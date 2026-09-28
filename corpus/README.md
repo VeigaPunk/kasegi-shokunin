@@ -21,7 +21,8 @@ its source. No generic filler.
 | Ops integrity layer | `knowledge/ops-invariants.md` | `ops/shared.mjs` (BANNED/PARKED/K3/TELEMETRY_EVENTS/gitMutationBlocker), `validate.mjs`, `registry-check.mjs`, `reroute-drill.mjs`, `check-freshness.mjs`, `sighting*.sh` — all read in full |
 | Board intake + batch finalize | `knowledge/intake-and-finalize.md` | `ops/import-board.mjs` (binding/P6/P7/S4) + `ops/finalize-all.mjs` (claim sweep/tag/atomic push) — full reads |
 | Claim-hardening defect taxonomy + archive | `knowledge/ufo-archive-2026.md` | `fleets/ufo-archive-2026/` full walk: 19 `claim-*` report.json defect censuses, keeper/whipper (b1k-NNN origin), inquiries briefs, programs/ old evidence shape |
-| Lessons | `lessons/round-1.md`, `lessons/round-1-aggregator-audit.md`, `lessons/round-3.md` … `lessons/round-8.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
+| Submitted-state / do-not-refile registry | `knowledge/submitted-registry.md` | live census: all `claims/*/*/status.json` submission fields (19 signatures), `ledger/missions.jsonl` SUBMITTED/DISCLOSED_FREE, `portal-reconciliation-2026-09-11.json`, `final-audit.json`, `origin-work/open-bug-bounties/claim-packages/submission-review/` (real receipt store), VDP `SUBMITTED.md`, `claim-ready/*`+`claim-hold/*` tags, `_claimer.status.json`, 15 status-less stub dirs |
+| Lessons | `lessons/round-1.md`, `lessons/round-1-aggregator-audit.md`, `lessons/round-3.md` … `lessons/round-9.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
 
 - ~~ops tail (`validate`/`registry-check`/`reroute-drill`/`check-freshness`/
@@ -46,3 +47,9 @@ its source. No generic filler.
 - `fleets/registry.json` lane→model routing — possibly cross-domain.
 - `george/` (49G comma.ai research dir) — parked round 4: no claim package
   references it; revisit only if one does.
+- ~~No consolidated do-not-submit list~~ — CLOSED round 9:
+  `knowledge/submitted-registry.md` (3 verified H1 + 3 archive-era live in
+  origin-work tree + 3 probable orphans + 1 VDP; Anthropic claim↔VDP
+  same-finding collision verified by live claim-check OK; origin-work
+  corpus outside every scan; field-spelling + polarity traps; 15
+  status-less stub dirs; root zips = dated snapshots).

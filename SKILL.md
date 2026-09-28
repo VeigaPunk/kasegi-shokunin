@@ -331,6 +331,52 @@ reference. Archive `claim-packages/<slug>` paths are the pre-rename tree —
 they now live at `claims/<platform>-<program>/<slug>/`. Mine the archive
 for defect patterns; it is not live state.
 
+## Submitted-state registry — the do-not-refile set
+
+Full table: `corpus/knowledge/submitted-registry.md`. Submission truth is
+scattered — `claims/*/*/status.json` (six field spellings), `ledger/missions.jsonl`,
+`fleets/run/portal-reconciliation-2026-09-11.json`,
+`.ufo/claim-recovery/final-audit.json`, `vdp-disclosures/`, stale
+`claim-ready/*` tags, and archive-era mission reports. Consolidated set:
+
+- **Verified:** H1 `4002776` mozilla (closed_duplicate), H1 `4002810` spotify
+  (closed_duplicate), H1 `4002789` airtable (`not_established`; status.json is
+  BLOCKED but `submission_state:"SUBMITTED"` + `submitted_url` carry the truth).
+- **Archive-era** (`claim-web1/2`): H1 `4028846` k8s-nodebound, Bugcrowd
+  `a169f309` ld-node-stream, Bugcrowd `e4f41218-6036-4bcf-80f1-1e2b6bf86d4e`
+  mattermost-jira-oauth2 — all filed 2026-09-14. The packages are NOT gone:
+  they live in the sibling tree `~/Projects/origin-work/open-bug-bounties/
+  claim-packages/` — whose `submission-review/submission-receipts.csv`
+  (3 rows) + `receipts/` (6 JSONs) + `queue.json` are the real receipt store.
+  No bounties-repo tool reads that tree — a second blind spot.
+- **Probable-unverified** (login-wall, ~65–70% real per claim-elastic):
+  H1 `4028904`/`4028953` elastic, Bugcrowd `4ecbaf46` aiven. Do not refile;
+  do not delete receipts.
+- **VDP:** `anthropic-plugin-dev-cmd-injection` freely disclosed 2026-09-06
+  (ledger `DISCLOSED_FREE` row at the same timestamp).
+  ⚠ Queued row 4 (`hackerone-anthropic/plugin-dev-test-hook-command-injection`,
+  DONE+claimable) is the SAME finding (same commit/file/sha256/CWE-78) — the
+  duplicate scan tests only `submitted_url`/`submission_performed`/
+  `submission_state` inside `claims/*/*/status.json`, misses `vdp-disclosures/`
+  and archive receipts; live `claim-check` run on the package returns OK.
+  A `claim-hold/*` tag exists on it, yet the generated index still queues it.
+  Report upstream (bounties owner); not fixed here (cross-domain).
+
+Field traps: `submitted_url` (filed report, contains `/reports/`) ≠
+`submission_url` (destination endpoint). `submission_performed:false` does NOT
+mean unsubmitted — airtable carries it plus a real `submitted_url`. Trust
+`submitted_url`-with-`/reports/`, `submit/receipt.md`, or `submission_state`
+SUBMITTED, cross-checked against ledger SUBMITTED/DISCLOSED_FREE rows.
+Aliases are structured when used — `hackerone-mozilla` status.json carries
+`duplicate_of` + `submission_state:"DUPLICATE_OF_SUBMITTED"` pointing at the
+mozilla canonical; the `claim.json alias_of` convention is unused repo-wide.
+`claim-ready/*` tags (3) all predate the SUBMITTED commits; `claim-hold/*`
+tags (9) exist alongside. 15 of 295 `claims/<p>/<s>/` dirs have no
+`status.json` (13 `ingestion-seeded` stubs: `INGESTION.md`+`claim.json`;
+stiltsoft partial; t-mobile `BLOCKED.md`-only; histogram: PARKED 248 /
+BLOCKED 16 / DONE 15 / SUBMITTED 2 / OPERATOR_GATED 1). Root
+`*-2026-09-15.zip` bundles are dated snapshots, not filtered live state.
+
 ## Triage economics
 
 `ops/ev-report.mjs` computes the hunter-contract EV per program record
@@ -368,7 +414,7 @@ the Submit click, payout rails).
 - `~/Projects/bounties/ops/fleet-dispatch.mjs` — the `/loop` dispatcher: leases, slot rotation, sole claims/ committer, tag+push proof, model-window routing
 - `~/Projects/bounties/fleets/{missions/<id>.md,run/,leases.json,claimer-mission.md,review-mission.md,priority.json,state-snapshots/}` — generated L1 assignments, status file-protocol, sibling-lane contracts
 - `~/Projects/bounties/docs/RUNBOOK-resume.md` — snapshot restore + dispatcher relaunch procedure
-- `~/Projects/bounties/.ufo-mission-report-bh*.md` — 21 hunter-mission readiness-audit reports (all BLOCKED verdicts)
+- `~/Projects/bounties/.ufo-mission-report-bh*.md` — 22 hunter-mission readiness-audit reports (21 BLOCKED, 1 READY: intigriti-yahoo)
 - `~/Projects/bounties/.ufo-{ingestion,warden}/` — intake-cycle + readiness-tracker artifacts for the origin-work claim tree
 - `~/Projects/bounties/ops/park-disposition.mjs` — PARKED/FAILED detail-regex classifier; producer of all `docs/autopsies/*` and the RETIRED rewrite + `mission_retired` telemetry
 - `~/Projects/bounties/ops/{validate,registry-check,reroute-drill,check-freshness}.mjs` — integrity gates: schema+referential, lane↔card bijection/k3/grok-pin, simulation-only reroute drill, 26 h live-source staleness alarm

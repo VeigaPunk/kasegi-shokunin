@@ -155,3 +155,34 @@
   SUBMITTED. SKILL.md gained the "Claim-hardening wave" defect-class
   section + cited path; README coverage map + gap marked closed.
   `corpus/lessons/round-8.md` recorded.
+- 2026-09-28 — round 9: closed the submitted-state gap — the do-not-refile
+  set was scattered across six stores with no consolidated list, and the
+  archive taxonomy named receipts (4028846, a169f309) absent from `claims/`.
+  Live-censused all 280 `claims/*/*/status.json` for submission fields:
+  only airtable/spotify/mozilla carry real `submitted_url`/`submitted_at`/
+  `submission_state:"SUBMITTED"` + `submit/receipt.md`; ledger
+  `missions.jsonl` SUBMITTED rows and `portal-reconciliation-2026-09-11.json`
+  agree (mozilla+spotify closed_duplicate, airtable not_established);
+  `final-audit.json` pins the same three preexisting reports. Recovered
+  three archive-era filings (H1 4028846 k8s-nodebound, Bugcrowd a169f309
+  ld-node-stream, e4f41218 mattermost) plus three probable-unverified
+  receipts (H1 4028904/4028953 elastic, Bugcrowd 4ecbaf46 aiven —
+  login-wall, do-not-refile/do-not-delete). **Live hazard surfaced:**
+  queued row 4 `hackerone-anthropic/plugin-dev-test-hook-command-injection`
+  (DONE+claimable) is the identical finding (same commit/file/sha256/CWE-78)
+  already freely disclosed as `vdp-disclosures/anthropic-plugin-dev-cmd-
+  injection/` — the duplicate scan reads only `claims/`; reported upstream,
+  not fixed (cross-domain). Field traps recorded: `submission_performed`
+  ≠ receipt truth, `submission_url` ≠ `submitted_url`. Aliases are
+  machine-readable when used (`duplicate_of` + `submission_state:
+  DUPLICATE_OF_SUBMITTED` on hackerone-mozilla; `claim.json alias_of`
+  unused repo-wide). L2 sweep found new stores: the `submission-review/`
+  receipt tree lives under `~/Projects/origin-work/open-bug-bounties/
+  claim-packages/` (submission-receipts.csv 3 rows + 3 orphan receipts =
+  the probable set), `_claimer.status.json` submitted[]/disclosed[]
+  arrays, `.ufo/bounty-fleet/reports/claim-claim-*.md` reconciles.
+  Hygiene: 295 claim dirs, 15 status-less (13 ingestion-seeded stubs +
+  stiltsoft partial + t-mobile BLOCKED.md); root zips dated snapshots.
+  → `corpus/knowledge/submitted-registry.md`; SKILL.md gained the
+  registry section; README gap closed. `corpus/lessons/round-9.md`
+  recorded.
