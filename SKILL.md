@@ -100,6 +100,45 @@ passing DONE packages with an explicit https route, attaches
 manifest-bound payload without re-review, and restores original bytes if the
 post-write recheck fails.
 
+## Intake surface — the map is decorative, ingestion is hidden
+
+`bounty-map/programs/*.json` (1088 records, one import
+`refresh-20260829T190850329Z`, nothing since) is **not** mission state:
+`mission_state` is DISCOVERED×1087/PLANNED×1 and read only for a `--dry`
+log line; `lane` is `executor`×1088; `ev_inputs` non-empty×1; `reward`
+exists on 48 records (all `source_kind=independent`) — `ev-report.mjs`
+prints UNKNOWN for 1087 programs. `check-freshness.mjs` live exit 1: all
+three board datasets 358 h stale (26 h threshold, AR4 alarm standing).
+Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88) is
+`priority(9e12) > continue(2e12) > curated(1e12) > reward.min×1000` —
+for ~1040 records the map contributes 0 or 1 points; real state is
+`ledger/missions.jsonl` + `fleets/run/`, real termination is
+status-file TERMINAL + telemetry `attempts()≥2`.
+
+Two intake paths: `import-board.mjs` writes the map (evidence-bound);
+the `.ufo-ingestion/` cycle (2026-09-14, 16 scouts rerouted off a grok
+403 onto `devin/swe-2:max`) EV-ranked 32 programs and seeded 13 directly
+into `claims/<slug>/ingestion-20260914/` **without map records** — 7 of
+the 12 queue rows, and 22 claims dirs total are map-less (incl. all
+Cantina/immunefi archive dirs). Name-drift joins: map `bugcrowd-spacex`
+vs claims `bugcrowd-spacex-starlink`; map `github-bug-bounty` (the one
+curated record) vs claims `github-bounty`. Cycle 2 never ran — its
+deferred/queued frontier (~80 programs) is enumerated in
+`cycle-20260914T171257Z.md`. `.ufo-ingestion/claim-tracker.py` is a dead
+third watcher (READY.md/no-BLOCKED.md, weaker than claim-check) that also
+scans the origin-work claim-packages tree; last cycle 2026-09-14T20:40Z.
+
+`fleets/registry.json` is in-domain: the `operator_decrees` block is the
+authoritative decree ledger — filing order (mozilla→spotify→airtable→
+intel), **3cx never-submitted decree** (free disclosure pending rep),
+intel hold (no Intigriti KYC), freebie-class ATTRIBUTED not anonymous
+(supersedes the anonymity clause — anthropic), paid track =
+`vgpnk1337`(H1)/`veigapunk`(Intigriti) operator accounts, severity-
+evidence-trail requirement. The file accretes with in-place `superseded`
+markers (astra is simultaneously doctrine-banned and LIVE-routed;
+`(parked until 2026-09-07)` bucket notes are stale vs `PARKED=[]`).
+Authoritative detail: `corpus/knowledge/intake-surface.md`.
+
 ## Mission ledger & audit store
 
 `ledger/missions.jsonl` is the append-only hunter-contract state machine
@@ -449,3 +488,6 @@ the Submit click, payout rails).
 - `~/Projects/bounties/ops/{import-board,finalize-all}.mjs` — the only ops scripts that write beyond `ledger/`: evidence-bound program feed and batch claim tag+push sweep
 - `~/Projects/bounties/ops/sighting{,-board,-dispatcher,-missions}.sh` — `ufo_sighting` observation windows (display only)
 - `~/Projects/bounties/fleets/ufo-archive-2026/` — pre-consolidation fleet snapshot: 19 `claim-*` hardening missions (defect census), `bounty-keeper` (b1k-NNN origin), L0 mission briefs, old per-program evidence shape
+- `~/Projects/bounties/bounty-map/{schema.json,programs/*.json}` — 1088-record census: single refresh run, decorative `mission_state`/`lane`/`ev_inputs`, 352 untouched, map↔claims name drift
+- `~/Projects/bounties/.ufo-ingestion/{cycle-20260914T171257Z.md,rankings.md,claim-tracker.py,claim-ready-tracker.*}` — the second intake path + dead continuous watcher over claims/ AND origin-work claim-packages
+- `~/Projects/bounties/fleets/registry.json` — lane/bucket routing + `operator_decrees` ledger (claim queue, 3cx/intel/anthropic dispositions, disclosure-class guardrails)

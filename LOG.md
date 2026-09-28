@@ -211,3 +211,31 @@
   → `corpus/knowledge/operator-queue.md`; SKILL.md gained "Operator queue —
   live audit" section; README coverage map + gap closed.
   `corpus/lessons/round-10.md` recorded.
+- 2026-09-28 — round 11: closed the intake-surface + registry gaps — the
+  last open known-gap and the largest unread structured dataset. Censused
+  all 1088 `bounty-map/programs/*.json` (single `refresh_run_id`
+  `refresh-20260829T190850329Z`, 30 days stale): `mission_state` is
+  DISCOVERED×1087/PLANNED×1 and never advanced — `fleet-dispatch.mjs::
+  programState()` reads it only for a `--dry` log line; `lane`=
+  executor×1088; `ev_inputs` non-empty×1 (github-bug-bounty curated M2);
+  `reward` on 48 independent records only → `buildQueue` degenerates to
+  priority(9e12)/continue(2e12)/curated(1e12)/reward.min×1000 for ~1040
+  zero-scored records. Coverage join: 586/592 evidence dirs mapped,
+  252/275 claims dirs mapped, 352 map programs untouched, 22 map-less
+  claims dirs = the `.ufo-ingestion/` cycle (2026-09-14, 16 scouts,
+  grok 403 → devin/swe-2:max reroute; EV-ranked 32, seeded 13 → 7 of 12
+  queue rows) bypasses the map entirely; name-drift pairs (spacex,
+  github-bounty) break id joins. Live verify: `check-freshness` exit 1
+  (358 h vs 26 h, standing AR4), `validate` OK. `.ufo-ingestion/
+  claim-tracker.py` = dead third watcher (READY.md standard, weaker than
+  claim-check; also scans origin-work claim-packages; last run
+  2026-09-14T20:40Z). `fleets/registry.json` resolved in-domain: the
+  `operator_decrees` block is the authoritative decree ledger — filing
+  order mozilla→spotify→airtable→intel, **3cx never-filed decree**
+  (free disclosure pending rep, explains rounds 9–10 anomaly), intel
+  hold, freebie-class ATTRIBUTED supersedes anonymous, paid-track
+  accounts vgpnk1337/veigapunk, severity-evidence-trail; astra is
+  simultaneously doctrine-banned and LIVE-routed (in-place superseded
+  markers, stale parked notes). → `corpus/knowledge/intake-surface.md`;
+  SKILL.md gained Intake surface section + 3 cited paths; README coverage
+  map + registry gap CLOSED. `corpus/lessons/round-11.md` recorded.

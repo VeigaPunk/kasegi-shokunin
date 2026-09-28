@@ -23,7 +23,8 @@ its source. No generic filler.
 | Claim-hardening defect taxonomy + archive | `knowledge/ufo-archive-2026.md` | `fleets/ufo-archive-2026/` full walk: 19 `claim-*` report.json defect censuses, keeper/whipper (b1k-NNN origin), inquiries briefs, programs/ old evidence shape |
 | Submitted-state / do-not-refile registry | `knowledge/submitted-registry.md` | live census: all `claims/*/*/status.json` submission fields (19 signatures), `ledger/missions.jsonl` SUBMITTED/DISCLOSED_FREE, `portal-reconciliation-2026-09-11.json`, `final-audit.json`, `origin-work/open-bug-bounties/claim-packages/submission-review/` (real receipt store), VDP `SUBMITTED.md`, `claim-ready/*`+`claim-hold/*` tags, `_claimer.status.json`, 15 status-less stub dirs |
 | Operator queue audit | `knowledge/operator-queue.md` | live `claim-check.mjs` re-run of all 12 queued rows + `claim-index.mjs` source read (`claim-hold/*` inert), per-row checklist gates, runbook distill, anthropic↔VDP fingerprint byte-match |
-| Lessons | `lessons/round-1.md`, `lessons/round-1-aggregator-audit.md`, `lessons/round-3.md` … `lessons/round-9.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
+| Intake surface (map census, ingestion path, registry decrees) | `knowledge/intake-surface.md` | 1088-record census, `fleet-dispatch.mjs::buildQueue` scoring source read, `.ufo-ingestion/` full walk, `fleets/registry.json` decree ledger, live `check-freshness`/`validate` runs |
+| Lessons | `lessons/round-1.md` … `lessons/round-11.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
 
 - ~~ops tail (`validate`/`registry-check`/`reroute-drill`/`check-freshness`/
@@ -45,7 +46,7 @@ its source. No generic filler.
   `knowledge/ufo-archive-2026.md` (19-mission defect taxonomy, b1k-NNN
   keeper origin, `claim-packages/`→`claims/` naming drift, reconciliation
   evidence chain).
-- `fleets/registry.json` lane→model routing — possibly cross-domain.
+- ~~`fleets/registry.json` lane→model routing — possibly cross-domain~~ — CLOSED round 11: `knowledge/intake-surface.md` (in-domain: `operator_decrees` is the authoritative decree ledger — claim queue order, 3cx never-filed, intel hold, freebie attribution flip — plus lane/bucket routing consumed by validate/registry-check).
 - `george/` (49G comma.ai research dir) — parked round 4: no claim package
   references it; revisit only if one does.
 - ~~No consolidated do-not-submit list~~ — CLOSED round 9:
