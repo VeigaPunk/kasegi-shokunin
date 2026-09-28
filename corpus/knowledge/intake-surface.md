@@ -11,12 +11,16 @@ failures), `ops/` source reads, and `node ops/check-freshness.mjs` (exit 1).
 | Board import | `ops/import-board.mjs --from <board>` (evidence-bound: dataset sha256 + count + `refresh_run_id` vs `refresh_evidence.json`) | `bounty-map/programs/*.json` — new records land `{lane:"executor", mission_state:"DISCOVERED", ev_inputs:{}}`; past-DISCOVERED files are byte-protected | `fleet-dispatch.mjs::buildQueue`, `ev-report.mjs`, `rank.mjs`, `validate.mjs` |
 | Ingestion cycle | `.ufo-ingestion/cycle-20260914T171257Z.md` (run `ing4e0158f74cf3`, 16 scouts, grok 403 spending-limit → rerouted `devin/swe-2:max` via `.omp/agents/ing-scout.md`) | `claims/<slug>/ingestion-20260914/` directly — INGESTION.md + claim.json (`stage:"ingestion-seeded"`) | `claim-index.mjs` queue only |
 
-**The ingestion cycle bypasses `bounty-map` entirely.** 22 claim dirs have
-no program record: all 13 ingestion-seeded programs (crypto, spacex-starlink,
-auth0-okta, superhuman, amazonvrp, yahoo, x, wellsfargo-bbp, hyatt, ui, bcny,
-monzo, personio — 7 of the 12 queue rows came from this cycle) plus archive-era
-dirs (cantina-dydx/euler/morpho/pendle/reserve/uniswap, immunefi-1inch/
-moneyonchain, sherlock-aave-v4, discord, dji, riot, adobe, brave,
+**The ingestion cycle wrote no map records itself.** 22 claim dirs have
+no program record (round-13 correction: the seeding did NOT make all 13
+seeded programs map-less — 9 of 13 already had map records: crypto,
+auth0-okta, superhuman, amazonvrp, x, wellsfargo-bbp, hyatt, ui, bcny).
+Composition, live census round-13: 4 seeded (spacex-starlink, monzo,
+personio, yahoo — 7 of the 12 queue rows came from this cycle) + 18
+archive-era
+dirs (cantina-dydx/euler/morpho/pendle/reserve-protocol/uniswap,
+immunefi-1inch-SmartContracts/moneyonchain, sherlock-aave-v4, discord, dji,
+riot, adobe, brave, **hackerone-zabbix** — omitted from earlier lists,
 nvidia-public, intigriti-c1a89c7e, github-bounty). The ranked table in
 `cycle-*.md` (EV-scored, 13 SEEDED / 1 REJECTED / 18 DEFERRED) is the real
 curated ranking — richer than anything `rank.mjs` produces off the map.
@@ -38,8 +42,16 @@ round-12 correction).
   `fleets/run/<id>.status.json` TERMINAL (`DONE/PARKED/FAILED/RETIRED`) +
   `attempts()≥2` counted from telemetry park/fail events. 10 of the 12
   schema enum values are never populated. One real writer exists —
-  `rank.mjs:203` bumps DISCOVERED→RANKED — but no RANKED record exists,
-  so it never ran post-refresh (round-12 addition).
+  `rank.mjs:202-203` bumps DISCOVERED→RANKED — but no RANKED record exists.
+  Round-13 correction: "it never ran post-refresh" was an unbounded negative —
+  `--write-queue` ran ≥2× on 2026-09-04 (2 `RANKED` lines in
+  `ledger/missions.jsonl` in rank.mjs's exact hardcoded append shape incl.
+  producer/model/basis/artifact_sha256; one sha matches the still-present
+  `ledger/rankings-2026-09-04.json`). Defensible claim: the bump never
+  PERSISTED to a program file — the sole curated candidate was already
+  PLANNED (`heldByState`, rank.mjs:199-201) and default-basis positives were
+  held by the S3 consistency gate. As of 2026-09-28: 1087 DISCOVERED /
+  1 PLANNED / 0 RANKED.
 - `lane`: `executor` ×1088 — decorative; routing lives in
   `fleets/registry.json` lane definitions, not per-program.
 - `ev_inputs`: exactly **1** non-empty record (`github-bug-bounty`, curated
@@ -72,8 +84,14 @@ score = priority_hit(9e12) + continue_verdict(2e12) + curated_ev(1e12)
       + reward.min×1000 + is_live(1)
 ```
 
-With `priority.json` = 14 programs, `continue` verdicts ≈ 50, `curated` = 1,
-`reward.min` present on 48: for ~1040 records the score is 0 or 1 and order
+With `priority.json` = 14 programs (a strict subset of the 50
+continue-verdict programs — the 9e12 tier only breaks ties inside the
+continue cohort), `curated` = 1, `reward` object on 48 but numeric
+`reward.min` on only 14 (round-13 correction; one of the 14 is also a
+continue hit, so the reward band counts 13): for exactly **1024** records
+(796 zero + 228 live-only; round-13 census — earlier "~1040" was derived
+from the reward-exists≠reward.min-numeric conflation) the score is 0 or 1
+and order
 degenerates to readdir order. The 1088-record map contributes almost nothing
 to queue order — intake effort paid off only through the separate
 `.ufo-ingestion` ranking and `priority.json`/`review-verdicts.jsonl`.

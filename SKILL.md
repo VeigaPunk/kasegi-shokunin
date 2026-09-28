@@ -73,7 +73,7 @@ Terminal classes observed across 486 non-claim-ready missions
 |---|---|---|---|
 | In-scope finding, reproducible locally, reviewer APPROVED, all gates PASS | Claimable | `status.json state:"DONE", claimable:true` | `docs/claim-ready-index.md` (12 queued) |
 
-| Defect proven, live precondition unverified (e.g. needs read-only chain/state check) | Positive-blocked | `state:"BLOCKED", verdict:"positive-blocked-*", claimable:false`, `resume_condition` set | `claims/cantina-pendle/ingestion-20260915/status.json` |
+| Defect proven, live precondition unverified (e.g. needs read-only chain/state check) | Positive-blocked | `state:"BLOCKED", verdict:"positive-blocked-*", claimable:false`, `resume_condition` set | `claims/cantina-pendle/ingestion-20260915/status.json` — exactly 2 attested instances (+ cantina-dydx); free-form verdict string: no schema defines it, claim-check.mjs:169's not-claimable regex doesn't recognize it (round-13 annotation) |
 | Finding needs operator-owned substrate (VM, device, account) | Positive-blocked | `submit/BLOCKED.md` names the exact gate | `claims/hackerone-3cx/…` (uid=0 disposable-VM capture) |
 | Bounded negative result: authorized surface tried, nothing claimable | LEARNED honest-zero (438/486) | `state:"BLOCKED", verdict:"honest-zero-*", finding_count:0`, `submit/BLOCKED.md` | `claims/bugcrowd-seek/honest-zero/` |
 | Scope never verifiable (auth wall, SPA shell, terms gate) | RETIRED auth-walled (19/486) | `docs/autopsies/<program>.md` + parked status | `docs/autopsies/bugcrowd-openai.md` |
@@ -106,28 +106,40 @@ post-write recheck fails.
 `bounty-map/programs/*.json` (1088 records, one import
 `refresh-20260829T190850329Z`, nothing since) is **not** mission state:
 `mission_state` is DISCOVERED×1087/PLANNED×1 and read only for a `--dry`
-log line; `lane` is `executor`×1088; `ev_inputs` non-empty×1; `reward`
-exists on 48 records (all `source_kind=independent`) — `ev-report.mjs`
-prints UNKNOWN for 1087 programs. `check-freshness.mjs` live exit 1: all
-three board datasets 358 h stale (26 h threshold, AR4 alarm standing).
-Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88) is
-`priority(9e12) > continue(2e12) > curated(1e12) > reward.min×1000` —
-for ~1040 records the map contributes 0 or 1 points; real state is
+log line; `lane` is `executor`×1088; `ev_inputs` non-empty×1; the `reward`
+object exists on 48 records (all `source_kind=independent`) but numeric
+`reward.min` on only 14 (round-13 correction) — `ev-report.mjs` prints
+UNKNOWN for 1087 programs. `check-freshness.mjs` live exit 1: all three
+board datasets 358 h stale at round 11, 359.4 h at the round-13 live re-run
+(the counter grows between runs; 26 h threshold, AR4 alarm standing).
+Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+`priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+text omitted `is_live(1)`) — exactly 1024 of 1088 records score 0 (796) or
+1 (228), so for 94.1% of the map ordering degenerates to readdir order;
+`priority.json` (14) is a strict subset of the 50 continue programs, so the
+9e12 tier only breaks ties inside the continue cohort. Canonical derivation:
+`corpus/knowledge/triage-thresholds.md`. Real state is
 `ledger/missions.jsonl` + `fleets/run/`, real termination is
 status-file TERMINAL + telemetry `attempts()≥2`.
 
 Two intake paths: `import-board.mjs` writes the map (evidence-bound);
 the `.ufo-ingestion/` cycle (2026-09-14, 16 scouts rerouted off a grok
 403 onto `devin/swe-2:max`) EV-ranked 32 programs and seeded 13 directly
-into `claims/<slug>/ingestion-20260914/` **without map records** — 7 of
-the 12 queue rows, and 22 claims dirs total are map-less (incl. all
-Cantina/immunefi archive dirs). Name-drift joins: map `bugcrowd-spacex`
+into `claims/<slug>/ingestion-20260914/` — 7 of the 12 queue rows.
+**Round-13 correction:** the seeding bypassed the map for only 4 of the 13
+slugs (spacex-starlink, yahoo, monzo, personio); the other 9 have map
+records. The 22 map-less claims dirs = 4 seeded + 18 archive-era (incl. all
+Cantina/immunefi dirs). Name-drift joins: map `bugcrowd-spacex`
 vs claims `bugcrowd-spacex-starlink`; map `github-bug-bounty` (the one
 curated record) vs claims `github-bounty`. Cycle 2 never ran — its
 deferred/queued frontier (~80 programs) is enumerated in
 `cycle-20260914T171257Z.md`. `.ufo-ingestion/claim-tracker.py` is a dead
 third watcher (READY.md/no-BLOCKED.md, weaker than claim-check) that also
-scans the origin-work claim-packages tree; last cycle 2026-09-14T20:40Z.
+scans the origin-work claim-packages tree; `tracker.log` last line
+2026-09-14T17:24:52Z — the "20:40Z" recorded in earlier rounds is the `.md`
+snapshot's mtime (17:40:15 -0300 = 20:40:15Z), not a tracker cycle
+(round-13 correction).
 
 `fleets/registry.json` is in-domain: the `operator_decrees` block is the
 authoritative decree ledger — filing order (mozilla→spotify→airtable→
@@ -173,7 +185,9 @@ claim package. Authoritative detail: `corpus/knowledge/mission-ledger.md`,
 `ufo_sighting:fleet-grid`, 2 h leases in `fleets/leases.json`, slot
 rotation on terminal status, `reconcile()` rebuilds from leases + pane
 titles on restart. Queue score = priority(9e12) > continue(2e12) >
-curated-EV(1e12) > reward.min — EV orders, never gates (AR12). Dispatcher
+curated(1e12) > reward.min×1000 > is_live(1) (round-13 correction: five
+terms; `curated` is a boolean on non-empty `ev_inputs`, never an EV
+magnitude) — EV orders, never gates (AR12). Dispatcher
 is the sole committer to `claims/` (P21) gated on fresh `claim-check.mjs`
 (P20), tags `claim-ready/<id>/<slug>` and pushes atomically after proving
 the tagged commit's bytes match (`claim_tag_rejected` telemetry on
@@ -382,8 +396,9 @@ disclosure defect, not a code defect:
 
 ## Claim-hardening wave — the defect layer above the gates
 
-`fleets/ufo-archive-2026/missions/claim-*/report.json` (19 L1 hardening
-missions, 2026-09-14) is the empirical superset of `claim-check.mjs`:
+`fleets/ufo-archive-2026/missions/claim-*/report.json` (20 L1 hardening
+missions, 2026-09-14 — round-13 correction: this line stayed at 19 after
+r12 fixed the companion) is the empirical superset of `claim-check.mjs`:
 what packages actually get wrong, beyond what the checker catches. The
 top recurrence classes (full 22-class taxonomy:
 `corpus/knowledge/ufo-archive-2026.md`):
@@ -465,12 +480,20 @@ is intel's *nested* `submission.state`, not a top-level state). Root
 
 `docs/claim-ready-index.md` (generator: `ops/claim-index.mjs`) queues every
 `claims/*/*/status.json` package whose current bytes pass `claim-check.mjs`.
-Live re-run 2026-09-28: all 12 queued rows pass the gate. Dossier:
+Live re-run 2026-09-28 (round 13): all 12 queued rows pass the gate;
+tree-wide 281 `status.json` = 280 packages (PARKED 248 / DONE 15 / BLOCKED
+15 / SUBMITTED 2) + 1 evidence-copy grep trap
+(`claims/bugcrowd-seek/honest-zero/evidence/status.json`, state PARKED);
+claim-check over the 15 DONE → 12 OK + 3 FAIL (doit 7 errors, github-bounty
+8, 3cx 8), exactly matching the generated index's blocked table. Dossier:
 `corpus/knowledge/operator-queue.md`. Two systemic holes in the queue path:
 
 - **`claim-hold/*` tags are inert** — `claim-index.mjs` only reads
-  `claim-ready/*` tags; no hold filter exists. Queued rows 4 (anthropic),
-  7 (wordpress), 10 (intel) all carry `claim-hold/*` tags the index ignores.
+  `claim-ready/*` tags; no hold filter exists. Queued rows 2 (8x8),
+  4 (anthropic), 7 (wordpress), 10 (intel) — FOUR, round-13 correction; the
+  8x8 hold tag has existed since 2026-09-05T19:28:41-03:00 — carry
+  `claim-hold/*` tags the index ignores (9 hold tags total, all creatordate
+  2026-09-05).
 - **Duplicate scan reads `claims/` only** — row 4
   (`hackerone-anthropic/plugin-dev-test-hook-command-injection`) is
   byte-identical to the operator's own VDP disclosure
@@ -478,9 +501,13 @@ Live re-run 2026-09-28: all 12 queued rows pass the gate. Dossier:
   `d7dbd9a`, file, sha256 `ded642e8`, CWE-78) and still returns
   `claim-check: OK`. **Do not file row 4.**
 
-Other per-row traps: `submitted_url` on queued rows is a route URL (landing
-page/`reports/new`), never a `/reports/<id>` receipt — queue membership means
-"never submitted". Personio (row 11): takeover proof is REQUIRED by program
+Other per-row traps: all 12 queued rows carry `submitted_url: null`
+(round-13 correction — earlier text called the route URLs `submitted_url`;
+they live in `submission_url` (spacex), `claim_url`
+(8x8/anthropic/wordpress/intel), and `submit-payload.json` route fields);
+real `/reports/<id>` receipts exist only on the 2 SUBMITTED packages
+(airtable, spotify). Queue membership means "never submitted" by field value,
+not inference. Personio (row 11): takeover proof is REQUIRED by program
 OOS, not optional. SpaceX (row 1): same class, "recommended". Intel (row 10):
 `submit/BLOCKED-2026-09-11.md` still on disk — no authenticated Intigriti
 session. 8x8 (row 2): asset is `eligible_for_bounty=false` — the index itself
@@ -507,7 +534,24 @@ Missing inputs print `UNKNOWN`, never default to 0/1; verdict degrades to
 operator-side contract for what only a human may do (vault unlock, MFA, KYC,
 the Submit click, payout rails).
 
-## Cited paths (all verified 2026-09-28)
+Round-13 derivation (canonical: `corpus/knowledge/triage-thresholds.md`):
+verdict is strict — `positive_adjusted_ev` only when `adjusted_ev > 0`
+(ev-report.mjs:91); exit 0 always, except 2 for a missing program-id
+argument OR a missing program file; an unparseable file → WARNING + all
+terms UNKNOWN + exit 0 (fail-closed on values, not on parse). The basis
+column (`source_url|estimate|unknown`) is never exercised live: 0/1088
+records carry any `sources[].basis`. `rank.mjs:55-58` DEFAULTS (ranking
+artifacts only, never ev-report): p_in_scope .7, p_reproducible .7,
+p_unique .25, p_accepted .6, effort_hours 60, opportunity_rate 25,
+direct_cost 0, delay_cost 0, expected_risk_cost 250 → default p_success
+.0735. The single complete record (github-bug-bounty) live round-13:
+0.9×0.8×0.35×0.7 = 0.1764, gross 1764, cost 1250, adjusted_ev 514, positive
+true. `adjusted_ev` is derived-only, never persisted: fleet-dispatch.mjs:200
+reads it for telemetry and always logs `"unknown"` (0/1088; schema
+`additionalProperties:false`), so the negative-EV `ev_note` branch (:204) is
+dead code.
+
+## Cited paths (all verified 2026-09-28; round-13 full-set re-audit: 708 counted citations — 705 resolved, 3 broken repaired in place)
 
 - `~/Projects/bounties/fleets/mission-template.md` — L1 mission contract, six-file deliverable spec
 - `~/Projects/bounties/docs/claim-runbook.md` — preflight + operator-only actions
@@ -520,7 +564,7 @@ the Submit click, payout rails).
 - `~/Projects/bounties/claims/cantina-pendle/ingestion-20260915/` — complete positive-blocked exemplar
 - `~/Projects/bounties/claims/bugcrowd-seek/honest-zero/` — complete honest-zero exemplar
 - `~/Projects/bounties/bounty-map/schema.json` — program record schema (draft-07, fail-closed `additionalProperties:false`)
-- `~/Projects/bounties/ledger/{missions,telemetry,candidates,imports}.jsonl` — append-only mission state machine + dispatcher heartbeat + hunter intake + board-import binding
+- `~/Projects/bounties/ledger/{missions,telemetry,candidates,imports}.jsonl` — append-only mission state machine + dispatcher heartbeat + hunter intake + board-import binding. Round-13: telemetry line counts grow between runs (`check-freshness.mjs:61` appends one `freshness_check` line per invocation — 7225 lines as of 2026-09-28T21:52:51.978Z); the worktree copy also carries 3 committed merge-conflict marker lines from a 2026-09-06 merge (JSON.parse fails on exactly those 3; the sole in-repo consumer `attempts()` is regex-only, so the fleet never notices); `rankings-*.json` = 234 artifacts / 229 stamps with zero consumers.
 - `~/Projects/bounties/evidence/<program>/` — per-program audit store (592 dirs; scope-snapshots, envelopes, custodian pairs, honest-zero records)
 - `~/Projects/bounties/ops/shared.mjs` — `appendLedger` (3500B O_APPEND cap) + `gitMutationBlocker` + `TELEMETRY_EVENTS`
 - `~/Projects/bounties/ops/fleet-dispatch.mjs` — the `/loop` dispatcher: leases, slot rotation, sole claims/ committer, tag+push proof, model-window routing

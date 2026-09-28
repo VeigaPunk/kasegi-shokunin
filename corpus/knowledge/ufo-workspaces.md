@@ -53,8 +53,10 @@ reports** → 19 shared / 3 report-only (`bh0cb2eb6ca20b`, `bh3d2d3d538556`,
 (`bhb0bfa2c8715d`, no workspace, no report). "Find the workspace for report X"
 fails 3/22; a top-level-only scan over-counts failures 6-fold.
 
-Verdicts (grep `Outcome` over all 22 reports, triple-verified): **2 READY / 20
-BLOCKED** — READY = `bh0cb2eb6ca20b` (intigriti-yahoo, "1 claimable finding, gate
+Verdicts (**2 READY / 20 BLOCKED**; round-13 correction: the "grep `Outcome`
+over all 22 reports" method was impossible — only 13/22 reports contain that
+string; the tally holds via the Terminal-disposition/heading markers): READY =
+`bh0cb2eb6ca20b` (intigriti-yahoo, "1 claimable finding, gate
 `ops/claim-check.mjs` → OK") and `bh557fda669b20` (hackerone-superhuman,
 `node ops/claim-check.mjs claims/hackerone-superhuman/ingestion-20260914` → OK).
 Other `READY` string occurrences are negations ("0 READY, 1 BLOCKED", "Why not
@@ -116,16 +118,23 @@ bountyfleet1 hunt plan and explicitly disclaims `docs/plan-round0.md` (the HQ
 bootstrap) — same filename, different document.
 
 **Second `missions.jsonl`, second state machine:** `.ufo/bounty-fleet/ledger/missions.jsonl`
-= 525 rows / 184 run_ids (LEARNED 183 / SCOPED 174 / PLANNED 161 / EVIDENCED 2 /
-EXECUTED 1 / VERIFIED 1 / SUBMISSION_PREPARED 1 / 2 unparseable) vs root
+= 525 rows / **183** run_ids (round-13 correction: 184 was an off-by-one
+counting the runless `bountyfleet1` producer; every run_id is `b1k-NNN`;
+LEARNED 183 / SCOPED 174 / PLANNED 161 / EVIDENCED 2 /
+EXECUTED 1 / VERIFIED 1 / SUBMISSION_PREPARED 1 — and "2 unparseable" was
+wrong: the b1k-002 and b1k-133 rows are valid JSON using `state:"PARKED"`
+instead of `transition`, so 0 unparseable) vs root
 `ledger/missions.jsonl` = 718 lines / 260 missions. Any `**/missions.jsonl` glob
 merges two unrelated machines. `telemetry.jsonl` 281 rows (lease_claimed 88,
-operator_decree 32, mission_parked 83); `candidates.jsonl` 118 pre-hunt triage rows
-(116 program_ids). Writers are each run's own L1, not a central ops tool.
+operator_decree 32, mission_parked 83); `candidates.jsonl` 118 pre-hunt triage
+rows — 111 rows carry a program_id, **105 distinct** (round-13 correction:
+"116 program_ids" conflated rows with the field; 7 rows lack it). Writers are
+each run's own L1, not a central ops tool.
 
 **Four irreconcilable run counts:** keeper `state.json launched=265` = `sessions/`
 dirs (b1k-001…265, no gaps), but reports 249, root plans 233 (+9 in `session/`),
-ledgered run_ids 184, telemetry 172 → **81 launched runs left no ledger line**.
+ledgered run_ids **183**, telemetry **171** (170 b1k + 1 refresh run —
+round-13 corrections) → **82 launched runs left no ledger line**.
 Silent truncation: `b1k-248` + `b1k-251..265` have transcripts but no report and no
 ledger row (b1k-253 sole exception); ledger frozen 2026-09-11T03:39Z while keeper
 ran to 09:37Z. Two halts, not one: `launch_cap` at launched=64 (2026-09-10T23:01Z),
@@ -155,17 +164,26 @@ model `devin/swe-2`, thinking=max) driven by `.omp/skills/ufo/SKILL.md` +
 protocol. All 8 lanes launched within 15 s at 2026-09-15T20:31:58–20:32:13Z;
 bpolish8 re-ran 23:36:52Z. `bpolish` is an **operator lane label** (0 hits in
 `.omp/`, never emitted by any tool) = board-polish over `claims/<program>/<slug>/`
-packages for UFO missions under `origin-work/ufo-fsd-alpha/.ufo/missions/hunt-*`.
+packages for UFO missions the transcripts place under
+`origin-work/ufo-fsd-alpha/.ufo/missions/hunt-*` (round-13 correction: that
+tree has no `.ufo/missions/` dir and no `hunt-*` path at depth ≤4 — the
+citation dangles like the claims-side `.ufo/` refs; the label survives only
+in transcript text).
 
-**Refile verdict: does NOT extend the do-not-refile registry.** Non-null
-`submitted_url`: zero occurrences (key present with `null` in ~51 files). Strict
-`(?<!no_)submission_performed:true` fires in 9 files — all Gate-3 checklist text,
-negative assertions, an agent's own grep pattern, validator regex.
+**Refile verdict: does NOT extend the do-not-refile registry.**
+`submitted_url`: zero non-null occurrences (key present with `null` in **56**
+files, 61 carry the key — round-13 correction: "~51" irreproducible). Strict
+`(?<!no_)submission_performed:true` fires in **4** files (separator-tolerant
+variants: 20 files; `.ufo`-wide: 16 — round-13 correction: no variant yields
+the earlier "9"); all hits are Gate-3 checklist text, negative assertions, an
+agent's own grep pattern, validator regex.
 `custodian-receipts.json` (152 files) is a custody **hash-chain** (schema
 `custodian-receipts/v1`, `prior_receipt_sha256`), not a submission receipt.
 
-Grep traps (this corpus, measured): naive `submission_performed.*true` → **471 hits
-/ 61 files, 0 real** (~50× false positives from `no_submission_performed: true`);
+Grep traps (this corpus, measured): naive `submission_performed.*true` → **402
+lines / 91 files, 0 real** (round-13 correction: 471/61 irreproducible under
+any variant — jsonl-only gives 385/76; the false-positive mechanism,
+`no_submission_performed: true`, holds);
 `receipt` → 2,841 hits, all custodian material; `submission_state:"SUBMITTED"`
 counters measure checklist text volume, not state; 403 hits are agents grepping
 `.ufo/sessions` itself (self-referential — never cite as independent confirmation);

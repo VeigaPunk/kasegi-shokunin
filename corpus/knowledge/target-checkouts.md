@@ -8,7 +8,7 @@ to it.
 
 | Dir | Size | What | Disposition |
 |---|---|---|---|
-| `pendle-core-v2-public/` | 63 M | shallow clone of `github.com/pendle-finance/pendle-core-v2-public`, single squashed commit `f24265966bb53f75d834ad705decde8e479d3a33` = **v6.10.0**; 274 `.sol` files, 10 top-level dirs, `audits/` (7 classes: LinearDiscountOracle, LpPtoracle, PtLooping, main codebase, marketV6, marketV7, sPendle), `whitepapers/` (5 PDFs: AMM, LP_Oracle, PT+YT, SY, vePENDLE) | live: the cantina-pendle hunt target; untracked+un-ignored in git |
+| `pendle-core-v2-public/` | 63 M | shallow clone of `github.com/pendle-finance/pendle-core-v2-public`, single squashed commit `f24265966bb53f75d834ad705decde8e479d3a33` = **v6.10.0**; 274 `.sol` files, **6 top-level dirs + 9 top-level files** (round-13 correction: "10 top-level dirs" overcounted), `audits/` (7 classes: LinearDiscountOracle, LpPtoracle, PtLooping, main codebase, marketV6, marketV7, sPendle), `whitepapers/` (5 PDFs: AMM, LP_Oracle, PT+YT, SY, vePENDLE) | live: the cantina-pendle hunt target; untracked+un-ignored in git |
 | `george/` | 49 G | comma.ai research dir, zero `claims/` references | parked round 4; revisit only if a claim references it |
 | `vgn-bounty-lab/` | ~0 | empty `git init`, zero commits | closed round 4; gitignored (`.gitignore:7`) |
 
@@ -24,15 +24,21 @@ clone". 5 files under `claims/cantina-pendle/` reference the checkout by name.
 
 Census over all 255 `claims/*/*/provenance.json`:
 
-- **187 carry a `"pin"` block**; pin-key field frequencies: `tree` ×31, `exit` ×19,
-  `cmd` ×18, `repo` ×16, `remote` ×6, `tag` ×4 → three pin families:
+- **187 files contain a `"pin"` key — 188 occurrences** (round-13 correction:
+  the count holds as a raw-substring file census, but "block" overstated the
+  structure and the key-frequency table — `tree` ×31, `exit` ×19, `cmd` ×18,
+  `repo` ×16, `remote` ×6, `tag` ×4 — reproduces under NO method: those
+  fields belong to `steps[]` transition objects, and `exit`/`cmd` appear in
+  0 pin values). Verified structure: **152 top-level + 35 nested**; of the
+  188 pin values, **157 are bare 40-char hex strings**, **24 dicts**, **3
+  nulls**. The dict pins show two observed families (the previously claimed
+  third "command-style `{cmd, exit}`" family does not exist):
   1. **remote-style** `{remote, commit, note}` — named upstream + commit
      (pendle exemplar);
-  2. **clone-style** `{action:"sparse clone", repo, commit, tree, sparse}` — 11
-     files pin a sparse checkout down to `tree` sha + file list (e.g.
-     idos-network `IDOSNodeStaking.sol`, ember-protocol Ember-Vaults-EVM);
-  3. **command-style** `{cmd, exit}` — pins the exact command that produced an
-     artifact + its exit status.
+  2. **clone-style** `{action:"sparse clone", repo, commit, tree, sparse}` —
+     the 11 sparse-checkout pins (down to `tree` sha + file list, e.g.
+     idos-network `IDOSNodeStaking.sol`, ember-protocol Ember-Vaults-EVM)
+     live in `steps[]` objects, not in top-level pin blocks.
 - 43 files carry `"action"` keys (pin actions and transition actions share the
   field name).
 - Transition shape (exemplar `claims/doit-vulnerability-reward-program/amp-http-oauth-redirect/provenance.json`):

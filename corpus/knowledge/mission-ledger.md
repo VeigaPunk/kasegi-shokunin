@@ -1,10 +1,14 @@
 # Mission ledger — `ledger/*.jsonl` + rankings artifacts
 
 Source: `~/Projects/bounties/ledger/` (missions.jsonl 718 lines,
-telemetry.jsonl 7218 lines, candidates.jsonl 8, imports.jsonl 8, ~30
-`rankings-<ts>.json` artifacts), `ops/shared.mjs`, `ops/rank.mjs`,
-`ops/import-board.mjs`, `ops/fleet-dispatch.mjs`, `docs/plan-round0.md`.
-Counted 2026-09-28.
+telemetry.jsonl **7225 lines as of 2026-09-28T21:52:51.978Z** — round-13
+correction: the r12 count 7218 was time-of-audit; the file grows on every
+`check-freshness.mjs:61` invocation, including audit runs, candidates.jsonl
+8, imports.jsonl 8, **234** `rankings-<ts>.json` artifacts over 229 distinct
+stamps — round-13 correction: "~30" was a transcription of the event-kind
+count), `ops/shared.mjs`, `ops/rank.mjs`, `ops/import-board.mjs`,
+`ops/fleet-dispatch.mjs`, `docs/plan-round0.md`. Counted 2026-09-28, counts
+carry as-of stamps where the file is live-appended.
 
 ## Writer contract
 
@@ -13,6 +17,15 @@ Append-only — never rewrites history. Three kinds: `telemetry` | `missions` |
 `imports`. Serialized lines are capped at **3500 bytes** so concurrent
 cross-session `O_APPEND` writes stay atomic (POSIX PIPE_BUF); oversize entries
 are replaced by a `{truncated:true}` marker, never split.
+
+Round-13 caveat: "append-only" describes the writer contract, not the file
+bytes — the worktree `telemetry.jsonl` carries **3 committed git
+merge-conflict marker lines** from a 2026-09-06 merge (worktree lines
+4460 `<<<<<<< HEAD` / 4462 `=======` / 4480 `>>>>>>> 3d28a716` at the
+7224-line state; present in HEAD and index too, which hold 6383 lines vs the
+worktree's 7225). `JSON.parse` fails on exactly those 3 lines; the sole
+in-repo consumer `fleet-dispatch.mjs:80-85 attempts()` filters by regex and
+never parses, so the corruption is invisible to every gate.
 
 ## `missions.jsonl` — hunter-contract state machine
 
@@ -51,12 +64,20 @@ for a same-mission last-line), emits `rankings-<YYYYMMDDTHHMMSSZ>.json`
 shape: `{generated_at, defaults{ev defaults}, ranked[{id, expected_reward,
 p_success, gross_value, total_cost, adjusted_ev, inputs_basis}], unknown[]}`.
 `inputs_basis:"curated"` vs `default_estimate` distinguishes real EV inputs
-from the default prior set (p_in_scope .7, p_repro .7, p_unique .25,
-p_accepted .6, effort 60h, risk 250).
+from the default prior set — round-13 correction, full set from
+`rank.mjs:55-58` DEFAULTS: p_in_scope .7, p_reproducible .7, p_unique .25,
+p_accepted .6, effort_hours 60, opportunity_rate 25, direct_cost 0,
+delay_cost 0, expected_risk_cost 250 (earlier text omitted opportunity_rate
+and the zero costs).
 
 ## `telemetry.jsonl` — dispatcher heartbeat
 
-~30 event kinds. Observed distribution: `dispatcher_tick` 3680,
+35 distinct event keys live (round-13 census; the r4 text said "~30").
+Census method matters: count LINES matching `"event"\s*:\s*"<name>"`
+(excluding non-event `"kind":` lines) — the file mixes 7065 compact
+`"event":"x"` with 143 spaced `"event": "x"` lines, and a naive
+`grep -o '"event":"X"'` undercounts `attempt_reset` by 92% (5 vs 68) and
+`lease_claimed` by 20% (86 vs 107). Observed distribution: `dispatcher_tick` 3680,
 `mission_parked` 1188, `mission_dispatched` 1167, `fleet_synced` 249,
 `freshness_check` 233, `binding_verified` 224, `lease_claimed` 107,
 `attempt_reset` 68, `operator_decree` 58, `mission_retired`/`_claimed`/`_done`

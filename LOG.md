@@ -293,3 +293,123 @@
   `knowledge/target-checkouts.md`; SKILL.md gained "UFO runtime workspaces"
   section + 8 cited paths; README coverage map + 3 gaps CLOSED.
   `corpus/lessons/round-12.md` recorded.
+- 2026-09-28 — round 13: depth axis-move — the full-set citation re-audit +
+  three-way threshold re-derivation planned at r12, executed as the lane's
+  largest audit fan (10 L2s in one batch: 2 reviewers, 2 critics, sentinel,
+  2 scouts, connector, executor-drafter, revenger; 7 returned usable audits).
+  First order: committed round-12's artifacts LATE in both repos (r12 ended
+  without its commit+push; kasegi fc6d398, main-repo report 5309290).
+  **Measured: depth 8→9.** Citation layer: 1100 backticked tokens extracted
+  from SKILL.md + 20 corpus entries; the assigned reviewer degraded and
+  failed (fabricated "108 modules" totals — rejected; its citations.json +
+  extraction scripts were kept and L1 finished the audit deterministically,
+  `/tmp/kasegi-r13/classify{2,3,4,5}.py` with in-file rules): **708 counted
+  citations, 705 resolved = 99.6%** (anchored-only 438/441 = 99.3%) vs r12's
+  86.5% on a 74-citation sample. 3 truly broken, repaired: evidence-dir
+  `raw-rN/` → real naming is `raw/` (244 dirs); submitted-registry
+  `B-bounty-fleet/` layout is in the ALL-zip (469 members) only, not the
+  468-file `claim-ready-packages` zip (numbered top-level dirs);
+  ufo-workspaces `ufo-fsd-alpha/.ufo/missions/hunt-*` dangles — no
+  `missions/` dir exists in that tree, the label survives only in transcript
+  text. Fact layer (~106 atomic checks across 5 auditors + L1 source reads):
+  ~30 defects found, ALL repaired in place ("round-13 correction/addition"
+  markers; full enumeration in `corpus/README.md` Known-gaps). Headlines:
+  reroute universals → distributions (23/121 non-grok causes incl. 429
+  token-plan ×5; `devin/swe-2:max` target 88/121, 8 null, 25 other); keeper
+  run_ids 184→183 (runless `bountyfleet1` off-by-one) → unledgered 81→82;
+  "2 unparseable" → 0 (b1k-002/133 are valid JSON using `state:"PARKED"`,
+  no `transition` key); candidates 116→105 distinct program_ids (111/118
+  rows carry one); sessions grep tallies all irreproducible (strict
+  `(?<!no_)submission_performed:true` = 4 files not 9; tolerant 20;
+  `.ufo`-wide 16; naive 471/61 → 402 lines/91 files, jsonl-only 385/76;
+  null `submitted_url` ~51 → 56/61); "grep Outcome over all 22" impossible
+  (13/22 contain the string; the 2-READY/20-BLOCKED tally holds via
+  disposition markers); `3d28a716` stamp "18:26" → author=committer
+  2026-09-06T05:42:43-03:00; tracked claims 20 → 19 program dirs +
+  `claims/README.md`; pendle 10 → 6 top-level dirs + 9 files; pin taxonomy
+  → verified census (187 files/188 occurrences = 152 top-level + 35 nested;
+  157 bare 40-hex + 24 dicts + 3 nulls; the `{cmd,exit}` "family" doesn't
+  exist; sparse-clone objects live in `steps[]`); archive-missions 19→20 in
+  BOTH regressed lines (ufo-archive-2026.md:11, SKILL.md:385 — r12 fixed
+  only :5); queued-hold rows 3→**4** (8x8 `claim-hold` tag exists since
+  2026-09-05T19:28:41-03:00, misrecorded absent); `submitted_url` is null
+  on all 12 queued rows — route URLs live in `submission_url`/`claim_url`/
+  `submit-payload.json`; crypto package severity critical → **Low
+  (C:L,I:N,A:N)** ("critical" = wildcard asset's reward tier); superhuman
+  "lab-credential-redaction" gate nonexistent (generic attachment hygiene
+  only, claim_checklist.md:26); peak model `openai-oauth/` →
+  `openai-codex/gpt-6-astra:max` (fleet-dispatch.mjs:300); usage-limit
+  signatures 3→**4** (+`usage_limit_reached`, :272); `reward.min` numeric on
+  **14** not 48 (48 = reward OBJECT); "~1040" degenerate records → exactly
+  **1024** (796 zero + 228 one); queue score is FIVE-termed (+`is_live(1)`,
+  :110) and `priority.json` (14) is a strict SUBSET of the 50 continue
+  programs — the 9e12 tier only breaks ties inside the continue cohort;
+  seeded-13 "without map records" → 9/13 HAVE records (map-less: only
+  spacex-starlink/yahoo/monzo/personio; 22 map-less = 4 seeded + 18
+  archive-era, `hackerone-zabbix` restored to the archive list); "rank.mjs
+  never ran post-refresh" (unbounded negative) → ran ≥2× 2026-09-04 (2
+  RANKED ledger lines in its hardcoded append shape; one sha matches
+  `rankings-2026-09-04.json`) — the BUMP never persisted (heldByState :199-201
+  + S3 gate); tracker "last cycle 20:40Z" → `tracker.log` last line
+  17:24:52Z (20:40 = the .md snapshot mtime); telemetry 7218 → **7225 as of
+  2026-09-28T21:52:51.978Z** — `check-freshness.mjs:61` appends one line per
+  run INCLUDING audit runs ("read-only" fleet tooling is not write-free),
+  and the worktree file carries **3 committed merge-conflict markers** (09-06
+  merge; JSON.parse fails on exactly 3; invisible to regex-only `attempts()`);
+  rankings "~30" → 234 files/229 stamps, zero consumers; 35 distinct event
+  keys (naive `grep -o` undercounts `attempt_reset` 92%: 7065 compact vs 143
+  spaced lines). **New derived dead code:** `fleet-dispatch.mjs:200` reads
+  schema-impossible `ev_inputs.adjusted_ev` (`additionalProperties:false`,
+  0/1088) → every `mission_dispatched` logs `adjusted_ev:"unknown"`, the
+  negative-EV `ev_note` branch (:204) is dead — AR12 "ledgered honestly"
+  holds only in the unknown direction; the :10 in-file comment "EV ordering
+  (curated first…)" is doubly false (curated ranks third; "EV" is a boolean);
+  two pane crashes exhaust a program's MAX_ATTEMPTS=2 hunt budget (:82,:327).
+  claim-check facts added to corpus: blanket symlink ban (:105), 5 MiB
+  per-file cap (:111), secrets scan reads EVERY non-symlink file ≤5 MiB as
+  UTF-8 (not "text files"), HARD_STOP emits TWO errors (:83-84), title-dup
+  threshold 16 chars (:194), strict `adjusted_ev > 0` cutoff (ev-report:91),
+  exit 2 for missing arg AND missing file, unparseable → WARNING+exit 0,
+  basis column never exercised live (0/1088 `sources[].basis`), full
+  `rank.mjs:55-58` DEFAULTS (.7/.7/.25/.6, 60h, 25, 0, 0, 250 → default
+  p_success .0735). **New canonical entry `knowledge/triage-thresholds.md`**
+  (queue admission filters, score weights + collision bound `reward.min<1e9`,
+  dispatcher constants, all claim-check gate tables with error strings, EV
+  contract, schema table, shared constants, telemetry register, §9 correction
+  ledger) — three-way verified: L1 full-source read × executor draft ×
+  reviewer derivation, ZERO model disagreement. Sentinel live-run layer
+  (safety-gated: claim-check/ev-report/validate proven write-free from
+  source; claim-index + check-freshness EXCLUDED as writers): 281
+  `status.json` = 280 packages (PARKED 248/DONE 15/BLOCKED 15/SUBMITTED 2)
+  + 1 evidence-copy trap (`bugcrowd-seek/honest-zero/evidence/status.json`,
+  PARKED — the 281st); 15 DONE → 12 OK + 3 FAIL (doit 7/github-bounty 8/3cx
+  8 errors) exactly matching the generated index; VDP duplicate byte-proven
+  (sha256 `ded642e8…` identical, commit d7dbd9a, CWE-78, row still passes
+  claim-check); live EV github-bug-bounty 0.9×0.8×0.35×0.7=0.1764, gross
+  1764, cost 1250, adjusted 514, positive true. `docs/claim-runbook.md` read
+  in full (69 lines; the r10 distillation upgraded to line-cited §A/§B/§C).
+  README: `program-quirks.md` was index-orphaned (19 rows for 20 entries) —
+  indexed; new recorded gaps: claim-anatomy ~3.6% sampled (≈10/280
+  line-by-line), round-2 lesson/LOG hole (history not rewritten),
+  positive-blocked weak attestation (2 instances, free-form, gate-invisible
+  — annotated in SKILL.md). Adjacency (reported, not absorbed;
+  `/tmp/kasegi-r13/connector.md`): `fleets/registry.json` ownership
+  CONTESTED (kasegi r11 in-domain decree reading vs kumitate r1
+  orchestration claim) → aggregator arbitrates; kagi README cites kake
+  SKILL.md:104-107 for the shared CDP lease, now at :116-119 → kagi fixes;
+  kotoba inventories a CLAUDE.md inside `george/` → kasegi park stands,
+  qualified as unexplored-by-kasegi. Hazards: EvRevenger ran
+  check-freshness pre-reconciliation → +1 telemetry line (disclosed, not
+  reverted — revert = second mutation); transient EDQUOT zeroed
+  ThresholdsReviewer's report file (structured output preserved);
+  CitationsReviewer failed degraded (output rejected, artifacts reused); 4
+  unexplained mtime-only touches on `.git` dirs 18:34:30/18:37:11 (actor
+  [UNVERIFIED]; no locks, rebase state reproduces, not lane-originated —
+  scout-drift.md + SCORECARD coverage row). SCORECARD: depth 8→9, coverage
+  9→9 (denominator reproduced 18/18; transparency note: 26 root files not
+  3; per-file surface set 41/41 class-covered); r14 premise CORRECTED by
+  the density census (thin cohort = Program-rule checklist 28.6 +
+  anti-patterns 29.7; the triage table ranks #14/18). Mid-round operator
+  rule (binding): domain source repos are READ-ONLY — lane compliant (zero
+  git writes to `~/Projects/bounties`; pushes only VeigaPunk/kasegi-shokunin
+  + VeigaPunk/shokunin). `corpus/lessons/round-13.md` recorded.

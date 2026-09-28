@@ -20,7 +20,11 @@ until `active.size == --max` → `dispatcher_tick` telemetry → 30 s sleep.
   `continue` verdicts +2e12, `curated` EV inputs +1e12, `reward.min*1000`,
   `freshness.live` +1. `DONE` never redispatches; live leases and
   mission-file presence filter the candidate set. EV is ordering, never a
-  gate (AR12 — negative-EV dispatches carry an `ev_note`).
+  gate (AR12). Round-13 correction: the "negative-EV dispatches carry an
+  `ev_note`" claim is dead code — `ev_note` (fleet-dispatch.mjs:204) fires
+  only when `ev_inputs.adjusted_ev` is a negative number, which can never
+  exist (schema `additionalProperties:false`, 0/1088 records); every
+  `mission_dispatched` line logs `adjusted_ev:"unknown"`.
 - **Lease**: `fleets/leases.json`, `{program_id, mission_id, leased_at,
   expires_at}`; 2 h expiry (3030 lines — includes expired history and
   b1k-seat leases carrying `lease_holder`, `asset`, `official_url`,
@@ -49,13 +53,15 @@ until `active.size == --max` → `dispatcher_tick` telemetry → 30 s sleep.
   `gitMutationBlocker`.
 - **Model routing** (decree 2026-09-04, fixed UTC-3): Beijing off-peak
   12:00–22:00 → `alibaba-token-plan/deepseek-v4-pro:max`; peak →
-  `openai-oauth/gpt-6-astra:max`. Applies to NEW launches only — running
+  `openai-codex/gpt-6-astra:max` (round-13 correction: source
+  fleet-dispatch.mjs:300; earlier text said `openai-oauth/`). Applies to NEW launches only — running
   missions keep their pin (contract freeze). Window flip resets the limit
   fallback. An A/B/C `--models-rr a,b,c --rr-until <epochMs>` experiment
   mode exists (telemetry `experiment: l1-model-abc`).
 - **`detectLimit()`**: tails `fleets/run/*.log` modified <15 min; strict
-  signatures (`usage limit has been reached`, `rate limit exceeded`,
-  `429 Too Many`) ANDed with a model-family regex — the TUI status bar
+  signatures — FOUR, round-13 correction (`usage limit has been reached`,
+  `usage_limit_reached`, `rate limit exceeded`,
+  `429 Too Many`; fleet-dispatch.mjs:272) ANDed with a model-family regex — the TUI status bar
   prints untracked-file counts like `?429`, so a bare 429 regex
   false-positives. On hit: new launches pin `xai-oauth/grok-4.6:low`,
   `model_reroute` telemetry names the evidence file.

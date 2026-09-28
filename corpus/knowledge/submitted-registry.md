@@ -202,8 +202,11 @@ copy, correctly outside the scan.)
 
 ## Dated operator-facing bundles (root, not live state — verified)
 
-- `claim-ready-packages-2026-09-15.zip` — 468 files, 9.1 MB; `B-bounty-fleet/`
-  layout incl. `00-submitted-poc-remediation/airtable-…` + CLAIM-READY-INDEX.
+- `claim-ready-packages-2026-09-15.zip` — 468 files, 9.1 MB; numbered
+  top-level package dirs (`00-submitted-poc-remediation/airtable-…`,
+  `01-spacex-starlink-…` … `07-intel-…`) + CLAIM-READY-INDEX (round-13
+  correction: the `B-bounty-fleet/` grouping is NOT in this zip — 0 hits;
+  it exists only in the ALL-zip below, 469 members).
 - `ALL-claim-ready-packages-2026-09-15.zip` — 831 files, 10.8 MB; adds
   `A-open-bug-bounties/<slug>/` package trees (this is where the archive-era
   receipt IDs also appear) + `00-MASTER-INDEX.md` + `00-CHATGPT-TASK.md`.

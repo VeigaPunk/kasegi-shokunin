@@ -30,7 +30,8 @@ Required: `report.md`, `claim_checklist.md`, `custodian-receipts.json`,
 
 - `chain`/`decisions` non-empty array.
 - Per decision: `scope_signal` exactly `NO_SCOPE_OBJECTION` (any other value
-  errors; `HARD_STOP` gets its own message); nonempty `matched_grant_id`;
+  errors; `HARD_STOP` gets its own message AND the exact-signal message —
+  two errors for one decision, L83-84, round-13 correction); nonempty `matched_grant_id`;
   `decision_sha256` matches `/^[a-f0-9]{64}$/i`.
 - `head_sha256` = final decision's `decision_sha256` =
   `manifest.expected_head_sha256` — three-way binding.
@@ -41,10 +42,25 @@ Required: `report.md`, `claim_checklist.md`, `custodian-receipts.json`,
 
 ## Secrets gate (L100–114)
 
-Regex over every text file in the package:
+Regex over every non-symlink file ≤5 MiB in the package, read as UTF-8 —
+no text/binary filter (round-13 correction: "every text file" was wrong;
+L110-113):
 `/(api[_-]?key|secret|token|password|bearer)\s*[:=]\s*["']?[A-Za-z0-9_\-]{16,}/i`.
 Any hit errors. Note: it is a single permissive pattern — real secret hygiene
 still needs judgment beyond the gate.
+
+Same walk loop, non-regex gates (round-13 addition — omitted from earlier
+lists here and in SKILL.md):
+- **Blanket symlink ban**: any directory entry that is a symlink errors
+  without traversal (L104-105) — separate from the manifest-artifact
+  `realpathSync` confinement (L48-49).
+- **Per-file size cap**: files > `5 * 1024 * 1024` B error as `oversize
+  artifact (>5MB)` and skip the secrets scan (L111).
+- Error-set caveat: the manifest loop `continue`s past a failing artifact
+  (L46-49), so one run's error list is path-dependent, not a full partition
+  of violations — while gate-level flow never exits early (L18-19, 228-231).
+- Canonical per-gate derivation (triggers, error strings, line numbers,
+  constants): `triage-thresholds.md` §4 (round-13).
 
 ## status.json gates (L118–226)
 
@@ -90,7 +106,8 @@ from report.md, 140 chars), reward (`status.reward{min,max,currency}` or
 
 - Only `DONE` packages that pass claim-check.
 - Route: `status.submission_url ?? claim_url` must parse as explicit `https:`.
-- Attachments = `claim_checklist.json` + positive-polarity manifest artifacts
+- Attachments = `claim_checklist.md` (round-13 correction: earlier text said
+  `claim_checklist.json`; prepare-claims attaches the `.md`) + positive-polarity manifest artifacts
   (resolved inside package, deduped). Negative artifacts never attach.
 - Payload fields: program, slug, platform (hostname), route, title (first `#`
   of report.md else status.title), `severity: status.severity ?? verdict`,

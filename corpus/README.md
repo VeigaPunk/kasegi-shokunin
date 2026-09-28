@@ -27,7 +27,9 @@ its source. No generic filler.
 | UFO runtime workspaces (`.ufo/` layer + `.omp/`) | `knowledge/ufo-workspaces.md` | full census: 25 `bh*` warden workspaces + 22 reports + `reroutes.jsonl` (121 records), `bounty-fleet/` 805 M keeper tree (second `missions.jsonl`), `sessions/` bpolish1..8 (refile verdict NONE + grep traps), `grok-bounty-assessment-20260911/` (frozen, self-invalidating), `claim-recovery/`, `.omp/` tracked-vs-live, root `README.md`/`.gitignore` |
 | Repo git state | `knowledge/repo-git-state.md` | live `git status/branch/rev-list/merge-base/ls-files`: stalled mid-rebase ≥17 days, 903 dirty entries, 12 tags pushed, `claim-ship` superseded ancestor, claims/ 198 tracked files vs 3361 on disk |
 | Target checkouts + provenance pins | `knowledge/target-checkouts.md` | `pendle-core-v2-public/` (shallow clone `f242659`=v6.10.0, pin-bound), `george/` parked, 187/255 `provenance.json` pin census, `claim-check.mjs:96-97` never validates pins |
-| Lessons | `lessons/round-1.md` … `lessons/round-12.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
+| Canonical triage thresholds (gates/weights/constants, line-cited) | `knowledge/triage-thresholds.md` | full reads of `ops/claim-check.mjs`+`ev-report.mjs`+`fleet-dispatch.mjs`+`shared.mjs`+`bounty-map/schema.json` + live censuses; 3-way verified round-13 (L1 read × executor draft × reviewer derivation) |
+| Per-program quirks (fee/precondition patterns) | `knowledge/program-quirks.md` | sibling-package sampling (dydx same-blocker class; morpho/euler/uniswap/reserve honest-zero) — index-orphaned until round 13 |
+| Lessons | `lessons/round-1.md` … `lessons/round-13.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
 
 - ~~ops tail (`validate`/`registry-check`/`reroute-drill`/`check-freshness`/
@@ -82,3 +84,38 @@ its source. No generic filler.
   SKILL.md + 5 corpus entries, each marked "round-12 correction/addition";
   two critic falsifications also repaired (claims denominator 275→274; bh
   audits "21 all BLOCKED"→22: 20 BLOCKED/2 READY).
+- Round-13 depth audit (5 independent L2 auditors + L1 full-source
+  derivation): full-set citation re-audit 705/708 counted citations resolved
+  (99.6%; 3 broken repaired: `raw-rN/`→`raw/`, `B-bounty-fleet/` zip
+  misattribution, dangling `ufo-fsd-alpha/.ufo/missions/hunt-*`); ~106
+  attached-fact checks found ~30 defects — all repaired in place this round
+  (markers "round-13 correction/addition"): reroute universals→distributions
+  (23/121 non-grok causes, devin target 88/121), keeper run_ids 184→183 +
+  unledgered 81→82 + "2 unparseable"→0, candidates 116→105 ids, sessions
+  grep tallies (strict 9→4 files; naive 471/61→402/91; null-url ~51→56/61),
+  `3d28a716` stamp→05:42:43-03:00, tracked claims 20→19 dirs, pendle 10→6
+  top-level dirs, pin-family taxonomy→verified 187/188 census (157 bare hex,
+  24 dicts, 3 nulls; no {cmd,exit} family), archive missions 19→20 (both
+  regressed lines), queued-hold rows 3→4 (8x8 tag exists since 09-05),
+  `submitted_url` route-URL claim→null on all 12 (routes live in
+  submission_url/claim_url/payload), crypto severity critical→Low,
+  superhuman lab-redaction gate nonexistent, openai-oauth→openai-codex peak
+  model, 3→4 usage-limit signatures, `reward.min` 48→14 numeric + 1024
+  (796+228) degenerate records + five-term score incl. `is_live(1)`,
+  seeded-13 "without map records"→9/13 have records (4 map-less), rank.mjs
+  "never ran"→ran ≥2× 09-04, bump never persisted, telemetry 7218→7225
+  as-of-stamped + 3 committed conflict markers + rankings ~30→234/229,
+  ev-report exit/basis/cutoff semantics, `claim_checklist.json`→`.md`,
+  HARD_STOP double-error, symlink-ban + 5 MiB walk gates added.
+- Per-program claim anatomy is ~3.6% sampled (≈10 of 280 status-gated
+  packages read line-by-line; recorded in lessons round-7/8, never in
+  Known-gaps until round 13) — deliberate: full anatomy census is a
+  candidate future coverage sub-axis, not a gap-by-omission.
+- `corpus/lessons/` has no round-2 record and LOG.md jumps round 1→round 3:
+  a round-2 ledger hole from the lane's first day (round-2 work, if any,
+  was folded into the round-3 entry). History is not rewritten; recorded
+  round 13 so the absence is known-deliberate, not lost.
+- `positive-blocked-*` verdict class: exactly 2 attested instances
+  (cantina-pendle, cantina-dydx), free-form string, no schema definition,
+  unrecognized by claim-check.mjs:169's not-claimable regex — annotated in
+  SKILL.md round 13; it is a package-state convention, not a gate class.

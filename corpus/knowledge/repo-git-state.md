@@ -10,7 +10,7 @@ commit-sourced claims end 2026-09-06, but the artifacts run to 2026-09-15.
 |---|---|---|
 | Repo state | `interactive rebase in progress; onto 7dce2872`, HEAD detached at `58acb6d8` ("chore(fleet): periodic mission-work sync [auto]", 2026-09-06T18:31:35-03:00) | `git status`, `git branch -vv` |
 | Rebase stop | 1 command done (`pick 3d28a716`), **0 remaining**, "You are currently editing a commit" → stalled at the amend step; autostash present (`a00d4c55…`), `git stash list` empty | `.git/rebase-merge/{done,git-rebase-todo,autostash}` |
-| Local `main` | `3d28a716`, 171 commits, committer date 2026-09-06 18:26 | `git branch -vv`, `rev-list --count` |
+| Local `main` | `3d28a716`, 171 commits, author=committer date **2026-09-06T05:42:43-03:00** (round-13 correction: the earlier "18:26" matches no stamp on this commit; `58acb6d8`'s 18:31:35-03:00 confirmed) | `git branch -vv`, `rev-list --count`, `git log -1 --format=%ci` |
 | `origin/main` | tip `7dce2872` (2026-09-05, "plazir lore: Halley Comet Festival…"), 180 commits; remote `github.com/VeigaPunk/bounties.git` | `git log origin/main` |
 | Dirty tree | **903 entries** = 101 `M` (82 `claims/`, 6 `ops/`, 3 `evidence/`, 3 `.omp/`, 2 `ledger/`, 2 `fleets/`, 2 `docs/`, 1 `.gitignore`) + 802 `??` (307 `claims/`, 234 `evidence/`, 227 `ledger/`, `.ufo*`, root zips, `george/`, `pendle-core-v2-public/`) | `git status --porcelain` |
 | Newest commit anywhere | 2026-09-06 18:31 → **all Sep 7–15 fleet work (b1k overnight, bh* audits, ingestion cycles, bpolish) is working-tree-only** | `git reflog` |
@@ -48,7 +48,7 @@ freeze). Cross-domain: the fix belongs to the bounties owner.
 
 | Surface | On disk | Git-tracked |
 |---|---|---|
-| `claims/` | 3,361 files / 274 program dirs / 295 packages | **198 files / 20 program dirs** (incl. all 3 submitted + anthropic/wordpress/intel/8x8/3cx queue rows + honest-zero stubs); the cantina-pendle exemplar is `??` untracked |
+| `claims/` | 3,361 files / 274 program dirs / 295 packages | **198 files / 19 program dirs + tracked `claims/README.md`** (round-13 correction: "20 program dirs" counted the README's dir; incl. all 3 submitted + anthropic/wordpress/intel/8x8/3cx queue rows + honest-zero stubs); the cantina-pendle exemplar is `??` untracked |
 | `.ufo/` | 1.5 G (bh* workspaces, bounty-fleet, sessions, assessments) | **0 files**, un-ignored except `bounty-fleet/session[s]/` |
 | `fleets/run/` + `leases.json` | 703 status files, leases, portal-reconciliation | **0 — ignored by design** (`.gitignore:8-9`) |
 | `george/` | 49 G | 0, untracked, un-ignored |

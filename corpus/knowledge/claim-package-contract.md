@@ -15,6 +15,17 @@ A claim-ready package lives at `claims/<program>/<slug>/` and contains:
 | `provenance.json` | Agents + requested/resolved models per transition, commands + exit codes, pin (remote + commit), `policy_sha256`, `external_effects_performed: []`, secrets attestation. |
 | `status.json` | `manifest_sha256` binds status to manifest bytes. `claim_review` holds `hard_gates` + `subchecks` + `reviewer` (distinct identity, requested/resolved model, fallback flag). |
 
+Round-13 boundary note — not every row above is gate-enforced:
+`claim-check.mjs` never reads the manifest `schema_version`, the provenance
+`pin`/`policy_sha256`/`external_effects_performed`, `status.severity`, or
+`status.reward` — the tokens do not occur in the file (the entire provenance
+gate is the :96-97 non-emptiness check). Those fields are
+contract-by-convention (reviewer/runbook-checked), not machine gates. The
+report.md "no submission" gate is a PROSE regex
+(`/no submission (performed|made)/i`, :29), distinct from the JSON
+`no_submission_performed` field. Canonical derivation:
+`triage-thresholds.md` §4.
+
 ## status.json semantics (observed values)
 
 - `state`: `DONE` | `BLOCKED` | `SUBMITTED`. `DONE` requires reviewer `APPROVED`

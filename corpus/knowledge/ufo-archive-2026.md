@@ -8,7 +8,9 @@ generated the `b1k-NNN` run_ids still referenced by `ledger/candidates.jsonl`.
 
 ## Layout
 
-- `missions/claim-*/` — 19 hardening missions. Each has `report.json` (L1's
+- `missions/claim-*/` — 20 hardening missions (round-13 correction: this
+  line stayed at 19 after r12 fixed :5 — `ls -d claim-* | wc -l` = 20, 20
+  `report.json`). Each has `report.json` (L1's
   structured self-report); richer ones keep the full multi-seat artifact set:
   `wwkd-plan-r1.md`, `planner-r1.md`, `scout-r1.md`, `security-audit-r1.md`,
   `reviewer-correctness-r1.md`, `claim-reviewer-r1.md`, `gatekeeper-r1.md`,

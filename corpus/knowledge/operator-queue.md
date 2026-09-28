@@ -12,12 +12,15 @@ are provenance only.
 1. **`claim-hold/*` tags are inert.** `claim-index.mjs:13` only lists
    `git tag -l 'claim-ready/*'`; no hold filtering exists anywhere in the
    queue path. Nine `claim-hold/*` tags exist
-   (`git tag -l 'claim-hold/*'`); three of them —
-   `intel-bug-bounty/pqos-pci-ids-stack-overflow`,
+   (`git tag -l 'claim-hold/*'`, all creatordate 2026-09-05); **FOUR** of
+   them are queued rows anyway (round-13 correction — the 8x8 hold tag
+   `claim-hold/hackerone-8x8-bounty/jibri-unauthenticated-http-api-arbitrary-ffmpeg-output`
+   has existed since 2026-09-05T19:28:41-03:00 and was misrecorded as
+   absent): `intel-bug-bounty/pqos-pci-ids-stack-overflow`,
    `hackerone-wordpress/unchecked-aaaa-ssrf`,
-   `hackerone-anthropic/plugin-dev-test-hook-command-injection` — are queued
-   rows anyway. Holds require operator filtering at read time; the index will
-   not do it.
+   `hackerone-anthropic/plugin-dev-test-hook-command-injection`,
+   `hackerone-8x8-bounty/jibri-…ffmpeg-output`. Holds require operator
+   filtering at read time; the index will not do it.
 2. **Duplicate scan reads `claims/` only.** The anthropic row is the identical
    finding already freely disclosed at
    `vdp-disclosures/anthropic-plugin-dev-cmd-injection/` — byte-identical
@@ -27,23 +30,29 @@ are provenance only.
    CWE-78). Neither the package's own `claim_checklist.md` nor any gate knows
    about the VDP twin. Do not file this row; it is a duplicate of the
    operator's own 2026-09-06 disclosure.
-3. **`submitted_url` on queued rows is a route, not a receipt.** 9 of 12 rows
-   carry `submitted_url` values that are program landing/report-form URLs
-   (`…/engagements/spacex`, `…/reports/new`, `…/programs/…/detail`). None
-   contains `/reports/<id>`. `submission_state` values are informational
-   (`STAGED — operator-gated`, `BLOCKED — operator-gated external effect`),
-   not SUBMITTED. Queue membership still means "never submitted".
+3. **`submitted_url` on queued rows is null — the route URLs live in other
+   fields.** Round-13 correction: earlier text said "9 of 12 rows carry
+   `submitted_url` route URLs"; live census: all 12 queued `status.json`
+   carry `submitted_url: null` (mtimes 2026-09-14/15). The program
+   landing/report-form URLs live in `submission_url` (spacex,
+   `…/engagements/spacex`), `claim_url` (8x8, anthropic, wordpress, intel —
+   `…/reports/new`, `…/programs/…/detail`), and `submit-payload.json` route
+   fields; none contains `/reports/<id>`. Real receipts exist only on the 2
+   SUBMITTED packages (airtable, spotify). `submission_state` values are
+   informational (`STAGED — operator-gated`, `BLOCKED — operator-gated
+   external effect`), not SUBMITTED. Queue membership means "never
+   submitted" by field value, not inference.
 
 ## Per-row dossier
 
 | # | Program·slug | Platform route | Residual gate (from `claim_checklist.md`) | Do-not-refile risk |
 |---|---|---|---|---|
 | 1 | bugcrowd-spacex-starlink·ingestion-20260914 | Bugcrowd SpaceX | Gate 1 mandatory DNS re-verify (TOCTOU); Gate 1.5 Cloudflare takeover proof "recommended", effectively required | None — precondition, not yet a takeover |
-| 2 | hackerone-8x8-bounty·jibri-…ffmpeg-output | H1 8x8 | `claim-hold/*` tag absent; but asset is `eligible_for_submission=true`/`eligible_for_bounty=false` — **queue says "No payout claim"**; submitting anyway is a report-quality decision, not a bounty decision | None |
+| 2 | hackerone-8x8-bounty·jibri-…ffmpeg-output | H1 8x8 | `claim-hold/*` tag **present** since 2026-09-05T19:28:41-03:00 and ignored by the index (round-13 correction — was misrecorded absent); asset is `eligible_for_submission=true`/`eligible_for_bounty=false` — **queue says "No payout claim"**; submitting anyway is a report-quality decision, not a bounty decision | None |
 | 3 | hackerone-amazonvrp·ingestion-20260914 | H1 Amazon VRP | Gate 1 re-run `precondition_holds:true` (13/13) — PyPI/npm registry state mutable; Gate 1.5 = policy's own prescribed validation path | None |
 | 4 | hackerone-anthropic·plugin-dev-…injection | H1 Anthropic | **HOLD + DUPLICATE**: `claim-hold` tag ignored by index; same finding as `vdp-disclosures/anthropic-plugin-dev-cmd-injection` (fingerprint above); checklist's duplicate notes list upstream PRs but miss the operator's own disclosure | **CONFIRMED — do not file** |
-| 5 | hackerone-crypto·ingestion-20260914 | H1 crypto.com | None beyond standard operator gates; CWE-639 cross-tenant, `severity=critical` in package | None |
-| 6 | hackerone-superhuman·ingestion-20260914 | H1 Superhuman | Standard gates; re-attach hygiene — operator must re-verify lab-credential redaction before attaching evidence | None |
+| 5 | hackerone-crypto·ingestion-20260914 | H1 crypto.com | None beyond standard operator gates; CWE-639 cross-tenant; package severity is **Low (C:L, I:N, A:N)** (`claim_checklist.md:7,39` — round-13 correction: "critical" is the wildcard asset's reward tier, not the package severity; `status.json` has no severity field) | None |
+| 6 | hackerone-superhuman·ingestion-20260914 | H1 Superhuman | Standard gates; the "re-verify lab-credential redaction" gate **does not exist** in this package (round-13 correction: grep lab → only "Lab Café" Places results); the only attachment gate is the generic "do not attach unrelated secrets or third-party data" (`claim_checklist.md:26`) | None |
 | 7 | hackerone-wordpress·unchecked-aaaa-ssrf | H1 WordPress | `claim-hold` tag ignored by index; `submit/channel-block-20260911.md` documents missing authenticated H1 session (renamed from BLOCKED.md — historical channel blocker, not a readiness defect) | Low — channel blocker only |
 | 8 | hackerone-x·ingestion-20260914 | H1 X | Gate 1 mandatory re-verify (`source drifts`); attachment-hygiene gate resolved 2026-09-15 | None |
 | 9 | immunefi-beanstalk·ingestion-20260915 | Immunefi Beanstalk | Deployed-code check required: diamond facets must match source-pinned review (repo HEAD `4e80daa`); bytecode drift = re-verify | None |
@@ -53,21 +62,30 @@ are provenance only.
 
 ## Operator-only steps (claim-runbook distilled)
 
-`docs/claim-runbook.md` — tooling stops at staging; everything external is
-manual: `op` vault unlock for H1/Intigriti credential items, per-platform
-first-login 2FA (no TOTP seeds in vault), KYC/tax on first payout, the actual
-Submit click (attribution: `vgpnk1337` on H1, `veigapunk` on Intigriti),
-payout rails. Preflight: `claim-index.mjs` list → `claim-check.mjs` per
-package → `prepare-claims.mjs` staging → `gitMutationBlocker` clean-HEAD
-check → review payload+report+checklist. After each submission the operator
-hands back the report URL/ID; the fleet records `SUBMITTED` in
-`status.json` + `ledger/missions.jsonl` (never submits itself — decree
-2026-09-05).
+`docs/claim-runbook.md` (69 lines, read in full round-13) — tooling stops at
+staging; everything external is manual. §A preflight (:7-32): claim-index
+queue membership → claim-check on current bytes ("`DONE` alone is
+insufficient", :12) → prepare-claims staging (deterministic payloads,
+explicit HTTPS route, post-write recheck, manifest-bound bytes never
+rewritten without re-review, :21-23) → human review of the six artifacts →
+confirm route/scope/duplicate-state/identity/PoC requirements (:26-27) →
+`HEAD` resolves symbolically to `main` with no active
+rebase/merge/cherry-pick (:28-30 — the fail-closed branch preflight shared
+by all sync/finalizer mutation paths) → stop if any gate is unknown (:31).
+§B operator-only table (:34-46): `op` vault unlock (tooling reads the
+`HackerOne` + `Intigriti` items at claim time, :38), per-platform
+first-login 2FA (**no TOTP seeds in the vault items** — one approval per
+platform per session, :39), KYC/tax on first payout (:40), the Submit click
+attributable to `vgpnk1337`(H1)/`veigapunk`(Intigriti) (:41), payout
+destination at triage (:42). §C decree 2026-09-05 (:48-68): submission is
+100% operator-executed, never automated; after each submission the operator
+hands back the URL/ID and the fleet records the SUBMITTED transition into
+`status.json` + `ledger/missions.jsonl`, committed and pushed (:66-68).
 
 ## Cross-domain reports (filed, not fixed here — bounties repo owner)
 
 - `claim-index.mjs` does not consume `claim-hold/*` — holds are advisory
-  only. Row 4/7/10 queue despite holds.
+  only. Rows 2/4/7/10 queue despite holds (round-13: four, not three).
 - `claim-check.mjs` duplicate scan does not cover `vdp-disclosures/` or the
   `origin-work/open-bug-bounties/claim-packages/` receipt tree — row 4 is a
   verified duplicate that returns `claim-check: OK`.

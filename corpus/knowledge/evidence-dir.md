@@ -50,7 +50,10 @@ heterogeneity — the *claim package* is where the strict contract applies.
 `custodian/` (27) — paired `input.<action>.json` / `decision.<action>.json`,
 with `.hard-stop` suffix on denied actions; `custodian-inputs/` +
 `custodian-decisions/` is an alternate pair naming.
-`runs/`, `round-N/`, `raw-rN/` — per-attempt isolation.
+`runs/`, `round-N/` (e.g. `hackerone-1password/round-1`,
+`hackerone-dyson/rounds/round-1..3`) — per-attempt isolation (round-13
+correction: the earlier `raw-rN/` dir naming does not exist; raw bytes live
+in `raw/`, 244 dirs above).
 `source/`/`src/`/`repos/` — cloned target repos for local hunts.
 `specialists/` — L2 verdict JSONs (`round-1-scout.json`…).
 `b1k-NNN/` under ~30 program dirs — per-run output keyed to the
