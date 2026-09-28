@@ -413,3 +413,104 @@
   rule (binding): domain source repos are READ-ONLY — lane compliant (zero
   git writes to `~/Projects/bounties`; pushes only VeigaPunk/kasegi-shokunin
   + VeigaPunk/shokunin). `corpus/lessons/round-13.md` recorded.
+- 2026-09-28 — round 14: depth axis-move — the r13 thin-cohort per-item
+  citation repair, executed per the corrected r14 plan. 10-L2 batched fan
+  (3 scouts, 2 executors, critic, reviewer, connector, revenger, labrat);
+  all 10 returned usable output (zero degraded L2s this round).
+  **Measured: thin cohort repaired; depth integer held at 9** (Not-10 list in
+  SCORECARD). Instrument: `/tmp/kasegi-r14/density.py` (labrat reimplementation
+  of the r13 census, calibrated on the exact pre-r13 blob fc6d398 — checklist
+  6/28.6 and anti-patterns 11/29.7 reproduce EXACTLY, mean Δ+0.8, residuals
+  traced to r13's own table-arithmetic noise + mutually inconsistent date
+  counting), same script before (HEAD 7483333) / after: Program-rule checklist
+  **28.6→106.6**, Policy access playbook **62.5→462.5**, Disclosure
+  anti-patterns **29.7→108.4**; both named sections clear the pre-edit mean
+  102.5 (bar rule fixed this round: the post-edit mean 142.5 is self-inflated
+  by the repair — compare each block to its own BEFORE). Path-citation
+  instances 275→373. Claim-hardening's two prose-only rows re-anchored
+  (repair-8; item 13 = `ufo-archive-2026.md:145-149`, item 14 = `:150-154` —
+  reviewer's final line numbers; the SCORECARD plan's own ":412-413" reference
+  was actually :413-414). All 10 anti-pattern items carry per-item anchors +
+  a new per-item anchor-map table (repair-3 deliverable) + a 4-fact
+  "same source, not itemized" addendum (wrap `:83`,`:92`,`:99`,`:107`,`:155-157`).
+  **3 SKILL falsifications repaired in place** ("round-14 correction" markers):
+  (1) header "every fix is a disclosure defect" — FALSIFIED by 2 agents + L1
+  read (wrap `:9` defines NO-GO as an open reproduction gate; `:20-21` are
+  technical gates); (2) `:412` receipt-drift reconciler pointers — 4028846 /
+  a169f309 are in NEITHER `portal-reconciliation-2026-09-11.json` (`:9-11` =
+  the Sep-11 trio only) NOR `final-audit.json` (zero grep matches); the real
+  store is origin-work `submission-review/` (`receipts/*.json:5-6`,
+  `submission-receipts.csv:2-3`, `queue.json:12`) which SKILL `:446-448`
+  itself names two sections later; (3) Immunefi `policy_sha256` overreach —
+  beanstalk provenance has zero hash keys; Immunefi page hashes land as
+  `html_sha256` in keeper telemetry `:181`; the Cantina/HackenProof legs
+  stand (pendle `provenance.json:32-33`, atomone `:36`). **One critic
+  falsification REJECTED with evidence:** the 2026-09-05 severity decree
+  EXISTS at `fleets/claimer-mission.md:29` (critic grepped only `docs/`);
+  L1+executor+revenger three-way concordance; git timeline proves the
+  override order (wrap fixes b3b1b7e3 19:54 −03:00 → decree applied 2ef530c6
+  20:56 −03:00, overriding wrap `:23`'s airtable keep-the-ceiling advice;
+  applied at airtable `claim_checklist.md:32`). **Claim-anatomy sampling push
+  (recorded gap U1) 3.6%→10.7%:** 20 new full `status.json` reads via
+  deterministic stratified rule (`select20.sh`: universe 280, 17 already-read
+  excluded, strata quota 0/2/2/2/14, even-index stride; byte-identical
+  re-runs; L1 re-ran: universe=280 eligible=263 selected=20, PARKED 16 /
+  BLOCKED 2 / DONE 2, SIG 4). D1-D13 deviation classes → new canonical entry
+  `corpus/knowledge/claim-anatomy-sample.md`. Headlines: **260/280 (92.9%)**
+  deviate from the canonical required-key set (20/280 conformant);
+  `claim_review` present 26/280; `claimable` absent 241/280 (exactly the
+  b1k-* cohort, 232/233); `manifest_sha256` absent/null 84/280; `verdict` =
+  free-form slug (249 distinct/280; undocumented suffixes `-identity` ×121,
+  `-host-binding` ×69); D11 state enum omitted PARKED (248/280) →
+  `claim-package-contract.md:31` repaired; D12 DONE ≠ filed (spacex-starlink
+  + hackerone-x `claimable:true` with `submitted_url:null`;
+  `submission_performed===true` = 0/280). SKILL anatomy section carries the
+  reality annotation (contract realized in 20/280; six-file set held 18/20;
+  hyatt + northwestern-mutual at 1/6 canonical). Checklist section: all 18
+  top-level scope-snapshot keys documented (SKILL named 9+2); `:47`
+  reward-band/currency FALSIFIED against the SEEK exemplar (only
+  `reward_table_url:16` null — true anchors starbucks-japan `:112-118` +
+  sherlock-106 `:12-15`; 29/785 carry `currency`); `coverage.status` second
+  value `insufficient_for_authorization` (opus-guard `:24`; 58/785 carry
+  coverage.status — L1-re-derived); `provenance.json.pin` = four live shapes
+  (object / bare string / nested in commands[] / version), not one fixed key;
+  `program-quirks.md` linked from SKILL at last (closes r13 repair-2's SKILL
+  half). Corpus playbook attribution repaired: "(seek, openai, spacex
+  autopsies)" → openai/spacex/blofin autopsies verified (`:6` each), seek has
+  NO autopsy (its evidence = snapshot `:54` + BLOCKED.md); `stop_reason`
+  anchored to `authorization-envelope.json:49`. Generated-file staleness
+  annotated: `docs/claim-ready-index.md` on-disk = **11 rows** (generated
+  stamp `:3` 2026-09-06T01:35:16Z) vs **12** claim-check-OK packages — the
+  12th (intigriti-yahoo, DONE + `claimable:true` `:2`,`:11`) appears only on
+  live regeneration; SKILL `:115` annotated. **Hazards:** mid-round
+  unverified actor at 2026-09-28T23:32Z — `freshness_check` (23:32:22.884Z)
+  + judge-lane `reroute_drill` simulated (23:32:32.720Z) telemetry appends
+  (7225→7227; SKILL as-of refreshed) + mtime-only touch on
+  `docs/claim-ready-index.md` (bytes UNCHANGED: HEAD==worktree==11 rows; the
+  generator did not run — content stamp still 09-06); no cron/systemd-timer/
+  live-process match; an attached `ufo_sighting` tmux (created 15:24) hosts a
+  separate live agent session (window 2, "1 running agent"); the two L2s
+  alive that minute (labrat, executor-checklist) both attest read-only; not
+  lane-originated; actor [UNVERIFIED] — reported-not-explained, same
+  treatment as r13's `.git` touches. **Adjacency** (reported, not absorbed;
+  `/tmp/kasegi-r14/connector.md`): `fleets/registry.json` is NOT contested —
+  the integrator ruled the semantic split at r10 (decree ledger → kasegi;
+  routing + registry-check tooling → kumitate;
+  `.ufo/reports/round-10/protocol.md:249-252`, `AGGREGATE.md:667`); r13's
+  "CONTESTED" flag was stale on our side; D-76 remains open only for
+  recording the ruling in both provinces. Kotoba's
+  `sibling-description-rewrites-round8.md:259-310` repeats kasegi
+  policy-intake facts (derivative snapshot, drift risk); inbound SKILL
+  line-cites from siblings/main-repo docs are listed in connector.md — r14's
+  renumbering shifts them; siblings re-cite at their own lanes' discretion.
+  **Method lessons** (`corpus/lessons/round-14.md`): the density proxy is
+  form-sensitive (identical content = 86.0 at 80-col prose vs 973.3 as a
+  single-line-row table) → block-vs-BEFORE bar fixed in SCORECARD; three-way
+  derivation is load-bearing (critic missed `fleets/`, executor missed the
+  I8 definition at `fleets/mission-template.md:20` — L1 found both);
+  executor despawn-second-yields overwrote scratch drafts AFTER L1
+  integration — integrate from the first verified yield. L1 independently
+  derived all 10 item anchors + the checklist anchor set + the decree git
+  timeline before integrating. Zero writes to `~/Projects/bounties` by this
+  lane (the +2 telemetry lines are external — disclosed, not reverted;
+  revert = second mutation). `corpus/lessons/round-14.md` recorded.

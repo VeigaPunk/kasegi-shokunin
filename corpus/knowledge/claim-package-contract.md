@@ -28,14 +28,27 @@ report.md "no submission" gate is a PROSE regex
 
 ## status.json semantics (observed values)
 
-- `state`: `DONE` | `BLOCKED` | `SUBMITTED`. `DONE` requires reviewer `APPROVED`
-  with `claim_ready:true`; producer never self-approves.
+- `state`: `DONE` | `BLOCKED` | `SUBMITTED` | `PARKED` — round-14
+  correction: PARKED was missing from this enum but is 248/280 = 88.6% of
+  packages (`claim-anatomy-sample.md` D11). `DONE` requires reviewer
+  `APPROVED` with `claim_ready:true`; producer never self-approves.
 - `verdict`: free-form but observed patterns: `positive`,
-  `positive-blocked-<precondition>`, `honest-zero-<reason>`.
+  `positive-blocked-<precondition>`, `honest-zero-<reason>`. Round-14
+  census: 249 distinct values / 280 packages (88.9% singletons);
+  `honest-zero-*` = 256 incl. two undocumented dominant suffixes
+  `-identity` (121) and `-host-binding` (69); `positive-blocked-*` = 2;
+  4 verdicts are full prose sentences
+  (`claims/bugcrowd-auth0-okta/ingestion-20260914/status.json:3`).
 - `claimable`: bool — the queue bit for `docs/claim-ready-index.md`.
+  Round-14 census: absent in 241/280 (exactly the b1k-* keeper cohort,
+  232/233); `claimable:true` only 12/280 (`claim-anatomy-sample.md` D1).
 - `finding_count`: positive integer when claimable.
 - `do_not_submit` / `no_submission_performed`: redundant external-effect guards.
-- `claimability_blocker` + `resume_condition`: what reopens a BLOCKED package.
+- `claimability_blocker` + `resume_condition`: what reopens a BLOCKED
+  package. Round-14 note: in the sampled BLOCKED packages
+  `claimability_blocker` occurs 0×; hyatt uses `blocked_reason`
+  (`claims/hackerone-hyatt/ingestion-20260914/status.json:14`) — blocker
+  naming drifts (`claim-anatomy-sample.md` D9).
 - `claim_review.hard_gates`: `written_scope`, `authorization`,
   `evidence_integrity`, `no_duplicate_or_prior_submission`.
 - `claim_review.subchecks`: `no_secrets`, `operator_attribution`.

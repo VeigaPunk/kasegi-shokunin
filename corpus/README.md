@@ -29,7 +29,8 @@ its source. No generic filler.
 | Target checkouts + provenance pins | `knowledge/target-checkouts.md` | `pendle-core-v2-public/` (shallow clone `f242659`=v6.10.0, pin-bound), `george/` parked, 187/255 `provenance.json` pin census, `claim-check.mjs:96-97` never validates pins |
 | Canonical triage thresholds (gates/weights/constants, line-cited) | `knowledge/triage-thresholds.md` | full reads of `ops/claim-check.mjs`+`ev-report.mjs`+`fleet-dispatch.mjs`+`shared.mjs`+`bounty-map/schema.json` + live censuses; 3-way verified round-13 (L1 read × executor draft × reviewer derivation) |
 | Per-program quirks (fee/precondition patterns) | `knowledge/program-quirks.md` | sibling-package sampling (dydx same-blocker class; morpho/euler/uniswap/reserve honest-zero) — index-orphaned until round 13 |
-| Lessons | `lessons/round-1.md` … `lessons/round-13.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
+| Claim-anatomy sample (per-program `status.json`) | `knowledge/claim-anatomy-sample.md` | round-14: 20 NEW full reads via deterministic stratified rule (script preserved, L1-reproduced); 10→30/280 = 10.7%; deviation classes D1-D13 with anchors |
+| Lessons | `lessons/round-1.md` … `lessons/round-14.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
 
 - ~~ops tail (`validate`/`registry-check`/`reroute-drill`/`check-freshness`/
@@ -107,10 +108,13 @@ its source. No generic filler.
   as-of-stamped + 3 committed conflict markers + rankings ~30→234/229,
   ev-report exit/basis/cutoff semantics, `claim_checklist.json`→`.md`,
   HARD_STOP double-error, symlink-ban + 5 MiB walk gates added.
-- Per-program claim anatomy is ~3.6% sampled (≈10 of 280 status-gated
-  packages read line-by-line; recorded in lessons round-7/8, never in
-  Known-gaps until round 13) — deliberate: full anatomy census is a
-  candidate future coverage sub-axis, not a gap-by-omission.
+- ~~Per-program claim anatomy is ~3.6% sampled (≈10 of 280 status-gated
+  packages read line-by-line)~~ — ADVANCED round 14: +20 full reads via a
+  deterministic stratified selection (script preserved + L1 re-run) →
+  **30/280 = 10.7%** (`knowledge/claim-anatomy-sample.md`; D1-D13 deviation
+  classes, 260/280 packages deviate from the canonical key set). The full
+  100% census remains a future coverage sub-axis candidate — deliberate,
+  not a gap-by-omission.
 - `corpus/lessons/` has no round-2 record and LOG.md jumps round 1→round 3:
   a round-2 ledger hole from the lane's first day (round-2 work, if any,
   was folded into the round-3 entry). History is not rewritten; recorded
@@ -119,3 +123,20 @@ its source. No generic filler.
   (cantina-pendle, cantina-dydx), free-form string, no schema definition,
   unrecognized by claim-check.mjs:169's not-claimable regex — annotated in
   SKILL.md round 13; it is a package-state convention, not a gate class.
+- Round-14 depth audit (9 independent L2s: 3 scouts, 2 executors, critic,
+  reviewer, connector, revenger + L1 full-source derivation): per-item
+  citations landed for both thin sections (Program-rule checklist,
+  Disclosure anti-patterns); 3 falsified SKILL claims repaired in place —
+  "every fix is a disclosure defect" header (2 NO-GO rows are reproduction
+  gates, `docs/wrap-report.md:9,:20-21`), the :412 receipt-drift pointers
+  (4028846/a169f309 live in origin-work `submission-review/`, NOT in
+  `portal-reconciliation-2026-09-11.json`/`final-audit.json`), Immunefi
+  `policy_sha256` overreach (beanstalk provenance has zero hash keys;
+  Immunefi page hashes land as `html_sha256` in keeper telemetry); 2 corpus
+  defects repaired (state enum omitted PARKED 248/280; playbook seek-autopsy
+  misattribution); vocabularies widened with census anchors
+  (`provenance.json.pin` 4 shapes, `coverage.status` second value, verdict
+  suffixes `-identity`×121 / `-host-binding`×69, decree git timeline
+  b3b1b7e3→2ef530c6). Markers "round-14 correction/addition". One critic
+  falsification REJECTED with evidence (the 2026-09-05 severity decree
+  exists at `fleets/claimer-mission.md:29` — critic grepped only `docs/`).
