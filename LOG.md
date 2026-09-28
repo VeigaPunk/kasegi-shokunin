@@ -186,3 +186,28 @@
   → `corpus/knowledge/submitted-registry.md`; SKILL.md gained the
   registry section; README gap closed. `corpus/lessons/round-9.md`
   recorded.
+- 2026-09-28 — round 10: closed the operator-queue gap — the 12-row
+  `docs/claim-ready-index.md` queue had never been audited as a set, and
+  round 9 had flagged row 4 without verifying the fingerprint or the
+  queue-path defect. Live `claim-check.mjs` re-run on all 12 rows: all OK.
+  Source read of `ops/claim-index.mjs` (full file): `claim-hold/*` tags are
+  never consumed — the index only lists `claim-ready/*` — so three held
+  packages queue anyway (anthropic, wordpress, intel). Row-4 fingerprint
+  byte-matched against `vdp-disclosures/anthropic-plugin-dev-cmd-injection/`:
+  same commit `d7dbd9a09f59775726ed14bbea8fc9dfdff62f7b`, same file
+  `plugins/plugin-dev/skills/hook-development/scripts/test-hook.sh`, same
+  captured-source sha256 `ded642e811b4…f0069393`, CWE-78 — verified
+  duplicate of the operator's own 2026-09-06 disclosure; do not file.
+  `submitted_url` on 9/12 queued rows is a route URL, never a `/reports/`
+  receipt — queue membership = never submitted. Per-row residual gates
+  extracted from each `claim_checklist.md`: personio takeover proof REQUIRED
+  by program OOS (spacex same class, "recommended"); intel
+  `submit/BLOCKED-2026-09-11.md` still live (no authed Intigriti session);
+  wordpress `submit/channel-block-20260911.md` = historical no-session
+  blocker; 8x8 asset `eligible_for_bounty=false` (index flags "No payout
+  claim"); mutable-precondition re-verify gates on spacex/amazonvrp/x/
+  beanstalk/yahoo. Runbook operator-only steps distilled. Both queue-path
+  defects are cross-domain (bounties owner) — reported, not fixed.
+  → `corpus/knowledge/operator-queue.md`; SKILL.md gained "Operator queue —
+  live audit" section; README coverage map + gap closed.
+  `corpus/lessons/round-10.md` recorded.

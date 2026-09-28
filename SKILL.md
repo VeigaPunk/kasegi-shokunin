@@ -377,6 +377,34 @@ stiltsoft partial; t-mobile `BLOCKED.md`-only; histogram: PARKED 248 /
 BLOCKED 16 / DONE 15 / SUBMITTED 2 / OPERATOR_GATED 1). Root
 `*-2026-09-15.zip` bundles are dated snapshots, not filtered live state.
 
+## Operator queue — live audit
+
+`docs/claim-ready-index.md` (generator: `ops/claim-index.mjs`) queues every
+`claims/*/*/status.json` package whose current bytes pass `claim-check.mjs`.
+Live re-run 2026-09-28: all 12 queued rows pass the gate. Dossier:
+`corpus/knowledge/operator-queue.md`. Two systemic holes in the queue path:
+
+- **`claim-hold/*` tags are inert** — `claim-index.mjs` only reads
+  `claim-ready/*` tags; no hold filter exists. Queued rows 4 (anthropic),
+  7 (wordpress), 10 (intel) all carry `claim-hold/*` tags the index ignores.
+- **Duplicate scan reads `claims/` only** — row 4
+  (`hackerone-anthropic/plugin-dev-test-hook-command-injection`) is
+  byte-identical to the operator's own VDP disclosure
+  (`vdp-disclosures/anthropic-plugin-dev-cmd-injection`: same commit
+  `d7dbd9a`, file, sha256 `ded642e8`, CWE-78) and still returns
+  `claim-check: OK`. **Do not file row 4.**
+
+Other per-row traps: `submitted_url` on queued rows is a route URL (landing
+page/`reports/new`), never a `/reports/<id>` receipt — queue membership means
+"never submitted". Personio (row 11): takeover proof is REQUIRED by program
+OOS, not optional. SpaceX (row 1): same class, "recommended". Intel (row 10):
+`submit/BLOCKED-2026-09-11.md` still on disk — no authenticated Intigriti
+session. 8x8 (row 2): asset is `eligible_for_bounty=false` — the index itself
+flags "No payout claim". Mutable-precondition rows (spacex DNS, amazonvrp
+registry state, x source drift, beanstalk deployed-bytecode, yahoo rolling
+1-year release window) all carry mandatory re-verify gates in their
+`claim_checklist.md`.
+
 ## Triage economics
 
 `ops/ev-report.mjs` computes the hunter-contract EV per program record

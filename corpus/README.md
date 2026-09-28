@@ -22,6 +22,7 @@ its source. No generic filler.
 | Board intake + batch finalize | `knowledge/intake-and-finalize.md` | `ops/import-board.mjs` (binding/P6/P7/S4) + `ops/finalize-all.mjs` (claim sweep/tag/atomic push) — full reads |
 | Claim-hardening defect taxonomy + archive | `knowledge/ufo-archive-2026.md` | `fleets/ufo-archive-2026/` full walk: 19 `claim-*` report.json defect censuses, keeper/whipper (b1k-NNN origin), inquiries briefs, programs/ old evidence shape |
 | Submitted-state / do-not-refile registry | `knowledge/submitted-registry.md` | live census: all `claims/*/*/status.json` submission fields (19 signatures), `ledger/missions.jsonl` SUBMITTED/DISCLOSED_FREE, `portal-reconciliation-2026-09-11.json`, `final-audit.json`, `origin-work/open-bug-bounties/claim-packages/submission-review/` (real receipt store), VDP `SUBMITTED.md`, `claim-ready/*`+`claim-hold/*` tags, `_claimer.status.json`, 15 status-less stub dirs |
+| Operator queue audit | `knowledge/operator-queue.md` | live `claim-check.mjs` re-run of all 12 queued rows + `claim-index.mjs` source read (`claim-hold/*` inert), per-row checklist gates, runbook distill, anthropic↔VDP fingerprint byte-match |
 | Lessons | `lessons/round-1.md`, `lessons/round-1-aggregator-audit.md`, `lessons/round-3.md` … `lessons/round-9.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
 
@@ -53,3 +54,7 @@ its source. No generic filler.
   same-finding collision verified by live claim-check OK; origin-work
   corpus outside every scan; field-spelling + polarity traps; 15
   status-less stub dirs; root zips = dated snapshots).
+- ~~`claim-hold/*` semantics + queued-row audit~~ — CLOSED round 10:
+  `knowledge/operator-queue.md` (claim-index ignores hold tags → 3 held rows
+  queued; anthropic row = own VDP disclosure, verified byte-identical;
+  per-row residual-gate dossier).
