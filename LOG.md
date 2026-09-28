@@ -17,3 +17,7 @@
   carries: pipeline, scope-snapshot checklist, per-platform policy playbook,
   finding-triage decision table, evidence-package anatomy with status.json
   gate semantics, 10 observed disclosure anti-patterns, EV model, cited paths.
+  Corpus added per `../CORPUS.md`: `corpus/README.md` index + coverage map,
+  `corpus/knowledge/` (claim-package-contract, policy-access-playbook,
+  ev-model, terminal-classes, program-quirks — all sourced),
+  `corpus/lessons/round-1.md` (what worked/friction/gaps).
