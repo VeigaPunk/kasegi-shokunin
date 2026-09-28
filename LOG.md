@@ -21,3 +21,18 @@
   `corpus/knowledge/` (claim-package-contract, policy-access-playbook,
   ev-model, terminal-classes, program-quirks — all sourced),
   `corpus/lessons/round-1.md` (what worked/friction/gaps).
+- 2026-09-28 — round 3: closed the gate-list gap and walked the VDP corpus.
+  Read `ops/claim-check.mjs` (full 233 lines), `ops/claim-index.mjs`,
+  `ops/prepare-claims.mjs` → `corpus/knowledge/claim-gates.md` (complete gate
+  inventory: file presence, content markers, manifest/redaction binding,
+  custodian 3-way head binding, secrets regex, status.json gates incl. the
+  GLOBAL duplicate-submission scan and literal `kx-reviewer` role check;
+  index error-ranking and payload immutability semantics). Walked
+  `vdp-disclosures/anthropic-plugin-dev-cmd-injection/` →
+  `corpus/knowledge/vdp-disclosure-packages.md` (4-file shape: ROUTE.md /
+  cover-note.md / report.md / SUBMITTED.md; free + attributed decree;
+  security.txt Contact → H1 embedded_submissions route; operator sends
+  personally). Sampled 5 Cantina sibling ingestions → `program-quirks.md`
+  (only dydx repeats positive-blocked-live-precondition; $100 fee is
+  Pendle-specific so far). SKILL.md gained the enforced-gate summary + VDP
+  sibling-format section. `corpus/lessons/round-3.md` recorded.

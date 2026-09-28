@@ -1,9 +1,9 @@
 # Program quirks observed
 
 Source: `~/Projects/bounties/claims/cantina-pendle/ingestion-20260915/`,
-`docs/claim-ready-index.md`, `docs/claim-runbook.md`, autopsies. Read
-2026-09-28. Quirks belong in each package's `claim_checklist.md`; this file
-lists patterns to check for.
+`docs/claim-ready-index.md`, `docs/claim-runbook.md`, autopsies, Cantina
+sibling status.json files. Read 2026-09-28. Quirks belong in each package's
+`claim_checklist.md`; this file lists patterns to check for.
 
 ## Cantina (pendle exemplar)
 
@@ -20,6 +20,19 @@ lists patterns to check for.
 - Scope attribution trick: in-scope contract addresses enumerated in
   `deployments/<chain>-core.json` keys (`pendleSwap`, router facets); whitelist
   membership dynamic → source-review-only under no-chain-contact boundary.
+
+### Cantina siblings sampled round 3 (ingestion-20260914/15)
+
+- `cantina-dydx`: BLOCKED `positive-blocked-live-precondition` — same
+  live-precondition pattern as Pendle; reward table critical max $1M.
+- `cantina-morpho`: BLOCKED `honest-zero-no-claimable-finding`
+  (totalRewardPot $2.5M headline; WebApps crit max $200k).
+- `cantina-euler`, `cantina-uniswap`, `cantina-reserve-protocol`: PARKED
+  `honest-zero-local-source-review` — local source review bounded out.
+- Takeaway: on Cantina, ingestion-seeded packages resolve either to
+  positive-blocked-on-live-precondition or honest-zero; the $100 fee gate is
+  Pendle-specific so far — do not assume every Cantina program charges.
+  Reward ladders vary per program ($1M–$15.5M crit ceilings).
 
 ## HackerOne
 

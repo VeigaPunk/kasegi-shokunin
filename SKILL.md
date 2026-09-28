@@ -71,6 +71,7 @@ Terminal classes observed across 486 non-claim-ready missions
 | Condition | Class | Package state | Evidence |
 |---|---|---|---|
 | In-scope finding, reproducible locally, reviewer APPROVED, all gates PASS | Claimable | `status.json state:"DONE", claimable:true` | `docs/claim-ready-index.md` (12 queued) |
+
 | Defect proven, live precondition unverified (e.g. needs read-only chain/state check) | Positive-blocked | `state:"BLOCKED", verdict:"positive-blocked-*", claimable:false`, `resume_condition` set | `claims/cantina-pendle/ingestion-20260915/status.json` |
 | Finding needs operator-owned substrate (VM, device, account) | Positive-blocked | `submit/BLOCKED.md` names the exact gate | `claims/hackerone-3cx/…` (uid=0 disposable-VM capture) |
 | Bounded negative result: authorized surface tried, nothing claimable | LEARNED honest-zero (438/486) | `state:"BLOCKED", verdict:"honest-zero-*", finding_count:0`, `submit/BLOCKED.md` | `claims/bugcrowd-seek/honest-zero/` |
@@ -81,6 +82,36 @@ Terminal classes observed across 486 non-claim-ready missions
 Verdict rule from `fleets/review-mission.md`: **drop** = dead end, **continue**
 = name the one executable next step, **leave** = don't touch again. "Leave" is
 the default: 430/486.
+`claim-check.mjs` enforces all of it (authoritative list:
+`corpus/knowledge/claim-gates.md`): required-file presence, `report.md`
+"Scope excerpt" + "no submission performed" markers, per-artifact sha256 +
+path/symlink confinement + same-digest redaction receipts (producer ≠
+verifier), non-empty custodian chain where every `scope_signal` is exactly
+`NO_SCOPE_OBJECTION` and `head_sha256` == last decision ==
+`manifest.expected_head_sha256`, a secrets regex over all package text, and
+`status.json` — `DONE` + `claimable:true` + `finding_count≥1` +
+`manifest_sha256` binding + `APPROVED` review by a distinct `kx-reviewer`
+(role, requested/resolved model, fallback flag) + four hard gates + two
+subchecks PASS + not-claimable heuristics + a global duplicate-submission scan
+across all `claims/*/*/status.json` + `submit/BLOCKED.md` and nested-readiness
+blockers. `prepare-claims.mjs` then stages `submit-payload.json` only for
+passing DONE packages with an explicit https route, attaches
+`claim_checklist.md` + positive-polarity artifacts only, refuses to rewrite a
+manifest-bound payload without re-review, and restores original bytes if the
+post-write recheck fails.
+
+## VDP disclosure packages (sibling format)
+
+`vdp-disclosures/<slug>/` is a distinct, lighter contract: `ROUTE.md` (channel
++ attribution decree — observed: free + fully attributed via the vendor's
+security.txt Contact route, e.g. an H1 `embedded_submissions` URL), a
+`cover-note.md`, the same-craft `report.md` ("Disclosed freely by", pinned
+commit/file/sha256, CWE, CVSS, verbatim scope excerpt), and `SUBMITTED.md`
+(timestamp + verbatim platform confirmation). Operator personally sends; the
+fleet stages, never sends. Parked VDP-adjacent programs show up as two-file
+honest-zero claims (`report.md` + `status.json`, e.g.
+`claims/hackerone-ruby/honest-zero-vdp-no-payout/`). Details:
+`corpus/knowledge/vdp-disclosure-packages.md`.
 
 ## Evidence-package anatomy
 
