@@ -71,5 +71,26 @@
   tracker over the origin-work tree) → `corpus/knowledge/mission-control.md`.
   SKILL.md gained Mission control plane section + cited paths.
   `corpus/lessons/round-5.md` recorded.
+- 2026-09-28 — round 6: closed the retirement-lane gap. Read
+  `ops/park-disposition.mjs` in full (80 lines): dry-run-by-default
+  PARKED/FAILED dispositor, first-match regex chain over
+  `status.json.detail` (HONEST→LEARNED no-op, H1SPA→RETRY_METHOD,
+  AUTH→RETIRE_AUTH, TRANSIENT→RETRY_TRANSIENT, else REVIEW no-op);
+  --apply un-parks retries via status-file `rm` + `mission_unparked`
+  telemetry, and produces the fixed five-part `docs/autopsies/<id>.md`
+  + RETIRED status rewrite + `mission_retired` event. Censused all 31
+  autopsies: auth-walled SPA ×27, terms-gate ×1 (SIX), privacy hard
+  stop ×1 (Airtable), paused/non-enumerable ×2; generated "Why"
+  boilerplate mis-describes non-login sub-causes — Reason (verbatim)
+  is authoritative. Re-ran the exact classifier live over
+  `fleets/run/` (703 statuses): LEARNED 529 / REVIEW 85 / RETIRE_AUTH
+  30 / RETRY 2 — the 85 REVIEW are the same auth-wall class in newer
+  wording ("no exact in-scope assets", "active-testing grant",
+  "custodian HARD_STOP") the regex misses: parked invisibly, never
+  retired. → `corpus/knowledge/retirement-autopsies.md` (producer
+  mechanics, schema, sub-cause partition, regex-drift rule: embed a
+  literal AUTH keyword in `detail` when parking). SKILL.md gained the
+  Retirement lane section, corrected `docs/autopsies/` count 30→31,
+  + park-disposition cited path. `corpus/lessons/round-6.md` recorded.
 
   `corpus/lessons/round-4.md` recorded.

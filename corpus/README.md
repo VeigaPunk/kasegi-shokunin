@@ -17,7 +17,8 @@ its source. No generic filler.
 | Mission ledger + ops | `knowledge/mission-ledger.md` | `ledger/*.jsonl` census, `ops/shared.mjs`/`rank.mjs`/`import-board.mjs`/`fleet-dispatch.mjs`, `docs/plan-round0.md` |
 | Mission control plane | `knowledge/mission-control.md` | `ops/fleet-dispatch.mjs` full read, `fleets/missions|run|leases|priority|state-snapshots`, `claimer-mission.md`, `review-mission.md`, sighting scripts, `RUNBOOK-resume.md`, `.ufo-mission-report-bh*`, `.ufo-ingestion/`, `.ufo-warden/` |
 | Per-program audit store | `knowledge/evidence-dir.md` | `evidence/` census (592 dirs), `ops/fleet-dispatch.mjs`, `evidence/bugcrowd-seek/`, `evidence/sherlock-8/` |
-| Lessons | `lessons/round-1.md`, `lessons/round-3.md`, `lessons/round-4.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
+| Retirement + autopsies | `knowledge/retirement-autopsies.md` | `ops/park-disposition.mjs` full read, `docs/autopsies/` 31-file census, `fleets/run/` live classifier re-run |
+| Lessons | `lessons/round-1.md`, `lessons/round-3.md`, `lessons/round-4.md`, `lessons/round-5.md`, `lessons/round-6.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
 
 - ~~`ops/claim-check.mjs` gate list~~ — CLOSED round 1:

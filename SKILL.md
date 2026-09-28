@@ -167,6 +167,34 @@ honest-zero claims (`report.md` + `status.json`, e.g.
 `claims/hackerone-ruby/honest-zero-vdp-no-payout/`). Details:
 `corpus/knowledge/vdp-disclosure-packages.md`.
 
+## Retirement lane — autopsies & the detail regex
+
+`ops/park-disposition.mjs` (dry-run default, `--apply` acts; decree
+2026-09-05: retry live paths, retire structural blocks) regex-classifies
+every `fleets/run/*.status.json` in state PARKED/FAILED by its `detail`
+string — first match wins: `honest.zero`→LEARNED (terminal-good), H1-SPA
+wording→RETRY_METHOD (GraphQL path), AUTH keyword→RETIRE_AUTH,
+transient→RETRY_TRANSIENT, else **REVIEW = no action**. RETIRE_AUTH
+writes a fixed five-part `docs/autopsies/<id>.md` (Outcome / Program URL /
+State / verbatim Reason / Why / Unlock / Evidence), flips the status to
+RETIRED, emits `mission_retired` telemetry. Requeue = operator session or
+public policy, then delete BOTH the autopsy and the status file.
+
+`detail` is machine-consumed, not prose: the 85-mission REVIEW cohort
+(live census 2026-09-28 — 529 LEARNED / 85 REVIEW / 30 RETIRE_AUTH / 2
+RETRY) is the same auth-wall class worded as "no exact in-scope assets" /
+"active-testing grant" / "custodian HARD_STOP" — none of which the regex
+knows, so they park invisibly. **When parking a mission, embed a literal
+classifier keyword in `detail`** (`in_scope_assets empty`, `no testing
+grant`, `auth-walled`, `scope unverifiable: ...hackerone`) or the
+disposition pass no-ops.
+
+The 31 autopsies partition: auth-walled SPA ×27, terms-gate ×1 (SIX),
+privacy hard stop ×1 (Airtable), paused/non-enumerable ×2. The generated
+"Why" paragraph always says "account login" — trust `Reason (verbatim)`,
+not the boilerplate. Authoritative detail:
+`corpus/knowledge/retirement-autopsies.md`.
+
 ## Evidence-package anatomy
 
 `claims/<program>/<slug>/` — six files, per `fleets/mission-template.md` and
@@ -256,7 +284,7 @@ the Submit click, payout rails).
 - `~/Projects/bounties/docs/continuation-notes.md` — 486-mission class partition
 - `~/Projects/bounties/docs/wrap-report.md` — GO/GO-WITH-FIX/NO-GO review evidence
 - `~/Projects/bounties/docs/review-verdicts.jsonl` — drop/continue/leave ledger
-- `~/Projects/bounties/docs/autopsies/` — 30 structural-failure writeups
+- `~/Projects/bounties/docs/autopsies/` — 31 structural-failure writeups (fixed 5-part schema, generated)
 - `~/Projects/bounties/ops/{claim-check,claim-index,prepare-claims,ev-report}.mjs` — fail-closed gates
 - `~/Projects/bounties/claims/cantina-pendle/ingestion-20260915/` — complete positive-blocked exemplar
 - `~/Projects/bounties/claims/bugcrowd-seek/honest-zero/` — complete honest-zero exemplar
@@ -269,3 +297,4 @@ the Submit click, payout rails).
 - `~/Projects/bounties/docs/RUNBOOK-resume.md` — snapshot restore + dispatcher relaunch procedure
 - `~/Projects/bounties/.ufo-mission-report-bh*.md` — 21 hunter-mission readiness-audit reports (all BLOCKED verdicts)
 - `~/Projects/bounties/.ufo-{ingestion,warden}/` — intake-cycle + readiness-tracker artifacts for the origin-work claim tree
+- `~/Projects/bounties/ops/park-disposition.mjs` — PARKED/FAILED detail-regex classifier; producer of all `docs/autopsies/*` and the RETIRED rewrite + `mission_retired` telemetry
