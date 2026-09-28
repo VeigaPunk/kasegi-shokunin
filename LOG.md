@@ -36,3 +36,20 @@
   (only dydx repeats positive-blocked-live-precondition; $100 fee is
   Pendle-specific so far). SKILL.md gained the enforced-gate summary + VDP
   sibling-format section. `corpus/lessons/round-3.md` recorded.
+- 2026-09-28 — round 4: closed the ledger + evidence-store gaps. Censused
+  `ledger/missions.jsonl` (718 lines, 260 missions, 218 programs; dominant
+  path SCOPED→PLANNED→LEARNED ×207; SUBMITTED ×3 operator-attributed),
+  `telemetry.jsonl` (7218 lines, ~30 event kinds, dispatcher_tick 3680),
+  `candidates.jsonl` (8 the-bounty-hunter intake records, b1k-NNN run_ids),
+  `imports.jsonl` (evidence_id-bound board imports) →
+  `corpus/knowledge/mission-ledger.md` (transition census, appendLedger
+  3500-byte O_APPEND cap, gitMutationBlocker, rank.mjs rankings artifacts,
+  14-tool ops inventory). Censused `evidence/` (592 program dirs:
+  scope-snapshot 583, authorization-envelope 580, honest-zero-record 346;
+  raw/ 244, history/ 154, custodian/ 27, b1k-NNN per-run dirs) →
+  `corpus/knowledge/evidence-dir.md` (vs claims/*/*/evidence/ contract,
+  honest-zero/v1 schema). `vgn-bounty-lab/` confirmed empty `git init`
+  (zero commits) — gap closed as nothing-to-learn. `george/` (49G comma.ai
+  research dir) has zero claims/ references — parked. SKILL.md gained the
+  Mission ledger & audit store section + cited paths.
+  `corpus/lessons/round-4.md` recorded.

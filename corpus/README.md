@@ -13,15 +13,23 @@ its source. No generic filler.
 | Policy access per platform | `knowledge/policy-access-playbook.md` | `mission-template.md`, `docs/autopsies/`, `claims/bugcrowd-seek/` |
 | Triage economics | `knowledge/ev-model.md` | `ops/ev-report.mjs`, `bounty-map/schema.json` |
 | Mission outcome statistics | `knowledge/terminal-classes.md` | `docs/continuation-notes.md`, `docs/review-verdicts.jsonl`, `docs/wrap-report.md` |
-| Program quirks | `knowledge/program-quirks.md` | `claims/cantina-pendle/…`, `docs/claim-ready-index.md`, `docs/claim-runbook.md` |
 | VDP disclosure packages | `knowledge/vdp-disclosure-packages.md` | `vdp-disclosures/anthropic-plugin-dev-cmd-injection/` + `claims/*-vdp-no-payout/` |
-| Lessons | `lessons/round-1.md`, `lessons/round-3.md` | `LOG.md` rounds 1+3, commits `5a0188f`/`49f5945`/`round-3`, `.ufo/reports/` |
+| Mission ledger + ops | `knowledge/mission-ledger.md` | `ledger/*.jsonl` census, `ops/shared.mjs`/`rank.mjs`/`import-board.mjs`/`fleet-dispatch.mjs`, `docs/plan-round0.md` |
+| Per-program audit store | `knowledge/evidence-dir.md` | `evidence/` census (592 dirs), `ops/fleet-dispatch.mjs`, `evidence/bugcrowd-seek/`, `evidence/sherlock-8/` |
+| Lessons | `lessons/round-1.md`, `lessons/round-3.md`, `lessons/round-4.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
 
 - ~~`ops/claim-check.mjs` gate list~~ — CLOSED round 1:
   `knowledge/claim-gates.md` holds the full extracted gate list.
 - Cantina fee/precondition pattern: siblings sampled (dydx same blocker class;
   morpho/euler/uniswap/reserve honest-zero) — see `program-quirks.md`.
-  `vgn-bounty-lab/` still unwalked.
-- No entry yet on `fleets/registry.json` lane→model routing; fleet mechanics
-  are arguably cross-domain, revisit if PROVINCE.md absorbs it.
+- ~~`vgn-bounty-lab/` unwalked~~ — CLOSED round 4: empty `git init`, zero
+  commits, nothing to learn (`knowledge/evidence-dir.md` §adjacent dirs).
+- ~~`evidence/` per-program vs `claims/*/evidence/` unexamined~~ — CLOSED
+  round 4: `knowledge/evidence-dir.md` (592-dir census + record schemas).
+- ~~`ledger/` writers/state machine undocumented~~ — CLOSED round 4:
+  `knowledge/mission-ledger.md` (transition counts, telemetry event census,
+  ops inventory).
+- `fleets/registry.json` lane→model routing — possibly cross-domain.
+- `george/` (49G comma.ai research dir) — parked round 4: no claim package
+  references it; revisit only if one does.

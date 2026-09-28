@@ -100,6 +100,34 @@ passing DONE packages with an explicit https route, attaches
 manifest-bound payload without re-review, and restores original bytes if the
 post-write recheck fails.
 
+## Mission ledger & audit store
+
+`ledger/missions.jsonl` is the append-only hunter-contract state machine
+(writer: `ops/shared.mjs::appendLedger`, 3500-byte line cap for O_APPEND
+atomicity). Transition census (718 lines / 260 missions):
+`SCOPED` 232 → `PLANNED` 219 → `LEARNED` 244 dominates;
+`SCOPED→PLANNED→LEARNED` alone is 207 missions. Deep path
+`EXECUTED→EVIDENCED→VERIFIED→SUBMISSION_PREPARED` is rare; `SUBMITTED` (3)
+and `DISCLOSED_FREE` are operator-attributed ledger facts, never fleet
+actions. `ledger/telemetry.jsonl` (7218 lines) is the dispatcher heartbeat
+(`dispatcher_tick`, `mission_parked`, `claim_commit_failed`,
+`model_reroute`, `operator_decree`…). `ledger/candidates.jsonl` is
+`the-bounty-hunter` intake (run_id `b1k-NNN`); `ledger/imports.jsonl` binds
+board imports to an `evidence_id` (fail-closed in `import-board.mjs`).
+`rank.mjs` emits `rankings-<ts>.json` with `inputs_basis:"curated"` vs
+`default_estimate` priors.
+
+`evidence/<program-id>/` (592 dirs) is the per-program audit store —
+`scope-snapshot.json` 583, `authorization-envelope.json` 580, `provenance`
+532, `custodian-receipts` 514, `honest-zero-record.json` (schema
+`honest-zero/v1`) 346, `status.json` 275 — plus `raw/` fetched bytes,
+`history/` superseded envelopes, `custodian/` input+decision pairs,
+`b1k-NNN/` per-run output. Distinct tree from `claims/*/*/evidence/`:
+missions append freely; the strict manifest contract applies only inside a
+claim package. Authoritative detail: `corpus/knowledge/mission-ledger.md`,
+`corpus/knowledge/evidence-dir.md`.
+
+
 ## VDP disclosure packages (sibling format)
 
 `vdp-disclosures/<slug>/` is a distinct, lighter contract: `ROUTE.md` (channel
