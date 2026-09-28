@@ -152,6 +152,45 @@ all BLOCKED), `.ufo-warden/` (readiness dispatch ledger), `.ufo-ingestion/`
 `fleets/state-snapshots/`. Authoritative detail:
 `corpus/knowledge/mission-control.md`.
 
+## Ops integrity layer — invariants, intake, finalize
+
+`ops/shared.mjs` owns the constants every ops file imports: `BANNED`
+(`cursor`, `opencode` — word-boundary scan across lanes/roles/cards),
+`PARKED` (empty since the chatgpt park lifted 2026-09-04 → parked checks
+are vacuous), `K3_SEATS` = `judge`/`planner` (only lanes allowed
+`kimi-code/k3` routes; live primaries are `k3:high`),
+`gitMutationBlocker` (fail-closed on rebase/merge/cherry-pick or non-main
+HEAD), `appendLedger` (3500 B cap). `validate.mjs` is a schema-subset +
+referential gate (lane ids must exist in `fleets/registry.json`;
+`freshness.as_of` strict RFC3339; `--strict` adds non-empty `ev_inputs`).
+`registry-check.mjs` owns the deep bijection: every non-k3 lane has exactly
+one `.omp/agents/kx-<lane>.md` card (`mission_l1` resolves to
+`fleets/mission-template.md`), card `model:` pins resolve through
+`.omp/config.yml` modelRoles to the lane primary, `judge` must keep an
+empty bucket + an `honest.halt` note, every `grok` route ends `:low`
+exactly. `reroute-drill.mjs --simulate park:<lane>` picks the first
+non-banned/non-parked/non-k3 bucket entry (degrades to `local`), writes
+`reroute_drill` telemetry with `simulated:true`, never mutates.
+
+Two ops scripts write beyond `ledger/`:
+`import-board.mjs --from <board>` binds the three board datasets
+(sha256 + record count + `refresh_run_id` all must match
+`refresh_evidence.json`) before writing any `bounty-map/programs/*.json`;
+new records land as `{ev_inputs:{}, lane:"executor",
+mission_state:"DISCOVERED"}`; past-DISCOVERED files are byte-protected
+but provenance drift emits `provenance_drift` telemetry (S4). Only the
+independent dataset filters records (active + public + confirmed_cash +
+high confidence). `finalize-all.mjs` is the batch claim sweep: per DONE
+package it re-runs claim-check, commits, byte-proofs then annotates
+`claim-ready/<id>/<slug>` (conflicting existing sha → `claim_tag_conflict`,
+never rewrites), refreshes the index, one atomic `push --atomic`.
+
+Observation, not authority: `ops/sighting*.sh` manage four windows in
+`ufo_sighting` (fleet/ledger/missions/dispatcher) and never kill mission
+panes; `sighting-missions.sh` capture-pane frames are the live view — the
+missions window's `tail -f fleets/run/*.log` dead-globs once logs rotate
+to `.log.gz`. Detail: `corpus/knowledge/ops-invariants.md`,
+`corpus/knowledge/intake-and-finalize.md`.
 
 
 ## VDP disclosure packages (sibling format)
@@ -298,3 +337,6 @@ the Submit click, payout rails).
 - `~/Projects/bounties/.ufo-mission-report-bh*.md` — 21 hunter-mission readiness-audit reports (all BLOCKED verdicts)
 - `~/Projects/bounties/.ufo-{ingestion,warden}/` — intake-cycle + readiness-tracker artifacts for the origin-work claim tree
 - `~/Projects/bounties/ops/park-disposition.mjs` — PARKED/FAILED detail-regex classifier; producer of all `docs/autopsies/*` and the RETIRED rewrite + `mission_retired` telemetry
+- `~/Projects/bounties/ops/{validate,registry-check,reroute-drill,check-freshness}.mjs` — integrity gates: schema+referential, lane↔card bijection/k3/grok-pin, simulation-only reroute drill, 26 h live-source staleness alarm
+- `~/Projects/bounties/ops/{import-board,finalize-all}.mjs` — the only ops scripts that write beyond `ledger/`: evidence-bound program feed and batch claim tag+push sweep
+- `~/Projects/bounties/ops/sighting{,-board,-dispatcher,-missions}.sh` — `ufo_sighting` observation windows (display only)

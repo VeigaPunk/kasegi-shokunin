@@ -18,8 +18,14 @@ its source. No generic filler.
 | Mission control plane | `knowledge/mission-control.md` | `ops/fleet-dispatch.mjs` full read, `fleets/missions|run|leases|priority|state-snapshots`, `claimer-mission.md`, `review-mission.md`, sighting scripts, `RUNBOOK-resume.md`, `.ufo-mission-report-bh*`, `.ufo-ingestion/`, `.ufo-warden/` |
 | Per-program audit store | `knowledge/evidence-dir.md` | `evidence/` census (592 dirs), `ops/fleet-dispatch.mjs`, `evidence/bugcrowd-seek/`, `evidence/sherlock-8/` |
 | Retirement + autopsies | `knowledge/retirement-autopsies.md` | `ops/park-disposition.mjs` full read, `docs/autopsies/` 31-file census, `fleets/run/` live classifier re-run |
+| Ops integrity layer | `knowledge/ops-invariants.md` | `ops/shared.mjs` (BANNED/PARKED/K3/TELEMETRY_EVENTS/gitMutationBlocker), `validate.mjs`, `registry-check.mjs`, `reroute-drill.mjs`, `check-freshness.mjs`, `sighting*.sh` — all read in full |
+| Board intake + batch finalize | `knowledge/intake-and-finalize.md` | `ops/import-board.mjs` (binding/P6/P7/S4) + `ops/finalize-all.mjs` (claim sweep/tag/atomic push) — full reads |
 | Lessons | `lessons/round-1.md`, `lessons/round-3.md`, `lessons/round-4.md`, `lessons/round-5.md`, `lessons/round-6.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
+
+- ~~ops tail (`validate`/`registry-check`/`reroute-drill`/`check-freshness`/
+  `finalize-all`/sighting scripts + `shared.mjs` constants) name-only~~ —
+  CLOSED round 7: `knowledge/ops-invariants.md` + `knowledge/intake-and-finalize.md`.
 
 - ~~`ops/claim-check.mjs` gate list~~ — CLOSED round 1:
   `knowledge/claim-gates.md` holds the full extracted gate list.
