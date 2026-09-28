@@ -66,3 +66,65 @@
 ---
 
 *All "Result vs claim" cells record what this verifier actually executed on 2026-09-28T23:31–23:32Z at HEAD `7483333d`; volatile numbers (freshness age, telemetry counts, queue rows) are hypotheses-as-of-stamp, not durable claims.*
+
+## Round-8 amendment (critic-absorbed)
+
+Applies to the sections above as committed at `9dbe69f`; appended verbatim, prior sections not rewritten.
+
+### 1. Coldness caveat — SKILL.md citation closure is author-contaminated (context-leak)
+
+Re-scan of the worktree SKILL.md for citations naming the auditor/author lane, prior-round verdicts, or aggregator lessons: **zero**. SKILL.md cites no `corpus/lessons/round-*`, no `*-aggregator-*` path, no `cold-run-*` file (`grep -n 'corpus/lessons|aggregator|cold-run|round-[0-9]' SKILL.md` → only round-13/round-14 *provenance adjectives* in prose, never a file cite into a lesson). So no new break-point rows of class `context-leak` arise from lesson self-citations. The standing caveat is nevertheless recorded: **box 3 is graded on pointer resolvability + step executability, not on runner ignorance.** The citation closure still leaks author context through the worktree-only `corpus/knowledge/claim-anatomy-sample.md` (see §3) and through the corpus-vs-bounties path-base split (break point 1).
+
+### 2. Three-outcome gate rule (PROTOCOL.md, committed HEAD — text quoted, not line numbers)
+
+PROTOCOL.md (committed HEAD) defines executed for operator-owned terminal actions: *"executed means prepared + verified + handed off … a documented negative result at that gate still counts."* Reclassification of every GATED row from the table above:
+
+| Original GATED row (cite kept from table above) | Classification | Why |
+|---|---|---|
+| submission → OPERATOR ONLY (decree 2026-09-05) | **gated-without-artifact** | no handoff artifact prepared or verified; nothing documents a negative at the gate — a bare decree cite is not an artifact |
+| finalize-all.mjs batch sweep (commit + atomic push) | **gated-without-artifact** | no staged commit or push prepared; hard rule 1 of this audit forbids the external effect, and the skill text was not exercised to produce a handoff pointer |
+| prepare-claims.mjs staging `submit-payload.json` | **gated-without-artifact** | no payload was staged (would mutate a claim package); no prepared-and-verified handoff artifact exists |
+| import-board.mjs --from <board> (writes bounty-map records) | **gated-without-artifact** | no record written, no `refresh_evidence.json` binding prepared; nothing verified |
+| TERMINAL + attempts()≥2 triage rule (mission dispatch) | **gated-without-artifact** | no mission dispatched, no telemetry row produced; measurement absent, not merely deferred |
+| check-freshness AR4 alarm → trigger board refresh | **gated-without-artifact** | the alarm output *was* executed (cmd 10, exit 0) but the refresh itself was neither prepared nor handed off; network fetch is an external effect |
+| Public GraphQL `team(handle)` policy query (HackerOne playbook row) | **gated-without-artifact** | no POST prepared; no request envelope verified; no response artifact captured |
+
+Outcome mix: **7 × gated-without-artifact, 0 × gated-withart.** Grade impact: none — the [~] was set by the three documented-vs-live mismatches (break points 3–5 class `claim-falsified`/`unresolvable-cite`), not by gate density; the executed-command layer remains the decision basis.
+
+### 3. Stamp upgrade — full dirty file set and read-base per graded claim
+
+Start dirty set (`git status --short`): ` M SKILL.md`, ` M corpus/README.md`, ` M corpus/knowledge/claim-package-contract.md`, ` M corpus/knowledge/policy-access-playbook.md`, `?? corpus/knowledge/claim-anatomy-sample.md` (5 entries). SKILL.md worktree diff vs HEAD: `166 insertions(+), 48 deletions(-)`.
+
+Read-base per graded claim (verified by `git show HEAD:SKILL.md | grep -cF`):
+- **HEAD text (executed against committed bytes):** "274 program dirs", "486-line verdict ledger", "31 autopsies", "592 dirs", "exactly 2 attested instances (+ cantina-dydx)", "doit 7 errors", "rows 2 (8x8)" hold-tag hole, "adjusted_ev 514", "except 2 for a missing program-id argument OR a missing program file", "live exit 1", "529 LEARNED / 85 REVIEW", "RED with 7 violations", reroute-drill "never mutates".
+- **Worktree-only text (not in HEAD; graded against dirty bytes):** "validate.mjs … 10 lanes" (`validate: OK (1088 programs, 10 lanes, 0 errors)` — cmd 15), "the full contract holds in only 20/280" status sampling (cmd 16), "280 packages (PARKED 248 / DONE 15 / BLOCKED 15 / SUBMITTED 2)" (cmd 17), and the `corpus/knowledge/claim-anatomy-sample.md` cites at SKILL.md:383/:392 — the file is **untracked** (`git ls-files corpus/knowledge/claim-anatomy-sample.md` → empty), so those status-sampling percentages (20/280, 26/280, 39/280, 84/280, 233/280) rest on uncommitted evidence.
+
+**Verdict is provisional until the lane commits** `SKILL.md` and `corpus/knowledge/claim-anatomy-sample.md`. Files named: `SKILL.md`, `corpus/knowledge/claim-anatomy-sample.md` (plus `corpus/README.md`, `corpus/knowledge/claim-package-contract.md`, `corpus/knowledge/policy-access-playbook.md` dirty but ungraded).
+
+### 4. Citation form — line text quoted alongside SKILL.md:NNN
+
+Quoting each graded cite's text (worktree SKILL.md, 2026-09-28):
+
+- SKILL.md:6 → "Grounded in `/home/vgpnk/Projects/bounties` (UFO fleet HQ): 274 program dirs / 295 packages (280 status-gated) under `claims/`, 1088 program records under `bounty-map/programs/`, a 486-line verdict ledger"
+- SKILL.md:94 → "Per-program pattern list: `corpus/knowledge/program-quirks.md:10` (fee gate)"
+- SKILL.md:113–114 → "`check-freshness.mjs` live exit 1: all three board datasets 358 h stale at round 11, 359.4 h at the round-13 live re-run"
+- SKILL.md:117 → "exactly 2 attested instances (+ cantina-dydx); free-form verdict string: no schema defines it, claim-check.mjs:169's not-claimable regex doesn't recognize it"
+- SKILL.md:202 → "`ledger/telemetry.jsonl` (7,224 lines as of 2026-09-28; append-only — treat line counts as-of their date)"
+- SKILL.md:255–256 → "`gitMutationBlocker` (fail-closed on rebase/merge/cherry-pick or non-main HEAD)"
+- SKILL.md:541 → "claim-check.mjs:169's not-claimable regex doesn't recognize it (round-13 annotation)" (dup of :117 text, listed for the break-point row)
+- SKILL.md:549 → "`docs/claim-ready-index.md` (12 queued)" — re-executed live: 12 rows
+- SKILL.md:553 → "row 4 … byte-identical to the operator's own VDP disclosure" — not re-executed (claimed)
+- SKILL.md:556 → "row 4 (`hackerone-anthropic/plugin-dev-test-hook-command-injection`) … still returns `claim-check: OK`" — **re-executed**: cmd 6 exit 0
+- SKILL.md:588 → "exit 0 always, except 2 for a missing program-id argument OR a missing program file" — **re-executed**: exit 0 ≠ claimed 2
+
+### 5. Dispatch chain
+
+Verifier line reads: **aggregator lane round 8 → L2 seat Box3Kasegi (labrat) → dispatch report `.ufo/reports/round-8/aggregator.md`**.
+
+### 6. Corpus partial-author carve-out
+
+The aggregator lane authored `corpus/lessons/round-{1,4,5,6}-aggregator-audit.md` (and `round-5-aggregator-mirror-ambiguous-citation-base.md`) in this repo. Box-3's corpus half is graded against the child lane's own corpus text (`corpus/knowledge/*`); aggregator-authored lessons are cited but **not self-certified** — no SKILL.md pointer into a lesson exists (§1), so no circularity enters the grade, but aggregator-authored lessons carry zero certification weight here.
+
+### 7. X1 repair — verdict line grounded in an executed command + exit code
+
+Verdict basis restated with execution proof: **[~]** — decided by cmd 9 (`node ops/ev-report.mjs` no-arg → exit **0**, claimed exit **2**, SKILL.md:588) plus cmd 10 (`node ops/check-freshness.mjs` → exit **0**, claimed exit **1**, SKILL.md:113–114): the skill is executable without oral context (12 of 16 executable rows reproduced their claims) but three documented-vs-live mismatches (break points 3–5) keep it below a clean pass, and per §3 the grade is **provisional until the lane commits** the worktree-only claims.
