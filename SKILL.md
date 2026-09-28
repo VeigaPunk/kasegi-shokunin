@@ -127,6 +127,32 @@ missions append freely; the strict manifest contract applies only inside a
 claim package. Authoritative detail: `corpus/knowledge/mission-ledger.md`,
 `corpus/knowledge/evidence-dir.md`.
 
+## Mission control plane
+
+`ops/fleet-dispatch.mjs` is the `/loop` engine: tmux panes under
+`ufo_sighting:fleet-grid`, 2 h leases in `fleets/leases.json`, slot
+rotation on terminal status, `reconcile()` rebuilds from leases + pane
+titles on restart. Queue score = priority(9e12) > continue(2e12) >
+curated-EV(1e12) > reward.min — EV orders, never gates (AR12). Dispatcher
+is the sole committer to `claims/` (P21) gated on fresh `claim-check.mjs`
+(P20), tags `claim-ready/<id>/<slug>` and pushes atomically after proving
+the tagged commit's bytes match (`claim_tag_rejected` telemetry on
+mismatch). Mission L1s are 584 generated `fleets/missions/<program>.md`
+assignments reporting back through the file protocol
+`fleets/run/<program>.status.json` (703 files: PARKED 646, DONE 27,
+SCOPING 20, RETIRED 6, plus `_`-prefixed seat statuses). Model routing is a
+time-windowed decree (UTC-3 12:00–22:00 → deepseek-v4-pro, else
+gpt-6-astra) + strict log-signature limit detection → grok-4.6:low lane.
+Sibling L1s: `fleets/claimer-mission.md` (CDP browser submissions,
+operator-authed), `fleets/review-mission.md` (486-item drop/continue/leave
+sweep). Audit lanes: `.ufo-mission-report-bh*.md` (21 readiness audits,
+all BLOCKED), `.ufo-warden/` (readiness dispatch ledger), `.ufo-ingestion/`
+(scout cycles + claim-ready tracker over the separate
+`origin-work/open-bug-bounties` tree). Resume: `docs/RUNBOOK-resume.md` +
+`fleets/state-snapshots/`. Authoritative detail:
+`corpus/knowledge/mission-control.md`.
+
+
 
 ## VDP disclosure packages (sibling format)
 
@@ -238,3 +264,8 @@ the Submit click, payout rails).
 - `~/Projects/bounties/ledger/{missions,telemetry,candidates,imports}.jsonl` — append-only mission state machine + dispatcher heartbeat + hunter intake + board-import binding
 - `~/Projects/bounties/evidence/<program>/` — per-program audit store (592 dirs; scope-snapshots, envelopes, custodian pairs, honest-zero records)
 - `~/Projects/bounties/ops/shared.mjs` — `appendLedger` (3500B O_APPEND cap) + `gitMutationBlocker` + `TELEMETRY_EVENTS`
+- `~/Projects/bounties/ops/fleet-dispatch.mjs` — the `/loop` dispatcher: leases, slot rotation, sole claims/ committer, tag+push proof, model-window routing
+- `~/Projects/bounties/fleets/{missions/<id>.md,run/,leases.json,claimer-mission.md,review-mission.md,priority.json,state-snapshots/}` — generated L1 assignments, status file-protocol, sibling-lane contracts
+- `~/Projects/bounties/docs/RUNBOOK-resume.md` — snapshot restore + dispatcher relaunch procedure
+- `~/Projects/bounties/.ufo-mission-report-bh*.md` — 21 hunter-mission readiness-audit reports (all BLOCKED verdicts)
+- `~/Projects/bounties/.ufo-{ingestion,warden}/` — intake-cycle + readiness-tracker artifacts for the origin-work claim tree
