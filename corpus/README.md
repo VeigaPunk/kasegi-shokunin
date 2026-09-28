@@ -20,7 +20,8 @@ its source. No generic filler.
 | Retirement + autopsies | `knowledge/retirement-autopsies.md` | `ops/park-disposition.mjs` full read, `docs/autopsies/` 31-file census, `fleets/run/` live classifier re-run |
 | Ops integrity layer | `knowledge/ops-invariants.md` | `ops/shared.mjs` (BANNED/PARKED/K3/TELEMETRY_EVENTS/gitMutationBlocker), `validate.mjs`, `registry-check.mjs`, `reroute-drill.mjs`, `check-freshness.mjs`, `sighting*.sh` — all read in full |
 | Board intake + batch finalize | `knowledge/intake-and-finalize.md` | `ops/import-board.mjs` (binding/P6/P7/S4) + `ops/finalize-all.mjs` (claim sweep/tag/atomic push) — full reads |
-| Lessons | `lessons/round-1.md`, `lessons/round-3.md`, `lessons/round-4.md`, `lessons/round-5.md`, `lessons/round-6.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
+| Claim-hardening defect taxonomy + archive | `knowledge/ufo-archive-2026.md` | `fleets/ufo-archive-2026/` full walk: 19 `claim-*` report.json defect censuses, keeper/whipper (b1k-NNN origin), inquiries briefs, programs/ old evidence shape |
+| Lessons | `lessons/round-1.md`, `lessons/round-1-aggregator-audit.md`, `lessons/round-3.md` … `lessons/round-8.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
 
 - ~~ops tail (`validate`/`registry-check`/`reroute-drill`/`check-freshness`/
@@ -38,6 +39,10 @@ its source. No generic filler.
 - ~~`ledger/` writers/state machine undocumented~~ — CLOSED round 4:
   `knowledge/mission-ledger.md` (transition counts, telemetry event census,
   ops inventory).
+- ~~`fleets/ufo-archive-2026/` unwalked~~ — CLOSED round 8:
+  `knowledge/ufo-archive-2026.md` (19-mission defect taxonomy, b1k-NNN
+  keeper origin, `claim-packages/`→`claims/` naming drift, reconciliation
+  evidence chain).
 - `fleets/registry.json` lane→model routing — possibly cross-domain.
 - `george/` (49G comma.ai research dir) — parked round 4: no claim package
   references it; revisit only if one does.

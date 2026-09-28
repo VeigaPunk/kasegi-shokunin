@@ -130,3 +130,28 @@
   M4 gate is permanently red; cross-domain, reported not fixed.
   `node ops/validate.mjs` → `OK (1088 programs, 10 lanes, 0 errors)`.
   `corpus/lessons/round-7.md` recorded.
+
+- 2026-09-28 — round 8: closed the archive gap — `fleets/ufo-archive-2026/`,
+  the last named known-gap and the richest unread artifact class. Read all
+  19 `missions/claim-*/report.json` (2026-09-14 hardening wave over real
+  `claims/` packages) plus every sibling dir →
+  `corpus/knowledge/ufo-archive-2026.md`: 22-class defect taxonomy that is
+  the empirical superset of `claim-check.mjs` (custodian-head mis-binding,
+  stale vs missing redaction receipts, status.json field absence,
+  missing `submission-draft.md` as the dominant defect, stale packet
+  drafts materially wrong, receipt-drift duplicate-submission hazards,
+  "verified"-never-executed claims, citation drift, alias-status drift,
+  proven-but-not-claimable gamma-deposit class, falsified-by-execution
+  elastic exclusion notice); outcome vocabulary (REFINED→DONE / HOLD /
+  NOT-SUBMITTABLE / reconcile-only / stop-frontier-saturated;
+  `no_submission_performed` is the norm). Provenance resolved:
+  `bounty-keeper/keeper.mjs` is the `b1k-NNN` run_id producer
+  (265 launched, halted `night_budget`) that `ledger/candidates.jsonl`
+  and `evidence/*/b1k-NNN/` reference; archive `claim-packages/*` paths
+  are the pre-rename tree (now `claims/<platform>-<program>/<slug>/`,
+  verified live). Reconciliation chain recorded: `fleets/run/portal-
+  reconciliation-2026-09-11.json` + `.ufo/claim-recovery/final-audit.json`
+  + `ledger/candidates.jsonl` do-not-re-hunt + `ledger/missions.jsonl`
+  SUBMITTED. SKILL.md gained the "Claim-hardening wave" defect-class
+  section + cited path; README coverage map + gap marked closed.
+  `corpus/lessons/round-8.md` recorded.

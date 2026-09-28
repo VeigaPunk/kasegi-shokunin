@@ -297,6 +297,40 @@ disclosure defect, not a code defect:
     reviewer distinctness, secret + attribution subchecks
     (`docs/claim-runbook.md` §A.2).
 
+## Claim-hardening wave — the defect layer above the gates
+
+`fleets/ufo-archive-2026/missions/claim-*/report.json` (19 L1 hardening
+missions, 2026-09-14) is the empirical superset of `claim-check.mjs`:
+what packages actually get wrong, beyond what the checker catches. The
+top recurrence classes (full 22-class taxonomy:
+`corpus/knowledge/ufo-archive-2026.md`):
+
+| Class | Signature | Fix pattern |
+|---|---|---|
+| Custodian head mis-binding | `head_sha256` absent; `expected_head_sha256` used as receipt field name; terminal `event_sha256` bound instead of terminal `decision_sha256` | rebind to final decision digest |
+| Redaction-receipt drift | artifacts without same-digest receipts; orphan receipts binding *stale* digests (incl. reusable receipts existing in `evidence/` but never copied into `manifest.redactions`) | receipts bind current manifest digests, producer ≠ verifier |
+| Missing in-package `submission-draft.md` | dominant defect — nearly every `claim-ready` package | stage canonical paste-ready draft: verbatim scope excerpt, clone prerequisite, prior-art/dedupe disclosures |
+| Stale packet drafts | `submission-review/packets/` admin drafts contradict in-package state — one was *materially wrong* (dev-trunk-only conclusion omitted the vulnerable stable v1 endpoint) | `DO-NOT-USE` banner; in-package draft is canonical |
+| Receipt drift (duplicate-submission hazard) | package reads pre-submission while a real receipt exists (H1 #4028846, Bugcrowd a169f309) | `RECEIPT EXISTS — DO NOT RESUBMIT` banner; reconcile every admin file to submitted-state via `fleets/run/portal-reconciliation-2026-09-11.json` + `.ufo/claim-recovery/final-audit.json` |
+| "Verified" but never executed | vectors claimed verified, never run | execute against real extracted code; regenerate RUN_LOG |
+| Stale file:line citations | most common narrative defect — citations drift every repair | re-cite post-repair numbering before staging |
+| Manifest↔report disagreement | REPORT flags `UNRESOLVED CONFLICT` while manifest says `claim-ready` | manifest is gate-visible; reconcile (`hold-prior-filing-conflict`, preserve `prior_status`) |
+| Alias indistinguishable from canonical | alias carried `claim-ready` + own contradictory severity | `status:"claim-ready-alias"`, `claim.json alias_of`, evidence-handoff stub draft, `DO-NOT-ATTACH` flag |
+| Proven-but-not-claimable | vuln proven by PoC but published audit finding + deployed asset verified fixed first-hand (gamma-deposit) | `NOT-SUBMITTABLE` state; exclusion-notice draft (elastic falsified-by-execution) |
+
+Outcome vocabulary the wave established: `REFINED→DONE` (gates pass,
+submission still operator-gated), `HOLD` with named blockers,
+`NOT-SUBMITTABLE`, `reconcile-only` (verified prior submission),
+`stop — frontier saturated`. No mission submitted anything —
+`no_submission_performed` is the norm even in DONE packages.
+
+The archive also holds the `b1k-NNN` provenance: `bounty-keeper/keeper.mjs`
+(16-pane wall, launched 265, halted on 12 h night budget) is the producer
+of the run_ids `ledger/candidates.jsonl` and `evidence/*/b1k-NNN/` still
+reference. Archive `claim-packages/<slug>` paths are the pre-rename tree —
+they now live at `claims/<platform>-<program>/<slug>/`. Mine the archive
+for defect patterns; it is not live state.
+
 ## Triage economics
 
 `ops/ev-report.mjs` computes the hunter-contract EV per program record
@@ -340,3 +374,4 @@ the Submit click, payout rails).
 - `~/Projects/bounties/ops/{validate,registry-check,reroute-drill,check-freshness}.mjs` — integrity gates: schema+referential, lane↔card bijection/k3/grok-pin, simulation-only reroute drill, 26 h live-source staleness alarm
 - `~/Projects/bounties/ops/{import-board,finalize-all}.mjs` — the only ops scripts that write beyond `ledger/`: evidence-bound program feed and batch claim tag+push sweep
 - `~/Projects/bounties/ops/sighting{,-board,-dispatcher,-missions}.sh` — `ufo_sighting` observation windows (display only)
+- `~/Projects/bounties/fleets/ufo-archive-2026/` — pre-consolidation fleet snapshot: 19 `claim-*` hardening missions (defect census), `bounty-keeper` (b1k-NNN origin), L0 mission briefs, old per-program evidence shape
