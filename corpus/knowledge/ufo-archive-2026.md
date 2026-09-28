@@ -2,7 +2,7 @@
 
 Source: `/home/vgpnk/Projects/bounties/fleets/ufo-archive-2026/` (frozen 2026-09-17;
 read in full 2026-09-28). A snapshot of the 2026-09-06→14 bounty fleet *before*
-the current `fleets/missions|run|leases` layout: 19 `claim-*` L1 hardening
+the current `fleets/missions|run|leases` layout: 20 `claim-*` L1 hardening
 missions over real `claims/` packages, plus the keeper/whipper substrate that
 generated the `b1k-NNN` run_ids still referenced by `ledger/candidates.jsonl`.
 
@@ -100,8 +100,8 @@ don't.
    (8x8 `e593ff7d` vs chain `ba990856`; github-nines `57f02637`).
 3. Manifest artifacts without same-digest redaction receipts
    (anthropic 9/…; wordpress 22/27 — 12 reusable receipts existed in
-   `evidence/redaction-scan-authorization.json` but were never copied into
-   `manifest.redactions`; intel 9).
+   `evidence/hackerone-wordpress/redaction-scan-authorization.json` but were
+   never copied into `manifest.redactions`; intel 9).
 4. Orphan receipts binding non-manifest digests — receipts for stale digests
    of package-root files (doit-amp ×5). Receipts must bind *current* manifest
    digests.

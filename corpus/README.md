@@ -20,11 +20,14 @@ its source. No generic filler.
 | Retirement + autopsies | `knowledge/retirement-autopsies.md` | `ops/park-disposition.mjs` full read, `docs/autopsies/` 31-file census, `fleets/run/` live classifier re-run |
 | Ops integrity layer | `knowledge/ops-invariants.md` | `ops/shared.mjs` (BANNED/PARKED/K3/TELEMETRY_EVENTS/gitMutationBlocker), `validate.mjs`, `registry-check.mjs`, `reroute-drill.mjs`, `check-freshness.mjs`, `sighting*.sh` — all read in full |
 | Board intake + batch finalize | `knowledge/intake-and-finalize.md` | `ops/import-board.mjs` (binding/P6/P7/S4) + `ops/finalize-all.mjs` (claim sweep/tag/atomic push) — full reads |
-| Claim-hardening defect taxonomy + archive | `knowledge/ufo-archive-2026.md` | `fleets/ufo-archive-2026/` full walk: 19 `claim-*` report.json defect censuses, keeper/whipper (b1k-NNN origin), inquiries briefs, programs/ old evidence shape |
+| Claim-hardening defect taxonomy + archive | `knowledge/ufo-archive-2026.md` | `fleets/ufo-archive-2026/` full walk: 20 `claim-*` report.json defect censuses (round-12 correction), keeper/whipper (b1k-NNN origin), inquiries briefs, programs/ old evidence shape |
 | Submitted-state / do-not-refile registry | `knowledge/submitted-registry.md` | live census: all `claims/*/*/status.json` submission fields (19 signatures), `ledger/missions.jsonl` SUBMITTED/DISCLOSED_FREE, `portal-reconciliation-2026-09-11.json`, `final-audit.json`, `origin-work/open-bug-bounties/claim-packages/submission-review/` (real receipt store), VDP `SUBMITTED.md`, `claim-ready/*`+`claim-hold/*` tags, `_claimer.status.json`, 15 status-less stub dirs |
 | Operator queue audit | `knowledge/operator-queue.md` | live `claim-check.mjs` re-run of all 12 queued rows + `claim-index.mjs` source read (`claim-hold/*` inert), per-row checklist gates, runbook distill, anthropic↔VDP fingerprint byte-match |
 | Intake surface (map census, ingestion path, registry decrees) | `knowledge/intake-surface.md` | 1088-record census, `fleet-dispatch.mjs::buildQueue` scoring source read, `.ufo-ingestion/` full walk, `fleets/registry.json` decree ledger, live `check-freshness`/`validate` runs |
-| Lessons | `lessons/round-1.md` … `lessons/round-11.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
+| UFO runtime workspaces (`.ufo/` layer + `.omp/`) | `knowledge/ufo-workspaces.md` | full census: 25 `bh*` warden workspaces + 22 reports + `reroutes.jsonl` (121 records), `bounty-fleet/` 805 M keeper tree (second `missions.jsonl`), `sessions/` bpolish1..8 (refile verdict NONE + grep traps), `grok-bounty-assessment-20260911/` (frozen, self-invalidating), `claim-recovery/`, `.omp/` tracked-vs-live, root `README.md`/`.gitignore` |
+| Repo git state | `knowledge/repo-git-state.md` | live `git status/branch/rev-list/merge-base/ls-files`: stalled mid-rebase ≥17 days, 903 dirty entries, 12 tags pushed, `claim-ship` superseded ancestor, claims/ 198 tracked files vs 3361 on disk |
+| Target checkouts + provenance pins | `knowledge/target-checkouts.md` | `pendle-core-v2-public/` (shallow clone `f242659`=v6.10.0, pin-bound), `george/` parked, 187/255 `provenance.json` pin census, `claim-check.mjs:96-97` never validates pins |
+| Lessons | `lessons/round-1.md` … `lessons/round-12.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
 
 - ~~ops tail (`validate`/`registry-check`/`reroute-drill`/`check-freshness`/
@@ -59,3 +62,23 @@ its source. No generic filler.
   `knowledge/operator-queue.md` (claim-index ignores hold tags → 3 held rows
   queued; anthropic row = own VDP disclosure, verified byte-identical;
   per-row residual-gate dossier).
+
+- ~~`.ufo/bh*/` mission workspaces, `.ufo/sessions/`, `.ufo/bounty-fleet/`, and
+  `grok-bounty-assessment-20260911` un-censused~~ — CLOSED round 12:
+  `knowledge/ufo-workspaces.md` (25 bh workspaces incl. the 507 M foreign-tree
+  outlier; warden producer + lifecycle; keeper tree with the second
+  `missions.jsonl`; 8 bpolish seats, refile verdict NONE, 471-false-positive
+  grep trap; frozen self-invalidating grok assessment; `.omp/` second routing
+  truth; 656 claims files cite `.ufo/` paths, 51/543 refs already dangling).
+- `pendle-core-v2-public/` (63 M vendored hunt target, never named in LOG) +
+  the provenance-pin contract — CLOSED round 12:
+  `knowledge/target-checkouts.md`.
+- Repo git runtime state — CLOSED round 12: `knowledge/repo-git-state.md`
+  (stalled mid-rebase since before 2026-09-11, `gitMutationBlocker` refuses
+  all fleet commits, all Sep 7–15 work working-tree-only; escalated to L0 via
+  `.ufo/l0-questions.md`).
+- Round-12 citation audit (independent L2 reviewer: 74 citations checked —
+  64 OK / 9 spot-mismatch / 1 broken) — all 10 repaired in place across
+  SKILL.md + 5 corpus entries, each marked "round-12 correction/addition";
+  two critic falsifications also repaired (claims denominator 275→274; bh
+  audits "21 all BLOCKED"→22: 20 BLOCKED/2 READY).

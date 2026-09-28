@@ -162,8 +162,10 @@ claim-check. Add a regression case for this pair.
   lando-diff-warning-missing-authz/status.json` carries `duplicate_of` →
   `claims/mozilla-security-bounties/lando-diff-warning-missing-authz/`,
   `submission_state:"DUPLICATE_OF_SUBMITTED"`, `canonical_submitted_*`,
-  `do_not_submit:true`. `duplicate_of` has 3 sites (two record the H1
-  closed-duplicate targets 3892215/3721615); `superseded_by` appears once —
+  `do_not_submit:true`. `duplicate_of` has 3 sites; both H1-target sites
+  record **3892215** (round-12 correction: 3721615 — mozilla's closed-dup
+  target — appears only in `fleets/run/portal-reconciliation-2026-09-11.json`,
+  never in a `duplicate_of` field); `superseded_by` appears once —
   amazonvrp `history.superseded_by` narrative (a precondition finding, NOT a
   submission alias). The anti-pattern table's `claim.json alias_of`
   convention is unused repo-wide (0 hits, any file) — alias truth lives in
@@ -190,8 +192,11 @@ Three sub-classes (L2-verified file census):
   empty `evidence/`,`submit/` — partial package, no status.
 - `bugcrowd-t-mobile/honest-zero`: `BLOCKED.md` only (81 bytes).
 
-Status histogram over the 280 real packages: PARKED 248, BLOCKED 16,
-DONE 15, SUBMITTED 2, OPERATOR_GATED 1. (A 281st `status.json` exists at
+Status histogram over the 280 real packages: PARKED 248, BLOCKED 15,
+DONE 15, SUBMITTED 2 (= 280; round-12 correction: BLOCKED was 16 and a
+5th "OPERATOR_GATED 1" component was double-counted — OPERATOR_GATED is
+intel's *nested* `submission.state`, its top-level state is DONE).
+(A 281st `status.json` exists at
 `claims/bugcrowd-seek/honest-zero/evidence/status.json` — depth-4 evidence
 copy, correctly outside the scan.)
 

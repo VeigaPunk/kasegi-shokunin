@@ -21,7 +21,9 @@ nvidia-public, intigriti-c1a89c7e, github-bounty). The ranked table in
 `cycle-*.md` (EV-scored, 13 SEEDED / 1 REJECTED / 18 DEFERRED) is the real
 curated ranking — richer than anything `rank.mjs` produces off the map.
 ~80 more programs are queued for next-cycle evaluation inside the cycle file's
-scan queue; that cycle never ran (tracker log ends 2026-09-14T20:40Z).
+scan queue; that cycle never ran (tracker log's last line is
+2026-09-14T17:24:52Z; 20:40:15Z is the `.md` snapshot cycle stamp —
+round-12 correction).
 
 ## Program-record census (1088, all from one import)
 
@@ -35,7 +37,9 @@ scan queue; that cycle never ran (tracker log ends 2026-09-14T20:40Z).
   `ledger/missions.jsonl`; real dispatch termination is
   `fleets/run/<id>.status.json` TERMINAL (`DONE/PARKED/FAILED/RETIRED`) +
   `attempts()≥2` counted from telemetry park/fail events. 10 of the 12
-  schema enum values are never populated.
+  schema enum values are never populated. One real writer exists —
+  `rank.mjs:203` bumps DISCOVERED→RANKED — but no RANKED record exists,
+  so it never ran post-refresh (round-12 addition).
 - `lane`: `executor` ×1088 — decorative; routing lives in
   `fleets/registry.json` lane definitions, not per-program.
 - `ev_inputs`: exactly **1** non-empty record (`github-bug-bounty`, curated
@@ -52,7 +56,7 @@ scan queue; that cycle never ran (tracker log ends 2026-09-14T20:40Z).
   `check-freshness.mjs` exits 1 (honest alarm AR4, currently firing).
 - `source_kind`: platform 767 / web3 273 / independent 48, in 1:1 lockstep
   with `board_ref.dataset`.
-- Coverage: 586/592 `evidence/` dirs have map records; 252/275 `claims/`
+- Coverage: 586/592 `evidence/` dirs have map records; 252/274 `claims/`
   dirs have map records; **352 map programs were never touched** (no
   evidence dir, no claims dir — platform 239 / web3 95 / independent 18).
 - Name-drift pairs where map id ≠ claims/evidence dir name for the same
@@ -85,11 +89,11 @@ watching BOTH `claims/` AND
 consumer of the sibling tree no ops tool reads (see
 `submitted-registry.md`). Its claimable rule is `READY.md` present AND no
 `BLOCKED.md` beneath/above — a weaker, earlier standard than
-`claim-check.mjs`; 21 of its 24 "claimable" hits are origin-tree packages
+`claim-check.mjs`; **all 24** of its "claimable" hits are origin-tree packages
 ($13,733 tracked `expected_usd`, most flagged "claim.json
 absent/unparseable"). Outputs: `claim-ready-tracker.{md,json,log}` +
 `claim-ready-ledger.json` (first_seen/last_seen per package). The tracker is
-**dead**: last cycle 2026-09-14T20:40Z, log silent since; its "continuous"
+**dead**: last cycle stamp 2026-09-14T20:40Z (log's last line 17:24:52Z), silent since; its "continuous"
 badge lies. If revived, its origin-tree hits still need the hard gate before
 they're queue-worthy.
 

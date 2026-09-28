@@ -5,9 +5,10 @@ description: Domain specialist — bounty & security research — scopes ~/Proje
 
 # kasegi-shokunin — bounty & security research craft
 
-Grounded in `/home/vgpnk/Projects/bounties` (UFO fleet HQ): 275 claim packages
-under `claims/`, 1088 program records under `bounty-map/programs/`, a 486-line
-verdict ledger at `docs/review-verdicts.jsonl`, and the operator-facing queue
+Grounded in `/home/vgpnk/Projects/bounties` (UFO fleet HQ): 274 program dirs /
+295 packages (280 status-gated) under `claims/`, 1088 program records under
+`bounty-map/programs/`, a 486-line verdict ledger at
+`docs/review-verdicts.jsonl`, and the operator-facing queue
 at `docs/claim-ready-index.md`. Every rule below cites a file you can open.
 
 ## Pipeline (observed, not invented)
@@ -148,7 +149,7 @@ atomicity). Transition census (718 lines / 260 missions):
 `SCOPED→PLANNED→LEARNED` alone is 207 missions. Deep path
 `EXECUTED→EVIDENCED→VERIFIED→SUBMISSION_PREPARED` is rare; `SUBMITTED` (3)
 and `DISCLOSED_FREE` are operator-attributed ledger facts, never fleet
-actions. `ledger/telemetry.jsonl` (7218 lines) is the dispatcher heartbeat
+actions. `ledger/telemetry.jsonl` (7,224 lines as of 2026-09-28; append-only — treat line counts as-of their date) is the dispatcher heartbeat
 (`dispatcher_tick`, `mission_parked`, `claim_commit_failed`,
 `model_reroute`, `operator_decree`…). `ledger/candidates.jsonl` is
 `the-bounty-hunter` intake (run_id `b1k-NNN`); `ledger/imports.jsonl` binds
@@ -184,12 +185,55 @@ time-windowed decree (UTC-3 12:00–22:00 → deepseek-v4-pro, else
 gpt-6-astra) + strict log-signature limit detection → grok-4.6:low lane.
 Sibling L1s: `fleets/claimer-mission.md` (CDP browser submissions,
 operator-authed), `fleets/review-mission.md` (486-item drop/continue/leave
-sweep). Audit lanes: `.ufo-mission-report-bh*.md` (21 readiness audits,
-all BLOCKED), `.ufo-warden/` (readiness dispatch ledger), `.ufo-ingestion/`
+sweep). Audit lanes: `.ufo-mission-report-bh*.md` (22 readiness audits:
+20 BLOCKED, 2 READY — intigriti-yahoo + hackerone-superhuman, both
+claim-check OK), `.ufo-warden/` (readiness dispatch ledger), `.ufo-ingestion/`
 (scout cycles + claim-ready tracker over the separate
 `origin-work/open-bug-bounties` tree). Resume: `docs/RUNBOOK-resume.md` +
 `fleets/state-snapshots/`. Authoritative detail:
 `corpus/knowledge/mission-control.md`.
+
+## UFO runtime workspaces — the untracked `.ufo/` layer + `.omp/`
+
+`~/Projects/bounties/.ufo/` (1.5 G, `git ls-files` → 0, mostly *not ignored*) is
+the runtime tree no ops tool reads: 25 `bh*` warden-audit workspaces (19
+top-level + 6 under `bounty-fleet/sessions/`) vs 22 root reports (19 shared /
+3 report-only / 6 workspace-only + 1 phantom dispatch), the 805 M
+`bounty-fleet/` keeper tree, 117 M of `sessions/` bpolish transcripts, and two
+frozen audits.
+
+- Model provenance = the resolved route at run time: `reroutes.jsonl` (121
+  records, every cause a grok/xai 403/429 → `devin/swe-2:max`), not the
+  registry pin. The warden's `state.json` is keyed by PROGRAM → re-dispatch
+  silently overwrites runIds; the yahoo READY package cites the *superseded*
+  runId (provenance split — never prune workspace-only ids).
+- `bounty-fleet/` = the bounty-keeper overnight fleet: a second
+  `ledger/missions.jsonl` (525 rows / 184 run_ids — a different state machine
+  than the root `ledger/`); 265 launched / 249 reported / 184 ledgered — 81
+  runs never reached a ledger; two halts (launch_cap@64, night_budget).
+- `sessions/bpolish1..8` = omp recorder v3 transcripts (2026-09-15): zero
+  submission evidence (`submitted_url` all null; receipts = custodian
+  hash-chain); grep trap — `no_submission_performed: true` → 471 false
+  positives, 0 real.
+- `grok-bounty-assessment-20260911/` = frozen 266-mission reconciliation:
+  88.30/100 descriptive (never quote without its
+  `BLOCKED_BY_NONCOMPENSABLE_GATES` — `clean_repository_closure` is
+  unpassable by construction on a dirty tree), and self-invalidating: its
+  validator re-reads live file line-ranges, so re-running it today fails.
+- 656 `claims/` files cite `.ufo/…` provenance paths; 51 of 543 JSON refs
+  already dangle and `claim-check.mjs` resolves none of them → **copy bytes
+  into the package; a `.ufo/` citation is not durable evidence**.
+- `.omp/` = the second routing truth (uncommitted `config.yml` rewrites all
+  six `fleet_*` roles; `registry-check` RED with 7 violations; 4 non-registry
+  cards invisible to every check; `skills/ufo` a drifted fork) — mechanics are
+  cross-domain (kumitate/protocol); the bounty consequence is the
+  resolved-route rule above.
+- Outermost layer: the repo is stalled mid-rebase since before 2026-09-11
+  (903 dirty entries) — `gitMutationBlocker` refuses every fleet commit; all
+  Sep 7–15 work is working-tree-only (`corpus/knowledge/repo-git-state.md`).
+
+Authoritative detail: `corpus/knowledge/ufo-workspaces.md`, `repo-git-state.md`,
+`target-checkouts.md`.
 
 ## Ops integrity layer — invariants, intake, finalize
 
@@ -412,8 +456,9 @@ mozilla canonical; the `claim.json alias_of` convention is unused repo-wide.
 `claim-ready/*` tags (3) all predate the SUBMITTED commits; `claim-hold/*`
 tags (9) exist alongside. 15 of 295 `claims/<p>/<s>/` dirs have no
 `status.json` (13 `ingestion-seeded` stubs: `INGESTION.md`+`claim.json`;
-stiltsoft partial; t-mobile `BLOCKED.md`-only; histogram: PARKED 248 /
-BLOCKED 16 / DONE 15 / SUBMITTED 2 / OPERATOR_GATED 1). Root
+stiltsoft partial; t-mobile `BLOCKED.md`-only; histogram over the 280 gated:
+PARKED 248 / BLOCKED 15 / DONE 15 / SUBMITTED 2 — the single OPERATOR_GATED
+is intel's *nested* `submission.state`, not a top-level state). Root
 `*-2026-09-15.zip` bundles are dated snapshots, not filtered live state.
 
 ## Operator queue — live audit
@@ -481,13 +526,21 @@ the Submit click, payout rails).
 - `~/Projects/bounties/ops/fleet-dispatch.mjs` — the `/loop` dispatcher: leases, slot rotation, sole claims/ committer, tag+push proof, model-window routing
 - `~/Projects/bounties/fleets/{missions/<id>.md,run/,leases.json,claimer-mission.md,review-mission.md,priority.json,state-snapshots/}` — generated L1 assignments, status file-protocol, sibling-lane contracts
 - `~/Projects/bounties/docs/RUNBOOK-resume.md` — snapshot restore + dispatcher relaunch procedure
-- `~/Projects/bounties/.ufo-mission-report-bh*.md` — 22 hunter-mission readiness-audit reports (21 BLOCKED, 1 READY: intigriti-yahoo)
+- `~/Projects/bounties/.ufo-mission-report-bh*.md` — 22 hunter-mission readiness-audit reports (20 BLOCKED, 2 READY: intigriti-yahoo + hackerone-superhuman)
 - `~/Projects/bounties/.ufo-{ingestion,warden}/` — intake-cycle + readiness-tracker artifacts for the origin-work claim tree
 - `~/Projects/bounties/ops/park-disposition.mjs` — PARKED/FAILED detail-regex classifier; producer of all `docs/autopsies/*` and the RETIRED rewrite + `mission_retired` telemetry
 - `~/Projects/bounties/ops/{validate,registry-check,reroute-drill,check-freshness}.mjs` — integrity gates: schema+referential, lane↔card bijection/k3/grok-pin, simulation-only reroute drill, 26 h live-source staleness alarm
-- `~/Projects/bounties/ops/{import-board,finalize-all}.mjs` — the only ops scripts that write beyond `ledger/`: evidence-bound program feed and batch claim tag+push sweep
+- `~/Projects/bounties/ops/{import-board,finalize-all}.mjs` — evidence-bound program feed and batch claim tag+push sweep (other beyond-`ledger/` writers: `rank.mjs` → `bounty-map/programs` + `ledger/rankings-*`; `fleet-dispatch`, `park-disposition`, `prepare-claims`, `claim-index`)
 - `~/Projects/bounties/ops/sighting{,-board,-dispatcher,-missions}.sh` — `ufo_sighting` observation windows (display only)
-- `~/Projects/bounties/fleets/ufo-archive-2026/` — pre-consolidation fleet snapshot: 19 `claim-*` hardening missions (defect census), `bounty-keeper` (b1k-NNN origin), L0 mission briefs, old per-program evidence shape
+- `~/Projects/bounties/fleets/ufo-archive-2026/` — pre-consolidation fleet snapshot: 20 `claim-*` hardening missions (defect census), `bounty-keeper` (b1k-NNN origin), L0 mission briefs, old per-program evidence shape
 - `~/Projects/bounties/bounty-map/{schema.json,programs/*.json}` — 1088-record census: single refresh run, decorative `mission_state`/`lane`/`ev_inputs`, 352 untouched, map↔claims name drift
 - `~/Projects/bounties/.ufo-ingestion/{cycle-20260914T171257Z.md,rankings.md,claim-tracker.py,claim-ready-tracker.*}` — the second intake path + dead continuous watcher over claims/ AND origin-work claim-packages
 - `~/Projects/bounties/fleets/registry.json` — lane/bucket routing + `operator_decrees` ledger (claim queue, 3cx/intel/anthropic dispositions, disclosure-class guardrails)
+- `~/Projects/bounties/.ufo/bh*/` + `.ufo/bounty-fleet/sessions/bh*/` — 25 warden-audit workspaces (`plan.md`, `proposals/<Agent>.md`, `reroutes.jsonl` model-fallback log); untracked, invisible to every ops scan
+- `~/Projects/bounties/.ufo/bounty-fleet/` — overnight bountyfleet1/b1k-NNN keeper tree: own `ledger/missions.jsonl` (second state machine), `plan-b1k-*.md` ×233, `report.md` halt, `reports/` (249 b1k + 8 claim reconciliations), `scopes/`, `session/` vs `sessions/`
+- `~/Projects/bounties/.ufo/sessions/` — bpolish1..8 omp-recorder-v3 transcripts (2026-09-15); zero submission evidence; grep-trap corpus
+- `~/Projects/bounties/.ufo/{grok-bounty-assessment-20260911,claim-recovery}/` — frozen 266-mission reconciliation (88.30 descriptive, gate BLOCKED, self-invalidating validator) + b1k post-mortem (`final-audit.json`, superseded in place by the package readiness-audit)
+- `~/Projects/bounties/.omp/{config.yml,agents/,skills/}` — second routing truth: live `config.yml` ≠ README/HEAD; 11 cards (9 tracked); registry-check RED; drifted untracked `skills/ufo` fork
+- `~/Projects/bounties/{README.md,.gitignore}` — README describes git HEAD, not the live router ("9 lanes" stale = 10); asymmetric 11-line ignore set (`fleets/run/` ignored by design, `.ufo/` bulk mostly not)
+- `~/Projects/bounties/.git/` — stalled interactive rebase (onto `7dce2872`, detached `58acb6d8`, 0 commands left, autostash present), 903 dirty entries, all 12 `claim-*` tags pushed, `claim-ship` a superseded ancestor line
+- `~/Projects/bounties/pendle-core-v2-public/` — vendored hunt target (shallow clone, `f242659` = v6.10.0, pinned by `claims/cantina-pendle/…/provenance.json`); 187/255 provenance files carry a `pin` — `claim-check.mjs` never validates pins

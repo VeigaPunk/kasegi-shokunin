@@ -239,3 +239,57 @@
   markers, stale parked notes). → `corpus/knowledge/intake-surface.md`;
   SKILL.md gained Intake surface section + 3 cited paths; README coverage
   map + registry gap CLOSED. `corpus/lessons/round-11.md` recorded.
+- 2026-09-28 — round 12: closed the `.ufo/` runtime-layer gap — the last
+  un-censused surface class (round-11 residual) — and repaired the corpus's
+  first measured citation audit. Created `SCORECARD.md` (coverage proxy
+  13/18→18/18 top-level surfaces; axis move: coverage 7→9). Fan: 10 L2s in
+  one batch (4 scouts per surface, 2 executors incl. skeleton/drafter, 2
+  critics falsifying rounds 9–11, connector sibling-overlap matrix, reviewer
+  citation audit). Walked: `.ufo/bh*` ×19 + 6 nested (warden-dispatched
+  readiness-audit workspaces; 25 vs 22 reports = 19 shared/3 report-only/6
+  workspace-only/1 phantom; `reroutes.jsonl` 121 records all grok/xai
+  403/429 → `devin/swe-2:max`; state.json program-keyed runId overwrites;
+  yahoo READY provenance split bh7609023286b0↔bh0cb2eb6ca20b),
+  `.ufo/bounty-fleet/` 805M (bounty-keeper tree per `keeper.mjs:48-63`;
+  second `missions.jsonl` 525 rows/184 run_ids; 265 launched/249 reported/184
+  ledgered → 81 unledgered; two halts launch_cap@64+night_budget; b1k-248+251-265
+  silent truncation; `report.md` vs `reports/`, `session/` vs `sessions/`
+  traps), `.ufo/sessions/` (exactly 8 bpolish seats — "248 entries" falsified;
+  omp recorder v3, 2026-09-15; refile verdict NONE, `submitted_url` all null;
+  `no_submission_performed:true` → 471-false-positive grep trap),
+  `.ufo/grok-bounty-assessment-20260911/` (historical, zero live consumers;
+  scorer extracted in full — NA-exclusion + gcd-fold; 88.30/100 descriptive +
+  gate BLOCKED, `clean_repository_closure` fail×266 unpassable by
+  construction; self-invalidating — frozen scorer re-run fails today because
+  `validate-review-output.mjs:58` re-reads live line ranges),
+  `.ufo/claim-recovery/` (final-audit pins corroborate round 9 but are
+  superseded in place by the gamma package's 09-14 readiness-audit), `.omp/`
+  (second routing truth: uncommitted config.yml rewrites all six `fleet_*`
+  roles; registry-check RED 7 violations; 4 non-registry cards invisible to
+  every check; skills/ufo drifted fork), root `README.md` ("9 lanes" stale=10,
+  describes git HEAD not live router) + `.gitignore` (asymmetric,
+  load-bearing) + `pendle-core-v2-public/` (63M shallow clone `f242659`=v6.10.0,
+  pin-bound; 187/255 provenance.json carry pins; claim-check never validates
+  them). **Live-infra hazard surfaced + escalated to L0:** repo stalled
+  mid-interactive-rebase since before 2026-09-11 (detached 58acb6d8, 0
+  commands left, autostash), gitMutationBlocker fail-closes → no fleet
+  commit/tag/push; 903 dirty entries; all Sep 7–15 work working-tree-only;
+  claims/ 198 tracked files vs 3361 on disk (20/274 dirs); 49G george/ + 1.5G
+  .ufo/ untracked AND un-ignored (`git add -A` ingestion risk); all 12 tags
+  pushed; `claim-ship` = merged ancestor with superseded `claim-ready:`
+  messages. 656 claims files cite `.ufo/` paths; 51/543 JSON refs already
+  dangling; no gate resolves them → copy-bytes rule. Citation audit (74
+  checked): 64 OK/9 mismatch/1 broken — all 10 repaired (bh audits "21 all
+  BLOCKED"→22: 20 BLOCKED/2 READY superhuman+yahoo; claims denominator
+  275→274 program dirs, 295 packages; archive missions 19→20; histogram
+  BLOCKED 16→15 + OPERATOR_GATED nested-not-top-level; duplicate_of targets
+  3892215 only, 3721615 is portal-reconciliation-only; "only ops writers"
+  false — rank.mjs:203 + 4 others; wordpress redaction-receipt path; tracker
+  24/24 origin-tree + log-end 17:24:52Z; telemetry as-of dated). Round-9 LOG
+  wording "+ submit/receipt.md" for all three submitted packages was critic-
+  falsified (only mozilla has one) — the registry table itself was already
+  correct; LOG history not rewritten. New corpus:
+  `knowledge/ufo-workspaces.md`, `knowledge/repo-git-state.md`,
+  `knowledge/target-checkouts.md`; SKILL.md gained "UFO runtime workspaces"
+  section + 8 cited paths; README coverage map + 3 gaps CLOSED.
+  `corpus/lessons/round-12.md` recorded.

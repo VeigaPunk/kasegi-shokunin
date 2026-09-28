@@ -134,13 +134,17 @@ tail. Sighting windows are display only — authority stays with dispatcher
 
 ## Audit lanes (2nd-generation hunter, 2026-09-14/15)
 
-- **`.ufo-mission-report-bh<hex>.md`** — 21 root-level UFO-FSD mission
-  reports; every one is a claim-package readiness audit ending BLOCKED.
+- **`.ufo-mission-report-bh<hex>.md`** — 22 root-level UFO-FSD mission
+  reports; claim-package readiness audits: 20 BLOCKED, **2 READY**
+  (`bh0cb2eb6ca20b` intigriti-yahoo, `bh557fda669b20` hackerone-superhuman,
+  both claim-check OK) — round-12 correction of round 5's "21, all BLOCKED".
   Flavors: honest-zero-*, `placeholder shell, dispatched in error` (warden
   filter bug, fixed 2026-09-14), participation-gated (Monzo needed own
   UK/EU KYC account — deepest hunt: signature-verified APK acquisition +
   smali-level deeplink trace, recorded as residual lead not-a-finding).
-  Reports carry per-artifact sha256 + `.ufo/<runId>/` evidence dirs.
+  Reports carry per-artifact sha256; the `.ufo/<runId>/` evidence-dir join
+  fails for ≥8/22 (25 workspaces vs 22 reports, two disjoint roots —
+  see `ufo-workspaces.md`).
 - **`.ufo-warden/`** — readiness dispatcher: `state.json` maps
   program→{runId, findings[], done, doneVia:"tick/handoff-present"};
   `warden.log` = TICK backlog/deadline/present/COMPLETE events.
