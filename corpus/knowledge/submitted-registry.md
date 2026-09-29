@@ -102,9 +102,17 @@ package contains zero references to `vdp`/`anthropic-plugin-dev-cmd-injection`
 (no cross-reference exists in either direction). Filing it double-files the
 operator's own free disclosure.
 
-Root cause verified against source: `ops/claim-check.mjs:174-199` tests
-prior submission only via `submitted_url` / `submission_performed===true` /
-`submission_state`==`SUBMITTED`, and its sibling-package scan enumerates only
+Root cause verified against source: `[lost-tree] ops/claim-check.mjs:174-199`
+tests prior submission only via `submitted_url` / `submission_performed===true`
+/ `submission_state`==`SUBMITTED` — round-15 anchor note: those lines are past
+the EOF of the surviving mirror's 83-line `ops/claim-check.mjs`
+(sha256 `93679ea1d29b`), which has no prior-submission, duplicate-scan or
+nested-readiness gate at all (19 `err(` sites vs the live file's 48). The
+behaviour described here is a lost-tree fact
+(`corpus/knowledge/source-tree-loss-2026-09-28.md` §4.1), not a mirror one.
+It tests prior submission only via `submitted_url` /
+`submission_performed===true` / `submission_state`==`SUBMITTED`, and its
+sibling-package scan enumerates only
 `claims/*/*/status.json` (`claimRoot` = two levels up, same-slug-or-same-title
 match, ≥16-char titles). `vdp-disclosures/` and archive receipts are outside
 the tree. Runtime proof: `node ops/claim-check.mjs

@@ -514,3 +514,170 @@
   timeline before integrating. Zero writes to `~/Projects/bounties` by this
   lane (the +2 telemetry lines are external — disclosed, not reverted;
   revert = second mutation). `corpus/lessons/round-14.md` recorded.
+- 2026-09-28 — round 15: depth axis-move, forced into a **source-loss
+  re-anchor** — the PROVINCE root `~/Projects/bounties` was removed from the
+  filesystem at **2026-09-28T23:51:31Z**, ~36 s after the watchdog launched
+  this round (`watchdog.log` 20:50:55-03:00) and 19 min after r14's last
+  verified observation of the tree (telemetry appends 23:32:22Z/23:32:32Z).
+  **Detection** (L1, the round's first command — a domain snapshot, per r14
+  lesson 4): `ls -d ~/Projects/bounties` → `No such file or directory`;
+  full-depth `find /home/vgpnk -type d \( -name bounties -o -name
+  cantina-pendle -o -name bounty-fleet \)` (158.6 s) and `-name missions.jsonl`
+  → empty, with exactly one swallowed EACCES stderr line re-run and recorded
+  (`nc8r6-ExLibRouteCheck/.ufo/scopes/tmp-r35-eacces-1488153`, mode-000,
+  Sep 25, unrelated); `/scratch` depth ≤ 4 → empty;
+  `~/.local/share/Trash/{files,info}` → never initialized (no trash store);
+  `/proc/mounts` → `/home` is btrfs subvol `@home`, no separate/unmounted
+  volume; a `find / -xdev` sweep is worthless here because `/home` is its own
+  mount (L1 method error, caught and corrected in-round). A critic L2
+  independently re-derived the absence (both casings, the 40-entry `~/Projects`
+  listing, full-root name sweep, rename-window sweep, `docker inspect` on all 31
+  containers, 72 deleted-but-open fds) and killed the "house-tidy swarm" actor
+  hypothesis (`~/.ufo/house-tidy-round0-plan.md` exists, zero execution
+  artifacts). **Actor UNDETERMINED**; the single honest blind spot is that btrfs
+  subvolume enumeration returns `Operation not permitted` for this user and
+  `/.snapshots` is root-only. **Data PRESUMED-LOST locally**; a sentinel L2's
+  timeline bounds the event to 23:32Z–23:51:31Z with concurrent activity at
+  `origin-work/ufo-fsd-alpha` 20:53:17, `origin-work/tmp` 20:53:56,
+  `origin-work/open-bug-bounties/.git` 20:57:10 and an attached `ufo_sighting`
+  tmux (4 windows, created 15:24:42) hosting a separate live agent session
+  (panes captured read-only, never sent keys). Evidence of record:
+  `corpus/knowledge/source-tree-loss-2026-09-28.md` (§1 detection, §2 window,
+  §3 the 18 gone surfaces, §4 the survivors, §5 anchor-base rule, §6
+  resolvability, §7 the never-re-verifiable DATA-half list, §9 the nine L2
+  corrections, §10 measurements). Operator decisions requested in
+  `../.ufo/l0-questions.md` (reorg vs deletion · recoverability · PROVINCE
+  re-point) — the lane made none of those calls itself.
+  **Survivors, measured not assumed.** (1) `~/Projects/the-bounty-hunter` —
+  frozen 2026-09-05 code mirror, HEAD `1cfbd86` (A=C 12:35:36-03:00) over
+  `37c3668` (v0.1.0, 09:06:07-03:00), tag `v0.1.0`, clean worktree, 34 files /
+  8 dirs, remote `VeigaPunk/the-bounty-hunter`; revenger forensics: `.git`
+  crtime 09:01:51, reflog holds only the two commits (no clone/fetch), 0 packs /
+  48 loose objects, `git fsck` clean ⇒ the local repo is the **origin** of that
+  remote, and 9 of 10 sampled `ops/*.mjs` are byte-identical to `37c3668` (only
+  `finalize-all.mjs` new + `fleet-dispatch.mjs` modified in `1cfbd86`, whose
+  message overstates its own delta). Per-file provenance (L1 reads + 3 scouts,
+  sha256-pinned): `ops/ev-report.mjs` 92 ln `ba5485ed6a5d` — **all 14 recorded
+  spans at 0 offset**, anchor-compatible; `ops/rank.mjs` 249 ln `e724186c1330`
+  — `DEFAULTS :55-59` exact, and its own consistency gate `:126-137` still
+  hard-pins `adjusted_ev === 514` at `:136`; `bounty-map/schema.json` 68 ln —
+  `ev_inputs :32-52` (corpus `ev-model.md` said `:32-51`, off by one →
+  repaired); `ops/park-disposition.mjs` 80 ln — classifier regexes `:18-21`
+  verbatim, autopsy writer `:53-74`; **diverged**: `ops/fleet-dispatch.mjs`
+  330 ln vs the lost 427 (`mission-control.md:3`) — 3-term score at `:97` vs
+  5 terms at `:110`, no `priority.json`/`review-verdicts` reader anywhere,
+  `LEASE_MS :43`/`MAX_ATTEMPTS :44`/`TERMINAL :45` vs `:45`/`:46`/`:47`,
+  `adjusted_ev` telemetry `:152`/`:155`/`:156` vs `:200`/`:204`, `MODEL :32`
+  `qwen3.8-max:xhigh` vs `deepseek-v4-pro:max`, peak `:221`
+  `gpt-daybreak-blue-latest:max` vs `gpt-6-astra:max`, family regex `:192` vs
+  `:271`, `SYNC_PATHS[0] :269` `claims` vs `claims/README.md`, no `GRID`;
+  `ops/shared.mjs` 41 ln — **no `gitMutationBlocker`**; `ops/claim-check.mjs`
+  83 ln / **19** `err(` sites vs 233 / 48, with `symlink`, `NO_SCOPE_OBJECTION`,
+  `matched_grant_id`, `decision_sha256`, `manifest_sha256`, `claim_review`,
+  `finding_count`, `submission_performed`, `BLOCKED.md`, `schema_version` all at
+  0 hits; a fourth marker: `lessons/round-4-aggregator-audit.md:28` records 14
+  `ops/*.mjs`, the mirror has 13. No second copy of any ops file exists on disk,
+  so the live revisions survive **only as corpus quotations**. (2)
+  `~/Projects/origin-work/open-bug-bounties` — 26 claim-package dirs + 3 files
+  (**0** `status.json`: pre-dates the six-file contract),
+  `claim-packages/submission-review/claims` 21 entries, 43 `.ufo-missions`,
+  5 `data/*.json` inventories, git HEAD `1307b8b`; the mirror's
+  `ops/check-freshness.mjs:14` defaults its board to exactly this path, so the
+  two survivors are wired together by the ops code. Inventoried, **not
+  censused** → the r16 coverage move.
+  **Repairs landed (all mirror anchors L1-verified; `anchorcheck.py` over the
+  whole `SKILL.md`: 196 in-range cite instances, 0 past-EOF).**
+  `## Triage economics` 93.3 → **131.4**: per-constant cites for the four
+  formula terms, `isNum`/`fmt`, the 10-input print loop, all four exit
+  branches, the strict `> 0` verdict; the `rank.mjs` run contract + a 7-row
+  admission table (reward-floor `unknown`, incomplete-curated `unknown`,
+  non-positive never queued, **default-basis positives held** "not sufficiently
+  evidenced", duplicate-`RANKED` suppression with fail-open history, the
+  DISCOVERED-only advance that never regresses, the top-5 custodian skeleton);
+  new derived arithmetic — default priors give `adjusted_ev = 0.0735 ×
+  reward.min − 1750`, break-even `reward.min > 23 809.52`, observed max 10 000
+  → **−1015**, so every default-basis program is negative-EV and the `:123`
+  sort degenerates to `reward.min` desc (AR12 in arithmetic); the
+  `expected_reward` two-sources trap (`ops/rank.mjs:92`/`:104` vs
+  `ops/ev-report.mjs:78`); dual-base citing for `fleet-dispatch.mjs` with
+  `[lost-tree]` markers. Exit semantics are **runnable-verified**, not just
+  cited: an L2 smoke-ran a byte-identical copy outside the mirror
+  (`/tmp/kasegi-r15/ev-smoke`, copy sha256 == mirror sha256) and observed exit
+  2 / exit 2 / WARNING+all-UNKNOWN+0 / `total_cost` finite with `adjusted_ev`
+  UNKNOWN on a missing factor / string `"0.5"` rejected per key / exactly-0 →
+  `false` / and the round-13 record reproducing 0.1764 · 1764 · 1250 · **514** ·
+  true. `## Ops integrity layer` 61.1 → **111.5**: mirror cites for every
+  constant (`BANNED :7` + the word-boundary scan `ops/validate.mjs:56`,
+  `PARKED :8` and the vacuous `/(?!)/` token `ops/validate.mjs:28`,
+  `K3_SEATS :9`/`K3_TOKEN :11`, `sha256File :25-31`, the 3500-byte
+  `PIPE_BUF` cap `:33-34`/`:38-39`, validate's 8 gate families, registry-check's
+  7 checks incl. the grok-`:low` pin, reroute-drill's simulation contract,
+  check-freshness `THRESHOLD_H = 26 :15` + its per-run telemetry append `:61`),
+  `gitMutationBlocker` marked absent-from-mirror, the finalize-all divergence
+  recorded (mirror = the 39-line genesis version, `:25` only `rev-parse
+  --verify` + skip-existing-tag), the sighting windows cited literally
+  (`ops/sighting.sh:8`,`:12`,`:17`,`:18`,`:24`), and a new **do-not-run
+  hazard**: all 11 mirror ops scripts derive `root` from `import.meta.url`, so
+  running one in place would mutate a read-only product repo (and ENOENT on the
+  first `appendLedger` — no `ledger/` there) [INFERENCE, never executed].
+  **New invariant defect found and proved**: `TELEMETRY_EVENTS`
+  (`ops/shared.mjs:13-22`, 8 names) is imported by nothing — `grep -rn` over the
+  mirror returns only the declaration and `appendLedger:36-41` never checks the
+  name — while the ops scripts append **17** distinct `event:` values, of which
+  4 are whitelisted; 4 whitelisted names are appended by no ops script. A
+  decorative whitelist, same class as the decorative bounty map.
+  `## VDP disclosure packages` 81.8 → **117.4**: the whole surface is now
+  stamped corpus-attested, with the mirror-negative proof (0 hits for
+  `vdp|disclos|no.?payout|disclosed_free` in any `ops/*.mjs`; only
+  `fleets/mission-template.md:50`, `docs/genesis-plan.md:15`,`:17`, two agent
+  cards; `ops/finalize-all.mjs:20` filters `state !== 'DONE'` with no
+  `DISCLOSED_FREE` case). `## Retirement lane` 62.5 → **93.0**: the four
+  classifier regexes quoted with cites, first-match order, the RETRY requeue
+  mechanism (`:45-49`), the RETIRED rewrite + `mission_retired` (`:75-78`), and
+  the **"five-part" autopsy claim falsified → seven** (4 bold metadata lines
+  `:56-59` + 3 `##` sections `:61`,`:67`,`:72`) — `SKILL.md` said five while
+  listing seven; `corpus/knowledge/retirement-autopsies.md:38` repaired the same
+  way. Preamble + `## Cited paths` header now state the loss, the three anchor
+  bases and the measured resolvability. Two unsupported
+  `ops/claim-index.mjs:4` cites ("tags are provenance only" — string absent from
+  the mirror file) marked `[lost-tree]`; one past-EOF corpus cite annotated
+  (`submitted-registry.md:105`).
+  **Instruments committed** (`corpus/instruments/`, was `/tmp`-resident and one
+  sweep from being lost): `density.py`, `resolve.py`, `anchorcheck.py`, a
+  README with definitions + measured limits + the bar rule, and the census of
+  record `citation-survival.{md,tsv}`. Continuity proved by an independent L2
+  reimplementation across three blobs: pre-r13 `fc6d398` reproduces r13's mean
+  96.5 and all four block values; pre-r14 `7483333` reproduces r14's bar 102.5
+  and 28.6/29.7/62.5; the live file reproduces all 18 BEFORE-r15 values.
+  **Measured**: density file mean 142.5 → **152.8**, path-citation instances 376
+  → **622**; resolvability SKILL 47/289 = 16.26 % → **221/485 = 45.57 %**,
+  corpus 13.29 % → 15.00 %, lane 14.09 % → **25.50 %**. `BAR_R15 = 142.5`
+  frozen as a declared constant and **not cleared** by any of the four blocks in
+  prose form — published as a failure rather than gamed, because the labrat
+  measured the *unchanged* thin block at 100.0 as prose vs 150.0 as a
+  single-line-row table (r14's own record: 86.0 vs 973.3), i.e. the bar is
+  reachable by reformatting alone. Bar rule amended for r16: conjunctive with a
+  ≥ 60 % resolvability gate, since the mutation tester proved density rewards a
+  fabricated `path:line` exactly as much as a real one (8 killed / 4 survived,
+  4 blind spots recorded). `SCORECARD.md`: `depth` **split** into
+  `depth:density` 9 → 9 and `depth:verifiability` 2 → **4** (the two
+  sub-metrics moved in opposite directions, so one integer hid the state; the
+  split exposes a worse number), `coverage` 9 → **7** (denominator 0/18
+  present, 1 of 2 surviving roots censused).
+  **L2 fleet**: 15 subagents in one batched dispatch (3 scouts, 2 executors,
+  critic, reviewer, connector, labrat, revenger, sentinel, simplifier,
+  distiller, mutation-tester), all read-only, all writing distinct
+  `/tmp/kasegi-r15/` files. L1 re-derived every integrated anchor itself and
+  rejected two executor claims that failed that check (a `[corpus-attested]`
+  stamp misplaced onto mirror-verifiable DEFAULTS; a `:201-205` live-tree span
+  no source records). Connector: 339 `Projects/bounties` references across all
+  8 lane repos + main (221 path-shaped, 133 in `corpus/knowledge/`), no sibling
+  had recorded the disappearance, 4 lanes wrote after 23:51Z without mentioning
+  it; `the-bounty-hunter` reported as **mixed scope** (kasegi = bounty
+  EV/claim/policy semantics, kumitate = orchestration/tooling, integrator
+  arbitrates the repo split) and its remote is outside the `MISSION.md:49-56`
+  push allow-list — nothing was pushed there. Distiller: 66 duplicate EV/triage
+  statements across 4 files, 22 CODE-half vs 14 DATA-half facts, canonical-home
+  map delivered for r16. **Zero writes under `~/Projects/**` by this lane**
+  (attested by two L2s independently); nothing reverted, nothing re-created.
+  `corpus/lessons/round-15.md` recorded.

@@ -2,6 +2,13 @@
 
 Source: `~/Projects/bounties/ops/ev-report.mjs` (header + computation),
 `bounty-map/schema.json` `ev_inputs` properties. Read 2026-09-28.
+**Round-15 anchor base:** `~/Projects/bounties` is GONE
+(`corpus/knowledge/source-tree-loss-2026-09-28.md`). Every `ev-report.mjs`
+line number in this file was re-verified this round against the frozen
+2026-09-05 mirror `~/Projects/the-bounty-hunter` HEAD `1cfbd86`
+(`ops/ev-report.mjs`, 92 lines, sha256 `ba5485ed6a5d`) and resolves at 0
+offset — anchor-compatible, not proven byte-identical. Live-census counts
+(0/1088 and friends) are corpus-attested as-of 2026-09-28T23:32Z.
 
 ```
 p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
@@ -27,7 +34,9 @@ Facts:
   live: 0/1088 records carry any `sources[].basis`, so every live program
   prints basis `unknown` for all 10 inputs (round-13 census).
 - `adjusted_ev` is derived-only, never persisted: schema `ev_inputs` has no
-  such property (`additionalProperties:false`, schema.json:32-51) and 0/1088
+  such property (`additionalProperties:false` at `bounty-map/schema.json:34`,
+  block `bounty-map/schema.json:32-52` — round-15 correction: the close is one
+  line later than the `:32-51` this line previously cited) and 0/1088
   records carry the key; `fleet-dispatch.mjs:200` reads it for telemetry
   anyway — every `mission_dispatched` line logs `adjusted_ev:"unknown"` and
   the negative-EV `ev_note` branch (:204) is dead code (round-13

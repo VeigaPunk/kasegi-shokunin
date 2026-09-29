@@ -30,9 +30,27 @@ its source. No generic filler.
 | Canonical triage thresholds (gates/weights/constants, line-cited) | `knowledge/triage-thresholds.md` | full reads of `ops/claim-check.mjs`+`ev-report.mjs`+`fleet-dispatch.mjs`+`shared.mjs`+`bounty-map/schema.json` + live censuses; 3-way verified round-13 (L1 read × executor draft × reviewer derivation) |
 | Per-program quirks (fee/precondition patterns) | `knowledge/program-quirks.md` | sibling-package sampling (dydx same-blocker class; morpho/euler/uniswap/reserve honest-zero) — index-orphaned until round 13 |
 | Claim-anatomy sample (per-program `status.json`) | `knowledge/claim-anatomy-sample.md` | round-14: 20 NEW full reads via deterministic stratified rule (script preserved, L1-reproduced); 10→30/280 = 10.7%; deviation classes D1-D13 with anchors |
-| Lessons | `lessons/round-1.md` … `lessons/round-14.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
+| Source-tree loss + mirror provenance (PROVINCE root absent) | `knowledge/source-tree-loss-2026-09-28.md` | round-15: detection commands, 23:32Z–23:51:31Z disappearance window, per-file mirror provenance (`wc -l` + sha256 + anchor verdicts for 11 files), forensic blind spots, anchor-base rule, resolvability census, the never-re-verifiable DATA-half list, 9 L2 audit corrections |
+| Depth instruments (committed, re-runnable) | `instruments/{density.py,resolve.py,anchorcheck.py,README.md}` + `instruments/citation-survival.{md,tsv}` | round-15: evidence-density census, live citation-resolvability census (instrument of record + definition + known limits), mirror anchor range/semantic gate; bar rule `BAR_R15 = 142.5` frozen + conjunctive ≥60 % resolvability gate from r16 |
+| Lessons | `lessons/round-1.md` … `lessons/round-15.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
 
+- **`~/Projects/bounties` is GONE** (removed 2026-09-28T23:51:31Z, actor
+  UNDETERMINED, PRESUMED-LOST locally): the 18-surface coverage denominator is
+  0/18 present, 704 genuine citations in `SKILL.md` + 765 lost-tree
+  `path:line` cites across 21 `knowledge/*.md` files no longer resolve, and the
+  DATA-half censuses (1088 records, 280 packages, 592 evidence dirs, 7227
+  telemetry lines, 31 autopsies, the `.git` rebase state) can never be
+  re-verified. Recorded round 15 in `knowledge/source-tree-loss-2026-09-28.md`;
+  operator decision requested in `../../../.ufo/l0-questions.md` (reorg vs
+  deletion, recoverability, PROVINCE re-point). Two surviving roots:
+  `~/Projects/the-bounty-hunter` (frozen 2026-09-05 code mirror, censused r15)
+  and `~/Projects/origin-work/open-bug-bounties` (**inventory only — the r16
+  coverage move**).
+- Anchor bases are pinned per file, and only 1 of 21 `knowledge/*.md` entries
+  (`triage-thresholds.md`, pinned to blob `fc6d398` for its `SKILL.md:NNN`
+  cites) carries an explicit pin so far — pinning the other 20 is the r16
+  `depth:verifiability` move.
 - ~~ops tail (`validate`/`registry-check`/`reroute-drill`/`check-freshness`/
   `finalize-all`/sighting scripts + `shared.mjs` constants) name-only~~ —
   CLOSED round 7: `knowledge/ops-invariants.md` + `knowledge/intake-and-finalize.md`.

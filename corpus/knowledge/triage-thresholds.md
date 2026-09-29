@@ -5,6 +5,30 @@ Source: `~/Projects/bounties/ops/{claim-check,ev-report,fleet-dispatch,shared}.m
 Paths below are relative to `~/Projects/bounties/` unless absolute. Line numbers
 are source lines, not rendered lines.
 
+**Round-15 anchor-base pins (both bases moved under this file).**
+1. `SKILL.md:NNN` cites below (32 instances, 23 unique spans) are pinned to
+   git blob **`fc6d398`** (the round-12 `SKILL.md`, 546 lines) — r13/r14/r15
+   renumbered the live file. Resolve with
+   `git -C ~/projects/shokunin/kasegi-shokunin show fc6d398:SKILL.md | sed -n
+   'NNNp'`. Verified 8/8 sampled spans this round (`:498-502` = the EV formula
+   block, `:175-176` = the four-term queue score, `:113-114` = `buildQueue`
+   ordering, `:117` = `attempts()≥2`, `:90-91` = `NO_SCOPE_OBJECTION`,
+   `:522`/`:526` = cited-path rows, `:10-11` = the 1088/486 preamble). The
+   hazard was already named in
+   `corpus/lessons/round-5-aggregator-mirror-ambiguous-citation-base.md`.
+2. `ops/*.mjs` and `bounty-map/schema.json` line numbers below were read from
+   the **lost** `~/Projects/bounties` working tree (as-of 2026-09-28T23:32Z).
+   That tree is gone; the surviving frozen mirror
+   `~/Projects/the-bounty-hunter` HEAD `1cfbd86` (2026-09-05) matches this
+   file's anchors exactly for `ev-report.mjs` (all 14 spans), `rank.mjs`
+   (`:55-58` DEFAULTS) and `schema.json`, but **diverges** for
+   `fleet-dispatch.mjs` (330 lines vs 427; 3-term score at mirror `:97` vs the
+   5-term `:110` below; `adjusted_ev` telemetry at mirror `:152`/`:155`/`:156`
+   vs `:200`/`:204`), `shared.mjs` (41 lines, no `gitMutationBlocker`) and
+   `claim-check.mjs` (83 lines, 19 `err(` sites vs 48). Per-file table:
+   `corpus/knowledge/source-tree-loss-2026-09-28.md` §4.1. Rows below keep
+   their lost-tree numbers — they are the record of what the live fleet ran.
+
 This is the single derivation of the numeric thresholds the bounty pipeline
 runs on: queue admission weights (`fleet-dispatch.mjs::buildQueue`), package
 gates (`claim-check.mjs`), the adjusted-EV formula (`ev-report.mjs`), the

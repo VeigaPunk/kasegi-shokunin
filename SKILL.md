@@ -5,11 +5,25 @@ description: Domain specialist — bounty & security research — scopes ~/Proje
 
 # kasegi-shokunin — bounty & security research craft
 
-Grounded in `/home/vgpnk/Projects/bounties` (UFO fleet HQ): 274 program dirs /
-295 packages (280 status-gated) under `claims/`, 1088 program records under
+**Round-15 status of the ground truth.** This skill was grounded in
+`/home/vgpnk/Projects/bounties` (UFO fleet HQ): 274 program dirs / 295
+packages (280 status-gated) under `claims/`, 1088 program records under
 `bounty-map/programs/`, a 486-line verdict ledger at
-`docs/review-verdicts.jsonl`, and the operator-facing queue
-at `docs/claim-ready-index.md`. Every rule below cites a file you can open.
+`docs/review-verdicts.jsonl`, and the operator-facing queue at
+`docs/claim-ready-index.md`. **That tree was removed from the filesystem at
+2026-09-28T23:51:31Z** (actor UNDETERMINED, data PRESUMED-LOST locally;
+detection, timeline, forensics and the per-file provenance of what survives:
+`corpus/knowledge/source-tree-loss-2026-09-28.md`). Every rule below still
+cites a file — but as of round 15 each citation resolves against one of three
+bases, named per block: the frozen 2026-09-05 mirror
+`~/Projects/the-bounty-hunter` HEAD `1cfbd86` (ops code, live-checkable), the
+other surviving root `~/Projects/origin-work/open-bug-bounties` (26 claim
+packages + `submission-review/` receipts + 43 `.ufo-missions` + `data/*.json`
+inventories), or the lost tree, marked `[lost-tree] <path>:<line>` and
+[corpus-attested as-of 2026-09-28T23:32Z]. Counts that came from the lost DATA
+half can never be re-verified; they are stamped, not deleted. Whether
+`PROVINCE.md` re-points is an open L0 question (`.ufo/l0-questions.md`,
+kasegi round-15 row).
 
 ## Pipeline (observed, not invented)
 
@@ -292,23 +306,83 @@ Authoritative detail: `corpus/knowledge/ufo-workspaces.md`, `repo-git-state.md`,
 
 ## Ops integrity layer — invariants, intake, finalize
 
-`ops/shared.mjs` owns the constants every ops file imports: `BANNED`
-(`cursor`, `opencode` — word-boundary scan across lanes/roles/cards),
-`PARKED` (empty since the chatgpt park lifted 2026-09-04 → parked checks
-are vacuous), `K3_SEATS` = `judge`/`planner` (only lanes allowed
-`kimi-code/k3` routes; live primaries are `k3:high`),
-`gitMutationBlocker` (fail-closed on rebase/merge/cherry-pick or non-main
-HEAD), `appendLedger` (3500 B cap). `validate.mjs` is a schema-subset +
-referential gate (lane ids must exist in `fleets/registry.json`;
-`freshness.as_of` strict RFC3339; `--strict` adds non-empty `ev_inputs`).
-`registry-check.mjs` owns the deep bijection: every non-k3 lane has exactly
-one `.omp/agents/kx-<lane>.md` card (`mission_l1` resolves to
-`fleets/mission-template.md`), card `model:` pins resolve through
-`.omp/config.yml` modelRoles to the lane primary, `judge` must keep an
-empty bucket + an `honest.halt` note, every `grok` route ends `:low`
-exactly. `reroute-drill.mjs --simulate park:<lane>` picks the first
-non-banned/non-parked/non-k3 bucket entry (degrades to `local`), writes
-`reroute_drill` telemetry with `simulated:true`, never mutates.
+`ops/shared.mjs` (mirror: 41 lines, sha256 `2497578a44e5`) owns the
+constants every ops file imports: `BANNED = ['cursor','opencode']`
+(`ops/shared.mjs:7`), enforced as a word-boundary scan
+`(^|[^a-z])<b>([^a-z]|$)` (`ops/validate.mjs:56`); `PARKED = []` — empty
+since the chatgpt park lifted 2026-09-04 (`ops/shared.mjs:8`), which makes
+the parked check **vacuous by construction**: `PARKED_TOKEN` falls back to
+`/(?!)/`, a never-match (`ops/validate.mjs:28`); `K3_SEATS = ['judge',
+'planner']` (`ops/shared.mjs:9`) with the route regex
+`/kimi-code\/k3|kimi-k3|moonshot\/kimi-k3/i` (`ops/shared.mjs:11`);
+`sha256File` = digest of exact bytes, `null` when absent
+(`ops/shared.mjs:25-31`); `appendLedger` caps a line at **3500 bytes** so
+concurrent cross-session `O_APPEND` writes stay atomic within POSIX
+`PIPE_BUF` (`ops/shared.mjs:33-34`), replaces an oversize entry with a
+`truncated:true` stub (`ops/shared.mjs:38`) and appends to
+`ledger/<kind>.jsonl` (`ops/shared.mjs:39`). `gitMutationBlocker`
+(fail-closed on rebase/merge/cherry-pick or non-main HEAD) is **absent from
+the mirror** — 0 hits repo-wide; it existed only in the lost tree
+(`[lost-tree] ops/shared.mjs:55`, `corpus/knowledge/ops-invariants.md:24`).
+
+**`TELEMETRY_EVENTS` is a decorative whitelist** (round-15 finding,
+mirror-verified): `ops/shared.mjs:13-22` declares 8 event names
+(`lane_parked`, `lane_degraded`, `operator_decree`, `xask_dry`,
+`board_imported`, `binding_verified`, `reroute_drill`, `provenance_drift`),
+but `grep -rn TELEMETRY_EVENTS --include='*.mjs' --include='*.sh'` over the
+mirror returns **only that declaration** — nothing imports it, and
+`appendLedger` never checks the event name (`ops/shared.mjs:36-41`). The ops
+scripts actually append **17** distinct `event:` values (`mission_failed` ×3
+sites, `model_reroute` ×2, `claim_rejected` ×2, then `reroute_drill`,
+`provenance_drift`, `mission_unparked`, `mission_retired`, `mission_done`,
+`mission_dispatched`, `freshness_check`, `fleet_synced`, `finalize_all`,
+`dispatcher_tick`, `claims_pushed`, `board_imported`, `binding_verified`,
+`attempt_reset`): only 4 of the 17 are whitelisted, and 4 whitelisted names
+(the `lane_*`/`operator_decree`/`xask_dry` set) are appended by no ops script
+at all — they are lane-side events. Same defect class as the decorative
+bounty map: a declared contract with no enforcement point.
+
+`ops/validate.mjs` (130 lines) is a schema-subset + referential gate:
+RFC3339 regex `ops/validate.mjs:27`, program `freshness.as_of` must match it
+(`ops/validate.mjs:118`), a record's `lane` must exist in
+`fleets/registry.json` (`ops/validate.mjs:119`), `--strict` additionally
+requires non-empty `ev_inputs` (`ops/validate.mjs:120-121`), `k3_seats` must
+be exactly `[judge, planner]` (`ops/validate.mjs:63-65`), every `BANNED`
+provider must appear in the `operator_decrees.banned_providers` decree
+(`ops/validate.mjs:72-73`), and `modelRoles` is parsed from `.omp/config.yml`
+with `/^\s{2}(\w+):\s*(\S+)\s*$/` (`ops/validate.mjs:82`). Output contract:
+`validate: FAIL (<programs>, <lanes>, <errors>)` + exit 1, else
+`validate: OK (...)` (`ops/validate.mjs:125-130`).
+`ops/registry-check.mjs` (189 lines) owns the deep bijection: every non-k3
+lane has exactly one `.omp/agents/kx-<lane>.md` card
+(`ops/registry-check.mjs:57-80`), `mission_l1` resolves instead to
+`fleets/mission-template.md` (`ops/registry-check.mjs:70-72`), card `model:`
+pins resolve through `.omp/config.yml` modelRoles to the lane primary
+(`ops/registry-check.mjs:82-108`), `judge` must keep an empty bucket plus an
+`honest.halt` note (`ops/registry-check.mjs:117-118`), any other lane with an
+empty bucket needs an explicit `degrade` note
+(`ops/registry-check.mjs:121-122`), banned providers must be absent
+(`ops/registry-check.mjs:134-157`), k3 routes confined to the two seats
+(`ops/registry-check.mjs:159-170`), and every `grok` route must end `:low`
+exactly (`ops/registry-check.mjs:34-43`, `:172-183`); the OK line prints the
+lane count and the resolved k3 seats (`ops/registry-check.mjs:190`).
+`ops/reroute-drill.mjs --simulate park:<lane>` is simulation-only by header
+contract (`ops/reroute-drill.mjs:2-3`): it parses `/^park:(.+)$/`
+(`ops/reroute-drill.mjs:20`), picks the first non-banned/non-parked/non-k3
+bucket entry (`ops/reroute-drill.mjs:44-57`), degrades to `local` when none
+(`ops/reroute-drill.mjs:60`), and writes `reroute_drill` telemetry with
+`simulated: true` (`ops/reroute-drill.mjs:63-69`) — never mutates the
+registry, never spawns, never calls the network.
+`ops/check-freshness.mjs` alarms at `THRESHOLD_H = 26` hours
+(`ops/check-freshness.mjs:15`), prefers
+`last_permitted_check_at_utc ?? last_attempted_check_at_utc ?? snapshot_at_utc`
+(`ops/check-freshness.mjs:43`), prints `FRESH`/`STALE`
+(`ops/check-freshness.mjs:50`), exits `liveStale > 0 ? 1 : 0`
+(`ops/check-freshness.mjs:59`) and appends one `freshness_check` telemetry
+line per invocation (`ops/check-freshness.mjs:61`) — which is why the lost
+tree's telemetry count grew between runs. Its default board is the **other
+surviving root**, `/home/vgpnk/Projects/origin-work/open-bug-bounties`
+(`ops/check-freshness.mjs:14`).
 
 Two ops scripts write beyond `ledger/`:
 `import-board.mjs --from <board>` binds the three board datasets
@@ -318,17 +392,46 @@ new records land as `{ev_inputs:{}, lane:"executor",
 mission_state:"DISCOVERED"}`; past-DISCOVERED files are byte-protected
 but provenance drift emits `provenance_drift` telemetry (S4). Only the
 independent dataset filters records (active + public + confirmed_cash +
-high confidence). `finalize-all.mjs` is the batch claim sweep: per DONE
-package it re-runs claim-check, commits, byte-proofs then annotates
+high confidence) — the filter is mirror-anchored at
+`ops/import-board.mjs:132`. `finalize-all.mjs` is the batch claim sweep: per
+DONE package it re-runs claim-check, commits, byte-proofs then annotates
 `claim-ready/<id>/<slug>` (conflicting existing sha → `claim_tag_conflict`,
-never rewrites), refreshes the index, one atomic `push --atomic`.
+never rewrites), refreshes the index, one atomic `push --atomic`
+[corpus-attested as-of 2026-09-28T23:32Z; source tree absent] — the mirror
+carries only the 39-line genesis version, whose sole git step is
+`rev-parse --verify` + skip-an-existing-tag (`ops/finalize-all.mjs:25`), so
+the byte-proof/conflict/`--atomic` behaviour is a lost-tree fact
+(`corpus/knowledge/intake-and-finalize.md:78-92`).
 
 Observation, not authority: `ops/sighting*.sh` manage four windows in
-`ufo_sighting` (fleet/ledger/missions/dispatcher) and never kill mission
-panes; `sighting-missions.sh` capture-pane frames are the live view — the
+`ufo_sighting` — literally `for w in fleet ledger missions dispatcher`
+(`ops/sighting.sh:8`, `:12`, `:18`) — and never kill mission panes or the
+session itself (`ops/sighting.sh:17`); the board window runs
+`watch -n5 -t ops/sighting-board.sh` (`ops/sighting.sh:24`).
+`sighting-missions.sh` capture-pane frames are the live view — the
 missions window's `tail -f fleets/run/*.log` dead-globs once logs rotate
-to `.log.gz`. Detail: `corpus/knowledge/ops-invariants.md`,
-`corpus/knowledge/intake-and-finalize.md`.
+to `.log.gz`.
+
+**Never run the mirror's ops scripts in place** (round-15 hazard). All 11
+derive their write root from their own location —
+`const root = join(dirname(fileURLToPath(import.meta.url)), '..')`
+(`ops/ev-report.mjs:21`, `ops/rank.mjs:43`, `ops/fleet-dispatch.mjs:21`,
+`ops/park-disposition.mjs:12`, `ops/import-board.mjs:30`,
+`ops/finalize-all.mjs:11`, `ops/validate.mjs:18`, `ops/registry-check.mjs:12`,
+`ops/check-freshness.mjs:12`, `ops/claim-index.mjs:11`,
+`ops/reroute-drill.mjs:10`) — so a run inside
+`~/Projects/the-bounty-hunter` would create and mutate `ledger/`,
+`fleets/run/`, `docs/autopsies/`, `evidence/` and `bounty-map/programs/` in a
+read-only product repo (`ops/rank.mjs:140`, `ops/rank.mjs:203`,
+`ops/rank.mjs:222`, `ops/shared.mjs:39`, `ops/park-disposition.mjs:43`,
+`ops/park-disposition.mjs:53`). The mirror has no `ledger/` at all, so the
+first `appendLedger` would throw ENOENT — `appendFileSync` creates no
+directory [INFERENCE, derived not executed]. Only `ops/ev-report.mjs` is
+side-effect-free (read-only imports, `ops/ev-report.mjs:17`), and r15 still
+smoke-ran it from a byte-identical **copy** outside the mirror
+(`/tmp/kasegi-r15/ev-smoke`). Detail: `corpus/knowledge/ops-invariants.md`,
+`corpus/knowledge/intake-and-finalize.md`,
+`corpus/knowledge/source-tree-loss-2026-09-28.md` §4.1.
 
 
 ## VDP disclosure packages (sibling format)
@@ -341,35 +444,82 @@ commit/file/sha256, CWE, CVSS, verbatim scope excerpt), and `SUBMITTED.md`
 (timestamp + verbatim platform confirmation). Operator personally sends; the
 fleet stages, never sends. Parked VDP-adjacent programs show up as two-file
 honest-zero claims (`report.md` + `status.json`, e.g.
-`claims/hackerone-ruby/honest-zero-vdp-no-payout/`). Details:
-`corpus/knowledge/vdp-disclosure-packages.md`.
+`claims/hackerone-ruby/honest-zero-vdp-no-payout/`).
+
+**This entire surface is corpus-attested only** [as-of 2026-09-28T23:32Z;
+source tree absent]. The surviving mirror carries **no VDP runtime
+knowledge**: `grep -rniE 'vdp|disclos|no.?payout|disclosed_free'` over
+`~/Projects/the-bounty-hunter` (excluding `.git`) hits no `ops/*.mjs` file at
+all — only the report-field list ("disclosure timeline",
+`fleets/mission-template.md:50`), the genesis plan (`docs/genesis-plan.md:15`,
+`docs/genesis-plan.md:17`) and two agent cards
+(`.omp/agents/scope-evidence-custodian.md:83`,
+`.omp/agents/the-bounty-hunter.md:28`); there is no `vdp-disclosures/`
+directory, and `ops/finalize-all.mjs:20` filters on `state !== 'DONE'` with no
+`DISCLOSED_FREE` case. Every VDP fact above is anchored in
+`corpus/knowledge/vdp-disclosure-packages.md` (`:3-5`, `:9`, `:13-16`, `:20`,
+`:22-31`), which is now the only record.
 
 ## Retirement lane — autopsies & the detail regex
 
-`ops/park-disposition.mjs` (dry-run default, `--apply` acts; decree
-2026-09-05: retry live paths, retire structural blocks) regex-classifies
-every `fleets/run/*.status.json` in state PARKED/FAILED by its `detail`
-string — first match wins: `honest.zero`→LEARNED (terminal-good), H1-SPA
-wording→RETRY_METHOD (GraphQL path), AUTH keyword→RETIRE_AUTH,
-transient→RETRY_TRANSIENT, else **REVIEW = no action**. RETIRE_AUTH
-writes a fixed five-part `docs/autopsies/<id>.md` (Outcome / Program URL /
-State / verbatim Reason / Why / Unlock / Evidence), flips the status to
-RETIRED, emits `mission_retired` telemetry. Requeue = operator session or
-public policy, then delete BOTH the autopsy and the status file.
+`ops/park-disposition.mjs` (mirror: 80 lines, sha256 `868057c96cc8`; dry-run
+by default, `--apply` acts — `ops/park-disposition.mjs:14`, dry-run exits 0
+at `ops/park-disposition.mjs:41`; decree 2026-09-05: retry live paths, retire
+structural blocks) regex-classifies every `fleets/run/*.status.json`
+(directory constant `ops/park-disposition.mjs:13`) whose `state` is PARKED or
+FAILED (`ops/park-disposition.mjs:23-25`) by its `detail` string — **first
+match wins** (`ops/park-disposition.mjs:28-32`): `HONEST = /honest.zero/i`
+(`ops/park-disposition.mjs:21`) → LEARNED (terminal-good);
+`H1SPA = /scope unverifiable.*hackerone|hackerone.*SPA|content-negotiated to
+RFC 9116|security\.txt stub/i` (`ops/park-disposition.mjs:20`) → RETRY_METHOD
+(GraphQL path); `AUTH` (`ops/park-disposition.mjs:18` — 16 alternatives,
+including `auth-walled`, `requires login`, `SPA login`, `accept_terms`,
+`account creation`, `AUTH_UNVERIFIED`, `in_scope_assets empty`, `SPA shell`,
+`login-walled`, `no testing grant`, `testing paused`, `requires agreement`,
+`privacy hard stop`, `forbidden`, `prohibited personal-data`,
+`not in publi`) → RETIRE_AUTH;
+`TRANSIENT = /unreachable|timeout|HTTP 5\d\d|ECONN|ENOTFOUND|DNS|network/i`
+(`ops/park-disposition.mjs:19`) → RETRY_TRANSIENT; else **REVIEW = no action**
+(`ops/park-disposition.mjs:32`). The dry-run prints the five class counts
+(`ops/park-disposition.mjs:36-39`).
+
+RETRY_* is a real requeue: `attempt_reset` + `mission_unparked` telemetry then
+`rmSync` of the status file so the dispatcher re-picks it on the current window
+model (`ops/park-disposition.mjs:45-49`). RETIRE_AUTH reads the program record
+(`ops/park-disposition.mjs:52`) and writes
+`docs/autopsies/<id>.md` (`ops/park-disposition.mjs:43`, `:53`) with a fixed
+**seven-part** body — round-15 correction, this section previously said
+"five-part" while listing seven: 4 bold metadata lines `**Outcome:**`
+(`ops/park-disposition.mjs:56`), `**Program URL:**` (`:57`),
+`**State at retirement:**` (`:58`), `**Reason (verbatim):**` (`:59`), then 3
+`##` sections — "Why it could not succeed autonomously"
+(`ops/park-disposition.mjs:61-65`), "Unlock prerequisite"
+(`ops/park-disposition.mjs:67-70`), "Evidence"
+(`ops/park-disposition.mjs:72-73`). It then rewrites the status to
+`state:'RETIRED'` with `detail: retired: <cls> — see docs/autopsies/<id>.md`
+(`ops/park-disposition.mjs:75-77`) and emits `mission_retired` telemetry
+carrying the autopsy path (`ops/park-disposition.mjs:78`). Requeue = operator
+session or public policy, then delete BOTH the autopsy and the status file —
+the instruction is printed into the artifact itself
+(`ops/park-disposition.mjs:70`).
 
 `detail` is machine-consumed, not prose: the 85-mission REVIEW cohort
 (live census 2026-09-28 — 529 LEARNED / 85 REVIEW / 30 RETIRE_AUTH / 2
 RETRY) is the same auth-wall class worded as "no exact in-scope assets" /
 "active-testing grant" / "custodian HARD_STOP" — none of which the regex
-knows, so they park invisibly. **When parking a mission, embed a literal
-classifier keyword in `detail`** (`in_scope_assets empty`, `no testing
-grant`, `auth-walled`, `scope unverifiable: ...hackerone`) or the
-disposition pass no-ops.
+knows, so they park invisibly [corpus-attested as-of 2026-09-28T23:32Z;
+source tree absent; the regex half is mirror-verified above — those three
+phrasings match none of `ops/park-disposition.mjs:18-21`]. **When parking a
+mission, embed a literal classifier keyword in `detail`**
+(`in_scope_assets empty`, `no testing grant`, `auth-walled`,
+`scope unverifiable: ...hackerone`) or the disposition pass no-ops.
 
 The 31 autopsies partition: auth-walled SPA ×27, terms-gate ×1 (SIX),
-privacy hard stop ×1 (Airtable), paused/non-enumerable ×2. The generated
-"Why" paragraph always says "account login" — trust `Reason (verbatim)`,
-not the boilerplate. Authoritative detail:
+privacy hard stop ×1 (Airtable), paused/non-enumerable ×2
+[corpus-attested as-of 2026-09-28T23:32Z; source tree absent]. The generated
+"Why" paragraph is boilerplate — it always says "account login"
+(`ops/park-disposition.mjs:62-65`), so trust `Reason (verbatim)`
+(`ops/park-disposition.mjs:59`), not the prose. Authoritative detail:
 `corpus/knowledge/retirement-autopsies.md`.
 
 ## Evidence-package anatomy
@@ -419,7 +569,7 @@ Per-item anchor map (round-14 addition; the r13 repair-3 deliverable):
 | 2 | intel `:19` descope; airtable `:23` ceiling advice overridden | decree `2ef530c6` | `fleets/claimer-mission.md:22`,`:29` |
 | 3 | mozilla `:18`, payload row `:92` | GO-WITH-FIX | `claims/mozilla-security-bounties/lando-diff-warning-missing-authz/report.md:79-82` |
 | 4 | airtable `:23`,`:97` (8 files vs 3); wordpress `:95` (17 files); anthropic `:17`,`:91` | GO-WITH-FIX | `claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:35` |
-| 5 | all 8 tag refs `:5`,`:118`,`:122-124`,`:126` | tag drift | `docs/claim-ready-index.md:32-38` + `ops/claim-index.mjs:4` |
+| 5 | all 8 tag refs `:5`,`:118`,`:122-124`,`:126` | tag drift | `docs/claim-ready-index.md:32-38` + `[lost-tree] ops/claim-index.mjs:4` |
 | 6 | — (not wrap-sourced) | incident record | `claims/bugcrowd-seek/honest-zero/submit/BLOCKED.md:17-20` |
 | 7 | — (not wrap-sourced) | ingestion record | `claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15` |
 | 8 | — (not wrap-sourced) | invariant I8 | `fleets/mission-template.md:20` + `docs/continuation-notes.md:19`,`:26` |
@@ -459,7 +609,10 @@ Per-item anchor map (round-14 addition; the r13 repair-3 deliverable):
    `claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:35`).
 5. **Stale `claim-ready/*` tag treated as current authority** — a historical
    tag never overrides current bytes (`docs/claim-runbook.md:3-5`);
-   `ops/claim-index.mjs:4` ("tags are provenance only"), and only current
+   `[lost-tree] ops/claim-index.mjs:4` ("tags are provenance only" — string
+   absent from the surviving mirror's `ops/claim-index.mjs`, whose `:3-4`
+   header instead reads "regenerate docs/claim-ready-index.md from the repo's
+   claim-ready/* tags … Run after any claim-ready tag lands"), and only current
    bytes passing `ops/claim-check.mjs` enter the queue
    (`docs/claim-ready-index.md:3`). The mechanism is live: 3 tags sit
    excluded from the operator queue with per-row failing gates
@@ -636,8 +789,25 @@ registry state, x source drift, beanstalk deployed-bytecode, yahoo rolling
 
 ## Triage economics
 
-`ops/ev-report.mjs` computes the hunter-contract EV per program record
-(`bounty-map/programs/<id>.json` → `ev_inputs`):
+`ops/ev-report.mjs` computes the hunter-contract EV for one program record
+(`bounty-map/programs/<id>.json` → `ev_inputs`; path built at
+`ops/ev-report.mjs:28-29`) and persists nothing — it imports only
+`readFileSync`/`existsSync` (`ops/ev-report.mjs:17`) and ends in
+`process.exit(0)` (`ops/ev-report.mjs:92`). Reporting tool, never a gate.
+
+**Anchor base (round 15).** `~/Projects/bounties` is GONE — removed
+2026-09-28T23:51:31Z (`corpus/knowledge/source-tree-loss-2026-09-28.md`).
+Cites below were re-read this round from the frozen 2026-09-05 mirror
+`~/Projects/the-bounty-hunter` HEAD `1cfbd86`. Its `ops/ev-report.mjs`
+(92 lines, sha256 `ba5485ed6a5d`) resolves all 14 spans the corpus recorded
+from the lost tree at the same line numbers — **anchor-compatible, not proven
+byte-identical** (the lost bytes are gone); `ops/rank.mjs` (249 lines,
+`e724186c1330`) matches at `DEFAULTS :55-59`. `ops/fleet-dispatch.mjs` is 330
+lines vs the lost 427 (`corpus/knowledge/mission-control.md:3`) and diverges
+in content, so its anchors are cited twice and every lost-tree anchor is
+written `[lost-tree] <path>:<line>` — a token that cannot resolve against the
+mirror by accident. Counts from the lost DATA half carry [corpus-attested
+as-of 2026-09-28T23:32Z; source tree absent].
 
 ```
 p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
@@ -647,29 +817,148 @@ total_cost   = effort_hours × opportunity_rate + direct_cost + delay_cost
 adjusted_ev  = gross_value − total_cost
 ```
 
-Missing inputs print `UNKNOWN`, never default to 0/1; verdict degrades to
-`unknown` — fail-closed like everything else. `docs/claim-runbook.md` is the
-operator-side contract for what only a human may do (vault unlock, MFA, KYC,
-the Submit click, payout rails).
+Terms: `ops/ev-report.mjs:77` (`p_success` — left-fold
+`reduce((a,b)=>a*b, 1)` over the 4 factors mapped at
+`ops/ev-report.mjs:73`), `ops/ev-report.mjs:78` (`gross_value`),
+`ops/ev-report.mjs:79-81` (`total_cost`; the 5 `costKeys` at
+`ops/ev-report.mjs:74`), `ops/ev-report.mjs:82` (`adjusted_ev`); all four
+printed at `ops/ev-report.mjs:86-89`. Guards: `ops/ev-report.mjs:46`
+`isNum = typeof v === 'number' && Number.isFinite(v)` — no coercion, so a
+JSON string `"0.5"` prints UNKNOWN while numeric `0.5` prints;
+`ops/ev-report.mjs:47` `fmt = String(Number(v.toFixed(6)))` — six decimals
+then trailing-zero stripping: `0.0735`, never `0.073500`.
 
-Round-13 derivation (canonical: `corpus/knowledge/triage-thresholds.md`):
-verdict is strict — `positive_adjusted_ev` only when `adjusted_ev > 0`
-(ev-report.mjs:91); exit 0 always, except 2 for a missing program-id
-argument OR a missing program file; an unparseable file → WARNING + all
-terms UNKNOWN + exit 0 (fail-closed on values, not on parse). The basis
-column (`source_url|estimate|unknown`) is never exercised live: 0/1088
-records carry any `sources[].basis`. `rank.mjs:55-58` DEFAULTS (ranking
-artifacts only, never ev-report): p_in_scope .7, p_reproducible .7,
-p_unique .25, p_accepted .6, effort_hours 60, opportunity_rate 25,
-direct_cost 0, delay_cost 0, expected_risk_cost 250 → default p_success
-.0735. The single complete record (github-bug-bounty) live round-13:
-0.9×0.8×0.35×0.7 = 0.1764, gross 1764, cost 1250, adjusted_ev 514, positive
-true. `adjusted_ev` is derived-only, never persisted: fleet-dispatch.mjs:200
-reads it for telemetry and always logs `"unknown"` (0/1088; schema
-`additionalProperties:false`), so the negative-EV `ev_note` branch (:204) is
-dead code.
+Missing inputs print `UNKNOWN`, never 0/1; the affected term and the verdict
+degrade to `unknown`, fail-closed (`ops/ev-report.mjs:47`,
+`ops/ev-report.mjs:91`). Verdict is strict — `positive_adjusted_ev: true`
+only when `adjusted_ev > 0`, `false` at ≤ 0 (exactly 0 → `false`), `unknown`
+when either term is non-finite (`ops/ev-report.mjs:91`). Exits: 0 always on a
+report (`ops/ev-report.mjs:92`); **2** for a missing program-id argument
+(`ops/ev-report.mjs:23-26`) OR a missing program file
+(`ops/ev-report.mjs:30-33`); unparseable file → `WARNING` + `rec = null`
+(`ops/ev-report.mjs:38-41`) → `ev = {}` (`ops/ev-report.mjs:43`) → all 10
+inputs and all 4 terms UNKNOWN, exit 0 — fail-closed on values, not on parse.
+All branches **runnable-verified**: r15 ran a byte-identical copy of the
+mirror script (`/tmp/kasegi-r15/ev-smoke`, copy sha256 == mirror sha256) and
+observed every exit code and every UNKNOWN path.
 
-## Cited paths (all verified 2026-09-28; round-13 full-set re-audit: 708 counted citations — 705 resolved, 3 broken repaired in place)
+Row shape `  <key> = <value> basis: <basis><detail>`, `padEnd(20)` /
+`padEnd(10)` (`ops/ev-report.mjs:70`); `as_of` raw or UNKNOWN
+(`ops/ev-report.mjs:50`); `sources[k].basis` = `source_url` (URL appended at
+`ops/ev-report.mjs:65`), `estimate`, else `unknown`
+(`ops/ev-report.mjs:59-70`), `rationale` appended after ` | `
+(`ops/ev-report.mjs:69`). The basis column is never exercised live — 0/1088
+records carry any `sources[].basis`, so all 10 inputs print basis `unknown`
+[corpus-attested as-of 2026-09-28T23:32Z; source tree absent]. The
+operator-only contract (vault unlock, MFA, KYC, the Submit click, payout
+rails) lived in the lost `docs/claim-runbook.md` [corpus-attested as-of
+2026-09-28T23:32Z; source tree absent].
+
+`ops/rank.mjs` DEFAULTS are a **separate machine**, never read by ev-report
+(`ops/rank.mjs:55-59`, values `ops/rank.mjs:56-58`): p_in_scope 0.7,
+p_reproducible 0.7, p_unique 0.25, p_accepted 0.6, effort_hours 60,
+opportunity_rate 25, direct_cost 0, delay_cost 0, expected_risk_cost 250.
+Derived: 0.7×0.7 = 0.49, ×0.25 = 0.1225, ×0.6 = **0.0735**; total_cost =
+60×25+0+0+250 = **1750**. Same formula behind `round6` (`ops/rank.mjs:63`,
+`compute` at `ops/rank.mjs:66-77`) but a different reward source: rank takes
+`rec.reward?.min` (`ops/rank.mjs:92`, `ops/rank.mjs:118-119`) and copies only
+the 9 PROB+COST keys for a curated record (`ops/rank.mjs:104`), so
+`ev_inputs.expected_reward` (`bounty-map/schema.json:40`) is read by
+**ev-report alone** (`ops/ev-report.mjs:78`) — one symbol, two sources;
+never conflate them.
+
+Consequence: `adjusted_ev = 0.0735 × reward.min − 1750`, so break-even needs
+`reward.min > 1750/0.0735 = 23 809.52`; the highest observed floor was 10 000
+(0.0735×10000 = 735 → **−1015**), i.e. every default-basis program is
+negative-EV [corpus-attested as-of 2026-09-28T23:32Z; source tree absent].
+Under DEFAULTS p_success and total_cost are constant, so the sort at
+`ops/rank.mjs:123` (`adjusted_ev` desc, then `id` asc) degenerates to
+`reward.min` desc: only a curated record can reorder the queue. That is AR12
+in arithmetic — EV is ORDERING, never a gate (`ops/fleet-dispatch.mjs:11`
+comment); the negative-EV `ev_note` branch (mirror
+`ops/fleet-dispatch.mjs:156`; `[lost-tree] ops/fleet-dispatch.mjs:204`)
+ledgers the fact, it does not block.
+
+Run contract: `node ops/rank.mjs [--top N] [--write-queue]` — `--top` default
+20 (`ops/rank.mjs:46`), non-integer or < 1 → `rank: ERROR` + exit 1
+(`ops/rank.mjs:48-49`). Without `--write-queue` it prints and exits 0
+(`ops/rank.mjs:161`); with it, S3 queue admission runs (`ops/rank.mjs:163`).
+Either way it writes `ledger/rankings-<YYYYMMDDTHHMMSSZ>.json` (stamp
+`ops/rank.mjs:53`, path `ops/rank.mjs:140`, collision suffix `-1`/`-2`/…
+`ops/rank.mjs:141-142` — never overwrites, so sha256 attestations never
+break) holding `{generated_at, defaults{basis:'default_estimate', …DEFAULTS,
+as_of}, ranked, unknown}` (`ops/rank.mjs:143-148`). Every queued mission
+appends `{mission_id:'mission-<id>', transition:'RANKED',
+producer:'kx-executor', model:'alibaba-token-plan/qwen3.8-max:xhigh',
+adjusted_ev, basis, artifact_sha256}` (`ops/rank.mjs:186-190`; the digest is
+taken over the artifact bytes at `ops/rank.mjs:178`) — the attestation binds
+the ranking file, not just the number. `stateOrder` (`ops/rank.mjs:179`) is
+the 12-step pre-terminal ladder DISCOVERED → NORMALIZED → DEDUPED → SCOPED →
+RANKED → PLANNED → AUTHORIZED → EXECUTED → EVIDENCED → VERIFIED →
+SUBMISSION_PREPARED → LEARNED: it carries `AUTHORIZED`, which the live ledger
+never recorded a transition for, and omits both the operator-only
+SUBMITTED/DISCLOSED_FREE and the terminal PARKED/FAILED/RETIRED
+[corpus-attested as-of 2026-09-28T23:32Z; source tree absent]. The top 5
+RANKED curated candidates also get `evidence/<id>/custodian-input.json`,
+written only if absent (`ops/rank.mjs:216-219`): a
+`custodian-input-skeleton/v1` for one `read_public_policy` action
+(`ops/rank.mjs:223`, `ops/rank.mjs:229`), impact ceiling "none — read-only
+public metadata", `data_classes: ['public']`, `credential_binding` and
+`external_effect` both none, `scope_snapshot.note: 'no live fetch'`
+(`ops/rank.mjs:231-235`, `ops/rank.mjs:241`), window = now + 7 days
+(`ops/rank.mjs:214`, `7 * 864e5`). The AR14 bounded passive policy read is
+pre-staged as a skeleton that itself fetches nothing.
+
+| `rank.mjs` admission condition | outcome | cite |
+|---|---|---|
+| `reward.min` not a finite number | filed `unknown`, reason `no verified reward floor` | `ops/rank.mjs:92-96` |
+| curated `ev_inputs` missing any of the 9 PROB+COST keys | filed `unknown`, reason names the missing keys | `ops/rank.mjs:105-108` |
+| `adjusted_ev ≤ 0` | not in `positives`, never queued | `ops/rank.mjs:151`, `ops/rank.mjs:164` |
+| positive but `inputs_basis === 'default_estimate'` | **held**, not queued — "not sufficiently evidenced" | `ops/rank.mjs:164-165`, `ops/rank.mjs:247` |
+| positive + curated, last ledger line already `RANKED` with the same `adjusted_ev` | duplicate attestation suppressed (counted, not appended; malformed history lines fail open) | `ops/rank.mjs:185`, `ops/rank.mjs:175` |
+| positive + curated + `mission_state === 'DISCOVERED'` | advanced to `RANKED`; any state ≥ RANKED never regresses | `ops/rank.mjs:200-204` |
+| in the top 5 of the RANKED curated set | custodian skeleton written unless it exists | `ops/rank.mjs:209-219` |
+
+`adjusted_ev` is derived-only, never persisted: `ev_inputs` is pinned
+`additionalProperties: false` (`bounty-map/schema.json:34`, block
+`bounty-map/schema.json:32-52`) with no such property, ev-report writes no
+file (`ops/ev-report.mjs:17`), and 0/1088 records carry the key
+[corpus-attested as-of 2026-09-28T23:32Z; source tree absent]. The dispatcher
+reads it anyway — `rec.ev_inputs?.adjusted_ev` (mirror
+`ops/fleet-dispatch.mjs:152`; `[lost-tree] ops/fleet-dispatch.mjs:200`) — and
+logs `adjusted_ev: ev ?? 'unknown'` (mirror `ops/fleet-dispatch.mjs:155`), so
+every `mission_dispatched` line records `"unknown"` and `ev_note` is dead code.
+
+Worked example — github-bug-bounty, the single complete record, live
+round-13: 0.9×0.8×0.35×0.7 = 0.1764, gross 1764, cost 1250, adjusted_ev
+**514**, positive true [corpus-attested as-of 2026-09-28T23:32Z; source tree
+absent]. Two re-verifications survive the loss: the mirror's consistency gate
+fails the run unless `adjusted_ev === 514` (`ops/rank.mjs:126-137`, assertion
+`ops/rank.mjs:136`, "M2 verified value"), and the r15 smoke run of the mirror
+`ops/ev-report.mjs` on those inputs printed 0.1764 / 1764 / 1250 / 514 / true.
+
+| EV input | mirror INPUTS cite | mirror DEFAULTS cite | default | consumed by |
+|---|---|---|---|---|
+| `p_in_scope` | `ops/ev-report.mjs:55` | `ops/rank.mjs:56` | 0.7 | `p_success` `ops/ev-report.mjs:77` |
+| `p_reproducible` | `ops/ev-report.mjs:55` | `ops/rank.mjs:56` | 0.7 | `p_success` `ops/ev-report.mjs:77` |
+| `p_unique` | `ops/ev-report.mjs:55` | `ops/rank.mjs:56` | 0.25 | `p_success` `ops/ev-report.mjs:77` |
+| `p_accepted` | `ops/ev-report.mjs:55` | `ops/rank.mjs:56` | 0.6 | `p_success` `ops/ev-report.mjs:77` |
+| `expected_reward` | `ops/ev-report.mjs:56` | `reward.min` `ops/rank.mjs:92` | — | `gross_value` `ops/ev-report.mjs:78` |
+| `effort_hours` | `ops/ev-report.mjs:56` | `ops/rank.mjs:57` | 60 | `total_cost` `ops/ev-report.mjs:79-81` |
+| `opportunity_rate` | `ops/ev-report.mjs:56` | `ops/rank.mjs:57` | 25 | `total_cost` `ops/ev-report.mjs:79-81` |
+| `direct_cost` | `ops/ev-report.mjs:57` | `ops/rank.mjs:57` | 0 | `total_cost` `ops/ev-report.mjs:79-81` |
+| `delay_cost` | `ops/ev-report.mjs:57` | `ops/rank.mjs:57` | 0 | `total_cost` `ops/ev-report.mjs:79-81` |
+| `expected_risk_cost` | `ops/ev-report.mjs:57` | `ops/rank.mjs:58` | 250 | `total_cost` `ops/ev-report.mjs:79-81` |
+
+Cantina's $100 submission fee belongs in `direct_cost`; the schema's other
+cost/time fields are `deadline` (`bounty-map/schema.json:46`), `duration_p90`
+(`bounty-map/schema.json:47`) and `submission_buffer`
+(`bounty-map/schema.json:48`), all inside `bounty-map/schema.json:35-51`.
+Authoritative derivation:
+`corpus/knowledge/triage-thresholds.md` §5 (its `SKILL.md:NNN` cites are
+pinned to blob `fc6d398`), `corpus/knowledge/ev-model.md`.
+
+## Cited paths (verified 2026-09-28 against the then-live tree; round-13 full-set re-audit 705/708 resolved — **and as of round 15 the `~/Projects/bounties` root itself is gone**, so every path below is `[lost-tree]` unless it has a mirror equivalent in `~/Projects/the-bounty-hunter` or lives under `~/Projects/origin-work/open-bug-bounties`. Resolvability is measured, not assumed: `corpus/instruments/resolve.py`, census of record `corpus/instruments/citation-survival.md` — SKILL.md 47/289 = 16.26 % before the round-15 re-anchor, 222/486 = 45.68 % at round close; this header is itself inside the measured file, so the figure is a fixed point only to ±1 token)
 
 - `~/Projects/bounties/fleets/mission-template.md` — L1 mission contract, six-file deliverable spec
 - `~/Projects/bounties/docs/claim-runbook.md` — preflight + operator-only actions
