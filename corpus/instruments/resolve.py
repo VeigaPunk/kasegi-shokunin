@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""kasegi r15 — live citation-resolvability census (the lane's new depth instrument).
+"""kasegi r15 live citation-resolvability census; self-input/leading-dot fixes r18.
 
 Usage: python3 resolve.py <root-of-lane-repo>
 
 Scope (the Target of r15's instrument brief):
-  <root>/SKILL.md  plus  <root>/corpus/**/*.md
+  <root>/SKILL.md plus <root>/corpus/**/*.md, excluding this generated report:
+  <root>/corpus/instruments/citation-survival.md
 
 Extraction rule: lifted verbatim from /tmp/kasegi-r15/density.py's docstring
 ("Path-like rule", which is itself r13's extract.py:is_pathlike + the r14
 :line-anchor tolerance):
   * take every backticked span `` `token` `` in every line;
-  * strip surrounding ".,;:" punctuation; drop http(s)://, xd://, skill://;
+  * strip trailing ".,;:" prose punctuation (leading dots are path data);
   * a token counts when it
       (a) ENDS in a code/doc extension from EXTS (anchored at end),
       (b) ends with '/',
@@ -61,7 +62,8 @@ Outputs (both written next to this script):
   citation-survival.md   headline report
 
 Deterministic: stdlib only, no network, no randomness, no locale; every
-iteration is over a sorted list; output byte-identical across runs.
+iteration is over a sorted list; generated output is excluded from input, so
+output is byte-identical across consecutive runs over unchanged source bytes.
 """
 import glob as globmod
 import os
@@ -81,11 +83,11 @@ GITSTATUS = re.compile(r"^(?:M|A|D|R|\?\?|!!)\s")
 SHELLCMD = re.compile(r"^(?:git|node|npm|cd|ls|cat|grep|find|python3?|jq|tar|cp|mv|rm|chmod|printf|echo|for|if|while)\b|[&|]{2}|\s\|\s")
 REGEXLIT = re.compile(r"^/.*/[a-z]*$")
 REGEXMETA = re.compile(r"[\\()|^$?]|\d|\[")   # guards REGEXLIT against plain paths
-
+GENERATED_REPORT = os.path.normpath("corpus/instruments/citation-survival.md")
 
 def is_pathlike(tok):
     """r13 extract.py rule + r14 :line-anchor tolerance (verbatim)."""
-    t = tok.strip().strip(".,;:")
+    t = tok.strip().rstrip(".,;:")
     if not t or (" " in t and "/" not in t):
         return False
     if t.startswith("http") or t.startswith("xd://") or t.startswith("skill://"):
@@ -193,8 +195,9 @@ def collect(lane_root):
         for dirpath, dirnames, filenames in os.walk(os.path.join(repo, sub)):
             dirnames.sort()
             for fn in sorted(filenames):
-                if fn.endswith(".md"):
-                    files.append(os.path.join(dirpath, fn))
+                candidate = os.path.join(dirpath, fn)
+                if fn.endswith(".md") and os.path.relpath(candidate, repo) != GENERATED_REPORT:
+                    files.append(candidate)
     cites = {}
     for f in files:
         if not os.path.isfile(f):
@@ -203,7 +206,7 @@ def collect(lane_root):
         with open(f, "r", encoding="utf-8") as fh:
             for line in fh:
                 for m in TOKEN.finditer(line):
-                    t = m.group(1).strip().strip(".,;:")
+                    t = m.group(1).strip().rstrip(".,;:")
                     if not is_pathlike(t):
                         continue
                     e = cites.setdefault(t, {"files": set(), "occ": 0})
@@ -285,9 +288,9 @@ def main(argv):
         return "%.2f%%" % (100.0 * n / m) if m else "n/a"
 
     L = []
-    L.append("# citation-survival census — kasegi lane, r15")
+    L.append("# citation-survival census — kasegi lane")
     L.append("")
-    L.append("Instrument: `/tmp/kasegi-r15/resolve.py` (stdlib-only, deterministic).")
+    L.append("Instrument: `corpus/instruments/resolve.py` (stdlib-only, deterministic; r18 definition).")
     L.append("Lane root: `%s`" % repo)
     L.append("Scope: `SKILL.md` + `corpus/**/*.md` (%d files)." % (len(
         {f for r in rows for f in r["files"]})))

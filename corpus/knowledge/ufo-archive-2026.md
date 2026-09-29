@@ -1,6 +1,6 @@
 # ufo-archive-2026 — pre-consolidation claim-hardening wave
 
-Source: `/home/vgpnk/Projects/bounties/fleets/ufo-archive-2026/` (frozen 2026-09-17;
+Source: `[lost-tree] fleets/ufo-archive-2026/` (frozen 2026-09-17;
 read in full 2026-09-28). A snapshot of the 2026-09-06→14 bounty fleet *before*
 the current `fleets/missions|run|leases` layout: 20 `claim-*` L1 hardening
 missions over real `claims/` packages, plus the keeper/whipper substrate that
@@ -27,8 +27,8 @@ generated the `b1k-NNN` run_ids still referenced by `ledger/candidates.jsonl`.
   `scope-snapshots/` or `captures/` (nextcloud), `lanes/round0-*.json`,
   `state-ledger.jsonl`, `run-manifest.json` (sole-L1 model resolution,
   frozen axes).
-- `bounty-keeper/` — `keeper.mjs`: saturated a 16-pane wall, `LAUNCH_CAP 384`,
-  12 h night budget, spawned `b1k-NNN` runs via `ufo-sighting.mjs`. State:
+- `bounty-keeper/` — `[lost-tree] fleets/ufo-archive-2026/bounty-keeper/keeper.mjs`: saturated a 16-pane wall, `LAUNCH_CAP 384`,
+  12 h night budget, spawned `b1k-NNN` runs via `~/Projects/origin-work/ufo-fsd-alpha/scripts/ufo-sighting.mjs`. State:
   launched 265, halted `night_budget` 2026-09-11T09:37Z. **This is the
   producer of the `b1k-NNN` run_ids** in `ledger/candidates.jsonl` and
   `evidence/<program>/b1k-NNN/` dirs.
@@ -90,7 +90,7 @@ report.json` names the chain to reuse when a package may already be filed:
 ## Observed defect taxonomy (what claim packages actually got wrong)
 
 Ordered by recurrence across the 19 missions. This is the empirical superset
-of `claim-check.mjs` — the wave fixed what the gates catch *and* what they
+of `ops/claim-check.mjs` — the wave fixed what the gates catch *and* what they
 don't.
 
 **Gate-binding (checker-visible):**
@@ -194,7 +194,7 @@ planner-vs-sentinel curl dispute resolved to the conditioned-accept path
 same-digest receipts + producer≠verifier. Claim-reviewer replayed the PoC
 live (31/31 PASS, drift = timestamp only). Per-package multi-seat artifacts
 are preserved under `missions/claim-*/` — that is the review-evidence format
-the current `claim-check.mjs` `claim_review` block codifies.
+the current `ops/claim-check.mjs` `claim_review` block codifies.
 
 ## What this archive is NOT
 

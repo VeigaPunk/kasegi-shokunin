@@ -1,6 +1,6 @@
 # `evidence/<program-id>/` — the per-program audit store
 
-Source: `find`/`ls` census of `~/Projects/bounties/evidence/` (592 program
+Source: `find`/`ls` census of `[lost-tree] ~/Projects/bounties/evidence/` (592 program
 dirs), exemplars `evidence/bugcrowd-seek/` and `evidence/sherlock-8/`,
 `ops/fleet-dispatch.mjs`, `docs/plan-round0.md`. Counted 2026-09-28.
 

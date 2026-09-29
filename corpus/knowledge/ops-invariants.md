@@ -2,12 +2,12 @@
 
 Source: `~/Projects/bounties/ops/{shared,validate,registry-check,reroute-drill,
 check-freshness,sighting,sighting-board,sighting-dispatcher,sighting-missions}.mjs|.sh`
-all read in full; `fleets/registry.json` + `.omp/agents/` verified 2026-09-28.
+all read in full; `fleets/registry.json` + `~/Projects/the-bounty-hunter/.omp/agents/` verified 2026-09-28.
 
 These are the fail-closed invariants and the observation deck. None of them
 hunt; they gate every mutation and prove the routing rules hold.
 
-## `shared.mjs` — the constants every other ops file imports
+## `~/Projects/the-bounty-hunter/ops/shared.mjs` — the constants every other ops file imports
 
 Single source of truth (header comment: "Never duplicate these constants in
 another file"). Consumers: validate, registry-check, import-board,
@@ -22,15 +22,15 @@ reroute-drill, fleet-dispatch, park-disposition, finalize-all, check-freshness.
 | `TELEMETRY_EVENTS` | 8 names | the *registry* event kinds (lane_parked, lane_degraded, operator_decree, xask_dry, board_imported, binding_verified, reroute_drill, provenance_drift); runtime kinds are emitted by fleet-dispatch |
 | `sha256File` | bytes→hex | returns `null` on absent path — callers must not confuse null with a digest |
 | `gitMutationBlocker` | fail-closed preflight | refuses when rebase-merge/rebase-apply/MERGE_HEAD/CHERRY_PICK_HEAD exist (`ACTIVE_GIT_OPERATION`) or HEAD not on `main` (`HEAD_NOT_ON_MAIN`); used by finalize-all, fleet-dispatch commits, --sync |
-| `appendLedger` | 3500-byte cap | see `mission-ledger.md` |
+| `appendLedger` | 3500-byte cap | see `corpus/knowledge/mission-ledger.md` |
 
-## `validate.mjs` — schema + referential gate (M1)
+## `~/Projects/the-bounty-hunter/ops/validate.mjs` — schema + referential gate (M1)
 
 Runs three layers, one `ERROR <line>` each, exit 1 on any:
 
 1. **Registry sanity**: every lane id collectable for reference checks.
-2. **Config/card pins**: `.omp/config.yml` `modelRoles:` (2-space-indent regex
-   `^\s{2}(\w+):\s*(\S+)$`) + `.omp/agents/` scanned for BANNED.
+2. **Config/card pins**: `~/Projects/the-bounty-hunter/.omp/config.yml` `modelRoles:` (2-space-indent regex
+   `^\s{2}(\w+):\s*(\S+)$`) + `~/Projects/the-bounty-hunter/.omp/agents/` scanned for BANNED.
 3. **Program records**: hand-rolled subset validator over
    `bounty-map/schema.json` — honors `type/required/properties/enum/pattern/
    additionalProperties:false/minLength/minimum/maximum`, `format:uri`
@@ -41,14 +41,14 @@ Runs three layers, one `ERROR <line>` each, exit 1 on any:
 `--strict <file>` narrows to one record and adds `ev_inputs` non-empty.
 `programs/x.json` auto-prefixes to `bounty-map/`. This is a *subset* checker —
 draft-07 features it doesn't implement (oneOf, $ref, dependencies) silently
-pass. `schema.json`'s own `additionalProperties:false` is what makes the
+pass. `~/Projects/the-bounty-hunter/bounty-map/schema.json`'s own `additionalProperties:false` is what makes the
 subset enforceable.
 
-## `registry-check.mjs` — the deep lane bijection (M4)
+## `~/Projects/the-bounty-hunter/ops/registry-check.mjs` — the deep lane bijection (M4)
 
 Owns what validate.mjs doesn't — seven numbered checks, exit 1 per violation:
 
-1. **Lane↔card bijection**: every non-k3 lane needs `.omp/agents/kx-<lane>.md`;
+1. **Lane↔card bijection**: every non-k3 lane needs `~/Projects/the-bounty-hunter/.omp/agents/kx-<lane>.md`;
    every `kx-*.md` needs a lane (orphan detection via set-consumption).
    `mission_l1` is the documented exception — its "card" is
    `fleets/mission-template.md` because L1s spawn as separate omp sessions.
@@ -79,25 +79,25 @@ nested `@` alias, so it compares `'"@ufo_deepseek_max"'` ≠ primary;
 2026-09-15 charter: reasoning seats on unmetered swe-2) still mismatch
 the registry primaries. Consequence: the M4 deep-invariant gate is
 continuously red → treated as noise → a real lane/card drift would land
-invisibly. Cross-domain (`.omp/` + registry semantics) — reported, not
-fixed here. `validate.mjs` on the same day: `OK (1088 programs, 10 lanes,
+invisibly. Cross-domain (`~/Projects/the-bounty-hunter/.omp/` + registry semantics) — reported, not
+fixed here. `~/Projects/the-bounty-hunter/ops/validate.mjs` on the same day: `OK (1088 programs, 10 lanes,
 0 errors)`.
 
-## `reroute-drill.mjs` — simulation-only identity proof (I6)
+## `~/Projects/the-bounty-hunter/ops/reroute-drill.mjs` — simulation-only identity proof (I6)
 
 `node ops/reroute-drill.mjs --simulate park:<lane>` — the ONLY valid arg
 shape; anything else exits 1. Walks the lane's `bucket` in order, takes the
 first entry that is non-BANNED, non-PARKED, non-K3; degrades to literal
-`'local'` on exhaustion. Never mutates `registry.json`, never spawns, never
+`'local'` on exhaustion. Never mutates `~/Projects/the-bounty-hunter/fleets/registry.json`, never spawns, never
 networks — its one side effect is a `reroute_drill` telemetry line with
 `simulated:true`, `from: primary`, `to: candidate`. Purpose: prove a lane's
 identity survives a primary park without exercising real dispatch.
 
-## `check-freshness.mjs` — honest-alarm staleness (M5)
+## `~/Projects/the-bounty-hunter/ops/check-freshness.mjs` — honest-alarm staleness (M5)
 
 `node ops/check-freshness.mjs [--from <board-root>]` — board defaults to
 `/home/vgpnk/Projects/origin-work/open-bug-bounties`. Requires
-`data/refresh_evidence.json` (run_id + attempted_at_utc) and all three
+`~/Projects/origin-work/open-bug-bounties/data/refresh_evidence.json` (run_id + attempted_at_utc) and all three
 datasets; missing/malformed → `freshness: ERROR`, exit 1.
 
 Per dataset: timestamp = `last_permitted_check_at_utc ??
@@ -118,18 +118,18 @@ windows in the `ufo_sighting` tmux session — `fleet` (watch sighting-board),
 windows, never the session — mission L1 panes live in the same session and
 are untouchable.
 
-- `sighting-board.sh`: one frame = jq table of `fleets/run/*.status.json`
+- `~/Projects/the-bounty-hunter/ops/sighting-board.sh`: one frame = jq table of `fleets/run/*.status.json`
   (program/state/detail) + `git -C claims log --oneline -8` + lease expiry
   list + telemetry tail. Caveat: `git -C claims` resolves to the parent repo
   (claims/ has no `.git`), so the "claims commits" pane shows repo log —
   right data, historical label.
-- `sighting-dispatcher.sh`: 10 s loop — `pgrep -af fleet-dispatch` (prints
+- `~/Projects/the-bounty-hunter/ops/sighting-dispatcher.sh`: 10 s loop — `pgrep -af fleet-dispatch` (prints
   the restart command when dead), last 5 `dispatcher_tick`, last 8
   `mission_dispatched`.
-- `sighting-missions.sh`: 6 s loop of `tmux capture-pane` frames over every
+- `~/Projects/the-bounty-hunter/ops/sighting-missions.sh`: 6 s loop of `tmux capture-pane` frames over every
   non-managed window — the rendered-TUI view. Preferred over the missions
   window when the fleet is idle: `tail -f fleets/run/*.log` matches nothing
   once logs are rotated to `.log.gz` (observed: 0 uncompressed `.log`,
   537 `.log.gz`), so the tail window shows a dead glob.
 
-Display-only: authority stays with `fleet-dispatch.mjs` + the L1 panes.
+Display-only: authority stays with `~/Projects/the-bounty-hunter/ops/fleet-dispatch.mjs` + the L1 panes.

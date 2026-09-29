@@ -9,7 +9,7 @@ are provenance only.
 
 ## Systemic queue gaps (all verified in `ops/claim-index.mjs` source)
 
-1. **`claim-hold/*` tags are inert.** `claim-index.mjs:13` only lists
+1. **`claim-hold/*` tags are inert.** `~/Projects/the-bounty-hunter/ops/claim-index.mjs:12` only lists
    `git tag -l 'claim-ready/*'`; no hold filtering exists anywhere in the
    queue path. Nine `claim-hold/*` tags exist
    (`git tag -l 'claim-hold/*'`, all creatordate 2026-09-05); **FOUR** of
@@ -52,7 +52,7 @@ are provenance only.
 | 3 | hackerone-amazonvrp·ingestion-20260914 | H1 Amazon VRP | Gate 1 re-run `precondition_holds:true` (13/13) — PyPI/npm registry state mutable; Gate 1.5 = policy's own prescribed validation path | None |
 | 4 | hackerone-anthropic·plugin-dev-…injection | H1 Anthropic | **HOLD + DUPLICATE**: `claim-hold` tag ignored by index; same finding as `vdp-disclosures/anthropic-plugin-dev-cmd-injection` (fingerprint above); checklist's duplicate notes list upstream PRs but miss the operator's own disclosure | **CONFIRMED — do not file** |
 | 5 | hackerone-crypto·ingestion-20260914 | H1 crypto.com | None beyond standard operator gates; CWE-639 cross-tenant; package severity is **Low (C:L, I:N, A:N)** (`claim_checklist.md:7,39` — round-13 correction: "critical" is the wildcard asset's reward tier, not the package severity; `status.json` has no severity field) | None |
-| 6 | hackerone-superhuman·ingestion-20260914 | H1 Superhuman | Standard gates; the "re-verify lab-credential redaction" gate **does not exist** in this package (round-13 correction: grep lab → only "Lab Café" Places results); the only attachment gate is the generic "do not attach unrelated secrets or third-party data" (`claim_checklist.md:26`) | None |
+| 6 | hackerone-superhuman·ingestion-20260914 | H1 Superhuman | Standard gates; the "re-verify lab-credential redaction" gate **does not exist** in this package (round-13 correction: grep lab → only "Lab Café" Places results); the only attachment gate is the generic "do not attach unrelated secrets or third-party data" (`[lost-tree] claim_checklist.md:26`) | None |
 | 7 | hackerone-wordpress·unchecked-aaaa-ssrf | H1 WordPress | `claim-hold` tag ignored by index; `submit/channel-block-20260911.md` documents missing authenticated H1 session (renamed from BLOCKED.md — historical channel blocker, not a readiness defect) | Low — channel blocker only |
 | 8 | hackerone-x·ingestion-20260914 | H1 X | Gate 1 mandatory re-verify (`source drifts`); attachment-hygiene gate resolved 2026-09-15 | None |
 | 9 | immunefi-beanstalk·ingestion-20260915 | Immunefi Beanstalk | Deployed-code check required: diamond facets must match source-pinned review (repo HEAD `4e80daa`); bytecode drift = re-verify | None |
@@ -84,8 +84,8 @@ hands back the URL/ID and the fleet records the SUBMITTED transition into
 
 ## Cross-domain reports (filed, not fixed here — bounties repo owner)
 
-- `claim-index.mjs` does not consume `claim-hold/*` — holds are advisory
+- `~/Projects/the-bounty-hunter/ops/claim-index.mjs` does not consume `claim-hold/*` — holds are advisory
   only. Rows 2/4/7/10 queue despite holds (round-13: four, not three).
-- `claim-check.mjs` duplicate scan does not cover `vdp-disclosures/` or the
-  `origin-work/open-bug-bounties/claim-packages/` receipt tree — row 4 is a
+- `~/Projects/the-bounty-hunter/ops/claim-check.mjs` duplicate scan does not cover `vdp-disclosures/` or the
+  `~/Projects/origin-work/open-bug-bounties/claim-packages/` receipt tree — row 4 is a
   verified duplicate that returns `claim-check: OK`.

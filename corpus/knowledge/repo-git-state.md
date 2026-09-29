@@ -14,9 +14,9 @@ commit-sourced claims end 2026-09-06, but the artifacts run to 2026-09-15.
 | `origin/main` | tip `7dce2872` (2026-09-05, "plazir lore: Halley Comet Festival…"), 180 commits; remote `github.com/VeigaPunk/bounties.git` | `git log origin/main` |
 | Dirty tree | **903 entries** = 101 `M` (82 `claims/`, 6 `ops/`, 3 `evidence/`, 3 `.omp/`, 2 `ledger/`, 2 `fleets/`, 2 `docs/`, 1 `.gitignore`) + 802 `??` (307 `claims/`, 234 `evidence/`, 227 `ledger/`, `.ufo*`, root zips, `george/`, `pendle-core-v2-public/`) | `git status --porcelain` |
 | Newest commit anywhere | 2026-09-06 18:31 → **all Sep 7–15 fleet work (b1k overnight, bh* audits, ingestion cycles, bpolish) is working-tree-only** | `git reflog` |
-| Stall age | `.ufo/grok-bounty-assessment-20260911/assessment-manifest.json:41-42` records `repository_commit: "BLOCKED_ACTIVE_PREEXISTING_REBASE"` + `clean_tree_proof: "…_AND_AMBIENT_CHANGES"` (2026-09-11) → stall predates 09-11 | manifest read |
+| Stall age | `[lost-tree] .ufo/grok-bounty-assessment-20260911/assessment-manifest.json:41-42` records `repository_commit: "BLOCKED_ACTIVE_PREEXISTING_REBASE"` + `clean_tree_proof: "…_AND_AMBIENT_CHANGES"` (2026-09-11) → stall predates 09-11 | manifest read |
 
-Consequence: `ops/shared.mjs::gitMutationBlocker` fail-closes with BOTH
+Consequence: `[lost-tree] ops/shared.mjs::gitMutationBlocker` fail-closes with BOTH
 `ACTIVE_GIT_OPERATION` and `HEAD_NOT_ON_MAIN` → every dispatcher
 `commitClaims`/`finalizePush`/`periodicSync` is refused **now**. Any statement that
 "the dispatcher commits/tags/pushes accepted packages" (SKILL.md mission-control
@@ -62,7 +62,7 @@ Hazards:
    add-all (by any tool resolving the rebase) commits gigabytes. The ignored
    622 M `bounty-fleet/session[s]/` is the only bulk that's safe.
 2. **No git provenance for the audit trail:** 656 `claims/` files cite `.ufo/`
-   paths (51 already dangling — see `ufo-workspaces.md` §citations); neither side
+   paths (51 already dangling — see `corpus/knowledge/ufo-workspaces.md` §citations); neither side
    is versioned. The 44+ mission audit trail exists only on this filesystem.
 3. **Commit-based claims must state their epoch:** "committed 9dc20e64/b01f9de4"
    citations (submitted-registry) are pre-09-06 and remain valid; anything citing

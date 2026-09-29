@@ -7,7 +7,7 @@ spellings), `ledger/missions.jsonl`, `fleets/run/portal-reconciliation-
 2026-09-11.json`, `.ufo/claim-recovery/final-audit.json`, `vdp-disclosures/`,
 stale git tags, archive-era mission reports, the root snapshot zips — AND
 the live sibling tree `~/Projects/origin-work/open-bug-bounties/
-claim-packages/` (the true home of `submission-review/` receipts). This is
+claim-packages/` (the true home of `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/` receipts). This is
 the merged table.
 
 ## Verified submissions (receipt-bound)
@@ -23,8 +23,8 @@ the merged table.
 **The receipt-bearing packages are not gone — they moved to the sibling
 tree.** `~/Projects/origin-work/open-bug-bounties/claim-packages/` is a
 LIVE, separate claim corpus (~26 package dirs incl. all six old slugs,
-`CONNECTOR.md`, `_schema.json`, `submission-review/`). Its
-`submission-review/submission-receipts.csv` (verified live):
+`CONNECTOR.md`, `_schema.json`, `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/`). Its
+`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/submission-receipts.csv` (verified live):
 
 ```
 canonical_id,company,platform,report_id,report_url,submitted_at,status
@@ -39,7 +39,7 @@ under `A-open-bug-bounties/<slug>/` (a copy of this tree). Verified: no
 receipt ID appears anywhere under `bounties/claims/`. Do-not-refile rules
 still apply — a re-hunt that reproduces these findings must not file a
 second report. And the blind spot is bigger than VDP: **no bounties-repo
-tool (`claim-check`, `claim-index`) reads `origin-work/` at all** — the
+tool (`claim-check`, `claim-index`) reads `~/Projects/origin-work/` at all** — the
 entire second claim corpus is outside every scan.
 
 | Report | Program/pkg (old name) | Submitted | State |
@@ -60,11 +60,11 @@ auth-walled per `docs/continuation-notes.md`).
 REAL-SUBMISSION ~65–70% — paired mtimes with the attested 4028846 write
 pattern, sequential same-session H1 ID block, no local receipt template.
 Public check = login-wall 403 (existence unverifiable, not absence).
-`submission-review/receipts/CONTRADICTION.md` (in the origin-work tree,
+`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/receipts/CONTRADICTION.md` (in the origin-work tree,
 mission claim-elastic 2026-09-14) is the additive warning file: each orphan
 receipt conflicts with admin records (`submission-receipts.csv` no row,
-`queue.json` `submitted:false`, `claims/*.json` `submitted:false`,
-`run.json` `external_submissions:0`) — while paired `attachment-manifest.json`
+`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/queue.json` `submitted:false`, `claims/*.json` `submitted:false`,
+`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/run.json` `external_submissions:0`) — while paired `attachment-manifest.json`
 files self-contradictorily carry `uploaded:true` + `platform_report_id` —
 each also names the pkg under `esapi-*`/`aiven-karapace-acl-prefix`.
 Operator action pending: authenticated H1/Bugcrowd inbox check; if real,
@@ -117,23 +117,23 @@ sibling-package scan enumerates only
 match, ≥16-char titles). `vdp-disclosures/` and archive receipts are outside
 the tree. Runtime proof: `node ops/claim-check.mjs
 claims/hackerone-anthropic/plugin-dev-test-hook-command-injection` → `OK`
-despite the VDP receipt. `claim-index.mjs` builds the queue from the same
+despite the VDP receipt. `ops/claim-index.mjs` builds the queue from the same
 package set — no separate VDP/archive scan.
 
-**The gap is wider than VDP:** the entire `origin-work/.../claim-packages/`
+**The gap is wider than VDP:** the entire `~/Projects/origin-work/open-bug-bounties/claim-packages/`
 corpus (~26 packages, 6 receipt JSONs, `submission-receipts.csv`,
-`queue.json`) is outside every bounties-repo scan — `claim-check`,
+`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/queue.json`) is outside every bounties-repo scan — `claim-check`,
 `claim-index`, and every status-glob see only `~/Projects/bounties/claims/`.
 A re-staged finding from the origin-work tree collides with nothing the
 checker reads.
 
 Advisory upstream fix (bounties-repo owned, not kasegi): extend the
 duplicate predicate to consume `vdp-disclosures/*/SUBMITTED.md` (receipt) +
-sibling `report.md` (identity: commit+file+sha256+CWE, not title alone) and
-an archive-receipt index; `claim-index.mjs` then inherits the exclusion via
+sibling `[lost-tree] vdp-disclosures/<slug>/report.md` (identity: commit+file+sha256+CWE, not title alone) and
+an archive-receipt index; `ops/claim-index.mjs` then inherits the exclusion via
 claim-check. Add a regression case for this pair.
 
-## Field-semantics traps (verified against `claim-check.mjs` source)
+## Field-semantics traps (verified against `ops/claim-check.mjs` source)
 
 - `submitted_url` = the filed-report URL (`/reports/<id>`); `submission_url`
   / `submission_uri` / `submission_email` = the *destination endpoint*, not
@@ -183,7 +183,7 @@ claim-check. Add a regression case for this pair.
   commits) and 9 `claim-hold/*` (incl. anthropic; telemetry shows its
   `claim-ready` tag was pushed then superseded by `claim-hold` — yet the
   generated index still queues it as row 4). Tags are provenance, never
-  authority: `claim-index.mjs` re-validates current bytes.
+  authority: `ops/claim-index.mjs` re-validates current bytes.
 
 ## Status-less claim dirs (15 of 295 — not real packages)
 
@@ -196,9 +196,9 @@ Three sub-classes (L2-verified file census):
   stage from the hunt2-deferred seeding wave (2026-09-14/15). Two are not
   bare: `discord-bug-bounty` carries 8 recon artifacts under `evidence/`;
   `microsoft-bounty-family` carries `evidence/falsification-ledger.md`.
-- `bugcrowd-stiltsoft/honest-zero`: `report.md` + `custodian-receipts.json` +
+- `bugcrowd-stiltsoft/honest-zero`: `[lost-tree] claims/bugcrowd-stiltsoft/honest-zero/report.md` + `custodian-receipts.json` +
   empty `evidence/`,`submit/` — partial package, no status.
-- `bugcrowd-t-mobile/honest-zero`: `BLOCKED.md` only (81 bytes).
+- `bugcrowd-t-mobile/honest-zero`: `[lost-tree] claims/bugcrowd-t-mobile/honest-zero/BLOCKED.md` only (81 bytes).
 
 Status histogram over the 280 real packages: PARKED 248, BLOCKED 15,
 DONE 15, SUBMITTED 2 (= 280; round-12 correction: BLOCKED was 16 and a

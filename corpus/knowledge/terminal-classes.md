@@ -1,6 +1,6 @@
 # Terminal classes — how missions end
 
-Source: `~/Projects/bounties/docs/continuation-notes.md` (486-mission freeze
+Source: `[lost-tree] docs/continuation-notes.md` (486-mission freeze
 partition), `docs/review-verdicts.jsonl` (verdict counts), `docs/wrap-report.md`
 (claim-review gate outcomes). Read 2026-09-28.
 
@@ -38,6 +38,6 @@ capture; WordPress pinned-checkout rerun).
 - `coverage.missing` semantics: empty `in_scope_assets` = "not observed in this
   response", not "no scope exists".
 - "Best among observed" — never claim exhaustive testing
-  (`mission-template.md` NEVER list).
+  (`fleets/mission-template.md` NEVER list).
 - `claim-ready/*` git tags are provenance markers only; never authority over
   current bytes (`docs/claim-ready-index.md` excluded-tags table).

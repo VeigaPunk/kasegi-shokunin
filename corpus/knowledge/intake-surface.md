@@ -1,15 +1,15 @@
 # Intake surface — bounty-map census, ingestion pipeline, registry decree ledger
 
 All numbers verified live 2026-09-28 by census over
-`~/Projects/bounties/bounty-map/programs/*.json` (1088 records, 0 parse
+`[lost-tree] ~/Projects/bounties/bounty-map/programs/*.json` (1088 records, 0 parse
 failures), `ops/` source reads, and `node ops/check-freshness.mjs` (exit 1).
 
 ## Two intake paths, and the second never writes the map
 
 | Path | Producer | Writes | Consumers |
 |---|---|---|---|
-| Board import | `ops/import-board.mjs --from <board>` (evidence-bound: dataset sha256 + count + `refresh_run_id` vs `refresh_evidence.json`) | `bounty-map/programs/*.json` — new records land `{lane:"executor", mission_state:"DISCOVERED", ev_inputs:{}}`; past-DISCOVERED files are byte-protected | `fleet-dispatch.mjs::buildQueue`, `ev-report.mjs`, `rank.mjs`, `validate.mjs` |
-| Ingestion cycle | `.ufo-ingestion/cycle-20260914T171257Z.md` (run `ing4e0158f74cf3`, 16 scouts, grok 403 spending-limit → rerouted `devin/swe-2:max` via `.omp/agents/ing-scout.md`) | `claims/<slug>/ingestion-20260914/` directly — INGESTION.md + claim.json (`stage:"ingestion-seeded"`) | `claim-index.mjs` queue only |
+| Board import | `ops/import-board.mjs --from <board>` (evidence-bound: dataset sha256 + count + `refresh_run_id` vs `refresh_evidence.json`) | `bounty-map/programs/*.json` — new records land `{lane:"executor", mission_state:"DISCOVERED", ev_inputs:{}}`; past-DISCOVERED files are byte-protected | `fleet-dispatch.mjs::buildQueue`, `~/Projects/the-bounty-hunter/ops/ev-report.mjs`, `~/Projects/the-bounty-hunter/ops/rank.mjs`, `~/Projects/the-bounty-hunter/ops/validate.mjs` |
+| Ingestion cycle | `.ufo-ingestion/cycle-20260914T171257Z.md` (run `ing4e0158f74cf3`, 16 scouts, grok 403 spending-limit → rerouted `devin/swe-2:max` via `.omp/agents/ing-scout.md`) | `claims/<slug>/ingestion-20260914/` directly — INGESTION.md + claim.json (`stage:"ingestion-seeded"`) | `~/Projects/the-bounty-hunter/ops/claim-index.mjs` queue only |
 
 **The ingestion cycle wrote no map records itself.** 22 claim dirs have
 no program record (round-13 correction: the seeding did NOT make all 13
@@ -23,7 +23,7 @@ immunefi-1inch-SmartContracts/moneyonchain, sherlock-aave-v4, discord, dji,
 riot, adobe, brave, **hackerone-zabbix** — omitted from earlier lists,
 nvidia-public, intigriti-c1a89c7e, github-bounty). The ranked table in
 `cycle-*.md` (EV-scored, 13 SEEDED / 1 REJECTED / 18 DEFERRED) is the real
-curated ranking — richer than anything `rank.mjs` produces off the map.
+curated ranking — richer than anything `~/Projects/the-bounty-hunter/ops/rank.mjs` produces off the map.
 ~80 more programs are queued for next-cycle evaluation inside the cycle file's
 scan queue; that cycle never ran (tracker log's last line is
 2026-09-14T17:24:52Z; 20:40:15Z is the `.md` snapshot cycle stamp —
@@ -35,14 +35,14 @@ round-12 correction).
 `refresh-20260829T190850329Z` — a single board import; nothing since.
 
 - `mission_state`: DISCOVERED ×1087, PLANNED ×1 (`github-bug-bounty`).
-  **The field is write-only drift.** `import-board.mjs` never advances it;
+  **The field is write-only drift.** `~/Projects/the-bounty-hunter/ops/import-board.mjs` never advances it;
   `fleet-dispatch.mjs::programState()` (line 74) reads it only for the
   `--dry` log line (line 177). Real mission progress lives in
   `ledger/missions.jsonl`; real dispatch termination is
   `fleets/run/<id>.status.json` TERMINAL (`DONE/PARKED/FAILED/RETIRED`) +
   `attempts()≥2` counted from telemetry park/fail events. 10 of the 12
   schema enum values are never populated. One real writer exists —
-  `rank.mjs:202-203` bumps DISCOVERED→RANKED — but no RANKED record exists.
+  `~/Projects/the-bounty-hunter/ops/rank.mjs:202-203` bumps DISCOVERED→RANKED — but no RANKED record exists.
   Round-13 correction: "it never ran post-refresh" was an unbounded negative —
   `--write-queue` ran ≥2× on 2026-09-04 (2 `RANKED` lines in
   `ledger/missions.jsonl` in rank.mjs's exact hardcoded append shape incl.
@@ -56,7 +56,7 @@ round-12 correction).
   `fleets/registry.json` lane definitions, not per-program.
 - `ev_inputs`: exactly **1** non-empty record (`github-bug-bounty`, curated
   M2 values, `sources.note` cites missions.jsonl mission-0). Consequence:
-  `ev-report.mjs` prints `UNKNOWN` for 1087/1088 programs and `rank.mjs`'s
+  `~/Projects/the-bounty-hunter/ops/ev-report.mjs` prints `UNKNOWN` for 1087/1088 programs and `~/Projects/the-bounty-hunter/ops/rank.mjs`'s
   `inputs_basis:"curated"` consistency gate passes on a population of one.
 - `reward`: 48 records, **all `source_kind=independent`** — the platform
   (767) and web3 (273) datasets carry no reward fields at all. medians:
@@ -65,7 +65,7 @@ round-12 correction).
   records carry the identical `as_of` = the refresh-run timestamp, so the
   label describes the dataset, not per-program recency. Live check
   2026-09-28: all three datasets 358.2 h stale vs the 26 h threshold —
-  `check-freshness.mjs` exits 1 (honest alarm AR4, currently firing).
+  `~/Projects/the-bounty-hunter/ops/check-freshness.mjs` exits 1 (honest alarm AR4, currently firing).
 - `source_kind`: platform 767 / web3 273 / independent 48, in 1:1 lockstep
   with `board_ref.dataset`.
 - Coverage: 586/592 `evidence/` dirs have map records; 252/274 `claims/`
@@ -105,9 +105,9 @@ Read-only continuous scanner (mission `trk263db49c589`, "~5 min refresh")
 watching BOTH `claims/` AND
 `~/Projects/origin-work/open-bug-bounties/claim-packages/` — the third
 consumer of the sibling tree no ops tool reads (see
-`submitted-registry.md`). Its claimable rule is `READY.md` present AND no
+`corpus/knowledge/submitted-registry.md`). Its claimable rule is `READY.md` present AND no
 `BLOCKED.md` beneath/above — a weaker, earlier standard than
-`claim-check.mjs`; **all 24** of its "claimable" hits are origin-tree packages
+`~/Projects/the-bounty-hunter/ops/claim-check.mjs`; **all 24** of its "claimable" hits are origin-tree packages
 ($13,733 tracked `expected_usd`, most flagged "claim.json
 absent/unparseable"). Outputs: `claim-ready-tracker.{md,json,log}` +
 `claim-ready-ledger.json` (first_seen/last_seen per package). The tracker is
@@ -141,7 +141,7 @@ behind package dispositions that claim files only gesture at:
   finding was VDP-dismissed as nothing.
 - `intel_hold_2026_09_06` — no Intigriti ID verification → held (matches the
   live `submit/BLOCKED-2026-09-11.md` on the intel package).
-- Routing machinery (for `ops/validate.mjs`/`registry-check.mjs` context):
+- Routing machinery (for `ops/validate.mjs`/`~/Projects/the-bounty-hunter/ops/registry-check.mjs` context):
   `k3_seats` = judge+planner, `reroute_rules` I3/I6/I7, `omp_seat`, bucket
   fallbacks, `dual_method_schedule` (UTC-3 12–22 → Chinese stack, else
   astra-class), `token_plan_limit_contingency` → grok-only lane.

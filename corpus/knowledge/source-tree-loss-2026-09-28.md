@@ -1,6 +1,6 @@
 # Source-tree loss 2026-09-28 — PROVINCE root absent; mirror provenance
 
-**Event.** `~/Projects/bounties` — the kasegi PROVINCE root (`PROVINCE.md:3`),
+**Event.** `~/Projects/bounties` — the kasegi PROVINCE root (`./PROVINCE.md:3`),
 the anchor of every `~/Projects/bounties/...` citation in `SKILL.md` and all 22
 `corpus/knowledge/*.md` entries — is absent from the filesystem as of round 15.
 Recorded so the loss is known-deliberate and every citation in this lane carries
@@ -50,7 +50,7 @@ in-round — the full-depth searches above are the ones that count).
 
 Round-12 already escalated the tree's fragility (stalled interactive rebase since
 before 2026-09-11, 903 dirty entries, `george/` 49 G + `.ufo/` 1.5 G untracked
-and un-ignored: `repo-git-state.md`, `.ufo/l0-questions.md` kasegi round-12 row).
+and un-ignored: `corpus/knowledge/repo-git-state.md`, `.ufo/l0-questions.md` kasegi round-12 row).
 Whether this loss is that cleanup, an operator reorg, or an accident is an
 operator question — appended to `.ufo/l0-questions.md` as the kasegi round-15 row.
 Never reverted, never re-created: this lane wrote nothing under `~/Projects`.
@@ -86,7 +86,7 @@ template"; touches only `ops/finalize-all.mjs` +39 and `ops/fleet-dispatch.mjs`
 **34 files / 8 dirs** (`.omp{,/agents}`, `bin`, `bounty-map`, `docs`, `fleets`,
 `ops`). No commit after 2026-09-05 → the mirror is a **frozen Sep-5 state**,
 10 days older than the lost tree's last-read state (work through 2026-09-15,
-telemetry to 2026-09-28). `bounty-map/` holds **only** `schema.json`;
+telemetry to 2026-09-28). `bounty-map/` holds **only** `bounty-map/schema.json`;
 `bounty-map/programs/` does not exist → 0 records. It is the ONLY copy of these
 ops files left on disk: `find /home/vgpnk -maxdepth 8 \( -name ev-report.mjs -o
 -name fleet-dispatch.mjs -o -name claim-check.mjs \)` → 3 hits, all under this root.
@@ -103,15 +103,15 @@ second copy exists anywhere on disk.
 | mirror file | lines | sha256 (12) | vs the corpus's live-tree anchors | verdict |
 |---|---:|---|---|---|
 | `ops/ev-report.mjs` | 92 | `ba5485ed6a5d` | all 14 distinct cited spans resolve at **0 offset** (`:23-26`,`:30-33`,`:38-41`,`:46`,`:47`,`:50`,`:54-58`,`:59-70`,`:73-75`,`:77`,`:78`,`:79-81`,`:82`,`:86-89`,`:91`,`:92`) | **REVISION-IDENTICAL** |
-| `bounty-map/schema.json` | 68 | `1a2fd18e9c2d` | `ev_inputs` block = `:32-52` (`additionalProperties:false` `:34`, `p_*` bounds `:36-39`, `expected_reward`…`expected_risk_cost` `:40-45`, `deadline`/`duration_p90`/`submission_buffer` `:46-48`, `as_of` `:49`, `sources` `:50`) — corpus `ev-model.md:30` wrote `:32-51`, off by one on the closing brace | **REVISION-IDENTICAL** (corpus cite off-by-one, repaired r15) |
+| `bounty-map/schema.json` | 68 | `1a2fd18e9c2d` | `ev_inputs` block = `:32-52` (`additionalProperties:false` `:34`, `p_*` bounds `:36-39`, `expected_reward`…`expected_risk_cost` `:40-45`, `deadline`/`duration_p90`/`submission_buffer` `:46-48`, `as_of` `:49`, `sources` `:50`) — corpus `corpus/knowledge/ev-model.md:37-38` wrote `:32-51`, off by one on the closing brace | **REVISION-IDENTICAL** (corpus cite off-by-one, repaired r15) |
 | `ops/rank.mjs` | 249 | `e724186c1330` | `DEFAULTS` `:55-59` (values `:56-58`) exactly as cited; consistency gate `:126-137` pins `github-bug-bounty` `adjusted_ev === 514` at `:136`; artifact `:140-148`; `inputs_basis` `:103`/`:111`; RANKED suppression `:167-186`; `mission_state` advance `:198-203` | **REVISION-IDENTICAL** for the cited anchors |
 | `ops/park-disposition.mjs` | 80 | `868057c96cc8` | classifier regexes `:18-21`, PARKED/FAILED filter `:25`, first-match order `:28-32`, dry-run exit `:41`, `mkdir docs/autopsies` `:43`, RETRY telemetry `:46-47` + `rmSync` `:48`, autopsy writer `:53-74`, RETIRED rewrite `:75-77`, `mission_retired` `:78` | **REVISION-IDENTICAL** for the cited anchors |
-| `ops/fleet-dispatch.mjs` | 330 (331st line unterminated) | `40f4a5a303dd` | score `:97` has **3 terms** (`curated 1e12` + `reward.min*1000` + `is_live 1`) — the live tree's `:110` had **5** (`priority 9e12`, `continue 2e12` first); repo-wide grep for `priority.json`/`review-verdicts`/`9e12`/`2e12` = 0 hits; `LEASE_MS :43` vs live `:45`; `MAX_ATTEMPTS :44` vs `:46`; `TERMINAL :45` vs `:47`; `attempts() :72-79` vs `:78-85`; `adjusted_ev` read `:152`/logged `:155`/`ev_note` `:156` vs live `:200`/`:204`; `MODEL :32` `qwen3.8-max:xhigh` vs live `deepseek-v4-pro:max`; peak model `:221` `gpt-daybreak-blue-latest:max` vs live `gpt-6-astra:max`; family regex `:192` vs `:271`; `SYNC_PATHS[0] :269` `claims` vs `claims/README.md`; no `GRID`/`formation`; poll `:312` vs `:409`; live file was **427 lines** (`mission-control.md:3`, `triage-thresholds.md:444`) | **EARLIER STATE** (−97 lines, tiers not yet added) |
+| `ops/fleet-dispatch.mjs` | 330 (331st line unterminated) | `40f4a5a303dd` | score `:97` has **3 terms** (`curated 1e12` + `reward.min*1000` + `is_live 1`) — the live tree's `:110` had **5** (`priority 9e12`, `continue 2e12` first); repo-wide grep for `priority.json`/`review-verdicts`/`9e12`/`2e12` = 0 hits; `LEASE_MS :43` vs live `:45`; `MAX_ATTEMPTS :44` vs `:46`; `TERMINAL :45` vs `:47`; `attempts() :72-79` vs `:78-85`; `adjusted_ev` read `:152`/logged `:155`/`ev_note` `:156` vs live `:200`/`:204`; `MODEL :32` `qwen3.8-max:xhigh` vs live `deepseek-v4-pro:max`; peak model `:221` `gpt-daybreak-blue-latest:max` vs live `gpt-6-astra:max`; family regex `:192` vs `:271`; `SYNC_PATHS[0] :269` `claims` vs `claims/README.md`; no `GRID`/`formation`; poll `:312` vs `:409`; live file was **427 lines** (`corpus/knowledge/mission-control.md:3`, `corpus/knowledge/triage-thresholds.md:25`) | **EARLIER STATE** (−97 lines, tiers not yet added) |
 | `ops/shared.mjs` | 41 | `2497578a44e5` | `BANNED :7`, `PARKED :8` (empty; chatgpt park lifted 2026-09-04), `K3_SEATS :9`, `K3_TOKEN :11`, `TELEMETRY_EVENTS` 8 names `:13-22`, `sha256File :25-31`, `appendLedger` 3500-byte cap `:33`(comment)/`:38`(enforcement), `O_APPEND`/`PIPE_BUF` note `:34` — but **`gitMutationBlocker` absent** (0 hits), which the live tree had and `SKILL.md` cites | **EARLIER STATE** |
-| `ops/claim-check.mjs` | 83 | `93679ea1d29b` | `err(` call sites **19** vs the live file's **48**; `symlink`/`lstatSync` 0 hits, `NO_SCOPE_OBJECTION`/`matched_grant_id`/`decision_sha256`/`manifest_sha256`/`claim_review`/`finding_count`/`submission_performed`/`BLOCKED.md`/`schema_version` all **0 hits**; keeps only `SECRET` regex `:66`, 5 MiB skip `:69`, `HARD_STOP` `:56`, artifact-missing `:42`; live file was 233+ lines (`claim-gates.md:3`) | **EARLIER STATE** (much thinner; the entire `status.json` gate family postdates it) |
+| `ops/claim-check.mjs` | 83 | `93679ea1d29b` | `err(` call sites **19** vs the live file's **48**; `symlink`/`lstatSync` 0 hits, `NO_SCOPE_OBJECTION`/`matched_grant_id`/`decision_sha256`/`manifest_sha256`/`claim_review`/`finding_count`/`submission_performed`/`BLOCKED.md`/`schema_version` all **0 hits**; keeps only `SECRET` regex `:66`, 5 MiB skip `:69`, `HARD_STOP` `:56`, artifact-missing `:42`; live file was 233+ lines (`corpus/knowledge/claim-gates.md:3`) | **EARLIER STATE** (much thinner; the entire `status.json` gate family postdates it) |
 | `ops/{validate,registry-check,check-freshness,reroute-drill,finalize-all,import-board,claim-index}.mjs` | 130/189/62/70/39/258/49 | `81c7fdea0ce8`/`ada8e678447f`/`63df3bc0eabf`/`51fa772d877b`/`13a5b95da61a`/`29e7aa47252d`/`09d0bb943518` | constants re-anchored this round (validate RFC3339 `:27`, vacuous `PARKED_TOKEN` `:28`, k3 seat check `:63-65`, `--strict ev_inputs` `:120-121`; registry-check grok-`:low` pin `:34-43`, bijection `:57-80`, bucket hygiene `:117-122`; check-freshness `THRESHOLD_H = 26` `:15`, default board `:14`, telemetry append `:61`, exit `:59`; reroute-drill `/^park:(.+)$/` `:20`, `simulated:true` `:63-69`) | usable, per-anchor verification required |
 | `fleets/{mission-template.md,registry.json}` | — | `0d4ff5944c4f`/`173921b1806f` | template carries the six-file contract + `I8` + the report.md field list (`:50` incl. "disclosure timeline"); registry present | usable |
-| **VDP surface** | 0 | — | `grep -rniE 'vdp\|disclos\|no.?payout\|disclosed_free'` over the whole mirror (excl `.git`) hits only `fleets/mission-template.md:50`, `docs/genesis-plan.md:15,17`, `.omp/agents/scope-evidence-custodian.md:83,104,118,129,139`, `.omp/agents/the-bounty-hunter.md:28` — **zero hits in any `ops/*.mjs`**, no `vdp-disclosures/` dir | **NOT IN MIRROR** |
+| **VDP surface** | 0 | — | `grep -rniE 'vdp\|disclos\|no.?payout\|disclosed_free'` over the whole mirror (excl `.git`) hits only `fleets/mission-template.md:50`, `docs/genesis-plan.md:15,17`, `.omp/agents/scope-evidence-custodian.md:83,104,118,129,139`, `~/Projects/the-bounty-hunter/.omp/agents/the-bounty-hunter.md:28` — **zero hits in any `ops/*.mjs`**, no `vdp-disclosures/` dir | **NOT IN MIRROR** |
 
 Direction of divergence is one-way: where the mirror differs it is *missing*
 what the live tree had (tiers, blocker, gate families, GRID) — never the reverse
@@ -122,15 +122,15 @@ not a substitute for it.
 
 ### 4.2 `~/Projects/origin-work/open-bug-bounties` — the origin-work claim corpus
 
-Pre-existing and already partially documented (`submitted-registry.md`: the real
-receipt store). Inventory re-taken this round: `claim-packages/` = **26 package
-dirs + 3 files** (`README.md`, `CONNECTOR.md`, `_schema.json`), **0 `status.json`**
+Pre-existing and already partially documented (`corpus/knowledge/submitted-registry.md`: the real
+receipt store). Inventory re-taken this round: `~/Projects/origin-work/open-bug-bounties/claim-packages/` = **26 package
+dirs + 3 files** (`~/Projects/origin-work/open-bug-bounties/claim-packages/README.md`, `~/Projects/origin-work/open-bug-bounties/claim-packages/CONNECTOR.md`, `~/Projects/origin-work/open-bug-bounties/claim-packages/_schema.json`), **0 `status.json`**
 anywhere under it (this corpus predates the six-file/`status.json` contract),
-`claim-packages/submission-review/` = receipts + `claims/` **21 entries**,
-`.ufo-missions/` **43 entries**, `data/` 5 inventories
-(`independent_programs.json` 34 811 B, `platform_programs.json` 218 131 B,
-`web3_programs.json` 78 770 B, `refresh_evidence.json` 24 047 B, `programs.ts`),
-git HEAD `1307b8b`. `check-freshness.mjs:14` in the mirror defaults its board to
+`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/` = receipts + `claims/` **21 entries**,
+`.ufo-missions/` **43 entries**, `~/Projects/origin-work/open-bug-bounties/data/` 5 inventories
+(`~/Projects/origin-work/open-bug-bounties/data/independent_programs.json` 34 811 B, `~/Projects/origin-work/open-bug-bounties/data/platform_programs.json` 218 131 B,
+`~/Projects/origin-work/open-bug-bounties/data/web3_programs.json` 78 770 B, `~/Projects/origin-work/open-bug-bounties/data/refresh_evidence.json` 24 047 B, `programs.ts`),
+git HEAD `1307b8b`. `ops/check-freshness.mjs:14` in the mirror defaults its board to
 exactly this path — the two surviving roots are wired together by the ops code.
 **Not censused** (top-level inventory only) → the round-16 coverage move.
 
@@ -145,12 +145,12 @@ exactly this path — the two surviving roots are wired together by the ops code
    of a file this lane keeps editing (see §6).
 2. Never substitute a mirror line number for a lost-tree line number silently.
    Where both are known, cite both and label each (`Triage economics` in
-   `SKILL.md` does this for `fleet-dispatch.mjs`).
+   `SKILL.md` does this for `ops/fleet-dispatch.mjs`).
 3. Facts whose only source was the DATA half can never be re-verified; they
    carry `[corpus-attested as-of 2026-09-28T23:32Z; source tree absent]`.
 4. Semantics that the mirror can still execute are **runnable-verified**, which
    is stronger than a line cite: r15 smoke-ran a byte-identical copy of the
-   mirror `ev-report.mjs` (`/tmp/kasegi-r15/ev-smoke`, copy sha256 == mirror
+   mirror `ops/ev-report.mjs` (`/tmp/kasegi-r15/ev-smoke`, copy sha256 == mirror
    sha256) and reproduced every branch — no-arg → exit 2; missing file → exit 2;
    unparseable → `WARNING` + all-10 `UNKNOWN` + exit 0; missing `p_accepted` →
    `total_cost` still computed, `adjusted_ev` UNKNOWN, verdict `unknown`, exit 0;
@@ -181,8 +181,8 @@ rule artifacts. Strict-reading variant (mirror name-survival NOT counted as
 resolvable): 44/289 = 15.22 % SKILL, 112/971 = 11.53 % corpus, 137/1107 = 12.38 %
 lane. **Name survival is not content survival**: of 53 resolvable line-anchored
 citations, 51 are in range and 2 are past the mirror's EOF
-(`ops/claim-check.mjs:174-199` cited by `submitted-registry.md:105` against an
-83-line file; `ops/shared.mjs:55` cited by `corpus/lessons/round-4-aggregator-audit.md:26`
+(`[lost-tree] ops/claim-check.mjs:174-199` cited by `corpus/knowledge/submitted-registry.md:105` against an
+83-line file; `[lost-tree] ops/shared.mjs:55` cited by `corpus/lessons/round-4-aggregator-audit.md:26`
 against 41 lines) — both are mirror-backed name matches with lost content.
 Compare r13/r14: 705/708 = 99.6 % of counted SKILL citations resolved. The proxy
 did not change; the filesystem did.
@@ -221,11 +221,11 @@ present them as live again without a restored tree.
   `:61`,`:67`,`:72`) and `SKILL.md` itself listed seven while calling them five.
   `corpus/knowledge/retirement-autopsies.md:38` heading "five fixed parts"
   repaired the same way.
-- `corpus/knowledge/ev-model.md:30` `schema.json:32-51` → `:32-52` (block closes
+- `corpus/knowledge/ev-model.md:37-38` `bounty-map/schema.json:32-51` → `:32-52` (block closes
   one line later; the properties body `:35-51` was already right).
-- `triage-thresholds.md` SKILL-cite anchor base pinned to blob `fc6d398` (§6).
+- `corpus/knowledge/triage-thresholds.md` SKILL-cite anchor base pinned to blob `fc6d398` (§6).
 - `SKILL.md` `## Triage economics` re-anchored to the mirror with per-constant
-  cites + dual-base citing for `fleet-dispatch.mjs`; `## Ops integrity layer`,
+  cites + dual-base citing for `ops/fleet-dispatch.mjs`; `## Ops integrity layer`,
   `## VDP disclosure packages`, `## Retirement lane` re-anchored/stamped likewise.
 
 ## 9. Round-15 verification corrections (L2 falsifications L1 accepted)
@@ -237,7 +237,7 @@ Nine independent L2 audits ran against this event (critic, sentinel, revenger,
 - **"REVISION-IDENTICAL" is unprovable and was overstated.** The lost bytes are
   gone, so a 0-offset anchor match proves *anchor compatibility*, not identity.
   §4.1's verdicts now read ANCHOR-COMPATIBLE. Two supporting details: r13
-  recorded the missing-argument exit at `ev-report.mjs:25` while the branch is
+  recorded the missing-argument exit at `ops/ev-report.mjs:25` while the branch is
   `:23-26` (stale-by-one, immaterial); and the mirror's own header comment
   `ops/ev-report.mjs:16` says only "exit 2 if the program file is missing"
   while the code also exits 2 on a missing argument (`:23-26`) — a
@@ -247,8 +247,8 @@ Nine independent L2 audits ran against this event (critic, sentinel, revenger,
   objects; `git fsck` clean; `main == origin/main == 1cfbd86`; tag `v0.1.0`.
   The local repo is therefore the **origin** of the GitHub remote, not a clone.
   9 of 10 sampled `ops/*.mjs` are byte-identical to the initial commit
-  `37c3668` (A=C 2026-09-05T09:06:07-03:00); only `finalize-all.mjs` (new) and
-  `fleet-dispatch.mjs` (modified) changed in `1cfbd86`, whose message overstates
+  `37c3668` (A=C 2026-09-05T09:06:07-03:00); only `ops/finalize-all.mjs` (new) and
+  `ops/fleet-dispatch.mjs` (modified) changed in `1cfbd86`, whose message overstates
   its own delta. So the mirror's ops state is the 09:06:07 snapshot for those 9.
 - **No second copy exists**: `git cat-file -e` fails for all 6 lost-path probes
   against `1cfbd86`; a filesystem-wide sweep for the six ops filenames found
@@ -285,15 +285,15 @@ Nine independent L2 audits ran against this event (critic, sentinel, revenger,
   `docs/autopsies/`, `evidence/`, `bounty-map/programs/` inside a read-only
   product repo; the mirror has no `ledger/`, so the first `appendLedger` would
   throw ENOENT [INFERENCE — derived, never executed]. r15 smoke-ran only
-  `ev-report.mjs` (side-effect-free, `ops/ev-report.mjs:17`) and only from a
+  `ops/ev-report.mjs` (side-effect-free, `ops/ev-report.mjs:17`) and only from a
   byte-identical copy outside the mirror.
 - **Citation inventory scale** (critic): 21 `corpus/knowledge/*.md` files carry
-  **765** lost-tree `path:line` citations. Only `triage-thresholds.md` received
+  **765** lost-tree `path:line` citations. Only `corpus/knowledge/triage-thresholds.md` received
   an explicit anchor-base pin this round (§6); pinning the other 20 is the
   round-16 move. Two corpus cites are past the mirror's EOF —
-  `submitted-registry.md:105` (`ops/claim-check.mjs:174-199` vs 83 lines,
-  annotated this round) and `lessons/round-4-aggregator-audit.md:26`
-  (`ops/shared.mjs:55` vs 41 lines, left as history). `SKILL.md`'s two
+  `corpus/knowledge/submitted-registry.md:105` (`[lost-tree] ops/claim-check.mjs:174-199` vs 83 lines,
+  annotated this round) and `corpus/lessons/round-4-aggregator-audit.md:26`
+  (`[lost-tree] ops/shared.mjs:55` vs 41 lines, left as history). `SKILL.md`'s two
   `ops/claim-index.mjs:4` cites ("tags are provenance only") are unsupported by
   the mirror — the string is absent from its `ops/claim-index.mjs` — and are now
   marked `[lost-tree]`.
@@ -306,7 +306,7 @@ Nine independent L2 audits ran against this event (critic, sentinel, revenger,
   orchestration/tooling surface, protocol/integrator arbitrates the repo-level
   split (consistent with the r10 `fleets/registry.json` ruling). Its remote
   `VeigaPunk/the-bounty-hunter` is outside the lane push allow-list
-  (`MISSION.md:49-56`); this lane pushed nothing there.
+  (`../MISSION.md:49-56`); this lane pushed nothing there.
 
 ## 10. Round-15 measurements (both instruments, before → after)
 

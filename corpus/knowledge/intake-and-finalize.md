@@ -8,18 +8,18 @@ These are the only two ops scripts that write outside `ledger/` — one fills
 `bounty-map/programs/` from the board, the other tags + pushes accepted
 `claims/` packages. Both are fail-closed and both report through telemetry.
 
-## `import-board.mjs` — evidence-bound one-way feed (P6/P7/AR5/S4)
+## `~/Projects/the-bounty-hunter/ops/import-board.mjs` — evidence-bound one-way feed (P6/P7/AR5/S4)
 
 `node ops/import-board.mjs --from <board-root> [--verify-binding]` — no
-`--from` is a usage exit-1. Feeds `origin-work/open-bug-bounties/data/` into
+`--from` is a usage exit-1. Feeds `~/Projects/origin-work/open-bug-bounties/data/` into
 `bounty-map/programs/`.
 
 **Binding phase (before any write).** Three datasets:
-`independent_programs.json` and `platform_programs.json` expose `.programs[]`;
-`web3_programs.json` exposes `.records[]`. Every check below exits 1, nothing
+`~/Projects/origin-work/open-bug-bounties/data/independent_programs.json` and `~/Projects/origin-work/open-bug-bounties/data/platform_programs.json` expose `.programs[]`;
+`~/Projects/origin-work/open-bug-bounties/data/web3_programs.json` exposes `.records[]`. Every check below exits 1, nothing
 written:
 
-- `refresh_evidence.json` needs `run_id` + `evidence_id`.
+- `~/Projects/origin-work/open-bug-bounties/data/refresh_evidence.json` needs `run_id` + `evidence_id`.
 - Each dataset's byte-sha256 and record count must equal the
   `evidence.datasets[]` entry for its `data/<file>` path.
 - Each dataset's `refresh_run_id` must equal the evidence `run_id` — and the
@@ -67,7 +67,7 @@ Closes with `board_imported` ledger line: `{run_id, evidence_id,
 counts{written, live, snapshot_retained, stale_snapshot, collisions,
 protected}}`. First import: 1087 written, 258 live, 829 stale_snapshot.
 
-## `finalize-all.mjs` — end-of-run claim sweep
+## `~/Projects/the-bounty-hunter/ops/finalize-all.mjs` — end-of-run claim sweep
 
 `node ops/finalize-all.mjs` — idempotent batch equivalent of the
 dispatcher finalize path, for when claims landed outside a live dispatch.
@@ -81,7 +81,7 @@ For every `claims/<id>/<slug>/status.json` it then:
    `/not.claimable/i` (review-overturned); skip any `disposition` field
    (held/shelved by decree); skip `submission_state === 'DISCLOSED_FREE'`
    (VDP freebies are never claim-ready).
-2. **Re-validates**: fresh `claim-check.mjs` run per package; nonzero exit →
+2. **Re-validates**: fresh `~/Projects/the-bounty-hunter/ops/claim-check.mjs` run per package; nonzero exit →
    `claim_rejected` telemetry (stdout tail 300 chars), `rejected++`.
 3. **Commits**: `git add` the package; if staged diff non-empty →
    `commit -m "claim(<id>): accept <slug>"`; if clean → reuse last commit
@@ -92,7 +92,7 @@ For every `claims/<id>/<slug>/status.json` it then:
    existing tag on a DIFFERENT sha → `claim_tag_conflict`, rejected, never
    rewrites. New tag is annotated with finalize timestamp.
 
-Then regenerates `docs/claim-ready-index.md` via `claim-index.mjs`, commits
+Then regenerates `docs/claim-ready-index.md` via `~/Projects/the-bounty-hunter/ops/claim-index.mjs`, commits
 it if changed (`claim_index_commit_failed` on error), re-runs
 `gitMutationBlocker` before push (blocked → `finalize_all_push_blocked`,
 exit 1), and finishes with ONE `git push --atomic origin main` + all

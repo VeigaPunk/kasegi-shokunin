@@ -1,6 +1,6 @@
 # Program quirks observed
 
-Source: `~/Projects/bounties/claims/cantina-pendle/ingestion-20260915/`,
+Source: `[lost-tree] claims/cantina-pendle/ingestion-20260915/`,
 `docs/claim-ready-index.md`, `docs/claim-runbook.md`, autopsies, Cantina
 sibling status.json files. Read 2026-09-28. Quirks belong in each package's
 `claim_checklist.md`; this file lists patterns to check for.

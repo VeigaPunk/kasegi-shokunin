@@ -1,9 +1,9 @@
 # Mission ledger — `ledger/*.jsonl` + rankings artifacts
 
-Source: `~/Projects/bounties/ledger/` (missions.jsonl 718 lines,
+Source: `[lost-tree] ~/Projects/bounties/ledger/` (missions.jsonl 718 lines,
 telemetry.jsonl **7225 lines as of 2026-09-28T21:52:51.978Z** — round-13
 correction: the r12 count 7218 was time-of-audit; the file grows on every
-`check-freshness.mjs:61` invocation, including audit runs, candidates.jsonl
+`~/Projects/the-bounty-hunter/ops/check-freshness.mjs:61` invocation, including audit runs, candidates.jsonl
 8, imports.jsonl 8, **234** `rankings-<ts>.json` artifacts over 229 distinct
 stamps — round-13 correction: "~30" was a transcription of the event-kind
 count), `ops/shared.mjs`, `ops/rank.mjs`, `ops/import-board.mjs`,
@@ -12,7 +12,7 @@ carry as-of stamps where the file is live-appended.
 
 ## Writer contract
 
-`ops/shared.mjs::appendLedger(root, kind, entry)` is the only writer.
+`ops/shared.mjs::appendLedger` (root, kind, entry) is the only writer.
 Append-only — never rewrites history. Three kinds: `telemetry` | `missions` |
 `imports`. Serialized lines are capped at **3500 bytes** so concurrent
 cross-session `O_APPEND` writes stay atomic (POSIX PIPE_BUF); oversize entries
@@ -44,7 +44,7 @@ model, note?, artifact?}`. Observed transitions (count over 718 lines /
 | `EXECUTED` | 1 | hunt ran |
 | `EVIDENCED` | 2 | evidence package assembled |
 | `VERIFIED` | 1 | review passed |
-| `SUBMISSION_PREPARED` | 1 | `prepare-claims.mjs` payload staged |
+| `SUBMISSION_PREPARED` | 1 | `~/Projects/the-bounty-hunter/ops/prepare-claims.mjs` payload staged |
 | `SUBMITTED` | 3 | operator actually submitted (mozilla, spotify, airtable) |
 | `DISCLOSED_FREE` | 1 | VDP disclosure path |
 | `LEARNED` | 244 | terminal: honest-zero / parked — the dominant exit |
@@ -54,7 +54,7 @@ is the park-at-scope path (auth wall / no assets). Deepest observed path:
 `SCOPED→PLANNED→EVIDENCED→VERIFIED→SUBMISSION_PREPARED→LEARNED`
 (immunefi-gamma). Full pipeline `EXECUTED→EVIDENCED→VERIFIED` is rare —
 most missions terminate at LEARNED without a claim deliverable, matching the
-486-mission partition in `terminal-classes.md`. `SUBMITTED` only ever
+486-mission partition in `corpus/knowledge/terminal-classes.md`. `SUBMITTED` only ever
 follows operator action; it is a ledger fact, not a fleet transition.
 
 `ops/rank.mjs` suppresses duplicate `RANKED` attestations (scans the ledger
@@ -65,7 +65,7 @@ shape: `{generated_at, defaults{ev defaults}, ranked[{id, expected_reward,
 p_success, gross_value, total_cost, adjusted_ev, inputs_basis}], unknown[]}`.
 `inputs_basis:"curated"` vs `default_estimate` distinguishes real EV inputs
 from the default prior set — round-13 correction, full set from
-`rank.mjs:55-58` DEFAULTS: p_in_scope .7, p_reproducible .7, p_unique .25,
+`~/Projects/the-bounty-hunter/ops/rank.mjs:55-58` DEFAULTS: p_in_scope .7, p_reproducible .7, p_unique .25,
 p_accepted .6, effort_hours 60, opportunity_rate 25, direct_cost 0,
 delay_cost 0, expected_risk_cost 250 (earlier text omitted opportunity_rate
 and the zero costs).
@@ -86,7 +86,7 @@ Census method matters: count LINES matching `"event"\s*:\s*"<name>"`
 
 `ops/shared.mjs::TELEMETRY_EVENTS` enumerates the *registry* kinds
 (lane_parked, lane_degraded, operator_decree, xask_dry, board_imported,
-binding_verified, reroute_drill, provenance_drift); `fleet-dispatch.mjs`
+binding_verified, reroute_drill, provenance_drift); `~/Projects/the-bounty-hunter/ops/fleet-dispatch.mjs`
 emits the runtime kinds (dispatcher_tick, mission_*, claim_*, fleet_synced).
 `gitMutationBlocker(root)` fail-closes every git-mutating path on active
 rebase/merge/cherry-pick or HEAD not on `main`; blocked mutations log
@@ -116,17 +116,17 @@ by design (freshness is a label, not a gate).
 
 | Tool | Role |
 |---|---|
-| `shared.mjs` | invariants + `appendLedger` + `gitMutationBlocker` + `sha256File` |
-| `validate.mjs` | schema + referential checks (M1) |
-| `import-board.mjs` | one-way run-id-bound board feed (M3/M6) |
-| `registry-check.mjs` | lane/model invariants, k3-seat count (M4) |
-| `reroute-drill.mjs` | simulated park→reroute telemetry drill (M4) |
-| `check-freshness.mjs` | staleness verdicts (M5) |
-| `rank.mjs` | EV ranking → rankings artifacts + RANKED lines |
-| `ev-report.mjs` | per-program adjusted-EV (fail-closed UNKNOWN) |
-| `fleet-dispatch.mjs` | tmux mission spawner, lease/claim/commit loop, telemetry |
-| `park-disposition.mjs` | unpark/retire dispositions → telemetry |
-| `claim-check.mjs` | package validator (see `claim-gates.md`) |
-| `claim-index.mjs` | operator queue generator |
-| `prepare-claims.mjs` | deterministic payload staging |
-| `finalize-all.mjs` | batch finalize |
+| `~/Projects/the-bounty-hunter/ops/shared.mjs` | invariants + `appendLedger` + `gitMutationBlocker` + `sha256File` |
+| `~/Projects/the-bounty-hunter/ops/validate.mjs` | schema + referential checks (M1) |
+| `~/Projects/the-bounty-hunter/ops/import-board.mjs` | one-way run-id-bound board feed (M3/M6) |
+| `~/Projects/the-bounty-hunter/ops/registry-check.mjs` | lane/model invariants, k3-seat count (M4) |
+| `~/Projects/the-bounty-hunter/ops/reroute-drill.mjs` | simulated park→reroute telemetry drill (M4) |
+| `~/Projects/the-bounty-hunter/ops/check-freshness.mjs` | staleness verdicts (M5) |
+| `~/Projects/the-bounty-hunter/ops/rank.mjs` | EV ranking → rankings artifacts + RANKED lines |
+| `~/Projects/the-bounty-hunter/ops/ev-report.mjs` | per-program adjusted-EV (fail-closed UNKNOWN) |
+| `~/Projects/the-bounty-hunter/ops/fleet-dispatch.mjs` | tmux mission spawner, lease/claim/commit loop, telemetry |
+| `~/Projects/the-bounty-hunter/ops/park-disposition.mjs` | unpark/retire dispositions → telemetry |
+| `~/Projects/the-bounty-hunter/ops/claim-check.mjs` | package validator (see `corpus/knowledge/claim-gates.md`) |
+| `~/Projects/the-bounty-hunter/ops/claim-index.mjs` | operator queue generator |
+| `~/Projects/the-bounty-hunter/ops/prepare-claims.mjs` | deterministic payload staging |
+| `~/Projects/the-bounty-hunter/ops/finalize-all.mjs` | batch finalize |

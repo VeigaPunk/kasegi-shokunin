@@ -16,7 +16,7 @@ A claim-ready package lives at `claims/<program>/<slug>/` and contains:
 | `status.json` | `manifest_sha256` binds status to manifest bytes. `claim_review` holds `hard_gates` + `subchecks` + `reviewer` (distinct identity, requested/resolved model, fallback flag). |
 
 Round-13 boundary note — not every row above is gate-enforced:
-`claim-check.mjs` never reads the manifest `schema_version`, the provenance
+`~/Projects/the-bounty-hunter/ops/claim-check.mjs` never reads the manifest `schema_version`, the provenance
 `pin`/`policy_sha256`/`external_effects_performed`, `status.severity`, or
 `status.reward` — the tokens do not occur in the file (the entire provenance
 gate is the :96-97 non-emptiness check). Those fields are
@@ -24,13 +24,13 @@ contract-by-convention (reviewer/runbook-checked), not machine gates. The
 report.md "no submission" gate is a PROSE regex
 (`/no submission (performed|made)/i`, :29), distinct from the JSON
 `no_submission_performed` field. Canonical derivation:
-`triage-thresholds.md` §4.
+`corpus/knowledge/triage-thresholds.md` §4.
 
 ## status.json semantics (observed values)
 
 - `state`: `DONE` | `BLOCKED` | `SUBMITTED` | `PARKED` — round-14
   correction: PARKED was missing from this enum but is 248/280 = 88.6% of
-  packages (`claim-anatomy-sample.md` D11). `DONE` requires reviewer
+  packages (`corpus/knowledge/claim-anatomy-sample.md` D11). `DONE` requires reviewer
   `APPROVED` with `claim_ready:true`; producer never self-approves.
 - `verdict`: free-form but observed patterns: `positive`,
   `positive-blocked-<precondition>`, `honest-zero-<reason>`. Round-14
@@ -38,17 +38,17 @@ report.md "no submission" gate is a PROSE regex
   `honest-zero-*` = 256 incl. two undocumented dominant suffixes
   `-identity` (121) and `-host-binding` (69); `positive-blocked-*` = 2;
   4 verdicts are full prose sentences
-  (`claims/bugcrowd-auth0-okta/ingestion-20260914/status.json:3`).
+  (`[lost-tree] claims/bugcrowd-auth0-okta/ingestion-20260914/status.json:3`).
 - `claimable`: bool — the queue bit for `docs/claim-ready-index.md`.
   Round-14 census: absent in 241/280 (exactly the b1k-* keeper cohort,
-  232/233); `claimable:true` only 12/280 (`claim-anatomy-sample.md` D1).
+  232/233); `claimable:true` only 12/280 (`corpus/knowledge/claim-anatomy-sample.md` D1).
 - `finding_count`: positive integer when claimable.
 - `do_not_submit` / `no_submission_performed`: redundant external-effect guards.
 - `claimability_blocker` + `resume_condition`: what reopens a BLOCKED
   package. Round-14 note: in the sampled BLOCKED packages
   `claimability_blocker` occurs 0×; hyatt uses `blocked_reason`
-  (`claims/hackerone-hyatt/ingestion-20260914/status.json:14`) — blocker
-  naming drifts (`claim-anatomy-sample.md` D9).
+  (`[lost-tree] claims/hackerone-hyatt/ingestion-20260914/status.json:14`) — blocker
+  naming drifts (`corpus/knowledge/claim-anatomy-sample.md` D9).
 - `claim_review.hard_gates`: `written_scope`, `authorization`,
   `evidence_integrity`, `no_duplicate_or_prior_submission`.
 - `claim_review.subchecks`: `no_secrets`, `operator_attribution`.

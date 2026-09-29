@@ -1,6 +1,6 @@
 # `.ufo/` runtime workspaces + `.omp/` — the untracked execution layer
 
-All numbers verified live 2026-09-28 by census over `/home/vgpnk/Projects/bounties/.ufo/`
+All numbers verified live 2026-09-28 by census over `[lost-tree] .ufo/`
 and `.omp/` (`find | wc -l`, `du -sh`, `git ls-files`, structured first/middle/last
 sampling) by 4 scouts + 2 executors + L1, read-only. Nothing in `.ufo/` is mission
 state until copied into `evidence/` or `claims/` — but claim packages *cite* `.ufo/`
@@ -69,9 +69,9 @@ Id hazards:
 - `.ufo-warden/state.json` is keyed by **PROGRAM**: re-dispatch silently overwrites
   `runId` (bugcrowd-t-mobile, hackerone-bcny, intigriti-yahoo each got a second run
   within ~7 min); superseded run ids survive only in reports/sessions.
-- **Provenance split on a READY package:** `claims/intigriti-yahoo/ingestion-20260914/status.json:6`
-  + `provenance.json:3` carry `mission_id: bh7609023286b0` (superseded, report-less
-  run) while `PLAN.md:1` + the root report say `bh0cb2eb6ca20b`. Joining on
+- **Provenance split on a READY package:** `[lost-tree] claims/intigriti-yahoo/ingestion-20260914/status.json:6`
+  + `[lost-tree] claims/intigriti-yahoo/ingestion-20260914/provenance.json:3` carry `mission_id: bh7609023286b0` (superseded, report-less
+  run) while `[lost-tree] claims/intigriti-yahoo/ingestion-20260914/PLAN.md:1` + the root report say `bh0cb2eb6ca20b`. Joining on
   `mission_id` mis-attributes a READY finding; `bh7609023286b0` must not be pruned —
   it is the producing workspace.
 - Report-less workspaces are not safe to delete: two are producing workspaces of
@@ -81,7 +81,7 @@ Id hazards:
 
 Present in 8/19 top-level + 4/6 session-layer workspaces (12 files, **121 records**);
 absence = zero reroutes, not missing data. Line schema
-(`.ufo/bh008834d61250/reroutes.jsonl:1`): `{round, identity, from, to, cause,
+(`[lost-tree] .ufo/bh008834d61250/reroutes.jsonl:1`): `{round, identity, from, to, cause,
 action}`. Cause census: **every observed cause is a grok/xai path failure** —
 21× `403 personal-team-blocked:spending-limit (grok credits exhausted)`, 17×
 `403 spending-limit, credits exhausted`, 6× `HTTP 403 personal-team-blocked`, 4× each
@@ -92,7 +92,7 @@ unreliable provenance — a claim citing "the grok review" needs the reroute log
 
 ## `.ufo/bounty-fleet/` — the overnight keeper tree (b1k-NNN, 805 M)
 
-Producer (verified in source): `fleets/ufo-archive-2026/bounty-keeper/keeper.mjs:48-63`
+Producer (verified in source): `[lost-tree] fleets/ufo-archive-2026/bounty-keeper/keeper.mjs:48-63`
 — `runId = b1k-<slot pad3>`, `ufo-sighting launch --session-dir
 .ufo/bounty-fleet/sessions/<runId>`, prompt `@.ufo/bounty-fleet/p-wave-l1.md`,
 `UFO_ROOT=~/Projects/origin-work/ufo-fsd-alpha`, `FLEET=bounties`, `WINDOW_CAP=16`,
@@ -196,7 +196,7 @@ mismatch (`.md` holding JSON, byte-identical `.json`/`.md` pairs, 9 zero-byte `.
 
 43 files / 3 dirs / 3.3 M; **historical, zero live consumers** (grep: 0 hits in
 `ops/*.mjs`, `fleets/registry.json`, `docs/*.md`; only 4 archival readers, incl.
-`fleets/ufo-archive-2026/missions/claim-github-nines/lanes/connector-r1.md:52`
+`[lost-tree] fleets/ufo-archive-2026/missions/claim-github-nines/lanes/connector-r1.md:52`
 which already calls it stale; dir itself untracked).
 
 `assessment-manifest.json` (`schema_version: grok-bounty-assessment-manifest/v2`,
@@ -204,7 +204,7 @@ which already calls it stale; dir itself untracked).
 evidence_integrity, claim_readiness, model_attribution, operational_reliability,
 review_coverage); 5 hard gates (written_scope, authorization, evidence_integrity,
 no_duplicate_or_prior_submission, **clean_repository_closure** — a 5th gate
-`claim-check.mjs` doesn't have); `corpus_binding` = 266 declared missions
+`ops/claim-check.mjs` doesn't have); `corpus_binding` = 266 declared missions
 (bountyfleet1 + 265 b1k), 250 finalized reports, 16 reportless, 691 transcripts /
 588,976,407 bytes, 0 parse errors; `completion.claim_package_gate_census:
 "COMPLETE_ZERO_PASSING"`.
@@ -245,7 +245,7 @@ independent evidence.
 
 **Self-invalidation:** re-running the frozen scorer with its own nine byte-identical
 bound lane outputs now exits `ok:false` at `lanes/deepseek-review-07.json`
-units[23]=b1k-210, because `validate-review-output.mjs:58` re-derives cited line
+units[23]=b1k-210, because `[lost-tree] .ufo/grok-bounty-assessment-20260911/validate-review-output.mjs:58` re-derives cited line
 ranges against **current** file lengths and
 `claims/immunefi-gamma/hypervisor-deposit-from-to/submit/readiness-audit.json` was
 rewritten 2026-09-14 (now 129 lines; frozen citation says `:95-133`). Lesson: an
@@ -280,16 +280,16 @@ exist** (dangling citation, invisible to every gate).
 
 ## `.omp/` — the second routing truth (cross-domain mechanics; bounty consequences kept)
 
-120 K / 17 files. Tracked (10): `config.yml` + `agents/{kx-connector,kx-distiller,
+120 K / 17 files. Tracked (10): `~/Projects/the-bounty-hunter/.omp/config.yml` + `agents/{kx-connector,kx-distiller,
 kx-executor,kx-labrat,kx-reviewer,kx-scout,kx-security,scope-evidence-custodian,
 the-bounty-hunter}.md`. On disk but **untracked**: `agents/ing-scout.md`,
 `agents/ufo-l2.md` (both literal `devin/swe-2:max`), `skills/` (whole subtree).
 11 cards for 10 registry lanes; the 4 non-registry cards (ing-scout, ufo-l2,
 scope-evidence-custodian, the-bounty-hunter) are invisible to every registry-check
 test except the banned-token scan — the round-7 "bijection holds" verdict is
-directory-driven over `kx-\w+.md` only (`registry-check.mjs:57-80`).
+directory-driven over `kx-\w+.md` only (`ops/registry-check.mjs:57-80`).
 
-Live `config.yml` (36 l, **modified-uncommitted**): `task.maxConcurrency: 32`,
+Live `[lost-tree] .omp/config.yml` (36 l, **modified-uncommitted**): `task.maxConcurrency: 32`,
 `maxRecursionDepth: 2`; `modelRoles`: task/smol/default → `@ufo_deepseek_max` →
 `alibaba-token-plan/deepseek-v4.1-flash:max`; `fleet_judge/fleet_planner/
 fleet_executor/fleet_depth` → `devin/swe-2:max`; `fleet_volume/fleet_utility` →
@@ -298,12 +298,12 @@ deepseek-v4-1-flash:high → grok-4.5:low ×2 → devin/swe-2:max),
 `fallbackRevertPolicy: never`. The committed HEAD version instead matches the root
 README's 2026-09-04 decree table (k3/qwen3.8-max:xhigh/deepseek-v4-pro:max/
 deepseek-v4-flash-0731/grok-4.5:low) — **README describes git HEAD, not the live
-router**; `registry-check.mjs` reads the working file and is RED (exit 1, 7 `@role`
+router**; `ops/registry-check.mjs` reads the working file and is RED (exit 1, 7 `@role`
 violations: 3 genuine card↔registry mismatches + resolver artifacts from the
 single-level quote-retaining alias resolver at `:87-91`). Every one of the 7 kx
 cards self-contradicts: description names the registry primary, `model:` pin
 resolves elsewhere. `.omp/skills/ufo/SKILL.md` is a drifted untracked fork of the
-canonical `origin-work/ufo-fsd-alpha` skill (304 l / sha256 `2d5bfd3e…` vs 626 l /
+canonical `~/Projects/origin-work/ufo-fsd-alpha` skill (304 l / sha256 `2d5bfd3e…` vs 626 l /
 `40949973…`, 685 diff lines; cites `scripts/{sync-ufo-contracts,…}` that don't
 exist in bounties). Bounty-domain consequence: **model attributions in claim
 provenance must name the resolved route at run time (reroutes.jsonl / session
@@ -313,9 +313,9 @@ headers), never the registry pin.** Router mechanics themselves → kumitate/pro
 ## Root `README.md` + `.gitignore` — the tracked/untracked boundary
 
 `README.md` (70 l, mtime 2026-09-06 04:08): "the fleet: **9 lanes**" is stale —
-registry has 10 lane keys and `validate.mjs` prints 10; the "9" traces to the stale
-header comment at `registry-check.mjs:6`. Its routing table matches registry
-primaries but omits `mission_l1` and matches nothing in the live `config.yml`.
+registry has 10 lane keys and `ops/validate.mjs` prints 10; the "9" traces to the stale
+header comment at `ops/registry-check.mjs:6`. Its routing table matches registry
+primaries but omits `mission_l1` and matches nothing in the live `[lost-tree] .omp/config.yml`.
 `.gitignore` = 11 lines in the worktree (HEAD has 9; the last two —
 `.ufo/bounty-fleet/session[s]/` — are uncommitted): `node_modules/ .next/ out/ .env*
 .DS_Store .ufo/cache/ vgn-bounty-lab/ fleets/run/ fleets/leases.json
@@ -330,15 +330,15 @@ untracked; a fresh clone would surface `session/`+`sessions/` (622 M) as untrack
 
 The strongest in-domain fact of this census: **656 files under `claims/` contain a
 `.ufo/` path string**; JSON-scoped scan finds **543 distinct `.ufo/…` references,
-51 already dangling (~9%)** — e.g. `claims/immunefi-gamma/…/status.json:45` →
+51 already dangling (~9%)** — e.g. `[lost-tree] claims/immunefi-gamma/…/status.json:45` →
 `.ufo/missions/…` (dir never existed), `claims/github-bounty/nines-githubapp-dangling-cname/status.json`
 → `.ufo/scopes/claim-github-nines/`, `claims/intel-bug-bounty/pqos-pci-ids-stack-overflow/custodian-receipts.json`
-→ `.ufo/missions/claim-intel/…`. `claim-check.mjs` never resolves them (it checks
+→ `.ufo/missions/claim-intel/…`. `ops/claim-check.mjs` never resolves them (it checks
 in-package digests), so a dangling `.ufo/` citation is invisible to every gate.
 **Rule: never treat a `.ufo/…` reference as durable evidence — copy the bytes into
 the package before relying on them.** Same durability gap one directory over:
 `fleets/run/` (ignored). Repo git state (stalled rebase, 903 dirty entries) →
-`knowledge/repo-git-state.md`.
+`corpus/knowledge/repo-git-state.md`.
 
 ## Operational takeaways
 
@@ -360,4 +360,4 @@ the package before relying on them.** Same durability gap one directory over:
    binds a stale queue sha. Read the newest artifact in the package first.
 5. Check `git status` before any commit-sourced claim — the repo has been stalled
    mid-rebase since ≥2026-09-11 and all Sep 7–15 work is working-tree-only
-   (`knowledge/repo-git-state.md`).
+   (`corpus/knowledge/repo-git-state.md`).

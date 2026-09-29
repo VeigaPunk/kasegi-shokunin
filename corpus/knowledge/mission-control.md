@@ -72,7 +72,7 @@ until `active.size == --max` → `dispatcher_tick` telemetry → 30 s sleep.
 
 ## `fleets/missions/<program>.md` — 584 generated L1 assignments
 
-Per-program instantiation of `mission-template.md`, not the template
+Per-program instantiation of `~/Projects/the-bounty-hunter/fleets/mission-template.md`, not the template
 itself. Every file = Godspeed prefix + `# MISSION L1 — <name>` +
 authoritative `Program record`/`Program id`/`Official policy URL` +
 AR14 standing grant + fleet-learned policy playbook + NEVER list + lane
@@ -104,7 +104,7 @@ Observed state census (703 files, 0 parse errors):
 mission file — b1k seats and programs dispatched before per-program
 assignment generation.
 
-`*.log.gz` (537) = gzipped mission TUI pipes; `sighting-missions.sh`
+`*.log.gz` (537) = gzipped mission TUI pipes; `~/Projects/the-bounty-hunter/ops/sighting-missions.sh`
 renders live panes via `capture-pane` instead — raw streams are for
 post-mortem, rendered frames for watching.
 
@@ -150,7 +150,7 @@ tail. Sighting windows are display only — authority stays with dispatcher
   smali-level deeplink trace, recorded as residual lead not-a-finding).
   Reports carry per-artifact sha256; the `.ufo/<runId>/` evidence-dir join
   fails for ≥8/22 (25 workspaces vs 22 reports, two disjoint roots —
-  see `ufo-workspaces.md`).
+  see `corpus/knowledge/ufo-workspaces.md`).
 - **`.ufo-warden/`** — readiness dispatcher: `state.json` maps
   program→{runId, findings[], done, doneVia:"tick/handoff-present"};
   `warden.log` = TICK backlog/deadline/present/COMPLETE events.

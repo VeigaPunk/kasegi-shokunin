@@ -46,7 +46,7 @@ a grant derived from verbatim policy text.
 ## Program-rule checklist (step 1 of any mission)
 
 Fill `evidence/<program>/scope-snapshot.json` — observed schema
-(`claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:1-57`,
+(`[lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:1-57`,
 18 top-level keys; the bullets below name 10, the rest are listed after):
 
 - [ ] `url`, `fetched_at`, `content_sha256` of the official policy page
@@ -67,18 +67,18 @@ Fill `evidence/<program>/scope-snapshot.json` — observed schema
       SCOPED" `:54`)
 - [ ] `safe_harbor` — record `null` when absent (`:15`); distinguish SEAL
       Whitehat (active exploits only —
-      `claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15`,
-      `claim_checklist.md:34-35`) from a routine-research safe harbor
+      `[lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15`,
+      `[lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:34-35`) from a routine-research safe harbor
 - [ ] `reward_table_url`, reward band, currency — round-14 correction: the
       SEEK exemplar carries only `reward_table_url` (`:16`, null); band +
       currency keys live in other snapshots
-      (`evidence/hackerone-starbucks-japan/scope-snapshot.json:112-118`
+      (`[lost-tree] evidence/hackerone-starbucks-japan/scope-snapshot.json:112-118`
       reward_table 150/500/1500/3000, `currency:"USD"` `:117`;
-      `evidence/sherlock-106/scope-snapshot.json:12-15` max_reward 100000
+      `[lost-tree] evidence/sherlock-106/scope-snapshot.json:12-15` max_reward 100000
       USDC); 29/785 snapshots carry a `currency` key
 - [ ] `coverage.status` — `incomplete` when the fetch is a login shell
       (`:29-31`); second observed value `insufficient_for_authorization`
-      (`claims/bugcrowd-opus-guard-market/honest-zero/evidence/scope-snapshot.json:24`);
+      (`[lost-tree] claims/bugcrowd-opus-guard-market/honest-zero/evidence/scope-snapshot.json:24`);
       `coverage.missing[]` names exactly what was absent (`:38-43`, 4 items);
       58/785 snapshots carry `coverage.status` (round-14 census)
 
@@ -91,20 +91,24 @@ semantics: `normalized_scope_sha256` `:20`, `content_hash_basis` `:21`,
 
 Program quirks to check before planning work:
 submission fee (Cantina Pendle: $100 —
-`claims/cantina-pendle/ingestion-20260915/INGESTION.md:18`
-`submissionFee: $100`; `claim_checklist.md` §1 makes a live-balance check the
-claimability gate `:9`, do-not-pay-until rule `:27-28`, `:52`), KYC
-requirement (`INGESTION.md:18` `kycRequired: false`,
-`claim_checklist.md:36`), AI-disclosure requirement (`claim_checklist.md:33`,
-`INGESTION.md:31`), evidence-source parity (deployed bytecode ↔ repo commit —
-`claim_checklist.md:19-20` names commit `f242659`; round-14 correction:
-`provenance.json.pin` has four observed shapes — structured block
-`provenance.json:27-31` {remote, commit, note}, bare string
-`claims/hackerone-wordpress/honest-zero-wp-cli/provenance.json:8`, nested in
-`commands[]`
-`claims/hackerone-anthropic/honest-zero-claude-code/provenance.json:29`,
+`[lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:18`
+`submissionFee: $100`; `[lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:9`
+makes a live-balance check the claimability gate; `[lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:27-28`
+and `[lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:52` are the do-not-pay-until rules), KYC
+requirement (`[lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:18` `kycRequired: false`,
+`[lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:36`), AI-disclosure requirement
+(`[lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:33`,
+`[lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:31`), evidence-source parity
+(deployed bytecode ↔ repo commit —
+`[lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:19-20` names commit `f242659`;
+round-14 correction: `provenance.json.pin` has four observed shapes —
+structured block `[lost-tree] claims/cantina-pendle/ingestion-20260915/provenance.json:27-31`
+{remote, commit, note}, bare string
+`[lost-tree] claims/hackerone-wordpress/honest-zero-wp-cli/provenance.json:8`,
+nested in `commands[]`
+`[lost-tree] claims/hackerone-anthropic/honest-zero-claude-code/provenance.json:29`,
 version pin `"0.2.9"`
-`claims/hackerone-airtable/honest-zero-mcp-cli/provenance.json:32`).
+`[lost-tree] claims/hackerone-airtable/honest-zero-mcp-cli/provenance.json:32`).
 Per-program pattern list: `corpus/knowledge/program-quirks.md:10` (fee gate),
 `:13` (vulnerable-pattern OOS), `:17` (SEAL), `:19` (`kycRequired`), `:24`
 (sampled siblings).
@@ -113,11 +117,11 @@ Per-program pattern list: `corpus/knowledge/program-quirks.md:10` (fee gate),
 
 | Platform | Reality | Move |
 |---|---|---|
-| HackerOne | HTML is a JS shell; `/policy` can 403 unauthenticated (`docs/autopsies/hackerone-figma.md:6` `403 sign_in` + `figma.json 404`) | Public GraphQL `team(handle)` query — policy/scope/structured_scopes, no auth (`evidence/paypal-bug-bounty/provenance.json:27` POST → `HTTP 200` `policy_len 25844`; query envelope `evidence/hackerone-1password/fetch-evidence/graphql-request-20260905T165623Z.json:2`) |
-| Bugcrowd | Auth-walled SPA for anonymous fetches (`evidence/bugcrowd-barracuda/scope-snapshot.json:11` HTTP 200 React shell) | Try public brief/changelog JSON once — `engagement_known_issues.json` 401 (`evidence/bugcrowd-barracuda/scope-snapshot.json:42`, `evidence/bugcrowd-asana/scope-snapshot.json:12`), brief doc 404 (`docs/autopsies/bugcrowd-openai.md:6`, `docs/autopsies/bugcrowd-spacex.md:6`, `docs/autopsies/bugcrowd-blofin-crypto-mbb-og.md:6`; 401+406+404 combined `docs/continuation-notes.md:50`); else park at SCOPED (`claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:54`), don't burn budget |
-| Immunefi/Cantina/HackenProof | Public bounty pages with contract scope (`claims/cantina-pendle/ingestion-20260915/INGESTION.md:9` deployments JSON keys + whitelisted markets) | Capture page HTML into `evidence/` (pendle `INGESTION.md:37`); hash it (`policy_sha256` — pendle `provenance.json:32-33`, `claims/hackenproof-atomone/honest-zero-atomone/provenance.json:36`; round-14 correction: no provenance page hash on Immunefi ingestions — `claims/immunefi-beanstalk/ingestion-20260915/provenance.json` has zero hash keys; their page hashes land as `html_sha256` in `.ufo/bounty-fleet/ledger/telemetry.jsonl:181`) |
-| RFC 9116 security.txt | A stub is not a scope (`evidence/bugcrowd-asana/scope-snapshot.json:12` Contact/Policy → bugcrowd stub, Expires 2026-12-31, no assets) | No assets + no grant → park (`evidence/bugcrowd-barracuda/scope-snapshot.json:45` 404 "no RFC 9116 security.txt") |
-| Terms-gated policy (SIX Group) | Reading requires accepting Program Rules (`docs/autopsies/hackerone-six-group.md:6` reason verbatim) | Terms acceptance is a forbidden external effect → autopsy + retire (`:3` `RETIRED (structurally blocked)`; `corpus/knowledge/policy-access-playbook.md:13`) |
+| HackerOne | HTML is a JS shell; `/policy` can 403 unauthenticated (`[lost-tree] docs/autopsies/hackerone-figma.md:6` `403 sign_in` + `figma.json 404`) | Public GraphQL `team(handle)` query — policy/scope/structured_scopes, no auth (`[lost-tree] evidence/paypal-bug-bounty/provenance.json:27` POST → `HTTP 200` `policy_len 25844`; query envelope `[lost-tree] evidence/hackerone-1password/fetch-evidence/graphql-request-20260905T165623Z.json:2`) |
+| Bugcrowd | Auth-walled SPA for anonymous fetches (`[lost-tree] evidence/bugcrowd-barracuda/scope-snapshot.json:11` HTTP 200 React shell) | Try public brief/changelog JSON once — `engagement_known_issues.json` 401 (`[lost-tree] evidence/bugcrowd-barracuda/scope-snapshot.json:42`, `[lost-tree] evidence/bugcrowd-asana/scope-snapshot.json:12`), brief doc 404 (`[lost-tree] docs/autopsies/bugcrowd-openai.md:6`, `[lost-tree] docs/autopsies/bugcrowd-spacex.md:6`, `[lost-tree] docs/autopsies/bugcrowd-blofin-crypto-mbb-og.md:6`; 401+406+404 combined `[lost-tree] docs/continuation-notes.md:50`); else park at SCOPED (`[lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:54`), don't burn budget |
+| Immunefi/Cantina/HackenProof | Public bounty pages with contract scope (`[lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:9` deployments JSON keys + whitelisted markets) | Capture page HTML into `evidence/` (pendle `[lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:37`); hash it (`policy_sha256` — pendle `[lost-tree] claims/cantina-pendle/ingestion-20260915/provenance.json:32-33`, `[lost-tree] claims/hackenproof-atomone/honest-zero-atomone/provenance.json:36`; round-14 correction: no provenance page hash on Immunefi ingestions — `claims/immunefi-beanstalk/ingestion-20260915/provenance.json` has zero hash keys; their page hashes land as `html_sha256` in `[lost-tree] .ufo/bounty-fleet/ledger/telemetry.jsonl:181`) |
+| RFC 9116 security.txt | A stub is not a scope (`[lost-tree] evidence/bugcrowd-asana/scope-snapshot.json:12` Contact/Policy → bugcrowd stub, Expires 2026-12-31, no assets) | No assets + no grant → park (`[lost-tree] evidence/bugcrowd-barracuda/scope-snapshot.json:45` 404 "no RFC 9116 security.txt") |
+| Terms-gated policy (SIX Group) | Reading requires accepting Program Rules (`[lost-tree] docs/autopsies/hackerone-six-group.md:6` reason verbatim) | Terms acceptance is a forbidden external effect → autopsy + retire (`:3` `RETIRED (structurally blocked)`; `corpus/knowledge/policy-access-playbook.md:13`) |
 
 ## Finding-triage decision table
 
@@ -126,7 +130,7 @@ Terminal classes observed across 486 non-claim-ready missions
 
 | Condition | Class | Package state | Evidence |
 |---|---|---|---|
-| In-scope finding, reproducible locally, reviewer APPROVED, all gates PASS | Claimable | `status.json state:"DONE", claimable:true` | `docs/claim-ready-index.md` (12 queued — round-14 note: the on-disk file is STALE: generated stamp `:3` = 2026-09-06T01:35:16Z, 11 rows; the 12th claim-check-OK package `claims/intigriti-yahoo/ingestion-20260914` (DONE + `claimable:true`, `status.json:2`,`:11`) appears only on live regeneration) |
+| In-scope finding, reproducible locally, reviewer APPROVED, all gates PASS | Claimable | `status.json state:"DONE", claimable:true` | `docs/claim-ready-index.md` (12 queued — round-14 note: the on-disk file is STALE: generated stamp `:3` = 2026-09-06T01:35:16Z, 11 rows; the 12th claim-check-OK package `claims/intigriti-yahoo/ingestion-20260914` (DONE + `claimable:true`, `[lost-tree] claims/intigriti-yahoo/ingestion-20260914/status.json:2`, `[lost-tree] claims/intigriti-yahoo/ingestion-20260914/status.json:11`) appears only on live regeneration) |
 
 | Defect proven, live precondition unverified (e.g. needs read-only chain/state check) | Positive-blocked | `state:"BLOCKED", verdict:"positive-blocked-*", claimable:false`, `resume_condition` set | `claims/cantina-pendle/ingestion-20260915/status.json` — exactly 2 attested instances (+ cantina-dydx); free-form verdict string: no schema defines it, claim-check.mjs:169's not-claimable regex doesn't recognize it (round-13 annotation) |
 | Finding needs operator-owned substrate (VM, device, account) | Positive-blocked | `submit/BLOCKED.md` names the exact gate | `claims/hackerone-3cx/…` (uid=0 disposable-VM capture) |
@@ -552,7 +556,7 @@ requested/resolved model + fallback recorded. Any failed/unknown gate →
 
 ## Disclosure anti-patterns (all observed in fleet wrap review)
 
-From `docs/wrap-report.md` — 7 canonical packages, 0 clean GO, 0 immediate
+From `[lost-tree] docs/wrap-report.md` — 7 canonical packages, 0 clean GO, 0 immediate
 submissions (counts `:25-32`: 0 GO / 5 GO-WITH-FIX-NEEDED / 2 NO-GO / 7
 canonical / 8 tag refs). Round-14 correction: the 5 GO-WITH-FIX rows failed
 on disclosure/packaging defects, but the 2 NO-GO rows are reproduction
@@ -565,20 +569,20 @@ Per-item anchor map (round-14 addition; the r13 repair-3 deliverable):
 
 | # | wrap-report row(s) | wrap verdict | primary source anchor |
 |---|---|---|---|
-| 1 | anthropic `:17`, intel `:19`, spotify `:22`; payload audit `:91-97` | GO-WITH-FIX ×5 | `docs/wrap-report.md:93` `positive_finding`; `:94`,`:97` `positive` |
-| 2 | intel `:19` descope; airtable `:23` ceiling advice overridden | decree `2ef530c6` | `fleets/claimer-mission.md:22`,`:29` |
-| 3 | mozilla `:18`, payload row `:92` | GO-WITH-FIX | `claims/mozilla-security-bounties/lando-diff-warning-missing-authz/report.md:79-82` |
-| 4 | airtable `:23`,`:97` (8 files vs 3); wordpress `:95` (17 files); anthropic `:17`,`:91` | GO-WITH-FIX | `claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:35` |
-| 5 | all 8 tag refs `:5`,`:118`,`:122-124`,`:126` | tag drift | `docs/claim-ready-index.md:32-38` + `[lost-tree] ops/claim-index.mjs:4` |
-| 6 | — (not wrap-sourced) | incident record | `claims/bugcrowd-seek/honest-zero/submit/BLOCKED.md:17-20` |
-| 7 | — (not wrap-sourced) | ingestion record | `claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15` |
-| 8 | — (not wrap-sourced) | invariant I8 | `fleets/mission-template.md:20` + `docs/continuation-notes.md:19`,`:26` |
-| 9 | 3cx `:20`, wordpress `:21` | NO-GO ×2 | pendle `status.json:4-5`,`:21`; 3cx `status.json:2`,`:5`,`:21` |
-| 10 | — (not wrap-sourced) | runbook rule | `docs/claim-runbook.md:11-20` (§A step 2) |
+| 1 | anthropic `:17`, intel `:19`, spotify `:22`; payload audit `:91-97` | GO-WITH-FIX ×5 | `[lost-tree] docs/wrap-report.md:93` `positive_finding`; `:94`,`:97` `positive` |
+| 2 | intel `:19` descope; airtable `:23` ceiling advice overridden | decree `2ef530c6` | `[lost-tree] fleets/claimer-mission.md:22`, `[lost-tree] fleets/claimer-mission.md:29` |
+| 3 | mozilla `:18`, payload row `:92` | GO-WITH-FIX | `[lost-tree] claims/mozilla-security-bounties/lando-diff-warning-missing-authz/report.md:79-82` |
+| 4 | airtable `:23`,`:97` (8 files vs 3); wordpress `:95` (17 files); anthropic `:17`,`:91` | GO-WITH-FIX | `[lost-tree] claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:35` |
+| 5 | all 8 tag refs `:5`,`:118`,`:122-124`,`:126` | tag drift | `[lost-tree] docs/claim-ready-index.md:32-38` + `[lost-tree] ops/claim-index.mjs:4` |
+| 6 | — (not wrap-sourced) | incident record | `[lost-tree] claims/bugcrowd-seek/honest-zero/submit/BLOCKED.md:17-20` |
+| 7 | — (not wrap-sourced) | ingestion record | `[lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15` |
+| 8 | — (not wrap-sourced) | invariant I8 | `fleets/mission-template.md:20` + `[lost-tree] docs/continuation-notes.md:19`, `[lost-tree] docs/continuation-notes.md:26` |
+| 9 | 3cx `:20`, wordpress `:21` | NO-GO ×2 | pendle `[lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:4-5`, `[lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:21`; 3cx `[lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:2`, `[lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:5`, `[lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:21` |
+| 10 | — (not wrap-sourced) | runbook rule | `[lost-tree] docs/claim-runbook.md:11-20` (§A step 2) |
 1. **Internal verdict strings as portal severity** — payloads carried
    `positive_finding` / `positive` instead of the platform's severity
    language (H1 `High` + CVSS, Intigriti `Unscored` when the program
-   self-assigns): `docs/wrap-report.md:19` (`positive_finding` → `Unscored`
+   self-assigns): `[lost-tree] docs/wrap-report.md:19` (`positive_finding` → `Unscored`
    — Intel assigns CVSS v4.0), `:17` (H1 `High`/CVSS 7.8 "rather than an
    internal verdict string"), `:22` (`Medium`/CVSS 5.5); all 7 payload-audit
    rows flag it (`:91-97` — `positive_finding` `:93`, `positive` `:94`,`:97`).
@@ -586,80 +590,80 @@ Per-item anchor map (round-14 addition; the r13 repair-3 deliverable):
    2026-09-05: claim at full supported strength; strip "Low-to-Medium
    ceiling" phrasing where Medium is proven; keep descoped language where
    precondition isn't proven (Intel: direct OOB write only, no code-exec
-   claim). Decree verbatim: `fleets/claimer-mission.md:29`; it postdates the
+   claim). Decree verbatim: `[lost-tree] fleets/claimer-mission.md:29`; it postdates the
    wrap review (git: wrap fixes `b3b1b7e3` 19:54 −03:00 → decree applied
    `2ef530c6` 20:56 −03:00, "airtable claims Medium at full strength") and
-   overrides `docs/wrap-report.md:23`'s keep-the-ceiling advice — pre-decree
-   staging line `fleets/claimer-mission.md:22`, applied at
-   `claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:32`;
-   descope side `docs/wrap-report.md:19` (no code-execution/LPE claim, no
+   overrides `[lost-tree] docs/wrap-report.md:23`'s keep-the-ceiling advice — pre-decree
+   staging line `[lost-tree] fleets/claimer-mission.md:22`, applied at
+   `[lost-tree] claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:32`;
+   descope side `[lost-tree] docs/wrap-report.md:19` (no code-execution/LPE claim, no
    requested High) + tag-inflation side `:122` (Intel tag still asked High).
 3. **Absolute statements falsified by the package's own provenance** —
    Mozilla report said "no live host was contacted" while provenance
-   recorded earlier GET/HEAD recon (`docs/wrap-report.md:18`, payload row
+   recorded earlier GET/HEAD recon (`[lost-tree] docs/wrap-report.md:18`, payload row
    `:92`); corrected to "no live host contacted *to verify this finding*" —
    fix applied live at
-   `claims/mozilla-security-bounties/lando-diff-warning-missing-authz/report.md:79-82`.
+   `[lost-tree] claims/mozilla-security-bounties/lando-diff-warning-missing-authz/report.md:79-82`.
 4. **Internal orchestration artifacts in attachments** — authorization/scope
    records, duplicate checklists, internal files submitted alongside the
-   report (`docs/wrap-report.md:17`, `:91`,`:93`; wordpress staged 17
+   report (`[lost-tree] docs/wrap-report.md:17`, `:91`,`:93`; wordpress staged 17
    attachments against a 3-file allowlist `:95`). Attach only triage-useful
    proof (Airtable: `poc.js`, `poc-output.json`, `proof.json` — nothing else,
    `:23`,`:97`; allowlist at
-   `claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:35`).
+   `[lost-tree] claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:35`).
 5. **Stale `claim-ready/*` tag treated as current authority** — a historical
-   tag never overrides current bytes (`docs/claim-runbook.md:3-5`);
+   tag never overrides current bytes (`[lost-tree] docs/claim-runbook.md:3-5`);
    `[lost-tree] ops/claim-index.mjs:4` ("tags are provenance only" — string
    absent from the surviving mirror's `ops/claim-index.mjs`, whose `:3-4`
    header instead reads "regenerate docs/claim-ready-index.md from the repo's
    claim-ready/* tags … Run after any claim-ready tag lands"), and only current
    bytes passing `ops/claim-check.mjs` enter the queue
-   (`docs/claim-ready-index.md:3`). The mechanism is live: 3 tags sit
+   (`[lost-tree] docs/claim-ready-index.md:3`). The mechanism is live: 3 tags sit
    excluded from the operator queue with per-row failing gates
-   (`docs/claim-ready-index.md:32-38`); all 8 wrap-era tags lack their
-   generated payload (`docs/wrap-report.md:118`), annotations drifted
+   (`[lost-tree] docs/claim-ready-index.md:32-38`); all 8 wrap-era tags lack their
+   generated payload (`[lost-tree] docs/wrap-report.md:118`), annotations drifted
    (`:122-124`: Intel asks High, 3CX `$1,150–$3,500` vs current
    `$1,150–$2,300`, Mozilla stale manifest digest), and the alias package
    must not be submitted from (`:126`).
 6. **Overclaiming the negative** — an empty `in_scope_assets` means "not
    observed in this response", never "the program has no scope"
-   (`claims/bugcrowd-seek/honest-zero/submit/BLOCKED.md:17-20`; gate row
-   `:26`; `evidence/scope-snapshot.json:5`,`:56`).
+   (`[lost-tree] claims/bugcrowd-seek/honest-zero/submit/BLOCKED.md:17-20`; gate row
+   `:26`; `[lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:5`, `[lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:56`).
 7. **Claiming safe harbor the program doesn't grant** — SEAL Whitehat covers
    active exploits only; routine findings get no safe-harbor credit
-   (`claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15`,`:31`,`:34`;
-   `claim_checklist.md:34-35`).
+   (`[lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15`, `[lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:31`, `[lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:34`;
+   `[lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:34-35`).
 8. **Manufactured findings** — I8: "never manufacture a finding"
    (`fleets/mission-template.md:20`; ufo-substrate invariant "Honesty
    outranks progress"); honest-zero is a first-class deliverable — the
    designed-outcome gloss is
-   `fleets/ufo-archive-2026/missions/groknight-mentor/lane-connector.md:24`.
+   `[lost-tree] fleets/ufo-archive-2026/missions/groknight-mentor/lane-connector.md:24`.
    438/486 non-claim-ready missions terminate as LEARNED honest-zero
-   (`docs/continuation-notes.md:19`, heading `:26`; partition `:20-22`:
-   19 RETIRED + 3 RETRY-method + 26 FAILED-infra).
+   (`[lost-tree] docs/continuation-notes.md:19`, heading `[lost-tree] docs/continuation-notes.md:26`; partition
+   `[lost-tree] docs/continuation-notes.md:20-22`: 19 RETIRED + 3 RETRY-method + 26 FAILED-infra).
 9. **Precondition laundering** — a local PoC proves the defect, not live
    impact. The package stays gated until the named precondition check runs:
    Pendle `state:"BLOCKED"` + `positive-blocked-live-precondition`
-   (`claims/cantina-pendle/ingestion-20260915/status.json:4-5`,
-   `resume_condition` `:21`; live-balance gate `claim_checklist.md:9-16`);
+   (`[lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:4-5`,
+   `resume_condition` `[lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:21`; live-balance gate `[lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:9-16`);
    3CX `claimable:false` + review `outcome:"BLOCKED"` despite DONE state
-   (`claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:2`,`:5`,`:21`;
-   uid=0 capture required `docs/wrap-report.md:20`). WordPress differs
+   (`[lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:2`, `[lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:5`, `[lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:21`;
+   uid=0 capture required `[lost-tree] docs/wrap-report.md:20`). WordPress differs
    (round-14 correction): package state is DONE + `claimable:true`
-   (`claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:2`,`:13`) —
-   the hold was the wrap NO-GO gate (`docs/wrap-report.md:21`,`:157`), since
-   cleared (`status.json:25` APPROVED; `:48` delta_note: 2026-09-15 poc.sh
+   (`[lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:2`, `[lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:13`) —
+   the hold was the wrap NO-GO gate (`[lost-tree] docs/wrap-report.md:21`, `[lost-tree] docs/wrap-report.md:157`), since
+   cleared (`[lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:25` APPROVED; `[lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:48` delta_note: 2026-09-15 poc.sh
    re-executed, exit 0).
 10. **Treating "DONE" as claimable** — `DONE` alone is insufficient:
     claimable requires `claimable:true`, positive `finding_count`,
     status↔manifest digest, custodian head binding, redaction receipts,
     reviewer distinctness, secret + attribution subchecks
-    (`docs/claim-runbook.md:11-20` = §A step 2, item-for-item; live proof:
-    3CX DONE + `claimable:false`, `status.json:2`,`:5`).
+    (`[lost-tree] docs/claim-runbook.md:11-20` = §A step 2, item-for-item; live proof:
+    3CX DONE + `claimable:false`, `[lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:2`, `[lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:5`).
 
 Same source, not itemized above (round-14 additions): payloads used absolute
 workstation paths — regenerate on the submission host
-(`docs/wrap-report.md:99`); program-wide reward range ≠ finding-specific
+(`[lost-tree] docs/wrap-report.md:99`); program-wide reward range ≠ finding-specific
 requested band (Mozilla `$500–$20,000` vs proposed High `$3,000–$6,000`,
 `:92`,`:107`); secret scans must tolerate inert fixtures (Airtable's
 one-char `Bearer x`, `:83`); final gate was HOLD — zero immediate
@@ -680,9 +684,9 @@ top recurrence classes (full 22-class taxonomy:
 | Redaction-receipt drift | artifacts without same-digest receipts; orphan receipts binding *stale* digests (incl. reusable receipts existing in `evidence/` but never copied into `manifest.redactions`) | receipts bind current manifest digests, producer ≠ verifier |
 | Missing in-package `submission-draft.md` | dominant defect — nearly every `claim-ready` package | stage canonical paste-ready draft: verbatim scope excerpt, clone prerequisite, prior-art/dedupe disclosures |
 | Stale packet drafts | `submission-review/packets/` admin drafts contradict in-package state — one was *materially wrong* (dev-trunk-only conclusion omitted the vulnerable stable v1 endpoint) | `DO-NOT-USE` banner; in-package draft is canonical |
-| Receipt drift (duplicate-submission hazard) | package reads pre-submission while a real receipt exists (H1 #4028846 = `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/receipts/k8s-nodebound-token-impersonation.json:5-6` + `submission-receipts.csv:2`; Bugcrowd a169f309 = `receipts/ld-node-stream-tls-bypass.json:5-6` + `csv:3`) | `RECEIPT EXISTS — DO NOT RESUBMIT` banner; reconcile every admin file to submitted-state — round-14 correction: the bounties-repo reconcilers do NOT hold these receipts (`fleets/run/portal-reconciliation-2026-09-11.json:9-11` covers only the Sep-11 trio 4002776/4002810/4002789; `.ufo/claim-recovery/final-audit.json` has zero 4028*/a169f309 matches) — the origin-work `submission-review/` store does (incl. `queue.json:12`) |
+| Receipt drift (duplicate-submission hazard) | package reads pre-submission while a real receipt exists (H1 #4028846 = `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/receipts/k8s-nodebound-token-impersonation.json:5-8` + `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/submission-receipts.csv:2`; Bugcrowd a169f309 = `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/receipts/ld-node-stream-tls-bypass.json:5-6` + `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/submission-receipts.csv:3`) | `RECEIPT EXISTS — DO NOT RESUBMIT` banner; reconcile every admin file to submitted-state — round-14 correction: the bounties-repo reconcilers do NOT hold these receipts (`[lost-tree] fleets/run/portal-reconciliation-2026-09-11.json:9-11` covers only the Sep-11 trio 4002776/4002810/4002789; `[lost-tree] .ufo/claim-recovery/final-audit.json` has zero 4028*/a169f309 matches) — the origin-work `submission-review/` store does (incl. `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/queue.json:11-12`) |
 | "Verified" but never executed | vectors claimed verified, never run (exemplars: coinbase vectors 3-4 + path-form boundary; sibling class = overclaims contradicted by the package's own evidence, e.g. spacex "both resolvers" = DoH only — `corpus/knowledge/ufo-archive-2026.md:150-154`) | execute against real extracted code; regenerate RUN_LOG |
-| Stale file:line citations | most common narrative defect — citations drift every repair (exemplars: metamask `:161→:162`, elastic `:604→:605` + api.search.go range, aiven `README.rst:706` misattribution, web3 ranges narrower than function extents, web1 `READY.md` systematically stale — `corpus/knowledge/ufo-archive-2026.md:145-149`) | re-cite post-repair numbering before staging |
+| Stale file:line citations | most common narrative defect — citations drift every repair (exemplars: metamask `:161→:162`, elastic `:604→:605` + api.search.go range, aiven quoted stale anchor "README.rst:706" (source base not retained), web3 ranges narrower than function extents, web1 `READY.md` systematically stale — `corpus/knowledge/ufo-archive-2026.md:145-149`) | re-cite post-repair numbering before staging |
 | Manifest↔report disagreement | REPORT flags `UNRESOLVED CONFLICT` while manifest says `claim-ready` | manifest is gate-visible; reconcile (`hold-prior-filing-conflict`, preserve `prior_status`) |
 | Alias indistinguishable from canonical | alias carried `claim-ready` + own contradictory severity | `status:"claim-ready-alias"`, `claim.json alias_of`, evidence-handoff stub draft, `DO-NOT-ATTACH` flag |
 | Proven-but-not-claimable | vuln proven by PoC but published audit finding + deployed asset verified fixed first-hand (gamma-deposit) | `NOT-SUBMITTABLE` state; exclusion-notice draft (elastic falsified-by-execution) |

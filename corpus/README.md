@@ -26,7 +26,7 @@ its source. No generic filler.
 | Intake surface (map census, ingestion path, registry decrees) | `knowledge/intake-surface.md` | 1088-record census, `fleet-dispatch.mjs::buildQueue` scoring source read, `.ufo-ingestion/` full walk, `fleets/registry.json` decree ledger, live `check-freshness`/`validate` runs |
 | UFO runtime workspaces (`.ufo/` layer + `.omp/`) | `knowledge/ufo-workspaces.md` | full census: 25 `bh*` warden workspaces + 22 reports + `reroutes.jsonl` (121 records), `bounty-fleet/` 805 M keeper tree (second `missions.jsonl`), `sessions/` bpolish1..8 (refile verdict NONE + grep traps), `grok-bounty-assessment-20260911/` (frozen, self-invalidating), `claim-recovery/`, `.omp/` tracked-vs-live, root `README.md`/`.gitignore` |
 | Repo git state | `knowledge/repo-git-state.md` | live `git status/branch/rev-list/merge-base/ls-files`: stalled mid-rebase ≥17 days, 903 dirty entries, 12 tags pushed, `claim-ship` superseded ancestor, claims/ 198 tracked files vs 3361 on disk |
-| Target checkouts + provenance pins | `knowledge/target-checkouts.md` | `pendle-core-v2-public/` (shallow clone `f242659`=v6.10.0, pin-bound), `george/` parked, 187/255 `provenance.json` pin census, `claim-check.mjs:96-97` never validates pins |
+| Target checkouts + provenance pins | `knowledge/target-checkouts.md` | `pendle-core-v2-public/` (shallow clone `f242659`=v6.10.0, pin-bound), `george/` parked, 187/255 `provenance.json` pin census, `[lost-tree] claim-check.mjs:96-97` never validates pins (lost-tree line range; mirror `ops/claim-check.mjs` is only 83 lines) |
 | Canonical triage thresholds (gates/weights/constants, line-cited) | `knowledge/triage-thresholds.md` | full reads of `ops/claim-check.mjs`+`ev-report.mjs`+`fleet-dispatch.mjs`+`shared.mjs`+`bounty-map/schema.json` + live censuses; 3-way verified round-13 (L1 read × executor draft × reviewer derivation) |
 | Per-program quirks (fee/precondition patterns) | `knowledge/program-quirks.md` | sibling-package sampling (dydx same-blocker class; morpho/euler/uniswap/reserve honest-zero) — index-orphaned until round 13 |
 | Claim-anatomy sample (per-program `status.json`) | `knowledge/claim-anatomy-sample.md` | round-14: 20 NEW full reads via deterministic stratified rule (script preserved, L1-reproduced); 10→30/280 = 10.7%; deviation classes D1-D13 with anchors |
@@ -157,4 +157,4 @@ its source. No generic filler.
   suffixes `-identity`×121 / `-host-binding`×69, decree git timeline
   b3b1b7e3→2ef530c6). Markers "round-14 correction/addition". One critic
   falsification REJECTED with evidence (the 2026-09-05 severity decree
-  exists at `fleets/claimer-mission.md:29` — critic grepped only `docs/`).
+  exists at `[lost-tree] fleets/claimer-mission.md:29` — critic grepped only `docs/`).

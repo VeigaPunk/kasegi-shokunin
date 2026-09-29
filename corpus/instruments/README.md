@@ -8,12 +8,14 @@ repo and every domain surface.
 | script | what it measures | run |
 |---|---|---|
 | `density.py` | per-block evidence density of a markdown file: `ev = path-cites + concrete-table-rows + unique-numerics + unique-ALL-CAPS-signatures`, `dens = ev*100/nb` (nb = non-blank lines). Blocks segment at `^#{2,3}`. Full exclusion rules in its docstring. | `python3 corpus/instruments/density.py SKILL.md --label X` → stdout table + mean |
-| `resolve.py` | **live citation-resolvability**: every distinct backticked path-like citation in `SKILL.md` + `corpus/**/*.md`, classified `RESOLVES` / `MIRROR-EQUIVALENT` / `INTERNAL` / `GONE`; numerator = the first three. | `python3 corpus/instruments/resolve.py <lane-repo-root>` → writes `citation-survival.md` + `citation-survival.tsv` **next to the script** |
-| `anchorcheck.py` | anchor gate: every `path:NN[-MM]` mirror citation in a markdown file must be in range of the real file, and prints the cited source line(s) for semantic review. Mirror root is hard-coded to `~/Projects/the-bounty-hunter`. | `python3 corpus/instruments/anchorcheck.py <file.md>` |
+| `resolve.py` | **live citation-resolvability**: every distinct backticked path-like citation in `SKILL.md` + `corpus/**/*.md`, excluding its generated `citation-survival.md`; preserves leading-dot paths and classifies `RESOLVES` / `MIRROR-EQUIVALENT` / `INTERNAL` / `GONE`; numerator = the first three. | `python3 corpus/instruments/resolve.py <lane-repo-root>` → writes `citation-survival.md` + `citation-survival.tsv` **next to the script** |
+| `anchorcheck.py` | anchor gate: each supported `path:NN[-MM]` citation is range-checked against the lane, frozen mirror, pinned Git blob, or declared ORIGIN-WORK root; prints the cited source lines. Round 18 added lane-prefixed paths (`corpus/`, `claims/`, `evidence/`, `.ufo/`, etc.), `csv`/`jsonl`/`rst`/`txt`/`py`/`ts`, and explicit mirror paths. ORIGIN-WORK checks current bytes only and do not establish tracking or a durable pin. | `python3 corpus/instruments/anchorcheck.py <file.md>` |
 
-`citation-survival.md` / `.tsv` in this directory are the **round-15 census of
-record** (regenerate any time; both are re-runnable byte-identically — the r15
-double-run md5 was `ab25833e897822af3e87b371a3d4eeff` in `/tmp/kasegi-r15`).
+ORIGIN-WORK citations must use the explicit `~/Projects/origin-work/open-bug-bounties/` prefix; explicit mirror citations use `~/Projects/the-bounty-hunter/`. Both roots are realpath-confined (`OUTSIDE-BASE`) and read-only. Relative lane paths are checked lane-root-relative; bare names also search the four declared lane directories and then fixed mirror subdirectories. Round 18 changed leading/trailing cleanup from `strip` to `rstrip`: a leading dot is path data, so `.ufo/` and `.omp/` must never be silently rewritten before matching. Summary output keeps `ORIGIN` and `OUTSIDE-BASE` separate.
+
+`citation-survival.md` / `.tsv` are the **current census of record**, regenerated
+in round 18. The historical round-15 census and its double-run md5
+`ab25833e897822af3e87b371a3d4eeff` remain recoverable from git history.
 
 ## Known limits (measured, not assumed)
 
@@ -36,6 +38,12 @@ double-run md5 was `ab25833e897822af3e87b371a3d4eeff` in `/tmp/kasegi-r15`).
   corpus cites: `[lost-tree] ops/claim-check.mjs:174-199` vs an 83-line file,
   `ops/shared.mjs:55` vs 41 lines). `anchorcheck.py` is the instrument that
   catches those; run it after any re-anchor.
+- **`anchorcheck.py` checks only supported anchored token shapes.** `bad=0`
+  means every recognized anchor is either in range or explicitly
+  `LOST-RECORDED`; it does not make historical lost-tree content openable and
+  does not validate unanchored template paths. Round 18 broadened the matcher,
+  exposed 82 bad anchors in the pre-edit `SKILL.md` (versus 46 under the r17
+  matcher), and then triaged all 82 rather than preserving the blind spot.
 - **The rate is definition-sensitive.** Three independent r15 implementations
   agreed on direction and disagreed on absolutes: `resolve.py` (instrument of
   record, definition above) SKILL 222/486 = 45.68 %, lane 410/1437 = 28.53 %; a
@@ -44,6 +52,17 @@ double-run md5 was `ab25833e897822af3e87b371a3d4eeff` in `/tmp/kasegi-r15`).
   written path: 6.9 % distinct / 7.1 % instances; a third that excludes
   glob/pattern tokens first: 202/419 = 48.2 % concrete-shaped tokens existing
   on disk. Always publish the definition with the number.
+- **Round-18 rate moved honestly, not monotonically.** Exact ORIGIN-WORK
+  re-anchors raised the corrected SKILL numerator 228 → 232, while expanding
+  ambiguous shorthand and previously invisible lost-tree anchors raised its
+  denominator 488 → 503; therefore the fraction moved 46.72 % → 46.12 %.
+  Lane total still improved 427/1461 = 29.23 % → 432/1469 = 29.41 %. The
+  score stays 4. The auditability move is reported separately by
+  `anchorcheck.py`: broadened-matcher bad anchors 82 → 0, ORIGIN 1 → 5, and
+  explicit LOST-RECORDED 5 → 104.
+  The corrected resolver excludes its own generated Markdown and preserves
+  leading-dot paths; two consecutive final runs produced byte-identical stdout,
+  Markdown, and TSV.
 
 ## Bar rule for repairs (round-15 amendment)
 

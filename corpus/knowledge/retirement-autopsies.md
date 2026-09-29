@@ -1,6 +1,6 @@
 # Retirement lane — disposition classifier + autopsy contract
 
-Source: `~/Projects/bounties/ops/park-disposition.mjs` (80 lines, read in
+Source: `~/Projects/the-bounty-hunter/ops/park-disposition.mjs` (80 lines, read in
 full), `docs/autopsies/` (31 files, all read), `fleets/mission-template.md`
 line 23 (park-at-SCOPED grant), `fleets/run/*.status.json` live re-census.
 Read 2026-09-28.
@@ -82,7 +82,7 @@ Outcome is `RETIRED (structurally blocked)` in all 31.
 | Paused/non-enumerable scope: `engagement in_progress_paused` (`blockopensource`) or non-enumerable "all internet-facing assets" (`sky-plc-mbb-og2`, signup forbidden) | 2 | `bugcrowd-blockopensource`, `bugcrowd-sky-plc-mbb-og2` |
 
 Platform split: 26 bugcrowd / 5 hackerone — the H1 cohort predates the
-GraphQL `team(handle)` workaround now in `policy-access-playbook.md`; those
+GraphQL `team(handle)` workaround now in `corpus/knowledge/policy-access-playbook.md`; those
 four (`elastic`, `figma`, `greenhouse` + `six-group` terms gate) are the
 ones a provisioned H1 session could un-park today.
 

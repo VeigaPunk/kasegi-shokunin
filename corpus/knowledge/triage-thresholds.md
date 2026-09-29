@@ -281,7 +281,8 @@ Decoded pattern: keyword (`api key`/`apikey`/`api-key`, `secret`, `token`,
 | nested blockers | same contexts, `(ctx.blocker_codes ?? ctx.blockers ?? ctx.remaining_gates)` is a non-empty array | `status.json contains unresolved nested readiness blockers` | 218-223 | MATCHES: `claim-gates.md:71-74` |
 
 Title threshold: **16 characters** minimum before the cross-package title
-comparison engages (`claim-check.mjs:194`) — shorter titles can only duplicate
+comparison engages (`[lost-tree] claim-check.mjs:194` — lost-tree line number;
+mirror `ops/claim-check.mjs` is only 83 lines) — shorter titles can only duplicate
 by slug.
 
 ### 4.9 Output contract

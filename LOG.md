@@ -681,3 +681,109 @@
   map delivered for r16. **Zero writes under `~/Projects/**` by this lane**
   (attested by two L2s independently); nothing reverted, nothing re-created.
   `corpus/lessons/round-15.md` recorded.
+- 2026-09-28 — round 17: selected the lowest axis, `depth:verifiability` (4),
+  and extended `anchorcheck.py` for the explicit ORIGIN-WORK root only. The
+  checker now emits `IN-RANGE(ORIGIN)`, applies realpath/commonpath confinement
+  (`OUTSIDE-BASE`), rejects non-files, and reports separate `ORIGIN` and
+  `OUTSIDE-BASE` counters. `SKILL.md:683` now anchors lines 5–8 of the
+  `k8s-nodebound-token-impersonation.json` receipt: report id, URL, submitted
+  date, and status. The source is untracked at open-bug-bounties HEAD
+  `1307b8b`; observed SHA-256
+  `daaee21c387ff6b2103043e53db1794bb6b6b4eb0c9444bc615aa48ca476122b`.
+  Before/after smoke: the baseline checker silently skipped the valid citation
+  (0 checked); final fixture reports `ORIGIN=1`, one in-range anchor, and
+  `PAST-EOF`, `OUTSIDE-BASE`, `MISSING-FILE` for three negatives. Full
+  `SKILL.md` output moved 195→196 in-range anchors, with 46 missing, 5
+  lost-recorded, 0 pin-broken, `ORIGIN=1`, `OUTSIDE-BASE=0`.
+  `resolve.py` already line-checked resolvable paths, so the lane score is held
+  at **4→4**, not credited as a new resolvability gain; its current census is
+  480/1506 overall and 222/486 for SKILL. Ten L2s were dispatched in one
+  batch; independent critic/reviewer/connector/sentinel/labrat reports
+  confirmed the distinction between checker coverage and resolver rate, the
+  untracked-source limit, and the exact-root read-only boundary. No external
+  source files were changed. See `.ufo/reports/round-17/kasegi.md`.
+- 2026-09-29 — round 18: selected the lowest axis,
+  **depth:verifiability (4)**, and completed the planned missing-anchor triage.
+  Round-open baseline with the r17 checker was **196 in-range / 46 bad / 162
+  distinct / LOST-RECORDED=5 / ORIGIN=1**. Broadening the checker over the same
+  pre-edit `SKILL.md` exposed its hidden surface: **205 in-range / 82 bad / 171
+  distinct**. The old token cleanup stripped leading dots, so `.omp/...` and
+  `.ufo/...` were silently mangled; its CITE regex ignored `corpus/`,
+  `claims/`, `evidence/`, `.ufo/`, `receipts/`, `csv`, `jsonl`, `rst`, `txt`,
+  `py`, and `ts`. Round 18 preserves leading dots, recognizes those anchored
+  shapes, supports explicit realpath-confined
+  `~/Projects/the-bounty-hunter/` anchors, and reports the correct base on a
+  mirror traversal failure.
+  **Triage verdict.** Independent L2 census found 15 of the original 16
+  distinct missing paths absent from lane, mirror, origin-work, and the two
+  surviving repos' histories; only `queue.json` has an exact survivor.
+  Name-similar candidates were rejected on content: the mirror
+  `docs/example-claim-ready-index.md` is 14 lines / 7 rows / 2026-09-05, not
+  the cited 32+ line / 11-row / 2026-09-06 file; groknight `WRAP.md`, packet
+  completeness checklists, and origin-work reconciliation are different
+  artifacts. Historical sources are now explicit `[lost-tree]` anchors rather
+  than apparent openable paths. Context-explicit bare Pendle, Yahoo, 3CX, and
+  WordPress anchors were expanded to their full historical paths. The quoted
+  stale target-repo text `README.rst:706` was de-anchored with its missing-base
+  caveat instead of falsely labelling it LOST-TREE.
+  **Four exact re-anchors** now use full ORIGIN-WORK paths:
+  `submission-receipts.csv:2`, `submission-receipts.csv:3`,
+  `receipts/ld-node-stream-tls-bypass.json:5-6`, and `queue.json:11-12`.
+  Reviewer read every range and confirmed the report IDs/URLs and three-report
+  note support the no-resubmit claim. The source tree is mutable and all four
+  receipt-store files are git-untracked; current-byte SHA-256 evidence:
+  CSV `3ed3e6959fc9b005630461c93045f5a2887d64f3d436c69549e87c024ffb80b9`,
+  queue `1fa7cb8b1aab2a74a214fc511e0393b72265cbeef023129a1a80365c5f1f676d`,
+  LaunchDarkly receipt
+  `49525f86053003af053a6ed7a56c1176777682a339bd1ba651189854dab3ce2e`.
+  No durable blob-pin is claimed.
+  **Measured final:** `anchorcheck.py SKILL.md` = **209 in-range / 0 bad /
+  175 distinct / LOST-RECORDED=104 / ORIGIN=5 / PIN-BROKEN=0 /
+  OUTSIDE-BASE=0**. Every live corpus file (`corpus/README.md` +
+  `corpus/knowledge/*.md`) also has zero bad anchors; three live-file defects
+  were made explicit LOST-RECORDED. Pre-r16 lesson anchors remain historical
+  under citation-bases rule 6. Density guard: mean **152.9 → 153.9**, path
+  citation instances **623 → 645**; no density credit claimed.
+  **Resolver correction.** The r15 resolver ingested its own generated
+  `citation-survival.md` and stripped leading dots, contradicting its
+  byte-identical claim. It now excludes that output, uses trailing-only
+  punctuation cleanup, and names the committed instrument in generated output.
+  The executor's preserved pre-edit Markdown snapshot was overlaid onto a
+  complete scratch copy so both sides used one corrected definition: SKILL
+  **228/488 = 46.72% → 232/503 = 46.12%**; corpus
+  **246/1145 = 21.48% → 247/1144 = 21.59%**; lane
+  **427/1461 = 29.23% → 432/1469 = 29.41%**. Two consecutive final runs had
+  byte-identical stdout and outputs: census SHA-256
+  `4d3874706d7fd31a0fa9bcdde88ca2f531f12eb6abeca6798732f7c4bef5d46a`
+  (Markdown) and
+  `95c6a2328a8ff35336470f843c17a797a4b2078e1c7313c04cc383be5b4602e4`
+  (TSV). The score stays **4→4**: absolute openable anchors and lane rate
+  improved, but the defined SKILL fraction fell after honest denominator
+  expansion.
+  **Behavioral smoke:** a nine-case `/tmp` fixture proved lane, `.omp` mirror,
+  explicit mirror, origin CSV, and LOST-RECORDED positives plus distinct
+  MISSING-FILE, PAST-EOF, ORIGIN traversal, and MIRROR traversal negatives.
+  It caught and then verified the mirror-base diagnostic repair. `SKILL.md`
+  final SHA-256
+  `62582f91770bb8a3ad208a861ad735b9c052c635f84c18ab678413089bd3ec7d`;
+  `anchorcheck.py`
+  `443ff50f62f823977660d7d688f5070acaae1bf973f34b4be59ee84a05fe02e0`;
+  `resolve.py`
+  `b44247e1eeb192d23f9de9d92a38a031280b091b544532dad3999755ccbafee4`.
+  **Inherited work:** round 16 was operator-terminated with citation-base
+  normalization in flight; its live-document rewrites and
+  `corpus/knowledge/citation-bases.md` were verified and completed here.
+  Round-17 ORIGIN support and its log/report are included in the same first
+  commit after those interrupted rounds.
+  **L2 fleet:** 9 agents in one batched call — 2 scouts, critic, reviewer,
+  revenger, executor, connector, labrat, sentinel — all read-only over lane
+  and surviving roots, writing only `/tmp/kasegi-r18/`. Census, invisible-token
+  enumeration, falsification, semantic anchor review, provenance recovery,
+  independent edit map, sibling overlap, baseline, and regex-adversarial
+  reports all returned. Connector found no sibling copy of the lost sources.
+  **Routing relay:** effective config shows
+  `modelRoles.m_swe=devin/swe-2:max` but
+  `retry.fallbackChains.m_swe=null`; Daybreak is a separate role, so the
+  operator's intended exact `m_swe → daybreak-blue:max` chain is **not visible**.
+  No genuine m_swe capacity failure occurred; no advancement was observed or
+  forced, and no config or frozen-contract bytes were changed.

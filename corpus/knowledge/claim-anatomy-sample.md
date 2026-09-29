@@ -14,7 +14,7 @@ full census stays a future coverage sub-axis candidate.
 - Universe: `find claims -mindepth 3 -maxdepth 3 -name status.json` = **280**
   (the 281st `status.json` is the depth-5 evidence copy
   `claims/bugcrowd-seek/honest-zero/evidence/status.json` — excluded by
-  construction, matching `submitted-registry.md:200-202`).
+  construction, matching `corpus/knowledge/submitted-registry.md:207-209`).
 - Exclusion set: 17 already-deeply-read paths (SKILL/corpus exemplars: seek
   honest-zero, pendle, dydx, 3cx, anthropic plugin-dev, both mozilla lando
   packages, airtable ×2, spotify ×2, wordpress ×2, intel pqos, doit amp,
@@ -66,7 +66,7 @@ evidence locations).
 
 - **D1** `claimable` absent 13/20 sample, **241/280** tree-wide — exactly the
   b1k-* producer cohort (13/13 sample, 232/233 tree-wide; exemplar
-  `claims/hackerone-automattic/honest-zero-jetpack/status.json:1-15`, 13
+  `[lost-tree] claims/hackerone-automattic/honest-zero-jetpack/status.json:1-15`, 13
   keys, none `claimable`). `claimable:true` only **12/280**.
 - **D2** `claim_review` absent 15/20, **254/280** tree-wide; present only
   26/280. Sample holders: auth0-okta `:41`, opus-guard `:16`, spacex `:15`,
@@ -78,14 +78,14 @@ evidence locations).
   northwestern-mutual `:1-16` has NEITHER guard; polarity inversion
   opus-guard `:15` `do_not_submit:false` on `state:"BLOCKED"` `:2` +
   `claimable:false` `:10` (cf. the opposite-direction mozilla trap at
-  `submitted-registry.md:145-147`).
+  `corpus/knowledge/submitted-registry.md:146-148`).
 - **D5** `manifest_sha256` absent (automattic / github / vercel-open-source,
   each `:1-15`; last field `updated_at:14` — the binding is not merely null,
   it is unrepresentable) or null (hyatt `:7`); **84/280** tree-wide (71
   absent + 13 null).
 - **D6** `deliverable` escapes the package root: northwestern-mutual `:7` =
-  `evidence/bugcrowd-northwestern-mutual-mbb-og/`; hyatt `:8` =
-  `evidence/hackerone-hyatt/`. Other 18/20 all start with `claims/`.
+  `[lost-tree] evidence/bugcrowd-northwestern-mutual-mbb-og/`; hyatt `:8` =
+  `[lost-tree] evidence/hackerone-hyatt/`. Other 18/20 all start with `claims/`.
 - **D7** six-file anatomy not met: hyatt dir holds only `BLOCKED.md,
   INGESTION.md, claim.json, status.json` (1/6 canonical);
   northwestern-mutual only `status.json` + `submit/` (1/6). Other **18/20**
@@ -107,12 +107,12 @@ evidence locations).
   and `-host-binding` (**69**); 4 prose-sentence verdicts (auth0-okta `:3`);
   `positive-blocked-*` = **2/280** (consistent with r13 U5); 0/20 in sample.
 - **D11** the documented `state` enum omitted PARKED (**248/280** = 88.6%) —
-  repaired round-14 in `claim-package-contract.md:31`.
+  repaired round-14 in `corpus/knowledge/claim-package-contract.md:31`.
 - **D12** DONE ≠ filed: spacex-starlink `:9` `claimable:true`, `:7`
   `submitted_url:null`, `:12` `submission_state:"STAGED — operator-gated…"`;
   x `:9`/`:7` same shape, no `submission_state`. Both DONE packages'
   `submission_url` values are destination endpoints — exactly the
-  `submitted-registry.md:130-133` trap. Tree-wide: `submission_performed
+  `corpus/knowledge/submitted-registry.md:138-141` trap. Tree-wide: `submission_performed
   ===true` occurs **0/280**; any-SIG = 29/280 (8/8 eligible DONE, 5/245
   PARKED, 4/10 BLOCKED).
 - **D13** deviation burden: **16/20** sample and **260/280 (92.9%)**
@@ -140,7 +140,7 @@ evidence locations).
 - `SKILL.md` Evidence-package anatomy `status.json` row now carries the
   attestation strength (full contract 20/280; cohort counts) instead of
   presenting `claimable`/`claim_review` as universal.
-- `claim-package-contract.md` state enum + verdict patterns + `claimable`
+- `corpus/knowledge/claim-package-contract.md` state enum + verdict patterns + `claimable`
   absence + blocker-naming drift annotated.
 - The six-file contract line names the two 1/6 packages as sampled reality.
 - Verdict-suffix vocabulary (`-identity`, `-host-binding`) is now documented;

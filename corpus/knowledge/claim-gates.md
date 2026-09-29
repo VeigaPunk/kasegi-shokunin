@@ -60,7 +60,7 @@ lists here and in SKILL.md):
   (L46-49), so one run's error list is path-dependent, not a full partition
   of violations — while gate-level flow never exits early (L18-19, 228-231).
 - Canonical per-gate derivation (triggers, error strings, line numbers,
-  constants): `triage-thresholds.md` §4 (round-13).
+  constants): `corpus/knowledge/triage-thresholds.md` §4 (round-13).
 
 ## status.json gates (L118–226)
 

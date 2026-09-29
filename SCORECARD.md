@@ -77,26 +77,55 @@ reader can open what the skill cites. Splitting exposes a *worse* number rather
 than concealing it, which is the test for whether a split is honest. No axis
 retired.
 
+## Round 17 result
+
+| Axis | Score before r17 | Score after r17 | Evidence pointer | Last change |
+|---|---:|---:|---|---|
+| depth:density | 9 | 9 | Held at the r15 result above; no density move this round. | r15 |
+| depth:verifiability | 4 | 4 | `resolve.py` already range-checks resolvable anchors; the pre-edit census records the receipt `:5-6` in range. `anchorcheck.py` now reports `ORIGIN=1` and prints the corrected `SKILL.md:683` range `:5-8`; `MISSING-FILE=46`, `LOST-RECORDED=5`, and `PIN-BROKEN=0` remain. The source is untracked, so this is current-byte evidence only. | r15 (held r17) |
+| coverage | 7 | 7 | Held at the r15 result above; no coverage move this round. | r15 |
+
+The round-17 narrative recorded `480/1506`; the round-18 labrat reproduced the
+unchanged pre-edit census as **451/1506** = 107 RESOLVES + 224
+MIRROR-EQUIVALENT + 120 INTERNAL. The denominator and SKILL row (`222/486`)
+matched, so `480` was a numerator transcription error. Round 18 also found
+that `resolve.py` ingested its own generated `citation-survival.md` and stripped
+leading dots from `.ufo`/`.omp` tokens. The corrected definition excludes that
+generated report and preserves leading dots. A complete scratch tree overlaid
+with the executor's exact pre-edit SKILL/corpus snapshot supplies the comparable
+baseline below; two final runs are byte-identical.
+
+## Round 18 result
+
+| Axis | Score before r18 | Score after r18 | Evidence pointer | Last change |
+|---|---:|---:|---|---|
+| depth:density | 9 | 9 | Non-target guard only: unchanged instrument, mean **152.9 → 153.9**, path-citation instances **623 → 645**. No density credit claimed; the increase comes largely from making shorthand historical anchors explicit. | r15 (held r18) |
+| depth:verifiability | 4 | **4** | `anchorcheck.py SKILL.md`: r17 matcher baseline **196 in-range / 46 bad / 162 distinct / LOST=5 / ORIGIN=1**; broadened r18 matcher on the same pre-edit bytes exposed **205 / 82 / 171 / 5 / 1**; final **209 / 0 / 175 / 104 / 5**, `PIN-BROKEN=0`, `OUTSIDE-BASE=0`. Four exact origin-work receipt anchors now open; all recognized non-openable anchors are explicit rather than silently skipped or reported as unexplained MISSING-FILE. Corrected `resolve.py`: SKILL numerator **228 → 232**, denominator **488 → 503**, so **46.72 % → 46.12 %**; lane total **427/1461 = 29.23 % → 432/1469 = 29.41 %**. Score held: absolute openable set and lane rate improved, but the defined SKILL fraction did not. | r18 (measured, score held) |
+| coverage | 7 | 7 | Held at the r15 result; no coverage move this round. | r15 (held r18) |
+
+The independent L2 map classified 79 broad-shape anchors as absent from all
+three declared roots and found three exact relative-path survivors in
+origin-work; review also resolved the omitted `csv:3` shorthand to the same
+receipt CSV. All four new full ORIGIN-WORK ranges were read and semantically
+support the receipt claim. Of the original 16 distinct MISSING-FILE paths,
+15 are absent from both surviving roots and their git histories; only
+`queue.json` has an exact survivor. Name-similar files
+(`docs/example-claim-ready-index.md`, `.ufo-missions/groknight/WRAP.md`,
+packet `completeness-checklist.md`) were rejected as non-equivalent. The
+quoted stale target-repo text `README.rst:706` was de-anchored rather than
+mislabelled LOST-TREE. Live files (`SKILL.md`, `corpus/README.md`,
+`corpus/knowledge/*.md`) now have zero `MISSING-FILE`, `PAST-EOF`,
+`OUTSIDE-BASE`, or `PIN-BROKEN`; pre-r16 lessons retain historical bad anchors
+under `citation-bases.md` rule 6.
+
 ## Planned
 
-Round 16 candidate: **depth:verifiability** (lowest scored axis at 4).
-Concrete move: anchor-base-pin the remaining **20** `corpus/knowledge/*.md`
-entries the way `triage-thresholds.md` was pinned this round (each gets a
-header naming its base — mirror `1cfbd86`, `[lost-tree]` as-of
-2026-09-28T23:32Z, or origin-work — and every `SKILL.md:NNN` cross-cite is
-pinned to a git blob), then re-run `resolve.py` + `anchorcheck.py` and publish
-before → after. Falsifiable target: lane resolvability 28.53 % → ≥ 40 % with
-zero past-EOF anchors in `corpus/knowledge/`. Secondary (same round if cheap):
-move the `TELEMETRY_EVENTS` decorative-whitelist derivation into its canonical
-home `corpus/knowledge/ops-invariants.md` (distiller's ownership map:
-`/tmp/kasegi-r15/distiller.md`, 66 duplicate statements across 4 files,
-22 CODE-half vs 14 DATA-half facts), and repair `## Pipeline` (13.3, the last
-block below 100 — 2.3× below bar; per-stage cites to
-`fleets/mission-template.md` + the mirror ops files). Coverage follow-up:
-census `~/Projects/origin-work/open-bug-bounties` (the one surviving root still
-uncensused) — that is the natural first trial of a `coverage:surviving-roots`
-sub-axis, and the `coverage:claims-pipeline` vs `coverage:target-corpus` split
-stays deferred until a live claims pipeline exists again.
+Round 19 candidate: **depth:verifiability** (4 remains below coverage 7).
+Audit the 104 `LOST-RECORDED` instances for semantic support in the
+corpus-attested record. Delete claims whose only support vanished; do not
+replace primary sources with circular corpus citations merely to raise the
+resolution fraction. Start with the critic-flagged Airtable severity/decree
+claim, whose surviving origin-work package materially differs.
 
 ## Retired
 

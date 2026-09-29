@@ -60,7 +60,7 @@ nothing re-checks).
 ## Denominator note (round-12 correction)
 
 `claims/` live census 2026-09-28: **274** top-level program dirs (+1 root
-`README.md` file), **295** package dirs (`<program>/<slug>`), **280** packages with
+`[lost-tree] claims/README.md` file), **295** package dirs (`<program>/<slug>`), **280** packages with
 `status.json`, 255 with `provenance.json`. Round 1's "275 claim dirs" and round 9's
 "295 claim dirs, 15 status-less" were counting program dirs and package dirs
 respectively — both numbers are right for their unit; SKILL.md L8 conflated them
