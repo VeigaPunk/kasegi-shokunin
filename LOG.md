@@ -787,10 +787,3 @@
   operator's intended exact `m_swe → daybreak-blue:max` chain is **not visible**.
   No genuine m_swe capacity failure occurred; no advancement was observed or
   forced, and no config or frozen-contract bytes were changed.
-
-## 2026-10-13 — HOURS.md ledger opened
-
-- Operator seed per PROTOCOL.md §Craft-hours: shonen→shokunin now requires
-  ≥10,000 verified craft-hours AND the SHONEN gate. Ledger starts at 0;
-  instrumented rounds accrue collective in-domain lane-minutes.
-- Evidence: fleet commit; PROTOCOL.md §Craft-hours.
