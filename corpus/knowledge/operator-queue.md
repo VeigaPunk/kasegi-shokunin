@@ -9,7 +9,7 @@ are provenance only.
 
 ## Systemic queue gaps (all verified in `ops/claim-index.mjs` source)
 
-1. **`claim-hold/*` tags are inert.** `~/Projects/the-bounty-hunter/ops/claim-index.mjs:12` only lists
+1. **`claim-hold/*` tags are inert.** `[lost-base] ~/Projects/the-bounty-hunter/ops/claim-index.mjs:12` only lists
    `git tag -l 'claim-ready/*'`; no hold filtering exists anywhere in the
    queue path. Nine `claim-hold/*` tags exist
    (`git tag -l 'claim-hold/*'`, all creatordate 2026-09-05); **FOUR** of

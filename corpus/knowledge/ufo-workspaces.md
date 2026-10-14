@@ -95,7 +95,8 @@ unreliable provenance — a claim citing "the grok review" needs the reroute log
 Producer (verified in source): `[lost-tree] fleets/ufo-archive-2026/bounty-keeper/keeper.mjs:48-63`
 — `runId = b1k-<slot pad3>`, `ufo-sighting launch --session-dir
 .ufo/bounty-fleet/sessions/<runId>`, prompt `@.ufo/bounty-fleet/p-wave-l1.md`,
-`UFO_ROOT=~/Projects/origin-work/ufo-fsd-alpha`, `FLEET=bounties`, `WINDOW_CAP=16`,
+`UFO_ROOT=~/Projects/origin-work/ufo-fsd-alpha` (as recorded in the lost launch
+script; the same repo now lives at `~/Projects/ufo-fsd-alpha`), `FLEET=bounties`, `WINDOW_CAP=16`,
 `LAUNCH_CAP=384`, `NIGHT_MS=12h`; `:72` night_budget halt. Per-run L1 rode
 `xai-oauth/grok-4.6:xhigh`.
 
@@ -166,7 +167,10 @@ bpolish8 re-ran 23:36:52Z. `bpolish` is an **operator lane label** (0 hits in
 `.omp/`, never emitted by any tool) = board-polish over `claims/<program>/<slug>/`
 packages for UFO missions the transcripts place under
 `origin-work/ufo-fsd-alpha/.ufo/missions/hunt-*` (round-13 correction: that
-tree has no `.ufo/missions/` dir and no `hunt-*` path at depth ≤4 — the
+tree has no `.ufo/missions/` dir and no `hunt-*` path at depth ≤4 — re-verified
+2026-10-14 against the relocated tree `~/Projects/ufo-fsd-alpha` @ `964f443e`
+(`.ufo/` holds only `cache scopes sighting statusline-*`; the claim survives
+the relocation). The
 citation dangles like the claims-side `.ufo/` refs; the label survives only
 in transcript text).
 
@@ -287,7 +291,7 @@ the-bounty-hunter}.md`. On disk but **untracked**: `agents/ing-scout.md`,
 11 cards for 10 registry lanes; the 4 non-registry cards (ing-scout, ufo-l2,
 scope-evidence-custodian, the-bounty-hunter) are invisible to every registry-check
 test except the banned-token scan — the round-7 "bijection holds" verdict is
-directory-driven over `kx-\w+.md` only (`ops/registry-check.mjs:57-80`).
+directory-driven over `kx-\w+.md` only (`[lost-base] ops/registry-check.mjs:57-80`).
 
 Live `[lost-tree] .omp/config.yml` (36 l, **modified-uncommitted**): `task.maxConcurrency: 32`,
 `maxRecursionDepth: 2`; `modelRoles`: task/smol/default → `@ufo_deepseek_max` →
@@ -303,8 +307,11 @@ violations: 3 genuine card↔registry mismatches + resolver artifacts from the
 single-level quote-retaining alias resolver at `:87-91`). Every one of the 7 kx
 cards self-contradicts: description names the registry primary, `model:` pin
 resolves elsewhere. `.omp/skills/ufo/SKILL.md` is a drifted untracked fork of the
-canonical `~/Projects/origin-work/ufo-fsd-alpha` skill (304 l / sha256 `2d5bfd3e…` vs 626 l /
-`40949973…`, 685 diff lines; cites `scripts/{sync-ufo-contracts,…}` that don't
+canonical `~/Projects/ufo-fsd-alpha` skill (304 l / sha256 `2d5bfd3e…` vs 626 l /
+`40949973…` when measured; the tree relocated from `origin-work/` to
+`~/Projects/ufo-fsd-alpha` 2026-10-12, HEAD `964f443e`, file now 600 l — current
+bytes differ from the recorded fork diff; the recorded comparison stays the
+round-13 evidence), cites `scripts/{sync-ufo-contracts,…}` that don't
 exist in bounties). Bounty-domain consequence: **model attributions in claim
 provenance must name the resolved route at run time (reroutes.jsonl / session
 headers), never the registry pin.** Router mechanics themselves → kumitate/protocol
@@ -314,7 +321,7 @@ headers), never the registry pin.** Router mechanics themselves → kumitate/pro
 
 `README.md` (70 l, mtime 2026-09-06 04:08): "the fleet: **9 lanes**" is stale —
 registry has 10 lane keys and `ops/validate.mjs` prints 10; the "9" traces to the stale
-header comment at `ops/registry-check.mjs:6`. Its routing table matches registry
+header comment at `[lost-base] ops/registry-check.mjs:6`. Its routing table matches registry
 primaries but omits `mission_l1` and matches nothing in the live `[lost-tree] .omp/config.yml`.
 `.gitignore` = 11 lines in the worktree (HEAD has 9; the last two —
 `.ufo/bounty-fleet/session[s]/` — are uncommitted): `node_modules/ .next/ out/ .env*

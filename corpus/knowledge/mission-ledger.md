@@ -3,7 +3,7 @@
 Source: `[lost-tree] ~/Projects/bounties/ledger/` (missions.jsonl 718 lines,
 telemetry.jsonl **7225 lines as of 2026-09-28T21:52:51.978Z** — round-13
 correction: the r12 count 7218 was time-of-audit; the file grows on every
-`~/Projects/the-bounty-hunter/ops/check-freshness.mjs:61` invocation, including audit runs, candidates.jsonl
+`[lost-base] ~/Projects/the-bounty-hunter/ops/check-freshness.mjs:61` invocation, including audit runs, candidates.jsonl
 8, imports.jsonl 8, **234** `rankings-<ts>.json` artifacts over 229 distinct
 stamps — round-13 correction: "~30" was a transcription of the event-kind
 count), `ops/shared.mjs`, `ops/rank.mjs`, `ops/import-board.mjs`,
@@ -65,7 +65,7 @@ shape: `{generated_at, defaults{ev defaults}, ranked[{id, expected_reward,
 p_success, gross_value, total_cost, adjusted_ev, inputs_basis}], unknown[]}`.
 `inputs_basis:"curated"` vs `default_estimate` distinguishes real EV inputs
 from the default prior set — round-13 correction, full set from
-`~/Projects/the-bounty-hunter/ops/rank.mjs:55-58` DEFAULTS: p_in_scope .7, p_reproducible .7, p_unique .25,
+`[lost-base] ~/Projects/the-bounty-hunter/ops/rank.mjs:55-58` DEFAULTS: p_in_scope .7, p_reproducible .7, p_unique .25,
 p_accepted .6, effort_hours 60, opportunity_rate 25, direct_cost 0,
 delay_cost 0, expected_risk_cost 250 (earlier text omitted opportunity_rate
 and the zero costs).

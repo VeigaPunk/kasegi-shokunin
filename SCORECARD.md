@@ -118,6 +118,52 @@ mislabelled LOST-TREE. Live files (`SKILL.md`, `corpus/README.md`,
 `OUTSIDE-BASE`, or `PIN-BROKEN`; pre-r16 lessons retain historical bad anchors
 under `citation-bases.md` rule 6.
 
+## Round 19 result — re-census after second root loss (2026-10-14)
+
+Trigger: the OMP/ufo-fsd substrate re-census found that this lane's two
+"surviving roots" — `~/Projects/the-bounty-hunter` (frozen mirror) and all of
+`~/Projects/origin-work` (incl. `open-bug-bounties`) — are ABSENT
+(no relocated copy found under `~`; evidence:
+`corpus/knowledge/root-loss-2026-10-12.md`), while `ufo-fsd-alpha` relocated
+intact to `~/Projects/ufo-fsd-alpha` @ `964f443e`. This is external drift,
+not a lane move; scores are re-reported, not improved.
+
+| Axis | Score before r19 | Score after r19 | Evidence pointer | Last change |
+|---|---:|---:|---|---|
+| depth:density | 9 | 9 | Non-target guard only: mean **153.9 → 154.0**, path-citation instances 645 → 645 (`[lost-base]` marks do not inflate; same instrument, same form). | r15 (held r19) |
+| depth:verifiability | 4 | 4 (held by floor) | `anchorcheck.py SKILL.md` before repair: **7 in-range / 202 bad / LOST=104** — every bad instance traced to the two absent bases; after repair: **7 in-range / 0 bad / LOST-RECORDED=306 / BASE-ABSENT=0 / PIN-BROKEN=0 / OUTSIDE-BASE=0**. `resolve.py` regenerated census: SKILL **32/506 = 6.32 %** (r18: 232/503 = 46.12 %), corpus **116/1142 = 10.16 %**, lane **132/1469 = 8.99 %** — the drop is the domain bases vanishing, measured honestly rather than hidden. | r19 (measured, score held) |
+| coverage | 7 | 7 | Held; the two surviving-root surfaces the r15 denominator was re-based onto are now 0/2 present. Both censuses (`the-bounty-hunter` file-granularity, `open-bug-bounties` inventory) remain corpus-attested records. Re-scoping is the operator's (same L0 question). | r15 (held r19) |
+
+**Gate repairs (the re-census work itself):** `anchorcheck.py` +
+`resolve.py` now DERIVE their roots (`$KASEGI_MIRROR`,
+`$KASEGI_ORIGIN_ROOT` → first existing candidate → canonical absent path);
+hardcoded roots removed. New `BASE-ABSENT` verdict (own class, not bad) so
+an absent tree never masquerades as a missing file. `resolve.py` records
+the mirror's absence in the generated census. Live ufo-fsd citations
+re-anchored (`ufo-archive-2026.md:31`, `ufo-workspaces.md` ×2 — the
+`hunt-*` dangling claim re-verified against the moved tree; the
+`UFO_ROOT=` env value kept verbatim as a quote). 202 SKILL + 39 corpus
+anchors into absent bases marked `[lost-base]` under the extended
+vocabulary (`citation-bases.md` LOST-BASE); first-loss note gained an
+append-only errata; PROVINCE.md, SKILL.md and this file carry factual annotations.
+
+**Carried debt (named, with unblock action):**
+- `RECEIPT-STORE-LOST`: `submission-review/` receipts (CSV rows 2–3,
+  `queue.json:11-12`, k8s + LD JSON receipts) that backed the no-resubmit
+  claims are corpus-attested only; r18-recorded byte SHAs preserved in
+  `LOG.md`. Unblock: operator restores the `open-bug-bounties` checkout or
+  declares the claims permanently attested.
+- `MIRROR-SOURCE-LOST`: every `ops/*.mjs`, `bounty-map/schema.json`,
+  `fleets/*`, `docs/*`, `.omp/*` line anchor is now uncheckable; the
+  `[lost-base]` prefix is the standing marker. Unblock: restore the
+  `the-bounty-hunter` mirror (any checkout of HEAD `1cfbd86` satisfies the
+  anchors; `$KASEGI_MIRROR` override re-points the gates without edits).
+- `ORIGIN-REPO-LOST`: `origin-work/ufo-fsd-alpha` citations that recorded
+  historical state (mtime rows, `UFO_ROOT=` env value) stay verbatim as
+  quotes; live claims re-anchored to `~/Projects/ufo-fsd-alpha`. Unblock:
+  none needed for lane gates (derived `$UFO_SRC` candidates list the new
+  path first).
+
 ## Planned
 
 Round 19 candidate: **depth:verifiability** (4 remains below coverage 7).

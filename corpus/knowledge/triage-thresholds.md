@@ -49,7 +49,7 @@ shape only, and only through `validate.mjs`.
 ## 1. Queue admission — candidate filters
 
 `buildQueue()` iterates `bounty-map/programs/*.json` and drops a record when any
-filter matches (`fleet-dispatch.mjs:88-114`):
+filter matches (`[lost-base] fleet-dispatch.mjs:88-114`):
 
 | Filter | Exact condition | Line | Corpus tie |
 |---|---|---|---|
@@ -62,19 +62,19 @@ filter matches (`fleet-dispatch.mjs:88-114`):
 `attempts(id)` = `max(0, parks − resets)`, where `parks` counts telemetry lines in
 `ledger/telemetry.jsonl` matching `"program": "<id>"[,}]` **and**
 `/mission_(parked|failed)/`, and `resets` counts lines containing
-`attempt_reset` (`fleet-dispatch.mjs:78-85`).
+`attempt_reset` (`[lost-base] fleet-dispatch.mjs:78-85`).
 
 Consequence: pane/tmux crashes write `mission_failed` (:327), which
 `attempts()` counts identically to evidence parks — two infra failures
 permanently exhaust a program's `MAX_ATTEMPTS = 2` hunt budget (:46, :103).
 
 `leases` default is `{}` when `fleets/leases.json` is absent/unparseable
-(`fleet-dispatch.mjs:56`); lease records are
-`{program_id, mission_id, leased_at, expires_at}` (`fleet-dispatch.mjs:182`).
+(`[lost-base] fleet-dispatch.mjs:56`); lease records are
+`{program_id, mission_id, leased_at, expires_at}` (`[lost-base] fleet-dispatch.mjs:182`).
 
 ## 2. Queue score weight table
 
-Single expression, `fleet-dispatch.mjs:110`:
+Single expression, `[lost-base] fleet-dispatch.mjs:110`:
 
 ```
 score = priority_hit(9e12) + continue_verdict(2e12) + curated_ev(1e12)
@@ -89,13 +89,13 @@ score = priority_hit(9e12) + continue_verdict(2e12) + curated_ev(1e12)
 | reward | `(rec.reward?.min ?? 0) * 1000` | 50 → 5e4 … 10000 → 1e7 (observed) | 110 | SUPERSEDES: `SKILL.md:175` — that line writes `reward.min`, source multiplies by 1000 |
 | freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `intake-surface.md:72`, `mission-control.md:20-21`; SUPERSEDES: `SKILL.md:113-114,175-176` (term omitted) |
 
-Sort is `(a,b) => b.score - a.score`, descending, stable (`fleet-dispatch.mjs:113`).
+Sort is `(a,b) => b.score - a.score`, descending, stable (`[lost-base] fleet-dispatch.mjs:113`).
 
 ### 2.1 Tier arithmetic — the collision bound
 
 Tiers are additive, so tier separation only holds while each lower term stays
 below the next tier: `reward.min * 1000 < 1e12` ⟺ **`reward.min < 1e9`**. No
-guard exists at `fleet-dispatch.mjs:110`; a record with `reward.min ≥ 1e9`
+guard exists at `[lost-base] fleet-dispatch.mjs:110`; a record with `reward.min ≥ 1e9`
 would tie or outrank the curated tier (`≥ 2e9` outranks the continue tier;
 `≥ 9e9` outranks priority). Observed headroom is five orders of magnitude — see
 census below. The `is_live` term can never outrank a `reward.min ≥ 1` record
@@ -123,12 +123,12 @@ Consequences, all derived from the expression at line 110:
 
 - 796 records (73.2%) score exactly `0` and 228 (21.0%) score exactly `1`
   (freshness only) — 1024 records are decided by `readdirSync` order
-  (`fleet-dispatch.mjs:98`); only 64 records (5.9%) hold any tier: 14 priority
+  (`[lost-base] fleet-dispatch.mjs:98`); only 64 records (5.9%) hold any tier: 14 priority
   (+2e12 each, all also continue hits), 36 continue-only, 1 curated, 13
   reward-band.
 - `priority.json` is a **subset** of the 50 continue-verdict programs
   (14/14 intersection), matching the code comment "continue-verdict programs
-  hunt first (operator decree: continue the 50)" (`fleet-dispatch.mjs:90`): the
+  hunt first (operator decree: continue the 50)" (`[lost-base] fleet-dispatch.mjs:90`): the
   9e12 term only breaks ties *inside* the continue cohort, it does not add a
   disjoint tier.
 - `adjusted_ev` never contributes: `buildQueue` reads it nowhere, and no record
@@ -340,7 +340,7 @@ Exactly 10 inputs, in this print order: `p_in_scope`, `p_reproducible`,
 `adjusted_ev` is **derived only, never persisted**: the script writes no file,
 and `schema.json` has no such property (`ev_inputs` is
 `additionalProperties:false` :34, no `adjusted_ev` in :35-51).
-`fleet-dispatch.mjs:200` nevertheless reads `rec.ev_inputs?.adjusted_ev` — the
+`[lost-base] fleet-dispatch.mjs:200` nevertheless reads `rec.ev_inputs?.adjusted_ev` — the
 read can never be a number (0/1088 records carry the key, census §2.2), so
 every `mission_dispatched` line logs `adjusted_ev: "unknown"` and the
 negative-EV `ev_note` branch (:204) is dead code: AR12's "negative/unknown EV
@@ -380,7 +380,7 @@ reviewer derivation).
 Boundary: `schema.json` is enforced only as far as `validate.mjs`'s hand-rolled
 subset (`ops-invariants.md:34-40`); `--strict` additionally requires non-empty
 `ev_inputs` (`ops-invariants.md:41-42`), which is what makes "curated"
-(`fleet-dispatch.mjs:107`) a strict-mode-valid notion rather than a
+(`[lost-base] fleet-dispatch.mjs:107`) a strict-mode-valid notion rather than a
 schema-mandated one.
 
 ## 7. `shared.mjs` — constants every ops file imports
@@ -430,12 +430,12 @@ Supersedes column names the audit-time target, not current text.
 
 | # | Statement | Source basis | Supersedes |
 |---|---|---|---|
-| 9.1 | Dispatch score has **five** terms, not four — `is_live(1)` is part of the ordering (`fleet-dispatch.mjs:110`). | 110 | `SKILL.md:113-114` and `SKILL.md:175-176` omit it (both are summaries of this expression) |
+| 9.1 | Dispatch score has **five** terms, not four — `is_live(1)` is part of the ordering (`[lost-base] fleet-dispatch.mjs:110`). | 110 | `SKILL.md:113-114` and `SKILL.md:175-176` omit it (both are summaries of this expression) |
 | 9.2 | The `reward` term is `reward.min × 1000`, so the ordering tail is `… > reward.min×1000 > live(1)`, not `… > reward.min`. | 110 | `SKILL.md:175` writes `reward.min` |
-| 9.3 | `curated` is a **boolean** on `Object.keys(ev_inputs).length > 0`; no EV magnitude is ever compared. The `buildQueue` header's "EV ordering (curated first …)" is doubly wrong: curated ranks **third**, behind priority and continue. | 10, 107, 110 | `fleet-dispatch.mjs:10` (in-file comment), `SKILL.md:10-11`-style "EV ordering" phrasing |
-| 9.4 | `rec.ev_inputs?.adjusted_ev` (`fleet-dispatch.mjs:200`) can never be a number: `schema.json` `ev_inputs` is `additionalProperties:false` (34) with no `adjusted_ev` property (35-51), `ev-report.mjs` computes it without persisting (82), and 0 of 1088 program records contain the key (census §2.2). Consequence: every `mission_dispatched` line logs `adjusted_ev: "unknown"` and the negative-EV `ev_note` branch (204) is dead — AR12's "negative/unknown EV is ledgered honestly" is true only in the "unknown" direction. | 200-205, `schema.json:34-51` | `fleet-dispatch.mjs:11` (in-file comment), `mission-control.md:21-23` |
+| 9.3 | `curated` is a **boolean** on `Object.keys(ev_inputs).length > 0`; no EV magnitude is ever compared. The `buildQueue` header's "EV ordering (curated first …)" is doubly wrong: curated ranks **third**, behind priority and continue. | 10, 107, 110 | `[lost-base] fleet-dispatch.mjs:10` (in-file comment), `SKILL.md:10-11`-style "EV ordering" phrasing |
+| 9.4 | `rec.ev_inputs?.adjusted_ev` (`[lost-base] fleet-dispatch.mjs:200`) can never be a number: `schema.json` `ev_inputs` is `additionalProperties:false` (34) with no `adjusted_ev` property (35-51), `ev-report.mjs` computes it without persisting (82), and 0 of 1088 program records contain the key (census §2.2). Consequence: every `mission_dispatched` line logs `adjusted_ev: "unknown"` and the negative-EV `ev_note` branch (204) is dead — AR12's "negative/unknown EV is ledgered honestly" is true only in the "unknown" direction. | 200-205, `[lost-base] schema.json:34-51` | `[lost-base] fleet-dispatch.mjs:11` (in-file comment), `mission-control.md:21-23` |
 | 9.5 | `reward.min` numeric on **14** records; `reward` object on 48. | census §2.2 | `intake-surface.md:75-76` ("`reward.min` present on 48"), `SKILL.md:111` ("`reward` exists on 48" — true but conflated downstream) |
-| 9.6 | Peak-window model is `openai-codex/gpt-6-astra:max`. | `fleet-dispatch.mjs:300` | `mission-control.md:37-38` (`openai-oauth/gpt-6-astra:max`) |
+| 9.6 | Peak-window model is `openai-codex/gpt-6-astra:max`. | `[lost-base] fleet-dispatch.mjs:300` | `mission-control.md:37-38` (`openai-oauth/gpt-6-astra:max`) |
 | 9.7 | Usage-limit signatures are four (incl. `usage_limit_reached`), ANDed with a family regex, tail-only, 15-min mtime window. | 271-278 | `mission-control.md:41-43` (three signatures) |
 | 9.8 | `claim-check.mjs` never validates manifest `schema_version`, `provenance.json` pins/`policy_sha256`/`external_effects_performed`, `status.severity`, or `status.reward` — the tokens do not appear in the file. Those `claim-package-contract.md` rows are contract-by-convention. | grep of `claim-check.mjs` for `schema_version\|policy_sha256\|external_effects\|reward\|severity\|mission_id` → only `title` (183, 194) matches | `claim-package-contract.md:13,15,33-38` (implies gate-enforced) |
 | 9.9 | Tier collision bound: `reward.min ≥ 1e9` breaks the priority/continue/curated separation (no guard). Observed max `reward.min` = 10000 → `1e7`, five orders under the curated tier. | 110 + census §2.2 | — |

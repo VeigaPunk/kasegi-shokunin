@@ -28,7 +28,7 @@ generated the `b1k-NNN` run_ids still referenced by `ledger/candidates.jsonl`.
   `state-ledger.jsonl`, `run-manifest.json` (sole-L1 model resolution,
   frozen axes).
 - `bounty-keeper/` — `[lost-tree] fleets/ufo-archive-2026/bounty-keeper/keeper.mjs`: saturated a 16-pane wall, `LAUNCH_CAP 384`,
-  12 h night budget, spawned `b1k-NNN` runs via `~/Projects/origin-work/ufo-fsd-alpha/scripts/ufo-sighting.mjs`. State:
+  12 h night budget, spawned `b1k-NNN` runs via `~/Projects/ufo-fsd-alpha/scripts/ufo-sighting.mjs` (recorded as `origin-work/ufo-fsd-alpha` at census time; the tree relocated to `~/Projects/ufo-fsd-alpha` 2026-10-12, file survives at HEAD `964f443e`). State:
   launched 265, halted `night_budget` 2026-09-11T09:37Z. **This is the
   producer of the `b1k-NNN` run_ids** in `ledger/candidates.jsonl` and
   `evidence/<program>/b1k-NNN/` dirs.

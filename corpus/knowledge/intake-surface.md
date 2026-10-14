@@ -42,7 +42,7 @@ round-12 correction).
   `fleets/run/<id>.status.json` TERMINAL (`DONE/PARKED/FAILED/RETIRED`) +
   `attempts()≥2` counted from telemetry park/fail events. 10 of the 12
   schema enum values are never populated. One real writer exists —
-  `~/Projects/the-bounty-hunter/ops/rank.mjs:202-203` bumps DISCOVERED→RANKED — but no RANKED record exists.
+  `[lost-base] ~/Projects/the-bounty-hunter/ops/rank.mjs:202-203` bumps DISCOVERED→RANKED — but no RANKED record exists.
   Round-13 correction: "it never ran post-refresh" was an unbounded negative —
   `--write-queue` ran ≥2× on 2026-09-04 (2 `RANKED` lines in
   `ledger/missions.jsonl` in rank.mjs's exact hardcoded append shape incl.

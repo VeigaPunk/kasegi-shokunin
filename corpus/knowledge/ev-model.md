@@ -34,14 +34,14 @@ Facts:
   live: 0/1088 records carry any `sources[].basis`, so every live program
   prints basis `unknown` for all 10 inputs (round-13 census).
 - `adjusted_ev` is derived-only, never persisted: schema `ev_inputs` has no
-  such property (`additionalProperties:false` at `bounty-map/schema.json:34`,
-  block `bounty-map/schema.json:32-52` — round-15 correction: the close is one
+  such property (`additionalProperties:false` at `[lost-base] bounty-map/schema.json:34`,
+  block `[lost-base] bounty-map/schema.json:32-52` — round-15 correction: the close is one
   line later than the `:32-51` this line previously cited) and 0/1088
-  records carry the key; `[lost-tree] ops/fleet-dispatch.mjs:200` (mirror `ops/fleet-dispatch.mjs:152`) reads it for telemetry
+  records carry the key; `[lost-tree] ops/fleet-dispatch.mjs:200` (mirror `[lost-base] ops/fleet-dispatch.mjs:152`) reads it for telemetry
   anyway — every `mission_dispatched` line logs `adjusted_ev:"unknown"` and
   the negative-EV `ev_note` branch (:204) is dead code (round-13
   three-way-verified derivation).
-- Ranking-artifact defaults are a separate machine (`ops/rank.mjs:55-58`
+- Ranking-artifact defaults are a separate machine (`[lost-base] ops/rank.mjs:55-58`
   DEFAULTS, never used by ev-report): p_in_scope .7, p_reproducible .7,
   p_unique .25, p_accepted .6, effort_hours 60, opportunity_rate 25,
   direct_cost 0, delay_cost 0, expected_risk_cost 250 → default p_success

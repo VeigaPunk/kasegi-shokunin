@@ -36,7 +36,7 @@ in round 18. The historical round-15 census and its double-run md5
   relative path exists in the mirror is `MIRROR-EQUIVALENT` even when the line
   number is past the mirror's EOF or the content differs (r15 found 2 such
   corpus cites: `[lost-tree] ops/claim-check.mjs:174-199` vs an 83-line file,
-  `ops/shared.mjs:55` vs 41 lines). `anchorcheck.py` is the instrument that
+  `[lost-base] ops/shared.mjs:55` vs 41 lines). `anchorcheck.py` is the instrument that
   catches those; run it after any re-anchor.
 - **`anchorcheck.py` checks only supported anchored token shapes.** `bad=0`
   means every recognized anchor is either in range or explicitly

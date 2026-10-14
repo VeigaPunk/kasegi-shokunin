@@ -13,6 +13,13 @@ resolve against two surviving roots: the frozen 2026-09-05 code mirror
 lost tree. Whether this file re-points is an operator decision, requested in
 `../.ufo/l0-questions.md` (kasegi round-15 row); the lane did not re-scope
 itself.
+**Round-19 status (factual annotation, append-only).** Both surviving roots
+named above are now ABSENT — `~/Projects/the-bounty-hunter` and the whole
+`~/Projects/origin-work` tree disappeared on/around 2026-10-12 (no relocated
+copy found under `~`; sibling `ufo-fsd-alpha` relocated intact to
+`~/Projects/ufo-fsd-alpha`). Evidence: `corpus/knowledge/root-loss-2026-10-12.md`.
+The province domain is unchanged; coverage claims against the absent trees are
+corpus-attested records, not live-openable.
 
 **Owns:** the domain knowledge, playbooks, error patterns, and checklists above.
 **Refuses:** anything outside this domain; report cross-domain evidence back to the orchestrator rather than absorbing it.

@@ -18,25 +18,28 @@ The resolver classifies existing lane-relative paths as INTERNAL
 (`corpus/instruments/resolve.py:31-48`).
 
 **MIRROR** means the frozen code mirror `~/Projects/the-bounty-hunter` at git
-HEAD `1cfbd86` (2026-09-05 genesis snapshot, CODE half only). Its files are
-live-checkable, but a matching path is only name-surviving/anchor-compatible,
-never proof that lost bytes were identical
+HEAD `1cfbd86` (2026-09-05 genesis snapshot, CODE half only) — **ABSENT since
+2026-10-12** (`corpus/knowledge/root-loss-2026-10-12.md`); its files are no
+longer live-checkable on this host. While it stood, a matching path was only
+name-surviving/anchor-compatible, never proof that lost bytes were identical
 (`corpus/instruments/README.md:31-38`; per-file provenance verdicts:
 `corpus/knowledge/source-tree-loss-2026-09-28.md` §4.1). Mirror-relative
 `ops/...`, `fleets/...`, `docs/...`, `bounty-map/...` tokens classify
 MIRROR-EQUIVALENT under the resolver's relative-path fallback
 (`corpus/instruments/resolve.py:164-172`). When a mirror anchor could be
 confused with a lost-tree anchor, write the explicit root
-(`~/Projects/the-bounty-hunter/ops/rank.mjs:55-58`, which classifies RESOLVES)
+(`~/Projects/the-bounty-hunter/ops/rank.mjs:55-58`, which classified RESOLVES while the mirror stood — now `[lost-base]` and BASE-ABSENT)
 or label the base in the sentence.
 
-**ORIGIN-WORK** means the surviving data root
-`~/Projects/origin-work/open-bug-bounties` (live repo, HEAD `1307b8b`,
-2026-09-14), including its claim packages, `submission-review/` receipts,
+**ORIGIN-WORK** means the data root
+`~/Projects/origin-work/open-bug-bounties` (live repo while it stood, HEAD `1307b8b`,
+2026-09-14 — **the entire `origin-work` tree is ABSENT since 2026-10-12**,
+`corpus/knowledge/root-loss-2026-10-12.md`), including its claim packages,
 `.ufo-missions`, and `data/` inventories. Use the full root, for example
-`~/Projects/origin-work/open-bug-bounties/claim-packages/`; that form is
-RESOLVES under the resolver's other-root rule
-(`corpus/instruments/resolve.py:161-163`). This root MUTATES during rounds:
+`~/Projects/origin-work/open-bug-bounties/claim-packages/`; that form
+classified RESOLVES under the resolver's other-root rule while the root stood
+(`corpus/instruments/resolve.py:161-163`) — now GONE; use `[lost-base] `.
+This root MUTATED during rounds:
 its `.ufo-missions` subtree lost 681 files at 2026-09-28T22:45:06-03:00
 (recorded in `corpus/knowledge/open-bug-bounties-census.md` §loss-event).
 Every count taken from it carries an as-of timestamp.
@@ -52,6 +55,16 @@ resolving numerator, and `corpus/instruments/anchorcheck.py` reports it as
 LOST-RECORDED instead of PAST-EOF. Facts from the lost DATA half carry the
 exact stamp `[corpus-attested as-of 2026-09-28T23:32Z; source tree absent]`
 (`corpus/knowledge/source-tree-loss-2026-09-28.md` §5).
+
+**LOST-BASE** means any cited base tree that went absent after the
+`~/Projects/bounties` loss — currently the MIRROR and ORIGIN-WORK trees above
+(removed on/around 2026-10-12; evidence `corpus/knowledge/root-loss-2026-10-12.md`).
+Its historical anchors carry the parallel prefix `[lost-base] ` INSIDE the
+backticks, same semantics as `[lost-tree]` (recorded, deliberately
+non-openable, `LOST-RECORDED` under `anchorcheck.py`, GONE+synthetic under
+`resolve.py`, never counts as verified). `ufo-fsd-alpha` is NOT a lost base —
+it relocated intact to `~/Projects/ufo-fsd-alpha`, and citations to it are
+re-anchored, not prefixed.
 
 **BLOB-PIN** means a git object used when a lane file's line numbers move.
 `SKILL.md:NNN` spans in `corpus/knowledge/triage-thresholds.md` are pinned to

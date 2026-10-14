@@ -78,7 +78,22 @@ SYMANCHOR = re.compile(r"::[A-Za-z_][A-Za-z0-9_.]*$")
 PLACEHOLDER = re.compile(r"<[^<>]*>")
 GLOBMETA = "*?["
 BOUNTY_PREFIXES = ("~/Projects/bounties", "/home/vgpnk/Projects/bounties")
-MIRROR_ROOT = "~/Projects/the-bounty-hunter"
+# Round-19 (2026-10-14): the mirror root is DERIVED, not hardcoded —
+# $KASEGI_MIRROR wins, else the first existing candidate, else the canonical
+# absent path; when absent, bounty/mirror-relative cites classify GONE
+# truthfully and the report records the absence.
+MIRROR_CANDIDATES = ("~/Projects/the-bounty-hunter",
+                     "~/Projects/origin-work/the-bounty-hunter")
+def _derive_mirror():
+    env = os.environ.get("KASEGI_MIRROR")
+    if env:
+        return os.path.expanduser(env)
+    for c in MIRROR_CANDIDATES:
+        if os.path.isdir(os.path.expanduser(c)):
+            return c
+    return MIRROR_CANDIDATES[0]
+MIRROR_ROOT = _derive_mirror()
+MIRROR_ABSENT = not os.path.isdir(os.path.expanduser(MIRROR_ROOT))
 GITSTATUS = re.compile(r"^(?:M|A|D|R|\?\?|!!)\s")
 SHELLCMD = re.compile(r"^(?:git|node|npm|cd|ls|cat|grep|find|python3?|jq|tar|cp|mv|rm|chmod|printf|echo|for|if|while)\b|[&|]{2}|\s\|\s")
 REGEXLIT = re.compile(r"^/.*/[a-z]*$")
@@ -295,7 +310,8 @@ def main(argv):
     L.append("Scope: `SKILL.md` + `corpus/**/*.md` (%d files)." % (len(
         {f for r in rows for f in r["files"]})))
     L.append("Extraction: verbatim density.py docstring path-like rule (see module docstring).")
-    L.append("Mirror root for bounty-path equivalence: `%s`." % mirror)
+    L.append("Mirror root for bounty-path equivalence: `%s`%s." % (
+        mirror, " (ABSENT — mirror fallback disabled)" if MIRROR_ABSENT else ""))
     L.append("")
     L.append("## Totals")
     L.append("")

@@ -41,8 +41,8 @@ Round-15 correction: this heading said "five fixed parts" while the block
 below enumerates seven.
 
 Verified against the surviving mirror writer: 4 bold metadata lines
-(`ops/park-disposition.mjs:56-59`) + 3 `##` sections
-(`ops/park-disposition.mjs:61`, `:67`, `:72`). Anchor base
+(`[lost-base] ops/park-disposition.mjs:56-59`) + 3 `##` sections
+(`[lost-base] ops/park-disposition.mjs:61`, `:67`, `:72`). Anchor base
 `~/Projects/the-bounty-hunter` HEAD `1cfbd86` (frozen 2026-09-05); the lost
 tree's `ops/park-disposition.mjs` was recorded identical for this file's
 anchors (`corpus/knowledge/source-tree-loss-2026-09-28.md` §4.1).

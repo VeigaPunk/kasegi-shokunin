@@ -31,6 +31,7 @@ its source. No generic filler.
 | Per-program quirks (fee/precondition patterns) | `knowledge/program-quirks.md` | sibling-package sampling (dydx same-blocker class; morpho/euler/uniswap/reserve honest-zero) — index-orphaned until round 13 |
 | Claim-anatomy sample (per-program `status.json`) | `knowledge/claim-anatomy-sample.md` | round-14: 20 NEW full reads via deterministic stratified rule (script preserved, L1-reproduced); 10→30/280 = 10.7%; deviation classes D1-D13 with anchors |
 | Source-tree loss + mirror provenance (PROVINCE root absent) | `knowledge/source-tree-loss-2026-09-28.md` | round-15: detection commands, 23:32Z–23:51:31Z disappearance window, per-file mirror provenance (`wc -l` + sha256 + anchor verdicts for 11 files), forensic blind spots, anchor-base rule, resolvability census, the never-re-verifiable DATA-half list, 9 L2 audit corrections |
+| Root loss — second event (mirror + origin-work absent; ufo-fsd relocated) | `knowledge/root-loss-2026-10-12.md` | round-19 re-census: `the-bounty-hunter` and the whole `origin-work` tree ABSENT (no relocated copy); `ufo-fsd-alpha` relocated intact to `~/Projects/ufo-fsd-alpha` @ `964f443e`; `[lost-base]` vocabulary, derived-root instruments, `BASE-ABSENT` verdict |
 | Depth instruments (committed, re-runnable) | `instruments/{density.py,resolve.py,anchorcheck.py,README.md}` + `instruments/citation-survival.{md,tsv}` | round-15: evidence-density census, live citation-resolvability census (instrument of record + definition + known limits), mirror anchor range/semantic gate; bar rule `BAR_R15 = 142.5` frozen + conjunctive ≥60 % resolvability gate from r16 |
 | Lessons | `lessons/round-1.md` … `lessons/round-15.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 ## Known gaps
@@ -46,7 +47,15 @@ its source. No generic filler.
   deletion, recoverability, PROVINCE re-point). Two surviving roots:
   `~/Projects/the-bounty-hunter` (frozen 2026-09-05 code mirror, censused r15)
   and `~/Projects/origin-work/open-bug-bounties` (**inventory only — the r16
-  coverage move**).
+  coverage move**) — both now ABSENT, see next bullet.
+- **`~/Projects/the-bounty-hunter` + all of `~/Projects/origin-work` are also
+  GONE** (absent since ~2026-10-12, detected 2026-10-14 re-census — the two
+  "surviving roots" this map was re-based onto in round 15): every
+  `the-bounty-hunter`/`open-bug-bounties`/`origin-work` path cited anywhere in
+  this corpus is now a historical record — `[lost-base]` where anchored —
+  unless the sentence re-anchors it to `~/Projects/ufo-fsd-alpha` (the one
+  tree that relocated intact, HEAD `964f443e`). Evidence:
+  `knowledge/root-loss-2026-10-12.md`; vocabulary: `knowledge/citation-bases.md`.
 - Anchor bases are pinned per file, and only 1 of 21 `knowledge/*.md` entries
   (`triage-thresholds.md`, pinned to blob `fc6d398` for its `SKILL.md:NNN`
   cites) carries an explicit pin so far — pinning the other 20 is the r16

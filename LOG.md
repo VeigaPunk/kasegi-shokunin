@@ -787,3 +787,31 @@
   operator's intended exact `m_swe → daybreak-blue:max` chain is **not visible**.
   No genuine m_swe capacity failure occurred; no advancement was observed or
   forced, and no config or frozen-contract bytes were changed.
+- 2026-10-14 — round 19 (re-census after second root loss): both roots the
+  round-15 re-base depended on — `~/Projects/the-bounty-hunter` (frozen
+  mirror, HEAD `1cfbd86`) and the whole `~/Projects/origin-work` tree — are
+  ABSENT (detected 2026-10-14T12:44Z; no relocated copy under `~`; actor
+  UNDETERMINED, evidence `corpus/knowledge/root-loss-2026-10-12.md`). The
+  OMP substrate `ufo-fsd-alpha` relocated intact to
+  `~/Projects/ufo-fsd-alpha` @ `964f443e`. Survey before repair:
+  `anchorcheck.py SKILL.md` → **7 in-range / 202 bad / LOST=104**
+  (every bad instance an absent-base citation, classes (a)+(b));
+  `resolve.py` → 6 RESOLVES / 1341 GONE; density mean 153.9 (guard).
+  Repairs: instruments DERIVE their roots (`$KASEGI_MIRROR`,
+  `$KASEGI_ORIGIN_ROOT` → first existing candidate → canonical absent path;
+  `$UFO_SRC`/`ufo-fsd-alpha` candidates in anchorcheck); new `BASE-ABSENT`
+  verdict (own class, not bad) so an absent tree cannot masquerade as a
+  missing file; 202 SKILL + 39 corpus anchors into absent bases marked
+  `[lost-base]` under the extended citation-bases vocabulary; live ufo-fsd
+  citations re-anchored (`ufo-archive-2026.md:31`, `ufo-workspaces.md` ×2,
+  `hunt-*` dangling claim re-verified on the moved tree); first-loss note +
+  PROVINCE + SKILL header carry append-only factual annotations; lessons
+  untouched per rule 6. After: `anchorcheck.py SKILL.md` → **7 in-range /
+  0 bad / LOST-RECORDED=306 / BASE-ABSENT=0 / PIN-BROKEN=0 /
+  OUTSIDE-BASE=0**; `resolve.py` regenerated census SKILL 32/506 = 6.32 %,
+  corpus 116/1142 = 10.16 %, lane 132/1469 = 8.99 % (drop is the domain
+  bases vanishing, recorded honestly); density 154.0, cites 645.
+  SCORECARD: density 9→9, verifiability 4→4 (held by the r18 definition;
+  the measured fraction fell), coverage 7→7. Carried debt named:
+  RECEIPT-STORE-LOST, MIRROR-SOURCE-LOST, ORIGIN-REPO-LOST (unblock actions
+  in `SCORECARD.md` round-19 row).

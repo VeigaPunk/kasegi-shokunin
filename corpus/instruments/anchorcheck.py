@@ -14,7 +14,7 @@ classes SEPARATE (round-16 critic ruling: never collapse them into one
   PAST-EOF          file exists at the base but the anchor is out of range (bad)
   OUTSIDE-BASE      explicit ORIGIN-WORK or MIRROR-ABSOLUTE path escapes its root (bad)
   PIN-BROKEN        a pin was declared but the git object does not exist (bad)
-  LOST-RECORDED     token prefixed `[lost-tree] ` inside the backticks:
+  LOST-RECORDED     token prefixed `[lost-tree] ` or `[lost-base] ` inside the backticks:
                     deliberately non-openable historical anchor; reported and
                     counted separately, NOT checked, never counted as validated
 
@@ -24,7 +24,10 @@ Bases, in precedence order:
     registers a pin; cites of that relpath verify against
     `git show <hash>:<relpath>` in the lane repo.
 (d) ORIGIN-WORK: only the explicit
-    `~/Projects/origin-work/open-bug-bounties/` prefix is accepted. Real paths
+    `~/Projects/origin-work/open-bug-bounties/` prefix is accepted; the checked
+    base is `$KASEGI_ORIGIN_ROOT` else the first existing of
+    `~/Projects/origin-work/open-bug-bounties`, `~/Projects/open-bug-bounties`.
+    An absent base reports BASE-ABSENT (own verdict, not bad). Real paths
     must remain under that root; the check reads current bytes and does not
     establish that a mutable source file is tracked or durably pinned.
 (a) lane base: bare `name.ext` cites search lane dirs first; any relative
@@ -32,13 +35,17 @@ Bases, in precedence order:
     `.ufo/`, `submit/`, `receipts/` prefixes and `csv`/`jsonl`/`rst`/`txt`/
     `py`/`ts` extensions) is tried lane-root-relative.
 (f) MIRROR-ABSOLUTE: the explicit `~/Projects/the-bounty-hunter/` prefix is
-    confined to the mirror root exactly like ORIGIN-WORK is confined to
-    ORIGIN_ROOT; violations classify OUTSIDE-BASE.
+    confined to the mirror base `$KASEGI_MIRROR` else the first existing of
+    `~/Projects/the-bounty-hunter`, `~/Projects/origin-work/the-bounty-hunter`,
+    exactly like ORIGIN-WORK; violations classify OUTSIDE-BASE, absent base
+    BASE-ABSENT.
 (e) unprefixed mirror names: a cite not found in the lane is tried under the
     mirror subdirs (ops, docs, bin, fleets, bounty-map, .omp), then at the
     mirror root. Lost-tree paths under prefixes like `claims/` or `docs/`
-    therefore classify MISSING-FILE until marked `[lost-tree]`. Mirror root:
-    `~/Projects/the-bounty-hunter` (frozen 2026-09-05, HEAD `1cfbd86`).
+    therefore classify BASE-ABSENT (mirror gone since 2026-10-14) until marked
+    `[lost-tree]`; before the loss they classified MISSING-FILE. Mirror root:
+    `~/Projects/the-bounty-hunter` (frozen 2026-09-05, HEAD `1cfbd86`; ABSENT
+    on this host since the 2026-10-12 restructure — no relocated copy found).
 
 Lane root: env KASEGI_LANE_ROOT, else the nearest ancestor of the checked file
 containing SKILL.md or .git.
@@ -49,22 +56,51 @@ are its input. Re-check cadence (r16 rule, instruments/README.md): run after
 every edit to any cited lane file and at every round close.
 
 Summary line is greppable, one per file:
-== <src>: N in-range cite instances, M bad; K distinct anchors; LOST-RECORDED=L PIN-BROKEN=P ORIGIN=O OUTSIDE-BASE=X
-(bad = MISSING-FILE + PAST-EOF + OUTSIDE-BASE.)
+== <src>: N in-range cite instances, M bad; K distinct anchors; LOST-RECORDED=L PIN-BROKEN=P ORIGIN=O OUTSIDE-BASE=X BASE-ABSENT=B
+(bad = MISSING-FILE + PAST-EOF + OUTSIDE-BASE; BASE-ABSENT and LOST-RECORDED are
+explicit recorded-loss verdicts, not bad.)
 
 Usage: python3 anchorcheck.py <file.md>
 """
 import re, sys, os, subprocess
 
-MIRROR = os.path.expanduser('~/Projects/the-bounty-hunter')
+# Round-19 re-census (2026-10-14): both surviving domain roots went ABSENT —
+# the 2026-09-28 event took `~/Projects/bounties`; this event removed
+# `~/Projects/the-bounty-hunter` and the whole `~/Projects/origin-work` tree
+# (no relocated copy found under ~). Roots are now DERIVED, never hardcoded:
+# $KASEGI_MIRROR / $KASEGI_ORIGIN_ROOT win, else the first existing candidate,
+# else the canonical (absent) path so the failure names the expected base.
+# A citation into an absent base reports BASE-ABSENT (its own verdict, like
+# LOST-RECORDED) instead of a misleading MISSING-FILE.
+_MIRROR_CANDIDATES = (
+    os.path.expanduser('~/Projects/the-bounty-hunter'),
+    os.path.expanduser('~/Projects/origin-work/the-bounty-hunter'),
+)
+_ORIGIN_CANDIDATES = (
+    os.path.expanduser('~/Projects/origin-work/open-bug-bounties'),
+    os.path.expanduser('~/Projects/open-bug-bounties'),
+)
+
+def _derive_root(env_name, candidates):
+    override = os.environ.get(env_name)
+    if override:
+        return os.path.expanduser(override)
+    for c in candidates:
+        if os.path.isdir(c):
+            return c
+    return candidates[0]
+
+MIRROR = _derive_root('KASEGI_MIRROR', _MIRROR_CANDIDATES)
+MIRROR_ABSENT = not os.path.isdir(MIRROR)
 MIRROR_CITE_PREFIX = '~/Projects/the-bounty-hunter/'
 ORIGIN_CITE_PREFIX = '~/Projects/origin-work/open-bug-bounties/'
-ORIGIN_ROOT = os.path.expanduser('~/Projects/origin-work/open-bug-bounties')
+ORIGIN_ROOT = _derive_root('KASEGI_ORIGIN_ROOT', _ORIGIN_CANDIDATES)
+ORIGIN_ABSENT = not os.path.isdir(ORIGIN_ROOT)
 LANE = os.environ.get('KASEGI_LANE_ROOT')
 LANE_DIRS = ('.', 'corpus/knowledge', 'corpus/lessons', 'corpus/instruments')
 TOK = re.compile(r"`([^`\n]+)`")
 PIN = re.compile(r"<!--\s*pin:\s*([\w./-]+\.(?:mjs|json|md|sh))\s+([0-9a-f]{7,40})\s*-->")
-LOST = re.compile(r"^\[lost-tree\]\s+(.*)$")
+LOST = re.compile(r"^\[lost-(?:tree|base)\]\s+(.*)$")
 CITE = re.compile(r"^((?:~/Projects/origin-work/open-bug-bounties/[\w./-]+\.(?:mjs|sh|json|md|csv|jsonl|txt)|~/Projects/the-bounty-hunter/[\w./-]+\.(?:mjs|sh|json|md|csv|jsonl|txt)|(?:corpus|ops|fleets|docs|bin|bounty-map|\.omp|claims|evidence|submit|vdp-disclosures|ledger|\.ufo|receipts|raw)/[\w./-]+\.(?:mjs|sh|json|md|csv|jsonl|rst|txt|py|ts)|[\w.-]+\.(?:mjs|json|sh|md|csv|jsonl|rst|txt))):(\d+)(?:-(\d+))?$")
 
 
@@ -135,6 +171,8 @@ def main(argv):
                         within_origin = False
                     if not within_origin:
                         outside_root = origin_root; verdict = 'OUTSIDE-BASE'
+                    elif ORIGIN_ABSENT:
+                        verdict = 'BASE-ABSENT'
                     elif not os.path.isfile(path):
                         verdict = 'MISSING-FILE'
                     else:
@@ -148,6 +186,8 @@ def main(argv):
                         within_mirror = False
                     if not within_mirror:
                         outside_root = mirror_root; verdict = 'OUTSIDE-BASE'
+                    elif MIRROR_ABSENT:
+                        verdict = 'BASE-ABSENT'
                     elif not os.path.isfile(path):
                         verdict = 'MISSING-FILE'
                     else:
@@ -176,7 +216,8 @@ def main(argv):
                         path = os.path.join(MIRROR, rel); kind = 'MIRROR'
             if verdict is None:
                 if not os.path.exists(path):
-                    verdict = 'MISSING-FILE'
+                    verdict = ('BASE-ABSENT' if (kind == 'MIRROR' and MIRROR_ABSENT)
+                               else 'MISSING-FILE')
                 else:
                     n = sum(1 for _ in open(path, errors='replace'))
                     if b > n or a < 1 or b < a:
@@ -194,6 +235,10 @@ def main(argv):
             if verdict == 'PIN-BROKEN':
                 kinds['PIN-BROKEN'] = kinds.get('PIN-BROKEN', 0) + 1
                 per.append(f"PIN-BROKEN md:{ln} {tok} (git object missing: {pins.get(rel)})")
+                continue
+            if verdict == 'BASE-ABSENT':
+                kinds['BASE-ABSENT'] = kinds.get('BASE-ABSENT', 0) + 1
+                per.append(f"BASE-ABSENT md:{ln} {tok} (base tree absent: {path})")
                 continue
             if verdict == 'OUTSIDE-BASE':
                 kinds['OUTSIDE-BASE'] = kinds.get('OUTSIDE-BASE', 0) + 1
@@ -227,11 +272,11 @@ def main(argv):
           f"{bad} bad; "
           f"{len(seen)} distinct anchors; "
           f"LOST-RECORDED={kinds.get('LOST-RECORDED', 0)} PIN-BROKEN={kinds.get('PIN-BROKEN', 0)} "
-          f"ORIGIN={kinds.get('IN-RANGE(ORIGIN)', 0)} OUTSIDE-BASE={kinds.get('OUTSIDE-BASE', 0)}")
+          f"ORIGIN={kinds.get('IN-RANGE(ORIGIN)', 0)} OUTSIDE-BASE={kinds.get('OUTSIDE-BASE', 0)} "
+          f"BASE-ABSENT={kinds.get('BASE-ABSENT', 0)}")
     for line in per:
         if not line.startswith(('MISSING-FILE', 'PAST-EOF', 'PIN-BROKEN', 'OUTSIDE-BASE')):
             print(line)
-    return 0
 
 
 if __name__ == '__main__':
