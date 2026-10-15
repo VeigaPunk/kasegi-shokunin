@@ -80,3 +80,55 @@ From round 16 the density bar is **conjunctive** with a resolvability gate:
 a repaired block counts as repaired only if `dens ≥ BAR` **and** ≥ 60 % of its
 path citations resolve (`RESOLVES` + `MIRROR-EQUIVALENT` + `INTERNAL` +
 blob-pinned), because density alone rewards citing files that no longer exist.
+
+## `resolve.py` explicit-mirror citation alias (round-17 continuation)
+
+`resolve.py` derives its mirror root — `$KASEGI_MIRROR` wins, else the first
+existing of `MIRROR_CANDIDATES` (`~/Projects/the-bounty-hunter`,
+`~/Projects/origin-work/the-bounty-hunter`), else the canonical absent path
+(`_derive_mirror`). The round-17 change makes citations written with an
+explicit canonical mirror prefix honor that derived root, as relative and
+bounty-relative citations already did in `classify`:
+
+- **Exact-prefix, slash-delimited matching.** The alias applies only to the
+  two `MIRROR_CANDIDATES` prefixes in tilde form (`~/…`) or expanded-`$HOME`
+  absolute form (`/home/vgpnk/…`) — the root itself or a descendant below a
+  `/`. Prefix-sibling paths (`~/Projects/the-bounty-hunter-extra/x.md`) are
+  not mirror cites and keep the plain absolute-path check.
+- **Selected root, no stale fallback.** When `$KASEGI_MIRROR` is set, the
+  suffix after the matched prefix resolves only under the selected
+  `mirror_root`; the canonical written path is never consulted as a source
+  of stale bytes. A missing suffix classifies `GONE` truthfully.
+- **Unchanged schema, actual path.** A hit stays `RESOLVES`, domain `other`,
+  and the census reports the actual resolved path under `mirror_root`; a
+  miss is `GONE`. Bounty, relative and other-root classification is
+  untouched; the four classes remain `RESOLVES` / `MIRROR-EQUIVALENT` /
+  `INTERNAL` / `GONE`.
+- **Realpath confinement.** Newly mapped explicit hits must stay under the
+  realpath of `mirror_root`: `../` segments or symlinks below that root
+  cannot credit unrelated files. The selected root itself may be a symlink.
+
+Pre-fix baseline (resolver SHA-256
+`97012403e89a94d2478249de4fa198f873520328df14e4432b1040c564e03294`),
+reproduced by L1 with `KASEGI_MIRROR` pointing at a populated relocated
+root: explicit `~/Projects/the-bounty-hunter/ops/rank.mjs:1` and expanded
+`$HOME/Projects/the-bounty-hunter/.omp/config.yml:1` both classified `GONE`
+(0/2) while relative `ops/rank.mjs:1` was `MIRROR-EQUIVALENT`. The
+regression fixture proves relocation, precedence and confinement from the
+consumer side (subprocess of the real CLI, temporary dirs, isolated
+`HOME`/`KASEGI_MIRROR`, census writes stay inside the fixture, exit code =
+verdict): `python3 corpus/instruments/test_resolve.py`. To replay the
+pre-fix bytes instead, set `KASEGI_RESOLVER_UNDER_TEST=<path>` to an
+alternate resolver copy; the default is same-directory `resolve.py`.
+
+**What the alias does NOT mean.** It adds no ORIGIN-WORK override:
+`~/Projects/origin-work/open-bug-bounties/` keeps the ordinary literal
+other-root check, and `anchorcheck.py` retains its separate ORIGIN-WORK
+base rules. No receipt or provenance authentication is added.
+No sources were restored: both roots remain absent on this host
+(`corpus/knowledge/root-loss-2026-10-12.md`), and a fixture `RESOLVES` is
+proof of the mapping, not of a recovered bounty tree. Fixture numbers are
+not census numbers: keep synthetic TSVs inside their temporary fixtures;
+never publish them as `citation-survival.*`. The live resolvability score
+moves only on measurements of the actual lane corpus and domain roots.
+

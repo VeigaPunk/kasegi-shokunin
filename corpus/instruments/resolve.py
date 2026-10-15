@@ -28,7 +28,17 @@ suffix (`:NN`, `:NN-MM`, and the r15-tolerated `::symbol` form) -> BASE. Then:
                      ~/Projects/the-bounty-hunter? MIRROR-EQUIVALENT : GONE
   domain OTHER    BASE starts with `~` or `/` (any other root, e.g.
                   ~/Projects/origin-work/..., /tmp/kasegi-r1*)
-                  -> exists? RESOLVES : GONE
+                  -> exists? RESOLVES : GONE, EXCEPT that an EXACT canonical
+                  mirror alias is handled first: BASE equal to a
+                  MIRROR_CANDIDATES root (tilde or expanded current-HOME
+                  form; root-only or trailing slash allowed) or a
+                  `/`-delimited descendant of one — never a prefix sibling,
+                  and `[lost-base]`/`[lost-tree]`-marked tokens are not
+                  aliases. Its suffix resolves under the SELECTED mirror
+                  root and nowhere else, realpath-confined against `../` or
+                  symlink escapes: -> exists? RESOLVES (reporting that
+                  actual mirror path) : GONE — a missing mapping never
+                  falls back to stale canonical bytes.
   domain REL      BASE has no leading `~`/`/` (relative). Two candidate bases:
                   the lane repo root, then the mirror root (the pre-r15 world
                   ran with the bounties tree as its root, so bare
@@ -82,6 +92,10 @@ BOUNTY_PREFIXES = ("~/Projects/bounties", "/home/vgpnk/Projects/bounties")
 # $KASEGI_MIRROR wins, else the first existing candidate, else the canonical
 # absent path; when absent, bounty/mirror-relative cites classify GONE
 # truthfully and the report records the absence.
+# The selected root is also the authority for EXPLICIT canonical citations:
+# classify resolves their suffix under mirror_root (realpath-confined) and
+# never reads the canonical written path for stale bytes; all other
+# explicit roots keep the plain exists? RESOLVES : GONE behavior.
 MIRROR_CANDIDATES = ("~/Projects/the-bounty-hunter",
                      "~/Projects/origin-work/the-bounty-hunter")
 def _derive_mirror():
@@ -163,6 +177,28 @@ def exists_any(path):
     return None, None
 
 
+def mirror_suffix(base):
+    """Return BASE's suffix under an exact canonical mirror prefix, else None.
+    Alias forms are the MIRROR_CANDIDATES strings only, in tilde or expanded
+    current-HOME form: the root itself, root + '/', or a '/'-delimited
+    descendant. Prefix siblings (`root-x/...`) are ordinary other roots."""
+    for c in MIRROR_CANDIDATES:
+        for root in (c, os.path.expanduser(c)):
+            if base == root:
+                return ""
+            if base.startswith(root + "/"):
+                return base[len(root) + 1:].lstrip("/")
+    return None
+
+
+def under_mirror(path, mirror_root):
+    """True when realpath(path) is realpath(mirror_root) or below it; a
+    '../' walk-out or symlink escape is never credited as mirror evidence."""
+    r = os.path.realpath(os.path.expanduser(mirror_root))
+    p = os.path.realpath(path)
+    return os.path.commonpath((r, p)) == r
+
+
 def classify(tok, lane_root, mirror_root):
     base, anchor = strip_anchor(tok)
     if base.startswith(BOUNTY_PREFIXES):
@@ -175,6 +211,15 @@ def classify(tok, lane_root, mirror_root):
         if m:
             return "MIRROR-EQUIVALENT", p, m, dom
         return "GONE", "", "", dom
+    sfx = mirror_suffix(base)
+    if sfx is not None:
+        # Explicit canonical mirror citation: the selected mirror root is the
+        # only source — a missing suffix classifies GONE truthfully, never
+        # falling back to stale bytes at the canonical written path.
+        m, p = exists_any(os.path.join(mirror_root, sfx) if sfx else mirror_root)
+        if m and under_mirror(p, mirror_root):
+            return "RESOLVES", p, m, "other"
+        return "GONE", "", "", "other"
     if base.startswith("~") or base.startswith("/"):
         m, p = exists_any(base)
         return ("RESOLVES", p, m, "other") if m else ("GONE", "", "", "other")

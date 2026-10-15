@@ -822,3 +822,29 @@
 
 Full round detail: `corpus/lessons/round-20-recensus.md`. Advisory inventories:
 `../.ufo/waves/shokunin12h-20261014-p1-repair/members/`.
+
+## Round 17 continuation — 2026-10-15 — explicit mirror citations
+
+Selected **depth:verifiability (4)**, below coverage 7 and density 9.
+The explicit steer reuses round 17 after the recorded round-20 work; all
+earlier entries and the filed report are preserved, not renumbered.
+Motivation: `corpus/lessons/round-20-recensus.md:34-35` named suffix-joining
+onto derived roots as an unlanded narrow fix. At lane baseline
+`4b2e30231c20d3374a39976df5a0f998a6c6f90c`, a copied resolver CLI with
+isolated HOME and a populated `KASEGI_MIRROR` classified **0/2** explicit
+canonical mirror citations as resolving, despite the mirror-relative control
+being `MIRROR-EQUIVALENT`; the missing-file control remained `GONE`.
+Exact stdout: `distinct=4 resolves=0 mirror=1 internal=0 other=0 gone=3 skill=1/4 corpus=0/0 all=1/4`.
+Resolver baseline SHA-256:
+`97012403e89a94d2478249de4fa198f873520328df14e4432b1040c564e03294`.
+
+The bounded implementation in `corpus/instruments/resolve.py` maps exact
+canonical `MIRROR_CANDIDATES` prefixes (tilde or expanded HOME, root or
+slash-delimited descendants) to the selected mirror root. It retains
+`RESOLVES`/domain `other`, reports the actual selected-root path, rejects
+realpath escapes, and never falls back to stale canonical bytes. Existing
+bounty, relative and unrelated absolute-root branches are unchanged.
+`corpus/instruments/README.md` documents this contract at the end of the
+file, preserving its older line anchors. This is measurement correctness,
+not a recovered source tree, receipt authentication, or a live-score increase.
+The pre-existing user edits to `anchorcheck.py` and its cache are excluded.
