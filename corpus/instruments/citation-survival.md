@@ -2,26 +2,26 @@
 
 Instrument: `corpus/instruments/resolve.py` (stdlib-only, deterministic; r18 definition).
 Lane root: `/home/vgpnk/Projects/shokunin/kasegi-shokunin`
-Scope: `SKILL.md` + `corpus/**/*.md` (49 files).
+Scope: `SKILL.md` + `corpus/**/*.md` (50 files).
 Extraction: verbatim density.py docstring path-like rule (see module docstring).
 Mirror root for bounty-path equivalence: `/home/vgpnk/Projects/the-bounty-hunter` (ABSENT — mirror fallback disabled).
 
 ## Totals
 
-- distinct path-like citations: **1471** (total occurrences: 2915; a citation cited in both scopes counts once)
+- distinct path-like citations: **1480** (total occurrences: 2925; a citation cited in both scopes counts once)
 - distinct citations appearing in SKILL.md: 506 (of which SKILL-only: 327)
-- distinct citations appearing in corpus: 1144
+- distinct citations appearing in corpus: 1153
 
 | class | distinct citations |
 |---|---|
-| RESOLVES | 9 |
+| RESOLVES | 10 |
 | MIRROR-EQUIVALENT | 0 |
-| GONE | 1339 |
-| INTERNAL | 123 |
-| OTHER *(root-domain bucket, orthogonal: the brief says classify other roots as RESOLVES/GONE)* | 9 resolve / 104 gone = 113 |
+| GONE | 1346 |
+| INTERNAL | 124 |
+| OTHER *(root-domain bucket, orthogonal: the brief says classify other roots as RESOLVES/GONE)* | 10 resolve / 104 gone = 114 |
 
-Terminal outcome classes sum to the distinct total: RESOLVES(9) + MIRROR-EQUIVALENT(0) + INTERNAL(123) + GONE(1339) = 1471.
-Of the 9 RESOLVES, 9 are non-lane roots (domain `other`: origin-work, /tmp, ~/projects …); 0 are lane-repo-absolute.
+Terminal outcome classes sum to the distinct total: RESOLVES(10) + MIRROR-EQUIVALENT(0) + INTERNAL(124) + GONE(1346) = 1480.
+Of the 10 RESOLVES, 10 are non-lane roots (domain `other`: origin-work, /tmp, ~/projects …); 0 are lane-repo-absolute.
 Of the 0 MIRROR-EQUIVALENT, 0 were written as `~/Projects/bounties/...` (domain `bounty`), 0 were bounty-root-relative bare paths (domain `rel`).
 
 ## Resolvability rate
@@ -29,8 +29,8 @@ Of the 0 MIRROR-EQUIVALENT, 0 were written as `~/Projects/bounties/...` (domain 
 Numerator = RESOLVES + MIRROR-EQUIVALENT + INTERNAL. Denominator = all distinct citations appearing in that scope (a citation in both scopes enters both denominators).
 
 - SKILL.md alone: **32/506 = 6.32%**
-- corpus alone: **116/1144 = 10.14%**
-- lane total (SKILL.md + corpus): **132/1471 = 8.97%**
+- corpus alone: **118/1153 = 10.23%**
+- lane total (SKILL.md + corpus): **134/1480 = 9.05%**
 
 ## Noise sub-census (GONE tokens that are rule artifacts, not citable paths)
 
@@ -42,27 +42,27 @@ Flag counts (a token can carry several flags):
 | gitstatus,synthetic | 2 |
 | regex | 10 |
 | regex,synthetic | 7 |
-| shell | 49 |
+| shell | 52 |
 | shell,synthetic | 47 |
 | synthetic | 484 |
 
-- GONE citations carrying any noise flag: 602
-- GONE citations with no noise flag (genuine vanished paths): 737
-- citations containing glob/placeholder syntax (`* ? [ { } <...>`): 551
+- GONE citations carrying any noise flag: 605
+- GONE citations with no noise flag (genuine vanished paths): 741
+- citations containing glob/placeholder syntax (`* ? [ { } <...>`): 552
 
 Noise-adjusted rates (denominator excludes noise-flagged citations):
 - SKILL: 32/195 = 16.41%
-- CORPUS: 105/796 = 13.19%
-- ALL: 121/858 = 14.10%
+- CORPUS: 106/801 = 13.23%
+- ALL: 122/863 = 14.14%
 
 ## Scope x class matrix
 
 | class | SKILL.md only | SKILL+corpus | corpus only | total |
 |---|---|---|---|---|
-| RESOLVES | 1 | 1 | 7 | 9 |
+| RESOLVES | 1 | 1 | 8 | 10 |
 | MIRROR-EQUIVALENT | 0 | 0 | 0 | 0 |
-| GONE | 311 | 163 | 865 | 1339 |
-| INTERNAL | 15 | 15 | 93 | 123 |
+| GONE | 311 | 163 | 872 | 1346 |
+| INTERNAL | 15 | 15 | 94 | 124 |
 
 ## Citation-base ambiguity (r5's known hazard)
 
@@ -87,7 +87,7 @@ grep -ohP '`[^`\n]+`' SKILL.md corpus/README.md corpus/*/*.md \
  | sort -u | wc -l
 ```
 
-Result: both yield **1471** distinct citations, and
+Result: both yield **1480** distinct citations, and
 `diff <(pipeline to file) <(cut -f1 citation-survival.tsv | tail -n +2 | sort -u)` is empty (sets identical, not just counts).
 Re-running `resolve.py` twice leaves both outputs byte-identical (md5 stable).
 
@@ -108,7 +108,7 @@ is compared against the resolved file's line count (editor convention).
 |---|---|---|---|---|---|
 | `../MISSION.md:49-56` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/../MISSION.md` | 49-56 | 88 | in range |
 | `./PROVINCE.md:3` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/./PROVINCE.md` | 3 | 25 | in range |
-| `SCORECARD.md:23` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 23 | 180 | in range |
+| `SCORECARD.md:23` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 23 | 186 | in range |
 | `SKILL.md:10` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SKILL.md` | 10 | 1012 | in range |
 | `SKILL.md:10-11` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SKILL.md` | 10-11 | 1012 | in range |
 | `SKILL.md:111` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SKILL.md` | 111 | 1012 | in range |

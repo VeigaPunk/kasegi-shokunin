@@ -1,7 +1,7 @@
 # round-20 re-census — instruments re-derive their roots; both domain roots still lost
 
 2026-10-14. Steered round 20. Advisory inventories:
-`.ufo/waves/shokunin12h-20261014-p1-repair/members/Kasegi*.md`.
+`../.ufo/waves/shokunin12h-20261014-p1-repair/members/Kasegi*.md`.
 
 ## Verdict lines (measured)
 
