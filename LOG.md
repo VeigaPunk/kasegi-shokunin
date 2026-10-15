@@ -999,3 +999,41 @@ bindings and ZFL fallback; missing quality bar needs grounded criteria
 before knowledge admission. Fresh-session continuation/report/receipt
 artifacts belong only inside this repository's `.ufo/`. A local blocked
 receipt must not be represented as Sighting acceptance or a verified round.
+
+## Round 21 publication — 2026-10-15 — local report and continuation
+
+Owned reconciliation committed as
+`67fb678ae6b148e5f38ca74bbf77143bc5be5973`, lane identity, pathspec-limited.
+The report was then written at `.ufo/reports/round-21/kasegi.md`, citing that
+actual commit; fresh-session handoff is `.ufo/continuations/round-21.md`.
+The corpus index names both the preserved inherited lesson and the new
+round-21 correction. No shared report or ledger was changed.
+
+**Receipt prerequisite re-measured on the real surface.** The selected
+Sighting launch's identity/path metadata has no assigned task key or
+applicable expected prompt/config receipt binding. Nested dispatch and
+provenance keys also lack them; the canonical `.ufo/*pending*`/`.ufo/*queue*`
+name sweep found no matching files. This is not authority to synthesize a
+`task_<24 hex>` key. Public launch prompt/config digests were measured and
+persisted in `.ufo/rounds/round-21/launch-file-hashes.json`.
+
+Canonical `ufo-mission-result.mjs create-receipt` was actually invoked using
+the observed run/session, source prompt/config digests, real local report,
+producer `kasegi-shokunin`, and `iteration.decision=blocked`, omitting the
+unavailable key. Exact refusal:
+`{"schema":"ufo-mission-result-error-v1","code":"invalid_id","message":"taskKey is not a safe local identity","details":{}}`
+— exit **1**, no receipt file created. Full input and output:
+`.ufo/rounds/round-21/receipt-input.json` and
+`.ufo/rounds/round-21/receipt-mint-attempt.json`; prerequisite record:
+`receipt-preflight.json`. Receipt validation was not run on a nonexistent
+receipt and no Sighting completion command followed the failed mint.
+The integrator must supply the real applicable binding; a local report is
+not accepted completion evidence.
+
+Timestamped own-mission observation at 2026-10-15T05:19:02.329572Z:
+899.474 seconds since launch, just below two 450-second ticks; **progressing**
+on the real work commit above (`owned-mission-liveness.json`). The report
+flags this same owned mission as progressing if it crosses that review
+threshold during publication. No sibling liveness/process control or
+elapsed-budget stop was inferred. This remains one blocked attempt,
+**zero verified-round credit**, all axis/trend verdicts unchanged.
