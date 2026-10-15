@@ -178,3 +178,9 @@ claim, whose surviving origin-work package materially differs.
 None. (No axis saturated. `coverage`'s r12 18/18 was destroyed by an external
 event, not by exhaustion, so it is re-based rather than retired; `depth` was
 split, not retired — see above.)
+
+## Move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 20 | freshness | measured at HEAD (see lesson) | verdicts recorded per gate, no scalar | `corpus/lessons/round-20-recensus.md` |

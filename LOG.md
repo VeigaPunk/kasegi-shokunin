@@ -815,3 +815,10 @@
   the measured fraction fell), coverage 7→7. Carried debt named:
   RECEIPT-STORE-LOST, MIRROR-SOURCE-LOST, ORIGIN-REPO-LOST (unblock actions
   in `SCORECARD.md` round-19 row).
+
+## 20 — re-census round (freshness axis-move)
+
+2026-10-14 · steered round 20 · axis: freshness · 32-lane fleet wave + parent integration.
+
+Full round detail: `corpus/lessons/round-20-recensus.md`. Advisory inventories:
+`.ufo/waves/shokunin12h-20261014-p1-repair/members/`.
