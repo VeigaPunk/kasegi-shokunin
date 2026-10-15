@@ -848,3 +848,154 @@ bounty, relative and unrelated absolute-root branches are unchanged.
 file, preserving its older line anchors. This is measurement correctness,
 not a recovered source tree, receipt authentication, or a live-score increase.
 The pre-existing user edits to `anchorcheck.py` and its cache are excluded.
+
+**Committed verification:** measured the same copied-CLI fixture at
+implementation commit `d43e63c8872c4029c7edb9067d8f272642e7885a`:
+**0/2 → 2/2** explicit citations resolve to their expected selected-root
+files, with unchanged relative/missing controls and CLI exit 0 on both
+revisions. After stdout:
+`distinct=4 resolves=2 mirror=1 internal=0 other=0 gone=1 skill=3/4 corpus=0/0 all=3/4`.
+Resolver SHA-256 after:
+`d6a3c3f1a1d8e97d42d66a8aa3cb34530b7bc1c18b194e487ef8d580d869f903`.
+The full counting command, literal stdin, expected-path definition and
+per-revision output are recorded in
+`corpus/lessons/round-17-mirror-relocation.md`; SCORECARD names both measured
+commit hashes, not its own future record commit. Frozen committed SKILL
+resolution is **32/506 → 32/506**, with 0 changed verdicts; SKILL and
+PROVINCE bytes are identical. Scores remain verifiability 4, density 9,
+coverage 7. Measurement correctness improved; live source availability did not.
+
+Nine L2 roles were dispatched in one native host-routed craft batch:
+MirrorPlan (planner), MirrorOverlap (connector), MirrorImpl/MirrorCases/
+MirrorDocs (three executors), MirrorEvidence (scribe), MirrorSurface (scout),
+MirrorReview (reviewer), MirrorCritic (critic). No per-task model alias or
+routing configuration was set. This is not a generic UFO validated wave:
+its taxonomy/floor conflicts with the mission-required planner batch.
+The connector's bounded sibling scan found no sibling production consumer
+or competing owner for this lane-local resolver; kumitate's ufo-fsd
+citation checker is an independent surface, not a caller to migrate.
+
+**Historical erratum, not a rewrite:** the older round-17 LOG entry's
+`480/1506` numerator is superseded by the round-18 correction
+**451/1506** (`SCORECARD.md:88-96`), not by a fresh restoration claim.
+The filed round-17 report's old SKILL `222/486` is historical; this
+continuation measures **32/506** against the named commits. Its old
+`SKILL.md:683` location is not a current line pointer. The new report
+assessment adds the missing SHONEN section; no promotion is asserted.
+
+## Round 21 — 2026-10-15 — interactive cutover; routing blocked
+
+Selected lowest LIVE axis **depth:verifiability (4)**; density 9 and
+coverage 7 are guards. Highest documented round is 20 (`SCORECARD.md`,
+`a5cbf77`/`644ed37`/`de625f9`/`ea36dfc`; shared MANIFEST entry 138 annotates
+lane round 20). The launch counter 17 is not a verified completion count.
+WWKD saved before work at `plans/wwkd-round-21-authority-audit.md`.
+This is one blocked attempt; **no verified-round credit**, no saturation
+claim, and no round loop in this session.
+
+**Inherited work reconciled, not erased.** Initial HEAD
+`d43e63c8872c4029c7edb9067d8f272642e7885a` already contains the explicit
+mirror resolver fix. Initial dirty LOG/SCORECARD continuations and the
+untracked `corpus/lessons/round-17-mirror-relocation.md` and
+`corpus/instruments/test_resolve.py` are retained as interrupted lane work.
+The test's one-line fixture containment repair adds `dir=HERE` so its
+temporary writes match its repository-local contract. The pre-existing
+two-line `anchorcheck.py` root-join change and cache remain unchanged and
+excluded. `initial-hashes.json` under `.ufo/rounds/round-21/` preserves
+initial byte hashes; admission checks preserve SKILL, PROVINCE, resolver,
+dirty anchorcheck and inherited lesson bytes.
+
+**Named correction to “Round 17 continuation — 2026-10-15” above.**
+Its historical prompt does not authorize reusing a completed number after
+round 20. Its nine-role craft dispatch is not a validated 32-member wave
+under this interactive contract, and is not counted as a newly verified
+round. Its assertion that the later evidence-record commit changes no
+resolver/SKILL/PROVINCE bytes still holds for those production files; the
+inherited fixture test is now durably recorded with the containment repair.
+The older shared round-17 report was read-only, not overwritten.
+
+**Exact routing blocker.** `cfg://task/agentModelOverrides` reports executor
+`@m_mid`, scribe/simplifier/scout/mutation-tester `@m_fast`,
+reviewer/sentinel/revenger/connector `@m_mid`, critic `@m_strong`.
+Required content aliases are `@m_composer`, audit aliases `@m_grok`,
+connector `@m_antigravity` with `@m_zfl` fallback.
+`cfg://retry/fallbackChains` reports `m_antigravity: []`.
+All four named aliases exist, but the required role/fallback bindings do
+not. No config writes, routing overlays, concrete model pins, capacity
+failure probes, hidden substitutes, or second L1 were used.
+Metadata is persisted in `.ufo/rounds/round-21/routing-observation.json`.
+
+**Wave:** `.ufo/rounds/round-21/wave-spec.json` has 32 distinct meaningful
+scopes: 25 knowledge entries, four high-risk SKILL interfaces, and three
+cross-cuts. Canonical `ufo-swarm-wave.mjs plan` and `run` both exited **0**;
+complete output is in `wave-plan.json` and `wave-render.json`.
+**Zero members dispatched**: native `task` cannot realize the required
+bindings. The rendered registry has unassigned handles, not completion
+evidence. The known contract-sync/self-iter Phase 0 failures were not rerun;
+no native judgment is claimed.
+
+**Own behavioral verification.** Final contained CLI regression:
+`python3 -B corpus/instruments/test_resolve.py` → **10/10**, exit **0**
+(`contained-resolver-regressions.json`). Re-executed actual copied CLI over
+`4b2e30231c20d3374a39976df5a0f998a6c6f90c` versus
+`d43e63c8872c4029c7edb9067d8f272642e7885a`: explicit expected-path hits
+**0/2→2/2**, relative/missing controls unchanged, both CLI exits **0**;
+wrapper `COPIED_CLI_SMOKE: PASS explicit_expected_paths=0/2->2/2 controls=unchanged`,
+exit **0** (`inherited-copied-cli-smoke.json`). This is old resolver
+mapping correctness, not a round-21 source-recovery or axis improvement.
+
+**Named correction to the inherited 32/506 availability guard.** Replaying
+its frozen-code/live-filesystem command produced **33/506** on both
+revisions and its 32 assertion failed, exit **1**
+(`frozen-skill-guard.json`). Exporting the commits produced **31/506** on
+both sides and the same assertion failed, exit **1**
+(`snapshot-skill-guard.json`). Exact difference: `.git` and `.ufo/` are
+`GONE` in Git exports and `INTERNAL` in today's lane root. A comparison
+that declares both input definitions confirms unchanged frozen class maps
+and SKILL/PROVINCE hashes, exit **0** (`revision-comparison.json`).
+The specific old 32/506 filesystem was not preserved. Failures remain in
+the evidence record; no assertion was silently re-pinned or called green.
+The new-entry erratum is `corpus/lessons/round-21-routing-blocked.md`;
+the inherited corpus lesson is byte-preserved.
+
+**Committed-input instruments**, revision
+`d43e63c8872c4029c7edb9067d8f272642e7885a`, in an owned Git-exported
+snapshot (never the dirty anchorcheck):
+`== SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0`
+(exit **0**);
+density mean **154.0**, **645** path cites / **18** blocks (exit **0**);
+resolver
+`distinct=1508 resolves=10 mirror=0 internal=125 other=0 gone=1373 skill=31/506 corpus=119/1181 all=135/1508`
+(exit **0**). Full outputs and counting commands are in
+`.ufo/rounds/round-21/committed-anchorcheck.json`,
+`.ufo/rounds/round-21/committed-density.json`,
+`.ufo/rounds/round-21/committed-resolver.json`; definition/hashes in
+`frozen-input-definition.json`. Generated snapshot census files are named
+`frozen-head-citation-survival.*`, not installed as the live census.
+
+**Own round-local admission evaluation:** full command, every verdict line,
+stdout/stderr and exit **1** in
+`.ufo/rounds/round-21/admission-gate.json`:
+`ADMISSION_GATE: BLOCKED failed_requirements=11 verified_round_credit=0`.
+Ten wrong role bindings plus the missing connector fallback block dispatch.
+Global config SHA-256 remained
+`08788ddcbbb48180b987e6f54b517af294c85cacceb07bdd594843a53e668dcc`.
+No new product gate is registered. `corpus/QUALITY.md` is missing;
+conformance debt, no fabricated quality authority. `MINT.md` absent; no
+mint/promotion. No outside non-author spot-check.
+
+**Verdicts:** depth:verifiability unchanged (4→4), depth:density unchanged
+(9→9), coverage unchanged (7→7); expansion/quality/discernment unchanged.
+No current authority/severity/decree change was admitted without the
+required wave. Source-loss and prior corpus debts remain named, not fixed.
+
+**Boundary and continuation:** no push, network research, sibling/source
+mutation, shared-ledger/report mutation, credential contents, native
+transcript bodies, or journal contents. Shape-only pane check returned
+`%16 node /dev/pts/17`, exit **0** (`interactive-pane-shape.json`); the
+operator's interactive composer was not replaced with a log watcher.
+Routing owner must supply authorized effective composer/grok/antigravity
+bindings and ZFL fallback; missing quality bar needs grounded criteria
+before knowledge admission. Fresh-session continuation/report/receipt
+artifacts belong only inside this repository's `.ufo/`. A local blocked
+receipt must not be represented as Sighting acceptance or a verified round.

@@ -167,3 +167,13 @@ its source. No generic filler.
   b3b1b7e3→2ef530c6). Markers "round-14 correction/addition". One critic
   falsification REJECTED with evidence (the 2026-09-05 severity decree
   exists at `[lost-tree] fleets/claimer-mission.md:29` — critic grepped only `docs/`).
+
+## Interactive cutover evidence — round 21
+
+| Entry | Evidence status |
+|---|---|
+| `lessons/round-17-mirror-relocation.md` | Inherited interrupted-worker record; preserved verbatim. Round-number and mutable-filesystem guard corrections are in the new round-21 entry, not rewritten into this historical lesson. |
+| `lessons/round-21-routing-blocked.md` | Routing-blocked authority audit, zero verified-round credit; inherited CLI behavior re-executed, failed 32/506 replays preserved, Git-export versus live-filesystem definitions separated. |
+
+No new domain knowledge is admitted by this index addition. The required
+quality bar `corpus/QUALITY.md` is absent; it remains conformance debt.

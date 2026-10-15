@@ -166,12 +166,12 @@ append-only errata; PROVINCE.md, SKILL.md and this file carry factual annotation
 
 ## Planned
 
-Round 19 candidate: **depth:verifiability** (4 remains below coverage 7).
-Audit the 104 `LOST-RECORDED` instances for semantic support in the
-corpus-attested record. Delete claims whose only support vanished; do not
-replace primary sources with circular corpus citations merely to raise the
-resolution fraction. Start with the critic-flagged Airtable severity/decree
-claim, whose surviving origin-work package materially differs.
+Next candidate: **depth:verifiability** (4 remains below coverage 7).
+Audit the recorded severity/decree claims for support in the surviving lane
+corpus; both former domain bases are absent, not available for comparison.
+Do not replace primary sources with circular corpus citations to raise the
+resolution fraction. The explicit-mirror override inconsistency is repaired
+in the round-17 continuation below; source restoration remains operator-owned.
 
 ## Retired
 
@@ -184,3 +184,106 @@ split, not retired — see above.)
 | Round | Axis | Before | After | Evidence |
 |---|---|---|---|---|
 | 20 | freshness | measured at HEAD (see lesson) | verdicts recorded per gate, no scalar | `corpus/lessons/round-20-recensus.md` |
+
+## Round 17 continuation — 2026-10-15
+
+The explicit steer reuses round 17 after the recorded round-20 work; prior
+round entries are historical and unchanged. Selected lowest axis:
+**depth:verifiability (4)**, not coverage 7 or density 9.
+
+| Axis | Before | After | Verdict and evidence | Last change |
+|---|---:|---:|---|---|
+| depth:verifiability | 4 | **4** | **Improved measurement correctness**, score held: real copied CLI resolves explicit canonical mirror citations to the selected-root files **0/2 → 2/2**. Frozen SKILL availability remains **32/506 → 32/506** (6.32%, 0 changed verdicts). No restored primary sources or source authenticity claimed. | r17 continuation |
+| depth:density | 9 | 9 | **Unchanged**: SKILL bytes identical at both measured commits; no density content or rendering change. | r15 (held r17 continuation) |
+| coverage | 7 | 7 | **Unchanged**: PROVINCE bytes and owned surface set identical; missing domain roots are not restored or re-scoped. | r15 (held r17 continuation) |
+
+**Measured before commit:** `4b2e30231c20d3374a39976df5a0f998a6c6f90c`.
+**Measured after implementation commit:** `d43e63c8872c4029c7edb9067d8f272642e7885a`.
+The later evidence-record commit does not change the measured resolver,
+SKILL, or PROVINCE bytes; no self-referential commit hash is asserted.
+
+**Counting command:** `python3 -B -`, with its complete literal stdin in
+`corpus/lessons/round-17-mirror-relocation.md` under “Counting command —
+both committed resolver revisions”. It executes the real copied CLI twice,
+parses its TSV, and counts `RESOLVES` only when the actual resolved path is
+the expected relocated file. Observed stdout:
+
+```text
+before: distinct=4 resolves=0 mirror=1 internal=0 other=0 gone=3 skill=1/4 corpus=0/0 all=1/4
+after:  distinct=4 resolves=2 mirror=1 internal=0 other=0 gone=1 skill=3/4 corpus=0/0 all=3/4
+```
+
+The relative control is `MIRROR-EQUIVALENT` on both revisions; the missing
+explicit file is `GONE` on both; both CLI exits are 0. The separate
+`python3 -B -` command with complete stdin under that lesson's “Frozen
+live-input guard” re-derives **32/506** from each committed SKILL/resolver
+pair and prints the unchanged SKILL/PROVINCE hashes. Full mutable corpus
+census files are intentionally unchanged; documentation additions are not
+being presented as recovered source citations.
+
+No axis is retired or split. This is the narrow suffix-join repair named in
+`corpus/lessons/round-20-recensus.md:34-35`, not a new restoration or coverage
+claim. The pre-existing uncommitted `anchorcheck.py` changes are excluded.
+
+## Round 21 — interactive cutover, blocked before dispatch (2026-10-15)
+
+Actual next round after documented round 20; the old launch counter 17 is
+not a verified-round count. The later reused “round 17 continuation” above
+is inherited work, not authority to overwrite an earlier round. Its resolver
+implementation `d43e63c8872c4029c7edb9067d8f272642e7885a` is preserved.
+No preceding completed-round entries or shared ledger rows are rewritten.
+
+Selected lowest LIVE axis: **depth:verifiability (4)**. WWKD:
+`plans/wwkd-round-21-authority-audit.md`. The intended severity/decree
+authority audit has an exact validated 32-member payload, but **zero
+dispatched members**: effective role bindings are generic
+`@m_mid`/`@m_fast`/`@m_strong`, not the required composer/grok/antigravity
+bindings; `m_antigravity` has no ZFL fallback. No routing overlay was added.
+Full alias evidence and gate: `.ufo/rounds/round-21/routing-observation.json`
+and `.ufo/rounds/round-21/admission-gate.json`.
+
+| Axis | Before | After | Verdict | Evidence |
+|---|---:|---:|---|---|
+| depth:verifiability | 4 | 4 | unchanged | No required audit was dispatched and no new primary source was admitted. Inherited CLI mapping re-proved 0/2→2/2; that is prior implementation evidence, not a round-21 gain. |
+| depth:density | 9 | 9 | unchanged | Committed SKILL bytes held; density mean 154.0, 645 citation instances, 18 blocks. `committed-density.json` records command/output/exit 0. |
+| coverage | 7 | 7 | unchanged | PROVINCE hash held; no surface restoration, re-scope, or coverage credit. |
+
+**Admission:** `ADMISSION_GATE: BLOCKED failed_requirements=11 verified_round_credit=0`
+(exit **1**). Canonical wave plan/render exits **0/0**, 32 members, no task
+batch. Passing local behavior: contained resolver suite **10/10**, copied-CLI
+smoke exit **0**, revision comparison exit **0**, committed anchorcheck
+**7 in-range / 0 bad / LOST-RECORDED=306 / PIN-BROKEN=0 / ORIGIN=0 /
+OUTSIDE-BASE=0 / BASE-ABSENT=0**, exit **0**. Full outputs, not inferred
+passes, are under `.ufo/rounds/round-21/`.
+
+**Erratum to the inherited 32/506 claim above:** the old command freezes
+SKILL and resolver bytes, but resolves against the mutable working
+filesystem. Replayed today it reports **33/506 → 33/506**. Git-exported
+inputs report **31/506 → 31/506**; `.git` and the untracked `.ufo/` account
+for the two class differences. Both old 32/506 assertions failed (exit **1**)
+and are preserved in `frozen-skill-guard.json` and
+`snapshot-skill-guard.json`. `revision-comparison.json` prints the class
+differences and confirms unchanged frozen maps and SKILL/PROVINCE hashes.
+The old filesystem was not snapshotted, so 32/506 is historical, not newly
+certified. No source-availability gain is claimed.
+
+**Measured revisions:** inherited before
+`4b2e30231c20d3374a39976df5a0f998a6c6f90c`; inherited implementation and
+round-open committed input `d43e63c8872c4029c7edb9067d8f272642e7885a`.
+Exact counting commands/outputs: `inherited-copied-cli-smoke.json`,
+`revision-comparison.json`, `committed-{anchorcheck,density,resolver}.json`
+inside `.ufo/rounds/round-21/`. Exported HEAD census:
+SKILL **31/506**, corpus **119/1181**, lane **135/1508**. This definition
+excludes Git/runtime metadata; it does not silently replace the live census.
+
+**Learning:** expansion unchanged; quality unchanged; discernment unchanged.
+No outside spot-check or promotion. `corpus/QUALITY.md` is missing and remains
+named conformance debt. No saturation or axis retirement; this is one blocked
+interactive attempt, not three consecutive blocked rounds.
+
+**Next:** routing owner supplies authorized effective content→`@m_composer`,
+audit→`@m_grok`, connector→`@m_antigravity` with `@m_zfl` fallback.
+A fresh UFO L1 session, with the integrator-assigned next monotonic round,
+executes the prepared authority audit; no in-session loop or counter reset.
+Source restoration and prior named corpus debts remain open. Details and
+new-entry corrections: `corpus/lessons/round-21-routing-blocked.md`.
