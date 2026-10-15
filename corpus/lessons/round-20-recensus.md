@@ -33,3 +33,7 @@ here: the anchor regex does not match `~/Projects/ufo-fsd-alpha/`.
   regenerated census (`116/1144`, `132/1471`).
 - A suffix-join onto the derived override roots is the one narrow
   root-default change available; left unlanded by decision, named here.
+
+## Independent audit erratum (appended 2026-10-14)
+
+Independent audit: all three instruments re-ran exit 0 with matching counters; the census was regenerated after the round-20 lesson entered the walk (census now matches the tree). Identity/pathspec/record confirmed. Dead-path sweep found **22 live lines** at the round commit (`citation-bases.md:72` + `triage-thresholds.md:12` lowercase `~/projects` `git -C`; `submitted-registry.md` ×12 calling `~/Projects/origin-work/open-bug-bounties` a LIVE corpus; `intake-and-finalize.md`, `ops-invariants.md`, `operator-queue.md` how-tos into the absent root; `SCORECARD.md:174` still calling the origin-work package surviving) — named debt, owner kasegi, unblock: mark those lines lost-base or historical. Six deleted-path classes have zero citations.
