@@ -1042,3 +1042,10 @@ elapsed-budget stop was inferred. This remains one blocked attempt,
 
 Operator rollout per the 2026-10-16 fleet amendment (fleet-root `84bade0`): appended the missing `SCORECARD.md` contract sections. Already present as real sections: axes (`## Axes`), planned (`## Planned`), retired (`## Retired`). Added by this rollout: `## Capabilities` (empty repertoire table, placeholder row only) and `## Saturation` (deferral line naming the lane's next-round obligation).
 No axis claim was made and no score moved: purely additive scaffolds, no verdicts, no numbers, no round executed.
+
+## 2026-10-17 — repository README
+
+- **Trigger.** The repository root had no `README.md`.
+- **Evidence.** Domain plus the round-15 and round-19 absence annotations are `PROVINCE.md`. Loss records exist at `corpus/knowledge/source-tree-loss-2026-09-28.md` and `corpus/knowledge/root-loss-2026-10-12.md`.
+- **Action.** Added `README.md`. Corpus indexes were not edited. No Devin wiki URL was present.
+- **Outcome.** No axis claim; no score moved. The page does not treat the absent source trees as live paths.
