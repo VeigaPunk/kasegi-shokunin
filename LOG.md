@@ -1042,3 +1042,11 @@ elapsed-budget stop was inferred. This remains one blocked attempt,
 
 Operator rollout per the 2026-10-16 fleet amendment (fleet-root `84bade0`): appended the missing `SCORECARD.md` contract sections. Already present as real sections: axes (`## Axes`), planned (`## Planned`), retired (`## Retired`). Added by this rollout: `## Capabilities` (empty repertoire table, placeholder row only) and `## Saturation` (deferral line naming the lane's next-round obligation).
 No axis claim was made and no score moved: purely additive scaffolds, no verdicts, no numbers, no round executed.
+
+## 2026-10-17 — root README
+
+Motivating evidence: no root `README.md`. The page follows `PROVINCE.md`
+(domain unchanged; both surviving roots absent at the round-19 re-census)
+and `corpus/instruments/README.md` (density, resolve, anchorcheck, including
+the form-sensitivity limit). `SHONEN.md` boxes are open. No Devin wiki URL
+exists in this repo; none was added.
