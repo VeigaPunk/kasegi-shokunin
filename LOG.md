@@ -1042,3 +1042,8 @@ elapsed-budget stop was inferred. This remains one blocked attempt,
 
 Operator rollout per the 2026-10-16 fleet amendment (fleet-root `84bade0`): appended the missing `SCORECARD.md` contract sections. Already present as real sections: axes (`## Axes`), planned (`## Planned`), retired (`## Retired`). Added by this rollout: `## Capabilities` (empty repertoire table, placeholder row only) and `## Saturation` (deferral line naming the lane's next-round obligation).
 No axis claim was made and no score moved: purely additive scaffolds, no verdicts, no numbers, no round executed.
+## 2026-10-17 — root README added
+
+- **Trigger.** Operator request for a repository front door. This checkout had no root `README.md`.
+- **Action.** Added `README.md` from `PROVINCE.md` (domain unchanged; 2026-09-28 and 2026-10-12 root-loss annotations) and `corpus/instruments/README.md` (density.py, resolve.py, anchorcheck.py commands and the GONE class). The loss notes named in the README are the two knowledge files the province cites.
+- **Non-claims.** No Devin wiki URL existed here and none was added. No axis claim, no score change, no instrument run. Not a craft round.
