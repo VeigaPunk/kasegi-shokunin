@@ -1042,3 +1042,15 @@ elapsed-budget stop was inferred. This remains one blocked attempt,
 
 Operator rollout per the 2026-10-16 fleet amendment (fleet-root `84bade0`): appended the missing `SCORECARD.md` contract sections. Already present as real sections: axes (`## Axes`), planned (`## Planned`), retired (`## Retired`). Added by this rollout: `## Capabilities` (empty repertoire table, placeholder row only) and `## Saturation` (deferral line naming the lane's next-round obligation).
 No axis claim was made and no score moved: purely additive scaffolds, no verdicts, no numbers, no round executed.
+
+## 2026-10-17 — readable front door
+
+Root README was absent. Claims are taken from PROVINCE.md (domain unchanged; both later roots recorded ABSENT) and corpus/README.md's coverage map. No exploit, payload, or attack procedure was added. SHONEN.md boxes are `[ ]`.
+
+Corpus index: `corpus/README.md` is line-cited (`corpus/instruments/citation-survival.md` names lines 49 and 82) and was not edited. `corpus/knowledge/`, `corpus/lessons/`, evidence, fixtures, and earlier LOG entries were not rewrapped.
+
+Lint fixes: none. Human-legible Markdown in this repo had no unpinned same-line defect.
+
+Lint left in place: none in the human-legible set (README, PROVINCE, SKILL, SHONEN, MINT, AGENTS, corpus/README, corpus/QUALITY, plans/*.md).
+
+Devin: a search for `devin.ai` in this repo found no URL to edit. No wiki URL was added.
