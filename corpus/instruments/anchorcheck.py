@@ -164,7 +164,7 @@ def main(argv):
             if verdict is None:
                 if rel.startswith(ORIGIN_CITE_PREFIX):
                     origin_root = os.path.realpath(ORIGIN_ROOT)
-                    path = os.path.realpath(os.path.expanduser(rel))
+                    path = os.path.realpath(os.path.join(origin_root, rel[len(ORIGIN_CITE_PREFIX):]))
                     try:
                         within_origin = os.path.commonpath((origin_root, path)) == origin_root
                     except ValueError:
@@ -179,7 +179,7 @@ def main(argv):
                         kind = 'ORIGIN'
                 elif rel.startswith(MIRROR_CITE_PREFIX):
                     mirror_root = os.path.realpath(MIRROR)
-                    path = os.path.realpath(os.path.expanduser(rel))
+                    path = os.path.realpath(os.path.join(mirror_root, rel[len(MIRROR_CITE_PREFIX):]))
                     try:
                         within_mirror = os.path.commonpath((mirror_root, path)) == mirror_root
                     except ValueError:
