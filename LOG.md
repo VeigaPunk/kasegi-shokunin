@@ -1037,3 +1037,8 @@ flags this same owned mission as progressing if it crosses that review
 threshold during publication. No sibling liveness/process control or
 elapsed-budget stop was inferred. This remains one blocked attempt,
 **zero verified-round credit**, all axis/trend verdicts unchanged.
+
+## 2026-10-16 — protocol conformance: SCORECARD contract fields
+
+Operator rollout per the 2026-10-16 fleet amendment (fleet-root `84bade0`): appended the missing `SCORECARD.md` contract sections. Already present as real sections: axes (`## Axes`), planned (`## Planned`), retired (`## Retired`). Added by this rollout: `## Capabilities` (empty repertoire table, placeholder row only) and `## Saturation` (deferral line naming the lane's next-round obligation).
+No axis claim was made and no score moved: purely additive scaffolds, no verdicts, no numbers, no round executed.
