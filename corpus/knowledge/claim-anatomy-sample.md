@@ -145,3 +145,9 @@ evidence locations).
 - The six-file contract line names the two 1/6 packages as sampled reality.
 - Verdict-suffix vocabulary (`-identity`, `-host-binding`) is now documented;
   any future consumer keying on `verdict` prefixes must treat it as free text.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/claims/*/*/status.json; 20 full status.json reads selected by the round-14 stratified sample.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/claim-anatomy-sample.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

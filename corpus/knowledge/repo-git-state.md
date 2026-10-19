@@ -67,3 +67,9 @@ Hazards:
 3. **Commit-based claims must state their epoch:** "committed 9dc20e64/b01f9de4"
    citations (submitted-registry) are pre-09-06 and remain valid; anything citing
    `git log` for Sep 7–15 artifacts will silently find nothing.
+
+## Provenance (round-22 correction, appended)
+
+source: Lane read-only Git snapshot on 2026-09-28 — git status, branch, rev-list, merge-base, and ls-files; section The stall.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties/.git && git -C ~/Projects/bounties rev-parse HEAD (fails closed today: bounties base absent since 2026-09-28; the 2026-09-28 snapshot is not re-verifiable; re-scope is L0 kasegi round-15)

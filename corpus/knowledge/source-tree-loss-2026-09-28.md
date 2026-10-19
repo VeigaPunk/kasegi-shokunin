@@ -347,3 +347,9 @@ prose vs 150.0 as a single-line-row table, i.e. the bar is reachable by
 reformatting alone, so clearing it is not evidence of knowledge. Bar rule
 amended (frozen constant + conjunctive ≥ 60 % resolvability gate) in
 `corpus/instruments/README.md` and `SCORECARD.md`.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/PROVINCE.md:3 and the 2026-09-28 source-tree census; lane round-15 loss record with round-19 absence errata.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/source-tree-loss-2026-09-28.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

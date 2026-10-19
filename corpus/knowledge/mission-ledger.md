@@ -130,3 +130,9 @@ by design (freshness is a label, not a gate).
 | `~/Projects/the-bounty-hunter/ops/claim-index.mjs` | operator queue generator |
 | `~/Projects/the-bounty-hunter/ops/prepare-claims.mjs` | deterministic payload staging |
 | `~/Projects/the-bounty-hunter/ops/finalize-all.mjs` | batch finalize |
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/ledger/; [lost-base] ~/Projects/the-bounty-hunter/ops/check-freshness.mjs, ops/rank.mjs, and dispatcher/ledger producers; round-13 corrections.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/mission-ledger.md (fails closed today: bounties base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

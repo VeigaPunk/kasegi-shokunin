@@ -23,3 +23,27 @@ corpus-attested records, not live-openable.
 
 **Owns:** the domain knowledge, playbooks, error patterns, and checklists above.
 **Refuses:** anything outside this domain; report cross-domain evidence back to the orchestrator rather than absorbing it.
+
+## Core
+
+The line-3 domain comprises program rules, scopes, and claim packages; the
+core also covers triage and claim gates, and submission/disclosure packaging.
+These surfaces are corpus-attested, while their source roots are absent. This
+is a classification, not a re-scope: re-scope remains the operator's decision
+under L0 kasegi round-15.
+
+## Frontier
+
+General practice that governs every program is indexed in corpus/README.md
+under Frontier F01–F08.
+
+## Adjacent
+
+Sibling lanes are reported, not absorbed:
+
+- chousa — research method and source hierarchy
+- kagi — secrets and vault handling
+- kake — web properties
+- kengaku — LLM evaluation and benchmarks
+
+Live-target testing is refused; this corpus is documentation only.

@@ -41,3 +41,9 @@ capture; WordPress pinned-checkout rerun).
   (`fleets/mission-template.md` NEVER list).
 - `claim-ready/*` git tags are provenance markers only; never authority over
   current bytes (`docs/claim-ready-index.md` excluded-tags table).
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/docs/continuation-notes.md, docs/review-verdicts.jsonl, and docs/wrap-report.md; round-1 freeze partition.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/terminal-classes.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

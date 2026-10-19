@@ -65,3 +65,9 @@ nothing re-checks).
 "295 claim dirs, 15 status-less" were counting program dirs and package dirs
 respectively — both numbers are right for their unit; SKILL.md L8 conflated them
 (fixed round 12: "274 program dirs / 295 packages (280 gated)").
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/claims/*/*/provenance.json scan over 255 files and root-level target checkout census.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/target-checkouts.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

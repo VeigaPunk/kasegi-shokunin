@@ -1010,3 +1010,14 @@ pinned to blob `fc6d398`), `corpus/knowledge/ev-model.md`.
 - `~/Projects/bounties/{README.md,.gitignore}` — README describes git HEAD, not the live router ("9 lanes" stale = 10); asymmetric 11-line ignore set (`fleets/run/` ignored by design, `.ufo/` bulk mostly not)
 - `~/Projects/bounties/.git/` — stalled interactive rebase (onto `7dce2872`, detached `58acb6d8`, 0 commands left, autostash present), 903 dirty entries, all 12 `claim-*` tags pushed, `claim-ship` a superseded ancestor line
 - `~/Projects/bounties/pendle-core-v2-public/` — vendored hunt target (shallow clone, `f242659` = v6.10.0, pinned by `claims/cantina-pendle/…/provenance.json`); 187/255 provenance files carry a `pin` — `claim-check.mjs` never validates pins
+
+## Frontier decision table (round 22)
+Use the source IDs in `corpus/SOURCES.md` to trace these report-review rules to their current public guidance; each entry was admitted against `corpus/QUALITY.md` (Q1–Q6).
+
+| situation | rule | entry | source |
+|---|---|---|---|
+| A report states a CVSS v4.0 number | Include its vector and metric-group label; CVSS-B alone is severity, not a complete risk assessment. | `corpus/knowledge/cvss-v4-severity-and-vector.md` | S001, S002 |
+| A disclosure date or deadline is discussed | Name the policy, trigger, patch relationship, and documented exceptions; do not assume one universal interval. | `corpus/knowledge/coordinated-disclosure-timelines.md` | S003–S005 |
+| A program displays safe harbor | Check its actual asset scope, testing grant, and prohibited methods separately; a badge does not expand scope. | `corpus/knowledge/authorization-safe-harbor-and-scope.md` | S006–S008 |
+| An AI system produces a finding | Keep it a candidate until reproduced and human-reviewed for impact and reachability; preserve program-specific AI rules. | `corpus/knowledge/ai-assisted-finding-validation.md` | S009–S012 |
+| A report cites the 2025 CWE Top 25 | Use a technically supported root-cause mapping; do not turn aggregate rank into target risk or reward. | `corpus/knowledge/cwe-top25-2025-methodology.md` | S013–S015 |

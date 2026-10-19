@@ -173,6 +173,10 @@ Do not replace primary sources with circular corpus citations to raise the
 resolution fraction. The explicit-mirror override inconsistency is repaired
 in the round-17 continuation below; source restoration remains operator-owned.
 
+**Round-22 planned for round 23** (supersedes the paragraph above as the next plan; that text is kept as history):
+1. **depth:verifiability** — reconcile STATE D9 stale resolver cells (`SCORECARD.md` r19 row `132/1469`, `116/1142`) against one Git-export census; before: 2 stale cells, after: 0; command: run `resolve.py` in pre/post scratch exports and `diff` the generated `citation-survival.md`. No internal-citation credit.
+2. **coverage** — admit F06–F08 (multi-party CVD S018, CNA rules S022, EU CRA S024) through `corpus/QUALITY.md`; before 0/3, after ≤3/3; command: `grep -cE '^\| F0[6-8] .*\| admitted \|' corpus/README.md`. Adopt the r22 coverage denominator (20 Core + Frontier admitted / total) by explicit claim.
+
 ## Retired
 
 None. (No axis saturated. `coverage`'s r12 18/18 was destroyed by an external
@@ -184,6 +188,8 @@ split, not retired — see above.)
 | Round | Axis | Before | After | Evidence |
 |---|---|---|---|---|
 | 20 | freshness | measured at HEAD (see lesson) | verdicts recorded per gate, no scalar | `corpus/lessons/round-20-recensus.md` |
+| 22 | depth:verifiability | 4 (legacy headers 0/25) | 4 held (headers 25/25, rechecks 25/25 runnable, 23 fail closed; 31 dead-path lines marked) | `corpus/lessons/round-22.md` |
+| 22 | coverage | 7 (frontier 0/5, map rows 25) | 7 held (frontier 5/5 admitted, map rows 33) + capability `sources-registry` | `corpus/README.md` § Frontier, `corpus/SOURCES.md` |
 
 ## Round 17 continuation — 2026-10-15
 
@@ -292,10 +298,64 @@ new-entry corrections: `corpus/lessons/round-21-routing-blocked.md`.
 
 | Capability | What it can now do | Evidence pointer | First-working round |
 |---|---|---|---|
-| — none yet — | | | |
+| sources-registry | Curates where kasegi learns: `corpus/SOURCES.md` (contract v1) — opened, scope-tiered rows with anchors, rejected rows with flips, study paths and a search log; all seven contract census commands run clean | `corpus/SOURCES.md`; seven contract census outputs recorded in `corpus/lessons/round-22.md` § Gate (Census block); 27 rows (A=25 C=2; mined=15 queued=10 rejected=2), malformed 0, dup/enum/missing-used-by empty | 22 |
 
 Rows enter only through a round that demonstrates the capability running (`AXES.md` §Capabilities); none enter through this rollout.
 
 ## Saturation
 
 The lane's saturation line + stagnation window N are to be declared by the lane on its next round per `AXES.md` §The stagnation nudge; not asserted by this conformance change.
+
+**Round-22 declaration.** Saturation line: **9/10 on each owned axis**
+(depth:density, depth:verifiability, coverage). Stagnation window: **N = 3**
+completed, admitted rounds without a capability entry. At 9/4/7 the
+lowest-axis obligation stays active; the round-22 `sources-registry` entry
+starts the window. Rationale: the r22 planner (two axes far below 9; a lower
+line would let the nudge waive the verifiability debt).
+
+## Round 22 — kaika: provenance disclosure + frontier expansion (2026-10-19)
+
+Steered round 22 (round 21 blocked with zero credit consumed 21). Worktree
+`kaika/round`, base `94aace2`. Setup (not a claim): `corpus/QUALITY.md` minted —
+Q1–Q6 entry criteria and R1–R6 record criteria, each citing its mined mistake in
+`corpus/lessons/round-22.md` § Mistakes. Two claims, distinct axes, causally
+separable (C1 reads only the 25 legacy entries; C2 reads only the new entries,
+registry, index and province).
+
+| Axis | Before | After | Verdict and evidence | Last change |
+|---|---:|---:|---|---|
+| depth:verifiability (C1, lowest axis) | 4 | **4** | **Improved, score held.** Legacy knowledge entries carrying `source:`/`verified-at:`/`recheck:` (appended end-of-file `## Provenance` block, so no existing line anchor shifts): **0/25 → 25/25** each. `recheck:` lines runnable **0/25 → 25/25**: 23 fail closed (exit 1, base absent), 2 pass (exit 0: citation-bases anchorcheck, root-loss absence test). Dead-path lines carrying a same-line historical marker **0 → 31** (22 named by the r20 audit + 9 still-current how-tos/assertions found by the r22 critic); presence-wording sweep **8 → 5**, the 5 residual hits reviewed benign (past tense, or the relocated `~/Projects/ufo-fsd-alpha`, which is present). Nothing re-verified against a lost base; resolver rise is all INTERNAL and **not credited** (GONE 1383 → 1383). Threshold for 5: a non-author audit passing 25/25 source chains and 0 unsupported current claims. | 22 |
+| coverage (C2) | 7 | **7** | **Improved, score held.** Frontier topics admitted **0/5 → 5/5** (`corpus/README.md` § Frontier F01–F05; F06–F08 queued with opened S-rows). Coverage-map rows **25 → 33**. `PROVINCE.md` Core/Frontier/Adjacent **0 → 3** (classification, not a re-scope). Capability `sources-registry` enters. Score held: the r15 domain-root definition is unchanged by public-practice entries (r22 critic); proposed denominator for adoption next round: 20 corpus-attested Core items + 5 Frontier topics → (20+0)/25 before, (20+5)/25 after. | 22 |
+| depth:density | 9 | 9 | **Unchanged, no harm.** 18 pre-existing blocks keep identical nb/cites/tbl/num/sig/ev/dens (block 18's `lines` span 37→38 only, from the blank separator before the new block); new block `Frontier decision table (round 22)` = 155.6 ≥ BAR_R15 142.5 with 7/7 path cites resolving (conjunctive bar met); file mean 154.0 → 154.0. | r15 (held r22) |
+
+**Counting commands** (run from the lane root; the before tree is
+`git archive 94aace2`):
+
+```sh
+# C1 — legacy headers + recheck exit codes
+for k in source verified-at recheck; do n=0; for f in $(git ls-tree --name-only 94aace2 corpus/knowledge/); do grep -q "^$k:" "$f" && n=$((n+1)); done; echo "$k $n/25"; done
+for f in $(git ls-tree --name-only 94aace2 corpus/knowledge/); do r=$(grep -m1 '^recheck:' "$f" | sed 's/^recheck: //; s/^on-restoration — //; s/ (fails closed.*//'); bash -c "$r" >/dev/null 2>&1; echo $?; done | sort | uniq -c
+# anchors into legacy entries unshifted: every original line is a prefix of its current line
+for f in $(git ls-tree --name-only 94aace2 corpus/knowledge/); do git show 94aace2:$f | awk -v F="$f" 'BEGIN{while((getline l < F)>0) c[++n]=l} {if (index(c[NR],$0)!=1) bad++} END{print bad+0}'; done | sort | uniq -c
+grep -c 'r22 correction' $(git ls-tree --name-only 94aace2 corpus/knowledge/) | awk -F: '{s+=$2} END{print s}'
+for f in $(git ls-tree --name-only 94aace2 corpus/knowledge/); do grep -nE 'the-bounty-hunter|origin-work|open-bug-bounties|~/projects' "$f" | grep -E 'live|LIVE|not gone|moved|surviv|true home|PRESENT|present|exists|still' | grep -vE '\[lost-(base|tree)\]|historical|r22 correction|ABSENT|absent|^[0-9]+:(source|recheck|verified-at):'; done | wc -l
+# C2 — frontier, map, province, registry
+grep -cE '^\| F0[1-5] .*\| admitted \|' corpus/README.md
+awk '/^## Coverage map/{f=1;next}/^## /{f=0} f&&/^\| /{n++} END{print n-2}' corpus/README.md
+grep -cE '^## (Core|Frontier|Adjacent)' PROVINCE.md
+grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md   # + the six other contract census commands
+# no-harm
+python3 corpus/instruments/density.py SKILL.md --label r22; python3 corpus/instruments/anchorcheck.py SKILL.md
+```
+
+Resolver (scratch copies only, never the live tree): base `skill=32/506
+corpus=140/1212 all=156/1539`, round-22 `skill=39/513 corpus=187/1259
+all=203/1586`; every added token INTERNAL, GONE unchanged — reported, not
+credited. **Measured before:** `94aace2`. **Measured after:** the round-22
+commit (hash in `LOG.md` round-22 entry's successor record and the fleet report;
+no self-referential hash is asserted here).
+
+**Provider exhaustion.** The first executor seats (sources, provenance,
+entries, index) died or stalled on `resource_exhausted` (free-model rate
+limit); they were cancelled and re-dispatched fresh on the re-routed bucket.
+No claim was shrunk.

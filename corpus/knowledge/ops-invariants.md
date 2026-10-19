@@ -96,8 +96,8 @@ identity survives a primary park without exercising real dispatch.
 ## `~/Projects/the-bounty-hunter/ops/check-freshness.mjs` — honest-alarm staleness (M5)
 
 `node ops/check-freshness.mjs [--from <board-root>]` — board defaults to
-`/home/vgpnk/Projects/origin-work/open-bug-bounties`. Requires
-`~/Projects/origin-work/open-bug-bounties/data/refresh_evidence.json` (run_id + attempted_at_utc) and all three
+`/home/vgpnk/Projects/origin-work/open-bug-bounties`. Requires [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
+`~/Projects/origin-work/open-bug-bounties/data/refresh_evidence.json` (run_id + attempted_at_utc) and all three [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
 datasets; missing/malformed → `freshness: ERROR`, exit 1.
 
 Per dataset: timestamp = `last_permitted_check_at_utc ??
@@ -118,18 +118,24 @@ windows in the `ufo_sighting` tmux session — `fleet` (watch sighting-board),
 windows, never the session — mission L1 panes live in the same session and
 are untouchable.
 
-- `~/Projects/the-bounty-hunter/ops/sighting-board.sh`: one frame = jq table of `fleets/run/*.status.json`
+- `~/Projects/the-bounty-hunter/ops/sighting-board.sh`: one frame = jq table of `fleets/run/*.status.json` [r22 correction: the-bounty-hunter base absent since ~2026-10-12; test -e failed 2026-10-19; historical how-to, not runnable]
   (program/state/detail) + `git -C claims log --oneline -8` + lease expiry
   list + telemetry tail. Caveat: `git -C claims` resolves to the parent repo
   (claims/ has no `.git`), so the "claims commits" pane shows repo log —
   right data, historical label.
-- `~/Projects/the-bounty-hunter/ops/sighting-dispatcher.sh`: 10 s loop — `pgrep -af fleet-dispatch` (prints
+- `~/Projects/the-bounty-hunter/ops/sighting-dispatcher.sh`: 10 s loop — `pgrep -af fleet-dispatch` (prints [r22 correction: the-bounty-hunter base absent since ~2026-10-12; test -e failed 2026-10-19; historical how-to, not runnable]
   the restart command when dead), last 5 `dispatcher_tick`, last 8
   `mission_dispatched`.
-- `~/Projects/the-bounty-hunter/ops/sighting-missions.sh`: 6 s loop of `tmux capture-pane` frames over every
+- `~/Projects/the-bounty-hunter/ops/sighting-missions.sh`: 6 s loop of `tmux capture-pane` frames over every [r22 correction: the-bounty-hunter base absent since ~2026-10-12; test -e failed 2026-10-19; historical how-to, not runnable]
   non-managed window — the rendered-TUI view. Preferred over the missions
   window when the fleet is idle: `tail -f fleets/run/*.log` matches nothing
   once logs are rotated to `.log.gz` (observed: 0 uncompressed `.log`,
   537 `.log.gz`), so the tail window shows a dead glob.
 
-Display-only: authority stays with `~/Projects/the-bounty-hunter/ops/fleet-dispatch.mjs` + the L1 panes.
+Display-only: authority stays with `~/Projects/the-bounty-hunter/ops/fleet-dispatch.mjs` + the L1 panes. [r22 correction: the-bounty-hunter base absent since ~2026-10-12; test -e failed 2026-10-19; historical how-to, not runnable]
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/ops/{shared,validate,registry-check,reroute-drill,check-freshness,sighting,sighting-board,sighting-dispatcher,sighting-missions}.mjs/.sh; [lost-base] ~/Projects/the-bounty-hunter/.omp/agents/.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/ops-invariants.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

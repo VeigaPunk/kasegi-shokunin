@@ -117,3 +117,9 @@ from report.md, 140 chars), reward (`status.reward{min,max,currency}` or
   artifact and bytes differ → skip (changed bytes require re-review).
 - Post-write: claim-check re-runs; on failure the original payload bytes are
   restored (or the file removed). Deterministic: writes only when bytes differ.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/ops/claim-check.mjs:1-233, tag 014A; full round-3 source read.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/claim-gates.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

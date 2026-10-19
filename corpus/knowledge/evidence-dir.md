@@ -83,3 +83,9 @@ stopped_at_transition, reason, no_submission_performed:true}`.
   transcripts). **Zero claims dirs reference it** — parked as out-of-skill
   research substrate; revisit only if a claim package ever cites it.
 - `pendle-core-v2-public/` — vendored target repo for the Pendle claim.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/evidence/ census (592 program directories), ops/fleet-dispatch.mjs, docs/plan-round0.md, and evidence exemplars.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/evidence-dir.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

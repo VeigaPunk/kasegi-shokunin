@@ -1042,3 +1042,64 @@ elapsed-budget stop was inferred. This remains one blocked attempt,
 
 Operator rollout per the 2026-10-16 fleet amendment (fleet-root `84bade0`): appended the missing `SCORECARD.md` contract sections. Already present as real sections: axes (`## Axes`), planned (`## Planned`), retired (`## Retired`). Added by this rollout: `## Capabilities` (empty repertoire table, placeholder row only) and `## Saturation` (deferral line naming the lane's next-round obligation).
 No axis claim was made and no score moved: purely additive scaffolds, no verdicts, no numbers, no round executed.
+
+## Round 22 — 2026-10-19 — kaika: QUALITY bar, source registry, frontier, provenance disclosure
+
+Steered round 22 (r21 blocked, zero credit, consumed 21); worktree `kaika/round`,
+base `94aace2`; no collision (`.ufo/reports/round-22/kasegi.md` absent at start).
+Claims: **C1 depth:verifiability** (lowest axis, 4) and **C2 coverage** (7) with
+capability `sources-registry`. Setup: `corpus/QUALITY.md` (Q1–Q6, R1–R6), each
+criterion citing its mined mistake in `corpus/lessons/round-22.md`.
+
+**L2 swarm.** One batched call of 12 (planner, connector, 4 executors, scribe,
+scout, labrat, critic, reviewer, sentinel), each prompt led by `/skill:godspeed` +
+the verbatim directive. Two earlier batch attempts were refused by the session's
+100-job cap and started nothing. All four executor seats then hit provider
+exhaustion (`resource_exhausted`, free-model rate limit); they were cancelled and
+re-dispatched fresh in one batch on the re-routed bucket. Post-integration
+reviewer/critic/sentinel ran as a second batch of 3.
+
+**Motivating evidence.** STATE dossier §3/§5: 0/25 provenance headers, no
+QUALITY bar, no Frontier, no PROVINCE structure, 22 D10 live dead-path lines.
+ART dossier: CVSS v4, CVD timelines, safe harbor vs scope, AI-assisted finding
+validation and CWE Top 25 2025 method are uncovered or program-specific only (scout
+sweep: `/tmp` record summarized in the report, commands `git grep -niE … 94aace2`).
+
+**Landed.** 25 legacy entries: appended `## Provenance (round-22 correction,
+appended)` blocks (`source:`/`verified-at:`/`recheck:`; 23 rechecks fail closed,
+2 pass) + 31 same-line `[r22 correction …; historical]` markers (22 from the r20 audit class, 9 more found by the r22 post-critic: `submitted-registry.md` :9, :21, :23; `intake-and-finalize.md` :84, :95; `ops-invariants.md` :121, :126, :129, :135). Five admitted
+entries (S001–S015 re-opened). `corpus/SOURCES.md` 27 rows, census clean.
+`corpus/README.md` +8 map rows + `## Frontier` F01–F08; `PROVINCE.md` Core/Frontier/
+Adjacent (classification, not re-scope). SKILL.md: one appended block `## Frontier
+decision table (round 22)` (155.6 ≥ BAR_R15, 7/7 cites resolve).
+
+**Caught before commit (M17).** Inserting headers at line 2 shifted every
+path:line anchor into the legacy entries by +3 (anchorcheck printed
+`mission-control.md:3` as the new verified-at line). Headers moved to an
+appended block; all 25 files' original lines are prefix-identical to `94aace2`;
+anchorcheck summaries for SKILL.md and four anchor-heavy entries equal base.
+Numstat "deletions" in six files are same-line suffix appends (16 hunks, 0
+non-prefix).
+
+**Re-verification (freshness).** Lost roots re-tested 2026-10-19:
+`~/Projects/bounties`, `~/Projects/the-bounty-hunter`, `~/Projects/origin-work`
+absent; `~/Projects/ufo-fsd-alpha` present (root-loss recheck exit 0).
+
+**Verdicts (pending non-author verification).** C1 improved, score held 4;
+C2 improved, score held 7; capability `sources-registry` enters; depth:density
+held 9 (18 pre-existing blocks' value columns unchanged, block 18 `lines` 37→38 from the separator; mean 154.0 → 154.0). Resolver rise (SKILL
+32/506 → 39/513, corpus 140/1212 → 187/1259) is all INTERNAL, GONE 1383 → 1383 —
+reported, not credited. No push (standing operator rule overrides MISSION.md
+commit-then-push).
+
+**Post-integration review fixes (second L2 batch, before commit).** Reviewer:
+a backticked placeholder recheck in the lesson counted as a GONE resolver token
+→ unbackticked; `repo-git-state.md` recheck passed vacuously (0 cites) →
+rewritten to fail closed on `~/Projects/bounties/.git`; S024's Article 14(2)(a)
+quote matched only a secondary mirror and EUR-Lex Article 14 was unreachable to
+L1 too → row narrowed to the opened recitals, still `queued`. Critic: 9 more
+still-current how-tos/assertions marked; `corpus/README.md:5` global "everything
+read from bounties" claim given a same-line scope correction. Sentinel: Q6's
+literal vault-scheme text would trip the commit credential sweep → reworded;
+no live-target, signed-URL or injection findings.
+

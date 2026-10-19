@@ -171,3 +171,9 @@ behind package dispositions that claim files only gesture at:
 5. **Registry decrees answer "why" questions claim files can't.** Before
    re-deriving a disposition (3cx non-filing, intel hold, anthropic VDP
    attribution), check `operator_decrees` first.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/bounty-map/programs/*.json census (1088 records), ops/ source reads, and check-freshness run.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/intake-surface.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

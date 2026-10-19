@@ -6,8 +6,8 @@ truth is scattered across `claims/*/*/status.json` (inconsistent field
 spellings), `ledger/missions.jsonl`, `fleets/run/portal-reconciliation-
 2026-09-11.json`, `.ufo/claim-recovery/final-audit.json`, `vdp-disclosures/`,
 stale git tags, archive-era mission reports, the root snapshot zips — AND
-the live sibling tree `~/Projects/origin-work/open-bug-bounties/
-claim-packages/` (the true home of `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/` receipts). This is
+the live sibling tree `~/Projects/origin-work/open-bug-bounties/ [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
+claim-packages/` (the true home of `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/` receipts). This is [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
 the merged table.
 
 ## Verified submissions (receipt-bound)
@@ -18,13 +18,13 @@ the merged table.
 | H1 `4002810` | `claims/hackerone-spotify/exported-loginactivity-cross-app-oauth-relay` | 2026-09-06T00:55:38Z | `closed_duplicate` of 3892215 | `status.json` SUBMITTED; ledger; portal-reconciliation; `duplicate_of` fields; commit `b01f9de4` |
 | H1 `4002789` | `claims/hackerone-airtable/airtable-js-record-id-path-traversal` | 2026-09-06T00:55:38Z | `not_established` — report + 3 attachments exist, no triage decision observed | `status.json` BLOCKED + `submission_state:"SUBMITTED"` + `submitted_url` + `submitted_at`; ledger; portal-reconciliation; commit `b01f9de4` |
 
-## Archive-era submissions (receipts now live in the sibling tree)
+## Archive-era submissions (receipts now live in the sibling tree) [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
 
-**The receipt-bearing packages are not gone — they moved to the sibling
-tree.** `~/Projects/origin-work/open-bug-bounties/claim-packages/` is a
+**The receipt-bearing packages are not gone — they moved to the sibling [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
+tree.** `~/Projects/origin-work/open-bug-bounties/claim-packages/` is a [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
 LIVE, separate claim corpus (~26 package dirs incl. all six old slugs,
-`CONNECTOR.md`, `_schema.json`, `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/`). Its
-`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/submission-receipts.csv` (verified live):
+`CONNECTOR.md`, `_schema.json`, `~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/`). Its [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
+`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/submission-receipts.csv` (verified live): [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
 
 ```
 canonical_id,company,platform,report_id,report_url,submitted_at,status
@@ -39,7 +39,7 @@ under `A-open-bug-bounties/<slug>/` (a copy of this tree). Verified: no
 receipt ID appears anywhere under `bounties/claims/`. Do-not-refile rules
 still apply — a re-hunt that reproduces these findings must not file a
 second report. And the blind spot is bigger than VDP: **no bounties-repo
-tool (`claim-check`, `claim-index`) reads `~/Projects/origin-work/` at all** — the
+tool (`claim-check`, `claim-index`) reads `~/Projects/origin-work/` at all** — the [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
 entire second claim corpus is outside every scan.
 
 | Report | Program/pkg (old name) | Submitted | State |
@@ -60,11 +60,11 @@ auth-walled per `docs/continuation-notes.md`).
 REAL-SUBMISSION ~65–70% — paired mtimes with the attested 4028846 write
 pattern, sequential same-session H1 ID block, no local receipt template.
 Public check = login-wall 403 (existence unverifiable, not absence).
-`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/receipts/CONTRADICTION.md` (in the origin-work tree,
+`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/receipts/CONTRADICTION.md` (in the origin-work tree, [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
 mission claim-elastic 2026-09-14) is the additive warning file: each orphan
 receipt conflicts with admin records (`submission-receipts.csv` no row,
-`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/queue.json` `submitted:false`, `claims/*.json` `submitted:false`,
-`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/run.json` `external_submissions:0`) — while paired `attachment-manifest.json`
+`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/queue.json` `submitted:false`, `claims/*.json` `submitted:false`, [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
+`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/run.json` `external_submissions:0`) — while paired `attachment-manifest.json` [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
 files self-contradictorily carry `uploaded:true` + `platform_report_id` —
 each also names the pkg under `esapi-*`/`aiven-karapace-acl-prefix`.
 Operator action pending: authenticated H1/Bugcrowd inbox check; if real,
@@ -120,10 +120,10 @@ claims/hackerone-anthropic/plugin-dev-test-hook-command-injection` → `OK`
 despite the VDP receipt. `ops/claim-index.mjs` builds the queue from the same
 package set — no separate VDP/archive scan.
 
-**The gap is wider than VDP:** the entire `~/Projects/origin-work/open-bug-bounties/claim-packages/`
+**The gap is wider than VDP:** the entire `~/Projects/origin-work/open-bug-bounties/claim-packages/` [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
 corpus (~26 packages, 6 receipt JSONs, `submission-receipts.csv`,
-`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/queue.json`) is outside every bounties-repo scan — `claim-check`,
-`claim-index`, and every status-glob see only `~/Projects/bounties/claims/`.
+`~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/queue.json`) is outside every bounties-repo scan — `claim-check`, [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
+`claim-index`, and every status-glob see only `~/Projects/bounties/claims/`. [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
 A re-staged finding from the origin-work tree collides with nothing the
 checker reads.
 
@@ -221,3 +221,9 @@ copy, correctly outside the scan.)
 Both frozen ≤2026-09-15 09:45; the live tree contains files dated
 2026-09-15 21:40–21:45 and 2026-09-16 09:32 absent from both zips, and the
 zip layout exists nowhere in the working tree. Never treat as authority.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties submission and claim records; [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/ receipts and archive-era records.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && test -d ~/Projects/origin-work && python3 corpus/instruments/anchorcheck.py corpus/knowledge/submitted-registry.md (fails closed today: bounties base absent since 2026-09-28 and origin-work base absent since 2026-10-12; not re-verifiable; re-scope is L0 kasegi round-15)

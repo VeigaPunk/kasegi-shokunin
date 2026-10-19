@@ -84,8 +84,14 @@ hands back the URL/ID and the fleet records the SUBMITTED transition into
 
 ## Cross-domain reports (filed, not fixed here — bounties repo owner)
 
-- `~/Projects/the-bounty-hunter/ops/claim-index.mjs` does not consume `claim-hold/*` — holds are advisory
+- `~/Projects/the-bounty-hunter/ops/claim-index.mjs` does not consume `claim-hold/*` — holds are advisory [r22 correction: the-bounty-hunter base absent since 2026-10-12; test -e failed 2026-10-19; historical]
   only. Rows 2/4/7/10 queue despite holds (round-13: four, not three).
-- `~/Projects/the-bounty-hunter/ops/claim-check.mjs` duplicate scan does not cover `vdp-disclosures/` or the
-  `~/Projects/origin-work/open-bug-bounties/claim-packages/` receipt tree — row 4 is a
+- `~/Projects/the-bounty-hunter/ops/claim-check.mjs` duplicate scan does not cover `vdp-disclosures/` or the [r22 correction: the-bounty-hunter base absent since 2026-10-12; test -e failed 2026-10-19; historical]
+  `~/Projects/origin-work/open-bug-bounties/claim-packages/` receipt tree — row 4 is a [r22 correction: origin-work base absent since 2026-10-12; test -e failed 2026-10-19; historical]
   verified duplicate that returns `claim-check: OK`.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/docs/claim-ready-index.md at committed refresh 81326214; [lost-base] ~/Projects/the-bounty-hunter/ops/claim-check.mjs and package status/checklist reads.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/operator-queue.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

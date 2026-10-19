@@ -202,3 +202,9 @@ Not live state: statuses, model routes, and mission files are the 2026-09-06
 fleet, superseded by `fleets/missions|run|leases` + `ops/fleet-dispatch.mjs`.
 Mine it for defect patterns and contract ancestors; do not cite it as
 current authority.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/fleets/ufo-archive-2026/ snapshot, frozen 2026-09-17 and read in full 2026-09-28.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/ufo-archive-2026.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

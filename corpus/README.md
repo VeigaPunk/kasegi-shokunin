@@ -2,7 +2,7 @@
 
 Proprietary memory for the bounty & security research domain. Everything here
 was read from `/home/vgpnk/Projects/bounties` on 2026-09-28; each entry names
-its source. No generic filler.
+its source. No generic filler. [r22 correction: this holds for the 25 legacy entries only; the five round-22 entries (Frontier F01–F05) were read from public sources S001–S015 on 2026-10-19 — see SOURCES.md]
 
 ## Coverage map
 
@@ -34,6 +34,14 @@ its source. No generic filler.
 | Root loss — second event (mirror + origin-work absent; ufo-fsd relocated) | `knowledge/root-loss-2026-10-12.md` | round-19 re-census: `the-bounty-hunter` and the whole `origin-work` tree ABSENT (no relocated copy); `ufo-fsd-alpha` relocated intact to `~/Projects/ufo-fsd-alpha` @ `964f443e`; `[lost-base]` vocabulary, derived-root instruments, `BASE-ABSENT` verdict |
 | Depth instruments (committed, re-runnable) | `instruments/{density.py,resolve.py,anchorcheck.py,README.md}` + `instruments/citation-survival.{md,tsv}` | round-15: evidence-density census, live citation-resolvability census (instrument of record + definition + known limits), mirror anchor range/semantic gate; bar rule `BAR_R15 = 142.5` frozen + conjunctive ≥60 % resolvability gate from r16 |
 | Lessons | `lessons/round-1.md` … `lessons/round-15.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
+| CVSS v4.0 severity and vector semantics | knowledge/cvss-v4-severity-and-vector.md | S001, S002 — public primary, opened 2026-10-19 |
+| Coordinated-disclosure timelines | knowledge/coordinated-disclosure-timelines.md | S003, S004, S005 — public primary, opened 2026-10-19 |
+| Authorization, safe harbor, and scope | knowledge/authorization-safe-harbor-and-scope.md | S006, S007, S008 — public primary, opened 2026-10-19 |
+| AI-assisted finding validation | knowledge/ai-assisted-finding-validation.md | S009, S010, S011, S012 — public primary, opened 2026-10-19 |
+| CWE Top 25 2025 methodology | knowledge/cwe-top25-2025-methodology.md | S013, S014, S015 — public primary, opened 2026-10-19 |
+| Citation-base vocabulary (D6; previously unmapped) | knowledge/citation-bases.md | kaika W1 STATE dossier defect D6 (fleet-ledger .ufo/waves/kaika-w1/kasegi-state.md, outside this repo); existing corpus vocabulary |
+| Admission bar + source registry | QUALITY.md, SOURCES.md | Round-22 admission and source-registry contract |
+| Lessons (r22 correction) | lessons/round-1.md … lessons/round-22.md (25 files; gaps at 2, 16, 18, 19) | The old Lessons row understated coverage: current files include rounds 17, 20, 21, and 22. |
 ## Known gaps
 
 - **`~/Projects/bounties` is GONE** (removed 2026-09-28T23:51:31Z, actor
@@ -177,3 +185,20 @@ its source. No generic filler.
 
 No new domain knowledge is admitted by this index addition. The required
 quality bar `corpus/QUALITY.md` is absent; it remains conformance debt.
+
+Correction (2026-10-19): corpus/QUALITY.md now exists; the preceding closing paragraph records the earlier state and is retained as history.
+
+## Frontier
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F01 | CVSS v4.0 severity and vector semantics | admitted | knowledge/cvss-v4-severity-and-vector.md | S001, S002 | Keep scores distinct from program-specific risk and policy. |
+| F02 | Coordinated-disclosure timelines | admitted | knowledge/coordinated-disclosure-timelines.md | S003, S004, S005 | Compare stated timelines while preserving each source's attribution. |
+| F03 | Authorization, safe harbor, and scope | admitted | knowledge/authorization-safe-harbor-and-scope.md | S006, S007, S008 | Attribute protections to the policy that grants them; do not generalize. |
+| F04 | AI-assisted finding validation | admitted | knowledge/ai-assisted-finding-validation.md | S009, S010, S011, S012 | Preserve independent validation and source-specific limitations. |
+| F05 | CWE Top 25 2025 methodology | admitted | knowledge/cwe-top25-2025-methodology.md | S013, S014, S015 | Treat the ranking as a methodology-specific prioritization, not a universal risk order. |
+| F06 | Multi-party CVD — FIRST guidelines v1.1 | queued | — | S018 | Open the public guideline and record its coordination roles. |
+| F07 | CVE CNA operational rules | queued | — | S022 | Open the current public CNA rules and record operational requirements. |
+| F08 | EU Cyber Resilience Act reporting duties | queued | — | S024 | Open official text or guidance and date-stamp the reporting duties. |
+
+The original domain-root map is exhausted: 0/18 surfaces are present.

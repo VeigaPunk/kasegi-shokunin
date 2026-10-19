@@ -29,3 +29,9 @@ status.json. Read 2026-09-28.
   claims/).
 - Same external-effect rule applies: the operator personally submits; the
   fleet stages, never sends.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/vdp-disclosures/anthropic-plugin-dev-cmd-injection/ and claims/hackerone-ruby/ and claims/hackerone-nextcloud/ honest-zero-vdp-no-payout status.json records.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/vdp-disclosure-packages.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

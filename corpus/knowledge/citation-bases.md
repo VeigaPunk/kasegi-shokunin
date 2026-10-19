@@ -69,7 +69,7 @@ re-anchored, not prefixed.
 **BLOB-PIN** means a git object used when a lane file's line numbers move.
 `SKILL.md:NNN` spans in `corpus/knowledge/triage-thresholds.md` are pinned to
 the round-12 blob `fc6d398` (546-line `SKILL.md`); commands resolve a pin with
-the shell command git -C /home/vgpnk/projects/shokunin/kasegi-shokunin show
+the shell command git -C /home/vgpnk/projects/shokunin/kasegi-shokunin show [r22 correction: lowercase lane path absent on 2026-10-19; test -e failed 2026-10-19; historical]
 fc6d398:SKILL.md (pipe to sed -n 'NNNp' for one line). Machine-readable pin
 declaration for `anchorcheck.py` (plain HTML comment, never backticked):
 `pin: SKILL.md fc6d398` inside an HTML comment tag. Other measured lane
@@ -118,3 +118,9 @@ plain prose.
    `corpus/knowledge/*.md`), where every renumbered anchor was
    content-verified against the current target line (mapping of record: the
    round-18 `LOG.md` entry + regenerated citation census).
+
+## Provenance (round-22 correction, appended)
+
+source: Lane rounds 18–19 — LOG.md:705-716 and 790-793; base vocabulary in sections Base names and Rules that prevent silent base changes.
+verified-at: 2026-10-14
+recheck: python3 corpus/instruments/anchorcheck.py corpus/knowledge/citation-bases.md

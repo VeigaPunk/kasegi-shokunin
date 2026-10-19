@@ -59,3 +59,9 @@ sibling status.json files. Read 2026-09-28. Quirks belong in each package's
   verbatim).
 - AI-content rejection clauses exist verbatim (SEEK: "low-effort or
   AI-generated content … will be rejected").
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] claims/cantina-pendle/ingestion-20260915/, docs/claim-ready-index.md, docs/claim-runbook.md, docs/autopsies/, and sibling status.json files.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/program-quirks.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

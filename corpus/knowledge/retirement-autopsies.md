@@ -133,3 +133,9 @@ a second fetch when you see:
   stop → autopsy; do not "work around" it.
 - `engagement in_progress_paused` announcement → no testing grant exists →
   autopsy sub-cause "paused", not a retry.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-base] ~/Projects/the-bounty-hunter/ops/park-disposition.mjs; [lost-tree] docs/autopsies/ and fleets/run/*.status.json census.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/retirement-autopsies.md (fails closed today: bases absent since 2026-09-28/2026-10-12; not re-verifiable; re-scope is L0 kasegi round-15)

@@ -52,3 +52,9 @@ Facts:
 
 Usage: `node ops/ev-report.mjs <program-id>` prints every input with its basis
 (source_url or estimate) + `as_of` timestamp.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-base] ~/Projects/the-bounty-hunter/ops/ev-report.mjs, header and computation; [lost-tree] ~/Projects/bounties/bounty-map/schema.json, ev_inputs properties.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/ev-model.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

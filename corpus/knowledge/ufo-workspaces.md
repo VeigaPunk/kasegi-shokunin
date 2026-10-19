@@ -368,3 +368,9 @@ the package before relying on them.** Same durability gap one directory over:
 5. Check `git status` before any commit-sourced claim — the repo has been stalled
    mid-rebase since ≥2026-09-11 and all Sep 7–15 work is working-tree-only
    (`corpus/knowledge/repo-git-state.md`).
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/.ufo/ and .omp/ census from 2026-09-28; round-13 relocation recheck against ~/Projects/ufo-fsd-alpha at HEAD 964f443e.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/ufo-workspaces.md (fails closed today: primary base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

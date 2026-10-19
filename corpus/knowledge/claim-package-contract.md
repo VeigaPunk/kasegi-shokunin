@@ -60,3 +60,9 @@ is insufficient: needs `claimable:true`, positive `finding_count`, artifact,
 status↔manifest digest match, manifest↔custodian-head binding, redaction
 receipts, reviewer distinctness, secret + attribution subchecks
 (`docs/claim-runbook.md` §A.2).
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/fleets/mission-template.md, deliverable contract section; verified against claims/cantina-pendle/ingestion-20260915/ and claims/bugcrowd-seek/honest-zero/.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/claim-package-contract.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)

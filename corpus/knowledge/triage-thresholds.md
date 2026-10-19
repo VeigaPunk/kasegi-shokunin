@@ -10,7 +10,7 @@ are source lines, not rendered lines.
    git blob **`fc6d398`** (the round-12 `SKILL.md`, 546 lines) — r13/r14/r15
    renumbered the live file. Resolve with
    `git -C ~/projects/shokunin/kasegi-shokunin show fc6d398:SKILL.md | sed -n
-   'NNNp'`. Verified 8/8 sampled spans this round (`:498-502` = the EV formula
+   'NNNp'`. Verified 8/8 sampled spans this round (`:498-502` = the EV formula [r22 correction: lowercase path absent on 2026-10-19; test -e failed 2026-10-19; historical]
    block, `:175-176` = the four-term queue score, `:113-114` = `buildQueue`
    ordering, `:117` = `attempts()≥2`, `:90-91` = `NO_SCOPE_OBJECTION`,
    `:522`/`:526` = cited-path rows, `:10-11` = the 1088/486 preamble). The
@@ -479,3 +479,9 @@ Read-only census commands (no writes to the bounty tree; programs,
 `fleets/priority.json`, `docs/review-verdicts.jsonl`, `fleets/leases.json` read
 only) produced §2.2; outputs quoted verbatim there. `[UNVERIFIED]`: nothing —
 every numeric claim above carries a source line or a quoted command output.
+
+## Provenance (round-22 correction, appended)
+
+source: [lost-tree] ~/Projects/bounties/ops/{claim-check,ev-report,fleet-dispatch,shared}.mjs and bounty-map/schema.json; SKILL.md pin fc6d398 as lane snapshot.
+verified-at: 2026-09-28
+recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/triage-thresholds.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
