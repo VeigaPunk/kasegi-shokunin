@@ -1,7 +1,7 @@
 # Coordinated Disclosure Timelines
 source: S003 — https://www.cisa.gov/resources-tools/resources/establishing-coordinated-vulnerability-disclosure-program-work-security-researchers — PDF p. 6, “Establish Reasonable Time Frames for Remediation and Disclosure of Reported Vulnerabilities”
 verified-at: 2026-10-19
-recheck: Annually and when a cited policy changes; reread S003 p. 6 at https://www.cisa.gov/resources-tools/resources/establishing-coordinated-vulnerability-disclosure-program-work-security-researchers, S004’s policy and FAQ at https://certcc.github.io/certcc_disclosure_policy/, and S005’s 90-day FAQ at https://projectzero.google/vulnerability-disclosure-faq.html; if a source is unavailable, record the timeline as unknown rather than carrying a guessed default.
+recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S003 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S004 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S005
 
 ## Rule
 A disclosure timeline in a report or case record must name the policy or coordinator, the event that starts its clock, the stated interval, the patch/publication relationship, and any documented extension or exception.
@@ -38,3 +38,7 @@ S003 is joint supplier guidance about program design; it does not prescribe a si
 S004 describes CERT/CC’s own policy, and S005 describes Project Zero’s own policy; neither establishes a general legal requirement.
 A policy may change after this verification date, so do not reuse a stale timeline without reopening its source.
 This entry describes policy review only and does not direct disclosure or contact with any target.
+
+Round-23 recheck clarification: the command checks exact quoted support in pinned
+captured-source excerpts, not current online freshness or a complete entry audit.
+Re-open the applicable official policy before using its current timeline.

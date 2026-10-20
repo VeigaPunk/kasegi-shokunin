@@ -1,7 +1,7 @@
 # AI-Assisted Finding Validation
 source: S009 — https://www.ncsc.gov.uk/blogs/10-questions-ask-using-ai-models-find-vulnerabilities — question 7, “Where should I start?”
 verified-at: 2026-10-19
-recheck: Annually and when guidance or the cited first-party methods change; reread S009 question 7 at https://www.ncsc.gov.uk/blogs/10-questions-ask-using-ai-models-find-vulnerabilities, S010 “Perfect Verification” and “Conclusions” at https://projectzero.google/2024/06/project-naptime.html, S011 “The signal-to-noise problem” and “Our vulnerability discovery harness” at https://blog.cloudflare.com/cyber-frontier-models/, and S012 “Open-source software” at https://www.anthropic.com/research/glasswing-initial-update; if a source is unavailable, keep the finding unconfirmed until the evidence is rechecked.
+recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S009 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S010 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S011 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S012
 
 ## Rule
 Treat an AI-originated finding as a candidate, not a confirmed vulnerability, until its evidence package records a reproducible observation and human validation of the claimed impact and reachability.
@@ -40,3 +40,7 @@ S010 reports Project Zero’s design and benchmark results; its controlled tasks
 S011 and S012 are first-party descriptions of Cloudflare’s and Anthropic’s own work, not independently audited general model-performance rates.
 Neither vendor’s reported counts nor its workflow proves that another report is valid; preserve attribution and the limits of each source.
 This entry describes review of documentation and evidence packages only; it does not direct probing, scanning, or submission.
+
+Round-23 recheck clarification: the command checks exact quoted support in pinned
+captured-source excerpts, not current online freshness, a complete entry audit,
+or an independent audit of the publishers' methods and reported performance.

@@ -300,7 +300,7 @@ new-entry corrections: `corpus/lessons/round-21-routing-blocked.md`.
 |---|---|---|---|
 | sources-registry | Curates where kasegi learns: `corpus/SOURCES.md` (contract v1) — opened, scope-tiered rows with anchors, rejected rows with flips, study paths and a search log; all seven contract census commands run clean | `corpus/SOURCES.md`; seven contract census outputs recorded in `corpus/lessons/round-22.md` § Gate (Census block); 27 rows (A=25 C=2; mined=15 queued=10 rejected=2), malformed 0, dup/enum/missing-used-by empty | 22 |
 
-Rows enter only through a round that demonstrates the capability running (`AXES.md` §Capabilities); none enter through this rollout.
+The `sources-registry` capability entered in round 22; the preceding row replaces the rollout's empty repertoire placeholder. New rows require an exercised round demonstration (`AXES.md` §Capabilities).
 
 ## Saturation
 
@@ -359,3 +359,34 @@ no self-referential hash is asserted here).
 entries, index) died or stalled on `resource_exhausted` (free-model rate
 limit); they were cancelled and re-dispatched fresh on the re-routed bucket.
 No claim was shrunk.
+
+## Round 23 — frozen claims (2026-10-20)
+
+Base: `922a4dde90b60b465e2b8b241d1fe363f1f27e98`. Machine-readable
+preregistration: `.ufo/waves/round-23/claims.json`, written before dispatch.
+This replaces the r22 next-plan's stale-cell reconciliation as the lowest-axis
+claim: editing a reported cell does not improve the registered detector.
+
+1. **C1 depth:verifiability (lowest, score 4): detector soundness.**
+   The actual `resolve.py` credits an outside-mirror file as
+   MIRROR-EQUIVALENT through a bounty-parent path. Confine bounty and relative
+   mirror fallbacks using the same realpath boundary as explicit mirror
+   citations, reject prefix-sibling confusion, and measure the real copied CLI
+   against the same persisted expected fixture matrix before and after.
+   This is instrument correctness, not restored primary sources or a rise in
+   citation availability; the score remains 4. Preserve direct-source and
+   lane-relative semantics. Frozen pre-round SKILL/corpus outputs and all
+   changed verdicts are a required no-harm disclosure.
+2. **C2 coverage (score 7): F06–F08 admitted 0/3 → 3/3**, contingent on opening
+   official FIRST, current CNA rules, and CRA Article 14/71 text and clearing
+   Q1–Q6. Public-practice frontier denominator frozen at eight topics:
+   5/8 → 8/8. The historical lost-root denominator and score 7 are not
+   redefined. C1 is independently measurable with no frontier entry present;
+   C2 is independently measurable with the original resolver.
+
+Round-22 verifier correction: its C1 was REJECTED-HONEST-STOP, not an
+admitted depth improvement. The earlier “improved, score held” rows remain
+historical author assessments; headers/historical notices are provenance and
+freshness work, not detector-defined depth credit. Evidence:
+`corpus/lessons/round-22-verifier-spotcheck.md`; learning and routed-debt
+closure belong to `corpus/lessons/round-23.md`.

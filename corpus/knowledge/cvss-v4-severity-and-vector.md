@@ -1,7 +1,7 @@
 # CVSS v4 Severity and Vectors
 source: S001 — https://www.first.org/cvss/v4.0/user-guide — “CVSS Base Score (CVSS-B) Measures Severity, not Risk”
 verified-at: 2026-10-19
-recheck: On each FIRST CVSS v4 document revision, reread S001 “CVSS Base Score (CVSS-B) Measures Severity, not Risk” at https://www.first.org/cvss/v4.0/user-guide and S002 Assessment and Nomenclature at https://www.first.org/cvss/v4.0/specification-document; if either source is unavailable or changes, treat this guidance as unverified.
+recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S001 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S002
 
 ## Rule
 For every report or package that publishes a CVSS v4.0 number, publish the CVSS vector string and a nomenclature label identifying the metric groups used: CVSS-B, CVSS-BE, CVSS-BT, or CVSS-BTE.
@@ -26,7 +26,7 @@ Practical review checks:
 - S002, “Assessment”: “This vector string is a specifically formatted text string that contains each value assigned to each metric, and should be displayed with the vulnerability score.”
 - S002, “Assessment”: “Assessment of the Threat and Environmental metrics is not required, but is highly recommended for more meaningful results.”
 - S002, “Introduction”: “These factors are outside the scope of CVSS.” This refers to additional organizational factors such as regulatory requirements and monetary losses.
-- S002, “Supplemental Metrics”: “No metric will, within its specification, have any impact on the final CVSS score.”
+- S002, “Supplemental Metrics”: “No metric will, within its specification, have any impact on the final CVSS score”. The source continues “(e.g. CVSS-BTE).”; the quoted fragment is not a complete sentence.
 
 ## Kasegi use
 Use this alongside SKILL.md’s “Program-rule checklist (step 1 of any mission)” and “Disclosure anti-patterns (all observed in fleet wrap review)”.
@@ -42,3 +42,7 @@ CVSS is a severity-scoring framework, not proof that a reported behavior exists,
 A vector and nomenclature make the assessment legible; they do not independently validate the analyst’s metric choices.
 FIRST’s official guide and specification define the framework, not a particular program’s reward policy or an organization’s complete risk decision.
 This entry is documentation-only and gives no instruction to test a target.
+
+Round-23 recheck clarification: the command checks exact quoted support in pinned
+captured-source excerpts, not current online freshness or a complete entry audit.
+Re-open the official documents on release/change before claiming current guidance.

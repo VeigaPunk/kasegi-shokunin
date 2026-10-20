@@ -1,7 +1,7 @@
 # CWE Top 25 2025 Methodology
 source: S013 — https://cwe.mitre.org/top25/archive/2025/2025_methodology.html — “Removal of CWE Mapping Normalization”
 verified-at: 2026-10-19
-recheck: On release of a later annual edition or methodology revision, reread S013 “Dataset Collection/Scoping,” “Removal of CWE Mapping Normalization,” and “Scoring” at https://cwe.mitre.org/top25/archive/2025/2025_methodology.html, then compare S014 “Mapping Usage,” “Abstraction,” and “Possible Causes of Rank Shifts” at https://cwe.mitre.org/top25/archive/2025/2025_key_insights.html and S015’s ranked list at https://cwe.mitre.org/top25/archive/2025/2025_cwe_top25.html; if the edition or method cannot be checked, do not claim a current trend.
+recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S013 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S014 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S015
 
 ## Rule
 When a report cites the 2025 CWE Top 25, identify it as an aggregate ranking for that edition and map the reported root cause to a CWE using the technical evidence, not rank alone.
@@ -40,3 +40,8 @@ S013 and S014 are MITRE’s published method and interpretation of its own 2025 
 The dataset window, mapped-record set, and CVSS versions bound the published result; the ranking is not a universal measure of current risk.
 S015 supplies the ranked 2025 list but does not replace its methodology or a technically supported root-cause mapping.
 This entry concerns interpretation of public documentation only and gives no instruction to inspect or test a target.
+
+Round-23 recheck clarification: the command checks exact quoted support in pinned
+captured-source excerpts, not current online freshness or a complete entry audit.
+The 2025 edition is a dated methodology; re-open official material for current
+ranking or cross-year comparison claims.

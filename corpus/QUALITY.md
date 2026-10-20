@@ -38,3 +38,14 @@ that round's lesson with the failing criterion — a rejection is evidence of ta
 | R4 | A round counts only with a resolvable work commit (`git cat-file -e`) and a before→after measurement; a rendered wave is not execution and a marker is not a round. | M1 — 273 B r16 marker; M2 — dead hash, report-before-commit; M12 — `corpus/lessons/round-21-routing-blocked.md` (0 of 32 dispatched) |
 | R5 | A round without a lesson is recorded as a named omission in the next lesson. | M14 — no lessons for rounds 2, 16, 18, 19 |
 | R6 | An edit to a file that other files cite by line number keeps every existing line at its number (append at the end, or a same-line suffix); anchorcheck before/after prints the same cited source lines. | M17 — r22 inserted provenance headers at line 2 of 25 legacy entries, shifting ~160 path:line anchors (e.g. SKILL.md:821) by +3 until L1 caught it pre-commit |
+
+## Round-23 verifier-disagreement criteria
+
+These supplement rather than rewrite Q1–Q6 and R1–R6.
+
+| id | criterion | grounded in |
+|---|---|---|
+| Q7 | An executable recheck field contains a command, not prose beginning “On each”. Its successful output names what was checked: a pinned captured-source comparison is not a fresh network verification. At least one missing/corrupted-source control must fail. | `corpus/lessons/round-23.md` M2; the r22 verifier found five admitted entries' prose rechecks exit 2. |
+| R7 | Freeze an axis claim against its registered detector before implementation. A provenance/header count cannot stand in for citation resolution; instrument-correctness claims must change and exercise the actual detector, report semantic before→after cases, and disclose unchanged source-availability scores. | `corpus/lessons/round-23.md` M1; r22 C1 rejected because `resolve.py` and `anchorcheck.py` were unchanged. |
+| R8 | Source rows' immutable fields stay immutable: a corrected anchor or broadened scope in a registry row is a new row beginning “supersedes S### —”. A wrong quote location in a filed lesson is instead an appended R9 erratum, not duplicate source authority. Log every status/recheck/used-by old→new change. | `corpus/lessons/round-23.md` M5; S006's row and entry were already correct, but its r22 Gate location was wrong. |
+| R9 | A numerical erratum names its base and changed-file scope; line pointers are re-opened against the cited revision. Append the correction to historical lessons/logs rather than silently rewriting their filed assertions. | `corpus/lessons/round-23.md` M3/M4; r22 stale lesson pointers and deletion tally 22 versus 32. |
