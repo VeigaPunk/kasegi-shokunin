@@ -411,8 +411,9 @@ REJECTED-HONEST-STOP correction stands.
 
 **Capability entry.** `mirror-containment-matrix` — the lane can now replay a
 frozen detector matrix on real copied CLI bytes with a do-nothing control, and
-fail closed on digest/quote corruption. Exercised this round (13/13 and 7/13
-receipts, three failing recheck controls). Evidence:
+fail closed on digest/quote corruption. Exercised this round (**24/24** landed-bytes and
+**12/24** do-nothing-control receipts on `matrix_sha256=d05b1e0c…`, three failing
+recheck controls). Evidence:
 `corpus/instruments/mirror-containment-check.py`,
 `corpus/instruments/mirror-containment-fixtures.json`,
 `corpus/source-snapshots/round-23/manifest.json`, `corpus/lessons/round-23.md`

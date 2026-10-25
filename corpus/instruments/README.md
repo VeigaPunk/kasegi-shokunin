@@ -132,3 +132,16 @@ not census numbers: keep synthetic TSVs inside their temporary fixtures;
 never publish them as `citation-survival.*`. The live resolvability score
 moves only on measurements of the actual lane corpus and domain roots.
 
+
+## Round-23 instruments
+
+- `mirror-containment-check.py` + `mirror-containment-fixtures.json` — replays the
+  frozen C1 matrix (24 cases: 12 escape, 12 control) on real copied `resolve.py`
+  bytes, one isolated `HOME`/`KASEGI_MIRROR`/lane tree per case; asserts the CLI's
+  `class`, `resolved_path`, `method` and `domain`; writes a JSON receipt with
+  resolver, matrix and checker digests. `--resolver PATH` replays alternate bytes
+  (the do-nothing control). Fixture names are confined to the case root.
+- `source-recheck.py` + `corpus/source-snapshots/round-23/manifest.json` — checks
+  pinned captures against declared SHA-256 and exact quotes, applying a declared
+  normalization (`normalized=markup-whitespace`); exits 0 only when every assertion
+  holds, 1 on a mismatch, 2 when a base is missing.

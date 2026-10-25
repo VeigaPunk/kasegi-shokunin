@@ -322,3 +322,28 @@ Receipts now also carry each case's `method` and `domain` from the CLI, so the
 routing change the exact-root hunk makes is visible instead of inferred: the same
 citation resolves `literal/bounty` on baseline bytes and `literal/other` on landed
 bytes (`falsify/BaselineFalsify.md`, residual recommendation).
+
+### Errata after `falsify/VacuityDisclosure.md` (post-seal)
+
+- **Guard instrumentation now actually reported.** The frozen guard clause asks for
+  density and anchorcheck. At the seal the final resolver bytes
+  (`690153ad…ea2d`; baseline `d6a3c3f1…f903`) give:
+  `python3 corpus/instruments/density.py SKILL.md --label r23` → mean dens **154.0**
+  over 19 blocks, **652** path-citation instances, exit 0;
+  `python3 corpus/instruments/anchorcheck.py SKILL.md` → **7 in-range / 0 bad**,
+  7 distinct anchors, `LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0
+  BASE-ABSENT=0`, exit 0. Earlier the lesson named neither instrument, so the
+  guard was unfalsifiable from the filed text.
+- **Definition limit (unpack-path dependence).** The frozen-corpus numerator moves
+  with the export location: the same final resolver over `git archive 922a4dd`
+  unpacked at `/tmp/X/a` reports `internal=197 … 208/1589`, at `/tmp/X/cur/export`
+  `internal=198 … 209/1589`, because `corpus/README.md:54` cites
+  `../../../.ufo/l0-questions.md` and only the shallower unpack lands on the lane's
+  real `.ufo`. The guard number is therefore reported with its unpack depth, and the
+  matrix — not this fraction — carries C1.
+- **Duplicate citation key.** The census prints `distinct=1589` but the emitted TSV
+  has 1588 unique `citation` values: `evidence-manifest/v1` appears under both the
+  `SKILL` and `+CORPUS` scope labels, and the `citation→class` diff is last-wins.
+  No verdict differs; the two counts measure different things and are now labelled.
+- **Indexing.** Both new instruments were missing from `corpus/README.md` § Coverage
+  map and from this README's instrument list; rows added.
