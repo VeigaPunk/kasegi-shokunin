@@ -1246,7 +1246,7 @@ Frozen claims `.ufo/waves/round-24/claims.json`; base `d0a3f6a`, tip at start
 ## Round 25 — 2026-10-25 — recheck lines made executable; vendor disclosure policies admitted as F10
 
 Frozen claims `.ufo/waves/round-25/claims.json` (C1 depth:verifiability **4**, the lowest
-non-retired axis; C2 coverage **7**); base `b49948f`, lane HEAD at this entry `<set at commit>`.
+non-retired axis; C2 coverage **7**); base `b49948f`, lane HEAD at this entry `98261ebaf06b6415badaec362c69623d0e1db880`.
 
 - **C1 depth:verifiability — every entry's own `recheck:` line, made executable.** Counter
   `python3 corpus/instruments/recheck-audit.py --json .ufo/waves/round-25/c1-after.json`
