@@ -1,0 +1,1031 @@
+{
+  "schema": "ufo-swarm-wave-v1",
+  "wave": "kasegi-r30-build",
+  "context": "# kasegi-shokunin round 30, wave 1 (one v2 wave, 64 seats) — hyaku run 7 inline spawn\n\nYou are an L2 seat dispatched by the kasegi L1 (KasegiR30) through the orchestrator session. Fleet root /home/vgpnk/Projects/shokunin — you NEVER write there.\n\nLane repo (your ONLY write scope): /home/vgpnk/Projects/shokunin/kasegi-shokunin. Lane base revision a94871315cafa368f79c17d8c62d71fddd967986; claims-freeze commit 3c5573541300ba0fd3d89372dda3d841172eaa3f.\n\nRead before your item (absolute paths):\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-30/claims.json — FROZEN claims C1/C2 (predicates, counter commands, kill rules; do not edit; corrections land as separate appended files).\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-30/c1-controls/before.txt, c2-controls/before.txt, census-before.txt — committed before receipts.\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md, corpus/README.md, corpus/SOURCES.md, corpus/QUALITY.md, corpus/lessons/round-29.md, corpus/lessons/round-29-verifier-spotcheck.md.\n- /home/vgpnk/Projects/shokuknow/merge/kasegi/MERGE-REPORT.md and SOURCES.append.md (read-only package; NEVER write inside /home/vgpnk/Projects/shokuknow).\n- /home/vgpnk/Projects/shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md (read-only).\n\nHard bounds:\n- Write ONLY inside /home/vgpnk/Projects/shokunin/kasegi-shokunin. Never write to the fleet root (/home/vgpnk/Projects/shokunin), sibling lanes, /home/vgpnk/Projects/shokuknow, the lane's git/jj state (no `git`/`jj` mutations; working-tree files only), `.ufo/state`, or MANIFEST.json. No command may contact a live bounty target; corpus entries are documentation-only (QUALITY Q6).\n- Every `Report:` trailer path is relative to /home/vgpnk/Projects/shokunin/kasegi-shokunin — write it at /home/vgpnk/Projects/shokunin/kasegi-shokunin/<that path>. Your report file is your ownership marker; put your final evidence there.\n- Tooling authorization (operator 2026-10-19): you may install or upgrade tools that help the task — first read /home/vgpnk/.omp/agent/RULES.md (official channels: uv tool / official release binary / cargo / npm -g; NEVER sudo pacman: all pacman transactions are PAUSED host-wide; never run pacman -Sy/-Syu/-U/-R; no partial upgrades). Record any install (tool/version/channel/reason) in your report.\n- Your route is set by the operator's global role map; never pass a model.\n- Godspeed posture: name the axes; iterate cheap and in parallel; keep moves that improve any axis and harm none; never stall in clarifying-question loops; act via tool calls, don't ask.\n- If an artifact you depend on is not yet on disk, poll (sleep 30s loops) up to your seat ceiling, then proceed against current bytes and label exactly which bytes you measured (sha256); never fabricate output and never claim a check you did not run.\n- You are a leaf: do not dispatch tasks or spawn subagents (one read-only labrat probe is permitted only for an executor testing a falsifiable hypothesis).\n- Your final answer = your report file content (Markdown) that the L1 will integrate.",
+  "policy": {
+    "source": "config",
+    "maxLanes": 128,
+    "minLanes": 16,
+    "waveMinLanes": 64,
+    "waveMaxLanes": 128,
+    "declaredMaxLanes": 128,
+    "hardCeiling": 256,
+    "rampBatchSize": 5,
+    "rampIntervalMs": 700,
+    "globalRunnerCeiling": 1056
+  },
+  "counts": {
+    "spawn": 64,
+    "resume": 0,
+    "total": 64
+  },
+  "compaction": {
+    "applied": false,
+    "mechanism": null,
+    "reason": null,
+    "savedBytes": 0,
+    "payloadBytesBefore": 0,
+    "payloadBytesAfter": 0
+  },
+  "dispatch": {
+    "calls": 1,
+    "kind": "task",
+    "note": "Issue exactly one batched task call carrying every spawn lane, plus one hub send per resume lane. Never split a wave into multiple task calls (one-swarm-per-wave)."
+  },
+  "registry": {
+    "schema": "ufo-swarm-registry-v1",
+    "path": ".ufo/waves/round-30/wave1/swarm-registry.json",
+    "reportDir": ".ufo/waves/round-30/wave1",
+    "members": {
+      "ScoutDatawalk": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScoutAssimPackage": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScoutQuarantineSlice": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScoutInstrumentBaseline": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "ScoutMapExpected": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScoutAdjacency": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ConnClaims": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "connector",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ConnStagedCensus": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "connector",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ConnQuarantine": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "connector",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ConnHarm": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "connector",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecImplFrontierHarness": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecImplSourceRecheck": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecControlC1": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecMutantsC1": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecDensityNoHarm": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecCaptureAssim": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecEntryF14": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecRegistryAppend": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecReadmeF14": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecExpectedList": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecCensusAfter": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecHarnessAfter": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecSelftestProbe": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecQuarantineFetch": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecConsiderthese": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecScopeSweep": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecPostCommitRecheck": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ExecBeforeVerify": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeLesson": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeLessonGate": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeLog": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeScorecard": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeSkillGate": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeReport": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeQuarantine": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeAssim": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeMistakes": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeFrontier": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeDigest": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeSpot": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "ScribeCloseOut": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "RevC1Instrument": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "RevC1Controls": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "RevC2Entry": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "RevC2Registry": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "RevC2Manifest": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "RevClaimsOverall": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "RevNoHarm": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "RevScope": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "RevQuarantineInd": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "RevConsiderthese": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "RevReadme": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "CritC1Kill": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "CritC2Kill": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "CritGlobal": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "CritMeta": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "MutC1A1": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "MutC1A2": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "MutC1B1": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "MutC1B2": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "SentScope": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "sentinel",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "SentSecretScan": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "sentinel",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      },
+      "RevEngIntent": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "revenger",
+        "item": null,
+        "axes": [
+          "depth:verifiability"
+        ],
+        "milestone": "round-30"
+      },
+      "SimplWave": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "simplifier",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-30"
+      }
+    }
+  },
+  "priorRegistries": [],
+  "tasks": [
+    {
+      "name": "ScoutDatawalk",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nThis seat carries the L1 planner's bounded data-walk (the L1 holds the canonical planner seat; this item is the permitted data-walk ride). Verify and report:\n1. The frozen counters run from the lane root and their BEFORE values hold at the freeze commit 3c5573541300ba0fd3d89372dda3d841172eaa3f (`git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 3c5573541300ba0fd3d89372dda3d841172eaa3f:.ufo/waves/round-30/c1-controls/before.txt` etc. — run the actual commands from claims.json against the working tree for an identical record).\n2. `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain` state; the lane must contain no pre-existing production drift beyond the wave's own files.\n3. Confirmation that the round-30 claims target the lane's lowest non-retired axis (depth:verifiability 4) and a second distinct axis (coverage 7) per SCORECARD.md.\n4. Confirm no earlier round-30 attempt artifacts exist except the committed freeze files.\nReport: .ufo/waves/round-30/wave1/ScoutDatawalk.md (with all command outputs, exit codes, and sha256 of the two instruments at 3c5573541300ba0fd3d89372dda3d841172eaa3f).\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScoutDatawalk.md"
+    },
+    {
+      "name": "ScoutAssimPackage",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nRead the assimilation package (read-only) for the F14 theme \"Japanese severity vocabulary and the handling-priority model\":\n- /home/vgpnk/Projects/shokuknow/merge/kasegi/MERGE-REPORT.md\n- /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md rows staged S049 (IPA JVN activity report PDF) and S050 (IPA JVN quarterly registration report) and S043 (JPCERT/CC guideline, maps to lane S041)\n- staged entry /home/vgpnk/Projects/shokuknow/merge/kasegi/knowledge/corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md\n\nReport the exact staged cell bytes (URL, kind, tier, scope, anchor, teaches, status, opened, recheck, used-by) for S049/S050, the staged entry's header/source lines, and every schema hazard (cells containing `|`, prose recheck cells, non-ISO opened dates) that the lane append must normalize. Confirm the two URLs are absent from the lane registry (grep). Also read the lane's S041 row and round-28 capture path to state what S041 contributes. Report: .ufo/waves/round-30/wave1/ScoutAssimPackage.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScoutAssimPackage.md"
+    },
+    {
+      "name": "ScoutQuarantineSlice",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nExtract this lane's quarantine slice from the read-only absent-defect register:\nR=/home/vgpnk/Projects/shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md\nA=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-30/assimilation; mkdir -p \"$A\"\nawk -F'|' -v l='kasegi' '$2 ~ (\"`\" l \"`\") && $3 ~ /round[0-9]+/ && $4 ~ /S[0-9]+/ {print $4, $5}' \"$R\" > \"$A/quarantine-slice\"\nEvery line must carry an S-id; print the full table (id + register cell text) and mark which rows carry truncated URLs vs full locators. Record the slice count. Do NOT fetch yet (ExecQuarantineFetch does). Report: .ufo/waves/round-30/wave1/ScoutQuarantineSlice.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScoutQuarantineSlice.md"
+    },
+    {
+      "name": "ScoutInstrumentBaseline",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nRe-read the two instruments fully: corpus/instruments/frontier-recheck-count.py and corpus/instruments/source-recheck.py. Reproduce the four before probes from claims.json C1 (A1/A2/B1/B2) against the working tree at the freeze commit and confirm every value in .ufo/waves/round-30/c1-controls/before.txt still reproduces (run each command, capture stdout/stderr/exit, sha256 both instrument files). Explain in your report WHY each baseline behavior is a conformance gap for claims C1 (missing named-row error; duplicate target passes; stem mismatch passes; double-occurrence passes). Report: .ufo/waves/round-30/wave1/ScoutInstrumentBaseline.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScoutInstrumentBaseline.md"
+    },
+    {
+      "name": "ScoutMapExpected",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nStudy corpus/instruments/knowledge-expected.txt and corpus/instruments/recheck-audit.py: what entries/lines does the expected list hold today (counts at the freeze commit), how is it regenerated, and what must change when exactly one new knowledge entry (corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md) lands? Verify the round-28/29 notes: expected=40 entries/42 lines pre-r28 → 41/43 after F12; r29: 43? Measure exactly. Also confirm the README append-only convention (R6) and the exact table shapes used for the F13 coverage-map/frontier appendix rows so the F14 appendix matches byte-for-byte in shape. Report: .ufo/waves/round-30/wave1/ScoutMapExpected.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScoutMapExpected.md"
+    },
+    {
+      "name": "ScoutAdjacency",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nScan /home/vgpnk/Projects/shokunin/MISSION.md, AXES.md and every sibling PROVINCE.md (chousa, kake, kagi, kengaku, kumitate, kotoba, kama, souji, tabi, kaidoku, tsukuroi, mado, tameshi, mori, revenger, kotodama): does any sibling lane hold the ground of \"Japanese severity vocabulary and JVN handling-priority model\" (IPA JVN reports, CVSS→深刻度 mapping, quarterly statistics) or of the C1 harness/Q9 checker instruments? Report each scan with evidence; report adjacency findings, absorb nothing. Report: .ufo/waves/round-30/wave1/ScoutAdjacency.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScoutAdjacency.md"
+    },
+    {
+      "name": "ConnClaims",
+      "agent": "connector",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nReconcile the frozen claims: for each claim in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-30/claims.json, produce a claim chain showing predicate sentence → counter command → kill rule → before receipt file → expected after file. Verify the counter commands exactly match the predicate and that the kill rules are executable by the L1 (paste the command list). Flag any counter that cannot emit the number its kill rule watches (M29-2 class). Confirm C1/C2 are causally separable (C1 fixtures touch only .ufo/waves/round-30/c1-controls and the two instruments; C2 touches corpus/SOURCES.md, corpus/README.md, corpus/knowledge/<F14 entry>, corpus/source-snapshots/round-30/, corpus/instruments/knowledge-expected.txt). Report: .ufo/waves/round-30/wave1/ConnClaims.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ConnClaims.md"
+    },
+    {
+      "name": "ConnStagedCensus",
+      "agent": "connector",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nRun the assimilation id-collision check (addendum §10) with scratch committed as wave evidence:\nS=/home/vgpnk/Projects/shokuknow\nA=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-30/assimilation; mkdir -p \"$A\"\ngrep -oE '^ {0,3}\\|[[:space:]]*S[0-9]{3,}' /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md | grep -oE 'S[0-9]+' | sort > \"$A/reg-ids\"\ngrep -oE '^ {0,3}\\|[[:space:]]*S[0-9]{3,}' \"$S/merge/kasegi/SOURCES.append.md\" | grep -oE 'S[0-9]+' | sort > \"$A/staged-ids\"\ncomm -12 \"$A/reg-ids\" \"$A/staged-ids\" > \"$A/collisions\"\nAlso PROVE the guard's discrimination: create a scratch registry fixture with an indented `  | S002 |` row and show the 0–3-space-tolerant pattern catches it (nonempty collisions) while `^\\|` misses it. Then produce the adopted-id map by document (URL equality): staged S049→lane S046, staged S050→lane S047; verify both URLs are absent from the lane registry pre-append and the ids are free. Paste both id lists, the collision count and the renumber map. Report: .ufo/waves/round-30/wave1/ConnStagedCensus.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ConnStagedCensus.md"
+    },
+    {
+      "name": "ConnQuarantine",
+      "agent": "connector",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nCross-source pattern join: read /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-30/assimilation/quarantine-slice (from ScoutQuarantineSlice) and the package's staged rows S049/S050/S043. For each slice row, note whether the document's publisher/lineage overlaps the F14 sources (IPA/JPCERT/CC) — mark `related-to-F14` vs `unrelated`. This join feeds the lesson Gate, so verdicts are consistent. Also report which slice rows, if adopted, would need which lane ids (never arithmetic: document identity decides). Report: .ufo/waves/round-30/wave1/ConnQuarantine.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ConnQuarantine.md"
+    },
+    {
+      "name": "ConnHarm",
+      "agent": "connector",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nCross-claim interference analysis: C1 hardens frontier-recheck-count.py and source-recheck.py; C2 lands a new frontier row + entry + rows that must pass the hardened harness (17/17) and the hardened checker (exit 0). Enumerate every ordering hazard: manifest before captures; harness after entry/row; census after rows; Entry before registry/README; expected-list after entry. For each dependent seat, state the wait-gate file (the artifact that must exist on disk before the seat proceeds) and a sane poll ceiling. Also check C1's regression clause does not forbid the C2 additions (the F14 recheck line must satisfy the stricter checker). Output a dependency table. Report: .ufo/waves/round-30/wave1/ConnHarm.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ConnHarm.md"
+    },
+    {
+      "name": "ExecImplFrontierHarness",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nImplement C1 limbs A1+A2 in corpus/instruments/frontier-recheck-count.py (single owner):\n- A1: when an admitted frontier row names an entry path that does not exist, fail with a message that names the row id and path (exit 1), instead of an uncaught FileNotFoundError traceback.\n- A2: when two admitted rows resolve to the same entry realpath, fail naming the duplicate (exit 1).\nPreserve every existing behavior and CLI flag (--root, --json). Update the module docstring to state the new fail-closed behaviors. Do not touch any other file. Show the diff (`git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff corpus/instruments/frontier-recheck-count.py`) and the new sha256 in your report. Then run the A1/A2 fixtures from .ufo/waves/round-30/c1-controls/ to demonstrate the new behavior (expected: a1 exit 1 naming F98; a2 exit 1 naming the duplicate). Report: .ufo/waves/round-30/wave1/ExecImplFrontierHarness.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecImplFrontierHarness.md"
+    },
+    {
+      "name": "ExecImplSourceRecheck",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nImplement C1 limbs B1+B2 in corpus/instruments/source-recheck.py (single owner):\n- B1: in check_source, verify record[\"id\"] == Path(record[\"path\"]).stem; on mismatch emit `reason=stem-mismatch` and return 1.\n- B2: an assertion whose normalized quote occurs more than once passes ONLY if its anchor verifies (anchor_verdict anchor=N-ok); MISSING/OUT-OF-RANGE/BROKEN anchors become failures (emit the reason and set status=1).\nPreserve all existing behaviors, flags and exit conventions; update the module docstring and selftest to cover the two new limbs (add selftest cases for stem mismatch and double occurrence). Run `python3 corpus/instruments/source-recheck.py --selftest` — it must print `selftest cases=… failures=0` and exit 0. Show diff + sha256. Report: .ufo/waves/round-30/wave1/ExecImplSourceRecheck.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecImplSourceRecheck.md"
+    },
+    {
+      "name": "ExecControlC1",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nRun the canonical C1 control matrix (single owner of .ufo/waves/round-30/c1-controls/*.txt):\n1. BEFORE: re-run the four frozen probes exactly as in claims.json C1 counter_commands at the freeze commit bytes (git show 3c5573541300ba0fd3d89372dda3d841172eaa3f:corpus/instruments/frontier-recheck-count.py etc. into scratch if the working tree has changed) and write before-run-2.txt reproducing before.txt.\n2. Poll until the working-tree digests of both instruments differ from the freeze digests (or 45 min), then AFTER: run the same four probes against the landed bytes and write c1-after.txt.\n3. Regression: `python3 corpus/instruments/frontier-recheck-count.py` on the real corpus and each real manifest source-recheck that passed at base must still pass (prove unchanged).\nPrint a before/after table with exit codes and the key output lines. Report: .ufo/waves/round-30/wave1/ExecControlC1.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecControlC1.md"
+    },
+    {
+      "name": "ExecMutantsC1",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAfter the instruments are updated (poll digests; ceiling 60 min), create four mutant copies under .ufo/waves/round-30/c1-controls/mutants/:\n- mutant-a1.py: frontier-recheck-count.py with the A1 named-row limb removed (revert to uncaught open()).\n- mutant-a2.py: with the A2 duplicate detection removed.\n- mutant-b1.py: source-recheck.py with the B1 stem check removed.\n- mutant-b2.py: with the B2 occurrence check removed.\nRun the corresponding fixture against each mutant: each mutant must FLIP the fixed behavior (mutant-a1: A1 exits 1 with traceback/no named-row marker; mutant-a2: A2 exits 0; mutant-b1: B1 exits 0; mutant-b2: B2 exits 0). Also re-run the four probes from the freeze-commit bytes (via `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 3c5573541300ba0fd3d89372dda3d841172eaa3f:…`) as the do-nothing control — none may meet the targets. Record outputs and sha256 of each mutant. Report: .ufo/waves/round-30/wave1/ExecMutantsC1.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecMutantsC1.md"
+    },
+    {
+      "name": "ExecDensityNoHarm",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nNo-harm measurement (do not edit any production file): run `python3 corpus/instruments/density.py SKILL.md --label r30-before` and `python3 corpus/instruments/anchorcheck.py SKILL.md` and `python3 corpus/instruments/recheck-audit.py` at the current tree; record SKILL.md sha256 and PROVINCE.md sha256. Then AFTER the wave's production changes land (poll for the F14 entry and new instrument digests; ceiling 60 min), re-run all three and record. Report the before/after numbers, verdict-class movement (must be none beyond documented appends), and confirm no owned axis score changes (depth:density 9, depth:verifiability 4 held, coverage 7 held). Report: .ufo/waves/round-30/wave1/ExecDensityNoHarm.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecDensityNoHarm.md"
+    },
+    {
+      "name": "ExecCaptureAssim",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nSingle owner of corpus/source-snapshots/round-30/ (captures + manifest.json):\n1. S046: capture the IPA JVN activity report PDF — https://www.ipa.go.jp/security/reports/vuln/jvn/ug65p90000019ev2-att/000095610.pdf — with `python3 corpus/instruments/capture-source.py --kind pdf` (pdftotext -enc UTF-8); name the snapshot S046.txt.\n2. S047: capture the IPA JVN quarterly registration report — https://www.ipa.go.jp/security/reports/vuln/jvn/ipedia2026q3.html — with `python3 corpus/instruments/capture-source.py --kind html`; name S047.txt.\n3. Also copy the existing S041 capture into this dir (corpus/source-snapshots/round-28/S041.txt → S041.txt) so the manifest is self-contained.\n4. Build manifest.json (schema_version 1, sources list): records S046, S047, S041 with path, sha256 (real file hashes), and quotes arrays: for each record pick 3-6 assertions from the actual capture text (normalized length ≥12 chars, exactly-once occurrences, correct stem == id, optional anchors). Verify with `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-30/manifest.json --source S046` (and S047, S041) — all must exit 0 with `occurrences=1` (or verified anchors) — and `source-recheck.py --selftest` still green. Report the chosen quotes, occurrence counts, hashes and the manifest bytes digest. If capture-source.py fails on a source (e.g., bot gate), use the documented curl fallback (instrument UA) and say so (M29-5 class). Report: .ufo/waves/round-30/wave1/ExecCaptureAssim.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecCaptureAssim.md"
+    },
+    {
+      "name": "ExecEntryF14",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nSole writer of corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md (the F14 entry). Requirements (QUALITY Q1-Q10, R-rules):\n- Opens with `source: S046 — <URL> — <anchor>`, `source: S047 — <URL> — <anchor>`, `source: S041 — <URL> — <anchor>` (anchors from the actual captures), `verified-at: 2026-10-25`, `ground: F14`, and one executable `recheck:` line: a single command chain running source-recheck.py for S046, S047, S041 (each `--source` invocation, `&&`-chained), prefixed `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin &&`, with a `#` human note after the command (Q10).\n- Use the captured quotes (read corpus/source-snapshots/round-30/S046.txt, S047.txt, S041.txt) for every load-bearing claim: JVN has no native severity scale and maps CVSS base scores (v2 and v3) onto the Japanese 深刻度 labels; the quarterly report publishes the distribution (cite the exact percentages you find in S047.txt); the guideline's 付録4 (S041) frames the impact-model thinking. Attribute everything to IPA/JPCERT's own reports (Q4); include at least one falsifiable rule and one rejected over-generalization (Q5). No live-target instructions; documentation-only (Q6).\n- Body must mention S046, S047, S041 ids (the harness's cited-ids check reads S-ids in the body).\nReport the final file bytes (sha256, line count) and how each Q/R criterion is met. Do NOT edit SOURCES.md, README.md, or the manifests yourself. Report: .ufo/waves/round-30/wave1/ExecEntryF14.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecEntryF14.md"
+    },
+    {
+      "name": "ExecRegistryAppend",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nSole writer of the corpus/SOURCES.md registry appends for this round:\n1. Append two new rows after the last registry row (S045): S046 (source: IPA JVN activity report — https://www.ipa.go.jp/security/reports/vuln/jvn/ug65p90000019ev2-att/000095610.pdf; kind docs; tier A; scope: JVN's own severity vocabulary, CVSS-to-深刻度 band definitions; anchor: from the round-30 capture S046.txt, the 注1)/注2) definitions; teaches: JVN has no native severity scale — it maps CVSS base scores onto Japanese labels keeping legacy v2 bands; status mined; opened 2026-10-25; recheck 180d; used-by corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md) and S047 (IPA JVN quarterly registration report — https://www.ipa.go.jp/security/reports/vuln/jvn/ipedia2026q3.html; kind docs; tier A; scope: JVN quarterly severity distribution; anchor: from S047.txt, 2-2 深刻度別割合/図2-2,図2-3; teaches: Japan's national database carries CVSS-derived severities at scale; status mined; opened 2026-10-25; recheck 90d; used-by same entry). No `|` inside any cell; exactly 11 columns.\n2. Append the \"Registry changes\" lines: S046+S047 rows added (old → new), plus any status/recheck/used-by cell change observed this round (log old→new each, R8).\nDo not modify any existing row. Verify with the census row-count command (rows=47) and `sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` exit 0 (W04 S028/S029 warnings allowed). Report the final registry tail bytes + sha256. Report: .ufo/waves/round-30/wave1/ExecRegistryAppend.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecRegistryAppend.md"
+    },
+    {
+      "name": "ExecReadmeF14",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nSole writer of corpus/README.md appends: after the last line, append (R6 — never edit existing lines):\n1. A coverage-map appendix row: | Japanese severity vocabulary and handling-priority model (round 30) | `knowledge/japanese-severity-vocabulary-and-impact-model.md` | S046, S047 (S041) — public primary, opened 2026-10-25 | (same shape as the F13 appendix row).\n2. An F14 frontier row: | F14 | Japanese severity vocabulary and the handling-priority model | admitted | knowledge/japanese-severity-vocabulary-and-impact-model.md | S046, S047, S041 | <next note> | (same shape as F13's row in its appendix table).\n3. A short appended amendment paragraph recording \"at round 30 the frontier stands at 14/14 admitted\" (historical note appended, never rewriting earlier text).\nVerify `awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md` → 14 and head bytes unchanged. Report final tail + sha256. Report: .ufo/waves/round-30/wave1/ExecReadmeF14.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecReadmeF14.md"
+    },
+    {
+      "name": "ExecExpectedList",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAfter the F14 entry lands (poll for corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md; ceiling 45 min): regenerate/append corpus/instruments/knowledge-expected.txt exactly as recheck-audit.py expects (one line per corpus/knowledge/*.md entry, comments preserved), then run `python3 corpus/instruments/recheck-audit.py` — it must print expected=<n> missing=0 unexpected=0 exit=0. Show the old vs new expected-list line counts and the recheck-audit output. Report: .ufo/waves/round-30/wave1/ExecExpectedList.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecExpectedList.md"
+    },
+    {
+      "name": "ExecCensusAfter",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAfter S046/S047 rows and the F14 entry exist (poll SOURCES row count 47; ceiling 60 min): run the full census suite and write .ufo/waves/round-30/c2-after.txt:\n- `grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md` → 47\n- tier histogram, status histogram, malformed count (0), duplicate ids (none), enum violations (none), mined used-by paths exist (none missing)\n- `/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` → exit 0\nPrint all outputs. Report: .ufo/waves/round-30/wave1/ExecCensusAfter.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecCensusAfter.md"
+    },
+    {
+      "name": "ExecHarnessAfter",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAfter the F14 row, entry, rows and round-30 manifest all exist (poll for corpus/README.md F14 row AND entry AND manifest; ceiling 60 min): run `python3 corpus/instruments/frontier-recheck-count.py` → expect `PASS F14 knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S046,S047,S041 exit=0` and `entries=17 pass=17 exit=0`; then `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-30/manifest.json --source S046 && … --source S047 && … --source S041` → exit 0. Save outputs to .ufo/waves/round-30/harness-after.txt. Report: .ufo/waves/round-30/wave1/ExecHarnessAfter.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecHarnessAfter.md"
+    },
+    {
+      "name": "ExecSelftestProbe",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nProbe every instrument and every new/edited artifact:\n- `python3 corpus/instruments/source-recheck.py --selftest` → `selftest cases=… failures=0` exit 0 (post-B1/B2 implementation).\n- `bash -n` on every `recheck:` line in the F14 entry and any changed corpus entry (must parse).\n- Run the F14 entry's recheck line from a foreign cwd (/tmp) — must still exit 0 (cwd-independence).\n- `python3 corpus/instruments/recheck-audit.py` exit 0.\nRecord all outputs and exit codes. Report: .ufo/waves/round-30/wave1/ExecSelftestProbe.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecSelftestProbe.md"
+    },
+    {
+      "name": "ExecQuarantineFetch",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nHand-check every row of /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-30/assimilation/quarantine-slice: for each S-id, fetch the cited source (instrument UA; use the full staged URL when the register URL is truncated) and try to locate the quote the register/proposal names. Classify each row: `reachable-quote-located` (fetch 200 + quote found), `fetched-no-quote` (fetch 200 + no located quote), `unfetchable` (404/TLS/failure), `already-mined-by-document` (URL byte-equal to an existing lane row). Verdicts close the row: none is appendable until hand-checked; a row that is not cited by an admitted entry is not appended regardless. Do NOT write into the register or the package. Produce the verdicts table (id, verdict, evidence, quote-or-reason). Report: .ufo/waves/round-30/wave1/ExecQuarantineFetch.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecQuarantineFetch.md"
+    },
+    {
+      "name": "ExecConsiderthese",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nMine considerthese proposal 4 (\"Give my own proposals a status ledger\") from /home/vgpnk/Projects/shokunin/kasegi-shokunin/considerthese/2026-10-25.md (read-only; never edit that file). Land it as corpus/knowledge/considerthese-proposals-ledger.md: a status ledger table for proposals 1-6 (columns: proposal, status, round, path/evidence, note), marking 1 mined→R14, 2 open, 3 partially landed, 4 mined→this round (this file), 5 mined→R15, 6 open. Opens with provenance trio (source: considerthese/2026-10-25.md — own-work path, verified-at: 2026-10-25, recheck: 180d), meets Q1-Q6 (documentation-only, no universal claims). Report file sha256. Report: .ufo/waves/round-30/wave1/ExecConsiderthese.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecConsiderthese.md"
+    },
+    {
+      "name": "ExecScopeSweep",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nDuring and after the wave, scan for out-of-bounds writes: list files under the fleet root /home/vgpnk/Projects/shokunin (excluding .ufo/state, .scratch, .ufo/reports, .ufo/prompts, .ufo/watchdog.log — orchestrator-owned) modified since the wave start whose content mentions `kasegi` + `round-30`; also confirm nothing was written into /home/vgpnk/Projects/shokuknow or sibling lane repos. Do NOT delete or edit anything; report findings (paths + mtimes + first line) or a clean sweep. Also verify the lane has no writes outside .ufo/waves/round-30/, corpus/ (sanctioned files), SCORECARD.md, LOG.md, SKILL.md (if appended). Report: .ufo/waves/round-30/wave1/ExecScopeSweep.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecScopeSweep.md"
+    },
+    {
+      "name": "ExecPostCommitRecheck",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nWrite the canonical post-integration recheck script at .ufo/waves/round-30/post-commit-recheck.sh that, run from the lane root after the L1's final commit, re-runs every C1 and C2 counter from claims.json plus the census and prints a summary (a1/a2/b1/b2 exits, frontier 14, entries citing S046/047 =1, rows 47, census exit, harness 17/17, recheck exit). Dry-run it on the current working tree and record its output. The L1 will run it at the final commit. The script must be bash -n clean. Report: .ufo/waves/round-30/wave1/ExecPostCommitRecheck.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecPostCommitRecheck.md"
+    },
+    {
+      "name": "ExecBeforeVerify",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nVerify the freeze receipts are intact at the freeze commit:\n- `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 3c5573541300ba0fd3d89372dda3d841172eaa3f:.ufo/waves/round-30/claims.json` parses and matches the working copy.\n- `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 3c5573541300ba0fd3d89372dda3d841172eaa3f:.ufo/waves/round-30/c1-controls/before.txt` reproduces the four probes (run them) — same outputs.\n- census-before.txt values reproduce (census exit 0, rows 45, frontier 13, entries citing S046/047 0, harness 16/16).\nProduce a freeze-authenticity receipt (digests + outputs). Report: .ufo/waves/round-30/wave1/ExecBeforeVerify.md.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ExecBeforeVerify.md"
+    },
+    {
+      "name": "ScribeLesson",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nSole writer of corpus/lessons/round-30.md. Assemble the full round lesson in the round-29 lesson's structure: revisions (base, freeze commit, dispatch commit, landed), wave shape/seat-role mix (from the spec/registry), frozen claims before→after table (from claims.json + c1/c2 receipts), Gate section (admitted F14 entry + S046/S047 rows; refused package candidates with reasons + flip; quarantine slice verdicts), Registry changes old→new, Mistakes (M30-*) from ScribeMistakes, considerthese, census before/after, compliance/ownership (single writers per file), tooling, close-out ledger. Poll until the required seat report files exist under .ufo/waves/round-30/wave1/ (ceiling 90 min); never fabricate a value you cannot point to. Report (the lesson itself): .ufo/waves/round-30/wave1/ScribeLesson.md plus the lesson at corpus/lessons/round-30.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeLesson.md"
+    },
+    {
+      "name": "ScribeLessonGate",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nDraft the Gate block for the assimilation set (for ScribeLesson): admitted items (F14 entry; rows S046/S047) with per-item evidence (capture anchor, exactly-once quote, Q1-Q10 compliance) and ≤25-word located quotes with access date 2026-10-25; rejected candidates from the package (name at least one reject with reason + flip, e.g. `chinese-criminal-thresholds-and-authorisation.md` standing refusal or any candidate whose sources are not lane-registered); and the quarantine-slice verdict summary. Write .ufo/waves/round-30/wave1/ScribeLessonGate.md as your draft (ScribeLesson integrates). Report: .ufo/waves/round-30/wave1/ScribeLessonGate.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeLessonGate.md"
+    },
+    {
+      "name": "ScribeLog",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nSole writer of LOG.md's round-30 entry (append only): lane, round 30, date 2026-10-25, claims C1/C2 (axes), wave shape (one v2 wave 64 seats), key evidence pointers (claims.json, before/after receipts, wave spec/dispatch), and the planned commit references. Do not embed final commit hashes you cannot know; leave that to the report. Verify the entry is appended at the end (head unchanged, R6). Report: .ufo/waves/round-30/wave1/ScribeLog.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeLog.md"
+    },
+    {
+      "name": "ScribeScorecard",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nSole writer of SCORECARD.md's round-30 result section (append at end): before→after tables for C1 (depth:verifiability 4 held — instrument conformance, evidence c1-controls) and C2 (coverage 7 held — F14, registry 45→47, harness 16/16→17/17), depth:density unchanged 9 (density numbers disclosed, not a score move), capabilities (none added this round), saturation unchanged (line 9/10, window N=3), and the move-log row. Poll receipts (ceiling 60 min). Keep all existing text untouched. Report: .ufo/waves/round-30/wave1/ScribeScorecard.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeScorecard.md"
+    },
+    {
+      "name": "ScribeSkillGate",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nIf the hardened instruments (frontier-recheck-count.py, source-recheck.py) warrant a row in SKILL.md's Gates & probes table, append it at the end of the table (R6 append-only; head unchanged). Otherwise state no-op. Then run `python3 corpus/instruments/density.py SKILL.md --label r30-post-scribe` and `python3 corpus/instruments/anchorcheck.py SKILL.md` to confirm the append caused no verdict-class movement, and report density mean before/after. Report: .ufo/waves/round-30/wave1/ScribeSkillGate.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeSkillGate.md"
+    },
+    {
+      "name": "ScribeReport",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nDraft the round report (for the L1 to finalize at /home/vgpnk/Projects/shokunin/.ufo/reports/round-30/kasegi.md) with exactly these literal sections in order: **Work performed** (names claims C1/C2 + axes; one bullet per item with evidence pointer), **Landed changes** (each tied to a LOG.md entry and later the commit hash), **Before → after measurements** (one per claim with counting command + commit), **Sources & frontier** (SOURCES rows before→after, census command/output, rows added by tier, rows touched old→new, frontier rows advanced, assimilation theme + considerthese), **Trend verdicts** (expansion/quality/discernment verdicts with evidence), **SHONEN** (one line per box: `[x]` only with a named non-author verifier; `[~]` with a resolvable evidence pointer; `[ ]` if untouched — the lane has 4 boxes in SHONEN.md), plus a **Stale-lane** line and any tool installs. Write your draft at .ufo/waves/round-30/wave1/draft-report.md. Report: .ufo/waves/round-30/wave1/ScribeReport.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeReport.md"
+    },
+    {
+      "name": "ScribeQuarantine",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nFinalize the quarantine verdicts table for the lesson: read ExecQuarantineFetch verdicts and ConnQuarantine joins; produce one row per slice id (id, verdict, evidence, note). Verify each verdict has a matching evidence line. Report: .ufo/waves/round-30/wave1/ScribeQuarantine.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeQuarantine.md"
+    },
+    {
+      "name": "ScribeAssim",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nBuild the assimilation evidence pack under .ufo/waves/round-30/assimilation/: copies of reg-ids, staged-ids, collisions (from ConnStagedCensus), the adopted-id map (staged S049→S046, S050→S047) with URL-equality proof, the gate-quote compliance check (each quoted ≤25 words, located), and the normalization notes (staged cells → lane schema). Confirm nog staged row is appended as-is (schema/census-safe). Report: .ufo/waves/round-30/wave1/ScribeAssim.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeAssim.md"
+    },
+    {
+      "name": "ScribeMistakes",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nMine this round's mistakes into rows (class · evidence pointer · captured-by · fix). Sources: the round-29 verifier routed defects (uncommitted leftovers at closure — committed via cleanup; report conformance items; S043 residual anchor cell deferred under R8), any wave findings you observe, and M29-3/M29-4 recurrences. Each fix must be shown able to fail before it counts (e.g., run the pre-fix instrument against the fixture). If you find none beyond the routed ones, paste the sweep that found none. Write .ufo/waves/round-30/wave1/ScribeMistakes.md. Report: .ufo/waves/round-30/wave1/ScribeMistakes.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeMistakes.md"
+    },
+    {
+      "name": "ScribeFrontier",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nVerify the frontier sheet: read corpus/README.md frontier rows and confirm F01-F14 rows (13 pre-round → 14 after F14); record the F14 row bytes and its entry/sources binding; compose the frontier section snippet for the lesson/report (rows before 13 → after 14, F14 admitted, denominator 14/14). Report: .ufo/waves/round-30/wave1/ScribeFrontier.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeFrontier.md"
+    },
+    {
+      "name": "ScribeDigest",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nTrack instrument digests across stages: record sha256 of frontier-recheck-count.py and source-recheck.py at freeze (3c5573541300ba0fd3d89372dda3d841172eaa3f), at implementation (poll), and at the end (landed bytes); catch and report mid-wave digest drift (M29-6 class) — if a receipt's digest does not match the file it cites, flag it. Produce a digest ledger table. Report: .ufo/waves/round-30/wave1/ScribeDigest.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeDigest.md"
+    },
+    {
+      "name": "ScribeSpot",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nCollect the non-author seat spot-check agreements/disagreements (from RevC2Entry, RevC2Registry, RevQuarantineInd, RevC1Instrument and other reviewers) into the lesson's Spot-check result section: table of item, gate decision, re-opened by, agree/disagree, reason. Poll those reports (ceiling 60 min). Report: .ufo/waves/round-30/wave1/ScribeSpot.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeSpot.md"
+    },
+    {
+      "name": "ScribeCloseOut",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nMaintain the close-out ledger: what the L1 still owes after the wave (post-commit recheck run at final commit; misroot sweep; report landing via fleet-commit; proof of census exit 0 at round end; final harness re-run). Each item carries the command that closes it. Report: .ufo/waves/round-30/wave1/ScribeCloseOut.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/ScribeCloseOut.md"
+    },
+    {
+      "name": "RevC1Instrument",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAfter the instruments change (poll digests; ceiling 60 min), independently re-read frontier-recheck-count.py and source-recheck.py and verify the C1 semantics (A1 named-row fail-closed; A2 duplicate realpath rejection; B1 stem==id fail-closed; B2 non-unique-without-anchor fail-closed). Re-run the four counts yourself; verify the real-corpus regression clause (harness 16/16 and every real manifest recheck that passed at base still passes). Verdict: agree/disagree with the claim receipt, with reasons. Report: .ufo/waves/round-30/wave1/RevC1Instrument.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevC1Instrument.md"
+    },
+    {
+      "name": "RevC1Controls",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAudit the C1 fixture matrix (c1-controls/): each fixture must isolate exactly one limb (A1/A2/B1/B2); run all four against base bytes (git show 3c5573541300ba0fd3d89372dda3d841172eaa3f:…) and against the landed bytes; confirm the do-nothing control cannot meet the targets and each mutant flips exactly one fixture. Flag any fixture that is not discriminating. Verdict with reasons. Report: .ufo/waves/round-30/wave1/RevC1Controls.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevC1Controls.md"
+    },
+    {
+      "name": "RevC2Entry",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nBar-check the F14 entry (single re-open, non-author seat): read corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md and the round-30 captures (S046.txt/S047.txt/S041.txt) + manifest.json. Check Q1-Q10: provenance trio, source-id equality with the recheck `--source` set, bash -n + cwd-independence + `#` note (Q10), attribution (Q4), falsifiability (Q5), documentation-only (Q6), exactly-once quotes with stems==ids (Q9), normalization declared (Q8). Verdict admit/reject with reasons; record agree/disagree on the gate. Report: .ufo/waves/round-30/wave1/RevC2Entry.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevC2Entry.md"
+    },
+    {
+      "name": "RevC2Registry",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nIndependently re-verify the registry changes: parse corpus/SOURCES.md rows S046/S047 (11 columns, no pipes in cells, enums valid, no duplicate ids, used-by paths exist), confirm census exit 0, and audit the \"Registry changes\" changelog for complete old→new logging (R8). Confirm no existing row was modified. Report: .ufo/waves/round-30/wave1/RevC2Registry.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevC2Registry.md"
+    },
+    {
+      "name": "RevC2Manifest",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nRe-run the round-30 manifest assertions: `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-30/manifest.json --source S046` (and S047, S041) — all assertions occurrences=1 raw and normalized, stems==ids, anchors in range; verify each capture file's sha256 matches the manifest pin; verify source-recheck selftest still green. Verdict with reasons. Report: .ufo/waves/round-30/wave1/RevC2Manifest.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevC2Manifest.md"
+    },
+    {
+      "name": "RevClaimsOverall",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nEnd-to-end claim admission review: regenerate the before→after table for C1 and C2 from committed receipts and working-tree bytes; check each kill rule; confirm causal separability (C1 verifiable without C2 and vice versa) and that no claim's target is reachable by a do-nothing control. Produce the final verdicts (improved / held) with evidence. Report: .ufo/waves/round-30/wave1/RevClaimsOverall.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevClaimsOverall.md"
+    },
+    {
+      "name": "RevNoHarm",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nVerify no owned axis is harmed: compare SKILL.md and PROVINCE.md bytes before/after (allowed appends only, head unchanged); confirm SCORECARD scores hold (density 9, verifiability 4, coverage 7) with no in-place edits of history; confirm no claim traded one axis for another; density/anchorcheck verdict classes unmoved. Report: .ufo/waves/round-30/wave1/RevNoHarm.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevNoHarm.md"
+    },
+    {
+      "name": "RevScope",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nScan all seat reports and the filesystem for out-of-bounds writes: nothing under the fleet root, sibling lanes, /home/vgpnk/Projects/shokuknow, lane git/jj state, .ufo/state, or MANIFEST.json should be touched; confirm no `git`/`jj` mutation by any seat; confirm no pacman transaction. Report any violation with the seat name and path. Report: .ufo/waves/round-30/wave1/RevScope.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevScope.md"
+    },
+    {
+      "name": "RevQuarantineInd",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nIndependently re-open a sample (≥3) of the quarantine-slice verdicts from ExecQuarantineFetch: re-fetch or check the evidence and record agree/disagree with reasons for each sampled row. Report: .ufo/waves/round-30/wave1/RevQuarantineInd.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevQuarantineInd.md"
+    },
+    {
+      "name": "RevConsiderthese",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nVerify the proposals ledger (corpus/knowledge/considerthese-proposals-ledger.md) against /home/vgpnk/Projects/shokunin/kasegi-shokunin/considerthese/2026-10-25.md: proposal numbers, statuses, round numbers, paths. Confirm the considerthese/ file was never modified (read-only; sha256 before/after). Verdict with reasons. Report: .ufo/waves/round-30/wave1/RevConsiderthese.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevConsiderthese.md"
+    },
+    {
+      "name": "RevReadme",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nVerify corpus/README.md: head bytes unchanged (R6), F14 frontier row + coverage-map appendix row present with correct shapes, expected-list/recheck-audit alignment, and `awk …` frontier count = 14; harness 17/17 passes against the appendix. Report: .ufo/waves/round-30/wave1/RevReadme.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevReadme.md"
+    },
+    {
+      "name": "CritC1Kill",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAttack C1: try to satisfy the four counters without the claimed work — e.g., a printer that emits the expected lines, exit-code manipulation, degenerate fixtures, hardcoded messages, or reusing unrelated entries. Also check the mutants flip exactly one limb and the do-nothing control stays failing. Publish every bypass attempt with its outcome and the exact counter command it targets. Verdict: is the claim's kill rule robust? Report: .ufo/waves/round-30/wave1/CritC1Kill.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/CritC1Kill.md"
+    },
+    {
+      "name": "CritC2Kill",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAttack C2: try to reach frontier 14 + entries citing S046/047 =1 + rows 47 + census 0 + harness 17/17 + recheck 0 WITHOUT a real entry or captures — e.g., an empty/stub/wrong entry, a row-only append, a duplicate source row, pointing the entry at an existing capture, or counting rows a sourceless fixture also counts. Publish each attempt and outcome. Verdict: is the claim's kill rule robust? Report: .ufo/waves/round-30/wave1/CritC2Kill.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/CritC2Kill.md"
+    },
+    {
+      "name": "CritGlobal",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nGlobal vacuity/overclaim audit across both claims: scores held correctly (no scalar rise claimed), measurement-vs-intent honesty (what the counters actually prove), no hidden trade anywhere, report markers absent, and the round's admission readiness. Also check the round's wave composition satisfies run-7 (64 seats, connector present, m_flash majority, attack ≥25%). Report: .ufo/waves/round-30/wave1/CritGlobal.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/CritGlobal.md"
+    },
+    {
+      "name": "CritMeta",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nWave-level meta-review: after results land, verify the results registry (wave1-results.json) matches the spec's seat roster (no missing/dead seats, no extra), seat counts vs spec, and whether any seat's report is contentless or a marker. Check that every seat whose output feeds a claim actually ran (dead seats stay dead in evidence). Report: .ufo/waves/round-30/wave1/CritMeta.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/CritMeta.md"
+    },
+    {
+      "name": "MutC1A1",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAfter the instrument update (poll digest; ceiling 60 min): create mutant-a1 (frontier-recheck-count.py with the A1 named-row limb removed, i.e. no catch around open()) in .ufo/waves/round-30/c1-controls/mutants/, run the A1 fixture against it, and show the behavior FLIPS (exit 1 traceback, no F98 marker). Record the mutant sha256 and output. Report: .ufo/waves/round-30/wave1/MutC1A1.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/MutC1A1.md"
+    },
+    {
+      "name": "MutC1A2",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAfter the instrument update (poll digest; ceiling 60 min): create mutant-a2 (A2 duplicate detection removed), run the A2 fixture against it, show it exits 0 (pass=2) — the flip. Record sha256 and output. Report: .ufo/waves/round-30/wave1/MutC1A2.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/MutC1A2.md"
+    },
+    {
+      "name": "MutC1B1",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAfter the instrument update (poll digest; ceiling 60 min): create mutant-b1 (source-recheck.py B1 stem check removed), run the B1 fixture, show exit 0 — the flip. Record sha256 and output. Report: .ufo/waves/round-30/wave1/MutC1B1.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/MutC1B1.md"
+    },
+    {
+      "name": "MutC1B2",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nAfter the instrument update (poll digest; ceiling 60 min): create mutant-b2 (B2 occurrence check removed), run the B2 fixture, show exit 0 with occurrences=2 — the flip. Record sha256 and output. Report: .ufo/waves/round-30/wave1/MutC1B2.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/MutC1B2.md"
+    },
+    {
+      "name": "SentScope",
+      "agent": "sentinel",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nWatch the wave live: periodically (every ~10 min, up to 90 min) scan for out-of-bounds writes — files under /home/vgpnk/Projects/shokunin (fleet root), siblings, /home/vgpnk/Projects/shokuknow — that mention kasegi round 30 or were modified after wave start; record findings with timestamps; never modify anything. Also confirm no seat ran git/jj mutations or pacman. Report: .ufo/waves/round-30/wave1/SentScope.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/SentScope.md"
+    },
+    {
+      "name": "SentSecretScan",
+      "agent": "sentinel",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nScan every new/edited production file this round (F14 entry, SOURCES rows, lesson, ledger, manifests, instruments) for credential material, session/private URLs, `op://` references, and any live-target instruction (Q6). Also grep seat reports for banned tool usage claims (pacman). Report pass/fail per file with evidence. Report: .ufo/waves/round-30/wave1/SentSecretScan.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/SentSecretScan.md"
+    },
+    {
+      "name": "RevEngIntent",
+      "agent": "revenger",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nReverse-engineer the intent behind C1's targets: read corpus/lessons/round-24.md (M24), round-29.md (M29-3/M29-4) and the round-24/25/28 verifier spotchecks; trace each new limb (A1/A2/B1/B2) to the recorded incident it fixes; verify the fixes address the original failure modes by replaying the original repros; report residue gaps not yet covered (e.g. cross-entry credit, manifest path handling) as findings, without editing. Report: .ufo/waves/round-30/wave1/RevEngIntent.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/RevEngIntent.md"
+    },
+    {
+      "name": "SimplWave",
+      "agent": "simplifier",
+      "task": "/skill:godspeed\n\nYou are a Godspeed-enabled subagent.\n\n1. **Name the axes.**\n2. **Iterate cheap, in parallel.**\n3. **Keep moves that improve any axis and harm none.**\n4. **Don't aim — let the frontier walk itself.**\n\n## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.\n\nYAGNI pass over the wave's outputs before integration: list files under .ufo/waves/round-30/wave1/ and .ufo/waves/round-30/c1-controls/ that are redundant, superseded, or scaffolding not needed by the claims or lesson (e.g., duplicate receipts, scratch copies), and recommend exclusions from the final commit. Verify nothing needed is excluded (cross-check claims.json counters, kill rules, lesson structure). Also check that no bulk corpus copies were introduced (R14: use tarballs/git archive instead). Report: .ufo/waves/round-30/wave1/SimplWave.md.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-30\n\nReport: write your scoped findings to .ufo/waves/round-30/wave1/SimplWave.md"
+    }
+  ]
+}
