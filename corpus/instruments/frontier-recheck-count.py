@@ -18,8 +18,18 @@ line to the entry it belongs to before it runs it:
   D. only then is the line executed, from the lane root, and its exit code is
      the entry's result.
 
-An entry passes only when A-D all hold and the line exits 0. Exit 0 when every
-admitted Frontier entry passes, 1 otherwise, 2 on a harness/read error.
+An entry passes only when A-D all hold and the line exits 0. The harness also
+fails closed before any line runs:
+
+  E. an admitted row whose entry file does not exist fails with a named-row
+     `missing-entry` problem (the row id and path are printed; never an
+     uncaught FileNotFoundError traceback);
+  F. two admitted rows resolving to the same entry realpath fail the run with
+     a `DUPLICATE-ENTRY` note naming the duplicate rows and the entry.
+
+Exit 0 when every admitted Frontier entry passes, 1 otherwise (any failing
+row, a missing entry, or a duplicate entry realpath), 2 on a harness/read
+error.
 
 This instrument measures recheck coverage only: a passing entry proves its
 pinned captures still hold its own assertions, not that the entry's claims are
@@ -56,11 +66,17 @@ def entry_contract(root, entry_path):
 
     `declared` is the header `source:` id set; `cited` is every S-id the entry's
     body mentions. The recheck must select a superset of the header ids (nothing
-    dropped) and a subset of the cited ids (no cross-entry credit)."""
+    dropped) and a subset of the cited ids (no cross-entry credit).
+
+    Returns None when the entry file exists under neither candidate path
+    (`root/<entry_path>` or the corpus-relative form); callers must treat None
+    as a fail-closed missing-entry outcome."""
     full = os.path.join(root, entry_path)
     if not os.path.isfile(full):
         # README rows name entries relative to corpus/ (`knowledge/...`).
         full = os.path.join(root, "corpus", entry_path)
+    if not os.path.isfile(full):
+        return None
     declared, cited, recheck, manifest = [], set(), "", None
     with open(full, encoding="utf-8") as fh:
         body = fh.read()
@@ -99,7 +115,24 @@ def manifest_ids(root, manifest):
 
 
 def evaluate(root, entry_path):
-    declared, cited, recheck, recheck_ids, manifest = entry_contract(root, entry_path)
+    contract = entry_contract(root, entry_path)
+    if contract is None:
+        return {
+            "entry": entry_path,
+            "declared_ids": [],
+            "cited_ids": [],
+            "recheck_ids": [],
+            "manifest": None,
+            "exit": None,
+            "realpath": None,
+            "problems": ["missing-entry"],
+            "status": "FAIL",
+        }
+    declared, cited, recheck, recheck_ids, manifest = contract
+    full = os.path.join(root, entry_path)
+    if not os.path.isfile(full):
+        full = os.path.join(root, "corpus", entry_path)
+    realpath = os.path.realpath(full)
     problems = []
     if not declared:
         problems.append("no-source-line")
@@ -133,6 +166,7 @@ def evaluate(root, entry_path):
         "cited_ids": cited,
         "recheck_ids": recheck_ids,
         "manifest": manifest,
+        "realpath": realpath,
         "exit": exit_code,
         "problems": problems,
         "status": "PASS" if not problems else "FAIL",
@@ -165,14 +199,29 @@ def main(argv=None):
                 "-" if record["exit"] is None else record["exit"],
                 (" problems=" + ",".join(record["problems"])) if record["problems"] else ""))
     passed = sum(1 for r in records if r["status"] == "PASS")
-    print("entries=%d pass=%d exit=%d" % (len(records), passed, 0 if passed == len(records) and records else 1))
+    duplicate = None
+    seen_realpath = {}
+    for record in records:
+        rp = record.get("realpath")
+        if rp is None:
+            continue
+        if rp in seen_realpath:
+            duplicate = (seen_realpath[rp], record["frontier"], record["entry"])
+            break
+        seen_realpath[rp] = record["frontier"]
+    if duplicate:
+        print("DUPLICATE-ENTRY %s,%s %s" % (duplicate[0], duplicate[1], duplicate[2]))
+    fail_closed = duplicate is not None or not records or passed != len(records)
+    print("entries=%d pass=%d exit=%d" % (len(records), passed, 1 if fail_closed else 0))
     if args.json:
         with open(args.json, "w", encoding="utf-8") as fh:
             json.dump({"schema": "kasegi-frontier-recheck-receipt-v1", "root": root,
-                       "entries": len(records), "pass": passed, "records": records},
+                       "entries": len(records), "pass": passed,
+                       "duplicate_entry": duplicate[2] if duplicate else None,
+                       "records": records},
                       fh, indent=2, sort_keys=True)
             fh.write("\n")
-    return 0 if records and passed == len(records) else 1
+    return 1 if fail_closed else 0
 
 
 if __name__ == "__main__":

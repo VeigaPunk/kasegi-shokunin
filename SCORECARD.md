@@ -780,3 +780,56 @@ hand-checked, none adopted); considerthese proposal 5 landed as QUALITY.md R15. 
 `corpus/lessons/round-29.md` §Mistakes (M29-1…M29-9) incl. M28-5 persistence on the frontier
 harness and the mid-wave S043 occurrences=12 blind spot. No owned axis is assigned a scalar
 increase; depth:verifiability remains 4, coverage remains 7.
+
+## Round 30 — frozen claims C1/C2 (2026-10-25)
+
+Frozen before dispatch in `.ufo/waves/round-30/claims.json` (base `a94871315…`,
+claims-freeze commit `3c557354…`, wave-1 dispatch commit `002e92ce…`). Receipts
+land under `.ufo/waves/round-30/` (`c1-controls/`, `c2-controls/before.txt`,
+`census-before.txt`, `harness-after.txt`, `wave1/`).
+
+| Claim | Axis | Before | After | Verdict and evidence | Last change |
+|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest non-retired, 4) | A1 exit 1 uncaught `FileNotFoundError` traceback, no named-row marker; A2 exit 0 `pass=2` on a duplicate entry realpath; B1 exit 0 (stem mismatch passes); B2 exit 0 `occurrences=2 anchor=MISSING` (`c1-controls/before.txt`, `before-run-2.txt`) | A1 exit 1 `FAIL F98 knowledge/zz-missing.md … problems=missing-entry` naming row and path; A2 exit 1 `DUPLICATE-ENTRY F98,F97 knowledge/dup-entry.md`; B1 exit 1 `reason=stem-mismatch`; B2 exit 1 with a failure reason (the frozen fixture trips the B1 stem limb first; see B2 note); `source-recheck.py --selftest` 9/9 exit 0; real-corpus regression leg green (full harness 17/17 exit 0; 34 prior registered source-rechecks on manifests rounds 23–29 and round-30 S046/S047/S041 all exit 0) | **Improved, score held 4.** Instruments: `frontier-recheck-count.py` `c8a62888…` → `aa60b581…`; `source-recheck.py` `9fe6a4a0…` → `33602a9d…`. Do-nothing control at freeze bytes reproduces all four before defects (`ExecMutantsC1.md`, `CritC1Kill.md`) — control cannot meet the target. Mutants A1/A2/B1 each flip exactly one limb; mutant-B2 flips on the supplementary same-stem fixture (live exit 1 `reason=occurrence-not-unique`; mutant exit 0) — the committed `manifest-b2.json` (id S045, path B2.txt) has the stem limb fire first, so the frozen B2 counter does not isolate the occurrence limb (R10-class fixture defect, recorded; the limb is covered by the selftest 9-case matrix and the clean same-stem fixture). Kill rule PASS as written (b2 exit 1 names a failure reason; no real-corpus regression). | 30 |
+| C2 | coverage (7) | frontier admitted 13; entries citing S04[6-7] 0; registry rows 45; census exit 0; harness entries=16 pass=16 exit=0 (`c2-controls/before.txt`, `census-before.txt`) | frontier admitted **14** (F14 row in `corpus/README.md`); entries citing S046/S047 **1** (the F14 entry); registry rows **47** (S046/S047 appended); census **exit 0** (W04 S028/S029 only); harness **entries=17 pass=17 exit=0** incl. `PASS F14 knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0`; source-recheck S046/S047/S041 each **exit 0** on the round-30 manifest (`dfc88357…`), all assertions exactly-once or anchor-verified (S047 Q1 occurrences=3 anchor=123-ok, Q3 occurrences=2 anchor=130-ok) | **Improved, score held 7.** C2 sourced: F14 entry `knowledge/japanese-severity-vocabulary-and-impact-model.md` (`f584f06c…`, 38 lines) cites S046/S047 (first registered this round; captures `S046.txt` `884481f3…` / `S047.txt` `bcf4f605…`) plus the already-registered S041 (capture reused from round 28, `e18acbf9…`). Do-nothing control at base (13/0/45, 16/16, no captures) cannot meet the target. Kill rule PASS at the landed bytes (`harness-after.txt`; `ExecCensusAfter.md`). | 30 |
+| depth:density | 9 | mean 167.5, 22 blocks, 659 path-citation instances (SKILL.md `82bdced5…`) | mean **171.1**, 23 blocks, 662 cites (SKILL.md `a05c1b47…`, 1047 → 1057 lines; R6 append of the round-30 Gates & probes registry section); `anchorcheck.py SKILL.md` exit 0, verdict classes unmoved: 7 in-range / 0 bad / LOST-RECORDED=306 / PIN-BROKEN=0 / ORIGIN=0 / OUTSIDE-BASE=0 / BASE-ABSENT=0 | **Unchanged, no harm.** Density change disclosed, not claimed as a score move (same posture as round 29). | r15 (held r30) |
+
+**Measurement state.** Values above were measured at the landed working-tree bytes
+described in `.ufo/waves/round-30/harness-after.txt` (digests pinned there), at
+`c1-controls/mutants/` and by `ScribeDigest.md`; earlier red snapshots recorded
+mid-wave states (F14 entry/manifest absent, S047 unanchored, census E11) and are
+superseded by the final receipts, not hidden.
+
+**B2 fixture note (recorded, not a kill).** The frozen `manifest-b2.json` declares
+`id=S045` with `path=B2.txt`, so the B1 stem check fires before the occurrence gate;
+the frozen counter b2 exits 1 with `reason=stem-mismatch`. This satisfies the frozen
+kill-rule clause (exit 1 + a failure reason) but does not exercise the B2 limb; the
+occurrence limb is demonstrated by `--selftest` (9/9) and by the supplementary
+same-stem fixture where the live instrument exits 1 `reason=occurrence-not-unique`
+and mutant-B2 exits 0 (`ExecMutantsC1.md` §4, `CritC1Kill.md` §3–§4). A corrected
+isolating B2 fixture is the recommended follow-up, already recorded in the lesson
+receipts.
+
+**recheck-audit open item (outside the frozen claims).** `recheck-audit.py`
+prints `expect=present expected=43 missing=0 unexpected=0 exit=1`: the strict
+instrument/own limbs reject the new `considerthese-proposals-ledger.md` recheck form
+(names no corpus instrument and not its own file), so the audit's exit-0 acceptance
+is not met (`ExecExpectedList.md`). Expected-list equality holds; the item is
+recorded for the lesson.
+
+**Capabilities: no row added this round.** Per the round-30 assignment no new
+capability is planned, and none was demonstrated beyond the frozen predicates: C1
+extends the existing `frontier-recheck-harness` and `source-capture` instruments and
+C2 exercises the already-recorded `source-capture`, `source-capture-pdf` and
+`frontier-recheck-harness` capabilities. The Capabilities table is unchanged; the
+stagnation window continues (last capability entry round 25).
+
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3. With
+depth:verifiability at 4 the lowest-axis obligation stays active.
+
+### Round-30 move-log rows
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 30 | depth:verifiability | 4 (A1 traceback/no row marker; A2 duplicate passes; B1 stem passes; B2 double-occurrence passes) | 4 held (A1 exit 1 naming F98; A2 exit 1 naming duplicate; B1 exit 1 reason=stem-mismatch; B2 exit 1 reason present; selftest 9/9; 34 base-passing real rechecks preserved) | `corpus/instruments/frontier-recheck-count.py`, `corpus/instruments/source-recheck.py`, `.ufo/waves/round-30/c1-controls/`, `wave1/ExecImplSourceRecheck.md`, `wave1/ExecMutantsC1.md`, `wave1/CritC1Kill.md` |
+| 30 | coverage | 7 (frontier 13, S046/047 citations 0, registry 45, harness 16/16) | 7 held (frontier 14, citations 1, registry 47, census exit 0, harness 17/17, rechecks exit 0) | `corpus/README.md` F14 row, `corpus/SOURCES.md` S046/S047, `corpus/source-snapshots/round-30/manifest.json`, `.ufo/waves/round-30/harness-after.txt` |

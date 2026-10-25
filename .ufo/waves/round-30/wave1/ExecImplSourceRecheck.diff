@@ -1,0 +1,217 @@
+--- .ufo/waves/round-30/wave1/ExecImplSourceRecheck.pre.py	2026-10-25 15:50:16.605953092 -0300
++++ corpus/instruments/source-recheck.py	2026-10-25 15:51:26.916195435 -0300
+@@ -7,6 +7,14 @@
+ Manifest paths are relative to the manifest directory. This instrument reads
+ only local files; a successful check verifies captured bytes, not current
+ upstream availability or freshness.
++
++Round-30 Q9 enforcement (C1 B1/B2):
++- B1: every record's `path` stem must equal its `id`
++  (reason=stem-mismatch, exit 1).
++- B2: a quote whose normalized text occurs more than once passes only when
++  its declared `anchor` line verifies (anchor=N-ok); a missing, out-of-range,
++  or broken anchor fails with reason=occurrence-not-unique /
++  reason=anchor-out-of-range / reason=anchor-broken (exit 1).
+ """
+ import argparse
+ import hashlib
+@@ -75,25 +83,35 @@
+ 
+ 
+ def anchor_verdict(assertion, raw_lines, occurrences):
+-    """Return the receipt's anchor note for one assertion (QUALITY Q9).
++    """Return (note, verdict) for one assertion (QUALITY Q9).
+ 
++    note is the receipt's anchor note; verdict is one of:
++      "unique"        — quote occurs once; no anchor required
++      "ok"           — declared anchor verifies (anchor=N-ok)
++      "missing"       — non-unique quote carries no anchor
++      "out-of-range"  — declared anchor outside the snapshot
++      "broken"        — declared anchor does not hold the normalized quote
++
+     A quote that occurs more than once must carry an `anchor` line number: the
+     pin is verified against the raw snapshot, so a non-unique quote names where
+     it is meant to be read instead of relying on substring presence. A unique
+-    quote needs no anchor and reports `anchor=none`; a declared anchor that
+-    does not hold the quote is reported as `anchor=BROKEN` (visible, not fatal:
+-    the quote itself is still found, and the round's Gate records the finding).
++    quote needs no anchor and reports no note; a declared anchor that does not
++    hold the quote is reported as `anchor=N-BROKEN`. The caller decides whether
++    the verdict is fatal (B2: any verdict other than "ok" on a non-unique
++    quote is a failure).
+     """
+     anchor = assertion.get("anchor")
+     if anchor is None:
+-        return "" if occurrences <= 1 else " anchor=MISSING"
++        if occurrences <= 1:
++            return "", "unique"
++        return " anchor=MISSING", "missing"
+     if type(anchor) is not int or anchor < 1 or anchor > len(raw_lines):
+-        return " anchor=OUT-OF-RANGE"
++        return " anchor=OUT-OF-RANGE", "out-of-range"
+     window = " ".join(raw_lines[max(0, anchor - 1):anchor + 3])
+     expected = normalize(assertion["quote"])
+     if expected and expected in normalize(window):
+-        return " anchor=%d-ok" % anchor
+-    return " anchor=%d-BROKEN" % anchor
++        return " anchor=%d-ok" % anchor, "ok"
++    return " anchor=%d-BROKEN" % anchor, "broken"
+ 
+ 
+ def check_source(manifest_path, record, out):
+@@ -102,6 +120,10 @@
+     if not isinstance(path, str) or not path or Path(path).is_absolute():
+         emit(out, f"{source_id}:manifest", "UNAVAILABLE", "reason=invalid-path")
+         return 2
++    # B1: the capture file stem must equal the record id (QUALITY Q9).
++    if Path(path).stem != source_id:
++        emit(out, f"{source_id}:manifest", "MISMATCH", "reason=stem-mismatch")
++        return 1
+ 
+     expected = record.get("sha256")
+     if not isinstance(expected, str) or SHA256_RE.fullmatch(expected) is None:
+@@ -164,7 +186,18 @@
+     for assertion in sorted(quotes, key=lambda item: item["id"]):
+         quote_id = assertion["id"]
+         occurrences = normalized_source.count(normalize(assertion["quote"]))
+-        anchor_note = anchor_verdict(assertion, raw_lines, occurrences)
++        anchor_note, anchor_verdict_result = anchor_verdict(assertion, raw_lines, occurrences)
++        # B2: a non-unique quote passes only when its anchor verifies; a
++        # missing, out-of-range, or broken anchor is a failure (QUALITY Q9).
++        if occurrences > 1 and anchor_verdict_result != "ok":
++            anchor_reasons = {
++                "missing": "reason=occurrence-not-unique",
++                "out-of-range": "reason=anchor-out-of-range",
++                "broken": "reason=anchor-broken",
++            }
++            emit(out, f"{source_id}:{quote_id}", "MISMATCH", anchor_reasons[anchor_verdict_result])
++            status = 1
++            continue
+         if assertion["quote"] in source_text:
+             emit(out, f"{source_id}:{quote_id}", "OK",
+                  "occurrences=%d%s" % (occurrences, anchor_note))
+@@ -209,6 +242,23 @@
+     script = Path(__file__).resolve()
+     payload = b"Captured fixture supports a verifiable local rule.\n"
+     snapshot_digest = hashlib.sha256(payload).hexdigest()
++
++    # Double-occurrence capture: the normalized quote appears on lines 6 and 10,
++    # so anchor=6 verifies, anchor=2 is broken, anchor=99 is out of range.
++    double_payload = (
++        b"filler start A A A\n"
++        b"filler B B B\n"
++        b"filler C C C\n"
++        b"filler D D D\n"
++        b"filler E E E\n"
++        b"a verifiable local rule occurrence\n"
++        b"filler F F F\n"
++        b"filler G G G\n"
++        b"filler H H H\n"
++        b"a verifiable local rule again\n"
++        b"filler I I I\n"
++    )
++
+     with tempfile.TemporaryDirectory(prefix="source-recheck-") as directory:
+         root = Path(directory)
+         manifest_path = root / "manifest.json"
+@@ -231,10 +281,28 @@
+ 
+         cases = []
+ 
+-        def run_case(name, manifest_arg, expected_status, expected_ids):
++        def make_manifest(name, source_id, quotes, capture=payload, capture_name=None):
++            path = root / (name + ".json")
++            if capture_name is None:
++                capture_name = source_id + ".txt"
++            (root / capture_name).write_bytes(capture)
++            doc = {
++                "schema_version": SCHEMA_VERSION,
++                "sources": [{
++                    "id": source_id,
++                    "path": capture_name,
++                    "sha256": hashlib.sha256(capture).hexdigest(),
++                    "quotes": quotes,
++                }],
++            }
++            path.write_text(json.dumps(doc, sort_keys=True) + "\n", encoding="utf-8")
++            return path
++
++        def run_case(name, manifest_arg, expected_status, expected_ids,
++                     source_id="S900", expected_substr=None):
+             try:
+                 result = subprocess.run(
+-                    [sys.executable, str(script), "--manifest", str(manifest_arg), "--source", "S900"],
++                    [sys.executable, str(script), "--manifest", str(manifest_arg), "--source", source_id],
+                     cwd=str(root),
+                     stdout=subprocess.PIPE,
+                     stderr=subprocess.PIPE,
+@@ -242,7 +310,12 @@
+                     check=False,
+                 )
+                 observed_ids = [line.split(maxsplit=1)[0] for line in result.stdout.splitlines() if line.strip()]
+-                passed = (result.returncode == expected_status and observed_ids == expected_ids and not result.stderr)
++                passed = (
++                    result.returncode == expected_status
++                    and observed_ids == expected_ids
++                    and not result.stderr
++                    and (expected_substr is None or expected_substr in result.stdout)
++                )
+                 observed_status = result.returncode
+             except OSError:
+                 passed = False
+@@ -266,14 +339,53 @@
+ 
+         run_case("missing-manifest", root / "absent.json", 2, ["manifest"])
+ 
+-    return 0 if all(cases) else 1
++        stem_manifest = make_manifest(
++            "stem",
++            "S901",
++            [{"id": "Q1", "quote": "verifiable local rule", "location": "fixture line 1"}],
++            capture_name="S900.txt",
++        )
++        run_case(
++            "stem-mismatch", stem_manifest, 1, ["S901:manifest"],
++            source_id="S901", expected_substr="reason=stem-mismatch",
++        )
++
++        q9_quote = {"id": "Q1", "quote": "verifiable local rule"}
++        double_missing = make_manifest("double-missing", "S900", [dict(q9_quote)], capture=double_payload)
++        run_case(
++            "double-occurrence", double_missing, 1, ["S900:sha256", "S900:Q1"],
++            expected_substr="reason=occurrence-not-unique",
++        )
+ 
++        double_ok = make_manifest("double-ok", "S900", [dict(q9_quote, anchor=6)], capture=double_payload)
++        run_case(
++            "double-occurrence-anchored", double_ok, 0, ["S900:sha256", "S900:Q1"],
++            expected_substr="anchor=6-ok",
++        )
+ 
++        double_range = make_manifest("double-range", "S900", [dict(q9_quote, anchor=99)], capture=double_payload)
++        run_case(
++            "double-occurrence-out-of-range", double_range, 1, ["S900:sha256", "S900:Q1"],
++            expected_substr="reason=anchor-out-of-range",
++        )
++
++        double_broken = make_manifest("double-broken", "S900", [dict(q9_quote, anchor=2)], capture=double_payload)
++        run_case(
++            "double-occurrence-broken", double_broken, 1, ["S900:sha256", "S900:Q1"],
++            expected_substr="reason=anchor-broken",
++        )
++
++    failed = sum(1 for passed in cases if not passed)
++    print(f"selftest cases={len(cases)} failures={failed}", file=out)
++    return 0 if failed == 0 else 1
++
++
+ def main(argv=None):
+     parser = argparse.ArgumentParser(description="Recheck exact quotes in pinned local source snapshots.")
+     parser.add_argument("--manifest", help="JSON manifest with local source paths, SHA-256 pins, and quote assertions")
+     parser.add_argument("--source", help="check one source ID from the manifest")
+-    parser.add_argument("--selftest", action="store_true", help="run isolated clean, corrupt, and missing-file controls")
++    parser.add_argument("--selftest", action="store_true",
++                        help="run isolated controls: clean/corrupt/missing plus B1 stem and B2 anchor limbs")
+     args = parser.parse_args(argv)
+ 
+     if args.selftest:
