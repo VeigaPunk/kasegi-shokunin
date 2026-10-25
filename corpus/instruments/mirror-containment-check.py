@@ -129,11 +129,15 @@ def read_tsv(tsv):
     i_cite = header.index("citation")
     i_cls = header.index("class")
     i_path = header.index("resolved_path")
+    i_method = header.index("method") if "method" in header else None
+    i_dom = header.index("domain") if "domain" in header else None
     for line in lines[1:]:
         cols = line.split("\t")
         if len(cols) <= max(i_cite, i_cls, i_path):
             continue
-        rows[cols[i_cite]] = (cols[i_cls], cols[i_path])
+        method = cols[i_method] if i_method is not None and len(cols) > i_method else ""
+        dom = cols[i_dom] if i_dom is not None and len(cols) > i_dom else ""
+        rows[cols[i_cite]] = (cols[i_cls], cols[i_path], method, dom)
     return rows
 
 
@@ -162,6 +166,8 @@ def run_case(case, defaults, resolver_bytes, matrix_id):
         "expect": case.get("expect", ""),
         "actual": "NO-ROW",
         "resolved_path": "",
+        "method": "",
+        "domain": "",
         "path_check": "",
         "status": "FAIL",
         "problems": [],
@@ -208,9 +214,11 @@ def run_case(case, defaults, resolver_bytes, matrix_id):
             return record
         rows = read_tsv(tsv)
         record["rows"] = len(rows)
-        cls, resolved = rows.get(case["cite"], ("NO-ROW", ""))
+        cls, resolved, method, dom = rows.get(case["cite"], ("NO-ROW", "", "", ""))
         record["actual"] = cls
         record["resolved_path"] = resolved.replace(root, "<CASE>")[:MAX_STDOUT_STORED]
+        record["method"] = method
+        record["domain"] = dom
         record["path_check"] = path_verdict(case["expect"], resolved, root, mirror, lane)
         tolerated = False
         if record["path_check"] and case.get("path_tolerance") == "carve-out":

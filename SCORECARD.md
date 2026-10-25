@@ -435,7 +435,7 @@ first landing's assessment.
   `922a4dd` bytes): escape **0/12 GONE**, controls 12/12, 12/24 pass, exit 1. Landed
   bytes: **24/24, exit 0**, `resolver_sha256=690153ad…ea2d`. The earlier "6/6,
   13/13" cells describe the first matrix and are kept as history. The checker now
-  also asserts the `resolved_path` column and records `checker_sha256`; two cases
+  also asserts the `resolved_path` column and records `checker_sha256`, and per case the `method` and `domain` the CLI reported; two cases
   (lane-first ordering, mirror-root prefix sibling) exist because mutation seats
   proved the earlier matrix could not see them.
 - **C1 scope wording.** The axis move is **mirror-fallback soundness**, not

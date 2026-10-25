@@ -245,7 +245,7 @@ below was applied before the final commit; the receipts named are the final ones
 | RerunMatrix F2, SentinelChecker F3 | the checker read only `class`; the `resolved_path` column was never asserted, so a fabricated path scored 13/13 | checker now reads `resolved_path` and asserts it per class (GONE ⇒ empty; MIRROR-EQUIVALENT ⇒ inside mirror; INTERNAL ⇒ inside lane; RESOLVES ⇒ inside the case root) |
 | SentinelChecker F1 (HIGH) | fixture-supplied names were joined without confinement → arbitrary host mkdir/open/symlink/unlink | `safe_path()` rejects absolute names, `..` segments and parents resolving outside the case root; symlink targets must stay inside it |
 | SentinelChecker F4/F6 | timeout killed only the child; one bad case aborted the matrix | `start_new_session` + `killpg` on timeout; per-case exception containment |
-| SentinelChecker F5/F7, RerunMatrix F1 | unbounded stored stdout, receipt not byte-reproducible, no checker identity | stdout capped and case-root-masked, TSV read capped, receipt records `checker_sha256` and `generated_at` |
+| SentinelChecker F5/F7, RerunMatrix F1 | unbounded stored stdout, receipt not byte-reproducible, no checker identity | stdout capped and case-root-masked, TSV read capped, receipt records `checker_sha256`, and per case the `method` and `domain` the CLI reported and `generated_at` |
 | AddHocAbsForm F1 | the matrix pinned only the tilde spelling of the bounty root | added `absolute-bounty-fallback-control` and `absolute-prefix-sibling-confusion` |
 | LiteralCarveout, AnchorDebt | the literal-hit carve-out and the unconfined lane branch were invisible in the detector's own contract | `resolve.py` policy docstring rescoped: mirror credit only; literal `RESOLVES` and the lane-relative `INTERNAL` branch named as carve-outs |
 | MatrixFreezeOrder F3 | no case exercised the expansion branches the fix touched | added brace/glob escape cases and a confined-brace control |
@@ -259,7 +259,7 @@ below was applied before the final commit; the receipts named are the final ones
 **Corrected C1 measurement (supersedes the 13-case numbers earlier in this lesson;
 they stay as history).** Matrix is now 24 cases: 12 escape, 12 control.
 `matrix_sha256=d05b1e0c…b809`, `resolver_sha256=690153ad…ea2d` (fixed),
-`d6a3c3f1…f903` (baseline), `checker_sha256=53742c8d…9529`. Baseline (do-nothing
+`d6a3c3f1…f903` (baseline), `checker_sha256=dddd5549…6b55`. Baseline (do-nothing
 control): escape **0/12 GONE**, controls 12/12, 12/24 pass, exit 1. Fixed: **24/24,
 exit 0**. Every escape case is discriminated by at least one landed change, and each
 was checked against baseline bytes through the same checker. Two cases exist because mutation seats proved the earlier matrix could not
@@ -317,3 +317,8 @@ opening) with a re-open on 2026-10-25 that produced no new bytes.
 Corrected census at the seal: **31 rows**, tier A=29 / C=2, status mined 19 /
 queued 9 / rejected 3, `used-by` 19 — the earlier "30 / A=28 / mined 18 / used-by 18"
 in this lesson predates S031 and is corrected here, not rewritten.
+
+Receipts now also carry each case's `method` and `domain` from the CLI, so the
+routing change the exact-root hunk makes is visible instead of inferred: the same
+citation resolves `literal/bounty` on baseline bytes and `literal/other` on landed
+bytes (`falsify/BaselineFalsify.md`, residual recommendation).
