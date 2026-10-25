@@ -9,14 +9,16 @@ Attacked bytes — **two baselines, because the tree moved under this seat mid-w
   (`round-23: mirror-fallback confinement with matrix receipts; admit F06-F08 with pinned-source rechecks`),
   `source-recheck.py` `f743942d…888d`, `manifest.json` `b8a20607…a2da`, three captures
   S018/S029/S030. Working tree clean for those paths at measurement time.
-- **Baseline B** ("## Baseline B" below): HEAD had advanced to `4d9231e780ce4a74bc1e609c18000d80ca8b4c85`
-  (repairs `2712c99` + log `4d9231e`) with a subsequent **uncommitted** instrument edit in the working
-  tree: `source-recheck.py` `5f72b4c0…e12a`, `manifest.json` `e06aa3c…eeba`, four captures
-  S018/S029/S030/S031, F07 re-pointed from S030 to S031. `git status --porcelain` at measurement:
-  ` M corpus/instruments/source-recheck.py`, ` M corpus/source-snapshots/round-23/manifest.json`.
+- **Baseline B** ("## Baseline B" below): the repaired pair, committed by `12edac4`/`8acb255` and still
+  current at HEAD `bf9ce024` when measured — `source-recheck.py` `5f72b4c0…e12a`, `manifest.json`
+  `e06aa3c…eeba`, four captures S018/S029/S030/S031, F07 re-pointed from S030 to S031; `git status`
+  clean for those paths.
+- **Intermediate B0** (HEAD `4d9231e`, superseded): the first repaired pair, instrument still
+  `f743942d…888d` with manifest `eb6044c3…`, four sources, S030 quote still carrying `<u>` markup. Measured
+  only to separate "the repair" from "the normalization edit" — it is not the landed state.
 
-Both baselines were measured; neither is reported as the other. Baseline A is no longer HEAD and its
-commit is retained in history, so both evidence sets stay re-derivable.
+Both A and B were measured in full; B0 only on the specific questions F5/F7 raise. Neither baseline is
+reported as the other, and A's commit is retained in history, so all three evidence sets stay re-derivable.
 
 No production file was edited. No commit, push, admit, or score claim. All mutation happened in
 `/tmp/kasegi-r23-falsify-ControlsRerun/`.
@@ -258,13 +260,14 @@ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/s
 (Full stdout for these three is identical, line for line, to the three V1 `--source` blocks above. The
 pre-`cd` form was also run from the repo root with the same three exit-0 results.)
 
-## Baseline B — current working tree after the in-wave repairs
+## Baseline B — the repaired pair (`12edac4`/`8acb255`, current at measurement)
 
-Identifiers at measurement (`python3 --version` → 3.14.8, same host):
+Identifiers at measurement (`python3 --version` → 3.14.8, same host; `git status --porcelain` clean for
+these paths, `git show 8acb255:<path>` reproduces both hashes):
 
 ```
 sha256sum corpus/instruments/source-recheck.py
-  5f72b4c076670bb6a06e786d761495ef016ad3c29511f155a4961c9a71bbe12a   (UNCOMMITTED: git status " M")
+  5f72b4c076670bb6a06e786d761495ef016ad3c29511f155a4961c9a71bbe12a   (committed, 12edac4 onward)
 sha256sum corpus/source-snapshots/round-23/*
   d366bf409e7ce9e361b9f1fe544bc1657e3eea2b6f62eaa51e9c21419dc27ab4  S018.txt   (unchanged vs A)
   82514478b6c5fb8f81c0a51391da91bd35f1f0d3f35bc008b0f5afdf4ce32b8c  S029.txt   (unchanged vs A)
@@ -272,6 +275,9 @@ sha256sum corpus/source-snapshots/round-23/*
   3c7ae8ba56df4e0c1d619956b894b5c3e3a7c9e35c8e1112576f521322460678  S031.txt   (new in B)
   e06aa3cdf65f316e6718342ed5dc03e289fd0132149f22c632225f3fbed0eeba  manifest.json (4 sources, 32 quotes)
 ```
+
+The earlier intermediate pair (HEAD `4d9231e`) had the same four captures but instrument `f743942d` and
+manifest `eb6044c3`; that pair is quoted only where F5/F7 need it.
 
 Manifest delta vs A: `S029` quotes 7 → 9 (`art14-2a-track-context`, `art14-4a-early-warning`,
 `art14-4b-incident-notification`), new `S031` source with 10 quotes, `S030` retained at 7 quotes,
@@ -324,9 +330,26 @@ S031:rule-4-2-11-separate-ids OK
 S031:rule-4-2-12-uncertainty OK
 S031:version-4-2-6 OK
 ```
-Note: the clean run is not uniformly exact — `S030:rule-4-1-9-independently-fixable` passes **only**
-through the normalization fallback (manifest quote is tag-free; `S030.txt:165` carries
-`<u>Independently Fixable</u>`). The receipt names that transformation on the line, so the pass is disclosed.
+Note: the clean run is not uniformly exact. `S030:rule-4-1-9-independently-fixable` passes **only** through
+the normalization fallback — direct check, `q["quote"] in S030_text` → `False`, and the tag-free sentence
+`are Independently Fixable.` occurs **0** times in `S030.txt` (`S030.txt:165` holds
+`…the Vulnerabilities are <u>Independently Fixable</u>.`). Cross-revision check, run from
+`/tmp/kasegi-r23-falsify-ControlsRerun`:
+
+```
+$ git show 4d9231e:corpus/instruments/source-recheck.py > old_4d9231e.py   # sha256 f743942d…888d
+$ python3 old_4d9231e.py --manifest <current manifest e06aa3c>             # strict, no normalize
+S030:rule-4-1-9-independently-fixable MISMATCH reason=quote-not-found
+EXIT=1
+$ python3 old_4d9231e.py --manifest B0/manifest.json                       # 4d9231e manifest eb6044c3
+EXIT=0     (that manifest quotes the sentence *with* the <u> tags, so it is an exact substring)
+$ python3 <current instrument 5f72b4c0> --manifest B0/manifest.json        # new instrument, old manifest
+EXIT=0
+```
+
+So the committed pair is internally consistent (before and after the edit), but the pair is **coupled**: the
+current instrument is the only one under which the current manifest's S030 quote verifies, and that one line
+is the fallback's, not an exact match.
 
 `--source S018` → **EXIT 0**
 ```
@@ -532,7 +555,7 @@ successful output must *"name what was checked"*.
 | corrupted snapshot bytes, pin untouched (append 1 byte to `S030.txt`) | nonzero | 1 (`S030:sha256 MISMATCH expected=673526…019 actual=8cc91b4…f46`) | yes |
 | corrupted snapshot word (`Optional participant` → `Compulsory participant` in `S018.txt`) | nonzero | 1 (`S018:sha256 MISMATCH expected=d366bf4…ab4 actual=17894ba…efc2`) | yes |
 
-**Baseline B** (current working tree, instrument `5f72b4c0` uncommitted, manifest `e06aa3c`, 4 sources):
+**Baseline B** (committed `12edac4`/`8acb255`, instrument `5f72b4c0`, manifest `e06aa3c`, 4 sources):
 
 | control | required | observed | match |
 |---|---|---|---|
@@ -614,9 +637,13 @@ same outside file → **EXIT 2**, same line. An uppercase `sha256` → **EXIT 2*
 only after the exact test fails, emitting `OK normalized=markup-whitespace`. Two consequences measured:
 
 1. The *clean* Baseline B run is not uniformly exact: `S030:rule-4-1-9-independently-fixable` passes **only**
-   via the fallback (manifest quote is tag-free; `S030.txt:165` reads
-   `…whether the Vulnerabilities are <u>Independently Fixable</u>`). Remove the fallback and the clean
-   manifest fails on that assertion.
+   via the fallback. Measured, not inferred: the quote string is not a substring of `S030.txt`
+   (`in` → `False`; the tag-free sentence occurs 0 times), and the previously committed strict instrument
+   (`git show 4d9231e:…`, `f743942d`) run against the current manifest returns **EXIT 1** with
+   `S030:rule-4-1-9-independently-fixable MISMATCH reason=quote-not-found`. The superseded `4d9231e`
+   manifest (`eb6044c3`) quoted the sentence *with* `<u>…</u>` and is an exact substring, so it passes under
+   both instruments — i.e. the normalization was introduced when the quote was de-marked, and the two edits
+   are coupled.
 2. A quote may be non-verbatim in both whitespace and markup and still pass: rewriting
    `S031/rule-3-1-1-scope-definition` to
    `CNAs  MUST   develop, document, and operate within a <u>Scope Definition</u>` (double spaces, injected
@@ -637,13 +664,16 @@ exists nowhere as a c2 receipt. The shared header also cites
 Refutation: `sha256sum` the two files (differing hashes), or find a receipt containing `S030:sha256 OK` for
 the S030 capture. Reporting only — I did not rename, delete, or rewrite either receipt.
 
-**F7 (committed baseline is real, falsifiable).** At Baseline A, `git ls-files` listed `manifest.json`, the
-three `.txt` snapshots and `source-recheck.py`, with `git status --porcelain` empty for those paths at HEAD
-`953c278`; the three F06–F08 recheck commands resolved from a clean checkout and exited 0 as written. At
-Baseline B the same is true of the committed state (`4d9231e`), with the caveat recorded in the header:
-`source-recheck.py` and `manifest.json` carry **uncommitted** working-tree edits (`git status` → ` M`, ` M`),
-so Baseline B measures in-flight bytes, not HEAD bytes. Refutation: any of those files untracked at the
-stated commit, or `git status` clean for them while their on-disk hash differs from the stated one.
+**F7 (committed baselines are real; the B pair is coupled; falsifiable).** At Baseline A, `git ls-files`
+listed `manifest.json`, the three `.txt` snapshots and `source-recheck.py`, `git status --porcelain` was
+empty for those paths at HEAD `953c278`, and the three F06–F08 recheck commands resolved from a clean
+checkout (exit 0). At Baseline B the same holds — `git show 8acb255:corpus/instruments/source-recheck.py`
+and `…/manifest.json` reproduce `5f72b4c0…` and `e06aa3c…` exactly, `git status` clean for those paths, and
+the published `--source S018/S029/S031` commands exit 0 — but the two B artifacts are a package: only the
+normalizing instrument verifies the de-marked S030 quote (F5), while the superseded pair at `4d9231e`
+(`f743942d` + `eb6044c3`) also verifies as a package. A future revert of either half alone turns the
+aggregate run red (measured: strict instrument + current manifest → exit 1). Refutation: any of those files
+untracked at the stated commit, or a `git show <commit>:<path>` hash differing from the one printed here.
 
 ## Scope limits (what this report does not establish)
 
@@ -653,9 +683,10 @@ stated commit, or `git status` clean for them while their on-disk hash differs f
   bytes that are on disk.
 - I did not verify the quotes against page numbers or section anchors of the original documents; F2 shows
   the instrument cannot do so either, and manifest B now says so itself.
-- Baseline B's instrument (`5f72b4c0`) and manifest (`e06aa3c`) were **uncommitted** when measured; a later
-  commit or edit can change them. Baseline A's bytes are fixed at `953c278` in history. Re-run the commands
-  in this report before quoting either hash as current.
+- The tree moved twice while this seat ran (`953c278` → `4d9231e` → `12edac4`/`8acb255` → `bf9ce024`), and
+  sibling seats were still committing at measurement time. Every hash here was re-read after the fact; a
+  new commit can make any of them historical. Re-run the commands before quoting a hash as current.
+- I did not test a revert of *both* halves of the B pair, only of the instrument half (→ exit 1, F5/F7).
 - I did not evaluate Q1–Q5 for the F06/F07/F08 entries, the C1 `resolve.py` detectors or its fixtures, or
   any admission/score outcome. Those are other seats' bytes and claims. F6 is reported as a defect in a
   landed C2 receipt, not repaired: fixing it is the integration owner's call.
@@ -672,8 +703,9 @@ stated commit, or `git status` clean for them while their on-disk hash differs f
 ## Tooling / side effects
 
 No packages installed or upgraded (pacman paused host-wide; nothing needed). Scratch confined to
-`/tmp/kasegi-r23-falsify-ControlsRerun/` (Baseline A trees + `out/`, Baseline B trees + `outB/`); `/tmp`
-only, no `.ufo/waves/*/scratch*` dependency, so the round-35 relocation notices from peers do not affect
-this report. No production file, lane tree, git index, or sibling lane was modified — the two receipts
-named in F6 were read with `git show`/`sha256sum` only. Report written:
-`.ufo/waves/round-23/falsify/ControlsRerun.md`.
+`/tmp/kasegi-r23-falsify-ControlsRerun/` (Baseline A trees + `out/`, Baseline B trees + `outB/`, plus
+`B0/` holding the `4d9231e` manifest and `old_4d9231e.py` holding that commit's instrument, both produced
+with `git show <commit>:<path> > …`); `/tmp` only, no `.ufo/waves/*/scratch*` dependency, so the round-35
+relocation notices from peers do not affect this report. No production file, lane tree, git index, or
+sibling lane was modified — the two receipts named in F6 were read with `git show`/`sha256sum` only. Report
+written: `.ufo/waves/round-23/falsify/ControlsRerun.md`.

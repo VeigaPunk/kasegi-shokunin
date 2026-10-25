@@ -11,13 +11,35 @@ the earlier bytes.** Nothing in the production tree was edited by me.
 | revision | `mirror-containment-check.py` | `mirror-containment-fixtures.json` | `resolve.py` |
 |---|---|---|---|
 | R1 — analysed 03:37–03:40 (my first pass) | `1bc2db10dfbc59ef863e68afce475cd1d317da517137922804d7fc09cd46cecb` | `5e61a33ed5fa530547aff197fad9380d86d5850374bbb4f2a8f99df44b5e76a9` | `ed9a9dae10024bbb2be5db12776f798309fd4615585c3ad93adaab12702840e9` |
-| **R2 — current (03:43 checker, 03:47 matrix, 03:46 resolver)** | **`53742c8d9529dffb8c40c39b3448de7388b774b548d7831670598d5534bff5d1`** (12372 B) | **`332a5fe95b94207cdf25caf29d52b394f81701b4fe441b92e47ab3ac100005e3`** (9291 B) | **`fce5b84be4cece914260f03a3a8b739dc1108381f97482bbfc7b22143810a4b0`** (28254 B) |
+| **R2 — measured 03:44–03:50 (first pass on the rewrite)** | **`53742c8d9529dffb8c40c39b3448de7388b774b548d7831670598d5534bff5d1`** (12372 B) | `332a5fe9…` (23 cases) | `fce5b84b…` |
+| **R3 — current at 03:52 (matrix/resolver moved again; checker byte-identical to R2)** | **`53742c8d…`** — unchanged | `d05b1e0cf62738ac8bf06497334c16a392089a5792ca9fd930f0cbf73e69b809` (10327 B, 24 cases) | `690153adc3e39f1e86317bd7b4eeb3b04ece5b4beb55f50111d8e98e7ff3ea2d` (28599 B) |
+| **R4 — current at 03:53 (checker touched again)** | **`dddd55496b55eb49138613e3b7143834412cdb104b7f8f6b6e85210f3dd98f8a`** (12818 B) | `d05b1e0c…` | `690153ad…` |
 
-R2 matrix grew from 13 to **23 cases** (11 escape / 12 controls). `c1-fixed.json` on disk is now
-schema 2 and its `resolver_sha256`/`matrix_sha256` match R2 exactly (`fce5b84b…` / `332a5fe9…`,
-identical case-id order, 23/23) — so the landed receipt describes the bytes that are on disk now.
-At 03:47 it transiently recorded `158a423c…`, a revision I no longer have; that intermediate state
-is not reproducible and I make no claim about it.
+R2's matrix had 23 cases (11 escape / 12 controls); R3/R4's has **24 (12 / 12)**, the new one being
+`bounty-root-underscore-sibling` (escape, `GONE`). Between R2 and R4 the checker changed once more,
+at 03:52:42: `diff` shows the entire delta is receipt metadata — `read_tsv` now also carries the
+`method`/`domain` columns through to `record["method"]`/`record["domain"]` and `rows` values grew
+from 2-tuples to 4-tuples. No guard, bound, wait or verdict path was touched. I therefore
+re-verified the findings on R4 rather than inheriting them: default matrix 24/24 (`exit=0`), N1
+carve-out waiver reproduced with `resolved_path=/etc/passwd`, N4 unrelated-in-root `RESOLVES`
+reproduced. **Part 1 findings are properties of the bytes on disk now**; only the matrix and
+resolver keep moving. R3 run on the current bytes:
+
+```
+$ cd /tmp/kasegi-r23-falsify-SentinelChecker/src3 && python3 mirror-containment-check.py --json ../receipt-r3.json
+... 24 lines ...
+cases=24 escape=12 controls=12 pass=24 fail=0 resolver_sha256=690153ad... matrix_sha256=d05b1e0c...
+exit=0
+```
+
+`c1-fixed.json` keeps pace with each edit and at R4 pins all three: `checker_sha256=dddd5549…`,
+`resolver_sha256=690153ad…`, `matrix_sha256=d05b1e0c…`, `generated_at=2026-10-25T06:52:43Z`
+(= 03:52:43 local, i.e. the R4 edit), 24 ids in the same order, 24/24. Two transient states existed
+earlier (`158a423c…` at 03:47 and `332a5fe9…` at 03:48, each briefly ahead of the receipt); I make
+no claim about them. Because the receipt now pins the checker as well as the bytes it ran, the
+R1-F7 provenance gap is closed *provided* the receipt is regenerated after every edit — which is
+what happened here. Integration is still in flight, so treat the identity table as a timestamped
+observation rather than a stable pin.
 
 Scratch: `/tmp/kasegi-r23-falsify-SentinelChecker/` — R1 bytes in `src/`, **R2 bytes in `src2/`**,
 R2 probes in `v2/`. All citations below are inlined as command+output; the tree is `/tmp` and not
@@ -39,7 +61,7 @@ exit=0
 
 ---
 
-# Part 1 — live findings on R2 (current bytes)
+# Part 1 — live findings on the current checker (`dddd5549…`; guards identical in R2/R3/R4)
 
 ## N1 — MEDIUM — the new path audit is waivable by the same fixture data it guards (`path_tolerance: "carve-out"`)
 
@@ -79,7 +101,7 @@ adding one key to any future case silently converts a path failure into a pass. 
 ## N2 — MEDIUM — a `setsid()` descendant converts the timeout into an unbounded hang (the killpg fix does not cover it)
 
 **What changed.** R2 replaced `subprocess.run(timeout=…)` with `Popen(..., start_new_session=True)`
-plus `os.killpg(proc.pid, SIGKILL)` on `TimeoutExpired` (`:186-196`) — the right direction — but the
+plus `os.killpg(proc.pid, SIGKILL)` on `TimeoutExpired` (`:185-196`) — the right direction — but the
 kill targets only that one process group, and the follow-up `proc.communicate()` (`:196`) has **no
 deadline**. Any descendant that leaves the group keeps the inherited stdout/stderr pipes open, so
 the second `communicate()` waits forever.
@@ -117,7 +139,7 @@ walk `/proc/<pid>/task/*/children` and kill each new descendant after the group 
 
 **What R2 changed.** `MAX_STDOUT_STORED = 400` (`:46`) truncates what is *recorded* (`:200,203,213`)
 and `MAX_TSV_BYTES = 8 MiB` (`:47`) bounds the TSV read (`:123`). Neither bounds what is *read*:
-`Popen(..., stdout=PIPE)` + `communicate()` (`:186-190`) still accumulates every byte in the parent.
+`Popen(..., stdout=PIPE)` + `communicate()` (`:185-190`) still accumulates every byte in the parent.
 
 **Evidence** (200 MiB of child stdout, R2 checker, `resource.getrusage(RUSAGE_CHILDREN)`):
 
@@ -152,8 +174,8 @@ cases=1 escape=0 controls=1 pass=1 fail=0 ... exit=0
 satisfiable by an unrelated file for the largest class.
 
 **Impact.** For `RESOLVES` controls the assertion proves "some file exists inside the case root",
-not "the cited path resolved". That is the weakest of the three bounds and the one most controls use
-(9 of 12 in R2).
+not "the cited path resolved". `RESOLVES` is the joint-largest control class (4 of 12), alongside
+`MIRROR-EQUIVALENT` (4), with `GONE` (2) and `INTERNAL` (2) behind them.
 
 **Smallest remediation.** For `RESOLVES`, also require the class's own method/domain columns to
 agree with the reported path (the resolver already emits them), or compare the reported path's
@@ -181,8 +203,8 @@ AttributeError: 'int' object has no attribute 'get'                             
 a receipt; `--json` is never written.
 
 **Smallest remediation.** Validate `defaults` and each case's type/required keys in the existing
-schema check (`:252-256` region, next to the `schema`/`cases` test) and record `case-error` for
-anything that fails.
+schema check (`:244-246`, next to the `schema`/`cases` test) and record `case-error` for anything
+that fails.
 
 ## N6 — LOW — by design, unchanged: the selected resolver still runs unconfined, and its bytes still reach the receipt
 
@@ -228,15 +250,15 @@ Verified by replaying each R1 probe against R2 bytes, not by reading the diff.
 | G1 no fixture-supplied path reaches outside the case root | `safe_path` + `check_link_target`, applied before every mkdir/open/symlink/unlink (`:100-118`) | three escape fixtures → `case-error`, no host artifacts, victim intact |
 | G2 child env is exactly 6 keys; parent env does not leak | fixed `env` dict (`:174-182`) | `KASEGI_SECRET=topsecret-abc123` absent; `env_keys` = 6 names (R1 probe, env block unchanged in R2) |
 | G3 only `--resolver` bytes and `sys.executable` execute; fixture bytes are data | `Popen([sys.executable, copied, lane])` | R1 probe: `tool/sitecustomize.py` and `tool/usercustomize.py` supplied as fixture `files` never ran |
-| G4 the matrix is not vacuous and controls are path-audited | fixture data + `path_verdict` | 23/23 on R2; `/etc/passwd` and out-of-root paths fail; R1 baseline `d6a3c3f1…` scored 7/13 |
-| G5 the landed receipt describes the bytes on disk | receipt `resolver_sha256`/`matrix_sha256` vs measured | `fce5b84b…` and `332a5fe9…` match, same 23 ids, 23/23 |
-| G6 escapes are pinned `GONE`, controls pin surviving classes | fixture data | `escape=11`, all `expect=GONE`; `controls=12`, one declared `path_tolerance` |
+| G4 the matrix is not vacuous and controls are path-audited | fixture data + `path_verdict` | 23/23 on R2 and 24/24 on R3; `/etc/passwd` and out-of-root paths fail; R1 baseline `d6a3c3f1…` scored 7/13 |
+| G5 the landed receipt describes the bytes on disk | receipt `resolver_sha256`/`matrix_sha256` vs measured | at R3: `690153ad…` and `d05b1e0c…` match, same 24 ids, 24/24 (R2 matched its own pair too, 23/23) |
+| G6 escapes are pinned `GONE`, controls pin surviving classes | fixture data | `escape=12`, all `expect=GONE`; `controls=12`, one declared `path_tolerance` |
 
 ## Bounds the instrument still does not have
 
 - Aggregate deadline: per-case `TIMEOUT_S = 120` (`:44`) only, N cases serial, N from fixtures.
 - A deadline on the **second** `communicate()` after a timeout (`:196`) — N2.
-- Any memory ceiling on captured output (`:186-190`) — N3.
+- Any memory ceiling on captured output (`:185-190`) — N3.
 - Case/`defaults` shape validation before the loop (`:158-159`, `:254`) — N5.
 - Timeout on `shutil.rmtree(root, ignore_errors=True)` (`:225`) and partial-cleanup reporting.
 - Any check that a passing `RESOLVES` path is *related* to the citation (`:149`) — N4.

@@ -57,10 +57,11 @@ scratch tree is a convenience copy, never the evidence locus. Consequently no re
 restoration or reconstruction of scratch bytes can change or invalidate any claim here.
 
 **Revision audited.** Every measurement in §1–§2 is taken at lane tip **`953c278`**
-(registry = 30 rows, tree clean). While this seat was writing, the lane advanced twice
-(`2712c99` "post-attack repairs; F07 to current CNA 4.2.6 (S031)…", then `4d9231e` "log the
-post-attack repairs…"). §2.1 re-runs the R8 checks at the new tip and re-verdicts every
-finding there, so no claim here silently describes a revision that no longer exists.
+(registry = 30 rows, tree clean). While this seat was writing, the lane advanced five commits
+(`2712c99` … S031; `4d9231e` … repairs log; `12edac4` … seal; `8acb255` … Q7/Q8 controls;
+`bf9ce02` … supplementary Gate rows and corrected census). §2.1 re-runs the R8 checks at the
+current tip and re-verdicts every finding there, so no claim here silently describes a revision
+that no longer exists.
 
 ### 1.1 Whole-registry field diff, base vs working tree
 
@@ -219,12 +220,13 @@ the registry (round-lesson classification and Gate-quote binding), not in `SOURC
 ### 2.1 Post-audit delta — re-verdict at the advancing tip
 
 ```sh
-git log --oneline -5
+git log --oneline -6
 git diff 953c278..HEAD -- corpus/SOURCES.md
 git diff 4d9231e..HEAD -- corpus/SOURCES.md
 ```
 
 ```
+bf9ce02 round-23 rescue: 24-case matrix, docstring truth fixes, supplementary Gate rows for S018/S031, corrected census
 8acb255 round-23: record the failing Q7/Q8 control exits beside the clean runs
 12edac4 round-23 seal: 23-case matrix with ordering/prefix pins, declared recheck normalization, Q8/R10, final receipts
 4d9231e round-23: log the post-attack repairs and final C1/C2 measurements
@@ -232,13 +234,14 @@ git diff 4d9231e..HEAD -- corpus/SOURCES.md
 953c278 round-23: mirror-fallback confinement with matrix receipts; admit F06-F08 with pinned-source rechecks
 --- 953c278..HEAD: corpus/SOURCES.md | 1 insertion(+), 0 deletions(-) ---
 +| S031 | CVE Numbering Authority Operational Rules v4.2.6 — https://www.cve.org/Resources/Roles/Cnas/CNA_Rules_v4.2.6.pdf | spec | A | ... | ... | supersedes S030 — current 4.2.6 makes independent-fixability ID separation a MUST; S030's 4.2.0 SHOULD is historical. | mined | ... | ... | corpus/knowledge/cna-assignment-and-vulnerability-rules.md |
---- 4d9231e..HEAD: (empty) ---
+--- 4d9231e..HEAD: (empty) ---   --- 8acb255..HEAD: (empty) ---
 ```
 
-Four commits landed after the audited revision, but the **registry object itself moved only
-once** (`git diff 4d9231e..HEAD -- corpus/SOURCES.md` is empty), so the registry numbers below
-are the numbers at the current tip `8acb255` and cannot drift without another registry commit.
-Both F-6 and F-7 were re-checked at `8acb255` and still hold.
+Five commits landed after the audited revision, but the **registry object itself moved only
+once** (in `2712c99`; `git diff 4d9231e..HEAD -- corpus/SOURCES.md` is empty), so the registry
+numbers below are the numbers at the tip `bf9ce02` and cannot drift without another registry
+commit. F-6 and F-7 were live at both `4d9231e` and `8acb255` and were **repaired by
+`bf9ce02`**, after this seat's measurements; both repairs are recorded under §3.
 
 Re-measured with the §1.4 commands (identical at `4d9231e` and `8acb255`): **rows 31; tier
 A=29 C=2; status mined=19
@@ -255,22 +258,25 @@ on the CRA chain.
 
 Re-verdict of the findings:
 
-| finding | at `953c278` | at current tip (`8acb255`; registry frozen since `4d9231e`) |
+| finding | at `953c278` | at tip `bf9ce02` |
 |---|---|---|
-| F-6 (no Gate record for the newest row) | n/a — S031 absent | **present** (new; highest severity here) |
-| F-7 (closing census stale) | n/a | **present** (new) |
+| F-6 (no Gate record for the newest row) | n/a — S031 absent | live at `4d9231e`/`8acb255`; **RESOLVED at `bf9ce02`** |
+| F-7 (closing census stale) | n/a | live at `4d9231e`/`8acb255`; **RESOLVED at `bf9ce02`** |
 | F-1 (S028 logged as `rejected → rejected`) | present | **present** — `round-23.md:204` unchanged |
-| F-2 (Gate quote under-grounds `teaches`) | present | present for S029/S030; subsumed in weight by F-6 |
+| F-2 (Gate quote under-grounds `teaches`) | present | **present** for S029/S030 — the supplementary Gate block adds rows only for S018/S031 |
 | F-3 (registry bytes predate admission) | present | still true — S031 lands *after* admission too |
 | F-4 (S022 `used-by` = `—`) | present | **present, strengthened** (entry now cites S022 by id) |
 | F-5 (entry header `3.2.4` vs anchor `3.2.4.2`) | present | **resolved** — the F07 rewrite now reads `3.2.4.2`, matching `SOURCES.md:36`-lineage anchor |
 
 ## 3. Findings (severity order)
 
-F-6 and F-7 were captured at the current tip (§2.1) and are the highest-severity findings;
-F-1–F-5 were captured at `953c278`. Ids are stable, so severity order and numbering differ.
+F-6 and F-7 were the highest-severity findings at capture and were both repaired by
+`bf9ce02`; they are retained with their resolution recorded, because a finding that is later
+fixed is still the reason the fix exists. What remains live at the tip is F-1, F-2, F-3 and
+F-4; F-5 was resolved by the same advance. F-1–F-5 were captured at `953c278`. Ids are stable,
+so severity order and numbering differ.
 
-### F-6 (Medium) — the newest row, S031, has no Gate record anywhere in the round lesson
+### F-6 (Medium at capture — **repaired at `bf9ce02`**) — the newest row, S031, had no Gate record anywhere in the round lesson
 
 Contract rule 1 (`SOURCES-CONTRACT-v1.md:43-47`) requires the round lesson's `## Gate` to
 record, **for every new row**, the URL, the access date, and a ≤25-word quote with its
@@ -307,11 +313,22 @@ quote).
 
 Falsifier: a row in `corpus/lessons/round-23.md` containing the `CNA_Rules_v4.2.6` URL with an
 access date and a ≤25-word located quote. Not found in either Gate section or the appended
-section.
+section **at `4d9231e` or `8acb255`**.
 
-### F-7 (Low–Medium) — the round's closing registry census no longer matches the registry it closes on
+**RESOLVED at `bf9ce02`** ("round-23 rescue: … supplementary Gate rows for S018/S031,
+corrected census"), appended rather than rewritten: `corpus/lessons/round-23.md:296-308` adds
+`### Gate — supplementary rows (post-audit, falsify/LessonGateRows.md)` with **two** S031
+rows carrying the 4.2.6 URL, `accessed 2026-10-25`, and located quotes — "Version: 4.2.6"
+(title page, `S031.txt:1`) and "CNAs MUST assign different CVE IDs to different, Independently
+Fixable Vulnerabilities." (rule 4.2.11, page 15) — both ≤25 words, together grounding both
+clauses of `teaches` (current version, and MUST-vs-SHOULD). Contract rule 1 is now satisfied
+for S031. The finding is retained because it was true of the bytes this seat attacked and is
+the reason the supplementary block exists.
 
-`corpus/lessons/round-23.md:234-236` is the last census statement in the round:
+### F-7 (Low–Medium at capture — **repaired at `bf9ce02`**) — the round's closing registry census no longer matched the registry it closes on
+
+`corpus/lessons/round-23.md:234-236` was, before `bf9ce02`, the last census statement in the
+round:
 
 > SOURCES: registry rows 27 → 30 (tier A=28, C=2; status mined 18, queued 9, rejected 3; 18
 > rows carry `used-by`) …
@@ -332,6 +349,13 @@ one mined row.
 
 Falsifier: an updated census (`31`, `A=29`, `mined 19`, `19` `used-by`) at or after the S031
 discussion in the same lesson.
+
+**RESOLVED at `bf9ce02`**: `corpus/lessons/round-23.md:317-319` appends "Corrected census at
+the seal: **31 rows**, tier A=29 / C=2, status mined 19 / queued 9 / rejected 3, `used-by`
+19 — the earlier '30 / A=28 / mined 18 / used-by 18' in this lesson predates S031 and is
+corrected here, not rewritten." My independent §1.4 replay produces exactly those five
+numbers (`31`, `A=29 C=2`, `mined=19 queued=9 rejected=3`, `usedby=19`), so the correction is
+accurate as well as append-only — the stale line at `:233` is retained as history per R9.
 
 ### F-1 (Low–Medium) — the round lesson logs the added row S028 as an in-place `rejected → rejected` no-op
 
@@ -479,12 +503,13 @@ another superseding row, not by editing the row.
   already correct, S028 rejected as duplicate authority). I initially treated the absence of
   S029/S030 from M5 as an evidence-pointer gap and discarded it — the column is "grounded in",
   i.e. the origin case, not a per-round compliance proof.
-- **Re-verified at `4d9231e`** (§2.1): the second advance is also strictly append-only —
-  `git diff 953c278..HEAD -- corpus/SOURCES.md` reports "1 insertion(+), 0 deletions(-)" — and
-  S031 is a well-formed added row: 11 cells, `spec`/`A`, `mined`, `opened 2026-10-25`,
-  `recheck: on-release`, `used-by` an existing path, `teaches` opening `supersedes S030 —`.
-  No pre-existing row's immutable field moved in the second advance either, so P1/P2/P5 hold
-  at the tip as well as at the audited revision.
+- **Re-verified across every advance** (§2.1): each post-audit commit chain is strictly
+  append-only for the registry — `git diff 953c278..HEAD -- corpus/SOURCES.md` reports
+  "1 insertion(+), 0 deletions(-)" across five commits, and `git diff 4d9231e..HEAD` /
+  `git diff 8acb255..HEAD` are both empty. S031 is a well-formed added row: 11 cells,
+  `spec`/`A`, `mined`, `opened 2026-10-25`, `recheck: on-release`, `used-by` an existing path,
+  `teaches` opening `supersedes S030 —`. No pre-existing row's immutable field moved in any
+  advance, so P1/P2/P5 hold at the tip as well as at the audited revision.
 
 ## 5. Residual risk and verification gaps
 

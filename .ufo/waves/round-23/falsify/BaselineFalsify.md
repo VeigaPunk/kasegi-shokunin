@@ -9,21 +9,21 @@ Tooling record: **no installs or updates** (stock `python3` 3.14.8, `sha256sum`,
 
 ## 0. Answer in one paragraph
 
-The fail-before relation is **real in all five generations of the package I measured**: the
+The fail-before relation is **real in all six generations of the package I measured**: the
 baseline resolver fails exactly the escape cases and nothing else, every one of those failures
 becomes a PASS under the fixed bytes, and **no control ever moves** in class or status. Two of the
 three assigned verifications hold only *inside* a generation: `matrix_sha256` is identical across
 the two receipts **of one generation** and necessarily differs between generations, because the
 fixtures, checker and resolver were all rewritten **during this falsify wave** — 13 cases at
-`953c278`, then 17, 20, 22 and finally 23 cases across four receipt regenerations between
-`03:43:07` and `03:48:29` (5 min 22 s), with five distinct fixture digests, three distinct
-resolver digests and two distinct checker digests observed. So "frozen
+`953c278`, then 17, 20, 22, 23 and finally 24 cases, across four receipt regenerations between
+`03:43:07` and `03:48:29` (5 min 22 s), with six distinct fixture digests, four distinct resolver
+digests and two distinct checker digests observed. So "frozen
 matrix" is not a property of this package yet; the durable invariant is the baseline derangement,
 and that invariant held at every measurement. I also found that the case `glob-expansion-escape`
 was **inert** in the 20- and 22-case generations (baseline already `GONE`, for the vacuous reason
 that no glob match existed on either side); it was rewritten at `03:48:20` (fixtures
-`158a423c` → `332a5fe9`) with a note that states exactly that defect, and in the current 23-case
-matrix no escape case is non-discriminating.
+`158a423c` → `332a5fe9`) with a note that states exactly that defect; in the 23-case matrix and in
+the 24-case working tree that followed, no escape case is non-discriminating.
 
 ---
 
@@ -38,8 +38,9 @@ matrix no escape case is non-discriminating.
 | **C** | `4d9231e` `03:46:26` | `fce5b84b…` | `53742c8d…` | `4e39f65c…` | 20 (9/11) | `06:46:26Z` |
 | **D** | worktree `03:47:58` (uncommitted at measurement) | `fce5b84b…` | `53742c8d…` | `158a423c…` | 22 (10/12) | `06:47:58Z` |
 | **E** | `12edac4`, unchanged at HEAD `8acb255` | `fce5b84b…` | `53742c8d…` | `332a5fe9…` | 23 (11/12) | `06:48:29Z` |
+| **F** | worktree `03:51` (unreceipted) | `690153ad…` | `53742c8d…` | `d05b1e0c…` | 24 (12/12) | *(none)* |
 
-The **baseline resolver never moved**: `sha256 d6a3c3f1a1d8…` in all five generations, and it is
+The **baseline resolver never moved**: `sha256 d6a3c3f1a1d8…` in all six generations, and it is
 byte-identical to the pre-fix detector:
 
 ```
@@ -61,8 +62,13 @@ Drift timeline (wall clock, this host):
 - `03:46:26` receipts C written; `03:46:46` HEAD → `4d9231e`.
 - `03:47:58` receipts D (22 cases, `158a423c`) — still carrying the inert glob case.
 - `03:48:20` fixtures repaired (`158a423c` → `332a5fe9`, the glob case rewritten).
-- `03:48:29`/`03:48:30` receipts E (23 cases, `332a5fe9`) — the first pair that matches the
-  repaired matrix and the last generation I measured; fixtures still `332a5fe9` at `03:49:07`.
+- `03:48:29`/`03:48:30` receipts E (23 cases, `332a5fe9`) — committed at `12edac4`, unchanged at
+  `8acb255`; the last generation with a receipt pair.
+- `03:51:2x` fixtures → 24 cases (`d05b1e0c`), resolver → `690153ad` (docstring only): an
+  `escape` case `bounty-root-underscore-sibling` (`~/Projects/bounties_legacy/README.md:1`, decoy
+  at `relocated/tbh/_legacy/README.md`) was added, **unreceipted at measurement**, and it is
+  discriminating: baseline `MIRROR-EQUIVALENT` (FAIL), fixed `GONE` (PASS), 12 escapes / 12
+  controls, `pass=12 fail=12` vs `pass=24 fail=0`.
 
 **Every number below is pinned to a `sha256`, not to a path.** A reader re-running
 `corpus/instruments/mirror-containment-check.py` today will get whatever generation is current.
@@ -86,6 +92,7 @@ python3 <checker> --resolver <pinned resolve.py> --fixtures <pinned fixtures> --
 | C (20) | `pass=12 fail=8` | `pass=20 fail=0` | **yes**, 8 ids | none | none |
 | D (22) | `pass=13 fail=9` | `pass=22 fail=0` | **yes**, 9 ids | none | none |
 | E (23) | `pass=12 fail=11` | `pass=23 fail=0` | **yes**, 11 ids | none | none |
+| F (24) | `pass=12 fail=12` | `pass=24 fail=0` | **yes**, 12 ids | none | none |
 
 Generation E (current, `332a5fe9` / `fce5b84b`) fail set — identical to its 11 declared escapes:
 
@@ -259,7 +266,7 @@ absolute-spelling twin.
 ## 6. Findings (falsifiable)
 
 1. **Fail-before holds exactly, at every generation.** Baseline FAIL set == fixed-run flip set
-   (A 6/6, B 7/7, C 8/8, D 9/9, E 11/11); zero PASS→FAIL regressions; zero controls differing in
+   (A 6/6, B 7/7, C 8/8, D 9/9, E 11/11, F 12/12); zero PASS→FAIL regressions; zero controls differing in
    class or status. Falsifier: one case where the baseline and the fixed bytes disagree outside the
    declared escape set, or a control whose class differs between runs.
 2. **The baseline is genuine pre-fix bytes** — blob `2b1e2528…` at `922a4dd`/`8bf9807`/`953c278`,

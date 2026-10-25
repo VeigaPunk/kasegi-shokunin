@@ -20,6 +20,10 @@ Frozen claims (`.ufo/waves/round-23/claims.json`, unchanged since the checkpoint
   located quotes and executable local rechecks"; `count` = admitted rows in
   `corpus/README.md`, frontier 5/8 → 8/8.
 - `admission`: independent non-author closure only; L1 holds the planner seat.
+- Note on later scope: `SCORECARD.md`'s round-23 errata re-scopes the axis move as
+  **mirror-fallback soundness, not "detector soundness"** (the lane-relative
+  `INTERNAL` branch stays unconfined, the bounty literal hit is reported as written).
+  Neither the claim text nor `claims.json` changed; the errata is a reading.
 
 What the inherited attempt (checkpoint `8bf9807`, "policy-paused, unadmitted, no task
 resumption") left in the tree: the three F06–F08 knowledge entries, the six
@@ -34,8 +38,8 @@ byte-identical at `922a4dde` and `8bf9807`) and **no** manifest (so every entry
 |---|---|
 | checkpoint under test | `8bf9807` = `8bf980721554d2d24bcc83e2e0996e0c27684a06` |
 | lane tip at audit start | `953c278` |
-| lane tip at audit close | **`4d9231e`** (via `2712c99`, `4d9231e`; two unpredicted commits landed mid-audit) |
-| audit wall clock | 2026-10-25 06:36–06:49 **UTC** (03:36–03:49 local, host TZ `-03`) |
+| lane tip at audit close | **`f6966d4`** — six unpredicted commits landed mid-audit: `2712c99`, `4d9231e`, `12edac4`, `8acb255`, `bf9ce02`, `f6966d4` |
+| audit wall clock | 2026-10-25 06:36–06:53 **UTC** (03:36–03:53 local, host TZ `-03`) |
 | `8bf9807`→`953c278` diff for assigned paths | `9 files changed, 1618 insertions(+), 1 deletion(-)` |
 | scratch | `/tmp/kasegi-r23-falsify-inherited/` |
 
@@ -48,7 +52,8 @@ about "the matrix" is meaningless without the generation:
 | G17 | `8dd45bc8…`(a) | 17 / `5c64e014…` | worktree 06:43Z |
 | G20 | `fce5b84b…` | 20 / `4e39f65c…` | worktree 06:47Z |
 | G22 | `fce5b84b…` | 22 / `158a423c…` | worktree 06:48:20Z |
-| **G23** | **`fce5b84b…`** | **23 / `332a5fe9…`** | committed `4d9231e` + dirty receipts at 06:48:42Z |
+| G23 | `fce5b84b…` | 23 / `332a5fe9…` | committed `4d9231e` + dirty receipts at 06:48:42Z |
+| **G24** | **`690153ad…`** | **24 / `d05b1e0c…`** | committed `f6966d4`, 06:53Z — the ladder was still moving when this report closed |
 
 (a) G17/G20 also carried `9e0b5751…` for a window (see §2a–2b). Findings below are
 labelled with the generation they hold for; §4.0 is the status board.
@@ -69,10 +74,10 @@ labelled with the generation they hold for; §4.0 is the status board.
  46  0  corpus/source-snapshots/round-23/manifest.json
 ```
 
-**Explicitly unchanged since the checkpoint** (so nothing in them was repaired):
-`corpus/knowledge/multiparty-vulnerability-coordination.md`,
-`corpus/SOURCES.md`, `corpus/instruments/source-recheck.py`,
-`corpus/source-snapshots/round-23/{S018,S029,S030}.txt`,
+**Unchanged from the checkpoint to `953c278`** (nothing repaired in the first landing; see §2a for the post-audit commits, which touched three of these):
+`corpus/knowledge/multiparty-vulnerability-coordination.md` (now +8/−1),
+`corpus/SOURCES.md` (now +1: S031), `corpus/instruments/source-recheck.py` (now +11),
+`corpus/source-snapshots/round-23/{S018,S029,S030}.txt` (still untouched),
 `.ufo/waves/round-23/{claims.json,before-instruments.json,opened-source-snapshots.json,source-open-transcript.json,build/**}`.
 
 Cited-by files changed at `953c278` but outside the assigned path list (evidence is
@@ -91,6 +96,8 @@ much larger:
 4d9231e round-23: log the post-attack repairs and final C1/C2 measurements
 12edac4 round-23 seal: 23-case matrix with ordering/prefix pins, declared recheck normalization, Q8/R10, final receipts
 8acb255 round-23: record the failing Q7/Q8 control exits beside the clean runs
+bf9ce02 round-23 rescue: 24-case matrix, docstring truth fixes, supplementary Gate rows for S018/S031, corrected census
+f6966d4 round-23: receipts carry per-case method/domain; baseline-vs-landed routing visible
 ```
 
 `git diff --numstat 953c278 HEAD -- corpus/ SCORECARD.md LOG.md`:
@@ -161,33 +168,47 @@ drift may be L1 integration. But **the report below distinguishes "committed
 | `corpus/instruments/mirror-containment-check.py` (new; committed `1bc2db10…`, live `53742c8d…`) | copied-CLI replay | **Reproducible.** My three runs (committed bytes ×2, inherited bytes ×1) reproduced the committed receipts case-for-case (`fixed identical: True`, `baseline identical: True`); `matrix_sha256=5e61a33e…b5e76a9` equals `sha256sum` of the committed fixtures file. The checker itself changed in the worktree, so the committed receipts cannot have been produced by the current checker+matrix pair. |
 | `.ufo/waves/round-23/c1-baseline-resolver.py` (new) | "do-nothing" control = `git show 922a4dd:resolve.py` | **Correct.** `diff <(git show 8bf9807:corpus/instruments/resolve.py) c1-baseline-resolver.py` → no output; `git diff --stat 922a4dde 8bf9807 -- corpus/instruments/resolve.py` → no output. Recorded `resolver_sha256` matches the file. |
 | `.ufo/waves/round-23/c1-baseline.json` (new) | escape 0/6, controls 7/7, 7/13 | **Matches my rerun** (`baseline identical: True`). |
-| `.ufo/waves/round-23/c1-fixed.json` (new) | escape 6/6, controls 7/7, 13/13 | **Matched the bytes it pinned — and is now stale** (§4, F1). |
+| `.ufo/waves/round-23/c1-fixed.json` (new) | escape 6/6, controls 7/7, 13/13 | G13 receipt: matched the bytes it pinned, then went stale mid-audit, then was **regenerated at G23** (23 cases, `332a5fe9…`, `fce5b84b…`). See §4.0/F1. |
 | `corpus/source-snapshots/round-23/manifest.json` (new, +46) | 19 quote assertions + 3 digests | **All 19 quotes are literal substrings** (`TOTAL quotes 19 MISSES 0`); the three digests equal `sha256sum` of the `.txt` files; `source-recheck.py` exits 0 for S018/S029/S030 with the claimed line counts (7/7/8). This repairs the inherited "recheck exits 2" defect. |
 | `corpus/knowledge/cra-manufacturer-reporting-duties.md` (1/1) | Article 71 quote corrected | **Repairs a genuine misquote.** Inherited row (`git show 8bf9807:…:50`) quoted “It shall apply from 11 December 2027.”; `grep -c` of that string in `S029.txt` = **0**, of “This Regulation shall apply from 11 December 2027.” = **1**. The repaired entry quote is now an exact substring. |
 | `corpus/knowledge/cna-assignment-and-vulnerability-rules.md` (+5) | Quote-fidelity note for `4.1.9` `<u>` markup | **Accurate disclosure, not a quote correction.** `S030.txt:165` carries `are <u>Independently Fixable</u>`; the entry table quotes the rendered form, which is *not* a substring (`OUT` in my per-doc check). The note states exactly this and points at the manifest, which asserts the literal bytes. Consistent, and the divergence is markup only. |
 | `.ufo/waves/round-23/falsify-spec.json`, `falsify/refusal-1.json`, `falsify/swarm-registry.json` (new) | 36-seat wave, refused at dispatch, no replacement | **Counts check out.** `falsify-spec.json` items = 36, `maxLanes` 64; registry members = 36 with role tally `critic 9, reviewer 7, executor 7, scout 4, mutation-tester 3, sentinel 2, revenger 2, connector 1, scribe 1` — identical to the lesson's prose. `refusal-1.json` records `refused:true`, `seats:36`, job-limit error. |
-| `corpus/knowledge/multiparty-vulnerability-coordination.md` | **unchanged** | Nothing repaired — F06 rests entirely on inherited bytes. My check: all **6** quoted sentences are literal substrings of `S018.txt`; no defect found in the entry's quotes. |
-| `corpus/SOURCES.md`, `source-recheck.py`, `S018/S029/S030.txt` | **unchanged** | Registry census reproduces the lesson exactly: 30 rows, tier `A=28 C=2`, status `mined 18 / queued 9 / rejected 3`, `used-by` non-empty on 18; S029 "supersedes S024", S030 "supersedes S022". |
-| `corpus/README.md` (3/3) | F06–F08 queued→admitted | **Reproduces:** `grep -cE '^\| F0[6-8] .*\| admitted \|'` → **3**; `grep -cE '^\| F0[1-8] .*\| admitted \|'` → **8**; each `entry` path exists. |
-| `corpus/lessons/round-23.md` (167/0) | attempt-2 lesson | **Wave and census arithmetic reproduces** (§ above). One blanket sentence is not covered — F6. |
+| `corpus/knowledge/multiparty-vulnerability-coordination.md` | unchanged at `953c278`; +8/−1 at `8acb255` | At the first landing nothing was repaired — F06 rested entirely on inherited bytes, and all **6** quoted sentences are literal substrings of `S018.txt`. The post-audit commit adds the `cd …` recheck prefix (F3) and a *Capture gap* disclosure that I verified: `S018.txt` starts at `## Definitions`, contains no "Spring 2020", and ends at the `Use coordinators` lead line. |
+| `corpus/SOURCES.md`, `source-recheck.py`, `S018/S029/S030.txt` | unchanged at `953c278`; SOURCES +1 row and `source-recheck.py` +11 at `8acb255` | At the first landing the census reproduced the lesson exactly: 30 rows, tier `A=28 C=2`, status `mined 18 / queued 9 / rejected 3`, `used-by` 18; S029 "supersedes S024", S030 "supersedes S022". At close: **31 rows, A=29 C=2, mined 19 / queued 9 / rejected 3, used-by 19** — the deltas are S031 and the S030 double-attribution in F10. |
+| `corpus/README.md` (3/3 at `953c278`; 9/3 by `8acb255`) | F06–F08 queued→admitted; F07 sources cell later S030→S031 | **Reproduces:** `grep -cE '^\| F0[6-8] .*\| admitted \|'` → **3**; `grep -cE '^\| F0[1-8] .*\| admitted \|'` → **8**; each `entry` path exists. |
+| `corpus/lessons/round-23.md` (167/0 at `953c278`; +60 more by `8acb255`) | attempt-2 lesson + post-attack repair log | **Wave and census arithmetic reproduces** (§ above). One blanket sentence is not covered — F6. |
 
 ## 4. Findings
 
-### 4.0 Status board at HEAD `8acb255` (06:50:29Z)
+### 4.0 Status board (committed state `8acb255`, 06:50:29Z; G24 addendum below)
 
 | finding | first observed | status at close | why |
 |---|---|---|---|
-| F1a receipt ↔ bytes binding | G13 / live G17 | **CLOSED** | `c1-fixed.json` regenerated; now `23` cases, `matrix_sha256=332a5fe9…`, `resolver_sha256=fce5b84b…` = `sha256sum` of the live file |
+| F1a receipt ↔ bytes binding | G13 / live G17 | **CLOSED** | `c1-fixed.json` regenerated and re-regenerated: G23 = 23 cases / `332a5fe9…` / `fce5b84b…`; G24 = 24 cases / `d05b1e0c…` / `690153ad…`, each equal to the live file (`sha256sum`) |
 | F1b bare-root class change | G17/G20 | **CLOSED by reversal** | final `resolve.py` keeps root-only bounty citations at `GONE` (comment + probe below) |
-| F2 unit suite blind to the defect | G13 | **OPEN** | `test_resolve.py` untouched by all four commits; still `10 tests OK` on both fixed and baseline bytes |
+| F2 unit suite blind to the defect | G13 | **OPEN** | `test_resolve.py` untouched by all six commits; still `10 tests OK` on both fixed and baseline bytes |
 | F3 `recheck:` cwd dependence | G13 | **CLOSED** | all three entries (and the new F07→S031 form) now begin `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 …` |
 | F4 instruments README stale | G13 | **OPEN** | `git diff --stat 953c278 HEAD -- corpus/instruments/README.md` is empty |
 | F5 open-record transcript gaps | G13 | **OPEN, wider** | transcript still has none of S018/S029/S030/S031; `opened-source-snapshots.json` has S018/S029/S030 but **no S031**, which is now F07's admitted authority |
-| F6 bulk-reuse of contradicted reports | G13 | **OPEN** | reuse sentence unchanged; two of its reports' premises remain falsified by the landing |
+| F6 bulk-reuse of contradicted reports | G13 | **OPEN** | reuse sentence unchanged; three of its reports' premises remain falsified by the landing |
 | F7 refusal timestamp mislabelled | G13 | **OPEN** | `refusal-1.json` still `"at":"2026-10-25T03:34Z"` (local `-03`) |
 | F8 dual sha authority unchecked | G13 | **OPEN, asymmetric** | S031 is pinned in `manifest.json` only; no open-record copy exists to disagree with |
 | F9 a declared escape case was non-discriminating | G22 | **CLOSED** | `glob-expansion-escape` passed on the baseline at G22 and was redefined at G23 (see F9) |
 | F10 superseded registry row still claims current use | G23 | **OPEN** | `SOURCES.md` S030 is `mined`, teaches "use current 4.2.0 requirements", and still lists the cna entry under `used-by` although that entry now sources S031 |
+
+**G24 addendum (06:53:04Z, `HEAD`=`f6966d4`).** The ladder did not stop at `8acb255`: a
+rescue commit `bf9ce02` and `f6966d4` took the matrix to **24 cases / 12 escapes**
+(`matrix_sha256=d05b1e0c…`, resolver `690153ad…`), and the receipts were regenerated
+again — baseline **0/12 escapes GONE**, landed **24/24**; a new escape case
+`bounty-root-underscore-sibling` appears. Every **OPEN** finding in the board above was
+re-checked against these newest bytes and is **unchanged**: `test_resolve.py` still
+absent from `953c278..HEAD`; `instruments/README.md` still untouched; open records still
+`['S018','S029','S030']` with an empty transcript; `refusal-1.json` still
+`"at":"2026-10-25T03:34Z"`; SOURCES S030 still `mined` with the cna entry in `used-by`.
+Bare-root citations are still **absent from all 24 cases**, so the G17/G20 class change
+and its reversal remain unpinned by any fixture. F1/F3 and F9 stay closed.
+Treat every number in this report as **state-pinned**; the primary sources are the
+receipts and the commits, not this prose.
 
 ### F1 (high; **closed** by 2712c99/12edac4) — the C1 receipt was bound to bytes the tree no longer had, and a live delta was an unpinned classification change
 
@@ -276,7 +297,9 @@ silently) and wire the matrix into any test runner (F2).
 
 `corpus/instruments/README.md:120` documents `python3 corpus/instruments/test_resolve.py`
 as "the regression fixture". `test_resolve.py` was **not touched** by this attempt
-(absent from the `8bf9807..HEAD` name-status). Running its copies in `/tmp`:
+(absent from the `8bf9807..953c278` name-status) and **still untouched at `8acb255`**
+(`git log 953c278..HEAD --name-only` names no `test_resolve`), although the resolver it
+tests gained two guards and the matrix grew to 23 cases. Running its copies in `/tmp`:
 
 ```
 default (committed resolver):                 Ran 10 tests … OK   EXIT=0
@@ -317,7 +340,7 @@ root. The live worktree has begun repairing this (`cd /home/vgpnk/Projects/shoku
 in all three entries, uncommitted at 06:41Z); the committed bytes still carry the
 defect, and no receipt records the fix.
 
-### F4 (medium) — `corpus/instruments/README.md` documents the pre-fix classifier as current
+### F4 (medium; **OPEN at `8acb255`**) — `corpus/instruments/README.md` documents the pre-fix classifier as current
 
 Unchanged since the checkpoint, and now wrong about the code it indexes:
 
@@ -326,8 +349,10 @@ Unchanged since the checkpoint, and now wrong about the code it indexes:
 - `README.md:11` still summarises `resolve.py` with no mention of confinement at all.
 
 This is the instrument's own index page, not a historical round note, so it is
-presented as current documentation. `corpus/lessons/round-23.md` records the code
-change but no doc-update, and the file is absent from the change set.
+presented as current documentation. The lesson records the code change but no
+doc-update, and `git diff --stat 953c278 HEAD -- corpus/instruments/README.md` is
+still empty after all four post-audit commits: the file has not moved since the
+checkpoint.
 
 ### F5 (medium; **OPEN and wider at `8acb255`**) — the wave's open records do not cover the authorities it admits
 
@@ -414,7 +439,7 @@ visible only by comparing the two generations.
 
 ### F10 (medium; **OPEN at `8acb255`**) — a superseded registry row still claims current use
 
-`corpus/SOURCES.md` row S030 says, verbatim:
+`corpus/SOURCES.md` rows S030 and S031 (abbreviated to the load-bearing cells; status and `used-by` are the last two columns):
 
 ```
 | S030 | … CNA Operational Rules v4.2.0 … | spec | A | … version 4.2.0 | … | supersedes S022 — use current 4.2.0 requirements and section numbering; … | mined | … | corpus/knowledge/cna-assignment-and-vulnerability-rules.md |
@@ -468,54 +493,60 @@ non-empty on 19 — the two extra `mined`/`used-by` counts relative to `953c278`
 
 ```sh
 cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+git log --format='%h %s' 953c278..HEAD          # four post-audit commits, HEAD 8acb255
+git diff --numstat 953c278 HEAD -- corpus/ SCORECARD.md LOG.md
 git diff --numstat 8bf9807 HEAD -- corpus/knowledge/multiparty-vulnerability-coordination.md \
   corpus/knowledge/cna-assignment-and-vulnerability-rules.md \
   corpus/knowledge/cra-manufacturer-reporting-duties.md corpus/SOURCES.md \
   corpus/source-snapshots/round-23 corpus/instruments/source-recheck.py .ufo/waves/round-23
 git show 8bf9807:corpus/instruments/resolve.py > /tmp/kasegi-r23-falsify-inherited/inherit_resolve.py
 diff /tmp/kasegi-r23-falsify-inherited/inherit_resolve.py .ufo/waves/round-23/c1-baseline-resolver.py   # empty
-# pin the live state first; these bytes moved 3× during the audit
-git status --porcelain=v1; git diff --stat HEAD -- corpus/instruments/; sha256sum corpus/instruments/resolve.py
-git stash list >/dev/null   # not used: no tree mutation by this seat
-python3 corpus/instruments/mirror-containment-check.py --json /tmp/…/rerun-fixed.json                   # 13/13 exit 0 on committed pair
+# pin the state first: the tree changed five matrix generations during this audit
+git status --porcelain=v1; sha256sum corpus/instruments/{resolve.py,mirror-containment-fixtures.json}
+python3 corpus/instruments/mirror-containment-check.py --json /tmp/…/rerun-fixed.json                   # 23/23 exit 0
 python3 corpus/instruments/mirror-containment-check.py \
-  --resolver .ufo/waves/round-23/c1-baseline-resolver.py --json /tmp/…/rerun-baseline.json              # 7/13 exit 1
-for s in S018 S029 S030; do python3 corpus/instruments/source-recheck.py \
-  --manifest corpus/source-snapshots/round-23/manifest.json --source $s; done                            # exit 0 ×3, 7/7/8 lines
-cp corpus/instruments/*.py /tmp/kasegi-r23-falsify-inherited/instr/   # run tests on copies only
-cd /tmp/kasegi-r23-falsify-inherited/instr && python3 test_resolve.py                                    # 10 tests OK
-KASEGI_RESOLVER_UNDER_TEST=baseline.py python3 test_resolve.py                                           # 10 tests OK  ← F2
-sh -c 'python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S018'  # from /tmp: EXIT=2  ← F3
-sha256sum corpus/instruments/resolve.py   # ed9a9dae… == c1-fixed.json at 06:37Z; 9e0b5751… 06:40Z; 8dd45bc8… 06:43Z  ← F1
+  --resolver .ufo/waves/round-23/c1-baseline-resolver.py --json /tmp/…/rerun-baseline.json              # 12/23, escape 0/11, exit 1
+for s in S018 S029 S030 S031; do python3 corpus/instruments/source-recheck.py \
+  --manifest corpus/source-snapshots/round-23/manifest.json --source $s; done                            # exit 0 ×4, 7/10/8/11 lines
+cp corpus/instruments/*.py /tmp/kasegi-r23-falsify-inherited/instr2/   # run tests on copies only
+cd /tmp/kasegi-r23-falsify-inherited/instr2 && python3 test_resolve.py                                   # 10 tests OK
+KASEGI_RESOLVER_UNDER_TEST=baseline.py python3 test_resolve.py                                           # 10 tests OK  ← F2, still open
+sh -c 'python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S018'  # from /tmp: EXIT=2 on 953c278 text; fixed at HEAD  ← F3
+sha256sum corpus/instruments/resolve.py   # ed9a9dae… 06:37Z; 9e0b5751… 06:40Z; 8dd45bc8… 06:43Z; fce5b84b… 06:47Z onward  ← F1
 ```
 
 Per-doc quote check and the bare-root probe are in
-`/tmp/kasegi-r23-falsify-inherited/docquotes.py` and the `rootcase/` + `run-{head,inherit,live,live43}/`
-fixtures (`SKILL.md` cites `~/Projects/bounties`, `~/Projects/bounties/`,
-`~/Projects/bounties//etc/hostname`; `HOME` and `KASEGI_MIRROR` are fixture dirs so the
-mirror is present). The bare-root probe is the only way to see F1's class change; the
-committed 13-case and live 17-case matrices both omit that citation.
+`/tmp/kasegi-r23-falsify-inherited/{docquotes.py,docquotes2.py}` and the `rootcase/` +
+`run-{head,inherit,live,live43,final,close}/` fixtures (`SKILL.md` cites
+`~/Projects/bounties`, `~/Projects/bounties/`, `~/Projects/bounties//etc/hostname`;
+`HOME` and `KASEGI_MIRROR` are fixture dirs so the mirror is present). The bare-root
+probe is the only way to see the G17/G20 class change and its reversal; **no matrix
+generation — 13, 17, 20, 22 or 23 cases — contains a bare-root citation**.
 
 ## 7. Scope limits and confidence
 
-- **Confidence: high** for F1's hash divergence, the bare-root probe, the unit-suite
-  blindness (F2), the `/tmp` verbatim failure (F3), F4's README lines, F5's zero
-  counts, F7's timestamps, and every "confirmed-as-sound" item — each is a direct
-  command output above.
+- **Confidence: high** for every hash/timestamp/class divergence above (F1's ladder,
+  the bare-root probe and its reversal, F2's identical `10 tests OK` on both byte sets,
+  F3's `/tmp` exit 2 on the `953c278` text, F4's untouched README, F5's zero counts and
+  the missing S031 open record, F7's timestamps, F9's two-generation receipt pair,
+  F10's S030 row) — each is a direct command output quoted in place.
 - **Confidence: medium** for F6's severity: whether a bulk reuse sentence must carry
   per-report supersession is a documentation-policy call, not a mechanical fact; the
   premise contradictions themselves are mechanical.
-- **Not assessed:** `corpus/instruments/test_resolve.py` behaviour under the *live*
-  bytes beyond the matrix (the unit suite is byte-blind to the relevant branch, so it
-  tells nothing either way about the F1 ternary change); `anchorcheck.py` over the
-  three entries' line-anchored claims; whether the uncommitted edits were L1's or a
-  seat's; `SCORECARD.md`'s score semantics beyond reading its C1/C2 evidence pointers.
-- **Concurrency caveat:** the tree moved during the audit — three distinct resolver
-  hashes and two matrix configurations were observed between 06:36Z and 06:43Z
-  (§2a–2b). Everything in §2a, and F1's "live" half, describes those snapshots and must
-  be re-pinned before any admission decision. All scratch used by this seat is
-  `/tmp/kasegi-r23-falsify-inherited/` (not `.ufo/waves/*/scratch/`); no production
-  file, index, or lane tree was modified by this seat.
+- **Not assessed:** `test_resolve.py` behaviour beyond the two byte sets (the suite is
+  byte-blind to the relevant branch, so it says nothing about either guard);
+  `anchorcheck.py` over the entries' line-anchored claims; `SCORECARD.md`'s score
+  semantics beyond its C1/C2 evidence pointers; whether the mid-audit uncommitted
+  edits and the four commits were L1's integration or seat work (authorship is not
+  observable from the tree, and this seat made no production edit).
+- **Concurrency caveat:** the tree moved continuously during this audit — **four
+  commits** (`2712c99`, `4d9231e`, `12edac4`, `8acb255`) and **five matrix
+  generations** (13→17→20→22→23 cases) between 06:36Z and 06:50Z. §2a–2b pins each
+  state; §4.0 states which finding survives at `8acb255`. A reader must re-pin before
+  using any number here: F1 and F3 are closed *by later bytes*, not by the bytes they
+  were found on. All scratch used by this seat is `/tmp/kasegi-r23-falsify-inherited/`
+  (not `.ufo/waves/*/scratch/`); no production file, index, or lane tree was modified
+  by this seat.
 - **No installs or updates** were performed (no pacman, uv, cargo, or npm), so the
   tooling-record requirement is vacuous. No network access, no credential operation,
   no live-target traffic; only local authorized fixtures under `/tmp`.
