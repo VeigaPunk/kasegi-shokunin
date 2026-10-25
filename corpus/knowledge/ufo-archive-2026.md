@@ -207,4 +207,4 @@ current authority.
 
 source: [lost-tree] ~/Projects/bounties/fleets/ufo-archive-2026/ snapshot, frozen 2026-09-17 and read in full 2026-09-28.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/ufo-archive-2026.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/ufo-archive-2026.md  # on-restoration — fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

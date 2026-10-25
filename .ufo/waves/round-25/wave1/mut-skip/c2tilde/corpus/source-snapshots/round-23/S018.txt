@@ -1,0 +1,86 @@
+## Definitions
+
+Within the context of this document, the following definitions apply. Definitions that are available in ISO/IEC 29147:2014[3](#fn-3) are used with minimal modification.
+
+- **Advisory:** Announcement or bulletin that serves to inform, advise, and warn about a vulnerability of a product.
+- **Coordinator:** Optional participant that can assist vendors and finders in handling and disclosing vulnerability information.
+- **Defender:** Stakeholder who is responsible for defending against attacks. A defender can be a system administrator, vendor, or provider of defensive technologies or services. Defenders may detect vulnerable systems, detect and respond to attacks, and perform vulnerability response and management.
+- **Disclosure:** Act of initially providing vulnerability information to a party that was not believed to be previously aware. The overall disclosure process typically includes multiple disclosure events.
+- **Exposure:** Time between the discovery of a vulnerability and the time a vulnerability can no longer be exploited.
+- **Finder:** Individual or organization that identifies a potential vulnerability in a product or service. For example, a finder may be an external security researcher.
+- **Mitigations:** Actions that reduce the likelihood of a vulnerability being exploited or the impact of exploitation.
+- **Remediation:** Patch, fix, upgrade, configuration, or documentation change to either remove or mitigate a vulnerability.
+- **Vendor:** Individual or organization that developed the product or service or is responsible for maintaining it.
+- **Peer Vendor:** Vendor at the same horizontal level of the supply chain. Peer vendors may be independent implementers of the same technology (e.g., OpenSSL and GnuTLS) or downstream users of the same upstream technology (e.g., Red Hat and SuSE).
+- **Upstream Vendor:** Vendor that provides a product or technology to a downstream vendor.
+- **Downstream Vendor:** Vendor that receives a product or technology from an upstream vendor for use in the downstream vendor’s product, technology, or service.
+- **Vulnerability:** Weakness in software, hardware, or a service that can be exploited.
+
+![Stakeholder roles and communication paths](/global/sigs/vulnerability-coordination/multiparty/media/figure-1.jpg) *Figure 1: Stakeholder roles and communication paths*
+
+## Guiding Concepts and Best Current Practices
+
+The following guidance is derived from the cases, variants, responses, and preventions discussed later in the section on Multi-Party Disclosure Use Cases. The most important practices, particularly those that occurred repeatedly, are captured here. Stakeholders should carefully consider their actions, particularly notification and public disclosure, due to the widespread impact on other stakeholders in multi-party cases.
+
+### Establish a strong foundation of processes and relationships
+
+- All parties, particularly vendors, should establish and publish actionable public vulnerability coordination and disclosure policies and expectations, including timelines and thresholds for disclosure.
+- All parties should develop and maintain awareness of peers and other potential stakeholder communities.
+- Vendors should pre-establish upstream and downstream vendor relationships and communication channels to understand potential impacts and coordination timelines.
+- Vendor should consider tracking the use of third-party components to better develop inventory and an understanding of upstream and downstream dependencies.
+
+### Maintain clear and consistent communications
+
+**Prior to disclosure**
+
+- All parties should clearly and securely communicate and negotiate expectations and timelines.
+- Vendors should provide currently accepted contact mechanisms, such as security@ email addresses and “slash security” (/security) web pages.
+- All parties should acknowledge receipt of each communication.
+- Vendor or coordinator should maintain frequent communication with finder, including status updates and potential impacts to disclosure timeline.
+- Finder should provide clear documentation and artifacts to support vulnerability verification.
+- Vendor should clearly document product support timelines and limitations.
+- All parties should avoid individual points of failure for communication.
+
+**After disclosure**
+
+- Vendor should provide clear advisories and bulletins in human and machine-readable format related to vulnerability fixes and mitigations (e.g., Common Vulnerability Reporting Format, CVRF[4](#fn-4) ).
+- Vendor should identify a dedicated contact for upstream and downstream stakeholders, in addition to communicating via generic e-mail, like secure@example.com.
+- If needed, vendor should leverage coordinators for broad communication and coordination.
+- All parties should utilize common vulnerability tracking and aggregation capabilities like the NIST National Vulnerability Database (NVD[5](#fn-5) ) and Common Vulnerabilities and Exposures (CVE[6](#fn-6) ).
+- All parties, particularly CVE Numbering Authorities (CNAs), should follow the appropriate guidance for assigning CVE IDs and populating CVE entries.[7](#fn-7)
+- All parties should provide information to help other stakeholders assess severity, priority, and risk associated with vulnerabilities. The Common Vulnerability Scoring System (CVSS) is one such option.[8](#fn-8)
+
+### Build and maintain trust
+
+- All parties should implement measures to secure communication and handling of sensitive information. (e.g., implementing encryption of communication with external stakeholders).
+- Vendor should test updates rigorously prior to security fix release.
+- Vendor can establish bug bounty programs, credit or safe harbor, to proactively identify vulnerabilities prior to release.
+- All parties should avoid escalation to any extent possible (including legal action).
+  Stakeholders should encourage security research and coordinated disclosure within relevant legal frameworks. Legal or other coercive pressure, actual or perceived, often creates a chilling effect on desired security research.
+
+### Minimize exposure for stakeholders
+
+- Vendor can release fixes on a predetermined schedule (e.g., Patch Tuesday).
+- When possible, updates and patches should only include security fixes and not new features or non-security bug fixes (e.g., Java releases separate feature changes from security fixes[9](#fn-9)).
+- Vendor should offer an automatic update process for users if possible.
+- User should enable automatic vendor patch updates if available.
+- Vendor should establish and participate in trusted networks (e.g., vetted mailing lists such as the UEFI USRT[10](#fn-10) ) for rapid communication and coordination.
+- Vendor can provide any available mitigations or workarounds even if they may cause some degradation of service.
+- Stakeholders should consider partial, preliminary public disclosure as described in Use Case 3.
+- Downstream vendors should consider updating their components as soon as upstream vendors recommend a new release.
+- In the absence of clear evidence of prior public disclosure (including active exploitation), stakeholders should provide a reasonable embargo period to vendors to investigate and develop fixes.
+- Vendors should be aware that publication of fixes can disclose the presence of the same vulnerability in other vendors’ components.
+
+### Respond quickly to early disclosure
+
+- Vendor should analyze the situation and establish a priority remediation timeline.
+- Where possible, vendor can reach out to finder to define the scope of early disclosure and perform damage control.
+- Vendor should provide communications to users regarding the vulnerability and potential mitigations (e.g., release an interim advisory).
+
+### Use coordinators when appropriate
+
+- Coordinator can help connect researchers, vendors, and other stakeholders. This is particularly helpful when multiple parties (vendors) are involved or there is difficultly contacting a party (vendor).
+- Coordinator can provide additional technical, impact, and scope analysis to researchers, vendors, and other stakeholders, particularly when there is disagreement.
+- Coordinator should develop and maintain awareness of and relationships with other coordinators.
+- To reduce confusion when multiple coordinators are involved, one coordinator should be selected as lead.
+

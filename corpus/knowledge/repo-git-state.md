@@ -72,4 +72,4 @@ Hazards:
 
 source: Lane read-only Git snapshot on 2026-09-28 — git status, branch, rev-list, merge-base, and ls-files; section The stall.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties/.git && git -C ~/Projects/bounties rev-parse HEAD (fails closed today: bounties base absent since 2026-09-28; the 2026-09-28 snapshot is not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties/.git && git -C ~/Projects/bounties rev-parse HEAD  # on-restoration — fails closed today: bounties base absent since 2026-09-28; the 2026-09-28 snapshot is not re-verifiable; re-scope is L0 kasegi round-15

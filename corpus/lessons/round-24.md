@@ -209,3 +209,21 @@ fleet-root file was deleted.
   (`wave2-refusal-1.json`, `Background job limit reached (100)`, 0 spawned);
   payload resent unchanged.
 - Dead seats: none in wave 1 or wave 2.
+## Errata — round 25 corrections to round-24 measurements (R9)
+
+- **D24-2 assertion count.** The committed round-24 manifest contains 19 records and 76
+  assertions (sum of `len(source["quotes"])`), not 77. The round-25 verifier independently
+  reproduced 76 from the manifest and 95 receipt OK lines (19 sha pins + 76 quote assertions).
+  The round-24 report's 76 remains correct; the round-24 SCORECARD and this lesson's earlier
+  77 are historical transcription errors. Current SCORECARD and `corpus/instruments/README.md`
+  now say 76 with the counting command.
+- **D24-3 bound-64→8 mutant.** The round-24 `ResolverAttack.md:151` measured the mutant only
+  on baseline resolver bytes `690153ad…`, where it scored 4/8; no round-24 receipt measured
+  the mutant on landed bytes `db5e0767…`. Round 25 now measures that mutant (`88122e10…`) on
+  the landed bytes: dispatch 8/8 and containment 24/24, receipts
+  `.ufo/waves/round-25/d24-3/receipt.txt`. The blind spot is confirmed, not inferred.
+- **D24-4 L4 label.** The `c1-control-baseline.txt` L4 `FAIL` is the case verdict, not its
+  primary assertion: the primary `INTERNAL` citation passed with empty `path_check`; the case
+  failed only on the added bounty/mirror citation (`GONE`, `path_check=missing-path`). The
+  receipt labels L4 `liveness`; see `corpus/lessons/round-25.md` §Mistakes M25-3 and
+  `wave1/RevL4Reconcile.md`.

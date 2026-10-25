@@ -1,0 +1,17 @@
+# Round 23 C1 — resolver range-limit review
+
+## Finding (High): bounty-prefixed parent traversal is still credited outside the mirror
+
+**Counterexample:** In the existing CLI fixture, set `mirror` to `.../relocated/tbh` as in `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/test_resolve.py:71-74`. Create a real file at `os.path.join(os.path.dirname(mirror), "outside-vault", "secret.mjs")`, matching the escaped-file construction at lines 255-264; leave the corresponding path under the fixture `HOME` absent. Submit `~/Projects/bounties/../outside-vault/secret.mjs:1`.
+
+`strip_anchor` removes the ordinary `:1` suffix (`/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/resolve.py:86,137-145`). `classify` then sets `rel` to `../outside-vault/secret.mjs` and tries `exists_any(os.path.join(mirror_root, rel))` (`resolve.py:202-212`). That resolves to the existing sibling of the mirror, and this bounty fallback returns `MIRROR-EQUIVALENT` without calling `under_mirror` (defined at `resolve.py:194-199`). **Expected class: `GONE`**: C1 requires bounty-prefixed mirror escapes to be uncredited, and explicitly says declared escape fixtures classify `GONE` (`/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-23/claims.json:4`). This counterexample remains valid with a conventional `:1` anchor; it does not depend on malformed-anchor acceptance.
+
+**Coverage gap:** `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/test_resolve.py:255-279` covers parent traversal and symlink escapes only through explicit canonical mirror paths. The bounty case at lines 249-253 is only a confined positive control. Add the counterexample above alongside those controls.
+
+**Compatibility invariant:** Keep a confined bounty citation such as `~/Projects/bounties/fleet/queue-stats.json:1` as `MIRROR-EQUIVALENT` when only the mirror copy exists (`test_resolve.py:249-253`). Also preserve lane-first relative resolution (`test_resolve.py:221-235`): a relative file present in both lane and mirror remains `INTERNAL` at the lane path, mirror-only remains `MIRROR-EQUIVALENT`, and missing remains `GONE`. Do not broaden C1 into changing explicit lane-relative semantics; the frozen claim excludes those (`claims.json:4`).
+
+## Scope and verification limits
+
+`LINEANCHOR` accepts any terminal decimal `:N` or `:N-M`/`:N–M` without checking positivity, range order, or file bounds (`resolve.py:86,137-145`); `classify` receives but does not use the `anchor` value (`resolve.py:202-203`). That is a separate anchor-validity limitation, not needed to establish this C1 containment failure. Keep the wave-2 C1 attack on confinement and use `:1` so range validity is not an ambiguity.
+
+`git diff HEAD -- corpus/instruments/resolve.py corpus/instruments/test_resolve.py` was empty; the observed tracked round diff was in `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` and `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md`, not the resolver implementation. No tests were run, as instructed. The `lsp` device was unavailable (`xd://lsp` returned “No such tool”; no LSP device appeared in the mounted-device list), so I used literal grep only to locate the parser and escape-test occurrences; the conclusion above is based on the cited source control flow and fixture construction, not semantic LSP results.

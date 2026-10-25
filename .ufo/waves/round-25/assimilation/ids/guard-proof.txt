@@ -1,0 +1,99 @@
+== §10 id-collision guard: failure-mode proof ==
+lane root: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+fixture registry: .ufo/waves/round-25/assimilation/ids/fixture/fixture-SOURCES.md (row 2 is INDENTED by two spaces)
+fixture staged:   .ufo/waves/round-25/assimilation/ids/fixture/fixture-staged.md (carries the same id at column 0)
+
+-- fixture bytes --
+$ grep -nE '^ *\|' .ufo/waves/round-25/assimilation/ids/fixture/fixture-SOURCES.md
+7:| id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |
+8:|---|---|---|---|---|---|---|---|---|---|---|
+9:| S001 | Fixture Document Alpha — https://example.invalid/alpha | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |
+10:  | S002 | Fixture Document Beta — https://example.invalid/beta | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |
+[exit 0]
+
+$ grep -nE '^ *\|' .ufo/waves/round-25/assimilation/ids/fixture/fixture-staged.md
+5:| id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |
+6:|---|---|---|---|---|---|---|---|---|---|---|
+7:| S002 | Fixture Document Beta, staged — https://example.invalid/beta | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |
+8:| S003 | Fixture Document Gamma, staged — https://example.invalid/gamma | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |
+[exit 0]
+
+-- A. GUARD PATTERN (0-3 leading spaces) --
+$ grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' .ufo/waves/round-25/assimilation/ids/fixture/fixture-SOURCES.md | grep -oE 'S[0-9]+' | sort > .ufo/waves/round-25/assimilation/ids/fixture/a-reg-ids
+[exit 0]
+
+$ grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' .ufo/waves/round-25/assimilation/ids/fixture/fixture-staged.md | grep -oE 'S[0-9]+' | sort > .ufo/waves/round-25/assimilation/ids/fixture/a-staged-ids
+[exit 0]
+
+$ comm -12 .ufo/waves/round-25/assimilation/ids/fixture/a-reg-ids .ufo/waves/round-25/assimilation/ids/fixture/a-staged-ids > .ufo/waves/round-25/assimilation/ids/fixture/a-collisions
+[exit 0]
+
+$ printf 'a-reg-ids    lines='; wc -l < .ufo/waves/round-25/assimilation/ids/fixture/a-reg-ids; tr '\n' ' ' < .ufo/waves/round-25/assimilation/ids/fixture/a-reg-ids; echo
+a-reg-ids    lines=2
+S001 S002 
+[exit 0]
+
+$ printf 'a-staged-ids lines='; wc -l < .ufo/waves/round-25/assimilation/ids/fixture/a-staged-ids; tr '\n' ' ' < .ufo/waves/round-25/assimilation/ids/fixture/a-staged-ids; echo
+a-staged-ids lines=2
+S002 S003 
+[exit 0]
+
+$ printf 'a-collisions lines='; wc -l < .ufo/waves/round-25/assimilation/ids/fixture/a-collisions
+a-collisions lines=1
+[exit 0]
+
+$ cat .ufo/waves/round-25/assimilation/ids/fixture/a-collisions
+S002
+[exit 0]
+
+-- B. COLUMN-ZERO-ONLY PATTERN (^\|) over the same two fixtures --
+$ grep -oE '^\|[[:space:]]*S[0-9]{3,}' .ufo/waves/round-25/assimilation/ids/fixture/fixture-SOURCES.md | grep -oE 'S[0-9]+' | sort > .ufo/waves/round-25/assimilation/ids/fixture/b-reg-ids
+[exit 0]
+
+$ grep -oE '^\|[[:space:]]*S[0-9]{3,}' .ufo/waves/round-25/assimilation/ids/fixture/fixture-staged.md | grep -oE 'S[0-9]+' | sort > .ufo/waves/round-25/assimilation/ids/fixture/b-staged-ids
+[exit 0]
+
+$ comm -12 .ufo/waves/round-25/assimilation/ids/fixture/b-reg-ids .ufo/waves/round-25/assimilation/ids/fixture/b-staged-ids > .ufo/waves/round-25/assimilation/ids/fixture/b-collisions
+[exit 0]
+
+$ printf 'b-reg-ids    lines='; wc -l < .ufo/waves/round-25/assimilation/ids/fixture/b-reg-ids; tr '\n' ' ' < .ufo/waves/round-25/assimilation/ids/fixture/b-reg-ids; echo
+b-reg-ids    lines=1
+S001 
+[exit 0]
+
+$ printf 'b-staged-ids lines='; wc -l < .ufo/waves/round-25/assimilation/ids/fixture/b-staged-ids; tr '\n' ' ' < .ufo/waves/round-25/assimilation/ids/fixture/b-staged-ids; echo
+b-staged-ids lines=2
+S002 S003 
+[exit 0]
+
+$ printf 'b-collisions lines='; wc -l < .ufo/waves/round-25/assimilation/ids/fixture/b-collisions
+b-collisions lines=0
+[exit 0]
+
+$ cat .ufo/waves/round-25/assimilation/ids/fixture/b-collisions
+[exit 0]
+
+-- C. VERDICT --
+A (0-3 spaces): 1 collision -> S002. The guard detects the duplicate, which is what it must do.
+B (^| only):    0 collisions. The indented S002 row is invisible to the pattern, so the duplicate id would be appended silently.
+A column-zero-only pattern is therefore not an acceptable guard: it under-reports exactly the copy-paste case the guard exists to catch.
+
+-- D. LATENT-RISK CHECK on the real inputs (are the real files flat today?) --
+$ grep -cE '^ {1,3}\|[[:space:]]*S[0-9]{3,}' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md
+0
+[exit 1]
+
+$ grep -cE '^ {1,3}\|[[:space:]]*S[0-9]{3,}' corpus/SOURCES.md
+0
+[exit 1]
+
+$ grep -cE '^\|[[:space:]]*S[0-9]{3,}' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md
+94
+[exit 0]
+
+$ grep -cE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md
+94
+[exit 0]
+
+Both real inputs carry 0 indented rows, so today the two patterns agree (94 staged, 35 registered).
+The guard's 0-3-space form is not redundant: it is the form that still works after the first indented paste.

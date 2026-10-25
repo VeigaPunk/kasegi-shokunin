@@ -1,0 +1,67 @@
+{
+  "schema": "kasegi-round-claims-v1",
+  "round": 24,
+  "frozen_at_utc": "2026-10-25T00:00:00Z",
+  "base": "d0a3f6a4643fc5f668e95d94fcdbe22830bb8f9a",
+  "note": "Frozen BEFORE any data was collected this round. Counters, targets and kill rules below are the claim; a rule changed after a seat scored is not the claim's rule (QUALITY R7, kumitate r42 lesson).",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "axis_score_before": 4,
+      "why_lowest": "depth:verifiability is the lowest non-retired scored axis (density 9, coverage 7).",
+      "target_axis_or_capability": "axis",
+      "surface_changed": "The two verifiability instruments that decide whether a citation is re-derivable: the captured-source rechecker's manifest coverage for S001-S015, and resolve.py's brace/glob dispatch.",
+      "predicate": "At round end every one of the eight Frontier knowledge entries runs its own `recheck:` command and exits 0 from committed captures, AND the frozen resolve dispatch matrix scores 8/8 with exit 0.",
+      "counter_A": {
+        "what": "frontier entry recheck exit codes (exit 0 count out of 8 entries)",
+        "command": "for f in cvss-v4-severity-and-vector coordinated-disclosure-timelines authorization-safe-harbor-and-scope ai-assisted-finding-validation cwe-top25-2025-methodology multiparty-vulnerability-coordination cna-assignment-and-vulnerability-rules cra-manufacturer-reporting-duties; do r=$(grep -m1 '^recheck: ' corpus/knowledge/$f.md | sed 's/^recheck: //'); bash -c \"$r\" >/dev/null 2>&1; echo \"$f $?\"; done",
+        "before_expected": "3/8 exit 0 (F06, F07, F08); F01-F05 exit 2 not-listed",
+        "after_target": "8/8 exit 0"
+      },
+      "counter_B": {
+        "what": "resolve dispatch matrix pass count out of 8 cases",
+        "command": "python3 corpus/instruments/resolve-dispatch-check.py --fixtures corpus/instruments/resolve-dispatch-fixtures.json",
+        "before_expected": "4/8, exit 1 on frozen baseline resolver bytes (.ufo/waves/round-24/c1-baseline-resolver.py)",
+        "after_target": "8/8, exit 0"
+      },
+      "do_nothing_control": "The cheapest control skips both fixes: round-23 manifest unchanged (no S001-S015 capture) and the round-23 resolver bytes. It must score 3/8 (counter A) and 4/8 (counter B). If it meets either target, the counter or target is wrong and the claim is not made.",
+      "kill_rule": "If either after-target is met by the do-nothing control receipt, or either counter is not reproducible from committed bytes by one command, C1 is not claimed this round (honest stop)."
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "axis_score_before": 7,
+      "why_lowest": "Second axis move; C1 carries the lowest-axis obligation.",
+      "target_axis_or_capability": "axis",
+      "surface_changed": "Frontier topic set: authorisation that exists outside a platform's safe-harbour text (an engagement document and a statute). The lane holds neither: `grep -riE 'rules of engagement|statutory authorization' SKILL.md corpus/knowledge/` counts 0 hits at base.",
+      "predicate": "One new frontier topic (F09) is admitted in corpus/README.md with two knowledge entries, each sourced from rows first registered this round under addendum 10, each row re-opened by this lane with its own access date and located quote.",
+      "counter": {
+        "what": "admitted frontier topics, and knowledge entries whose source is a row first registered this round",
+        "command_A": "awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md",
+        "before_expected_A": "8",
+        "after_target_A": "9",
+        "command_B": "grep -lE '^source: S1[0-9][0-9] ' corpus/knowledge/*.md | wc -l",
+        "before_expected_B": "0 (no knowledge entry cites a row numbered S100+)",
+        "after_target_B": "2"
+      },
+      "do_nothing_control": "Adopting nothing from the package leaves counter A at 8 and counter B at 0; a row appended without an admitted entry citing it is not knowledge expansion (CORPUS rule 4) and does not move either counter.",
+      "kill_rule": "If either entry fails a Q1-Q6 gate, or its cited source cannot be re-opened and quoted by this lane this round, the entry is refused with reason and flip condition, and C2 lands short (honest stop). Refusals are evidence, not padding."
+    }
+  ],
+  "assimilation": {
+    "package": "/home/vgpnk/Projects/shokuknow/merge/kasegi",
+    "collision_map": ".ufo/waves/round-24/assimilation/renumber-map.tsv",
+    "candidates_admit": [
+      "knowledge/corpus/knowledge/authorised-testing-rules-of-engagement.md",
+      "knowledge/corpus/knowledge/statutory-authorization-in-three-traditions.md"
+    ],
+    "candidate_refuse": [
+      "knowledge/corpus/knowledge/chinese-criminal-thresholds-and-authorisation.md"
+    ]
+  },
+  "routed_defects": [
+    "round-23-verifier-spotcheck.md defect 1: F01-F05 recheck exit 2 not-listed",
+    "round-23-verifier-spotcheck.md defect 2: detector liveness debt (first-match brace/glob suppression, never-resolving empty brace alternative)"
+  ]
+}

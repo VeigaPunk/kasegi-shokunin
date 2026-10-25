@@ -1,0 +1,29 @@
+# Round-25 source capture log (L1, 2026-10-25)
+
+Instrument: `corpus/instruments/capture-source.py` (round-24 capability, unchanged this round).
+Command form, run from /home/vgpnk/Projects/shokunin/kasegi-shokunin:
+
+    python3 corpus/instruments/capture-source.py --id <S0NN> --url <URL> --out corpus/source-snapshots/round-25/<S0NN>.txt
+
+Verbatim instrument output, in run order:
+
+    S036 status=200 fetched_bytes=16900 snapshot_bytes=4815 sha256=022ca4f40b9e07a4e052c4d6ac8a9b4195503489417eb7fd0760d28c35ceb950 utc=2026-10-25T08:14:25Z out=corpus/source-snapshots/round-25/S036.txt
+    S037 status=200 fetched_bytes=89300 snapshot_bytes=11194 sha256=b204aa7f60ec2e70713ecd8c605fb1adb6e39549f0ef09d32a297c10f473cb4c utc=2026-10-25T08:14:25Z out=corpus/source-snapshots/round-25/S037.txt
+    S038 status=200 fetched_bytes=37806 snapshot_bytes=3093 sha256=09e077d31ce3b5e366fa435f5c474db7405eef8dd313b64be46f88047dabb68a utc=2026-10-25T08:14:25Z out=corpus/source-snapshots/round-25/S038.txt
+    S039 status=200 fetched_bytes=199797 snapshot_bytes=37126 sha256=657e7b4c67e67d00b190b31942d749a28d0988f15d1e6f5f506130accffc191d utc=2026-10-25T08:14:26Z out=corpus/source-snapshots/round-25/S039.txt
+    S040 status=200 fetched_bytes=94027 snapshot_bytes=33463 sha256=b7f7b55ff3fc723ec5f9ffb2da47f640f0cef12d2f969a5e35754eee0c4e286c utc=2026-10-25T08:14:28Z out=corpus/source-snapshots/round-25/S040.txt
+
+Documents (staged package rows are the pointer; the ids below are this lane's, continuing the
+append-only registry from S035):
+
+| lane id | document | URL | staged id |
+|---|---|---|---|
+| S036 | 脆弱性情報ハンドリングポリシー (Cybozu) | https://cybozu.co.jp/company/security-policy/ | S055 |
+| S037 | FAQ（脆弱性報奨金制度） (Cybozu) | https://cybozu.co.jp/products/bug-bounty/faq/ | S056 |
+| S038 | 脆弱性報告制度 (GMO Pepabo) | https://pepabo.com/contact/vulnerability-reporting/ | S057 |
+| S039 | 日立グループにおける製品脆弱性情報の開示プロセス (HIRT-PUB10008) | https://www.hitachi.co.jp/hirt/publications/hirt-pub10008/index.html | S060 |
+| S040 | Cisco Security Vulnerability Policy | https://www.cisco.com/c/en/us/about/security-center/security-vulnerability-policy.html | S068 |
+
+A plain `curl -L` with a browser UA returned http 403 for S040 while the capture instrument's own
+UA (`kasegi-shokunin/1.0 (documentation capture; …)`) returned 200; the capture is the bytes of
+record and the re-fetch is independently reproduced by the ScoutFetchCisco seat.

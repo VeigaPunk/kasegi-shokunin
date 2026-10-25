@@ -352,4 +352,4 @@ amended (frozen constant + conjunctive ≥ 60 % resolvability gate) in
 
 source: [lost-tree] ~/Projects/bounties/PROVINCE.md:3 and the 2026-09-28 source-tree census; lane round-15 loss record with round-19 absence errata.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/source-tree-loss-2026-09-28.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/source-tree-loss-2026-09-28.md  # on-restoration — fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

@@ -123,4 +123,4 @@ plain prose.
 
 source: Lane rounds 18–19 — LOG.md:705-716 and 790-793; base vocabulary in sections Base names and Rules that prevent silent base changes.
 verified-at: 2026-10-14
-recheck: python3 corpus/instruments/anchorcheck.py corpus/knowledge/citation-bases.md
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/anchorcheck.py corpus/knowledge/citation-bases.md

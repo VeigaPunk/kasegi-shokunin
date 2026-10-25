@@ -122,4 +122,4 @@ from report.md, 140 chars), reward (`status.reward{min,max,currency}` or
 
 source: [lost-tree] ~/Projects/bounties/ops/claim-check.mjs:1-233, tag 014A; full round-3 source read.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/claim-gates.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/claim-gates.md  # on-restoration — fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

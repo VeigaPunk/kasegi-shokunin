@@ -70,4 +70,4 @@ respectively — both numbers are right for their unit; SKILL.md L8 conflated th
 
 source: [lost-tree] ~/Projects/bounties/claims/*/*/provenance.json scan over 255 files and root-level target checkout census.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/target-checkouts.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/target-checkouts.md  # on-restoration — fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

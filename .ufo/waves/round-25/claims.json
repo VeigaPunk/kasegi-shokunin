@@ -1,0 +1,52 @@
+{
+ "round": 25,
+ "lane": "kasegi",
+ "frozen_at_utc": "2026-10-25T08:13:38Z",
+ "base_revision": "b49948f1164ef65106b2c4cbee3f53e8a44b8c41",
+ "claims": [
+  {
+   "id": "C1",
+   "type": "measured",
+   "axis": "depth:verifiability",
+   "axis_score_before": 4,
+   "lowest_nonretired": true,
+   "surface": "the `recheck:` line of every corpus/knowledge/*.md entry (35 lines) as the entry's own verifiability instrument",
+   "predicate": "Every `recheck:` line in corpus/knowledge/*.md is a single shell command that (a) parses under `bash -n`, (b) produces the same exit status AND the same combined stdout+stderr digest when run from the lane root and from a foreign cwd (/), and (c) names at least one lane-relative corpus/ path or a ~/Projects/ base test, with every named corpus/ path existing under the lane root. The audit prints one verdict per line and lines=35 pass=N exit=0|1.",
+   "counter": "python3 corpus/instruments/recheck-audit.py --json .ufo/waves/round-25/c1-after.json",
+   "target": "lines=35 pass=35 exit=0",
+   "before": "pass=6 (23 lines are prose+command hybrids that fail `bash -n`; 6 are cwd-dependent: lane-root exit 0, foreign-cwd exit 2)",
+   "do_nothing_control": "same counter on the unchanged committed bytes -> pass=6 exit=1; a control that meets the target voids the claim",
+   "kill_rule": "if the do-nothing control scores pass=35, or if any line reaches pass by deleting its fail-closed test instead of prefixing it, the claim is void",
+   "independent_of": "C2"
+  },
+  {
+   "id": "C2",
+   "type": "measured",
+   "axis": "coverage",
+   "axis_score_before": 7,
+   "surface": "frontier ground the lane did not hold: vendor-side disclosure policies as corpus objects (F10)",
+   "predicate": "Frontier admitted rows = 10 AND at least one corpus/knowledge/*.md carries a header `source:` id first registered this round AND the sources census validates exit 0.",
+   "counter": "awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md ; grep -lE '^source: S0(3[6-9]|[4-9][0-9])' corpus/knowledge/*.md | wc -l ; scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi",
+   "target": "frontier=10, entries-citing-new-rows>=1, census exit 0",
+   "before": "frontier=9, entries=0, census exit 0 (rows 35)",
+   "do_nothing_control": "unchanged bytes score frontier=9 entries=0",
+   "kill_rule": "if a row is appended without an admitted entry citing it, or a staged row is appended unnormalized, the claim is void",
+   "independent_of": "C1"
+  }
+ ],
+ "frontier_step": {
+  "census_command": "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi",
+  "census_before": "exit 0, rows 35, malformed 0, tier A=32 B=1 C=2, status mined=23 queued=9 rejected=3, W04 x2 (S028,S029 pre-existing)"
+ },
+ "assimilation": {
+  "package": "/home/vgpnk/Projects/shokuknow/merge/kasegi",
+  "theme": "vendor-side disclosure policies as corpus objects",
+  "planned_admit": "vendor-disclosure-policies-as-corpus-objects.md (S036-S039) + vendor-disclosure-policy-commitments-crosswalk.md (S036,S038-S040), re-grounded from five captures; staged ids map S055/S056/S057/S060/S068 to S036-S040 by document",
+  "planned_reject": "vendor-cvd-policy-crosswalk-2026-10-23.md — refused as staged: Q3 claims two disclosure-trigger conditions but S040.txt L301-L309 has four; Q7 prose recheck; ground F20 absent. Cisco source itself was reachable and admitted as S040."
+ },
+ "counter_notes": {
+  "frozen_predicate": "three limbs retained unchanged for the claim; frozen-surface receipt is 35/35",
+  "counter_repair": "strict limbs and completeness rule added after mutation seats proved the frozen counter reachable by degenerate controls; receipts before/after on final instrument digest c3c19adc…",
+  "surface_interaction": "C2 adds two files; final tree is 37 lines, so report frozen-surface (35) and final-tree (37) separately."
+ }
+}

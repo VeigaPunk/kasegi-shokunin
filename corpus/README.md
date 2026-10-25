@@ -2,7 +2,7 @@
 
 Proprietary memory for the bounty & security research domain. Everything here
 was read from `/home/vgpnk/Projects/bounties` on 2026-09-28; each entry names
-its source. No generic filler. [r22 correction: this holds for the 25 legacy entries only; the five round-22 entries (Frontier F01–F05) were read from public sources S001–S015 on 2026-10-19 — see SOURCES.md; r23 correction: the three round-23 entries (Frontier F06–F08) were read from public sources S018, S031 and S029 opened 2026-10-20 and 2026-10-25 — 33 entries in total; r24 correction: the round-24 entry count is 35 — F09 admits two entries read from public sources S032-S035 opened 2026-10-25]
+its source. No generic filler. [r22 correction: this holds for the 25 legacy entries only; the five round-22 entries (Frontier F01–F05) were read from public sources S001–S015 on 2026-10-19 — see SOURCES.md; r23 correction: the three round-23 entries (Frontier F06–F08) were read from public sources S018, S031 and S029 opened 2026-10-20 and 2026-10-25 — 33 entries in total; r24 correction: the round-24 entry count is 35 — F09 admits two entries read from public sources S032-S035 opened 2026-10-25; r25 correction: the round-25 entry count is 37 — F10 admits two entries re-grounded from public sources S036-S040 captured 2026-10-25]
 
 ## Coverage map
 
@@ -47,6 +47,8 @@ its source. No generic filler. [r22 correction: this holds for the 25 legacy ent
 | CRA manufacturer reporting duties (round 23) | knowledge/cra-manufacturer-reporting-duties.md | S029 — public primary, opened 2026-10-20 |
 | Engagement authorisation — rules of engagement (round 24) | knowledge/authorised-testing-rules-of-engagement.md | S032 — public primary (NIST SP 800-115), opened 2026-10-25 |
 | Statutory definition of unauthorised access, Japan (round 24) | knowledge/statutory-authorization-and-unauthorized-access.md | S033 (e-Gov consolidated text) with S034/S035 as tier-B/commentary, opened 2026-10-25 |
+| Vendor-side disclosure policies as corpus objects (round 25) | knowledge/vendor-disclosure-policies-as-corpus-objects.md | S036, S037, S038, S039 — four Japanese vendor pages captured 2026-10-25 |
+| A vendor policy commits to a clock, not a scope (round 25) | knowledge/vendor-disclosure-policy-commitments-crosswalk.md | S040 (Cisco) crosswalked against S036/S038/S039 — captured 2026-10-25 |
 ## Known gaps
 
 - **`~/Projects/bounties` is GONE** (removed 2026-09-28T23:51:31Z, actor
@@ -206,8 +208,9 @@ Correction (2026-10-19): corpus/QUALITY.md now exists; the preceding closing par
 | F07 | CVE CNA operational rules | admitted | knowledge/cna-assignment-and-vulnerability-rules.md | S031 | Separate technical impact, assignment scope and identifier count; do not reuse 4.1.0 section numbers. |
 | F08 | EU Cyber Resilience Act reporting duties | admitted | knowledge/cra-manufacturer-reporting-duties.md | S029 | Distinguish manufacturer statutory tracks from researcher disclosure; Article 14 applies from 2026-09-11. |
 | F09 | Authorisation outside the platform: the engagement document and the statute | admitted | knowledge/authorised-testing-rules-of-engagement.md, knowledge/statutory-authorization-and-unauthorized-access.md | S032, S033, S034, S035 | A safe-harbour badge is not the grant and not the legal definition: read the ROE's scope/exclude list, and the access manager the statute requires. |
+| F10 | Vendor-side disclosure policies as corpus objects | admitted | knowledge/vendor-disclosure-policies-as-corpus-objects.md, knowledge/vendor-disclosure-policy-commitments-crosswalk.md | S036, S037, S038, S039, S040 | A vendor's published policy is a standing first-party statement, not a programme: read its intake channels, its handling-versus-disclosure scope, the standard edition it names, and the conditions (and count of conditions) under which it goes faster. |
 
 The original domain-root map is exhausted: 0/18 surfaces are present.
 That sentence describes the lost `/home/vgpnk/Projects/bounties` surface set only; the
-public-practice frontier above is a separate denominator (9/9 admitted at round 24; F01-F08 at
-round 23, F09 at round 24) and is not counted into the 0/18 figure.
+public-practice frontier above is a separate denominator (10/10 admitted at round 25; F01-F08 at
+round 23, F09 at round 24, F10 at round 25) and is not counted into the 0/18 figure.

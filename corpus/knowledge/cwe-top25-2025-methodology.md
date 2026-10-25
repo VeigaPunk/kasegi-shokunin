@@ -1,7 +1,7 @@
 # CWE Top 25 2025 Methodology
 source: S013 — https://cwe.mitre.org/top25/archive/2025/2025_methodology.html — “Removal of CWE Mapping Normalization”
 verified-at: 2026-10-19
-recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S013 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S014 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S015
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S013 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S014 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S015
 
 ## Rule
 When a report cites the 2025 CWE Top 25, identify it as an aggregate ranking for that edition and map the reported root cause to a CWE using the technical evidence, not rank alone.

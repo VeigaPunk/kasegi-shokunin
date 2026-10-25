@@ -1,0 +1,24 @@
+# C1 — bounty-mirror symlink escape
+
+Axes: **depth:verifiability** (mirror containment); coverage axis not evaluated by this scoped C1 review.
+
+## Finding (actionable; attack item for wave2)
+
+`classify()` accepts an existing bounty suffix in the selected mirror without checking that the resolved target remains inside that mirror. In `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/resolve.py:202-213`, the bounty branch maps the suffix at lines 210-212 and returns `MIRROR-EQUIVALENT` whenever `exists_any()` reports a match. `exists_any()` uses `os.path.exists()` and returns the supplied path at `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/resolve.py:163-167`; that follows a symlink for existence but does not replace the returned path with its real target. The realpath confinement helper is at `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/resolve.py:194-199`, but the bounty branch never calls it (unlike the canonical-mirror branch at `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/resolve.py:214-222`). This contradicts frozen C1's requirement that bounty-prefixed mirror fallback paths not credit symlink escapes (`/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-23/claims.json:4`).
+
+### Concrete falsifier (not executed)
+
+Using the CLI fixture's setup (`/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/test_resolve.py:95-103`): let `self.mirror` be the selected mirror, create an existing regular file outside it (for example `touch_scratch("outside-vault2/real.mjs")`), and symlink `self.mirror/link-to-outside.mjs` to that file. Classify the bounty-prefixed citation `~/Projects/bounties/link-to-outside.mjs:1` with the fake HOME and `KASEGI_MIRROR=self.mirror`. At `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/resolve.py:204-206`, it enters the bounty branch and obtains suffix `link-to-outside.mjs`; canonical bounty path is absent, then `exists_any(join(mirror, suffix))` succeeds through the symlink and `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/resolve.py:211-212` returns **MIRROR-EQUIVALENT**. Required expected class is **GONE**: the target's `realpath` is outside the selected mirror, so it is not mirror evidence. This is falsifiable by adding this exact fixture shape and asserting `GONE` with an empty resolved path.
+
+The existing symlink regression does not cover this path: `test_symlink_inside_mirror_escaping_root_is_confined` uses `CAND1_TILDE` (`~/Projects/the-bounty-hunter/...`) at `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/test_resolve.py:274-279`, which takes the separate canonical-mirror branch and is protected by `under_mirror`. Existing `test_bounty_control_relative_under_mirror` checks only an ordinary in-mirror file (`/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/test_resolve.py:249-253`). The adjacent dot-dot escape test likewise exercises canonical mirror aliases, not bounty-prefixed fallback (`/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/test_resolve.py:255-272`).
+
+## Compatibility invariant
+
+Do not disable valid fallback: a regular, confined `mirror/fleet/queue-stats.json` for `~/Projects/bounties/fleet/queue-stats.json:1` must remain **MIRROR-EQUIVALENT**, with the resolved path under the selected mirror (`/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/test_resolve.py:249-253`). Also preserve existing relative-path precedence: lane copy → **INTERNAL**; mirror-only copy → **MIRROR-EQUIVALENT**; absent in both → **GONE** (`/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/test_resolve.py:221-235`). The test must distinguish a confined file from an escaping symlink rather than changing those semantics.
+
+## Scope and verification gaps
+
+- Read `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/resolve.py`, `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/test_resolve.py`, and frozen C1 claim. `git diff --no-ext-diff 922a4dde90b60b465e2b8b241d1fe363f1f27e98 -- corpus/instruments/resolve.py corpus/instruments/test_resolve.py` returned no output: this is an unresolved behavior in the inspected source, not a claimed change in those two files relative to the frozen base.
+- No tests or runtime probes were run, as assigned; the counterexample is a code-path-derived attack, not an observed CLI result.
+- No `lsp` device is mounted in this session (the `xd://lsp` lookup reported no such tool), so LSP status/references/definition/diagnostics were unavailable. No grep was used as semantic proof.
+- Scope is the bounty-prefixed symlink-escape behavior only. The additional C1 sibling-prefix and parent-traversal cases were not independently probed here; no broader detector or coverage claim is made.

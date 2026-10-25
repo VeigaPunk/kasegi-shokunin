@@ -226,4 +226,4 @@ zip layout exists nowhere in the working tree. Never treat as authority.
 
 source: [lost-tree] ~/Projects/bounties submission and claim records; [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/ receipts and archive-era records.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && test -d ~/Projects/origin-work && python3 corpus/instruments/anchorcheck.py corpus/knowledge/submitted-registry.md (fails closed today: bounties base absent since 2026-09-28 and origin-work base absent since 2026-10-12; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && test -d ~/Projects/origin-work && python3 corpus/instruments/anchorcheck.py corpus/knowledge/submitted-registry.md  # on-restoration — fails closed today: bounties base absent since 2026-09-28 and origin-work base absent since 2026-10-12; not re-verifiable; re-scope is L0 kasegi round-15

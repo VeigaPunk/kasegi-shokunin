@@ -498,16 +498,64 @@ The change is confined to those two instruments plus the CLI guards that stop th
 **Known blind spot (R11, published not hidden).** Neither matrix has a case with
 more than four brace alternatives: a mutant lowering `brace_expand`'s
 64-combination bound to 8 scores `8/8` on the dispatch matrix and `24/24` on the
-containment matrix while flipping real verdicts (`ResolverAttack` receipt,
-wave 1). Degenerate instruments are separated: always-GONE `1/8`,
-always-INTERNAL `0/8`.
+containment matrix while flipping real verdicts (measured round 25 on the landed
+bytes: mutant `88122e10…`, `.ufo/waves/round-25/d24-3/receipt.txt`; the
+round-24 receipt only measured the baseline base, `4/8`). Degenerate instruments
+are separated: always-GONE `1/8`, always-RESOLVES `0/8` (the artefact's own
+label, `.ufo/waves/round-24/wave1/LivenessMatrix.md:200-201`).
 
 ## Round-24 capabilities
 
 | Capability | What it can now do | Evidence pointer | First-working round |
 |---|---|---|---|
 | frontier-recheck-harness | Re-verify every admitted Frontier entry from committed captures, with the entry bound to its own recheck line (header sources covered, selections cited, manifest listing them), and score it as `entries=K pass=P exit=0|1` | `corpus/instruments/frontier-recheck-count.py`; `c1-counterA-after.json` (10/10), `c1-counterA-before.json` (3/8) | 24 |
-| source-capture | Capture a public document to a committed, hash-pinned text snapshot with a deterministic conversion and a selftest, then assert located quotes offline | `corpus/instruments/capture-source.py` (selftest exit 0), `corpus/source-snapshots/round-24/manifest.json` (19 records, 77 assertions, exit 0) | 24 |
+| source-capture | Capture a public document to a committed, hash-pinned text snapshot with a deterministic conversion and a selftest, then assert located quotes offline | `corpus/instruments/capture-source.py` (selftest exit 0), `corpus/source-snapshots/round-24/manifest.json` (19 records, 76 assertions, exit 0) | 24 |
 
 **Saturation unchanged:** line 9/10 per owned axis, window N = 3. With
 depth:verifiability at 4 the lowest-axis obligation stays active.
+## Round 25 — frozen claims C1/C2 (2026-10-25)
+
+Frozen at `.ufo/waves/round-25/claims.json` (2026-10-25T08:13:38Z, base `b49948f`).
+Counter instrument: `corpus/instruments/recheck-audit.py`, one digest for every receipt,
+`c3c19adc…`; receipts `.ufo/waves/round-25/c1-receipt-index.txt`. The round repaired the
+counter after a mutation-tester showed the frozen three-limb predicate reachable without
+doing the work (`cd <lane> && true` etc.) — a post-freeze counter repair, disclosed in the
+report, with the frozen numbers reported beside the strict ones.
+
+| Claim | Axis | Before | After | Verdict and evidence | Last change |
+|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest non-retired, 4) | `lines=35 pass=6` — 23 `broken` (prose hybrids, `bash -n` fails), 6 cwd-dependent, `executes=12 gated=0 broken=23`, exit 1 | frozen surface `lines=35 total=35 pass=35 strict=35`; final tree `lines=37 total=37 pass=37 strict=37`; `executes=14 gated=23 broken=0`, exit 0 | **Improved, score held 4.** Counter (one instrument): before `pass=6` → frozen surface `pass=35` → final tree `pass=37`, all strict limbs green. Independent re-derivation matched 35/35 verdicts with 0 disagreements. Do-nothing control `pass=6` cannot meet the target; mutants M1–M4 each flip exactly one limb (`c1-controls/`). Nothing the counter measures moved a detector: `resolve.py`/`anchorcheck.py`/`source-recheck.py` bytes untouched. | 25 |
+| C2 | coverage (7) | frontier admitted **9**; entries citing a row first registered this round **0** | **10**; **2** | **Improved, score held 7.** `awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md` → 9 → 10; `grep -lE '^source: S0(3[6-9]|[4-9][0-9])' corpus/knowledge/*.md \| wc -l` → 0 → 2; registry 35 → 40 rows (census exit 0); `frontier-recheck-count.py` `entries=12 pass=12 exit=0`. F10 entries re-grounded from captures S036–S040 (manifest 5 records / 40 assertions, all `occurrences=1`). | 25 |
+| depth:density | 9 | 9 | 9 | **Unchanged, no harm.** `density.py SKILL.md` mean **154.0**, 652 path-citation instances, 19 blocks (identical to the pre-round receipt); `anchorcheck.py SKILL.md` `bad=0`, `LOST-RECORDED=306`; `SKILL.md` bytes untouched. | r15 (held r25) |
+
+**C1 speed, named by surface.** The entry-granularity verifiability instrument: every
+`corpus/knowledge/*.md` entry's own `recheck:` line. Before, 29 of 35 lines could not be
+used to re-derive the entry's evidence (23 could not run at all; 6 depended on the ambient
+cwd). After, all 35 are one cwd-independent command; 23 stay fail-closed on absent bases and
+14 execute today. The score is held at 4 because the axis's score is the detector
+(`resolve.py`/`anchorcheck.py` census), not the form; the round's critic argued the same
+independently (`wave1/CritC1Axis.md`). The 23 fail-closed lines record the lost bases of
+2026-09-28 / 2026-10-12; they cannot re-verify until an operator restores or re-points those
+roots (L0 kasegi round-15 row).
+
+**Counter repair, in the round's own words.** `claims.json` frozen three limbs; a
+mutation-tester found the target reachable by degenerate lines; four strict limbs and a
+completeness rule were added beside the frozen three (never replacing them); the do-nothing
+control and the mutants are receipts in `c1-controls/`. A critic's vacuity findings (limb (b)
+is equality, not success; `pass=35` counts form, not re-verification) are published in the
+lesson and report, and the `executes/gated/broken` classes make the limit visible in every
+receipt.
+
+## Round-25 capabilities
+
+| Capability | What it can now do | Evidence pointer | First-working round |
+|---|---|---|---|
+| recheck-audit | Audit every corpus entry's `recheck:` line for command form, cwd-invariance and entry binding, with one isolating fixture per limb (14 selftest cases), a do-nothing control, and `executes/gated/broken` classes | `corpus/instruments/recheck-audit.py`; `c1-receipt-index.txt`; `c1-controls/` | 25 |
+| source-capture-round-25 | Re-ground five public documents into hash-pinned snapshots and assert 40 located quotes exactly once with an offline manifest recheck | `corpus/instruments/capture-source.py`; `corpus/source-snapshots/round-25/manifest.json` + `source-recheck.py` | 25 |
+
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3. With
+depth:verifiability at 4 the lowest-axis obligation stays active. Planned round 26:
+C1 verifiability — make `anchorcheck.py` exit nonzero on unverifiable verdicts and give
+`CITE` a `~/Projects/bounties/` arm (the routed debt above, measurable by the fraction of
+fail-closed lines that check citations); C2 coverage — continue F10 with the
+ISO/IEC 29147/30111 division-of-labour theme only after registering its staged rows.

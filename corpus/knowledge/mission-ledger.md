@@ -135,4 +135,4 @@ by design (freshness is a label, not a gate).
 
 source: [lost-tree] ~/Projects/bounties/ledger/; [lost-base] ~/Projects/the-bounty-hunter/ops/check-freshness.mjs, ops/rank.mjs, and dispatcher/ledger producers; round-13 corrections.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/mission-ledger.md (fails closed today: bounties base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/mission-ledger.md  # on-restoration — fails closed today: bounties base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

@@ -373,4 +373,4 @@ the package before relying on them.** Same durability gap one directory over:
 
 source: [lost-tree] ~/Projects/bounties/.ufo/ and .omp/ census from 2026-09-28; round-13 relocation recheck against ~/Projects/ufo-fsd-alpha at HEAD 964f443e.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/ufo-workspaces.md (fails closed today: primary base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/ufo-workspaces.md  # on-restoration — fails closed today: primary base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

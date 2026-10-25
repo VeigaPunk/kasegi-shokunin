@@ -154,10 +154,17 @@ moves only on measurements of the actual lane corpus and domain roots.
   (existence plus containment to the root that class implies). `--resolver PATH`
   scores alternate bytes; `--json` writes a receipt with resolver, matrix, checker
   and runner digests. Measured discrimination: fixed bytes 8/8, round-23 bytes
-  4/8, always-GONE resolver 1/8, always-INTERNAL 0/8.
+  4/8, always-GONE resolver 1/8, always-RESOLVES 0/8 (the artefact's own label,
+  `.ufo/waves/round-24/wave1/LivenessMatrix.md:200-201`; earlier lane files called
+  it `always-INTERNAL`, corrected round 25).
   **Known limit (R11):** no case has more than four brace alternatives, so a
-  mutant that lowers `brace_expand`'s 64-combination bound to 8 scores 8/8 here and
-  24/24 on the round-23 matrix while flipping real verdicts. Reported, not hidden.
+  mutant that lowers `brace_expand`'s 64-combination bound to 8 flips real verdicts
+  without moving the pass count. Measured: on the **baseline** bytes
+  (`690153ad…`) that mutant scores 4/8 with an identical receipt and 24/24 on the
+  round-23 containment matrix (`ResolverAttack.md:151`); on the **landed** bytes
+  (`db5e0767…`) the same mutant (`88122e10…`, round 25) scores **8/8 and 24/24**,
+  which is the blind spot demonstrated rather than inferred — receipt
+  `.ufo/waves/round-25/d24-3/receipt.txt`. Reported, not hidden.
 - `capture-source.py` — fetches one public document, converts it to UTF-8 text
   (HTML tags stripped and entities decoded; PDF text via `pdftotext -enc UTF-8`;
   plain text as served), collapses per-line whitespace, writes the snapshot and
@@ -171,11 +178,13 @@ moves only on measurements of the actual lane corpus and domain roots.
   `--source` selections, the selections must be cited in the entry, the named
   manifest must list them, and the line must be a `source-recheck.py` invocation
   with `--source`). Prints one line per entry and `entries=K pass=P exit=0|1`.
-- `corpus/source-snapshots/round-24/manifest.json` — 19 captured records, 62
+- `corpus/source-snapshots/round-24/manifest.json` — 19 captured records, 76
   assertions: S001–S015 (the five round-22 Frontier entries) and S032–S035 (the
   round-24 F09 admissions). Every assertion was measured exactly-once in its own
   capture; the checker now prints `occurrences=N` and verifies a declared `anchor`
-  line for non-unique quotes (QUALITY Q9).
+  line for non-unique quotes (QUALITY Q9). Count it from the lane root:
+  `python3 -c "import json;d=json.load(open('corpus/source-snapshots/round-24/manifest.json'));print(sum(len(s['quotes']) for s in d['sources']))"`
+  → `76`, and the round-24 receipt's 95 `OK` lines are 19 `:sha256` plus these 76.
 - `source-recheck.py` (round-24 changes) — rejects a quote shorter than 12
   normalized characters (`reason=quote-too-short-to-be-evidence`), prints the
   occurrence count on every pass, and verifies an optional `anchor` line number.

@@ -168,4 +168,4 @@ tail. Sighting windows are display only — authority stays with dispatcher
 
 source: [lost-tree] ~/Projects/bounties/ops/fleet-dispatch.mjs:1-427 and fleets/missions, fleets/run, leases, priority, and state-snapshot inventories.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/mission-control.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/mission-control.md  # on-restoration — fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

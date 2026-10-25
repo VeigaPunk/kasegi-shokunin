@@ -138,4 +138,4 @@ a second fetch when you see:
 
 source: [lost-base] ~/Projects/the-bounty-hunter/ops/park-disposition.mjs; [lost-tree] docs/autopsies/ and fleets/run/*.status.json census.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/retirement-autopsies.md (fails closed today: bases absent since 2026-09-28/2026-10-12; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/retirement-autopsies.md  # on-restoration — fails closed today: bases absent since 2026-09-28/2026-10-12; not re-verifiable; re-scope is L0 kasegi round-15

@@ -1242,3 +1242,62 @@ Frozen claims `.ufo/waves/round-24/claims.json`; base `d0a3f6a`, tip at start
   landed. Wave 2 `kasegi-r24-falsify` 35 seats (attack roles 24/35 = 69%)
   validated under the v1 policy; first dispatch refused at the host job limit
   (`wave2-refusal-1.json`), payload resent unchanged.
+
+## Round 25 — 2026-10-25 — recheck lines made executable; vendor disclosure policies admitted as F10
+
+Frozen claims `.ufo/waves/round-25/claims.json` (C1 depth:verifiability **4**, the lowest
+non-retired axis; C2 coverage **7**); base `b49948f`, lane HEAD at this entry `<set at commit>`.
+
+- **C1 depth:verifiability — every entry's own `recheck:` line, made executable.** Counter
+  `python3 corpus/instruments/recheck-audit.py --json .ufo/waves/round-25/c1-after.json`
+  (one instrument digest for every receipt, `c3c19adc…`): before `lines=35 pass=6
+  executes=12 gated=0 broken=23 parse_fail=23 cwd_fail=6 paths_fail=0 exit=1`; frozen surface
+  after `lines=35 pass=35 strict=35 exit=0`; final tree `lines=37 pass=37 strict=37 exit=0`,
+  `executes=14 gated=23 broken=0`. 29 of the 35 original lines were rewritten — the 23 prose
+  hybrids `on-restoration — <CMD> (<NOTE>)` became `cd <lane> && <CMD>  # on-restoration — <NOTE>`,
+  and the 6 cwd-dependent lines gained the prefix; `git diff --numstat` is `1 1` on each of the
+  29 files. The 23 fail-closed lines still fail closed, now against the documented absent bases
+  (exit 2 → 1), not a syntax error.
+- **C1 disclosed limits.** (i) C2's two entries take the audited surface from 35 to 37 files, so
+  the frozen `lines=35` literal is reported for the frozen surface while the final tree measures
+  `lines=37`; both receipts are produced by the same instrument digest. (ii) The counter was
+  repaired after the freeze: a mutation-tester showed the frozen three-limb predicate reachable
+  by degenerate lines (`cd <lane> && true`, `test -e <own file>`, `--selftest`); four strict
+  limbs and a completeness rule now sit beside the frozen three, and the degenerate controls are
+  `--selftest` fixtures. (iii) The `executes/gated/broken` classes make "37/37 form-conformant;
+  14 execute today, 23 gated" the honest sentence — never "37 entries re-verified today".
+- **C2 coverage — F10 admitted on five captures, entries 0 → 2.** Counters:
+  `awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md` → 9 → 10;
+  `grep -lE '^source: S0(3[6-9]|[4-9][0-9])' corpus/knowledge/*.md | wc -l` → 0 → 2;
+  census → exit 0, rows 40. Entries: `vendor-disclosure-policies-as-corpus-objects.md`
+  (S036–S039) and `vendor-disclosure-policy-commitments-crosswalk.md` (S040 crosswalked against
+  S036/S038/S039). Registry 35 → 40 (S036–S040, tier A, mined 23 → 28). Manifest 5 records /
+  40 assertions, all `occurrences=1`; `frontier-recheck-count.py` entries=12 pass=12 exit=0.
+- **Assimilation (§10).** Package read-only; id collision check: 5 ids (S031–S035), guard proved
+  on an indented fixture. Staged → lane: S055→S036, S056→S037, S057→S038, S060→S039,
+  S068→S040. Admitted 5 rows; refused the staged `vendor-cvd-policy-crosswalk-2026-10-23.md`
+  (Q3: "two conditions" is four in its own bytes of record; Q7: prose recheck; F20 row does not
+  exist). Five further staged entries not adopted (id collisions in the S031–S035 zone and
+  ground rows F11/F19/F20 that do not exist). The claims.json planned reject reason ("Cisco
+  unreachable") was falsified by this round's capture log and corrected.
+- **Routed defects D24-1…D24-5 — closed.** D24-1: this entry and the report cite the lane HEAD
+  at write time. D24-2: one number, 76 assertions over 19 records, with its counting command in
+  `corpus/instruments/README.md`; SCORECARD corrected; the round-24 lesson carries an appended
+  erratum (R9). D24-3: the bound-64→8 mutant is now measured on the landed bytes (mutant
+  `88122e10…`: dispatch 8/8, containment 24/24 — `.ufo/waves/round-25/d24-3/receipt.txt`).
+  D24-4: one reconciling sentence in the round-25 lesson, receipt as authority. D24-5:
+  cwd dependence 6 → 0.
+- **Census.** Before: exit 0, rows 35, A=32 B=1 C=2, mined=23 queued=9 rejected=3, W04 ×2
+  (S028/S029 pre-existing). After: exit 0, rows 40, A=37 B=1 C=2, mined=28 queued=9 rejected=3,
+  same two W04, no new warnings.
+- **Waves.** Two v1 waves. Wave 1 `kasegi-r25-build`: 38 seats (reviewer 12, scout 7,
+  executor 5, scribe 5, critic 4, mutation-tester 2, connector 1, sentinel 1, simplifier 1);
+  wave 2 `kasegi-r25-falsify`: 32 seats (reviewer 16, critic 7, scout 4, mutation-tester 2,
+  simplifier 1, sentinel 1, connector 1), dispatched after wave 1 against 32 distinct attack
+  items. Total 70 seats. Wave-2 reports are under `.ufo/waves/round-25/wave2/`; final
+  dead/refused counts are from `wave2/swarm-registry.json` and `wave2-dispatch.json`.
+- **Tooling.** No tool installed or upgraded; no pacman transaction attempted.
+- Final wave-2 correction: role mix is reviewer 16, critic 7, scout 4, mutation-tester 2,
+  simplifier 1, sentinel 1, connector 1 (32 total); all 32 reports landed, 0 dead seats, 0
+  dispatch refusals. The final round-25 capture manifest has 5 records / 40 assertions after
+  adding the missing S036 third-party-products assertion (anchor 15); all source rechecks exit 0.

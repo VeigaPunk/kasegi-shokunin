@@ -1,0 +1,13 @@
+L1   liveness expect=INTERNAL         actual=GONE             FAIL path_check=missing-path
+     also expect=INTERNAL         actual=INTERNAL         PASS
+L2   liveness expect=INTERNAL         actual=GONE             FAIL path_check=missing-path
+L3   liveness expect=INTERNAL         actual=INTERNAL         FAIL path_check=path-missing-on-disk
+L4   liveness expect=INTERNAL         actual=INTERNAL         FAIL
+     also expect=MIRROR-EQUIVALENT actual=GONE             FAIL path_check=missing-path
+C1   control  expect=INTERNAL         actual=INTERNAL         PASS
+C2   control  expect=GONE             actual=GONE             PASS
+C3   control  expect=INTERNAL         actual=INTERNAL         PASS
+C4   control  expect=MIRROR-EQUIVALENT actual=MIRROR-EQUIVALENT PASS
+     also expect=MIRROR-EQUIVALENT actual=MIRROR-EQUIVALENT PASS
+cases=8 pass=4 exit=1
+sha256 resolver=690153adc3e39f1e86317bd7b4eeb3b04ece5b4beb55f50111d8e98e7ff3ea2d matrix=fef0f02d6d64cfb68702d245ecd156b6bb7eea95115c2a94216a10f8f9414c8c checker=acbb687094f0fedb3517c744f0bcda68a4edd96ec760087e667fc70c6a0569e1

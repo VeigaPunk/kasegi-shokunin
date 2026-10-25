@@ -108,4 +108,4 @@ tag conflicts degrade to telemetry, not corruption.
 
 source: [lost-tree] ~/Projects/bounties/ops/import-board.mjs:1-258, ops/finalize-all.mjs:1-80, ledger/imports.jsonl, and claims/ verification.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/intake-and-finalize.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/intake-and-finalize.md  # on-restoration — fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

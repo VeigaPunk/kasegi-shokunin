@@ -1,7 +1,7 @@
 # Authorization, Safe Harbor, and Scope
 source: S006 — https://docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq — “How to Enable Safe Harbors (Program Owners & Admins)”
 verified-at: 2026-10-19
-recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S006 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S007 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S008
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S006 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S007 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S008
 
 ## Rule
 For a program record, preserve safe-harbor language, the explicit asset scope, the testing grant, and prohibited methods as separate observations.

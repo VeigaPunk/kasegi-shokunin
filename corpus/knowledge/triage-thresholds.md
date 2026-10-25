@@ -484,4 +484,4 @@ every numeric claim above carries a source line or a quoted command output.
 
 source: [lost-tree] ~/Projects/bounties/ops/{claim-check,ev-report,fleet-dispatch,shared}.mjs and bounty-map/schema.json; SKILL.md pin fc6d398 as lane snapshot.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/triage-thresholds.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/triage-thresholds.md  # on-restoration — fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

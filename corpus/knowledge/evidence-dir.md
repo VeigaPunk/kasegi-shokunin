@@ -88,4 +88,4 @@ stopped_at_transition, reason, no_submission_performed:true}`.
 
 source: [lost-tree] ~/Projects/bounties/evidence/ census (592 program directories), ops/fleet-dispatch.mjs, docs/plan-round0.md, and evidence exemplars.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/evidence-dir.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/evidence-dir.md  # on-restoration — fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

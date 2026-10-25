@@ -65,4 +65,4 @@ receipts, reviewer distinctness, secret + attribution subchecks
 
 source: [lost-tree] ~/Projects/bounties/fleets/mission-template.md, deliverable contract section; verified against claims/cantina-pendle/ingestion-20260915/ and claims/bugcrowd-seek/honest-zero/.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/claim-package-contract.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && python3 corpus/instruments/anchorcheck.py corpus/knowledge/claim-package-contract.md  # on-restoration — fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

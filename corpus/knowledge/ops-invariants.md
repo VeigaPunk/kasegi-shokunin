@@ -138,4 +138,4 @@ Display-only: authority stays with `~/Projects/the-bounty-hunter/ops/fleet-dispa
 
 source: [lost-tree] ~/Projects/bounties/ops/{shared,validate,registry-check,reroute-drill,check-freshness,sighting,sighting-board,sighting-dispatcher,sighting-missions}.mjs/.sh; [lost-base] ~/Projects/the-bounty-hunter/.omp/agents/.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/ops-invariants.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/ops-invariants.md  # on-restoration — fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15

@@ -94,4 +94,4 @@ hands back the URL/ID and the fleet records the SUBMITTED transition into
 
 source: [lost-tree] ~/Projects/bounties/docs/claim-ready-index.md at committed refresh 81326214; [lost-base] ~/Projects/the-bounty-hunter/ops/claim-check.mjs and package status/checklist reads.
 verified-at: 2026-09-28
-recheck: on-restoration — test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/operator-queue.md (fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -d ~/Projects/bounties && test -d ~/Projects/the-bounty-hunter && python3 corpus/instruments/anchorcheck.py corpus/knowledge/operator-queue.md  # on-restoration — fails closed today: base absent since 2026-09-28; not re-verifiable; re-scope is L0 kasegi round-15
