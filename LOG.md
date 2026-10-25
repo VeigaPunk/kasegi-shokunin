@@ -1110,3 +1110,42 @@ no live-target, signed-URL or injection findings.
 - Change: `README.md` created (lane-header convention) with a `**Wiki:**` link to https://app.devin.ai/org/veigapunk/wiki/VeigaPunk/kasegi-shokunin?branch=master.
 - Evidence: the org's Devin wiki index lists this repo's generated wiki; sibling lane READMEs carry the same `**Wiki:**` header.
 - Documentation-only change; no round run, no axis moved, no verdict changed.
+
+## 2026-10-25 — round 23: detector soundness + F06–F08 admission (attempt 2)
+
+- Frozen claims unchanged (`.ufo/waves/round-23/claims.json`, base `922a4dde`):
+  C1 depth:verifiability mirror-fallback soundness; C2 coverage F06–F08 0/3 → 3/3.
+  Lane tip at attempt start `1fafde8f11454f3b0b98ab7f2b2e640aaf7f399a` (inherited
+  checkpoint `8bf9807`, "policy-paused, unadmitted, no task resumption").
+- C1 landed: `corpus/instruments/resolve.py` gains `bounty_suffix()` (exact-root
+  boundary; `bounties-x` is an ordinary other root) and applies
+  `under_mirror(realpath)` to the bounty and relative mirror fallbacks. Counter:
+  new `corpus/instruments/mirror-containment-check.py` replays the frozen
+  13-case `mirror-containment-fixtures.json` on real copied CLI bytes. Baseline
+  `922a4dd` bytes: escape **0/6 GONE**, matrix 7/13, exit 1 (do-nothing control,
+  `.ufo/waves/round-23/c1-baseline.json`). Landed bytes: escape **6/6 GONE**,
+  controls 7/7, **13/13, exit 0** (`.ufo/waves/round-23/c1-fixed.json`). Both runs
+  print `matrix_sha256=5e61a33e…b5e76a9`.
+- C1 no-harm guard: frozen `git archive 922a4dd` export run through both detectors
+  — `changed=0 added=0 dropped=0`, identical summaries
+  (`distinct=1589 … all=208/1589`). `mirror=0` on this host makes that diff
+  vacuous; published as vacuity, the matrix carries the evidence.
+- C2 landed: `corpus/source-snapshots/round-23/manifest.json` minted (19 quote
+  assertions, three snapshot digests). The three published rechecks now exit 0
+  (`S018`, `S029`, `S030`); failing controls exit 1/2/1 (flipped digest, missing
+  source, fabricated quote). `corpus/README.md` § Frontier F06–F08 flipped
+  `queued → admitted` with entries and current sources (S018; S030 supersedes
+  S022; S029 supersedes S024). Counts: F06–F08 **0 → 3**, frontier **5/8 → 8/8**.
+- Mistakes mined: M6 (inherited state presented as landed; the fix had to be
+  re-implemented), M7 (F08 Article 71 quote was a paraphrase — corrected to
+  `This Regulation shall apply from 11 December 2027.`), M8 (`<u>` markup in S030's
+  4.1.9 line now disclosed), M9 (frozen C1 predicate vs literal-hit carve-out,
+  pinned as a control), M10 (guard vacuity disclosed), M11 (entry recheck pointed
+  at a manifest that did not exist). All in `corpus/lessons/round-23.md`.
+- Census: `scripts/sources-census.sh validate --root … kasegi` exit 0 (30 rows,
+  W04 warnings on the S028/S029 reused URLs).
+- Waves: wave 1 inherited (`kasegi-r23-build`, 64 seats, 44 reports); wave 2
+  `kasegi-r23-falsify` (36 seats, 19 attack roles) validated under the v1 policy,
+  refused once at the host job limit (`.ufo/waves/round-23/falsify/refusal-1.json`),
+  then dispatched intact after capacity freed.
+- Lane commit: `953c27880a97e8d3aaf8fac44c97e0252cddcddf` (round-23 work).

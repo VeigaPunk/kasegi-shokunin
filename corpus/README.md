@@ -2,7 +2,7 @@
 
 Proprietary memory for the bounty & security research domain. Everything here
 was read from `/home/vgpnk/Projects/bounties` on 2026-09-28; each entry names
-its source. No generic filler. [r22 correction: this holds for the 25 legacy entries only; the five round-22 entries (Frontier F01–F05) were read from public sources S001–S015 on 2026-10-19 — see SOURCES.md]
+its source. No generic filler. [r22 correction: this holds for the 25 legacy entries only; the five round-22 entries (Frontier F01–F05) were read from public sources S001–S015 on 2026-10-19 — see SOURCES.md; r23 correction: the three round-23 entries (Frontier F06–F08) were read from public sources S018, S031 and S029 opened 2026-10-20 and 2026-10-25 — 33 entries in total]
 
 ## Coverage map
 
@@ -42,6 +42,9 @@ its source. No generic filler. [r22 correction: this holds for the 25 legacy ent
 | Citation-base vocabulary (D6; previously unmapped) | knowledge/citation-bases.md | kaika W1 STATE dossier defect D6 (fleet-ledger .ufo/waves/kaika-w1/kasegi-state.md, outside this repo); existing corpus vocabulary |
 | Admission bar + source registry | QUALITY.md, SOURCES.md | Round-22 admission and source-registry contract |
 | Lessons (r22 correction) | lessons/round-1.md … lessons/round-22.md (25 files; gaps at 2, 16, 18, 19) | The old Lessons row understated coverage: current files include rounds 17, 20, 21, and 22. |
+| Multi-party coordination (round 23) | knowledge/multiparty-vulnerability-coordination.md | S018 — public primary, opened 2026-10-20 |
+| CNA assignment rules, current version (round 23) | knowledge/cna-assignment-and-vulnerability-rules.md | S031 (4.2.6, effective 2026-10-20) supersedes S030 — public primary, opened 2026-10-25 |
+| CRA manufacturer reporting duties (round 23) | knowledge/cra-manufacturer-reporting-duties.md | S029 — public primary, opened 2026-10-20 |
 ## Known gaps
 
 - **`~/Projects/bounties` is GONE** (removed 2026-09-28T23:51:31Z, actor
@@ -198,7 +201,10 @@ Correction (2026-10-19): corpus/QUALITY.md now exists; the preceding closing par
 | F04 | AI-assisted finding validation | admitted | knowledge/ai-assisted-finding-validation.md | S009, S010, S011, S012 | Preserve independent validation and source-specific limitations. |
 | F05 | CWE Top 25 2025 methodology | admitted | knowledge/cwe-top25-2025-methodology.md | S013, S014, S015 | Treat the ranking as a methodology-specific prioritization, not a universal risk order. |
 | F06 | Multi-party CVD — FIRST guidelines v1.1 | admitted | knowledge/multiparty-vulnerability-coordination.md | S018 | Record each party's role and relationship; an upstream fix is not downstream evidence. |
-| F07 | CVE CNA operational rules | admitted | knowledge/cna-assignment-and-vulnerability-rules.md | S030 (supersedes S022) | Separate technical impact, assignment scope and identifier count; do not reuse 4.1.0 section numbers. |
-| F08 | EU Cyber Resilience Act reporting duties | admitted | knowledge/cra-manufacturer-reporting-duties.md | S029 (supersedes S024) | Distinguish manufacturer statutory tracks from researcher disclosure; Article 14 applies from 2026-09-11. |
+| F07 | CVE CNA operational rules | admitted | knowledge/cna-assignment-and-vulnerability-rules.md | S031 | Separate technical impact, assignment scope and identifier count; do not reuse 4.1.0 section numbers. |
+| F08 | EU Cyber Resilience Act reporting duties | admitted | knowledge/cra-manufacturer-reporting-duties.md | S029 | Distinguish manufacturer statutory tracks from researcher disclosure; Article 14 applies from 2026-09-11. |
 
 The original domain-root map is exhausted: 0/18 surfaces are present.
+That sentence describes the lost `/home/vgpnk/Projects/bounties` surface set only; the
+public-practice frontier above is a separate denominator (8/8 admitted at round 23) and
+is not counted into the 0/18 figure.

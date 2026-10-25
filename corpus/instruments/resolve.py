@@ -26,11 +26,16 @@ suffix (`:NN`, `:NN-MM`, and the r15-tolerated `::symbol` form) -> BASE. Then:
   domain BOUNTY   BASE under the EXACT root `~/Projects/bounties` (or
                   /home/<u>/Projects/bounties; root-only or a `/`-delimited
                   descendant — a prefix sibling `bounties-x/...` is an ordinary
-                  other root, and a `../` segment never leaves the root)
-                  -> exists? RESOLVES : same relative path exists under
+                  other root, so it never enters this domain)
+                  -> literal exists? RESOLVES (CARVE-OUT: literal existence is
+                     reported as written, even when a `../` segment resolves
+                     outside the bounty root; r23 confines the mirror credit
+                     only, and the matrix pins this class as a control)
+                  -> else same relative path exists under
                      ~/Projects/the-bounty-hunter AND realpath-confined there?
-                     MIRROR-EQUIVALENT : GONE. A parent-traversal or symlink
-                     escape outside the selected mirror is never credited.
+                     MIRROR-EQUIVALENT : GONE. No mirror credit is given to a
+                     parent-traversal or symlink escape outside the selected
+                     mirror.
   domain OTHER    BASE starts with `~` or `/` (any other root, e.g.
                   ~/Projects/origin-work/..., /tmp/kasegi-r1*)
                   -> exists? RESOLVES : GONE, EXCEPT that an EXACT canonical
@@ -49,7 +54,10 @@ suffix (`:NN`, `:NN-MM`, and the r15-tolerated `::symbol` form) -> BASE. Then:
                   ran with the bounties tree as its root, so bare
                   `INGESTION.md` / `evidence/...` cites were bounty-root
                   relative).
-                  -> exists under lane repo? INTERNAL
+                  -> exists under lane repo? INTERNAL (NOT confined: a `../`
+                     segment or a repo symlink resolving outside the lane
+                     directory is still reported INTERNAL, by prior design;
+                     r23 did not change this branch and the matrix pins it)
                   -> else exists under mirror? MIRROR-EQUIVALENT, only when
                      the resolved path is realpath-confined inside the mirror;
                      `../` walk-outs and symlink escapes are GONE
@@ -62,8 +70,9 @@ suffix (`:NN`, `:NN-MM`, and the r15-tolerated `::symbol` form) -> BASE. Then:
     glob     `<...>` placeholders rewritten to `*`, then glob.glob(sorted),
              first match wins (a glob with zero matches does NOT resolve)
   So every class except GONE resolves by construction; INTERNAL is assigned
-  only to lane-repo-relative tokens that resolve against the lane repo
-  (non-resolving relative tokens are GONE, sub-kind `rel-unresolved`).
+  to lane-repo-relative tokens that resolve against the lane repo, including
+  a `../` walk-out past it (unconfined by design — see domain REL); a
+  non-resolving relative token is GONE, sub-kind `rel-unresolved`.
 
 Noise sub-census (transparency, not a class): GONE tokens that are artifacts
 of the path-like rule rather than citable paths — `regex` (PCRE/JS literal
@@ -208,7 +217,7 @@ def bounty_suffix(base):
             if base == root:
                 return ""
             if base.startswith(root + "/"):
-                return base[len(root) + 1:]
+                return base[len(root) + 1:].lstrip("/")
     return None
 
 
@@ -228,6 +237,9 @@ def classify(tok, lane_root, mirror_root):
         m, p = exists_any(base)
         if m:
             return "RESOLVES", p, m, dom
+        # Root-only bounty citations keep their pre-r23 verdict (no mirror
+        # mapping); r23 changes the confinement of fallback credit, not which
+        # citations earn it.
         m, p = exists_any(os.path.join(mirror_root, suffix)) if suffix else (None, None)
         if m and under_mirror(p, mirror_root):
             return "MIRROR-EQUIVALENT", p, m, dom
@@ -347,8 +359,8 @@ def main(argv):
         num = [r for r in sel if r["cls"] != "GONE"]
         return len(num), len(sel)
 
-    maxfiles = max(r["nfiles"] for r in rows)
-    maxocc = max(r["occ"] for r in rows)
+    maxfiles = max((r["nfiles"] for r in rows), default=0)
+    maxocc = max((r["occ"] for r in rows), default=0)
     gone20 = sorted([r for r in rows if r["cls"] == "GONE"],
                     key=lambda r: (-r["nfiles"], -r["occ"], r["cite"]))[:20]
     mirror_list = sorted([r for r in rows if r["cls"] == "MIRROR-EQUIVALENT"], key=lambda r: r["cite"])

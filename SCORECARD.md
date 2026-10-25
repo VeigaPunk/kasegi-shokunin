@@ -424,3 +424,32 @@ roles) validated under the v1 policy and was refused at dispatch by the host job
 limit (`Background job limit reached (100)`, all lanes); refusal filed at
 `.ufo/waves/round-23/falsify/refusal-1.json`. No seat replaced, split or shrunk,
 so this round's fresh attack wave did not run.
+
+### Round 23 — errata after the falsify wave (2026-10-25)
+
+Append-only corrections to the result table above; the earlier cells stand as the
+first landing's assessment.
+
+- **C1 measurement superseded.** The finalized matrix has **20 cases (9 escape, 11
+  control)**, `matrix_sha256=4e39f65c…c2400b`. Do-nothing control (baseline
+  `922a4dd` bytes): escape **0/9 GONE**, controls 11/11, 11/20 pass, exit 1. Landed
+  bytes: **20/20, exit 0**, `resolver_sha256=8dd45bc8…8848`. The earlier "6/6,
+  13/13" cells describe the first matrix and are kept as history. The checker now
+  also asserts the `resolved_path` column and records `checker_sha256`.
+- **C1 scope wording.** The axis move is **mirror-fallback soundness**, not
+  "detector soundness": the lane-relative `INTERNAL` branch is unconfined and the
+  bounty literal hit is reported as written. Both are pinned as controls
+  (`path_tolerance: carve-out` makes the lane escape visible in every receipt) and
+  named in `resolve.py`'s policy docstring.
+- **C2 sources cell corrected.** F07's admitted authority is **S031** (CNA
+  Operational Rules 4.2.6, approved 2026-10-14, effective 2026-10-20), which
+  supersedes S030 (4.2.0) and, through it, S022. The r22 plan text above that names
+  S022/S024 as the round-23 admission sources is historical; the registry rows
+  S022/S024 remain `queued` and their `teaches` cells are unchanged (R8).
+- **C2 count command.** `grep -cE` was column-agnostic; the frozen counter is now
+  `awk -F'|' '$2 ~ /^ *F0[1-8] / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}'
+  corpus/README.md` → 8 (F06–F08 variant → 3). Receipts: four rechecks exit 0;
+  three failing controls exit 1/2/1.
+- **F01–F05 residual debt named.** Their `recheck:` lines exit 2 `not-listed`
+  (no capture exists for S001–S015). Not repaired this round; disclosed in
+  `corpus/lessons/round-23.md`.

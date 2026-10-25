@@ -234,3 +234,60 @@ SOURCES: registry rows 27 → 30 (tier A=28, C=2; status mined 18, queued 9,
 rejected 3; 18 rows carry `used-by`), derived with
 `grep -cE '^ {0,3}\|[[:space:]]*S[0-9]{3,}'` on `git show 922a4dd:corpus/SOURCES.md`
 (27) and on the working registry (30) plus a cell census of tier/status/used-by.
+
+### Post-attack repairs — falsify wave `kasegi-r23-falsify` (36 seats)
+
+The wave ran after the first landing and attacked the landed bytes. Every repair
+below was applied before the final commit; the receipts named are the final ones.
+
+| seat finding | defect | repair landed |
+|---|---|---|
+| RerunMatrix F2, SentinelChecker F3 | the checker read only `class`; the `resolved_path` column was never asserted, so a fabricated path scored 13/13 | checker now reads `resolved_path` and asserts it per class (GONE ⇒ empty; MIRROR-EQUIVALENT ⇒ inside mirror; INTERNAL ⇒ inside lane; RESOLVES ⇒ inside the case root) |
+| SentinelChecker F1 (HIGH) | fixture-supplied names were joined without confinement → arbitrary host mkdir/open/symlink/unlink | `safe_path()` rejects absolute names, `..` segments and parents resolving outside the case root; symlink targets must stay inside it |
+| SentinelChecker F4/F6 | timeout killed only the child; one bad case aborted the matrix | `start_new_session` + `killpg` on timeout; per-case exception containment |
+| SentinelChecker F5/F7, RerunMatrix F1 | unbounded stored stdout, receipt not byte-reproducible, no checker identity | stdout capped and case-root-masked, TSV read capped, receipt records `checker_sha256` and `generated_at` |
+| AddHocAbsForm F1 | the matrix pinned only the tilde spelling of the bounty root | added `absolute-bounty-fallback-control` and `absolute-prefix-sibling-confusion` |
+| LiteralCarveout, AnchorDebt | the literal-hit carve-out and the unconfined lane branch were invisible in the detector's own contract | `resolve.py` policy docstring rescoped: mirror credit only; literal `RESOLVES` and the lane-relative `INTERNAL` branch named as carve-outs |
+| MatrixFreezeOrder F3 | no case exercised the expansion branches the fix touched | added brace/glob escape cases and a confined-brace control |
+| Q2TierSupport F (primary) | **F07's "current" CNA rules were already superseded on the day it was opened**: v4.2.6 (approved 2026-10-14, effective 2026-10-20) replaces v4.2.0, and 4.2.11 changed SHOULD→MUST | new row S031 + normalized `pdftotext` snapshot `S031.txt` + 10 manifest assertions; F07 entry rewritten to 4.2.6 with no page claims (rule numbers only); README F07 sources cell → S031; S030/S022 kept as historical rows |
+| HashCheck V1, S029Quotes | the 14(2)(a) assertion was non-unique (an incident-only excerpt satisfied it) | added `art14-2a-track-context` plus the 14(4)(a)/(4)(b) assertions and their entry quote rows |
+| RecheckAsWritten F-RA-1 | the published `recheck:` commands only ran from the repo root | every `recheck:` line now begins `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin &&`; receipts executed from `/tmp` |
+| FrontierAdmitForm F1/F2, FrontierSources F1/F3 | admitted entries had no Coverage-map row; supersession parentheticals in the sources cells; README provenance line stopped at F01–F05 | three Coverage-map rows appended, cells narrowed to bare ids, provenance line extended |
+| DenomCount D-1 | the frontier counter was column-agnostic and spacing-brittle | field-exact counter published: `awk -F'|' '$2 ~ /^ *F0[1-8] / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md` → 8 (F06–F08 variant → 3); `uniq -d` duplicate check → 0 |
+| CnaVersionDate | inherited `build/CnaFix.md` had already found the v4.2.6 supersession on 2026-10-20 and no corpus file disclosed it | disclosed here and in the F07 entry; see M13 |
+
+**Corrected C1 measurement (supersedes the 13-case numbers earlier in this lesson;
+they stay as history).** Matrix is now 20 cases: 9 escape, 11 control.
+`matrix_sha256=4e39f65c…c2400b`, `resolver_sha256=8dd45bc8…8848` (fixed),
+`d6a3c3f1…f903` (baseline), `checker_sha256=53742c8d…9529`. Baseline (do-nothing
+control): escape **0/9 GONE**, controls 11/11, 11/20 pass, exit 1. Fixed: **20/20,
+exit 0**. The lane-relative `INTERNAL` carve-out is now pinned with its escape
+visible (`path_tolerance: carve-out`, receipt line `carve-out:path-outside-internal`),
+not silently tolerated. The two literal-present controls pin the `RESOLVES`
+carve-out; both absolute-arm cases pin the `/home/vgpnk/...` spelling.
+
+**Corrected C2 measurement.** Four sources now recheck exit 0 (`S018`, `S029`,
+`S030`, `S031`; 7/7/8/10 assertions plus digests) — receipts
+`.ufo/waves/round-23/c2-recheck-S0xx.txt`, controls `.ufo/waves/round-23/c2-controls.txt`
+(digest 1, missing 2, fabricated quote 1). F07 now rests on the current rule set,
+so the "current CNA operational rules" clause of C2 is true at the measured date
+rather than 6 days stale.
+
+**Residual C2 debt (F01–F05).** The five r22 entries' `recheck:` lines point at this
+round's manifest, which lists S018/S029/S030/S031 only, so each exits 2
+`not-listed` (reproduced). That is fail-closed, but it is not a passing recheck:
+those five admissions rest on live-source reads with no capture. Naming it here is
+the round's disclosure; fixing it needs fifteen snapshots, which is a later round's
+work, not a round-23 claim.
+
+### Mistakes — captured by the falsify wave
+
+| id | class | evidence pointer | captured-by | fix |
+|---|---|---|---|---|
+| M12 | Fixture author controls the fixture root, not the host | SentinelChecker F1 reproduced a host-file unlink from a doctored matrix | Q6-adjacent safety rule this lane lacked for its own instruments | `safe_path()` + symlink-target confinement; a doctored matrix now fails per case with `case-error:ValueError:unsafe-` |
+| M13 | An inherited seat finding that never reached the corpus | `build/CnaFix.md` (mtime 2026-10-20T18:47-03) names the v4.2.6 supersession; no `corpus/` file disclosed it until now | Q2 (current-scope support) applied at admission time | F07 moved to S031; the inherited report is cited in this lesson as the finder, not as authority |
+| M14 | A passing counter that cannot see a wrong answer | DenomCount D-1: `grep` matched `admitted` in any column; F02 mutated to `candidate` + note `admitted` still counted | R2 (a rate cites its derivation) | field-exact `awk` counter plus a `uniq -d` duplicate check |
+| M15 | An assertion satisfiable by the wrong passage | HashCheck V1: the 24-hour phrase exists in both Article 14 tracks | Q3 (exact quote) extended to uniqueness where the words repeat | added the track-context assertion and the 14(4)(a)/(4)(b) rows |
+| M16 | Receipts that cannot be re-derived byte-for-byte | RerunMatrix F1: scratch paths in `cli_stdout` made every receipt unique | R3 (an instrument verdict names its definition and replays) | root masked to `<CASE>`, checker sha and UTC timestamp recorded |
+| M17 | A frozen predicate narrower than a fixture set reads | Causal/LiteralCarveout: `nature` decides which pin applies, and the frozen text never says so | R7 | matrix `note` fields and this lesson state the partition; the frozen text is untouched |
+| M18 | Undisclosed capture gaps stated as facts | S018Quotes: no version banner in the capture; S029Quotes: no OJ date line; S030Quotes: page markers missing for pages 3–7 | Q3's "exact location" read literally | each gap disclosed in its entry (F06 capture-gap paragraph; F08 OJ note; F07 page claims removed) |

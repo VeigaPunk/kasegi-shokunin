@@ -1,7 +1,7 @@
 # CRA manufacturer reporting duties are not researcher disclosure deadlines
 source: S029 — https://eur-lex.europa.eu/eli/reg/2024/2847/oj/eng — Regulation (EU) 2024/2847, OJ 20.11.2024; Articles 14, 15, 16 and 71
 verified-at: 2026-10-20
-recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S029
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S029
 
 ## Rule
 
@@ -24,7 +24,7 @@ All durations below are Article 14 outer limits, subject to “without undue del
 where stated; an outer limit is not permission to wait. The vulnerability and
 incident tracks have different final-report triggers.
 
-| Trigger and actor | Stage | Clock in official text | Located support |
+| Trigger and actor | Stage | Clock (paraphrase; exact wording in the quotes table) | Located support |
 |---|---|---|---|
 | Manufacturer becomes aware of an actively exploited vulnerability | Early warning | Without undue delay; within 24 hours of awareness | Article 14(2)(a) |
 | Same vulnerability | Vulnerability notification | Without undue delay; within 72 hours of awareness, unless relevant information already provided | Article 14(2)(b) |
@@ -45,9 +45,17 @@ platform is currently operating or a direction to submit anything.
 | Article 14(2)(a) | “within 24 hours of the manufacturer becoming aware of it” |
 | Article 14(2)(b) | “within 72 hours of the manufacturer becoming aware of the actively exploited vulnerability” |
 | Article 14(2)(c) | “no later than 14 days after a corrective or mitigating measure is available” |
+| Article 14(4)(a) | “an early warning notification of a severe incident having an impact on the security of the product with digital elements, without undue delay and in any event within 24 hours of the manufacturer becoming aware of it” |
+| Article 14(4)(b) | “within 72 hours of the manufacturer becoming aware of the incident” |
 | Article 14(4)(c) | “within one month after the submission of the incident notification under point (b)” |
 | Article 71 | “Article 14 shall apply from 11 September 2026” |
 | Article 71 | “This Regulation shall apply from 11 December 2027.” |
+
+The 24-hour phrase in the first exact-quote row is not unique in the document: the
+same words appear in the incident track at Article 14(4)(a) (`S029.txt:20`). The
+location column carries the track attribution; a substring recheck cannot
+distinguish the two rows, so read the attribution with the table, not from the
+bare match.
 
 ## Falsifiable local check
 
@@ -69,6 +77,10 @@ persons; it does not establish an asset-scope or testing grant. No legal
 protection or compliance conclusion is inferred here.
 
 ## Limits
+
+The captured excerpt carries no OJ date line: the `OJ 20.11.2024` attribution in
+this entry's `source:` header rests on the ELI URL (`/eli/reg/2024/2847/oj/eng`)
+and the 2026-10-20 opening, not on the excerpt bytes.
 
 Documentation-only: no target contact, scanning, login, report submission, or
 account operation. The recheck compares a pinned captured excerpt and exact
