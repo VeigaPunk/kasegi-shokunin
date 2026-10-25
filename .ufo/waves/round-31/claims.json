@@ -1,0 +1,57 @@
+{
+  "lane": "kasegi",
+  "round": 31,
+  "attempt": 1,
+  "base": "b374febbb33ccadade78a787279707fd5d2e6e1d",
+  "frozen_at_utc": "2026-10-25T23:20:00Z",
+  "axes_owned": ["depth:density", "depth:verifiability", "coverage"],
+  "saturation": {"line": "9/10 per owned axis", "window": "N=3"},
+  "lowest_non_retired_axis": "depth:verifiability (4)",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "score_before": 4,
+      "score_after": "held 4",
+      "claim_type": "measured",
+      "surface": "Discrimination of the lane's three recheck-family instruments (recheck-audit.py, source-recheck.py, frontier-recheck-count.py): a new committed one-limb mutation ledger (corpus/instruments/limb-ledger.json) and counter (corpus/instruments/limb-mutation-check.py) prove each named limb load-bearing on the landed bytes (R13); routed defect M30-1 (round-30 B2 fixture trips B1 first) is closed by a stem-correct B2 row",
+      "predicate_sentence": "limb-mutation-check.py --ledger limb-ledger.json prints, on the landed bytes, `limbs=13 killed=13 survivors=0` and `controls=3 rejected=3` and exits 0, where the 13 limbs are recheck-audit parse, cwd, paths, cdroot, instrument, own, completeness, expect-missing, expect-unexpected (9), source-recheck stem-mismatch and occurrence-not-unique (2), frontier-recheck-count missing-entry and duplicate-entry (2), a limb counts killed only when its one-limb mutant (an exact-once find/replace patch of the instrument bytes that still compiles) makes the limb's kill command differ from the unmutated run, and the 3 controls are a no-op patch, a patch that does not compile, and a semantically equivalent patch, each of which the counter must report as rejected or survivor",
+      "counter_commands": [
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/limb-ledger.json; echo \"counter_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py --quiet; echo \"audit_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --selftest; echo \"sr_selftest_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/frontier-recheck-count.py; echo \"harness_exit=$?\""
+      ],
+      "kill_rule": "Fails if any of: the counter is absent or exits non-zero; its output lacks the exact lines `limbs=13 killed=13 survivors=0` and `controls=3 rejected=3`; it prints fewer than 13 lines beginning `LIMB ` or any LIMB line shows live-result == mutant-result; any LIMB row's find text does not occur exactly once in its instrument; OR the real corpus regresses (recheck-audit.py --quiet must still print `strict pass=N/N` with N equal to the committed expected-entry count and exit 0; source-recheck.py --selftest failures=0; frontier harness pass == entries, exit 0); OR the closure re-derives any one ledger patch by hand (apply the find/replace to a copy, run the row's kill command) and the result differs from the counter's LIMB line.",
+      "do_nothing_control": "Base bytes b374febbb (recheck-audit.py sha256 3fc0d751…, source-recheck.py 33602a9d…, frontier-recheck-count.py aa60b581…): the counter and ledger do not exist; `python3 corpus/instruments/limb-mutation-check.py` exits 2 (receipt .ufo/waves/round-31/c1-controls/before.txt). A fake counter that prints the target summary lines without running any mutant (c1-controls/fake-counter.py) meets the summary text but prints 0 LIMB lines, so the kill rule's 13-LIMB-line clause and the closure re-derivation clause reject it (receipt c1-controls/fake-counter-receipt.txt).",
+      "mutants_of_the_counter": "Attack seats must show each of these counter mutants fails the 3 controls or the LIMB-line clause: always-killed (skip the mutant run), never-run-live-baseline, count-by-exit-code-only without compile check, find-text-not-unique accepted."
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "score_before": 7,
+      "score_after": "held 7",
+      "claim_type": "measured",
+      "sourced": true,
+      "surface": "Frontier F15 'A vendor's research programme as an intake route for other vendors' bugs' (assimilation theme from merge/kasegi/: staged entry vendor-third-party-finding-coordination-2026-10-23.md, staged row S080 Microsoft Security Vulnerability Research), re-grounded this round from a fresh capture of https://www.microsoft.com/en-us/msrc/msvr (HTTP 200, 81802 B at the L1 probe) as new lane row S048, entry corpus/knowledge/vendor-third-party-finding-coordination.md, capture pinned in corpus/source-snapshots/round-31/manifest.json",
+      "predicate_sentence": "frontier admitted rows increment 14 -> 15 (F15); exactly 1 knowledge entry cites S048 on a `source:` line; the S048 row appears exactly once in the registry and registry rows increment 47 -> 48; sources census exits 0; frontier-recheck-count harness prints entries=18 pass=18 exit=0 including PASS F15 ids=S048; source-recheck exits 0 for S048 on the round-31 manifest",
+      "counter_commands": [
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && grep -lE '^source: S048 ' corpus/knowledge/*.md | wc -l",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && grep -cE '^\\|[[:space:]]*S048[[:space:]]*\\|' corpus/SOURCES.md",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo \"census_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/frontier-recheck-count.py; echo \"harness_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-31/manifest.json --source S048; echo \"recheck_exit=$?\""
+      ],
+      "kill_rule": "Fails if any of: frontier admitted != 15; entries citing S048 != 1; S048 rows != 1; registry rows != 48; census exit != 0 or a new E/W finding beyond the base W04 S028/S029 duplicate-URL warnings; harness != entries=18 pass=18 exit=0 or lacks `PASS F15`; source-recheck S048 exit != 0 or any assertion not exactly-once-or-anchored; the entry fails any QUALITY.md Q1-Q10 under the non-author reviewer; the entry does not name Microsoft as the stating party for every programme claim (Q4); OR the entry repeats ground the coverage map already holds (reviewer must show F15 is not a restatement of F06/F10 entries with the sweep command).",
+      "do_nothing_control": "Base bytes b374febbb: frontier 14, entries citing S048 0, S048 rows 0, registry rows 47, census exit 0 (W04 x2), harness 17/17, source-recheck on the absent round-31 manifest exit 2 (receipt .ufo/waves/round-31/c2-controls/before.txt). Junk-row control: a bare S048 registry row with no entry and no capture leaves entries citing S048 at 0, frontier at 14 and harness at 17/17, and the census flags its unused mined row; it cannot meet the target."
+    }
+  ],
+  "non_claim_frontier_items": {
+    "assimilation": "theme = vendor-third-party-finding coordination (staged S080 -> lane S048 by document); package entry vendor-third-party-finding-coordination-2026-10-23.md; other package entries untouched; collision check and guard proof in .ufo/waves/round-31/assimilation/",
+    "considerthese": "considerthese/2026-10-25.md proposal 2 (distance to the next score, computed from committed bytes): a read-only corpus/instruments/score-gap.py plus a ledger status flip appended to corpus/knowledge/considerthese-proposals-ledger.md; not a claim, no score move asserted",
+    "mistake": "M31-1 stale-premise: SCORECARD.md round-30 'recheck-audit open item exit=1' paragraph and missing round-30 LOG.md entry (routed defects 2 and 4 of round-30-verifier-spotcheck.md); fix = appended erratum + LOG entry + QUALITY R16 shown able to fail",
+    "routed_defects_round_30": "1 leftovers committed or discarded and named; 2 LOG entry; 3 B2 isolation (inside C1 via the stem-correct B2 limb row); 4 stale SCORECARD paragraph"
+  }
+}
