@@ -586,3 +586,22 @@ receipt index `c1-receipt-index.txt`, controls `c1-controls/`).
 **Saturation unchanged:** line 9/10 per owned axis, window N = 3. With
 depth:verifiability at 4 the lowest-axis obligation stays active. Planned round 27:
 see `## Planned` above.
+
+## Round 27 — frozen claims C1/C2 (2026-10-25) — honest stop, NOT VERIFIED
+
+Frozen before dispatch in `.ufo/waves/round-27/claims.json` (base `744a0d8`, lane tip at round
+start; no in-place edit after freeze — R25-1 complied). Before-receipts committed at
+`.ufo/waves/round-27/c1-controls/`, `c2-controls/`, `census-before.txt`. The operator ended the
+run mid-round (orchestrator wrap-up): no wave dispatched, no production byte changed.
+
+| Claim | Axis | Before | After | Verdict and evidence | Last change |
+|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest non-retired, 4) | frozen baseline: bad-fixture exit 0 (BASE-ABSENT printed); bounties-fixture 0 BOUNTIES lines; `--selftest` absent; SKILL.md exit 0, bad=0 | not reached | **NOT VERIFIED — no dispatch, instrument unchanged.** Freeze, fixtures, do-nothing receipts and the M27-1 stale-premise capture are committed; the after-state was never produced. | 27 (not verified) |
+| C2 | coverage (7) | frozen baseline: frontier admitted 11; entries citing S042: 0; census exit 0 / 41 rows; harness 14/14 | not reached | **NOT VERIFIED — no dispatch, no capture/entry/row.** The staged-package survey (S042 free id, staged S043 = lane S041) is recorded in the round-27 lesson Gate as planning only. | 27 (not verified) |
+| depth:density | 9 | 9 | 9 | **Unchanged, no harm.** `SKILL.md` and every corpus byte untouched this round; no density/anchorcheck re-run needed beyond the committed SKILL.md before-receipt (exit 0, bad=0). | r15 (held r27) |
+
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3. With depth:verifiability at 4
+the lowest-axis obligation stays active. Planned round 28: re-freeze C1/C2 with the committed
+round-27 fixtures re-run (not re-created), dispatch the build wave with reviewer seats inside it
+(round-26 routed defect 2), inline ≤25-word Gate quotes (defect 3), one canonical receipt at the
+landed digest (defect 4); carry-forward implementation notes are in `corpus/lessons/round-27.md`.

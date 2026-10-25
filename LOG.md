@@ -1311,3 +1311,26 @@ Frozen claims `.ufo/waves/round-26/claims.json` (frozen_at_utc 2026-10-25T12:27:
 - **Tools touched.** `recheck-audit.py` **expected-list contract** — limb (d), above: the audit verifies against an expected entry list, so a deleted knowledge entry is named and exits 1. `capture-source.py` **pdf kind** (`--kind pdf` via `pdftotext`, poppler 26.08.0, pre-existing): S041 capture @ `2026-10-25T12:34:17Z` — status 200, fetched 1,338,665 B → snapshot 147,267 B, sha256 `e18acbf9…`, 2,354 lines, staged at `corpus/source-snapshots/round-26/S041.txt` (executor receipt `wave1/ExecCaptureS041.md`).
 - **Gate/verdict lines (frozen counters, lane root).** C1(a) `grep -cE '^\| [^|]+ \| gate\|probe ' SKILL.md` 0 → ≥1; C1(b) `grep -cE 'selftest cases=' .ufo/waves/round-26/c1-receipt-index.txt` 0 → 1; C1(c) `grep -rnE '62 assertions\|77 assertions' corpus/instruments/README.md SCORECARD.md corpus/lessons/round-24.md | grep -v 'round-24.md:77' | wc -l` 1 → 0 (observed 0 at write); C1(d) `python3 corpus/instruments/recheck-audit.py --root <scratch-tree-with-one-knowledge-entry-deleted> --cdroot <lane-root>` exit 0 → 1 naming the deleted entry; C2 frontier `awk …` 10 → 11; C2 `grep -lE '^source: S04[0-9] ' corpus/knowledge/*.md | wc -l` 0 → ≥1; C2 `sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` exit 0. After-values are this round's targets; receipts land in `.ufo/waves/round-26/` (c1-receipt-index.txt, c1-live.json, c1-controls/, c2-controls/).
 - **Tooling.** No tool installed or upgraded; no pacman transaction attempted (host-wide pacman paused). `pdftotext` 26.08.0 present before the round; `capture-source.py`'s pdf kind uses it.
+
+## Round 27 — 2026-10-25 — claims frozen + before-measured; operator wrap-up lands an honest stop (no waves)
+
+Frozen claims `.ufo/waves/round-27/claims.json`: C1 depth:verifiability **4** (lowest non-retired,
+held) — anchorcheck.py gate soundness (exit nonzero on unverifiable verdicts; `~/Projects/bounties/`
+CITE arm; `--selftest` with one isolating fixture per limb); C2 coverage **7** (held) — F12 Japanese
+state-coordinated disclosure workflow (staged package entry `japanese-domestic-disclosure-workflow.md`;
+staged S042 → lane S042; staged S043 = lane S041). Before-measurements and do-nothing receipts
+committed (`.ufo/waves/round-27/c1-controls/`, `c2-controls/`, `census-before.txt`); fixtures were
+executed pre-freeze, which caught one stale-premise design error (M27-1: fabricated lane citations
+report BASE-ABSENT, not MISSING-FILE, on a host whose mirror root is absent — the frozen claim was
+written against the observed verdict, not the assumed one). The operator then ended the run
+(orchestrator wrap-up): **no wave dispatched, no production byte changed; both claims land NOT
+VERIFIED** (lesson `corpus/lessons/round-27.md` §Frozen claims, §Mistakes M27-1/M27-2).
+- **Before receipts (committed).** C1: bad-fixture exit 0 (BASE-ABSENT printed); bounties-fixture
+  0 BOUNTIES lines; `--selftest` FileNotFoundError exit 1; SKILL.md exit 0, bad=0.
+  C2: frontier admitted 11; entries citing S042: 0; census exit 0 / 41 rows; harness
+  `entries=14 pass=14 exit=0`; expected-list 41 lines.
+- **Census.** Before: exit 0, 41 rows, W04 ×2 (S028/S029 pre-existing). After: unchanged — the
+  registry was not touched (same bytes, same exit; re-run recorded at round-28 close).
+- **Waves.** Zero. The 32–64 v1 band and the §3 L2 floor were not exercised; no seat ran; no
+  dispatch refusal occurred. Wrap-up directive: land now, record unfinished claims honestly.
+- **Tooling.** No tool installed or upgraded; no pacman transaction attempted (host-wide pause).
