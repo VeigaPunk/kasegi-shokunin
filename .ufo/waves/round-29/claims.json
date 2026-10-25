@@ -1,0 +1,61 @@
+{
+  "lane": "kasegi",
+  "round": 29,
+  "attempt": 1,
+  "base": "7a6591c1eb8a14f427297980a96fa8bb339f29ee",
+  "frozen_at_utc": "2026-10-25T18:40:00Z",
+  "axes_owned": ["depth:density", "depth:verifiability", "coverage"],
+  "saturation": {"line": "9/10 per owned axis", "window": "N=3"},
+  "lowest_non_retired_axis": "depth:verifiability (4)",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "score_before": 4,
+      "score_after": "held 4",
+      "claim_type": "measured",
+      "surface": "anchorcheck.py --selftest completeness and hermeticity (round-28 CritC1Kill gaps: OUTSIDE-BASE has a failing fixture only for the bounties arm; ORIGIN BASE-ABSENT has no failing fixture; a git-free PATH crashes the selftest with a traceback)",
+      "predicate_sentence": "anchorcheck --selftest reports limbs=9 covered=9 (every declared verdict limb has an isolating failing fixture) and prints selftest cases=12 failures=0, exits 0, and also exits 0 when run with PATH stripped of git (clean skip, no traceback)",
+      "counter_commands": [
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/anchorcheck.py --selftest",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/anchorcheck.py --selftest | grep -E 'selftest cases=|limbs='",
+        "T=$(mktemp -d) && ln -s \"$(command -v python3)\" \"$T/python3\" && cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && env -i \"PATH=$T\" \"$T/python3\" corpus/instruments/anchorcheck.py --selftest >/dev/null 2>&1; E=$?; rm -rf \"$T\"; echo \"nogit_exit=$E\""
+      ],
+      "kill_rule": "Fails if any of: selftest cases != 12; failures != 0; limbs != 9 or covered != 9; nogit_exit != 0; or the canonical c1-receipt-index.txt lacks an instrument_sha256 line matching the committed anchorcheck.py digest.",
+      "do_nothing_control": "Baseline bytes at base 7a6591c1 (anchorcheck.py sha256 23818c1204c38ee8d1bb0c6d449dd0ffb3c9181271f14fb3d7aab25a73ee7396): grep -cE 'limbs=[0-9]+ covered=' -> 0 (no coverage assertion); git-free PATH run -> exit 1 with FileNotFoundError: 'git' traceback. Receipts in c1-controls/before.txt. Control cannot meet the target."
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "score_before": 7,
+      "score_after": "held 7",
+      "claim_type": "measured",
+      "sourced": true,
+      "surface": "Frontier F13 'Program severity ladders and reward scales' (assimilation theme from merge/kasegi/), admitted with one entry corpus/knowledge/program-severity-ladders-and-reward-scales.md citing three rows first registered this round (S043 HackerOne standard program policy set, S044 Bugcrowd VRT README, S045 Bugcrowd CWE crosswalk), each with a capture pinned in corpus/source-snapshots/round-29/manifest.json",
+      "predicate_sentence": "frontier admitted rows increment 12 -> 13 (F13), exactly 1 knowledge entry cites a row first registered this round (S043/S044/S045), registry rows increment 42 -> 45, sources census exits 0, frontier-recheck-count harness entries=16 pass=16 exit=0, and source-recheck exits 0 for each of S043/S044/S045 on the round-29 manifest",
+      "counter_commands": [
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && grep -lE '^source: S04[3-5] ' corpus/knowledge/*.md | wc -l",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && grep -cE '^\\|[[:space:]]*S04[3-5][[:space:]]*\\|' corpus/SOURCES.md",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo \"census_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/frontier-recheck-count.py; echo \"harness_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-29/manifest.json --source S043 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-29/manifest.json --source S044 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-29/manifest.json --source S045; echo \"recheck_exit=$?\""
+      ],
+      "kill_rule": "Fails if any of: frontier admitted != 13; entries citing S04[3-5] != 1; S043+S044+S045 rows != 3; registry rows != 45; census_exit != 0; harness entries != 16 or pass != 16 or harness_exit != 0; recheck_exit != 0 or any manifest assertion not occurrences=1.",
+      "do_nothing_control": "Baseline at base 7a6591c1: frontier admitted 12, entries citing S04[3-5] 0, rows 42, no round-29 captures exist. Control cannot meet the target.",
+      "assimilation": {
+        "package": "/home/vgpnk/Projects/shokuknow/merge/kasegi",
+        "theme": "program severity ladders and reward scales",
+        "staged_rows_adopted": {"S031": "S043", "S032": "S044", "S033": "S045"},
+        "by_document_rule": "adopted ids continue the lane registry from S043; every adopted entry cites rows by document (URL/anchor is evidence), never by arithmetic",
+        "quarantine": "lane register slice 7 rows hand-checked this round; verdicts per row in the lesson Gate"
+      }
+    }
+  ],
+  "frontier_step": {
+    "census_before": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-29/census-before.txt",
+    "mistake_source": "round-28 verifier spot-check routed defects M28-1/M28-3/M28-5/M28-6/M28-8/M28-12",
+    "sourced_claim": "C2"
+  },
+  "round_shape": "one v2 wave, 64 seats (band floor); run-7 routing; m_flash roles >=50%, attack roles >=25%"
+}
