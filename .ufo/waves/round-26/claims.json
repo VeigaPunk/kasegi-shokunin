@@ -1,0 +1,71 @@
+{
+  "round": 26,
+  "lane": "kasegi",
+  "frozen_at_utc": "2026-10-25T12:27:41Z",
+  "base": "b76676e",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability (lowest non-retired, score 4, held)",
+      "name": "recheck-audit gate conformance: registry row, selftest receipt, restated fix-control, deletion soundness",
+      "predicate": "recheck-audit.py is registered in SKILL.md as a gate|probe row, its selftest receipt is committed in the round receipt index at the instrument's own digest, fix-control #3 is restated to exclude the retained historical line, and deleting a whole corpus knowledge entry makes the audit exit 1 naming the missing entry (before: exit 0).",
+      "before": {
+        "registry_row_skill": "0",
+        "selftest_receipt_lines": "0",
+        "fix_control_3_hits_excluding_historical": "1",
+        "deletion_fixture_exit": "0",
+        "deletion_fixture_lines": "36/36"
+      },
+      "after": {
+        "registry_row_skill": ">=1",
+        "selftest_receipt_lines": "1",
+        "fix_control_3_hits_excluding_historical": "0",
+        "deletion_fixture_exit": "1",
+        "deletion_fixture_missing": "names the deleted entry"
+      },
+      "counter_commands": [
+        "grep -cE '^\\| [^|]+\\| gate\\|probe ' SKILL.md",
+        "grep -cE 'selftest cases=' .ufo/waves/round-26/c1-receipt-index.txt",
+        "grep -rnE '62 assertions\\|77 assertions' corpus/instruments/README.md SCORECARD.md corpus/lessons/round-24.md | grep -v 'round-24.md:77' | wc -l",
+        "python3 corpus/instruments/recheck-audit.py --root <scratch-tree-with-one-knowledge-entry-deleted> --cdroot <lane-root>"
+      ],
+      "kill_rule": "any counter misses its after value, or the do-nothing control hits any after value",
+      "do_nothing_control": "unchanged committed bytes (instrument, SKILL.md, lessons): deletion fixture exit 0, registry row 0, selftest lines 0, fix-control hits 1",
+      "control_receipts": ".ufo/waves/round-26/c1-controls/",
+      "routed_defects_fixed": ["R25-2", "R25-3", "R25-4", "lane-declared: entry-file deletion shrinks the audited set while passing"]
+    },
+    {
+      "id": "C2",
+      "axis": "coverage (score 7, held)",
+      "name": "F11 frontier: ISO/IEC 29147 / 30111 division-of-labour theme admitted from the assimilation package, re-grounded on a fresh capture of the JPCERT/CC 2026 guideline (S041, staged S076)",
+      "predicate": "frontier row F11 is admitted in corpus/README.md; at least one knowledge entry cites a source row first registered this round; the sources census exits 0; every new row is cited by an admitted entry (kill rule).",
+      "before": {
+        "frontier_admitted": "10",
+        "entries_citing_row_first_registered_this_round": "0",
+        "sources_census_exit": "0"
+      },
+      "after": {
+        "frontier_admitted": "11",
+        "entries_citing_row_first_registered_this_round": ">=1",
+        "sources_census_exit": "0"
+      },
+      "counter_commands": [
+        "awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md",
+        "grep -lE '^source: S04[0-9] ' corpus/knowledge/*.md | wc -l",
+        "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi"
+      ],
+      "kill_rule": "a source row is appended without an admitted entry citing it; or census exit != 0 at round end",
+      "do_nothing_control": "no adoption: frontier stays 10, entries citing S04x stay 0",
+      "control_receipts": ".ufo/waves/round-26/c2-controls/",
+      "assimilation": {
+        "theme": "ISO/IEC 29147 / 30111 division of labour (JPCERT/CC 2026 P-guideline 付録6)",
+        "staged_entries": ["iso-29147-and-30111-division-of-labour-2026-10-23.md", "iso-29147-divergence-and-clause-crosswalk-2026-10-23.md"],
+        "staged_sources": ["S076 (division of labour anchor)", "S064 (付録6 §4 + 参考1 anchor)"],
+        "adopt_ids": ["S041 (JPCERT/CC 2026 guideline capture, renumbers staged S076/S064 by document)"],
+        "reject_candidates": ["vendor-cvd-policy-crosswalk-2026-10-23.md (ground F20 absent, Q7 prose recheck, Q3 four-vs-two conditions)", "chinese-criminal-thresholds-and-authorisation.md (refused round 24; reason + flip retained)"],
+        "quarantine_slice": ["S037", "S054", "S048", "S065", "S068", "S069", "S070"]
+      }
+    }
+  ],
+  "notes": "R25-1 compliance: this file is committed at freeze before any measurement or dispatch; corrections land as separate appended files, never in-place edits. Id-collision check ran in scratch: reg=40 staged=94 collisions=10 (S031-S040); adopted ids continue the lane registry from S041, citations re-pointed by document (URL/anchor is the evidence, never arithmetic)."
+}
