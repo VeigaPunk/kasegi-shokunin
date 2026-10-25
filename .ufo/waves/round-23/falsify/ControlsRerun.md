@@ -23,6 +23,15 @@ reported as the other, and A's commit is retained in history, so all three evide
 No production file was edited. No commit, push, admit, or score claim. All mutation happened in
 `/tmp/kasegi-r23-falsify-ControlsRerun/`.
 
+**Bottom line.** Q7's exit-code contract holds on both baselines: clean → 0, flipped digest → 1, missing
+source → 2, fabricated quote → 1, with 4/4 instrument self-controls passing, and no corruption I could
+construct returned 0. Two landed artifacts are nevertheless wrong in ways the exit codes cannot see: the
+receipt named `c2-recheck-S030.txt` contains S031's output (F6), and `LOG.md:1168` gives a byte size for the
+S031 capture that no revision in the repository has (F7). The current clean run also contains exactly one
+non-exact assertion, carried by Q8's declared normalization (F5) — compliant, but it means "every quote is a
+verbatim substring" is false for the clean run, and the instrument/manifest pair is only valid together
+(F8).
+
 ## Environment / identifiers (reproduce these first)
 
 Baseline A identifiers (Baseline B's are listed in its own section):
@@ -632,9 +641,12 @@ both escape shapes are refused at `:103`, on both baselines:
 same outside file → **EXIT 2**, same line. An uppercase `sha256` → **EXIT 2**,
 `S018:manifest UNAVAILABLE reason=invalid-sha256`. No escape that still exits 0 was found.
 
-**F5 (normalization fallback widens exit-0; falsifiable, and it is load-bearing on the clean run).**
-`5f72b4c0` adds `normalize()` — `MARKUP_RE = re.compile(r"</?u>")` plus whitespace collapse — consulted
-only after the exact test fails, emitting `OK normalized=markup-whitespace`. Two consequences measured:
+**F5 (the clean exit 0 partly rests on the declared normalization; falsifiable).** Q8
+(`corpus/QUALITY.md:57`) now *requires* declared normalization with the transformation named on the receipt,
+and `5f72b4c0` implements it: `MARKUP_RE = re.compile(r"</?u>")` plus whitespace collapse, consulted only
+after the exact test fails, emitting `OK normalized=markup-whitespace`. That is compliant — so F5 is not a
+criterion violation. What it does establish, measured: the clean run is not "all quotes exact", and the one
+non-exact assertion is load-bearing. Two consequences:
 
 1. The *clean* Baseline B run is not uniformly exact: `S030:rule-4-1-9-independently-fixable` passes **only**
    via the fallback. Measured, not inferred: the quote string is not a substring of `S030.txt`
@@ -661,13 +673,27 @@ exists nowhere as a c2 receipt. The shared header also cites
 `corpus/knowledge/cna-assignment-and-vulnerability-rules.md:4`, but that entry's `recheck:` line is now at
 `:5` after the S031 re-point. Both files were committed that way at `2712c99` (verified with
 `git show HEAD:.ufo/waves/round-23/c2-recheck-S030.txt`), i.e. this is not a scratch artifact.
+The underlying claim is nonetheless **true**: `--source S030` against the current pair exits 0
+(`B-clean-S030`, via the normalized line), and `LOG.md`'s "four rechecks exit 0" is accurate — the defect is
+that the file offered as that run's evidence contains another run's output, so the receipt does not witness
+the claim it is named for.
 Refutation: `sha256sum` the two files (differing hashes), or find a receipt containing `S030:sha256 OK` for
 the S030 capture. Reporting only — I did not rename, delete, or rewrite either receipt.
 
-**F7 (committed baselines are real; the B pair is coupled; falsifiable).** At Baseline A, `git ls-files`
-listed `manifest.json`, the three `.txt` snapshots and `source-recheck.py`, `git status --porcelain` was
-empty for those paths at HEAD `953c278`, and the three F06–F08 recheck commands resolved from a clean
-checkout (exit 0). At Baseline B the same holds — `git show 8acb255:corpus/instruments/source-recheck.py`
+**F7 (log line states a byte size no revision ever had; falsifiable).** `LOG.md:1168` says the S031 capture
+is "normalized `pdftotext` snapshot (49154 B)". Every revision in this repository holds **49350** B —
+`git show <c>:corpus/source-snapshots/round-23/S031.txt | wc -c` → 49350 at `a0a5695`, `cbea809`,
+`2712c99`, `4d9231e`, `12edac4`, `8acb255`, `bf9ce024`, and `wc -c` on the working file → 49350; a
+repository-wide `grep -rn 49154` returns only that LOG line. The claim's other half is correct (10
+assertions for S031). No exit code depends on size — the manifest pins the SHA-256, not the length — so this
+is a provenance-text error rather than a control failure, and it is the kind of number a later reader would
+use to decide whether their file is the same capture. Refutation: find a commit where the blob is 49154 B,
+or show the LOG sentence measuring something other than `S031.txt`. Reported, not edited.
+
+**F8 (committed baselines are real; the B pair is coupled; falsifiable).** At Baseline A,
+`git ls-files` listed `manifest.json`, the three `.txt` snapshots and `source-recheck.py`;
+`git status --porcelain` was empty for those paths at HEAD `953c278`, and the three F06–F08 recheck commands
+resolved from a clean checkout (exit 0). At Baseline B the same holds — `git show 8acb255:corpus/instruments/source-recheck.py`
 and `…/manifest.json` reproduce `5f72b4c0…` and `e06aa3c…` exactly, `git status` clean for those paths, and
 the published `--source S018/S029/S031` commands exit 0 — but the two B artifacts are a package: only the
 normalizing instrument verifies the de-marked S030 quote (F5), while the superseded pair at `4d9231e`
