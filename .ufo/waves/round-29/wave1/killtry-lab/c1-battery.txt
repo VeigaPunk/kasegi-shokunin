@@ -1,0 +1,53 @@
+===== C1 variant: base
+-- counter 1: python3 corpus/instruments/anchorcheck.py --selftest
+selftest cases=12 failures=0
+limbs=9 covered=9
+selftest_exit=0
+-- counter 2: grep
+selftest cases=12 failures=0
+limbs=9 covered=9
+grep_exit=0
+-- counter 3: git-free PATH
+nogit_exit=0
+
+===== C1 variant: c1-deadlimb
+-- counter 1: python3 corpus/instruments/anchorcheck.py --selftest
+selftest FAIL base-absent-origin: MISSING-FILE: want 0, got 1; BASE-ABSENT: want 1, got 0
+  MISSING-FILE md:1 ~/Projects/origin-work/open-bug-bounties/ops/claim-check.mjs:1
+  
+  == /tmp/anchorcheck-selftest-59xby5dl/base-absent-origin/fixture.md: 0 in-range cite instances, 1 bad; 0 distinct anchors; LOST-RECORDED=0 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+selftest cases=12 failures=1
+limbs=9 covered=9
+-- c1-deadlimb counter 2: grep
+selftest cases=12 failures=1
+limbs=9 covered=9
+grep_exit=0
+-- c1-deadlimb counter 3: git-free PATH
+nogit_exit=1
+
+===== C1 variant: c1-sharedfix
+-- counter 1
+selftest cases=12 failures=0
+limbs=9 covered=9
+selftest_exit=0
+-- counter 2
+selftest cases=12 failures=0
+limbs=9 covered=9
+grep_exit=0
+-- counter 3
+nogit_exit=0
+
+===== C1 variant: c1-printonly
+-- counter 1
+selftest cases=12 failures=0
+limbs=9 covered=9
+selftest_exit=0
+-- counter 2
+selftest cases=12 failures=0
+limbs=9 covered=9
+grep_exit=0
+-- counter 3
+nogit_exit=0
+
+===== receipt clause on the print-only instrument
+1

@@ -1033,3 +1033,15 @@ Use the source IDs in `corpus/SOURCES.md` to trace these report-review rules to 
 | A report cites the 2025 CWE Top 25 | Use a technically supported root-cause mapping; do not turn aggregate rank into target risk or reward. | `corpus/knowledge/cwe-top25-2025-methodology.md` | S013–S015 |
 
 Round-28 note (2026-10-25, supersedes the frozen C1 `corpus_disclosure` cell): zero backticked anchored `~/Projects/bounties/` citations exist lane-wide, so the new `BOUNTIES-ABSENT` arm in `CITE` is invisible to all existing bytes — no verdict-class movement on any file, corpus or `SKILL.md` (erratum, with the sweep command and scratch probe: `.ufo/waves/round-28/claims-erratum-1.md`).
+
+## Round-29 Gates & probes registry addition (appended 2026-10-25)
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| anchorcheck.py | gate|probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: exit 0 clean \| exit 1 on MISSING-FILE/PAST-EOF/OUTSIDE-BASE/PIN-BROKEN/BASE-ABSENT/BOUNTIES-ABSENT (LOST-RECORDED recorded, not fail; bounties base = `$KASEGI_BOUNTIES` override, else canonical `~/Projects/bounties`) | python3 corpus/instruments/anchorcheck.py --selftest -> one isolating fixture per fail limb, prints `limbs=9 covered=9` and `selftest cases=12 failures=0`, exit 0; git-free PATH run (env -i PATH=<python-only>) skips `pin-broken` (`SKIP pin-broken (git not found)`) and exits 0 — clean skip, no traceback | .ufo/waves/round-29/c1-receipt-index.txt | all inputs read-only + its own receipt dir | kasegi |
+
+This row records the round-29 state of the same instrument as the row above (R6 append; no existing line moved). It carries the round-29 selftest completeness (limbs=9 covered=9, cases=12) and hermetic git-free behavior for that measurement.
+
+## Round-29 frontier note (appended 2026-10-25)
+
+F13 — program severity ladders and reward scales — admitted 2026-10-25; entry `corpus/knowledge/program-severity-ladders-and-reward-scales.md`; sources S043 (HackerOne standard program policy set), S044 (Bugcrowd VRT README), S045 (Bugcrowd VRT CWE crosswalk); captures pinned in `corpus/source-snapshots/round-29/manifest.json`. (F13 is the first frontier row whose admission this round is tied to sources first registered this round as S043–S045.)

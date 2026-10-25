@@ -1,0 +1,204 @@
+# 🔹 Getting Started (Setup)
+
+## 🔧 Testing Requirements
+
+
+---
+
+###  Required Setup and Identification
+
+Set a custom HTTP header in **all testing traffic**. Include the header you used in your vulnerability report so HackerOne can identify your activity and deconflict it from other testing.
+
+| Identifier Type | Header Format | Example |
+|---|---|---|
+| HackerOne username | `X-Bug-Bounty: HackerOne-<username>` | `X-Bug-Bounty: HackerOne-username` |
+| Tool identifier | `X-Bug-Bounty: <toolname>` | `X-Bug-Bounty: BurpSuitePro` |
+
+## Testing Rules and Policies
+
+### 🔒 Handling Sensitive Information
+
+All vulnerability reports and related data must be treated as sensitive and handled accordingly.
+
+> Failure to comply with these testing requirements may result in your submission being deemed ineligible for a bounty.
+
+---
+
+## Program Scope and Assets
+
+### In Scope
+
+Issues affecting assets under HackerOne's control are in scope. This includes:
+
+- Vulnerabilities affecting self-hosted assets
+- Incorrect asset configurations
+- Missing or incomplete security patches
+- Other security issues within HackerOne's control
+
+### Out of Scope
+
+Third-party assets outside HackerOne's control are not authorized for testing because HackerOne cannot grant permission to test infrastructure it does not host or operate.
+
+Reports affecting third-party assets will generally be closed as **Informative**. In exceptional cases, HackerOne may award a discretionary bonus when a report demonstrates meaningful value to HackerOne's security posture.
+
+---
+
+## 🧪 Testing Resources and References
+
+### General Guidelines
+
+#### Sandbox Usage
+
+Whenever possible, perform testing within your own HackerOne sandbox organizations.
+
+You may [create a sandbox program using HackerOne's program creation workflow](https://hackerone.com/teams/new/sandbox) and select any available product edition. This provides access to nearly all HackerOne features. Researchers may create up to **30 sandbox programs**. 
+
+
+#### Live Environment Testing
+
+When testing in a live environment, you may only test against the approved HackerOne test programs listed in this document.
+
+#### Approved Reports for Proofs of Concept
+
+You may only use the following approved vulnerability reports when demonstrating a proof of concept (PoC).
+
+| Test Report | Purpose |
+|---|---|
+| **Test Report #3863297** | Approved for PoC demonstrations |
+| **Test Report #3863307** | Approved for PoC demonstrations |
+| **Test Report #3863322** | Approved for PoC demonstrations |
+
+#### ⚠️ Source Restrictions (Bounty Eligibility)
+
+Only the approved proof-of-concept reports listed above may be used when demonstrating a vulnerability.
+
+Do **not** use:
+
+- Reports from any other HackerOne program
+- Reports from private customer programs
+- Reports from any non-HackerOne source
+
+> ⚠️⚠️⚠️**WARNING**⚠️⚠️⚠️
+> **Using an unapproved report makes your submission ineligible for a bounty.**
+>
+> If your submission relies on testing performed using:
+>
+> - another HackerOne program, account, or report, not approved for testing,
+> - a customer program, or
+> - any non-HackerOne source,
+>
+> It may result in your submission being deemed **ineligible for a bounty.**
+>
+> Using multiple approved proof-of-concept reports to demonstrate the same issue does **not** increase the severity or reward of a finding.
+
+#### Scope Restrictions
+
+Do **not** access or test:
+
+- Customer programs
+- Customer environments
+- Customer data
+
+#### Data Handling
+
+If you inadvertently obtain sensitive information during testing:
+
+1. Stop testing immediately.
+2. Contact HackerOne.
+3. Delete the information from all local and stored systems.
+
+HackerOne may request confirmation that the data has been deleted. HackerOne may also request the usernames, IP addresses, or other identifiers used during testing to assess potential impact.
+
+---
+
+## 📋 Program State Testing
+
+### Program States
+
+HackerOne supports six program states that are relevant to testing:
+
+- Sandbox
+- Invite-only
+- Public
+- External program
+- External program + Sandbox
+- External program + Invite-only
+
+A valid vulnerability exists when there is an unauthorized or security-relevant difference between the behavior of Sandbox and Invite-only programs.
+
+It is **not** a vulnerability if a researcher cannot distinguish a Sandbox program from an Invite-only program.
+
+Use the following approved programs for testing.
+
+### Test Programs
+
+| Program State | Program Handle | ID | Node ID |
+|---|---|---:|---|
+| Sandbox | `@security-test-sandbox` | **49806** | `Z2lkOi8vaGFja2Vyb25lL1RlYW0vNDk4MDY=` |
+| Invite-only | `@security-test-invite-only` | **49807** | `Z2lkOi8vaGFja2Vyb25lL1RlYW0vNDk4MDc=` |
+| Public | `@security` | **13** | `Z2lkOi8vaGFja2Vyb25lL1RlYW0vMTM=` |
+| External program | `@security-test-ep` | **49803** | `Z2lkOi8vaGFja2Vyb25lL1RlYW0vNDk4MDM=` |
+| External program + Sandbox | `@security-test-ep-sandbox` | **49804** | `Z2lkOi8vaGFja2Vyb25lL1RlYW0vNDk4MDQ=` |
+| External program + Invite-only | `@security-test-ep-invite-only` | **49805** | `Z2lkOi8vaGFja2Vyb25lL1RlYW0vNDk4MDU=` |
+
+### Test Objects for Proofs of Concept
+
+You may use the following object identifiers when creating proofs of concept on **hackerone.com**.
+
+| Object Type | ID | GraphQL ID | Purpose |
+|---|---:|---|---|
+| StructuredScope | **58579** | `Z2lkOi8vaGFja2Vyb25lL1N0cnVjdHVyZWRTY29wZS81ODU3OQ==` | Asset belonging to `@security-test-sandbox` |
+| StructuredScope | **100578** | `Z2lkOi8vaGFja2Vyb25lL1N0cnVjdHVyZWRTY29wZS8xMDA1Nzg=` | Asset belonging to `@security-test-invite-only` |
+
+---
+
+## 🚫 Denial-of-Service (DoS) Policy
+
+### Dos Rules Overview
+
+| Requirement | Policy |
+|---|---|
+| Request constraints | Single request, single user, and single source IP only |
+| Automation | Automated tools, scripts, bots, and high-volume attacks are prohibited |
+| Testing window | Monday–Thursday, 9:00 PM UTC–6:00 AM UTC |
+| Safety brake | Stop immediately if service degradation is detected |
+| Audit information | Include the source IP address and timezone used during testing |
+| Cache poisoning | Evaluated on a case-by-case basis based on demonstrated impact |
+
+### DoS Reward
+
+Eligible Denial of Service (DoS) findings are capped at the **Medium** severity bounty rate for the affected asset.
+
+| Asset | Bounty |
+|---|---:|
+| `www.hackerone.com` | **$1,000** |
+| `hackerone.com` | **$1,500** |
+
+Reports that include prohibited testing methods or actions are **not eligible** for a reward.
+
+### DoS Eligibility
+
+To qualify for a DoS reward, a finding must demonstrate measurable degradation of HackerOne's servers or infrastructure, such as:
+
+- Increased response times
+- Service unavailability
+- Resource exhaustion affecting HackerOne systems
+
+### DoS Testing Guidelines
+
+#### ✅ DoS Allowed
+
+- Single-user, realistic actions only
+- Begin gradually with one or two requests
+- Send testing traffic from a single source IP
+- Validate observed impact from a separate IP
+- Stop immediately once service degradation is detected
+
+#### ❌ DoS Prohibited
+
+- Distributed denial-of-service (DDoS) attacks
+- Testing from multiple attacking IPs
+- Automated tools, scripts, or bots
+- Resource-exhaustion attacks
+- Data corruption or manipulation
+- Actions that compromise data integrity

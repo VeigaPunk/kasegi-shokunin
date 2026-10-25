@@ -1,0 +1,29 @@
+== S7 short quote (normalized 8 chars < MIN_QUOTE_CHARS=12)
+-- c6
+S044:Q1 UNAVAILABLE reason=quote-too-short-to-be-evidence
+-- c5
+FAIL     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=2    problems=recheck-exit-2
+entries=16 pass=15 exit=1
+== S8 unanchored twice-occurring quote (S044 Q5)
+-- c6 exit code and Q5 line
+S044:Q5 OK occurrences=2 anchor=MISSING
+recheck_exit=0
+-- c5
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+entries=16 pass=16 exit=0
+== S9 STEM-SWAP: manifest record id=S043 now points at S044.txt (Bugcrowd bytes) with S044 quotes; S043.txt (HackerOne capture) no longer referenced by any record
+-- c1..c4
+13
+1
+3
+census_exit=0
+-- c5
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+entries=16 pass=16 exit=0
+-- c6 (S043)
+S043:sha256 OK
+S043:Q1 OK occurrences=1
+S043:Q2 OK occurrences=1
+S043:Q3 OK occurrences=1
+S043:Q4 OK occurrences=1
+recheck_exit=0

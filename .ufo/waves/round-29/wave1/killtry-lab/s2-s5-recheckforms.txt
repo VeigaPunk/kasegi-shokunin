@@ -1,0 +1,16 @@
+== variant recheck: true
+== variant recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-29/wave1/killtry-lab/fleet/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-29/manifest.json
+== variant recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-29/wave1/killtry-lab/fleet/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --selftest
+== variant recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-29/wave1/killtry-lab/fleet/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041
+== S2 recheck: true
+FAIL     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=-    problems=not-a-recheck-invocation,no-source-selection,no-manifest
+entries=16 pass=15 exit=1
+== S3 whole-manifest, no --source
+FAIL     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=-    problems=no-source-selection
+entries=16 pass=15 exit=1
+== S4 --selftest
+FAIL     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=-    problems=not-a-recheck-invocation,no-source-selection,no-manifest
+entries=16 pass=15 exit=1
+== S5 cross-entry: --manifest round-28 --source S041
+FAIL     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=-    problems=header-sources-not-rechecked
+entries=16 pass=15 exit=1

@@ -81,3 +81,9 @@ a vendor's policy into a universal rule.
 | id | criterion | grounded in |
 |---|---|---|
 | R14 | Wave evidence is receipts and digests in git: a control/fixture tree larger than a few hundred kilobytes is committed as one content-addressed tarball (sha256 in the receipt) or regenerated from `git archive <rev>` plus a named mutation script, never as a full corpus copy; per-round repo growth is measurable from committed bytes. | considerthese/2026-10-25.md proposal 1 (2026-10-25); round-25 verifier spotcheck §bloat finding (98261eb +850,085 lines; ~65 MB under .ufo/waves/round-25/) |
+
+## Round-29 additions — open-defects ledger
+
+| id | criterion | grounded in |
+|---|---|---|
+| R15 | A named open defect stays open only while its runnable closure check exits non-zero; every open-defect row carries its closure-check command (`bash -n`-parseable) and an evidence pointer. | considerthese/2026-10-25.md proposal 5 (2026-10-25) — routed still-open defects (D24-1, D24-4, D24-5, R25-1…R25-5) and carried debt (entry deletion shrinks the audited set while passing; `source-recheck.py --source` single-valued) are named without runnable closure checks, so nothing distinguishes open from closed; the proposal would run each closure check daily, read-only, and report flips. |

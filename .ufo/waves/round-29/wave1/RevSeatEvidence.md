@@ -1,0 +1,29 @@
+# RevSeatEvidence — round 29 wave 1
+
+## Scope and method
+Sampled 10 seats across six roles (scout, connector, executor, scribe, reviewer, sentinel), preferring seats with reports present and including absent reports. Checked names/roles against `swarm-registry.json`, expected report naming against `wave1-spec.json`, the contemporaneous `receipt-index.txt`, report non-emptiness, and report claims against local outputs or explicit counter evidence where available. This is a point-in-time sample: the index says it was generated at 18:17:41Z; the roster/reports may continue changing. Registry records are only spawn/role/item/axes/milestone records and contain no status, agent ID, or last-error fields; therefore absent output is classified missing, not proven dead. No last error text is available in those artifacts.
+
+## Sampled seats
+
+| Seat / role | Expected output | Result / evidence check |
+|---|---|---|
+| `ScoutCapBugcrowd` / scout | `ScoutCapBugcrowd.md` | **Missing** (receipt-index line 8 says missing; no report in sampled file listing). No content claim could be assessed. |
+| `ScoutAssimilation` / scout | `ScoutAssimilation.md` | **Missing** (receipt-index line 9 says missing). No content claim assessable. |
+| `ConnOwnership` / connector | `ConnOwnership.md` | **Missing** (receipt-index line 13 says missing). No content claim assessable. |
+| `ExecCapS045` / executor | `ExecCapS045.md` | **Present, 4,009 bytes.** Receipt asserts capture digest `f583a396…b0f86`, 28,482 fetched bytes, 14,575 snapshot bytes, and content locations/counts. Report cites expected snapshot path but does not itself prove that the file still matches the digest. Other contemporaneous receipts corroborate capture-related outcomes; without an independent byte/hash check in this sample, detailed counts remain report assertions, not independently established here. Model note is internally inconsistent: it records a session-default model but says no config route table was consulted, despite the task-wide requirement to report the model actually run according to routing. Flag for provenance correction/confirmation; not evidence of fabricated capture. |
+| `ExecCanonC2` / executor | `ExecCanonC2.md` | **Present, 4,296 bytes.** Explicitly labels measurements PRE-STATE and the C2 subject unlanded; provides counters (12 admitted, 0 S043–S045 entries, 0 rows, 42 registry rows, harness 15/15, per-ID rechecks unavailable) and names after-run commands. This is appropriately non-comparative and self-consistent with its own stated missing-subject evidence. It does not falsely claim the target passed. |
+| `ScribeQuality` / scribe | `ScribeQuality.md` | **Present, 4,378 bytes.** Reports append-only R15 and gives before/after hashes, 83-line prefix hash, and line positions. Its own receipt-index entry is `ok`; no independent hash rerun was performed for this review. It candidly discloses an anchorcheck failure as pre-existing and unchanged, rather than claiming a clean pass. No copied boilerplate or empty-report concern observed. |
+| `ScribeConsiderthese` / scribe | `ScribeConsiderthese.md` | **Present, 10,994 bytes.** Substantive proposal/defect analysis; records M28-1/3/5 etc., with explicit status and evidence references. Distinct from the executor/capture receipts rather than generic filler. No specific fabrication found in sampled claims. |
+| `RevC2Entry` / reviewer | `RevC2Entry.md` | **Present, 3,521 bytes.** Correctly reports the target entry absent at inspection and marks Q8/Q9 / capture-anchor checks unverifiable, with a clear rerun requirement. The contemporaneous `ExecCanonC2.md` likewise says the entry/manifest were absent at its measurement. This is a defensible blocked review, not an unsupported approval. |
+| `SentScope` / sentinel | `SentScope.md` | **Present, 2,904 bytes.** Reports two tracked modifications plus untracked wave artifacts and explicitly says the requested post-integration final sweep is still outstanding; does not falsely certify it. Report contains concrete protected-path scope statements, though not all are independently verified by this sample. |
+
+## Integrity flags
+
+- **Missing outputs in sampled roles:** ScoutCapBugcrowd, ScoutAssimilation, and ConnOwnership. At index generation, the overall roster was 12 `ok`, 0 `empty`, 52 `missing` of 64 (receipt-index lines 71–72). This indicates substantial incomplete reporting at that snapshot, but does not prove 52 seats are dead: no termination/error state is present in the registry or index. No last-error text was available to quote.
+- **Provenance concern:** ExecCapS045 says `inception/mercury-3` was the default but explicitly says the config route table was not consulted. Treat model routing as unverified rather than validated. The report is detailed and internally specific; this alone does not establish fabrication.
+- **Claims with limits:** The sample did not independently hash/check the S045 capture or rerun the ScribeQuality hashes. Those claims are identified as receipt assertions, not independently confirmed facts. ExecCanonC2’s PRE-STATE values are transparently labeled and are not after-state evidence.
+- **Copied boilerplate / empty reports:** None found among the seven non-empty reports sampled; three missing outputs are not counted as empty. No specific fabricated result identified from the evidence checked.
+
+## Residual risk / verification gaps
+
+This is a sampled, timestamp-bounded review, not a full audit of all 64 seats. The generated index is a snapshot and can lag later report creation. Obtain a fresh seat-to-output census at close, inspect runner/job records for last errors before calling seats dead, and independently bind capture/report digests and model routing before relying on unverified provenance claims. No verification of changes after the sampled receipts was performed.

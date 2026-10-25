@@ -1,0 +1,157 @@
+# Round-29 L1 report evidence digest — kasegi (wave 1)
+
+Compiled by `ScribeReportDigest` (scribe) for direct assembly into `.ufo/reports/round-29/kasegi.md`.
+Snapshot time: **2026-10-25T18:22Z** (wave mid-flight; all AFTER values not yet final — see §Missing).
+Measured lane HEAD: `46e07f6ae8f23debb10034164252e7027b4d9091` (wave-1 spec + dispatch commit).
+Base: `7a6591c1eb8a14f427297980a96fa8bb339f29ee`; claims freeze: `f28ff5d26b29270f93163117e7255e24f0b1d947` (`git merge-base --is-ancestor f28ff5d HEAD` → 0).
+Answering model: `inception/mercury-3` (config route table; none passed by this seat).
+
+---
+
+## 1. Wave shape / seat mix / dead-seat record
+
+- Dispatch: `.ufo/waves/round-29/wave1-dispatch.json` — `counts: spawn=64, resume=0, total=64`; policy `waveMinLanes=64`; note "one-swarm-per-wave". Dispatched at `wave1.ready.dispatched` = `2026-10-25T15:15:08`. `wave1-run.err` empty.
+- Role mix (from `wave1/swarm-registry.json`, 64 members): scout 5, connector 3, executor 17 + lab-probe 3 (executor role), scribe 13, reviewer 11, critic 4, mutation-tester 4, sentinel 1, revenger 1, simplifier 2.
+- m_flash-roles (scout+scribe+reviewer+connector) = 32/64 = **50.0%** (≥50% floor met, at the boundary); with sentinel = 33/64 = 51.6%.
+- Attack-roles by registry tag (critic+mutation-tester+revenger+simplifier) = 11/64 = **17.2%** (+RevKillTry reviewer whose prompt attacks both kill rules → 12/64 = 18.75%). **Flag:** claims.json round_shape declares "attack roles >=25%"; the registry tags as enumerated do not reach 25%. The L1 should confirm the run-7 routing share definition (r28 report cited 50.7% / 31.9% for a 69-seat wave, so the definition likely differs from my grouping — the exact routing-share figures were not found on disk among the wave artifacts).
+- Seat-output record at snapshot: **16 of 64 seats have filed** (receipt-index.txt at 18:17:41Z enumerated 12 ok; since then ExecImplC1, LabC2Probe, ScribeAssimReport, RevC2Entry landed). Missing 48 seats listed in `wave1/receipt-index.txt` rows marked `missing` (scouts 5, connectors 3, executors 11, scribes 8, reviewers 10, critics 4, mutation-testers 4, labs 2, revenger 1, simplifiers 2 — no empty files, no crash text observed; wave mid-flight, not dead). **`wave1/receipt-index.txt` is the dead/empty-seat record to refresh at close.**
+
+## 2. Claim C1 — depth:verifiability (score_before 4, score_after target "held 4")
+
+Frozen predicate (`claims.json` C1): anchorcheck `--selftest` reports `limbs=9 covered=9` and prints `selftest cases=12 failures=0`, exits 0, and exits 0 with PATH stripped of git (clean skip, no traceback). Kill rule also requires `c1-receipt-index.txt` `instrument_sha256` line matching the committed anchorcheck.py digest.
+
+| # | Frozen counter (verbatim) | Before (committed, `c1-controls/before.txt`) | Current tree (measured 18:20Z, digest `57c5e111…`) | Target |
+|---|---|---|---|---|
+| 1 | `python3 corpus/instruments/anchorcheck.py --selftest` | `selftest cases=9 failures=0`, `selftest_exit=0` | `selftest cases=12 failures=0`, exit **0** | cases=12 failures=0 |
+| 2 | `… --selftest \| grep -E 'selftest cases=\|limbs='` | `0` (no coverage assertion; grep_exit=0) | `selftest cases=12 failures=0` / `limbs=9 covered=9` | limbs=9 covered=9 |
+| 3 | git-free PATH run | exit **1** + `FileNotFoundError: 'git'` traceback | **exit 1**, no traceback: `SKIP pin-broken (git not found)` → `selftest FAIL limb coverage: missing executed cases pin-broken` → `cases=12 failures=1 limbs=9 covered=8` | exit **0** (clean skip) |
+
+- SKILL.md anchorcheck at current digest: exit **0**, `7 in-range`, `0 bad`, `LOST-RECORDED=306`, PIN-BROKEN=0, ORIGIN=0, OUTSIDE-BASE=0, BASE-ABSENT=0 (unchanged vs base, ExecDensityNoHarm §1b).
+- Do-nothing control receipts: `wave1/c1-controls/base-control-selftest.txt` (cases=9, grep 0), `base-control-nogit.txt` (traceback, exit 1), `base-control-grep.txt` (0); all match the frozen expectation that the base cannot meet the target.
+- **ExecImplC1.md conflict:** the seat's receipt claims `nogit_exit=0` and `SKIP … counts the pin case as skipped/exercised` at instrument digest `68e1bdc63e39faf116107673123d197939f77f0c00e277269f12d70ddf97ca97`; the on-disk bytes at snapshot (digest `57c5e111a1b132176568b1fc8e1b7334bf699a68e3bf5ce94a12be6402cf768a`, 561 lines) fail the git-free run (exit 1). **M28-12-class drift: receipt digest ≠ current bytes.** C1's frozen hermeticity clause is NOT met at the snapshot digest; the canonical `c1-receipt-index.txt` does not exist yet. → C1 AFTER = INCOMPLETE/BLOCKED (needs either the claimed final bytes landed or a fix + canon receipt).
+
+## 3. Claim C2 — coverage (score_before 7, score_after target "held 7")
+
+Frozen predicate (`claims.json` C2): frontier admitted 12→13 (F13); exactly 1 knowledge entry cites S043/S044/S045; registry rows 42→45; census exits 0; harness `entries=16 pass=16 exit=0`; `source-recheck` exits 0 for each of S043/S044/S045 on the round-29 manifest with every assertion `occurrences=1`.
+
+| # | Frozen counter | Before (committed, `c2-controls/before.txt`) | PRE-STATE (ExecCanonC2, 18:15–16Z) | Current live (measured 18:20Z) | Target |
+|---|---|---|---|---|---|
+| 1 | frontier admitted awk | `12` | `12` (DIFFERS) | `12` | 13 |
+| 2 | `grep -lE '^source: S04[3-5] ' corpus/knowledge/*.md \| wc -l` | `0` | `0` (DIFFERS) | `0` (no entry cites) | 1 |
+| 3 | `grep -cE '^\|[[:space:]]*S04[3-5][[:space:]]*\|' corpus/SOURCES.md` | `0` | `0` (DIFFERS) | `0` | 3 |
+| 4 | registry rows | `42` | `42` (DIFFERS) | `42` | 45 |
+| 5 | census `sources-census.sh validate --root … kasegi` | exit 0, W04 S028/S029 | exit **0**, W04 S028/S029 only (errorCHES) | exit 0 (census-before.txt + ExecCensusDry gate 2) | exit 0 |
+| 6 | `frontier-recheck-count.py` | `entries=15 pass=15 exit=0` | `entries=15 pass=15 exit=0` (DIFFERS on counts) | — (not re-run at snapshot) | entries=16 pass=16 exit=0 |
+| 7 | `source-recheck.py --manifest …/round-29/manifest.json --source S043|S044|S045` | (no round-29 manifest; exit 2) | exit 2 each, `manifest UNAVAILABLE reason=missing` | S043/S044/S045: exit 0 (S044/S045) — S043 Q9-defective, see below | exit 0 each, all occurrences=1 |
+
+- **Round-29 captures on disk** (`corpus/source-snapshots/round-29/`): S043.txt (1,220,741 B, sha256 `02ecb500…dfc6`, minified JSON, 153 policy records; ETag cross-bound), S044.txt (8,187 B, sha256 `8adfca61…`), S045.txt (14,575 B, sha256 `f583a396…`). Receipts: ExecCapS043.md, ExecCapS044.md, ExecCapS045.md.
+- **S043 capture pipeline divergence (LabC2Probe):** `capture-source.py --kind html` cannot fetch S043 — urllib gets Cloudflare's 128-B "JavaScript is disabled" stub; the pinned JSON was fetched via the documented curl fallback (ExecCapS043 §2). Committed S044/S045 are instrument-reproducible byte-identical today; S043 is fetch-reproducible only.
+- **S043 manifest Q9 defect (LabC2Probe §5):** `manifest.json` pins S043 quotes Q1/Q2/Q4 each occurring **12×** (policy boilerplate repeated across the 153 records) with **no anchor**; `source-recheck` prints `occurrences=12 anchor=MISSING` and still exits 0, so the frozen kill rule's "every manifest assertion occurrences=1" clause **fails for S043 as pinned**. (Also: manifest S043 `location` prose cites lines 31/40/170/177 which do not exist as file lines in the single-line JSON body.) S044/S045 quotes are all exactly-once; locations hold (S044 Q3 line 33; S045 Q1 idor→CWE-932).
+- **F13 entry — STUB, not Q-conformant:** `corpus/knowledge/program-severity-ladders-and-reward-scales.md` exists (631 B, 15:17Z) with body `body stub S043 S044 S045`, and `recheck: 90d — \`curl -sSL …\` and confirm P1–P5 labels` (prose hybrid, Q7/Q10 fail; no quotes, no falsifiable rule, no located evidence → Q1–Q6 fail as landed). It is unfinished work.
+- **RevC2Entry.md** bar-checked BEFORE the entry existed (entry absent → all Q1–Q10 "unverifiable, fails"); its own rerun requirement stands. No ScribeReadmeC2 (README F13 row) / ScribeSourcesGate (registry append) / ExecHarnessC2 / ExecCanonC1 / ExecRecheckAudit receipts at snapshot.
+
+## 4. Assimilation (C2 F13 theme: "program severity ladders and reward scales")
+
+- Package `/home/vgpnk/Projects/shokuknow/merge/kasegi` READ-ONLY (MERGE-REPORT.md: 94 staged rows S031–S124, 67 staged entries; nothing written to package).
+- Id sets: `assimilation/staged-ids` = S031–S124 (94); `assimilation/reg-ids` = S001–S042 (42); `assimilation/collisions` = **12 numeric collisions S031–S042** (expected; collisions are lists, not 12 duplicate documents — ScribeAssimReport).
+- By-document adoption map (URL equality, staged → lane): staged S031 HackerOne policy_versions → **S043**; staged S032 Bugcrowd VRT README → **S044**; staged S033 Bugcrowd cwe.json → **S045** (`claims.json` `staged_rows_adopted`). Staged S042=IPA → lane S042 (exists, r28); staged S043=JPCERT/CC guideline → lane S041 (same PDF — cite, don't re-register). All three new URLs collision-free in the live registry (ExecCensusDry gate 1: `grep` → 0).
+- Guard: round-28 `guard-proof.txt` demonstrated `^ {0,3}\|` catches indented duplicates that `^\|` misses; a fresh round-29 guard run was NOT on disk at snapshot (ScribeAssimReport notes this — flag as owed).
+- Quarantine slice (`assimilation/quarantine-slice`, 7 rows): S037, S054 (`payload-absent`), S048, S065, S068, S069, S070 (`the cited source could not be fetched, so no quote was checked`). **None adopted.** These are register-class records from the prior hand-check; fresh round-29 fetch/quote verdicts are owed (ScribeQuarantine receipt absent at snapshot).
+- ExecCensusDry gate: scratch mirror with planned S043–S045 append + F13 entry → `sources-census.sh validate --file` exit 0, only W04 S028/S029, `rows=45`, no E03/E04/E11/E12 → **PASS to append** (live file untouched by that seat). Note: scratch append block carries staged `opened 2026-10-23`; ScribeSourcesGate should land the captured-anchor rows with opened 2026-10-25.
+
+## 5. Census before/after
+
+- Before (committed `census-before.txt`): exit 0, rows 42, W04 S028/S029 only.
+- After: **NOT YET RUN** (registry not appended). `ExecCensusDry.md` gate 2 re-measured the live before-state (42 rows, exit 0).
+
+## 6. Mistake rows (routed + observed)
+
+Routed for r29 (round-28 verifier spotcheck §Routed defects): M28-1 (PRE-STATE receipts), M28-3 (frozen counter cannot emit its value), M28-5 (harness crash on absent entry), M28-6 (stale `resolve-dispatch-fixtures.json:159,161` → `SKILL.md:1000`; SKILL now 1035 lines, brace set at 1008), M28-8 (Q9 stem check not instrumented), M28-12 (receipt digests drift behind bytes).
+
+Observed this wave (each measured):
+1. **M28-12 reproduced:** ExecImplC1 receipt digest `68e1bdc63…` ≠ current on-disk anchorcheck.py digest `57c5e111…`; git-free behavior differs (claimed exit 0 vs measured exit 1).
+2. **M28-8 reproduced in C2:** `source-recheck` exits 0 on S043 `occurrences=12 anchor=MISSING` — Q9 binding not enforced by the instrument (LabC2Probe §5; same class as r28 finding).
+3. **M28-1 discipline observed (good):** ExecCanonC2 self-labeled PRE-STATE, named the exact re-run, and forbade after-column comparison — the rule worked.
+4. **Stub entry:** F13 landing incomplete (`body stub`); RevC2Entry had to bar-check an absent entry (rerun owed).
+5. **S043 capture-pipeline gap:** instrument cannot fetch the JSON API (Cloudflare/urllib); fallback documented but non-instrument reproducibility must be stated in the entry's Limits.
+
+## 7. Evidence-pointer inventory (path:line / command output)
+
+- Claims/predicates/counters/kill rules: `.ufo/waves/round-29/claims.json` (C1 :11-26, C2 :27-53, frontier_step :55-59).
+- Before receipts: `c1-controls/before.txt` (instrument sha256 `23818c1204…`; cases=9; grep 0; nogit traceback exit 1), `c2-controls/before.txt` (12/0/1/42, harness 15/15, recheck-audit 40/40), `census-before.txt`.
+- Post-freeze commits: `46e07f6` dispatch; `f28ff5d` freeze; `7a6591c` base.
+- Seat receipts (wave1/): ExecCapS043.md, ExecCapS044.md, ExecCapS045.md, ExecCensusDry.md (+ scratch corpus mirror), ExecDensityNoHarm.md, ExecCanonC2.md + `receipts/ExecCanonC2.txt`, ExecScopeSweep.md, ScribeQuality.md, ScribeLog.md, ScribeFrontierNote.md, ScribeConsiderthese.md, ScribeAssimReport.md, RevC2Entry.md, LabC2Probe.md, SentScope.md, ExecImplC1.md (+ `ExecImplC1.diff`), `receipt-index.txt`, `receipts/` copies (09–61).
+- Assimilation artifacts: `assimilation/{staged-ids,reg-ids,collisions,quarantine-slice}` (wave1/ and round-29/).
+- Captures + manifest: `corpus/source-snapshots/round-29/{S043.txt,S044.txt,S045.txt,manifest.json}`.
+- Live-state probes by this scribe (18:20Z): `frontier_admitted=12`; SOURCES rows 42; S04[3-5] rows 0; C1 selftest/nogit/SKILL outputs quoted in §2.
+- R14 bloat note: wave1/ExecCensusDry mirror = 512 KB / 42 files (knowledge + SOURCES only) — under the threshold, but it is a scratch copy living in the committed wave dir; SimplyBloat to confirm consolidation.
+
+## 8. Missing evidence / required report sections (flag list)
+
+1. **C1 AFTER:** canon `c1-receipt-index.txt` absent; git-free exit must reach 0 at the final landed digest (currently 1); resolve the ExecImplC1 receipt-vs-bytes digest mismatch (M28-12).
+2. **C2 AFTER:** registry append (S043–S045), README F13 row, finished F13 entry, harness 16/16 run, after-census (45 rows), and per-id rechecks on the final manifest — all pending; ExecCanonC2's named re-run is the exact command set.
+3. **S043 Q9:** manifest must anchor the 12× quotes (or use unique per-record quotes) before "occurrences=1" can pass the kill rule; current `source-recheck` exit 0 is not a Q9 pass.
+4. **F13 entry:** replace stub with a Q1–Q10-conformant entry (real body, quotes with loci, one executable cwd-invariant `recheck:` line, Q4/Q5/Q6 content); rerun RevC2Entry on the landed bytes.
+5. **Assimilation:** fresh round-29 guard proof and fresh 7-row quarantine fetch/quote verdicts (ScribeQuarantine receipt absent).
+6. **Dead-seat record:** refresh `receipt-index.txt` at close; 48 seats outstanding at snapshot (mid-flight, not yet dead).
+7. **Attack-role share:** confirm the run-7 routing definition; registry-tag grouping gives 17.2–18.75%, not ≥25%.
+8. **Post-integration:** ExecPostCommitRecheck receipt + integration commit hash + final fleet-root sweep (SentScope's final sweep explicitly outstanding).
+
+## 9. Addendum — post-snapshot landings (measured 18:24Z) and updated flags
+
+**C1 — now fully met at the landed digest, canon receipt written.** Final live `anchorcheck.py`
+digest `68e1bdc63e39faf116107673123d197939f77f0c00e277269f12d70ddf97ca97` (561 lines; re-measured
+by this scribe at 18:24Z). `wave1/c1-receipt-index.txt` (18:16–17Z) records all four frozen targets:
+`selftest cases=12 failures=0`, `limbs=9 covered=9`, `nogit_exit=0` (`SKIP pin-broken (git not found)`,
+clean skip), `SKILL.md` exit 0 / bad 0 / LOST-RECORDED=306, `instrument_sha256` line matching the
+production digest — every kill-rule target PASS (ExecCanonC1.md). ExecSelftestProbe.md confirms four-run
+determinism (normal ×2, git-free ×2: identical stdout fingerprints, empty stderr, exit 0 each).
+**M28-12 caution recorded:** at 18:20Z this scribe caught a transient on-disk digest
+`57c5e111…` whose git-free run exited 1 (cases=12 failures=1 covered=8); the file later settled at
+`68e1bdc…`. Working-tree bytes moved between receipted states — re-hash immediately before commit and
+have ExecPostCommitRecheck re-verify at the integration commit (it is currently blocked awaiting the L1
+integration message; no post-commit counters run — its receipt is a correct PRE-STATE hold).
+
+**C2 — partial landing at 18:24Z:** `corpus/SOURCES.md` now has **45 rows** with S043/S044/S045
+appended (lines 49–51); frozen census command exits **0** (W04 S028/S029 only) — after-census for rows
+achieved. `manifest.json` exists (3,902 B, sha256 `f1745f3f…`); `source-recheck` exits 0 for S043/S044/
+S045 (ExecManifestC2.md). **Still missing:** README F13 row (frontier stays 12 — ScribeReadmeC2 receipt
+absent), a substantive F13 entry (the file remains the 631-B `body stub` with a prose `recheck:` — fails
+Q1–Q7/Q10 as landed), harness `entries=16 pass=16` after-run (ExecHarnessC2 receipt absent), and S043 Q9
+binding (manifest pins Q1/Q2/Q4 at raw occurrences=12 with `anchor` field present but degenerate — single-
+line JSON body; `source-recheck` prints `occurrences=12` + `anchor=1-ok` and exits 0, so "every manifest
+assertion occurrences=1" is not instrument-enforced). The C2 kill rule as written would still FAIL on the
+S043 Q9 clause until the manifest or the instrument changes.
+
+**CritC2Kill.md (adversarial, landed) — findings to carry into the report:**
+C1 [CRITICAL] `source-recheck` exits 0 for a manifest record whose id ≠ path stem (S043→S045.txt) and an
+unanchored 53× quote (`OK occurrences=53 anchor=MISSING`) — the kill rule's "any manifest assertion not
+occurrences=1" is unfalsifiable via `recheck_exit` (M28-8 carried unfixed); C2 [HIGH] the frontier harness
+passes 16/16 by pointing F13's entry cell at the existing F12 entry, or crashes (traceback) on true absence
+(M28-5 partial); C3 harness measures form only (headers + runnable recheck), not admission substance; C4
+counter 2 counts files, not per-id coverage — S043 can be orphaned and C2 still passes; C5 [HIGH] the
+staged package entry cannot honestly cite S043 (its body covers VRT/CNVD/BILISRC — staged S034/S036 not
+adopted), so the landed entry must be rewritten, not header-remapped with body verbatim; C6 S043 capture is
+fetch-reproducible only (capture-source.py cannot fetch it). Scratch: `wave1/CritC2Kill-scratch/`.
+
+**Seat-status at 18:24Z:** 21 seat receipts on disk (15 more than the 18:17:41Z index's 12); newly landed:
+ExecImplC1, ExecCanonC1, ExecManifestC2, ExecSelftestProbe, ExecPostCommitRecheck, LabC2Probe, ScribeAssimReport,
+RevC2Entry, CritC2Kill, RevSeatEvidence. RevSeatEvidence.md flags: 52 missing at index time (not proven dead),
+ExecCapS045 model-routing note flagged, no fabrication observed in sampled reports. Still outstanding at
+snapshot: ScribeReadmeC2, ScribeSourcesGate receipt, ExecEntryF13 receipt (finished entry), ExecHarnessC2,
+ExecRecheckAudit (red-before + regen), ExecAssembleReceipts, ScribeLessonGate/ScribeLesson/ScribeScorecard,
+RevC1*, RevC2Registry/RevC2Manifest, RevNoHarmC1/C2, RevReceiptsCanon, RevKillTry, RevCensusDry, RevStagedIntent,
+CritC1Kill, CritGlobal, CritMeta, MutC1Limbs/MutC1Hermetic/MutC2Counters/MutC2Sources, LabC1Probe/LabInstrumentProbe,
+SimplyBloat/SimplyFixture, ScoutDatawalk/ScoutCapH1/ScoutCapBugcrowd/ScoutAssimilation/ScoutConnOverlap,
+ConnClaims/ConnStagedCensus/ConnOwnership, ScribeQuarantine, ScribeReportDigest (now landed).
+
+**Updated missing/flag list (supersedes §8 where in conflict):**
+1. C1: canonical receipt EXISTS and passes at `68e1bdc…`; outstanding = integration commit + post-commit
+   re-verify (ExecPostCommitRecheck blocked on L1 message) + re-hash guard (transient 57c5e111 window).
+2. C2 rows/census: DONE (45 rows, exit 0). C2 remaining: README F13 row, substantive entry, harness
+   16/16 after-run, S043 Q9 fix (anchor/unique quotes or `check_q9.py`-style enforcement), rerun RevC2Entry.
+3. S043 Q9 must be resolved before the kill rule can pass as written.
+4. F13 entry stub must be replaced; the rewrite must drop the body's unadopted staged S034/S036 sources
+   (CritC2Kill C5) — provenance must match the S043/S044/S045 headers.
+5–8. unchanged from §8 (assimilation fresh guard/quarantine verdicts; seat index refresh at close;
+   attack-role definition; post-integration sweep).

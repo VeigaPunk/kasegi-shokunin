@@ -748,3 +748,35 @@ remains 7; both claims are measured improvements with scores held. Depth:density
 9; after the append-only SKILL.md registry note, `density.py` reports mean 160.2,
 20 blocks, 656 path citations (base was 150.3 / 20 / 652). The increase is disclosed,
 not claimed as a score move.
+
+## Round 29 — frozen claims C1/C2 (2026-10-25)
+
+**Claim C1 (depth:verifiability, lowest non-retired axis — score held 4):** anchorcheck.py
+`--selftest` completeness + hermeticity. Before: cases=9, `limbs=` assertion absent, git-free
+run exit 1 + `FileNotFoundError: 'git'` traceback (receipt `c1-controls/before.txt`). After
+(instrument sha256 `d0f35f8…`): `selftest cases=12 failures=0`, `limbs=9 covered=9`, exit 0;
+git-free run `SKIP pin-broken (git not found)`, `limbs=9 covered=8 skip=1`, `nogit_exit=0`.
+Canonical receipt `.ufo/waves/round-29/wave1/c1-receipt-index.txt` pins the digest. Post-wave
+truthfulness correction (RevC1Instrument/CritGlobal): skipped limb no longer counted as covered.
+Kill rule PASS. SKILL.md no-harm: 7 in-range/0 bad/306 LOST-RECORDED, skill_exit=0.
+
+**Claim C2 (coverage — score held 7):** frontier F13 admitted (12→13) with entry
+`corpus/knowledge/program-severity-ladders-and-reward-scales.md` citing rows first registered this
+round S043/S044/S045 (42→45). Census exit 0 (W04 S028/S029 only); harness `entries=16 pass=16
+exit=0` incl. `PASS F13 … ids=S043,S044,S045`; per-id source-recheck exit 0 each; manifest
+`910608e6…` all 12 assertions exactly-once (Q9). Do-nothing control at base cannot meet target.
+Kill rule PASS.
+
+**Depth:density unchanged 9:** density mean 150.3→167.5 disclosed (measurement change, not a
+score move); anchor verdict classes unmoved. **Capabilities: no row added this round.** Saturation
+unchanged: line 9/10, window N=3; lowest-axis obligation stays active.
+
+### Round-29 close-out addendum
+
+At the final lane commit, all frozen counters re-run clean (post-commit-recheck.txt). Wave shape:
+one v2 wave, 64 seats; m_flash roles 41/64 (64.1%), attack roles 19/64 (29.7%). Assimilation
+theme: program severity ladders and reward scales (merge/kasegi read-only; quarantine slice 7 rows
+hand-checked, none adopted); considerthese proposal 5 landed as QUALITY.md R15. Mistakes mined in
+`corpus/lessons/round-29.md` §Mistakes (M29-1…M29-9) incl. M28-5 persistence on the frontier
+harness and the mid-wave S043 occurrences=12 blind spot. No owned axis is assigned a scalar
+increase; depth:verifiability remains 4, coverage remains 7.

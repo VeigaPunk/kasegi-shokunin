@@ -87,18 +87,24 @@ mechanical count, kept unchanged for receipt continuity. Exit status is broader
 than `bad`: every count in FAIL_CLASSES drives it. LOST-RECORDED is recorded —
 not bad, not fail.)
 
---selftest (round 28) builds one isolating fixture per FAIL_CLASSES limb, plus
-a bounties in-range case, a marked-loss case and a clean control, all under a
-fresh temp dir; per case it overrides KASEGI_LANE_ROOT / KASEGI_MIRROR /
-KASEGI_ORIGIN_ROOT / KASEGI_BOUNTIES, so the absent-bases host still reaches
-every limb (a present temp mirror reaches MISSING-FILE, a real temp file
-reaches PAST-EOF, a temp `git init` repo supplies the broken pin, a present
-temp bounties root reaches OUTSIDE-BASE and in-range, absent roots reach
-BASE-ABSENT / BOUNTIES-ABSENT). It runs this file as a subprocess and asserts
-each case's exact verdict-class counts and exit status. Prints
-`selftest cases=N failures=0` and exits 0; on any mismatch it prints the
-failing case and that case's stdout/stderr, and exits 1. No fixture reads or
-writes the live tree.
+--selftest (round 28; round 29 closure) declares one isolating failing fixture
+per fail-class limb in the LIMBS registry — nine limbs: MISSING-FILE, PAST-EOF,
+OUTSIDE-BASE for each of the bounties/mirror/origin arms, PIN-BROKEN,
+BASE-ABSENT for each of the mirror/origin arms, BOUNTIES-ABSENT — and runs 12
+cases (9 failing + 3 controls), all under a fresh temp dir; per case it
+overrides KASEGI_LANE_ROOT / KASEGI_MIRROR / KASEGI_ORIGIN_ROOT /
+KASEGI_BOUNTIES, so the absent-bases host still reaches every limb (a present
+temp mirror reaches MISSING-FILE, a real temp file reaches PAST-EOF, a temp
+`git init` repo supplies the broken pin, present temp roots reach OUTSIDE-BASE
+for all three arms and in-range, absent roots reach BASE-ABSENT /
+BOUNTIES-ABSENT). It runs this file as a subprocess and asserts each case's
+exact verdict-class counts and exit status. When `git` is not on PATH the
+PIN-BROKEN case is skipped with `SKIP pin-broken (git not found)` and the run
+still exits 0 (hermeticity). After the cases it asserts the registry against
+the executed case list and prints `limbs=9 covered=9`. Prints
+`selftest cases=N failures=0` and exits 0; on any mismatch (including an
+uncovered declared limb) it prints the failing case and that case's
+stdout/stderr, and exits 1. No fixture reads or writes the live tree.
 
 Usage: python3 anchorcheck.py <file.md>
        python3 anchorcheck.py --selftest
@@ -197,7 +203,19 @@ def git_show(repo, obj, path, a, b):
     return ('OK', ' ⏎ '.join(x.strip()[:100] for x in lines[a-1:b]))
 
 
-# ---- round-28 selftest: one isolating fixture per fail limb ------------------
+# ---- round-29 selftest: one isolating fixture per fail limb ------------------
+LIMBS = {
+    'missing-file': 'MISSING-FILE',
+    'past-eof': 'PAST-EOF',
+    'outside-base-bounties': 'OUTSIDE-BASE',
+    'outside-base-mirror': 'OUTSIDE-BASE',
+    'outside-base-origin': 'OUTSIDE-BASE',
+    'pin-broken': 'PIN-BROKEN',
+    'base-absent-mirror': 'BASE-ABSENT',
+    'base-absent-origin': 'BASE-ABSENT',
+    'bounties-absent': 'BOUNTIES-ABSENT',
+}
+
 
 def _counts(out):
     """Parse one run's stdout into {verdict class|'IN-RANGE': count}."""
@@ -213,15 +231,7 @@ def _counts(out):
 
 
 def _selftest():
-    """One isolating fixture per FAIL_CLASSES limb, plus controls, in temp dirs.
-
-    Each case runs this file as a subprocess with KASEGI_LANE_ROOT /
-    KASEGI_MIRROR / KASEGI_ORIGIN_ROOT / KASEGI_BOUNTIES pointed at fresh temp
-    roots, so a fixture reaches exactly one limb even on this host (where every
-    real base is absent), and then asserts the COMPLETE verdict-class vector and
-    the exit status. A fixture that trips a second limb, or a limb with no
-    failing fixture, therefore shows up as a failure here.
-    """
+    """Run every declared fail-path limb plus three controls in temp dirs."""
     zero = {k: 0 for k in FAIL_CLASSES}
     zero['LOST-RECORDED'] = 0
     zero['IN-RANGE'] = 0
@@ -238,50 +248,50 @@ def _selftest():
                           exit_code=exit_code, absent=absent, files=files,
                           git_dir=git_dir))
 
-    # 1 MISSING-FILE — every base present, the cited file simply absent.
     add('missing-file',
         "Fabricated citation, no file at any present base: "
         "`corpus/knowledge/zz-selftest-absent.md:99`\n",
         want(**{'MISSING-FILE': 1}), 1)
-    # 2 PAST-EOF — a real temp file, anchor beyond its last line.
     add('past-eof', "Existing lane file, anchor past EOF: `present.md:9`\n",
         want(**{'PAST-EOF': 1}), 1,
         files=(('lane', 'present.md', 'one\ntwo\nthree\n'),))
-    # 3 OUTSIDE-BASE — bounties root present, the cite walks out of it.
-    add('outside-base',
+    add('outside-base-bounties',
         "Bounties cite escaping its root: "
         "`~/Projects/bounties/../selftest-escape.md:1`\n",
         want(**{'OUTSIDE-BASE': 1}), 1)
-    # 4 PIN-BROKEN — declared pin whose object id does not exist in the repo.
+    add('outside-base-mirror',
+        "Mirror cite escaping its root: "
+        "`~/Projects/the-bounty-hunter/../selftest-escape.md:1`\n",
+        want(**{'OUTSIDE-BASE': 1}), 1)
+    add('outside-base-origin',
+        "Origin cite escaping its root: "
+        "`~/Projects/origin-work/open-bug-bounties/../selftest-escape.md:1`\n",
+        want(**{'OUTSIDE-BASE': 1}), 1)
     add('pin-broken',
         "<!-- pin: pinned.md deadbeef -->\n"
         "Pinned cite whose blob does not exist: `pinned.md:1`\n",
         want(**{'PIN-BROKEN': 1}), 1, git_dir='lane')
-    # 5 BASE-ABSENT — unprefixed mirror name with the mirror root absent.
-    add('base-absent',
+    add('base-absent-mirror',
         "Unprefixed mirror name, mirror root absent: `zz-selftest-ops.mjs:1`\n",
         want(**{'BASE-ABSENT': 1}), 1, absent=('mirror',))
-    # 6 BOUNTIES-ABSENT — bounties-prefixed cite with the bounties root absent.
+    add('base-absent-origin',
+        "Explicit origin cite, origin root absent: "
+        "`~/Projects/origin-work/open-bug-bounties/ops/claim-check.mjs:1`\n",
+        want(**{'BASE-ABSENT': 1}), 1, absent=('origin',))
     add('bounties-absent',
         "Bounties cite, bounties root absent: "
         "`~/Projects/bounties/ops/claim-check.mjs:96`\n",
         want(**{'BOUNTIES-ABSENT': 1}), 1, absent=('bounties',))
-    # 7 bounties arm resolves (control) — the arm must not only fail closed.
     add('bounties-in-range',
         "Bounties cite inside a present root: "
         "`~/Projects/bounties/ops/claim-check.mjs:2`\n",
         want(**{'IN-RANGE': 1}), 0,
         files=(('bounties', 'ops/claim-check.mjs', 'alpha\nbeta\ngamma\n'),))
-    # 8 LOST-RECORDED is recorded, not fail. The bare (unbackticked) `[lost-…]`
-    # trailer in line 1 is deliberately NOT a token (TOK is backtick-only), so
-    # the case asserts LOST-RECORDED=1, not 2 — exactly the measured corpus
-    # behaviour disclosed in the round-28 wave-1 receipt.
     add('lost-recorded',
         "Bare marked trailer, not a token: "
         "source: [lost-tree] ~/Projects/bounties/ops/gone.mjs:1-3\n"
         "Backticked marked loss: `[lost-base] ~/Projects/bounties/ops/gone.mjs:4`\n",
         want(**{'LOST-RECORDED': 1}), 0, absent=('bounties',))
-    # 9 clean control — in-range lane cite, nothing else, exit 0.
     add('clean', "Clean lane cite: `present.md:2`\n",
         want(**{'IN-RANGE': 1}), 0,
         files=(('lane', 'present.md', 'one\ntwo\nthree\n'),))
@@ -289,34 +299,51 @@ def _selftest():
     base = tempfile.mkdtemp(prefix='anchorcheck-selftest-')
     report = []
     n_fail = 0
+    n_skip = 0
+    executed = []
+    skipped = []
     try:
         for c in cases:
             d = os.path.join(base, c['name'])
             root = {}
             for sub in ('lane', 'mirror', 'bounties', 'origin'):
                 root[sub] = os.path.join(d, sub)
-                if sub not in c['absent']:          # named-but-absent otherwise
+                if sub not in c['absent']:
                     os.makedirs(root[sub], exist_ok=True)
             for sub, rel, text in c['files']:
                 fp = os.path.join(root[sub], rel)
                 os.makedirs(os.path.dirname(fp), exist_ok=True)
                 with open(fp, 'w') as f:
                     f.write(text)
-            if c['git_dir']:
-                subprocess.run(['git', '-C', root[c['git_dir']], 'init', '-q'],
-                               capture_output=True)
             fixture = os.path.join(d, 'fixture.md')
             with open(fixture, 'w') as f:
                 f.write(c['fixture'])
-            # Do not let ambient repository-location variables redirect the
-            # isolated PIN-BROKEN fixture into the caller's Git repository.
+
+            # Keep ambient Git repository-location variables from redirecting
+            # the isolated PIN-BROKEN fixture into the caller's repository.
             env = {k: v for k, v in os.environ.items() if not k.startswith('GIT_')}
             env.update(KASEGI_LANE_ROOT=root['lane'],
                        KASEGI_MIRROR=root['mirror'],
                        KASEGI_ORIGIN_ROOT=root['origin'],
                        KASEGI_BOUNTIES=root['bounties'])
+            if c['git_dir']:
+                git = shutil.which('git', path=env.get('PATH'))
+                if git is None:
+                    print('SKIP pin-broken (git not found)')
+                    n_skip += 1
+                    skipped.append(c['name'])
+                    continue
+                init = subprocess.run([git, '-C', root[c['git_dir']], 'init', '-q'],
+                                      capture_output=True, text=True, env=env)
+                if init.returncode:
+                    n_fail += 1
+                    report.append(f"selftest FAIL {c['name']}: git init exit {init.returncode}")
+                    if init.stderr.strip():
+                        report.append('  ' + init.stderr.strip().replace('\n', '\n  '))
+                    continue
             p = subprocess.run([sys.executable, os.path.abspath(__file__), fixture],
                                capture_output=True, text=True, env=env)
+            executed.append(c['name'])
             got = _counts(p.stdout)
             diffs = [f'{k}: want {v}, got {got.get(k)}'
                      for k, v in c['expected'].items() if got.get(k) != v]
@@ -328,12 +355,23 @@ def _selftest():
                 for stream in (p.stdout, p.stderr):
                     if stream.strip():
                         report.append('  ' + stream.strip().replace('\n', '\n  '))
+
+        covered = sum(1 for name in LIMBS if name in executed)
+        missing = [name for name in LIMBS if name not in executed and name not in skipped]
+        if missing:
+            n_fail += 1
+            report.append('selftest FAIL limb coverage: missing executed cases '
+                          + ', '.join(missing))
     finally:
         shutil.rmtree(base, ignore_errors=True)
     for line in report:
         print(line)
     print(f"selftest cases={len(cases)} failures={n_fail}")
+    print(f"skip={len(skipped)}")
+    print(f"limbs={len(LIMBS)} covered={covered}")
     return 0 if not n_fail else 1
+
+
 
 
 def main(argv):

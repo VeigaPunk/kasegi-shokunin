@@ -1,0 +1,59 @@
+ExecCanonC2 — canonical C2 receipt (round 29 wave 1)
+UTC: 2026-10-25T18:15-18:16Z (batch)
+Lane HEAD measured: 46e07f6ae8f23debb10034164252e7027b4d9091 (wave-1 dispatch commit)
+State label: PRE-STATE — the C2 subject has NOT landed (no F13 row, no S043/S044/S045 registry rows, no corpus/knowledge/program-severity-ladders-and-reward-scales.md; round-29 snapshot dir exists but holds only S044.txt + S045.txt, both untracked).
+
+Frozen counter results (claims.json C2 counter_commands; all run from the lane root):
+
+1. frontier admitted: awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md
+   -> 12  (expected 13)  DIFFERS — F13 not admitted yet
+2. entries citing S04[3-5]: grep -lE '^source: S04[3-5] ' corpus/knowledge/*.md | wc -l
+   -> 0   (expected 1)   DIFFERS — entry file absent
+3. S043+S044+S045 rows: grep -cE '^\|[[:space:]]*S04[3-5][[:space:]]*\|' corpus/SOURCES.md
+   -> 0   (expected 3)   DIFFERS — rows not appended
+4. registry rows (census): rows=42 (expected 45)  DIFFERS
+   sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> exit 0, W04 S028/S029 only (match on exit)
+5. harness: python3 corpus/instruments/frontier-recheck-count.py
+   -> entries=15 pass=15 exit=0  (expected entries=16 pass=16 exit=0)  DIFFERS on counts
+6. per-id rechecks: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-29/manifest.json --source S043|S044|S045
+   -> each exit 2 "manifest UNAVAILABLE reason=missing"  (expected exit 0 each)  DIFFERS — manifest absent
+
+Every difference shares one cause: the C2 subject is not landed. These PRE-STATE numbers MUST NOT be compared to an after column (M28-1 rule).
+
+Named re-run (required when the subject lands; same commands, from the lane root):
+  awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md          # expect 13
+  grep -lE '^source: S04[3-5] ' corpus/knowledge/*.md | wc -l                                        # expect 1
+  grep -cE '^\|[[:space:]]*S04[3-5][[:space:]]*\|' corpus/SOURCES.md                                # expect 3
+  /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo "census_exit=$?"   # expect exit 0, rows 45
+  python3 corpus/instruments/frontier-recheck-count.py; echo "harness_exit=$?"                       # expect entries=16 pass=16 exit=0
+  python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-29/manifest.json --source S043 && ... S044 && ... S045; echo "recheck_exit=$?"   # expect exit 0 each, all manifest assertions occurrences=1
+
+=== AFTER (POST-STATE) — re-run at the landed subject, 2026-10-25T18:22Z ===
+Lane HEAD: 46e07f6ae8f23debb10034164252e7027b4d9091 (unchanged; subject files landed uncommitted in the working tree)
+
+1. frontier admitted -> 13 (expected 13)  MATCHES
+2. entries citing S04[3-5] -> 1 (expected 1)  MATCHES
+3. S043+S044+S045 rows -> 3 (expected 3)  MATCHES
+4. registry rows -> 45 (expected 45); sources-census validate exit 0, W04 S028/S029 only  MATCHES
+5. harness -> entries=16 pass=16 exit=0 (expected 16/16/0)  MATCHES (PASS F13 knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0)
+6. per-id rechecks -> S043 exit 0 (Q1-Q4 OK; Q1/Q2/Q4 occurrences=12 with anchor=1 verified, Q3 occurrences=1), S044 exit 0 (Q1-Q4 occurrences=1), S045 exit 0 (Q1-Q4 occurrences=1)  MATCHES (exit 0 each)
+
+Kill-rule verdict: PASS — every frozen C2 count matches. The S043 Q1/Q2/Q4 12-occurrence quotes are Q9-anchored (anchor line verified by source-recheck.py), permitted by QUALITY Q9; not a defect.
+
+=== FINAL (POST-STATE, stabilized bytes) — re-run at 2026-10-25T18:25Z ===
+After ExecEntryF13's stabilization the round-29 manifest/capture bytes changed: manifest.json
+910608e6bba69b32423a260332853e28f737affeaeb9011f6c9faef6702fb16a, S043.txt
+d3b815ed75e3e32b2ae363b9f612c3d25b9c8c585df2c4cd797296f2ded69199 (record-scoped), S044.txt
+8adfca615f3fc3ba9200c656a8184682b6de6d344d7436b74a7da11662b126bf, S045.txt
+f583a3965348a90c4b306a4a5c83fde48c1a81366874f409b62717645ebb0f86, entry
+6c05c98f3c6851b560098b8f7c43350a951e487e8b34e2ff09831563aa8ff4a6. Counters at these bytes:
+
+1. frontier admitted -> 13  MATCHES
+2. entries citing S04[3-5] -> 1  MATCHES
+3. S043+S044+S045 rows -> 3  MATCHES
+4. registry rows -> 45; census exit 0, W04 S028/S029 only  MATCHES
+5. harness -> entries=16 pass=16 exit=0  MATCHES
+6. per-id rechecks -> S043 exit 0 (Q1-Q4 occurrences=1, anchors 31/40/170/92 verified), S044 exit 0 (Q1-Q4 occurrences=1), S045 exit 0 (Q1-Q4 occurrences=1)  MATCHES
+
+FINAL kill-rule verdict: PASS — all frozen C2 counts match at the stabilized bytes; all 12
+manifest assertions now exactly-once with verified anchors.

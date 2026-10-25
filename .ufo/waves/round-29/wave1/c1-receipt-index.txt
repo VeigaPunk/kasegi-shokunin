@@ -1,0 +1,28 @@
+C1 canonical receipt index — kasegi round 29, wave 1
+base=7a6591c1eb8a14f427297980a96fa8bb339f29ee freeze=f28ff5d26b29270f93163117e7255e24f0b1d947
+measured_at=2026-10-25T18:55Z (post-integration correction, final working-tree bytes)
+instrument_sha256=d0f35f8ccdcf995b78ea1403732fa90e12708b79bda21793002f7315b0e2a912
+
+selftest (normal PATH):
+selftest cases=12 failures=0
+skip=0
+limbs=9 covered=9
+selftest_exit=0
+
+git-free PATH (env -i PATH=<python-only dir>):
+SKIP pin-broken (git not found)
+selftest cases=12 failures=0
+skip=1
+limbs=9 covered=8
+nogit_exit=0
+
+SKILL.md no-harm:
+== SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+skill_exit=0
+density: mean 167.5, 659 path-citation instances across 22 blocks (disclosed measurement change, not a claim)
+
+Truthfulness correction (L1, post-wave): per RevC1Instrument/CritGlobal, the no-git run no longer counts the skipped
+pin-broken limb as covered (covered=8, skip=1); the normal-PATH run exercises all 9 limbs (covered=9).
+Baseline controls: c1-controls/before.txt (cases=9, limbs grep 0, git-free exit 1 traceback); do-nothing control cannot meet target.
+
+C1 kill rule: PASS (cases=12, failures=0, limbs=9 covered=9, nogit_exit=0, digest line present).

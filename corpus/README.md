@@ -243,3 +243,22 @@ list was not regenerated). Once the round-28 entry landed the audit duly printed
 42 lines clears it. Re-verify with
 `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py`
 (the run prints `expected=<n> missing=<n> unexpected=<n> exit=<n>`).
+
+## Round-29 admission — coverage map row and Frontier F13 (appended 2026-10-25)
+
+The coverage map above is not edited in place (R6): the round-29 entry
+`knowledge/program-severity-ladders-and-reward-scales.md` (Frontier F13, sources S043 +
+S044 + S045; source basis: the HackerOne standard program policy set, the Bugcrowd VRT
+README and the Bugcrowd VRT CWE crosswalk, all captured 2026-10-25 under
+`corpus/source-snapshots/round-29/`) is recorded here as an appended amendment so every
+existing line keeps its number. The coverage-map row is appended here rather than inserted
+into the map, and the F13 frontier row is listed here on the same table shape as the
+frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Program severity ladders and reward scales (round 29) | `knowledge/program-severity-ladders-and-reward-scales.md` | S043, S044, S045 — public primary, opened 2026-10-25 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F13 | Program severity ladders and reward scales | admitted | knowledge/program-severity-ladders-and-reward-scales.md | S043, S044, S045 | Keep each platform's ladder as its own suggested baseline — distinct from CVSS-B and from other programs' reward ceilings; do not generalize a payout scale across programs. |

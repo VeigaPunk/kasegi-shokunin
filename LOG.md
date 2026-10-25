@@ -1400,3 +1400,68 @@ appends the final after-values at close; no number here is transcribed from anot
 - Final canonical measurements are recorded at the committed instrument digest in
   `.ufo/waves/round-28/c1-receipt-index.txt`; post-commit reruns and lane/report hashes are in the
   fleet report.
+
+## Round 29 — 2026-10-25 — anchorcheck selftest completeness/hermeticity + F13 program-severity assimilation (one v2 wave, 64 seats)
+
+Frozen claims `.ufo/waves/round-29/claims.json` (`frozen_at_utc` `2026-10-25T18:40:00Z`); freeze
+commit `f28ff5d26b29270f93163117e7255e24f0b1d947`; lane base `7a6591c1eb8a14f427297980a96fa8bb339f29ee`;
+lane HEAD at this entry `46e07f6ae8f23debb10034164252e7027b4d9091` (wave-1 spec + dispatch). The
+integration commit is NOT YET KNOWN at composition time: `git diff f28ff5d… HEAD` carries only the
+three wave-infra files (`build-spec.py`, `wave1-dispatch.json`, `wave1-spec.json`), and
+`git status --porcelain` shows no tracked file modified — the wave is live and the production edits
+have not landed. Every before value below is the committed at-freeze receipt; every after value is
+labelled PENDING until the L1's close re-run records it.
+
+- **C1 depth:verifiability (4, held) — `anchorcheck.py --selftest` completeness and hermeticity.** Before,
+  at base (`.ufo/waves/round-29/c1-controls/before.txt`, instrument sha256
+  `23818c1204c38ee8d1bb0c6d449dd0ffb3c9181271f14fb3d7aab25a73ee7396`): `selftest cases=9 failures=0`
+  exit 0; limb-coverage grep (`limbs=[0-9]+ covered=`) → 0 (no coverage assertion); git-free PATH run →
+  exit 1 with `FileNotFoundError: 'git'` traceback. The wave-start base control re-run
+  (`wave1/c1-controls/base-control-{selftest,grep,nogit}.txt`) reproduced all three verbatim. Frozen
+  target: `limbs=9 covered=9` (every declared verdict limb has an isolating failing fixture),
+  `selftest cases=12 failures=0`, exit 0 both normally and under a git-stripped PATH, plus the
+  canonical `c1-receipt-index.txt` carrying an `instrument_sha256` line matching the committed digest.
+  After: **PENDING** — no instrument edit is committed or in tree at composition time, and the receipt
+  index does not exist yet.
+- **C2 coverage (7, held) — F13 program severity ladders and reward scales.** Before, at freeze
+  (`.ufo/waves/round-29/c2-controls/before.txt`): frontier admitted 12; entries citing `S04[3-5]` 0;
+  registry 42 rows; census exit 0 (W04 ×2, S028/S029); harness `entries=15 pass=15 exit=0`;
+  recheck-audit strict 40/40. The canonical C2 counter run `ExecCanonC2` (18:15–18:16Z) is labelled
+  **PRE-STATE**: all seven frozen counters still differ from their expectations because the subject is
+  unlanded — frontier 12 ≠ 13, entries 0 ≠ 1, S04[3-5] rows 0 ≠ 3, census 42 ≠ 45,
+  harness 15/15 ≠ 16/16, per-id recheck exit 2 (`manifest UNAVAILABLE reason=missing`). Captures on
+  disk (untracked) at composition time: `corpus/source-snapshots/round-29/S044.txt` (VRT README,
+  sha256 `8adfca61…`, seat `ExecCapS044`) and `S045.txt` (VRT→CWE mapping, sha256 `f583a396…`, seat
+  `ExecCapS045`); `S043.txt` exists but is a 128-byte JS-disabled placeholder (“It looks like your
+  JavaScript is disabled…”); no `manifest.json`, no knowledge entry, no registry rows, no F13 row yet.
+  After: **PENDING**; the named re-run is the six-command block in `wave1/ExecCanonC2.md`.
+- **Assimilation gate.** Theme: program severity ladders and reward scales, from the read-only merge
+  package `/home/vgpnk/Projects/shokuknow/merge/kasegi/` (MERGE-REPORT.md, SOURCES.append.md,
+  staged `program-severity-ladders-and-reward-scales.md`). Staged rows resolved by document, never by
+  arithmetic: staged S031 (HackerOne standard program policy set) → lane S043; staged S032 (Bugcrowd
+  VRT README) → lane S044; staged S033 (Bugcrowd VRT→CWE crosswalk) → lane S045 — landing each as a
+  new lane row with a round-29 capture pinned in the manifest. Collision guard artifacts in
+  `.ufo/waves/round-29/assimilation/` (`collisions` = S031–S042, `reg-ids` = S001–S042,
+  `staged-ids` = S031–S124). Quarantine slice: 7 rows hand-checked this round (`quarantine-slice`:
+  S037, S054, S048, S065, S068, S069, S070 — register classes verbatim); verdicts per row land in the
+  lesson Gate (pending at composition time).
+- **Census.** Before: exit 0, 42 rows, W04 ×2 (`.ufo/waves/round-29/census-before.txt`). After:
+  PENDING (expect exit 0 at 45 rows once S043/S044/S045 and the entry land).
+- **Waves.** One v2-policy wave, `kasegi-r29-build`: 64 seats spawned (dispatch `counts.spawn=64`,
+  resume 0) — scout 5, connector 3, executor 20, scribe 13, reviewer 11, critic 4, mutation-tester 4,
+  sentinel 1, revenger 1, simplifier 2. Spec `.ufo/waves/round-29/wave1-spec.json`, dispatch
+  `.ufo/waves/round-29/wave1-dispatch.json`, seat reports under `.ufo/waves/round-29/wave1/`.
+- **Tooling.** No tool installed or upgraded; no pacman transaction attempted (host-wide pause).
+  Answering model recorded on seat receipts: `inception/mercury-3` (config route table; no seat passes
+  a model itself).
+
+### Round-29 close-out owed (appended at composition time)
+
+- C1 after: run the three frozen counter commands at the landed instrument digest and confirm
+  `limbs=9 covered=9`, `selftest cases=12 failures=0`, `nogit_exit=0`, and write the canonical
+  `c1-receipt-index.txt` with the `instrument_sha256` line.
+- C2 after: run the six-command block in `wave1/ExecCanonC2.md` once F13 lands (frontier 13, entry 1,
+  rows 3, census 45/exit 0, harness 16/16, rechecks exit 0 each, every manifest assertion
+  `occurrences=1`).
+- Integration commit hash to be recorded here when it exists; before then, no after column is final.
+- Lesson Gate to carry the quarantine verdicts per row and any refusals with flip conditions.

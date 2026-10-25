@@ -1,0 +1,12 @@
+Mutation: only replace GIT_* filtering with dict(os.environ); keep git availability guard and all case logic fixed.
+Invocation: GIT_OBJECT_DIRECTORY=/dev/null python3 /tmp/mutant-m4-env.py --selftest
+selftest FAIL pin-broken: git init exit 1
+  /dev/null/pack: Not a directory
+selftest FAIL limb coverage: missing executed cases pin-broken
+selftest cases=12 failures=2
+limbs=9 covered=8
+mutant_exit=1
+Fixed-byte control: same GIT_OBJECT_DIRECTORY poison
+selftest cases=12 failures=0
+limbs=9 covered=9
+fixed_exit=0
