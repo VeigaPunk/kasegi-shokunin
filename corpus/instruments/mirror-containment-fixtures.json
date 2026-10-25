@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "purpose": "Frozen round-23 C1 matrix: the copied resolve.py CLI runs once per case against a disposable HOME/KASEGI_MIRROR/lane layout. Escape cases pin GONE; controls pin the class that must survive the fix. `@ROOT@` in a symlink target is the case root. Paths never leave the case root except by the traversal the citation itself performs.",
+  "defaults": {
+    "home": "home",
+    "mirror": "relocated/tbh",
+    "lane": "lane",
+    "dirs": ["home/Projects", "lane", "relocated/tbh"],
+    "files": {},
+    "symlinks": {}
+  },
+  "cases": [
+    {
+      "id": "bounty-parent-traversal",
+      "nature": "escape",
+      "cite": "~/Projects/bounties/../outside.md:1",
+      "files": {"relocated/outside.md": "escaped file outside the selected mirror\n"},
+      "expect": "GONE"
+    },
+    {
+      "id": "bounty-parent-traversal-vault",
+      "nature": "escape",
+      "cite": "~/Projects/bounties/../outside-vault/secret.mjs:1",
+      "files": {"relocated/outside-vault/secret.mjs": "escaped file outside the selected mirror\n"},
+      "expect": "GONE"
+    },
+    {
+      "id": "relative-mirror-fallback-escape",
+      "nature": "escape",
+      "cite": "../outside-vault/secret.mjs:1",
+      "files": {"relocated/outside-vault/secret.mjs": "escaped file outside the selected mirror\n"},
+      "expect": "GONE"
+    },
+    {
+      "id": "bounty-fallback-symlink-escape",
+      "nature": "escape",
+      "cite": "~/Projects/bounties/evil.mjs:1",
+      "dirs": ["secret"],
+      "files": {"secret/outside.mjs": "symlink target outside the selected mirror\n"},
+      "symlinks": {"relocated/tbh/evil.mjs": "@ROOT@/secret/outside.mjs"},
+      "expect": "GONE"
+    },
+    {
+      "id": "relative-fallback-symlink-escape",
+      "nature": "escape",
+      "cite": "nested/leak.md:1",
+      "dirs": ["relocated/tbh/nested", "secret"],
+      "files": {"secret/second.md": "symlink target outside the selected mirror\n"},
+      "symlinks": {"relocated/tbh/nested/leak.md": "@ROOT@/secret/second.md"},
+      "expect": "GONE"
+    },
+    {
+      "id": "bounty-prefix-sibling-confusion",
+      "nature": "escape",
+      "cite": "~/Projects/bounties-legacy/README.md:1",
+      "files": {"relocated/tbh/-legacy/README.md": "decoy under the mirror reached by the old '-' suffix mapping\n"},
+      "note": "The literal ~/Projects/bounties-legacy/README.md is absent; only the old startswith() prefix mapping reaches the mirror decoy.",
+      "expect": "GONE"
+    },
+    {
+      "id": "confined-bounty-fallback-control",
+      "nature": "control",
+      "cite": "~/Projects/bounties/ops/rank.mjs:1",
+      "files": {"relocated/tbh/ops/rank.mjs": "confined mirror evidence\n"},
+      "expect": "MIRROR-EQUIVALENT"
+    },
+    {
+      "id": "confined-relative-fallback-control",
+      "nature": "control",
+      "cite": "docs/note.md:1",
+      "files": {"relocated/tbh/docs/note.md": "confined mirror evidence\n"},
+      "expect": "MIRROR-EQUIVALENT"
+    },
+    {
+      "id": "missing-bounty-target-control",
+      "nature": "control",
+      "cite": "~/Projects/bounties/missing/x.mjs:1",
+      "expect": "GONE"
+    },
+    {
+      "id": "lane-relative-parent-internal-control",
+      "nature": "control",
+      "cite": "../outside.md:1",
+      "files": {"outside.md": "lane-root-relative ../ hit\n"},
+      "note": "Frozen claim preserves lane-relative semantics: the lane-repo branch runs first, so this stays INTERNAL.",
+      "expect": "INTERNAL"
+    },
+    {
+      "id": "literal-prefix-sibling-control",
+      "nature": "control",
+      "cite": "~/Projects/bounties-legacy/README.md:1",
+      "files": {"home/Projects/bounties-legacy/README.md": "ordinary other-root literal\n"},
+      "note": "A literal hit is truthful RESOLVES as an ordinary other root before and after; the claim confines the mirror fallback, not literal existence.",
+      "expect": "RESOLVES"
+    },
+    {
+      "id": "canonical-alias-confined-control",
+      "nature": "control",
+      "cite": "~/Projects/the-bounty-hunter/server.py:1",
+      "files": {"relocated/tbh/server.py": "confined canonical-alias evidence\n"},
+      "expect": "RESOLVES"
+    },
+    {
+      "id": "canonical-alias-escape-control",
+      "nature": "control",
+      "cite": "~/Projects/the-bounty-hunter/../../outside.md:1",
+      "files": {"outside.md": "outside the selected mirror\n"},
+      "note": "Already confined before round 23; pins that the pre-existing canonical gate still works.",
+      "expect": "GONE"
+    }
+  ]
+}

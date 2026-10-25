@@ -23,9 +23,14 @@ Extraction rule: lifted verbatim from /tmp/kasegi-r15/density.py's docstring
 Resolution policy (documented, deterministic). For a token, strip the anchor
 suffix (`:NN`, `:NN-MM`, and the r15-tolerated `::symbol` form) -> BASE. Then:
 
-  domain BOUNTY   BASE under `~/Projects/bounties` (or /home/<u>/Projects/bounties)
+  domain BOUNTY   BASE under the EXACT root `~/Projects/bounties` (or
+                  /home/<u>/Projects/bounties; root-only or a `/`-delimited
+                  descendant — a prefix sibling `bounties-x/...` is an ordinary
+                  other root, and a `../` segment never leaves the root)
                   -> exists? RESOLVES : same relative path exists under
-                     ~/Projects/the-bounty-hunter? MIRROR-EQUIVALENT : GONE
+                     ~/Projects/the-bounty-hunter AND realpath-confined there?
+                     MIRROR-EQUIVALENT : GONE. A parent-traversal or symlink
+                     escape outside the selected mirror is never credited.
   domain OTHER    BASE starts with `~` or `/` (any other root, e.g.
                   ~/Projects/origin-work/..., /tmp/kasegi-r1*)
                   -> exists? RESOLVES : GONE, EXCEPT that an EXACT canonical
@@ -45,7 +50,9 @@ suffix (`:NN`, `:NN-MM`, and the r15-tolerated `::symbol` form) -> BASE. Then:
                   `INGESTION.md` / `evidence/...` cites were bounty-root
                   relative).
                   -> exists under lane repo? INTERNAL
-                  -> else exists under mirror? MIRROR-EQUIVALENT
+                  -> else exists under mirror? MIRROR-EQUIVALENT, only when
+                     the resolved path is realpath-confined inside the mirror;
+                     `../` walk-outs and symlink escapes are GONE
                   -> else GONE
 
   Existence test for a candidate path (method name is reported):
@@ -191,6 +198,20 @@ def mirror_suffix(base):
     return None
 
 
+def bounty_suffix(base):
+    """Return BASE's suffix under the exact bounty root, else None.
+    A prefix sibling (`~/Projects/bounties-x/...`) is an ordinary other root,
+    never a bounty citation; the boundary matches mirror_suffix()'s."""
+    for prefix in BOUNTY_PREFIXES:
+        for root in (prefix, os.path.expanduser(prefix)):
+            root = root.rstrip("/")
+            if base == root:
+                return ""
+            if base.startswith(root + "/"):
+                return base[len(root) + 1:]
+    return None
+
+
 def under_mirror(path, mirror_root):
     """True when realpath(path) is realpath(mirror_root) or below it; a
     '../' walk-out or symlink escape is never credited as mirror evidence."""
@@ -201,14 +222,14 @@ def under_mirror(path, mirror_root):
 
 def classify(tok, lane_root, mirror_root):
     base, anchor = strip_anchor(tok)
-    if base.startswith(BOUNTY_PREFIXES):
+    suffix = bounty_suffix(base)
+    if suffix is not None:
         dom = "bounty"
-        rel = base.split("/Projects/bounties", 1)[1].lstrip("/")
         m, p = exists_any(base)
         if m:
             return "RESOLVES", p, m, dom
-        m, p = exists_any(os.path.join(mirror_root, rel)) if rel else (None, None)
-        if m:
+        m, p = exists_any(os.path.join(mirror_root, suffix)) if suffix else (None, None)
+        if m and under_mirror(p, mirror_root):
             return "MIRROR-EQUIVALENT", p, m, dom
         return "GONE", "", "", dom
     sfx = mirror_suffix(base)
@@ -229,7 +250,7 @@ def classify(tok, lane_root, mirror_root):
         return "INTERNAL", p, m, "rel"
     if base not in ("", ".", ".."):
         m, p = exists_any(os.path.join(mirror_root, base))
-        if m:
+        if m and under_mirror(p, mirror_root):
             return "MIRROR-EQUIVALENT", p, m, "rel"
     return "GONE", "", "", "rel"
 

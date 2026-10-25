@@ -47,7 +47,7 @@ platform is currently operating or a direction to submit anything.
 | Article 14(2)(c) | “no later than 14 days after a corrective or mitigating measure is available” |
 | Article 14(4)(c) | “within one month after the submission of the incident notification under point (b)” |
 | Article 71 | “Article 14 shall apply from 11 September 2026” |
-| Article 71 | “It shall apply from 11 December 2027.” |
+| Article 71 | “This Regulation shall apply from 11 December 2027.” |
 
 ## Falsifiable local check
 

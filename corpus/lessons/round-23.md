@@ -67,3 +67,170 @@ queued sources and the new S030/S029 rows carry the admitted current scope.
 Spot-check: independent non-author admit-and-reject review is delegated to the
 parent's separate closure after landing. Our waves are author-side evidence and
 are not that judgment.
+
+## Attempt 2 — 2026-10-25: landed detector soundness and F06–F08 admission
+
+Lane tip at attempt start `1fafde8f11454f3b0b98ab7f2b2e640aaf7f399a` (checkpoint
+`8bf9807`, "policy-paused, unadmitted, no task resumption"). Frozen claims are
+unchanged from `.ufo/waves/round-23/claims.json` (base `922a4dde`); this attempt
+runs C1 and C2 as frozen and adds no claim.
+
+**Inherited vs re-verified vs discarded.** Reused after re-verification: the
+three F06/F07/F08 knowledge entries, registry rows S018/S022/S024/S028/S029/S030,
+the three pinned snapshots, `corpus/instruments/source-recheck.py`, the r23
+SCORECARD frozen-claims section, QUALITY Q7–R9 and the 44 inherited seat reports
+under `.ufo/waves/round-23/build/` (author-side evidence, never admission).
+Discarded: the inherited implication that the C1 fix had landed. `git diff
+922a4dde -- corpus/instruments/resolve.py` is empty at this attempt's start, and
+every seat patch lived only in `/tmp/kasegi-r23-*` clones that no longer exist
+(`ls -d /tmp/kasegi-r23-*` → 0). The FixMirror design was re-implemented here
+from its own report and measured on this attempt's bytes.
+
+### C1 — depth:verifiability (lowest axis, score 4): mirror-fallback soundness
+
+Landed in `corpus/instruments/resolve.py`:
+
+- `bounty_suffix()` (new): exact-root equality or a `/`-delimited descendant of
+  `~/Projects/bounties` / `/home/vgpnk/Projects/bounties`. `~/Projects/bounties-x`
+  is now an ordinary other root instead of a bounty citation with suffix `-x/...`.
+- Bounty fallback now requires `under_mirror(p, mirror_root)`; relative mirror
+  fallback likewise. Both were unchecked before; the canonical-alias branch already
+  had the guard.
+- Literal `exists_any(base)` RESOLVES for bounty citations is deliberately kept
+  (carve-out), and the lane-relative `INTERNAL` branch is unchanged — both are
+  pinned as controls in the matrix.
+- Policy docstring updated in place for the BOUNTY and REL domains; no other line
+  of the module moved.
+
+**Counting command** (identical inputs both sides; the matrix SHA-256 is printed
+and recorded in both receipts):
+
+```sh
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+git show 922a4dd:corpus/instruments/resolve.py > .ufo/waves/round-23/c1-baseline-resolver.py
+python3 corpus/instruments/mirror-containment-check.py \
+  --resolver .ufo/waves/round-23/c1-baseline-resolver.py \
+  --json .ufo/waves/round-23/c1-baseline.json      # do-nothing control
+python3 corpus/instruments/mirror-containment-check.py \
+  --json .ufo/waves/round-23/c1-fixed.json         # landed bytes
+```
+
+**Before → after** (same 13-case matrix, `matrix_sha256=5e61a33e…b5e76a9`):
+
+| class of fixture | baseline (control) | landed |
+|---|---|---|
+| escape fixtures pinned GONE (6) | **0/6** GONE — all 6 credited `MIRROR-EQUIVALENT` | **6/6** GONE |
+| controls pinned to their class (7) | 7/7 | **7/7** |
+| whole matrix | 7/13 pass, exit 1 | **13/13 pass, exit 0** |
+
+Escape cases: `bounty-parent-traversal`, `bounty-parent-traversal-vault`,
+`relative-mirror-fallback-escape`, `bounty-fallback-symlink-escape`,
+`relative-fallback-symlink-escape`, `bounty-prefix-sibling-confusion`. Controls:
+confined bounty and relative fallbacks, missing target, lane-relative `../`
+`INTERNAL`, literal prefix-sibling `RESOLVES`, canonical-alias `RESOLVES` and its
+pre-existing escape `GONE`. The control run is the §8 do-nothing receipt: it
+skips the claimed work and still scores 0/6 on the target, so the counter is not
+reachable without the fix.
+
+**No-harm guard (frozen corpus, both detectors).** `git archive 922a4dd` export,
+baseline and landed resolver bytes run against that identical export:
+`distinct=1589 resolves=11 mirror=0 internal=197 other=0 gone=1381
+skill=39/513 corpus=192/1262 all=208/1589` in both runs; citation→class diff
+`distinct base=1588 fixed=1588 added=0 dropped=0 changed=0`. **The guard is
+vacuous on this host**: `mirror=0` because neither mirror candidate exists, so no
+citation reaches the modified branches. It is published as vacuity, and the
+matrix — not the frozen-corpus diff — is C1's evidence. The residual
+lane-relative `INTERNAL` branch remains unconﬁned by design (carve-out) and is not
+generalized into "the detector is sound".
+
+Score held at **4**: instrument correctness only; no restored source, no citation
+availability change.
+
+### C2 — coverage (score 7): F06–F08 admitted
+
+The inherited entries' `recheck:` lines pointed at a manifest that did not exist
+(`corpus/source-snapshots/round-23/manifest.json` absent → exit 2). This attempt
+wrote it: nineteen quote assertions over the three pinned snapshots, each with
+the snapshot digest, and ran the published command three times:
+
+```sh
+for s in S018 S029 S030; do python3 corpus/instruments/source-recheck.py \
+  --manifest corpus/source-snapshots/round-23/manifest.json --source $s; done
+```
+
+`S018` exit 0 (7 OK lines), `S029` exit 0 (7 OK), `S030` exit 0 (8 OK — digest
+plus seven quotes). **Q7 fail-closed controls** (scratch copies of the manifest
+and snapshots): flipped digest → `S018:sha256 MISMATCH`, exit 1; missing source
+path → `S029:source UNAVAILABLE reason=missing`, exit 2; fabricated quote →
+`S030:fabricated MISMATCH reason=quote-not-found`, exit 1.
+
+Admission rows: `corpus/README.md` § Frontier F06→`knowledge/multiparty-vulnerability-coordination.md`
+(S018), F07→`knowledge/cna-assignment-and-vulnerability-rules.md` (S030,
+supersedes S022), F08→`knowledge/cra-manufacturer-reporting-duties.md` (S029,
+supersedes S024). Counting commands:
+`grep -cE '^\| F0[6-8] .*\| admitted \|' corpus/README.md` → **0 → 3**;
+`grep -cE '^\| F0[1-8] .*\| admitted \|' corpus/README.md` → **5 → 8**.
+Frozen denominator `5/8 → 8/8`; the historical lost-root denominator and score 7
+are not redefined.
+
+Score held at **7**: the r15 domain-root denominator is untouched by
+public-practice entries.
+
+### Mistakes — captured this attempt
+
+| id | class | evidence pointer | captured-by | fix |
+|---|---|---|---|---|
+| M6 | Inherited state presented as landed work | `git diff 922a4dde -- corpus/instruments/resolve.py` empty at attempt start; `ls -d /tmp/kasegi-r23-*` → 0; checkpoint message "unadmitted, no task resumption" | R4 (existing: a rendered wave is not execution) plus this attempt's diff | Re-implement the fix on live bytes and measure the real copied CLI; report the inherited build reports as author-side evidence only. |
+| M7 | Quote is a paraphrase, not the source sentence | F08's Article 71 row said “It shall apply from 11 December 2027.”; `S029.txt:122` reads “This Regulation shall apply from 11 December 2027.” | Q3 (exact quote) enforced mechanically by the new manifest/recheck — the first recheck run would fail on the old quote | Quote corrected in the entry to the located sentence; the manifest asserts it. Caught **before** admission, by the instrument rather than by reading. |
+| M8 | Quote fidelity across excerpt markup | F07's 4.1.9 row quotes rendered text while `S030.txt:165` carries `<u>Independently Fixable</u>` | Q3 + Q7 (the recheck compares captured bytes) | Manifest asserts the excerpt's literal bytes; the entry now discloses the markup difference in a Quote-fidelity note. |
+| M9 | Frozen predicate wider than its fixtures | C1 `after` says "all declared mirror-escape and prefix-confusion fixtures classify GONE", while a literal-present prefix sibling is truthfully `RESOLVES` | R7 (freeze against the registered detector) plus the inherited Causal/RedBefore seats | The matrix declares the escape fixture as the *literal-absent* sibling (the actual defect) and pins the literal-present sibling as a control with its ordinary-root class; both are disclosed in the matrix `note` and this lesson. The predicate sentence is not rewritten. |
+| M10 | Claim evidence structure vs guard vacuity | `mirror=0` on this host makes the frozen-corpus verdict diff structurally incapable of changing | The inherited NoHarm seat predicted it; this attempt reproduced it | Publish the vacuity next to the guard, and rest C1 on the matrix receipts. |
+| M11 | Prose-vs-command drift in the entry headers | The three `recheck:` lines named a manifest that did not exist (exit 2) | Q7 (executable recheck) | Manifest minted in the same landing as the row flips; three exit-0 runs plus three failing controls recorded. |
+
+### Gate — attempt 2 additions
+
+Opened rows this round are S018, S029, S030 and S028 (rejected), as recorded in
+the section above. Transitions verified against committed rows and logged
+old→new:
+
+| row | field | old | new |
+|---|---|---|---|
+| S018 | status | queued | mined |
+| S018 | used-by | — | corpus/knowledge/multiparty-vulnerability-coordination.md |
+| S018 | recheck | 180d | 180d (unchanged) |
+| S029 | (new row) | — | mined, spec/A, supersedes S024 |
+| S030 | (new row) | — | mined, spec/A, supersedes S022 |
+| S022, S024 | status | queued | queued (unchanged; historical, not rewritten) |
+| S028 | status | rejected | rejected (duplicate-row proposal; flip unchanged) |
+
+Census: `scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`
+→ exit **0**, 30 registry rows, two W04 duplicate-URL warnings (S028 and S029
+reuse the S006 / S024 URLs — warnings, not errors). This is the round-end required
+exit-0 census, and also the opening census (the registry was untouched when it
+ran).
+
+C2 evidence ceiling: the snapshots are normalized public-document reader
+excerpts, not raw HTTP bytes; the recheck proves quote-in-capture, not current
+online law or FIRST/CVE/EUR-Lex freshness. Each entry's Limits section states it;
+S030's "current" claim is dated (approved 2026-08-20, effective 2026-08-25).
+
+### Wave record for attempt 2
+
+Wave 1 is inherited (`kasegi-r23-build`, 64 seats, committed under `.ufo/waves/round-23/build/`
+with registry `swarm-registry.json`); its 44 reports were re-read and are
+author-side evidence. Wave 2 (`kasegi-r23-falsify`, 36 seats — 9 critic, 7
+reviewer, 7 executor, 4 scout, 3 mutation-tester, 2 sentinel, 2 revenger, 1
+connector, 1 scribe; attack roles 19/36) validated under the v1 policy
+(`plan`/`run` exit 0, registry `.ufo/waves/round-23/falsify/swarm-registry.json`)
+and was **refused at dispatch**: `Background job limit reached (100)` on every
+lane. Refusal text is filed at `.ufo/waves/round-23/falsify/refusal-1.json`;
+the payload is `falsify-spec.json` + `falsify/dispatch.json`-shaped output under
+`/tmp`. No seat was replaced, split or shrunk.
+
+Spot-check: independent non-author admit-and-reject review remains with the
+parent's separate closure. Nothing here is an admission.
+
+SOURCES: registry rows 27 → 30 (tier A=28, C=2; status mined 18, queued 9,
+rejected 3; 18 rows carry `used-by`), derived with
+`grep -cE '^ {0,3}\|[[:space:]]*S[0-9]{3,}'` on `git show 922a4dd:corpus/SOURCES.md`
+(27) and on the working registry (30) plus a cell census of tier/status/used-by.

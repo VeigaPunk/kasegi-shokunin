@@ -390,3 +390,37 @@ historical author assessments; headers/historical notices are provenance and
 freshness work, not detector-defined depth credit. Evidence:
 `corpus/lessons/round-22-verifier-spotcheck.md`; learning and routed-debt
 closure belong to `corpus/lessons/round-23.md`.
+
+## Round 23 — result (attempt 2, 2026-10-25)
+
+Frozen claims and base are unchanged from `.ufo/waves/round-23/claims.json`
+(base `922a4dde90b60b465e2b8b241d1fe363f1f27e98`). Lane tip at attempt start
+`1fafde8f11454f3b0b98ab7f2b2e640aaf7f399a`. Neither claim restores a lost
+domain source; no axis is redefined.
+
+| Claim | Axis | Before | After | Verdict and evidence | Last change |
+|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest, 4) | escape fixtures credited `MIRROR-EQUIVALENT`: **0/6 GONE**; matrix 7/13, exit 1 (do-nothing control, baseline `922a4dd` bytes) | **6/6 escape GONE, 7/7 controls preserved, matrix 13/13, exit 0** | **Improved, score held 4.** Command: `python3 corpus/instruments/mirror-containment-check.py --resolver .ufo/waves/round-23/c1-baseline-resolver.py --json .ufo/waves/round-23/c1-baseline.json` vs the same command without `--resolver` (`c1-fixed.json`); both print `matrix_sha256=5e61a33e…b5e76a9`, so the inputs are identical. Code: `resolve.py` `bounty_suffix()` exact-root boundary plus `under_mirror()` on the bounty and relative fallbacks. Guard: frozen `922a4dd` export, both detectors → `changed=0 added=0 dropped=0`, `mirror=0` (published as vacuous). Score held: instrument correctness, no source restoration or citation-availability change; the lane-relative `INTERNAL` carve-out is disclosed, not generalized. | 23 |
+| C2 | coverage (7) | F06–F08 admitted **0/3**; frontier **5/8**; entry rechecks exit 2 (manifest absent) | **3/3 admitted; frontier 8/8**; rechecks exit 0 for S018/S029/S030 with three failing controls (exit 1/2/1) | **Improved, score held 7.** Commands: `grep -cE '^\| F0[6-8] .*\| admitted \|' corpus/README.md` → **0 → 3**; `grep -cE '^\| F0[1-8] .*\| admitted \|' corpus/README.md` → **5 → 8**; `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S0xx` → exit 0 ×3. Entries `knowledge/multiparty-vulnerability-coordination.md` (S018), `cna-assignment-and-vulnerability-rules.md` (S030, supersedes S022), `cra-manufacturer-reporting-duties.md` (S029, supersedes S024). Score held: the r15 domain-root denominator is untouched by public-practice entries. | 23 |
+
+**No axis harmed.** depth:density was not touched this round; the resolver,
+matrix and manifest are read-only inputs to `SKILL.md` density except for the new
+instrument files outside the density measurement's scope. `SCORECARD.md`'s earlier
+r22 rows remain historical author assessments; the r22 verifier's
+REJECTED-HONEST-STOP correction stands.
+
+**Capability entry.** `mirror-containment-matrix` — the lane can now replay a
+frozen detector matrix on real copied CLI bytes with a do-nothing control, and
+fail closed on digest/quote corruption. Exercised this round (13/13 and 7/13
+receipts, three failing recheck controls). Evidence:
+`corpus/instruments/mirror-containment-check.py`,
+`corpus/instruments/mirror-containment-fixtures.json`,
+`corpus/source-snapshots/round-23/manifest.json`, `corpus/lessons/round-23.md`
+§ Attempt 2. First working round: 23. This restarts the r22 stagnation window.
+
+**Wave conformance (honest).** Wave 1 inherited (`kasegi-r23-build`, 64 seats,
+committed registry + 44 reports). Wave 2 `kasegi-r23-falsify` (36 seats, 19 attack
+roles) validated under the v1 policy and was refused at dispatch by the host job
+limit (`Background job limit reached (100)`, all lanes); refusal filed at
+`.ufo/waves/round-23/falsify/refusal-1.json`. No seat replaced, split or shrunk,
+so this round's fresh attack wave did not run.

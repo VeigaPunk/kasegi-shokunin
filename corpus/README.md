@@ -197,8 +197,8 @@ Correction (2026-10-19): corpus/QUALITY.md now exists; the preceding closing par
 | F03 | Authorization, safe harbor, and scope | admitted | knowledge/authorization-safe-harbor-and-scope.md | S006, S007, S008 | Attribute protections to the policy that grants them; do not generalize. |
 | F04 | AI-assisted finding validation | admitted | knowledge/ai-assisted-finding-validation.md | S009, S010, S011, S012 | Preserve independent validation and source-specific limitations. |
 | F05 | CWE Top 25 2025 methodology | admitted | knowledge/cwe-top25-2025-methodology.md | S013, S014, S015 | Treat the ranking as a methodology-specific prioritization, not a universal risk order. |
-| F06 | Multi-party CVD — FIRST guidelines v1.1 | queued | — | S018 | Open the public guideline and record its coordination roles. |
-| F07 | CVE CNA operational rules | queued | — | S022 | Open the current public CNA rules and record operational requirements. |
-| F08 | EU Cyber Resilience Act reporting duties | queued | — | S024 | Open official text or guidance and date-stamp the reporting duties. |
+| F06 | Multi-party CVD — FIRST guidelines v1.1 | admitted | knowledge/multiparty-vulnerability-coordination.md | S018 | Record each party's role and relationship; an upstream fix is not downstream evidence. |
+| F07 | CVE CNA operational rules | admitted | knowledge/cna-assignment-and-vulnerability-rules.md | S030 (supersedes S022) | Separate technical impact, assignment scope and identifier count; do not reuse 4.1.0 section numbers. |
+| F08 | EU Cyber Resilience Act reporting duties | admitted | knowledge/cra-manufacturer-reporting-duties.md | S029 (supersedes S024) | Distinguish manufacturer statutory tracks from researcher disclosure; Article 14 applies from 2026-09-11. |
 
 The original domain-root map is exhausted: 0/18 surfaces are present.
