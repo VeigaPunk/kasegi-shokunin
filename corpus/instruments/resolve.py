@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""kasegi r15 live citation-resolvability census; self-input/leading-dot fixes r18.
+"""kasegi r15 live citation-resolvability census; r18 self-input/leading-dot fixes; r23 mirror-fallback confinement.
 
 Usage: python3 resolve.py <root-of-lane-repo>
 
@@ -27,6 +27,9 @@ suffix (`:NN`, `:NN-MM`, and the r15-tolerated `::symbol` form) -> BASE. Then:
                   /home/<u>/Projects/bounties; root-only or a `/`-delimited
                   descendant — a prefix sibling `bounties-x/...` is an ordinary
                   other root, so it never enters this domain)
+                  -> a root-only citation (no suffix) keeps its pre-r23
+                     verdict GONE: r23 changes which fallback credits are
+                     confined, not which citations earn a mirror mapping
                   -> literal exists? RESOLVES (CARVE-OUT: literal existence is
                      reported as written, even when a `../` segment resolves
                      outside the bounty root; r23 confines the mirror credit
@@ -110,8 +113,9 @@ BOUNTY_PREFIXES = ("~/Projects/bounties", "/home/vgpnk/Projects/bounties")
 # truthfully and the report records the absence.
 # The selected root is also the authority for EXPLICIT canonical citations:
 # classify resolves their suffix under mirror_root (realpath-confined) and
-# never reads the canonical written path for stale bytes; all other
-# explicit roots keep the plain exists? RESOLVES : GONE behavior.
+# never reads the canonical written path for stale bytes. OTHER-domain
+# explicit roots keep the plain exists? RESOLVES : GONE behavior; the BOUNTY
+# root is explicit too but has its own confined fallback (r23, bounty_suffix).
 MIRROR_CANDIDATES = ("~/Projects/the-bounty-hunter",
                      "~/Projects/origin-work/the-bounty-hunter")
 def _derive_mirror():

@@ -1180,3 +1180,10 @@ no live-target, signed-URL or injection findings.
   was replaced by the discriminating hop form. `source-recheck.py` now applies a
   declared normalization (`normalized=markup-whitespace`), implementing
   `considerthese/2026-10-24.md` proposal 1; QUALITY gains Q8 and R10.
+- Rescue pass after the last seats: docstring prose rescoped (module header names
+  r23; the round-19 comment no longer claims BOUNTY keeps plain exists?GONE; the
+  root-only bounty rule stated in the policy, not only in a code comment), and one
+  more escape case added (`bounty-root-underscore-sibling`, a same-name continuation
+  the boundary must reject). Final matrix **24 cases (12 escape, 12 control)**,
+  fixed **24/24 exit 0** (`resolver 690153ad…`, `matrix d05b1e0c…`), do-nothing
+  control **0/12 escape GONE**, 12/24, exit 1.

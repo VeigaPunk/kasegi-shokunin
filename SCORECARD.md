@@ -430,10 +430,10 @@ so this round's fresh attack wave did not run.
 Append-only corrections to the result table above; the earlier cells stand as the
 first landing's assessment.
 
-- **C1 measurement superseded.** The finalized matrix has **23 cases (11 escape, 12
-  control)**, `matrix_sha256=332a5fe9…05e3`. Do-nothing control (baseline
-  `922a4dd` bytes): escape **0/11 GONE**, controls 12/12, 12/23 pass, exit 1. Landed
-  bytes: **23/23, exit 0**, `resolver_sha256=fce5b84b…a4b0`. The earlier "6/6,
+- **C1 measurement superseded.** The finalized matrix has **24 cases (12 escape, 12
+  control)**, `matrix_sha256=d05b1e0c…b809`. Do-nothing control (baseline
+  `922a4dd` bytes): escape **0/12 GONE**, controls 12/12, 12/24 pass, exit 1. Landed
+  bytes: **24/24, exit 0**, `resolver_sha256=690153ad…ea2d`. The earlier "6/6,
   13/13" cells describe the first matrix and are kept as history. The checker now
   also asserts the `resolved_path` column and records `checker_sha256`; two cases
   (lane-first ordering, mirror-root prefix sibling) exist because mutation seats

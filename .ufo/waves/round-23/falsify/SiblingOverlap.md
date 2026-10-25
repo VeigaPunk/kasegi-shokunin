@@ -146,14 +146,23 @@ provenance keys are exactly these bare IDs. `corpus/README.md:200-202` (observed
 not this seat's finding) binds F06→`S018`, F07→`S030 (supersedes S022)`,
 F08→`S029 (supersedes S024)`; the entries carry the same bare IDs in their `source:`
 header lines (`corpus/knowledge/multiparty-vulnerability-coordination.md:2` → `S018`;
-`…/cna-assignment-and-vulnerability-rules.md:2` → `S030`). The round-23 lesson Gate
+`…/cna-assignment-and-vulnerability-rules.md:2` → `S030`). *After* the post-attack repair
+the same rows sit at `corpus/README.md:203-205` with F07→`S031` (`corpus/SOURCES.md:37`,
+"supersedes S030" — CNA rules 4.2.6, approved 2026-10-14, effective 2026-10-20) and the
+F07 entry header now opens `source: S031`. The pins moved; the bare-ID join key did not,
+so S-2 is unaffected — and the repair adds a *fresh* bare id (`S031`) whose only guarantee
+is still lane-locality. The round-23 lesson Gate
 records the same bare IDs (`.ufo`-local: `corpus/lessons/round-23.md:198-202`, e.g.
-`| S029 | (new row) | — | mined, spec/A, supersedes S024 |`).
+`| S029 | (new row) | — | mined, spec/A, supersedes S024 |`). That Gate block is the
+pre-repair record — it still lists S030, not S031 — and the repair is logged later in the
+same lesson (`corpus/lessons/round-23.md:252`, `:273`), which is append-only history rather
+than a contradiction with `README.md:204`.
 
-Inside kasegi this is sound: the recheck commands resolve lane-locally
-(`python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S018`,
-`…/multiparty-vulnerability-coordination.md:4`) and the manifest keys off kasegi's own
-table. The defect appears only when a **wave-level reader** joins `S018` across lanes —
+Inside kasegi this is sound: the recheck commands resolve lane-locally — each is pinned to
+the lane root and a lane-local manifest
+(`recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S018`,
+`…/multiparty-vulnerability-coordination.md:4`) — so the bare `S018` there means kasegi's
+table and nothing else. The defect appears only when a **wave-level reader** joins `S018` across lanes —
 and wave-level readers are precisely what a FALSIFY wave publishes for.
 
 ## 4. Findings
@@ -201,7 +210,9 @@ Scope it narrowly so it cannot collide with the contract:
   `corpus/README.md`, or knowledge headers: contract rule 2 makes those **append-only**,
   and rewriting an `id` cell would violate "never reused".
 - Applies to **prose citations only**, never to executable strings. Recheck commands keep
-  bare `--source S018` (the manifest is lane-local; qualifying it would break the command).
+  bare `--source S018`: they already pin the lane root
+  (`cd /home/vgpnk/Projects/shokunin/kasegi-shokunin &&`) and a lane-local manifest, so
+  qualifying the id would only break the lookup.
 - Encoding is one regex-checkable form, `[a-z]+:S[0-9]{3,}`, so a sentinel can fail closed.
 
 **Axes.** `depth:verifiability`: improves — the join key becomes unambiguous exactly where
@@ -266,11 +277,14 @@ result for it.
 
 ## 8. Scope limits
 
-- This seat did **not** touch C1: `resolve.py`, the 13-case fixture matrix, the
-  baseline/fixed receipts and the copied-CLI replay were not read for verdict, mutated, or
-  replayed. No C1 conclusion is stated or implied here.
+- This seat did **not** touch C1: `resolve.py`, the containment fixture matrix (13 cases
+  when this report was written; **22** at `4d9231e` — 12 expected `GONE`, 4
+  `MIRROR-EQUIVALENT`, 4 `RESOLVES`, 2 `INTERNAL`, with the fixed receipt matching 22/22
+  and the baseline receipt leaking 13), the baseline/fixed receipts and the copied-CLI
+  replay were not read for verdict, mutated, or replayed. No C1 conclusion is stated or
+  implied here.
 - Quote fidelity, snapshot hashes, manifest completeness, and recheck execution for
-  S018/S029/S030 belong to other seats; not assessed, not claimed.
+  S018/S029/S030/S031 belong to other seats; not assessed, not claimed.
 - The F06–F08 `admitted` state is reported as **observed artifact state** with line
   numbers only. This seat asserts nothing about whether the admission is justified, and
   does not claim admission, score movement, or a coverage numerator.

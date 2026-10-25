@@ -56,6 +56,12 @@ depends on a scratch tree, on a `/tmp` directory, or on a rebuilt-from-transcrip
 scratch tree is a convenience copy, never the evidence locus. Consequently no relocation,
 restoration or reconstruction of scratch bytes can change or invalidate any claim here.
 
+**Revision audited.** Every measurement in §1–§2 is taken at lane tip **`953c278`**
+(registry = 30 rows, tree clean). While this seat was writing, the lane advanced twice
+(`2712c99` "post-attack repairs; F07 to current CNA 4.2.6 (S031)…", then `4d9231e` "log the
+post-attack repairs…"). §2.1 re-runs the R8 checks at the new tip and re-verdicts every
+finding there, so no claim here silently describes a revision that no longer exists.
+
 ### 1.1 Whole-registry field diff, base vs working tree
 
 Base revision per `.ufo/waves/round-23/claims.json` is `922a4dde`. `c8b719d` is an ancestor
@@ -107,7 +113,7 @@ zero rows removed.
 ### 1.2 `teaches` cell is column 7 and opens with the exact required token
 
 ```sh
-for id in S028 S029 S030; do echo -n "$id: "; grep "^| $id " corpus/SOURCES.md | awk -F' \| ' '{print $7}'; done
+for id in S028 S029 S030; do echo -n "$id: "; grep "^| $id " corpus/SOURCES.md | awk -F'|' '{t=$8; gsub(/^[[:space:]]+|[[:space:]]+$/,"",t); print t}'; done
 ```
 
 ```
@@ -132,7 +138,7 @@ S024 IDENTICAL
 S006 IDENTICAL
 ```
 
-### 1.4 Contract census, run verbatim from the lane root
+### 1.4 Contract census at `953c278`, run verbatim from the lane root
 
 The contract ships its own census block (lines 70–81). Transcribed here **in full**, not
 abbreviated, so every number below is re-derivable from this report alone with no scratch
@@ -153,8 +159,8 @@ awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ {i=$2; gsub(/[[:spac
 awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ && NF==13 {i=$2;k=$4;t=$5;s=$9; gsub(/[[:space:]]/,"",i); gsub(/[[:space:]]/,"",k); gsub(/[[:space:]]/,"",t); gsub(/[[:space:]]/,"",s); if (t !~ /^[ABC]$/) print "tier", i, t; if (s !~ /^(queued|mined|rejected)$/) print "status", i, s; if (k !~ /^(spec|docs|paper|code|tool|dataset|talk|book|community|own-work)$/) print "kind", i, k; if (t=="A" && k=="community") print "tier-inflation", i}' corpus/SOURCES.md
 # mined rows whose used-by paths do not exist — must print nothing
 awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ && NF==13 {s=$9; gsub(/[[:space:]]/,"",s); if (s=="mined") {n=split($12, a, /[,;]/); for (j=1;j<=n;j++) {p=a[j]; gsub(/^[[:space:]]+|[[:space:]]+$/,"",p); if (p!="" && p!="—") print p}}}' corpus/SOURCES.md | while read -r p; do [ -e "$p" ] || echo "missing: $p"; done
-# independent count of rows whose used-by cell is not — (run from the lane root)
-grep -E '^\| S[0-9]' corpus/SOURCES.md | awk -F' \\| ' '$11!="— |"' | wc -l
+# independent count of rows whose used-by cell is not — (contract indexing: field 12 on -F'|')
+awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ {p=$12; gsub(/^[[:space:]]+|[[:space:]]+$/,"",p); if (p!="—") c++} END{print c+0}' corpus/SOURCES.md
 ```
 
 Output:
@@ -210,7 +216,122 @@ makes the fleet-root location correct, so this is not a finding.)
 R8 holds on the registry bytes. The findings below are defects in the *record surrounding*
 the registry (round-lesson classification and Gate-quote binding), not in `SOURCES.md`.
 
+### 2.1 Post-audit delta — re-verdict at the advancing tip
+
+```sh
+git log --oneline -5
+git diff 953c278..HEAD -- corpus/SOURCES.md
+git diff 4d9231e..HEAD -- corpus/SOURCES.md
+```
+
+```
+8acb255 round-23: record the failing Q7/Q8 control exits beside the clean runs
+12edac4 round-23 seal: 23-case matrix with ordering/prefix pins, declared recheck normalization, Q8/R10, final receipts
+4d9231e round-23: log the post-attack repairs and final C1/C2 measurements
+2712c99 round-23: post-attack repairs; F07 to current CNA 4.2.6 (S031); 20-case containment matrix; c2 receipts
+953c278 round-23: mirror-fallback confinement with matrix receipts; admit F06-F08 with pinned-source rechecks
+--- 953c278..HEAD: corpus/SOURCES.md | 1 insertion(+), 0 deletions(-) ---
++| S031 | CVE Numbering Authority Operational Rules v4.2.6 — https://www.cve.org/Resources/Roles/Cnas/CNA_Rules_v4.2.6.pdf | spec | A | ... | ... | supersedes S030 — current 4.2.6 makes independent-fixability ID separation a MUST; S030's 4.2.0 SHOULD is historical. | mined | ... | ... | corpus/knowledge/cna-assignment-and-vulnerability-rules.md |
+--- 4d9231e..HEAD: (empty) ---
+```
+
+Four commits landed after the audited revision, but the **registry object itself moved only
+once** (`git diff 4d9231e..HEAD -- corpus/SOURCES.md` is empty), so the registry numbers below
+are the numbers at the current tip `8acb255` and cannot drift without another registry commit.
+Both F-6 and F-7 were re-checked at `8acb255` and still hold.
+
+Re-measured with the §1.4 commands (identical at `4d9231e` and `8acb255`): **rows 31; tier
+A=29 C=2; status mined=19
+queued=9 rejected=3; `used-by` 19; malformed 0; duplicate ids 0; enum violations 0; missing
+`mined` `used-by` paths 0.** Root cause of the advance: `Q2TierSupport`'s primary finding —
+v4.2.0 was already superseded by v4.2.6 on the day F07 opened it — so the fix is a new row.
+
+R8's append-only mechanism handles the second-order supersession **correctly**: S031 is an
+added row (S030's cells are untouched) whose `teaches` opens `supersedes S030 —` and
+explicitly demotes the predecessor ("S030's 4.2.0 SHOULD is historical"). S030 stays `mined`
+with `used-by` = the F07 entry, which is contract-accurate because the entry still cites S030
+(`:16`, `:68-69`). This closes, for the CNA chain, the one-directional-marker gap §5.1 notes
+on the CRA chain.
+
+Re-verdict of the findings:
+
+| finding | at `953c278` | at current tip (`8acb255`; registry frozen since `4d9231e`) |
+|---|---|---|
+| F-6 (no Gate record for the newest row) | n/a — S031 absent | **present** (new; highest severity here) |
+| F-7 (closing census stale) | n/a | **present** (new) |
+| F-1 (S028 logged as `rejected → rejected`) | present | **present** — `round-23.md:204` unchanged |
+| F-2 (Gate quote under-grounds `teaches`) | present | present for S029/S030; subsumed in weight by F-6 |
+| F-3 (registry bytes predate admission) | present | still true — S031 lands *after* admission too |
+| F-4 (S022 `used-by` = `—`) | present | **present, strengthened** (entry now cites S022 by id) |
+| F-5 (entry header `3.2.4` vs anchor `3.2.4.2`) | present | **resolved** — the F07 rewrite now reads `3.2.4.2`, matching `SOURCES.md:36`-lineage anchor |
+
 ## 3. Findings (severity order)
+
+F-6 and F-7 were captured at the current tip (§2.1) and are the highest-severity findings;
+F-1–F-5 were captured at `953c278`. Ids are stable, so severity order and numbering differ.
+
+### F-6 (Medium) — the newest row, S031, has no Gate record anywhere in the round lesson
+
+Contract rule 1 (`SOURCES-CONTRACT-v1.md:43-47`) requires the round lesson's `## Gate` to
+record, **for every new row**, the URL, the access date, and a ≤25-word quote with its
+location grounding `teaches`. S031 is a new row (added in `2712c99`, `git diff 953c278..HEAD
+-- corpus/SOURCES.md` → 1 insertion). It is recorded nowhere in a Gate:
+
+```sh
+grep -n "CNA_Rules_v4" corpus/lessons/round-23.md
+grep -n "^## Gate\|^### Gate" corpus/lessons/round-23.md
+```
+
+```
+37:| S030, supersedes S022 | https://www.cve.org/Resources/Roles/Cnas/CNA_Rules_v4.2.0.pdf | 2026-10-20 | ... | CNA Operational Rules 4.2.0, ... |
+27:## Gate
+190:### Gate — attempt 2 additions
+```
+
+`:37` is S030's record for **4.2.0**. The string `CNA_Rules_v4.2.6` does not occur in
+`corpus/lessons/round-23.md` at all, so S031 has no Gate row: no URL, no access date, no
+≤25-word located quote. Both existing Gate sections (`:27`, `:190`) predate S031, and the
+appended post-attack section describes S031 only in a repairs table (`:252`) and a
+residual-debt paragraph (`:280`) — description is not a Gate record.
+
+The verification itself exists: `corpus/source-snapshots/round-23/manifest.json` carries
+**10** S031 assertions (`S018 6, S029 9, S030 7, S031 10`), and `S031.txt` is pinned. So this
+is an omission from the contract-required *record*, not missing evidence.
+
+Why it matters for R8 specifically: S031 is the row whose `teaches` makes the substantive
+claim — "current 4.2.6 makes independent-fixability ID separation a MUST; S030's 4.2.0 SHOULD
+is historical" — and it is the only new row this round with no Gate record. A Gate-only
+reader therefore sees the successor's mere assertion, which is exactly the shape R8 exists to
+prevent (a superseding row indistinguishable from duplicate authority without its own located
+quote).
+
+Falsifier: a row in `corpus/lessons/round-23.md` containing the `CNA_Rules_v4.2.6` URL with an
+access date and a ≤25-word located quote. Not found in either Gate section or the appended
+section.
+
+### F-7 (Low–Medium) — the round's closing registry census no longer matches the registry it closes on
+
+`corpus/lessons/round-23.md:234-236` is the last census statement in the round:
+
+> SOURCES: registry rows 27 → 30 (tier A=28, C=2; status mined 18, queued 9, rejected 3; 18
+> rows carry `used-by`) …
+
+At `4d9231e` the same §1.4 commands give **31 rows, A=29, mined=19, 19 `used-by`**. The
+appended post-attack section adds S031 but never restates the census:
+
+```sh
+grep -n "27 → 31\|→ 31\|rows 31\|mined 19" corpus/lessons/round-23.md   # no match
+```
+
+The *change* is disclosed in prose (`:252` "new row S031"), so this is a stale rate rather
+than a hidden edit — which is why it is not Medium-and-above. But under R2 ("a rate cites its
+derivation") and the round's own census discipline, the last number statement in the ledger
+describes a 30-row registry that no longer exists, and the round closes on 31. A reader taking
+the ledger's closing figures as the round's final state is off by one row, one tier-A row and
+one mined row.
+
+Falsifier: an updated census (`31`, `A=29`, `mined 19`, `19` `used-by`) at or after the S031
+discussion in the same lesson.
 
 ### F-1 (Low–Medium) — the round lesson logs the added row S028 as an in-place `rejected → rejected` no-op
 
@@ -315,17 +436,28 @@ change must be logged; it was not changed. **This is already filed by
 `Q2TierSupport.md` F-4** and is not claimed here as a new finding — recorded so the R8
 proposition P4 sweep is visibly complete rather than silently narrowed.
 
-### F-5 (Informational, out of R8 scope) — S030 entry header and registry anchor disagree on section depth
+Strengthened at the current tip: the rewritten F07 entry cites S022 **by identifier** —
+`corpus/knowledge/cna-assignment-and-vulnerability-rules.md:19`: "S022 preserves the 4.1.0
+era". The contract defines `used-by` as "the knowledge entries or lessons **citing the row**"
+(`SOURCES-CONTRACT-v1.md:40-41`), so the definition is literally satisfied while the cell
+still reads `—`; and `mined` is defined as "cited by ≥1 path in `used-by`"
+(`:36-37`), so the row is in the wrong status as well as the wrong cell. Both fields are
+mutable and both changes would require an old→new log entry that does not exist.
 
-`corpus/SOURCES.md:36` anchor: "sections 3.1, **3.2.4.2**, 4.1 and 4.2, especially 4.2.11
-page 15". `corpus/knowledge/cna-assignment-and-vulnerability-rules.md:2`: "sections 3.1,
-**3.2.4**, 4.1 and 4.2". The same entry's body (`:33`) cites "section 3.2.4.2, pages 9–10",
-and `corpus/source-snapshots/round-23/S030.txt:108-110` contains both the parent heading
-`3.2.4 Availability and Responsiveness` and the subsection `3.2.4.2`. The registry anchor is
-the precise one; the *entry header* is the inconsistent artifact. This is **not** a registry
-defect and R8's append-only rule does not reach it (the registry anchor should not be
-"corrected" to match a looser header). Noted because the anchor is immutable, so any future
-divergence here can only be fixed by minting another superseding row.
+### F-5 (Informational, out of R8 scope — **resolved at the current tip**) — S030 entry header and registry anchor disagreed on section depth
+
+At the audited revision, `corpus/SOURCES.md:36` anchor read "sections 3.1, **3.2.4.2**, 4.1
+and 4.2, especially 4.2.11 page 15", while `corpus/knowledge/cna-assignment-and-vulnerability-rules.md:2`
+read "sections 3.1, **3.2.4**, 4.1 and 4.2". The entry's body (`:33`) cited "section 3.2.4.2,
+pages 9–10", and `corpus/source-snapshots/round-23/S030.txt:108-110` contains both the parent
+heading `3.2.4 Availability and Responsiveness` and the subsection `3.2.4.2`.
+
+**Resolved at `4d9231e`** by the F07 rewrite to S031: the entry's header now reads
+`sections 3.1, 3.2.4.2, 4.1 and 4.2`, and S031's own anchor (`SOURCES.md`, S031 field 6) is
+`... sections 3.1, 3.2.4.2, 4.1 and 4.2 — rule 4.2.11 page 15`. Header, row anchor and body
+now agree. Recorded because resolution does not erase the structural point: the anchor is
+immutable, so had the divergence persisted it could only have been fixed by minting yet
+another superseding row, not by editing the row.
 
 ## 4. Checks that passed (tested, no defect — recorded to bound the search)
 
@@ -347,17 +479,26 @@ divergence here can only be fixed by minting another superseding row.
   already correct, S028 rejected as duplicate authority). I initially treated the absence of
   S029/S030 from M5 as an evidence-pointer gap and discarded it — the column is "grounded in",
   i.e. the origin case, not a per-round compliance proof.
+- **Re-verified at `4d9231e`** (§2.1): the second advance is also strictly append-only —
+  `git diff 953c278..HEAD -- corpus/SOURCES.md` reports "1 insertion(+), 0 deletions(-)" — and
+  S031 is a well-formed added row: 11 cells, `spec`/`A`, `mined`, `opened 2026-10-25`,
+  `recheck: on-release`, `used-by` an existing path, `teaches` opening `supersedes S030 —`.
+  No pre-existing row's immutable field moved in the second advance either, so P1/P2/P5 hold
+  at the tip as well as at the audited revision.
 
 ## 5. Residual risk and verification gaps
 
-1. **No forward marker on S022/S024.** The contract's status vocabulary is exactly
+1. **Forward markers remain one-directional.** The contract's status vocabulary is exactly
    `queued|mined|rejected` (validated at `SOURCES-CONTRACT-v1.md:78` → §1.4 empty enum
-   output); there is no `superseded` state. Consequently the only machine-visible
-   supersession signal is one-directional, in S029/S030's `teaches`. A consumer enumerating
-   the 9 `queued` rows receives S022/S024 with their pre-supersession scope/anchor text
-   (`S024`: "Article 14 wording not yet verified against EUR-Lex ... re-open before mining")
-   and no pointer forward. This is contract-compliant but is a discoverability gap that a
-   future round could close only by a new row or a logged `used-by` update (F-4).
+   output); there is no `superseded` state. The successor's `teaches` is therefore the only
+   machine-visible supersession signal. S031 improves on this: its `teaches` explicitly names
+   the predecessor's demotion ("S030's 4.2.0 SHOULD is historical"), so the CNA chain is
+   readable forward from the successor alone. The **CRA chain still is not**: S029 records
+   only "supersedes S024 —", and a consumer enumerating the 9 `queued` rows still receives
+   S024 with its pre-supersession text ("Article 14 wording not yet verified against EUR-Lex
+   … re-open before mining") and no pointer forward. S022 has the same shape. This is
+   contract-compliant but remains a discoverability gap that a future round can close only by
+   a new row or a logged `used-by`/status update (F-4).
 2. **This report cannot validate the admission itself.** Per F-3 the registry predates
    `953c278`. Whether F06–F08 *should* be admitted is the closure's judgment; I measured only
    whether the registry record is append-only and honestly logged.

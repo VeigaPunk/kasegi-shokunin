@@ -257,10 +257,10 @@ below was applied before the final commit; the receipts named are the final ones
 | CnaVersionDate | inherited `build/CnaFix.md` had already found the v4.2.6 supersession on 2026-10-20 and no corpus file disclosed it | disclosed here and in the F07 entry; see M13 |
 
 **Corrected C1 measurement (supersedes the 13-case numbers earlier in this lesson;
-they stay as history).** Matrix is now 23 cases: 11 escape, 12 control.
-`matrix_sha256=332a5fe9…05e3`, `resolver_sha256=fce5b84b…a4b0` (fixed),
+they stay as history).** Matrix is now 24 cases: 12 escape, 12 control.
+`matrix_sha256=d05b1e0c…b809`, `resolver_sha256=690153ad…ea2d` (fixed),
 `d6a3c3f1…f903` (baseline), `checker_sha256=53742c8d…9529`. Baseline (do-nothing
-control): escape **0/11 GONE**, controls 12/12, 12/23 pass, exit 1. Fixed: **23/23,
+control): escape **0/12 GONE**, controls 12/12, 12/24 pass, exit 1. Fixed: **24/24,
 exit 0**. Every escape case is discriminated by at least one landed change, and each
 was checked against baseline bytes through the same checker. Two cases exist because mutation seats proved the earlier matrix could not
 see them: lane-first ordering (`relative-priority-lane-first-control`) and the
@@ -294,3 +294,26 @@ work, not a round-23 claim.
 | M16 | Receipts that cannot be re-derived byte-for-byte | RerunMatrix F1: scratch paths in `cli_stdout` made every receipt unique | R3 (an instrument verdict names its definition and replays) | root masked to `<CASE>`, checker sha and UTC timestamp recorded |
 | M17 | A frozen predicate narrower than a fixture set reads | Causal/LiteralCarveout: `nature` decides which pin applies, and the frozen text never says so | R7 | matrix `note` fields and this lesson state the partition; the frozen text is untouched |
 | M18 | Undisclosed capture gaps stated as facts | S018Quotes: no version banner in the capture; S029Quotes: no OJ date line; S030Quotes: page markers missing for pages 3–7 | Q3's "exact location" read literally | each gap disclosed in its entry (F06 capture-gap paragraph; F08 OJ note; F07 page claims removed) |
+
+### Gate — supplementary rows (post-audit, `falsify/LessonGateRows.md`)
+
+The Gate block above opened S028/S029/S030 but omitted a row for **S018** (re-opened)
+and for the later **S031**, and its row/status census went stale when S031 landed.
+Appended rather than rewritten (R9).
+
+| row | URL | accessed | exact quote (≤25 words) | location |
+|---|---|---|---|---|
+| S018, re-opened | https://www.first.org/global/sigs/vulnerability-coordination/multiparty/guidelines-v1.1 | 2026-10-20 | “All parties should clearly and securely communicate and negotiate expectations and timelines.” | Maintain clear and consistent communications — Prior to disclosure (`S018.txt:36`) |
+| S031, supersedes S030 | https://www.cve.org/Resources/Roles/Cnas/CNA_Rules_v4.2.6.pdf | 2026-10-25 | “Version: 4.2.6” | Title page, 4 lines above the approved date (`S031.txt:1` after the provenance header) |
+| S031, supersedes S030 | https://www.cve.org/Resources/Roles/Cnas/CNA_Rules_v4.2.6.pdf | 2026-10-25 | “CNAs MUST assign different CVE IDs to different, Independently Fixable Vulnerabilities.” | rule 4.2.11, page 15 of the PDF (`S031.txt`, normalized capture) |
+
+Transitions this block adds, old→new: `S030 used-by` stays
+`corpus/knowledge/cna-assignment-and-vulnerability-rules.md` because the entry still
+cites the pinned 4.2.0 text for its version history, while `S031` is the entry's
+`source:` header and current authority; `S030 teaches` is unchanged (R8 — a
+superseded row is not edited). S018's per-row access date is 2026-10-20 (the round's
+opening) with a re-open on 2026-10-25 that produced no new bytes.
+
+Corrected census at the seal: **31 rows**, tier A=29 / C=2, status mined 19 /
+queued 9 / rejected 3, `used-by` 19 — the earlier "30 / A=28 / mined 18 / used-by 18"
+in this lesson predates S031 and is corrected here, not rewritten.

@@ -2,46 +2,55 @@
 
 Seat: `L1Kasegi23.MutateBoundary-2` (mutation-tester, leaf). Date: 2026-10-25.
 Host: linux 7.2.11-arch1-1, Python 3.14.8. All writes confined to
-`/tmp/kasegi-r23-falsify-MutateBoundary-2/`. No production file, lane tree, index,
-or sibling artifact was touched; no tool was installed, upgraded, or configured.
+`/tmp/kasegi-r23-falsify-MutateBoundary-2/`. No production file, lane tree, index, or
+sibling artifact was touched; no tool was installed, upgraded, or configured.
 
-Pins for every result below — re-verified against `corpus/instruments/` at write time
-(they are byte-identical to my scratch snapshots `pristine3/`):
+## 0. Pins, and the fact that they moved three times
 
-| artifact | sha256 |
-|---|---|
-| `corpus/instruments/resolve.py` | `8dd45bc8d9aedbb25247a64fbd6094a1b9e7b9a3b3facdb58001c59ef3868848` |
-| `corpus/instruments/mirror-containment-fixtures.json` | `4e39f65c7c1bdc7d6a390f0aeefe5fa88af67ea84659aa9ff36b84d271c2400b` |
-| `corpus/instruments/mirror-containment-check.py` | `53742c8d9529dffb8c40c39b3448de7388b774b548d7831670598d5534bff5d1` |
+The C1 instrument set was edited by other seats while I probed. Every result below is
+measured on the **tested pin**; the byte-comparison against the live tree is stated
+explicitly. Line numbers throughout refer to the tested pin.
 
-Frozen matrix at this pin: **20 cases, 9 escape / 11 control**; baseline replay
-**20/20 PASS** (`pristine3/receipt-main.json`, sha256 `b669a64c…`).
+| pin | `resolve.py` | fixtures | checker | note |
+|---|---|---|---|---|
+| tested | `8dd45bc8d9aedbb25247a64fbd6094a1b9e7b9a3b3facdb58001c59ef3868848` (590 ln) | `4e39f65c…` | `53742c8d…` | 20 cases, 9 escape / 11 control; **20/20 PASS** |
+| live at write | `fce5b84be4cece914260f03a3a8b739dc1108381f97482bbfc7b22143810a4b0` (593 ln) | `332a5fe9…` | `53742c8d…` | 23 cases, 11 escape / 12 control; **23/23 PASS**; mutant A re-run gives the identical flip set (21/23) |
 
-## 0. The artifact set moved twice while I probed (observation, not a claim)
+Between the tested and live pins the matrix gained `relative-priority-lane-first-control`,
+`mirror-root-prefix-sibling-escape`, `absolute-parent-traversal`, and a strengthened
+`glob-expansion-escape` whose note records that a bare `<name>.md` glob "cannot cross `/`
+and would pass on baseline too" — the same masking pattern F2 describes.
 
-Three distinct instrument sets appeared between 03:35 and 03:45: the 13-case
-matrix `5e61a33e…` with class-only checker `1bc2db10…` and resolver `ed9a9dae…`; a
-schema-2 checker `fc9550f0…`; then the live pair above. `.ufo/waves/round-23/c1-{baseline,fixed}.json`
-were both rewritten at 03:43. I re-pinned and re-ran rather than reporting the
-superseded pin.
+`diff` tested→live is one hunk at `classify`'s bounty fallback: a 3-line comment plus
+root-only bounty citations no longer earning mirror credit
+(`exists_any(join(mirror_root, suffix) if suffix else mirror_root)` →
+`exists_any(join(mirror_root, suffix)) if suffix else (None, None)`). The boundary
+(`bounty_suffix`, `classify`'s branch selection) and both `under_mirror()` calls are
+byte-identical across the two pins, which is why A's result transfers; I re-ran it
+rather than inferring it (receipts `0585fe72…` vs `dbab6711…`).
 
-One false-positive of my own, recorded so it is not mistaken for a finding: pairing the
-**new** checker with my **stale** 13-case fixtures copy produced
-`lane-relative-parent-internal-control FAIL path_check=path-outside-internal` (12/13).
-That red is a matrix/checker version mismatch — the landed fixtures carry the
-lane-branch carve-out — and it vanishes on matched pins (20/20). Checker and matrix
-must be pinned together; the receipts' `matrix_sha256` is what makes that detectable.
+Earlier in the wave I also saw a 13-case matrix (`5e61a33e…`, class-only checker
+`1bc2db10…`) and a schema-2 checker (`fc9550f0…`); `.ufo/waves/round-23/c1-{baseline,fixed}.json`
+were rewritten at 03:43. Recorded so nobody mistakes my earlier numbers for current ones.
+
+One false positive of my own, kept visible: pairing the **new** checker with my
+**stale** 13-case fixtures gave `lane-relative-parent-internal-control FAIL
+path_check=path-outside-internal` (12/13). It is a pin mismatch — the landed matrix
+carries that lane-branch carve-out — and it disappears at 20/20 on matched pins.
+Checker and matrix are version-coupled; the receipts' `matrix_sha256` is what exposes
+a mismatched pair.
 
 ## 1. Assigned mutant (A)
 
 The boundary decision is one expression, `resolve.py:234` (`suffix = bounty_suffix(base)`);
-`bounty_suffix()` is `resolve.py:210-221`. A reverts **only** that boundary/suffix
-derivation to the pre-fix form from `.ufo/waves/round-23/c1-baseline-resolver.py`
-(`startswith(BOUNTY_PREFIXES)` + `split("/Projects/bounties", 1)[1]`):
+`bounty_suffix()` is `resolve.py:210-221`; `BOUNTY_PREFIXES` is `resolve.py:106`.
+A reverts **only** that boundary/suffix derivation to the pre-fix form in
+`.ufo/waves/round-23/c1-baseline-resolver.py` (`startswith(BOUNTY_PREFIXES)` +
+`split("/Projects/bounties", 1)[1]`):
 
 ```diff
---- pristine3/resolve.py
-+++ mutA3/resolve.py              (sha256 39d0e720d66837c17dd92bfe6584e7ec7df8c96137a70a2780325e71a979993c)
+--- pristine3/resolve.py                (tested pin, sha256 8dd45bc8…)
++++ mutA3/resolve.py                    (sha256 39d0e720d66837c17dd92bfe6584e7ec7df8c96137a70a2780325e71a979993c)
 @@ resolve.py:232-235
  def classify(tok, lane_root, mirror_root):
      base, anchor = strip_anchor(tok)
@@ -51,11 +60,13 @@ derivation to the pre-fix form from `.ufo/waves/round-23/c1-baseline-resolver.py
      if suffix is not None:
 ```
 
-Both `under_mirror()` calls (`resolve.py:244`, `resolve.py:264`) are left intact, so A
-isolates the prefix boundary and is not a disguised containment revert.
-`bounty_suffix()` remains defined but uncalled (unreachable by construction).
-Differential probe over 20 fixture cites + 9 boundary neighbours: 5 diverged, all
-prefix siblings — the mutation is the boundary and nothing else:
+Both containment calls (`resolve.py:241` bounty fallback, `resolve.py:262` relative
+fallback) are left intact, so A isolates the prefix boundary and is not a disguised
+containment revert. `bounty_suffix()` stays defined but uncalled (unreachable by
+construction). Rebuilt byte-identically from the pinned source by `rebuild3.py`.
+
+Differential probe over the 20 fixture cites + 9 boundary neighbours: **5 diverged, all
+prefix siblings, nothing else**, i.e. the mutation is the boundary and not a side effect:
 
 ```
 ~/Projects/bounties-legacy/README.md      pristine=None mutant='-legacy/README.md'
@@ -77,15 +88,19 @@ cd /tmp/kasegi-r23-falsify-MutateBoundary-2/<dir> \
 
 | run | pass/fail | flipped cases (expect → mutant) |
 |---|---|---|
-| pristine (`8dd45bc8…`) | **20/0** | — |
-| **A (`39d0e720…`)** | **18/2** | `bounty-prefix-sibling-confusion`: GONE → MIRROR-EQUIVALENT; `absolute-prefix-sibling-confusion`: GONE → MIRROR-EQUIVALENT |
+| tested pin, unmutated (`8dd45bc8…`) | **20/0** | — |
+| **A on tested pin (`39d0e720…`)** | **18/2** | `bounty-prefix-sibling-confusion`: GONE → MIRROR-EQUIVALENT; `absolute-prefix-sibling-confusion`: GONE → MIRROR-EQUIVALENT |
+| live pin, unmutated (`fce5b84b…`) | **20/0** | — |
+| **A on live pin (`b4669aa3…`)** | **18/2** | identical two cases |
+| newest live pin, unmutated (`fce5b84b…` + 23-case matrix `332a5fe9…`) | **23/0** | — |
+| **A on newest live pin (same `b4669aa3…`)** | **21/2** | identical two cases (`path_check=gone-with-path` on both) |
 
-**Verdict: killed** — two independent cases observe it, one per spelling of the
-bounty root (tilde and absolute). Every control, every traversal case, both relative
-escapes, and both expansion escapes are unchanged.
+**Verdict: killed** — twice, once per spelling of the bounty root (tilde and absolute).
+Every control, every traversal case, both relative escapes and both expansion escapes
+are unchanged.
 
-Path-level trace on live bytes (`probe_trace3.py`, isolated `HOME` = case home, the
-same environment the CLI sees; `classify` returns class/domain as 4th field):
+Path-level trace on the tested pin (`probe_trace3.py`, isolated `HOME` = case home, the
+same environment the CLI sees; `classify` returns class/domain as its 4th field):
 
 ```
 CASE bounty-prefix-sibling-confusion
@@ -103,126 +118,139 @@ CASE literal-prefix-sibling-control
 ```
 
 The credited decoy is *inside* the mirror (`under_mirror` true), so containment cannot
-see this defect, and the literal control keeps its class while its domain flips.
+see this defect; the literal control keeps its class while only its domain flips.
 
 ## 3. Are `literal-prefix-sibling-control` and `bounty-prefix-sibling-confusion` discriminated by this mutation alone?
 
-**One-sidedly, and the control carries no boundary information.**
+**One-sidedly. The escape case is a live witness; the control is inert.**
 
-- Class level: escape FAIL vs control PASS → the run separates them. All separating
+- Class level: escape FAIL vs control PASS → the run separates them, and all separating
   power sits on the escape side.
 - The control's verdict is produced at `resolve.py:237-239` (`exists_any(base)`), which
-  runs **before** the mutated fallback (`resolve.py:243-245`). A cannot reach it.
-- The only observable A produces on the control is the `domain` field `other`→`bounty`
-  (trace above). The checker asserts `citation`, `class`, and `resolved_path`
-  (`mirror-containment-check.py:120-134`); `domain` is written at `resolve.py:341` but
+  runs **before** the mutated fallback at `resolve.py:240-243`. A cannot reach it.
+- A's only observable on the control is `domain` `other`→`bounty` (trace above).
+  The checker reads `citation`, `class`, and `resolved_path`
+  (`mirror-containment-check.py:120-137`); `domain` is emitted at `resolve.py:338` but
   never compared. So even the one signal that moves is unasserted.
-- The two cases are also not independent inputs: both cite the identical string
-  `~/Projects/bounties-legacy/README.md` and differ only in filesystem layout — which is
-  why the control flips only under a literal-branch mutation (C: `RESOLVES`→`GONE`).
-  The pair witnesses literal-hit precedence, not boundary exactness.
-- Live matrix now has a second, differently spelled witness
-  (`absolute-prefix-sibling-confusion`), so the *claim* no longer rests on one case; the
-  *control* is still inert.
+- The two cases are not independent inputs: both cite the identical string
+  `~/Projects/bounties-legacy/README.md` and differ only in filesystem layout. That is
+  why the control moves only under a literal-branch mutation (C below) — the pair
+  witnesses literal-hit precedence, not boundary exactness.
+- The live matrix now also carries `absolute-prefix-sibling-confusion`, so the *claim*
+  no longer rests on a single case; the *control* is still boundary-blind.
 
-## 4. Attribution probes (same harness and matrix; A is the assigned mutant)
+## 4. Attribution probes (same harness; A is the only assigned mutant)
 
-Each row is a single independent change from the live resolver; every one keeps
-`under_mirror()` unless stated.
+Each row is one independent change from the tested pin against the 20-case matrix
+(9 escape / 11 control); containment is kept unless the
+row says otherwise. `pin` = tested / live.
 
 | id | change | resolver sha256 (12) | pass/fail (20) | flips |
 |---|---|---|---|---|
 | A | boundary → `startswith`+`split` | `39d0e720d668` | 18/2 | tilde + absolute sibling confusion |
-| J | boundary loosened on tilde arm only | `27f6c4bd8cbe` | 19/1 | tilde sibling only (absolute arm exact) |
-| D | bounty-fallback `under_mirror` dropped | `1f72a5df2de9` | 16/4 | 2 traversal + bounty symlink escape + brace-expansion escape |
+| J | boundary loosened on the tilde arm only | `27f6c4bd8cbe` | 19/1 | tilde sibling only (absolute arm stays exact) |
+| D | bounty-fallback `under_mirror` dropped | `1f72a5df2de9` | 16/4 | both traversal cases, bounty symlink escape, brace-expansion escape |
 | E | relative-fallback `under_mirror` dropped | `2d2dcb4edac1` | 18/2 | both relative escapes |
-| B | A + D | `5a1fd64a9582` | 14/6 | exactly A ∪ D (no interaction) |
+| B | A + D | `5a1fd64a9582` | 14/6 | exactly A ∪ D (6 cases, no interaction) |
 | C | A + literal-hit branch suppressed | `01870941cfeb` | 15/5 | both sibling escapes + `literal-prefix-sibling-control` + both literal carve-outs (`bounty-literal-present-traversal`, `bounty-literal-symlink-present`) |
 | F | `classify` returns GONE always | `a2f53034a117` | 11/9 | 9 controls (all MIRROR-EQUIVALENT, INTERNAL, RESOLVES controls) |
 | G | `BOUNTY_PREFIXES` loses `/home/vgpnk/Projects/bounties` | `2d06d656eba4` | 19/1 | `absolute-bounty-fallback-control` |
 | H | `BOUNTY_PREFIXES` loses `~/Projects/bounties` | `d3ac99b9d422` | 18/2 | `confined-bounty-fallback-control`, `brace-expansion-confined-control` |
 | K | boundary admits `root + "_"` siblings | `eedc6effe307` | **20/0 (SURVIVED)** | none |
 
-A-on-decoy-removed variant (`fixtures3-nodecoy.json`, sha256 `d362073f…`, the
-`bounty-prefix-sibling-confusion` `files` emptied): **19/1** — A still killed by the
-absolute sibling, so the tilde witness is no longer the sole detector.
+Decoy-removal variant (`fixtures3-nodecoy.json`, sha256 `d362073f…`, the
+`bounty-prefix-sibling-confusion` `files` emptied): A scores **19/1** — still killed by
+`absolute-prefix-sibling-confusion`, so the tilde decoy is no longer the sole detector.
 
 ## 5. Findings (falsifiable)
 
-1. **F1 — A is killed, twice.** Reverting the exact-root boundary is observed by
-   `bounty-prefix-sibling-confusion` and `absolute-prefix-sibling-confusion` (18/20).
-   Falsifier: any additional flip, or either case passing — receipt `dd5d918f…`.
-2. **F2 — the boundary coverage is now redundant across spellings, but each spelling is
-   necessary.** Dropping only the tilde arm (J) leaves the absolute sibling green;
-   removing only the tilde decoy (nodecoy) leaves the absolute witness. Falsifier: J
-   flipping the absolute case, or nodecoy A passing 20/20.
-3. **F3 — the literal control is boundary-blind.** Identical class under pristine and A;
-   only a literal-branch mutation moves it (C). The `domain` flip A induces is written
-   (`resolve.py:341`) but unasserted (`mirror-containment-check.py:120-134`). Falsifier:
-   a boundary-only mutant that flips `literal-prefix-sibling-control`.
-4. **F4 — boundary and containment are orthogonal.** D (4 flips) and E (2 flips) are
-   disjoint; B's 6 flips equal A ∪ D exactly; A's decoy is inside the mirror
-   (`under_mirror` true). Falsifier: a containment-only mutant flipping a
-   prefix-sibling case, or B ≠ A ∪ D.
-5. **F5 — the matrix is not GONE-collapsible.** A GONE-everything `classify` fails 9 of
-   20 (11/20), all on controls. Falsifier: F reaching 20/20.
-6. **F6 — residual narrow hole: the boundary is tested for one non-`/` continuation.**
-   K (admits `root + "_"` siblings) survives 20/20, and dies only on a probe case I
-   added (21st): `~/Projects/bounties_legacy/README.md` with a decoy at
-   `<mirror>/legacy/README.md` (sha256 `e693c305…`; pristine 21/21 PASS, K 20/21 FAIL).
-   So "reject sibling-root prefix confusion" is witnessed for `-x` siblings, not for
-   arbitrary non-`/` continuations. Scope: contrived one-separator mutant; closing it is
-   one fixture case, and the current code is not wrong on these inputs — it is the
-   *general* property that is unwitnessed. Falsifier: an existing case flipping under K.
-7. **F7 — receipt/live-bytes coupling.** The C1 receipts now pin resolver `8dd45bc8…` +
-   matrix `4e39f65c…` + checker `53742c8d…`; a checker/matrix mismatch silently
-   mis-scores a control (my §0 false positive). Falsifier: reproducing 20/20 from the
-   receipt's three hashes while mixing either file from an earlier pin.
+1. **F1 — A is killed twice.** Reverting the exact-root boundary is observed by
+   `bounty-prefix-sibling-confusion` and `absolute-prefix-sibling-confusion` — 18/20 on
+   the tested pin, 21/23 on the newest live pin, same two cases both times.
+   Falsifier: any additional flip, or either case passing — receipts
+   `dbab6711…` (tested), `0585fe72…` (live 20), `16cdbf3b…` (live 23).
+2. **F2 — boundary coverage is redundant across spellings, but each spelling is
+   load-bearing.** Loosening only the tilde arm (J) leaves the absolute sibling green;
+   deleting only the tilde decoy (nodecoy) still leaves a killing witness. Falsifier: J
+   flipping the absolute case, or A-on-nodecoy reaching 20/20.
+3. **F3 — the paired literal control cannot detect boundary regressions.** Identical
+   class under pristine and A; it moves only when the literal branch is mutated (C). The
+   `domain` flip A induces is emitted (`resolve.py:338`) but unasserted
+   (`mirror-containment-check.py:120-137`). Falsifier: a boundary-only mutant that flips
+   `literal-prefix-sibling-control`.
+4. **F4 — boundary and containment are orthogonal, and separately witnessed.** D (4
+   flips) and E (2 flips) are disjoint; B's 6 flips are exactly A ∪ D; A's decoy is
+   inside the mirror (`under_mirror` true). Falsifier: a containment-only mutant
+   flipping a sibling case, or B ≠ A ∪ D.
+5. **F5 — the matrix is not GONE-collapsible.** A GONE-everything `classify` scores
+   11/20 with all 9 failures on controls. Falsifier: F reaching 20/20.
+6. **F6 — residual narrow hole: only one non-`/` continuation spelling is pinned.** K
+   (admits `root + "_"` siblings) survives 20/20 and dies only on a probe case I added
+   (21st): cite `~/Projects/bounties_legacy/README.md:1` with a decoy at
+   `<mirror>/legacy/README.md` (variant sha256 `e693c305…`; pristine 21/21 PASS, K
+   20/21 FAIL). So "reject sibling-root prefix confusion" is evidenced for `-x`
+   siblings, not for arbitrary continuations. The current code is not wrong on these
+   inputs — it is the *general* property that is unwitnessed, and closing it costs one
+   fixture case. Falsifier: any frozen case flipping under K.
+7. **F7 — pin coupling is load-bearing.** The receipts now pin resolver + matrix +
+   checker; a checker/matrix mismatch silently mis-scores a control (my §0 false
+   positive, reproduced from a stale pair). Falsifier: reproducing 20/20 from a
+   receipt's three hashes while substituting any one file from an earlier pin.
 
 ## 6. Restoration evidence
 
-- `mutA3/resolve.py` exists only as a probe; the pristine copy was never mutated.
-  Re-verified: `pristine3/resolve.py` sha256 == live `corpus/instruments/resolve.py`
-  sha256 == `8dd45bc8…`; fixtures `4e39f65c…`, checker `53742c8d…` also equal live.
-- No scratch file under test was left mutated: every mutant lives in its own
-  `mut<id>3/` directory alongside an untouched `pristine3/`; the assigned mutation was
-  applied once to `mutA3/` and reproduced byte-identically from `pristine3/` in a second
-  pass (same `39d0e720…`).
-- Determinism: pristine replayed at each of the three pins with the same case map; live
-  pin replayed twice (20/20 both times).
-- The mid-wave changes to `resolve.py`, `mirror-containment-check.py`, and the fixture
-  file were made by other seats (mtimes 03:42–03:43), not by me; I re-pinned and re-ran
+- The pristine copies were never mutated. Verified at write time:
+  `pristine3/resolve.py` sha256 == the tested pin, `pristine4/resolve.py` == the live
+  tree, and fixtures `4e39f65c…` / checker `53742c8d…` equal the live tree for both.
+- Every mutant was rebuilt from the pinned source by `rebuild3.py` and its sha256
+  matches the `resolver_sha256` recorded inside its own receipt (A `39d0e720…`,
+  B `5a1fd64a…`, C `01870941…`, D `1f72a5df…`, E `2d2dcb4e…`, F `a2f53034…`,
+  G `2d06d656…`, H `d3ac99b9…`, J `27f6c4bd…`, K `eedc6eff…`). No scratch file under
+  test was left carrying an unrecorded mutation.
+- Determinism: the tested pin was replayed twice (20/20 both times, same case map);
+  the live resolver was replayed on both live matrix revisions (20/20 and 23/23), and A
+  on it flipped the same two cases each time.
+- Mid-wave edits to `resolve.py`, `mirror-containment-check.py`, and the fixture file
+  were made by other seats (mtimes 03:42-03:47), not by me; I re-pinned and re-ran
   instead of reverting them.
 
 ## 7. Scope limits
 
-- Detector-only: class + `resolved_path`/carve-out verdicts for 20 frozen cases (+2
-  probe variants). No statement about source availability, quote fidelity, C2
-  (F06-F08), or any score.
-- One mutation point per mutant; A is the assigned probe, J-K and the variants are
-  attribution/coverage controls and are labelled as such.
-- `domain` is unasserted, so domain statements rest only on the direct trace in §2.
+- Detector-only: class plus `resolved_path`/carve-out verdicts over 20 tested-pin cases,
+  23 live-pin cases, and 3 probe variants. Nothing here speaks to source availability,
+  quote fidelity, C2 (F06-F08), or any score.
+- One mutation point per mutant; only A is the assigned probe. J, K, B-H and the two
+  variants are attribution/coverage controls and are labelled as such.
+- `domain` is unasserted, so all domain statements rest on the direct trace in §2.
 - The absolute-form cases are host-dependent by fixture design (they require
-  `/home/vgpnk/Projects/bounties*` to stay absent on the run host — verified absent here
-  via `ls`); results using them do not transfer to a host that has those paths.
-- `K`'s probe case is mine, not frozen; it is evidence about the matrix's generality,
-  not a defect report against the resolver.
-- Single execution per mutant; pristine repeated. No statistical claim.
+  `/home/vgpnk/Projects/bounties*` absent on the run host — verified absent here with
+  `ls`); those results do not transfer to a host that has those paths.
+- K's probe case is mine, not frozen: it is evidence about the matrix's generality, not
+  a defect report against `resolve.py`.
+- Single execution per mutant (pristine repeated). No statistical claim; a live-tree
+  edit after 03:48 would invalidate the "live at write" row only.
 
 ## 8. Reproduction
 
 ```
 SCR=/tmp/kasegi-r23-falsify-MutateBoundary-2
 SRC=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments
-mkdir -p $SCR/pristine3 && cp $SRC/{resolve.py,mirror-containment-fixtures.json,mirror-containment-check.py} $SCR/pristine3/
-mv $SCR/pristine3/mirror-containment-fixtures.json $SCR/pristine3/fixtures.json
-mv $SCR/pristine3/mirror-containment-check.py $SCR/pristine3/check.py
-python3 $SCR/rebuild3.py          # applies the §1/§4 edits, asserting 1 occurrence each
-python3 $SCR/run_all3.py          # baseline + A..H + nodecoy
-python3 $SCR/run_jk.py            # arm-separated (J), sibling-class (K), underscore probe
+mkdir -p $SCR/pristine3
+cp $SRC/resolve.py $SCR/pristine3/resolve.py
+cp $SRC/mirror-containment-fixtures.json $SCR/pristine3/fixtures.json
+cp $SRC/mirror-containment-check.py $SCR/pristine3/check.py
+python3 $SCR/rebuild3.py            # 10 mutants from pristine3/resolve.py
+python3 $SCR/run_final.py           # pristine3/4 + A,B,C,D,E,F,G,H,J,K + nodecoy
+python3 $SCR/probe_trace3.py        # per-case classify trace (sets HOME per case)
+python3 $SCR/probe_diff.py          # boundary-only divergence set
 ```
 
-Receipt hashes (live pin): pristine `b669a64c…`, A `dd5d918f…`, B `5c16c8be…`,
-C `c1c4c2e1…`, D `0dcf1b47…`, E `75ba2380…`, F `e79fbd21…`, G `1d22ea60…`,
-H `1eaf90ef…`, J `72981593…`, K `82cebb06…`, A-nodecoy `4d45e217…`,
-K-nodecoy `c7b514e1…`, pristine-underscore2 `d48074ef…`, K-underscore2 `5e61305e…`.
+`rebuild3.py [SRC] [SUFFIX]` takes any pinned resolver and emits
+`mut{A,B,C,D,E,F,G,H,J,K}<SUFFIX>/resolve.py`, asserting every anchor occurs once.
+
+Receipt hashes (tested pin): pristine `f64029cc…`, A `dbab6711…`, B `ed699772…`,
+C `ba68f628…`, D `ffebca4f…`, E `fe69b73a…`, F `e34a7c71…`, G `db7c4489…`,
+H `2c4faa4b…`, J `92052823…`, K `124ab39c…`, A-nodecoy `731ec2be…`,
+K-nodecoy `d9c92af6…`, pristine-underscore2 `d48074ef…`, K-underscore2 `5e61305e…`.
+Live pin: pristine `c4636e30…`, A `0585fe72…`. Newest live pin (23 cases):
+pristine `29562c84…`, A `16cdbf3b…`.

@@ -1,387 +1,260 @@
 # SentinelChecker — trust-boundary / failure-mode attack on `mirror-containment-check.py`
 
-Round-23 FALSIFY wave, sentinel seat. Target: `corpus/instruments/mirror-containment-check.py` only
-(plus the frozen matrix it consumes). Read-only on all production files; every mutation and
-side-effect probe ran on `/tmp` copies.
+Round-23 FALSIFY wave, sentinel seat. Target: `corpus/instruments/mirror-containment-check.py`
+and the matrix it consumes. Read-only on all production files; every mutation and side-effect
+probe ran on `/tmp` copies. **This file was rewritten under me mid-seat (03:43–03:48), so this
+report is organised as: current bytes first, then the disposition of the findings I filed against
+the earlier bytes.** Nothing in the production tree was edited by me.
 
-## Artifact identity (recomputed, not taken from any receipt)
+## Artifact identity (recomputed at each measurement, not taken from any receipt)
 
-| artifact | sha256 |
-|---|---|
-| `corpus/instruments/mirror-containment-check.py` (under test) | `1bc2db10dfbc59ef863e68afce475cd1d317da517137922804d7fc09cd46cecb` |
-| `corpus/instruments/mirror-containment-fixtures.json` | `5e61a33ed5fa530547aff197fad9380d86d5850374bbb4f2a8f99df44b5e76a9` |
-| `corpus/instruments/resolve.py` | `ed9a9dae10024bbb2be5db12776f798309fd4615585c3ad93adaab12702840e9` |
+| revision | `mirror-containment-check.py` | `mirror-containment-fixtures.json` | `resolve.py` |
+|---|---|---|---|
+| R1 — analysed 03:37–03:40 (my first pass) | `1bc2db10dfbc59ef863e68afce475cd1d317da517137922804d7fc09cd46cecb` | `5e61a33ed5fa530547aff197fad9380d86d5850374bbb4f2a8f99df44b5e76a9` | `ed9a9dae10024bbb2be5db12776f798309fd4615585c3ad93adaab12702840e9` |
+| **R2 — current (03:43 checker, 03:47 matrix, 03:46 resolver)** | **`53742c8d9529dffb8c40c39b3448de7388b774b548d7831670598d5534bff5d1`** (12372 B) | **`332a5fe95b94207cdf25caf29d52b394f81701b4fe441b92e47ab3ac100005e3`** (9291 B) | **`fce5b84be4cece914260f03a3a8b739dc1108381f97482bbfc7b22143810a4b0`** (28254 B) |
 
-Scratch: `/tmp/kasegi-r23-falsify-SentinelChecker/` (256 K, present at write time with the three
-shas above). It is `/tmp` and therefore **not durable**: every observable this report relies on is
-inlined below as the exact command plus its output, so no finding depends on that tree surviving a
-`/tmp` sweep. (For the same reason I assert nothing about the separate round-35 wave's scratch
-tree, which was relocated to `scratch-evidence/` and partly re-created/deleted again between ~03:43
-and ~03:46; this report cites no wave scratch path.) Interpreter seen in tracebacks:
-`/usr/lib/python3.14` (CPython 3.14). No packages installed or updated (pacman paused host-wide;
-nothing was needed).
+R2 matrix grew from 13 to **23 cases** (11 escape / 12 controls). `c1-fixed.json` on disk is now
+schema 2 and its `resolver_sha256`/`matrix_sha256` match R2 exactly (`fce5b84b…` / `332a5fe9…`,
+identical case-id order, 23/23) — so the landed receipt describes the bytes that are on disk now.
+At 03:47 it transiently recorded `158a423c…`, a revision I no longer have; that intermediate state
+is not reproducible and I make no claim about it.
 
-**Derived bytes I created (rebuild ≠ evidence).** Nothing here was rebuilt from a transcript; these
-are the exact files that produced the inlined outputs, pinned so a later reader can tell a
-substitution from the original. All are *derived* (doctored fixtures and resolver stubs), not
-authoritative sources — the authoritative bytes are the three production files above. Note the
-fixtures embed `$S` absolute paths, so their hashes are path-dependent: they pin these bytes at
-this path only.
+Scratch: `/tmp/kasegi-r23-falsify-SentinelChecker/` — R1 bytes in `src/`, **R2 bytes in `src2/`**,
+R2 probes in `v2/`. All citations below are inlined as command+output; the tree is `/tmp` and not
+durable. The two mutated copies of the checker are diff-verified and neither touches measured code
+paths: `orphan/check-t3.py` (one line, `TIMEOUT_S = 120` → `2`) and `probe/check-copyprobe.py`
+(one added 4-line `finally` block, used only in the R1 env probe). Interpreter: CPython 3.14
+(`/usr/lib/python3.14`). No packages installed or updated (pacman paused host-wide; nothing needed).
 
-| scratch artifact | bytes | sha256 |
-|---|---|---|
-| `receipt-baseline.json` | 8140 | `ce24314b904d1a13449270fe6333453039944471b37e48fc5a73c67705ed5056` |
-| `fixtures-traversal.json` | 890 | `48814c3a4df21a48187f19fedb3a62407d67d2e67ebf2c02ea1412662ac877e0` |
-| `exfil/fake-resolver.py` | 508 | `c48a1dfd5d593f5304fd9d5c94549f75c9e1d541ff624e22fd4d778760cbfbb2` |
-| `fixtures-hostread.json` | 393 | `cff417c60a70526817c8e144bc86f5f97ff32f28ef565067333ff237e2f5556a` |
-| `receipt-hostread.json` | 869 | `0479015f05bf3f9c7fa097562c2f1fb84ed37dc984656eddd3a5c3ae22ee4792` |
-| `table/table-resolver.py` | 1426 | `0cd5e54d59bedf2526e12cec0d0905a99d0a1718293823eadae5c4b344f92dab` |
-| `receipt-table.json` | 5445 | `d612ba29b88889a80c518bba44383b553220cb911a1b1f942a59e44a2842c3ed` |
-| `hostmirror/fake.py` | 364 | `da6936387b3d928e11e3db97cacea46156327a4e98ca688f703400af5c52a36d` |
-| `fixtures-hostmirror.json` | 312 | `fd15e90830855cbd1966f531e014cc6e5519a2d1a9e239ae17a4516a1595d9e0` |
-| `orphan/check-t3.py` | 8286 | `3e151e2223818398fbd29731cde74145ee0af2eb7f30ad1eb1576bfb45f81b6a` |
-| `orphan/orphan-resolver.py` | 270 | `3443e00817ea41a137a998b33e47157443b3f7bcfae2e71c58047a187d484a9d` |
-| `fixtures-orphan.json` | 359 | `b0bf41293c57003ab6734b4a7669112a2c810339be536364f0b335c3de84e467` |
-| `bomb/stdout-bomb.py` | 84 | `e54afaefe79474606a9ab174478bc25f5a8cae0d6e43634f97e5ded4dd305ce9` |
-| `fixtures-bomb.json` | 364 | `8ac27738c5f5dfd86e55747ed092abca4244df85decdbe10cfdd70ab0b8eb22b` |
-| `utf8/bad-utf8-resolver.py` | 78 | `6b87d89f80141dd4030e6a4c938205996e9a42dce25921a74fe75cc038d51aed` |
-| `probe/probe-resolver.py` | 557 | `3b8b567cae71853d8cade4debc92ab868511581f58ed1e9d3fe411e1b51a50a6` |
-| `probe/check-copyprobe.py` | 8494 | `d50e580e1a5e822f76d1be60d2718933c823fdb5004dc3a7e1533148eb9b992a` |
-| `fixtures-probe.json` | 679 | `c315ba21091e798fcae046c5da59e498560b4dff48310cb1519b9d63fec0987e` |
-
-Two artifacts are mutated copies of the checker under test, both verified by diff, and neither
-touches the measured code paths:
-
-- `orphan/check-t3.py` — exactly one line (`TIMEOUT_S = 120` → `2`), so F4's timeout behaviour is
-  produced by production logic at a shorter clock, not by rewritten logic;
-- `probe/check-copyprobe.py` — one added 4-line block in the existing `finally` that copies
-  `tool/probe.json` out before `rmtree` (the manifest above records `probe/probe-resolver.py`'s
-  readings); `build_case`, the env dict and the run path are byte-identical to production.
-
-Every other artifact's *behaviour* is fully quoted in its finding, so a reader can reconstruct it
-without the tree and still check the claim against the inlined output.
-
-Default-path reproduction (production bytes, unmodified, copied to scratch):
+R2 default-path reproduction:
 
 ```
-$ cd /tmp/kasegi-r23-falsify-SentinelChecker/src && time python3 mirror-containment-check.py --json ../receipt-baseline.json
-... 13 lines ...
-cases=13 escape=6 controls=7 pass=13 fail=0 resolver_sha256=ed9a9dae... matrix_sha256=5e61a33e...
-real 0m0.232s
+$ cd /tmp/kasegi-r23-falsify-SentinelChecker/src2 && python3 mirror-containment-check.py --json ../receipt-current.json
+bounty-parent-traversal                    escape  expect=GONE  actual=GONE  PASS
+... 22 more ...
+lane-relative-parent-internal-control      control expect=INTERNAL actual=INTERNAL PASS path_check=carve-out:path-outside-internal
+cases=23 escape=11 controls=12 pass=23 fail=0 resolver_sha256=fce5b84b... matrix_sha256=332a5fe9...
 exit=0
-totals {'cases':13,'controls':7,'escape':6,'fail':0,'pass':13}
 ```
-
-So the happy path reproduces 13/13 here in 0.23 s, and the receipt's two hashes match the
-production bytes above. Everything below is about what that number does and does not buy.
 
 ---
 
-## F1 — HIGH — fixture data is joined to the temp root with no confinement: arbitrary host file write, truncate and delete
+# Part 1 — live findings on R2 (current bytes)
 
-**Guarantee it breaks.** The only thing making "writes stay in the temp root" true is
-`os.path.join(root, rel)` on data that currently happens to be relative. There is no
-`commonpath`/`realpath` check, no rejection of absolute names, no rejection of `..` segments
-(`corpus/instruments/mirror-containment-check.py:49-64,70-74`). `defaults` is merged into every
-case (`:49,53,57`), so one poisoned `defaults.files` entry escapes for all 13 cases.
+## N1 — MEDIUM — the new path audit is waivable by the same fixture data it guards (`path_tolerance: "carve-out"`)
 
-**Exploit path.** The instrument advertises `--fixtures PATH` (`:149`) and its purpose is to replay
-"a frozen matrix" that contributors may propose changes to. A doctored or PR-substituted matrix
-executes these paths as data:
+**What changed and why it matters.** R2 added `path_verdict()` (`:140-152`): a non-GONE class must
+name an existing path confined to `{MIRROR-EQUIVALENT: mirror, INTERNAL: lane, else: root}`
+(`:149`), and `PASS` now requires `path_check == ""` — *or* `tolerated` (`:216-221`), where
+`tolerated` is set whenever the **case itself** declares `"path_tolerance": "carve-out"`. The
+waiver is unconditional: any verdict string, including `path-outside-mirror-equivalent`, is
+accepted, and the case still counts as `PASS` in `totals.pass` and the exit code (`:301`).
 
-1. absolute `dirs`/`files` keys → `os.makedirs` / `open(...,"w")` at that absolute path (`:51,71-74`);
-2. `../…` keys → the same, one level above the `mkdtemp` root;
-3. two ordered `symlinks` entries — `"esc": "/any/host/dir"` then `"esc/victim.txt": …` — make
-   `os.path.lexists()`/`os.remove()` act **through** the first link (`:59-64`), deleting a real
-   host file outside the root and then planting a symlink in its place.
-
-**Evidence** (doctored matrix in scratch; `$S=/tmp/kasegi-r23-falsify-SentinelChecker`):
+**Evidence — a doctored case waives the audit for `/etc/passwd`:**
 
 ```
-$ ls -l "$S/victimdir/"          # before: -rw-r--r-- victim.txt "host victim file"
-$ cd "$S/src" && python3 mirror-containment-check.py --fixtures "$S/fixtures-traversal.json"; echo exit=$?
-exit=0
-$ ls -ld "$S/escape-dir" "$S/escape-file.txt" /tmp/escape-rel.txt
-drwxr-xr-x 2 vgpnk vgpnk  6 ... /tmp/kasegi-r23-falsify-SentinelChecker/escape-dir
--rw-r--r-- 1 vgpnk vgpnk 33 ... /tmp/kasegi-r23-falsify-SentinelChecker/escape-file.txt
--rw-r--r-- 1 vgpnk vgpnk 44 ... /tmp/escape-rel.txt          # from the "../escape-rel.txt" key
-$ ls -l "$S/victimdir/"
-lrwxrwxrwx 1 vgpnk vgpnk 43 ... victim.txt -> /tmp/kasegi-r23-c1-wyvaht1f/does-not-matter
-$ cat "$S/victimdir/victim.txt"
-cat: .../victim.txt: No such file or directory
+$ cat fixtures-carveout.json     # one case: expect MIRROR-EQUIVALENT + "path_tolerance": "carve-out"
+$ python3 mirror-containment-check.py --resolver hostmirror/fake.py --fixtures fixtures-carveout.json --json rec-carveout.json
+self-declared-carveout  control expect=MIRROR-EQUIVALENT actual=MIRROR-EQUIVALENT PASS path_check=carve-out:path-outside-mirror-equivalent
+cases=1 escape=0 controls=1 pass=1 fail=0 ... exit=0
+$ python3 -c "... rec-carveout.json ..."
+status PASS | path_check carve-out:path-outside-mirror-equivalent | resolved_path /etc/passwd
 ```
 
-The absolute keys wrote two artifacts outside the `mkdtemp` root, the `../` key wrote directly into
-`/tmp`, and the host file named by the symlink chain was **unlinked and replaced**. In a real run
-the same shape reaches `~/.bashrc`, `~/.config/…`, or any corpus file the lane user can write,
-including this repo.
+The receipt and the printed line *do* keep the escape visible — that is a genuine improvement, and
+the one legitimate use in the frozen matrix (`lane-relative-parent-internal-control`, whose
+`../outside.md` really does leave the lane root) is honest. But `status`, `totals.pass` and `exit 0`
+no longer imply the path audit passed, and the waiver is not restricted to the INTERNAL class or to
+the specific `path-outside-internal` verdict.
 
-**Impact.** Data-to-arbitrary-write/delete as the invoking user, for an artifact whose entire job
-is to consume an externally editable JSON file. It also gives a reviewer no way to tell a benign
-matrix edit from a destructive one without reading every `files`/`dirs`/`symlinks` key.
+**Impact.** The control half of the matrix remains conditionally self-auditing at the data layer:
+adding one key to any future case silently converts a path failure into a pass. A reader who greps
+`pass=23`/`exit 0` (the exact habit N3 rests on) sees nothing.
 
-**Smallest remediation.** In `build_case`/`write_file`, resolve each name against the root and
-refuse unless `os.path.commonpath((root, os.path.realpath(joined))) == os.path.realpath(root)`,
-plus refuse absolute names and `..` segments before creating anything; create symlinks after
-validating their *names* the same way, and never `os.remove` a path whose parent resolves outside
-the root. (The frozen shipped matrix passes such a guard — see G4.)
+**Smallest remediation.** Restrict carve-out to `expect == "INTERNAL"` **and** to the exact
+`path-outside-internal` verdict, require a per-case `carve_out_reason` string, and report
+`totals["carve_outs"]` separately with exit 0 requiring the count to equal a pinned number
+(currently 1) or 0.
 
----
+## N2 — MEDIUM — a `setsid()` descendant converts the timeout into an unbounded hang (the killpg fix does not cover it)
 
-## F2 — MEDIUM — the selected resolver runs with no confinement at all, and its stdout is persisted verbatim into the receipt
+**What changed.** R2 replaced `subprocess.run(timeout=…)` with `Popen(..., start_new_session=True)`
+plus `os.killpg(proc.pid, SIGKILL)` on `TimeoutExpired` (`:186-196`) — the right direction — but the
+kill targets only that one process group, and the follow-up `proc.communicate()` (`:196`) has **no
+deadline**. Any descendant that leaves the group keeps the inherited stdout/stderr pipes open, so
+the second `communicate()` waits forever.
 
-**Guarantee it rests on.** Only the env dict at `:96-103` plus `cwd=tool`. That is process
-*environment* substitution, not a filesystem boundary: no user namespace, no seccomp, no chroot,
-no read/write barrier. The docstring's "executed once per matrix case with an isolated HOME,
-KASEGI_MIRROR and lane root" (`:5-7`) reads stronger than the code delivers.
-
-**Evidence — env is genuinely replaced (this part holds):**
-
-```
-$ KASEGI_SECRET=topsecret-abc123 python3 check-copyprobe.py --resolver probe-resolver.py ... 
-{"cwd":"/tmp/kasegi-r23-c1-wjp50hp4/tool","home":"/tmp/kasegi-r23-c1-wjp50hp4/home",
- "mirror":"/tmp/kasegi-r23-c1-wjp50hp4/relocated/tbh","secret_leak":"<absent>","tmpdir":"<absent>",
- "env_keys":["HOME","KASEGI_MIRROR","LANG","LC_ALL","PATH","PYTHONDONTWRITEBYTECODE"]}
-```
-
-**Evidence — host read is unbounded and lands in the receipt:**
+**Evidence** (R2 checker, one-line `TIMEOUT_S = 2` scratch mutant; resolver forks, `os.setsid()`s,
+then sleeps 600 s holding the pipes; external 20 s cap):
 
 ```
-$ python3 mirror-containment-check.py --resolver "$S/exfil/fake-resolver.py" --fixtures fixtures-hostread.json --json receipt-hostread.json
-host-read-through-selected-resolver  control expect=RESOLVES actual=RESOLVES PASS
-exit=0
-$ python3 -c "... receipt-hostread.json ..."
-class= RESOLVES
-stdout= HOST-FILE-DISCLOSURE:plazir27          # /etc/hostname content
-```
-
-Two things follow: (a) the resolver reads anything the lane user can read, which is expected for
-`--resolver` but is not disclosed as the actual trust model; (b) `record["cli_stdout"]`
-(`:113`) copies child-controlled bytes into the receipt unconditionally, so any secret or host data
-the resolver prints is persisted into the wave artifact. `PATH` is also inherited (`:99`) and
-`TMPDIR` is unset, so a resolver's `tempfile` writes land in host `/tmp`, outside the case root.
-
-**Impact.** A passing receipt is evidence about *bytes that ran with full user privilege*, not about
-a contained run; and receipts can silently carry host data.
-
-**Smallest remediation.** Retract the "isolated" wording to "HOME/KASEGI_MIRROR are redirected";
-stop recording `cli_stdout` (or keep ≤200 bytes and strip), and set `PATH=/usr/bin:/bin` explicitly
-rather than inheriting it.
-
----
-
-## F3 — MEDIUM — the verdict is the resolver's own self-report; `resolved_path` is never inspected
-
-**Guarantee it rests on.** `record["actual"] = classes.get(case["cite"], "NO-ROW")` where
-`classes` maps the TSV's `citation` column to its `class` column (`:122-138`). Only two columns are
-read (`:126-127`); `resolved_path` is never compared to the case root or to the mirror.
-
-**Evidence A — a lookup table with zero containment logic scores 13/13, exit 0.** A 25-line
-resolver that reads the cite from `lane/SKILL.md`, maps it through a dict, and writes
-`<cite>\t<class>\t/fabricated\t1`:
-
-```
-$ python3 mirror-containment-check.py --resolver "$S/table/table-resolver.py" --json receipt-table.json
-cases=13 escape=6 controls=7 pass=13 fail=0 resolver_sha256=0cd5e54d... matrix_sha256=5e61a33e...
-exit=0
-totals {'cases':13,'controls':7,'escape':6,'fail':0,'pass':13}
-```
-
-**Evidence B — a MIRROR-EQUIVALENT control passes while reporting a host path:**
-
-```
-resolver writes: ~/Projects/bounties/ops/rank.mjs:1 \t MIRROR-EQUIVALENT \t /etc/passwd \t 1
-$ python3 mirror-containment-check.py --resolver "$S/hostmirror/fake.py" --fixtures fixtures-hostmirror.json
-mirror-control-host-path  control expect=MIRROR-EQUIVALENT actual=MIRROR-EQUIVALENT PASS
-exit=0
-```
-
-**Impact.** "13/13 under the frozen matrix" is a statement about classification strings emitted by
-those bytes. It does not demonstrate either C1 predicate (`bounty_suffix` exact-root boundary,
-`under_mirror` realpath confinement) and it cannot detect a resolver that credits a path outside the
-selected mirror, because the harness never looks at the credited path. This is the fabricated-
-readiness class of defect if 13/13 is cited as containment proof on its own.
-
-**Smallest remediation.** For cases whose expectation is `RESOLVES`/`MIRROR-EQUIVALENT`, assert
-that the reported `resolved_path` is a realpath-confined descendant of the case's mirror root (the
-checker already knows `root`, `home`, `mirror`); report `problems=["path-outside-mirror"]` otherwise.
-That converts the control half of the matrix into an oracle the checker computes itself.
-
----
-
-## F4 — MEDIUM — timeout kills only the direct child; descendants survive and keep writing after the run returns
-
-**Guarantee it rests on.** `subprocess.run(..., timeout=TIMEOUT_S)` with no `start_new_session` /
-process group. `TimeoutExpired` is handled (`:109-111`), the direct child is killed, and the temp
-root is removed in `finally` (`:141-142`) — but nothing kills the resolver's children, and nothing
-stops them writing by absolute path after `rmtree`.
-
-**Evidence** (scratch copy differs from production by one line — `TIMEOUT_S = 120` → `2`; diff
-shown, `$S/orphan/check-t3.py`). Resolver forks an orphan that sleeps 4 s and writes a marker:
-
-```
-$ diff -u src/mirror-containment-check.py orphan/check-t3.py
+$ diff src2/mirror-containment-check.py orphan/check-t3.py
 -TIMEOUT_S = 120
 +TIMEOUT_S = 2
-$ time python3 check-t3.py --resolver orphan/orphan-resolver.py --fixtures fixtures-orphan.json
-orphan  control expect=GONE actual=NO-ROW FAIL problems=timeout
-real 0m2.043s
-exit=1
-$ sleep 5; cat "$S/orphan-descendant-proof.txt"
-descendant survived the checker's timeout
+$ time timeout 20s python3 orphan/check-t3.py --resolver orphan-resolver-long.py --fixtures fixtures-orphan.json
+real 0m20.001s
+exit=124                      # the checker never returned: stuck in proc.communicate() at :196
+$ cat orphan-descendant-proof.txt
+holding the stdout pipe
 ```
 
-**Impact.** A slow or hung resolver leaks processes that outlive the matrix run and can write
-anywhere afterwards; repeated CI invocations accumulate them. No cleanup step can observe them,
-because the record says `problems=timeout` and the root is already gone.
+For contrast, a descendant that stays in the group is handled correctly — the earlier probe with
+`setsid` removed returned in 4.0 s with `problems=timeout`, i.e. the fix works exactly as far as the
+process group reaches. This is a *new* failure mode in the sense that the stated mechanism
+(`killpg`) is now the whole defence, and it is defeated by three lines.
 
-**Smallest remediation.** `subprocess.Popen(..., start_new_session=True)` and on timeout
-`os.killpg(proc.pid, SIGKILL)` (then reap); or `process_group=0` on 3.11+ with the same killpg.
+**Impact.** A hung or hostile resolver — including a historical `git show` blob replayed via
+`--resolver` — hangs the instrument indefinitely with no output, no receipt, and a live pipe holder.
+The only bound is whatever the caller wraps around it; the file's own `TIMEOUT_S` docstring has no
+force.
+
+**Smallest remediation.** Give the second wait a deadline (`proc.communicate(timeout=5)`, then
+`proc.kill()` and abandon the pipes), and/or write child stdout/stderr to files inside the case root
+instead of pipes (`stdout=open(...,'wb')`) so a surviving holder cannot block the parent; optionally
+walk `/proc/<pid>/task/*/children` and kill each new descendant after the group kill.
+
+## N3 — MEDIUM — child output is still buffered without bound in the parent (`MAX_STDOUT_STORED` caps storage, not memory)
+
+**What R2 changed.** `MAX_STDOUT_STORED = 400` (`:46`) truncates what is *recorded* (`:200,203,213`)
+and `MAX_TSV_BYTES = 8 MiB` (`:47`) bounds the TSV read (`:123`). Neither bounds what is *read*:
+`Popen(..., stdout=PIPE)` + `communicate()` (`:186-190`) still accumulates every byte in the parent.
+
+**Evidence** (200 MiB of child stdout, R2 checker, `resource.getrusage(RUSAGE_CHILDREN)`):
+
+```
+checker exit: 1 | max child RSS KiB: 634200 delta 619.3 MiB
+```
+
+vs 617.9 MiB on R1 — unchanged within noise. 619 MiB of parent RSS for 200 MiB of child bytes; the
+only ceiling remains 120 s of writing, i.e. multiple GiB on a fast pipe.
+
+**Impact.** OOM of the checker mid-matrix; the receipt is written only after the loop (`:278-296`),
+so the entire run's evidence is lost and the only signal is a killed process.
+
+**Smallest remediation.** Redirect the child's stdout/stderr to files inside the case root and read
+at most `MAX_STDOUT_STORED` bytes from them; that fixes N2 and N3 together.
+
+## N4 — LOW-MEDIUM — `RESOLVES` is bound to the whole case root, so any in-root file satisfies the path audit
+
+`path_verdict` binds `RESOLVES` to `root` (`:149`) — which contains the lane, the mirror, and every
+planted file — while `MIRROR-EQUIVALENT` binds to `mirror` and `INTERNAL` to `lane`.
+
+**Evidence** — a resolver that ignores the citation and reports `lane/SKILL.md`:
+
+```
+$ python3 mirror-containment-check.py --resolver hostmirror/lane-skill.py --fixtures fixtures-resolves-weak.json
+resolves-satisfied-by-unrelated-in-root-file control expect=RESOLVES actual=RESOLVES PASS
+cases=1 escape=0 controls=1 pass=1 fail=0 ... exit=0
+```
+
+(cite was `/no/such/tree/thing.md:1`). Out-of-root paths are still rejected —
+`path-outside-resolves` on the same fixture with `/etc/passwd` — so the audit is not vacuous, just
+satisfiable by an unrelated file for the largest class.
+
+**Impact.** For `RESOLVES` controls the assertion proves "some file exists inside the case root",
+not "the cited path resolved". That is the weakest of the three bounds and the one most controls use
+(9 of 12 in R2).
+
+**Smallest remediation.** For `RESOLVES`, also require the class's own method/domain columns to
+agree with the reported path (the resolver already emits them), or compare the reported path's
+suffix to the citation's suffix.
+
+## N5 — LOW — per-case containment is real but incomplete: two shape abuses still abort the whole run
+
+The new `except Exception` (`:223`) does contain everything *inside* the case — my R1 crash vectors
+(UTF-8 decode error, dangling symlink, bad path) now yield `problems=["case-error:…"]` and the
+matrix continues (see P1 evidence). Two entry points sit outside it:
+
+```
+# fixtures with schema 1 + cases but no "defaults"
+File ".../mirror-containment-check.py", line 254, in main
+    defaults = matrix["defaults"]
+KeyError: 'defaults'                                                              exit=1
+
+# a non-dict case in the list (record is built from case.get() at :158-159, before the try at :223)
+File ".../mirror-containment-check.py", line 159, in run_case
+    "id": case.get("id", "unnamed"),
+AttributeError: 'int' object has no attribute 'get'                               exit=1
+```
+
+**Impact.** A malformed matrix still loses every completed case and produces a traceback instead of
+a receipt; `--json` is never written.
+
+**Smallest remediation.** Validate `defaults` and each case's type/required keys in the existing
+schema check (`:252-256` region, next to the `schema`/`cases` test) and record `case-error` for
+anything that fails.
+
+## N6 — LOW — by design, unchanged: the selected resolver still runs unconfined, and its bytes still reach the receipt
+
+R2 keeps the R1 trust model: `--resolver` bytes are executed with the lane user's full privilege;
+env is replaced (6 keys, verified), there is no read/write barrier, and up to 400 bytes of
+resolver-chosen stdout are stored in the receipt (`:200`). Verified on R2: a resolver that reports
+`GONE` with an empty path and prints `/etc/hostname` back:
+
+```
+exfil-in-receipt  escape expect=GONE actual=GONE PASS        exit=0
+status PASS | stored stdout len 341 | head: HOST-FILE-DISCLOSURE:plazir27plazir27...
+```
+
+The `<CASE>` root substitution (`:200,203,213`) is a genuine hygiene improvement over R1. What is
+unchanged is that a passing receipt is evidence about bytes that ran with full user privilege and
+that receipts can carry host data (now ≤400 B per field).
+
+**Smallest remediation.** State the trust model in the docstring ("`--resolver` is executed
+unconfined; do not pass bytes you would not run"), and drop `cli_stdout` from the receipt (keep it
+in the console line only).
 
 ---
 
-## F5 — MEDIUM — no bound on child output or on the TSV: memory grows with resolver-controlled bytes
+# Part 2 — disposition of the R1 findings (analysed bytes `1bc2db10…`)
 
-**Guarantee it rests on.** `capture_output=True, text=True` (`:107`) buffers the child's entire
-stdout/stderr in the checker, and the TSV is read line-by-line into a dict with no row/size cap
-(`:123-136`). `TIMEOUT_S` bounds wall time, not bytes.
+Verified by replaying each R1 probe against R2 bytes, not by reading the diff.
 
-**Evidence.** Resolver writes 200 MiB to stdout; parent (checker) peak RSS delta measured with
-`resource.getrusage(RUSAGE_CHILDREN)`:
-
-```
-$ python3 -c "... subprocess.run([sys.executable,'mirror-containment-check.py', '--resolver', stdout-bomb.py, ...])
-checker exit: 1
-max child RSS KiB: 632780 delta KiB: 632780 = 617.9 MiB
-```
-
-618 MiB of parent RSS for 200 MiB of child bytes (~3×: byte buffer + decoded str). The only ceiling
-is 120 s of writing, i.e. multiple GiB on a fast pipe. Fixtures and resolver files are also read
-whole (`:155,164`).
-
-**Impact.** OOM of the checker mid-matrix; because the receipt is written only after the loop
-(`:191-209`), the entire run's evidence is lost, and there is nothing in the record that says why.
-
-**Smallest remediation.** Cap captured bytes (read incrementally, `problems=["stdout-overflow"]`
-past N MiB), cap TSV rows/bytes, and reject a fixtures/resolver file above a size limit before
-reading it.
-
----
-
-## F6 — LOW-MEDIUM — no per-case exception containment: one malformed case or one odd child byte stream aborts the whole matrix, receipt lost
-
-**Guarantee it rests on.** The only `except` around the child is `TimeoutExpired` (`:109`); the only
-`except` around the TSV is the header `ValueError` (`:128`). `build_case` has no guard at all, and
-`main`'s loop (`:174`) has none either. `finally` does clean the temp root, so this is not a leak —
-it is total loss of results.
-
-**Evidence (three independent aborts, all exit 1, `--json` never written):**
-
-```
-# 1) child emits a non-UTF-8 byte
-File "/usr/lib/python3.14/subprocess.py", line 1099, in _translate_newlines
-UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
-exit=1 ; receipt-utf8.json: No such file or directory
-
-# 2) fixtures symlink whose target directory does not exist (legal fixture, dangling link)
-File ".../mirror-containment-check.py", line 61, in build_case
-FileExistsError: [Errno 17] File exists: '/tmp/kasegi-r23-c1-p1ckzygn/esc'
-
-# 3) fixtures with schema 1 + cases but no "defaults"
-File ".../mirror-containment-check.py", line 169, in main
-KeyError: 'defaults'
-exit=1
-```
-
-**Impact.** A single hostile or merely sloppy case turns 12 completed cases into zero evidence, and
-the exit status cannot distinguish "matrix failed" from "instrument crashed". `case["cite"]`/`id`/
-`expect`/`nature` are also unvalidated (a case with `nature:"escape2"` would be counted in
-`cases`/`pass` but in neither `escapes` nor `controls` at `:184-185`).
-
-**Smallest remediation.** Wrap the body of `run_case` (and the `defaults = matrix["defaults"]` read)
-in `try/except Exception as exc: record["problems"].append("crash-"+type(exc).__name__)`;
-validate each case's required keys and `nature ∈ {escape,control}` before the loop; write the
-receipt even when some records failed.
-
----
-
-## F7 — LOW — the exit code and the matrix hash are weaker provenance than they look
-
-**Guarantee it rests on.** `return 0 if len(passed) == len(records) else 1` (`:211`): success means
-"every case this file contained agreed", with no requirement that there are 13 cases, 6 escapes, or
-7 controls, and no comparison of `matrix_sha256` against any expected value.
-
-**Evidence.** A one-case doctored matrix exits 0 (both F2 and F3 runs above: `cases=1 ... pass=1`,
-`exit=0`). The receipt (`:192-206`) carries `resolver`/`resolver_sha256`, `matrix`/`matrix_sha256`,
-`cases`, `totals` — and nothing else: no checker sha256, no `sys.version`, no start/finish
-timestamp, no per-case resolver sha. A hand-written 13/13 receipt is byte-shape identical to a
-generated one; the landed `c1-fixed.json` is only distinguishable by re-running.
-
-**Second, small defect in the same block:** `matrix_sha256` is computed by `sha256_file(args.fixtures)`
-(`:171`, a *second* open of the path) while the executed matrix came from the buffer read at `:155`.
-Those are different reads; `TOCTOU` between them means the recorded hash need not describe the bytes
-that were executed. The resolver path does not have this defect — `:170` hashes the same in-memory
-buffer it copies at `:95`.
-
-**Impact.** "exit 0 / 13 of 13" is not self-authenticating; and the matrix hash is not strictly
-bound to the parsed matrix.
-
-**Smallest remediation.** Hash the buffer read at `:155` (`hashlib.sha256(raw).hexdigest()`), record
-`checker_sha256`, `sys.version` and `started/finished` timestamps, and make exit 0 additionally
-require `escape == 6 and controls == 7` for the frozen matrix id (or fail loudly when the case
-inventory does not match the expected one).
-
----
-
-## F8 — INFO — bounds the file names and does not have
-
-- **Per-case only:** `TIMEOUT_S = 120` (`:33`); no aggregate deadline. N cases × 120 s, N taken
-  from the fixtures list (`:174`, unbounded length, serial).
-- **Cleanup:** `shutil.rmtree(root, ignore_errors=True)` (`:142`) — no timeout; a resolver that
-  fills the root within its 120 s makes cleanup unbounded, and `ignore_errors` hides partial
-  cleanup. (In my runs no root leaked: the one `/tmp/kasegi-r23-c1-*` visible mid-experiment was a
-  concurrently running sibling case's root and was gone on the next read — I am **not** claiming a
-  temp-root leak.)
-- **Sizes:** fixtures and resolver read whole (`:155,164`); TSV rows unbounded (F5).
-- **Receipt:** `open(args.json,"w")` with no parent creation and no atomic replace (`:207`), written
-  only after the last case (F6).
-
----
-
-## Guarantees that do hold (verified, with the confinement they rest on)
-
-| # | Guarantee | Rests on | Verification |
+| R1 finding | Severity then | Status on R2 | R2 evidence |
 |---|---|---|---|
-| G1 | Child env is exactly the 6-key dict; parent env does not leak | `:96-103` replaces `env` wholesale | `KASEGI_SECRET=topsecret-abc123` absent in child; `env_keys` = 6 names |
-| G2 | No fixture bytes are executed; the only executed bytes are `--resolver` content and `sys.executable` | `:93-108`; fixture data is only written to files | `tool/sitecustomize.py` and `tool/usercustomize.py` supplied as `files` keys — `/tmp/.../sitecustomize-proof.txt` and `usercustomize-proof.txt` were **not** created |
-| G3 | Working tree stays inside `mkdtemp` for the *shipped* matrix, and `finally` removes the root even on crash | `:78` (0700 mkdtemp) + relative-only fixture names | default run left no `/tmp/kasegi-r23-c1-*`; crash runs also cleaned |
-| G4 | The frozen matrix contains no absolute names, no `..` segments, and every symlink target is `@ROOT@`-prefixed | script audit of every `dirs`/`files`/`symlinks` key | `unsafe entries: none`, 13 cases |
-| G5 | Escapes are pinned `GONE` and the 6/7 split is real | fixture data, not checker logic | `Counter({'control': 7, 'escape': 6})`, all six escape ids `expect=GONE` |
-| G6 | Landed `c1-fixed.json` is content-bound to the production bytes | its `resolver_sha256`/`matrix_sha256` equal the independently measured shas above | `ed9a9dae…` / `5e61a33e…`, totals 13/13; `c1-baseline.json` `d6a3c3f1…`, 7/13 |
+| **F1** fixture names joined without confinement → host write, `/tmp` write, host file unlink via symlink chain | HIGH | **FIXED** — `safe_path` (`:59-76`) rejects absolute/`..` and re-checks the resolved parent; `check_link_target` (`:78-87`) confines targets | `traversal-absolute` → `case-error:ValueError:unsafe-dir:'…/escape-dir'`; `symlink-chain-host-unlink` → `case-error:ValueError:escape-symlink-target:'…/hostdir'`; `symlink-target-absolute-host` → `…escape-symlink-target:'/etc/passwd'`; `escape-dir`/`escape-file.txt`/`/tmp/escape-rel.txt` absent; `hostdir/victim.txt` still `HOST-VICTIM` |
+| **F2** unconfined resolver; stdout persisted verbatim | MEDIUM | **PARTIAL** — root substituted + capped at 400 B; still unconfined, still persisted (N6) | 341-byte disclosure in `rec-goneexfil.json`, `exit=0` |
+| **F3** verdict self-reported, `resolved_path` never read | MEDIUM | **PARTIAL** — class *and* path now compared (`:120-152,221`); a `/etc/passwd` MIRROR-EQUIVALENT now fails | `mirror-control-host-path … FAIL path_check=path-outside-mirror-equivalent`; residues N1 and N4 |
+| **F4** timeout kills only the direct child; descendants survive | MEDIUM | **PARTIAL** — `start_new_session` + `killpg` added, cooperative descendants now die; `setsid` descendants still hang the checker (N2) | `timeout 20s … exit=124` |
+| **F5** unbounded child output in parent memory | MEDIUM | **NOT FIXED** — storage capped, memory not (N3) | 619.3 MiB delta |
+| **F6** no per-case exception containment | LOW-MED | **MOSTLY FIXED** — `except Exception` per case; `defaults`/non-dict case still abort (N5) | R1's three crash vectors now record `case-error`; two shape abuses still `exit=1` with traceback |
+| **F7** exit code + provenance weak; matrix hash from a second read (TOCTOU) | LOW | **FIXED** — `schema 2`, `checker_sha256`, `generated_at`, and `matrix_sha256 = sha256_bytes(fixtures_bytes)` from the parsed buffer (`:256-257,282`) | `rec-hostread.json`: `schema 2 … checker_sha256 53742c8d… … generated_at …`; residual: exit still `len(passed)==len(records)` (`:301`), so a 1-case matrix still exits 0 (verified in N1's run) |
+| **F8** named missing bounds (no aggregate deadline, unbounded rmtree, whole-file fixture read) | INFO | **PARTIAL** — TSV capped at 8 MiB; aggregate deadline and rmtree still unbounded | by inspection |
 
-**Net reading for C1's evidence.** The landed receipt is honestly bound to the production
-`resolve.py` bytes, and the matrix is not vacuous (a do-nothing baseline scores 7/13). What it does
-**not** establish is containment: F3 shows the verdict is self-reported and path-blind, so the
-receipt's 13/13 must be read as "these sha-pinned bytes classified these 13 cites as expected", with
-the containment predicates carrying the argument from source review (`bounty_suffix` exact-root
-boundary, `under_mirror` realpath check), not from this instrument.
+## Guarantees that hold on R2 (each with its basis)
+
+| Guarantee | Basis | Verification |
+|---|---|---|
+| G1 no fixture-supplied path reaches outside the case root | `safe_path` + `check_link_target`, applied before every mkdir/open/symlink/unlink (`:100-118`) | three escape fixtures → `case-error`, no host artifacts, victim intact |
+| G2 child env is exactly 6 keys; parent env does not leak | fixed `env` dict (`:174-182`) | `KASEGI_SECRET=topsecret-abc123` absent; `env_keys` = 6 names (R1 probe, env block unchanged in R2) |
+| G3 only `--resolver` bytes and `sys.executable` execute; fixture bytes are data | `Popen([sys.executable, copied, lane])` | R1 probe: `tool/sitecustomize.py` and `tool/usercustomize.py` supplied as fixture `files` never ran |
+| G4 the matrix is not vacuous and controls are path-audited | fixture data + `path_verdict` | 23/23 on R2; `/etc/passwd` and out-of-root paths fail; R1 baseline `d6a3c3f1…` scored 7/13 |
+| G5 the landed receipt describes the bytes on disk | receipt `resolver_sha256`/`matrix_sha256` vs measured | `fce5b84b…` and `332a5fe9…` match, same 23 ids, 23/23 |
+| G6 escapes are pinned `GONE`, controls pin surviving classes | fixture data | `escape=11`, all `expect=GONE`; `controls=12`, one declared `path_tolerance` |
+
+## Bounds the instrument still does not have
+
+- Aggregate deadline: per-case `TIMEOUT_S = 120` (`:44`) only, N cases serial, N from fixtures.
+- A deadline on the **second** `communicate()` after a timeout (`:196`) — N2.
+- Any memory ceiling on captured output (`:186-190`) — N3.
+- Case/`defaults` shape validation before the loop (`:158-159`, `:254`) — N5.
+- Timeout on `shutil.rmtree(root, ignore_errors=True)` (`:225`) and partial-cleanup reporting.
+- Any check that a passing `RESOLVES` path is *related* to the citation (`:149`) — N4.
+- Any restriction on which verdicts a fixture may waive (`:216-219`) — N1.
 
 ## Scope limits
 
-- Attacked `mirror-containment-check.py` and the frozen matrix only. I did **not** audit
-  `resolve.py`'s two containment predicates, the fixture matrix's semantic adequacy, or the C2
-  snapshot/quote artifacts — sibling seats own those; my mutation of the checker is one scratch line
-  (`TIMEOUT_S`) and is shown as a diff.
-- Hostile resolver is in scope *as a trust boundary question*, not as an intrusion: all probes ran
-  against `/tmp` scratch, `/etc/hostname` was the only host file touched (read), and the deleted
-  file was one I created in scratch (`$S/victimdir/victim.txt`).
+- Attacked the checker and the matrix; I did **not** audit `resolve.py`'s containment predicates
+  (C1's `bounty_suffix`/`under_mirror`) or the C2 snapshot artifacts — sibling seats own those. The
+  only production change I observed in `resolve.py` is that R2 is 77 diff lines from R1; I make no
+  claim about its correctness beyond what the matrix shows.
+- All probes ran against `/tmp` scratch: `/etc/hostname` was the only host file read, and the only
+  host file I attempted to delete was one I created in scratch (`v2/hostdir/victim.txt`), which
+  survived. `/tmp/escape-rel.txt` (created by the R1 probe) was removed after capture.
 - Not exercised: read-only filesystems, `--json` aimed at a symlink/`/dev/full`, umask variants,
-  in-place mutation of fixtures *during* the 0.23 s run (F7's TOCTOU is by inspection, not a
-  demonstrated race), `TMPDIR`-set host, and behaviour under a non-CPython `sys.executable`.
-- Read-only compliance: the single file written by me is this report. No git/jj command was run, no
-  lane or sibling-lane file was touched, no install or host configuration was performed. Scratch
-  `/tmp/kasegi-r23-falsify-SentinelChecker/` (256 K) existed at write time but is not durable (see
-  the header); the report is self-contained because each finding inlines its command and output.
-  The one artifact my traversal probe dropped directly in `/tmp` (`/tmp/escape-rel.txt`) was removed
-  after capture.
-- No admission, score, or claim-status movement is asserted here.
+  non-CPython `sys.executable`, `TMPDIR`-set hosts, and a resolver that races the TSV read.
+- The R2 findings rest on a *fixture/resolver I supply*; they are defects of the instrument's own
+  guarantees, not claims that the frozen matrix or the current `resolve.py` is wrong.
+- Read-only compliance: the only file I wrote is this report. No git/jj command was run, no lane or
+  sibling-lane file touched, no install or host configuration performed.
+- No admission, score, or claim-status movement is asserted.

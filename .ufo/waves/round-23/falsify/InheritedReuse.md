@@ -33,17 +33,25 @@ byte-identical at `922a4dde` and `8bf9807`) and **no** manifest (so every entry
 | object | identity |
 |---|---|
 | checkpoint under test | `8bf9807` = `8bf980721554d2d24bcc83e2e0996e0c27684a06` |
-| lane tip | `HEAD` = `953c278` |
-| audit wall clock | 2026-10-25 06:36–06:44 **UTC** (03:36–03:44 local, host TZ `-03`) |
-| `8bf9807`→`HEAD` diff for assigned paths | `9 files changed, 1618 insertions(+), 1 deletion(-)` |
+| lane tip at audit start | `953c278` |
+| lane tip at audit close | **`4d9231e`** (via `2712c99`, `4d9231e`; two unpredicted commits landed mid-audit) |
+| audit wall clock | 2026-10-25 06:36–06:49 **UTC** (03:36–03:49 local, host TZ `-03`) |
+| `8bf9807`→`953c278` diff for assigned paths | `9 files changed, 1618 insertions(+), 1 deletion(-)` |
 | scratch | `/tmp/kasegi-r23-falsify-inherited/` |
 
-Three distinct states of the C1 bytes exist and must not be conflated:
-**(a) committed `953c278`** — resolver `ed9a9dae…`, 13-case matrix `5e61a33e…`;
-**(b) live at 06:40Z** — resolver `9e0b5751…`, same 13-case matrix;
-**(c) live at 06:43Z (close of audit)** — resolver `8dd45bc8…`, 17-case matrix
-`5c64e014…`, changed `mirror-containment-check.py` `53742c8d…`. The C1 receipt
-`c1-fixed.json` pins (a) only.
+The C1 counter went through **five** generations inside this audit. Any sentence
+about "the matrix" is meaningless without the generation:
+
+| generation | resolver sha256 | matrix cases / sha256 | where it lived |
+|---|---|---|---|
+| G13 | `ed9a9dae…` | 13 / `5e61a33e…` | committed `953c278`; receipt `c1-fixed.json` |
+| G17 | `8dd45bc8…`(a) | 17 / `5c64e014…` | worktree 06:43Z |
+| G20 | `fce5b84b…` | 20 / `4e39f65c…` | worktree 06:47Z |
+| G22 | `fce5b84b…` | 22 / `158a423c…` | worktree 06:48:20Z |
+| **G23** | **`fce5b84b…`** | **23 / `332a5fe9…`** | committed `4d9231e` + dirty receipts at 06:48:42Z |
+
+(a) G17/G20 also carried `9e0b5751…` for a window (see §2a–2b). Findings below are
+labelled with the generation they hold for; §4.0 is the status board.
 
 ## 2. Every file changed since the checkpoint, in the assigned scope
 
@@ -67,12 +75,65 @@ Three distinct states of the C1 bytes exist and must not be conflated:
 `corpus/source-snapshots/round-23/{S018,S029,S030}.txt`,
 `.ufo/waves/round-23/{claims.json,before-instruments.json,opened-source-snapshots.json,source-open-transcript.json,build/**}`.
 
-Cited-by files changed at `HEAD` but outside the assigned path list (evidence is
+Cited-by files changed at `953c278` but outside the assigned path list (evidence is
 presented through them, so they are in scope as *presentation*): `corpus/README.md`
 (3/3, the F06–F08 flip), `corpus/lessons/round-23.md` (167/0, attempt-2 section),
 `SCORECARD.md` (34/0, round-23 result row).
 
-### 2a. Uncommitted drift observed *during* this audit
+### 2a. Post-audit commits (not present when the audit began)
+
+Four commits landed between 06:44Z and 06:50Z, so the table above is the **first
+landing only**. At close (`HEAD` = `8acb255`, 06:50:29Z) the assigned-path delta is
+much larger:
+
+```
+2712c99 round-23: post-attack repairs; F07 to current CNA 4.2.6 (S031); 20-case containment matrix; c2 receipts
+4d9231e round-23: log the post-attack repairs and final C1/C2 measurements
+12edac4 round-23 seal: 23-case matrix with ordering/prefix pins, declared recheck normalization, Q8/R10, final receipts
+8acb255 round-23: record the failing Q7/Q8 control exits beside the clean runs
+```
+
+`git diff --numstat 953c278 HEAD -- corpus/ SCORECARD.md LOG.md`:
+
+```
+ 70   0  LOG.md                                             31   0  SCORECARD.md
+  7   0  corpus/QUALITY.md                                   9   3  corpus/README.md
+  1   0  corpus/SOURCES.md                                 145  55  corpus/instruments/mirror-containment-check.py
+171  19  corpus/instruments/mirror-containment-fixtures.json 22  10  corpus/instruments/resolve.py
+ 11   0  corpus/instruments/source-recheck.py                43  29  corpus/knowledge/cna-assignment-and-vulnerability-rules.md
+ 14   2  corpus/knowledge/cra-manufacturer-reporting-duties.md 8   1  corpus/knowledge/multiparty-vulnerability-coordination.md
+ 60   0  corpus/lessons/round-23.md                        136   0  corpus/source-snapshots/round-23/S031.txt
+136  20  corpus/source-snapshots/round-23/manifest.json
+```
+
+New in the wave directory: `c2-controls.txt` and `c2-recheck-{S018,S029,S030,S031}.txt`
+(receipts for the failing controls and the clean runs), plus ~30 `falsify/*.md`
+seat reports. State at close: `HEAD`=`8acb255`, clean except ten `falsify/*.md`
+(including this report), so the production bytes I measured are the committed ones.
+
+What the four commits change materially:
+
+- **F07 authority moved to `S031`** (CNA Operational Rules 4.2.6, approved
+  2026-10-14, effective 2026-10-20; 136-line normalized `S031.txt`). `README.md`
+  F07 now cites S031; `SOURCES.md` gained row S031 ("supersedes S030"); the cna
+  entry was rewritten (43/29) and its `source:`/`recheck:` now name S031.
+- **C2 pins grew from 19 to 32 assertions** across four snapshots
+  (`S018 6, S029 9, S030 7, S031 10`), still with **0 misses** (`TOTAL quotes 32
+  MISSES 0`), and four rechecks exit 0: `S018` 7 lines, `S029` 10, `S030` 8,
+  `S031` 11 — counts consistent with digest+quotes for each.
+- **The matrix grew 13 → 17 → 20 → 22 → 23 cases.** Final: 11 escapes, 12 controls,
+  `matrix_sha256=332a5fe9…`, baseline `922a4dd` bytes **0/11 escape GONE** and
+  controls 12/12 (12/23 pass), landed `fce5b84b…` **23/23**. The two cases
+  `relative-priority-lane-first-control` and `mirror-root-prefix-sibling-escape`
+  were added because mutation seats showed the earlier matrix could not see them
+  (`SCORECARD.md` errata, round-23 append-only block).
+- **`resolve.py` root-only bounty citations were taken back to their pre-round
+  verdict.** The G17/G20 ternary that mapped `~/Projects/bounties` to the mirror
+  root is gone; the final bytes carry the comment "Root-only bounty citations keep
+  their pre-r23 verdict" and my probe returns `GONE` for both
+  `~/Projects/bounties` and `~/Projects/bounties/` (§4.0).
+
+### 2b. Byte-level drift observed *during* this audit
 
 The working tree changed between 06:36Z and 06:43Z UTC while I was reading it. The
 first `git status --porcelain` (06:36Z) showed only ` M LOG.md`; by 06:40Z it showed
@@ -112,7 +173,36 @@ drift may be L1 integration. But **the report below distinguishes "committed
 
 ## 4. Findings
 
-### F1 (high, falsifiable) — the C1 receipt is bound to bytes the tree no longer has, and the live delta is an unpinned classification change
+### 4.0 Status board at HEAD `8acb255` (06:50:29Z)
+
+| finding | first observed | status at close | why |
+|---|---|---|---|
+| F1a receipt ↔ bytes binding | G13 / live G17 | **CLOSED** | `c1-fixed.json` regenerated; now `23` cases, `matrix_sha256=332a5fe9…`, `resolver_sha256=fce5b84b…` = `sha256sum` of the live file |
+| F1b bare-root class change | G17/G20 | **CLOSED by reversal** | final `resolve.py` keeps root-only bounty citations at `GONE` (comment + probe below) |
+| F2 unit suite blind to the defect | G13 | **OPEN** | `test_resolve.py` untouched by all four commits; still `10 tests OK` on both fixed and baseline bytes |
+| F3 `recheck:` cwd dependence | G13 | **CLOSED** | all three entries (and the new F07→S031 form) now begin `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 …` |
+| F4 instruments README stale | G13 | **OPEN** | `git diff --stat 953c278 HEAD -- corpus/instruments/README.md` is empty |
+| F5 open-record transcript gaps | G13 | **OPEN, wider** | transcript still has none of S018/S029/S030/S031; `opened-source-snapshots.json` has S018/S029/S030 but **no S031**, which is now F07's admitted authority |
+| F6 bulk-reuse of contradicted reports | G13 | **OPEN** | reuse sentence unchanged; two of its reports' premises remain falsified by the landing |
+| F7 refusal timestamp mislabelled | G13 | **OPEN** | `refusal-1.json` still `"at":"2026-10-25T03:34Z"` (local `-03`) |
+| F8 dual sha authority unchecked | G13 | **OPEN, asymmetric** | S031 is pinned in `manifest.json` only; no open-record copy exists to disagree with |
+| F9 a declared escape case was non-discriminating | G22 | **CLOSED** | `glob-expansion-escape` passed on the baseline at G22 and was redefined at G23 (see F9) |
+| F10 superseded registry row still claims current use | G23 | **OPEN** | `SOURCES.md` S030 is `mined`, teaches "use current 4.2.0 requirements", and still lists the cna entry under `used-by` although that entry now sources S031 |
+
+### F1 (high; **closed** by 2712c99/12edac4) — the C1 receipt was bound to bytes the tree no longer had, and a live delta was an unpinned classification change
+
+**Status: both halves closed.** The binding half was repaired by regenerating the
+receipts (final `c1-fixed.json`: 23 cases, `matrix_sha256=332a5fe9…`,
+`resolver_sha256=fce5b84b…`, equal to the live file and to
+`sha256sum corpus/instruments/mirror-containment-fixtures.json`). The class half was
+repaired by reversal: the final `resolve.py` carries "Root-only bounty citations keep
+their pre-r23 verdict" and my probe on `fce5b84b…` returns `GONE` for
+`~/Projects/bounties`, `~/Projects/bounties/`, and `~/Projects/bounties//etc/hostname`
+— identical to the committed `953c278` result. The body below is the record of the
+window in which it was not closed, because the evidence was already being cited as
+current while it drifted.
+
+Original observation (G13):
 
 `c1-fixed.json` records `"resolver": ".../corpus/instruments/resolve.py"` and
 `"resolver_sha256": "ed9a9dae…40e9"`. That identifies the **committed** `953c278`
@@ -173,12 +263,14 @@ Why this matters rather than being a tidy consistency fix:
 
 The escape/control claim itself survives on every byte set I ran: committed bytes
 **13/13**, live 06:40 bytes **13/13**, live 06:43 bytes **17/17 (escape 7/7,
-controls 10/10, exit 0, `matrix_sha256=5c64e014…`)**. So the defect is *evidence
-binding and unpinned scope*, not a false matrix result. Minimal closure: either revert
-the ternary hunk before commit, or add a bare-root fixture (pin whichever class is
-intended), regenerate `c1-fixed.json` against the final resolver+matrix pair, and
-record the GONE→MIRROR-EQUIVALENT decision against the 23 citations. Do not rely on
-either live receipt until it is regenerated after the tree stops moving.
+controls 10/10)**, live 06:47 bytes **20/20**, and final `fce5b84b…` bytes
+**23/23 (escape 11/11, controls 12/12, `matrix_sha256=332a5fe9…`, exit 0)** against a
+baseline of **12/23 with 0/11 escapes GONE**. So the defect was *evidence binding and
+unpinned scope*, never a false matrix result — and the bare-root decision was
+ultimately made the other way (root-only stays `GONE`), which also restores
+`SKILL.md:813`'s statement. Two things the closure did **not** do: add a bare-root
+fixture (still none at 23 cases, so the decision remains unpinned and could flip again
+silently) and wire the matrix into any test runner (F2).
 
 ### F2 (high) — the repo's own regression fixture is green on the inherited unsound bytes
 
@@ -202,9 +294,13 @@ specs). Consequence: a future edit that deletes `bounty_suffix()`'s boundary or 
 `under_mirror()` call leaves `test_resolve.py` green. R7 asks that instrument claims
 change and exercise the actual detector; the unit fixture still does not exercise it.
 
-### F3 (medium) — the committed entry `recheck:` lines are not verbatim-executable outside the lane root
+### F3 (medium; **closed** at `8acb255`) — the committed entry `recheck:` lines were not verbatim-executable outside the lane root
 
-The committed (`953c278`) `recheck:` fields are:
+**Status: closed.** All four entry `recheck:` lines (F06, F07→S031, F08) now begin
+`cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 …` at `HEAD`, so the
+command is cwd-independent. The defect below held for `953c278` only.
+
+The committed (`953c278`) `recheck:` fields were:
 `recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S0NN`.
 Executed verbatim from `/tmp`:
 
@@ -233,23 +329,28 @@ This is the instrument's own index page, not a historical round note, so it is
 presented as current documentation. `corpus/lessons/round-23.md` records the code
 change but no doc-update, and the file is absent from the change set.
 
-### F5 (medium) — the wave's "source-open transcript" contains none of the round's opens
+### F5 (medium; **OPEN and wider at `8acb255`**) — the wave's open records do not cover the authorities it admits
 
-`.ufo/waves/round-23/source-open-transcript.json` (unchanged) contains `S001`–`S015`
-only. Counts for the rows the lesson's Gate says were "opened this round":
+`.ufo/waves/round-23/source-open-transcript.json` (unchanged through all four
+commits) contains `S001`–`S015` only. Counts for the rows the lesson's Gate says were
+"opened this round", re-measured at close:
 
 ```
-S018 in transcript: 0    S022: 0    S024: 0    S028: 0    S029: 0    S030: 0
+S018 in transcript: 0    S022: 0    S024: 0    S028: 0    S029: 0    S030: 0    S031: 0
+opened-source-snapshots.json ids: ['S018', 'S029', 'S030']        # no S031
+manifest.json ids:               ['S018', 'S029', 'S030', 'S031']
 ```
 
 The opens are instead asserted by a *different* inherited file,
-`opened-source-snapshots.json` (S018/S029/S030, `"opened": "2026-10-20"`), and for
-**S028 there is no open record at all** (not in the transcript, not in
-`opened-source-snapshots.json`; only the `SOURCES.md` row's own `where` cell claims
-it was opened). The transcript is not marked as partial or superseded, and the lesson
-cites the wave directory as the open record. C2's admission criterion ("only after
-official text opens") is therefore backed, for three rows, by a file whose sibling
-transcript denies covering them — and for the fourth by self-assertion only.
+`opened-source-snapshots.json` (S018/S029/S030, `"opened": "2026-10-20"`). Since
+`2712c99`, **F07's admitted authority is `S031`, which appears in the manifest but in
+neither open record** — no open date, no URL, no byte pin, no transcript line. S028
+(rejected) likewise has no open record at all; only its `SOURCES.md` `where` cell
+claims it was opened. The transcript is not marked partial or superseded, and the
+lesson cites the wave directory as the open record. C2's criterion ("only after
+official text opens") is therefore backed for three rows by a file whose sibling
+transcript denies covering them, self-asserted for the fourth, and — for the source
+F07 now rests on — backed by the *manifest alone*, which is a byte pin, not an open.
 
 ### F6 (low) — the bulk reuse statement covers reports whose premises the tree now contradicts
 
@@ -281,30 +382,80 @@ refused was created. The registry's timestamp is correct UTC; the refusal's is l
 `-03` time carrying a `Z` suffix. Wave-conformance evidence for "refused at dispatch"
 should not carry a timestamp that inverts the ordering.
 
-### F8 (low) — two sha256 authorities over the same snapshots, still unchecked
+### F8 (low; **OPEN, now asymmetric**) — two sha256 authorities, one of which no longer covers the admitted set
 
 `opened-source-snapshots.json` and `manifest.json` each pin `sha256` for
 `S018/S029/S030.txt`. They **agree today** (d366bf…, 825144…, 673526…), and
 `source-recheck.py` has **no reference to `opened-source-snapshots`** (grep → "NO
-reference"), so nothing enforces the agreement. `build/Q1Executable.md` #6 named this
-class; the landing minted the second authority without a cross-check. Not currently a
-divergence — a latent one.
+reference"), so nothing enforces the agreement. Since `2712c99` the manifest also pins
+**S031**, which the other file does not carry at all — the two authorities now cover
+different sets, and the newer one is the only pin for F07's authority. `build/Q1Executable.md`
+#6 named this class; the landing extended the second authority without a cross-check or
+a set-equality assertion.
+
+### F9 (low; **CLOSED at G23**) — a declared escape case was non-discriminating for one generation
+
+At generation **G22** (22 cases, `matrix_sha256=158a423c…`, resolver `fce5b84b…`) the
+regenerated do-nothing receipt recorded:
+
+```
+c1-baseline.json: cases 22  escape 10  fail 9  pass 13
+  PASS  escape  glob-expansion-escape  GONE -> GONE
+```
+
+i.e. one of the ten declared escape fixtures **already classified GONE on the
+inherited bytes**, so it could not testify to the fix — the counter would have shown
+"escape 9/10" and still reported the matrix as exercising ten escapes. At G23 the case
+was redefined (`~/Projects/bounties/<name>/../../outside-vault/x.md:1`) and now fails
+on the baseline (`0/11`), so the class is closed. The record matters because the
+SCORECARD errata describes only the two *added* cases as mutation-driven; the
+non-discriminating state itself existed in a committed-then-replaced receipt and is
+visible only by comparing the two generations.
+
+### F10 (medium; **OPEN at `8acb255`**) — a superseded registry row still claims current use
+
+`corpus/SOURCES.md` row S030 says, verbatim:
+
+```
+| S030 | … CNA Operational Rules v4.2.0 … | spec | A | … version 4.2.0 | … | supersedes S022 — use current 4.2.0 requirements and section numbering; … | mined | … | corpus/knowledge/cna-assignment-and-vulnerability-rules.md |
+| S031 | … CNA Operational Rules v4.2.6 … | spec | A | … current version 4.2.6 | … | supersedes S030 — current 4.2.6 makes independent-fixability ID separation a MUST; S030's 4.2.0 SHOULD is historical. | mined | … | corpus/knowledge/cna-assignment-and-vulnerability-rules.md |
+```
+
+Both rows are `mined` and both claim `used-by` the same entry, while that entry's
+`source:` is **S031 only**. So S030 simultaneously (a) tells a reader to "use current
+4.2.0 requirements", (b) is declared historical by S031's own cell, and (c) claims a
+`used-by` relation the entry does not have. `corpus/lessons/round-23.md:252` states
+the intent — "S030/S022 kept as historical rows" — and the SCORECARD errata corrects
+the *entry and README* cells, but the registry row itself was not updated and no
+old→new status/`used-by` change is logged (R8 requires exactly that log). Census at
+close: 31 rows, tier `A=29 C=2`, status `mined 19 / queued 9 / rejected 3`, `used-by`
+non-empty on 19 — the two extra `mined`/`used-by` counts relative to `953c278`
+(30 / 28 / 18) are S031 plus this double-attribution.
 
 ## 5. Confirmed-as-sound (so the next seat does not re-derive it)
 
-- **Matrix reproducibility and control validity.** Committed `c1-baseline.json` and
-  `c1-fixed.json` reproduce case-for-case on independent runs of the committed
-  resolver+matrix pair; the baseline is byte-identical to the checkpoint resolver;
-  `matrix_sha256` equals the fixtures' digest in all receipts. The live 17-case
-  expansion also passes on the live resolver (17/17, exit 0) — but see F1: that run is
-  not the receipt of record and pins no bare-root case.
-- **The C1 fix itself.** All six declared escapes (seven in the live matrix) are GONE
-  on committed and live bytes; all controls keep their pinned class. The confinement is
-  real, not a blanket ban.
-- **Quote pins.** 19/19 manifest quotes are literal substrings; per-entry checks give
-  F06 6/6, F08 6/6, F07 6/7 exact with the one disclosed markup case; max quote length 20 words (Q3's ≤25).
-- **C2 counters.** 3/3 and 8/8 as claimed; SOURCES census (30 rows, A=28/C=2,
-  mined 18/queued 9/rejected 3, used-by 18) as claimed; `mirror=0` vacuity disclosed.
+- **Matrix reproducibility and control validity (final generation).** At `8acb255` the
+  receipts match the tree: 23 cases, `matrix_sha256=332a5fe9…` = `sha256sum` of the
+  fixtures file; `c1-fixed.json` 23/23 with `resolver_sha256=fce5b84b…` = the live
+  file; `c1-baseline.json` 12/23 with **0/11** escapes GONE and controls 12/12. My
+  independent runs reproduced G13 (13/13), G17 (17/17), G20 (20/20) and G23 (23/23),
+  and the inherited baseline (7/13 at G13; 12/23 at G23).
+- **The C1 fix itself.** All eleven declared escapes are GONE on the final bytes; all
+  twelve controls keep their pinned class; the baseline fails every escape. The
+  confinement is real, not a blanket ban, and the two carve-outs (lane-relative
+  `INTERNAL`, bounty literal hit) are pinned as controls and named in the docstring.
+- **Quote pins (final).** 32/32 manifest quotes are literal substrings across four
+  snapshots; per-entry checks give F06 6/6 against S018, F08 8/8 against S029, and F07
+  7/8 against S031 — the single non-literal string is `4.2.0 is the current CNA rule
+  set.`, which sits in F07's **Rejected** block as the rejected claim, so it is
+  correctly absent from the source. Max quote length 20 words (Q3's ≤25).
+- **C2 counters and rechecks (final).** 3/3 and 8/8 as claimed; four rechecks exit 0
+  (`S018` 7 lines, `S029` 10, `S030` 8, `S031` 11 — digest+quotes each); SOURCES
+  census reproduces the 31/29/2/19 numbers above; `mirror=0` vacuity disclosed.
+- **F07's currentness correction is real and material.** `S031.txt` is a 49,350-byte
+  normalized capture whose 10 assertions all verify, and the entry now records that
+  4.2.6 turns independent-fixability ID separation into a MUST where 4.2.0 said SHOULD.
+  The inherited F07 admitted on 4.2.0 was out of date on the day it was opened.
 - **Entry headers.** All three entries carry the Q1 triad (`source:`, `verified-at: 2026-10-20`,
   `recheck:`) directly under the H1 — the working tree did not need to add them; my
   earlier suspicion that they were missing was a grep-pattern artefact, corrected here.
@@ -361,7 +512,7 @@ committed 13-case and live 17-case matrices both omit that citation.
   seat's; `SCORECARD.md`'s score semantics beyond reading its C1/C2 evidence pointers.
 - **Concurrency caveat:** the tree moved during the audit — three distinct resolver
   hashes and two matrix configurations were observed between 06:36Z and 06:43Z
-  (§2a). Everything in §2a, and F1's "live" half, describes those snapshots and must
+  (§2a–2b). Everything in §2a, and F1's "live" half, describes those snapshots and must
   be re-pinned before any admission decision. All scratch used by this seat is
   `/tmp/kasegi-r23-falsify-inherited/` (not `.ufo/waves/*/scratch/`); no production
   file, index, or lane tree was modified by this seat.

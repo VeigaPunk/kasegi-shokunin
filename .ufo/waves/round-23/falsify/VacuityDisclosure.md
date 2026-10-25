@@ -113,7 +113,7 @@ Same committed resolver bytes (`ed9a9dae`), same export content, two unpack path
 Root cause chain, all locally observable: `corpus/README.md:54` (in the `922a4dd`
 export) cites `../../../.ufo/l0-questions.md`; the relative branch
 `exists_any(join(lane_root, base)) → INTERNAL` is unconfined by design (the
-carve-out the lesson discloses at `:143-145`); `/tmp/.ufo` is a symlink to
+carve-out the lesson discloses at `:143-144`); `/tmp/.ufo` is a symlink to
 `/home/vgpnk/Projects/shokunin/.ufo` (`readlink -f`, link mtime Oct 24 04:44), and
 `/home/vgpnk/Projects/shokunin/.ufo/l0-questions.md` exists. Three levels above
 `…/cur/export` is `/tmp`, so the token resolves. A nested control at
