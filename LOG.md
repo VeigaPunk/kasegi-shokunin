@@ -1149,3 +1149,27 @@ no live-target, signed-URL or injection findings.
   refused once at the host job limit (`.ufo/waves/round-23/falsify/refusal-1.json`),
   then dispatched intact after capacity freed.
 - Lane commit: `953c27880a97e8d3aaf8fac44c97e0252cddcddf` (round-23 work).
+
+## 2026-10-25 — round 23, after the falsify wave (36 seats)
+
+- The wave attacked the first landing and found real defects; all were repaired
+  before the closing commit `2712c99268ff71e465304ce3846d52f5cf4af1a6`.
+- C1 matrix grown 13 → **20 cases** (9 escape, 11 control): absolute-arm cases,
+  literal-present carve-out controls, brace/glob expansion cases. Do-nothing
+  control on the final matrix: escape **0/9**, controls 11/11, 12/20, exit 1.
+  Landed bytes: **20/20, exit 0** (`resolver_sha256=fce5b84b…`, `matrix_sha256=4e39f65c…`).
+- Checker hardened: fixture-name confinement (a doctored matrix could unlink a
+  host file), `resolved_path` assertion per class, process-group timeout,
+  per-case containment, bounded stored output, checker sha + UTC stamp in the
+  receipt. The lane-relative `INTERNAL` carve-out is now a labelled pin
+  (`carve-out:path-outside-internal`), not a silent pass.
+- F07 corrected to the **current** CNA rules: v4.2.6 (approved 2026-10-14,
+  effective 2026-10-20) supersedes v4.2.0, and 4.2.11 changed SHOULD→MUST. New
+  row S031 + normalized `pdftotext` snapshot (49154 B) + 10 assertions; entry
+  rewritten with rule-number locations only (no page claims). The inherited
+  `build/CnaFix.md` had found this on 2026-10-20 and no corpus file disclosed it.
+- C2: four rechecks exit 0 (`S018`, `S029`, `S030`, `S031`), controls 1/2/1;
+  receipts `.ufo/waves/round-23/c2-recheck-S0xx.txt` and `c2-controls.txt`.
+  Residual debt named: F01–F05 rechecks exit 2 `not-listed` (no capture exists).
+- Frontier counter made field-exact (`awk` on the status column) and the three
+  new Coverage-map rows appended; README provenance line extended to 33 entries.
