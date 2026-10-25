@@ -1,0 +1,80 @@
+s3 staged-package inventory (raw) — round 26 wave 1 — 2026-10-25 (UTC)
+Package: /home/vgpnk/Projects/shokuknow/merge/kasegi/ (READ-ONLY)
+
+=== 1. Package files ===
+- MERGE-REPORT.md        exists, 13,771 B
+- MERGE-REPORT.json      exists, 29.2 KB (accepted=94, refused=[])
+- SOURCES.append.md      exists, 89,718 B, 100 lines (1 blank, 2 comments, header 2, 94 data rows)
+- knowledge/              only subdir; contains corpus/knowledge/ with 67 entry files (no amendments/ dir)
+
+=== 2. Staged row census (SOURCES.append.md) ===
+- staged rows: 94 (S031..S124 inclusive; rows at lines 7-100)
+- first staged id: S031 | last staged id: S124
+- MERGE-REPORT.md says "lane registry currently holds 30 rows; first staged id is S031"
+  but the lane registry at freeze holds 40 rows (S001-S040) — claims.json note: reg=40 staged=94
+  collisions=10 (S031-S040). The report's "30" is stale.
+- collide with lane registry: S031, S032, S033, S034, S035, S036, S037, S038, S039, S040 (10)
+- free ids: S041..S124 (84)
+
+=== 3. Target staged entries (exist) ===
+- knowledge/corpus/knowledge/iso-29147-and-30111-division-of-labour-2026-10-23.md
+  2,642 B  sha256 c2dbbe84b36f021c54a525836ba250bbe552ce457ad2dcdb3503313a84559e62
+  ground: F19 (extends the round-4 entry iso-29147-divergence-and-clause-crosswalk)
+  source: S076 — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf — 付録6 §2「国際標準の概要」,
+          the paragraph on ISO/IEC 30111:2013, and 図 1, p.45
+  verified-at: 2026-10-23
+  recheck: 180d — `curl -sSL https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf` and confirm
+          付録6 §2 still carries the ISO/IEC 30111:2013 paragraph (ran 2026-10-23)
+  quoted material (S076): 「外部からの脆弱性に関する情報の受領、ユーザに対する脆弱性対策のアドバイザリ配布等」
+    (§2 paragraph); 「ベンダの社内での脆弱性取扱いのプロセス」; 「脆弱性の検証」/「脆弱性対策の開発」
+    (§2 paragraph); 図 1「ISO/IEC 29147 と ISO/IEC 30111 の対応」 p.45; figure note 「出所：ISO/IEC
+    29147:2014 を元に作成」 p.45
+- knowledge/corpus/knowledge/iso-29147-divergence-and-clause-crosswalk-2026-10-23.md
+  3,907 B  sha256 20aaf26690d132849541bb1773114dac9d686e81c22cb4dddafccb24988a889f
+  ground: F19 (new frontier item: the ISO/IEC 29147 comparison, obtainable without the paywalled standard)
+  source: S064 — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf — 付録6「国際標準に準拠するための留意点」,
+          section 4.「ISO/IEC 29147:2014 について留意すべき事項」 p.46-47, and 参考1 p.53-54
+  source: S068 — https://www.cisco.com/c/en/us/about/security-center/security-vulnerability-policy.html —
+          "Cisco Product Security Incident Response"
+  verified-at: 2026-10-23
+  recheck: 180d — `curl -sSL https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf` then confirm
+          付録6 still carries 参考1 and the section-4 table (ran 2026-10-23)
+  quoted claims:
+    - S064: divergence sentence: P-guideline does not require a vendor to adopt a vulnerability disclosure
+      policy, while ISO/IEC 29147:2014 does require one and publication of part of it (付録6 §4 p.46-47)
+    - S064: table rows 全体 / オンラインサービス / 脆弱性公開ポリシー / 脆弱性の受領 / 中間ベンダ (§4)
+    - S064: 6.2 "Minimum policy aspects" reproduced in English + Japanese incl. elements a)–f); 6.3
+      "Optional policy aspects"; clause 3.4 on online services (§4 p.46-47)
+    - S064: 参考1 maps clauses 1–9 (5.1–5.9, 6.1–6.3, 7.1–7.7) onto P-guideline sections (p.53-54)
+    - S068: "The Cisco PSIRT aligns its practices with ISO/IEC 29147:2018" — location "Cisco Product
+      Security Incident Response"
+
+=== 4. Strict-limb check of staged recheck lines (recheck-audit.py limbs) ===
+Both target lines: no `cd <lane-root> &&` prefix; prose after backtick command with "(ran …)" tail.
+- parse  : FAIL (bash -n syntax error at '('; also "180d — " prefix not a command)
+- cwd   : PASS only trivially (identical rc=2 syntax-error output in both cwds — equality check)
+- paths  : FAIL (names no corpus/… token and no ~/Projects/ base)
+- cdroot : PASS only vacuously (no cd prefix present, so nothing to check)
+- instrument: FAIL (no corpus/instruments/*.py; no `test -[def] ~/Projects/`)
+- own    : FAIL (no own-file token, no --source+snapshots pair, no bare base-state assertion)
+Both fail 4/6 strict limbs. If adopted verbatim the lane's strict gate (37/37 → 39/39) would break.
+
+Reject candidates carry the same non-conforming shape:
+- vendor-cvd-policy-crosswalk-2026-10-23.md recheck: prose + curl inside backticks + "(ran …)" → same verdicts
+- chinese-criminal-thresholds-and-authorisation.md recheck: prose + curl + "(ran …)" → same verdicts
+
+=== 5. Reject candidates (exist) ===
+- knowledge/corpus/knowledge/vendor-cvd-policy-crosswalk-2026-10-23.md
+  3,281 B  sha256 be3ddb3228ca341457bd9f4814a7883a384ac5bf54d31c4eca3cb458c093a901
+  ground: F20 (new frontier item: vendor-side disclosure policies as corpus objects)
+  round-25 lesson recorded reject: Q7 prose recheck, ground F20 absent from lane frontier
+  (grep -cE '\| F20 ' → 0), Q3 four-vs-two disclosure-trigger conditions
+- knowledge/corpus/knowledge/chinese-criminal-thresholds-and-authorisation.md
+  4,124 B  sha256 1660c00c16369d0a50870185607e0a8006ed573cc4ae69a696ce568e4e8a59ae
+  ground: F12 (extends F03)
+  round-24 lesson recorded reject: Q2+Q4 and Q1/Q7 (recheck prose, curl exits 0 on 404;
+  "purely quantitative" falsified by 第一条(五); ground F12 names no lane frontier item)
+
+=== 6. Lane frontier rows (corpus/README.md) ===
+F01..F10 admitted only. No F11 (this round's target), F12, F19, F20 rows exist in the lane.
+Package-local grounds (F12/F19/F20) are therefore pointers, not lane frontier ids.

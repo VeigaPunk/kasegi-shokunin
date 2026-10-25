@@ -1,0 +1,46 @@
+Round 26 wave 1 — ownership matrix preflight
+Source of truth: wave1-spec.json items/prompts (same roster in wave1-dispatch.json); paths below are planned output/write scopes, not a claim that each file is already present.
+
+Seat | Access | Owned paths
+s2 ScoutS040Probe | read-only except explicitly assigned capture | .ufo/waves/round-26/wave1/s040-probe.txt; corpus/source-snapshots/round-26/S040-live.txt
+s4 ScoutQuarantine | read-only | .ufo/waves/round-26/wave1/quarantine-verdicts.txt
+s5 ScoutQuoteRelocation | read-only | .ufo/waves/round-26/wave1/s5-quote-relocation.txt; /tmp PDF/extraction are scratch, not lane outputs
+
+w1 ScribeSourcesAppend | writer | corpus/SOURCES.md
+w2 ScribeEntryDivision | writer | corpus/knowledge/iso-29147-and-30111-division-of-labour.md
+w3 ScribeEntryCrosswalk | writer | corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md
+w4 ScribeReadme | writer | corpus/README.md
+w5 ScribeLesson | writer | corpus/lessons/round-26.md
+w6 ScribeScorecard | writer | SCORECARD.md
+w7 ScribeLogProvince | writer | LOG.md; PROVINCE.md (only the specified F11 line, if needed)
+
+e1 ExecAuditFix | writer | corpus/instruments/recheck-audit.py; .ufo/waves/round-26/c1-controls/e1-selftest-live.txt
+ e2 ExecExpectedList | writer | corpus/instruments/knowledge-expected.txt
+ e3 ExecReceiptIndex | writer | .ufo/waves/round-26/c1-receipt-index.txt; .ufo/waves/round-26/c1-instrument-digest.txt; .ufo/waves/round-26/c1-live.json
+ e4 ExecSkillRegistry | writer | SKILL.md
+ e5 ExecCaptureS041 | writer | corpus/source-snapshots/round-26/S041.txt
+ e6 ExecManifestRecheck | writer | corpus/source-snapshots/round-26/manifest.json; .ufo/waves/round-26/wave1/e6-recheck-results.txt
+ e7 ExecMirrorCensus | writer | .ufo/waves/round-26/c2-controls/do-nothing.json; /tmp/kasegi-r26-mirror is scratch
+ e8 ExecFrontierSim | writer (production map explicitly read-only) | .ufo/waves/round-26/wave1/e8-frontier-sim.txt and e8 scratch output/receipts under .ufo/waves/round-26/wave1/
+ e9 — no separate executor named e9 in the wave1 spec; see scope note below.
+
+m1 MutDeletionControls | read/write only in C1 controls | .ufo/waves/round-26/c1-controls/m1-*.txt; .ufo/waves/round-26/c1-controls/m1-summary.json
+m2 MutRegistryRow | read/write only in C1 controls | .ufo/waves/round-26/c1-controls/m2-registry-mutants.txt
+m3 MutGameability | read/write only in controls | .ufo/waves/round-26/c1-controls/m3-gameability.txt; .ufo/waves/round-26/c2-controls/m3-gameability.txt
+
+Other wave1 report writers (not production writers):
+ScoutDatawalk -> wave1/s1-datawalk.txt; ScoutPackageInventory -> wave1/s3-inventory.txt; ConnOverlap -> wave1/c1-overlap.txt; ConnR25Continuity -> wave1/c2-r25-continuity.md; ConnUsedbyMap -> wave1/c3-usedby.txt; ConnOwnership -> wave1/c4-ownership.txt (this report); CritVacuityC1 -> wave1/k1-vacuity.txt; CritVacuityC2 -> wave1/k2-vacuity.txt; CritNoHarm -> wave1/k3-noharm.txt; RevDigestLineage -> wave1/r1-digest-lineage.md; RevS040Fingerprint -> wave1/r2-s040-fingerprint.txt; SentScopeSweep -> wave1/n1-sweep.txt; SentContract -> wave1/n2-contract.txt; SimplYagni -> wave1/x1-yagni.txt. These are each individually assigned report paths. No other seat is authorized to write them.
+
+Path coverage / exclusivity check
+- Each explicitly listed fixed production path has exactly one seat: SOURCES, each entry, README, lesson, scorecard, LOG, PROVINCE, audit instrument, expected list, receipt index, skill registry, S041/S040 snapshots, manifest, and e7 C2 receipt.
+- Pattern scopes are not blanket write permission: wave1/* is partitioned by each item’s explicitly named output; c1-controls/* is partitioned among e1, m1, m2, m3 as listed; c2-controls write is m3 only among the m-seats, while e7 owns only do-nothing.json.
+- No path has two owners within the named seat sets; read-only s4/s5 do not own production write paths. s2's assigned S040 capture is an explicit capture exception, not general production-write authority.
+- The literal global set «.ufo/waves/round-26/wave1/*» is not a single owner's set: it contains many distinct per-seat reports. The disjointness assertion applies to concrete assigned filenames, not to overlapping directory glob notation.
+
+Scope exceptions and contradictions to resolve before treating the abbreviated role labels as exhaustive
+1. The request's shorthand e1-e9 does not match the actual spec roster: it defines eight executor seats (ExecAuditFix, ExecExpectedList, ExecReceiptIndex, ExecSkillRegistry, ExecCaptureS041, ExecManifestRecheck, ExecMirrorCensus, ExecFrontierSim) and no e9. The matrix records all eight actual executors; no ninth owner can be inferred.
+2. The shorthand s2/s4/s5 is supported for the named s2 capture, s4 quarantine report, and s5 quote report. s3 is also a read-only scout but writes its assigned wave1 inventory report; do not mistake it for a writer of listed production corpus paths.
+3. MutGameability has two assigned outputs, one under each control directory. Its prompt allows those two receipts only; this does not authorize any m-seat to alter other C1/C2 controls or production files.
+4. Some broad prompt glob sets (wave1/*, c1-controls/*, source-snapshots/round-26/*) overlap textually across the abstract request, but concrete assignment prompts are narrower and disjoint. New/unlisted paths are not authorized absent an amended assignment.
+
+No code or production files modified by this preflight. Tool installation: none.

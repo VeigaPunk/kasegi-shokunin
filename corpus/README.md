@@ -209,8 +209,9 @@ Correction (2026-10-19): corpus/QUALITY.md now exists; the preceding closing par
 | F08 | EU Cyber Resilience Act reporting duties | admitted | knowledge/cra-manufacturer-reporting-duties.md | S029 | Distinguish manufacturer statutory tracks from researcher disclosure; Article 14 applies from 2026-09-11. |
 | F09 | Authorisation outside the platform: the engagement document and the statute | admitted | knowledge/authorised-testing-rules-of-engagement.md, knowledge/statutory-authorization-and-unauthorized-access.md | S032, S033, S034, S035 | A safe-harbour badge is not the grant and not the legal definition: read the ROE's scope/exclude list, and the access manager the statute requires. |
 | F10 | Vendor-side disclosure policies as corpus objects | admitted | knowledge/vendor-disclosure-policies-as-corpus-objects.md, knowledge/vendor-disclosure-policy-commitments-crosswalk.md | S036, S037, S038, S039, S040 | A vendor's published policy is a standing first-party statement, not a programme: read its intake channels, its handling-versus-disclosure scope, the standard edition it names, and the conditions (and count of conditions) under which it goes faster. |
+| F11 | ISO/IEC 29147/30111 division-of-labour meta | admitted | knowledge/iso-29147-and-30111-division-of-labour.md, knowledge/iso-29147-divergence-and-clause-crosswalk.md | S041 | Treat 29147 as the vendor's outward-facing disclosure standard and 30111 as its internal handling process; record the edition a source names (JPCERT/CC compares against 2014, Cisco claims 2018). |
 
 The original domain-root map is exhausted: 0/18 surfaces are present.
 That sentence describes the lost `/home/vgpnk/Projects/bounties` surface set only; the
-public-practice frontier above is a separate denominator (10/10 admitted at round 25; F01-F08 at
-round 23, F09 at round 24, F10 at round 25) and is not counted into the 0/18 figure.
+public-practice frontier above is a separate denominator (11/11 admitted at round 26; F01-F08 at
+round 23, F09 at round 24, F10 at round 25, F11 at round 26) and is not counted into the 0/18 figure.

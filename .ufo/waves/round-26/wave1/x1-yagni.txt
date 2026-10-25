@@ -1,0 +1,89 @@
+# x1 — YAGNI audit checklist (round 26, wave 1)
+Seat: L1Kasegi26.SimplYagni (simplifier, read-only). UTC access date: 2026-10-25.
+Scope: wave-1 drafts — knowledge entries, lesson, SOURCES append, SCORECARD diff, SKILL registry row,
+expected list, receipts. No production edits made. Every suggestion below notes which frozen counter it
+preserves (C1(a)-(d), C2 awk/grep/census, frontier harness).
+
+Legend: R = dead/stale referent or dead pattern reuse; D = duplication; P = placeholder/empty;
+W = over-wide claim vs committed evidence. SB = suggested by this seat (for L1 to apply at its
+discretion); BL = measured blocker (red gate right now if the round closed as-is).
+
+## Summary
+- BL-1  README F11 entry cell cites staged-package filenames that do not exist in the lane
+         (frontier-recheck-count.py crashes: FileNotFoundError, exit 1 — measured after entries
+         landed). Same dead names repeated in SCORECARD C2 row.
+- BL-2  SOURCES S040/S041 recheck cells carry prose after the cadence (`180d — …`): sources census
+         E09 on both rows, exit 1 (measured) — C2 kill-rule limb "census exit = 0 at round end"
+         unsatisfied at compose.
+- BL-3  corpus/instruments/knowledge-expected.txt is stale vs the 39-entry tree (37 listed):
+         default expected-list audit is red (`unexpected=2`, exit 1 — measured). Regenerate after
+         the two entries landed.
+- BL-4  c1-receipt-index.txt was written before the instrument change landed (pins pre-change digest
+         c3c19adc… and `selftest cases=14`; landed instrument is 3fc0d751… with 15 cases). C1(b)
+         index must be regenerated at the landed digest (lesson M26-1 already records this).
+- SB-5  README coverage-map table has no F11 row although every prior admitted frontier (F01–F10)
+         has one — add a row for pattern parity, or record the omission deliberately.
+- SB-6  SCORECARD r27 planned rows restate round-25 planned text nearly verbatim; optional to
+         compress to a pointer; no counter impact.
+- SB-7  Receipt index currently prints two identical digest lines (instrument = base) and bare
+         `EXIT=0` lines without commands; when regenerating (BL-4), keep the base line as an
+         explicit control and attach commands to receipt lines — reduces noise without losing
+         evidence.
+
+## Per-file
+
+### corpus/README.md (w4)
+- [R/BL-1] Frontier row F11 `entry` cell: `knowledge/iso-29147-and-30111-division-of-labour-2026-10-23.md, knowledge/iso-29147-divergence-and-clause-crosswalk-2026-10-23.md` (staged package names). Actual files landed without the date suffix (`iso-29147-and-30111-division-of-labour.md`, `iso-29147-divergence-and-clause-crosswalk.md`). Measured: `frontier-recheck-count.py` exit 1, FileNotFoundError on the staged name. Fix: point the cell at the actual filenames. Counters: C2 awk unchanged (11); harness recovers to entries=14 pass=14 exit 0.
+- [R/SB-5] Coverage-map table (first table) has no round-26 row, while F09/F10 (and F01–F08) each have one. Add, mirroring the F10 row: `| ISO/IEC 29147/30111 division-of-labour (round 26) | knowledge/iso-29147-and-30111-division-of-labour.md, knowledge/iso-29147-divergence-and-clause-crosswalk.md | S041 — public primary, opened 2026-10-25 |`. No counter reads the coverage map; safe.
+- Denominator paragraph update (11/11) is correct; no change.
+
+### corpus/knowledge/iso-29147-and-30111-division-of-labour.md (w2)
+- Clean. Q1–Q9-conformant; all quotes anchor-verified in S041.txt / S039.txt / S040.txt (spot-checked S039.txt:497-499 and S040.txt:58 — verbatim present). No empty/placeholder sections. No dead staged referents (ground: F11 is the lane id; staged filename only in the documented re-ground note).
+- [D] The `jpcert-fig1-caption` row notes the string repeats at 5 lines — load-bearing (Q9), keep. Capture fingerprint repeated across entries/lesson/scorecard/LOG is provenance, not padding; do not delete.
+
+### corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md (w3)
+- Clean. Dense, evidence-bound; quote table + republication section both carry distinct information (English/Japanese 6.2/6.3 vs manifest labels). No placeholders; no over-wide claims (attribution to the guideline's reproduction is explicit in Rejected over-generalizations).
+- [R] None: uses lane ids S041/S040; no F19/F20 ground leak; recheck line is a conforming `cd <lane-root> && source-recheck.py --source S041` command.
+
+### corpus/lessons/round-26.md (w5)
+- Complete: Overview, Gate (admitted/rejects/quarantine/kill-rule status), Mistakes M26-1..M26-7, Fixes 1-7, Appendix, routed debt. No empty sections.
+- [W] None found: kill-rule status and counter outcomes match the receipts (measured independently this seat: (a)=1, (b)=1 line present, (c)=0, (d)=exit 1; awk=11, grep=3, census=1).
+- [D] The Appendix repeats the counters already in Overview and Fixes — house format (R2), keep.
+
+### corpus/SOURCES.md (w1)
+- [R/BL-2] S040 and S041 recheck cells: `180d — <prose>` violates the census grammar (E09 on both; census exit 1 measured). Census accepts ISO date / NNd / symbolic cadence only. Fix: `180d` alone in both cells; move the R25-5 URL/UA record into the `## Registry changes` note (S040 already has one — keep it; add an S041 line, e.g. `S041 recheck cell: 180d → 180d — re-fetch with capture-source.py instrument UA (browser UA 403s); canonical anchor is the PDF` only if the cell is trimmed). Counters: C2 census → exit 0 (only pre-existing W04 S028/S029); no row id/scope/teaches content changes.
+- [R] S041 used-by cell names both entries correctly (undated) — good, matches landed files; leave.
+- Row S041 scope/teaches are within evidence; no W issues.
+
+### SCORECARD.md (w6)
+- [R/BL-1] C2 result row repeats the dead staged filenames — align to actual entry names (same fix as README).
+- [D/SB-6] r27 planned rows mostly restate the round-25 planned paragraph (anchorcheck exit debt). Acceptable because the debt is genuinely carried; if L1 wants a leaner diff, replace the two rows with a pointer to the round-25 planned text plus one new line. No counter impact.
+- C1 row honestly records score held 4 and gate conformance; density row measured at scribe time before SKILL edit (disclosed). OK.
+- Capability row `source-capture-pdf` is new and load-bearing; keep.
+
+### SKILL.md (e4)
+- Clean: one table row (8 columns) + one explanatory sentence about the expected-list contract. Minimal; no duplication with other sections. Counter (a)=1. Keep as-is (m2 shows the counter only discriminates the missing `|probe` marker; the row's other properties are content-verified).
+
+### corpus/instruments/knowledge-expected.txt (e2)
+- [R/BL-3] Stale: 37 entries vs 39 in tree committed audit `unexpected=2` exit 1 (measured with the landed instrument). Regenerate with the same read-only pipeline (`git ls-files corpus/knowledge/*.md | sort`), keeping the 2-line header. Counter-safe: C1(d) still fires for deletions; the live gate turns green.
+- Header is minimal; no other trimming.
+
+### .ufo/waves/round-26/c1-receipt-index.txt / c1-instrument-digest.txt / c1-live.json (e3)
+- [R/BL-4] Index pins pre-change digest c3c19adc… and `selftest cases=14`; landed instrument is 3fc0d751… with 15 cases (selftest exit 0, measured). Regenerate the index at the landed digest: `instrument_sha256=3fc0d751…`, base-digest control line, `selftest cases=15 failures=0 exit=0`, and a live 39-entry audit line. Same for c1-instrument-digest.txt (new digest + old note). c1-live.json should be refreshed at close (current file is the pre-change/pre-entries baseline).
+- [D/SB-7] While regenerating: instrument and base lines are currently identical duplicates; keep the base line as an explicit control (it will differ after regeneration), attach commands to the bare `EXIT=0` lines, and keep the cross-reference correction note (R25-2).
+
+### PROVINCE.md (w7)
+- Clean: single F11 sentence. No action.
+
+### LOG.md (w7)
+- Clean: one dense round-26 entry with honest "at write" caveats. No action.
+
+### Wave-1 reports (s1-s5, c1-c4, e6/e8, k2/k3, m1-m3, n1, r1/r2) — scanned, no placeholders
+- All non-empty and fact-dense; no empty/boilerplate sections observed. No action.
+
+## Verdict
+Only the four blockers (BL-1..BL-4) need changes before round close; each is a referent/staleness
+fix, not a content reduction. No draft carries duplicated load-bearing blocks worth deleting (both
+knowledge entries are near-minimal for their Q-bars; the lesson is complete). No over-wide claim
+found beyond what the receipts support. No reuse of retired instruments (the fixed drafts use lane
+ids and current instruments; the staged-package F19/F20 grounds were correctly dropped).

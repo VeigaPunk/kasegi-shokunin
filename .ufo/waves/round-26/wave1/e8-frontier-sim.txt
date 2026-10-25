@@ -1,0 +1,175 @@
+e8 — frontier-recheck-count.py F11 integration simulation
+Agent: L1Kasegi26.ExecFrontierSim (leaf). Date: 2026-10-25 (UTC). Instrument:
+corpus/instruments/frontier-recheck-count.py (unchanged, no edits to real corpus).
+
+How the instrument counts (summary):
+- read_frontier(root) scans <root>/corpus/README.md line by line with
+  FRONTIER_ROW = ^\|\s*(F\d+)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*`?([^|`]+?)`?\s*\|
+  capturing (id, topic, status, entry-cell) in README order.
+- main() keeps only rows whose status cell == "admitted".
+- For each admitted row, the entry cell (4th column) is split on ","; each part is
+  one entry path resolved relative to <root>/corpus/ (e.g. knowledge/foo.md).
+- Each entry is evaluated (entry_contract + evaluate): the recheck line must name
+  source-recheck.py with --manifest and --source ids that (A) cover the entry's own
+  header source: ids, (B) are all listed by a schema-valid manifest, (C) are cited
+  by the entry body; then the line is executed from the lane root and its exit code
+  is the entry's result. PASS = no problems and exit 0.
+- Summary line prints entries=<total records across admitted rows> pass=<N>
+  exit=<0 if N==records and records nonempty, else 1>; exit 2 on harness/read error.
+- So the per-row contribution is 1 record per comma-separated entry path in an
+  admitted row's entry cell (F09 and F10 currently each contribute 2 records).
+
+=============================================================================
+1) LIVE run on the real map (unmodified corpus/README.md)
+=============================================================================
+Command (run from lane root):
+  python3 corpus/instruments/frontier-recheck-count.py \
+    --root /home/vgpnk/Projects/shokunin/kasegi-shokunin \
+    --json .ufo/waves/round-26/wave1/e8-live-receipt.json
+Exit code: 0
+
+Per-entry/per-row output:
+  PASS  F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0
+  PASS  F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0
+  PASS  F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0
+  PASS  F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0
+  PASS  F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0
+  PASS  F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0
+  PASS  F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0
+  PASS  F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0
+  PASS  F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0
+  PASS  F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0
+  PASS  F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0
+  PASS  F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0
+  entries=12 pass=12 exit=0
+
+Per-row record counts (live): F01 1, F02 1, F03 1, F04 1, F05 1, F06 1,
+F07 1, F08 1, F09 2, F10 2 => 12 records, 12 PASS, exit 0.
+
+=============================================================================
+2) SIMULATION A — future F11 row admitted, copy of an existing admitted row
+   (scratch copy of corpus/README.md; real README untouched)
+=============================================================================
+Scratch root: .ufo/waves/round-26/wave1/e8-scratch (byte-copy of the lane's
+corpus/ + one inserted row; removed after the run, receipt kept).
+The ONLY diff vs the real corpus/README.md (verified with diff):
+  211a212
+  > | F11 | PLACEHOLDER frontier row — temporary copy of F10 for frontier-recheck-count simulation | admitted | knowledge/vendor-disclosure-policies-as-corpus-objects.md, knowledge/vendor-disclosure-policy-commitments-crosswalk.md | S036, S037, S038, S039, S040 | PLACEHOLDER next cell — not a real admission. |
+
+Command:
+  python3 corpus/instruments/frontier-recheck-count.py \
+    --root .ufo/waves/round-26/wave1/e8-scratch \
+    --json .ufo/waves/round-26/wave1/e8-scratch-receipt.json
+Exit code: 0
+
+Output (before -> after):
+  BEFORE (live):  entries=12 pass=12 exit=0
+  AFTER (scratch): entries=14 pass=14 exit=0
+  New F11 records (identical to F10's, from the copied row):
+    PASS  F11  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0
+    PASS  F11  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0
+  All 12 pre-existing records remain PASS.
+
+=> An admitted F11 row that points at real, existing entry files integrates
+   cleanly: the instrument reads it, counts 1 record per entry path in its cell
+   (2 for this two-entry copy), and still exits 0. No code change needed.
+
+=============================================================================
+3) SIMULATION B — F11 admitted but its entry file does not exist yet
+   (robustness probe: what "breaks" looks like)
+=============================================================================
+Scratch root: .ufo/waves/round-26/wave1/e8-scratch-b (same as A except F11's
+entry cell = knowledge/f11-placeholder-theme.md, a file that does not exist).
+Command: same as A. Exit code: 1 (NOT the clean harness exit; uncaught crash).
+Output (last lines):
+  ... F10  PASS lines identical to live ...
+  Traceback (most recent call last):
+    File ".../frontier-recheck-count.py", line 179, in <module>
+      sys.exit(main())
+    File ".../frontier-recheck-count.py", line 159, in main
+      record = evaluate(root, entry)
+    File ".../frontier-recheck-count.py", line 102, in evaluate
+      declared, cited, recheck, recheck_ids, manifest = entry_contract(root, entry_path)
+    File ".../frontier-recheck-count.py", line 65, in entry_contract
+      with open(full, encoding="utf-8") as fh:
+  FileNotFoundError: [Errno 2] No such file or directory:
+  '.../e8-scratch-b/corpus/knowledge/f11-placeholder-theme.md'
+No summary line is printed; no JSON receipt is written (the crash precedes the
+--json dump). The instrument neither reports a per-row FAIL nor exits 2; it dies
+with an uncaught exception.
+
+=> Integration hazard: if the future F11 row is admitted BEFORE its knowledge
+   entry file(s) are landed (or the entry path is mistyped), frontier-recheck-
+   count.py breaks with a traceback instead of a clean verdict. The C2 adoption
+   order (land the entry file first, then admit the row) avoids this; a
+   defensive fix would resolve the entry path inside evaluate() and report
+   "entry-file-missing" as a FAIL problem rather than raising.
+
+=============================================================================
+4) SIMULATION C — F11 row present but status not "admitted" (staged)
+   (pre-admission state of the same future row)
+=============================================================================
+Scratch root: .ufo/waves/round-26/wave1/e8-scratch-c (F11 row identical to A
+but status cell = "staged").
+Command: same as A. Exit code: 0.
+Output: identical to the live run — "entries=12 pass=12 exit=0"; the staged F11
+row is ignored by the admitted filter and contributes 0 records.
+
+=> A not-yet-admitted F11 row (staged/queued status) leaves the counts and exit
+   unchanged; no break.
+
+=============================================================================
+Summary of measured results
+=============================================================================
+| variant | F11 row | scratch README | entries | pass | exit |
+|---|---|---|---|---|---|---|
+| live    | none            | n/a (real)              | 12 | 12 | 0 |
+| A (assigned sim) | F11 admitted, copy of F10 row, real entries | +1 row | 14 | 14 | 0 |
+| B (probe) | F11 admitted, placeholder entry file missing | +1 row | n/a (crash) | n/a | 1 (traceback) |
+| C (probe) | F11 staged (not admitted), real entries | +1 row | 12 | 12 | 0 |
+
+Files in .ufo/waves/round-26/wave1/:
+- e8-live-receipt.json (live run, JSON)
+- e8-scratch-run.txt / e8-scratch-receipt.json (simulation A, stdout + JSON)
+- e8-scratch-b-run.txt (simulation B stdout, traceback verbatim; no JSON written)
+- e8-scratch-c-run.txt / e8-scratch-c-receipt.json (simulation C, stdout + JSON)
+Scratch corpus trees removed after capture; the only difference from the real
+README in each variant was the single F11 row (verified by diff).
+=============================================================================
+5) LIVE re-run after the REAL F11 row landed mid-wave (2026-10-25, same session)
+=============================================================================
+During this seat's session the real corpus/README.md gained an uncommitted F11
+row (scribe w4 / C2 adoption work in flight, NOT my simulation):
+
+  | F11 | ISO/IEC 29147/30111 division-of-labour meta | admitted |
+    knowledge/iso-29147-and-30111-division-of-labour-2026-10-23.md,
+    knowledge/iso-29147-divergence-and-clause-crosswalk-2026-10-23.md |
+    S041 | ...
+
+Command: identical to the live run in §1 (against the real lane root).
+Exit code: 1 (uncaught crash — same shape as simulation B).
+Output (last lines):
+  ... F01–F10 lines identical to §1 (12 PASS) ...
+  Traceback (most recent call last):
+    File ".../frontier-recheck-count.py", line 179, in <module>
+      sys.exit(main())
+    File ".../frontier-recheck-count.py", line 159, in main
+      record = evaluate(root, entry)
+    File ".../frontier-recheck-count.py", line 102, in evaluate
+      declared, cited, recheck, recheck_ids, manifest = entry_contract(root, entry_path)
+    File ".../frontier-recheck-count.py", line 65, in entry_contract
+      with open(full, encoding="utf-8") as fh:
+  FileNotFoundError: [Errno 2] No such file or directory:
+  '/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/iso-29147-and-30111-division-of-labour-2026-10-23.md'
+
+The two F11 entry files exist ONLY in the read-only assimilation package
+(/home/vgpnk/Projects/shokuknow/merge/kasegi/knowledge/corpus/knowledge/),
+not yet landed in corpus/knowledge/. So at this measurement the live frontier
+gate is broken by the admission-before-entry ordering: the instrument crashes
+(exit 1, traceback, no summary) instead of reporting per-row FAILs.
+
+LIVE tally as measured this session:
+  before F11 row (10:xx UTC):  entries=12 pass=12 exit=0
+  after F11 row (09:3x UTC):  crash — exit=1, FileNotFoundError, no summary
+Receipts: e8-live-receipt.json (before), e8-live-receipt-after-f11.json +
+e8-live-after-f11.txt (after). The earlier §1–§4 results all still stand.

@@ -177,6 +177,10 @@ in the round-17 continuation below; source restoration remains operator-owned.
 1. **depth:verifiability** — reconcile STATE D9 stale resolver cells (`SCORECARD.md` r19 row `132/1469`, `116/1142`) against one Git-export census; before: 2 stale cells, after: 0; command: run `resolve.py` in pre/post scratch exports and `diff` the generated `citation-survival.md`. No internal-citation credit.
 2. **coverage** — admit F06–F08 (multi-party CVD S018, CNA rules S022, EU CRA S024) through `corpus/QUALITY.md`; before 0/3, after ≤3/3; command: `grep -cE '^\| F0[6-8] .*\| admitted \|' corpus/README.md`. Adopt the r22 coverage denominator (20 Core + Frontier admitted / total) by explicit claim.
 
+**Round-26 planned for round 27** (supersedes the blocks above as the next plan; that text is kept as history). The round-26 plans were taken up as this round's frozen claims C1/C2 (gate-conformance receipt `.ufo/waves/round-26/c1-receipt-index.txt`; F11 frontier admission in `corpus/README.md`). The plan rows below are plans, not commits:
+1. **depth:verifiability** (lowest non-retired, 4) — continue instrument soundness on the routed debt named in round 25: make `anchorcheck.py` exit nonzero on unverifiable verdicts and give `CITE` a `~/Projects/bounties/` arm, measurable by the fraction of fail-closed lines that check citations. No internal-citation credit.
+2. **coverage** (7) — continue the frontier from the open leads (`corpus/SOURCES.md` § Leads: ISO/IEC 29147/30111 standard records at iso.org), contingent on opening them and clearing Q1–Q6, registering the source rows first.
+
 ## Retired
 
 None. (No axis saturated. `coverage`'s r12 18/18 was destroyed by an external
@@ -559,3 +563,26 @@ C1 verifiability — make `anchorcheck.py` exit nonzero on unverifiable verdicts
 `CITE` a `~/Projects/bounties/` arm (the routed debt above, measurable by the fraction of
 fail-closed lines that check citations); C2 coverage — continue F10 with the
 ISO/IEC 29147/30111 division-of-labour theme only after registering its staged rows.
+
+## Round 26 — frozen claims C1/C2 (2026-10-25)
+
+Frozen before dispatch in `.ufo/waves/round-26/claims.json` (freeze commit
+`1b076fa7f2fb5e7dd9d87449514eba526043421b`, base `b76676e`, frozen_at_utc
+`2026-10-25T12:27:41Z`). Receipts land under `.ufo/waves/round-26/` (C1
+receipt index `c1-receipt-index.txt`, controls `c1-controls/`).
+
+| Claim | Axis | Before | After | Verdict and evidence | Last change |
+|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest non-retired, 4) | frozen baseline: registry row 0; selftest receipt lines 0; fix-control #3 hits excluding historical 1; deletion-fixture exit 0 (36/36 lines) | claim targets: registry row ≥1; selftest receipt line 1; fix-control hits 0; deletion exit 1 naming the deleted entry | **Score held 4 — gate conformance round**: recheck-audit.py registered as a gate\|probe row in SKILL.md (verdict map, `--selftest` spelling, pinned-value path, write scope, owner); committed selftest receipt line `selftest cases=… failures=0` at the instrument's own sha256 in `c1-receipt-index.txt` (fixes R25-2 cross-reference); fix-control #3 restated to exclude the retained historical `round-24.md:77` line (R25-4); deleting a whole corpus knowledge entry makes the audit exit 1 naming the missing entry. The round proves gate conformance, not a higher score. Evidence pointer: `.ufo/waves/round-26/c1-receipt-index.txt`. | 26 |
+| C2 | coverage (7) | frozen baseline: frontier admitted 10; entries citing a row first registered this round 0 | claim targets: frontier admitted 11; entries citing a first-registered-this-round row ≥1 | **Improved, score held 7**: F11 admitted in `corpus/README.md` § Frontier (ISO/IEC 29147/30111 division-of-labour theme, assimilation package; entry paths `knowledge/iso-29147-and-30111-division-of-labour.md`, `knowledge/iso-29147-divergence-and-clause-crosswalk.md`). S041 registered this round (JPCERT/CC 2026 P-guideline capture; snapshot `corpus/source-snapshots/round-26/S041.txt`, sha256-bound quotes in `manifest.json`). Sources census exits 0 at round close (cadence-only recheck cells restored; E09/E11 cleared). Evidence pointer: `corpus/README.md` § Frontier (F11). | r26 |
+| depth:density | 9 | 9 | 9 | **Unchanged, no harm.** `density.py SKILL.md` measured at scribe time (before the C1 registry-row edit to SKILL.md lands): mean **154.0**, 652 path-citation instances, 19 blocks; `anchorcheck.py SKILL.md` `bad=0`, `LOST-RECORDED=306`, `PIN-BROKEN=0`, `OUTSIDE-BASE=0`, `BASE-ABSENT=0`, exit 0. | r15 (held r26) |
+
+## Round-26 capabilities
+
+| Capability | What it can now do | Evidence pointer | First-working round |
+|---|---|---|---|
+| source-capture-pdf | Capture a PDF public document to a committed, hash-pinned text snapshot via `pdftotext -enc UTF-8` (`capture-source.py --kind pdf`; flag available since round 24's `source-capture`), with located quotes asserted offline by `source-recheck.py` | `corpus/instruments/capture-source.py` (`--kind pdf`); `corpus/source-snapshots/round-26/manifest.json` + `S041.txt` (sha256 `e18acbf9…`, 7 pinned quotes) | 26 |
+
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3. With
+depth:verifiability at 4 the lowest-axis obligation stays active. Planned round 27:
+see `## Planned` above.

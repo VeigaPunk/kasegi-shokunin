@@ -1,0 +1,16 @@
+C1 registry-row mutation probe; scratch-only; real SKILL.md not edited.
+Counter from claims.json, executed in scratch directory:
+grep -cE '^\| [^|]+\| gate\|probe '
+
+Synthetic canonical planned row used as starting point:
+| recheck-audit.py| gate|probe verdicts: 0=PASS, 1=FAIL; selftest: --selftest; pinned: .ufo/waves/round-26/c1-receipt-index.txt; write scope: scratch outputs only; owner: kasegi |
+Pristine count: stdout=1; exit=0.
+
+Mutants (stdout / exit):
+a) verdict map omitted: 1 / 0 — count still matches one row; counter cannot detect missing map.
+b) type gate without |probe: 0 / 1 — count changes; counter detects missing probe marker.
+c) self-test spelling --self-test: 1 / 0 — count still matches; spelling not validated.
+d) pinned-value path omitted: 1 / 0 — count still matches; path not validated.
+e) instrument name typo recheck-audti.py: 1 / 0 — count still matches; name not validated.
+
+Verdict: detector only distinguishes the gate|probe type mutation. The other four defects survive its count (determinism is stable but insufficient for conformance). No tools installed.

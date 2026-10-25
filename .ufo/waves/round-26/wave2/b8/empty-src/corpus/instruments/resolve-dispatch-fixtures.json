@@ -1,0 +1,164 @@
+{
+  "schema": 1,
+  "purpose": "Frozen round-24 C1 counter-B matrix: 4 liveness-positive cases that the round-23 brace/glob dispatch cannot resolve (empty brace alternative; glob crediting a dangling first match) and 4 controls that pin the classes a fix must preserve. Every case runs the copied resolve.py CLI once against a disposable HOME/KASEGI_MIRROR/lane tree and asserts BOTH the class and the resolved_path (existence, containment in the class's root, and the exact expected file when named). `@ROOT@` in a symlink target is the case root.",
+  "defaults": {
+    "home": "home",
+    "mirror": "relocated/tbh",
+    "lane": "lane",
+    "dirs": [
+      "home",
+      "relocated/tbh"
+    ],
+    "files": {},
+    "symlinks": {}
+  },
+  "cases": [
+    {
+      "id": "L1",
+      "nature": "liveness",
+      "cite": "dir/{,sub}/file.md",
+      "expect": "INTERNAL",
+      "expect_file": "lane/dir/file.md",
+      "dirs": [
+        "lane/dir"
+      ],
+      "files": {
+        "lane/dir/file.md": "# live literal behind the empty alternative\n"
+      },
+      "extra_cites": [
+        {
+          "cite": "ops/{,registry-check}.mjs",
+          "expect": "INTERNAL",
+          "expect_file": "lane/ops/registry-check.mjs"
+        }
+      ],
+      "extra_files": {
+        "lane/ops/registry-check.mjs": "// survives the empty-first-alternative fix\n"
+      },
+      "why": "An empty first alternative means the brace group contributes nothing, so `dir/{,sub}/file.md` denotes `dir/file.md`. Round-23 brace_expand drops the empty branch and never builds that path, so the CLI answers GONE for a citation whose file is on disk. The extra cite pins the real-world prefix/extension shape so a fix cannot resolve L1 by breaking `prefix/{,name}.ext`."
+    },
+    {
+      "id": "L2",
+      "nature": "liveness",
+      "cite": "dir/{sub,}/file2.md",
+      "expect": "INTERNAL",
+      "expect_file": "lane/dir/file2.md",
+      "dirs": [
+        "lane/dir"
+      ],
+      "files": {
+        "lane/dir/file2.md": "# the real second path `dir/sub/file2.md` is absent by design\n"
+      },
+      "why": "Same defect with the empty alternative written second: sorted expansion still discards it, so only `dir/sub/file2.md` is tested and the citation is GONE. The fixture keeps `dir/sub/` absent so the class can only be earned by the empty branch."
+    },
+    {
+      "id": "L3",
+      "nature": "liveness",
+      "cite": "glob/<n>.md",
+      "expect": "INTERNAL",
+      "expect_file": "lane/glob/b-live.md",
+      "dirs": [
+        "lane/glob"
+      ],
+      "files": {
+        "lane/glob/b-live.md": "# later sorted match, live\n"
+      },
+      "symlinks": {
+        "lane/glob/a-dangling.md": "@ROOT@/gone-target.md"
+      },
+      "why": "glob.glob() reports broken symlinks, and round-23 exists_any returns matches[0] without an existence test. The dangling `a-dangling.md` sorts before the live `b-live.md`, so the CLI credits a path that does not exist. Expectation is the first EXISTS match, `b-live.md`."
+    },
+    {
+      "id": "L4",
+      "nature": "liveness",
+      "cite": "brace/{alpha,beta}.md",
+      "expect": "INTERNAL",
+      "expect_file": "lane/brace/beta.md",
+      "dirs": [
+        "lane/brace"
+      ],
+      "files": {
+        "lane/brace/beta.md": "# live alternative\n"
+      },
+      "symlinks": {
+        "lane/brace/alpha.md": "@ROOT@/gone-alpha.md"
+      },
+      "extra_cites": [
+        {
+          "cite": "~/Projects/bounties/{ops,}/rank.mjs",
+          "expect": "MIRROR-EQUIVALENT",
+          "expect_file": "relocated/tbh/rank.mjs"
+        }
+      ],
+      "extra_files": {
+        "relocated/tbh/rank.mjs": "// mirror-side empty alternative only\n"
+      },
+      "why": "Primary: the round-23 brace branch already tests os.path.exists per expansion, so it must keep skipping the dangling first alternative and land on the live second — a fix that returns the first expansion regardless of existence is caught here (measured: the naive-brace probe fails this case with path-missing-on-disk). Second citation: the same empty-alternative defect on the bounty/mirror-fallback branch, where the only live expansion is the mirror-side empty alternative (`relocated/tbh/rank.mjs`); the frozen baseline answers GONE for it, which is what makes the case fail-before and reproduces the claim's 4/8 without dropping the primary shape. Both must pass after the fix."
+    },
+    {
+      "id": "C1",
+      "nature": "control",
+      "cite": "docs/exists.md",
+      "expect": "INTERNAL",
+      "expect_file": "lane/docs/exists.md",
+      "dirs": [
+        "lane/docs"
+      ],
+      "files": {
+        "lane/docs/exists.md": "# plain literal hit\n"
+      },
+      "why": "Plain literal hit with no brace or glob: keeps its existing class. A resolver that answers GONE for everything cannot satisfy it."
+    },
+    {
+      "id": "C2",
+      "nature": "control",
+      "cite": "docs/absent.md",
+      "expect": "GONE",
+      "expect_file": null,
+      "dirs": [
+        "lane/docs"
+      ],
+      "files": {},
+      "why": "Plain absent literal: must stay GONE with an empty resolved_path. A resolver that answers RESOLVES (or names any path) for everything cannot satisfy it."
+    },
+    {
+      "id": "C3",
+      "nature": "control",
+      "cite": "multi/*.md",
+      "expect": "INTERNAL",
+      "expect_file": "lane/multi/a.md",
+      "dirs": [
+        "lane/multi"
+      ],
+      "files": {
+        "lane/multi/a.md": "# first sorted match\n",
+        "lane/multi/b.md": "# second sorted match\n"
+      },
+      "why": "Two live glob matches: the first sorted match (`a.md`) must win deterministically both before and after the fix. A resolver that returns any existing match other than the sorted first cannot satisfy it."
+    },
+    {
+      "id": "C4",
+      "nature": "control",
+      "cite": "~/Projects/bounties/ops/{import-board,finalize-all}.mjs",
+      "expect": "MIRROR-EQUIVALENT",
+      "expect_file": "relocated/tbh/ops/import-board.mjs",
+      "dirs": [
+        "relocated/tbh/ops"
+      ],
+      "files": {
+        "relocated/tbh/ops/import-board.mjs": "// the round-23 SKILL.md brace-idiom shape\n"
+      },
+      "extra_cites": [
+        {
+          "cite": "~/Projects/bounties/ops/{validate,registry-check,reroute-drill,check-freshness}.mjs",
+          "expect": "MIRROR-EQUIVALENT",
+          "expect_file": "relocated/tbh/ops/check-freshness.mjs"
+        }
+      ],
+      "extra_files": {
+        "relocated/tbh/ops/check-freshness.mjs": "// SKILL.md:1000 verbatim alternative set\n"
+      },
+      "why": "The real SKILL.md brace idiom under the bounty root, with the bounty literal absent and the mirror root present: brace expansion must still credit the mirror form. The extra cite is the verbatim four-alternative set from SKILL.md:1000, so the fix is pinned against the line that motivated it, not only against a two-way toy."
+    }
+  ]
+}

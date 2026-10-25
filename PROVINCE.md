@@ -38,6 +38,7 @@ General practice that governs every program is indexed in corpus/README.md
 under Frontier F01–F10 (F09, round 24: authorisation outside the platform — the
 engagement document and the statute; F10, round 25: vendor-side disclosure policies as
 corpus objects; 10/10 admitted).
+F11 — ISO/IEC 29147/30111 division-of-labour (JPCERT/CC 2026 guideline) — admitted round 26
 
 ## Adjacent
 

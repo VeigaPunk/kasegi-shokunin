@@ -41,15 +41,31 @@ check: the audit exits 0 only when the number of audited lines equals the number
 of `corpus/knowledge/*.md` files, is non-zero, and every line passes. A deleted
 recheck line therefore fails the audit instead of silently shrinking the set.
 
+An expected list is committed alongside the knowledge files at
+`corpus/instruments/knowledge-expected.txt`: one sorted, lane-relative
+`corpus/knowledge/<entry>.md` filename per line, `#` comment lines allowed. When
+the file exists (at `<root>/corpus/instruments/knowledge-expected.txt` by
+default, or at `--expect PATH`), the audit additionally requires set equality
+between the listed entries and the audited tree's actual
+`corpus/knowledge/*.md` entries: an expected entry absent from the tree prints
+`missing=<name>`, an extra tree entry prints `unexpected=<name>`, and either
+makes the audit red. Drift between the committed list and the tree is therefore
+a failed audit, so deleting a whole knowledge entry no longer shrinks the
+audited set silently. When `--expect` is absent or its file is missing, the
+audit keeps its glob-based completeness rule and the receipt records
+`expect="absent"`.
+
 Usage:
   python3 corpus/instruments/recheck-audit.py                       # audit the lane
   python3 corpus/instruments/recheck-audit.py --json receipt.json   # + machine receipt
   python3 corpus/instruments/recheck-audit.py --root /scratch/copy  # audit a copy
   python3 corpus/instruments/recheck-audit.py --foreign /           # foreign cwd
+  python3 corpus/instruments/recheck-audit.py --expect /path/list   # explicit expected list
   python3 corpus/instruments/recheck-audit.py --selftest            # fixtures
 
 Exit status: 0 when every line passes the frozen limbs AND the strict set AND the
-completeness check, 1 otherwise. A receipt is a verdict about form only. It does
+completeness check AND the expected-list equality (when an expected list exists),
+1 otherwise. A receipt is a verdict about form only. It does
 not assert that an entry's evidence is current: a line whose lane-root run fails
 closed (`fail-closed` in the receipt) counts as passing its form limbs and is
 reported separately, because the base it guards is absent.
@@ -159,6 +175,25 @@ def collect(root, foreign, cdroot=None):
     return entries
 
 
+def load_expected(path):
+    names = []
+    with open(path, encoding="utf-8") as handle:
+        for raw in handle:
+            line = raw.strip()
+            if line and not line.startswith("#"):
+                names.append(line)
+    return names
+
+
+def expected_mismatch(root, expected):
+    actual = {
+        os.path.relpath(p, root)
+        for p in glob.glob(os.path.join(root, "corpus/knowledge/*.md"))
+    }
+    wanted = set(expected)
+    return sorted(wanted - actual), sorted(actual - wanted)
+
+
 def selftest():
     import tempfile
 
@@ -217,8 +252,54 @@ def selftest():
         )
         if complete is not False:
             failures += 1
-        total_cases = len(cases) + 1
-        print("selftest cases=%d failures=%d exit=%d" % (total_cases, failures, 1 if failures else 0))
+        # expected-list fixtures: the committed list vs the audited tree must match,
+        # so deleting a whole entry (missing) or adding an extra one (unexpected)
+        # must red the audit and name the file in the receipt.
+        for label, expected, extra in (
+            ("expect-missing", ["corpus/knowledge/good.md", "corpus/knowledge/ghost-absent.md"], ()),
+            ("expect-unexpected", ["corpus/knowledge/good.md"], ("extra.md",)),
+        ):
+            tree = os.path.join(tmp, label)
+            os.makedirs(os.path.join(tree, "corpus/knowledge"))
+            os.makedirs(os.path.join(tree, "corpus/instruments"))
+            open(os.path.join(tree, "corpus/instruments/tool.py"), "w").close()
+            line = "recheck: cd %s && python3 corpus/instruments/tool.py corpus/knowledge/good.md" % tree
+            with open(os.path.join(tree, "corpus/knowledge/good.md"), "w") as handle:
+                handle.write("# fixture\n\n" + line + "\n")
+            for name in extra:
+                with open(os.path.join(tree, "corpus/knowledge", name), "w") as handle:
+                    handle.write("# fixture\n\n" + line.replace("good.md", name) + "\n")
+            with open(os.path.join(tree, "corpus/instruments/knowledge-expected.txt"), "w") as handle:
+                handle.write("# expected knowledge entries for %s\n" % label)
+                for name in expected:
+                    handle.write(name + "\n")
+            receipt_path = os.path.join(tree, "receipt.json")
+            rc = main(["--root", tree, "--cdroot", tree, "--json", receipt_path])
+            with open(receipt_path, encoding="utf-8") as handle:
+                receipt = json.load(handle)
+            if label == "expect-missing":
+                ok = (
+                    rc == 1
+                    and receipt["missing_entries"] == ["corpus/knowledge/ghost-absent.md"]
+                    and receipt["unexpected_entries"] == []
+                    and receipt["expect"] == "present"
+                )
+            else:
+                ok = (
+                    rc == 1
+                    and receipt["unexpected_entries"] == ["corpus/knowledge/extra.md"]
+                    and receipt["missing_entries"] == []
+                    and receipt["expect"] == "present"
+                )
+            if not ok:
+                failures += 1
+            print(
+                "selftest %-15s exit=%d want=1 missing=%s unexpected=%s %s"
+                % (label, rc, receipt["missing_entries"], receipt["unexpected_entries"], "ok" if ok else "FAIL")
+            )
+        # 13 per-entry fixtures + 2 tree-level expected-list fixtures (completeness
+        # is an auxiliary sanity line above, not counted as a case)
+        total_cases = len(cases) + 2
         return 1 if failures else 0
 
 
@@ -231,6 +312,12 @@ def main(argv=None):
         help="the lane root the recheck lines are expected to cd into; defaults to --root "
         "(set it when --root is a scratch copy of the corpus)",
     )
+    parser.add_argument(
+        "--expect",
+        help="path to the expected knowledge-entry list; defaults to "
+        "<root>/corpus/instruments/knowledge-expected.txt when that file exists "
+        "(absent or missing file: the audit keeps its glob-based completeness rule)",
+    )
     parser.add_argument("--json")
     parser.add_argument("--selftest", action="store_true")
     parser.add_argument("--quiet", action="store_true")
@@ -241,6 +328,18 @@ def main(argv=None):
     cdroot = os.path.abspath(args.cdroot) if args.cdroot else None
     entries = collect(root, args.foreign, cdroot)
     total = len(glob.glob(os.path.join(root, "corpus/knowledge/*.md")))
+    expect_path = args.expect
+    if expect_path is None:
+        default_expect = os.path.join(root, "corpus/instruments/knowledge-expected.txt")
+        expect_path = default_expect if os.path.exists(default_expect) else None
+    elif not os.path.exists(expect_path):
+        expect_path = None
+    if expect_path is None:
+        expected_entries, missing_entries, unexpected_entries = [], [], []
+    else:
+        expected_entries = load_expected(expect_path)
+        missing_entries, unexpected_entries = expected_mismatch(root, expected_entries)
+    expect_active = expect_path is not None
     passed = sum(1 for e in entries if e["pass"])
     strict_passed = sum(1 for e in entries if e["pass_strict"])
     fail_closed = sum(1 for e in entries if e["lane_exit"] != 0)
@@ -249,7 +348,8 @@ def main(argv=None):
     failing = {limb: sum(1 for e in entries if not e["limbs"][limb]) for limb in FROZEN_LIMBS}
     strict_failing = {limb: sum(1 for e in entries if not e["strict"][limb]) for limb in STRICT_LIMBS}
     complete = len(entries) == total and total > 0
-    ok = passed == len(entries) and complete and strict_passed == total
+    expect_ok = not expect_active or (not missing_entries and not unexpected_entries)
+    ok = passed == len(entries) and complete and strict_passed == total and expect_ok
     if not args.quiet:
         for entry in entries:
             frozen = "".join("1" if entry["limbs"][limb] else "0" for limb in FROZEN_LIMBS)
@@ -266,6 +366,11 @@ def main(argv=None):
                     "PASS" if entry["pass_strict"] else ("FROZEN-ONLY" if entry["pass"] else "FAIL"),
                 )
             )
+    if not args.quiet and expect_active:
+        for name in missing_entries:
+            print("missing=%s" % name)
+        for name in unexpected_entries:
+            print("unexpected=%s" % name)
     with open(os.path.abspath(__file__), "rb") as handle:
         instrument_sha256 = hashlib.sha256(handle.read()).hexdigest()
     summary = {
@@ -284,6 +389,10 @@ def main(argv=None):
         "broken": broken,
         "failing_limbs": failing,
         "strict_failing_limbs": strict_failing,
+        "expect": "present" if expect_active else "absent",
+        "expected_entries": expected_entries,
+        "missing_entries": missing_entries,
+        "unexpected_entries": unexpected_entries,
         "entries": entries,
     }
     print(
@@ -311,6 +420,16 @@ def main(argv=None):
             failing["parse"],
             failing["cwd"],
             failing["paths"],
+            0 if ok else 1,
+        )
+    )
+    print(
+        "expect=%s expected=%d missing=%d unexpected=%d exit=%d"
+        % (
+            "present" if expect_active else "absent",
+            len(expected_entries),
+            len(missing_entries),
+            len(unexpected_entries),
             0 if ok else 1,
         )
     )

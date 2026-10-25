@@ -1,0 +1,338 @@
+{
+ "wave": "kasegi-r26-falsify",
+ "context": "# Round\nkasegi-shokunin round 26, wave 2 (falsify + integration closure), dispatched by the L1 after wave 1\nlanded. Fleet root /home/vgpnk/Projects/shokunin. Lane repo /home/vgpnk/Projects/shokunin/kasegi-shokunin — your only write scope. Current lane state: wave-1\nbuild has landed (claims C1/C2 implemented; S041 capture + manifest + SOURCES row + F11 row + two\nknowledge entries + regenerated receipts + cadence-only recheck cells + expected list 39). The L1\nintegrated the four blockers found by wave 1 (README/SCORECARD F11 names aligned to actual\nunsuffixed filenames; S040/S041 recheck cells restored to bare `180d` with prose recorded under\n`## Registry changes`; knowledge-expected.txt regenerated to 39 entries; c1-receipt-index.txt +\nc1-instrument-digest.txt regenerated at landed instrument digest 3fc0d751… with selftest cases=15).\nMeasured at integration time: census exit 0; frontier-recheck-count 14/14 exit 0; live audit 39/39\nexit 0 expect=present; deletion fixture exit 1 missing=<name>; registry grep 1; selftest receipt line\n1; fix-control restated BRE 0; awk frontier 11; precise S041-citing entries 2.\n\nRead before your item (absolute paths):\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-26/claims.json (FROZEN; do not edit)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md (axes, round-26 result rows)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md (Q1-Q9, R1-R12)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md (frontier F11 row)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md (S040/S041 rows + Registry changes note)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-26.md (lesson incl open-items block)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/recheck-audit.py (landed --expect version, digest 3fc0d751…)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/knowledge-expected.txt (39 entries)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-26/c1-receipt-index.txt, c1-instrument-digest.txt, c1-live.json\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-26/c1-controls/ (wave-1 control receipts)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-26/ (S041.txt, S040-live.txt, manifest.json)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/iso-29147-and-30111-division-of-labour.md and\n  iso-29147-divergence-and-clause-crosswalk.md\n\n# Hard rules (every seat)\n- Every `Report:` trailer path is relative to /home/vgpnk/Projects/shokunin/kasegi-shokunin — write it at /home/vgpnk/Projects/shokunin/kasegi-shokunin/<that path>.\n- You are a leaf: spawn nothing, start no background job, run no swarm of your own.\n- Write ONLY your owned paths. A read-only seat makes NO production edit; its output is its report\n  file (and, where the item says so, files under .ufo/waves/round-26/wave2/ or .ufo/waves/round-26/c1-controls/). The one production\n  writer this wave is the scribe amend seat (ScribeLessonAmend, sole owner of\n  corpus/lessons/round-26.md). All other seats are read-only.\n- Never write /home/vgpnk/Projects/shokunin (fleet root), any sibling lane, /home/vgpnk/Projects/shokuknow (READ-ONLY), /home/vgpnk/Projects/shokunin/.ufo/state,\n  /home/vgpnk/Projects/shokunin/.scratch, MANIFEST.json, templates/ or fleet scripts/.\n- Never run VCS mutations in the lane. Read-only git is fine.\n- Tooling: pacman transactions PAUSED host-wide; uv tool/npx/official binary only; read\n  /home/vgpnk/.omp/agent/RULES.md before installing; record installs in report.\n- Honesty: an unrun check has not passed; never fabricate a verdict, quote, count or exit code.\n- Never edit claims.json or round-25 files. Today is 2026-10-25; use UTC.\n\n# Attack items (falsify the claimed AFTER states; each report names what it attacks and its verdict)\n",
+ "reportDir": ".ufo/waves/round-26/wave2",
+ "maxLanes": 64,
+ "axes": [
+  "depth:verifiability",
+  "coverage"
+ ],
+ "milestone": "round-26 falsify wave: attack the claimed AFTER states + integration closure",
+ "items": [
+  {
+   "name": "AttackA1",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "C1a registry row counter",
+   "prompt": "Attack C1 counter (a): run `grep -cE '^\\| [^|]+\\| gate\\|probe ' SKILL.md` (expect 1)\nand also grep for a row whose THIRD field begins with literal `gate|probe `; verify the row content\nagainst the Gate-standard fields (name, type, entry command, verdict map, self-test spelling\n--selftest, pinned-value path, write scope, owner). Report whether the counter could be satisfied by a\ndecorative row under the current bytes, and whether the landed row is complete. Output:\n.ufo/waves/round-26/wave2/a1.md (read-only)."
+  },
+  {
+   "name": "AttackA2",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "C1b counter gameability",
+   "prompt": "Attack C1 counter (b): the selftest line grep `grep -cE 'selftest cases=' .ufo/waves/round-26/c1-receipt-index.txt`\nreturns 1. On a scratch COPY of the receipt, produce a misleading line `selftest cases=15 failures=0\nexit=0` without any run and confirm the counter still returns 1 (document). Also confirm the real\nreceipt's selftest line is backed by a true 15-case run (see e1-selftest-live.txt and the index's\nregeneration note). Output .ufo/waves/round-26/wave2/a2.md; scratch only."
+  },
+  {
+   "name": "AttackA3",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "C1 receipt-digest equality",
+   "prompt": "Verify the receipt index digest binding: read .ufo/waves/round-26/c1-receipt-index.txt and\n.ufo/waves/round-26/c1-instrument-digest.txt; compute `sha256sum corpus/instruments/recheck-audit.py`; assert all\nthree match the landed instrument (3fc0d751…) and that base_sha256_control equals the round-25 pinned\ndigest c3c19adc… (pre-change control). Report the three values. Also confirm c1-live.json instrument\nhash equals the same. Output .ufo/waves/round-26/wave2/a3.md (read-only)."
+  },
+  {
+   "name": "AttackA4",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "C1c fix-control semantics",
+   "prompt": "Attack C1 counter (c): run the restated fix-control in BOTH spellings from the lane root:\n(a) the frozen spelling with `-E` and `\\|` (GNU grep on this host treats `\\|` as literal — record\noutput), (b) the BRE alternation without `-E`: `grep -rnE '62 assertions|77 assertions'\ncorpus/instruments/README.md SCORECARD.md corpus/lessons/round-24.md | grep -v 'round-24.md:77' |\nwc -l` (expect 0) and without the exclusion (expect 1, the retained historical line). Report both,\nplus the exact retained line text. Output .ufo/waves/round-26/wave2/a4.md (read-only)."
+  },
+  {
+   "name": "AttackA5",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "C1d deletion mutants on landed bytes",
+   "prompt": "Re-run the deletion-mutant suite on the LANDED instrument (digest 3fc0d751…), each fixture\nbeing a scratch copy of corpus/ WITH the committed knowledge-expected.txt present:\nA) delete whole entry (e.g. multiparty-vulnerability-coordination.md) → expect exit 1 +\n`missing=…`; B) delete the recheck line from one entry → expect exit 1 (completeness); C) rename a\nknowledge file → expect exit 1 + `missing=… unexpected=…`; D) add stray extra file without recheck →\nexpect exit 1 + `unexpected=…`; E) clean copy → expect exit 0 + `expect=present expected=39`.\nRecord every verbatim tail line (lines/total/exit/expect/missing/unexpected). Also verify a copy\nWITHOUT the expected list (expect=absent) reproduces the old green pass for mutant A (document the\nfallback). Output .ufo/waves/round-26/wave2/a5.md + .ufo/waves/round-26/c1-controls/a5-*.txt (scratch fixtures under /tmp)."
+  },
+  {
+   "name": "AttackA6",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "expected-list parity",
+   "prompt": "Verify `corpus/instruments/knowledge-expected.txt`: (1) sorted, one relative path per line,\ncomments only in the 2-line header; (2) non-comment set == `ls corpus/knowledge/*.md | sort`\n(39 entries); (3) no blank/duplicate/CR; (4) every name exists; (5) report the exact count. Also cross\ncheck that `git status --porcelain corpus/knowledge/` shows exactly the two new untracked entries.\nOutput .ufo/waves/round-26/wave2/a6.md (read-only)."
+  },
+  {
+   "name": "AttackA7",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "instrument diff review",
+   "prompt": "Review the landed `recheck-audit.py` changes (git diff vs base 1b076fa7): --expect\nargument + default resolution, expected-list reading (skip blank/#), set comparison, missing/unexpected\nreceipt fields, exit semantics (0 clean/1 failed), expect=present/absent behavior, docstring updated,\nselftest count 15. Flag any path by which a deletion could still pass (e.g. expected file deleted\ntogether with an entry — compare against claims' kill rules). Output .ufo/waves/round-26/wave2/a7.md (read-only)."
+  },
+  {
+   "name": "AttackA8",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "selftest truth",
+   "prompt": "Run `python3 corpus/instruments/recheck-audit.py --selftest` from the lane root; count the\nlines matching `selftest … ok` (expect 15), confirm `failures=0` and final exit 0, list each case name.\nCross-check the receipt's `selftest cases=15 failures=0 exit=0` line against the observed run. Output\n.ufo/waves/round-26/wave2/a8.md (read-only)."
+  },
+  {
+   "name": "AttackA9",
+   "role": "critic",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "registry row conformance",
+   "prompt": "Apply the Gate-standard registry field checklist to the SKILL.md row: name, type\n(gate|probe), entry command, verdict map (0 clean / 1 failed / undeclared nonzero ->\ncould-not-evaluate), self-test command, spelling `--selftest`, pinned-value path, write scope, owner.\nQuote the landed row; report each field present/absent; note the unescaped `gate|probe` rendering\ntrade-off. Output .ufo/waves/round-26/wave2/a9.md (read-only)."
+  },
+  {
+   "name": "AttackB1",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "census exit re-measure",
+   "prompt": "Re-run `/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root\n/home/vgpnk/Projects/shokunin kasegi` and record exit (expect 0; W04 S028/S029 pre-existing). Also\nrun against an explicit lane dir. Confirm no E09/E11. Output .ufo/waves/round-26/wave2/b1.md (read-only)."
+  },
+  {
+   "name": "AttackB2",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "registry R9 row citation coverage",
+   "prompt": "Scan corpus/SOURCES.md rows and corpus/knowledge/*.md `source:` headers: report any row with\nno citing entry (R9 violation) and any citing id not present in the registry. Verify S041 is cited by\nexactly the two new F11 entries and S040 still by the F10 crosswalk. Output .ufo/waves/round-26/wave2/b2.md (read-only)."
+  },
+  {
+   "name": "AttackB3",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "frontier harness re-run",
+   "prompt": "Run `python3 corpus/instruments/frontier-recheck-count.py --root <lane>` and record per-row\nlines + exit (expect 14/14 exit 0, F11 twice with ids=S041). Also verify the F11 entry-cell names\nequal the two real unsuffixed filenames and that both files exist. Output .ufo/waves/round-26/wave2/b3.md (read-only)."
+  },
+  {
+   "name": "AttackB4",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "README variant sanity",
+   "prompt": "Check corpus/README.md: F11 row exactly once; awk frontier counter = 11; entry cell paths\nexist; sources cell = S041; no stray F12; other rows untouched (compare F01-F10 with round-25 map).\nAlso note header/count mentions (37→39) consistency. Output .ufo/waves/round-26/wave2/b4.md (read-only)."
+  },
+  {
+   "name": "AttackB5",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "S041 capture pinning",
+   "prompt": "Verify S041 pinning: file `corpus/source-snapshots/round-26/S041.txt` sha256 equals the\ncapture log `(e18acbf9…)`, equals manifest's sha256, and the capture log line exists in wave1\nExecCaptureS041.md. Grep the snapshot for the division-of-labour paragraph line ~1670-1673 and the\n図1 caption line 1678. Output .ufo/waves/round-26/wave2/b5.md (read-only)."
+  },
+  {
+   "name": "AttackB6",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "manifest quote recheck re-run",
+   "prompt": "Run `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-26/manifest.json\n--source S041` and record per-quote verdicts + exit (expect exit 0). Confirm quote texts are ≤70\nchars and locatable. Output .ufo/waves/round-26/wave2/b6.md (read-only)."
+  },
+  {
+   "name": "AttackB7",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "precise C2 counter",
+   "prompt": "Run the precise round-26 counter: `grep -lE '^source: S041 ' corpus/knowledge/*.md | wc -l`\n(expect 2) and the frozen overmatch `grep -lE '^source: S04[0-9] ' corpus/knowledge/*.md | wc -l`\n(expect 3: round-25 S040 + the two S041). Explain why the frozen 'before 0' is stale (round-25 S040)\nand why the precise S041-only measure is the honest one for 'first registered this round'. Output\n.ufo/waves/round-26/wave2/b7.md (read-only)."
+  },
+  {
+   "name": "AttackB8",
+   "role": "critic",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "C2 vacuity re-probe",
+   "prompt": "Re-attack C2 counters on final bytes: (1) could the two entries be renamed/emptied while all\ncounters stay green? Check the entries' bodies have real quoted content (report presence of quotes and\nsource headers); (2) simulate removing the S041 row → which checks fail (census/frontier)? (3)\nsimulate F11 row → status staged → awk count 10 (confirm filtering). Report verdicts. Output\n.ufo/waves/round-26/wave2/b8.md (scratch only)."
+  },
+  {
+   "name": "AttackC1",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "entry division-of-labour quality audit",
+   "prompt": "Audit `corpus/knowledge/iso-29147-and-30111-division-of-labour.md` against Q1-Q9: headers\n(source S041 / verified-at 2026-10-25 / recheck command with --manifest path), every quote present in\nthe captured S041.txt with correct line refs and ≤70 chars, thesis grounded, no invented claims, no\nstaged F19/F20 ground leak, title/scope consistent with the README F11 row. Report the verdict and any\ndefect. Output .ufo/waves/round-26/wave2/c1.md (read-only)."
+  },
+  {
+   "name": "AttackC2",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "entry crosswalk quality audit",
+   "prompt": "Audit `corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md` similarly: quotes\n(divergence sentence, 7-day, 6.2/6.3, 参考1) with line refs and ≤70 chars against S041.txt, Cisco\nedition claim against S040-live.txt line 58, no duplication of F10 coverage without added value.\nReport verdict + defects. Output .ufo/waves/round-26/wave2/c2.md (read-only)."
+  },
+  {
+   "name": "AttackC3",
+   "role": "connector",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "duplication scan",
+   "prompt": "Compare the two new F11 entries against F10 entries (vendor-disclosure-policies-as-corpus-objects.md,\nvendor-disclosure-policy-commitments-crosswalk.md) for duplicated quotes/themes; report overlap verdicts\nand any unique content each adds (mirror the round-25 verifier's duplication rule). Output .ufo/waves/round-26/wave2/c3.md\n(read-only)."
+  },
+  {
+   "name": "AttackD1",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "lesson integrity audit",
+   "prompt": "Audit `corpus/lessons/round-26.md`: Gate block (admits/rejects/quarantine verdicts) matches\nthe wave-1 data (reject reasons + flips; seven quarantine verdicts); kill-rule status matches final\nstate; fix-control #3 restated text + recorded 0; no fabricated outputs; counters table matches final\nmeasured values; access-date evidence today. Report any stale statement (especially any 'open item'\nthat the L1 has since closed). Output .ufo/waves/round-26/wave2/d1.md (read-only)."
+  },
+  {
+   "name": "AttackD2",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "scorecard consistency",
+   "prompt": "Verify SCORECARD.md round-26 rows against evidence pointers: C1 row's evidence file\n(c1-receipt-index.txt) exists and matches current receipt; C2 row's names match actual filenames;\ncapability row source-capture-pdf evidence exists; r27 planned row is plan-only and not marked done.\nReport drift, if any. Output .ufo/waves/round-26/wave2/d2.md (read-only)."
+  },
+  {
+   "name": "AttackD3",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "LOG/PROVINCE accuracy",
+   "prompt": "Spot-check LOG.md round-26 entry and PROVINCE.md F11 sentence for factual consistency with the\nfinal state (frontier 11, S041 row, census 0, receipt digest). Quote any discrepancy. Output\n.ufo/waves/round-26/wave2/d3.md (read-only)."
+  },
+  {
+   "name": "AttackE1",
+   "role": "revenger",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "R25 lineage re-confirm",
+   "prompt": "Re-derive the round-25 digest lineage from git (read-only): confirm the round-25 tip\ninstrument sha equals c3c19adc…, the committed receipt index has no selftest line at :4, and the new\nround-26 receipt (at 3fc0d751…) fixes the cross-reference with its note line. Quote the old line 4 and\nthe new selftest line. Output .ufo/waves/round-26/wave2/e1.md (read-only)."
+  },
+  {
+   "name": "AttackE2",
+   "role": "revenger",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "S040 fingerprint + final URL",
+   "prompt": "Combine the wave-1 s2 probe with the round-25 verifier note into one fingerprint: canonical URL\n→ 301 → final URL → 200 under instrument UA; browser UA 403; S040-live.txt sha256 b7f7b55f… equals\nround-25 snapshot; the S040 recheck cell now bare `180d`, with final URL/UA recorded in `## Registry\nchanges`. Output .ufo/waves/round-26/wave2/e2.md (read-only)."
+  },
+  {
+   "name": "AttackF1",
+   "role": "sentinel",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "final scope sweep",
+   "prompt": "Final read-only sweep: (1) working tree changes since base 1b076fa7 ⊆ owned paths (reuse\nwave1/c4-ownership.txt; allow wave2 reports + the lesson amend + c1-controls additions); (2) no fleet\nroot / shokuknow / sibling writes; (3) claims.json byte-equal freeze commit (sha 343e568e…); (4) HEAD\nstill at base (no VCS write by any seat). Output .ufo/waves/round-26/wave2/f1.md (read-only; run LAST)."
+  },
+  {
+   "name": "AttackG1",
+   "role": "sentinel",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "contract deliverables checklist",
+   "prompt": "Check final deliverables presence: two knowledge entries, SOURCES S041 row + bare recheck\ncells, README F11 (names aligned), lesson round-26 with Gate/fixes/appendix, SCORECARD rows,\nknowledge-expected.txt (39), c1-receipt-index.txt + c1-instrument-digest.txt + c1-live.json, manifest.json,\nS041.txt, S040-live.txt, c1-controls/, c2-controls/, wave1 & wave2 reports. For each: exists + non-empty.\nReport gaps only. Output .ufo/waves/round-26/wave2/g1.md (read-only)."
+  },
+  {
+   "name": "AttackH1",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "live audit receipt regen check",
+   "prompt": "Re-run the live audit `python3 corpus/instruments/recheck-audit.py --json\n.ufo/waves/round-26/c1-live.json` and record exit + summary (expect lines=39 total=39 pass=39 exit=0\nexpect=present expected=39 missing=0 unexpected=0). Note any deviation. Output .ufo/waves/round-26/wave2/h1.md; writes only\nits report (the JSON receipt is owned by the L1's receipt file — do not overwrite unless identical)."
+  },
+  {
+   "name": "AttackI1",
+   "role": "critic",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "kill-rule recheck",
+   "prompt": "Re-evaluate the frozen kill rules against the final state: C1 (all four counters green after\nregeneration); C2 (census exit 0; every new row cited; precise counter ≥1). State explicitly which kill\nrule would fire for each known failure mode (deletion pass, census E09, orphan row, counter overmatch)\nand confirm none fires now. Output .ufo/waves/round-26/wave2/i1.md (read-only)."
+  },
+  {
+   "name": "AttackI2",
+   "role": "mutation-tester",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "row-deletion sensitivity",
+   "prompt": "On scratch copies, test that removing (1) the S041 row from SOURCES, (2) one F11 entry from\nknowledge/, (3) the F11 row from README, each individually causes at least one gate red (census exit\nor frontier exit or awk count). Record which gate fires for which removal and that the committed state\nhas none missing. Output .ufo/waves/round-26/wave2/i2.md (scratch only)."
+  },
+  {
+   "name": "AttackJ1",
+   "role": "scout",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "staged rejects presence",
+   "prompt": "Re-confirm the two reject candidates remain in the staged package with their documented\ngrounds (vendor-cvd-policy-crosswalk-2026-10-23.md ground F20; chinese-criminal-thresholds-and-authorisation.md\nground F12) and that the lane corpus contains no F12/F19/F20 frontier rows; report the reject reasons +\nflip conditions carried by the lesson. Output .ufo/waves/round-26/wave2/j1.md (read-only)."
+  },
+  {
+   "name": "AttackK1",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "old receipts untouched",
+   "prompt": "Confirm no round-25 or earlier file changed: `git diff 1b076fa7 --stat` shows only the\nround-26 files; specifically `.ufo/waves/round-25/` untouched and `corpus/lessons/round-25*.md`\nuntouched. Output .ufo/waves/round-26/wave2/k1.md (read-only)."
+  },
+  {
+   "name": "AttackL1",
+   "role": "scout",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "git log freeze visibility",
+   "prompt": "Show `git log --oneline -3` and confirm the claims-freeze commit (1b076fa7 \"round-26:\nfreeze claims.json …\") is the parent of the build state, with no post-freeze edit of claims.json\n(byte-equal). Output .ufo/waves/round-26/wave2/l1.md (read-only)."
+  },
+  {
+   "name": "AttackM1",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "receipt line mutants",
+   "prompt": "Probe the regenerated c1-receipt-index.txt counter determinism: (1) delete the selftest line\n→ grep 0; (2) change `failures=0` → `failures=1` → grep still 1 (document counter blind spot); (3)\nchange digest → grep still 1. Note any hardening suggestion for wave3/report. Output .ufo/waves/round-26/wave2/m1.md\n(scratch only)."
+  },
+  {
+   "name": "AttackZ1",
+   "role": "connector",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "used-by edge map (deferred)",
+   "prompt": "Complete the wave-1 failed seat: compute used-by edges for S039/S040/S041 from\ncorpus/knowledge/*.md `source:` headers; assert S041 used-by = the two F11 entries, S040 = the F10\ncrosswalk, S039 = both F10 entries + none of the F11 entries; confirm no orphan rows (R9). Output\n.ufo/waves/round-26/wave2/z1.md (read-only)."
+  },
+  {
+   "name": "ScribeLessonAmend",
+   "role": "scribe",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "lesson open-items closure (deferred)",
+   "prompt": "Amend `corpus/lessons/round-26.md` (SOLE OWNER; append a dated `## Integration closure\n(2026-10-25)` block): record the four wave-1 open items and their resolution — (1) receipt index\nregenerated at landed digest 3fc0d751… with `selftest cases=15 failures=0 exit=0`; (2) census E09/E11\ncleared by cadence-only recheck cells (S040/S041) with final-URL/UA prose moved to `## Registry\nchanges`; (3) README/SCORECARD F11 entry names aligned to actual filenames; (4) knowledge-expected.txt\nregenerated to 39 entries. Append the final measured counter table (C1a 1; C1b 1; C1c BRE 0; C1d\ndeletion exit 1 + missing=<name>; C2 awk 11; precise S041-citing 2; census exit 0; frontier 14/14\nexit 0). Do not alter earlier blocks. Report appended lines. Output .ufo/waves/round-26/wave2/z2.md."
+  }
+ ]
+}

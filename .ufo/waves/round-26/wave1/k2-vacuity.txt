@@ -1,0 +1,88 @@
+C2 vacuity attack — k2 (CritVacuityC2)
+Round 26, wave 1 (build); seat: UF-FSD critic (leaf, read-only except owned report paths)
+Date: 2026-10-25 (UTC timestamps)
+Frozen claim under attack: C2 coverage (score 7 held), predicate limbs:
+  - frontier row F11 admitted in corpus/README.md (counter: awk ... '$4 ~ /^ *admitted *$/' -> 11)
+  - >=1 knowledge entry cites a source row first registered this round (counter: grep -lE '^source: S04[0-9] ' corpus/knowledge/*.md | wc -l -> >=1)
+  - sources census exits 0
+  - kill rule: a source row appended without an admitted entry citing it
+
+[1] THE COUNTER `grep -lE '^source: S04[0-9] '` DOES NOT MEASURE "FIRST REGISTERED THIS ROUND"
+
+Observed (lane root, 2026-10-25):
+  $ grep -lE '^source: S04[0-9] ' corpus/knowledge/*.md | wc -l
+  1
+  $ grep -lE '^source: S04[0-9] ' corpus/knowledge/*.md
+  corpus/knowledge/vendor-disclosure-policy-commitments-crosswalk.md
+
+The single match is the round-25 (F10) entry, whose header line 2 reads:
+  source: S040 — https://www.cisco.com/...
+S040 was FIRST REGISTERED IN ROUND 25, not round 26. Therefore:
+  - the frozen BEFORE value `entries_citing_row_first_registered_this_round: 0` is false today (it is already 1);
+  - the AFTER value `>=1` is already satisfied by zero round-26 work — the do-nothing control hits the after value on this limb.
+
+Scratch registry test (6 synthetic rows a.md..f.md with headers source: S040 / S041 / S039 / S050 / S049 / S04):
+  frozen counter matches: S040, S041, S049  -> count=3
+  frozen counter does NOT match: S039, S050, "S04" (bare)
+=> the regex selects the whole S040-S049 id band; it cannot discriminate the registration round of a row, and it would also match future S04x rows of later rounds.
+
+Also: the counter counts ENTRY FILES (grep -l), so an empty shell that contains only the header line `source: S041 ...` counts the same as a full learning entry. It never inspects whether the entry cites the row in a body claim or carries any learning.
+
+[2] EMPTY SHELLS SATISFY EVERY C2 COUNTER (vacuity demo on scratch mirror)
+
+Scratch mirror = copy of the live corpus + two F11 entries whose ENTIRE content is the three header lines:
+  source: S041 — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf — 付録6 §2 p.45
+  verified-at: 2026-10-25
+  recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-26/manifest.json --source S041
+Measured on the mirror:
+  - awk frontier admitted = 11                       (F11 row admitted, empty-shell entries)
+  - grep -lE '^source: S04[0-9] ' | wc -l = 3     (crosswalk S040 + 2 shells)
+  - sources-census validate: E11 (used-by) clears for S041 once the shell files exist
+  - frontier-recheck-count.py: entries=14 pass=14 exit=0  (shells PASS)
+
+Why the shells pass the frontier harness: `source-recheck.py` verifies the MANIFEST's pinned quotes against the captured snapshot bytes; it never reads the entry's body. A recheck line pointing at a valid manifest passes regardless of the entry's content.
+
+Duplication vs existing corpus (Q: do the planned entries duplicate admitted entries?):
+  - The staged F11 crosswalk text (considerthese/merge package) carries a Cisco half (staged S068 = same page as lane S040): quote "The Cisco PSIRT aligns its practices with ISO/IEC 29147:2018" == already-admitted F10 quote cisco-iso-29147-2018 (vendor-disclosure-policy-commitments-crosswalk.md:46), and its "record the edition" point repeats F10's falsifiable rule 1 ("Edition, not presence", crosswalk.md:80-82).
+  - The adopted wave plan (ScribeEntryCrosswalk) sources ONLY S041 and drops the Cisco half, which removes that duplication if executed as planned.
+  - The division-of-labour claims (29147 = outward handling; 30111 = internal process; 図1) and the divergence claims (P-guideline does NOT require a disclosure policy while 29147:2014 does; 6.2/6.3 clause reproduction; 7-day acknowledgement) are NOT present anywhere in the admitted corpus (S039 only maps Hitachi's steps onto both standards; S040 names alignment alone). So the planned entries contribute new learning on their face — but NO counter in C2 verifies any of it.
+
+[3] FRONTIER-COUNTING INTERACTION (frontier-recheck-count.py)
+
+Steady state (scratch copy of corpus, F11 row + entries present):
+  baseline (F01-F10): entries=12 pass=12 exit=0
+  after F11 admitted with 2 entries: entries=14 pass=14 exit=0
+  existing F01-F10 per-row output unchanged byte-for-byte -> admitting F11 does NOT break existing frontier row counting.
+
+Fragility A — row-before-entries (current live state): the README F11 row is already committed to the working tree, but the two knowledge files do not exist yet. Running the harness on that exact state:
+  FileNotFoundError: [Errno 2] No such file or directory: '.../corpus/knowledge/iso-29147-and-30111-division-of-labour-2026-10-23.md'
+  instrument exit = 1 (unhandled traceback; not a clean per-entry FAIL).
+
+Fragility B — name mismatch: the live F11 row cites:
+  knowledge/iso-29147-and-30111-division-of-labour-2026-10-23.md, knowledge/iso-29147-divergence-and-clause-crosswalk-2026-10-23.md
+  (with -2026-10-23 suffix), while the wave's own scribe prompts create:
+  iso-29147-and-30111-division-of-labour.md / iso-29147-divergence-and-clause-crosswalk.md (no suffix),
+  and the S041 used-by cell also references the no-suffix names. If the scribes follow their prompts, the README row dangles permanently -> harness crash persists, and the S041 row stays E11-dangling.
+
+[4] CENSUS BLOCKER (C2 third limb)
+
+Live, 2026-10-25:
+  $ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+  kasegi  W04  S028 duplicate url ... (warning)
+  kasegi  W04  S029 duplicate url ... (warning)
+  kasegi  E09  S040 recheck=180d — final URL https://sec.cloudapps.cisco.com/... (2 redirects); instrument UA required (browser UA 403s)
+  kasegi  E09  S041 recheck=180d — re-fetch with capture-source.py instrument UA (browser UA 403s); canonical anchor is the PDF
+  kasegi  E11  S041 missing used-by corpus/knowledge/iso-29147-and-30111-division-of-labour.md
+  kasegi  E11  S041 missing used-by corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md
+  census exit=1
+
+Full-mirror test (all live entries + the 2 F11 shell files present): E11 clears for S041; E09 on S040/S041 REMAINS -> census still exit 1. The "180d — <prose>" recheck cells are not a parsable cadence (E09: ISO date / NNd / symbolic only). Therefore the claim's "sources census exits 0" is unreachable with the current S040/S041 recheck-cell texts; the cells must be plain `180d` (notes moved out of the cell).
+
+CONCLUSION / COUNTEREXAMPLE
+The strongest counterexample is "round-25 bytes + zero round-26 work": the frozen `grep -lE '^source: S04[0-9] '` command already returns 1 on the committed round-25 tree (S040 crosswalk), so the C2 AFTER limb `>=1` is satisfied by the do-nothing baseline, and the "first registered this round" property is untestable with this counter. Empty-shell entries pass all frozen C2 counters (awk=11, grep>=1, census used-by edges, frontier harness pass=14/14). Impacted axes: coverage (C2 itself); frontier counting robustness feeds depth:verifiability only indirectly (frontier-recheck-count is not a C2 counter).
+
+SMALLEST SAFE CORRECTIONS (as appended notes/corrections, never edits to frozen claims.json)
+1. Rewrite the S04x counter to bind to the round's newly-appended row set (e.g. `grep -lE '^source: S041 ' corpus/knowledge/*.md | wc -l` for round 26, or a census-backed filter on opened=this-round ∧ status=mined), and record that S040 (round 25) must not count.
+2. Require at least one new entry to be Q1-Q9-conformant with a non-empty body (e.g. gate on the recheck-audit expected-list and on a body-quote binding: >=1 manifest assertion whose quoted text also appears in the entry body), so empty shells cannot pass.
+3. Align the README F11 entry cell with the exact filenames the scribes create (and with the S041 used-by cell), and land the F11 row only after the entries exist — or make frontier-recheck-count.py report missing entries as FAIL instead of raising.
+4. Restore the S040/S041 recheck cells to the plain cadence `180d` (notes out-of-cell) so the sources census can exit 0.

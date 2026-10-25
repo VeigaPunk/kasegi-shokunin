@@ -1,0 +1,29 @@
+Round 26 wave 1 — planner data-walk (ScoutDatawalk) — facts only
+Seat: L1Kasegi26.ScoutDatawalk. Lane root: /home/vgpnk/Projects/shokunin/kasegi-shokunin. Accessed 2026-10-25 UTC.
+
+1) C1 counters (run from lane root):
+- `grep -cE '^\| [^|]+\| gate\|probe ' SKILL.md` -> 0 (grep exit 1). Fixed-string `grep -cF 'gate|probe' SKILL.md` -> 0.
+- `grep -cE 'selftest cases=' .ufo/waves/round-26/c1-receipt-index.txt` -> "No such file or directory (os error 2)", exit 2 (file absent).
+- `grep -rnE '62 assertions\|77 assertions' corpus/instruments/README.md SCORECARD.md corpus/lessons/round-24.md | grep -v 'round-24.md:77' | wc -l` -> 0 (exit 0).
+  CAVEAT: shell grep is builtin pi-uu-grep 0.2.0; /usr/bin/grep is GNU 3.12-modified; neither treats `\|` as ERE alternation (probes: '62 assertions\|77 assertions' -> 0 even where '62 assertions|77 assertions' matches 2). Frozen counter outputs are vacuous under this regex semantics. Content ground truth: plain ERE finds exactly one hit, corpus/lessons/round-24.md:77 ("...source-recheck.py` exits 0 over 19 records / 77 assertions."), the retained historical line; excluding it -> 0 (R25-4 end state holds by content).
+- Counter 4 (deletion fixture) defined as `python3 corpus/instruments/recheck-audit.py --root <scratch-tree-with-one-knowledge-entry-deleted> --cdroot <lane-root>`; needs scratch tree, not run in this walk. recheck-audit.py exists.
+
+2) Knowledge census: `git ls-files corpus/knowledge/*.md | wc -l` = 37; glob count = 37 (same set). `git status --porcelain corpus/knowledge/` empty -> zero untracked/modified knowledge files.
+
+3) Frontier: README lists F01..F10, all admitted; NO F11 row. awk counter `awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md` -> 10 (exit 0). frontier-recheck-count.py exists; counts per README frontier row (FRONTIER_ROW regex -> id/title/status/entry_path), per-entry contract A-D (declared source: ids == body-cited ids subset of recheck ids; manifest exists/schema-valid/lists ids; recheck line shape source-recheck.py --manifest --source; executed from lane root), exit 0 iff every admitted row passes, 1 otherwise, 2 harness error.
+
+4) Sources census: `scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` -> exit 0. stdout:
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+(W04 warnings do not affect clean-lane exit.)
+
+5) SOURCES.md actual header: `| id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |` (11 cols) — the item's label set (id|title|source|category|grade|read|recheck|used-by) does not match; file is authoritative.
+S040 (line 46): id S040, source "Cisco Security Vulnerability Policy — https://www.cisco.com/c/en/us/about/security-center/security-vulnerability-policy.html", kind docs, tier A, status mined, opened 2026-10-25, recheck = 180d, used-by = corpus/knowledge/vendor-disclosure-policy-commitments-crosswalk.md only.
+S039 (line 45) exists: Hitachi HIRT-PUB10008 (https://www.hitachi.co.jp/hirt/publications/hirt-pub10008/index.html), docs/A/mined, opened 2026-10-25, recheck 180d, teaches incl. ISO/IEC 29147:2014 + 30111:2013 mapping (L497-L499), used-by both F10 entries.
+
+6) claims.json exists at .ufo/waves/round-26/claims.json. HEAD = 1b076fa7f2fb5e7dd9d87449514eba526043421b (freeze commit). `git diff 1b076fa... -- .ufo/waves/round-26/claims.json` empty (exit 0); status porcelain empty -> untouched.
+
+Notes:
+- No modified tracked files in repo. Untracked scaffolding: .ufo/waves/round-26/{assimilation/, build-wave1-spec.py, c1-live.json, wave1-dispatch.json, wave1-plan.json, wave1-spec.json, wave1/}; corpus/instruments/knowledge-expected.txt; corpus/source-snapshots/round-26/. None under corpus/knowledge/.
+- C2 counter `grep -lE '^source: S04[0-9] ' corpus/knowledge/*.md | wc -l` currently returns 1 (claims "before" 0): corpus/knowledge/vendor-disclosure-policy-commitments-crosswalk.md line 2 begins "source: S040 — ..." (round-25 entry). S04[0-9] span also matches S040 (registered round 25), so the counter as frozen does not isolate rows first registered this round (S041+). Flag for L1/executor.

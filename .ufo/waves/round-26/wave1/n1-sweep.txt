@@ -1,0 +1,101 @@
+kasegi-shokunin round 26 wave 1 — end-of-wave scope sweep (sentinel, read-only)
+Observed at 2026-10-25T12:40Z (UTC snapshot; wave seats still landing outputs at capture time).
+Lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Base/claims freeze commit: 1b076fa7f2fb5e7dd9d87449514eba526043421b (HEAD, master, origin/master)
+
+===========================================================================
+1) Files modified/created since base — git status --porcelain (=1 -uall
+===========================================================================
+Tracked MODIFIED (7) — all owned in c4 ownership matrix:
+  M LOG.md                                  -> w7 ScribeLogProvince
+  M PROVINCE.md                             -> w7 ScribeLogProvince
+  M SCORECARD.md                            -> w6 ScribeScorecard
+  M SKILL.md                                -> e4 ExecSkillRegistry
+  M corpus/README.md                        -> w4 ScribeReadme
+  M corpus/SOURCES.md                       -> w1 ScribeSourcesAppend
+  M corpus/instruments/recheck-audit.py     -> e1 ExecAuditFix
+  (git diff HEAD --stat: 7 files, +69/-4; nothing staged — git diff --cached empty.)
+
+Untracked (??) — grouped:
+  - Production corpus additions (4), all owned:
+      corpus/source-snapshots/round-26/S041.txt            -> e5 ExecCaptureS041
+      corpus/source-snapshots/round-26/S040-live.txt       -> s2 ScoutS040Probe
+      corpus/source-snapshots/round-26/manifest.json       -> e6 ExecManifestRecheck
+      corpus/instruments/knowledge-expected.txt            -> e2 ExecExpectedList
+  - C1/C2 receipts/controls, all in owned scopes:
+      .ufo/waves/round-26/c1-receipt-index.txt       -> e3 ExecReceiptIndex
+      .ufo/waves/round-26/c1-instrument-digest.txt   -> e3
+      .ufo/waves/round-26/c1-live.json               -> e3
+      .ufo/waves/round-26/c1-controls/m1-*.txt, m1-summary.json -> m1 MutDeletionControls
+      .ufo/waves/round-26/c1-controls/m2-registry-mutants.txt   -> m2 MutRegistryRow
+      .ufo/waves/round-26/c1-controls/m3-gameability.txt        -> m3 MutGameability
+      .ufo/waves/round-26/c2-controls/m3-gameability.txt        -> m3 MutGameability
+      .ufo/waves/round-26/c2-controls/do-nothing.json          -> e7 ExecMirrorCensus
+      .ufo/waves/round-26/c1-controls/fixtures/ (base, m1a..m1d/c2) -> m1 mutation fixtures (owned)
+  - wave1 per-seat reports (35 entries; e.g. ExecCaptureS041.md, e8-*, r1-digest-lineage.md,
+    s1-datawalk.txt, s3-inventory.txt, s5-quote-relocation.txt, s040-probe.txt,
+    c2-r25-continuity.md, c4-ownership.txt, ...) — each matches the seat's assigned report
+    path in wave1-spec.json / c4-ownership.txt. No unexpected wave1 file.
+  - Planner infra created pre-dispatch (12:32Z) by the L1/planner, not seats:
+      build-wave1-spec.py, wave1-spec.json, wave1-plan.json, wave1-dispatch.json,
+      .ufo/waves/round-26/assimilation/ (pre-freeze, 12:24Z; older than claims commit).
+
+find .ufo/waves/round-26 -newer <claims-commit> (mtime > 2026-10-25T12:27:50Z):
+  only the files above (build/spec/plan/dispatch at 12:32Z, receipts/controls/wave1 outputs
+  at 12:34-12:39Z). No stray path outside wave1/, c1/c2-controls/, or the four corpus files.
+
+Ownership verdict: every changed path (7 modified + all untracked) is inside a seat's
+sole-owned path per c4-ownership.txt / wave1-spec.json item prompts. No path has two
+owners; no write outside a named scope. PASS.
+
+===========================================================================
+2) No writes outside the lane (fleet root / shokuknow / sibling lanes)
+===========================================================================
+Fleet root /home/vgpnk/Projects/shokunin:
+  - Top-level entries newer than the freeze commit: only .git/ (dir mtime bumped by
+    subsequent tooling/read-only git status index refresh; no LANE-level commit).
+  - Protected paths: no post-freeze write by wave-1 seats.
+      .ufo/state/*.report-baseline: latest mtime 12:22:35Z (kasegi) — BEFORE freeze. OK.
+      .ufo/watchdog.log: 12:22:36Z — before freeze. OK.
+      MANIFEST.json (12:27Z), templates/, scripts/ (except hyaku below), .omp/: no post-freeze writes.
+    Observed post-freeze fleet writes, all PRE-DISPATCH (12:29Z, before wave started at
+    12:32Z), attributed to external fleet/concurrent activity, not wave-1 seats:
+      .scratch/goal-20261025-hyaku-12h.md (12:29:30Z), scripts/hyaku/lane-addendum.md
+      (12:29:39Z); fleet .git object writes/commits at 12:29:02-18Z (stray-commit repair
+      f47ad6ba, mado round-37 report exports -> fleet HEAD cdaa69d7).
+shokuknow (/home/vgpnk/Projects/shokuknow): newest mtime in tree = 2026-10-24 (files) /
+  2026-10-25T12:05Z (.git); working tree was already dirty pre-round (long-standing
+  uncommitted changes, e.g. lanes/chousa/*). No writes since freeze. PASS.
+Sibling lanes: 20 sibling *shokunin dirs all show 0 files with mtime newer than claims
+  commit (VCS internals excluded); no round-26 paths present in any sibling. PASS.
+  (Fleet .ufo/reports/round-26/ holds *other lanes'* report files — fleet-level, not ours.)
+
+===========================================================================
+3) No VCS mutation in the lane
+===========================================================================
+  - HEAD == 1b076fa7f2fb5e7dd9d87449514eba526043421b (same as base/claims freeze). OK.
+  - git log unchanged: latest commit is the freeze commit; refs master/origin/master =
+    1b076fa7; lane reflog shows only historical "export from jj" entries (HEAD@{0} = freeze).
+  - Lane .git writes since freeze: only object/ref/log files created by the freeze commit
+    itself (12:27:50Z) and .git/index refreshed by read-only `git status` runs (12:34:13Z;
+    no ref/HEAD change). No commits, no branch/ref moves, no stash/reset/checkout.
+  - .jj op store: last ops at freeze checkout (12:27:50-51Z); no jj mutating ops since.
+  - Working tree holds uncommitted expected files: 7 modified + untracked wave artifacts (PASS,
+    matches "uncommitted expected files" precondition).
+
+===========================================================================
+4) claims.json bytes match freeze commit
+===========================================================================
+  git show 1b076fa7:.ufo/waves/round-26/claims.json | sha256sum -> 343e568e7113f0d63ea63f7c9b8d7c18f44e310a67717d490a35ae1adec6741f
+  sha256sum .ufo/waves/round-26/claims.json                       -> 343e568e7113f0d63ea63f7c9b8d7c18f44e310a67717d490a35ae1adec6741f
+  MATCH (verified twice during the sweep). OK.
+
+===========================================================================
+Notes / observations
+===========================================================================
+  - Snapshot taken while several seats were still landing (e.g. ScribeEntryDivision /
+    ScribeEntryCrosswalk knowledge entries iso-29147-*.md and lessons/round-26.md not yet
+    present at capture time; remaining wave1 reports pending). Sweep verdict applies to
+    the observed state; a final re-run after wave completion is recommended.
+  - The sweep itself is read-only; no production path was modified by this seat.
+  - Tooling: none installed (no installs needed for read-only sweep).

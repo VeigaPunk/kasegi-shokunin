@@ -973,6 +973,15 @@ Authoritative derivation:
 `corpus/knowledge/triage-thresholds.md` §5 (its `SKILL.md:NNN` cites are
 pinned to blob `fc6d398`), `corpus/knowledge/ev-model.md`.
 
+
+## Gates & probes registry
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| recheck-audit.py | gate|probe | python3 corpus/instruments/recheck-audit.py [--json <out>] | 0 clean \| 1 failed \| undeclared nonzero -> could-not-evaluate | python3 corpus/instruments/recheck-audit.py --selftest | .ufo/waves/round-26/c1-receipt-index.txt | corpus/ read-only + its own receipt dir | kasegi |
+
+The audit is stateful against the committed expected list (the pinned receipt index): the present knowledge-entry set is compared to it, so deleting an entry is a red audit (exit 1 naming the missing entry), never a silent green pass.
+
 ## Cited paths (verified 2026-09-28 against the then-live tree; round-13 full-set re-audit 705/708 resolved — **and as of round 15 the `~/Projects/bounties` root itself is gone**, so every path below is `[lost-tree]`; **round-19 re-census (2026-10-14): the mirror and origin-work roots that used to carry the exceptions are also gone**, so there are no live exceptions left — the previous clause "unless it has a mirror equivalent in `~/Projects/the-bounty-hunter` or lives under `~/Projects/origin-work/open-bug-bounties`" is historical. Resolvability is measured, not assumed: `corpus/instruments/resolve.py`, census of record `corpus/instruments/citation-survival.md` — SKILL.md 47/289 = 16.26 % before the round-15 re-anchor, 222/486 = 45.68 % at round-15 close, re-censused at round 19; this header is itself inside the measured file, so the figure is a fixed point only to ±1 token)
 
 - `~/Projects/bounties/fleets/mission-template.md` — L1 mission contract, six-file deliverable spec

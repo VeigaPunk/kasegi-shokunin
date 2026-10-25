@@ -1,0 +1,274 @@
+{
+  "schema": 1,
+  "purpose": "Frozen round-23 C1 matrix: the copied resolve.py CLI runs once per case against a disposable HOME/KASEGI_MIRROR/lane layout. Escape cases pin GONE; controls pin the class that must survive the fix. `@ROOT@` in a symlink target is the case root. Paths never leave the case root except by the traversal the citation itself performs.",
+  "defaults": {
+    "home": "home",
+    "mirror": "relocated/tbh",
+    "lane": "lane",
+    "dirs": [
+      "home/Projects",
+      "lane",
+      "relocated/tbh"
+    ],
+    "files": {},
+    "symlinks": {}
+  },
+  "cases": [
+    {
+      "id": "bounty-parent-traversal",
+      "nature": "escape",
+      "cite": "~/Projects/bounties/../outside.md:1",
+      "files": {
+        "relocated/outside.md": "escaped file outside the selected mirror\n"
+      },
+      "expect": "GONE"
+    },
+    {
+      "id": "bounty-parent-traversal-vault",
+      "nature": "escape",
+      "cite": "~/Projects/bounties/../outside-vault/secret.mjs:1",
+      "files": {
+        "relocated/outside-vault/secret.mjs": "escaped file outside the selected mirror\n"
+      },
+      "expect": "GONE"
+    },
+    {
+      "id": "relative-mirror-fallback-escape",
+      "nature": "escape",
+      "cite": "../outside-vault/secret.mjs:1",
+      "files": {
+        "relocated/outside-vault/secret.mjs": "escaped file outside the selected mirror\n"
+      },
+      "expect": "GONE"
+    },
+    {
+      "id": "bounty-fallback-symlink-escape",
+      "nature": "escape",
+      "cite": "~/Projects/bounties/evil.mjs:1",
+      "dirs": [
+        "secret"
+      ],
+      "files": {
+        "secret/outside.mjs": "symlink target outside the selected mirror\n"
+      },
+      "symlinks": {
+        "relocated/tbh/evil.mjs": "@ROOT@/secret/outside.mjs"
+      },
+      "expect": "GONE"
+    },
+    {
+      "id": "relative-fallback-symlink-escape",
+      "nature": "escape",
+      "cite": "nested/leak.md:1",
+      "dirs": [
+        "relocated/tbh/nested",
+        "secret"
+      ],
+      "files": {
+        "secret/second.md": "symlink target outside the selected mirror\n"
+      },
+      "symlinks": {
+        "relocated/tbh/nested/leak.md": "@ROOT@/secret/second.md"
+      },
+      "expect": "GONE"
+    },
+    {
+      "id": "bounty-prefix-sibling-confusion",
+      "nature": "escape",
+      "cite": "~/Projects/bounties-legacy/README.md:1",
+      "files": {
+        "relocated/tbh/-legacy/README.md": "decoy under the mirror reached by the old '-' suffix mapping\n"
+      },
+      "note": "The literal ~/Projects/bounties-legacy/README.md is absent; only the old startswith() prefix mapping reaches the mirror decoy.",
+      "expect": "GONE"
+    },
+    {
+      "id": "confined-bounty-fallback-control",
+      "nature": "control",
+      "cite": "~/Projects/bounties/ops/rank.mjs:1",
+      "files": {
+        "relocated/tbh/ops/rank.mjs": "confined mirror evidence\n"
+      },
+      "expect": "MIRROR-EQUIVALENT"
+    },
+    {
+      "id": "confined-relative-fallback-control",
+      "nature": "control",
+      "cite": "docs/note.md:1",
+      "files": {
+        "relocated/tbh/docs/note.md": "confined mirror evidence\n"
+      },
+      "expect": "MIRROR-EQUIVALENT"
+    },
+    {
+      "id": "missing-bounty-target-control",
+      "nature": "control",
+      "cite": "~/Projects/bounties/missing/x.mjs:1",
+      "expect": "GONE"
+    },
+    {
+      "id": "lane-relative-parent-internal-control",
+      "nature": "control",
+      "cite": "../outside.md:1",
+      "files": {
+        "outside.md": "lane-root-relative ../ hit\n"
+      },
+      "note": "Frozen claim preserves lane-relative semantics: the lane-repo branch runs first and is NOT realpath-confined, so a `../` walk-out past the lane root stays INTERNAL. This control pins that carve-out deliberately; it is the lane branch, not a mirror credit.",
+      "expect": "INTERNAL",
+      "path_tolerance": "carve-out"
+    },
+    {
+      "id": "literal-prefix-sibling-control",
+      "nature": "control",
+      "cite": "~/Projects/bounties-legacy/README.md:1",
+      "files": {
+        "home/Projects/bounties-legacy/README.md": "ordinary other-root literal\n"
+      },
+      "note": "A literal hit is truthful RESOLVES as an ordinary other root before and after; the claim confines the mirror fallback, not literal existence.",
+      "expect": "RESOLVES"
+    },
+    {
+      "id": "canonical-alias-confined-control",
+      "nature": "control",
+      "cite": "~/Projects/the-bounty-hunter/server.py:1",
+      "files": {
+        "relocated/tbh/server.py": "confined canonical-alias evidence\n"
+      },
+      "expect": "RESOLVES"
+    },
+    {
+      "id": "canonical-alias-escape-control",
+      "nature": "control",
+      "cite": "~/Projects/the-bounty-hunter/../../outside.md:1",
+      "files": {
+        "outside.md": "outside the selected mirror\n"
+      },
+      "note": "Already confined before round 23; pins that the pre-existing canonical gate still works.",
+      "expect": "GONE"
+    },
+    {
+      "id": "bounty-literal-present-traversal",
+      "nature": "control",
+      "cite": "~/Projects/bounties/../outside.md:1",
+      "dirs": [
+        "home/Projects/bounties"
+      ],
+      "files": {
+        "home/Projects/outside.md": "literal-hit carve-out probe\n"
+      },
+      "note": "Literal existence for a bounty citation is reported as written (RESOLVES) and is outside r23's mirror-credit scope; pinned so the carve-out cannot be mistaken for a fix or a regression.",
+      "expect": "RESOLVES"
+    },
+    {
+      "id": "bounty-literal-symlink-present",
+      "nature": "control",
+      "cite": "~/Projects/bounties/evil.mjs:1",
+      "dirs": [
+        "home/Projects/bounties",
+        "secret"
+      ],
+      "files": {
+        "secret/outside.mjs": "literal symlink target\n"
+      },
+      "symlinks": {
+        "home/Projects/bounties/evil.mjs": "@ROOT@/secret/outside.mjs"
+      },
+      "note": "Same carve-out through a symlinked literal: RESOLVES on the written path. Compare bounty-fallback-symlink-escape, where no literal exists and the mirror credit is confined.",
+      "expect": "RESOLVES"
+    },
+    {
+      "id": "absolute-bounty-fallback-control",
+      "nature": "control",
+      "cite": "/home/vgpnk/Projects/bounties/ops/rank.mjs:1",
+      "files": {
+        "relocated/tbh/ops/rank.mjs": "confined mirror evidence, absolute spelling\n"
+      },
+      "note": "Pins the absolute arm of BOUNTY_PREFIXES. Host-dependent: requires /home/vgpnk/Projects/bounties/ops/rank.mjs to stay absent on the run host (verified 2026-10-25); if it appears, the literal branch legitimately yields RESOLVES.",
+      "expect": "MIRROR-EQUIVALENT"
+    },
+    {
+      "id": "absolute-prefix-sibling-confusion",
+      "nature": "escape",
+      "cite": "/home/vgpnk/Projects/bounties-legacy/README.md:1",
+      "files": {
+        "relocated/tbh/-legacy/README.md": "decoy under the mirror reached by the old '-' suffix mapping\n"
+      },
+      "note": "Absolute spelling of the prefix sibling; the literal must be absent on the host for this to stay a confusion case.",
+      "expect": "GONE"
+    },
+    {
+      "id": "brace-expansion-escape",
+      "nature": "escape",
+      "cite": "~/Projects/bounties/{../outside.md,missing.md}:1",
+      "files": {
+        "relocated/outside.md": "brace-expanded escape outside the mirror\n"
+      },
+      "note": "Expansion is where confinement can leak: only the traversal alternative resolves, and it resolves outside the mirror.",
+      "expect": "GONE"
+    },
+    {
+      "id": "glob-expansion-escape",
+      "nature": "escape",
+      "cite": "~/Projects/bounties/<name>/../../outside-vault/x.md:1",
+      "dirs": [
+        "relocated/tbh/sub"
+      ],
+      "files": {
+        "relocated/outside-vault/x.md": "glob hop outside the mirror\n"
+      },
+      "note": "The placeholder rewrite matches while a directory exists under the mirror, then the `..` hops leave it. A bare `<name>.md` glob cannot cross `/` and would pass on baseline too, so it is not used here.",
+      "expect": "GONE"
+    },
+    {
+      "id": "brace-expansion-confined-control",
+      "nature": "control",
+      "cite": "~/Projects/bounties/{ops,missing}/rank.mjs:1",
+      "files": {
+        "relocated/tbh/ops/rank.mjs": "confined brace expansion\n"
+      },
+      "note": "A brace set whose only existing alternative is inside the mirror still credits MIRROR-EQUIVALENT: the fix narrows escapes, not expansions.",
+      "expect": "MIRROR-EQUIVALENT"
+    },
+    {
+      "id": "relative-priority-lane-first-control",
+      "nature": "control",
+      "cite": "docs/shared.md:1",
+      "files": {
+        "lane/docs/shared.md": "lane copy wins\n",
+        "relocated/tbh/docs/shared.md": "mirror copy\n"
+      },
+      "note": "Pins the lane-first ordering: a relative cite that exists in both trees is INTERNAL, not a mirror credit. A mirror-first mutant passes every other case and must fail this one.",
+      "expect": "INTERNAL"
+    },
+    {
+      "id": "mirror-root-prefix-sibling-escape",
+      "nature": "escape",
+      "cite": "../tbh-evil/decoy.md:1",
+      "files": {
+        "relocated/tbh-evil/decoy.md": "mirror-root prefix sibling\n"
+      },
+      "note": "The joined string `mirror/../tbh-evil/decoy.md` starts with the mirror path, so a string-prefix substitute for under_mirror credits it; realpath does not. Pins the mirror-root sibling boundary.",
+      "expect": "GONE"
+    },
+    {
+      "id": "absolute-parent-traversal",
+      "nature": "escape",
+      "cite": "/home/vgpnk/Projects/bounties/../outside-vault/secret.mjs:1",
+      "files": {
+        "relocated/outside-vault/secret.mjs": "absolute parent-traversal escape\n"
+      },
+      "note": "Absolute spelling of the parent traversal. Host-dependent: requires /home/vgpnk/Projects/outside-vault to stay absent on the run host.",
+      "expect": "GONE"
+    },
+    {
+      "id": "bounty-root-underscore-sibling",
+      "nature": "escape",
+      "cite": "~/Projects/bounties_legacy/README.md:1",
+      "files": {
+        "relocated/tbh/_legacy/README.md": "decoy reached only by a loose root-name continuation\n"
+      },
+      "note": "The boundary is `/`-delimited: `bounties_legacy` is not a bounty citation even though it shares the root name prefix. A mutant that accepts any same-name continuation credits the mirror decoy.",
+      "expect": "GONE"
+    }
+  ]
+}

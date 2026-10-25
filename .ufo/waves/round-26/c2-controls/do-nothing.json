@@ -1,0 +1,23 @@
+{
+  "round": 26,
+  "lane": "kasegi",
+  "control": "C2 do-nothing (pre-append mirror census gate)",
+  "generated_at_utc": "2026-10-25T12:34:41Z",
+  "expectations": {
+    "frontier_admitted": 10,
+    "entries_citing_S04x": 0
+  },
+  "measured": {
+    "frontier_admitted": 10,
+    "entries_citing_S04x_frozen_counter": 1,
+    "entries_citing_S041_S049": 0
+  },
+  "census_exits": {
+    "mirror_literal_validate_root_mirror_lane_kasegi": 2,
+    "mirror_explicit_lane_dir_validate": 0,
+    "live_fleet_root_validate_root_fleet_lane_kasegi": 0,
+    "live_explicit_lane_dir_validate": 0
+  },
+  "mirror": "/tmp/kasegi-r26-mirror",
+  "notes": "Frozen counter `grep -lE '^source: S04[0-9] ' corpus/knowledge/*.md` overmatches round-25 S040, cited at knowledge/vendor-disclosure-policy-commitments-crosswalk.md:2, so the baseline reads 1 not 0. No S041-S049 citations exist yet (count 0). The sources census exits 0 via the explicit lane-dir form on both mirror and live lane; the literal `--root <mirror> kasegi` form cannot resolve lanes (mirror root has no shokunin.conf and no *-shokunin subdir) and exits 2."
+}

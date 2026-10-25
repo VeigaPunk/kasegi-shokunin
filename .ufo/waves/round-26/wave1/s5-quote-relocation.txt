@@ -1,0 +1,78 @@
+S5 QUOTE RELOCATION — JPCERT/CC 情報セキュリティ早期警戒パートナーシップガイドライン 2026年10月
+Independent re-location of the staged S076/S064 quotes in the ORIGINAL source PDF (not lane capture).
+UTC access date: 2026-10-25 (all fetches/extractions run this date).
+
+## 1. Source fetch (instrument UA)
+URL: https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf
+Fetch: python3 urllib with instrument UA "kasegi-shokunin/1.0 (documentation capture; +https://shokunin.invalid/kasegi)" (capture-source.py UA)
+HTTP status: 200
+Bytes: 1,338,665
+sha256(PDF bytes): 0ff7a6b6b4fa4a9aeffa924e9a1775fbcf044773d79491e0d47aca78eb004f03
+pdfinfo: PDF-1.7, 64 pages, A4 (595.32 x 841.92 pt), Producer "Microsoft® Word for Microsoft 365", CreationDate Mon Sep 28 22:54:43 2026 -03:00
+
+## 2. pdftotext extractions
+Tool: pdftotext version 26.08.0 (Poppler), no -layout (default reading order)
+Commands:
+  pdftotext partnership_guideline2026.pdf pg_full.txt            (full text, 2860 lines)
+  pdftotext -f 45 -l 47 partnership_guideline2026.pdf pg_p45-47.txt  (PDF pages 45-47)
+  pdftotext -f 53 -l 54 partnership_guideline2026.pdf pg_p53-54.txt  (PDF pages 53-54)
+sha256 of extractions:
+  pg_full.txt       eee97733f127850429f5033e88d8e72341a11be445085d3e663f2c604045e8a5
+  pg_p45-47.txt     4c200c420fd791d19c43d1544053039fffd210eb605564dc1db72d3a89358993
+  pg_p53-54.txt     31a706e52ce5843c4fcd683a08e67b8de7dc401983ec2345aac0f6745a7f1dbc
+
+NOTE ON PAGINATION: the PDF has a 2-page offset vs the printed page numbers.
+Printed page N = PDF page N+2 (cover + one front page). PDF page 47 prints "45" at its foot, etc.
+All locations below give FULL-text line, PDF page, and printed page.
+
+## 3. Quote locations (exact extracted lines)
+
+### 3.1 division-of-labour paragraph (ISO/IEC 30111:2013 sentence) — S076 anchor
+Quote: "一方、ISO/IEC 30111:2013 はベンダの社内での脆弱性取扱いのプロセス（脆弱性の検証、脆弱性対策の開発等）の指針を提供します。"
+- FULL text lines: 2009-2010 (sentence spans two lines; starts mid-line 2009 "…を規定しています。一方、ISO/IEC 30111:2013 はベンダの社内での脆弱性取扱", ends line 2010 "いのプロセス（脆弱性の検証、脆弱性対策の開発等）の指針を提供します。")
+- PDF page 47 (= printed p.45), rel lines 23-24
+- pg_p45-47.txt lines 114-115
+- Context: 付録6 §2 「2. 国際標準の概要」 (section heading at FULL line 2004 / PDF p.47 rel 18)
+
+### 3.2 図 1 caption「（出所：ISO/IEC 29147:2014 を元に作成）」 — occurrences (5 total in full text)
+1. FULL line 2020 | PDF p.48 (= printed p.46) rel 6 | figure "図 1 / ISO/IEC 29147 と ISO/IEC 30111 の対応" on same page (rel 3,5) | THIS is the 図 1 caption cited by S076
+2. FULL line 2140 | PDF p.50 (= printed p.48) rel 48 | caption under the §4(1) quote table (3.4 / 5.5.4)
+3. FULL line 2237 | PDF p.52 (= printed p.50) rel 33 | caption under the §4(2) quote table (6.1/6.2/6.3)
+4. FULL line 2283 | PDF p.53 (= printed p.51) rel 32 | caption under the §4(3) quote table (7.3) | pg_p53-54.txt line 32
+5. FULL line 2355 | PDF p.54 (= printed p.52) rel 55 | caption under the §4(4) quote table (5.4.3/7.5) | pg_p53-54.txt line 104
+
+### 3.3 §4 (2) divergence sentence — S064 anchor
+Quote: "P ガイドラインでは、ベンダに脆弱性公開ポリシーの策定を求めていません"
+- FULL line 2238 (single line; continues on same line "…を求めていませんが、ISO/IEC 29147:2014 では、脆弱性公開ポリシーを策定することや、その一部を公開することを求めています。")
+- PDF p.52 (= printed p.50), rel 34
+- Context: 付録6 §4 (2) 「(2) 脆弱性公開ポリシー」 closing paragraph (subsection heading FULL line 2158 / PDF p.51 rel 5)
+
+### 3.4 7-day acknowledgement — S064 anchor (exact wording)
+Quote: "受信した旨を 7 日以内に返信することが必要となります。"
+- FULL line 2291 (single line; full sentence "…その上で、脆弱性の届出を受信した際には、受信した旨を 7 日以内に返信することが必要となります。")
+- PDF p.53 (= printed p.51), rel 40
+- pg_p53-54.txt line 40
+- Context: 付録6 §4 (3) 「(3) 脆弱性の受領」 closing paragraph (subsection heading FULL line 2261 / PDF p.53 rel 10)
+- RELATED shorter variant (summary table row, NOT the quote): "受信した旨を 7 日以内に返信する。" at FULL line 2076 | PDF p.49 (= printed p.47) rel 43 | outside PDF pages 45-47
+
+### 3.5 6.2 / 6.3 markers — S064 anchor (ISO clause text reproduced in §4(2))
+- "6.2 Minimum policy aspects": FULL line 2180 | PDF p.51 (= printed p.49) rel 27 | English clause heading in the §4(2) quote table; Japanese counterpart "6.2 最小限の要素" at FULL line 2207 | PDF p.52 rel 3
+- "6.3 Optional policy aspects": FULL line 2225 | PDF p.52 (= printed p.50) rel 21 | English clause heading; Japanese counterpart "6.3 オプショナルなポリシーの要素" at FULL line 2231 | PDF p.52 rel 27 (first occurrence; the second occurrence at FULL 2441 is a row of the 参考 1 table)
+
+### 3.6 参考 1 table — S064 anchor
+Header: "参考 1 ISO/IEC 29147:2014 と情報セキュリティ早期警戒パートナーシップガイドラインの対応"
+- FULL lines 2382-2383 (header spans two lines)
+- PDF p.56 (= printed p.54), rel 3-4
+- Table body continues on PDF p.57 (= printed p.55): rows 1.適用範囲 … 9.x, 付録 A/B, 文献目録 (FULL lines 2482-2526)
+
+## 4. Staged-anchor deltas (observed, original PDF)
+- S076 anchor "図 1 … p.45": §2 + 30111 sentence are on printed p.45 ✓, but the 図 1 caption is on printed p.46 (PDF 48), not p.45.
+- S064 anchor "§4 … p.46-47": §4 heading 「4.ISO/IEC 29147:2014 について留意すべき事項」 is on printed p.47 (PDF 49, FULL 2036); subsection (1) printed p.48, (2) printed p.49-50, (3) printed p.51, (4) printed p.51-52. The clause reproductions (6.1-6.3) and the divergence sentence are on printed p.49-50, NOT p.46-47.
+- S064 anchor "参考1 p.53-54": 参考 1 header/table is on printed p.54-55 (PDF 56-57), NOT p.53-54.
+- The 7-day acknowledgement quote (with ことが必要となります) is the §4(3) closing recommendation on printed p.51 (PDF 53); the summary table on printed p.47 (PDF 49) has only the shorter form "受信した旨を 7 日以内に返信する。" without ことが必要となります.
+- S064 states the 7-day line as part of the §4 table row guidance; the quote text actually verbatim matches the §4(3) closing paragraph (FULL 2291).
+
+## 5. Verification method
+- All quotes above matched after whitespace normalization (all whitespace stripped) against the pdftotext extractions; each multi-line match start line is reported.
+- Count of caption occurrences confirmed exactly 5 by counting the normalized string in the joined full text; each occurrence is a single extracted line.
+- No production edits made; this file and ScoutQuoteRelocation.md are the only outputs.

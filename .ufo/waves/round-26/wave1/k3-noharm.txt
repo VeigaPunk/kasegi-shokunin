@@ -1,0 +1,37 @@
+Round 26 wave 1 — no-harm review verdicts (seat CritNoHarm)
+Access date: 2026-10-25 (UTC). Lane base: 1b076fa7f2fb5e7dd9d87449514eba526043421b (claims freeze).
+
+Verdict summary
+- (1) recheck-audit.py --expect vs round-25 receipts: PASS (no retroactive harm; forward-only verified).
+- (2) SOURCES.md S041 append + S040 recheck-cell update vs census invariant: FAIL (as-specified cells break census: E09 on S040 and S041, validate exit 1 even at simulated end state). Smallest safe correction tested: cadence-only recheck cells + prose moved to a `## Registry changes` note -> exit 0.
+- (3) two knowledge entries + F11 row vs README invariants: FAIL (frontier row F11 references staged package filenames `iso-29147-…-2026-10-23.md`; planned entries are created without the date suffix -> frontier-recheck-count.py crashes with FileNotFoundError, exit 1; will persist after the entries land unless the row is corrected).
+- (4) write-scope overlap: PASS per consumed c4 ownership matrix + independent prompt audit — no concrete path has two owners. Two non-overlap coordination hazards noted (F11 name mismatch; receipt index written before the instrument change landed).
+
+(1) recheck-audit.py --expect — forward-only, round-25 receipts untouched
+- git: `git diff --name-only 41a77b8 HEAD -- .ufo/waves/round-25/` = 0 paths; `git status --porcelain -- .ufo/waves/round-25/` = 0 lines. The round-25 receipt subtree (3,773 tracked files) is byte-identical at round-26 freeze and in the working tree.
+- Base instrument (1b076fa bytes, sha256 c3c19adc…) run on the round-25 frozen surface `.ufo/waves/round-25/c1-after-35` reproduces the round-25 receipt exactly: `lines=35 total=35 pass=35 fail-closed=23 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0`, `executes=12 gated=23 broken=0` — matches the round-25 lesson table.
+- The planned change is additive: `--expect` defaults to `<root>/corpus/instruments/knowledge-expected.txt`, a path that does not exist in any round-25 snapshot tree (verified), and the diff's own docstring states behavior is unchanged when `--expect` is absent or its file missing. No round-25 receipt JSON is read, rewritten, or re-validated by the change; the round-26 receipt is a separate file (.ufo/waves/round-26/c1-receipt-index.txt).
+
+(2) Census invariant — BROKEN by as-specified S041/S040 cells
+- Live run: `/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` -> exit 1 with:
+  `kasegi  E09  S040 recheck=180d — final URL https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html (2 redirects); instrument UA required (browser UA 403s)`
+  `kasegi  E09  S041 recheck=180d — re-fetch with capture-source.py instrument UA (browser UA 403s); canonical anchor is the PDF`
+  (`W04 S028 / W04 S029` are pre-existing, present at round-25 close.)
+- End-state scratch simulation (SOURCES.md copied, both new entry stubs present so E11 clears): same two E09 rows, exit 1. The E09s are intrinsic to the as-specified recheck cell text (E09 accepts only ISO date, NNd, or a symbolic cadence — prose after `180d` is invalid), so they persist after the entries land.
+- Smallest safe correction (simulated, exit 0, only pre-existing W04 warnings): keep recheck cells cadence-only (`180d`) and move the URL/UA requirement text into a `## Registry changes` note below the table. This satisfies the C2 census invariant (exit 0) without losing the R25-5 record.
+- C2 kill-rule note: as specified, the round-end census would exit 1 -> the claim's `sources_census_exit=0` after-state would not be met.
+
+(3) README invariants — BROKEN by F11 row entry-cell names
+- Frontier count: claims.json C2 awk now yields 11 (F11 row present) — the count invariant itself holds.
+- Entries-per-row: frontier table now lists 14 entry references (F01–F08: 8; F09: 2; F10: 2; F11: 2) — structurally consistent.
+- Defect: the landed F11 row's entry cell cites the staged package filenames `knowledge/iso-29147-and-30111-division-of-labour-2026-10-23.md` and `knowledge/iso-29147-divergence-and-clause-crosswalk-2026-10-23.md`, but the planned entries (w2/w3) are created as `iso-29147-and-30111-division-of-labour.md` and `iso-29147-divergence-and-clause-crosswalk.md` (no date suffix). `python3 corpus/instruments/frontier-recheck-count.py` therefore crashes: `FileNotFoundError: … corpus/knowledge/iso-29147-and-30111-division-of-labour-2026-10-23.md`, exit 1. The crash persists after w2/w3 land unless the F11 row is corrected to the actual entry names (or the entries adopt the staged names).
+- Minor stale: README header correction line still records round-25 count 37; after the two entries it is 39 (doc update needed, not a machine-checked invariant).
+
+(4) Write-scope overlap — PASS
+- Consumed `.ufo/waves/round-26/wave1/c4-ownership.txt` (ConnOwnership) and independently re-derived ownership from all 35 item prompts. No concrete path is owned by two seats: SOURCES.md (w1), each new entry (w2/w3), README.md (w4), lesson (w5), SCORECARD.md (w6), LOG.md/PROVINCE.md (w7), recheck-audit.py + e1-selftest-live.txt (e1), knowledge-expected.txt (e2), c1-receipt-index.txt/c1-instrument-digest.txt/c1-live.json (e3), SKILL.md (e4), S041.txt (e5), manifest.json + e6-results (e6), c2-controls/do-nothing.json (e7), S040-live.txt (s2 capture exception), c1-controls partition (e1/m1/m2/m3 distinct files), c2-controls/m3-gameability.txt (m3). Read-only seats write only their named wave1 report.
+- Observed coordination hazards (not overlaps): (a) w4's F11 row uses staged names while w2/w3 create non-suffixed files (see (3)); (b) the c1 receipt index and digest file were written while the instrument was still at the round-25 digest (`instrument_sha256=c3c19adc…`, `selftest cases=14 failures=0`), i.e. before e1's change landed; for C1(b) the index must be rewritten at the new instrument digest with the extended selftest (15 cases) once e1 lands. Observed mid-edit state at review time: `corpus/instruments/recheck-audit.py` (sha256 57efded2…) does not parse (`IndentationError: expected an indented block after 'if' statement on line 173`) and its `--selftest` run crashed with a TypeError at line 245 — implementation-in-progress, not a verdict on the final bytes.
+
+Smallest safe corrections (for the L1, not applied by this seat)
+1. Census: S041/S040 recheck cells -> `180d` only; R25-5 URL/UA prose -> `## Registry changes` note (verified exit 0).
+2. README F11 entry cell -> the actual planned entry filenames (no date suffix), or align w2/w3 filenames with the row.
+3. Rewrite c1-receipt-index.txt after e1's change lands, at the new instrument digest, with `selftest cases=15 failures=0` once the extended selftest passes.

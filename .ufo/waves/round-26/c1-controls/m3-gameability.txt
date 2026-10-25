@@ -1,0 +1,7 @@
+C1 counter gameability probe — 2026-10-25 UTC
+
+Scratch-only probe in /tmp/kasegi-m3-game. Wrote the literal line `selftest cases=15 failures=0` to an otherwise arbitrary scratch receipt without invoking `recheck-audit.py --selftest`; the frozen grep-shaped counter returned 1. Thus the frozen C1 selftest-receipt counter does not prove selftest was run, nor bind receipt to instrument digest. Counter would still accept the claimed AFTER value. This is a counter weakness, not evidence the actual round receipt is fake.
+
+The proposed `--expect` empty-file bypass is NOT available in the lane instrument as inspected: recheck-audit.py has no `--expect` argument or expected-list behavior. An empty expected-list file is therefore not a reproducible gameability path for the frozen command as written. The current committed working-tree expected listing has 39 lines; do not treat its existence as a frozen claim counter.
+
+No production bytes modified. No runtime selftest was executed for the fake-line probe.

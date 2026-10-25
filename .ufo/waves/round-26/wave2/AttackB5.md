@@ -1,0 +1,71 @@
+# AttackB5 — S041 capture pinning review (wave 2, round 26)
+
+- Seat: `L1Kasegi26.AttackB5`
+- Date: 2026-10-25 (UTC)
+- Role: reviewer (read-only); no subagent dispatch; no VCS writes; no tool
+  install/upgrade (none needed — verification used `read`/`grep`/`sha256sum`).
+- Item: falsify "S041 capture pinning" (snapshot digest == capture log ==
+  manifest digest; log line in wave1 ExecCaptureS041.md; division-of-labour
+  paragraph and 図1 caption present at the claimed lines).
+
+## Verdict: NOT FALSIFIED — S041 pinning CONFIRMED
+
+All four checks pass with exact evidence; no actionable defect found.
+
+## 1. sha256 three-way binding
+
+| Source | sha256 |
+|---|---|
+| On-disk `sha256sum` of `corpus/source-snapshots/round-26/S041.txt` | `e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47` |
+| Capture log line (`wave1/ExecCaptureS041.md`) | `sha256=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47` |
+| `corpus/source-snapshots/round-26/manifest.json` S041 entry | `"sha256": "e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47"` |
+
+All three identical (full 64-hex digest; the assignment's shorthand e18acbf9…
+is its prefix). Snapshot facts on disk: 2354 lines, 147267 bytes — both match
+the capture log (`snapshot_bytes=147267`) and wave1 metrics.
+
+## 2. Capture log line exists in wave1 ExecCaptureS041.md
+
+Present verbatim at lines 16–18 of
+`.ufo/waves/round-26/wave1/ExecCaptureS041.md`:
+
+```
+S041 status=200 fetched_bytes=1338665 snapshot_bytes=147267 sha256=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47 utc=2026-10-25T12:34:17Z out=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-26/S041.txt
+```
+
+## 3. Division-of-labour paragraph at ~1670–1673
+
+Read directly from `S041.txt` lines 1666–1693:
+
+- Line 1670: `弱性に関する情報の受領、ユーザに対する脆弱性対策のアドバイザリ配布等）`
+- Line 1671: `を規定しています。一方、ISO/IEC 30111:2013 はベンダの社内での脆弱性取扱`
+- Line 1672: `いのプロセス（脆弱性の検証、脆弱性対策の開発等）の指針を提供します。`
+- Line 1673: `これらの関係を次の図に示します。`
+
+The paragraph spans lines 1669–1673 under section `2. 国際標準の概要`
+(line 1666); the key string `社内での脆弱性取扱` is on line 1671 (matches
+manifest Q1a location). PASS.
+
+## 4. 図1 caption at line 1678
+
+- Line 1676: `図 1`
+- Line 1677: `ISO/IEC 29147 と ISO/IEC 30111 の対応`
+- Line 1678: `（出所：ISO/IEC 29147:2014 を元に作成）`
+
+The caption string `出所：ISO/IEC 29147:2014 を元に作成` is on line 1678,
+immediately following the 図1 title. PASS.
+
+## Residual risk / gaps
+
+- None material. One noted nuance (already recorded in manifest, not a
+  defect): the Q1 sentence splits across the PDF line wrap at 取扱/い
+  (L1671→L1672), which is why the manifest pins two contiguous fragments
+  Q1a/Q1b — consistent with what we read on disk.
+- Verification used only local reads/`sha256sum`; no capture re-run
+  (not in scope; the pinning claim is about the existing recorded state).
+
+## Files changed
+
+- `.ufo/waves/round-26/wave2/AttackB5.md` (this report).
+- `.ufo/waves/round-26/wave2/b5.md` (same report, spec-named output path).
+- Nothing else touched.

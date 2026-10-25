@@ -1,0 +1,53 @@
+# e1-selftest-live — ExecAuditFix (recheck-audit.py expected-list gate)
+# generated: 2026-10-25T12:37:35Z
+# instrument_sha256=3fc0d751f2a5819879d440f8ef62b607376a8b6914d7edf9fe1b2fc25662d4e1
+# python: Python 3.14.8
+
+## --selftest (15 cases)
+selftest good.md       pass want=True  got=True  | strict want=True  got=True  ok
+selftest prose.md      pass want=False got=False | strict want=False got=False ok
+selftest cwd.md        pass want=False got=False | strict want=False got=False ok
+selftest ghost.md      pass want=False got=False | strict want=False got=False ok
+selftest degenerate.md pass want=True  got=True  | strict want=False got=False ok
+selftest elsewhere.md  pass want=True  got=True  | strict want=False got=False ok
+selftest ownonly.md    pass want=True  got=True  | strict want=False got=False ok
+selftest selftesty.md  pass want=True  got=True  | strict want=False got=False ok
+selftest sourced.md    pass want=True  got=True  | strict want=True  got=True  ok
+selftest basetest.md   pass want=True  got=True  | strict want=False got=False ok
+selftest basestate.md  pass want=True  got=True  | strict want=True  got=True  ok
+selftest parseonly.md  pass want=False got=False | strict want=False got=False ok
+selftest instonly.md   pass want=True  got=True  | strict want=False got=False ok
+selftest completeness lines=13 total=15 complete=False ok
+good.md                                                    frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+missing=corpus/knowledge/ghost-absent.md
+strict pass=1/1 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=1 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=1 total=1 pass=1 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=2 missing=1 unexpected=0 exit=1
+selftest expect-missing  exit=1 want=1 missing=['corpus/knowledge/ghost-absent.md'] unexpected=[] ok
+extra.md                                                   frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+good.md                                                    frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+unexpected=corpus/knowledge/extra.md
+strict pass=2/2 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=2 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=2 total=2 pass=2 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=1 missing=0 unexpected=1 exit=1
+selftest expect-unexpected exit=1 want=1 missing=[] unexpected=['corpus/knowledge/extra.md'] ok
+selftest_exit=0
+## scratch deleted-entry audit (expected list present; vdp-disclosure-packages.md removed from tree)
+deleted-scratch missing=corpus/knowledge/vdp-disclosure-packages.md
+deleted-scratch strict pass=36/36 cdroot_fail=0 instrument_fail=0 own_fail=0
+deleted-scratch executes=14 gated=22 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+deleted-scratch lines=36 total=36 pass=36 fail-closed=22 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+deleted-scratch expect=present expected=37 missing=1 unexpected=0 exit=1
+deleted-scratch exit=1
+## scratch extra-file audit
+extra-scratch unexpected-extra.md                                        frozen=110 strict=110001 lane=2   foreign=2   gated       FAIL
+extra-scratch unexpected=corpus/knowledge/unexpected-extra.md
+extra-scratch lines=38 total=38 pass=37 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=1 exit=1
+extra-scratch expect=present expected=37 missing=0 unexpected=1 exit=1
+extra-scratch exit=1
+## scratch no-expect audit (old behavior on same deleted tree)
+noexpect-scratch lines=36 total=36 pass=36 fail-closed=22 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+noexpect-scratch expect=absent expected=0 missing=0 unexpected=0 exit=0
+noexpect-scratch exit=0

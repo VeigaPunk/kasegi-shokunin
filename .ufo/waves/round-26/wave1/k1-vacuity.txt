@@ -1,0 +1,126 @@
+C1 VACUITY ATTACK — k1 (CritVacuityC1)
+Lane: kasegi-shokunin (base 1b076fa7f2fb5e7dd9d87449514eba526043421b)
+Seat: L1Kasegi26.CritVacuityC1 | Role: UFO-FSD critic (read-only/scratch)
+Date (access): 2026-10-25 (UTC). Instrument under test: corpus/instruments/recheck-audit.py.
+
+===============================================================
+(1) Can the registry row appear without any real gate behavior?  YES.
+===============================================================
+Frozen counter #1:  grep -cE '^\| [^|]+\| gate\|probe ' SKILL.md
+Live value: 1 (SKILL.md:981, the e4 row). The row is documentation, not
+behavior: the counter matches any table row whose third cell begins with the
+literal text `gate|probe ` and executes nothing.
+
+Key semantics on this host (pi-uu-grep 0.2.0, /bin and /usr/bin identical):
+- `grep -E 'a\|b'` matches literal text "a|b" (verified: printf 'a|b\n' → match,
+  rc=0): in ERE here `\|` is a LITERAL PIPE, not alternation.
+- `grep -E '62 assertions|77 assertions'` DOES alternate (plain `|`).
+Therefore the counter is satisfied by any row `| <x> | gate|probe | ...` —
+even if corpus/instruments/recheck-audit.py is deleted, broken, or never
+runs. The row's verdict-map, self-test, pinned-value-path and write-scope
+columns are unexecuted prose. Parallel seat m2 confirmed 4/5 field mutations
+(verdict map omitted, self-test spelling --self-test, pinned path omitted,
+instrument name typo) all still count 1; only the type-cell marker is
+distinguishable. The e4 row had to write a non-standard unescaped
+`gate|probe` cell (which a strict markdown renderer splits) purely to hit the
+frozen regex — the counter is brittle in both directions.
+
+ALSO decorative: counter #2 (`grep -cE 'selftest cases=' c1-receipt-index.txt`)
+counts any line containing "selftest cases=" — it does not verify failures=0,
+the cases number, or that the line's digest matches the instrument bytes. A
+line written without running anything (or `cases=15 failures=99`) counts the
+same.
+
+NOTE (propose for the round report; do NOT change claims.json): make the
+counters bind to executable evidence —
+  (a) counter #2 spelling → require a live-run binding, e.g. check the index
+      contains `selftest cases=[0-9]+ failures=0` AND that its
+      `instrument_sha256=` equals a fresh `sha256sum
+      corpus/instruments/recheck-audit.py` at measurement time (a stale or
+      fabricated line otherwise satisfies it);
+  (b) commit the executed selftest + live-audit outputs (e1/e3 receipts) in
+      c1-controls and state in the round report that the registry row's
+      self-test column equals the command whose output is receipted;
+  (c) require `expect=present` in the deletion-fixture receipt (see (2)) so
+      the fixture provably exercised the gate rather than the fallback.
+Integration state observed: e3's committed receipt (instrument_sha256=
+c3c19adc…, selftest cases=14) predates the landed instrument (sha at report
+time 3fc0d751…; `--selftest` no longer prints a `selftest cases=` summary
+line — executor still editing). Counter #2 reads 1, but the predicate's
+"at the instrument's own digest" clause is not satisfied by the current
+bytes; regenerate the receipt index on the final instrument bytes before
+commit.
+
+===============================================================
+(2) Deletion fixture: do lines/total + expected-set equality catch BOTH
+     full deletion and rename?  YES (with conditions) — confirmed.
+===============================================================
+Pre-fix evidence (m1 receipts c1-controls/m1-*.txt + my byte-identical scratch
+rerun on the same c3c19adc bytes):
+  base  : lines=37 total=37 strict 37/37 exit=0
+  A del : lines=36 total=36 strict 36/36 exit=0   -> full deletion UNDETECTED
+  C ren : exit=1 INCIDENTALLY only (renamed entry's own recheck line still
+          names the old filename -> paths/own limb fails; not general)
+  D stray: lines=37 total=38 exit=1 (completeness already catches extra file
+          without a recheck line)
+Traced cause: completeness is `len(entries)==total`; deleting one whole entry
+shrinks BOTH sides together, so the equality holds vacuously (36/36) — the
+lines/total count alone cannot see deletion.
+
+Landed `--expect` behavior (ran the current instrument on the same fixtures;
+receipt fields missing_entries/unexpected_entries + exit):
+  base: expect=present expected=37 missing=0 unexpected=0 exit=0
+  A   : expect=present expected=37 missing=1 (triage-thresholds.md) exit=1
+  C   : expect=present expected=37 missing=1 unexpected=1 exit=1
+  D   : expect=present expected=37 missing=0 unexpected=1 (stray-extra.md) exit=1
+=> CONFIRMED: expected-set equality (implemented in expected_mismatch() against
+the glob of corpus/knowledge/*.md) catches BOTH full deletion and rename,
+names the offending entries, and is independent of whether the entry's
+recheck line self-names. The A flip (exit 0 -> 1) is exactly C1's target.
+
+Conditions for soundness (NOTE for round report):
+  - default-path discovery: the audit only activates --expect when
+    <root>/corpus/instruments/knowledge-expected.txt exists. The deletion
+    fixture MUST contain the committed expected list (snapshot taken BEFORE
+    the deletion); otherwise expect=absent falls back to glob completeness and
+    deletion passes again. The frozen counter does not pass --expect, so this
+    is an integration prerequisite, not a property of the command.
+  - the committed expected list must match the live entry set; if C2 adds its
+    two knowledge entries and knowledge-expected.txt is not regenerated, the
+    live audit reds on missing=[iso-29147-…] (intended drift contract, but
+    wave ordering must regenerate/verify the list after the C2 entries land).
+
+===============================================================
+(3) Fix-control #3 restatement vs retained historical line.  RUN (verbatim).
+===============================================================
+Command exactly as frozen in claims.json:
+  grep -rnE '62 assertions\|77 assertions' corpus/instruments/README.md SCORECARD.md corpus/lessons/round-24.md | grep -v 'round-24.md:77' | wc -l
+Output: 0
+Raw (same, no exclusion): 0 hits (grep rc=1)  [ERE form]
+
+Why: on this host `\|` inside -E is a literal pipe (verified above), so the
+pattern can never match any line; the counter is an always-zero tautology. It
+cannot fail under any file content, it cannot see the retained historical
+line, and the claim's recorded before (=1 excluding the historical line) is
+unreproducible under the frozen spelling — a do-nothing run of the frozen
+command yields 0, which equals the after value (kill-rule conflict).
+
+Intended semantics (BRE form used by the round-25 lesson, no -E):
+  grep -rn '62 assertions\|77 assertions' corpus/instruments/README.md SCORECARD.md corpus/lessons/round-24.md
+  -> exactly 1 hit: corpus/lessons/round-24.md:77
+     ("it was written; `source-recheck.py` exits 0 over 19 records / 77 assertions.")
+  with the exclusion -> 0.
+So under the intended alternation the restatement interacts CORRECTLY with
+the retained historical line: it removes precisely the round-24.md:77 sentence
+(the only remaining stale number) and the after=0 is genuine.
+
+Recommendation (NOTE): restate the frozen counter without `-E` (or with plain
+`|` alternation) and keep the `grep -v 'round-24.md:77'` exclusion; record the
+frozen-spelling defect in the round report.
+
+===============================================================
+Summary of live evidence (all outputs above reproduced on 2026-10-25 UTC;
+file mtimes 09:35; instrument sha lineage observed: c3c19adc (pre-fix) ->
+503de028d (m1 note) -> ae4a7205 (first read, selftest cases=15) ->
+3fc0d751 (final read, selftest summary line removed)).
+===============================================================
