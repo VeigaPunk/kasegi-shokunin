@@ -1,4 +1,4 @@
-# Q7/Q8 controls, 2026-10-25, copies of corpus/source-snapshots/round-23/manifest.json
+# Q7/Q8 controls, 2026-10-25, against copies of corpus/source-snapshots/round-23/manifest.json
 # clean:
   S018 exit=0
   S029 exit=0
@@ -6,3 +6,12 @@
   S031 exit=0
 # selftest:
   exit=0
+# control: digest
+S018:sha256 MISMATCH expected=0000000000000000000000000000000000000000000000000000000000000000 actual=d366bf409e7ce9e361b9f1fe544bc1657e3eea2b6f62eaa51e9c21419dc27ab4
+  exit=1
+# control: missing
+S029:source UNAVAILABLE reason=missing
+  exit=2
+# control: quote
+S030:fabricated MISMATCH reason=quote-not-found
+  exit=1
