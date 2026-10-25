@@ -1,0 +1,23 @@
+Post-commit round-28 recheck (2026-10-25 UTC)
+Measured revision: 1265fe111bc0684d4dac004d803aa5b683c6b833
+
+$ sha256sum corpus/instruments/anchorcheck.py
+23818c1204c38ee8d1bb0c6d449dd0ffb3c9181271f14fb3d7aab25a73ee7396  corpus/instruments/anchorcheck.py
+
+C1 counters (same revision):
+bad-fixture exit=1
+BOUNTIES-ABSENT lines=1
+selftest cases=9 failures=0; exit=0
+SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0; exit=0
+Canonical index: .ufo/waves/round-28/c1-receipt-index.txt; selftest line count=1; embedded instrument_sha256 matches the line above.
+
+C2 counters:
+awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md -> 12
+ grep -lE '^source: S042 ' corpus/knowledge/*.md | wc -l -> 1
+ grep -cE '^\|[[:space:]]*S042[[:space:]]*\|' corpus/SOURCES.md -> 1
+python3 corpus/instruments/frontier-recheck-count.py -> PASS F12 knowledge/japanese-domestic-disclosure-workflow.md ids=S041,S042 exit=0; entries=15 pass=15 exit=0
+python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041 -> S041:Q6 OK occurrences=1; exit=0
+python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S042 -> S042:Q6 OK occurrences=1; exit=0
+sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> W04 S028/S029 pre-existing; kasegi ok; exit=0
+python3 corpus/instruments/recheck-audit.py -> executes=16 gated=24 broken=0; lines=40 total=40 pass=40 exit=0; expected=40 missing=0 unexpected=0 exit=0
+python3 corpus/instruments/density.py SKILL.md --label r28-final -> mean dens 160.2; 20 blocks; 656 path citations
