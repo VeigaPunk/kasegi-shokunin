@@ -1187,3 +1187,58 @@ no live-target, signed-URL or injection findings.
   the boundary must reject). Final matrix **24 cases (12 escape, 12 control)**,
   fixed **24/24 exit 0** (`resolver 690153ad…`, `matrix d05b1e0c…`), do-nothing
   control **0/12 escape GONE**, 12/24, exit 1.
+
+## 2026-10-25 — round 24 (C1 verifiability instruments, C2 assimilation/F09)
+
+Frozen claims `.ufo/waves/round-24/claims.json`; base `d0a3f6a`, tip at start
+`c2480b1`. Two claims, distinct axes, both measured; no axis harmed.
+
+- **C1 depth:verifiability — the two routed verifier defects, fixed and measured.**
+  Counter A (every Frontier entry's own `recheck:`): **3/8 → 8/8** (frozen shell
+  form, cwd-pinned); the F09 entries make it **10/10** under the new harness
+  `corpus/instruments/frontier-recheck-count.py`, which refuses a line that is not
+  a `source-recheck.py` invocation, whose `--source` set does not cover the entry's
+  header sources, or names a manifest that does not list them. Counter B
+  (`resolve.py` dispatch): **4/8 exit 1 → 8/8 exit 0** on
+  `resolve-dispatch-check.py` + `resolve-dispatch-fixtures.json` (8 cases, 4
+  liveness / 4 control, class **and** resolved path asserted), with the round-23
+  containment matrix still **24/24 exit 0**. Resolver changes: an empty brace
+  alternative in a real set is now a literal expansion (a bare `{}` stays a
+  placeholder), a brace alternative that carries a `<...>` placeholder is globbed,
+  the glob branch credits the first match that *exists*, and the CLI refuses a
+  non-directory root and an empty census run (wave-1 seat truncated
+  `citation-survival.*` with `--help`; restored byte-exact).
+- **C1 captures.** `corpus/instruments/capture-source.py` (HTML/PDF/text →
+  UTF-8 text, deterministic, `--selftest` exit 0) + `source-snapshots/round-24/`
+  (19 captures, 77 assertions, `source-recheck.py` exit 0). `source-recheck.py`
+  now rejects a quote shorter than 12 normalized characters, prints the
+  occurrence count it observed, and verifies an optional `anchor` line (the
+  round-23 manifest's one non-unique assertion now reads `anchor=10-ok`).
+- **C2 coverage — F09 admitted (8/8 → 9/9) with two entries, re-grounded in-lane.**
+  `authorised-testing-rules-of-engagement.md` (S032 NIST SP 800-115 Appendix B)
+  and `statutory-authorization-and-unauthorized-access.md` (S033 e-Gov
+  consolidated text, with S034 MIC page and S035 NPA commentary). Registry
+  **31 → 35** rows (S032 A, S033 A, S034 B, S035 A; mined 19→23), census exit 0
+  with only the two pre-existing W04s. Package `chinese-criminal-thresholds-and-
+  authorisation.md` **refused**: its own cited 第二百八十五条 lacks the
+  情节严重 element it asserts (Q2/Q4), its `recheck:` cannot fail closed, and it
+  points at `ground: F12`, which the lane does not have. S034's title corrected
+  `防止 → 禁止` before landing (log only; row added this round).
+- **Assimilation (§10).** Package `/home/vgpnk/Projects/shokuknow/merge/kasegi`,
+  read-only. Collision check: lane registry max S031 vs staged S031–S124 →
+  **1 collision (S031, HackerOne policy set vs CNA Rules 4.2.6)**; guard proved on
+  an indented scratch fixture (`assimilation/guard-proof.txt`: 0-3-space pattern
+  catches it, column-zero-only does not). Map `assimilation/renumber-map.tsv`:
+  S123→S032, S039→S033, S040→S034, S041→S035; the other 90 staged rows are not
+  adopted and get no id.
+- **Docs/contracts.** QUALITY gains Q9 (assertion binding), R11 (counter
+  instruments publish their discrimination), R12 (a recheck line is measured
+  against the entry that owns it); `corpus/instruments/README.md` gains the
+  round-24 section including the published blind spot; `corpus/README.md`
+  provenance line, F09 row, coverage-map rows and frontier denominator updated;
+  `PROVINCE.md` Frontier F01–F09.
+- **Waves.** Wave 1 `kasegi-r24-build` 43 seats (scout 22, reviewer 7, executor 5,
+  scribe 3, critic 3, mutation-tester 1, connector 1, sentinel 1), all reports
+  landed. Wave 2 `kasegi-r24-falsify` 35 seats (attack roles 24/35 = 69%)
+  validated under the v1 policy; first dispatch refused at the host job limit
+  (`wave2-refusal-1.json`), payload resent unchanged.

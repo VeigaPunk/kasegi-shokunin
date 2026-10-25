@@ -22,6 +22,7 @@ SCHEMA_VERSION = 1
 ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*\Z")
 SHA256_RE = re.compile(r"[0-9a-f]{64}\Z")
 MARKUP_RE = re.compile(r"</?u>")
+MIN_QUOTE_CHARS = 12   # normalized minimum: a shorter "quote" matches any capture
 
 
 def normalize(text):
@@ -73,6 +74,28 @@ def load_manifest(path, out):
     return manifest_path, records
 
 
+def anchor_verdict(assertion, raw_lines, occurrences):
+    """Return the receipt's anchor note for one assertion (QUALITY Q9).
+
+    A quote that occurs more than once must carry an `anchor` line number: the
+    pin is verified against the raw snapshot, so a non-unique quote names where
+    it is meant to be read instead of relying on substring presence. A unique
+    quote needs no anchor and reports `anchor=none`; a declared anchor that
+    does not hold the quote is reported as `anchor=BROKEN` (visible, not fatal:
+    the quote itself is still found, and the round's Gate records the finding).
+    """
+    anchor = assertion.get("anchor")
+    if anchor is None:
+        return "" if occurrences <= 1 else " anchor=MISSING"
+    if type(anchor) is not int or anchor < 1 or anchor > len(raw_lines):
+        return " anchor=OUT-OF-RANGE"
+    window = " ".join(raw_lines[max(0, anchor - 1):anchor + 3])
+    expected = normalize(assertion["quote"])
+    if expected and expected in normalize(window):
+        return " anchor=%d-ok" % anchor
+    return " anchor=%d-BROKEN" % anchor
+
+
 def check_source(manifest_path, record, out):
     source_id = record["id"]
     path = record.get("path")
@@ -100,6 +123,12 @@ def check_source(manifest_path, record, out):
         quote_ids.add(assertion["id"])
         if not isinstance(assertion.get("quote"), str) or not assertion["quote"]:
             emit(out, f"{source_id}:{assertion['id']}", "UNAVAILABLE", "reason=empty-quote")
+            return 2
+        # A quote with no substance after normalization (' ', '<u></u>') matched
+        # any capture and would pass silently (r24 RevC1Control forgery route).
+        if len(normalize(assertion["quote"])) < MIN_QUOTE_CHARS:
+            emit(out, f"{source_id}:{assertion['id']}", "UNAVAILABLE",
+                 "reason=quote-too-short-to-be-evidence")
             return 2
 
     base = manifest_path.parent
@@ -130,15 +159,21 @@ def check_source(manifest_path, record, out):
 
     emit(out, f"{source_id}:sha256", "OK")
     status = 0
+    normalized_source = normalize(source_text)
+    raw_lines = source_text.splitlines()
     for assertion in sorted(quotes, key=lambda item: item["id"]):
         quote_id = assertion["id"]
+        occurrences = normalized_source.count(normalize(assertion["quote"]))
+        anchor_note = anchor_verdict(assertion, raw_lines, occurrences)
         if assertion["quote"] in source_text:
-            emit(out, f"{source_id}:{quote_id}", "OK")
-        elif normalize(assertion["quote"]) and normalize(assertion["quote"]) in normalize(source_text):
+            emit(out, f"{source_id}:{quote_id}", "OK",
+                 "occurrences=%d%s" % (occurrences, anchor_note))
+        elif occurrences:
             # Declared normalization (considerthese/2026-10-24 proposal 1):
             # reader captures carry markup such as <u>…</u>; the receipt names
             # the transformation instead of forcing the entry to quote tags.
-            emit(out, f"{source_id}:{quote_id}", "OK", "normalized=markup-whitespace")
+            emit(out, f"{source_id}:{quote_id}", "OK",
+                 "normalized=markup-whitespace occurrences=%d%s" % (occurrences, anchor_note))
         else:
             emit(out, f"{source_id}:{quote_id}", "MISMATCH", "reason=quote-not-found")
             status = 1

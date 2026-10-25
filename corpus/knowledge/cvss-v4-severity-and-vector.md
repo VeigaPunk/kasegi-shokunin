@@ -1,7 +1,7 @@
 # CVSS v4 Severity and Vectors
 source: S001 — https://www.first.org/cvss/v4.0/user-guide — “CVSS Base Score (CVSS-B) Measures Severity, not Risk”
 verified-at: 2026-10-19
-recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S001 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S002
+recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S001 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S002
 
 ## Rule
 For every report or package that publishes a CVSS v4.0 number, publish the CVSS vector string and a nomenclature label identifying the metric groups used: CVSS-B, CVSS-BE, CVSS-BT, or CVSS-BTE.

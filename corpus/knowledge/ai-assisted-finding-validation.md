@@ -1,7 +1,7 @@
 # AI-Assisted Finding Validation
 source: S009 — https://www.ncsc.gov.uk/blogs/10-questions-ask-using-ai-models-find-vulnerabilities — question 7, “Where should I start?”
 verified-at: 2026-10-19
-recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S009 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S010 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S011 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-23/manifest.json --source S012
+recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S009 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S010 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S011 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-24/manifest.json --source S012
 
 ## Rule
 Treat an AI-originated finding as a candidate, not a confirmed vulnerability, until its evidence package records a reproducible observation and human validation of the claimed impact and reachability.

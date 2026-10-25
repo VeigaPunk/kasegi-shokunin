@@ -35,7 +35,8 @@ under L0 kasegi round-15.
 ## Frontier
 
 General practice that governs every program is indexed in corpus/README.md
-under Frontier F01–F08.
+under Frontier F01–F09 (F09, round 24: authorisation outside the platform — the
+engagement document and the statute; 9/9 admitted).
 
 ## Adjacent
 

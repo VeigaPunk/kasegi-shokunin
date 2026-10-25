@@ -2,7 +2,7 @@
 
 Proprietary memory for the bounty & security research domain. Everything here
 was read from `/home/vgpnk/Projects/bounties` on 2026-09-28; each entry names
-its source. No generic filler. [r22 correction: this holds for the 25 legacy entries only; the five round-22 entries (Frontier F01–F05) were read from public sources S001–S015 on 2026-10-19 — see SOURCES.md; r23 correction: the three round-23 entries (Frontier F06–F08) were read from public sources S018, S031 and S029 opened 2026-10-20 and 2026-10-25 — 33 entries in total]
+its source. No generic filler. [r22 correction: this holds for the 25 legacy entries only; the five round-22 entries (Frontier F01–F05) were read from public sources S001–S015 on 2026-10-19 — see SOURCES.md; r23 correction: the three round-23 entries (Frontier F06–F08) were read from public sources S018, S031 and S029 opened 2026-10-20 and 2026-10-25 — 33 entries in total; r24 correction: the round-24 entry count is 35 — F09 admits two entries read from public sources S032-S035 opened 2026-10-25]
 
 ## Coverage map
 
@@ -32,7 +32,7 @@ its source. No generic filler. [r22 correction: this holds for the 25 legacy ent
 | Claim-anatomy sample (per-program `status.json`) | `knowledge/claim-anatomy-sample.md` | round-14: 20 NEW full reads via deterministic stratified rule (script preserved, L1-reproduced); 10→30/280 = 10.7%; deviation classes D1-D13 with anchors |
 | Source-tree loss + mirror provenance (PROVINCE root absent) | `knowledge/source-tree-loss-2026-09-28.md` | round-15: detection commands, 23:32Z–23:51:31Z disappearance window, per-file mirror provenance (`wc -l` + sha256 + anchor verdicts for 11 files), forensic blind spots, anchor-base rule, resolvability census, the never-re-verifiable DATA-half list, 9 L2 audit corrections |
 | Root loss — second event (mirror + origin-work absent; ufo-fsd relocated) | `knowledge/root-loss-2026-10-12.md` | round-19 re-census: `the-bounty-hunter` and the whole `origin-work` tree ABSENT (no relocated copy); `ufo-fsd-alpha` relocated intact to `~/Projects/ufo-fsd-alpha` @ `964f443e`; `[lost-base]` vocabulary, derived-root instruments, `BASE-ABSENT` verdict |
-| Depth instruments (committed, re-runnable; r23 adds `mirror-containment-check.py` + `mirror-containment-fixtures.json` and `source-recheck.py` + `source-snapshots/round-23/manifest.json`) | `instruments/{density.py,resolve.py,anchorcheck.py,mirror-containment-check.py,source-recheck.py,README.md}` + `instruments/citation-survival.{md,tsv}` | round-15: evidence-density census, live citation-resolvability census (instrument of record + definition + known limits), mirror anchor range/semantic gate; bar rule `BAR_R15 = 142.5` frozen + conjunctive ≥60 % resolvability gate from r16 |
+| Depth instruments (committed, re-runnable; r23 adds `mirror-containment-check.py` + `mirror-containment-fixtures.json` and `source-recheck.py` + `source-snapshots/round-23/manifest.json`; r24 adds `capture-source.py`, `resolve-dispatch-check.py` + `resolve-dispatch-fixtures.json`, `frontier-recheck-count.py` and `source-snapshots/round-24/manifest.json`) | `instruments/{density.py,resolve.py,anchorcheck.py,mirror-containment-check.py,source-recheck.py,README.md}` + `instruments/citation-survival.{md,tsv}` | round-15: evidence-density census, live citation-resolvability census (instrument of record + definition + known limits), mirror anchor range/semantic gate; bar rule `BAR_R15 = 142.5` frozen + conjunctive ≥60 % resolvability gate from r16 |
 | Lessons | `lessons/round-1.md` … `lessons/round-15.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 | CVSS v4.0 severity and vector semantics | knowledge/cvss-v4-severity-and-vector.md | S001, S002 — public primary, opened 2026-10-19 |
 | Coordinated-disclosure timelines | knowledge/coordinated-disclosure-timelines.md | S003, S004, S005 — public primary, opened 2026-10-19 |
@@ -45,6 +45,8 @@ its source. No generic filler. [r22 correction: this holds for the 25 legacy ent
 | Multi-party coordination (round 23) | knowledge/multiparty-vulnerability-coordination.md | S018 — public primary, opened 2026-10-20 |
 | CNA assignment rules, current version (round 23) | knowledge/cna-assignment-and-vulnerability-rules.md | S031 (4.2.6, effective 2026-10-20) supersedes S030 — public primary, opened 2026-10-25 |
 | CRA manufacturer reporting duties (round 23) | knowledge/cra-manufacturer-reporting-duties.md | S029 — public primary, opened 2026-10-20 |
+| Engagement authorisation — rules of engagement (round 24) | knowledge/authorised-testing-rules-of-engagement.md | S032 — public primary (NIST SP 800-115), opened 2026-10-25 |
+| Statutory definition of unauthorised access, Japan (round 24) | knowledge/statutory-authorization-and-unauthorized-access.md | S033 (e-Gov consolidated text) with S034/S035 as tier-B/commentary, opened 2026-10-25 |
 ## Known gaps
 
 - **`~/Projects/bounties` is GONE** (removed 2026-09-28T23:51:31Z, actor
@@ -203,8 +205,9 @@ Correction (2026-10-19): corpus/QUALITY.md now exists; the preceding closing par
 | F06 | Multi-party CVD — FIRST guidelines v1.1 | admitted | knowledge/multiparty-vulnerability-coordination.md | S018 | Record each party's role and relationship; an upstream fix is not downstream evidence. |
 | F07 | CVE CNA operational rules | admitted | knowledge/cna-assignment-and-vulnerability-rules.md | S031 | Separate technical impact, assignment scope and identifier count; do not reuse 4.1.0 section numbers. |
 | F08 | EU Cyber Resilience Act reporting duties | admitted | knowledge/cra-manufacturer-reporting-duties.md | S029 | Distinguish manufacturer statutory tracks from researcher disclosure; Article 14 applies from 2026-09-11. |
+| F09 | Authorisation outside the platform: the engagement document and the statute | admitted | knowledge/authorised-testing-rules-of-engagement.md, knowledge/statutory-authorization-and-unauthorized-access.md | S032, S033, S034, S035 | A safe-harbour badge is not the grant and not the legal definition: read the ROE's scope/exclude list, and the access manager the statute requires. |
 
 The original domain-root map is exhausted: 0/18 surfaces are present.
 That sentence describes the lost `/home/vgpnk/Projects/bounties` surface set only; the
-public-practice frontier above is a separate denominator (8/8 admitted at round 23) and
-is not counted into the 0/18 figure.
+public-practice frontier above is a separate denominator (9/9 admitted at round 24; F01-F08 at
+round 23, F09 at round 24) and is not counted into the 0/18 figure.

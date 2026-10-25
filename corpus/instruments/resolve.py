@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""kasegi r15 live citation-resolvability census; r18 self-input/leading-dot fixes; r23 mirror-fallback confinement.
+"""kasegi r15 live citation-resolvability census; r18 self-input/leading-dot fixes; r23 mirror-fallback confinement; r24 brace/glob dispatch liveness.
 
 Usage: python3 resolve.py <root-of-lane-repo>
 
@@ -171,10 +171,14 @@ def brace_expand(path):
     if not m:
         return [path]
     out = []
-    for alt in sorted(m.group(1).split(",")):
-        if not alt.strip():
-            continue          # `{}` / `{,x}` empty alternative is not a resolvable expansion
-        out.extend(brace_expand(path[: m.start()] + alt + path[m.end():]))
+    alts = sorted(m.group(1).split(","))
+    for alt in alts:
+        # r24: inside a real alternative set the empty alternative is a literal
+        # expansion (`{,sub}` -> the group disappears); dropping it made every
+        # citation whose only on-disk member is that expansion GONE. A bare `{}`
+        # is a placeholder, not a set, and still expands to nothing.
+        if alt.strip() or (not alt and len(alts) > 1):
+            out.extend(brace_expand(path[: m.start()] + alt + path[m.end():]))
         if len(out) > 64:
             break
     return sorted(out)[:64]
@@ -189,11 +193,22 @@ def exists_any(path):
     for c in cands:
         if os.path.exists(c):
             return "brace", c
+    for c in cands:
+        # r24: an alternative may itself carry a `<...>` placeholder
+        # (`fleets/missions/<id>/claim-alpha.md` inside a brace group). The
+        # literal expansion loop above cannot see it, so glob each expansion.
+        qc = PLACEHOLDER.sub("*", c)
+        if any(ch in qc for ch in GLOBMETA):
+            for hit in sorted(globmod.glob(qc, recursive=True)):
+                if os.path.exists(hit):
+                    return "brace-glob", hit
     q = PLACEHOLDER.sub("*", p)
     if any(ch in q for ch in GLOBMETA):
-        matches = sorted(globmod.glob(q, recursive=True))
-        if matches:
-            return "glob", matches[0]
+        # r24: credit the first match that EXISTS. sorted(glob)[0] may be a
+        # dangling symlink, which produced a resolved_path no re-check corroborates.
+        for c in sorted(globmod.glob(q, recursive=True)):
+            if os.path.exists(c):
+                return "glob", c
     return None, None
 
 
@@ -318,10 +333,20 @@ def main(argv):
         sys.stderr.write("usage: resolve.py <root-of-lane-repo>\n")
         return 2
     repo = os.path.abspath(os.path.expanduser(argv[1]))
+    if not os.path.isdir(repo):
+        # r24: a mistyped flag (`--help`) used to be read as a lane root and
+        # overwrote the committed census of record with a zero-row report.
+        sys.stderr.write("resolve.py: not a directory: %s\n" % argv[1])
+        sys.stderr.write("usage: resolve.py <root-of-lane-repo>\n")
+        return 2
     mirror = os.path.expanduser(MIRROR_ROOT)
     here = os.path.dirname(os.path.abspath(__file__))
     repo, cites = collect(repo)
 
+    if not cites:
+        # Never overwrite the census of record with an empty run.
+        sys.stderr.write("resolve.py: no citations collected under %s; census not written\n" % repo)
+        return 2
     rows = []
     for tok in sorted(cites):
         cls, path, method, dom = classify(tok, repo, mirror)

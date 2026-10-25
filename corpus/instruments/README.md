@@ -145,3 +145,43 @@ moves only on measurements of the actual lane corpus and domain roots.
   pinned captures against declared SHA-256 and exact quotes, applying a declared
   normalization (`normalized=markup-whitespace`); exits 0 only when every assertion
   holds, 1 on a mismatch, 2 when a base is missing.
+
+## Round-24 instruments
+
+- `resolve-dispatch-check.py` + `resolve-dispatch-fixtures.json` — the C1 counter-B
+  matrix: 8 cases (4 liveness, 4 control) replayed on real copied `resolve.py`
+  bytes in isolated case trees, asserting `class` **and** `resolved_path`
+  (existence plus containment to the root that class implies). `--resolver PATH`
+  scores alternate bytes; `--json` writes a receipt with resolver, matrix, checker
+  and runner digests. Measured discrimination: fixed bytes 8/8, round-23 bytes
+  4/8, always-GONE resolver 1/8, always-INTERNAL 0/8.
+  **Known limit (R11):** no case has more than four brace alternatives, so a
+  mutant that lowers `brace_expand`'s 64-combination bound to 8 scores 8/8 here and
+  24/24 on the round-23 matrix while flipping real verdicts. Reported, not hidden.
+- `capture-source.py` — fetches one public document, converts it to UTF-8 text
+  (HTML tags stripped and entities decoded; PDF text via `pdftotext -enc UTF-8`;
+  plain text as served), collapses per-line whitespace, writes the snapshot and
+  prints its sha256 plus fetch byte count and UTC stamp. `--selftest` proves the
+  conversion is deterministic. **Known limit:** it is a network-capable producer;
+  the scheme allowlist lives in `allow_url()`, redirects stay on http(s), but it
+  cannot certify that a host will serve the same bytes again.
+- `frontier-recheck-count.py` — the C1 counter-A harness: reads the Frontier table
+  in `corpus/README.md`, and for each admitted entry binds the entry to its own
+  `recheck:` line before running it (header `source:` ids must be covered by the
+  `--source` selections, the selections must be cited in the entry, the named
+  manifest must list them, and the line must be a `source-recheck.py` invocation
+  with `--source`). Prints one line per entry and `entries=K pass=P exit=0|1`.
+- `corpus/source-snapshots/round-24/manifest.json` — 19 captured records, 62
+  assertions: S001–S015 (the five round-22 Frontier entries) and S032–S035 (the
+  round-24 F09 admissions). Every assertion was measured exactly-once in its own
+  capture; the checker now prints `occurrences=N` and verifies a declared `anchor`
+  line for non-unique quotes (QUALITY Q9).
+- `source-recheck.py` (round-24 changes) — rejects a quote shorter than 12
+  normalized characters (`reason=quote-too-short-to-be-evidence`), prints the
+  occurrence count on every pass, and verifies an optional `anchor` line number.
+- `resolve.py` (round-24 changes) — brace alternatives: an empty alternative in a
+  real alternative set is a literal expansion (`{,sub}`), a bare `{}` stays a
+  placeholder; a surviving alternative that carries a `<...>` placeholder is
+  globbed (`brace-glob`); the glob branch credits the first match that exists, not
+  `matches[0]`. The CLI now refuses a non-directory root and refuses to overwrite
+  the census when it collects no citations.

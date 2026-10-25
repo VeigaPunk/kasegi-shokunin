@@ -456,3 +456,58 @@ first landing's assessment.
 - **F01–F05 residual debt named.** Their `recheck:` lines exit 2 `not-listed`
   (no capture exists for S001–S015). Not repaired this round; disclosed in
   `corpus/lessons/round-23.md`.
+
+## Round 24 — frozen claims C1/C2 (2026-10-25)
+
+Frozen before dispatch in `.ufo/waves/round-24/claims.json` (base
+`d0a3f6a4643fc5f668e95d94fcdbe22830bb8f9a`, lane tip at attempt start `c2480b1`).
+The round fixes the two defects the round-23 verifier routed to this lane and
+takes one assimilation admission.
+
+| Claim | Axis | Before | After | Verdict and evidence | Last change |
+|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest non-retired, 4) | frontier rechecks exit 0: **3/8** (F01–F05 exit 2 `not-listed`); dispatch matrix **4/8 exit 1** on round-23 bytes | **8/8** and **8/8 exit 0**; with F09's two entries counted, harness **10/10** | **Improved, score held 4.** Counter A (frozen shell form, cwd-pinned, `c1-counterA-shell-{before,after}.txt`): `3/8 → 8/8`. Harness `frontier-recheck-count.py` (`c1-counterA-{before,after}.json`): `3/8 → 10/10`, exit 0. Counter B: baseline bytes `690153ad…` `cases=8 pass=4 exit=1` (`c1-control-baseline.txt`), landed bytes `db5e0767…` `cases=8 pass=8 exit=0` (`c1-fixed.txt`); round-23 containment matrix still `24/24 exit 0` (`c1-containment-regression.txt`). Do-nothing control cannot meet either target. | 24 |
+| C2 | coverage (7) | frontier admitted **8**; entries citing a row first registered this round **0** | **9** admitted; **2** entries | **Improved, score held 7.** `awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md` → **8 → 9** (F09). Entries: `authorised-testing-rules-of-engagement.md` (S032) and `statutory-authorization-and-unauthorized-access.md` (S033/S034/S035); counter B corrected by erratum (below): `grep -lE '^source: S03[2-5] ' corpus/knowledge/*.md \| wc -l` → **0 → 2**. Registry **31 → 35** rows (A 29→32, B 0→1; mined 19→23), census exit 0. Refused with reason + flip: `chinese-criminal-thresholds-and-authorisation.md`. | 24 |
+| depth:density | 9 | 9 | 9 | **Unchanged, no harm.** `density.py SKILL.md` → mean **154.0**, 652 path-citation instances, 19 blocks, exit 0; `SKILL.md` bytes untouched this round. `anchorcheck.py SKILL.md` → `0 bad`, `LOST-RECORDED=306`, exit 0. | r15 (held r24) |
+
+**C1 scope, named by surface.** Two verifiability instruments: the captured-source
+rechecker's manifest coverage for S001–S015 (nothing was captured, so five entries
+could only fail closed) and `resolve.py`'s brace/glob dispatch (an empty brace
+alternative was dropped; a glob credited `matches[0]` even when it was a dangling
+symlink; a brace alternative carrying a `<...>` placeholder was never globbed).
+The change is confined to those two instruments plus the CLI guards that stop the
+`--help`-as-lane-root census overwrite and an empty-run census write.
+
+**Errata (append-only; filed before the after-measurement).**
+1. `frozen_at_utc` in `claims.json` says `2026-10-25T00:00:00Z`; the file's real
+   creation time is `07:09:47Z` (wave-1 reviewer receipt). The date is corrected
+   here; the freeze still precedes every measurement in this table (first receipt
+   `07:09:56Z`).
+2. Counter B's frozen command `grep '^source: S1[0-9][0-9] '` assumed the package's
+   numbering. Adopted ids continue the registry from S031 → **S032–S035**, so the
+   command can never match; the *predicate* (two entries, each citing a row first
+   registered this round) is unchanged and is measured by `S03[2-5]`. A frozen
+   command that mis-measures its own predicate is a defect in the instrument, not
+   a reason to bend the ids (ids follow the document — CORPUS rule 2).
+3. The wave-1 `LivenessMatrix` item's L4 (dangling *brace* alternative) could not
+   fail the baseline: `brace_expand` already tested `os.path.exists` per
+   expansion. The landed matrix's L4 keeps that citation as a post-fix guard and
+   adds a bounty/mirror empty-alternative citation, which is what fails on the
+   baseline; the receipt prints both citations per case.
+
+**Known blind spot (R11, published not hidden).** Neither matrix has a case with
+more than four brace alternatives: a mutant lowering `brace_expand`'s
+64-combination bound to 8 scores `8/8` on the dispatch matrix and `24/24` on the
+containment matrix while flipping real verdicts (`ResolverAttack` receipt,
+wave 1). Degenerate instruments are separated: always-GONE `1/8`,
+always-INTERNAL `0/8`.
+
+## Round-24 capabilities
+
+| Capability | What it can now do | Evidence pointer | First-working round |
+|---|---|---|---|
+| frontier-recheck-harness | Re-verify every admitted Frontier entry from committed captures, with the entry bound to its own recheck line (header sources covered, selections cited, manifest listing them), and score it as `entries=K pass=P exit=0|1` | `corpus/instruments/frontier-recheck-count.py`; `c1-counterA-after.json` (10/10), `c1-counterA-before.json` (3/8) | 24 |
+| source-capture | Capture a public document to a committed, hash-pinned text snapshot with a deterministic conversion and a selftest, then assert located quotes offline | `corpus/instruments/capture-source.py` (selftest exit 0), `corpus/source-snapshots/round-24/manifest.json` (19 records, 77 assertions, exit 0) | 24 |
+
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3. With
+depth:verifiability at 4 the lowest-axis obligation stays active.
