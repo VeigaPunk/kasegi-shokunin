@@ -1,0 +1,647 @@
+{
+ "wave": "kasegi-r28-build",
+ "context": "# Round\nkasegi-shokunin round 28, wave 1 (build+attack, single v2 wave), dispatched by the L1 (parent omp session).\nFleet root /home/vgpnk/Projects/shokunin. Lane repo /home/vgpnk/Projects/shokunin/kasegi-shokunin — your only write scope. Lane base revision c9f8b115a098c65356e4b3b6048af45a37ab8395 (claims freeze commit).\nRead before your item (absolute paths):\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/claims.json (FROZEN claims C1/C2, predicates, counters, kill rules — do\n  not edit; corrections land as separate appended files)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md (axes, saturation, round-27 carry-forward)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md (entry bar Q1-Q10, record bar R1-R13)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md (coverage map, frontier F01-F11)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md (registry; S001-S041; S041 row)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-27.md (carry-forward items 1-4, M27-1/M27-2)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/anchorcheck.py (the C1 instrument; digest c2a9e6c6... pre-change)\n- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-source.py (--kind html|pdf|text), source-recheck.py,\n  frontier-recheck-count.py, recheck-audit.py\n- /home/vgpnk/Projects/shokuknow/merge/kasegi/ (READ-ONLY assimilation package: MERGE-REPORT.md, SOURCES.append.md,\n  knowledge/corpus/knowledge/japanese-domestic-disclosure-workflow.md)\n\n# The two frozen claims (do not widen, do not re-word; counter commands execute from the lane root)\nC1 depth:verifiability (lowest non-retired axis, score 4 held) — anchorcheck.py gate soundness:\n(a) exit 1 on unverifiable verdicts (MISSING-FILE, PAST-EOF, OUTSIDE-BASE, PIN-BROKEN, BASE-ABSENT,\nBOUNTIES-ABSENT); (b) CITE gains a ~/Projects/bounties/ arm → BOUNTIES-ABSENT; (c) --selftest runs one\nisolating fixture per limb, prints `selftest cases=N failures=0`, receipt at the landed sha256;\n(d) no-harm: SKILL.md live run exit 0, bad=0, verdict classes unchanged (LOST-RECORDED=306).\nCorpus disclosure (frozen): 4 corpus marked bounties citations (claim-gates.md, intake-and-finalize.md,\nmission-control.md, source-tree-loss-2026-09-28.md) newly classify LOST-RECORDED after the arm.\nImplementation notes (round-27 lesson carry-forward 2): FAIL_CLASSES as above; LOST-RECORDED stays\nrecorded-not-fail; derive the bounties root like MIRROR/ORIGIN ($KASEGI_BOUNTIES override + canonical\n~/Projects/bounties); selftest fixtures must isolate limbs under the absent-bases host (env-override a\ntemp mirror root to reach MISSING-FILE; PAST-EOF needs a real temp file).\nC2 coverage (score 7 held) — F12 Japanese state-coordinated disclosure workflow: captures of the IPA\nintake-process page (new row S042) + a round-28 re-capture of the JPCERT/CC 2026 P-guideline (row S041)\nunder corpus/source-snapshots/round-28/, manifest.json with Q9-bound quote assertions, entry\nknowledge/japanese-domestic-disclosure-workflow.md (source: S041 + source: S042 headers, one executable\ncwd-independent recheck line), corpus/README.md F12 row admitted, S042 registry row (tier A, mined,\nopened 2026-10-25, used-by exactly the entry), S041 used-by gains the entry (old→new logged), census\nexit 0, harness entries 14→15 pass 15. Assimilation Gate: >=1 admit + >=1 reject with inline <=25-word\nquotes. considerthese/2026-10-25.md proposal 1 lands as QUALITY.md R14 and is practiced in-round.\n\n# Ownership map — production files have exactly ONE writer; do not touch any other production file\n- corpus/instruments/anchorcheck.py -> ExecImplC1 ONLY (all other C1 seats: scratch copies under\n  .ufo/waves/round-28/wave1/<YourSeat>/ only, never the live file)\n- corpus/instruments/README.md -> ExecInstrReadme ONLY\n- SKILL.md -> ScribeSkillGate ONLY (append at end per R6; never shift lines)\n- corpus/source-snapshots/round-28/S042.txt -> ExecCaptureS042 ONLY\n- corpus/source-snapshots/round-28/S041.txt -> ExecCaptureS041 ONLY\n- corpus/source-snapshots/round-28/manifest.json -> ExecManifest ONLY\n- corpus/knowledge/japanese-domestic-disclosure-workflow.md -> ScribeEntryC2 ONLY\n- corpus/SOURCES.md -> ScribeRegistryC2 ONLY\n- corpus/README.md -> ScribeReadmeC2 ONLY\n- corpus/QUALITY.md -> ScribeR14 ONLY\n- corpus/lessons/round-28.md -> ScribeLesson ONLY\n- LOG.md -> ScribeLog ONLY; SCORECARD.md -> ScribeScorecard ONLY\n- .ufo/waves/round-28/assimilation/ scratch -> ScoutAssimilation ONLY\n- Per-seat receipts: .ufo/waves/round-28/receipts/<SeatName>.txt (or .json) — write only your own file.\n\n# Hard rules (every seat)\n- Every `Report:` trailer path is relative to /home/vgpnk/Projects/shokunin/kasegi-shokunin — write it at /home/vgpnk/Projects/shokunin/kasegi-shokunin/<that path>. Use absolute\n  paths in every command.\n- You are a leaf: spawn nothing, start no background job, run no swarm of your own.\n- Timing: seats run concurrently. If a file your item depends on is not yet updated (e.g. the\n  instrument still has pre-change digest c2a9e6c6...), do NOT wait or poll: run your attack against\n  scratch copies / the pre-change bytes, label your receipt PRE-STATE, and name the exact re-run\n  command the L1 must execute post-change. An unrun check has not passed.\n- Write ONLY your owned paths (named above and in your item). A read-only seat makes NO production edit.\n- Never write /home/vgpnk/Projects/shokunin (fleet root), any sibling lane, /home/vgpnk/Projects/shokuknow (READ-ONLY: no writes, never run\n  renumber-staged.py / merge-plan.py / quote-lint.py / absent-defect-register.py there),\n  /home/vgpnk/Projects/shokunin/.ufo/state, /home/vgpnk/Projects/shokunin/.scratch, MANIFEST.json, templates/ or fleet scripts/.\n- Never run in the lane repo: git add/commit/push/checkout/switch/stash/reset/pull, any mutating jj\n  command (commit/new/describe/squash/rebase/abandon/bookmark/undo/op restore), or any other VCS write.\n  Read-only git (log/show/diff/status/ls-files/rev-parse) and `jj --ignore-working-copy` are fine.\n  The L1 commits through the lane helper; you never do. Git fixtures: mktemp -d + git -C \"$D\" init.\n- Tooling: you may install or upgrade tools that help your item — read /home/vgpnk/.omp/agent/RULES.md\n  first, official channels only, record tool/version/channel/reason in your report. ALL pacman\n  transactions are PAUSED host-wide: use `uv tool` / `npx` / an official binary in ~/.local/bin only;\n  never `pacman -S`, `-Sy`, `-Syu`, `-U`, `-R`.\n- Honesty: an unrun check has not passed; never fabricate a verdict, a quote, a count or an exit code.\n  Quote failures verbatim. If your item cannot be completed, report the exact blocker.\n- Never edit claims.json, the round-27 lesson(s), or any prior round's wave receipts.\n- No credential material, session or private URLs in anything you write (CORPUS.md rule 6).\n- Today is 2026-10-25. Use UTC in timestamps. Access dates in Gate blocks must be today.\n",
+ "reportDir": ".ufo/waves/round-28/wave1",
+ "maxLanes": 128,
+ "axes": [
+  "depth:verifiability",
+  "coverage"
+ ],
+ "milestone": "round-28 build+attack wave: C1 anchorcheck fail-closed + C2 F12 assimilation",
+ "items": [
+  {
+   "name": "ScoutDatawalk",
+   "role": "scout",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nThis seat carries the L1 planner's bounded data-walk. Verify and report:\n1. The frozen counters run from the lane root and their BEFORE values hold at base c9f8b115a098c65356e4b3b6048af45a37ab8395:\n   bad-fixture exit (expect 0, BASE-ABSENT=1), bounties-fixture BOUNTIES lines (expect 0),\n   `python3 corpus/instruments/frontier-recheck-count.py` (expect entries=14 pass=14 exit=0),\n   `awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md`\n   (expect 11), sources census exit 0 / 41 rows.\n2. `git ls-files corpus/knowledge/*.md | wc -l` (expect 41) and confirm no untracked knowledge files.\n3. Read /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/claims.json and confirm it matches commit c9f8b115a098c65356e4b3b6048af45a37ab8395 byte-exact\n   (`git show c9f8b115a098c65356e4b3b6048af45a37ab8395:.ufo/waves/round-28/claims.json | sha256sum` vs the worktree file).\n4. Confirm the 4 disclosed corpus bounties-marked citations exist as claimed (grep the 4 named files).\n5. Run `python3 corpus/instruments/recheck-audit.py` and record the summary line (expected-list basis\n   for carry-forward 4 reconciliation).\nReport: .ufo/waves/round-28/wave1/ScoutDatawalk.md (facts only, no edits)."
+  },
+  {
+   "name": "ScoutIpaRecon",
+   "role": "scout",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nReconnaissance for the S042 capture (C2). Open the live source\nhttps://www.ipa.go.jp/security/todokede/vuln/process.html (instrument UA:\n`curl -sSL -A \"kasegi-shokunin/1.0 (documentation capture; +https://shokunin.invalid/kasegi)\"`):\n1. Record HTTP code, final URL, content-type, and whether the page carries the\n   脆弱性関連情報の取扱いプロセス steps 1-10 and the ウェブアプリケーションの取扱いプロセス steps 1-6.\n2. Locate step 5 起算日の連絡 in the rendered text and record a <=25-word verbatim quote with the line\n   context you found it in (this quote seeds the registry row and the lesson Gate).\n3. Note any markup quirks capture-source.py --kind html must handle (encode, nav boilerplate).\n4. Confirm the staged row's anchor claim (staged S042: 'step 5 起算日の連絡') against the live page.\nDo NOT write the snapshot (ExecCaptureS042 owns S042.txt); do NOT edit SOURCES.md.\nReport: .ufo/waves/round-28/wave1/ScoutIpaRecon.md (include the exact curl command, exit, and your located quote)."
+  },
+  {
+   "name": "ScoutJpcertRecon",
+   "role": "scout",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nReconnaissance for the S041 re-capture (C2). Probe\nhttps://www.jpcert.or.jp/vh/partnership_guideline2026.pdf with the instrument UA (curl -sSIL): record\ncode, content-type, content-length, last-modified. Compare the live bytes' sha256 against the round-26\ncommitted capture /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-26/S041.txt (sha256\ne18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47): if identical, say so with the\ncommand output; if different, diff the first divergence and report it. Confirm the edition stamp\n2026年10月 and the PDF digital-signature date 2026.09.29 are still what the document carries. Report\nwhether a fresh capture is byte-identical, and locate the 起算日 footnote-4 sentence in the current\ncapture text, quoting <=25 words. Do NOT write the snapshot (ExecCaptureS041 owns S041.txt).\nReport: .ufo/waves/round-28/wave1/ScoutJpcertRecon.md."
+  },
+  {
+   "name": "ScoutAssimilation",
+   "role": "scout",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nRun the assimilation pre-checks in scratch you own (.ufo/waves/round-28/assimilation/):\n1. Id-collision check exactly per the round prompt: extract lane registry ids and staged ids with the\n   0-3-space-tolerant pattern, `comm -12` into .ufo/waves/round-28/assimilation/collisions. Non-empty is EXPECTED\n   (staged S031-S043+ collide with lane S031-S041 by number but differ by document) — record the count\n   and paste both id lists.\n2. Prove the guard once: a scratch registry file with an indented `  | S002 |` row colliding with a\n   staged id must produce a non-empty collisions file (write the fixture, run the pattern, paste output).\n3. By-document mapping: for the rows this round adopts, map staged S042 (IPA process page URL) -> lane\n   S042 (free; verify no lane row carries that URL: grep the lane registry), and staged S043 (JPCERT\n   guideline URL) -> lane S041 (verify SAME URL by document, not by number).\n4. Quarantine slice: read /home/vgpnk/Projects/shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md\n   (READ-ONLY), extract the kasegi slice (awk -F'|' -v l='kasegi' '$2 ~ (\"`\" l \"`\") && $3 ~ /round[0-9]+/\n   && $4 ~ /S[0-9]+/' ...), record every row's class cell; confirm none of the adopted rows (S042 by\n   document) appears; record the verdict list for the report (rows NOT adopted stay quarantined).\n5. Staged-row schema survey: inspect staged S042/S043 rows for census-schema conformance (11 columns,\n   no literal or escaped pipes in cells, recheck cell is ISO date / NNn / symbolic cadence — NOT prose;\n   flag the staged S042 teaches cell per the round-27 lesson note).\nWrite scratch only under .ufo/waves/round-28/assimilation/. Report: .ufo/waves/round-28/wave1/ScoutAssimilation.md + the scratch files."
+  },
+  {
+   "name": "ScoutGateRegistry",
+   "role": "scout",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nReconnaissance for the C1 SKILL.md gate-registry update. Read\n/home/vgpnk/Projects/shokunin/kasegi-shokunin/SKILL.md and /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/README.md:\n1. Find every existing gate|probe registry row/table naming anchorcheck.py (quote it with its line\n   number) and record its current verdict map and exit-code wording.\n2. Find where the instruments README documents anchorcheck's verdict classes and exit behavior\n   (quote lines).\n3. Confirm appending ONE new row at the end of the existing registry table shifts no existing line\n   (R6): record the table's last-row line number and the byte offset where an append would land.\n4. Report the exact append strategy for ScribeSkillGate and ExecInstrReadme (same-line suffix vs new\n   row; cite R6).\nReport: .ufo/waves/round-28/wave1/ScoutGateRegistry.md (no edits)."
+  },
+  {
+   "name": "ConnOverlap",
+   "role": "connector",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nSibling-overlap scan for F12 ground. Read the sibling lanes' corpus\nindexes (READ-ONLY): /home/vgpnk/Projects/shokunin/kengaku-shokunin/corpus/README.md, /home/vgpnk/Projects/shokunin/chousa-shokunin/corpus/README.md,\n/home/vgpnk/Projects/shokunin/kotoba-shokunin/corpus/README.md, /home/vgpnk/Projects/shokunin/kake-shokunin/corpus/README.md. Question: does any\nsibling already hold the Japanese state-coordinated disclosure workflow ground (IPA/JPCERT process,\n起算日, coordinator-mediated flow)? Check for entries naming IPA, JPCERT, 起算日, 情報処理推進機構.\nName what you found with paths; if nothing, paste the sweep commands and outputs (negative claim\ncarries its sweep). Conclude: is F12 uncovered coverage-map ground for kasegi?\nReport: .ufo/waves/round-28/wave1/ConnOverlap.md (no edits)."
+  },
+  {
+   "name": "ConnClaims",
+   "role": "connector",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nCross-claim pattern check. The round's two claims share one pattern:\nfail-closed receipts (C1: instrument exits nonzero; C2: manifest quote assertions). Read the frozen\nclaims.json, then check consistency: (1) both claims' kill rules demand a failing control — name each\ncontrol and its receipt path; (2) C1 counter (c) and C2 counter (3) both bind a receipt to a sha256 —\nconfirm the binding sentence is the same shape in both (paste both); (3) flag any asymmetry the L1\nmust reconcile before the canonical receipts land. Also scan /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-25.md and\nround-26.md for the same pattern's prior defects (R25-2 receipt cross-reference, defect 4 canonical\nreceipt) and confirm this round's dispatch_requirements close them; cite the lesson lines.\nReport: .ufo/waves/round-28/wave1/ConnClaims.md (no edits)."
+  },
+  {
+   "name": "ConnStagedCensus",
+   "role": "connector",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nCensus of the staged package vs the lane registry by document.\nFrom /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md (READ-ONLY): extract every staged row's id + canonical URL;\nfrom /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md extract every lane row's id + URL. Join by URL: (1) which staged rows\nare already lane rows under DIFFERENT ids (staged S043 == lane S041 is known — verify and find all\nothers); (2) which staged rows are genuinely absent from the lane registry (count them); (3) verify the\nr27 lesson's claim 'staged S042 is free in the lane registry' by URL. Report the join table (id_staged,\nurl, id_lane|none). This is the adoption map future rounds use; it also proves this round appends\nexactly one row.\nReport: .ufo/waves/round-28/wave1/ConnStagedCensus.md (no edits)."
+  },
+  {
+   "name": "ExecImplC1",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nImplement the frozen C1 change in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/anchorcheck.py\n(you own this file; no other seat may edit it). Requirements (claims.json C1, round-27 carry-forward 2):\n1. FAIL_CLASSES = MISSING-FILE, PAST-EOF, OUTSIDE-BASE, PIN-BROKEN, BASE-ABSENT, BOUNTIES-ABSENT; the\n   tool exits 1 when any fail-class count > 0, else 0. LOST-RECORDED stays recorded-not-fail.\n2. CITE gains a `~/Projects/bounties/` arm: regex alternative for `~/Projects/bounties/<path>:<line>`\n   with the SAME realpath confinement as MIRROR/ORIGIN (escapes classify OUTSIDE-BASE against the\n   bounties root); absent root -> BOUNTIES-ABSENT. Derive the root like MIRROR/ORIGIN:\n   $KASEGI_BOUNTIES override else canonical ~/Projects/bounties; BOUNTIES_ABSENT flag like the others.\n3. `--selftest`: one isolating fixture per limb, run in temp dirs (env-overrides KASEGI_MIRROR /\n   KASEGI_BOUNTIES to reach MISSING-FILE / BOUNTIES-ABSENT; a real temp file for PAST-EOF; a fake git\n   pin object id for PIN-BROKEN; a path escape for OUTSIDE-BASE). Print `selftest cases=N failures=0`\n   and exit 0; any fixture failing prints the failing case and exits 1.\n4. Update the module docstring: new verdict class, exit semantics, --selftest, the bounties arm, and\n   keep the existing verdict classes/separation intact.\n5. After editing, run: the two r27 fixtures (bad-fixture must exit 1 with BASE-ABSENT printed;\n   bounties-fixture must print exactly 1 BOUNTIES-ABSENT line); `--selftest` (exit 0, cases=N\n   failures=0); the SKILL.md live run (exit 0, bad=0, LOST-RECORDED=306, BASE-ABSENT=0 — verdict\n   classes UNCHANGED); and anchorcheck over corpus/knowledge/*.md (report the 4 disclosed bounties\n   citations now classifying LOST-RECORDED). Paste ALL outputs into your receipt.\nAlso write .ufo/waves/round-28/wave1/ExecImplC1.diff (unified diff of your change, produced with `git diff -- corpus/instruments/anchorcheck.py`\nplus `sha256sum` of the new file) so reviewers can review without touching the live file.\nReceipts: .ufo/waves/round-28/receipts/ExecImplC1.txt and .ufo/waves/round-28/wave1/ExecImplC1.diff."
+  },
+  {
+   "name": "ExecInstrReadme",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/README.md ONLY. Update the\nanchorcheck.py section to document: the fail-closed exit semantics (exit 1 on any fail class), the\nBOUNTIES-ABSENT verdict class, the derived $KASEGI_BOUNTIES root, the --selftest spelling, and the\ncorpus disclosure (4 marked bounties citations now LOST-RECORDED). Append at the end of the anchorcheck\nsection (R6: never shift existing lines); if the section is mid-file, add a same-line-suffix-free new\nparagraph at the file end naming the round-28 amendment instead. Wait for ScoutGateRegistry's report\n(.ufo/waves/round-28/wave1/ScoutGateRegistry.md) to see the current wording — if it is not yet written, proceed against the\ncurrent bytes and note that. Receipt: .ufo/waves/round-28/receipts/ExecInstrReadme.txt with before/after sha256."
+  },
+  {
+   "name": "ExecCaptureS042",
+   "role": "executor",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-28/S042.txt ONLY.\nCapture the IPA intake-process page:\n`cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/capture-source.py --id S042 --url\nhttps://www.ipa.go.jp/security/todokede/vuln/process.html --kind html --out\ncorpus/source-snapshots/round-28/S042.txt`\nRecord exit, byte count, sha256, and fetch timestamp (UTC). Then grep the snapshot for 起算日 and for\n取扱いプロセス, recording every hit line number + first 100 chars. Verify the snapshot contains the\n10-step product flow and the 6-step web-application flow; paste the step headings you found. If the\nfetch fails or the page structure blocks the instrument, report the exact failure and stop (do NOT hand-\nscrape into the snapshot). Receipt: .ufo/waves/round-28/receipts/ExecCaptureS042.txt."
+  },
+  {
+   "name": "ExecCaptureS041",
+   "role": "executor",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-28/S041.txt ONLY.\nRe-capture the JPCERT/CC 2026 partnership guideline:\n`cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/capture-source.py --id S041 --url\nhttps://www.jpcert.or.jp/vh/partnership_guideline2026.pdf --kind pdf --out\ncorpus/source-snapshots/round-28/S041.txt`\nRecord exit, byte count, sha256, fetch timestamp. Compare byte-for-byte with the round-26 capture\n/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-26/S041.txt (`cmp` + sha256 of both): identical or not, paste the\nresult (ScoutJpcertRecon may already have probed this — your comparison is the authoritative one on the\ncommitted bytes). Grep for 起算日 and record hit lines; verify the edition stamp 2026年10月 appears.\nReceipt: .ufo/waves/round-28/receipts/ExecCaptureS041.txt."
+  },
+  {
+   "name": "ExecManifest",
+   "role": "executor",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-28/manifest.json ONLY.\nBuild it AFTER both captures land (if absent when you start, do the parts you can and re-check once;\nif still absent, report the blocker — do NOT invent captures). Schema follows round-26's manifest\n(schema_version 1, purpose, sources[]): records S042.txt (new capture, path stem == id) and S041.txt\n(round-28 re-capture) with sha256 pins and quote assertions. Quote assertions: Q9-conformant — every\nquote exactly-once in its capture OR carries an `anchor` line number; `location` is documentation the\ninstrument does not read; each quote <= 25 words, copied from the capture bytes (never retyped from\nmemory); include at least: for S042, the step-5 起算日の連絡 quote ScoutIpaRecon located; for S041, the\n起算日 footnote-4 definition and the 図1 flow statement. Run\n`python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json`\n(full run) and paste the output (expect exit 0, every assertion passing). Receipt:\n.ufo/waves/round-28/receipts/ExecManifest.txt with the manifest sha256 before and after any fix."
+  },
+  {
+   "name": "ExecHarnessC2",
+   "role": "executor",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nRun and receipt the C2 instruments (no production edits):\n1. `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest\n   corpus/source-snapshots/round-28/manifest.json --source S042` and `--source S041` — both must exit 0;\n   paste outputs. If the manifest is not yet present, run against the round-26 manifest for S041 as a\n   PRE-STATE receipt and say so.\n2. After the entry + README row land: `python3 corpus/instruments/frontier-recheck-count.py` — expect\n   entries=15 pass=15 exit=0; paste output. PRE-STATE (before entry lands): expect entries=14 — record\n   both if you can, else the one that exists.\n3. Run the entry's own recheck line exactly as written, from a FOREIGN cwd (cd /tmp first) — Q10\n   cwd-independence; paste output.\nReceipt: .ufo/waves/round-28/receipts/ExecHarnessC2.txt."
+  },
+  {
+   "name": "ExecCensusDry",
+   "role": "executor",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nPre-landing census dry-run in scratch (no production edits). Build a\nscratch mirror: copy /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/ to a temp dir, apply ScribeRegistryC2's planned registry edit (read\ntheir draft receipt .ufo/waves/round-28/receipts/ScribeRegistryC2.txt if present; else construct the expected S042 row\n+ S041 used-by change from claims.json yourself and say which), then run:\n`/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file <scratch>/corpus/SOURCES.md`\nExpect exit 0 (warnings allowed). Paste the full output. This gates the real append: E03/E04 findings\nmean refuse/supersede, never append past. Receipt: .ufo/waves/round-28/receipts/ExecCensusDry.txt."
+  },
+  {
+   "name": "ExecExpectedList",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nReconcile the recheck-audit expected-list count basis (round-27\ncarry-forward 4). Run `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py` and record its\n`lines=`/`total=` summary; count `git ls-files corpus/knowledge/*.md | wc -l`; determine whether the\nexpected-list regeneration after the F12 entry lands should produce N or N+1 and WHY (read the\ninstrument's expected-list logic, quote the code lines). Do NOT regenerate the list (the entry may not\nhave landed yet); produce the exact command the L1 must run post-landing and the expected before/after\nvalues. Receipt: .ufo/waves/round-28/receipts/ExecExpectedList.txt."
+  },
+  {
+   "name": "ExecNoHarmC1",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nRun the C1 no-harm measurements (no production edits):\n1. `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/anchorcheck.py SKILL.md` — record exit, the summary line,\n   and the full verdict-class counts (LOST-RECORDED, PIN-BROKEN, ORIGIN, OUTSIDE-BASE, BASE-ABSENT,\n   bad). Compare against the frozen before (exit 0, bad=0, LOST-RECORDED=306). If the instrument is\n   still pre-change (digest c2a9e6c6...), run anyway and label PRE-STATE.\n2. `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/density.py SKILL.md --label r28-noharm` — record the mean,\n   block count, and path-citation instances; compare against 154.0 / 19 blocks / 652 (round-25/24\n   receipts). SKILL.md must be byte-identical to base c9f8b115a098c65356e4b3b6048af45a37ab8395 for this guard (`git diff c9f8b115a098c65356e4b3b6048af45a37ab8395 -- SKILL.md`\n   must be empty unless ScribeSkillGate has landed — check and name what you see).\nReceipt: .ufo/waves/round-28/receipts/ExecNoHarmC1.txt."
+  },
+  {
+   "name": "ExecFixtureRun",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nRe-run the frozen C1 counters against the live instrument and\nreceipt them exactly (no production edits):\n1. bad-fixture: `python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bad-fixture.md\n   >/dev/null 2>&1; echo $?` — paste exit + the printed summary line.\n2. bounties-fixture: `python3 corpus/instruments/anchorcheck.py\n   .ufo/waves/round-27/c1-controls/bounties-fixture.md 2>/dev/null | grep -c BOUNTIES-ABSENT` — paste count.\n3. selftest: `python3 corpus/instruments/anchorcheck.py --selftest` — paste full output + exit.\nLabel each receipt with the instrument sha256 you ran against (`sha256sum corpus/instruments/anchorcheck.py`).\nIf the instrument is still pre-change, label all three PRE-STATE. Receipt: .ufo/waves/round-28/receipts/ExecFixtureRun.txt."
+  },
+  {
+   "name": "ExecC2Counters",
+   "role": "executor",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nRe-run the frozen C2 counters (no production edits), labeling\nPRE-STATE where the artifact has not landed:\n1. `awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md`\n2. `grep -lE '^source: S042 ' corpus/knowledge/*.md | wc -l`\n3. `grep -cE '^\\|[[:space:]]*S042[[:space:]]*\\|' corpus/SOURCES.md`\n4. `/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo exit=$?`\n5. `python3 corpus/instruments/frontier-recheck-count.py`\nPaste every output with the UTC timestamp of each run. Receipt: .ufo/waves/round-28/receipts/ExecC2Counters.txt."
+  },
+  {
+   "name": "ExecRecheckAuditR28",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nRun the recheck-audit instrument over the corpus after all\nknowledge/ lands (if the new entry is absent when you run, produce a PRE-STATE receipt and stop):\n`cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py` — record the summary line. Then run the new\nF12 entry's recheck line standalone from a foreign cwd and from the lane root; both must exit 0; paste.\nReceipt: .ufo/waves/round-28/receipts/ExecRecheckAuditR28.txt."
+  },
+  {
+   "name": "ExecScopeSweep",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nWrite-scope sweep after the wave's edits land (best effort at your\nrun time; label what was checked):\n1. `git -C /home/vgpnk/Projects/shokunin status --porcelain` (fleet root) — any untracked file whose content names kasegi or\n   round-28 is a MISROOT: copy it byte-exact into the same relative path under /home/vgpnk/Projects/shokunin/kasegi-shokunin, `cmp` to verify,\n   then DELETE the fleet copy; record each action. Never touch files naming other lanes, .ufo/state,\n   .scratch, MANIFEST.json, templates/ or fleet scripts/.\n2. `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain` — every modified path must be in the ownership map or under\n   .ufo/waves/round-28/ or the named receipts; list any violation.\n3. Confirm no seat wrote under /home/vgpnk/Projects/shokuknow (`git -C /home/vgpnk/Projects/shokuknow status --porcelain` empty — read-only).\nReceipt: .ufo/waves/round-28/receipts/ExecScopeSweep.txt."
+  },
+  {
+   "name": "ExecReceiptCanonC1",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nDraft the canonical C1 receipt index content (a TEXT block, not\nthe final file — the L1 assembles the canonical file post-commit). Collect from the wave receipts:\ninstrument sha256 (post-change), bad-fixture exit + summary, bounties-fixture count, selftest output,\nSKILL.md no-harm line, and the corpus disclosure count. Emit the exact lines the canonical\n.ufo/waves/round-28/c1-receipt-index.txt should contain, each labeled with its source receipt path. Write your draft\nto .ufo/waves/round-28/receipts/ExecReceiptCanonC1.txt. Do NOT create .ufo/waves/round-28/c1-receipt-index.txt (defect 4: one\ncanonical receipt, assembled by the L1 at the landed digest)."
+  },
+  {
+   "name": "ExecReceiptCanonC2",
+   "role": "executor",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nDraft the canonical C2 receipt block (same rules as\nExecReceiptCanonC1): frontier count before/after, entries-citing-S042 before/after, registry rows\nbefore/after, census exit, harness line, manifest sha256, source-recheck S041/S042 exits. Write the\nexact canonical lines with source-receipt pointers to .ufo/waves/round-28/receipts/ExecReceiptCanonC2.txt. Do NOT\ncreate any canonical file under .ufo/waves/round-28/ root."
+  },
+  {
+   "name": "ExecSkillGateSupport",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nSupport measurement for the SKILL.md gate row (no edits):\nrun `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && grep -nE 'gate\\|probe|anchorcheck' SKILL.md | head -20` and record the registry\ntable shape; compute the line number where an appended row would land and confirm appending there\nshifts no existing anchor (count SKILL.md lines; R6). Also run\n`python3 corpus/instruments/anchorcheck.py SKILL.md 2>/dev/null | tail -1` and record the summary (it\nis the post-impl no-harm input if the impl has landed; label PRE-STATE otherwise).\nReceipt: .ufo/waves/round-28/receipts/ExecSkillGateSupport.txt."
+  },
+  {
+   "name": "ScribeEntryC2",
+   "role": "scribe",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/japanese-domestic-disclosure-workflow.md ONLY.\nDraft the F12 entry, re-grounded on THIS ROUND's captures (never on the staged package bytes as\nauthority). Structure: H1 title; directly under it the Q1 trio: `source: S041 — <url> — <anchor>` and\n`source: S042 — <url> — <anchor>` header lines (both; mirror the two-source F09/F10/F11 entry format:\nread one first, e.g. knowledge/iso-29147-and-30111-division-of-labour.md, and copy its header shape),\n`verified-at: 2026-10-25`, `recheck:` ONE executable cwd-independent command of the form\n`cd <lane-root> && python3 corpus/instruments/source-recheck.py --manifest\ncorpus/source-snapshots/round-28/manifest.json --source S041 --source S042` (Q10: parseable by bash -n,\ncarries its own cd prefix). Body: the state-coordinated flow (10-step product path + 6-step web-app\npath), 起算日 as the disclosure-clock anchor (first attempted contact — quote it from the captures,\n<=25 words each, with capture line numbers), the one-year withdrawal rule, the web-app lighter path,\nand a 'Why it matters' paragraph naming 起算日 as the transferable artefact for coordinator-timeline\ncomparisons (F02 linkage). Q4: attribute positions to IPA/JPCERT/CC, never universalize. Q5: name one\nfalsifiable rule and one rejected over-generalization. Q6: documentation-only. Every load-bearing claim\ncarries a capture-anchored quote: cite S042.txt:LINE and S041.txt:LINE. Read the staged package entry\n/home/vgpnk/Projects/shokuknow/merge/kasegi/knowledge/corpus/knowledge/japanese-domestic-disclosure-workflow.md for its claim\nskeleton, but every quote must be re-located in the round-28 captures (RevengerC2 traces this).\nReceipt: .ufo/waves/round-28/receipts/ScribeEntryC2.txt (quote list + line anchors)."
+  },
+  {
+   "name": "ScribeRegistryC2",
+   "role": "scribe",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md ONLY. Two edits, both logged:\n1. Append ONE row for S042: 11 columns, no literal or escaped pipes in any cell; normalized to the\n   lane's fleet schema (NOT the staged bytes as-is): id S042; source `IPA 脆弱性関連情報の届出受付業務における\n   取扱いプロセス — https://www.ipa.go.jp/security/todokede/vuln/process.html`; kind docs; tier A;\n   scope = IPA/JPCERT/CC intake-process for that page's coverage; anchor = the 10-step flow + step 5\n   起算日の連絡, verified against the round-28 capture; teaches = ONE grounded learner benefit\n   (coordinator-mediated flow; the finder is told 起算日 and the detail-information date); status mined;\n   opened 2026-10-25; recheck `180d`; used-by exactly `corpus/knowledge/japanese-domestic-disclosure-workflow.md`.\n   The staged row's prose-flavored cells (per the r27 lesson note) must be rewritten in this normalized\n   shape — never appended as-is (§10 scratch transformation rule).\n2. S041 used-by: append the entry path to the existing S041 row's used-by cell, keeping every other\n   cell byte-identical (R8: log old -> new in your receipt and in the lesson).\nAlso append the change log lines at the registry's change-log section per the round-26 precedent\n(r26 logged the S041 recheck-cell restore at the file's log area — mirror that shape). Then run the\ncensus CLI yourself: `/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root\n/home/vgpnk/Projects/shokunin kasegi` — exit must be 0 (only pre-existing W04 warnings allowed); paste.\nReceipt: .ufo/waves/round-28/receipts/ScribeRegistryC2.txt (old/new cells + census output)."
+  },
+  {
+   "name": "ScribeReadmeC2",
+   "role": "scribe",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md ONLY. Two appends (R6 — never shift\nexisting lines; both go at the end of their sections or as end-of-file amendments):\n1. Frontier table: append row F12 (id F12 | topic 'Japanese state-coordinated disclosure workflow' |\nstatus admitted | entry knowledge/japanese-domestic-disclosure-workflow.md | sources S041, S042 |\nnext-step cell naming the 起算日 column for future coordinator-timeline comparisons). Mirror an existing\nrow's exact column shape. Update the admitted-count sentence (the paragraph after the table that names\n'11/11 admitted at round 26; F01-F08 at round 23, F09 at round 24, F10 at round 25, F11 at round 26')\nto record F12 at round 28 and 12/12 — same-line suffix or an appended amendment line, never rewriting\nthe historical sentence (R9).\n2. Coverage map / expected-list note: append the round-28 reconciliation note naming the new entry and\n   pointing at ExecExpectedList's receipt for the count basis.\nDo not touch the 0/18 lost-domain sentences. Receipt: .ufo/waves/round-28/receipts/ScribeReadmeC2.txt."
+  },
+  {
+   "name": "ScribeR14",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md ONLY. Append the round-25/26-era section\nshape: `## Round-28 additions — wave-evidence economy` with one criterion:\n| R14 | Wave evidence is receipts and digests in git: a control/fixture tree larger than a few hundred\nkilobytes is committed as one content-addressed tarball (sha256 in the receipt) or regenerated from\n`git archive <rev>` plus a named mutation script, never as a full corpus copy; per-round repo growth is\nmeasurable from committed bytes. | considerthese/2026-10-25.md proposal 1 (2026-10-25); round-25\nverifier spotcheck §bloat finding (98261eb +850,085 lines; ~65 MB under .ufo/waves/round-25/) |\nAppend at the end of the file (R6). Practice note: cite this round's own receipts/ layout (digests +\nreceipts, no full-corpus fixture copies) as the exercised instance in your receipt.\nReceipt: .ufo/waves/round-28/receipts/ScribeR14.txt."
+  },
+  {
+   "name": "ScribeSkillGate",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/SKILL.md ONLY. After ExecImplC1 lands (check\n.ufo/waves/round-28/wave1/ExecImplC1.diff; if absent, draft against the frozen predicate and label PRE-STATE), append ONE\nrow to the existing gate|probe registry table for anchorcheck.py recording the round-28 semantics:\nfail-closed exit (exit 1 on MISSING-FILE/PAST-EOF/OUTSIDE-BASE/PIN-BROKEN/BASE-ABSENT/BOUNTIES-ABSENT),\nthe --selftest spelling, the $KASEGI_BOUNTIES root, and the owner. Append at the END of the table only\n(R6); record the table's prior last line number and the new row's line number in your receipt. Also\nappend a same-round note (end of file or end of section) that the 4 corpus bounties citations now\nclassify LOST-RECORDED — one sentence, anchored to the disclosure. Keep every existing byte anchored:\nverify with `python3 corpus/instruments/anchorcheck.py SKILL.md` BEFORE and AFTER your edit — the\ncited-line output for pre-existing anchors must be unchanged except your appended material (paste both\nsummaries). Receipt: .ufo/waves/round-28/receipts/ScribeSkillGate.txt."
+  },
+  {
+   "name": "ScribeStagedCompare",
+   "role": "scribe",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nRead-only comparison (no production edits): diff the staged\nentry /home/vgpnk/Projects/shokuknow/merge/kasegi/knowledge/corpus/knowledge/japanese-domestic-disclosure-workflow.md against\nthe lane's existing F11 entries (/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/iso-29147-and-30111-division-of-labour.md and\niso-29147-divergence-and-clause-crosswalk.md) and against F02\n(/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/coordinated-disclosure-timelines.md). Produce the overlap map: which staged\nclaims duplicate F11 ground (e.g. 29147/30111 division — the staged entry's S043 anchor names the\nguideline, not the division itself; be precise), which are new (起算日 workflow, one-year withdrawal,\nweb-app parallel path). Output the overlap map as .ufo/waves/round-28/wave1/ScribeStagedCompare.md — ScribeEntryC2 and\nRevengerC2 consume it to keep F12 distinct from F11."
+  },
+  {
+   "name": "ScribeLessonGate",
+   "role": "scribe",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own the Gate section draft (final assembly by ScribeLesson):\nwrite .ufo/waves/round-28/wave1/ScribeLessonGate.md containing the round-28 `## Gate` section per LEARNING.md/CORPUS.md:\n- The assimilation set: staged package rows/entries read this round; >=1 ADMIT (the workflow entry +\n  S042 by document; staged S043 == lane S041 cited not re-registered) and >=1 REJECT with reason+flip.\n  Reject candidates to evaluate: (a) the standing chinese-criminal-thresholds refusal — re-confirm or\n  lift with evidence; (b) vendor-third-party-finding-coordination-2026-10-23.md — its `ground: F20`\n  names no lane frontier row (verify against corpus/README.md). Verdicts must cite package paths.\n- Every NEW SOURCES row: URL, access date 2026-10-25, and a <=25-word located quote INLINE (round-26\n  routed defect 3 — no pointer-only gates). For S042 use ScoutIpaRecon's/ExecCaptureS042's located quote.\n- Every status/recheck/used-by change: old -> new inline (S041 used-by).\n- The quarantine-slice verdict list from ScoutAssimilation (7 kasegi rows, none adopted; each row's\n  register class recorded).\nGate shape follows round-26's lesson Gate (read it first: /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-26.md)."
+  },
+  {
+   "name": "ScribeLesson",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-28.md ONLY. Assemble the full lesson\nfrom the wave receipts after the work lands (read every .ufo/waves/round-28/wave1/*.md and .ufo/waves/round-28/receipts/*.txt that exists\nwhen you run; label anything missing as not-landed): H1 round-28 header; the frozen-claims recap with\nfinal verdicts (filled from ExecC2Counters/ExecFixtureRun — if those show PRE-STATE, mark the lesson\nDRAFT and say the L1 finalizes after close); `## Gate` — paste ScribeLessonGate's draft, reconciled\nwith what actually landed; `## Mistakes` — at least one row: class, evidence pointer, captured-by,\nfix (candidates: any seat's PRE-STATE receipt that reveals a timing hazard; the staged-row prose-cell\ndefect the normalization fixed; anything SentinelScope finds); `## Compliance` (freeze discipline,\ncensus before/after, no pacman). Claim and honest wording throughout. If claims land mid-wave while you\nwrite, record both receipt states with timestamps. Receipt: .ufo/waves/round-28/receipts/ScribeLesson.txt."
+  },
+  {
+   "name": "ScribeLog",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md ONLY. Append the round-28 entry at the END (never\nrewrite history; R9). Content: freeze commit c9f8b115a098c65356e4b3b6048af45a37ab8395; the two claims with their final measured\nbefore->after values (re-run the frozen counter commands yourself from the committed bytes at your run\ntime — do not transcribe another seat's numbers; if an artifact has not landed, write 'pending at\n<UTC>' and the L1 appends the final value at close); census before (exit 0, 41 rows) and after\n(ScribeRegistryC2's run; expect 42); wave shape (one v2 wave, 69 seats, role mix from the spec);\nreceipt pointers. One line per claim plus a census line and a wave line. Receipt:\n.ufo/waves/round-28/receipts/ScribeLog.txt with the exact LOG.md diff."
+  },
+  {
+   "name": "ScribeScorecard",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nYou own /home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md ONLY. Append `## Round 28 — frozen\nclaims C1/C2 (2026-10-25)` at the end (never edit prior rows). Table rows: C1 depth:verifiability\nbefore (bad-fixture exit 0; bounties 0 lines; selftest absent; SKILL exit 0 bad=0 LOST=306) -> after\n(the measured values you re-run yourself: bad-fixture exit 1; bounties 1 line; selftest cases=N\nfailures=0 at instrument sha256; SKILL exit 0 bad=0 LOST=306) with verdict + evidence pointers\n(receipts paths); C2 coverage before (frontier 11; entries 0; rows 41; harness 14/14) -> after\n(frontier 12; entries 1; rows 42 census exit 0; harness 15/15); depth:density 9 held with the\nExecNoHarmC1 density numbers (SKILL.md byte-diff vs base named). Capabilities: add NO row unless a\ncapability actually demonstrated this round (none is planned — say so). Saturation paragraph unchanged.\nIf measurements are PRE-STATE when you run, write the row with 'pending' cells and the L1 completes at\nclose. Receipt: .ufo/waves/round-28/receipts/ScribeScorecard.txt."
+  },
+  {
+   "name": "ScribeSourcesGate",
+   "role": "scribe",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nDraft the SOURCES-anchored evidence block for the report (no\nproduction edits): for every source opened this round (IPA page, JPCERT PDF, staged package files),\nwrite: the S-row it becomes or cites, URL, access date 2026-10-25, <=25-word located quote, and the\nknowledge path citing it. This block is the report's Sources & frontier raw material and the §2b\n'at least one sourced claim' evidence (C2 rests on S042 opened this round). Write it to\n.ufo/waves/round-28/wave1/ScribeSourcesGate.md. Confirm the census row count for S042 lands at exactly 42 total rows\n(re-run the row-count command yourself)."
+  },
+  {
+   "name": "ScribeReportDigest",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nDraft the report skeleton evidence digest (no production edits):\nread the frozen claims.json and every receipt in .ufo/waves/round-28/receipts/ that exists at your run time; produce\n.ufo/waves/round-28/wave1/ScribeReportDigest.md containing, per report section (Work performed / Landed changes /\nBefore-after measurements / Sources & frontier / Trend verdicts / SHONEN), the bullet points with\nevidence pointers the L1 needs. Trend verdicts: draft a proposed verdict per trend with its evidence\n(expansion: F12; quality: C1 fail-closed + captures re-grounded; discernment: the Gate admits/rejects\n+ disclosure) — the L1 owns the final call. SHONEN: four boxes, all [~] with refreshed pointers, no\nself-written [x]. Label PRE-STATE items as such. Receipt: .ufo/waves/round-28/receipts/ScribeReportDigest.txt."
+  },
+  {
+   "name": "ScribeReceiptsC2",
+   "role": "scribe",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nAssemble the C2 receipt bundle index (no canonical file — write\n.ufo/waves/round-28/receipts/ScribeReceiptsC2.txt): list every C2-related receipt file with one-line summaries\n(capture sha256s, manifest sha256, census output hash, harness lines, counter values with timestamps).\nCross-check that every frozen C2 counter has at least one receipt covering it; name any gap.\nThis is the digest the canonical receipt and the report cite."
+  },
+  {
+   "name": "ScribeFrontierNote",
+   "role": "scribe",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nDraft the frontier-continuity note (no production edits): read\ncorpus/README.md's Frontier section and the F02/F11 entries; write .ufo/waves/round-28/wave1/ScribeFrontierNote.md\nproposing the F12 'next' cell wording (how 起算日 becomes the Japanese column in future coordinator-\ntimeline comparisons) and checking the F12 topic string does not collide with any existing F-row\ntopic. Also verify the coverage-map paragraph's denominator wording stays consistent with the\n11/12 admitted public-practice frontier (never the 0/18 lost-domain figure). ScribeReadmeC2 consumes."
+  },
+  {
+   "name": "ScribeQualityCross",
+   "role": "scribe",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nCross-check the C2 entry draft against QUALITY.md Q1-Q10 BEFORE\nit lands (no production edits): read ScribeEntryC2's file as it exists when you run (if absent, check\nagainst the staged skeleton and label PRE-STATE); produce a criterion-by-criterion table\n(Q1..Q10, R1..R6 where applicable) with PASS/FAIL and the entry line evidence for each; any FAIL gets\na concrete fix suggestion. Write .ufo/waves/round-28/wave1/ScribeQualityCross.md. This is the entry's independent bar check\nbefore admission. Receipt: .ufo/waves/round-28/receipts/ScribeQualityCross.txt."
+  },
+  {
+   "name": "ExecInstrSelftest",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nSelftest instrumentation run (no production edits): after ExecImplC1\nlands (check sha256), run `python3 corpus/instruments/anchorcheck.py --selftest` and capture the FULL\noutput verbatim including the `selftest cases=N failures=0` line and exit code; then run it a second\ntime to confirm determinism (identical output). Record the instrument sha256 with each run. If the\nimpl has not landed, run against pre-change bytes, record the FileNotFoundError as PRE-STATE, and stop.\nReceipt: .ufo/waves/round-28/receipts/ExecInstrSelftest.txt."
+  },
+  {
+   "name": "ScribeCensusNote",
+   "role": "scribe",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nDraft the census-section note for the lesson (no production edits):\nread .ufo/waves/round-28/census-before.txt (exit 0, 41 rows) and run the round-end census yourself when the registry\nlands (or record PRE-STATE): paste the full validation output, the row count before->after (41->42),\nthe tier/status histogram delta (one new tier-A mined row), and the W04 status (pre-existing, S028/S029).\nWrite it to .ufo/waves/round-28/wave1/ScribeCensusNote.md — ScribeLesson consumes it as the Compliance census block."
+  },
+  {
+   "name": "ExecGateLog",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nEmit the gate/verdict inventory for the report (no production edits):\nlist every instrument gate run this round with its exit code — anchorcheck.py (before/after, fixtures,\nselftest, SKILL.md, corpus sweep), density.py, recheck-audit.py, source-recheck.py,\nfrontier-recheck-count.py, capture-source.py x2, sources-census.sh xN — each with receipt path and the\nsha256 of the instrument or manifest it ran against. Produce .ufo/waves/round-28/wave1/ExecGateLog.md (the report's\nevidence-pointer index)."
+  },
+  {
+   "name": "RevImplC1",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nReview the C1 implementation against the frozen predicate. Source:\n.ufo/waves/round-28/wave1/ExecImplC1.diff (if absent, review the live file against base with\n`git diff c9f8b115a098c65356e4b3b6048af45a37ab8395 -- corpus/instruments/anchorcheck.py`; if that is empty too, label PRE-STATE and\nreview the pre-change bytes against the predicate, listing what must change). Check line by line:\n(1) every FAIL_CLASS actually triggers exit 1 and no IN-RANGE class does; (2) the bounties arm is\nrealpath-confined exactly like MIRROR (quote the confinement code from both arms and compare); (3)\n--selftest fixtures are isolating — each fails exactly one limb (read the fixture code; run it if the\nimpl has landed); (4) LOST-RECORDED is untouched; (5) no behavior change outside the fail-class/exit/\narm/selftest scope (flag any drive-by edit). Verdict: APPROVE or CHANGES-REQUIRED with file:line\nevidence. Receipt: .ufo/waves/round-28/wave1/RevImplC1.md."
+  },
+  {
+   "name": "RevFixturesC1",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nReview the --selftest fixtures for isolation and completeness\n(claims.json kill rule: a limb with no failing fixture, or a fixture failing another limb, kills C1).\nRead the selftest code in the landed instrument (or .ufo/waves/round-28/wave1/ExecImplC1.diff). For EACH fixture: which\nlimb it targets, why it fails that limb and no other (trace the code path), and its expected output\nline. Check completeness: one fixture per FAIL_CLASS limb (MISSING-FILE, PAST-EOF, OUTSIDE-BASE,\nPIN-BROKEN, BASE-ABSENT, BOUNTIES-ABSENT) + a clean-case control. Also verify fixtures run in temp\ndirs and never touch the live tree. Run the selftest if the impl has landed and paste the output.\nReceipt: .ufo/waves/round-28/wave1/RevFixturesC1.md."
+  },
+  {
+   "name": "RevNoHarmC1",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nIndependent no-harm verification (claims.json C1(d)): after the impl\nlands (check the instrument digest; PRE-STATE if unchanged), run `python3 corpus/instruments/anchorcheck.py\nSKILL.md` and diff the FULL verdict-class set against the frozen before (exit 0; bad=0; LOST-RECORDED=306;\nPIN-BROKEN=0; ORIGIN=0; OUTSIDE-BASE=0; BASE-ABSENT=0; in-range=7). Then run over corpus/knowledge/*.md\nand corpus/*.md: produce the corpus-wide delta table (which files gained LOST-RECORDED lines; expect\nexactly the 4 disclosed bounties citations and no other class movement). Any OTHER movement is a no-harm\nviolation — name it. Receipt: .ufo/waves/round-28/wave1/RevNoHarmC1.md."
+  },
+  {
+   "name": "RevEntryC2",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nBar-check the F12 entry against QUALITY.md. Read\n/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/japanese-domestic-disclosure-workflow.md as it exists when you run (PRE-STATE:\ncheck the staged skeleton against the bar instead, and say what the real entry must still prove).\nCriterion table Q1-Q10 + Q4 attribution + Q5 falsifiable-rule-and-rejection, each with entry line\nevidence; then verify three load-bearing claims END-TO-END: open the round-28 captures at the entry's\ncited line anchors and confirm the quoted text is there verbatim (paste capture line + entry quote);\nrun the entry's recheck line from a foreign cwd; confirm both source: headers' ids equal the recheck's\n--source ids (R12). Verdict: ADMIT-BAR-MET or list exact failures. Receipt: .ufo/waves/round-28/wave1/RevEntryC2.md."
+  },
+  {
+   "name": "RevRegistryC2",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nReview the registry edit (corpus/SOURCES.md) after ScribeRegistryC2\nlands (PRE-STATE if untouched): run the FULL frozen census grammar yourself — 11 columns on the new\nrow (awk NF check), no literal/escaped pipes in cells, kind enum `docs`, tier A scoped, status mined,\nused-by exactly the one entry and the path exists, S042 id not reused anywhere (dup check), S041's\nother cells byte-identical to base (c9f8b115a098c65356e4b3b6048af45a37ab8395) except used-by (`git diff c9f8b115a098c65356e4b3b6048af45a37ab8395 -- corpus/SOURCES.md`\nmust show exactly: one added row + one used-by cell change + any log lines). Then run the census CLI\nand paste. Any extra drift is a defect — name it. Receipt: .ufo/waves/round-28/wave1/RevRegistryC2.md."
+  },
+  {
+   "name": "RevManifestC2",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nQ9 review of the round-28 manifest after ExecManifest lands\n(PRE-STATE if absent): (1) every record's path stem equals its id; (2) every sha256 matches the on-disk\ncapture (sha256sum both); (3) every quote occurs exactly once in its capture OR carries an `anchor`\nline number — re-run each assertion yourself with grep -c (paste counts); (4) quotes are <=25 words;\n(5) run source-recheck.py on both sources and paste exits. Any quote found twice with no anchor is a\nQ9 failure — name it. Receipt: .ufo/waves/round-28/wave1/RevManifestC2.md."
+  },
+  {
+   "name": "RevCounters1",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nIndependent counter re-run (C1): after the impl lands, re-run all\nfour frozen C1 counter commands from the lane root yourself (do not trust seat receipts): paste each\ncommand, its output, its exit, and the UTC timestamp; compare each against the frozen after-values in\nclaims.json (bad-fixture exit 1; bounties 1 line; selftest receipt conditions; SKILL exit 0 bad=0\nLOST=306). State PASS/FAIL per counter. If PRE-STATE, run anyway against the pre-change bytes, record\nthe observed before-values, and say the after re-run is owed at close. Receipt: .ufo/waves/round-28/wave1/RevCounters1.md."
+  },
+  {
+   "name": "RevCounters2",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nIndependent counter re-run (C2): after the C2 artifacts land, re-run\nall four frozen C2 counter commands yourself: frontier awk (expect 12), entries-citing-S042 (expect 1),\nS042 row count (expect 1) + census CLI exit 0, harness (expect entries=15 pass=15 exit=0). Paste\ncommands/outputs/timestamps; PASS/FAIL each. PRE-STATE: run against current bytes, record observed\nvalues, name the owed re-runs. Receipt: .ufo/waves/round-28/wave1/RevCounters2.md."
+  },
+  {
+   "name": "RevCensusEnd",
+   "role": "reviewer",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nRound-end census verification: run\n`/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`\nafter the registry lands; paste the FULL output and exit code. Also run the seven frozen manual census\ncommands from CORPUS.md §Census (rows, malformed=0, tier histogram, status histogram, dup ids empty,\nenum/tier-inflation empty, mined used-by paths exist) against corpus/SOURCES.md and paste each output.\nReport rows before (41) vs after (expect 42) with the counting command. Any non-zero malformed or a new\nE-code is a conformance defect — name it. Receipt: .ufo/waves/round-28/wave1/RevCensusEnd.md."
+  },
+  {
+   "name": "RevDensityGuard",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nGuard the density axis (score 9): run `python3 corpus/instruments/density.py\nSKILL.md --label r28-guard` after ALL lands; compare mean / blocks / path-citation instances against\nthe frozen before (154.0 / 19 / 652 — verify against the round-25 committed receipt if numbers differ;\nthe instrument is unchanged so the comparison is valid). Also `git diff c9f8b115a098c65356e4b3b6048af45a37ab8395 --stat -- SKILL.md\ncorpus/knowledge/ corpus/README.md` — name every touched file; SKILL.md changes must be append-only\n(R6). Any density drop or non-append SKILL.md edit is a harm — name it. Receipt: .ufo/waves/round-28/wave1/RevDensityGuard.md."
+  },
+  {
+   "name": "RevReceiptsCanon",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nReceipt completeness review: after the wave settles, list every\nfrozen counter/kill-rule/claim condition and map each to the receipt(s) covering it (.ufo/waves/round-28/receipts/\nand .ufo/waves/round-28/wave1/). Name every gap. Confirm defect-4 conformance: NO file named c1-receipt-index.txt or any\ncanonical receipt exists yet under .ufo/waves/round-28/ root (only the L1 creates it at close, at the landed digest).\nConfirm every receipt carries its instrument/artifact sha256 and UTC timestamp. Receipt:\n.ufo/waves/round-28/wave1/RevReceiptsCanon.md."
+  },
+  {
+   "name": "RevCloseCheck",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nFinal close-out checklist against the round contract: (1) every\nproduction change maps to the ownership map and to a wave receipt; (2) the four routed dispatch\nrequirements from claims.json are each evidenced (reviewer seats in THIS wave — count them; inline Gate\nquotes in the lesson; one canonical receipt still owed at close; expected-list reconciliation);\n(3) misroot sweep evidence exists (ExecScopeSweep); (4) no fleet-root writes; (5) lesson Gate has\n>=1 admit and >=1 reject with quotes; (6) do-nothing receipts exist (r27+ r28 before receipts).\nProduce the go/no-go list with pointers. Receipt: .ufo/waves/round-28/wave1/RevCloseCheck.md."
+  },
+  {
+   "name": "CritC1Vacuity",
+   "role": "critic",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nVacuity attack on C1: can any after-value be reached WITHOUT the\nclaimed work? Build the do-nothing control explicitly: the pre-change instrument (digest\nc2a9e6c6...) on both fixtures reaches exit 0 / 0 lines (re-run and paste) — already known; now attack\nthe selftest: could `--selftest` print `selftest cases=N failures=0` with ZERO real fixtures\n(degenerate: cases=0, or fixtures that assert nothing)? Read the impl (or diff) and try to construct\na vacuous pass; if you cannot, state the blocking code with line evidence. Also attack exit-code\nreachability: is there any path where exit 1 comes from something OTHER than a fail-class verdict\n(e.g. a parse error masquerading)? Receipt: .ufo/waves/round-28/wave1/CritC1Vacuity.md."
+  },
+  {
+   "name": "CritC1Kill",
+   "role": "critic",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nKill-rule attack on C1: the kill rule fires on non-isolating fixtures.\nAttempt to PROVE a fixture non-isolating: for each selftest fixture in the landed impl (or diff),\ntrace whether it can fail for a reason in ANOTHER limb (e.g. the MISSING-FILE fixture failing because\nof the absent bounties root rather than the mirror override). Run the selftest with deliberate\nenv perturbations (KASEGI_MIRROR set/unset, KASEGI_BOUNTIES set) and record which cases flip.\nAny cross-limb flippage is a kill — name the fixture and the perturbation. Receipt: .ufo/waves/round-28/wave1/CritC1Kill.md."
+  },
+  {
+   "name": "CritC2Admission",
+   "role": "critic",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nAdmission attack on C2: argue the STRONGEST case that F12 should\nNOT be admitted: (a) is the entry's core claim (起算日 as coordinator-told disclosure clock) actually\nsupported by BOTH captures, or does one capture not contain it? (b) does F12 duplicate F11 ground\n(use ScribeStagedCompare's map)? (c) is S042 tier-A justified for this scope or is a process page\nonly tier-B? (d) does the staged entry's claim skeleton contain any claim the re-grounded entry\ndropped silently? Read the captures at the cited anchors and paste what you find. Verdict: the\nadmission survives or dies on these points — say which with evidence. Receipt: .ufo/waves/round-28/wave1/CritC2Admission.md."
+  },
+  {
+   "name": "CritC2Kill",
+   "role": "critic",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nKill-rule attack on C2: attempt to violate each kill-rule clause without\ndoing the work: (1) can the frontier awk count reach 12 by editing an EXISTING row's status instead of\nadmitting F12? (2) can entries-citing-S042 reach 1 with a stub entry failing Q1? (3) can the census\nstay exit 0 with a malformed appended row (test the 0-3-space indented-row blind spot on a scratch\ncopy of the registry — a row indented 4+ spaces is ignored by the census; is that reachable here?)?\n(4) can the harness pass 15/15 with the entry's recheck pointing at the wrong manifest (R12)? Each\nattempt: describe, test in scratch, report the outcome. Receipt: .ufo/waves/round-28/wave1/CritC2Kill.md."
+  },
+  {
+   "name": "CritGlobal",
+   "role": "critic",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nWhole-claim falsification pass: read the final (or in-flight) state of\nboth claims' artifacts and argue each claim FAILED or is unprovable-as-stated: are the before-values\nhonest (re-run one before counter yourself from base c9f8b115a098c65356e4b3b6048af45a37ab8395 via git archive or the committed r27/r28\nbefore receipts)? Is any after-value measured against mutable bytes instead of committed bytes (R3)?\nIs any claim a re-score of an existing rule on new inputs rather than a surface move (§9 naming\nrule)? Is 'no axis harmed' true anywhere outside SKILL.md (the corpus LOST-RECORDED growth — is it\nharmed or disclosed)? Produce the strongest honest counter-case; the L1 answers each point in the\nreport. Receipt: .ufo/waves/round-28/wave1/CritGlobal.md."
+  },
+  {
+   "name": "MutExitC1",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nMutation-test the exit-code limb: on a SCRATCH copy of the\nlanded instrument (or pre-change bytes if the impl has not landed — label it), create mutants:\nM1 remove the exit-1 (always exit 0); M2 exit 1 unconditionally; M3 drop BASE-ABSENT from the fail\nset; M4 drop PIN-BROKEN from the fail set. Run each mutant against: the bad-fixture, the bounties\nfixture, the selftest, and SKILL.md. Expected: M1 fails bad-fixture (still exit 0), M2 fails SKILL.md\n(exit nonzero on clean input), M3 fails the selftest BASE-ABSENT limb, M4 fails the PIN-BROKEN limb.\nPaste a table: mutant x test -> score. Any mutant passing everything is a live mutation — name it.\nWork ONLY in .ufo/waves/round-28/wave1/MutExitC1/ (copy the instrument there; never edit the live file).\nReceipt: .ufo/waves/round-28/wave1/MutExitC1.md."
+  },
+  {
+   "name": "MutArmC1",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nMutation-test the bounties arm: scratch copy. Mutants: M1 remove\nthe bounties alternative from CITE entirely (bounties cite becomes invisible again); M2 remove the\nrealpath confinement for the bounties arm only (escapes would classify in-range instead of\nOUTSIDE-BASE); M3 point the bounties root at the mirror candidates by mistake. Score each against the\nbounties fixture + an escape fixture you write (`~/Projects/bounties/../etc/passwd:1`-shaped, in\nscratch text) + SKILL.md (no new movement allowed). Expected kills: M1 -> 0 BOUNTIES lines; M2 ->\nescape not OUTSIDE-BASE; M3 -> wrong absence verdict. Paste the table. Receipt: .ufo/waves/round-28/wave1/MutArmC1.md."
+  },
+  {
+   "name": "MutSelftestC1",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nMutation-test the selftest completeness: scratch copy.\nMutants: M1 report `selftest cases=0 failures=0` (skip all fixtures); M2 drop one fixture silently\nwhile keeping the count accurate (does the count drop get noticed? the frozen predicate binds cases=N\n— what N is frozen? If none, completeness is the only guard — attack it); M3 make one fixture assert a\ntrivially-true condition. Score each against the frozen counter (c): does the receipt-line condition\ncatch it? The kill rule says a limb with no failing fixture kills C1 — demonstrate the catch or name\nthe gap. Paste the table with the exact outputs. Receipt: .ufo/waves/round-28/wave1/MutSelftestC1.md."
+  },
+  {
+   "name": "MutQuoteC2",
+   "role": "mutation-tester",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nMutation-test the manifest quote binding: scratch copy of the\nmanifest + captures (.ufo/waves/round-28/wave1/MutQuoteC2/). Mutants: M1 change one quote's final character; M2\nswap two quotes between S041 and S042 records; M3 set one quote to a string occurring twice (remove\nits anchor). Run source-recheck.py against each mutant. Expected: all three exit non-zero naming the\nfailing assertion. Any mutant exiting 0 is a live mutation — name it and the assertion it fooled.\nReceipt: .ufo/waves/round-28/wave1/MutQuoteC2.md."
+  },
+  {
+   "name": "MutManifestC2",
+   "role": "mutation-tester",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nMutation-test the Q9 stem/sha binding: scratch copy.\nMutants: M1 rename S042.txt to S042b.txt in the manifest path (stem != id); M2 set S041's sha256 to\nS042's (path/id bound to wrong bytes); M3 point both records at the same capture file. Run\nsource-recheck.py on each. Expected: all exit non-zero. Any pass is a live mutation — name it.\nReceipt: .ufo/waves/round-28/wave1/MutManifestC2.md."
+  },
+  {
+   "name": "RevengerC1",
+   "role": "revenger",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nReverse-engineer the C1 change's fidelity to original intent: read the\nanchorcheck.py git history (`git log --oneline -- corpus/instruments/anchorcheck.py` + the r15/r18/r19\ncommits' versions) and the round-15..27 lessons' instrument requirements; enumerate the documented\nbehaviors the round-28 change must PRESERVE (verdict-class separation, LOST-RECORDED semantics, pin\nhandling, LANE_DIRS resolution order, derived roots, printed line format for semantic review).\nThen diff the landed impl (or .ufo/waves/round-28/wave1/ExecImplC1.diff) against that list: any documented behavior lost,\nweakened, or silently changed? The printed per-line and summary formats are consumed by other\nreceipts/grep patterns — check the new output still matches the frozen counter sed/grep shapes in\nclaims.json (the `== ... bad;` and `LOST-RECORDED=` summary forms). Receipt: .ufo/waves/round-28/wave1/RevengerC1.md."
+  },
+  {
+   "name": "RevengerC2",
+   "role": "revenger",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nTrace the staged entry to ground: for EVERY claim in the landed\nknowledge/japanese-domestic-disclosure-workflow.md (or the staged skeleton if not yet landed), find\nits origin in the staged package bytes and its re-grounded anchor in the round-28 captures. Produce\nthe claim-traceability table: claim -> staged line -> capture file:line -> quote match (yes/no with\ngrep output). Any claim present in the staged entry but ABSENT or unsupported in the re-grounded entry\nmust be named (silent drops are defects); any NEW claim in the re-grounded entry without a capture\nanchor is unsupported — name it. Receipt: .ufo/waves/round-28/wave1/RevengerC2.md."
+  },
+  {
+   "name": "SentinelScope",
+   "role": "sentinel",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nScope and safety sweep of the wave's writes (run at your best\ntime; re-check after any late edit you notice): (1) `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain` — every\nmodified/untracked path must be in the ownership map or under .ufo/waves/round-28/ or receipts/;\n(2) grep every new/changed file under corpus/ and .ufo/waves/round-28/ for credential patterns\n(secret/token/cookie/op://, BEGIN PRIVATE KEY) — must be empty; (3) confirm no writes to /home/vgpnk/Projects/shokunin\nroot, /home/vgpnk/Projects/shokuknow, .ufo/state, .scratch, MANIFEST.json, templates/, fleet scripts/; (4) confirm the two\ncapture fetches used only the instrument UA on public URLs (read ExecCaptureS042/S041 receipts);\n(5) confirm no fixture or test probed any live target (Q6 class check). Name any violation with its\npath. Receipt: .ufo/waves/round-28/wave1/SentinelScope.md."
+  },
+  {
+   "name": "SentinelQuality",
+   "role": "sentinel",
+   "axes": [
+    "coverage"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nQuality-bar sentinel: independently sample-verify the admission\nbar on the F12 entry (read the landed entry; if absent, PRE-STATE against the staged skeleton): pick\nTHREE load-bearing claims at random (seed from your own read), open the capture at each cited anchor,\nand confirm the quote verbatim. Check the entry for universalized attribution (Q4 violations:\n'Japan requires...' vs 'the IPA process page states...'), memory-typed numbers (any numeric claim must\nmatch a capture line), and the Q6 documentation-only rule. Also verify the SKILL.md append is\nappend-only (`git diff c9f8b115a098c65356e4b3b6048af45a37ab8395 -- SKILL.md` shows only added lines at the end). Receipt:\n.ufo/waves/round-28/wave1/SentinelQuality.md."
+  },
+  {
+   "name": "SimplBloat",
+   "role": "simplifier",
+   "axes": [
+    "depth:verifiability"
+   ],
+   "milestone": "round-28",
+   "prompt": "/skill:godspeed\n\nWave-evidence economy sweep (R14 practice): measure the byte size\nof everything under .ufo/waves/round-28/ as it exists when you run (`du -sb` + `find -type f | wc -l`).\nFlag any single artifact over 256 KiB that is NOT a capture snapshot or instrument (receipts should be\ntext, kilobytes at most). If ScribeLesson/others produced oversized control trees, recommend the R14\nremedy (content-addressed tarball with sha256 in the receipt, or git-archive regeneration note) with\nthe exact commands. Confirm no full-corpus fixture copies were committed this round (compare against\nthe round-25 mistake: c1-after-35 was a full corpus copy). Receipt: .ufo/waves/round-28/wave1/SimplBloat.md."
+  }
+ ]
+}
