@@ -1,0 +1,25 @@
+# C1 before (round 30, frozen at claims commit; instrument sha256 below)
+## instrument digests at base
+c8a62888354ba60dae85d4510653312413e293c0114177627e2e6770a0b88261  corpus/instruments/frontier-recheck-count.py
+9fe6a4a07fdbbd83a9b64a588a14d02b154fd5de81e460b97519675d69a79b96  corpus/instruments/source-recheck.py
+## A1 missing-entry fixture (harness-root-a1)
+    declared, cited, recheck, recheck_ids, manifest = entry_contract(root, entry_path)
+                                                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/frontier-recheck-count.py", line 65, in entry_contract
+    with open(full, encoding="utf-8") as fh:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-30/c1-controls/harness-root-a1/corpus/knowledge/zz-missing.md'
+a1_exit=1 (FileNotFoundError traceback; no named-row marker)
+## A2 duplicate-target fixture (harness-root-a2)
+PASS     F98  knowledge/dup-entry.md                               ids=S003           exit=0   
+PASS     F97  knowledge/dup-entry.md                               ids=S003           exit=0   
+entries=2 pass=2 exit=0
+a2_exit=0 (pass=2 on duplicate target)
+## B1 stem-mismatch (manifest-b1)
+S043:sha256 OK
+S043:Q1 OK normalized=markup-whitespace occurrences=1
+b1_exit=0
+## B2 double-occurrence (manifest-b2)
+S045:sha256 OK
+S045:Q1 OK occurrences=2 anchor=MISSING
+b2_exit=0

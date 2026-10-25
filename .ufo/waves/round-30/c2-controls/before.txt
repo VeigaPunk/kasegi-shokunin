@@ -1,0 +1,13 @@
+# C2 before (round 30, frozen at claims commit)
+## counting commands
+$ awk -F"|" '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md
+$ grep -lE '^source: S04[6-7] ' corpus/knowledge/*.md | wc -l
+$ grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo "census_exit=$?"
+$ python3 corpus/instruments/frontier-recheck-count.py; echo "harness_exit=$?"
+## measured
+frontier_admitted=13
+entries_citing_s046_047=0
+registry_rows=45
+census_exit=0
+harness=entries=16 pass=16 exit=0

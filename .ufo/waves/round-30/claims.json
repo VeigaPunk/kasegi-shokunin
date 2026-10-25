@@ -1,0 +1,74 @@
+{
+  "lane": "kasegi",
+  "round": 30,
+  "attempt": 1,
+  "base": "a94871315cafa368f79c17d8c62d71fddd967986",
+  "frozen_at_utc": "2026-10-25T18:55:00Z",
+  "axes_owned": [
+    "depth:density",
+    "depth:verifiability",
+    "coverage"
+  ],
+  "saturation": {
+    "line": "9/10 per owned axis",
+    "window": "N=3"
+  },
+  "lowest_non_retired_axis": "depth:verifiability (4)",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "score_before": 4,
+      "score_after": "held 4",
+      "claim_type": "measured",
+      "surface": "Instrument conformance for the frontier recheck harness (frontier-recheck-count.py) and the captured-source quote checker (source-recheck.py): round-29 mistakes M29-4 (harness crashes with an uncaught FileNotFoundError on a missing entry and can pass pointing at an unrelated existing entry) and M29-3 (Q9 occurrence/stem binding not enforced by the committed instrument; a record whose stem != id and a double-occurrence quote both pass with exit 0)",
+      "predicate_sentence": "On four committed fixtures: (A1) a frontier row naming a missing entry makes the harness exit 1 with a message naming the row, not a FileNotFoundError traceback; (A2) two admitted rows naming the same entry realpath make the harness exit 1 naming the duplicate; (B1) a source-recheck manifest record whose id != capture file stem exits 1 (reason=stem-mismatch); (B2) a quote occurring twice without a verified anchor exits 1 (reason=occurrence-not-unique)",
+      "counter_commands": [
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/frontier-recheck-count.py --root .ufo/waves/round-30/c1-controls/harness-root-a1; echo \"a1_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/frontier-recheck-count.py --root .ufo/waves/round-30/c1-controls/harness-root-a2; echo \"a2_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest .ufo/waves/round-30/c1-controls/q9/manifest-b1.json --source S043; echo \"b1_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest .ufo/waves/round-30/c1-controls/q9/manifest-b2.json --source S045; echo \"b2_exit=$?\""
+      ],
+      "kill_rule": "Fails if any of: a1_exit != 1 or the A1 stderr/stdout does not name the row id F98; a2_exit != 1 or the A2 output does not name the duplicate entry; b1_exit != 1 or the B1 output lacks reason=stem-mismatch; b2_exit != 1 or the B2 output lacks a failure reason; OR the real corpus regresses (frontier-recheck-count.py on the lane must still pass every admitted row as of the round's final state, and every real manifest recheck that passed at base must still pass).",
+      "do_nothing_control": "Baseline bytes at base a94871315 (frontier-recheck-count.py sha256 c8a62888…, source-recheck.py sha256 9fe6a4a0…): A1 exits 1 with a FileNotFoundError traceback and no named-row marker; A2 exits 0 with pass=2 on a duplicate target; B1 exits 0 (stem mismatch passes); B2 exits 0 with occurrences=2 anchor=MISSING. Receipts committed at .ufo/waves/round-30/c1-controls/before.txt. Control cannot meet the target.",
+      "mutants": "Four isolating mutants of the landed instruments, each removing exactly one new limb: mutant-A1 (drop named-row error) must make A1 exit without the named-row marker; mutant-A2 (drop duplicate detection) must make A2 exit 0; mutant-B1 (drop stem check) must make B1 exit 0; mutant-B2 (drop occurrence check) must make B2 exit 0."
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "score_before": 7,
+      "score_after": "held 7",
+      "claim_type": "measured",
+      "sourced": true,
+      "surface": "Frontier F14 'Japanese severity vocabulary and the handling-priority model' (assimilation theme from merge/kasegi/), admitted with one entry corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md citing two rows first registered this round (S046 IPA JVN activity report PDF, S047 IPA JVN quarterly registration report) plus the already-registered S041 (JPCERT/CC 2026 guideline), each with a capture pinned in corpus/source-snapshots/round-30/manifest.json",
+      "predicate_sentence": "frontier admitted rows increment 13 -> 14 (F14); exactly 1 knowledge entry cites a row first registered this round (S046/S047); registry rows increment 45 -> 47; sources census exits 0; frontier-recheck-count harness entries=17 pass=17 exit=0 including PASS F14 ids=S046,S047,S041; source-recheck exits 0 for each of S046/S047/S041 on the round-30 manifest",
+      "counter_commands": [
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && grep -lE '^source: S04[6-7] ' corpus/knowledge/*.md | wc -l",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && grep -cE '^\\|[[:space:]]*S04[6-7][[:space:]]*\\|' corpus/SOURCES.md",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo \"census_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/frontier-recheck-count.py; echo \"harness_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-30/manifest.json --source S046 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-30/manifest.json --source S047 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-30/manifest.json --source S041; echo \"recheck_exit=$?\""
+      ],
+      "kill_rule": "Fails if any of: frontier admitted != 14; entries citing S04[6-7] != 1; S046+S047 rows != 2; registry rows != 47; census_exit != 0; harness entries != 17 or pass != 17 or harness_exit != 0; recheck_exit != 0 or any round-30 manifest assertion not exactly-once (occurrences=1) with stem == id.",
+      "do_nothing_control": "Baseline at base a94871315: frontier admitted 13, entries citing S04[6-7] 0, rows 45, no round-30 captures exist. Control cannot meet the target.",
+      "assimilation": {
+        "package": "/home/vgpnk/Projects/shokuknow/merge/kasegi",
+        "theme": "Japanese severity vocabulary and the handling-priority model",
+        "staged_rows_adopted": {
+          "S049": "S046",
+          "S050": "S047"
+        },
+        "by_document_rule": "adopted ids continue the lane registry from S046; every adopted entry cites rows by document (URL/anchor is evidence), never by arithmetic",
+        "quarantine": "lane register slice hand-checked this round; verdicts per row in the lesson Gate"
+      }
+    }
+  ],
+  "frontier_step": {
+    "census_before": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-30/census-before.txt",
+    "mistake_source": "round-29 verifier spot-check routed defects (uncommitted round-29 leftovers; report conformance: Trend verdicts section, SHONEN one-line-per-box tokens, literal Landed changes/Before-after headers) and M29-3/M29-4",
+    "sourced_claim": "C2",
+    "considerthese": "proposal 4 (proposals status ledger) from considerthese/2026-10-25.md — mined and landed this round"
+  },
+  "round_shape": "one v2 wave, 64 seats (run-7 band floor 64); run-7 routing; m_flash roles >=50%, attack roles >=25%; connector seats included"
+}
