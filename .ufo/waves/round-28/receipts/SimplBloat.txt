@@ -1,0 +1,136 @@
+# SimplBloat — round-28 wave1 receipt (wave-evidence economy sweep, R14 practice)
+# seat=SimplBloat role=simplifier leaf=yes
+# date=2026-10-25 (UTC); lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+# lane_base=c9f8b115a098c65356e4b3b6048af45a37ab8395  HEAD_at_measurement=94f387cbee71a532a51ce075f01701a557231e85
+# report=.ufo/waves/round-28/wave1/SimplBloat.md
+# production_edits=NONE  vcs_writes=NONE  tool_installs=NONE  writes_outside_lane=NONE
+
+## 1. Footprint as it exists (measured 2026-10-25T17:48:48Z; wave was still landing)
+du -sb .ufo/waves/round-28 | cut -f1                 -> 13395335
+du -sk .ufo/waves/round-28                           -> 13856
+find .ufo/waves/round-28 -type f | wc -l             -> 360
+find .ufo/waves/round-28 -type d | wc -l             -> 59
+find .ufo/waves/round-28 -type l | wc -l             -> 3
+unique blob bytes (sha256 de-dup, python walk)       -> 11525047 across 295 unique blobs
+redundant bytes                                      -> 1870102  (14.0% of tree)
+git ls-tree -r -l HEAD -- .ufo/waves/round-28        -> 13 files / 297893 bytes  (2.2% of tree)
+find .ufo/waves/round-28/receipts -type f | wc -l    -> 36 files / 448675 bytes; max 41201 (ExecRecheckAuditR28.txt)
+# drift during the sweep: 301632 B / 20 files at 17:23Z -> 13395335 B / 360 files at 17:51Z
+
+## 2. The flag rule: artifacts > 256 KiB that are not captures/instruments
+find .ufo/waves/round-28 -type f -size +256k  -> exactly 2:
+  7465472  wave1/ScribeLessonGate/S065.body   PDF; sha256=e33b0f67293441f19ee519b2ed1619121da84867aa8396a3a16facd572586d83  FLAGGED
+   513648  wave1/ScribeLessonGate/S054.body   PDF; sha256=0150c9d15dee603f55573f4692f306ba8ff46f70454b032f813b95fbdbb12b88  FLAGGED
+classification evidence:
+  python3 -c "import json;m=json.load(open('corpus/source-snapshots/round-28/manifest.json'));print([r['id'] for r in m['sources']])" -> ['S041','S042']
+  grep -cE '^\s{0,3}\| *S05[45] *\|' corpus/SOURCES.md  -> 0
+  grep -cE '^\s{0,3}\| *S06[58] *\|' corpus/SOURCES.md  -> 0
+  grep -rn 'S065.body\|e33b0f67' .ufo/waves/round-28/receipts/ .ufo/waves/round-28/wave1/*.md -> no hits (undigested)
+seat carrying them: du -sb wave1/ScribeLessonGate -> 8258680 B / 23 files; bodies = 96.8% of it.
+text side it actually asserts from: *.norm 111342 B, *.txt 49254 B, .out 1636 B, .sh 2792 B.
+receipts comply (text, KB): 36 files, 34 text/plain + 1 text/x-diff + 1 text/html MIME sniff on the
+  plain-text ExecCaptureS042.txt (grep -c "<html|<div|<script" -> 0); mean 12.2 KiB, max 41201 B; >256KiB count 0.
+
+## 3. R14 remedy — rehearsed in mktemp -d, all tarballs REPRODUCIBLE (cmp identical on rebuild)
+# A. recommended: whole wave tree, bodies excluded
+tar --sort=name --mtime='@0' --owner=0 --group=0 --numeric-owner --format=posix -cf /tmp/round-28-wave-evidence.tar -C .ufo/waves/round-28 --exclude='*.body' .
+  -> 6000640 B  sha256=7292c58eadc2b3d467bbdbff2f1f6946449db269d076b10e308997d1da086937
+zstd -19 -q -c /tmp/round-28-wave-evidence.tar -> 489687 B   (27x smaller than 13395335 B working tree)
+# B. if the PDF bytes must be kept: one content-addressed tarball (literal R14 wording)
+tar --sort=name --mtime='@0' --owner=0 --group=0 --numeric-owner --format=posix -cf /tmp/slgate-bodies.tar S037.body S048.body S054.body S065.body S068.body
+  -> 8110080 B  sha256=8b8750c6a61f0b81e22e563c40063aaaf589d8eb45b7aca2ca228823b2a7c3e1  (zstd 7990832 B: PDFs do not compress)
+lean half: tar ... -C .ufo/waves/round-28/wave1/ScribeLessonGate --exclude='*.body' . -> 194560 B sha256=91ac8587769e1cddded1255d8e0c9f698a1865c47d6e56e954a4dafa870c6557
+extraction round-trip: diff -r --brief <seat> /tmp/slgate-x -> exactly 5 lines, all "Only in ...: S0NN.body"
+# C. regeneration arm — measured, all five bodies reproduce byte-identically by re-fetch today
+#    UA = kasegi-shokunin/1.0 (documentation capture; +https://shokunin.invalid/kasegi)  [capture-source.py:32]
+S065 200 7465472 e33b0f67... cmp identical | S054 200 513648 0150c9d1... identical
+S037 200   24189 9cba2e96... identical | S048 404 748 95cd25d8... identical | S068 200 94027 098f99a8... identical
+=> cheaper arm: keep quarantine-handcheck.sh + these five digests in the receipt, delete the bodies.
+# D. git archive arm for what is committed
+git archive HEAD -- .ufo/waves/round-28 -> 317440 B sha256=7cf2a79fa824dc8dac0b33b8a80866cf50402671275804dde9b47f419a27f46c
+
+## 4. No full-corpus copy committed this round (three independent checks)
+committed: 13 paths / 297893 B; comm -12 of round-28 tracked blob ids vs HEAD:corpus blob ids -> 0 shared
+git ls-tree -r --name-only HEAD -- .ufo/waves/round-28 | grep -c '/corpus/'  -> 0
+find .ufo/waves/round-28 -type d -name corpus, filtered to >=20 files -> none
+content identity: 24 wave files byte-identical to a live corpus file = 1591773 B; all 24 untracked (??) and all
+  24 blobs absent from .git (git cat-file -e) -> 0 bytes spent, 1591773 B would be spent if staged.
+  breakdown: 7x S041.txt(147267) + 7x S042.txt(60508) + 6x manifest.json(5038) + 4x anchorcheck*.py(26780)
+single-file registry fixtures (below a corpus copy, named for the L1): assimilation/{schema,schema2,schema3,
+  schema4}/corpus/SOURCES.md + assimilation/base/SOURCES.md = 5 files / 172036 B = 1.4% of live corpus
+  (2133023 B / 128 tracked files). assimilation/base/SOURCES.md is byte-identical to c9f8b11:corpus/SOURCES.md.
+
+## 4b. The round-25 mistake, re-measured (so the comparison is grounded, not quoted)
+at 98261eb: .ufo/waves/round-25/c1-after-35 = 115 files / 1822119 B, and 115/115 blobs identical to that
+  commit's corpus/ ; file set = parent corpus (107) + the 7 corpus files the commit added -> SUPERSET copy.
+same commit also carried 6 full copies at c1-controls/{M1-parse,base,do-nothing,M2-cwd,M3-paths,M4-degenerate}/
+  corpus = 108 files / ~1683500 B each (comm -23 vs parent corpus -> no missing paths).
+effect: .ufo/waves/round-25 tracked 3773 paths / 57511001 B; commit 98261eb still cost 550 new objects /
+  5156417 B after git de-dup (335 of its 773 distinct blobs pre-existed).
+
+## 5. Redundancy and staging projection (dry-run only; index untouched: git diff --cached --name-only -> 0)
+top waste groups (waste = size*(copies-1)):
+  883602  147267 x7  wave1/MutManifestC2/m1/S041.txt (+pristine,m2,m3,m3b,MutQuoteC2/work,ScribeEntryC2/scratch)
+  363048   60508 x7  same seven dirs, S042.txt
+  273150   27315 x11 wave1/ExecReceiptCanonC1/skill.*.out
+   81009   27003 x4  wave1/ScribeSkillGate/*.n
+   80340   26780 x4  wave1/MutSelftestC1/live-base.py (anchorcheck copies)
+   32215   32215 x2  wave1/CritC2Kill/lab/pre-SOURCES.md
+   25190    5038 x6  manifest.json scratch copies
+staging projection (git hash-object + git cat-file -e per path, working tree):
+  as-is                     345 staged paths (342 files + 3 symlinks) / 12950359 B -> 260 NEW blobs / 10736334 B
+  with exclusions below     317 staged paths (314 files + 3 symlinks) /  3352434 B -> 250 NEW blobs /  2557516 B
+recommended pathspec (dry-run verified: body/scratch/try.txt hits -> 0, no other path drops):
+  git add .ufo/waves/round-28 ':!*.body' ':!*/ScribeEntryC2/scratch/*' ':!*/MutManifestC2/*' ':!*/MutQuoteC2/*' ':!*.try.txt' ':!*/__pycache__/*'
+  (__pycache__ already in .gitignore:2; 5 .pyc / 146897 B, git check-ignore confirms ignored)
+
+## 6. Near-miss recorded (detector, not luck)
+17:40:51Z: wave1/CritC2Kill/lab = 26604423 B / 1214 files, holding 12 dirs of 98-101 files each
+  (lab/{chain,chain2,chain3,j0,j3,j4,j8,jhid,w4a,w4b,w4c,w4d}/corpus) = 26268175 B = 66% of the wave tree.
+  one chain: 99 files, 96 byte-identical to live corpus; file set = live corpus minus 39 (all lessons/ +
+  QUALITY.md + the new entry) plus 1 stub -> pruned corpus copy, and no builder script existed.
+  staging cost had it landed: 1157 paths (git add --dry-run | grep -c 'CritC2Kill/lab').
+17:42:14Z: emptied by its owner -> wave1/CritC2Kill = 137564 B / 26 files; find -type d -name corpus -> none.
+git log --all --oneline -- '.ufo/waves/round-28/wave1/CritC2Kill/lab' -> empty (nothing ever committed).
+detector: for d in $(find .ufo/waves/round-28 -type d -name corpus); do n=$(find "$d" -type f|wc -l); [ "$n" -ge 20 ] && echo "MIRROR $n $(du -sb "$d"|cut -f1) $d"; done
+
+## 7. Depth:verifiability side-findings (advisory; nothing deleted, no production file touched)
+(1) wave1-dispatch.json is ~75% derived from wave1-spec.json: taskCall.context is byte-identical to
+    spec['context']; all 69/69 task fields = spec.prompt + a trailer that is a pure function of the item
+    (executor -> "except your single labrat.", else plain; Judged on: ", ".join(axes); Milestone; Report:
+    reportDir/<name>.md) — 51 plain + 18 executor. 77218 of 102538 B reconstructible; remainder is
+    registry/counts/policy. Not deleted: cited by LOG.md, corpus/lessons/round-28.md, 4 wave reports.
+(2) build-wave1-spec.py is deterministic: re-run with output redirected to a temp dir reproduces
+    wave1-spec.json byte-identically (sha256=76e3560d78baec507c620962c069de555e18a1803bcdd8ff8624c5c8c95a7e45,
+    cmp equal, lane untouched). Spec+dispatch are regenerable from 67176 B of script.
+(3) 3 absolute symlinks assimilation/schema{2,3,4}/corpus/knowledge -> <lane>/corpus/knowledge.
+    git-safe (mktemp repo: git ls-files -s -> mode 120000, 0 target bytes).
+    Archive-UNSAFE: tar -h grew the tree by 583680 B and embedded 123 live corpus entries
+    (tar -tvf | grep -c corpus/knowledge -> 123). Do NOT use -h/--dereference for any R14 tarball.
+(4) Correction to .ufo/waves/round-28/receipts/ScribeR14.txt §4 (not my file): its zero-copies probe is
+    name-based (find -name QUALITY.md -o -name SOURCES.md -o -name README.md -o -name anchorcheck.py) and
+    re-runs to 6 now, not 0 (4x assimilation/*/corpus/SOURCES.md, assimilation/base/SOURCES.md,
+    ExecInstrReadme/readme-base/README.md — the last byte-identical to c9f8b11:corpus/instruments/README.md).
+    Its footprint 759791 B / 53 files is a live-wave snapshot (final 13395335 B / 360 files); "largest control tree 44 KiB so no tarball
+    is owed" predates ScribeLessonGate (8258680 B), which does owe one under §3A/C above.
+
+## 8. Surfaces touched
+WROTE: .ufo/waves/round-28/wave1/SimplBloat.md (report), .ufo/waves/round-28/receipts/SimplBloat.txt (this file).
+REMOVED: empty scratch dir .ufo/waves/round-28/wave1/SimplBloat/ that I created earlier this session.
+READ-ONLY: git log/ls-tree/status/check-ignore/hash-object/cat-file/archive/rev-list/rev-parse; mktemp -d plus
+  git init fixtures for the symlink-mode proof; corpus/QUALITY.md (R14 row), claims.json, SCORECARD.md,
+  corpus/{QUALITY,README,SOURCES}.md, corpus/lessons/round-27.md, considerthese/2026-10-25.md, other seats'
+  receipts and reports, /home/vgpnk/Projects/shokuknow/.../absent-defect-register.md (never written).
+NOT RUN / NOT TOUCHED: corpus/instruments/anchorcheck.py (ExecImplC1 owns it; digest not taken by me as a
+  counter), any C1/C2 counter command, any production file, any VCS write, any pacman/uv/npx transaction.
+  No credential/session/private URL appears in this receipt.
+
+## 9. L1 verification commands
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+du -sb .ufo/waves/round-28 | cut -f1                                  # 13362703 at 17:48:48Z (drifts while wave lands)
+find .ufo/waves/round-28 -type f | wc -l                              # 358
+find .ufo/waves/round-28 -type f -size +256k                          # S065.body, S054.body only
+find .ufo/waves/round-28/receipts -type f | wc -l                     # 35
+git ls-tree -r -l HEAD -- .ufo/waves/round-28 | awk '{s+=$4}END{print s}'   # 297893
+for d in $(find .ufo/waves/round-28 -type d -name corpus); do n=$(find "$d" -type f|wc -l); [ "$n" -ge 20 ] && echo "MIRROR $d"; done   # empty
+git log --all --oneline -- '.ufo/waves/round-28/wave1/CritC2Kill/lab' # empty

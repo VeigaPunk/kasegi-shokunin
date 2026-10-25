@@ -1,0 +1,182 @@
+ScribeSkillGate — round 28, wave 1 — SKILL.md gate|probe registry row for anchorcheck.py
+Recorded 2026-10-25T17:28Z (UTC). Lane root /home/vgpnk/Projects/shokunin/kasegi-shokunin.
+Write scope used: SKILL.md (production, sole owner), .ufo/waves/round-28/receipts/ScribeSkillGate.txt,
+.ufo/waves/round-28/wave1/ScribeSkillGate.md, .ufo/waves/round-28/wave1/ScribeSkillGate/ (scratch).
+No other production file touched. No tool installed. No VCS write.
+
+====================================================================
+STATE LABEL
+====================================================================
+SKILL.md edit ................ POST-STATE (written and verified below).
+anchorcheck.py at first read . PRE-STATE, digest c2a9e6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748.
+anchorcheck.py at last read .. 95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514
+                               (§3 measured at c3629229; §8 re-runs every value at 95333e29 — same result).
+The instrument was observed landing live (five digests in ~100 s: 5f5f725c, e14f75b8, c79fb7ca,
+29aba084, c3629229). The first landed reads were mid-write (--selftest raised
+`NameError: name '_selftest' is not defined`; bad fixture still exit 0). The verify block below ran on
+c3629229 with the digest identical at block start and block end, so its values are POST-STATE for that
+digest. ExecImplC1 may still edit after this line was written: re-run §7 on the final digest.
+
+====================================================================
+1. TABLE GEOMETRY (R6 record, as requested)
+====================================================================
+prior last row line .......... 981  (`| recheck-audit.py | gate|probe | ...` — round 26)
+new row line ................. 982  (`| anchorcheck.py | gate|probe | ...`)
+SKILL.md ..................... 1032 -> 1035 lines
+  +1 at line 982   — the new table row (end of table only; nothing above it changed)
+  +2 at lines 1034-1035 — blank line + the one-sentence round-28 note, appended at end of file
+rows matching the round-26 counter regex `^\| [^|]+\| gate\|probe ` ... 1 -> 2
+cell-split parity (unescaped `|` count) rows 981 and 982 ............... 11 = 11 (same trade as r26:
+the literal `gate|probe` type cell splits under a strict renderer, kept for the counter)
+
+Verbatim row (line 982):
+| anchorcheck.py | gate|probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: exit 0 clean \| exit 1 on MISSING-FILE/PAST-EOF/OUTSIDE-BASE/PIN-BROKEN/BASE-ABSENT/BOUNTIES-ABSENT (LOST-RECORDED recorded, not fail; bounties base = `$KASEGI_BOUNTIES` override, else canonical `~/Projects/bounties`) | python3 corpus/instruments/anchorcheck.py --selftest -> one isolating fixture per limb, prints `selftest cases=N failures=0` | .ufo/waves/round-28/c1-receipt-index.txt | all inputs read-only + its own receipt dir | kasegi |
+
+Verbatim note (line 1035):
+Round-28 note (2026-10-25, supersedes the frozen C1 `corpus_disclosure` cell): zero backticked anchored `~/Projects/bounties/` citations exist lane-wide, so the new `BOUNTIES-ABSENT` arm in `CITE` is invisible to all existing bytes — no verdict-class movement on any file, corpus or `SKILL.md` (erratum, with the sweep command and scratch probe: `.ufo/waves/round-28/claims-erratum-1.md`).
+
+sha256 SKILL.md before ....... fa09d5b835451f2443fc96353432a330608baf5f3631d1b382141f7e86d64f2d
+sha256 SKILL.md after ........ 125be37d85ffe6be30a3c372b52d96d8074e3c4d7f4baf835d0f5aed5f56cca6
+git diff --unified=0 SKILL.md: one added line at +982, and +1034..1035 (blank + note). Nothing else.
+
+====================================================================
+2. ANCHORCHECK BEFORE / AFTER ON SKILL.md — PRE-CHANGE INSTRUMENT (c2a9e6c6)
+   R6 test: "anchorcheck before/after prints the same cited source lines"
+====================================================================
+BEFORE (HEAD bytes, 1032 lines):
+  $ python3 corpus/instruments/anchorcheck.py SKILL.md ; echo $?
+  0
+  == SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+AFTER (worktree, 1035 lines):
+  0
+  == SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+
+Raw diff of the two 315-line reports — exactly one line, and only its position field:
+  -LOST-RECORDED md:998 [lost-base] check-freshness.mjs:61 (not checked)
+  +LOST-RECORDED md:999 [lost-base] check-freshness.mjs:61 (not checked)
+
+Normalized diff (every `md:NN` -> `md:NN`): IDENTICAL, both sides sha256
+dd63c163a56b8db43451141a1c72f91955792d5b8ac4d08d6821d7a9ee890220.
+So: no cited anchor's verdict, token or cited source text moved; one citation occurrence sits one line
+lower because the row was inserted above it. Nothing in the lane cites SKILL.md:998, so no third-party
+pointer is affected by that shift (see §6).
+
+====================================================================
+3. THE ROW'S FOUR SEMANTIC CLAIMS, MEASURED ON THE LANDED INSTRUMENT (c3629229)
+====================================================================
+digest at block start == block end == c36292292ec0d85eef348b0c1ef723c6501fb136cab939e0e87c93137edb6a2a
+
+(a) fail-closed exit — bad fixture (.ufo/waves/round-27/c1-controls/bad-fixture.md):
+      $ python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bad-fixture.md >/dev/null 2>&1; echo $?
+      1                                    <- frozen after value, was 0 pre-change
+
+(b) BOUNTIES-ABSENT arm — bounties fixture:
+      $ python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bounties-fixture.md
+      BOUNTIES-ABSENT md:3 ~/Projects/bounties/ops/claim-check.mjs:96 (base tree absent: /home/vgpnk/Projects/bounties/ops/claim-check.mjs)
+      == .ufo/waves/round-27/c1-controls/bounties-fixture.md: 0 in-range cite instances, 0 bad; 0 distinct anchors; LOST-RECORDED=0 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+      exit 1;  `| grep -c BOUNTIES-ABSENT` = 1   <- frozen after value, was 0 pre-change
+
+(c) --selftest spelling:
+      $ python3 corpus/instruments/anchorcheck.py --selftest
+      selftest cases=9 failures=0
+      exit 0
+
+    $KASEGI_BOUNTIES root override (row claim: override, else canonical ~/Projects/bounties):
+      temp root present, same fixture:
+      $ KASEGI_BOUNTIES=$T python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bounties-fixture.md
+      PAST-EOF md:3 ~/Projects/bounties/ops/claim-check.mjs:96 (file has 1 lines)
+      == ...: 0 in-range cite instances, 1 bad; ... BASE-ABSENT=0
+      i.e. with the override present the base is checked (no BOUNTIES-ABSENT); with it absent the same
+      cite is BOUNTIES-ABSENT. The override is load-bearing.
+
+(d) no-harm, SKILL.md live run, landed instrument:
+      worktree (POST edit):  exit 0
+        == SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+      HEAD bytes (PRE edit) run through the same instrument:
+        == .ufo/waves/round-28/wave1/ScribeSkillGate/SKILL-head.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+      Raw diff: the summary path label plus the same single `md:998 -> md:999` line.
+      Normalized diff: IDENTICAL, both sides sha256
+      e53e8b5be7c5da3c97513b4840c5d5fad0f1389d02575f11dc2c1777cb768a86.
+      Every frozen C1(d) class holds: exit 0, bad=0, LOST-RECORDED=306, PIN-BROKEN=0, OUTSIDE-BASE=0,
+      BASE-ABSENT=0.
+
+Entry command cell ("python3 corpus/instruments/anchorcheck.py <file.md>") and write scope
+("all inputs read-only"): the landed docstring states "No fixture reads or writes the live tree"; the
+module opens files for reading only (`open(src)`, `open(path)`); the only `subprocess` call is
+`git -C <repo> show`; `--selftest` writes only under `tempfile`. Read-only claim holds.
+
+====================================================================
+4. THE NOTE — ORIGINAL BRIEF vs ERRATUM (conflict recorded verbatim)
+====================================================================
+Original brief: "append a same-round note ... that the 4 corpus bounties citations now classify
+LOST-RECORDED".
+Mid-run correction from KasegiR28 (L1): "claims.json's corpus_disclosure cell does NOT reproduce.
+ExecInstrReadme proved the 4 named citations are non-backticked provenance headers invisible to
+TOK/CITE — 0 backticked anchored bounties cites exist, 0 LOST-RECORDED movement. Your SKILL.md append
+must therefore NOT say 'the 4 corpus bounties citations now classify LOST-RECORDED'."
+Erratum of record: .ufo/waves/round-28/claims-erratum-1.md (2315 B, filed 14:25).
+
+Independently re-verified at this seat, lane-wide over SKILL.md + corpus/**/*.md (backticked tokens that
+are marked-lost or bare and end in `:NN`):
+  $ grep -rno '`\[lost-\(base\|tree\)\] ~/Projects/bounties/[^`]*:[0-9][0-9]*`' corpus/ SKILL.md | wc -l
+  0
+A tokenizer-level scan (TOK -> strip `[lost-tree]`/`[lost-base]` -> bounties CITE arm) over the four
+named files returns 0 backticked hits; the four citations are plain `source:` prose lines
+(e.g. corpus/knowledge/claim-gates.md:123), which anchorcheck never scans.
+=> The note states the erratum's fact (zero backticked anchored bounties citations; the arm invisible to
+all existing bytes; no verdict-class movement anywhere), not "now classify LOST-RECORDED".
+
+====================================================================
+5. WHAT MOVED / WHAT DID NOT
+====================================================================
+Moved:      SKILL.md +3 lines (1 registry row at 982, blank + note at 1034-1035); `gate|probe` rows 1->2.
+Not moved: SKILL.md verdict classes (identical summary, pre- and post-instrument); every cited anchor's
+           verdict/token/source text (normalized byte-identity at both instruments); the round-26 row at
+           981 and the whole file above 982.
+Pre-existing pointer still true: corpus/lessons/round-26-verifier-spotcheck.md:32 cites SKILL.md:977-985;
+           after the edit that range is heading(977), blank, header(979), separator(980), r26 row(981),
+           r28 row(982), blank, paragraph(984), blank — every r26-cited property is still inside it.
+
+====================================================================
+6. HONEST LIMITS (unrun = not passed; stale = disclosed)
+====================================================================
+1. R6 letter: material at or after line 982 shifted by +1 (the file's last content line 1032 -> 1033).
+   No pre-existing anchor CONTENT moved (normalized byte-identity proven twice), and the single moved
+   report position (SKILL.md:998 occurrence) is not cited by any file. A shift-free table append is not
+   possible: the only compensating line deletions move either the section heading at 977 (cited by
+   round-26-verifier-spotcheck.md) or the paragraph at 984.
+2. corpus/instruments/resolve-dispatch-fixtures.json:159 and :161 carry the prose pointer `SKILL.md:1000`
+   for "the verbatim four-alternative set". It is already stale: line 1000 is
+   `~/Projects/bounties/ops/shared.mjs`; the four-alternative set is at 1007 before this edit and 1008
+   after. Round-26 created the drift (it inserted 9 lines at 976). Not mine to fix; flagged to the L1.
+3. The instrument changed five times while this seat measured; §3 values are tied to digest c3629229
+   only. Later edits invalidate them.
+4. Round-28 counter (c) also wants the selftest line in the canonical receipt index
+   (.ufo/waves/round-28/c1-receipt-index.txt) at the landed instrument digest. That index is not mine
+   (ExecReceiptCanonC1 / KasegiR28); this receipt does not claim it exists.
+
+====================================================================
+7. RE-RUN FOR THE L1 (lane root, post-final-digest)
+====================================================================
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && sha256sum corpus/instruments/anchorcheck.py && python3 corpus/instruments/anchorcheck.py --selftest; echo selftest_exit=$? ; python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bad-fixture.md >/dev/null 2>&1; echo bad_fixture_exit=$? ; python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bounties-fixture.md 2>/dev/null | grep -c BOUNTIES-ABSENT ; python3 corpus/instruments/anchorcheck.py SKILL.md >/dev/null 2>&1; echo skill_exit=$? ; python3 corpus/instruments/anchorcheck.py SKILL.md 2>/dev/null | sed -n 's/^== .*bad; \(.*\)/\1/p' ; grep -cE '^\| [^|]+\| gate\|probe ' SKILL.md
+Expected: selftest_exit=0 with `selftest cases=N failures=0`; bad_fixture_exit=1; 1; skill_exit=0;
+`7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0`; 2.
+
+Scratch (mine, deletable): .ufo/waves/round-28/wave1/ScribeSkillGate/ — anchorcheck-SKILL-before.txt,
+anchorcheck-SKILL-after.txt, n-before.txt, n-after.txt, SKILL-head.md, final-block.txt,
+landed-head.txt, landed-worktree.txt, lh.n, lw.n, verify-block.txt, newinstr-*.txt, bounties-landed.txt,
+recheck-final.txt.
+
+====================================================================
+8. POST-REPORT RECHECK — later landed digest 95333e29 (17:29:16Z)
+====================================================================
+The instrument moved once more after §3 was written. Every counter was re-run on the later bytes; the
+digest was identical at block start and end:
+  sha256 corpus/instruments/anchorcheck.py = 95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514
+  --selftest ............ selftest cases=9 failures=0   exit 0
+  bad fixture ........... exit 1
+  bounties fixture ...... 1 BOUNTIES-ABSENT line
+  SKILL.md .............. exit 0
+    == SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+No value changed. The row's wording remains accurate at this digest. Any further ExecImplC1 edit still
+requires §7.

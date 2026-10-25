@@ -1,0 +1,133 @@
+== ScribeLesson — round-28 wave 1 — lesson assembly receipt ==
+seat: ScribeLesson (scribe, leaf; no dispatch, no background job, no VCS write, no install)
+owned paths written: corpus/lessons/round-28.md, this receipt, wave1/ScribeLesson.md
+lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane tip at round start: 261a6651b7e52c58e9ad0ceaef6f3bd0bf2d904f (claims.json `base`)
+claims-freeze commit: c9f8b115a098c65356e4b3b6048af45a37ab8395
+dispatch commit (lane HEAD while the wave ran): 94f387cbee71a532a51ce075f01701a557231e85
+assembled: 2026-10-25T17:30Z .. 2026-10-25T17:36Z (UTC)
+
+STATE LABEL: DRAFT
+  Reason (my assignment's own branch condition): the two receipts it names as the verdict source
+  are PRE-STATE.
+    .ufo/waves/round-28/receipts/ExecC2Counters.txt   17:21:57Z + 17:22:28Z  PRE-STATE
+    .ufo/waves/round-28/receipts/ExecFixtureRun.txt   17:22Z                PRE-STATE
+  The after values recorded in the lesson come from seats that ran LATER at the landed digests
+  (ExecImplC1 17:29:28Z, ScribeSkillGate 17:29:16Z, RevFixturesC1 17:31:21Z, RevCounters2
+  17:26:24Z, ExecReceiptCanonC2 17:27:13Z, RevCensusEnd, ScribeCensusNote §7). The lesson says so
+  in its header and marks itself DRAFT for the L1 to finalize after close. No after value in the
+  lesson is projected; every one cites the seat and timestamp that produced it.
+
+WAVE STATE AT ASSEMBLY (17:35:16Z, measured)
+  60 of 69 seats had filed wave1/*.md; 33 had filed receipts/*.txt.
+  No artifact at all from 6 seats: ScoutJpcertRecon, ScoutGateRegistry, RevDensityGuard,
+  CritC2Kill, CritGlobal, SimplBloat. They are named as NOT LANDED in the lesson header; nothing
+  is inferred from their absence and no claim is scored on work they did not file.
+  corpus/lessons/round-28.md did not exist before this seat; .ufo/waves/round-28/c1-receipt-index.txt
+  does not exist (verified absent at 17:30:49Z, 17:34:31Z, 17:35:16Z).
+
+INPUTS READ (all under the lane unless stated)
+  claims.json; SCORECARD.md (r24-r28 sections); corpus/QUALITY.md; corpus/README.md (frontier,
+  r28 amendment); corpus/SOURCES.md (S041/S042 rows + Registry changes); corpus/lessons/round-27.md;
+  corpus/lessons/round-26.md §Gate; /home/vgpnk/Projects/shokunin/LEARNING.md (lesson/Gate shape,
+  spot-check rule); corpus/source-snapshots/round-28/{manifest.json,S041.txt,S042.txt};
+  the F12 entry; .ufo/waves/round-28/claims.json + claims-erratum-1.md + wave1-spec.json +
+  wave1-dispatch.json + census-before.txt;
+  the readonly package /home/vgpnk/Projects/shokuknow/merge/kasegi/{MERGE-REPORT.md,
+  SOURCES.append.md, knowledge/corpus/knowledge/*.md} (read only; nothing executed there);
+  receipts: ExecC2Counters, ExecFixtureRun, ExecInstrSelftest, ExecNoHarmC1 (density/disclosure),
+  ExecCaptureS041, ExecCaptureS042, ExecManifest, ExecHarnessC2, ExecCensusDry, ExecExpectedList,
+  ExecRecheckAuditR28, ExecInstrReadme, ExecSkillGateSupport, ExecReceiptCanonC1, ExecReceiptCanonC2,
+  ExecImplC1(+.diff), ExecGateLog, ScribeR14, ScribeEntryC2, ScribeRegistryC2, ScribeReadmeC2,
+  ScribeLog, ScribeScorecard, ScribeSkillGate, ScribeFrontierNote, ScribeCensusNote,
+  ScribeSourcesGate, ScribeLessonGate, ScoutAssimilation, RevCounters1, RevCounters2, RevCloseCheck,
+  RevCensusEnd, RevRegistryC2, RevEntryC2, RevManifestC2, RevFixturesC1, SentinelScope,
+  SentinelQuality, ConnClaims, ExecScopeSweep, ScoutIpaRecon;
+  reports also read directly: Exec{C2Counters,FixtureRun,InstrSelftest,CaptureS041,CaptureS042,
+  Manifest,CensusDry,ExpectedList,RecheckAuditR28,InstrReadme,NoHarmC1,ReceiptCanonC1,ReceiptCanonC2,
+  HarnessC2,ImplC1,ScopeSweep,SkillGateSupport,InstrSelftest} §; Scribe{SkillGate,R14,RegistryC2,
+  ReadmeC2,Log,Scorecard,FrontierNote,CensusNote,SourcesGate,LessonGate}; Rev{CloseCheck,CensusEnd,
+  RegistryC2,EntryC2,ManifestC2,FixturesC1,Counters1,Counters2}; Scout{Assimilation,IpaRecon};
+  Sentinel{Scope,Quality}; ConnClaims; CritC1Vacuity; Mut{ManifestC2,QuoteC2,ArmC1}.
+
+== 1. WHAT THIS SEAT RAN ITSELF (read-only; nothing re-run to decorate a result) ==
+1.1 census validate (the Compliance after-state), 17:30Z:
+    $ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+    kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+    kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+    kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+    census_exit=0
+1.2 row counts, same run:
+    $ grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md   -> 42
+    $ grep -cE '^\|[[:space:]]*S042[[:space:]]*\|' corpus/SOURCES.md          -> 1
+1.3 single-valued --source check (M28-11), 17:31Z, on the landed manifest:
+    $ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041 --source S042 2>&1 | grep -c 'OK occurrences'
+    6
+    => the two-flag invocation checks ONE id (S042); 12 assertions require two invocations
+       (source-recheck.py:275 `add_argument("--source", …)`, no action="append").
+1.4 digests bound by the lesson (sha256sum, read-only), 17:30:49Z unless stated:
+    corpus/instruments/anchorcheck.py                          95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514
+    corpus/SOURCES.md                                          e59240f8e9842535e815f7d4575be7ea11a6a57a7bbaead43cbea92bd013945d
+    corpus/README.md                                           5f458a7a26b8dfc2dd2ee2e46e11380d5697e51e77213772bce7b59253363180 (245 lines)
+    corpus/knowledge/japanese-domestic-disclosure-workflow.md   a22d2321e39fd0e547d8ae480eb566648520e59281e69e057aab5ab8502413a6 (103 lines, 18544 B)
+    SKILL.md                                                   125be37d85ffe6be30a3c372b52d96d8074e3c4d7f4baf835d0f5aed5f56cca6 (1035 lines)
+    corpus/QUALITY.md                                          00d4b2a3898220f61a8d26477aed3a6fa928fd73bd524eacbd8979df105c9839 (83 lines)
+    LOG.md                                                     c30b7608d4fd46ea4620f614c40f5b497db5e026f3935f748dae152b9a184981
+    SCORECARD.md                                               95a0ec5bebd27d45528b4ccca8a45a284af4d2818628d25c7e65ca675a9ee483
+    corpus/source-snapshots/round-28/manifest.json             e62ddad133ffc19ebc66822c0fcb3b48ed4993c101f05262302acc58714f291d (5038 B)
+    corpus/source-snapshots/round-28/S041.txt                  e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47 (147267 B)
+    corpus/source-snapshots/round-28/S042.txt                  b432ec165693d005fa5de326ffb40d60d0476b18a345a9fc6d631d10b9c96966 (60508 B)
+    at 17:35:26Z: corpus/instruments/README.md                 cf35a643b8d5d9d2eb726d4190e029f275bc5a129e87ccec40d27c9d86d5322b
+                  (327 lines; git diff --numstat = 131 0)
+1.5 line-count deltas vs HEAD (`git show HEAD:<f> | wc -l` vs `wc -l`):
+    SKILL.md 1032->1035; corpus/QUALITY.md 77->83; corpus/instruments/README.md 196->327;
+    corpus/README.md 217->245; the F12 entry 0->103.
+1.6 capture identity: round-28 S041.txt == round-26 S041.txt (same sha256, same 147267 B) --
+    measured here by sha256sum of both files; corroborated by ExecCaptureS041's cmp_exit=0.
+
+== 2. FROZEN-CLAIM VERDICTS AS RECORDED ==
+C1 (depth:verifiability, 4): limbs (a)-(d) OBSERVED at anchorcheck.py 95333e29 (ExecImplC1
+  17:29:28Z; reproduced at the same digest by ScribeSkillGate 17:29:16Z and RevFixturesC1
+  17:31:21Z). (a) bad-fixture exit 1; (b) exactly 1 BOUNTIES-ABSENT line, runtime exit 1;
+  (c) selftest cases=9 failures=0 exit 0, mutants M1 failures=4 / M2 failures=1;
+  (d) SKILL.md exit 0, bad 0, LOST-RECORDED=306, PIN-BROKEN=0, ORIGIN=0, OUTSIDE-BASE=0,
+  BASE-ABSENT=0. NOT CLOSED: the canonical c1-receipt-index.txt is absent, so frozen counter (c)'s
+  index greps have not run. Recorded in the lesson as "predicate limbs observed; claim not closable".
+C2 (coverage, 7): all after values reached and measured -- frontier 11->12, entries citing S042
+  0->1, registry 41->42 rows with one S042 row, census exit 0 (W04 x2 only), harness 14/14->15/15
+  exit 0, manifest 12/12 exactly-once, source-recheck exit 0 per id (RevCounters2 17:26:24Z;
+  ExecReceiptCanonC2 17:27:13Z; RevCensusEnd; my census run §1.1).
+depth:density: no-harm on verdict classes observed; the post-append density re-measure is OWED
+  (the dispatch's 154.0/19 comparand is stale -- M28-9).
+Claims erratum: the frozen C1 corpus_disclosure cell does NOT reproduce (0 of 4); correction is
+  the appended .ufo/waves/round-28/claims-erratum-1.md, not an in-place edit.
+
+== 3. LESSON CONTENTS (what corpus/lessons/round-28.md carries) ==
+H1 + header naming the three revisions; DRAFT banner with the PRE-STATE reason and the 6 not-landed
+seats; frozen-claims table (C1/C2/density) with before, after and verdict-at-assembly; the
+timestamped counter-state table (6 runs, 3 distinct digests); the appended-claims-erratum paragraph;
+`## Gate` pasted from ScribeLessonGate and reconciled (collision/adoption ids, admitted rows with the
+inline S042:Q1 quote, refused rows with inline <=25-word quotes for BOTH rejects, quarantine slice
+table of 7, registry changes old->new including the S041 used-by cell required by C2, R14 landing,
+4 mid-wave defects, spot-check result naming the admit agreements and the owed reject spot-check);
+`## Mistakes` with 12 rows (M28-1 .. M28-12), each naming class, evidence pointer, captured-by and a
+fix; `## Compliance` (freeze discipline, 9-file ownership table with digests, census before/mid/after,
+scope and safety, tooling, close-out ledger); `## Carry-forward for round 29` (8 items).
+
+== 4. HONESTY / LIMITS ==
+- I ran neither the C1 nor the C2 frozen counter commands as a verdict of my own; the lesson cites
+  the seats that did, at the digests they pinned. I ran only the census, the row counts, the
+  --source check, digests and line counts (§1) -- each pasted above.
+- I did not re-run the frontier harness or source-recheck beyond the single --source experiment in
+  §1.3; their results are quoted from RevCounters2 / ExecHarnessC2 / ExecReceiptCanonC2.
+- Six seats had filed nothing at assembly; their work is neither credited nor guessed.
+- The lesson is DRAFT for a real reason (canonical index + a re-run at the closing commit), not as
+  a formality.
+- No credential material, session or private URL appears in the lesson, this receipt or my report.
+- No tool installed or upgraded; no pacman/uv/npx transaction by this seat.
+- No VCS write of any kind; read-only git only (`log`, `show`, `diff`, `status`, `cat-file`).
+
+== 5. FILES WRITTEN BY THIS SEAT ==
+  corpus/lessons/round-28.md                          (517 lines, 46988 B, sha256 973b6362bea143a22f1b8590756ce753aeac45beb8b6a6b70afad8db60948d3d at 17:37:36Z; sole production write)
+  .ufo/waves/round-28/receipts/ScribeLesson.txt       (this file)
+  .ufo/waves/round-28/wave1/ScribeLesson.md           (report)

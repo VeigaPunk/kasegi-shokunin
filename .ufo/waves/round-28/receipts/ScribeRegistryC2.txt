@@ -1,0 +1,166 @@
+Seat: ScribeRegistryC2
+Round: kasegi round 28, wave 1 (v2 build+attack)
+Lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Lane base: c9f8b115a098c65356e4b3b6048af45a37ab8395
+Written: 2026-10-25T17:2xZ (UTC), revised after the C2 entry landed (~17:3xZ)
+Owned production path — the ONLY production file this seat wrote: corpus/SOURCES.md
+Other writes: this receipt, .ufo/waves/round-28/wave1/ScribeRegistryC2.md (report). Scratch: /tmp only.
+
+================================================================
+1. PRODUCTION DIFF — corpus/SOURCES.md
+================================================================
+before sha256  fe14821388269f04c5da665ed4181ac04a9762197de0900b57ab5057f384481b
+after  sha256  e59240f8e9842535e815f7d4575be7ea11a6a57a7bbaead43cbea92bd013945d
+
+`git show HEAD:corpus/SOURCES.md` vs worktree:
+  removed lines = 1 (the pre-change S041 row)
+  added   lines = 4 (patched S041 row, new S042 row, 2 registry-change log lines)
+  no other hunk. Registry rows: 41 -> 42.
+
+Placement: S042 is the last row of `## Registry` (line 48, immediately after S041 at line 47,
+before the blank line and `## Paths`). Change-log lines appended at the end of
+`## Registry changes` (lines 78-79). `## Paths`, the search log and the leads section are
+untouched.
+
+================================================================
+2. EDIT 1 — S042 row appended (normalized, not the staged bytes)
+================================================================
+Landed row (line 48, verbatim; 11 cells, 12 pipe characters, 0 escaped pipes, NF=13 under
+`awk -F'|'`, the census grammar):
+
+| S042 | IPA 脆弱性関連情報の届出受付業務における取扱いプロセス — https://www.ipa.go.jp/security/todokede/vuln/process.html | docs | A | IPA and JPCERT/CC's own intake process for vulnerability reports as that page states it: the software-product flow (10 steps, from receipt to publication), the web-application flow (7 steps) and the vendor own-product flow | 脆弱性関連情報の届出受付業務における取扱いプロセス and ソフトウエア製品の取扱いプロセス (heading L132, steps 1 to 10 at L133-L159), step 5 起算日の連絡 (L144-L145), verified against the round-28 capture S042.txt; 最終更新日 2017-05-30 | A coordinator mediates the flow: the finder is told the 起算日 and the detail-information date, while IPA and JPCERT/CC contact the developer (L145). | mined | 2026-10-25 | 180d | corpus/knowledge/japanese-domestic-disclosure-workflow.md |
+
+Cell-by-cell:
+  id      S042
+  source  IPA 脆弱性関連情報の届出受付業務における取扱いプロセス — https://www.ipa.go.jp/security/todokede/vuln/process.html
+  kind    docs
+  tier    A
+  scope   IPA/JPCERT/CC intake process for the page's coverage, all three flows named
+  anchor  10-step software-product flow (heading L132, steps L133-L159) + step 5
+          起算日の連絡 (L144-L145), verified against the round-28 capture;
+          最終更新日 2017-05-30
+  teaches ONE learner benefit: coordinator-mediated flow; the finder is told the 起算日 and
+          the detail-information date
+  status  mined
+  opened  2026-10-25
+  recheck 180d
+  used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md  (exactly the entry)
+
+Normalization vs the staged bytes (/home/vgpnk/Projects/shokunin/shokuknow/merge/kasegi/
+SOURCES.append.md, read-only; compared cell by cell, nothing copied as-is):
+  - teaches: staged cell was a multi-clause prose sentence ("... and may query progress").
+    Rewritten to ONE grounded learner benefit, pinned to the capture line carrying it (L145).
+  - anchor: staged cell claimed "ウェブアプリケーションの取扱いプロセス steps 1 to 6".
+    The round-28 capture runs that flow to step 7 (L162-L182, 7.統計情報の公表 at L181), so
+    the staged step count is NOT carried.
+  - anchor: staged offsets replaced with capture line numbers verified on S042.txt sha256
+    b432ec165693d005fa5de326ffb40d60d0476b18a345a9fc6d631d10b9c96966 (identical to the pin
+    in corpus/source-snapshots/round-28/manifest.json).
+  - opened: staged 2026-10-23 -> 2026-10-25 (access date is today).
+  - recheck: staged 180d retained unchanged.  - used-by: staged path retained (it is the
+    admitted entry).
+
+Anchor evidence re-read from the landed capture (not inferred):
+  L121 脆弱性関連情報の届出受付業務における取扱いプロセス (page heading)
+  L123 最終更新日：2017年5月30日
+  L132 ソフトウエア製品の取扱いプロセス (flow heading)
+  L133 1.届出の受付  …  L159 10. 統計情報の公表   (steps 1-10; L160 is step 10's body)
+  L144 5.起算日の連絡
+  L145 JPCERT/CC は製品開発者への連絡を開始した旨（起算日）、および、製品開発者へ詳細情報を
+        連絡した旨をIPAへ連絡します。IPAは起算日、および、詳細情報連絡日を発見者へ連絡します。
+  L161   ウェブアプリケーションの取扱いプロセス (flow heading); steps 1-7 at L162-L181
+         (L182 is step 7's body)
+  L183 自社製品の取扱いプロセス (third flow heading; 8 steps to L200)
+
+Line convention: step ranges cite the numbered step-heading lines, matching the entry's own
+`source: S042` header (`ソフトウエア製品 1.–10. (L133-159)`, `ウェブアプリケーション 1.–7.
+(L162-182)`, `自社製品 1.–8. (L184-200)`) and ExecCaptureS042's convention; the flow heading
+line is named separately.
+
+Exactly-once checks on the pinned bytes (grep -Fc / grep -c):
+  the L145 sentence          1
+  最終更新日：2017年5月30日   1
+  ^5.起算日の連絡$ (heading) 1
+  起算日 (bare term)         3 occurrences: L144 once (heading), L145 twice
+  lines containing 起算日の連絡 1
+
+URL collision check: `grep -c "todokede/vuln/process.html" corpus/SOURCES.md` = 1 (this row
+only; S058 is the sibling uketsuke.html path). No E04/W04 can fire from this row.
+
+================================================================
+3. EDIT 2 — S041 used-by (R8 old -> new)
+================================================================
+old cell: corpus/knowledge/iso-29147-and-30111-division-of-labour.md, corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md
+new cell: corpus/knowledge/iso-29147-and-30111-division-of-labour.md, corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md, corpus/knowledge/japanese-domestic-disclosure-workflow.md
+
+Cell-identity proof on the LANDED bytes (mechanical, not eyeballed): split the pre-change S041
+row (`git show HEAD:corpus/SOURCES.md`, line 47) and the landed row (line 47) on `|`.
+  old cells 13, new cells 13
+  differing cell indices: [11] only  (0 = the empty field before the first pipe, 11 = used-by)
+Every other S041 cell — id, source, kind, tier, scope, anchor, teaches, status, opened,
+recheck — is byte-identical. The only added bytes on that line are
+", corpus/knowledge/japanese-domestic-disclosure-workflow.md".
+
+================================================================
+4. CHANGE LOG — appended at ## Registry changes (round-26 precedent shape)
+================================================================
+- S042 row added: new row (id `S042`, tier A, status mined, opened 2026-10-25, recheck `180d`, used-by `corpus/knowledge/japanese-domestic-disclosure-workflow.md`), anchor pinned to the round-28 capture `corpus/source-snapshots/round-28/S042.txt` (heading L132, steps 1 to 10 at L133-L159, step 5 起算日の連絡 L144-L145). Rewritten to the registry's own cell shape from the staged `/home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md` bytes, not appended as-is: the staged row's prose `teaches` cell and its `ウェブアプリケーション ... steps 1 to 6` anchor claim (the round-28 capture shows seven steps) are not carried.
+- S041 used-by cell old → new: `corpus/knowledge/iso-29147-and-30111-division-of-labour.md, corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md` → `corpus/knowledge/iso-29147-and-30111-division-of-labour.md, corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md, corpus/knowledge/japanese-domestic-disclosure-workflow.md` (round-28 C2 F12 admission; every other S041 cell byte-identical, R8).
+
+================================================================
+5. R8 LINE FOR THE ROUND-28 LESSON (owner: ScribeLesson; not written by this seat)
+================================================================
+R8 requires the old->new logged "in the receipt and in the lesson". The lesson file
+(corpus/lessons/round-28.md) is outside this seat's write scope, so the verbatim line is
+delivered here for that seat to lift unchanged:
+
+  - S041 used-by old -> new (round 28, C2 F12): `iso-29147-and-30111-division-of-labour.md, iso-29147-divergence-and-clause-crosswalk.md` -> `iso-29147-and-30111-division-of-labour.md, iso-29147-divergence-and-clause-crosswalk.md, japanese-domestic-disclosure-workflow.md` (paths under corpus/knowledge/). S042 appended, no old value existed.
+
+================================================================
+6. CENSUS
+================================================================
+Command (run from the lane root, as specified):
+  /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+
+(a) PRE-EDIT baseline, before any byte of mine:
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+census_exit=0
+
+(b) EARLIER RUN on the real root while the C2 entry was still absent (PRE-STATE, recorded as
+history — not a result):
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	E11	S041 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+kasegi	E11	S042 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+census_exit=1
+  -> both findings named the same missing path, the C2 entry (ScribeEntryC2's file), not a
+     registry defect. Confirmed the dependency, did not wait: the landed registry bytes were
+     run in a scratch lane root with the used-by target present and validated clean, so the
+     row shape was proven before the entry existed.
+
+(c) FINAL RUN on the real production root, after corpus/knowledge/
+    japanese-domestic-disclosure-workflow.md landed:
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+census_exit=0
+  -> exit 0; the only findings are the two pre-existing W04 (S028, S029) that the baseline
+     already carried. No E01/E02/E03/E04/E05/E06/E07/E08/E09/E10/E11/E12 from this seat's
+     bytes.
+
+================================================================
+7. COUNTER-RELEVANT GREPS (C2 counter 3, this seat's half)
+================================================================
+grep -cE '^\|[[:space:]]*S042[[:space:]]*\|' corpus/SOURCES.md                   -> 1
+awk -F'|' '/^\|[[:space:]]*S[0-9]{3} /{n++} END{print n}' corpus/SOURCES.md     -> 42
+
+================================================================
+8. TOOLING / HONESTY
+================================================================
+- No tool installed, no pacman transaction attempted (host-wide pause respected). No VCS write.
+- Every figure above is a single execution's output pasted from this session; nothing was
+  re-run to decorate a value. Both census runs are reported, including the one that failed.
+- The lesson (corpus/lessons/round-28.md) and corpus/README.md F12 row were NOT touched; they
+  belong to other seats.

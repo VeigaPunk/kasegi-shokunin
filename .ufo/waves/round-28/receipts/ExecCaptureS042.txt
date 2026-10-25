@@ -1,0 +1,222 @@
+ExecCaptureS042 — round-28 wave 1 — C2 coverage (capture limb) — 2026-10-25
+lane root : /home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane base : c9f8b115a098c65356e4b3b6048af45a37ab8395
+owned path: corpus/source-snapshots/round-28/S042.txt   (written this seat; nothing else in production touched)
+axes      : coverage
+status    : CAPTURE LANDED. One dispatch expectation FAILS verification: the web-application
+            flow is SEVEN numbered steps in the captured page, not six (see §5).
+
+=============================================================================================
+§1  CAPTURE — instrument invocation, verbatim stdout, exit
+=============================================================================================
+command:
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/capture-source.py --id S042 --url https://www.ipa.go.jp/security/todokede/vuln/process.html --kind html --out corpus/source-snapshots/round-28/S042.txt
+
+stdout (verbatim, one line):
+S042 status=200 fetched_bytes=229982 snapshot_bytes=60508 sha256=b432ec165693d005fa5de326ffb40d60d0476b18a345a9fc6d631d10b9c96966 utc=2026-10-25T17:22:03Z out=corpus/source-snapshots/round-28/S042.txt
+
+exit=0
+
+field              value
+-----------------  ----------------------------------------------------------------------
+source id          S042
+url                https://www.ipa.go.jp/security/todokede/vuln/process.html
+kind               html
+http status        200
+fetched bytes      229982
+snapshot bytes     60508
+snapshot lines     974  (wc -l -c -> "974 60508 corpus/source-snapshots/round-28/S042.txt")
+sha256 (snapshot)  b432ec165693d005fa5de326ffb40d60d0476b18a345a9fc6d631d10b9c96966
+fetch timestamp    2026-10-25T17:22:03Z (UTC, printed by the instrument)
+independent digest sha256sum corpus/source-snapshots/round-28/S042.txt
+                   -> b432ec165693d005fa5de326ffb40d60d0476b18a345a9fc6d631d10b9c96966  corpus/source-snapshots/round-28/S042.txt
+                   (matches the instrument line; the digest binds the landed bytes)
+
+Pipeline determinism check (supporting, not a substitute for the capture):
+command: python3 corpus/instruments/capture-source.py --selftest
+stdout : selftest normalize=ok deterministic=ok
+exit   : 0
+
+=============================================================================================
+§2  SNAPSHOT HYGIENE (read-only checks on the landed bytes)
+=============================================================================================
+check                                command                                                        result
+-----------------------------------  -------------------------------------------------------------  -------------------
+valid UTF-8, NUL bytes               python3 -c "b=open(...,'rb').read(); b.decode('utf-8')"         utf8=ok bytes=60508 nul=0
+residual '<' tag markup              grep -c '<' <file>                                             0
+residual HTML entities '&...;'       grep -c '&[a-zA-Z#][a-zA-Z0-9]*;' <file>                       0
+trailing newline                     tail -c1 <file> | od -An -c                                    "\n"
+article body                         sed -n '121,208p' <file> | wc -l                               88 lines
+
+Structure map of the snapshot (line numbers are 1-based in S042.txt):
+  L1          <title> "... | 情報セキュリティ | IPA 独立行政法人 情報処理推進機構"
+  L2-L115     site header / global nav (chrome)
+  L116-L129   breadcrumb + H1 + 最終更新日：2017年5月30日 (L123) + in-page anchor list
+  L130-L131   legal basis + IPA intake-role statement
+  L132        heading ソフトウエア製品の取扱いプロセス
+  L133-L160   10-step product flow (steps 1-10)
+  L161        heading ウェブアプリケーションの取扱いプロセス
+  L162-L182   web-application flow (steps 1-7 — see §5)
+  L183        heading 自社製品の取扱いプロセス
+  L184-L200   own-product flow (steps 1-8)
+  L202-L208   更新履歴 (2004-07-08 / 2015-07-23 / 2017-05-30)
+  L209-L974   site chrome + live 重要なセキュリティ情報 news feed + footer (dated content)
+
+=============================================================================================
+§3  KEYWORD HITS — 起算日  (every hit line + first 100 chars)
+=============================================================================================
+Total occurrences of the string 起算日: 3, on 2 lines (L145 carries two).
+
+line  len(chars)  first 100 chars
+----  ----------  ------------------------------------------------------------------------------------------------
+L144           8  5.起算日の連絡
+L145          93  JPCERT/CC は製品開発者への連絡を開始した旨（起算日）、および、製品開発者へ詳細情報を連絡した旨をIPAへ連絡します。IPAは起算日、および、詳細情報連絡日を発見者へ連絡します。
+
+Verbatim full text of L145 (93 chars):
+JPCERT/CC は製品開発者への連絡を開始した旨（起算日）、および、製品開発者へ詳細情報を連絡した旨をIPAへ連絡します。IPAは起算日、および、詳細情報連絡日を発見者へ連絡します。
+
+=============================================================================================
+§4  KEYWORD HITS — 取扱いプロセス  (every hit line + first 100 chars)
+=============================================================================================
+Total occurrences: 16, on 15 lines (L206 carries two).
+
+line  len(chars)  first 100 chars
+----  ----------  ------------------------------------------------------------------------------------------------
+L1            58  脆弱性関連情報の届出受付業務における取扱いプロセス | 情報セキュリティ | IPA 独立行政法人 情報処理推進機構
+L121          25  脆弱性関連情報の届出受付業務における取扱いプロセス
+L122          25  脆弱性関連情報の届出受付業務における取扱いプロセス
+L126          16  ソフトウエア製品の取扱いプロセス
+L127          19  ウェブアプリケーションの取扱いプロセス
+L128          12  自社製品の取扱いプロセス
+L129          22  脆弱性関連情報の届出受付業務の取扱いプロセス
+L132          16  ソフトウエア製品の取扱いプロセス
+L161          19  ウェブアプリケーションの取扱いプロセス
+L183          12  自社製品の取扱いプロセス
+L204          20  「脆弱性関連情報の取扱いプロセス」を掲載
+L206          47  ソフトウェア製品、ウェブアプリケーションの取扱いプロセスを改訂、自社製品の取扱いプロセスを追加
+L208          31  ソフトウェア製品、ウェブアプリケーションの取扱いプロセスを改訂
+L571          25  脆弱性関連情報の届出受付業務における取扱いプロセス
+L573          24  調整不能案件の公表判定業務における取扱いプロセス
+
+=============================================================================================
+§5  FLOW VERIFICATION — step headings pasted verbatim
+=============================================================================================
+5a. ソフトウエア製品の取扱いプロセス — DISPATCH EXPECTATION "10-step": CONFIRMED, 10 numbered
+    steps, contiguous 1-10, no gap:
+      L133  1.届出の受付
+      L136  2.届出の受理／不受理の決定
+      L138  3.JPCERT/CC への脆弱性関連情報の連絡
+      L140  4.製品開発者へ連絡
+      L144  5.起算日の連絡
+      L146  6.製品開発者による対応
+      L152  7. 対応状況の受付
+      L154  8.公表日の調整
+      L157  9. 対応状況（対策方法）の公表
+      L159  10. 統計情報の公表
+
+5b. ウェブアプリケーションの取扱いプロセス — DISPATCH EXPECTATION "6-step": NOT CONFIRMED.
+    The captured page numbers SEVEN steps, contiguous 1-7:
+      L162  1. 届出の受付
+      L165  2.届出の受理／不受理の決定
+      L167  3.ウェブサイト運営者への連絡
+      L170  4.取扱い開始連絡
+      L172  5.ウェブサイト運営者による対応
+      L179  6.修正完了の連絡
+      L181  7.統計情報の公表
+    Reading: steps 1-6 are the operator-facing operational path; step 7 (統計情報の公表, body L182
+    "その際、届出のウェブサイトが判別可能な情報は公表しません。") is the closing statistics
+    publication, the analogue of product-flow step 10. So "six-step" is true only if the closing
+    statistics step is excluded; the page as captured does not end at 修正完了の連絡.
+    NOT hand-scraped, NOT edited: this is the instrument's output bytes.
+
+5c. 自社製品の取扱いプロセス — present in the same capture, EIGHT numbered steps (not named in
+    the dispatch): L184 1. 届出の受付 / L186 2.届出の受理／不受理の決定 / L188 3.JPCERT/CC への
+    脆弱性関連情報の連絡 / L190 4.製品開発者へ連絡 / L192 5. 製品開発者による対応 /
+    L196 6.公表日の調整 / L198 7.対応状況（対策方法）の公表 / L200 8.統計情報の公表
+
+5d. Page provenance inside the capture: L123 "最終更新日：2017年5月30日"; L202-L208 更新履歴
+    (2004-07-08 掲載 / 2015-07-23 ソフトウェア製品・ウェブアプリケーション改訂＋自社製品追加 /
+    2017-05-30 ソフトウェア製品・ウェブアプリケーション改訂). The document is a 2017-dated page;
+    the capture date 2026-10-25 is the as-of date of the retrieval, not of the content.
+
+5e. Staged-entry cross-check (read-only, /home/vgpnk/Projects/shokuknow/merge/kasegi): the staged
+    entry's L46 says "...second six-step flow ... ending in 取扱い開始連絡 and 修正完了の連絡
+    rather than in a negotiated publication date." Against this capture that sentence is wrong on
+    two counts: the flow is seven numbered steps, and it ends in 統計情報の公表 (it does correctly
+    lack a 公表日の調整 step). The entry must be re-grounded on S042 bytes, so ScribeEntryC2 and
+    the round lesson must not repeat "six-step" as a capture fact.
+
+=============================================================================================
+§6  MANIFEST QUOTE CANDIDATES for S042 (measured, not proposed from memory)
+=============================================================================================
+Each candidate below was string-counted against the landed bytes with source-recheck's own
+normalization (" ".join(split()) after stripping <u>/</u>); all are contiguous byte substrings,
+exactly-once, and >= the instrument's MIN_QUOTE_CHARS=12, so none needs an `anchor`.
+
+id                        line  occ  chars  ws-words  quote (verbatim from S042.txt)
+------------------------  ----  ---  -----  --------  ------------------------------------------------------------
+Q1-step5-startdate        L145    1     63         2  JPCERT/CC は製品開発者への連絡を開始した旨（起算日）、および、製品開発者へ詳細情報を連絡した旨をIPAへ連絡します。
+Q2-intake-role            L131    1     40         2  IPA は、届出受付機関として届出された脆弱性関連情報を下記のとおり取扱います。
+Q3-legal-basis            L130    1     23         1  2004年7月8日から経済産業省の告示に基づき
+Q4-webapp-fix-report      L180    1     50         1  ウェブサイト運営者から脆弱性関連情報に係る修正完了の報告を受領した場合、その旨を発見者に連絡します。
+Q5-webapp-stats-redaction L182    1     29         1  その際、届出のウェブサイトが判別可能な情報は公表しません。
+Q6-unreachable-developer  L142    1     49         1  製品開発者に連絡が取れない場合は、連絡不能開発者一覧に公表し、製品開発者からの連絡を呼びかけます。
+Q7-product-stats-step     L160    1     59         1  IPA、JPCERT/CCは、脆弱性に係る実態の周知徹底、被害の予防のため、脆弱性関連情報に係る統計情報を公表します。
+
+Traps measured (do NOT use as quotes):
+  "5.起算日の連絡"                       -> 8 chars  < MIN_QUOTE_CHARS=12 -> source-recheck would emit
+                                            UNAVAILABLE quote-too-short-to-be-evidence
+  "10. 統計情報の公表"                   -> 9 chars  (same trap)
+  "脆弱性関連情報の届出受付業務における取扱いプロセス" -> occurs 4x (L1, L121, L122, L571):
+                                            needs anchor= or must be avoided
+  "IPA、JPCERT/CCは、脆弱性関連情報に係る対応状況（対策方法）をポータルサイト(JVN)にて公表します。"
+                                         -> occurs 2x (L158, L199): needs anchor= or must be avoided
+
+=============================================================================================
+§7  RISKS / FINDINGS handed to the L1
+=============================================================================================
+1. "6-step web-application flow" is not in the captured bytes (§5b). Any manifest location text,
+   registry anchor, entry body sentence, or Gate quote that asserts six steps is unsupported by
+   this capture. The capture supports "7 numbered steps (1-6 operational + 7 統計情報の公表)".
+2. The capture necessarily contains IPA site chrome and a live news feed (L209-L974), with dated
+   items such as L213 "「Movable Type」における複数の脆弱性について（JVN#66473735）" and
+   L520 "情報セキュリティ安心相談窓口の相談状況［2026年第3四半期（7月～9月）］". Consequence: a
+   FUTURE re-fetch of this page will not be byte-identical to this snapshot. source-recheck is
+   unaffected (it pins these bytes, not upstream), but no receipt may claim that re-fetching the
+   page reproduces sha256 b432ec16….
+3. The page is a stable 2017-dated document (最終更新日 2017年5月30日), so the S042 row's
+   `opened 2026-10-25` is the capture date; content freshness is not implied by it.
+4. No credential, session or private URL material is present in the snapshot or this receipt.
+
+=============================================================================================
+§8  SCOPE / WRITES / UNRUN
+=============================================================================================
+Production writes by this seat: corpus/source-snapshots/round-28/S042.txt (only).
+Seat artifacts: this receipt and .ufo/waves/round-28/wave1/ExecCaptureS042.md.
+No scratch tree, no background job, no subagent, no git/VCS write, no pacman transaction,
+no tool install (nothing needed).
+Checks NOT run by this seat (not its item): frontier harness, sources census, anchorcheck (C1).
+An unrun check has not passed.
+
+=============================================================================================
+§9  POST-LANDING RECHECK of S042 against the manifest (read-only, after ExecManifest landed it)
+=============================================================================================
+At 2026-10-25T17:25:25Z:
+sha256sum corpus/source-snapshots/round-28/manifest.json
+-> e62ddad133ffc19ebc66822c0fcb3b48ed4993c101f05262302acc58714f291d
+
+python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S042
+-> S042:sha256 OK
+   S042:Q1 OK occurrences=1
+   S042:Q2 OK occurrences=1
+   S042:Q3 OK occurrences=1
+   S042:Q4 OK occurrences=1
+   S042:Q5 OK occurrences=1
+   S042:Q6 OK occurrences=1
+exit=0
+
+Interpretation: the landed snapshot bytes are exactly the bytes the manifest pins, and all six S042
+assertions are exactly-once (no anchor needed). This does not verify the S041 record; the full-manifest
+run belongs to ExecManifest. ExecManifest independently confirmed the pin b432ec16… and that its Q1 is
+the L145 quote.
+

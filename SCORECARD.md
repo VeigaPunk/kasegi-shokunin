@@ -605,3 +605,146 @@ the lowest-axis obligation stays active. Planned round 28: re-freeze C1/C2 with 
 round-27 fixtures re-run (not re-created), dispatch the build wave with reviewer seats inside it
 (round-26 routed defect 2), inline ≤25-word Gate quotes (defect 3), one canonical receipt at the
 landed digest (defect 4); carry-forward implementation notes are in `corpus/lessons/round-27.md`.
+
+## Round 28 — frozen claims C1/C2 (2026-10-25)
+
+Frozen before dispatch in `.ufo/waves/round-28/claims.json` (base
+`c9f8b115a098c65356e4b3b6048af45a37ab8395`, the claims-freeze commit; wave-1 dispatch commit
+`94f387cbeb71a532a51ce075f01701a557231e85`). The round re-declares the two claims round 27 froze
+and never dispatched (its honest stop, § Round 27 above) and re-runs the committed round-27
+fixtures instead of re-creating them (r27 carry-forward 1). Receipts land under
+`.ufo/waves/round-28/` (`c1-controls/`, `c2-controls/`, `receipts/`).
+
+**Measurement state (2026-10-25T17:23Z–17:29Z).** The section was drafted while wave 1 was landing
+and then completed at the instrument's landed digest
+`95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514` (523 lines, 17:29Z; the
+executor's own artifact records the same value as "landed file digest" in
+`.ufo/waves/round-28/wave1/ExecImplC1.diff`). While the seat measured, the file was rewritten in
+place: `c2a9e6c6…` → `2f707046…` → `0a24a173…` → `7adfc847…` → `982d7207…` → `5f5f725c…` →
+`29aba084…` → `c3629229…` → `95333e29…`. Every intermediate state was rejected as evidence because
+it missed at least one target (exit 0 on the bad fixture; `NameError: name '_selftest' is not
+defined`; or the bounties cite resolving under the mirror prefix as `BASE-ABSENT`). Every counter
+below was run at `95333e29…`, digest checked before and after, and each is reproducible across two
+runs. **Still pending at write:** the canonical C1 receipt index
+`.ufo/waves/round-28/c1-receipt-index.txt` (absent at 17:29Z; ExecReceiptCanonC1 and the L1 own it),
+so frozen counter (c)'s receipt-index limb is unrun. ScribeSkillGate's `SKILL.md` append landed at
+17:31Z (sha256 `125be37d…`, +3 lines) and the no-harm limbs were re-measured at those bytes (density
+row). The frozen C1 `corpus_disclosure` cell was superseded by
+`.ufo/waves/round-28/claims-erratum-1.md`; this seat re-measured the corrected reading and agrees
+(0/0/0/15, zero verdict-class movement anywhere). A final re-verification at 17:33Z reproduced every
+value in the table with the same digests (`anchorcheck.py` `95333e29…`, `SKILL.md` `125be37d…`);
+the only open item remains `.ufo/waves/round-28/c1-receipt-index.txt`.
+
+| Claim | Axis | Before | After | Verdict and evidence | Last change |
+|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest non-retired, 4) | bad-fixture exit **0** (prints `BASE-ABSENT md:2 corpus/knowledge/zz-r27-anchorcheck-missing.md:99`, exit 0); bounties-fixture **0** `BOUNTIES-ABSENT` lines (cite invisible to `CITE`); `--selftest` absent (`FileNotFoundError: '--selftest'`, exit 1); `anchorcheck.py SKILL.md` exit **0**, **bad=0**, LOST-RECORDED=**306**; instrument sha256 `c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748` | **Reached at the landed digest `95333e29…` (17:29Z, digest unchanged before and after every run):** bad-fixture exit **1** (same `BASE-ABSENT md:2 …zz-r27-anchorcheck-missing.md:99` line, now failing closed); bounties-fixture **1** `BOUNTIES-ABSENT` line (`~/Projects/bounties/ops/claim-check.mjs:96`, base absent); `selftest cases=9 failures=0`, exit **0**, two runs byte-identical (9 cases, each asserting the complete verdict vector with each of the four bases re-pointed at a fresh temp root via `KASEGI_LANE_ROOT`/`KASEGI_MIRROR`/`KASEGI_ORIGIN_ROOT`/`KASEGI_BOUNTIES`; case 8 is the bare-marker control) — **under the default environment only: an inherited `GIT_DIR` flips the `pin-broken` case, reproduced below**; `anchorcheck.py SKILL.md` exit **0**, **bad=0**, LOST-RECORDED=**306**, `BASE-ABSENT=0`, `PIN-BROKEN=0`, `OUTSIDE-BASE=0`, `ORIGIN=0`, in-range **7**. **Pending:** the receipt-index limb — `.ufo/waves/round-28/c1-receipt-index.txt` was absent at 17:29Z, so frozen counter (c)'s "at the instrument's own sha256" receipt line is not yet produced. | **Kill-rule hit, reproduced at the landed digest and unresolved at write: C1 cannot be recorded as met on these bytes.** Counters (a)–(d) are met in the default environment, but the frozen kill rule's clause "a limb with no failing fixture" fires under an inherited `GIT_DIR` — the `pin-broken` case flips to `IN-RANGE(PIN)` (reproduced below). The score is the L1's to set; this seat records the measurement, not a pass. The frozen disclosure cell is superseded by filed erratum 1, whose corrected reading this seat re-measured — routed, not hidden. Before values re-measured by this seat and by three independent read-only seats at the same digest: `.ufo/waves/round-28/c1-controls/{instrument-digest,bad-fixture,bounties-fixture,selftest,skill}-before.txt`, `.ufo/waves/round-28/receipts/ExecFixtureRun.txt`, `ExecInstrSelftest.txt` (determinism: two runs byte-identical), `ExecNoHarmC1.txt` (SKILL body byte-identical to the frozen before-receipt). Kill rules unchanged from `claims.json` C1. | 28 |
+| C2 | coverage (7) | frontier admitted **11**; entries citing S042 **0**; registry **41** rows, census exit 0 (two pre-existing W04 S028/S029 duplicate-url warnings); harness `entries=14 pass=14 exit=0`. Receipts: `.ufo/waves/round-28/c2-controls/before.txt`, `census-before.txt` | **Reached at 17:29Z:** frontier **12** (F12 `knowledge/japanese-domestic-disclosure-workflow.md`, sources S041, S042); entries citing S042 **1**; S042 row **1** (tier A, mined, opened 2026-10-25, used-by exactly the entry); registry **42** rows, `sources-census.sh validate` exit **0** (only the two pre-existing W04 S028/S029 warnings); harness `entries=15 pass=15 exit=0` (F12 line `PASS … ids=S041,S042 exit=0`); `source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041 --source S042` exit **0**, 6 quotes per source, every one `occurrences=1`; the entry's single `recheck:` line names those same two ids; S041's used-by lists the entry beside its two earlier ISO entries. | **Improved, score held 7 — every limb of the frozen after column is reached.** The score stays 7 because coverage's denominator (the r15 domain-root definition) is unchanged: this adds a twelfth admitted public-practice frontier topic and its first entry, not a restored lost surface. **Critic-reported limit, not an admission kill:** `CritC2Admission.md` finds the staged pre-publication user-notification claim (supported at S041 L229-234) silently omitted from the re-grounded entry and recommends restoring it or disclosing the omission in the entry's Limits. Recorded here; not repaired by this seat (the entry is ScribeEntryC2's file). Evidence pointers: `.ufo/waves/round-28/c2-controls/before.txt`, `census-before.txt`; `.ufo/waves/round-28/receipts/ExecC2Counters.txt` (both passes PRE-STATE), `ExecCaptureS041.txt`, `ExecCaptureS042.txt`, `ExecManifest.txt`, `ScribeReadmeC2.txt`; `corpus/source-snapshots/round-28/{S041.txt,S042.txt,manifest.json}`. Capture digests: S041.txt `e18acbf9…2f5ab47` (147267 B), S042.txt `b432ec16…b9c96966` (60508 B). Kill rules unchanged from `claims.json` C2. | 28 |
+| depth:density | 9 | 9 | 9 | **Unchanged verdict, no credit claimed.** At base bytes (`SKILL.md` sha256 `fa09d5b835451f2443fc96353432a330608baf5f3631d1b382141f7e86d64f2d`, `git diff c9f8b115… -- SKILL.md` empty at 17:23Z): `density.py` mean **150.3**, **20** blocks, **652** path-citation instances; `anchorcheck.py` exit 0, bad=0, LOST-RECORDED=306, `BASE-ABSENT=0`, `PIN-BROKEN=0`, `OUTSIDE-BASE=0`. After ScribeSkillGate's R6 append (sha256 `125be37d85ffe6be30a3c372b52d96d8074e3c4d7f4baf835d0f5aed5f56cca6`, 1032 → 1035 lines: one `anchorcheck.py` row in the Gates & probes table plus the round-28 erratum note): mean **160.2**, **20** blocks, **656** cites, and `anchorcheck.py SKILL.md` still exit **0**, **bad=0**, LOST-RECORDED=**306**, every fail class 0. The mean rise is the appended gate documentation's own cites, not new evidence and not a density gain. **Baseline reconciliation (r25/r26's recorded 154.0 / 19 blocks / 652 is stale, not drift):** the same instrument measures r22 bytes (`git show c8b719d:SKILL.md`) at 19 blocks / 154.0 / 652, and r26 bytes (`a04cc6c`, 9 lines added — the `## Gates & probes registry` block, nb=5 ev=4 dens=80.0) at 20 blocks / 150.3 / 652; the new low-density block pulls the unweighted mean while path cites stay 652. Measured and named in `.ufo/waves/round-28/receipts/ExecNoHarmC1.txt` § 2, not inferred. | r15 (held r28) |
+
+**C1 corpus disclosure — the frozen cell is superseded by filed erratum 1, and this seat's
+measurement agrees with it.** `claims.json` C1 `corpus_disclosure` asserted that four marked
+`[lost-tree]` `~/Projects/bounties/…` citations (`claim-gates.md:123`, `intake-and-finalize.md:109`,
+`mission-control.md:169`, `source-tree-loss-2026-09-28.md:353`) "newly classify LOST-RECORDED",
+i.e. **1 / 1 / 1 / 16**. Measured at the landed digest `95333e29…` with
+`python3 corpus/instruments/anchorcheck.py <file> | grep -c '^LOST-RECORDED '` → **0 / 0 / 0 / 15**,
+unchanged from the pre-change baseline; an independent survey for backticked anchored bounties
+citations across `corpus/` and `SKILL.md` returns **0 hits**, which is the corrected cell appended
+as `.ufo/waves/round-28/claims-erratum-1.md` (L1, appended never in-place, R25-1/R9). Cause, measured:
+those four lines are plain prose trailers (`source: [lost-tree] ~/Projects/bounties/…`), and the
+instrument's token extractor is backtick-only (`TOK`, `corpus/instruments/anchorcheck.py:152`), so
+they are not citations at all; the backticked bounties tokens in the same files — a bare path with
+no line anchor, e.g. the header at `corpus/knowledge/claim-gates.md:3` — carry no `:NN` and are not
+`CITE` matches either. The arm itself works: a temp fixture carrying a backticked
+`[lost-tree] ~/Projects/bounties/ops/claim-check.mjs:5` reports `LOST-RECORDED … (not checked)` and
+exit 0, and the instrument's selftest case 8 asserts that the bare trailer is not a token
+("exactly the measured corpus behaviour disclosed in the round-28 wave-1 receipt",
+`corpus/instruments/anchorcheck.py:296-299`). Net effect: a stronger no-harm result than the frozen
+cell predicted — the arm is invisible to every existing byte, and no verdict class moved on any
+file (SKILL.md limb above). No corpus file was edited by this seat.
+
+**C1 isolation attack — reproduced at the landed digest (a fact recorded here; the verdict is the
+L1's).** `CritC1Kill.md` reports, and this seat independently reproduced, that `--selftest`'s
+`pin-broken` case is decided partly by ambient git state: `_selftest()` copies `os.environ` and
+overrides only the four `KASEGI_*` roots, so an inherited `GIT_DIR` survives into the case's
+`git show deadbeef:pinned.md`. With a temp repo carrying ref `deadbeef` and blob `pinned.md`:
+
+```text
+GIT_DIR="<tmp>/.git" python3 corpus/instruments/anchorcheck.py --selftest
+selftest FAIL pin-broken: PIN-BROKEN: want 1, got 0; IN-RANGE: want 0, got 1; exit: want 1, got 0
+selftest cases=9 failures=1        # exit 1
+```
+
+The same bytes with no perturbation print `selftest cases=9 failures=0`, exit 0. Under the
+perturbation the `PIN-BROKEN` limb has no failing fixture — the frozen kill rule's second clause
+("a limb with no failing fixture"). The instrument's own verdicts are unchanged; the selftest is
+not self-contained. Critic-reported, not re-measured here: `outside-base` exercises only the
+bounties arm, so the MIRROR/ORIGIN `OUTSIDE-BASE` sub-limbs and the ORIGIN `BASE-ABSENT` sub-limb
+have no failing fixture; and with `git` absent from `PATH` the selftest dies in a traceback with no
+`selftest cases=` line (on this host `git` is present, so the frozen counters are unaffected).
+Suggested fix, from the critic: sanitize `GIT_DIR`/`GIT_OBJECT_DIRECTORY`/`GIT_WORK_TREE`/
+`GIT_INDEX_FILE`/`GIT_CEILING_DIRECTORIES`/`GIT_DISCOVERY_ACROSS_FILESYSTEM` out of the case env.
+Receipt: `.ufo/waves/round-28/wave1/CritC1Kill.md`.
+
+**In-flight observation, resolved (measured 17:24Z, re-measured 17:29Z).** With the F12 and S042
+rows landed but the entry absent, the close-out gates were transiently red: `sources-census.sh validate`
+exited **1** with `kasegi E11 S041 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md`
+and the same line for S042, and `frontier-recheck-count.py` raised
+`FileNotFoundError: '…/corpus/knowledge/japanese-domestic-disclosure-workflow.md'` (exit 1).
+Both were consequences of the missing entry, not of the claims. Once the entry landed both pass —
+census exit **0** with **42** registry rows, harness `entries=15 pass=15 exit=0` — so the transient
+reds are recorded here only so they are not mistaken for a kill-rule hit, and are superseded by the
+measured values above.
+
+**L1 close-out block (run from `/home/vgpnk/Projects/shokunin/kasegi-shokunin`; an unrun check has not passed).**
+
+```sh
+# C1 — re-run at the FINAL commit; values above measured at 95333e29…
+sha256sum corpus/instruments/anchorcheck.py
+grep -cE 'selftest cases=' .ufo/waves/round-28/c1-receipt-index.txt; grep -oE 'instrument_sha256=[0-9a-f]{64}' .ufo/waves/round-28/c1-receipt-index.txt   # frozen counter (c) receipt limb; index absent at 17:29Z
+python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bad-fixture.md >/dev/null 2>&1; echo "bad_fixture_exit=$?"
+python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bounties-fixture.md 2>/dev/null | grep -c BOUNTIES-ABSENT
+python3 corpus/instruments/anchorcheck.py --selftest; echo "selftest_exit=$?"
+python3 corpus/instruments/anchorcheck.py SKILL.md >/dev/null 2>&1; echo "skill_exit=$?"
+python3 corpus/instruments/anchorcheck.py SKILL.md 2>/dev/null | grep '^== '
+python3 corpus/instruments/density.py SKILL.md --label r28-post | grep -E 'mean dens|Total path'   # required if ScribeSkillGate appended
+for f in claim-gates intake-and-finalize mission-control source-tree-loss-2026-09-28; do echo -n "$f "; python3 corpus/instruments/anchorcheck.py corpus/knowledge/$f.md 2>/dev/null | grep -c '^LOST-RECORDED '; done
+# C2 — re-run at the FINAL commit; values above measured at 17:29Z
+awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md
+grep -lE '^source: S042 ' corpus/knowledge/*.md | wc -l
+grep -cE '^\|[[:space:]]*S042[[:space:]]*\|' corpus/SOURCES.md
+/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo "census_exit=$?"
+python3 corpus/instruments/frontier-recheck-count.py
+python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041 --source S042; echo "recheck_exit=$?"
+```
+
+**Capabilities: no row added this round.** Per the round-28 assignment no new capability is
+planned, and none was demonstrated beyond the frozen predicates: C1 extends an existing gate
+instrument (`anchorcheck.py`) and C2 exercises the already-recorded `source-capture`,
+`source-capture-pdf` and `frontier-recheck-harness` capabilities. The earlier Capabilities table
+is unchanged; the r22 stagnation window continues to the r27 lesson, not restarted here.
+
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3. With depth:verifiability at 4
+the lowest-axis obligation stays active.
+
+### Round-28 close-out addendum (appended; canonical measurements)
+
+At the final lane commit, the corrected `anchorcheck.py` digest is recorded in
+`.ufo/waves/round-28/c1-receipt-index.txt`; C1 after-values re-run against it:
+bad-fixture exit 1, BOUNTIES-ABSENT lines 1, `--selftest` cases=9 failures=0
+(including the isolated-Git-environment regression), SKILL.md exit 0 with bad=0 and
+LOST-RECORDED=306. The C1 disclosure erratum remains: 0 of the four named provenance
+trailers are TOK tokens; no verdict class moves anywhere.
+
+C2 close-out: F12 admitted 11→12, entries citing S042 0→1, S042 row 0→1,
+registry 41→42; census exit 0; harness entries=15 pass=15 exit=0; both S041 and S042
+manifest rechecks exit 0. The expected-list count basis is now aligned: the audit's
+working-tree glob has 40 knowledge entries, the ignored-header list has 40 entry
+lines / 42 physical lines, and `recheck-audit.py` exits 0 with expected=40,
+missing=0, unexpected=0. The two source rechecks use separate `--source` invocations
+because the CLI flag is single-valued.
+
+No owned axis is assigned a scalar increase: depth:verifiability remains 4 and coverage
+remains 7; both claims are measured improvements with scores held. Depth:density stays
+9; after the append-only SKILL.md registry note, `density.py` reports mean 160.2,
+20 blocks, 656 path citations (base was 150.3 / 20 / 652). The increase is disclosed,
+not claimed as a score move.

@@ -1,0 +1,76 @@
+ScoutJpcertRecon — round-28 wave-1 recon receipt (C2, coverage)
+seat=ScoutJpcertRecon  date=2026-10-25 (UTC)  lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+base=c9f8b115a098c65356e4b3b6048af45a37ab8395
+written_by_this_seat:
+  .ufo/waves/round-28/wave1/ScoutJpcertRecon.md   (25152 B -> amended; final size below)
+  .ufo/waves/round-28/receipts/ScoutJpcertRecon.txt (this file)
+production_files_written: NONE (no corpus/, no SKILL.md, no manifest, no SOURCES.md, no README.md, no VCS write)
+
+PROBE (curl -sSIL, 2026-10-25T17:28:43Z)
+  status=HTTP/2 200  content-type=application/pdf  content-length=1338665
+  last-modified=Thu, 01 Oct 2026 00:49:04 GMT  etag="146d29-65cbcc8478000"
+
+BYTE IDENTITY (the C2 question)
+  fresh capture via capture-source.py --kind pdf:
+    sha256=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47  bytes=147267  lines=2354
+  round-26 committed S041.txt : sha256=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+  round-28 landed   S041.txt  : sha256=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+  cmp round-26 vs fresh = 0 ; cmp round-28 vs fresh = 0  -> BYTE-IDENTICAL, no divergence
+  upstream PDF bytes sha256=0ff7a6b6b4fa4a9aeffa924e9a1775fbcf044773d79491e0d47aca78eb004f03
+    == round-26 committed digest (.ufo/waves/round-26/wave1/s5-quote-relocation.txt:10) -> upstream PDF unchanged too
+
+EDITION STAMP + SIGNATURE DATE (both present, each exactly once)
+  L10  "2026 年 10 月"                              (edition stamp, cover block)  occurrences=1
+  L7   "日付 : 2026.09.29 18:01:10 +09'00'"        (PDF signature block)          occurrences=1
+  pdfsig: Signing Time Sep 29 2026 06:01:10 (-03) == 2026-09-29T09:01:10Z == the embedded 18:01:10 +09
+  pdfsig: "Total document signed" / "Signature is Valid."
+          ("Certificate Validation: Unknown issue..." = chain/trust-store status, NOT a signature failure)
+
+起算日 FOOTNOTE-4 SENTENCE (<=25 words, verbatim from capture L340)
+  本ガイドラインのⅣ．４．2)において規定された連絡を最初に試みた日を起算日とします。
+  42 chars; 9 whitespace tokens; occurrences=1 (L340)
+  ANCHOR RESOLVED (not assumed): PDF page 11 = printed page 9; marker "4" attaches to L305
+  (なお、起算日4から 1 年以上経過した届出については…) under ２．発見者の対応 (L268) -> 4) 脆弱性関連情報の管理および開示 (L291);
+  L338/L339 are the bare marker digits 4 and 5, L340 is footnote 4's body.
+  Document's own cross-ref confirms: L648 and L786 both cite it as "２．注釈 4".
+  45-day target measured from the same 起算日: L648 (JPCERT/CC 3) 公表日の決定) and L786 (developer track 3));
+  grep -c '45 日' = 2 (both chapter Ⅳ); chapter Ⅴ (L856-1154) has 0 "起算日" and 0 "45 日" (scanned).
+
+FINDING FOR THE L1 (material; latent, not a round-28 blocker)
+  source-recheck.py --source is SINGLE-VALUED (argparse) -> LAST flag wins.
+  The round-27 carry-forward (corpus/lessons/round-27.md:78) prescribes one invocation with
+  "--source S041 --source S042"; that form checks ONLY S042.
+  MEASURED: corrupted S041 + single invocation -> exit=0, S041's corruption INVISIBLE;
+            corrupted S041 + chained invocations -> S041:sha256 MISMATCH, exit=1.
+  HARNESS-LEVEL: on a temp lane root, frontier-recheck-count.py PASSES (entries=1 pass=1 exit=0)
+  with a corrupted S041 under the single-invocation form, and FAILS (recheck-exit-1) under the
+  chained form. The harness regex finds both ids either way, so it cannot tell the forms apart.
+  LANDED ENTRY IS SOUND: corpus/knowledge/japanese-domestic-disclosure-workflow.md:7 already uses the
+  CHAINED form (two invocations, one --source each, joined by &&); bash -n parses it; exits 0 from a
+  foreign cwd (Q10 satisfied); it is the form my corruption control catches.
+  All 8 existing multi-source entries in the lane already chain with && (0 use the two-flag form).
+  => L1 should record the chained form as the canonical multi-source recheck shape.
+
+OTHER ITEMS ROUTED (not mine to edit)
+  F6 manifest S041 Q1.location label "Ⅳ．６．4) 注釈 4" is imprecise; the note belongs to ２．注釈 4.
+     location is prose the instrument does not read (Q9); line number L340 and the quote are correct. -> ExecManifest
+  F7 the edition stamp cannot be a standalone manifest quote: normalized 11 chars < MIN_QUOTE_CHARS=12
+     -> UNAVAILABLE reason=quote-too-short-to-be-evidence, exit 2 (measured). A compliant form is
+     "2026 年 10 月 独立行政法人情報処理推進機構" (normalized 26, occ=1, anchor=10 -> "anchor=10-ok", verified OK).
+     The landed entry cites the edition in prose instead. -> informational
+  F8 corpus/SOURCES.md:77 "browser UA 403s" for S041 does NOT reproduce: HTTP 200 + identical bytes for
+     Chrome/Linux, Chrome/Windows, Safari/macOS, bare curl/8.5.0 (all byte-identical to the instrument-UA fetch).
+     The 403 belongs to the S040 Cisco host (round-26 lesson :104, ScoutS040Probe.md:21); no round-26 artifact
+     probes a browser UA against the JPCERT PDF. -> ScribeRegistryC2, as an R8/R9 appended change note.
+
+LANDED-STATE CHECKS RUN AGAINST THE CURRENT LANE (all executed, none assumed)
+  python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041   -> exit 0 (Q1-Q6 occurrences=1)
+  python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S042   -> exit 0 (Q1-Q6 occurrences=1)
+  python3 corpus/instruments/frontier-recheck-count.py   -> entries=15 pass=15 exit=0 (F12 row: ids=S041,S042 exit=0)
+  /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> exit 0
+      (only the pre-existing W04 S028/S029 duplicate-URL findings; S042 row present)
+
+TOOLING
+  curl, python3 3.14.8, cmp/sha256sum/grep, pdftotext 26.08.0 + pdfsig/pdfinfo (poppler-utils) — ALL PRE-EXISTING.
+  No tool installed or upgraded. NO pacman transaction attempted (host-wide pacman pause in force).
+  All scratch under /tmp/jpcert-recon-8XRo1j/ and /tmp/harness-test-* — REMOVED at end of seat.

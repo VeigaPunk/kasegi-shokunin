@@ -1,0 +1,36 @@
+== round-28 wave-1 isolated row-grammar test ==
+census: /home/vgpnk/Projects/shokunin/scripts/sources-census.sh   today: 2026-10-25
+
+-- A: staged S042 alone (live S042 removed) --
+dropped live S042; inserted staged row before line 49
+$ grep -cE '^ {0,3}\| *S042 *\|' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema4/corpus/SOURCES.md
+1
+[exit 0]
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema4/corpus/SOURCES.md --today 2026-10-25 | grep -vE '	E11	'
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+[exit 0]
+
+
+-- B: staged S043 alone (live S041 removed) --
+dropped live S041; inserted staged row before line 49
+$ grep -cE '^ {0,3}\| *S04[13] *\|' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema4/corpus/SOURCES.md
+1
+[exit 0]
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema4/corpus/SOURCES.md --today 2026-10-25 | grep -vE '	E11	'
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+[exit 0]
+
+
+-- C: a staged row with a PROSE recheck cell (S081) --
+dropped live NONE; inserted staged row before line 50
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema4/corpus/SOURCES.md --today 2026-10-25 | grep -E 'S081|E09'
+file	E09	S081 recheck=90d — re-open the 公告 page and confirm “您不得因为漏洞信息私自联系厂商” still present (ran 2026-10-24)
+file	E11	S081 missing used-by corpus/knowledge/cn-crowdsourced-testing-roles-and-conduct.md
+[exit 0]
+
+(E09 on S081 = the package's prose recheck cells violate the census grammar; the two
+ adopted rows S042/S043 both carry a bare '180d' and are unaffected)

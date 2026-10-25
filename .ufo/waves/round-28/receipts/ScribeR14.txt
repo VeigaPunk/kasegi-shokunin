@@ -1,0 +1,96 @@
+== ScribeR14 · round 28 wave 1 · QUALITY.md R14 (wave-evidence economy) ==
+seat: ScribeR14 (scribe, leaf)
+date_utc: 2026-10-25T17:23:03Z (practice-instance snapshot; see Known limits)
+owned_path: corpus/QUALITY.md (sole writer; no other production file touched)
+lane_root: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+
+== 1. Change ==
+Appended at end of file (R6), 6 insertions / 0 deletions:
+  line 78 (blank)
+  line 79 "## Round-28 additions — wave-evidence economy"
+  line 80 (blank)
+  line 81 "| id | criterion | grounded in |"
+  line 82 "|---|---|---|"
+  line 83 "| R14 | Wave evidence is receipts and digests in git: a control/fixture tree larger than a
+           few hundred kilobytes is committed as one content-addressed tarball (sha256 in the
+           receipt) or regenerated from `git archive <rev>` plus a named mutation script, never as
+           a full corpus copy; per-round repo growth is measurable from committed bytes. |
+           considerthese/2026-10-25.md proposal 1 (2026-10-25); round-25 verifier spotcheck §bloat
+           finding (98261eb +850,085 lines; ~65 MB under .ufo/waves/round-25/) |"
+(reflowed here for width; committed bytes are the single-line row the assignment specified,
+verified verbatim from lines 78-83 raw.)
+
+before_sha256: 319dc9eb41fe947342a25b1ad42f407c6047a794ad23b23d0e5128f0bf46fa38  (77 lines)
+after_sha256:  00d4b2a3898220f61a8d26477aed3a6fa928fd73bd524eacbd8979df105c9839  (83 lines)
+
+== 2. R6 line preservation (measured, not asserted) ==
+$ git show HEAD:corpus/QUALITY.md | wc -l
+77
+$ git show HEAD:corpus/QUALITY.md | sha256sum
+319dc9eb41fe947342a25b1ad42f407c6047a794ad23b23d0e5128f0bf46fa38  -
+$ head -77 corpus/QUALITY.md | sha256sum
+319dc9eb41fe947342a25b1ad42f407c6047a794ad23b23d0e5128f0bf46fa38  -
+$ wc -l < corpus/QUALITY.md
+83
+$ git diff --stat corpus/QUALITY.md
+ corpus/QUALITY.md | 6 ++++++
+ 1 file changed, 6 insertions(+)
+Byte-identical first 77 lines ⇒ every existing line keeps its number. Files that cite QUALITY.md by
+line (all pointers < 77, so all preserved): `.ufo/waves/round-23/build/SourceSafety.md:16,22`
+(:19, :17), `RecheckSources.md:45` (:14-19, :48), `ImmutableSources.md:14,20,25` (:50, :51),
+`OverlapVault.md:26,56,58` (:19, :48), `HistoricalRows.md:89` (:48-51), `falsify/ControlsRerun.md:553,645`
+(:48, :57), `falsify/DenomCount.md:93` (:21), `falsify/SentinelQ6.md:68,109,127,144,147,151,182` (:19, :14).
+
+== 3. Grounding of the R14 citation (re-opened, not retyped) ==
+(a) considerthese/2026-10-25.md proposal 1, "Cap wave-evidence bloat before it breaks reviewability":
+    "`98261eb` alone is +850,085 lines; the round committed ~3.77k files / ~65 MB under
+    `.ufo/waves/round-25/`"; proposal text: keep receipts and digests in git, bulky control trees as
+    "one content-addressed tarball (sha256 in the receipt)" or "regenerate them from `git archive <rev>`
+    plus a mutation script".
+(b) Independent re-measure of those two numbers in the lane:
+    $ git show --stat 98261eb | tail -1
+     3821 files changed, 850085 insertions(+), 48 deletions(-)
+    $ du -sk .ufo/waves/round-25
+    65132	.ufo/waves/round-25
+(c) §bloat finding location: corpus/lessons/round-25-verifier-spotcheck.md:163-165 "Operator note (not
+    a defect): the round committed ~3.77k files / ~65 MB of wave evidence under `.ufo/waves/round-25/`
+    (`wave1/` 33M, `wave2/` 18M, `c1-controls/` 12M)".
+
+== 4. Practice instance — this round's own receipts/ layout (exercised, cited) ==
+Measured 2026-10-25T17:23:03Z during the live wave (see Known limits):
+$ find .ufo/waves/round-28 -type f | wc -l            -> 53
+$ du -sb .ufo/waves/round-28 | cut -f1                -> 759791   (892 KiB)
+$ du -sk .ufo/waves/round-25 | cut -f1                -> 65132    (round 25 comparison)
+$ find .ufo/waves/round-28 -type f \( -name QUALITY.md -o -name SOURCES.md -o -name README.md \
+      -o -name anchorcheck.py \) | wc -l             -> 0        (no corpus-file copies under round 28)
+$ du -sk .ufo/waves/round-28/c1-controls | cut -f1    -> 44       (largest control tree, KiB)
+$ ls .ufo/waves/round-28/receipts/                    -> ExecC2Counters.txt ExecFixtureRun.txt
+                                                         ExecInstrSelftest.txt   (per-seat receipts)
+$ grep -hc sha256 .ufo/waves/round-28/receipts/*      -> 8, 3, 11  (digests carried inside receipts)
+Layout exercised: per-seat receipts at .ufo/waves/round-28/receipts/<Seat>.txt carrying sha256 digests;
+one canonical C1 index assembled at the landed instrument digest by
+`.ufo/waves/round-28/assemble-receipts.py` (reads `sha256sum corpus/instruments/anchorcheck.py`); wave-1
+scratch under .ufo/waves/round-28/wave1/<Seat>/ holds only capture-sized fixtures (largest
+S041.try.txt 147,267 B; S042.try.txt 60,508 B), never a corpus tree. No tarball is required this round:
+the largest control tree is 44 KiB, below R14's "a few hundred kilobytes" threshold; the criterion binds
+future bulky evidence, and the in-round instance is cited, not scored.
+
+== 5. Pre-state observation passed to L1 (not this seat's check) ==
+$ sha256sum corpus/instruments/anchorcheck.py
+c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748  corpus/instruments/anchorcheck.py
+At measurement the instrument still carried the pre-change digest, so the C1 counters and the canonical
+index at the landed digest were NOT run here (ExecImplC1 owns that file; this seat ran none of C1's
+counter commands). Other digests observed read-only: source-recheck.py 9fe6a4a0…, frontier-recheck-count.py
+c8a62888…, recheck-audit.py 3fc0d751…, capture-source.py e1831888….
+
+== 6. Known limits ==
+- The wave was still running at 17:23:03Z: receipts/ had 3 files then and grows after this receipt; the
+  footprint numbers are a timestamped snapshot, not round-end totals. Re-measure:
+  `find .ufo/waves/round-28 -type f | wc -l; du -sk .ufo/waves/round-28`.
+- R14 is prospective: it constrains future evidence, so no axis score is claimed from it.
+- No tool was installed or upgraded; no pacman transaction attempted.
+
+== 7. Verification the L1 should run ==
+$ head -77 corpus/QUALITY.md | sha256sum          # must equal 319dc9eb41fe9473…
+$ tail -1 corpus/QUALITY.md                        # must start "| R14 | Wave evidence is receipts"
+$ git diff --stat corpus/QUALITY.md                # 6 insertions, 0 deletions

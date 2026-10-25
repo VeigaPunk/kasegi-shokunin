@@ -1,0 +1,59 @@
+# Round 28 — ExecCaptureS041 receipt (C2 re-grounding; S041 re-capture)
+# date=2026-10-25 lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+# report=.ufo/waves/round-28/wave1/ExecCaptureS041.md
+command=cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/capture-source.py --id S041 --url https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf --kind pdf --out corpus/source-snapshots/round-28/S041.txt
+capture_exit=0
+log=S041 status=200 fetched_bytes=1338665 snapshot_bytes=147267 sha256=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47 utc=2026-10-25T17:22:12Z out=corpus/source-snapshots/round-28/S041.txt
+fetched_bytes=1338665
+snapshot_bytes=147267
+snapshot_lines=2354
+sha256_log=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+sha256_disk=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+sha256_match=yes
+fetch_utc=2026-10-25T17:22:12Z
+instrument=capture-source.py sha256=e1831888d7192a5b7d55636a89e4da4a705eabdae77b812d20e72eafb633dc18
+toolchain=pdftotext 26.08.0 /usr/bin/pdftotext (pre-existing; no install)
+
+## upstream corroboration (curl -sI, same UA, 2026-10-25)
+http=HTTP/2 200
+content_length=1338665
+last_modified=Thu, 01 Oct 2026 00:49:04 GMT
+etag="146d29-65cbcc8478000"
+content_length_matches_fetched_bytes=yes
+
+## byte-for-byte comparison with round-26 capture (authoritative)
+sha256_round26=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+sha256_round28=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+bytes_round26=147267
+bytes_round28=147267
+cmp_exit=0
+verdict=IDENTICAL
+
+## content verification
+grep_起算日_count=9
+起算日_hits=305,340,430,648,786,1170,1171,1186,1211
+起算日_definition=L340 本ガイドラインのⅣ．４．2)において規定された連絡を最初に試みた日を起算日とします。
+edition_stamp=2026 年 10 月 @ L10 (hits=1)
+signature_stamp=L7 日付 : 2026.09.29 18:01:10 +09'00'
+
+## round-26 manifest anchor cross-check on round-28 bytes (informational; manifest is ExecManifest's)
+Q1a count=1 lines=1671
+Q1b count=1 lines=1672
+Q2a count=2 lines=1708,1874 anchor=1874
+Q2b count=1 lines=1851
+Q3 count=1 lines=1868
+Q4 count=1 lines=1916
+Q5 count=1 lines=1813
+
+## deferred (unrun != passed)
+source_recheck_S041=NOT RUN (corpus/source-snapshots/round-28/manifest.json absent at run time; ExecManifest owns it)
+rerun_cmd=cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041
+rerun_expects=exit 0, sha256 e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+
+## files written
+corpus/source-snapshots/round-28/S041.txt
+.ufo/waves/round-28/receipts/ExecCaptureS041.txt
+.ufo/waves/round-28/wave1/ExecCaptureS041.md
+
+## risks
+none; S042.txt present in the same directory from ExecCaptureS042 (not written or verified by this seat)

@@ -1,0 +1,15 @@
+MutArmC1 (round-28 wave 1, mutation tester — bounties arm)
+2026-10-25 UTC. State: PRE-STATE (pre-commit) — instrument HEAD still c2a9e6c6…; working-tree bytes 95333e29… used as mutation base (snapshot wave1/MutArmC1/base-landed.py).
+
+Mutants (scratch copies, one behavior-bearing point each):
+- M1: delete ~/Projects/bounties/ alternative from CITE → bounties cite invisible again.
+- M2: remove realpath/commonpath confinement for the bounties arm only.
+- M3: BOUNTIES_ROOT derived from _MIRROR_CANDIDATES (wrong candidates).
+
+Scores (fixtures: committed bounties fixture + my escape/inrange fixtures + SKILL.md):
+- M1 KILLED: bounties fixture → 0 BOUNTIES lines, exit 0 (invisible).
+- M2 KILLED: escape fixture under KASEGI_BOUNTIES=tmp root → IN-RANGE exit 0 instead of OUTSIDE-BASE (and absent-root escapes flip to BOUNTIES-ABSENT).
+- M3 KILLED: inrange under present $KASEGI_BOUNTIES root → BOUNTIES-ABSENT (wrong absence verdict); all detail lines name ~/Projects/the-bounty-hunter (wrong root). NOTE: frozen `grep -c BOUNTIES-ABSENT` counter is insensitive to root naming on this host — text probe needed.
+- SKILL.md: exit 0, bad=0, LOST-RECORDED=306, classes unchanged on BASE and all mutants (byte-identical outputs). No new movement.
+
+Live instrument untouched by me (sha 95333e29… before/after). Full report: wave1/MutArmC1.md. Post-commit re-run commands in that report.

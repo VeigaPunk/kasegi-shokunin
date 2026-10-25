@@ -1,0 +1,64 @@
+== round-28 wave-1 by-document mapping ==
+
+-- 1. staged S042 row (IPA intake-process page) --
+$ grep -nE '^ {0,3}\| *S042 *\|' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md | cut -c1-260
+18:| S042 | IPA 脆弱性関連情報の届出受付業務における取扱いプロセス — https://www.ipa.go.jp/security/todokede/vuln/process.html | docs | A | IPA and JPCERT/CC's own intake process for vulnerability reports, including the 起算日 and publication-date steps | 脆弱性関連情報の取扱いプロセス steps 1 to 10, s
+[exit 0]
+
+
+-- 2. staged S043 row (JPCERT/CC 2026 P-guideline) --
+$ grep -nE '^ {0,3}\| *S043 *\|' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md | cut -c1-260
+19:| S043 | 情報セキュリティ早期警戒パートナーシップガイドライン 2026年10月 — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf | spec | A | The 2026 Japanese national guideline for software and web-application vulnerability handling | 2026年10月 edition, PDF digital signature date
+[exit 0]
+
+
+-- 3. lane registry: is S042 free? --
+$ grep -cE '^ {0,3}\| *S042 *\|' corpus/SOURCES.md
+0
+[exit 1]
+
+
+-- 4. lane registry: does ANY lane row carry the IPA intake-process URL? (must be 0) --
+$ grep -cF 'https://www.ipa.go.jp/security/todokede/vuln/process.html' corpus/SOURCES.md
+0
+[exit 1]
+
+
+-- 5. lane registry: does ANY lane row carry the P-guideline URL? (must be >=1) --
+$ grep -cF 'https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf' corpus/SOURCES.md
+1
+[exit 0]
+
+$ grep -nF 'https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf' corpus/SOURCES.md | cut -c1-120
+47:| S041 | 情報セキュリティ早期警戒パートナーシップガイドライン 2026年10月 (JPCERT/CC) — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf 
+[exit 0]
+
+
+-- 6. lane S041 row in full (the row staged S043 maps onto) --
+$ grep -nE '^ {0,3}\| *S041 *\|' corpus/SOURCES.md
+47:| S041 | 情報セキュリティ早期警戒パートナーシップガイドライン 2026年10月 (JPCERT/CC) — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf | spec | A | The JPCERT/CC 2026 partnership guideline's annex (付録6) on international-standard conformance: the mapping between the early-warning framework and ISO/IEC 29147:2014 / ISO/IEC 30111:2013, plus the points where conforming to 29147 requires more than the guideline states | 付録6 §2 p.45 (ISO/IEC 29147:2014 vs ISO/IEC 30111:2013 division of labour, 図1), §4 p.46-47 (points to note when conforming to ISO/IEC 29147:2014: vulnerability disclosure policy, 7-day receipt acknowledgement, intermediate vendors, online services), 参考1 p.53-54 (clause correspondence table ISO/IEC 29147:2014 ↔ P-guideline) | ISO/IEC 29147:2014 and ISO/IEC 30111:2013 divide labour between a vendor's outward-facing disclosure and its in-house handling; the P-guideline maps onto both, and 参考1 pairs each 29147 clause with its guideline section, exposing divergences where a 29147-conforming vendor must go beyond the guideline (e.g. a 7-day receipt acknowledgement). | mined | 2026-10-25 | 180d | corpus/knowledge/iso-29147-and-30111-division-of-labour.md, corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md |
+[exit 0]
+
+
+-- 7. URL equality by document (not by number): staged S043 URL vs lane S041 URL --
+$ printf 'staged S043 url: '; grep -E '^ {0,3}\| *S043 *\|' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md | grep -oE 'https?://[^ |]+' | head -1
+staged S043 url: https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf
+[exit 0]
+
+$ printf 'lane   S041 url: '; grep -E '^ {0,3}\| *S041 *\|' corpus/SOURCES.md | grep -oE 'https?://[^ |]+' | head -1
+lane   S041 url: https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf
+[exit 0]
+
+$ printf 'staged S042 url: '; grep -E '^ {0,3}\| *S042 *\|' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md | grep -oE 'https?://[^ |]+' | head -1
+staged S042 url: https://www.ipa.go.jp/security/todokede/vuln/process.html
+[exit 0]
+
+
+-- 8. duplicate-document scan across the WHOLE lane registry (any URL appearing twice) --
+$ grep -oE 'https?://[^ |]+' corpus/SOURCES.md | sort | uniq -d
+https://docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq
+https://eur-lex.europa.eu/eli/reg/2024/2847/oj/eng
+https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html
+[exit 0]
+
+(empty above = no URL is registered twice in the lane registry)

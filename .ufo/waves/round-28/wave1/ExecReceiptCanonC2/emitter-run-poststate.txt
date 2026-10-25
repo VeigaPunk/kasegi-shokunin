@@ -1,0 +1,33 @@
+== round-28 C2 receipt (coverage — F12 Japanese state-coordinated disclosure workflow) ==
+measured_utc=2026-10-25T17:27:13Z
+base=c9f8b115a098c65356e4b3b6048af45a37ab8395
+frontier_admitted_before=11
+frontier_admitted_after=12
+# source: awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md
+entries_citing_S042_before=0
+entries_citing_S042_after=1
+# source: grep -lE '^source: S042 ' corpus/knowledge/*.md | wc -l
+entry_file_state=present
+entry_header_and_recheck=declared=S041,S042 recheck=S041,S042 equal=True recheck_lines=1
+# source: entry bytes; equality limb measured here (harness tests only subset/superset)
+sources_rows_before=41
+sources_rows_after=42
+s042_rows_after=1
+# source: grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md ; same for S042
+census_exit_after=0
+census_findings=W04:2 E11:0
+# source: /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+frontier_harness_before=entries=14 pass=14 exit=0
+frontier_harness_after=entries=15 pass=15 exit=0 (pass_lines=15 harness_exit=0)
+# source: python3 corpus/instruments/frontier-recheck-count.py
+manifest_sha256=e62ddad133ffc19ebc66822c0fcb3b48ed4993c101f05262302acc58714f291d
+manifest_path_stem_ok=True pairs=S041->S041.txt S042->S042.txt
+s041_capture_sha256=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+s042_capture_sha256=b432ec165693d005fa5de326ffb40d60d0476b18a345a9fc6d631d10b9c96966
+s041_recapture_vs_round26=IDENTICAL
+# source: sha256sum corpus/source-snapshots/round-28/{manifest.json,S041.txt,S042.txt}; cmp against round-26/S041.txt
+source_recheck_S041_exit=0
+source_recheck_S042_exit=0
+q9_assertions=unique=12 anchored_ok=0 bad=0 total_pinned=12
+# source: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json [--source S041|--source S042]
+c2_after_reached=yes

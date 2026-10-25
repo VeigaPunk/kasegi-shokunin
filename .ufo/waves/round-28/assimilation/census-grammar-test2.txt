@@ -1,0 +1,39 @@
+== round-28 wave-1 census-grammar test v2 (rows inside the Registry section) ==
+census: /home/vgpnk/Projects/shokunin/scripts/sources-census.sh   today: 2026-10-25
+
+-- scratch 0: live lane registry as-is --
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema2/corpus/SOURCES.md --today 2026-10-25 | grep -vE 'E11' 
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+[exit 0]
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema2/corpus/SOURCES.md --today 2026-10-25 | grep -cE 'E11' | sed 's/^/E11 count: /'
+E11 count: 2
+[exit 0]
+
+
+-- scratch 1: live registry + the PACKAGE's own staged S042 row --
+$ grep -nE '^ {0,3}\| *S04[12] *\|' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema2/corpus/SOURCES.md | cut -c1-90
+47:| S041 | 情報セキュリティ早期警戒パートナーシップガイドライン 2026年10月 (JPCERT/CC) — https://www.jpcert.or.jp/vh/
+48:| S042 | IPA 脆弱性関連情報の届出受付業務における取扱いプロセス — https://www.ipa.go.jp/security/todokede/vuln/p
+[exit 0]
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema2/corpus/SOURCES.md --today 2026-10-25 | grep -vE 'E11'
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+[exit 0]
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema2/corpus/SOURCES.md --today 2026-10-25 | grep -E 'E01|E02|E03|E04|E05|E06|E07|E08|E09|E10|E12'
+[exit 1]
+
+(empty = no schema violation for the staged S042 row)
+
+-- scratch 2: live registry + the PACKAGE's own staged S043 row (must NOT be a new id) --
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema2/corpus/SOURCES.md --today 2026-10-25 | grep -vE 'E11'
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+[exit 0]
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema2/corpus/SOURCES.md --today 2026-10-25 | grep -E 'E01|E02|E03|E04|E05|E06|E07|E08|E09|E10|E12'
+[exit 1]
+

@@ -1,0 +1,154 @@
+# ScribeLog — round-28 wave1 receipt
+
+seat:          ScribeLog (scribe)
+utc:           2026-10-25T17:24:28Z
+lane:          /home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane_head:     94f387cbee71a532a51ce075f01701a557231e85 (r28 wave1 spec + dispatch)
+freeze_commit: c9f8b115a098c65356e4b3b6048af45a37ab8395 (round-28 claims freeze)
+write_scope:   LOG.md (append only) + this receipt + .ufo/waves/round-28/wave1/ScribeLog/ scratch
+state:         PRE-STATE — wave in flight at measurement time; every post-value is PENDING at close
+
+## Behavior
+
+Appended one Round 28 section at the END of LOG.md (append only; R9). The entry carries the
+claims-freeze commit, one line per claimed axis (C1 depth:verifiability, C2 coverage), a census
+line and a wave line, plus receipt pointers. Every counter was re-run by this seat from the lane
+root against the committed bytes at run time; no value was transcribed from another seat. Because
+the wave was still in flight (instrument still at the pre-change digest c2a9e6c6…, C1 receipt index
+absent, F12 entry absent), all after-values are written as PENDING and the L1 appends them at close.
+
+Verified R9 mechanically: `git diff --numstat -- LOG.md` → `49	0	LOG.md` (49 insertions,
+0 deletions; no prior round line changed).
+
+## Measured at run time (lane root; frozen counter commands)
+
+Two full passes (17:23:04Z and 17:23:53Z) plus a re-confirmation at 17:24:28Z; all three agreed on
+the C1 state. Transcripts: .ufo/waves/round-28/wave1/ScribeLog/measure.txt, measure2.txt,
+measure3.txt, measure4.txt.
+
+C1 (anchorcheck.py, instrument_sha256=c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748,
+i.e. unchanged pre-change bytes):
+- (a) `python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bad-fixture.md; echo $?`
+      → exit=0 (before; BASE-ABSENT printed). After PENDING (expect 1).
+- (b) `python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bounties-fixture.md | grep -c BOUNTIES-ABSENT`
+      → 0 (before). After PENDING (expect 1).
+- (c) `.ufo/waves/round-28/c1-receipt-index.txt` absent; `anchorcheck.py --selftest` → exit=1.
+      Before 0 receipt lines. After PENDING (expect `selftest cases=N failures=0` at the landed
+      instrument digest).
+- (d) `python3 corpus/instruments/anchorcheck.py SKILL.md` → exit=0, bad=0, and
+      `== SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0`.
+      No-harm baseline holds at measure time; after must stay 0/0/306.
+
+C2 (frozen counter commands):
+- frontier admitted (`awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md`):
+  11 → 12 (F12 row landed mid-wave).
+- `grep -lE '^source: S042 ' corpus/knowledge/*.md | wc -l`: 0 → 0 (entry absent at all passes).
+- `grep -cE '^\|[[:space:]]*S042[[:space:]]*\|' corpus/SOURCES.md`: 0 → 1; registry rows 41 → 42.
+- `python3 corpus/instruments/frontier-recheck-count.py`: `entries=14 pass=14 exit=0` → crash while
+  the entry is absent:
+    FileNotFoundError: [Errno 2] No such file or directory:
+    '…/corpus/knowledge/japanese-domestic-disclosure-workflow.md'
+  (final expect `entries=15 pass=15 exit=0`).
+- census `sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`: before exit 0,
+  41 rows; mid-wave exit 1, 42 rows, verbatim:
+    kasegi	E11	S041 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+    kasegi	E11	S042 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+  (plus the two pre-existing W04 S028/S029 warnings). Final expect exit 0 at 42 rows.
+
+## Gates
+
+- PASS (run time): LOG.md append-only (49 insertions / 0 deletions); lane HEAD unchanged; freeze
+  commit present and matches c9f8b11…; census before reproduced (exit 0, 41 rows); SKILL.md no-harm
+  baseline reproduced (exit 0, bad=0, LOST-RECORDED=306, other classes 0); instrument still at the
+  pre-change digest; both round-28 captures present; wave spec/dispatch counts 69/69.
+- PENDING at close (this seat cannot observe them): C1 (a) exit 1, (b) 1 BOUNTIES-ABSENT line,
+  (c) one receipt line at the landed instrument digest, (d) unchanged 0/0/306; C2 entry present,
+  frontier 12 with a live entry, harness 15/15, census exit 0 at 42 rows.
+- BLOCKING observation for the L1: the mid-wave tree is inconsistent — F12 is admitted and S042 is
+  registered while corpus/knowledge/japanese-domestic-disclosure-workflow.md is absent, so census
+  exits 1 (E11 ×2) and frontier-recheck-count.py raises FileNotFoundError. This must be closed
+  before the lane commit; if ScribeEntryC2's file never lands, C2 cannot reach its after-values.
+
+## Exact LOG.md diff (verbatim `git diff -- LOG.md`)
+
+diff --git i/LOG.md w/LOG.md
+index 358a93f..e3a5682 100644
+--- i/LOG.md
++++ w/LOG.md
+@@ -1334,3 +1334,52 @@ VERIFIED** (lesson `corpus/lessons/round-27.md` §Frozen claims, §Mistakes M27-
+ - **Waves.** Zero. The 32–64 v1 band and the §3 L2 floor were not exercised; no seat ran; no
+   dispatch refusal occurred. Wrap-up directive: land now, record unfinished claims honestly.
+ - **Tooling.** No tool installed or upgraded; no pacman transaction attempted (host-wide pause).
++
++## Round 28 — 2026-10-25 — anchorcheck gate soundness + F12 Japanese state-coordinated disclosure workflow (one v2 wave, 69 seats)
++
++Frozen claims `.ufo/waves/round-28/claims.json` (frozen_at_utc `2026-10-25T00:00:00Z`); freeze
++commit `c9f8b115a098c65356e4b3b6048af45a37ab8395`; lane HEAD at this entry `94f387c`
++(round-28 wave1 spec + dispatch). Every counter below was re-run by this seat from the lane root,
++last at `2026-10-25T17:23:53Z`, re-confirmed unchanged at `2026-10-25T17:24:28Z`; post-values are
++recorded as PENDING because the wave was still in flight at that instant — the instrument was at
++its pre-change digest `c2a9e6c6…`, no `c1-receipt-index.txt` existed, and the F12 knowledge entry
++had not landed (both round-28 captures, the F12 README row and the S042 registry row had). The L1
++appends the final after-values at close; no number here is transcribed from another seat.
++
++- **C1 depth:verifiability (4, held) — anchorcheck.py gate soundness.** Before→after, measured at
++  instrument `c2a9e6c6…`: (a) bad-fixture exit **0 → pending** (BASE-ABSENT printed, exit 0);
++  (b) bounties-fixture `BOUNTIES-ABSENT` lines **0 → pending** (CITE does not match the cite at all);
++  (c) selftest receipt lines **0 → pending** (`--selftest` absent, exit 1;
++  `.ufo/waves/round-28/c1-receipt-index.txt` not created); (d) SKILL.md live run exit **0**, bad **0**,
++  verdict classes unchanged — `LOST-RECORDED=306 PIN-BROKEN=0 OUTSIDE-BASE=0 BASE-ABSENT=0` (no-harm
++  baseline holds at measure time; after must stay 0/0/306). Frozen disclosure: once the
++  `~/Projects/bounties/` CITE arm lands, 4 corpus marked bounties citations (`claim-gates.md`,
++  `intake-and-finalize.md`, `mission-control.md`, `source-tree-loss-2026-09-28.md`) newly classify
++  LOST-RECORDED — disclosed, not hidden. Close re-run: the four frozen counter commands (bad-fixture
++  exit; bounties-fixture `grep -c BOUNTIES-ABSENT`; `--selftest` plus the receipt-index
++  `selftest cases=N failures=0` / `instrument_sha256=` line; `anchorcheck.py SKILL.md`).
++- **C2 coverage (7, held) — F12 Japanese state-coordinated disclosure workflow.** Frontier
++  `admitted` rows **11 → 12 (row present mid-wave)**; knowledge entries with `^source: S042 `
++  **0 → 0** (entry absent at both passes); `S042` registry row **0 → 1** and registry **41 → 42
++  rows**; harness `entries=14 pass=14 exit=0 → FileNotFoundError` (`corpus/
++  knowledge/japanese-domestic-disclosure-workflow.md`) because the F12 row was admitted before its
++  entry landed; census exit 0 / 41 rows → **exit 1**, `E11 ×2 (S041, S042 missing used-by
++  corpus/knowledge/japanese-domestic-disclosure-workflow.md)`. Final after-values remain PENDING at
++  close: the entry, and with it harness **15/15** and census **exit 0 / 42 rows**, must be confirmed
++  by the L1 re-run of the four frozen counter commands (README `awk` admitted count;
++  `grep -lE '^source: S042 ' corpus/knowledge/*.md | wc -l`;
++  `grep -cE '^\|[[:space:]]*S042[[:space:]]*\|' corpus/SOURCES.md`; `frontier-recheck-count.py`).
++- **Census.** Before: exit 0, 41 rows, W04 ×2 (S028/S029 pre-existing; re-run committed at
++  `.ufo/waves/round-28/census-before.txt`). Mid-wave at `2026-10-25T17:23:53Z`: exit 1, 42 rows —
++  `E11` for both S041 and S042 missing the used-by entry, i.e. a registry/entry ordering gap, not a
++  row defect; the two pre-existing W04s persist. After: PENDING — ScribeRegistryC2's run, expected
++  exit 0 at 42 rows once the entry lands; the L1 records the final exit/row count.
++- **Waves.** One v2-policy wave, `kasegi-r28-build`: 69 seats spawned (dispatch
++  `counts.spawn=69`, resume 0, total 69) — executor 18, scribe 16, reviewer 12, scout 5, critic 5,
++  mutation-tester 5, connector 3, revenger 2, sentinel 2, simplifier 1. Spec
++  `.ufo/waves/round-28/wave1-spec.json`, dispatch `.ufo/waves/round-28/wave1-dispatch.json`, seat
++  reports under `.ufo/waves/round-28/wave1/`. Receipts: `.ufo/waves/round-28/receipts/ScribeLog.txt`
++  (this entry's diff), measurement transcripts
++  `.ufo/waves/round-28/wave1/ScribeLog/measure.txt` … `measure4.txt`; controls
++  `.ufo/waves/round-28/c1-controls/` and `.ufo/waves/round-28/c2-controls/`.
++- **Tooling.** No tool installed or upgraded; no pacman transaction attempted (host-wide pause).
+
+## Touched surfaces
+
+- LOG.md — 49 appended lines (§Round 28), 0 deletions.
+- .ufo/waves/round-28/receipts/ScribeLog.txt — this receipt.
+- .ufo/waves/round-28/wave1/ScribeLog/ — measurement scratch (measure.txt, measure2.txt,
+  measure3.txt, measure4.txt).
+
+## Out of scope
+
+No other production file touched (claims.json, lesson, SCORECARD.md, instruments, registry, README,
+QUALITY.md, SKILL.md untouched). No git/jj write; no commit/push; no VCS mutation. No subagent, no
+background job. No tool installed/upgraded; no pacman transaction. /home/vgpnk/Projects/shokuknow
+read-only and untouched.
+
+## Findings for the L1
+
+1. Mid-wave ordering gap (blocking C2's after-values): frontier F12 + S042 row exist without
+   corpus/knowledge/japanese-domestic-disclosure-workflow.md → census exit 1 (E11 ×2),
+   frontier-recheck-count.py FileNotFoundError. Close only after ScribeEntryC2 lands.
+2. C1 is unmodified at measurement time (digest c2a9e6c6…): counters (a)-(c) still at their before
+   values; re-run the four frozen C1 commands after ExecImplC1 lands and append the after-values.
+3. The LOG.md entry is written to accept L1-appended after-values; no line in it claims a value this
+   seat did not observe.

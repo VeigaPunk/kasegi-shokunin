@@ -1,0 +1,554 @@
+POST-STATE receipt — round-28 wave 1, seat ExecRecheckAuditR28
+generated_utc: 2026-10-25T17:27:13Z
+lane_repo: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane_HEAD: 94f387cbee71a532a51ce075f01701a557231e85
+seat_layer: leaf executor (no dispatch, no background job)
+scope: (1) run corpus/instruments/recheck-audit.py over the corpus from the lane root and record the
+       summary line; (2) run the new F12 entry's recheck line standalone from a foreign cwd and from
+       the lane root, both must exit 0.
+
+STATE: POST-STATE. The F12 entry landed while this seat was running (PRE-STATE baseline preserved below).
+Timeline of the same seat, same instruments:
+  2026-10-25T17:25:38Z  PRE-STATE   39 entries, entry absent, audit exit 0
+  2026-10-25T17:26:55Z  POST-STATE  40 entries, entry present, audit exit 1 (stale expected list only)
+  2026-10-25T17:27:13Z  canonical capture for the numbers below
+
+
+-- IDENTITY (sha256, live at 2026-10-25T17:27:13Z) --
+recheck-audit.py         3fc0d751f2a5819879d440f8ef62b607376a8b6914d7edf9fe1b2fc25662d4e1
+source-recheck.py        9fe6a4a07fdbbd83a9b64a588a14d02b154fd5de81e460b97519675d69a79b96
+knowledge-expected.txt   30ba586029f679721d57025a1ac339b93fe11b38c5825c721be495048b2a9080
+anchorcheck.py           29aba0847985c8460b8bfb591bf39f269e25f008c9eeb6101e45803862f81f67
+round-28/S041.txt        e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+round-28/S042.txt        b432ec165693d005fa5de326ffb40d60d0476b18a345a9fc6d631d10b9c96966
+round-28/manifest.json   e62ddad133ffc19ebc66822c0fcb3b48ed4993c101f05262302acc58714f291d
+
+Anchor churn observed during this wave (C1 landing, not my file):
+  17:25:38Z c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748 (round-27 pre-change)
+  17:26:1xZ 2f7070466fba5732c2e82fe73128c66d3600b806e023559187fa5fd8f211206b
+  17:27:13Z 29aba0847985c8460b8bfb591bf39f269e25f008c9eeb6101e45803862f81f67 (digest of record for the post-state audit below)
+
+knowledge-expected.txt is UNCHANGED at 30ba586029f67972 (mtime 2026-10-25 09:48:15.073367761 -0300, 39 entry lines):
+that single stale file is the only reason the canonical audit exits 1 post-landing.
+
+
+-- RESULT — the two lines this seat owes --
+A) CANONICAL audit from the lane root — `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py`
+   exit=1, and the cause is one stale owned file, not the new entry:
+     strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+     executes=17 gated=23 broken=0
+     lines=40 total=40 pass=40 fail-closed=23 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+     expect=present expected=39 missing=0 unexpected=1 exit=1
+     unexpected=corpus/knowledge/japanese-domestic-disclosure-workflow.md
+   F12 row: japanese-domestic-disclosure-workflow.md  frozen=111 strict=111111 lane=0 foreign=0 executes PASS
+
+B) SAME audit with the expected list refreshed — a scratch list (40 entries) passed via --expect,
+   the owned corpus/instruments/knowledge-expected.txt is ExecExpectedList's file and was NOT edited here:
+     python3 corpus/instruments/recheck-audit.py --expect /tmp/r28-kexp40.txt
+     exit=0
+     strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+     executes=17 gated=23 broken=0
+     lines=40 total=40 pass=40 fail-closed=23 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+     expect=present expected=40 missing=0 unexpected=0 exit=0
+   scratch list sha256: ab3feb1335af6af3bf85a0a45f6f7beaa2da89ec96bc081b36a9b88b5d17e68a
+   => the round's audit exit 0 is reachable the moment ExecExpectedList lands its refresh; no other
+      fix is needed.
+
+C) The entry's own recheck line, standalone: exit 0 from /tmp AND from the lane root
+   (14 OK lines = 2 sha256 + 12 quote assertions, every quote occurrences=1). Verbatim below in STANDALONE.
+
+
+-- POST-STATE CANONICAL — verbatim (exit 1) --
+ai-assisted-finding-validation.md                          frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+authorised-testing-rules-of-engagement.md                  frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+authorization-safe-harbor-and-scope.md                     frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+citation-bases.md                                          frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+claim-anatomy-sample.md                                    frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+claim-gates.md                                             frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+claim-package-contract.md                                  frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+cna-assignment-and-vulnerability-rules.md                  frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+coordinated-disclosure-timelines.md                        frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+cra-manufacturer-reporting-duties.md                       frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+cvss-v4-severity-and-vector.md                             frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+cwe-top25-2025-methodology.md                              frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+ev-model.md                                                frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+evidence-dir.md                                            frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+intake-and-finalize.md                                     frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+intake-surface.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+iso-29147-and-30111-division-of-labour.md                  frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+iso-29147-divergence-and-clause-crosswalk.md               frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+japanese-domestic-disclosure-workflow.md                   frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+mission-control.md                                         frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+mission-ledger.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+multiparty-vulnerability-coordination.md                   frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+operator-queue.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+ops-invariants.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+policy-access-playbook.md                                  frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+program-quirks.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+repo-git-state.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+retirement-autopsies.md                                    frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+root-loss-2026-10-12.md                                    frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+source-tree-loss-2026-09-28.md                             frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+statutory-authorization-and-unauthorized-access.md         frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+submitted-registry.md                                      frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+target-checkouts.md                                        frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+terminal-classes.md                                        frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+triage-thresholds.md                                       frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+ufo-archive-2026.md                                        frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+ufo-workspaces.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+vdp-disclosure-packages.md                                 frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+vendor-disclosure-policies-as-corpus-objects.md            frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+vendor-disclosure-policy-commitments-crosswalk.md          frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+unexpected=corpus/knowledge/japanese-domestic-disclosure-workflow.md
+strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=17 gated=23 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=40 total=40 pass=40 fail-closed=23 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=39 missing=0 unexpected=1 exit=1
+
+
+-- POST-STATE WITH REFRESHED EXPECTED LIST — verbatim (exit 0) --
+ai-assisted-finding-validation.md                          frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+authorised-testing-rules-of-engagement.md                  frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+authorization-safe-harbor-and-scope.md                     frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+citation-bases.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+claim-anatomy-sample.md                                    frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+claim-gates.md                                             frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+claim-package-contract.md                                  frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+cna-assignment-and-vulnerability-rules.md                  frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+coordinated-disclosure-timelines.md                        frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+cra-manufacturer-reporting-duties.md                       frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+cvss-v4-severity-and-vector.md                             frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+cwe-top25-2025-methodology.md                              frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+ev-model.md                                                frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+evidence-dir.md                                            frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+intake-and-finalize.md                                     frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+intake-surface.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+iso-29147-and-30111-division-of-labour.md                  frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+iso-29147-divergence-and-clause-crosswalk.md               frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+japanese-domestic-disclosure-workflow.md                   frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+mission-control.md                                         frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+mission-ledger.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+multiparty-vulnerability-coordination.md                   frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+operator-queue.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+ops-invariants.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+policy-access-playbook.md                                  frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+program-quirks.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+repo-git-state.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+retirement-autopsies.md                                    frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+root-loss-2026-10-12.md                                    frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+source-tree-loss-2026-09-28.md                             frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+statutory-authorization-and-unauthorized-access.md         frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+submitted-registry.md                                      frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+target-checkouts.md                                        frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+terminal-classes.md                                        frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+triage-thresholds.md                                       frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+ufo-archive-2026.md                                        frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+ufo-workspaces.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+vdp-disclosure-packages.md                                 frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+vendor-disclosure-policies-as-corpus-objects.md            frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+vendor-disclosure-policy-commitments-crosswalk.md          frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=16 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=40 total=40 pass=40 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=40 missing=0 unexpected=0 exit=0
+
+
+-- ENTRY CONTRACT (post-state) --
+path: corpus/knowledge/japanese-domestic-disclosure-workflow.md
+sha256: 0261f315b8b02b74b2f87206dbb5e067ade7b15c6275c674d5ae95c8c658383a
+declared `source:` ids: S041 S042
+recheck `--source` ids: S041 S042
+ids_equal: True
+cd target == lane root: True
+manifest named: corpus/source-snapshots/round-28/manifest.json
+
+recheck line (verbatim from the file):
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S042
+
+
+-- STANDALONE RUNS — the entry's recheck line from a foreign cwd and from the lane root --
+cwd=/tmp  exit=0
+S041:sha256 OK
+S041:Q1 OK occurrences=1
+S041:Q2 OK occurrences=1
+S041:Q3 OK occurrences=1
+S041:Q4 OK occurrences=1
+S041:Q5 OK occurrences=1
+S041:Q6 OK occurrences=1
+S042:sha256 OK
+S042:Q1 OK occurrences=1
+S042:Q2 OK occurrences=1
+S042:Q3 OK occurrences=1
+S042:Q4 OK occurrences=1
+S042:Q5 OK occurrences=1
+S042:Q6 OK occurrences=1
+stderr: <empty>
+
+cwd=/home/vgpnk/Projects/shokunin/kasegi-shokunin  exit=0
+S041:sha256 OK
+S041:Q1 OK occurrences=1
+S041:Q2 OK occurrences=1
+S041:Q3 OK occurrences=1
+S041:Q4 OK occurrences=1
+S041:Q5 OK occurrences=1
+S041:Q6 OK occurrences=1
+S042:sha256 OK
+S042:Q1 OK occurrences=1
+S042:Q2 OK occurrences=1
+S042:Q3 OK occurrences=1
+S042:Q4 OK occurrences=1
+S042:Q5 OK occurrences=1
+S042:Q6 OK occurrences=1
+stderr: <empty>
+
+
+-- LANDED MANIFEST vs REAL CAPTURES — whole manifest (exit 0) --
+S041:sha256 OK
+S041:Q1 OK occurrences=1
+S041:Q2 OK occurrences=1
+S041:Q3 OK occurrences=1
+S041:Q4 OK occurrences=1
+S041:Q5 OK occurrences=1
+S041:Q6 OK occurrences=1
+S042:sha256 OK
+S042:Q1 OK occurrences=1
+S042:Q2 OK occurrences=1
+S042:Q3 OK occurrences=1
+S042:Q4 OK occurrences=1
+S042:Q5 OK occurrences=1
+S042:Q6 OK occurrences=1
+
+
+-- S041 alone (exit 0) --
+S041:sha256 OK
+S041:Q1 OK occurrences=1
+S041:Q2 OK occurrences=1
+S041:Q3 OK occurrences=1
+S041:Q4 OK occurrences=1
+S041:Q5 OK occurrences=1
+S041:Q6 OK occurrences=1
+
+
+-- S042 alone (exit 0) --
+S042:sha256 OK
+S042:Q1 OK occurrences=1
+S042:Q2 OK occurrences=1
+S042:Q3 OK occurrences=1
+S042:Q4 OK occurrences=1
+S042:Q5 OK occurrences=1
+S042:Q6 OK occurrences=1
+
+
+-- SELFTEST — recheck-audit.py --selftest (exit 0) --
+selftest good.md       pass want=True  got=True  | strict want=True  got=True  ok
+selftest prose.md      pass want=False got=False | strict want=False got=False ok
+selftest cwd.md        pass want=False got=False | strict want=False got=False ok
+selftest ghost.md      pass want=False got=False | strict want=False got=False ok
+selftest degenerate.md pass want=True  got=True  | strict want=False got=False ok
+selftest elsewhere.md  pass want=True  got=True  | strict want=False got=False ok
+selftest ownonly.md    pass want=True  got=True  | strict want=False got=False ok
+selftest selftesty.md  pass want=True  got=True  | strict want=False got=False ok
+selftest sourced.md    pass want=True  got=True  | strict want=True  got=True  ok
+selftest basetest.md   pass want=True  got=True  | strict want=False got=False ok
+selftest basestate.md  pass want=True  got=True  | strict want=True  got=True  ok
+selftest parseonly.md  pass want=False got=False | strict want=False got=False ok
+selftest instonly.md   pass want=True  got=True  | strict want=False got=False ok
+selftest completeness lines=13 total=15 complete=False ok
+good.md                                                    frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+missing=corpus/knowledge/ghost-absent.md
+strict pass=1/1 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=1 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=1 total=1 pass=1 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=2 missing=1 unexpected=0 exit=1
+selftest expect-missing  exit=1 want=1 missing=['corpus/knowledge/ghost-absent.md'] unexpected=[] ok
+extra.md                                                   frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+good.md                                                    frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+unexpected=corpus/knowledge/extra.md
+strict pass=2/2 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=2 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=2 total=2 pass=2 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=1 missing=0 unexpected=1 exit=1
+selftest expect-unexpected exit=1 want=1 missing=[] unexpected=['corpus/knowledge/extra.md'] ok
+
+
+-- SELFTEST — source-recheck.py --selftest (exit 0) --
+SELFTEST clean PASS expected-exit=0 observed-exit=0 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST corrupt PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256 observed-ids=S900:sha256
+SELFTEST missing-source PASS expected-exit=2 observed-exit=2 expected-ids=S900:source observed-ids=S900:source
+SELFTEST missing-manifest PASS expected-exit=2 observed-exit=2 expected-ids=manifest observed-ids=manifest
+
+
+-- PRE-STATE BASELINE — audit before the entry landed, 39 entries (exit 0) --
+ai-assisted-finding-validation.md                          frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+authorised-testing-rules-of-engagement.md                  frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+authorization-safe-harbor-and-scope.md                     frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+citation-bases.md                                          frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+claim-anatomy-sample.md                                    frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+claim-gates.md                                             frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+claim-package-contract.md                                  frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+cna-assignment-and-vulnerability-rules.md                  frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+coordinated-disclosure-timelines.md                        frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+cra-manufacturer-reporting-duties.md                       frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+cvss-v4-severity-and-vector.md                             frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+cwe-top25-2025-methodology.md                              frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+ev-model.md                                                frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+evidence-dir.md                                            frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+intake-and-finalize.md                                     frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+intake-surface.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+iso-29147-and-30111-division-of-labour.md                  frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+iso-29147-divergence-and-clause-crosswalk.md               frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+mission-control.md                                         frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+mission-ledger.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+multiparty-vulnerability-coordination.md                   frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+operator-queue.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+ops-invariants.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+policy-access-playbook.md                                  frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+program-quirks.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+repo-git-state.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+retirement-autopsies.md                                    frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+root-loss-2026-10-12.md                                    frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+source-tree-loss-2026-09-28.md                             frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+statutory-authorization-and-unauthorized-access.md         frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+submitted-registry.md                                      frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+target-checkouts.md                                        frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+terminal-classes.md                                        frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+triage-thresholds.md                                       frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+ufo-archive-2026.md                                        frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+ufo-workspaces.md                                          frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+vdp-disclosure-packages.md                                 frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+vendor-disclosure-policies-as-corpus-objects.md            frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+vendor-disclosure-policy-commitments-crosswalk.md          frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+strict pass=39/39 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=16 gated=23 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=39 total=39 pass=39 fail-closed=23 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=39 missing=0 unexpected=0 exit=0
+
+
+-- PRE-LANDING DRY RUN on REAL manifest + REAL capture bytes --
+Superseded by the real POST-STATE runs above; kept because it isolates the audit's acceptance of the
+exact post-state shape from the landing of the entry file.
+scratch_root: /tmp/r28-audit-probe-1v0pfcwe (mktemp; nothing written inside the lane)
+scratch copies byte-identical to the lane: manifest=True S041=True S042=True
+
+synthetic entry headers source: S041 / source: S042 and the same line form; audit over the scratch tree:
+  audit_exit=0
+  japanese-domestic-disclosure-workflow.md                   frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+  strict pass=1/1 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=1 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=1 total=1 pass=1 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+  expect=present expected=1 missing=0 unexpected=0 exit=0
+
+
+-- PROBE MATRIX — audit limb behaviour (synthetic entries; REAL manifest + REAL capture bytes) --
+audit_exit=0  expectation: exit 0, strict=111111, executes
+  japanese-domestic-disclosure-workflow.md                   frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+  strict pass=1/1 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=1 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=1 total=1 pass=1 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+  expect=present expected=1 missing=0 unexpected=0 exit=0
+
+audit_exit=1  expectation: exit 1, strict=111011 cdroot_fail=1
+  japanese-domestic-disclosure-workflow.md                   frozen=111 strict=111011 lane=0   foreign=0   executes    FROZEN-ONLY
+  strict pass=0/1 cdroot_fail=1 instrument_fail=0 own_fail=0
+  executes=1 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=1 total=1 pass=1 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+  expect=present expected=1 missing=0 unexpected=0 exit=1
+
+audit_exit=1  expectation: exit 1, strict=111110 own_fail=1
+  japanese-domestic-disclosure-workflow.md                   frozen=111 strict=111110 lane=0   foreign=0   executes    FROZEN-ONLY
+  strict pass=0/1 cdroot_fail=0 instrument_fail=0 own_fail=1
+  executes=1 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=1 total=1 pass=1 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+  expect=present expected=1 missing=0 unexpected=0 exit=1
+
+audit_exit=0  expectation: GAP: exit 0, PASS (declared-vs-line id equality is not an audit limb)
+  japanese-domestic-disclosure-workflow.md                   frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+  strict pass=1/1 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=1 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=1 total=1 pass=1 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+  expect=present expected=1 missing=0 unexpected=0 exit=0
+
+audit_exit=1  expectation: exit 1, unexpected=corpus/knowledge/japanese-domestic-disclosure-workflow.md
+  japanese-domestic-disclosure-workflow.md                   frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+  unexpected=corpus/knowledge/japanese-domestic-disclosure-workflow.md
+  strict pass=1/1 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=1 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=1 total=1 pass=1 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+  expect=present expected=0 missing=0 unexpected=1 exit=1
+
+audit_exit=0  expectation: GAP: source-recheck exit 2 UNAVAILABLE absorbed as gated=PASS, audit exit 0
+  japanese-domestic-disclosure-workflow.md                   frozen=111 strict=111111 lane=2   foreign=2   gated       PASS
+  strict pass=1/1 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=0 gated=1 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=1 total=1 pass=1 fail-closed=1 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+  expect=present expected=1 missing=0 unexpected=0 exit=0
+
+audit_exit=1  expectation: exit 1, strict=110111 paths_fail=1
+  japanese-domestic-disclosure-workflow.md                   frozen=110 strict=110111 lane=2   foreign=2   gated       FAIL
+  strict pass=0/1 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=0 gated=1 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=1 total=1 pass=0 fail-closed=1 parse_fail=0 cwd_fail=0 paths_fail=1 exit=1
+  expect=present expected=1 missing=0 unexpected=0 exit=1
+
+audit_exit=0  expectation: GAP: exit 2 for S042 absorbed as gated=PASS, audit exit 0
+  japanese-domestic-disclosure-workflow.md                   frozen=111 strict=111111 lane=2   foreign=2   gated       PASS
+  strict pass=1/1 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=0 gated=1 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=1 total=1 pass=1 fail-closed=1 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+  expect=present expected=1 missing=0 unexpected=0 exit=0
+
+audit_exit=0  expectation: GAP: sha MISMATCH exit 1 absorbed as gated=PASS, audit exit 0
+  japanese-domestic-disclosure-workflow.md                   frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+  strict pass=1/1 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=0 gated=1 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=1 total=1 pass=1 fail-closed=1 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+  expect=present expected=1 missing=0 unexpected=0 exit=0
+
+
+-- FINDINGS (measured, not inferred) --
+
+1. The F12 entry passes every limb the audit has. Row: frozen=111 strict=111111 lane=0 foreign=0 executes PASS.
+   Its declared ids equal its line ids (S041 S042), the cd target is the lane root, both path tokens
+   resolve, and the line exits 0 from two different starting cwds. The audit's current exit 1 is
+   attributable to exactly one stale owned file (knowledge-expected.txt, 39 lines) and disappears with
+   an --expect list of 40 entries (RESULT B).
+
+2. GAPS, not blockers: recheck-audit.py is sound on FORM and blind on EVIDENCE STATE. `class` is `gated`
+   for ANY nonzero line exit that still parses, and `gated` counts as PASS. Four measured consequences:
+   - PROBE G  `--source S999` (id not in the manifest) -> source-recheck exit 2, row `gated`, audit exit 0 PASS
+   - PROBE K  line points at round-26/manifest.json, which does not list S042 -> exit 2, `gated`, audit exit 0 PASS
+   - PROBE J  one byte appended to the S042 capture -> `S042:sha256 MISMATCH` exit 1, `gated`, audit exit 0 PASS
+   - PROBE D  headers declare S041+S042 while the line checks only S041 -> `executes`, audit exit 0 PASS;
+              declared-vs-line id equality is not an audit limb at all
+   So after landing, recheck-audit.py exit 0 is NECESSARY, NOT SUFFICIENT for C2's "the entry's recheck
+   line exits 0 on its ids". The kill rule "recheck --source ids differ from the entry's declared
+   source: ids" is enforced by corpus/instruments/frontier-recheck-count.py (rules A/B) and by the
+   standalone runs here. Recorded so the round claims exactly what was measured.
+
+3. Limbs that do bite: a missing manifest file is caught (PROBE H: paths_fail=1, strict=110111, exit 1)
+   and expected-list drift is caught (PROBE E: unexpected=1, exit 1). ExecExpectedList owns the refresh
+   and reported the same before/after numbers independently (.ufo/waves/round-28/receipts/ExecExpectedList.txt);
+   the owned file was still the 39-line version at 17:27:13Z.
+
+4. The landed round-28 manifest already satisfies every mechanical limb: 2 sources, 12 assertions, each
+   OK occurrences=1, no anchor required, both capture sha256 match the pins, exit 0 per id and whole-manifest.
+
+-- L1 RERUN (exact commands; audit launch path is the lane root) --
+
+R1  cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py
+    once ExecExpectedList's refresh is in place, acceptance is exactly:
+      strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+      executes=17 gated=23 broken=0
+      lines=40 total=40 pass=40 fail-closed=23 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+      expect=present expected=40 missing=0 unexpected=0 exit=0
+    NOTE: executes=17 holds only while citation-bases.md keeps exiting 0 under the landed anchorcheck.py;
+    if C1 moves that behaviour, expects executes=16 / gated=24. Read the F12 row, not the total.
+
+R2  the entry's own recheck line, read out of the file (never retyped):
+      cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+      sha256sum corpus/knowledge/japanese-domestic-disclosure-workflow.md   # measured: 0261f315b8b02b74b2f87206dbb5e067ade7b15c6275c674d5ae95c8c658383a
+      CMD=$(sed -n 's/^recheck:[[:space:]]*//p' corpus/knowledge/japanese-domestic-disclosure-workflow.md)
+      ( cd /tmp && bash -c "$CMD" ) ; echo foreign_exit=$?
+      ( cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && bash -c "$CMD" ) ; echo lane_exit=$?
+    expected on both: exit 0 plus 14 OK lines (S041:sha256, S041:Q1..Q6, S042:sha256, S042:Q1..Q6,
+    each occurrences=1). If the entry digest moved after this receipt, re-measure R1+R2.
+
+R3  cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/frontier-recheck-count.py
+    (rule A/B coverage = C2 counter 4, owned by ExecHarnessC2; expected entries=15 pass=15 exit=0 once the
+    F12 README row is admitted. Not run by this seat: outside its item.)
+
+-- WRITES / TOOLING --
+Production files edited by this seat: NONE. Written: this receipt and
+.ufo/waves/round-28/wave1/ExecRecheckAuditR28.md. Scratch lives in /tmp (/tmp/r28-audit-probe-1v0pfcwe, /tmp/r28-recheck-probe-eiht9gzh, /tmp/r28-kexp40.txt);
+no bulky fixture tree was committed (QUALITY R14 wave-evidence economy). No tool was installed or
+upgraded, so no tool/version/channel row applies.
+
+-- LATE OBSERVATIONS — instrument churn during the wave (supersedes RESULT totals where they differ) --
+
+Measured after the body above was written, same seat, same commands. C1 landed anchorcheck.py between
+observations and ScribeEntryC2 was still revising the entry file, so both inputs moved.
+
+  obs          utc        entries  anchorcheck(12)   audit_exit  executes/gated  refreshed-list exit
+  O1 PRE-STATE 17:25:38Z  39       c2a9e6c60880      0           16/23           n/a
+  O2 POST      17:26:55Z  40       2f7070466fba      1           17/23           0
+  O3 POST      17:27:13Z  40       982d720776f1      1           17/23           0
+  O4 POST      17:28:15Z  40       c36292292ec0      1           16/24           0
+  entry sha256: 0261f315b8b0... at O2/O3, a0f8e6172110... at O4 (revision in flight -> re-measure per R2)
+
+O4, verbatim:
+  citation-bases.md                     frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+  japanese-domestic-disclosure-workflow.md frozen=111 strict=111111 lane=0 foreign=0 executes    PASS
+  strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=16 gated=24 broken=0
+  lines=40 total=40 pass=40 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0   (refreshed list)
+  expect=present expected=40 missing=0 unexpected=0 exit=0
+
+Cause of O4's executes 17 -> 16: under C1's landed anchorcheck.py, corpus/knowledge/citation-bases.md
+now exits 1 on its own line:
+  == corpus/knowledge/citation-bases.md: 10 in-range cite instances, 0 bad; 8 distinct anchors; LOST-RECORDED=1 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=1
+  BASE-ABSENT md:31 ~/Projects/the-bounty-hunter/ops/rank.mjs:55-58 (base tree absent: /home/vgpnk/Projects/the-bounty-hunter/ops/rank.mjs)
+BASE-ABSENT is one of C1's declared FAIL_CLASSES, so this is the claim behaving as specified: the entry
+flips fail-closed, the audit reclassifies it `gated` and still counts it PASS (strict=111111). C1's
+no-harm clause (d) is scoped to SKILL.md (BASE-ABSENT=0), so this corpus-side consequence is recorded for
+the round log, not raised as a C1 kill. It also means "executes=17" is not a stable post-land number.
+
+ACCEPTANCE (churn-independent):
+  1. F12 row reads frozen=111 strict=111111 lane=0 foreign=0 executes PASS
+  2. strict pass=40/40, lines=40 total=40 pass=40, parse/cwd/paths fails 0
+  3. expect=present expected=40 missing=0 unexpected=0 exit=0  (needs ExecExpectedList's refresh)
+  4. the entry's own line, run per R2, exits 0 from both cwds with 14 OK lines
+  execute/gated split: 16/24 once C1's anchorcheck is final; 17/23 only on pre-C1 bytes.
+
+-- O5 FINAL — measured at the LANDED anchorcheck.py (supersedes every total above) --
+utc: 2026-10-25T17:29:06Z
+anchorcheck.py sha256: 95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514 (C1 landed; 523 lines)
+  (O2/O3/O4 digests 2f7070466fba / 982d720776f1 / c36292292ec0 were intermediate copies during C1's edit;
+   ExecImplC1 confirms the landed digest directly.)
+entry sha256: a0f8e6172110c8419bdc1ea39823736b0b066e6155fc9a3f6f89cf7f4c260b59
+knowledge-expected.txt sha256: 30ba586029f679721d57025a1ac339b93fe11b38c5825c721be495048b2a9080 (STILL the 39-line file)
+
+CANONICAL (stale expected list), exit 1:
+  citation-bases.md                        frozen=111 strict=111111 lane=1   foreign=1   gated       PASS
+  japanese-domestic-disclosure-workflow.md frozen=111 strict=111111 lane=0   foreign=0   executes    PASS
+  unexpected=corpus/knowledge/japanese-domestic-disclosure-workflow.md
+  strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=16 gated=24 broken=0
+  lines=40 total=40 pass=40 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+  expect=present expected=39 missing=0 unexpected=1 exit=1
+
+REFRESHED EXPECTED LIST (--expect /tmp/r28-kexp40.txt), exit 0:
+  strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=16 gated=24 broken=0
+  lines=40 total=40 pass=40 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+  expect=present expected=40 missing=0 unexpected=0 exit=0
+
+ENTRY LINE STANDALONE at entry digest a0f8e617: exit 0 from /tmp and exit 0 from the lane root,
+14 OK lines each (S041:sha256, S041:Q1..Q6, S042:sha256, S042:Q1..Q6; every quote occurrences=1).
+
+citation-bases.md under the landed gate: exit 1, `10 in-range cite instances, 0 bad; ... BASE-ABSENT=1`,
+driven by `BASE-ABSENT md:31 .../the-bounty-hunter/ops/rank.mjs:55-58`. Intended fail-closed per C1
+predicate (a) FAIL_CLASSES; ExecImplC1 confirms. This is the whole reason executes is 16 and not 17 —
+the F12 entry itself executes.
+
+=> Post-landing, the ONLY outstanding blocker to `recheck-audit.py` exit 0 is the stale
+   corpus/instruments/knowledge-expected.txt (ExecExpectedList's file). Numbers for that state are
+   the REFRESHED block immediately above.
+
+-- O6 — re-measured at the FINAL entry bytes (ScribeEntryC2 revision landed) --
+utc: 2026-10-25T17:31:01Z
+entry sha256: a22d2321e39fd0e547d8ae480eb566648520e59281e69e057aab5ab8502413a6
+anchorcheck.py: 95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514
+knowledge-expected.txt: 30ba586029f679721d57025a1ac339b93fe11b38c5825c721be495048b2a9080 (still the 39-line file)
+
+  row: japanese-domestic-disclosure-workflow.md frozen=111 strict=111111 lane=0 foreign=0 executes PASS
+  declared source ids == recheck --source ids: S041 S042
+  standalone: exit 0 from /tmp and exit 0 from the lane root, 14 OK lines each (same 2 sha256 + 12 quotes,
+              every quote occurrences=1)
+  canonical audit (stale expected list): exit 1, expect=present expected=39 missing=0 unexpected=1
+  refreshed expected list (--expect /tmp/r28-kexp40.txt): exit 0,
+      strict pass=40/40, lines=40 total=40 pass=40 fail-closed=24,
+      expect=present expected=40 missing=0 unexpected=0
+
+CONCLUSION (unchanged at the final bytes): the F12 entry satisfies the audit and its two standalone runs;
+the only remaining red is the stale expected list. ExecExpectedList re-confirmed the same live numbers at
+17:29:59Z independently and states the refresh is an L1-run step (read-only seat).

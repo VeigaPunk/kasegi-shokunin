@@ -1,0 +1,166 @@
+ExecCensusDry — round-28, wave 1 — pre-landing sources-census dry-run (scratch only)
+=====================================================================================
+date: 2026-10-25 (UTC)
+seat: ExecCensusDry (leaf)
+lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane HEAD: 94f387cbee71a532a51ce075f01701a557231e85
+           (dispatch commit; claims-freeze ancestor c9f8b115a098c65356e4b3b6048af45a37ab8395)
+production corpus/SOURCES.md sha256 at run start:
+  fe14821388269f04c5da665ed4181ac04a9762197de0900b57ab5057f384481b
+production edits made by this seat: NONE (read-only seat; every mutation below is a /tmp mirror)
+
+instrument: /home/vgpnk/Projects/shokunin/scripts/sources-census.sh (fleet script, read-only)
+scratch mirror: /tmp/census-dry-r28.XKHc2x/corpus  (cp -a of the whole lane corpus/, 2.7M, ephemeral;
+                no fixture tree written inside the lane repo — R14 practice)
+
+-------------------------------------------------------------------------------
+Registry edit modelled in scratch
+-------------------------------------------------------------------------------
+Source of the planned row: .ufo/waves/round-28/receipts/ contained NO ScribeRegistryC2 receipt when
+this seat read it (directory listing empty at run start), so the edit was CONSTRUCTED, per the dispatch
+fallback, from:
+  - claims.json C2: "S042 registry row (tier A, mined, opened 2026-10-25, used-by exactly the entry)"
+  - /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md staged row S042 (verbatim wording,
+    opened normalized 2026-10-23 -> 2026-10-25 per the claim)
+Applied in the mirror only:
+
+(1) S041 used-by (old -> new):
+    old: corpus/knowledge/iso-29147-and-30111-division-of-labour.md, corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md
+    new: corpus/knowledge/iso-29147-and-30111-division-of-labour.md, corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md, corpus/knowledge/japanese-domestic-disclosure-workflow.md
+
+(2) appended row (inside ## Registry, after S041):
+| S042 | IPA 脆弱性関連情報の届出受付業務における取扱いプロセス — https://www.ipa.go.jp/security/todokede/vuln/process.html | docs | A | IPA and JPCERT/CC's own intake process for vulnerability reports, including the 起算日 and publication-date steps | 脆弱性関連情報の取扱いプロセス steps 1 to 10, step 5 起算日の連絡; ウェブアプリケーションの取扱いプロセス steps 1 to 6 | Japan runs a coordinator-mediated flow in which the finder is told the 起算日 and the detail-information date, and may query progress | mined | 2026-10-25 | 180d | corpus/knowledge/japanese-domestic-disclosure-workflow.md |
+
+(3) entry stand-in (path-existence only; census E11 reads the path, never the file body):
+    /tmp/census-dry-r28.XKHc2x/corpus/knowledge/japanese-domestic-disclosure-workflow.md
+    sha256 ee667c2f5d9d24da99eeed903c613a79c12912d83af3d4952f8e7a36458372ec
+    = the read-only assimilation-package bytes copied verbatim (its headers are S042+S043; ScribeEntryC2's
+    landed file will carry S041+S042). This is a stand-in, not a proposal for the lane entry content.
+
+-------------------------------------------------------------------------------
+[B0] BASELINE — unmodified mirror (control: must reproduce census-before.txt)
+    cmd: sources-census.sh validate --file /tmp/census-dry-r28.XKHc2x/corpus/SOURCES.md
+-----------------------------------------------------------------------------------------------
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	ok	/tmp/census-dry-r28.XKHc2x/corpus/SOURCES.md
+census_exit=0
+    rows=41  (matches claims before.sources_rows=41)
+    diff vs committed .ufo/waves/round-28/census-before.txt: lane label `file` instead of `kasegi`,
+    and the registry path — same two W04 findings, same ok line, same exit 0.
+
+-------------------------------------------------------------------------------
+[B1] RUN A — registry edit applied, entry ABSENT (ordering probe)
+-----------------------------------------------------------------------------------------------
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	E11	S041 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+file	E11	S042 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+census_exit=1
+    => the registry edit is INVALID until the entry file exists; the entry must land in the same commit
+       (or before) the registry append.
+
+-------------------------------------------------------------------------------
+[B2] RUN B — THE GATE: registry edit + entry present (post-landing model)
+    cmd: sources-census.sh validate --file /tmp/census-dry-r28.XKHc2x/corpus/SOURCES.md
+-----------------------------------------------------------------------------------------------
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	ok	/tmp/census-dry-r28.XKHc2x/corpus/SOURCES.md
+census_exit=0
+    rows=42 ; no E03, no E04, no other E/W beyond the two pre-existing W04 warnings.
+    mirror SOURCES.md sha256 after edit: 8aabaa85ab6f8e1717556eb4756d20c0cf702f52132040e6d2bdfaa140faa6f4
+    S042 row field count: NF=13 (census E01 expects NF=13)
+
+-------------------------------------------------------------------------------
+[B3] M1 — duplicate-id mutant (E03 teeth at this append)
+-----------------------------------------------------------------------------------------------
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	E03	S042 duplicate id
+exit=1
+
+-------------------------------------------------------------------------------
+[B4] M2 — same URL AND same scope, no "supersedes S…" (E04 teeth at this append)
+-----------------------------------------------------------------------------------------------
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	E04	S043 duplicate url www.ipa.go.jp/security/todokede/vuln/process.html within scope IPA and JPCERT/CC's own intake process for vulnerability reports, including the 起算日 and publication-date steps
+exit=1
+
+-------------------------------------------------------------------------------
+[B5] M3 — staged S043 (JPCERT) re-registered next to S041: same URL, different scope
+-----------------------------------------------------------------------------------------------
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S043 duplicate url www.jpcert.or.jp/vh/partnership_guideline2026.pdf across scopes
+file	ok	/tmp/census-dry-r28.XKHc2x/mutants/m3-stagedS043/corpus/SOURCES.md
+exit=0
+    => GATE BLIND SPOT (ground-truthed): the census cannot enforce "staged S043 = lane S041, cited not
+       re-registered". A duplicate JPCERT row under a different scope string is a warning, not a failure.
+
+-------------------------------------------------------------------------------
+[B6] Instrument self-isolation health
+-----------------------------------------------------------------------------------------------
+cmd: sources-census.sh selftest
+result: 95 "killed" lines incl. E01..E12, W01..W04, indent variants, root-dot, H1 injection, gawk fault
+        line: `selftest ok`   selftest_exit=0
+
+-------------------------------------------------------------------------------
+Verdict
+-------------------------------------------------------------------------------
+GATE PASS on the modelled append: exit 0, warnings allowed, rows 41 -> 42, S042 present, no E03/E04,
+S041 and S042 used-by resolve. Production append is not blocked by the census.
+
+Pre-conditions the L1 must keep when landing the real edit:
+  1. corpus/knowledge/japanese-domestic-disclosure-workflow.md must exist at the claim path in the same
+     commit as the S042 row (else E11 x2, exit 1 — demonstrated in B1).
+  2. The S042 row must sit INSIDE the ## Registry table (a row after ## Paths is E12, exit 1).
+  3. Row must keep NF=13 and use no `|` inside a cell (E01).
+  4. recheck `180d` and opened `2026-10-25` (E08/E09-clean; `2026-10-23` would also pass E08 but fails the
+     claim's opened value — the census cannot enforce that).
+  5. The census cannot enforce two claim clauses: the S041 used-by gain (no completeness check exists; E11
+     only proves that paths a row *does* list exist) and "cite S041, do not re-register the guideline" (B5).
+
+Post-change re-run the L1 must execute (unrun == not passed):
+  /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file \
+    /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md; echo exit=$?
+  /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate \
+    --root /home/vgpnk/Projects/shokunin kasegi; echo census_exit=$?
+  grep -cE '^\|[[:space:]]*S042[[:space:]]*\|' \
+    /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md   # expect 1
+
+No tool installs or upgrades were needed. No production file was touched by this seat.
+
+-------------------------------------------------------------------------------
+[LIVE] POST-LANDING OBSERVATION — the real append landed during this seat's run
+-------------------------------------------------------------------------------
+At run start the production registry was fe148213…384481b (no S042). While this seat was building the
+mutants, a sibling seat (ScribeRegistryC2) landed the real edit. Observed live state:
+
+  production corpus/SOURCES.md sha256 now: 79c4ae7a34f86c79d25c6a7118ba3a8f700d8db12ea90b8e29429d5b164d693e
+  git diff --stat: 1 file changed, 4 insertions(+), 1 deletion(-)   (S041 cell rewrite + S042 row)
+  S041 used-by now: corpus/knowledge/iso-29147-and-30111-division-of-labour.md, corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md, corpus/knowledge/japanese-domestic-disclosure-workflow.md
+  S042 row: present at line 48, NF=13, matches the modelled row
+  rows: 42
+  corpus/knowledge/japanese-domestic-disclosure-workflow.md: ABSENT
+
+  cmd: sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	E11	S041 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+file	E11	S042 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+exit=1
+
+  cmd: sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi   (claim C2 counter 3)
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	E11	S041 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+kasegi	E11	S042 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+census_exit=1
+
+  => LIVE CENSUS FAILS RIGHT NOW, exactly as B1 predicted: the registry append is landed but
+     ScribeEntryC2's entry is not. C2's "census exits 0" is currently UNMET. It becomes met only when
+     corpus/knowledge/japanese-domestic-disclosure-workflow.md lands; no further registry change is
+     needed (the row itself produced no E03/E04/E01/E08/E09).
+     Nothing here is a defect in the landed row; the missing artefact is the entry file.

@@ -1,0 +1,15 @@
+C2 harness blocker on the round-28 manifest (measured, not inferred)
+
+`python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S042`
+prints exactly:
+  S042:Q1 UNAVAILABLE reason=quote-too-short-to-be-evidence
+  exit=2
+
+Cause: S042 Q1 normalizes (whitespace collapsed, <u>/</u> stripped) to fewer than
+MIN_QUOTE_CHARS=12 characters, which source-recheck.py rejects before any match is
+attempted (the r24 forge-route guard). S041 against the same manifest is clean:
+sha256 OK + Q1..Q6 all `OK occurrences=1`, exit=0.
+
+Fix is in your file, not mine: give S042 Q1 a longer contiguous quote (>=12 chars
+after normalization) taken verbatim from the capture. Whole-record per-quote lengths:
+

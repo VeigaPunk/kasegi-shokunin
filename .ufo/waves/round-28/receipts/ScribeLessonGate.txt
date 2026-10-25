@@ -1,0 +1,125 @@
+ScribeLessonGate — round 28 wave 1 — Gate section draft (for ScribeLesson assembly)
+Lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Lane base: c9f8b115a098c65356e4b3b6048af45a37ab8395 (claims freeze commit)
+Written: 2026-10-25T17:24Z–17:31Z (UTC)
+
+OWNED PRODUCTION PATH — NONE. This seat writes no production file (draft-only seat).
+Deliverable: .ufo/waves/round-28/wave1/ScribeLessonGate.md (218 lines, 22,640 B)
+Receipt: this file.
+Scratch (own seat dir only): .ufo/waves/round-28/wave1/ScribeLessonGate/
+  quarantine-handcheck.sh, quarantine-handcheck.out, and the 7 fetched bodies + .txt/.norm intermediates.
+No VCS write, no tool install, no package-manager transaction, no subagent, no background job.
+
+================================================================
+1. WHAT THE DRAFT CONTAINS (requirement -> location)
+================================================================
+- Assimilation set, >=1 admit (F12 entry + S042 by document; staged S043 == lane S041 cited,
+  not re-registered) ........................................ §Admitted + §Collision / adoption ids
+- >=1 reject with reason + flip:
+  (a) chinese-criminal-thresholds-and-authorisation.md, re-confirmed ... §Refused row 1
+  (b) vendor-third-party-finding-coordination-2026-10-23.md (ground: F20) ... §Refused row 2
+- Every NEW SOURCES row with URL + access date 2026-10-25 + <=25-word located quote INLINE:
+  S042 only (the one new row): URL, opened 2026-10-25, quote at S042.txt:145 occ=1
+  (the step-5 sentence ScoutIpaRecon located; manifest S042:Q1). No pointer-only gate.
+- Every status/recheck/used-by change old -> new inline: S041 used-by full old text -> full new
+  text; S042 staged opened 2026-10-23 -> 2026-10-25; status/recheck unchanged on all rows.
+- Quarantine slice: 7 kasegi rows, register class verbatim per row, none adopted.
+- considerthese/2026-10-25.md proposal 1 -> QUALITY.md R14, practised in-round.
+- Defects caught mid-wave (5), incl. the manifest Q1 heading-too-short defect, source-recheck's
+  exit-0-on-Q9-failure states, the harness FileNotFoundError ordering defect, the single-valued
+  --source, and the 43/94 staged rows carrying prose recheck cells.
+- §What this Gate does not claim: counters, S042 re-fetch reproducibility, package-vs-lane
+  frontier namespace, quarantine rows' authenticity, and the open expected-list gate.
+
+================================================================
+2. COMMANDS RUN BY THIS SEAT (observed values, not inferred)
+================================================================
+a) id collision (read of ScoutAssimilation's committed scratch + its receipt):
+   .ufo/waves/round-28/assimilation/collision-check.txt  -> reg=41, staged=94, collisions=11
+   post-change (ScoutAssimilation receipt §1)            -> reg=42, staged=94, collisions=12
+b) staged/lane row identity, cell counts, census grammar:
+   .ufo/waves/round-28/assimilation/by-document-map.txt, schema-survey.txt (read; scout-owned)
+c) lane registry state:
+   awk -F'|' 'NF>=12 && $2 ~ /^ *S[0-9]{3,} *$/{n++} END{print "registry_rows="n}' corpus/SOURCES.md
+     -> registry_rows=42
+   grep -cE '^ {0,3}\| *S04[3-9] *\|' corpus/SOURCES.md            -> 0
+   grep -cE '\| F20 ' corpus/README.md                            -> 0
+   grep -nE '\| F1[0-9] ' corpus/README.md                        -> F10 (211), F11 (212), F12 (213)
+d) reject-candidate recheck form (measured, not asserted):
+   bash -n on chinese-criminal-thresholds-and-authorisation.md `recheck:` line  -> exit 2
+     bash: line 1: syntax error near unexpected token `('
+   bash -n on vendor-third-party-finding-coordination-2026-10-23.md `recheck:`  -> exit 2
+     bash: line 1: syntax error near unexpected token `('
+   grep -n '^### Rejected' over both reject entries                             -> exit 1 (no section)
+   test -e corpus/knowledge/{vendor-cvd-policy-crosswalk-2026-10-23.md,
+     chinese-criminal-thresholds-and-authorisation.md,
+     vendor-third-party-finding-coordination-2026-10-23.md}                      -> no / no / no
+e) F12 admission on landed bytes (this seat):
+   python3 corpus/instruments/frontier-recheck-count.py
+     -> PASS F12 knowledge/japanese-domestic-disclosure-workflow.md ids=S041,S042 exit=0
+        entries=15 pass=15 exit=0   harness_exit=0
+   /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /... kasegi
+     -> only W04 S028/S029; census_exit=0
+f) the entry's recheck line from a foreign cwd:
+   cd /tmp; line=$(grep -m1 '^recheck:' .../japanese-domestic-disclosure-workflow.md | sed 's/^recheck: //')
+   bash -n <(printf '%s\n' "$line")   -> bash_n_exit=0
+   eval "$line"                       -> foreign_cwd_exit=0 (S041 Q1..Q6 + S042 Q1..Q6, all occ=1)
+g) quarantine hand-check (this seat's own fetch, instrument UA from capture-source.py:32):
+   .ufo/waves/round-28/wave1/ScribeLessonGate/quarantine-handcheck.sh  (utc 2026-10-25T17:24:29Z)
+     S037 code=200 bytes=24189    anchor 发布日期 occ=1   (whole staged anchor string occ=0)
+     S048 code=404 bytes=748      anchor 项目周期 occ=0
+     S054 code=200 bytes=513648   anchor 府連第7号 occ=0  (PDF prints 府 サ 連 第 ７ 号, glyph-spaced)
+     S065 code=200 bytes=7465472  anchor 刑法（7 件） occ=1; 现行有效法律目录 occ=1
+     S068 code=200 bytes=94027    anchor "The Cisco PSIRT aligns its practices with ISO/IEC 29147:2018" occ=1
+     S069 code=302 bytes=0        curl (60) TLS verify: unable to get local issuer certificate
+     S070 code=302 bytes=0        same
+   normalisation: tags stripped, whitespace collapsed (Q8)
+h) manifest Q9 (attributed, ExecHarnessC2 receipt §A3/D): 12 quotes occ=1; check_q9 PASS both ids;
+   source-recheck exit 0 on S041 and S042; three Q9 failure states exit 0 in source-recheck itself.
+i) expected-list state at compose (read-only):
+   python3 corpus/instruments/recheck-audit.py
+     -> lines=40 total=40 pass=40 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+        expect=present expected=39 missing=0 unexpected=1 exit=1
+        unexpected=corpus/knowledge/japanese-domestic-disclosure-workflow.md
+   (ExecExpectedList owns the regeneration; its receipt carries the exact command.)
+
+================================================================
+3. PROVENANCE / ATTRIBUTION
+================================================================
+- Capture facts (S041 re-capture byte-identical to round 26, sha e18acbf9…; S042 229,982 B ->
+  60,508 B, sha b432ec16…, utc 17:22:03Z): ExecCaptureS041 / ExecCaptureS042 receipts.
+- Manifest digest e62ddadf…, first-build defect fa1f366f…, all-quotes occ=1: ExecManifest receipt.
+- Q9 discrimination + harness ordering defect + single-valued --source: ExecHarnessC2 receipt.
+- S042/S041 registry edits, cell-identity proof, R8 old->new line: ScribeRegistryC2 receipt.
+- Entry sha256 a0f8e617…, 18,452 B, six strict recheck-audit limbs: ScribeEntryC2 receipt.
+- Slice/classes and the package-vs-lane frontier namespace: ScoutAssimilation receipt §4/§5.
+- Everything else in the draft was run by this seat (§2). Unrun checks are not claimed.
+
+================================================================
+4. CONFLICTS / DISAGREEMENTS (verbatim, for the judge)
+================================================================
+- ScoutAssimilation §6 recorded `census exit=1` with E11 on S041/S042 because the entry did not
+  exist at its run time; this seat's later run (§2e) recorded `census_exit=0`. Both are true for
+  their timestamps; the draft uses the later landed state and labels the earlier one as mid-wave.
+- ScoutAssimilation §7 offered as a reject "inline quote" two `anchor:` cells, not a located
+  verbatim quote. This draft does not reuse them; it quotes the entry's own bytes instead.
+- The quarantine slice: ScoutAssimilation recorded the 7 rows and `NONE adopted` but no per-row
+  fetch verdict; this seat therefore ran the hand-check itself (§2g) and says so in the draft.
+- No other conflicts observed.
+
+================================================================
+5. OUT OF SCOPE / NOT RUN (explicit)
+================================================================
+- C1 counters and the landed-instrument selftest receipt: not this seat's item; not run here.
+- knowledge-expected.txt regeneration: not this seat's write scope; measured red state disclosed.
+- Revenger/critic seats, wave registry, commits: not this seat's item.
+- No pacman transaction attempted (host-wide pause respected); no tool needed or installed.
+
+================================================================
+6. ARTIFACT PATHS
+================================================================
+.ufo/waves/round-28/wave1/ScribeLessonGate.md                          (deliverable)
+.ufo/waves/round-28/receipts/ScribeLessonGate.txt                      (this receipt)
+.ufo/waves/round-28/wave1/ScribeLessonGate/quarantine-handcheck.sh|.out (fetch evidence)
+.ufo/waves/round-28/wave1/ScribeLessonGate/S0{37,48,54,65,68,69,70}.{body,txt,norm}
+  (S069/S070 produced no body: the 302 -> TLS failure left 0 B, so no .body/.txt exists for them)

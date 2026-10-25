@@ -1,0 +1,92 @@
+# ScoutAssimilation — round-28 wave 1 receipt (assimilation pre-checks)
+Seat: ScoutAssimilation. Lane: kasegi-shokunin. Base: c9f8b115a098c65356e4b3b6048af45a37ab8395.
+Date: 2026-10-25 (UTC). Report: .ufo/waves/round-28/wave1/ScoutAssimilation.md
+Scratch: .ufo/waves/round-28/assimilation/  (production paths untouched)
+
+== 1. id-collision check (0-3-space pattern, comm -12) ==
+pattern: '^ {0,3}\|[[:space:]]*S[0-9]{3,}'
+FROZEN BASE (rev c9f8b11, via git show):
+  lane reg-ids    = 41  (S001..S041)
+  staged ids      = 94  (S031..S124)
+  collisions      = 11  (S031 S032 S033 S034 S035 S036 S037 S038 S039 S040 S041)
+  same-document=0 different-document=11  (all id-space collisions, per-collision URL pairs pasted)
+LIVE WORKTREE (after ScribeRegistryC2 appended lane S042 mid-wave):
+  lane reg-ids = 42, staged = 94, collisions = 12 (S031..S042)
+files: assimilation/collision-check.{sh,txt}, collision-check-frozen-base.{sh,txt},
+       collision-check-postchange.txt, {reg-ids,staged-ids,collisions}, base/*
+
+== 2. guard proof (fixture: registry row '  | S002 |' indented two spaces) ==
+A. guard pattern ^ {0,3}\|  -> a-collisions lines=1  (S002)          [DETECTED]
+B. column-zero pattern ^\|   -> b-collisions lines=0  (0 bytes)       [MISSED]
+verdict: guard proved once and proved discriminating; 0-3-space form is the correct one.
+files: assimilation/guard-proof.{sh,txt}, assimilation/fixture/*
+
+== 3. by-document mapping ==
+staged S042 URL = https://www.ipa.go.jp/security/todokede/vuln/process.html
+  lane S042 free at base (grep -c = 0, exit 1); no lane row carries that URL (grep -cF = 0)
+  -> staged S042 -> lane S042, free, new document.
+staged S043 URL = https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf
+  lane  S041 URL = https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf  (identical string)
+  -> staged S043 == lane S041 (same PDF, disjoint anchors): CITED, NOT re-registered.
+measured: appending staged S043 alongside live S041 -> census 'W04 S043 duplicate url
+www.jpcert.or.jp/vh/partnership_guideline2026.pdf across scopes'.
+files: assimilation/by-document-map.{sh,txt}
+
+== 4. quarantine slice (absent-defect-register, kasegi, READ-ONLY) ==
+7 rows: S037 payload-absent (round1) | S054 payload-absent (round3) |
+S048/S065/S068/S069/S070 'the cited source could not be fetched, so no quote was checked'
+NONE adopted; all 7 stay quarantined.
+adopted rows absent from register: grep -cF 'todokede/vuln/process' = 0;
+  grep -cF 'partnership_guideline2026' = 0; the only S043 hit is lane game-dev-2d's row.
+file: assimilation/quarantine-slice.txt
+
+== 5. staged-row schema survey ==
+staged S042: NF=13 (11 cols), no literal/escaped pipe in any cell, kind=docs tier=A status=mined
+  opened=2026-10-23 recheck=180d (NNn, NOT prose) used-by=corpus/knowledge/japanese-domestic-disclosure-workflow.md
+staged S043: NF=13 (11 cols), no pipe in any cell, kind=spec tier=A status=mined
+  opened=2026-10-23 recheck=180d (NNn, NOT prose)  (not re-registered -> used-by moot)
+census grammar (measured on scratch registries, real validator, --file, stdout only):
+  staged S042 alone -> no E-code (only pre-existing W04 S028/S029)
+  staged S043 alone -> no E-code
+  staged S081 (prose recheck) -> 'file E09 S081 recheck=90d — re-open the ... still present'
+  => 43 of 94 staged rows (S081-S124) have prose recheck cells = E09-class. Not triggered by
+     this round's two rows; must be rewritten by any future round that adopts one of them.
+round-27 flag on staged S042 teaches cell: RESOLVED. The census has no teaches rule for a mined
+  row (only W02 for rejected rows); the lane house convention is an (Lnn) capture anchor, and
+  the LANDED lane S042 row carries '(L145)' with anchor 'L132-L160 ... verified against the
+  round-28 capture S042.txt'. Capture line S042.txt:145 = step-5 body; :153 = query-progress.
+package ground pointers use a DIFFERENT frontier namespace: package F12 = Chinese statutory
+  family; package F13 = this workflow. Lane frontier is F01-F12 with lane F12 = this workflow.
+  -> the lane entry must ground on lane F12 and cite lane ids S041+S042, never staged S043.
+files: assimilation/schema-survey.{sh,txt}, row-grammar-test.{sh,txt}, schema{,2,3,4}/
+
+== 6. live state measured mid-wave (read-only) ==
+census validate --root /home/vgpnk/Projects/shokunin kasegi -> exit=1 with
+  E11 S041 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+  E11 S042 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+  (entry file did not exist on disk at run time; ScribeEntryC2 owns it)
+frontier admitted count (README awk) = 12
+lane registry S042 row live (line 48), used-by exactly the entry; S041 used-by gained the entry
+  and the old->new change is logged in '## Registry changes'.
+
+== 7. Gate evidence offered to ScribeLesson ==
+admit  : the F12 entry on lane ids S041+S042 re-grounded on the round-28 captures
+reject : chinese-criminal-thresholds-and-authorisation.md (staged S044/S045/S046) - package
+  ground F12 names a package frontier id whose lane counterpart is a different topic; its
+  recheck line is the package's prose form (E09-class).
+  inline quote available: '付録6 §2 p.45 (ISO/IEC 29147:2014 vs ISO/IEC 30111:2013 division of
+  labour, 図1)' (lane S041 anchor) vs '2026年10月 edition, PDF digital signature dated
+  2026.09.29; section Ⅳ ソフトウエア製品に係る脆弱性関連情報取扱, 図1' (staged S043 anchor).
+
+== 8. re-run commands for the L1 ==
+bash .ufo/waves/round-28/assimilation/collision-check.sh
+bash .ufo/waves/round-28/assimilation/collision-check-frozen-base.sh
+bash .ufo/waves/round-28/assimilation/guard-proof.sh
+bash .ufo/waves/round-28/assimilation/by-document-map.sh
+bash .ufo/waves/round-28/assimilation/schema-survey.sh
+bash .ufo/waves/round-28/assimilation/row-grammar-test.sh
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo census_exit=$?   # AFTER the entry lands
+
+== 9. honesty ==
+No production file created, edited or deleted. No VCS write. No network fetch. No tool installed;
+no pacman transaction attempted. No claim after-value asserted by this seat.

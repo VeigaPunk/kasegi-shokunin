@@ -1,0 +1,121 @@
+# Round-28 — ExecScopeSweep receipt (write-scope sweep)
+# date=2026-10-25 lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+# report=.ufo/waves/round-28/wave1/ExecScopeSweep.md
+# snapshot_utc=2026-10-25T17:28:53Z   (wave still in flight at snapshot)
+# lane_head=94f387cbee71a532a51ce075f01701a557231e85
+# base=c9f8b115a098c65356e4b3b6048af45a37ab8395  base_is_ancestor=yes
+# wave_start_utc=2026-10-25T17:01:25Z  (derived: git log -1 --format=%cI <base>, converted to UTC)
+# tools_installed=none  (checker uses git/find/grep/awk/sha256sum only; no network, no pacman)
+
+instrument=.ufo/waves/round-28/wave1/ExecScopeSweep/scope-check.sh
+instrument_sha256=0f30d2c86ea2b460162f99eaa8fbf88f0cb95f42bbbad816bf701dd88085cc00
+raw_output=.ufo/waves/round-28/wave1/ExecScopeSweep/sweep-final2.txt
+raw_output_bytes=17636
+raw_output_sha256=5a19abaf9149d7e73c6233cc43a40cca4790d5872af2f0a96063def086f10f9b
+
+## command 1 — instrument self-proof (classifier can fail)
+command=cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && bash .ufo/waves/round-28/wave1/ExecScopeSweep/scope-check.sh --selftest
+selftest cases=13 failures=0
+selftest_exit=0
+# 13 fixtures: 6 PROD (incl. rename new-path parse), 2 WAVE, 5 VIOLATION
+#   (corpus/knowledge/rogue-r28.md, corpus/lessons/round-27.md, templates/foo.md,
+#    .ufo/state/kasegi.r28.json, corpus/instruments/resolve.py)
+
+## command 2 — full sweep
+command=cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && bash .ufo/waves/round-28/wave1/ExecScopeSweep/scope-check.sh
+run_utc=2026-10-25T17:28:53Z
+lane_prod_paths=12 lane_wave_paths=238 lane_violations=0
+fleet_untracked_scanned=0 fleet_misroot=0
+fleet_ignored_roots=15 fleet_ignored_files_scanned=0 fleet_ignored_misroot=0
+shokuknow_head=8b94c5c12c0521e4cd9ed8e5b6939afd8518c715
+shokuknow_status_paths=5217
+shokuknow_merge_kasegi_status_paths=19
+shokuknow_merge_kasegi_files_newer_than_wave=0
+shokuknow_merge_kasegi_max_mtime=2026-10-24T23:33:20.0436186320-03:00  (= 2026-10-25T02:33Z)
+shokuknow_files_newer_than_wave_naming_kasegi=0
+shokuknow_files_newer_than_wave_total=0
+shokuknow_status_paths_touched_since_wave_start=0
+shokuknow_kasegi_scoped_files_newer_than_wave=0
+scope_check_exit=0
+
+## limb 2 — lane repo vs ownership map (0 violations, 12/13 map paths landed)
+PROD    M  ScribeLog        LOG.md                                  (+49 -0)
+PROD    M  ScribeScorecard  SCORECARD.md                            (+74 -0)
+PROD    M  ScribeSkillGate  SKILL.md                                (+3 -0)
+PROD    M  ScribeR14        corpus/QUALITY.md                       (+6 -0)
+PROD    M  ScribeReadmeC2   corpus/README.md                        (+28 -0)
+PROD    M  ScribeRegistryC2 corpus/SOURCES.md                       (+4 -1)
+PROD    M  ExecInstrReadme  corpus/instruments/README.md            (+93 -0)
+PROD    M  ExecImplC1       corpus/instruments/anchorcheck.py        (+259 -19)
+PROD   ??  ScribeEntryC2    corpus/knowledge/japanese-domestic-disclosure-workflow.md  18452 B
+PROD   ??  ExecCaptureS041  corpus/source-snapshots/round-28/S041.txt                 147267 B
+PROD   ??  ExecCaptureS042  corpus/source-snapshots/round-28/S042.txt                 60508 B
+PROD   ??  ExecManifest     corpus/source-snapshots/round-28/manifest.json            5038 B
+laneless_prod_path=corpus/lessons/round-28.md  status=ABSENT (ScribeLesson not landed at snapshot)
+numstat_captured_utc=2026-10-25T17:29:45Z
+lane_status_totals=8 modified, 256 untracked (all untracked are under .ufo/waves/round-28/)
+sources_md_single_deletion=S041 used-by cell old->new (C2 obligation) + S042 row + 2 changelog lines
+duplicate_writer_claims=0  (each landed path claimed only by its map owner)
+
+## limb 1 — fleet root (no misroot)
+command=git -C /home/vgpnk/Projects/shokunin status --porcelain -uall
+untracked=0
+modified_tracked=5:
+  M .ufo/state/kasegi.report-baseline
+  M .ufo/state/kengaku.report-baseline
+  M .ufo/state/souji.report-baseline
+  M .ufo/state/tabi.report-baseline
+  M .ufo/watchdog.log
+# all 5 are in the excluded control plane; no lane production path exists at the fleet root
+# (.scratch/goal-20261025-hyaku-run7.md was modified at 17:22:18Z, byte-identical to HEAD by 17:28:41Z; excluded)
+misroot_actions=none_needed (no untracked fleet file to copy back or delete)
+
+## limb 3 — shokuknow read-only substrate
+# The briefed check "status empty" is false by construction: 5217 uncommitted paths at HEAD 8b94c5c
+# across ~22 lanes predate this wave. Delta check (which is what the wave can affect):
+shokuknow_delta_since_freeze=0 files, 0 status paths rewritten
+shokuknow_kasegi_package_max_mtime=2026-10-25T02:33:20Z  (14.5 h before the freeze commit)
+verdict=no round-28 seat wrote under /home/vgpnk/Projects/shokuknow
+
+## protected paths (untouched)
+git diff --name-only HEAD -- .ufo/waves/round-27 .ufo/waves/round-26 corpus/lessons/round-27.md .ufo/waves/round-28/claims.json
+= (empty)
+git status --porcelain -uall -- <same paths> = (empty)
+mtime .ufo/waves/round-28/claims.json = 2026-10-25T16:58:45Z (pre-freeze-commit)
+mtime corpus/lessons/round-27.md      = 2026-10-25T14:34:36Z
+
+## advisories (report-only; no scope violation)
+A1 SKILL.md not appended strictly at EOF: 2 hunks, 0 deletions —
+   @@ -981,0 +982 @@ (instrument-table row, mid-file) and @@ -1032,0 +1034,2 @@ (EOF).
+   live anchors at SKILL.md line >=982: 0 (highest live anchor 977)
+   historical anchors shifted: 52 (all .ufo/waves/round-23..25 frozen evidence: 993/1000/1014/1019/1021)
+   L1 decision: accept in place, or ask ScribeSkillGate to move the row to EOF.
+A2 assimilation scratch aliases production: schema2/3/4/corpus/knowledge -> lane corpus/knowledge
+   (3 absolute symlinks). No write went through them (0 files in corpus/knowledge newer than freeze).
+A3 corpus/lessons/round-28.md absent at snapshot -> re-run required after ScribeLesson lands.
+A4 protected files untouched (above).
+
+## bounds
+sibling_lanes_audited_for_status=no (21 sibling repos; 4 active since freeze: kengaku 75, souji 49,
+  tabi 37, chousa 6 files; 8 of those files mention "kasegi" only as sibling references in their own
+  docs/wave evidence; none is a kasegi path or byte copy)
+production_edit_content_verified=no (C1/C2 counters, Q9 assertions, row shape are other seats' claims)
+post_snapshot_changes=not covered (wave in flight: 22/69 receipts, 33 seat reports at 17:28:53Z)
+
+## re-run (after the wave closes; any cwd)
+command=bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/wave1/ExecScopeSweep/scope-check.sh
+command=bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/wave1/ExecScopeSweep/scope-check.sh --selftest
+expected: selftest cases=13 failures=0 ; lane_violations=0 ; lane_prod_paths=13 ;
+          fleet_misroot=0 ; fleet_ignored_misroot=0 ;
+          shokuknow_kasegi_scoped_files_newer_than_wave=0 ; scope_check_exit=0
+
+confirm_run_utc=2026-10-25T17:30:05Z
+confirm_lane_prod_paths=12 confirm_lane_wave_paths=261 confirm_lane_violations=0
+confirm_fleet_untracked=0 confirm_fleet_misroot=0
+confirm_shokuknow_files_newer_than_wave_total=0 confirm_shokuknow_kasegi_scoped=0
+confirm_scope_check_exit=0
+# This seat's own four written paths are the report, this receipt, and the two files
+# under .ufo/waves/round-28/wave1/ExecScopeSweep/ (script + raw output). No production edit.
+
+verdict=PASS-at-snapshot (0 scope violations, 0 misroot, 0 shokuknow delta;
+        two advisories A1/A3 and one not-yet-landed map path carried forward)

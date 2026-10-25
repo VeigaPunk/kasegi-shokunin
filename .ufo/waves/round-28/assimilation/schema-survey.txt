@@ -1,0 +1,97 @@
+== round-28 wave-1 staged-row schema survey ==
+
+-- S042: field count (NF must be 13 for an 11-column row) --
+$ awk -F'|' -v id='S042' '$2 ~ "^[[:space:]]*" id "[[:space:]]*$" {print "NF=" NF; print "fields_minus_edges=" NF-2}' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md
+NF=13
+fields_minus_edges=11
+[exit 0]
+
+-- S042: literal or escaped pipes inside cells --
+$ awk -F'|' -v id='S042' '$2 ~ "^[[:space:]]*" id "[[:space:]]*$" {for(i=2;i<=NF;i++) if($i ~ /\\\|/) print "cell " i " contains an ESCAPED pipe: " $i}' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md
+[exit 0]
+
+$ grep -cF '\\|' <(grep -E '^ {0,3}\\| *'S042' *\\|' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md)
+0
+[exit 1]
+
+(0 on both = no escaped pipe inside any cell)
+-- S042: cell-by-cell --
+$ awk -F'|' -v id='S042' '$2 ~ "^[[:space:]]*" id "[[:space:]]*$" {n=split("id source kind tier scope anchor teaches status opened recheck used-by",names," "); for(i=1;i<=n;i++){c=$(i+1); gsub(/^[[:space:]]+|[[:space:]]+$/,"",c); printf "  col%-8s len=%-4d %s\n", names[i], length(c), (length(c)>150 ? substr(c,1,150) " ...[TRUNC]" : c)}}' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md
+  colid       len=4    S042
+  colsource   len=89   IPA 脆弱性関連情報の届出受付業務における取扱いプロセス — https://www.ipa.go.jp/security/todokede/vuln/process.html
+  colkind     len=4    docs
+  coltier     len=1    A
+  colscope    len=110  IPA and JPCERT/CC's own intake process for vulnerability reports, including the 起算日 and publication-date steps
+  colanchor   len=78   脆弱性関連情報の取扱いプロセス steps 1 to 10, step 5 起算日の連絡; ウェブアプリケーションの取扱いプロセス steps 1 to 6
+  colteaches  len=130  Japan runs a coordinator-mediated flow in which the finder is told the 起算日 and the detail-information date, and may query progress
+  colstatus   len=5    mined
+  colopened   len=10   2026-10-23
+  colrecheck  len=4    180d
+  colused-by  len=57   corpus/knowledge/japanese-domestic-disclosure-workflow.md
+[exit 0]
+
+
+-- S043: field count (NF must be 13 for an 11-column row) --
+$ awk -F'|' -v id='S043' '$2 ~ "^[[:space:]]*" id "[[:space:]]*$" {print "NF=" NF; print "fields_minus_edges=" NF-2}' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md
+NF=13
+fields_minus_edges=11
+[exit 0]
+
+-- S043: literal or escaped pipes inside cells --
+$ awk -F'|' -v id='S043' '$2 ~ "^[[:space:]]*" id "[[:space:]]*$" {for(i=2;i<=NF;i++) if($i ~ /\\\|/) print "cell " i " contains an ESCAPED pipe: " $i}' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md
+[exit 0]
+
+$ grep -cF '\\|' <(grep -E '^ {0,3}\\| *'S043' *\\|' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md)
+0
+[exit 1]
+
+(0 on both = no escaped pipe inside any cell)
+-- S043: cell-by-cell --
+$ awk -F'|' -v id='S043' '$2 ~ "^[[:space:]]*" id "[[:space:]]*$" {n=split("id source kind tier scope anchor teaches status opened recheck used-by",names," "); for(i=1;i<=n;i++){c=$(i+1); gsub(/^[[:space:]]+|[[:space:]]+$/,"",c); printf "  col%-8s len=%-4d %s\n", names[i], length(c), (length(c)>150 ? substr(c,1,150) " ...[TRUNC]" : c)}}' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md
+  colid       len=4    S043
+  colsource   len=95   情報セキュリティ早期警戒パートナーシップガイドライン 2026年10月 — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf
+  colkind     len=4    spec
+  coltier     len=1    A
+  colscope    len=92   The 2026 Japanese national guideline for software and web-application vulnerability handling
+  colanchor   len=129  2026年10月 edition, PDF digital signature dated 2026.09.29; section Ⅳ ソフトウエア製品に係る脆弱性関連情報取扱, 図1; 付録3 法的な論点について, p.36; 起算日 footnote 4
+  colteaches  len=120  The guideline fixes 起算日 as the first attempted developer contact and asks finders to file 検証コード, 画面キャプチャ, ログ as evidence
+  colstatus   len=5    mined
+  colopened   len=10   2026-10-23
+  colrecheck  len=4    180d
+  colused-by  len=181  corpus/knowledge/japanese-domestic-disclosure-workflow.md, corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md, corpus/knowledge/japanes ...[TRUNC]
+[exit 0]
+
+
+-- recheck-cell form check against the census grammar (ISO date | NNn | symbolic) --
+$ awk -F'|' -v l='kasegi' 'index($2,l)>0 && $3 ~ /round[0-9]+/ && $4 ~ /S[0-9]+/ {id=$4; gsub(/[^S0-9]/,"",id); cls=$5; gsub(/^[[:space:]]+|[[:space:]]+$/,"",cls); printf "%s | class=%s | round=%s\n", id, cls, $3}' /home/vgpnk/Projects/shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md
+S037 | class=`payload-absent` | round= round1 
+S054 | class=`payload-absent` | round= round3 
+S048 | class=the cited source could not be fetched, so no quote was checked | round= round2 
+S065 | class=the cited source could not be fetched, so no quote was checked | round= round4 
+S068 | class=the cited source could not be fetched, so no quote was checked | round= round4 
+S069 | class=the cited source could not be fetched, so no quote was checked | round= round4 
+S070 | class=the cited source could not be fetched, so no quote was checked | round= round4 
+[exit 0]
+
+
+-- quarantine slice: does ANY register row name staged S042 or S043 (or their URLs)? --
+$ grep -nE '\| *S04[23] *(`|$)' /home/vgpnk/Projects/shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md | cut -c1-220
+273:| `game-dev-2d` | round1 | S043` | the cited source could not be fetched, so no quote was checked | https://docs.godotengine.org/en/4.7/classes/class_input.html |
+[exit 0]
+
+$ grep -cF 'todokede/vuln/process' /home/vgpnk/Projects/shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md
+0
+[exit 1]
+
+$ grep -cF 'partnership_guideline2026' /home/vgpnk/Projects/shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md
+0
+[exit 1]
+
+(both 0 = neither adopted document is in the absent-defect register)
+-- used-by paths named by the staged adopted rows: do they exist in the LANE today? --
+$ for f in corpus/knowledge/japanese-domestic-disclosure-workflow.md corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md corpus/knowledge/japanese-disclosure-legal-framework.md; do printf '%s exists=%s\n' "$f" "$(test -e "$f" && echo yes || echo no)"; done
+corpus/knowledge/japanese-domestic-disclosure-workflow.md exists=no
+corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md exists=no
+corpus/knowledge/japanese-disclosure-legal-framework.md exists=no
+[exit 0]
+

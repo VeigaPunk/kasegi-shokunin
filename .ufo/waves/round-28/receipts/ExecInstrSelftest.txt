@@ -1,0 +1,115 @@
+== ExecInstrSelftest — round 28 wave 1, C1 counter (c) selftest instrumentation ==
+seat: ExecInstrSelftest (leaf, no production edits)
+lane repo: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane base: c9f8b115a098c65356e4b3b6048af45a37ab8395 (claims freeze commit)
+recorded_utc: 2026-10-25T17:22:49Z
+VERDICT: PRE-STATE (impl not landed). Not a pass, not a fail — the limb under test
+does not exist in the live bytes yet. Frozen claims.json after value for (c) is NOT reached
+by this receipt.
+
+-- WHY PRE-STATE (three independent byte facts, all read-only) --
+1. live digest:      sha256sum corpus/instruments/anchorcheck.py
+                     = c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748
+   claims.json C1.before.instrument_sha256 is the same value (c2a9e6c6…, "unchanged since
+   round-27 freeze").   -> IMPL NOT LANDED.
+2. frozen-base blob: git cat-file -p c9f8b115a098c65356e4b3b6048af45a37ab8395:corpus/instruments/anchorcheck.py | sha256sum
+                     = c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748
+   -> live file is byte-identical to the freeze commit.
+3. working tree:     git diff --stat HEAD -- corpus/instruments/anchorcheck.py  -> no output (clean);
+                     file is 283 lines.
+4. limb tokens absent from live bytes:
+                     grep -nE 'selftest|BOUNTIES-ABSENT|FAIL_CLASSES' corpus/instruments/anchorcheck.py
+                     -> zero matches (limbs (a)-derived FAIL_CLASSES, (b) bounties arm, (c) --selftest
+                        do not exist in these bytes).
+5. peer state:       .ufo/waves/round-28/wave1/ExecImplC1/ does not exist (owner has written no scratch).
+
+-- RUN 1 --
+command: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/anchorcheck.py --selftest
+instrument_sha256 (measured immediately before run): c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748
+instrument_sha256 (measured immediately after run):  c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748
+exit: 1
+stdout (FULL, verbatim, 0 bytes):
+<<<BEGIN STDOUT>>>
+<<<END STDOUT>>>
+stderr (FULL, verbatim, 442 bytes):
+<<<BEGIN STDERR>>>
+Traceback (most recent call last):
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/anchorcheck.py", line 283, in <module>
+    sys.exit(main(sys.argv[1:]))
+             ~~~~^^^^^^^^^^^^^^
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/anchorcheck.py", line 135, in main
+    for line in open(src):
+                ~~~~^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '--selftest'
+<<<END STDERR>>>
+`selftest cases=` line present: NO (0 occurrences).
+
+-- RUN 2 (determinism) --
+command: same as run 1, second invocation, separate captures
+instrument_sha256 (measured immediately before run): c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748
+instrument_sha256 (measured immediately after run):  c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748
+exit: 1
+stdout (FULL, verbatim, 0 bytes):
+<<<BEGIN STDOUT>>>
+<<<END STDOUT>>>
+stderr (FULL, verbatim, 442 bytes):
+<<<BEGIN STDERR>>>
+Traceback (most recent call last):
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/anchorcheck.py", line 283, in <module>
+    sys.exit(main(sys.argv[1:]))
+             ~~~~^^^^^^^^^^^^^^
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/anchorcheck.py", line 135, in main
+    for line in open(src):
+                ~~~~^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '--selftest'
+<<<END STDERR>>>
+
+-- DETERMINISM RESULT --
+diff of run1 vs run2 stdout+stderr: identical, exit codes identical (1, 1).
+md5(selftest-pre.err)  = 73be6ae7745c1a875a0e1b11fe9d8661
+md5(selftest-pre-2.err) = 73be6ae7745c1a875a0e1b11fe9d8661
+determinism=PRE-STATE-IDENTICAL. (Determinism of the PRE-STATE crash says nothing about the
+landed instrument: --selftest does not exist yet. The determinism limb MUST be re-measured on the
+landed bytes.)
+
+-- RELATION TO THE FROZEN CLAIM --
+C1 do_nothing_control / before: "selftest_receipt_lines: 0 (--selftest crashes FileNotFoundError exit 1)".
+This receipt reproduces that before value exactly, twice, at the pre-change digest. It therefore:
+  * CONFIRMS the before/do-nothing side of C1(c) at c2a9e6c6…,
+  * does NOT reach after value (c) "selftest_receipt_lines: 1 at instrument_sha256 matching
+    sha256sum corpus/instruments/anchorcheck.py, selftest cases=N failures=0 exit=0".
+Per the seat's standing rule (an unrun check has not passed; and a PRE-STATE capture is not a
+post-change pass), C1(c) remains UNVERIFIED until the command below is run on the landed bytes.
+
+-- RE-RUN COMMAND THE L1 MUST EXECUTE AFTER ExecImplC1 LANDS (post-change; writes its own evidence) --
+Run from the lane root, absolute paths, writes ONLY under .ufo/waves/round-28/receipts/:
+
+  cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && R=.ufo/waves/round-28/receipts && mkdir -p "$R" && s1=$(sha256sum corpus/instruments/anchorcheck.py | awk '{print $1}') && python3 corpus/instruments/anchorcheck.py --selftest >"$R/selftest.post1.out" 2>"$R/selftest.post1.err"; e1=$?; s2=$(sha256sum corpus/instruments/anchorcheck.py | awk '{print $1}') && python3 corpus/instruments/anchorcheck.py --selftest >"$R/selftest.post2.out" 2>"$R/selftest.post2.err"; e2=$?; s3=$(sha256sum corpus/instruments/anchorcheck.py | awk '{print $1}') && { echo "== POST-CHANGE selftest (ExecInstrSelftest re-run) =="; echo "recorded_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"; echo "instrument_sha256_run1=$s1"; echo "instrument_sha256_run2=$s2"; echo "instrument_sha256_after_run2=$s3"; echo "exit1=$e1 exit2=$e2"; echo "-- run1 FULL stdout --"; cat "$R/selftest.post1.out"; echo "-- run1 FULL stderr --"; cat "$R/selftest.post1.err"; echo "-- determinism --"; if diff -q "$R/selftest.post1.out" "$R/selftest.post2.out" >/dev/null && diff -q "$R/selftest.post1.err" "$R/selftest.post2.err" >/dev/null; then echo determinism=IDENTICAL; else echo determinism=DIFFERS; fi; echo "selftest_cases_lines=$(grep -cE '^selftest cases=[0-9]+ failures=0$' "$R/selftest.post1.out")"; } | tee "$R/ExecInstrSelftest.at-landing.txt"
+
+Expected post-change readings (from claims.json C1.after, NOT yet observed):
+  e1=0, e2=0, s1=s2=s3=<landed digest != c2a9e6c6…>,
+  determinism=IDENTICAL, selftest_cases_lines=1, and run1 stdout carries one
+  `selftest cases=N failures=0` line with N == the number of isolating limbs the impl ships.
+FAIL conditions for the re-run: exit != 0 on either run; determinism=DIFFERS;
+selftest_cases_lines != 1; s1 != s2 (instrument moved mid-measurement — re-run);
+or `selftest cases=… failures=` shows a nonzero failure count.
+Then the canonical index must be assembled by the L1 so that
+  grep -cE 'selftest cases=' .ufo/waves/round-28/c1-receipt-index.txt  == 1
+  grep -oE 'instrument_sha256=[0-9a-f]{64}' .ufo/waves/round-28/c1-receipt-index.txt == the landed digest
+(assemble-receipts.py runs --selftest ONCE only and does not check determinism — that limb is
+covered by this seat's re-run command above, not by the assembler.)
+
+-- ASSETS WRITTEN BY THIS SEAT (all under .ufo/waves/round-28/wave1/ExecInstrSelftest/) --
+selftest-pre.out      0 bytes   run1 stdout
+selftest-pre.err      442 bytes run1 stderr
+selftest-pre-2.out    0 bytes   run2 stdout
+selftest-pre-2.err    442 bytes run2 stderr
+sha-pre.txt                     cached digest record
+No production file was read-modified or written by this seat; no VCS write; no background job;
+no subagent dispatched; no tool installed or upgraded.
+
+-- AUDIT OF THIS RECEIPT (R13) --
+Every number above was produced by a command in this session on the bytes named by the recorded
+digest; nothing is projected. The determinism figure is measured on PRE-STATE bytes and is labelled
+as such — it is not evidence for the landed instrument (R13: a measurement not run on landed bytes
+says so).

@@ -1,0 +1,75 @@
+# ExecManifest — round-28 wave 1 receipt (coverage / C2 manifest pin)
+Seat: ExecManifest. Owned path: corpus/source-snapshots/round-28/manifest.json.
+Lane base: c9f8b115a098c65356e4b3b6048af45a37ab8395. Date: 2026-10-25 (UTC).
+
+## Landed captures (owned by ExecCaptureS041 / ExecCaptureS042; not edited here)
+- sha256 S041.txt = e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47 (147267 B, 2354 lines)
+  Digest is identical to corpus/source-snapshots/round-26/S041.txt: the round-28 re-capture is byte-identical.
+- sha256 S042.txt = b432ec165693d005fa5de326ffb40d60d0476b18a345a9fc6d631d10b9c96966 (60508 B, 974 lines)
+
+Captures were absent when the seat started (round-28/ held no files); they landed while this seat
+prepared its quote plan. No PRE-STATE run was needed: every check below ran on the landed bytes.
+
+## Manifest digest, before and after the one fix
+- before fix (first build): fa1f366f6a4d298769f226b0ed0b1d3688af100f84c20c6529415dbceb68882c
+  first full run exited 2 with `S042:Q1 UNAVAILABLE reason=quote-too-short-to-be-evidence`
+  (S042 Q1 was the 8-character step-5 heading `5.起算日の連絡`, below source-recheck MIN_QUOTE_CHARS=12;
+  ExecHarnessC2 independently reported the same finding in the same window).
+- fix: S042 Q1 replaced with the verbatim step-5 body line (L145); all quote strings re-extracted
+  programmatically from the capture bytes. Nothing outside S042 Q1 changed in substance.
+- after fix (landed): e62ddad133ffc19ebc66822c0fcb3b48ed4993c101f05262302acc58714f291d (5038 B)
+
+## Full run (verbatim)
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json
+S041:sha256 OK
+S041:Q1 OK occurrences=1
+S041:Q2 OK occurrences=1
+S041:Q3 OK occurrences=1
+S041:Q4 OK occurrences=1
+S041:Q5 OK occurrences=1
+S041:Q6 OK occurrences=1
+S042:sha256 OK
+S042:Q1 OK occurrences=1
+S042:Q2 OK occurrences=1
+S042:Q3 OK occurrences=1
+S042:Q4 OK occurrences=1
+S042:Q5 OK occurrences=1
+S042:Q6 OK occurrences=1
+exit=0
+
+## Per-id runs
+$ ... --manifest corpus/source-snapshots/round-28/manifest.json --source S041
+S041:sha256 OK + S041:Q1..Q6 OK occurrences=1; exit_s041=0
+$ ... --manifest corpus/source-snapshots/round-28/manifest.json --source S042
+S042:sha256 OK + S042:Q1..Q6 OK occurrences=1; exit_s042=0
+
+## Q9 audit, re-derived outside the instrument (json load + str.count + sha256)
+source  id  stem==id  sha pin  raw count  normalized count  words  anchor
+S041    Q1  True      True     1          1                 1      none
+S041    Q2  True      True     1          1                 1      none
+S041    Q3  True      True     1          1                 2      none
+S041    Q4  True      True     1          1                 5      none
+S041    Q5  True      True     1          1                 3      none
+S041    Q6  True      True     1          1                 5      none
+S042    Q1  True      True     1          1                 2      none
+S042    Q2  True      True     1          1                 2      none
+S042    Q3  True      True     1          1                 1      none
+S042    Q4  True      True     1          1                 1      none
+S042    Q5  True      True     1          1                 1      none
+S042    Q6  True      True     1          1                 1      none
+12 quotes total; every one exactly-once raw and normalized, so no `anchor` is required.
+
+## Quote provenance
+All 12 quote strings were sliced from the capture files by line index in a builder run, then printed back
+and matched with grep -F before the manifest was written; no quote was retyped from memory. Required
+assertions: S042 Q1 = L145 (step-5 起算日の連絡 sentence ScoutIpaRecon located); S041 Q1 = L340
+(footnote-4 起算日 definition); S041 Q2/Q3 = L212/L249 (図１ flow statement and its caption).
+
+## Scope and residue
+Only corpus/source-snapshots/round-28/manifest.json was written by this seat; no other production file,
+no VCS operation, no tool install. Residual risk: the capture owner or a later re-capture could rewrite
+S041.txt/S042.txt and invalidate the pins; the digest was re-checked after the successful full run and was
+unchanged (both files mtime 14:22, manifest 14:24).
+
+## L1 re-run command
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json; echo exit=$?

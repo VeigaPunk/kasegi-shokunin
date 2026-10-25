@@ -979,6 +979,7 @@ pinned to blob `fc6d398`), `corpus/knowledge/ev-model.md`.
 | name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
 |---|---|---|---|---|---|---|---|
 | recheck-audit.py | gate|probe | python3 corpus/instruments/recheck-audit.py [--json <out>] | 0 clean \| 1 failed \| undeclared nonzero -> could-not-evaluate | python3 corpus/instruments/recheck-audit.py --selftest | .ufo/waves/round-26/c1-receipt-index.txt | corpus/ read-only + its own receipt dir | kasegi |
+| anchorcheck.py | gate|probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: exit 0 clean \| exit 1 on MISSING-FILE/PAST-EOF/OUTSIDE-BASE/PIN-BROKEN/BASE-ABSENT/BOUNTIES-ABSENT (LOST-RECORDED recorded, not fail; bounties base = `$KASEGI_BOUNTIES` override, else canonical `~/Projects/bounties`) | python3 corpus/instruments/anchorcheck.py --selftest -> one isolating fixture per limb, prints `selftest cases=N failures=0` | .ufo/waves/round-28/c1-receipt-index.txt | all inputs read-only + its own receipt dir | kasegi |
 
 The audit is stateful against the committed expected list (the pinned receipt index): the present knowledge-entry set is compared to it, so deleting an entry is a red audit (exit 1 naming the missing entry), never a silent green pass.
 
@@ -1030,3 +1031,5 @@ Use the source IDs in `corpus/SOURCES.md` to trace these report-review rules to 
 | A program displays safe harbor | Check its actual asset scope, testing grant, and prohibited methods separately; a badge does not expand scope. | `corpus/knowledge/authorization-safe-harbor-and-scope.md` | S006–S008 |
 | An AI system produces a finding | Keep it a candidate until reproduced and human-reviewed for impact and reachability; preserve program-specific AI rules. | `corpus/knowledge/ai-assisted-finding-validation.md` | S009–S012 |
 | A report cites the 2025 CWE Top 25 | Use a technically supported root-cause mapping; do not turn aggregate rank into target risk or reward. | `corpus/knowledge/cwe-top25-2025-methodology.md` | S013–S015 |
+
+Round-28 note (2026-10-25, supersedes the frozen C1 `corpus_disclosure` cell): zero backticked anchored `~/Projects/bounties/` citations exist lane-wide, so the new `BOUNTIES-ABSENT` arm in `CITE` is invisible to all existing bytes — no verdict-class movement on any file, corpus or `SKILL.md` (erratum, with the sweep command and scratch probe: `.ufo/waves/round-28/claims-erratum-1.md`).

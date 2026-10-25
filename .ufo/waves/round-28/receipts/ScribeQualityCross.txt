@@ -1,0 +1,107 @@
+ScribeQualityCross — round-28 wave 1, C2 entry bar check (QUALITY.md Q1-Q10, R1-R6, R12)
+Lane root: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Seat type: read-only reviewer. Production edits by this seat: NONE.
+Files written by this seat: .ufo/waves/round-28/wave1/ScribeQualityCross.md,
+  .ufo/waves/round-28/receipts/ScribeQualityCross.txt (this file). Nothing else.
+
+1. OBJECT AUDITED
+entry: corpus/knowledge/japanese-domestic-disclosure-workflow.md, 103 lines,
+  sha256 a22d2321e39fd0e547d8ae480eb566648520e59281e69e057aab5ab8502413a6
+  (landed 17:26Z as 0261f315b8b02b74b2f87206dbb5e067ade7b15c6275c674d5ae95c8c658383a,
+   revised in place by 17:29Z; the full audit was re-run on a22d2321 and every cited line
+   number is identical in both byte states)
+captures: round-28/S042.txt 60508 B / 974 lines; round-28/S041.txt 147267 B / 2354 lines
+manifest: round-28/manifest.json sha256 e62ddad133ffc19ebc66822c0fcb3b48ed4993c101f05262302acc58714f291d
+registry: 42 rows (S041 :47, S042 :48, both tier A / mined / opened 2026-10-25)
+frontier: 12 admitted rows (F12 at corpus/README.md:213)
+State: the entry was ABSENT for the first part of the run; the staged skeleton
+  (/home/vgpnk/Projects/shokuknow/merge/kasegi/..., read-only) was graded PRE-STATE first and
+  would have been REJECTED (staged S043 id, verified-at 2026-10-23, prose recheck failing
+  bash -n, ground F13, 9-step and "six-step" flows where the captures say 10 and 7, no line
+  anchors, no falsifiable rule, unqualified "no bounty"). The landed entry fixes all of them.
+
+2. VERDICT
+Q1 PASS  Q2 PASS  Q3 PASS  Q4 PASS (1 residual)  Q5 PASS  Q6 PASS  Q7 PASS  Q8 PASS
+Q9 PASS (2 pin-label corrections)  Q10 PASS
+R1 n/a  R2 PASS (1 nit)  R3 PASS  R4 n/a  R5 n/a  R6 n/a  R12 PASS
+Admission recommendation: PASS. Nothing blocks admission; F1/F3/F4 are same-commit text fixes.
+
+3. MEASURED (all commands from the lane root, 2026-10-25T17:29-17:31Z)
+$ python3 - <<audit>>   # parse the quoted-record table, test each quote at its stated line
+rows=30 on_stated_line=30 exactly_once=29 forked_with_disclosed_anchor=1
+max_chars=49 max_words=5 rows_over_70_chars=0
+forked: jpcert-finder-evidence "「画面キャプチャ」、" 2x (S041.txt:344, :929); entry:100 discloses it
+
+$ bash -n -c "$(sed -n 's/^recheck: //p' corpus/knowledge/japanese-domestic-disclosure-workflow.md)"
+parse_exit=0
+$ line run from lane root      -> exit 0, 14 "OK occurrences=1" lines
+$ line run from / (foreign cwd)-> exit 0, identical stdout sha256
+  dbb21ba593e35996718b23b761646deaab4280ce9c622b95f5dd09d70135b6ac
+
+$ python3 corpus/instruments/frontier-recheck-count.py
+PASS F12 knowledge/japanese-domestic-disclosure-workflow.md ids=S041,S042 exit=0
+entries=15 pass=15 exit=0
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+census_exit=0 (42 rows; only pre-existing W04 S028, W04 S029)
+
+$ python3 corpus/instruments/recheck-audit.py --foreign /
+lines=40 total=40 pass=40 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=39 missing=0 unexpected=1 exit=1
+  -> the entry's own line passes every limb; the exit 1 is the expected-list equality only (F5)
+
+C2 counters (frozen claim C2 after-values):
+  admitted frontier rows                          = 12   (after 12)
+  entries with ^source: S042                      = 1    (after 1)
+  S042 registry rows                              = 1    (after 1)
+  frontier harness                                = entries=15 pass=15 exit=0 (after 15/15)
+
+4. FINDINGS
+F1 (Q9, substantive but non-blocking). Two "manifest pin" cells are false:
+  entry:56 ipa-product-step5-head -> "Q1 (heading)": S042:Q1 is the L145 body sentence, not the
+    heading "5.起算日の連絡"; that heading is 8 chars, below MIN_QUOTE_CHARS=12, so it can never
+    be a valid assertion. Fix: cell -> "—".
+  entry:75 jpcert-withdraw-verb -> "Q6 (continuation)": S041:Q6 ends at S041.txt:305; the quoted
+    string is on :306 and no assertion pins it. Fix: cell -> "—".
+  Neighbouring "Q1 (first half)", "Q1 (second sentence)", "Q5 (second sentence)" are prefix/suffix
+  of the pinned assertion: true, but the pin binds the whole string, not the fragment.
+F2 (dependency, ExecManifest). manifest.json S042:Q2.location says "step 4, line 142 (L142)"; the
+  quote is at S042.txt:131 (page introduction) and L142 is S042:Q4's quote. The entry cites :131
+  correctly (entry:52), so the entry is right and the manifest metadata is wrong.
+F3 (Q4 residual). entry:11 "Japan's vulnerability intake ... There is no bounty and no per-finding
+  severity ratchet" — the "no bounty" clause is unquoted and, read literally about Japan, is
+  falsified by this lane's own S037 (サイボウズ 脆弱性報奨金制度 FAQ, tier A, SOURCES.md:43).
+  Fix: "The partnership's intake path carries no bounty ...", optionally citing S037.
+F4 (R2 nit). entry:101 cites source-recheck.py:275; --source is declared at :277 (:275 is def main).
+F5 (dependency, ExecExpectedList/L1). knowledge-expected.txt lists 39 entries, the tree has 40, so
+  recheck-audit exits 1 with unexpected=1 although all 40 lines pass. ExecExpectedList measured
+  PRE-STATE at 17:23Z and did not regenerate. Fix: append the entry in sorted position, re-run
+  recheck-audit (expect expected=40, exit 0).
+
+5. CONFLICTS / HONESTY NOTES
+- Manifest target moved mid-run: at 17:23Z S042:Q1 was "5.起算日の連絡" (normalized length 8) and
+  source-recheck exited 2 with "S042:Q1 UNAVAILABLE reason=quote-too-short-to-be-evidence"; the
+  bytes were rewritten at 17:24:14Z and the run is exit 0. Verdicts use e62ddad1.
+- Entry target moved mid-run: 0261f315 (17:26Z) -> a22d2321 (17:29Z); audit re-run on the latter.
+- Dispatch says source: S041 + source: S042; the staged skeleton wrote S042 + S043. The landed entry
+  follows the dispatch (staged S043 -> lane S041 by document). No second reading survives.
+- recheck-audit's exit 1 must not be read as an entry failure: all 40 lines pass; only the
+  expected-list set equality fails.
+
+6. RE-RUN IF THE ENTRY CHANGES AGAIN (an unrun check has not passed)
+  sha256sum corpus/knowledge/japanese-domestic-disclosure-workflow.md    # must still be a22d2321…
+  bash -n -c "$(sed -n 's/^recheck: //p' corpus/knowledge/japanese-domestic-disclosure-workflow.md)"
+  eval "$(sed -n 's/^recheck: //p' corpus/knowledge/japanese-domestic-disclosure-workflow.md)"
+  python3 corpus/instruments/frontier-recheck-count.py                  # expect 15/15 exit 0
+  /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+  python3 corpus/instruments/recheck-audit.py --foreign /                # expect exit 0 after F5
+
+7. BOUNDARIES
+No production file edited. No git/VCS write (file is untracked; read-only inspection only). No
+pacman transaction; no tool installed or upgraded. No subagent, background job or swarm. Nothing
+written outside the two paths named in §"Files written". No credential, session or private URL.
+
+8. OUT OF SCOPE
+C1 / anchorcheck.py; the S042/S041 registry rows' field-by-field correctness beyond tier, status,
+opened date and used-by; the F12 README wording; the assimilation Gate quotes; whether the entry's
+claims match its quotes in substance beyond the line-by-line resolution reported here.

@@ -1,0 +1,180 @@
+kasegi-shokunin round 28 — SKILL.md gate-row support measurement (read-only seat, no production edits)
+seat: ExecSkillGateSupport (executor)
+axes: depth:verifiability; milestone: round-28
+measured_utc: 2026-10-25T17:24:13Z .. 2026-10-25T17:30:00Z
+lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane base: c9f8b115a098c65356e4b3b6048af45a37ab8395
+worktree HEAD: 94f387cbee71a532a51ce075f01701a557231e85
+report: .ufo/waves/round-28/wave1/ExecSkillGateSupport.md
+
+STATE LABELS (two byte states were observed; the assigned "PRE-STATE otherwise" branch no
+longer applies at the end because both production edits landed during this seat)
+
+P1 PRE-STATE (measurement-start bytes)
+    SKILL.md   sha256 fa09d5b835451f2443fc96353432a330608baf5f3631d1b382141f7e86d64f2d
+               1032 lines, byte-identical to HEAD, mtime 09:35:29 -0300
+    anchorcheck.py sha256 c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748
+               (frozen C1.before digest; impl not yet landed)
+    verified: `date -u` = 2026-10-25T17:24:13Z while SKILL.md mtime was still 09:35 -0300;
+    `git show HEAD:SKILL.md | sha256sum` = fa09d5b8… at the same time.
+
+P2 LANDED (final bytes of this receipt)
+    SKILL.md   sha256 125be37d85ffe6be30a3c372b52d96d8074e3c4d7f4baf835d0f5aed5f56cca6
+               1035 lines, mtime 2026-10-25 14:26:18 -0300 (17:26:18Z), git status ` M`
+    anchorcheck.py sha256 95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514
+               523 lines, stable across two reads at 17:29:25Z and 17:29:32Z, git status ` M`
+    both edits were made by their owning seats (ScribeSkillGate / ExecImplC1); this seat
+    wrote neither. Byte churn observed while the owning seats worked (all superseded):
+    SKILL.md fa09d5b8… (pre-state) -> 68d1c377… (17:26Z, row + earlier EOF note) ->
+    125be37d… (17:26:18Z, EOF note rewritten; only line 1035 differs from 68d1c377…);
+    instrument c2a9e6c6… (pre-state) -> 29aba084… (17:27Z, `--selftest` raised
+    NameError: name '_selftest' is not defined, exit 1) -> c3629229… (17:27:50Z,
+    selftest cases=9 failures=0) -> 95333e29… (17:29:32Z, re-measured identical:
+    selftest cases=9 failures=0, SKILL.md summary unchanged).
+
+==============================================================================
+1) REGISTRY TABLE SHAPE  (assigned grep)
+==============================================================================
+cmd: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin \
+     && grep -nE 'gate\|probe|anchorcheck' SKILL.md | head -20
+
+PRE-STATE output (verbatim, one line):
+981:| recheck-audit.py | gate|probe | python3 corpus/instruments/recheck-audit.py [--json <out>] | 0 clean \| 1 failed \| undeclared nonzero -> could-not-evaluate | python3 corpus/instruments/recheck-audit.py --selftest | .ufo/waves/round-26/c1-receipt-index.txt | corpus/ read-only + its own receipt dir | kasegi |
+
+LANDED output (verbatim, two lines):
+981:| recheck-audit.py | gate|probe | python3 corpus/instruments/recheck-audit.py [--json <out>] | 0 clean \| 1 failed \| undeclared nonzero -> could-not-evaluate | python3 corpus/instruments/recheck-audit.py --selftest | .ufo/waves/round-26/c1-receipt-index.txt | corpus/ read-only + its own receipt dir | kasegi |
+982:| anchorcheck.py | gate|probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: exit 0 clean \| exit 1 on MISSING-FILE/PAST-EOF/OUTSIDE-BASE/PIN-BROKEN/BASE-ABSENT/BOUNTIES-ABSENT (LOST-RECORDED recorded, not fail; bounties base = `$KASEGI_BOUNTIES` override, else canonical `~/Projects/bounties`) | python3 corpus/instruments/anchorcheck.py --selftest -> one isolating fixture per limb, prints `selftest cases=N failures=0` | .ufo/waves/round-28/c1-receipt-index.txt | all inputs read-only + its own receipt dir | kasegi |
+
+Section geometry (LANDED): heading 977, blank 978, header 979, separator 980, data rows
+981-982, blank 983, prose note 984, blank 985, next heading 986.
+Declared columns (8): name | type | entry command | verdict map | self-test |
+pinned-value path | write scope | owner.
+Raw cells: BOTH rows carry an UNESCAPED `gate|probe` -> 9 pipe-delimited cells for an
+8-column header. The verdict-map/self-test pipes are escaped (`\|`); the marker pipe is not.
+GFM rendering (markdown-it-py 4.2.0, `MarkdownIt('commonmark').enable('table')`, 8 <th>,
+2 data <tr>, 8 <td> each) shows the consequence: fields shift one right and the 9th cell
+(owner) is dropped, on both rows:
+  recheck row -> [recheck-audit.py | gate | probe | python3 corpus/instruments/recheck-audit.py [--json <out>] | 0 clean | 1 failed | ... | python3 ... --selftest | .ufo/waves/round-26/... | corpus/ read-only + its own receipt dir]
+  anchor row  -> [anchorcheck.py | gate | probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: ... | python3 ... --selftest -> ... | .ufo/waves/round-28/... | all inputs read-only + its own receipt dir]
+=> `owner` ("kasegi") is not rendered on either row; `type` renders as `gate` and
+   `entry command` renders as `probe`. Pre-existing on row 981; replicated on row 982.
+Marker counter from round-26 lesson (control #4):
+  grep -cE '^\| [^|]+\| gate\|probe ' SKILL.md
+  PRE-STATE = 1 ; LANDED = 2
+Escaped-marker variant (`gate\|probe`) renders 8 correct cells but makes that same
+counter stay 1 (measured on a scratch copy), i.e. the counter cannot see the new row.
+
+==============================================================================
+2) APPENDED-ROW LINE NUMBER AND R6 SHIFT CHECK
+==============================================================================
+PRE-STATE arithmetic (base sha fa09d5b8…, 1032 lines; `wc -l` = 1032; file ends with `\n`
+after line 1032, which is the last row of the 4-column "Frontier decision table"):
+  variant A — bare table row at EOF:
+      row lands at LINE 1033; file 1033 lines.
+      GFM check: it is absorbed as a 6th row of the frontier table (4 header columns);
+      only its first 4 cells survive ("anchorcheck.py", "gate|probe", entry command,
+      verdict map) and self-test/pinned-path/scope/owner are dropped. Not a registry row.
+  variant B — blank line + `## ...` heading + blank + header + separator + row:
+      row lands at LINE 1038; file 1038 lines; renders as a proper 8-column table.
+  variant C — in-table insert after line 981:
+      row lands at LINE 982; old lines 982..1032 move to 983..1033 (+1 for 51 lines).
+R6 byte proof: `head -1032` of variants A and B `cmp` against `git show HEAD:SKILL.md`
+returns identical (no differing byte) -> appending at EOF moves ZERO existing anchors.
+Max existing external anchor at that base: SKILL.md:1021. The only live-production
+reference is corpus/instruments/resolve-dispatch-fixtures.json (lines 159 and 161) at
+SKILL.md:1000.
+
+LANDED reality: ScribeSkillGate chose variant C (row at 982) plus an EOF note at 1035.
+The predicted shift is live and measured (each anchor now resolves one line early; the old
+content sits at n+1):
+  SKILL.md:993   HEAD `~/Projects/bounties/docs/autopsies/`      NOW `~/Projects/bounties/docs/review-verdicts.jsonl`
+  SKILL.md:1000  HEAD `~/Projects/bounties/ops/shared.mjs`       NOW `~/Projects/bounties/evidence/<program>/`
+  SKILL.md:1014  HEAD `~/Projects/bounties/.ufo/bh*/`            NOW `~/Projects/bounties/fleets/registry.json`
+  SKILL.md:1019  HEAD `~/Projects/bounties/{README.md,.gitignore}` NOW `~/Projects/bounties/.omp/{config.yml,agents/,skills/}`
+  SKILL.md:1021  HEAD `~/Projects/bounties/pendle-core-v2-public/` NOW `~/Projects/bounties/.git/`
+  in-file anchorcheck position: md:998 -> md:999 (visible in section 3's tail line).
+Reference sites now off by one: live production = resolve-dispatch-fixtures.json (2
+occurrences); frozen prior-round evidence = 7 at 993 (round-24 ScoutSKILLLiveness.md,
+round-25 RevBound8.md), 12 at 1014 (round-24 QuarterSHONEN.md, RevC2Held.md), 3 at 1019
+(round-24 ScoutAnchor.md), 3 at 1021 (round-24 CritC2.md), 119 at 1000 across .ufo copies.
+Anchor numbers <=981 (including the row line itself and the round-26 lesson's 977/981
+references) are unaffected.
+Pre-existing drift, independent of this round: the fixture's `why` calls the four-alt
+`{validate,registry-check,reroute-drill,check-freshness}.mjs` set "SKILL.md:1000", but at
+HEAD that set is at line 1007 (at round-22 c8b719d it was at 998, so the anchor was
+already 2 lines off when the fixture landed at d3614a2), and at LANDED bytes it is at 1008.
+Additional EOF append on the landed file: a bare row would land at LINE 1036 (file 1036
+lines); a sectioned block puts the row at LINE 1041 (file 1041 lines). Both measured to
+leave the first 1035 bytes byte-identical (cmp) -> no existing anchor moves.
+
+==============================================================================
+3) anchorcheck.py SKILL.md SUMMARY  (assigned command + true summary)
+==============================================================================
+cmd (assigned): cd /home/vgpnk/Projects/shokunin/kasegi-shokunin \
+                && python3 corpus/instruments/anchorcheck.py SKILL.md 2>/dev/null | tail -1
+verbatim (LANDED bytes, POST-IMPL instrument):
+LOST-RECORDED md:999 [lost-base] check-freshness.mjs:61 (not checked)
+=> `tail -1` returns a VERDICT LINE, not the summary. The summary is stdout line 2
+   (stdout line 1 is empty). Verbatim summary:
+== SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+exit=0 ; stderr 0 bytes ; stdout 315 lines ; class counts OK=7 LOST-RECORDED=306
+PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0.
+
+STATE OF THE NUMBERS: POST-IMPL. The instrument that produced the final run is
+  sha256 95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514 (523 lines,
+  stable across two reads at 17:29:25Z and 17:29:32Z), which differs from the frozen
+  pre-change digest c2a9e6c6…; on these bytes
+  `python3 corpus/instruments/anchorcheck.py --selftest` prints
+  `selftest cases=9 failures=0` and exits 0. (The digest was still moving during this
+  seat: 29aba084… at 17:27Z, c3629229… at 17:27:50Z, 95333e29… at 17:29Z; the L1 must
+  re-run against the digest it commits.)
+PRE-STATE cross-check: the same summary (7 in-range / 0 bad / LOST-RECORDED=306 / all
+other classes 0, exit 0, 315 lines) was produced by the PRE-CHANGE instrument c2a9e6c6…
+on the PRE-EDIT SKILL.md fa09d5b8…, and again by c2a9e6c6… on the first landed SKILL.md
+(68d1c377…). Net: the registry row + EOF note changed no SKILL.md verdict class; the only
+observable difference is the in-file position md:998 -> md:999 caused by the +1 shift.
+
+Intermediate state, recorded so it is not mistaken for a pass: at 17:27Z the partially
+written instrument (sha 29aba084…, 386 lines) raised, verbatim,
+  NameError: name '_selftest' is not defined
+and `--selftest` exited 1. That digest no longer exists in the worktree; the final
+receipt value is 95333e29… above.
+
+==============================================================================
+4) FROZEN C1 COUNTER DEFECT (claims.json counter #4, not edited)
+==============================================================================
+The frozen `bad` extractor is unsatisfiable on the current summary text:
+  sed -n 's/^== .*bad; \([0-9]*\) bad.*/bad=\1/p'
+The summary has a single "N bad;"; the pattern requires a second "N bad" after it, so it
+prints NOTHING. Verbatim run (lane root, both byte states):
+  0
+  lost=306
+(no `bad=` line between them). Corrected equivalent, measured: bad=0
+  sed -n 's/^== .* \([0-9]*\) bad;.*/bad=\1/p'
+The `lost` extractor in the same counter is correct (`lost=306`). Evidence only — this
+seat does not edit claims.json.
+
+==============================================================================
+5) SCOPE, TOOLING, AND RE-RUN
+==============================================================================
+No production file written or edited by this seat. Scratch copies live under
+/tmp/tmp.AMhJRjwsjF (pre-state copies incl. /tmp/tmp.AMhJRjwsjF/head.md, the exact
+`git show HEAD:SKILL.md` blob) and /tmp/skill-125be37d.md (landed snapshot). The
+markdown-it-py runs were ephemeral (`uv run --with markdown-it-py`), no persistent install:
+uv 0.13.0, markdown-it-py 4.2.0, CPython 3.14.8. No pacman transaction was attempted.
+
+L1 re-run after the wave settles (files were still changing during this seat):
+  cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+  sha256sum SKILL.md corpus/instruments/anchorcheck.py
+  wc -l SKILL.md
+  grep -nE 'gate\|probe|anchorcheck' SKILL.md | head -20
+  python3 corpus/instruments/anchorcheck.py SKILL.md > /tmp/r28-skillgate-post.out 2>&1; echo exit=$?
+  sed -n '2p' /tmp/r28-skillgate-post.out
+  awk '{print $1}' /tmp/r28-skillgate-post.out | sort | uniq -c
+  grep -cE '^\| [^|]+\| gate\|probe ' SKILL.md
+  python3 corpus/instruments/density.py SKILL.md --label r28-post | grep -E 'mean dens|Total path|^# Density'
+Expected on the final bytes: exit 0; summary 7 in-range / 0 bad / LOST-RECORDED=306 /
+PIN-BROKEN=0 / ORIGIN=0 / OUTSIDE-BASE=0 / BASE-ABSENT=0; marker counter >= 2;
+density 20 blocks / 652 pre-edit path cites vs 656 after the row+note (mean 150.3 -> 160.2
+if the row stays in the existing block, 147.9/21 blocks if it moves to a new `##` section);
+SKILL.md line count recorded with the anchor numbers in section 2.

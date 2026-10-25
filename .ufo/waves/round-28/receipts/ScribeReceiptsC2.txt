@@ -1,0 +1,372 @@
+== kasegi-shokunin round 28 / wave 1 / ScribeReceiptsC2 — C2 receipt bundle index ==
+seat            : ScribeReceiptsC2 (scribe, leaf; no subagents, no background jobs, no installs)
+lane            : /home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane HEAD       : 94f387cbee71a532a51ce075f01701a557231e85 (dispatch commit; wave edits uncommitted)
+claims-freeze   : c9f8b115a098c65356e4b3b6048af45a37ab8395 (ancestor of HEAD, git merge-base exit 0)
+snapshot_utc    : 2026-10-25T17:32:56Z — receipt/report pins; frozen counters run 17:32:02Z..17:32:03Z;
+                  artifact pins 17:32:18Z; control pins 17:33:36Z; lesson pin 17:37:36Z (§8 G1)
+state           : POST-STATE. Every frozen C2 counter was observed at its after value by this seat
+                  AND by at least one wave receipt written by another seat (see §2).
+defect-4 scope  : NO canonical index / receipts file created under .ufo/waves/round-28/ root. This is
+                  the C2 bundle digest only; the L1 assembles the one canonical receipt at close.
+
+WHAT THIS FILE IS
+The digest the canonical C2 receipt block and the round report cite. It (1) pins the bytes each receipt
+binds, (2) inventories every C2-related receipt with a one-line summary, and (3) maps each frozen C2
+counter and each kill-rule limb to the receipt(s) covering it, naming gaps (§8).
+
+C2-RELATED (scope rule used here) = a receipt that attests
+  (i) a frozen C2 counter command from claims.json, or
+  (ii) a non-counter C2 predicate clause (capture pins, entry headers/recheck, S042 registry row,
+       S041 used-by change, assimilation Gate, QUALITY R14), or
+  (iii) a C2 kill-rule limb or its control.
+C1-only receipts are excluded and listed in §10.
+
+=============================================================================================
+§1  FROZEN C2 COUNTERS — AFTER VALUES, TIMESTAMPS, RECEIPTS OF RECORD
+=============================================================================================
+claims.json C2.counter_commands has four entries; entry 3 bundles two commands (S042 row grep + census),
+shown as 3a/3b. No counter is widened, re-worded, or re-derived here.
+
+# |  frozen command (executed from the lane root)                     | before -> after (frozen) | observed post-state (UTC)                                           | receipts of record
+--+--------------------------------------------------------------------+--------------------------+---------------------------------------------------------------------+-------------------
+1 |  awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} ...  | 11 -> 12                 | 12 @17:26:24Z RevCounters2; 12 @17:27:13Z ExecReceiptCanonC2;      | ExecC2Counters (before 11)
+  |  END{print n+0}' corpus/README.md                                  |                          | 12 @17:32:02Z this index                                            | ScribeReadmeC2 (row landed, 12)
+  |                                                                    |                          |                                                                     | RevCounters2, ExecReceiptCanonC2
+2 |  grep -lE '^source: S042 ' corpus/knowledge/*.md | wc -l           | 0 -> 1                   | 1 @17:27:13Z ExecReceiptCanonC2; 1 @17:32:02Z this index             | ExecC2Counters (before 0)
+  |                                                                    |                          |                                                                     | ScribeEntryC2, RevCounters2
+3a|  grep -cE '^\|[[:space:]]*S042[[:space:]]*\|' corpus/SOURCES.md    | 0 -> 1                   | 1 @17:26:17Z RevRegistryC2; 1 @17:27:13Z; 1 @17:32:02Z this index   | ExecC2Counters (before 0)
+  |                                                                    |                          |                                                                     | ScribeRegistryC2, RevRegistryC2
+3b|  scripts/sources-census.sh validate --root ... kasegi; echo $?    | exit 0 (41 rows) ->      | exit 0 @17:28Z ScribeRegistryC2 §6(c) / ExecHarnessC2 E1 /           | ExecC2Counters (PRE 41/0)
+  |                                                                    | exit 0 (42 rows)         | RevCensusEnd; exit 0 @17:27:13Z ExecReceiptCanonC2;                  | ScribeRegistryC2, ExecCensusDry
+  |                                                                    |                          | exit 0 @17:32:02Z this index (stdout sha256 920e6fd4…)              | ExecHarnessC2, RevCensusEnd
+4 |  python3 corpus/instruments/frontier-recheck-count.py              | 14/14 exit 0 ->          | entries=15 pass=15 exit 0 @17:28Z ExecHarnessC2 B3;                 | ExecC2Counters (PRE 14/14)
+  |                                                                    | entries=15 pass=15 exit 0| 15/15 @17:27:13Z ExecReceiptCanonC2; 15/15 @17:26:24Z RevCounters2;  | ExecHarnessC2 B3, ExecReceiptCanonC2
+  |                                                                    |                          | PASS F12 ids=S041,S042 @17:32:02Z this index (sha256 17ffa632…)     | RevCounters2, ExecGateLog §E
+
+Census stdout of record (3 lines, sha256 920e6fd4b2e82aee969bf489a9a2a4cd97188cf84ec001b4df1c944ea5901499):
+  kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+  kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+  kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+  (W04 on S028/S029 is pre-existing; census-before.txt carries the same two warnings.)
+Harness stdout of record (16 lines, sha256 17ffa632db6726fb1c0122d7bffdc22ba6c4967fcf8d9eb13f3ca0bac485ed38),
+last line: `entries=15 pass=15 exit=0`; F12 row: `PASS F12 knowledge/japanese-domestic-disclosure-workflow.md ids=S041,S042 exit=0`.
+
+=============================================================================================
+§2  COUNTER COVERAGE MATRIX — every frozen counter has a post-state receipt
+=============================================================================================
+counter | before-receipt (PRE)        | after-receipt (POST, non-index)                   | independent review        | verdict
+--------+-----------------------------+---------------------------------------------------+---------------------------+---------
+1       | ExecC2Counters 17:21:57Z=11 | ScribeReadmeC2 (F12 row landed, 12);               | RevCounters2 17:26:24Z=12 | COVERED
+        |                             | ExecReceiptCanonC2 17:27:13Z=12                    |                           |
+2       | ExecC2Counters 17:21:57Z=0  | ScribeEntryC2 (entry landed, S041+S042 headers);   | RevCounters2 17:26:24Z=1  | COVERED
+        |                             | ExecReceiptCanonC2 17:27:13Z=1                     |                           |
+3a      | ExecC2Counters 17:21:57Z=0  | ScribeRegistryC2 (row at SOURCES.md:48);           | RevRegistryC2 17:26:17Z=1 | COVERED
+        |                             | ExecReceiptCanonC2 17:27:13Z=1                     |                           |
+3b      | ExecC2Counters 17:21:57Z    | ScribeRegistryC2 §6(c) exit 0; ExecReceiptCanonC2  | RevCensusEnd (round-end)  | COVERED
+        | (41 rows, exit 0)           | 17:27:13Z census_exit_after=0 W04:2 E11:0;         | RevReceiptsCanon 17:28Z   | (post-entry)
+        |                             | ExecHarnessC2 E1 (PRE red -> POST green)           |                           |
+4       | ExecC2Counters 17:21:57Z    | ExecHarnessC2 B3 17:28Z entries=15 pass=15 exit=0; | RevCounters2 17:26:24Z    | COVERED
+        | (14/14)                     | ExecReceiptCanonC2 17:27:13Z; ExecGateLog §E       | 15/15 exit 0              | (post-entry)
+
+NO COUNTER GAP: no frozen counter depends on this index's run alone. Counter 3b is the only one whose
+post-entry receipt is primarily a seat receipt (ScribeRegistryC2) rather than a counter seat's; the
+independent RevCensusEnd and this index's 17:32:02Z run corroborate it.
+
+=============================================================================================
+§3  NON-COUNTER C2 PREDICATE CLAUSES — receipts and measured values
+=============================================================================================
+clause in C2.predicate / assignment            | receipt(s)                                                                 | measured
+-----------------------------------------------+----------------------------------------------------------------------------+---------
+S042 capture pinned (stem==id, sha256)          | ExecCaptureS042 (b432ec16…, 60508 B, 974 lines, fetch 17:22:03Z);           | match
+and S041 re-capture pinned                      | ExecCaptureS041 (e18acbf9…, 147267 B, fetch 17:22:12Z, cmp vs r26=0);      | S041 IDENTICAL to r26
+                                                | ExecManifest, RevManifestC2, ExecReceiptCanonC2                            |
+manifest quote assertions Q9 (exactly-once or   | ExecManifest (12/12 occurrences=1, Q9 re-derived); RevManifestC2;           | 12/12 unique, 0 bad,
+anchored; path stem==id)                        | ExecHarnessC2 A3 (`q9 ids=2 failures=0`, assertions=7 per id);             | 0 anchor defects;
+                                                | MutManifestC2 (M1 stem mutant SURVIVES -> instrument does not enforce       | stem equality shown by
+                                                | stem==id); ExecReceiptCanonC2 (`manifest_path_stem_ok=True`)               | review, not by exit code
+entry opens with source: S041 + source: S042    | ScribeEntryC2 (headers, live entry a22d2321…, 103 lines);                  | 2 source lines, 1
+and one executable cwd-independent recheck      | ScribeQualityCross (Q1/Q10 PASS on a22d2321…); RevEntryC2 (Q1 PASS);       | recheck line; ids equal;
+whose --source ids equal the declared ids       | ExecHarnessC2 C1 (foreign cwd exit 0); ExecReceiptCanonC2 (equal=True)     | bash -n 0, foreign 0
+S042 registry row: tier A, mined, opened        | ScribeRegistryC2 (row :48, NF=13, used-by exactly the entry; 2 change-log  | all fields hold; census
+2026-10-25, used-by exactly the entry           | lines); RevRegistryC2 (grammar PASS); RevCensusEnd; census E11 satisfier   | E11 satisfied
+S041 used-by gains the entry, old->new logged   | ScribeRegistryC2 §5 (old: 2 entries -> new: 3 entries); SOURCES.md change  | logged in receipt +
+                                                | log; RevRegistryC2; lesson §Registry changes (17:37:36Z, L201-213)          | registry + lesson
+Assimilation Gate >=1 admit + >=1 reject,       | lesson corpus/lessons/round-28.md (Gate §, revised 17:37:36Z,            | 1 admit (S042/S041)
+inline <=25-word quotes                         | sha256 973b6362…): 1 reject-table + 1 standing re-confirmation;            | + 2 rejects recorded;
+                                                | inline quote count `grep -c '「'` = 1 (the S042 L145 admit quote,          | only the ADMIT has an
+                                                | 63 chars / 2 whitespace-words). Reject rows carry measured reasons +       | inline verbatim quote;
+                                                | flip conditions, NOT a quoted candidate sentence. ScoutAssimilation §7     | see §8 G1a for the
+                                                | offers an "inline quote available" string that is an anchor comparison,    | predicate-wording check
+                                                | not the rejected claim. ScribeLessonGate.md same (1 quote).                |
+QUALITY R14 lands and is practiced in-round     | ScribeR14 (QUALITY.md 77->83 lines, before/after sha, R6 intact);           | landed; practice =
+                                                | ExecScopeSweep (wave evidence only, 12 prod paths / 0 violations)          | receipts+digests, no copy
+
+=============================================================================================
+§4  C2 KILL-RULE LIMBS — receipt coverage and whether each was exercised
+=============================================================================================
+limb                                                          | receipt(s)                                                  | state at snapshot
+--------------------------------------------------------------+-------------------------------------------------------------+---------------------------
+source row appended without an admitted entry citing it       | census E11 x2 observed pre-entry (ScribeRegistryC2 (b),     | exercised, then cleared
+                                                              | ExecHarnessC2 E1, ExecReceiptCanonC2 F-2, RevCounters2      | by the entry landing;
+                                                              | 17:25:27Z); post-entry census exit 0                        | no violation at close
+census exit != 0 at round end                                 | ScribeRegistryC2 §6(c), RevCensusEnd, this index 17:32:02Z  | exit 0; not triggered
+harness pass < entries                                        | ExecHarnessC2 B3 (15/15), this index (15/15)                | not triggered
+entry recheck --source ids differ from declared source: ids   | ExecHarnessC2 B3 (ids=S041,S042), ExecReceiptCanonC2        | equal; not triggered
+                                                              | (declared=recheck=S041,S042 equal=True)                     |
+manifest assertion not exactly-once or anchor-broken          | ExecManifest, RevManifestC2, ExecHarnessC2 A3, MutQuoteC2   | 12/12 unique; not triggered.
+                                                              |                                                             | MutQuoteC2 M3 shows an
+                                                              |                                                             | unanchored duplicate still
+                                                              |                                                             | exits 0 (instrument gap,
+                                                              |                                                             | routed; no live duplicate)
+do-nothing control (no adoption reaches an after value)       | .ufo/waves/round-28/c2-controls/before.txt                  | control clean and pinned
+                                                              | (sha256 70ab940ecc3fd06fc3f507209d99075ee273f613a50c729341f2111fe24d439d: | (11 / 0 / 41 / 14-14)
+                                                              | frontier=11, entries_citing_S042=0, sources_rows=41,        |
+                                                              | entries=14 pass=14 exit=0) + ExecC2Counters PRE runs        |
+mid-wave transition states (honest history)                   | RevCounters2 timeline 17:23:41Z / 17:25:27Z / 17:26:24Z;    | each intermediate state
+                                                              | ExecReceiptCanonC2 F-1 emitter fail-closed run 17:25:41Z    | observed, not inferred
+
+=============================================================================================
+§5  BYTES PINNED (full sha256 for the claim's evidence; 16-hex for prose docs)
+=============================================================================================
+corpus/source-snapshots/round-28/S041.txt      e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47  147267 B  17:22:12Z
+corpus/source-snapshots/round-28/S042.txt      b432ec165693d005fa5de326ffb40d60d0476b18a345a9fc6d631d10b9c96966   60508 B  17:22:03Z
+corpus/source-snapshots/round-28/manifest.json e62ddad133ffc19ebc66822c0fcb3b48ed4993c101f05262302acc58714f291d    5038 B  17:24:14Z
+corpus/knowledge/japanese-domestic-disclosure-workflow.md
+                                               a22d2321e39fd0e547d8ae480eb566648520e59281e69e057aab5ab8502413a6   18544 B  17:29:21Z (103 lines)
+corpus/SOURCES.md                              e59240f8e9842535…  34258 B  42 rows (S041 :47, S042 :48)
+corpus/README.md                               5f458a7a26b8dfc2…  26339 B  245 lines (F12 :213)
+corpus/QUALITY.md                              00d4b2a3898220f6…  12560 B  83 lines (R14 :83)
+SCORECARD.md                                   7b9c556d77d74661…  66601 B
+LOG.md                                         c30b7608d4fd46ea… 102453 B
+SKILL.md                                       125be37d85ffe6be…  84078 B  (C1 no-harm boundary; not a C2 artifact)
+corpus/instruments/anchorcheck.py              95333e29ee5acce5…  26780 B  (C1 instrument; boundary note only)
+corpus/lessons/round-28.md                     973b6362bea143a2…  46988 B  517 lines  17:37:36Z (revised twice in
+                                               wave; ScribeLesson.txt receipt pins this sha)
+
+=============================================================================================
+§6  C2 RECEIPT INVENTORY — .ufo/waves/round-28/receipts/
+=============================================================================================
+file                    | sha256[:16]      | bytes | state     | one-line summary
+------------------------+------------------+-------+-----------+---------------------------------------------------------
+ExecC2Counters.txt      | 8c6fc594050a3a03 |  8249 | PRE-STATE | Runs 17:21:57Z and 17:22:28Z: frontier 11, entries 0, S042 rows 0,
+                        |                  |       |           | census exit 0 (41 rows, W04 S028/S029), harness 14/14 exit 0; all
+                        |                  |       |           | *_before values + the exact post-change re-run block.
+ExecCaptureS041.txt     | cc45c97591a697c5 |  2928 | CAPTURE   | exit 0, status 200, sha256 e18acbf9…, 147267 B / 2354 lines,
+                        |                  |       |           | fetch 17:22:12Z; cmp vs round-26 = 0 (IDENTICAL); 起算日 9 hits
+                        |                  |       |           | (definition L340); edition stamp 2026年10月 L10; recheck deferred.
+ExecCaptureS042.txt     | e83585b59b9f3d64 | 16178 | CAPTURE   | exit 0, status 200, sha256 b432ec16…, 60508 B / 974 lines,
+                        |                  |       |           | fetch 17:22:03Z; 10-step product flow CONFIRMED; web-app flow is
+                        |                  |       |           | SEVEN steps (dispatch "6-step" NOT confirmed); 3 起算日 occurrences
+                        |                  |       |           | on L144/L145; 7 quote candidates incl. the 8-char MIN_QUOTE trap.
+ExecManifest.txt        | 4c8998572b10b20b |  4409 | LANDED    | manifest first build fa1f366f… exited 2 (`S042:Q1 UNAVAILABLE
+                        |                  |       |           | reason=quote-too-short-to-be-evidence`); fixed -> landed e62ddad1…
+                        |                  |       |           | (5038 B); full run 12/12 `OK occurrences=1` exit 0; per-id exits 0;
+                        |                  |       |           | Q9 audit re-derived outside the instrument.
+ExecHarnessC2.txt       | 83844fa238f85a7e | 20182 | POST      | A2 recheck both ids exit 0; A3 Q9 probe (P1/P2/P3 pass without
+                        |                  |       |           | failing, P4/P5 exit 2); B1 14/14 PRE; B2 uncaught FileNotFoundError
+                        |                  |       |           | PRE-entry; B3 15/15 exit 0 POST; C1 foreign-cwd recheck exit 0;
+                        |                  |       |           | E1 census PRE red -> POST green.
+ExecCensusDry.txt       | fa22dc79d168ceff | 12091 | SCRATCH   | census mirror: baseline exit 0, E11 on staged row before entry,
+                        |                  |       |           | final projection 42 rows exit 0, E03 duplicate-id control, NF=13.
+ExecExpectedList.txt    | a5a3590a6524f68e | 11611 | PRE+SCR   | count basis reconciled: 41 lines = 39 entries + 2 comments; live
+                        |                  |       |           | audit 39/39 exit 0; stale-list post-landing exit 1 (unexpected=1);
+                        |                  |       |           | regenerated 40/40 exit 0 (scratch-measured); L1 command named.
+ExecRecheckAuditR28.txt | cbe98184bcf2e777 | 41201 | POST      | PRE 39 entries exit 0; POST 40 entries exit 1 ONLY from the stale
+                        |                  |       |           | expected list (expected=39 unexpected=1); POST with refreshed list
+                        |                  |       |           | exit 0 (expected=40); entry recheck exit 0 from /tmp and lane root.
+ExecReceiptCanonC2.txt  | 16545eb9800a8522 | 15716 | POST      | Canonical C2 block draft measured 17:27:13Z with every after value;
+                        |                  |       |           | collection ledger, F-1..F-5 findings, emitter + saved run, assembly
+                        |                  |       |           | steps; created no canonical file.
+ExecGateLog.txt         | 8e5390bf411f3794 | 31626 | LANDED    | Raw gate evidence: per-gate digest binds (before==after), anchorcheck
+                        |                  |       |           | digest ledger, 43-file sweep, §E C2 gates at landed bytes (F12 PASS).
+ExecScopeSweep.txt      | 88cd777270fe1f33 |  7447 | PARTIAL   | Write-scope sweep 17:28:53Z: 12 prod paths, 0 violations, 0 fleet
+                        |                  |       |           | misroot, shokuknow unchanged; checker selftest 13 cases 0 failures.
+ScoutAssimilation.txt   | b2851a79c5056e58 |  6231 | SCRATCH   | id-collision 11 (all different-document), guard proved discriminating;
+                        |                  |       |           | staged S042 -> lane S042 free, staged S043 == lane S041 cited;
+                        |                  |       |           | quarantine 7 rows none adopted; staged-row schema NF=13.
+ScribeEntryC2.txt       | cdb0b92ed4c69844 | 12623 | POST      | Entry landed: headers, one recheck line, declared/recheck ids equal;
+                        |                  |       |           | quote list with capture line + occurrence count per quote.
+                        |                  |       |           | DRIFT: receipt pins entry a0f8e617…/18452 B; live a22d2321…/18544 B.
+ScribeRegistryC2.txt    | d669307bac295233 | 12035 | POST      | S042 row at SOURCES.md:48 (NF=13, tier A, mined, opened 2026-10-25,
+                        |                  |       |           | used-by exactly the entry); S041 used-by 2 -> 3 entries with old->new
+                        |                  |       |           | logged; census PRE 41/exit 0, mid E11/exit 1, POST exit 0.
+ScribeReadmeC2.txt      | cf8000f6f9abb797 | 10796 | POST      | F12 row at README:213 + r28 amendment (history retained, R9);
+                        |                  |       |           | counter 1 before 11 -> after 12; line-identity checks on cited lines.
+ScribeR14.txt           | 07cd1dfe7ae4f13c |  6355 | LANDED    | QUALITY.md R14 appended (77 -> 83 lines, before/after sha, R6 byte
+                        |                  |       |           | identity of first 77 lines); practice instance = this round's layout.
+ScribeQualityCross.txt  | 5c15d630e82493e8 |  7321 | POST      | Audits landed entry a22d2321…: Q1-Q10 PASS (Q4 one residual), R12
+                        |                  |       |           | PASS, admission PASS; staged skeleton graded PRE and REJECTED.
+ScribeFrontierNote.txt  | 90f351594b7d082e | 11102 | POST      | F12 topic collision check (none; jaccard vs F02 0.333), frontier
+                        |                  |       |           | 12/12 rows, proposed 'next' wording, denominator consistency.
+ScribeLesson.txt        | cc45d9ee1d2735a0 | 11016 | POST      | Lesson receipt: pins corpus/lessons/round-28.md as 517 lines / 46988 B /
+                        |                  |       |           | sha256 973b6362… at 17:37:36Z; records the C1/C2 before-after table,
+                        |                  |       |           | census 41->42 exit 0, C1 95333e29 values, and digest binds per section.
+ScribeLessonGate.txt    | 8d8c9dba5771e9fb |  9118 | DRAFT     | Gate section draft: S042 admitted (S041 cited, not re-registered),
+                        |                  |       |           | ONE inline quote (S042 L145, 63 chars/2 ws-words), two reject rows with
+                        |                  |       |           | reasons+flips (no quoted candidate sentence), quarantine table, S041
+                        |                  |       |           | old->new line. Pasted into the lesson (final pin 973b6362…, 17:37:36Z).
+ScribeReportDigest.txt  | see §7 twin list|       | POST      | Report evidence skeleton: C2 bullets with receipt pointers; labels
+                        |                  |       |           | PRE-STATE items as such; no production edit.
+ScribeScorecard.txt     | cd86178e5d61f581 | 13498 | POST      | Round-28 scorecard row; C2 11/0/41/14-14 -> 12/1/42/15-15; density
+                        |                  |       |           | re-base 150.3 / 20 blocks / 652 cites at the same SKILL.md bytes.
+ScribeLog.txt           | 1b87718798ed30eb | 10822 | POST      | LOG.md round-28 entry: freeze commit, claim lines, census line, wave
+                        |                  |       |           | shape, receipt pointers; exact LOG.md diff.
+MutQuoteC2.txt          | c37f8cfc2fedbca6 |   350 | POST      | Mutation verdict: M1 killed, M2 killed, M3 LIVE (unanchored duplicate
+                        |                  |       |           | still exits 0); baseline exit 0; bytes restored and re-hashed.
+(Adjacent, not C2-gated: ExecGateLog/ExecScopeSweep/ScribeLog are wave-wide; C1 receipts are in §10.)
+
+=============================================================================================
+§7  C2 EVIDENCE REPORTS WITHOUT A SEPARATE TEXT RECEIPT — .ufo/waves/round-28/wave1/
+=============================================================================================
+Reviewer / attacker reports (the .md IS the receipt for these seats):
+RevEntryC2.md        | b7510cf782110670 | 10133 | Landed entry bar review: Q1-Q10 PASS with residuals (see §8 G5).
+RevManifestC2.md     | d4b315775b82d832 |  6243 | stem==id PASS, sha pins PASS, 12/12 exactly-once PASS; notes the
+                     |                  |       | stem limb is not instrument-enforced.
+RevRegistryC2.md     | 56a624e250984991 |  5795 | Registry grammar PASS: NF=13 all rows, no pipes, kind enum, tier A,
+                     |                  |       | mined, opened 2026-10-25, used-by exactly the entry.
+RevCensusEnd.md      | c29ddac4f1cc9585 |  8298 | Round-end census: 41 -> 42 rows, exit 0, tier/status delta, the seven
+                     |                  |       | manual CORPUS census commands.
+RevCounters2.md      | c218f8d9a9bcfa2d |  7110 | Independent counter re-run: 17:23:41 / 17:25:27 / 17:26:24Z states;
+                     |                  |       | PASS on all four frozen counters at the final state.
+RevReceiptsCanon.md  | 7c5943b9bf72a383 | 13845 | Condition -> receipt map for C1+C2, sha256/UTC conformance audit of every
+                     |                  |       | receipt, named gaps, L1 close re-run block.
+MutManifestC2.md     | f766dc8a956fa341 |  4085 | Q9 mutants: M1 stem mismatch SURVIVED (instrument gap), remaining mutants
+                     |                  |       | killed; pristine exit 0; scratch bytes restored to the live pins.
+RevengerC2.md        | aa7e166b8294eccb | 16079 | Claim traceability: landed entry claim -> staged origin -> capture anchor;
+                     |                  |       | every quote re-located; silent drops named.
+CritC2Admission.md   | 17514ded225d6551 |  6734 | Admission survives four tested grounds; one fixable silent-drop defect
+                     |                  |       | (staged pre-publication user-notification claim omitted).
+ScoutIpaRecon.md     | 7f52dd6dc7838e8b | 20593 | Live IPA page recon: 200, 10-step/7-step flows, step-5 起算日 quote located.
+ScoutAssimilation.md | b86e56adea7f77a0 | 25938 | Assimilation pre-checks: collisions, by-document mapping, quarantine slice,
+                     |                  |       | staged-row schema.
+ConnOverlap.md       | b8b40ee19b943a6e | 11255 | Sibling-lane overlap sweep: no sibling holds the Japanese state-coordinated
+                     |                  |       | disclosure ground; F12 is uncovered coverage-map ground.
+ConnStagedCensus.md  | 07913c27ecc54c91 | 24430 | Staged vs lane registry join by URL: exactly one genuinely new row (S042);
+                     |                  |       | staged S043 == lane S041.
+ConnClaims.md        | 3e62953f9e4252a9 | 12157 | Cross-claim fail-closed consistency: controls named for both claims, receipt
+                     |                  |       | sha256 binding shape compared, asymmetries flagged.
+
+Narrative twins of the §6 receipts (same evidence, longer form; cited by the report, not by the
+canonical counter lines): ExecC2Counters.md a9b7263011da914c; ExecCaptureS041.md ce002034165f9062;
+ExecCaptureS042.md 22bb26793542082a; ExecManifest.md 0bbde916221a6b79; ExecHarnessC2.md e28f31932a639657;
+ExecCensusDry.md f05c4273e4ecfa3e; ExecExpectedList.md 652c55566b9ffd0c; ExecRecheckAuditR28.md
+ee58605d1e684667; ExecReceiptCanonC2.md 0bf2610f37a07313; ScribeEntryC2.md a654ad90492b67c0;
+ScribeReadmeC2.md f70aab74bf732948; ScribeRegistryC2.md f993c939f3470a59; ScribeQualityCross.md
+7576ac51dc07460c; ScribeFrontierNote.md 3ca02ba306c88c46; ScribeCensusNote.md e903f3950d7fdfdf;
+ScribeSourcesGate.md 5e08d5b1a52451ed; ScribeStagedCompare.md 239925fe216ed4e7; ScribeLessonGate.md d6ed4d9651210cbf; ScribeLesson.md
+73df37ebe2256e8d; ScribeReportDigest.md 104fdf53c8e15374; ScribeScorecard.md 67f08ef92ebec3ba;
+ScribeLog.md ae029f96c99836ec; ExecScopeSweep.md 81a621254176eab0.
+
+=============================================================================================
+§8  GAPS — named, with the exact check that closes each (an unrun check has not passed)
+=============================================================================================
+G1  corpus/lessons/round-28.md LANDED and RECEIPTED: 517 lines, 46988 B, sha256
+    973b6362bea143a22f1b8590756ce753aeac45beb8b6a6b70afad8db60948d3d, pinned by
+    receipts/ScribeLesson.txt at 17:37:36Z (the file was revised twice in-wave: a258743d… 504 lines
+    -> 973b6362… 517 lines). Verified by this index on the final bytes: Gate at L70, one admit family
+    (S042 new row + S041 cited-not-re-registered), two reject rows each with reasons + flip
+    conditions (L157-164), S041 used-by old->new at L201-213, quarantine slice 7 rows.
+    Caution: if the lesson is rewritten again before the commit, ScribeLesson.txt's pin is stale —
+      sha256sum corpus/lessons/round-28.md   # compare with 973b6362…
+      grep -cE '^## Gate' corpus/lessons/round-28.md   # 1
+      grep -n 'used-by' corpus/lessons/round-28.md     # S041 old -> new line present
+G1a Predicate-wording check for the canonical judge, not asserted here. C2.predicate reads
+    "the assimilation Gate records >=1 admit and >=1 reject with inline <=25-word quotes".
+    Measured on the landed lesson: inline quote count is ONE (`grep -c '「'` = 1), the S042 L145
+    admit quote (63 chars / 2 whitespace-words). The two reject rows carry measured reasons and
+    flip conditions but no verbatim quote of the rejected candidate's load-bearing sentence;
+    ScoutAssimilation.txt §7's "inline quote available" string is S041/staged-S043 anchor text,
+    not the rejected claim. If the clause is read as requiring a quote on the reject arm too, this
+    is a shortfall to append (R25-1), not to fix in place. If it is read as one quote for the Gate's
+    new-source disclosure (the round-26 defect-3 shape), the clause is satisfied.
+G2  CritC2Kill.md absent at snapshot (dispatch path .ufo/waves/round-28/wave1/CritC2Kill.md).
+    The frozen kill rule is already exercised piecewise by MutQuoteC2 (M1/M2 killed, M3 live),
+    MutManifestC2 (M1 live), RevReceiptsCanon (control clean). If it lands, cite it in the
+    canonical block; no counter depends on it.
+G3  Expected-list refresh is NOT done. Live `python3 corpus/instruments/recheck-audit.py` at
+    2026-10-25T17:26:57Z printed:
+      lines=40 total=40 pass=40 fail-closed=23 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+      expect=present expected=39 missing=0 unexpected=1 exit=1
+    (only the new entry is unexpected). Regeneration is the L1's step (ExecExpectedList names it);
+    expected outcome measured in scratch: `wc -l 42 | entries 40 | lines=40 total=40 pass=40 |
+    expected=40 missing=0 unexpected=0 exit=0`.
+G4  ScribeEntryC2.txt pin drift. Receipt pins the entry at a0f8e617… / 18452 B; the live entry is
+    a22d2321… / 18544 B (revised in place 17:29:21Z after the receipt was written). ScribeQualityCross
+    audited the live a22d2321 bytes; the receipt itself needs re-pinning at close:
+      sha256sum corpus/knowledge/japanese-domestic-disclosure-workflow.md
+G5  CritC2Admission's surviving defect: the staged entry's pre-publication user-notification claim
+    was silently dropped from the re-grounded entry. Smallest correction: restore the bounded claim
+    with its S041 anchor, or disclose the omission in the entry's Limits / the round lesson. No
+    admission-kill evidence on the other three grounds.
+G6  Receipt mutability. Every hash in §6/§7 pins bytes at 17:32:56Z. Several receipts were rewritten
+    during the wave (e.g. ExecCaptureS042 15178 -> 16178 B, ExecRecheckAuditR28 39924 -> 41201 B,
+    ExecGateLog 31871 -> 31626 B). If a seat rewrites a receipt after this snapshot, re-hash that row;
+    do not re-trust the pinned hash.
+G7  "six-step" web-application flow is false on both captures (S042.txt:162-182 numbers 1.-7.;
+    S041.txt:1331 図４ agrees). The landed entry, S042 registry row, F12 README row and lesson Gate
+    all state seven; any later text asserting six must be rejected on these bytes. Verified by this
+    index: `sed -n '130,208p' S042.txt | grep -nE '^[0-9]+\.'` shows 10 / 7 / 8 steps.
+G8  Instrument weaknesses (routed, not patched here; owned by other seats):
+    - frontier-recheck-count.py raises an uncaught FileNotFoundError instead of failing a row when an
+      admitted frontier row names an absent entry (ExecHarnessC2 B2, ExecReceiptCanonC2 F-1). Post-entry
+      exit 0 at 17:32:02Z; a mid-wave re-run can still read as a crash, not a FAIL.
+    - source-recheck.py does not enforce path stem == id (MutManifestC2 M1 survives) and does not fail
+      an unanchored duplicate (MutQuoteC2 M3 live). Both limbs are currently satisfied by review
+      (RevManifestC2, ExecReceiptCanonC2) and by the live bytes (no duplicates, stems match).
+G9  Manifest quote length note (no action): S042:Q1 is 93 characters but 2 whitespace-words, inside the
+    <=25-word brief under the instrument's word measure. S042:Q3 `最終更新日：2017年5月30日` is 16 chars,
+    above MIN_QUOTE_CHARS=12.
+
+=============================================================================================
+§9  INDEX-OBSERVED MEASUREMENTS (this seat's runs; commands verbatim, cwd = lane root)
+=============================================================================================
+2026-10-25T17:26:35Z–17:26:36Z  mid-wave after the entry landed
+  awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md -> 12
+  grep -lE '^source: S042 ' corpus/knowledge/*.md | wc -l                                       -> 1
+  grep -cE '^\|[[:space:]]*S042[[:space:]]*\|' corpus/SOURCES.md                                 -> 1
+  sources-census.sh validate --root ... kasegi                                                   -> exit 0 (W04 x2 + ok)
+  frontier-recheck-count.py                                                                      -> entries=15 pass=15 exit=0
+
+2026-10-25T17:26:57Z
+  python3 corpus/instruments/recheck-audit.py -> lines=40 total=40 pass=40;
+      expect=present expected=39 missing=0 unexpected=1 exit=1  (stale expected list only; see G3)
+  entry `recheck:` line from /tmp: bash -n exit 0; eval exit 0; output ends S042:Q6 OK occurrences=1
+
+2026-10-25T17:24:26Z  source-recheck full run
+  python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json
+  -> S041:sha256 OK + Q1..Q6 OK occurrences=1; S042:sha256 OK + Q1..Q6 OK occurrences=1; exit=0
+
+2026-10-25T17:32:02Z–17:32:03Z  final counter pass (same values as 17:26:35Z)
+  frontier=12 | entries citing S042=1 | S042 rows=1 |
+  census_exit=0 (stdout sha256 920e6fd4b2e82aee969bf489a9a2a4cd97188cf84ec001b4df1c944ea5901499) |
+  harness: `PASS F12 knowledge/japanese-domestic-disclosure-workflow.md ids=S041,S042 exit=0` +
+  `entries=15 pass=15 exit=0` (stdout sha256 17ffa632db6726fb1c0122d7bffdc22ba6c4967fcf8d9eb13f3ca0bac485ed38)
+
+2026-10-25T17:32:18Z  pins: S041 e18acbf9… / S042 b432ec16… / manifest e62ddad1… / entry a22d2321… /
+  SOURCES e59240f8… (42 rows) / README 5f458a7a… (245 lines) / QUALITY 00d4b2a3…
+Entry integrity cross-check (this seat, 17:33Z): 91 `S04[12].txt:NN` anchor references, every line number
+  in range (S041 2354 lines, S042 974 lines), bad=0.
+
+=============================================================================================
+§10  EXCLUSIONS AND ADJACENT RECEIPTS
+=============================================================================================
+C1-only receipts (not C2 evidence; cite them from the C1 block, not here):
+  ExecImplC1.txt, ExecFixtureRun.txt, ExecInstrSelftest.txt, ExecNoHarmC1.txt, ExecReceiptCanonC1.txt,
+  ExecSkillGateSupport.txt, ScribeSkillGate.txt, ExecInstrReadme.txt, and the wave1 reports RevImplC1.md,
+  RevFixturesC1.md, RevNoHarmC1.md, RevengerC1.md, RevCounters1.md, CritC1Vacuity.md, MutArmC1.md,
+  MutExitC1.md, MutSelftestC1.md, plus .ufo/waves/round-28/claims-erratum-1.md (corrects C1's frozen
+  corpus-disclosure annotation only; C2 counters unaffected — verified by re-running §1 after the erratum).
+Adjacent, partly C2: ExecGateLog.txt (wave-wide gates incl. §E C2), ExecScopeSweep.txt (write scope),
+  ScribeLog.txt (round log), RevCloseCheck.md (global close checklist, snapshot 17:24:47Z).
+
+=============================================================================================
+§11  HONEST LIMITS OF THIS DIGEST
+=============================================================================================
+- Values are observations at the snapshot stamps above, not forecasts. Where a seat receipt was PRE-STATE
+  its after value is supplied by a different receipt (§2), never upgraded from the PRE text.
+- This seat ran no production edit, no VCS write, no subagent, no background job, and installed no tool
+  (python3 + coreutils + the repo instruments sufficed; pacman is host-paused and not attempted).
+- Writes by this seat: .ufo/waves/round-28/receipts/ScribeReceiptsC2.txt (this file) and
+  .ufo/waves/round-28/wave1/ScribeReceiptsC2.md (seat report). Nothing else.
+- An unrun check has not passed. §8 lists every check still owed at close.

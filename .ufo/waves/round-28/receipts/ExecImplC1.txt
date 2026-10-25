@@ -1,0 +1,170 @@
+== ExecImplC1 — round-28 wave-1 C1 receipt (corpus/instruments/anchorcheck.py) ==
+generated_utc=2026-10-25T17:29:28Z
+lane_base=c9f8b115a098c65356e4b3b6048af45a37ab8395 (pre-change instrument sha256 c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748)
+landed_instrument=95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514
+landed_lines=523
+files_changed=corpus/instruments/anchorcheck.py (only; diff artifact .ufo/waves/round-28/wave1/ExecImplC1.diff)
+tools_installed=none (no pacman/uv/npx transaction; host pacman pause respected)
+
+== what changed (claims.json C1 / round-27 lesson carry-forward 2) ==
+1 FAIL_CLASSES = MISSING-FILE, PAST-EOF, OUTSIDE-BASE, PIN-BROKEN, BASE-ABSENT,
+  BOUNTIES-ABSENT; main() returns 1 when any count in FAIL_CLASSES is nonzero,
+  else 0. LOST-RECORDED stays recorded-not-fail (never counted, never fail).
+2 CITE gains a BOUNTIES-PROVINCE arm: explicit `~/Projects/bounties/` prefix,
+  realpath-confined exactly like ORIGIN/MIRROR (escape -> OUTSIDE-BASE against
+  the bounties root), absent root -> BOUNTIES-ABSENT (fail class). Root derived
+  like the others: $KASEGI_BOUNTIES else canonical ~/Projects/bounties;
+  BOUNTIES_ABSENT flag mirrors MIRROR_ABSENT/ORIGIN_ABSENT.
+3 --selftest: one isolating fixture per FAIL_CLASSES limb + a bounties in-range
+  case + a marked-loss case + a clean control (cases=9), each in a fresh temp
+  dir with KASEGI_LANE_ROOT/KASEGI_MIRROR/KASEGI_ORIGIN_ROOT/KASEGI_BOUNTIES
+  overridden, each run as a subprocess of this file; asserts the COMPLETE
+  verdict-class vector and the exit status. Prints the `selftest` tally line
+  (9 cases, 0 failures) and exits 0; any mismatch prints the failing case with
+  its stdout/stderr and exits 1.
+4 Module docstring: new BOUNTIES-ABSENT class, fail-closed exit semantics,
+  --selftest, base (g) BOUNTIES-PROVINCE, the root derivation, and why
+  BOUNTIES-ABSENT is deliberately NOT a summary bucket (counter (b) counts
+  BOUNTIES-ABSENT verdict LINES and expects exactly 1). Existing classes keep
+  their spellings; the summary line format is byte-identical to r18.
+
+== counter (a) bad-fixture — command from claims.json ==
+$ python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bad-fixture.md
+
+== .ufo/waves/round-27/c1-controls/bad-fixture.md: 0 in-range cite instances, 0 bad; 0 distinct anchors; LOST-RECORDED=0 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=1
+BASE-ABSENT md:2 corpus/knowledge/zz-r27-anchorcheck-missing.md:99 (base tree absent: /home/vgpnk/Projects/the-bounty-hunter/corpus/knowledge/zz-r27-anchorcheck-missing.md)
+exit=1
+AFTER value required: exit 1 with BASE-ABSENT printed. OBSERVED: exit 1, BASE-ABSENT md:2 printed.
+
+== counter (b) bounties-fixture — command from claims.json ==
+$ python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bounties-fixture.md 2>/dev/null | grep -c BOUNTIES-ABSENT
+1
+--- full output of that fixture run ---
+BOUNTIES-ABSENT md:3 ~/Projects/bounties/ops/claim-check.mjs:96 (base tree absent: /home/vgpnk/Projects/bounties/ops/claim-check.mjs)
+
+== .ufo/waves/round-27/c1-controls/bounties-fixture.md: 0 in-range cite instances, 0 bad; 0 distinct anchors; LOST-RECORDED=0 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+exit=1
+AFTER value required: exactly 1 BOUNTIES-ABSENT line. OBSERVED: 1.
+
+== counter (c) --selftest ==
+$ python3 corpus/instruments/anchorcheck.py --selftest
+selftest cases=9 failures=0
+exit=0
+AFTER value required: exit 0 and a 'selftest cases=N failures=0' line. OBSERVED above.
+
+== counter (d) SKILL.md live no-harm ==
+$ python3 corpus/instruments/anchorcheck.py SKILL.md >/dev/null 2>&1; echo $?
+0
+$ python3 corpus/instruments/anchorcheck.py SKILL.md | grep "^== "
+== SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+--- field extraction of that summary line ---
+in_range=7 bad=0 anchors=7 lost=306 pin_broken=0 origin=0 outside=0 base_absent=0
+$ python3 corpus/instruments/anchorcheck.py SKILL.md 2>/dev/null | sed -n "s/^== .*LOST-RECORDED=\([0-9]*\).*/lost=\1/p"
+lost=306
+--- non-LOST-RECORDED, non-summary, non-OK lines (must be empty = no verdict class moved) ---
+
+--- (end of that filter) ---
+OBSERVED: exit 0, 7 in-range / 0 bad / 7 anchors / LOST-RECORDED=306 / PIN-BROKEN=0 / ORIGIN=0 / OUTSIDE-BASE=0 / BASE-ABSENT=0 — identical to .ufo/waves/round-27/c1-controls/skill-before.txt.
+
+== do-nothing control: PRE-CHANGE bytes (c2a9e6c6) on the same three commands ==
+$ python3 <pre-change anchorcheck.py> .ufo/waves/round-27/c1-controls/bad-fixture.md
+
+== .ufo/waves/round-27/c1-controls/bad-fixture.md: 0 in-range cite instances, 0 bad; 0 distinct anchors; LOST-RECORDED=0 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=1
+BASE-ABSENT md:2 corpus/knowledge/zz-r27-anchorcheck-missing.md:99 (base tree absent: /home/vgpnk/Projects/the-bounty-hunter/corpus/knowledge/zz-r27-anchorcheck-missing.md)
+exit=0
+$ python3 <pre-change anchorcheck.py> .ufo/waves/round-27/c1-controls/bounties-fixture.md 2>/dev/null | grep -c BOUNTIES-ABSENT
+0
+exit_of_fixture_run=0
+$ python3 <pre-change anchorcheck.py> --selftest
+                ~~~~^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '--selftest'
+pre_selftest_exit=1
+OBSERVED: unchanged bytes reach exit 0 / 0 BOUNTIES lines / no --selftest — the r27 before values. The control cannot reach any after value.
+
+== selftest discrimination (R11/R13): mutants of the landed bytes ==
+Mutants live only in /tmp; the live file is never mutated.
+M1 = landed bytes minus the bounties CITE alternative
+M2 = landed bytes minus BOUNTIES-ABSENT in FAIL_CLASSES
+
+--- M1 (bounties arm removed): the four arm-dependent cases must fail ---
+selftest FAIL outside-base: OUTSIDE-BASE: want 1, got 0; exit: want 1, got 0
+  == /tmp/anchorcheck-selftest-0olevo8n/outside-base/fixture.md: 0 in-range cite instances, 0 bad; 0 distinct anchors; LOST-RECORDED=0 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+selftest FAIL bounties-absent: BOUNTIES-ABSENT: want 1, got 0; exit: want 1, got 0
+  == /tmp/anchorcheck-selftest-0olevo8n/bounties-absent/fixture.md: 0 in-range cite instances, 0 bad; 0 distinct anchors; LOST-RECORDED=0 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+selftest FAIL bounties-in-range: IN-RANGE: want 1, got 0
+  == /tmp/anchorcheck-selftest-0olevo8n/bounties-in-range/fixture.md: 0 in-range cite instances, 0 bad; 0 distinct anchors; LOST-RECORDED=0 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+selftest FAIL lost-recorded: LOST-RECORDED: want 1, got 0
+  == /tmp/anchorcheck-selftest-0olevo8n/lost-recorded/fixture.md: 0 in-range cite instances, 0 bad; 0 distinct anchors; LOST-RECORDED=0 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+selftest cases=9 failures=4
+exit=1
+
+--- M2 (BOUNTIES-ABSENT not a fail class): the bounties-absent case must fail ---
+selftest FAIL bounties-absent: BOUNTIES-ABSENT: want 1, got None; exit: want 1, got 0
+  BOUNTIES-ABSENT md:1 ~/Projects/bounties/ops/claim-check.mjs:96 (base tree absent: /tmp/anchorcheck-selftest-pcug3b2p/bounties-absent/bounties/ops/claim-check.mjs)
+  
+  == /tmp/anchorcheck-selftest-pcug3b2p/bounties-absent/fixture.md: 0 in-range cite instances, 0 bad; 0 distinct anchors; LOST-RECORDED=0 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+selftest cases=9 failures=1
+exit=1
+
+--- landed bytes: clean ---
+selftest cases=9 failures=0
+exit=0
+
+== corpus sweep: pre-change vs landed, every verdict field ==
+files swept=44  verdict-class/BOUNTIES-line movement=0  exit-only movement=5
+EXIT-MOVED corpus/QUALITY.md: 0 -> 1 (BASE-ABSENT-driven fail-closed, predicate (a))
+EXIT-MOVED corpus/knowledge/citation-bases.md: 0 -> 1 (BASE-ABSENT-driven fail-closed, predicate (a))
+EXIT-MOVED corpus/knowledge/cra-manufacturer-reporting-duties.md: 0 -> 1 (BASE-ABSENT-driven fail-closed, predicate (a))
+EXIT-MOVED corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md: 0 -> 1 (BASE-ABSENT-driven fail-closed, predicate (a))
+EXIT-MOVED corpus/knowledge/root-loss-2026-10-12.md: 0 -> 1 (BASE-ABSENT-driven fail-closed, predicate (a))
+
+the four citations named in claims.json corpus_disclosure (pre -> post LOST-RECORDED):
+  corpus/knowledge/claim-gates.md: LOST-RECORDED 0 -> 0   (no reclassification)
+  corpus/knowledge/intake-and-finalize.md: LOST-RECORDED 0 -> 0   (no reclassification)
+  corpus/knowledge/mission-control.md: LOST-RECORDED 0 -> 0   (no reclassification)
+  corpus/knowledge/source-tree-loss-2026-09-28.md: LOST-RECORDED 15 -> 15   (no reclassification)
+
+== why the corpus_disclosure is NOT reproduced (measured, not assumed) ==
+$ grep -rnE "\\[lost-(tree|base)\\] ~/Projects/bounties/[^ \`]*:[0-9]+" corpus/knowledge/*.md
+corpus/knowledge/claim-gates.md:123:source: [lost-tree] ~/Projects/bounties/ops/claim-check.mjs:1-233, tag 014A; full round-3 source read.
+corpus/knowledge/intake-and-finalize.md:109:source: [lost-tree] ~/Projects/bounties/ops/import-board.mjs:1-258, ops/finalize-all.mjs:1-80, ledger/imports.jsonl, and claims/ verification.
+corpus/knowledge/mission-control.md:169:source: [lost-tree] ~/Projects/bounties/ops/fleet-dispatch.mjs:1-427 and fleets/missions, fleets/run, leases, priority, and state-snapshot inventories.
+corpus/knowledge/source-tree-loss-2026-09-28.md:353:source: [lost-tree] ~/Projects/bounties/PROVINCE.md:3 and the 2026-09-28 source-tree census; lane round-15 loss record with round-19 absence errata.
+
+--- are those citations backticked (i.e. reachable by TOK)? ---
+corpus/knowledge/claim-gates.md:123: backticks_on_line=0 -> tokenised_by_TOK=NO
+corpus/knowledge/intake-and-finalize.md:109: backticks_on_line=0 -> tokenised_by_TOK=NO
+corpus/knowledge/mission-control.md:169: backticks_on_line=0 -> tokenised_by_TOK=NO
+corpus/knowledge/source-tree-loss-2026-09-28.md:353: backticks_on_line=0 -> tokenised_by_TOK=NO
+
+$ python3 - <<PY  # backticked ~/Projects/bounties tokens carrying a :NN anchor, lane-wide
+total=0
+
+CONCLUSION (honest): the CITE bounties arm is load-bearing (counter (b): 0 -> 1, and mutant M1 kills 4 selftest cases), but it cannot make the four disclosed corpus citations classify LOST-RECORDED. They are plain-text 'source:' trailers, TOK is backtick-only, and no backticked '~/Projects/bounties/<path>:<NN>' token exists anywhere in the lane. Measured reclassification = 0 of 4. This is a claims-correction candidate for the L1 (appended file, R25-1), not something this seat can fix without changing the token model (refused: out of assigned scope, and the reviewer would correctly flag it).
+
+Blast radius if the L1 later authorizes a marked-bare scan (measured, not implemented): exactly those 4 lines in corpus/knowledge/*.md and 0 such lines in SKILL.md — so the SKILL.md no-harm gate (306/0) would still hold.
+
+== files, digests, scope ==
+changed: corpus/instruments/anchorcheck.py
+95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514  corpus/instruments/anchorcheck.py
+diff artifact: .ufo/waves/round-28/wave1/ExecImplC1.diff
+report: .ufo/waves/round-28/wave1/ExecImplC1.md
+
+== observations for the L1 (not defects I can fix) ==
+O1 claims.json counter (d) second command is vacuous on BOTH byte sets:
+   sed -n "s/^== .*bad; \\([0-9]*\\) bad.*/bad=\\1/p" expects "bad; N bad",
+   the summary grammar is "N bad; K distinct anchors" -> 0 lines pre-change and 0 lines post-change.
+   prechange_bad_sed_lines=0  postchange_bad_sed_lines=0
+   bad=0 is nevertheless observed (summary line, field extraction above).
+O2 .ufo/waves/round-28/assemble-receipts.py takes the SKILL.md line as out.strip().split(chr(10))[-1],
+   which is a LOST-RECORDED verdict line (the summary prints first, verdict detail after).
+   Not edited by this seat (not my file); flagged so the canonical index records the summary line instead.
+O3 corpus/QUALITY.md now exits 1 (pre-existing BASE-ABSENT cites) under the fail-closed rule.
+   Intended per predicate (a); disclosed so ScribeR14/ScribeScorecard are not surprised.
+
+== claim mapping ==
+(a) exit 1 on unverifiable verdicts ......... OBSERVED (bad-fixture exit 1; 5 corpus exits 0->1)
+(b) CITE bounties arm -> BOUNTIES-ABSENT .... OBSERVED (exactly 1 line; fixture exit 1)
+(c) --selftest, isolating fixtures .......... OBSERVED (cases=9 failures=0 exit=0; M1 kills 4, M2 kills 1)
+(d) no-harm SKILL.md ........................ OBSERVED (exit 0, bad=0, LOST-RECORDED=306, BASE-ABSENT=0)
+corpus_disclosure 4 -> LOST-RECORDED ....... NOT REPRODUCED (0 of 4; cause and evidence above)

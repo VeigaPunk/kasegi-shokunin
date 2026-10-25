@@ -210,8 +210,36 @@ Correction (2026-10-19): corpus/QUALITY.md now exists; the preceding closing par
 | F09 | Authorisation outside the platform: the engagement document and the statute | admitted | knowledge/authorised-testing-rules-of-engagement.md, knowledge/statutory-authorization-and-unauthorized-access.md | S032, S033, S034, S035 | A safe-harbour badge is not the grant and not the legal definition: read the ROE's scope/exclude list, and the access manager the statute requires. |
 | F10 | Vendor-side disclosure policies as corpus objects | admitted | knowledge/vendor-disclosure-policies-as-corpus-objects.md, knowledge/vendor-disclosure-policy-commitments-crosswalk.md | S036, S037, S038, S039, S040 | A vendor's published policy is a standing first-party statement, not a programme: read its intake channels, its handling-versus-disclosure scope, the standard edition it names, and the conditions (and count of conditions) under which it goes faster. |
 | F11 | ISO/IEC 29147/30111 division-of-labour meta | admitted | knowledge/iso-29147-and-30111-division-of-labour.md, knowledge/iso-29147-divergence-and-clause-crosswalk.md | S041 | Treat 29147 as the vendor's outward-facing disclosure standard and 30111 as its internal handling process; record the edition a source names (JPCERT/CC compares against 2014, Cisco claims 2018). |
+| F12 | Japanese state-coordinated disclosure workflow | admitted | knowledge/japanese-domestic-disclosure-workflow.md | S041, S042 | Use 起算日 — the day the guideline's Ⅳ.4.2) notification was first attempted (S041 footnote 4), not an acknowledgement or a submission date — as the Japanese column when comparing coordinator timelines against F02. The same 45-day figure is triggered differently on each side: S041's publication date is a 目安 of 45 days from 起算日 (Ⅳ.3)), CERT/CC's 45 days runs from the initial report (S004, F02). |
 
 The original domain-root map is exhausted: 0/18 surfaces are present.
 That sentence describes the lost `/home/vgpnk/Projects/bounties` surface set only; the
 public-practice frontier above is a separate denominator (11/11 admitted at round 26; F01-F08 at
 round 23, F09 at round 24, F10 at round 25, F11 at round 26) and is not counted into the 0/18 figure.
+
+[r28 amendment, appended 2026-10-25] The parenthetical above records the round-26 frontier state and is
+retained as history, not rewritten (R9): at round 28 the frontier stands at **12/12 admitted** —
+F01-F08 at round 23, F09 at round 24, F10 at round 25, F11 at round 26, F12 at round 28. The 0/18
+sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
+
+## Round-28 reconciliation — coverage map and expected list (appended 2026-10-25)
+
+The coverage map above is not edited in place: the round-28 entry
+`knowledge/japanese-domestic-disclosure-workflow.md` (Frontier F12, sources S041 + S042; source
+basis: the JPCERT/CC 2026 早期警戒パートナーシップガイドライン re-captured this round plus the new
+IPA 脆弱性関連情報の届出受付業務における取扱いプロセス row S042, both captured 2026-10-25 under
+`corpus/source-snapshots/round-28/`) is recorded here as an appended amendment so every existing
+line keeps its number (R6). Its count basis is not this index: `corpus/instruments/recheck-audit.py`
+compares the tree against the committed `corpus/instruments/knowledge-expected.txt`, which at
+round-28 start held **41 lines = 39 entries + 2 comment lines** (measured 2026-10-25:
+`wc -l` → 41, `grep -vc '^#'` → 39 — the same 41-versus-39 basis the round-27 lesson named), so the
+list must become 40 entries / 42 lines in the same round the entry lands or the audit reports the
+new file as `unexpected=`. That basis is confirmed by the round-28 wave receipt
+`.ufo/waves/round-28/receipts/ExecExpectedList.txt` (the same 41 = 39 entries + 2 comments
+reconciliation, measured before the entry landed; the receipt reports no production edits, so the
+list was not regenerated). Once the round-28 entry landed the audit duly printed
+`expect=present expected=39 missing=0 unexpected=1 exit=1`; regenerating the list to 40 entries /
+42 lines clears it. Re-verify with
+`cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py`
+(the run prints `expected=<n> missing=<n> unexpected=<n> exit=<n>`).

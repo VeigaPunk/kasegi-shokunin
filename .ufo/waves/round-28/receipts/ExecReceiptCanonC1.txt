@@ -1,0 +1,255 @@
+== kasegi-shokunin round 28 / wave 1 / seat ExecReceiptCanonC1 — canonical C1 receipt-index DRAFT ==
+seat: ExecReceiptCanonC1 (executor, read-only; NO production file edited)
+collected_utc: 2026-10-25T17:29Z (UTC); last digest check 2026-10-25T17:29:56Z
+lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane base: c9f8b115a098c65356e4b3b6048af45a37ab8395 (claims freeze)
+state: POST-CHANGE. The landed instrument is
+  95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514
+  which ExecImplC1's own receipt declares at its "== files, digests, scope ==" line (cross-check below).
+  Digest identical before and after every measurement run in the authoritative batches below.
+
+DEFECT-4 COMPLIANCE: this seat created NO `.ufo/waves/round-28/c1-receipt-index.txt` and no canonical file
+under `.ufo/waves/round-28/`. The L1 assembles the one canonical file at close. Scratch and evidence live
+under `.ufo/waves/round-28/wave1/ExecReceiptCanonC1/`.
+
+------------------------------------------------------------------------------
+1. WHAT THE CANONICAL FILE MUST SATISFY (frozen claims.json C1; read, not re-worded)
+------------------------------------------------------------------------------
+counter (c) greps the canonical index itself:
+  grep -cE 'selftest cases=' .ufo/waves/round-28/c1-receipt-index.txt   -> after value is 1 line
+  grep -oE 'instrument_sha256=[0-9a-f]{64}' ... -> exactly one match == `sha256sum corpus/instruments/anchorcheck.py`
+counters (a)/(b)/(d) measure the live instrument; the index carries their verbatim result lines so the after
+column is auditable. The block in §3 therefore holds EXACTLY ONE `selftest cases=` line and EXACTLY ONE
+digest-token line, and no `# source:` label repeats either phrase.
+
+------------------------------------------------------------------------------
+2. STABILITY — why these numbers are not mutable-byte measurements (R3)
+------------------------------------------------------------------------------
+The instrument changed 14 times while this seat collected. The digest was sampled every 5 s; no value was
+recorded until the digest held still AND every after-value was reached:
+
+  17:26:15 0a24a173b302   17:26:20 7adfc8475e08   17:26:35 cab98bcc0cf7   17:26:40 982d720776f1
+  17:26:45 5f5f725c7fdc   17:26:50 3122643c99c7   17:27:00 21b59612698f   17:27:05 e14f75b87d3d
+  17:27:10 c79fb7ca4695   17:27:15 29aba0847985 (stable x3)              17:27:42 c36292292ec0 (stable x3)
+  17:28:41 95333e29ee5a (stable x5; all after-values reached) -> measurement digest
+
+Mid-flight snapshot taken at 29aba0847985 (NOT used for any receipt value; recorded because it shows the
+after-values are not reachable from a partial file):
+  $ python3 corpus/instruments/anchorcheck.py --selftest
+  ......
+  File ".../anchorcheck.py", line 206, in main
+    return _selftest()
+           ^^^^^^^^^
+  NameError: name '_selftest' is not defined
+  selftest_exit=1
+At that digest counters (a) and (b) already read exit 1 / 1 line but (c) did not exist as code — a partial
+file would have shown a "passing" (a)/(b) with an absent (c), which is why the final batch waits on all four.
+
+Every authoritative run below was bracketed by `sha256sum corpus/instruments/anchorcheck.py`; the batch logs
+record `digest_before == digest_after == 95333e29…` and `STABLE_DURING_BATCH=yes`:
+  .ufo/waves/round-28/wave1/ExecReceiptCanonC1/final-batch.log
+  .ufo/waves/round-28/wave1/ExecReceiptCanonC1/final.selftest1.out, final.selftest2.out
+  .ufo/waves/round-28/wave1/ExecReceiptCanonC1/skill.final.out
+
+------------------------------------------------------------------------------
+3. THE CANONICAL BLOCK — the canonical file content is EXACTLY this (paste verbatim)
+------------------------------------------------------------------------------
+BEGIN CANONICAL BLOCK
+== round-28 canonical C1 receipt index (assembled at the landed digest; defect 4: one canonical receipt) ==
+lane=kasegi-shokunin round=28 wave=kasegi-r28-build base=c9f8b115a098c65356e4b3b6048af45a37ab8395 assembled_utc=2026-10-25T17:29:16Z
+instrument_sha256=95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514
+# source: corpus/instruments/anchorcheck.py as measured 2026-10-25T17:29:16Z-17:29:33Z (stable across 5 probes + batch; sha256sum equal before and after every run)
+
+== counter (a) bad-fixture — unverifiable cite must exit nonzero ==
+== .ufo/waves/round-27/c1-controls/bad-fixture.md: 0 in-range cite instances, 0 bad; 0 distinct anchors; LOST-RECORDED=0 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=1
+BASE-ABSENT md:2 corpus/knowledge/zz-r27-anchorcheck-missing.md:99 (base tree absent: /home/vgpnk/Projects/the-bounty-hunter/corpus/knowledge/zz-r27-anchorcheck-missing.md)
+exit=1
+# source: .ufo/waves/round-28/wave1/ExecReceiptCanonC1/final-batch.log (fixture .ufo/waves/round-27/c1-controls/bad-fixture.md sha256 969e2b92f1d14c47ebd5152aebc2df7342fc1743a914cac8f846fd27758e7471)
+
+== counter (b) bounties-fixture — CITE must see the ~/Projects/bounties/ arm ==
+BOUNTIES-ABSENT md:3 ~/Projects/bounties/ops/claim-check.mjs:96 (base tree absent: /home/vgpnk/Projects/bounties/ops/claim-check.mjs)
+BOUNTIES-ABSENT_lines=1
+exit=1
+# source: .ufo/waves/round-28/wave1/ExecReceiptCanonC1/final-batch.log (fixture .ufo/waves/round-27/c1-controls/bounties-fixture.md sha256 5c37b69e0ec662b6bafd98e5d8a5def3d78be563489db891790dc2f543eb77b5)
+
+== counter (c) --selftest — one isolating fixture per limb, at the digest above ==
+selftest cases=9 failures=0
+selftest_exit=0
+selftest_determinism=IDENTICAL
+# source: .ufo/waves/round-28/wave1/ExecReceiptCanonC1/final.selftest1.out and final.selftest2.out (run twice at the digest above; byte-identical, exit 0 both)
+
+== counter (d) SKILL.md no-harm — exit 0, bad=0, verdict classes unchanged ==
+== SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+skill_md_exit=0
+skill_md_bad=0
+skill_md_lost_recorded=306
+skill_md_class_counts=OK=7 LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0 MISSING-FILE=0 PAST-EOF=0
+skill_md_stdout_sha256=82be0566f677599dc27355913e2d2af9a466fcfa4012249310dfbcf1210ca48d
+skill_md_stdout_note=not byte-identical to the pre-state capture: exactly one line moved (LOST-RECORDED md:998 -> md:999) because ScribeSkillGate inserted the anchorcheck registry row at SKILL.md:980; class counts unchanged
+# source: .ufo/waves/round-28/wave1/ExecReceiptCanonC1/skill.final.out, diffed against .ufo/waves/round-28/c1-controls/skill-before.txt
+
+== corpus disclosure — bounties-prefixed marked citations newly recorded ==
+corpus_disclosure_new_LOST-RECORDED=0
+corpus/knowledge/claim-gates.md new_LOST-RECORDED=0
+corpus/knowledge/intake-and-finalize.md new_LOST-RECORDED=0
+corpus/knowledge/mission-control.md new_LOST-RECORDED=0
+corpus/knowledge/source-tree-loss-2026-09-28.md new_LOST-RECORDED=0
+corpus_BOUNTIES-ABSENT_total=0
+# source: .ufo/waves/round-28/wave1/ExecReceiptCanonC1/final-batch.log; supersedes the frozen claims.json corpus_disclosure cell per .ufo/waves/round-28/claims-erratum-1.md (the 4 named cites are plain-text source: lines, outside TOK's backticked-token scan)
+
+== do-nothing control (unchanged pre-change bytes; cannot reach any after value) ==
+control_instrument_digest=c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748
+control_bad_fixture_exit=0
+control_bounties_ABSENT_lines=0
+control_selftest_receipt_lines=0
+# source: .ufo/waves/round-28/c1-controls/bad-fixture-before.txt, bounties-fixture-before.txt, selftest-before.txt, instrument-digest-before.txt
+END CANONICAL BLOCK
+
+Filled copy kept for verification: .ufo/waves/round-28/wave1/ExecReceiptCanonC1/canonical-block.filled.txt
+(pre-token template, kept only as history: canonical-block.template.txt)
+
+------------------------------------------------------------------------------
+4. LINE-SHAPE CONFORMANCE — the frozen counter greps, executed against the filled block
+   (2026-10-25T17:29Z, from .ufo/waves/round-28/wave1/ExecReceiptCanonC1/)
+------------------------------------------------------------------------------
+$ grep -cE 'selftest cases=' canonical-block.filled.txt
+1                                        # exit 0 -> after value `selftest_receipt_lines: 1` is met
+$ grep -oE 'instrument_sha256=[0-9a-f]{64}' canonical-block.filled.txt
+instrument_sha256=95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514
+$ grep -cE 'instrument_sha256=' canonical-block.filled.txt
+1                                        # exactly one digest-token line
+$ sha256sum corpus/instruments/anchorcheck.py | awk '{print "instrument_sha256="$1}'
+instrument_sha256=95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514
+                                         # EQUAL to the block's line -> counter (c) digest binding holds
+$ python3 corpus/instruments/anchorcheck.py --selftest >/dev/null 2>&1; echo selftest_exit=$?
+selftest_exit=0
+
+counter (d)'s seds are defined ON THE SKILL.md RUN, not on the index. Applied to the index they are
+ambiguous/misleading because the block also carries the bad-fixture summary line (starts `== `, contains
+LOST-RECORDED=0):
+  $ sed -n 's/^== .*LOST-RECORDED=\([0-9]*\).*/lost=\1/p' canonical-block.filled.txt
+  lost=0
+  lost=306
+  $ sed -n 's/^== .*bad; \([0-9]*\) bad.*/bad=\1/p' canonical-block.filled.txt
+  (no output — finding F-A)
+Run them against `python3 corpus/instruments/anchorcheck.py SKILL.md` exactly as claims.json writes them:
+  lost=306 ; bad= (empty, F-A)
+
+------------------------------------------------------------------------------
+5. VALUE PROVENANCE — every block line and the receipt it came from
+------------------------------------------------------------------------------
+instrument_sha256=95333e29…
+  .ufo/waves/round-28/receipts/ExecImplC1.txt  ("95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514  corpus/instruments/anchorcheck.py")
+  independently: sha256sum at 17:29:16Z, 17:29:18Z, 17:29:33Z, 17:29:56Z (all equal)
+counter (a) summary + BASE-ABSENT detail + exit=1
+  .ufo/waves/round-28/wave1/ExecReceiptCanonC1/final-batch.log; corroborated by
+  .ufo/waves/round-28/receipts/ExecImplC1.txt lines 36-37 ("exit 1, BASE-ABSENT md:2 printed")
+  NOTE the class is BASE-ABSENT (not MISSING-FILE) — the M27-1 stale-premise lesson, honoured.
+counter (b) BOUNTIES-ABSENT detail + lines=1 + exit=1
+  final-batch.log; ExecImplC1.txt lines 40-47 ("OBSERVED: 1", "exit=1")
+counter (c) `selftest cases=9 failures=0` + exit 0 + determinism
+  final.selftest1.out / final.selftest2.out (cmp identical, both exit 0); ExecImplC1.txt line 51-53
+  N=9 is the impl's own count (one isolating fixture per FAIL_CLASSES limb + bounties in-range + marked-loss
+  + clean control, per ExecImplC1.txt lines 18-24). It is copied verbatim, not asserted by this seat.
+counter (d) summary + exit 0 + bad=0 + LOST-RECORDED=306 + class counts
+  skill.final.out (315 lines, sha256 82be0566…); ExecNoHarmC1.txt PRE-STATE run matches these classes;
+  ExecImplC1.txt line 67 declares the same verdict vector as byte classes.
+disclosure 0 + per-file 0s + corpus BOUNTIES-ABSENT total 0
+  final-batch.log; reconciled with .ufo/waves/round-28/claims-erratum-1.md and ExecImplC1.txt line 143.
+do-nothing control
+  .ufo/waves/round-28/c1-controls/*-before.txt (untouched; the pre-change digest line 0/0/selftest-absent)
+  plus this seat's independent PRE-STATE reproduction at 17:23Z (§7).
+
+------------------------------------------------------------------------------
+6. ASSEMBLY AT CLOSE — one canonical file, staleness gate (L1)
+------------------------------------------------------------------------------
+ 1. cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+ 2. sha256sum corpus/instruments/anchorcheck.py
+      == 95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514  -> paste §3 as-is.
+      != that value -> the instrument moved after this collection; RE-RUN, do not paste this block:
+         python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bad-fixture.md   # exit, summary
+         python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bounties-fixture.md | grep -c BOUNTIES-ABSENT
+         python3 corpus/instruments/anchorcheck.py --selftest                                       # cases line, exit
+         python3 corpus/instruments/anchorcheck.py SKILL.md | grep '^== SKILL.md:'                  # no-harm line
+         for f in corpus/knowledge/claim-gates.md corpus/knowledge/intake-and-finalize.md \
+                  corpus/knowledge/mission-control.md corpus/knowledge/source-tree-loss-2026-09-28.md; do
+           printf '%s new_LOST-RECORDED=%s\n' "$f" \
+             "$(python3 corpus/instruments/anchorcheck.py "$f" 2>/dev/null | grep -c 'LOST-RECORDED.*bounties')"
+         done
+         (then rewrite the digest line, the three counter sections and the disclosure section with the new
+          verbatim outputs; §4's greps must still read 1 / one digest-token line / matching sha256sum)
+ 3. write `.ufo/waves/round-28/c1-receipt-index.txt` = §3 block verbatim.
+ 4. re-verify the written file:
+      grep -cE 'selftest cases=' .ufo/waves/round-28/c1-receipt-index.txt                 # 1
+      grep -oE 'instrument_sha256=[0-9a-f]{64}' .ufo/waves/round-28/c1-receipt-index.txt  # one line == step 2
+      python3 corpus/instruments/anchorcheck.py --selftest >/dev/null 2>&1; echo selftest_exit=$?   # 0
+
+------------------------------------------------------------------------------
+7. FINDINGS while collecting (reported, not silently worked around)
+------------------------------------------------------------------------------
+F-A · frozen counter (d) `bad=` extraction is VACUOUS on both byte sets. Verbatim at 17:24Z and re-confirmed
+      17:29Z against the landed bytes:
+        $ python3 corpus/instruments/anchorcheck.py SKILL.md >/dev/null 2>&1; echo $? ; \
+          python3 corpus/instruments/anchorcheck.py SKILL.md 2>/dev/null | sed -n 's/^== .*bad; \([0-9]*\) bad.*/bad=\1/p' ; \
+          python3 corpus/instruments/anchorcheck.py SKILL.md 2>/dev/null | sed -n 's/^== .*LOST-RECORDED=\([0-9]*\).*/lost=\1/p'
+        0
+        lost=306
+      The pattern wants `bad; N bad`; the grammar is `N bad; K distinct anchors`. bad=0 is still measured —
+      `grep -oE '[0-9]+ bad;'` -> `0 bad;` (used in the block) — and ExecImplC1.txt "O1" independently
+      reports the same (prechange_bad_sed_lines=0, postchange_bad_sed_lines=0). claims.json untouched here;
+      an appended correction (R25-1) is the L1's call.
+
+F-B · the frozen `corpus_disclosure` cell ("4 corpus marked bounties citations newly classify
+      LOST-RECORDED") is NOT reproduced: measured 0 of 4 on the landed bytes. Cause, proven twice:
+      (i) the 4 cites are PLAIN TEXT `source:` trailers, e.g. corpus/knowledge/claim-gates.md:123
+          `source: [lost-tree] ~/Projects/bounties/ops/claim-check.mjs:1-233, …` (also intake-and-finalize:109,
+          mission-control:169, source-tree-loss-2026-09-28:353);
+      (ii) the scanner gates on backticks only (`TOK = re.compile(r"`([^`\n]+)`")`), and LOST-stripping runs
+          inside that loop, so a bare `source:` line is never tokenised;
+      (iii) lane-wide, backticked `~/Projects/bounties/<path>:NN` tokens = 0 (my scratch probe:
+          .ufo/waves/round-28/wave1/ExecReceiptCanonC1/anchorcheck.citearm-only.py — pre-change bytes + the
+          bounties alternative in CITE only, +63 bytes: the r27 bounties fixture goes 0 -> 1 verdict line,
+          the 4 disclosure files stay 0/0/0/0);
+      (iv) measured on landed bytes: 0/0/0/0, corpus BOUNTIES-ABSENT total 0.
+      This is already reconciled by .ufo/waves/round-28/claims-erratum-1.md (filed 14:25), which supersedes
+      the cell with "zero backticked anchored bounties citations exist; no verdict-class movement anywhere";
+      ExecImplC1.txt line 143 reaches the same conclusion. The block records the MEASURED 0, never a 4.
+
+F-C · C1(d) "verdict classes unchanged" HOLDS, but SKILL.md is not byte-identical to the before-capture:
+      exactly one line moved, `LOST-RECORDED md:998` -> `md:999`, because ScribeSkillGate inserted the
+      anchorcheck registry row at SKILL.md:980 (git diff base: +3 lines). Class counts and the summary line
+      are unchanged, so the frozen kill rule (exit nonzero / bad moves / class counts move) does not fire —
+      but no receipt may claim byte-identity. Skill stdout sha256 moved 2f29df46… -> 82be0566…; the block
+      records both the sha and the one-line cause.
+
+F-D · `.ufo/waves/round-28/assemble-receipts.py` takes the SKILL.md line as
+      `out.strip().split("\n")[-1]`, which is a LOST-RECORDED verdict line, not the summary (the summary
+      prints before the verdict detail). ExecImplC1.txt "O2" flags the same. This block is immune because it
+      selects `grep '^== SKILL.md:'`. If the L1 runs the assembler, do NOT accept its counter-(d) section.
+
+Also disclosed (from ExecImplC1.txt "O3", not a defect): under the fail-closed rule, 5 corpus files with
+pre-existing fail-class cites now exit 1 (e.g. corpus/QUALITY.md, pre-existing BASE-ABSENT). Intended per
+predicate (a); ScribeR14/ScribeScorecard should not read it as new harm. Verdict-CLASS movement corpus-wide
+is 0 of 44 files (ExecImplC1.txt line 114: `files swept=44  verdict-class/BOUNTIES-line movement=0`).
+
+------------------------------------------------------------------------------
+8. SCOPE / HONESTY
+------------------------------------------------------------------------------
+- No production file read-modified or written. No VCS write. No subagent, no background job, no tool
+  installed or upgraded (python3 + coreutils sufficed). No credential material written.
+- Files written by this seat (all under .ufo/waves/round-28/):
+    receipts/ExecReceiptCanonC1.txt                            <- this receipt
+    wave1/ExecReceiptCanonC1.md                                <- seat report
+    wave1/ExecReceiptCanonC1/canonical-block.template.txt      <- pre-token template (history)
+    wave1/ExecReceiptCanonC1/canonical-block.filled.txt        <- §3 block, grep-verified
+    wave1/ExecReceiptCanonC1/candidate.shape-check.txt         <- token-shape candidate (stand-ins, history)
+    wave1/ExecReceiptCanonC1/anchorcheck.citearm-only.py       <- CITE-arm scratch probe (F-B iii), 14519 bytes (14507 chars)
+    wave1/ExecReceiptCanonC1/final-batch.log                   <- authoritative batch, digest-bracketed
+    wave1/ExecReceiptCanonC1/final.selftest1.out, final.selftest2.out
+    wave1/ExecReceiptCanonC1/skill.final.out                   <- SKILL.md run at the landed digest
+    wave1/ExecReceiptCanonC1/post-batch.log, skill.post.out, selftest.post1.*, selftest.post2.*
+                                                              <- the 17:28Z intermediate batch (digest c3629229)
+- Every number above was produced by a command against the digest named on its line. Values measured on the
+  intermediate c3629229 bytes are labelled as such and are NOT used in the block (they agreed with the final
+  ones anyway: (a) exit 1, (b) 1 line, (c) cases=9 failures=0, (d) 306/0).
+- An unrun check has not passed: nothing in this receipt asserts a check this seat did not execute.

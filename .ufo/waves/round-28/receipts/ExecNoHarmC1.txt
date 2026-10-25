@@ -1,0 +1,122 @@
+kasegi-shokunin round 28 — C1 no-harm measurement seat
+seat: ExecNoHarmC1 (executor, read-only; no production file edited)
+measured: 2026-10-25T17:23Z (UTC)
+lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane base: c9f8b115a098c65356e4b3b6048af45a37ab8395
+worktree HEAD at measure: 94f387cbee71a532a51ce075f01701a557231e85
+
+STATE LABEL: PRE-STATE
+  corpus/instruments/anchorcheck.py sha256 =
+  c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748
+  which equals .ufo/waves/round-28/c1-controls/instrument-digest-before.txt, i.e. the
+  frozen pre-change digest. ExecImplC1's C1 edit has NOT landed. Every number below is
+  the pre-change baseline and is not evidence about the post-change instrument.
+
+==============================================================================
+1) anchorcheck.py SKILL.md  (frozen C1(d) no-harm guard)
+==============================================================================
+cmd: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin \
+     && python3 corpus/instruments/anchorcheck.py SKILL.md
+exit=0
+stdout: 315 lines / 27315 bytes / sha256 2f29df462b1c146d5446d77ce5530b6105cf3bc301a4a0801b7cc2a719e03835
+
+summary line (verbatim):
+== SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+
+full verdict-class counts (313 verdict lines + 1 summary + 1 blank = 315):
+  IN-RANGE (emitted as "OK md:")     7
+  LOST-RECORDED                    306
+  PIN-BROKEN                         0
+  ORIGIN                             0
+  OUTSIDE-BASE                       0
+  BASE-ABSENT                        0
+  MISSING-FILE                       0
+  PAST-EOF                           0
+  bad (= MISSING-FILE + PAST-EOF + OUTSIDE-BASE) = 0
+  distinct anchors = 7
+  LOST md: span = 57 .. 998
+
+determinism: two consecutive runs byte-identical (same sha256 both).
+
+equality vs the frozen before receipt: fresh stdout is BYTE-IDENTICAL to the body of
+.ufo/waves/round-28/c1-controls/skill-before.txt (that receipt is exactly this body plus
+the trailing "exit=0\n"; cmp of `sed '$d' before-receipt` vs fresh stdout: identical).
+
+compare against frozen before:
+  exit 0            -> 0            OK
+  bad 0             -> 0            OK
+  LOST-RECORDED 306 -> 306          OK
+  PIN-BROKEN 0      -> 0            OK
+  ORIGIN 0          -> 0            OK
+  OUTSIDE-BASE 0    -> 0            OK
+  BASE-ABSENT 0     -> 0            OK
+  in-range 7        -> 7            OK
+  => VERDICT: NO MOVEMENT (no-harm holds PRE-STATE).
+
+LIMIT named honestly: the pre-change instrument has no fail path (main() returns None, the
+only sys.exit is sys.exit(main(...)); a bad verdict still prints and exits 0 — see
+c1-controls/bad-fixture-before.txt "BASE-ABSENT ... exit=0"). So this exit 0 is the
+no-movement guard only; it cannot test the new gate. Post-change re-run required.
+
+==============================================================================
+2) density.py SKILL.md --label r28-noharm  (depth:density no-harm guard)
+==============================================================================
+cmd: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin \
+     && python3 corpus/instruments/density.py SKILL.md --label r28-noharm
+exit=0
+header: # Density census — r28-noharm (1032 lines, 20 blocks)
+mean dens: 150.3
+blocks: 20
+Total path-citation instances: 652 across 20 blocks
+stdout: 3300 bytes / sha256 3731d4f7458473fea61603f35960a3798d9808611f68b78c7d2d0dea9d1ecf5c;
+two runs byte-identical.
+density.py sha256 = ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710
+(unchanged since eb5b590; only commit that ever touched the file).
+
+BASELINE RECONCILIATION — the assigned comparand 154.0 / 19 blocks / 652 is STALE:
+  a) r22 bytes, `git show c8b719d:SKILL.md` (1023 lines): 19 blocks, mean 154.0,
+     652 cites — reproduces the round-24/25 recorded baseline exactly.
+  b) r26 bytes, `git show a04cc6c:SKILL.md` (1032 lines). Its sha256 is
+     fa09d5b835451f2443fc96353432a330608baf5f3631d1b382141f7e86d64f2d, identical to
+     `git show c9f8b11:SKILL.md` and to the worktree SKILL.md:
+     20 blocks, mean 150.3, 652 cites.
+  c) cause, named: commit a04cc6c (round-26) added 9 lines — a new
+     `## Gates & probes registry` section (heading + table header/separator + one data
+     row + prose) inserted before `## Cited paths`, with 0 path-cites (nb=5 ev=4
+     dens=80.0). Block count 19 -> 20; the new low-density block pulls the UNWEIGHTED
+     mean 154.0 -> 150.3. Path-citation instances unchanged at 652 (new block adds 0).
+  d) therefore the same-byte guard for round 28 is 150.3 / 20 blocks / 652 cites at base
+     c9f8b11. Measured now: exactly that; delta 0 on all three.
+
+SKILL.md identity guard:
+  git diff c9f8b115a098c65356e4b3b6048af45a37ab8395 -- SKILL.md   -> empty (0 lines)
+  sha256 SKILL.md (worktree) = fa09d5b8... = git show c9f8b11:SKILL.md sha256
+  git status --porcelain -- SKILL.md corpus/instruments/anchorcheck.py -> empty
+  => ScribeSkillGate's R6 append has NOT landed at measure time; no round-28 byte has
+     touched SKILL.md.
+
+==============================================================================
+RE-RUN AFTER PRODUCTION LANDS (L1; an unrun check has not passed)
+==============================================================================
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+sha256sum corpus/instruments/anchorcheck.py
+python3 corpus/instruments/anchorcheck.py SKILL.md > /tmp/r28-post-anchor.out 2>&1; echo exit=$?
+sed -n '2p' /tmp/r28-post-anchor.out
+awk '/^OK md:/{k["OK"]++} /^(LOST-RECORDED|MISSING-FILE|PAST-EOF|OUTSIDE-BASE|PIN-BROKEN|BASE-ABSENT) /{k[$1]++} END{for(x in k) printf "%s=%d\n", x, k[x]}' /tmp/r28-post-anchor.out | sort
+python3 corpus/instruments/density.py SKILL.md --label r28-post | grep -E 'mean dens|Total path|^# Density'
+
+required post-change values: anchorcheck exit 0; bad=0; LOST-RECORDED=306; PIN-BROKEN=0;
+ORIGIN=0; OUTSIDE-BASE=0; BASE-ABSENT=0; in-range=7. density: path-citation instances
+>= 652; mean compared to 150.3 with any delta attributed to the appended block's own dens
+(if ScribeSkillGate adds a `##` section, block count becomes 21 and the unweighted mean
+moves for that reason alone, not drift).
+
+==============================================================================
+RISKS / LIMITS
+==============================================================================
+- PRE-STATE only. Proves no round-28 drift in SKILL.md so far; says nothing about the new
+  instrument's failure behaviour.
+- Using the assigned comparand 154.0/19/652 unchanged against base bytes would report a
+  false -3.7 mean regression. It is re-based here to 150.3/20/652 at the same bytes, with
+  the r26 commit and its new block named as the cause.
+- No tool installed; no pacman transaction attempted.

@@ -1,0 +1,1957 @@
+
+
+
+
+
+
+
+
+
+<link rel="shortcut icon" href="https://www.cisco.com/favicon.ico" type="image/x-icon" />
+<title>Security Vulnerability Policy</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="HandheldFriendly" content="true" />
+<link href="https://sec.cloudapps.cisco.com/security/center/Resources/css/stylesheet.css" type="text/css" rel="stylesheet">
+<script src="https://sec.cloudapps.cisco.com/security/center/Resources/js/jquery-1.12.1.min.js" type="application/javascript"></script>
+<style>
+@media print {
+    .printclass {
+        margin-left: 10% !important;
+        }
+    .table-formatted-vborders {
+        width:70% !important;
+    }
+    }
+.wrapper {
+    width: 115%;
+    clear: both;
+    margin-bottom: 20px;
+    margin-left: 5%;
+    margin-right: 20%;
+}
+.paginationSection{
+	margin-left: 105px;
+}
+strong, b{
+	font-weight: 700 !important;
+}
+.mainHeadSection {
+    margin: 0 0px 30px 0;
+    width: 57%;
+    margin-left: 180px;
+}
+
+.main-section-bottom {
+    overflow: hidden;
+    width: 58%;
+    margin-left: 180px;
+    font-family: Inter, "Noto Sans", CiscoSans, CiscoSansTT, -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.3;
+}
+
+.sitecopy p{
+    color:rgb(82, 82, 82);
+    font-size:14px;
+    font-stretch:100%;
+    font-style:normal;
+    font-weight:400;
+}
+/*media query changes start: varsingh*/
+/*Tablet and iPads; */
+@media (min-width: 768px) and (max-width: 1024px) {
+.wrapper {
+    width: 175%;
+    clear: both;
+    margin-bottom: 20px;
+    margin-left: -176px;
+    margin-right: inherit;
+}
+
+.paginationSection {
+    margin-left: 105px;
+}
+
+.mainHeadSection {
+    margin: 0 0px 30px 0;
+    width: 57%;
+    margin-left: 177px;
+    line-height: 1.8rem;
+}
+}
+
+@media (min-width: 320px) and (max-width: 320px){
+.paginationSection {
+    margin-left: 90px !important;
+}
+.mainHeadSection {
+    margin: 0 0px 5px 0;
+    width: 57% !important;
+    margin-left: 165px !important;
+    line-height: 1.9rem;
+}
+.wrapper {
+    width: 160% !important;
+    clear: both;
+    margin-bottom: 20px;
+    margin-left: -173px !important;
+    overflow-wrap: anywhere;
+}
+}
+
+
+/*smart phones: iPhone X*/
+@media (min-width: 320px) and (max-width: 480px) {
+.cdc-fw, .loc-en-us{
+overflow-x: hidden;
+}
+.paginationSection {
+    margin-left: -75px;
+}
+.mainHeadSection {
+    margin: 0 0px 5px 0;
+    width: 57%;
+    margin-left: -5px;
+    line-height: 1.9rem;
+}
+
+.wrapper {
+    width: 170%;
+    clear: both;
+    margin-bottom: 20px;
+    margin-left: -173px;
+	overflow-wrap: anywhere;
+}
+}
+
+/*iPad Pro*/
+@media only screen 
+  and (min-device-width: 1024px) 
+  and (max-device-width: 1366px) 
+  and (-webkit-min-device-pixel-ratio: 2) 
+  and (orientation: portrait){
+.paginationSection {
+    margin-left: 110px;
+}
+.mainHeadSection {
+    margin: 0 0px 30px 0;
+    width: 57%;
+    margin-left: 180px;
+    line-height: 1.8rem;
+}
+.wrapper {
+    width: 173%;
+    clear: both;
+    margin-bottom: 20px;
+    margin-left: -176px;
+    margin-right: inherit;
+}
+}
+
+/*media query changes end: varsingh*/
+@media (device-width: 768px){
+   .mainHeadSection {
+    margin-left: 0px;
+   }
+   .paginationSection {
+    margin-left: -70px !important;
+}
+}
+</style>
+<style>
+/* Hide TAC AI / Shepherd UI on narrow viewports (host + proactive popup nodes left by bundle) */
+@media (max-width: 767px) {
+  shepherd-native-embed,
+  #proactivePopupLogin,
+  #proactivePopup,
+  #signInTAC,
+  #closeProactivePopup,
+  #shepherdNativeEmbedProactivePopupStyle,
+  .shepherd-native-embed-element,
+  .csa-proactive-popup {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+html.tac-ai-narrow-viewport shepherd-native-embed,
+html.tac-ai-narrow-viewport #proactivePopupLogin,
+html.tac-ai-narrow-viewport #proactivePopup,
+html.tac-ai-narrow-viewport #signInTAC,
+html.tac-ai-narrow-viewport #closeProactivePopup,
+html.tac-ai-narrow-viewport #shepherdNativeEmbedProactivePopupStyle,
+html.tac-ai-narrow-viewport .shepherd-native-embed-element,
+html.tac-ai-narrow-viewport .csa-proactive-popup {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+</style>
+<script type="module">
+const MOBILE_MQ = "(max-width: 767px)";
+const mqMobile = window.matchMedia(MOBILE_MQ);
+
+/** Bumped whenever we tear down for mobile; in-flight setup() must abort if stale. */
+let tacAiSetupToken = 0;
+
+/**
+ * Narrow viewport: CSS media and layout width (avoid visualViewport alone â€” it can
+ * disagree with layout width during resize on some browsers).
+ */
+function isMobileViewport() {
+  const mqNarrow = window.matchMedia(MOBILE_MQ).matches;
+  const inner = window.innerWidth;
+  const client = document.documentElement
+    ? document.documentElement.clientWidth
+    : inner;
+  const layoutW = Math.min(inner, client);
+  return mqNarrow || layoutW <= 767;
+}
+
+function syncNarrowViewportClass() {
+  document.documentElement.classList.toggle(
+    "tac-ai-narrow-viewport",
+    isMobileViewport()
+  );
+}
+
+const TAC_AI_SHEPHERD_REMOVE_SELECTORS = [
+  "shepherd-native-embed",
+  "#proactivePopupLogin",
+  "#proactivePopup",
+  "#signInTAC",
+  "#closeProactivePopup",
+  "#shepherdNativeEmbedProactivePopupStyle",
+  ".shepherd-native-embed-element",
+  ".csa-proactive-popup",
+];
+
+/**
+ * Removes the custom element and known Cisco Shepherd / proactive popup DOM
+ * (the bundle often leaves #proactivePopupLogin etc. after the host is gone).
+ */
+function removeShepherdEmbed() {
+  tacAiSetupToken++;
+  TAC_AI_SHEPHERD_REMOVE_SELECTORS.forEach((sel) => {
+    try {
+      document.querySelectorAll(sel).forEach((el) => {
+        el.remove();
+      });
+    } catch (_) {
+      /* ignore invalid selector in very old engines */
+    }
+  });
+}
+
+let tacAiMobileDomObserver = null;
+
+function stopMobileEmbedObserver() {
+  if (tacAiMobileDomObserver) {
+    tacAiMobileDomObserver.disconnect();
+    tacAiMobileDomObserver = null;
+  }
+}
+
+function nodeMayBeTacAiShepherdUi(el) {
+  if (!el || el.nodeType !== 1) {
+    return false;
+  }
+  const id = el.id || "";
+  if (
+    /^(proactivePopupLogin|proactivePopup|signInTAC|closeProactivePopup|shepherdNativeEmbedProactivePopupStyle)$/.test(
+      id
+    )
+  ) {
+    return true;
+  }
+  if (typeof el.matches !== "function") {
+    return false;
+  }
+  return el.matches(
+    "shepherd-native-embed, .shepherd-native-embed-element, .csa-proactive-popup"
+  );
+}
+
+function nodeTreeMayContainTacAiShepherdUi(root) {
+  if (!root || root.nodeType !== 1) {
+    return false;
+  }
+  if (nodeMayBeTacAiShepherdUi(root)) {
+    return true;
+  }
+  if (typeof root.querySelector !== "function") {
+    return false;
+  }
+  return !!root.querySelector(
+    "shepherd-native-embed, #proactivePopupLogin, #proactivePopup, .shepherd-native-embed-element, .csa-proactive-popup"
+  );
+}
+
+/** While narrow, strip any embed the bundle re-attaches to the document. */
+function startMobileEmbedObserver() {
+  stopMobileEmbedObserver();
+  tacAiMobileDomObserver = new MutationObserver((mutations) => {
+    if (!isMobileViewport()) {
+      stopMobileEmbedObserver();
+      return;
+    }
+    let shouldStrip = false;
+    for (let i = 0; i < mutations.length; i++) {
+      const added = mutations[i].addedNodes;
+      for (let j = 0; j < added.length; j++) {
+        if (nodeTreeMayContainTacAiShepherdUi(added[j])) {
+          shouldStrip = true;
+          break;
+        }
+      }
+      if (shouldStrip) {
+        break;
+      }
+    }
+    if (shouldStrip) {
+      removeShepherdEmbed();
+    }
+  });
+  tacAiMobileDomObserver.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+  });
+}
+
+function shouldAbortTacAiSetup(tokenAtStart) {
+  return tokenAtStart !== tacAiSetupToken || isMobileViewport();
+}
+
+/**
+ * Keeps class/CSS in sync, tears down embed on mobile, starts embed when wide.
+ */
+function onTacAiViewportChange() {
+  syncNarrowViewportClass();
+  if (isMobileViewport()) {
+    removeShepherdEmbed();
+    startMobileEmbedObserver();
+    return;
+  }
+  stopMobileEmbedObserver();
+  startTacAiEmbed();
+}
+
+let tacAiBundleInjected = false;
+
+const productConfigurations = {
+  name: "Security Advisory Pages",
+  environment: "production", // Change this environment to 'production' for using production environment.
+  overlay: {
+    enabled: true,
+  },
+  guidedWorkflow: {
+    enabled: true,
+  },
+  hideIcon: true,
+};
+const deployedBundleUrl =
+  "https://inproductexperience.cisco.com/shepherd-native-embed/latest/package/dist/bundle.js";
+const pluginParams = {};
+
+async function setupShepherdEmbed() {
+  const tokenAtStart = tacAiSetupToken;
+  if (shouldAbortTacAiSetup(tokenAtStart)) {
+    return;
+  }
+
+  await customElements.whenDefined("shepherd-native-embed");
+  if (shouldAbortTacAiSetup(tokenAtStart)) {
+    return;
+  }
+
+  if (document.querySelector("shepherd-native-embed")) {
+    console.log("Plugin is already present.");
+    return;
+  }
+
+  if (shouldAbortTacAiSetup(tokenAtStart)) {
+    return;
+  }
+
+  const shepherdElement = document.createElement("shepherd-native-embed");
+  shepherdElement.setAttribute("data-options", JSON.stringify(pluginParams));
+  document.body.appendChild(shepherdElement);
+
+  if (shouldAbortTacAiSetup(tokenAtStart)) {
+    shepherdElement.remove();
+    return;
+  }
+
+  /**
+   * Checks if the document's published date from the DOM is after a given date.
+   *
+   * This function extracts the published date from the page's DOM element
+   * (#ud-published .divLabelContent), compares it with the provided date,
+   * and returns true if the published date is more recent.
+   *
+   * @param {string} givenDate - The date to compare against (in a format parseable by Date constructor, e.g., 'YYYY-MM-DD')
+   * @returns {boolean} - Returns true if published date is after the given date, false otherwise
+   */
+  function checkPublishedDate(givenDate) {
+    try {
+      const publishedElement = document.querySelector(
+        "#ud-published .divLabelContent"
+      );
+      if (!publishedElement) {
+        console.warn("Published date element not found");
+        return false;
+      }
+
+      const publishedDateString = publishedElement.textContent.trim();
+      if (!publishedDateString) {
+        console.warn("Published date string is empty");
+        return false;
+      }
+
+      const publishedDate = new Date(publishedDateString);
+      const comparisonDate = new Date(givenDate);
+
+      if (isNaN(publishedDate.getTime()) || isNaN(comparisonDate.getTime())) {
+        console.error("Invalid date format detected");
+        return false;
+      }
+
+      return publishedDate > comparisonDate;
+    } catch (error) {
+      console.error("Error comparing dates:", error.message);
+      return false;
+    }
+  }
+
+  /**
+   * Inserts proactivepopup for unauthenticated user
+   */
+  const handleUnauthenticatedCallback = async () => {
+    const pageTitleElement = document.querySelector(".pageHeadTitle");
+    const pageTitle = pageTitleElement
+      ? pageTitleElement.textContent.trim()
+      : "";
+
+    if (pageTitle === "Cisco IOS XE Software Hardening Guide") {
+      await shepherdElement.initiateProactivePopup();
+    } else if (checkPublishedDate("2025-06-30")) {
+      await shepherdElement.initiateProactivePopup();
+    }
+  };
+
+  if (typeof shepherdElement.setup === "function") {
+    await shepherdElement.setup(
+      productConfigurations,
+      null,
+      handleUnauthenticatedCallback
+    );
+  }
+
+  if (shouldAbortTacAiSetup(tokenAtStart)) {
+    shepherdElement.remove();
+  }
+}
+
+function startTacAiEmbed() {
+  if (isMobileViewport()) {
+    return;
+  }
+  if (!tacAiBundleInjected) {
+    tacAiBundleInjected = true;
+    const script = document.createElement("script");
+    script.src = deployedBundleUrl;
+    script.charset = "utf-8";
+    script.onload = () => {
+      console.log("Bundle loaded successfully.");
+      setupShepherdEmbed().catch((error) => {
+        console.error("Error setting up shepherd embed:", error);
+      });
+    };
+    document.head.appendChild(script);
+    return;
+  }
+
+  setupShepherdEmbed().catch((error) => {
+    console.error("Error setting up shepherd embed:", error);
+  });
+}
+
+let tacAiResizeTimer;
+
+/** Instant teardown on shrink so the widget does not linger behind debounce. */
+function applyTacAiViewportImmediate() {
+  syncNarrowViewportClass();
+  if (isMobileViewport()) {
+    removeShepherdEmbed();
+    startMobileEmbedObserver();
+    requestAnimationFrame(() => {
+      if (isMobileViewport()) {
+        removeShepherdEmbed();
+      }
+    });
+  } else {
+    stopMobileEmbedObserver();
+  }
+}
+
+function scheduleTacAiViewportDebounce() {
+  clearTimeout(tacAiResizeTimer);
+  tacAiResizeTimer = setTimeout(onTacAiViewportChange, 100);
+}
+
+window.addEventListener("resize", () => {
+  applyTacAiViewportImmediate();
+  scheduleTacAiViewportDebounce();
+});
+
+if (typeof ResizeObserver !== "undefined" && document.documentElement) {
+  try {
+    const tacAiLayoutRo = new ResizeObserver(() => {
+      applyTacAiViewportImmediate();
+      scheduleTacAiViewportDebounce();
+    });
+    tacAiLayoutRo.observe(document.documentElement);
+  } catch (_) {
+    /* ignore */
+  }
+}
+
+if (typeof mqMobile.addEventListener === "function") {
+  mqMobile.addEventListener("change", onTacAiViewportChange);
+} else if (typeof mqMobile.addListener === "function") {
+  mqMobile.addListener(onTacAiViewportChange);
+}
+
+onTacAiViewportChange();
+</script>
+
+
+<!-- <script src="//www.cisco.com/etc/designs/cdc/clientlibs/responsive/js/web-component-foundation.min.js"></script>
+        <script>
+            cdc.wcAncillaryAssetAllocator.init(['cdc-template'], 'en/us', false, true, false, 'prod', true);
+        </script> -->
+      <script type="module" src="https://www.cisco.com/site/web-components/us/en/cdc-template.js"></script>
+       <script>    
+		   if (window.cdcext === undefined) { window.cdcext = {}; }
+		    cdcext.customEnvironment = 'prod';
+		    cdcext.host = 'Cisco Security Center';
+		    cdcext.locale = 'en-US';
+		
+		    if (window.cdclocale === undefined) { window.cdclocale = {}; }
+		    cdclocale.locale = 'en_us';
+		    
+	   </script>
+    </head>
+    <body style="overflow-x: hidden; margin: 0%;">
+        <cdc-template>
+
+
+
+
+
+
+<div class="wrapper topHeadSection">
+    <div class="paginationSection clearfix printclass">
+        <ul>
+                <a href="https://www.cisco.com">Home</a> / <a href="https://sec.cloudapps.cisco.com/security/center/home.x">Cisco Security</a>
+        </ul>
+    </div>
+    <div class="mainHeadSection clearfix printclass">
+        <!-- <h4>Cisco Security</h4> -->
+        
+        <h1 class="pageHeadTitle">
+            <!--Page heading goes here-->
+            Security Vulnerability Policy
+        </h1>
+    </div>
+</div>
+<div class="wrapper">
+    
+
+<link href="https://sec.cloudapps.cisco.com/security/center/Resources/css/FeedBack_Style.css" type="text/css" rel="stylesheet"/>
+
+			<!-- <div id='siofeedback_tab' class='siofeedback_tab_right' tabindex='0'><a href='javascript:openNewWindow();'><div><span></span></div></a></div> -->
+			<div id='ZN_0OjF4gJD0uzMamG'><!--DO NOT REMOVE-CONTENTS PLACED HERE--></div>
+		
+		<script>
+			function openNewWindow(){
+		//alert('deep');
+		var a='https://ciscocx.qualtrics.com/jfe/form/SV_0q7r6A02bSNGuk6?Ref='+window.location.href+'';
+		var height='325';
+		var width='550';
+		var left='420';
+		var top='400';
+		//alert('URL IS '+a)
+		//window.open(a,'_blank','width='+width+',height='+height+',left='+left+',top='+top',scrollbars=yes');
+		window.open(a,'_blank','width='+width+',height='+height+',left='+left+',top='+top+',scrollbars=yes');
+		}
+		</script>
+		
+		<script type='text/javascript'>
+(function(){var g=function(e,h,f,g){
+this.get=function(a){for(var a=a+"=",c=document.cookie.split(";"),b=0,e=c.length;b<e;b++){for(var d=c[b];" "==d.charAt(0);)d=d.substring(1,d.length);if(0==d.indexOf(a))return d.substring(a.length,d.length)}return null};
+this.set=function(a,c){var b="",b=new Date;b.setTime(b.getTime()+6048E5);b="; expires="+b.toGMTString();document.cookie=a+"="+c+b+"; path=/; "};
+this.check=function(){var a=this.get(f);if(a)a=a.split(":");else if(100!=e)"v"==h&&(e=Math.random()>=e/100?0:100),a=[h,e,0],this.set(f,a.join(":"));else return!0;var c=a[1];if(100==c)return!0;switch(a[0]){case "v":return!1;case "r":return c=a[2]%Math.floor(100/c),a[2]++,this.set(f,a.join(":")),!c}return!0};
+this.go=function(){if(this.check()){var a=document.createElement("script");a.type="text/javascript";a.src=g;document.body&&document.body.appendChild(a)}};
+this.start=function(){var t=this;"complete"!==document.readyState?window.addEventListener?window.addEventListener("load",function(){t.go()},!1):window.attachEvent&&window.attachEvent("onload",function(){t.go()}):t.go()};};
+try{(new g(100,"r","QSI_S_ZN_0OjF4gJD0uzMamG","https://zn0ojf4gjd0uzmamg-ciscocx.siteintercept.qualtrics.com/SIE/?Q_ZID=ZN_0OjF4gJD0uzMamG")).start()}catch(i){}})();
+</script>
+
+<style>
+	#QSIFeedbackButton-btn{
+			bottom: 39% !important;
+		}
+			#QSIFeedbackButton-btn:active, #QSIFeedbackButton-btn:focus {
+    outline: none !important;
+}
+	@media only screen and (max-width: 768px){
+	#QSIFeedbackButton-btn{
+			display: none !important;
+		}
+	}
+	
+	/* .QSIFeedbackButton div{
+		color:white !important;
+		background-color: #1a8ce9 !important;	
+	} */
+</style>
+		
+        <div class="main-section-bottom printclass">
+            <!--HTML Contents goes here-->
+            <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+ <!--   <link rel="stylesheet" type="text/css"
+        href="https://www.cisco.com/etc/designs/cdc/fw/snapshots/css/responsive-1.17v.css"> -->
+
+    <title>Security Vulnerability Policy - Cisco</title>
+
+    <meta name="description" content="psirt, security vulnerability, vulnerability, policy" />
+    <meta name="title" content="Security Vulnerability Policy" />
+    <style>
+        a {
+            word-wrap: break-word;
+        }
+
+        .wrapper {
+            width: unset !important;
+            margin-left: 5% !important;
+            margin-right: 7% !important;
+        }
+
+        th,
+        td {
+            font-size: 12px;
+        }
+
+        .main-section-bottom {
+            margin-left: 0px !important;
+            width: 100%;
+            margin-bottom: 2%;
+        }
+
+        main {
+            margin-left: 250px;
+        }
+
+        .bottomSection img {
+            width: 100%;
+        }
+
+        .bottomSection .big {
+            width: 97%;
+        }
+
+        .bottomSection {
+            margin-left: 250px;
+            padding-left: 12px;
+            padding-bottom: 20px;
+        }
+
+        .mainHeadSection {
+            margin: 0px 0px 0px 30px;
+        }
+
+        .paginationSection {
+            margin: 30px 0px 0px 0px;
+        }
+
+        h1 {
+            color: #007fab;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            font-size: 24px;
+            font-weight: 400;
+            font-family: 'CISCOSANSTTLIGHT'
+        }
+
+        h2 {
+            color: #007fab;
+            margin-top: 1.5em;
+            margin-bottom: .5em;
+            font-size: 20px;
+            font-family: 'CISCOSANSTTLIGHT'
+        }
+
+        h3 {
+            margin-top: 1.25em;
+            margin-bottom: 1em;
+            font-size: 18px;
+            font-weight: bold;
+            color: #007fab;
+            font-family: 'CISCOSANSTTLIGHT'
+        }
+
+        p {
+
+            margin-bottom: 1em;
+            line-height: 150%;
+            font-size: 16px;
+            font-family: 'CISCOSANSTTLIGHT';
+            color: black;
+        }
+
+        sup {
+            font-size: 10px;
+            color: black;
+        }
+
+        pre {
+            color: black;
+            font-family: monospace;
+            font-size: 14px;
+            font-stretch: 100%;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 130%;
+        }
+
+        ol {
+            font-size: 16px;
+            font-stretch: 100%;
+            font-style: normal;
+            font-weight: 400;
+            list-style-type: decimal;
+            margin: 16px;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-left: 1em;
+            line-height: 130%;
+            font-family: 'CISCOSANSTTLIGHT'
+        }
+
+        ul {
+            font-size: 16px;
+            font-stretch: 100%;
+            font-style: normal;
+            font-weight: 400;
+            list-style-type: disc;
+            margin: 16px;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-left: 1em;
+            line-height: 130%;
+            font-family: 'CISCOSANSTTLIGHT'
+        }
+
+        li {
+            margin-top: 0.2em;
+            font-family: 'CISCOSANSTTLIGHT';
+            color: black;
+        }
+
+        nav {
+            position: absolute;
+            width: 250px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 0rem;
+            padding-top: 22px !important;
+            border-right: 1px solid #ccc;
+            font-size: 9pt;
+        }
+
+        nav ul {
+            list-style: none;
+            padding-left: 0;
+            font-size: 9pt;
+        }
+
+        nav li {
+            margin-bottom: 0.25em;
+            font-size: 14px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: normal;
+            transition: all 0.2s ease;
+
+        }
+
+        nav a.active {
+            font-weight: bolder !important;
+            text-decoration: underline;
+
+        }
+
+        main {
+            padding: 0 10;
+        }
+
+        td.big {
+            padding: 10px !important;
+        }
+
+        table.big,
+        td.big {
+            border-collapse: collapse;
+            font-family: 'CISCOSANSTTLIGHT';
+            line-height: 120%;
+            margin-left: 20px;
+            table-layout: fixed;
+            overflow-x: auto;
+            font-size:11pt;
+        }
+
+        table.tight,
+        td.tight,
+        table.tight1,
+        td.tight1 {
+            border-collapse: collapse;
+            padding: 10px;
+            font-family: 'CISCOSANSTTLIGHT';
+            line-height: 120%;
+            table-layout: fixed;
+            font-size:100%;
+        }
+
+        th {
+            background-color: #0d274d;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            font-size:100%;
+        }
+
+        .responsive {
+            width: 100%;
+            height: auto;
+        }
+
+        @media screen and (max-width: 700px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .sidebar a {
+                float: left;
+            }
+
+            div.content {
+                margin-left: 0;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .sidebar a {
+                text-align: center;
+                float: none;
+            }
+
+            nav {
+                top: 0
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .bottomSection .big {
+                width: 95%;
+            }
+
+            .bottomSection img {
+                width: 100%
+            }
+
+            .wrapper {
+                width: unset !important;
+                margin-left: 6px;
+            }
+
+            #sideActionBar {
+                /* left: 1% !important */
+            }
+
+        }
+
+        @media (device-width: 768px) {
+            .paginationSection {
+                margin-left: 0px !important;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            main,
+            .bottomSection {
+                margin-left: 20px;
+            }
+
+            .mainHeadSection {
+                margin: 0 !important;
+                width: 100% !important;
+            }
+
+            .paginationSection{
+                margin-left: 0px !important;
+            }
+            .paginationSection ul{
+                margin-left: 0px !important;
+                padding-left: 0px !important;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 900px) {
+            .tight td.tight img {
+                width: 100% !important;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 701px) {
+            nav {
+                display: none;
+            }
+
+            main,
+            .bottomSection {
+                margin-left: 0px;
+            }
+
+            table.tight1,
+            td.tight1 {
+                padding: 5px;
+                overflow-x: none;
+                font-size: 11px;
+            }
+        }
+
+        @media (min-width: 320px) and (max-width: 480px) {
+            nav {
+                display: none;
+            }
+
+            #InformationChannels .big a {
+                word-wrap: inherit !important;
+            }
+
+            .wrapper {
+                width: unset !important;
+                margin-left: 2% !important;
+                margin-right: 2% !important;
+            }
+
+            .bottomSection {
+                margin-left: 0px !important;
+                width: 100% !important;
+            }
+
+            .mainHeadSection {
+                margin: 0 !important;
+                width: 100% !important;
+            }
+
+            .paginationSection{
+                margin-left: 0px !important;
+            }
+
+            .paginationSection ul{
+                margin-left: 0px !important;
+                padding-left: 0px !important;
+            }
+
+            main {
+                margin-left: 0px !important;
+                width: 100% !important;
+            }
+
+            /*main, .bottomSection{
+                margin-left: 180px;
+            }*/
+            /* .headerTable {
+                margin-left: 187px !important;
+                width: 80%;
+            } */
+
+            table.big {
+                margin-left: 0px;
+            }
+
+            table .tight img {
+                width: 100%;
+            }
+
+            .tight1 th {
+                font-size: 11px;
+                padding: 0px;
+            }
+
+            .tight1 td,
+            .tight td {
+                font-size: 9px !important;
+                padding: 3px !important;
+            }
+
+            .main-section-bottom {
+                width: 100%;
+            }
+
+            #DisclosureSchedule table .tight {
+                width: 100%;
+            }
+
+            table.tight1,
+            table.tight {
+                width: 98%;
+            }
+
+            #SecurityRiskAssessment table {
+                font-size: 11px;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 700px) {
+            .main-section-bottom {
+                width: 100%;
+            }
+
+            table.big {
+                width: 100%;
+                margin-left: 0px;
+            }
+
+            table .tight th {
+                padding: 0px;
+            }
+
+            table .tight td {
+                padding: 5px;
+            }
+        }
+
+        @media only screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+            .wrapper {
+                margin-left: 40px !important;
+                width: unset !important;
+            }
+
+        }
+
+        @media screen and (max-width: 768px) {
+            .headerTable tr {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .headerTable td {
+                width: 80%;
+            }
+
+            .headerTable td.tight {
+                padding-bottom: 15px !important;
+                width: 100%;
+                /* Adjust padding for smaller view */
+            }
+
+            .alignTh {
+                writing-mode: vertical-rl;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table border="0" width="100%" class="big headerTable">
+        <tr>
+            <td class="tight" width="27%" style="padding-bottom: 30px !important"><img
+                    src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/psirtlogo.png"
+                    class="responsive" alt="Cisco PSIRT Logo"></td>
+            <td class="tight" width="73%" style="padding-bottom: 30px !important">
+                <p>If you are experiencing a security vulnerability emergency, see <a href="#Contact">Cisco PSIRT Contact Information</a>.</p>
+                <p>Other contact information:</p>
+                <ul>
+                    <li><a href="#PR">Public Relations and Press Queries</a></li>
+                    <li><a href="#GeneralQueries">General Security-Related Queries</a></li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    
+<img src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/line1400.jpg" width="100%" alt="">
+
+<div id="sideActionBar" style="position:initial;background: #fff; z-index: 20; left: 5%; right: 10px; top: 0;">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="#Purpose">Purpose</a></li>
+                <li><a href="#Policy">Policy</a></li>
+                <li><a href="#PR">Public Relations or Press Queries</a></li>
+                <li><a href="#ProductSecurityCommitment">Commitment to Product Security and Integrity</a></li>
+                <li><a href="#ProductSecurityIncidentResponse">Cisco Product Security Incident Response</a>
+                    <ul>
+                        <li><a href="#Contact">Cisco PSIRT Contact Information</a></li>
+                        <li><a href="#GeneralQueries">General Security-Related Queries</a></li>
+                        <li><a href="#IR_Assistance">Incident Response Assistance</a></li>
+                        <li><a href="#InformationChannels">Channels For Security Vulnerability Information</a>
+                            <ul>
+                                <li><a href="#Email">Email Details</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="#Process">Cisco Process for Product Security Incident Response</a>
+                    <ul>
+                        <li><a href="#AwarenessAndInvestigations">Awareness and Investigations</a>
+                            <ul>
+                                <li><a href="#Cloud">Cloud-Hosted Services</a></li>
+                                <li><a href="#ThirdPartySoftware">Third-Party Software</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#SecurityRiskAssessment">Security Risk Assessment</a></li>
+                        <li><a href="#Disclosure">Disclosure of Security Vulnerabilities</a>
+                            <ul>
+                                <li><a href="#DisclosureSchedule">Disclosure Schedule</a></li>
+                                <li><a href="#SecurityPublications">Security Publications</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#SoftwareUpdates">Security Software Updates</a></li>
+                    </ul>
+                </li>
+                <li><a href="#BugBounties">Cisco Bug Bounty Programs</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+
+        <section id="Purpose"><a name="purpose"></a>
+            <h1>Purpose</h1>
+            <p>This policy was created to guide and inform Cisco customers in the event of a reported vulnerability in a
+                Cisco product or cloud-hosted service. It ensures that Cisco customers have a consistent, unambiguous
+                resource to help them understand how Cisco responds to events of this nature.</p>
+        </section>
+
+        <section id="Policy"><a name="policy"></a>
+            <h1>Policy</h1>
+            <p>This policy clearly states how Cisco addresses reported security vulnerabilities in Cisco products and
+                cloud-hosted services, including the timeline, actions, and responsibilities that apply to all
+                customers.</p>
+        </section>
+
+        <section id="PR"><a name="pr"></a>
+            <h1>Public Relations or Press Queries Regarding Cisco Security Vulnerability Information</h1>
+            <p>Members of the media with queries about Cisco security vulnerability information can contact <a href="mailto:media_pr@cisco.com">media_pr@cisco.com</a>.</p>
+        </section>
+
+        <section id="ProductSecurityCommitment"><a name="psi"></a>
+            <h1>Commitment to Product Security and Integrity at Cisco</h1>
+            <p>Cisco product development practices specifically prohibit any intentional behaviors or product features
+                that are designed to allow unauthorized device or network access, exposure of sensitive device
+                information, or a bypass of security features or restrictions. These include, but are not limited to:
+            </p>
+            <ul>
+                <li>Undisclosed device access methods or back doors</li>
+                <li>Hardcoded or undocumented account credentials</li>
+                <li>Covert communication channels</li>
+                <li>Undocumented traffic diversion</li>
+            </ul>
+            <p>Cisco considers such product behaviors to be serious vulnerabilities. Cisco will address any issues of
+                this nature with the highest priority and encourages all parties to report suspected vulnerabilities to
+                the <a href="#Contact">Cisco PSIRT</a> for immediate investigation.</p>
+            <p>For more information, see <a
+                    href="https://www.cisco.com/c/en/us/about/trust-center/technology-built-in-security.html#~stickynav=2">Cisco
+                    Secure Development Lifecycle (CSDL)</a>.</p>
+        </section>
+
+        <section id="ProductSecurityIncidentResponse"><a name="cpsir"></a>
+            <h1>Cisco Product Security Incident Response</h1>
+            <p>The Cisco Product Security Incident Response Team (PSIRT) is responsible for responding to Cisco product
+                security incidents. The Cisco PSIRT aligns its practices with <a href="https://www.iso.org/standard/72311.html">ISO/IEC 29147:2018</a>,
+                which are guidelines for disclosure of potential vulnerabilities established by the International
+                Organization for Standardization.</p>
+                <p>The Cisco PSIRT is a dedicated, global team that receives, investigates, and
+                publicly reports information about security vulnerabilities and issues related to Cisco products and
+                services. The Cisco PSIRT works with Cisco customers and vendors, independent security researchers, consultants, and
+                industry organizations to identify possible security vulnerabilities and issues with
+                Cisco products and networks.</p>
+            <p>Cisco defines a security vulnerability as a weakness in the computational logic found in software and
+                hardware components that, when exploited, results in a negative impact to confidentiality, integrity, or
+                availability. Cisco reserves the right to deviate from this definition based on specific circumstances.
+               </p>
+        </section>
+
+        <section id="Contact"><a name="roosfassv"></a>
+            <h2>Cisco PSIRT Contact Information</h2>
+            <p>Individuals or organizations that are experiencing a product security issue are strongly encouraged to
+                contact the Cisco PSIRT. Cisco welcomes reports from independent researchers, industry organizations,
+                vendors, customers, and other sources concerned with product or network security.</p>
+            <p>To contact the Cisco PSIRT, use one of the methods in the following table:</p>
+            <table class="big" border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td class="big" bgcolor="#0d274d" align="center" valign="middle" width="140px"><img
+                                src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/email.png"
+                                width="90px" alt=""></td>
+                        <td class="big" style="/* padding-right: 50px !important; */"><strong>Email <a
+                                    href="mailto:psirt@cisco.com">psirt@cisco.com</a></strong>
+                            <ul>
+                                <li style="font-size:95%; line-height: normal;">This is the most effective method.</li>
+                                <li style="font-size:95%; line-height: normal;">Include a detailed description of the problem and any relevant details and logs.</li>
+                            </ul><br>
+                            <span style="line-height: 120%">Cisco encourages customers to encrypt sensitive information
+                                that is sent to Cisco by email. The Cisco PSIRT supports encrypted messages via Pretty
+                                Good Privacy (PGP)/GNU Privacy Guard (GPG) encryption software. The Cisco PSIRT public
+                                key is available at the following link: <a href="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/Cisco_PSIRT_PGP_Public_Key.asc">https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/Cisco_PSIRT_PGP_Public_Key.asc</a>.</span><br><br>
+                            <span style="line-height: 120%">Cisco supports an RFC 9116-compliant security.txt file,
+                                located at <a href="https://www.cisco.com/.well-known/security.txt">https://www.cisco.com/.well-known/security.txt</a>.</span>
+                            <p>&nbsp;</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="big" bgcolor="#0d274d" align="center" valign="middle" width="140px"><img
+                                src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/phone.png"
+                                width="90px" alt=""></td>
+                        <td class="big" style="padding-right: 50px !important;"><strong>Call<br>
+                                +1 877 228 7302 (toll-free within North America)<br>
+                                +1 408 525 6532 (international direct dial)</strong><br><br>
+                            <span style="line-height: 120%">These contact numbers route to Cisco global customer
+                                support. To facilitate engagement, explain that this is a product security issue or,
+                                alternatively, reference the PSIRT-SVP-001 search code.</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="GeneralQueries"><a name="gsrq"></a>
+            <h2>General Security-Related Queries</h2>
+            <p>For general security concerns about Cisco products and cloud-hosted services, the Cisco Technical
+                Assistance Center (TAC) can provide configuration and technical assistance. The Cisco TAC can also help
+                with non-critical security incidents and software upgrades for security bug fixes. To contact the Cisco
+                TAC, use one of the following methods:</p>
+
+            <table class="big" border="0" width="100%">
+                <thead>
+                    <th width="140px">&nbsp;</th>
+                    <th align="left">Cisco TAC Support &mdash; Available 24 hours a day, 7 days a week</th>
+                </thead>
+                <tr>
+                    <td class="big" bgcolor="#0d274d" align="center" valign="middle" width="140px"><img
+                            src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/phone.png" width="90px"
+                            alt=""></td>
+
+                    <td class="big">
+                        <strong>+1 800 553 2447 (toll-free within North America)<br />
+                            +1 408 526 7209 (international direct dial)<br /><br /> </strong>
+                        Additional TAC numbers:&#8239;<a
+                            href="https://www.cisco.com/c/en/us/support/web/tsd-cisco-worldwide-contacts.html">Customer
+                            Service Contacts</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="big" bgcolor="#0d274d" align="center" valign="middle" width="140px"><img
+                            src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/Web_white.png"
+                            width="80px" alt=""><br /></td>
+                    <td class="big"><a
+                            href="https://mycase.cloudapps.cisco.com/start"><strong>https://mycase.cloudapps.cisco.com/start</strong></a>
+                    </td>
+                </tr>
+            </table>
+        </section>
+        <section id="IR_Assistance"><a name="ire"></a>
+            <h2>Incident Response Assistance</h2>
+            <p>All customers, regardless of support contract status, may be eligible to receive reasonable support for
+                security incidents that impact them that involve Cisco products or services.</p>
+            <p>Customers with support contracts should follow their normal support process to engage Cisco. Any customer
+                who does not hold a support contract must contact Cisco <a href="#GeneralQueries">by telephone</a> and
+                request that a support case be opened on an exception basis. The customer should be prepared to share
+                serial number(s), the software release, and a detailed description of the concern and request that the
+                Cisco PSIRT be engaged.</p>
+            <p>If the concern is in currently supported hardware or software products, the Cisco PSIRT, at the request of the Cisco TAC, will make a reasonable effort to validate the concern, collect required data, and report the findings back to the customer. Further in-depth analysis, assessment of “lateral” impact, or detailed characterizations of sources and other impacts are beyond the scope of the Cisco PSIRT and require that customers engage a full-service forensics analysis and impact assessment provider. </p>
+        </section>
+        <section id="InformationChannels">
+            <h2><a name="rsvifc"></a>Channels for Security Vulnerability Information from Cisco</h2>
+            <p>There are several ways to stay connected and receive the latest security vulnerability information from Cisco. Refer to the following table and see the <a href="#SecurityRiskAssessment">matrix of security publications</a> to determine the best channel for your needs. </p>
+            <a name="cc"></a><a name="rss"></a><a name="openVuln_API"></a><a name="cns"></a><a name="pfsuc"></a>
+            <table class="big">
+                <tr>
+                    <td class="big" bgcolor="00bceb" align="center" valign="middle" width="140px"><img
+                            src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/Web.png" width="90px"
+                            alt=""></td>
+                    <td class="big"><strong>Cisco Security Portal</strong><br />
+                        <strong><a
+                                href="https://www.cisco.com/security">https://www.cisco.com/security</a></strong><br /><br />
+                        This website provides Cisco security information and security vulnerability documents, including
+                        relevant security products and services.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="big" bgcolor="00bceb" align="center" valign="middle" width="140px"><img
+                            src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/api.png" width="90px"
+                            alt=""></td>
+                    <td class="big"><strong>Cisco PSIRT openVuln API</strong><br />
+                        <strong><a
+                                href="https://developer.cisco.com/psirt/">https://developer.cisco.com/psirt/</a></strong><br /><br />
+                        This RESTful API allows customers to obtain Cisco security vulnerability information in
+                        different machine-consumable formats.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="big" bgcolor="00bceb" align="center" valign="middle" width="140px"><img
+                            src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/bell.png" width="90px"
+                            alt=""></td>
+                    <td class="big"><strong>My Notifications</strong><br />
+                        <strong><a
+                                href="https://www.cisco.com/c/en/us/support/web/tools/cns/notifications.html">https://www.cisco.com/c/en/us/support/web/tools/cns/notifications</a></strong><br /><br />
+                        Create customized notifications to receive important Cisco product and technology information,
+                        including Cisco Security Advisories.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="big" bgcolor="00bceb" align="center" valign="middle" width="140px"><img
+                            src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/email_black.png"
+                            width="90px" alt=""></td>
+                    <td class="big"><strong>Customer Security Announcement Email</strong><br /><br />
+                        To subscribe, email <a
+                            href="mailto:cust-security-announce-join@cisco.com">cust-security-announce-join@cisco.com</a>.
+                        (The content of the message does not matter.) You will receive a confirmation email, further
+                        instructions, and a list policy statement.<br /><br />
+                        To unsubscribe from the cust-security-announce mailing list, email <a
+                            href="mailto:cust-security-announce-leave@cisco.com">cust-security-announce-leave@cisco.com</a>
+                        with the word "unsubscribe" in the subject line.<br /><br />
+                        For details, see the <a href="#Email">Details About the Cisco Customer Security Announcement
+                            Email</a> section after this table.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="big" bgcolor="00bceb" align="center" valign="middle" width="140px"><img
+                            src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/rss.png" width="90px"
+                            alt=""></td>
+                    <td class="big"><strong>RSS Feed</strong><br />
+                        <strong><a
+                                href="http://sec.cloudapps.cisco.com/security/center/rss.x?i=44">http://sec.cloudapps.cisco.com/security/center/rss.x?i=44</a></strong><br /><br />
+                        These feeds are free and do not require an active Cisco.com registration.
+                    </td>
+                </tr>
+            </table>
+
+            <p>All information provided through the channels listed in the preceding table is point-in-time, meaning that the information was accurate at the time it was published or distributed. The most up-to-date information about security vulnerabilities in Cisco products and software is available through the <a
+                    href="https://bst.cloudapps.cisco.com/home">Cisco Bug Search Tool</a>. This web-based tool is a
+                gateway to the Cisco bug tracking system. The <a
+                    href="https://www.cisco.com/c/en/us/support/web/tools/bst/bsthelp/index.html">Bug Search Tool
+                    Help</a> page has information on where to find Cisco bug IDs and how to use the tool.</p>
+        </section>
+
+        <section id="Email">
+            <h3>Details About the Cisco Security Announcement Email</h3>
+            <p><a href="https://sec.cloudapps.cisco.com/security/center/publicationListing.x">Cisco Security Advisories</a> provide information about security vulnerabilities of Critical, High, and Medium severity. They are clear-signed with the Cisco PSIRT <a
+                    href="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/Cisco_PSIRT_PGP_Public_Key.asc">PGP
+                    public key</a> and distributed to the external cust-security-announce mailing list. The Cisco PSIRT
+                may also send Informational advisories to the cust-security-announce mailing list.</p>
+            <p>Emails are sent for the initial release of and major revisions to Cisco Security Advisories. A major
+                revision is defined as a revision that Cisco PSIRT determines to be a significant change to advisory content that is related to how customers should address the vulnerability.
+                Examples of a major advisory change include, but are not
+                limited to, changes to the affected products list, changes in <a href="#SecurityRiskAssessment">Security
+                    Impact Rating</a>, changes in mitigations or workarounds, and changes to&#8239;fixed releases
+                information. If a document undergoes a minor revision, the update will be posted to <a
+                    href="https://www.cisco.com/security/">Cisco.com</a> without an accompanying email. Customers who
+                require automated alerts for minor revisions should subscribe to the <a
+                    href="http://sec.cloudapps.cisco.com/security/center/rss.x?i=44">Cisco Security Advisory RSS
+                    feed</a> or <a href="https://www.cisco.com/c/en/us/support/web/tools/cns/notifications.html">My
+                    Notifications</a>. All Security Advisories on Cisco.com are displayed in chronological order, with
+                the most recent advisories and updates appearing at the top of the page.</p>
+            <p>To subscribe to the cust-security-announce mailing list, email <a
+                    href="mailto:cust-security-announce-join@cisco.com">cust-security-announce-join@cisco.com</a> using the email account that you wish to have subscribed. (The
+                content of the message does not matter.) You will receive confirmation, instructions, and a list policy
+                statement.</p>
+            <p>To unsubscribe from the cust-security-announce mailing list, email <a
+                    href="mailto:cust-security-announce-leave@cisco.com?subject=unsubscribe">cust-security-announce-leave@cisco.com</a> using the email account that you wish to have unsubscribed and put the word "unsubscribe" in the subject line. (The content of the message does not matter.) You will
+                receive a confirmation notice, to which you need to reply to be unsubscribed. You will not be
+                unsubscribed unless you reply to the confirmation email.</p>
+            <p><span style="font-weight: bold">Important:</span> Requests to subscribe must be sent to <a
+                    href="mailto:cust-security-announce-join@cisco.com">cust-security-announce-join@cisco.com</a>, and
+                requests to unsubscribe must be sent to <a
+                    href="mailto:cust-security-announce-leave@cisco.com?subject=unsubscribe">cust-security-announce-leave@cisco.com</a>
+                &mdash; not to the cust-security-announce@cisco.com email address itself. You must send the messages
+                from the email account that you want to be subscribed to or unsubscribed from the list.</p>
+        </section>
+
+        <section id="Process">
+            <h1><a name="cpsirp"></a>Cisco Process for Product Security Incident Response</h1>
+            <img src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/psirtprocess.png" width="100%"
+                alt="The vulnerability life cycle and Cisco PSIRT disclosure process is as follows. #1 is Awareness, when PSIRT received notification of a sescurity incident. #2 is Active Management, when PSIRT prioritizes and identifies resources. #3 is Software Fixes, when PSIRT coordinates the fix and impact assesssment. Finally, #4 is Customer Notification, when PSIRT notifies all customers simultaneously.">
+            <p>The Cisco PSIRT investigates all reports of product security vulnerabilities, regardless of the Cisco
+                software code version or product lifecycle status, until the product reaches the&#8239;<a
+                    href="https://www.cisco.com/c/en/us/products/eos-eol-policy.html">Last Day of Support (LDoS)</a>.
+                Issues will be prioritized based on the potential severity of the vulnerability and other environmental
+                factors. Ultimately, the resolution of a reported incident may require upgrades to products and
+                cloud-hosted services that are under active support from Cisco. As a best practice, Cisco strongly
+                recommends that customers periodically verify that their products are under active support to ensure that they have access to
+                the latest software updates and other benefits.</p>
+        </section>
+        <section id="AwarenessAndInvestigations">
+            <h2><a name="dsvdpcsd"></a><a name="AwarenessAndInvestigations"></a>Awareness and Investigations</h2>
+            <p>During any investigation, the Cisco PSIRT manages all sensitive information on a highly confidential
+                basis. Internal distribution is limited to those individuals who have a legitimate need to know and can
+                actively assist in the resolution.</p>
+            <p><span style="font-weight: bold">Incidents reports by third parties:</span> Throughout the investigative
+                process, the Cisco PSIRT strives to work collaboratively with the incident reporter to assess the
+                nature of the vulnerability, gather required technical information, and determine appropriate remedial
+                action. When the initial investigation is complete, results will be delivered to the incident reporter
+                along with a plan for resolution and public disclosure, as applicable.</p>
+            <p>The Cisco PSIRT will coordinate with the incident reporter to determine the frequency of status updates
+                on the incident and documentation updates.</p>
+            <p>The Cisco PSIRT asks incident reporters to maintain strict confidentiality until complete resolutions are
+                available for customers and have been published by the Cisco PSIRT on the Cisco website through the
+                appropriate coordinated disclosure.</p>
+            <p>With the agreement of the incident reporter, the Cisco PSIRT may acknowledge the reporter's contribution
+                during the public disclosure of the vulnerability.</p>
+            <p><span style="font-weight: bold">Incidents that may impact other vendors:</span> The Cisco PSIRT works
+                with third-party coordination centers such as the&#8239;<a href="https://www.kb.cert.org/vuls/">Computer
+                    Emergency Response Team Coordination Center</a>&#8239;(CERT/CC),&#8239;<a
+                    href="https://www.kyberturvallisuuskeskus.fi/en/">Computer Emergency Response Team of
+                    Finland</a>&#8239;(CERT-FI),&#8239;<a href="https://www.jpcert.or.jp/english/">Japan Computer
+                    Emergency Response Team</a>&#8239;(JP-CERT), and&#8239;<a href="https://www.npsa.gov.uk/">National
+                    Protective Security Authority</a>&#8239;(NPSA) to manage a coordinated industry disclosure for
+                vulnerabilities reported to Cisco that may impact multiple vendors (for example, a generic protocol
+                issue). In these situations, the Cisco PSIRT will either assist the incident reporter with contacting
+                the coordination center or do so on the incident reporter’s behalf.</p>
+            <p>Cisco will protect customer-specific data at all times throughout this process. Specifically, Cisco will
+                not share any customer-specific data unless directed to do so by the affected customer or as required
+                by a legal investigation.</p>
+            <p><span style="font-weight: bold">Incidents discovered during services delivery:</span> If a new or
+                previously undisclosed security vulnerability is found during a Cisco Services engagement with a
+                customer, Cisco will follow the&#8239;<a href="#Process">Cisco Product Security Incident Response
+                    Process</a>. Vulnerabilities found in Cisco products and cloud-hosted services will be handled by
+                the Cisco PSIRT according to this&#8239;<a
+                    href="https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html">Cisco
+                    Security Vulnerability Policy</a>.</p>
+            <p>If the vulnerability is in another vendor’s product, Cisco will follow the&#8239;<a
+                    href="https://sec.cloudapps.cisco.com/security/center/resources/vendor_vulnerability_policy.html">Cisco
+                    Vendor Vulnerability Reporting and Disclosure Policy</a>&#8239;unless the affected customer wishes
+                to report the vulnerability to the vendor directly; in that case, Cisco will facilitate contact between
+                the customer and the vendor and will notify CERT/CC (or its national equivalent). </p>
+        </section>
+
+        <section id="Cloud"><a name="cloud"></a>
+            <h3>Cisco Cloud-Hosted Services</h3>
+            <p>Cisco offers multiple cloud-hosted services that are used by customers but are maintained, patched, and
+                monitored by Cisco.</p>
+
+            <p>The Cisco PSIRT responds to vulnerabilities in Cisco cloud-hosted services and works closely with the
+                teams that operate them. These operational teams ensure that security vulnerabilities are fixed and that patches are
+                deployed to all customer instances in a timely manner.</p>
+
+            <p>Typically, service-related security events are communicated to customers by the service teams through
+                direct notification or through the service dashboard or portal. In some instances, Cisco may disclose
+                vulnerabilities through Security Advisories for Cisco cloud-hosted services in coordination with the
+                service teams.</p>
+
+            <p>In most cases, no user action is required because Cisco regularly patches cloud-hosted services.</p>
+        </section>
+
+        <section id="ThirdPartySoftware">
+            <h3><a name="3psv"></a>Third-Party Software Vulnerabilities</h3>
+            <p>If there is a vulnerability in a third-party software component that is used in a Cisco product, Cisco
+                typically uses the CVSS score provided by the component creator. Cisco may adjust the CVSS score to
+                reflect the circumstances that are specific to Cisco products.</p>
+
+            <p>Cisco will consider a third-party vulnerability “high profile” if it meets the following criteria:</p>
+            <ul>
+                <li>The vulnerability exists in a third-party component.</li>
+                <li>Multiple Cisco products and/or cloud-hosted services are affected.</li>
+                <li>The CVSS score is 5.0 or higher.</li>
+                <li>The vulnerability has gathered significant public attention.</li>
+                <li>The vulnerability is likely to have exploits available and is expected to be, or is being, actively
+                    exploited.</li>
+            </ul>
+
+            <p>For high profile, third-party vulnerabilities, Cisco will begin assessing potentially impacted
+                products and cloud-hosted services that have not reached the LDoS and publish a Security Advisory. Known affected Cisco products and
+                cloud-hosted services will be detailed in updates to the initial Security Advisory. A Cisco bug will be created for each vulnerable
+                product so that registered customers can view them using the Cisco Bug Search Tool. Third-party
+                vulnerabilities that are not classified as high profile will be disclosed in a <a href="#rne">Release
+                    Note Enclosure (RNE)</a>.</p>
+            <p style="font-weight: bold"><a name="cvr"></a><a name="vex"></a>Cisco Vulnerability Repository</p>
+            <p>The&#8239;<a href="https://sec.cloudapps.cisco.com/security/center/cvr">Cisco Vulnerability
+                    Repository</a>&#8239;(CVR) is a vulnerability search engine for CVEs that were published in 2018 or
+                later that may impact Cisco products. The CVR can help customers understand if their Cisco product is
+                affected by a particular third-party software vulnerability. Customers may request a Vulnerability
+                Exploitability eXchange (VEX) document for any CVE in the CVR.</p>
+
+            <p>This tool also displays any Cisco Security Advisories that are associated with a CVE. At this time, The
+                CVR does not include Cisco cloud offers. For help with a product not listed in this tool, use the
+                Feedback link on the&#8239;CVR page&#8239;or contact your support organization.</p>
+        </section>
+
+        <section id="SecurityRiskAssessment"><a name="asr"></a>
+            <h2>Security Risk Assessment</h2>
+            <p>Cisco uses&#8239;Version 3.1&#8239;of the&#8239;<a href="https://www.first.org/cvss/">Common
+                    Vulnerability Scoring System&#8239;(CVSS)</a> as part of its standard process of evaluating reported
+                potential vulnerabilities that do not have a CVE in Cisco products and cloud-hosted services. This CVSS
+                model uses three distinct measurements, or scores: Base, Temporal, and Environmental. Cisco will provide
+                an evaluation of the Base vulnerability score and, in some instances, the Temporal vulnerability score.
+                End users are encouraged to compute the Environmental score based on their network parameters. The
+                combination of all three scores should be considered the final score, which represents a moment in time
+                and is tailored to a specific environment. Organizations are advised to use this final score to
+                prioritize responses in their own environments.</p>
+            <p>In addition to CVSS scores, Cisco uses the Security Impact Rating (SIR) as a way to categorize
+                vulnerability severity in a simpler manner. The SIR is based on the CVSS Base score. It may be adjusted
+                by PSIRT to account for Cisco-specific variables and is included in every Cisco Security Advisory. Cisco
+                uses the following guidelines to determine the Cisco Security Advisory type for vulnerabilities in
+                Cisco-authored, customer-managed software. Security Advisories for Critical, High, and Medium SIRs
+                include fixed software information.</p>
+            <table class="tight" border="1" width="100%">
+                <thead>
+                    <th align="center">Type</th>
+                    <th align="center">CVSS Score</th>
+                    <th align="center">CVE</th>
+                    <th align="center">Fix Information</th>
+                    <th align="center">Machine-readable Format</th>
+                </thead>
+                <tr>
+                    <td class="tight" align="center" valign="middle" width="140px"><img
+                            src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/critical.png"
+                            width="90px" alt="Critical"></td>
+                    <td class="tight">
+                        9.0 &ndash; 10.0
+                    </td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Security Advisory<sup>1</sup><br />Bug Search Tool</td>
+                    <td class="tight">RSS, CSAF</td>
+                </tr>
+                <tr>
+                    <td class="tight" align="center" valign="middle" width="140px"><img
+                            src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/high.png" width="90px"
+                            alt="High"></td>
+                    <td class="tight">
+                        7.0 &ndash; 8.9
+                    </td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Security Advisory<sup>1</sup><br />Bug Search Tool</td>
+                    <td class="tight">RSS, CSAF</td>
+                </tr>
+                <tr>
+                    <td class="tight" align="center" valign="middle" width="140px"><img
+                            src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/medium.png"
+                            width="90px" alt="Medium"></td>
+                    <td class="tight">
+                        4.0 &ndash; 6.9
+                    </td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Security Advisory<sup>1</sup><br />Bug Search Tool</td>
+                    <td class="tight">RSS, CSAF</td>
+                </tr>
+                <tr>
+                    <td class="tight" align="center" valign="middle" width="140px"><img
+                            src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/informational.png"
+                            width="90px" alt="Informational"></td>
+                    <td class="tight">
+                        Not applicable
+                    </td>
+                    <td class="tight">No</td>
+                    <td class="tight">Bug Search Tool, if applicable</td>
+                    <td class="tight">RSS, CSAF</td>
+                </tr>
+            </table><br>
+            <p style="margin-top: 0">1. Detailed fix information for Cisco IOS, IOS XE, NX-OS, FXOS, Adaptive Security
+                Appliance (ASA), Firepower Threat Defense (FTD), and Firepower Management Center (FMC) Software can be
+                obtained using the Cisco Software Checker.</p>
+            <p>Issues with a Low SIR are typically published as a bug <a href="#rne">Release Note Enclosure (RNE)</a>
+                and not as a Security Advisory.</p>
+            <p>Cisco reserves the right to deviate from these guidelines in specific cases if additional factors are not
+                properly captured in the CVSS score.</p>
+            <p>If there is a security issue with a third-party software component that is used in a Cisco product, Cisco
+                typically uses the CVSS score provided by the third party. In some cases, Cisco may adjust the CVSS
+                score to reflect the impact to the Cisco product.</p>
+            <p><span style="font-weight: bold">Note:</span>&#8239;Cisco is a&#8239;<a
+                    href="https://cve.mitre.org/index.html">Common Vulnerabilities and Exposures&#8239;(CVE)</a>
+                Numbering Authority and will assign CVE IDs to Cisco software vulnerabilities from the MITRE block of
+                IDs that are assigned to the company for this purpose. Cisco does not assign CVE IDs for reported
+                vulnerabilities until the vulnerabilities have been confirmed by Cisco. After vulnerabilities are
+                published, Cisco provides CVE details to MITRE for inclusion in its database.</p>
+        </section>
+
+        <section id="Disclosure">
+            <h2><a name="cp"></a>Disclosure of Security Vulnerabilities</h2>
+            <p>Cisco generally does not publicly disclose security vulnerabilities in a Cisco product until the Cisco PSIRT has completed the incident response process and determined that enough software patches or workarounds exist to address the vulnerability. Cisco may, however, expedite disclosure of a security vulnerability in the following situations: </p>
+            <ul>
+                <li>The Cisco PSIRT has completed the incident response process for a high-severity vulnerability and public disclosure of code fixes is planned to address it. </li>
+                <li>The Cisco PSIRT has observed active exploitation of a vulnerability that could lead to increased
+                    risk for Cisco customers. Cisco will accelerate the publication of a security announcement
+                    describing the vulnerability that may or may not include a complete set of patches or workarounds.
+                </li>
+                <li>There is the potential for increased public awareness of a vulnerability affecting Cisco products
+                    and/or cloud-hosted services that could lead to increased risk for Cisco customers. Cisco will
+                    accelerate the publication of a security announcement describing the vulnerability that may or may
+                    not include a complete set of patches or workarounds.</li>
+                <li>The Cisco PSIRT has declared a third-party software vulnerability to be high profile.</li>
+            </ul>
+            <p>All Cisco security publications are disclosed to customers and the public simultaneously.</p>
+            <p>When coordinating disclosure with third parties, the Cisco PSIRT will attempt to provide notification of
+                any changes to the Cisco PSIRT public disclosure schedule.</p>
+            <p>As documented in the&#8239;<a href="#InformationChannels">Channels for Security Vulnerability Information
+                    from Cisco</a>&#8239;section of this document, Cisco delivers technical security information about
+                software fixes in Cisco products and distributes product updates through several channels. Cisco
+                reserves the right to deliver technical security information in a manner that deviates from this policy
+                on an exception basis.</p>
+        </section>
+
+
+        <section id="DisclosureSchedule">
+            <h3><a name="ds"></a><a name="cis"></a><a name="aop"></a><a name="exceptions"></a>Disclosure Schedule</h3>
+            <p>Cisco generally discloses Cisco Security Advisories at 1600 Greenwich Mean Time (GMT) on any given
+                Wednesday.</p>
+            <p>In direct response to customer feedback, Cisco releases the following bundles of Cisco Security
+                Advisories at 1600 GMT on a regular schedule twice each year. This schedule applies to the disclosure of
+                vulnerabilities in the following Cisco products and does not apply to the disclosure of vulnerabilities
+                in other Cisco products.</p>
+            <table class="tight" border="1" width="70%">
+                <thead>
+                    <th align="center" colspan="2">Cisco Products</th>
+                </thead>
+                <tr>
+                    <td class="tight">Cisco FXOS and NX-OS Software</td>
+                    <td class="tight">Fourth Wednesday of February and August</td>
+                </tr>
+                <tr>
+                    <td class="tight">Cisco IOS XR Software</td>
+                    <td class="tight">Second Wednesday of March and September</td>
+                </tr>
+                <tr>
+                    <td class="tight">Cisco IOS and IOS XE Software</td>
+                    <td class="tight">Fourth Wednesday of March and September</td>
+                </tr>
+            </table>
+            <p>Cisco reserves the right to publish an individual Security Advisory for Cisco IOS and IOS XE Software,
+                Cisco IOS XR Software, or Cisco FXOS and NX-OS Software or other products outside the published
+                schedule. Conditions under which an out-of-cycle publication may occur include, but are not limited to,
+                the following:</p>
+            <ul>
+                <li>Cisco detects heightened public awareness of a serious vulnerability.</li>
+                <li>Cisco learns of active exploitation of a vulnerability.</li>
+                <li>Cisco works with a third-party coordination center to publicly disclose a vulnerability.</li>
+            </ul>
+        </section>
+
+
+        <section id="SecurityPublications">
+            <h3><a name="tpos"></a>Types of Security Publications</h3>
+            <p>In all security publications, Cisco discloses the information required for customers to assess the impact
+                of a vulnerability and any potential steps needed to protect their environments. Cisco does not provide
+                vulnerability details that could enable someone to craft an exploit.</p>
+            <p>Cisco provides the following types of security-related publications on the <a
+                    href="https://www.cisco.com/security">Cisco Security Portal</a> on Cisco.com.</p>
+            <p style="font-weight: bold"><a name="sa"></a>Cisco Security Advisories</p>
+            <p><a href="https://sec.cloudapps.cisco.com/security/center/publicationListing.x">Cisco Security
+                    Advisories</a> provide detailed information about certain security issues that directly involve Cisco
+                products and cloud-hosted services and that require an upgrade, fix, or other customer action. Security
+                Advisories are used to disclose vulnerabilities in Cisco-authored software or in high-profile
+                third-party software with a Critical, High, or Medium SIR. The Cisco PSIRT validates only the affected
+                and fixed release information that is documented in the advisory.</p>
+            <p>Cisco Security Advisories are point-in-time documents. Information should be considered up to date as of
+                the time and date of the last publication update as indicated by the Last Updated field in the advisory
+                header.</p>
+            <p>All Cisco Security Advisories that disclose vulnerabilities with a Critical, High, or Medium SIR include
+                an option to download <a href="https://csaf.io/">Common Security Advisory Framework (CSAF)</a> content.
+                CSAF is an industry standard designed to depict vulnerability information in machine-readable format.
+                This machine-readable content can be used with other tools to automate the process of interpreting data
+                contained in a Security Advisory.</p>
+            <p>Cisco occasionally publishes Informational Security Advisories to address issues that require a response
+                to information discussed in a public forum, such as a blog or discussion list. Informational advisories
+                are normally published if a third party makes a public statement about a Cisco product vulnerability.
+                Informational advisories may also be used to proactively notify customers about a security-related issue
+                that is not a vulnerability. Informational advisories are not used as a disclosure mechanism for any
+                Cisco vulnerabilities but instead for sharing information on security incidents that may impact Cisco
+                products and that may be of interest to Cisco customers.</p>&#8239;
+            <a name="terms"></a><a name="interim"></a><a name="fixed"></a><a name="final"></a>
+            <table class="tight" width="100%" border="1">
+                <thead>
+                    <th align="center">Security Advisory Terms and Conventions</th>
+                </thead>
+                <tr>
+                    <td class="tight" style="font-size:11pt"><strong>Fixed Release Availability:</strong>&#8239;If a
+                        future release date is indicated for software, the date provided represents an estimate based on
+                        all information known to Cisco as of the Last Updated date at the top of the advisory.
+                        Availability dates are subject to change based on a number of factors, including satisfactory
+                        testing results and delivery of other priority features and fixes. If no version or date is
+                        listed for an affected component (indicated by a blank field and/or an advisory designation of
+                        Interim), Cisco is continuing to evaluate the fix and will update the advisory as additional
+                        information becomes available. After the advisory is marked Final, customers should refer to the
+                        associated Cisco bug(s) for further details.</td>
+                </tr>
+                <tr>
+                    <td class="tight" style="font-size:11pt;">The designated Security Advisory status indicates the
+                        following:<br /><br />
+                        <strong>Interim:</strong>&#8239;The Cisco investigation is ongoing. Cisco will issue revisions
+                        to the advisory when additional information, including fixed software release data, becomes
+                        available.<br /><br />
+                        <strong>Final:</strong>&#8239;Cisco has completed its evaluation of the vulnerability described
+                        in the advisory. There will be no further updates unless there is a material change in the
+                        nature of the vulnerability.
+                    </td>
+                </tr>
+            </table>
+            <p style="font-weight: bold"><a name="cer"></a>Cisco Event Responses</p>
+            <p><a href="https://sec.cloudapps.cisco.com/security/center/erp.x?i=52">Cisco&#8239;Event
+                    Responses</a>&#8239;provide information about security events that have the potential for widespread
+                impact on customer networks, applications, and devices. Cisco Event Responses contain summary
+                information, threat analysis, and mitigation techniques that feature Cisco products and cloud-hosted
+                services. They are normally published under the following circumstances:</p>
+            <ul>
+                <li>If a significant security vulnerability exists in a vendor's product that could affect a Cisco
+                    product due to interoperation with the vendor's product or use of the network as a vector for
+                    exploitation.</li>
+                <li>In conjunction with the release of Cisco IOS and IOS XE, Cisco IOS XR, Cisco FXOS and NX-OS, and
+                    Cisco ASA, FTD, and FMC Software bundled publications.</li>
+            </ul>
+            <p style="font-weight: bold"><a name="rne"></a>Release Note Enclosures</p>
+            <p>Release Note Enclosures (RNEs) are used to disclose issues with a Low SIR and most third-party software
+                vulnerabilities. All Cisco bug IDs that are disclosed by Cisco are available for registered customers to
+                view in the <a href="https://tools.cisco.com/bugsearch/">Cisco Bug Search Tool</a>.</p>
+            <p>If a Cisco Security Advisory references a bug, the bug entry in the Cisco Bug Search Tool will link to
+                the relevant Cisco Security Advisory.</p>
+            <p>Any Cisco bug that has been evaluated by the Cisco PSIRT includes a PSIRT Evaluation section in its RNE.
+                This section includes, where Cisco deems appropriate and relevant, Base and Temporal CVSS scores and a
+                CVE ID. Customers are invited to use this additional information at their discretion and correlate Cisco
+                bugs with industry events. This information is not intended to supplement any standard Cisco warranties
+                that are applicable to the software as stated in the Cisco End User License Agreement.</p>
+            <p>Free software updates will not be provided for issues that are disclosed through an RNE. Customers who
+                wish to upgrade to a software release that includes fixes for those issues should contact their normal
+                support channels. Any exception to this policy will be determined solely at the discretion of Cisco.</p>
+            <p>The following table summarizes the methods used to notify customers about the aforementioned security
+                publications. Exceptions may be made on a case-by-case basis to increase communication for a given
+                document.</p>
+            <table class="tight1" width="100%" border="1">
+                <thead>
+                    <th width="33%">Publication</th>
+                    <th width="9%" class="alignTh">Email</th>
+                    <th width="11%" class="alignTh">Security Portal</th>
+                    <th width="8%" class="alignTh">RSS</th>
+                    <th width="16%" class="alignTh">My Notifications (CNS)</th>
+                    <th width="13%" class="alignTh">openVuln API</th>
+                    <th width="12%" class="alignTh">Bug Search Tool</th>
+                </thead>
+                <tr>
+                    <td class="tight">Cisco Security Advisory&mdash;Critical and High Severity</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                </tr>
+                <tr>
+                    <td class="tight">Cisco Security Advisory&mdash;Medium Severity</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                </tr>
+                <tr>
+                    <td class="tight">Cisco Security Advisory&mdash;Informational</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">No</td>
+                    <td class="tight">No</td>
+                    <td class="tight">Yes</td>
+                </tr>
+                <tr>
+                    <td class="tight">Cisco Event Response</td>
+                    <td class="tight">No</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">Yes</td>
+                    <td class="tight">No</td>
+                    <td class="tight">No</td>
+                    <td class="tight">No</td>
+                </tr>
+                <tr>
+                    <td class="tight">Release Note Enclosure</td>
+                    <td class="tight">No</td>
+                    <td class="tight">No</td>
+                    <td class="tight">No</td>
+                    <td class="tight">No</td>
+                    <td class="tight">No</td>
+                    <td class="tight">Yes</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="SoftwareUpdates"> 
+            <h2><a name="fixes"></a>Security Software Updates</h2>
+            <p>The Cisco PSIRT will investigate and disclose vulnerabilities in Cisco products and services from the
+                date of First Commercial Shipment (FCS) to the&#8239;<a
+                    href="https://www.cisco.com/c/en/us/products/eos-eol-policy.html">LDoS</a>. Cisco customers with
+                service contracts that entitle them to regular software updates should obtain security fixes through
+                their usual update channels, generally from the Cisco website for the relevant product. Cisco recommends
+                contacting the Cisco TAC only with specific and imminent problems or questions.</p>
+            <p>As a special customer service, and to improve the overall security of the internet, Cisco may offer
+                customers free software updates to address high-severity security problems. The decision to provide free
+                software updates is made on a case-by-case basis. Refer to the Cisco security publication for details.
+                Free software updates will typically be limited to Critical- and High-severity vulnerabilities.</p>
+            <p>Fixes for some third-party software vulnerabilities may be available only in the most recent major
+                software releases and not backported to older releases.</p>
+            <p>If Cisco has offered a free software update to address a specific issue, noncontract customers who are
+                eligible for the update may obtain it by contacting the Cisco TAC using any of the methods described in
+                the&#8239;<a href="#GeneralQueries">General Security-Related Queries</a>&#8239;section of this document.
+            </p>
+            <p><span style="font-weight: bold">Note:</span>&#8239;To verify their entitlement, individuals who contact
+                the Cisco TAC should have available the URL of the Cisco document that is offering the update.</p>
+            <p>Customers may download, install, and expect support only for software releases and feature sets for which
+                they have purchased a valid license that is current and active. By installing, downloading, accessing,
+                or otherwise using such software updates, customers agree to follow the terms of the&#8239;<a
+                    href="https://www.cisco.com/c/en/us/about/legal/cloud-and-software/end_user_license_agreement.html">Cisco
+                    software license agreement</a>. In most cases, the software update will be a maintenance release to
+                software that was previously purchased. Free security software updates do not entitle customers to a new
+                software license, additional software feature sets, or major revision upgrades.</p>
+            <p>After&#8239;<a href="https://www.cisco.com/c/en/us/products/eos-eol-policy.html">End of
+                    Sale&#8239;(EoS)</a>, the availability of security fixes for vulnerabilities is defined in the
+                product’s EoS bulletin. (See the&#8239;<a
+                    href="https://www.cisco.com/c/en/us/products/eos-eol-policy.html">End-of-Life Policy</a>&#8239;for
+                details.) The EoS bulletin may define the Last Day of Support (LDoS) milestone, which identifies the
+                last date that Cisco will investigate and disclose product vulnerabilities.</p>
+            <p>Once the LDoS has been reached, the Cisco PSIRT will continue to accept vulnerability reports but will
+                not analyze, fix, or disclose potential vulnerabilities. To this end, the Cisco PSIRT will not issue
+                CVEs for issues reported on products that are past the LDoS milestone.</p>
+            <p>All aspects of this process are subject to change without notice and on a case-by-case basis. No
+                particular level of response is guaranteed for any specific issue or class of issues.</p>
+        </section>
+        <section id="BugBounties"><a name="bug_bounties"></a>
+            <h1>Cisco Bug Bounty Programs</h1>
+            <p>For information on Cisco Bug Bounty programs, see&#8239;<a
+                    href="https://sec.cloudapps.cisco.com/security/center/resources/cisco_bug_bounty_faq.html">Bug
+                    Bounty Programs at Cisco</a>.</p>
+        </section>
+    </main>
+
+    <div class="bottomSection">
+      <p>&nbsp;</p>
+        <hr />
+        <p>Last Updated: 2025 September 8</p>
+        <p>This document is part of the <a href="https://www.cisco.com/security" target="_blank">Cisco Security</a>
+            portal. Cisco provides the official information contained on the <a href="https://www.cisco.com/security"
+                target="_blank"> Cisco Security</a> portal in English only.</p>
+
+
+        <p>This document is provided on an &quot;as is&quot; basis and does not imply any kind of guarantee or warranty,
+            including the warranties of merchantability or fitness for a particular use. Your use of the information in
+            the document or materials linked from the document is at your own risk. Cisco reserves the right to change
+            or update this document without notice at any time.</p>
+
+
+
+        <p>Internal Reference Policy: Security Vulnerability Policy, EDCS-19443599</p>
+        <p>Owning Function: Cisco PSIRT</p>
+        <p>&copy; 2025 Cisco and/or its affiliates. All rights reserved. This document is Cisco Public Information.</p>
+        <table border="2" width="100%" class="big">
+            <tr>
+                <td class="tight" bgcolor="#0d274d" align="center" width="27%"><img
+                        src="https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/psirtlogo_white.png"
+                        alt="Cisco PSIRT Logo"></td>
+                <td class="tight" width="73%">
+                    <p>Cisco PSIRT: <a href="mailto:psirt@cisco.com">psirt@cisco.com</a></p>
+                    <p>Cisco Security Advisories: <a
+                            href="https://sec.cloudapps.cisco.com/security/center/publicationListing.x">https://sec.cloudapps.cisco.com/security/center/publicationListing.x</a>
+                    </p>
+                    <p>Cisco Security Tactical Resources: <a
+                            href="https://sec.cloudapps.cisco.com/security/center/tacticalresources.x">https://sec.cloudapps.cisco.com/security/center/tacticalresources.x</a>
+                    </p>
+                    <p>Cisco Worldwide Support Contacts: <a
+                            href="https://www.cisco.com/c/en/us/support/web/tsd-cisco-worldwide-contacts.html">https://www.cisco.com/c/en/us/support/web/tsd-cisco-worldwide-contacts.html</a>
+                    </p>
+                </td>
+            </tr>
+        </table>
+</div>
+
+
+    <script>
+        const sections = document.querySelectorAll("main section[id]");
+        const navLinks = document.querySelectorAll("nav a");
+        const sideActionBarElement = document.getElementById("sideActionBar");
+        const sideActionBarElementOffsetTop = sideActionBarElement.offsetTop;
+        const sidebarElement = document.getElementsByClassName("sidebar")[0];
+        console.log('sideActionBarElement ', sideActionBarElementOffsetTop);
+        const footerElement = document.getElementsByClassName("bottomSection")[0];
+        const footerElementOffsetTop = footerElement.offsetTop;
+        console.log('sideActionBarElement ', footerElementOffsetTop);
+        var messageBody = document.getElementById('sideActionBar');
+        messageBody.scrollTop = messageBody.scrollHeight;
+
+        function onScroll() {
+            console.log("on scroll", scrollY , footerElementOffsetTop );
+            if (scrollY >= sideActionBarElementOffsetTop + 120) {
+                sideActionBarElement.style.position = "fixed";
+            } else {
+                sideActionBarElement.style.position = "initial";
+            }
+
+            if (scrollY >= footerElementOffsetTop + 900) {
+                sidebarElement.style.height = "300px";
+            } else {
+                sidebarElement.style.height = "unset";
+            }
+
+   if (scrollY >= footerElementOffsetTop + 600 && screen.width > 768 && screen.width < 900) {
+                sidebarElement.style.height = "120px";
+            }
+         
+  if (scrollY >= footerElementOffsetTop + 800 && screen.width > 900 && screen.width < 1024) {
+                sidebarElement.style.height = "120px";
+            }
+
+ if (scrollY >= footerElementOffsetTop + 750 && screen.width > 1583) {
+                sidebarElement.style.height = "300px";
+            }
+
+            let currentSection = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    currentSection = section.getAttribute("id");
+                }
+            });
+
+            navLinks.forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href") === `#${currentSection}`) {
+                    link.classList.add("active");
+                }
+            });
+        }
+
+        window.addEventListener("scroll", onScroll);
+    </script>
+</body>
+
+</html>
+
+        </div>
+</div>
+
+
+
+
+</cdc-template>
+ <!-- GDPR cookie integration -->
+<script type="text/javascript" src="//www.cisco.com/c/dam/cdc/t/ctm.js"></script>
+    </body>
+</html>	

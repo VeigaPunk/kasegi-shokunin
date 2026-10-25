@@ -1334,3 +1334,69 @@ VERIFIED** (lesson `corpus/lessons/round-27.md` §Frozen claims, §Mistakes M27-
 - **Waves.** Zero. The 32–64 v1 band and the §3 L2 floor were not exercised; no seat ran; no
   dispatch refusal occurred. Wrap-up directive: land now, record unfinished claims honestly.
 - **Tooling.** No tool installed or upgraded; no pacman transaction attempted (host-wide pause).
+
+## Round 28 — 2026-10-25 — anchorcheck gate soundness + F12 Japanese state-coordinated disclosure workflow (one v2 wave, 69 seats)
+
+Frozen claims `.ufo/waves/round-28/claims.json` (frozen_at_utc `2026-10-25T00:00:00Z`); freeze
+commit `c9f8b115a098c65356e4b3b6048af45a37ab8395`; lane HEAD at this entry `94f387c`
+(round-28 wave1 spec + dispatch). Every counter below was re-run by this seat from the lane root,
+last at `2026-10-25T17:23:53Z`, re-confirmed unchanged at `2026-10-25T17:24:28Z`; post-values are
+recorded as PENDING because the wave was still in flight at that instant — the instrument was at
+its pre-change digest `c2a9e6c6…`, no `c1-receipt-index.txt` existed, and the F12 knowledge entry
+had not landed (both round-28 captures, the F12 README row and the S042 registry row had). The L1
+appends the final after-values at close; no number here is transcribed from another seat.
+
+- **C1 depth:verifiability (4, held) — anchorcheck.py gate soundness.** Before→after, measured at
+  instrument `c2a9e6c6…`: (a) bad-fixture exit **0 → pending** (BASE-ABSENT printed, exit 0);
+  (b) bounties-fixture `BOUNTIES-ABSENT` lines **0 → pending** (CITE does not match the cite at all);
+  (c) selftest receipt lines **0 → pending** (`--selftest` absent, exit 1;
+  `.ufo/waves/round-28/c1-receipt-index.txt` not created); (d) SKILL.md live run exit **0**, bad **0**,
+  verdict classes unchanged — `LOST-RECORDED=306 PIN-BROKEN=0 OUTSIDE-BASE=0 BASE-ABSENT=0` (no-harm
+  baseline holds at measure time; after must stay 0/0/306). Frozen disclosure: once the
+  `~/Projects/bounties/` CITE arm lands, 4 corpus marked bounties citations (`claim-gates.md`,
+  `intake-and-finalize.md`, `mission-control.md`, `source-tree-loss-2026-09-28.md`) newly classify
+  LOST-RECORDED — disclosed, not hidden. Close re-run: the four frozen counter commands (bad-fixture
+  exit; bounties-fixture `grep -c BOUNTIES-ABSENT`; `--selftest` plus the receipt-index
+  `selftest cases=N failures=0` / `instrument_sha256=` line; `anchorcheck.py SKILL.md`).
+- **C2 coverage (7, held) — F12 Japanese state-coordinated disclosure workflow.** Frontier
+  `admitted` rows **11 → 12 (row present mid-wave)**; knowledge entries with `^source: S042 `
+  **0 → 0** (entry absent at both passes); `S042` registry row **0 → 1** and registry **41 → 42
+  rows**; harness `entries=14 pass=14 exit=0 → FileNotFoundError` (`corpus/
+  knowledge/japanese-domestic-disclosure-workflow.md`) because the F12 row was admitted before its
+  entry landed; census exit 0 / 41 rows → **exit 1**, `E11 ×2 (S041, S042 missing used-by
+  corpus/knowledge/japanese-domestic-disclosure-workflow.md)`. Final after-values remain PENDING at
+  close: the entry, and with it harness **15/15** and census **exit 0 / 42 rows**, must be confirmed
+  by the L1 re-run of the four frozen counter commands (README `awk` admitted count;
+  `grep -lE '^source: S042 ' corpus/knowledge/*.md | wc -l`;
+  `grep -cE '^\|[[:space:]]*S042[[:space:]]*\|' corpus/SOURCES.md`; `frontier-recheck-count.py`).
+- **Census.** Before: exit 0, 41 rows, W04 ×2 (S028/S029 pre-existing; re-run committed at
+  `.ufo/waves/round-28/census-before.txt`). Mid-wave at `2026-10-25T17:23:53Z`: exit 1, 42 rows —
+  `E11` for both S041 and S042 missing the used-by entry, i.e. a registry/entry ordering gap, not a
+  row defect; the two pre-existing W04s persist. After: PENDING — ScribeRegistryC2's run, expected
+  exit 0 at 42 rows once the entry lands; the L1 records the final exit/row count.
+- **Waves.** One v2-policy wave, `kasegi-r28-build`: 69 seats spawned (dispatch
+  `counts.spawn=69`, resume 0, total 69) — executor 18, scribe 16, reviewer 12, scout 5, critic 5,
+  mutation-tester 5, connector 3, revenger 2, sentinel 2, simplifier 1. Spec
+  `.ufo/waves/round-28/wave1-spec.json`, dispatch `.ufo/waves/round-28/wave1-dispatch.json`, seat
+  reports under `.ufo/waves/round-28/wave1/`. Receipts: `.ufo/waves/round-28/receipts/ScribeLog.txt`
+  (this entry's diff), measurement transcripts
+  `.ufo/waves/round-28/wave1/ScribeLog/measure.txt` … `measure4.txt`; controls
+  `.ufo/waves/round-28/c1-controls/` and `.ufo/waves/round-28/c2-controls/`.
+- **Tooling.** No tool installed or upgraded; no pacman transaction attempted (host-wide pause).
+
+### Round-28 close-out correction (appended)
+
+- C1 disclosure correction: the frozen prediction of four new `LOST-RECORDED` classifications did not
+  reproduce; those `source:` trailers are not backticked TOK tokens. Erratum:
+  `.ufo/waves/round-28/claims-erratum-1.md`; no verdict-class movement.
+- The post-wave expected-list gate was closed by regenerating
+  `corpus/instruments/knowledge-expected.txt` from the working-tree knowledge glob: 39 → 40 entry
+  lines (41 → 42 physical lines). `python3 corpus/instruments/recheck-audit.py` now prints
+  `lines=40 total=40 pass=40 … exit=0` and `expected=40 missing=0 unexpected=0 exit=0`.
+- The selftest's caller-controlled `GIT_*` environment flaw was reproduced under `GIT_DIR` and
+  corrected by removing inherited `GIT_*` variables in its isolated subprocess environment.
+  Before: `selftest cases=9 failures=1`; after: `selftest cases=9 failures=0`, exit 0
+  (`claims-erratum-1.md` §Erratum 2).
+- Final canonical measurements are recorded at the committed instrument digest in
+  `.ufo/waves/round-28/c1-receipt-index.txt`; post-commit reruns and lane/report hashes are in the
+  fleet report.

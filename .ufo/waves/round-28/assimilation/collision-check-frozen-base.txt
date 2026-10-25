@@ -1,0 +1,98 @@
+== round-28 wave-1 collision check against the FROZEN lane base ==
+base revision: c9f8b115a098c65356e4b3b6048af45a37ab8395
+$ git rev-parse --verify c9f8b115a098c65356e4b3b6048af45a37ab8395^{commit}
+c9f8b115a098c65356e4b3b6048af45a37ab8395
+[exit 0]
+
+$ git show c9f8b115a098c65356e4b3b6048af45a37ab8395:corpus/SOURCES.md > /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/SOURCES.md
+[exit 0]
+
+$ wc -l < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/SOURCES.md | sed 's/^/base SOURCES.md lines: /'
+base SOURCES.md lines: 76
+[exit 0]
+
+
+$ grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/SOURCES.md | grep -oE 'S[0-9]+' | sort > /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/reg-ids
+[exit 0]
+
+$ grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md | grep -oE 'S[0-9]+' | sort > /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/staged-ids
+[exit 0]
+
+$ comm -12 /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/reg-ids /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/staged-ids > /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/collisions
+[exit 0]
+
+$ printf 'base reg-ids    lines='; wc -l < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/reg-ids
+base reg-ids    lines=41
+[exit 0]
+
+$ printf 'base staged-ids lines='; wc -l < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/staged-ids
+base staged-ids lines=94
+[exit 0]
+
+$ printf 'base collisions  lines='; wc -l < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/collisions
+base collisions  lines=11
+[exit 0]
+
+$ cat /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/base/collisions
+S031
+S032
+S033
+S034
+S035
+S036
+S037
+S038
+S039
+S040
+S041
+[exit 0]
+
+
+-- do the 11 colliding ids carry the SAME DOCUMENT in lane and staged? (all must differ) --
+$ python3 - <<'PY'
+import re
+base=open('.ufo/waves/round-28/assimilation/base/SOURCES.md',encoding='utf-8').read().split('\n')
+pkg=open('/home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md',encoding='utf-8').read().split('\n')
+def rows(lines):
+    d={}
+    for l in lines:
+        m=re.match(r'^ {0,3}\|\s*(S\d{3,})\s*\|(.*)$',l)
+        if m:
+            u=re.search(r'https?://[^ |]+', m.group(2))
+            d[m.group(1)]=(u.group(0) if u else '', m.group(2)[:70])
+    return d
+b=rows(base); p=rows(pkg)
+same=0; diff=0
+for i in sorted(set(b)&set(p)):
+    if b[i][0]==p[i][0]:
+        same+=1; print(f'{i}  SAME URL  {b[i][0]}')
+    else:
+        diff+=1; print(f'{i}  DIFFER    lane={b[i][0][:58]}')
+        print(f'{"":6}staged={p[i][0][:58]}')
+print(f'--- collisions={len(set(b)&set(p))} same-document={same} different-document={diff}')
+PY
+S031  DIFFER    lane=https://www.cve.org/Resources/Roles/Cnas/CNA_Rules_v4.2.6.
+      staged=https://hackerone.com/security/policy_versions
+S032  DIFFER    lane=https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpub
+      staged=https://raw.githubusercontent.com/bugcrowd/vulnerability-r
+S033  DIFFER    lane=https://laws.e-gov.go.jp/api/1/lawdata/411AC0000000128
+      staged=https://raw.githubusercontent.com/bugcrowd/vulnerability-r
+S034  DIFFER    lane=https://www.soumu.go.jp/main_sosiki/cybersecurity/kokumin/
+      staged=https://zc.cnvd.org.cn/news/helpList
+S035  DIFFER    lane=https://www.npa.go.jp/bureau/cyber/pdf/1_kaisetsu.pdf
+      staged=https://security.360.cn/Reward/rules
+S036  DIFFER    lane=https://cybozu.co.jp/company/security-policy/
+      staged=https://security.bilibili.com/static/docs/BILISRC_V1.7.pdf
+S037  DIFFER    lane=https://cybozu.co.jp/products/bug-bounty/faq/
+      staged=https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=458BAC
+S038  DIFFER    lane=https://pepabo.com/contact/vulnerability-reporting/
+      staged=https://std.samr.gov.cn/gb/search/gbDetailed?id=B4C25880C3
+S039  DIFFER    lane=https://www.hitachi.co.jp/hirt/publications/hirt-pub10008/
+      staged=https://laws.e-gov.go.jp/api/1/lawdata/411AC0000000128
+S040  DIFFER    lane=https://www.cisco.com/c/en/us/about/security-center/securi
+      staged=https://www.soumu.go.jp/main_sosiki/cybersecurity/kokumin/
+S041  DIFFER    lane=https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf
+      staged=https://www.npa.go.jp/bureau/cyber/pdf/1_kaisetsu.pdf
+--- collisions=11 same-document=0 different-document=11
+[exit 0]
+

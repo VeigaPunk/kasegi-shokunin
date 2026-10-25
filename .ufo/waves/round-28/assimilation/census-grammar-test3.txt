@@ -1,0 +1,55 @@
+== round-28 wave-1 census-grammar test v3 (rows inside the Registry section) ==
+census: /home/vgpnk/Projects/shokunin/scripts/sources-census.sh   today: 2026-10-25
+
+-- scratch 0: live lane registry as-is --
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema3/corpus/SOURCES.md --today 2026-10-25 | grep -vE '	E11	'
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+[exit 0]
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema3/corpus/SOURCES.md --today 2026-10-25 | grep -E '	E11	'
+file	E11	S041 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+file	E11	S042 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+[exit 0]
+
+
+-- scratch 1: live registry + the PACKAGE's own staged S042 row (duplicate id test) --
+inserted staged row before line 50 (## Paths)
+$ grep -nE '^ {0,3}\| *S04[12] *\|' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema3/corpus/SOURCES.md | cut -c1-90
+47:| S041 | 情報セキュリティ早期警戒パートナーシップガイドライン 2026年10月 (JPCERT/CC) — https://www.jpcert.or.jp/vh/
+48:| S042 | IPA 脆弱性関連情報の届出受付業務における取扱いプロセス — https://www.ipa.go.jp/security/todokede/vuln/p
+50:| S042 | IPA 脆弱性関連情報の届出受付業務における取扱いプロセス — https://www.ipa.go.jp/security/todokede/vuln/p
+[exit 0]
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema3/corpus/SOURCES.md --today 2026-10-25 | grep -vE '	E11	'
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	E03	S042 duplicate id
+file	W04	S042 duplicate url www.ipa.go.jp/security/todokede/vuln/process.html across scopes
+[exit 0]
+
+
+-- scratch 2: live registry + the PACKAGE's own staged S043 row (new-id test) --
+inserted staged row before line 50 (## Paths)
+$ grep -nE '^ {0,3}\| *S04[123] *\|' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema3/corpus/SOURCES.md | cut -c1-90
+47:| S041 | 情報セキュリティ早期警戒パートナーシップガイドライン 2026年10月 (JPCERT/CC) — https://www.jpcert.or.jp/vh/
+48:| S042 | IPA 脆弱性関連情報の届出受付業務における取扱いプロセス — https://www.ipa.go.jp/security/todokede/vuln/p
+50:| S043 | 情報セキュリティ早期警戒パートナーシップガイドライン 2026年10月 — https://www.jpcert.or.jp/vh/partnership_
+[exit 0]
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema3/corpus/SOURCES.md --today 2026-10-25 | grep -vE '	E11	'
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S043 duplicate url www.jpcert.or.jp/vh/partnership_guideline2026.pdf across scopes
+[exit 0]
+
+
+-- scratch 2 detail: the E04/W04 duplicate-url verdicts for the S041/S043 pair --
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/schema3/corpus/SOURCES.md --today 2026-10-25 | grep -E 'S041|S043'
+file	W04	S043 duplicate url www.jpcert.or.jp/vh/partnership_guideline2026.pdf across scopes
+file	E11	S041 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+file	E11	S043 missing used-by corpus/knowledge/japanese-domestic-disclosure-workflow.md
+file	E11	S043 missing used-by corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md
+file	E11	S043 missing used-by corpus/knowledge/japanese-disclosure-legal-framework.md
+[exit 0]
+

@@ -1,0 +1,79 @@
+== round-28 wave-1 guard proof: indented registry row must collide ==
+lane root: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+fixture registry: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/fixture-SOURCES.md  (row '  | S002 |' indented two spaces)
+fixture staged:   /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/fixture-staged.md  (S002 at column 0)
+
+-- fixture bytes (visible indent) --
+$ grep -nE '^ *\|' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/fixture-SOURCES.md
+3:| id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |
+4:|---|---|---|---|---|---|---|---|---|---|---|
+5:| S001 | Fixture Document Alpha — https://example.invalid/fixture/alpha | docs | A | fixture scope | fixture anchor | fixture teaches | mined | 2026-10-25 | 90d | corpus/knowledge/fixture-alpha.md |
+6:  | S002 | Fixture Document Beta — https://example.invalid/fixture/beta | docs | A | fixture scope | fixture anchor | fixture teaches | mined | 2026-10-25 | 90d | corpus/knowledge/fixture-beta.md
+[exit 0]
+
+$ grep -nE '^ *\|' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/fixture-staged.md
+2:| id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |
+3:|---|---|---|---|---|---|---|---|---|---|---|
+4:| S002 | Fixture Staged Beta — https://example.invalid/staged/beta | docs | A | staged scope | staged anchor | staged teaches | mined | 2026-10-25 | 90d | corpus/knowledge/fixture-beta.md
+5:| S003 | Fixture Staged Gamma — https://example.invalid/staged/gamma | docs | A | staged scope | staged anchor | staged teaches | mined | 2026-10-25 | 90d | corpus/knowledge/fixture-gamma.md
+[exit 0]
+
+-- A. GUARD PATTERN (0-3 leading spaces) --
+$ grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/fixture-SOURCES.md | grep -oE 'S[0-9]+' | sort > /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/a-reg-ids
+[exit 0]
+
+$ grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/fixture-staged.md | grep -oE 'S[0-9]+' | sort > /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/a-staged-ids
+[exit 0]
+
+$ comm -12 /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/a-reg-ids /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/a-staged-ids > /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/a-collisions
+[exit 0]
+
+$ printf 'a-reg-ids    lines='; wc -l < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/a-reg-ids; tr '\n' ' ' < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/a-reg-ids; echo
+a-reg-ids    lines=2
+S001 S002 
+[exit 0]
+
+$ printf 'a-staged-ids lines='; wc -l < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/a-staged-ids; tr '\n' ' ' < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/a-staged-ids; echo
+a-staged-ids lines=2
+S002 S003 
+[exit 0]
+
+$ printf 'a-collisions lines='; wc -l < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/a-collisions
+a-collisions lines=1
+[exit 0]
+
+$ cat /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/a-collisions
+S002
+[exit 0]
+
+-- B. COLUMN-ZERO-ONLY PATTERN (^\|) over the same two fixtures --
+$ grep -oE '^\|[[:space:]]*S[0-9]{3,}' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/fixture-SOURCES.md | grep -oE 'S[0-9]+' | sort > /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/b-reg-ids
+[exit 0]
+
+$ grep -oE '^\|[[:space:]]*S[0-9]{3,}' /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/fixture-staged.md | grep -oE 'S[0-9]+' | sort > /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/b-staged-ids
+[exit 0]
+
+$ comm -12 /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/b-reg-ids /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/b-staged-ids > /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/b-collisions
+[exit 0]
+
+$ printf 'b-reg-ids    lines='; wc -l < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/b-reg-ids; tr '\n' ' ' < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/b-reg-ids; echo
+b-reg-ids    lines=1
+S001 
+[exit 0]
+
+$ printf 'b-staged-ids lines='; wc -l < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/b-staged-ids; tr '\n' ' ' < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/b-staged-ids; echo
+b-staged-ids lines=2
+S002 S003 
+[exit 0]
+
+$ printf 'b-collisions lines='; wc -l < /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/b-collisions
+b-collisions lines=0
+[exit 0]
+
+$ cat /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-28/assimilation/fixture/b-collisions
+[exit 0]
+
+-- C. VERDICT --
+A (0-3 spaces): non-empty collisions file (S002) -> the guard reports the duplicate.
+B (^| only):    0-byte collisions file -> the indented row is invisible, so the duplicate id would be appended silently.
+The 0-3-space-tolerant pattern is therefore the correct guard form.

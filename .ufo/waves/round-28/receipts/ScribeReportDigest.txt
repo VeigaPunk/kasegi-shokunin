@@ -1,0 +1,114 @@
+== ScribeReportDigest — round 28 wave 1 — report evidence skeleton (digest seat) ==
+seat: ScribeReportDigest (scribe, leaf). Write scope used: .ufo/waves/round-28/wave1/ScribeReportDigest.md
+and this receipt. No production file touched, no VCS write, no background job, no subagent, no tool
+installed, no pacman transaction attempted.
+lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+recorded_utc: 2026-10-25T17:23Z .. 2026-10-25T17:33Z (state stamp 17:30:13Z–17:33Z)
+lane_HEAD: 94f387cbee71a532a51ce075f01701a557231e85
+claims-freeze base: c9f8b115a098c65356e4b3b6048af45a37ab8395 (ancestor of HEAD)
+
+-- 1. WHAT WAS READ (inputs actually opened) --
+- .ufo/waves/round-28/claims.json (frozen C1/C2: predicate, before, after, counter_commands,
+  kill_rule, do_nothing_control, corpus_disclosure, dispatch_requirements).
+- .ufo/waves/round-28/wave1-spec.json + wave1/swarm-registry.json (69 seats; role histogram computed
+  from the spec: executor 18, scribe 16, reviewer 12, critic 5, mutation-tester 5, scout 5,
+  connector 3, revenger 2, sentinel 2, simplifier 1).
+- .ufo/waves/round-28/receipts/ — every receipt present at scan times 17:23:31Z (5 files),
+  17:24:21Z (6), 17:26:14Z (16), 17:29:56Z (26), 17:32:33Z (31). Read in full: ExecInstrSelftest,
+  ExecFixtureRun, ExecC2Counters, ExecCaptureS041, ExecNoHarmC1, ScribeR14, ExecManifest.
+  Read by targeted grep: ExecCaptureS042, ExecHarnessC2, ExecCensusDry, ExecExpectedList,
+  ExecReceiptCanonC1, ScribeRegistryC2, ScribeReadmeC2, ScribeScorecard, ScribeLog, ExecRecheckAuditR28,
+  ScribeSkillGate, ExecGateLog, ExecSkillGateSupport, ScribeEntryC2, ScoutAssimilation,
+  ScribeFrontierNote, MutArmC1, MutQuoteC2, ExecScopeSweep, ScribeLessonGate.
+- claims-adjacent lane bytes: SCORECARD.md (axes + round-27 row), corpus/QUALITY.md, corpus/README.md
+  (§Frontier, amendments), corpus/SOURCES.md (S041/S042 rows), corpus/lessons/round-27.md,
+  SHONEN.md, considerthese/2026-10-25.md (proposal 1), PROVINCE.md (§Frontier),
+  corpus/instruments/anchorcheck.py (CITE/LOST/FAIL_CLASSES logic), the landed entry and manifest,
+  fleet reports .ufo/reports/round-26/kasegi.md and round-27/kasegi.md (section shape only).
+
+-- 2. OWN MEASUREMENTS (read-only; every value quoted in the digest) --
+instrument_sha256 timeline (bracketed runs): c2a9e6c6 (17:23:01Z, = freeze blob) -> 0a24a173 (17:26:14)
+-> 7adfc847 (17:26:23) -> 982d7207 (17:26:38) -> 3122643c (17:26:49) -> c3629229 (17:27:57)
+-> 95333e29 (17:30:03Z, stable through 17:32:33Z). ExecImplC1 was mid-write in this window; at 3122643c
+`--selftest` raised `NameError: name '_selftest' is not defined`. No mid-write reading is cited as a result.
+
+C1 at 95333e29 (stable s1==s2):
+  bad_fixture_exit=1                       (before 0)
+  bounties BOUNTIES-ABSENT lines=1         (before 0)
+  --selftest exit=0, "selftest cases=9 failures=0", 1 such line   (before crash exit 1)
+  SKILL.md exit=0; "== SKILL.md: 7 in-range cite instances, 0 bad; 7 distinct anchors;
+    LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0"   (unchanged)
+  .ufo/waves/round-28/c1-receipt-index.txt: ABSENT
+
+C2 at 17:30:13Z:
+  frontier admitted=12 (before 11)
+  entries citing ^source: S042 = 1 (before 0)
+  S042 registry rows = 1 (before 0); SOURCES.md 42 rows
+  frontier-recheck-count.py: entries=15 pass=15 exit=0 (F12 PASS ids=S041,S042)   (before 14/14)
+  source-recheck.py --manifest round-28/manifest.json --source S041 --source S042: exit 0
+  census validate: exit 0; census: rows 42, tier.A 39, tier.B 1, tier.C 2, mined 30, queued 9,
+    rejected 3; only pre-existing W04 S028/S029
+  recheck-audit.py: lines=40 total=40 pass=40 fail-closed=24 exit=1;
+    expect=present expected=39 missing=0 unexpected=1 exit=1   -> knowledge-expected.txt still 41 lines
+  density.py SKILL.md: mean 160.2, 20 blocks, 656 path cites (base bytes: 150.3 / 20 / 652)
+
+Entry contract (my reads): corpus/knowledge/japanese-domestic-disclosure-workflow.md, 103 lines,
+sha256 a22d2321e39fd0e547d8ae480eb566648520e59281e69e057aab5ab8502413a6; `source: S041` and
+`source: S042` headers, `verified-at: 2026-10-25`, one `recheck:` line that parses under `bash -n` and
+carries `cd <lane-root> &&`, `--source` ids == declared ids.
+
+-- 3. FINDINGS THE REPORT MUST CARRY (evidence, not opinion) --
+F1 (correction) The frozen C1 corpus_disclosure does not reproduce. Per-file LOST-RECORDED, pre-change
+   instrument (git show c9f8b11:corpus/instruments/anchorcheck.py) vs landed 95333e29:
+     claim-gates.md 0/0 | intake-and-finalize.md 0/0 | mission-control.md 0/0 |
+     source-tree-loss-2026-09-28.md 15/15
+   No citation is newly classified. Cause: LOST-RECORDED is decided by the `^\[lost-(tree|base)\]\s+`
+   marker inside a backticked token, before any path arm; the four named references sit outside the
+   backticks (`source: [lost-tree] ~/Projects/bounties/...`) and their backticked mentions carry no
+   `:line`, so CITE never sees them in either instrument. Arm reach on the lane's own text measured:
+   0 unmarked backticked bounties path:line tokens in SKILL.md + all 40 corpus/**/*.md; 0 BOUNTIES-ABSENT
+   verdict lines on SKILL.md; 0 corpus files emitting BOUNTIES-ABSENT. Recommended: report the arm as
+   proven on the committed fixture + selftest and nil on the lane text; file an appended erratum, never
+   an edit to claims.json (R25-1). Same class as M27-1 (assumed premise, not measured).
+F2 (blind spot) source-recheck.py does not enforce Q9's exactly-once conjunct. Reproduced myself:
+   a scratch manifest (mktemp -d, copies of both captures, S042 Q2 replaced by a phrase occurring twice,
+   no anchor) prints `S042:Q2 OK occurrences=2 anchor=MISSING` and exits 0. Matches MutQuoteC2 M3 LIVE.
+   The landed manifest's 12 quotes are all occurrences=1, so Q9 holds for them; enforcement does not.
+F3 (ordering) Between the F12/S042 row landing and the entry landing the lane was red: census exit 1
+   with `E11 S041` + `E11 S042 missing used-by ...`, and frontier-recheck-count.py exited 1 with an
+   uncaught FileNotFoundError in entry_contract() (no entries=/pass= line). Both closed on entry landing.
+   Lesson-grade defect: the harness has no clean "entry missing" verdict.
+F4 (baseline) The 154.0 / 19-block / 652-cite density comparand is the r22-byte figure. Base c9f8b11
+   (== a04cc6c bytes) measures 150.3 / 20 / 652; commit a04cc6c's new Gate|probe block (nb=5 ev=4
+   dens=80.0) raised the block count 19->20. Landed bytes measure 160.2 / 20 / 656 (+4 cites, same
+   block count). Using the stale comparand would report a false -3.7 mean "regression".
+F5 (gate) PROVINCE.md is not in the round-28 ownership map and still reads F01–F10 with no F12 sentence;
+   SHONEN box 4 must be caveated or the L1 must append the sentence.
+
+-- 4. DIGEST CONTENT --
+.ufo/waves/round-28/wave1/ScribeReportDigest.md — per report section: §0 snapshot table,
+§1 Work performed, §2 Landed changes, §3 Before->after (C1 limbs incl. stability, C2 counters 1-8,
+density, in-flight red state, remaining commands), §4 Sources & frontier + §4b disclosure correction,
+§5 three proposed trend verdicts with downgrade conditions (L1 owns the final call),
+§6 SHONEN four boxes all [~] with refreshed pointers and no self-written [x],
+§7 remaining closure checklist, §8 receipts index (31 files).
+
+SHONEN boxes were written [~] only: no non-author verifier is named for the round at the state stamp.
+
+-- 5. NOT CLAIMED --
+No C1/C2 final verdict; the canonical index's content; the unlanded lesson/commit; the Gate's assembled
+form (only the draft). No after-value is attributed to a digest other than the one it was measured at.
+The digest's own numbers are timestamped; receipts arriving after 17:33Z are not incorporated.
+
+-- 6. VERIFICATION THE L1 SHOULD RUN --
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && sha256sum corpus/instruments/anchorcheck.py
+python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bad-fixture.md >/dev/null 2>&1; echo $?
+python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bounties-fixture.md 2>/dev/null | grep -c BOUNTIES-ABSENT
+python3 corpus/instruments/anchorcheck.py --selftest | head -1
+python3 corpus/instruments/anchorcheck.py SKILL.md 2>/dev/null | grep '^== '
+awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md
+python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041 --source S042; echo $?
+/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo $?
+python3 corpus/instruments/frontier-recheck-count.py | tail -1
+python3 corpus/instruments/recheck-audit.py 2>&1 | grep -E 'lines=|expect='
+python3 corpus/instruments/density.py SKILL.md --label r28-verify | grep -E 'mean dens|Total path'

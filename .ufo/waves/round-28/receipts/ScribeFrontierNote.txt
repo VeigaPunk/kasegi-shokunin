@@ -1,0 +1,188 @@
+ScribeFrontierNote — receipt (round-28 wave 1, read-only seat)
+Lane root: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Base (claims freeze): 261a6651b7e52c58e9ad0ceaef6f3bd0bf2d904f
+Note: .ufo/waves/round-28/wave1/ScribeFrontierNote.md
+UTC stamps from `date -u` at the measured snapshot: 2026-10-25T17:25:48Z
+No production file written. No VCS write. No tool installed. No pacman attempted.
+
+A. BYTES ASSESSED
+$ sha256sum corpus/README.md corpus/SOURCES.md
+e38ba5673c0f6789d3de33cf688ccfa3bc88684ed24fd48afe1b891fe7a815a4  corpus/README.md
+79c4ae7a34f86c79d25c6a7118ba3a8f700d8db12ea90b8e29429d5b164d693e  corpus/SOURCES.md
+$ wc -l corpus/README.md
+243 corpus/README.md
+$ git show 261a665:corpus/README.md | wc -l
+217
+NOTE: ScribeReadmeC2 wrote corpus/README.md concurrently during this seat. Two F12 `next`
+texts were observed; the note judges the hash above. Re-hash at round close.
+
+B. FRONTIER COUNTERS (frozen C2 command)
+$ awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md
+12
+$ awk -F'|' '$2 ~ /^ *F[0-9]+ / {n++} END{print n+0}' corpus/README.md
+12
+Pre-change measurement earlier in this seat (same commands, before ScribeReadmeC2 landed):
+admitted=11, rows=11.
+Landed row (line 213, verbatim):
+| F12 | Japanese state-coordinated disclosure workflow | admitted | knowledge/japanese-domestic-disclosure-workflow.md | S041, S042 | Use 起算日 — the day the guideline's Ⅳ.4.2) notification was first attempted (S041 footnote 4), not an acknowledgement or a submission date — as the Japanese column when comparing coordinator timelines against F02. |
+Row-cell metrics: next cell 33 words / 211 chars / contains '|' = False.
+Topic vs frozen C2 name: `topic substring of C2 name: True`; row id F12.
+
+C. COLLISION CHECK (`python3 -c`, README rows parsed)
+rows: 12
+candidate: Japanese state-coordinated disclosure workflow
+exact/casefold equality: NONE (only its own F12 row)
+subset/superset (either direction, tokenized [a-z0-9]+): NONE
+shared tokens:
+  F02: shared=['coordinated', 'disclosure'] jaccard=0.333
+  F10: shared=['disclosure'] jaccard=0.091
+  F12: shared=['coordinated', 'disclosure', 'japanese', 'state', 'workflow'] jaccard=1.000
+F13 row present: NONE
+
+D. DENOMINATOR / PARAGRAPH CHECKS
+$ grep -n '11/12' corpus/README.md
+NONE
+$ diff <(git show 261a665:corpus/README.md | head -212) <(head -212 corpus/README.md)
+IDENTICAL 1-212
+$ git diff -U0 261a665 -- corpus/README.md | grep -E '^@@'
+@@ -212,0 +213 @@ Correction (2026-10-19): corpus/QUALITY.md now exists; the preceding closing par
+@@ -217,0 +219,25 @@ round 23, F09 at round 24, F10 at round 25, F11 at round 26) and is not counted
+$ grep -rnoE 'corpus/README\.md:[0-9]+(-[0-9]+)?' --include=*.md --include=*.py --include=*.json --include=*.txt . | (excluding .ufo/waves/round-2[0-7], citation-survival, frozen-head)
+lines cited: :5, :49, :54, :82, :145, :168, :200-202, :211 — none >= 213, so the two insertions shift no cited line.
+Current paragraph lines: 215 (0/18), 217-218 (11/11 at round 26, unchanged from base), 220-224 (r28 amendment: 12/12 admitted; 0/18 untouched; frontier outside it).
+
+E. ENTRY / HARNESS STATE AT SNAPSHOT (TRANSIENT)
+$ test -f corpus/knowledge/japanese-domestic-disclosure-workflow.md; echo $?
+1
+$ timeout 120 python3 corpus/instruments/frontier-recheck-count.py; echo exit=$?
+Traceback …
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/frontier-recheck-count.py", line 65, in entry_contract
+    with open(full, encoding="utf-8") as fh:
+FileNotFoundError: [Errno 2] No such file or directory: '/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/japanese-domestic-disclosure-workflow.md'
+exit=1
+(python_exit=1; measured with output redirected to a temp file, not through a pipe.)
+$ wc -l corpus/instruments/knowledge-expected.txt ; grep -vc '^#' corpus/instruments/knowledge-expected.txt
+41
+39
+$ git show 261a665:corpus/instruments/knowledge-expected.txt | wc -l ; ... | grep -vc '^#'
+41
+39
+
+F. CAPTURES / REGISTRY CROSS-CHECKS
+corpus/source-snapshots/round-28/: S041.txt 147267 B, S042.txt 60508 B, manifest.json 5038 B
+manifest schema_version=1, ids [S041, S042]; S041 sha256 e18acbf9…ab47, S042 sha256 b432ec16…6966.
+S041 registry row used-by (line 47 raw) now lists:
+  corpus/knowledge/iso-29147-and-30111-division-of-labour.md,
+  corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md,
+  corpus/knowledge/japanese-domestic-disclosure-workflow.md
+=> consistent with the F12 row's `S041, S042`.
+
+G. PROVINCE cross-check
+PROVINCE.md:37-41 stops at F11 ("… F10 … 10/10 admitted). F11 — ISO/IEC 29147/30111 … admitted
+round 26"). No contradicting number, but no F12 line or deferral. Outside all wave-1 ownership
+cells; routed to L1 in the note §4/§6.
+
+H. COMMANDS RUN (chronological, all read-only except the two writes to this seat's own paths)
+1. read skill://godspeed; corpus/README.md; .ufo/waves/round-28/claims.json; SCORECARD.md;
+   corpus/QUALITY.md; corpus/lessons/round-27.md; corpus/SOURCES.md rows; F02 entry; staged F12
+   entry (read-only shokuknow); MERGE-REPORT.md; SOURCES.append.md; F11 entries;
+   frontier-recheck-count.py; manifest.json; round-27 verifier spotcheck; build-wave1-spec.py
+   (read-only); PROVINCE.md.
+2. bash: frontier counters (pre-change 11/11; post-row 12/12), non-ASCII grep, knowledge count
+   (39), snapshot listing, receipts listing, scratch listing.
+3. bash: citations to corpus/README.md, coverage-map row count (42 incl. header+separator),
+   '11/12' grep, README numbered dump, expected-list wc/grep, base-blob wc/grep.
+4. eval(py): topic collision check (§C).
+5. bash: diff of lines 1-212 vs base (IDENTICAL), diff hunk headers, harness run (exit 1),
+   frozen awk counters.
+6. bash: sha256sum + date -u + tail dump (§A/§D), entry existence.
+7. write: this seat's note and this receipt (only writes performed).
+
+=========================================================================
+REV 2 — post-landing re-measurement (2026-10-25T17:28:20Z; supersedes the
+PRE-STATE cells above, which are kept as history per R9)
+=========================================================================
+
+Old -> new (logged, no earlier measurement erased):
+  README sha256: e38ba5673c0f6789d3de33cf688ccfa3bc88684ed24fd48afe1b891fe7a815a4
+              -> 5f458a7a26b8dfc2dd2ee2e46e11380d5697e51e77213772bce7b59253363180
+  README lines: 243 -> 245 ; git diff --numstat 261a665 -- corpus/README.md -> "28	0"
+  entry file: absent -> present (18452 B measured)
+  frontier harness: python_exit=1 FileNotFoundError -> entries=15 pass=15 exit=0
+  recheck-audit: not run -> exit=1 with expected=39 unexpected=1 (open item)
+
+A2. FINAL BYTES
+$ date -u +%Y-%m-%dT%H:%M:%SZ
+2026-10-25T17:28:20Z
+$ sha256sum corpus/README.md
+5f458a7a26b8dfc2dd2ee2e46e11380d5697e51e77213772bce7b59253363180  corpus/README.md
+$ wc -l corpus/README.md
+245 corpus/README.md
+$ diff <(git show 261a665:corpus/README.md | head -212) <(head -212 corpus/README.md)   -> IDENTICAL 1-212
+$ git diff --numstat 261a665 -- corpus/README.md
+28	0	corpus/README.md
+
+B2. FRONTIER (final)
+$ awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md
+12
+$ awk -F'|' '$2 ~ /^ *F[0-9]+ / {n++} END{print n+0}' corpus/README.md
+12
+$ timeout 240 python3 corpus/instruments/frontier-recheck-count.py ; echo python_exit=$?
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0
+entries=15 pass=15 exit=0
+python_exit=0
+$ grep -n '11/12' corpus/README.md
+NONE
+
+C2. F12 ROW (final, line 213) — cells=6, next = 65 words / 393 chars / pipe=False,
+    topic unchanged = True. Verbatim row is quoted in the note §1.
+
+D2. ENTRY (final)
+$ ls -l corpus/knowledge/japanese-domestic-disclosure-workflow.md
+18452 bytes
+$ grep -nE '^source: |^recheck:|^ground:' corpus/knowledge/japanese-domestic-disclosure-workflow.md
+3:source: S041 — … capture corpus/source-snapshots/round-28/S041.txt
+4:source: S042 — … capture corpus/source-snapshots/round-28/S042.txt
+6:recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S042
+7:ground: F12 — adopts the staged package entry …
+(no F13 reference in the file; the staged F13 -> lane F12 remap is closed.)
+
+E2. OPEN ITEM — expected list (measured, not quoted)
+$ wc -l corpus/instruments/knowledge-expected.txt ; grep -vc '^#' corpus/instruments/knowledge-expected.txt ; grep -c 'japanese-domestic' corpus/instruments/knowledge-expected.txt
+41
+39
+0
+$ timeout 240 python3 corpus/instruments/recheck-audit.py ; echo exit=$?
+strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=16 gated=24 broken=0
+lines=40 total=40 pass=40 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=39 missing=0 unexpected=1 exit=1
+unexpected=corpus/knowledge/japanese-domestic-disclosure-workflow.md
+exit=1
+Fix: regenerate knowledge-expected.txt to 40 entries / 42 lines; the file is in no wave-1
+ownership cell (ExecExpectedList receipt: "The expected list was NOT regenerated", PRE-STATE).
+
+F2. 45-DAY SUFFIX GROUNDS (checked against the captures)
+$ grep -n "45" corpus/source-snapshots/round-28/S041.txt
+648:みた日（起算日、２．注釈 4 を参照）から 45 日後を目安とします。ただし、
+786:日（起算日、２．注釈 4 を参照）から 45 日後を目安とします。公表に更なる時
+$ sed -n '20,24p' corpus/knowledge/coordinated-disclosure-timelines.md
+(line 22, S004) "Vulnerabilities reported to the CERT/CC will be disclosed to the public 45 days after the initial report"
+=> same 45-day number, different trigger; the README suffix states both sides correctly.
+
+G2. ROUTED ITEMS (note §6)
+1. knowledge-expected.txt regeneration (L1 to assign; owner unset in wave-1 map).
+2. ScribeLesson R9 erratum: round-24.md:83 / round-26.md:55 "ground: F12 names no lane frontier
+   item" is stale now that F12 exists (wrong topic, not no row); refusal unchanged.
+3. PROVINCE.md:37-41 stops at F11 — no F12 line/deferral.
+4. Resolved by ScribeReadmeC2: optional 45-day suffix accepted; staged ground F13 -> F12.
+
+H2. ADDITIONAL COMMANDS RUN IN REV 2 (all read-only)
+date -u; sha256sum corpus/README.md; wc -l corpus/README.md; awk counters; harness run (timeout
+240); recheck-audit run (timeout 240); awk tail dump of README 213-245; sed of the F12 row; python3
+cell-shape check; ls/grep of the landed entry; ls of receipts/; cat ExecExpectedList.txt (head 60)
+and tail of ExecRecheckAuditR28.txt; head 60 of ScribeReadmeC2.txt; grep "45" in S041.txt; sed of
+F02 lines 20-24; diff of lines 1-212; git diff --numstat.
+Writes in Rev 2: this receipt (edit append), the seat note (rewrite at its own path). No
+production file touched; no VCS write; no tool installed; no pacman transaction.

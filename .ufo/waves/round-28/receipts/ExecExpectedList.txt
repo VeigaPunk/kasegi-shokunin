@@ -1,0 +1,155 @@
+ExecExpectedList — round-28 wave 1, r27 carry-forward 4 (recheck-audit expected-list count basis)
+Lane root: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Lane HEAD at measurement: 94f387cbee71a532a51ce075f01701a557231e85 (2026-10-25T17:24:13Z)
+Claims-freeze base c9f8b115a098c65356e4b3b6048af45a37ab8395 is an ancestor of HEAD
+  (`git merge-base --is-ancestor` exit 0).
+Production edits by this seat: NONE. Only this receipt and
+  .ufo/waves/round-28/wave1/ExecExpectedList.md were written. The expected list was NOT regenerated.
+Tooling installed/upgraded: NONE (no pacman, no uv, no npx).
+State label: PRE-STATE for §1-§6 as measured at 17:23Z (knowledge entry absent);
+  §8 records the live POST-LANDING re-measurement after the entry landed at 17:29Z.
+  corpus/source-snapshots/round-28/manifest.json landed at 14:24 local (17:24Z) during the item.
+
+1. LIVE RUN (measured 2026-10-25T17:23Z)
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py
+strict pass=39/39 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=16 gated=23 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=39 total=39 pass=39 fail-closed=23 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=39 missing=0 unexpected=0 exit=0
+EXIT=0
+instrument: corpus/instruments/recheck-audit.py sha256 3fc0d751f2a5819879d440f8ef62b607376a8b6914d7edf9fe1b2fc25662d4e1
+  (the C1 claim's c2a9e6c6… pre-change digest is anchorcheck.py, a different instrument; this item
+  does not touch anchorcheck.py and its bytes were not consulted for a verdict)
+expected list: corpus/instruments/knowledge-expected.txt sha256
+  30ba586029f679721d57025a1ac339b93fe11b38c5825c721be495048b2a9080
+
+2. COUNT BASIS (r27 carry-forward 4)
+$ git ls-files corpus/knowledge/*.md | wc -l                                    -> 39
+$ ls corpus/knowledge/*.md | wc -l                                             -> 39
+$ find corpus/knowledge -maxdepth 1 -type f ! -name '*.md'                     -> (none)
+$ wc -l corpus/instruments/knowledge-expected.txt                              -> 41
+$ grep -c '^#' corpus/instruments/knowledge-expected.txt                       -> 2
+$ grep -vc '^#' corpus/instruments/knowledge-expected.txt                      -> 39
+Reconciliation: the r27 note's "41 lines (`wc -l`)" is 39 entry lines + 2 `#` header comment lines.
+  The r26 integration's "39 entries" is the entry-count basis. There is no 37/39/41 discrepancy left:
+  41 (wc -l) = 39 (entries) + 2 (comments). Both live and listed sets are 39; set equality holds.
+
+3. INSTRUMENT LOGIC (quoted, corpus/instruments/recheck-audit.py at sha256 3fc0d751…)
+ 178  def load_expected(path):
+ 179      names = []
+ 180      with open(path, encoding="utf-8") as handle:
+ 181          for raw in handle:
+ 182              line = raw.strip()
+ 183              if line and not line.startswith("#"):
+ 184                  names.append(line)
+ 185      return names
+ 188  def expected_mismatch(root, expected):
+ 189      actual = {
+ 190          os.path.relpath(p, root)
+ 191          for p in glob.glob(os.path.join(root, "corpus/knowledge/*.md"))
+ 192      }
+ 193      wanted = set(expected)
+ 194      return sorted(wanted - actual), sorted(actual - wanted)
+ 330      total = len(glob.glob(os.path.join(root, "corpus/knowledge/*.md")))
+ 350      complete = len(entries) == total and total > 0
+ 351      expect_ok = not expect_active or (not missing_entries and not unexpected_entries)
+ 352      ok = passed == len(entries) and complete and strict_passed == total and expect_ok
+Consequences: (i) comment/blank lines are skipped by load_expected, so `wc -l` is not an entry count;
+(ii) the "actual" side is the working-tree glob, so every new corpus/knowledge/*.md is an `unexpected`
+entry until the list is regenerated; (iii) `entries` counts only files carrying a `recheck:` line
+(audit_entry returns None at line 117, collect drops it at line 173), while `total` counts all .md
+files, so `lines`/`total` split if the new entry has no recheck line.
+
+4. ANSWER — regeneration must produce N+1, not N
+With N = 39 (current expected-entry count / current corpus/knowledge/*.md count), the regenerated list
+must hold N+1 = 40 entry lines (42 physical lines with the 2 kept `#` headers). It must NOT stay at 39.
+Equivalently, with N' = 41 (`wc -l` today, the number the r27 carry-forward quotes), 41 -> 42 = N'+1.
+Reason: F12 lands exactly one new corpus/knowledge/*.md, and expected_mismatch builds `actual` from
+`glob(root/corpus/knowledge/*.md)`; a stale list therefore yields
+`unexpected=corpus/knowledge/japanese-domestic-disclosure-workflow.md` and exit 1 (line 351-352 gating).
+
+5. POST-LANDING SIMULATION (scratch, no lane write)
+Scratch A /tmp/r28-exp-sim-A = copy of the live corpus + simulated F12 entry with the C2-shaped line
+  `recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --source S041 --source S042 --manifest corpus/source-snapshots/round-28/manifest.json`
+  + placeholder round-28 manifest; expected list left at the live 39 entries.
+$ python3 corpus/instruments/recheck-audit.py --root /tmp/r28-exp-sim-A --cdroot /home/vgpnk/Projects/shokunin/kasegi-shokunin
+strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=16 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=40 total=40 pass=40 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=39 missing=0 unexpected=1 exit=1
+unexpected=corpus/knowledge/japanese-domestic-disclosure-workflow.md
+Scratch B /tmp/r28-exp-sim = same tree, list regenerated from the working-tree glob (relative paths):
+$ python3 corpus/instruments/recheck-audit.py --root /tmp/r28-exp-sim --cdroot /home/vgpnk/Projects/shokunin/kasegi-shokunin
+strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=16 gated=24 broken=0
+lines=40 total=40 pass=40 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=40 missing=0 unexpected=0 exit=0
+EXIT=0; regenerated list wc -l = 42, entry lines = 40.
+Scratch C side-check (entry present, its recheck line removed, list regenerated):
+lines=39 total=40 pass=39 exit=1; strict pass=39/40; expect=present expected=40 missing=0 unexpected=1 exit=1
+  -> a list regeneration cannot mask a missing recheck line; `complete`/`strict_passed == total` catch it.
+Failed-probe note (kept for honesty): the first scratch regeneration wrote absolute
+  `/tmp/r28-exp-sim/corpus/knowledge/…` names and produced `expected=40 missing=40 unexpected=40 exit=1`
+  — list entries must be lane-relative, which is why the L1 command below runs from the lane root.
+
+6. EXACT COMMAND THE L1 MUST RUN AFTER THE F12 ENTRY LANDS (not run by this seat)
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && \
+{ printf '%s\n' \
+    '# Expected knowledge entries for corpus/instruments/recheck-audit.py — round 28' \
+    '# Sorted list from the working tree (one entry per line); keep in sync with corpus/knowledge/.'; \
+  LC_ALL=C ls corpus/knowledge/*.md | LC_ALL=C sort; } \
+  > corpus/instruments/knowledge-expected.txt.new && \
+mv corpus/instruments/knowledge-expected.txt.new corpus/instruments/knowledge-expected.txt && \
+python3 corpus/instruments/recheck-audit.py --json .ufo/waves/round-28/receipts/recheck-audit-after.json
+Precondition: run only after the entry, the round-28 manifest and the two round-28 captures exist, and
+before/interleaved with the landing commit; the instrument's `paths` limb resolves the entry's manifest
+under the lane root, so an entry without its manifest reds `paths` even with a correct list.
+Expected before/after values:
+  before (measured today): wc -l 41 | entries 39 | files 39 | lines=39 total=39 pass=39 | expected=39 missing=0 unexpected=0 | exit=0
+  entry landed, list stale (measured in scratch): wc -l 41 | entries 39 | files 40 | lines=40 total=40 pass=40 | expected=39 missing=0 unexpected=1 | exit=1
+  after regeneration (measured in scratch): wc -l 42 | entries 40 | files 40 | lines=40 total=40 pass=40 strict 40/40 | expected=40 missing=0 unexpected=0 | exit=0
+  (the live `expect=present expected=40 missing=0 unexpected=0 exit=0` line is the L1's to produce; this
+  seat's 40-entry variant is scratch-measured, not a live after-value)
+Asset-order note: the committed list is not byte-sorted (line 15 `evidence-dir.md`, line 16
+  `ev-model.md`; LC_ALL=C puts `ev-model.md` first). Set equality makes this harmless today; the
+  regeneration above fixes the order.
+
+7. RISKS
+- The F12 entry's own recheck line must exist and pass the strict limbs; the simulation proves the
+  expected-list machinery, not ScribeEntryC2's line. If that line is absent: lines=39 total=40 exit=1.
+- `git ls-files`-based regeneration before the landing commit would omit the still-untracked entry and
+  produce 39 (wrong). Use the working-tree listing above (the instrument's own basis), or run the
+  `git ls-files 'corpus/knowledge/*.md' | LC_ALL=C sort` variant only after the entry is committed.
+- The manifest landed during this item (sha256 e62ddad133ffc19ebc66822c0fcb3b48ed4993c101f05262302acc58714f291d,
+  observed after 17:24:13Z; file mtime 14:24 local); if it is rewritten after this receipt, the entry's
+  `--manifest` line and the
+  `paths` limb must be re-checked at the L1's re-run, not trusted from this PRE-STATE.
+
+8. POST-LANDING LIVE RE-MEASUREMENT (2026-10-25T17:29:59Z; supersedes §1 for current state)
+The F12 entry landed while this receipt was being written. Observed:
+  corpus/knowledge/japanese-domestic-disclosure-workflow.md 18544 B, sha256
+    a22d2321e39fd0e547d8ae480eb566648520e59281e69e057aab5ab8502413a6 (mtime 14:29 local)
+  corpus/knowledge/*.md count -> 40
+  corpus/instruments/knowledge-expected.txt UNCHANGED by this seat: sha256 30ba5860…,
+    wc -l 41, entry lines 39
+  corpus/instruments/anchorcheck.py now sha256 95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514
+    (C1 instrument finalized by ExecImplC1; observed context only — no bearing on this item)
+$ python3 corpus/instruments/recheck-audit.py          (live, canonical committed list)
+unexpected=corpus/knowledge/japanese-domestic-disclosure-workflow.md
+strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+lines=40 total=40 pass=40 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=39 missing=0 unexpected=1 exit=1
+  (exit 1; this is exactly the stale-list verdict §5 predicted)
+$ python3 corpus/instruments/recheck-audit.py --expect /tmp/r28-exp-sim/corpus/instruments/knowledge-expected.txt
+  (read-only probe: 40-entry temp list, committed list NOT touched; temp entries verified equal to the
+   live glob by `diff` -> empty)
+strict pass=40/40 cdroot_fail=0 instrument_fail=0 own_fail=0
+lines=40 total=40 pass=40 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=40 missing=0 unexpected=0 exit=0
+  (exit 0; the live after-value the L1 must reproduce with the §6 command against the committed file)
+The entry's own recheck line executes with exit 0 on the live tree (`fail-closed=24` unchanged from the
+scratch-with-entry count, so the line is counted as executes, not gated).
+Digest discrepancy flag: a peer seat reported entry digest a0f8e617…; the bytes here hash to a22d2321…
+at 17:29:59Z. Either the entry was rewritten between the probes or the peer's digest covers different
+bytes — the L1 must re-hash the entry at re-run time rather than trust either figure.
+

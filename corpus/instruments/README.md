@@ -194,3 +194,134 @@ moves only on measurements of the actual lane corpus and domain roots.
   globbed (`brace-glob`); the glob branch credits the first match that exists, not
   `matches[0]`. The CLI now refuses a non-directory root and refuses to overwrite
   the census when it collects no citations.
+
+## Round-28 amendment — `anchorcheck.py` fails closed (C1)
+
+Appended at file end; no line above moved (R6). Instrument bytes: ExecImplC1
+(diff `corpus/instruments/ExecImplC1.diff`, receipt
+`.ufo/waves/round-28/receipts/ExecImplC1.txt`). Landed digest measured here:
+`95333e29ee5acce549f8e0b6328c6dcab3c542cf16bc295d6a6ae70c6f144514` (523 lines,
+2026-10-25T17:30Z); the figure of record is the round-28 receipt index, not a
+digest retyped from another document. Figures labelled *before* are runs against
+the pre-change digest
+`c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748` (the
+do-nothing control); figures labelled *after* are runs at the landed digest. The
+re-verify block is at the end of this section.
+
+**Exit is a verdict, not a print.** `FAIL_CLASSES` is the exit driver:
+`MISSING-FILE`, `PAST-EOF`, `OUTSIDE-BASE`, `PIN-BROKEN`, `BASE-ABSENT`,
+`BOUNTIES-ABSENT` — exit 1 when any count is nonzero, else 0. Exit 0 means every
+recognized anchor is `IN-RANGE*` or `LOST-RECORDED`. `LOST-RECORDED` keeps its
+round-16 meaning: recorded-not-fail — counted, never checked, never able to flip
+the exit code. `bad` stays the historical three-class count (MISSING-FILE +
+PAST-EOF + OUTSIDE-BASE) for receipt continuity, so PIN-BROKEN, BASE-ABSENT and
+BOUNTIES-ABSENT move the exit without moving `bad`: read the exit status, not
+only the summary. *Before*, no class moved the exit code at all — `main()` fell
+off the end, so `sys.exit(None)` was 0 even with a fail verdict printed
+(`.ufo/waves/round-28/c1-controls/bad-fixture-before.txt` shows both halves, the
+`BASE-ABSENT` line and `exit=0`). *After*: the r27 bad fixture exits 1, and a
+sweep of `corpus/knowledge/*.md` + `corpus/*.md` + `SKILL.md` (44 files,
+2026-10-25T17:30Z) moves no verdict class in any file while flipping exactly 5
+exits 0→1 — all BASE-ABSENT-driven: `QUALITY.md`, `citation-bases.md`,
+`cra-manufacturer-reporting-duties.md`,
+`iso-29147-divergence-and-clause-crosswalk.md`, `root-loss-2026-10-12.md`.
+
+**This file is flagged by its own rule.** At the landed digest a run of the
+instrument over this file exits 1: three BASE-ABSENT cites carried since
+rounds 17/24 (the `ResolverAttack` and mirror `ops/rank.mjs` examples at lines
+114, 116 and 164) point into the mirror base absent since 2026-10-12. They are
+pre-existing documentation examples, not anchors added by this section (0
+added), and they are left as measured rather than relabelled to make the file
+pass.
+
+**`BOUNTIES-ABSENT` — the lost PROVINCE root gets its own class.** `CITE` gains a
+`~/Projects/bounties/` arm, so a citation into the PROVINCE root is classified
+instead of being invisible to the matcher. The root is derived like MIRROR and
+ORIGIN, never hardcoded: `$KASEGI_BOUNTIES` wins, else the canonical
+`~/Projects/bounties` — a single candidate, because that root was removed on
+2026-09-28 and never relocated (`test -d ~/Projects/bounties` → exit 1,
+2026-10-25; loss record `corpus/knowledge/source-tree-loss-2026-09-28.md`). A
+citation into the absent root reports `BOUNTIES-ABSENT`, its own class: not
+`BASE-ABSENT` (the mirror/origin bases) and not `MISSING-FILE` (a lane file that
+is not there). The arm carries the same realpath confinement as the MIRROR arm —
+a `../` segment or symlink resolving outside the derived root is `OUTSIDE-BASE`
+against that root, not a hit; when the root is present but the cited file is not,
+the verdict is `MISSING-FILE` (still a fail class, never a silent pass). The
+class appears exactly once for the r27 bounties fixture, because the frozen
+counter is `grep -c BOUNTIES-ABSENT` — it counts lines, not occurrences, which is
+why the summary's bucket list deliberately gains no `BOUNTIES-ABSENT=` field.
+*Before*, `CITE` had no such alternative, so that fixture produced no cite
+instance in any class (0 `BOUNTIES-ABSENT` lines, every bucket 0):
+`.ufo/waves/round-28/c1-controls/bounties-fixture-before.txt`. *After*: one
+`BOUNTIES-ABSENT md:3 … (base tree absent: …)` line naming the derived root,
+`grep -c` = 1, exit 1, summary buckets unchanged.
+
+**`--selftest` — the limbs prove themselves.** Spelling:
+`python3 corpus/instruments/anchorcheck.py --selftest`, from the lane root, with
+no file argument (the pre-change bytes opened the flag as a path and died
+`FileNotFoundError: '--selftest'`, exit 1 — a crash, not a verdict:
+`.ufo/waves/round-28/c1-controls/selftest-before.txt`). Each case runs this file
+as a subprocess in a fresh temp dir with `KASEGI_LANE_ROOT`, `KASEGI_MIRROR`,
+`KASEGI_ORIGIN_ROOT` and `KASEGI_BOUNTIES` overridden, and asserts the complete
+verdict-class vector plus the exit status — so a fixture that trips a second
+limb, or a limb with no failing fixture, is itself a failure. The landed set is
+9 cases: six fail limbs, one per `FAIL_CLASSES` entry — `missing-file` (every
+base present, cited file absent), `past-eof` (real temp file, anchor past EOF),
+`outside-base` (a bounties cite that walks out of the root with a `..` segment
+while the root is present), `pin-broken` (temp `git init` repo, pin object
+`deadbeef`), `base-absent` (unprefixed mirror name, mirror root absent),
+`bounties-absent` (bounties root absent) — each expecting exactly its own class
+at exit 1; and three controls at exit 0: `bounties-in-range` (the arm resolves
+in a present root, so the arm is not merely an outage), `lost-recorded` (one
+backticked marked token plus one bare `source:` trailer, asserting
+`LOST-RECORDED=1` not 2 — the token model asserted as code), `clean` (in-range
+lane cite). Success prints `selftest cases=N failures=0` and exits 0; a failing
+case prints its name plus that case's stdout/stderr and exits 1. Measured at
+the landed digest: `selftest cases=9 failures=0`, exit 0. Quote N from a live
+run, never retype it.
+
+**Corpus disclosure — declared four, measured zero.** C1's frozen disclosure says
+the bounties arm reclassifies 4 marked bounties citations as `LOST-RECORDED`:
+`corpus/knowledge/claim-gates.md` (line 123), `intake-and-finalize.md` (109),
+`mission-control.md` (169) and `source-tree-loss-2026-09-28.md` (353). Measured
+at the landed digest — and earlier at the pre-change digest and on a scratch copy
+carrying only the `CITE` arm
+(`.ufo/waves/round-28/wave1/ExecInstrReadme/anchorcheck-scratch.py`, not the live
+file) — **0 of the 4 reclassify**: the landed 44-file sweep
+(`corpus/knowledge/*.md` + `corpus/*.md` + `SKILL.md`) moves no verdict class in
+any file, the four named ones included. The cause is structural: those four
+citations are plain-text `source:` header lines, not
+backticked tokens, so `TOK` never hands them to `CITE`; and a scan of
+`corpus/**/*.md` + `SKILL.md` + `LOG.md` + `SCORECARD.md` at 2026-10-25T17:24Z
+(before this section existed) found 70 backticked `~/Projects/bounties/…` tokens
+with **0** carrying a `:NN` anchor, so none can match `CITE` with or without the
+arm. `SKILL.md` is unchanged by construction (0 marked bounties cites,
+`LOST-RECORDED=306`, 7 in-range, bad 0). The disclosure is therefore recorded as
+DECLARED and NOT REPRODUCED — at the landed digest `95333e29…` as at
+`c2a9e6c6…`. If a later change reaches 4, it matches outside the documented
+backticked-token shape, and that broadening belongs here with its own
+before/after. The L1 has since superseded the frozen cell by an appended
+correction (`.ufo/waves/round-28/claims-erratum-1.md`) whose statement is
+stronger and matches this measurement: zero backticked anchored
+`~/Projects/bounties/` citations exist in the lane tree, so the arm is invisible
+to every existing byte and no verdict-class count moves. Raw measurement:
+`.ufo/waves/round-28/wave1/ExecInstrReadme/disclosure-measurement.txt`.
+
+**Re-verify** (from the lane root; run after any instrument edit — every target
+below was measured at the landed digest `95333e29…`):
+
+    sha256sum corpus/instruments/anchorcheck.py
+    python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bad-fixture.md >/dev/null 2>&1; echo "bad_fixture_exit=$?"
+    python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bounties-fixture.md 2>/dev/null | grep -c BOUNTIES-ABSENT
+    python3 corpus/instruments/anchorcheck.py --selftest; echo "selftest_exit=$?"
+    python3 corpus/instruments/anchorcheck.py SKILL.md 2>/dev/null | grep '^== '
+    for f in corpus/knowledge/*.md corpus/*.md SKILL.md; do python3 corpus/instruments/anchorcheck.py "$f" 2>/dev/null | grep '^== '; done
+
+Targets: `bad_fixture_exit=1`; bounties fixture `1`; `selftest cases=9 failures=0`
+with exit 0; and the SKILL.md no-harm line `0 bad`, `LOST-RECORDED=306`,
+`PIN-BROKEN=0`, `OUTSIDE-BASE=0`, `BASE-ABSENT=0`, 7 in-range instances — the same
+numbers the pre-change bytes print
+(`.ufo/waves/round-28/c1-controls/skill-before.txt`), so the arm and the exit rule
+change no verdict class there. A drop of the `BOUNTIES-ABSENT` count to 0 means
+the arm or its print path regressed; a sweep that moves a class means a matcher
+widened, which must be documented here with its before/after.
