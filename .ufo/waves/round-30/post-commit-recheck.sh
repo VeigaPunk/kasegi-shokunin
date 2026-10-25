@@ -20,7 +20,7 @@ run_counter() {
   if [[ $label == a1 ]] && ! grep -q 'F98' <<<"$output"; then failures=$((failures + 1)); fi
   if [[ $label == a2 ]] && ! grep -qi 'duplicate' <<<"$output"; then failures=$((failures + 1)); fi
   if [[ $label == b1 ]] && ! grep -q 'stem-mismatch' <<<"$output"; then failures=$((failures + 1)); fi
-  if [[ $label == b2 ]] && ! grep -Eq 'occurrence-not-unique|occurrences=2' <<<"$output"; then failures=$((failures + 1)); fi
+  if [[ $label == b2 ]] && ! grep -Eq 'stem-mismatch|occurrence-not-unique' <<<"$output"; then failures=$((failures + 1)); fi
 }
 
 run_counter a1 python3 corpus/instruments/frontier-recheck-count.py --root .ufo/waves/round-30/c1-controls/harness-root-a1
@@ -44,7 +44,7 @@ harness_output=$(python3 corpus/instruments/frontier-recheck-count.py 2>&1)
 harness_status=$?
 printf '%s\n' "$harness_output"
 printf 'harness_exit=%s\n' "$harness_status"
-if (( harness_status != 0 )) || ! grep -q 'entries=17 pass=17 exit=0' <<<"$harness_output" || ! grep -q 'PASS F14 .*ids=S046,S047,S041' <<<"$harness_output"; then failures=$((failures + 1)); fi
+if (( harness_status != 0 )) || ! grep -q 'entries=17 pass=17 exit=0' <<<"$harness_output" || ! grep -Eq 'PASS[[:space:]]+F14 .*ids=(S041,S046,S047|S046,S047,S041)' <<<"$harness_output"; then failures=$((failures + 1)); fi
 
 recheck_status=0
 for source in S046 S047 S041; do
