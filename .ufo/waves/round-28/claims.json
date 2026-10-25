@@ -1,0 +1,81 @@
+{
+  "round": 28,
+  "lane": "kasegi",
+  "frozen_at_utc": "2026-10-25T00:00:00Z",
+  "base": "261a6651b7e52c58e9ad0ceaef6f3bd0bf2d904f",
+  "frozen_by": "L1 kasegi round 28 attempt 1; re-freeze of the round-27 frozen C1/C2 (round 27 honest stop, orchestrator wrap-up, zero dispatch). Counters and predicates below are frozen: no in-place edit after this file commits; corrections land as separate appended files (R25-1, R9). Fixtures and before-receipts re-run from the committed round-27 bytes, not re-created (round-27 lesson carry-forward 1).",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability (lowest non-retired, score 4, held)",
+      "name": "anchorcheck.py gate soundness: exit nonzero on unverifiable verdicts, CITE gains a ~/Projects/bounties/ arm, --selftest with one isolating fixture per limb",
+      "predicate": "anchorcheck.py (a) exits 1 when a citation is unverifiable (MISSING-FILE, PAST-EOF, OUTSIDE-BASE, PIN-BROKEN, BASE-ABSENT, BOUNTIES-ABSENT) instead of printing the verdict and exiting 0; (b) an unmarked `~/Projects/bounties/` citation is matched by CITE and reported BOUNTIES-ABSENT instead of being invisible; (c) `anchorcheck.py --selftest` runs one isolating fixture per limb and prints `selftest cases=N failures=0`, committed in the round receipt index at the instrument's own sha256; (d) no-harm: the SKILL.md live run keeps exit 0 with bad=0 and its verdict classes unchanged (LOST-RECORDED=306, BASE-ABSENT=0, PIN-BROKEN=0, OUTSIDE-BASE=0).",
+      "before": {
+        "bad_fixture_exit": "0 (BASE-ABSENT printed, exit 0)",
+        "bounties_fixture_BOUNTIES_lines": "0 (cite not matched by CITE at all)",
+        "selftest_receipt_lines": "0 (--selftest crashes FileNotFoundError exit 1)",
+        "skill_md_exit": "0",
+        "skill_md_bad": "0",
+        "skill_md_lost_recorded": "306",
+        "instrument_sha256": "c2a9e6c6088015968b3c6ea7f12a0ea66699c3ecb2a21db362659db8e95ef748 (unchanged since round-27 freeze; re-verified at round-28 freeze)"
+      },
+      "after": {
+        "bad_fixture_exit": "1",
+        "bounties_fixture_BOUNTIES_lines": "1",
+        "selftest_receipt_lines": "1 at instrument_sha256 matching sha256sum corpus/instruments/anchorcheck.py, selftest cases=N failures=0 exit=0",
+        "skill_md_exit": "0",
+        "skill_md_bad": "0",
+        "skill_md_lost_recorded": "306"
+      },
+      "counter_commands": [
+        "python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bad-fixture.md >/dev/null 2>&1; echo $?",
+        "python3 corpus/instruments/anchorcheck.py .ufo/waves/round-27/c1-controls/bounties-fixture.md 2>/dev/null | grep -c BOUNTIES-ABSENT",
+        "grep -cE 'selftest cases=' .ufo/waves/round-28/c1-receipt-index.txt && grep -oE 'instrument_sha256=[0-9a-f]{64}' .ufo/waves/round-28/c1-receipt-index.txt && sha256sum corpus/instruments/anchorcheck.py | awk '{print \"instrument_sha256=\"$1}' && python3 corpus/instruments/anchorcheck.py --selftest >/dev/null 2>&1; echo selftest_exit=$?",
+        "python3 corpus/instruments/anchorcheck.py SKILL.md >/dev/null 2>&1; echo $? ; python3 corpus/instruments/anchorcheck.py SKILL.md 2>/dev/null | sed -n 's/^== .*bad; \\([0-9]*\\) bad.*/bad=\\1/p' ; python3 corpus/instruments/anchorcheck.py SKILL.md 2>/dev/null | sed -n 's/^== .*LOST-RECORDED=\\([0-9]*\\).*/lost=\\1/p'"
+      ],
+      "kill_rule": "any counter misses its after value; or the do-nothing control (pre-change instrument bytes) reaches any after value; or the SKILL.md live run exits nonzero, its bad count moves, or its verdict-class counts move; or a selftest fixture is shown non-isolating (a fixture that fails a limb other than its own, or a limb with no failing fixture)",
+      "do_nothing_control": "unchanged committed anchorcheck.py bytes on the two committed fixtures: exit 0 and 0 BOUNTIES lines (receipts .ufo/waves/round-27/c1-controls/*-before.txt, re-run fresh at .ufo/waves/round-28/c1-controls/*-before.txt); selftest absent (c1-controls/selftest-before.txt)",
+      "control_receipts": ".ufo/waves/round-27/c1-controls/ plus .ufo/waves/round-28/c1-controls/ (fresh re-runs)",
+      "corpus_disclosure": "after the CITE bounties arm, 4 corpus marked bounties citations (claim-gates.md, intake-and-finalize.md, mission-control.md, source-tree-loss-2026-09-28.md) newly classify LOST-RECORDED instead of being silently skipped; SKILL.md verdict classes are unchanged (0 marked bounties cites, prose mentions unanchored). Disclosed, not hidden.",
+      "routed_debt_fixed": "round-25 carried debt: 'anchorcheck.py exits 0 for every verdict class' and 'CITE lacks the ~/Projects/bounties/ arm' (round-26 lesson, routed debt); round-27 lesson carry-forward 2 implementation notes (FAIL_CLASSES; bounties root derived like MIRROR/ORIGIN with KASEGI_BOUNTIES override + canonical ~/Projects/bounties; selftest fixtures isolate limbs under the absent-bases host: env-override a temp mirror root to reach MISSING-FILE, PAST-EOF needs a real temp file)"
+    },
+    {
+      "id": "C2",
+      "axis": "coverage (score 7, held)",
+      "name": "F12 frontier: Japanese state-coordinated disclosure workflow admitted, re-grounded on round-28 captures of the IPA intake-process page (new row S042) and a re-capture of the JPCERT/CC 2026 P-guideline (existing row S041)",
+      "predicate": "frontier row F12 is admitted in corpus/README.md naming knowledge/japanese-domestic-disclosure-workflow.md; the entry opens with source: S041 and source: S042 headers, a single executable recheck line whose --source ids equal the declared ids against corpus/source-snapshots/round-28/manifest.json; the manifest pins both captures (path stem equals id, sha256, Q9-conformant quote assertions) and source-recheck exits 0 on both ids; the S042 registry row is appended (tier A, mined, opened 2026-10-25, used-by exactly the admitted entry); S041's used-by gains the entry (change logged old->new in the lesson); the assimilation Gate records >=1 admit and >=1 reject with inline <=25-word quotes; the sources census exits 0.",
+      "before": {
+        "frontier_admitted": "11",
+        "entries_citing_S042": "0",
+        "sources_rows": "41 (census exit 0, receipts .ufo/waves/round-27/census-before.txt re-run at .ufo/waves/round-28/census-before.txt)",
+        "frontier_harness": "entries=14 pass=14 exit=0"
+      },
+      "after": {
+        "frontier_admitted": "12",
+        "entries_citing_S042": "1",
+        "sources_rows": "42, census exit 0, S042 row present",
+        "frontier_harness": "entries=15 pass=15 exit=0"
+      },
+      "counter_commands": [
+        "awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md",
+        "grep -lE '^source: S042 ' corpus/knowledge/*.md | wc -l",
+        "grep -cE '^\\|[[:space:]]*S042[[:space:]]*\\|' corpus/SOURCES.md ; /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo census_exit=$?",
+        "python3 corpus/instruments/frontier-recheck-count.py"
+      ],
+      "kill_rule": "a source row appended without an admitted entry citing it; census exit != 0 at round end; harness pass < entries; the entry's recheck --source ids differ from its declared source: ids; any manifest quote assertion not exactly-once (or anchor-broken)",
+      "do_nothing_control": "no adoption: frontier stays 11, entries citing S042 stay 0, harness stays 14/14 (receipts .ufo/waves/round-27/c2-controls/before.txt re-run fresh at .ufo/waves/round-28/c2-controls/before.txt); a do-nothing round cannot reach any after value",
+      "control_receipts": ".ufo/waves/round-27/c2-controls/ plus .ufo/waves/round-28/c2-controls/ (fresh re-runs)",
+      "assimilation": {
+        "package": "/home/vgpnk/Projects/shokuknow/merge/kasegi (read-only)",
+        "theme": "Japanese state-coordinated disclosure workflow (staged japanese-domestic-disclosure-workflow.md; staged S042 -> adopted lane S042, no collision; staged S043 = already lane S041 round 26, cited not re-registered)",
+        "one_considerthese_item": "considerthese/2026-10-25.md proposal 1 (wave-evidence economy) lands as QUALITY.md R14 and is practiced in-round (receipts and digests in git; no bulky full-corpus fixture trees committed)"
+      }
+    }
+  ],
+  "dispatch_requirements": [
+    "reviewer seats inside the build wave (round-26 routed defect 2; the r27 lesson carry-forward 1)",
+    "inline <=25-word Gate quotes in the round lesson (round-26 routed defect 3)",
+    "one canonical receipt index at the landed instrument digest; no mid-wave receipt artifacts (round-26 routed defect 4)",
+    "round-27 routed defects: land the fleet report before returning (r26 defect 1, repeated in r27 spotcheck as ordering note); expected-list count basis reconciled when the F12 entry lands (r27 carry-forward 4)"
+  ]
+}
