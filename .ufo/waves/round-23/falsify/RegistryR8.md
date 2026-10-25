@@ -48,6 +48,14 @@ dirty. **`corpus/SOURCES.md` itself was never dirty** — re-checked clean at re
 (`git status --porcelain corpus/SOURCES.md` → empty) — so every registry measurement here is
 against released lane-tip bytes, not against a sibling's in-flight edit.
 
+**Durability of evidence.** Every finding below is carried by the report body itself: an
+inline command with verbatim output, or a git object identity (`922a4dd`, `c8b719d`,
+`8bf9807`, `953c278`) resolvable with `git cat-file -e`, or a repo-resident path. No finding
+depends on a scratch tree, on a `/tmp` directory, or on a rebuilt-from-transcript file. The
+`/tmp` directory named above is working scratch only and holds nothing this report cites; a
+scratch tree is a convenience copy, never the evidence locus. Consequently no relocation,
+restoration or reconstruction of scratch bytes can change or invalidate any claim here.
+
 ### 1.1 Whole-registry field diff, base vs working tree
 
 Base revision per `.ufo/waves/round-23/claims.json` is `922a4dde`. `c8b719d` is an ancestor
@@ -126,16 +134,27 @@ S006 IDENTICAL
 
 ### 1.4 Contract census, run verbatim from the lane root
 
-The contract ships its own census block (lines 70–81); reproduced unmodified:
+The contract ships its own census block (lines 70–81). Transcribed here **in full**, not
+abbreviated, so every number below is re-derivable from this report alone with no scratch
+tree, no working directory and no helper script:
 
 ```sh
-grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md          # rows
-awk -F'|' '... NF!=13 {n++} END{print n+0}' corpus/SOURCES.md                  # malformed
-awk -F'|' '... {t=$5; ... n[t]++}' corpus/SOURCES.md                           # tier
-awk -F'|' '... {s=$9; ... n[s]++}' corpus/SOURCES.md                           # status
-awk -F'|' '... {i=$2; ... print i}' corpus/SOURCES.md | sort | uniq -d         # dup ids
-awk -F'|' '... enum violations ...' corpus/SOURCES.md
-awk -F'|' '... mined used-by ...' corpus/SOURCES.md | while read -r p; do [ -e "$p" ] || echo "missing: $p"; done
+# rows (spacing-tolerant)
+grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md
+# malformed rows — 11 columns means NF=13; must print 0
+awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ && NF!=13 {n++} END{print n+0}' corpus/SOURCES.md
+# tier histogram
+awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ {t=$5; gsub(/[[:space:]]/,"",t); n[t]++} END{for(k in n) printf "%s=%d ", k, n[k]; print ""}' corpus/SOURCES.md
+# status histogram
+awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); n[s]++} END{for(k in n) printf "%s=%d ", k, n[k]; print ""}' corpus/SOURCES.md
+# duplicate ids — must print nothing
+awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ {i=$2; gsub(/[[:space:]]/,"",i); print i}' corpus/SOURCES.md | sort | uniq -d
+# enum violations and tier inflation — must print nothing
+awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ && NF==13 {i=$2;k=$4;t=$5;s=$9; gsub(/[[:space:]]/,"",i); gsub(/[[:space:]]/,"",k); gsub(/[[:space:]]/,"",t); gsub(/[[:space:]]/,"",s); if (t !~ /^[ABC]$/) print "tier", i, t; if (s !~ /^(queued|mined|rejected)$/) print "status", i, s; if (k !~ /^(spec|docs|paper|code|tool|dataset|talk|book|community|own-work)$/) print "kind", i, k; if (t=="A" && k=="community") print "tier-inflation", i}' corpus/SOURCES.md
+# mined rows whose used-by paths do not exist — must print nothing
+awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ && NF==13 {s=$9; gsub(/[[:space:]]/,"",s); if (s=="mined") {n=split($12, a, /[,;]/); for (j=1;j<=n;j++) {p=a[j]; gsub(/^[[:space:]]+|[[:space:]]+$/,"",p); if (p!="" && p!="—") print p}}}' corpus/SOURCES.md | while read -r p; do [ -e "$p" ] || echo "missing: $p"; done
+# independent count of rows whose used-by cell is not — (run from the lane root)
+grep -E '^\| S[0-9]' corpus/SOURCES.md | awk -F' \\| ' '$11!="— |"' | wc -l
 ```
 
 Output:

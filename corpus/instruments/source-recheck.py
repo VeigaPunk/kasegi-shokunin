@@ -21,6 +21,12 @@ from pathlib import Path
 SCHEMA_VERSION = 1
 ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*\Z")
 SHA256_RE = re.compile(r"[0-9a-f]{64}\Z")
+MARKUP_RE = re.compile(r"</?u>")
+
+
+def normalize(text):
+    """Collapse whitespace and drop capture markup (<u>/</u>) before matching."""
+    return " ".join(MARKUP_RE.sub("", text).split())
 
 
 def emit(out, stable_id, status, detail=""):
@@ -128,6 +134,11 @@ def check_source(manifest_path, record, out):
         quote_id = assertion["id"]
         if assertion["quote"] in source_text:
             emit(out, f"{source_id}:{quote_id}", "OK")
+        elif normalize(assertion["quote"]) and normalize(assertion["quote"]) in normalize(source_text):
+            # Declared normalization (considerthese/2026-10-24 proposal 1):
+            # reader captures carry markup such as <u>…</u>; the receipt names
+            # the transformation instead of forcing the entry to quote tags.
+            emit(out, f"{source_id}:{quote_id}", "OK", "normalized=markup-whitespace")
         else:
             emit(out, f"{source_id}:{quote_id}", "MISMATCH", "reason=quote-not-found")
             status = 1

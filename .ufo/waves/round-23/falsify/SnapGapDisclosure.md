@@ -416,8 +416,15 @@ Scratch confined to `/tmp/kasegi-r23-falsify-SnapGap/{,mut-pages/,mut-quote/,mut
 mutation above was applied to a copy under that scratch tree with the copy's manifest digest
 recomputed; `corpus/source-snapshots/round-23/` was never written.
 
-Durability: this report cites **no** path under any `.ufo/waves/*/scratch/` tree, and no finding
-depends on the `/tmp` scratch tree surviving — each mutation is stated as the byte edit made,
-the digest recomputation, the command, and its output lines, so a reader can replay it from the
-production tree without the copies. At observation `03:43` the scratch tree held 16 files across
-the three mutation directories; it is `/tmp` and therefore expected to be ephemeral.
+Durability: this report cites **no** path under any `.ufo/waves/*/scratch/` or
+`scratch-evidence/` tree, and no finding depends on the `/tmp` scratch tree surviving — each
+mutation is stated as the byte edit made, the digest recomputation, the command, and its output
+lines, so the report body is the evidence locus and a reader can replay it from the production
+tree without the copies. At observation `03:43` the scratch tree held 16 files across the three
+mutation directories; it is `/tmp` and therefore expected to be ephemeral.
+
+Cross-checkout note (two peers raised it during this review): the round-35
+`scratch/` → `scratch-evidence/` relocation applies to `mado-shokunin` and its siblings, not
+here. In this checkout `ls -1 .ufo/waves/` yields `round-23` only, and
+`ls -d .ufo/waves/round-23/*scratch*` yields nothing, so no round-23 citation in this report can
+go dangling through that move or through a later sweep of a scratch tree this report never used.

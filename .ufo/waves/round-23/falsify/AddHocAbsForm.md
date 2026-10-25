@@ -51,12 +51,14 @@ the sibling, so the token falls through to the ordinary-other-root branch and `G
 
 Scratch (`/tmp/kasegi-r23-falsify-AddHocAbsForm/`):
 
-> Durability note (2026-10-25T03:46-03:00, after the external sweep that removed
-> `.ufo/waves/round-35/scratch/`): this report cites **no** `.ufo/…/scratch` path — its scratch is
-> a `/tmp` tree, verified intact at that timestamp with the two script hashes below unchanged. Every
-> output quoted in this report is inlined rather than left in scratch (verbatim TSV rows, CLI
-> stdout, probe table, mutant diffs, matrix receipts), so the evidence stands even if `/tmp` is
-> cleared; the scratch paths are provenance, not a data dependency.
+> Durability note (2026-10-25T03:46-03:00): this report cites **no** `.ufo/…/scratch` path, so the
+> fleet-wide round-35 relocation (`.ufo/waves/round-35/scratch/` → `scratch-evidence/`) cannot
+> dangle it; this repo has only `.ufo/waves/round-23`. Its scratch is a `/tmp` tree, verified intact
+> at that timestamp with the two script hashes below unchanged. Every output quoted in this report
+> is inlined rather than left in scratch (verbatim TSV rows, CLI stdout, probe table, mutant diffs,
+> matrix receipts), so the evidence stands even if `/tmp` is cleared; the scratch paths are
+> provenance, not a data dependency. No file here is rebuilt from transcript — every SHA-256 in this
+> report is of the bytes that were measured.
 
 - `harness.py` (`87f7801684adcc03ce19ff5b8855d6dc3ad5f633cde239a16c12b05537ff8916`) — copies the
   resolver bytes next to a disposable tree, so the CLI's own `citation-survival.tsv` is written in
@@ -194,3 +196,178 @@ consequence of `BOUNTY_PREFIXES`, so the fix is host-specific while the boundary
   corpus attribution, admission, or any score movement; no admission is claimed.
 - Editing wave: no build, lint, test, type-check, or formatter run was performed (parent owns the
   post-integration gate). All mutants and outputs live in `/tmp`; repo bytes were read only.
+
+## Appendix — verbatim scratch sources
+
+Both scripts are inlined byte-for-byte, so the report is self-contained: if `/tmp` is cleared,
+extract each block and the SHA-256 quoted above must match the extracted file. Nothing here is
+rebuilt from transcript — these are the bytes that produced the quoted arm output.
+
+### `harness.py` — `87f7801684adcc03ce19ff5b8855d6dc3ad5f633cde239a16c12b05537ff8916`
+
+```python
+#!/usr/bin/env python3
+"""Scratch r23 falsify probe: absolute-form prefix-sibling of the bounty root.
+
+Builds a disposable tree with an isolated HOME whose Projects tree contains
+only `bounties-legacy/README.md`, a KASEGI_MIRROR containing `-legacy/README.md`
+(the old '-' suffix decoy), and a lane SKILL.md citing one token. Copies the
+resolver bytes under test next to the tree (so its written TSV stays in
+scratch) and runs the untouched CLI once.
+
+Prints the CLI exit/stdio and every TSV row verbatim, plus byte identity and
+the on-disk state of the absolute path the citation names.
+"""
+import argparse
+import hashlib
+import os
+import shutil
+import subprocess
+import sys
+
+ABS_CITE = "/home/vgpnk/Projects/bounties-legacy/README.md"
+
+
+def sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 16), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def build(root, cite):
+    home = os.path.join(root, "home")
+    mirror = os.path.join(root, "relocated", "tbh")
+    lane = os.path.join(root, "lane")
+    tool = os.path.join(root, "tool")
+    for d in (os.path.join(home, "Projects", "bounties-legacy"),
+              os.path.join(mirror, "-legacy"),
+              lane, tool):
+        os.makedirs(d, exist_ok=True)
+    with open(os.path.join(home, "Projects", "bounties-legacy", "README.md"),
+              "w", encoding="utf-8") as fh:
+        fh.write("ordinary other-root literal under the disposable HOME\n")
+    with open(os.path.join(mirror, "-legacy", "README.md"), "w",
+              encoding="utf-8") as fh:
+        fh.write("decoy under the selected mirror reached by a '-' suffix\n")
+    with open(os.path.join(lane, "SKILL.md"), "w", encoding="utf-8") as fh:
+        fh.write("# abs-form probe\n\n- `%s`\n" % cite)
+    return home, mirror, lane, tool
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--resolver", required=True)
+    ap.add_argument("--root", required=True)
+    ap.add_argument("--cite", default=ABS_CITE + ":1")
+    ap.add_argument("--label", default="")
+    ap.add_argument("--extra-file", action="append", default=[],
+                    help="path relative to --root to materialise before the run")
+    args = ap.parse_args(argv)
+
+    shutil.rmtree(args.root, ignore_errors=True)
+    home, mirror, lane, tool = build(args.root, args.cite)
+    for rel in args.extra_file:
+        target = os.path.join(args.root, rel)
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        with open(target, "w", encoding="utf-8") as fh:
+            fh.write("decoy planted at %s\n" % rel)
+    copied = os.path.join(tool, "resolve.py")
+    shutil.copyfile(args.resolver, copied)
+
+    env = {
+        "HOME": home,
+        "KASEGI_MIRROR": mirror,
+        "PATH": os.environ.get("PATH", "/usr/bin:/bin"),
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+    }
+    proc = subprocess.run([sys.executable, copied, lane], cwd=tool, env=env,
+                          capture_output=True, text=True, timeout=120)
+
+    print("label            : %s" % args.label)
+    print("resolver         : %s" % args.resolver)
+    print("resolver sha256  : %s" % sha256_file(args.resolver))
+    print("copied sha256    : %s" % sha256_file(copied))
+    print("cite             : %s" % args.cite)
+    print("HOME             : %s" % home)
+    print("KASEGI_MIRROR    : %s (realpath %s)" % (mirror, os.path.realpath(mirror)))
+    print("abs path exists  : %s -> %s"
+          % (ABS_CITE, os.path.exists(ABS_CITE)))
+    print("decoy exists     : %s"
+          % os.path.exists(os.path.join(mirror, "-legacy", "README.md")))
+    print("cli exit         : %d" % proc.returncode)
+    print("cli stdout       : %s" % (proc.stdout or "").strip())
+    if proc.stderr.strip():
+        print("cli stderr       : %s" % proc.stderr.strip()[:400])
+
+    tsv = os.path.join(tool, "citation-survival.tsv")
+    print("tsv              : %s (exists %s)" % (tsv, os.path.isfile(tsv)))
+    if os.path.isfile(tsv):
+        with open(tsv, "r", encoding="utf-8") as fh:
+            for line in fh:
+                print("row              : %s" % line.rstrip("\n"))
+    return 0 if proc.returncode == 0 else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+```
+
+### `prefix-probe.py` — `b1c996c12fc335d347f6bb3b3a448fce113c1044f38953da81daddacc8fdeffe`
+
+```python
+#!/usr/bin/env python3
+"""In-process probe: which BOUNTY_PREFIXES entry grants bounty_suffix() the
+absolute spelling, and what the tilde entry expands to under a foreign HOME.
+
+Run as:
+  env HOME=/tmp/kasegi-r23-falsify-AddHocAbsForm/fixed-tilde/home \
+      KASEGI_MIRROR=/tmp/kasegi-r23-falsify-AddHocAbsForm/fixed-tilde/relocated/tbh \
+      python3 /tmp/kasegi-r23-falsify-AddHocAbsForm/prefix-probe.py \
+      /tmp/kasegi-r23-falsify-AddHocAbsForm/bytes-fixed.py
+"""
+import importlib.util
+import os
+import sys
+
+spec = importlib.util.spec_from_file_location("res", sys.argv[1])
+m = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(m)
+
+print("module      :", m.__file__)
+print("HOME        :", os.environ["HOME"])
+print("KASEGI_MIRROR:", os.environ["KASEGI_MIRROR"])
+print("BOUNTY_PREFIXES =", m.BOUNTY_PREFIXES)
+for p in m.BOUNTY_PREFIXES:
+    print("  prefix %r\n    expanduser -> %r" % (p, os.path.expanduser(p)))
+
+toks = [
+    "/home/vgpnk/Projects/bounties-legacy/README.md",
+    "/home/vgpnk/Projects/bounties-x/README.md",
+    "/home/vgpnk/Projects/bounties/ops/rank.mjs",
+    "/home/vgpnk/Projects/bounties",
+    "/home/vgpnk/Projects/bounties/",
+    "/home/vgpnk/Projects/bounties//etc/hostname",
+    "/home/vgpnk/Projects/bounties/../outside.md",
+    "~/Projects/bounties-legacy/README.md",
+    "~/Projects/bounties/ops/rank.mjs",
+]
+for t in toks:
+    print("bounty_suffix(%-56r) -> %r" % (t, m.bounty_suffix(t)))
+
+lane = os.path.join(os.environ["HOME"], "..", "lane")
+mirror = os.environ["KASEGI_MIRROR"]
+for t in (toks[0], toks[5], toks[6], toks[7]):
+    print("classify(%-56r) -> %r" % (t, m.classify(t, lane, mirror)))
+
+print("join(mirror, %r) -> %r"
+      % ("/etc/hostname", os.path.join(mirror, "/etc/hostname")))
+print("under_mirror(/etc/hostname, mirror) ->",
+      m.under_mirror("/etc/hostname", mirror))
+print("under_mirror(mirror + /../outside.md, mirror) ->",
+      m.under_mirror(os.path.join(mirror, "../outside.md"), mirror))
+print("MIRROR_ROOT/MIRROR_ABSENT ->", m.MIRROR_ROOT, m.MIRROR_ABSENT)
+```

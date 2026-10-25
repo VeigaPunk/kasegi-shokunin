@@ -91,6 +91,11 @@ exit=1
   i.e. the parenthetical is load-bearing, not cosmetic: quoting only the rendered form in
   the manifest would fail closed.
 
+  Durability: that replay is deterministic from the repo bytes plus the rendered quote
+  displayed in row L28 above, so `/tmp` is a convenience copy, not the evidence locus.
+  This report body carries the recipe and the verdict; nothing here depends on a scratch
+  directory surviving.
+
 - Supplementary fidelity check (beyond the assigned question): all seven rendered entry
   quotes are exact substrings of the **upstream PDF** text after whitespace normalisation
   (`curl` → `/tmp/S030.pdf`, `pdfinfo`: 27 pages, title "… Version 4.2.0";

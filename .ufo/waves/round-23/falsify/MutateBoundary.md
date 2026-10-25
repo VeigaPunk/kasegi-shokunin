@@ -1,48 +1,61 @@
 # MutateBoundary — C1 prefix-boundary mutation probe (round 23)
 
-Seat: `L1Kasegi23.MutateBoundary-2` (mutation-tester, leaf).
-Date: 2026-10-25. Host: linux 7.2.11-arch1-1, Python 3.14.8.
-Target under test (read-only): `corpus/instruments/resolve.py`
-(`sha256 ed9a9dae10024bbb2be5db12776f798309fd4615585c3ad93adaab12702840e9`),
-`corpus/instruments/mirror-containment-fixtures.json`
-(`sha256 5e61a33ed5fa530547aff197fad9380d86d5850374bbb4f2a8f99df44b5e76a9`),
-`corpus/instruments/mirror-containment-check.py` (`sha256 1bc2db10dfbc59ef863e68afce475cd1d317da517137922804d7fc09cd46cecb`).
-Scratch (all writes): `/tmp/kasegi-r23-falsify-MutateBoundary-2/`.
+Seat: `L1Kasegi23.MutateBoundary-2` (mutation-tester, leaf). Date: 2026-10-25.
+Host: linux 7.2.11-arch1-1, Python 3.14.8. All writes confined to
+`/tmp/kasegi-r23-falsify-MutateBoundary-2/`. No production file, lane tree, index,
+or sibling artifact was touched; no tool was installed, upgraded, or configured.
 
-I read `resolve.py:89-263`, `mirror-containment-check.py:29-215`, the full frozen
-matrix, `.ufo/waves/round-23/c1-baseline-resolver.py`, and the two receipts before
-mutating. No production file, lane tree, index, or sibling artifact was modified;
-no tool was installed or upgraded (no package transaction was attempted).
+Pins for every result below — re-verified against `corpus/instruments/` at write time
+(they are byte-identical to my scratch snapshots `pristine3/`):
 
-## 1. Assigned mutant (A): pre-fix boundary in `bounty_suffix`'s call site
+| artifact | sha256 |
+|---|---|
+| `corpus/instruments/resolve.py` | `8dd45bc8d9aedbb25247a64fbd6094a1b9e7b9a3b3facdb58001c59ef3868848` |
+| `corpus/instruments/mirror-containment-fixtures.json` | `4e39f65c7c1bdc7d6a390f0aeefe5fa88af67ea84659aa9ff36b84d271c2400b` |
+| `corpus/instruments/mirror-containment-check.py` | `53742c8d9529dffb8c40c39b3448de7388b774b548d7831670598d5534bff5d1` |
 
-The boundary decision lives in one expression, `resolve.py:225` (pristine):
-`suffix = bounty_suffix(base)`; `bounty_suffix()` itself is `resolve.py:201-213`.
-The assigned mutation reverts only that boundary/suffix derivation to the pre-fix
-form (`.ufo/waves/round-23/c1-baseline-resolver.py`, `classify` body):
+Frozen matrix at this pin: **20 cases, 9 escape / 11 control**; baseline replay
+**20/20 PASS** (`pristine3/receipt-main.json`, sha256 `b669a64c…`).
+
+## 0. The artifact set moved twice while I probed (observation, not a claim)
+
+Three distinct instrument sets appeared between 03:35 and 03:45: the 13-case
+matrix `5e61a33e…` with class-only checker `1bc2db10…` and resolver `ed9a9dae…`; a
+schema-2 checker `fc9550f0…`; then the live pair above. `.ufo/waves/round-23/c1-{baseline,fixed}.json`
+were both rewritten at 03:43. I re-pinned and re-ran rather than reporting the
+superseded pin.
+
+One false-positive of my own, recorded so it is not mistaken for a finding: pairing the
+**new** checker with my **stale** 13-case fixtures copy produced
+`lane-relative-parent-internal-control FAIL path_check=path-outside-internal` (12/13).
+That red is a matrix/checker version mismatch — the landed fixtures carry the
+lane-branch carve-out — and it vanishes on matched pins (20/20). Checker and matrix
+must be pinned together; the receipts' `matrix_sha256` is what makes that detectable.
+
+## 1. Assigned mutant (A)
+
+The boundary decision is one expression, `resolve.py:234` (`suffix = bounty_suffix(base)`);
+`bounty_suffix()` is `resolve.py:210-221`. A reverts **only** that boundary/suffix
+derivation to the pre-fix form from `.ufo/waves/round-23/c1-baseline-resolver.py`
+(`startswith(BOUNTY_PREFIXES)` + `split("/Projects/bounties", 1)[1]`):
 
 ```diff
---- pristine/resolve.py
-+++ mutA/resolve.py
-@@ -222,7 +222,8 @@
+--- pristine3/resolve.py
++++ mutA3/resolve.py              (sha256 39d0e720d66837c17dd92bfe6584e7ec7df8c96137a70a2780325e71a979993c)
+@@ resolve.py:232-235
  def classify(tok, lane_root, mirror_root):
      base, anchor = strip_anchor(tok)
 -    suffix = bounty_suffix(base)
 +    suffix = (base.split("/Projects/bounties", 1)[1].lstrip("/")
 +              if base.startswith(BOUNTY_PREFIXES) else None)
      if suffix is not None:
-         dom = "bounty"
 ```
 
-`under_mirror()` calls are left in place on both fallbacks, so this mutation
-isolates the *prefix boundary* alone and does not double as the containment revert.
-`bounty_suffix()` remains defined but uncalled (unreachable by design of the mutant).
-Bytes: `mutA/resolve.py` = `13cdb2cf39f9ac8df69c8f4875876c958ac19533f5f32173473ce529a82fce9e`
-(reproduced byte-identically in `mutT/` by a second, independent edit pass).
-
-Differential probe (`probe_diff.py`) over the 13 fixture cites plus 9 boundary
-neighbours: **20 probed, 5 diverged**, all prefix siblings, and nothing else —
-i.e. the mutation is exactly the boundary and not a side effect:
+Both `under_mirror()` calls (`resolve.py:244`, `resolve.py:264`) are left intact, so A
+isolates the prefix boundary and is not a disguised containment revert.
+`bounty_suffix()` remains defined but uncalled (unreachable by construction).
+Differential probe over 20 fixture cites + 9 boundary neighbours: 5 diverged, all
+prefix siblings — the mutation is the boundary and nothing else:
 
 ```
 ~/Projects/bounties-legacy/README.md      pristine=None mutant='-legacy/README.md'
@@ -52,203 +65,164 @@ i.e. the mutation is exactly the boundary and not a side effect:
 /home/vgpnk/Projects/bountiesz/b.md       pristine=None mutant='z/b.md'
 ```
 
-## 2. Detector replay: pristine, mutant A, restored
+## 2. Detector replay
 
-Command (identical for every run; only `--resolver`/`--fixtures`/`--json` vary):
+Command (per directory; `--json` tag varies):
 
 ```
 cd /tmp/kasegi-r23-falsify-MutateBoundary-2/<dir> \
-  && python3 ../pristine/check.py --resolver ./resolve.py \
-       --fixtures ../pristine/fixtures.json --json ./receipt-<tag>.json
+  && python3 ../pristine3/check.py --resolver ./resolve.py \
+       --fixtures ../pristine3/fixtures.json --json ./receipt-main.json
 ```
 
-| run | resolver sha256 (12) | pass/fail | flips vs pristine |
-|---|---|---|---|
-| pristine | `ed9a9dae1002` | 13/0 | — |
-| **A (assigned)** | `13cdb2cf39f9` | **12/1** | **`bounty-prefix-sibling-confusion: GONE → MIRROR-EQUIVALENT`** |
-| A, restored | `ed9a9dae1002` | 13/0 | none (case-for-case equal to pristine) |
+| run | pass/fail | flipped cases (expect → mutant) |
+|---|---|---|
+| pristine (`8dd45bc8…`) | **20/0** | — |
+| **A (`39d0e720…`)** | **18/2** | `bounty-prefix-sibling-confusion`: GONE → MIRROR-EQUIVALENT; `absolute-prefix-sibling-confusion`: GONE → MIRROR-EQUIVALENT |
 
-Mutant A output (excerpt, `mutA/receipt-mutA.json`):
+**Verdict: killed** — two independent cases observe it, one per spelling of the
+bounty root (tilde and absolute). Every control, every traversal case, both relative
+escapes, and both expansion escapes are unchanged.
 
-```
-bounty-parent-traversal            escape  expect=GONE             actual=GONE             PASS
-bounty-parent-traversal-vault      escape  expect=GONE             actual=GONE             PASS
-relative-mirror-fallback-escape    escape  expect=GONE             actual=GONE             PASS
-bounty-fallback-symlink-escape     escape  expect=GONE             actual=GONE             PASS
-relative-fallback-symlink-escape   escape  expect=GONE             actual=GONE             PASS
-bounty-prefix-sibling-confusion    escape  expect=GONE             actual=MIRROR-EQUIVALENT FAIL
-confined-bounty-fallback-control   control expect=MIRROR-EQUIVALENT actual=MIRROR-EQUIVALENT PASS
-...
-literal-prefix-sibling-control     control expect=RESOLVES         actual=RESOLVES         PASS
-cases=13 escape=6 controls=7 pass=12 fail=1
-```
-
-**Verdict for A: killed** (1 of 13 cases observes it), and only by
-`bounty-prefix-sibling-confusion`. All 7 controls, all 5 other escapes, and the
-two relative escapes are unchanged.
-
-Path-level trace (`probe_trace.py`, isolated `HOME` = case home, same layout the CLI
-sees):
+Path-level trace on live bytes (`probe_trace3.py`, isolated `HOME` = case home, the
+same environment the CLI sees; `classify` returns class/domain as 4th field):
 
 ```
-CASE bounty-prefix-sibling-confusion  (HOME=/tmp/trace-xsv_5voe/home)
+CASE bounty-prefix-sibling-confusion
   cite=~/Projects/bounties-legacy/README.md:1
-  pristine bounty_suffix=None literal=(None, None) classify=('GONE', '', '', 'other')
-  mutantA  bounty_suffix=None literal=(None, None) classify=('MIRROR-EQUIVALENT',
-             '/tmp/trace-xsv_5voe/relocated/tbh/-legacy/README.md', 'literal', 'bounty')
-             under_mirror=True realpath=/tmp/trace-xsv_5voe/relocated/tbh/-legacy/README.md
-CASE literal-prefix-sibling-control  (HOME=/tmp/trace-s521410_/home)
+  pristine classify=('GONE', '', '', 'other')
+  mutantA  classify=('MIRROR-EQUIVALENT', '<root>/relocated/tbh/-legacy/README.md', 'literal', 'bounty')
+CASE absolute-prefix-sibling-confusion
+  cite=/home/vgpnk/Projects/bounties-legacy/README.md:1
+  pristine classify=('GONE', '', '', 'other')
+  mutantA  classify=('MIRROR-EQUIVALENT', '<root>/relocated/tbh/-legacy/README.md', 'literal', 'bounty')
+CASE literal-prefix-sibling-control
   cite=~/Projects/bounties-legacy/README.md:1
-  pristine ... classify=('RESOLVES', '.../home/Projects/bounties-legacy/README.md', 'literal', 'other')
-  mutantA  ... classify=('RESOLVES', '.../home/Projects/bounties-legacy/README.md', 'literal', 'bounty')
-             under_mirror=False
+  pristine classify=('RESOLVES', '<root>/home/Projects/bounties-legacy/README.md', 'literal', 'other')
+  mutantA  classify=('RESOLVES', '<root>/home/Projects/bounties-legacy/README.md', 'literal', 'bounty')
 ```
 
-Two structural facts follow directly: (a) the defect is not a containment escape —
-the decoy sits *inside* the mirror, so `under_mirror()` reports `True` and cannot see
-it; (b) both cases share the identical citation string
-(`mirror-containment-fixtures.json:55` and `:91`) and differ only in layout.
+The credited decoy is *inside* the mirror (`under_mirror` true), so containment cannot
+see this defect, and the literal control keeps its class while its domain flips.
 
 ## 3. Are `literal-prefix-sibling-control` and `bounty-prefix-sibling-confusion` discriminated by this mutation alone?
 
-**Only one-sidedly, and the control contributes no boundary discrimination.**
+**One-sidedly, and the control carries no boundary information.**
 
-- Class level: the escape case flips GONE→MIRROR-EQUIVALENT while the control stays
-  RESOLVES→RESOLVES. So the mutant run separates them — but all of the separating
-  power is on the escape side; the control is *invariant* under the boundary mutation.
-- Mechanism: the control's verdict is produced by `exists_any(base)` before the
-  mutated mirror-fallback clause runs (`resolve.py:229-233`). It therefore observes
-  literal precedence, not boundary exactness. Its only observable change under the
-  mutation is the **domain** label (``other`` → ``bounty``), and the checker compares
-  `class` only (`mirror-containment-check.py:126-133` indexes `citation` and `class`
-  in the TSV header written at `resolve.py:329`, which does carry a `domain` column).
-- Witness in the other direction (mutant C = A + literal hit suppressed:
-  `m, p = (None, None)` at `resolve.py:229`): 2 flips —
-  `bounty-prefix-sibling-confusion` **and** `literal-prefix-sibling-control:
-  RESOLVES → GONE`. So the control does load-bear, but for the literal branch, not
-  for the boundary.
-- They are not independent inputs (same citation string, layout-only difference), so
-  the pair cannot establish "prefix siblings are treated as ordinary other roots";
-  it establishes only literal-hit precedence over the mirror fallback.
+- Class level: escape FAIL vs control PASS → the run separates them. All separating
+  power sits on the escape side.
+- The control's verdict is produced at `resolve.py:237-239` (`exists_any(base)`), which
+  runs **before** the mutated fallback (`resolve.py:243-245`). A cannot reach it.
+- The only observable A produces on the control is the `domain` field `other`→`bounty`
+  (trace above). The checker asserts `citation`, `class`, and `resolved_path`
+  (`mirror-containment-check.py:120-134`); `domain` is written at `resolve.py:341` but
+  never compared. So even the one signal that moves is unasserted.
+- The two cases are also not independent inputs: both cite the identical string
+  `~/Projects/bounties-legacy/README.md` and differ only in filesystem layout — which is
+  why the control flips only under a literal-branch mutation (C: `RESOLVES`→`GONE`).
+  The pair witnesses literal-hit precedence, not boundary exactness.
+- Live matrix now has a second, differently spelled witness
+  (`absolute-prefix-sibling-confusion`), so the *claim* no longer rests on one case; the
+  *control* is still inert.
 
-Consequence for C1 verifiability: the claim's `reject sibling-root prefix confusion`
-clause rests on exactly one case, and the paired control is inert to it.
+## 4. Attribution probes (same harness and matrix; A is the assigned mutant)
 
-## 4. Supplementary attribution probes (same harness, same matrix)
+Each row is a single independent change from the live resolver; every one keeps
+`under_mirror()` unless stated.
 
-Each mutant is a single additional change from pristine; every one keeps
-`under_mirror()` unless stated. Full diffs are reproducible from the pristine copy.
-
-| id | single change | sha256 (12) | pass/fail | flips |
+| id | change | resolver sha256 (12) | pass/fail (20) | flips |
 |---|---|---|---|---|
-| A | boundary → `startswith` + `split` | `13cdb2cf39f9` | 12/1 | prefix-sibling-confusion |
-| B | A + bounty-fallback `under_mirror` dropped | `ad309e0570a8` | 9/4 | A's flip + `bounty-parent-traversal`, `bounty-parent-traversal-vault`, `bounty-fallback-symlink-escape` |
-| C | A + literal hit suppressed | `67f8c0bee32c` | 11/2 | A's flip + `literal-prefix-sibling-control: RESOLVES→GONE` |
-| D | bounty-fallback `under_mirror` dropped only | `163f54b07adb` | 10/3 | `bounty-parent-traversal`, `…-vault`, `bounty-fallback-symlink-escape` |
-| E | relative-fallback `under_mirror` dropped only | `7fed2c1a11f4` | 11/2 | `relative-mirror-fallback-escape`, `relative-fallback-symlink-escape` |
-| F | `classify` returns GONE always | `2e1edc7792ed` | 8/5 | 5 controls: both confined MIRROR-EQUIVALENT, INTERNAL, both RESOLVES controls |
-| G | `BOUNTY_PREFIXES` loses `/home/vgpnk/Projects/bounties` | `f032c4ca9153` | **13/0 (SURVIVED)** | none |
-| H | `BOUNTY_PREFIXES` loses `~/Projects/bounties` | `853a8eeab9e0` | 12/1 | `confined-bounty-fallback-control: MIRROR-EQUIVALENT→GONE` only |
+| A | boundary → `startswith`+`split` | `39d0e720d668` | 18/2 | tilde + absolute sibling confusion |
+| J | boundary loosened on tilde arm only | `27f6c4bd8cbe` | 19/1 | tilde sibling only (absolute arm exact) |
+| D | bounty-fallback `under_mirror` dropped | `1f72a5df2de9` | 16/4 | 2 traversal + bounty symlink escape + brace-expansion escape |
+| E | relative-fallback `under_mirror` dropped | `2d2dcb4edac1` | 18/2 | both relative escapes |
+| B | A + D | `5a1fd64a9582` | 14/6 | exactly A ∪ D (no interaction) |
+| C | A + literal-hit branch suppressed | `01870941cfeb` | 15/5 | both sibling escapes + `literal-prefix-sibling-control` + both literal carve-outs (`bounty-literal-present-traversal`, `bounty-literal-symlink-present`) |
+| F | `classify` returns GONE always | `a2f53034a117` | 11/9 | 9 controls (all MIRROR-EQUIVALENT, INTERNAL, RESOLVES controls) |
+| G | `BOUNTY_PREFIXES` loses `/home/vgpnk/Projects/bounties` | `2d06d656eba4` | 19/1 | `absolute-bounty-fallback-control` |
+| H | `BOUNTY_PREFIXES` loses `~/Projects/bounties` | `d3ac99b9d422` | 18/2 | `confined-bounty-fallback-control`, `brace-expansion-confined-control` |
+| K | boundary admits `root + "_"` siblings | `eedc6effe307` | **20/0 (SURVIVED)** | none |
 
-B's flip set is exactly A ∪ D (no interaction). D and E are disjoint, so the two
-containment calls are separately witnessed. F shows the control set is not
-GONE-collapsible (the escape set alone would be cheated by a GONE-everything
-detector; the controls reject it 5/13).
-
-G is the material coverage finding: deleting the absolute-home bounty prefix changes
-real behaviour (`/home/vgpnk/Projects/bounties/…` loses the confined mirror fallback
-and becomes plain-GONE) yet survives the frozen matrix untouched, because no case
-uses that form. I verified a concrete witness and its host dependence:
-`fixtures-abscase.json` (`sha256 680559edaf37…`) adds one `absolute-bounty-fallback-control`
-citing `/home/vgpnk/Projects/bounties/ops/rank.mjs:1` with the file only in the mirror.
-
-```
-pristine, 14 cases: cases=14 ... pass=14 fail=0   (absolute case PASS = MIRROR-EQUIVALENT)
-G,        14 cases: absolute-bounty-fallback-control expect=MIRROR-EQUIVALENT actual=GONE FAIL
-                   cases=14 ... pass=13 fail=1
-```
-
-That witness is not hermetic: it requires `/home/vgpnk/Projects/bounties/ops/rank.mjs`
-to be absent on the host (it is, on this host: `ls` → No such file or directory), which
-breaks the fixture's own stated invariant that "paths never leave the case root except
-by the traversal the citation itself performs" (matrix line 3). Closing G therefore
-needs a harness change (redirect the bounty literal root the way `KASEGI_MIRROR`
-redirects the mirror), not a fixture-only case.
+A-on-decoy-removed variant (`fixtures3-nodecoy.json`, sha256 `d362073f…`, the
+`bounty-prefix-sibling-confusion` `files` emptied): **19/1** — A still killed by the
+absolute sibling, so the tilde witness is no longer the sole detector.
 
 ## 5. Findings (falsifiable)
 
-1. **F1 — single-witness boundary.** Reverting `bounty_suffix()`'s exact-root boundary
-   to `startswith(BOUNTY_PREFIXES)` + `split()` is killed by exactly one of 13 frozen
-   cases (`bounty-prefix-sibling-confusion` → MIRROR-EQUIVALENT). Falsified if any other
-   case flips: none did (receipt `63107a2f…`, sha `13cdb2cf…`).
-2. **F2 — decoy-load-bearing witness.** With that case's `files` emptied
-   (`fixtures-nodecoy.json`, `sha256 d70d46dc3bbac48ac2186dbe91872313662b4cccc38801a42dbd1289538b45ab`),
-   the same mutant passes 13/13. The escape case therefore only detects the boundary
-   while its decoy at `<mirror>/-legacy/README.md` is pinned; removing the decoy
-   silently deletes all boundary coverage while the suite still reports 13/13.
-3. **F3 — the paired literal control is boundary-blind.** `literal-prefix-sibling-control`
-   is RESOLVES under both pristine and mutant A; it only moves under a literal-branch
-   mutation (C). The distinguishing signal the mutation *does* produce for it — the
-   `domain` column flipping `other`→`bounty` — is never asserted by
-   `mirror-containment-check.py`, which compares `class` only.
-4. **F4 — unwitnessed absolute-home bounty root.** `BOUNTY_PREFIXES[1]`
-   (`/home/vgpnk/Projects/bounties`) has no fixture witness; G survives 13/13 with a
-   genuine behavioural change, and the verified remedy case is host-anchored, outside
-   the harness's hermetic envelope.
-5. **F5 — boundary and containment are orthogonal.** `under_mirror()` reports `True`
-   for the sibling-confusion decoy (trace above); D/E flip disjoint sets. Neither
-   mechanism can substitute for the other, so the claim needs both kinds of witness —
-   which the frozen matrix currently has.
-6. **F6 — matrix not GONE-collapsible.** A GONE-everything `classify` fails 5 of 7
-   controls (8/13 overall), so the escape set is not trivially satisfiable.
-
-None of these is a claim of admission, score movement, or source accuracy; F1/F2/F4 are
-detector-strength findings about the C1 instrument, F3 is about the control's
-evidential value, F5/F6 are supporting observations.
+1. **F1 — A is killed, twice.** Reverting the exact-root boundary is observed by
+   `bounty-prefix-sibling-confusion` and `absolute-prefix-sibling-confusion` (18/20).
+   Falsifier: any additional flip, or either case passing — receipt `dd5d918f…`.
+2. **F2 — the boundary coverage is now redundant across spellings, but each spelling is
+   necessary.** Dropping only the tilde arm (J) leaves the absolute sibling green;
+   removing only the tilde decoy (nodecoy) leaves the absolute witness. Falsifier: J
+   flipping the absolute case, or nodecoy A passing 20/20.
+3. **F3 — the literal control is boundary-blind.** Identical class under pristine and A;
+   only a literal-branch mutation moves it (C). The `domain` flip A induces is written
+   (`resolve.py:341`) but unasserted (`mirror-containment-check.py:120-134`). Falsifier:
+   a boundary-only mutant that flips `literal-prefix-sibling-control`.
+4. **F4 — boundary and containment are orthogonal.** D (4 flips) and E (2 flips) are
+   disjoint; B's 6 flips equal A ∪ D exactly; A's decoy is inside the mirror
+   (`under_mirror` true). Falsifier: a containment-only mutant flipping a
+   prefix-sibling case, or B ≠ A ∪ D.
+5. **F5 — the matrix is not GONE-collapsible.** A GONE-everything `classify` fails 9 of
+   20 (11/20), all on controls. Falsifier: F reaching 20/20.
+6. **F6 — residual narrow hole: the boundary is tested for one non-`/` continuation.**
+   K (admits `root + "_"` siblings) survives 20/20, and dies only on a probe case I
+   added (21st): `~/Projects/bounties_legacy/README.md` with a decoy at
+   `<mirror>/legacy/README.md` (sha256 `e693c305…`; pristine 21/21 PASS, K 20/21 FAIL).
+   So "reject sibling-root prefix confusion" is witnessed for `-x` siblings, not for
+   arbitrary non-`/` continuations. Scope: contrived one-separator mutant; closing it is
+   one fixture case, and the current code is not wrong on these inputs — it is the
+   *general* property that is unwitnessed. Falsifier: an existing case flipping under K.
+7. **F7 — receipt/live-bytes coupling.** The C1 receipts now pin resolver `8dd45bc8…` +
+   matrix `4e39f65c…` + checker `53742c8d…`; a checker/matrix mismatch silently
+   mis-scores a control (my §0 false positive). Falsifier: reproducing 20/20 from the
+   receipt's three hashes while mixing either file from an earlier pin.
 
 ## 6. Restoration evidence
 
-- `mutA/resolve.py` restored from `pristine/resolve.py`; before/after sha256 both
-  `ed9a9dae10024bbb2be5db12776f798309fd4615585c3ad93adaab12702840e9`.
-- Restored bytes replayed on the frozen matrix: `cases=13 ... pass=13 fail=0`
-  (`mutA/receipt-mutA-restored.json`); its per-case `(expect, actual, status)` map is
-  identical to the pristine receipt (verified programmatically: `restored==pristine: True`).
-- Production artifacts re-hashed after all runs:
-  `resolve.py ed9a9dae…`, `mirror-containment-fixtures.json 5e61a33e…`,
-  `mirror-containment-check.py 1bc2db10…`. Determinism: pristine was run twice, same
-  case map both times.
+- `mutA3/resolve.py` exists only as a probe; the pristine copy was never mutated.
+  Re-verified: `pristine3/resolve.py` sha256 == live `corpus/instruments/resolve.py`
+  sha256 == `8dd45bc8…`; fixtures `4e39f65c…`, checker `53742c8d…` also equal live.
+- No scratch file under test was left mutated: every mutant lives in its own
+  `mut<id>3/` directory alongside an untouched `pristine3/`; the assigned mutation was
+  applied once to `mutA3/` and reproduced byte-identically from `pristine3/` in a second
+  pass (same `39d0e720…`).
+- Determinism: pristine replayed at each of the three pins with the same case map; live
+  pin replayed twice (20/20 both times).
+- The mid-wave changes to `resolve.py`, `mirror-containment-check.py`, and the fixture
+  file were made by other seats (mtimes 03:42–03:43), not by me; I re-pinned and re-ran
+  instead of reverting them.
 
 ## 7. Scope limits
 
-- Detector-only: one class per case, 13 frozen cases (+1 probe case), classification
-  semantics of the copied CLI TSV. Nothing here measures source availability, quote
-  fidelity, corpus attribution, C2 (F06-F08), or score.
-- One mutation point per mutant; A is the assigned probe, B-H are attribution controls
-  run on the same matrix and are reported as such, not as additional contract findings.
-- The `domain` column is unasserted, so all statements about domain rest on the direct
-  trace in §2, not on the matrix.
-- Host-dependent absolute-path probe (§4) is valid only while
-  `/home/vgpnk/Projects/bounties` is absent; on another host the same case would read
-  the host literal and the probe result would not transfer.
-- Single run per mutant (pristine twice). No claim of statistical robustness.
+- Detector-only: class + `resolved_path`/carve-out verdicts for 20 frozen cases (+2
+  probe variants). No statement about source availability, quote fidelity, C2
+  (F06-F08), or any score.
+- One mutation point per mutant; A is the assigned probe, J-K and the variants are
+  attribution/coverage controls and are labelled as such.
+- `domain` is unasserted, so domain statements rest only on the direct trace in §2.
+- The absolute-form cases are host-dependent by fixture design (they require
+  `/home/vgpnk/Projects/bounties*` to stay absent on the run host — verified absent here
+  via `ls`); results using them do not transfer to a host that has those paths.
+- `K`'s probe case is mine, not frozen; it is evidence about the matrix's generality,
+  not a defect report against the resolver.
+- Single execution per mutant; pristine repeated. No statistical claim.
 
-## 8. Reproduction commands
+## 8. Reproduction
 
 ```
 SCR=/tmp/kasegi-r23-falsify-MutateBoundary-2
 SRC=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments
-mkdir -p $SCR/{pristine,mutA}
-cp $SRC/resolve.py $SCR/pristine/resolve.py
-cp $SRC/mirror-containment-fixtures.json $SCR/pristine/fixtures.json
-cp $SRC/mirror-containment-check.py $SCR/pristine/check.py
-cp $SCR/pristine/resolve.py $SCR/mutA/resolve.py
-# apply the §1 diff to $SCR/mutA/resolve.py, then:
-cd $SCR/pristine && python3 check.py --resolver ./resolve.py --fixtures ./fixtures.json --json ./receipt-pristine.json
-cd $SCR/mutA    && python3 ../pristine/check.py --resolver ./resolve.py --fixtures ../pristine/fixtures.json --json ./receipt-mutA.json
-cd $SCR         && python3 probe_diff.py && python3 probe_trace.py
+mkdir -p $SCR/pristine3 && cp $SRC/{resolve.py,mirror-containment-fixtures.json,mirror-containment-check.py} $SCR/pristine3/
+mv $SCR/pristine3/mirror-containment-fixtures.json $SCR/pristine3/fixtures.json
+mv $SCR/pristine3/mirror-containment-check.py $SCR/pristine3/check.py
+python3 $SCR/rebuild3.py          # applies the §1/§4 edits, asserting 1 occurrence each
+python3 $SCR/run_all3.py          # baseline + A..H + nodecoy
+python3 $SCR/run_jk.py            # arm-separated (J), sibling-class (K), underscore probe
 ```
 
-Receipt hashes: pristine `bcf854e7…`, A `63107a2f…`, A-restored `482b9211…`,
-B `a9aa8ba3…`, C `79fdb05d…`, D `9625e5aa…`, E `e5c9b70d…`, F `f8ef42fe…`,
-G `0e0b4521…`, G+abscase `67279672…`, H `8cfe9f1a…`, A-nodecoy `5d3358a9…`,
-pristine+abscase `650f8513…`.
+Receipt hashes (live pin): pristine `b669a64c…`, A `dd5d918f…`, B `5c16c8be…`,
+C `c1c4c2e1…`, D `0dcf1b47…`, E `75ba2380…`, F `e79fbd21…`, G `1d22ea60…`,
+H `1eaf90ef…`, J `72981593…`, K `82cebb06…`, A-nodecoy `4d45e217…`,
+K-nodecoy `c7b514e1…`, pristine-underscore2 `d48074ef…`, K-underscore2 `5e61305e…`.

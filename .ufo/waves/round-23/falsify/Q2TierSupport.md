@@ -189,6 +189,22 @@ S029:sha256 OK … S029:art71-general-application OK exit=0
 S030:sha256 OK … S030:rule-4-2-12-uncertainty OK   exit=0
 ```
 
+### Durable external-evidence anchors (F1 and F4)
+
+The two official PDFs F1/F4 rely on were downloaded again on 2026-10-25 to
+`/tmp/kasegi-r23-q2tier/` (scratch; not cited as an evidence locus) and hashed. The digests,
+not the scratch copies or any session artifact, are the reproducible anchor:
+
+| document | bytes | sha256 | text check (`pdftotext` + grep) |
+|---|---|---|---|
+| CNA Rules v4.2.6 PDF | 271367 | `e296c9376cabcd09879f03920d99bb17e545a0e9c270d94478e45eda99677a22` | `Version: 4.2.6`, `Approved date: 2026-October-14`, `Effective date: 2026-October-20`, `4.2.11 CNAs MUST assign different CVE IDs…` |
+| CNA Rules v4.1.0 PDF | 250107 | `9c55618efcc632b2b498e87ecf8eb9dcc2c724754b6bfacf5270f6b606b29cf0` | `Version 4.1.0`, `Effective May 14, 2025`, `4.1.10 … Independently Fixable`, `4.1.11 Interdependent conditions…` |
+
+Reproduce F1: `curl -sSL -o /tmp/v426.pdf https://www.cve.org/Resources/Roles/Cnas/CNA_Rules_v4.2.6.pdf && sha256sum /tmp/v426.pdf && pdftotext /tmp/v426.pdf - | grep -n "Effective date\|^4.2.11 "`.
+A future reader comparing these numbers observes the same bytes I measured; no rebuilt file
+stands in for them. This report deliberately does not quote its own sha256: the value changes
+with every edit, so pin it at hand-off instead of trusting a number inside the file it hashes.
+
 ## 6. Verdict summary
 
 | entry | Q2 verdict | basis |

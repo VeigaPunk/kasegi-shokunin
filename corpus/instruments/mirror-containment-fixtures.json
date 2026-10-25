@@ -209,14 +209,14 @@
     {
       "id": "glob-expansion-escape",
       "nature": "escape",
-      "cite": "~/Projects/bounties/<name>.md:1",
+      "cite": "~/Projects/bounties/<name>/../../outside-vault/x.md:1",
       "dirs": [
-        "relocated/outside-vault"
+        "relocated/tbh/sub"
       ],
       "files": {
-        "relocated/outside-vault/x.md": "glob match outside the mirror\n"
+        "relocated/outside-vault/x.md": "glob hop outside the mirror\n"
       },
-      "note": "Placeholder rewrite matches only outside the mirror through a relative hop; a confined glob match is the control below.",
+      "note": "The placeholder rewrite matches while a directory exists under the mirror, then the `..` hops leave it. A bare `<name>.md` glob cannot cross `/` and would pass on baseline too, so it is not used here.",
       "expect": "GONE"
     },
     {
@@ -228,6 +228,37 @@
       },
       "note": "A brace set whose only existing alternative is inside the mirror still credits MIRROR-EQUIVALENT: the fix narrows escapes, not expansions.",
       "expect": "MIRROR-EQUIVALENT"
+    },
+    {
+      "id": "relative-priority-lane-first-control",
+      "nature": "control",
+      "cite": "docs/shared.md:1",
+      "files": {
+        "lane/docs/shared.md": "lane copy wins\n",
+        "relocated/tbh/docs/shared.md": "mirror copy\n"
+      },
+      "note": "Pins the lane-first ordering: a relative cite that exists in both trees is INTERNAL, not a mirror credit. A mirror-first mutant passes every other case and must fail this one.",
+      "expect": "INTERNAL"
+    },
+    {
+      "id": "mirror-root-prefix-sibling-escape",
+      "nature": "escape",
+      "cite": "../tbh-evil/decoy.md:1",
+      "files": {
+        "relocated/tbh-evil/decoy.md": "mirror-root prefix sibling\n"
+      },
+      "note": "The joined string `mirror/../tbh-evil/decoy.md` starts with the mirror path, so a string-prefix substitute for under_mirror credits it; realpath does not. Pins the mirror-root sibling boundary.",
+      "expect": "GONE"
+    },
+    {
+      "id": "absolute-parent-traversal",
+      "nature": "escape",
+      "cite": "/home/vgpnk/Projects/bounties/../outside-vault/secret.mjs:1",
+      "files": {
+        "relocated/outside-vault/secret.mjs": "absolute parent-traversal escape\n"
+      },
+      "note": "Absolute spelling of the parent traversal. Host-dependent: requires /home/vgpnk/Projects/outside-vault to stay absent on the run host.",
+      "expect": "GONE"
     }
   ]
 }

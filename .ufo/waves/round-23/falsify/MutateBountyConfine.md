@@ -154,8 +154,9 @@ bounty or relative hunks. Disjointness confirmed with `L1Kasegi23.MutateRelConfi
 - Fixtures are the frozen matrix; no new cases were added, so absence of a discriminating control
   in §7.1 is a finding about the frozen matrix, not a proposed contract change.
 - Tooling: no installs or updates; `python3` from PATH only.
-- Scratch durability: the cited `/tmp/kasegi-r23-falsify-MutateBountyConfine-2` tree still
-  existed at the 03:47 audit after the ~03:45 removal of the in-repo
-  `.ufo/waves/round-35/scratch/` tree; this report cites no `.ufo/…/scratch` path, and the
-  mutation diff, both hashes, the result tables and the raw TSV rows are inlined above so the
-  findings survive any scratch loss.
+- Scratch durability: the cited `/tmp/kasegi-r23-falsify-MutateBountyConfine-2` tree was re-audited
+  at 03:47:33 — intact, `resolve.py`/`pristine-resolve.py` still `ed9a9dae…` and
+  `mutant-resolve.py` still `163f54b0…`. This report cites no `.ufo/…/scratch` path, and the
+  mutation diff, both hashes, the result tables and the raw TSV rows are inlined above, so the
+  findings survive any scratch loss. (The round-35 `scratch/` → `scratch-evidence/` relocation is
+  `mado-shokunin`'s lane and is not a dependency of this one.)

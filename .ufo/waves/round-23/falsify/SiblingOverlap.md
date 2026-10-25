@@ -6,6 +6,12 @@ Target of this seat: sibling corpora only — whether any *admitted* sibling ent
 (a) multi-party coordination, (b) CVE/CNA assignment rules, (c) EU CRA reporting duties,
 and therefore whether kasegi should **cite**, **defer**, or **own** F06–F08.
 
+State note: the corpus moved during this wave. Artifact observations below were first taken
+against the tree *before* the post-attack repair (`2712c99`), which re-sourced F07 to CNA
+rules 4.2.6 and grew the containment matrix; §3 re-states each affected pin with its current
+location. Where a line number and the current tree disagree, the tree at `4d9231e` wins and
+neither finding (S-1, S-2) changes.
+
 Read-only. No production file, lane tree, git/jj state, or sibling tree was written,
 committed, or mutated. No package was installed (tooling note: nothing installed; no
 `pacman`/`uv`/`npm`/`cargo` transaction executed — pacman is paused host-wide anyway).
@@ -272,4 +278,5 @@ result for it.
   trees is characterised in §2.1 rather than assumed away.
 - No sibling `SKILL.md` was read (out of scope for the stated target); the census covers
   `corpus/**` recursively, including `lessons/`.
+- No artifact cited here was rebuilt from a transcript, and no `scratch/` tree is cited at all: this lane has no `.ufo/waves/round-35*` tree, and round-23 scratch is not used as evidence. Every citation is a committed in-repo or fleet-ledger path, and the §7 probes were executed against those bytes — so no number in this report can disagree with the hash of a rebuilt surrogate.
 - Read-only throughout: the only file written by this seat is this report.

@@ -1,327 +1,244 @@
 # DocstringTruth — `resolve.py` policy text vs. landed `classify()` bytes
 
-Seat: `L1Kasegi23.DocstringTruth-2` (reviewer, leaf).
-Round 23 FALSIFY wave. Read-only against the repo: the only repo write is this file.
-All mutation and CLI replay happened under `/tmp/kasegi-r23-falsify-DocstringTruth-2`.
-No git/jj command, commit, or index touch. No installs.
+Seat: `L1Kasegi23.DocstringTruth-2` (reviewer, leaf). Round 23 FALSIFY wave.
+Read-only against the repo: the only repo write is this file. All mutation and CLI replay ran
+under `/tmp/kasegi-r23-falsify-DocstringTruth-2`. No git/jj command, commit, or index touch.
+No installs.
 
-Axis attacked: **depth:verifiability** — does the detector's own documented policy describe
-the bytes that classify citations, after the C1 containment change?
+Axis attacked: **depth:verifiability** — does the detector's documented policy, and the receipt
+that certifies it, describe the bytes and the matrix actually on disk?
 
-## 1. Inputs and hashes
+**Pinned artifact set** (hashes re-checked after writing this report):
 
-| artifact | sha256 |
-|---|---|
-| `corpus/instruments/resolve.py` — **A**: bytes `c1-fixed.json` pins and the bytes every probe in §3-§5 was first run against (mtime `03:27:44 -0300`) | `ed9a9dae10024bbb2be5db12776f798309fd4615585c3ad93adaab12702840e9` |
-| `corpus/instruments/resolve.py` — **B**: working-tree bytes at report time (mtime `03:40:40 -0300`) | `9e0b5751e820a6868edfff70571e38212763a30446204d7d8522cb0f525d7cde` |
-| `corpus/instruments/mirror-containment-fixtures.json` | `5e61a33ed5fa530547aff197fad9380d86d5850374bbb4f2a8f99df44b5e76a9` |
-| `corpus/instruments/mirror-containment-check.py` | `1bc2db10dfbc59ef863e68afce475cd1d317da517137922804d7fc09cd46cecb` |
-| `.ufo/waves/round-23/c1-fixed.json` | pins `resolver_sha256 = ed9a9dae…`, `matrix_sha256 = 5e61a33e…`, `13/13` |
-| `.ufo/waves/round-23/c1-baseline-resolver.py` (pre-fix control) | `d6a3c3f1a1d8e97d42d66a8aa3cb34530b7bc1c18b194e487ef8d580d869f903` |
+| artifact | sha256 | mtime |
+|---|---|---|
+| `corpus/instruments/resolve.py` | `fce5b84be4cece914260f03a3a8b739dc1108381f97482bbfc7b22143810a4b0` | `03:46:26 -0300` |
+| `corpus/instruments/mirror-containment-fixtures.json` | `4e39f65c7c1bdc7d6a390f0aeefe5fa88af67ea84659aa9ff36b84d271c2400b` (20 cases) | `03:43:38 -0300` |
+| `corpus/instruments/mirror-containment-check.py` | `53742c8d9529dffb8c40c39b3448de7388b774b548d7831670598d5534bff5d1` | `03:43:01 -0300` |
+| `.ufo/waves/round-23/c1-fixed.json` | `21b85212…`, `generated_at 2026-10-25T06:46:26Z`, pins resolver `fce5b84b…`, matrix `4e39f65c…`, checker `53742c8d…`, `20/20` | `03:46:26` |
+| `.ufo/waves/round-23/c1-baseline.json` | `8ad926ed…`, `generated_at 2026-10-25T06:46:27Z`, pins baseline `d6a3c3f1…`, same matrix/checker, `12/20` | `03:46:27` |
+| `.ufo/waves/round-23/c1-baseline-resolver.py` | `d6a3c3f1a1d8e97d42d66a8aa3cb34530b7bc1c18b194e487ef8d580d869f903` | `03:28` |
 
-**Bytes drifted mid-review (unattributed; not reverted, per read-only contract).** At the first
-read the tree was `ed9a9dae…`; at report time it is `9e0b5751…`. `diff -u` of the two is exactly
-three hunks, all outside the passage under review except one:
+## 1. What moved during this review (pin discipline, not a finding)
 
-```diff
-@@ bounty_suffix()
--                return base[len(root) + 1:]
-+                return base[len(root) + 1:].lstrip("/")
-@@ bounty fallback
--        m, p = exists_any(os.path.join(mirror_root, suffix)) if suffix else (None, None)
-+        m, p = exists_any(os.path.join(mirror_root, suffix) if suffix else mirror_root)
-@@ report totals
--    maxfiles = max(r["nfiles"] for r in rows)
--    maxocc = max(r["occ"] for r in rows)
-+    maxfiles = max((r["nfiles"] for r in rows), default=0)
-+    maxocc = max((r["occ"] for r in rows), default=0)
-```
+The tree was edited four times while the audit ran. Recorded so every number below can be tied to
+bytes; I wrote none of it and reverted none of it.
 
-The frozen 13-case matrix passes **13/13 on both byte sets**. Findings are therefore labelled by
-byte set: F1, F2, F3, F6, F7 reproduce on **A and B**; F4 and F5 reproduce only on **A** and are
-already fixed in **B**; F8 (receipt/tree drift) is a property of the pair.
+| set | resolver sha | fixtures | checker |
+|---|---|---|---|
+| **A** 03:27:44 | `ed9a9dae…` | 13 cases `5e61a33e…` | `1bc2db10…` |
+| **B** 03:40:40 | `9e0b5751…` | 13 cases | `1bc2db10…` |
+| **C** 03:42:37 | `8dd45bc8…` | 20 cases `4e39f65c…` (03:43:38) | `53742c8d…` (03:43:01) |
+| **D (pinned)** 03:46:26 | `fce5b84b…` | 20 cases (unchanged) | unchanged |
+
+A→D is: the BOUNTY/REL policy paragraphs rewritten to disclose the literal and INTERNAL
+carve-outs (`:26-38`, `:52-64`, `:72-75`); `bounty_suffix().lstrip("/")` (`:220`); the root-only
+mirror-mapping guard toggled twice — enabled in B/C (`… if suffix else mirror_root`), then
+deliberately reverted in D to `(None, None)` with the comment at `:240-242`; and
+`max(..., default=0)` for empty row sets (`:359-360`). The matrix grew 13→17→20 cases. The
+receipts were regenerated at 03:46:26–27 against the 20-case matrix, so receipt and tree now
+agree; see §4 history for the stale-receipt window.
 
 ## 2. Method
 
-Each probe is an isolated case root with its own `HOME`, `KASEGI_MIRROR` and lane repo; the
-real `resolve.py` is copied into `<case>/tool/resolve.py` and executed as a CLI, and the rows
-are read from the CLI's own `citation-survival.tsv`. This is the same replay shape as
-`mirror-containment-check.py` (`HOME` / `KASEGI_MIRROR` / `lane`, `SKILL.md` carrying the cite).
+Each probe is an isolated case root with its own `HOME`, `KASEGI_MIRROR` and lane repo; the real
+`resolve.py` is copied to `<case>/tool/resolve.py` and executed as the CLI; rows are read from the
+CLI's own `citation-survival.tsv`. Same replay shape as `mirror-containment-check.py`.
 
 ```bash
 S=/tmp/kasegi-r23-falsify-DocstringTruth-2
-env -i HOME=$S/a/home KASEGI_MIRROR=$S/a/relocated/tbh PATH=/usr/bin:/bin \
+env -i HOME=$S/k/home KASEGI_MIRROR=$S/k/relocated/tbh PATH=/usr/bin:/bin \
        LANG=C.UTF-8 LC_ALL=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 \
-       python3 $S/a/tool/resolve.py $S/a/lane
+       python3 $S/k/tool/resolve.py $S/k/lane
 ```
 
-Tooling note (role requirement): **no LSP device is mounted** in this session
-(`read xd://lsp` → `No such tool: xd://lsp`; mounted list contains no `lsp`). Caller/definition
-queries therefore used `grep` + the executed CLI as the documented literal fallback, not as
-semantic proof. Python has no project type-checker config in this repo, so no diagnostics pass
-was possible either.
+Tooling (role requirement): **no LSP device is mounted** (`read xd://lsp` → `No such tool: xd://lsp`).
+Caller/definition/diagnostics checks were impossible; the ledger rests on line-addressed reads,
+`grep`, and executed CLI rows, and nothing here is offered as semantic proof.
 
-## 3. Policy-line ledger (docstring line → implementing range → verdict)
+## 3. Policy ledger on the pinned bytes
 
-Docstring policy text lives at `resolve.py:23-66`; the implementing code is `classify()` at
-`resolve.py:223-255` plus `mirror_suffix()` `:187-198`, `bounty_suffix()` `:201-212`,
-`under_mirror()` `:215-220`, `exists_any()` `:170-184`, `brace_expand()` `:155-167`,
-`BOUNTY_PREFIXES` `:97`, `MIRROR_CANDIDATES` `:106-107`.
-
-| policy lines | statement | implementing lines | verdict |
+| docstring lines | statement | implementing lines | verdict |
 |---|---|---|---|
-| 26-28 | BOUNTY = EXACT root, root-only or `/`-delimited descendant | `:97`, `:201-212`, `:225-226` | **MATCH** (prefix sibling `~/Projects/bounties-x/f.md` → `domain=other`, `RESOLVES`; see §4 ledger run) |
-| 29 | "a `../` segment never leaves the root" | `:226-230` (`exists_any(base)`, no confinement) | **STALE** (F1) |
-| 30-32 | mirror fallback = same relative path under mirror **AND realpath-confined** | `:231-233` + `:215-220` | **MATCH** (confined control → MIRROR-EQUIVALENT; fallback `../` and symlink escapes → GONE; §5) |
-| 32-33 | "parent-traversal or symlink escape outside the selected mirror is never credited" | `:228-230` credit the primary branch unconfined | **STALE** as a general sentence (F1) |
-| 34-36, 44-46 | OTHER: any `~`/`/` root → exists? RESOLVES : GONE | `:244-246` | **MATCH** |
-| 36-43 | canonical mirror alias handled first; suffix under the SELECTED root only; never a prefix sibling; root-only/trailing slash allowed; realpath-confined | `:235-243`, `:187-198` | **MATCH** (`~/Projects/origin-work/the-bounty-hunter/...` resolves under the relocated selected root; `the-bounty-hunter-x/f.md` → `other`; bare alias root → `RESOLVES`) |
-| 41-42 | "`[lost-base]`/`[lost-tree]`-marked tokens are not aliases" | **no implementing line** | **UNANCHORED** (F6) |
-| 47-52 | REL: lane repo first → INTERNAL | `:247-250` | **MATCH** on existence; **STALE** on containment (F2) |
-| 53-55 | REL mirror fallback only when realpath-confined; `../` walk-outs and symlink escapes GONE | `:251-254` + `:215-220` | **MATCH** (frozen escapes GONE) |
-| 58-59 | literal `os.path.exists(expanduser(path))` | `:171-175` | **MATCH** |
-| 60-61 | brace: sorted, ≤64 combos, first existing wins | `:155-167`, `:176-180` | **MATCH** (cap enforced; empty alternatives silently skipped — undocumented, harmless) |
-| 62-63 | glob: `<...>`→`*`, sorted first match, zero matches does not resolve | `:181-183` | **MATCH with note** (`recursive=True` and globbing on any `*?[`, not only `<...>`, are undocumented) |
-| 64 | every class except GONE resolves by construction | `:230`, `:233`, `:242`, `:246`, `:250`, `:254` | **MATCH** |
-| 65 | "INTERNAL is assigned only to lane-repo-relative tokens that resolve against the lane repo" | `:248-250` (`join(lane_root, base)`, unconfined) | **STALE** (F2) |
-| 66 | non-resolving relative tokens are GONE, "sub-kind `rel-unresolved`" | none; TSV header has no sub-kind column | **UNANCHORED** (F6) |
-| 98-105 (round-19 block) | "all other explicit roots keep the plain exists? RESOLVES : GONE behavior" | `:244-246` true for OTHER-domain non-aliases; BOUNTY is also an explicit root with a fallback `:231-233` | **STALE/ambiguous** (F3) |
-| 1-2 (module header) | "r15 … self-input/leading-dot fixes r18" | r23 changed `classify()`; `grep -n 'r23\|containment' resolve.py` → no match | **STALE** (F3) |
-| 374 (generated prose) | "r18 definition" | r23 changed the definition | **STALE** (F3) |
-| 379-380 (generated prose) | prints the selected/derived mirror root | `:379-380` uses `MIRROR_ROOT` | **MATCH** |
-| 497-499, 547 (generated prose) | "Sep-5 genesis mirror `~/Projects/the-bounty-hunter`" | mirror is derived (`:98-117`); contradicts line 379 of the same generated document | **STALE** (F3) |
-
-Ledger evaluated against byte set **B** (`9e0b5751…`). On the receipt-pinned set **A**
-(`ed9a9dae…`) two rows read differently, both already corrected in **B**: the fallback clause at
-`:30-31` did not cover a root-only suffix (F4) and `bounty_suffix()` did not normalise the
-leading slash its docstring claims to match `mirror_suffix()` on (F5).
+| 26-29 | BOUNTY = EXACT root; root-only or `/`-delimited descendant; prefix sibling `bounties-x/...` never enters the domain | `:106`, `:210-221`, `:233-235` | **MATCH** — `~/Projects/bounties-x/f.md` → `other`/`RESOLVES`; `~/Projects/bounties-legacy/README.md` → `GONE` |
+| 30-33 | literal `exists` → `RESOLVES` **as written**, even when `../` resolves outside the bounty root ("CARVE-OUT") | `:237-239` | **MATCH** — matrix `bounty-literal-present-traversal` / `bounty-literal-symlink-present` both `RESOLVES`; direct row keeps the raw `..` path |
+| 33 | "the matrix pins this class as a control" | those two cases | **MATCH** (pinned set D) |
+| 34-38 | fallback: same relative path under mirror **and realpath-confined**, else GONE | `:243-246`, `:224-229` | **MATCH** — all 8 discriminating escape cases flip credit→`GONE`; brace-expanded escape included |
+| 34-38 (root-only) | for a root-only BASE, "same relative path exists under the mirror" would credit the mirror root | `:243` (`if suffix else (None, None)`) + comment `:240-242` | **STALE-BY-OMISSION** (F3) — root-only cites are GONE; only the code comment says so |
+| 39-46, 48-51 | OTHER: `~`/`/` root → exists? `RESOLVES` : `GONE`; canonical alias first, selected root only, root-only/trailing slash, realpath-confined | `:247-258`, `:196-207` | **MATCH** — alias resolves under the relocated root; `the-bounty-hunter-x/f.md` → `other`; alias escape → `GONE` |
+| 46-47 | "`[lost-base]`/`[lost-tree]`-marked tokens are not aliases" | **none** | **UNANCHORED** (F4) |
+| 52-60 | REL: lane repo first; `INTERNAL` not confined (`../` or repo symlink outside the lane still `INTERNAL`, "by prior design; r23 did not change this branch and the matrix pins it") | `:259-262`; `lane-relative-parent-internal-control` | **MATCH** — `../outside.md` → `INTERNAL`, path `…/lane/../outside.md`; `lane/leak.md → vault` → `INTERNAL` |
+| 61-63 | mirror fallback only when realpath-confined; walk-outs and symlink escapes GONE | `:263-266`, `:224-229` | **MATCH** (matrix) |
+| 66-67 | literal `os.path.exists(expanduser(path))` | `:180-184` | **MATCH** |
+| 68-69 | brace: sorted, ≤64 combos, first existing wins | `:164-177`, `:185-189` | **MATCH** (cap enforced; empty alternatives silently skipped — undocumented, harmless) |
+| 70-71 | glob: `<...>`→`*`, sorted first match, zero matches does not resolve | `:190-193` | **MATCH with note** (`recursive=True`; globbing also triggers on any `*?[`, not only `<...>`) |
+| 72-74 | every class except GONE resolves by construction; INTERNAL includes a `../` walk-out past the lane | `:238-266` | **MATCH** |
+| 75 | non-resolving relative token is GONE, "sub-kind `rel-unresolved`" | **none**; no sub-kind column | **UNANCHORED** (F4) |
+| 2 | header "r15 … fixes r18" | body cites r23 at `:32`, `:60`; header does not | **STALE** (F1) |
+| 107-114 (round-19 block) | "all other explicit roots keep the plain exists? RESOLVES : GONE behavior" | `:256-258` true for OTHER non-aliases; BOUNTY is also an explicit root but has the fallback `:243-246` | **STALE/ambiguous** (F1) |
+| 386 (generated) | "r18 definition" | definition changed in r23 | **STALE** (F1) |
+| 391-392 (generated) | prints the selected/derived mirror root | uses `MIRROR_ROOT` | **MATCH** |
+| 509-511, 559 (generated) | "Sep-5 genesis mirror `~/Projects/the-bounty-hunter`" | mirror derived (`:107-125`); contradicts `:391` in the same emitted document | **STALE** (F1) |
 
 ## 4. Findings
 
-### F1 — HIGH (docstring truth, containment over-claim): the BOUNTY *primary* branch credits
-### `../` and symlink escapes; the frozen matrix cannot see it
+### F1 — MEDIUM-LOW (stale prose that a verifier reads first)
 
-Policy text added by this very fix (`resolve.py:26-33`) asserts:
-
-> "…a `../` segment never leaves the root)" (line 29)
-> "A parent-traversal or symlink escape outside the selected mirror is never credited." (32-33)
-
-`classify()` gates only the fallback conjunct (`:231-233`). The primary conjunct at `:228-230`
-returns `RESOLVES` for the raw, un-normalised string. Repro (case `a`; `home/Projects/bounties`
-and `home/Projects/outside.md` both exist):
+All four artefacts still carry pre-r23 labels, and one of them contradicts itself inside the same
+generated document. Observed on a pinned-set run with a relocated mirror:
 
 ```
-~/Projects/bounties/../outside.md:1	RESOLVES	/tmp/…/a/home/Projects/bounties/../outside.md	1	literal	bounty	1	SKILL
+/tmp/…/k/tool/citation-survival.md:3    Instrument: `corpus/instruments/resolve.py` (…; r18 definition).
+/tmp/…/k/tool/citation-survival.md:7    Mirror root for bounty-path equivalence: `/tmp/…/k/relocated/tbh`.
+/tmp/…/k/tool/citation-survival.md:89   … the Sep-5 genesis mirror `~/Projects/the-bounty-hunter` …
 ```
 
-`realpath` of the credited path is `/tmp/kasegi-r23-falsify-DocstringTruth-2/a/home/Projects/outside.md`
-— outside both the bounty root and the mirror. Same for a symlink placed inside the canonical
-root (case `b`, `home/Projects/bounties/esc.md → …/vault/secret.mjs`, realpath
-`…/vault/secret.mjs`):
+- `:2` still says *"r15 … self-input/leading-dot fixes r18"* while the same docstring now cites
+  **r23** at `:32` and `:60`. The header contradicts the body.
+- The generated report says *"r18 definition"* (`:386`) and, in §Honest scope limits, names a fixed
+  genesis mirror (`:509-511`, `:559`) although the same document prints the actually selected root
+  at `:391-392`.
+- The round-19 comment block (`:107-114`) still claims *"all other explicit roots keep the plain
+  exists? RESOLVES : GONE behavior"*. The BOUNTY domain is an explicit root and does **not** keep
+  plain behaviour (it has the confined fallback). The sentence is true only for OTHER-domain
+  non-aliases and needs the scoping its sibling paragraphs received.
+
+Prose only — this does not change any classification — but it is the first thing a reader uses to
+identify which revision produced a receipt.
+
+### F2 — MEDIUM-LOW (fixture truth): `glob-expansion-escape` does not test confinement
+
+The case is counted among the escapes but classifies identically before and after the fix. Pinned
+set D, fixture shape (mirror has no `.md`; the only markdown is `relocated/outside-vault/x.md`):
 
 ```
-~/Projects/bounties/esc.md:1	RESOLVES	/tmp/…/b/home/Projects/bounties/esc.md	1	literal	bounty	1	SKILL
+~/Projects/bounties/<name>.md:1   GONE   (no method; domain bounty)
 ```
 
-The frozen escape matrix passes only because **no case ever materialises the canonical bounty
-root directory**. `defaults.dirs = ["home/Projects", "lane", "relocated/tbh"]`; the only
-`home/Projects/bounties*` entry in the whole matrix is `bounties-legacy/README.md` (a different
-subtree):
-
-```bash
-python3 -c "
-import json; d=json.load(open('corpus/instruments/mirror-containment-fixtures.json'))
-print([ (c['id'],k,rel) for c in d['cases'] for k in ('dirs','files','symlinks') for rel in (c.get(k) or {}) if rel.startswith('home/Projects/bounties') ])"
-# → [('literal-prefix-sibling-control', 'files', 'home/Projects/bounties-legacy/README.md')]
-```
-
-So for every BOUNTY cite in the matrix `bounties/..` cannot resolve (parent component absent) and
-the case only ever exercises the fallback. Materialising the root (`dirs += ["home/Projects/bounties"]`)
-and the escaped target at its literal canonical location flips the two named escape cases:
-
-```bash
-python3 corpus/instruments/mirror-containment-check.py --fixtures $S/fixtures-canonical-root.json
-bounty-parent-traversal           escape expect=GONE actual=RESOLVES FAIL
-bounty-parent-traversal-vault     escape expect=GONE actual=RESOLVES FAIL
-cases=13 escape=6 controls=7 pass=11 fail=2
-```
-
-Adding `home/Projects/bounties/evil.mjs → @ROOT@/secret/outside.mjs` to
-`bounty-fallback-symlink-escape` flips that one too (`actual=RESOLVES`, `fail=1` in that run).
-Only the fixture copies in `/tmp` were changed; the frozen matrix and the resolver bytes are untouched.
-
-**Does this falsify C1's `after` claim?** No, not as worded: the claim is narrowly about
-"bounty-prefixed and relative **mirror fallback paths**", and those fallback gates held under
-every attack I could construct (§5). What it falsifies is (a) the module policy text at
-`:29`/`:32-33`, which is broader, and (b) the fixture names `bounty-parent-traversal` /
-`bounty-parent-traversal-vault`, which read as "bounty traversal is pinned GONE" while they only
-pin "traversal is GONE when the canonical root is absent" — exactly the state in which the
-primary branch is structurally unreachable.
-
-### F2 — MEDIUM (docstring vs. its own frozen control): "INTERNAL … resolve against the lane repo" is false
-
-`resolve.py:52` and `:65` say the lane-first candidate is lane-repo-relative and INTERNAL is
-assigned only to tokens resolving "against the lane repo". `:248-250` is an unconfined
-`exists_any(os.path.join(lane_root, base))`. Repro (case `b`; `outside.md` exists one level
-above the lane, `lane/leak.md → …/vault/secret.mjs`):
+It is GONE for the documented zero-match reason, not because a match was rejected: the pattern is
+`mirror_root/*.md`, and `*` cannot cross `/` to reach `relocated/outside-vault/x.md`. Adding one
+file *inside* the mirror proves the mechanism:
 
 ```
-../outside.md	INTERNAL	/tmp/…/b/lane/../outside.md	1	literal	rel	1	SKILL
-leak.md:1	INTERNAL	/tmp/…/b/lane/leak.md	1	literal	rel	1	SKILL
+# same case + relocated/tbh/inside.md
+~/Projects/bounties/<name>.md:1   MIRROR-EQUIVALENT   …/relocated/tbh/inside.md   glob   bounty
 ```
 
-realpaths: `…/b/outside.md` and `…/vault/secret.mjs` — both outside the lane repo. The frozen
-matrix *pins* this behaviour (`lane-relative-parent-internal-control`, `expect=INTERNAL`,
-`files={'outside.md'}`), so the module docstring contradicts its own control. C1's claim
-discloses the behaviour ("relative ../outside.md is INTERNAL (not targeted)"); what it did not
-do is reconcile the policy sentence — the docstring still claims containment that the code does
-not provide. This is the same asymmetry F1 exploits, on the INTERNAL side.
+And the baseline resolver returns `GONE` for the fixture shape as well
+(`--resolver .ufo/waves/round-23/c1-baseline-resolver.py` → this case PASSES on the baseline).
+So the case pins "no match existed", not "an outside match was refused". Its own note claims the
+opposite mechanism — *"Placeholder rewrite matches only outside the mirror through a relative hop"* —
+but the citation contains no relative hop and the outside file is unreachable by the pattern.
 
-### F3 — MEDIUM-LOW (stale pre-fix prose in header, round-19 block, generated report)
+Effect on the wave's arithmetic: of the **9** escapes in the pinned matrix, **8 are discriminating**
+(they flip from a credit class on the baseline to GONE on D). `glob-expansion-escape` is the ninth
+and is not. It should gain a `..`/`**` so it actually reaches the outside file, or be reclassified
+as a control so the escape count is honest.
 
-- Emitted `citation-survival.md` self-contradicts: line 7 of the generated doc prints the
-  derived mirror root (`/tmp/…/relocated/tbh` in my run), line 89 (from `resolve.py:497-499`,
-  also `:547`) still says "Sep-5 genesis mirror `~/Projects/the-bounty-hunter`". Post-C1 the
-  class means "realpath-confined under the SELECTED mirror", so the scope-limits prose is both
-  stale and internally inconsistent when `KASEGI_MIRROR` relocates the root.
-- `resolve.py:1-2` still labels the instrument "r15 … r18"; `:374` emits "r18 definition".
-  `grep -n 'r23\|containment' resolve.py` → **no match**, although `classify()` changed in r23.
-  A reader cannot tell from the bytes that the containment rule exists.
-- `:98-105` says "all other explicit roots keep the plain exists? RESOLVES : GONE behavior".
-  After the fix the BOUNTY domain (also an explicit root) has a realpath-confined fallback, so
-  the sentence is only true for OTHER-domain non-aliases. It needs the same scoping its sibling
-  sentences just received.
+### F3 — LOW (doc/policy gap): root-only BOUNTY citations are GONE, and only a code comment says so
 
-### F4 — LOW (bytes **A** only; already fixed in **B**): BOUNTY root-only cite → GONE while the alias branch resolved it
-
-On set **A**, `resolve.py:231` used `exists_any(...) if suffix else (None, None)`, so an empty
-suffix could never reach the mirror; the sibling alias branch (`:240`) already handled it. Set
-**B** changed the guard to `... if suffix else mirror_root`. Evidence on **A**, canonical root
-absent, mirror present (case `c`):
+Pinned set D, canonical root absent, mirror present (case `k`):
 
 ```
 ~/Projects/bounties	GONE		1		bounty	1	SKILL
 ~/Projects/bounties/	GONE		1		bounty	1	SKILL
-~/Projects/the-bounty-hunter	RESOLVES	/tmp/…/c/relocated/tbh	1	literal	other	1	SKILL
+~/Projects/bounties/ops/rank.mjs:1	MIRROR-EQUIVALENT	…/relocated/tbh/ops/rank.mjs	1	literal	bounty	1	SKILL
 ```
 
-Same scenario on **B** (case `h`, canonical root absent, mirror present):
+The module policy at `:34-38` says an unsuccessful literal is followed by *"same relative path
+exists under ~/Projects/the-bounty-hunter AND realpath-confined there? MIRROR-EQUIVALENT : GONE"*.
+For a root-only BASE that relative path is the mirror root (which exists), so the prose implies
+`MIRROR-EQUIVALENT`; the code refuses the empty suffix at `:243`. The rule lives only in the
+code comment at `:240-242` (*"Root-only bounty citations keep their pre-r23 verdict (no mirror
+mapping); r23 changes the confinement of fallback credit, not which citations earn it"*).
+The behaviour matches pre-r23 and is deliberate; the **policy docstring** just never states it,
+so a verifier reading only the policy cannot predict the verdict. One clause at `:34` closes this.
 
-```
-~/Projects/bounties	MIRROR-EQUIVALENT	/tmp/…/h/relocated/tbh	1	literal	bounty	1	SKILL
-~/Projects/bounties/	MIRROR-EQUIVALENT	/tmp/…/h/relocated/tbh	1	literal	bounty	1	SKILL
-```
+### F4 — LOW (docstring assertions with no implementing line)
 
-So the docstring's fallback clause ("same relative path exists under …") now holds for root-only
-as well. Retained here because `c1-fixed.json` still pins set **A**, and because neither byte set
-states the root-only rule in prose — the code is now right, the sentence is still silent.
-
-### F5 — LOW (bytes **A** only; already fixed in **B**): "the boundary matches `mirror_suffix()`'s"
-
-Set **A**'s `bounty_suffix()` kept a leading `/` in the suffix (`return base[len(root) + 1:]`)
-while `mirror_suffix()` strips it. Observable on a double slash (case `d`, mirror holds
-`ops/rank.mjs`):
-
-```
-~/Projects/bounties//ops/rank.mjs:1	GONE		1		bounty	1	SKILL
-~/Projects/the-bounty-hunter//ops/rank.mjs:1	RESOLVES	/tmp/…/d/relocated/tbh/ops/rank.mjs	1	literal	other	1	SKILL
-```
-
-The double-slash BOUNTY suffix became absolute under `os.path.join` (`/ops/rank.mjs`) and
-`under_mirror` rejected it — safe, but the two boundaries were not the same, contrary to `:204`.
-Set **B** adds `.lstrip("/")`; the same citation now resolves (case `g`):
-
-```
-~/Projects/bounties//ops/rank.mjs:1	MIRROR-EQUIVALENT	/tmp/…/g/relocated/tbh/ops/rank.mjs	1	literal	bounty	1	SKILL
-```
-
-### F6 — LOW (unanchored docstring claims)
-
-- `:41-42` "`[lost-base]`/`[lost-tree]`-marked tokens are not aliases": `grep -n -i lost resolve.py`
-  returns exactly one hit, the docstring itself; the baseline control has the identical sentence.
-  No marker check exists in `classify()`/`mirror_suffix()`. Behaviour happens to hold only
-  because a prefixed marker breaks the string prefix.
-- `:66` "sub-kind `rel-unresolved`": one hit, the docstring; no sub-kind is produced and the
+- `:46-47` "`[lost-base]`/`[lost-tree]`-marked tokens are not aliases": `grep -n -i lost
+  resolve.py` returns exactly one hit — the docstring sentence. No marker test exists in
+  `mirror_suffix()` or `classify()`; the behaviour holds only because a prefixed marker breaks the
+  string prefix.
+- `:75` "sub-kind `rel-unresolved`": one hit, the docstring. No sub-kind is produced anywhere; the
   TSV header is `citation, class, resolved_path, files_citing_count, method, domain, occurrences, scopes`.
 
-### F7 — LOW (docstring `<u>` not implemented): `BOUNTY_PREFIXES` hardcodes one user
+Both are pre-existing (identical in `c1-baseline-resolver.py`) and harmless to classification, but
+they are unverifiable claims inside the policy a verifier is told to trust.
 
-`:27` says "(or /home/<u>/Projects/bounties…)" but `:97` is
-`('~/Projects/bounties', '/home/vgpnk/Projects/bounties')` — no other user. Case `e` (canonical
-absent, mirror holds `ops/rank.mjs`):
+### F5 — LOW (host-specific literals): "/home/<u>" is one hardcoded user, and two cases read the host
+
+`:27` says *(or /home/<u>/Projects/bounties…)*; `:106` is
+`('~/Projects/bounties', '/home/vgpnk/Projects/bounties')`. The same citation shape is a bounty
+citation or an ordinary other root depending on the username spelled in it (case `e`, canonical
+absent, mirror present):
 
 ```
-/home/vgpnk/Projects/bounties/ops/rank.mjs:1	MIRROR-EQUIVALENT	/tmp/…/e/relocated/tbh/ops/rank.mjs	1	literal	bounty	1	SKILL
-/home/alice/Projects/bounties/ops/rank.mjs:1	GONE		1		other	1	SKILL
+/home/vgpnk/Projects/bounties/ops/rank.mjs:1   MIRROR-EQUIVALENT   …/relocated/tbh/ops/rank.mjs   bounty
+/home/alice/Projects/bounties/ops/rank.mjs:1   GONE                                                other
 ```
 
-`/home/vgpnk/Projects/bounties` does not exist on this host, so the literal branch could not
-mask the result. The same citation shape gets the mirror fallback or not depending on the
-username spelled in it.
+This is also why two matrix cases are not hermetic: `absolute-bounty-fallback-control` and
+`absolute-prefix-sibling-confusion` cite absolute `/home/vgpnk/...` paths that the checker's
+isolated `HOME` cannot redirect. Their notes admit it ("requires … to stay absent on the run
+host"). On this host all four probed paths are absent, so they pass as pinned; on a host where the
+real bounty tree exists they would silently change class. Verified absent:
+`/home/vgpnk/Projects/bounties`, `/home/vgpnk/Projects/bounties/ops/rank.mjs`,
+`/home/vgpnk/Projects/bounties-legacy`, `/home/vgpnk/Projects/bounties-legacy/README.md`.
 
-### F8 — MEDIUM (verifiability, provenance): the C1 "fixed" receipt does not identify the landed bytes
+### History (defects fixed or superseded inside this window — recorded for provenance, not scored)
 
-`c1-fixed.json` records `resolver_sha256 = ed9a9dae…`; the working tree is `9e0b5751…` (mtime
-`03:40:40 -0300`). Both byte sets pass the frozen matrix 13/13, so no behavioural claim flips,
-but the receipt a verifier will read names code that is no longer in the tree.
+| old defect | evidence at the time | status at pin D |
+|---|---|---|
+| Policy said "a `../` segment never leaves the root" while the literal branch credited it (set A) | A: `~/Projects/bounties/../outside.md:1` → `RESOLVES`; the 13-case matrix passed that case only because `home/Projects/bounties` was never created | **reconciled**: `:30-33` discloses the carve-out; `bounty-literal-*` controls pin `RESOLVES`; `absolute-*`/`brace-*` escapes pin GONE |
+| Policy said INTERNAL is "only … against the lane repo" while `join(lane_root, base)` escaped it (set A) | A: `../outside.md` → `INTERNAL` with a path outside the lane | **reconciled**: `:52-60`, `:72-74` disclose it; matrix control pins it |
+| `bounty_suffix()` left a leading `/`, contradicting "boundary matches `mirror_suffix()`'s" (set A) | A: `~/Projects/bounties//ops/rank.mjs` → `GONE` vs alias double slash → `RESOLVES` | **fixed** (`:220`); D → `MIRROR-EQUIVALENT` |
+| Root-only bounty resolved to the mirror root in B/C | B/C: `~/Projects/bounties` → `MIRROR-EQUIVALENT` | **deliberately reverted** in D (`:240-243`); the docstring never stated the B/C rule either — see F3 |
+| Receipts pinned a 17-case matrix (`5c64e014…`) that was no longer on disk | at 03:43:07, matrix on disk was already 20 cases (`4e39f65c…`); `c1-fixed.json` reported `17/17` | **resolved** at 03:46:26: both receipts pin `4e39f65c…`, `fce5b84b…`, checker `53742c8d…`, `20/20` and `12/20` |
 
-```bash
-sha256sum corpus/instruments/resolve.py
-# 9e0b5751e820a6868edfff70571e38212763a30446204d7d8522cb0f525d7cde
-python3 -c "import json;print(json.load(open('.ufo/waves/round-23/c1-fixed.json'))['resolver_sha256'])"
-# ed9a9dae10024bbb2be5db12776f798309fd4615585c3ad93adaab12702840e9
-```
+## 5. Attacks that held on the pinned bytes
 
-Remedy is either regenerate the receipt from current bytes
-(`mirror-containment-check.py --json .ufo/waves/round-23/c1-fixed.json`, which yields 13/13 on
-`9e0b5751…`) or attribute the tree change and re-pin. This read-only seat did neither and did not
-revert the drift.
-
-## 5. Attacks that held (honest negatives — I could not break the fallback confinement)
+I could not break the fallback confinement, the alias confinement, the prefix boundary, or the
+brace-expansion confinement.
 
 | probe | result |
 |---|---|
-| `~/Projects/bounties//etc/hostname` (absolute-override join `mirror + "/etc/hostname"`) | `GONE` — `under_mirror` rejects `realpath("/etc/hostname")` |
+| `~/Projects/bounties//etc/hostname` (`os.path.join` absolute override) | `GONE` — `under_mirror` rejects `realpath("/etc/hostname")` |
 | `~/Projects/bounties/ops/../ok.md` (traversal that stays inside the mirror) | `MIRROR-EQUIVALENT` — realpath, not lexical, confinement |
-| `~/Projects/bounties/evil.mjs` where **mirror** file is a symlink to `@ROOT@/secret/outside.mjs` | `GONE` (frozen escape case) |
-| `nested/leak.md` with mirror-side symlink escape | `GONE` (frozen escape case) |
-| `../outside-vault/secret.mjs` relative fallback escape | `GONE` (frozen escape case) |
-| `~/Projects/the-bounty-hunter/../../outside.md` alias escape | `GONE` (frozen control) |
-| confined bounty/relative controls | `MIRROR-EQUIVALENT` / `RESOLVES` as pinned |
-| prefix siblings `bounties-x`, `the-bounty-hunter-x` | ordinary other root, never an alias (`RESOLVES` as `other` when present) |
+| `~/Projects/bounties/{../outside.md,missing.md}` (brace escape) | `GONE` on D, `MIRROR-EQUIVALENT` on baseline → discriminating |
+| `~/Projects/bounties/evil.mjs` where the **mirror** file symlinks outside | `GONE` (matrix) |
+| `nested/leak.md` mirror-side symlink escape | `GONE` (matrix) |
+| `~/Projects/the-bounty-hunter/../../outside.md` | `GONE` (matrix) |
+| `~/Projects/bounties/{ops,missing}/rank.mjs` (confined brace) | `MIRROR-EQUIVALENT` (matrix) |
+| `~/Projects/bounties//ops/rank.mjs` (double slash) | `MIRROR-EQUIVALENT` — normalised in D |
+| prefix siblings `bounties-x`, `the-bounty-hunter-x` | ordinary other root, never an alias |
+| literal `../` and symlinked literal inside the canonical root | `RESOLVES` — disclosed carve-out, pinned as controls |
 
-The load-bearing line is `under_mirror()` `:215-220`; it correctly rejects both lexical escapes
-and symlink escapes, including the `os.path.join` absolute-override case. C1's narrow fallback
-confinement is real.
+The load-bearing line remains `under_mirror()` `:224-229`; it rejects lexical escapes, symlink
+escapes, and the absolute-override join.
 
 ## 6. Residual risk and verification gaps
 
-- **Fixture coverage (highest residual risk).** Zero of the 13 frozen cases has a functioning
-  canonical bounty root, so no case pins the primary BOUNTY branch in either direction — not a
-  literal resolve, not a literal escape. A future change to `:228-230` is invisible to the matrix.
-- **No LSP.** Caller/definition/diagnostics checks were not possible (`xd://lsp` absent); the
-  ledger above rests on line-addressed reads, `grep`, and executed CLI rows. Nothing here is
-  presented as semantic proof.
-- **Byte drift during review.** `resolve.py` changed from `ed9a9dae…` to `9e0b5751…` at
-  `03:40:40` while this review ran. I did not write it and did not revert it; F8 records the
-  consequence for receipt provenance. Every finding above is labelled with the byte set it
-  reproduces on, and §1 records the exact three-hunk diff.
-- **Fixture augmentation is scratch-only.** The two augmented matrices live in
-  `/tmp/kasegi-r23-falsify-DocstringTruth-2/{fixtures-augmented,fixtures-canonical-root}.json`.
-  I modified no repo artifact: `resolve.py` was re-read (and re-hashed) after the external change,
-  and `mirror-containment-fixtures.json` / `mirror-containment-check.py` still carry the §1 hashes.
-- **Not re-verified / out of scope for this seat:** C2 (F06-F08 admission, source snapshots,
-  quote assertions), score movement, admission, the round-19 mirror-root derivation itself, and
-  whether `MIRROR_ABSENT` messaging elsewhere matches. `citation-survival.tsv`/`.md` in the repo
-  were not regenerated; all runs wrote into `/tmp` case roots.
-- **Judgement limits.** F1-F3, F6-F8 are documentation/contract defects on both byte sets; F4 and
-  F5 are already fixed in the current tree. None of them asserts that C1's `after` line is false.
-  The claim-adjacent consequence is narrower: the 6/6 escape receipt does not demonstrate what
-  its case names assert, and it no longer hashes to the landed file.
+- **One non-discriminating escape (F2)** inflates the escape denominator by one unless reclassified.
+- **Non-hermetic cases (F5)**: two cases read `/home/vgpnk/...` outside the temp root; results are
+  host-dependent by construction, as their notes say.
+- **Prose drift (F1)**: the receipt now matches the bytes, but the labels a reader uses to identify
+  the revision ("r18 definition", fixed genesis mirror) do not.
+- **No LSP**: no caller/definition/diagnostics pass was possible; nothing here is semantic proof.
+- **Moving target**: the tree changed four times during the audit (all recorded in §1). If the
+  hashes in the header no longer match at integration time, re-run
+  `mirror-containment-check.py` (and `--resolver .ufo/waves/round-23/c1-baseline-resolver.py`)
+  rather than trusting this report's counts.
+- **Out of scope for this seat:** C2 (F06-F08 admission, snapshots, quote assertions), score
+  movement, admission, and the mirror-root derivation beyond the ambiguity noted in F1. Repo
+  `citation-survival.tsv`/`.md` were not regenerated; all runs wrote into `/tmp` case roots.
+- **Judgement limits.** No finding asserts that C1's `after` line is false. F2 is about what one
+  fixture actually exercises; F1, F3-F5 are prose, policy-gap, and unanchored-claim defects.
 
 ## 7. Scope limits
 
-Read-only review of `corpus/instruments/resolve.py:1-582` and the frozen C1 fixtures/checker;
-reproduction only in `/tmp` scratch. No production file, lane tree, index/state, sibling lane,
-or fleet repo touched. Nothing committed or pushed. No self-credit, no admission, no score
+Read-only review of `corpus/instruments/resolve.py`, the frozen C1 matrix, the checker, and both
+receipts; reproduction only under `/tmp/kasegi-r23-falsify-DocstringTruth-2`. No production file,
+lane tree, index/state, sibling lane, or fleet repo touched; artifact hashes were re-read after
+this report was written. Nothing committed or pushed. No self-credit, no admission, no score
 statement.

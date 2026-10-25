@@ -257,11 +257,14 @@ below was applied before the final commit; the receipts named are the final ones
 | CnaVersionDate | inherited `build/CnaFix.md` had already found the v4.2.6 supersession on 2026-10-20 and no corpus file disclosed it | disclosed here and in the F07 entry; see M13 |
 
 **Corrected C1 measurement (supersedes the 13-case numbers earlier in this lesson;
-they stay as history).** Matrix is now 20 cases: 9 escape, 11 control.
-`matrix_sha256=4e39f65c…c2400b`, `resolver_sha256=8dd45bc8…8848` (fixed),
+they stay as history).** Matrix is now 23 cases: 11 escape, 12 control.
+`matrix_sha256=332a5fe9…05e3`, `resolver_sha256=fce5b84b…a4b0` (fixed),
 `d6a3c3f1…f903` (baseline), `checker_sha256=53742c8d…9529`. Baseline (do-nothing
-control): escape **0/9 GONE**, controls 11/11, 11/20 pass, exit 1. Fixed: **20/20,
-exit 0**. The lane-relative `INTERNAL` carve-out is now pinned with its escape
+control): escape **0/11 GONE**, controls 12/12, 12/23 pass, exit 1. Fixed: **23/23,
+exit 0**. Every escape case is discriminated by at least one landed change, and each
+was checked against baseline bytes through the same checker. Two cases exist because mutation seats proved the earlier matrix could not
+see them: lane-first ordering (`relative-priority-lane-first-control`) and the
+mirror-root prefix sibling (`mirror-root-prefix-sibling-escape`). The lane-relative `INTERNAL` carve-out is now pinned with its escape
 visible (`path_tolerance: carve-out`, receipt line `carve-out:path-outside-internal`),
 not silently tolerated. The two literal-present controls pin the `RESOLVES`
 carve-out; both absolute-arm cases pin the `/home/vgpnk/...` spelling.

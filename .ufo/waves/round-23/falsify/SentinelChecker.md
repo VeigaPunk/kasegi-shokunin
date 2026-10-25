@@ -15,10 +15,51 @@ side-effect probe ran on `/tmp` copies.
 Scratch: `/tmp/kasegi-r23-falsify-SentinelChecker/` (256 K, present at write time with the three
 shas above). It is `/tmp` and therefore **not durable**: every observable this report relies on is
 inlined below as the exact command plus its output, so no finding depends on that tree surviving a
-`/tmp` sweep (the round-35 seat which lost `.ufo/waves/round-35/scratch/` at ~03:45 is the same
-class of risk; this report cites no wave scratch path). Interpreter seen in tracebacks:
+`/tmp` sweep. (For the same reason I assert nothing about the separate round-35 wave's scratch
+tree, which was relocated to `scratch-evidence/` and partly re-created/deleted again between ~03:43
+and ~03:46; this report cites no wave scratch path.) Interpreter seen in tracebacks:
 `/usr/lib/python3.14` (CPython 3.14). No packages installed or updated (pacman paused host-wide;
 nothing was needed).
+
+**Derived bytes I created (rebuild ≠ evidence).** Nothing here was rebuilt from a transcript; these
+are the exact files that produced the inlined outputs, pinned so a later reader can tell a
+substitution from the original. All are *derived* (doctored fixtures and resolver stubs), not
+authoritative sources — the authoritative bytes are the three production files above. Note the
+fixtures embed `$S` absolute paths, so their hashes are path-dependent: they pin these bytes at
+this path only.
+
+| scratch artifact | bytes | sha256 |
+|---|---|---|
+| `receipt-baseline.json` | 8140 | `ce24314b904d1a13449270fe6333453039944471b37e48fc5a73c67705ed5056` |
+| `fixtures-traversal.json` | 890 | `48814c3a4df21a48187f19fedb3a62407d67d2e67ebf2c02ea1412662ac877e0` |
+| `exfil/fake-resolver.py` | 508 | `c48a1dfd5d593f5304fd9d5c94549f75c9e1d541ff624e22fd4d778760cbfbb2` |
+| `fixtures-hostread.json` | 393 | `cff417c60a70526817c8e144bc86f5f97ff32f28ef565067333ff237e2f5556a` |
+| `receipt-hostread.json` | 869 | `0479015f05bf3f9c7fa097562c2f1fb84ed37dc984656eddd3a5c3ae22ee4792` |
+| `table/table-resolver.py` | 1426 | `0cd5e54d59bedf2526e12cec0d0905a99d0a1718293823eadae5c4b344f92dab` |
+| `receipt-table.json` | 5445 | `d612ba29b88889a80c518bba44383b553220cb911a1b1f942a59e44a2842c3ed` |
+| `hostmirror/fake.py` | 364 | `da6936387b3d928e11e3db97cacea46156327a4e98ca688f703400af5c52a36d` |
+| `fixtures-hostmirror.json` | 312 | `fd15e90830855cbd1966f531e014cc6e5519a2d1a9e239ae17a4516a1595d9e0` |
+| `orphan/check-t3.py` | 8286 | `3e151e2223818398fbd29731cde74145ee0af2eb7f30ad1eb1576bfb45f81b6a` |
+| `orphan/orphan-resolver.py` | 270 | `3443e00817ea41a137a998b33e47157443b3f7bcfae2e71c58047a187d484a9d` |
+| `fixtures-orphan.json` | 359 | `b0bf41293c57003ab6734b4a7669112a2c810339be536364f0b335c3de84e467` |
+| `bomb/stdout-bomb.py` | 84 | `e54afaefe79474606a9ab174478bc25f5a8cae0d6e43634f97e5ded4dd305ce9` |
+| `fixtures-bomb.json` | 364 | `8ac27738c5f5dfd86e55747ed092abca4244df85decdbe10cfdd70ab0b8eb22b` |
+| `utf8/bad-utf8-resolver.py` | 78 | `6b87d89f80141dd4030e6a4c938205996e9a42dce25921a74fe75cc038d51aed` |
+| `probe/probe-resolver.py` | 557 | `3b8b567cae71853d8cade4debc92ab868511581f58ed1e9d3fe411e1b51a50a6` |
+| `probe/check-copyprobe.py` | 8494 | `d50e580e1a5e822f76d1be60d2718933c823fdb5004dc3a7e1533148eb9b992a` |
+| `fixtures-probe.json` | 679 | `c315ba21091e798fcae046c5da59e498560b4dff48310cb1519b9d63fec0987e` |
+
+Two artifacts are mutated copies of the checker under test, both verified by diff, and neither
+touches the measured code paths:
+
+- `orphan/check-t3.py` — exactly one line (`TIMEOUT_S = 120` → `2`), so F4's timeout behaviour is
+  produced by production logic at a shorter clock, not by rewritten logic;
+- `probe/check-copyprobe.py` — one added 4-line block in the existing `finally` that copies
+  `tool/probe.json` out before `rmtree` (the manifest above records `probe/probe-resolver.py`'s
+  readings); `build_case`, the env dict and the run path are byte-identical to production.
+
+Every other artifact's *behaviour* is fully quoted in its finding, so a reader can reconstruct it
+without the tree and still check the claim against the inlined output.
 
 Default-path reproduction (production bytes, unmodified, copied to scratch):
 

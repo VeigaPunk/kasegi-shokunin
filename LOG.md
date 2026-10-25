@@ -1173,3 +1173,10 @@ no live-target, signed-URL or injection findings.
   Residual debt named: F01–F05 rechecks exit 2 `not-listed` (no capture exists).
 - Frontier counter made field-exact (`awk` on the status column) and the three
   new Coverage-map rows appended; README provenance line extended to 33 entries.
+- Final seal: matrix **23 cases** (11 escape, 12 control), fixed **23/23 exit 0**
+  (`resolver fce5b84b…`, `matrix 332a5fe9…`), do-nothing control **0/11 escape GONE**,
+  12/23, exit 1. Two cases added after mutation seats proved the earlier matrix could
+  not see lane-first ordering or the mirror-root prefix sibling; the bare-glob case
+  was replaced by the discriminating hop form. `source-recheck.py` now applies a
+  declared normalization (`normalized=markup-whitespace`), implementing
+  `considerthese/2026-10-24.md` proposal 1; QUALITY gains Q8 and R10.

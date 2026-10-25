@@ -370,18 +370,73 @@ Drift-generation copies were restored to the drifted bytes, not to `ed9a…`:
 
 Production integrity: my only writes were inside `/tmp/kasegi-r23-falsify-MutateRelConfine-2` and
 this report. The production file's mtime moved from `03:27:44.381977020` to
-`03:40:40.438084141 -0300` by a **different seat's** write (§1); I neither performed nor reverted
-it, per the read-only mandate. No git/jj operation was run by this seat.
+`03:40:40.438084141 -0300` (code change) and then `03:42:37.811829694 -0300` (docstring-only), both
+by **different seats'** writes; the checker and the fixture matrix were also rewritten under this
+seat (§9). I neither performed nor reverted any of it, per the read-only mandate. No git/jj
+operation was run by this seat.
 
 ## 8. Scope limits
 
-- Detector exercised: only `corpus/instruments/mirror-containment-check.py` over the frozen
-  13-case `mirror-containment-fixtures.json`, plus real-CLI replays on four ad-hoc fixtures of my
-  own construction (persistent under scratch, not admitted to the matrix).
-- Only `classify()`'s relative branch (`resolve.py:248-255`) and its `under_mirror()` helper
-  (`:215-220`) were mutated. No C2 artifact, source snapshot, knowledge entry, README/SOURCES/
-  QUALITY row, receipt, or claim was touched or re-verified.
+- Detector exercised: `corpus/instruments/mirror-containment-check.py` over the 13-case
+  seat-start matrix and the 20-case final snapshot (§9), plus real-CLI replays on five ad-hoc
+  fixtures of my own construction (persistent under scratch, not admitted to the matrix).
+- Only `classify()`'s relative branch (`resolve.py:248-255` on seat-start bytes; `:256-264` after
+  the docstring growth) and its `under_mirror()` helper (`:215-220` / `:224-229`) were mutated. No
+  C2 artifact, source snapshot, knowledge entry, README/SOURCES/QUALITY row, receipt, or claim was
+  touched or re-verified.
 - Linux-only realpath/symlink semantics; no Windows/macOS commonpath edge cases.
 - Surviving mutants are reported as matrix coverage findings. They do not assert a live defect in
   the landed bytes, do not move any score, and do not license changing the contract.
 - Nothing here is an admission claim; independent non-author closure remains with L1.
+
+## 9. Matrix evolution during this seat (environment churn)
+
+All rows below are other seats' writes observed while this seat held the tree read-only.
+
+| time | artifact | hash | note |
+|---|---|---|---|
+| 03:27:44 | `resolve.py` | `ed9a9dae…` | seat-start bytes; all §2-§5 runs |
+| 03:40:40 | `resolve.py` | `9e0b5751…` | 4-line code change at `:208`, `:231`, `:347-348` (§1) |
+| 03:42:37 | `resolve.py` | `8dd45bc8…` | docstring-only vs `9e0b…` (AST equal with docstrings stripped) |
+| 03:28:25 | checker | `1bc2db10…` | seat-start checker |
+| 03:42:15 → 03:43:01 | checker | `fc9550f0…` → `53742c8d…` | adds `path_check=` reporting |
+| 03:28:11 | fixtures | `5e61a33e…` | 13 cases (6 escape / 7 control) |
+| 03:42:46 → 03:43:01 | fixtures | `eac8d3ec…` → `5c64e014…` | reformatted, then 17 cases (7 / 10) |
+| 03:43:38 | fixtures | `4e39f65c…` | 20 cases (9 escape / 11 control) — final pinned snapshot |
+| 03:46:26 | `resolve.py` | `fce5b84b…` | bounty branch only: root-only bounty citations revert to no mirror mapping, with comment; relative branch byte-identical |
+
+Transient observation: at fixtures `eac8d3ec…` one in-repo run of the then-current production
+bytes reported `cases=17 … pass=16 fail=1`. The fixture file changed again before I could write a
+receipt, so the failing case id is unrecoverable; I record this only as churn evidence, not as a
+finding.
+
+Final pinned snapshot (all §9 runs): production `8dd45bc8…`, checker `53742c8d…`, fixtures
+`4e39f65c…` (20 cases), copied to `/tmp/kasegi-r23-falsify-MutateRelConfine-2/finalmatrix/`.
+Production replay on that snapshot: `cases=20 escape=9 controls=11 pass=20 fail=0`.
+
+Mutant re-runs on that snapshot (each built from `8dd45bc8…`; receipts on disk):
+
+| mutant | sha256 | result | flips |
+|---|---|---|---|
+| `f1_rel` — relative conjunct removed (assigned) | `2d2dcb4e…` | KILLED, 18/20 | the 2 relative escapes |
+| `f1_bounty` — bounty conjunct removed | `1f72a5df…` | KILLED, 16/20 | 3 bounty cases + `brace-expansion-escape` |
+| `f1_order` — mirror-first relative branch | `40dff4e8…` | SURVIVED, 20/20 | none |
+| `f1_prefix` — helper `p.startswith(r)` | `d54c48e9…` | SURVIVED, 20/20 | none |
+| `f1_abspath` — abspath in relative branch | `06a28e61…` | KILLED, 19/20 | 1 symlink escape |
+
+Relative∩bounty flip set on the 20-case snapshot: empty. Control flips: none in any mutant.
+
+Survivors re-proved behaviour-bearing on these exact bytes with the manual fixtures:
+both-trees `docs/note.md` → prod `INTERNAL`, `f1_order` `MIRROR-EQUIVALENT`; prefix sibling
+`../tbh-evil/decoy.md` → prod `GONE`, `f1_prefix` `MIRROR-EQUIVALENT`.
+
+All §9 copies restored to `8dd45bc8…` after the runs (`sha256sum` verified); the newest-bytes
+mutant `f2_rel` was restored to `fce5b84b…`.
+
+Newest-bytes cross-check (`fce5b84b…`, written 03:46:26): production passes the pinned 20-case
+matrix `20/20`; the only code change versus `8dd45bc8…` is in the bounty branch (root-only bounty
+citations no longer map to the mirror), the relative branch is byte-identical, and the same
+relative-conjunct removal rebuilt on those bytes (`f2_rel`, sha256
+`c5c15ef1f772319300925df416b37a0419af355e21d4bb1808942bd98d01a897`) flips exactly the same two
+cases (18/20). The assigned verdict and the disjointness conclusion are therefore invariant across
+all three production revisions this seat observed. Writes after 03:46:26 are not tracked here.
