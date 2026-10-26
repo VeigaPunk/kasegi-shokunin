@@ -1,0 +1,94 @@
+{
+  "lane": "kasegi",
+  "round": 34,
+  "attempt": 1,
+  "base": "014ee2d7aa8c3c095ff57ae51097606a9906228c",
+  "frozen_at_utc": "2026-10-26T05:00:00Z",
+  "axes_owned": ["depth:density", "depth:verifiability", "coverage"],
+  "saturation": { "line": "9/10 per owned axis", "window": "N=3" },
+  "lowest_non_retired_axis": "depth:verifiability (4)",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "score_before": 4,
+      "score_after": "held 4",
+      "predicate": "The committed instrument-soundness closure suite `corpus/instruments/r-defect-closure.sh` prints `closed=9/9 exit=0` on the landed tree and `--selftest` prints `cases=9 failures=0`; `corpus/instruments/capture-binding-check.py --selftest` prints `selftest cases=N failures=0` with N>=19; the committed mutant matrix `corpus/instruments/kill-rule-check.py` prints `survivors=0`; the nine round-33 verifier-routed defects R1-R9 each carry a runnable closure check that exits non-zero while open (the suite fails on the base tree, `closed=0/9`).",
+      "kill_rule": "Any of: suite missing (ls_exit=2); `closed` != 9/9; suite --selftest prints fewer than 9 cases or any failure; capture-binding-check --selftest prints N<19 or any failure; kill-rule-check prints survivors>0; any single R-closure check exits 0 on a tree that still carries its defect (proved by the suite's own --selftest); <LANE_HASH> still present in SCORECARD.md; round-32 manifest still carrying a non-UTC fetched_utc; S040-live.txt still having no manifest record or orphan listing.",
+      "counting_commands": [
+        "bash corpus/instruments/r-defect-closure.sh -> closed=K/9 exit=0|1",
+        "bash corpus/instruments/r-defect-closure.sh --selftest -> cases=9 failures=0 exit=0",
+        "python3 corpus/instruments/capture-binding-check.py --selftest -> selftest cases=N failures=0 (N>=19)",
+        "python3 corpus/instruments/kill-rule-check.py -> survivors=K",
+        "grep -c '<LANE_HASH>' SCORECARD.md -> 0",
+        "python3 corpus/instruments/capture-binding-check.py -> records=40 bound=40 unbound=0 exit=0 (unchanged C1 instrument baseline)"
+      ],
+      "before": [
+        "r-defect-closure.sh absent (ls_exit=2)",
+        "capture-binding-check --selftest cases=11 (no per-file, nested-dir, strict-UTC, dup-record, dual-https, rejected-anchor cases)",
+        "survivor mutants pass the frozen round-33 kill rule: skip-selftest summary mutant prints cases=0 failures=0 exit 0 (F-5 not caught); accept-record-without-url mutant prints records=2 bound=2 unbound=0 exit 0 (plain-run survivor)",
+        "SCORECARD.md carries 2 <LANE_HASH> markers (R1)",
+        "round-32 manifest fetched_utc = 2026-10-25T23:14:00-03:00 (local-offset, R8)",
+        "round-26 S040-live.txt has no manifest record (R6)",
+        "QUALITY.md R20 carries 'exactly one' registry-row URL reading (R3)",
+        "round-33 lesson carries no R7 erratum (char counts / S050 line cite)",
+        "frontier-recheck-count.py rule A is one-directional (R9; reverse binding not enforced)",
+        "no junk-twin control committed under c2-controls/ (R9)"
+      ],
+      "after": [
+        "r-defect-closure.sh exists; closed=9/9 exit=0 at tip; --selftest cases=9 failures=0",
+        "capture-binding-check --selftest cases=N failures=0, N>=19, incl. named cases: per-file-orphan-detected, per-file-orphan-listed, nested-snapshot-dir, fetched-utc-pending-rejected, fetched-utc-local-offset-rejected, dup-record-in-manifest, double-https-row, rejected-row-anchor, summary-only-selftest-rejected",
+        "kill-rule-check.py survivors=0 (skip-selftest and accept-record-without-url mutants killed)",
+        "SCORECARD.md <LANE_HASH> count 0 + appended correction naming 7963976e/014ee2d (R1)",
+        "erratum 2 appended in the round-33 section restating the per-id parenthetical + pre-freeze satisfiability step recorded (R2)",
+        "QUALITY.md appended note below R20 states the per-id reading supersedes 'exactly one' (R3)",
+        "round-33 lesson carries appended R7 erratum (31/22 char counts, S050.txt:70 sentence cite)",
+        "round-32 manifest carries only strict-UTC fetched_utc instants (R8)",
+        "S040-live.txt has a manifest record or explicit orphan listing; round-26 manifest purpose text corrected (R6)",
+        "frontier-recheck-count.py rule A enforces both directions (R9)",
+        "junk-twin control committed under c2-controls/ and rejected by the admission gate (source-recheck exit != 0; reviewer REFUSE) (R9)"
+      ]
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "score_before": 7,
+      "score_after": "held 7",
+      "predicate": "Frontier F17 (Immunefi Vulnerability Severity Classification System v2.2 — Web3/smart-contract bounty severity classification) admitted 16->17; registry row S051 added (tier A, status mined, opened 2026-10-26); knowledge entry corpus/knowledge/immunefi-vscs-v2-2-smart-contract-severity.md cites `source: S051`; harness prints entries=20 pass=20 exit=0 incl. `PASS F17 ids=S051`; source-recheck S051 prints every assertion occurrences=1, sha256 OK, exit 0; census exit 0 (W04 S028/S029 only); the junk F17 twin (c2-controls/junk-f17.md) is rejected by the admission gate.",
+      "kill_rule": "Any of: frontier_admitted != 17; registry rows != 51; S051_row != 1; entries citing S051 != 1; harness entries/pass != 20/20; source-recheck S051 exit != 0; census exit != 0; junk twin passes source-recheck or is admitted.",
+      "counting_commands": [
+        "grep -cE '^\\| F[0-9]+ \\|' corpus/README.md -> 17",
+        "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md -> 51",
+        "grep -cE '^\\|[[:space:]]*S051[[:space:]]*\\|' corpus/SOURCES.md -> 1",
+        "grep -lE '^source: S051 ' corpus/knowledge/*.md | wc -l -> 1",
+        "python3 corpus/instruments/frontier-recheck-count.py -> entries=20 pass=20 exit=0",
+        "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-34/manifest.json --source S051 -> all occurrences=1, sha256 OK, exit 0",
+        "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> exit 0"
+      ],
+      "before": [
+        "frontier_admitted=16",
+        "registry rows=50; S051_rows=0; entries citing S051=0",
+        "harness entries=19 pass=19 exit=0",
+        "source-recheck S051: manifest UNAVAILABLE reason=missing, exit 2",
+        "census exit 0 with W04 S028/S029 only",
+        "knowledge entries=45",
+        "junk F17 twin exists at c2-controls/junk-f17.md; shape counters pass it (3/3); source-recheck on it fails (exit 2)"
+      ],
+      "after": [
+        "frontier_admitted=17 (F17 row admitted, cited by the entry)",
+        "registry rows=51; S051 row=1 (tier A, mined, opened 2026-10-26); entries citing S051=1",
+        "harness entries=20 pass=20 exit=0 incl. `PASS F17 ... ids=S051`",
+        "source-recheck S051 exit 0, every assertion occurrences=1, sha256 OK",
+        "census exit 0 with W04 S028/S029 only",
+        "knowledge entries=46",
+        "junk twin rejected: source-recheck exit != 0 and non-author reviewer REFUSE on record"
+      ]
+    }
+  ],
+  "non_claim_frontier_items": {
+    "assimilation": "Re-run the id-collision check and the quarantine slice re-derivation (register read-only) for the merge/kasegi/ package; re-confirm standing refusals with flip conditions; no staged entry has fully-met flip conditions this round (program-scope-rules-and-asset-boundaries: located quotes/per-platform attribution remain; claim-packaging-and-report-quality: S036 BILISRC unregistered; cn-crowdsourced-testing-roles-and-conduct and chinese-crowd-testing-national-standard: S081/S082/S077/S078/S079 unregistered; chinese-criminal-thresholds-and-authorisation: S044/S045/S046 staged-ids collision; chinese-program-severity-instrument: anchor absent from capture and second source unregistered). Assimilation: none adopted this round; verdicts recorded in the lesson Gate.",
+    "considerthese": "considerthese/2026-10-25.md proposal 6 (event-driven reflections) mined this round: it becomes a QUALITY.md criterion (R23) grounding a lesson, citing the proposal file + date; other proposals unchanged with reasons from the lane ledger.",
+    "mistake": "M34-1: round-33 report claimed 'all mutants killed' while 3/4 mutants survived the frozen kill rule (R4) — class overstatement/summarization beyond measured evidence; captured-by R13 existed but was not applied to the mutant-obligation sentence; fix = tightened kill-rule check shown able to fail (skip-selftest and accept-record-without-url mutants fail the landed instrument, pass the frozen one). M34-2: <LANE_HASH> placeholders filed in SCORECARD.md (R1) — class landing/reference-drift; captured-by none; fix = replacement + appended correction + closure check.",
+    "routed_defects_round_33": "R1-R9 from round-33-verifier-spotcheck.md §5 are C1's subject (all nine land with runnable closure checks)."
+  }
+}
