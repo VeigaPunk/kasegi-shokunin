@@ -28,3 +28,20 @@ kill rule is unchanged (r38 judged-head export red).
 - Registry rows at base: 55 (S001–S055, unique).
 - Intended after-state: 59 rows (S056–S059 added), frontier 22, knowledge 51.
 - r38 judged head: `66703acaaff50529a35be49aa8759d04140720ad`.
+
+## E4 — verification ref for the C1 counting command (R1 class, resolved)
+
+The freeze C1 counting command `bash corpus/instruments/r39-closure.sh --export-ref <J> -> closed=8/8` is
+unsatisfiable at J as written: G2 requires the receipt to be inside the export, and the judged-head
+rule defines J as the commit that carries every round-39 change EXCEPT the receipt (so at J the G2
+receipt limb is 0 and the run prints closed=7/8 exit=1 by construction — the round-38 verifier R1
+class). Resolution, matching G2 as written and the round-38 precedent:
+- The verification ref is **Y** = J + the receipt only (`git diff --name-only J Y` = the receipt).
+- `--export-ref Y` prints `closed=8/8 exit=0` and `--selftest --export-ref Y` prints
+  `selftest cases=8 failures=0` with eight graded case lines.
+- A run at J prints `closed=7/8 exit=1` with the G2 payload `receipt=0`; this is expected and
+  documented in the receipt, not a kill.
+- The kill rule's reds stand unchanged: base 480b1a505a2dfc14a4f718d16d63808247214d0a and r38
+  judged head 66703acaaff50529a35be49aa8759d04140720ad exports print closed<8/8 exit=1.
+- Wave-2 suite-run items use `<Y>` as the verification ref; RevC1Receipt checks both the J-run
+  (7/8, receipt=0) and the Y-run (8/8).
