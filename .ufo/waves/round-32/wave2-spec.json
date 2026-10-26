@@ -1,0 +1,533 @@
+{
+ "wave": "kasegi-r32-falsify",
+ "reportDir": ".ufo/waves/round-32/wave2",
+ "maxLanes": 128,
+ "axes": [
+  "depth:verifiability",
+  "coverage"
+ ],
+ "milestone": "round-32 falsify wave: attack C1/C2 landed bytes",
+ "context": "# Round\nkasegi-shokunin round 32, dispatched by the L1 (agent KasegiR32) via the inline spawn handoff (hyaku run 7). Lane repo /home/vgpnk/Projects/shokunin/kasegi-shokunin is your ONLY write scope. Lane base a2b9fd84eeae47d7c1c7d92061b4dc28da245915; claims-freeze commit 5938d541e2c5b146ae4cd9142e52fd63b461e76c. The fleet root /home/vgpnk/Projects/shokunin is read-only to you.\n\nFrozen claims (do not edit; corrections land as separate appended files): /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/claims.json\n- C1 depth:verifiability (score 4, held), capability `capture-binding-check`: new instrument `corpus/instruments/capture-binding-check.py` binds every manifest record under `corpus/source-snapshots/*/manifest.json` to the URL it was fetched from (`url`, byte-equal to its registry row URL) and a fetch time (`fetched_utc`), with a hermetic live-compare mode; offline run must print `records=R bound=R unbound=0` (R = manifest entry count, 38 at base) + 8 `CONTROL ` lines + `controls=8 as-expected=8`, exit 0 twice byte-identical; new ledger `corpus/instruments/capture-binding-ledger.json` through the UNCHANGED round-31 counter `limb-mutation-check.py` must print `limbs=8 killed=8 survivors=0` + `controls=3 rejected=3`.\n- C2 coverage (score 7, held): Frontier F16 admitted 15 -> 16 - scope and asset-boundary rules of two Chinese programmes (CNVD crowd-testing platform help page, 360SRC rules PDF): new registry rows S049 (CNVD, https://zc.cnvd.org.cn/news/helpList) and S050 (360SRC, https://security.360.cn/Reward/rules, a PDF), registry 48 -> 50, one entry `corpus/knowledge/program-scope-rules-and-asset-boundaries.md` citing both, harness entries=19 pass=19 with `PASS F16`, census exit 0, source-recheck exit 0 for S049 and S050 on `corpus/source-snapshots/round-32/manifest.json`.\n- Non-claim frontier items: assimilation (theme = program scope rules; staged S034 -> lane S049 and staged S035 -> lane S050 by DOCUMENT; collision scratch + guard proof in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/assimilation/), considerthese proposal 3 remainder (fixture-only `claim-package-check.py`), mistake mining + routed round-31 repairs (QUALITY R16/R18/R19/cases=4, F15 sentence edits, weak ledger rows, score-gap receipt).\n\nThe L1 already captured S049 and S050 (inline prerequisite): `corpus/source-snapshots/round-32/S049.txt` (HTML help page via capture-source.py, 426 lines) and `S050.txt` (PDF via pdftotext, 630 lines). Digests and fetch UTC (S049 2026-10-26T02:09:46Z, S050 2026-10-26T02:09:50Z) are in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/capture-lines.txt - read them there, never retype them. Never re-capture over those two files; scratch re-fetches go under your own scratch dir.\n\nRead as your item requires (absolute paths): /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/claims.json; /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md (entry bar Q1-Q10, record rows R1-R19); /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md; /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md; /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/README.md and the instruments; /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-31.md and round-31-verifier-spotcheck.md (its section 5 routes the round-32 repairs); /home/vgpnk/Projects/shokunin/kasegi-shokunin/considerthese/2026-10-25.md (proposals only); read-only campaign package /home/vgpnk/Projects/shokuknow/merge/kasegi/ (never write there, never run its tools); round-31 receipts under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-31/ as precedent for shape.\n\n## INTERFACE CONTRACT for C1 (frozen by the L1; every C1 seat codes to this)\nManifest record schema (schema_version stays 1; `source-recheck.py` ignores unknown keys, keep it that way): each element of `sources[]` gains `url` (string), `fetched_utc` (string `YYYY-MM-DDTHH:MM:SSZ` or the literal `unrecorded`) and, when `unrecorded`, `fetched_utc_note` (non-empty string saying why the time is not recoverable and where it was searched). Optional `capture_kind` (`html`|`pdf`|`text`). `url` must equal the URL cell of the record id's registry row in `corpus/SOURCES.md` (the first `https?://` token of the `source` cell after ` — `); redirects are not recorded in `url`.\n\nChecker `python3 corpus/instruments/capture-binding-check.py [--root LANE]` (default root derived from the script path; stdlib only; never writes inside the lane; no git write; default mode is OFFLINE and touches no network):\n- reads `<root>/corpus/source-snapshots/*/manifest.json` in sorted path order and the registry rows of `<root>/corpus/SOURCES.md` (0-3 leading spaces tolerated, like the census parser);\n- one line per record: `RECORD <round-dir>/<id> url=<ok|MISSING|MISMATCH|SCHEME|CONFLICT> utc=<recorded|unrecorded|BAD|NOTE-MISSING> verdict=bound|unbound:<reason>`; unbound reasons: `missing-url`, `url-registry-mismatch`, `url-scheme`, `utc-format`, `utc-note-missing`, `id-url-conflict` (one id carrying two different urls across manifests), `registry-row-missing`;\n- then `records=R bound=B unbound=U` and `utc_recorded=A utc_unrecorded=C`;\n- then exactly 8 control lines `CONTROL <id> expect=<verdict> observed=<verdict> ok=y|n` and `controls=8 as-expected=<k>`; control ids/expectations: `S1-missing-url` unbound:missing-url; `S2-url-registry-mismatch` unbound:url-registry-mismatch; `S3-url-scheme` unbound:url-scheme; `S4-utc-format` unbound:utc-format; `S5-id-url-conflict` unbound:id-url-conflict; `L1-live-absent` live-absent; `L2-live-present` live-present; `L3-live-unreachable` live-unreachable. S-controls run the real checker function on a synthetic mini-lane built in tempfile.mkdtemp (registry row S900 + one manifest). L-controls start an in-process `http.server` on 127.0.0.1 (ephemeral port, thread, always shut down) serving one fixture page and run the real live-compare function against it (L1: manifest quote not present in the served page; L2: present; L3: a closed localhost port).\n- exit 0 iff U == 0 and all 8 controls ok; exit 1 if U > 0 or a control is not ok; exit 2 on usage or unreadable input. Stdout is deterministic (no timestamps, no temp paths): two runs are byte-identical.\n- `--live [--source ID]... [--timeout SEC]`: for the selected records fetch `url` (instrument UA, capture-source.py's fetch/html_to_text/pdf_to_text; kind from `capture_kind`, else `.pdf` suffix, else html), normalize with `source-recheck.py`'s normalize(), and count each manifest quote's occurrences in the live text. Per record `LIVE <round-dir>/<id> quotes=<n> present=<p> absent=<a> verdict=live-present|live-partial|live-absent|live-unreachable[:reason]`, then `live records=R present=P partial=Q absent=A unreachable=U`. Live mode prints no CONTROL lines; exit 0 iff every record is live-present, 1 if any live-partial/live-absent, 3 if some unreachable and none absent/partial. Live mode is an OBSERVATION: network state is not a committed byte, so it is never a kill-rule clause.\n- `--selftest`: prints `selftest cases=N failures=M` and exits 0 iff M == 0 (the 8 controls plus any extra fixture cases the owner adds).\nLedger `corpus/instruments/capture-binding-ledger.json` uses the round-31 schema unchanged (read the docstring of `limb-mutation-check.py`): 8 LIMB rows with ids `CB-url-required`, `CB-url-registry-equal`, `CB-url-scheme`, `CB-utc-format`, `CB-id-url-consistency`, `CB-live-absent`, `CB-live-unreachable`, `CB-exit-on-unbound` (each limb is the one check whose removal the matching control or fixture must expose), plus the three frozen control ids CTL-noop, CTL-nocompile, CTL-equivalent. Kill commands run the instrument as a program (`python3 {inst} --root {root}` or `... --root {root}/corpus/instruments/capture-binding-fixtures/<lane-fixture>`); a limb with no killing signal is a SURVIVOR and the checker owner strengthens its own controls/fixtures until it is killed; a limb provably equivalent is reported with proof, never relabelled killed. The round-31 counter and ledger (`limb-mutation-check.py`, `limb-ledger.json`) are NOT edited this round.\n\n## INTERFACE CONTRACT for C2 (frozen by the L1)\nEntry `corpus/knowledge/program-scope-rules-and-asset-boundaries.md` (QUALITY Q1-Q10, written fresh from the captures; the staged package entry is read-only input and is NOT copied). Header trio first: `source: S049 ...` and the S050 citation on `source:` lines (each `S###` with URL and capture anchor), `verified-at: 2026-10-26`, `recheck:` one `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-32/manifest.json --source S049 && ... --source S050` line (bash -n parseable, cwd-invariant, runs from `/`); `ground: F16`. It names CNVD (CNCERT/CC crowd-testing platform) as the stating party for every S049 rule and 360SRC (360 Security Emergency Response Center, V2.0, effective 2023-03-01) for every S050 rule; quotes in the source language, each <=25 words, each exactly-once in the pinned capture under source-recheck normalize() with its capture line; states at least one falsifiable rule and at least one rejected over-generalization (e.g. that the two programmes' scope rules are one Chinese standard, or that a platform target list is a scope grant); refuses to import severity ladders (F13), safe-harbour (F03/F09) or statute (F09) ground; documentation-only (Q6). Registry rows S049 and S050 follow CORPUS.md SOURCES contract v1: 11 columns (NF=13), no `|` inside any cell, tier A scoped to each programme's own statement of its scope rules, `status` mined, `opened` 2026-10-26 (the capture date), `recheck` a valid cadence (`90d`), `used-by` the entry path; staged S034/S035 cells are read-only inputs and are rewritten, never appended as-is; every changed cell is logged old->new.\n\n## WAVE 2 SCOPE (falsify wave; wave 1 has landed and is quiescent: read its receipts under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/)\nSeats are READ-ONLY on the lane except these single-writer paths: /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py, capture-binding-fixtures/** and capture-binding-ledger.json: ExecCBFix (fixes only) | /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/program-scope-rules-and-asset-boundaries.md: ScribeEntryFix (fixes only) | /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md: ScribeQualityFix (append-only, fixes only) | /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-32.md: ScribeLesson | /home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md: ScribeScorecard (append-only) | /home/vgpnk/Projects/shokunin/kasegi-shokunin/SHONEN.md: ScribeShonen | /home/vgpnk/Projects/shokunin/kasegi-shokunin/SKILL.md: ScribeSkillGate (append-only) | /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/README.md: ScribeInstrReadme (append-only) | every /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/<YourName>.md receipt and your own named scratch dir under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/. Everything else is read-only. Fixtures and mutants live in `mktemp -d` scratch copies of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus (use `--root` where the instrument accepts it); never run an instrument in the lane in a way that writes (`resolve.py` writes citation-survival.* next to itself: scratch only).\n\nBounds (all seats):\n1. Writes go ONLY under /home/vgpnk/Projects/shokunin/kasegi-shokunin - never the fleet root, sibling lanes, lane jj state or lane Git index, /home/vgpnk/Projects/shokuknow (read-only; never run campaign tools there), templates/, scripts/, .ufo/state/, .ufo/watchdog.log, MANIFEST.json, /home/vgpnk/Projects/shokunin/.scratch/.\n2. Every `Report:` trailer path is relative to /home/vgpnk/Projects/shokunin/kasegi-shokunin - write it at /home/vgpnk/Projects/shokunin/kasegi-shokunin/<that path> (= /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/<YourName>.md). Receipts hold commands + their output, never prose-only claims.\n3. Never message agent://all; coordinate only with the peers named in your item via write agent://<id> (id = the seat name).\n4. NEVER run git/jj mutations in the lane (no add/commit/stash/checkout/reset/pull/push, no jj commit/new/describe/squash/rebase/abandon/bookmark/undo). The L1 commits through the lane helper. Read-only git (log, show, diff, status, ls-files, rev-parse) is fine. Git fixtures: D=$(mktemp -d) && git -C \"$D\" init -q; verify `git -C \"$D\" rev-parse --show-toplevel` equals $D before the first commit; every later git call names -C \"$D\"; never a throwaway identity anywhere else.\n5. Tooling authorization (operator 2026-10-19): you may install/upgrade tools that help the task - read /home/vgpnk/.omp/agent/RULES.md first (official channels; record tool/version/channel/reason in your receipt). pacman is PAUSED host-wide (orchestrator ruling 2026-10-20): never run any pacman transaction; use uv tool/npx/an official binary in ~/.local/bin. Never -Sy/-Syu/-U/-R, no downgrade, no host-service restart.\n6. A counter run before its subject lands is PRE-STATE: label it so, name the re-run, never compare a PRE-STATE number to an after column. In-flight outputs while another seat edits are non-comparative (M30-3): re-run on quiescent bytes before you cite.\n7. Leaf role: no delegation, no background jobs, no own swarm; an executor may spawn at most one read-only labrat probe.\n8. Documentation-only domain: never contact any live bounty target; fetches are limited to the public documentation URLs your item names (instrument UA: `kasegi-shokunin/1.0 (documentation capture; +https://shokunin.invalid/kasegi)`). No credential material, session URLs or vault references in any file.\n9. Waiting: when your item says wait for a peer receipt, poll with `until [ -s <file> ]; do sleep 20; done` (cap 30 minutes); if the file never appears, record `BLOCKED: <file>` in your receipt and finish what you can. Do not busy-loop.\n10. Record the answering model you actually ran on when your item depends on it (the config route table decides; never pass a model).\n11. Quote discipline (CORPUS.md rule 1, QUALITY Q3): a quote is <=25 words with its exact location; never retype a number from memory. Chinese text: copy bytes from the capture, never retype from memory.\n12. Shell tool caveat: long poll loops may be auto-backgrounded by the shell tool; say so in the receipt rather than reporting a background run as foreground.",
+ "items": [
+  {
+   "name": "ExecLimbCBurlrequired",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nFalsify ledger limb `CB-url-required` (missing `url` accepted) of the C1 ledger on the LANDED bytes. Wave 1 landed the checker /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py and ledger /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-ledger.json (read-only for you; all work in a mktemp scratch copy of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus). (1) Re-derive by hand: copy /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus to a scratch dir, read the ledger row id `CB-url-required`, run its kill command on the UNMUTATED copy (record exit and whether `signal` matches), apply the row's find/replace yourself with python (assert find occurs exactly once; `python3 -m py_compile` the result), run the kill command again, and compare with the counter's `LIMB CB-url-required` line from `python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/capture-binding-ledger.json` (run it too). (2) Second mutant: invent a DIFFERENT one-line mutant of the same check (not the ledger's) and say whether the checker's controls or fixtures kill it; (3) say whether the limb is load-bearing only through one witnessing control/fixture (`weak`) or through more than one (`holds`), and name the control(s). A survivor is reported with the exact mutant, never relabelled. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLimbCBurlrequired.md with every command and output."
+  },
+  {
+   "name": "ExecLimbCBurlregistryequal",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nFalsify ledger limb `CB-url-registry-equal` (`url` != registry URL accepted) of the C1 ledger on the LANDED bytes. Wave 1 landed the checker /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py and ledger /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-ledger.json (read-only for you; all work in a mktemp scratch copy of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus). (1) Re-derive by hand: copy /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus to a scratch dir, read the ledger row id `CB-url-registry-equal`, run its kill command on the UNMUTATED copy (record exit and whether `signal` matches), apply the row's find/replace yourself with python (assert find occurs exactly once; `python3 -m py_compile` the result), run the kill command again, and compare with the counter's `LIMB CB-url-registry-equal` line from `python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/capture-binding-ledger.json` (run it too). (2) Second mutant: invent a DIFFERENT one-line mutant of the same check (not the ledger's) and say whether the checker's controls or fixtures kill it; (3) say whether the limb is load-bearing only through one witnessing control/fixture (`weak`) or through more than one (`holds`), and name the control(s). A survivor is reported with the exact mutant, never relabelled. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLimbCBurlregistryequal.md with every command and output."
+  },
+  {
+   "name": "ExecLimbCBurlscheme",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nFalsify ledger limb `CB-url-scheme` (non-http(s) scheme accepted) of the C1 ledger on the LANDED bytes. Wave 1 landed the checker /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py and ledger /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-ledger.json (read-only for you; all work in a mktemp scratch copy of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus). (1) Re-derive by hand: copy /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus to a scratch dir, read the ledger row id `CB-url-scheme`, run its kill command on the UNMUTATED copy (record exit and whether `signal` matches), apply the row's find/replace yourself with python (assert find occurs exactly once; `python3 -m py_compile` the result), run the kill command again, and compare with the counter's `LIMB CB-url-scheme` line from `python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/capture-binding-ledger.json` (run it too). (2) Second mutant: invent a DIFFERENT one-line mutant of the same check (not the ledger's) and say whether the checker's controls or fixtures kill it; (3) say whether the limb is load-bearing only through one witnessing control/fixture (`weak`) or through more than one (`holds`), and name the control(s). A survivor is reported with the exact mutant, never relabelled. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLimbCBurlscheme.md with every command and output."
+  },
+  {
+   "name": "ExecLimbCButcformat",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nFalsify ledger limb `CB-utc-format` (malformed `fetched_utc` accepted) of the C1 ledger on the LANDED bytes. Wave 1 landed the checker /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py and ledger /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-ledger.json (read-only for you; all work in a mktemp scratch copy of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus). (1) Re-derive by hand: copy /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus to a scratch dir, read the ledger row id `CB-utc-format`, run its kill command on the UNMUTATED copy (record exit and whether `signal` matches), apply the row's find/replace yourself with python (assert find occurs exactly once; `python3 -m py_compile` the result), run the kill command again, and compare with the counter's `LIMB CB-utc-format` line from `python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/capture-binding-ledger.json` (run it too). (2) Second mutant: invent a DIFFERENT one-line mutant of the same check (not the ledger's) and say whether the checker's controls or fixtures kill it; (3) say whether the limb is load-bearing only through one witnessing control/fixture (`weak`) or through more than one (`holds`), and name the control(s). A survivor is reported with the exact mutant, never relabelled. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLimbCButcformat.md with every command and output."
+  },
+  {
+   "name": "ExecLimbCBidurlconsistency",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nFalsify ledger limb `CB-id-url-consistency` (one id with two urls across manifests accepted) of the C1 ledger on the LANDED bytes. Wave 1 landed the checker /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py and ledger /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-ledger.json (read-only for you; all work in a mktemp scratch copy of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus). (1) Re-derive by hand: copy /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus to a scratch dir, read the ledger row id `CB-id-url-consistency`, run its kill command on the UNMUTATED copy (record exit and whether `signal` matches), apply the row's find/replace yourself with python (assert find occurs exactly once; `python3 -m py_compile` the result), run the kill command again, and compare with the counter's `LIMB CB-id-url-consistency` line from `python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/capture-binding-ledger.json` (run it too). (2) Second mutant: invent a DIFFERENT one-line mutant of the same check (not the ledger's) and say whether the checker's controls or fixtures kill it; (3) say whether the limb is load-bearing only through one witnessing control/fixture (`weak`) or through more than one (`holds`), and name the control(s). A survivor is reported with the exact mutant, never relabelled. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLimbCBidurlconsistency.md with every command and output."
+  },
+  {
+   "name": "ExecLimbCBliveabsent",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nFalsify ledger limb `CB-live-absent` (live-absent counted as present) of the C1 ledger on the LANDED bytes. Wave 1 landed the checker /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py and ledger /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-ledger.json (read-only for you; all work in a mktemp scratch copy of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus). (1) Re-derive by hand: copy /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus to a scratch dir, read the ledger row id `CB-live-absent`, run its kill command on the UNMUTATED copy (record exit and whether `signal` matches), apply the row's find/replace yourself with python (assert find occurs exactly once; `python3 -m py_compile` the result), run the kill command again, and compare with the counter's `LIMB CB-live-absent` line from `python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/capture-binding-ledger.json` (run it too). (2) Second mutant: invent a DIFFERENT one-line mutant of the same check (not the ledger's) and say whether the checker's controls or fixtures kill it; (3) say whether the limb is load-bearing only through one witnessing control/fixture (`weak`) or through more than one (`holds`), and name the control(s). A survivor is reported with the exact mutant, never relabelled. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLimbCBliveabsent.md with every command and output."
+  },
+  {
+   "name": "ExecLimbCBliveunreachable",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nFalsify ledger limb `CB-live-unreachable` (live-unreachable counted as present/confirmed) of the C1 ledger on the LANDED bytes. Wave 1 landed the checker /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py and ledger /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-ledger.json (read-only for you; all work in a mktemp scratch copy of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus). (1) Re-derive by hand: copy /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus to a scratch dir, read the ledger row id `CB-live-unreachable`, run its kill command on the UNMUTATED copy (record exit and whether `signal` matches), apply the row's find/replace yourself with python (assert find occurs exactly once; `python3 -m py_compile` the result), run the kill command again, and compare with the counter's `LIMB CB-live-unreachable` line from `python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/capture-binding-ledger.json` (run it too). (2) Second mutant: invent a DIFFERENT one-line mutant of the same check (not the ledger's) and say whether the checker's controls or fixtures kill it; (3) say whether the limb is load-bearing only through one witnessing control/fixture (`weak`) or through more than one (`holds`), and name the control(s). A survivor is reported with the exact mutant, never relabelled. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLimbCBliveunreachable.md with every command and output."
+  },
+  {
+   "name": "ExecLimbCBexitonunbound",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nFalsify ledger limb `CB-exit-on-unbound` (exit status ignores unbound records) of the C1 ledger on the LANDED bytes. Wave 1 landed the checker /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py and ledger /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-ledger.json (read-only for you; all work in a mktemp scratch copy of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus). (1) Re-derive by hand: copy /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus to a scratch dir, read the ledger row id `CB-exit-on-unbound`, run its kill command on the UNMUTATED copy (record exit and whether `signal` matches), apply the row's find/replace yourself with python (assert find occurs exactly once; `python3 -m py_compile` the result), run the kill command again, and compare with the counter's `LIMB CB-exit-on-unbound` line from `python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/capture-binding-ledger.json` (run it too). (2) Second mutant: invent a DIFFERENT one-line mutant of the same check (not the ledger's) and say whether the checker's controls or fixtures kill it; (3) say whether the limb is load-bearing only through one witnessing control/fixture (`weak`) or through more than one (`holds`), and name the control(s). A survivor is reported with the exact mutant, never relabelled. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLimbCBexitonunbound.md with every command and output."
+  },
+  {
+   "name": "MutCBLastUrl",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nChecker mutant attack: in a scratch copy (mktemp; never edit /home/vgpnk/Projects/shokunin/kasegi-shokunin) of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py apply this one mutation (adapt it to the real code): registry URL parser takes the LAST http(s) token of the `source` cell instead of the first. Run the mutant offline (`python3 <mutant> --root <scratch lane copy containing corpus/>`), and through the ledger runner if it applies. The frozen C1 design (claims.json `mutants_of_the_checker`) requires each checker mutant to be caught by a CONTROL line or a ledger limb, i.e. to NOT print `records=R bound=R unbound=0`, `controls=8 as-expected=8` and exit 0 byte-identically to the real run. Report: the mutant diff, its full output and exit code, whether it is KILLED (output or exit differs from the real checker; name the control/limb) or a SURVIVOR (byte-identical or equally green), and for a survivor the smallest control or fixture that would kill it. If your mutant is not expressible in the real code, say so with the line you read. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/MutCBLastUrl.md."
+  },
+  {
+   "name": "MutCBCountVsIn",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nChecker mutant attack: in a scratch copy (mktemp; never edit /home/vgpnk/Projects/shokunin/kasegi-shokunin) of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py apply this one mutation (adapt it to the real code): live-compare counts a quote present when `quote in text` on the RAW (un-normalized) live text, and 0 occurrences are not distinguished from partial. Run the mutant offline (`python3 <mutant> --root <scratch lane copy containing corpus/>`), and through the ledger runner if it applies. The frozen C1 design (claims.json `mutants_of_the_checker`) requires each checker mutant to be caught by a CONTROL line or a ledger limb, i.e. to NOT print `records=R bound=R unbound=0`, `controls=8 as-expected=8` and exit 0 byte-identically to the real run. Report: the mutant diff, its full output and exit code, whether it is KILLED (output or exit differs from the real checker; name the control/limb) or a SURVIVOR (byte-identical or equally green), and for a survivor the smallest control or fixture that would kill it. If your mutant is not expressible in the real code, say so with the line you read. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/MutCBCountVsIn.md."
+  },
+  {
+   "name": "MutCBHttpErrorPresent",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nChecker mutant attack: in a scratch copy (mktemp; never edit /home/vgpnk/Projects/shokunin/kasegi-shokunin) of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py apply this one mutation (adapt it to the real code): live-compare does not check the HTTP status, so an HTTP 404/500 error page body that happens to contain the quote text is treated as live-present (fetch helper swallows the status). Run the mutant offline (`python3 <mutant> --root <scratch lane copy containing corpus/>`), and through the ledger runner if it applies. The frozen C1 design (claims.json `mutants_of_the_checker`) requires each checker mutant to be caught by a CONTROL line or a ledger limb, i.e. to NOT print `records=R bound=R unbound=0`, `controls=8 as-expected=8` and exit 0 byte-identically to the real run. Report: the mutant diff, its full output and exit code, whether it is KILLED (output or exit differs from the real checker; name the control/limb) or a SURVIVOR (byte-identical or equally green), and for a survivor the smallest control or fixture that would kill it. If your mutant is not expressible in the real code, say so with the line you read. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/MutCBHttpErrorPresent.md."
+  },
+  {
+   "name": "MutCBUnrecordedNoNote",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nChecker mutant attack: in a scratch copy (mktemp; never edit /home/vgpnk/Projects/shokunin/kasegi-shokunin) of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py apply this one mutation (adapt it to the real code): an `unrecorded` fetched_utc is accepted without a `fetched_utc_note`. Run the mutant offline (`python3 <mutant> --root <scratch lane copy containing corpus/>`), and through the ledger runner if it applies. The frozen C1 design (claims.json `mutants_of_the_checker`) requires each checker mutant to be caught by a CONTROL line or a ledger limb, i.e. to NOT print `records=R bound=R unbound=0`, `controls=8 as-expected=8` and exit 0 byte-identically to the real run. Report: the mutant diff, its full output and exit code, whether it is KILLED (output or exit differs from the real checker; name the control/limb) or a SURVIVOR (byte-identical or equally green), and for a survivor the smallest control or fixture that would kill it. If your mutant is not expressible in the real code, say so with the line you read. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/MutCBUnrecordedNoNote.md."
+  },
+  {
+   "name": "MutCBControlTautology",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nChecker mutant attack: in a scratch copy (mktemp; never edit /home/vgpnk/Projects/shokunin/kasegi-shokunin) of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py apply this one mutation (adapt it to the real code): the L-controls compute `observed` by calling the same function that computes `expect` (a tautology), so every control prints ok=y whatever the checker does. Run the mutant offline (`python3 <mutant> --root <scratch lane copy containing corpus/>`), and through the ledger runner if it applies. The frozen C1 design (claims.json `mutants_of_the_checker`) requires each checker mutant to be caught by a CONTROL line or a ledger limb, i.e. to NOT print `records=R bound=R unbound=0`, `controls=8 as-expected=8` and exit 0 byte-identically to the real run. Report: the mutant diff, its full output and exit code, whether it is KILLED (output or exit differs from the real checker; name the control/limb) or a SURVIVOR (byte-identical or equally green), and for a survivor the smallest control or fixture that would kill it. If your mutant is not expressible in the real code, say so with the line you read. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/MutCBControlTautology.md."
+  },
+  {
+   "name": "MutCBNondeterministic",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nChecker mutant attack: in a scratch copy (mktemp; never edit /home/vgpnk/Projects/shokunin/kasegi-shokunin) of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py apply this one mutation (adapt it to the real code): stdout depends on dict/set iteration order or the scratch temp path, so two runs are not byte-identical. Run the mutant offline (`python3 <mutant> --root <scratch lane copy containing corpus/>`), and through the ledger runner if it applies. The frozen C1 design (claims.json `mutants_of_the_checker`) requires each checker mutant to be caught by a CONTROL line or a ledger limb, i.e. to NOT print `records=R bound=R unbound=0`, `controls=8 as-expected=8` and exit 0 byte-identically to the real run. Report: the mutant diff, its full output and exit code, whether it is KILLED (output or exit differs from the real checker; name the control/limb) or a SURVIVOR (byte-identical or equally green), and for a survivor the smallest control or fixture that would kill it. If your mutant is not expressible in the real code, say so with the line you read. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/MutCBNondeterministic.md."
+  },
+  {
+   "name": "ExecLive1",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nLive observation (NOT a kill-rule clause; the network is not a committed byte). Run the landed checker's live mode on your slice - round-23 and round-24 manifests (23 records) first half: the first 12 in sorted manifest order - from a scratch copy so nothing is written into the lane: `D=$(mktemp -d) && cp -r /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus \"$D/\" && python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py --root \"$D\" --live --source <ID> [--source ...] --timeout 60` (instrument UA, public documentation URLs only, one request per record, never a retry storm; if a host returns 403/429, record `live-unreachable` with the code and stop for that host). Paste every `LIVE ...` line, the `live records=...` summary and the exit code. For every `live-absent` or `live-partial` record: classify with evidence (diff a fresh `capture-source.py` capture in scratch against the committed capture: page drift / host moved / the quote was a transient value / the capture was wrong) and state the consequence for the entry that cites that id (read its `used-by`) WITHOUT editing anything. Also record the instrument's answer for the localhost controls (offline run still `controls=8 as-expected=8`). Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLive1.md with a table id | verdict | evidence."
+  },
+  {
+   "name": "ExecLive2",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nLive observation (NOT a kill-rule clause; the network is not a committed byte). Run the landed checker's live mode on your slice - the remaining records of round-23/round-24 (11 records) - from a scratch copy so nothing is written into the lane: `D=$(mktemp -d) && cp -r /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus \"$D/\" && python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py --root \"$D\" --live --source <ID> [--source ...] --timeout 60` (instrument UA, public documentation URLs only, one request per record, never a retry storm; if a host returns 403/429, record `live-unreachable` with the code and stop for that host). Paste every `LIVE ...` line, the `live records=...` summary and the exit code. For every `live-absent` or `live-partial` record: classify with evidence (diff a fresh `capture-source.py` capture in scratch against the committed capture: page drift / host moved / the quote was a transient value / the capture was wrong) and state the consequence for the entry that cites that id (read its `used-by`) WITHOUT editing anything. Also record the instrument's answer for the localhost controls (offline run still `controls=8 as-expected=8`). Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLive2.md with a table id | verdict | evidence."
+  },
+  {
+   "name": "ExecLive3",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nLive observation (NOT a kill-rule clause; the network is not a committed byte). Run the landed checker's live mode on your slice - round-25, 26, 28, 29 manifests (all their records, 11) - from a scratch copy so nothing is written into the lane: `D=$(mktemp -d) && cp -r /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus \"$D/\" && python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py --root \"$D\" --live --source <ID> [--source ...] --timeout 60` (instrument UA, public documentation URLs only, one request per record, never a retry storm; if a host returns 403/429, record `live-unreachable` with the code and stop for that host). Paste every `LIVE ...` line, the `live records=...` summary and the exit code. For every `live-absent` or `live-partial` record: classify with evidence (diff a fresh `capture-source.py` capture in scratch against the committed capture: page drift / host moved / the quote was a transient value / the capture was wrong) and state the consequence for the entry that cites that id (read its `used-by`) WITHOUT editing anything. Also record the instrument's answer for the localhost controls (offline run still `controls=8 as-expected=8`). Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLive3.md with a table id | verdict | evidence."
+  },
+  {
+   "name": "ExecLive4",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nLive observation (NOT a kill-rule clause; the network is not a committed byte). Run the landed checker's live mode on your slice - round-30, 31 and 32 manifests (S041, S046, S047, S048, S049, S050) - from a scratch copy so nothing is written into the lane: `D=$(mktemp -d) && cp -r /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus \"$D/\" && python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py --root \"$D\" --live --source <ID> [--source ...] --timeout 60` (instrument UA, public documentation URLs only, one request per record, never a retry storm; if a host returns 403/429, record `live-unreachable` with the code and stop for that host). Paste every `LIVE ...` line, the `live records=...` summary and the exit code. For every `live-absent` or `live-partial` record: classify with evidence (diff a fresh `capture-source.py` capture in scratch against the committed capture: page drift / host moved / the quote was a transient value / the capture was wrong) and state the consequence for the entry that cites that id (read its `used-by`) WITHOUT editing anything. Also record the instrument's answer for the localhost controls (offline run still `controls=8 as-expected=8`). Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLive4.md with a table id | verdict | evidence."
+  },
+  {
+   "name": "ExecCBFix",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nOwn capture-binding-check.py, capture-binding-fixtures/** and capture-binding-ledger.json for FIXES ONLY (wave-1 owners ExecCBCheck/ExecCBLedger are done). Read the wave-2 receipts /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/MutCB*.md, /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecLimbCB*.md, /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/CritJunk*.md as they land (poll; cap 35 minutes). For each SURVIVOR a mutation-tester or limb falsifier reports, add the smallest control/fixture/check that kills it, show red-before (the mutant survives) and green-after (the mutant is killed; the real checker still prints `records=R bound=R unbound=0` and `controls=8 as-expected=8`, exit 0, byte-identical twice; the ledger still prints `limbs=8 killed=8 survivors=0` and `controls=3 rejected=3`) - but NEVER change the frozen predicate, the 8 control ids or the 8 limb ids, and never add a 9th limb or control to the count lines (extra checks live inside the existing ones or as unprinted guard fixtures as the round-31 counter did). If nothing survives write `no-change` and edit nothing. Report sha256 old -> new for every file you touch. Receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecCBFix.md."
+  },
+  {
+   "name": "ExecRegressionC1",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nFinal no-harm run for C1 on quiescent bytes (poll until /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecCBFix.md exists, then run): from /home/vgpnk/Projects/shokunin/kasegi-shokunin: `python3 corpus/instruments/capture-binding-check.py` (twice, byte-identical sha256), `python3 corpus/instruments/capture-binding-check.py --selftest`, from `cd /` with `--root /home/vgpnk/Projects/shokunin/kasegi-shokunin`, `python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/capture-binding-ledger.json` (twice, stdout byte-identical), the UNCHANGED round-31 `--ledger corpus/instruments/limb-ledger.json` (expect `limbs=13 killed=13 survivors=0`, `controls=3 rejected=3`), `limb-mutation-check.py --selftest`, `python3 corpus/instruments/recheck-audit.py --quiet` (strict pass=45/45 with the F16 entry), `recheck-audit.py --selftest`, `source-recheck.py --selftest`, `python3 corpus/instruments/anchorcheck.py --selftest`, `python3 corpus/instruments/frontier-recheck-count.py` (entries=19 pass=19), `python3 corpus/instruments/claim-package-check.py --selftest`, `python3 corpus/instruments/closure-checks.py --selftest`, and the independent R count (python one-liner in claims.json C1 counter 3) and `with_url` (counter 4). Label every number with its command and exit; paste outputs; compare each with /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/c1-controls/before.txt. Verify `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain corpus/` shows no unexpected path. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecRegressionC1.md; flag PRE-STATE runs."
+  },
+  {
+   "name": "CritJunkConstruction",
+   "role": "critic",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nReproduce the round-31 junk construction against the NEW instrument (scratch only; recipe in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-31/wave1/CritC2Kill.md §4): in a mktemp copy of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus build (a) an invented capture + manifest + registry row + entry whose URL is a real public page that does NOT contain the invented quote; (b) the same with `url` copied from the registry and a plausible fetched_utc. Run `python3 capture-binding-check.py --root <scratch>` offline (expect PASS on (b) by construction - say so), then run the live-compare against a localhost http.server you start that serves the REAL text at the registry URL's role (you may point the scratch registry row and manifest `url` at 127.0.0.1:<port> to emulate the live page) and show live-absent for the invented quote; then the reverse (honest capture, live page edited) -> live-absent: so live-absent means 'capture and live page disagree', not 'capture is fabricated' (state it). Quantify: how many of the 8 CONTROL lines and which ledger limbs witness each outcome. Verdict: `closes gate caveat 1 for: <exact class>` and `does not close: <exact class>`. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/CritJunkConstruction.md."
+  },
+  {
+   "name": "CritCalibration",
+   "role": "critic",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nCalibration attack (AXES calibration: self-assessment vs observed state). Read SHONEN.md, SCORECARD.md (round-31 section, Axes, Capabilities, Saturation), corpus/README.md coverage statements, corpus/instruments/README.md, and the landed round-32 bytes. Count mismatches between the lane's self-assessment and observed state with commands: stale live-claim numbers (`grep -n` for registry row counts 48, frontier counts 15, `entries=18`, `strict pass=44/44`, `38 records`, 'F01-F15', '44 entries' in files that should now say 50 / 16 / 19 / 45 / 40; separate historical-by-design lines (append-only R6/R9) from live-claim lines that now read wrong), SHONEN box evidence against the files it cites (does each cited path/command exist and print what the box says: `grep -n` + run), SCORECARD capabilities table vs instruments that exist (`ls corpus/instruments`), PROVINCE frontier list vs README frontier rows (F01-F16), SKILL.md instrument registry vs `ls corpus/instruments/*.py`. Report `mismatches=N` split by (live-wrong / historical-ok / unverifiable) with path:line for each live-wrong one; propose the erratum line, do not edit. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/CritCalibration.md."
+  },
+  {
+   "name": "RevQuoteCNVD",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nRe-open the live source https://zc.cnvd.org.cn/news/helpList yourself (instrument UA, scratch dir only) and verify the F16 assertions about CNVD: for every assertion in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-32/manifest.json for S049, locate the quote in your own fresh fetch (capture-source.py html_to_text, then source-recheck.py normalize()) and in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-32/S049.txt at the manifest's line; report exact location, occurrence count, equal/different wording and whether the quote sits under the tab/section the entry says. Then read /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/program-scope-rules-and-asset-boundaries.md and check every sentence about CNVD for attribution (Q4: 'CNVD states ...'), over-generalization (a rule of one help page stated as a platform-wide or China-wide rule) and quote integrity (each quote byte-equal to the capture). Findings by severity (HIGH = claim without a locatable quote, MEDIUM = unattributed generalization, LOW = wording). Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevQuoteCNVD.md."
+  },
+  {
+   "name": "RevQuoteSRC360",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nSame as a quote re-open for https://security.360.cn/Reward/rules (a PDF): re-fetch in scratch, convert with pdftotext -enc UTF-8, verify every assertion for S050 in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-32/manifest.json: fresh-fetch location, capture line, PDF page, occurrences, equality; flag quotes that span a PDF line wrap and whether source-recheck.py normalize() handles the wrap (Chinese text with a wrap inside a phrase). Then check every sentence of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/program-scope-rules-and-asset-boundaries.md about 360SRC for Q4 attribution ('360SRC V2.0 states ...'), the document version/date, and over-generalization (rule 10 about non-enrolled assets stated as a universal SRC rule; an example domain generalized). Findings by severity as in the CNVD sibling item. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevQuoteSRC360.md."
+  },
+  {
+   "name": "RevEntryQ",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nIndependent Q1-Q10 review (QUALITY.md, read it fully, incl. R-rows that bind entries) of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/program-scope-rules-and-asset-boundaries.md - you did not write it. One row per criterion Q1..Q10: pass|fail, the line number, the quote. Run: `bash -n` on the recheck line; run it from the lane root and from `cd /`; path stem == id for each manifest record (Q9); quotes exactly-once or anchored (Q9); normalization declared (Q8); documentation-only (Q6: no probing instruction, no credential/URL with session material); at least one falsifiable rule and one rejected over-generalization (Q5); tier-C never sole support (Q2); `ground: F16` equals the README row. Verdict ADMIT|REFUSE with reasons - including any sentence that outruns its quote. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevEntryQ.md."
+  },
+  {
+   "name": "RevEntryQ2",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nA SECOND independent Q1-Q10 review of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/program-scope-rules-and-asset-boundaries.md, blind to RevEntryQ (do not read /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevEntryQ.md until you have written your verdict; then append a comparison section). You did not write the entry. Run every check the entry's falsifiable rules name (their commands) and report each result; check each rejected over-generalization is actually rejected by a quote, not asserted; check the entry against the staged package entry's refusal reasons (round-31 lesson `### Refused package candidates` row for program-scope-rules-and-asset-boundaries.md): which refusal reason is cleared and by what bytes. Verdict ADMIT|REFUSE per criterion and overall. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevEntryQ2.md."
+  },
+  {
+   "name": "RevRowS049S050",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nReview the S049 and S050 registry rows in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md against CORPUS.md SOURCES contract v1 (rules 1-6) and the staged rows S034/S035 in /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md: 11 columns (NF=13 under the census awk), no `|` in cells, tier scoped, anchor exact (capture lines + date or the explicit no-date statement, not a bare homepage), `teaches` one grounded benefit that is a scope benefit (the staged text was severity ground), status mined with a resolving used-by path, opened 2026-10-26, recheck a valid cadence; pre-existing rows byte-identical to base (`git diff -U0 a2b9fd84eeae47d7c1c7d92061b4dc28da245915 -- corpus/SOURCES.md`: additions only). Run the contract's census commands (copy verbatim from CORPUS.md) and `/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` and paste. Verdict per row CONFORMANT|DEFECT with the line. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevRowS049S050.md."
+  },
+  {
+   "name": "CritExpansion",
+   "role": "critic",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nExpansion-credit attack on F16 (LEARNING.md: expansion counts admitted entries on ground the coverage map did not hold). With the final entry and /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/ScoutSweepF16.md, ConnSibling.md and CritC2Kill.md: state with sweep commands whether any existing entry (F03 authorization-safe-harbor-and-scope, F09 authorised-testing-rules-of-engagement, F13 program-severity-ladders-and-reward-scales, F10 vendor-disclosure entries, SKILL.md) already says what F16 says. Quote the overlapping lines if any. Decide: `new-ground` (residual named precisely), `partial` (overlap named, residual named) or `restatement`. If `restatement`, the F16 admission fails C2's kill rule - say so plainly. Also check the coverage-map row placement (corpus/README.md appended section) does not double-count an existing map row. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/CritExpansion.md."
+  },
+  {
+   "name": "CritQuoteSweep",
+   "role": "critic",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nQuote sweep over the F16 entry: extract every double-quoted or 「」/“” string and every CJK blockquote in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/program-scope-rules-and-asset-boundaries.md with a script (paste the script and its counts). For each: is it <=25 words/characters-equivalent, is it exactly-once in the pinned capture (S049.txt or S050.txt) under normalize(), is it a manifest assertion, and is it attributed to the right programme. Strings that are not source quotes (labelled rejected inferences, hypothetical strings) must be explicitly labelled so; any unlabelled non-source string in quote marks is a Q3 defect. Report `quote rows=N source-bound=K mismatches=M`; M must be 0 for `clean`. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/CritQuoteSweep.md."
+  },
+  {
+   "name": "ScoutLiveDrift",
+   "role": "scout",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nDrift check of the S049 and S050 sources: fetch both URLs now (instrument UA, scratch dir) with `python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-source.py --id S049 --url https://zc.cnvd.org.cn/news/helpList --kind html --out <scratch>/S049-now.txt` and `--id S050 --url https://security.360.cn/Reward/rules --kind pdf --out <scratch>/S050-now.txt`; diff -u against the committed captures /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-32/S049.txt and S050.txt (count differing lines; say whether any manifest assertion's text changed; classify the differing lines: nav, dates, tokens, content). Report capture-to-capture determinism (sha256 equal or not) over TWO fresh fetches 60 seconds apart. This bounds how stable a captured-source recheck is (Q7: a pinned capture is not a fresh network verification). Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScoutLiveDrift.md."
+  },
+  {
+   "name": "ExecCensusFinal",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nFinal C2 counters on quiescent bytes (poll until /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/ExecHarnessC2.md exists and /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeEntryFix.md exists or 20 minutes pass): run every C2 counter command from /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/claims.json verbatim from the lane and report each value with its label: frontier admitted (expect 16), entries citing S049 (1), citing S050 (1), S049/S050 rows (1/1), registry rows (50), census exit (0, W04 S028/S029 only), harness (`PASS F16`, entries=19 pass=19 exit=0), source-recheck S049 and S050 (exit 0). Also the six contract census commands from CORPUS.md and the census before/after (/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/census-before.txt vs now, `diff -u`). Then the junk-row control re-derivation (scratch only): bare S049/S050 rows with no entry/capture -> counters 2,3 stay 0, frontier 15, harness 18/18, census flags `W03` unused-mined rows; and a stub entry with `source: S049` + `S050` lines but no quotes -> which counters it passes (shape counters) - and which prose clauses of the kill rule stop it. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecCensusFinal.md."
+  },
+  {
+   "name": "RevGateSpot",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nDiscernment spot-check sample (LEARNING.md: a seat this lane dispatched is still the lane - label your verdict `lane-seat`, not independent; the non-author closure follows). Read /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-32.md `## Gate` when ScribeLesson has written it (poll /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeLesson.md; cap 40 min) and re-open: (a) the S049 and S050 registry rows' located quotes against a fresh fetch; (b) the assimilation ADMIT (staged S034/S035 -> lane S049/S050 by document: compare the staged row URLs with the lane row URLs byte-for-byte); (c) at least one assimilation REFUSAL: open the staged entry and confirm the stated failing criteria and flip condition; (d) the id-collision evidence (/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/assimilation/: re-run the 0-3-space extractor, compare counts and `sha256sum`s); (e) the quarantine slice (7 rows: re-derive with the awk from the round prompt section 10). One row per decision: agree|disagree + reason. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevGateSpot.md."
+  },
+  {
+   "name": "CritMistakes",
+   "role": "critic",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nAttack the mistake-mining. (1) The R16/R18/R19 repairs claim to be shown able to fail: re-run /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/closure-checks.py `--selftest` and each `--check` on mutant fixtures from /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/ExecClosureChecks.md - verify the OLD round-31 commands exit 0 (false green) on the same mutants while the new checks exit 1; delete the erratum / paragraph / h2 body in scratch copies of the real SCORECARD.md, LOG.md and QUALITY.md and confirm each check goes `open`. (2) Sweep the wave-1 receipts (/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/*.md) for BLOCKED / DEFECT / survivor / FAIL / traceback / PRE-STATE (command + counts; commands and outputs both go in your receipt - O6) and list every mistake the wave actually hit that ScribeGateDraft (/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/ScribeGateDraft.md) omitted. (3) Check the draft's mistake classes use the `mistakes.md` vocabulary and each row has captured-by and a fix. (4) Re-measure the `cases=4` erratum number. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/CritMistakes.md."
+  },
+  {
+   "name": "MutClosureChecks",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nMutation-test /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/closure-checks.py in a scratch copy: mutants (a) R16 requires the erratum but not the filed paragraph, (b) R16 accepts an erratum that names a different paragraph, (c) the R16 token spelled `r31 errata` accepted, (d) R18 accepts an h3 `### Round 30` heading, (e) R18 accepts an empty h2 body, (f) R19 reverts to a single-token grep, (g) `--check` unknown id exits 0, (h) exit code ignores `open`. For each: does `--selftest` fail (KILLED) or stay green (SURVIVOR)? Report diffs, outputs, exit codes; propose the smallest fixture for each survivor (message ExecClosureChecks? it is done - write the proposal in your receipt). Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/MutClosureChecks.md."
+  },
+  {
+   "name": "RevClaimCheck",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nReview /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/claim-package-check.py and corpus/instruments/claim-package-fixtures/** against /home/vgpnk/Projects/shokunin/kasegi-shokunin/considerthese/2026-10-25.md proposal 3 and /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/ScoutClaimSpec.md: does every RULE trace to a line in claim-package-contract.md / claim-gates.md / claim-anatomy-sample.md (path:line)? run `--selftest` (cases=7 failures=0) and on a hand-made 8th defect (not in the fixtures); is the documentation-only constraint honoured (grep fixtures for hosts other than target.invalid, credentials, vault paths: counts); does the docstring state what the gate does NOT do; does it overclaim `end-to-end` anywhere (SHONEN box 2 stays honest). Verdict `lands|weak|defect` and what the considerthese ledger may truthfully say. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevClaimCheck.md."
+  },
+  {
+   "name": "MutClaimCheck",
+   "role": "mutation-tester",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nMutation-test /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/claim-package-check.py in a scratch copy: delete or invert each RULE check in turn (one mutant per rule, as many as the checker has) and run `--selftest` and the conforming fixture; report per mutant KILLED or SURVIVOR (a mutant is killed when `--selftest` fails or the conforming fixture's verdict changes). Also mutants: exit code ignoring `fail`; verdict line hardcoded `pass`; fixture directory walk skipping hidden files. Report the table and the smallest fixture for each survivor. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/MutClaimCheck.md."
+  },
+  {
+   "name": "RevWeakRAFR",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nVerify the routed weak-limb repairs: read /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/ExecWeakRA.md and ExecWeakFR.md; in scratch copies re-apply each named mutant (RA-paths B3, RA-cdroot M2/M3/M4, FR-missing-entry guard drop) to the LANDED recheck-audit.py / frontier-recheck-count.py and confirm each is now killed by the instrument's own selftest/fixture (red-before on the base blob `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show a2b9fd84eeae47d7c1c7d92061b4dc28da245915:corpus/instruments/<file>` where the same mutant survives; green-after on landed bytes); confirm the committed round-31 ledger still prints `limbs=13 killed=13 survivors=0`, `controls=3 rejected=3` on the landed bytes (run it) and `recheck-audit.py --quiet` strict pass equals the expected-entry count; list any behaviour change outside the named limbs (diff the two files base vs landed). Verdict per repair `closed|open`. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevWeakRAFR.md."
+  },
+  {
+   "name": "RevQualityRows",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nReview the QUALITY.md append (`## Round-32 additions`, rows R20-R22 and the `cases=4` erratum) in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md: append-only (`git diff a2b9fd84eeae47d7c1c7d92061b4dc28da245915 -- corpus/QUALITY.md`: deletions 0), each row cites a lesson/receipt that exists (resolve every cited path), each criterion is checkable by a command (run it), R20's counter `capture-binding-check.py` exists and the criterion matches its output grammar, R21's `closure-checks.py --check` commands run and exit as the row says, the erratum's number equals a fresh measurement. A criterion with no lesson behind it is a LEARNING.md harm - report it. Verdict per row `holds|weak|defect`. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevQualityRows.md."
+  },
+  {
+   "name": "RevF15Fix",
+   "role": "reviewer",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nReview the F15 entry edits landed by ScribeF15Fix (/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/ScribeF15Fix.md has the diff): for each edit confirm (1) it closes the finding it names (read wave2/CritExpansion.md §6 and wave4/RevEntryQ3.md in round 31), (2) no quote changed (every quote string still exactly-once in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-31/S048.txt; run `source-recheck.py --manifest corpus/source-snapshots/round-31/manifest.json --source S048` -> 11 OK), (3) no admitted claim's meaning changed beyond the finding, (4) the entry still passes Q1-Q10 (spot Q1/Q4/Q5/Q7), (5) the header trio is intact. Verdict `edits sound | defect <edit>`. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevF15Fix.md."
+  },
+  {
+   "name": "ExecNoHarmDensity",
+   "role": "executor",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nNo-harm run for depth:density and anchor verdicts on the final lane bytes: `python3 corpus/instruments/density.py SKILL.md --label r32-final` (compare mean 191.5, 24 blocks, 689 cites at r31; report before/after exactly - the base is `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show a2b9fd84eeae47d7c1c7d92061b4dc28da245915:SKILL.md` measured the same way - no form gaming), `python3 corpus/instruments/anchorcheck.py SKILL.md` (r31: 7 in-range / 0 bad / LOST-RECORDED=306 / PIN-BROKEN=0 / ORIGIN=0 / OUTSIDE-BASE=0 / BASE-ABSENT=0; exit 0), and `python3 corpus/instruments/resolve.py /home/vgpnk/Projects/shokunin/kasegi-shokunin` in a SCRATCH copy only. If ScribeSkillGate has appended a SKILL.md block by then (poll /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeSkillGate.md; cap 30 min), measure the appended block's resolve fraction and say whether it meets the instrument's >=60% bar; verify `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff a2b9fd84eeae47d7c1c7d92061b4dc28da245915 -- SKILL.md PROVINCE.md` deletions 0. No score move is claimed from density. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecNoHarmDensity.md."
+  },
+  {
+   "name": "SentScopeFinal",
+   "role": "sentinel",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nFinal scope + credential + misroot sweep (run after at least 20 wave-2 receipts exist or 45 minutes). (1) `git -C /home/vgpnk/Projects/shokunin status --porcelain` with no pathspec: list seat-written paths at the fleet root (names containing kasegi/round-32/Exec/Scribe/Scout/Rev/Crit/Mut/Conn); report only, never delete, never touch .scratch/. (2) `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain`: classify each path against the FILE OWNERSHIP lists (wave-1 context in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1-spec.json and the wave-2 scope) and list UNOWNED writes and bulky scratch (counts, sizes; propose the path list the L1 should commit and the paths to leave out, as M31-6 did). (3) credential/session/private-URL grep over all new or changed lane files since a2b9fd84eeae47d7c1c7d92061b4dc28da245915 (`git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff --name-only a2b9fd84eeae47d7c1c7d92061b4dc28da245915` plus untracked). (4) shok live-target check: any host in new files other than 127.0.0.1, target.invalid, example.invalid and the documented public URLs. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/SentScopeFinal.md."
+  },
+  {
+   "name": "ScribeEntryFix",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nOwn /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/program-scope-rules-and-asset-boundaries.md for FIXES ONLY. Read the wave-2 reviewer receipts as they land (/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevEntryQ.md, RevEntryQ2.md, RevQuoteCNVD.md, RevQuoteSRC360.md, CritQuoteSweep.md, CritExpansion.md; poll; cap 40 minutes). For each HIGH/MEDIUM finding that is a true defect, apply the smallest edit (a sentence reworded to its quote, an attribution added, a quote restored byte-exact from the capture); decline findings that misread the capture with the located line. Never change a quote's bytes except to restore the capture's; never change the header `source:`/`recheck:`/`ground:` lines. After edits re-run `bash -n` + the recheck line from the lane root and `/`, the exactly-once count of every quote, and list each edit with the finding id it closes. If no defect: `no-change`. Receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeEntryFix.md."
+  },
+  {
+   "name": "ScribeQualityFix",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nOwn /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md for FIXES ONLY (append a row superseding, never rewriting; `supersedes R2x -`). Read /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/RevQualityRows.md and /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/CritMistakes.md (poll; cap 40 minutes). If a criterion weakness is a true defect, append the superseding row with the tightened command and its able-to-fail evidence (red-before/green-after in a scratch copy). If nothing needs change write `no-change` and edit nothing. Receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeQualityFix.md."
+  },
+  {
+   "name": "ScribeLesson",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nOwn /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-32.md ONLY. Poll until the wave-1 receipts /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/ScribeGateDraft.md, ExecHarnessC2.md, ExecCBLedger.md exist and at least 15 wave-2 receipts exist (cap 45 minutes), then write the round lesson in the shape of corpus/lessons/round-31.md (read its headings): header (lane, revisions: base a2b9fd84eeae47d7c1c7d92061b4dc28da245915, freeze 5938d541e2c5b146ae4cd9142e52fd63b461e76c, wave-1 spec/dispatch commit 288ea9ac17a78dce644388af35b89aa96b7994da; the final integration hash is added by the L1 later - leave the literal placeholder `LANDED_HASH_PENDING` ONLY in a line the L1 will replace; do not invent one), shape (two v1 waves: wave1 37 seats; wave2 seats from /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2-spec.json; roles; answering models by receipt (grep the receipts, count per model name)), `## Frozen claims - before -> after` (C1/C2 from the receipts, every number copied), `## Gate` (from ScribeGateDraft: admit rows with URL, access date 2026-10-26 and <=25-word located quote; >=1 admit and >=1 reject from the assimilation set; id-collision evidence with count basis; quarantine slice verdicts; registry changes old->new), `## Mistakes (M32-*)`, `## considerthese`, `## Census before -> after` (before /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/census-before.txt; after from ExecCensusFinal), `## Live observation` (ExecLive1..4 totals, named honestly as observation), `## Open items / unverified` (an inspected-items list with the sweep command and output, O6), `## Touched surfaces and provenance`. Every number cites a receipt; undone or unverified items are named, not omitted. Receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeLesson.md."
+  },
+  {
+   "name": "ScribeScorecard",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nOwn /home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md ONLY (append-only). Poll for /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecRegressionC1.md, /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecCensusFinal.md and at least 15 wave-2 receipts (cap 45 minutes). Append `## Round 32 — frozen claims C1/C2 (2026-10-26)` in the shape of the round-31 section: table Claim | Axis | Before | After | Verdict and evidence | Last change - C1 depth:verifiability (4 held; capability), C2 coverage (7 held), depth:density (9, unchanged, no harm; numbers from ExecNoHarmDensity) - every number copied from a receipt, the verdict honest (`verified` only if the frozen kill rule is met by the receipts; a miss is an honest stop, a contested reviewer verdict is reported verbatim). Append `## Round-32 capabilities` with the row `capture-binding-check` (what it can do, evidence pointer = command + receipt, first-working round 32) ONLY if ExecRegressionC1 shows it running with the exit-0 output; append move-log rows for rounds 32; an erratum paragraph for any stale live-claim line CritCalibration found in SCORECARD.md (appended; the filed line stays). State the saturation/stagnation status (line 9/10, window N=3; the last capability entry before this round was round 31 `limb-mutation-ledger`). Do not edit any earlier line. Receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeScorecard.md."
+  },
+  {
+   "name": "ScribeShonen",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nOwn /home/vgpnk/Projects/shokunin/kasegi-shokunin/SHONEN.md ONLY. The four boxes carry `[~]` with round-31 evidence text. Update each box's evidence line to the round-32 observable state with resolvable pointers (read each cited receipt/command: density.py/anchorcheck.py verdicts from /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecNoHarmDensity.md; `recheck-audit.py` strict pass and `frontier-recheck-count.py` entries=19 from ExecRegressionC1/ExecCensusFinal; the ledger counter outputs; the PROVINCE no-bleed sweep from /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/ConnSibling.md; the `claim-package-check.py --selftest` line from ExecRegressionC1 for box 2, stating that it is a fixture gate and not an end-to-end hunt). Fix the stale line `8 assertion OK lines` for the S048 recheck (the committed manifest has 11 assertions: `source-recheck.py --manifest corpus/source-snapshots/round-31/manifest.json --source S048` run it and copy the count). Use `[~]` with an evidence pointer or `[ ]` - NEVER `[x]` (no non-author verifier is on record). Keep the 4-box shape and header. Poll the receipts first (cap 45 minutes). Receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeShonen.md."
+  },
+  {
+   "name": "ScribeSkillGate",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nOwn /home/vgpnk/Projects/shokunin/kasegi-shokunin/SKILL.md ONLY, append-only (R6; SKILL.md is cited by line number across the lane - never insert above the end). Read the last ~60 lines (the round-31 appended block) and append one registry block `## Gates & probes registry - round 32` in the same style listing: `capture-binding-check.py` (what it checks, offline command, `--live` observation command, the 8 controls, limits: copy-registry stuffer passes static check; live-absent means disagreement not fabrication), `capture-binding-ledger.json`, `closure-checks.py` (R16/R18/R19 closure commands), `claim-package-check.py` (fixture-only form gate), plus one F16 line (program scope rules of CNVD and 360SRC: the entry path and the two rows). Each row: command, expected output line copied from /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecRegressionC1.md, entry path; paths must resolve (verify every cited path with `ls`). Wait for /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecRegressionC1.md (poll; cap 45 min). Receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeSkillGate.md."
+  },
+  {
+   "name": "ScribeInstrReadme",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nOwn /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/README.md ONLY, append-only. After ExecRegressionC1 lands (poll /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ExecRegressionC1.md; cap 45 min) append a section `## Round-32 additions` with a table row per new instrument (`capture-binding-check.py`, `capture-binding-ledger.json`, `capture-binding-fixtures/`, `closure-checks.py`, `claim-package-check.py`): what it measures, run command, known limits (stated, not implied; e.g. the static check cannot see a copy-registry stuffer, `--live` is an observation, `claim-package-check.py` checks form not truth). Also append the changed-bytes notes for `recheck-audit.py` and `frontier-recheck-count.py` (sha256 old -> new from the ExecWeak* receipts) and the manifest schema addition (`url`, `fetched_utc`, `fetched_utc_note`, `capture_kind`). Receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeInstrReadme.md."
+  },
+  {
+   "name": "ScribeReportDraft",
+   "role": "scribe",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nDraft the round report body into /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeReportDraft.md for the L1 (the L1 files the final report at the fleet path; you never touch it). Poll until wave-1 and wave-2 receipts are present (cap 50 minutes), then draft, with every claim carrying an evidence pointer to a receipt path or command output: **Work performed** (opens naming C1 and C2 with target axes or capability; one bullet per work item), **Landed changes** (each tied to a LOG.md entry and commit - leave `<LANE_HASH>` markers the L1 fills, and the receipt proving each), **Before -> after measurements** (per claim: counting command, before and after values, the commit measured), **Sources & frontier** (SOURCES rows before->after with the counting command, rows added by tier, rows touched old->new, frontier rows advanced, assimilation: theme, entry admitted/refused with reasons, id-collision lists and counts, the renumber map, the quarantine slice verdicts; considerthese line), **Trend verdicts** (expansion/quality/discernment, each improved|harmed|unchanged|unprovable-but-better with evidence), **SHONEN** (one line per box of SHONEN.md; `[~]` with a resolvable pointer or `[ ]`; never `[x]`), a Stale-lane line, tool installs. Mark every number you could not trace to a receipt `UNVERIFIED`. Receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ScribeReportDraft.md."
+  },
+  {
+   "name": "ConnCrossPattern",
+   "role": "connector",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nCross-claim/cross-source pattern finding over the landed round: do C1 (capture binding: url + fetched_utc + live compare) and C2 (F16: two fresh captures with url/fetched_utc in their manifest) share a failure pattern or reusable discipline (e.g. a pinned capture is a frozen input just as a pinned instrument digest is; static binding vs live observation; exactly-once quotes vs exactly-once finds)? Read /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave1/*.md and /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/*.md receipts as they land (poll; cap 40 minutes) and report: (1) shared patterns worth a QUALITY criterion or a SKILL.md line (path:line evidence); (2) any place the two claims silently depend on each other (the round-32 manifest must carry url/fetched_utc for R to equal bound; recheck-audit N vs knowledge-expected.txt; the census W-lines); (3) whether the live observations (ExecLive1..4) change what C2's entry may claim; (4) two routing proposals for round 33. Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ConnCrossPattern.md."
+  },
+  {
+   "name": "ConnAssimilationFit",
+   "role": "connector",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nAssimilation fit across the package: read /home/vgpnk/Projects/shokuknow/merge/kasegi/MERGE-REPORT.md and the round-30, 31 and 32 lessons' Gate blocks. Map (read-only): which staged themes the lane has now assimilated (F14 round 30, F15 round 31, F16 round 32) and which remain refused, and for each refused entry whether this round's new rows (S049/S050, with url+fetched_utc captures) change its flip condition: e.g. does S049 (CNVD help page) help `claim-packaging-and-report-quality.md` or `chinese-crowd-testing-national-standard-2026-10-23.md`? Recommend the NEXT assimilation theme for round 33 with its PROVINCE scope check and its first three blocking criteria. Also state which staged entries are duplicates of lane entries (name them). Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ConnAssimilationFit.md."
+  },
+  {
+   "name": "ConnRound33Routes",
+   "role": "connector",
+   "axes": [
+    "depth:verifiability",
+    "coverage"
+   ],
+   "milestone": "round-32",
+   "prompt": "/skill:godspeed\n\nRound-33 routing connector: from the wave-1 and wave-2 receipts and /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-31-verifier-spotcheck.md section 5, list every open defect or unverified item that this round left (stated as inspected items with the command that found them), group by owner (instrument, entry, quality, scorecard, other), and mark which of them a round-33 claim could take with a countable before -> after. Include the items this round deliberately did NOT take (the limb-mutation-check counter tamper probes: say why not, with the digests that pin the counter). Write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-32/wave2/ConnRound33Routes.md."
+  }
+ ]
+}
