@@ -76,15 +76,15 @@ non-retired axis `depth:verifiability (4)`.
 Before column: the frozen controls committed at the freeze (`.ufo/waves/round-36/c1-controls/before.txt`,
 `c2-controls/before.txt`, `census-before.txt`), re-measured by this seat on the `b47f2cd` worktree. After
 column: the frozen `claims.json` target, plus what the round's counter actually printed at each export. The
-suite readings are the suite author's own runs (`wave1/ExecC1SuiteBuild.md` § Export runs), not re-executed
-here — `r36-closure.sh` is not in the lane at this draft's instant (`ls corpus/instruments/r36-closure.sh`
-→ exit 2).
+suite readings are the suite author's own runs (`wave1/ExecC1SuiteBuild.md` § Export runs) and are bound to
+that seat's draft revision `ff616adc…`; the on-disk file is a **different** revision (`4db1ae70…`) that
+appeared during this draft — see the `suite present` row below and § Open items 11.
 
 ### C1 — depth:verifiability (4, held)
 
 | counter (E-check) | before, freeze `b47f2cd` | suite over `git archive` (author's runs) | target / state at draft |
 |---|---|---|---|
-| suite present | absent (`ls` exit 2; `c1-controls/before.txt` `suite_missing=1`) | draft 737 lines / 28,980 B, sha256 `ff616adc045a…4720`, `bash -n` exit 0 | not committed at draft; landing is the L1's |
+| suite present | absent at every measurement this seat made (`ls` exit 2; `c1-controls/before.txt` `suite_missing=1`) | the export runs and selftest quoted below are bound to the **draft** sha256 `ff616adc045a…4720` (737 lines / 28,980 B, `bash -n` exit 0). A **different revision** appeared in the lane worktree at `12:54:34 -0300` during this draft: `corpus/instruments/r36-closure.sh`, **894 lines / 39,022 B, sha256 `4db1ae70c76afd28b29e9ec24c2e44835322c61fa33e30c966f75ce0dfadb7c4`**, untracked, `bash -n` exit 0, same E1–E9 semantics read from its header | the `closed=9/9` claim must be run on the **landed** bytes; the payloads in this table are not a reading of `4db1ae70…` |
 | E1 placeholder/hash binding | `placeholders=0`, `lane-hash-markers=0`; **3** distinct 40-hex commit tokens in the suite's five-line window rule (`9f9848816503…` `:987`, `7963976e60b2…` `:988`, `c1c6a5f826d2…` `:1130`), each `cat-file -t`=commit and `merge-base --is-ancestor b47f2cd`=yes (this seat reproduced the suite's `final-lane-commits=3,bound=3`) | `3266c993` → `placeholders=1,…,bound=2 closed=0`; `0aee0ef` → `placeholders=1,…,bound=3 closed=0`; `b47f2cd` → `placeholders=0,…,bound=3 closed=1` | E1 is **open at both r35 heads and closed at the round-36 freeze** |
 | E2 round-34 density erratum | `erratum-row` 0 at `3266c993`, 1 at `0aee0ef` and at `b47f2cd` (`erratum-mean=6`) | see payload column | closed since `0aee0ef` |
 | E3 registry exact basenames | `grep -cF 'r35-defect-closure.sh' SKILL.md` = **0**; `grep -cF 'r36-closure.sh'` = **0**; near-name literal `r-defect-closure` = 4 lines | `closed=0` at all three exports | **open at draft**; the two rows are the L1's landing |
@@ -447,6 +447,14 @@ not a mistake in landed bytes); the entry's wrong capture digest (caught and fix
    ever checking the round this claim is about. The closing commit should write the full 40-hex on its
    `Final lane commit:` line, and a later round's E1 should require the *last* such line's token to be 40-hex
    and an ancestor of the exported ref.
+11. **Two revisions of the suite exist and only one has been measured.** `corpus/instruments/r36-closure.sh`
+   appeared in the worktree at `12:54:34 -0300` (894 lines / 39,022 B, sha256 `4db1ae70…`, untracked,
+   `bash -n` exit 0). The export readings and the selftest in § Frozen claims are bound to the 737-line
+   revision `ff616adc…` (`wave1/ExecC1SuiteBuild.md`). Semantics match on a header read (E1 five-line window
+   and ancestry, E3 exact basenames, E4 `.provenance.md`, E8 `M36` plus the stale line, E9 status/scratch/
+   head), but a `closed=9/9` claim must be run on the bytes that are committed, and the suite's own digest
+   must be recorded in the closing receipt (round-28 convention, restated because round 35's suite drift was
+   the reason).
 ---END LESSON---
 
 ## 2. Measurements this receipt rests on (command → output, all at `b47f2cd` unless stated)
@@ -609,7 +617,8 @@ watchdog.log:1527  2026-10-26T12:31:14-03:00 launch kasegi round=36 pgid=14809 d
 
 - Did not write `corpus/lessons/round-36.md`, `SCORECARD.md`, `SKILL.md`, `QUALITY.md`, `PROVINCE.md`,
   `corpus/SOURCES.md`, `corpus/README.md`, any snapshot/manifest, any instrument, or any sibling/source tree.
-- Did not execute `r36-closure.sh` (absent from the lane at every measurement), the F19 harness,
+- Did not execute `r36-closure.sh` — absent from the lane at every measurement this seat made, and the
+  revision that appeared later (`4db1ae70…`) was hashed and header-read only — nor the F19 harness,
   `source-recheck.py`, `capture-binding-check.py`, the census, or `score-gap.py`. Their readings are cited to
   the receipts that ran them, with the receipt named at each number.
 - Did not fetch any quarantine row (one fetch per row belongs to the scout); did not re-fetch the EPSS page

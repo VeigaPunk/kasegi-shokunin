@@ -31,10 +31,10 @@ Earlier reads used in this receipt: report draft 340/399-line revisions, lesson 
 390/399/404-line revisions, entry receipt at its 12:41 and 12:43 compositions. Those states are named
 where they matter.
 
-Discipline notes: (a) of 64 spec items, every draft this seat reviewed names its evidence by receipt; no
-draft was found claiming a measurement it had not read. (b) Two peer notes were sent (ScribeGateLesson,
-ScribeReportDraft) naming the items now marked *applied* below; both seats applied them before landing.
-That is coordination, not edit.
+Discipline notes: (a) every number in the five drafts traces to a named receipt or a printed command; the
+exceptions are the unbacked items filed below (C1, C2, C4 and the frozen-control key at C19). (b) Two peer
+notes were sent (ScribeGateLesson, ScribeReportDraft) naming the items now marked *applied* below; both
+seats applied them before landing. That is coordination, not edit.
 
 ---
 
@@ -82,7 +82,7 @@ All read-only, cwd = lane, at `b47f2cd` unless a ref is named.
 | wave shape | 64 seats: executor 18, scribe 12, reviewer 10, critic 6, scout 6, mutation-tester 5, connector 3, sentinel 2, simplifier 2; spawn 64 / resume 0 | `wave1-spec.json`, `wave1-dispatch.json` |
 | watchdog | `launch kasegi round=36` at `.ufo/watchdog.log:1527`; `complete kasegi round=36` 0 | `sed`, `grep -c` |
 | 13-of-14 control replay | `c1 7/7 MATCH` (2 derived), `c2 6/7 MATCH, 1 DIFF (junk_present)` | `ExecRegressionBase.md:153-158` |
-| submission-layer checks | `grep -c 'Erratum (round 35)'`=1; dead-seat sentence 0; no-instrument baseline 26 runs / 26 exit 0 green | greps, `ExecInstrumentsSynopsis.md:12` |
+| submission-layer checks | `grep -c 'Erratum (round 35)'`=1; dead-seat sentence 0; no-harm instrument baseline 26 runs / 26 exit 0 green | greps, `ExecInstrumentsSynopsis.md:12` |
 
 ---
 
@@ -96,9 +96,9 @@ bytes; **[open]** = still present at the final read and needs the L1.
 tracked, provenance note beside it)"; `:244` "r35 results tracked + provenance … **OBS present/tracked**".
 Measured: tracked = 1, note = **0** (ledger row "E4 provenance note" above). Corrected text: "tracked
 `0d28a45c…` (391 lines); the beside-note is **absent** — E4's `provenance-note` limb is 0 at the freeze
-and owed as an L1 landing." This is the one statement across the three documents that would be *false* in
-committed bytes; E4 itself, ScribeScorecard F4, the lesson table and `ExecRegressionBase` F5 already say
-0.
+and owed as an L1 landing." This is one of two statements across the five documents that would be *false*
+in committed bytes (the other is C2); the suite's E4 payload, ScribeScorecard F4, the lesson table and
+`ExecRegressionBase` F5 already say 0.
 
 **C2 [open] — LOG claims a fixture corpus that will not land.**
 `ScribeLOG.md:119` "Landed `corpus/instruments/r36-closure.sh` + `corpus/instruments/r36-fixtures/`".
@@ -168,12 +168,12 @@ substitute the measured hash at closure (E1 binds the recorded line, not the com
 into the receipt only. Preserves: the "append verdicts, do not rewrite the table" instruction.
 
 **C11 [open] — lesson carries a pending section into committed bytes.**
-`ScribeGateLesson.md:355`: `### Non-author spot-check — result pending`. Corrected text: state it as a
+`ScribeGateLesson.md:356`: `### Non-author spot-check — result pending`. Corrected text: state it as a
 fact with owner — "no non-author spot-check exists at filing; owed to the round-36 verifier" — or omit the
 section until the verifier files. Preserves: the lesson's own statement that nothing certifies the round.
 
 **C12 [open] — lesson duplicates the considerthese disposition.**
-`ScribeGateLesson.md:405` calls its § considerthese "this seat's summary of the same seven proposals"
+`ScribeGateLesson.md:408` calls its § considerthese "this seat's summary of the same seven proposals"
 while the long-form table is `ScribeConsiderthese.md` §2; both would land. Corrected text: land one — the
 receipt's table (it carries per-proposal evidence) — or keep the summary and cite it, not both. This is
 the rule the lesson already applies to the assimilation Gate ("paste one of them, not both").
@@ -196,14 +196,14 @@ pattern), and if the L1 adopts the narrower reading, file an appended claims err
 `claims.json`. Preserves: R22 (freeze satisfiability) and the no-edit rule.
 
 **C16 [open, guard] — the frozen "five routed defects" count.**
-Spot-check §5 routes **six** items. The report (`§5.1–§5.6`), the lesson (`:98` "routed six items … the
+Spot-check §5 routes **six** items. The report (`§5.1–§5.6`), the lesson (`:101` "routed six items … the
 frozen claim counts five") and the scorecard (F7) now say six. Corrected text: do not repeat "five" as
 fact in any committed document; the count belongs in the appended erratum.
 Status evidence: lesson and scorecard fixed in flight; LOG's M36 bullet names the spot-check without a
 count ✓.
 
 **C17 [open, low] — the lesson's Mistakes section is anchors-only until integration.**
-`ScribeGateLesson.md:366-371` now says the six-field rows "are to be appended under them at integration"
+`ScribeGateLesson.md:366-372` now says the six-field rows "are to be appended under them at integration"
 and that "the `M36` grep E8 runs counts either form". That is honest, but E8's literal is weaker than the
 minting contract: if the L1 appends only the anchors, the round has four ids with no re-runnable evidence
 field. Corrected text: append `ScribeMistakes.md` §1's table under the anchors (it already carries class ·
@@ -216,6 +216,15 @@ digests/lines, the density pair and the sibling ruling. The receipt's own §2.2 
 named receipt or delete the clause — never publish a slot. The report's SHONEN section carries none ✓.
 Preserves: SHONEN's "resolvable evidence pointer" rule.
 
+**C19 [open] — `junk_present=1` is quoted as a before value that is not a base property.**
+`ScribeReportDraft.md` quotes it in the C2 before-controls list (with a caveat at the E-check notes);
+`ScribeScorecard.md` F5 and `ScribeGateLesson.md` §Gate both flag it. Measured: `c2-controls/` holds
+`before.txt` only; `c2-controls/junk-f19.md` is absent at the freeze; `ExecRegressionBase` files the key
+DIFF/ambiguous (F6); `claims.json` C2 `before[1]` itself says "junk-f19 absent (control not yet built)".
+Corrected text: state the key verbatim, then state it is unbacked and that the twin exists only after this
+round lands — do not use it as the twin's before-state anywhere. Preserves: the frozen control is quoted,
+not rewritten.
+
 **Applied in flight (recorded for calibration, no action left):**
 - report `12/12 MATCH` → "c1 7/7 MATCH (2 derived), c2 6/7 MATCH, 1 DIFF" (`:86`, `:141-142`) — verified
   against `ExecRegressionBase.md:153-158`.
@@ -225,9 +234,9 @@ Preserves: SHONEN's "resolvable evidence pointer" rule.
   reading labelled (`:242`); verified against `ExecManifestChecks.md:18,267`.
 - report Landed-changes row no longer promises a self-referential lane-commit line (`:118`), matching
   ScribeScorecard F2 and E1's actual limb.
-- lesson "the five defects" → "routed six items … the frozen claim counts five" (`:98`).
+- lesson "the five defects" → "routed six items … the frozen claim counts five" (`:101`).
 - lesson PASS attribution → `36df1b1f…a641`, 263 lines / 17,374 B, with `c4f7d5b4…88e0` named as the
-  intermediate first-fix revision (`:185-186`); the entry-digest line list corrected to
+  intermediate first-fix revision (`:189-190`); the entry-digest line list corrected to
   `:46,:73,:87,:124,:143,:394`.
 - lesson "pasted verbatim" claim for the Mistakes rows replaced by an explicit owed statement (the
   six-field rows are to be appended under the anchors; see C17).
@@ -277,8 +286,8 @@ Preserves: SHONEN's "resolvable evidence pointer" rule.
   text (C5), and § Sources & frontier lacks its counting command (C6). With C5/C6/C7 addressed at
   integration it conforms.
 - **Lesson:** evidence-bearing and internally honest; the in-flight fixes are verified. Remaining:
-  C11 (pending section), C12 (duplicate considerthese authority), C13 (exit annotation), C17 (verbatim
-  claim).
+  C11 (pending section), C12 (duplicate considerthese authority), C13 (exit annotation), C17 (six-field
+  rows owed under the anchors).
 - **Scorecard:** the strongest of the three on self-criticism (F1–F7); remaining: C9 (attribution),
   C10 (unset variable) — both editorial, neither changes a value.
 - **LOG/SHONEN:** two hard defects (C1 false provenance note; C2 false fixture landing) and one count
@@ -290,9 +299,10 @@ Preserves: SHONEN's "resolvable evidence pointer" rule.
 ## Report
 
 Item result: reviewed the three primary drafts plus the LOG/SHONEN drafts against the receipts and the
-lane bytes, and produced **18 corrections** (C1–C18): 3 statement-level defects that would be false in
+lane bytes, and produced **19 corrections** (C1–C19): 3 statement-level defects that would be false in
 committed bytes (C1, C2, C3), 1 unsatisfied-claim blocker with no owner (C4), 5 conformance/publication
-items (C5, C6, C7, C10, C11), and 8 attribution/duplication/minor items. Seven items were observed live and
+items (C5, C6, C7, C10, C11), and 10 attribution/duplication/owed-evidence items (C8, C9, C12–C19).
+Seven items were observed live and
 corrected in flight by the drafting seats after direct peer notes; each is recorded with both readings.
 
 What was actually run here: `sha256sum`/`wc` over nine lane files; the frozen counting greps (frontier,

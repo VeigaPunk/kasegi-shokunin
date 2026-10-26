@@ -13,13 +13,14 @@ selftest, worktree fallback), and report the limits that remain with counters bo
 | `4db1ae70c76afd28b29e9ec24c2e44835322c61fa33e30c966f75ce0dfadb7c4` | 39022 B / 894 | **final; every row below measured on it** |
 | `76273416…` (817), `ff616adc…` (737) | 34631 / 28980 B | superseded; their failures are summarised in §2 |
 
-The suite is still **not in the lane** at my read (`ls corpus/instruments/r36-closure.sh` → exit 2), so
-C1's "committed instrument" clause is unproven at this seat and every number below is a scratch-draft
-result. Method: pin the draft, `source` it in a harness (it guards `main` behind `BASH_SOURCE = $0`), call
-`run_check <En> <TREE> <REF>` on scratch trees built from `git archive b47f2cdf…` (SCORECARD.md
-`ed6e931f…`, SKILL.md `daeff71b…`, QUALITY.md `d4f83bb1…`, round-35.md `af6e2c99…`); each tree differs by
-exactly one mutation; a row reading `closed=1` with the defect present is a survivor. No lane file was
-written; no mutating git outside my own scratch `git init` fixtures.
+The suite was a scratch draft when the matrix ran; it has since been **integrated byte-identically** as
+`caa3146` (`corpus/instruments/r36-closure.sh`, `sha256 = 4db1ae70…`, verified from the committed file), so
+every number below is a result for the committed bytes. Method: pin the draft, `source` it in a harness
+(it guards `main` behind `BASH_SOURCE = $0`), call `run_check <En> <TREE> <REF>` on scratch trees built
+from `git archive b47f2cdf…` (SCORECARD.md `ed6e931f…`, SKILL.md `daeff71b…`, QUALITY.md `d4f83bb1…`,
+round-35.md `af6e2c99…`); each tree differs by exactly one mutation; a row reading `closed=1` with the
+defect present is a survivor. No lane file was written; no mutating git outside my own scratch `git init`
+fixtures. Post-integration state is in §7.
 
 **Reproduced counters (byte-bound).**
 
@@ -142,8 +143,8 @@ longer satisfied by a bare summary or a mention.
 
 | clause (frozen C1 `kill_rule`) | result |
 |---|---|
-| suite missing (`ls_exit=2`) | **true in the lane right now**; only the scratch draft exists |
-| final-head export `closed=9/9 exit=0` | unmeasurable (final head absent); `b47f2cdf…` reads 4/9 |
+| suite missing (`ls_exit=2`) | **false now**: the instrument is committed at `caa3146`, `sha256 = 4db1ae70…` |
+| final-head export `closed=9/9 exit=0` | `b47f2cdf…` 4/9 → `caa3146`/`e666d90` 6/9 → `2c26a97` **8/9** (only E9 open); unproven until the closing commit |
 | `--selftest cases=9 failures=0` | 9 cases, 5 failures at `b47f2cdf…` (E1,E3,E4,E8,E9 = unlanded limbs); green only when they land |
 | any E-check can pass with its defect present | **FIRES** — B3/B4/B6, B8, B10, B12, B14, B16, B17, B19/B20, B22/B23/B24, B26/B27 |
 | `grep -c 'filled by the L1' SCORECARD.md != 0` | 0 at `b47f2cdf` (measured); 1 at `0aee0ef` |
@@ -172,14 +173,59 @@ type-cell `gate|probe` and no retraction heading; E5's two statement limbs; E7 t
 `M36-[0-9]` + a quoted fragment; E9 any-entry counting; gating on canonical lane/digest and running the
 committed fake suite.
 
-## 6. Hygiene
+## 6. Post-integration state and the builder's disposition
+
+The instrument was integrated **byte-identically** before my matrix landed: `caa3146`
+(`corpus/instruments/r36-closure.sh`, `sha256 = 4db1ae70…`, confirmed from the committed file — the
+digest the builder pins is the digest I attacked). Measured on the committed bytes, default lane and
+scratch root, `--work` in scratch:
+
+```
+caa3146   closed=6/9 exit=1   E1 open (round36-section=1, bound=0) · E4 note=0 · E9 dirty=1 seats=1 head=0
+e666d90   closed=6/9 exit=1   same
+2c26a97   closed=8/9 exit=1   only E9 open (status-dirty=1, scratch-seat-dirs=3, head-match=1)
+```
+
+`2c26a97` ("round-36: E1 Final lane commit line, E4 provenance note, lesson hash") is the landing order the
+suite predicts: E1 and E4 closed as soon as their bytes were committed, E9 remains until the closing
+commit clears the worktree and the seat dirs.
+
+**The real E1 green is the B3 class in the lane's own bytes.** At `2c26a97` the round-36 line reads
+`Final lane commit: e666d902…` (`SCORECARD.md:1492`) while `HEAD` is `2c26a97` — the line names an
+ancestor, which is exactly what the check accepts (`round36-final-lane-commits=1,bound=1`). This is inside
+the frozen limb ("exists and is an ancestor"), but `bound=1` must not be read as "the line names the final
+commit": it names the pre-closing commit, as B3's base-hash tree does.
+
+**Builder disposition (IRC).** No re-cut of the integrated instrument (it was integrated before the matrix
+landed); the 12 post-integration survivors were triaged into (a) **literal-conforming limits** — E1
+ancestor, E4 existence+non-empty, E5 presence, E6 marker, E9 dirs-only, judge shape — and (b) the
+**round-37 backlog with exact edits** — E3 retraction heading + `gate|probe` type cell, E7 negation row,
+E8 `M36-[0-9]` + quoted fragment, E2 non-negated marker + r35's row-bytes limb, canonical
+lane/scratch-root gating, and an E1 `on-head` limb first.
+
+**Critic's standing.** I accept (a) as claim-literal limits: the frozen predicate names existence or
+presence, so a 1-byte note or a base-hash ancestor is inside the wording and is not a clause-4 hit. But
+B10 (E3), B17 (E7) and B19 (E8) are clause-4 hits **by the builder's own classification** ("do not
+conform"): each check's stated defect is a registration, a supersession row, or a recorded correction, and
+a retraction row, a self-negating row, or the two tokens `M36 source-recheck` satisfy the check without it.
+B24/B26 are clause-4 hits only when a run passes `--scratch-root`/`--lane`; the frozen counting command
+does not, so they are invocation-scope warnings, not counter defects. Verdict unchanged: **hold at 4**,
+with the round-37 backlog as the exact fix list. The instrument is a sound gate for the shapes it names,
+not proof of the semantics those shapes stand for.
+
+Not re-run by this seat: the final-head `--selftest` (the L1's counted run; at `2c26a97` its E9 positive
+fails on the dirty worktree, so it cannot be green yet).
+
+## 7. Hygiene
 
 - Tooling: none installed, none needed (`bash` 5.x, `git`, `awk`, `sed`, `realpath`, `sha256sum` as present).
 - Scratch: `/fast/scratch/hyaku/kasegi-r36/CritC1Kill/` (drafts, export, attack trees, fake lanes,
   fixtures); removed before yield.
 - Writes: this receipt only. No lane repo, fleet, sibling lane, or source-tree file was written; no
   mutating git outside my own scratch `git init` fixtures.
-- Read state: lane `HEAD b47f2cdf…`; `git status --porcelain` = 9 untracked round-36 dispatch paths;
-  canonical scratch root = 18 seat dirs during the attack run, 11 at the last read. Three drafts
-  reviewed (`ff616adc` 737 lines, `76273416` 817, `4db1ae70` 894); the 28 rows of §1 are re-runnable
-  against any later digest.
+- Read state: the lane advanced under the review — attack base `b47f2cdf…` → integration `caa3146` →
+  wave evidence `e666d90` → closure bytes `2c26a97` (the `2c26a97` line's own claim). At the last read:
+  `git status --porcelain` = 1 modified path (`.ufo/waves/round-36/wave1/SimplReport.md`), canonical
+  scratch root = 3 seat dirs (18 during the attack run). Three drafts reviewed (`ff616adc` 737 lines,
+  `76273416` 817, `4db1ae70` 894) plus the committed instrument `caa3146` (byte-identical to
+  `4db1ae70`); the 28 rows of §1 are re-runnable against any later digest.
