@@ -1,0 +1,111 @@
+CycloneDX v1.7 JSON Reference CycloneDX 1.7 (JSON)
+analysis
+Type: object
+An assessment of the impact and exploitability of the vulnerability.
+No Additional Propertiesstate
+Type: enum (of string)
+Declares the current state of an occurrence of a vulnerability, after automated or manual analysis.
+Must be one of:
+NameDescription
+"resolved"The vulnerability has been remediated.
+"resolved_with_pedigree"The vulnerability has been remediated and evidence of the changes are provided in the affected components pedigree containing verifiable commit history and/or diff(s).
+"exploitable"The vulnerability may be directly or indirectly exploitable.
+"in_triage"The vulnerability is being investigated.
+"false_positive"The vulnerability is not specific to the component or service and was falsely identified or associated.
+"not_affected"The component or service is not affected by the vulnerability. Justification should be specified for all not_affected cases.
+justification
+Type: enum (of string)
+The rationale of why the impact analysis state was asserted.
+Must be one of:
+NameDescription
+"code_not_present"The code has been removed or tree-shaked.
+"code_not_reachable"The vulnerable code is not invoked at runtime.
+"requires_configuration"Exploitability requires a configurable option to be set/unset.
+"requires_dependency"Exploitability requires a dependency that is not present.
+"requires_environment"Exploitability requires a certain environment which is not present.
+"protected_by_compiler"Exploitability requires a compiler flag to be set/unset.
+"protected_at_runtime"Exploits are prevented at runtime.
+"protected_at_perimeter"Attacks are blocked at physical, logical, or network perimeter.
+"protected_by_mitigating_control"Preventative measures have been implemented that reduce the likelihood and/or impact of the vulnerability.
+response
+Type: array of enum (of string)
+A response to the vulnerability by the manufacturer, supplier, or project responsible for the affected component or service. More than one response is allowed. Responses are strongly encouraged for vulnerabilities where the analysis state is exploitable.
+No Additional ItemsEach item of this array must be:
+Type: enum (of string)
+Must be one of:
+NameDescription
+"can_not_fix"Can not fix
+"will_not_fix"Will not fix
+"update"Update to a different revision or release
+"rollback"Revert to a previous revision or release
+"workaround_available"There is a workaround available
+detail
+Type: string
+Detailed description of the impact including methods used during assessment. If a vulnerability is not exploitable, this field should include specific details on why the component or service is not impacted by this vulnerability.
+firstIssued
+Type: stringFormat: date-time
+The date and time (timestamp) when the analysis was first issued.
+lastUpdated
+Type: stringFormat: date-time
+The date and time (timestamp) when the analysis was last updated.
+affects
+Type: array of object
+The components or services that are affected by the vulnerability.
+All items must be unique
+No Additional ItemsEach item of this array must be:
+Type: object
+No Additional Propertiesref Required
+References a component or service by the objects bom-ref
+Any of
+Ref
+BOM-Link Element
+Type: string
+Descriptor for an element identified by the attribute 'bom-ref' in the same BOM document.
+In contrast to bomLinkElementType.
+Must be at least 1 characters long
+Type: string
+Descriptor for an element in a BOM document. See https://cyclonedx.org/capabilities/bomlink/
+Must match regular expression: ^urn:cdx:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/[1-9][0-9]*#.+$
+versions
+Type: array of object
+Zero or more individual versions or range of versions.
+No Additional ItemsEach item of this array must be:
+No Additional PropertiesOne of
+Option 1
+Option 2
+Type: object
+The following properties are required:
+version
+Type: object
+The following properties are required:
+range
+version
+Type: string
+A single version of a component or service.
+Must be at most 1024 characters long
+Examples:
+"9.0.14"
+"v1.33.7"
+"7.0.0-M1"
+"2.0pre1"
+"1.0.0-beta1"
+"0.8.15"
+range
+Type: string
+A version range specified in Package URL Version Range syntax (vers) which is defined at https://github.com/package-url/vers-spec
+Must be at least 1 characters long
+Must be at most 4096 characters long
+Examples:
+"vers:cargo/9.0.14"
+"vers:npm/1.2.3|>=2.0.0|<5.0.0"
+"vers:pypi/0.0.0|0.0.1|0.0.2|0.0.3|1.0|2.0pre1"
+"vers:tomee/>=1.0.0-beta1|<=1.7.5|>=7.0.0-M1|<=7.0.7|>=7.1.0|<=7.1.2|>=8.0.0-M1|<=8.0.1"
+"vers:gem/>=2.2.0|!= 2.2.1|<2.3.0"
+status
+Type: enum (of string) Default: "affected"
+The vulnerability status for the version or range of versions.
+Must be one of:
+NameDescription
+"affected"The version is affected by the vulnerability.
+"unaffected"The version is not affected by the vulnerability.
+"unknown"It is unknown (or unspecified) whether the given version is affected.

@@ -1,0 +1,104 @@
+{
+  "package": "claims/immunefi-sky/2026-10-26-public-disclosure-reprice/",
+  "produced_utc": "2026-10-26T21:24:00Z",
+  "digest_rule": "decision_sha256 = sha256 of json.dumps(decision-without-decision_sha256, sort_keys=True, separators=(',',':'), ensure_ascii=False) encoded UTF-8; head_sha256 = last decision's decision_sha256",
+  "decisions": [
+    {
+      "action": "scope_evaluation",
+      "input_sha256": "7bcbd40754a37f838b48ffc19de3d59019e8081c94516689a4eac9e158ee95d9",
+      "matched_grant_id": "immunefi:sky/sky-bbp@2026-09-19#websites-and-apps",
+      "scope_signal": "NO_SCOPE_OBJECTION",
+      "service": "immunefi",
+      "program": "Sky",
+      "asset": "https://vote.sky.money/ (successor of vote.makerdao.com, the 2023 report's host)",
+      "verdict": "IN_SCOPE_CRITICAL_ONLY",
+      "basis_lines": [
+        175,
+        71,
+        73
+      ],
+      "basis": "the program page names the vote asset and admits only Critical severity on it; the page's Last Updated marker is 19 September 2026 and Maximum Bounty is $10,000,000",
+      "decision_sha256": "cf503d4d71e54c86885702066ad0a346c42a82fe5b14f464d5a2a0a39400e9f0"
+    },
+    {
+      "action": "severity_classification",
+      "input_sha256": "08e09f6506decabb53703a0d8cf352921a34abe0fd956dfac59d2a60cf174e29",
+      "matched_grant_id": "immunefi:vscs-v2.2#websites-and-apps",
+      "scope_signal": "NO_SCOPE_OBJECTION",
+      "system": "Immunefi Vulnerability Severity Classification System v2.2",
+      "table": "Websites and Apps",
+      "level": "5. Critical",
+      "priced_bullet": "Execute arbitrary system commands",
+      "basis_lines": [
+        13,
+        14,
+        15,
+        16
+      ],
+      "why_this_bullet": "the finding's demonstrated consequence is arbitrary system command execution; the Critical row's file-read bullet enumerates /etc/shadow, database passwords and blockchain keys and excludes non-sensitive files, so the /etc/passwd read alone does not carry the level",
+      "why_not_smart_contracts_table": "the affected asset is a website/application, and the v2.2 tables rank within their own asset class",
+      "decision_sha256": "3ca022bb87d9fb92e61a6107a6354c9f55ccf2af291b4615164b830b803c6335"
+    },
+    {
+      "action": "reward_derivation",
+      "input_sha256": "7bcbd40754a37f838b48ffc19de3d59019e8081c94516689a4eac9e158ee95d9",
+      "matched_grant_id": "immunefi:sky/sky-bbp@2026-09-19#rewards-websites-and-apps",
+      "scope_signal": "NO_SCOPE_OBJECTION",
+      "service": "immunefi",
+      "derived_usd": 50000,
+      "observed_payout_usd": 50000,
+      "match": "exact",
+      "quoted_clause_line": 116,
+      "quoted_clause": "All other impacts that do not fall under this definition, but would be classified as Critical, and resulting in a theft of funds, will be rewarded USD 50 000 .",
+      "rejected_competing_clause": {
+        "line": 171,
+        "amount_usd": 10000,
+        "why": "the $10,000 clause prices manipulation of polling votes or their display; the priced finding is command execution on the same host, so anchoring on the polling clause would price it 5x low"
+      },
+      "ladder_gap": "the page prints no Critical website tier for an impact that is neither fund loss nor unauthorised minting; the $100,000 tier requires direct fund loss with zero user action, so a non-fund-loss Critical has no printed price and the 2023 payout is the only anchor",
+      "decision_sha256": "b45ff36c8441437b9be42b30df4e79a7f10b4dce6521489c70f0125ec22f991e"
+    },
+    {
+      "action": "exploitation_status",
+      "input_sha256": "3d81c31f62ad58d9f3e1cc1c1af60474bd47d661e7102dc3a0e8e6a784358289",
+      "matched_grant_id": "cisa-kev:feed@round-35-capture#S052",
+      "scope_signal": "NO_SCOPE_OBJECTION",
+      "catalog": "CISA Known Exploited Vulnerabilities",
+      "records_scanned": 1756,
+      "matches": 0,
+      "kev_status": "ABSENT",
+      "cve_identifier": "none published in the disclosure",
+      "effect_on_price": "none; KEV cannot raise priority here and VSCS v2.2 fixes the level largely on impact, not on exploitation likelihood",
+      "decision_sha256": "f8f19a5a47aa866a74a0aaf881fe84ee8150209b580e42213d8b0eed4eb9f970"
+    },
+    {
+      "action": "live_testing_refusal",
+      "input_sha256": "0856476e42f2bcef751e88f7f5cd7f26d06908db8be452b83824997f8a8ef9fd",
+      "matched_grant_id": "PROVINCE.md@lane:live-target-testing-refusal",
+      "scope_signal": "NO_SCOPE_OBJECTION",
+      "decision": "REFUSED",
+      "basis": "PROVINCE.md:52 states live-target testing is refused",
+      "second_basis": "the program's prohibited-activities list forbids testing mainnet or public testnet deployed code, and the published 2023 PoC route ran against a public testnet endpoint",
+      "tests_performed": 0,
+      "external_effects": [],
+      "decision_sha256": "e4efed8d2cfed59f13df8cbc7546e1e4c14feb576f7d9ba443107444e04ebd69"
+    },
+    {
+      "action": "disposition",
+      "input_sha256": "0856476e42f2bcef751e88f7f5cd7f26d06908db8be452b83824997f8a8ef9fd",
+      "matched_grant_id": "PROVINCE.md@lane:live-target-testing-refusal",
+      "scope_signal": "NO_SCOPE_OBJECTION",
+      "state": "PARKED",
+      "claimable": false,
+      "blocking_gates": [
+        "authorization",
+        "no_duplicate_or_prior_submission",
+        "reviewer-distinctness"
+      ],
+      "why": "the package re-prices a finding that was disclosed and paid in 2023; it was never a candidate for submission, no authorized testing exists behind it, and no non-author reviewer is attached to this wave-1 item",
+      "decision_sha256": "139b9bf1d8b369e01bfbaadb9849ab77bb0b2f94c27a7d1d5a6aaea95c178c2e"
+    }
+  ],
+  "head_sha256": "139b9bf1d8b369e01bfbaadb9849ab77bb0b2f94c27a7d1d5a6aaea95c178c2e",
+  "head_note": "head_sha256 equals the final disposition decision's digest and is the value the manifest binds as expected_head_sha256"
+}

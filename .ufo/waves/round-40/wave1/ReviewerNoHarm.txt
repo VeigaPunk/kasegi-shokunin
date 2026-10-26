@@ -1,0 +1,45 @@
+rnh.seat=ReviewerNoHarm
+rnh.item=independent reproduction of the base no-harm measurements at the round-40 claims freeze
+rnh.lane=kasegi-shokunin
+rnh.base=a7af2ce63bce153757d39bf66b366a96caf30c13
+rnh.freeze=5e985b74075dd3813a63d7750966bf8abf693465
+rnh.freeze.parent=a7af2ce63bce153757d39bf66b366a96caf30c13
+rnh.lane-head-at-run=5e985b74075dd3813a63d7750966bf8abf693465
+rnh.lane-tracked-tree=clean; SKILL.md, PROVINCE.md, corpus/instruments/density.py and corpus/instruments/anchorcheck.py sha256 identical across base, freeze and working tree
+rnh.cmd.1=python3 corpus/instruments/density.py SKILL.md --label SKILL
+rnh.density.exit=0
+rnh.density.file-lines=1115
+rnh.density.blocks=27
+rnh.density.mean-dens=232.9
+rnh.density.path-cite-instances=771
+rnh.cmd.2=python3 corpus/instruments/anchorcheck.py SKILL.md
+rnh.anchorcheck.exit=0
+rnh.anchorcheck.in-range=16
+rnh.anchorcheck.bad=0
+rnh.anchorcheck.distinct=16
+rnh.anchorcheck.lost-recorded=306
+rnh.anchorcheck.pin-broken=0
+rnh.anchorcheck.origin=0
+rnh.anchorcheck.outside-base=0
+rnh.anchorcheck.base-absent=0
+rnh.cmd.3=git diff --numstat a7af2ce63bce153757d39bf66b366a96caf30c13 5e985b74075dd3813a63d7750966bf8abf693465 -- SKILL.md PROVINCE.md
+rnh.numstat.skill-province=empty output, exit 0 (0 lines changed; SKILL.md and PROVINCE.md untouched base->freeze)
+rnh.cmd.4=git diff --name-status a7af2ce63bce153757d39bf66b366a96caf30c13 5e985b74075dd3813a63d7750966bf8abf693465
+rnh.name-status.added=5
+rnh.name-status.modified=0
+rnh.name-status.deleted=0
+rnh.name-status.path.1=.ufo/waves/round-40/c1-controls/before.txt (11 added lines)
+rnh.name-status.path.2=.ufo/waves/round-40/c2-controls/before.txt (10 added lines)
+rnh.name-status.path.3=.ufo/waves/round-40/c2-controls/junk-decisions.md (20 added lines)
+rnh.name-status.path.4=.ufo/waves/round-40/census-before.txt (5 added lines)
+rnh.name-status.path.5=.ufo/waves/round-40/claims.json (71 added lines)
+rnh.added-lines-total=117
+rnh.deleted-lines-total=0
+rnh.instruments.numstat.base-to-freeze=empty (corpus/instruments/ unchanged; density.py sha256 ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710 identical at base, freeze and worktree)
+rnh.compare.peer=ExecH10NoHarmBase (.ufo/waves/round-40/wave1/ExecH10NoHarmBase.txt)
+rnh.compare.result=full agreement on every reproduced value; zero differences
+rnh.compare.agree.1=density: file-lines 1115=1115, blocks 27=27, mean-dens 232.9=232.9, path-cite-instances 771=771
+rnh.compare.agree.2=anchorcheck: in-range 16=16, bad 0=0, distinct 16=16, lost-recorded 306=306, pin-broken 0=0, origin 0=0, outside-base 0=0, base-absent 0=0
+rnh.compare.agree.3=diffs: SKILL/PROVINCE numstat 0=0 lines; added-files 5=5; deleted-paths 0=0; added-lines 117=117 with identical per-path split 11/10/20/5/71
+rnh.compare.agree.4=sha256 SKILL.md ce6689c554f2e33b6d7b79a53fde387b7f7e7140ace1ade6e9f4670548b242f4, PROVINCE.md 4d42eed1afa00ff0dafcfea235e2f48c3b607fd67cdbe1d489504f1a098a155c, density.py ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710 — all equal the peer's reported values
+rnh.verdict=no-harm guard holds at the claims freeze; H10 base limb reproduced independently with full peer agreement

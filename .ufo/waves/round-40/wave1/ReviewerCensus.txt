@@ -1,0 +1,39 @@
+kasegi round-40 freeze census — ReviewerCensus
+freeze 5e985b74075dd3813a63d7750966bf8abf693465 (tree 5e82a2a5c4ad244760c8860a053b4b73356c6708), git-archive export, run 2026-10-26T21:19:04Z
+
+sources-census.sh validate --file <export>/corpus/SOURCES.md
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r40/ReviewerCensus/export/corpus/SOURCES.md
+exit=0
+
+sources-census.sh census --file <export>/corpus/SOURCES.md
+file	rows	59
+file	tier.A	55
+file	tier.B	2
+file	tier.C	2
+file	status.mined	44
+file	status.queued	9
+file	status.rejected	6
+FLEET	rows	59
+FLEET	tier.A	55
+FLEET	tier.B	2
+FLEET	tier.C	2
+FLEET	tier.invalid	0
+FLEET	status.queued	9
+FLEET	status.mined	44
+FLEET	status.rejected	6
+FLEET	status.invalid	0
+FLEET	missing	0
+
+manual histograms (awk over the same export, independent of the tool)
+registry_rows=59
+NF_histogram: NF=13 n=59
+duplicate_id_rows_total=0
+tier_histogram: A=55 B=2 C=2
+status_histogram: mined=44 queued=9 rejected=6
+queued_ids: S016 S017 S019 S020 S021 S022 S023 S024 S025
+S060plus_rows=0
+frontier_rows=22
+
+verdict: census exit 0; only W04 S028/S029; 59/59 rows NF=13; 0 duplicate ids; tiers 55 A / 2 B / 2 C; statuses 44 mined / 9 queued / 6 rejected; no new malformed rows.

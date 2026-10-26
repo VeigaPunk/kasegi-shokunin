@@ -1,0 +1,67 @@
+{
+  "package": "claims/immunefi-sky/2026-10-26-public-disclosure-reprice/",
+  "produced_utc": "2026-10-26T21:24:00Z",
+  "manifest_sha256": "294502661a738fa40f28a632252d64bb681642494ec9f7a1767a80cfd8693805",
+  "manifest_path": "evidence/manifest.json",
+  "state": "PARKED",
+  "verdict": "positive-blocked-no-authorized-testing",
+  "claimable": false,
+  "finding_count": 1,
+  "do_not_submit": true,
+  "no_submission_performed": true,
+  "claimability_blocker": "gate authorization fails (PROVINCE refuses live-target testing and none is claimed); gate no_duplicate_or_prior_submission fails (the finding was submitted 2023-09-25 and paid USD 50,000); no non-author reviewer is attached to this item",
+  "resume_condition": "never for submission; resume only as a calibration run if a second disclosed finding of a different impact class is priced against the same ladder",
+  "pricing": {
+    "severity_system": "Immunefi VSCS v2.2 (Websites and Apps)",
+    "severity_level": "5. Critical",
+    "severity_basis": "arbitrary system command execution",
+    "program_ladder_usd": 50000,
+    "program_ladder_clause": "all other Critical, theft of funds -> USD 50 000",
+    "observed_payout_usd": 50000,
+    "derived_equals_observed": true,
+    "kev_status": "ABSENT",
+    "cve": "none published",
+    "platform_label_crosswalk": "F13: program policy bounds the platform taxonomy; the label is the platform's, the money is the program's.",
+    "ladder_gap": "a Critical website impact with neither fund loss nor unauthorised minting has no printed price on the current page; the $100,000 tier requires direct fund loss with zero user action.",
+    "anti_anchor": "the $10,000 polling-manipulation clause (evidence/sky-program-scope-rewards.txt:171) is the seductive wrong row for this host and prices it 5x low."
+  },
+  "claim_review": {
+    "state": "not-ready",
+    "hard_gates": {
+      "written_scope": {
+        "result": "pass",
+        "note": "the vote asset's rule is quoted verbatim with URL, observed_at and content sha256"
+      },
+      "authorization": {
+        "result": "fail",
+        "note": "no authorized testing; PROVINCE.md:52 refuses live-target testing and the program forbids mainnet/testnet testing"
+      },
+      "evidence_integrity": {
+        "result": "pass",
+        "note": "five artifacts with digest and polarity, three positive, custody chain bound to the manifest"
+      },
+      "no_duplicate_or_prior_submission": {
+        "result": "fail",
+        "note": "the finding is a 2023 public submission paid USD 50,000"
+      }
+    },
+    "subchecks": {
+      "no_secrets": {
+        "result": "pass"
+      },
+      "operator_attribution": {
+        "result": "pass",
+        "note": "producer is the wave-1 seat, named in provenance.json"
+      }
+    },
+    "reviewer": {
+      "identity": null,
+      "assigned": false,
+      "requested_model": null,
+      "resolved_model": null,
+      "fallback": false,
+      "distinctness": "unsatisfied",
+      "note": "the contract requires a distinct non-author reviewer to approve; a single-seat wave-1 exemplar cannot supply one, so DONE is out of reach by construction"
+    }
+  }
+}

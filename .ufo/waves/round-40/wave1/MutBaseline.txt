@@ -1,0 +1,162 @@
+MutBaseline — round-40 wave-1 baseline mutation probe of the r39 closure suite
+==============================================================================
+
+Target: corpus/instruments/r39-closure.sh at r39 judged head
+8371e7ac9f32cae5ed72f8c28205634603f836fa, extracted with
+`git -C <lane> archive <hash> | tar -x` into scratch. Pristine suite sha256
+2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b (the digest the
+r39 receipt itself names). Purpose: baseline the wave-2 finding (CritG2Exploit
+F2: "G2 accepts forged payload values") at full-suite level, plus the G6
+scratch-scan evasion, as the defect class the round-40 suite (H5 forged-receipt
+rejection, H6 stray-sibling detection, H7 deterministic receipt) must kill.
+
+Fixture (no writes to the lane; a scratch clone only)
+-----------------------------------------------------
+git clone of the lane into scratch, detached at 8371e7a, clean; every suite run
+used --lane <clone> --work <scratch>/w/rN. The honest 8/8 window is not
+reproducible on the live lane (round-40 wave in flight), so the fixture clone
+stands in for it; R0 shows the environment is sound (G1,G3-G8 all green).
+
+  FORGED1 = a00d1f78901cd52aa5b9bb9aa301b68b8721a23a
+            clone commit that swaps the suite bytes for the mutated suite
+            (the only changed file is corpus/instruments/r39-closure.sh).
+  FORGED2 = 97536d3747a4057ee762bd3a0a5ce8275be829f0
+            clone commit on top of FORGED1; `git diff --name-only FORGED1
+            FORGED2` = .ufo/waves/round-39/final-gates/all-gates.txt (the
+            receipt alone), so G2's ancestor and post-receipt-diff limbs hold
+            legitimately.
+
+Patch list (find -> replace; three patches to the receipt-validation limbs,
+one separate G6 mutant)
+---------------------------------------------------------------------------
+Mutant file mut-g2 (sha256 21ef1eb211faa5d1ef8c7151f73955ca0ec33c6a90f384e978cc38b5684a293b):
+
+P1  g2_graded grading rule — stop reading the per-case fields.
+    find:  if ($0 ~ /^selftest case=G[1-8]( |$)/ && field($0, "positive=pass") && field($0, "verdict=pass")) {
+    repl:  if ($0 ~ /^selftest case=G[1-8]( |$)/) {
+    effect: any `selftest case=G<1-8>` line counts as graded — a `verdict=fail`
+    line (or a field-free line) satisfies a case.
+
+P2  g2_run_shapes run-block limbs — stop reading the closed= values.
+    find:  c1=$(grep -cE '^G[1-8] payload=.* closed=1$' "$p"); c1=${c1:-0}
+    repl:  c1=$(grep -cE '^G[1-8] payload=' "$p"); c1=${c1:-0}
+    find:  c0=$(grep -cE '^G[0-9]+ payload=.* closed=0$' "$p"); c0=${c0:-0}
+    repl:  c0=$(grep -cE '^G[0-9]+ payload=.* closed=9$' "$p"); c0=${c0:-0}
+    find:  ids=$(grep -E '^G[1-8] payload=.* closed=1$' "$p" \
+    repl:  ids=$(grep -E '^G[1-8] payload=' "$p" \
+    effect: run lines may claim closed=0 (or anything); the per-gate results in
+    the receipt are unread. (`payload=.*` already accepted an empty payload —
+    wave-2 F2 mut-h — unchanged here.)
+
+P3  check_g2 final-tally limb — accept any final tally.
+    find:  cl=$(grep -cE '^closed=8/8 exit=0$' "$p"); cl=${cl:-0}
+    repl:  cl=$(grep -cE '^closed=' "$p"); cl=${cl:-0}
+    effect: `closed=7/8 exit=1` satisfies the closed-line limb.
+
+Mutant file mut-g6 (sha256 b95b913a1c75b19102522855c7f1f1fcc5d798d83b86ee8f1e1d6e073f8ee5c0),
+pristine bytes plus M4 only:
+
+M4  check_g6 scratch scan — move the kasegi-r39 scan to an unrelated prefix.
+    find:  if [ -d "$sroot/kasegi-r39" ]; then
+           if out=$(find "$sroot/kasegi-r39" -mindepth 1 -maxdepth 1 -print); then
+    repl:  if [ -d "$sroot/kasegi-r90" ]; then
+           if out=$(find "$sroot/kasegi-r90" -mindepth 1 -maxdepth 1 -print); then
+    find:  elif [ -e "$sroot/kasegi-r39" ] || [ -L "$sroot/kasegi-r39" ]; then
+    repl:  elif [ -e "$sroot/kasegi-r90" ] || [ -L "$sroot/kasegi-r90" ]; then
+    effect: entries under kasegi-r39/ are never scanned; the payload label still
+    reads r39=, so the green line is indistinguishable from an honest one.
+
+Forged receipt (committed at FORGED2)
+-------------------------------------
+Starts from the honest receipt at 8371e7a (sha256
+8d46d7b251fd6736ba1841814274201176d3a7628f9330e8c9b1917013741471) and applies
+exactly four lying lines plus one dropped line; every payload VALUE stays
+honest:
+
+  1. `all-gates v5`                       -> `all-gates v3`
+  2. `export-ref=ee5ae5e1739527f4cdb50babe2d694005607b44e`
+                                          -> `export-ref=<FORGED1>`
+  3. `suite-sha256=2856a210...`           -> `suite-sha256=21ef1eb2...` (mut-g2)
+  4. `selftest cases=8 failures=1`        -> `selftest cases=8 failures=0`
+  5. dropped: the run-section transcript header line
+     `export-ref=ee5ae5e... mode=export lane=... suite-sha256=...`
+     (see incidental finding: its line-start `export-ref=` poisons the parser's
+     xref extraction, so the honest receipt can never pass the ancestry limb).
+
+Still honest in the forged bytes: G2's run line says `closed=0`; the final
+tally says `closed=7/8 exit=1` and `run-exit=1`; the G2 selftest case line says
+`positive=fail mutants=8/8 verdict=fail`; `selftest judge=own-report
+accepted=0`; `selftest-exit=1`. Forged receipt sha256
+5e52e57a64612ef8ce44c49300de830cfa26be3b5a607055a93e0115fa976000.
+
+Observed outputs (bash corpus/instruments/r39-closure.sh ...; rc of the suite)
+------------------------------------------------------------------------------
+
+R0  pristine suite, --export-ref 8371e7a (honest receipt)         rc=1
+    G1..G8: closed=7/8 exit=1 — only G2 red, and honestly so:
+G2 payload=receipt=1,sentinel=0,export-ref=1,ancestor=0,diff-clean=0,diff-read=ok,digest-match=1,export-suite=1,run-lines=7,closed-lines=1,distinct-ids=7,closed-line=0,graded-cases=7,ungraded-cases=1,selftest-summary=0,scorecard-ref=1,shonen-ref=1,final-lane-commit=0 closed=0
+    (sentinel=0: the honest receipt says v5, the limb demands v3;
+    ancestor/diff-clean red only because of the xref poisoning below.)
+
+R1  pristine suite, --export-ref FORGED2 (tampered receipt)       rc=1
+    closed=7/8 exit=1 — the pristine suite REJECTS the forgery:
+G2 payload=receipt=1,sentinel=1,export-ref=1,ancestor=1,diff-clean=1,diff-read=ok,digest-match=0,export-suite=1,run-lines=7,closed-lines=1,distinct-ids=7,closed-line=0,graded-cases=7,ungraded-cases=1,selftest-summary=1,scorecard-ref=1,shonen-ref=1,final-lane-commit=0 closed=0
+    red limbs: digest-match=0 (receipt names the mutant digest), run-lines=7 +
+    closed-lines=1 (G2's honest closed=0 run line), closed-line=0 (honest 7/8),
+    graded-cases=7 + ungraded-cases=1 (the honest verdict=fail case line).
+
+R2  mut-g2 (P1+P2+P3), --export-ref FORGED2, same tree            rc=0
+    closed=8/8 exit=0 — THE SUITE ACCEPTS THE TAMPERED RECEIPT:
+G2 payload=receipt=1,sentinel=1,export-ref=1,ancestor=1,diff-clean=1,diff-read=ok,digest-match=1,export-suite=1,run-lines=8,closed-lines=0,distinct-ids=8,closed-line=1,graded-cases=8,ungraded-cases=0,selftest-summary=1,scorecard-ref=1,shonen-ref=1,final-lane-commit=0 closed=1
+    The receipt still says closed=7/8 exit=1 and G2 verdict=fail inside; the
+    mutated limbs no longer read those values. A hand-forged receipt whose
+    every value lies, wrapped around a suite swapped three find->replace edits
+    earlier, closes 8/8.
+
+F2  wave-2 reproduction on the PRISTINE suite (limb-level driver:
+    `source r39-closure.sh; LANE=<clone>; check_g2 <tree> <ref>`), receipt with
+    8 case lines `selftest case=G<n> positive=pass mutants=0/0 verdict=pass`
+    (zero mutants run, zero rejected) and 8 run lines `G<n> payload= closed=1`
+    (empty payloads):                                            rc=0
+    payload=...,run-lines=8,closed-lines=0,distinct-ids=8,closed-line=1,graded-cases=8,ungraded-cases=0,...
+    The pristine parser never reads `mutants=` and `.*` matches the empty
+    payload — CritG2Exploit F2 (mut-f/g/h/j) reproduced verbatim.
+
+R3  pristine suite, --scratch-root <scratch>/g6root planted with the stray
+    sibling kasegi-r39/SomeOtherSeat/work/leftover.txt:           rc=1
+G6 payload=r37=absent,r38=absent,r39=present,work=outside,tolerated=none,read=ok closed=0
+    closed=6/8 exit=1 — the stray is detected (G2 also red: pristine limbs).
+
+R4  mut-g6 (M4), same tree, same stray still present:             rc=1
+G6 payload=r37=absent,r38=absent,r39=absent,work=outside,tolerated=none,read=ok closed=1
+    closed=7/8 exit=1 — G6 now green: the scan reads kasegi-r90, the stray
+    under kasegi-r39/ is invisible, and the green payload is indistinguishable
+    from an honest one. (Suite still 7/8 only because mut-g6 keeps the pristine
+    G2 limbs, which correctly red the tampered receipt — the two mutants are
+    independent.)
+
+Incidental finding (pristine parser, not a mutation)
+----------------------------------------------------
+The xref extraction `sed -n 's/^export-ref=//p'` lifts every line STARTING with
+`export-ref=`. The honest receipt's run-section transcript header starts with
+`export-ref=ee5ae5e... mode=export ...`, so xref becomes two lines and
+`git cat-file -t "<multiline>^{commit}"` fails: R0 shows ancestor=0,
+diff-clean=0 although `git merge-base --is-ancestor ee5ae5e 8371e7a` is true
+(rc=0, verified). The honest v5 receipt therefore can never satisfy G2's
+ancestry limb as written. The round-40 suite should anchor its receipt parsing
+to exact whole-line matches and key its transcript off a non-colliding marker.
+
+Verdict — the baseline the r40 suite must kill
+----------------------------------------------
+All four mutants SURVIVE, by design of the probe: P1/P2/P3 turn an honestly-red
+receipt into closed=8/8 exit=0 (R1 vs R2); M4 hides a live stray sibling behind
+an unrelated scan prefix (R3 vs R4). The r39 suite's receipt grading and
+scratch scan are each 2-3 find->replace edits from accepting fiction, and the
+forged receipt needs no runner at all. The round-40 suite closes this class
+only if: H5 grades a forged-receipt fixture whose defect survives P1/P2/P3-style
+limb weakening (graded case line with mutants>=1, rejection naming the limb);
+H6 grades a stray-sibling fixture against prefix-rename of its own scan (a
+renamed scan must red, not silently pass); H7 binds the receipt to a
+deterministic teed transcript so a hand-forged receipt fails the byte-identical
+re-run. Suite bytes at 8371e7a were never modified (pristine sha256 verified
+2856a210... after all runs); the lane repo was only read/cloned.

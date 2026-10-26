@@ -156,3 +156,6 @@ Correction (round 38): PROVINCE.md L79-L152 — the whole round-37 append — ho
 [r38 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F21 — OASIS CSAF v2.0 (Common Security Advisory Framework) VEX product-status categories and not-affected justification flags — admitted round 38; entry `corpus/knowledge/csaf-vex-product-status-and-justifications.md` (source S055)
 
 [r39 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F22 — CISA When to Issue VEX Information (VEX issuance/lifecycle/reaffirmation/inheritance guidance) — admitted round 39; entry corpus/knowledge/cisa-when-to-issue-vex.md (source S057)
+
+
+[r40 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F23 — CycloneDX v1.7 vulnerabilities[].analysis (six analysis states, nine not-affected justifications, a repeatable response array and a per-version status) — admitted round 40; entry corpus/knowledge/cyclonedx-analysis-subtree.md (source S060)

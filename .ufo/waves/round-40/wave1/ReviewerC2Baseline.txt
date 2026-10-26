@@ -1,0 +1,66 @@
+C2 baseline re-derivation at the round-40 claims-freeze commit
+ReviewerC2Baseline (kasegi-shokunin round 40, hyaku run 9) — 2026-10-26
+
+Freeze commit: 5e985b74075dd3813a63d7750966bf8abf693465
+  $ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show -s --format='%H %ci %s' 5e985b74075dd3813a63d7750966bf8abf693465
+  5e985b74075dd3813a63d7750966bf8abf693465 2026-10-26 18:10:32 -0300 round-40: freeze claims C1/C2 + control receipts
+  $ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff --name-only a7af2ce63bce153757d39bf66b366a96caf30c13 5e985b74075dd3813a63d7750966bf8abf693465
+  .ufo/waves/round-40/c1-controls/before.txt
+  .ufo/waves/round-40/c2-controls/before.txt
+  .ufo/waves/round-40/c2-controls/junk-decisions.md
+  .ufo/waves/round-40/census-before.txt
+  .ufo/waves/round-40/claims.json
+  The freeze commit adds only .ufo/waves/round-40 control files over base a7af2ce63bce153757d39bf66b366a96caf30c13; the corpus is identical to base.
+
+Method: `git -C <lane> archive 5e985b74075dd3813a63d7750966bf8abf693465 | tar -x` into scratch; every count below ran over that export. The export's corpus/SOURCES.md and corpus/README.md are byte-identical to the lane working tree (cmp: identical), and the lane working tree carries no tracked modifications (git status --porcelain lists untracked .ufo/waves/round-40 round files only), so these numbers are the live baseline the round-40 wave starts from.
+
+Baseline counts (corpus at the freeze commit):
+
+1. Queued count among the nine (claims.json counting command, verbatim):
+   $ awk -F'|' '/^\|[[:space:]]*S0(16|17|19|20|21|22|23|24|25)[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="queued") n++} END{print n+0}' corpus/SOURCES.md
+   9
+
+2. Queued ids (every queued registry row, so the list is exhaustive):
+   $ awk -F'|' '/^\|[[:space:]]*S[0-9]+[[:space:]]*\|/ {id=$2; s=$9; gsub(/[[:space:]]/,"",id); gsub(/[[:space:]]/,"",s); if(s=="queued") print id}' corpus/SOURCES.md
+   S016 S017 S019 S020 S021 S022 S023 S024 S025
+   Exactly the nine claimed ids; no other queued row exists in the registry.
+
+3. Statuses of the nine:
+   S016=queued S017=queued S019=queued S020=queued S021=queued S022=queued S023=queued S024=queued S025=queued
+
+4. Mined among the nine (same awk with s=="mined"): 0
+
+5. Registry total:
+   $ grep -cE '^\|[[:space:]]*S[0-9]+[[:space:]]*\|' corpus/SOURCES.md
+   59
+
+6. Frontier count:
+   $ grep -cE '^\| F[0-9]+ \|' corpus/README.md
+   22
+   Status cells of those 22 rows: 22 admitted, 0 non-admitted (F01-F22).
+
+7. Knowledge entries citing any of the nine:
+   $ grep -rlE '^source: S0(16|17|19|20|21|22|23|24|25)' corpus/knowledge | wc -l
+   0
+
+8. S060+ rows opened:
+   $ grep -cE '^\|[[:space:]]*S06[0-9][[:space:]]*\|' corpus/SOURCES.md
+   0
+
+9. Harness (run inside the freeze export):
+   $ python3 corpus/instruments/frontier-recheck-count.py
+   entries=25 pass=25 exit=0
+   (25 PASS lines covering F01-F22; per-line listing in the seat receipt.)
+
+10. Supersession rows, verbatim from corpus/SOURCES.md at the freeze commit:
+   | S030 | CVE Numbering Authority Operational Rules v4.2.0 — https://www.cve.org/Resources/Roles/Cnas/CNA_Rules_v4.2.0.pdf | spec | A | CVE Program CNA scope, vulnerability determination and assignment requirements in version 4.2.0 | Approved 2026-08-20, effective 2026-08-25; sections 3.1, 3.2.4.2, 4.1 and 4.2, especially 4.2.11 page 15 | supersedes S022 — use current 4.2.0 requirements and section numbering; distinguish assignment scope, security impact and independently fixable vulnerabilities. | mined | 2026-10-20 | on-release | corpus/knowledge/cna-assignment-and-vulnerability-rules.md |
+   | S029 | Regulation (EU) 2024/2847, CRA manufacturer reporting clocks — https://eur-lex.europa.eu/eli/reg/2024/2847/oj/eng | spec | A | Original official CRA Article 14 manufacturer reporting duties and Article 71 application dates, not a complete current compliance assessment | OJ 20.11.2024; Articles 14(1)-(4), 15, 16 and 71, opened 2026-10-20 | supersedes S024 — official Article 14 text distinguishes vulnerability and incident reporting clocks; Article 71 applies Article 14 from 11 September 2026. | mined | 2026-10-20 | on-release | corpus/knowledge/cra-manufacturer-reporting-duties.md |
+   S030 is a `mined` row whose teaches cell states "supersedes S022" — CNA Rules v4.2.0 replacing S022's v4.1.0 of the same program. S029 is a `mined` row whose teaches cell states "supersedes S024" — the official CRA Article 14 text, where S024's own row records "Article 14 wording not yet verified against EUR-Lex". Both supersession claims in claims.json hold; both superseding rows are mined, not queued or rejected placeholders.
+
+11. Junk control (c2-controls/junk-decisions.md): it fabricates all nine rows as `rejected` with evidence "none"; applying the frozen counter's mined-among-nine test to its fabricated status column gives 0 < 4, so the junk twin is rejected, as c2-controls/before.txt requires.
+
+12. r22 measure re-derivation (criterion defined in SCORECARD.md: F_total = frontier rows in corpus/README.md plus every corpus/SOURCES.md row still queued; F_admitted = frontier rows whose status cell is `admitted`):
+   F_total = 22 + 9 = 31; F_admitted = 22; (20+22)/(20+31) = 42/51 = 0.824 (0.8235)
+   Matches c2-controls/before.txt "42/51 = 0.824".
+
+Discrepancies vs claims.json C2 before-list: none. Every before-value reproduces at the freeze commit — queued 9 with the exact claimed ids, mined among the nine 0, entries citing the nine 0, S060+ 0, frontier 22, harness 25/25, registry 59, measure 42/51 = 0.824 — and the S022/S030 and S024/S029 supersession claims are confirmed by the S030/S029 rows themselves. Data collection may proceed on this baseline.

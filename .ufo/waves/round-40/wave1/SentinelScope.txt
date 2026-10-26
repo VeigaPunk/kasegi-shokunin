@@ -1,0 +1,73 @@
+# SentinelScope — round-40 wave-1 write-scope audit
+
+Snapshot 2026-10-26T21:19Z. Lane `kasegi-shokunin` @ `5e985b74075dd3813a63d7750966bf8abf693465`;
+fleet root @ `4bb33202687f02a84947811666a493164c82917d`. Wave window opens 18:10:05 -03
+(lane `.ufo/waves/round-40/` creation); findings below are every write observed at or after it.
+
+## 1. Contract under test (wave1-spec.json `context`, corroborated by this seat's handoff)
+
+- The lane repo is the only write target; the fleet root, sibling lanes and `/home/vgpnk/Projects/shokuknow` are read-only.
+- Seats may write exactly: `<SEAT>.md` receipt, deliverable files `<SEAT>.<suffix>` named by the item, and scratch under `$S`.
+- No mutating git/jj; no writes to `MANIFEST.json`, `templates/`, fleet `scripts/`, `.ufo/state/`, `.ufo/watchdog.log`, `.scratch/`.
+- Scratch is `S=/fast/scratch/hyaku/kasegi-r40/<SEAT>/` with `TMPDIR=$S`; a surviving scratch dir is a round-40 defect (H6 live check).
+- Heavy passes only while disk guard is green.
+
+## 2. Own seat discipline (SentinelScope)
+
+- Scratch created at spawn; `TMPDIR=$S` proved by `mktemp -d` returning `$S/tmp.AnRD666F2A` (`TMPDIR_BIND=ok`), temp removed.
+- Writes performed by this seat: this file and `SentinelScope.md` only. Scratch emptied and removed before filing.
+- Read-only commands only; no git/jj mutation, no pacman, no tool installs.
+
+## 3. Lane repo `kasegi-shokunin` — CLEAN
+
+- `git status --porcelain` = 15 entries, all `??` inside `.ufo/waves/round-40/` (build-wave{1,2}-spec.py, kasegi-r40-build.ready[.partial|.dispatched],
+  wave{1,2}-{spec,dispatch}.json, wave{1,2}-plan.{err,out}, wave{1,2}-run.err, `wave1/`) — orchestrator artifacts.
+  `LANE_NONROUND40_UNTRACKED=0`; zero `M`/`D`/`R` entries; `git diff --stat HEAD` empty.
+- Base `a7af2ce` is an ancestor of freeze `5e985b7`; HEAD is the freeze commit (no judged head yet — working copy `263869157671` is empty).
+- `wave1/`: 68 entries over 30 declared seat prefixes, 25 receipts. Every name is `<declared seat>.<allowed suffix>`; zero subdirectories,
+  zero symlinks, zero foreign-owned/setuid/world-writable files; two `.sh` at 755, the rest 644.
+- Extra artifacts relative to a literal name in the seat prompt (all justified by "also deliver" wording, none landable on their own):
+  `ExecH9DeclaredBlocks.{examples-declared,province,readme}.txt`, `ExecMistakesDraft.fixture-future-dated.txt`,
+  `ExecMistakesDraft.h5-replica.sh`. No file in `wave1/` names an undeclared seat.
+- No lane worktree write outside `.ufo/waves/round-40/` after 18:10; the only other churn is `.jj/` + `.git/index` bookkeeping
+  (working-copy snapshot 18:10:32–18:10:34, `git status` stat-cache refresh).
+
+## 4. Fleet root — CLEAN for round-40 seats
+
+- `git status --porcelain` = 1 entry: `?? .ufo/reports/round-42/kengaku.md` (13949 B, mtime 18:06:25 — **before** wave start).
+  Content is the kengaku lane round-42 report; `grep -ci kasegi` = 0, and its four `round-40` hits are kengaku's own battery40.
+  Not lane/round-40 authored; left untouched.
+- `git diff --stat HEAD` empty; `MANIFEST.json` mtime 18:05:03 but `git hash-object` = `0e598dd9…` = `HEAD:MANIFEST.json` (byte-identical, no drift).
+- Only writes inside the wave window: `.ufo/state/disk-guard.log` and `.ufo/state/inline-dispatcher.log` — harness-owned
+  (`inline-dispatcher.log` tail: `cap-defer …/kasegi-r40-build.ready occupied 87`). Not seat writes.
+- `scripts/` and `templates/` untouched since 18:05.
+
+## 5. Scratch root `/fast/scratch/hyaku/kasegi-r40/`
+
+- 36 dirs at snapshot, **all** declared seat names; 0 files directly under the root; 0 undeclared dirs.
+- Empty dirs at snapshot (started, no scratch content): `MutKillList`, `ReviewerC1Design`, `ReviewerC2Baseline`, `ScribeGateBlocks`, `ScribeNewRows`.
+  Live dirs are mid-wave (sizes 1–23k files); `MutBaseline`'s old-looking file mtimes are `git archive` extraction times for `r39-export`.
+- `find /fast/scratch -maxdepth 3 -name 'kasegi-r39*'` → nothing: the round-39 leftover is gone at round start, as the C1 before-control claims.
+
+## 6. Flags for the L1 misroot sweep
+
+1. **Sibling scratch entry `/fast/scratch/hyaku/kasegi-r40-l1`** (1 file `integration-plan.md`, 18:16, vgpnk:vgpnk 755). It matches the
+   `kasegi-r40*` sibling pattern H6 grades and the C1 kill rule's "leftover kasegi-r39*/r40 scratch entry at filing". Presumably the L1's
+   own scratch; **remove it before filing** or expect H6/C1 to see it.
+2. **Live seat scratch at filing time.** Every dir listed in §5 is a surviving `<SEAT>` entry in `kasegi-r40/`; all must be gone at filing
+   except the passed `--work` dir. Snapshot names above are the current set to sweep.
+3. **Untracked fleet file `.ufo/reports/round-42/kengaku.md`** predates the wave and is another lane's report — no action for round 40,
+   listed so the sweep does not re-attribute it.
+4. Pre-round-40 stray files at `/fast/scratch/hyaku/` root (`base-census.sh` 04:14, `line137.txt` 15:20, `_d.txt` 16:25) — not kasegi-round-40.
+
+## 7. Cross-lane and source trees
+
+- All 21 sibling lane repos scanned via read-only `git status --porcelain`: `kasegi|round-40` hits only inside `kasegi-shokunin` (its own 15 entries); 0 everywhere else.
+- `/home/vgpnk/Projects/shokuknow`: no file modified since 18:00 (find over the whole tree).
+- Disk guard at 21:18:23Z: `/tmp` 3%, `/var/tmp` 35%, `/fast/scratch/hyaku` 26% — green.
+
+## Verdict
+
+No write-scope violation attributable to a round-40 seat at snapshot: no tracked-file edits, no lane writes outside
+`.ufo/waves/round-40/`, no round-40 content in the fleet root, sibling lanes or shokuknow, no stray scratch dirs other than
+declared seat dirs. The two filing-time conditions (L1 sibling scratch entry; surviving seat scratch) are the only open items.

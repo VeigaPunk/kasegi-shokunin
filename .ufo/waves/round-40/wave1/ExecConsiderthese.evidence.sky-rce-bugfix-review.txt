@@ -1,0 +1,73 @@
+# capture: sky-rce-bugfix-review
+# title: Sky Remote Code Execution Bugfix Review
+# source_url: https://immunefi.com/blog/bug-fix-reviews/sky-remote-code-execution-bugfix-review/
+# http_status: 200
+# content_type: text/html; charset=utf-8
+# user_agent: kasegi-shokunin/1.0
+# fetched_utc: 2026-10-26T21:19:05Z
+# raw_bytes: 54099
+# raw_sha256: 1588dbb8eb2d6da17cfa0ea5cc56f3433c4a7bfef1e2b34e971a1b88c25e017d
+# refetch_utc: 2026-10-26T21:19:12Z
+# refetch_raw_sha256: 1588dbb8eb2d6da17cfa0ea5cc56f3433c4a7bfef1e2b34e971a1b88c25e017d
+# normalization: drop <script>/<style> bodies; <br> and </p|div|h1-6|li|tr|td|th> to newline; strip remaining tags to a space; HTML-entity-decode; collapse runs of spaces; drop empty lines
+# normalized_body_reproducible: YES (normalized text of the two independent fetches is byte-identical)
+# normalized_body_lines: 56
+# body_starts_line: 18
+# note: public disclosure write-up; unaffected by the per-request CSP nonce (this page re-fetched byte-identical raw)
+
+Sky Remote Code Execution Bugfix Review
+Home
+Customers
+Whitehat Spotlight
+Security Guides
+Research
+Get Protected
+Home
+Customers
+Whitehat Spotlight
+Security Guides
+Research
+Get Protected
+Sky Remote Code Execution Bugfix Review
+Copy
+Copied
+25 Feb 2025
+•
+3 min read
+Sky Remote Code Execution Bugfix Review
+Immunefi
+On 25 September 2023, a security researcher named xss submitted a critical vulnerability to Sky (formerly known as MakerDAO) through Immunefi. The white-hat was able to execute malicious code on vote.makerdao.com to extract sensitive content from the filesystem such as /etc/passwd. The vulnerability has since been fixed, on Sep 28, 2023.
+The report was validated and confirmed by the Sky team within two days, resulting in a maximum critical bounty payout of $50,000, as per their Bug Bounty Program (BBP) on Immunefi.
+Immunefi is pleased to have facilitated this responsible disclosure via our platform. Our goal is to make Web3 safer by incentivizing ethical hackers to responsibly disclose vulnerabilities in exchange for legitimate rewards and an enhanced reputation.
+Before diving into the root cause of the vulnerability, let’s first understand what Remote Code Execution (RCE) is and how it can impact DeFi applications and centralized exchanges.
+What is Remote code execution?
+RCE allows an attacker to remotely execute arbitrary commands or code on a server. For example, in an application that lets users ping a specified URL to check if an application is live, the code might resemble this:
+Since the user-supplied value is directly added to the ping command without any sanitization to ensure it contains only the URL, an attacker can inject a command like this:
+The server will interpret whoami as a separate command due to the semicolon (;) and execute it after pinging the host, thus allowing the attacker to inject and execute any system command.
+Now, the question is: What can an attacker achieve through RCE on CeX or DeFi applications?
+If the attacker has permission to modify file content, they could replace the wallet connection code on the DeFi application with a malicious script, which would initiate a transaction to the attacker’s wallet.
+The attacker might also be able to extract private keys or sensitive API keys/secrets, such as credentials for the email server.
+Even if the website doesn’t include Web3 business logic, the attacker could escalate their privileges to gain further access to the internal network.
+Root Cause of RCE on vote.makerdao.com
+vote.makerdao.com allows MKR token holders to vote and create proposals. When creating a proposal, users can either fill out the required fields manually or provide a URL to a .md file. If a user provides a Markdown file link, the application will parse the file content using gray-matter and auto-fill the proposal form.
+Sky was using the gray-matter library without disabling the JavaScript engine feature, which runs eval on the provided Markdown. The eval function is a JavaScript feature that converts strings or expressions into executable code.
+Since the user could control the unsanitized Markdown input, the whitehat was able to inject the  — javascript argument to make gray-matter execute system commands from the input.
+Here’s how the exploit works
+The attacker creates a poll at https://vote.makerdao.com/polling/create using the following URL: https://gist.githubusercontent.com/behroz-immunefi/1c664efb6bfaff4020fc6769fecd159b/raw/04649ac663f5095fa920bddb3d348d2622bc83d1/rce.md .
+After the poll is created, one can visit the following url endpoint https://vote.makerdao.com/api/polling/all-polls?network=goerli to view the output of the malicious command i.e cat /etc/passwd .
+Vulnerability Fix
+The vulnerability was fixed on Sep 28, 2023.
+Instead of passing Markdown content directly to the gray-matter library, it’s now routed through the matterWrapper function, which validates the input and disables the JavaScript engine by overriding the parse and stringify methods to return empty values.
+a:hover]:opacity-80 mt-4 mb-5 px-3 py-2 xs:px-4 xs:py-3 md:sticky bottom-2 bg-[#cbd4e4] dark:bg-[#404753] rounded-full">
+Share on
+or
+Copy
+Copied
+Bug Fix Reviews
+You might also like
+Top 3 Bugs from the ThunderNFT Invite Only Program
+4 min read
+Top 3 Bugs from the Shardeum Ancillaries Audit Competition
+6 min read
+Top 3 Bugs from the Shardeum Core Audit Competition
+3 min read

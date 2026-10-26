@@ -1,0 +1,71 @@
+# ExecAuditRun — recheck-audit on the round-40 lane tree: exact output + expected-number reconciliation
+
+snapshot
+  lane            /home/vgpnk/Projects/shokunin/kasegi-shokunin
+  head            5e985b74075dd3813a63d7750966bf8abf693465   (claims freeze; `git status --porcelain corpus/` printed empty)
+  knowledge files 51   (corpus/knowledge/*.md)
+  expected file   corpus/instruments/knowledge-expected.txt — 53 lines = 2 comment lines + 51 entries
+                  sha256 71282ee8a717212b90cde1b350817547169ca9f0d478938ae4aa95347e097a62
+  instrument      corpus/instruments/recheck-audit.py — sha256 5d4842da6103f17c7798ca2078a77288820bd8b90432348cd2cc012e1faf7f09
+  run-utc         2026-10-26T21:17:20Z .. 2026-10-26T21:17:24Z
+  command         python3 corpus/instruments/recheck-audit.py --quiet    (cwd = lane root)
+
+exact output (verbatim; process exit 0)
+
+strict pass=51/51 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=27 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=51 total=51 pass=51 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=51 missing=0 unexpected=0 exit=0
+
+expected-number reconciliation
+
+1. Current lane tree (pre-integration). 51 audited entries, 51 expected entries, missing=0, unexpected=0, strict 51/51,
+   exit 0 — the audited name set equals the committed list entry for entry, so the mismatch today is none. `pass` is a
+   form verdict: 24 of the 51 are `fail-closed`/`gated` because their base (`~/Projects/bounties`) is absent, and they
+   still pass the form limbs.
+
+2. Delivered expected list. `ExecHarnessUpdate.knowledge-expected.txt` landed at 2026-10-26T21:28:11Z: 61 lines =
+   2 comments + **59 entries**, sha256 `328041466810f72e7900669e811d36d0434991503e57bec4f1817921b31714a2`.
+   59 = 51 + 8, and 8 is exactly the number of entry files the wave delivered:
+       ScribeEntriesG1  anthropic-cvd-provenance-and-pacing, pz-reporting-transparency-trial, nist-sp800-216-vdp-framework
+       ScribeEntriesG2  cisa-bod-20-01-vdp-minimums, cisa-cvd-program-stages, cve-bench-agent-exploitation-benchmark,
+                        doj-vdp-framework-scope-and-authorization
+       ScribeF23        cyclonedx-analysis-subtree
+   The delivered list's names are the same eight names; no other difference exists against the committed 51-entry list.
+
+3. Post-integration state, measured (not assumed). A `git archive` mirror of 5e985b7 with those eight entry files installed
+   under the delivered list's own names, plus the round-40 capture slice + manifest assembled from the scouts' delivered
+   `Scout*.capture.txt` / `Scout*.manifest-record.json` files (S016, S017, S019, S020, S021, S023, S025, S060):
+       tree files=59  expected=59
+       strict pass=59/59 cdroot_fail=0 instrument_fail=0 own_fail=0
+       executes=27 gated=32 broken=0
+       lines=59 total=59 pass=59 fail-closed=32 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+       expect=present expected=59 missing=0 unexpected=0 exit=0
+   The same eight entries with their `source-recheck` command run against the assembled manifest:
+       S060:sha256 OK / S060:Q1 OK occurrences=1 anchor=7-ok / S060:Q2 OK occurrences=1 anchor=15-ok /
+       S060:Q3 OK occurrences=1 anchor=50-ok                                   (exit 0)
+   So 59 is the correct count for the delivered set, and the harness list needs no change — provided all eight entries land.
+
+4. Two integration-order states that are red and why (each measured):
+   a. Harness list committed before the entries: tree 55 (51 + G1's three + F23), expected 59 ->
+      `strict pass=55/55 … exit=1`, `expect=present expected=59 missing=4 unexpected=0 exit=1`, with
+      missing = cisa-bod-20-01-vdp-minimums.md, cisa-cvd-program-stages.md,
+      cve-bench-agent-exploitation-benchmark.md, doj-vdp-framework-scope-and-authorization.md.
+   b. Entries landed but `corpus/source-snapshots/round-40/` not yet landed: tree 59, expected 59 ->
+      `strict pass=51/59 … paths_fail=8 … exit=1`, 8 FAIL lines, `expect=present expected=59 missing=0 unexpected=0 exit=1`.
+      Each of the eight new entries names `corpus/source-snapshots/round-40/manifest.json` in its recheck command, so the
+      capture slice and manifest must land with the entries, in the same integration.
+   Nothing else in the tree is affected in either state (the pre-existing 51 stay green throughout).
+
+5. Any count other than the tree's own fails loudly, at both ends: too few prints `unexpected=N exit=1`, too many prints
+   `missing=N exit=1` (proved on scratch mirrors at N=4 and N=8 with a placeholder entry set, both directions, receipts in
+   the seat receipt §3). Derive the list from the tree after landing, never from an assumed increment: 53 is the committed
+   file's line count (2 comments + 51), not a target.
+
+6. Post-integration check to run from the lane root once the entries, the snapshots and the list are landed:
+       test "$(ls corpus/knowledge/*.md | wc -l)" = "$(grep -vc '^#' corpus/instruments/knowledge-expected.txt)" \
+         && echo count-equal
+       python3 corpus/instruments/recheck-audit.py --quiet
+   Green is `count-equal`, then `strict pass=<n>/<n> … own_fail=0`, then
+   `lines=<n> total=<n> pass=<n> … exit=0`, then `expect=present expected=<n> missing=0 unexpected=0 exit=0`.
+   For the delivered set that is `<n>` = 59.

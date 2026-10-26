@@ -1,0 +1,80 @@
+{
+  "schema_version": "evidence-manifest/v1",
+  "package": "claims/immunefi-sky/2026-10-26-public-disclosure-reprice/",
+  "produced_utc": "2026-10-26T21:24:00Z",
+  "lane": "kasegi-shokunin",
+  "round": 40,
+  "seat": "ExecConsiderthese",
+  "lane_base_commit": "a7af2ce63bce153757d39bf66b366a96caf30c13",
+  "artifacts": [
+    {
+      "path": "evidence/sky-rce-bugfix-review.txt",
+      "bytes": 5401,
+      "lines": 73,
+      "sha256": "d5066d3d972f808781d9350cc567758288b2c25a001f30032cec552d2ca647ef",
+      "polarity": "positive",
+      "role": "the disclosed finding itself: submitted 2023-09-25, fixed 2023-09-28, published 2025-02-25, paid USD 50,000"
+    },
+    {
+      "path": "evidence/sky-program-scope-rewards.txt",
+      "bytes": 58697,
+      "lines": 1041,
+      "sha256": "7bcbd40754a37f838b48ffc19de3d59019e8081c94516689a4eac9e158ee95d9",
+      "polarity": "positive",
+      "role": "the program's own scope, severity-eligibility and reward ladder, captured 2026-10-26"
+    },
+    {
+      "path": "evidence/vscs-v2.2-websites-and-apps.txt",
+      "bytes": 3445,
+      "lines": 64,
+      "sha256": "08e09f6506decabb53703a0d8cf352921a34abe0fd956dfac59d2a60cf174e29",
+      "polarity": "positive",
+      "role": "the platform severity system's Websites and Apps table, quoted from the lane's bound round-34 capture"
+    },
+    {
+      "path": "evidence/kev-absence-query.txt",
+      "bytes": 1288,
+      "lines": 31,
+      "sha256": "3d81c31f62ad58d9f3e1cc1c1af60474bd47d661e7102dc3a0e8e6a784358289",
+      "polarity": "negative",
+      "role": "exploitation-status probe: no KEV record matches the asset, product or library"
+    },
+    {
+      "path": "evidence/no-live-testing.txt",
+      "bytes": 1127,
+      "lines": 9,
+      "sha256": "0856476e42f2bcef751e88f7f5cd7f26d06908db8be452b83824997f8a8ef9fd",
+      "polarity": "negative",
+      "role": "absence record: no live testing was performed and none is claimed"
+    }
+  ],
+  "polarity_counts": {
+    "positive": 3,
+    "negative": 2,
+    "at_least_one_positive": true
+  },
+  "redactions": [],
+  "redactions_note": "all five artifacts are public captures or lane-local query records with no secret content, so no redaction receipt applies; the contract's rule that redactions:[] is never claim-ready is consistent with claim_ready:false below",
+  "claim_ready": false,
+  "not_claim_ready_reason": "no authorized testing (PROVINCE refusal), the finding is a prior public submission paid in 2023, and no non-author reviewer is attached",
+  "expected_head_sha256": "139b9bf1d8b369e01bfbaadb9849ab77bb0b2f94c27a7d1d5a6aaea95c178c2e",
+  "head_derivation": "decision_sha256 = sha256 of json.dumps(decision-without-decision_sha256, sort_keys=True, separators=(',',':'), ensure_ascii=False) encoded UTF-8; head_sha256 = last decision's decision_sha256",
+  "shipping": {
+    "layout": "wave1-flat",
+    "reason": "wave-1 seat deliverables are flat files beside the receipt (ExecConsiderthese.<suffix>); the package keeps contract-relative paths and this map resolves each one to its shipped file",
+    "prefix": "ExecConsiderthese.",
+    "map": {
+      "report.md": "ExecConsiderthese.report.md",
+      "claim_checklist.md": "ExecConsiderthese.claim_checklist.md",
+      "evidence/manifest.json": "ExecConsiderthese.manifest.json",
+      "custodian-receipts.json": "ExecConsiderthese.custodian-receipts.json",
+      "provenance.json": "ExecConsiderthese.provenance.json",
+      "status.json": "ExecConsiderthese.status.json",
+      "evidence/sky-rce-bugfix-review.txt": "ExecConsiderthese.evidence.sky-rce-bugfix-review.txt",
+      "evidence/sky-program-scope-rewards.txt": "ExecConsiderthese.evidence.sky-program-scope-rewards.txt",
+      "evidence/vscs-v2.2-websites-and-apps.txt": "ExecConsiderthese.evidence.vscs-v2.2-websites-and-apps.txt",
+      "evidence/kev-absence-query.txt": "ExecConsiderthese.evidence.kev-absence-query.txt",
+      "evidence/no-live-testing.txt": "ExecConsiderthese.evidence.no-live-testing.txt"
+    }
+  }
+}

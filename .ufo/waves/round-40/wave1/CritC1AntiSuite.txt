@@ -1,0 +1,285 @@
+# CritC1AntiSuite — adversarial pre-build review of the C1 counter (H1–H10)
+
+Seat: CritC1AntiSuite (round 40, wave 1, leaf). Scope: pre-build review of the
+frozen C1 counter as designed in `.ufo/waves/round-40/claims.json` (C1 predicate,
+kill rule, counting commands) and the round-39 defects it undertakes to close
+(R1–R7 in `corpus/lessons/round-39-verifier-spotcheck.md` §5; the wave-2
+instrument findings `wave2/CritG2Exploit.md` F2–F5 and `wave2/CritC1Kill.md`
+K1–K6, i.e. G2's shape-only receipt grading and G6's live-scratch scan). Every
+trick below is a concrete forgery or evasions the counter must reject; each names
+the H-check that must stop it and the graded selftest mutant (`selftest case=H<n>
+... positive=pass ... verdict=pass` per check, ten graded lines, `failures=0`)
+that must exercise it. ExecSuiteBuild is not done until every name in §3 is
+covered by a committed mutant and the case line prints `mutants=N/N` with N the
+size of that set.
+
+## 1. Trick → check → mutant table
+
+| # | Attack | Must-stop | Graded selftest mutants (names) |
+|---|---|---|---|
+| T1 | receipt copied verbatim from a different ref's run | H7 (byte-identity), H5 backup | `cases=receipt-cross-ref` |
+| T2 | receipt whose `H<n> payload=` values are plausible but wrong for this export | H5 | `cases=payload-closed-lie`, `cases=payload-forged-value`, `cases=payload-missing`, `cases=payload-extra`, `cases=payload-unknown-id` |
+| T3 | `run-utc` injected after the run / future-dated | H5 + H7 | `cases=utc-future`, `cases=utc-missing`, `cases=utc-duplicate`, `cases=utc-post-run` |
+| T4 | summary-only line satisfying a graded case | H5 (grading semantics) | `cases=summary-only-case`, `cases=case-zero-mutant`, `cases=case-no-verdict`, `cases=case-no-mutants-field`, `cases=case-indented-duplicate`, `cases=case-duplicate-id`, `cases=case-nine` |
+| T5 | stray scratch dir hidden under an unrelated name in the scanned root | H6 | `cases=sibling-unrelated-name`, `cases=sibling-prefix-adjacent`, `cases=sibling-dotdir`, `cases=sibling-file`, `cases=sibling-symlink` (+ control `cases=sibling-work-tolerated`) |
+| T6 | export path traversal (`../`, escaping symlink, refusing ref) | extraction guard (fold into H5 case set; see §2.6) | `cases=export-traversal-symlink`, `cases=export-traversal-path`, `cases=ref-alias-head`, `cases=ref-short`, `cases=ref-blob` |
+| T7 | a check reads the live lane instead of the export | every H-content limb (H1 H2 H3 H4 H9 H10) | `cases=live-lane-read` per check (dual-state fixture) |
+| T8 | receipt absent / renamed / extra receipt | H5, H1 | `cases=receipt-missing`, `cases=receipt-renamed`, `cases=receipt-extra` |
+| T9 | suite-sha256 self-binding forgery | H5 (digest limb) | `cases=suite-digest-mismatch`, `cases=suite-digest-missing` |
+| T10 | declared-blocks gaming (H9) | H9 | `cases=blocks-short`, `cases=blocks-long`, `cases=blocks-modified`, `cases=blocks-nonexistent`, `cases=blocks-deleted`, `cases=blocks-duplicate` |
+| T11 | no-harm gaming (H10) | H10 | `cases=harm-inplace-edit`, `cases=harm-deleted-path`, `cases=harm-density-changed` |
+
+## 2. Attacks
+
+### T1 — a receipt copied verbatim from a different ref's run
+Attack: take the committed `all-gates.txt` of one ref's run (say the green Y run)
+and place it, byte-identical, as the receipt of another ref's export (the base or
+the r39 judged head). The receipt is well-formed, self-consistent, correctly
+digested, and ancestor-clean; nothing about its shape is wrong. It is simply not
+the transcript of *this* export's run.
+Must-stop: H7. The receipt is the deterministic teed transcript of the suite's own
+run: re-running over the ref must reproduce the committed bytes byte-identically.
+Any run prints its resolved `--export-ref <40-hex>` in the header and the observed
+limb results; a foreign receipt's header/payloads cannot equal the fresh tee. H5
+backs this up: recorded payload values must equal the observed run lines for this
+export, so a foreign receipt contradicts the export at the payload level too.
+Selftest mutant: `cases=receipt-cross-ref` — build the fixture repo with two
+commits A<B where B adds only a green-shaped receipt over A; generate the receipt
+by running the suite at B; commit it at A as A's receipt (so A's tree carries it);
+run the H5/H7 check at A. Needle: red, with `receipt=1` but the cross-ref field
+red (`export-ref=1` if the header names B, `byte-identical=0` if it names A with
+B's payloads). The check must be a *comparison*, never a shape-only accept.
+
+### T2 — payload values plausible but wrong for this export
+Attack: hand-write or post-edit the receipt so every `H<n> payload=` line is
+well-formed and contains fields that look exactly like this suite's output, but
+where one or more values are false for this export (e.g. `H1 payload=suite=1`
+when the export lacks the suite; `H2 payload=...closed=1` when the export lacks
+the corrections; any payload copied from the Y run onto the base export). This is
+precisely the round-39 G2 flaw (CritG2Exploit F2: `g2_graded` grades two tokens;
+`g2_run_shapes` accepts `.*` empty payloads; payload values never bind to a
+captured invocation).
+Must-stop: H5. H5's check must re-derive every limb on the export and require each
+recorded `H<n> payload=` line to equal the suite's own emitted line for that limb
+on that export — not merely parse. The payload is data the run produced; a line
+the run could not have produced is tampering. This is the one change that closes
+G2/F2 and R7.
+Selftest mutants (all must red):
+- `cases=payload-closed-lie` — flip one `closed=0` to `closed=1` in a red run's
+  transcript (or inject a green `closed=10/10` line into a red run's output).
+- `cases=payload-forged-value` — alter one emitted field value (e.g.
+  `suite=present` → `suite=absent`, `graded-cases=10` → `graded-cases=9`) in an
+  otherwise genuine tee.
+- `cases=payload-missing` — drop one `H<n> payload=` line (run-block count 9).
+- `cases=payload-extra` — add a tenth-line duplicate of an existing `H<n>` line.
+- `cases=payload-unknown-id` — a payload line whose id is not in the suite's
+  `CHECK_IDS` (e.g. `H11`), or a line with no id.
+
+### T3 — `run-utc` injected after the run
+Attack: append or edit a `run-utc=` line after the run completed (or after the
+commit), so the receipt carries a timestamp that looks like the run instant but
+was not printed by the run. This is the round-39 R1 class: the attempt-1 receipt
+was future-dated (`2026-10-26T21:35:00Z` after its containing commit
+`2026-10-26T20:12:12Z`) and did not come from the run that it documents.
+Must-stop: H5 + H7. H7 requires the `run-utc` to be printed by the run itself and
+not future-dated; the byte-identity tee makes any injected line a mismatch. H5
+requires the receipt to carry exactly one `run-utc=` line whose value equals the
+run's own printed instant and is not after the suite's recorded start instant
+(captured before any check runs) — and, at the real lane, not after the commit
+that carries the receipt.
+Selftest mutants:
+- `cases=utc-future` — the run prints `run-utc=T`, the receipt says `T+Δ` (future
+  relative to the suite's frozen start) → red.
+- `cases=utc-missing` — no `run-utc=` line → red.
+- `cases=utc-duplicate` — two `run-utc=` lines with different values → red.
+- `cases=utc-post-run` — a `run-utc=` line whose value is later than the suite's
+  recorded start instant even though the run was clean (injected-after-the-run
+  simulation) → red.
+The runner must use one clock: the suite must print the value it records, never
+read a separate `date` at assembly time.
+
+### T4 — a summary-only line satisfying a graded case
+Attack: satisfy the graded-case counter with a summary line instead of per-check
+lines, e.g. `selftest cases=10 failures=0` with no `selftest case=H<n>` lines, or
+eight case lines plus a summary standing in for the tenth, or case lines missing
+`verdict=`, missing `mutants=`, carrying `mutants=0/0`, or indented so the
+anchor misses them (CritG2Exploit F2/F4: summary-only, `mutants=0/0`, empty
+payloads and an indented ninth duplicate all passed G2).
+Must-stop: H5's grading semantics. A graded case line requires `positive=pass`
+AND `verdict=pass` AND a non-empty `mutants=n/n` with n>=1 AND a fixture detail
+line behind it (`judge_selftest_report` already rejects detail-free reports; H5
+must apply that standard to the committed receipt and to every case). The kill
+rule already bans a summary-only line satisfying a case; the implementation must
+make that happen: exactly ten graded case lines, ten distinct ids, zero ungraded
+case lines, summary line present only as the count line.
+Selftest mutants:
+- `cases=summary-only-case` — summary line only, no case lines → red.
+- `cases=case-zero-mutant` — one case line `mutants=0/0` → red.
+- `cases=case-no-verdict` — one case line missing `verdict=pass` → red.
+- `cases=case-no-mutants-field` — one case line without `mutants=` at all → red.
+- `cases=case-indented-duplicate` — a ninth case line with leading whitespace
+  (not counted by `^selftest case=`) → red (count physical lines, or treat any
+  indented case line as ungraded).
+- `cases=case-duplicate-id` — two case lines with the same `H<n>` id → red.
+- `cases=case-nine` — only nine graded case lines → red.
+
+### T5 — stray scratch dir hidden under an unrelated name in the scanned root
+Attack: leave a surviving scratch directory at the scanned root under a name the
+scan does not match, e.g. `kasegi-r40-l1` (the round-39 R4 survivor), `r40-x`,
+`R40`, `KASEGI-R40`, `.hidden-work`, or a *file* (not a directory) named like a
+seat dir. The round-39 G6 scan only inspected the exact dirs `kasegi-r37`,
+`kasegi-r38`, `kasegi-r39`, so a sibling with any other name was invisible.
+Must-stop: H6. The scan must cover the lane's whole namespace `kasegi-r39*` and
+`kasegi-r40*` (prefix glob, exact match on the prefix, not one exact name) *and*
+every entry type (file, dotfile, symlink, directory) under those prefixes; the
+only tolerated entry is the realpath of the passed `--work` dir (or its clean
+parent chain toward `--work`), exactly as the round-39 `r39=present` logic
+tolerates the work chain. An entry whose scan fails is RED (`read=fail`), never
+silently zero. Because scanning the whole scratch root would red on other lanes'
+active scratch dirs (kengaku-r42, tabi-r35, …), the scan scope is the lane's own
+prefix namespace; a name outside that namespace is out of the frozen kill rule's
+letter, so if the judge wants total root quiescence that is a judge ruling — but
+within the namespace, name matching must never be the only gate.
+Selftest mutants (each must red; control must stay green):
+- `cases=sibling-unrelated-name` — dir `kasegi-r40-build-extra` (prefix-match
+  variant) under the scanned root.
+- `cases=sibling-prefix-adjacent` — dir `kasegi-r40x` (glob-adjacent).
+- `cases=sibling-dotdir` — dir `.kasegi-r40-seat` (dotfile).
+- `cases=sibling-file` — regular file `kasegi-r40-l1` (not a directory).
+- `cases=sibling-symlink` — symlink named `kasegi-r40-seat`.
+- `cases=sibling-work-tolerated` (control) — only the passed `--work` dir exists;
+  green.
+
+### T6 — export path traversal (`../`) and ref resolution
+Attack: (a) a malicious export member that escapes the work dir: git forbids `..`
+and absolute components in tracked paths, so the realistic git-archive vector is a
+*committed symlink* whose target escapes (`corpus/link -> ../../../../etc/passwd`
+or an absolute target); a naive `git archive | tar -xf` writes that symlink into
+the work dir, and any later read through it — or a later tar run re-entering the
+work dir — walks outside the export. (b) A `--export-ref` value that is not the
+full 40-hex commit hash: `rev-parse --verify <want>^{commit}` also resolves `HEAD`,
+branch/tag names and short hashes, so `--export-ref HEAD` exports the live lane
+tip and `--export-ref <short>` can silently select a different commit than the
+one the report names (a live-lane read by substitution).
+Must-stop: this class is not enumerated in H1–H10 as frozen. The extraction guard
+must live in `prepare_export` (before any limb runs) and be proven by a graded
+case. Smallest safe placement: fold it into H5's case set (H5 is the
+anti-forgery check; a malicious export is a forgery vector), and have the suite
+(a) validate the ref *before* extracting: exactly 40 hex chars and `cat-file -t`
+== `commit` — refuse everything else with exit 2 (harness error); (b) after
+extraction, canonicalize every member and refuse any member that is a symlink
+whose normalized target escapes `$EXPORT`, any absolute member path, and any `..`
+component (mirror `g1_path_safe`); (c) extract into a freshly-created empty
+container and treat any `tar` failure as harness error, never as a pass. Note the
+freeze gap for the judge: if H1–H10 are read as closed, this defense is still
+mandatory at the harness level and must be visible as a named graded case.
+Selftest mutants:
+- `cases=export-traversal-symlink` — fixture commit adds `corpus/escape ->
+  ../../../../etc/passwd` (or an absolute target); suite must refuse before any
+  check (exit 2), and under `--selftest` the H5 case must print red.
+- `cases=export-traversal-path` — a declared/emitted path with a `..` component
+  (defense-in-depth; git cannot produce one, so the fixture simulates the tar
+  stream or the path scanner).
+- `cases=ref-alias-head` — `--export-ref HEAD` refused (exit 2).
+- `cases=ref-short` — `--export-ref <12-hex>` refused (exit 2).
+- `cases=ref-blob` — `--export-ref <blob>` refused (exit 2).
+
+### T7 — a check reads the live lane instead of the export
+Attack: implement any H-check limb against the live lane tree (`$LANE/...`) or
+the live worktree instead of the export's copy: e.g. H2 greps the live
+`SCORECARD.md` for the correction lines, H1 checks the live `corpus/instruments/r40-closure.sh`,
+H4 reads the live `corpus/lessons/round-39.md`, H9/H10 run `git diff` against the
+live worktree instead of the export ref. Then an export whose content is red can
+pass because the live lane (checked out at Y, carrying the round's work) is green.
+Must-stop: every content limb. The suite is export-mode only: content reads MUST
+`cd "$tree"` (the export) as the round-39 limbs do; the only legitimate live reads
+are the lane's object database/ancestry (`cat-file`, `merge-base`, `diff` between
+refs) and the by-definition host-state scratch scan (H6). No limb may open a file
+under `$LANE`.
+Selftest mutant per check (`cases=live-lane-read` for H1/H2/H3/H4/H9/H10): the
+dual-state fixture — a fixture repo with two commits c1 and c2 over the same path,
+differing in exactly the byte the check reads; the fixture lane is checked out at
+c2, the export ref is c1. The check must evaluate c1's tree (red where c1 lacks
+the content) and must NOT see c2's worktree bytes. One shared fixture builder can
+serve all content checks: `hist_repo_ready`-style repo, `git checkout <other>` as
+the worktree state, export the other commit.
+
+### T8 — receipt absent / renamed / extra receipt
+Attack: no receipt at the required path (so the run's own tee is the only
+"receipt"), a receipt under a different name, or two receipts (one green, one
+red). The counter must fail closed when the receipt is absent and must identify
+the exact file `.ufo/waves/round-40/final-gates/all-gates.txt`.
+Selftest mutants: `cases=receipt-missing`, `cases=receipt-renamed`, `cases=receipt-extra`.
+
+### T9 — suite-sha256 self-binding forgery
+Attack: a receipt whose `suite-sha256=` digest matches some *other* revision of
+the suite (not the export's `r40-closure.sh`), so a mutated suite can carry a
+receipt that looks self-consistent without matching the export bytes. The
+round-39 G2 digest limb must be carried into H5 and H1: the receipt's
+`suite-sha256=` must equal the digest of the export's own `r40-closure.sh`.
+Selftest mutants: `cases=suite-digest-mismatch` (digest of a different version),
+`cases=suite-digest-missing` (no digest line).
+
+### T10 — declared-blocks gaming (H9)
+Attack: the whole-tail declaration is the source of truth for what the round
+added. Forgeries: declare only a suffix of the real appended tail (so lines added
+above the declared block pass as "declared"); declare a path that was modified
+in place (numstat M) as a pure append; declare an extra path not in the diff at
+all; declare more lines than were added; duplicate a declaration; declare a path
+with deletions (zero deletions must hold for every declared path and for the
+whole round diff).
+Must-stop: H9 — for every declared path, the declared block must equal the *whole*
+`git diff --numstat base..ref` added line count, with zero deletions, and the
+declared tail's sha must match the file's actual tail bytes (the round-39
+`g1_declare` full/short fixture pattern, extended). A path declared twice is
+validated twice; a path with any deleted line is red.
+Selftest mutants: `cases=blocks-short` (declare one line less), `cases=blocks-long`
+(declare one line more), `cases=blocks-modified` (a line edited in place, not
+appended — declared as pure append), `cases=blocks-nonexistent` (declare a path
+absent from the round diff), `cases=blocks-deleted` (declare a path whose diff has
+deletions), `cases=blocks-duplicate` (declare the same path twice with different
+line counts).
+
+### T11 — no-harm gaming (H10)
+Attack: pass the "append-only / no deletion" check while actually harming: edit a
+line in place in SKILL.md or PROVINCE.md (same line count, so `wc -l` and even a
+tail-sha check can miss it if the edit is inside the declared block's line count);
+delete a tracked path anywhere in the round's diff; change the depth:density
+instrument (`corpus/instruments/density.py`) so the density measurement changes.
+Must-stop: H10 — the round diff must contain zero deletions for every tracked
+path, SKILL.md and PROVINCE.md must be strictly append-only *by diff* (added lines
+only, no modified hunks), and the density instrument bytes at Y must equal the
+bytes at base (its sha in the declared/checked set).
+Selftest mutants: `cases=harm-inplace-edit` (one line edited in place in SKILL.md,
+line count unchanged), `cases=harm-deleted-path` (a tracked path removed in the
+round diff), `cases=harm-density-changed` (one byte changed in density.py).
+
+## 3. ExecSuiteBuild coverage checklist (names that must be covered)
+
+Every name in the §1 table must exist as a committed fixture/knob in the
+selftest case of its check, and each case must print `mutants=N/N` with N equal to
+its set size. Minimum per-check set sizes: H5 ≥ 19 mutants (T1, T2×5, T3×4,
+T4×7, T8×3, T9×2, T6×3 — see note), H6 ≥ 6, H7 ≥ 1 (determinism re-run) plus
+the T3 mutants shared with H5, H9 ≥ 6, H10 ≥ 3, H1/H2/H3/H4 each ≥ 1
+(`cases=live-lane-read`) plus their natural negative fixtures (missing suite /
+missing correction / missing criterion / missing gate-row URL-date-quote). H8's
+graded case must prove the base and r39-head reds are genuine — the same limbs
+red, not a vacuous short-circuit: build fixture refs that carry the full round
+content except the round's additions and require the same red needles the real
+negative controls print (`closed<10/10` with named red limbs).
+
+
+Freeze-gap note (for the judge): T6 (export path traversal / ref resolution) is
+not enumerated in H1–H10 as frozen. It is mandatory at the harness level regardless
+and is folded into H5's case set here so it appears in the graded count; if the
+judge prefers a separate limb, the suite's `CHECK_IDS` and the receipt's run block
+must grow accordingly and the frozen count (`closed=10/10`) would need an erratum
+— do not silently add an eleventh check without one.
+
+Determinism note (H7): the tee must be produced by one invocation
+(`--selftest --export-ref <Y>` with no `--lane`/`--scratch-root` deviations) with
+a single clock, written atomically (tmp + rename) only after the run completes.
+H7's byte-identity re-run must use identical arguments and the same `--work`; a
+receipt that records deviation lines, or a run that embeds mutable host state
+(e.g. a `tolerated=` path that changes between runs), cannot be reproduced and is
+a defect, not an excuse to relax the byte comparison.

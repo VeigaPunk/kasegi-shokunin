@@ -1,0 +1,287 @@
+# Round 40 — assimilation: id-collision guard and quarantine slice
+
+Read-only against `/home/vgpnk/Projects/shokuknow`; no campaign tool was run there.
+
+## 1. Inputs and the pin
+
+| what | path | sha256 | size |
+|---|---|---|---|
+| lane registry | `kasegi-shokunin/corpus/SOURCES.md` | `f33d10f45142b6d59969cedbfc35a1d29a3ba672d62067da8424fc0d32a728f2` | 132 lines |
+| staged package | `shokuknow/merge/kasegi/SOURCES.append.md` | `4fe049cbe4bac6c7924392bc162d2792032e7e3780f7f6da316cb8c6d87e73eb` | 94 rows |
+| defect register | `shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md` | — | kasegi rows: 7 |
+
+Lane head at measurement: `5e985b74075dd3813a63d7750966bf8abf693465` (claims-freeze).
+Measured `2026-10-26T21:17:26Z`. The package's sha256 is unchanged from round 39
+(`4fe049cb…`), so its 7 refusals carry byte-identical.
+
+## 2. reg-ids — 59
+
+```
+S001 S002 S003 S004 S005 S006 S007 S008 S009 S010 S011 S012 S013 S014 S015 S016 S017
+S018 S019 S020 S021 S022 S023 S024 S025 S026 S027 S028 S029 S030 S031 S032 S033 S034
+S035 S036 S037 S038 S039 S040 S041 S042 S043 S044 S045 S046 S047 S048 S049 S050 S051
+S052 S053 S054 S055 S056 S057 S058 S059
+```
+
+Extractor (0-3 leading spaces, the §10 form):
+
+```
+grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' corpus/SOURCES.md | grep -oE 'S[0-9]+' | sort -u
+```
+
+## 3. staged-ids — 94
+
+```
+S031 S032 S033 S034 S035 S036 S037 S038 S039 S040 S041 S042 S043 S044 S045 S046 S047
+S048 S049 S050 S051 S052 S053 S054 S055 S056 S057 S058 S059 S060 S061 S062 S063 S064
+S065 S066 S067 S068 S069 S070 S071 S072 S073 S074 S075 S076 S077 S078 S079 S080 S081
+S082 S083 S084 S085 S086 S087 S088 S089 S090 S091 S092 S093 S094 S095 S096 S097 S098
+S099 S100 S101 S102 S103 S104 S105 S106 S107 S108 S109 S110 S111 S112 S113 S114 S115
+S116 S117 S118 S119 S120 S121 S122 S123 S124
+```
+
+## 4. Collisions — 29
+
+```
+grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' <file> | grep -oE 'S[0-9]+' | sort -u > ids
+comm -12 reg-ids staged-ids
+```
+
+**collisions = 29 — S031 S032 S033 S034 S035 S036 S037 S038 S039 S040 S041 S042 S043
+S044 S045 S046 S047 S048 S049 S050 S051 S052 S053 S054 S055 S056 S057 S058 S059**
+
+Breakdown of the 29, by whether the colliding number names the same document:
+
+| kind | count | ids |
+|---|---|---|
+| same number, **different** document (true id collision) | 28 | S031–S041, S043–S059 |
+| same number **and** same URL | 1 | S042 — `https://www.ipa.go.jp/security/todokede/vuln/process.html` (lane S042, staged S042) |
+
+Document-level duplicates across the whole package — a staged row whose URL is already a
+mined lane row (these are not new sources; a renumber map that assigns them a new id would
+hold the same document twice):
+
+| staged | lane | URL |
+|---|---|---|
+| S031 | S043 | hackerone.com/security/policy_versions |
+| S032 | S044 | bugcrowd vulnerability-rating-taxonomy README.md |
+| S033 | S045 | bugcrowd vulnerability-rating-taxonomy cwe.json |
+| S034 | S049 | zc.cnvd.org.cn/news/helpList |
+| S035 | S050 | security.360.cn/Reward/rules |
+| S039 | S033 | laws.e-gov.go.jp/api/1/lawdata/411AC0000000128 |
+| S040 | S034 | soumu.go.jp/…/legal/09/ |
+| S041 | S035 | npa.go.jp/bureau/cyber/pdf/1_kaisetsu.pdf |
+| S042 | S042 | ipa.go.jp/security/todokede/vuln/process.html |
+| S043 | S041 | jpcert.or.jp/vh/partnership_guideline2026.pdf |
+| S049 | S046 | ipa.go.jp/…/jvn/ug65p90000019ev2-att/000095610.pdf |
+| S050 | S047 | ipa.go.jp/…/jvn/ipedia2026q3.html |
+| S055 | S036 | cybozu.co.jp/company/security-policy/ |
+| S056 | S037 | cybozu.co.jp/products/bug-bounty/faq/ |
+| S057 | S038 | pepabo.com/contact/vulnerability-reporting/ |
+| S060 | S039 | hitachi.co.jp/hirt/publications/hirt-pub10008/index.html |
+| S064 | S041 | jpcert.or.jp/vh/partnership_guideline2026.pdf |
+| S068 | S040 | cisco.com/…/security-vulnerability-policy.html |
+| S076 | S041 | jpcert.or.jp/vh/partnership_guideline2026.pdf |
+| S080 | S048 | microsoft.com/en-us/msrc/msvr |
+| S123 | S032 | nvlpubs.nist.gov/…/nistspecialpublication800-115.pdf |
+
+21 document-level duplicates; 15 of them sit inside the 29 colliding ids (S031–S035,
+S039–S043, S049, S050, S055–S057), leaving 14 colliding numbers that name documents the
+lane does not hold.
+
+## 5. Renumber map
+
+**None filed. No staged row is adopted this round, so no staged row receives a lane id**
+(§7: seven quarantine rows, zero adoptable). A map is written only for adopted rows —
+round 24 filed one and round 32 had to correct it (staged S034 is CNVD `helpList`, not the
+row the r24 map recorded), which is the cost of a speculative map.
+
+The rule the next adopting round applies:
+
+1. Read the lane registry max **at adoption time** and continue above it in document order;
+   never reuse a package number.
+2. Today the max is **S059**, so the next free id is **S060** — which is exactly the id the
+   round-40 coverage rows take. The staged package also holds an S060
+   (Hitachi HIRT-PUB10008), and every staged number S060–S124 is a *currently free* number
+   in the lane. The moment the lane opens S060 for a document other than Hitachi, the
+   collision set grows by one: 29 → 30. **Re-run this guard after the round-40 registry
+   rows land, not before** — the 29 measured here is a lower bound for the round.
+3. A staged row whose URL is already a mined lane row (§4 second table) is refused as a
+   duplicate before any id question is asked.
+
+## 6. Guard proof — the 0-3-space form is required
+
+Fixture (scratch, recreated by the script below): the registry fixture's S002 row is
+**indented by two spaces**; the staged fixture carries S002 at column 0.
+
+```
+== §10 id-collision guard: failure-mode proof (round 40) ==
+cwd: /fast/scratch/hyaku/kasegi-r40/ExecAssimilation
+
+-- fixture bytes --
+$ grep -nE '^ *\|' fixture/fixture-SOURCES.md
+1:| id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |
+2:|---|---|---|---|---|---|---|---|---|---|---|
+3:| S001 | Fixture Document Alpha — https://example.invalid/alpha | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |
+4:  | S002 | Fixture Document Beta — https://example.invalid/beta | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |
+[exit 0]
+
+$ grep -nE '^ *\|' fixture/fixture-staged.md
+1:| id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |
+2:|---|---|---|---|---|---|---|---|---|---|---|
+3:| S002 | Fixture Document Beta, staged — https://example.invalid/beta | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |
+4:| S003 | Fixture Document Gamma, staged — https://example.invalid/gamma | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |
+[exit 0]
+
+-- A. GUARD PATTERN (0-3 leading spaces) --
+$ grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' fixture/fixture-SOURCES.md | grep -oE 'S[0-9]+' | sort -u > fixture/a-reg-ids
+[exit 0]
+
+$ grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' fixture/fixture-staged.md | grep -oE 'S[0-9]+' | sort -u > fixture/a-staged-ids
+[exit 0]
+
+$ comm -12 fixture/a-reg-ids fixture/a-staged-ids > fixture/a-collisions
+[exit 0]
+
+$ printf 'a-reg-ids   lines=%s  ' "$(wc -l < fixture/a-reg-ids)"; tr '\n' ' ' < fixture/a-reg-ids; echo
+a-reg-ids   lines=2  S001 S002 
+[exit 0]
+
+$ printf 'a-staged-ids lines=%s  ' "$(wc -l < fixture/a-staged-ids)"; tr '\n' ' ' < fixture/a-staged-ids; echo
+a-staged-ids lines=2  S002 S003 
+[exit 0]
+
+$ printf 'a-collisions lines=%s  ' "$(wc -l < fixture/a-collisions)"; tr '\n' ' ' < fixture/a-collisions; echo
+a-collisions lines=1  S002 
+[exit 0]
+
+-- B. COLUMN-ZERO-ONLY PATTERN (^|) over the same two fixtures --
+$ grep -oE '^\|[[:space:]]*S[0-9]{3,}' fixture/fixture-SOURCES.md | grep -oE 'S[0-9]+' | sort -u > fixture/b-reg-ids
+[exit 0]
+
+$ grep -oE '^\|[[:space:]]*S[0-9]{3,}' fixture/fixture-staged.md | grep -oE 'S[0-9]+' | sort -u > fixture/b-staged-ids
+[exit 0]
+
+$ comm -12 fixture/b-reg-ids fixture/b-staged-ids > fixture/b-collisions
+[exit 0]
+
+$ printf 'b-reg-ids   lines=%s  ' "$(wc -l < fixture/b-reg-ids)"; tr '\n' ' ' < fixture/b-reg-ids; echo
+b-reg-ids   lines=1  S001 
+[exit 0]
+
+$ printf 'b-staged-ids lines=%s  ' "$(wc -l < fixture/b-staged-ids)"; tr '\n' ' ' < fixture/b-staged-ids; echo
+b-staged-ids lines=2  S002 S003 
+[exit 0]
+
+$ printf 'b-collisions lines=%s  ' "$(wc -l < fixture/b-collisions)"; tr '\n' ' ' < fixture/b-collisions; echo
+b-collisions lines=0  
+[exit 0]
+
+-- C. VERDICT --
+A (0-3 spaces) reports 1 collision (S002); B (^| only) reports 0.
+B misses the indented duplicate, so the guard form MUST tolerate 0-3 leading spaces.
+```
+
+On the real inputs today both forms agree (29 / 29) because neither file carries an
+indented row: `grep -cE '^ {1,3}\|[[:space:]]*S[0-9]{3,}'` → `0` for `corpus/SOURCES.md`
+and `0` for `SOURCES.append.md`. The 0-3-space form is therefore not redundant — it is the
+form that still works after the first indented paste, which is the only failure this guard
+exists to catch.
+
+Reproduction script (self-contained, writes only under `./fixture`):
+
+```bash
+#!/usr/bin/env bash
+set -u
+mkdir -p fixture
+printf '%s\n' \
+ '| id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |' \
+ '|---|---|---|---|---|---|---|---|---|---|---|' \
+ '| S001 | Fixture Document Alpha — https://example.invalid/alpha | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |' \
+ '  | S002 | Fixture Document Beta — https://example.invalid/beta | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |' \
+ > fixture/fixture-SOURCES.md
+printf '%s\n' \
+ '| id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |' \
+ '|---|---|---|---|---|---|---|---|---|---|---|' \
+ '| S002 | Fixture Document Beta, staged — https://example.invalid/beta | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |' \
+ '| S003 | Fixture Document Gamma, staged — https://example.invalid/gamma | docs | A | fixture | fixture | fixture | mined | 2026-10-25 | 180d | — |' \
+ > fixture/fixture-staged.md
+run() { printf '$ %s\n' "$*"; bash -c "$*"; printf '[exit %s]\n\n' "$?"; }
+echo "-- A. GUARD PATTERN (0-3 leading spaces) --"
+run "grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' fixture/fixture-SOURCES.md | grep -oE 'S[0-9]+' | sort -u > fixture/a-reg-ids"
+run "grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' fixture/fixture-staged.md | grep -oE 'S[0-9]+' | sort -u > fixture/a-staged-ids"
+run "comm -12 fixture/a-reg-ids fixture/a-staged-ids > fixture/a-collisions"
+run "printf 'a-collisions lines=%s  ' \"\$(wc -l < fixture/a-collisions)\"; tr '\n' ' ' < fixture/a-collisions; echo"
+echo "-- B. COLUMN-ZERO-ONLY PATTERN (^|) --"
+run "grep -oE '^\|[[:space:]]*S[0-9]{3,}' fixture/fixture-SOURCES.md | grep -oE 'S[0-9]+' | sort -u > fixture/b-reg-ids"
+run "grep -oE '^\|[[:space:]]*S[0-9]{3,}' fixture/fixture-staged.md | grep -oE 'S[0-9]+' | sort -u > fixture/b-staged-ids"
+run "comm -12 fixture/b-reg-ids fixture/b-staged-ids > fixture/b-collisions"
+run "printf 'b-collisions lines=%s  ' \"\$(wc -l < fixture/b-collisions)\"; tr '\n' ' ' < fixture/b-collisions; echo"
+```
+
+Expected: `a-collisions lines=1  S002`, `b-collisions lines=0`.
+
+## 7. Quarantine slice — 7 kasegi rows, verdict per row
+
+Source: `absent-defect-register.md`, `## Rows` (kasegi ×2, `payload-absent`) and
+`## Rows whose quotes were NEVER CHECKED` (kasegi ×5). The register's ids are **staged
+package** numbers, not lane ids (`grep` over `corpus/SOURCES.md` for each cited URL: only
+the Cisco URL is a lane row, S040). Live re-checks below ran
+`curl -sS -L --max-time 90 -A kasegi-shokunin/1.0` at `2026-10-26T21:18Z`.
+
+| row | register class | what it names | live re-check | verdict |
+|---|---|---|---|---|
+| S037 | `payload-absent` | GB/T 30279-2020, 标准信息 record | **HTTP 200, 24131 bytes**; page carries `标准号：GB/T 30279-2020`, `中文标准名称：信息安全技术 网络安全漏洞分类分级指南`, `标准状态： 现行`, `发布日期 … 2020-11-19`, `实施日期 … 2021-06-01` | **refuse** (not a fabrication) |
+| S054 | `payload-absent` | 内閣府サイバー官民連携室 要請, IPA `request_to_ipa.pdf` | **HTTP 200, 513648 bytes**; `pdftotext -enc UTF-8` → 8785 bytes, lines 42–43 read `…の悪用が確認` / `されたもの又は疑われるもの`, i.e. the quoted sentence is present with the parenthetical `（（法第 42 条第１項に規定する脆弱性をいう。以下同じ。）` elided and a line wrap inside it | **refuse** (not a fabrication) |
+| S048 | never checked (unreachable) | 标准计划 20260806-T-469 record | **HTTP 404, 748-byte error body** | **unreachable** |
+| S065 | never checked (unreachable) | 全国人大常委会《现行有效法律目录》 PDF | **HTTP 200, 7465472 bytes**; bare `pdftotext` → **0 bytes**, `pdftotext -layout` → 34332 bytes, `#1182` `刑法（7 件）`, `#1184` `中华人民共和国刑法（1979 年通过，1997 年修订，` … `2009 年修正）` | **refuse** (payload verified; entry gate fails — see below) |
+| S068 | never checked (unreachable) | Cisco Security Vulnerability Policy | URL is **lane S040**, `status: mined`, `corpus/knowledge/vendor-disclosure-policy-commitments-crosswalk.md` | **refuse** (document already held; duplicate) |
+| S069 | never checked (unreachable) | GB/T 30279—202X 征求意见稿 (dcpspTools) | **HTTP 200 with a 0-byte body** | **unreachable** |
+| S070 | never checked (unreachable) | GB/T 30279—202X 编制说明 (dcpspTools) | **HTTP 200 with a 0-byte body** | **unreachable** |
+
+**Adopted: 0. Adoptable under PROVINCE/QUALITY this round: 0.** Standing refusals carried.
+
+Why the three reachable rows still do not pass:
+
+- **S037** — the staged entry `chinese-vulnerability-taxonomy-and-grading.md` declares
+  `ground: F14 (new frontier item)`; lane F14 is *Japanese severity vocabulary and the
+  handling-priority model* (`corpus/README.md:284`), an unrelated admitted item, so the
+  entry fails the record's frontier binding (Q1's ground field). Its "quote" in the register
+  is a four-field concatenation of adjacent table cells (`信息安全技术 … 标准状态：现行
+  发布日期：2020-11-19 实施日期：2021-06-01`), not a contiguous span, so it fails Q3 as
+  written. Round 24 judged the Chinese national grading-standard family **adjacent**
+  (a standards body's classification instrument, not a program rule, scope, triage gate or
+  claim package). The payload is real; the entry is not admissible in this form.
+- **S054** — the staged entry is `authorization-safe-harbor-and-scope-2026-10-23-amendment.md`,
+  an amendment layer over the **admitted** lane entry `authorization-safe-harbor-and-scope.md`
+  (F03). Landing it edits an admitted entry, and its `ground:`/province framing would move a
+  statutory Cabinet-Office track into a platform safe-harbour entry. Quote shape is also
+  non-contiguous (elided parenthetical + line wrap).
+- **S065** — the staged entry `chinese-statute-version-drift-2026-10-23-r4-amendment.md`
+  declares `ground: F17 (statutory version drift in official sources)`; lane F17 is
+  *Immunefi Vulnerability Severity Classification System v2.2*
+  (`corpus/README.md:361`). It is also an r4 amendment to a base entry the lane does not
+  hold. The payload itself is now verified, so the register's `unreachable` class for this
+  row is **stale** — the extraction quirk is that the default `pdftotext` mode yields 0
+  bytes and `-layout`/`-raw` yields the text.
+
+Corrections this slice files against the standing record (round 39 said "2 quote-defective,
+4 unreachable, 1 unverifiable; 0 adopted"): the two `payload-absent` rows are **quote-shape
+defects, not fabrication** — both payloads are in their sources today; S048 is a **404**, not
+a transient fetch failure; S065 is **reachable**; S069/S070 remain unfetchable (empty body).
+
+## 8. Recommendation
+
+1. Carry the standing refusals on all seven rows; file **no** renumber map and adopt nothing
+   this round.
+2. Re-run this guard **after** the round-40 registry rows land: collision count is a lower
+   bound at 29 and S060–S124 are all free lane numbers today, one of which (staged S060,
+   Hitachi HIRT-PUB10008 = lane S039's document) is a document duplicate waiting at the
+   round's own next id.
+3. Before any future adoption, require: (a) the entry's `ground:` re-derived against the
+   current `corpus/README.md` F-table (three staged entries checked here name the wrong
+   frontier item); (b) a contiguous ≤25-word quote (S037, S054, S065 all fail Q3 by
+   concatenation, elision or line wrap, though the payload exists); (c) a document-level
+   duplicate check against the lane (21 staged rows are already-held documents).
+4. S065 is the best next-round candidate — payload verified, only the ground label and the
+   base/amendment split block it.

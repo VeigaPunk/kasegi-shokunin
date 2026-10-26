@@ -512,3 +512,32 @@ at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29,
 F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round
 37, F21 at round 38, F22 at round 39. The 0/18 sentence is untouched: the lost-domain denominator
 still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+
+## Round-40 admission — coverage map row and Frontier F23 (appended 2026-10-26)
+
+The coverage map above is not edited in place (R6): the round-40 entry
+`knowledge/cyclonedx-analysis-subtree.md` (Frontier F23, source S060; source basis: the CycloneDX
+v1.7 JSON reference's `vulnerabilities[].analysis` subtree at https://cyclonedx.org/docs/1.7/json/ —
+the `analysis.state`, `analysis.justification` and `analysis.response` fields that record an
+analyst's decision about a vulnerability — captured 2026-10-26 under `corpus/source-snapshots/round-40/`)
+is recorded here as an appended amendment so every existing line keeps its number. The coverage-map
+row is appended here rather than inserted into the map, and the F23 frontier row is listed here
+on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Vulnerability analysis decisions in a CycloneDX BOM (round 40) | knowledge/cyclonedx-analysis-subtree.md | S060 — public primary, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F23 | CycloneDX v1.7 `vulnerabilities[].analysis` — the analyst-decision record (six states, nine justifications, five responses) beyond CSAF/VEX product status | admitted | knowledge/cyclonedx-analysis-subtree.md | S060 | Read an analyst decision from the BOM's own `analysis` object, not from a product-status block: `state` is one scalar of six values — "Declares the current state of an occurrence of a vulnerability, after automated or manual analysis." (S060.txt:L7) — and `false_positive` (S060.txt:L14) has no CSAF `product_status` twin; `justification` is one of nine reasons whose rule is only "Justification should be specified for all not_affected cases." (S060.txt:L15), weaker than S055's flag SHALL (S055.txt:L2151-L2152); `response` is a repeatable intention (S060.txt:L32), not a status change; and a version entry that omits its status defaults to `affected` (S060.txt:L105). None of this is an issuance or inheritance rule — that layer is S057's. |
+
+[r40 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 40 the frontier stands at **23/23 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round
+37, F21 at round 38, F22 at round 39, F23 at round 40. The 0/18 sentence is untouched: the
+lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
+outside it.

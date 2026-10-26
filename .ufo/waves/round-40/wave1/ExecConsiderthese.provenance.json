@@ -1,0 +1,82 @@
+{
+  "package": "claims/immunefi-sky/2026-10-26-public-disclosure-reprice/",
+  "produced_utc": "2026-10-26T21:24:00Z",
+  "agents": [
+    {
+      "identity": "ExecConsiderthese",
+      "role": "producer",
+      "requested_model": "deepseek-v4.1-flash",
+      "resolved_model": "deepseek-v4.1-flash",
+      "fallback": false,
+      "transition": "wave-1 item build"
+    },
+    {
+      "identity": "kasegi-shokunin L1 (KasegiR40)",
+      "role": "dispatcher",
+      "requested_model": null,
+      "resolved_model": null,
+      "fallback": false,
+      "transition": "item assignment; no review performed"
+    }
+  ],
+  "reviewer_attached": false,
+  "commands": [
+    {
+      "cmd": "curl -sS -L --max-time 90 -A kasegi-shokunin/1.0 -o review.html -w '%{http_code}|%{size_download}|%{url_effective}' https://immunefi.com/blog/bug-fix-reviews/sky-remote-code-execution-bugfix-review/",
+      "exit": 0,
+      "observed": "200|54099|https://immunefi.com/blog/bug-fix-reviews/sky-remote-code-execution-bugfix-review/",
+      "at_utc": "2026-10-26T21:19:05Z"
+    },
+    {
+      "cmd": "curl -sS -L --max-time 90 -A kasegi-shokunin/1.0 -o program.html -w '%{http_code}|%{size_download}|%{url_effective}' https://immunefi.com/bug-bounty/sky/",
+      "exit": 0,
+      "observed": "200|554144|https://immunefi.com/bug-bounty/sky/information/ (HTTP 307 hop)",
+      "at_utc": "2026-10-26T21:19:06Z"
+    },
+    {
+      "cmd": "curl (second independent fetch of both pages) then sha256sum review.html program.html review.re.html program.re.html",
+      "exit": 0,
+      "observed": "review raw byte-identical; program raw differs only in the CSP nonce; normalized bodies byte-identical",
+      "at_utc": "2026-10-26T21:19:12Z"
+    },
+    {
+      "cmd": "grep -n <quote> over the normalized captures (line numbers cited in report.md)",
+      "exit": 0,
+      "observed": "each cited line number re-derived from the shipped artifact",
+      "at_utc": "2026-10-26T21:22:00Z"
+    },
+    {
+      "cmd": "grep -c '\"cveID\"' corpus/source-snapshots/round-35/S052.txt",
+      "exit": 0,
+      "observed": "1756",
+      "at_utc": "2026-10-26T21:21:18Z"
+    },
+    {
+      "cmd": "grep -ic 'makerdao' | grep -ic 'gray-matter\\|gray matter' | grep -icE '\\bsky\\b' | grep -ic 'vote\\.' on the KEV capture",
+      "exit": 1,
+      "observed": "0 each; exit 1 is grep's no-match status",
+      "at_utc": "2026-10-26T21:21:18Z"
+    },
+    {
+      "cmd": "python3 build-evidence.py; python3 build-rest.py; python3 build-package.py (scratch builders emitting the shipped artifacts and package bytes)",
+      "exit": 0,
+      "observed": "artifacts and package files written to .ufo/waves/round-40/wave1/",
+      "at_utc": "2026-10-26T21:24:00Z"
+    }
+  ],
+  "pin": {
+    "remote": "https://github.com/VeigaPunk/kasegi-shokunin.git",
+    "commit": "a7af2ce63bce153757d39bf66b366a96caf30c13",
+    "kind": "lane base commit read-only"
+  },
+  "policy_sha256": "4d42eed1afa00ff0dafcfea235e2f48c3b607fd67cdbe1d489504f1a098a155c",
+  "program_policy_sha256": "7bcbd40754a37f838b48ffc19de3d59019e8081c94516689a4eac9e158ee95d9",
+  "program_policy_path": "evidence/sky-program-scope-rewards.txt",
+  "external_effects_performed": [],
+  "secrets_attestation": {
+    "credentials_in_package": false,
+    "tokens_or_session_material_read": false,
+    "captures_contain_no_private_data": "both sources are public web pages; the disclosure quotes no secret"
+  },
+  "no_submission_performed": true
+}

@@ -1,0 +1,231 @@
+# MutKillList — mutation catalogue for corpus/instruments/r40-closure.sh (round 40, wave 1)
+
+Detector: the suite's own graded selftest,
+  bash r40-closure.sh --selftest --export-ref 5e985b74075dd3813a63d7750966bf8abf693465
+with --lane/--work/--scratch-root pinned under the seat scratch, identical for every run.
+Pristine bytes: .ufo/waves/round-40/wave1/ExecSuiteBuild.r40-closure.sh, sha256
+bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e, 1734 lines. Baseline case
+lines: H1 3/3, H2 3/3, H3 2/2, H4 3/3, H5 2/2, H6 4/4, H7 6/6, H8 0/2, H9 5/5, H10 3/3.
+H8's 0/2 is a baseline failure at this ref — the export predates the suite, so check_h8
+short-circuits at suite=0 and the graded needles never fire; H8 is judged by direct probe.
+Killed = a case line's mutant count drops below baseline (the weakened check now accepts a
+fixture) or the positive limb flips. Survived = the selftest is unchanged. Every patch was
+applied to a scratch copy; the wave-dir file was never modified (re-hashed identical after
+the campaign) and a restored-pristine re-run reproduced the baseline byte-identically
+(modulo the --work path in one stderr diagnostic).
+
+## M01 H1 registry-row gate accepts zero
+find:
+    [ "$have" -eq 1 ] && [ "$dig" -eq 1 ] && [ "$reg" -eq 1 ] && exit 0
+replace:
+    [ "$have" -eq 1 ] && [ "$dig" -eq 1 ] && [ "$reg" -ge 0 ] && exit 0
+reopens: H1 green with no r40-closure.sh registry row in SKILL.md or the instruments README
+verdict: killed
+evidence: selftest case=H1 mutants=3/3 -> 2/3; mutant=registry-row-absent rejected=0 rc=0
+  payload=suite=1,digest=1,registry=0,registry-in=none
+
+## M02 H2 named-correction gate accepts zero
+find:
+      [ "$n" -ge 1 ] || missing=$((missing + 1))
+replace:
+      [ "$n" -ge 0 ] || missing=$((missing + 1))
+reopens: a record with no `Correction (round 40)` line at all, and a record whose correction
+  line omits the final r39 receipt values, both pass H2
+verdict: killed
+evidence: selftest case=H2 mutants=3/3 -> 1/3; lesson-correction-absent rejected=0 rc=0
+  payload=corrections=3,named=3,missing=0,fences=closed; values-not-named rejected=0 rc=0
+  payload=corrections=4,named=3,missing=0,fences=closed
+
+## M03 H2 closed-fence gate dropped
+find:
+    [ "$missing" -eq 0 ] && [ "$fences" = closed ] && exit 0
+replace:
+    [ "$missing" -eq 0 ] && exit 0
+reopens: corrections counted inside an unclosed fence pass H2
+verdict: killed
+evidence: selftest case=H2 mutants=3/3 -> 2/3; fence-open-at-eof rejected=0 rc=0
+  payload=corrections=4,named=4,missing=0,fences=open
+
+## M04 H3 criterion-row gate accepts zero
+find:
+    [ "$mentions" -ge 1 ] && [ "$rows" -ge 1 ] && exit 0
+replace:
+    [ "$mentions" -ge 1 ] && [ "$rows" -ge 0 ] && exit 0
+reopens: M39-2 cited in prose with no criterion table row passes H3
+verdict: killed
+evidence: selftest case=H3 mutants=2/2 -> 1/2; mention-without-criterion-row rejected=0 rc=0
+  payload=mentions=1,rows=0
+
+## M05 H4 quote-length cap 25 -> 2500 (both occurrences)
+find (2 occurrences; pristine lines 661 and 669):
+        if (c > 25) over++
+replace:
+        if (c > 2500) over++
+reopens: a located quote over 25 words counts as valid; the oversize limb never fires
+verdict: killed
+evidence: selftest case=H4 mutants=3/3 -> 2/3; quote-over-25-words rejected=0 rc=0
+  payload=s056=1,s058=1,s059=1,oversize=0
+
+## M06 H4 URL requirement disabled
+find:
+      url = (buf ~ /https?:\/\/[^ )>]+/) ? 1 : 0
+replace:
+      url = (buf ~ /https?:\/\/[^ )>]+/) ? 1 : 1
+reopens: a Gate block with no URL counts as located
+verdict: killed
+evidence: selftest case=H4 mutants=3/3 -> 2/3; url-absent rejected=0 rc=0
+  payload=s056=1,s058=1,s059=1,oversize=0
+
+## M07 H5 future-dated run-utc accepted
+find:
+    [ "$control" -eq 8 ] && [ "$utc" = 1 ] && [ "$forged" = rejected ] \
+replace:
+    [ "$control" -eq 8 ] && [ "$utc" != never ] && [ "$forged" = rejected ] \
+reopens: a receipt whose run-utc post-dates the verification clock (not-future=0) passes H5
+verdict: killed
+evidence: selftest case=H5 mutants=2/2 -> 1/2; source-future-dated rejected=0 rc=0 payload=
+  source=1,control=8/8,utc=0,forged-payload=rejected,future-dated=rejected,summary-only=rejected
+
+## M08 H5 recorded-payload binding disabled  ** SURVIVED **
+find:
+    [ "$control" -eq 8 ] && [ "$utc" = 1 ] && [ "$forged" = rejected ] \
+replace:
+    [ "$control" -ge 0 ] && [ "$utc" = 1 ] && [ "$forged" = rejected ] \
+reopens: a receipt whose recorded payload contradicts the export passes H5 whenever the
+  forged id is not H3 — the only id the selftest's forged fixture tampers with
+verdict: SURVIVED
+evidence: selftest unchanged (case=H5 mutants=2/2; the H3-forged fixture is still rejected
+  by the forged-payload variant machinery, so the fixture set cannot see this weakening).
+  Direct probe (check_h5 on an H2-forged receipt; identical payload both runs:
+  control=7/8,utc=1,forged-payload=rejected,future-dated=rejected,summary-only=rejected):
+  pristine rc=1, mutant rc=0 — accepted.
+L1 finding: H5's fixture set forges only the H3 payload id. Add fixtures forging each of
+  the eight payload ids (or at least one non-H3 id) so a control-gate weakening is graded.
+
+## M09 H6 family pattern narrowed to the exact name kasegi-r39
+find:
+        kasegi-r39*|kasegi-r40*) ;;
+replace:
+        kasegi-r39) ;;
+reopens: the round-39 R4 class — a stray sibling named kasegi-r39-stray / kasegi-r40-stray
+  (family-adjacent, not exact) is invisible to the scan
+verdict: killed
+evidence: selftest case=H6 mutants=4/4 -> 2/4; r39-sibling-family rejected=0 rc=0 and
+  r40-sibling-family rejected=0 rc=0, both payload=strays=0,read=ok
+
+## M10 H6 work-tolerance widened to every family entry
+find:
+        "$r"|"$r"/*) continue ;;
+replace:
+        *) continue ;;
+reopens: every kasegi-r39*/kasegi-r40* entry is tolerated as this run's --work; the scan
+  counts nothing
+verdict: killed
+evidence: selftest case=H6 mutants=4/4 -> 1/4; empty-sibling-family-entry,
+  r39-sibling-family and r40-sibling-family all rejected=0 rc=0 payload=strays=0,read=ok
+
+## M11 H7 byte-identity cmp disabled  ** SURVIVED **
+find:
+    cmp -s -- "$rebuild" "$f" || ok=0
+replace:
+    cmp -s -- "$rebuild" "$rebuild" || ok=0
+reopens: the cmp clause is dead; a receipt that is shape-clean but not byte-identical to the
+  rebuilt transcript (e.g. two payload lines reordered) passes H7
+verdict: SURVIVED
+evidence: selftest unchanged (case=H7 mutants=6/6; all six fixtures are caught by shape
+  limbs — none isolates cmp). Direct probe (check_h7 on a receipt whose every shape limb is
+  green, two payload lines swapped): pristine rc=1, mutant rc=0 — accepted.
+L1 finding: add a reorder fixture (shape-clean, byte-different) so the cmp clause is graded.
+
+## M12 H8 negative-control gates accept a green tally  ** SURVIVED **
+find:
+  [ "$b" -lt 10 ] && [ "$rc" -eq 1 ] && [ "$r" -lt 10 ] && [ "$rk" -eq 1 ] && return 0
+replace:
+  [ "$b" -le 10 ] && [ "$rc" -eq 1 ] && [ "$r" -le 10 ] && [ "$rk" -eq 1 ] && return 0
+reopens: a negative control that prints closed=10/10 (a green base or r39-head run) is
+  accepted by H8
+verdict: SURVIVED
+evidence: selftest inconclusive at this ref (case=H8 mutants=0/2 at baseline — the export
+  predates the suite; at Y the two unresolvable-ref fixtures still cannot see this mutant).
+  Direct probe (check_h8 on a fixture tree whose r40-closure.sh prints closed=10/10 exit=1
+  for both controls; payload base=10/10,base-exit=1,r39=10/10,r39-exit=1): pristine rc=1,
+  mutant rc=0 — accepted.
+L1 finding: H8's fixtures only exercise unresolvable-ref fail-closed; no fixture exercises
+  a green or tampered control, so the -lt/-eq clauses are ungraded. Add a stub-suite or
+  green-tally fixture. (H1's digest limb backstops a stub suite in a real export — the
+  export copy would not match the executing bytes — but the H8 clause itself stays ungraded.)
+
+## M13 H9 added-line equality loosened to >=
+find:
+      [ "$add" = "$lines" ] || continue
+replace:
+      [ "$add" -ge "$lines" ] || continue
+reopens: a declaration naming fewer lines than the path's added-line count (declared short
+  of the whole appended tail) passes H9
+verdict: killed
+evidence: selftest case=H9 mutants=5/5 -> 4/5; declared-short-of-added rejected=0 rc=0
+  payload=declared=2,valid=2,tail=2,pure=1,paths=1,diff-read=ok
+
+## M14 H9 zero-deletion gate accepts deletions  ** SURVIVED (benign) **
+find:
+      && [ "$pure" -eq 1 ] && [ "$paths" -eq 1 ] && exit 0
+replace:
+      && [ "$pure" -ge 0 ] && [ "$paths" -eq 1 ] && exit 0
+reopens: nothing reachable — a declared path with deletions never reaches valid++ (the
+  `continue` in `[ "$del" = 0 ] || { pure=0; continue; }`), so pure=0 implies
+  valid<declared and the valid gate reds independently; the pure gate is redundant given
+  that continue
+verdict: survived (benign — equivalent on every reachable tree)
+evidence: selftest unchanged (case=H9 mutants=5/5). The 2-point variant M15 (valid+pure
+  gates) is killed 2/5, with declared-path-with-deletions accepted (declared=2,valid=1,
+  tail=2,pure=0).
+L1 finding: none required; recorded because a single-point pure-gate edit is invisible to
+  the selftest.
+
+## M15 H9 valid+pure gates disabled together (2-point)
+find:
+    [ "$diffread" = ok ] && [ "$declared" -ge 1 ] && [ "$valid" -eq "$declared" ] \
+      && [ "$pure" -eq 1 ] && [ "$paths" -eq 1 ] && exit 0
+replace:
+    [ "$diffread" = ok ] && [ "$declared" -ge 1 ] && [ "$valid" -ge 0 ] \
+      && [ "$pure" -ge 0 ] && [ "$paths" -eq 1 ] && exit 0
+reopens: declared-short, tail-sha-mismatch and declared-path-with-deletions all pass H9
+  (only the path-safety and diff-read limbs remain)
+verdict: killed
+evidence: selftest case=H9 mutants=5/5 -> 2/5; declared-short-of-added, tail-sha-mismatch
+  and declared-path-with-deletions all rejected=0 rc=0
+
+## M16 H10 density-digest gate accepts a change
+find:
+      && [ "$dens" -eq 1 ] && [ "$deleted" -eq 0 ] && exit 0
+replace:
+      && [ "$dens" -ge 0 ] && [ "$deleted" -eq 0 ] && exit 0
+reopens: a changed corpus/instruments/density.py digest passes H10
+verdict: killed
+evidence: selftest case=H10 mutants=3/3 -> 2/3; density-instrument-changed rejected=0 rc=0
+  payload=skill-del=0,province-del=0,density=0,deleted=0,diff-read=ok
+
+## M17 H10 deleted-paths gate accepts deletion
+find:
+      && [ "$dens" -eq 1 ] && [ "$deleted" -eq 0 ] && exit 0
+replace:
+      && [ "$dens" -eq 1 ] && [ "$deleted" -ge 0 ] && exit 0
+reopens: a round diff that deletes tracked paths passes H10
+verdict: killed
+evidence: selftest case=H10 mutants=3/3 -> 2/3; tracked-path-deleted rejected=0 rc=0
+  payload=skill-del=0,province-del=0,density=1,deleted=1,diff-read=ok
+
+## Observations (no mutation needed)
+- H1 registry breadth vs the frozen predicate: check_h1 sets reg=1 for a row in EITHER
+  SKILL.md OR corpus/instruments/README.md (where=skill|readme|both). Measured probe
+  h1-readme-only: a tree whose SKILL.md carries no r40-closure.sh row but whose
+  corpus/instruments/README.md does -> check_h1 rc=0, payload
+  suite=1,digest=1,registry=1,registry-in=readme. The frozen C1 predicate names "its
+  SKILL.md Gates & probes registry row". Tighten the check or widen the predicate wording —
+  L1's call; recorded as a predicate-vs-implementation gap, not a mutant survivor.
+
+## Tally
+17 patches over H1-H10: 13 killed, 4 survived — M08, M11, M12 are real coverage findings
+(the selftest cannot see those weakenings; each probe proves the defect class reopens),
+M14 is benign-equivalent. Survivors are coverage findings for the L1, not permission to
+change the contract.

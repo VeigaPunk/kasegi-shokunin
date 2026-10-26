@@ -1,0 +1,56 @@
+Counterexample findings — frozen C2 kill rule
+
+Counterexample: the round-22 measure is not independently discriminating. With all nine queued rows changed to rejected, the queue is zero while 22 frontier rows are admitted; its arithmetic is (20+22)/(20+22)=42/42=1.000 despite no evidence. The separate frozen C2 conjuncts must do the work: at least four mined, and Gate-block evidence for every decided row. This all-rejected control is therefore rejected by “fewer than four of the nine mined” (0<4) and by the Gate evidence requirement; it demonstrates why the scalar cannot stand in for the frozen kill rule.
+
+Variant A — all nine rejected, no entries, no captures, no F23. Scratch outputs: queued=0, mined=0, entries citing any of the nine=0, S060+ rows=0, S060+ entries=0, frontier=22, harness entries=25 pass=25 exit=0. The one harness success is the pre-existing baseline; the C2 kill clauses fire for fewer than four mined, no S060+ row/entry, frontier count not 23, and harness not 26/26. Rejected rows had no reason+flip and the round-40 lesson/Gate block did not exist in this copied base tree. Measure alone: 42/42=1.000.
+
+Variant B — four mined rows with four throwaway knowledge entries and no round-40 capture or manifest, plus five rejected rows with reason+flip. Textual outputs: queued=0, mined=4, entries citing nine=4; frontier=22, harness=25/25. The minimum mined floor is met, but the frozen Gate evidence clause blocks the mined rows: `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-40/manifest.json --source S016` returned `manifest UNAVAILABLE reason=missing`, exit 2. No S060+ row/entry or F23 exists. Thus dummy entries do not suffice.
+
+Variant C — strongest challenge tested: four mined rows, self-authored capture bytes, internally matching manifest digests/quotes, four knowledge entries, five rejected rows with reason+flip, a self-authored S060 record/entry and F23. This package passed local structural/integrity checks: queued=0, mined=4, entries citing nine=4, S060+ rows=1, S060+ entries=1, frontier=23; source-recheck exits 0 for S016/S017/S019/S020/S060; capture binding records=51 bound=51 unbound=0; frontier harness entries=26 pass=26 exit=0; census exit=0 with only baseline W04 S028/S029. Its captures and HTTP metadata are invented, not source-derived. This is the strongest residual path: the local validators prove internal consistency and quote presence, not that the capture originated at the asserted public URL or that the asserted fetch actually occurred. The Gate-block clause could stop it if the Gate is checked against independently grounded source evidence; the frozen text does not explicitly specify authentication of fetch provenance. Report as a freeze defect/risk for L1 decision before accepting such data, not as a legitimate pass.
+
+Actual commands/output (all fixtures in `/fast/scratch/hyaku/kasegi-r40/CritC2Junk`; lane read-only):
+
+```text
+$ bash /home/vgpnk/Projects/shokunin/scripts/hyaku/disk-guard.sh status
+root                             use%     free
+/tmp                               3%   125.2G
+/var/tmp                          35%   585.2G
+/fast/scratch/hyaku               26%   601.9G
+
+$ python3 build_fixtures.py
+done
+
+$ awk -F'|' '/^\|[[:space:]]*S0(16|17|19|20|21|22|23|24|25)[[:space:]]*\|/ {s=$9;gsub(/[[:space:]]/,"",s);if(s=="queued")q++;if(s=="mined")m++} END{printf "queued=%d mined=%d\\n",q,m}' corpus/SOURCES.md
+varA: queued=0 mined=0
+varB: queued=0 mined=4
+varC: queued=0 mined=4
+
+$ grep -rlE '^source: S0(16|17|19|20|21|22|23|24|25)' corpus/knowledge | wc -l
+varA: 0
+varB: 4
+varC: 4
+
+$ grep -cE '^\|[[:space:]]*S06[0-9][[:space:]]*\|' corpus/SOURCES.md; grep -rlE '^source: S06[0-9]' corpus/knowledge | wc -l
+varA: 0 / 0
+varB: 0 / 0
+varC: 1 / 1
+
+$ grep -cE '^\| F[0-9]+ \|' corpus/README.md; python3 corpus/instruments/frontier-recheck-count.py | tail -1
+varA: 22; entries=25 pass=25 exit=0
+varB: 22; entries=25 pass=25 exit=0
+varC: 23; entries=26 pass=26 exit=0
+
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-40/manifest.json --source S016
+varB: manifest UNAVAILABLE reason=missing ; exit=2
+varC: S016:sha256 OK; S016:Q1 OK occurrences=1 anchor=9-ok ; exit=0
+
+$ python3 corpus/instruments/capture-binding-check.py | tail -2
+varC: records=51 bound=51 unbound=0 ; exit=0
+
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --today 2026-10-26 --root <scratch-root> kasegi
+varA: exit=0, warnings W04 S028/S029 only
+varB: exit=0, warnings W04 S028/S029 only
+varC: exit=0, warnings W04 S028/S029 only
+```
+
+Smallest safe correction: retain both necessary gates (`>=4` mined and per-row Gate evidence), and make Gate evidence provenance explicit for mined rows: URL + access date + located quote must be independently checked against source-derived captured bytes and the source-recheck result; local digests/quotes alone are not proof of URL provenance. State that the coverage measure is a reported scalar, not acceptance. The all-rejected attack is stopped by the explicit floor; a fully self-authored, internally coherent attack currently relies on discretionary “junk twin” review unless provenance is an explicit acceptance condition.

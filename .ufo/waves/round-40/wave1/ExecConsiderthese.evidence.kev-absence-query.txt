@@ -1,0 +1,31 @@
+# query: CISA KEV membership for the priced finding
+# ran_utc: 2026-10-26T21:21:18Z
+# working_dir: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+# catalog_capture: corpus/source-snapshots/round-35/S052.txt
+# catalog_capture_sha256: d69349e86c5cce17146ccb4a4d514272d5ef47cb9586d06085113cf6779e8826
+# catalog_capture_bytes: 1479694
+# catalog_source: CISA KEV JSON feed, captured round 35 (see corpus/knowledge/cisa-kev-catalog.md)
+
+## commands and exact output
+
+[cveID_records] $ grep -c '"cveID"' corpus/source-snapshots/round-35/S052.txt
+exit=0 output=1756
+
+[makerdao] $ grep -ic 'makerdao' corpus/source-snapshots/round-35/S052.txt
+exit=1 output=0
+
+[gray_matter] $ grep -ic 'gray-matter\|gray matter' corpus/source-snapshots/round-35/S052.txt
+exit=1 output=0
+
+[sky_word] $ grep -icE '\bsky\b' corpus/source-snapshots/round-35/S052.txt
+exit=1 output=0
+
+[vote_dot] $ grep -ic 'vote\.' corpus/source-snapshots/round-35/S052.txt
+exit=1 output=0
+
+## reading
+
+The catalog capture holds 1756 CVE records. None of the four probes (vendor/lab name,
+library name, token name, hostname stem) hits. The public disclosure assigns no CVE
+identifier to the finding, so there is no key by which KEV could hold it: the finding's
+KEV status is ABSENT, and KEV eligibility is moot in the absence of a CVE.

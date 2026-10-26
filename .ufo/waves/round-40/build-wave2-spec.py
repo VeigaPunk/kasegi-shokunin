@@ -1,0 +1,121 @@
+#!/usr/bin/env python3
+"""kasegi round-40 wave-2 (falsify) spec generator — 36 seats."""
+import io, json
+
+LANE = "/home/vgpnk/Projects/shokunin/kasegi-shokunin"
+BASE = "a7af2ce63bce153757d39bf66b366a96caf30c13"
+FREEZE = "5e985b74075dd3813a63d7750966bf8abf693465"
+R39JUDGED = "8371e7ac9f32cae5ed72f8c28205634603f836fa"
+
+CONTEXT = f"""# Round
+kasegi-shokunin round 40, FALSIFY wave 2, dispatched by the L1 (agent KasegiR40) via the inline spawn handoff (hyaku run 9). Lane repo {LANE} is the ONLY lane repo. The fleet root /home/vgpnk/Projects/shokunin is read-only to you — never write there. /home/vgpnk/Projects/shokuknow is read-only — never write there, never run its campaign tools. Base commit {BASE}; claims-freeze commit {FREEZE}; frozen claims at {LANE}/.ufo/waves/round-40/claims.json (read it first; do not edit). Wave-1 build outputs live at {LANE}/.ufo/waves/round-40/wave1/ (receipts + deliverables); the integrated lane state is the repository at the verification ref Y (the lane tip = judged head J + the receipt `.ufo/waves/round-40/final-gates/all-gates.txt` only). Before-controls: {LANE}/.ufo/waves/round-40/c1-controls/before.txt, c2-controls/before.txt, c2-controls/junk-decisions.md, census-before.txt.
+
+Attack contract. This wave ATTACKS what wave 1 produced and what the frozen claims promise. Every seat names what it attacks in its receipt: the item being falsified, the command re-run, and the result (reproduced / contradicted / defect found). Re-run each counting command from claims.json against the committed bytes (git show/archive of Y), re-open each new source row (fetch live, verify the capture's sha256 and the located quotes), attack each claim and each new entry/tool, mutation-test each new gate, and report every disagreement as a defect. A green re-run is evidence too — record it. Never edit lane files; deliverables are only your receipt and any byte-exact attack fixture named in your item.
+
+Write scope. Your ONLY allowed writes are (1) your receipt at {LANE}/.ufo/waves/round-40/wave2/<SEATNAME>.md, (2) byte-exact attack fixtures beside it as {LANE}/.ufo/waves/round-40/wave2/<SEATNAME>.<suffix>, and (3) scratch under your scratch dir. Never edit any other lane/fleet/sibling/source-tree file; never run a mutating git/jj command; never run campaign tools in /home/vgpnk/Projects/shokuknow. Read-only git is fine (`git -C {LANE} show/archive/ls-tree/grep/rev-parse`).
+
+Scratch. S=/fast/scratch/hyaku/kasegi-r40/<SEATNAME>/ (mkdir -p; TMPDIR=$S; /tmp only <50 MB). Remove S before yielding (`trap 'rm -rf -- "$S"' EXIT`; `finally: shutil.rmtree`). `bash /home/vgpnk/Projects/shokunin/scripts/hyaku/disk-guard.sh status` before a heavy pass. A surviving scratch dir is a round-40 defect (H6 checks it live).
+
+Tooling. Tooling authorization (operator 2026-10-19): install/upgrade tools that help after reading /home/vgpnk/.omp/agent/RULES.md (official channels; record tool/version/channel/reason). pacman PAUSED host-wide — never run pacman; use `uv tool install`/`npx`/official binary into ~/.local/bin. Never edit ~/.omp/agent/config.yml or mcp.json. Never restart a host service.
+
+Host guard (SEAT_GUARD). Tools start at the fleet root: cd to scratch first; absolute paths everywhere. Git fixtures: D=$(mktemp -d) && git -C "$D" init -q, verify toplevel == "$D" before any commit; never a throwaway git identity elsewhere. Never write PATH dirs or fleet-root tracked files.
+
+Rules. Keep moves that improve an axis and harm none. Do not message agent://all. Do not run your own swarm. Network fetches: `curl -sS -L --max-time 90 -A kasegi-shokunin/1.0`; record HTTP status, bytes, UTC fetch time. Godspeed posture governs your work: name the axes, iterate cheap in parallel, keep moves that improve any axis and harm none, never stall in clarifying-question loops.
+"""
+
+def item(name, role, task):
+    return {"name": name, "role": role, "prompt": "/skill:godspeed\n\n" + task}
+
+items = []
+
+# ---------- REVIEWERS (attack C1/C2 counters and records) ----------
+items.append(item("RevC1Counters", "reviewer", f"""Attack the C1 counters: run `bash <lane>/corpus/instruments/r40-closure.sh --export-ref <Y> --work $S/w --lane {LANE}` (Y = the lane tip) and record the full output and exit; it must print `closed=10/10 exit=0`. Then `--selftest --export-ref <Y>` must print `selftest cases=10 failures=0` with 10 graded case lines. Then the two negative controls: `--export-ref {BASE}` and `--export-ref {R39JUDGED}` must print closed<10/10 exit=1, and a plain run must exit 2. Also verify the suite file's sha256 equals the SKILL.md Gates & probes registry row. Attack: try to make a check pass while its defect is present by supplying a modified export (e.g., patch the exported SOURCES/records) in scratch — if any check stays green under a defeater, that is a defect. Deliver the transcripts + verdict."""))
+
+items.append(item("RevC1Sandbox", "reviewer", f"""Attack the r40 suite's sandbox: (1) export with a symlink inside the tree pointing outside it; (2) export with a path traversal candidate (a file named `../evil` or a declared block path containing `..`); (3) reuse a `--work` dir that already contains a previous export (stale-state trick); (4) run with `--scratch-root` pointing at a dir containing unrelated kasegi-r4* stray dirs (must red) and with an empty scratch root (must green). Record each run's output. Any check reading the live lane instead of the export, or passing with stale/unrelated state, is a defect. Deliver transcripts + verdict."""))
+
+items.append(item("RevH2Corrections", "reviewer", f"""Attack the H2 target: verify at Y that `grep -c '^Correction (round 40)'` is >=1 in each of SCORECARD.md, LOG.md, SHONEN.md and corpus/lessons/round-39.md, and that each such line names the final r39 receipt values (`closed=7/8 exit=1` and `selftest failures=1`) and the G2/G6 non-independence reason. Also verify the corrections are pure appends (previous claimed untouched). Any record still claiming r39 C1 8/8 at Y without the correction is a defect. Deliver counts + verdict."""))
+
+items.append(item("RevH3Criterion", "reviewer", f"""Attack the H3 target: verify `grep -cE 'M39-2' corpus/QUALITY.md` >=1 at Y and that the criterion row is grounded (cites the lesson row and states the receipt-transcript rule). Flag a criterion that names the class without citing M39-2 (R36). Deliver output + verdict."""))
+
+items.append(item("RevH4GateRows", "reviewer", f"""Attack the H4 target: read corpus/lessons/round-39.md's Gate section at Y and verify the S056/S058/S059 rejected-row blocks each carry a URL, an access date, and a <=25-word located quote. Re-locate each quote in the live source by fetching the URL (record status/bytes/sha256) and confirming the quote text occurs. Any block lacking any of the three, or a quote not matching the live source, is a defect. Deliver rows + verdict."""))
+
+items.append(item("RevC2Decisions", "reviewer", f"""Attack the C2 decision set at Y: verify each of the nine rows S016/S017/S019/S020/S021/S022/S023/S024/S025 has status `mined` or `rejected` (queued count must be 0); verify the lesson's old→new change-log line exists for each; verify S022's flip names S030 and S024's flip names S029; verify mined rows each have exactly one knowledge entry citing them and rejected rows each carry reason+flip in the row (`teaches` cell). Count mined among the nine (must be >=4). Any queued row, missing log, or evidence-free decision is a defect. Deliver the per-row table + verdict."""))
+
+items.append(item("RevC2Entries", "reviewer", f"""Attack the C2 knowledge entries: for each mined entry among the nine decided rows (and any S060+ mined entry), run `python3 <lane>/corpus/instruments/source-recheck.py --manifest <lane>/corpus/source-snapshots/round-40/manifest.json --source S###` and record exits; verify each entry passes QUALITY Q1-Q6 (provenance trio; tier A/B support; <=25-word located quotes; attribution; a falsifiable rule + a rejected over-generalization; documentation-only, no credentials). Re-open one quote per entry in the capture. Any entry failing Q1-Q6 or a recheck non-zero is a defect. Deliver per-entry verdicts."""))
+
+items.append(item("RevF23", "reviewer", f"""Attack the F23 admission: verify at Y that corpus/README.md has a frontier row F23 (admitted) with its entry path and source ids; that `grep -cE '^\| F[0-9]+ \|' corpus/README.md` = 23; that the harness `python3 <lane>/corpus/instruments/frontier-recheck-count.py` prints entries=26 pass=26 exit=0 incl. `PASS F23`; that PROVINCE.md carries the `[r40 Frontier amendment]` F23 line; and that the entry's claims are grounded in the CycloneDX analysis-subtree capture with <=25-word quotes. Flag any row/entry/harness mismatch. Deliver outputs + verdict."""))
+
+items.append(item("RevNewRows", "reviewer", f"""Attack the new S060+ rows: verify at Y that `grep -cE '^\|[[:space:]]*S06[0-9][[:space:]]*\|' corpus/SOURCES.md` >=1, each row NF=13 with no `|` in cells, opened today, status valid, and at least one mined row has exactly one knowledge entry citing it (`grep -rlE '^source: S06[0-9]' corpus/knowledge | wc -l` >=1) whose source-recheck passes. Also verify the rows do not collide with existing ids and census stays exit 0. Any malformed/colliding/unbound row is a defect. Deliver counts + verdict."""))
+
+items.append(item("RevJunk", "reviewer", f"""Attack the junk control: apply the junk-decisions.md flip-all rows to a scratch copy of the registry and run the C2 kill-rule checks (queued count, mined>=4, Gate-evidence grep): the junk must NOT satisfy the target (it must leave mined=0 and no Gate evidence). Also verify the committed junk twin was not accidentally integrated (the lane must NOT contain the junk rows in the real registry). Deliver outputs + verdict."""))
+
+items.append(item("RevCensus", "reviewer", f"""Attack the registry at Y: run `bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` (exit must be 0, warnings W04 S028/S029 only) and the manual checks from CORPUS.md on an export of Y: NF==13 for every row, no duplicate ids, tier/status enums valid, no tier-inflation, mined rows' used-by paths exist. Any malformed row or new W/E code is a defect. Deliver outputs + verdict."""))
+
+items.append(item("RevNoHarm", "reviewer", f"""Attack the no-harm guard: at Y vs base {BASE}, run `git -C {LANE} diff --numstat {BASE} <Y> -- . ':!.ufo'` and confirm every changed path is N/0 (additions only), SKILL.md and PROVINCE.md are append-only, `sha256sum corpus/instruments/density.py` is unchanged, and `python3 corpus/instruments/density.py SKILL.md --label SKILL` + `anchorcheck.py SKILL.md` behave as recorded. Any deletion, mid-file edit of a cited file, or instrument change is a defect. Deliver outputs + verdict."""))
+
+# ---------- CRITICS ----------
+items.append(item("CritReceiptForge", "critic", f"""Attack the r40 receipt: produce forged receipt variants against the committed suite at Y — (a) copy the committed all-gates.txt, change one `H<n> payload=` value to contradict the export, and feed it as the receipt; (b) re-stamp `run-utc` in the future; (c) assemble a receipt from a different ref's run; (d) a summary-only receipt with no per-check lines. For each, run the suite with the forged receipt in place (in scratch) and record whether it is rejected (closed<10/10 or selftest failure). Any forged variant that passes is a defect — the R1/G2 class is only closed if all four are rejected. Deliver variants + transcripts + verdict."""))
+
+items.append(item("CritKillRule", "critic", f"""Attack the C1 kill rule: try to construct a state where a real defect exists but the frozen kill rule does NOT fire (e.g., a stray scratch dir under a name the H6 scan misses, a check passing because it reads the live lane, a pending marker spelled differently, or a working tree that appears clean while a file changed). Report each such escape precisely; if any is found, it is a counter/hardening defect the L1 must know about. Deliver attempts + verdict."""))
+
+items.append(item("CritC2Fabricate", "critic", f"""Attack the C2 counters by fabrication: in a scratch copy of the lane, create plausible-looking dummy mined entries (with fake provenance quotes) for the nine rows and run the harness/source-recheck/census gates; record which kill-rule clauses stop them. Also try four dummy-mined + five flip-rejects. If any fabricated state passes all counters, that is a freeze defect (do-nothing control reachable). Deliver attempts + verdict."""))
+
+items.append(item("CritRecordsConsistency", "critic", f"""Attack the round-40 records: scan at Y for the R2 class (any record still claiming r39 C1 8/8 at Y without an appended correction), any future-dated `run-utc`, any `⟨pending` or placeholder tokens in corpus/lessons/round-40.md and the new records, missing transcripts for quoted runs, and internal score/count contradictions vs claims.json (e.g., score rows disagreeing with measured commands). Also confirm the report's evidence pointers (to be filed) resolve. List every finding with exact line pointers; any unmarked overstatement is a defect. Deliver findings."""))
+
+items.append(item("CritSourceTruth", "critic", f"""Attack source truth: pick two of the newly mined rows (one from the nine, one S060+) and one rejected row; fetch the source live now, compare HTTP status/bytes/sha256 against the manifest record, re-locate the entry's quotes in the live text, and confirm the row's `teaches`/flip matches the source. Any capture that fails byte-identity or a quote that does not occur live is a defect. Deliver per-source verdicts."""))
+
+items.append(item("CritCounterSoup", "critic", f"""Attack the r40 suite as a whole: run the suite at Y several times under perturbations — (a) with `--scratch-root` pointing at a scratch that contains leftovers from other seats; (b) with a pre-populated `export/` in --work; (c) with TMPDIR unset; (d) from a different cwd; (e) twice back-to-back (determinism). Record each output/exit. Any red-green flip caused by environment rather than byte state is a defect (the G6 class). Deliver runs + verdict."""))
+
+items.append(item("CritCrossAxis", "critic", f"""Attack cross-axis harm: verify the round did not harm depth:density (SKILL.md append-only, density instrument unchanged, density mean not reduced), calibration (SHONEN boxes' new pointers resolve; no fabricated [x]), and adjacency (no absorbed sibling ground). Run density.py on the final SKILL.md, anchorcheck, and grep the new entries for sibling-domain topics. Any harm is a defect. Deliver outputs + verdict."""))
+
+# ---------- MUTATION-TESTERS ----------
+items.append(item("MutH1H5", "mutation-tester", f"""Mutation-test the r40 suite limbs H1-H5: extract the committed suite to scratch; apply one find→replace patch per limb that reopens exactly that check's defect class (H1: rename the suite/registry-row pattern; H2: weaken the correction grep; H3: drop the M39-2 token; H4: drop the quote/date requirement; H5: trust receipt payloads again). For each mutant run the suite's `--selftest` and the plain export run at Y; a limb is killed only when the mutant changes the verdict (selftest failure or closed<K/K). Record each patch with killed/survivor. Any survivor is a defect. Deliver patch list + verdict."""))
+
+items.append(item("MutH6H10", "mutation-tester", f"""Mutation-test the r40 suite limbs H6-H10: same method for H6 (scan the wrong root/prefix), H7 (skip the re-run byte-comparison), H8 (accept base as green), H9 (skip whole-tail diff), H10 (skip append-only/deletion guard). Record killed/survivor per patch. Any survivor is a defect. Deliver patch list + verdict."""))
+
+items.append(item("MutEntries", "mutation-tester", f"""Mutation-test the new knowledge entries' gates: in a scratch mirror, mutate each new entry (drop the `source:` line; truncate a quote; change a number; drop the falsifiable rule; add a credential-like string) and run `source-recheck.py`/`recheck-audit.py`/`frontier-recheck-count.py` on the mirror; each mutant must change the verdict. Any mutant that still passes is a gate gap. Deliver mutants + verdict."""))
+
+items.append(item("MutRegistry", "mutation-tester", f"""Mutation-test the registry gates: mutate the SOURCES rows in a scratch mirror (break NF=13; duplicate an id; invalid status enum; tier-inflation A+community; used-by path missing; a `|` inside a cell) and run the census + capture-binding-check; each mutant must red. Any mutation that still passes census/binding is a defect. Deliver mutants + verdict."""))
+
+items.append(item("MutHarness", "mutation-tester", f"""Mutation-test the frontier harness: mutate `corpus/instruments/frontier-recheck-count.py` (or its expected list) in a scratch mirror — remove a PASS line, point F23 at the wrong entry, change the expected count — and run the harness; each mutant must change the verdict (exit 1 or entries/pass mismatch). Any mutation that still returns entries=26 pass=26 is a defect. Deliver mutants + verdict."""))
+
+items.append(item("MutCountingCommands", "mutation-tester", f"""Mutation-test the claims' counting commands: re-run every counting command in claims.json at Y verbatim (queued awk, mined awk, grep -rl source cites, S060+ greps, frontier count, harness, census) and record outputs. For each, also run it against the base {BASE} to confirm the before value still matches the before-control files. Any command whose output contradicts the claim's after-state is a defect. Deliver outputs + verdict."""))
+
+# ---------- SCOUTS ----------
+items.append(item("ScoutReopenNine", "scout", f"""Re-open the nine decided sources live: for each of S016/S017/S019/S020/S021/S022/S023/S024/S025 fetch its URL now (`curl -sS -L --max-time 90 -A kasegi-shokunin/1.0`), record HTTP status, bytes, sha256, UTC time, and compare with the round-40 manifest record (if the row is mined) or note the drift for rejected rows. Also confirm the row's `teaches` content still matches the live page (spot quote). Any source whose live bytes diverge from the committed capture is a finding (quality/drift) — report it, do not edit. Deliver the table."""))
+
+items.append(item("ScoutReopenLeads", "scout", f"""Re-open the new lead sources live: the CycloneDX analysis-subtree capture (F23 row), and the S060+ rows' URLs (CSAF v2.1 os/ status; CISA VEX Status Justifications). Record status/bytes/sha256/UTC and compare with the committed captures; re-locate one quote per row live. Any divergence is a finding. Deliver the table."""))
+
+items.append(item("ScoutHrefCheck", "scout", f"""Check every URL referenced in the NEW rows (S060+) and in the nine decided rows' source cells: each must return HTTP 2xx/3xx now; record statuses. Any dead/moved link is a finding (freshness). Deliver the table."""))
+
+items.append(item("ScoutSiblingFinal", "scout", f"""Final sibling-overlap sweep: grep the 20 sibling lanes' corpora + fleet root for the round's new topics (CycloneDX analysis, CVE-Bench/AI-agent exploitation, federal VDP guidance, Anthropic CVD, Project Zero transparency, CSAF v2.1 os/, VEX Status Justifications) and record any overlapping claims (owning lane + path). This confirms no cross-domain bleed in the landed entries. Deliver the sweep output + ruling."""))
+
+# ---------- LABRATS (as scouts) ----------
+items.append(item("LabDeterminismY", "scout", f"""Determinism probe at Y: run `bash <lane>/corpus/instruments/r40-closure.sh --export-ref <Y> --work $S/a --lane {LANE}` and `--work $S/b`, then `diff` the two outputs; also diff against the committed all-gates.txt receipt (normalizing nothing). Record byte-identity or every differing line. Any nondeterminism or receipt mismatch is a defect (H7). Deliver transcripts."""))
+
+items.append(item("LabScratchClean", "scout", f"""Scratch-hygiene probe: list `/fast/scratch/hyaku/` for `kasegi-r39*`/`kasegi-r40*` dirs; record what exists (excluding your own at the moment of listing, and the L1's expected work dir). Run `bash /home/vgpnk/Projects/shokunin/scripts/hyaku/disk-guard.sh status`. Any stray dir other than seats' live scratch is a round-40 defect finding. Deliver the listing."""))
+
+items.append(item("LabExportClean", "scout", f"""Isolation probe: run the r40 suite at Y with a deliberately dirty `--scratch-root` (create a stray `kasegi-r40-stray/` inside it first) and with a pre-populated `export/` subdir in `--work`; the run must still be green (H6 permits only its own --work; the stray in scope must not count) or must red ONLY if the stray is in the scanned root. Record outputs; interpret against H6 semantics. Clean your strays before yielding. Deliver transcripts."""))
+
+items.append(item("LabFreshFetch", "scout", f"""Fetch-stability probe: re-fetch one mined source (pick S025 or S016) and one S060+ source with a different User-Agent and at a different time; compare status/bytes/sha256. Record whether the committed capture is stable under UA variation. Any instability is a freshness finding. Deliver transcripts."""))
+
+# ---------- CONNECTOR / SENTINEL ----------
+items.append(item("ConnPatterns", "connector", f"""Cross-claim pattern finding on the landed round: read the C1 suite and C2 decisions, identify shared assumptions (e.g., both rely on source-recheck and the registry; the suite's H2/H3/H4 checks the same records the C2 lesson edits), and check for interactions that could hide a defect (e.g., a correction line satisfying H2 while the underlying record remains false). Also scan for pattern reuse across the round (status-change logging, quote discipline) that could be folded into QUALITY or the suite. Deliver the pattern findings; no edits."""))
+
+items.append(item("SentinelFinal", "sentinel", f"""Final scope audit: (1) `git -C /home/vgpnk/Projects/shokunin status --porcelain` — report any untracked fleet-root file whose content names kasegi/round-40 (the L1's misroot sweep will then handle it); (2) `git -C {LANE} status --porcelain` — confirm the lane is clean at Y apart from the expected wave evidence; (3) verify the wave-2 results will be complete (seat receipts present for each seat you observe); (4) confirm no seat wrote to forbidden paths (grep receipts for `/home/vgpnk/Projects/shokunin/templates`, `scripts/`, `.ufo/state`, `.scratch`, shokuknow writes). Deliver findings; do not delete anything."""))
+
+spec = {
+    "wave": "kasegi-r40-falsify",
+    "reportDir": ".ufo/waves/round-40/wave2",
+    "maxLanes": 64,
+    "axes": ["depth:verifiability", "coverage"],
+    "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls",
+    "context": CONTEXT,
+    "items": items,
+}
+out = "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/wave2-spec.json"
+with io.open(out, "w", encoding="utf-8") as f:
+    json.dump(spec, f, indent=1, ensure_ascii=False)
+print("items", len(items))
+from collections import Counter
+print(Counter(it["role"] for it in items))

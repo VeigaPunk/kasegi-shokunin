@@ -1,0 +1,73 @@
+| M40-1 | evidence-provenance | the round-39 attempt-1 receipt records a pass that the L1's own run over the same commit does not produce, under a `run-utc` that post-dates that commit | `5006097a:.ufo/waves/round-39/final-gates/all-gates.txt` (`all-gates v3`, export-ref `46c66c26`) records `run-utc=2026-10-26T21:35:00Z`, `closed=8/8 exit=0` and `selftest cases=8 failures=0`, but its containing commit `5006097a` is `2026-10-26T20:12:12Z` (+82m48s) and the L1's own run over `5006097a` printed `closed=6/8 exit=1` and `selftest cases=8 failures=2` (scratch `/fast/scratch/hyaku/kasegi-r39-l1/verify-Y.txt`, sha256 `98290ee6…`, uncommitted and absent since) — verifier R1 (`corpus/lessons/round-39-verifier-spotcheck.md:158-167`), wave-2 `CritC1Kill.md` §K5, and the lesson's own disclosure at `corpus/lessons/round-39.md:86` | none at the time — the wave-2 instrument attack found it, and no check parsed `run-utc`: the only `run-utc` writer in `corpus/instruments/r39-closure.sh` is the fixture helper `g2_content` (`:1150`), so the committed header was authored, not teed | H5/H7 of `corpus/instruments/r40-closure.sh`: H5 re-derives payload fields from the export and requires `export-commit ≤ run-utc ≤ receipt-commit`, rejecting a forged-payload or future-dated receipt; H7 makes the receipt the teed transcript of one observed run with `run-utc` printed by that run and a byte-identical re-run; the rule is stated in `corpus/QUALITY.md` R37, minted this round | H5 prints `closed=0` on the real v3 receipt (`dated=future`) and on the fixture whose only change is `run-utc=2026-10-27T21:35:00Z` (`closed=0`, every other limb `1`), while the unedited v5 receipt over the same export prints `closed=1`; the committed case must print `selftest case=H5 positive=pass verdict=pass` — transcript below, detector `wave1/ExecMistakesDraft.h5-replica.sh` |
+
+# evidence only — the line above is the landable row; everything below is the transcript its last cell cites
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format='%H %cI' 5006097a
+5006097a84305267c9a3e8c1e1d560e60fe41d37 2026-10-26T17:12:12-03:00
+
+$ TZ=UTC git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format='%H committer-utc=%cd' --date=format-local:'%Y-%m-%dT%H:%M:%SZ' 5006097a
+5006097a84305267c9a3e8c1e1d560e60fe41d37 committer-utc=2026-10-26T20:12:12Z
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 5006097a:.ufo/waves/round-39/final-gates/all-gates.txt | sed -n '1,4p'
+all-gates v3
+export-ref=46c66c268502abd1b2c342fc71bf88ccf721845b
+suite-sha256=2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b
+run-utc=2026-10-26T21:35:00Z
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 5006097a:.ufo/waves/round-39/final-gates/all-gates.txt | grep -E '^(G2 payload|closed=8/8|selftest cases=)'
+G2 payload=receipt=1,sentinel=1,export-ref=1,ancestor=1,diff-clean=1,diff-read=ok,digest-match=1,export-suite=1,run-lines=8,closed-lines=0,distinct-ids=8,closed-line=1,graded-cases=8,ungraded-cases=0,selftest-summary=1,scorecard-ref=1,shonen-ref=1,final-lane-commit=0 closed=1
+closed=8/8 exit=0
+selftest cases=8 failures=0
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format='%H %cI %s' 46c66c26
+46c66c268502abd1b2c342fc71bf88ccf721845b 2026-10-26T17:11:10-03:00 round-39: content head J2 (lesson, LOG, SCORECARD, SHONEN, wave1 results + evidence)
+
+$ python3 -c "import datetime as d; a=d.datetime.fromisoformat('2026-10-26T21:35:00+00:00'); b=d.datetime.fromisoformat('2026-10-26T20:12:12+00:00'); print(a-b)"
+1:22:48
+exit=0
+
+$ git -C . show 8371e7ac9f32cae5ed72f8c28205634603f836fa:.ufo/waves/round-39/final-gates/all-gates.txt | sed 's/^run-utc=.*$/run-utc=2026-10-27T21:35:00Z/' > .ufo/waves/round-40/wave1/ExecMistakesDraft.fixture-future-dated.txt
+exit=0
+
+$ diff <(git -C . show 8371e7ac9f32cae5ed72f8c28205634603f836fa:.ufo/waves/round-39/final-gates/all-gates.txt) .ufo/waves/round-40/wave1/ExecMistakesDraft.fixture-future-dated.txt
+4c4
+< run-utc=2026-10-26T20:54:44Z
+---
+> run-utc=2026-10-27T21:35:00Z
+exit=1
+
+$ sha256sum .ufo/waves/round-39/final-gates/all-gates.txt .ufo/waves/round-40/wave1/ExecMistakesDraft.fixture-future-dated.txt .ufo/waves/round-40/wave1/ExecMistakesDraft.h5-replica.sh
+8d46d7b251fd6736ba1841814274201176d3a7628f9330e8c9b1917013741471  .ufo/waves/round-39/final-gates/all-gates.txt
+0bf299a65c17b054d609076276d9316c246baa15822d36cde69b75bbf535e525  .ufo/waves/round-40/wave1/ExecMistakesDraft.fixture-future-dated.txt
+db56b5dad26172b6f2f82834ec7596749068e23766c59f92693769f8b9839856  .ufo/waves/round-40/wave1/ExecMistakesDraft.h5-replica.sh
+exit=0
+
+$ bash .ufo/waves/round-40/wave1/ExecMistakesDraft.h5-replica.sh --lane . --export-ref ee5ae5e1739527f4cdb50babe2d694005607b44e --receipt .ufo/waves/round-39/final-gates/all-gates.txt --contained-in 8371e7ac9f32cae5ed72f8c28205634603f836fa
+H5 payload=version=1,xref=1,digest=1,declared=1(recorded=2,export=2),run-utc=2026-10-26T20:54:44Z,dated=ok closed=1
+exit=0
+
+$ bash .ufo/waves/round-40/wave1/ExecMistakesDraft.h5-replica.sh --lane . --export-ref ee5ae5e1739527f4cdb50babe2d694005607b44e --receipt .ufo/waves/round-40/wave1/ExecMistakesDraft.fixture-future-dated.txt --contained-in 8371e7ac9f32cae5ed72f8c28205634603f836fa
+H5 payload=version=1,xref=1,digest=1,declared=1(recorded=2,export=2),run-utc=2026-10-27T21:35:00Z,dated=future closed=0
+exit=1
+
+$ bash .ufo/waves/round-40/wave1/ExecMistakesDraft.h5-replica.sh --lane . --export-ref 46c66c268502abd1b2c342fc71bf88ccf721845b --receipt-ref 5006097a84305267c9a3e8c1e1d560e60fe41d37:.ufo/waves/round-39/final-gates/all-gates.txt --contained-in 5006097a84305267c9a3e8c1e1d560e60fe41d37
+H5 payload=version=1,xref=1,digest=1,declared=1(recorded=2,export=2),run-utc=2026-10-26T21:35:00Z,dated=future closed=0
+exit=1
+
+$ git -C . show 8371e7ac9f32cae5ed72f8c28205634603f836fa:.ufo/waves/round-39/final-gates/all-gates.txt | sed 's/^G1 payload=declared=2,/G1 payload=declared=3,/' > /tmp/h5-forged-payload.txt
+exit=0
+
+$ bash .ufo/waves/round-40/wave1/ExecMistakesDraft.h5-replica.sh --lane . --export-ref ee5ae5e1739527f4cdb50babe2d694005607b44e --receipt /tmp/h5-forged-payload.txt --contained-in 8371e7ac9f32cae5ed72f8c28205634603f836fa
+H5 payload=version=1,xref=1,digest=1,declared=0(recorded=3,export=2),run-utc=2026-10-26T20:54:44Z,dated=ok closed=0
+exit=1
+
+$ rm -f /tmp/h5-forged-payload.txt
+exit=0
+
+$ grep -n "printf 'run-utc" corpus/instruments/r39-closure.sh
+1150:    printf 'run-utc=2026-10-26T20:00:00Z\n'
+exit=0
+
+$ test -e /fast/scratch/hyaku/kasegi-r39-l1/verify-Y.txt && echo present || echo absent
+absent
+exit=0

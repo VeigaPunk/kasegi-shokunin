@@ -1,0 +1,605 @@
+{
+  "schema": "ufo-swarm-wave-v1",
+  "wave": "kasegi-r40-falsify",
+  "context": "# Round\nkasegi-shokunin round 40, FALSIFY wave 2, dispatched by the L1 (agent KasegiR40) via the inline spawn handoff (hyaku run 9). Lane repo /home/vgpnk/Projects/shokunin/kasegi-shokunin is the ONLY lane repo. The fleet root /home/vgpnk/Projects/shokunin is read-only to you — never write there. /home/vgpnk/Projects/shokuknow is read-only — never write there, never run its campaign tools. Base commit a7af2ce63bce153757d39bf66b366a96caf30c13; claims-freeze commit 5e985b74075dd3813a63d7750966bf8abf693465; frozen claims at /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/claims.json (read it first; do not edit). Wave-1 build outputs live at /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/wave1/ (receipts + deliverables); the integrated lane state is the repository at the verification ref Y (the lane tip = judged head J + the receipt `.ufo/waves/round-40/final-gates/all-gates.txt` only). Before-controls: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/c1-controls/before.txt, c2-controls/before.txt, c2-controls/junk-decisions.md, census-before.txt.\n\nAttack contract. This wave ATTACKS what wave 1 produced and what the frozen claims promise. Every seat names what it attacks in its receipt: the item being falsified, the command re-run, and the result (reproduced / contradicted / defect found). Re-run each counting command from claims.json against the committed bytes (git show/archive of Y), re-open each new source row (fetch live, verify the capture's sha256 and the located quotes), attack each claim and each new entry/tool, mutation-test each new gate, and report every disagreement as a defect. A green re-run is evidence too — record it. Never edit lane files; deliverables are only your receipt and any byte-exact attack fixture named in your item.\n\nWrite scope. Your ONLY allowed writes are (1) your receipt at /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/wave2/<SEATNAME>.md, (2) byte-exact attack fixtures beside it as /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/wave2/<SEATNAME>.<suffix>, and (3) scratch under your scratch dir. Never edit any other lane/fleet/sibling/source-tree file; never run a mutating git/jj command; never run campaign tools in /home/vgpnk/Projects/shokuknow. Read-only git is fine (`git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show/archive/ls-tree/grep/rev-parse`).\n\nScratch. S=/fast/scratch/hyaku/kasegi-r40/<SEATNAME>/ (mkdir -p; TMPDIR=$S; /tmp only <50 MB). Remove S before yielding (`trap 'rm -rf -- \"$S\"' EXIT`; `finally: shutil.rmtree`). `bash /home/vgpnk/Projects/shokunin/scripts/hyaku/disk-guard.sh status` before a heavy pass. A surviving scratch dir is a round-40 defect (H6 checks it live).\n\nTooling. Tooling authorization (operator 2026-10-19): install/upgrade tools that help after reading /home/vgpnk/.omp/agent/RULES.md (official channels; record tool/version/channel/reason). pacman PAUSED host-wide — never run pacman; use `uv tool install`/`npx`/official binary into ~/.local/bin. Never edit ~/.omp/agent/config.yml or mcp.json. Never restart a host service.\n\nHost guard (SEAT_GUARD). Tools start at the fleet root: cd to scratch first; absolute paths everywhere. Git fixtures: D=$(mktemp -d) && git -C \"$D\" init -q, verify toplevel == \"$D\" before any commit; never a throwaway git identity elsewhere. Never write PATH dirs or fleet-root tracked files.\n\nRules. Keep moves that improve an axis and harm none. Do not message agent://all. Do not run your own swarm. Network fetches: `curl -sS -L --max-time 90 -A kasegi-shokunin/1.0`; record HTTP status, bytes, UTC fetch time. Godspeed posture governs your work: name the axes, iterate cheap in parallel, keep moves that improve any axis and harm none, never stall in clarifying-question loops.\n",
+  "policy": {
+    "source": "config",
+    "maxLanes": 64,
+    "minLanes": 16,
+    "waveMinLanes": 32,
+    "waveMaxLanes": 64,
+    "declaredMaxLanes": 64,
+    "hardCeiling": 256,
+    "rampBatchSize": 5,
+    "rampIntervalMs": 700,
+    "globalRunnerCeiling": 1056
+  },
+  "counts": {
+    "spawn": 35,
+    "resume": 0,
+    "total": 35
+  },
+  "compaction": {
+    "applied": false,
+    "mechanism": null,
+    "reason": null,
+    "savedBytes": 0,
+    "payloadBytesBefore": 0,
+    "payloadBytesAfter": 0
+  },
+  "dispatch": {
+    "calls": 1,
+    "kind": "task",
+    "note": "Issue exactly one batched task call carrying every spawn lane, plus one hub send per resume lane. Never split a wave into multiple task calls (one-swarm-per-wave)."
+  },
+  "registry": {
+    "schema": "ufo-swarm-registry-v1",
+    "path": ".ufo/waves/round-40/wave2/swarm-registry.json",
+    "reportDir": ".ufo/waves/round-40/wave2",
+    "members": {
+      "RevC1Counters": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "RevC1Sandbox": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "RevH2Corrections": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "RevH3Criterion": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "RevH4GateRows": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "RevC2Decisions": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "RevC2Entries": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "RevF23": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "RevNewRows": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "RevJunk": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "RevCensus": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "RevNoHarm": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "CritReceiptForge": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "CritKillRule": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "CritC2Fabricate": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "CritRecordsConsistency": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "CritSourceTruth": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "CritCounterSoup": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "CritCrossAxis": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "MutH1H5": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "MutH6H10": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "MutEntries": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "MutRegistry": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "MutHarness": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "MutCountingCommands": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "ScoutReopenNine": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "ScoutReopenLeads": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "ScoutHrefCheck": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "ScoutSiblingFinal": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "LabDeterminismY": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "LabScratchClean": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "LabExportClean": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "LabFreshFetch": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "ConnPatterns": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "connector",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      },
+      "SentinelFinal": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "sentinel",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls"
+      }
+    }
+  },
+  "priorRegistries": [],
+  "tasks": [
+    {
+      "name": "RevC1Counters",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the C1 counters: run `bash <lane>/corpus/instruments/r40-closure.sh --export-ref <Y> --work $S/w --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin` (Y = the lane tip) and record the full output and exit; it must print `closed=10/10 exit=0`. Then `--selftest --export-ref <Y>` must print `selftest cases=10 failures=0` with 10 graded case lines. Then the two negative controls: `--export-ref a7af2ce63bce153757d39bf66b366a96caf30c13` and `--export-ref 8371e7ac9f32cae5ed72f8c28205634603f836fa` must print closed<10/10 exit=1, and a plain run must exit 2. Also verify the suite file's sha256 equals the SKILL.md Gates & probes registry row. Attack: try to make a check pass while its defect is present by supplying a modified export (e.g., patch the exported SOURCES/records) in scratch — if any check stays green under a defeater, that is a defect. Deliver the transcripts + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevC1Counters.md"
+    },
+    {
+      "name": "RevC1Sandbox",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the r40 suite's sandbox: (1) export with a symlink inside the tree pointing outside it; (2) export with a path traversal candidate (a file named `../evil` or a declared block path containing `..`); (3) reuse a `--work` dir that already contains a previous export (stale-state trick); (4) run with `--scratch-root` pointing at a dir containing unrelated kasegi-r4* stray dirs (must red) and with an empty scratch root (must green). Record each run's output. Any check reading the live lane instead of the export, or passing with stale/unrelated state, is a defect. Deliver transcripts + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevC1Sandbox.md"
+    },
+    {
+      "name": "RevH2Corrections",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the H2 target: verify at Y that `grep -c '^Correction (round 40)'` is >=1 in each of SCORECARD.md, LOG.md, SHONEN.md and corpus/lessons/round-39.md, and that each such line names the final r39 receipt values (`closed=7/8 exit=1` and `selftest failures=1`) and the G2/G6 non-independence reason. Also verify the corrections are pure appends (previous claimed untouched). Any record still claiming r39 C1 8/8 at Y without the correction is a defect. Deliver counts + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevH2Corrections.md"
+    },
+    {
+      "name": "RevH3Criterion",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the H3 target: verify `grep -cE 'M39-2' corpus/QUALITY.md` >=1 at Y and that the criterion row is grounded (cites the lesson row and states the receipt-transcript rule). Flag a criterion that names the class without citing M39-2 (R36). Deliver output + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevH3Criterion.md"
+    },
+    {
+      "name": "RevH4GateRows",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the H4 target: read corpus/lessons/round-39.md's Gate section at Y and verify the S056/S058/S059 rejected-row blocks each carry a URL, an access date, and a <=25-word located quote. Re-locate each quote in the live source by fetching the URL (record status/bytes/sha256) and confirming the quote text occurs. Any block lacking any of the three, or a quote not matching the live source, is a defect. Deliver rows + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevH4GateRows.md"
+    },
+    {
+      "name": "RevC2Decisions",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the C2 decision set at Y: verify each of the nine rows S016/S017/S019/S020/S021/S022/S023/S024/S025 has status `mined` or `rejected` (queued count must be 0); verify the lesson's old→new change-log line exists for each; verify S022's flip names S030 and S024's flip names S029; verify mined rows each have exactly one knowledge entry citing them and rejected rows each carry reason+flip in the row (`teaches` cell). Count mined among the nine (must be >=4). Any queued row, missing log, or evidence-free decision is a defect. Deliver the per-row table + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevC2Decisions.md"
+    },
+    {
+      "name": "RevC2Entries",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the C2 knowledge entries: for each mined entry among the nine decided rows (and any S060+ mined entry), run `python3 <lane>/corpus/instruments/source-recheck.py --manifest <lane>/corpus/source-snapshots/round-40/manifest.json --source S###` and record exits; verify each entry passes QUALITY Q1-Q6 (provenance trio; tier A/B support; <=25-word located quotes; attribution; a falsifiable rule + a rejected over-generalization; documentation-only, no credentials). Re-open one quote per entry in the capture. Any entry failing Q1-Q6 or a recheck non-zero is a defect. Deliver per-entry verdicts.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevC2Entries.md"
+    },
+    {
+      "name": "RevF23",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the F23 admission: verify at Y that corpus/README.md has a frontier row F23 (admitted) with its entry path and source ids; that `grep -cE '^\\| F[0-9]+ \\|' corpus/README.md` = 23; that the harness `python3 <lane>/corpus/instruments/frontier-recheck-count.py` prints entries=26 pass=26 exit=0 incl. `PASS F23`; that PROVINCE.md carries the `[r40 Frontier amendment]` F23 line; and that the entry's claims are grounded in the CycloneDX analysis-subtree capture with <=25-word quotes. Flag any row/entry/harness mismatch. Deliver outputs + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevF23.md"
+    },
+    {
+      "name": "RevNewRows",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the new S060+ rows: verify at Y that `grep -cE '^\\|[[:space:]]*S06[0-9][[:space:]]*\\|' corpus/SOURCES.md` >=1, each row NF=13 with no `|` in cells, opened today, status valid, and at least one mined row has exactly one knowledge entry citing it (`grep -rlE '^source: S06[0-9]' corpus/knowledge | wc -l` >=1) whose source-recheck passes. Also verify the rows do not collide with existing ids and census stays exit 0. Any malformed/colliding/unbound row is a defect. Deliver counts + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevNewRows.md"
+    },
+    {
+      "name": "RevJunk",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the junk control: apply the junk-decisions.md flip-all rows to a scratch copy of the registry and run the C2 kill-rule checks (queued count, mined>=4, Gate-evidence grep): the junk must NOT satisfy the target (it must leave mined=0 and no Gate evidence). Also verify the committed junk twin was not accidentally integrated (the lane must NOT contain the junk rows in the real registry). Deliver outputs + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevJunk.md"
+    },
+    {
+      "name": "RevCensus",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the registry at Y: run `bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` (exit must be 0, warnings W04 S028/S029 only) and the manual checks from CORPUS.md on an export of Y: NF==13 for every row, no duplicate ids, tier/status enums valid, no tier-inflation, mined rows' used-by paths exist. Any malformed row or new W/E code is a defect. Deliver outputs + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevCensus.md"
+    },
+    {
+      "name": "RevNoHarm",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\nAttack the no-harm guard: at Y vs base a7af2ce63bce153757d39bf66b366a96caf30c13, run `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff --numstat a7af2ce63bce153757d39bf66b366a96caf30c13 <Y> -- . ':!.ufo'` and confirm every changed path is N/0 (additions only), SKILL.md and PROVINCE.md are append-only, `sha256sum corpus/instruments/density.py` is unchanged, and `python3 corpus/instruments/density.py SKILL.md --label SKILL` + `anchorcheck.py SKILL.md` behave as recorded. Any deletion, mid-file edit of a cited file, or instrument change is a defect. Deliver outputs + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/RevNoHarm.md"
+    },
+    {
+      "name": "CritReceiptForge",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\nAttack the r40 receipt: produce forged receipt variants against the committed suite at Y — (a) copy the committed all-gates.txt, change one `H<n> payload=` value to contradict the export, and feed it as the receipt; (b) re-stamp `run-utc` in the future; (c) assemble a receipt from a different ref's run; (d) a summary-only receipt with no per-check lines. For each, run the suite with the forged receipt in place (in scratch) and record whether it is rejected (closed<10/10 or selftest failure). Any forged variant that passes is a defect — the R1/G2 class is only closed if all four are rejected. Deliver variants + transcripts + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/CritReceiptForge.md"
+    },
+    {
+      "name": "CritKillRule",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\nAttack the C1 kill rule: try to construct a state where a real defect exists but the frozen kill rule does NOT fire (e.g., a stray scratch dir under a name the H6 scan misses, a check passing because it reads the live lane, a pending marker spelled differently, or a working tree that appears clean while a file changed). Report each such escape precisely; if any is found, it is a counter/hardening defect the L1 must know about. Deliver attempts + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/CritKillRule.md"
+    },
+    {
+      "name": "CritC2Fabricate",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\nAttack the C2 counters by fabrication: in a scratch copy of the lane, create plausible-looking dummy mined entries (with fake provenance quotes) for the nine rows and run the harness/source-recheck/census gates; record which kill-rule clauses stop them. Also try four dummy-mined + five flip-rejects. If any fabricated state passes all counters, that is a freeze defect (do-nothing control reachable). Deliver attempts + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/CritC2Fabricate.md"
+    },
+    {
+      "name": "CritRecordsConsistency",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\nAttack the round-40 records: scan at Y for the R2 class (any record still claiming r39 C1 8/8 at Y without an appended correction), any future-dated `run-utc`, any `⟨pending` or placeholder tokens in corpus/lessons/round-40.md and the new records, missing transcripts for quoted runs, and internal score/count contradictions vs claims.json (e.g., score rows disagreeing with measured commands). Also confirm the report's evidence pointers (to be filed) resolve. List every finding with exact line pointers; any unmarked overstatement is a defect. Deliver findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/CritRecordsConsistency.md"
+    },
+    {
+      "name": "CritSourceTruth",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\nAttack source truth: pick two of the newly mined rows (one from the nine, one S060+) and one rejected row; fetch the source live now, compare HTTP status/bytes/sha256 against the manifest record, re-locate the entry's quotes in the live text, and confirm the row's `teaches`/flip matches the source. Any capture that fails byte-identity or a quote that does not occur live is a defect. Deliver per-source verdicts.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/CritSourceTruth.md"
+    },
+    {
+      "name": "CritCounterSoup",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\nAttack the r40 suite as a whole: run the suite at Y several times under perturbations — (a) with `--scratch-root` pointing at a scratch that contains leftovers from other seats; (b) with a pre-populated `export/` in --work; (c) with TMPDIR unset; (d) from a different cwd; (e) twice back-to-back (determinism). Record each output/exit. Any red-green flip caused by environment rather than byte state is a defect (the G6 class). Deliver runs + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/CritCounterSoup.md"
+    },
+    {
+      "name": "CritCrossAxis",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\nAttack cross-axis harm: verify the round did not harm depth:density (SKILL.md append-only, density instrument unchanged, density mean not reduced), calibration (SHONEN boxes' new pointers resolve; no fabricated [x]), and adjacency (no absorbed sibling ground). Run density.py on the final SKILL.md, anchorcheck, and grep the new entries for sibling-domain topics. Any harm is a defect. Deliver outputs + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/CritCrossAxis.md"
+    },
+    {
+      "name": "MutH1H5",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\nMutation-test the r40 suite limbs H1-H5: extract the committed suite to scratch; apply one find→replace patch per limb that reopens exactly that check's defect class (H1: rename the suite/registry-row pattern; H2: weaken the correction grep; H3: drop the M39-2 token; H4: drop the quote/date requirement; H5: trust receipt payloads again). For each mutant run the suite's `--selftest` and the plain export run at Y; a limb is killed only when the mutant changes the verdict (selftest failure or closed<K/K). Record each patch with killed/survivor. Any survivor is a defect. Deliver patch list + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/MutH1H5.md"
+    },
+    {
+      "name": "MutH6H10",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\nMutation-test the r40 suite limbs H6-H10: same method for H6 (scan the wrong root/prefix), H7 (skip the re-run byte-comparison), H8 (accept base as green), H9 (skip whole-tail diff), H10 (skip append-only/deletion guard). Record killed/survivor per patch. Any survivor is a defect. Deliver patch list + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/MutH6H10.md"
+    },
+    {
+      "name": "MutEntries",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\nMutation-test the new knowledge entries' gates: in a scratch mirror, mutate each new entry (drop the `source:` line; truncate a quote; change a number; drop the falsifiable rule; add a credential-like string) and run `source-recheck.py`/`recheck-audit.py`/`frontier-recheck-count.py` on the mirror; each mutant must change the verdict. Any mutant that still passes is a gate gap. Deliver mutants + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/MutEntries.md"
+    },
+    {
+      "name": "MutRegistry",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\nMutation-test the registry gates: mutate the SOURCES rows in a scratch mirror (break NF=13; duplicate an id; invalid status enum; tier-inflation A+community; used-by path missing; a `|` inside a cell) and run the census + capture-binding-check; each mutant must red. Any mutation that still passes census/binding is a defect. Deliver mutants + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/MutRegistry.md"
+    },
+    {
+      "name": "MutHarness",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\nMutation-test the frontier harness: mutate `corpus/instruments/frontier-recheck-count.py` (or its expected list) in a scratch mirror — remove a PASS line, point F23 at the wrong entry, change the expected count — and run the harness; each mutant must change the verdict (exit 1 or entries/pass mismatch). Any mutation that still returns entries=26 pass=26 is a defect. Deliver mutants + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/MutHarness.md"
+    },
+    {
+      "name": "MutCountingCommands",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\nMutation-test the claims' counting commands: re-run every counting command in claims.json at Y verbatim (queued awk, mined awk, grep -rl source cites, S060+ greps, frontier count, harness, census) and record outputs. For each, also run it against the base a7af2ce63bce153757d39bf66b366a96caf30c13 to confirm the before value still matches the before-control files. Any command whose output contradicts the claim's after-state is a defect. Deliver outputs + verdict.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/MutCountingCommands.md"
+    },
+    {
+      "name": "ScoutReopenNine",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nRe-open the nine decided sources live: for each of S016/S017/S019/S020/S021/S022/S023/S024/S025 fetch its URL now (`curl -sS -L --max-time 90 -A kasegi-shokunin/1.0`), record HTTP status, bytes, sha256, UTC time, and compare with the round-40 manifest record (if the row is mined) or note the drift for rejected rows. Also confirm the row's `teaches` content still matches the live page (spot quote). Any source whose live bytes diverge from the committed capture is a finding (quality/drift) — report it, do not edit. Deliver the table.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/ScoutReopenNine.md"
+    },
+    {
+      "name": "ScoutReopenLeads",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nRe-open the new lead sources live: the CycloneDX analysis-subtree capture (F23 row), and the S060+ rows' URLs (CSAF v2.1 os/ status; CISA VEX Status Justifications). Record status/bytes/sha256/UTC and compare with the committed captures; re-locate one quote per row live. Any divergence is a finding. Deliver the table.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/ScoutReopenLeads.md"
+    },
+    {
+      "name": "ScoutHrefCheck",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nCheck every URL referenced in the NEW rows (S060+) and in the nine decided rows' source cells: each must return HTTP 2xx/3xx now; record statuses. Any dead/moved link is a finding (freshness). Deliver the table.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/ScoutHrefCheck.md"
+    },
+    {
+      "name": "ScoutSiblingFinal",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nFinal sibling-overlap sweep: grep the 20 sibling lanes' corpora + fleet root for the round's new topics (CycloneDX analysis, CVE-Bench/AI-agent exploitation, federal VDP guidance, Anthropic CVD, Project Zero transparency, CSAF v2.1 os/, VEX Status Justifications) and record any overlapping claims (owning lane + path). This confirms no cross-domain bleed in the landed entries. Deliver the sweep output + ruling.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/ScoutSiblingFinal.md"
+    },
+    {
+      "name": "LabDeterminismY",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nDeterminism probe at Y: run `bash <lane>/corpus/instruments/r40-closure.sh --export-ref <Y> --work $S/a --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin` and `--work $S/b`, then `diff` the two outputs; also diff against the committed all-gates.txt receipt (normalizing nothing). Record byte-identity or every differing line. Any nondeterminism or receipt mismatch is a defect (H7). Deliver transcripts.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/LabDeterminismY.md"
+    },
+    {
+      "name": "LabScratchClean",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nScratch-hygiene probe: list `/fast/scratch/hyaku/` for `kasegi-r39*`/`kasegi-r40*` dirs; record what exists (excluding your own at the moment of listing, and the L1's expected work dir). Run `bash /home/vgpnk/Projects/shokunin/scripts/hyaku/disk-guard.sh status`. Any stray dir other than seats' live scratch is a round-40 defect finding. Deliver the listing.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/LabScratchClean.md"
+    },
+    {
+      "name": "LabExportClean",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nIsolation probe: run the r40 suite at Y with a deliberately dirty `--scratch-root` (create a stray `kasegi-r40-stray/` inside it first) and with a pre-populated `export/` subdir in `--work`; the run must still be green (H6 permits only its own --work; the stray in scope must not count) or must red ONLY if the stray is in the scanned root. Record outputs; interpret against H6 semantics. Clean your strays before yielding. Deliver transcripts.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/LabExportClean.md"
+    },
+    {
+      "name": "LabFreshFetch",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\nFetch-stability probe: re-fetch one mined source (pick S025 or S016) and one S060+ source with a different User-Agent and at a different time; compare status/bytes/sha256. Record whether the committed capture is stable under UA variation. Any instability is a freshness finding. Deliver transcripts.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/LabFreshFetch.md"
+    },
+    {
+      "name": "ConnPatterns",
+      "agent": "connector",
+      "task": "/skill:godspeed\n\nCross-claim pattern finding on the landed round: read the C1 suite and C2 decisions, identify shared assumptions (e.g., both rely on source-recheck and the registry; the suite's H2/H3/H4 checks the same records the C2 lesson edits), and check for interactions that could hide a defect (e.g., a correction line satisfying H2 while the underlying record remains false). Also scan for pattern reuse across the round (status-change logging, quote discipline) that could be folded into QUALITY or the suite. Deliver the pattern findings; no edits.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/ConnPatterns.md"
+    },
+    {
+      "name": "SentinelFinal",
+      "agent": "sentinel",
+      "task": "/skill:godspeed\n\nFinal scope audit: (1) `git -C /home/vgpnk/Projects/shokunin status --porcelain` — report any untracked fleet-root file whose content names kasegi/round-40 (the L1's misroot sweep will then handle it); (2) `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain` — confirm the lane is clean at Y apart from the expected wave evidence; (3) verify the wave-2 results will be complete (seat receipts present for each seat you observe); (4) confirm no seat wrote to forbidden paths (grep receipts for `/home/vgpnk/Projects/shokunin/templates`, `scripts/`, `.ufo/state`, `.scratch`, shokuknow writes). Deliver findings; do not delete anything.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: round-40 falsify wave 2: attack C1 suite/counters, C2 decisions/rows/entries, sources re-open, junk controls\n\nReport: write your scoped findings to .ufo/waves/round-40/wave2/SentinelFinal.md"
+    }
+  ]
+}

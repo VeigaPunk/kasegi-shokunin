@@ -1,0 +1,468 @@
+# C2 junk-decision control scored against the frozen round-40 kill rule
+
+control   .ufo/waves/round-40/c2-controls/junk-decisions.md (fabricated decision set, do-nothing baseline)
+lane      /home/vgpnk/Projects/shokunin/kasegi-shokunin  (read-only; no mutating git/jj command)
+frozen    commit 5e985b74075dd3813a63d7750966bf8abf693465 (claims freeze), claims .ufo/waves/round-40/claims.json
+fixture   $S/SOURCES.junk.md = the frozen corpus/SOURCES.md with the junk decision set applied
+scratch   $S  (removed after this transcript and the receipt are filed)
+run-utc   2026-10-26T21:19:47Z
+
+Every command below ran through bash with S,F,LANE,FREEZE,CLAIMS,JUNK exported to the
+paths in this header; `exit=` is the command's own status. For `grep -c`, exit=1 with
+output 0 means "zero matching lines" — that is the expected red signal, not an error.
+The section C commands are the frozen C2 `counting_commands` verbatim, with `corpus/...`
+resolved against the freeze export $F and the registry path replaced by $S/SOURCES.junk.md.
+
+## A. Fixture identity
+
+$ git -C $LANE rev-parse HEAD
+5e985b74075dd3813a63d7750966bf8abf693465
+exit=0
+
+$ git -C $LANE status --porcelain --untracked-files=no
+exit=0
+
+$ mkdir -p $F && git -C $LANE archive $FREEZE | tar -x -C $F
+exit=0
+
+$ sha256sum $F/corpus/SOURCES.md && wc -l < $F/corpus/SOURCES.md
+f33d10f45142b6d59969cedbfc35a1d29a3ba672d62067da8424fc0d32a728f2  /fast/scratch/hyaku/kasegi-r40/ExecJunkRecheck/freeze/corpus/SOURCES.md
+132
+exit=0
+
+$ git -C $LANE show $FREEZE:corpus/SOURCES.md | sha256sum
+# frozen blob digest, independent of the scratch export
+f33d10f45142b6d59969cedbfc35a1d29a3ba672d62067da8424fc0d32a728f2  -
+exit=0
+
+$ sha256sum $JUNK && wc -l < $JUNK
+2294131d52b182f0bcf1bdd7002879cce48aad05788167545eba87dd385c0c15  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/c2-controls/junk-decisions.md
+20
+exit=0
+
+$ sha256sum $CLAIMS
+33a4602d3669aab178907082421fc72c3f2e938a06d902696ff4cb86cba2953f  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/claims.json
+exit=0
+
+## B. Apply the junk decision set to a scratch registry copy
+
+The control's table gives, for each of the nine rows, a fabricated status (`rejected`), a
+fabricated reason cell (`no time` / `superseded`) and evidence `none`. The registry's
+decision cells are column 9 (`status`) and column 8 (`teaches`, where landed rows carry the
+`REJECTED: ...; flip: ...` Gate text). The application writes exactly those two cells and
+leaves `used-by` untouched, so no capture, entry or quote is introduced.
+
+$ awk -F'|' -v OFS='|' 'BEGIN{split("S016 S017 S019 S020 S021 S022 S023 S024 S025",a," "); for(i in a) nine[a[i]]=1} {id=$2; gsub(/[[:space:]]/,"",id); if(id in nine){$8=(id=="S022"||id=="S024")?" superseded ":" no time "; $9=" rejected "} print}' $F/corpus/SOURCES.md > $S/SOURCES.junk.md
+exit=0
+
+$ sha256sum $S/SOURCES.junk.md && wc -l < $S/SOURCES.junk.md
+ffc4d5ed540d6b35d2f60a527b7e946107a4538fefaff8c51e8440e5fad0f4c7  /fast/scratch/hyaku/kasegi-r40/ExecJunkRecheck/SOURCES.junk.md
+132
+exit=0
+
+$ diff -u $F/corpus/SOURCES.md $S/SOURCES.junk.md | grep -E '^(---|\+\+\+|[-+][^-+])'
+# exactly the nine rewritten rows, nothing else
+--- /fast/scratch/hyaku/kasegi-r40/ExecJunkRecheck/freeze/corpus/SOURCES.md	2026-10-26 18:10:32.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r40/ExecJunkRecheck/SOURCES.junk.md	2026-10-26 18:19:48.139029295 -0300
+-| S016 | Anthropic Coordinated Vulnerability Disclosure for Claude-Discovered Vulnerabilities — https://www.anthropic.com/coordinated-vulnerability-disclosure | docs | A | Anthropic's own labeling, pacing and disclosure policy for AI-discovered vulnerabilities | Vulnerability Disclosure Reporting and Coordination; last updated 2026-03-06 | Ask for AI provenance labels and maintainer-aware submission pacing when automated finding volume exceeds review capacity. | queued | 2026-10-19 | 90d | — |
+-| S017 | Project Zero, Policy and Disclosure: 2025 Edition — https://projectzero.google/2025/07/reporting-transparency.html | docs | A | Project Zero's own reporting-transparency trial | The Trial: Reporting Transparency; 2025-07-29 | An early public notification can raise downstream awareness without disclosing exploit-enabling technical detail. | queued | 2026-10-19 | 90d | — |
++| S016 | Anthropic Coordinated Vulnerability Disclosure for Claude-Discovered Vulnerabilities — https://www.anthropic.com/coordinated-vulnerability-disclosure | docs | A | Anthropic's own labeling, pacing and disclosure policy for AI-discovered vulnerabilities | Vulnerability Disclosure Reporting and Coordination; last updated 2026-03-06 | no time | rejected | 2026-10-19 | 90d | — |
++| S017 | Project Zero, Policy and Disclosure: 2025 Edition — https://projectzero.google/2025/07/reporting-transparency.html | docs | A | Project Zero's own reporting-transparency trial | The Trial: Reporting Transparency; 2025-07-29 | no time | rejected | 2026-10-19 | 90d | — |
+-| S019 | NIST SP 800-216, Recommendations for Federal Vulnerability Disclosure Guidelines — https://csrc.nist.gov/pubs/sp/800/216/final | docs | A | NIST's federal vulnerability-disclosure framework recommendations | Abstract and final publication record; published 2023-05-24 | Formalize intake, assessment, tracking and communications rather than treating a published policy as the whole handling process. | queued | 2026-10-19 | on-release | — |
+-| S020 | U.S. Department of Justice, A Framework for a Vulnerability Disclosure Program for Online Systems — https://www.justice.gov/criminal/criminal-ccips/page/file/983996/dl?inline= | docs | A | DOJ guidance for scoping authorization, third-party interests and handling rules | Steps 1(C) and 3(A); Version 1.0, July 2017 | Check whether the organization can authorize testing of supplier-hosted assets and express allowed and disallowed conduct plainly. | queued | 2026-10-19 | on-release | — |
+-| S021 | CISA, BOD 20-01: Develop and Publish a Vulnerability Disclosure Policy — https://www.cisa.gov/news-events/directives/bod-20-01-develop-and-publish-vulnerability-disclosure-policy | docs | A | Federal agency VDP minimums, scope expansion and handling procedures | Required Actions; issued 2020-09-02 | Make scope, permitted testing, anonymous reporting, response expectations and handling procedures explicit instead of relying on a generic bounty policy. | queued | 2026-10-19 | on-release | — |
+-| S022 | CVE Numbering Authority Operational Rules v4.1.0 — https://www.cve.org/Resources/Roles/Cnas/CNA_Rules_v4.1.0.pdf | spec | A | CVE Program requirements for CNA scope, vulnerability determination and assignment | Sections 3.1 and 4.1; effective and approved 2025-05-14 | Define who has assignment authority and how scope, security impact and independently fixable issues affect CVE decisions. | queued | 2026-10-19 | on-release | — |
+-| S023 | The Coordinated Vulnerability Disclosure Program — CISA — https://www.cisa.gov/resources-tools/programs/coordinated-vulnerability-disclosure-cvd-program | docs | A | CISA's own intake, triage, coordination and disclosure process | The CVD Process, steps 1–7; page has no visible publication date, opened 2026-10-19 | Separate report intake, triage, coordination, CVE determination, advisory preparation and public disclosure as distinct stages. | queued | 2026-10-19 | 90d | — |
+-| S024 | Regulation (EU) 2024/2847, Cyber Resilience Act — https://eur-lex.europa.eu/eli/reg/2024/2847/oj/eng | spec | A | The CRA's purpose and its manufacturer obligations for products with digital elements (Article 14 wording not yet verified against EUR-Lex) | OJ L 2024/2847 of 20.11.2024, opening recitals (HTML view of OJ:L_202402847); Article 14 not reached in this round's reader — re-open before mining | Treat the CRA as a manufacturer-side legal duty distinct from researcher disclosure timelines; mine Article 14's reporting clock only after reading it in the official text. | queued | 2026-10-19 | on-release | — |
+-| S025 | CVE-Bench: A Benchmark for AI Agents' Ability to Exploit Real-World Web Application Vulnerabilities — https://arxiv.org/abs/2503.17332 | paper | A | CVE-Bench's own measured performance on its real-world web-application exploitation tasks | Abstract; published 2025-03-21, arXiv:2503.17332 | Use task-specific, reproducible benchmark outcomes and avoid generalizing exploitation results into broad claims about finding or triage accuracy. | queued | 2026-10-19 | on-release | — |
++| S019 | NIST SP 800-216, Recommendations for Federal Vulnerability Disclosure Guidelines — https://csrc.nist.gov/pubs/sp/800/216/final | docs | A | NIST's federal vulnerability-disclosure framework recommendations | Abstract and final publication record; published 2023-05-24 | no time | rejected | 2026-10-19 | on-release | — |
++| S020 | U.S. Department of Justice, A Framework for a Vulnerability Disclosure Program for Online Systems — https://www.justice.gov/criminal/criminal-ccips/page/file/983996/dl?inline= | docs | A | DOJ guidance for scoping authorization, third-party interests and handling rules | Steps 1(C) and 3(A); Version 1.0, July 2017 | no time | rejected | 2026-10-19 | on-release | — |
++| S021 | CISA, BOD 20-01: Develop and Publish a Vulnerability Disclosure Policy — https://www.cisa.gov/news-events/directives/bod-20-01-develop-and-publish-vulnerability-disclosure-policy | docs | A | Federal agency VDP minimums, scope expansion and handling procedures | Required Actions; issued 2020-09-02 | no time | rejected | 2026-10-19 | on-release | — |
++| S022 | CVE Numbering Authority Operational Rules v4.1.0 — https://www.cve.org/Resources/Roles/Cnas/CNA_Rules_v4.1.0.pdf | spec | A | CVE Program requirements for CNA scope, vulnerability determination and assignment | Sections 3.1 and 4.1; effective and approved 2025-05-14 | superseded | rejected | 2026-10-19 | on-release | — |
++| S023 | The Coordinated Vulnerability Disclosure Program — CISA — https://www.cisa.gov/resources-tools/programs/coordinated-vulnerability-disclosure-cvd-program | docs | A | CISA's own intake, triage, coordination and disclosure process | The CVD Process, steps 1–7; page has no visible publication date, opened 2026-10-19 | no time | rejected | 2026-10-19 | 90d | — |
++| S024 | Regulation (EU) 2024/2847, Cyber Resilience Act — https://eur-lex.europa.eu/eli/reg/2024/2847/oj/eng | spec | A | The CRA's purpose and its manufacturer obligations for products with digital elements (Article 14 wording not yet verified against EUR-Lex) | OJ L 2024/2847 of 20.11.2024, opening recitals (HTML view of OJ:L_202402847); Article 14 not reached in this round's reader — re-open before mining | superseded | rejected | 2026-10-19 | on-release | — |
++| S025 | CVE-Bench: A Benchmark for AI Agents' Ability to Exploit Real-World Web Application Vulnerabilities — https://arxiv.org/abs/2503.17332 | paper | A | CVE-Bench's own measured performance on its real-world web-application exploitation tasks | Abstract; published 2025-03-21, arXiv:2503.17332 | no time | rejected | 2026-10-19 | on-release | — |
+exit=0
+
+$ awk -F'|' '/^\|[[:space:]]*S0(16|17|19|20|21|22|23|24|25)[[:space:]]*\|/ {for(i=2;i<=12;i++) gsub(/^[[:space:]]+|[[:space:]]+$/,"",$i); printf "%-5s status=%-9s teaches=%-12s used-by=%s\n",$2,$9,$8,$12}' $S/SOURCES.junk.md
+# the decision cells the counter reads
+S016  status=rejected  teaches=no time      used-by=—
+S017  status=rejected  teaches=no time      used-by=—
+S019  status=rejected  teaches=no time      used-by=—
+S020  status=rejected  teaches=no time      used-by=—
+S021  status=rejected  teaches=no time      used-by=—
+S022  status=rejected  teaches=superseded   used-by=—
+S023  status=rejected  teaches=no time      used-by=—
+S024  status=rejected  teaches=superseded   used-by=—
+S025  status=rejected  teaches=no time      used-by=—
+exit=0
+
+## C. The frozen C2 counting commands, run on the junk registry copy
+
+$ awk -F'|' '/^\|[[:space:]]*S0(16|17|19|20|21|22|23|24|25)[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="queued") n++} END{print n+0}' $S/SOURCES.junk.md
+# frozen: queued among the nine -> 0
+0
+exit=0
+
+$ awk -F'|' '/^\|[[:space:]]*S0(16|17|19|20|21|22|23|24|25)[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' $S/SOURCES.junk.md
+# frozen: mined among the nine -> >=4
+0
+exit=0
+
+$ grep -rlE '^source: S0(16|17|19|20|21|22|23|24|25)' $F/corpus/knowledge | wc -l
+# frozen: knowledge entries citing the nine -> equal to the mined count
+0
+exit=0
+
+$ grep -cE '^\|[[:space:]]*S06[0-9][[:space:]]*\|' $S/SOURCES.junk.md
+# frozen: S060+ rows opened this round -> >=1
+0
+exit=1
+
+$ grep -rlE '^source: S06[0-9]' $F/corpus/knowledge | wc -l
+# frozen: knowledge entries citing an S060+ row -> >=1
+0
+exit=0
+
+$ grep -cE '^\| F[0-9]+ \|' $F/corpus/README.md
+# frozen: frontier rows -> 23
+22
+exit=0
+
+$ cd $F && python3 corpus/instruments/frontier-recheck-count.py
+# frozen: harness -> entries=26 pass=26 exit=0 (summary is the last line)
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+entries=25 pass=25 exit=0
+exit=0
+
+## D. Gate-block evidence in the junk decision set: absent
+
+$ grep -E '^\|[[:space:]]*S0(16|17|19|20|21|22|23|24|25)[[:space:]]*\|' $S/SOURCES.junk.md | grep -c 'flip:'
+# rejected rows need reason+flip; flip markers among the nine -> 0
+0
+exit=1
+
+$ awk -F'|' '/^\|[[:space:]]*S0(16|17|19|20|21|22|23|24|25)[[:space:]]*\|/ {e=$5; gsub(/[[:space:]]/,"",e); if(e!="none") n++} END{print n+0}' $JUNK
+# the control's own evidence column: cells other than `none` -> 0
+0
+exit=0
+
+$ awk -F'|' '/^\|[[:space:]]*S0(16|17|19|20|21|22|23|24|25)[[:space:]]*\|/ {r=$4; gsub(/^[[:space:]]+|[[:space:]]+$/,"",r); print r}' $JUNK | sort | uniq -c
+# fabricated reasons, verbatim from the control
+      7 no time
+      2 superseded
+exit=0
+
+$ grep -rlE '"id"[[:space:]]*:[[:space:]]*"S0(16|17|19|20|21|22|23|24|25)"' $F/corpus/source-snapshots | wc -l
+# capture manifests naming any of the nine -> 0 (no capture exists to recheck)
+0
+exit=0
+
+$ test -f $F/corpus/lessons/round-40.md && echo present || echo absent
+# the round-40 lesson Gate that rejected rows must log into does not exist at freeze
+absent
+exit=0
+
+$ grep -c 'flip:' $JUNK
+# no flip text anywhere in the control file -> 0
+0
+exit=1
+
+## E. Frozen kill rule evaluated on the junk fixture
+
+$ cat $S/eval-c2.py
+# the evaluator, in full, so the verdict is re-derivable
+#!/usr/bin/env python3
+"""Score a registry fixture against the frozen round-40 C2 kill rule (claims.json)."""
+import json
+import pathlib
+import subprocess
+import sys
+
+NINE = ["S016", "S017", "S019", "S020", "S021", "S022", "S023", "S024", "S025"]
+IDX = {"id": 0, "teaches": 6, "status": 7, "used_by": 10}
+
+
+def parse(path):
+    rows = {}
+    total = 0
+    for line in pathlib.Path(path).read_text().splitlines():
+        if not line.startswith("|"):
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) < 11 or not cells[0].startswith("S"):
+            continue
+        total += 1
+        rows[cells[0]] = {k: cells[i] for k, i in IDX.items()}
+    return rows, total
+
+
+def evidence(row, freeze):
+    """Gate-block evidence for one decided row; returns (ok, detail)."""
+    if row["status"] == "rejected":
+        return ("flip:" in row["teaches"].lower(),
+                "reason+flip" if "flip:" in row["teaches"].lower() else "reason-only,no-flip")
+    if row["status"] == "mined":
+        entry = row["used_by"]
+        if entry in ("", "\u2014", "-"):
+            return False, "no-entry"
+        md = freeze / "corpus" / entry
+        if not md.is_file() or f"source: {row['id']}" not in md.read_text():
+            return False, "entry-missing-or-unbound"
+        return False, "entry-bound,no-capture-manifest-in-fixture"
+    return False, "still-queued"
+
+
+def main():
+    reg = pathlib.Path(sys.argv[1])
+    freeze = pathlib.Path(sys.argv[2])
+    claims_path = pathlib.Path(sys.argv[3])
+    claims = json.loads(claims_path.read_text())
+    c2 = [c for c in claims["claims"] if c["id"] == "C2"][0]
+    rows, total = parse(reg)
+    nine = {sid: rows.get(sid, {"status": "absent", "teaches": "", "used_by": ""}) for sid in NINE}
+
+    queued = sum(1 for r in nine.values() if r["status"] == "queued")
+    mined = sum(1 for r in nine.values() if r["status"] == "mined")
+    absent = sum(1 for r in nine.values() if r["status"] == "absent")
+    details = {sid: evidence(r, freeze) for sid, r in nine.items()}
+    ok_evid = sum(1 for ok, _ in details.values() if ok)
+    s060 = sorted(sid for sid in rows if len(sid) == 4 and sid.startswith("S0") and int(sid[1:]) >= 60)
+    s060_entries = sum(
+        1 for p in (freeze / "corpus" / "knowledge").glob("*.md")
+        if any(l.startswith("source: S06") for l in p.read_text().splitlines()))
+    frontier = subprocess.run(
+        ["grep", "-cE", r"^\| F[0-9]+ \|", str(freeze / "corpus" / "README.md")],
+        capture_output=True, text=True)
+    frontier_n = int(frontier.stdout.strip() or 0)
+    harness = subprocess.run([sys.executable, str(freeze / "corpus" / "instruments" / "frontier-recheck-count.py")],
+                             cwd=str(freeze), capture_output=True, text=True)
+    hsum = [l for l in harness.stdout.splitlines() if l.startswith("entries=")]
+    hsum = hsum[0] if hsum else "<no-summary>"
+
+    print(f"frozen claims: {claims_path} (C2 kill_rule sha256-locked at claims freeze)")
+    print("frozen C2 kill_rule:")
+    print("  " + c2["kill_rule"])
+    print()
+    print(f"registry fixture: {reg} rows={total} nine_absent={absent}")
+    print()
+    fired = []
+
+    def clause(n, name, observed, required, ok):
+        verdict = "pass" if ok else "FIRED"
+        if not ok:
+            fired.append(f"{n:02d} {name}")
+        print(f"clause-{n:02d} {name:34s} observed={observed!s:12s} required={required!s:14s} {verdict}")
+
+    clause(1, "nine-rows-still-queued", queued, "0", queued == 0)
+    clause(2, "mined-among-nine-at-least-4", mined, ">=4", mined >= 4)
+    clause(3, "decided-row-gate-evidence", f"{ok_evid}/9", "9/9", ok_evid == 9)
+    clause(4, "s060-row-opened-this-round", len(s060), ">=1", len(s060) >= 1)
+    clause(5, "knowledge-entry-citing-s060", s060_entries, ">=1", s060_entries >= 1)
+    clause(6, "frontier-rows", frontier_n, "23", frontier_n == 23)
+    clause(7, "harness-entries26-pass26", hsum, "entries=26 pass=26 exit=0", hsum == "entries=26 pass=26 exit=0")
+    print(f"clause-08 source-recheck-fails-for-a-mined-row  observed=n/a (mined among nine = {mined}) "
+          f"{'pass' if mined == 0 else 'FIRED'}")
+    if mined:
+        fired.append("08 mined-row-without-capture-manifest")
+    print("clause-09 census-exit-or-new-W/E      observed=not-evaluated (fixture is a detached copy; not a census root)")
+    print()
+    print("per-row Gate-block evidence:")
+    for sid in NINE:
+        ok, detail = details[sid]
+        print(f"  {sid} status={nine[sid]['status']:9s} evidence={'yes' if ok else 'NO '} ({detail})")
+    print()
+    verdict = "REJECTED" if fired else "ACCEPTED"
+    print(f"clause-10 junk-twin-accepted                 observed={verdict:12s} required=not-accepted "
+          f"{'pass' if verdict == 'REJECTED' else 'FIRED'}")
+    print(f"fired={len(fired)} " + ",".join(fired))
+    print(f"verdict={verdict}")
+    return 1 if fired else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+exit=0
+
+$ python3 $S/eval-c2.py $S/SOURCES.junk.md $F $CLAIMS
+# exit=1 = the counter rejects the fixture (a counter that accepts exits 0)
+frozen claims: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/claims.json (C2 kill_rule sha256-locked at claims freeze)
+frozen C2 kill_rule:
+  Any of: any of the nine rows still queued; fewer than four of the nine mined; any decided row without its Gate-block evidence (mined rows need the capture, the entry and a passing source-recheck; rejected rows need reason+flip); no S060+ row opened this round; no knowledge entry citing an S060+ row; frontier rows != 23; harness not entries=26 pass=26 exit=0; source-recheck fails for any mined row; census exit != 0 or a new W/E code; junk twin accepted.
+
+registry fixture: /fast/scratch/hyaku/kasegi-r40/ExecJunkRecheck/SOURCES.junk.md rows=59 nine_absent=0
+
+clause-01 nine-rows-still-queued             observed=0            required=0              pass
+clause-02 mined-among-nine-at-least-4        observed=0            required=>=4            FIRED
+clause-03 decided-row-gate-evidence          observed=0/9          required=9/9            FIRED
+clause-04 s060-row-opened-this-round         observed=0            required=>=1            FIRED
+clause-05 knowledge-entry-citing-s060        observed=0            required=>=1            FIRED
+clause-06 frontier-rows                      observed=22           required=23             FIRED
+clause-07 harness-entries26-pass26           observed=entries=25 pass=25 exit=0 required=entries=26 pass=26 exit=0 FIRED
+clause-08 source-recheck-fails-for-a-mined-row  observed=n/a (mined among nine = 0) pass
+clause-09 census-exit-or-new-W/E      observed=not-evaluated (fixture is a detached copy; not a census root)
+
+per-row Gate-block evidence:
+  S016 status=rejected  evidence=NO  (reason-only,no-flip)
+  S017 status=rejected  evidence=NO  (reason-only,no-flip)
+  S019 status=rejected  evidence=NO  (reason-only,no-flip)
+  S020 status=rejected  evidence=NO  (reason-only,no-flip)
+  S021 status=rejected  evidence=NO  (reason-only,no-flip)
+  S022 status=rejected  evidence=NO  (reason-only,no-flip)
+  S023 status=rejected  evidence=NO  (reason-only,no-flip)
+  S024 status=rejected  evidence=NO  (reason-only,no-flip)
+  S025 status=rejected  evidence=NO  (reason-only,no-flip)
+
+clause-10 junk-twin-accepted                 observed=REJECTED     required=not-accepted pass
+fired=6 02 mined-among-nine-at-least-4,03 decided-row-gate-evidence,04 s060-row-opened-this-round,05 knowledge-entry-citing-s060,06 frontier-rows,07 harness-entries26-pass26
+verdict=REJECTED
+exit=1
+
+## F. Positive controls: the same detector fires on real evidence
+
+$ grep -cE 'REJECTED:.*flip:' $F/corpus/SOURCES.md
+# landed rejected rows carrying reason+flip
+6
+exit=0
+
+$ awk -F'|' '/^\|[[:space:]]*S[0-9]+[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="rejected") n++} END{print n+0}' $F/corpus/SOURCES.md
+# landed rejected rows total: 6 of 6 carry flip, so clause 3 is not a constant-zero oracle
+6
+exit=0
+
+$ awk -F'|' '/^\|[[:space:]]*S029[[:space:]]*\|/ {for(i=2;i<=12;i++) gsub(/^[[:space:]]+|[[:space:]]+$/,"",$i); printf "status=%s used-by=%s\n",$9,$12}' $F/corpus/SOURCES.md
+status=mined used-by=corpus/knowledge/cra-manufacturer-reporting-duties.md
+exit=0
+
+$ grep -n '^source: S029' $F/corpus/knowledge/cra-manufacturer-reporting-duties.md
+# a landed mined row's entry carries the source binding the junk rows lack
+2:source: S029 — https://eur-lex.europa.eu/eli/reg/2024/2847/oj/eng — Regulation (EU) 2024/2847, OJ 20.11.2024; Articles 14, 15, 16 and 71
+exit=0
+
+$ cat $S/recheck/S057.manifest.json
+# manifest over the landed S057 capture (sha256 is the committed file)
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "S057",
+      "path": "S057.txt",
+      "sha256": "11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f",
+      "quotes": [
+        {
+          "id": "Q1",
+          "quote": "VEX users choose the most appropriate tools for their ecosystems."
+        }
+      ]
+    }
+  ]
+}
+exit=0
+
+$ cd $S/recheck && python3 $F/corpus/instruments/source-recheck.py --manifest S057.manifest.json --source S057
+# the third Gate-block leg, on a real mined row: capture + quote + passing recheck
+S057:sha256 OK
+S057:Q1 OK occurrences=1
+exit=0
+
+## G. Adversarial variant: flip all nine to `mined` with the same zero evidence
+
+$ awk -F'|' -v OFS='|' 'BEGIN{split("S016 S017 S019 S020 S021 S022 S023 S024 S025",a," "); for(i in a) nine[a[i]]=1} {id=$2; gsub(/[[:space:]]/,"",id); if(id in nine){$8=(id=="S022"||id=="S024")?" superseded ":" no time "; $9=" mined "} print}' $F/corpus/SOURCES.md > $S/SOURCES.junk-mined.md
+# same fixture, status cell -> mined, nothing else added
+exit=0
+
+$ sha256sum $S/SOURCES.junk-mined.md
+e7c88e034bd491121b4440d10b4d96fe54290c326caa49fe44a28f9bcf55ba16  /fast/scratch/hyaku/kasegi-r40/ExecJunkRecheck/SOURCES.junk-mined.md
+exit=0
+
+$ awk -F'|' '/^\|[[:space:]]*S0(16|17|19|20|21|22|23|24|25)[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' $S/SOURCES.junk-mined.md
+# the >=4 floor is satisfied by a status lie alone
+9
+exit=0
+
+$ grep -rlE '^source: S0(16|17|19|20|21|22|23|24|25)' $F/corpus/knowledge | wc -l
+# but entries citing the nine -> 0, so the equality clause fires (0 != 9)
+0
+exit=0
+
+$ grep -rlE '"id"[[:space:]]*:[[:space:]]*"S0(16|17|19|20|21|22|23|24|25)"' $F/corpus/source-snapshots | wc -l
+# and no capture manifest exists, so no mined row can pass source-recheck
+0
+exit=0
+
+$ python3 $S/eval-c2.py $S/SOURCES.junk-mined.md $F $CLAIMS
+# a status-only mined flip is still rejected
+frozen claims: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/claims.json (C2 kill_rule sha256-locked at claims freeze)
+frozen C2 kill_rule:
+  Any of: any of the nine rows still queued; fewer than four of the nine mined; any decided row without its Gate-block evidence (mined rows need the capture, the entry and a passing source-recheck; rejected rows need reason+flip); no S060+ row opened this round; no knowledge entry citing an S060+ row; frontier rows != 23; harness not entries=26 pass=26 exit=0; source-recheck fails for any mined row; census exit != 0 or a new W/E code; junk twin accepted.
+
+registry fixture: /fast/scratch/hyaku/kasegi-r40/ExecJunkRecheck/SOURCES.junk-mined.md rows=59 nine_absent=0
+
+clause-01 nine-rows-still-queued             observed=0            required=0              pass
+clause-02 mined-among-nine-at-least-4        observed=9            required=>=4            pass
+clause-03 decided-row-gate-evidence          observed=0/9          required=9/9            FIRED
+clause-04 s060-row-opened-this-round         observed=0            required=>=1            FIRED
+clause-05 knowledge-entry-citing-s060        observed=0            required=>=1            FIRED
+clause-06 frontier-rows                      observed=22           required=23             FIRED
+clause-07 harness-entries26-pass26           observed=entries=25 pass=25 exit=0 required=entries=26 pass=26 exit=0 FIRED
+clause-08 source-recheck-fails-for-a-mined-row  observed=n/a (mined among nine = 9) FIRED
+clause-09 census-exit-or-new-W/E      observed=not-evaluated (fixture is a detached copy; not a census root)
+
+per-row Gate-block evidence:
+  S016 status=mined     evidence=NO  (no-entry)
+  S017 status=mined     evidence=NO  (no-entry)
+  S019 status=mined     evidence=NO  (no-entry)
+  S020 status=mined     evidence=NO  (no-entry)
+  S021 status=mined     evidence=NO  (no-entry)
+  S022 status=mined     evidence=NO  (no-entry)
+  S023 status=mined     evidence=NO  (no-entry)
+  S024 status=mined     evidence=NO  (no-entry)
+  S025 status=mined     evidence=NO  (no-entry)
+
+clause-10 junk-twin-accepted                 observed=REJECTED     required=not-accepted pass
+fired=6 03 decided-row-gate-evidence,04 s060-row-opened-this-round,05 knowledge-entry-citing-s060,06 frontier-rows,07 harness-entries26-pass26,08 mined-row-without-capture-manifest
+verdict=REJECTED
+exit=1
+
+## H. Reading
+
+The control fails on independent clauses, so it cannot be rescued by satisfying one:
+- clause 2 (mined among the nine >= 4): observed 0, because a rejected status cannot be mined;
+- clause 3 (every decided row carries its Gate-block evidence): 0/9, because `no time` and
+  `superseded` are reasons with no flip, no capture, no entry and no passing source-recheck;
+- clauses 4-7: the do-nothing baseline opens no S060+ row, adds no S060+ entry, leaves the
+  frontier at 22 and the harness at 25/25.
+The adversarial variant shows the counter is not defeated by the cheap repair either: setting
+all nine to `mined` clears the >=4 floor but the entry-count equality and the missing capture
+manifests still reject it.
+
+Positive controls F show the same probes return nonzero on landed evidence (6/6 rejected rows
+carry flip; S029 is bound to its entry; S057's capture passes source-recheck), so the zeros in
+C and D are measurements of the control, not a dead detector.
+
+exit-code note: `grep -c` and `grep -l ... | wc -l` report exit=1/0 for zero hits as shown;
+`python3 eval-c2.py` exits 1 exactly when at least one clause fires.

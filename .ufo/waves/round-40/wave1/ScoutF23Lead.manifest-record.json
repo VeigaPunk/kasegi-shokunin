@@ -1,0 +1,57 @@
+{
+  "id": "S060",
+  "path": "S060.txt",
+  "files": [
+    "S060.txt"
+  ],
+  "url": "https://cyclonedx.org/docs/1.7/json/",
+  "capture_url": "https://cyclonedx.org/docs/1.7/json/",
+  "status": 200,
+  "fetched_utc": "2026-10-26T21:16:18Z",
+  "fetched_bytes": 6419901,
+  "size_bytes": 4889,
+  "snapshot_bytes": 4889,
+  "lines": 111,
+  "sha256": "d68626222139e8399bd421bbf023c030e6cace071cacbfc8abe659c629ce6779",
+  "snapshot_sha256": "d68626222139e8399bd421bbf023c030e6cace071cacbfc8abe659c629ce6779",
+  "raw_sha256": "4d9c10da73aedb78727cbfeefd2a07551f25acae92a0dc6900cd976d6e947874",
+  "raw_bytes": 6419901,
+  "full_text_sha256": "ffe8c0b6c155dab46098754e7ee757c441f230810fd353135fb2bd149f5ba7f4",
+  "full_text_bytes": 1041903,
+  "full_text_lines": 22795,
+  "scope": "SCOPED SLICE of the normalized page text: capture L1 = page text L1 (title/version line); capture L2-L111 = page text L16060-L16169 (the vulnerabilities[].analysis subtree L16060-L16107 plus the sibling vulnerabilities[].affects[].versions[].status enum L16134-L16169 as its product-status counterpart). Mapping: capture line k>=2 = page-text line 16058+k. Full page is not committed.",
+  "tool": "corpus/instruments/capture-source.py html_to_text() (+collapse) over the fetched HTML, then line slice [L1] + [L16060..L16169] (UTF-8, final newline); UA kasegi-shokunin/1.0",
+  "normalized": "capture-source.py html_to_text(): <script>/<style> removed, block tags to newlines, tags stripped, html.unescape(), runs of space/tab/NBSP collapsed, blank lines dropped, UTF-8, final newline; then the declared line slice",
+  "http": {
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "final_url": "https://cyclonedx.org/docs/1.7/json/",
+    "redirects": 0,
+    "user_agent": "kasegi-shokunin/1.0",
+    "fetched_utc": "2026-10-26T21:16:18Z",
+    "date": "Mon, 26 Oct 2026 21:16:18 GMT",
+    "server": "cloudflare",
+    "cache_control": "public, max-age=0, must-revalidate"
+  },
+  "reproducibility": "raw_sha256 is NOT stable across fetches: a second fetch at 2026-10-26T21:17:05Z returned the same 6419901 bytes but sha256 9a551897...c6 (3936 bytes differ: Cloudflare data-cfemail email-obfuscation tokens). The normalized full-page text sha256 ffe8c0b6...f4 was identical on both fetches, so the slice is reproducible.",
+  "quotes": [
+    {
+      "id": "Q1",
+      "quote": "Declares the current state of an occurrence of a vulnerability, after automated or manual analysis.",
+      "anchor": 7,
+      "location": "L7 of the committed slice (page text L16065); analysis.state description: the field records the current state of one occurrence of a vulnerability after automated or manual analysis, not a product-status list."
+    },
+    {
+      "id": "Q2",
+      "quote": "The component or service is not affected by the vulnerability. Justification should be specified for all not_affected cases.",
+      "anchor": 15,
+      "location": "L15 (page text L16073); the not_affected value of analysis.state, with the SHOULD-level rule that a justification accompany it (cf. CSAF known_not_affected impact-statement SHALL, S055)."
+    },
+    {
+      "id": "Q3",
+      "quote": "The date and time (timestamp) when the analysis was last updated.",
+      "anchor": 50,
+      "location": "L50 (page text L16108); analysis.lastUpdated description: a per-analysis timestamp, the CycloneDX analogue of the VEX issued/updated timestamps S057 discusses (L45 firstIssued, L48 lastUpdated)."
+    }
+  ]
+}

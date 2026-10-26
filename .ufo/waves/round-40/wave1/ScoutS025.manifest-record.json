@@ -1,0 +1,61 @@
+{
+ "schema_version": 1,
+ "purpose": "Round-40 S025 captured-source assertions (CVE-Bench, Zhu et al., arXiv:2503.17332v4, 24 Jun 2025). Capture is the arXiv PDF's converted text (pdftotext), fetched 2026-10-26T21:16:02Z with curl -sS -L --max-time 90 under UA kasegi-shokunin/1.0; the abs landing page (HTTP 200, 44575 bytes, sha256 28675fd2808412c1255561965bfc8d409d979f05cea2877db5acc0606146d627) is metadata only. Candidate record produced by ScoutS025; L1/ScribeRows own the landed manifest.",
+ "sources": [
+  {
+   "id": "S025",
+   "path": "S025.txt",
+   "files": [
+    "S025.txt"
+   ],
+   "url": "https://arxiv.org/abs/2503.17332",
+   "capture_url": "https://arxiv.org/pdf/2503.17332",
+   "status": 200,
+   "fetched_utc": "2026-10-26T21:16:02Z",
+   "fetched_bytes": 602933,
+   "size_bytes": 602933,
+   "snapshot_bytes": 71851,
+   "lines": 1490,
+   "sha256": "faa1c1f8b9b34615e37f26b09e5a0763ad287daf1563b0823a7473867dbf9b7b",
+   "snapshot_sha256": "faa1c1f8b9b34615e37f26b09e5a0763ad287daf1563b0823a7473867dbf9b7b",
+   "raw_sha256": "334417c3bbc4fbaa1777df3a98b5c518e9187cac3b21714879116a0260f26cb1",
+   "raw_bytes": 602933,
+   "tool": "corpus/instruments/capture-source.py pdf_to_text(): pdftotext -enc UTF-8 on the raw PDF bytes, then collapse() (CRLF/CR to LF, runs of space/tab/NBSP collapsed, lines trimmed, blank lines dropped, UTF-8, final newline)",
+   "normalized": "capture-source.py pdf_to_text(): pdftotext -enc UTF-8, runs of space/tab/NBSP collapsed, blank lines dropped, UTF-8, final newline",
+   "http": {
+    "status": 200,
+    "content_type": "application/pdf",
+    "final_url": "https://arxiv.org/pdf/2503.17332",
+    "redirects": 0,
+    "user_agent": "kasegi-shokunin/1.0",
+    "fetched_utc": "2026-10-26T21:16:02Z",
+    "content_length": 602933,
+    "pinned_version_check": "https://arxiv.org/pdf/2503.17332v4 -> HTTP 200, 602933 bytes, identical sha256"
+   },
+   "landing_page": {
+    "url": "https://arxiv.org/abs/2503.17332",
+    "role": "metadata only; not the committed capture",
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "fetched_utc": "2026-10-26T21:16:02Z",
+    "raw_bytes": 44575,
+    "raw_sha256": "28675fd2808412c1255561965bfc8d409d979f05cea2877db5acc0606146d627",
+    "revision": "Submitted 21 Mar 2025 (v1), last revised 24 Jun 2025 (v4)"
+   },
+   "quotes": [
+    {
+     "id": "Q1",
+     "quote": "Our experiments show that the state-of-the-art agent framework can exploit up to 13% of the vulnerabilities.",
+     "anchor": 32,
+     "location": "L31-L34 (anchor L32 holds the sentence start); final sentence of the Abstract block (heading L7) in the v4 PDF text. Note: the registry row's quote ('resolve up to 13% of vulnerabilities') is not present in this v4 text; the v4 wording is 'exploit up to 13% of the vulnerabilities'."
+    },
+    {
+     "id": "Q2",
+     "quote": "LLM agents can exploit up to 10% web application vulnerabilities under the zero-day setting, and 12.5% under the one-day setting.",
+     "anchor": 507,
+     "location": "L506-L510; first paragraph ('Success Rate.') of Section 4 Experiments (Section 4.1 Settings follows), the paper's per-setting measured result; the quote begins at the end of L507."
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,164 @@
+# ReviewerC1Design — design-verification checklist for r40-closure.sh (H1–H10)
+
+Design-level requirements derived from claims.json C1 (frozen 5e985b7), the round-39 attack
+classes (R1–R7 in corpus/lessons/round-39-verifier-spotcheck.md §5; CritG2Exploit F2–F5;
+CritC1Kill K1–K6), and measured probes (stale-work overlay, symlink escape, ref aliases,
+tee exit laundering — evidence in ReviewerC1Design.md). Items marked [GAP] are not stated
+by the frozen C1 text and not covered by CritC1AntiSuite T1–T11; items marked [ENDORSED]
+confirm an AntiSuite requirement as necessary and correctly placed. Every requirement is
+builder-binding for ExecSuiteBuild.
+
+## 0. Receipt identity semantics (resolves the H5/H7 self-reference; read before building H5)
+
+0.1 The committed receipt (`.ufo/waves/round-40/final-gates/all-gates.txt`) is the tee of the
+    run over the ref it records (`export-ref=J` per claims.json judged_head_rule). It cannot
+    record Y: the receipt's bytes do not exist when the producing run starts, so a run at Y
+    cannot validate the receipt it is producing (fixpoint regress).
+0.2 The receipt-validation limb is two-mode, switched deterministically on receipt presence at
+    `--export-ref` (never on a flag): receipt absent at the passed ref → green with the literal
+    payload `receipt=0` (pre-commit mode); receipt present → full validation mode. Both modes
+    count toward closed=10/10 so the J-run tee and the Y counting run are both green.
+0.3 [GAP→must implement] In validation mode, "recorded payload contradicting the export" means:
+    archive the receipt's RECORDED ref (second `git archive`), re-derive every limb value over
+    it, and require each recorded `H<n> payload=` and each `selftest detail=` value to equal the
+    re-derived value as an exact string. Field-presence or shape checks are insufficient
+    (CritG2Exploit F2: `g2_graded` graded two tokens; `.*` accepted empty payloads).
+0.4 [GAP→must implement] Structural limbs in validation mode, each with its own payload field:
+    recorded ref is exactly 40-hex and `cat-file -t` = commit; recorded ref is ancestor-or-equal
+    of the passed ref; receipt ABSENT at the recorded ref; `git diff --name-only <recorded>
+    <passed>` = exactly the receipt path, nothing else (closes CritC1Kill K1b self-naming
+    export-ref and CritG2Exploit F5 empty-diff chain); receipt suite-sha256 = digest of the
+    export's r40-closure.sh = digest named in the SKILL.md registry row.
+0.5 State in the suite header that no in-suite limb proves the receipt is a true tee of any run;
+    that closure is H7's re-run byte-identity, a separate command. Do not let a payload field
+    (e.g. `tee-verified=1`) claim what no limb computes.
+0.6 Every content limb reads the export work tree or lane git object data (`git -C <lane>
+    cat-file/show/diff` between explicit refs); no limb opens a file under the live worktree
+    checkout. Graded proof per content limb (H1 H2 H3 H4 H9 H10): the dual-state fixture —
+    fixture repo with two commits c1<c2 differing in exactly the checked byte, fixture checked
+    out at c2, export ref c1; the limb must evaluate c1 and not see c2's worktree bytes
+    (ENDORSED AntiSuite T7, required for every content limb, not a shared single case).
+
+## 1. H5 — forged/tampered receipt rejection (payload re-derivation)
+
+1.1 Recount, never trust: closed is recomputed from re-derived limb results and must equal the
+    printed `closed=n/10` in the receipt AND the run's own tally. A `closed=` line that lies
+    about the limb reds. Payload-line set: missing line, extra/duplicated line, and an id not
+    in the suite's check list each red (unknown ids are forgeries, not noise).
+1.2 Graded selftest grammar, enforced on the receipt and in selftest output alike: physical
+    count of `^[[:space:]]*selftest case=` lines = 10 (an indented case line counts as
+    ungraded → red; CritG2Exploit F4); exactly 10 distinct ids; each line carries
+    `positive=pass` AND `verdict=pass` AND `mutants=n/n` with n>=1; zero ungraded case-shaped
+    lines; exactly one summary line `selftest cases=10 failures=0`; the summary must equal an
+    independent recount of `verdict=fail` lines (a summary miscounting its own block reds);
+    the judge standard (r39 `judge_selftest_report`) applies to the receipt's selftest block —
+    every case must be backed by `selftest detail=` lines matching its declared `mutants=n/n`
+    (closes CritC1Kill K1: detail-free receipts).
+1.3 `run-utc=`: exactly one line, value printed by the run itself from the run's single clock;
+    run-start and run-end lines bracket it and the value must lie in [start, end] (post-hoc
+    injection reds even where byte-compare normalizes); at the real lane the value must also be
+    <= the committer date (`git log -1 --format=%cI`) of the lane commit carrying the receipt —
+    the K5/R1 anchor; graded via fixture commits with pinned GIT_COMMITTER_DATE. Reject: future
+    vs run window, post-dated vs commit, missing, duplicated.
+1.4 Every rejection case asserts its sabotage precondition (the tamper provably in place, the
+    fixture in the intended state) before invoking the suite, and its verdict derives from the
+    observed output matching a NAMED red needle (the specific payload field), never from
+    exit code alone (CritG2Exploit F3: unobservable reds cannot be told from red-for-the-wrong-
+    reason). A fixture builder that silently no-ops must make its case print verdict=fail.
+
+## 2. H6 — stray sibling scan (G6/R4 closure)
+
+2.1 Scanned roots are declared constants of the suite and printed into the H6 payload
+    (`roots=...`); the primary root is the scratch parent (…/hyaku), because the R4 survivor
+    `kasegi-r39-l1` lived at parent level, not inside `kasegi-r39/`.
+2.2 Matching: basename prefix `kasegi-r39*` or `kasegi-r40*` (case-sensitive), on every entry
+    type — directory, regular file, dotfile, symlink. A file named like a seat dir is a stray.
+2.3 Sole exemption: the realpath of the passed `--work` dir and its parent chain toward the
+    scanned root. A control case proves green with work-only present.
+2.4 Fail closed: any root that cannot be listed or any entry whose lstat fails reds with
+    `read=fail`; silent zero on error is a defect.
+2.5 Selftest H6 cases plant strays only under an isolated `--scratch-root` override; the
+    selftest must never create `kasegi-r39*`/`kasegi-r40*` entries at the live root (the suite
+    must not manufacture the very strays the kill rule bans).
+2.6 Payload observability: matched strays are listed, LC_ALL=C sorted. H6 is host state;
+    byte-identity (H7) therefore holds under the kill rule's precondition (scratch quiescent
+    except --work); precondition drift reds closed AND identity consistently. Document this in
+    the suite header; it is not an excuse to relax either check.
+
+## 3. H7 — teed deterministic receipt
+
+3.1 Tee plumbing: `set -o pipefail`; stderr merged into the transcript; the suite prints a
+    final `exit=<n>` line. Measured: `false | tee f` exits 0 without pipefail — an unguarded
+    tee launders a dead run into a clean-looking receipt. A transcript whose final line is not
+    the suite's `exit=` line reds (truncation class).
+3.2 Byte-identity re-run: identical argv; the ONLY permitted difference is the single
+    `run-utc=` line value; two or more differing lines, or any differing non-clock line, reds.
+    Measured premise: two `git archive` invocations of one commit are byte-identical.
+3.3 One clock: run-start, run-utc, run-end are all printed by the run itself; no other clock or
+    host-volatile value (mounts, disk guards, seat names, hostnames, absolute mktemp paths)
+    may appear in the transcript. Output paths are relative to the work tree; enumeration
+    order is pinned (LC_ALL=C sort) everywhere a glob or walk is printed.
+3.4 Environment pins for every run: LC_ALL=C, TZ=UTC, fixed umask; fixture commits carry
+    pinned author/committer dates; the receipt is written atomically (tmp + rename) only after
+    the run completes, by one invocation.
+
+## 4. H1–H4, H8–H10 per-check requirements
+
+4.1 H1: the export contains `corpus/instruments/r40-closure.sh` and the SKILL.md Gates &
+    probes registry row names its exact basename AND carries a sha256 equal to the export
+    suite bytes (r39 pattern, SKILL.md registry digest limb).
+4.2 H2: anchored count >= 1 per file (SCORECARD.md, LOG.md, SHONEN.md,
+    corpus/lessons/round-39.md), pattern tolerant to list markers per CritC1Kill K3
+    (`^[-*[:space:]]*Correction \(round 40\)`), and every matched line carries the literal
+    final r39 receipt values (`closed=7/8`, `exit=1`, `failures=1`); a value-free correction
+    line must not satisfy the count. Section scans read ALL matching sections, never
+    last-only (CritC1Kill K6 `md_section` scoping).
+4.3 H3: a QUALITY.md criterion ROW citing M39-2 in the row format QUALITY.md actually uses
+    (anchor to the row prefix, not a bare mention); graded negative: mention outside a row.
+4.4 H4: for each of S056/S058/S059 in the round-39 lesson Gate: URL present, ISO access date
+    present, quote <= 25 words with the count computed LC_ALL=C-pinned; all-section scan; graded
+    negatives: missing date, 26-word quote, missing URL.
+4.5 H8: base and r39-head reds print the NAMED red limbs (same needles the real controls
+    print), not a vacuous short-circuit or crash; the negative-control transcripts are
+    committed beside the receipt (r39 R3 lesson: uncommitted control values are unauditable).
+4.6 H9 both directions (the frozen predicate states only (a)):
+    (a) declared⇒exact: per declared path — declared line count equals numstat added for
+    base..ref, deletions 0, and sha of `tail -n <added>` matches the export bytes;
+    (b) [GAP→must implement] added⇒declared: EVERY path with added>0 in `git diff --numstat
+    base <ref>` (minus declared-blocks.txt itself and the receipt path) must be declared —
+    this is the CritC1Kill K2 closure (r39: 271 added files undeclared, 8/8 green);
+    duplicates red; declared-but-absent-from-diff red.
+4.7 H10: `git diff --diff-filter=D --name-only base <ref>` empty; per-path deletions 0;
+    SKILL.md and PROVINCE.md append-only by diff hunks (any modified hunk reds, line count is
+    not the test); density instrument bytes equal at base and ref; rename detection left off so
+    a rename surfaces as delete+add and reds.
+
+## 5. Harness and extraction guards (mandatory regardless of H-numbering)
+
+5.1 `--export-ref` accepts exactly 40 hex chars resolving to `cat-file -t` = commit; HEAD,
+    branch names, short hashes and blob ids refused with exit 2 (measured: rev-parse resolves
+    all of these — a short hash can silently select a different commit than the report names).
+5.2 Extraction into a fresh empty dir created by the suite; a non-empty `--work` is refused.
+    Measured: `git archive | tar -x` overlays without deleting, so a planted
+    `corpus/instruments/r40-closure.sh` in a reused work dir survives and would flip H1 green
+    at the base ref (breaking H8). tar failure = harness error, never a pass.
+5.3 After extraction, before any limb: canonical tree digest (per-file sha256 over LC_ALL=C
+    sorted paths, algorithm stated in the suite header) must equal the digest derived from the
+    ref's tree; refuse any member that is a symlink (or whose canonicalized target leaves the
+    work dir — measured: a committed symlink, relative or absolute, is extracted faithfully and
+    reads through it escape to the host, `/etc/passwd` read achieved); refuse `.git` members
+    and absolute or `..` member paths; refuse non-regular members.
+5.4 Exit-code taxonomy: 0 green, 1 any check red, 2 harness refusal only; no check failure may
+    surface as 2 and no harness refusal as 1. Traps and cleanup preserve the exit code.
+5.5 cwd discipline: checks run with cwd in the work tree; lane reads use explicit
+    `git -C <lane>`; GIT_DIR, GIT_WORK_TREE and GIT_INDEX_FILE are unset around work-tree
+    reads so no inherited or planted git pointer can redirect them.
+
+## 6. Builder process requirements
+
+6.1 Every graded case maps to a named attack: this checklist or CritC1AntiSuite §1 T1–T11
+    (ENDORSED as the mutant inventory); `mutants=n/n` prints the true set size; per-check
+    minimums per AntiSuite §3 hold, with T6 folded into H5's case set (or an erratum if an
+    eleventh check is preferred — never a silent count change).
+6.2 The selftest is hermetic: fixture repos only, no writes outside its own scratch root, no
+    requirement beyond lane git object reads, no live-scratch dependence.
