@@ -1,0 +1,76 @@
+{
+ "lane": "kasegi",
+ "round": 36,
+ "attempt": 1,
+ "base": "cc692008b0cfd58d18275aa6c4aed79620120799",
+ "frozen_at_utc": "2026-10-26T15:33:19Z",
+ "axes_owned": [
+  "depth:density",
+  "depth:verifiability",
+  "coverage"
+ ],
+ "saturation": {
+  "line": "9/10 per owned axis",
+  "window": "N=3"
+ },
+ "lowest_non_retired_axis": "depth:verifiability (4)",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "score_before": 4,
+   "score_after": "held 4",
+   "predicate": "The committed instrument `corpus/instruments/r36-closure.sh` runs over a `git archive` export of a named lane head (`--export-ref <hash>`) and prints `closed=9/9 exit=0` on the round-36 final lane head; `--selftest` prints `cases=9 failures=0`. Its nine checks E1-E9 close the five routed defects of the round-35 verifier spot-check and the two standing closure-order defects: E1 structural placeholder/hash binding (placeholder tokens absent; the Final lane commit line's hash exists and is an ancestor of the exported ref), E2 round-34 depth:density erratum present, E3 SKILL.md Gates & probes registry rows for exact basenames r35-defect-closure.sh and r36-closure.sh, E4 round-35 wave1-results.json tracked with provenance note, E5 claims-erratum-d5.md present, E6 L1Integration.md `Correction (round 35)` present, E7 QUALITY.md supersedes-R22/R23 rows present, E8 the false-evidence-line correction is recorded in the round-36 lesson, E9 quiescence (lane `git status --porcelain` empty; no leftover `$HYAKU_SCRATCH/kasegi-r36` seat dirs). The suite fails on the round-35 judged head 0aee0ef export (closed<9/9, exit 1) and on the round-35 base export (closed=0/9, exit 1).",
+   "kill_rule": "Any of: r36-closure.sh missing (ls_exit=2); plain run on the final lane-head export prints closed != 9/9 or exit != 0; --selftest prints fewer than 9 cases or any failure; any single E-check's fixture proves the check can pass while its defect is present; `grep -c 'filled by the L1' SCORECARD.md` != 0; lane working tree not clean at filing (`git status --porcelain` nonempty); any leftover kasegi-r36 scratch seat dir; the Final lane commit line's hash does not exist or is not an ancestor.",
+   "counting_commands": [
+    "bash corpus/instruments/r36-closure.sh --export-ref <final-lane-hash> -> closed=9/9 exit=0",
+    "bash corpus/instruments/r36-closure.sh --export-ref 3266c9937b03062d9bbc2f436e20820115ed179c -> closed=0/9 exit=1",
+    "bash corpus/instruments/r36-closure.sh --export-ref 0aee0ef105395a2f1d6ace7eaeef13871bb26988 -> closed<9/9 exit=1",
+    "bash corpus/instruments/r36-closure.sh --selftest -> cases=9 failures=0 exit=0",
+    "grep -c 'filled by the L1' SCORECARD.md -> 0"
+   ],
+   "before": [
+    "r36-closure.sh absent (suite_missing=1)",
+    "SKILL.md registry rows: r36-closure 0, r35-defect-closure exact basename 0",
+    "worktree clean 0; scratch leftovers 0",
+    "placeholder greps 0/0 (base clean)"
+   ],
+   "after": [
+    "r36-closure.sh exists; closed=9/9 exit=0 at the final lane-head export; --selftest cases=9 failures=0; r35-base export closed=0/9 exit=1; r35 judged head export closed<9/9 exit=1",
+    "SKILL.md Gates & probes registry registers exact basenames r35-defect-closure.sh and r36-closure.sh",
+    "round-36 lesson records E8 + Mistakes rows; lane quiescent at filing (E9)"
+   ]
+  },
+  {
+   "id": "C2",
+   "axis": "coverage",
+   "score_before": 7,
+   "score_after": "held 7",
+   "predicate": "Frontier F19 (FIRST EPSS - exploitation-likelihood scoring distinct from CVSS severity and from KEV catalog status) admitted 18->19; registry row S053 added (tier A, status mined, opened 2026-10-26); knowledge entry corpus/knowledge/epss-exploit-prediction-scoring.md cites `source: S053`; harness prints entries=22 pass=22 exit=0 incl. PASS F19 ids=S053; source-recheck S053 exit 0; census exit 0 (W04 S028/S029 only); knowledge entries 47->48; the junk twin c2-controls/junk-f19.md is rejected (source-recheck quote-not-found / harness non-admission).",
+   "kill_rule": "Any of: frontier rows != 19; S053 row absent or malformed; entry absent or failing Q1-Q10; harness not entries=22 pass=22 exit=0; source-recheck S053 exit != 0; census exit != 0; junk-f19 accepted by source-recheck or harness; capture/manifest absent or unbound (capture-binding-check).",
+   "counting_commands": [
+    "grep -cE '^\\| F[0-9]+ \\|' corpus/README.md -> 19",
+    "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md -> 53",
+    "grep -rlE '^source: S053 ' corpus/knowledge | wc -l -> 1",
+    "python3 corpus/instruments/frontier-recheck-count.py -> entries=22 pass=22 exit=0",
+    "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-36/manifest.json --source S053 -> exit 0",
+    "python3 corpus/instruments/capture-binding-check.py -> exit 0",
+    "ls corpus/knowledge/*.md | wc -l -> 48"
+   ],
+   "before": [
+    "frontier 18; registry rows 52; S053 rows 0; entries citing S053 0; knowledge entries 47; harness entries=21 pass=21",
+    "junk-f19 absent (control not yet built)"
+   ],
+   "after": [
+    "frontier 19 (F19 row); registry rows 53 (S053 row); entries citing S053 1; knowledge entries 48; harness entries=22 pass=22 exit=0",
+    "S053 capture + manifest committed (round-36), source-recheck exit 0, capture-binding exit 0",
+    "junk-f19 rejected (discriminating control receipt)"
+   ]
+  }
+ ],
+ "non_claim_frontier_items": {
+  "assimilation": "none adopted; id-collision rerun + quarantine slice verdicts in lesson Gate",
+  "considerthese": "2026-10-26.md: proposals 3 and 5 adopted (quiescence gate; PROVINCE frontier amendments); proposal 1 computed via score-gap; 2/4/6/7 reasons recorded",
+  "mistake": "M36-1..M36-4 minted in round-36 lesson"
+ }
+}
