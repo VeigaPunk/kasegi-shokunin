@@ -45,3 +45,33 @@ class). Resolution, matching G2 as written and the round-38 precedent:
   judged head 66703acaaff50529a35be49aa8759d04140720ad exports print closed<8/8 exit=1.
 - Wave-2 suite-run items use `<Y>` as the verification ref; RevC1Receipt checks both the J-run
   (7/8, receipt=0) and the Y-run (8/8).
+
+## E5 — non-vacuous measurement semantics (from CritFreezeAudit, pre-implementation)
+
+Adopted from the independent freeze audit `wave1/CritFreezeAudit.md` (spec-level, before any seat scored), to
+keep the frozen counters discriminating. Counting commands and kill rules read with these semantics:
+
+1. Graded case lines: every `selftest case=G<n>` line carries `mutants=n/n` with n >= 1 (no `mutants=0/0`) and
+   non-empty `payload=` fields; the kill rule counts `mutants=0/0` as a failure.
+2. G1: `declared-blocks.txt` must declare BOTH front doors (PROVINCE.md, corpus/README.md) and every added tail
+   (if a file gained lines since base, its declaration must be present and exact); empty declarations with
+   additions are RED.
+3. G4: at least one tracked `.ufo/waves/round-39/*-dispatch.json` must exist (a round with zero commits dispatch
+   files is RED).
+4. G5: the SCORECARD.md `## Round 39` section must exist, and SHONEN.md must carry round-39 lines; both with
+   zero `Final lane commit:` lines and the judged head named by reference only.
+5. G7: anchor after the existing `## Round-37 dispositions — filled (round 38)` heading in
+   `corpus/knowledge/considerthese-proposals-ledger.md`; the `## Round-39 dispositions` section carries >= 1
+   proposal row (this round mines proposal 1 and carries proposal 3, so >= 2) and one `Correction (round 39)` line.
+6. G3 scope: only lines ADDED since base (`git diff <base> REF` over SCORECARD.md, SHONEN.md, LOG.md,
+   corpus/lessons/round-38.md) are scanned for quoted `--export-ref <hash> -> closed=K/K` runs; every such quote
+   needs a committed transcript under `.ufo/waves/round-39/final-gates/` or an explicit `report-only` label. The
+   round report is bound by the same rule (the L1 files it with committed transcripts or report-only labels).
+7. R2 correction counting command: `grep -c '^Correction (round 39)' corpus/lessons/round-38.md LOG.md
+   SCORECARD.md SHONEN.md` — at least 1 per file at the judged head.
+8. R4 counting command: `grep -cE 'M38-5|M38-7' corpus/QUALITY.md` — at least 1 at the judged head (R36 row).
+9. C2 content binding: the F22 frontier row names entry `knowledge/cisa-when-to-issue-vex.md` and sources
+   `S057`; the S057 row is NF=13 with `status mined` and its source cell carries exactly
+   `https://www.cisa.gov/resources-tools/resources/when-issue-vex-information`; the S056/S058/S059 rows are
+   `status rejected` with a `flip:` token in `teaches`; the S057-citing entry has a substantive body (>= 10
+   lines) beyond the provenance trio.
