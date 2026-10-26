@@ -314,3 +314,29 @@ state and is retained as history, not rewritten (R9): at round 31 the frontier s
 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round 31. The 0/18 sentence
 is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
 frontier count stays outside it.
+
+## Round-33 admission — coverage map row and Frontier F16 (appended 2026-10-26)
+
+The coverage map above is not edited in place (R6): the round-33 entry
+`knowledge/chinese-crowdsourced-testing-scope-and-rewards.md` (Frontier F16, sources S049 + S050;
+source basis: the CNVD 众测 platform's 使用手册 at https://zc.cnvd.org.cn/news/helpList and
+360SRC's 外部漏洞处理和评分标准 V2.0 at https://security.360.cn/Reward/rules, both captured
+2026-10-25 under `corpus/source-snapshots/round-32/`) is recorded here as an appended amendment so
+every existing line keeps its number. The coverage-map row is appended here rather than inserted
+into the map, and the F16 frontier row is listed here on the same table shape as the frontier
+above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Chinese crowdsourced-testing platform scope and reward rules (round 33) | knowledge/chinese-crowdsourced-testing-scope-and-rewards.md | S049, S050 — public primary, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F16 | Chinese crowdsourced-testing platform scope and reward rules (CNVD 众测, 360SRC) | admitted | knowledge/chinese-crowdsourced-testing-scope-and-rewards.md | S049, S050 | Read a reward only from the platform that prints it — CNVD 众测 publishes no per-severity money table, since the enterprise's rating and the project's rules set the payout (S049.txt:419), while 360SRC pays its business-coefficient formula over base 安全币 (S050.txt:112, 129) — and read neither as scope or authorization: 360SRC's enumerating asset list is a separate page S050 names but this capture does not contain (S050.txt:71), and CNVD 众测 intake is the customer's per-project authorization, not the submission page's target list (S049.txt:211-214). |
+
+[r33 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 33 the frontier stands at **16/16 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33. The 0/18 sentence is untouched: the lost-domain denominator
+still holds 0 of 18 surfaces present, and the frontier count stays outside it.

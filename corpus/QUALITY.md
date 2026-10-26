@@ -156,3 +156,58 @@ printf 'live_selftest_ok_lines=%s instrument_cases_summary_lines=%s supersedes_r
 [ "$sum" -ge 1 ] || { [ "$sup" -ge 1 ] && [ "$cmd" -ge 1 ]; } && { echo "r13_specimen_closure=closed"; exit 0; }
 echo "r13_specimen_closure=open"; exit 1
 ```
+
+## Round-33 additions — a capture snapshot ships with its manifest (append-only)
+
+These two rows widen R13/R14 from instruments to captures: a round's capture evidence is
+admissible only with the binding metadata that lets a later reader tell a real capture from a
+fabricated one. They add no new Q/R bar to entries already admitted, and they supersede no
+earlier row.
+
+| id | criterion | grounded in |
+|---|---|---|
+| R20 | A capture snapshot directory ships its `manifest.json` in the same round and the same commit that adds its captured files. Every manifest record carries a `url` matching exactly one `corpus/SOURCES.md` registry-row URL and one fetch-provenance field: `fetched_utc` for a round-32-or-later capture, a declared `archival: true` for an older one whose exact fetch instant was not recorded. A snapshot dir with no manifest, or a record with neither `url` nor provenance, is a defect of the round that landed it, and it is repaired by appending that round's manifest and landing the checker in the same round — never by re-freezing the claim that reads manifests into a lower record count. | M33-1 (`corpus/lessons/round-33.md` § Mistakes; frozen statement `.ufo/waves/round-33/claims.json` → `non_claim_frontier_items.mistake`); `corpus/lessons/round-32-verifier-spotcheck.md:93` D5 — "are committed without a `round-32/manifest.json`" and "so the 38-record target is not silently moved" — plus the base measurement below: `manifest_records=38 with_url=0 with_fetched_utc=0 archival_true=0`, `snapshot_dirs_without_manifest=1` (`corpus/source-snapshots/round-32`, holding `S049.txt` and `S050.txt`), measured on base `690b69da…`. |
+| R21 | A sourced claim's capture manifest carries the provenance that lets a re-verifier separate a fabricated capture from a real one: a `url` the registry row independently names, and a fetch instant the capture commit dates. A counter set that binds only local bytes and shape counts (entry count, registry-row count, `occurrences=1`) is not evidence that the capture is real; until the manifest carries those fields, the claim states that limit instead of reading the passing counters as a capture check. | `corpus/lessons/round-31.md:146` open item 4 — "manifest `url`/`fetched_utc` fields and a census URL↔capture comparison" — after `.ufo/waves/round-31/wave1/CritC2Kill.md:232` §6 item 2 — "No URL↔capture binding anywhere": that seat's junk construction (invented capture + manifest + entry + frontier and registry rows) passed all seven C2 counters; M33-1 (`corpus/lessons/round-33.md` § Mistakes). |
+
+### R20 / R21 — the base measurement both rows rest on (read-only, replayable)
+
+`$1` is the revision to measure; the default is the round-33 claims base. The command prints one
+line, writes nothing, and needs only `git` and `python3`:
+
+```sh
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin || exit 9
+rev=${1:-690b69dae23ab9f4ccf056ba2d619cadc2abb3c4}
+python3 - "$rev" <<'PY'
+import json, subprocess, sys
+rev = sys.argv[1]
+g = lambda *a: subprocess.run(['git', *a], capture_output=True, text=True).stdout
+dirs = g('ls-tree', '--name-only', '-d', rev, 'corpus/source-snapshots/').split()
+tot = u = fut = arch = 0
+naked = []
+for d in dirs:
+    files = [f.rsplit('/', 1)[-1] for f in g('ls-tree', '--name-only', f'{rev}:{d}').split()]
+    mans = [f for f in files if f.endswith('manifest.json')]
+    if not mans and any(f.endswith('.txt') for f in files):
+        naked.append(d)
+    for m in mans:
+        doc = json.loads(g('show', f'{rev}:{d}/{m}'))
+        recs = doc.get('sources', []) if isinstance(doc, dict) else doc
+        for r in recs:
+            tot += 1; u += 'url' in r; fut += 'fetched_utc' in r; arch += r.get('archival') is True
+print(f'dirs={len(dirs)} manifest_records={tot} with_url={u} with_fetched_utc={fut} '
+      f'archival_true={arch} snapshot_dirs_without_manifest={len(naked)} names={",".join(sorted(naked))}')
+PY
+```
+
+Base output (measured 2026-10-26 against `690b69dae23ab9f4ccf056ba2d619cadc2abb3c4`):
+
+```
+dirs=9 manifest_records=38 with_url=0 with_fetched_utc=0 archival_true=0 snapshot_dirs_without_manifest=1 names=corpus/source-snapshots/round-32
+```
+
+The R20 recheck on a landed round is that round's committed checker —
+`cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/capture-binding-check.py` —
+whose rule A supplies the manifest clause, rule B the one-registry-row `url` clause and rule C the
+provenance clause. At round-33 composition the checker was absent from the base
+(`git cat-file -e 690b69da:corpus/instruments/capture-binding-check.py` → exit 128), so no landed
+verdict is claimed by these rows; a later reader runs the command and reads its own output.

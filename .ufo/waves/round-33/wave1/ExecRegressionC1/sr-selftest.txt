@@ -1,0 +1,12 @@
+SELFTEST clean PASS expected-exit=0 observed-exit=0 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST corrupt PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256 observed-ids=S900:sha256
+SELFTEST missing-source PASS expected-exit=2 observed-exit=2 expected-ids=S900:source observed-ids=S900:source
+SELFTEST missing-manifest PASS expected-exit=2 observed-exit=2 expected-ids=manifest observed-ids=manifest
+SELFTEST stem-mismatch PASS expected-exit=1 observed-exit=1 expected-ids=S901:manifest observed-ids=S901:manifest
+SELFTEST double-occurrence PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST double-occurrence-anchored PASS expected-exit=0 observed-exit=0 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST double-occurrence-out-of-range PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST double-occurrence-broken PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST quote-absent PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+selftest cases=10 failures=0
+sr_selftest_exit=0

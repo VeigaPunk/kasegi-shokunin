@@ -70,3 +70,5 @@ rewritten; the frontier as of round 31 is F01–F15. Titles and round attributio
 read from the `corpus/README.md` frontier rows at :213, :264 and :284; F15's round attribution is
 this round's admission (round-31 claims, C2), and its entry binds the frontier as `ground: F15`
 against the round-31 capture `corpus/source-snapshots/round-31/S048.txt`.
+
+[r33 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F16 — Chinese crowdsourced-testing platform scope and reward rules (CNVD 众测, 360SRC) — admitted round 33

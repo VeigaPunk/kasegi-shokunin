@@ -509,3 +509,148 @@ sha256 above changed) and `score-gap.py` was repaired by the L1 (census `cmd:` p
 `d6aefddca50293347c348646479bbe406745ad3163422b27edefcea861264270` (second run byte-identical), exit 0, with
 the same two summary lines `limbs=13 killed=13 survivors=0` and `controls=3 rejected=3`. The other four digests
 in the table are unchanged.
+
+## Round-33 additions — `capture-binding-check.py` (C1 capture-manifest binding)
+
+Appended at file end; no line above moved (R6). One new committed, stdlib-only instrument:
+`corpus/instruments/capture-binding-check.py`. It answers a question the instruments
+above never asked — a capture directory can hold real bytes and still be unauditable,
+because nothing in its `manifest.json` says which documented URL those bytes came from
+or when they were fetched. It audits that binding over every
+`corpus/source-snapshots/*/manifest.json` and closes routed defect D5
+(`corpus/lessons/round-32-verifier-spotcheck.md`: S049/S050 were committed with no
+`round-32/manifest.json`, so an auditor could not tell where the bytes came from).
+
+| script | what it measures | run |
+|---|---|---|
+| `corpus/instruments/capture-binding-check.py` | **Capture-manifest binding**, three rules. **A** manifest presence: every directory under `corpus/source-snapshots/` that holds a `manifest.json` *or* any captured file must hold one (`FAIL rule=missing-manifest dir=<dir>`). **B** URL binding, id-scoped per `claims-erratum-1`: the record id must name a registry row else `FAIL rule=no-row`; two rows with that id are `FAIL rule=dup-id`; the record `url` must byte-equal the `https://` token of *its own* row's source cell else `FAIL rule=url-mismatch` (an absent `url` is the `detail=absent` form). **C** provenance: a non-empty `fetched_utc` or `"archival": true`, with the archival exemption closed for `round-32`+ directories and for unparsable directory names (`FAIL rule=provenance-missing`). Prints one `AUDIT` header, one `MANIFEST <dirname> records=N url_bound=M fetched=K archival=L` line per manifest directory, one `FAIL` line per failure, and one summary `records=<total> bound=<total> unbound=<total>`; `bound` counts records satisfying B **and** C. Exit 0 only when every rule passes, 1 on any failure, 2 on a usage/read error (`UNAVAILABLE …`). | `python3 corpus/instruments/capture-binding-check.py [--root <lane>]` → 9 `MANIFEST` lines, the `AUDIT` line, `records=40 bound=40 unbound=0`, exit 0. `--selftest` → `selftest cases=11 failures=0`, exit 0. |
+
+### Measured on the landed bytes (quiescent, this seat)
+
+Instrument digest measured here with `sha256sum` on quiescent bytes, twice, identical
+(2026-10-26T04:26Z): `b4182665ba5cf5441d6495d7de3d59a4c6f8d679d5e9d85c38d16abfb6d0b7f9`,
+492 lines — the digest the executor receipt's header carries, with its digest-history
+line naming `bcabe76a…` → `4bc7aed3…` → **`b4182665…`**
+(`.ufo/waves/round-33/wave1/ExecCaptureBinding.md`). Read the history, not only the
+header: the executor's §3–§7 runs were executed at `4bc7aed3…` and only its selftest was
+re-run at `b4182665…`, where the change is docstring prose — the fixture count said
+`ten` while `CASES` holds eleven (`corpus/instruments/capture-binding-check.py:80`).
+This section's live figures were measured at `b4182665…`.
+
+Live run, twice, byte-identical stdout (sha256 of the 12-line body — nine `MANIFEST`
+lines, the `AUDIT` line, the summary and the `binding_exit` line —
+`5cac3ea71553ea102cbfcf83760a5a798750694bdc2979d02cea057cefb201d9`), against
+registry `corpus/SOURCES.md` sha256
+`fe89b17a2e059ef0d6e934157fef7c72508f1421e87a82a4aafefad40bc68c3c` (50 `S0xx` rows,
+S049/S050 appended by ExecRegistryAppend). The registry moved again after that run —
+`b22c7f0173e75e0c8c49cbf4b6e7f307fc2b1d9299ce282c1f78aadfc944d13b`, still 50 rows,
+2026-10-26T04:29Z — and a re-run at those bytes (twice, byte-identical) printed the
+same twelve lines and the same body sha256, so the Search-log and R8 lines appended
+after the two rows do not move this verdict:
+
+```text
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+AUDIT records=40 with_url=40 with_fetched_utc=2 with_archival=38 snapshot_dirs=9 manifest_dirs=9 missing_manifest=0 multi_row_url=2
+records=40 bound=40 unbound=0
+binding_exit=0
+```
+
+`--selftest` at the same digest prints all eleven case lines `verdict=pass` and
+`selftest cases=11 failures=0`, exit 0; fixture trees are built in `tempfile.mkdtemp`
+under `--scratch`, else `$HYAKU_SCRATCH`, and are removed at exit (measured: the
+scratch root was empty afterwards). Exit 2 was measured, not assumed:
+`UNAVAILABLE reason=no-snapshot-tree <root>` for a root without
+`corpus/source-snapshots/`, and `UNAVAILABLE reason=read-error … No such file or
+directory: '…/corpus/SOURCES.md'` for a present snapshot tree with no registry —
+both `exit=2`.
+
+### Manifest-schema additions (the rule B/C data)
+
+Every manifest record gained the fields the checker reads; the round-23 through
+round-31 manifests keep `schema_version: 1`, `purpose` and their `quotes` arrays
+byte-identical and only gain these keys:
+
+| field | value | records |
+|---|---|---|
+| `url` | the registry row's `https://` token, byte-exact (`S018` → `https://www.first.org/global/sigs/vulnerability-coordination/multiparty/guidelines-v1.1`) | 40 |
+| `archival` + `archival_note` | `true`, note `pre-round-32 capture; fetch instant not recorded` (one distinct value across all 38) | 38 (rounds 23–31) |
+| `fetched_utc` | `2026-10-25T23:14:00-03:00`, the capture commit `288ea9ac17a78dce644388af35b89aa96b7994da` author instant | 2 (round-32 S049/S050) |
+
+The round-32 records carry no `archival` key at all — rule C's exemption is closed
+there, so they must stay on `fetched_utc`. The 40 records are 9 snapshot directories
+(4 + 19 + 5 + 1 + 2 + 3 + 3 + 1 + 2) and every one has a manifest
+(`missing_manifest=0`), which is the D5 shape closed.
+
+Manifest digests at the same quiescent state, for re-verification:
+
+| manifest | sha256 |
+|---|---|
+| `round-23` | `1f6d4fb50491354d1347676bb3f9a03884ee46f1178d62f3ff11f0b31b8d8e70` |
+| `round-24` | `77b158caac9ae80890dd2948a72fc2ab2ed8f8be3f5e5f67b5260cce100b00a3` |
+| `round-25` | `251cb5b2c1bacb5ba47758fb60e41aaf1e367ae11df05ed19886361b35f7aea2` |
+| `round-26` | `1c9131326106eca5860f5c650b2c9c4efa860da52a701b039b457aba619e3247` |
+| `round-28` | `89f51e052eaefcb56a880d48e6778ee88b46e55cafde1275c69992304e7ef75e` |
+| `round-29` | `b24a485ff3d2d03abe3ef2022e211c7092bcf7509f3913cfa44145216e2c8d15` |
+| `round-30` | `8aacf77cf2f3d9c7912eea419a05e10604959b2faacb4ae3b0e097f8ab81f94b` |
+| `round-31` | `5fa37fd7249d043af1e36f98a549ee4ac8d6181e29f5def78116d3c637cb50e8` |
+| `round-32` | `6e4e719a76f1d18c36792f0c012d3ba3bd8cfb57aab25655f77c7a47343c8774` |
+
+### Known limits (measured, not assumed)
+
+- **Rule B binds by id, so the binding is only as good as the manifest's `id` field**
+  (`corpus/instruments/capture-binding-check.py:67-68`). A record whose id names a row
+  while its bytes came from another document passes rule B; only `source-recheck.py`
+  (sha256 + quote pins) or a human reader catches that. `bound=40` means "40 records
+  name their own row and carry provenance", not "40 captures are the right documents".
+- **Duplicate URL values across different ids are not a failure.** Per
+  `claims-erratum-1` §4 the record binds to its own row, and a URL that also sits in
+  another row or in prose is reported as `multi_row_url=2` — measured on the two
+  erratum-declared records, S029 (`round-23`) and S006 (`round-24`), whose URLs also
+  appear in rows S024 and S028. A global "the URL appears in exactly one row" reading
+  would have made `unbound=0` unattainable without editing immutable registry rows (R8).
+  The registry's pre-existing W04 duplicate-URL warnings stay census facts outside this
+  instrument.
+- **A row that carries two URL tokens binds when the record's url is one of them**
+  (`:71-73`). Measured: all 50 rows carry exactly one `https://` token today, so the
+  lenient branch is untested by the live tree and is proven only by the contract text.
+- **The registry is read as column 2 of every `| S0xx |` row, whatever its status**
+  (`:74-75`) — a `rejected` or `queued` row's URL binds a record exactly like a `mined`
+  row's. `bound=40` is not a statement about row status.
+- **`fetched_utc` is the capture commit instant for the round-32 records, not a
+  measured HTTP instant** (`.ufo/waves/round-33/wave1/ExecManifest32.md` §8: "it records
+  when the captures were committed, not a measured HTTP instant"). No independent
+  fetch log exists for that round; drift is bounded only from the 2026-10-26T04:16Z
+  live re-fetch onward (`ScoutLiveDrift`), which is not a substitute for the pin.
+- **Exit 2 is a separate verdict from a rule failure.** An absent root, absent
+  `SOURCES.md`, unparsable manifest JSON or malformed manifest shape prints
+  `UNAVAILABLE …` and exits 2; a missing manifest, unbound URL or missing provenance
+  exits 1. Neither is exit 0, so a wrapper that only greps the summary line can still
+  be fooled by a stale stdout — read the exit status.
+- **The instrument writes nothing** (`:77-78`), and only `--selftest` creates a scratch
+  directory. Measured: `git status --porcelain corpus/instruments corpus/source-snapshots
+  corpus/SOURCES.md` is identical before and after the runs in this section.
+
+### Re-verify (from the lane root; run after any edit to this instrument or to a manifest)
+
+```
+sha256sum corpus/instruments/capture-binding-check.py
+python3 corpus/instruments/capture-binding-check.py; echo "binding_exit=$?"
+python3 corpus/instruments/capture-binding-check.py --selftest; echo "selftest_exit=$?"
+for f in corpus/source-snapshots/*/manifest.json; do python3 -c "import json,sys; d=json.load(open(sys.argv[1])); s=d.get('sources',[]); print(sys.argv[1], 'records=', len(s), 'url=', sum('url' in x for x in s), 'fetched=', sum('fetched_utc' in x for x in s), 'archival=', sum('archival' in x for x in s))" "$f"; done
+```
+
+Targets: digest `b4182665…`; `records=40 bound=40 unbound=0` with `binding_exit=0`;
+`selftest cases=11 failures=0` with `selftest_exit=0`; and the per-manifest field
+counts `url=` equal to `records=`, `archival=` 38 over the eight legacy manifests,
+`fetched=` 2 on `round-32`. A summary that leaves `records=40` means a manifest was
+added, moved or lost — re-measure, do not adjust the target. A drop of `url_bound`
+below `records` on the legacy manifests means a row's URL text moved in
+`corpus/SOURCES.md`; that is a registry defect, not a capture defect.

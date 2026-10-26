@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "purpose": "Round-32 F16 captured-source assertions for S049 (网络安全众测平台 helpList, https://zc.cnvd.org.cn/news/helpList) and S050 (360SRC 外部漏洞处理和评分标准 V2.0, https://security.360.cn/Reward/rules), captured in commit 288ea9ac17a78dce644388af35b89aa96b7994da (author time 2026-10-25T23:14:00-03:00) and re-fetched with identical post-conversion text on 2026-10-26 (wave1/ScoutLiveDrift.md). SHA-256 pins bind each committed local capture; each record carries its registry `url` and its `fetched_utc` from the capture commit (C1 rule B/C). Normalization (QUALITY Q8): source-recheck.py normalize() strips capture markup such as <u>...</u> and collapses whitespace to single spaces, and every assertion below was measured exactly-once under that normalization before it was written here, so none carries an anchor. Whitespace collapse inserts a space at a source line wrap, so each assertion is confined to one capture line; the S050 applicability sentence continues on the next line and only its wrap-free clause is asserted. Q6 note: the S049 page carries platform-issued tester VPN account and password acquisition instructions; none of that text is quoted here and no credential, session URL or vault reference is carried.",
+  "sources": [
+    {
+      "id": "S049",
+      "path": "S049.txt",
+      "sha256": "962a451a3b1cd9ff7ae128a0c2bf0d4abb859cb86bf370a1673884199d1e9cb8",
+      "url": "https://zc.cnvd.org.cn/news/helpList",
+      "fetched_utc": "2026-10-25T23:14:00-03:00",
+      "quotes": [
+        {
+          "id": "Q1",
+          "quote": "漏洞提交页面的目标列表仅用于用户快速选择，并不是项目的测试范围约定",
+          "location": "L211; FAQ answer on adding a target: the submission page's target list is a convenience, not the project scope."
+        },
+        {
+          "id": "Q2",
+          "quote": "众测平台仅接收客户授权测试范围内的安全漏洞，不接受互联网漏洞。",
+          "location": "L214; answer to 平台是否接收互联网漏洞？ — only findings inside the customer-authorized test scope are accepted."
+        },
+        {
+          "id": "Q3",
+          "quote": "测试项目范围以外的系统不在客户的授权范围内，所以是坚决不允许的。",
+          "location": "L410; answer forbidding expansion of testing beyond the authorized project systems."
+        },
+        {
+          "id": "Q4",
+          "quote": "平台和企业在评价漏洞的风险等级时，会根据项目的规则、业务特点、影响范围等因素来调整漏洞的最终评级",
+          "location": "L208; severity-adjustment answer: the final rating follows project rules, business traits and impact, not a universal scale alone."
+        },
+        {
+          "id": "Q5",
+          "quote": "平台将会根据企业对漏洞的评级，结合项目规则中的要求来为白帽发放奖金。",
+          "location": "L419; reward-payment answer: rewards follow the enterprise's rating plus the project rules."
+        },
+        {
+          "id": "Q6",
+          "quote": "对于未通过可信测试系统发现的问题平台有权取消或降低奖励。",
+          "location": "L408; trusted-testing-system enforcement: findings not made through it may lose or reduce the reward."
+        },
+        {
+          "id": "Q7",
+          "quote": "最终得分 = 四舍五入（有效性 × 漏洞等级 × 测试难度 × 危害程度 × 企业规模 × 报告质量）",
+          "location": "L132; the platform's scoring formula (six factors: validity, severity, test difficulty, harm, enterprise size, report quality)."
+        },
+        {
+          "id": "Q8",
+          "quote": "注：请严格按照项目测试范围进行测试。",
+          "location": "L212; note under the submission-page answer: test strictly within the project scope."
+        }
+      ]
+    },
+    {
+      "id": "S050",
+      "path": "S050.txt",
+      "sha256": "2f9c6406ed381ee74556e9b31dd16550310de3daf45a2a6a646914fc6f378888",
+      "url": "https://security.360.cn/Reward/rules",
+      "fetched_utc": "2026-10-25T23:14:00-03:00",
+      "quotes": [
+        {
+          "id": "Q1",
+          "quote": "本标准适用于 360 集团发布的产品和业务",
+          "location": "L70; 一、适用范围 opening clause (the sentence continues on L71 with the invested-company list, across the wrap, and that continuation is not asserted)."
+        },
+        {
+          "id": "Q2",
+          "quote": "未纳入安全服务的资产一般情况下不收录相关漏洞",
+          "location": "L591; rule 10 under the reward standard: assets outside the security-service scope are generally not accepted."
+        },
+        {
+          "id": "Q3",
+          "quote": "禁止将漏洞报告存放在互联网开放的云服务或共享文档中",
+          "location": "L595; 九、通用规定 item 1 (the sentence continues after the wrap with the no-reward consequence)."
+        },
+        {
+          "id": "Q4",
+          "quote": "对提交漏洞报告后、未修复漏洞前，将漏洞报告公开或泄露的不予奖励。",
+          "location": "L597; 九、通用规定 item 2: no public disclosure or leak before the fix."
+        },
+        {
+          "id": "Q5",
+          "quote": "漏洞奖励=业务系数*基础安全币。",
+          "location": "L112; 三、漏洞奖励标准 1. 基础奖励标准 — the reward formula."
+        },
+        {
+          "id": "Q6",
+          "quote": "分为严重、高危、中危、低危、忽略五个等级",
+          "location": "L418; the five rating levels applied to findings by business harm."
+        }
+      ]
+    }
+  ]
+}
