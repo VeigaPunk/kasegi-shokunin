@@ -201,3 +201,80 @@ It is the round-34 lane tip at its non-author closure, as the spotcheck states (
   Digest `51337bf1fd5da7a5aebb626fe8c5fd520cce40209d79537324cf9d08a990efc7` (1261 lines) at this read.
 - `.ufo/waves/round-35/wave1/ExecD1Markers.md` (this receipt) — 201 lines,
   `sha256` `a5c8020e5d0dc3773c8a0771824c718edd4a29544cdaea1cfb3f69f4cca812a2` before this line was added.
+
+### 8. Phase 2 — the counter was re-broken by a later write and is now green again
+
+After §4 was measured, the round-35 section landed in `SCORECARD.md` and its measurement-state line
+(`:1271`, then) re-introduced the D1 literal:
+
+```
+$ grep -c -- 'filled by the L1' SCORECARD.md      -> 1   (line 1271)
+$ bash corpus/instruments/r35-defect-closure.sh   (ScribeShonen-3's read)
+D1 check=placeholders=1,… open=1
+closed=6/7 exit=1
+```
+
+This seat was paged by `ScribeShonen-3` and probed `ScribeScorecard-3` (who showed, by grepping every
+`wave1` receipt, that `:1263-1281` is no seat's text: it arrived with the integration commit `0aee0ef`).
+My one-line reword `edit` was **rejected — "Could not find a close enough match"** — because the bytes
+had already changed under me. The line at my read is:
+
+```
+Measurement state: base `3266c993…`, freeze `617496b9…`, wave-1 spec/dispatch `da2d3c68…`, integration `aa6ad99…`; final lane commit `0aee0ef…` (recorded in the closing commit).
+```
+
+i.e. whoever reconciled it replaced the placeholder prose with the real integration commit
+`0aee0ef105395a2f1d6ace7eaeef13871bb26988` (`git cat-file -t` = commit, subject "round-35: integration —
+lesson, scorecard, SHONEN, LOG, wave receipts, assimilation artifacts") instead of the wording this seat
+had proposed in its rejected edit (that proposed wording is **not** in the file). This seat claims no
+credit for the edit and made no write to it.
+
+Current state, measured after the L1's commit `8ce6fb4f2a33a6e1fb0963021905fb20dd58cc05`
+("round-35: D1 closure fix — scorecard closing-commit wording"; `git status --porcelain SCORECARD.md`
+empty, so the file is committed, not dirty):
+
+```
+$ grep -c -- 'filled by the L1' SCORECARD.md
+0
+exit=1
+$ grep -c -- 'c1c6a5f' SCORECARD.md
+3
+exit=0
+$ sha256sum SCORECARD.md
+085cffd60be1ad2fac07736e4bbe5c25fb06cace5bdda8707d75352e2575aaaa  SCORECARD.md
+$ wc -l SCORECARD.md
+1282 SCORECARD.md
+```
+
+and with the closure suite now landed, this seat ran it read-only (the wave's editing had stopped for
+this file; §5's hold-off applied while the suite was still in flight):
+
+```
+$ bash corpus/instruments/r35-defect-closure.sh
+D1 check=placeholders=0,lane-hash-markers=0,correction-c1c6a5f=3 open=0
+D2 check=erratum-row=1,erratum-mean=3,row-bytes=1 open=0
+D3 check=registry-r-defect-closure=4,registry-kill-rule=4 open=0
+D4 check=tracked=1,provenance=1 open=0
+D5 check=erratum-file=present,discriminating-invocation=5,per-id-occurrences=5 open=0
+D6 check=dead-seat-sentence=0,correction-round-35=1 open=0
+D7 check=supersedes-R22=1,supersedes-R23=1 open=0
+closed=7/7 exit=0
+suite_exit=0
+```
+
+D1's own check line (`placeholders=0, …, correction-c1c6a5f=3, open=0`) is the instrument-level
+confirmation of §4; the suite's `closed=7/7 exit=0` is the C1 seat's claim, measured here only as a
+cross-check.
+
+**Two items this seat escalates instead of editing** (both are other seats' rows; neither is mine to
+rewrite — the instruction is explicit that a leaf does not rewrite a sibling's paragraph):
+
+1. **Stale `depth:density` stub row, `SCORECARD.md:1269`**, still reads "unchanged (no density claim;
+   no-harm guard mean ≈ 201.2)". `wave1/ExecNoHarmFinal.md:41-63` measures the **landed** `SKILL.md`
+   at mean **220.9 / 26 blocks / 742 cites** and binds **201.2** to the `3266c99` blob
+   (`ba5ebe5d…`, 1091 lines / 25 / 711). This is the same stale-prose class as round-34's D2. Reported
+   to `ScribeScorecard-3` (who is appending a byte-bound guard row) and to the row's author; the row
+   needs the 220.9-landed / 201.2-base-blob split if the L1 keeps the stub block.
+2. **`final lane commit \`0aee0ef…\`` inside the round-35 section is the *integration* commit**, not the
+   closing one (`0aee0ef` is an ancestor of `HEAD` `8ce6fb4`, and further commits landed after it).
+   The label is the L1's call; recorded here because a reader would take it as the closing value.

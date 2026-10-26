@@ -7,7 +7,7 @@
 | lane base | `3266c9937b03062d9bbc2f436e20820115ed179c` |
 | claims freeze | `617496b9c6e92bc671e7e78b83df69a04470d0e9` |
 | assignment | demonstrate the do-nothing controls (C1 fake suite, C2 shape-only junk twin) are rejected by the real instruments |
-| measured at (UTC) | evidence block `2026-10-26T06:58:47Z` → `2026-10-26T06:58:51Z` (pre/post hashes byte-identical); stability re-hash and live run again at `06:59:13Z` on the same digests |
+| measured at (UTC) | wave evidence block `2026-10-26T06:58:47Z` → `2026-10-26T06:58:51Z` (pre/post hashes byte-identical); D1 recurrence observed `07:00:35Z` and post-fix state `07:01:28Z`; committed-bytes replay on lane head `5a253372d7ccda2fd7829932489481218c3b0efb` at `07:04Z` (see §4) |
 | scratch | `/fast/scratch/hyaku/kasegi-r35/ExecDoNothingReject/` (removed before yielding; every path quoted below is the transcript) |
 | lane writes | `.ufo/waves/round-35/c1-controls/fake-suite.sh` (authored), `.ufo/waves/round-35/c2-controls/junk-f18.md` (authored), this receipt |
 | installs | none (no pacman/uv/npm/`~/.local/bin` transaction) |
@@ -23,6 +23,16 @@ d69349e86c5cce17146ccb4a4d514272d5ef47cb9586d06085113cf6779e8826  corpus/source-
 e9de994dbe1940adb894420d566386500e4e29d69d8e6a5244ff2172c71d9761  corpus/knowledge/cisa-kev-catalog.md
 292aaac048c9cacff081c24b54fd71fc67a86d3c6ab6845398e0e2856c5be121  .ufo/waves/round-35/c1-controls/fake-suite.sh            (10 lines)  ← this seat
 0abec3591e4a2dc5195b23b1c2c920f66052327b7f971aa578af76c3459dc176  .ufo/waves/round-35/c2-controls/junk-f18.md              (23 lines)  ← this seat
+```
+
+Check targets at the post-fix state (`07:01:31Z`, after the D1 recurrence in §F7 was corrected):
+
+```
+085cffd60be1ad2fac07736e4bbe5c25fb06cace5bdda8707d75352e2575aaaa  SCORECARD.md
+daeff71be4d0ee991599abfba16721d878ab957f6e047da07b171b60a0b67dbc  SKILL.md
+d4f83bb1206f5084e998d9449c9bef5af06674c325fb66709fe5fbec9d6e2b69  corpus/QUALITY.md
+76f190a003931aee3bfbab7fec10aa657c0d64584d0cc0c7fd88b02b3679dc2d  .ufo/waves/round-34/wave1/L1Integration.md
+eee0bb579844ad9d02777fb4cd241e726d0bb0630679bc41aa534d7f5d0951e6  .ufo/waves/round-35/claims-erratum-d5.md
 ```
 
 The block opened with `=== HASHES (pre-run) 2026-10-26T06:58:47Z ===` and closed with
@@ -307,6 +317,52 @@ the real gate rejects its asserted content (`reason=quote-not-found`, exit 1) an
 row for it (`S052_rows=0` in the twin: `grep -c '^| S052' .ufo/waves/round-35/c2-controls/junk-f18.md`
 → 0). The rejection therefore rests on capture bytes and the manifest record, not on shape.
 
+### 4. Committed-bytes replay (does the measurement survive the commit?)
+
+Measured after the L1 committed the wave (`5a253372d7ccda2fd7829932489481218c3b0efb`) — first on a
+`git archive` export, then on a clone of the same commit:
+
+```
+$ git archive 5a253372… | tar -x -C $S/head5a25          # export_ok
+$ ls $S/head5a25/corpus/source-snapshots/round-35/
+S052.txt
+manifest.json
+$ ls $S/head5a25/.ufo/waves/round-35/c1-controls/ $S/head5a25/.ufo/waves/round-35/c2-controls/
+before.txt  fake-suite.sh
+before.txt  junk-f18.md
+$ python3 $S/head5a25/corpus/instruments/source-recheck.py \
+      --manifest $S/head5a25/corpus/source-snapshots/round-35/manifest.json --source S052
+S052:sha256 OK … (six OK lines) …
+head_recheck_exit=0
+```
+
+```
+$ bash $S/head5a25/corpus/instruments/r35-defect-closure.sh --root $S/head5a25
+D1 … open=0   D2 … open=0   D3 check=registry-r-defect-closure=4,registry-kill-rule=4 open=0
+D4 check=tracked=0,provenance=1 open=1
+D5 … open=0   D6 … open=0   D7 … open=0
+closed=6/7 exit=1
+```
+
+`D4 tracked=0` is the export artefact, not a defect: `check_d4` reads `git ls-files`, and an archive
+carries no index. On a clone of the same commit both predicates reproduce exactly:
+
+```
+$ git clone -q <lane> $S/clone5a25 && git -C $S/clone5a25 checkout -q 5a253372…
+checked out 5a25337
+$ bash corpus/instruments/r35-defect-closure.sh --root $S/clone5a25 | tail -1
+closed=7/7 exit=0
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-35/manifest.json --source S052
+… S052:Q5 OK normalized=markup-whitespace occurrences=1 anchor=19165-ok
+clone_recheck_exit=0
+```
+
+C2 cells on the same export: `frontier=18 rows=52 s052=1 citing=1`,
+`PASS F18 knowledge/cisa-kev-catalog.md ids=S052`, `entries=21 pass=21 exit=0`.
+
+The worktree at the time of this replay carried ` M .ufo/waves/round-35/wave1/ExecD1Markers.md`
+(another seat's post-commit write, not this seat's file and not mine to revert).
+
 ## Findings for the L1 (no artifacts edited by this seat outside its write set)
 
 - **F1 — the twin's own `recheck:` line passes; the discriminating invocation is the scratch-manifest
@@ -348,12 +404,55 @@ row for it (`S052_rows=0` in the twin: `grep -c '^| S052' .ufo/waves/round-35/c2
 - **F6 — the C2 counters are tree-state snapshots.** `entries_citing_S052=1` and
   `knowledge_entries=47` were measured at `cisa-kev-catalog.md` = `e9de994d…`; if a scribe revises
   that entry, the harness line changes but the §2a do-nothing cells cannot.
+- **F7 — D1 reopened after the first green measurement, by the round-35 scorecard's own closing
+  sentence.** Timeline on unchanged suite bytes (`0ae4b484…`):
+
+  | UTC | live tree | cause |
+  |---|---|---|
+  | `06:56:47Z` | `closed=4/7 exit=1` — `D4 tracked=0`, `D6 correction-round-35=0`, `D7 supersedes-R22=0` | D4/D6/D7 not yet landed; D4 needs the L1's index action |
+  | `06:58:47Z` | `closed=7/7 exit=0`, `--selftest cases=7 failures=0` | the measured evidence state for §1–§3 |
+  | `07:00:35Z` | `closed=6/7 exit=1` — `D1 check=placeholders=1,… open=1` | `SCORECARD.md:1271` (written `07:00:01Z`, digest `04365925…`): `… ; final lane commit filled by the L1 in the closing commit.` |
+  | `07:01:28Z` | `closed=7/7 exit=0` | the sentence was reworded (SCORECARD.md `085cffd6…`); D1 `placeholders=0` |
+
+  The C1 immutability claim is therefore state-dependent within the wave: the same suite digest gave
+  two different verdicts eight minutes apart, and the reopen was a *prose* edit in a file no C1
+  defects D2/D4–D7 touch. This seat reported it to the L1, which committed the fix (`8ce6fb4f`) —
+  recorded here as the measured sequence, not as a judgement of C1.
+- **F8 — D1's matcher is a literal substring, so any sentence that names who fills the closing
+  commit reopens it.** `check_d1` uses `grep -c -F -- 'filled by the L1'` (`r35-defect-closure.sh:164`).
+  The defect it targets is an *unfilled placeholder line*, but the check forbids the phrase anywhere
+  in `SCORECARD.md`, including a measurement-state sentence that merely describes the commit
+  process. That is the round-34 D1 class ("widen the R1 check to placeholder prose") implemented
+  one step too literally: the scribe's natural wording re-mints the defect. Options for the suite
+  owner: match the placeholder *form* (`final lane commit.*filled by the L1`, or a line whose only
+  content is the placeholder), or require the scorecard's closing commit to be a hash citation.
+  Not this seat's file, so recorded only.
+- **F9 — wave writes landed after the L1's first push, and they mattered.** On `8ce6fb4f`,
+  `git status --porcelain` listed `M .ufo/waves/round-35/build-spec.py`, `M SKILL.md`, and untracked
+  `corpus/source-snapshots/round-35/S052.txt`, `c1-controls/fake-suite.sh`, `c2-controls/junk-f18.md`,
+  `wave1.ready`, `wave1.ready.dispatched`, `wave1/ExecDoNothingReject.md`, `wave1/ScribeLesson.md`.
+  Two of those were load-bearing, proven on a `git archive 8ce6fb4f` export: (a) `source-recheck
+  --source S052` read `S052:source UNAVAILABLE reason=missing`, exit 2 — C2's frozen exit-0
+  predicate did not reproduce from the commit; (b) the suite read `closed=5/7 exit=1` with
+  `D3 registry-r-defect-closure=0,registry-kill-rule=0` — the registry rows lived only in the
+  uncommitted `SKILL.md`. The L1 committed the pending set as `5a253372…`, after which §4's replay
+  reproduces both predicates. The residual worktree modification at the time of that replay was
+  ` M .ufo/waves/round-35/wave1/ExecD1Markers.md`.
+- **F10 — the closure suite is not replayable from a `git archive`; only from a clone.** `check_d4`
+  reads `git ls-files`, so an archive export always reports `tracked=0` and the suite reads
+  `closed=6/7 exit=1` on a tree whose every defect is closed (§4, both sides measured). No header
+  line states this; line 67 mentions "git-free export" only for D2's append-only reading. A
+  non-author following the claim's "run the suite and read `closed=7/7`" will fail on an archive.
+  Recommendation for the suite owner: state the replay recipe (`git clone` / a worktree, not
+  `git archive`) in the suite header and in `corpus/instruments/r35-fixtures/README.md`, or let D4
+  fall back to a committed tracked-file manifest when no index is present.
 
 ## Scope, cleanup, tooling
 
 - Lane writes: the two control fixtures named above and this receipt. No `git add/commit/push`, no
-  `jj` mutation; the only git command run was `git archive 617496b9` (read-only) and
-  `git show --stat`/`git log` (read-only). No write to `/home/vgpnk/Projects/shokunin`,
+  `jj` mutation; every git command run was read-only (`git archive` of `617496b9` / `8ce6fb4f` /
+  `5a253372` into scratch, `git clone <lane>` into scratch, `git status`, `git log`, `git show`,
+  `git cat-file -e`, `git check-ignore`). No write to `/home/vgpnk/Projects/shokunin`,
   `/home/vgpnk/Projects/shokuknow`, `bounties`, or any sibling lane. One read-only
   `scripts/sources-census.sh validate` run (it writes nothing into the fleet root).
 - Scratch `/fast/scratch/hyaku/kasegi-r35/ExecDoNothingReject/` contained the base export, the four
