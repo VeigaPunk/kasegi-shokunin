@@ -1,0 +1,121 @@
+all-gates v1
+export-ref=2735e93f10a7b444878e3552bcf9822613e83068
+suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+run-utc=2026-10-26T17:59:17Z
+
+== run ==
+export-ref=2735e93f10a7b444878e3552bcf9822613e83068 mode=export lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+E1 payload=placeholders=0,lane-hash-markers=0,round37-section=1,round37-final-lane-commits=1,bound=1 closed=1
+E2 payload=erratum-marker=1,erratum-row=1,erratum-mean=7 closed=1
+E3 payload=registry-r35-defect-closure=1,registry-r36-closure=2 closed=1
+E4 payload=tracked-ref=1,tracked-index=1,provenance-note=1 closed=1
+E5 payload=claims-erratum-d5=1 closed=1
+E6 payload=path=.ufo/waves/round-34/wave1/L1Integration.md,correction-round35=1 closed=1
+E7 payload=supersedes-r22=1,supersedes-r23=1 closed=1
+E8 payload=m36-rows=4,names-corrected-line=3,stale-line=0,round35-lesson=1 closed=1
+E9 payload=status-read=ok,status-dirty=0,scratch-seat-dirs=0,head-match=1,lane-root=1,scratch-root=present closed=1
+E10 payload=all-gates=0,suite-file=1,header=0,ancestor=0,digest-match=0,run-lines=0,recorded-closed=0,selftest-cases=0,selftest-summary=0,crossrun=0,placeholders=0 closed=1
+E11 payload=log37-block=1,correction-marker=1,false-path-named=1,falsity-stated=3 closed=1
+E12 payload=scorecard37-section=1,c20300df=1,anchor-ancestor=1,stale-e666d902=0,lesson37=1,lesson-c20300df=5,lesson-anchor-ancestor=2 closed=1
+E13 payload=registry-rows=2,single-choice-type=1,exit2-verdict=1 closed=1
+E14 payload=suite-file=1,porcelain-default=0,status-read-swallow=0,status-read-sites=10,fail-closed-marker=8 closed=1
+closed=14/14 exit=0
+
+== selftest ==
+selftest export-ref=2735e93f10a7b444878e3552bcf9822613e83068 lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+selftest detail=E1 positive=pass payload=placeholders=0,lane-hash-markers=0,round37-section=1,round37-final-lane-commits=1,bound=1
+selftest detail=E1 mutant=placeholder rejected=1 limb=placeholders=1
+selftest detail=E1 mutant=lane-hash-marker rejected=1 limb=lane-hash-markers=1
+selftest detail=E1 mutant=unbound-hash rejected=1 limb=bound=0
+selftest detail=E1 mutant=history-only rejected=1 limb=round37-section=0
+selftest case=E1 positive=pass mutants=4/4 verdict=pass
+selftest detail=E2 positive=pass payload=erratum-marker=1,erratum-row=1,erratum-mean=7
+selftest detail=E2 mutant=stale-mean rejected=1 limb=erratum-mean=0
+selftest detail=E2 mutant=prose-not-row rejected=1 limb=erratum-row=0
+selftest detail=E2 mutant=marker-without-row rejected=1 limb=erratum-row=0
+selftest case=E2 positive=pass mutants=3/3 verdict=pass
+selftest detail=E3 positive=pass payload=registry-r35-defect-closure=1,registry-r36-closure=2
+selftest detail=E3 mutant=r36-row-absent rejected=1 limb=registry-r36-closure=0
+selftest detail=E3 mutant=r35-row-absent rejected=1 limb=registry-r35-defect-closure=0
+selftest detail=E3 mutant=inexact-basename rejected=1 limb=registry-r35-defect-closure=0
+selftest detail=E3 mutant=mention-not-row rejected=1 limb=registry-r36-closure=0
+selftest detail=E3 mutant=rows-outside-registry rejected=1 limb=registry-r36-closure=0
+selftest case=E3 positive=pass mutants=5/5 verdict=pass
+selftest detail=E4 positive=pass payload=tracked-ref=1,tracked-index=1,provenance-note=1
+selftest detail=E4 mutant=provenance-absent rejected=1 limb=provenance-note=0
+selftest case=E4 positive=pass mutants=1/1 verdict=pass
+selftest detail=E5 positive=pass payload=claims-erratum-d5=1
+selftest detail=E5 mutant=erratum-absent rejected=1 limb=claims-erratum-d5=0
+selftest case=E5 positive=pass mutants=1/1 verdict=pass
+selftest detail=E6 positive=pass payload=path=.ufo/waves/round-34/wave1/L1Integration.md,correction-round35=1
+selftest detail=E6 mutant=correction-absent rejected=1 limb=correction-round35=0
+selftest case=E6 positive=pass mutants=1/1 verdict=pass
+selftest detail=E7 positive=pass payload=supersedes-r22=1,supersedes-r23=1
+selftest detail=E7 mutant=r23-row-absent rejected=1 limb=supersedes-r23=0
+selftest detail=E7 mutant=prose-not-row rejected=1 limb=supersedes-r22=0
+selftest case=E7 positive=pass mutants=2/2 verdict=pass
+selftest detail=E8 positive=pass payload=m36-rows=4,names-corrected-line=3,stale-line=0,round35-lesson=1
+selftest detail=E8 mutant=m36-absent rejected=1 limb=m36-rows=0
+selftest detail=E8 mutant=stale-line-present rejected=1 limb=stale-line=1
+selftest detail=E8 mutant=corrected-line-unnamed rejected=1 limb=names-corrected-line=0
+selftest detail=E8 mutant=round35-lesson-absent rejected=1 limb=round35-lesson=0
+selftest case=E8 positive=pass mutants=4/4 verdict=pass
+selftest detail=E9 positive=pass payload=status-read=ok,status-dirty=0,scratch-seat-dirs=0,head-match=1,lane-root=1,scratch-root=present
+selftest detail=E9 mutant=dirty-worktree rejected=1 limb=status-dirty=1
+selftest detail=E9 mutant=leftover-seat-dir rejected=1 limb=scratch-seat-dirs=1
+selftest detail=E9 mutant=stale-ref rejected=1 limb=head-match=0
+selftest detail=E9 mutant=enclosing-repo rejected=1 limb=lane-root=0
+selftest detail=E9 mutant=status-read-failed rejected=1 limb=status-read=failed
+selftest case=E9 positive=pass mutants=5/5 verdict=pass
+selftest detail=E10 positive=fail rc=1 payload=all-gates=0,suite-file=1,header=0,ancestor=0,digest-match=0,run-lines=0,recorded-closed=0,selftest-cases=0,selftest-summary=0,crossrun=0,placeholders=0
+selftest detail=E10 mutant=all-gates-absent rejected=1 limb=all-gates=0
+selftest detail=E10 mutant=digest-mismatch rejected=1 limb=digest-match=0
+selftest detail=E10 mutant=export-ref-unresolvable rejected=1 limb=ancestor=0
+selftest detail=E10 mutant=run-utc-invalid rejected=1 limb=header=0
+selftest detail=E10 mutant=sentinel-missing rejected=1 limb=header=0
+selftest detail=E10 mutant=header-shape rejected=1 limb=header=0
+selftest detail=E10 mutant=run-line-missing rejected=1 limb=run-lines=13
+selftest detail=E10 mutant=run-id-duplicated rejected=1 limb=run-lines=13
+selftest detail=E10 mutant=run-line-open rejected=1 limb=run-lines=0
+selftest detail=E10 mutant=closed-line-wrong rejected=1 limb=recorded-closed=0
+selftest detail=E10 mutant=selftest-case-missing rejected=1 limb=selftest-cases=13
+selftest detail=E10 mutant=selftest-positive-failed rejected=1 limb=selftest-cases=13
+selftest detail=E10 mutant=selftest-mutants-zero rejected=1 limb=selftest-cases=0
+selftest detail=E10 mutant=selftest-summary-failed rejected=1 limb=selftest-summary=0
+selftest detail=E10 mutant=crossrun-key-drift rejected=1 limb=crossrun=0
+selftest detail=E10 mutant=placeholder-present rejected=1 limb=placeholders=1
+selftest case=E10 positive=pass mutants=16/16 verdict=pass
+selftest detail=E11 positive=pass payload=log37-block=1,correction-marker=1,false-path-named=1,falsity-stated=3
+selftest detail=E11 mutant=no-round37-block rejected=1 limb=log37-block=0
+selftest detail=E11 mutant=no-correction-marker rejected=1 limb=correction-marker=0
+selftest detail=E11 mutant=path-not-named rejected=1 limb=false-path-named=0
+selftest detail=E11 mutant=falsity-not-stated rejected=1 limb=falsity-stated=0
+selftest case=E11 positive=pass mutants=4/4 verdict=pass
+selftest detail=E12 positive=pass payload=scorecard37-section=1,c20300df=1,anchor-ancestor=1,stale-e666d902=0,lesson37=1,lesson-c20300df=5,lesson-anchor-ancestor=2
+selftest detail=E12 mutant=no-round37-section rejected=1 limb=scorecard37-section=0
+selftest detail=E12 mutant=anchor-label-absent rejected=1 limb=anchor-ancestor=0
+selftest detail=E12 mutant=anchor-hash-absent rejected=1 limb=c20300df=0
+selftest detail=E12 mutant=stale-label-in-section rejected=1 limb=stale-e666d902=1
+selftest detail=E12 mutant=lesson-absent rejected=1 limb=lesson37=0
+selftest detail=E12 mutant=lesson-not-bound rejected=1 limb=lesson-c20300df=0
+selftest case=E12 positive=pass mutants=6/6 verdict=pass
+selftest detail=E13 positive=pass payload=registry-rows=2,single-choice-type=1,exit2-verdict=1
+selftest detail=E13 mutant=type-cell-not-single rejected=1 limb=single-choice-type=0
+selftest detail=E13 mutant=exit2-verdict-absent rejected=1 limb=exit2-verdict=0
+selftest detail=E13 mutant=row-outside-registry rejected=1 limb=registry-rows=0
+selftest detail=E13 mutant=clauses-split-across-rows rejected=1 limb=exit2-verdict=0
+selftest detail=E13 control=appended-correction-shape accepted=1
+selftest case=E13 positive=pass mutants=4/4 verdict=pass
+selftest detail=E14 positive=pass payload=suite-file=1,porcelain-default=0,status-read-swallow=0,status-read-sites=10,fail-closed-marker=8
+selftest detail=E14 mutant=fail-open-default rejected=1 limb=porcelain-default=1
+selftest detail=E14 mutant=status-read-swallowed rejected=1 limb=status-read-swallow=1
+selftest detail=E14 mutant=fail-closed-marker-absent rejected=1 limb=fail-closed-marker=0
+selftest case=E14 positive=pass mutants=3/3 verdict=pass
+selftest cases=14 failures=0
+selftest judge=own-report accepted=0
+selftest judge=forged-summary rejected=1
+selftest judge=forged-caselines rejected=1
+selftest judge=forged-failed-cases rejected=1
+selftest judge=forged-detail-free rejected=1
+selftest judge=forged-13-cases rejected=1
+selftest judge=forged-duplicate-id rejected=1
