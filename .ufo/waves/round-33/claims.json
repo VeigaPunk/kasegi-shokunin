@@ -1,0 +1,58 @@
+{
+  "lane": "kasegi",
+  "round": 33,
+  "attempt": 1,
+  "base": "690b69dae23ab9f4ccf056ba2d619cadc2abb3c4",
+  "frozen_at_utc": "2026-10-26T04:15:00Z",
+  "axes_owned": ["depth:density", "depth:verifiability", "coverage"],
+  "saturation": {"line": "9/10 per owned axis", "window": "N=3"},
+  "lowest_non_retired_axis": "depth:verifiability (4)",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "score_before": 4,
+      "score_after": "held 4",
+      "claim_type": "measured",
+      "surface": "Capture-manifest binding: every corpus/source-snapshots/<round>/manifest.json record binds its capture to the registry-documented URL and to fetch provenance (fetched_utc for round-32+ captures, a declared archival note for pre-round-32 captures whose exact fetch instant was not recorded). New committed instrument corpus/instruments/capture-binding-check.py audits all manifests (rule A: every snapshot dir has a manifest; rule B: every record's `url` matches exactly one SOURCES.md registry-row URL; rule C: every record carries `fetched_utc` or `archival: true` with the round-32+ records requiring `fetched_utc`). Closes routed defect D5 (round-32 verifier spotcheck: S049/S050 captures committed without a manifest) and round-31 routed open item 4 (manifest `url`/`fetched_utc` fields so the C2 counters can distinguish a fabricated capture)",
+      "predicate_sentence": "On the landed bytes, the committed `corpus/instruments/capture-binding-check.py` prints `records=40 bound=40 unbound=0` and exits 0; every snapshot directory carries a manifest; every manifest record has a `url` that matches exactly one `corpus/SOURCES.md` registry-row URL; the two round-32 records (S049, S050) carry `fetched_utc`; the 38 pre-round-32 records carry `archival: true`; `--selftest` prints failures=0 and exits 0; and the capability `capture-binding-check` enters the SCORECARD capabilities table in the same round.",
+      "counter_commands": [
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/capture-binding-check.py; echo \"binding_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/capture-binding-check.py --selftest; echo \"selftest_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && for f in corpus/source-snapshots/*/manifest.json; do python3 -c \"import json,sys; d=json.load(open(sys.argv[1])); print(sys.argv[1], 'records=', len(d.get('sources',[])), 'url=', sum('url' in s for s in d.get('sources',[])), 'fetched=', sum('fetched_utc' in s for s in d.get('sources',[])), 'archival=', sum('archival' in s for s in d.get('sources',[])))\" \"$f\"; done"
+      ],
+      "kill_rule": "Fails if any of: the instrument is absent or exits non-zero; the summary is not exactly `records=40 bound=40 unbound=0`; any snapshot directory lacks a manifest; any record's `url` matches zero or two+ registry-row URLs (grep the row URL in corpus/SOURCES.md); either round-32 record lacks `fetched_utc`; any pre-round-32 record lacks `archival: true`; `--selftest` prints any failure or exits non-zero; OR a fake checker (fake-checker.py in c1-controls) that prints the summary without validating exits 0 with unbound records present (the kill rule's clause: the real checker must exit 1 on the base bytes and name unbound records, never print bound=N when the records carry no url).",
+      "do_nothing_control": "Base bytes 690b69da: the instrument does not exist (ls exit 2); manifest audit shows records=38 with_url=0 with_fetched_utc=0; the round-32 snapshot dir holds S049.txt/S050.txt with no manifest; source-recheck on the absent round-32 manifest exits 2 (receipt .ufo/waves/round-33/c1-controls/before.txt). Fake-checker receipt: fake-checker.py prints `records=38 bound=38 unbound=0` exit 0 with no validation (c1-controls/fake-checker-receipt.txt) — the kill rule rejects it.",
+      "mutants_of_the_counter": "Attack seats must show each of these counter mutants fails the kill rule: accept-a-record-without-url (bound counts records with no url), accept-url-not-in-registry (a url matching no registry row counts bound), skip-fetched_utc-requirement (round-32+ records pass without fetched_utc), skip-selftest (exit 0 without running selftest)."
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "score_before": 7,
+      "score_after": "held 7",
+      "claim_type": "measured",
+      "sourced": true,
+      "surface": "Frontier F16 'Chinese crowdsourced-testing platform scope and reward rules' (assimilation theme from merge/kasegi/: staged S034 = CNVD helpList, staged S035 = 360SRC rules; both mapped by document to new lane rows S049/S050 captured in round 32), entry corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md, capture manifest corpus/source-snapshots/round-32/manifest.json (created this round under C1's rule C for the two new records)",
+      "predicate_sentence": "frontier admitted rows increment 15 -> 16 (F16); exactly 1 knowledge entry cites S049 and S050 on `source:` lines; the S049 and S050 rows appear exactly once each in the registry and registry rows increment 48 -> 50; sources census exits 0 with no new E/W finding beyond the base W04 S028/S029 duplicate-URL warnings; frontier-recheck-count harness prints entries=19 pass=19 exit=0 including PASS F16 ids=S049,S050; source-recheck exits 0 for both S049 and S050 on the round-32 manifest; and the entry passes QUALITY Q1-Q10 under a non-author reviewer.",
+      "counter_commands": [
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && echo -n 'S049='; grep -lE '^source: S049 ' corpus/knowledge/*.md | wc -l; echo -n 'S050='; grep -lE '^source: S050 ' corpus/knowledge/*.md | wc -l",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && grep -cE '^\\|[[:space:]]*S049[[:space:]]*\\|' corpus/SOURCES.md",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && grep -cE '^\\|[[:space:]]*S050[[:space:]]*\\|' corpus/SOURCES.md",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo \"census_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/frontier-recheck-count.py; echo \"harness_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-32/manifest.json --source S049; echo \"recheck49_exit=$?\"",
+        "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-32/manifest.json --source S050; echo \"recheck50_exit=$?\""
+      ],
+      "kill_rule": "Fails if any of: frontier admitted != 16; entries citing S049 != 1 or S050 != 1; S049 rows != 1 or S050 rows != 1; registry rows != 50; census exit != 0 or a new E/W finding beyond the base W04 S028/S029 duplicate-URL warnings; harness != entries=19 pass=19 exit=0 or lacks `PASS F16`; source-recheck S049 or S050 exit != 0 or any assertion not exactly-once-or-anchored; the entry fails any QUALITY.md Q1-Q10 under the non-author reviewer; the entry does not name CNVD and 360SRC as the stating parties for every platform claim (Q4); OR the entry repeats ground the coverage map already holds or that a refused staged entry held (reviewer must show F16 is not a restatement of F13/F14/F15 or of the refused chinese-crowdsourced-testing/chinese-crowd-testing-national-standard staged entries, with the sweep command).",
+      "do_nothing_control": "Base bytes 690b69da: frontier 15, entries citing S049/S050 0, S049/S050 rows 0, registry rows 48, census exit 0 (W04 x2), harness 18/18 exit 0, source-recheck on the absent round-32 manifest exit 2 (receipt .ufo/waves/round-33/c2-controls/before.txt). Junk-row control: a bare S049/S050 registry row with no entry and no capture leaves entries citing at 0, frontier at 15 and harness at 18/18, and the census flags the unused mined rows; it cannot meet the target."
+    }
+  ],
+  "non_claim_frontier_items": {
+    "assimilation": "theme = Chinese crowdsourced-testing platform scope and reward rules (staged S034 -> lane S049 by document, CNVD helpList; staged S035 -> lane S050 by document, 360SRC rules); collision check and guard proof in .ufo/waves/round-33/assimilation/; standing refusals re-confirmed with flip conditions; quarantine slice (7 register rows) hand-checked with per-row verdicts",
+    "considerthese": "considerthese/2026-10-25.md proposal 1 (wave-evidence bloat / per-round repo growth measurement): lands as a lesson/QUALITY note with a measured committed-byte growth figure for this round's wave evidence (R14 re-affirmed); no new proposal mined beyond it",
+    "mistake": "M33-1: round-32 S049/S050 captures committed without their manifest (D5) — class landing/reference-drift; captured-by none -> new QUALITY criterion R20 (a capture snapshot ships with its manifest in the same commit); fix = C1 instrument + round-32 manifest. M33-2: round-32 report misquoted the dispatcher log (D4) — fix = this round cites only committed receipts and a committed watchdog digest",
+    "routed_defects_round_32": "D1 round-32 LOG entry appended by the L1 in this round; D2 frontier step (lesson, mistakes, census before/after) runs in this round; D3 cross-domain-evidence line in the report; D4 committed watchdog digest instead of /fast/scratch log citation; D5 round-32 manifest (inside C1); D6 quarantine S037 verdict recorded (spliced quote refused; contiguous field string offered)"
+  }
+}
