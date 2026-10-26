@@ -1,0 +1,12 @@
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+echo "## base tip: $(git rev-parse master)"
+echo "frontier_admitted=$(awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md)"
+echo "entries_citing_S049=$(grep -lE '^source:.*S049' corpus/knowledge/*.md | wc -l)"
+echo "entries_citing_S050=$(grep -lE '^source:.*S050' corpus/knowledge/*.md | wc -l)"
+echo "rows_S049=$(grep -cE '^\|[[:space:]]*S049[[:space:]]*\|' corpus/SOURCES.md)"
+echo "rows_S050=$(grep -cE '^\|[[:space:]]*S050[[:space:]]*\|' corpus/SOURCES.md)"
+echo "registry_rows=$(grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md)"
+/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo "census_exit=$?"
+python3 corpus/instruments/frontier-recheck-count.py | tail -2; echo "harness_exit=${PIPESTATUS[0]}"
+python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-32/manifest.json --source S049; echo "recheck_S049_exit=$?"
+python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-32/manifest.json --source S050; echo "recheck_S050_exit=$?"
