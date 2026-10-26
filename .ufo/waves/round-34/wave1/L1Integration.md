@@ -27,9 +27,12 @@ commit. Raw full output (including `anchorcheck.py` per-cite listing) is in
 | Do-nothing control C2 (`c2-controls/junk-checker.py` + `junk-f17.md`) | shape counters pass `3/3` by design; fabricated sentence at `junk-f17.md:15` fails `source-recheck` against the capture (`MISMATCH reason=quote-not-found`, exit 1) | — |
 
 Notes:
-- The round-33 summary `ExecRegressionC1` did not file a receipt (dead seat, 1 of 65); the
-  regression battery is covered by this L1 re-run plus `wave1/ExecRDefectClosureSuite.md`
-  §5 (base `closed=0/9`, exit 1) and the wave receipts.
+- The round-33 summary `ExecRegressionC1` filed its receipt, committed in `c1c6a5f`
+  (round-34 closure); the regression battery is covered by that receipt plus this L1
+  re-run and `wave1/ExecRDefectClosureSuite.md` §5 (base `closed=0/9`, exit 1).
+
+- Correction (round 35): the bullet above was corrected in place — the dead-seat claim
+  was false; the `ExecRegressionC1` receipt is committed in `c1c6a5f` (round-34 closure).
 - The junk-twin rejection limb is recorded with its dispute (`wave1/RevJunkTwin.md` holds;
   `wave1/CritOverclaim.md` F1/F1b, `wave1/CritC2Kill.md` G5, `wave1/ScoutDatawalk.md`
   F-1/F-1b dispute the as-frozen phrasing); the executable fact the round lands is that the

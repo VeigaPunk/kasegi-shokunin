@@ -227,3 +227,24 @@ failure (SCORECARD round-33 section, erratum 2).
 | R23 | A lane records an event-driven reflection cadence: burst activity and idle stretches are reviewed within the next round's lesson, citing the considerthese file and date. Grounded in: considerthese/2026-10-25.md proposal 6. | `considerthese/2026-10-25.md:76` proposal 6 (2026-10-25) |
 | R24 | A counter's mutant kill rule is recorded and tightened: the selftest clause requires one `selftest case=<name>` verdict line per case with cases>=11, so a summary-only forgery (cases=0 failures=0) cannot satisfy it. | `corpus/lessons/round-33-verifier-spotcheck.md:174-176` (R4) and the round-34 erratum at `corpus/lessons/round-33.md:215-226` — the frozen rule **caught 3 of 4**, skip-selftest (M4) survived (`.ufo/waves/round-33/wave1/RevClaimsFreeze.md:75,172`, finding F-5); M34-1 at `.ufo/waves/round-34/claims.json` → `non_claim_frontier_items.mistake` (the 'all mutants killed' overstatement) |
 | R25 | A frozen claim's literal constants are checked for satisfiability against base bytes **plus the round's declared after-adds** (a new registry row the claim itself adds, a manifest record it lands): a literal true at base but false at the declared after-state is fixed before data, never waived by a post-freeze erratum. Grounded in: M34-3 (`.ufo/waves/round-34/mistakes-erratum-1.md`). | M34-3 at `.ufo/waves/round-34/mistakes-erratum-1.md` (the C1 `records=40` literal was true at base and false at the declared after-state `records=41`) |
+
+## Round-35 supersession — R22/R23 grounded-in corrections and the next-score gap (append-only)
+
+R6 form: every line above keeps its number — this block is appended after line 229 (the file is
+30889 bytes before it, `head -c 30889 corpus/QUALITY.md | sha256sum` →
+`807cc714d01587e03fb3025ad04aa8434980b3e5804bc3f639d0f4935f8b74a8`), and R22 (line 226) and R23
+(line 227) are not edited. Both corrections are round-34 verifier defect D7
+(`corpus/lessons/round-34-verifier-spotcheck.md:199-203`: "QUALITY R22 cites M34-2, but its grounding
+is M34-3 (lesson open item 10; `CritMistakes` F7)"), landed as supersessions because the bar is
+append-only.
+
+R22's corrected citation reaches M34-3 from the side that matters: M34-3's own capture line reads
+"`none` at freeze time — `QUALITY.md` R22 (pre-freeze satisfiability) existed but had no planned-state
+limb" (`.ufo/waves/round-34/mistakes-erratum-1.md:18-20`), so R22 is the criterion that could not see
+the defect; R25 cites the same row as the mistake it mints, and neither citation is a second source
+for the other.
+
+| id | criterion | grounded in |
+|---|---|---|
+| R26 | A round reports the distance to the next score, not only "improved, held": a read-only gap computation against the recorded next-score threshold, cited in the round lesson. Grounded in: `considerthese/2026-10-25.md` proposal 2 (2026-10-25). R22's criterion is unchanged by this row. | supersedes R22 — R22's Grounded-in column cites M34-2, but M34-2 is the SCORECARD unfilled-placeholder defect (R1 class); the correct mistake is M34-3, the freeze-satisfiability row minted at `.ufo/waves/round-34/mistakes-erratum-1.md:9-29` (round-34 lesson open item 10, `corpus/lessons/round-34.md:482-485`) — the C1 `records=40` literal was true at base and false at the declared after-state `records=41`. The new criterion's runnable form is `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/score-gap.py` (read-only; prints the `SCORECARD.md` threshold line it reads and one computed `gap:` line, exit 0), whose ledger row is `corpus/knowledge/considerthese-proposals-ledger.md` § Round-31 status flips (proposal 2 `mined round 31`). |
+| R27 | A lane records an event-driven reflection cadence: burst activity and idle stretches are reviewed within the next round's lesson, citing the considerthese file and date. R23's criterion is unchanged by this row. | supersedes R23 — R23's Grounded-in column cites `considerthese/2026-10-25.md:76` proposal 6 alone; the landed grounding is the round-34 lesson's own § considerthese disposition of that proposal (`corpus/lessons/round-34.md:343-358`: proposal 6 "mined → landed" as R23, including the recorded narrowing against `wave1/ScribeQualityDraft.md`'s block), which a re-verifier re-opens in-lane rather than in a reflection file. |
