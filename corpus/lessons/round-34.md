@@ -550,3 +550,12 @@ additive to the composition above, no earlier sentence is rewritten.
   name (`ExecRegressionC1.md` — dead seat 1 of 65; covered by the L1 regression re-run above and
   `ExecRDefectClosureSuite.md` §5, base `closed=0/9` exit 1). No `wave1-results.json` exists:
   attempt 1 ended before the dispatcher finalized results, so receipts are the evidence.
+
+**Post-commit erratum (appended 2026-10-26, after the integration commit):** the missing receipt
+`wave1/ExecRegressionC1.md` landed at `2026-10-26T06:16:16-06:16:29Z` — after the integration
+commit — and is committed in the follow-up commit. It re-runs the six frozen C1 counting commands
+verbatim at a quiescent input digest (`6ed34f48…`, stable from 06:04:29Z): all six match the
+frozen literals (command 6 `records=41 bound=41 unbound=0 exit=0` under erratum 1), the suite
+fails on base bytes (`base_exit=1` at `014ee2d`), and the repeat-run triple is byte-identical.
+The round therefore closes with 65/65 receipts filed (the name-vs-file swap noted above
+unchanged).

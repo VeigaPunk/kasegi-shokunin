@@ -1642,3 +1642,8 @@ exists — attempt 1 died before the dispatcher finalized results; the 65 receip
 evidence. Stale-lane: attempt 1 launched 02:24Z, ended 06:15Z without report; attempt 2
 inherited and landed. Open L0: kasegi round-32 question (re-dispatch vs L1-only landing) remains
 open.
+
+Post-entry note (appended 2026-10-26): `wave1/ExecRegressionC1.md` landed at 06:16Z, after the
+integration commit, and is committed in the follow-up commit; the round closes with 65/65 wave
+receipts filed. Its quiescent re-run of the six frozen C1 commands matches the literals, and the
+suite fails on base bytes (`base_exit=1` at `014ee2d`).
