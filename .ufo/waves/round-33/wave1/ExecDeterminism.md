@@ -2,7 +2,7 @@
 
 Seat: `ExecDeterminism` (leaf executor, hyaku run-8 inline spawn). Lane: `kasegi-shokunin`.
 Lane write scope: this lane only. Fleet root and `shokuknow` untouched.
-Measurement window: **2026-10-26T04:31:43Z – 04:33:42Z** (UTC stamps printed per run).
+Measurement window: **2026-10-26T04:36:15Z – 04:38:00Z** (UTC stamps printed per run).
 Lane HEAD at measurement: `53bfa59ff3fa578818e7e5db04fe60e80ed1eb6f` (working tree carried the
 wave's uncommitted edits; every number below is bound to file digests, not to HEAD).
 Runtime: `Python 3.14.8 (main, Oct 2 2026, 10:23:31) [GCC 16.2.1 20260810]`, Linux x64.
@@ -23,9 +23,11 @@ printf 'exit=%s stdout_sha256=%s stdout_bytes=%s stderr_sha256=%s\n' \
 Quiescence gate: the 19 files the four probes read (four instruments, `corpus/SOURCES.md`,
 `corpus/README.md`, `corpus/instruments/knowledge-expected.txt`, the F16 knowledge entry,
 all nine `corpus/source-snapshots/*/manifest.json`, `round-32/S049.txt`, `round-32/S050.txt`)
-were hashed before the window, after the window, and again later. Digests below.
+were hashed before the window, after the window, at 04:37:54Z, and once more at 04:39:49Z immediately before hand-off. The aggregate digest of
+that digest list held at `6a5b48cf…` over the polls 04:36:15Z / 04:36:35Z / 04:36:55Z and the
+before/after lists diff empty; all four probes therefore ran on one unchanged byte set.
 
-Measured inputs (digest of record; unchanged 04:31:43 → 04:32:30 → 04:33:42):
+Measured inputs (digest of record, identical at 04:37:03Z, 04:37:54Z and 04:39:49Z):
 
 | Input | sha256 |
 |---|---|
@@ -36,7 +38,7 @@ Measured inputs (digest of record; unchanged 04:31:43 → 04:32:30 → 04:33:42)
 | `corpus/SOURCES.md` | `b22c7f0173e75e0c8c49cbf4b6e7f307fc2b1d9299ce282c1f78aadfc944d13b` |
 | `corpus/README.md` | `3779e77f07a2d76119a074f598389d35353e01a4651cec8c75201c770f754932` |
 | `corpus/instruments/knowledge-expected.txt` | `3f68b9a2ff7db654770bc11cb3b178b3d2920cc8e5ca0ba9761d85a65ab81ceb` |
-| `corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md` | `53c48b3b322aa4e5f90e1bae27ad0c1fb60c3452b2cff1e35a52e3276bb60a48` |
+| `corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md` | `1f7ac0a2c39a0fbfdbee2ecbe112316dfc1bf7095b18cb8fb4eb9d6dfce171d1` |
 | `corpus/source-snapshots/round-32/manifest.json` | `6e4e719a76f1d18c36792f0c012d3ba3bd8cfb57aab25655f77c7a47343c8774` |
 | `corpus/source-snapshots/round-23/manifest.json` | `1f6d4fb50491354d1347676bb3f9a03884ee46f1178d62f3ff11f0b31b8d8e70` |
 | `corpus/source-snapshots/round-24/manifest.json` | `77b158caac9ae80890dd2948a72fc2ab2ed8f8be3f5e5f67b5260cce100b00a3` |
@@ -46,11 +48,8 @@ Measured inputs (digest of record; unchanged 04:31:43 → 04:32:30 → 04:33:42)
 | `corpus/source-snapshots/round-29/manifest.json` | `b24a485ff3d2d03abe3ef2022e211c7092bcf7509f3913cfa44145216e2c8d15` |
 | `corpus/source-snapshots/round-30/manifest.json` | `8aacf77cf2f3d9c7912eea419a05e10604959b2faacb4ae3b0e097f8ab81f94b` |
 | `corpus/source-snapshots/round-31/manifest.json` | `5fa37fd7249d043af1e36f98a549ee4ac8d6181e29f5def78116d3c637cb50e8` |
-| `corpus/source-snapshots/round-32/{S049,S050}.txt` | `962a451a3b1cd9ff7ae128a0c2bf0d4abb859cb86bf370a1673884199d1e9cb8`, `2f9c6406ed381ee74556e9b31dd16550310de3daf45a2a6a646914fc6f378888` |
-
-`diff` of the before/after digest lists → empty (`NONE (quiescent)`); the later re-sample
-(04:32:30Z) and the final confirmation (04:33:42Z) matched the same list. All four probes
-therefore ran on one unchanged byte set.
+| `corpus/source-snapshots/round-32/S049.txt` | `962a451a3b1cd9ff7ae128a0c2bf0d4abb859cb86bf370a1673884199d1e9cb8` |
+| `corpus/source-snapshots/round-32/S050.txt` | `2f9c6406ed381ee74556e9b31dd16550310de3daf45a2a6a646914fc6f378888` |
 
 ## 2. The four probes — run 1 vs run 2
 
@@ -63,9 +62,8 @@ therefore ran on one unchanged byte set.
 
 stdout sizes: 714 / 324 / 1898 / 215 bytes. stderr was empty on all eight runs
 (`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, 0 bytes).
-
-Timestamps (run 1 → run 2): #1 04:31:43Z/04:31:43Z · #2 04:31:43Z/04:31:46Z ·
-#3 04:31:48Z/04:31:50Z · #4 04:31:51Z/04:31:51Z.
+Timestamps (run 1 → run 2): #1 04:37:03Z/04:37:03Z · #2 04:37:03Z/04:37:06Z ·
+#3 04:37:09Z/04:37:10Z · #4 04:37:11Z/04:37:11Z.
 
 Outputs (verbatim, run 1 of each):
 
@@ -107,27 +105,26 @@ S049:Q7 OK occurrences=1
 S049:Q8 OK occurrences=1
 ```
 
-## 3. Temporal repeat — same bytes, 71 s later
+## 3. Temporal repeat — same bytes, 23–31 s later
 
-Re-ran all four at 04:32:54Z–04:33:03Z against the same digests; both repeats of every
-command reproduced the §2 digests exactly:
+Re-ran all four at 04:37:34Z–04:37:42Z; both repeats of every command reproduced the §2 digests:
 
-| Probe | 04:31 window | repeat 1 | repeat 2 |
+| Probe | 04:37:03 window | repeat 1 | repeat 2 |
 |---|---|---|---|
 | binding | `1861fec8…` | `1861fec8…` | `1861fec8…` |
 | audit | `450a22c9…` | `450a22c9…` | `450a22c9…` |
 | harness | `18a19fef…` | `18a19fef…` | `18a19fef…` |
 | recheck S049 | `4ca1f549…` | `4ca1f549…` | `4ca1f549…` |
 
-cwd independence (supplementary): run 1 of the binding check executed from
-`pwd = /home/vgpnk/Projects/shokunin` (fleet root, outside the lane) at 04:33:21Z produced
-sha256 `1861fec8…`, exit 0 — identical to the lane-root run. The instrument's default root is
-derived from its own path, and its directory walk is ordered (`sorted(os.listdir(base))`,
+cwd independence (supplementary): at 04:38:00Z run 1 of the binding check executed with
+`pwd = /home/vgpnk/Projects/shokunin` (fleet root, outside the lane) and produced sha256
+`1861fec8…`, exit 0 — identical to the lane-root run. The instrument's default root comes from
+its own path, and its directory walk is ordered (`sorted(os.listdir(base))`,
 `corpus/instruments/capture-binding-check.py:145`), so the ordering is not filesystem-dependent.
 
 ## 4. Scratch honouring — `TMPDIR` and `HYAKU_SCRATCH`
 
-Window 2026-10-26T04:32:07Z–04:32:08Z. Instrument digest identical before and after
+Window 2026-10-26T04:37:23Z–04:37:24Z. Instrument digest identical before and after
 (`b4182665…`, `diff` empty). Two environments:
 
 - A: `env -u HYAKU_SCRATCH TMPDIR=/tmp python3 corpus/instruments/capture-binding-check.py`
@@ -138,8 +135,8 @@ Window 2026-10-26T04:32:07Z–04:32:08Z. Instrument digest identical before and 
 | A `TMPDIR=/tmp` | `1861fec846ca9a5c0e1a7a54591888896fb2c4f2ab89255c640e46eda3c5a9f1` | 0 | `9c61334e369b2a413af55bbdb91628d31cf94d1a34d368d75bd5f878f9de1b4a` | 0 |
 | B `HYAKU_SCRATCH=/fast/scratch/hyaku` | `1861fec846ca9a5c0e1a7a54591888896fb2c4f2ab89255c640e46eda3c5a9f1` | 0 | `9c61334e369b2a413af55bbdb91628d31cf94d1a34d368d75bd5f878f9de1b4a` | 0 |
 
-Within each env the two runs of a command matched each other, and across envs the byte equality
-was asserted with `cmp`, which printed nothing:
+Within each env the two runs of a command matched each other; across envs the byte equality was
+asserted with `cmp`, which printed nothing:
 
 ```
 $ cmp plain_tmpdir.run1.out plain_hyaku.run1.out && echo "plain outputs byte-identical across env"
@@ -168,15 +165,15 @@ selftest cases=11 failures=0
 
 **Where the fixtures actually landed** — observed, not inferred. A `tempfile.mkdtemp` observer
 wrapped the stdlib function for one run per env and ran the checker's own `main()` with
-`--selftest` (checker bytes unmodified; digest-bound above):
+`--selftest` (checker bytes unmodified, digest-bound above):
 
 ```
 $ env -u HYAKU_SCRATCH TMPDIR=/tmp python3 spy_scratch.py corpus/instruments/capture-binding-check.py
-SPY mkdtemp dir='/tmp' path='/tmp/capture-binding-selftest-ctkdtpb6'
+SPY mkdtemp dir='/tmp' path='/tmp/capture-binding-selftest-ca3wqtcy'
 selftest cases=11 failures=0
 SPY checker_exit=0
 $ env -u TMPDIR HYAKU_SCRATCH=/fast/scratch/hyaku python3 spy_scratch.py corpus/instruments/capture-binding-check.py
-SPY mkdtemp dir='/fast/scratch/hyaku' path='/fast/scratch/hyaku/capture-binding-selftest-amzsb3as'
+SPY mkdtemp dir='/fast/scratch/hyaku' path='/fast/scratch/hyaku/capture-binding-selftest-sbtetawk'
 selftest cases=11 failures=0
 SPY checker_exit=0
 ```
@@ -193,7 +190,26 @@ none
 
 Fixtures are removed at exit, so identical stdout is not identical stdout-with-leftovers.
 
-## 5. PRE-STATE baseline (non-comparative — do not read as an after column)
+## 5. Superseded first pass (recorded, not cited)
+
+A first pass ran 04:31:43Z–04:33:42Z on the same instrument digests but on an **earlier F16
+entry** (`53c48b3b322aa4e5f90e1bae27ad0c1fb60c3452b2cff1e35a52e3276bb60a48`). That entry was
+rewritten to `1f7ac0a2…` at 04:33:57Z (ExecEntryF16's receipt lands 04:35:11Z), outside that
+window, so the pass no longer described the tree and was re-measured as §1–§4 above. Recorded
+facts about it, measured and not inferred:
+
+- The superseded pass's own before/after lists were identical (it was quiescent too); a diff of
+  its post-window list against §1's pre-window list shows **exactly one changed line**, the F16
+  entry (one `<`/`>` pair, `diff` exit 1).
+- All four probe stdout digests were **unchanged** by that entry revision
+  (`1861fec8…` / `450a22c9…` / `18a19fef…` / `4ca1f549…` before and after) — consistent with these
+  probes printing the entry's file name, ids and counts rather than its prose. That is an
+  observation on two revisions, not a general guarantee.
+- Two mid-wave smoke runs taken before the instrument settled are **non-comparative and not
+  cited** (04:23:28Z printed `records=40 bound=38 unbound=2` with `FAIL rule=no-row record=S049`;
+  04:27:33Z printed `records=40 bound=40 unbound=0`).
+
+## 6. PRE-STATE baseline (non-comparative — do not read as an after column)
 
 Labelled per bound 6. At the **base commit** `690b69dae23ab9f4ccf056ba2d619cadc2abb3c4`,
 materialised with `git archive 690b69da | tar -x -C $HYAKU_SCRATCH/kasegi-r33/ExecDeterminism/base`
@@ -212,32 +228,33 @@ exit 2→0, binding absent→`bound=40`) is a landed-edit effect, not a determin
 only use here is to show the three pre-existing instruments were deterministic before this wave,
 so any in-wave nondeterminism would have been an edit regression rather than pre-existing noise.
 
-## 6. Findings
+## 7. Findings
 
 1. **Determinism holds for all four commands.** Two consecutive runs each, plus two more runs
-   71 s later, produced byte-identical stdout and identical exit codes on one verified-unchanged
-   input set (19 digests, `diff` empty across a 119 s span).
+   23–31 s later, produced byte-identical stdout and identical exit codes (all 0) on one
+   verified-unchanged input set (19 digests; aggregate `6a5b48cf…` unchanged
+   04:36:15Z→04:39:49Z).
 2. **Scratch honouring holds.** `--selftest` fixtures land in `$TMPDIR` when `HYAKU_SCRATCH` is
    unset and in `$HYAKU_SCRATCH` when it is set; both placements print the same 744 bytes and
    exit 0, both are removed at exit, and the non-selftest run writes nothing.
 3. **No lane-state leakage into stdout.** Across all measured runs (lane root, both envs, base
    export) no probe printed an absolute path, a scratch/temp name, a timestamp or a PID; the
    base `source-recheck` failure printed `manifest UNAVAILABLE reason=missing` — a reason, not a
-   path. The only path-shaped text is lane-relative (`knowledge/…` entry names), so the working
-   directory does not change the bytes (§3).
-4. **Context for the frozen claims** (C1, not re-scored here): on these bytes
+   path. The only path-shaped text is lane-relative (`knowledge/…` entry names), and the
+   fleet-root cwd run reproduced the lane-root bytes, so the working directory does not change
+   them.
+4. **Context for the frozen claims** (C1/C2, not re-scored here): on these bytes
    `records=40 bound=40 unbound=0` exit 0, `multi_row_url=2` (the erratum-1 informational count
    for the S024/S029 and S006/S028 shared URLs), `entries=19 pass=19` including
    `PASS F16 … ids=S049,S050`, and `S049:Q1–Q8 OK occurrences=1`.
 
-## 7. Limits, risks, re-run condition
+## 8. Limits, risks, re-run condition
 
 - **Digest-bound, not commit-bound.** The measurement is valid for the §1 digests at HEAD
   `53bfa59` plus wave edits, not for any later revision. During this wave the instrument's
-  digest moved three times (`5fa7868b…` → `4bc7aed3…` → `b4182665…`); two smoke runs taken
-  mid-wave (04:23:28Z, `bound=38 unbound=2`; 04:27:33Z, `bound=40`) are **non-comparative and
-  not cited**. **Re-run condition:** any post-04:33:42Z change to one of the 19 inputs
-  invalidates §2–§4 and the four commands must be run twice again on the new bytes.
+  digest moved three times (`5fa7868b…` → `4bc7aed3…` → `b4182665…`) and the F16 entry once.
+  **Re-run condition:** any post-04:39:49Z change to one of the 19 inputs invalidates §2–§4 and
+  the four commands must be run twice again on the new bytes.
 - **Four commands, one host, one interpreter.** This is not a claim that the instruments are
   deterministic on another filesystem, locale or Python version. Ordering is `sorted()` at
   `corpus/instruments/capture-binding-check.py:145` and by record id in `source-recheck.py`, so
@@ -250,8 +267,9 @@ so any in-wave nondeterminism would have been an edit regression rather than pre
   because of anything measured here. Determinism means both runs agree, not that the value is
   good.
 - An early runner version appended `; echo "…_exit=$?"` to each command, so its recorded
-  wrapper status was the echo's 0 while the instrument's status sat in stdout. Those runs
-  (04:1xZ) were discarded; every number above is the command's own exit status.
+  wrapper status was the echo's 0 while the instrument's status sat in stdout. Those runs (the
+  base-commit pass taken before the runner captured the command's own status) were discarded;
+  every number above is the command's own exit status.
 - No tool was installed or upgraded; no pacman/uv/npm/cargo action. No network access, no live
   target contacted, no credential material read or written (QUALITY Q6). Writes were confined to
   this receipt; git use was read-only (`rev-parse`, `status`, `log`, `archive`). Scratch lived

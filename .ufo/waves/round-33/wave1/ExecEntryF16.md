@@ -202,6 +202,17 @@ entries=19 pass=18 exit=1
 
 So the harness binds my line to both header ids (A-D), and the C2 target shape
 (`entries=19 pass=19` incl. `PASS F16 ids=S049,S050`) is reached by my entry plus the row.
+
+**Paired mirror mutation (reported by MutEntryF16, not measured by me).** The complementary
+mutation — deleting the header `source: S050` line while leaving the `recheck:` line intact —
+**survives**: on `1f7ac0a2…` the mutant hashes `0144fc25…` and still prints `PASS F16 ids=S049`,
+`entries=19 pass=19 exit=0`, with no problem lines. Cause is visible in
+`frontier-recheck-count.py`: `declared ⊆ recheck_ids` is checked, but the extra recheck id is
+absorbed because the body citations (and the recheck line's own `--source S050`) keep it inside
+`cited`, so nothing requires every recheck id to be a declared header id. That is a harness
+coverage gap, not a defect in this entry (both header lines are present here, measured: `grep -c
+'^source: S049 '` → 1 and `'^source: S050 '` → 1), and it is the same class as the reviewer's
+junk-twin finding in §9 — routed, not fixed from this seat.
 **Re-run named:** the lane harness on the real tree after ScribeReadmeF16 lands the row — the
 18/18 above must not be compared to an after column, and the 19/19 figure is a fixture number on a
 copied README, not the lane's gate.

@@ -978,3 +978,114 @@ R16 weak, R18 defect (no conforming specimen until the relabel above), R19 weake
 ### Round-31 final addendum — residual call `wave4` (supersedes the "no independent re-review" sentence above)
 
 A second hand-built residual call (2 seats, dispatch `43c364d06ccf5a3d1029c0f7816c8e50b509365b`, receipts `.ufo/waves/round-31/wave4/`) reviewed the final F15 entry revision at lane tip `43c364d`: `RevEntryQ3` — a seat that neither wrote nor earlier reviewed the entry — **ADMIT**, Q1–Q10 all pass, the blocking findings of both earlier REFUSEs resolved on the current bytes, LOW/NIT items only (route-3 note token, one paraphrase outside quotes); `CritQuoteSweep` — `clean`, 0 mismatches among 28 source-bound quote rows (one routed Q33 note on a rejected-inference quote). Both seats are dispatched by this lane, so the verdict is lane-seat, not the non-author closure's. The C2 reviewer conflict is therefore: two REFUSEs on earlier revisions, one ADMIT on the final revision.
+
+## Round 33 — frozen claims C1/C2 (2026-10-26)
+
+Frozen before dispatch in `.ufo/waves/round-33/claims.json` (base
+`690b69dae23ab9f4ccf056ba2d619cadc2abb3c4`, claims-freeze commit
+`6e55c8d58a3e63efe11c0df47068bfc479bfc8e0`, Rule-B erratum commit `53bfa59f…`, wave-1
+integration commit `9f9848816503aa0cd566fc2efdc5e69ea501a253`). **Final lane commit:
+`<LANE_HASH>`** — the L1 replaces this marker; the wave-1 value above is the commit the
+after-column seats measured, not the closing commit. Receipts land under
+`.ufo/waves/round-33/` (`c1-controls/`, `c2-controls/`, `census-before.txt`,
+`assimilation/`, `watchdog-digest.txt`, `wave1/`; 54 seat receipts plus
+`swarm-registry.json` at this seat's gate). This file carried **no round-32 section** at
+base (`grep -n '^## ' SCORECARD.md` returns round 31 as the last round heading), so C2's
+last-change column stays 31 and every before-column below is measured at this round's
+base bytes, not against a round-32 scorecard row. The round-33 subject is capture-manifest
+binding (C1) and frontier F16 / Chinese crowdsourced-testing platform scope and reward rules
+(C2).
+
+| Claim | Axis | Before | After | Verdict and evidence | Last change |
+|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest non-retired, 4) | instrument absent (`ls_exit=2`); manifest audit `TOTAL records=38 with_url=0 with_fetched_utc=0`; `corpus/source-snapshots/round-32/` holds `S049.txt`/`S050.txt` with **no manifest**; `source-recheck` on the absent round-32 manifest prints `manifest UNAVAILABLE reason=missing`, `recheck_exit=2`; the frozen fake checker prints `records=38 bound=38 unbound=0` with `fake_exit=0` and no validation (`c1-controls/before.txt`, `c1-controls/fake-checker-receipt.txt`) | `records=40 bound=40 unbound=0` with `run1_exit=0 run2_exit=0` and byte-identical stdout (sha256 `1861fec8…a3c5a9f1`); `AUDIT records=40 with_url=40 with_fetched_utc=2 with_archival=38 snapshot_dirs=9 manifest_dirs=9 missing_manifest=0 multi_row_url=2`; `--selftest` `cases=11 failures=0` exit 0; on base bytes the real checker prints `records=38 bound=0 unbound=38` exit 1 and names `FAIL rule=missing-manifest dir=round-32`; the fake prints the same summary there with exit 0 and `--selftest cases=0`, so the kill rule rejects it; no-harm on the same bytes: `strict pass=45/45 cdroot_fail=0 instrument_fail=0 own_fail=0`, `expect=present expected=45 missing=0 unexpected=0 exit=0`, `source-recheck --selftest cases=10 failures=0`, harness `entries=19 pass=19 exit=0`, and 40 `:sha256 OK` pins across all nine manifests (the byte half `capture-binding-check.py` does not carry); instrument `b4182665…` (492 lines) (`wave1/ExecRegressionC1.md` §1–§2, `wave1/ExecNoHarmFinal.md` §7, `wave1/CritC1Kill.md` byte arm) | **Verified, score held 4.** Every frozen counter clause is met on quiescent bytes, twice byte-identically, and the do-nothing control cannot reach the target: the base tree has no instrument, no manifest for `round-32`, no `url` on any of its 38 records, and the fake checker that meets the summary text is rejected by the base-byte discriminator. The independent instrument review lands: `**lands** — all six review questions answered yes with code-line and behavioral evidence at the quiescent digest` (`wave1/RevC1Instrument.md` §9); `The counter is falsifiable and satisfies the kill rule's fake-checker clause.` (same file, Verdict 1, on `CritC1Kill` §Verdict 1). Disclosed, not scored as clause work: the frozen kill text's global exactly-one-match parenthetical is superseded by erratum 1 (per-id row binding; a URL shared by two ids is informational `multi_row_url=2` — S024/S029, S006/S028) and the erratum is load-bearing, since a literal global reading rejects the correct instrument (`wave1/CritC1Kill.md` Verdict 3); the critic's seven-plus blind spots H1–H8 (capture bytes, nested dirs, `fetched_utc` presence-only, duplicate records, two-token rows, rejected-row anchors) are spec-level, with H1–H3 covered only when the `source-recheck` byte run is cited beside the checker (`wave1/CritC1Kill.md` Verdict 4, §Disclosures); and `anchorcheck.py SKILL.md` reports **12** in-range anchors rather than the item's 7, five of them added by this round's `SKILL.md` append, with every failure class identical (`wave1/ExecRegressionC1.md` D-R33-1). | 33 |
+| C2 | coverage (7) | `frontier_admitted=15`; `S049=0`, `S050=0`; `S049_rows=0`, `S050_rows=0`, `total_rows=48`; census exit 0 with only `W04 S028` + `W04 S029` + `ok`; harness `entries=18 pass=18 exit=0`; `manifest UNAVAILABLE reason=missing`, `recheck_exit=2` (`c2-controls/before.txt`, `census-before.txt`) | frontier admitted **16**; entries citing `source: S049 `/`S050 ` **1 / 1**; `S049` rows **1**, `S050` rows **1**, registry rows **50**; census **exit 0** with exactly the base `W04 S028` + `W04 S029` warnings and no `E` finding; harness **`entries=19 pass=19 exit=0`** including `PASS F16 knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050 exit=0`; `source-recheck` on `corpus/source-snapshots/round-32/manifest.json` **exit 0** for both sources — S049 `sha256 OK` + Q1–Q8, S050 `sha256 OK` + Q1–Q6, all 14 quote assertions `occurrences=1` — and the entry's own `recheck:` line exits 0 from the lane root, `/` and `/tmp`; six contract census commands `rows=50`, `malformed=0`, `tier=A=47 B=1 C=2`, `status=mined=38 queued=9 rejected=3`, `dups=`, `enum_violations=0`, `missing_usedby=0`, and the `diff -u` against `census-before.txt` shows only the expected `+2` rows / `+2` tier-A / `+2` mined deltas (`wave1/ExecHarnessC2.md` §1–§3, `wave1/ExecCensusAfter.md` §1–§3) | **Verified on all nine frozen counters, score held 7**, with the entry clause carried by a non-author ADMIT and the residual reviewer posture reported below rather than narrowed. Row reviews at quiescent bytes return `**ADMIT-ROW**` for S049, which `conforms to SOURCES contract v1 rules 1–6 on every checked cell` (`wave1/RevRowS049.md` §8), and `ADMIT-ROW` for S050 with `All six contract rules CONFORMANT at row level` and `No medium or high finding.` (`wave1/RevRowS050.md` §3). The independent Q1–Q10 review returns `**ADMIT.**` (`wave1/RevEntryF16.md` §7) on entry digest `53c48b3b…` (306 lines); the final lane bytes are `1f7ac0a2…` (306 lines, 24539 B) and carry **no second full Q1–Q10 review** — the delta is a Claim 1 question stem, verified narrow by the mutation probe (`wave1/MutEntryF16.md` §digest history: `edits confined to a Claim 1 question stem — verified here: source: lines on 3/4, recheck: on 7`) and re-measured on the final bytes by the quote sweep's closed finding (`wave1/RevQuoteSweep.md` §6) and by `wave1/RevTranslation.md`. Two findings are recorded, neither a frozen-clause trip: `## Verdict: SURVIVOR (coverage finding)` for the one-sided header-drop mutant, which the receipt itself scopes as *an instrument coverage finding on `frontier-recheck-count.py` rule A, not a defect in the entry*, and the critic's measured junk twin, on which every C2 counter passes, so that `the counter set discriminates **shape**, not content` and novelty/Q3/Q4 rest on the reviewer clause alone (`wave1/CritC2Kill.md` §5). | 33 |
+| depth:density | 9 | mean 191.5, 24 blocks, 689 path-citation instances (`SKILL.md` replayed from base `690b69da`) | mean **201.7**, 25 blocks, 710 cites (`SKILL.md` `b11b6085…`, 1071 → 1090 lines); `anchorcheck.py` failure classes unmoved (0 bad / LOST-RECORDED=306 / PIN-BROKEN=0 / ORIGIN=0 / OUTSIDE-BASE=0 / BASE-ABSENT=0, exit 0) with in-range 7 → 12; `git diff --numstat` on the append-only files `19 0 SKILL.md`, `2 0 PROVINCE.md`, 0 deletions (`wave1/ExecNoHarmFinal.md` §3–§4, `wave1/ExecRegressionC1.md` §1 rows 7–9, §2.9–§2.10) | **Unchanged (held 9), no harm; the density move is disclosed, no score move claimed.** Both sides were measured with the same committed instrument on the same file: base 191.5 / 24 / 689, final 201.7 / 25 / 710. The whole increase is the appended round-33 gate block (19 lines, 21 citation instances); every fail class in `anchorcheck.py` and the 306 LOST-RECORDED count are identical on both sides. The in-range count rising 7 → 12 is logged as a count change with unchanged classes, not as new resolvable evidence. | r15 (held r33) |
+
+**Rule-B erratum, disclosed (post-freeze, round-25 form).** `claims.json` C1's interface
+contract says a `url` that greps to "0 or 2+ matches" is a failure, which read literally
+rejects the two cross-id URL pairs the registry has held since round 24 (S024/S029 EUR-Lex,
+S006/S028 HackerOne). The L1 filed `.ufo/waves/round-33/claims-erratum-1.md` before any seat
+scored: rule B binds a record to its **own** id row by byte-exact token match, a URL shared by
+two different ids is informational (`multi_row_url=2`), and two rows with the same id are
+`dup-id`. The landed instrument implements it (`case_duplicate_id_rows`, `case_shared_url_passes`)
+and the frozen counters are reported under the erratum reading, not the literal one.
+
+**C1 blind spots, recorded (not filed as failures).** `wave1/CritC1Kill.md` measures H1–H8:
+capture bytes are not bound by the checker (truncated `S050.txt`, deleted `S049.txt` and a
+`../` path all leave it exit 0), nested snapshot dirs vanish from the one-level walk,
+`fetched_utc="pending"` discharges rule C, duplicate records inside one manifest audit clean, a
+row with two `https://` tokens widens binding, and a `rejected` row can anchor a record. H1–H3
+are covered by `source-recheck.py` (`40 :sha256 OK`, exit 0 each; mutants caught with
+`MISMATCH` exit 1, `stem-mismatch` exit 1, `UNAVAILABLE` exit 2), which is why the after-column
+cites that run; H4–H8 remain spec-level gaps. Also recorded rather than hidden: rule C's
+`fetched_utc` is the capture-commit timestamp (round-32 manifest `purpose`), not a fetch
+instant, and the instrument binds manifest metadata to registry text — it does not prove the
+bytes came from the documented URL.
+
+**C2 reviewer posture, reported verbatim for the canonical judge.** `wave1/RevEntryF16.md` §7:
+`**ADMIT.**` on `53c48b3b…`, with three below-bar findings (no Chinese word-segmentation
+instrument for the ≤25-word quote rule, `source:` anchor lists that summarise rather than
+enumerate, and an unscoped whole-file grep reading 3 where the scoped one reads 1). The final
+bytes `1f7ac0a2…` differ from the reviewed revision and have no second full Q1–Q10 review; the
+lane-seat ADMIT plus the narrow-delta verification above is all the admission rests on. The one
+residual content defect the critic reported on the intermediate revision (`entry:280` printing a
+stale self-referential `grep` count) does **not** reproduce on the final bytes: this seat ran
+that line's own scoped command once on committed `1f7ac0a2…`, and
+`awk '/^## Attribution/{f=1} /^## What this adds/{f=0} f' <entry> | grep -c -E 'CVSS|0.85|时效评价|利用代码'`
+returns `1`, while the unscoped whole-file grep returns `3` — the entry's printed literal is the
+scoped value. That single command is this seat's own read of committed bytes, not a seat
+receipt, and it is not a re-review. Also unapplied, and named as a gap rather than a kill: the
+critic's request to commit the junk twin and its all-pass output under `c2-controls/` so the
+reviewer clause has a control (`wave1/CritC2Kill.md` §6 item 3) — `c2-controls/` still holds
+`before.txt` only.
+
+**Measurement state.** Values above were measured at the wave-1 integration commit
+`9f98488…` on quiescent bytes with per-seat bookend digests: `corpus/SOURCES.md`
+`b22c7f01…` (50 rows), `corpus/README.md` `3779e77f…`, the F16 entry `1f7ac0a2…`,
+`corpus/source-snapshots/round-32/manifest.json` `6e4e719a…`, the eight upgraded legacy
+manifests `1f6d4fb5…` / `77b158ca…` / `251cb5b2…` / `1c913132…` / `89f51e05…` / `b24a485f…` /
+`8aacf77c…` / `5fa37fd7…`, `corpus/instruments/capture-binding-check.py` `b4182665…`,
+`corpus/instruments/frontier-recheck-count.py` `aa60b581…`, `source-recheck.py` `fd2e01e8…`,
+`knowledge-expected.txt` `3f68b9a2…`, `SKILL.md` `b11b6085…`, `PROVINCE.md` `b57de5d9…`,
+`corpus/QUALITY.md` `00781e09…`, `corpus/instruments/README.md` `15dd603e…`. Two in-flight
+supersessions are recorded rather than compared: the entry moved `53c48b3b…` → `1f7ac0a2…`
+after `ExecHarnessC2`'s bookend (which is why `ExecCensusAfter` prints a different entry digest
+than that receipt), and `recheck-audit.py` printed `lines=44 … expected=44` at 04:16Z before the
+wave's scribes landed, against `lines=45 … expected=45` after — the first is PRE-STATE and is not
+an after column. The counters that C1's capability row depends on were measured by
+`ExecRegressionC1` before any SCORECARD append existed (`wave1/ExecRegressionC1.md` D-R33-2);
+this section is that landing.
+
+**Capabilities: one row enters.** The C1 instrument is demonstrated running at its final
+revision on committed bytes with the exit-0 output, its 11-case selftest, its base-byte failure
+and its fake-checker rejection, and it is independently reviewed (`wave1/ExecRegressionC1.md`,
+`wave1/ExecDeterminism.md`, `wave1/RevC1Instrument.md`, `wave1/CritC1Kill.md`), so
+`capture-binding-check` enters the Capabilities table for round 33 — appended below as
+`## Round-33 capabilities`, the round-24/25/26/31 pattern, because this seat is append-only and
+does not edit the master `## Capabilities` table in place. The master table is otherwise
+unchanged. Per the frozen C1 predicate the row is part of the claim, not a side note: it is the
+one clause no counter could observe before this append.
+
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3. The round-33
+`capture-binding-check` entry restarts the capability window (previous entry round 31). With
+depth:verifiability at 4 the lowest-axis obligation stays active.
+
+## Round-33 capabilities
+
+| Capability | What it can now do | Evidence pointer | First-working round |
+|---|---|---|---|
+| capture-binding-check | Audit every committed capture snapshot in one pass: walk `corpus/source-snapshots/*/manifest.json`, flag any snapshot dir without a manifest (rule A), bind each record's `url` byte-exactly to its own `corpus/SOURCES.md` registry-row token with `no-row` / `dup-id` / `url-mismatch` / `detail=absent` failure names (rule B, per-id reading of erratum 1), and require `fetched_utc` for `round-32`+ dirs while accepting `archival: true` for older ones (rule C); print one `MANIFEST <round> records=N url_bound=M fetched=K archival=L` line per dir plus an `AUDIT` line and a `records=N bound=M unbound=0` summary, exit 0 / 1 / 2, run an 11-case `--selftest` (the six contract-named cases plus five) against fixture trees in `$HYAKU_SCRATCH`/`$TMPDIR` scratch that are removed at exit, and write nothing into the lane; stdlib only | `corpus/instruments/capture-binding-check.py` (sha256 `b4182665…`, 492 lines); `wave1/ExecRegressionC1.md` §1–§2 (`records=40 bound=40 unbound=0` twice byte-identically, `selftest cases=11 failures=0`, base bytes `unbound=38` exit 1, fake rejected); `wave1/RevC1Instrument.md` §9 `lands`; `wave1/ExecDeterminism.md`; blind spots and their `source-recheck.py` mitigation in `wave1/CritC1Kill.md` | 33 |
+
+### Round-33 move-log rows
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 33 | depth:verifiability | 4 (no capture-binding instrument; 38 manifest records carry no `url`, none carries fetch provenance; the round-32 snapshot dir has no manifest; a summary-printing fake passes) | 4 held (`records=40 bound=40 unbound=0` exit 0 twice byte-identically, 9/9 dirs manifest-bound, 2 round-32 `fetched_utc` + 38 `archival: true`, `selftest cases=11 failures=0`, base bytes fail closed naming `dir=round-32`, fake rejected, 40 sha pins via `source-recheck`, no corpus regression) | `corpus/instruments/capture-binding-check.py`, the nine `corpus/source-snapshots/*/manifest.json`, `corpus/SOURCES.md`, `.ufo/waves/round-33/wave1/{ExecRegressionC1,ExecNoHarmFinal,ExecDeterminism,RevC1Instrument,CritC1Kill}.md` |
+| 33 | coverage | 7 (frontier 15, entries citing S049/S050 0/0, registry 48, harness 18/18, manifest absent → recheck exit 2) | 7 held (frontier 16, entries citing 1/1, registry 50, census exit 0 with base warnings only, harness 19/19 incl. `PASS F16`, 14 quote assertions `occurrences=1` exit 0) | `corpus/README.md` F16 row, `corpus/SOURCES.md` S049/S050, `corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md`, `corpus/source-snapshots/round-32/manifest.json`, `.ufo/waves/round-33/wave1/{ExecHarnessC2,ExecCensusAfter,RevRowS049,RevRowS050,RevEntryF16}.md` |
+
+**Round-33 final lane commit: `<LANE_HASH>`** — the L1 replaces this marker. Every value in
+this section was measured at the wave-1 integration commit `9f98488…` on the quiescent bytes
+digested under § Measurement state; the closing commit may add seat receipts, `LOG.md`,
+`SHONEN.md`, `corpus/lessons/round-33.md` and this section itself, none of which any counter
+above reads.

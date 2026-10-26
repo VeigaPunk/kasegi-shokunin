@@ -3,40 +3,40 @@
 Promotion to shokunin requires all of:
 
 - [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
-      — evidence (round 31, HEAD `eecad59`; `SKILL.md` sha256
-      `817636048968caf9801f3bdd22c8b8970f1014fc5a8192c49010e8328c4088b7`, clean in
-      `git status --porcelain -- SKILL.md`): `density.py SKILL.md` prints mean dens 191.5 over
-      24 blocks and 689 path-citation instances, `density_exit=0`; `anchorcheck.py SKILL.md` prints
-      `7 in-range cite instances, 0 bad`, `anchor_exit=0` — compared against an r30 replay (mean 171.1,
-      23 blocks, 662 cites, `0 bad`) in `.ufo/waves/round-31/wave2/ExecNoHarmDensity.md` §1b/§2b. The
-      mean move comes only from the round-31 appended block 24, whose resolvable share is 11/27 =
-      40.74%, so the receipt claims no quality gain for it (§1d).
+      — evidence (round 33, integration commit `9f98488` over base `690b69da`; `SKILL.md` sha256
+      `b11b60857986c3d735876da168042fe150b8c80fbdf2792263a29cf2a8e3ed84`, 1090 lines, appended
+      only: `git diff --numstat 690b69da -- SKILL.md` = `19	0`): `density.py SKILL.md`
+      prints mean dens 201.7 over 25 blocks and 710 path-citation instances, `density_exit=0`,
+      against the base re-measured on the same bytes at 191.5 / 24 blocks / 689 citations;
+      `anchorcheck.py SKILL.md` prints `12 in-range cite instances, 0 bad`, `LOST-RECORDED=306`,
+      `PIN-BROKEN=0`, `anchor_exit=0` (`.ufo/waves/round-33/wave1/ExecRegressionC1.md` §2.8/§2.9,
+      raws `anchor.txt`/`density-final.txt`); the round-33 SKILL row carries the instrument gate.
 
 - [~] At least one end-to-end domain task executed and logged in LOG.md
-      — evidence (round 31): `LOG.md:1469` carries the round-30 entry, appended in round 31 by seat
-      `ScribeLogR30` (`.ufo/waves/round-31/wave1/ScribeLogR30.md`), and round-31's own end-to-end
-      commands land with receipts: the C1 counter prints `limbs=13 killed=13 survivors=0` and
-      `controls=3 rejected=3`, exit 0 (`.ufo/waves/round-31/wave2/ExecRegressionC1.md` §2), and C2's
-      census exits 0 with the harness at `entries=18 pass=18 exit=0`
-      (`.ufo/waves/round-31/wave2/ExecCensusFinal.md`). No round-31 `LOG.md` entry exists yet at HEAD
-      `eecad59`; the box stays `[~]`.
+      — evidence (round 33): `LOG.md` newest entry is `## Round 32` at `:1593`, appended in the
+      freeze commit `6e55c8d` by the L1 (routed defect D1), and it records an honest stop, not a
+      task; `## Round 31` (`:1584`) is the last end-to-end entry and no `## Round 33` heading
+      exists (`grep -c '^## Round 33' LOG.md` = 0; `git diff --numstat 690b69da 9f98488 -- LOG.md` = `4	0`; 1595 lines).
+      Round 33's end-to-end measurement is executed but unlogged: `capture-binding-check.py`
+      prints `records=40 bound=40 unbound=0` exit 0 twice, `selftest cases=11 failures=0` exit 0
+      (`.ufo/waves/round-33/wave1/ExecRegressionC1.md` §1/§2.1-2.2); the box stays `[~]`.
 
 - [~] Instructions executable by an agent without oral context
-      — evidence (round 31, HEAD `eecad59` plus the wave-2 counter fix, `limb-mutation-check.py` sha256
-      `237fd07cbcb4a12a470e912d1a4b68ff1968fde62f2709b182822fed42d791f4`): every one of the 44
-      `corpus/knowledge/*.md` entries carries one `recheck:` command;
-      `recheck-audit.py --quiet` prints `strict pass=44/44` and
-      `expect=present expected=44 missing=0 unexpected=0`, exit 0 from the lane root and from `/` with `--root`
-      (`.ufo/waves/round-31/wave2/ExecRegressionC1.md` §3); `frontier-recheck-count.py` prints
-      `PASS F15 knowledge/vendor-third-party-finding-coordination.md ids=S048` and
-      `entries=18 pass=18 exit=0` (§4 and `.ufo/waves/round-31/wave2/ExecCensusFinal.md`); and
-      `source-recheck.py --manifest corpus/source-snapshots/round-31/manifest.json --source S048`
-      exits 0 with 8 assertion `OK` lines (ExecCensusFinal.md §3).
+      — evidence (round 33, integration commit `9f98488` over base `690b69da`): each of the 45
+      `corpus/knowledge/*.md` entries carries one `recheck:` command; `recheck-audit.py --quiet`
+      prints `strict pass=45/45 cdroot_fail=0 instrument_fail=0 own_fail=0` and
+      `expect=present expected=45 missing=0 unexpected=0`, `recheck_exit=0`, over
+      `knowledge-expected.txt` sha256 `3f68b9a2…ab81ceb` (44 → 45 entries)
+      (`.ufo/waves/round-33/wave1/ExecRegressionC1.md` §2.5; `ExecExpectedList.md` §3);
+      `frontier-recheck-count.py` prints `PASS F16 … ids=S049,S050` and
+      `entries=19 pass=19 exit=0` (`ExecHarnessC2.md` §C2.[7]); `source-recheck.py` exits 0
+      on the round-32 manifest for S049 (`sha256 OK`, `Q1`-`Q8` `OK occurrences=1`) and S050
+      (`sha256 OK`, `Q1`-`Q6`), `recheck49_exit=0 recheck50_exit=0` (`ExecHarnessC2.md` §C2.[8]/[9]).
 
 - [~] No cross-domain bleed (PROVINCE.md still accurate)
-      — evidence (round 31): `PROVINCE.md` gained only an end-of-file amendment (`git diff --numstat
-      b374febb -- PROVINCE.md` = `20	0`), naming F12–F15 and keeping the older F01–F10 paragraph as
-      history; the sibling sweep in `.ufo/waves/round-31/wave1/ConnSibling.md` §1.5/§2.2 found zero
-      MSVR and zero "vendor research" hits across the six sibling corpora, placed F15 inside this
-      province, and recorded `kake-shokunin/corpus/README.md:457-460` as an explicit refusal of
-      vulnerability intake; adjacency reported, nothing absorbed.
+      — evidence (round 33, integration commit `9f98488`): `PROVINCE.md` gained only the end-of-file
+      F16 amendment — `git diff --numstat 690b69da -- PROVINCE.md` = `2	0`, `grep -c '^-[^-]'` = 0,
+      74 lines, sha256 `b57de5d9…abd679` (`.ufo/waves/round-33/wave1/ScribeProvince.md` §5) — and F16 sits
+      inside this province: the round-33 six-lane sweep found zero hits for CNVD, 360SRC, 众测,
+      `zc.cnvd.org.cn`, `security.360.cn`, `crowdsourced` (`wave1/ConnSibling.md` §1/Findings), which
+      records `kake-shokunin/corpus/README.md:464-465` refusing vulnerability handling; nothing absorbed.
