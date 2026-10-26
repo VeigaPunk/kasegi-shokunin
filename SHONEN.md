@@ -176,3 +176,12 @@ a checked box; promotion needs a named non-author verifier.
       — evidence (round 37): `recheck-audit.py` strict pass=49/49 expected=49 exit=0; frontier harness entries=23 pass=23 exit=0 incl. PASS F20 ids=S054; source-recheck S054 exit 0; capture-binding records=44 bound=44; census exit 0; r37 suite `--selftest` cases=14 failures=0 and `--export-ref aa88877bf921d952137817b91ca76234b206da65` closed=14/14 exit=0 (raw transcript committed at .ufo/waves/round-37/final-gates/all-gates.txt). Box stays `[~]`.
 - [~] No cross-domain bleed (PROVINCE.md still accurate)
       — evidence (round 37): PROVINCE.md F20 amendment appended; F20/S054 uncontested across 20 sibling lanes (ConnSibling/ScoutF20Sibling ruling); junk twin rejected. Box stays `[~]`.
+
+- [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
+      — evidence (round 38): the Gates & probes registry gains the `r38-closure.sh` row (single-choice type `gate`, verdict map incl. exit 2) appended at EOF; every base line byte-identical; `anchorcheck.py SKILL.md` exit 0. Box stays `[~]`; no non-author check.
+- [~] At least one end-to-end domain task executed and logged in LOG.md
+      — evidence (round 38): no end-to-end domain task ran this round; the closest executed work is the F21 capture + harness run and the r38 suite run. Box stays `[~]`.
+- [~] Instructions executable by an agent without oral context
+      — evidence (round 38): `frontier-recheck-count.py` entries=24 pass=24 exit=0 incl. PASS F21 ids=S055; `source-recheck --source S055` exit 0; `capture-binding-check.py` records=45 bound=45; `recheck-audit.py --quiet` expected=50 unexpected=0 exit=0; census exit 0; r38 suite run + selftest over the judged head: export-ref of .ufo/waves/round-38/final-gates/all-gates.txt (raw transcript committed there). Box stays `[~]`.
+- [~] No cross-domain bleed (PROVINCE.md still accurate)
+      — evidence (round 38): PROVINCE.md carries a `Correction (round 38)` line marking the round-37 scaffolding L81-L152 as not part of the province (D-A), then the F21 amendment; CSAF/VEX ground uncontested across 20 sibling lanes, kake's security.txt `CSAF` extension mention ruled adjacent (`wave1/ConnSibling.md`). Box stays `[~]`.

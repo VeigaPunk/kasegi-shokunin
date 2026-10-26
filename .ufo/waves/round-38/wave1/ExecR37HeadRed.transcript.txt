@@ -1,0 +1,881 @@
+=== ExecR37HeadRed raw transcript: round-37 judged head vs tip ===
+utc=2026-10-26T18:28:55Z lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+r37-judged-head=2387dcf6ccfefcfb703783387b9aade8fc82abfa
+r37-tip=83975acc83df4bd8d5eaf463182ae615f2b64546
+base(a173b0c2)=a173b0c2b98c5ae39599fa9be76027fbbead0b9e
+r37-base=b56a41680cefd391868c1c370dc063c69d827e7d
+
+=== S0. refs and ancestry (read-only git) ===
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin cat-file -t 2387dcf6ccfefcfb703783387b9aade8fc82abfa
+commit
+[exit=0]
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin cat-file -t 83975acc83df4bd8d5eaf463182ae615f2b64546
+commit
+[exit=0]
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format=%H %ci %s 2387dcf6ccfefcfb703783387b9aade8fc82abfa
+2387dcf6ccfefcfb703783387b9aade8fc82abfa 2026-10-26 15:01:28 -0300 round-37: F3 final head — bind final lane hash in SHONEN/SCORECARD
+[exit=0]
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format=%H %ci %s 83975acc83df4bd8d5eaf463182ae615f2b64546
+83975acc83df4bd8d5eaf463182ae615f2b64546 2026-10-26 15:03:15 -0300 round-37: WAVE-DONE results — kasegi-r37-build-results.json (64/64 settled)
+[exit=0]
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin merge-base --is-ancestor 2387dcf6ccfefcfb703783387b9aade8fc82abfa 83975acc83df4bd8d5eaf463182ae615f2b64546; echo ancestor-or-equal=$?
+ancestor-or-equal=0
+[exit=0]
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff --name-only 2387dcf6ccfefcfb703783387b9aade8fc82abfa 83975acc83df4bd8d5eaf463182ae615f2b64546
+.ufo/waves/round-37/kasegi-r37-build-results.json
+[exit=0]
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log --oneline -3 83975acc83df4bd8d5eaf463182ae615f2b64546
+83975ac round-37: WAVE-DONE results — kasegi-r37-build-results.json (64/64 settled)
+2387dcf round-37: F3 final head — bind final lane hash in SHONEN/SCORECARD
+aa88877 round-37: F2 final head — genuine all-gates transcript of the F1 run
+[exit=0]
+
+=== S1. exports (git archive into scratch outside the lane) ===
+
+$ rm -rf /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t; mkdir -p /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t; git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive 2387dcf6ccfefcfb703783387b9aade8fc82abfa | tar -x -C /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j; echo r37j-files=$(find /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j -type f | wc -l)
+r37j-files=7288
+[exit=0]
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive 83975acc83df4bd8d5eaf463182ae615f2b64546 | tar -x -C /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t; echo r37t-files=$(find /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t -type f | wc -l)
+r37t-files=7289
+[exit=0]
+
+########################################################################
+### REF r37j (2387dcf6ccfefcfb703783387b9aade8fc82abfa)
+########################################################################
+
+--- G1 (D-A) front-door scaffolding: Correction (round 38) lines ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -c '^Correction (round 38)' PROVINCE.md corpus/README.md
+PROVINCE.md:0
+corpus/README.md:0
+[exit=1]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && wc -l PROVINCE.md corpus/README.md
+  152 PROVINCE.md
+  454 corpus/README.md
+  606 total
+[exit=0]
+
+--- G1 scaffold markers pasted into PROVINCE.md / corpus/README.md ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -nE '^## [34]\. |ScribeFrontierAmendments|^\| (property|check) \|' PROVINCE.md | cut -c1-140
+83:| property | value |
+90:## 3. Deliverable B — `corpus/README.md` end-of-file block
+126:| property | value |
+134:## 4. Validation on a scratch mirror (append, not edit)
+137:`/fast/scratch/hyaku/kasegi-r37/ScribeFrontierAmendments/mirror`, both blocks appended with Python to the
+140:| check | command | observed |
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -nE '^## [34]\. |ScribeFrontierAmendments|^\| check \|' corpus/README.md | cut -c1-160
+436:## 4. Validation on a scratch mirror (append, not edit)
+439:`/fast/scratch/hyaku/kasegi-r37/ScribeFrontierAmendments/mirror`, both blocks appended with Python to the
+442:| check | command | observed |
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -c '^| F20 ' PROVINCE.md; grep -c '^| F20 ' corpus/README.md
+1
+1
+[exit=0]
+
+--- G1 fence state at EOF (CommonMark walk: open = ``` + info, close = ``` alone) ---
+PROVINCE.md: L81 OPEN  (bare)
+PROVINCE.md: L96 content-inside-fence (info=text)
+PROVINCE.md: L124 CLOSE
+PROVINCE.md: state-at-EOF=closed
+corpus/README.md: L426 OPEN  (bare)
+corpus/README.md: state-at-EOF=OPEN (unbalanced)
+fence-line-counts:
+PROVINCE.md:81:```
+PROVINCE.md:96:```text
+PROVINCE.md:124:```
+corpus/README.md:426:```
+[exit=0]
+
+--- G1 declared-blocks.txt (round-38 declaration file) ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && ls -l .ufo/waves/round-38/declared-blocks.txt 2>&1
+ls: cannot access '.ufo/waves/round-38/declared-blocks.txt': No such file or directory
+[exit=2]
+
+--- G1 block bytes/sha the verdict names (PROVINCE 2-line F20 block, README 27-line append) ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -c '^\[r37 Frontier amendment' PROVINCE.md; grep -c '^\[r37 amendment' corpus/README.md
+1
+1
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && sed -n '79,80p' PROVINCE.md | sha256sum; sed -n '79,80p' PROVINCE.md | wc -c
+cdfe44e319094957ec583b7c3cd8212b882752b75682d9f1cf4d0b734f20f545  -
+295
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && python3 -c "
+import hashlib
+tgt='2ebd8cd2881b020cb0e234658adf132cf4741c1d226e1d7c267f7d71c5b7e97b'
+for f,n in (('corpus/README.md',27),('PROVINCE.md',27),('PROVINCE.md',2)):
+    b=open(f,'rb').read().split(b'\n'); hit=[i+1 for i in range(len(b)) if hashlib.sha256(b'\n'.join(b[i:i+n])+b'\n').hexdigest() in (tgt,'cdfe44e319094957ec583b7c3cd8212b882752b75682d9f1cf4d0b734f20f545')]
+    print(f,'window',n,'declared-digest-matches-at-lines',hit if hit else 'NONE')"
+corpus/README.md window 27 declared-digest-matches-at-lines NONE
+PROVINCE.md window 27 declared-digest-matches-at-lines [97]
+PROVINCE.md window 2 declared-digest-matches-at-lines [79]
+[exit=0]
+
+--- G2 (D-B) all-gates receipt header + graded ref ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && head -1 .ufo/waves/round-37/final-gates/all-gates.txt
+all-gates v1
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -cE '^(export-ref|suite-sha256|run-utc)=' .ufo/waves/round-37/final-gates/all-gates.txt
+4
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && sed -n '2,4p' .ufo/waves/round-37/final-gates/all-gates.txt
+export-ref=9492c776724e737caf5815fabc98e59ea04830df
+suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+run-utc=2026-10-26T18:00:21Z
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -cE '^E[0-9]+ payload=.* closed=1' .ufo/waves/round-37/final-gates/all-gates.txt; grep -E '^closed=' .ufo/waves/round-37/final-gates/all-gates.txt; grep -E '^selftest cases=' .ufo/waves/round-37/final-gates/all-gates.txt
+14
+closed=14/14 exit=0
+selftest cases=14 failures=0
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -c 'all-gates v2' .ufo/waves/round-37/final-gates/all-gates.txt
+0
+[exit=1]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff --name-only 9492c776724e737caf5815fabc98e59ea04830df 2387dcf6ccfefcfb703783387b9aade8fc82abfa | wc -l; git diff --name-only 9492c776724e737caf5815fabc98e59ea04830df 2387dcf6ccfefcfb703783387b9aade8fc82abfa | head -8
+3
+.ufo/waves/round-37/final-gates/all-gates.txt
+SCORECARD.md
+SHONEN.md
+[exit=0]
+
+--- G2 named "final" heads in SCORECARD/SHONEN ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -nE 'final (lane )?head|Final lane commit' SCORECARD.md SHONEN.md | cut -c1-150
+SCORECARD.md:987:integration commit `9f9848816503aa0cd566fc2efdc5e69ea501a253`). **Final lane commit:
+SCORECARD.md:1129:`c2-controls/before.txt`) and `census-before.txt`. **Final lane commit:
+SCORECARD.md:1492:Final lane commit: e666d902337a49dcbfc77880939874f39c6f477b
+SCORECARD.md:1494:**Round-36 measured closure (appended after integration).** Measured at the final lane head `274fa9ae908db5800013778098f4d426281b46e
+SCORECARD.md:1500:| depth:verifiability | 4 | 4 (held) | `r37-closure.sh` export suite E1–E14: `closed=14/14 exit=0` at the r37 final lane head; `--se
+SCORECARD.md:1509:Final lane commit: f3246559bed2fd085dde860e00247ce394f02bad (round-37 wave-evidence ancestor; the round's final head is named in the
+SHONEN.md:163:      — evidence (round 36): Gates & probes registry now registers `r35-defect-closure.sh` and `r36-closure.sh` by exact basename (E3); 
+SHONEN.md:172:      — evidence (round 37, final lane head aa88877bf921d952137817b91ca76234b206da65): the Gates & probes registry now carries the r37-c
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -nE '(final head|final lane head).{0,20}[0-9a-f]{7,}' SCORECARD.md SHONEN.md | cut -c1-160
+SCORECARD.md:1494:**Round-36 measured closure (appended after integration).** Measured at the final lane head `274fa9ae908db5800013778098f4d426281b46e2` (export
+SHONEN.md:172:      — evidence (round 37, final lane head aa88877bf921d952137817b91ca76234b206da65): the Gates & probes registry now carries the r37-closure.sh 
+[exit=0]
+
+--- G3 (D-C) pending markers in the round-37 lesson ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -c '⟨pending' corpus/lessons/round-37.md; grep -n '⟨pending' corpus/lessons/round-37.md | cut -c1-120
+7
+10:as any round's final commit; round-37 final lane commit `⟨pending: L1 closure commit — a commit cannot
+90:  `⟨pending: entry file at the integrated head⟩`.
+95:  `⟨pending: ExecC2Harness / final-gates transcript at the integrated head⟩`.
+216:   reds. `⟨pending: wave1/ExecGateReviewPrep.md; file at the integrated head⟩`.
+265:`⟨pending: wave1/ScribeConsiderthese.md §3 delivers the byte-exact block, sha256 `7c232983…`⟩`). Old →
+300:`⟨pending: L1 integration census measurement⟩`.
+320:`⟨pending: measurement at the integrated head⟩` — r36 discipline holds: `SKILL.md`/`PROVINCE.md` base
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -c 'Pending-marker resolutions (round 38)' corpus/lessons/round-37.md
+0
+[exit=1]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -n 'is not landed' corpus/lessons/round-37.md | cut -c1-120
+[exit=0]
+
+--- G3 widened placeholder vocabulary on lines added base(r37)..REF ---
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff -U0 b56a41680cefd391868c1c370dc063c69d827e7d 2387dcf6ccfefcfb703783387b9aade8fc82abfa -- . ':!.ufo' ':!corpus/instruments/r38-closure.sh' ':!corpus/instruments/r38-fixtures' | grep '^+' | grep -vE '^\+\+\+' | grep -cE '⟨pending|<fill>|filled by the L1|<LANE_HASH>|<r38-|TBD|TODO'
+10
+[exit=0]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff -U0 b56a41680cefd391868c1c370dc063c69d827e7d 2387dcf6ccfefcfb703783387b9aade8fc82abfa -- . ':!.ufo' ':!corpus/instruments/r38-closure.sh' ':!corpus/instruments/r38-fixtures' | grep '^+' | grep -vE '^\+\+\+' | grep -cE '<fill>|filled by the L1|<LANE_HASH>|<r38-'
+1
+[exit=0]
+
+--- G4 (D3) dispatch/results pairing in .ufo/waves/round-37 ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && ls -1 .ufo/waves/round-37/*dispatch.json .ufo/waves/round-37/*results.json 2>&1
+ls: cannot access '.ufo/waves/round-37/*results.json': No such file or directory
+.ufo/waves/round-37/wave1-dispatch.json
+[exit=2]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git ls-tree -r --name-only 2387dcf6ccfefcfb703783387b9aade8fc82abfa -- .ufo/waves/round-37/ | sed -n '1,25p'
+.ufo/waves/round-37/assimilation/collisions
+.ufo/waves/round-37/assimilation/quarantine-slice
+.ufo/waves/round-37/assimilation/reg-ids
+.ufo/waves/round-37/assimilation/staged-ids
+.ufo/waves/round-37/c1-controls/before.txt
+.ufo/waves/round-37/c2-controls/before.txt
+.ufo/waves/round-37/census-before.txt
+.ufo/waves/round-37/claims-erratum-1.md
+.ufo/waves/round-37/claims.json
+.ufo/waves/round-37/final-gates/all-gates.txt
+.ufo/waves/round-37/wave1-dispatch.json
+.ufo/waves/round-37/wave1-plan.err
+.ufo/waves/round-37/wave1-plan.out
+.ufo/waves/round-37/wave1-run.err
+.ufo/waves/round-37/wave1-spec.json
+.ufo/waves/round-37/wave1.ready
+.ufo/waves/round-37/wave1.ready.dispatched
+.ufo/waves/round-37/wave1/ConnC1C2.md
+.ufo/waves/round-37/wave1/ConnPatterns.md
+.ufo/waves/round-37/wave1/ConnSibling.md
+.ufo/waves/round-37/wave1/CritBoundary.md
+.ufo/waves/round-37/wave1/CritC1Export.md
+.ufo/waves/round-37/wave1/CritC1Kill.md
+.ufo/waves/round-37/wave1/CritC2Claim.md
+.ufo/waves/round-37/wave1/CritC2Kill.md
+[exit=0]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git ls-tree -r --name-only 2387dcf6ccfefcfb703783387b9aade8fc82abfa -- .ufo/waves/round-37/kasegi-r37-build-results.json | wc -l
+0
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && python3 -c "import json,glob;d=json.load(open('.ufo/waves/round-37/wave1-dispatch.json'));print('dispatch-tasks',len(d.get('taskCall',{}).get('tasks',[])))"
+dispatch-tasks 64
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && python3 -c "import json,glob,os;
+for p in sorted(glob.glob('.ufo/waves/round-37/*results.json')):
+    d=json.load(open(p)); r=d.get('results'); print(p,'seats=',d.get('seats'),'results=',len(r) if isinstance(r,list) else r)"
+[exit=0]
+
+--- G5 (D-D) SCORECARD round-37 section labels ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -nE '^#{1,4} .*Round[- ]?37' SCORECARD.md
+1496:## Round 37 result
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && awk 'BEGIN{s=0} /^## .*Round[- ]?37/{s=1; print NR": "$0; next} s&&/^## /{exit} s{print NR": "$0}' SCORECARD.md | grep -nE 'Final lane commit|f3246559|e666d902|aa88877b|Correction' | cut -c1-170
+10:1505: Measured after: `bash corpus/instruments/r37-closure.sh --export-ref aa88877bf921d952137817b91ca76234b206da65` → `closed=14/14 exit=0`; `grep -cE '^\| F[0-9]+ \|
+12:1507: Anchor ancestor (r36 lane head): `c20300df516eb5575d8db2aaad1f0cf4913e7981` — the r36 Final-lane-commit label previously pointing at the intermediate ancestor e6
+14:1509: Final lane commit: f3246559bed2fd085dde860e00247ce394f02bad (round-37 wave-evidence ancestor; the round's final head is named in the report).
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && awk 'BEGIN{s=0} /^## .*Round[- ]?37/{s=1; next} s&&/^## /{exit} s{print}' SCORECARD.md | grep -c 'Final lane commit:'
+1
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -c '^Correction (round 38)' SCORECARD.md
+0
+[exit=1]
+
+########################################################################
+### REF r37t (83975acc83df4bd8d5eaf463182ae615f2b64546)
+########################################################################
+
+--- G1 (D-A) front-door scaffolding: Correction (round 38) lines ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -c '^Correction (round 38)' PROVINCE.md corpus/README.md
+PROVINCE.md:0
+corpus/README.md:0
+[exit=1]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && wc -l PROVINCE.md corpus/README.md
+  152 PROVINCE.md
+  454 corpus/README.md
+  606 total
+[exit=0]
+
+--- G1 scaffold markers pasted into PROVINCE.md / corpus/README.md ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -nE '^## [34]\. |ScribeFrontierAmendments|^\| (property|check) \|' PROVINCE.md | cut -c1-140
+83:| property | value |
+90:## 3. Deliverable B — `corpus/README.md` end-of-file block
+126:| property | value |
+134:## 4. Validation on a scratch mirror (append, not edit)
+137:`/fast/scratch/hyaku/kasegi-r37/ScribeFrontierAmendments/mirror`, both blocks appended with Python to the
+140:| check | command | observed |
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -nE '^## [34]\. |ScribeFrontierAmendments|^\| check \|' corpus/README.md | cut -c1-160
+436:## 4. Validation on a scratch mirror (append, not edit)
+439:`/fast/scratch/hyaku/kasegi-r37/ScribeFrontierAmendments/mirror`, both blocks appended with Python to the
+442:| check | command | observed |
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -c '^| F20 ' PROVINCE.md; grep -c '^| F20 ' corpus/README.md
+1
+1
+[exit=0]
+
+--- G1 fence state at EOF (CommonMark walk: open = ``` + info, close = ``` alone) ---
+PROVINCE.md: L81 OPEN  (bare)
+PROVINCE.md: L96 content-inside-fence (info=text)
+PROVINCE.md: L124 CLOSE
+PROVINCE.md: state-at-EOF=closed
+corpus/README.md: L426 OPEN  (bare)
+corpus/README.md: state-at-EOF=OPEN (unbalanced)
+fence-line-counts:
+PROVINCE.md:81:```
+PROVINCE.md:96:```text
+PROVINCE.md:124:```
+corpus/README.md:426:```
+[exit=0]
+
+--- G1 declared-blocks.txt (round-38 declaration file) ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && ls -l .ufo/waves/round-38/declared-blocks.txt 2>&1
+ls: cannot access '.ufo/waves/round-38/declared-blocks.txt': No such file or directory
+[exit=2]
+
+--- G1 block bytes/sha the verdict names (PROVINCE 2-line F20 block, README 27-line append) ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -c '^\[r37 Frontier amendment' PROVINCE.md; grep -c '^\[r37 amendment' corpus/README.md
+1
+1
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && sed -n '79,80p' PROVINCE.md | sha256sum; sed -n '79,80p' PROVINCE.md | wc -c
+cdfe44e319094957ec583b7c3cd8212b882752b75682d9f1cf4d0b734f20f545  -
+295
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && python3 -c "
+import hashlib
+tgt='2ebd8cd2881b020cb0e234658adf132cf4741c1d226e1d7c267f7d71c5b7e97b'
+for f,n in (('corpus/README.md',27),('PROVINCE.md',27),('PROVINCE.md',2)):
+    b=open(f,'rb').read().split(b'\n'); hit=[i+1 for i in range(len(b)) if hashlib.sha256(b'\n'.join(b[i:i+n])+b'\n').hexdigest() in (tgt,'cdfe44e319094957ec583b7c3cd8212b882752b75682d9f1cf4d0b734f20f545')]
+    print(f,'window',n,'declared-digest-matches-at-lines',hit if hit else 'NONE')"
+corpus/README.md window 27 declared-digest-matches-at-lines NONE
+PROVINCE.md window 27 declared-digest-matches-at-lines [97]
+PROVINCE.md window 2 declared-digest-matches-at-lines [79]
+[exit=0]
+
+--- G2 (D-B) all-gates receipt header + graded ref ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && head -1 .ufo/waves/round-37/final-gates/all-gates.txt
+all-gates v1
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -cE '^(export-ref|suite-sha256|run-utc)=' .ufo/waves/round-37/final-gates/all-gates.txt
+4
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && sed -n '2,4p' .ufo/waves/round-37/final-gates/all-gates.txt
+export-ref=9492c776724e737caf5815fabc98e59ea04830df
+suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+run-utc=2026-10-26T18:00:21Z
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -cE '^E[0-9]+ payload=.* closed=1' .ufo/waves/round-37/final-gates/all-gates.txt; grep -E '^closed=' .ufo/waves/round-37/final-gates/all-gates.txt; grep -E '^selftest cases=' .ufo/waves/round-37/final-gates/all-gates.txt
+14
+closed=14/14 exit=0
+selftest cases=14 failures=0
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -c 'all-gates v2' .ufo/waves/round-37/final-gates/all-gates.txt
+0
+[exit=1]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff --name-only 9492c776724e737caf5815fabc98e59ea04830df 83975acc83df4bd8d5eaf463182ae615f2b64546 | wc -l; git diff --name-only 9492c776724e737caf5815fabc98e59ea04830df 83975acc83df4bd8d5eaf463182ae615f2b64546 | head -8
+4
+.ufo/waves/round-37/final-gates/all-gates.txt
+.ufo/waves/round-37/kasegi-r37-build-results.json
+SCORECARD.md
+SHONEN.md
+[exit=0]
+
+--- G2 named "final" heads in SCORECARD/SHONEN ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -nE 'final (lane )?head|Final lane commit' SCORECARD.md SHONEN.md | cut -c1-150
+SCORECARD.md:987:integration commit `9f9848816503aa0cd566fc2efdc5e69ea501a253`). **Final lane commit:
+SCORECARD.md:1129:`c2-controls/before.txt`) and `census-before.txt`. **Final lane commit:
+SCORECARD.md:1492:Final lane commit: e666d902337a49dcbfc77880939874f39c6f477b
+SCORECARD.md:1494:**Round-36 measured closure (appended after integration).** Measured at the final lane head `274fa9ae908db5800013778098f4d426281b46e
+SCORECARD.md:1500:| depth:verifiability | 4 | 4 (held) | `r37-closure.sh` export suite E1–E14: `closed=14/14 exit=0` at the r37 final lane head; `--se
+SCORECARD.md:1509:Final lane commit: f3246559bed2fd085dde860e00247ce394f02bad (round-37 wave-evidence ancestor; the round's final head is named in the
+SHONEN.md:163:      — evidence (round 36): Gates & probes registry now registers `r35-defect-closure.sh` and `r36-closure.sh` by exact basename (E3); 
+SHONEN.md:172:      — evidence (round 37, final lane head aa88877bf921d952137817b91ca76234b206da65): the Gates & probes registry now carries the r37-c
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -nE '(final head|final lane head).{0,20}[0-9a-f]{7,}' SCORECARD.md SHONEN.md | cut -c1-160
+SCORECARD.md:1494:**Round-36 measured closure (appended after integration).** Measured at the final lane head `274fa9ae908db5800013778098f4d426281b46e2` (export
+SHONEN.md:172:      — evidence (round 37, final lane head aa88877bf921d952137817b91ca76234b206da65): the Gates & probes registry now carries the r37-closure.sh 
+[exit=0]
+
+--- G3 (D-C) pending markers in the round-37 lesson ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -c '⟨pending' corpus/lessons/round-37.md; grep -n '⟨pending' corpus/lessons/round-37.md | cut -c1-120
+7
+10:as any round's final commit; round-37 final lane commit `⟨pending: L1 closure commit — a commit cannot
+90:  `⟨pending: entry file at the integrated head⟩`.
+95:  `⟨pending: ExecC2Harness / final-gates transcript at the integrated head⟩`.
+216:   reds. `⟨pending: wave1/ExecGateReviewPrep.md; file at the integrated head⟩`.
+265:`⟨pending: wave1/ScribeConsiderthese.md §3 delivers the byte-exact block, sha256 `7c232983…`⟩`). Old →
+300:`⟨pending: L1 integration census measurement⟩`.
+320:`⟨pending: measurement at the integrated head⟩` — r36 discipline holds: `SKILL.md`/`PROVINCE.md` base
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -c 'Pending-marker resolutions (round 38)' corpus/lessons/round-37.md
+0
+[exit=1]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -n 'is not landed' corpus/lessons/round-37.md | cut -c1-120
+[exit=0]
+
+--- G3 widened placeholder vocabulary on lines added base(r37)..REF ---
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff -U0 b56a41680cefd391868c1c370dc063c69d827e7d 83975acc83df4bd8d5eaf463182ae615f2b64546 -- . ':!.ufo' ':!corpus/instruments/r38-closure.sh' ':!corpus/instruments/r38-fixtures' | grep '^+' | grep -vE '^\+\+\+' | grep -cE '⟨pending|<fill>|filled by the L1|<LANE_HASH>|<r38-|TBD|TODO'
+10
+[exit=0]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff -U0 b56a41680cefd391868c1c370dc063c69d827e7d 83975acc83df4bd8d5eaf463182ae615f2b64546 -- . ':!.ufo' ':!corpus/instruments/r38-closure.sh' ':!corpus/instruments/r38-fixtures' | grep '^+' | grep -vE '^\+\+\+' | grep -cE '<fill>|filled by the L1|<LANE_HASH>|<r38-'
+1
+[exit=0]
+
+--- G4 (D3) dispatch/results pairing in .ufo/waves/round-37 ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && ls -1 .ufo/waves/round-37/*dispatch.json .ufo/waves/round-37/*results.json 2>&1
+.ufo/waves/round-37/kasegi-r37-build-results.json
+.ufo/waves/round-37/wave1-dispatch.json
+[exit=0]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git ls-tree -r --name-only 83975acc83df4bd8d5eaf463182ae615f2b64546 -- .ufo/waves/round-37/ | sed -n '1,25p'
+.ufo/waves/round-37/assimilation/collisions
+.ufo/waves/round-37/assimilation/quarantine-slice
+.ufo/waves/round-37/assimilation/reg-ids
+.ufo/waves/round-37/assimilation/staged-ids
+.ufo/waves/round-37/c1-controls/before.txt
+.ufo/waves/round-37/c2-controls/before.txt
+.ufo/waves/round-37/census-before.txt
+.ufo/waves/round-37/claims-erratum-1.md
+.ufo/waves/round-37/claims.json
+.ufo/waves/round-37/final-gates/all-gates.txt
+.ufo/waves/round-37/kasegi-r37-build-results.json
+.ufo/waves/round-37/wave1-dispatch.json
+.ufo/waves/round-37/wave1-plan.err
+.ufo/waves/round-37/wave1-plan.out
+.ufo/waves/round-37/wave1-run.err
+.ufo/waves/round-37/wave1-spec.json
+.ufo/waves/round-37/wave1.ready
+.ufo/waves/round-37/wave1.ready.dispatched
+.ufo/waves/round-37/wave1/ConnC1C2.md
+.ufo/waves/round-37/wave1/ConnPatterns.md
+.ufo/waves/round-37/wave1/ConnSibling.md
+.ufo/waves/round-37/wave1/CritBoundary.md
+.ufo/waves/round-37/wave1/CritC1Export.md
+.ufo/waves/round-37/wave1/CritC1Kill.md
+.ufo/waves/round-37/wave1/CritC2Claim.md
+[exit=0]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git ls-tree -r --name-only 83975acc83df4bd8d5eaf463182ae615f2b64546 -- .ufo/waves/round-37/kasegi-r37-build-results.json | wc -l
+1
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && python3 -c "import json,glob;d=json.load(open('.ufo/waves/round-37/wave1-dispatch.json'));print('dispatch-tasks',len(d.get('taskCall',{}).get('tasks',[])))"
+dispatch-tasks 64
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && python3 -c "import json,glob,os;
+for p in sorted(glob.glob('.ufo/waves/round-37/*results.json')):
+    d=json.load(open(p)); r=d.get('results'); print(p,'seats=',d.get('seats'),'results=',len(r) if isinstance(r,list) else r)"
+.ufo/waves/round-37/kasegi-r37-build-results.json seats= 64 results= 64
+[exit=0]
+
+--- G5 (D-D) SCORECARD round-37 section labels ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -nE '^#{1,4} .*Round[- ]?37' SCORECARD.md
+1496:## Round 37 result
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && awk 'BEGIN{s=0} /^## .*Round[- ]?37/{s=1; print NR": "$0; next} s&&/^## /{exit} s{print NR": "$0}' SCORECARD.md | grep -nE 'Final lane commit|f3246559|e666d902|aa88877b|Correction' | cut -c1-170
+10:1505: Measured after: `bash corpus/instruments/r37-closure.sh --export-ref aa88877bf921d952137817b91ca76234b206da65` → `closed=14/14 exit=0`; `grep -cE '^\| F[0-9]+ \|
+12:1507: Anchor ancestor (r36 lane head): `c20300df516eb5575d8db2aaad1f0cf4913e7981` — the r36 Final-lane-commit label previously pointing at the intermediate ancestor e6
+14:1509: Final lane commit: f3246559bed2fd085dde860e00247ce394f02bad (round-37 wave-evidence ancestor; the round's final head is named in the report).
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && awk 'BEGIN{s=0} /^## .*Round[- ]?37/{s=1; next} s&&/^## /{exit} s{print}' SCORECARD.md | grep -c 'Final lane commit:'
+1
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -c '^Correction (round 38)' SCORECARD.md
+0
+[exit=1]
+
+########################################################################
+### G6 (D-E) live scratch quiescence (ref-independent, live)
+########################################################################
+
+$ for d in /fast/scratch/hyaku/kasegi-r36 /fast/scratch/hyaku/kasegi-r37 /fast/scratch/hyaku/kasegi-r38; do printf '%s: ' "$d"; if [ -d "$d" ]; then echo "present entries=$(find "$d" -mindepth 1 -maxdepth 1 | wc -l)"; find "$d" -mindepth 1 -maxdepth 1 | sed 's/^/  /'; else echo absent; fi; done
+/fast/scratch/hyaku/kasegi-r36: absent
+/fast/scratch/hyaku/kasegi-r37: absent
+/fast/scratch/hyaku/kasegi-r38: present entries=26
+  /fast/scratch/hyaku/kasegi-r38/L1
+  /fast/scratch/hyaku/kasegi-r38/ExecBaseRed
+  /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed
+  /fast/scratch/hyaku/kasegi-r38/ExecR37Carry
+  /fast/scratch/hyaku/kasegi-r38/ExecDeclaredBlocks
+  /fast/scratch/hyaku/kasegi-r38/ExecC2Capture
+  /fast/scratch/hyaku/kasegi-r38/ExecC2QuoteOnce
+  /fast/scratch/hyaku/kasegi-r38/ExecC2Census
+  /fast/scratch/hyaku/kasegi-r38/ExecIdCollision
+  /fast/scratch/hyaku/kasegi-r38/ExecCsafStatus
+  /fast/scratch/hyaku/kasegi-r38/ExecSchemaCross
+  /fast/scratch/hyaku/kasegi-r38/ExecNoHarm
+  /fast/scratch/hyaku/kasegi-r38/ExecDensity
+  /fast/scratch/hyaku/kasegi-r38/ExecQuarantine
+  /fast/scratch/hyaku/kasegi-r38/ExecQuiescence
+  /fast/scratch/hyaku/kasegi-r38/ExecC2Junk
+  /fast/scratch/hyaku/kasegi-r38/ScribeRowS055
+  /fast/scratch/hyaku/kasegi-r38/ScribeEntryF21
+  /fast/scratch/hyaku/kasegi-r38/ExecC2Binding
+  /fast/scratch/hyaku/kasegi-r38/ExecC2Harness
+  /fast/scratch/hyaku/kasegi-r38/ExecC2Audit
+  /fast/scratch/hyaku/kasegi-r38/ExecSuiteBuild
+  /fast/scratch/hyaku/kasegi-r38/ScribeFrontierBlocks
+  /fast/scratch/hyaku/kasegi-r38/ScribePendingResolutions
+  /fast/scratch/hyaku/kasegi-r38/ScribeScorecard
+  /fast/scratch/hyaku/kasegi-r38/ScribeLedgerFill
+[exit=0]
+
+$ find /fast/scratch/hyaku/kasegi-r37 -mindepth 1 -maxdepth 1 -type d | sed 's/^/seatdir: /'
+find: ‘/fast/scratch/hyaku/kasegi-r37’: No such file or directory
+[exit=0]
+
+########################################################################
+### G7 (D-F) considerthese ledger round-37 section
+########################################################################
+
+--- r37j ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -n 'Round-37 dispositions' corpus/knowledge/considerthese-proposals-ledger.md; sed -n '36,41p' corpus/knowledge/considerthese-proposals-ledger.md | cat -A | cut -c1-100
+37:## Round-37 dispositions (appended 2026-10-26, R31 home)
+$
+## Round-37 dispositions (appended 2026-10-26, R31 home)$
+$
+$
+$
+## Re-pin note (appended 2026-10-26)$
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && wc -l corpus/knowledge/considerthese-proposals-ledger.md; grep -c 'Round-37 dispositions — filled (round 38)' corpus/knowledge/considerthese-proposals-ledger.md
+43 corpus/knowledge/considerthese-proposals-ledger.md
+0
+[exit=1]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && awk '/^## Round-37 dispositions/{f=1;next} f&&/^## /{exit} f&&NF{n++} END{print "non-empty body lines under heading=" n+0}' corpus/knowledge/considerthese-proposals-ledger.md
+non-empty body lines under heading=0
+[exit=0]
+
+--- r37t ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -n 'Round-37 dispositions' corpus/knowledge/considerthese-proposals-ledger.md; sed -n '36,41p' corpus/knowledge/considerthese-proposals-ledger.md | cat -A | cut -c1-100
+37:## Round-37 dispositions (appended 2026-10-26, R31 home)
+$
+## Round-37 dispositions (appended 2026-10-26, R31 home)$
+$
+$
+$
+## Re-pin note (appended 2026-10-26)$
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && wc -l corpus/knowledge/considerthese-proposals-ledger.md; grep -c 'Round-37 dispositions — filled (round 38)' corpus/knowledge/considerthese-proposals-ledger.md
+43 corpus/knowledge/considerthese-proposals-ledger.md
+0
+[exit=1]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && awk '/^## Round-37 dispositions/{f=1;next} f&&/^## /{exit} f&&NF{n++} END{print "non-empty body lines under heading=" n+0}' corpus/knowledge/considerthese-proposals-ledger.md
+non-empty body lines under heading=0
+[exit=0]
+
+########################################################################
+### G8 (carry-over) r37-closure.sh over each export
+########################################################################
+
+--- r37j: bash corpus/instruments/r37-closure.sh --export-ref 2387dcf6ccfefcfb703783387b9aade8fc82abfa ---
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && sha256sum corpus/instruments/r37-closure.sh
+0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d  corpus/instruments/r37-closure.sh
+[exit=0]
+[suite exit=1]
+export-ref=2387dcf6ccfefcfb703783387b9aade8fc82abfa mode=export lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+deviation=non-default --scratch-root
+E1 payload=placeholders=0,lane-hash-markers=0,round37-section=1,round37-final-lane-commits=1,bound=1 closed=1
+E2 payload=erratum-marker=1,erratum-row=1,erratum-mean=7 closed=1
+E3 payload=registry-r35-defect-closure=1,registry-r36-closure=2 closed=1
+E4 payload=tracked-ref=1,tracked-index=1,provenance-note=1 closed=1
+E5 payload=claims-erratum-d5=1 closed=1
+E6 payload=path=.ufo/waves/round-34/wave1/L1Integration.md,correction-round35=1 closed=1
+E7 payload=supersedes-r22=1,supersedes-r23=1 closed=1
+E8 payload=m36-rows=4,names-corrected-line=3,stale-line=0,round35-lesson=1 closed=1
+E9 payload=status-read=ok,status-dirty=3,scratch-seat-dirs=0,head-match=0,lane-root=1,scratch-root=absent closed=0
+E10 payload=all-gates=1,suite-file=1,header=1,ancestor=1,digest-match=1,run-lines=14,recorded-closed=1,selftest-cases=14,selftest-summary=1,crossrun=1,placeholders=0 closed=1
+E11 payload=log37-block=1,correction-marker=1,false-path-named=1,falsity-stated=3 closed=1
+E12 payload=scorecard37-section=1,c20300df=1,anchor-ancestor=1,stale-e666d902=0,lesson37=1,lesson-c20300df=5,lesson-anchor-ancestor=2 closed=1
+E13 payload=registry-rows=2,single-choice-type=1,exit2-verdict=1 closed=1
+E14 payload=suite-file=1,porcelain-default=0,status-read-swallow=0,status-read-sites=10,fail-closed-marker=8 closed=1
+closed=13/14 exit=1
+
+--- r37t: bash corpus/instruments/r37-closure.sh --export-ref 83975acc83df4bd8d5eaf463182ae615f2b64546 ---
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && sha256sum corpus/instruments/r37-closure.sh
+0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d  corpus/instruments/r37-closure.sh
+[exit=0]
+[suite exit=1]
+export-ref=83975acc83df4bd8d5eaf463182ae615f2b64546 mode=export lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+deviation=non-default --scratch-root
+E1 payload=placeholders=0,lane-hash-markers=0,round37-section=1,round37-final-lane-commits=1,bound=1 closed=1
+E2 payload=erratum-marker=1,erratum-row=1,erratum-mean=7 closed=1
+E3 payload=registry-r35-defect-closure=1,registry-r36-closure=2 closed=1
+E4 payload=tracked-ref=1,tracked-index=1,provenance-note=1 closed=1
+E5 payload=claims-erratum-d5=1 closed=1
+E6 payload=path=.ufo/waves/round-34/wave1/L1Integration.md,correction-round35=1 closed=1
+E7 payload=supersedes-r22=1,supersedes-r23=1 closed=1
+E8 payload=m36-rows=4,names-corrected-line=3,stale-line=0,round35-lesson=1 closed=1
+E9 payload=status-read=ok,status-dirty=3,scratch-seat-dirs=0,head-match=0,lane-root=1,scratch-root=absent closed=0
+E10 payload=all-gates=1,suite-file=1,header=1,ancestor=1,digest-match=1,run-lines=14,recorded-closed=1,selftest-cases=14,selftest-summary=1,crossrun=1,placeholders=0 closed=1
+E11 payload=log37-block=1,correction-marker=1,false-path-named=1,falsity-stated=3 closed=1
+E12 payload=scorecard37-section=1,c20300df=1,anchor-ancestor=1,stale-e666d902=0,lesson37=1,lesson-c20300df=5,lesson-anchor-ancestor=2 closed=1
+E13 payload=registry-rows=2,single-choice-type=1,exit2-verdict=1 closed=1
+E14 payload=suite-file=1,porcelain-default=0,status-read-swallow=0,status-read-sites=10,fail-closed-marker=8 closed=1
+closed=13/14 exit=1
+
+=== S9. summary table (as measured above) ===
+tag  ref                                      g1_corr38 g1_fence g2_allgates g3_pending g4_results g5_corr38 g8_closed
+r37j  2387dcf6ccfefcfb703783387b9aade8fc82abfa 0         closed,OPEN  all-gates v1 7         0          0         closed=13/14
+r37t  83975acc83df4bd8d5eaf463182ae615f2b64546 0         closed,OPEN  all-gates v1 7         1          0         closed=13/14
+
+utc-end=2026-10-26T18:28:57Z
+
+
+########################################################################
+### ADDENDUM A. G8 exact counting command (no --scratch-root override)
+########################################################################
+utc=2026-10-26T18:28:57Z
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse HEAD; git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain | head -5
+700153593eb586c70a6499c8ca225ee4d673bc9b
+?? .ufo/waves/round-38/wave1.ready
+?? .ufo/waves/round-38/wave1.ready.partial
+?? .ufo/waves/round-38/wave1/
+[exit=0]
+
+--- r37j: bash corpus/instruments/r37-closure.sh --export-ref 2387dcf6ccfefcfb703783387b9aade8fc82abfa --work /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/w2/r37j ---
+[suite exit=1]
+export-ref=2387dcf6ccfefcfb703783387b9aade8fc82abfa mode=export lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+E1 payload=placeholders=0,lane-hash-markers=0,round37-section=1,round37-final-lane-commits=1,bound=1 closed=1
+E2 payload=erratum-marker=1,erratum-row=1,erratum-mean=7 closed=1
+E3 payload=registry-r35-defect-closure=1,registry-r36-closure=2 closed=1
+E4 payload=tracked-ref=1,tracked-index=1,provenance-note=1 closed=1
+E5 payload=claims-erratum-d5=1 closed=1
+E6 payload=path=.ufo/waves/round-34/wave1/L1Integration.md,correction-round35=1 closed=1
+E7 payload=supersedes-r22=1,supersedes-r23=1 closed=1
+E8 payload=m36-rows=4,names-corrected-line=3,stale-line=0,round35-lesson=1 closed=1
+E9 payload=status-read=ok,status-dirty=3,scratch-seat-dirs=0,head-match=0,lane-root=1,scratch-root=absent closed=0
+E10 payload=all-gates=1,suite-file=1,header=1,ancestor=1,digest-match=1,run-lines=14,recorded-closed=1,selftest-cases=14,selftest-summary=1,crossrun=1,placeholders=0 closed=1
+E11 payload=log37-block=1,correction-marker=1,false-path-named=1,falsity-stated=3 closed=1
+E12 payload=scorecard37-section=1,c20300df=1,anchor-ancestor=1,stale-e666d902=0,lesson37=1,lesson-c20300df=5,lesson-anchor-ancestor=2 closed=1
+E13 payload=registry-rows=2,single-choice-type=1,exit2-verdict=1 closed=1
+E14 payload=suite-file=1,porcelain-default=0,status-read-swallow=0,status-read-sites=10,fail-closed-marker=8 closed=1
+closed=13/14 exit=1
+PARSED: E9 payload=status-read=ok,status-dirty=3,scratch-seat-dirs=0,head-match=0,lane-root=1,scratch-root=absent closed=0|closed=13/14 exit=1|
+
+--- r37t: bash corpus/instruments/r37-closure.sh --export-ref 83975acc83df4bd8d5eaf463182ae615f2b64546 --work /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/w2/r37t ---
+[suite exit=1]
+export-ref=83975acc83df4bd8d5eaf463182ae615f2b64546 mode=export lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+E1 payload=placeholders=0,lane-hash-markers=0,round37-section=1,round37-final-lane-commits=1,bound=1 closed=1
+E2 payload=erratum-marker=1,erratum-row=1,erratum-mean=7 closed=1
+E3 payload=registry-r35-defect-closure=1,registry-r36-closure=2 closed=1
+E4 payload=tracked-ref=1,tracked-index=1,provenance-note=1 closed=1
+E5 payload=claims-erratum-d5=1 closed=1
+E6 payload=path=.ufo/waves/round-34/wave1/L1Integration.md,correction-round35=1 closed=1
+E7 payload=supersedes-r22=1,supersedes-r23=1 closed=1
+E8 payload=m36-rows=4,names-corrected-line=3,stale-line=0,round35-lesson=1 closed=1
+E9 payload=status-read=ok,status-dirty=3,scratch-seat-dirs=0,head-match=0,lane-root=1,scratch-root=absent closed=0
+E10 payload=all-gates=1,suite-file=1,header=1,ancestor=1,digest-match=1,run-lines=14,recorded-closed=1,selftest-cases=14,selftest-summary=1,crossrun=1,placeholders=0 closed=1
+E11 payload=log37-block=1,correction-marker=1,false-path-named=1,falsity-stated=3 closed=1
+E12 payload=scorecard37-section=1,c20300df=1,anchor-ancestor=1,stale-e666d902=0,lesson37=1,lesson-c20300df=5,lesson-anchor-ancestor=2 closed=1
+E13 payload=registry-rows=2,single-choice-type=1,exit2-verdict=1 closed=1
+E14 payload=suite-file=1,porcelain-default=0,status-read-swallow=0,status-read-sites=10,fail-closed-marker=8 closed=1
+closed=13/14 exit=1
+PARSED: E9 payload=status-read=ok,status-dirty=3,scratch-seat-dirs=0,head-match=0,lane-root=1,scratch-root=absent closed=0|closed=13/14 exit=1|
+
+########################################################################
+### ADDENDUM B. G3 widened-vocabulary token breakdown (base r37..REF, lines added)
+########################################################################
+
+--- r37j ---
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff -U0 b56a41680cefd391868c1c370dc063c69d827e7d 2387dcf6ccfefcfb703783387b9aade8fc82abfa -- . ':!.ufo' ':!corpus/instruments/r38-closure.sh' ':!corpus/instruments/r38-fixtures' | grep '^+' | grep -vE '^\+\+\+' | grep -oE '⟨pending|<fill>|filled by the L1|<LANE_HASH>|<r38-|TBD|TODO' | sort | uniq -c
+      1 filled by the L1
+      1 <LANE_HASH>
+      7 ⟨pending
+      1 TBD
+      2 TODO
+[exit=0]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff -U0 b56a41680cefd391868c1c370dc063c69d827e7d 2387dcf6ccfefcfb703783387b9aade8fc82abfa -- . ':!.ufo' ':!corpus/instruments/r38-closure.sh' ':!corpus/instruments/r38-fixtures' | grep -nE '^\+.*(<fill>|filled by the L1|<LANE_HASH>|<r38-)' | cut -c1-180
+347:+#       0 `filled by the L1` lines and 0 `<LANE_HASH>` marker lines, a
+[exit=0]
+
+--- r37t ---
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff -U0 b56a41680cefd391868c1c370dc063c69d827e7d 83975acc83df4bd8d5eaf463182ae615f2b64546 -- . ':!.ufo' ':!corpus/instruments/r38-closure.sh' ':!corpus/instruments/r38-fixtures' | grep '^+' | grep -vE '^\+\+\+' | grep -oE '⟨pending|<fill>|filled by the L1|<LANE_HASH>|<r38-|TBD|TODO' | sort | uniq -c
+      1 filled by the L1
+      1 <LANE_HASH>
+      7 ⟨pending
+      1 TBD
+      2 TODO
+[exit=0]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff -U0 b56a41680cefd391868c1c370dc063c69d827e7d 83975acc83df4bd8d5eaf463182ae615f2b64546 -- . ':!.ufo' ':!corpus/instruments/r38-closure.sh' ':!corpus/instruments/r38-fixtures' | grep -nE '^\+.*(<fill>|filled by the L1|<LANE_HASH>|<r38-)' | cut -c1-180
+347:+#       0 `filled by the L1` lines and 0 `<LANE_HASH>` marker lines, a
+[exit=0]
+
+########################################################################
+### ADDENDUM C. the round-37 lesson L85 sentence the verdict names
+########################################################################
+
+--- r37j ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && sed -n '83,87p' corpus/lessons/round-37.md | cat -n
+     1	  `wave1/RevEntryF20.md` §2).
+     2	- **Entry draft and review:** the entry is drafted at 84 lines with `source: S054`, `verified-at:
+     3	  2026-10-26` and an executable `recheck:` line (`wave1/ScribeEntryF20.md` §2) but is **not landed**.
+     4	  The plan review passes Q1–Q6 with one open pitfall — the planned *example falsifiable rule* is not
+     5	  checkable against the pinned capture and needs a capture-grounded replacement
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -c 'not landed' corpus/lessons/round-37.md; grep -nE 'not landed' corpus/lessons/round-37.md | cut -c1-140
+1
+85:  2026-10-26` and an executable `recheck:` line (`wave1/ScribeEntryF20.md` §2) but is **not landed**.
+[exit=0]
+
+--- r37t ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && sed -n '83,87p' corpus/lessons/round-37.md | cat -n
+     1	  `wave1/RevEntryF20.md` §2).
+     2	- **Entry draft and review:** the entry is drafted at 84 lines with `source: S054`, `verified-at:
+     3	  2026-10-26` and an executable `recheck:` line (`wave1/ScribeEntryF20.md` §2) but is **not landed**.
+     4	  The plan review passes Q1–Q6 with one open pitfall — the planned *example falsifiable rule* is not
+     5	  checkable against the pinned capture and needs a capture-grounded replacement
+[exit=0]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -c 'not landed' corpus/lessons/round-37.md; grep -nE 'not landed' corpus/lessons/round-37.md | cut -c1-140
+1
+85:  2026-10-26` and an executable `recheck:` line (`wave1/ScribeEntryF20.md` §2) but is **not landed**.
+[exit=0]
+
+########################################################################
+### ADDENDUM E. D-A side facts: README heading the scribe table claims, F20 duplication, TBD/TODO refs
+########################################################################
+
+--- r37j ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -c '^## Round-37 admission' corpus/README.md
+0
+[exit=1]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37j && grep -n 'F20' PROVINCE.md | cut -c1-140
+80:[r37 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F20 — SSVC (Stakeholder-Specific Vulnerability Categorization) d
+88:| source of the F20 sentence | the round-37 frozen claim C2 wording (SSVC — Stakeholder-Specific Vulnerability Categorization, decision-p
+97:## Round-37 admission — coverage map row and Frontier F20 (appended 2026-10-26)
+100:`knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md` (Frontier F20, source S054;
+106:the F20 frontier row is listed here on the same table shape as the frontier above.
+114:| F20 | SSVC (Stakeholder-Specific Vulnerability Categorization) — stakeholder-tailored, decision-point-based prioritization | admitted 
+120:F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at
+131:| count line | `[r37 amendment, appended 2026-10-26]` naming `20/20 admitted` and F01-F08 r23, F09 r24, F10 r25, F11 r26, F12 r28, F13 r
+145:| row cells | pipe-split of the F20 line | 6 cells; next cell 155 words |
+[exit=0]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff -U0 b56a41680cefd391868c1c370dc063c69d827e7d 2387dcf6ccfefcfb703783387b9aade8fc82abfa -- . ':!.ufo' ':!corpus/instruments/r38-closure.sh' ':!corpus/instruments/r38-fixtures' | grep -nE '^\+.*(TBD|TODO)' | cut -c1-170
+985:+      ph=$(grep -cE '<(hash|sha|digest|ref|payload|N|n|id)>|TODO|TBD' "$p"); ph=${ph:-0}
+1542:+  mk_gates "$d/$p" "$live" 'extra=# TODO fill the export-ref'
+[exit=0]
+
+--- r37t ---
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -c '^## Round-37 admission' corpus/README.md
+0
+[exit=1]
+
+$ cd /fast/scratch/hyaku/kasegi-r38/ExecR37HeadRed/exp-r37t && grep -n 'F20' PROVINCE.md | cut -c1-140
+80:[r37 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F20 — SSVC (Stakeholder-Specific Vulnerability Categorization) d
+88:| source of the F20 sentence | the round-37 frozen claim C2 wording (SSVC — Stakeholder-Specific Vulnerability Categorization, decision-p
+97:## Round-37 admission — coverage map row and Frontier F20 (appended 2026-10-26)
+100:`knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md` (Frontier F20, source S054;
+106:the F20 frontier row is listed here on the same table shape as the frontier above.
+114:| F20 | SSVC (Stakeholder-Specific Vulnerability Categorization) — stakeholder-tailored, decision-point-based prioritization | admitted 
+120:F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at
+131:| count line | `[r37 amendment, appended 2026-10-26]` naming `20/20 admitted` and F01-F08 r23, F09 r24, F10 r25, F11 r26, F12 r28, F13 r
+145:| row cells | pipe-split of the F20 line | 6 cells; next cell 155 words |
+[exit=0]
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git diff -U0 b56a41680cefd391868c1c370dc063c69d827e7d 83975acc83df4bd8d5eaf463182ae615f2b64546 -- . ':!.ufo' ':!corpus/instruments/r38-closure.sh' ':!corpus/instruments/r38-fixtures' | grep -nE '^\+.*(TBD|TODO)' | cut -c1-170
+985:+      ph=$(grep -cE '<(hash|sha|digest|ref|payload|N|n|id)>|TODO|TBD' "$p"); ph=${ph:-0}
+1542:+  mk_gates "$d/$p" "$live" 'extra=# TODO fill the export-ref'
+[exit=0]
+
+########################################################################
+### ADDENDUM D. D3 closure-order raw timestamps (git commit times only)
+########################################################################
+
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && for r in 9492c776724e737caf5815fabc98e59ea04830df aa88877bf921d952137817b91ca76234b206da65 2387dcf6ccfefcfb703783387b9aade8fc82abfa 83975acc83df4bd8d5eaf463182ae615f2b64546; do git log -1 --format='%h %ct %ci %s' $r; done
+9492c77 1793037589 2026-10-26 14:59:49 -0300 round-37: F1 bootstrap receipt (disclosed token edits: E10 green + summaries + selftest case)
+aa88877 1793037625 2026-10-26 15:00:25 -0300 round-37: F2 final head — genuine all-gates transcript of the F1 run
+2387dcf 1793037688 2026-10-26 15:01:28 -0300 round-37: F3 final head — bind final lane hash in SHONEN/SCORECARD
+83975ac 1793037795 2026-10-26 15:03:15 -0300 round-37: WAVE-DONE results — kasegi-r37-build-results.json (64/64 settled)
+[exit=0]
+cited (outside git, from corpus/lessons/round-37-verifier-spotcheck.md:5 D3): complete kasegi round=37 at 15:02:47; 83975acc commit time 15:03:15
+
+utc-end=2026-10-26T18:28:59Z
+
+########################################################################
+### ADDENDUM F. the four heads the round-37 artifacts name (read-only git)
+########################################################################
+utc=2026-10-26T18:29:29Z
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format=%h_%ci_%s 9492c776724e737caf5815fabc98e59ea04830df
+9492c77 2026-10-26 14:59:49 -0300 round-37: F1 bootstrap receipt (disclosed token edits: E10 green + summaries + selftest case)
+[exit=0]
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format=%h_%ci_%s aa88877bf921d952137817b91ca76234b206da65
+aa88877 2026-10-26 15:00:25 -0300 round-37: F2 final head — genuine all-gates transcript of the F1 run
+[exit=0]
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format=%h_%ci_%s f3246559bed2fd085dde860e00247ce394f02bad
+f324655 2026-10-26 13:59:17 -0300 round-37: wave evidence — spec/plan/dispatch (kasegi-r37-build, 64 seats v2)
+[exit=0]
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format=%h_%ci_%s 2387dcf6ccfefcfb703783387b9aade8fc82abfa
+2387dcf 2026-10-26 15:01:28 -0300 round-37: F3 final head — bind final lane hash in SHONEN/SCORECARD
+[exit=0]
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format=%h_%ci_%s 83975acc83df4bd8d5eaf463182ae615f2b64546
+83975ac 2026-10-26 15:03:15 -0300 round-37: WAVE-DONE results — kasegi-r37-build-results.json (64/64 settled)
+[exit=0]
+
+$ ancestry of each named head against 2387dcf6 (merge-base --is-ancestor)
+9492c776 ancestor-of-2387dcf6=0
+aa88877b ancestor-of-2387dcf6=0
+f3246559 ancestor-of-2387dcf6=0
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin ls-tree -l 2387dcf6 -- .ufo/waves/round-37/final-gates/all-gates.txt
+100644 blob 09c3a187b73caa59c4561ac254e04609e39350d8    9238	.ufo/waves/round-37/final-gates/all-gates.txt
+
+$ git -C  ls-tree -l 83975acc -- .ufo/waves/round-37/kasegi-r37-build-results.json
+100644 blob 22f7fdbc49f48d5a1f94a5def2864d83a6f7c329  326389	.ufo/waves/round-37/kasegi-r37-build-results.json
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin ls-tree -l 83975acc -- corpus/instruments/r37-closure.sh
+100644 blob 68ac41e8fdab46ba508800a377f396e663f2a436   73132	corpus/instruments/r37-closure.sh
+
+utc-end=2026-10-26T18:29:29Z

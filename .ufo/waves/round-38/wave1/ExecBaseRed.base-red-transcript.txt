@@ -1,0 +1,254 @@
+== provenance ==
+utc=2026-10-26T18:30:07Z
+lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+ref_under_test=a173b0c2b98c5ae39599fa9be76027fbbead0b9e
+r37_judged_head=2387dcf6ccfefcfb703783387b9aade8fc82abfa  r37_lane_tip=83975acc83df4bd8d5eaf463182ae615f2b64546  round38_claims_freeze=9a10b02fe411bb8d9d71aed3b1d3a5949d50d16b
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse a173b0c2b98c5ae39599fa9be76027fbbead0b9e^{commit}
+a173b0c2b98c5ae39599fa9be76027fbbead0b9e
+[rc=0]
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin merge-base --is-ancestor a173b0c2b98c5ae39599fa9be76027fbbead0b9e 9a10b02fe411bb8d9d71aed3b1d3a5949d50d16b
+[rc=0]
+export: git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive a173b0c2b98c5ae39599fa9be76027fbbead0b9e | tar -x -C /fast/scratch/hyaku/kasegi-r38/ExecBaseRed/b
+export file count: 7290
+exported tree root: /fast/scratch/hyaku/kasegi-r38/ExecBaseRed/b
+
+### P0 — the round-38 suite itself (claim C1's instrument) at the ref under test
+$ ls corpus/instruments/r38-closure.sh
+ls: cannot access 'corpus/instruments/r38-closure.sh': No such file or directory
+[rc=2]
+r38-closure.sh blobs at a173b0c2b98c5ae39599fa9be76027fbbead0b9e: 0
+corpus/instruments entries at a173b0c2b98c5ae39599fa9be76027fbbead0b9e: 99
+
+### P1 — round-38 wave tree at the ref under test and at the claims freeze
+round-38 tree entries at a173b0c2b98c5ae39599fa9be76027fbbead0b9e: 0
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin ls-tree -r --name-only 9a10b02fe411bb8d9d71aed3b1d3a5949d50d16b -- .ufo/waves/round-38/
+.ufo/waves/round-38/c1-controls/before.txt
+.ufo/waves/round-38/c2-controls/before.txt
+.ufo/waves/round-38/census-before.txt
+.ufo/waves/round-38/claims.json
+[rc=0]
+round-38 dispatch.json at a173b0c2b98c5ae39599fa9be76027fbbead0b9e: 0
+round-38 results.json  at a173b0c2b98c5ae39599fa9be76027fbbead0b9e: 0
+
+### G1 (D-A) — correction lines, fence state at EOF, declared-blocks.txt
+$ grep -c ^Correction (round 38) PROVINCE.md
+0
+[rc=1]
+$ grep -c ^Correction (round 38) corpus/README.md
+0
+[rc=1]
+any 'Correction (round 38)' byte sequence in the tree: 0 file(s)
+--- PROVINCE.md ---
+fence_lines=3
+  fence L81: [```]
+  fence L96: [```text]
+  fence L124: [```]
+  open_at_eof=1
+--- corpus/README.md ---
+fence_lines=1
+  fence L426: [```]
+  open_at_eof=1
+$ ls .ufo/waves/round-38/declared-blocks.txt
+ls: cannot access '.ufo/waves/round-38/declared-blocks.txt': No such file or directory
+[rc=2]
+$ grep -n Validation on a scratch mirror PROVINCE.md corpus/README.md
+PROVINCE.md:134:## 4. Validation on a scratch mirror (append, not edit)
+corpus/README.md:436:## 4. Validation on a scratch mirror (append, not edit)
+[rc=0]
+$ grep -c ^## 3\. Deliverable B PROVINCE.md
+1
+[rc=0]
+$ grep -c ^## Round-37 admission corpus/README.md
+0
+[rc=1]
+F20 rows: PROVINCE=1 README=1
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff --numstat b56a41680cefd391868c1c370dc063c69d827e7d a173b0c2b98c5ae39599fa9be76027fbbead0b9e -- PROVINCE.md corpus/README.md
+74	0	PROVINCE.md
+56	0	corpus/README.md
+[rc=0]
+$ sha256sum PROVINCE.md corpus/README.md
+3e9e66b2448d61b6d24bb66562b865c777593df55b27300252b94620503838ea  PROVINCE.md
+20c86fb2295726cc8c8b8b7ce24ae057d35dc1d1e6c5c3a2b860c67dab9f0365  corpus/README.md
+[rc=0]
+
+### G2 (D-B) — all-gates receipt: round-38 absent; r37 receipt grades 9492c776 and the front doors name aa88877b
+$ ls .ufo/waves/round-38/final-gates/all-gates.txt
+ls: cannot access '.ufo/waves/round-38/final-gates/all-gates.txt': No such file or directory
+[rc=2]
+round-38 final-gates entries at a173b0c2b98c5ae39599fa9be76027fbbead0b9e: 0
+$ grep -nE ^(all-gates|export-ref=|suite-sha256=|run-utc=) .ufo/waves/round-37/final-gates/all-gates.txt
+1:all-gates v1
+2:export-ref=9492c776724e737caf5815fabc98e59ea04830df
+3:suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+4:run-utc=2026-10-26T18:00:21Z
+7:export-ref=9492c776724e737caf5815fabc98e59ea04830df mode=export lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+[rc=0]
+$ grep -cE ^E[0-9]+ payload=.* closed=1$ .ufo/waves/round-37/final-gates/all-gates.txt
+14
+[rc=0]
+$ grep -nE ^(closed=|selftest cases=) .ufo/waves/round-37/final-gates/all-gates.txt
+22:closed=14/14 exit=0
+114:selftest cases=14 failures=0
+[rc=0]
+--- which 'final' head do the front doors name? ---
+$ grep -cF 2387dcf6ccfefcfb703783387b9aade8fc82abfa SCORECARD.md SHONEN.md
+SCORECARD.md:0
+SHONEN.md:0
+[rc=1]
+$ grep -cF aa88877b SCORECARD.md SHONEN.md
+SCORECARD.md:1
+SHONEN.md:2
+[rc=0]
+$ grep -nF final lane head aa88877b SCORECARD.md SHONEN.md
+SHONEN.md:172:      — evidence (round 37, final lane head aa88877bf921d952137817b91ca76234b206da65): the Gates & probes registry now carries the r37-closure.sh row plus the D5-corrected single-choice r36-closure.sh row (E13); `anchorcheck.py SKILL.md` exit 0; density/anchor post-append re-measurement (density mean 225.3→post-append re-measurement in RevNoHarm; anchorcheck exit 0). Box stays `[~]`; no non-author check.
+[rc=0]
+--- does the receipt name its own head by reference only? ---
+$ grep -cE ^export-ref=9492c776724e737caf5815fabc98e59ea04830df .ufo/waves/round-37/final-gates/all-gates.txt
+2
+[rc=0]
+
+### G3 (D-C) — pending markers, stale 'not landed' line, widened placeholder vocabulary
+$ grep -c ⟨pending corpus/lessons/round-37.md
+7
+[rc=0]
+$ grep -n ⟨pending corpus/lessons/round-37.md
+10:as any round's final commit; round-37 final lane commit `⟨pending: L1 closure commit — a commit cannot
+90:  `⟨pending: entry file at the integrated head⟩`.
+95:  `⟨pending: ExecC2Harness / final-gates transcript at the integrated head⟩`.
+216:   reds. `⟨pending: wave1/ExecGateReviewPrep.md; file at the integrated head⟩`.
+265:`⟨pending: wave1/ScribeConsiderthese.md §3 delivers the byte-exact block, sha256 `7c232983…`⟩`). Old →
+300:`⟨pending: L1 integration census measurement⟩`.
+320:`⟨pending: measurement at the integrated head⟩` — r36 discipline holds: `SKILL.md`/`PROVINCE.md` base
+[rc=0]
+$ grep -c Pending-marker resolutions (round 38) corpus/lessons/round-37.md
+0
+[rc=1]
+$ grep -n not landed corpus/lessons/round-37.md
+85:  2026-10-26` and an executable `recheck:` line (`wave1/ScribeEntryF20.md` §2) but is **not landed**.
+[rc=0]
+$ grep -cF is not landed corpus/lessons/round-37.md
+0
+[rc=1]
+--- widened placeholder regex <r3[0-9]-[a-z-]+>|<fill>|<LANE_HASH>|<FRONTIER_N> over round-written lane files ---
+SCORECARD.md: 0
+SHONEN.md: 0
+LOG.md: 2
+PROVINCE.md: 0
+corpus/lessons/round-37.md: 0
+corpus/README.md: 0
+--- the r37 bootstrap commit the old E1 passed (D-C's miss), for the widened-limb argument ---
+(read with git show piped to grep: no redirect, so line numbers are the file's own)
+--- SCORECARD.md at 9492c776 ---
+1505:Measured after: `bash corpus/instruments/r37-closure.sh --export-ref <r37-final-head>` → `closed=14/14 exit=0`; `grep -cE '^\| F[0-9]+ \|' corpus/README.md
+--- SHONEN.md at 9492c776 ---
+172:      — evidence (round 37, final lane head <r37-final-lane-hash>): the Gates & probes registry now carries the r37-closure.sh row plus the D5-corrected sin
+176:      — evidence (round 37): `recheck-audit.py` strict pass=49/49 expected=49 exit=0; frontier harness entries=23 pass=23 exit=0 incl. PASS F20 ids=S054; so
+token occurrences in SCORECARD.md at 9492c776:
+      1 <r37-final-head>
+token occurrences in SHONEN.md at 9492c776:
+      1 <fill>
+      2 <r37-final-lane-hash>
+
+### G4 (D3) — closure order: results file absent at the r37 judged head, present only after 'complete'
+r37 wave tree entries at 2387dcf6ccfefcfb703783387b9aade8fc82abfa: 82
+results.json at 2387dcf6ccfefcfb703783387b9aade8fc82abfa: 0
+.ufo/waves/round-37/kasegi-r37-build-results.json
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format=%H %cI 83975acc83df4bd8d5eaf463182ae615f2b64546
+83975acc83df4bd8d5eaf463182ae615f2b64546 2026-10-26T15:03:15-03:00
+[rc=0]
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log -1 --format=%H %cI 2387dcf6ccfefcfb703783387b9aade8fc82abfa
+2387dcf6ccfefcfb703783387b9aade8fc82abfa 2026-10-26T15:01:28-03:00
+[rc=0]
+
+### G5 (D-D) — 'Final lane commit:' in the SCORECARD round-37 section; round-38 correction absent
+1
+15:Final lane commit: f3246559bed2fd085dde860e00247ce394f02bad (round-37 wave-evidence ancestor; the round's final head is named in the report).
+$ grep -c ^Correction (round 38) SCORECARD.md
+0
+[rc=1]
+$ grep -n f3246559 SCORECARD.md
+1509:Final lane commit: f3246559bed2fd085dde860e00247ce394f02bad (round-37 wave-evidence ancestor; the round's final head is named in the report).
+[rc=0]
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin cat-file -t f3246559
+commit
+[rc=0]
+
+### G6 (D-E) — live scratch state for kasegi-r36/r37/r38
+/fast/scratch/hyaku/kasegi-r36 dir=absent any_entries=0 seat_dirs=0
+/fast/scratch/hyaku/kasegi-r37 dir=absent any_entries=0 seat_dirs=0
+/fast/scratch/hyaku/kasegi-r38 dir=present any_entries=228805 seat_dirs=29
+$ find /fast/scratch/hyaku/kasegi-r36 /fast/scratch/hyaku/kasegi-r37 -mindepth 1
+find: ‘/fast/scratch/hyaku/kasegi-r36’: No such file or directory
+find: ‘/fast/scratch/hyaku/kasegi-r37’: No such file or directory
+[rc=1]
+
+### G7 (D-F) — the ledger '## Round-37 dispositions' section body
+$ grep -n ^## Round-37 dispositions corpus/knowledge/considerthese-proposals-ledger.md
+37:## Round-37 dispositions (appended 2026-10-26, R31 home)
+[rc=0]
+  body L38: []
+  body L39: []
+  body L40: []
+  next section starts L41
+non_empty_body_rows=0
+$ grep -cE ^\| *(P[0-9]|[0-9]+) *\| corpus/knowledge/considerthese-proposals-ledger.md
+0
+[rc=1]
+$ wc -l corpus/knowledge/considerthese-proposals-ledger.md
+43 corpus/knowledge/considerthese-proposals-ledger.md
+[rc=0]
+--- disposition tables anywhere in the file (pipe rows) ---
+$ grep -cE ^\| corpus/knowledge/considerthese-proposals-ledger.md
+16
+[rc=0]
+
+### G8 carry-over — r37-closure.sh over the base export (committed instrument, digest-bound)
+instrument at a173b0c2b98c5ae39599fa9be76027fbbead0b9e:
+0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d  -
+   1558   73132
+$ sha256sum /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r37-closure.sh
+0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r37-closure.sh
+[rc=0]
+live lane HEAD at measurement time: 700153593eb586c70a6499c8ca225ee4d673bc9b
+live lane porcelain at measurement time (3 line(s)):
+?? .ufo/waves/round-38/wave1.ready
+?? .ufo/waves/round-38/wave1.ready.partial
+?? .ufo/waves/round-38/wave1/
+r37 SCRATCH_ROOT default: 185:SCRATCH_ROOT=/fast/scratch/hyaku/kasegi-r37
+export-ref=a173b0c2b98c5ae39599fa9be76027fbbead0b9e mode=export lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d
+E1 payload=placeholders=0,lane-hash-markers=0,round37-section=1,round37-final-lane-commits=1,bound=1 closed=1
+E2 payload=erratum-marker=1,erratum-row=1,erratum-mean=7 closed=1
+E3 payload=registry-r35-defect-closure=1,registry-r36-closure=2 closed=1
+E4 payload=tracked-ref=1,tracked-index=1,provenance-note=1 closed=1
+E5 payload=claims-erratum-d5=1 closed=1
+E6 payload=path=.ufo/waves/round-34/wave1/L1Integration.md,correction-round35=1 closed=1
+E7 payload=supersedes-r22=1,supersedes-r23=1 closed=1
+E8 payload=m36-rows=4,names-corrected-line=3,stale-line=0,round35-lesson=1 closed=1
+E9 payload=status-read=ok,status-dirty=3,scratch-seat-dirs=0,head-match=0,lane-root=1,scratch-root=absent closed=0
+E10 payload=all-gates=1,suite-file=1,header=1,ancestor=1,digest-match=1,run-lines=14,recorded-closed=1,selftest-cases=14,selftest-summary=1,crossrun=1,placeholders=0 closed=1
+E11 payload=log37-block=1,correction-marker=1,false-path-named=1,falsity-stated=3 closed=1
+E12 payload=scorecard37-section=1,c20300df=1,anchor-ancestor=1,stale-e666d902=0,lesson37=1,lesson-c20300df=5,lesson-anchor-ancestor=2 closed=1
+E13 payload=registry-rows=2,single-choice-type=1,exit2-verdict=1 closed=1
+E14 payload=suite-file=1,porcelain-default=0,status-read-swallow=0,status-read-sites=10,fail-closed-marker=8 closed=1
+closed=13/14 exit=1
+[g8_exit=1]
+
+### G8 diagnostic (not part of the base red) — isolate E9's two live limbs
+Same instrument, --export-ref = live lane HEAD 700153593eb586c70a6499c8ca225ee4d673bc9b.
+If the ref's content is green, only status-dirty (the wave's untracked files) should stay red.
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r37-closure.sh --export-ref 700153593eb586c70a6499c8ca225ee4d673bc9b --work /fast/scratch/hyaku/kasegi-r38/ExecBaseRed/r37w-tip
+[rc=1]
+E9 payload=status-read=ok,status-dirty=3,scratch-seat-dirs=0,head-match=1,lane-root=1,scratch-root=absent closed=0
+closed=13/14 exit=1
+E-lines closed=1: 13 / 14
+
+E9 at the base export: E9 payload=status-read=ok,status-dirty=3,scratch-seat-dirs=0,head-match=0,lane-root=1,scratch-root=absent closed=0
+E9 at the live HEAD : E9 payload=status-read=ok,status-dirty=3,scratch-seat-dirs=0,head-match=1,lane-root=1,scratch-root=absent closed=0
+base export closed=13/14 exit=1   live-HEAD ref closed=13/14 exit=1
+freeze reading, quoted from .ufo/waves/round-38/c1-controls/before.txt:
+G8 carry-over: bash corpus/instruments/r37-closure.sh --export-ref a173b0c2b98c5ae39599fa9be76027fbbead0b9e -> closed=14/14 exit=0 (run at freeze by L1)
+=> E9's head-match limb flips only with the ref; the residual red in both runs is the live
+   dirty worktree. The r37 carry-over reads 14/14 only when the live lane is quiescent at the
+   exported ref; for round 38 that means running it against REF (judged head J) at filing.
+
+== transcript end utc=2026-10-26T18:30:09Z ==

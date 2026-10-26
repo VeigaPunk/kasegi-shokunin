@@ -1507,3 +1507,24 @@ Measured after: `bash corpus/instruments/r37-closure.sh --export-ref aa88877bf92
 Anchor ancestor (r36 lane head): `c20300df516eb5575d8db2aaad1f0cf4913e7981` — the r36 Final-lane-commit label previously pointing at the intermediate ancestor e666d902 is corrected per E12 (see round-37 lesson).
 
 Final lane commit: f3246559bed2fd085dde860e00247ce394f02bad (round-37 wave-evidence ancestor; the round's final head is named in the report).
+
+Correction (round 38): the round-37 section's `Final lane commit: f3246559…` line names a wave-evidence anchor ancestor, not a final head; read it as `Anchor ancestor (r37 wave evidence): f3246559bed2fd085dde860e00247ce394f02bad`; the round-37 judged head is 2387dcf6ccfefcfb703783387b9aade8fc82abfa and its tip 83975acc83df4bd8d5eaf463182ae615f2b64546 (verifier §5 D-D).
+
+## Round 38 result
+
+| Axis | Score before r38 | Score after r38 | Evidence pointer | Last change |
+|---|---:|---:|---|---|
+| depth:verifiability | 4 | 4 (held) | `corpus/instruments/r38-closure.sh` (sha256 `85d33ea9…`, export-mode suite G1–G8) closes the round-37 verifier's routed D-A, D-B, D-C, D3, D-D, D-E and the L1-found D-F; the run over the round-38 head the receipt names, and its `--selftest`, are committed in `.ufo/waves/round-38/final-gates/all-gates.txt`; reds over the base `a173b0c2` and the round-37 verifier's reviewed head `2387dcf6` exports are committed in `.ufo/waves/round-38/final-gates/reds.txt`. | r38 (held) |
+| coverage | 7 | 7 (held) | Frontier F21 (OASIS CSAF v2.0 — VEX product-status categories and not-affected justification flags) 20→21; registry S055 54→55 (tier A, kind spec, mined, opened 2026-10-26); entry `corpus/knowledge/csaf-vex-product-status-and-justifications.md` (`source: S055`); capture `corpus/source-snapshots/round-38/S055.txt` (sha256 `63c8ad52…`, 5146 lines) + `manifest.json`; harness `entries=24 pass=24 exit=0` incl. `PASS F21 … ids=S055`; `source-recheck --source S055` exit 0; binding `records=45 bound=45 unbound=0`; audit `expected=50 missing=0 unexpected=0 exit=0`; census exit 0 (W04 S028/S029 only); knowledge 49→50; junk twin `.ufo/waves/round-38/c2-controls/junk-f21.md` rejected (`junk-f21-recheck.txt`: 4× `quote-not-found`, exit 1). | r38 (held) |
+| depth:density | 9 | 9 | Non-target guard only: `SKILL.md` gains one EOF Gates & probes row (`r38-closure.sh`); every base line byte-identical; no density move claimed. | r15 (held r38) |
+
+Measured before: claims-freeze commit `9a10b02fe411bb8d9d71aed3b1d3a5949d50d16b` (`.ufo/waves/round-38/c1-controls/before.txt`, `c2-controls/before.txt`, `census-before.txt`).
+judged head: export-ref of .ufo/waves/round-38/final-gates/all-gates.txt
+The C2 values above were measured on the integrated tree that the judged head commits; the C1 run is the receipt itself. This section names no hash for the round-38 head: a commit cannot contain its own hash (QUALITY R33), and the lane tip adds only the receipt file.
+
+**Capabilities: no row enters this round.** `r38-closure.sh` is a closure counter, not a new domain capability; the capability window is unchanged (last entry round 33). **Saturation unchanged:** line 9/10 per owned axis, window N = 3; the lowest non-retired axis stays depth:verifiability (4), which C1 worked.
+
+**Planned for round 39** (appended plan, not a claim): (1) depth:verifiability — an r39 suite that turns the
+round-38 attack findings into fixtures and tightened limbs (whole-tail declarations, graded selftest case
+lines, seat-identity G4, the four MutG5G8 fixture gaps, pinned r37 bytes for G8); (2) coverage — continue
+the frontier from opened VEX/advisory leads (`wave1/ScoutVexLeads.md`) only after re-opening them in-round.

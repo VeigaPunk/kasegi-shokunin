@@ -150,3 +150,7 @@ copies only. Measured on that mirror:
 
 Harness on the same mirror (`HYAKU_SCRATCH=<scratch> python3 corpus/instruments/frontier-recheck-count.py
 --root <mirror>`, tail):
+
+Correction (round 38): PROVINCE.md L79-L152 — the whole round-37 append — hold the intended 2-line amendment at L79-L80 (a blank line and the `[r37 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F20 — …` line, sha256 cdfe44e319094957ec583b7c3cd8212b882752b75682d9f1cf4d0b734f20f545) followed by misplaced receipt scaffolding at L81-L152 copied from `.ufo/waves/round-37/wave1/ScribeFrontierAmendments.md`: a duplicated F20 row, property tables, a "Validation on a scratch mirror" section, and stray fences; L81-L152 are to be read as not part of the province.
+
+[r38 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F21 — OASIS CSAF v2.0 (Common Security Advisory Framework) VEX product-status categories and not-affected justification flags — admitted round 38; entry `corpus/knowledge/csaf-vex-product-status-and-justifications.md` (source S055)

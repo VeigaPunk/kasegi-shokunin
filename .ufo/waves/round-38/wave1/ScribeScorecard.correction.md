@@ -1,0 +1,1 @@
+Correction (round 38): the round-37 section's `Final lane commit: f3246559…` line names a wave-evidence anchor ancestor, not a final head; read it as `Anchor ancestor (r37 wave evidence): f3246559bed2fd085dde860e00247ce394f02bad`; the round-37 judged head is 2387dcf6ccfefcfb703783387b9aade8fc82abfa and its tip 83975acc83df4bd8d5eaf463182ae615f2b64546 (verifier §5 D-D).
