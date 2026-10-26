@@ -1,0 +1,18 @@
+# ScoutInstrumentState — receipt (round 39, wave 2, falsify; scout, attack posture)
+
+Deliverable: `.ufo/waves/round-39/wave2/ScoutInstrumentState.state.md` (full inventory, 40+ command results with exit codes, defect list). I authored none of the work under test.
+Heads: HEAD = Y `5006097a84305267c9a3e8c1e1d560e60fe41d37`; J `46c66c268502abd1b2c342fc71bf88ccf721845b`; `git diff --name-only J Y` = the all-gates receipt only. Measured 2026-10-26 ~20:15-20:19Z. No tool installs, no network fetches. No lane file edited, no mutating git on the lane (git mutations only inside scratch fixtures `lane-clone`/`lane-J`, toplevel asserted; scratch removed at exit).
+
+## Verdict
+- **No instrument fails on the landed tree** when run in a quiescent environment (clean clone at HEAD=Y, empty scratch root). Every gate/probe exits 0: capture-binding (`records=46 bound=46 unbound=0`, selftest 23/0), frontier harness (`entries=25 pass=25 exit=0`, F22 PASS, selftest 6/0), recheck-audit (`pass=51/51`, `expected=51 missing=0 unexpected=0`), source-recheck (all 15 manifests rc 0 incl. S057 Q1–Q4), anchorcheck selftest 12/0, limb-mutation-check (`limbs=13 killed=13 survivors=0 controls=3 rejected=3`, selftest 20/0), kill-rule-check (`mutants=3 killed=3 survivors=0`, `gates=7 failed=0`), mirror-containment 24/24, resolve-dispatch 8/8, test_resolve OK, r-defect 9/9, r35 7/7, r36 9/9, r37 14/14, sources-census exit 0 (only the two pre-existing W04, identical to `census-before.txt`).
+- **C1 holds as frozen (with E4):** r39 `--export-ref Y` → `closed=8/8 exit=0`; `--selftest --export-ref Y` → `selftest cases=8 failures=0` with 8 graded lines (`mutants=4/4,8/8,2/2,6/6,4/4,4/4,3/3,3/3`); at J (HEAD=J fixture) `closed=7/8` with G2 `receipt=0` exactly as E4; base and r38-head exports `closed=2/8 exit=1`; plain run exit 2.
+- **C2 holds (E1 value 59):** frontier 22, registry 59 (base 55), `source: S057` files 1, knowledge 51; five one-limb mutations (drop header, alter row URL, flip row to rejected, delete entry, corrupt capture) each turn the matching counter red; junk-f22 control replayed → 4× `MISMATCH reason=quote-not-found`, rc 1.
+
+## Defects found
+1. **D1 reproduction hazard (C1 counting command).** `--export-ref Y` is 8/8 only if lane HEAD == Y, porcelain clean, and scratch quiescent (G8 runs the pinned r37 suite, whose E9 reads live status/HEAD/scratch; documented at `r39-closure.sh:185`, not in claims/erratum). Live lane now: `closed=6/8` default root, `7/8` with an empty `--scratch-root`; clean clone + one commit past Y: `7/8` (G8 `r37-closed=0`). After the L1 commits wave-2 evidence, the verifier must run in a `--lane` clone checked out at Y, or the filing must state the precondition.
+2. **D2 (minor).** `corpus/lessons/round-39.md:24` bare `S057.txt:12-14` → `anchorcheck` `BASE-ABSENT` exit 1; same class pre-exists in r37/r38 lessons (5/9/2 instances); lane-prefixed path would be IN-RANGE.
+3. **D3 (stale census of record).** `citation-survival.md` last regenerated round-20; `score-gap` reads `134/1480 = 9.05%` lane; fresh `resolve.py` (scratch clone only) = `704/3488 = 20.18%`, SKILL `83/608 = 13.65%`.
+4. **D4 (docs).** r35–r39 closure suites and `r-defect-closure.sh` absent from `corpus/instruments/README.md`; `r39-closure.sh` absent from SKILL.md.
+5. **D5 (cosmetic).** G6 `g6_chain_ok` prints `cd: <file>: Not a directory` for plain files beside the work dir (verdict stays correct/fail-closed).
+
+Not defects: `limb-mutation-check.py` without `--ledger` exits 2 (usage); `recheck-audit.py --expect` takes a path; r38 suite/selftest are round-bound and red at a round-39 head.

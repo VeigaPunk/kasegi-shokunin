@@ -1,0 +1,208 @@
+# MutFrontierRow — F22 frontier-row mutation battery (kasegi round 39, wave 2, falsify)
+
+Seat: MutFrontierRow (attack seat, leaf). Date: 2026-10-26.
+Lane (read-only to this seat): /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Mirror: `git -C <lane> archive HEAD | tar -x` at lane HEAD 5006097a84305267c9a3e8c1e1d560e60fe41d37,
+built in scratch /fast/scratch/hyaku/kasegi-r39/MutFrontierRow/mirror (removed at exit; no .git in
+the mirror; every mutation happened there, never in the lane). Live working-tree sha256 of each
+attacked file equals the mirror sha256 (verified: f6d97c29…, 5010a107…, 11c8d6d6…), so the battery
+attacked the landed bytes at HEAD.
+Detector (the C2 harness, run once per mutation):
+  python3 <mirror>/corpus/instruments/frontier-recheck-count.py --root <mirror> --json <out>/<tag>.json
+Frozen target: claims.json C2 counting command
+  "python3 corpus/instruments/frontier-recheck-count.py -> entries=25 pass=25 exit=0"
+Verdict keys: RED = harness exit != 0 (mutant killed). SURVIVOR = exit 0;
+count-drift = summary entries/pass != frozen 25/25.
+
+== Controls ==
+
+C0 baseline (pristine mirror, no mutation)
+  PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0
+  entries=25 pass=25 exit=0
+  -> GREEN; reproduces the frozen counting command on the mirror.
+  CAVEAT (proved by C-ESC below): the executed recheck escapes --root via the line's own
+  `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin &&` prefix, so this PASS measures the live
+  lane's captures, not the mirror's.
+
+Live-lane do-nothing control (frozen command exactly as written, no --root)
+  command: python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/frontier-recheck-count.py
+  output:  PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0
+           entries=25 pass=25 exit=0   (process exit=0)
+  -> the frozen counting command holds at the live tree.
+
+C-ESC escape control (mirror capture corrupted, recheck line UNCHANGED)
+  mutation: last byte of mirror corpus/source-snapshots/round-39/S057.txt flipped (XOR 0x01)
+  output:  PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0
+           entries=25 pass=25 exit=0
+  -> SURVIVOR. The harness prints PASS with a corrupted mirror capture: rule D ("only then is
+     the line executed, from the lane root") is defeated by the recheck line's own absolute `cd` —
+     the exit-code limb is bound to the hardcoded lane root, not to --root. Limbs A/B (source ids,
+     manifest) stay bound to --root; limb D does not.
+  restoration: sha256(S057.txt) == 11c8d6d6… (pristine) OK
+
+C-DIGEST direct control (same corruption, root-bound execution — not the harness)
+  command: cd <mirror> && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S057
+  output:  S057:sha256 MISMATCH expected=11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f actual=b8f1bdb386d48261d892d305a702f4fc33b6f2cdf02e3827bd2a2d21de8c686a
+  exit=1
+  -> the corruption is real and detectable when execution is root-bound; C-ESC vs C-DIGEST
+     isolates the cd prefix as the escape mechanism.
+  restoration: sha256(S057.txt) == 11c8d6d6… (pristine) OK
+
+== Row mutations (corpus/README.md, F22 row, line 506) ==
+
+Row before (6 cells; table header is `| id | topic | status | entry | sources | next |`):
+  | F22 | VEX issuance, lifecycle and inheritance guidance (CISA When to Issue VEX Information) | admitted | knowledge/cisa-when-to-issue-vex.md | S057 | Keep the issuance layer distinct from the CSAF VEX document-content standard; a status update or reaffirmation is a new VEX statement, not a rewrite; upstream not_affected inheritance is conditional. |
+
+M1 drop-entry-path — cell 4 emptied
+  after:  | F22 | … | admitted |  | S057 | … |
+  output: (no F22 record line — FRONTIER_ROW regex requires >=1 char in cell 4, row unread)
+          entries=24 pass=24 exit=0
+  verdict: SURVIVOR (exit 0). Silent row-drop; the frozen count entries=25 drifts to 24, so the
+           frozen counting command catches it — but the exit code does not. A receipt that quotes
+           only "exit=0" certifies a frontier missing its row.
+
+M2 sources-cell-S055 — cell 5 S057 -> S055
+  after:  | F22 | … | admitted | knowledge/cisa-when-to-issue-vex.md | S055 | … |
+  output: PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0
+          entries=25 pass=25 exit=0
+  verdict: SURVIVOR, undetected by any counter. The harness parses only cells 1-4 (id, topic,
+           status, entry); cell 5 (sources) is never read, and no other committed instrument reads
+           the Frontier table (grep over corpus/instruments and scripts: only
+           frontier-recheck-count.py's read_frontier touches it). The entry<->source binding lives
+           solely in the entry's own `source:` line, so the row can name any source id — including
+           one that belongs to another entry (S055 is F21's source) — and every instrument stays
+           green. Pinned only by the E5.9 prose predicate ("the F22 frontier row names entry … and
+           sources S057"), which no instrument enforces.
+
+M3 status-queued — cell 3 admitted -> queued
+  after:  | F22 | … | queued | knowledge/cisa-when-to-issue-vex.md | S057 | … |
+  output: (no F22 record line — the admitted filter drops the row)
+          entries=24 pass=24 exit=0
+  verdict: SURVIVOR (exit 0). Same silent row-drop shape as M1; frozen count drifts 25->24.
+           `grep -cE '^\| F[0-9]+ \|'` still returns 22, so the frontier-count counter does NOT
+           catch it — only the harness count does.
+
+M4a 7 cells — pipe inserted inside the topic cell (cells shift)
+  after:  | F22 | VEX issuance, lifecycle and inheritance guidance | (CISA When to Issue VEX Information) | admitted | knowledge/… | S057 | … |
+  output: (no F22 record line — the parsed status cell becomes the topic tail, not "admitted")
+          entries=24 pass=24 exit=0
+  verdict: SURVIVOR (exit 0; count drift 25->24).
+
+M4b 7 cells — extra cell appended after the note (cells 1-4 intact)
+  after:  | F22 | … | … | upstream not_affected inheritance is conditional. | extra-cell |
+  output: PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0
+          entries=25 pass=25 exit=0
+  verdict: SURVIVOR, undetected by anything. The regex is prefix-shaped: it stops after cell 4 and
+           never validates the row's width against the 6-column header. A malformed 7-cell row in a
+           6-column table passes every instrument and every frozen counter.
+
+M4c 7 cells — pipe inserted inside the entry path (status cell intact)
+  after:  | F22 | … | admitted | knowledge/cisa-when-to-issue-vex | .md | S057 | … |
+  output: FAIL     F22  knowledge/cisa-when-to-issue-vex                     ids=-              exit=-    problems=missing-entry
+          entries=25 pass=24 exit=1
+  verdict: RED — killed (rule E fires: named-row missing-entry, fail-closed).
+
+== Recheck-line mutations (corpus/knowledge/cisa-when-to-issue-vex.md, line 6) ==
+
+Line before:
+  recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S057   # prints S057:sha256 OK then one S057:Q<n> OK line per pinned quote … not a fresh network check
+  (comment tail unchanged by every mutation below)
+
+M5 recheck-drop-cd — cd prefix dropped
+  after:  recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S057   # …
+  output: PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0
+          entries=25 pass=25 exit=0
+  verdict: GREEN (diagnostic; see F-C). Execution is now bound to --root (proved by M5b): the
+           mirror's own source-recheck.py ran against the mirror's capture and manifest and exited
+           0 — which also confirms the HEAD mirror is complete for source-recheck. Two readings:
+           (a) the cd prefix is unnecessary for the harness path — the lane-relative line is the
+           root-bound form the harness contract (rule D) actually wants; (b) with the cd prefix
+           present, the harness certifies an execution it does not confine (C-ESC).
+
+M5b recheck-drop-cd + corrupted mirror capture
+  after:  M5's line, plus mirror S057.txt last byte flipped
+  output: FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=1    problems=recheck-exit-1
+          entries=25 pass=24 exit=1
+  verdict: RED — killed. The same corruption that C-ESC survives turns red once the cd prefix is
+           gone: the cd prefix is exactly what defeats --root binding of the exit-code limb.
+  restoration: sha256(ENTRY) and sha256(S057.txt) both == pristine OK
+
+M6 recheck-missing-manifest — --manifest points at a missing file
+  after:  … --manifest corpus/source-snapshots/round-39/manifest-MISSING.json --source S057 …
+  output: FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=-    problems=manifest-unreadable
+          entries=25 pass=24 exit=1
+  verdict: RED — killed (rule B fails closed before execution; exit "-" = line not run).
+
+== Summary ==
+
+tag                              target      mutation                              verdict
+C0-baseline                      mirror      none (pristine)                       GREEN (25/25, exit 0)
+live-lane control                live lane   none (frozen command as written)      GREEN (25/25, exit 0)
+C-ESC-corrupt-capture-cd-intact  mirror      capture byte flipped, cd intact       SURVIVOR (exit 0) — rule-D escape
+C-DIGEST (direct recheck)        mirror      same corruption, root-bound run       RED (exit 1, sha256 MISMATCH)
+M1-drop-entry-path               README row  cell 4 emptied                        SURVIVOR (exit 0; count 25->24)
+M2-sources-cell-S055             README row  cell 5 S057 -> S055                   SURVIVOR (exit 0; count 25/25) — uninstrumented cell
+M3-status-queued                 README row  cell 3 -> queued                      SURVIVOR (exit 0; count 25->24)
+M4a-7cells-mid-topic-pipe        README row  7 cells, cells shift                  SURVIVOR (exit 0; count 25->24)
+M4b-7cells-trailing-cell         README row  7 cells, cells 1-4 intact             SURVIVOR (exit 0; count 25/25) — fully invisible
+M4c-7cells-entry-split           README row  7 cells, entry path split             RED (exit 1, missing-entry)
+M5-recheck-drop-cd               entry L6    cd prefix dropped                     GREEN (exit 0; execution becomes --root-bound)
+M5b-drop-cd-corrupt-capture      entry L6    cd dropped + capture corrupted        RED (exit 1, recheck-exit-1)
+M6-recheck-missing-manifest      entry L6    manifest -> missing path              RED (exit 1, manifest-unreadable)
+C9-final-pristine                mirror      none (restored)                       GREEN (25/25, exit 0)
+
+Killed: M4c, M5b, M6 (plus C-DIGEST as the direct-execution control). Survived: M1, M2, M3, M4a,
+M4b, C-ESC. Of the survivors, M1/M3/M4a are caught by the frozen counting command's count
+(entries=25 drifts to 24) but not by its exit code; M2 and M4b are caught by nothing instrumented
+at all.
+
+== Findings ==
+
+F-A (coverage defect, M2): the Frontier row's `sources` cell is parsed by no committed instrument.
+    frontier-recheck-count.py's FRONTIER_ROW regex stops at cell 4; the entry<->source binding is
+    taken solely from the entry's own `source:`/evidence lines. Swapping the row's source to
+    another entry's source (S055, F21's source) leaves every frozen C2 counter at its frozen value
+    (frontier 22, registry 59, harness 25/25, binding 46/46, audit expected=51 — none read this
+    cell). The claim's E5.9 sentence is the only pin on this cell and it is prose, not a counting
+    command. A one-line guard (harness asserts the row's cell-5 ids are a subset of the entry's
+    declared set) would close it.
+
+F-B (row-shape / row-drop blind spot, M1/M3/M4a/M4b): the harness never validates row width
+    against the header and treats a regex-non-matching row as absent rather than as an error. Four
+    of six row mutations survive with exit 0; two of them (M1, M3) also keep the frozen frontier
+    grep count at 22. A dropped or malformed admitted row shrinks the measured surface silently;
+    only the entries=25 count notices, and only when the drift crosses the frozen number.
+
+F-C (rule-D escape, C-ESC vs M5b/C-DIGEST): evaluate() executes the recheck line with cwd=root,
+    but the line's own leading `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin &&` overrides it,
+    so the exit-code limb is bound to a hardcoded absolute path, not to --root. With the cd intact
+    the harness prints PASS for a mirror whose capture is corrupted (C-ESC); with the cd dropped
+    the same corruption is red (M5b). At the live lane the cd target equals root, so the frozen
+    counting command is unaffected today — but any run at a different --root (export, mirror,
+    relocated checkout) certifies the hardcoded tree, not the one under test. The root-bound
+    (cd-less) form of the line also passes (M5), so the prefix is load-bearing for nothing the
+    harness checks.
+
+F-D (what holds): the fail-closed limbs work as documented where they bind — missing-entry (M4c),
+    manifest-unreadable (M6), and the executed recheck's own digest check (M5b, C-DIGEST) all fire
+    red with named-row problems, and the pristine baseline and final restored run both print the
+    frozen entries=25 pass=25 exit=0.
+
+Claim impact: C2's harness limb is real but narrower than its receipt line. The row-level binding
+(sources cell, row shape, row presence) is enforced only by the frozen entries=25 count (M1/M3/M4a
+drift it) and the E5.9 prose predicate (M2); M4b flips nothing at all; and the executed recheck is
+bound to a hardcoded path rather than to the harness root (C-ESC). No mutation made a frozen
+counter report a false green count — the survivors survive by leaving the counters untouched.
+
+== Restoration ledger ==
+
+Every mutation was applied to the scratch mirror only and reverted immediately after its run;
+restoration verified by sha256 equality against the pre-battery bytes:
+
+  corpus/README.md                            f6d97c2975945a32d13b259bbc0862372ac0d7e774dd6099f9ef029819a83ee1  pristine == restored (after M1 M2 M3 M4a M4b M4c)
+  corpus/knowledge/cisa-when-to-issue-vex.md  5010a107cc7ef34bcd7e8d1a74eb2a2bb2a71c3ea666577506d7c2f93dc25d29  pristine == restored (after M5 M5b M6)
+  corpus/source-snapshots/round-39/S057.txt   11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f  pristine == restored (after C-ESC M5b C-DIGEST; equals the digest declared in the entry header and manifest)
+
+Final pristine re-run C9: entries=25 pass=25 exit=0. The lane tree was never written (git archive
+and rev-parse only; all writes under /fast/scratch/hyaku/kasegi-r39/MutFrontierRow, removed at
+exit).

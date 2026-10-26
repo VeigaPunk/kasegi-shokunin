@@ -1715,3 +1715,4 @@ Claims frozen in `.ufo/waves/round-38/claims.json` before dispatch (base `a173b0
 - Assimilation: none adopted; id-collision rerun 24->25 collisions; quarantine slice 7 rows verdicted (2 quote-defective, 4 unreachable, 1 unverifiable).
 - considerthese: proposal 1 mined into SCORECARD §Saturation (distance-to-next-score criteria); ledger round-39 dispositions filled.
 - Wave shape: w1 49 seats + w2 37 seats = 86.
+Correction (round 39): the LOG.md round-38 correction block above was formatted as a Markdown list item and therefore did not satisfy the frozen line-anchored check `grep -c '^Correction (round 39)' LOG.md` (observed 0). This standalone append records the same round-38 run truth: the J run is 7/8 (G2 red), and the 8/8 run belongs to `run-ref=7dd2fcd67aa8d3f67616e9fa79049c7c33c3ea8e`, not J. The earlier line remains unchanged.

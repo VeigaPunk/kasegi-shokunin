@@ -1,0 +1,563 @@
+kasegi-shokunin round-39 wave-2 (falsify) — seat MutSuiteLimbs
+Item: mutate the landed corpus/instruments/r39-closure.sh one limb at a time in a
+      sandbox clone; run --selftest --export-ref <Y>; record caught vs survived;
+      cover every G1-G8 conjunct at least once. Survivors are coverage findings.
+Date: 2026-10-26. Lane read-only; read-only git only; no mutating git anywhere.
+
+Target bytes: lane tip Y = 5006097a84305267c9a3e8c1e1d560e60fe41d37,
+corpus/instruments/r39-closure.sh sha256
+2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b
+(= the committed receipt's suite-sha256; J = 46c66c268502abd1b2c342fc71bf88ccf721845b;
+git diff --name-only J Y = the receipt only, so Y = J + receipt per erratum E4).
+
+DETECTOR (identical for pristine / every mutant / restored bytes):
+  bash <suite-copy> --selftest --export-ref 5006097a84305267c9a3e8c1e1d560e60fe41d37 \
+       --lane $S/lanesnap --work $S/work-<id> --scratch-root $S/sroot
+  --lane: clean clone of the lane at Y (the real worktree holds untracked wave-2 files;
+    the pinned r37 suite's live E9 limb reds G8 on any run against it — measured, see
+    receipt §baseline). Plain local clone (hardlinked objects; every git call read-only).
+  --scratch-root: private empty dir, because the default /fast/scratch/hyaku/kasegi-r39
+    holds sibling seat dirs and G6 reds on them fail-closed (measured).
+  Both overrides print deviation= lines in every capture; the suite documents them.
+
+PRISTINE BASELINE (stabilized): selftest cases=8 failures=0, exit=0, 34/34 mutant
+fixtures rejected=1, all six forgeries rejected, judge accepted. Repeat run byte-identical
+after path normalization (determinism delta = 0 lines).
+PRISTINE BASELINE (literal command, default lane+scratch): failures=2 — G6 r39=present
+(sibling scratch) and G8 r37-closed=0 (dirty worktree): environmental, not suite defects.
+
+LITERAL vs DIFFERENTIAL detector (E5 non-vacuous semantics): the receipt's
+suite-sha256 binds the EXECUTING bytes, so ANY byte mutation trips G2's positive limb on
+the stale real receipt (measured control M0: failures=1, digest-match=0, all fixtures
+still rejected). That catch is independent of the mutated limb and evaporates once the
+attacker re-runs the suite and commits a fresh receipt (the normal workflow). The
+authoritative detector is therefore DIFFERENTIAL at fixed ref Y: a mutant is KILLED iff
+the verdict layer reacts (a fixture flips to rejected=0, a positive/control flips to fail,
+a judge forgery flips, or failures>1); a mutant whose only delta is the M0 tripwire
+signature (or payload values inside still-passing lines) SURVIVES — its limb is pinned by
+no fixture, so a defective suite committed with its own fresh receipt self-certifies.
+
+Result: 95 runs = 1 control + 94 limb mutants; 34 KILLED, 60 SURVIVED
+(34 live holes, 21 dead/redundant conjuncts, 2 masked single routes of a doubly-enforced
+limb, 1 reporting-only, 1 weakened-parser-outcome-preserved, 1 unreachable fail-open).
+
+LEGEND: L<n> = pristine line number; 'conjunct dropped' = the [ ... ] test removed from
+that check's final predicate (with one adjacent &&, so the list stays well-formed).
+
+======================================================================================================================
+MUTATION TABLE (one mutation per run; per row: literal failures, verdict class, exact mutation, finding, evidence)
+======================================================================================================================
+id         chk lit.fail verdict              limb / mutation / finding
+----------------------------------------------------------------------------------------------------------------------
+M-G1-01    G1  1        SURVIVED-TRIPWIRE    fence-type: tilde opener recognition deleted
+                                               mut: L375 deleted
+                                               ->  LIVE-HOLE: tilde fences become invisible; a correction inside a proper tilde fence counts as outside (the tilde fixture still reds, but via the accidental ``` opener, so the limb is unpinned)
+
+M-G1-02    G1  1        SURVIVED-TRIPWIRE    whole-tail: tail sha256 equality dropped
+                                               mut: L614 deleted
+                                               ->  LIVE-HOLE: a declaration with a wrong sha but the right line count validates; no fixture supplies one
+
+M-G1-03    G1  3        KILLED               whole-tail: numstat added==lines dropped
+                                               mut: L624 deleted
+                                               ->  KILLED-BY-FIXTURE: the declared-short-of-added fixture greens (valid=0 needle lost), G1 case verdict=fail
+                                               ev:  selftest case=G1 positive=pass mutants=3/4 verdict=fail | selftest case=G1 positive=pass mutants=4/4 verdict=pass
+
+M-G1-04    G1  1        SURVIVED-TRIPWIRE    predicate: pure-append (deleted==0) conjunct dropped
+                                               mut: L667: '[ "$pure" -eq 1 ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: del!=0 always skips valid++ so valid<declared already reds; pure==1 is implied
+
+M-G1-05    G1  1        SURVIVED-TRIPWIRE    predicate: front-doors==2 conjunct dropped
+                                               mut: L667: '[ "$doors" -eq 2 ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: a tree declaring only one front door greens; no single-door fixture
+
+M-G1-06    G1  1        SURVIVED-TRIPWIRE    readme inside-fence correction no longer reds (cor_decl)
+                                               mut: L654: 'cor_decl=0' -> ':'
+                                               ->  MASKED single route: the predicate rin conjunct (L668) is the second enforcement; compound M-G1-06c is killed, so the fixture does pin the contract limb
+
+M-G1-06a   G1  1        SURVIVED-TRIPWIRE    province inside-fence correction no longer reds (cor_decl)
+                                               mut: L640: 'cor_decl=0' -> ':'
+                                               ->  MASKED single route: the predicate pin conjunct is the second enforcement
+
+M-G1-07    G1  1        SURVIVED-TRIPWIRE    readme counted-correction tail-position check neutralized
+                                               mut: L657: '[ "$c" -gt $((rtotal - decl_r)) ] || cor_decl=0' -> ':'
+                                               ->  LIVE-HOLE: no fixture places a counted correction OUTSIDE the declared tail; the tail-position limb is unpinned
+
+M-G1-07a   G1  1        SURVIVED-TRIPWIRE    province counted-correction tail-position check neutralized
+                                               mut: L644: '[ "$c" -gt $((ptotal - decl_p)) ] || cor_decl=0' -> ':'
+                                               ->  LIVE-HOLE: same, province side
+
+M-G1-08    G1  3        KILLED               declaration path-safety guard disabled
+                                               mut: L611: 'if ! g1_path_safe "$path"; then paths=0; continue; fi' -> ':'
+                                               ->  KILLED-BY-FIXTURE: the declaration-path-escape fixture no longer prints paths=0, so its limb-named rejection is lost (rejected=0)
+                                               ev:  fatal: ../outside-fixture.md: '../outside-fixture.md' is outside repository at 'WORK/mut/hrepo' | selftest case=G1 positive=pass mutants=3/4 verdict=fail
+
+M-G1-09    G1  1        SURVIVED-TRIPWIRE    predicate: declared>=2 conjunct dropped
+                                               mut: L666: '[ "$declared" -ge 2 ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: doors==2 requires two valid declarations, so declared>=2 is implied
+
+M-G1-10    G1  1        SURVIVED-TRIPWIRE    numstat read failure fails open (ERR -> 0 0)
+                                               mut: L396: "printf 'ERR'" -> "printf '0 0'"
+                                               ->  REPORTING-ONLY: outcome preserved (a failed numstat read still reds via valid<declared) but the payload misreports diff-read=ok
+
+M-G1-11    G1  1        SURVIVED-TRIPWIRE    predicate: valid==declared conjunct dropped
+                                               mut: L666: ' && [ "$valid" -eq "$declared" ] \\' -> ' \\'
+                                               ->  LIVE-HOLE: an extra INVALID declaration (e.g. a third path with a wrong sha) greens; every fixture declares exactly the two doors
+
+M-G1-13    G1  3        KILLED               fence-type: backtick closer closes a tilde fence (ftype ignored)
+                                               mut: L378: 'if (ftype == "`" && s ~ /^ {0,3}```[ \\t]*$/) open = 0' -> 'if (s ~ /^ {0,3}```[ \\t]*$/) open = 0'
+                                               ->  KILLED-BY-FIXTURE: the tilde fixture's ``` line now closes its tilde fence, readme-fence=closed, fixture greens (rejected=0)
+                                               ev:  selftest case=G1 positive=pass mutants=3/4 verdict=fail | selftest case=G1 positive=pass mutants=4/4 verdict=pass
+
+M-G1-14    G1  1        SURVIVED-TRIPWIRE    fence opener: leading-blank allowance removed ({0,3} -> none)
+                                               mut: L374: 'if (s ~ /^ {0,3}```/) { open = 1; ftype = "`" }' -> 'if (s ~ /^```/) { open = 1; ftype = "`" }'; L375: 'else if (s ~ /^ {0,3}~~~/) { open = 1; ftype = "~" }' -> 'else if (s ~ /^~~~/) { open = 1; ftype = "~" }'
+                                               ->  LIVE-HOLE: an indented fence opener (1-3 blanks) is no longer recognized, so a correction inside an indented fence counts as outside and can green the inside-fence defect
+
+M-G1-16    G1  1        SURVIVED-TRIPWIRE    predicate: province-fence closed conjunct dropped
+                                               mut: L668: '[ "$pf" = closed ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: an open PROVINCE fence greens; the only fence fixture reds README (tilde), so the province-fence limb is unpinned
+
+M-G1-17    G1  3        KILLED               predicate: readme-fence closed conjunct dropped
+                                               mut: L668: '[ "$rf" = closed ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the tilde fixture greens (readme-fence=open no longer reds), rejected=0
+                                               ev:  selftest case=G1 positive=pass mutants=3/4 verdict=fail | selftest case=G1 positive=pass mutants=4/4 verdict=pass
+
+M-G1-18    G1  1        SURVIVED-TRIPWIRE    predicate: province corrections-inside==0 conjunct dropped
+                                               mut: L668: '[ "$pin" -eq 0 ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: pin!=0 sets cor_decl=0 at L640, which reds
+
+M-G1-19    G1  1        SURVIVED-TRIPWIRE    predicate: readme corrections-inside==0 conjunct dropped
+                                               mut: L668: ' && [ "$rin" -eq 0 ] \\' -> ' \\'
+                                               ->  DEAD conjunct: rin!=0 sets cor_decl=0 at L654, which reds
+
+M-G1-20    G1  1        SURVIVED-TRIPWIRE    predicate: corrections-declared==1 conjunct dropped
+                                               mut: L669: '[ "$cor_decl" -eq 1 ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: the pin/rin predicate conjuncts red the same fixtures
+
+M-G1-21    G1  1        SURVIVED-TRIPWIRE    predicate: diff-read ok conjunct dropped
+                                               mut: L666: '[ "$diffread" = ok ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: a missing blocks file gives declared=0; a failed numstat skips the declaration so valid<declared
+
+M-G1-22    G1  1        SURVIVED-TRIPWIRE    predicate: paths==1 conjunct dropped
+                                               mut: L667: ' && [ "$paths" -eq 1 ] \\' -> ' \\'
+                                               ->  DEAD conjunct: an unsafe path is skipped before valid++, so valid<declared reds
+
+M-G1-23    G1  1        SURVIVED-TRIPWIRE    readme counted-correction-with-no-declaration branch neutralized
+                                               mut: L660: 'cor_decl=0' -> ':'
+                                               ->  DEAD conjunct: decl_r<1 leaves have_r=0 so doors<2 reds
+
+M-G1-06c   G1  3        KILLED               COMPOUND readme inside-fence limb: assignment L654 + predicate rin conjunct both dropped
+                                               mut: L654: 'cor_decl=0' -> ':'; L668: ' && [ "$rin" -eq 0 ]' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: with both readme routes down the correction-inside-fence fixture greens (rejected=0, rc=0) — the fixture pins the contract limb
+                                               ev:  selftest case=G1 positive=pass mutants=3/4 verdict=fail | selftest case=G1 positive=pass mutants=4/4 verdict=pass
+
+M-G1-06d   G1  1        SURVIVED-TRIPWIRE    COMPOUND province inside-fence limb: assignment L640 + predicate pin conjunct both dropped
+                                               mut: L640: 'cor_decl=0' -> ':'; L668: ' && [ "$pin" -eq 0 ]' -> '<removed>'
+                                               ->  LIVE-HOLE (compound, both province routes dropped): no fixture puts a fenced correction in PROVINCE.md, so a province inside-fence correction greens
+
+M-G2-01    G2  1        SURVIVED-TRIPWIRE    graded parser: positive=pass field requirement dropped
+                                               mut: L434: 'field($0, "positive=pass") && ' -> '<removed>'
+                                               ->  LIVE-HOLE: a case line with verdict=pass but positive=fail counts as graded; no fixture carries that shape
+
+M-G2-02    G2  1        SURVIVED-TRIPWIRE    graded parser: case-id regex G[1-8] widened to G[0-9]
+                                               mut: L434: 'G[1-8]( |$)' -> 'G[0-9]( |$)'
+                                               ->  LIVE-HOLE: case ids outside G1..G8 (G0/G9) count as graded; no fixture
+
+M-G2-03    G2  1        SURVIVED-TRIPWIRE    graded: distinct-ids==8 conjunct dropped
+                                               mut: L716: '[ "$dist" -eq 8 ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: duplicate graded case ids pass; no fixture
+
+M-G2-04    G2  1        SURVIVED-TRIPWIRE    run-shapes: zero closed=0-lines conjunct dropped
+                                               mut: L713: '[ "$c0" -eq 0 ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: a closed=0 line in the receipt passes; no fixture
+
+M-G2-05    G2  2        KILLED               predicate: sentinel==1 conjunct dropped
+                                               mut: L742: '[ "$sentinel" -eq 1 ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the sentinel-v2 fixture greens (sentinel=0 no longer reds), rejected=0
+                                               ev:  selftest case=G2 positive=fail mutants=7/8 verdict=fail | selftest cases=8 failures=2
+
+M-G2-06    G2  1        SURVIVED-TRIPWIRE    predicate: selftest-summary==1 conjunct dropped
+                                               mut: L745: '[ "$summary" -eq 1 ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: a receipt with eight graded cases but NO summary line passes; every fixture writes the summary
+
+M-G2-07    G2  1        SURVIVED-TRIPWIRE    predicate: export-copy digest conjunct dropped
+                                               mut: L744: '[ "$export_suite" -eq 1 ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: the export's own suite copy digest goes unchecked; the digest-mismatch fixture stays red via the executing-bytes limb, so the conjunct is unpinned
+
+M-G2-08    G2  1        SURVIVED-TRIPWIRE    predicate: scorecard-ref conjunct dropped
+                                               mut: L745: ' && [ "$scref" -eq 1 ] \\' -> ' \\'
+                                               ->  LIVE-HOLE: the SCORECARD judged-head phrase goes unchecked; no fixture removes it
+
+M-G2-09    G2  1        SURVIVED-TRIPWIRE    predicate: shonen-ref conjunct dropped
+                                               mut: L746: '[ "$shonenref" -eq 1 ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: the SHONEN judged-head phrase goes unchecked; no fixture removes it
+
+M-G2-10    G2  1        SURVIVED-TRIPWIRE    predicate: receipt-exists conjunct dropped
+                                               mut: L742: '[ "$file" -eq 1 ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: a missing receipt leaves xref empty so ancestor=0 reds
+
+M-G2-11    G2  1        SURVIVED-TRIPWIRE    predicate: diff-read ok conjunct dropped
+                                               mut: L743: '[ "$diffread" = ok ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: a failed diff leaves diffclean=0 which reds
+
+M-G2-12    G2  1        SURVIVED-TRIPWIRE    predicate: exactly-one closed=8/8-line conjunct dropped
+                                               mut: L744: ' && [ "$closed_ok" -eq 1 ] \\' -> ' \\'
+                                               ->  LIVE-HOLE: eight G-lines with no closed=8/8 line pass; no fixture
+
+M-G2-13    G2  1        SURVIVED-TRIPWIRE    run-shapes: eight closed=1-lines conjunct dropped
+                                               mut: L713: '[ "$c1" -eq 8 ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: nine G-lines with eight distinct ids pass (c1==8 unpinned)
+
+M-G2-14    G2  1        SURVIVED-TRIPWIRE    run-shapes: distinct-ids==8 (run block) conjunct dropped
+                                               mut: L713: '[ "$ids" -eq 8 ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: eight G-lines with a duplicate id pass (ids==8 unpinned)
+
+M-G2-15    G2  0        SURVIVED-PAYLOAD     predicate: executing-bytes digest conjunct dropped (tripwire off)
+                                               mut: L743: ' && [ "$digest" -eq 1 ] \\' -> ' \\'
+                                               ->  LIVE-HOLE, STRONGEST: with the executing-bytes digest conjunct dropped the selftest prints cases=8 failures=0 and exits 0 — the tamper-evidence limb is unpinned (the digest-mismatch fixture stays red only via the export-copy limb)
+
+M-G2-16    G2  2        KILLED               predicate: ancestor conjunct dropped
+                                               mut: L742: ' && [ "$ancestor" -eq 1 ] \\' -> ' \\'
+                                               ->  KILLED-BY-FIXTURE: the export-ref-not-ancestor fixture greens (ancestor=0 no longer reds), rejected=0
+                                               ev:  selftest case=G2 positive=fail mutants=7/8 verdict=fail | selftest cases=8 failures=2
+
+M-G2-17    G2  2        KILLED               predicate: post-receipt diff-clean conjunct dropped
+                                               mut: L743: '[ "$diffclean" -eq 1 ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the post-receipt-diff-extra fixture greens (diff-clean=0 no longer reds), rejected=0
+                                               ev:  selftest case=G2 positive=fail mutants=7/8 verdict=fail | selftest cases=8 failures=2
+
+M-G2-18    G2  1        SURVIVED-TRIPWIRE    graded: total==8 conjunct dropped
+                                               mut: L716: '[ "$total" -eq 8 ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: graded==8 && ungraded==0 imply total==8
+
+M-G2-19    G2  1        SURVIVED-TRIPWIRE    graded: ungraded==0 conjunct dropped
+                                               mut: L716: '[ "$ungr" -eq 0 ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: a ninth ungraded case line passes; no fixture
+
+M-G2-20    G2  1        KILLED               judged-head phrase constant mutated (positive-only)
+                                               mut: L679: 'judged head: export-ref' -> 'judged headX: export-ref'
+                                               ->  KILLED-BY-POSITIVE: the real receipt's SCORECARD/SHONEN no longer carry the mutated phrase, scref=0/shonenref=0 red the positive
+                                               ev:  selftest detail=G2 positive=fail rc=1 payload=receipt=1,sentinel=1,export-ref=1,ancestor=1,diff-clean=1,diff-read=ok,digest-match=0,export-suite=1,run
+
+M-G2-21    G2  1        SURVIVED-TRIPWIRE    predicate: export-ref present conjunct dropped
+                                               mut: L742: '[ -n "$xref" ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: an absent export-ref leaves ancestor=0 which reds
+
+M-G2-22    G2  1        SURVIVED-TRIPWIRE    graded: graded==8 conjunct dropped
+                                               mut: L716: '[ "$g" -eq 8 ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: total==8 && ungraded==0 imply graded==8
+
+M-G2-23    G2  2        KILLED               predicate: final-lane-commit==0 conjunct dropped
+                                               mut: L746: '[ "$fin" -eq 0 ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the final-label-in-section fixture greens (final-lane-commit=1 no longer reds), rejected=0
+                                               ev:  selftest case=G2 positive=fail mutants=7/8 verdict=fail | selftest cases=8 failures=2
+
+M-G2-24    G2  1        SURVIVED-TRIPWIRE    export-ref regex {40} widened to {7,40}
+                                               mut: L687: '[0-9a-f]{40}' -> '[0-9a-f]{7,40}'
+                                               ->  LIVE-HOLE (parser strictness): a 7-hex export-ref is accepted; the frozen predicate says 40 hex
+
+M-G2-25    G2  1        SURVIVED-TRIPWIRE    suite-sha256 regex {64} widened to {8,64}
+                                               mut: L689: '[0-9a-f]{64}' -> '[0-9a-f]{8,64}'
+                                               ->  WEAKENED-PARSER, outcome preserved: a short digest line is counted but the equality limbs still fail; only odd-shaped receipts shift
+
+M-G2-26    G2  1        SURVIVED-TRIPWIRE    summary regex loosened (failures count unchecked)
+                                               mut: L717: "'^selftest cases=8 failures=0$'" -> "'^selftest cases=8 '"
+                                               ->  LIVE-HOLE: a receipt line 'selftest cases=8 failures=1' satisfies the summary limb (failures count unchecked)
+
+M-G2-27    G2  1        KILLED               sentinel constant v3 -> v4 (positive-only)
+                                               mut: L686: "'all-gates v3'" -> "'all-gates v4'"
+                                               ->  KILLED-BY-POSITIVE: the real receipt's first line is 'all-gates v3', sentinel=0 reds the positive
+                                               ev:  selftest detail=G2 positive=fail rc=1 payload=receipt=1,sentinel=0,export-ref=1,ancestor=1,diff-clean=1,diff-read=ok,digest-match=0,export-suite=1,run
+
+M-G3-01    G3  4        KILLED               predicate: uncovered==0 conjunct dropped
+                                               mut: L790: '[ "$uncovered" -eq 0 ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: both G3 fixtures (no transcript / wrong location) green, uncovered=1 no longer reds, rejected=0 x2
+                                               ev:  selftest case=G3 positive=pass mutants=0/2 verdict=fail | selftest case=G3 positive=pass mutants=2/2 verdict=pass
+
+M-G3-02    G3  1        SURVIVED-TRIPWIRE    predicate: diff-read ok conjunct dropped (fail-open)
+                                               mut: L790: '[ "$diffread" = ok ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: a failed diff read is no longer fail-closed — added lines go unscanned and uncovered stays 0 (the round-38 G3-M4 class reopens)
+
+M-G3-03    G3  1        SURVIVED-TRIPWIRE    report-only exemption deleted
+                                               mut: L771 deleted; L772 deleted; L773 deleted; L774 deleted; L775 deleted; L776 deleted
+                                               ->  LIVE-HOLE: a quote labeled report-only needs no committed transcript; no fixture exercises the label without a transcript
+
+M-G3-04    G3  3        KILLED               transcript directory widened to .ufo/waves/round-39
+                                               mut: L755: 'local gdir=.ufo/waves/round-39/final-gates' -> 'local gdir=.ufo/waves/round-39'
+                                               ->  KILLED-BY-FIXTURE: the transcript-outside-final-gates fixture greens (the widened dir finds its note), rejected=0
+                                               ev:  selftest case=G3 positive=pass mutants=1/2 verdict=fail | selftest case=G3 positive=pass mutants=2/2 verdict=pass
+
+M-G3-05    G3  1        SURVIVED-TRIPWIRE    ref-token regex {7,40} narrowed to {40,40}
+                                               mut: L463: '[0-9a-f]{7,40}' -> '[0-9a-f]{40,40}'; L464: '[0-9a-f]\\{7,40\\}' -> '[0-9a-f]\\{40,40\\}'
+                                               ->  LIVE-HOLE: a quoted 7-hex ref is invisible to the extractor, so an uncovered quote passes; fixtures use 40-hex refs only
+
+M-G4-01    G4  3        KILLED               seats-ok: distinct-identity conjunct dropped
+                                               mut: L834: ' && [ "$distinct" = 1 ]' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the duplicate-identity fixture greens (seats-ok=1), rejected=0
+                                               ev:  selftest case=G4 positive=pass mutants=5/6 verdict=fail | selftest case=G4 positive=pass mutants=6/6 verdict=pass
+
+M-G4-02    G4  1        SURVIVED-TRIPWIRE    seats-ok: identity-field-present conjunct dropped
+                                               mut: L834: ' && [ "$ident" != none ]' -> '<removed>'
+                                               ->  LIVE-HOLE: results entries lacking every identity field pass when the count matches; no fixture
+
+M-G4-03    G4  3        KILLED               seats-ok: results==tasks conjunct dropped
+                                               mut: L833: ' && [ "$results" -eq "$tasks" ]' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the seat-count-short fixture greens (2==3 no longer checked), rejected=0
+                                               ev:  selftest case=G4 positive=pass mutants=5/6 verdict=fail | selftest case=G4 positive=pass mutants=6/6 verdict=pass
+
+M-G4-04    G4  1        SURVIVED-TRIPWIRE    predicate: zero-task==0 conjunct dropped
+                                               mut: L842: '[ "$zero" -eq 0 ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: seats-ok==dispatches implies no paired zero-task dispatch
+
+M-G4-05    G4  1        SURVIVED-TRIPWIRE    predicate: at-least-one-dispatch conjunct dropped
+                                               mut: L841: '[ "$disp" -ge 1 ] && ' -> '<removed>'
+                                               ->  LIVE-HOLE: a round-39 wave dir with ZERO dispatch files greens (read=ok, 0==0==0); no fixture
+
+M-G4-06    G4  1        SURVIVED-TRIPWIRE    predicate: pairs==dispatches conjunct dropped
+                                               mut: L841: ' && [ "$pairs" -eq "$disp" ] \\' -> ' \\'
+                                               ->  DEAD conjunct: an unpaired dispatch never increments seats-ok, so seats-ok==dispatches implies pairs==dispatches
+
+M-G4-07    G4  1        SURVIVED-TRIPWIRE    predicate: read==ok conjunct dropped
+                                               mut: L841: '[ "$read" = ok ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: a missing wave dir gives dispatches=0 so dispatches>=1 reds
+
+M-G4-08    G4  3        KILLED               dispatch/results wave-match removed
+                                               mut: L824: 'if [ -n "$wave" ] && [ -n "$rwave" ] && [ "$wave" != "$rwave" ]; then continue; fi' -> ':'
+                                               ->  KILLED-BY-FIXTURE: the results-wave-mismatch fixture pairs and greens, rejected=0
+                                               ev:  selftest case=G4 positive=pass mutants=5/6 verdict=fail | selftest case=G4 positive=pass mutants=6/6 verdict=pass
+
+M-G4-09    G4  2        KILLED               identity-field precedence reordered (seat,agent,id,name)
+                                               mut: L501: '("id", "name", "seat", "agent")' -> '("seat", "agent", "id", "name")'
+                                               ->  KILLED-BY-POSITIVE: the real results entries carry name/agent but not seat, so ident falls to agent (a 9-valued role field), distinct=0, positive reds
+                                               ev:  selftest case=G4 positive=fail mutants=6/6 verdict=fail | selftest case=G4 positive=pass mutants=6/6 verdict=pass
+
+M-G4-10    G4  4        KILLED               predicate: seats-ok==dispatches conjunct dropped
+                                               mut: L842: '[ "$seats_ok" -eq "$disp" ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the duplicate and short fixtures green (seats-ok no longer must equal dispatches), rejected=0 x2
+                                               ev:  selftest case=G4 positive=pass mutants=4/6 verdict=fail | selftest case=G4 positive=pass mutants=6/6 verdict=pass
+
+M-G4-11    G4  1        SURVIVED-TRIPWIRE    seats-ok: tasks>=1 guard dropped
+                                               mut: L833: '[ "$tasks" -ge 1 ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: a zero-task pair has no entries so ident=none reds
+
+M-G5-01    G5  3        KILLED               predicate: final-lane-commit==0 conjunct dropped
+                                               mut: L865: '[ "$fin" -eq 0 ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the final-label-in-section fixture greens, rejected=0
+                                               ev:  selftest case=G5 positive=pass mutants=3/4 verdict=fail | selftest case=G5 positive=pass mutants=4/4 verdict=pass
+
+M-G5-02    G5  1        SURVIVED-TRIPWIRE    predicate: correction>=1 conjunct dropped
+                                               mut: L865: '[ "$cor" -ge 1 ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: ro>=1 implies cor>=1 (same line prefix)
+
+M-G5-03    G5  3        KILLED               predicate: correction-labeled>=1 conjunct dropped
+                                               mut: L865: '[ "$ro" -ge 1 ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the correction-unlabeled fixture greens (correction-labeled=0 no longer reds), rejected=0
+                                               ev:  selftest case=G5 positive=pass mutants=3/4 verdict=fail | selftest case=G5 positive=pass mutants=4/4 verdict=pass
+
+M-G5-04    G5  3        KILLED               predicate: round39-section==1 conjunct dropped
+                                               mut: L865: '[ "$sect" -eq 1 ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the round39-section-absent fixture greens, rejected=0
+                                               ev:  selftest case=G5 positive=pass mutants=3/4 verdict=fail | selftest case=G5 positive=pass mutants=4/4 verdict=pass
+
+M-G5-05    G5  2        KILLED               pinned constant f06148c6 -> f06148c7 (positive-only)
+                                               mut: L858: 'f06148c6' -> 'f06148c7'; L860: 'f06148c6' -> 'f06148c7'
+                                               ->  KILLED-BY-POSITIVE: the real SCORECARD correction names f06148c6; with the constant mutated cor=0 reds the positive
+                                               ev:  selftest case=G5 positive=fail mutants=4/4 verdict=fail | selftest case=G5 positive=pass mutants=4/4 verdict=pass
+
+M-G6-01    G6  3        KILLED               predicate: r37 absent conjunct dropped
+                                               mut: L916: '[ "$r37" = absent ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the r37-leftover-file fixture greens (r37=present no longer reds), rejected=0
+                                               ev:  selftest case=G6 positive=pass mutants=3/4 verdict=fail | selftest case=G6 positive=pass mutants=4/4 verdict=pass
+
+M-G6-02    G6  3        KILLED               predicate: r38 absent conjunct dropped
+                                               mut: L916: ' && [ "$r38" = absent ]' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the r38-residual-seat fixture greens, rejected=0
+                                               ev:  selftest case=G6 positive=pass mutants=3/4 verdict=fail | selftest case=G6 positive=pass mutants=4/4 verdict=pass
+
+M-G6-03    G6  3        KILLED               tolerance chain guard g6_chain_ok forced tolerant
+                                               mut: L548: 'next e real n' -> 'next e real n\n  return 0'
+                                               ->  KILLED-BY-FIXTURE: the r39-parent-sibling-leftover fixture is tolerated (chain guard forced), r39 stays empty, rejected=0
+                                               ev:  SUITE: line N: cd: WORK/mut/g6-r39/kasegi-r39/seat/leftover.txt: Not a directory | selftest case=G6 positive=pass mutants=3/4 verdict=fail
+
+M-G6-04    G6  3        KILLED               predicate: r39 absent-or-empty gate forced green
+                                               mut: L917: 'if [ "$r39" = absent ] || [ "$r39" = empty ]; then return 0; fi' -> 'if :; then return 0; fi'
+                                               ->  KILLED-BY-FIXTURE: the r39-parent-sibling-leftover fixture greens (r39=present no longer reds), rejected=0
+                                               ev:  selftest case=G6 positive=pass mutants=3/4 verdict=fail | selftest case=G6 positive=pass mutants=4/4 verdict=pass
+
+M-G6-05    G6  1        SURVIVED-TRIPWIRE    non-directory leftover (file/symlink) reads as absent
+                                               mut: L536 deleted; L537 deleted
+                                               ->  LIVE-HOLE: a leftover FILE or SYMLINK at kasegi-r37/kasegi-r38 now reads 'absent' — quiescence passes over a non-directory leftover; all fixtures use directories
+
+M-G6-06    G6  3        KILLED               unreadable scan reports empty (fail-open)
+                                               mut: L534: "printf 'unreadable'" -> "printf 'empty'"
+                                               ->  KILLED-BY-FIXTURE: the unreadable-root fixture now reads r37=empty, its limb needle r37=unreadable is lost, rejected=0
+                                               ev:  selftest case=G6 positive=pass mutants=3/4 verdict=fail | selftest case=G6 positive=pass mutants=4/4 verdict=pass
+
+M-G6-07    G6  1        SURVIVED-TRIPWIRE    work=unknown fail-closed branch returns 0
+                                               mut: L877: 'return 1' -> 'return 0'
+                                               ->  FAIL-OPEN, unreachable in practice: make_work always sets WORK, so the work=unknown branch cannot fire in a real run; latent only
+
+M-G6-08    G6  1        SURVIVED-TRIPWIRE    predicate: read==ok conjunct dropped
+                                               mut: L916: '[ "$read" = ok ] && ' -> '<removed>'
+                                               ->  DEAD conjunct: read=fail means r37/r38 unreadable, which the absent conjuncts already red
+
+M-G7-01    G7  1        SURVIVED-TRIPWIRE    predicate: rows>=3 conjunct dropped
+                                               mut: L943: ' && [ "$rows" -ge 3 ] \\' -> ' \\'
+                                               ->  LIVE-HOLE: fewer than three proposal rows green (E5 floor for this round is >=2); no fixture
+
+M-G7-02    G7  1        SURVIVED-TRIPWIRE    predicate: proposal-1 present conjunct dropped
+                                               mut: L944: ' && [ "$have1" -eq 1 ]' -> '<removed>'
+                                               ->  LIVE-HOLE: proposal 1 absent greens; no fixture drops row 1
+
+M-G7-03    G7  3        KILLED               predicate: correction>=1 conjunct dropped
+                                               mut: L943: '[ "$cor" -ge 1 ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the correction-absent fixture greens (correction=0 no longer reds), rejected=0
+                                               ev:  selftest case=G7 positive=pass mutants=2/3 verdict=fail | selftest case=G7 positive=pass mutants=3/3 verdict=pass
+
+M-G7-04    G7  3        KILLED               section-order limb b>a weakened to b>0
+                                               mut: L932: '[ "$b" -gt "$a" ]' -> '[ "$b" -gt 0 ]'
+                                               ->  KILLED-BY-FIXTURE: the section-before-round38 fixture greens (b>0 passes with the section first), rejected=0
+                                               ev:  selftest case=G7 positive=pass mutants=2/3 verdict=fail | selftest case=G7 positive=pass mutants=3/3 verdict=pass
+
+M-G7-05    G7  3        KILLED               predicate: proposal-3 present conjunct dropped
+                                               mut: L944: ' && [ "$have3" -eq 1 ]' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the proposal-3-row-absent fixture greens (proposal-3=0 no longer reds), rejected=0
+                                               ev:  selftest case=G7 positive=pass mutants=2/3 verdict=fail | selftest case=G7 positive=pass mutants=3/3 verdict=pass
+
+M-G7-06    G7  1        SURVIVED-TRIPWIRE    g7_rows first-cell regex loosened (1x counts as 1; G7-H1)
+                                               mut: L577: 'if (c ~ /^[0-9]+$/)' -> 'if (c ~ /^[0-9]/)'
+                                               ->  LIVE-HOLE: a first cell like '1x' counts as proposal 1 (round-38 hole G7-H1 reopenable); no fixture
+
+M-G7-07    G7  2        KILLED               round-39 heading constant mutated (positive-only)
+                                               mut: L930: 'appended 2026-10-26' -> 'appended 2026-10-27'
+                                               ->  KILLED-BY-POSITIVE: the real ledger heading carries 'appended 2026-10-26'; with the constant mutated b=0 reds the positive
+                                               ev:  selftest case=G7 positive=fail mutants=3/3 verdict=fail | selftest case=G7 positive=pass mutants=3/3 verdict=pass
+
+M-G8-01    G8  1        SURVIVED-TRIPWIRE    pinned-digest comparison forced to pinned=1
+                                               mut: L959: '[ "$psha" = "$PIN_R37_SHA" ] && pinned=1' -> 'pinned=1'
+                                               ->  LIVE-HOLE: with the pinned-digest comparison forced, a doctored pinfile whose bytes differ from the pin but still run green passes; no fixture doctors the pinfile (fixtures only mutate the export copy)
+
+M-G8-02    G8  4        KILLED               predicate: export-copy digest conjunct dropped
+                                               mut: L972: '[ "$copy_ok" -eq 1 ] && ' -> '<removed>'
+                                               ->  KILLED-BY-FIXTURE: the export-copy-digest-mismatch fixture greens (export-copy=0 no longer reds), rejected=0
+                                               ev:  selftest case=G8 positive=pass mutants=1/3 verdict=fail | selftest case=G8 positive=pass mutants=3/3 verdict=pass
+
+M-G8-03    G8  1        SURVIVED-TRIPWIRE    predicate: closed=14/14 last-line conjunct dropped
+                                               mut: L972: ' && [ "$last" = \'closed=14/14 exit=0\' ] \\' -> ' \\'
+                                               ->  DEAD conjunct: rc==0 plus the pinned r37 bytes' own output contract imply the last line is closed=14/14 exit=0
+
+M-G8-04    G8  1        SURVIVED-TRIPWIRE    predicate: r37-exit==0 conjunct dropped
+                                               mut: L973: ' && [ "$rc" -eq 0 ]' -> '<removed>'
+                                               ->  DEAD conjunct: the last-line match implies the r37 run exited 0 (its tally line is its exit)
+
+M-G8-05    G8  2        KILLED               PIN_REF constant mutated (positive-only)
+                                               mut: L198: 'fc82abfa' -> 'fc82abfb'
+                                               ->  KILLED-BY-POSITIVE: git show of the mutated pin fails, pinned-sha=0, r37-closed=0 red the positive
+                                               ev:  fatal: path 'corpus/instruments/r37-closure.sh' exists on disk, but not in '2387dcf6ccfefcfb703783387b9aade8fc82abfb' | selftest case=G8 positive=fail mutants=3/3 verdict=fail
+
+M-G8-06    G8  2        KILLED               PIN_R37_SHA constant mutated (positive-only)
+                                               mut: L199: '42434d' -> '42434e'
+                                               ->  KILLED-BY-POSITIVE: the real pinned digest no longer equals the mutated constant, pinned=0, no run, positive reds
+                                               ev:  selftest case=G8 positive=fail mutants=3/3 verdict=fail | selftest case=G8 positive=pass mutants=3/3 verdict=pass
+
+======================================================================================================================
+CONTROL M0 (no-op comment byte, L4 'Eight checks'->'Eight checkZ'): failures=1 exit=1;
+G2 positive=fail digest-match=0; all 34 fixtures rejected=1; judge accepted. This is the
+tripwire signature S0 every byte mutation adds; the differential rule subtracts it.
+
+KILLED mutations (34) — the fixture set or the positive pins these limbs:
+  M-G1-03    G1  whole-tail: numstat added==lines dropped
+  M-G1-08    G1  declaration path-safety guard disabled
+  M-G1-13    G1  fence-type: backtick closer closes a tilde fence (ftype ignored)
+  M-G1-17    G1  predicate: readme-fence closed conjunct dropped
+  M-G1-06c   G1  COMPOUND readme inside-fence limb: assignment L654 + predicate rin conjunct both dropped
+  M-G2-05    G2  predicate: sentinel==1 conjunct dropped
+  M-G2-16    G2  predicate: ancestor conjunct dropped
+  M-G2-17    G2  predicate: post-receipt diff-clean conjunct dropped
+  M-G2-20    G2  judged-head phrase constant mutated (positive-only)
+  M-G2-23    G2  predicate: final-lane-commit==0 conjunct dropped
+  M-G2-27    G2  sentinel constant v3 -> v4 (positive-only)
+  M-G3-01    G3  predicate: uncovered==0 conjunct dropped
+  M-G3-04    G3  transcript directory widened to .ufo/waves/round-39
+  M-G4-01    G4  seats-ok: distinct-identity conjunct dropped
+  M-G4-03    G4  seats-ok: results==tasks conjunct dropped
+  M-G4-08    G4  dispatch/results wave-match removed
+  M-G4-09    G4  identity-field precedence reordered (seat,agent,id,name)
+  M-G4-10    G4  predicate: seats-ok==dispatches conjunct dropped
+  M-G5-01    G5  predicate: final-lane-commit==0 conjunct dropped
+  M-G5-03    G5  predicate: correction-labeled>=1 conjunct dropped
+  M-G5-04    G5  predicate: round39-section==1 conjunct dropped
+  M-G5-05    G5  pinned constant f06148c6 -> f06148c7 (positive-only)
+  M-G6-01    G6  predicate: r37 absent conjunct dropped
+  M-G6-02    G6  predicate: r38 absent conjunct dropped
+  M-G6-03    G6  tolerance chain guard g6_chain_ok forced tolerant
+  M-G6-04    G6  predicate: r39 absent-or-empty gate forced green
+  M-G6-06    G6  unreadable scan reports empty (fail-open)
+  M-G7-03    G7  predicate: correction>=1 conjunct dropped
+  M-G7-04    G7  section-order limb b>a weakened to b>0
+  M-G7-05    G7  predicate: proposal-3 present conjunct dropped
+  M-G7-07    G7  round-39 heading constant mutated (positive-only)
+  M-G8-02    G8  predicate: export-copy digest conjunct dropped
+  M-G8-05    G8  PIN_REF constant mutated (positive-only)
+  M-G8-06    G8  PIN_R37_SHA constant mutated (positive-only)
+
+SURVIVED mutations (60) — full list with finding class:
+  M-G1-01    G1  TRIPWIRE     fence-type: tilde opener recognition deleted
+  M-G1-02    G1  TRIPWIRE     whole-tail: tail sha256 equality dropped
+  M-G1-04    G1  TRIPWIRE     predicate: pure-append (deleted==0) conjunct dropped
+  M-G1-05    G1  TRIPWIRE     predicate: front-doors==2 conjunct dropped
+  M-G1-06    G1  TRIPWIRE     readme inside-fence correction no longer reds (cor_decl)
+  M-G1-06a   G1  TRIPWIRE     province inside-fence correction no longer reds (cor_decl)
+  M-G1-07    G1  TRIPWIRE     readme counted-correction tail-position check neutralized
+  M-G1-07a   G1  TRIPWIRE     province counted-correction tail-position check neutralized
+  M-G1-09    G1  TRIPWIRE     predicate: declared>=2 conjunct dropped
+  M-G1-10    G1  TRIPWIRE     numstat read failure fails open (ERR -> 0 0)
+  M-G1-11    G1  TRIPWIRE     predicate: valid==declared conjunct dropped
+  M-G1-14    G1  TRIPWIRE     fence opener: leading-blank allowance removed ({0,3} -> none)
+  M-G1-16    G1  TRIPWIRE     predicate: province-fence closed conjunct dropped
+  M-G1-18    G1  TRIPWIRE     predicate: province corrections-inside==0 conjunct dropped
+  M-G1-19    G1  TRIPWIRE     predicate: readme corrections-inside==0 conjunct dropped
+  M-G1-20    G1  TRIPWIRE     predicate: corrections-declared==1 conjunct dropped
+  M-G1-21    G1  TRIPWIRE     predicate: diff-read ok conjunct dropped
+  M-G1-22    G1  TRIPWIRE     predicate: paths==1 conjunct dropped
+  M-G1-23    G1  TRIPWIRE     readme counted-correction-with-no-declaration branch neutralized
+  M-G1-06d   G1  TRIPWIRE     COMPOUND province inside-fence limb: assignment L640 + predicate pin conjunct both dropped
+  M-G2-01    G2  TRIPWIRE     graded parser: positive=pass field requirement dropped
+  M-G2-02    G2  TRIPWIRE     graded parser: case-id regex G[1-8] widened to G[0-9]
+  M-G2-03    G2  TRIPWIRE     graded: distinct-ids==8 conjunct dropped
+  M-G2-04    G2  TRIPWIRE     run-shapes: zero closed=0-lines conjunct dropped
+  M-G2-06    G2  TRIPWIRE     predicate: selftest-summary==1 conjunct dropped
+  M-G2-07    G2  TRIPWIRE     predicate: export-copy digest conjunct dropped
+  M-G2-08    G2  TRIPWIRE     predicate: scorecard-ref conjunct dropped
+  M-G2-09    G2  TRIPWIRE     predicate: shonen-ref conjunct dropped
+  M-G2-10    G2  TRIPWIRE     predicate: receipt-exists conjunct dropped
+  M-G2-11    G2  TRIPWIRE     predicate: diff-read ok conjunct dropped
+  M-G2-12    G2  TRIPWIRE     predicate: exactly-one closed=8/8-line conjunct dropped
+  M-G2-13    G2  TRIPWIRE     run-shapes: eight closed=1-lines conjunct dropped
+  M-G2-14    G2  TRIPWIRE     run-shapes: distinct-ids==8 (run block) conjunct dropped
+  M-G2-15    G2  PAYLOAD      predicate: executing-bytes digest conjunct dropped (tripwire off)
+  M-G2-18    G2  TRIPWIRE     graded: total==8 conjunct dropped
+  M-G2-19    G2  TRIPWIRE     graded: ungraded==0 conjunct dropped
+  M-G2-21    G2  TRIPWIRE     predicate: export-ref present conjunct dropped
+  M-G2-22    G2  TRIPWIRE     graded: graded==8 conjunct dropped
+  M-G2-24    G2  TRIPWIRE     export-ref regex {40} widened to {7,40}
+  M-G2-25    G2  TRIPWIRE     suite-sha256 regex {64} widened to {8,64}
+  M-G2-26    G2  TRIPWIRE     summary regex loosened (failures count unchecked)
+  M-G3-02    G3  TRIPWIRE     predicate: diff-read ok conjunct dropped (fail-open)
+  M-G3-03    G3  TRIPWIRE     report-only exemption deleted
+  M-G3-05    G3  TRIPWIRE     ref-token regex {7,40} narrowed to {40,40}
+  M-G4-02    G4  TRIPWIRE     seats-ok: identity-field-present conjunct dropped
+  M-G4-04    G4  TRIPWIRE     predicate: zero-task==0 conjunct dropped
+  M-G4-05    G4  TRIPWIRE     predicate: at-least-one-dispatch conjunct dropped
+  M-G4-06    G4  TRIPWIRE     predicate: pairs==dispatches conjunct dropped
+  M-G4-07    G4  TRIPWIRE     predicate: read==ok conjunct dropped
+  M-G4-11    G4  TRIPWIRE     seats-ok: tasks>=1 guard dropped
+  M-G5-02    G5  TRIPWIRE     predicate: correction>=1 conjunct dropped
+  M-G6-05    G6  TRIPWIRE     non-directory leftover (file/symlink) reads as absent
+  M-G6-07    G6  TRIPWIRE     work=unknown fail-closed branch returns 0
+  M-G6-08    G6  TRIPWIRE     predicate: read==ok conjunct dropped
+  M-G7-01    G7  TRIPWIRE     predicate: rows>=3 conjunct dropped
+  M-G7-02    G7  TRIPWIRE     predicate: proposal-1 present conjunct dropped
+  M-G7-06    G7  TRIPWIRE     g7_rows first-cell regex loosened (1x counts as 1; G7-H1)
+  M-G8-01    G8  TRIPWIRE     pinned-digest comparison forced to pinned=1
+  M-G8-03    G8  TRIPWIRE     predicate: closed=14/14 last-line conjunct dropped
+  M-G8-04    G8  TRIPWIRE     predicate: r37-exit==0 conjunct dropped

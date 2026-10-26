@@ -1,0 +1,360 @@
+SCOPE GUARD — kasegi-shokunin round 39, wave 2 (falsify)
+Seat: SentinelScopeGuard (leaf attack seat; not the author of any deliverable under attack)
+Scan window (UTC): 2026-10-26T20:14:09Z .. 2026-10-26T20:20Z  (local -03:00: 17:14 .. 17:20)
+Read-only throughout. No file outside this receipt, the scope.txt deliverable and the seat scratch was written.
+
+Anchors
+  fleet HEAD        d1e70ce65352cf95866842eb81e470eda7988e8e  protocol-shokunin 2026-10-26T17:07:10-03:00
+                    "hyaku run9: kaidoku r40 closed rejected-honest-stop (rounds[768]), r41 dispatched"
+  lane HEAD (Y)     5006097a84305267c9a3e8c1e1d560e60fe41d37  kasegi-shokunin 2026-10-26T17:12:12-03:00
+  wave start        round-39 claims freeze dcd31701720a6a4929a32471a62011ed87103421 at 2026-10-26T16:26:41-03:00
+                    (wave-1 dispatch d65d823e 16:28:27; wave-2 dispatch 17:12:36)
+  scan threshold    2026-10-26 16:20:00 -03:00 (= 19:20Z), i.e. 6m41s before the claims freeze
+  disk guard        /home/vgpnk/Projects/shokunin/.ufo/state/disk-guard.log
+                    2026-10-26T20:17:17Z ok /var/tmp use=35% ; ok /fast/scratch/hyaku use=25%  → green
+
+================================================================================
+VERDICT SUMMARY
+================================================================================
+(a) fleet repo (read-only to seats) ................ PASS  no untracked/modified file; the 31 commits
+                                                      landed during the wave are orchestrator commits
+                                                      (19 protocol-shokunin, 12 per-lane "dispatch
+                                                      evidence"/report commits), 19 unique paths, none
+                                                      inside a lane tree. The one file naming kasegi,
+                                                      .ufo/prompts/kasegi-round-39.md, is the
+                                                      dispatcher's own L1 prompt (orchestrator text).
+(b) ~/.local/bin and every PATH directory .......... PASS for the round-39 window: 0 entries created,
+                                                      modified or renamed at/after 16:20:00 -03:00 in
+                                                      all 20 existing PATH dirs. 1 OUT-OF-WINDOW TRACE
+                                                      (14:05:53, round 37) + 1 LATENT TRUST-BOUNDARY
+                                                      finding in the landed r39-closure.sh — F2 and F1.
+(c) sibling lane repos (20) ....................... PASS  14 clean; 6 dirty only in their own round
+                                                      directories; 0 kasegi-authored path or commit;
+                                                      no kasegi-identity author in any sibling; the
+                                                      S057 / "round-39" name hits are lane-local.
+
+FAIL count: 0.  Findings: F1 (medium, latent, landed bytes), F2 (low, out-of-window trace).
+
+================================================================================
+(a) FLEET REPO — `git -C /home/vgpnk/Projects/shokunin status --porcelain`
+================================================================================
+$ git -C /home/vgpnk/Projects/shokunin status --porcelain            # run 20:14:09Z
+(no output)                                                          rc=0
+$ git -C /home/vgpnk/Projects/shokunin status --porcelain -uall | wc -l
+0
+$ git -C /home/vgpnk/Projects/shokunin status --porcelain -uall | wc -l   # re-run 20:17:19Z
+0
+→ zero untracked, zero modified, zero staged. Nothing kasegi-authored is uncommitted in the fleet.
+
+Status-clean alone is not proof (a seat could commit into the fleet repo), so the during-wave commits
+were audited as well:
+
+$ git -C /home/vgpnk/Projects/shokunin rev-list --count --since='2026-10-26T16:20:00-03:00' HEAD
+31
+$ git -C /home/vgpnk/Projects/shokunin log --since='2026-10-26T16:20:00-03:00' --format='%an' | sort | uniq -c
+      2 kaidoku-shokunin
+      1 kama-shokunin
+      1 kasegi-shokunin
+      2 kengaku-shokunin
+      2 mado-shokunin
+     19 protocol-shokunin
+      1 souji-shokunin
+      1 tabi-shokunin
+      2 tameshi-shokunin
+
+$ git -C /home/vgpnk/Projects/shokunin log --since='2026-10-26T16:20:00-03:00' --name-only --format='' | sort -u
+MANIFEST.json
+.scratch/goal-20261026-hyaku-run9.md
+.ufo/prompts/closure/kaidoku-round-40.md
+.ufo/prompts/closure/kengaku-round-41.md
+.ufo/prompts/closure/mado-round-45.md
+.ufo/prompts/closure/souji-round-33.md
+.ufo/prompts/closure/tameshi-round-48.md
+.ufo/prompts/kaidoku-round-41.md
+.ufo/prompts/kama-round-46.md
+.ufo/prompts/kasegi-round-39.md
+.ufo/prompts/kengaku-round-42.md
+.ufo/prompts/mado-round-46.md
+.ufo/prompts/tabi-round-34.md
+.ufo/prompts/tameshi-round-49.md
+.ufo/reports/round-33/souji.md
+.ufo/reports/round-40/kaidoku.md
+.ufo/reports/round-41/kengaku.md
+.ufo/reports/round-45/mado.md
+.ufo/reports/round-48/tameshi.md
+(19 unique paths; `grep -i kasegi` over the same list → only .ufo/prompts/kasegi-round-39.md)
+
+Fleet tracks no real lane tree:
+$ git -C ... ls-files | cut -d/ -f1 | sort | uniq -c
+  1 AGENTS.md  1 AXES.md  1 CORPUS.md  2 .devin  1 .gitignore  1 LEARNING.md  1 LOG.md  1 MANIFEST.json
+  1 MISSION.md  1 m-rev-vs-rev.py  2 .omp  1 PROTOCOL-APPENDIX.md  1 PROTOCOL.md  1 README.md
+  685 research  1 ROADMAP.md  1 SCORECARD.md  17 .scratch  32 scripts  1 shokunin.conf  15 templates
+  4071 .ufo
+$ git -C ... ls-files | grep -c '\-shokunin/'
+7
+  all 7 are synthetic census fixtures, not lane trees:
+  scripts/fixtures/sources-census/{injection-shokunin/…, root/{a,b,c,z}-shokunin/…}
+→ no lane byte can reach the fleet tree through a lane path; the only writable-from-lane-looking
+  tracked surface is `.ufo/` (4071 files: prompts, per-lane reports, closure receipts), which during the
+  wave received only orchestrator files (list above).
+
+The three commits naming kasegi:
+$ git -C /home/vgpnk/Projects/shokunin log --since='2026-10-26T16:20:00-03:00' --format='%h %cI %an | %s' | grep -i kasegi
+1e63da5d 2026-10-26T16:28:38-03:00 protocol-shokunin | run9: goal ledger — kasegi r38 / tabi r33 closed (rounds[762],[763]), r39/r34 dispatched; ...
+edaa4fd1 2026-10-26T16:22:59-03:00 kasegi-shokunin  | round-39: kasegi dispatch evidence (hyaku inline attempt 1)
+97461c54 2026-10-26T16:22:06-03:00 protocol-shokunin | rounds ledger: kasegi r38 closure (rejected-honest-stop) — hyaku, non-author
+
+Attribution of edaa4fd1: content is the dispatcher prompt (.ufo/prompts/kasegi-round-39.md, head:
+"You are the kasegi L1, round 39. Working dir: /home/vgpnk/Projects/shokunin/kasegi-shokunin."), and the
+identical pattern exists once for every dispatched lane in the same window —
+$ git -C ... log --since='2026-10-26T16:20:00-03:00' --format='%h %an | %s' | grep 'dispatch evidence'
+f51b1efc kaidoku-shokunin | round-41: kaidoku dispatch evidence (hyaku inline attempt 1)
+1a7a6925 mado-shokunin    | round-46: mado dispatch evidence (hyaku inline attempt 1)
+e0551f18 kengaku-shokunin | round-42: kengaku dispatch evidence (hyaku inline attempt 1)
+77053a1b tameshi-shokunin | round-49: tameshi dispatch evidence (hyaku inline attempt 1)
+87769f44 kama-shokunin    | round-46: kama dispatch evidence (hyaku inline attempt 1)
+0929a340 tabi-shokunin    | round-34: tabi dispatch evidence (hyaku inline attempt 1)
+edaa4fd1 kasegi-shokunin  | round-39: kasegi dispatch evidence (hyaku inline attempt 1)
+So edaa4fd1 is orchestrator dispatch evidence filed under the lane identity, not a lane or seat write, and
+it carries no lane deliverable bytes. 97461c54/1e63da5d are hyaku ledger lines (protocol identity).
+
+MANIFEST.json mtime anomaly investigated and cleared:
+  mtime 2026-10-26 17:06:10.3570998240 -03:00, content identical to HEAD:
+  $ sha256sum MANIFEST.json                                    → 1d65a8969026d7944fb2173426c269a09495f26c797e9c19bd7e11f1883d42f9
+  $ git -C ... show HEAD:MANIFEST.json | sha256sum             → 1d65a8969026d7944fb2173426c269a09495f26c797e9c19bd7e11f1883d42f9
+  $ git -C ... diff --stat HEAD -- MANIFEST.json                → (empty)
+  $ git -C ... log -1 --format='%h %cI %s' -- MANIFEST.json
+  f0505690 2026-10-26T17:06:10-03:00 rounds ledger: kaidoku r40 closure (rejected-honest-stop) — hyaku, non-author
+  Writer: /home/vgpnk/Projects/shokunin/scripts/hyaku/append-closure.py (tmp file + os.replace, line
+  ~147-150). The rewrite is the kaidoku r40 hyaku ledger append — no kasegi content, no uncommitted diff.
+
+Fleet tree mtimes at/after 16:20:00 -03:00, non-lane paths:
+$ find /home/vgpnk/Projects/shokunin -maxdepth 1 -newermt "2026-10-26 16:20:00" -printf '%TY-%Tm-%Td %TH:%TM:%TS %y %p\n' | sort
+2026-10-26 16:48:11 d /home/vgpnk/Projects/shokunin/.ufo
+2026-10-26 17:06:10 f /home/vgpnk/Projects/shokunin/MANIFEST.json
+2026-10-26 17:06:10 d /home/vgpnk/Projects/shokunin
+2026-10-26 17:14:33 d /home/vgpnk/Projects/shokunin/.git        <- the seat's own read-only git calls
+$ (recursive, scripts/ templates/ research/ ok/ — each: no entry newer than 16:20:00)
+
+Ignored-path writes in the fleet root during the wave (these are the only writes git status cannot show):
+$ git -C ... status --porcelain --ignored=matching | awk '$1=="!!"{print $2}' | filter mtime>=16:20
+.jj/repo/  .jj/working_copy/
+.ufo/state/disk-guard.log  .ufo/state/inline-dispatcher.log  .ufo/watchdog.log
+.ufo/state/{kaidoku,kama,kasegi,kengaku,mado,tabi,tameshi}.report-baseline
+.ufo/prompts/{kasegi-round-39,kama-round-46,kengaku-round-42,mado-round-46,tabi-round-34,tameshi-round-49,
+              kaidoku-round-41}.md + .ufo/prompts/closure/*.md
+.ufo/reports/round-{33,40,41,45,48}/{souji,kaidoku,kengaku,mado,tameshi}.md
+.scratch/goal-20261026-hyaku-run9.md
+→ every one of these is hyaku-run-9 orchestrator state (baselines, prompts, closure reports, the run-9
+  goal file whose first line is "<!-- ORCHESTRATOR-OWNED run state (hyaku run 9) ... -->") or VCS state.
+  The only kasegi-named file is .ufo/prompts/kasegi-round-39.md (dispatcher prompt, 16:22:59). No
+  .ufo/reports/round-39/kasegi.md exists yet (reports/round-39 contains chousa.md Oct 24 and kaidoku.md
+  14:57) — the L1 files its own round-39 report at close, outside this wave.
+
+================================================================================
+(b) ~/.local/bin AND ALL PATH DIRECTORIES
+================================================================================
+$ ls -1 /home/vgpnk/.local/bin | wc -l
+100
+$ find /home/vgpnk/.local/bin -maxdepth 1 -newermt "2026-10-26 00:00:00" -printf '%TY-%Tm-%Td %TH:%TM:%TS %y %p -> %l\n' | sort
+2026-10-26 01:22:37 f sasquatch ; 2026-10-26 01:22:37 f sasquatch-v4be
+2026-10-26 02:16:40 l pypy3.11 -> .../pypy-3.11.16-linux-x86_64-gnu/bin/pypy3.11
+2026-10-26 04:19:49 l meson -> ~/.local/share/uv/tools/meson/bin/meson
+2026-10-26 09:46:22 l ruff  -> ~/.local/share/uv/tools/ruff/bin/ruff
+2026-10-26 10:49:45 f OpenBot-0.50.0-x86_64.AppImage ; 2026-10-26 10:50:01 l openbot -> ...
+2026-10-26 14:05:53 d /home/vgpnk/.local/bin        <- directory entry change, see F2
+Latest entry mtime = 2026-10-26 10:50:01 -03:00, i.e. 5h30m BEFORE the wave threshold.
+
+$ find /home/vgpnk/.local/bin -maxdepth 1 -newermt "2026-10-26 16:20:00" -printf ...
+(no output)
+$ find /home/vgpnk/.local/bin -maxdepth 1 -newerct "2026-10-26 16:20:00" -printf ...
+(no output)                                   <- no create, modify, rename or chmod since the wave
+$ find /home/vgpnk/.local/bin -maxdepth 1 -type f -perm -o+w -printf '%M %u %p\n'
+(no output)
+$ find /home/vgpnk/.local/bin -maxdepth 1 ! -user vgpnk -printf '%u %y %p\n'
+(no output)
+
+Every PATH directory (20 existing), scanned for entries newer than the wave threshold:
+$ for p in $(echo "$PATH" | tr ':' '\n'); do [ -d "$p" ] && find "$p" -maxdepth 1 -newermt "2026-10-26 16:20:00" ! -name . -printf ...
+(no output for every directory)
+Dirs scanned: /run/user/1000/fnm_multishells/{5071,3206,1551}_.../bin, ~/.local/share/fnm, ~/.opencode/bin,
+~/.local/bin, ~/.local/share/mise/installs/node/latest/bin, ~/.local/share/mise/shims,
+~/.local/share/omarchy/bin, /usr/local/sbin, /usr/local/bin, /usr/bin, /usr/lib/jvm/default/bin,
+/usr/bin/{site,vendor,core}_perl, ~/.minimax/bin, ~/.minimax-code/bin, ~/.grok/bin, ~/.kimi-code/bin.
+
+PATH-shadow audit (the incident class): every core tool resolved inside a PATH dir that precedes
+/usr/bin was checked —
+$ for tool in git bash sh tar awk sed grep python3 sha256sum diff sort wc cut find xargs env stat date mktemp rm cp mv jq curl; do for p in $pre; do [ -e "$p/$tool" ] && printf ... ; done; done
+jq         /home/vgpnk/.local/bin -> /home/vgpnk/.local/bin/jq
+$ file /home/vgpnk/.local/bin/jq
+ELF 64-bit LSB executable, x86-64, statically linked, BuildID[sha1]=0ebe5e23…, stripped, 2267912 B,
+mtime 2026-10-03 18:34:03 (predates the round by weeks) — a real jq binary, not a wrapper.
+(no shim for git, sh, tar, sed, grep, awk, python3, sha256sum, diff — none of the tools the C1 instrument
+ shells out to).
+$ command -v git
+/usr/bin/git
+$ ls -la /home/vgpnk/.local/bin/git
+ls: cannot access '/home/vgpnk/.local/bin/git': No such file or directory
+$ find <PATH dirs> -maxdepth 1 -type l | grep -E 'shokunin|scratch|/fast/'
+(no output — no PATH symlink points into any repo, lane or scratch tree)
+
+Persistence surfaces (cheap check, no writes):
+$ find ~/.config/systemd -newermt "2026-10-26 16:20:00" ; find ~/.config/autostart -newermt ...
+$ find ~/.bashrc ~/.zshrc ~/.profile ~/.config/fish -maxdepth 1 -newermt "2026-10-26 16:20:00"
+(no output; `crontab` binary absent on this host)
+
+================================================================================
+(c) SIBLING LANE REPOS (20 siblings; fleet root is not a superproject — each is its own repo)
+================================================================================
+$ for d in /home/vgpnk/Projects/shokunin/*/; do [ -e "$d/.git" ] && echo "$(basename $d) $(git -C $d status --porcelain | wc -l)"; done
+audio 0 | chousa 0 | game-dev-2d 0 | game-dev-3d 0 | kagi 0 | kaidoku 2 | kake 0 | kama 4 |
+kasegi 5 | kengaku 0 | kotoba 0 | kotodama 0 | kumitate 0 | lore 0 | mado 3 | mori 0 |
+revenger 0 | souji 0 | tabi 10 | tameshi 1 | tsukuroi 8
+(kasegi's own 5 entries collapse to 11 paths under `-uall`, all this wave's dispatch files and wave2
+seat artifacts:
+  ?? .ufo/waves/round-39/kasegi-r39-falsify.ready
+  ?? .ufo/waves/round-39/kasegi-r39-falsify.ready.dispatched
+  ?? .ufo/waves/round-39/wave2-dispatch.json
+  ?? .ufo/waves/round-39/wave2-run.err
+  ?? .ufo/waves/round-39/wave2/{ScoutL0Open.l0.txt,ScoutL0Open.md,ScoutMergePackage.md,
+     ScoutMergePackage.package.md,ScoutScratch.md,ScoutScratch.scratch.txt,swarm-registry.json}
+— no source, corpus or instrument file is dirty in the lane.)
+
+Dirty sibling paths, with mtimes — every one belongs to that lane's own current round:
+  kaidoku  ?? .ufo/waves/round-41/ (17:10:09)  ?? plans/round-41-claims.md (17:12:22)
+  kama     ?? .ufo/waves/round-46/{c1/,w1.ready,w1.ready.dispatched,w1/out/} (16:55:50-17:13:36)
+  mado     ?? .ufo/waves/round-45/w1/MutC1Counter/results.json (16:08:37)
+           ?? .ufo/waves/round-46/ (17:12:30)  ?? quality/counters/c1-r46-fixtures.json (17:14:24)
+  tabi     M  corpus/lessons/round-34.md (17:11:44) + ?? .ufo/waves/round-34/* (16:42-17:14)
+  tameshi  ?? .ufo/evidence/round-49/ (17:14:29)
+  tsukuroi M  corpus/knowledge/btrfs-scrub-record-r42.md (17:14:31)  M  tools/tsukuroi-census.sh
+           (17:13:24) + ?? .ufo/waves/round-42/* (16:37-16:58), ?? corpus/lessons/round-42.md (16:39:25)
+No path names kasegi, round-39-of-kasegi, or a kasegi artifact.
+
+Commit identities in siblings since the wave (author/committer pairs):
+$ for d in ...; do git -C $d log --since='2026-10-26T16:20:00-03:00' --format='%an <%ae> / %cn <%ce>' | sort -u; done
+kaidoku  kaidoku-shokunin <kaidoku@shokunin.local> + protocol-shokunin <protocol@shokunin.local>
+kama     kama-shokunin
+kengaku  kengaku-shokunin + protocol-shokunin
+mado     mado-shokunin + protocol-shokunin
+souji    souji-shokunin + protocol-shokunin
+tabi     tabi-shokunin + protocol-shokunin
+tameshi  tameshi-shokunin + protocol-shokunin
+tsukuroi tsukuroi-shokunin
+(the other 12 siblings had no commits in the window; no sibling has a commit authored or committed by
+`kasegi-shokunin <kasegi@shokunin.local>`)
+
+Content-level attribution (git pickaxe over the same window, per sibling):
+$ git -C $sib log --since=... -S'kasegi' | -S'round-39' | -S'r39-closure'
+  kaidoku  c4895cf1, 49096c7e, 0b15b8b2/4d62ee5a/c17565bc  → their own r39/r40 lane artifacts
+           (e.g. "mirror-r39-clauses.py", ".ufo/waves/round-40/r39…"; kaidoku's own round 39)
+  kengaku  53b9e4e, e61aff6                                → kengaku's own plans/round-39-claims.md,
+                                                              .ufo/waves/round-39/claims/ (own lane)
+  mado     7c0b0035, ac3f9dee                              → mado's own .ufo/waves/round-39/w1/
+                                                              ExecEventqSnapshot/eventq-live-census.txt
+  tabi     04f9623, 59f1b47                                → tabi's own adjacency rows citing kasegi
+                                                              SKILL.md:267 / mission-control.md:119 /
+                                                              ufo-workspaces.md:272 (read-only analysis),
+                                                              and "kasegi": "d65d823e…" pinned as sibling
+                                                              state in tabi's own c1-pins.json
+  tameshi  14d03ea, e438777                                → tameshi's own no-harm monitor hashing
+                                                              kasegi-shokunin/.gitignore and SCORECARD.md
+                                                              (read-only hashes) and a fleet census line
+Every hunk is the sibling reading kasegi read-only, never a kasegi-authored byte.
+
+Kasegi-only artifact names searched across all siblings (r39-closure.sh, S057*, cisa-when-to-issue-vex*,
+claims-erratum-1.md): no r39-closure.sh, no cisa-when-to-issue-vex*, no claims-erratum-1.md anywhere.
+S057 hits are lane-local registry IDs from earlier rounds: kake .ufo/waves/round-31/sources/S057.txt
+(content: "Blueprint YAML Reference — Render Docs…", i.e. a Render.com source, round 31),
+tabi corpus/evidence/round-18/source-recheck/S057.*, tameshi .ufo/evidence/round-45/freshness/sources/
+S057.raw.gz. Round-39 directory hits in siblings are their own: kama
+.ufo/waves/round-46/w1/out/S8Sample3/sources/round-39-{fleet-report,closure}.md begin
+"# kama round 39 fleet report / author: kama L1 / date: 2026-10-25" (kasegi_hits=0).
+
+Ignored-path gap closed (a write into a sibling's `.gitignore`d path is invisible to `git status`):
+$ for each sibling: git status --porcelain --ignored=matching | awk '$1=="!!"{print $2}'
+  all ignored entries are `.jj/{.gitignore,repo/,working_copy/}` (the sibling's own VCS activity, mtimes
+  = its own commit times), `__pycache__/`, `.ruff_cache/`, and pre-wave scratch dirs of earlier rounds
+  (e.g. kake .ufo/waves/round-52/selftest/, tabi .ufo/waves/round-24/scratch/, kotodama .scratch/).
+  No ignored entry names kasegi, round-39-of-kasegi, or was created inside the wave window except the
+  siblings' own `.jj` state.
+
+Scope bound of the attribution: a plant carrying zero kasegi tokens (no "kasegi"/"round-39"/"r39-closure"
+string, no kasegi path, no kasegi identity) is not attributable by name or content evidence. What is
+excluded by measurement: every sibling path, dirty or ignored, and every added line in every sibling
+commit of the window was checked for the three tokens; nothing matched a kasegi-authorship signature.
+
+Positive control that the scan method flags real wave writes (same find/status machinery):
+$ find .../kasegi-shokunin/.ufo/waves/round-39 -maxdepth 1 -newermt "2026-10-26 16:20:00"
+16:26:21 c1-controls | 16:26:27 census-before.txt | 16:26:35 claims.json | 16:27:16 build-wave1-spec.py
+| 16:28:10 items1.py | 16:28:16 build-wave1-final.py | 16:28:16 wave1-spec.json | 16:28:19 wave1-plan.err
+and, in the fleet tree, .scratch/goal-20261026-hyaku-run9.md at 17:07:10 was flagged by the same filter.
+→ the method detects lane-local and fleet-root writes at wave time; the empty results above are
+  discriminative, not blind.
+
+================================================================================
+FINDINGS
+================================================================================
+F1 — medium, latent (landed bytes): the committed instrument resolves `git` through PATH
+  Evidence (HEAD bytes of corpus/instruments/r39-closure.sh, 1793 lines):
+  $ git -C <lane> show HEAD:corpus/instruments/r39-closure.sh | grep -cE '(^|[^/[:alnum:]_-])git[[:space:]]'
+  38            (38 matching lines)
+  $ ... | grep -E '(^|...)git[[:space:]]' | grep -vcE '^[[:space:]]*#'      → 29 executable invocations
+  $ git -C <lane> show HEAD:corpus/instruments/r39-closure.sh | grep -c '/usr/bin/git'
+  0
+  The judged-head export limb itself is bare-PATH:
+  r39-closure.sh:328  git -C "$LANE" archive --format=tar "$REF_RESOLVED" | tar -xf - -C "$EXPORT"
+  Every lane-reading limb is bare-PATH too: :323 rev-parse --git-dir, :325 rev-parse --verify,
+  :328 archive, :391 diff --numstat, :692 cat-file, :693 merge-base --is-ancestor, :696 diff --name-only,
+  :757 diff --no-color, :956 `show "$PIN_REF:$suite"`, :1315 `show "$PIN_REF:…/r37-closure.sh"`. The
+  other invocations (:1044-1070, :1431-1455) build throwaway fixture repos under scratch and are less
+  exposed, but they too trust the PATH binary.
+  PATH order: /usr/bin is entry 12; eleven user-writable directories precede it — six under
+  /home/vgpnk ({.local/share/fnm, .opencode/bin, .local/bin, .local/share/mise/installs/node/latest/bin,
+  .local/share/mise/shims, .local/share/omarchy/bin}) and three /run/user/1000/fnm_multishells/*/bin.
+  A `git` file in any of them wins over /usr/bin/git for every non-interactive script.
+  Exploit path: a wrapper named `git` dropped in any of those dirs is executed by every limb, including
+  the export that G1/G3/G8 compare against — a wrapper can return a tree that the gates then certify.
+  This is not hypothetical for this lane: F2 shows such a wrapper existed on this host, at 14:05:53 the
+  same day. Impact: G1 whole-tail declarations, G3 added-line transcripts, G8 pinned r37 bytes and the
+  judged-head export are all only as trustworthy as `command -v git` at measurement time; a shim can
+  make `closed=8/8` describe bytes that were never committed.
+  Smallest remediation: resolve git once at suite start (e.g. `GIT=$(command -v git)`; refuse when the
+  resolved path is not under /usr/bin or /usr/local/bin, or when readlink -f lands inside $HOME or any
+  /fast/scratch path), then run every limb through "$GIT". One pinned variable, no behavior change on a
+  clean host.
+  Note: this is a scope/trust-boundary finding about the landed instrument, offered as attack evidence;
+  the C1 claim's measured numbers are not re-litigated here.
+
+F2 — low, out-of-window trace: a `git` path-shim existed in ~/.local/bin during round 37
+  Evidence (both from this lane, committed bytes):
+  .ufo/waves/round-37/wave1/ExecC1JudgedHeadFail.md:97 (mtime 14:08:29)
+    "- **F4 — environment, transient:** `/home/vgpnk/.local/bin/git` (a 3526-byte Python wrapper, mtime
+     14:05 today, ahead of `/usr/bin/git` on PATH) failed with `No such file or directory` from inside a
+     non-interactive script … `git --version` = 2.56.0 from both paths. … This seat pinned `/usr/bin/git`"
+  .ufo/waves/round-37/wave1/ScribeMistakes.md:38 (mtime 14:11:51)
+    "/usr/bin/git (one inherited temp shell resolved git to nothing — /home/vgpnk/.local/bin/git does not
+     exist — so the absolute path pins the binary)"
+  Host-side corroboration: /home/vgpnk/.local/bin has directory mtime 2026-10-26 14:05:53 -03:00 and no
+  surviving entry with that mtime or ctime → an entry name existed transiently at exactly the wrapper's
+  stated mtime and is gone now (`command -v git` = /usr/bin/git; `ls ~/.local/bin/git` = No such file).
+  Timeline: present 14:05:53 → observed 14:08:29 → gone by 14:11:51. 2h14m before this wave's threshold,
+  therefore outside round 39 wave 2; no kasegi round-39 seat created it, and no round-39 seat left one.
+  Impact: during round 37, any suite limb invoking bare `git` ran through a wrapper whose bytes and
+  behaviour nobody recorded (the receipt only records that it proxied `--version`). The build up to
+  round 39 inherits that provenance hole; nothing in round 39 re-tests it.
+  Smallest remediation: adopt F1 (pin git), which makes the class harmless whether or not a shim ever
+  reappears; optionally record `command -v git` + sha256 of the resolved binary in the suite's receipt.
+
+Verified clean (no finding):
+  - no untracked/modified fleet file; no kasegi-authored fleet content; the MANIFEST.json mtime bump is
+    explained (hyaku rounds-ledger append for kaidoku r40, committed as f0505690, working-tree bytes
+    identical to HEAD — no uncommitted change).
+  - no PATH entry (20 dirs) created/modified/renamed in the wave window; no o+w file, no foreign owner,
+    no PATH symlink into a repo or scratch, no systemd/autostart/rc persistence write.
+  - no sibling lane path, commit or blob attributable to a kasegi seat; all cross-lane kasegi tokens are
+    read-only references by the owning lane; lane-local S057 IDs are not kasegi's S057.
+  - kasegi lane's own dirty tree is exactly this wave's dispatch files plus wave2 seat artifacts.
+
+Commands were run read-only; no git/jj mutation was performed anywhere (fixtures, clones: none created).
+Deliverable identity: this file, .ufo/waves/round-39/wave2/SentinelScopeGuard.scope.txt.

@@ -1,0 +1,98 @@
+ConnRoleGround — seat-model / route-map verification
+kasegi-shokunin round 39, wave 2 (falsify)
+Run UTC: 2026-10-26T20:17:13Z
+Lane HEAD at verification: 5006097a84305267c9a3e8c1e1d560e60fe41d37 (lane tree; untracked wave-2 runtime files only)
+
+== 1. Route map as configured ==
+
+Source of truth: /home/vgpnk/.omp/agent/config.yml, key task.agentModelOverrides (lines 350-368).
+Observed verbatim:
+  task: "@m_opus"          main: "@m_opus"        planner: "@m_opus"
+  executor: "@m_flash"     scribe: "@m_flash"     critic: "@m_flash"
+  sentinel: "@m_flash"     simplifier: "@m_flash" labrat: "@m_flash"
+  reviewer: "@m_zfl"       mutation-tester: "@m_zfl"  security-reviewer: "@m_zfl"
+  scout: "@m_sonnet"       connector: "@m_kfc"
+  (also present, not in the seat spec's list: revenger "@m_flash", sonic "@m_flash",
+   distiller "@m_haiku", seance "@m_haiku" — no wave-1/wave-2 seat uses them)
+
+Comparison against the seat spec's expected map:
+  executor/scribe/critic/sentinel/simplifier/labrat -> m_flash  MATCH (all six)
+  reviewer/mutation-tester -> m_zfl                              MATCH (both)
+  scout -> m_sonnet                                              MATCH
+  connector -> m_kfc                                             MATCH
+  task/main/planner -> m_opus                                    MATCH (all three)
+VERDICT: configured route map matches the wave policies' role map exactly. No drift.
+
+== 2. Alias resolution (config.yml model aliases, lines 327-346) ==
+
+  m_flash  = opencode-go/deepseek-v4.1-flash:high
+  m_zfl    = zai/glm-5.3-flash:max
+  m_sonnet = anthropic/claude-sonnet-5-5:high
+  m_kfc    = kimi-code/kimi-for-coding:max
+  m_opus   = anthropic/claude-opus-5-5:high
+All five aliases referenced by the role map are defined; every alias target string
+appears in enabledModels (config.yml lines 1-300), so no override dangles.
+
+== 3. No wave item passes a model ==
+
+Scanned byte-wise for model-pin patterns (m_opus|m_flash|m_zfl|m_sonnet|m_kfc|model):
+  .ufo/waves/round-39/wave1-dispatch.json  (49 registry members) — 0 member entries carry
+     a model field or model-ish key; registry member schema is {kind, agentId, role, item,
+     axes, milestone} only.
+  .ufo/waves/round-39/wave2-dispatch.json  (37 registry members) — 0 member entries carry
+     a model field or model-ish key; same schema. The dispatch `policy` block carries only
+     concurrency/ramp keys (source, maxLanes, minLanes, waveMinLanes, waveMaxLanes,
+     declaredMaxLanes, hardCeiling, rampBatchSize, rampIntervalMs, globalRunnerCeiling) —
+     no model key.
+  .ufo/waves/round-39/wave1-spec.json item prompts — the only 'model' hits are semantic
+     uses (fence model in ExecWholeTailFixture/ExecSuiteBuild; "new model" truth-model
+     language; ConnRoleGround's own item naming the role map). No item pins an answering
+     model.
+  .ufo/waves/round-39/wave2-spec.json item prompts — the only 'model' hits are
+     RevSuiteDesign's "fence model" (G1 limb wording) and ConnRoleGround's own item text.
+VERDICT: roles only; no wave item passes a model. Routing is config-driven end to end.
+
+== 4. Seat-model report stub — expected model per role ==
+
+  role            expected alias   resolves to
+  ----            --------------   --------------------------------------
+  executor        m_flash          opencode-go/deepseek-v4.1-flash:high
+  scribe          m_flash          opencode-go/deepseek-v4.1-flash:high
+  critic          m_flash          opencode-go/deepseek-v4.1-flash:high
+  sentinel        m_flash          opencode-go/deepseek-v4.1-flash:high
+  simplifier      m_flash          opencode-go/deepseek-v4.1-flash:high
+  labrat          m_flash          opencode-go/deepseek-v4.1-flash:high
+  reviewer        m_zfl            zai/glm-5.3-flash:max
+  mutation-tester m_zfl            zai/glm-5.3-flash:max
+  scout           m_sonnet         anthropic/claude-sonnet-5-5:high
+  connector       m_kfc            kimi-code/kimi-for-coding:max
+  task            m_opus           anthropic/claude-opus-5-5:high
+  main            m_opus           anthropic/claude-opus-5-5:high
+  planner         m_opus           anthropic/claude-opus-5-5:high
+
+Actual answering model per seat: NOT exposed via proc:// at run time (job listings carry
+name/role/status/uptime only; no model field on any live or exited job checked
+2026-10-26T20:17Z). This seat's own session context reports Model: kimi-code/kimi-for-coding,
+consistent with connector -> m_kfc. Per-seat actual models to be filled from wave results
+once the swarm registry/agent records publish them:
+  PENDING: fill from results for wave-1 (49 seats) and wave-2 (37 seats).
+
+Wave-2 seat -> expected model (36 peers + this seat), from wave2-dispatch.json registry:
+  connectors (2): ConnC1C2, ConnRoleGround -> m_kfc
+  critics (8): CritBaseControl, CritC1Kill, CritC2Kill, CritG1Exploit, CritG2Exploit,
+    CritG4Exploit, CritMutantAssault, CritOverclaimScan -> m_flash
+  mutation-testers (7): MutC2Row, MutCorrectionBlocks, MutFixedPins, MutFrontierRow,
+    MutJunk, MutSelftestGrading, MutSuiteLimbs -> m_zfl
+  reviewers (12): RevC1Receipt, RevC2Recheck, RevCensusFinal, RevF22Entry, RevF22Quotes,
+    RevGateReadiness, RevMistakesGate, RevNoHarmDiff, RevReportPreflight, RevShonenFinal,
+    RevSuiteDesign, RevTrendEvidence -> m_zfl
+  scouts (4): ScoutInstrumentState, ScoutL0Open, ScoutMergePackage, ScoutScratch -> m_sonnet
+  scribes (1): ScribeFinalWaveEvidence -> m_flash
+  sentinels (2): SentinelScopeGuard, SentinelSecretsScan -> m_flash
+  simplifiers (1): SimplArtifactTrim -> m_flash
+
+== 5. Finding ==
+
+No falsification found on the routing surface: the configured role map equals the seat
+spec's expected map on all thirteen role entries, every alias resolves and is enabled,
+and neither wave passes a model to any item. Routing control is clean as frozen.

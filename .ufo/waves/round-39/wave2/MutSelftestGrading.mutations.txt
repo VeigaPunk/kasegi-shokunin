@@ -1,0 +1,211 @@
+# MutSelftestGrading — selftest case-line OUTPUT mutation battery (kasegi round 39, wave 2, falsify)
+
+Seat: MutSelftestGrading (attack seat, leaf; no subagents spawned). Date: 2026-10-26.
+Lane (read-only to this seat): /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Attacked bytes: `corpus/instruments/r39-closure.sh` at lane HEAD Y=5006097a84305267c9a3e8c1e1d560e60fe41d37.
+Pristine working-tree sha256 = 2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b,
+which EQUALS the `suite-sha256=` pinned in `.ufo/waves/round-39/final-gates/all-gates.txt` — the
+battery attacked exactly the bytes the receipt binds. Every mutation happened on a scratch copy
+(/fast/scratch/hyaku/kasegi-r39/MutSelftestGrading/mut-*/r39-closure.sh, removed at exit); the lane
+file was never opened for write (restoration evidence at the end).
+
+Frozen target (claims.json C1 predicate, selftest limb):
+  `--selftest --export-ref J` prints `selftest cases=8 failures=0` with one graded
+  `selftest case=G<n> ... positive=pass ... verdict=pass` line per check whose mutants are all
+  rejected; a summary-only line never satisfies a case.
+Verification ref per erratum E4: Y = J + receipt only; J = 46c66c268502abd1b2c342fc71bf88ccf721845b
+(read from the receipt's `export-ref=`; `git diff --name-only J Y` = the receipt alone, verified).
+
+Grading layer under attack (pristine lines 1634-1660, judge_selftest_report; emitter = st_verdict
+line 1367): a case line counts only when the report has exactly 8 `selftest case=` lines, exactly 8
+ending `verdict=pass`, exactly one `selftest cases=8 failures=0` summary, each id G1..G8 appears
+exactly once with `positive=pass` and trailing `verdict=pass`, mutants=<ok>/<n> with n>=1 and ok=n,
+and exactly n `selftest detail=G<i> mutant=` lines of which ok are rejected=1.
+
+== Experimental frame ==
+
+Because a mutated copy's own sha256 differs from the receipt's pinned digest, G2's anti-tamper limb
+(`digest-match`) goes red in every mutant run BY DESIGN — executing bytes != pinned bytes. That
+collateral is separated from the mutation signal by (a) a collateral-only control (pristine @ J,
+where G2 is red for the documented receipt=0 reason), (b) report-file forensics on the surviving
+`selftest-report.txt` of each run, and (c) a synthetic replay: the PRISTINE judge function applied
+to the accepted all-pass baseline report carrying exactly one mutation signature — no confound
+possible. Runs used `--lane <clean clone>` and `--scratch-root <private>` (both deviations printed
+by the suite itself); reason: the live lane worktree currently holds concurrent wave-2 untracked
+files, which red the pinned r37 suite's E9 status limb inside G8's positive limb (measured below)
+and would confound every run. Fixture clones: lane-Y (detached at Y) and lane-J (detached at J),
+both `rev-parse --show-toplevel`-asserted, both `status --porcelain` empty.
+
+== Controls ==
+
+C0 baseline (pristine bytes, --export-ref Y, lane-Y clone)
+  command: bash pristine/r39-closure.sh --selftest --export-ref 5006097a84305267c9a3e8c1e1d560e60fe41d37
+           --lane $S/lane-Y --work $S/base/work --scratch-root $S/base/g6root
+  header:  selftest export-ref=5006097a84305267c9a3e8c1e1d560e60fe41d37 lane=…/lane-Y
+           suite-sha256=2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b
+  case lines: G1 4/4, G2 8/8, G3 2/2, G4 6/6, G5 4/4, G6 4/4, G7 3/3, G8 3/3 — all
+          `positive=pass … verdict=pass`
+  summary: selftest cases=8 failures=0
+  judge:   selftest judge=own-report accepted=1; all six forgeries rejected=1
+  exit:    0   (wall ~6.5 s)
+  -> GREEN; reproduces the frozen selftest limb at Y on clean bytes.
+
+C-J collateral control (pristine bytes, --export-ref J, lane-J clone)
+  exit: 1
+  selftest detail=G2 positive=fail rc=1 payload=receipt=0,sentinel=0,export-ref=0,ancestor=0,
+    diff-clean=0,diff-read=ok,digest-match=0,export-suite=0,run-lines=0,closed-lines=0,
+    distinct-ids=0,closed-line=0,graded-cases=0,ungraded-cases=0,selftest-summary=0,
+    scorecard-ref=1,shonen-ref=1,final-lane-commit=0
+  selftest case=G2 positive=fail mutants=8/8 verdict=fail
+  selftest cases=8 failures=1 ; selftest judge=own-report accepted=0
+  -> the documented E4 J-run shape (G2 red, receipt=0): one fail-branch case line, failures=1,
+     judge rejects. This is what a legitimate single red looks like; every mutant below is
+     compared against it.
+
+C-ENV environmental control (pristine bytes, --export-ref Y, REAL lane)
+  exit: 1 ; selftest case=G8 positive=fail mutants=3/3 verdict=fail ; cases=8 failures=1 ;
+  judge=own-report accepted=0
+  Direct r37 probe (pinned bytes, real lane, ref Y):
+    E9 payload=status-read=ok,status-dirty=6,scratch-seat-dirs=0,head-match=1,lane-root=1,
+    scratch-root=absent closed=0 ; closed=13/14 exit=1
+  -> the red is E9's live status limb counting the concurrent wave-2 untracked files
+     (status-dirty=6), NOT a landed-bytes defect. FINDING for the round: while wave-2 untracked
+     files sit in the lane, the C1 selftest counting command cannot print `cases=8 failures=0`
+     on the real lane; the green window is transient (wave-1 measured it on a then-clean tree).
+     Any wave-2 re-verification of C1 on the live lane must either commit/clean first or use a
+     clean export-clone and say so.
+
+C9 do-nothing control (pristine bytes re-run AFTER all mutants, same config as C0)
+  exit: 0 ; selftest cases=8 failures=0 ; selftest judge=own-report accepted=1
+  -> no state pollution from the mutant runs; the suite is deterministic per (bytes, ref).
+
+== Mutations (all in st_verdict's pass-branch emitter, pristine line 1367, unless noted) ==
+
+M1 — swap `positive=pass` -> `positive=fail`, keeping verdict=pass
+  before:     printf 'selftest case=%s positive=pass mutants=%s/%s verdict=pass\n' "$id" "$ok" "$n"
+  after:      printf 'selftest case=%s positive=fail mutants=%s/%s verdict=pass\n' "$id" "$ok" "$n"
+  sha256:     2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b
+           -> 15f72ed4250e5da5d6b61d0dcb6a78effaed32de15078baff56d14297a28452b
+  command:    bash mut-M1/r39-closure.sh --selftest --export-ref 5006097a84305267c9a3e8c1e1d560e60fe41d37
+              --lane $S/lane-Y --work $S/mut-M1/work --scratch-root $S/mut-M1/g6root
+  exit:       1  (KILLED)
+  output:     seven case lines `selftest case=G<n> positive=fail mutants=<k>/<n> verdict=pass`
+              (G1 4/4, G3 2/2, G4 6/6, G5 4/4, G6 4/4, G7 3/3, G8 3/3) plus G2's collateral
+              fail-branch line; `selftest cases=8 failures=1`;
+              `selftest judge=own-report accepted=0`
+  report forensics (mut-M1/work/selftest-report.txt): case-lines=8, verdict-pass-lines=7,
+    pos-fail-verdict-pass=7 (the mutation signature: pass verdict on a failed positive)
+  attribution: G2's payload shows digest-match=0 with every other limb green (receipt=1,
+    sentinel=1, export-ref=1, ancestor=1, diff-clean=1, export-suite=1, run-lines=8) — the red is
+    the anti-tamper digest limb on mutated executing bytes, expected collateral. The GRADING catch
+    is proven confound-free by the synthetic replay: the pristine judge REJECTS an all-pass report
+    whose only defect is seven case lines carrying `positive=fail … verdict=pass` (top-gate counts
+    all pass there: cases=8, verdicts=8, summary=1, dup=1 — the sole violated condition is the
+    per-id `positive=pass` requirement). Verdict: the grading layer kills this mutant.
+
+M2 — remove the `verdict=` field
+  before:     printf 'selftest case=%s positive=pass mutants=%s/%s verdict=pass\n' "$id" "$ok" "$n"
+  after:      printf 'selftest case=%s positive=pass mutants=%s/%s\n' "$id" "$ok" "$n"
+  sha256:     2856a210… -> 0c10f83f4af970a9f593161c192ad84d826e00082971263031797b304343731a
+  command:    bash mut-M2/r39-closure.sh --selftest --export-ref 5006097a… --lane $S/lane-Y
+              --work $S/mut-M2/work --scratch-root $S/mut-M2/g6root
+  exit:       1  (KILLED)
+  output:     seven case lines WITHOUT any verdict field (`selftest case=G1 positive=pass
+              mutants=4/4` etc.) plus G2's collateral fail-branch line; `cases=8 failures=1`;
+              `judge=own-report accepted=0`
+  report forensics: case-lines=8, verdict-pass-lines=0 (no case line ends verdict=pass)
+  attribution: verdict-pass-lines 8 (baseline) -> 0 (mutant); the J-control shows a legitimate
+    single red leaves verdict-pass-lines=7, so the 7->0 drop is the mutation, not collateral.
+    Synthetic replay: pristine judge REJECTS the all-pass report with the verdict field stripped
+    (verdicts=0 != 8 at the top gate). Verdict: killed.
+
+M3 — emit a duplicate case line
+  before:     printf 'selftest case=%s positive=pass mutants=%s/%s verdict=pass\n' "$id" "$ok" "$n"
+  after:      that printf TWICE (two identical statements in the pass branch)
+  sha256:     2856a210… -> b2bac99b5b5d124b9501b0900b83d05e648f6534abd1f1513d83fc63014fbc95
+  command:    bash mut-M3/r39-closure.sh --selftest --export-ref 5006097a… --lane $S/lane-Y
+              --work $S/mut-M3/work --scratch-root $S/mut-M3/g6root
+  exit:       1  (KILLED)
+  output:     every pass-branch case line emitted twice (G1..G8 each x2 = 15 case lines with G2's
+              single collateral line); `cases=8 failures=1`; `judge=own-report accepted=0`
+  report forensics: case-lines=15, verdict-pass-lines=14, G1-dup=2, G8-lines=2
+  attribution: case-lines 8 (baseline) -> 15 (mutant); per-id dup 1 -> 2 violates the judge's
+    exactly-once requirement (and the top gate 8!=15). Synthetic replay: pristine judge REJECTS
+    the all-pass report with every case line duplicated (cases=16, dup=2). Verdict: killed.
+
+M4 — reduce the case-line output to 7 cases (G8's line suppressed; summary still claims 8)
+  before:     printf 'selftest case=%s positive=pass mutants=%s/%s verdict=pass\n' "$id" "$ok" "$n"
+  after:      [ "$id" = G8 ] || printf 'selftest case=%s positive=pass mutants=%s/%s verdict=pass\n' "$id" "$ok" "$n"
+  sha256:     2856a210… -> 19fbe21bb21ae854f015e90dafdaa50c26089b6fd4fed44f29e40d9b3fc53a45
+  command:    bash mut-M4/r39-closure.sh --selftest --export-ref 5006097a… --lane $S/lane-Y
+              --work $S/mut-M4/work --scratch-root $S/mut-M4/g6root
+  exit:       1  (KILLED)
+  output:     seven case lines (G1..G7; G8 absent) while the summary still prints
+              `selftest cases=8 failures=1` (lying summary shape); `judge=own-report accepted=0`
+  report forensics: case-lines=7, verdict-pass-lines=6, G8-lines=0, summary line still
+    `selftest cases=8 failures=0`-shaped (claims 8 cases)
+  attribution: case-lines 8 -> 7 with G8-lines 1 -> 0; the judge's top gate (7 != 8) and the
+    per-id loop (G8 dup=0 != 1) both fire. Synthetic replay: pristine judge REJECTS the all-pass
+    report with G8's case line deleted (cases=7, G8 dup=0). Verdict: killed.
+
+M5 (bonus probe, same grading layer) — run only the first 7 checks (loop reduced)
+  before:     for id in "${CHECK_IDS[@]}"; do        (run_selftest, pristine line 1665)
+  after:      for id in "${CHECK_IDS[@]:0:7}"; do
+  sha256:     2856a210… -> 00553743d3cbaf8c4dbf2ca45db33c06df5d8f91db4ec991168a31de42dc861c
+  command:    bash mut-M5/r39-closure.sh --selftest --export-ref 5006097a… --lane $S/lane-Y
+              --work $S/mut-M5/work --scratch-root $S/mut-M5/g6root
+  exit:       1  (KILLED)
+  output:     seven case lines, `selftest cases=7 failures=1`, `selftest problem=cases=7
+              expected=8`, `judge=own-report accepted=0`
+  -> TWO independent detection layers fire: the judge (cases 7 != 8) AND the run-level
+     cases-expected guard (`selftest problem=cases=7 expected=8`). Verdict: killed.
+
+== Synthetic replay (pristine judge, confound-free) ==
+
+Harness: source the PRISTINE suite (its main guard skips main when sourced) and call
+judge_selftest_report on report files. Synthetic inputs = the ACCEPTED C0 baseline report with
+exactly one signature applied to its `^selftest case=` lines (the same textual transformation each
+suite mutation produces at the emitter): M1 s/positive=pass/positive=fail/; M2 strip trailing
+` verdict=pass`; M3 duplicate every case line; M4 delete G8's case line.
+
+  replay baseline-unmodified   judge=accepted rc=0   (cases=8 verdicts=8 summary=1 dup=1)
+  replay jctl-G2-red-only      judge=rejected rc=1   (the legitimate-red shape also rejects)
+  replay synth-M1-posfail      judge=rejected rc=1   (cases=8 verdicts=8 summary=1 dup=1 —
+                               rejected ONLY by the per-id positive=pass check)
+  replay synth-M2-noverdict    judge=rejected rc=1   (verdicts=0)
+  replay synth-M3-duplicate    judge=rejected rc=1   (cases=16, dup=2)
+  replay synth-M4-seven        judge=rejected rc=1   (cases=7, G8 dup=0)
+
+Judge-condition table (counts from the actual files):
+
+  condition                          base  M1   M2   M3   M4
+  cases == 8                          8    8    8   16*   7*
+  verdicts(ending verdict=pass) == 8  8    8    0*  16*   7*
+  summary(cases=8 failures=0) == 1    1    1    1    1    1
+  per-id dup == 1                     1    1    1    2*  G8:0*
+  per-id positive=pass                ok  FAIL* ok   ok   ok
+  per-id trailing verdict=pass        ok   ok  FAIL* ok   ok
+  (* = violated condition; M1's only violation is the per-id positive=pass check)
+
+== Verdict summary ==
+
+  M1 positive=fail/verdict=pass   -> exit 1, judge accepted=0  KILLED (per-id positive check)
+  M2 verdict field removed        -> exit 1, judge accepted=0  KILLED (verdicts top gate + per-id)
+  M3 duplicate case line          -> exit 1, judge accepted=0  KILLED (cases top gate + dup check)
+  M4 reduced to 7 case lines      -> exit 1, judge accepted=0  KILLED (cases top gate + G8 dup=0)
+  M5 loop reduced to 7 cases      -> exit 1, judge accepted=0  KILLED (judge + problem guard)
+  No survivor. The C1 selftest grading layer rejects every mutated case-line output shape;
+  a summary-only or lying-summary line never satisfies a case.
+
+== Restoration / write-scope evidence ==
+
+- The lane suite file was NEVER written: sha256 before all work =
+  2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b; after all work = identical;
+  `git status --porcelain -- corpus/instruments/r39-closure.sh` = empty (0 tracked modifications).
+- All mutations lived in scratch copies under /fast/scratch/hyaku/kasegi-r39/MutSelftestGrading
+  (removed before yield). Fixture clones lane-Y/lane-J were created with `git clone --no-hardlinks`
+  (read-only on the lane) and detached checkouts inside the scratch fixtures only; toplevels
+  asserted; no mutating git command touched the lane, fleet root, shokuknow, or sibling repos.
+- No tools installed or upgraded (operator tooling authorization 2026-10-19 acknowledged; bash,
+  git, awk, sed, sha256sum, python3 sufficed; pacman untouched; no service touched).
+- Disk guard green at start and end: /fast 610G available (25% used), /home 586G available.

@@ -1,0 +1,193 @@
+# MutJunk.controls.txt — positive control for the junk instrument (round-39 wave 2, seat MutJunk)
+
+Item: on the committed capture, build a manifest where one fabricated junk claim is REPLACED by
+the true quote; run source-recheck and record that the true quote is `OK occurrences=1` while the
+other three remain MISMATCH (exit 1). Then a manifest with all four true quotes must exit 0.
+This proves the instrument discriminates claims, not just files.
+
+## Identity (all bytes read at lane HEAD 5006097a84305267c9a3e8c1e1d560e60fe41d37)
+
+lane_head=5006097a84305267c9a3e8c1e1d560e60fe41d37
+base=480b1a505a2dfc14a4f718d16d63808247214d0a
+claims_freeze=dcd31701720a6a4929a32471a62011ed87103421
+committed_capture=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-39/S057.txt sha256=11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f
+committed_manifest=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-39/manifest.json sha256=432f2205b368acb39d620bb85fe81c0fd6ccb345dd0878661478085ac1ce6659
+instrument=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/source-recheck.py sha256=fd2e01e88c8c45a949f48d67b3154ae87a95aeba0b6a9c42fbf64641b5b9c003
+frozen_junk_manifest=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-39/c2-controls/junk-manifest.json sha256=9dafce3647086cd082ab5ebb53d9b9601fd43ff76f701e595c5503afc388470a
+frozen_control_receipt=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-39/c2-controls/junk-f22-recheck.txt
+cross-check vs frozen receipt junk-f22-recheck.txt: instrument sha fd2e01e88c8c45a949f48d67b3154ae87a95aeba0b6a9c42fbf64641b5b9c003 MATCH; junk-manifest sha 9dafce3647086cd082ab5ebb53d9b9601fd43ff76f701e595c5503afc388470a MATCH; seat-manifest sha 432f2205b368acb39d620bb85fe81c0fd6ccb345dd0878661478085ac1ce6659 MATCH -> the bytes attacked are the frozen bytes.
+workdir: capture copied to scratch workdir, sha256 identical to committed capture (11c8d6d6...); all scratch-manifest runs resolve path S057.txt there (instrument resolves `path` relative to the manifest directory).
+git: all five artifact paths tracked (ls-files --error-unmatch ok); `git diff --quiet HEAD` over corpus/source-snapshots/round-39/, corpus/instruments/source-recheck.py, .ufo/waves/round-39/c2-controls/ -> clean. Lane dirty entries observed: only wave2 dispatch artifacts (kasegi-r39-falsify.ready*, wave2-dispatch.json, wave2-run.err, wave2/) — orchestrator/sibling writes, untouched by this seat.
+
+
+## Run transcripts (verbatim; each run followed by its observed exit code)
+
+S057:sha256 OK
+S057:Q1 OK normalized=markup-whitespace occurrences=1 anchor=12-ok
+S057:Q2 OK normalized=markup-whitespace occurrences=1 anchor=132-ok
+S057:Q3 OK normalized=markup-whitespace occurrences=1 anchor=136-ok
+S057:Q4 OK normalized=markup-whitespace occurrences=1 anchor=184-ok
+exit=0
+S057:sha256 OK
+S057:J1 MISMATCH reason=quote-not-found
+S057:J2 MISMATCH reason=quote-not-found
+S057:J3 MISMATCH reason=quote-not-found
+S057:J4 MISMATCH reason=quote-not-found
+exit=1
+S057:sha256 OK
+S057:J1 OK normalized=markup-whitespace occurrences=1
+S057:J2 MISMATCH reason=quote-not-found
+S057:J3 MISMATCH reason=quote-not-found
+S057:J4 MISMATCH reason=quote-not-found
+exit=1
+S057:sha256 OK
+S057:J1 MISMATCH reason=quote-not-found
+S057:J2 MISMATCH reason=quote-not-found
+S057:J3 MISMATCH reason=quote-not-found
+S057:J4 OK normalized=markup-whitespace occurrences=1
+exit=1
+S057:sha256 OK
+S057:J1 OK normalized=markup-whitespace occurrences=1 anchor=12-ok
+S057:J2 OK normalized=markup-whitespace occurrences=1 anchor=132-ok
+S057:J3 OK normalized=markup-whitespace occurrences=1 anchor=136-ok
+S057:J4 OK normalized=markup-whitespace occurrences=1 anchor=184-ok
+exit=0
+SELFTEST clean PASS expected-exit=0 observed-exit=0 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST corrupt PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256 observed-ids=S900:sha256
+SELFTEST missing-source PASS expected-exit=2 observed-exit=2 expected-ids=S900:source observed-ids=S900:source
+SELFTEST missing-manifest PASS expected-exit=2 observed-exit=2 expected-ids=manifest observed-ids=manifest
+SELFTEST stem-mismatch PASS expected-exit=1 observed-exit=1 expected-ids=S901:manifest observed-ids=S901:manifest
+SELFTEST double-occurrence PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST double-occurrence-anchored PASS expected-exit=0 observed-exit=0 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST double-occurrence-out-of-range PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST double-occurrence-broken PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST quote-absent PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+selftest cases=10 failures=0
+exit=0
+
+## Verdict
+
+- RUN A (baseline green): committed manifest -> 4x `OK ... occurrences=1 anchor=N-ok`, exit 0.
+- RUN B (frozen red baseline reproduced): frozen junk manifest (4 fabricated claims) -> 4x `MISMATCH reason=quote-not-found`, exit 1; identical shape to frozen junk-f22-recheck.txt.
+- RUN C (ITEM REQUIRED CONTROL): mixed manifest, fabricated claim J1 replaced by true capture Q1 -> `S057:J1 OK normalized=markup-whitespace occurrences=1` while J2/J3/J4 remain `MISMATCH reason=quote-not-found`, exit 1. The one true claim is individually reported OK occurrences=1; the manifest as a whole is still rejected.
+- RUN D (position probe): same splice at J4 -> `S057:J4 OK occurrences=1` while J1/J2/J3 MISMATCH, exit 1. Discrimination is per claim, not per position.
+- RUN E (all four true): fabricated claims J1..J4 replaced by true capture Q1..Q4 incl. declared anchors -> 4x `OK occurrences=1 anchor=N-ok`, exit 0.
+- RUN F: instrument selftest -> selftest cases=10 failures=0, exit 0.
+
+CONCLUSION: the instrument discriminates claims, not just files. A manifest mixing one true and
+three fabricated claims is rejected (exit 1) with the true claim reported OK occurrences=1; the
+all-true manifest passes (exit 0). Positive control SATISFIED; no defect found in the junk
+instrument's discrimination behavior on the committed capture.
+
+## Appendix: exact bytes of the control manifests used (scratch-built from committed JSONs; quote/anchor text spliced byte-exact from corpus/source-snapshots/round-39/manifest.json)
+
+
+=== appendix: mixed-J1Q1.json sha256=0de0bdac52dcec7295b4e1d2b9b247bc5c714d94bd32c271a3f32f416bb8c676 ===
+{
+ "schema_version": 1,
+ "sources": [
+  {
+   "id": "S057",
+   "path": "S057.txt",
+   "quotes": [
+    {
+     "id": "J1",
+     "location": "MUTJUNK MIXED CONTROL: fabricated claim 1 replaced by true capture Q1 (corpus/source-snapshots/round-39/manifest.json)",
+     "quote": "Whether, and when, to issue VEX information is a business decision for most suppliers and possibly a more individual decision for independent open source developers."
+    },
+    {
+     "id": "J2",
+     "location": "fabricated claim 2 of c2-controls/junk-f22.md",
+     "quote": "Once a VEX status is issued it must never be changed."
+    },
+    {
+     "id": "J3",
+     "location": "fabricated claim 3 of c2-controls/junk-f22.md",
+     "quote": "The When to Issue VEX Information document defines the five not-affected justification labels (component_not_present, vulnerable_code_not_present, vulnerable_code_not_in_execute_path, vulnerable_code_cannot_be_controlled_by_adversary, inline_mitigations_already_exist)."
+    },
+    {
+     "id": "J4",
+     "location": "fabricated claim 4 of c2-controls/junk-f22.md",
+     "quote": "CISA requires every VEX statement to include an exploitation-likelihood score, and its action_statement field is mandatory."
+    }
+   ],
+   "sha256": "11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f"
+  }
+ ]
+}
+
+=== appendix: mixed-J4Q4.json sha256=682ff7b7d25f49520695792a9872a838ceddd6909f5605dd3022fe9674c38f21 ===
+{
+ "schema_version": 1,
+ "sources": [
+  {
+   "id": "S057",
+   "path": "S057.txt",
+   "quotes": [
+    {
+     "id": "J1",
+     "location": "fabricated claim 1 of c2-controls/junk-f22.md",
+     "quote": "CISA's When to Issue VEX Information mandates a strict protocol that determines when a supplier must issue VEX information."
+    },
+    {
+     "id": "J2",
+     "location": "fabricated claim 2 of c2-controls/junk-f22.md",
+     "quote": "Once a VEX status is issued it must never be changed."
+    },
+    {
+     "id": "J3",
+     "location": "fabricated claim 3 of c2-controls/junk-f22.md",
+     "quote": "The When to Issue VEX Information document defines the five not-affected justification labels (component_not_present, vulnerable_code_not_present, vulnerable_code_not_in_execute_path, vulnerable_code_cannot_be_controlled_by_adversary, inline_mitigations_already_exist)."
+    },
+    {
+     "id": "J4",
+     "location": "MUTJUNK MIXED CONTROL: fabricated claim 4 replaced by true capture Q4 (corpus/source-snapshots/round-39/manifest.json)",
+     "quote": "Strictly speaking, consumers should not assume the status of an upstream component applies to a product that uses the component. Each component or product throughout a supply chain may require an independent VEX evaluation."
+    }
+   ],
+   "sha256": "11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f"
+  }
+ ]
+}
+
+=== appendix: all-true.json sha256=e06fc97e633a87a3cc4ec4b009684b3511f4f0750f89bb8dfbb80227576890ff ===
+{
+ "schema_version": 1,
+ "sources": [
+  {
+   "id": "S057",
+   "path": "S057.txt",
+   "quotes": [
+    {
+     "id": "J1",
+     "location": "MUTJUNK ALL-TRUE CONTROL: fabricated claim 1 replaced by true capture Q1 (quote+anchor as corpus/source-snapshots/round-39/manifest.json)",
+     "quote": "Whether, and when, to issue VEX information is a business decision for most suppliers and possibly a more individual decision for independent open source developers.",
+     "anchor": 12
+    },
+    {
+     "id": "J2",
+     "location": "MUTJUNK ALL-TRUE CONTROL: fabricated claim 2 replaced by true capture Q2 (quote+anchor as corpus/source-snapshots/round-39/manifest.json)",
+     "quote": "Ideally, when a new vulnerability is disclosed, an “under_investigation” status should be issued. When the investigation has concluded, status should be updated",
+     "anchor": 132
+    },
+    {
+     "id": "J3",
+     "location": "MUTJUNK ALL-TRUE CONTROL: fabricated claim 3 replaced by true capture Q3 (quote+anchor as corpus/source-snapshots/round-39/manifest.json)",
+     "quote": "VEX information includes timestamps to indicate when the information was first issued and most recently updated. By updating a timestamp but not changing status or other information, a VEX issuer can reaffirm that the current status remains accurate at the present time.",
+     "anchor": 136
+    },
+    {
+     "id": "J4",
+     "location": "MUTJUNK ALL-TRUE CONTROL: fabricated claim 4 replaced by true capture Q4 (quote+anchor as corpus/source-snapshots/round-39/manifest.json)",
+     "quote": "Strictly speaking, consumers should not assume the status of an upstream component applies to a product that uses the component. Each component or product throughout a supply chain may require an independent VEX evaluation.",
+     "anchor": 184
+    }
+   ],
+   "sha256": "11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f"
+  }
+ ]
+}
+
+=== note: junk-manifest.json bytes used in RUN B are the frozen committed bytes (sha256 9dafce3647086cd082ab5ebb53d9b9601fd43ff76f701e595c5503afc388470a), copied unmodified into the workdir; not reprinted here.
+=== observation: run from its committed location (.ufo/waves/round-39/c2-controls/) the frozen junk manifest alone reports `S057:source UNAVAILABLE reason=missing` exit=2, because `path` resolves relative to the manifest directory and the capture lives in corpus/source-snapshots/round-39/. The frozen receipt documents the designed work-dir run (capture beside manifest); reproduced as RUN B. Not a defect; recorded for reproducibility.
+

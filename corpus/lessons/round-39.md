@@ -78,7 +78,13 @@ exit 0. Registry 55 → 59 rows; tier A +1 (S057), rejected +3. Rows touched old
 | M39-3 | evidence-record | r38 report quotes tip run f06148c6 (8/8) with no committed transcript | report :37-38; commit grep 0 hits | none — R35 criterion added (committed transcript or report-only label) | r39 G3 scans round-39-added lines; receipt + reds committed at Y | a quoted run without transcript and without report-only label reds G3 |
 | M39-4 | evidence-record | M38-5/M38-7 have `captured-by: none` and no QUALITY row cites them | QUALITY.md greps (0 hits); verifier R4 | none — R36 criterion added | R36 row cites M38-5 and M38-7 | `grep -cE 'M38-5|M38-7' corpus/QUALITY.md` >= 1 |
 
-## Instrument attack findings (wave 2) — routed to round 40
-Wave 2 attacked the landed suite and the C2 artifacts after scoring; findings and verdicts land in `wave2/` receipts
-and are routed to round 40 as fixtures/limbs (per the frozen-rule discipline: a rule changed after scoring is not
-the claim's rule).
+## Instrument attack findings (wave 2)
+
+The 37-seat falsification wave re-opened the committed instrument and C2 artifacts. Findings and full receipts are in `.ufo/waves/round-39/wave2/`; they are not omitted from the round verdict:
+- G2 accepts fabricated payload values because it validates the shape/digest of the receipt but does not compare recorded `G<n> payload=` values with a captured invocation. CritG2Exploit.md documents passing mutations; the receipt is not proof of its own payload.
+- G6 is live-state dependent: its green result requires a quiescent `/fast/scratch/hyaku/kasegi-r39/` apart from the one tolerated work directory. Wave seats necessarily populate that path. CritC1Kill.md records default-root reds and isolated clean-clone success; the frozen bare command is therefore not an unconditional reproducible counter.
+- The committed receipt's `run-utc=2026-10-26T21:35:00Z` post-dates its containing commit (`2026-10-26T20:12:12Z`), so its timestamp is false provenance. The final report uses only a run timestamp observed at execution.
+- LOG.md's correction bullet failed the frozen `^Correction (round 39)` count (0); a standalone append was added without rewriting the earlier entry.
+- The claimed SKILL.md r39 registry row was absent; the row is now appended. CritOverclaimScan.md records the before-state.
+
+No predicate or kill rule was changed after scoring. C1's suite/selftests and C2's package checks have behavioral evidence, but the G2 receipt-value blind spot and G6 environment coupling prevent admitting C1 on the frozen counter alone. The round reports that uncertainty rather than treating the composed receipt as independent proof.

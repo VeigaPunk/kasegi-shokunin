@@ -1,0 +1,190 @@
+# MutC2Row-4 — S057 single-cell mutation matrix (kasegi round-39 wave 2, falsify)
+Seat: MutC2Row-4 (mutation tester, leaf). Date: 2026-10-26 (UTC).
+Target: the LANDED S057 row in kasegi-shokunin/corpus/SOURCES.md (lane HEAD
+5006097a84305267c9a3e8c1e1d560e60fe41d37; SOURCES.md last touched by 1a139e0
+"round-39: wave1 integration"; working tree clean for SOURCES.md — only
+untracked .ufo/waves/round-39/wave2* dispatch files dirty).
+Method: byte-identical scratch mirror of the lane corpus/ tree
+(/fast/scratch/hyaku/kasegi-r39/MutC2Row-4/), six single-cell mutations of the
+S057 row only (each mutant verified: diff vs pristine = exactly one line, the
+S057 row), then (a) fleet `sources-census.sh validate --file <mirror>` and
+(b) the lane's own awk census commands verbatim from fleet CORPUS.md §SOURCES.md
+Census (file argument swapped to the mirror path; the used-by existence check
+run with cwd = lane root so `[ -e ]` resolves against the real lane tree, the
+command's own documented "run from the lane root" semantics).
+
+## 0. Baselines (do-nothing controls)
+
+- Frozen C2 counting command, real lane:
+  `bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`
+  → exit 0. Output:
+    kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+    kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+    kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+  Two PRE-EXISTING W04 warnings (S028, S029 cross-scope URL duplicates) ride in
+  the landed registry; warnings do not affect exit (fleet property, report-only).
+- Pristine mirror, `validate --file <mirror>`: identical shape (lane name
+  "file"), same two W04 lines, `file ok …`, exit 0. The mirror reproduces the
+  lane baseline exactly.
+- Pristine mirror byte-identity: cmp lane vs mirror → identical;
+  sha256 f33d10f45142b6d59969cedbfc35a1d29a3ba672d62067da8424fc0d32a728f2
+  (both copies).
+- Tool sanity: `TMPDIR=<scratch> sources-census.sh selftest` → "selftest ok",
+  exit 0, 96 killed / 0 SURVIVED.
+- Pristine awk census (all seven CORPUS.md commands): rows=59 (matches erratum
+  E1), malformed=0, tier A=55 B=2 C=2, status mined=44 queued=9 rejected=6,
+  duplicate ids ∅, enum violations ∅, mined used-by missing ∅.
+
+## 1. Mutation matrix (S057 row only; every other byte identical to pristine)
+
+Baseline S057 cells under attack (frozen C2/E5): kind=docs, tier=A,
+status=mined, opened=2026-10-26, recheck=180d, NF=13, source cell carries
+exactly https://www.cisa.gov/resources-tools/resources/when-issue-vex-information.
+
+### M1 mut-tier — tier cell A → C
+- Edit: `| docs | A | CISA's own guidance on when` → `| docs | C | CISA's own guidance on when`
+- sha256: de9331fe2f2ba21b1f5d903dafae5a2ac653897650ec1c3b8e59afd21f04c1e5
+- Fleet census `validate --file`:
+    file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+    file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+    file	W01	S057 tierC mined used-by=corpus/knowledge/cisa-when-to-issue-vex.md
+    file	ok	/fast/scratch/hyaku/kasegi-r39/MutC2Row-4/mut-tier/corpus/SOURCES.md
+  exit=0 — NOT caught by exit code; flagged as NEW warning code W01 vs baseline.
+- Lane awk census: rows=59, malformed=0, tier hist **A=54 B=2 C=3** (was
+  A=55 B=2 C=2), status hist unchanged, dup ids ∅, enum violations ∅ (C is a
+  valid tier enum value), used-by missing ∅.
+- Verdict: census emits W01 (warning; exit 0). Under the frozen C2 kill-rule
+  limb "census exit != 0 **or a new W/E code**" this WOULD trip as a new W code;
+  the census's own exit code does not move. Report-only fleet property.
+
+### M2 mut-kind — kind cell docs → spec
+- Edit: `when-issue-vex-information | docs | A |` → `when-issue-vex-information | spec | A |`
+- sha256: 8271f6b32fb0f58043ad078ed0007c3cf340b7de4607f0378259160c1e36ebe4
+- Fleet census `validate --file`: baseline output only (two W04 + `file ok …`), exit=0 — SILENT PASS. No E, no W.
+- Lane awk census: byte-for-byte identical to pristine on all seven commands
+  (rows=59, malformed=0, tier A=55 B=2 C=2, status mined=44 queued=9 rejected=6,
+  dup ∅, enum ∅ — `spec` is a valid kind enum value, used-by ∅). kind has no
+  histogram command, so the drift is invisible there too.
+- Verdict: NOT caught by either instrument. The frozen C2/E5 predicate pins
+  S057 kind=docs; neither the fleet census nor the lane awk set detects
+  in-enum kind drift.
+
+### M3 mut-status — status cell mined → queued
+- Edit: `companion to S055's document-content standard | mined | 2026-10-26 |` → `… | queued | 2026-10-26 |`
+- sha256: 3ca75e756927854e2976d57315fc9e3e63df66588cbdc3e33ae1fe0dd0312c94
+- Fleet census `validate --file`: baseline output only (two W04 + `file ok …`), exit=0 — SILENT PASS. No E, no W (queued is a valid status; W03 only fires for mined+used-by=—; E11 only checks mined rows).
+- Lane awk census: rows=59, malformed=0, tier hist unchanged, status hist
+  **mined=43 queued=10 rejected=6** (was mined=44 queued=9), dup ∅, enum ∅,
+  used-by missing ∅ (S057 leaves the mined set, so its path check is skipped).
+- Verdict: NOT caught by exit code or E/W code; visible only as a status
+  histogram shift that no must-print-nothing check judges. A pinned expected
+  histogram would be needed to catch it.
+
+### M4 mut-nf — NF 13 → 12 (recheck cell `180d` dropped)
+- Edit: `| mined | 2026-10-26 | 180d | corpus/knowledge/cisa-when-to-issue-vex.md |` → `| mined | 2026-10-26 | corpus/knowledge/cisa-when-to-issue-vex.md |`
+- sha256: efa70422ba9b2f9cb5e441f6e67e021240688ebe30db13f69f42d56f750a2bec
+- Fleet census `validate --file`:
+    file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+    file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+    file	E01	S057 fields=10
+  exit=1 — CAUGHT (E01; the `file ok` line is suppressed when E-codes exist).
+- Lane awk census: rows=59, malformed=**1** (was 0; the NF!=13 counter catches
+  it), tier/status hists unchanged (the histogram loops still count the
+  malformed row's tier/status cells), dup ∅, enum ∅ (enum check requires
+  NF==13, so the malformed row is exempt), used-by missing ∅ (same NF==13
+  exemption — a malformed mined row also escapes the used-by existence check).
+- Verdict: CAUGHT by both instruments (census E01 exit 1; awk malformed=1).
+
+### M5 mut-twourl — source cell carries two URLs
+- Edit: `resources/when-issue-vex-information | docs | A |` →
+  `resources/when-issue-vex-information https://www.cisa.gov/sites/default/files/2023-11/When-to-Issue-a-VEX-508c.pdf | docs | A |`
+  (second URL = the row's own linked 508c PDF, named in the landed round-39
+  lesson prose; chosen as the most plausible real-world paste-in. It collides
+  with no other row's URL, so no W04/E04 cross-talk is possible.)
+- sha256: 8c505d9840a1846d162a9804f90d0b4c923b0dce060be53504e5f48a8bd399ed
+- Fleet census `validate --file`: baseline output only (two W04 + `file ok …`), exit=0 — SILENT PASS.
+  Mechanism (read from scripts/sources-census.sh row_pass): `url_of()` matches
+  the FIRST `https?://…` in the cell only (`match(s,/https?:\/\/[^[:space:]|]+/)`),
+  and W04/E04 compare that single normalized URL per row. Extra URLs in the
+  cell are invisible to the census.
+- Lane awk census: byte-for-byte identical to pristine on all seven commands —
+  no awk command inspects the source cell's URL count.
+- Verdict: NOT caught by either instrument. The frozen E5 binding says the
+  S057 source cell carries EXACTLY the page URL; a second URL — even the row's
+  own linked capture PDF — passes both instruments silently.
+
+### M6 mut-opened — opened cell 2026-10-26 → 2027-01-01 (future)
+- Edit: `companion to S055's document-content standard | mined | 2026-10-26 | 180d |` → `… | mined | 2027-01-01 | 180d |`
+- sha256: f70600551fa6634a84fefaa7d18581319a235a7a35012b4cde0a408dafdcbe71
+- Fleet census `validate --file`:
+    file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+    file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+    file	E08	S057 opened=2027-01-01
+  exit=1 — CAUGHT (E08; opened_epoch > today 2026-10-26).
+- Lane awk census: byte-for-byte identical to pristine on all seven commands —
+  the CORPUS.md awk set has no opened-date check (only the fleet census does).
+- Verdict: CAUGHT by the fleet census (E08, exit 1); invisible to the lane awk set.
+
+## 2. Verdict table
+
+| mutation (S057 cell)      | fleet census code | census exit | lane awk census signal                  | caught? |
+|---------------------------|-------------------|-------------|-----------------------------------------|---------|
+| M1 tier A→C               | W01 (new W code)  | 0           | tier hist A=54 C=3; enum ∅              | warning-only (kill-rule "new W/E code" limb would trip; census exit does not) |
+| M2 kind docs→spec         | —                 | 0           | identical to pristine                   | NO      |
+| M3 status mined→queued    | —                 | 0           | status hist mined=43 queued=10          | NO (histogram shift only; no judging check) |
+| M4 NF 13→12               | E01 fields=10     | 1           | malformed=1                             | YES (both) |
+| M5 source cell two URLs   | —                 | 0           | identical to pristine                   | NO      |
+| M6 opened future          | E08 opened=2027-01-01 | 1       | identical to pristine                   | YES (census only) |
+
+Score: fleet census catches 2/6 by exit code (E01, E08), flags 1/6 as a new
+warning (W01), silently passes 3/6 (kind, status, two-URL). The lane awk set
+catches 1/6 (malformed=1) and shifts a histogram on 2/6 without any judging
+check; it is blind to kind drift, two-URL cells and opened dates.
+
+## 3. Findings against the frozen C2/E5 predicates
+
+1. The C2 kill-rule limb "census exit != 0" guards exactly two of the six
+   frozen S057 cells (NF shape, opened date). Tier, kind, status and
+   source-cell content — the cells that carry the row's evidentiary meaning —
+   drift without moving the census exit code.
+2. E5 binding "source cell carries exactly <page URL>" is unenforced by both
+   instruments: the census reads only the first URL per cell; no awk command
+   reads URLs at all.
+3. In-enum drift (docs→spec, mined→queued) is structurally invisible to the
+   enum-violation checks by design; only a pinned expected histogram (tier,
+   status) or a per-row cell pin would catch it. The lane currently pins
+   neither in CORPUS.md's census block.
+4. Tier downgrade of a mined, used row surfaces only as W01 — a warning class
+   the census itself documents as "warnings do not affect clean lanes". Under
+   the frozen kill rule this still trips via the "new W/E code" limb, but the
+   tool's own contract treats the lane as clean (exit 0, `file ok` printed).
+5. Defense-in-depth note: the awk malformed-row counter and the used-by
+   existence check are mutually exclusive (NF!=13 vs NF==13 conditions), so a
+   malformed mined row escapes the used-by check; the fleet census has the
+   same shape (E01 `next` skips remaining per-row checks).
+6. Do-nothing controls hold: the frozen counting command exits 0 on the real
+   lane; the pristine mirror reproduces it; selftest 96/0; the two pre-existing
+   W04 warnings (S028, S029) are the only baseline findings and are report-only.
+
+## 4. Reproduction (exact commands)
+
+- Mirror: `S=/fast/scratch/hyaku/kasegi-r39/MutC2Row-4; mkdir -p $S/lane && cp -a <lane>/corpus $S/lane/corpus && cmp <lane>/corpus/SOURCES.md $S/lane/corpus/SOURCES.md` → identical; per-mutant `cp -a $S/lane $S/mut-<tag>`.
+- Census: `bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file $S/mut-<tag>/corpus/SOURCES.md; echo exit=$?`
+- Awk: the seven commands verbatim from /home/vgpnk/Projects/shokunin/CORPUS.md
+  §"Census — run from the lane root", file argument = mirror path, cwd = lane root.
+- Mutant fidelity: `diff pristine mutant` = exactly one changed line (the S057
+  row) for all six mutants; hashes in §5.
+
+## 5. sha256 (SOURCES.md mirrors)
+
+    f33d10f45142b6d59969cedbfc35a1d29a3ba672d62067da8424fc0d32a728f2  pristine (= lane HEAD bytes)
+    de9331fe2f2ba21b1f5d903dafae5a2ac653897650ec1c3b8e59afd21f04c1e5  mut-tier
+    8271f6b32fb0f58043ad078ed0007c3cf340b7de4607f0378259160c1e36ebe4  mut-kind
+    3ca75e756927854e2976d57315fc9e3e63df66588cbdc3e33ae1fe0dd0312c94  mut-status
+    efa70422ba9b2f9cb5e441f6e67e021240688ebe30db13f69f42d56f750a2bec  mut-nf
+    8c505d9840a1846d162a9804f90d0b4c923b0dce060be53504e5f48a8bd399ed  mut-twourl
+    f70600551fa6634a84fefaa7d18581319a235a7a35012b4cde0a408dafdcbe71  mut-opened
+
+No lane, fleet, sibling-repo or source-tree file was modified. All mutants
+lived in scratch and were destroyed with the scratch dir after this deliverable
+and the receipt were copied into .ufo/waves/round-39/wave2/.

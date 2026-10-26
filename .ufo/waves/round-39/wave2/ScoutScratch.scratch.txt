@@ -1,0 +1,87 @@
+ScoutScratch post-wave scratch audit, round 39 wave 2
+scan UTC: 2026-10-26T20:15:52Z (host clock; ls mtimes below are host-local = UTC-3h)
+lane head at scan: 5006097a84305267c9a3e8c1e1d560e60fe41d37 (Y); J = 46c66c268502abd1b2c342fc71bf88ccf721845b
+
+$ ls -d /fast/scratch/hyaku/kasegi-*
+kasegi-r39        (dir)
+kasegi-r39-l1     (dir)
+kasegi-r37        ABSENT (ls: No such file or directory)
+kasegi-r38        ABSENT (ls: No such file or directory)
+
+$ df -h /fast/scratch/hyaku     (scan time)
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme1n1p2  804G  189G  615G  24% /fast
+(first scan 20:13:59Z: Used 186G, Avail 619G, Use 24%)  -> disk guard green
+
+== /fast/scratch/hyaku/kasegi-r39 top-level entries and sizes (du -sb, bytes) ==
+ConnC1C2                       0
+ConnRoleGround                 0
+CritBaseControl                253741970
+CritC1Kill                     287746024
+CritC2Kill                     128809692
+CritG1Exploit                  128786214
+CritG2Exploit                  1287856841
+CritG4Exploit                  0
+CritMutantAssault              158945071
+CritOverclaimScan              0
+MutCorrectionBlocks            0
+MutFixedPins                   0
+MutJunk                        0
+MutSuiteLimbs                  0
+RevC1Receipt                   0
+RevC2Recheck                   19182
+RevCensusFinal                 0
+RevF22Entry                    0
+RevF22Quotes                   0
+RevGateReadiness               0
+RevMistakesGate                0
+RevNoHarmDiff                  0
+RevReportPreflight             0
+RevShonenFinal                 14447
+RevSuiteDesign                 0
+RevTrendEvidence               0
+ScoutInstrumentState           132497
+ScoutMergePackage              26260
+ScribeFinalWaveEvidence        13708
+SentinelScopeGuard             0
+SentinelSecretsScan            0
+SimplArtifactTrim              2221
+gates-work                     82137
+(ScoutScratch: removed by this seat before the scan; absent in the listing)
+total top-level entries: 33 (32 seat dirs + gates-work)
+
+== classification ==
+LIVE WAVE-2 SEAT DIRS (32 other than gates-work and ScoutScratch): all created 17:13-17:15 host-local, the same minute the wave-2 seats started;
+  their owners are running. NOT a defect at scan time; each must be gone before filing (trap rm). Re-scan at filing is REQUIRED.
+  Heavy ones to watch (1.29 GB CritG2Exploit; 288 MB CritC1Kill; 254 MB CritBaseControl): live seat work trees, sizes only.
+DEFECT 1: kasegi-r39/gates-work (82137 B, mtime 17:12, no owning seat, no process: ps shows no r39-closure/r37-closure).
+  Not a wave-2 seat. It is the --work dir named in the committed receipt: final-gates/all-gates.txt line 10:
+  G6 payload=r37=absent,r38=absent,r39=present,work=inside,tolerated=/fast/scratch/hyaku/kasegi-r39/gates-work,read=ok closed=1
+  Owner: L1 KasegiR39 / the L1 all-gates run (wave-1 integration, run-J/selftest-J/verify-Y). Contents:
+    gates-work/r/ (empty), run/ (empty), r37dbinned/ (empty), r37/live-lines.txt (1125 B), r37-pinned/r37-closure.sh (73132 B, 16:59),
+    st/ (forge-7-cases.txt, forge-caselines.txt, forge-detail-free.txt, forge-failed-cases.txt, forge-no-verdict.txt, forge-summary.txt, selftest-report.txt)
+  Kill rule (claims.json C1): "any leftover kasegi-r37/r38/r39 scratch entry at filing". It must be removed before filing; at the receipt run it was
+  tolerated only because G6 excuses the run's own --work.
+DEFECT 2 (outside the G6 name scope): /fast/scratch/hyaku/kasegi-r39-l1 (33845 B, mtime 17:12, 15 files: apply-deliverables.py, integrate.py,
+  integration-check.sh, integration-checklist.md, land-deliverables.sh, landed-texts.md, lesson-draft.md, make-declared-blocks.sh, make-receipt.sh,
+  report-draft.md, report-final.md, report-full.md, run-J.txt, selftest-J.txt, verify-Y.txt). L1 scratch. Named kasegi-r39-*, but G6 matches only the exact
+  names kasegi-r37 / kasegi-r38 / kasegi-r39; it is invisible to G6 (demonstrated below). Owner: L1 KasegiR39. Remove before filing.
+r37 / r38: no leftover (both roots absent).
+
+== /tmp ==
+find /tmp -xdev -size +50M -ls  -> no output (no file over 50 MB). du -sh /tmp -> 555M total (unreadable systemd-private dirs excluded by permission).
+find /tmp -maxdepth 2 -iname '*kasegi*' -o -iname 'r39-closure*' -o -iname 'ScoutScratch*' -> no output (this seat's /tmp outputs were removed).
+Wave-era /tmp files seen belong to other lanes (kaidoku r39: r39c1-entry.md 3642 B, r39rows.txt 4969 B, kaidoku-r39-census-start.txt 1205 B).
+No kasegi wave-era /tmp file over 50 MB. No /tmp defect for kasegi.
+
+== suite demonstrations (this seat, scratch under kasegi-r39/ScoutScratch, removed after) ==
+Run A: bash corpus/instruments/r39-closure.sh --export-ref J --work $S/w
+  -> G2 receipt=0 (expected, E4), G6 r39=present tolerated=none, G8 r37-closed=0 ; closed=5/8 exit=1
+Run B: same at Y -> G1 G2 G3 G4 G5 G7 closed=1; G6 closed=0 (r39=present: gates-work + sibling seat dirs; the first run also had my own run.out file in
+  my scratch dir, which tripped tolerated=none); G8 closed=0 ; closed=6/8 exit=1
+Run C: pinned r37 suite (git show 2387dcf6:corpus/instruments/r37-closure.sh) at Y -> E9 payload=status-read=ok,status-dirty=5,scratch-seat-dirs=0,head-match=1,
+  lane-root=1,scratch-root=absent closed=0 ; closed=13/14 exit=1. So G8 is red whenever the lane worktree is dirty (5 untracked wave-2 entries now).
+Run D: --scratch-root $S/root containing kasegi-r39-l1/f at Y -> G6 payload=r37=absent,r38=absent,r39=absent,work=outside,tolerated=none,read=ok closed=1
+  (a leftover dir named kasegi-r39-l1 passes G6; closed=7/8 only because G8 is dirty-tree red).
+Run E: --scratch-root $S/root containing kasegi-r39/leftover (a file) -> G6 r39=present closed=0 (correct, fail-closed) but stderr shows
+  "r39-closure.sh: line 893: cd: .../kasegi-r39/leftover: Not a directory" (also line 555 in g6_chain_ok): file entries leak a cd error; verdict unaffected.

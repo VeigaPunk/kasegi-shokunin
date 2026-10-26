@@ -200,3 +200,4 @@ Correction (round 39): box 3's round-38 evidence line ("r38 suite run + selftest
       — evidence (round 39): PROVINCE.md carries the `[r39 Frontier amendment]` F22 line; F22/S057 uncontested across 20 sibling lanes + shokuknow (ScoutSiblingF22 ruling); junk twin rejected. Box stays `[~]`.
 
 Round-39 measured state: judged head: export-ref of .ufo/waves/round-39/final-gates/all-gates.txt (claims-erratum-1.md E4).
+Correction (round 39): the round-39 suite's recorded 8/8 receipt is not independently reproducible as committed proof: G2 accepts mutated payload values and G6 depends on scratch-root state (`wave2/CritG2Exploit.md`, `wave2/CritC1Kill.md`). Its green isolated-clone/selftest evidence is reported with those limits; box 3 remains `[~]`, not independently verified.

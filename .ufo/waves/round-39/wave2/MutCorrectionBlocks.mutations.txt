@@ -1,0 +1,340 @@
+# MutCorrectionBlocks.mutations.txt — raw experiment transcript (round-39 wave 2, falsify)
+# seat: MutCorrectionBlocks (mutation-tester, leaf) | captured 2026-10-26T20:21:12Z
+# lane HEAD at capture: 5006097a84305267c9a3e8c1e1d560e60fe41d37 (tip Y; judged head J = 46c66c268502abd1b2c342fc71bf88ccf721845b per all-gates.txt export-ref)
+# attack target: the four landed R2 correction blocks — corpus/lessons/round-38.md:311, LOG.md:1704 (bullet), SCORECARD.md:1560 (R3 sibling :1579 left pristine), SHONEN.md:190
+# mutations: M1 wrong round label (round 39 -> round 38); M2a rewrite-style edit instead of append (overstate rewritten in place, appended block dropped); M2b mixed (block kept AND overstate rewritten in place); M3 correction without naming the overstate (truth tokens removed)
+# detector sweep.sh limbs: A = frozen erratum-E5-item-7 count (grep -c '^Correction (round 39)'); A' = unanchored count; B = named truth (a correction-block line containing closed=7/8 AND 7dd2fcd6); C = append-only (git diff --no-index --numstat deleted == 0)
+# all scratch under /fast/scratch/hyaku/kasegi-r39/MutCorrectionBlocks; pristine bytes = git show HEAD:<file>; the lane repo was never written by this seat.
+
+################################################################
+== DETECTOR SOURCE (sweep.sh, as executed) ==
+################################################################
+#!/usr/bin/env bash
+# sweep.sh — review-sweep detector for the R2 correction blocks (round-39 wave 2).
+# Faithful to the frozen semantics:
+#   Limb A  (erratum E5 item 7, FROZEN counting command):
+#           grep -c '^Correction (round 39)' >= 1 per file.
+#   Limb A' (item phrasing, unanchored observation):
+#           grep -c 'Correction (round 39)' >= 1 per file.
+#   Limb B  (RevCorrections mandate, named truth): a correction-block line —
+#           column-0 `Correction (round 39)` or the LOG bullet shape
+#           `- **Correction (round 39):**` — must name the J-run truth:
+#           contains `closed=7/8` AND `7dd2fcd6` (the 8/8 run is at run-ref
+#           7dd2fcd6..., not the judged head J).
+#   Limb C  (RevCorrections mandate, append-only): diff vs pristine shows
+#           additions only (git diff --no-index --numstat deleted == 0).
+# Usage: sweep.sh <dir-with-the-four-files> <pristine-dir>
+# Exit 0 iff every limb passes for every file.
+set -u
+dir=$1
+pri=$2
+files="corpus/lessons/round-38.md LOG.md SCORECARD.md SHONEN.md"
+overall=0
+for f in $files; do
+  a=$(grep -c '^Correction (round 39)' "$dir/$f"); a=${a:-0}
+  ap=$(grep -c 'Correction (round 39)' "$dir/$f"); ap=${ap:-0}
+  b=$(awk '(index($0, "Correction (round 39)") == 1 || index($0, "- **Correction (round 39)") == 1) \
+        && index($0, "closed=7/8") > 0 && index($0, "7dd2fcd6") > 0 { n++ } END { print n+0 }' "$dir/$f")
+  numstat=$(git diff --no-index --numstat "$pri/$f" "$dir/$f" 2>/dev/null | awk '{print $1, $2}'); numstat=${numstat:-0 0}
+  add=${numstat%% *}; del=${numstat##* }
+  va=PASS; [ "$a"  -ge 1 ] || va=FAIL
+  vap=PASS; [ "$ap" -ge 1 ] || vap=FAIL
+  vb=PASS; [ "$b"  -ge 1 ] || vb=FAIL
+  vc=PASS; [ "$del" -eq 0 ] || vc=FAIL
+  printf 'FILE=%s A=%s:%s Ap=%s:%s B=%s:%s C=%s:%s\n' \
+    "$f" "$va" "$a" "$vap" "$ap" "$vb" "$b" "$vc" "$del"
+  case "$va$vap$vb$vc" in PASSPASSPASSPASS) ;; *) overall=1 ;; esac
+done
+if [ "$overall" -eq 0 ]; then echo 'SWEEP=pass'; else echo 'SWEEP=fail'; fi
+exit "$overall"
+
+################################################################
+== PRISTINE BASELINE (do-nothing control) ==
+################################################################
+---- sweep pristine ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+
+################################################################
+== 16 SINGLE-DEFECT SCENARIOS (sweep output + verdict) ==
+################################################################
+===================================================================
+== SCENARIO M1-lesson (target corpus/lessons/round-38.md) ==
+---- sweep M1-lesson ----
+FILE=corpus/lessons/round-38.md A=FAIL:0 Ap=FAIL:0 B=FAIL:0 C=FAIL:1
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M1-lesson: CAUGHT by limbs: A Ap B C
+(baseline states: A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0 )
+(mutated  states: A=FAIL:0 Ap=FAIL:0 B=FAIL:0 C=FAIL:1 )
+===================================================================
+== SCENARIO M1-LOG (target LOG.md) ==
+---- sweep M1-LOG ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:1 B=FAIL:0 C=FAIL:1
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M1-LOG: CAUGHT by limbs: B C
+(baseline states: A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0 )
+(mutated  states: A=FAIL:0 Ap=PASS:1 B=FAIL:0 C=FAIL:1 )
+===================================================================
+== SCENARIO M1-SCORECARD (target SCORECARD.md) ==
+---- sweep M1-SCORECARD ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:1 Ap=PASS:1 B=FAIL:0 C=FAIL:1
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M1-SCORECARD: CAUGHT by limbs: B C
+(baseline states: A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0 )
+(mutated  states: A=PASS:1 Ap=PASS:1 B=FAIL:0 C=FAIL:1 )
+===================================================================
+== SCENARIO M1-SHONEN (target SHONEN.md) ==
+---- sweep M1-SHONEN ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=FAIL:0 Ap=FAIL:0 B=FAIL:0 C=FAIL:1
+SWEEP=fail
+VERDICT M1-SHONEN: CAUGHT by limbs: A Ap B C
+(baseline states: A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0 )
+(mutated  states: A=FAIL:0 Ap=FAIL:0 B=FAIL:0 C=FAIL:1 )
+===================================================================
+== SCENARIO M2a-lesson (target corpus/lessons/round-38.md) ==
+---- sweep M2a-lesson ----
+FILE=corpus/lessons/round-38.md A=FAIL:0 Ap=FAIL:0 B=FAIL:0 C=FAIL:3
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M2a-lesson: CAUGHT by limbs: A Ap B C
+(baseline states: A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0 )
+(mutated  states: A=FAIL:0 Ap=FAIL:0 B=FAIL:0 C=FAIL:3 )
+===================================================================
+== SCENARIO M2a-LOG (target LOG.md) ==
+---- sweep M2a-LOG ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:1 B=FAIL:0 C=FAIL:2
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M2a-LOG: CAUGHT by limbs: B C
+(baseline states: A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0 )
+(mutated  states: A=FAIL:0 Ap=PASS:1 B=FAIL:0 C=FAIL:2 )
+===================================================================
+== SCENARIO M2a-SCORECARD (target SCORECARD.md) ==
+---- sweep M2a-SCORECARD ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:1 Ap=PASS:1 B=FAIL:0 C=FAIL:2
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M2a-SCORECARD: CAUGHT by limbs: B C
+(baseline states: A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0 )
+(mutated  states: A=PASS:1 Ap=PASS:1 B=FAIL:0 C=FAIL:2 )
+===================================================================
+== SCENARIO M2a-SHONEN (target SHONEN.md) ==
+---- sweep M2a-SHONEN ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=FAIL:0 Ap=FAIL:0 B=FAIL:0 C=FAIL:2
+SWEEP=fail
+VERDICT M2a-SHONEN: CAUGHT by limbs: A Ap B C
+(baseline states: A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0 )
+(mutated  states: A=FAIL:0 Ap=FAIL:0 B=FAIL:0 C=FAIL:2 )
+===================================================================
+== SCENARIO M2b-lesson (target corpus/lessons/round-38.md) ==
+---- sweep M2b-lesson ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=FAIL:1
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M2b-lesson: CAUGHT by limbs: C
+(baseline states: A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0 )
+(mutated  states: A=PASS:1 Ap=PASS:1 B=PASS:1 C=FAIL:1 )
+===================================================================
+== SCENARIO M2b-LOG (target LOG.md) ==
+---- sweep M2b-LOG ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=FAIL:1
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M2b-LOG: CAUGHT by limbs: C
+(baseline states: A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0 )
+(mutated  states: A=FAIL:0 Ap=PASS:2 B=PASS:1 C=FAIL:1 )
+===================================================================
+== SCENARIO M2b-SCORECARD (target SCORECARD.md) ==
+---- sweep M2b-SCORECARD ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=FAIL:1
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M2b-SCORECARD: CAUGHT by limbs: C
+(baseline states: A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0 )
+(mutated  states: A=PASS:2 Ap=PASS:2 B=PASS:1 C=FAIL:1 )
+===================================================================
+== SCENARIO M2b-SHONEN (target SHONEN.md) ==
+---- sweep M2b-SHONEN ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=FAIL:1
+SWEEP=fail
+VERDICT M2b-SHONEN: CAUGHT by limbs: C
+(baseline states: A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0 )
+(mutated  states: A=PASS:1 Ap=PASS:1 B=PASS:1 C=FAIL:1 )
+===================================================================
+== SCENARIO M3-lesson (target corpus/lessons/round-38.md) ==
+---- sweep M3-lesson ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=FAIL:0 C=FAIL:1
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M3-lesson: CAUGHT by limbs: B C
+(baseline states: A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0 )
+(mutated  states: A=PASS:1 Ap=PASS:1 B=FAIL:0 C=FAIL:1 )
+===================================================================
+== SCENARIO M3-LOG (target LOG.md) ==
+---- sweep M3-LOG ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=FAIL:0 C=FAIL:1
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M3-LOG: CAUGHT by limbs: B C
+(baseline states: A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0 )
+(mutated  states: A=FAIL:0 Ap=PASS:2 B=FAIL:0 C=FAIL:1 )
+===================================================================
+== SCENARIO M3-SCORECARD (target SCORECARD.md) ==
+---- sweep M3-SCORECARD ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=FAIL:0 C=FAIL:1
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+SWEEP=fail
+VERDICT M3-SCORECARD: CAUGHT by limbs: B C
+(baseline states: A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0 )
+(mutated  states: A=PASS:2 Ap=PASS:2 B=FAIL:0 C=FAIL:1 )
+===================================================================
+== SCENARIO M3-SHONEN (target SHONEN.md) ==
+---- sweep M3-SHONEN ----
+FILE=corpus/lessons/round-38.md A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0
+FILE=LOG.md A=FAIL:0 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SCORECARD.md A=PASS:2 Ap=PASS:2 B=PASS:1 C=PASS:0
+FILE=SHONEN.md A=PASS:1 Ap=PASS:1 B=FAIL:0 C=FAIL:1
+SWEEP=fail
+VERDICT M3-SHONEN: CAUGHT by limbs: B C
+(baseline states: A=PASS:1 Ap=PASS:1 B=PASS:1 C=PASS:0 )
+(mutated  states: A=PASS:1 Ap=PASS:1 B=FAIL:0 C=FAIL:1 )
+
+################################################################
+== LANDED-SUITE CROSS-CHECK: G5 probe on SCORECARD fixtures (minimal git fixture per guard recipe; only the G5 line is evidence; other checks red from fixture-absence) ==
+################################################################
+# captured 2026-10-26T20:21:06Z
+---- suite G5 probe: pristine-SCORECARD (fixture /fast/scratch/hyaku/kasegi-r39/MutCorrectionBlocks/tmp.1KwUdJnGDB ref 1e297fc1e55616cd658d4451d9be160559546803) ----
+export-ref=1e297fc1e55616cd658d4451d9be160559546803 mode=export lane=/fast/scratch/hyaku/kasegi-r39/MutCorrectionBlocks/tmp.1KwUdJnGDB suite-sha256=2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b
+deviation=non-default --lane
+deviation=non-default --scratch-root
+fatal: bad object 480b1a505a2dfc14a4f718d16d63808247214d0a
+fatal: path 'corpus/instruments/r37-closure.sh' does not exist in '2387dcf6ccfefcfb703783387b9aade8fc82abfa'
+G1 payload=declared=0,valid=0,front-doors=0,tail-match=0,pure-append=1,paths=1,province-fence=absent,readme-fence=absent,corrections-outside=0,corrections-inside=0,corrections-declared=1,diff-read=missing closed=0
+G2 payload=receipt=0,sentinel=0,export-ref=0,ancestor=0,diff-clean=0,diff-read=ok,digest-match=0,export-suite=0,run-lines=0,closed-lines=0,distinct-ids=0,closed-line=0,graded-cases=0,ungraded-cases=0,selftest-summary=0,scorecard-ref=1,shonen-ref=0,final-lane-commit=0 closed=0
+G3 payload=added-quotes=0,covered=0,uncovered=0,report-only=0,diff-read=fail closed=0
+G4 payload=dispatches=0,pairs=0,seats-ok=0,zero-task=0,read=fail closed=0
+G5 payload=round39-section=1,final-lane-commit=0,correction=2,correction-labeled=1 closed=1
+G6 payload=r37=absent,r38=absent,r39=absent,work=outside,tolerated=none,read=ok closed=1
+G7 payload=section=0,after-round38=0,correction=0,rows=0,proposal-1=0,proposal-3=0 closed=0
+G8 payload=pin-ref=2387dcf6ccfefcfb703783387b9aade8fc82abfa,pinned-sha=0,export-copy=0,r37-copy=0,r37-closed=0,r37-exit=1 closed=0
+closed=2/8 exit=1
+---- suite G5 probe: M1-SCORECARD (R2 block label -> round 38) (fixture /fast/scratch/hyaku/kasegi-r39/MutCorrectionBlocks/tmp.TnEGeskG3i ref 27a727edfdc31ddb6c2fc5be62322f09ac8abbe3) ----
+export-ref=27a727edfdc31ddb6c2fc5be62322f09ac8abbe3 mode=export lane=/fast/scratch/hyaku/kasegi-r39/MutCorrectionBlocks/tmp.TnEGeskG3i suite-sha256=2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b
+deviation=non-default --lane
+deviation=non-default --scratch-root
+fatal: bad object 480b1a505a2dfc14a4f718d16d63808247214d0a
+fatal: path 'corpus/instruments/r37-closure.sh' does not exist in '2387dcf6ccfefcfb703783387b9aade8fc82abfa'
+G1 payload=declared=0,valid=0,front-doors=0,tail-match=0,pure-append=1,paths=1,province-fence=absent,readme-fence=absent,corrections-outside=0,corrections-inside=0,corrections-declared=1,diff-read=missing closed=0
+G2 payload=receipt=0,sentinel=0,export-ref=0,ancestor=0,diff-clean=0,diff-read=ok,digest-match=0,export-suite=0,run-lines=0,closed-lines=0,distinct-ids=0,closed-line=0,graded-cases=0,ungraded-cases=0,selftest-summary=0,scorecard-ref=1,shonen-ref=0,final-lane-commit=0 closed=0
+G3 payload=added-quotes=0,covered=0,uncovered=0,report-only=0,diff-read=fail closed=0
+G4 payload=dispatches=0,pairs=0,seats-ok=0,zero-task=0,read=fail closed=0
+G5 payload=round39-section=1,final-lane-commit=0,correction=1,correction-labeled=1 closed=1
+G6 payload=r37=absent,r38=absent,r39=absent,work=outside,tolerated=none,read=ok closed=1
+G7 payload=section=0,after-round38=0,correction=0,rows=0,proposal-1=0,proposal-3=0 closed=0
+G8 payload=pin-ref=2387dcf6ccfefcfb703783387b9aade8fc82abfa,pinned-sha=0,export-copy=0,r37-copy=0,r37-closed=0,r37-exit=1 closed=0
+closed=2/8 exit=1
+---- suite G5 probe: M2b-SCORECARD (overstate :1517 rewritten in place, block kept) (fixture /fast/scratch/hyaku/kasegi-r39/MutCorrectionBlocks/tmp.C7uHL7QDdF ref 1b589dbfcbfdb4f43db09cf832b2e28676c50967) ----
+export-ref=1b589dbfcbfdb4f43db09cf832b2e28676c50967 mode=export lane=/fast/scratch/hyaku/kasegi-r39/MutCorrectionBlocks/tmp.C7uHL7QDdF suite-sha256=2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b
+deviation=non-default --lane
+deviation=non-default --scratch-root
+fatal: bad object 480b1a505a2dfc14a4f718d16d63808247214d0a
+fatal: path 'corpus/instruments/r37-closure.sh' does not exist in '2387dcf6ccfefcfb703783387b9aade8fc82abfa'
+G1 payload=declared=0,valid=0,front-doors=0,tail-match=0,pure-append=1,paths=1,province-fence=absent,readme-fence=absent,corrections-outside=0,corrections-inside=0,corrections-declared=1,diff-read=missing closed=0
+G2 payload=receipt=0,sentinel=0,export-ref=0,ancestor=0,diff-clean=0,diff-read=ok,digest-match=0,export-suite=0,run-lines=0,closed-lines=0,distinct-ids=0,closed-line=0,graded-cases=0,ungraded-cases=0,selftest-summary=0,scorecard-ref=1,shonen-ref=0,final-lane-commit=0 closed=0
+G3 payload=added-quotes=0,covered=0,uncovered=0,report-only=0,diff-read=fail closed=0
+G4 payload=dispatches=0,pairs=0,seats-ok=0,zero-task=0,read=fail closed=0
+G5 payload=round39-section=1,final-lane-commit=0,correction=2,correction-labeled=1 closed=1
+G6 payload=r37=absent,r38=absent,r39=absent,work=outside,tolerated=none,read=ok closed=1
+G7 payload=section=0,after-round38=0,correction=0,rows=0,proposal-1=0,proposal-3=0 closed=0
+G8 payload=pin-ref=2387dcf6ccfefcfb703783387b9aade8fc82abfa,pinned-sha=0,export-copy=0,r37-copy=0,r37-closed=0,r37-exit=1 closed=0
+closed=2/8 exit=1
+---- suite G5 probe: M3-SCORECARD (R2 block body truth-free) (fixture /fast/scratch/hyaku/kasegi-r39/MutCorrectionBlocks/tmp.r5Zybt0X9u ref a182ca6f99cbd5a0836b5bcf6179e5d3c21f4f2d) ----
+export-ref=a182ca6f99cbd5a0836b5bcf6179e5d3c21f4f2d mode=export lane=/fast/scratch/hyaku/kasegi-r39/MutCorrectionBlocks/tmp.r5Zybt0X9u suite-sha256=2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b
+deviation=non-default --lane
+deviation=non-default --scratch-root
+fatal: bad object 480b1a505a2dfc14a4f718d16d63808247214d0a
+fatal: path 'corpus/instruments/r37-closure.sh' does not exist in '2387dcf6ccfefcfb703783387b9aade8fc82abfa'
+G1 payload=declared=0,valid=0,front-doors=0,tail-match=0,pure-append=1,paths=1,province-fence=absent,readme-fence=absent,corrections-outside=0,corrections-inside=0,corrections-declared=1,diff-read=missing closed=0
+G2 payload=receipt=0,sentinel=0,export-ref=0,ancestor=0,diff-clean=0,diff-read=ok,digest-match=0,export-suite=0,run-lines=0,closed-lines=0,distinct-ids=0,closed-line=0,graded-cases=0,ungraded-cases=0,selftest-summary=0,scorecard-ref=1,shonen-ref=0,final-lane-commit=0 closed=0
+G3 payload=added-quotes=0,covered=0,uncovered=0,report-only=0,diff-read=fail closed=0
+G4 payload=dispatches=0,pairs=0,seats-ok=0,zero-task=0,read=fail closed=0
+G5 payload=round39-section=1,final-lane-commit=0,correction=1,correction-labeled=1 closed=1
+G6 payload=r37=absent,r38=absent,r39=absent,work=outside,tolerated=none,read=ok closed=1
+G7 payload=section=0,after-round38=0,correction=0,rows=0,proposal-1=0,proposal-3=0 closed=0
+G8 payload=pin-ref=2387dcf6ccfefcfb703783387b9aade8fc82abfa,pinned-sha=0,export-copy=0,r37-copy=0,r37-closed=0,r37-exit=1 closed=0
+closed=2/8 exit=1
+
+################################################################
+== REPRESENTATIVE MUTATION DIFFS (pristine -> mutated, truncated at 200 cols) ==
+################################################################
+# captured 2026-10-26T20:21:06Z
+== M1-lesson diff (pristine -> mutated; label swap on the appended block line) ==
+311c311
+< Correction (round 39): two C1 lines above overstate the result at the judged head. The frozen C1 row (`:21`, "`closed=8/8 exit=0` and `selftest cases=8 failures=0` over the judged head are the recei
+---
+> Correction (round 38): two C1 lines above overstate the result at the judged head. The frozen C1 row (`:21`, "`closed=8/8 exit=0` and `selftest cases=8 failures=0` over the judged head are the recei
+== M2a-SCORECARD diff (overstate :1517 rewritten in place; appended block :1560 dropped) ==
+1517c1517
+< | depth:verifiability | 4 | 4 (held) | `corpus/instruments/r38-closure.sh` (sha256 `85d33ea9…`, export-mode suite G1–G8) closes the round-37 verifier's routed D-A, D-B, D-C, D3, D-D, D-E and the
+---
+> | depth:verifiability | 4 | 4 (held) | `corpus/instruments/r38-closure.sh` (sha256 `85d33ea9…`, export-mode suite G1–G8) closes the round-37 verifier's routed D-A, D-B, D-C, D3, D-D, D-E and the
+1560d1559
+< Correction (round 39): the `## Round 38 result` depth:verifiability row overstates the run at the judged head. Its clause "the run over the round-38 head the receipt names, and its `--selftest`, are
+== M3-LOG diff (bullet body replaced, truth tokens gone) ==
+1704c1704
+< - **Correction (round 39):** the round-38 C1 bullet says "Run and selftest over the judged head: `.ufo/waves/round-38/final-gates/all-gates.txt`"; the receipt's own run over that head (its `export-r
+---
+> - **Correction (round 39):** the round-38 C1 bullet above is corrected; see the round-39 section for the corrected reading.
+== M2b-lesson diff (overstate :21 rewritten in place; appended block KEPT) ==
+21c21
+< | **C1** | depth:verifiability (4, held) | `r38-closure.sh` absent; D-A..D-F open as listed in `.ufo/waves/round-38/c1-controls/before.txt` (no `Correction (round 38)` lines; README fence open at EO
+---
+> | **C1** | depth:verifiability (4, held) | `r38-closure.sh` absent; D-A..D-F open as listed in `.ufo/waves/round-38/c1-controls/before.txt` (no `Correction (round 38)` lines; README fence open at EO
+
+################################################################
+== RESTORATION CONTROL (pristine dir vs git HEAD bytes) ==
+################################################################
+# captured 2026-10-26T20:21:06Z
+RESTORED-EXACT corpus/lessons/round-38.md sha256=7936fb4ce79f4e34edb814abe06db107d3b125be7de8e0b83e67df191e1418d1
+RESTORED-EXACT LOG.md sha256=216b6970cd90a4c9c3d7ccfe52e60cd67c4767194eda9a92f2d18263d8ed6607
+RESTORED-EXACT SCORECARD.md sha256=b43dabd5b15f4b058fd88c12c590ae6e2b83b26b868312c2c1752d2905f2acd4
+RESTORED-EXACT SHONEN.md sha256=44b604ff4d17520d38572402e1d8c20d1b5f575c36c060efefaad078c831e094
