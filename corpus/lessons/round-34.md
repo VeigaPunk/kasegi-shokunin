@@ -3,7 +3,7 @@
 Lane: `kasegi-shokunin`. This lesson reports working-tree and receipt evidence, not a canonical
 judge decision. Revisions: base `014ee2d7aa8c3c095ff57ae51097606a9906228c`; claims-freeze commit
 `29f606dbdd28aff6fd4573ab4b90788bbb90af13`; wave-1 dispatch commit
-`206e5108f1190e61b3e2622d21cab8a5d921650c`; final integration hash `LANDED_HASH_PENDING` (the L1
+`206e5108f1190e61b3e2622d21cab8a5d921650c`; final integration hash `4b0a9f29a8797828fb711faed80ee151afdf5117` (the L1
 fills this after the integration commit; this seat does not commit).
 
 Shape: **one v2 wave**. Wave 1 `kasegi-r34-build`, **65 seats**, dispatch one batched task call
@@ -441,7 +441,7 @@ dedb9ea8…0850  .ufo/waves/round-34/claims.json (byte-identical to the freeze c
 
 ## Open items / unverified
 
-1. **`LANDED_HASH_PENDING`** is the L1's edit; this seat does not commit. Nothing else in this
+1. **`LANDED_HASH_PENDING`** = the L1's integration commit `4b0a9f29a8797828fb711faed80ee151afdf5117`. Nothing else in this
    file is a placeholder.
 2. **Twelve seats had no receipt** at composition (list in the header). Three of them own numbers
    this lesson therefore measured itself and not from a receipt: census-after
@@ -519,3 +519,34 @@ file digests. Evidence paths are named inline, principally
 and `wave1/{ExecRDefectClosureSuite,ExecCaptureBindingHarden,ExecKillRuleCheck,ExecFrontierBidirectional,ExecManifestR32Normalize,ExecS040Orphan,ExecLessonErrata,ExecErratum2,ExecQualityAppends,ExecScorecardMarkers,ExecRegistryAppend,ExecSnapshotR34,ExecHarnessAfter,ExecDoNothingReject,ExecRegressionC2,ExecBeforeReceipts,RevC1BeforeAfter,RevC2BeforeAfter,RevRSuite,RevEntryF17,RevRowS051,RevClaimsFreeze,RevErrata,RevNoHarm,RevCensus,RevJunkTwin,RevManifestR32,RevOrphan,MutKillRuleMutants,MutSelftestSummary,MutManifestField,MutCaptureBindingLimbs,CritC1Kill,CritC2Kill,CritOverclaim,CritMistakes,ScoutImmunefiLive,ScoutDatawalk,ScoutQuarantine,ScoutPackageThemes,ScoutSiblingSweep,ConnClaims,ConnCrossCheck,ConnSibling,ScribeEntryF17,ScribeSOURCESRow,ScribeSearchLog,ScribeSkillGate,ScribeQualityDraft,ScribeAssimilationGate,SentCred,SentScopeFinal}`.
 No claim in this file rests on a file this seat did not open; the twelve absent seats are named
 where their numbers would otherwise have been cited.
+
+## L1 integration appendix (appended 2026-10-26, after composition)
+
+The L1 (`KasegiR34a2`) landed the round on top of this lesson's working tree; everything below is
+additive to the composition above, no earlier sentence is rewritten.
+
+- Integration commit `4b0a9f29a8797828fb711faed80ee151afdf5117` (round-34: all wave evidence,
+  instruments, corpus additions, claims/erratum files).
+- L1 re-ran every frozen counter on the integrated bytes before the commit; full receipt
+  `.ufo/waves/round-34/wave1/L1Integration.md` (+ raw output `L1Integration.raw`): suite
+  `closed=9/9 exit=0`, `--selftest cases=9 failures=0`; capture-binding `--selftest cases=23
+  failures=0`, plain `records=41 bound=41 unbound=0 exit=0`; kill-rule
+  `mutants=3 killed=3 survivors=0`, `gates=7 failed=0`, `survivors=0`; frontier `17`, registry
+  rows `51`, S051 rows `1`, entries citing S051 `1`; harness `entries=20 pass=20 exit=0`;
+  source-recheck S051 exit 0; `<LANE_HASH>` count 0; census exit 0 (W04 S028/S029 only);
+  `recheck-audit.py` `strict pass=46/46` and `expect=present expected=46 missing=0 unexpected=0
+  exit=0`.
+- L1 production edits beyond the seats' work (all end-of-file appends or new files):
+  `PROVINCE.md:75` F17 frontier amendment (the SHONEN box-4 "owed" item); `SKILL.md:1091`
+  round-34 re-verify correction (the SHONEN box-1 "open, not closed" item);
+  `corpus/instruments/knowledge-expected.txt` synced to 46 entries (F17);
+  `corpus/QUALITY.md:229` R25 (planned-state satisfiability, grounded in M34-3);
+  `.ufo/waves/round-34/mistakes-erratum-1.md` minting M34-3/M34-5/M34-6; the strays
+  `selftest-baseline.txt` (lane root) and `baseline-plain.txt` (fleet root) confirmed absent at
+  integration (M34-6 fix). Post-append no-harm: `density.py SKILL.md` mean 201.2 (base 201.7,
+  no score move claimed), `anchorcheck.py SKILL.md` exit 0, 0 bad.
+- Wave receipt census at round end: 65 spec names; 65 receipt files present in `wave1/` with one
+  name-vs-file swap (`ScribeReportDraft-2.md` supplements `ScribeReportDraft.md`) and one missing
+  name (`ExecRegressionC1.md` — dead seat 1 of 65; covered by the L1 regression re-run above and
+  `ExecRDefectClosureSuite.md` §5, base `closed=0/9` exit 1). No `wave1-results.json` exists:
+  attempt 1 ended before the dispatcher finalized results, so receipts are the evidence.

@@ -1597,3 +1597,48 @@ Frozen before dispatch in `.ufo/waves/round-32/claims.json` (base `a2b9fd84eeae4
 ## Round 33 — 2026-10-26 — C1 capture-binding-check + manifest binding; C2 F16 admitted (CNVD 众测/360SRC); one v2 wave, 64 seats
 
 Claims frozen in `.ufo/waves/round-33/claims.json`, claims-freeze commit `6e55c8d` (base `690b69da`); Rule-B erratum 1 (id-scoped binding) `53bfa59`, filed before any seat scored; wave-1 spec/dispatch (64 seats, v2 policy) `a6a5023`; integration commit `9f98488`; closed by this entry. C1 depth:verifiability (4 held): `capture-binding-check.py` + all-manifest binding (url per record, fetched_utc for round-32 S049/S050, archival for 38 legacy), round-32 manifest created — `records=40 bound=40 unbound=0` exit 0, selftest cases=11 failures=0, fake checker rejected (D5 closed). C2 coverage (7 held): frontier F16 admitted 15→16, entry `chinese-crowdsourced-testing-scope-and-rewards.md` cites S049/S050, rows 48→50, census exit 0 (W04 S028/S029 only), harness entries=19 pass=19 incl `PASS F16 ids=S049,S050`, source-recheck S049/S050 exit 0; Q1–Q10 ADMIT under non-author reviewer. Frontier step: lesson `corpus/lessons/round-33.md` with Gate (2 admits by document + 7 rejects, quarantine 7 rows verdicts) and Mistakes M33-1 (round-32 captures committed without manifest → R20, closed by C1) and M33-2 (dispatcher-log misquote → committed watchdog digest); census before→after; considerthese proposal 1 mined (committed wave-evidence growth measured). No tool installed; pacman paused (no transaction). Wave: 64 seats, 0 dead, attack share 26/64, m_flash share 37/64. Routed defects D1–D6 all closed (D1 round-32 entry above, D3 cross-domain line in report, D4 watchdog digest, D5 inside C1, D6 quarantine verdict in lesson Gate).
+
+## Round 34 — 2026-10-26 — C1 instrument-soundness closure suite R1-R9; C2 F17 Immunefi VSCS v2.2 admitted (S051); one v2 wave, 65 seats
+
+Claims frozen in `.ufo/waves/round-34/claims.json` (claims-freeze commit `29f606d`, base
+`014ee2d`); C1 counting-literal erratum `.ufo/waves/round-34/claims-erratum-1.md`
+(`records=40` → `records=41`, rule-B binding proof) filed before any scoring verdict; wave-1
+spec/dispatch (65 seats, v2 policy) `206e5108`; integration commit `4b0a9f2`. Attempt 1
+(`KasegiR34`) ended mid-work without a report; attempt 2 (`KasegiR34a2`) inherited, re-verified
+and landed the same frozen claims unchanged.
+
+**C1 depth:verifiability (4 held).** `corpus/instruments/r-defect-closure.sh` closes the nine
+round-33 verifier-routed defects R1-R9 — `closed=9/9 exit=0`, `--selftest cases=9 failures=0`,
+fails on base (`closed=0/9`, exit 1). `capture-binding-check.py` hardened to a 23-case selftest
+(per-file binding, nested dir, strict-UTC, dup-record, dual-https, rejected anchor, summary-only
+rejection) — `records=41 bound=41 unbound=0` exit 0 (erratum 1 reading). `kill-rule-check.py`
+kills the two frozen-rule survivors (skip-selftest-summary, accept-record-without-url) —
+`mutants=3 killed=3 survivors=0`, `gates=7 failed=0`. `SCORECARD.md` `<LANE_HASH>` 2→0 with
+appended correction naming `7963976e`/`014ee2d`. Round-32 manifest normalized to strict-UTC
+fetched_utc; S040-live.txt orphan listed; QUALITY R20 per-id note + R22 pre-freeze step
+recorded; round-33 lesson R7 erratum appended; frontier rule A bidirectional; junk twin committed
+under `c2-controls/` and its fabricated sentence rejected against the capture (the as-frozen
+phrasing dispute is recorded in the lesson § Gate).
+
+**C2 coverage (7 held).** Frontier F17 admitted 16→17 — Immunefi Vulnerability Severity
+Classification System v2.2 (Web3/smart-contract bounty severity classification); entry
+`corpus/knowledge/immunefi-vscs-v2-2-smart-contract-severity.md` cites `source: S051`; registry
+50→51 (S051 tier A, status mined, opened 2026-10-26, live capture
+`corpus/source-snapshots/round-34/S051.txt`); harness `entries=20 pass=20 exit=0` incl.
+`PASS F17 ... ids=S051`; source-recheck S051 exit 0 (18 assertions, Q9/Q17 `occurrences=2`
+anchored); census exit 0 (W04 S028/S029 only); knowledge entries 45→46.
+
+Frontier step: census before→after exit 0 (both). Mined mistakes: M34-1 (round-33 "all mutants
+killed" overstatement, R4) and M34-2 (`<LANE_HASH>` markers, R1) from the frozen claims, plus
+M34-3/M34-5/M34-6 minted in `.ufo/waves/round-34/mistakes-erratum-1.md`. Sourced claim: C2
+rests on S051 opened this round. Assimilation: none adopted (id-collision rerun 21 collisions;
+quarantine slice 7 rows re-derived: 0 adopted / 2 refused / 5 unreachable; standing refusals
+re-measured, flips unmet). considerthese/2026-10-25.md proposal 6 mined → QUALITY R23.
+
+Shape: one v2 wave, 65 seats (executor 19, reviewer 13, scribe 10, mutation-tester 7, scout 5,
+critic 5, connector 3, sentinel 2, simplifier 1); attack share 27/65 = 41.5%; dead seat 1
+(`ExecRegressionC1`, no receipt; covered by the L1 regression re-run). No `wave1-results.json`
+exists — attempt 1 died before the dispatcher finalized results; the 65 receipts are the
+evidence. Stale-lane: attempt 1 launched 02:24Z, ended 06:15Z without report; attempt 2
+inherited and landed. Open L0: kasegi round-32 question (re-dispatch vs L1-only landing) remains
+open.
