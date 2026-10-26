@@ -974,3 +974,7 @@ D2 (stub-mode fixture) was not repaired as first applied (`json` was not importe
 the closing commit, with the `KeyError` arm left as a disclosed latent defect. `RevQualityFix`: R17 holds;
 R16 weak, R18 defect (no conforming specimen until the relabel above), R19 weaker than its criterion — disclosed in
 `corpus/lessons/round-31.md` § Close-out erratum, not repaired.
+
+### Round-31 final addendum — residual call `wave4` (supersedes the "no independent re-review" sentence above)
+
+A second hand-built residual call (2 seats, dispatch `43c364d06ccf5a3d1029c0f7816c8e50b509365b`, receipts `.ufo/waves/round-31/wave4/`) reviewed the final F15 entry revision at lane tip `43c364d`: `RevEntryQ3` — a seat that neither wrote nor earlier reviewed the entry — **ADMIT**, Q1–Q10 all pass, the blocking findings of both earlier REFUSEs resolved on the current bytes, LOW/NIT items only (route-3 note token, one paraphrase outside quotes); `CritQuoteSweep` — `clean`, 0 mismatches among 28 source-bound quote rows (one routed Q33 note on a rejected-inference quote). Both seats are dispatched by this lane, so the verdict is lane-seat, not the non-author closure's. The C2 reviewer conflict is therefore: two REFUSEs on earlier revisions, one ADMIT on the final revision.
