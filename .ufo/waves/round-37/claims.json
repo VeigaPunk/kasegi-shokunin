@@ -1,0 +1,81 @@
+{
+ "lane": "kasegi",
+ "round": 37,
+ "attempt": 1,
+ "base": "b56a41680cefd391868c1c370dc063c69d827e7d",
+ "frozen_at_utc": "2026-10-26T16:30:00Z",
+ "axes_owned": [
+  "depth:density",
+  "depth:verifiability",
+  "coverage"
+ ],
+ "saturation": {
+  "line": "9/10 per owned axis",
+  "window": "N=3"
+ },
+ "lowest_non_retired_axis": "depth:verifiability (4)",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "score_before": 4,
+   "score_after": "held 4",
+   "predicate": "The committed instrument `corpus/instruments/r37-closure.sh` runs over a `git archive` export of a named lane head (`--export-ref <hash>`) and prints `closed=14/14 exit=0` on the round-37 final lane head; `--selftest` prints `cases=14 failures=0`. Its fourteen checks E1-E14 close the six routed defects D1-D6 of the round-36 verifier spot-check (`corpus/lessons/round-36-verifier-spotcheck.md` §5) while carrying over the round-36 checks: E1-E9 keep the round-36 semantics (structural placeholder/hash binding; round-34 depth:density erratum present; SKILL.md Gates & probes registry exact-basename rows r35-defect-closure.sh AND r36-closure.sh; round-35 wave1-results.json tracked with provenance note; claims-erratum-d5.md present; L1Integration.md 'Correction (round 35)'; QUALITY supersedes-R22/R23 rows; false-evidence-line correction recorded in the round-36 lesson; quiescence: git status --porcelain empty and no leftover /fast/scratch/hyaku/kasegi-r37 seat dirs) with E9 rewritten FAIL-CLOSED (a git-status read that fails is red, never treated as clean). E10 stands D1: the export's `.ufo/waves/round-37/final-gates/all-gates.txt` carries the suite-digest header `suite-sha256=<sha>` where sha equals the digest of the suite bytes themselves, fourteen `E<n> payload=` lines, `closed=14/14 exit=0`, fourteen `selftest case=` lines and `cases=14 failures=0` (genuine suite output committed in-tree). E11 stands D2: the LOG.md round-37 entry contains a named correction of the round-36 C1 bullet's false `corpus/instruments/r36-fixtures/` path claim (git ls-tree shows r36-fixtures absent). E12 stands D4: the round-37 lesson and the round-37 SCORECARD section label the round-36 lane head c20300df516eb5575d8db2aaad1f0cf4913e7981 as `anchor ancestor`, and the stale label `Final lane commit: e666d902` appears nowhere inside the round-37 SCORECARD section. E13 stands D5: the SKILL.md Gates & probes registry row whose first cell is exactly `r36-closure.sh` has a single-choice type cell (not the literal `gate|probe`) and its verdict map includes exit `2` -> `could-not-evaluate`. E14 stands D6: the suite's own quiescence code is fail-closed by shape: `grep -cF 'porcelain:-0' r37-closure.sh` -> 0 and no `git ... status ... 2>/dev/null` swallow on the status read. Required reds: the r36 base export cc692008b0cfd58d18275aa6c4aed79620120799 -> `closed<14/14 exit=1`; the r36 judged-head export a23dc4788aa7c98831eed6db953434034ce5ae8d -> `closed<14/14 exit=1` (E10-E14 open there).",
+   "kill_rule": "Any of: r37-closure.sh missing (ls_exit=2); plain run on the final lane-head export prints closed != 14/14 or exit != 0; --selftest prints fewer than 14 cases or any failure; any single E-check's committed fixture proves the check can pass while its defect is present; `grep -c 'filled by the L1' SCORECARD.md` != 0; `grep -c '<LANE_HASH>' SCORECARD.md` != 0; the stale label `Final lane commit: e666d902` inside the round-37 SCORECARD section; `grep -cF 'porcelain:-0' corpus/instruments/r37-closure.sh` != 0; lane working tree not clean at filing (`git status --porcelain` nonempty); any leftover kasegi-r37 scratch seat dir.",
+   "counting_commands": [
+    "bash corpus/instruments/r37-closure.sh --export-ref <r37-final-lane-hash> -> closed=14/14 exit=0",
+    "bash corpus/instruments/r37-closure.sh --export-ref cc692008b0cfd58d18275aa6c4aed79620120799 -> closed<14/14 exit=1",
+    "bash corpus/instruments/r37-closure.sh --export-ref a23dc4788aa7c98831eed6db953434034ce5ae8d -> closed<14/14 exit=1",
+    "bash corpus/instruments/r37-closure.sh --selftest --export-ref <r37-final-lane-hash> -> cases=14 failures=0 exit=0",
+    "grep -c 'filled by the L1' SCORECARD.md -> 0"
+   ],
+   "before": [
+    "r37-closure.sh absent (suite_missing=1)",
+    "D1 open: no .ufo/waves/round-37/final-gates/all-gates.txt receipt",
+    "D2 open: LOG.md round-36 C1 bullet cites corpus/instruments/r36-fixtures/ which git ls-tree shows absent",
+    "D4 open: round-36 lesson and SCORECARD label e666d902 as 'Final lane commit' (intermediate ancestor)",
+    "D5 open: SKILL.md r36-closure.sh registry row type cell is the literal `gate|probe`; verdict map omits exit 2",
+    "D6 open: r36-closure.sh quiescence limb defaults a failed `git status` read to 0 dirty lines (`porcelain:-0`)",
+    "worktree clean 0; scratch leftovers 0; placeholder greps 0/0 (base clean)"
+   ],
+   "after": [
+    "r37-closure.sh exists; closed=14/14 exit=0 at the final lane-head export; --selftest cases=14 failures=0; r36-base export closed<14/14 exit=1; r36 judged-head export closed<14/14 exit=1",
+    "final-gates/all-gates.txt committed with suite digest + 14 E payload lines + closed=14/14 + 14 selftest case lines",
+    "LOG.md round-37 correction entry for the false r36-fixtures path; lesson/scorecard label c20300df as anchor ancestor; SKILL r36-closure.sh registry row single-choice type + exit-2 verdict; E9 fail-closed shape proven (D1-D6 closed)",
+    "round-37 lesson records E-checks + Mistakes rows; lane quiescent at filing"
+   ]
+  },
+  {
+   "id": "C2",
+   "axis": "coverage",
+   "score_before": 7,
+   "score_after": "held 7",
+   "predicate": "Frontier F20 (SSVC - Stakeholder-Specific Vulnerability Categorization, CERT/CC/Carnegie Mellon; stakeholder-tailored prioritization decision points distinct from CVSS severity, KEV catalog status and EPSS likelihood) admitted 19->20; registry row S054 added (tier A, status mined, opened 2026-10-26, kind docs, anchor and teaches grounded in the round-37 capture); knowledge entry corpus/knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md cites `source: S054`; harness prints entries=23 pass=23 exit=0 incl. PASS F20 ids=S054; source-recheck S054 exit 0; census exit 0 (W04 S028/S029 only); knowledge entries 48->49; capture corpus/source-snapshots/round-37/S054.txt + manifest.json (url https://certcc.github.io/SSVC/, fetched_utc strict UTC, sha256, lines) committed and bound (capture-binding-check records=44 bound=44); knowledge-expected.txt synced so recheck-audit prints expect=present expected=49 missing=0 unexpected=0 exit=0; the junk twin c2-controls/junk-f20.md is rejected (source-recheck quote-not-found / harness non-admission).",
+   "kill_rule": "Any of: frontier rows != 20; S054 row absent or malformed (NF != 13); entry absent or failing Q1-Q6; harness not entries=23 pass=23 exit=0; source-recheck S054 exit != 0; census exit != 0; junk-f20 accepted by source-recheck or harness; capture/manifest absent or unbound; recheck-audit unexpected != 0.",
+   "counting_commands": [
+    "grep -cE '^\\| F[0-9]+ \\|' corpus/README.md -> 20",
+    "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md -> 54",
+    "grep -rlE '^source: S054 ' corpus/knowledge | wc -l -> 1",
+    "python3 corpus/instruments/frontier-recheck-count.py -> entries=23 pass=23 exit=0",
+    "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-37/manifest.json --source S054 -> exit 0",
+    "python3 corpus/instruments/capture-binding-check.py -> records=44 bound=44 unbound=0 exit 0",
+    "python3 corpus/instruments/recheck-audit.py --quiet -> strict pass=49/49 expect=present expected=49 missing=0 unexpected=0 exit=0",
+    "ls corpus/knowledge/*.md | wc -l -> 49"
+   ],
+   "before": [
+    "frontier 19; registry rows 53; S054 rows 0; entries citing S054 0; knowledge entries 48; harness entries=22 pass=22; binding records=43 bound=43; audit expected=48 pass=48",
+    "junk-f20 absent (control not yet built)"
+   ],
+   "after": [
+    "frontier 20 (F20 row); registry rows 54 (S054 row); entries citing S054 1; knowledge entries 49; harness entries=23 pass=23 exit=0",
+    "junk-f20 rejected (discriminating control receipt)"
+
+   ]
+  }
+ ],
+ "non_claim_frontier_items": {
+  "assimilation": "none adopted; id-collision rerun (registry 53 x staged 94 -> 23 standing collisions) + quarantine slice verdicts (7 rows: S037/S054 payload-absent; 5 unreachable prose-class) in lesson Gate",
+  "considerthese": "2026-10-26.md: proposal 7 mined -> QUALITY R31 + corpus/considerthese-ledger.md; proposals 1/2/3/4/5/6 dispositions recorded in the lesson (proposal 1's §Saturation thresholds plank stays open)",
+  "mistake": "M37-1..M37-5 minted in round-37 lesson (D1-D6 routed defects + r36 scratch-sweep incident)"
+ }
+}

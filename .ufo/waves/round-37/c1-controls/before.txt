@@ -1,0 +1,30 @@
+C1 before (round-37 base b56a41680cefd391868c1c370dc063c69d827e7d, measured 2026-10-26T16:31Z, lane root /home/vgpnk/Projects/shokunin/kasegi-shokunin):
+
+$ ls corpus/instruments/r37-closure.sh
+ls: cannot access 'corpus/instruments/r37-closure.sh': No such file or directory   # suite_missing=1 (exit 2)
+
+$ ls .ufo/waves/round-37/final-gates/all-gates.txt
+ls: cannot access '.ufo/waves/round-37/final-gates/all-gates.txt': No such file or directory   # D1 open
+
+$ git ls-tree -r --name-only b56a41680cefd391868c1c370dc063c69d827e7d | grep -c r36-fixtures
+0   # D2 open: LOG.md round-36 C1 bullet claims corpus/instruments/r36-fixtures/ landed, git tree shows 0
+
+$ grep -nE 'Final lane commit' SCORECARD.md | tail -3
+# existing r36 block labels 'Final lane commit: e666d902...' (intermediate ancestor); D4 open
+$ grep -n 'Final lane commit: e666d902' SCORECARD.md | wc -l
+1
+
+$ grep -nE '^\| `?r36-closure\.sh`?[[:space:]]*\|' SKILL.md | head -3
+# row found; type cell reads `gate|probe` (not a single choice); verdict map has no exit-2 row; D5 open
+
+$ grep -n 'porcelain:-0' corpus/instruments/r36-closure.sh
+# r36-closure.sh E9 limb mapping a failing git status read to 0 dirty lines; D6 open
+
+$ grep -c 'filled by the L1' SCORECARD.md
+0
+$ grep -c '<LANE_HASH>' SCORECARD.md
+0
+$ git status --porcelain | wc -l
+0
+$ find /fast/scratch/hyaku/kasegi-r37 -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l
+0
