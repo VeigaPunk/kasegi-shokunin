@@ -1268,7 +1268,7 @@ more; the round-35 closure check reads that count as 0. Nothing else in this sec
 | coverage | 7 | 7 held — frontier 17→18 (F18 CISA KEV), registry 51→52 (S052), harness `entries=21 pass=21`, source-recheck S052 exit 0, census exit 0 | `corpus/README.md` F18 row, `corpus/SOURCES.md:58` S052, `corpus/knowledge/cisa-kev-catalog.md`, `corpus/source-snapshots/round-35/{S052.txt,manifest.json}` |
 | depth:density | 9 | unchanged (no density claim; no-harm guard mean ≈ 201.2) | `wave1/ExecNoHarmFinal.md` |
 
-Measurement state: base `3266c993…`, freeze `617496b9…`, wave-1 spec/dispatch `da2d3c68…`, integration `aa6ad99…`; final lane commit filled by the L1 in the closing commit.
+Measurement state: base `3266c993…`, freeze `617496b9…`, wave-1 spec/dispatch `da2d3c68…`, integration `aa6ad99…`; final lane commit `0aee0ef…` (recorded in the closing commit).
 
 Capabilities: no new capability row this round (the closure suite is a counter instrument; the capability window is not restarted — last entry round 33).
 
