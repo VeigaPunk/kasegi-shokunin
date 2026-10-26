@@ -945,3 +945,32 @@ entry-less run since round 26 reaches four admitted rounds and the nudge applies
 |---|---|---|---|---|
 | 31 | depth:verifiability | 4 (no limb ledger, no mutation counter; the three recheck instruments' limbs unproven) | 4 held (13 limbs each killed by its own exactly-once patch, 3 controls rejected, exit 0 twice byte-identically; 10 of 13 rows re-derived `holds`, 3 `weak`; frozen predicate met, the C1 counter-mutant set falsified in wave 2 and repaired post-freeze) | `corpus/instruments/limb-mutation-check.py`, `corpus/instruments/limb-ledger.json`, `.ufo/waves/round-31/wave2/ExecLimb*.md`, `wave2/MutCtr*.md`, `wave2/ExecCounterFix.md`, `wave2/ExecRegressionC1.md` |
 | 31 | coverage | 7 (frontier 14, entries citing S048 0, registry 47, harness 17/17, manifest absent → recheck exit 2) | 7 held, no credit claimed (frontier 15, entries citing S048 1, registry 48, census exit 0, harness 18/18, recheck exit 0 — but the frozen entry clause is contested by a non-author Q3 REFUSE) | `corpus/README.md:309` F15, `corpus/SOURCES.md:54`, `corpus/source-snapshots/round-31/manifest.json`, `wave2/ExecCensusFinal.md`, `wave2/RevEntryQ.md` |
+
+### Round-31 errata — instrument relabel for the C1 limb change
+
+r31 erratum: the paragraph `recheck-audit open item (outside the frozen claims)` filed at `SCORECARD.md:813-819`
+is re-labelled, not rewritten: after the C1 limb work `corpus/instruments/recheck-audit.py` sha256
+`5d4842da6103f17c7798ca2078a77288820bd8b90432348cd2cc012e1faf7f09` prints
+`strict pass=44/44 cdroot_fail=0 instrument_fail=0 own_fail=0` (`lines=44 total=44`), measured 2026-10-26T00:45Z.
+
+### Round-31 post-wave-2 addendum (residual call `wave3`, appended by the L1)
+
+After the lane commit `fd29aac0dd02f4c6783a0df8c4ba8d0e86414242` the L1 repaired the F15 entry (overlap
+section rewritten to concede F10's Cybozu and internal-detection rows, quotes carried in the source
+language, route-3/Cisco wording fixes, manifest Q9–Q11 added: 8 → 11 assertions, all `occurrences=1`) and
+`score-gap.py` (census `cmd:` pattern). A residual call of five seats re-reviewed at commit
+`022b755008777ee143b566cce3cfd0914c9846c0` (receipts `.ufo/waves/round-31/wave3/`): `RevEntryQ2` still
+filed **REFUSE on Q3 only** for the first repair (a translated string `"third-party products it uses"`
+inside quote marks at S036.txt:15; the Japanese original and `社内での検出` were not carried); the L1 then
+replaced both with the verbatim Japanese strings and re-ran the mechanical checks (each string
+`grep -c` ≥ 1 at its cited file; `source-recheck` exit 0 with 11 assertions; `recheck-audit` `strict pass=44/44`; harness
+`entries=18 pass=18`). That final revision has **no independent re-review**; the C2 admission therefore
+rests on the wave-2 `RevEntryQ` (REFUSE on an earlier revision), `RevEntryQ2` (REFUSE on the second
+revision, fix applied after it) and the L1's mechanical re-run — reported as an open reviewer conflict for the
+canonical judge. `CritExpansion2`: `partial`, restatement clause does not fire. `MutCounterReplay`: all six
+published counter mutants are caught by the repaired counter (`237fd07c…`), three of them by the guard-fixture
+exit status alone, not by the frozen summary lines. `RevScoreGapFix`: census-command repair verified (D1);
+D2 (stub-mode fixture) was not repaired as first applied (`json` was not imported) and is repaired in
+the closing commit, with the `KeyError` arm left as a disclosed latent defect. `RevQualityFix`: R17 holds;
+R16 weak, R18 defect (no conforming specimen until the relabel above), R19 weaker than its criterion — disclosed in
+`corpus/lessons/round-31.md` § Close-out erratum, not repaired.

@@ -491,3 +491,21 @@ base returns, so re-read it rather than diffing it. A LIMB line that stops showi
 `live` != `mutant` in exit or signal, or any `verdict=` other than `killed`, means the
 subject instrument's print format or its fixtures moved: re-derive that row, do not edit
 the summary.
+
+### Round-31 close-out erratum — digests after the wave-2 repairs (appended by the L1)
+
+The table above is the wave-1 state and is kept as history (R6/R9). Two instruments moved afterwards:
+`limb-mutation-check.py` was repaired by `ExecCounterFix` (three implicit guard fixtures run on every
+`--ledger` invocation; the printed output gained one `guard cases=3 failures=0` line, so the stdout
+sha256 above changed) and `score-gap.py` was repaired by the L1 (census `cmd:` pattern, stub-fixture JSON,
+`import json`, missing-field guard in the selftest). Current working-tree digests, measured 2026-10-26:
+
+| path | landed (final) |
+|---|---|
+| `corpus/instruments/limb-mutation-check.py` | `237fd07cbcb4a12a470e912d1a4b68ff1968fde62f2709b182822fed42d791f4` |
+| `corpus/instruments/score-gap.py` | `57584fda83b813e44fb2e2cb6cb2b1e4af1dd20f07877a6b119db9ba9feb43cf` |
+
+`limb-mutation-check.py --ledger corpus/instruments/limb-ledger.json` stdout sha256 is now
+`d6aefddca50293347c348646479bbe406745ad3163422b27edefcea861264270` (second run byte-identical), exit 0, with
+the same two summary lines `limbs=13 killed=13 survivors=0` and `controls=3 rejected=3`. The other four digests
+in the table are unchanged.

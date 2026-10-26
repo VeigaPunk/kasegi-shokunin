@@ -1,7 +1,7 @@
 # A vendor's research programme as an intake route for other vendors' bugs
 source: S048 — https://www.microsoft.com/en-us/msrc/msvr — section "Microsoft Security Vulnerability Research (MSVR)", capture corpus/source-snapshots/round-31/S048.txt:28-35 — the programme description L29, the three-route intake sentence L31, the three routes L32-L34, the three-role sentence L35
 verified-at: 2026-10-25
-recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-31/manifest.json --source S048   # 11 assertions (Q1-Q11), each exactly-once in the pinned capture, covering the entry's S048 quotes; a captured-source comparison, not a fresh network verification
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-31/manifest.json --source S048   # 11 assertions (Q1-Q11), each exactly-once in the pinned capture; the three route labels at L26-28 and the strings in the falsifiable checks are hand-measured, not manifest-bound; a captured-source comparison, not a fresh network verification
 ground: F15 — a vendor's research programme as an intake route for other vendors' bugs
 
 ## Attribution
@@ -61,23 +61,25 @@ third-party coordination under its own CVD approach (L35).
 ## What this adds beyond F06 and F10
 
 F06 (`knowledge/multiparty-vulnerability-coordination.md`, S018 FIRST v1.1) holds the role
-vocabulary, and in it the coordinator is a participant *outside* the vendor — "Optional
-participant that can assist vendors and finders" (line 25) — so its worksheet asks a package
-to record whether a coordinator exists rather than to assume one. F06 has no row for a
-vendor occupying the finder and coordinator seats itself.
+vocabulary: its coordinator is an "Optional participant that can assist vendors and finders"
+(line 25), so its worksheet asks a package to record whether a coordinator exists rather
+than to assume one. Nothing at line 25 says the coordinator cannot be a vendor, and F06 has
+no row for a vendor occupying the finder and coordinator seats itself.
 
 F10 holds vendors' published policy objects, not a programme (`corpus/README.md` F10 row:
 "A vendor's published policy is a standing first-party statement, not a programme"). Its
-overlap with S048 is conceded in three places: (a) Hitachi reports an issue that spills
-beyond Hitachi-group products to the partnership's 届出窓口 (S039.txt:506, quoted in
-`knowledge/vendor-disclosure-policies-as-corpus-objects.md` Claim 7), and Cisco, for a
-report that "may impact multiple vendors", works with coordination centres such as CERT/CC, CERT-FI, JP-CERT or NPSA
-to "manage a coordinated industry disclosure" (S040.txt:185-193, the `cisco-jpcert-partner`
-row of `knowledge/vendor-disclosure-policy-commitments-crosswalk.md`); (b) Cybozu's
-handling scope already covers "third-party products it uses" (S036.txt:15, line 35 of
-`knowledge/vendor-disclosure-policies-as-corpus-objects.md`); (c) the same entry holds a
-vendor-internal detection channel (line 23). All of these are a vendor's statement about
-findings reaching it or its own products, with any coordinator external.
+overlap with S048 is conceded in three differently shaped places: (a) an external centre —
+Hitachi reports an issue that spills beyond Hitachi-group products to the partnership's
+届出窓口 (S039.txt:506, quoted in `knowledge/vendor-disclosure-policies-as-corpus-objects.md`
+Claim 7), and Cisco, for a report that "may impact multiple vendors", works with coordination
+centres such as CERT/CC, CERT-FI, JP-CERT or NPSA to "manage a coordinated industry
+disclosure" (S040.txt:185-193, the `cisco-jpcert-partner` row of
+`knowledge/vendor-disclosure-policy-commitments-crosswalk.md`); (b) products the vendor
+uses — Cybozu's handling scope covers 当社が利用しているサードパーティー製品 (S036.txt:15,
+quoted at line 35 of `knowledge/vendor-disclosure-policies-as-corpus-objects.md`), the third-party
+products Cybozu itself uses; (c) internal detection with no coordinator named — 社内での検出
+(line 23 of the same entry). None of the three is a vendor stating a programme whose subject
+is other vendors' products, and none names the vendor as coordinator.
 
 Against that ground, S048 adds two things the lane did not hold, and a third that is a
 difference of kind rather than of ground:
@@ -151,7 +153,7 @@ above from the capture alone.
    "the finder also has a coordinated-disclosure obligation" is an inference these bytes do
    not carry, and is not adopted here.
 5. **"A vendor that coordinates third-party findings replaces the external coordinator."**
-   Rejected. F06's coordinator is an optional participant outside the vendor, and S048 names
+   Rejected. F06's coordinator is an "Optional participant" (line 25) and the lane's Hitachi and Cisco rows route out to an external centre, while S048 names
    no external centre at all (`grep -c 'CERT/CC'` → `0`, `grep -c 'JPCERT'` → `0`,
    `grep -c 'IPA'` → `0`; the capture's only `cert` match is the footer line
    "Certified Refurbished" at L48); the self-coordinating shape and the route-out shape are

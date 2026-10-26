@@ -46,6 +46,7 @@ import argparse
 import contextlib
 import hashlib
 import io
+import json
 import os
 import re
 import shutil
@@ -482,6 +483,11 @@ def selftest():
         a, b = _values(reports["a"]), _values(reports["b"])
 
         # every reported field must move when the fixture moves
+        missing = [k for k in ("recheck", "anchorcheck") if k not in a or k not in b]
+        if missing:
+            check("fields-present", False, "report lacked field(s) %s: a=%s b=%s" % (missing, sorted(a), sorted(b)))
+            print("selftest fields=%d failures=%d" % (len(a), len(failures)))
+            return 1
         ra, rb = _split_counts(a["recheck"]), _split_counts(b["recheck"])
         for key in ("lines", "executes", "gated", "broken"):
             check("recheck.%s" % key, ra[key] != rb[key], "a=%s b=%s" % (ra[key], rb[key]))
