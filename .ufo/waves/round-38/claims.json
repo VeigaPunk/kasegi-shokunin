@@ -1,0 +1,72 @@
+{
+ "lane": "kasegi",
+ "round": 38,
+ "attempt": 1,
+ "base": "a173b0c2b98c5ae39599fa9be76027fbbead0b9e",
+ "frozen_at_utc": "2026-10-26T18:17:40Z",
+ "axes_owned": [
+  "depth:density",
+  "depth:verifiability",
+  "coverage"
+ ],
+ "saturation": {
+  "line": "9/10 per owned axis",
+  "window": "N=3"
+ },
+ "lowest_non_retired_axis": "depth:verifiability (4)",
+ "judged_head_rule": "The round-38 judged head J is the `export-ref=` value recorded in `.ufo/waves/round-38/final-gates/all-gates.txt`. J is the lane commit that carries every round-38 change except that receipt; the lane tip Y adds only the receipt file (`git diff --name-only J Y` = `.ufo/waves/round-38/final-gates/all-gates.txt`). Lane files never name J by hash (a commit cannot contain its own hash); the report names J and Y.",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "score_before": 4,
+   "score_after": "held 4",
+   "predicate": "The committed instrument `corpus/instruments/r38-closure.sh` runs over a `git archive` export of a named lane head (`--export-ref <hash>`; plain run refused, exit 2) and prints `closed=8/8 exit=0` on the round-38 judged head J; `--selftest --export-ref J` prints `selftest cases=8 failures=0` with one `selftest case=G<n>` line per check whose mutants are all rejected. Its eight checks close the routed defects of the round-37 verifier spot-check (`corpus/lessons/round-37-verifier-spotcheck.md` §5: D-A, D-B, D-C, D3, D-D, D-E) plus the L1-found defect D-F, and carry the r37 suite forward: G1 (D-A) PROVINCE.md and corpus/README.md each carry an appended line beginning `Correction (round 38)` that names the round-37 append range as misplaced receipt scaffolding (PROVINCE.md L79-L152; corpus/README.md L399-L454), the file's fenced-code state at EOF is closed under a CommonMark fence walk (opening fence = ``` with optional info string; closing fence = ``` with no info string), and every round-38 end-of-file block appended to either file is byte-equal to its declaration in `.ufo/waves/round-38/declared-blocks.txt` (one line `<path> <lines> <sha256>` per block; the file's last <lines> lines hash to <sha256>); G2 (D-B) `.ufo/waves/round-38/final-gates/all-gates.txt` in the export has header `all-gates v2`, an `export-ref=<40-hex>` that is REF or an ancestor of REF with `git diff --name-only <export-ref> REF` a subset of {that receipt path}, `suite-sha256=` equal to the executing suite's digest, eight `G<n> payload=... closed=1` lines, `closed=8/8 exit=0`, eight `selftest case=G<n>` lines and `selftest cases=8 failures=0`; and the round-38 SCORECARD.md section and SHONEN.md round-38 lines name the judged head only by reference (`judged head: export-ref of .ufo/waves/round-38/final-gates/all-gates.txt`) with zero lines labelling any 7+-hex hash as `final head`, `final lane head` or `Final lane commit`; G3 (D-C) corpus/lessons/round-37.md carries an appended `## Pending-marker resolutions (round 38)` section with one table row per base pending-marker line (L10, L90, L95, L216, L265, L300, L320) plus a row for the L85 `not landed` sentence, each row naming its line and the resolved value with an evidence pointer; and the lines ADDED by `git diff <base> REF -- . ':!.ufo' ':!corpus/instruments/r38-closure.sh' ':!corpus/instruments/r38-fixtures'` contain zero tokens of the widened placeholder vocabulary {`⟨pending`, `<fill>`, `filled by the L1`, `<LANE_HASH>`, `<r38-`, `TBD`, `TODO`}; G4 (D3) every `.ufo/waves/round-38/*-dispatch.json` in the export has a tracked sibling `*-results.json` that parses as JSON and lists exactly as many seats as the dispatch's `taskCall.tasks` (WAVE-DONE results land in J, before the report); G5 (D-D) the round-38 SCORECARD.md section has zero `Final lane commit:` lines and SCORECARD.md carries an appended line beginning `Correction (round 38)` naming `f3246559` as the round-37 anchor ancestor, not a final head; G6 (D-E) live scratch quiescence: /fast/scratch/hyaku/kasegi-r36 and /fast/scratch/hyaku/kasegi-r37 hold zero entries (or are absent) and /fast/scratch/hyaku/kasegi-r38 holds nothing except the suite's own --work dir; G7 (D-F) corpus/knowledge/considerthese-proposals-ledger.md carries, after the empty `## Round-37 dispositions` heading, an appended section `## Round-37 dispositions — filled (round 38)` with a line beginning `Correction (round 38)` naming the empty heading and one table row for each of proposals 1-7 of considerthese/2026-10-26.md (7 rows); G8 (carry-over) `corpus/instruments/r37-closure.sh --export-ref REF` prints `closed=14/14 exit=0`.",
+   "kill_rule": "Any of: r38-closure.sh missing; the judged-head export prints closed != 8/8 or exit != 0; --selftest prints fewer than 8 cases or any failure, or a summary-only forgery satisfies it; base a173b0c2 export or r37 judged head 2387dcf6 export prints closed=8/8; any committed fixture shows a check passing while its defect is present; `grep -c '⟨pending' corpus/lessons/round-38.md` != 0; lane working tree not clean at filing; any leftover kasegi-r36/r37/r38 scratch entry at filing.",
+   "counting_commands": [
+    "bash corpus/instruments/r38-closure.sh --export-ref <J> -> closed=8/8 exit=0",
+    "bash corpus/instruments/r38-closure.sh --selftest --export-ref <J> -> selftest cases=8 failures=0 exit=0",
+    "bash corpus/instruments/r38-closure.sh --export-ref a173b0c2b98c5ae39599fa9be76027fbbead0b9e -> closed<8/8 exit=1",
+    "bash corpus/instruments/r38-closure.sh --export-ref 2387dcf6ccfefcfb703783387b9aade8fc82abfa -> closed<8/8 exit=1",
+    "bash corpus/instruments/r38-closure.sh -> exit 2 (plain run refused)"
+   ],
+   "before": [
+    "see .ufo/waves/round-38/c1-controls/before.txt (suite absent; D-A..D-F open; G8 carry-over 14/14 at base)"
+   ],
+   "after": [
+    "closed=8/8 exit=0 at J; selftest cases=8 failures=0; base and r37-judged-head exports red; all-gates.txt receipt committed at Y (= J + receipt only)"
+   ]
+  },
+  {
+   "id": "C2",
+   "axis": "coverage",
+   "score_before": 7,
+   "score_after": "held 7",
+   "predicate": "Frontier F21 (OASIS CSAF v2.0 — Common Security Advisory Framework; the VEX profile's product-status categories and the machine-readable not-affected justification flags a vendor publishes, distinct from CVSS severity, KEV status, EPSS likelihood and SSVC decisions) admitted 20->21; registry row S055 added (OASIS CSAF v2.0 OASIS Standard, https://docs.oasis-open.org/csaf/csaf/v2.0/os/csaf-v2.0-os.html, tier A, kind spec, status mined, opened 2026-10-26, NF=13); knowledge entry corpus/knowledge/csaf-vex-product-status-and-justifications.md cites `source: S055`; capture corpus/source-snapshots/round-38/S055.txt + manifest.json committed and bound; harness entries=24 pass=24 exit=0 incl. PASS F21 ids=S055; source-recheck S055 exit 0; capture-binding records=45 bound=45 unbound=0; recheck-audit expected=50 missing=0 unexpected=0 exit=0; census exit 0 (W04 S028/S029 only); knowledge 49->50; junk twin .ufo/waves/round-38/c2-controls/junk-f21.md rejected by source-recheck (quote-not-found, exit 1).",
+   "kill_rule": "Any of: frontier rows != 21; S055 row absent or NF != 13; entry absent or failing QUALITY Q1-Q6; harness not entries=24 pass=24 exit=0; source-recheck S055 exit != 0; binding not 45/45; audit unexpected != 0 or expected != 50; census exit != 0 or a new W/E code; junk-f21 accepted; capture or manifest absent or unbound.",
+   "counting_commands": [
+    "grep -cE '^\\| F[0-9]+ \\|' corpus/README.md -> 21",
+    "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md -> 55",
+    "grep -rlE '^source: S055' corpus/knowledge | wc -l -> 1",
+    "python3 corpus/instruments/frontier-recheck-count.py -> entries=24 pass=24 exit=0",
+    "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-38/manifest.json --source S055 -> exit 0",
+    "python3 corpus/instruments/capture-binding-check.py -> records=45 bound=45 unbound=0",
+    "python3 corpus/instruments/recheck-audit.py --quiet -> expected=50 missing=0 unexpected=0 exit=0",
+    "ls corpus/knowledge/*.md | wc -l -> 50",
+    "bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> exit 0"
+   ],
+   "before": [
+    "see .ufo/waves/round-38/c2-controls/before.txt (frontier 20; registry 54; S055 0; knowledge 49; harness 23/23; binding 44/44; audit expected=49)"
+   ],
+   "after": [
+    "frontier 21; registry 55; entries citing S055 1; knowledge 50; harness 24/24; binding 45/45; audit expected=50; junk-f21 rejected"
+   ]
+  }
+ ],
+ "non_claim_frontier_items": {
+  "sourced_claim": "C2 rests on S055, opened this round",
+  "assimilation": "id-collision rerun + quarantine slice verdicts recorded; adoption only if a staged entry passes PROVINCE/QUALITY gates (expected none: standing refusals)",
+  "considerthese": "2026-10-26 proposal 3 (quiescence gate before complete) mined into C1 G4/G6 + a QUALITY criterion; G7 fills the r37 ledger section",
+  "mistake": "M38-1.. from the round-37 verifier routed defects (D-A scaffolding paste, D-B judged-head drift, D-C pending markers, D-F empty ledger section)"
+ }
+}

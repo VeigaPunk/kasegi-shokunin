@@ -1,0 +1,18 @@
+# round-38 C1 before-controls, measured 2026-10-26T18:16:23Z at base a173b0c2b98c5ae39599fa9be76027fbbead0b9e (live lane == base, porcelain empty)
+suite: ls corpus/instruments/r38-closure.sh -> exit=2
+G1/D-A: grep -c '^Correction (round 38)' PROVINCE.md -> 0
+G1/D-A: grep -c '^Correction (round 38)' corpus/README.md -> 0
+G1/D-A: fence lines PROVINCE.md -> 81:``` 96:```text 124:``` 
+G1/D-A: fence lines corpus/README.md -> 426:```  (opener at 426 never closed: open-at-EOF=1)
+G1/D-A: r37 appends: PROVINCE.md L79-L152 (74 lines, git diff -U0 b56a4168 a173b0c2b98c5ae39599fa9be76027fbbead0b9e), corpus/README.md L399-L454 (56 lines)
+G1/D-A: declared-blocks file: ls .ufo/waves/round-38/declared-blocks.txt -> exit=2
+G2/D-B: ls .ufo/waves/round-38/final-gates/all-gates.txt -> exit=2
+G3/D-C: grep -c '⟨pending' corpus/lessons/round-37.md -> 7 (lines 10 90 95 216 265 300 320 )
+G3/D-C: grep -c 'Pending-marker resolutions (round 38)' corpus/lessons/round-37.md -> 0
+G3/D-C: L85 'is not landed' -> 1
+G4/D3: git ls-tree -r --name-only 2387dcf6 -- .ufo/waves/round-37/ | grep -c results.json -> 0  (r37 judged head lacked the WAVE-DONE results; landed later at 83975acc after complete)
+G5/D-D: awk round-37 section grep -c 'Final lane commit:' SCORECARD.md -> 1
+G5/D-D: grep -c '^Correction (round 38)' SCORECARD.md -> 0
+G6/D-E: find /fast/scratch/hyaku/kasegi-r36 /fast/scratch/hyaku/kasegi-r37 -mindepth 1 | wc -l -> 1 (/fast/scratch/hyaku/kasegi-r37/build-spec.py)
+G7/D-F: ledger rows under '## Round-37 dispositions' -> 0 (heading at L37, empty L38-L39; r37 report claimed an 18-row table)
+G8 carry-over: bash corpus/instruments/r37-closure.sh --export-ref a173b0c2b98c5ae39599fa9be76027fbbead0b9e -> closed=14/14 exit=0 (run at freeze by L1)
