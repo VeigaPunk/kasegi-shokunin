@@ -1,0 +1,14 @@
+--- corpus/instruments/source-recheck.py	2026-10-25 15:51:26.916195435 -0300
++++ .ufo/waves/round-30/wave1/mutant-b1/source-recheck.py	2026-10-25 15:54:14.129595867 -0300
+@@ -120,11 +120,6 @@
+     if not isinstance(path, str) or not path or Path(path).is_absolute():
+         emit(out, f"{source_id}:manifest", "UNAVAILABLE", "reason=invalid-path")
+         return 2
+-    # B1: the capture file stem must equal the record id (QUALITY Q9).
+-    if Path(path).stem != source_id:
+-        emit(out, f"{source_id}:manifest", "MISMATCH", "reason=stem-mismatch")
+-        return 1
+-
+     expected = record.get("sha256")
+     if not isinstance(expected, str) or SHA256_RE.fullmatch(expected) is None:
+         emit(out, f"{source_id}:manifest", "UNAVAILABLE", "reason=invalid-sha256")
