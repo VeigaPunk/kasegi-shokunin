@@ -1,0 +1,87 @@
+{
+  "lane": "kasegi",
+  "round": 35,
+  "attempt": 1,
+  "base": "3266c9937b03062d9bbc2f436e20820115ed179c",
+  "frozen_at_utc": "2026-10-26T07:30:00Z",
+  "axes_owned": ["depth:density", "depth:verifiability", "coverage"],
+  "saturation": { "line": "9/10 per owned axis", "window": "N=3" },
+  "lowest_non_retired_axis": "depth:verifiability (4)",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "score_before": 4,
+      "score_after": "held 4",
+      "predicate": "The committed closure suite `corpus/instruments/r35-defect-closure.sh` prints `closed=7/7 exit=0` on the landed tree and `--selftest` prints `cases=7 failures=0`; the seven round-34 verifier-routed defects D1-D7 each carry a runnable closure check that exits non-zero while open (the suite fails on the base tree, `closed=0/7`, exit 1).",
+      "kill_rule": "Any of: suite missing (ls_exit=2); `closed` != 7/7; suite --selftest prints fewer than 7 cases or any failure; any single D-closure check exits 0 on a tree that still carries its defect (proved by the suite's own --selftest); `<LANE_HASH>` still present in SCORECARD.md; `filled by the L1` placeholder prose still present in SCORECARD.md; `.ufo/waves/round-34/wave1-results.json` untracked.",
+      "counting_commands": [
+        "bash corpus/instruments/r35-defect-closure.sh -> closed=K/7 exit=0|1",
+        "bash corpus/instruments/r35-defect-closure.sh --selftest -> cases=7 failures=0 exit=0",
+        "grep -c 'filled by the L1' SCORECARD.md -> 0",
+        "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md -> 52",
+        "git ls-files .ufo/waves/round-34/wave1-results.json | wc -l -> 1"
+      ],
+      "before": [
+        "r35-defect-closure.sh absent (ls_exit=2)",
+        "SCORECARD.md carries 1 'filled by the L1' placeholder line, 0 citations of the round-34 tip hash c1c6a5f (D1)",
+        "SCORECARD.md carries 2 stale '201.7' depth:density-row lines and 0 corrected '201.2' markers (D2)",
+        "SKILL.md Gates & probes registry rows for r-defect-closure.sh / kill-rule-check.py: 0 (D3)",
+        "wave1-results.json untracked; no provenance note (D4)",
+        "claims-erratum-d5.md absent (D5)",
+        "L1Integration.md carries the stale dead-seat sentence (D6)",
+        "QUALITY.md carries 0 supersedes-R22 / supersedes-R23 rows (D7)"
+      ],
+      "after": [
+        "r35-defect-closure.sh exists; closed=7/7 exit=0 at tip; --selftest cases=7 failures=0; base tree closed=0/7 exit=1",
+        "SCORECARD.md 'filled by the L1' count 0 with appended correction naming c1c6a5f (D1)",
+        "SCORECARD.md carries an appended round-34 depth:density-row erratum naming the corrected mean 201.2 (D2)",
+        "SKILL.md Gates & probes registry registers r-defect-closure.sh and kill-rule-check.py (D3)",
+        "wave1-results.json tracked with a provenance note beside it (D4)",
+        "claims-erratum-d5.md exists and carries the discriminating-invocation and per-id occurrences statements (D5)",
+        "L1Integration.md stale dead-seat sentence corrected by an appended note (D6)",
+        "QUALITY.md carries appended supersedes-R22 and supersedes-R23 rows (D7)"
+      ]
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "score_before": 7,
+      "score_after": "held 7",
+      "predicate": "Frontier F18 (CISA Known Exploited Vulnerabilities catalog - exploitation-status-based prioritization distinct from CVSS severity) admitted 17->18; registry row S052 added (tier A, status mined, opened 2026-10-26); knowledge entry corpus/knowledge/cisa-kev-catalog.md cites `source: S052`; harness prints entries=21 pass=21 exit=0 incl. `PASS F18 ids=S052`; source-recheck S052 prints every assertion occurrences=1, sha256 OK, exit 0; census exit 0 (W04 S028/S029 only); the junk F18 twin (c2-controls/junk-f18.md) is rejected by the admission gate.",
+      "kill_rule": "Any of: frontier_admitted != 18; registry rows != 52; S052_row != 1; entries citing S052 != 1; harness entries/pass != 21/21; source-recheck S052 exit != 0; census exit != 0; junk twin passes source-recheck or is admitted.",
+      "counting_commands": [
+        "grep -cE '^\\| F[0-9]+ \\|' corpus/README.md -> 18",
+        "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md -> 52",
+        "grep -cE '^\\|[[:space:]]*S052[[:space:]]*\\|' corpus/SOURCES.md -> 1",
+        "grep -lE '^source: S052 ' corpus/knowledge/*.md | wc -l -> 1",
+        "python3 corpus/instruments/frontier-recheck-count.py -> entries=21 pass=21 exit=0",
+        "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-35/manifest.json --source S052 -> all occurrences=1, sha256 OK, exit 0",
+        "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> exit 0"
+      ],
+      "before": [
+        "frontier_admitted=17",
+        "registry rows=51; S052_rows=0; entries citing S052=0",
+        "harness entries=20 pass=20 exit=0",
+        "source-recheck S052: manifest UNAVAILABLE reason=missing, exit 2",
+        "census exit 0 with W04 S028/S029 only",
+        "knowledge entries=46"
+      ],
+      "after": [
+        "frontier_admitted=18 (F18 row admitted, cited by the entry)",
+        "registry rows=52; S052 row=1 (tier A, mined, opened 2026-10-26); entries citing S052=1",
+        "harness entries=21 pass=21 exit=0 incl. `PASS F18 ... ids=S052`",
+        "source-recheck S052 exit 0, every assertion occurrences=1, sha256 OK",
+        "census exit 0 with W04 S028/S029 only",
+        "knowledge entries=47",
+        "junk twin rejected: source-recheck exit != 0 and non-author reviewer REFUSE on record"
+      ]
+    }
+  ],
+  "non_claim_frontier_items": {
+    "assimilation": "Re-run the id-collision check (registry vs staged ids, 0-3-space pattern, proving the guard once on an indented-row fixture) and the quarantine slice re-derivation (register read-only) for the merge/kasegi/ package; re-confirm standing refusals with flip conditions; no staged entry has fully-met flip conditions this round (S036/BILISRC unregistered; S081/S082/S077/S078/S079 unregistered; anchor/capture gaps unchanged). Assimilation: none adopted this round; verdicts recorded in the lesson Gate.",
+    "considerthese": "considerthese/2026-10-25.md proposal 2 (distance to the next score, not just 'improved, held') mined this round: a read-only gap computation plus a QUALITY.md criterion (R26) grounding the lesson, citing the proposal file + date; other proposals unchanged with reasons from the lane ledger.",
+    "mistake": "M35-1 (candidate): round-34 verifier defect D4 - wave writes landed after the `complete` line (results.json untracked at round close) - class landing/closure-order; captured-by R4's 'landed means committed' reading was not applied to the results file; fix = commit results with provenance + quiesce before final commit. Further M35 rows minted from wave receipts in the lesson.",
+    "routed_defects_round_34": "D1-D7 from round-34-verifier-spotcheck.md §6 are C1's subject (all seven land with runnable closure checks)."
+  }
+}
