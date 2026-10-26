@@ -366,3 +366,31 @@ rewritten (R9): at round 34 the frontier stands at **17/17 admitted** — F01-F0
 at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
 F15 at round 31, F16 at round 33, F17 at round 34. The 0/18 sentence is untouched: the lost-domain
 denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+## Round-35 admission — coverage map row and Frontier F18 (appended 2026-10-26)
+
+The coverage map above is not edited in place (R6): the round-35 entry
+`knowledge/cisa-kev-catalog.md` (Frontier F18, source S052; source basis:
+CISA's Known Exploited Vulnerabilities JSON feed at
+https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
+(catalogVersion 2026.10.23, count 1756), captured 2026-10-26 under
+`corpus/source-snapshots/round-35/`) is recorded here as an appended amendment so
+every existing line keeps its number. The coverage-map row is appended here rather than inserted
+into the map, and the F18 frontier row is listed here on the same table shape as the frontier
+above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Known-exploited-vulnerabilities prioritization (round 35) | knowledge/cisa-kev-catalog.md | S052 — public primary dataset, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F18 | CISA Known Exploited Vulnerabilities catalog — exploitation-status-based prioritization distinct from CVSS severity | admitted | knowledge/cisa-kev-catalog.md | S052 | Keep the catalog's remediation clock attached to the directive that binds it: BOD 26-04 supersedes the revoked BOD 22-01 and uses KEV status as one of four risk-priority factors (public exposure, KEV status, automatability, technical impact), with 3-day remediation for the most urgent cases; KEV listing is an exploitation-status signal, not a severity score — the feed carries no severity field (12 keys x 1756 records, cvss 0). |
+
+[r35 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 35 the frontier stands at **18/18 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35. The 0/18 sentence is
+untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count
+stays outside it.

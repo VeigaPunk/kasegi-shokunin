@@ -1126,17 +1126,18 @@ Frozen before dispatch in `.ufo/waves/round-34/claims.json` (base
 together with the do-nothing controls committed at the freeze
 (`c1-controls/fake-suite.sh`, `c1-controls/fake-killrule.py`, `c2-controls/junk-f17.md` +
 `c2-controls/junk-checker.py`), the frozen before-controls (`c1-controls/before.txt`,
-`c2-controls/before.txt`) and `census-before.txt`. **Final lane commit: the L1 fills this line in the
-closing commit.** This section is written at the wave-1 integration state on the bytes digested under
-§ Measurement state, claims no lane-commit hash, and deliberately introduces no placeholder token —
-round-33 R1's defect was a published placeholder, the C1 counter reads that count as 0, and nothing
-here moves it. Receipts land under `.ufo/waves/round-34/` (`c1-controls/`, `c2-controls/`,
-`census-before.txt`, `claims-erratum-1.md`, `assimilation/`, `wave1/`; 58 seat receipts at this
-seat's read). The last round heading at this round's base is round 33, so C1's and C2's last-change
-column stays 33 and every before-column below is the frozen control measured at this round's base
-bytes. The round-34 subject is instrument-soundness closure for the nine round-33 verifier-routed
-defects R1–R9 (C1) and frontier F17 / Immunefi Vulnerability Severity Classification System v2.2
-(C2).
+`c2-controls/before.txt`) and `census-before.txt`. **Final lane commit:
+`c1c6a5f826d2425446347173de527c42991b78b0`** (filled in round 35, D1). This section is written at the
+wave-1 integration state on the bytes digested under § Measurement state and originally carried the
+placeholder prose this hash replaces; round-33 R1's defect recurred here in sentence form, which the
+round-34 R1 check missed because it matched only the angle-bracket lane-hash marker, not this prose form
+— the round-35 correction note at the end of this section records the substitution. Receipts land under
+`.ufo/waves/round-34/` (`c1-controls/`, `c2-controls/`, `census-before.txt`, `claims-erratum-1.md`,
+`assimilation/`, `wave1/`; 58 seat receipts at this seat's read). The last round heading at this round's
+base is round 33, so C1's and C2's last-change column stays 33 and every before-column below is the
+frozen control measured at this round's base bytes. The round-34 subject is instrument-soundness
+closure for the nine round-33 verifier-routed defects R1–R9 (C1) and frontier F17 / Immunefi
+Vulnerability Severity Classification System v2.2 (C2).
 
 | Claim | Axis | Before | After | Verdict and evidence | Last change |
 |---|---|---|---|---|---|
@@ -1237,7 +1238,45 @@ at 4 the lowest-axis obligation stays active, and the C1 blind spots above are t
 | 34 | depth:verifiability | 4 (suite absent, `selftest cases=11`, two frozen-rule survivors, 2 markers, local-offset `fetched_utc`, unlisted S040 capture, one-directional rule A, no junk-twin control) | 4 held (`closed=9/9 exit=0` / `selftest cases=9 failures=0` / base `closed=0/9 exit=1`; `selftest cases=23 failures=0`; `survivors=0` with 7 gates and 4/4 controls; markers 0 + correction; strict-UTC round-32 stamps; S040 orphan declared; rule A bidirectional; junk twin committed and rejected; 18/18 suite mutants and both rule-A limbs killed) | `corpus/instruments/{r-defect-closure.sh,kill-rule-check.py,capture-binding-check.py,frontier-recheck-count.py}`, `corpus/source-snapshots/round-{26,32}/manifest.json`, `corpus/QUALITY.md`, `corpus/lessons/round-33.md`, `.ufo/waves/round-34/wave1/{ExecRDefectClosureSuite,ExecKillRuleCheck,ExecCaptureBindingHarden,ExecFrontierBidirectional,ExecScorecardMarkers,ExecErratum2,ExecQualityAppends,ExecLessonErrata,ExecS040Orphan,ExecManifestR32Normalize,RevC1BeforeAfter,RevClaimsFreeze,RevRSuite,MutRSuiteChecks,MutKillRuleMutants,MutFrontierRuleA,CritC1Kill}.md` |
 | 34 | coverage | 7 (frontier 16, entries citing S051 0, registry 50, harness 19/19, round-34 manifest absent → recheck exit 2, junk twin uncommitted) | 7 held (frontier 17, entries citing 1, registry 51 with S051 row 1, harness 20/20 incl. `PASS F17`, `source-recheck S051` 18 assertions OK exit 0, census exit 0 with base warnings only, 46 knowledge entries, junk twin rejected by the reviewer-built manifest) | `corpus/README.md` F17 row, `corpus/SOURCES.md:57` S051 + `:77` Search-log bullet + `:103-105` R8 lines, `corpus/knowledge/immunefi-vscs-v2-2-smart-contract-severity.md`, `corpus/source-snapshots/round-34/{S051.txt,manifest.json}`, `.ufo/waves/round-34/c2-controls/junk-f17.md`, `.ufo/waves/round-34/wave1/{ExecSnapshotR34,ExecHarnessAfter,ExecRegistryAppend,ExecCensusAfter,ExecRegressionC2,RevC2BeforeAfter,RevCensus,RevRowS051,RevEntryF17,RevJunkTwin,CritC2Kill}.md` |
 
-**Round-34 final lane commit: filled by the L1 in the closing commit.** Every value in this section
-was measured at the wave-1 integration state on the quiescent bytes digested under § Measurement
-state; the closing commit may add seat receipts, `LOG.md`, `SHONEN.md`, `corpus/lessons/round-34.md`
-and this section itself, none of which any counter above reads.
+**Round-34 final lane commit: `c1c6a5f826d2425446347173de527c42991b78b0`** (filled in round 35, D1).
+Every value in this section was measured at the wave-1 integration state on the quiescent bytes
+digested under § Measurement state; the closing commit may add seat receipts, `LOG.md`, `SHONEN.md`,
+`corpus/lessons/round-34.md` and this section itself, none of which any counter above reads.
+
+Erratum (round 35): the round-34 depth:density row measured 0 changed SKILL/PROVINCE lines and mean 201.7; at the tip each file had +1 appended correction line and the measured density mean is 201.2 (unchanged instrument, same definition).
+
+Measurement state for the erratum above, so the two numbers stay bound to bytes: the 201.7 limb is
+`git show 206e510:SKILL.md` (`b11b6085…`, 1090 lines, 710 path-citation instances, 25 blocks;
+`PROVINCE.md` `b57de5d9…`, 74 lines) and the 201.2 limb is
+`git show 3266c9937b03062d9bbc2f436e20820115ed179c:SKILL.md` (`ba5ebe5d…`, 1091 lines, 711 cites,
+25 blocks; `PROVINCE.md` `b4bb5fee…`, 75 lines). The one line each comes from the round-34 closing
+commit `4b0a9f2` (`diff` = `1090a1091` for `SKILL.md`, `74a75` for `PROVINCE.md`, both `[round-34
+correction, appended 2026-10-26, end-of-file append per R6]`). Round-35 appends to `SKILL.md` move the
+live-tree mean independently of this erratum — read both figures against the named blobs, not the
+working tree (`density.py`, unchanged instrument, same definition).
+
+Correction (round 35): the two lane-commit placeholder sentences above (the preamble's and the closing
+paragraph's) were replaced with the round-34 final lane hash `c1c6a5f826d2425446347173de527c42991b78b0`
+(the round-34 lane tip at its non-author closure). Neither placeholder spelling occurs in this file any
+more; the round-35 closure check reads that count as 0. Nothing else in this section changed.
+
+## Round 35 — frozen claims C1/C2 (2026-10-26)
+
+| Axis | Before | After | Evidence |
+|---|---:|---:|---|---|
+| depth:verifiability | 4 | 4 held — D1–D7 closure suite `closed=7/7 exit=0`, base `closed=0/7 exit=1`, `--selftest cases=7 failures=0` | `corpus/instruments/r35-defect-closure.sh` + `r35-fixtures/`; `.ufo/waves/round-35/wave1/{ExecClosureSuite,RevClosureSuite,RevSelftestFixtures,ExecBeforeReceipts,ExecDoNothingReject}.md` |
+| coverage | 7 | 7 held — frontier 17→18 (F18 CISA KEV), registry 51→52 (S052), harness `entries=21 pass=21`, source-recheck S052 exit 0, census exit 0 | `corpus/README.md` F18 row, `corpus/SOURCES.md:58` S052, `corpus/knowledge/cisa-kev-catalog.md`, `corpus/source-snapshots/round-35/{S052.txt,manifest.json}` |
+| depth:density | 9 | unchanged (no density claim; no-harm guard mean ≈ 201.2) | `wave1/ExecNoHarmFinal.md` |
+
+Measurement state: base `3266c993…`, freeze `617496b9…`, wave-1 spec/dispatch `da2d3c68…`, integration `aa6ad99…`; final lane commit filled by the L1 in the closing commit.
+
+Capabilities: no new capability row this round (the closure suite is a counter instrument; the capability window is not restarted — last entry round 33).
+
+Move-log rows:
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 35 | depth:verifiability | 4 (D1–D7 open; suite absent) | 4 held (`closed=7/7`, base 0/7, selftest 7/7) | r35-defect-closure.sh; scorecard D1–D7 corrections; QUALITY R26/R27 |
+| 35 | coverage | 7 (frontier 17, registry 51) | 7 held (frontier 18, registry 52, S052) | F18 row; S052 row; entry; capture/manifest |
+
+Saturation unchanged: line 9/10 per owned axis, window N = 3. Lowest non-retired axis still depth:verifiability (4).

@@ -1,0 +1,113 @@
+{
+  "schema": "kasegi-r35-fixture-set-v1",
+  "instrument": "corpus/instruments/r35-defect-closure.sh",
+  "selftest_spelling": "bash corpus/instruments/r35-defect-closure.sh --selftest",
+  "row_root_layout": [
+    ".ufo/waves/round-34/wave1-results.json",
+    ".ufo/waves/round-34/wave1-results.json.provenance.md",
+    ".ufo/waves/round-34/wave1/L1Integration.md",
+    ".ufo/waves/round-35/claims-erratum-d5.md",
+    "SCORECARD.md",
+    "SKILL.md",
+    "corpus/QUALITY.md"
+  ],
+  "fixture_rule": "each D<i>/ tree breaks exactly one limb; every other limb carries fixed content",
+  "cases": [
+    {
+      "id": "D1",
+      "root": "D1",
+      "limb": "D1",
+      "files": [
+        "SCORECARD.md"
+      ],
+      "expect": "fail",
+      "broken": "round-34 placeholder prose present, no round-34 tip hash",
+      "fix": "replace the placeholder sentence with the line naming c1c6a5f"
+    },
+    {
+      "id": "D2",
+      "root": "D2",
+      "limb": "D2",
+      "files": [
+        "SCORECARD.md"
+      ],
+      "expect": "fail",
+      "broken": "stale 201.7 depth:density row present, no appended erratum",
+      "fix": "append the erratum naming 'round-34 depth:density row' and 201.2"
+    },
+    {
+      "id": "D3",
+      "root": "D3",
+      "limb": "D3",
+      "files": [
+        "SKILL.md"
+      ],
+      "expect": "fail",
+      "broken": "Gates & probes registry has no row naming either round-34 instrument",
+      "fix": "add the r-defect-closure.sh and kill-rule-check.py registry rows"
+    },
+    {
+      "id": "D4",
+      "root": "D4",
+      "limb": "D4",
+      "files": [
+        ".ufo/waves/round-34/wave1-results.json",
+        ".gitignore"
+      ],
+      "expect": "fail",
+      "broken": "results file kept out of the index by .gitignore; no provenance note",
+      "fix": "drop the ignore rule and add wave1-results.json.provenance.md"
+    },
+    {
+      "id": "D5",
+      "root": "D5",
+      "limb": "D5",
+      "files": [
+        ".ufo/waves/round-35/claims-erratum-d5.md"
+      ],
+      "expect": "fail",
+      "broken": "erratum keeps the discriminating-invocation statement, loses the per-id occurrence statement",
+      "fix": "restore the 'per-id occurrences' statement in section 2"
+    },
+    {
+      "id": "D6",
+      "root": "D6",
+      "limb": "D6",
+      "files": [
+        ".ufo/waves/round-34/wave1/L1Integration.md"
+      ],
+      "expect": "fail",
+      "broken": "stale dead-seat sentence present, no round-35 correction",
+      "fix": "replace the stale sentence with the 'Correction (round 35)' block"
+    },
+    {
+      "id": "D7",
+      "root": "D7",
+      "limb": "D7",
+      "files": [
+        "corpus/QUALITY.md"
+      ],
+      "expect": "fail",
+      "broken": "R22/R23 rows keep their original grounding; no supersession row",
+      "fix": "append the 'supersedes R22' and 'supersedes R23' rows"
+    }
+  ],
+  "controls": [
+    {
+      "id": "clean",
+      "root": "clean",
+      "expect": "pass-all",
+      "note": "all seven limbs fixed: every check must exit 0"
+    },
+    {
+      "id": "D1+D2",
+      "root": "two-defect/D1D2",
+      "expect": "fail",
+      "failing": [
+        "D1",
+        "D2"
+      ],
+      "note": "two limbs reintroduced: exactly the D1 and D2 checks fail"
+    }
+  ]
+}

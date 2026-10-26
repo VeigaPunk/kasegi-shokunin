@@ -1647,3 +1647,13 @@ Post-entry note (appended 2026-10-26): `wave1/ExecRegressionC1.md` landed at 06:
 integration commit, and is committed in the follow-up commit; the round closes with 65/65 wave
 receipts filed. Its quiescent re-run of the six frozen C1 commands matches the literals, and the
 suite fails on base bytes (`base_exit=1` at `014ee2d`).
+
+## Round 35 — 2026-10-26 — C1 D1–D7 closure suite + C2 F18 CISA KEV admitted (one v2 wave, 64 seats)
+
+Claims frozen in `.ufo/waves/round-35/claims.json` (freeze commit `617496b9…`; base `3266c993…`); wave-1 spec/dispatch `da2d3c68…`; integration commit `aa6ad99…`; final lane tip named in the round report.
+
+- **C1 depth:verifiability (4, held) — D1–D7 closure suite.** Landed `corpus/instruments/r35-defect-closure.sh` (7 checks, bash -n-clean, cd-prefixed, fail-closed) + `r35-fixtures/` (per-defect isolation); `closed=7/7 exit=0`, base `closed=0/7 exit=1`, `--selftest cases=7 failures=0`; forged summaries rejected (4/4). D1 placeholders replaced (`filled by the L1` 1→0; `c1c6a5f` citations 3); D2 appended round-34 depth:density erratum (201.2); D3 SKILL.md Gates & probes registry rows; D4 results tracked with provenance note (D4 closed by the L1 commit); D5 `claims-erratum-d5.md` (discriminating invocation + per-id occurrences); D6 L1Integration stale sentence corrected + `Correction (round 35)`; D7 QUALITY supersedes-R22/R23 rows (R26/R27).
+- **C2 coverage (7, held) — F18 CISA KEV admitted.** Frontier 17→18; registry 51→52 (S052, tier A, mined, opened 2026-10-26, JSON feed); entry `corpus/knowledge/cisa-kev-catalog.md` cites `source: S052`; harness `entries=21 pass=21 exit=0` incl. `PASS F18 ids=S052`; source-recheck S052 exit 0 (Q1–Q5 occurrences=1); census exit 0 (W04 S028/S029 only); knowledge 46→47. Capture `S052.txt` (1479694 B, 27870 lines) + manifest with fetched_utc strict UTC; live re-open 0 differing lines. RevEntryF18 REFUSE→repair→ADMIT (Q2 live-page claim demoted to a labelled Scope note; directive currency: BOD 26-04 supersedes revoked 22-01).
+- **Frontier items.** Assimilation: none adopted (id collisions 22 post-C2, guard proven; quarantine slice 7 rows: 4 present-and-located [S068 duplicate of S040], 2 prose-class-unverifiable, 1 unreachable, 0 adopted; standing refusals flips unmet). considerthese proposal 2 mined → QUALITY R26 (score-gap). Mistakes M35-1…M35-5 in `corpus/lessons/round-35.md`.
+- **Wave.** One v2 wave, 64 seats (executor 18, scribe 12, reviewer 10, scout 6, mutation-tester 5, critic 5, connector 4, sentinel 2, simplifier 2; attack share 31.2 %); receipts under `.ufo/waves/round-35/wave1/`; results file pending dispatcher finalize.
+- **Tooling.** No installs; no pacman transactions (host-wide pause).

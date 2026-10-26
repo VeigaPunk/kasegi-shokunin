@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "purpose": "Round-35 F18 captured-source assertions for S052 (CISA Catalog of Known Exploited Vulnerabilities, machine-readable JSON feed), captured 2026-10-26T06:32:40Z with corpus/instruments/capture-source.py --id S052 --kind text under the instrument UA kasegi-shokunin/1.0: HTTP status=200 served directly (no redirect; the effective URL is the requested URL), fetched_bytes=1807090, snapshot_bytes=1479694, 27870 lines, sha256 d69349e86c5cce17146ccb4a4d514272d5ef47cb9586d06085113cf6779e8826. --kind text is deliberate: the body is application/json and the instrument's default html mode runs html_to_text() plus html.unescape() over it, rewriting entity sequences inside shortDescription and notes strings; text keeps the served bytes modulo collapse()'s per-line whitespace collapse and blank-line drop. The snapshot is 1.41 MiB, above 1 MiB, and is committed in full as the capture. The URL the round-35 dispatch named (https://www.cisa.gov/known-exploited-vulnerabilities.json) is not served: it answers HTTP 404 with a 46916-byte HTML error page under the instrument UA, a desktop browser UA and curl's default UA (three measurements, 2026-10-26). The catalog page https://www.cisa.gov/known-exploited-vulnerabilities-catalog links three machine-readable artifacts, and /sites/default/files/feeds/known_exploited_vulnerabilities.json is the JSON one, so this record's url is that linked path. The CSV sibling /sites/default/files/csv/known_exploited_vulnerabilities.csv was also fetched for comparison (status=200, 1073722 bytes, 1757 lines): its header row carries 12 field names, not nine, over the same 1756 records, so the CSV holds no field the JSON lacks while the JSON alone carries title, catalogVersion, dateReleased and count. The per-record schema is 12 fields (cveID, vendorProject, product, vulnerabilityName, dateAdded, shortDescription, requiredAction, dueDate, knownRansomwareCampaignUse, forensicTriage, notes, cwes) and holds no severity scale: a token scan over the capture finds cvss 0, base score 0 and risk rating 0, and 'severity' twice, both inside prose strings. The catalog's prioritization input is therefore exploitation status (membership, dateAdded, dueDate, knownRansomwareCampaignUse), not a CVSS score; that negative is the distinctness half of F18 and is measured, not quoted, because a capture cannot quote an absence. The feed carries no prose definition of 'known exploited' either: its own descriptive text is the title quoted at Q1, and Q4 shows the per-record exploitation-status fields. SHA-256 pins the committed local capture; the record asserts nothing about what the feed serves today. Two instrument fetches 40 seconds apart (06:32:00Z and 06:32:40Z) produced the same sha256.",
+  "sources": [
+    {
+      "id": "S052",
+      "path": "S052.txt",
+      "sha256": "d69349e86c5cce17146ccb4a4d514272d5ef47cb9586d06085113cf6779e8826",
+      "url": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+      "fetched_utc": "2026-10-26T06:32:40Z",
+      "quotes": [
+        {
+          "id": "Q1",
+          "quote": "\"title\": \"CISA Catalog of Known Exploited Vulnerabilities\",",
+          "anchor": 2,
+          "location": "L2; the feed's top-level title. It is the catalog's own label and the whole descriptive text the feed carries: the snapshot has no prose definition of 'known exploited' beyond this name, which is why the definitional statement a knowledge entry makes must be attributed to the catalog page, not to S052."
+        },
+        {
+          "id": "Q2",
+          "quote": "\"catalogVersion\": \"2026.10.23\",",
+          "anchor": 3,
+          "location": "L3; the catalog's own version stamp, immediately under the title. This is the field a recheck cadence can compare against a later fetch."
+        },
+        {
+          "id": "Q3",
+          "quote": "\"dateReleased\": \"2026-10-23T19:30:18.9209Z\", \"count\": 1756,",
+          "anchor": 4,
+          "location": "L4-L5; the release instant and the declared record count, wrapped by the converter across two source lines (asserted normalized across the line break). The capture's parsed JSON has len(vulnerabilities) == 1756, matching this count field."
+        },
+        {
+          "id": "Q4",
+          "quote": "\"dueDate\": \"2022-07-18\", \"knownRansomwareCampaignUse\": \"Known\", \"forensicTriage\": \"No\", \"notes\": \"https:\\/\\/nvd.nist.gov\\/vuln\\/detail\\/CVE-2022-29499\",",
+          "anchor": 15472,
+          "location": "L15472-L15475, four consecutive lines of the record whose cveID is at L15465 (CVE-2022-29499, Mitel MiVoice Connect): the per-record exploitation-status fields a severity catalog does not carry — the remediation deadline, the known-ransomware flag with this record set to Known, the forensic-triage flag, and the NVD reference that names the CVE. Asserted normalized across the three line breaks; uniqueness rides on the notes URL."
+        },
+        {
+          "id": "Q5",
+          "quote": "\"dateAdded\": \"2022-03-25\", \"shortDescription\": \"Citrix SD-WAN and NetScaler SD-WAN allow SQL Injection.\", \"requiredAction\": \"Apply updates per vendor instructions.\", \"dueDate\": \"2022-04-15\",",
+          "anchor": 19165,
+          "location": "L19165-L19168, four consecutive lines of the record whose cveID is at L19161 (CVE-2019-12989, Citrix SD-WAN and NetScaler): the remediation clock on one record — dateAdded 2022-03-25, the vulnerability, the required action, dueDate 2022-04-15. Asserted normalized across the three line breaks; 19 words."
+        }
+      ]
+    }
+  ]
+}

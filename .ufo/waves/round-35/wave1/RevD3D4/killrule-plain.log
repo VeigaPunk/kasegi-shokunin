@@ -1,0 +1,62 @@
+KILL-RULE instrument=corpus/instruments/capture-binding-check.py sha256=3d9e5e0ddbaaccf91db255b4a978d49a1d44a2c54cd7cc1fef22c78330da99fa bytes=40556 lines=892 floor=19 counter_sha256=c279d952cba54f3f7d502a7a5e056be640146adc5b21a88b1d8dd65bfcdb5d61
+probe selftest-shape pristine=pass exit=0
+probe record-without-url pristine=pass exit=1
+probe per-file-orphan pristine=pass exit=1
+probe unnamed-record-id pristine=pass exit=1
+probe stale-orphan-declaration pristine=pass exit=1
+probe malformed-fetched-utc pristine=pass exit=1
+probe punctuated-url-cell pristine=pass exit=0
+probe malformed-orphan-declaration pristine=pass exit=2
+probe nested-legacy-round pristine=pass exit=0
+pristine selftest cases=23 case-lines=23 floor=19 floor_met=1
+mutant-patch name=skip-selftest-summary patch_sha256=c457083e5d99f9f0 find_sha256=e6262244cffa1e1e find_count=1 status=ok
+mutant-bytes name=skip-selftest-summary pristine_sha256=3d9e5e0ddbaaccf9 mutant_sha256=b9d40dbee7521dbd
+mutant-probe name=skip-selftest-summary probe=selftest-shape pristine=pass mutant=fail exit=0 reasons=summary-only;case-set-mismatch
+mutant-probe name=skip-selftest-summary probe=record-without-url pristine=pass mutant=pass exit=1
+mutant-probe name=skip-selftest-summary probe=per-file-orphan pristine=pass mutant=pass exit=1
+mutant-probe name=skip-selftest-summary probe=unnamed-record-id pristine=pass mutant=pass exit=1
+mutant-probe name=skip-selftest-summary probe=stale-orphan-declaration pristine=pass mutant=pass exit=1
+mutant-probe name=skip-selftest-summary probe=malformed-fetched-utc pristine=pass mutant=pass exit=1
+mutant-probe name=skip-selftest-summary probe=punctuated-url-cell pristine=pass mutant=pass exit=0
+mutant-probe name=skip-selftest-summary probe=malformed-orphan-declaration pristine=pass mutant=pass exit=2
+mutant-probe name=skip-selftest-summary probe=nested-legacy-round pristine=pass mutant=pass exit=0
+mutant=skip-selftest-summary killed=1
+mutant-patch name=accept-record-without-url patch_sha256=83cbd622ad2fd1e2 find_sha256=cbf461982c746e9d find_count=1 status=ok
+mutant-bytes name=accept-record-without-url pristine_sha256=3d9e5e0ddbaaccf9 mutant_sha256=5897a1f044bcbf3f
+mutant-probe name=accept-record-without-url probe=selftest-shape pristine=pass mutant=fail exit=1 reasons=exit=1;failures=1;case-verdict
+mutant-probe name=accept-record-without-url probe=record-without-url pristine=pass mutant=fail exit=0 reasons=exit=0 want=1;missing='detail=absent';missing='unbound=1'
+mutant-probe name=accept-record-without-url probe=per-file-orphan pristine=pass mutant=pass exit=1
+mutant-probe name=accept-record-without-url probe=unnamed-record-id pristine=pass mutant=pass exit=1
+mutant-probe name=accept-record-without-url probe=stale-orphan-declaration pristine=pass mutant=pass exit=1
+mutant-probe name=accept-record-without-url probe=malformed-fetched-utc pristine=pass mutant=pass exit=1
+mutant-probe name=accept-record-without-url probe=punctuated-url-cell pristine=pass mutant=pass exit=0
+mutant-probe name=accept-record-without-url probe=malformed-orphan-declaration pristine=pass mutant=pass exit=2
+mutant-probe name=accept-record-without-url probe=nested-legacy-round pristine=pass mutant=pass exit=0
+mutant=accept-record-without-url killed=1
+mutant-patch name=per-file-binding-removal patch_sha256=f872ef12408d9162 find_sha256=f1a44079b9477ef2 find_count=1 status=ok
+mutant-bytes name=per-file-binding-removal pristine_sha256=3d9e5e0ddbaaccf9 mutant_sha256=616ce9dd0637a23b
+mutant-probe name=per-file-binding-removal probe=selftest-shape pristine=pass mutant=fail exit=1 reasons=exit=1;failures=2;case-verdict
+mutant-probe name=per-file-binding-removal probe=record-without-url pristine=pass mutant=pass exit=1
+mutant-probe name=per-file-binding-removal probe=per-file-orphan pristine=pass mutant=fail exit=0 reasons=exit=0 want=1;missing='rule=orphan-capture';missing='orphans=1 orphan=S009.txt'
+mutant-probe name=per-file-binding-removal probe=unnamed-record-id pristine=pass mutant=pass exit=1
+mutant-probe name=per-file-binding-removal probe=stale-orphan-declaration pristine=pass mutant=pass exit=1
+mutant-probe name=per-file-binding-removal probe=malformed-fetched-utc pristine=pass mutant=pass exit=1
+mutant-probe name=per-file-binding-removal probe=punctuated-url-cell pristine=pass mutant=pass exit=0
+mutant-probe name=per-file-binding-removal probe=malformed-orphan-declaration pristine=pass mutant=pass exit=2
+mutant-probe name=per-file-binding-removal probe=nested-legacy-round pristine=pass mutant=pass exit=0
+mutant=per-file-binding-removal killed=1
+control=CTL-noop verdict=invalid:noop expect=invalid:noop ok=1
+control=CTL-nocompile verdict=invalid:nocompile expect=invalid:nocompile ok=1
+control=CTL-equivalent verdict=survivor expect=survivor ok=1 witness_survivors=1 witness_exit=1
+control=CTL-fake-killrule verdict=opaque expect=opaque ok=1 fake=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-34/c1-controls/fake-killrule.py fake_exit=0 fake_mutant_lines=0 fake_patch_digests=0 fake_mutants_line=0 fake_survivors=0 real_mutant_lines=3 witness_survivors=1 differs=1 stable=1
+controls=4 rejected=4
+GATE ok name=named-rows
+GATE ok name=pristine-selftest
+GATE ok name=pristine-fixtures
+GATE ok name=pristine-determinism
+GATE ok name=rows-valid
+GATE ok name=controls
+GATE ok name=survivors-zero
+mutants=3 killed=3 survivors=0 invalid=0
+gates=7 failed=0
+survivors=0

@@ -1,0 +1,43 @@
+selftest detail=D1 fixture reason=placeholders=1,lane-hash-markers=0,correction-c1c6a5f=0
+selftest detail=D1 mutant=placeholders reason=placeholders=1,lane-hash-markers=0,correction-c1c6a5f=3
+selftest detail=D1 mutant=lane-hash-markers reason=placeholders=0,lane-hash-markers=1,correction-c1c6a5f=3
+selftest detail=D1 mutant=correction-c1c6a5f reason=placeholders=0,lane-hash-markers=0,correction-c1c6a5f=0
+selftest case=D1 live=pass fixture=rejected mutants=3/3 others=6/6 verdict=pass
+selftest detail=D2 fixture reason=erratum-row=0,erratum-mean=0,row-bytes=1
+selftest detail=D2 mutant=erratum-row reason=erratum-row=0,erratum-mean=1,row-bytes=1
+selftest detail=D2 mutant=erratum-mean reason=erratum-row=1,erratum-mean=0,row-bytes=1
+selftest detail=D2 mutant=row-bytes reason=erratum-row=1,erratum-mean=2,row-bytes=0
+selftest case=D2 live=pass fixture=rejected mutants=3/3 others=6/6 verdict=pass
+selftest detail=D3 fixture reason=registry-r-defect-closure=0,registry-kill-rule=0
+selftest detail=D3 mutant=registry-r-defect-closure reason=registry-r-defect-closure=0,registry-kill-rule=1
+selftest detail=D3 mutant=registry-kill-rule reason=registry-r-defect-closure=1,registry-kill-rule=0
+selftest case=D3 live=pass fixture=rejected mutants=2/2 others=6/6 verdict=pass
+selftest detail=D4 fixture reason=tracked=0,provenance=0
+selftest detail=D4 mutant=tracked reason=tracked=0,provenance=1
+selftest detail=D4 mutant=provenance reason=tracked=1,provenance=0
+selftest case=D4 live=fail fixture=rejected mutants=2/2 others=6/6 verdict=fail
+selftest detail=D4 live-reason=tracked=0,provenance=1
+selftest detail=D5 fixture reason=erratum-file=present,discriminating-invocation=2,per-id-occurrences=0
+selftest detail=D5 mutant=erratum-file reason=erratum-file=absent,discriminating-invocation=0,per-id-occurrences=0 cascade=1
+selftest detail=D5 mutant=discriminating-invocation reason=erratum-file=present,discriminating-invocation=0,per-id-occurrences=5
+selftest detail=D5 mutant=per-id-occurrences reason=erratum-file=present,discriminating-invocation=5,per-id-occurrences=0
+selftest case=D5 live=pass fixture=rejected mutants=3/3 others=6/6 verdict=pass
+selftest detail=D6 fixture reason=dead-seat-sentence=1,correction-round-35=0
+selftest detail=D6 mutant=dead-seat-sentence reason=dead-seat-sentence=2,correction-round-35=0 verdict=unexpected rc=1
+selftest detail=D6 mutant=correction-round-35 reason=dead-seat-sentence=1,correction-round-35=0 verdict=unexpected rc=1
+selftest case=D6 live=fail fixture=rejected mutants=0/2 others=6/6 verdict=fail
+selftest detail=D6 live-reason=dead-seat-sentence=1,correction-round-35=0
+selftest detail=D7 fixture reason=supersedes-R22=0,supersedes-R23=0
+selftest detail=D7 mutant=supersedes-R22 reason=supersedes-R22=0,supersedes-R23=0 verdict=unexpected rc=1
+selftest detail=D7 mutant=supersedes-R23 reason=supersedes-R22=0,supersedes-R23=0 verdict=unexpected rc=1
+selftest case=D7 live=fail fixture=rejected mutants=0/2 others=6/6 verdict=fail
+selftest detail=D7 live-reason=supersedes-R22=0,supersedes-R23=0
+selftest control=clean closed=7/7 verdict=pass
+selftest control=two-defect closed=5/7 failed=D1,D2 verdict=pass
+selftest cases=7 failures=3 control-failures=0
+selftest judge=forged-summary rejected=1
+selftest judge=forged-caselines rejected=1
+selftest judge=short-report rejected=1
+selftest judge=fake-suite rejected=1 path=.ufo/waves/round-35/c1-controls/fake-suite.sh output=cases=7 failures=0
+selftest judge=fake-plain rejected=1 output=closed=7/7 exit=0
+selftest problem=self-report status=1

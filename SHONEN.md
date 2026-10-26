@@ -80,3 +80,26 @@ to 46 entries (F17), so `recheck-audit.py` prints `strict pass=46/46` and
 `density.py SKILL.md` mean **201.2** (base 201.7; the append is a factual correction, no score
 move claimed), `anchorcheck.py SKILL.md` exit 0 with the same failure classes (0 bad). All four
 boxes stay `[~]` with these pointers.
+
+- [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
+      — evidence (round 35): SKILL.md gained the `## Round-35 Gates & probes registry addition`
+      (+13/0), registering r-defect-closure.sh and kill-rule-check.py with name / gate|probe /
+      entry command / verdict map / selftest spelling / pinned-value path / write scope / owner
+      (D3); no-harm: `anchorcheck.py SKILL.md` 0 bad, exit 0; density mean ≈ 201.2 held. Box stays `[~]`.
+
+- [~] At least one end-to-end domain task executed and logged in LOG.md
+      — evidence (round 35): no new end-to-end hunt-to-claim task ran; the closest executed
+      measurement is the CISA KEV capture + source-recheck (Q1–Q5 occurrences=1, exit 0) and the
+      C1 closure suite (7/7). Box stays `[~]`.
+
+- [~] Instructions executable by an agent without oral context
+      — evidence (round 35): `recheck-audit.py --quiet` prints `strict pass=47/47` and
+      `expect=present expected=47 missing=0 unexpected=0 exit=0`; `r35-defect-closure.sh` plain run
+      `closed=7/7 exit=0`, `--selftest cases=7 failures=0`; all recheck lines `bash -n`-parseable,
+      cwd-invariant. Box stays `[~]`.
+
+- [~] No cross-domain bleed (PROVINCE.md still accurate)
+      — evidence (round 35): PROVINCE.md untouched (0 changed lines); F18 sits inside the province
+      (core "program rules, claim packages"; precedent F13/F16/F17 severity-scope rows); sibling
+      sweep 20/20: no contested scope (kake's BOD 20-01 lines are VDP-publishing, not
+      exploitation-status — ruled no collision). Box stays `[~]`.
