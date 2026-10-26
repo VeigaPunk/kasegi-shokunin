@@ -208,3 +208,56 @@ for the next adoption: the staged package holds its own S060 (Hitachi HIRT-PUB10
 lane already holds as S039), so the collision count is a lower bound and must be re-run after these rows
 land.
 
+## Wave-2 falsification (appended 2026-10-26)
+
+Wave `kasegi-r40-falsify` (35 seats: reviewer 12, scout 8, critic 7, mutation-tester 6, connector 1,
+sentinel 1; 0 dead) attacked the frozen claims. Verdicts:
+
+**C1 — the suite holds at the verification ref; no live defect defeats a check.** The green window is Y
+only: at J (receipt untracked) the suite prints `closed=9/10 exit=1` (H7 fail-closed on the absent
+receipt) and the selftest prints `cases=10 failures=1` (H7 positive red) — exactly the documented
+pre-receipt state, reproduced by RevC1Counters R1/R2 and MutH6H10 F1. Committing the byte-exact receipt
+as Y makes `--export-ref Y` green (`closed=10/10 exit=0`) and the graded selftest `cases=10 failures=0`
+with ten `case=H<n> positive=pass` lines; the plain transcript is byte-identical to the receipt
+(CritReceiptForge control `7b8cda36…`). Base and r39-head negatives are genuine (`base=3/10`,
+`r39=2/10`, both exit 1). Forged receipts — payload-contradicting, future-dated, different-ref,
+summary-only, tampered `H7 payload=` line — are all rejected. The `R40_NEG_BASE`/`R40_NEG_R39` knobs
+cannot mint a green receipt (H5/H7 catch it at production).
+
+Routed to round 41 (instrument robustness; no change to the frozen counter this round):
+- H2 substring match accepts wrong receipt values (`closed=7/80`, `failures=10`) — fix with token boundary (RevC1Counters D1).
+- H3 has no fence awareness — a fenced `M39-2` row passes (RevC1Counters D2).
+- H9 symlink escape: a declared path whose target is outside the export passes — fix with `readlink`-resolved path under the export root (RevC1Counters D5; RevC1Sandbox agrees).
+- H6 name-family match is case/separator-sensitive (`Kasegi-R40-stray`, `kasegi_r40-stray` pass) (RevC1Counters D6); top-level-only scan misses nested and dot-prefixed leftovers (LabExportClean F/D1-D2, CritKillRule F1/F3); H6 selftest mutants miss 4/8 H6 mutations (LabExportClean D4).
+- H1 registry-row regex accepts a row that merely mentions the instrument (RevC1Counters D8).
+- H5 forged detection is count-relative; under an already-mismatched payload an additional forgery is not independently flagged; H7's graded selftest does not isolate the payload-value comparison (MutH1H5; wave-1 M11/M08 family).
+- CritKillRule: 7 kill-rule escape states reproduced (nested scratch, work-inside-family container, dotfile dir, symlink-to-work tolerated, etc.) — the kill rule's cleanliness clause is not a stable predicate of leftovers; routed with the H6 fixes.
+
+**C2 — decision set reproduces; the S022/S024 teaches rewrite restored.** RevC2Decisions verified every
+frozen count at Y (queued 0, mined 7, entries citing nine 7, S060+ 3, frontier 23, harness 26/26,
+binding 54/54, census exit 0, measure 43/43) and found one committed defect: the integration commit
+`4766b9d` applied only status (and used-by on mined rows) — the delivered `teaches` rewrite for the two
+rejected rows S022/S024 was dropped, leaving the committed rows with queued teaches text while the change
+log claimed "reason+flip in row". This wave restored the teaches cells to the delivered
+`REJECTED: …; flip: …` text (SOURCES.md L28/L30), matching the other eight rejected rows. Lesson Census
+line 27's garbled parenthetical ("tier A +3?mined …") is read as "tier A +3 (mined S016/S017/S019/
+S020/S021/S023/S025/S060; rejected S061/S062; carried S022/S024 flips)". Observations recorded: O1
+supersession chain S022→S030→S031 is traversable and the S022 flip names S030 as specified; O3 counter
+blind spots (severed used-by → census W03 only; ghost used-by on a rejected row unchecked; queued revert
+caught only by the claims awk counter); O4 junk control rejected (mined=0 < 4).
+
+**Entries — all eight PASS Q1–Q6.** RevC2Entries re-ran source-recheck (all green), Q1–Q6 per entry, and
+cold-cwd `bash -n` on every recheck line. Minor infidelities recorded, not fixed (cosmetic; anchors and
+verbatim spans still locate the quoted bytes): S020/S025 anchors one line early in three places; S023
+capture contains U+202F characters so one quote is whitespace-normalised rather than byte-exact; the
+cve-bench entry quotes the paper's own dead GitHub link (`uiuc-kanglab` 404; live is `uiuc-kang-lab`);
+S060 manifest `full_text_lines=22795` is the split(`\n`) count vs `wc -l` 22794; manifest UA
+`kasegi-shokunin/1.0` vs capture-source.py's longer string (identical bytes).
+
+**Sibling/assimilation check.** ScoutSiblingFinal: no entry names a sibling lane (0 matches); tabi's
+round-34 mirror of kasegi's VEX-entry diff is not a tabi claim; shokuknow `lanes/kasegi/CHANNELS.md:15`
+still calls NIST SP 800-216 "queued" (stale upstream snapshot — this lane mined S019; do not re-adopt).
+CritSourceTruth: all 8 round-40 captures match manifest digests/lines/bytes; source-recheck green for
+S016/S060. ConnPatterns suggestions (extend census E11 used-by limb; port H4 scan to lesson Gate; derive
+H2/H3 expectations from committed records) recorded for round 41.
+

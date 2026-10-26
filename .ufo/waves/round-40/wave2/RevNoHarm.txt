@@ -1,0 +1,134 @@
+# RevNoHarm outputs — round-40 falsify wave 2 — no-harm guard attack
+# seat=RevNoHarm base=a7af2ce63bce153757d39bf66b366a96caf30c13 freeze=5e985b74075dd3813a63d7750966bf8abf693465 J5=3074c7679d6f527ec3930d7748ccce1dbae4a58a lane-tip-HEAD=3074c7679d6f527ec3930d7748ccce1dbae4a58a
+# Y status at attack time: no commit contains .ufo/waves/round-40/final-gates/all-gates.txt (git log --all -- <path> empty); receipt untracked at lane tip; receipt export-ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a. Seat pathspec excludes .ufo, so base->Y numstat over the seat pathspec == base->J5.
+
+## [1] git diff --numstat $B $J5 -- . ':!.ufo'
+5	0	LOG.md
+3	0	PROVINCE.md
+5	0	SCORECARD.md
+5	0	SHONEN.md
+7	0	SKILL.md
+14	0	corpus/QUALITY.md
+29	0	corpus/README.md
+12	9	corpus/SOURCES.md
+8	0	corpus/instruments/knowledge-expected.txt
+1734	0	corpus/instruments/r40-closure.sh
+132	0	corpus/knowledge/anthropic-cvd-provenance-and-pacing.md
+162	0	corpus/knowledge/cisa-bod-20-01-vdp-minimums.md
+134	0	corpus/knowledge/cisa-cvd-program-stages.md
+141	0	corpus/knowledge/cve-bench-agent-exploitation-benchmark.md
+322	0	corpus/knowledge/cyclonedx-analysis-subtree.md
+139	0	corpus/knowledge/doj-vdp-framework-scope-and-authorization.md
+121	0	corpus/knowledge/nist-sp800-216-vdp-framework.md
+136	0	corpus/knowledge/pz-reporting-transparency-trial.md
+11	0	corpus/lessons/round-39.md
+210	0	corpus/lessons/round-40.md
+32	0	corpus/source-snapshots/round-40/S016.txt
+39	0	corpus/source-snapshots/round-40/S017.txt
+132	0	corpus/source-snapshots/round-40/S019.txt
+319	0	corpus/source-snapshots/round-40/S020.txt
+432	0	corpus/source-snapshots/round-40/S021.txt
+213	0	corpus/source-snapshots/round-40/S023.txt
+1490	0	corpus/source-snapshots/round-40/S025.txt
+111	0	corpus/source-snapshots/round-40/S060.txt
+377	0	corpus/source-snapshots/round-40/manifest.json
+
+## [2] git diff --name-status $B $J5 -- . ':!.ufo'
+M	LOG.md
+M	PROVINCE.md
+M	SCORECARD.md
+M	SHONEN.md
+M	SKILL.md
+M	corpus/QUALITY.md
+M	corpus/README.md
+M	corpus/SOURCES.md
+M	corpus/instruments/knowledge-expected.txt
+A	corpus/instruments/r40-closure.sh
+A	corpus/knowledge/anthropic-cvd-provenance-and-pacing.md
+A	corpus/knowledge/cisa-bod-20-01-vdp-minimums.md
+A	corpus/knowledge/cisa-cvd-program-stages.md
+A	corpus/knowledge/cve-bench-agent-exploitation-benchmark.md
+A	corpus/knowledge/cyclonedx-analysis-subtree.md
+A	corpus/knowledge/doj-vdp-framework-scope-and-authorization.md
+A	corpus/knowledge/nist-sp800-216-vdp-framework.md
+A	corpus/knowledge/pz-reporting-transparency-trial.md
+M	corpus/lessons/round-39.md
+A	corpus/lessons/round-40.md
+A	corpus/source-snapshots/round-40/S016.txt
+A	corpus/source-snapshots/round-40/S017.txt
+A	corpus/source-snapshots/round-40/S019.txt
+A	corpus/source-snapshots/round-40/S020.txt
+A	corpus/source-snapshots/round-40/S021.txt
+A	corpus/source-snapshots/round-40/S023.txt
+A	corpus/source-snapshots/round-40/S025.txt
+A	corpus/source-snapshots/round-40/S060.txt
+A	corpus/source-snapshots/round-40/manifest.json
+
+## [3] totals and exception rows
+DELETION-ROW: 12	9	corpus/SOURCES.md
+paths=29 added=6475 deleted=9
+diff-filter=D whole-tree count: 0
+diff-filter=R whole-tree count: 0
+
+## [4] front-door numstat (guard limb)
+3	0	PROVINCE.md
+7	0	SKILL.md
+
+## [5] append-only byte-prefix check (base blob is prefix of J5 blob)
+SKILL.md: append_only=TRUE firstdiff_byte=112245 base=112245B y=113282B
+PROVINCE.md: append_only=TRUE firstdiff_byte=12057 base=12057B y=12382B
+LOG.md: append_only=TRUE firstdiff_byte=155196 base=155196B y=156527B
+SCORECARD.md: append_only=TRUE firstdiff_byte=187252 base=187252B y=188843B
+SHONEN.md: append_only=TRUE firstdiff_byte=20037 base=20037B y=21127B
+corpus/QUALITY.md: append_only=TRUE firstdiff_byte=53420 base=53420B y=57226B
+corpus/README.md: append_only=TRUE firstdiff_byte=49755 base=49755B y=52490B
+corpus/lessons/round-39.md: append_only=TRUE firstdiff_byte=9460 base=9460B y=12140B
+corpus/SOURCES.md: append_only=FALSE firstdiff_byte=8257 base=86566B y=92054B
+corpus/instruments/knowledge-expected.txt: append_only=FALSE firstdiff_byte=246 base=2620B y=3037B
+
+## [6] sha256 corpus/instruments/density.py (base | freeze | J5 | working tree)
+a7af2ce63bce  ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710  -
+5e985b74075d  ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710  -
+3074c7679d6f  ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710  -
+ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/density.py
+anchorcheck.py (same three refs): d0f35f8ccdcf995b78ea1403732fa90e12708b79bda21793002f7315b0e2a912 d0f35f8ccdcf995b78ea1403732fa90e12708b79bda21793002f7315b0e2a912 d0f35f8ccdcf995b78ea1403732fa90e12708b79bda21793002f7315b0e2a912 
+DENSITY_SHA pin in r40-closure.sh: DENSITY_SHA=ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710
+
+## [7] SOURCES.md 9 deletions — field-level classification (only promised C2 fields changed)
+S016: fields_changed=2 col8: 'queued' -> 'mined'; col11: '—' -> 'corpus/knowledge/anthropic-cvd-provenance-and-pacing.md'
+S017: fields_changed=2 col8: 'queued' -> 'mined'; col11: '—' -> 'corpus/knowledge/pz-reporting-transparency-trial.md'
+S019: fields_changed=2 col8: 'queued' -> 'mined'; col11: '—' -> 'corpus/knowledge/nist-sp800-216-vdp-framework.md'
+S020: fields_changed=2 col8: 'queued' -> 'mined'; col11: '—' -> 'corpus/knowledge/doj-vdp-framework-scope-and-authorization.md'
+S021: fields_changed=2 col8: 'queued' -> 'mined'; col11: '—' -> 'corpus/knowledge/cisa-bod-20-01-vdp-minimums.md'
+S022: fields_changed=1 col8: 'queued' -> 'rejected'
+S023: fields_changed=2 col8: 'queued' -> 'mined'; col11: '—' -> 'corpus/knowledge/cisa-cvd-program-stages.md'
+S024: fields_changed=1 col8: 'queued' -> 'rejected'
+S025: fields_changed=2 col8: 'queued' -> 'mined'; col11: '—' -> 'corpus/knowledge/cve-bench-agent-exploitation-benchmark.md'
+new rows: ['S060', 'S061', 'S062']
+
+## [8] density.py SKILL.md --label SKILL at freeze 5e985b7 (archive export) — vs recorded
+# Density census — SKILL (1115 lines, 27 blocks)
+| 26 | Round-35 Gates & probes registry addition (appended 2026-10-26) | 13 | 8 | 31 | 2 | 14 | 10 | 57 | 712.5 |
+| 27 | Round-36 Gates & probes registry addition (appended 2026-10-26) | 10 | 9 | 29 | 6 | 12 | 2 | 49 | 544.4 |
+| | **mean dens** | | | | | | | | **232.9** |
+
+Total path-citation instances: 771 across 27 blocks.
+rc=0 (full 39-line output identical in shape to ExecH10NoHarmBase.md §2.1 record)
+
+## [9] anchorcheck.py SKILL.md at freeze 5e985b7 (archive export) — vs recorded
+== SKILL.md: 16 in-range cite instances, 0 bad; 16 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+detail lines: 307 (pre-existing lost citations, recorded in-file)
+
+## [10] same instruments at J5 3074c76 (archive export)
+# Density census — SKILL (1122 lines, 28 blocks)
+| 27 | Round-36 Gates & probes registry addition (appended 2026-10-26) | 11 | 9 | 29 | 6 | 12 | 2 | 49 | 544.4 |
+| 28 | Round-40 Gates & probes registry addition (appended 2026-10-26) | 6 | 4 | 3 | 1 | 6 | 0 | 10 | 250.0 |
+| | **mean dens** | | | | | | | | **233.5** |
+
+Total path-citation instances: 774 across 28 blocks.
+== SKILL.md: 16 in-range cite instances, 0 bad; 16 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+anchorcheck J5 vs freeze: BYTE-IDENTICAL
+
+## [11] lane working-tree parity (tracked bytes = J5)
+density wt vs J5 export: BYTE-IDENTICAL
+anchor wt vs J5 export: BYTE-IDENTICAL

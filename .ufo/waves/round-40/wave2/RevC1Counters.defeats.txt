@@ -1,0 +1,126 @@
+# RevC1Counters — defeat tests, byte-exact transcripts (round-40 FALSIFY wave 2)
+# All fixtures live in scratch /fast/scratch/hyaku/kasegi-r40/RevC1Counters/ (removed at yield).
+# Checks were exercised two ways: (a) full suite runs over scratch fixture repos;
+# (b) sourcing the suite and calling the individual check_* functions on crafted trees.
+
+## D1  sourced-check defeats T1-T6 (H2 substring values, H2 4-backtick fence, H3 fenced row, H4 location/word-count)
+== T1 H2 control: honest values in all four records (expect GREEN rc=0)
+rc=0 payload=corrections=4,named=4,missing=0,fences=closed
+== T2 H2 substring defeat: closed=7/80 and failures=10 (wrong values)
+rc=0 payload=corrections=4,named=4,missing=0,fences=closed
+== T3 H2 4-backtick fence: correction inside a CommonMark 4-backtick fence
+rc=1 payload=corrections=3,named=3,missing=1,fences=open
+== T4 H3 fenced pseudo-table: only criterion row is inside a ``` fence
+rc=0 payload=mentions=1,rows=1
+== T5 H4 URL-colon location: no real location token, colon inside URL
+rc=1 payload=s056=1,s058=0,s059=0,oversize=0
+== T6 H4 hyphen-joining: 50 real words joined into 25 hyphen tokens
+rc=1 payload=s056=1,s058=0,s059=0,oversize=0
+   (joined token count: 21; real word count: 42)
+
+## D2  H9 symlink out-of-export read (T7) + H7 tree-binding catches (T8 patched SOURCES.md, T9 patched SCORECARD.md)
+== T7 H9 symlink declaration reads OUTSIDE the export
+   numstat: 1	0	pwn
+rc=0 payload=declared=1,valid=1,tail=1,pure=1,paths=1,diff-read=ok
+   (valid=1 with a declaration whose bytes live outside the export = out-of-export read)
+== T8 H7 tree-binding: patched SOURCES.md on top of Y must red H7
+exit=1  last line: closed=9/10 exit=1
+H7 payload=sentinel=1,ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a,digest=1,time-basis=1,run-utc=1,not-future=1,header-lines=5,run-lines=10,body-lines=11,closed
+== T9 H7 tree-binding: patched record (SCORECARD.md) on top of Y must red H7
+exit=1  last line: closed=8/10 exit=1
+H7 payload=sentinel=1,ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a,digest=1,time-basis=1,run-utc=1,not-future=1,header-lines=5,run-lines=10,body-lines=11,closed
+
+## D3  forged-env H8 receipt (T10, caught at production AND re-run), lying --scratch-root H6 (T11), H1 weak registry row (T13)
+== T10 forged-env H8: produce receipt with R40_NEG_BASE=r39head, commit, re-run plain
+produce exit=1  produced tally: closed=8/10 exit=1
+produced H8 line: H8 payload=base=2/10,base-exit=1,r39=2/10,r39-exit=1 closed=1
+re-run exit=1  tally: closed=8/10 exit=1
+payload-match=8
+== T11 lying --scratch-root H6: stray exists in dirtyroot, receipt audits emptyroot
+produce exit=0  produced H6 line: H6 payload=strays=0,read=ok closed=1
+truth at dirtyroot: strays would be 1 (kasegi-r40-stray exists there)
+HEAD detached at 7d9a151
+nothing to commit, working tree clean
+re-run exit=0  tally: closed=10/10 exit=0
+   (green re-run on the clean default root: the produced strays=0 is unfalsifiable post-hoc)
+== T13 H1 registry weakness: row that merely mentions r40-closure.sh
+rc=0 payload=suite=1,digest=1,registry=1,registry-in=skill
+   (registry=1 from a row that is NOT a registry row for this instrument)
+
+## D4  H6 name-family case/separator evasion (T14)
+ctrl-lower stray=kasegi-r40-stray -> rc=1 payload=strays=1,read=ok
+case-upper stray=Kasegi-R40-stray -> rc=0 payload=strays=0,read=ok
+underscore stray=kasegi_r40-stray -> rc=0 payload=strays=0,read=ok
+suffix-case stray=kasegi-r40-STRAY -> rc=1 payload=strays=1,read=ok
+
+## D5  forged-env H8 production transcript (byte-exact)
+all-gates v4
+export-ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a
+suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e
+time-basis=ref-commit
+run-utc=2026-10-26T21:56:22Z
+H1 payload=suite=1,digest=1,registry=1,registry-in=skill closed=1
+H2 payload=corrections=8,named=5,missing=0,fences=closed closed=1
+H3 payload=mentions=1,rows=1 closed=1
+H4 payload=s056=1,s058=1,s059=1,oversize=0 closed=1
+H5 payload=source=1,control=7/8,utc=1,forged-payload=rejected,future-dated=rejected,summary-only=rejected closed=0
+H6 payload=strays=0,read=ok closed=1
+H7 payload=sentinel=1,ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a,digest=1,time-basis=1,run-utc=1,not-future=1,header-lines=5,run-lines=10,body-lines=11,closed-0=2,closed-line=0,ancestor=1,diff-clean=1,diff-read=ok,payload-match=9,h7-line=0 closed=0
+H8 payload=base=2/10,base-exit=1,r39=2/10,r39-exit=1 closed=1
+H9 payload=declared=172,valid=172,tail=172,pure=1,paths=1,diff-read=ok closed=1
+H10 payload=skill-del=0,province-del=0,density=1,deleted=0,diff-read=ok closed=1
+closed=8/10 exit=1
+
+## D6  forged-env H8 re-run transcript after committing the forged receipt (byte-exact)
+all-gates v4
+export-ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a
+suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e
+time-basis=ref-commit
+run-utc=2026-10-26T21:56:22Z
+H1 payload=suite=1,digest=1,registry=1,registry-in=skill closed=1
+H2 payload=corrections=8,named=5,missing=0,fences=closed closed=1
+H3 payload=mentions=1,rows=1 closed=1
+H4 payload=s056=1,s058=1,s059=1,oversize=0 closed=1
+H5 payload=source=1,control=7/8,utc=1,forged-payload=rejected,future-dated=rejected,summary-only=rejected closed=0
+H6 payload=strays=0,read=ok closed=1
+H7 payload=sentinel=1,ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a,digest=1,time-basis=1,run-utc=1,not-future=1,header-lines=5,run-lines=10,body-lines=11,closed-0=2,closed-line=0,ancestor=1,diff-clean=1,diff-read=ok,payload-match=8,h7-line=0 closed=0
+H8 payload=base=3/10,base-exit=1,r39=2/10,r39-exit=1 closed=1
+H9 payload=declared=172,valid=172,tail=172,pure=1,paths=1,diff-read=ok closed=1
+H10 payload=skill-del=0,province-del=0,density=1,deleted=0,diff-read=ok closed=1
+closed=8/10 exit=1
+
+## D7  patched-SOURCES re-run transcript (byte-exact)
+all-gates v4
+export-ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a
+suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e
+time-basis=ref-commit
+run-utc=2026-10-26T21:56:22Z
+H1 payload=suite=1,digest=1,registry=1,registry-in=skill closed=1
+H2 payload=corrections=8,named=5,missing=0,fences=closed closed=1
+H3 payload=mentions=1,rows=1 closed=1
+H4 payload=s056=1,s058=1,s059=1,oversize=0 closed=1
+H5 payload=source=1,control=8/8,utc=1,forged-payload=rejected,future-dated=rejected,summary-only=rejected closed=1
+H6 payload=strays=0,read=ok closed=1
+H7 payload=sentinel=1,ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a,digest=1,time-basis=1,run-utc=1,not-future=1,header-lines=5,run-lines=10,body-lines=11,closed-0=0,closed-line=1,ancestor=1,diff-clean=0,diff-read=ok,payload-match=9,h7-line=0 closed=0
+H8 payload=base=3/10,base-exit=1,r39=2/10,r39-exit=1 closed=1
+H9 payload=declared=172,valid=172,tail=172,pure=1,paths=1,diff-read=ok closed=1
+H10 payload=skill-del=0,province-del=0,density=1,deleted=0,diff-read=ok closed=1
+closed=9/10 exit=1
+
+## D8  patched-SCORECARD re-run transcript (byte-exact)
+all-gates v4
+export-ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a
+suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e
+time-basis=ref-commit
+run-utc=2026-10-26T21:56:22Z
+H1 payload=suite=1,digest=1,registry=1,registry-in=skill closed=1
+H2 payload=corrections=9,named=6,missing=0,fences=closed closed=1
+H3 payload=mentions=1,rows=1 closed=1
+H4 payload=s056=1,s058=1,s059=1,oversize=0 closed=1
+H5 payload=source=1,control=7/8,utc=1,forged-payload=rejected,future-dated=rejected,summary-only=rejected closed=0
+H6 payload=strays=0,read=ok closed=1
+H7 payload=sentinel=1,ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a,digest=1,time-basis=1,run-utc=1,not-future=1,header-lines=5,run-lines=10,body-lines=11,closed-0=0,closed-line=1,ancestor=1,diff-clean=0,diff-read=ok,payload-match=7,h7-line=0 closed=0
+H8 payload=base=3/10,base-exit=1,r39=2/10,r39-exit=1 closed=1
+H9 payload=declared=172,valid=172,tail=172,pure=1,paths=1,diff-read=ok closed=1
+H10 payload=skill-del=0,province-del=0,density=1,deleted=0,diff-read=ok closed=1
+closed=8/10 exit=1

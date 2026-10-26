@@ -1,0 +1,69 @@
+selftest export-ref=a67011b25329ae66485b03614dcd62b7295115ce suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e
+selftest detail=H1 positive=pass payload=suite=1,digest=1,registry=1,registry-in=skill
+selftest detail=H1 mutant=suite-absent rejected=1 limb=suite=0
+selftest detail=H1 mutant=registry-row-absent rejected=1 limb=registry=0
+selftest detail=H1 mutant=export-bytes-differ rejected=1 limb=digest=0
+selftest case=H1 positive=pass mutants=3/3 verdict=pass
+selftest detail=H2 positive=pass payload=corrections=8,named=5,missing=0,fences=closed
+selftest detail=H2 control=four-records-green accepted=1 payload=corrections=4,named=4,missing=0,fences=closed
+selftest detail=H2 mutant=lesson-correction-absent rejected=1 limb=missing=1
+selftest detail=H2 mutant=values-not-named rejected=1 limb=missing=1
+selftest detail=H2 mutant=fence-open-at-eof rejected=1 limb=fences=open
+selftest case=H2 positive=pass mutants=3/3 verdict=pass
+selftest detail=H3 positive=pass payload=mentions=1,rows=1
+selftest detail=H3 control=criterion-row-green accepted=1 payload=mentions=1,rows=1
+selftest detail=H3 mutant=row-absent-at-all rejected=1 limb=mentions=0
+selftest detail=H3 mutant=mention-without-criterion-row rejected=1 limb=rows=0
+selftest case=H3 positive=pass mutants=2/2 verdict=pass
+selftest detail=H4 positive=pass payload=s056=1,s058=1,s059=1,oversize=0
+selftest detail=H4 control=three-located-quotes accepted=1 payload=s056=1,s058=1,s059=1,oversize=0
+selftest detail=H4 mutant=s059-block-absent rejected=1 limb=s059=0
+selftest detail=H4 mutant=quote-over-25-words rejected=1 limb=oversize=1
+selftest detail=H4 mutant=url-absent rejected=1 limb=s056=0
+selftest case=H4 positive=pass mutants=3/3 verdict=pass
+selftest detail=H5 positive=pass payload=source=1,control=8/8,utc=1,forged-payload=rejected,future-dated=rejected,summary-only=rejected
+selftest detail=H5 control=canonical-source-green accepted=1 payload=source=1,control=8/8,utc=1,forged-payload=rejected,future-dated=rejected,summary-only=rejected
+selftest detail=H5 mutant=recorded-payload-contradicts-export rejected=1 limb=control=7/8
+selftest detail=H5 mutant=source-future-dated rejected=1 limb=utc=0
+selftest case=H5 positive=pass mutants=2/2 verdict=pass
+selftest detail=H6 control=own-work-dir accepted=1 payload=strays=0,read=ok
+selftest detail=H6 mutant=empty-sibling-family-entry rejected=1 limb=strays=1
+selftest detail=H6 mutant=r39-sibling-family rejected=1 limb=strays=1
+selftest detail=H6 mutant=r40-sibling-family rejected=1 limb=strays=1
+/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r40-closure.sh: line 770: cd: /fast/scratch/hyaku/kasegi-r40/CritReceiptForge/root-st/kasegi-r40-forge/work/mut/H6-unreadable: Permission denied
+selftest detail=H6 mutant=unreadable-scratch-root rejected=1 limb=read=fail
+selftest case=H6 positive=pass mutants=4/4 verdict=pass
+selftest detail=H7 positive=pass payload=sentinel=1,ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a,digest=1,time-basis=1,run-utc=1,not-future=1,header-lines=5,run-lines=10,body-lines=11,closed-0=0,closed-line=1,ancestor=1,diff-clean=1,diff-read=ok,payload-match=9,h7-line=1
+selftest detail=H7 mutant=receipt-absent rejected=1 limb=receipt=0
+selftest detail=H7 mutant=future-dated-run-utc rejected=1 limb=not-future=0
+selftest detail=H7 mutant=export-ref-not-ancestor rejected=1 limb=ancestor=0
+selftest detail=H7 mutant=suite-digest-mismatch rejected=1 limb=digest=0
+selftest detail=H7 mutant=extra-body-line rejected=1 limb=body-lines=12
+selftest detail=H7 mutant=h7-line-tampered rejected=1 limb=h7-line=0
+selftest case=H7 positive=pass mutants=6/6 verdict=pass
+selftest detail=H8 positive=pass payload=base=3/10,base-exit=1,r39=2/10,r39-exit=1
+selftest detail=H8 mutant=base-ref-unresolvable rejected=1 limb=base-exit=2
+selftest detail=H8 mutant=r39-ref-unresolvable rejected=1 limb=r39-exit=2
+selftest case=H8 positive=pass mutants=2/2 verdict=pass
+selftest detail=H9 positive=pass payload=declared=172,valid=172,tail=172,pure=1,paths=1,diff-read=ok
+selftest detail=H9 control=declared-whole-tail-green accepted=1 payload=declared=2,valid=2,tail=2,pure=1,paths=1,diff-read=ok
+selftest detail=H9 mutant=declared-short-of-added rejected=1 limb=valid=0
+selftest detail=H9 mutant=tail-sha-mismatch rejected=1 limb=valid=0
+selftest detail=H9 mutant=declared-path-with-deletions rejected=1 limb=pure=0
+selftest detail=H9 mutant=declaration-path-escape rejected=1 limb=paths=0
+selftest detail=H9 mutant=declaration-absent-path rejected=1 limb=paths=0
+selftest case=H9 positive=pass mutants=5/5 verdict=pass
+selftest detail=H10 positive=pass payload=skill-del=0,province-del=0,density=1,deleted=0,diff-read=ok
+selftest detail=H10 control=append-only-green accepted=1 payload=skill-del=0,province-del=0,density=1,deleted=0,diff-read=ok
+selftest detail=H10 mutant=density-instrument-changed rejected=1 limb=density=0
+selftest detail=H10 mutant=skill-line-deleted rejected=1 limb=skill-del=1
+selftest detail=H10 mutant=tracked-path-deleted rejected=1 limb=deleted=1
+selftest case=H10 positive=pass mutants=3/3 verdict=pass
+selftest cases=10 failures=0
+selftest judge=own-report accepted=1
+selftest judge=forged-summary rejected=1
+selftest judge=forged-caselines rejected=1
+selftest judge=forged-failed-cases rejected=1
+selftest judge=forged-detail-free rejected=1
+selftest judge=forged-9-cases rejected=1
+selftest judge=forged-no-verdict rejected=1
