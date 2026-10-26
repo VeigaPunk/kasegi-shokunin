@@ -167,21 +167,23 @@ fails two checks (document). Receipt: fixture file list, per-fixture run outputs
 """ + TAIL)
 
 add("ExecC2Capture", "executor", HEAD + """
-Create the C2 capture: capture the CISA Known Exploited Vulnerabilities catalog JSON at
-https://www.cisa.gov/known-exploited-vulnerabilities.json using
+Create the C2 capture: capture the CISA Known Exploited Vulnerabilities catalog CSV at
+https://www.cisa.gov/sites/default/files/csv/known_exploited_vulnerabilities.csv using
 `python3 corpus/instruments/capture-source.py <url> --out corpus/source-snapshots/round-35/S052.txt`
-(instrument UA). Follow redirects; record the final URL. Verify the body is the catalog JSON (contains
-`catalogVersion` and a `vulnerabilities` array). Build `corpus/source-snapshots/round-35/manifest.json`
+(instrument UA). Follow redirects; record the final URL. Note for the search log: the JSON endpoint
+https://www.cisa.gov/known-exploited-vulnerabilities.json returns HTTP 404 (measured 2026-10-26), so the
+official CSV distribution is the primary data source. Verify the body is the catalog CSV (header row
+`cveID,vendorProject,product,vulnerabilityName,dateAdded,shortDescription,requiredAction,dueDate,knownRansomwareCampaignUse`
+with the record rows below it). Build `corpus/source-snapshots/round-35/manifest.json`
 (record S052: path, sha256, url (the final URL), fetched_utc in strict UTC) including the exact quotes the
 F18 entry will use, each with line anchors (line numbers in the captured text file), asserting
-`occurrences=1`. Candidate quotes (≤25 words each, located, from the JSON): the top-level title/label of
-the catalog, the definitional sentence about a vulnerability being "known exploited" (e.g. the `cveID` +
-`knownRansomwareCampaignUse` field semantics or the catalog's own descriptive text), and one concrete record
-demonstrating the `dateAdded`/`dueDate` remediation clock. Each quote must occur exactly once in the
-capture. Self-check: `python3 corpus/instruments/source-recheck.py --manifest
-corpus/source-snapshots/round-35/manifest.json --source S052` -> every assertion `occurrences=1`,
-`sha256 OK`, exit 0. If the JSON is large (>1 MiB), still commit it as the capture (named file; report its
-size — expected well below 10 MiB). Receipt with fetch stats, final URL, sha256, size, line numbers, manifest digest.
+`occurrences=1`. Candidate quotes (≤25 words each, located, from the CSV): the header row itself (the nine
+field names), one full catalog record line (a concrete `cveID` row with its `dateAdded` and `dueDate`
+values), and a second record demonstrating a `knownRansomwareCampaignUse` value. Each quote must occur
+exactly once in the capture (a full record line quoted verbatim occurs once). Self-check:
+`python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-35/manifest.json
+--source S052` -> every assertion `occurrences=1`, `sha256 OK`, exit 0. Report the capture size (expected
+well below 10 MiB). Receipt with fetch stats, final URL, sha256, size, line numbers, manifest digest.
 """ + TAIL)
 
 add("ExecRegistryAppend", "executor", HEAD + """
