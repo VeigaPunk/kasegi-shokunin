@@ -14,10 +14,12 @@ any registry row, capture, manifest, instrument, SCORECARD section, or sibling/s
 block carries one admit (F19/S053), three reject classes (junk twin, 6-of-7 quarantine rows, 7 standing
 refusals), the quarantine and id-collision numbers with their derivations, the considerthese dispositions, and
 the spot-check placeholder. Every number states the artifact it was read from; target values are labelled
-targets. Findings: eight register entries in § 4 — seven findings (the unbacked `junk_present=1` control, the
-unresolved S037/S054 label, the closed-but-greppable `b0a9` digest conflict, the round-35-vs-round-34
-provenance-note path in E4, E1's blindness to an abbreviated closing hash, the non-verbatim recommended Q1,
-and S065's transport-only movement) plus the peer review this seat applied. Out of scope: no re-execution of the suite,
+targets. Findings: the register in § 4 (twelve entries — eleven findings plus the peer review this seat
+applied), covering the unbacked `junk_present=1` control, the unresolved S037/S054 label, the
+closed-but-greppable `b0a9` digest conflict, the provenance-note path in E4, E1's blindness to an abbreviated
+closing hash, the non-verbatim recommended Q1, S065's transport-only movement, the suite's measured-vs-landed
+revision drift, the two revisions' `4/9` vs `3/9` negative control, the census excerpt, and the landed lesson's
+condensed form. Out of scope: no re-execution of the suite,
 harness, census or `source-recheck`; no re-fetch of any quarantine row; no sibling re-sweep. Artifact paths:
 this receipt, plus the five inputs named in § 2.
 
@@ -34,12 +36,12 @@ this receipt, plus the five inputs named in § 2.
 
 ## 1. Deliverable — `corpus/lessons/round-36.md` (draft text)
 
-Paste the block between the markers verbatim (UTF-8, single trailing newline). Two digests, both measured
-here: the lesson file is **sha256 `540af0671e0d1e0f8084fb97245a9623373f8a5cdc9fad80cfde9423e2ce3d62`**,
-404 lines / 36,315 B / 5,155 words; the block **as it sits in this receipt**, between the marker lines
-(one leading and one trailing empty line included by the extraction), is
-**sha256 `8b05dd50dae77caa350f88ccb36676d3cce6f5d72a195bd69d27289e6a765758`**, 405 lines / 36,316 B. The L1
-should re-hash after pasting, since every later append in the same round moves it.
+Paste the block between the markers verbatim (UTF-8, single trailing newline). The block **as it sits in this
+receipt**, between the marker lines (the extraction includes one leading and one trailing empty line), is
+**sha256 `732bcb1527e7255856e771a674ee409cf34318d1aa69a1cd68f14ed221a5156c`**, 413 lines / 37,641 B /
+5,346 words. This seat kept no separate lesson file — its scratch tree was removed by another process before
+the final assembly, so the bytes inside these markers are the authoritative draft, and the L1 should re-hash
+after pasting since every later append in the same round moves it.
 
 ---BEGIN LESSON---
 
@@ -621,6 +623,47 @@ wave1.ready 170 B sha256 54d680399dd52317…  -> {"lane":"kasegi","round":36,"wa
 watchdog.log:1527  2026-10-26T12:31:14-03:00 launch kasegi round=36 pgid=14809 driver=hyaku-inline attempt=1
 ```
 
+### 2.8 Post-draft integration record (measured after the draft was written)
+
+The lane moved while this seat was drafting. Everything below is a read; the draft's "state at draft" cells
+remain the draft-instant readings and are not retro-edited.
+
+```
+$ git log --oneline -4
+a23dc47 round-36: final gate receipts + measured closure
+274fa9a round-36: late receipt updates (Gate/Simpl)
+e9c57c4 round-36: late seat receipt updates
+2c26a97 round-36: E1 Final lane commit line, E4 provenance note, lesson hash
+$ git show --stat --oneline caa3146 | head -3
+caa3146 round-36: integration — r36-closure suite, F19 EPSS capture+entry+S053 row, R28/R29, PROVINCE F18/F19, SKILL registry, lesson/scorecard/SHONEN/LOG drafts
+ corpus/instruments/r36-closure.sh                   | 894 +++++
+ corpus/knowledge/epss-exploit-prediction-scoring.md | 263 ++++++
+ corpus/lessons/round-36.md                          |  45 ++
+```
+
+| subject | landed value (read at `HEAD`) | how measured |
+|---|---|---|
+| suite | `corpus/instruments/r36-closure.sh`, 894 lines, sha256 `4db1ae70c76afd28b29e9ec24c2e44835322c61fa33e30c966f75ce0dfadb7c4`; the committed blob digest equals the worktree digest | `sha256sum`, `git show HEAD:… \| sha256sum` |
+| capture | `corpus/source-snapshots/round-36/S053.txt`, sha256 `4ec61c59b0e9aedf89bb2cc3ba59f600e3b406599d1b2f8f89f43e03a16783e9` — **identical to the capture this seat produced independently** | `sha256sum` |
+| manifest | landed file digest `dd591cd4743b148db492cce78932a01125a4b7b69f7d4f1e40732dee48566a85`; the record is semantically the drafted one (`url`, `fetched_utc 2026-10-26T15:35:10Z`, `fetched_bytes 26804`, `lines 244`, same capture sha256, pins Q1/Q2/Q3/Q4 at anchors 216/217/217/235 with 25/8/23/23 words). The **file** digest differs from the drafted `f9590c2b…` (formatting at landing) | `python3 -c` over the JSON + `sha256sum` |
+| registry / frontier / knowledge | rows **53** (`S053` present), frontier **19**, knowledge **48**, entries citing `source: S053` **1** | the frozen greps in § 2.1 |
+| E3 registry rows | `r35-defect-closure.sh` **1**, `r36-closure.sh` **1** | `grep -cF` on `SKILL.md` |
+| QUALITY / PROVINCE | `R28` **1**, `R29` **1**; `PROVINCE.md` 78 lines with `F18` **1** and `F19` **1** | `grep -c '^\| R28 '`, `wc -l`, `grep -c` |
+| E4 provenance note | `.ufo/waves/round-35/wave1-results.json.provenance.md` **present** | `ls` |
+| lesson | `corpus/lessons/round-36.md` exists as **45 lines / 4,939 B, sha256 `cea4fcaffc77904f1295a87cfeef2a73481c581c98d6034995ee439cc0e43080`** — a condensation, **not** the 413-line draft in § 1 | `wc -lc`, `sha256sum` |
+| L1 closure reading (read, not re-run) | `.ufo/waves/round-36/final-gates/all-gates.txt` and the `SCORECARD.md` append: export `274fa9ae…` → `closed=9/9 exit=0`; `--selftest cases=9 failures=0`; negatives `3266c993` → `0/9 exit=1`, `0aee0ef` → `3/9 exit=1`; C2 `entries=22 pass=22`, `source-recheck S053` exit 0 with Q1–Q4 `occurrences=1`, `capture-binding-check records=43 bound=43` | file read; this seat executed none of them |
+| census | this seat's own run still prints **three** lines — `W04 S028`, `W04 S029`, `ok`, `census_exit=0` — while the `final-gates` artifact shows only `W04 S029` and `ok` | `bash ../scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` |
+
+**A counter-reading on the selftest, peer-reported and not re-run here.** `RevSpotCheckReadiness` reports that
+`--selftest` on the **landed** suite at HEAD `a23dc478` prints `cases=9 failures=1` (its E9 positive fails at
+`status-dirty=5, scratch-seat-dirs=3` mid-wave), and that it re-ran the negative controls itself: landed suite
+`0aee0ef` → `closed=3/9 exit=1`, base `3266c993` → `closed=0/9 exit=1`. That is consistent with E9's design —
+quiescence is a property of the live lane, so `cases=9 failures=0` is only measurable at the quiescent head the
+closure was run at (`274fa9ae…`), not at a head with wave receipts still untracked. Consequence for a reader:
+**every `cases=` and `closed=` figure must carry its head *and* the digest of the suite that printed it**; the
+`4/9` in § 2.2, the `3/9` above and the `failures=1` here are three different (head, suite) pairs, not three
+opinions about one measurement.
+
 ## 3. What this seat did not do
 
 - Did not write `corpus/lessons/round-36.md`, `SCORECARD.md`, `SKILL.md`, `QUALITY.md`, `PROVINCE.md`,
@@ -682,6 +725,24 @@ watchdog.log:1527  2026-10-26T12:31:14-03:00 launch kasegi round=36 pgid=14809 d
    worktree at `12:54:34 -0300` is `4db1ae70…` (894 lines / 39,022 B, untracked, `bash -n` exit 0). Both are
    read-only facts; no `closed=K/9` value in this receipt was produced by `4db1ae70…`, and this seat did not
    execute it.
+10. **The two suite revisions disagree on the negative control at the r35 judged head.** The draft suite reads
+   `0aee0ef` → `4/9` (`wave1/ExecC1SuiteBuild.md` § Export runs); the landed suite's closure run reads
+   `0aee0ef` → `3/9` (`.ufo/waves/round-36/final-gates/all-gates.txt`, `neg judged`). Both satisfy the frozen
+   kill rule (`closed<9/9`), so the claim is unharmed, but a reader comparing the two receipts sees a
+   one-check difference that is explained only by the revision change. Any later round quoting `4/9` must name
+   `ff616adc…`, and any quoting `3/9` must name `4db1ae70…`.
+11. **The closure artifact's census excerpt is not the command's full output.** This seat's own run at `HEAD`
+   prints three lines — `W04 S028`, `W04 S029`, `ok`, `census_exit=0`; the `final-gates` C2 block prints only
+   `W04 S029` and `ok`. The frozen claim's literal is "census exit 0 (W04 S028/S029 only)", which the
+   three-line output satisfies and the two-line excerpt cannot demonstrate. Recorded; the re-runnable command
+   is in § 2.8.
+12. **The landed lesson is a 45-line condensation, not the draft in this receipt.** `corpus/lessons/round-36.md`
+   is 45 lines / 4,939 B / sha256 `cea4fcaf…` and carries the claim values in summary form (including
+   `final lane commit e666d902…` and the closure readings). This seat's 413-line draft (§ 1) was not pasted.
+   That is the L1's call, recorded here so no reader assumes the draft is the landed text; the draft's value is
+   the Gate detail the condensation does not carry (candidate table, label conflict, guard proof, refusal
+   table, open items). The landed manifest's **file** digest is also not the drafted one
+   (`dd591cd4…` vs `f9590c2b…`) while its record content is identical.
 
 ## 5. Touched surfaces and provenance
 
@@ -698,8 +759,7 @@ d02acb68cb40164978146cf0f15f18a8f8a66d3c3470b3f6198e9e072911b862  quarantine sli
 66fece529978e3b2f34c57b8c37b041a6d817f2cff135cf117375bf414117868  EPSS served body (this seat's fetch, 26804 B)
 ff616adc045a8938c7ca69b3693565ef0f676a0d1d67df293b1b6c4a82da4720  r36-closure.sh draft (receipt-cited, not executed)
 f9590c2bbc26244af88dce8fa7c291d67e6138c293ba5198257789911c017da3  round-36 manifest (receipt-cited)
-540af0671e0d1e0f8084fb97245a9623373f8a5cdc9fad80cfde9423e2ce3d62  lesson block as a file (404 lines, 36,315 B)
-8b05dd50dae77caa350f88ccb36676d3cce6f5d72a195bd69d27289e6a765758  the same block as extracted from this receipt (405 lines, 36,316 B)
+732bcb1527e7255856e771a674ee409cf34318d1aa69a1cd68f14ed221a5156c  the lesson block as extracted from this receipt (413 lines, 37,641 B)
 ```
 
 Receipts **opened** (content read; each cited where its number is used): `ExecC1SuiteBuild`, `ExecC2Capture`,
@@ -732,12 +792,12 @@ The tokens are assembled at run time so this receipt is not itself a carrier of 
 ### 6.2 E8's lesson limb
 
 ```
-$ grep -cF 'M36' lesson.md
-7
+$ awk '/^---BEGIN LESSON---$/{f=1;next} /^---END LESSON---$/{f=0} f' ScribeGateLesson.md | grep -cF 'M36'
+8
 ```
 
-Seven lines: the numbering paragraph, the E8 note, the four row bullets and the "cleared on re-check" line.
-E8 requires ≥1.
+Eight lines in the lesson block: the numbering paragraph, the E8 note, the four row bullets, the "cleared on
+re-check" line and the M36-3 cross-reference inside R29's citation. E8 requires ≥1.
 
 ### 6.3 E8's stale-line limb, stated as a limit
 
@@ -749,7 +809,7 @@ counter.
 ### 6.4 Size and shape
 
 ```
-404 lines / 36,315 B / 5,155 words; sections: Shape, Frozen claims (C1, C2), Gate (candidates, admit, three
+413 lines / 37,641 B / 5,346 words; sections: Shape, Frozen claims (C1, C2), Gate (candidates, admit, three
 reject classes, assimilation, id collisions, considerthese, registry change log, census, contested scope,
-pending spot-check), Mistakes, sections not owned, open items (10).
+pending spot-check), Mistakes, sections not owned, open items (11).
 ```

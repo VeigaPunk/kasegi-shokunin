@@ -378,9 +378,13 @@ wording rather than a stronger reading:
 
 **Clause-4 disclosure (critic and I agree on this):** three of the twelve are kill-rule hits on the
 integrated bytes, not limits — **#4 E3 retraction section**, **#8 E7 negation row**, **#9 E8 two bare
-tokens**. Each is a tree where the check prints `closed=1` while the defect its clause names
-(unregistered / no supersession row / correction not recorded) is present, so a judge using those
-fixtures could kill C1. They are disclosed here rather than folded into the limits list. #10/#12 are
+tokens**. RevC1Suite-2 independently refused on the E8 **negation** form (lesson
+`no M36 rows minted; source-recheck unaffected`): reproduced here against the committed bytes, that
+tree prints `E8 payload=m36-rows=1,names-corrected-line=1,stale-line=0,round35-lesson=1 closed=0`…
+i.e. it closes, while the real lesson's `M36-1..4` rows are absent. The row-id regex below prints 0
+on the negation and 4 on the real lesson, so the fix is one line. Each of these is a tree where the
+check prints `closed=1` while the defect its clause names (unregistered / no supersession row /
+correction not recorded) is present, so a judge using those fixtures could kill C1. They are disclosed here rather than folded into the limits list. #10/#12 are
 invocation-scope only: the frozen counting command passes no `--lane`/`--scratch-root`, so a
 non-canonical invocation is outside the claim's measurement (the `deviation=` line makes it visible).
 
@@ -398,6 +402,42 @@ makes a non-canonical run unable to print `exit=0` (#10/#12), (c) E3 retraction 
 row (#3), (g) E5 statement clauses (#6), (h) E4 note names the results file (#5). Each is a small,
 independently testable limb; none was invented for this round's claim, which is why they are
 recorded rather than retro-fitted after integration.
+
+### v2 candidate — E8 row-id (tested, unlanded; the L1's decision)
+
+Produced after integration in response to RevC1Suite-2's Major, measured, and **not landed**: the
+committed instrument stays `4db1ae70` unless KasegiR36 says otherwise, because a re-cut changes the
+digest five seats have pinned.
+
+| field | value |
+|---|---|
+| v2 sha256 | `7f54f0e50023f5320fc889ffe44797c251db7eca849424df63f2eeff690467b7` |
+| lines / bytes | 898 / 39 351 |
+| diff vs `4db1ae70` | exactly two hunks: the `m36=` grep, and one selftest mutant |
+| `bash -n` | exit 0 |
+
+```diff
+-    m36=$(grep -cF -- 'M36' corpus/lessons/round-36.md 2>/dev/null); m36=${m36:-0}
++    m36=$(grep -cE -- '(^|[^0-9A-Za-z])M36-[0-9]+([^0-9]|$)' corpus/lessons/round-36.md 2>/dev/null); m36=${m36:-0}
+@@ selftest_case_E8 (after round35-lesson-absent)
++  n=$((n + 1)); d=$MUT/E8-negation; mut_reset "$d"
++  printf 'no M36 rows minted; source-recheck unaffected\n' | mut_put "$d" corpus/lessons/round-36.md
++  printf 'clean lesson\n' | mut_put "$d" corpus/lessons/round-35.md
++  st_neg E8 m36-negated "$d" "$REF_RESOLVED" 'm36-rows=0' && ok=$((ok + 1))
+```
+
+Measured on v2: base `3266c99` `closed=0/9 exit=1`; judged `0aee0ef` `closed=3/9 exit=1`; the then-current
+lane head (`a23dc47`) `closed=8/9 exit=1` with only E9 open and `E8 payload=m36-rows=4,names-corrected-line=3,stale-line=0,round35-lesson=1 closed=1`;
+`--selftest` `cases=9 failures=1` (only E9's positive, the pending quiescence), E1–E8 positives all pass,
+E8 mutants 5/5 including `m36-negated rejected=1 limb=m36-rows=0`, four forgeries rejected. The real
+lesson keeps 4 row matches; the negation fixture reads 0. Reproduce with the two hunks above against
+the receipt's fenced block, then `sha256sum` must print `7f54f0e5…`.
+
+Decision framing for the L1: landing it costs one commit and one re-run of the four counting
+commands, and invalidates the digests pinned by five seats (ExportMode PASS, CritC1Kill close,
+SimplC1, MutC1Fixtures, ExecC1Fixtures) — none of their *behavioural* results change, but their
+receipts name `4db1ae70`. Not landing it leaves #9/RevC1Suite-2's Major disclosed as a clause-4 hit
+with this patch as its fix. Either is defensible; the choice is the L1's, not mine.
 
 ## Files changed
 

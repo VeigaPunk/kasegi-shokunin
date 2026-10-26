@@ -78,8 +78,10 @@ bare `c2-controls/junk-f19.md` resolves to the wave dir; the spot-check should s
 
 ### A5 — Suite rerun (C1; frozen `counting_commands`, runnable once the L1 lands the suite)
 
-Status at check time: `corpus/instruments/r36-closure.sh` is **not yet in the tree** (ExecC1SuiteBuild in
-flight) — the following are the frozen expectations, not this seat's measurements:
+Status at check time: the suite is landed (`4db1ae70…`, see §6) and the negative controls + selftest are
+now **measured first-hand by this seat** (§6 Addendum): base → `closed=0/9 exit=1`; `0aee0ef` →
+`closed=3/9 exit=1`; `--selftest` mid-wave → `cases=9 failures=1` (E9 positive environmental, quiescence
+precondition). The frozen expectations below stand:
 
 ```
 bash corpus/instruments/r36-closure.sh --export-ref <final-lane-hash>                        -> closed=9/9  exit=0
@@ -162,6 +164,14 @@ list and three dispositions by IRC (see §4).
   real manifest admits the twin (`entries=22 pass=22`). `entries=22 pass=22` is admission-shape evidence;
   quote truth rides on the pinned comparison and the no-row check. A Gate that cites the harness count as
   the rejection would repeat the round-35 erratum's mistake in new clothes.
+- **G7 — suite-digest/number binding + selftest quiescence precondition (found during §6).** Two suite
+  revisions read `0aee0ef` differently: draft `ff616adc…` → `closed=4/9`, landed `4db1ae70…` →
+  `closed=3/9` (this seat measured the latter). Both satisfy the frozen `closed<9/9 exit=1`, so the claim
+  is safe, but any receipt quoting `closed=K/9` must name the suite digest with the number. And the
+  landed suite's `--selftest` prints `cases=9 failures=1` on a mid-wave dirty tree (E9 positive
+  `rc=1`, `status-dirty=5, scratch-seat-dirs=3`, measured at HEAD `a23dc478`) — E1–E8 all pass with full
+  mutant rejection; `cases=9 failures=0` is only measurable at the final quiescent head. A mid-wave
+  `failures=1` with an E9-positive payload is environmental, not a suite defect.
 
 ## 4. This seat's verification log
 
@@ -184,6 +194,11 @@ list and three dispositions by IRC (see §4).
 - Suite control refs verified: `git cat-file -t` + `git merge-base --is-ancestor refs/heads/master` for
   `3266c993…` (commit, ancestor), `0aee0ef1…` (commit, ancestor), `b47f2cdf…` (commit, ancestor),
   `cc692008…` (commit, ancestor) — the A5 negative controls are runnable refs, not dangling names.
+- Landed suite `4db1ae70…` measured first-hand (mid-wave, HEAD `a23dc478`): base export → `closed=0/9
+  exit=1`; `0aee0ef` export → `closed=3/9 exit=1`; `--selftest` → `cases=9 failures=1` with E1–E8
+  `positive=pass` and E9 positive `rc=1` (`status-dirty=5, scratch-seat-dirs=3`; tree verified: 5
+  porcelain lines, 3 sibling scratch dirs) — environmental, see G7. Raw captures held in seat scratch,
+  removed before yield.
 - Peer coordination: two messages to `ScribeGateLesson` (required-block list; G1/G2 findings + verified
   pin counts); two replies received — the first confirming the block list, the Q1 25-word handling, the
   census-after discipline, and independently flagging G2; the second reporting the G1 fix. Re-verified
@@ -201,11 +216,24 @@ list and three dispositions by IRC (see §4).
 
 - This receipt is a plan plus draft-readiness check: it verifies no claim and issues no admit/reject
   verdict; the fresh non-author reviewer owns those at the final lane head.
-- Landing state is a snapshot at ~15:45Z; receipts landing after it (ScribeGateLesson, RevEntryF19, the
-  suite, the applied row/entry/fixture) may resolve G5's items — re-check before judging.
-- The A5/A6 after-state expectations are the frozen `counting_commands` from `claims.json`, not this
-  seat's measurements (the suite is not yet in the tree; F19 is not yet landed).
+- Landing state is a snapshot: §1–§5 measured at ~15:45Z–16:05Z, §6 (addendum) at ~16:15Z; receipts
+  landing after them (RevEntryF19, the applied row/entry/fixture, the report) may resolve G5's items —
+  re-check before judging.
+- The A5 negative controls and selftest were frozen expectations when §1 was written and are now
+  first-hand measured on the landed suite `4db1ae70…` (§6 Addendum); the A6 after-state numbers (entries=22,
+  source-recheck S053 exit 0, knowledge 48) remain frozen expectations — F19's bytes were not yet landed
+  at check time.
 - Scratch `/fast/scratch/hyaku/kasegi-r36/RevSpotCheckReadiness/` (re-derived capture + tmp) removed
   before yield; nothing was copied into the wave dir except this receipt.
+
+## 6. Addendum — the drafted lesson Gate, checked (draft landed mid-check)
+
+`ScribeGateLesson.md` landed at 16:06Z (65,409 B, sha256 `5825adf47f201c2f6dbd424eb761eb9353d5152183b64c9493208a8467945085`); the lesson draft is the block between `---BEGIN LESSON---`/`---END LESSON---` (413 lines). Checked against the §2 checklist, first-hand. **Final revision of the receipt (post-check): 815 lines / 66,335 B, sha256 `0db61f4ec79a5c3c473a273f77a0587da5e6a4b02244b499114d9a76c3355419` (mtime 16:10:50Z); the marked block re-verified unchanged — 413 lines / 37,641 B, sha256 `732bcb1527e7255856e771a674ee409cf34318d1aa69a1cd68f14ed221a5156c`; the two E1 placeholder tokens (`filled by the L1`, `<LANE_HASH>`) count 0 in the block and the stale round-35 phrase `source-recheck exit 0 on committed bytes` counts 0. Extraction trap, measured: the receipt's own §5 reproduction text at `:795` contains both marker strings, so an unanchored `awk '/---BEGIN LESSON---/'` state machine drifts (this seat measured 433 lines / `814baec2…` before switching to the anchored `/^---BEGIN LESSON---$/` form, which reproduces `732bcb15…` exactly). Main should recompute the block digest with the anchored pattern.**
+
+- **All required blocks are present in the draft.** `## Gate` carries: Candidates considered; **Admitted — F19/S053** with Row (11 cells), **URL** (requested==effective, 0 redirects, 200, `text/html; charset=UTF-8`, 26,804 served bytes, `last-modified 2026-07-30`, plus a new fact — the trailing-slash-less URL answers **301**, `wave1/ScoutCaptureAvailability.md`), **Access date** (`2026-10-26T15:35:10Z` manifest `fetched_utc`, server `date:` header, three re-opens 15:36:30–15:36:47Z all byte-identical), Capture digest, **Quote (≤25 words, located, exactly once)** — Q1 25 words at `S053.txt:216` with the 30-word full sentence explicitly recorded as source-sentence-never-pin, plus the 0-occurrence spec-wording trap and the hyphen-split trap; distinctness as measured vocabulary (CVSS 33/28 lines, `severity` 0); freshness boundary; **Admission history records the b0a9 header-pin defect and the grep trap** (my G1, carried). Rejected: junk twin (fixture drafted-not-landed at draft instant, M35-5-class recurrence named, discriminating form = quote comparison not instrument exit code, no-row limb, **and G2's frozen-control defect recorded verbatim**); quarantine slice (7 rows, one fetch each, 0 adopted); standing refusals (7/7, 0 flips). Assimilation: none (with id-collision 52×94→22, predicted 23 vs the METI staged S053, guard load-bearing/fail-closed). considerthese; Registry change log (old→new); Census before→after; Contested scope (ruled, not silent); **Non-author spot-check — result pending** (placeholder, filled by the fresh reviewer); `## Mistakes` anchor.
+- **The landed lesson is a 45-line condensation, not the draft.** `corpus/lessons/round-36.md` (4,939 B, sha256 `cea4fcaffc77904f1295a87cfeef2a73481c581c98d6034995ee439cc0e43080`, mtime 15:57Z — landed *before* the draft receipt) carries the required Gate blocks in condensed form, verified: URL + access date + capture sha (`:14`), the ≤25-word located quote with all pins `occurrences=1` (`:15`), id-collision numbers (`:24`). The template contract is met by the condensation; the full draft lives in the wave receipt. The spot-check should verify the **committed** lesson keeps those three elements at whatever head it judges.
+- **Suite digest binding (new, measured).** The suite is landed: `corpus/instruments/r36-closure.sh` sha256 `4db1ae70c76afd28b29e9ec24c2e44835322c61fa33e30c966f75ce0dfadb7c4` (an earlier draft revision `ff616adc…` read `0aee0ef` at `closed=4/9`; the landed suite reads **`closed=3/9`** there — both satisfy the frozen `closed<9/9 exit=1`, but **any receipt quoting `closed=K/9` must name the suite digest with the number**).
+- **A5 first-hand measurements (landed suite `4db1ae70…`, mid-wave at HEAD `a23dc478`):** base export `3266c993…` → `closed=0/9 exit=1` (frozen expectation met); `0aee0ef…` → `closed=3/9 exit=1` (frozen `closed<9/9` met). `--selftest` **mid-wave prints `cases=9 failures=1`**: E1–E8 all `positive=pass` with full mutant rejection, but **E9's positive case fails (`rc=1`, payload `status-dirty=5, scratch-seat-dirs=3`)** because the lane is mid-wave dirty (verified: 5 porcelain lines, 3 sibling scratch dirs, HEAD moving). This is the expected mid-wave reading, **not a suite defect**: E9's own precondition is quiescence, so `cases=9 failures=0` is only measurable at the final quiescent head. The spot-check must run `--selftest` after quiescence (or on a clean export) and treat a mid-wave `failures=1` with an E9-positive payload as environmental.
+- **Report census excerpt flag (from the Gate scribe, unverified here — no report filed yet at check time):** an earlier closure artifact's census excerpt showed two lines where the command prints three. A4 pins the first-hand expectation: `W04 S028` + `W04 S029` + `ok …` + exit 0 — the fresh reviewer should count three lines plus the exit code in whatever the report excerpts.
 
 Report: .ufo/waves/round-36/wave1/RevSpotCheckReadiness.md

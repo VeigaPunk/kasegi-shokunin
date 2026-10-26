@@ -3,8 +3,8 @@
 Seat: `SentScope` (sentinel, leaf). Milestone: round-36. Judged on: **scope**.
 Lane: `/home/vgpnk/Projects/shokunin/kasegi-shokunin` (base `cc692008b0cfd58d18275aa6c4aed79620120799`,
 claims freeze `b47f2cdf17d9f6021cbdb4db1add09a9dbf4f1d6`).
-Measured 2026-10-26 12:37–13:10 local (-03:00). Receipts present at final scan: **60 / 64** (missing
-`MutC1Suite`, `MutC2Entry`, `SentSecrets`, plus this seat).
+Measured 2026-10-26 12:37–13:02 local (-03:00). Receipts present at final scan: **61 / 64** — 60 peers plus
+this one; `MutC1Suite`, `MutC2Entry`, `SentSecrets` were still running at hand-off.
 
 This seat wrote only this receipt and files under `/fast/scratch/hyaku/kasegi-r36/SentScope/`
 (removed after the receipt was written). No lane, fleet, sibling-lane or source-tree file was edited;
@@ -26,10 +26,10 @@ evidence and smallest remediations below.**
 | dispatched seats (`wave1-dispatch.json` `taskCall.tasks`) | 64 | parsed `name`, `task`; receipt-path extraction |
 | spec items (`wave1-spec.json` `items`) | 64 | cross-check of seat names / roles / axes |
 | receipt paths declared | 64 unique | regex on `Report: write your scoped findings to <path>` |
-| wave-dir files (all types) | 72 at final scan | `find` with mtimes; author classification by timestamp |
-| landed receipts | 60 | text scan (paths, write verbs, git/jj command lines) |
-| seat transcripts | 69 `*.jsonl` (64 seats incl. one resume `RevC1Suite-2`; 74 in the session root incl. `main` and three foreign L1s) | action sweep: every `write`/`edit` toolCall target, every `bash`/`eval` command scanned for write operators (`>`, `>>`, `tee`, `cp`, `mv`, `rm`, `rmdir`, `mkdir`, `touch`, `ln`, `chmod`, `sed -i`, `install`) and for `git`/`jj` mutation |
-| out-of-lane path tokens in receipts | 55 refs in 21 receipts | classified lane / scratch / fleet / shokuknow / `~/Projects` / tmp, then read-vs-write resolved from transcript operands |
+| wave-dir files (all types) | 75 at final scan (61 receipts incl. this one, 13 non-receipt, 1 nested `wave1/swarm-registry.json`) | `find` with mtimes; author classification by timestamp |
+| landed receipts | 61 (60 before this receipt) | text scan (paths, write verbs, git/jj command lines) |
+| seat transcripts | 69 `*.jsonl` (64 seats incl. one resume `RevC1Suite-2`; 74 in the session root: 69 wave seats + this seat + the L1 + three foreign L1s (Tameshi/Tabi/Souji)) | action sweep: every `write`/`edit` toolCall target, every `bash`/`eval` command scanned for write operators (`>`, `>>`, `tee`, `cp`, `mv`, `rm`, `rmdir`, `mkdir`, `touch`, `ln`, `chmod`, `sed -i`, `install`) and for `git`/`jj` mutation |
+| out-of-lane path tokens in peer receipts (this receipt excluded) | 55 refs in 21 of the 60 peer receipts | classified lane / scratch / fleet / shokuknow / `~/Projects` / tmp, then read-vs-write resolved from transcript operands |
 
 Text scanning alone cannot prove "no write"; the transcript sweep is what makes the negatives load-bearing,
 because a receipt can omit a write while the tool-call record cannot.
@@ -43,11 +43,13 @@ because a receipt can omit a write while the tool-call record cannot.
 - Every seat's declared scratch is `/fast/scratch/hyaku/kasegi-r36/<its own name>`; the only other scratch
   token in the prompts is the root `/fast/scratch/hyaku/kasegi-r36` (§ `Scratch.` paragraph), which is the
   intended parent, not a write target.
-- Seat-authored files in the wave dir are receipt-only: the 11 non-`.md` artifacts (`build-spec.py`,
+- Seat-authored files in the wave dir are receipt-only: the 11 non-`.md` build artifacts (`build-spec.py`,
   `wave1-spec.json`, `wave1-dispatch.json`, `wave1-plan.{out,err}`, `wave1-run.err`, `wave1.ready`,
   `wave1.ready.dispatched`, `census-before.txt`, `claims.json`, `c1-controls/before.txt`,
-  `c2-controls/before.txt`) all carry L1 build mtimes 12:33–12:36 and predate the wave. No seat dropped a
-  script, patch or output file into the wave dir root or into `c1-controls/`, `c2-controls/`, `assimilation/`.
+  `c2-controls/before.txt`) carry L1 build mtimes 12:33–12:36 and predate the wave; the two remaining
+  non-receipt files are L1-placed too (`wave1/swarm-registry.json`, and the C2 junk-twin control
+  `c2-controls/junk-f19.md`, mtime 12:54 — seats only *read* it). No seat dropped a script, patch or output
+  file into the wave dir root or into `c1-controls/`, `c2-controls/`, `assimilation/`.
 
 ## 3. FINDINGS
 
@@ -92,20 +94,26 @@ while every seat runs with `cwd=/home/vgpnk/Projects/shokunin`, so write the rec
 
 ### F2 — L1 destructive scratch sweep deleted a live seat's directory (severity: medium)
 
-**Actor:** `KasegiR36` (L1), `KasegiR36.jsonl` record 771, `2026-10-26T15:57:15Z` (= 12:57:15 local):
+**Actor:** `KasegiR36` (L1). It ran the same unguarded sweep **four times** while seats were still working
+(`KasegiR36.jsonl` records 771/780/815/833):
 
 ```
-cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && bash …/jj-lane.sh state . | head -1;
-find /fast/scratch/hyaku/kasegi-r36 -mindepth 1 -maxdepth 1 -type d -print -exec rm -rf {} + 2>/dev/null | wc -l;
-git status --porcelain | wc -l; mkdir -p .ufo/waves/round-36/final-gates
+2026-10-26T15:57:15.676Z  find /fast/scratch/hyaku/kasegi-r36 -mindepth 1 -maxdepth 1 -type d -print -exec rm -rf {} + 2>/dev/null | wc -l
+2026-10-26T15:57:41.391Z  find /fast/scratch/hyaku/kasegi-r36 -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null
+2026-10-26T15:59:15.664Z  find /fast/scratch/hyaku/kasegi-r36 -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null
+2026-10-26T15:59:56.825Z  find /fast/scratch/hyaku/kasegi-r36 -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null
 ```
 
-No age, ownership or receipt-existence guard. At that instant only 60/64 receipts existed (the L1's own
-previous command at 12:57:05 counted 60 and `NO_RESULTS`); at least four seats were still running.
+The first has no age/ownership/receipt guard; the last three drop even `-type d` and remove **any** entry.
+At the first sweep only 60/64 receipts existed (the L1's own previous command at 12:57:05 counted 60 and
+printed `NO_RESULTS`); four seats were still running.
+
 **Observed effect on me:** my scratch dir `/fast/scratch/hyaku/kasegi-r36/SentScope/` (created with
-`mkdir -p` at spawn, holding this sweep's scanner and its `scan.json` / `outside_refs.tsv` artifacts) was
-deleted mid-verification; I had to recreate it and re-derive the counts from the transcript sweep. Only
-`MutC1Suite/` survived initially because that seat re-created its dir at 12:57 after the sweep.
+`mkdir -p` at spawn, holding this sweep's scanner plus `scan.json` / `outside_refs.tsv`) was deleted
+**twice** — by the 12:57:15 sweep and again, after I recreated it, by the 12:59:56 sweep. I had to re-derive
+the counts from the transcript sweep. Sibling seats were hit the same way: `MutC1Suite`/`MutC2Entry` dirs
+reappearing at 13:00 are re-creations after the sweep, and `SentSecrets` (still running) lost its dir too
+unless it recreated it.
 
 Impact: a broad `rm -rf` over the shared round-scratch root destroys live siblings' work; if a seat's only
 copy of a draft lived in scratch, the loss is silent until the receipt is found to be stale. It also makes
@@ -160,7 +168,7 @@ Read-only, but beyond what the item text named, and therefore unlogged in the cl
 |---|---|---|
 | `ExecSiblingSweep` | `/home/vgpnk/Projects/shokuknow/lanes/revenger/round12/measurements/iwsec-program-20241113.txt:2196` (item named only `shokuknow/doctrine/`) | receipt L117, labelled "shokuknow is read-only" |
 | `RevSpotCheckReadiness` | `/home/vgpnk/Projects/shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md`, fleet `scripts/sources-census.sh` | receipt L60, L67 |
-| `ScribeGateLesson` | capaign register + `merge/kasegi/` package + fleet `.ufo/watchdog.log:1527` | receipt L217, L254, L562, L572, L69 |
+| `ScribeGateLesson` | campaign register + `merge/kasegi/` package + fleet `.ufo/watchdog.log:1527` | receipt L217, L254, L562, L572, L69 |
 | `ScribeConsiderthese` | fleet `AXES.md`, fleet `.ufo/l0-questions.md` | receipt L61, L91, L177 |
 | `ConnPatterns` | fleet `.ufo/waves/kaika-w1/mistakes.md` | receipt L244 |
 | `ExecCensusReplay`, `ExecC2Harness`, `CritC2Claim`, `CritC2Kill`, `ExecGateReviewPrep` | execute the fleet instrument `/home/vgpnk/Projects/shokunin/scripts/sources-census.sh` | receipts L103/L44, L226, L42/L152, L79, L516 |
@@ -184,7 +192,7 @@ measurement it either fails E9 or invites exactly the F2 sweep. Remediation: poi
 
 | check | result |
 |---|---|
-| Receipts instructing a mutating git/jj command | **none** — 0 line-start `git add/commit/reset/checkout/switch/push/fetch/stash/init/rebase/apply/clean/rm/mv/tag/update-ref/worktree/restore` and 0 `jj` mutations across all 60 receipts |
+| Receipts instructing a mutating git/jj command | **none** — 0 line-start `git add/commit/reset/checkout/switch/push/fetch/stash/init/rebase/apply/clean/rm/mv/tag/update-ref/worktree/restore` and 0 `jj` mutations across all 61 receipts |
 | Wave seats actually running a mutating git against lane/fleet/sibling | **none** — 136 mutating-git invocations across 69 seat transcripts; 0 have a `-C` target outside `/fast/scratch` (or a `$VAR` bound there); the 49 `-C`-less ones are inside `cd "$F"` fixture blocks or false-positive `merge-base` matches. Fixture isolation matches the dispatch rule (`git init` only after `rev-parse --show-toplevel` == fixture dir; e.g. `CritC1Kill:162`, `CritC1Export:58/64/69/74/126/134`, `ScribeMistakes`, `ExecQuiescenceProbe`) |
 | Receipts instructing an edit of another lane | **none** — sibling-lane mentions (`chousa`, `tsukuroi`, `tameshi`, `kaika`, `tabi`, `souji`, `revenger`) appear only in read-only greps and in verdicts about them |
 | Writes to `~/.omp/agent/config.yml` / `mcp.json` | **none** — 0 matches with a write verb; the only mentions are the prohibition itself |
@@ -193,13 +201,17 @@ measurement it either fails E9 or invites exactly the F2 sweep. Remediation: poi
 | Seat-authored non-receipt files in the lane | **none** — all non-`.md` wave-dir files predate the wave (§2); no seat wrote into `corpus/`, `SKILL.md`, `SCORECARD.md`, `QUALITY.md`, `L1Integration.md` (verified in the receipts' own no-harm sections and in the lane `git status`, whose only post-commit delta at measurement was ` M .ufo/waves/round-36/wave1/SimplReport.md`, i.e. a receipt update) |
 | Out-of-lane write operands in transcripts | **only F1** (fleet create/delete) and **F2** (L1 sweep); the remaining out-of-lane tokens are reads (§F5) |
 
-## 5. State at my measurement (post-L1 wave-evidence commit)
+## 5. State at my measurement
 
-- Receipts: **60/64**; missing `MutC1Suite`, `MutC2Entry`, `SentSecrets` (+ this seat).
-- Lane: `git status --porcelain` = **1** line, ` M .ufo/waves/round-36/wave1/SimplReport.md` — an expected
-  mid-wave receipt update, not a scope defect, but it means E9 is not yet satisfiable and late-landing
-  receipts will need one more integration commit.
-- Scratch root `/fast/scratch/hyaku/kasegi-r36`: empty apart from this seat's dir (removed at yield).
+- Receipts: **61/64 filed** (60 others + this one); still running at hand-off: `MutC1Suite`, `MutC2Entry`,
+  `SentSecrets`.
+- Lane: at my last read `git status --porcelain` = **1** line, ` M .ufo/waves/round-36/wave1/SentScope.md`
+  (this receipt). During the sweep the only delta observed was ` M …/SimplReport.md`, a receipt update that
+  the L1 has since committed — neither is a scope defect, but both mean E9 is not yet satisfiable and
+  late-landing receipts need one more integration commit.
+- Scratch root `/fast/scratch/hyaku/kasegi-r36`: `MutC1Suite/`, `MutC2Entry/` (still-running seats) plus
+  this seat's dir, which is removed at yield. The root was emptied four times by the L1 sweeps (F2), so the
+  "no leftover seat dirs" reading at closure is produced by the sweeper, not by seat-side cleanup alone.
 - Fleet: worktree dirty by exactly `scripts/hyaku/inline-dispatcher.py` (F3); no `round-36` residue under
   fleet `.ufo/waves` (F1 cleaned).
 
@@ -209,7 +221,7 @@ measurement it either fails E9 or invites exactly the F2 sweep. Remediation: poi
   `~/.omp/agent/sessions/-Projects-shokunin/2026-10-26T15-10-35-484Z_01a178c3-…`; writes performed by
   processes with no agent transcript (F3) are invisible to it by construction — that gap is why F3 is
   reported as unattributed rather than blamed on a seat.
-- Receipts landed after my last scan (13:10) are not covered; `MutC1Suite`, `MutC2Entry`, `SentSecrets` had
+- Receipts landed after my last scan (13:02) are not covered; `MutC1Suite`, `MutC2Entry`, `SentSecrets` had
   not filed when this receipt was written.
 - I did not run the C1 suite, the census, or any lane instrument; nothing in this receipt depends on their
   output.
