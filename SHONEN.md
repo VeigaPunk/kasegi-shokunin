@@ -206,3 +206,14 @@ Correction (round 39): the round-39 suite's recorded 8/8 receipt is not independ
 
 Correction (round 40): the round-39 box 3 evidence line ("suite `--selftest` graded cases=8 failures=0 at the verification ref") is contradicted by the committed receipt at Y `8371e7ac9f32cae5ed72f8c28205634603f836fa`, which records `closed=7/8 exit=1` and `selftest failures=1` (`selftest cases=8 failures=1`, `selftest-exit=1`, `G2 positive=fail`; all-gates v5, sha256 8d46d7b251fd6736ba1841814274201176d3a7628f9330e8c9b1917013741471).
 Correction (round 40): read the line as: the suite ran, seven of eight checks close, and the graded selftest carries one failing case; the 8/8 exists only in the discarded attempt-1 receipt at `5006097a` (`run-utc=2026-10-26T21:35:00Z`, after its containing commit), and the two green limbs are not independent — G2 accepts forged payload values (mut-f/g/h/j/k, `wave2/CritG2Exploit.md`), G6 depends on a scratch root the seats populate (`wave2/CritC1Kill.md`) — so box 3 stays `[~]`, not independently verified. Verifier R2's ask, quoted: "Append `Correction (round 40)` lines naming the final receipt values in each record."
+
+- [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
+      — evidence (round 40): Gates & probes registry row `r40-closure.sh` appended; density instrument byte-identical to base (H10 payload `density=1`); no density move claimed; `anchorcheck.py SKILL.md` exit 0. Box stays `[~]`; no non-author check.
+- [~] At least one end-to-end domain task executed and logged in LOG.md
+      — evidence (round 40): no live domain hunt ran (refused); closest executed work: the claim-package exemplar built from a public disclosed report (considerthese 2026-10-26 proposal 2) and the C1 suite run. Box stays `[~]`.
+- [~] Instructions executable by an agent without oral context
+      — evidence (round 40): r40-closure.sh suite at Y `closed=10/10 exit=0` and graded `--selftest cases=10 failures=0`; harness `entries=26 pass=26 exit=0`; binding `records=54 bound=54`; census exit 0; audit `expected=59 unexpected=0 exit=0`. Box stays `[~]`.
+- [~] No cross-domain bleed (PROVINCE.md still accurate)
+      — evidence (round 40): PROVINCE.md carries the `[r40 Frontier amendment]` F23 line; sibling sweep found no F23 ground (ScoutSiblingFinal/ConnPatterns); junk twin rejected. Box stays `[~]`.
+
+Correction (round 40): the final round-40 receipt values are recorded in `.ufo/waves/round-40/final-gates/all-gates.txt` at Y `d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5`: `closed=10/10 exit=0`, graded `selftest cases=10 failures=0`, suite sha256 `bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e`, `time-basis=ref-commit`, `run-utc=2026-10-26T22:32:37Z`. Box 3 stays `[~]` — no non-author verifier this round.

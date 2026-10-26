@@ -1722,3 +1722,13 @@ Correction (round 39): the C1 `closed=8/8` transcript is not accepted as indepen
 
 Correction (round 40): the `## Round 39` C1 bullet records "`closed=8/8 exit=0` at Y, graded `selftest cases=8 failures=0`", and the round-39 correction appended below it cites the report-only `3fa81ef5e7b558030903db71c3bb66cb0ea976a2` measurement without naming the final receipt values; the committed receipt at Y `8371e7ac9f32cae5ed72f8c28205634603f836fa` records `closed=7/8 exit=1` and `selftest failures=1` (`selftest cases=8 failures=1`, `selftest-exit=1`, `G2 positive=fail`; all-gates v5, sha256 8d46d7b251fd6736ba1841814274201176d3a7628f9330e8c9b1917013741471).
 Correction (round 40): the only 8/8 tally is the attempt-1 receipt at `5006097a` (`all-gates v3`, `run-utc=2026-10-26T21:35:00Z`, after its containing commit), which the round discards per verifier R1; and the two green limbs are not independent of what they grade — G2 checks receipt shape/digest, not the recorded `G<n> payload=` values against a captured run (mut-f/g/h/j/k pass, `wave2/CritG2Exploit.md`), and G6 greens only on a quiet `/fast/scratch/hyaku/kasegi-r39/` that the seat protocol populates (`G6 ... r39=present ... closed=0` with seats live; Y receipt `deviation=non-default --lane`; `wave2/CritC1Kill.md`). Verifier R2's ask, quoted: "Append `Correction (round 40)` lines naming the final receipt values in each record."
+
+## Round 40 (attempt 2, resumed)
+
+- C1 (depth:verifiability, 4 held, verified): `corpus/instruments/r40-closure.sh` H1–H10 landed; at Y `d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5` `closed=10/10 exit=0`, graded selftest `cases=10 failures=0`, base/r39-head reds, plain run refused exit 2; receipt = teed transcript (`time-basis=ref-commit`).
+- C2 (coverage, 7 → 8): nine queued rows decided (7 mined, 2 rejected with reason+flip restored in-row); S060 mined + S061/S062 rejected; frontier F23 admitted (22→23); harness 26/26; binding 54/54; census exit 0; measure 43/43.
+- Frontier: SOURCES 59→62; search-log bullet added.
+- Assimilation: id-collision rerun 29 collisions; quarantine slice 7 rows verdicted (2 quote-defective, 1 held, 1 refused on ground/Q3, 3 unreachable); 0 adopted.
+- considerthese: proposal 2 mined (claim-package exemplar built from a public disclosed report; SHONEN box-2 pointer).
+- Wave shape: w1 `kasegi-r40-build` 54 seats + w2 `kasegi-r40-falsify` 35 seats = 89 (64–128 band; attack share 50/89). Dead seats: 0.
+- Wave-2 routed findings (no frozen-counter change): H2 substring match, H3 fence-unaware, H6 family/nested/dot/symlink scans, H9 symlink escape, H1 registry-row regex, H5 count-relative forgery, kill-rule escapes — recorded in lesson §Wave-2 falsification.
