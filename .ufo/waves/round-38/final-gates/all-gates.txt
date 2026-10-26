@@ -1,22 +1,79 @@
 all-gates v2
 export-ref=66703acaaff50529a35be49aa8759d04140720ad
 suite-sha256=85d33ea9d386926e88f9818bbdae5c49ef9cf951363ea09de641cb22a26979a6
-# BOOTSTRAP receipt (round 38). The run over export-ref 66703acaaff50529a35be49aa8759d04140720ad itself printed closed=7/8: G2 is red there because that commit cannot contain this receipt. This draft carries the seven genuine G lines of that run plus a G2 line marked bootstrap-expected; the next lane commit replaces this whole file with the genuine run + selftest over the commit that carries this draft.
+run-ref=7dd2fcd67aa8d3f67616e9fa79049c7c33c3ea8e
+# Round-38 C1 receipt. export-ref = the judged head (every round-38 change). run-ref = the bootstrap commit (judged head + a bootstrap receipt, git diff --name-only export-ref run-ref = this file only); the unprefixed run and selftest below are the genuine output over run-ref, run 2026-10-26T19:10Z by the L1 with --work /fast/scratch/hyaku/kasegi-r38-gate (outside the lane and outside kasegi-r3[678]), lane HEAD = run-ref, worktree clean. Lines prefixed 'export-ref-run:' are the genuine run over export-ref itself, where G2 is red because that commit cannot contain this receipt (round-38 lesson, M38-8).
+export-ref-run: export-ref=66703acaaff50529a35be49aa8759d04140720ad mode=export lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=85d33ea9d386926e88f9818bbdae5c49ef9cf951363ea09de641cb22a26979a6
+export-ref-run: G1 payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=1 closed=1
+export-ref-run: G2 payload=receipt=0,sentinel=0,export-ref=0,ancestor=0,diff-clean=0,digest-match=0,run-lines=0,closed-line=0,selftest-lines=0,selftest-summary=0,scorecard-ref=1,shonen-ref=1,head-token-lines=0 closed=0
+export-ref-run: G3 payload=resolutions-section=1,line-tokens=8,added-pending=0,added-placeholders=0,diff-read=ok closed=1
+export-ref-run: G4 payload=dispatches=1,pairs=1,seats-ok=1,read=ok closed=1
+export-ref-run: G5 payload=round38-section=1,final-lane-commit-lines=0,correction=1,f3246559=2,anchor-ancestor=2 closed=1
+export-ref-run: G6 payload=r36=absent,r37=absent,r38=absent,work=outside,tolerated=none,read=ok closed=1
+export-ref-run: G7 payload=filled-section=1,correction=1,proposal-rows=7,missing=0 closed=1
+export-ref-run: G8 payload=r37-suite=1,r37-closed=1,r37-exit=0 closed=1
+export-ref-run: closed=7/8 exit=1
+## run over run-ref
+export-ref=7dd2fcd67aa8d3f67616e9fa79049c7c33c3ea8e mode=export lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=85d33ea9d386926e88f9818bbdae5c49ef9cf951363ea09de641cb22a26979a6
 G1 payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=1 closed=1
+G2 payload=receipt=1,sentinel=1,export-ref=1,ancestor=1,diff-clean=1,digest-match=1,run-lines=1,closed-line=1,selftest-lines=1,selftest-summary=1,scorecard-ref=1,shonen-ref=1,head-token-lines=0 closed=1
 G3 payload=resolutions-section=1,line-tokens=8,added-pending=0,added-placeholders=0,diff-read=ok closed=1
 G4 payload=dispatches=1,pairs=1,seats-ok=1,read=ok closed=1
 G5 payload=round38-section=1,final-lane-commit-lines=0,correction=1,f3246559=2,anchor-ancestor=2 closed=1
 G6 payload=r36=absent,r37=absent,r38=absent,work=outside,tolerated=none,read=ok closed=1
 G7 payload=filled-section=1,correction=1,proposal-rows=7,missing=0 closed=1
 G8 payload=r37-suite=1,r37-closed=1,r37-exit=0 closed=1
-G2 payload=bootstrap-expected closed=1
 closed=8/8 exit=0
-selftest case=G1 bootstrap-expected
-selftest case=G2 bootstrap-expected
-selftest case=G3 bootstrap-expected
-selftest case=G4 bootstrap-expected
-selftest case=G5 bootstrap-expected
-selftest case=G6 bootstrap-expected
-selftest case=G7 bootstrap-expected
-selftest case=G8 bootstrap-expected
+## selftest over run-ref
+selftest export-ref=7dd2fcd67aa8d3f67616e9fa79049c7c33c3ea8e lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=85d33ea9d386926e88f9818bbdae5c49ef9cf951363ea09de641cb22a26979a6
+selftest detail=G1 positive=pass payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=1
+selftest detail=G1 mutant=province-correction-absent rejected=1 limb=province-correction=0
+selftest detail=G1 mutant=readme-fence-open rejected=1 limb=readme-fence=open
+selftest detail=G1 mutant=declared-block-byte-flip rejected=1 limb=declared-ok=0
+selftest case=G1 positive=pass mutants=3/3 verdict=pass
+selftest detail=G2 positive=pass payload=receipt=1,sentinel=1,export-ref=1,ancestor=1,diff-clean=1,digest-match=1,run-lines=1,closed-line=1,selftest-lines=1,selftest-summary=1,scorecard-ref=1,shonen-ref=1,head-token-lines=0
+selftest detail=G2 mutant=sentinel-v1 rejected=1 limb=sentinel=0
+selftest detail=G2 mutant=digest-mismatch rejected=1 limb=digest-match=0
+selftest detail=G2 mutant=final-head-hash-in-section rejected=1 limb=head-token-lines=1
+selftest detail=G2 mutant=correction-line-inside-section rejected=1 limb=head-token-lines=1
+selftest detail=G2 mutant=export-ref-not-ancestor rejected=1 limb=ancestor=0
+selftest detail=G2 mutant=post-receipt-diff-extra rejected=1 limb=diff-clean=0
+selftest case=G2 positive=pass mutants=6/6 verdict=pass
+selftest detail=G3 positive=pass payload=resolutions-section=1,line-tokens=8,added-pending=0,added-placeholders=0,diff-read=ok
+selftest detail=G3 mutant=added-placeholder-token rejected=1 limb=added-placeholders=1
+selftest detail=G3 mutant=missing-line-token rejected=1 limb=line-tokens=7
+selftest case=G3 positive=pass mutants=2/2 verdict=pass
+selftest detail=G4 positive=pass payload=dispatches=1,pairs=1,seats-ok=1,read=ok
+selftest detail=G4 mutant=results-absent rejected=1 limb=pairs=0
+selftest detail=G4 mutant=seat-count-short rejected=1 limb=seats-ok=0
+selftest case=G4 positive=pass mutants=2/2 verdict=pass
+selftest detail=G5 positive=pass payload=round38-section=1,final-lane-commit-lines=0,correction=1,f3246559=2,anchor-ancestor=2
+selftest detail=G5 mutant=final-label-in-section rejected=1 limb=final-lane-commit-lines=1
+selftest detail=G5 mutant=correction-absent rejected=1 limb=correction=0
+selftest detail=G5 mutant=round38-section-absent rejected=1 limb=round38-section=0
+selftest detail=G5 mutant=correction-line-inside-section rejected=1 limb=final-lane-commit-lines=1
+selftest case=G5 positive=pass mutants=4/4 verdict=pass
+selftest detail=G6 positive=pass payload=r36=absent,r37=absent,r38=absent,work=outside,tolerated=none,read=ok
+selftest detail=G6 control=own-work-dir accepted=1 payload=r36=absent,r37=absent,r38=empty,work=inside,tolerated=/fast/scratch/hyaku/kasegi-r38-gate/s/mut/g6-control/kasegi-r38/seat,read=ok
+selftest detail=G6 mutant=r36-leftover-file rejected=1 limb=r36=present
+selftest detail=G6 mutant=r37-leftover-file rejected=1 limb=r37=present
+selftest detail=G6 mutant=r38-residual-seat rejected=1 limb=r38=present
+selftest detail=G6 mutant=r38-parent-sibling-leftover rejected=1 limb=r38=present
+selftest detail=G6 control=nested-clean-chain accepted=1 payload=r36=absent,r37=absent,r38=empty,work=inside,tolerated=/fast/scratch/hyaku/kasegi-r38-gate/s/mut/g6-r38-nested/kasegi-r38/seat,read=ok
+selftest detail=G6 mutant=unreadable-root rejected=1 limb=r37=unreadable
+selftest case=G6 positive=pass mutants=5/5 verdict=pass
+selftest detail=G7 positive=pass payload=filled-section=1,correction=1,proposal-rows=7,missing=0
+selftest detail=G7 mutant=proposal-row-absent rejected=1 limb=missing=1
+selftest detail=G7 mutant=correction-absent rejected=1 limb=correction=0
+selftest case=G7 positive=pass mutants=2/2 verdict=pass
+selftest detail=G8 positive=pass payload=r37-suite=1,r37-closed=1,r37-exit=0
+selftest detail=G8 mutant=carry-over-red rejected=1 limb=r37-closed=0
+selftest detail=G8 mutant=carry-over-suite-absent rejected=1 limb=r37-suite=0
+selftest case=G8 positive=pass mutants=2/2 verdict=pass
 selftest cases=8 failures=0
+selftest judge=own-report accepted=1
+selftest judge=forged-summary rejected=1
+selftest judge=forged-caselines rejected=1
+selftest judge=forged-failed-cases rejected=1
+selftest judge=forged-detail-free rejected=1
+selftest judge=forged-7-cases rejected=1
