@@ -147,8 +147,9 @@ boxes stay `[~]` with these pointers.
       `[~]`.
 
 **Round-35 measurement state (ScribeShonen, 2026-10-26T07:02Z; tip re-read at 07:06Z).** Live tree HEAD `5a25337` (integration `0aee0ef`, C1 integration `aa6ad99`), base `3266c993…`. Digests read at this seat's
-measurement: `SKILL.md` `daeff71b…` (1104 lines), `SCORECARD.md` `5ea6f459…` (1404 lines, after the
-receipt-grounded round-35 section; this seat's first pass read `085cffd6…` / 1282 lines),
+measurement: `SKILL.md` `daeff71b…` (1104 lines), `SCORECARD.md` `ed6e931f…` (1404 lines, the blob
+committed in `48e6053`; this seat's first pass read `085cffd6…` / 1282 lines and an intermediate
+append read `5ea6f459…` / 1404 lines — the committed blob is the binding),
 `corpus/QUALITY.md` `d4f83bb1…` (250 lines), `corpus/README.md` `277f04ce…` (396 lines),
 `corpus/SOURCES.md` `0f95a132…` (112 lines), F18 entry `e9de994d…` (91 lines),
 `knowledge-expected.txt` `d2e99ca6…` (49 lines), `r35-defect-closure.sh` `0ae4b484…` (834 lines),
