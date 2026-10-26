@@ -858,3 +858,90 @@ expect=present expected=43 missing=0 unexpected=0 exit=0
 Measurement limit, recorded rather than hidden: the same command on a `git archive` export of lane base `b374febbb33ccadade78a787279707fd5d2e6e1d` at a different path prints `strict pass=1/43 cdroot_fail=42 instrument_fail=0 own_fail=0 … exit=1`, because strict limb (d) requires the `cd <path> &&` target to equal the audited root (`corpus/instruments/recheck-audit.py:27`, `:137`) and 42 entry rechecks cd to the canonical lane path. A copy-relative run is therefore not a base measurement; the value quoted above is the lane-root one. If `recheck-audit.py` bytes change later this round (the C1 limb work), re-run and label any new value with its date.
 
 Capabilities clause, corrected: the round-30 headline "no row added this round" holds for round 30 (no round-30 capability table exists), but its parenthetical "(last capability entry round 25)" (`SCORECARD.md:825`) is false — round 26 added `source-capture-pdf` (`SCORECARD.md:580-584`, first-working round 26), so the last capability entry as of round 30 is round 26 and any stagnation count starts there. The filed sentence is left byte-identical; this erratum is the correction of record.
+
+## Round 31 — frozen claims C1/C2 (2026-10-25)
+
+Frozen before dispatch in `.ufo/waves/round-31/claims.json` (base `b374febb…`, claims-freeze
+commit `738a77999…`, wave-1 integration `eecad59db…`). Receipts land under `.ufo/waves/round-31/`
+(`c1-controls/before.txt`, `c1-controls/fake-counter-receipt.txt`, `c2-controls/before.txt`,
+`census-before.txt`, `wave1/`, `wave2/`). Wave 2 is a falsify wave: 13 one-limb re-derivations
+(`wave2/ExecLimb*.md`), six counter-mutant receipts (`wave2/MutCtr*.md`), two quote re-opens
+(`RevQuoteRoles`, `RevQuoteRoutes`), an independent Q1–Q10 entry review (`RevEntryQ`), an
+expansion-credit critic (`CritExpansion`), the counter repair (`ExecCounterFix`) and three
+no-harm/final counters (`ExecNoHarmDensity`, `ExecCensusFinal`, `ExecRegressionC1`).
+
+| Claim | Axis | Before | After | Verdict and evidence | Last change |
+|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest non-retired, 4) | `limb-ledger.json` / `limb-mutation-check.py` absent (`ls_exit=2`, `counter_exit=2`); `source-recheck --selftest` `cases=9 failures=0`; `recheck-audit --quiet` `strict pass=43/43 … exit=0`; frontier harness `entries=17 pass=17 exit=0`; a fake counter that prints both summary lines with 0 `LIMB ` lines is rejected (`c1-controls/before.txt`, `c1-controls/fake-counter-receipt.txt`: `fake LIMB lines: 0`) | 13 `LIMB ` lines (`grep -c '^LIMB '` = 13), every row `live=` ≠ `mutant=`; `limbs=13 killed=13 survivors=0`; `controls=3 rejected=3`; `guard cases=3 failures=0`; exit 0 twice byte-identically (stdout sha256 `d6aefddc…`); `--selftest` `cases=20 failures=0`; no-harm on the same bytes: `strict pass=44/44 cdroot_fail=0 instrument_fail=0 own_fail=0` and `expect=present expected=44 missing=0 unexpected=0 exit=0`, `source-recheck --selftest` `cases=10 failures=0`, `anchorcheck --selftest` `cases=12 failures=0` / `limbs=9 covered=9`, harness `entries=18 pass=18 exit=0`, 38 registered source ids over 8 manifests 38/38 exit 0 (`wave2/ExecRegressionC1.md`) | **Verified, score held 4.** The frozen kill rule is met on the repaired final revision: exact summary lines, 13 LIMB lines each with `live` ≠ `mutant`, exit 0 twice byte-identically, and no corpus regression on any leg above. Each row was also re-derived by hand from a scratch copy with the counter's line reproduced — 10 `holds`, 3 `weak` (`RA-cdroot` shape-narrow fixtures, `RA-paths` `named`-conjunct unwitnessed, `FR-missing-entry` signal-only kill; `wave2/ExecLimb*.md` §Verdict), recorded not relabelled. The 3 controls reject (`CTL-noop invalid:noop`, `CTL-nocompile invalid:nocompile`, `CTL-equivalent survivor`, all `ok=y`). Do-nothing control: base bytes have no counter and the fake counter meets the text with 0 `LIMB ` lines, so the target is unreachable without the work. Disclosed and **not** counted as a clause met: the claim's own `mutants_of_the_counter` set was falsified at the wave-1 landing (2 of its 4 frozen mutants survived) and repaired post-freeze — paragraph below. | 31 |
+| C2 | coverage (7) | `frontier_admitted=14`, `entries_citing_S048=0`, `rows_S048=0`, `registry_rows=47`, `census_exit=0`, `entries=17 pass=17 exit=0`, `manifest UNAVAILABLE reason=missing`, `recheck_exit=2` (`c2-controls/before.txt`) | frontier admitted **15**; entries citing S048 **1**; `S048` rows **1**; registry rows **48**; census **exit 0** with exactly `W04 S028` + `W04 S029` + `ok` and no `E`/new `W`; harness **`entries=18 pass=18 exit=0`** incl. `PASS F15 knowledge/vendor-third-party-finding-coordination.md ids=S048 exit=0`; `source-recheck --manifest corpus/source-snapshots/round-31/manifest.json --source S048` **exit 0**, 8 assertions every `occurrences=1` (`wave2/ExecCensusFinal.md` §1 — the frozen commands run verbatim from `claims.json`, ten surfaces digested twice 107 s apart with identical hashes; junk-row and base controls re-derived in §2–§4) | **NOT VERIFIED — honest stop, no credit claimed (score stays 7).** All seven frozen counter cells are met on quiescent bytes, but the kill rule's entry clause trips: the independent non-author Q1–Q10 review returns `REFUSE — on Q3 only` (`wave2/RevEntryQ.md` §5). Its ground: `corpus/knowledge/vendor-third-party-finding-coordination.md:84-87` warrants addition 3 with “F10's thesis is a vendor's standing statement about the handling of findings in its *own* products” — no verbatim quote and no location — and that reading is refuted by the crosswalk rows the entry itself cites (`vendor-disclosure-policy-commitments-crosswalk.md:49`, `:66`; §F1 there). The minimal one-bullet fix is named and owned by the L1 (`RevEntryQ` §5). The competing reviewer readings are quoted verbatim below; the ruling is the canonical judge's. A miss is recorded, not narrowed. | 31 |
+| depth:density | 9 | mean 171.1, 23 blocks, 662 path-citation instances (r30 `SKILL.md` replayed from `5703f9f`) | mean **191.5**, 24 blocks, 689 cites (`SKILL.md` `81763604…`, 1057 → 1071 lines); `anchorcheck.py` unmoved in every class (7 in-range / 0 bad / LOST-RECORDED=306 / PIN-BROKEN=0 / ORIGIN=0 / OUTSIDE-BASE=0 / BASE-ABSENT=0, exit 0) | **Unchanged (held 9), no harm; density change disclosed, no score move claimed.** Every pre-existing block row is byte-identical; the whole mean move is the appended block 24, whose resolve fraction is `11/27 = 40.74%` and therefore fails the instrument's own conjunctive bar (≥60%) — recorded as a volume/rule effect, not as new resolvable evidence (`wave2/ExecNoHarmDensity.md` §1, §1c, §1d, §2, §5). | r15 (held r31) |
+
+**Counter-mutant repair, disclosed (post-freeze, round-25 form).** `claims.json` C1
+`mutants_of_the_counter` names four counter mutants that attack seats must show are caught. Wave 2
+found **two of them surviving byte-identically** — `find-text-not-unique accepted`
+(`wave2/MutCtrNonUniqueFind.md` §Verdict: both summary lines, exit 0, stdout sha256 `9b386485…`)
+and `never-run-live-baseline` (`wave2/MutCtrNoLiveBaseline.md` §Verdict: byte-identical output,
+`9.8 s` vs `20.8 s` wall) — plus one out-of-set survivor, kill-command timeout counted as `killed`
+(`wave2/MutCtrTimeoutKilled.md` §Verdict). The other three frozen mutants were caught:
+`always-killed` → `controls=3 rejected=2`, `nocompile` → `rejected=2`, `signal-ignored` →
+`limbs=13 killed=12 survivors=1`. `ExecCounterFix` then closed all three survivors **inside the
+counter** with three implicit guard fixtures on every `--ledger` run (`guard cases=3 failures=0`),
+adding no limb and no control, so the frozen counts stay `controls=3 rejected=3` and no claims
+amendment is needed (`wave2/ExecCounterFix.md` §1, §4, §5): red-before, all three mutants exit 0
+on `c660a95f…` (§3); green-after, each exits 1 on `237fd07c…` (§5 table), with the real run still
+exit 0 twice byte-identically (§5). The frozen numbers are reported beside the repaired ones; the
+repair is disclosed as a post-freeze repair and is not counted as meeting a frozen clause.
+
+**C2 reviewer conflict, reported verbatim for the canonical judge.** `wave2/RevEntryQ.md` §5:
+`REFUSE — on Q3 only`. `wave2/RevQuoteRoles.md` §Verdict summary: `0 HIGH, 2 MEDIUM, 12 LOW`
+findings, `none is a claim without a locatable quote`. `wave2/CritExpansion.md` §VERDICT:
+**`partial`**, `Not restatement`, and `C2 is not failed by this review` — three sentence-level
+edits routed, not applied. `wave2/RevRowS048.md` §Verdict summary: `all six rules CONFORMANT at
+row level`, `No medium or high finding.` `wave2/RevQuoteRoutes.md` opens with
+`all 8 manifest assertions AGREE`. The round's own lesson reads these as `Non-author reviews agree
+on admission` (`corpus/lessons/round-31.md:14`), which does not carry RevEntryQ's filed Q3
+REFUSE; this scorecard records the REFUSE as the clause-tripping verdict and leaves the ruling to
+the canonical judge. Also recorded, not charged to C2: the expansion critic's `partial` grade and
+the routed three-edit correction (`CritExpansion` §6).
+
+**Measurement state.** Values above were measured at lane HEAD `eecad59db…` with `git status
+--porcelain corpus/` empty, except the one path that changed after wave 1: the counter, owned by
+`ExecCounterFix`. Revisions named: `limb-mutation-check.py` **`237fd07c…`** (820 lines,
+post-repair; `c660a95f…` is the pre-repair revision every wave-2 `ExecLimb*`/`MutCtr*` receipt
+measured, and `cde7c2b6…` / `f926bf75…` are mid-edit wave-1 states — none is compared to an after
+column, M30-3), `limb-ledger.json` `c042adf6…` (unchanged by the repair), `recheck-audit.py`
+`5d4842da…`, `source-recheck.py` `fd2e01e8…`, `frontier-recheck-count.py` `aa60b581…`; entry
+`1f16e371…`, `README.md` `d9865b2e…`, `SOURCES.md` `5a03c696…`, `knowledge-expected.txt`
+`d6f25227…`, manifest `b80f7f92…`, `S048.txt` `2001ad77…` (3755 B, 97 lines), `SKILL.md`
+`81763604…`. Mid-wave partial states (`admitted=14`, registry 47, harness 17/17 at
+`23:31:56Z`, `wave1/ExecHarnessC2.md` §last) are superseded by the quiescent runs above, not
+hidden. The C1 numbers are quoted from `wave2/ExecRegressionC1.md` at the repaired revision; the
+13 limb re-derivations were taken on `c660a95f…`, whose LIMB/control lines the repair leaves
+unchanged and the regression run reproduces. Several wave-2 seats' poll loops were
+auto-backgrounded by the shell tool rather than staying in the foreground; that is disclosed as a
+tool artefact, not reported as a foreground run.
+
+**Capabilities: one row enters.** C1's counter and ledger are demonstrated running at the final
+revision with the exit-0 output (`wave2/ExecRegressionC1.md`: `limbs=13 killed=13 survivors=0` /
+`controls=3 rejected=3`, 13 `LIMB ` lines, two runs byte-identical), so
+`limb-mutation-ledger` enters the Capabilities table for round 31 — appended below as
+`## Round-31 capabilities`, the round-24/25/26 pattern, because this seat is append-only and does
+not edit the master `## Capabilities` table in place. The master table is otherwise unchanged.
+
+## Round-31 capabilities
+
+| Capability | What it can now do | Evidence pointer | First-working round |
+|---|---|---|---|
+| limb-mutation-ledger | Prove each of 13 named limbs of the lane's three recheck instruments load-bearing on committed bytes: copy the corpus into a fresh scratch lane, run each limb's kill command unmutated (exit + declared signal) and again after an exactly-once find/replace patch that must still compile, print one `LIMB <id> live=… mutant=… verdict=killed\|survivor\|invalid:<reason>` line per row plus three control rows and three guard lines, exit 0 only when `limbs=13 killed=13 survivors=0` and `controls=3 rejected=3`; stdlib only, writes nothing into the lane, runs no git write | `corpus/instruments/limb-mutation-check.py` (sha256 `237fd07c…`), `corpus/instruments/limb-ledger.json` (`c042adf6…`); `.ufo/waves/round-31/wave2/ExecRegressionC1.md`; 13 row re-derivations in `wave2/ExecLimb*.md`; 6 counter-mutant probes in `wave2/MutCtr*.md` | 31 |
+
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3. With depth:verifiability at 4
+the lowest-axis obligation stays active. The round-31 `limb-mutation-ledger` entry restarts the
+capability window (previous entry round 26); if the canonical judge refuses the row, the
+entry-less run since round 26 reaches four admitted rounds and the nudge applies.
+
+### Round-31 move-log rows
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 31 | depth:verifiability | 4 (no limb ledger, no mutation counter; the three recheck instruments' limbs unproven) | 4 held (13 limbs each killed by its own exactly-once patch, 3 controls rejected, exit 0 twice byte-identically; 10 of 13 rows re-derived `holds`, 3 `weak`; frozen predicate met, the C1 counter-mutant set falsified in wave 2 and repaired post-freeze) | `corpus/instruments/limb-mutation-check.py`, `corpus/instruments/limb-ledger.json`, `.ufo/waves/round-31/wave2/ExecLimb*.md`, `wave2/MutCtr*.md`, `wave2/ExecCounterFix.md`, `wave2/ExecRegressionC1.md` |
+| 31 | coverage | 7 (frontier 14, entries citing S048 0, registry 47, harness 17/17, manifest absent → recheck exit 2) | 7 held, no credit claimed (frontier 15, entries citing S048 1, registry 48, census exit 0, harness 18/18, recheck exit 0 — but the frozen entry clause is contested by a non-author Q3 REFUSE) | `corpus/README.md:309` F15, `corpus/SOURCES.md:54`, `corpus/source-snapshots/round-31/manifest.json`, `wave2/ExecCensusFinal.md`, `wave2/RevEntryQ.md` |

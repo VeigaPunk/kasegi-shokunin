@@ -1,7 +1,7 @@
 # A vendor's research programme as an intake route for other vendors' bugs
 source: S048 — https://www.microsoft.com/en-us/msrc/msvr — section "Microsoft Security Vulnerability Research (MSVR)", capture corpus/source-snapshots/round-31/S048.txt:28-35 — the programme description L29, the three-route intake sentence L31, the three routes L32-L34, the three-role sentence L35
 verified-at: 2026-10-25
-recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-31/manifest.json --source S048   # 8 assertions, every quote exactly-once in the pinned capture; a captured-source comparison, not a fresh network verification
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-31/manifest.json --source S048   # 11 assertions (Q1-Q11), each exactly-once in the pinned capture, covering the entry's S048 quotes; a captured-source comparison, not a fresh network verification
 ground: F15 — a vendor's research programme as an intake route for other vendors' bugs
 
 ## Attribution
@@ -27,7 +27,7 @@ The three labelled routes follow, one per capture line:
 | "External reports to the Microsoft Security Response Center (MSRC)" (L33) | "These issues are coordinated by MSVR." | L33 |
 | "Internal research projects" (L34) | "Any issues are reported to the affected vendor under accepted Coordinated Vulnerability Disclosure practices." | L34 |
 
-Route 3 is scoped by Microsoft to non-Microsoft products:
+Route 3 is scoped by Microsoft to non-Microsoft products that run on Microsoft operating systems (see the quote):
 
 > products that run on Microsoft operating systems, but that are not developed by Microsoft
 > — L34
@@ -61,34 +61,44 @@ third-party coordination under its own CVD approach (L35).
 ## What this adds beyond F06 and F10
 
 F06 (`knowledge/multiparty-vulnerability-coordination.md`, S018 FIRST v1.1) holds the role
-vocabulary, and in it the coordinator is a participant *outside* the vendor — its worksheet
-asks a package to record whether a coordinator exists rather than to assume one. F06 has no
-row for a vendor occupying the finder and coordinator seats itself. F10's vendor rows both
-keep coordination outside the vendor: Hitachi reports an issue that spills beyond
-Hitachi-group products to the partnership's 届出窓口 (S039.txt:506, quoted in
-`knowledge/vendor-disclosure-policies-as-corpus-objects.md` Claim 7), and Cisco hands a
-report that "may impact multiple vendors" to CERT/CC, CERT-FI, JP-CERT or NPSA
-(S040.txt:185-193, the `cisco-jpcert-partner` row of
-`knowledge/vendor-disclosure-policy-commitments-crosswalk.md`).
+vocabulary, and in it the coordinator is a participant *outside* the vendor — "Optional
+participant that can assist vendors and finders" (line 25) — so its worksheet asks a package
+to record whether a coordinator exists rather than to assume one. F06 has no row for a
+vendor occupying the finder and coordinator seats itself.
 
-Against that ground, S048 adds three things the lane did not hold:
+F10 holds vendors' published policy objects, not a programme (`corpus/README.md` F10 row:
+"A vendor's published policy is a standing first-party statement, not a programme"). Its
+overlap with S048 is conceded in three places: (a) Hitachi reports an issue that spills
+beyond Hitachi-group products to the partnership's 届出窓口 (S039.txt:506, quoted in
+`knowledge/vendor-disclosure-policies-as-corpus-objects.md` Claim 7), and Cisco, for a
+report that "may impact multiple vendors", works with coordination centres such as CERT/CC, CERT-FI, JP-CERT or NPSA
+to "manage a coordinated industry disclosure" (S040.txt:185-193, the `cisco-jpcert-partner`
+row of `knowledge/vendor-disclosure-policy-commitments-crosswalk.md`); (b) Cybozu's
+handling scope already covers "third-party products it uses" (S036.txt:15, line 35 of
+`knowledge/vendor-disclosure-policies-as-corpus-objects.md`); (c) the same entry holds a
+vendor-internal detection channel (line 23). All of these are a vendor's statement about
+findings reaching it or its own products, with any coordinator external.
 
-1. **A standing internal-research route into other vendors' products.** Route 3 is a
-   programme activity aimed at products "that are not developed by Microsoft" (L34), not a
-   by-product of the vendor's own product QA — which is the shape Hitachi describes
-   (S039.txt:506).
+Against that ground, S048 adds two things the lane did not hold, and a third that is a
+difference of kind rather than of ground:
+
+1. **A conditional internal-research route into other vendors' products.** Route 3 is a
+   programme activity ("As time and resources permit", L34) aimed at products "that are not
+   developed by Microsoft" (L34), not a by-product of the vendor's own product QA — which is
+   the shape Hitachi describes (S039.txt:506).
 2. **The vendor stated as coordinator itself.** Microsoft names itself "as a coordinator of
-   vulnerabilities that affect multiple vendors" (L35), where Cisco's stated handling is to
-   route the multi-vendor report out to an external centre (S040.txt:185-193) and Hitachi's
-   is to file it with the national partnership (S039.txt:506).
-3. **A published programme about *other vendors'* products as a corpus object.** F10's
-   thesis is a vendor's standing statement about the handling of findings in its *own*
-   products; S048 is a vendor's standing statement about its routes into *other* vendors'
-   products.
+   vulnerabilities that affect multiple vendors" (L35), with no external centre named, where
+   Cisco's stated handling is to work with external coordination centres to manage a
+   coordinated industry disclosure (S040.txt:185-193) and Hitachi's is to
+   file it with the national partnership (S039.txt:506). The new fact is coordinator-of-record
+   being the vendor; the recording rule it instantiates is F06's worksheet line.
+3. **A published programme whose subject is other vendors' products** (the finder
+   direction of the Cybozu third-party-products scope). This is a difference in what the
+   page is about, not a new corpus-object type.
 
 F11 (`knowledge/iso-29147-and-30111-division-of-labour.md`, S041) holds the
 outward-disclosure / inward-handling division of labour and assigns no finder or coordinator
-seat to a vendor, so it carries none of the three additions.
+seat to a vendor, so it carries none of the additions.
 
 The negative sweep behind that claim, runnable from the lane root on the landed tree:
 
@@ -120,7 +130,7 @@ above from the capture alone.
 - **FC-2 — the coordinator seat is Microsoft's own, stated once.** `grep -c 'as a coordinator of vulnerabilities that affect multiple vendors' corpus/source-snapshots/round-31/S048.txt` → `1`. A package reading the coordinator as an external centre is reading a role the page does not assign.
 - **FC-3 — no clock and no channel on the page.** `grep -ciE '90[ -]day|deadline|embargo|timeline' corpus/source-snapshots/round-31/S048.txt` → `0`; `grep -ci '@microsoft' corpus/source-snapshots/round-31/S048.txt` → `0`. Any "MSVR's N-day embargo" or "report it to MSVR at ⟨address⟩" line cannot be supported from S048.
 - **FC-4 — the programme body carries no payment term.** `sed -n '28,35p' corpus/source-snapshots/round-31/S048.txt | grep -ci bounty` → `0`, while `grep -ci bounty corpus/source-snapshots/round-31/S048.txt` → `1` (the navigation item "Microsoft Bug Bounty Programs" at L15). A package equating MSVR with the bounty programme is citing page chrome.
-- **FC-5 — two of the three routes name the affected vendor; route 2 names no recipient.** `grep -c 'affected vendor' corpus/source-snapshots/round-31/S048.txt` → `2` (L32 and L34); L33 names only MSVR. A package claiming MSVR remediates a third-party product itself, rather than working with or reporting to the affected vendor, is unsupported; a package claiming route 2 hands the issue to the affected vendor is also unsupported, because the page does not say so.
+- **FC-5 — two of the three routes name the affected vendor; route 2 names no recipient.** `grep -c 'affected vendor' corpus/source-snapshots/round-31/S048.txt` → `2` (L32 and L34); L33 names no affected vendor, and MSVR is its only stated handler. A package claiming MSVR remediates a third-party product itself, rather than working with or reporting to the affected vendor, is unsupported; a package claiming route 2 hands the issue to the affected vendor is also unsupported, because the page does not say so.
 
 ## Rejected over-generalizations
 
@@ -152,7 +162,7 @@ above from the capture alone.
 - One page, one vendor, read as the pinned capture of 2026-10-25T23:29:53Z: 3755 B, 97 lines,
   sha256 `2001ad7732a16cd385b649a3eb2b9f2c6000fd90ca1cce219868a646cbc67e55`. Page-level
   evidence only; it carries no per-vendor process, contact or timeline.
-- The recheck verifies the pin and the exactly-once presence of eight quotes under
+- The recheck verifies the pin and the exactly-once presence of eleven quotes (Q1-Q11) under
   `source-recheck.py`'s declared normalization (capture markup stripped, whitespace
   collapsed). It does not verify that the upstream page still serves this text.
 - Documentation only: this entry records published programme text. It instructs no probing,

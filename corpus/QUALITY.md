@@ -94,3 +94,65 @@ a vendor's policy into a universal rule.
 |---|---|---|
 | R16 | A result paragraph that states an open failure or an exit code carries its runnable closure check (`bash -n`-parseable) in the same record; when a later state change closes it, closure is an appended erratum that names that paragraph by its own wording and cites the corrected output, with the filed paragraph left byte-identical — a check that turns green because the stale sentence was reworded or deleted has closed nothing. The check exits non-zero while the statement stands un-errataed and zero once the naming erratum carrying the corrected output is present. | `corpus/lessons/round-31.md` § Mistakes M31-1 — stale premise; the round-30 paragraph at `SCORECARD.md:813` (stale reading on `:814`) still said `expect=present expected=43 missing=0 unexpected=0 exit=1` after `corpus/lessons/round-30.md` § Close-out erratum had corrected the audit to `strict pass=43/43`; routed by `corpus/lessons/round-30-verifier-spotcheck.md` §1 defect 3 and §5 item 4. Specimen `.ufo/waves/round-31/wave1/ExecErratumCheck-before.txt` → `ExecErratumCheck-after.txt` on `SCORECARD.md` `cac64dbd…` → `5fa41aef…` (835 → 860 lines, append-only): red `file=SCORECARD.md stale_paragraphs=1 erratum_anchor=none names_item_and_cites_corrected_audit=0` / `erratum_closure=open`, `EXIT CODE: 1`; green `file=SCORECARD.md stale_paragraphs=2 erratum_anchor=837 names_item_and_cites_corrected_audit=1` / `erratum_closure=closed`, `EXIT CODE: 0`, and the mutant that deletes the erratum block returns exit 1. Limit measured here: on the base bytes reworded once with no erratum the same check printed `erratum_closure=closed` and exited 0 (`stale_paragraphs=0`), so only the naming-erratum branch is closure under this criterion. |
 | R17 | An instrument limb is claimed load-bearing only when a committed one-limb mutant makes that limb's kill command differ from the unmutated run: the mutant is an exact-once `find`/`replace` over the instrument's own bytes that still compiles (`py_compile`), and the replay `corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/limb-ledger.json` prints one `LIMB <id>` line per limb and rejects all three degenerate controls (no-op patch, non-compiling patch, semantically equivalent patch). A limb no mutant can move is a survivor: the owning instrument's selftest is strengthened with a case that fails only on that limb, and a survivor is never relabelled killed. | R13; `corpus/lessons/round-31.md` § Mistakes (the round-31 survivor/limb entries); round-30 `corpus/lessons/round-30.md` § Mistakes M30-1 — the frozen B2 fixture declared `id=S045` with `path=B2.txt`, so the B1 stem limb exited first and the B2 mutant's flip was `NO` on the frozen bytes, i.e. that limb was never isolated. Specimen `.ufo/waves/round-31/wave1/ledger-fragments/ra.json` `RA-completeness`: “On the pre-round-31 bytes this was the one RA survivor (mutant compiled, find once, exit 0, stdout byte-identical to pristine)”, closed by the two `main()`-level fixtures `complete-empty` and `complete-missing-line` rather than by relabelling. |
+
+## Round-31 wave-2 additions — byte-bound closure checks (append-only)
+
+| id | criterion | grounded in |
+|---|---|---|
+| R18 | A closure check for a filed result paragraph binds three byte facts and has no count-zero escape: (i) the span the paragraph was filed at still hashes to the digest pinned when it was filed, so deleting it, or rewording it in place, leaves the item open; (ii) a naming erratum anchored on an `Errata`/`Erratum` line after the span quotes the paragraph's wording and cites its filed `FILE:start-end` address; (iii) the corrected-output citation is bound to the instrument bytes that print it — a `strict pass=` reading at or after the filed span carries, on its line or within the two lines above it, the value that instrument prints now, that instrument's 8-hex digest and the filed address, so a changed instrument re-opens the check until a labelling entry cites the new triple while a stale, fabricated or address-less pair stays open. For a missing-entry closure the entry is the file's own entry level (`## `): an `###` sub-section that only mentions the round does not close it. | supersedes R16 — R16 stated the rule but never bound its check to it: the shipped CHECK A closed on `[ "$n" -eq 0 ] \|\|`, its own disclosed `R-1` limit (`.ufo/waves/round-31/wave1/ExecErratumCheck.md` §1, §5), so the clause "a check that turns green because the stale sentence was reworded or deleted has closed nothing" (`corpus/QUALITY.md:95`) had no conforming specimen. Measured before the tightening: base bytes minus the filed paragraph, no erratum, printed `erratum_closure=closed` exit 0 (`.ufo/waves/round-31/wave2/CritMistakes.md` §2.1, `.ufo/waves/round-31/wave2/MutErratumCheck.md` §2 mutant (c)); the round-30 `##` entry relabeled `## Round 29` still closed through the `### Round-30 checks re-run` note (`MutErratumCheck.md` §2 mutant (d1), `CritMistakes.md` §3); and the erratum's `strict pass=43/43` is superseded by `strict pass=44/44` from `recheck-audit.py` `5d4842da…` while CHECK A required the historical literal (`CritMistakes.md` §4). Tightened matrix, 11 byte-states, in `.ufo/waves/round-31/wave2/ScribeQualityFix.md` §2–§3 and re-measured on drifted `SCORECARD.md` `4076091c…` in 13 byte-states under the address-bound window form (§8): landed `SCORECARD.md` `5fa41aef…` exits 1 on `live_citation_self_naming=0` and exits 0 once the labelling erratum is appended in a scratch copy; the five mutants the shipped check passed — paragraph deleted, `exit=1`→`exit=0` reword, unrelated r31 erratum quoting both phrases, phrase and erratum both removed, fabricated live-pair line — all exit 1; the erratum-deleted control, the base bytes, a wrong-digest label and a stale-value label stay exit 1. CHECK B' keeps landed `LOG.md` `864deb7d…` at exit 0 (`round30_h2_headings=1`) and flips the relabeled-heading, entry-body-deleted and h3-only-backfill shapes 0 → 1; the h3 tolerance `R-2` disclosed is withdrawn. |
+| R19 | A specimen figure quoted inside a record row is either produced by a command the row cites or backed by a closure check that reproduces it; a literal the instrument never prints is a stale premise under R18 and is corrected by an appended row that names the stale literal and carries the command that computes the live figure — never by editing the filed row. | supersedes R13 — R13's specimen cites `selftest cases=4 failures=0 exit=0`, a summary shape `recheck-audit.py` has never printed: `grep -cE '^selftest cases='` on its output → 0, while the live `--selftest` prints 18 `selftest … ok` case lines at exit 0 (measured 2026-10-26T00:41Z on instrument `5d4842da…`); routed by `.ufo/waves/round-31/wave1/ScribeQuality.md` F1 and `.ufo/waves/round-31/wave2/CritMistakes.md` §6 (M31-4). Closure check below: pre-append bytes exit 1 (`supersedes_r13_rows=0`); a stub row naming R13 without a command also exits 1; this row and the two commands under R18 exit 0. R13's criterion text and its bite are unchanged and stay in force; only its specimen evidence is superseded. |
+
+### R18 — runnable closure checks (`bash -n`-parseable, `cd`-prefixed, no lane write)
+
+CHECK A' — `SCORECARD.md` `recheck-audit open item` paragraph. `$1` names the file under test
+(default: the lane copy); a scratch copy is what the mutant controls run:
+
+```sh
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin || exit 9
+f=${1:-SCORECARD.md}
+pin=d6c6ea77c9450bfc6886bf75e5f5b48e9056e1bd9cd213febea31e25a206a7b1
+d=$(sed -n '813,819p' "$f" | sha256sum | cut -d' ' -f1)
+n=$(grep -c 'recheck-audit open item' "$f")
+l=$(grep -nE '(([Rr]31)|([Rr]ound[- ]31))[[:space:]]+[Ee]rrata?' "$f" | head -1 | cut -d: -f1)
+c=0
+[ -n "$l" ] && tail -n +"$l" "$f" | grep -q 'recheck-audit open item' \
+  && tail -n +"$l" "$f" | grep -q 'SCORECARD\.md:813-819' && c=1
+live=$(python3 corpus/instruments/recheck-audit.py --quiet 2>&1 | grep -o 'strict pass=[0-9]*/[0-9]*' | head -1)
+inst=$(sha256sum corpus/instruments/recheck-audit.py | cut -c1-8)
+b=0
+for k in $(awk 'NR>=813 && /strict pass=/ {print NR}' "$f"); do
+  win=$(awk -v k="$k" 'NR>=k-2 && NR<=k' "$f")
+  printf '%s\n' "$win" | grep -qF "$live" && printf '%s\n' "$win" | grep -qF "$inst" \
+    && printf '%s\n' "$win" | grep -q 'SCORECARD\.md:813-819' && { b=1; break; }
+done
+printf 'file=%s filed_byte_identical=%s phrases=%s anchor=%s naming_erratum=%s live_citation_self_naming=%s live=%s instrument=%s\n' \
+  "$f" "$([ "$d" = "$pin" ] && echo y || echo n)" "$n" "${l:-none}" "$c" "$b" "$live" "$inst"
+[ "$d" = "$pin" ] && [ "$n" -ge 2 ] && [ "$c" -eq 1 ] && [ "$b" -eq 1 ] \
+  && { echo "erratum_closure=closed"; exit 0; }
+echo "erratum_closure=open"; exit 1
+```
+
+CHECK B' — round-30 `LOG.md` entry, gated on the entry level:
+
+```sh
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin || exit 9
+f=${1:-LOG.md}
+h2=$(awk '/^## /{ h=$0; sub(/^## */,"",h); if (match(h,/[Rr]ound[- ]?[0-9]+/)) { t=substr(h,RSTART,RLENGTH); gsub(/[^0-9]/,"",t); if (t+0==30) n++ } } END{print n+0}' "$f")
+h23=$(awk '/^#{2,3} /{ h=$0; sub(/^#{2,3} */,"",h); if (match(h,/[Rr]ound[- ]?[0-9]+/)) { t=substr(h,RSTART,RLENGTH); gsub(/[^0-9]/,"",t); if (t+0==30) n++ } } END{print n+0}' "$f")
+printf 'file=%s round30_h2_headings=%s round30_h2_or_h3_headings=%s\n' "$f" "$h2" "$h23"
+if [ "$h2" -ge 1 ]; then echo "log_closure=closed"; exit 0; else echo "log_closure=open"; exit 1; fi
+```
+
+### R19 — closure check for the R13 specimen figure
+
+```sh
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin || exit 9
+q=${1:-corpus/QUALITY.md}
+live=$(python3 corpus/instruments/recheck-audit.py --selftest 2>&1 | grep -c '^selftest .* ok$')
+sum=$(python3 corpus/instruments/recheck-audit.py --selftest 2>&1 | grep -cE '^selftest cases=[0-9]+ failures=[0-9]+')
+sup=$(grep -cE '^\| R[0-9]+ \| .*supersedes R13 ' "$q")
+cmd=$(grep -E '^\| R[0-9]+ \| .*supersedes R13 ' "$q" | grep -c -- '--selftest')
+printf 'live_selftest_ok_lines=%s instrument_cases_summary_lines=%s supersedes_r13_rows=%s row_cites_selftest=%s\n' "$live" "$sum" "$sup" "$cmd"
+[ "$sum" -ge 1 ] || { [ "$sup" -ge 1 ] && [ "$cmd" -ge 1 ]; } && { echo "r13_specimen_closure=closed"; exit 0; }
+echo "r13_specimen_closure=open"; exit 1
+```

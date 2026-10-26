@@ -39,6 +39,14 @@ the mutant's exit differs from `live_exit` or its output no longer matches
 never `killed`. Nothing is written outside the scratch lanes (deleted at exit),
 and no git command is run.
 
+Before any ledger row, every run evaluates three guard fixtures on a throwaway
+probe lane: a baseline that loses its declared signal must be
+`invalid:live-baseline`, a `find` occurring twice must be `invalid:find-count`,
+and a kill that never returns must be `invalid:timeout`. The committed ledger
+trips none of those three gates, so a counter that silently dropped one of them
+would still print the same summary; the guards close that route. They are not
+limbs or controls and never enter the two summary counts.
+
 Ledger validation (exit 2): `version` 1; unique ids; lane-relative instrument
 paths; non-empty `find`; integer `live_exit`; a `signal` that is a valid regex
 and does not match the empty string (a vacuous signal cannot discriminate); a
@@ -49,8 +57,10 @@ to `invalid:noop`, `invalid:nocompile`, `survivor`.
 
 Output grammar, one line per row (byte-exact):
 
+  guard <name> verdict=<v> want=<w> ok=y|n
   LIMB <id> live=<exit>/<sig:y|n> mutant=<exit>/<sig:y|n> verdict=<verdict>
   CONTROL <id> verdict=<v> expected=<e> ok=y|n
+  guard cases=<n> failures=<f>
   limbs=<n> killed=<k> survivors=<s>
   controls=<n> rejected=<r>
 
@@ -59,8 +69,8 @@ Output grammar, one line per row (byte-exact):
 `live-baseline`, `mutant-baseline`, `find-count`, `noop`, `nocompile`,
 `import`, `timeout`. `rejected` counts
 controls whose verdict equals their `expect`. Exit 0 iff n==k, survivors==0,
-every limb verdict is `killed`, and rejected==controls; 1 otherwise; 2 on a
-usage, ledger, or lane-root error.
+every limb verdict is `killed`, rejected==controls, and every guard fixture
+holds; 1 otherwise; 2 on a usage, ledger, or lane-root error.
 
 `--selftest` runs eleven internal fixtures (killed, survivor, one per
 `invalid:*` reason — `live-baseline`, `mutant-baseline`, `find-count`, `noop`,
@@ -83,6 +93,7 @@ import sys
 import tempfile
 
 TIMEOUT_SECONDS = 120
+GUARD_TIMEOUT = 1
 SIGNAL_FLAGS = re.MULTILINE
 ROW_ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]*\Z")
 CONTROL_EXPECTS = ("invalid:noop", "invalid:nocompile", "survivor")
@@ -494,6 +505,7 @@ def aggregate(limb_results, control_results, control_expects):
 
 def run_ledger(ledger_path, root, timeout):
     ledger = load_ledger(ledger_path)
+    guard_ok = run_guard()
     pristine = load_pristine(root, ledger["limbs"] + ledger["controls"])
 
     def make_scratch():
@@ -513,7 +525,7 @@ def run_ledger(ledger_path, root, timeout):
     )
     print(limb_summary)
     print(control_summary)
-    return 0 if ok else 1
+    return 0 if ok and guard_ok else 1
 
 
 PROBE_SOURCE = '''#!/usr/bin/env python3
@@ -535,16 +547,77 @@ if __name__ == "__main__":
 '''
 
 
+def probe_lane(tmp):
+    """Build a throwaway lane holding only the probe instrument."""
+    root = os.path.join(tmp, "lane")
+    os.makedirs(os.path.join(root, "corpus", "instruments"))
+    os.makedirs(os.path.join(root, "corpus", "knowledge"))
+    with open(os.path.join(root, "corpus", "instruments", "probe.py"), "w", encoding="utf-8") as handle:
+        handle.write(PROBE_SOURCE)
+    return root
+
+
+def guard_rows():
+    """The gates the committed ledger never trips, one fixture each."""
+    pass_line = 'MODE = "pass"'
+    base = {
+        "instrument": "corpus/instruments/probe.py",
+        "live_exit": 0,
+        "signal": "^probe ok$",
+        "kill": "python3 {inst}",
+        "note": "guard fixture",
+    }
+    return [
+        (
+            "invalid-live-baseline",
+            dict(base, id="guard-live", find=pass_line, replace='MODE = "fail"', signal="^probe never$"),
+            "invalid:live-baseline",
+        ),
+        (
+            "invalid-find-count",
+            dict(base, id="guard-find", find='print("probe', replace='print("probe2'),
+            "invalid:find-count",
+        ),
+        (
+            "invalid-timeout",
+            dict(
+                base,
+                id="guard-timeout",
+                find=pass_line,
+                replace='MODE = "fail"',
+                kill='if grep -q \'MODE = "fail"\' {inst}; then sleep 5; fi; python3 {inst}',
+            ),
+            "invalid:timeout",
+        ),
+    ]
+
+
+def run_guard():
+    """Prove the unexercised verdict gates are still live, on every ledger run."""
+    rows = guard_rows()
+    failures = 0
+    with tempfile.TemporaryDirectory(prefix="limb-guard-") as tmp:
+        root = probe_lane(tmp)
+        pristine = load_pristine(root, [row for _, row, _ in rows])
+        for name, row, want in rows:
+            result = evaluate_row(row, lambda: build_scratch(root, []), pristine, GUARD_TIMEOUT)
+            ok = result["verdict"] == want
+            failures += 0 if ok else 1
+            print(
+                "guard %-22s verdict=%-20s want=%-20s %s"
+                % (name, result["verdict"], want, "ok" if ok else "FAIL"),
+                flush=True,
+            )
+    print("guard cases=%d failures=%d" % (len(rows), failures))
+    return failures == 0
+
+
 def selftest():
     """One internal fixture per verdict path, then both exit-code aggregates."""
     failures = 0
     cases = 0
     with tempfile.TemporaryDirectory(prefix="limb-selftest-") as tmp:
-        root = os.path.join(tmp, "lane")
-        os.makedirs(os.path.join(root, "corpus", "instruments"))
-        os.makedirs(os.path.join(root, "corpus", "knowledge"))
-        with open(os.path.join(root, "corpus", "instruments", "probe.py"), "w", encoding="utf-8") as handle:
-            handle.write(PROBE_SOURCE)
+        root = probe_lane(tmp)
         pass_line = 'MODE = "pass"'
         base = {
             "instrument": "corpus/instruments/probe.py",

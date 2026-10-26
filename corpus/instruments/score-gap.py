@@ -180,7 +180,7 @@ def field_census(root):
         "definition": definition.group(0).strip(),
         "lane": "%s/%s = %s%%" % (lane.group(1), lane.group(2), lane.group(3)),
         "skill": "%s/%s = %s%%" % (skill.group(1), skill.group(2), skill.group(3)),
-        "cmd": "grep -nE '^Numerator = |^- (lane total|SKILL\\.md alone): ' %s" % CENSUS_REL,
+        "cmd": "grep -nE '^Numerator = |^- lane total \\(SKILL\\.md \\+ corpus\\): |^- SKILL\\.md alone: ' %s" % CENSUS_REL,
     }
 
 
@@ -406,7 +406,7 @@ def _make_fixture(parent, variant, real_instruments, recheck_mode):
     else:
         _write(os.path.join(root, RECHECK_REL), STUB_RECHECK)
         _write(os.path.join(root, "corpus/instruments/recheck.json"),
-               "".join('%s: %d,\n' % (k, v) for k, v in spec["recheck"].items()))
+               json.dumps(spec["recheck"]))
     shutil.copy(os.path.join(real_instruments, "anchorcheck.py"),
                 os.path.join(root, ANCHOR_REL))
     # bases: bounties present in both (an escape is reachable), mirror/origin per variant
