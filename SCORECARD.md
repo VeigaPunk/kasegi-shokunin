@@ -1558,3 +1558,22 @@ Both limbs must read at the judged head:
 
 
 Correction (round 39): the `## Round 38 result` depth:verifiability row overstates the run at the judged head. Its clause "the run over the round-38 head the receipt names, and its `--selftest`, are committed in `.ufo/waves/round-38/final-gates/all-gates.txt`" holds only for the receipt's `run-ref`: the receipt's `export-ref` (`:2`) is J = `66703acaaff50529a35be49aa8759d04140720ad`, and the run over J prints `export-ref-run: closed=7/8 exit=1` with G2 `closed=0` (`:8`, `:15`); the `closed=8/8 exit=0` (`:26`) and `selftest cases=8 failures=0` (`:73`) lines are over `run-ref=7dd2fcd67aa8d3f67616e9fa79049c7c33c3ea8e` (`:4`). Read the row as: eight of eight checks pass over the receipt's run-ref and exactly one (G2) is red over J, structurally, because J cannot contain the receipt that names it. The report's tip run over `f06148c66c6d7aed948cb7024d9f0b9cffe4b95a` (J plus the receipt file only: `git diff --name-only J Y` → `.ufo/waves/round-38/final-gates/all-gates.txt`, `git diff --numstat` 79/0) quoting `closed=8/8 exit=0` and `selftest cases=8 failures=0` is report-quoted only — no committed transcript exists, and `git grep f06148c6` over the tip's tree → 0 hits (exit 1), since the tip cannot carry its own run. Scores unchanged (depth:verifiability 4, held r38); this line corrects the evidence sentence, not the score (non-author verifier `corpus/lessons/round-38-verifier-spotcheck.md` §5 R2, R3).
+
+
+## Round 39 result
+
+| Axis | Score before r39 | Score after r39 | Evidence pointer | Last change |
+|---|---:|---:|---|---|
+| depth:verifiability | 4 | 4 (held) | `corpus/instruments/r39-closure.sh` (sha256 2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b), suite G1-G8 closes R1-R4 + attack findings; judged head: export-ref of .ufo/waves/round-39/final-gates/all-gates.txt (claims-erratum-1.md E4); `closed=8/8 exit=0` at Y, graded `selftest cases=8 failures=0`; base/r38-head reds. | r39 (held) |
+| coverage | 7 | 7 (held) | Frontier F22 (CISA When to Issue VEX Information) 21->22; registry S057 + rejected S056/S058/S059 (55->59); entry corpus/knowledge/cisa-when-to-issue-vex.md cites S057; harness entries=25 pass=25 incl PASS F22 ids=S057; source-recheck S057 exit 0; binding 46/46; audit expected=51; census exit 0; knowledge 50->51; junk twin rejected. | r39 (held) |
+| depth:density | 9 | 9 | Non-target guard only: SKILL.md append-only (one registry row r39-closure.sh); no density move claimed. | r15 (held r39) |
+
+Measured before: claims-freeze commit dcd31701720a6a4929a32471a62011ed87103421 (before-controls). Measured after: see the counting commands in `.ufo/waves/round-39/claims.json` + erratum E1/E2/E4/E5; outputs recorded in `.ufo/waves/round-39/final-gates/` and the C2 recheck receipts.
+
+Judged head: export-ref of .ufo/waves/round-39/final-gates/all-gates.txt (claims-erratum-1.md E4).
+
+**Capabilities: no row enters this round** (r39-closure.sh is a closure counter). **Saturation unchanged:** line 9/10, window N=3; lowest non-retired axis depth:verifiability (4) stays worked.
+
+**Planned for round 40**: (1) depth:verifiability — carry the wave-2 attack findings into r40 fixtures/limbs; continue the 0-gated distance (score-gap measured 24 gated lines; needs external bases or re-grounding). (2) coverage — open the remaining leads (CISA VEX Status Justifications PDF; CSAF v2.1 os/ status; CycloneDX analysis subtree scoped capture) and decide the 9 queued registry rows per the distance-to-next-score criterion.
+
+Correction (round 39): the round-38 tip run f06148c6 is report-only (no committed transcript).

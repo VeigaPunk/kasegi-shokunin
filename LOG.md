@@ -1702,3 +1702,16 @@ Claims frozen in `.ufo/waves/round-38/claims.json` before dispatch (base `a173b0
 - **Tooling.** No installs; no pacman transactions (host-wide pause).
 
 - **Correction (round 39):** the round-38 C1 bullet says "Run and selftest over the judged head: `.ufo/waves/round-38/final-gates/all-gates.txt`"; the receipt's own run over that head (its `export-ref` = J `66703acaaff50529a35be49aa8759d04140720ad`) prints `export-ref-run: closed=7/8 exit=1`, red on G2 (`receipt=0`), and its `closed=8/8 exit=0` run with `selftest cases=8 failures=0` is over `run-ref=7dd2fcd67aa8d3f67616e9fa79049c7c33c3ea8e`, not J. The round-38 entry is append-only history and is not edited.
+
+
+## Round 39
+
+- C1 (depth:verifiability, 4 held): `corpus/instruments/r39-closure.sh` landed (sha256 2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b); suite closes the round-38 verifier R1-R4 and the round-38 attack findings (whole-tail declarations G1, graded selftest G2, seat identity G4, pinned r37 bytes G8). Judged head J and verification ref Y per `claims-erratum-1.md` E4; `closed=8/8 exit=0` at Y, graded `selftest cases=8 failures=0`; base 480b1a50 and r38 head 66703acaaff exports red. Receipt `.ufo/waves/round-39/final-gates/all-gates.txt`.
+- C2 (coverage, 7 held): frontier F21->F22; CISA When to Issue VEX Information (S057, tier A docs, mined); rejected S056/S058/S059; entry `corpus/knowledge/cisa-when-to-issue-vex.md`; capture `corpus/source-snapshots/round-39/S057.txt` + manifest; harness entries=25 pass=25 incl PASS F22 ids=S057; binding 46/46; audit expected=51 missing=0 unexpected=0; junk twin rejected (4x MISMATCH exit=1); census exit 0 (W04 S028/S029 only). Registry 55->59.
+- Corrections: `Correction (round 39)` blocks in round-38 lesson, LOG, SCORECARD, SHONEN sweeping the R2 overstate (J run closed=7/8; 8/8 at run-ref 7dd2fcd6).
+- Quality: R34/R35/R36 criteria added citing M39-1/M39-3/M39-4.
+- Mistakes: M39-1 (frozen self-referential predicate), M39-2 (records overstate), M39-3 (tip run uncommitted), M39-4 (captured-by none without criteria).
+- Frontier: SOURCES 55->59; search-log bullet added.
+- Assimilation: none adopted; id-collision rerun 24->25 collisions; quarantine slice 7 rows verdicted (2 quote-defective, 4 unreachable, 1 unverifiable).
+- considerthese: proposal 1 mined into SCORECARD §Saturation (distance-to-next-score criteria); ledger round-39 dispositions filled.
+- Wave shape: w1 49 seats + w2 37 seats = 86.

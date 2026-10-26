@@ -30,11 +30,14 @@
       's/^export-ref=//p' .ufo/waves/round-39/final-gates/all-gates.txt)"` → `closed=8/8 exit=0`;
       `--selftest` under the same substitution → `selftest cases=8 failures=0` with eight graded
       `selftest case=G<n> … positive=pass … verdict=pass` lines; a plain run refuses with exit 2 (this
-      seat: `bash -n` clean, plain run `exit=2`); a run at the judged head itself prints
-      `closed=7/8 exit=1` with `G2 … receipt=0`, documented in the receipt per claims erratum 1 E4;
-      the base export and the round-38 closure head (`66703aca…`) are the suite's own red controls,
-      `closed<8/8 exit=1`. Those two run values are the suite's contract form and stay
-      `[L1-MEASURE]` until that receipt is filed. The round-39 head is named by reference only —
+      seat: `bash -n` clean, plain run `exit=2`); the base export `480b1a50…` and the round-38 closure
+      head (`66703aca…`) are the suite's own red controls, `closed=2/8 exit=1` (§2.3-2.4 of
+      `.ufo/waves/round-39/wave1/ExecSuiteBuild.md`), and the same suite is green on a scratch overlay
+      head carrying the round's evidence — `closed=8/8 exit=0`, `selftest cases=8 failures=0`, eight
+      graded case lines (§2.7), while the base selftest is honestly red at `cases=8 failures=6`
+      (§2.6); a run at the judged head itself prints `closed=7/8 exit=1` with `G2 … receipt=0`,
+      documented per claims erratum 1 E4, and the run at the verification ref Y stays `[L1-MEASURE]`
+      until `final-gates/all-gates.txt` is filed. The round-39 head is named by reference only —
       judged head: export-ref of .ufo/waves/round-39/final-gates/all-gates.txt — and the committed
       transcript for both runs is that receipt. C2 on the composed after-mirror:
       `capture-binding-check.py` → `records=46 bound=46 unbound=0`; `recheck-audit.py --quiet` →

@@ -294,10 +294,12 @@ Derived from the checks and the measured overlay; each is a byte-level constrain
 - **G3 scope.** It reads the files this round ADDS to (base lines are exempt: a prior round's quote
   is not this round's debt) and requires a `--export-ref <hex>` token, so a quote that names its head
   only as "J" is out of scope. File-wide application would red on pre-round-39 quoted runs whose refs
-  have no committed transcript anywhere (`SCORECARD.md:1434` `3266c993…`, `:1494` `274fa9ae…`/`0aee0ef…`,
-  `:1505` `aa88877bf9…`; `SHONEN.md:176` `aa88877bf9…`; the r37 receipt names `9492c776…`, not
-  `aa88877b…`). That is the historical R3 class, recorded, not silently greened: an honest head cannot
-  re-transcribe a run it did not take, and the round-38 lesson already records it.
+  have no committed run transcript (`SCORECARD.md:1434` `3266c993…` and `:1494`
+  `274fa9ae…`/`0aee0ef…`, `:1505` `aa88877bf9…`; `SHONEN.md:176` `aa88877bf9…`). Measured at base:
+  `274fa9ae…` and `aa88877bf9…` occur nowhere under `.ufo/waves/`; `3266c993…`/`0aee0ef…` occur only
+  in wave spec/dispatch/results text, never in a final-gates transcript; the r37 receipt records
+  `9492c776…`, not `aa88877b…`. That is the historical R3 class, recorded, not silently greened: an
+  honest head cannot re-transcribe a run it did not take, and the round-38 lesson already records it.
 - **G1's fence model** is the contract's spelling (three-character openers with an optional info
   string, three-character closers plus blanks, backtick and tilde); a four-backtick closer does not
   close. A mid-paragraph `Correction (round 39)` is not counted (so it cannot red the inside-fence

@@ -188,3 +188,15 @@ a checked box; promotion needs a named non-author verifier.
 
 
 Correction (round 39): box 3's round-38 evidence line ("r38 suite run + selftest over the judged head: export-ref of .ufo/waves/round-38/final-gates/all-gates.txt (raw transcript committed there)") overstates what that transcript carries. The receipt's `export-ref` is the judged head J = `66703acaaff50529a35be49aa8759d04140720ad`, and its run over J is `export-ref-run: closed=7/8 exit=1` (G2 `receipt=0`); the committed `closed=8/8 exit=0` and `selftest cases=8 failures=0` are over `run-ref=7dd2fcd67aa8d3f67616e9fa79049c7c33c3ea8e`. Read the line as: run + selftest committed over the receipt's run-ref, with the run over J red on G2 alone. Box 3 stays `[~]` (non-author verifier `corpus/lessons/round-38-verifier-spotcheck.md` §5 R2).
+
+
+- [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
+      — evidence (round 39): Gates & probes registry gains the `r39-closure.sh` row (single-choice gate, verdict map incl. exit 2) appended at EOF; every base line byte-identical; `anchorcheck.py SKILL.md` exit 0; suite `--selftest` graded cases=8 failures=0 at the verification ref. Box stays `[~]`; no non-author check.
+- [~] At least one end-to-end domain task executed and logged in LOG.md
+      — evidence (round 39): no end-to-end domain hunt ran; the closest executed work is the F22 capture + harness run and the r39 suite run. Box stays `[~]`.
+- [~] Instructions executable by an agent without oral context
+      — evidence (round 39): `frontier-recheck-count.py` entries=25 pass=25 exit=0 incl. PASS F22 ids=S057; `source-recheck --source S057` exit 0; `capture-binding-check.py` records=46 bound=46; `recheck-audit.py --quiet` expected=51 missing=0 unexpected=0 exit=0; census exit 0; r39 suite run + graded selftest at the verification ref Y (all-gates.txt). Box stays `[~]`.
+- [~] No cross-domain bleed (PROVINCE.md still accurate)
+      — evidence (round 39): PROVINCE.md carries the `[r39 Frontier amendment]` F22 line; F22/S057 uncontested across 20 sibling lanes + shokuknow (ScoutSiblingF22 ruling); junk twin rejected. Box stays `[~]`.
+
+Round-39 measured state: judged head: export-ref of .ufo/waves/round-39/final-gates/all-gates.txt (claims-erratum-1.md E4).
