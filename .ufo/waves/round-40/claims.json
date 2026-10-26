@@ -1,0 +1,71 @@
+{
+ "lane": "kasegi",
+ "round": 40,
+ "attempt": 1,
+ "base": "a7af2ce63bce153757d39bf66b366a96caf30c13",
+ "frozen_at_utc": "2026-10-26T21:12:00Z",
+ "axes_owned": [
+  "depth:density",
+  "depth:verifiability",
+  "coverage"
+ ],
+ "saturation": {
+  "line": "9/10 per owned axis",
+  "window": "N=3"
+ },
+ "lowest_non_retired_axis": "depth:verifiability (4)",
+ "judged_head_rule": "The round-40 judged head J is the lane commit that carries every round-40 change except the receipt; the lane tip Y adds only the receipt (`git diff --name-only J Y` = `.ufo/waves/round-40/final-gates/all-gates.txt`). Lane files never name J by hash (a commit cannot contain its own hash); the report names J and Y. Counting commands over the suite run at Y (J + receipt only); negative controls run at base a7af2ce63bce153757d39bf66b366a96caf30c13 and r39 judged head 8371e7ac9f32cae5ed72f8c28205634603f836fa.",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "score_before": 4,
+   "score_after": "held 4",
+   "predicate": "The committed instrument `corpus/instruments/r40-closure.sh` runs over a `git archive` export of a named lane head (`--export-ref <hash>`; plain run refused, exit 2) and prints `closed=10/10 exit=0` on the round-40 verification ref Y, and `--selftest --export-ref Y` prints `selftest cases=10 failures=0` with one graded `selftest case=H<n> ... positive=pass ... verdict=pass` line per check; base a7af2ce63bce153757d39bf66b366a96caf30c13 and r39 judged head 8371e7ac9f32cae5ed72f8c28205634603f836fa exports print closed<10/10 exit=1. Checks H1-H10 close the round-39 verifier routed defects R1-R7 (`corpus/lessons/round-39-verifier-spotcheck.md` §5) plus the round-39 instrument attack findings (G2 accepts forged payload values — `wave2/CritG2Exploit.md`; G6 is live-scratch dependent — `wave2/CritC1Kill.md`): H1 the suite and its SKILL.md Gates & probes registry row (exact basename) exist in the export; H2 `Correction (round 40)` lines naming the final r39 receipt values (closed=7/8 exit=1; selftest failures=1) exist in SCORECARD.md, LOG.md, SHONEN.md and corpus/lessons/round-39.md, count >= 1 each; H3 a QUALITY.md criterion row cites M39-2; H4 the round-39 lesson Gate rows for S056/S058/S059 each carry a URL, an access date and a <=25-word located quote; H5 a forged/tampered receipt (a recorded payload contradicting the export or a future-dated run-utc) is rejected, proven by a graded selftest case; H6 a stray kasegi-r39*/r40 scratch-sibling directory is detected and reds the run, proven by a graded selftest case; H7 the receipt is the deterministic teed transcript of the suite's own run (a re-run over J reproduces it byte-identically, run-utc printed by the run and not future-dated); H8 base and r39 judged-head exports print closed<10/10; H9 whole-tail declared blocks (`.ufo/waves/round-40/declared-blocks.txt`) equal the added lines with zero deletions for every declared path; H10 no-harm guard (SKILL.md and PROVINCE.md append-only; depth:density instrument unchanged; the round's diff deletes no tracked path).",
+   "kill_rule": "Any of: r40-closure.sh absent from the export; the Y export prints closed != 10/10 or exit != 0; --selftest prints fewer than 10 graded case lines, any failure, or a summary-only line satisfies a case; base a7af2ce63bce153757d39bf66b366a96caf30c13 or r39 judged head 8371e7ac9f32cae5ed72f8c28205634603f836fa export prints closed=10/10; a committed fixture shows a check passing while its defect is present; `grep -c '⟨pending' corpus/lessons/round-40.md` != 0; lane working tree not clean at filing; any leftover kasegi-r39*/r40 scratch entry at filing other than the passed --work dir.",
+   "counting_commands": [
+    "bash corpus/instruments/r40-closure.sh --export-ref <Y> -> closed=10/10 exit=0",
+    "bash corpus/instruments/r40-closure.sh --selftest --export-ref <Y> -> selftest cases=10 failures=0 exit=0",
+    "bash corpus/instruments/r40-closure.sh --export-ref a7af2ce63bce153757d39bf66b366a96caf30c13 -> closed<10/10 exit=1",
+    "bash corpus/instruments/r40-closure.sh --export-ref 8371e7ac9f32cae5ed72f8c28205634603f836fa -> closed<10/10 exit=1",
+    "bash corpus/instruments/r40-closure.sh -> exit 2 (plain run refused)"
+   ],
+   "before": [
+    "see .ufo/waves/round-40/c1-controls/before.txt (suite absent; R2/R5/R6 open; G2/G6 flaws standing; r39-l1 scratch leftover removed at round start)"
+   ],
+   "after": [
+    "closed=10/10 exit=0 at Y; selftest cases=10 failures=0 graded; base/r39-head exports red; all-gates.txt at Y is the teed run transcript; R2/R5/R6 corrections landed"
+   ]
+  },
+  {
+   "id": "C2",
+   "axis": "coverage",
+   "score_before": 7,
+   "score_after": 8,
+   "predicate": "The nine queued registry rows S016, S017, S019, S020, S021, S022, S023, S024, S025 are all decided (status != queued): each is `mined` with a knowledge entry citing it whose captured source passes source-recheck and is manifest-bound, or `rejected` with reason+flip logged in the round-40 lesson Gate (S022 superseded by S030; S024 superseded by S029); at least four of the nine are mined. Frontier F23 (CycloneDX analysis subtree — scoped analysis-subtree capture beyond CSAF/VEX product status) admitted 22->23, firing the round-39 S059 flip; new registry rows S060+ opened this round, with at least one mined knowledge entry citing an S060+ row. Harness entries=26 pass=26 incl. PASS F23 ids=S060...; capture-binding records = prior records + new captures; recheck-audit expected increments; census exit 0 (W04 S028/S029 only). The r22 coverage measure (20+F_admitted)/(20+F_total) moves 42/51 = 0.824 to 43/43 = 1.000 (F_total = frontier rows + queued registry rows).",
+   "kill_rule": "Any of: any of the nine rows still queued; fewer than four of the nine mined; any decided row without its Gate-block evidence (mined rows need the capture, the entry and a passing source-recheck; rejected rows need reason+flip); no S060+ row opened this round; no knowledge entry citing an S060+ row; frontier rows != 23; harness not entries=26 pass=26 exit=0; source-recheck fails for any mined row; census exit != 0 or a new W/E code; junk twin accepted.",
+   "counting_commands": [
+    "awk -F'|' '/^\\|[[:space:]]*S0(16|17|19|20|21|22|23|24|25)[[:space:]]*\\|/ {s=$9; gsub(/[[:space:]]/,\"\",s); if(s==\"queued\") n++} END{print n+0}' corpus/SOURCES.md -> 9 -> 0",
+    "awk -F'|' '/^\\|[[:space:]]*S0(16|17|19|20|21|22|23|24|25)[[:space:]]*\\|/ {s=$9; gsub(/[[:space:]]/,\"\",s); if(s==\"mined\") n++} END{print n+0}' corpus/SOURCES.md -> 0 -> >=4",
+    "grep -rlE '^source: S0(16|17|19|20|21|22|23|24|25)' corpus/knowledge | wc -l -> 0 -> equal to the mined count among the nine",
+    "grep -cE '^\\|[[:space:]]*S06[0-9][[:space:]]*\\|' corpus/SOURCES.md -> 0 -> >=1",
+    "grep -rlE '^source: S06[0-9]' corpus/knowledge | wc -l -> 0 -> >=1",
+    "grep -cE '^\\| F[0-9]+ \\|' corpus/README.md -> 22 -> 23",
+    "python3 corpus/instruments/frontier-recheck-count.py -> entries=25 pass=25 exit=0 -> entries=26 pass=26 exit=0",
+    "bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> exit 0"
+   ],
+   "before": [
+    "see .ufo/waves/round-40/c2-controls/before.txt (queued 9; mined among nine 0; entries citing nine 0; S060+ 0; frontier 22; harness 25/25; registry 59; measure 42/51 = 0.824)"
+   ],
+   "after": [
+    "queued 0; mined among nine >=4; entries matching the mined count; S060+ >=1 opened this round with one mined entry citing it; frontier 23; harness 26/26; census exit 0; measure 43/43 = 1.000"
+   ]
+  }
+ ],
+ "non_claim_frontier_items": {
+  "sourced_claim": "C2 rests on S060+ rows opened this round (one mined entry cites the row)",
+  "assimilation": "id-collision rerun + quarantine slice verdicts recorded; adoption only if a staged entry passes PROVINCE/QUALITY gates (standing refusals carried)",
+  "considerthese": "2026-10-26 proposal 2 (run one end-to-end domain task round) mined: a claim-package exemplar built from a public disclosed report and logged (SHONEN box 2 pointer)",
+  "mistake": "R1 (attempt-1 receipt not mined: future-dated run-utc, forged 8/8 tally) mined into round-40 lesson `## Mistakes` with a grounded QUALITY.md criterion; fix shown able to fail (H5/H7)"
+ }
+}
