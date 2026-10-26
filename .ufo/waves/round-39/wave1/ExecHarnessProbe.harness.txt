@@ -1,0 +1,887 @@
+# frontier-recheck-count.py semantics probe — kasegi round 39 (ExecHarnessProbe)
+
+Lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Mirror: git -C <lane> archive 480b1a505a2dfc14a4f718d16d63808247214d0a | tar -x -C /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror
+Mirror: 7 corpus/ entries, 50 knowledge entries, no .git
+Harness: /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py
+Harness sha256: 1be79af60cb5cb4c1662e4f0e14201a4f372df01513608481297fd564cd48249
+Lane harness sha256: 1be79af60cb5cb4c1662e4f0e14201a4f372df01513608481297fd564cd48249
+Python: 3.14.8
+Fetch: curl -sS -L --max-time 90 -A kasegi-shokunin/1.0, 2026-10-26T19:31:25Z
+  PDF  https://www.cisa.gov/sites/default/files/2023-11/When-to-Issue-a-VEX-508c.pdf
+       status=200 content-type=application/pdf bytes=235270
+       sha256=cbcbd77af32c589eaf85aef4e3911b133fd95ccdedd80b56b40e9c0909450d99
+  PAGE https://www.cisa.gov/resources-tools/resources/when-issue-vex-information
+       status=200 content-type=text/html; charset=utf-8 bytes=54453
+       sha256=4e6aa483c20013bb84d43d166e3f20c91fba63ece7c35861f6d95c8b61af0e4d
+  (both digests equal the round-38 ScoutVexLeads.md fetch ledger)
+
+F22 fixture shape (mimics the intended after-state):
+  corpus/knowledge/cisa-when-to-issue-vex.md — `source: S057 — …` header,
+    `verified-at: 2026-10-26`, `ground: F22`, one `recheck:` line; body cites
+    S057.txt line numbers plus S052/S053/S054/S055/S056 in prose.
+  corpus/source-snapshots/round-39/S057.txt — 275 lines, 17971 bytes,
+    sha256 11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f
+  corpus/source-snapshots/round-39/manifest.json — schema_version 1, one record
+    for S057, 6 pinned quotes Q1-Q6 with anchors.
+  corpus/README.md — end-of-file append: coverage-map row + F22 admitted row.
+  corpus/SOURCES.md — end-of-file S057 registry row (inert for this harness).
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse 480b1a505a2dfc14a4f718d16d63808247214d0a
+480b1a505a2dfc14a4f718d16d63808247214d0a
+[exit 0]
+
+$ sha256sum /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-base/corpus/source-snapshots/round-39/S057.txt
+11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f  /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-base/corpus/source-snapshots/round-39/S057.txt
+[exit 0]
+
+$ wc -l -c /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-base/corpus/source-snapshots/round-39/S057.txt
+  275 17971 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-base/corpus/source-snapshots/round-39/S057.txt
+[exit 0]
+
+$ sha256sum /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-base/corpus/knowledge/cisa-when-to-issue-vex.md
+6bd2e1baa10450992cf48b40afebfbe2977d90e0c0a0a5dbc7cc86ee5c700d83  /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-base/corpus/knowledge/cisa-when-to-issue-vex.md
+[exit 0]
+
+============================================================================================================
+A. baseline: recheck line cds into the variant root, so every limb is local
+============================================================================================================
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-base
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+entries=25 pass=25 exit=0
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-base --json /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-base.json
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+entries=25 pass=25 exit=0
+[exit 0]
+# F22 record from the JSON receipt follows
+
+{
+ "cited_ids": [
+  "S052",
+  "S053",
+  "S054",
+  "S055",
+  "S056",
+  "S057"
+ ],
+ "declared_ids": [
+  "S057"
+ ],
+ "entry": "knowledge/cisa-when-to-issue-vex.md",
+ "evidence_declared_ids": [],
+ "exit": 0,
+ "frontier": "F22",
+ "manifest": "corpus/source-snapshots/round-39/manifest.json",
+ "problems": [],
+ "realpath": "/fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-base/corpus/knowledge/cisa-when-to-issue-vex.md",
+ "recheck_ids": [
+  "S057"
+ ],
+ "status": "PASS",
+ "title": "VEX issuance, lifecycle and inheritance guidance (CISA When to Issue VEX Information)"
+}
+
+============================================================================================================
+B. landed form: recheck line cds into the real lane root (the absolute path)
+============================================================================================================
+# The harness evaluates its binding rules against --root, then executes the
+# recheck line with `bash -c` FROM --root. A `cd <lane> && …` prefix overrides
+# that cwd, so the EXEC limb reads lane state, not mirror state. With the lane
+# still pre-landing (no round-39 manifest) a mirror that carries every F22
+# artifact still reds F22 with recheck-exit-2.
+$ ls /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-39 2>&1
+ls: cannot access '/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-39': No such file or directory
+[exit 2]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-landed
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=2    problems=recheck-exit-2
+entries=25 pass=24 exit=1
+[exit 1]
+
+# The same tree with only the cd repointed at itself is the green baseline in A.
+# So the cd prefix must name the tree the run is about: a mirror-only harness
+# run cannot certify the exec limb of the landed entry.
+
+============================================================================================================
+C. cut limbs: one cut per copy of the same baseline mirror
+============================================================================================================
+C1. no entry file (README row kept, entry file absent)
+$ ls -l /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-noentry/corpus/knowledge/cisa-when-to-issue-vex.md 2>&1 || true
+ls: cannot access '/fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-noentry/corpus/knowledge/cisa-when-to-issue-vex.md': No such file or directory
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-noentry
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=-              exit=-    problems=missing-entry
+entries=25 pass=24 exit=1
+[exit 1]
+
+C2. no manifest file (entry and capture kept)
+$ ls -l /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-nomanifest/corpus/source-snapshots/round-39/
+total 24
+-rw-r--r-- 17 vgpnk vgpnk 17971 Oct 26 16:31 S057.txt
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-nomanifest
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=-    problems=manifest-unreadable
+entries=25 pass=24 exit=1
+[exit 1]
+
+C3. unreadable manifest (truncated JSON, file present)
+$ tail -c 80 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-badmanifest/corpus/source-snapshots/round-39/manifest.json
+  "anchor": 120,
+     "location": "L120-L122; 'Active exploitation' - VEX carrie
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-badmanifest
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=-    problems=manifest-unreadable
+entries=25 pass=24 exit=1
+[exit 1]
+
+C4. no capture file (manifest still names S057.txt)
+$ ls -l /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-nocapture/corpus/source-snapshots/round-39/
+total 4
+-rw-r--r-- 1 vgpnk vgpnk 3857 Oct 26 16:37 manifest.json
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-nocapture
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=2    problems=recheck-exit-2
+entries=25 pass=24 exit=1
+[exit 1]
+
+# the exec limb's own output for the same tree:
+$ cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-nocapture && bash -c "$(grep '^recheck: ' corpus/knowledge/cisa-when-to-issue-vex.md | sed 's/^recheck: //')"
+S057:source UNAVAILABLE reason=missing
+[exit 2]
+
+C5. swapped selection: recheck selects --source S054, entry still declares S057
+$ grep -n '^recheck: ' /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-swap/corpus/knowledge/cisa-when-to-issue-vex.md | cut -c1-260
+6:recheck: cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-swap && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S054   # prints S057:sha256 OK then one S057:Q<n> OK line per pinned quote w
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-swap
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=-    problems=header-sources-not-rechecked,selection-not-declared-by-entry,manifest-missing-ids
+entries=25 pass=24 exit=1
+[exit 1]
+
+C6. prose only: S054 cited in body sentences, binding stays S057
+$ grep -n 'S054' /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-prosecite/corpus/knowledge/cisa-when-to-issue-vex.md
+10:Cross-reference for contrast: the SSVC decision-point model (S054, F20) answers a different question from this document's issuance decision, and EPSS (S053) and KEV (S052) supply the likelihood and exploitation signals this capture does not.
+72:- No score layer: exploitation likelihood is EPSS (`S053`, F19) and stakeholder decision models are SSVC (`S054`, F20); exploitation activity is KEV (`S052`, F18). This capture carries none of those signals and points to KEV only as an external input (L127-L130).
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-prosecite
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+entries=25 pass=25 exit=0
+[exit 0]
+
+C7. S057 declared but never cited in prose (only the source line and the
+    recheck line mention it; neither counts as citation)
+$ grep -c 'S057' /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-noprose/corpus/knowledge/cisa-when-to-issue-vex.md
+2
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-noprose
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=-    problems=selection-not-cited-by-entry
+entries=25 pass=24 exit=1
+[exit 1]
+
+C8. per-source evidence bullet for an undeclared id: a body list item that
+    starts with an S-id is a DECLARATION, not prose citation
+$ grep -n '^- S0' /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-evidence-bullet/corpus/knowledge/cisa-when-to-issue-vex.md
+10:- S054, "SSVC decision points": "A decision point itself is not representative of risk"
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-evidence-bullet
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=-    problems=header-sources-not-rechecked
+entries=25 pass=24 exit=1
+[exit 1]
+
+C9. recheck trailing comment carrying another --source token
+$ grep -n '^recheck: ' /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-comment-source/corpus/knowledge/cisa-when-to-issue-vex.md | cut -c1-300
+6:recheck: cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-comment-source && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S057   # contrast: a reader might have pinned --source S054 here instead
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-comment-source
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=-    problems=selection-not-declared-by-entry,manifest-missing-ids
+entries=25 pass=24 exit=1
+[exit 1]
+
+C10. recheck line is a --selftest invocation
+$ grep -n '^recheck: ' /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-selftest/corpus/knowledge/cisa-when-to-issue-vex.md | cut -c1-200
+6:recheck: cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-selftest && python3 corpus/instruments/source-recheck.py --selftest
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-selftest
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=-    problems=not-a-recheck-invocation,no-source-selection,no-manifest
+entries=25 pass=24 exit=1
+[exit 1]
+
+C11. status cell is not exactly `admitted`
+$ grep -n '^| F22 ' /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-status-skip/corpus/README.md | cut -c1-200
+496:| F22 | VEX issuance, lifecycle and inheritance guidance (CISA When to Issue VEX Information) | admitted (provisional) | knowledge/cisa-when-to-issue-vex.md | S057 | Read issuance timing as a busi
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-status-skip
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+entries=24 pass=24 exit=0
+[exit 0]
+
+C12. F22 row absent while every F22 artifact is present (silent omission)
+$ grep -c '^| F22 ' /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-norow/corpus/README.md || true
+0
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-norow
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+entries=24 pass=24 exit=0
+[exit 0]
+
+C13. duplicate entry realpath (an F23 row pointing at the F22 entry)
+$ grep -nE '^\| F2[23] ' /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-dup/corpus/README.md | cut -c1-160
+496:| F22 | VEX issuance, lifecycle and inheritance guidance (CISA When to Issue VEX Information) | admitted | knowledge/cisa-when-to-issue-vex.md | S057 | Read
+497:| F23 | duplicate-entry probe | admitted | knowledge/cisa-when-to-issue-vex.md | S057 | probe |
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-dup
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+DUPLICATE-ENTRY F22,F23 knowledge/cisa-when-to-issue-vex.md
+entries=26 pass=26 exit=1
+[exit 1]
+
+C14. a stale `recheck:` line in a fenced sample ABOVE the real line
+$ sed -n '1,8p' /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-stale-first/corpus/knowledge/cisa-when-to-issue-vex.md | cut -c1-200
+```
+recheck: cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-stale-first && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S054
+```
+# VEX issuance, lifecycle and inheritance guidance (CISA, When to Issue VEX Information) — when a supplier issues, updates and reaffirms VEX information, and when a consumer may inherit an upstream st
+
+source: S057 — https://www.cisa.gov/resources-tools/resources/when-issue-vex-information — capture corpus/source-snapshots/round-39/S057.txt (275 lines, 17,971 bytes; sha256 11c8d6d684448a1ae049ecf488
+verified-at: 2026-10-26 (quotes re-checked against the pinned capture the same day it was fetched: 2026-10-26T19:31:25Z, HTTP 200, 235,270 raw PDF bytes, sha256 cbcbd77af32c589eaf85aef4e3911b133fd95cc
+ground: F22
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-stale-first
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=-    problems=header-sources-not-rechecked,selection-not-declared-by-entry,manifest-missing-ids
+entries=25 pass=24 exit=1
+[exit 1]
+
+C15. the real recheck line duplicated verbatim in a fenced body sample
+$ grep -n '^recheck: \|^recheck: ' /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-fenced-dup/corpus/knowledge/cisa-when-to-issue-vex.md | cut -c1-120
+6:recheck: cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-fenced-dup && python3 corpus/instruments/source-recheck.
+11:recheck: cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-fenced-dup && python3 corpus/instruments/source-recheck
+[exit 0]
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-fenced-dup
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+entries=25 pass=25 exit=0
+[exit 0]
+
+============================================================================================================
+D. the exec instrument on its own (what each exit code means)
+============================================================================================================
+$ cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-base && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S057
+S057:sha256 OK
+S057:Q1 OK normalized=markup-whitespace occurrences=1 anchor=13-ok
+S057:Q2 OK normalized=markup-whitespace occurrences=1 anchor=79-ok
+S057:Q3 OK normalized=markup-whitespace occurrences=1 anchor=132-ok
+S057:Q4 OK normalized=markup-whitespace occurrences=1 anchor=137-ok
+S057:Q5 OK normalized=markup-whitespace occurrences=1 anchor=182-ok
+S057:Q6 OK normalized=markup-whitespace occurrences=1 anchor=120-ok
+[exit 0]
+
+$ cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-nocapture && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S057
+S057:source UNAVAILABLE reason=missing
+[exit 2]
+
+$ cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/v-badmanifest && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S057
+manifest UNAVAILABLE reason=unreadable-or-invalid
+[exit 2]
+
+============================================================================================================
+E. harness selftest (its own six binding cases, unmodified mirror copy)
+============================================================================================================
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --selftest --scratch /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/selftest-scratch
+selftest case=bidirectional-holds exit=0 want=0 verdict=pass
+selftest case=selection-not-declared exit=1 want=1 verdict=pass
+selftest case=header-source-not-rechecked exit=1 want=1 verdict=pass
+selftest case=evidence-list-declares-selection exit=0 want=0 verdict=pass
+selftest case=evidence-declared-not-rechecked exit=1 want=1 verdict=pass
+selftest case=selection-neither-declared-nor-mentioned exit=1 want=1 verdict=pass
+selftest cases=6 failures=0
+[exit 0]
+
+============================================================================================================
+F. lane-side guard: no lane corpus file was touched by this seat
+============================================================================================================
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain | grep -v '^?? \.ufo/' ; echo '(no tracked or corpus change)'
+(no tracked or corpus change)
+[exit 0]
+
+$ ls /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-39 2>&1 || true
+ls: cannot access '/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-39': No such file or directory
+[exit 0]
+
+============================================================================================================
+G. observed map: one cut -> one row red, with the exact problem string
+============================================================================================================
+A  baseline (cd -> own root)         PASS F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=0
+                                     entries=25 pass=25 exit=0  process-exit=0
+B  landed cd -> lane root            FAIL F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=2 problems=recheck-exit-2
+                                     entries=25 pass=24 exit=1  process-exit=1
+C1 no entry                          FAIL F22 knowledge/cisa-when-to-issue-vex.md ids=- exit=- problems=missing-entry
+                                     entries=25 pass=24 exit=1  process-exit=1
+C2 no manifest                       FAIL F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=- problems=manifest-unreadable
+                                     entries=25 pass=24 exit=1  process-exit=1
+C3 bad manifest                      FAIL F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=- problems=manifest-unreadable
+                                     entries=25 pass=24 exit=1  process-exit=1
+C4 no capture                        FAIL F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=2 problems=recheck-exit-2
+                                     entries=25 pass=24 exit=1  process-exit=1
+C5 swap --source S054                FAIL F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=- problems=header-sources-not-rechecked,selection-not-declared-by-entry,manifest-missing-ids
+                                     entries=25 pass=24 exit=1  process-exit=1
+C6 S054 prose-cited, binding S057    PASS F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=0
+                                     entries=25 pass=25 exit=0  process-exit=0
+C7 S057 not cited in prose           FAIL F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=- problems=selection-not-cited-by-entry
+                                     entries=25 pass=24 exit=1  process-exit=1
+C8 evidence bullet S054              FAIL F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=- problems=header-sources-not-rechecked
+                                     entries=25 pass=24 exit=1  process-exit=1
+C9 comment --source S054             FAIL F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=- problems=selection-not-declared-by-entry,manifest-missing-ids
+                                     entries=25 pass=24 exit=1  process-exit=1
+C10 recheck --selftest               FAIL F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=- problems=not-a-recheck-invocation,no-source-selection,no-manifest
+                                     entries=25 pass=24 exit=1  process-exit=1
+C11 status 'admitted (provisional)'  (F22 row not read)
+                                     entries=24 pass=24 exit=0  process-exit=0
+C12 no F22 row                       (F22 row not read)
+                                     entries=24 pass=24 exit=0  process-exit=0
+C13 duplicate entry                  PASS F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=0
+                                     entries=26 pass=26 exit=1  process-exit=1  DUPLICATE-ENTRY F22,F23 knowledge/cisa-when-to-issue-vex.md
+C14 stale recheck line first         FAIL F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=- problems=header-sources-not-rechecked,selection-not-declared-by-entry,manifest-missing-ids
+                                     entries=25 pass=24 exit=1  process-exit=1
+C15 duplicated recheck line          PASS F22 knowledge/cisa-when-to-issue-vex.md ids=S057 exit=0
+                                     entries=25 pass=25 exit=0  process-exit=0
+
+Readings that follow from the transcript above:
+1. Every limb reds exactly one F22 row; the other 24 rows stay PASS in every case.
+2. Rule-A/B failures stop before the exec runs, so the row keeps ids=S057 and
+   prints exit=- : C2/C3 manifest-unreadable, C5, C7, C8, C9, C10. C1 is the
+   one fail-closed shape that prints ids=- too (missing-entry names the path it
+   tried). C4 is the only exec-side cut: ids=S057, exit=2, recheck-exit-2.
+3. A single cut can name several problems (C5 names three; the harness does not
+   stop at the first), so a receipt should quote the whole problems= list.
+4. C6 keeps PASS: a prose mention of another source does not touch the binding.
+5. C11/C12 are the dangerous greens: a status cell that is not exactly `admitted`
+   or a missing F22 row drops F22 from the run and still prints `entries=24
+   pass=24 exit=0`. A round-39 receipt must show entries=25 pass=25 exit=0 AND
+   the literal `PASS F22 ... ids=S057` line.
+6. C13 duplicates: both rows print PASS and the summary reads
+   `entries=26 pass=26 exit=1` with DUPLICATE-ENTRY beneath - pass= is not the
+   verdict; the process exit is.
+7. C14: the FIRST `recheck:` line in the file is the one the harness runs, so a
+   fenced example above the header reds the row. C15: an identical duplicate
+   line is harmless.
+8. B: the exec limb runs `cd <lane> && …` from the harness cwd, so only a run
+   against the lane (or a mirror whose cd is repointed) measures the exec limb.
+
+============================================================================================================
+H. post-filing cross-check against the SIBLING DELIVERABLES that will actually land
+============================================================================================================
+# Assembled from the wave-1 deliverables instead of my stand-ins: git archive BASE,
+# then the landed bytes copied in verbatim into the mirror (no rewriting).
+#   corpus/knowledge/cisa-when-to-issue-vex.md     <- ScribeEntryF22.entry.md
+#   corpus/source-snapshots/round-39/S057.txt      <- ExecFrontierCapture.S057.txt
+#   corpus/source-snapshots/round-39/manifest.json <- ExecFrontierCapture.manifest.json
+#   corpus/README.md += ScribeFrontierF22.readme.append.md
+#   corpus/SOURCES.md += ScribeRowS057.row.md (inert for this harness)
+$ sha256sum /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/knowledge/cisa-when-to-issue-vex.md /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-39/wave1/ScribeEntryF22.entry.md
+5010a107cc7ef34bcd7e8d1a74eb2a2bb2a71c3ea666577506d7c2f93dc25d29  /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/knowledge/cisa-when-to-issue-vex.md
+5010a107cc7ef34bcd7e8d1a74eb2a2bb2a71c3ea666577506d7c2f93dc25d29  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-39/wave1/ScribeEntryF22.entry.md
+[exit 0]
+
+$ sha256sum /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/source-snapshots/round-39/S057.txt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-39/wave1/ExecFrontierCapture.S057.txt
+11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f  /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/source-snapshots/round-39/S057.txt
+11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-39/wave1/ExecFrontierCapture.S057.txt
+[exit 0]
+
+$ wc -l -c /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/source-snapshots/round-39/S057.txt
+  275 17971 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/source-snapshots/round-39/S057.txt
+[exit 0]
+
+$ python3 -c "import json;d=json.load(open('/fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/source-snapshots/round-39/manifest.json'));print('schema_version',d['schema_version'],'ids',[r['id'] for r in d['sources']],'quotes',[len(r['quotes']) for r in d['sources']])"
+schema_version 1 ids ['S057'] quotes [4]
+[exit 0]
+
+# The landable capture is byte-identical to the one this probe regenerated in sections A-G
+# (11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f), so the entry's bound
+# sha256 and its line/byte counts agree with the capture seat's bytes.
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=2    problems=recheck-exit-2
+entries=25 pass=24 exit=1
+[exit 1]
+
+# as-landed bytes, lane still pre-landing: the ONLY problem on F22 is the exec limb.
+# Every binding rule the harness applies before exec (declaration set, citation,
+# evidence-bullet declarations, comment scan, manifest schema/ids) is therefore clean:
+# landing entry + capture + manifest together is the only remaining step.
+
+$ diff -u /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/knowledge/cisa-when-to-issue-vex.md /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror-cd/corpus/knowledge/cisa-when-to-issue-vex.md
+ ground: F22
+-recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S057   # prints S057:sha256 OK then one S057:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved — a pinned-capture comparison under whitespace collapse, not a fresh network check
++recheck: cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror-cd && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S057   # prints S057:sha256 OK then one S057:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved — a pinned-capture comparison under whitespace collapse, not a fresh network check
+ 
+ ## Attribution
+ 
+[exit 1]
+
+# probe-only rewrite in the second copy: the absolute cd prefix repointed at the
+# assembled tree; the diff above is the entire delta from ScribeEntryF22.entry.md.
+
+$ python3 /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror/corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror-cd
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+entries=25 pass=25 exit=0
+[exit 0]
+
+$ cd /fast/scratch/hyaku/kasegi-r39/ExecHarnessProbe/mirror-cd && bash -c "$(grep '^recheck: ' corpus/knowledge/cisa-when-to-issue-vex.md | sed 's/^recheck: //')"
+S057:sha256 OK
+S057:Q1 OK normalized=markup-whitespace occurrences=1 anchor=12-ok
+S057:Q2 OK normalized=markup-whitespace occurrences=1 anchor=132-ok
+S057:Q3 OK normalized=markup-whitespace occurrences=1 anchor=136-ok
+S057:Q4 OK normalized=markup-whitespace occurrences=1 anchor=184-ok
+[exit 0]
+
+# the entry's four pinned quotes verify against the landed capture; its anchors are
+# 12/132/136/184, not the 13/79/132/137/182/120 of my stand-in fixture (sections A-G).

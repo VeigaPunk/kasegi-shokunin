@@ -1,0 +1,497 @@
+base-gates transcript — kasegi-shokunin round-39 no-harm guard (seat ExecArchiveChecks)
+lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+base: 480b1a505a2dfc14a4f718d16d63808247214d0a
+lane HEAD at run: d65d823e7c84813c192b20ee757a8761f878a61f (round-39 wave1 spec/dispatch only; git diff --name-only base HEAD -- corpus/ SKILL.md PROVINCE.md LOG.md SCORECARD.md SHONEN.md is empty)
+scratch: /fast/scratch/hyaku/kasegi-r39/ExecArchiveChecks (TMPDIR and every --work bound here; removed after this transcript was filed)
+
+$ git status --porcelain
+?? .ufo/waves/round-39/build-wave2-final.py
+?? .ufo/waves/round-39/items2.py
+?? .ufo/waves/round-39/kasegi-r39-build.ready
+?? .ufo/waves/round-39/kasegi-r39-build.ready.dispatched
+?? .ufo/waves/round-39/wave1-plan.err
+?? .ufo/waves/round-39/wave1-run.err
+?? .ufo/waves/round-39/wave1/
+[exit 0]
+
+$ git status --porcelain -uno
+[exit 0 — no tracked modification; the untracked entries above are L1 round-39 dispatch artifacts under .ufo/waves/round-39/, none written by this seat]
+
+$ python3 corpus/instruments/anchorcheck.py SKILL.md
+
+== SKILL.md: 16 in-range cite instances, 0 bad; 16 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+LOST-RECORDED md:57 [lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:1-57 (not checked)
+LOST-RECORDED md:78 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15 (not checked)
+LOST-RECORDED md:79 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:34-35 (not checked)
+LOST-RECORDED md:83 [lost-tree] evidence/hackerone-starbucks-japan/scope-snapshot.json:112-118 (not checked)
+LOST-RECORDED md:85 [lost-tree] evidence/sherlock-106/scope-snapshot.json:12-15 (not checked)
+LOST-RECORDED md:89 [lost-tree] claims/bugcrowd-opus-guard-market/honest-zero/evidence/scope-snapshot.json:24 (not checked)
+LOST-RECORDED md:102 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:18 (not checked)
+LOST-RECORDED md:103 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:9 (not checked)
+LOST-RECORDED md:104 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:27-28 (not checked)
+LOST-RECORDED md:105 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:52 (not checked)
+LOST-RECORDED md:106 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:18 (not checked)
+LOST-RECORDED md:107 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:36 (not checked)
+LOST-RECORDED md:108 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:33 (not checked)
+LOST-RECORDED md:109 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:31 (not checked)
+LOST-RECORDED md:111 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:19-20 (not checked)
+LOST-RECORDED md:113 [lost-tree] claims/cantina-pendle/ingestion-20260915/provenance.json:27-31 (not checked)
+LOST-RECORDED md:115 [lost-tree] claims/hackerone-wordpress/honest-zero-wp-cli/provenance.json:8 (not checked)
+LOST-RECORDED md:117 [lost-tree] claims/hackerone-anthropic/honest-zero-claude-code/provenance.json:29 (not checked)
+LOST-RECORDED md:119 [lost-tree] claims/hackerone-airtable/honest-zero-mcp-cli/provenance.json:32 (not checked)
+OK md:120 corpus/knowledge/program-quirks.md:10  [- **$100 submission deposit** — the claimability gate is a read-only]
+LOST-RECORDED md:128 [lost-tree] docs/autopsies/hackerone-figma.md:6 (not checked)
+LOST-RECORDED md:128 [lost-tree] evidence/paypal-bug-bounty/provenance.json:27 (not checked)
+LOST-RECORDED md:128 [lost-tree] evidence/hackerone-1password/fetch-evidence/graphql-request-20260905T165623Z.json:2 (not checked)
+LOST-RECORDED md:129 [lost-tree] evidence/bugcrowd-barracuda/scope-snapshot.json:11 (not checked)
+LOST-RECORDED md:129 [lost-tree] evidence/bugcrowd-barracuda/scope-snapshot.json:42 (not checked)
+LOST-RECORDED md:129 [lost-tree] evidence/bugcrowd-asana/scope-snapshot.json:12 (not checked)
+LOST-RECORDED md:129 [lost-tree] docs/autopsies/bugcrowd-openai.md:6 (not checked)
+LOST-RECORDED md:129 [lost-tree] docs/autopsies/bugcrowd-spacex.md:6 (not checked)
+LOST-RECORDED md:129 [lost-tree] docs/autopsies/bugcrowd-blofin-crypto-mbb-og.md:6 (not checked)
+LOST-RECORDED md:129 [lost-tree] docs/continuation-notes.md:50 (not checked)
+LOST-RECORDED md:129 [lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:54 (not checked)
+LOST-RECORDED md:130 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:9 (not checked)
+LOST-RECORDED md:130 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:37 (not checked)
+LOST-RECORDED md:130 [lost-tree] claims/cantina-pendle/ingestion-20260915/provenance.json:32-33 (not checked)
+LOST-RECORDED md:130 [lost-tree] claims/hackenproof-atomone/honest-zero-atomone/provenance.json:36 (not checked)
+LOST-RECORDED md:130 [lost-tree] .ufo/bounty-fleet/ledger/telemetry.jsonl:181 (not checked)
+LOST-RECORDED md:131 [lost-tree] evidence/bugcrowd-asana/scope-snapshot.json:12 (not checked)
+LOST-RECORDED md:131 [lost-tree] evidence/bugcrowd-barracuda/scope-snapshot.json:45 (not checked)
+LOST-RECORDED md:132 [lost-tree] docs/autopsies/hackerone-six-group.md:6 (not checked)
+OK md:132 corpus/knowledge/policy-access-playbook.md:13  [| Terms-gated policy | SIX Group: reading Program Rules requires terms acceptance | Terms acceptance]
+LOST-RECORDED md:141 [lost-tree] claims/intigriti-yahoo/ingestion-20260914/status.json:2 (not checked)
+LOST-RECORDED md:141 [lost-tree] claims/intigriti-yahoo/ingestion-20260914/status.json:11 (not checked)
+LOST-RECORDED md:323 [lost-base] ops/shared.mjs:7 (not checked)
+LOST-RECORDED md:324 [lost-base] ops/validate.mjs:56 (not checked)
+LOST-RECORDED md:325 [lost-base] ops/shared.mjs:8 (not checked)
+LOST-RECORDED md:327 [lost-base] ops/validate.mjs:28 (not checked)
+LOST-RECORDED md:329 [lost-base] ops/shared.mjs:11 (not checked)
+LOST-RECORDED md:331 [lost-base] ops/shared.mjs:25-31 (not checked)
+LOST-RECORDED md:333 [lost-base] ops/shared.mjs:33-34 (not checked)
+LOST-RECORDED md:334 [lost-base] ops/shared.mjs:38 (not checked)
+LOST-RECORDED md:335 [lost-base] ops/shared.mjs:39 (not checked)
+LOST-RECORDED md:338 [lost-tree] ops/shared.mjs:55 (not checked)
+OK md:338 corpus/knowledge/ops-invariants.md:24  [| `gitMutationBlocker` | fail-closed preflight | refuses when rebase-merge/rebase-apply/MERGE_HEAD/C]
+LOST-RECORDED md:341 [lost-base] ops/shared.mjs:13-22 (not checked)
+LOST-RECORDED md:346 [lost-base] ops/shared.mjs:36-41 (not checked)
+LOST-RECORDED md:358 [lost-base] ops/validate.mjs:27 (not checked)
+LOST-RECORDED md:359 [lost-base] ops/validate.mjs:118 (not checked)
+LOST-RECORDED md:360 [lost-base] ops/validate.mjs:119 (not checked)
+LOST-RECORDED md:361 [lost-base] ops/validate.mjs:120-121 (not checked)
+LOST-RECORDED md:362 [lost-base] ops/validate.mjs:63-65 (not checked)
+LOST-RECORDED md:364 [lost-base] ops/validate.mjs:72-73 (not checked)
+LOST-RECORDED md:365 [lost-base] ops/validate.mjs:82 (not checked)
+LOST-RECORDED md:367 [lost-base] ops/validate.mjs:125-130 (not checked)
+LOST-RECORDED md:370 [lost-base] ops/registry-check.mjs:57-80 (not checked)
+LOST-RECORDED md:371 [lost-base] ops/registry-check.mjs:70-72 (not checked)
+LOST-RECORDED md:373 [lost-base] ops/registry-check.mjs:82-108 (not checked)
+LOST-RECORDED md:374 [lost-base] ops/registry-check.mjs:117-118 (not checked)
+LOST-RECORDED md:376 [lost-base] ops/registry-check.mjs:121-122 (not checked)
+LOST-RECORDED md:377 [lost-base] ops/registry-check.mjs:134-157 (not checked)
+LOST-RECORDED md:378 [lost-base] ops/registry-check.mjs:159-170 (not checked)
+LOST-RECORDED md:379 [lost-base] ops/registry-check.mjs:34-43 (not checked)
+LOST-RECORDED md:380 [lost-base] ops/registry-check.mjs:190 (not checked)
+LOST-RECORDED md:382 [lost-base] ops/reroute-drill.mjs:2-3 (not checked)
+LOST-RECORDED md:383 [lost-base] ops/reroute-drill.mjs:20 (not checked)
+LOST-RECORDED md:384 [lost-base] ops/reroute-drill.mjs:44-57 (not checked)
+LOST-RECORDED md:385 [lost-base] ops/reroute-drill.mjs:60 (not checked)
+LOST-RECORDED md:386 [lost-base] ops/reroute-drill.mjs:63-69 (not checked)
+LOST-RECORDED md:389 [lost-base] ops/check-freshness.mjs:15 (not checked)
+LOST-RECORDED md:391 [lost-base] ops/check-freshness.mjs:43 (not checked)
+LOST-RECORDED md:392 [lost-base] ops/check-freshness.mjs:50 (not checked)
+LOST-RECORDED md:393 [lost-base] ops/check-freshness.mjs:59 (not checked)
+LOST-RECORDED md:394 [lost-base] ops/check-freshness.mjs:61 (not checked)
+LOST-RECORDED md:397 [lost-base] ops/check-freshness.mjs:14 (not checked)
+LOST-RECORDED md:408 [lost-base] ops/import-board.mjs:132 (not checked)
+LOST-RECORDED md:414 [lost-base] ops/finalize-all.mjs:25 (not checked)
+OK md:416 corpus/knowledge/intake-and-finalize.md:78-92  [For every `claims/<id>/<slug>/status.json` it then: ⏎  ⏎ 1. **Filters**: skip `state !== 'DONE'`; skip verdict matching ⏎ `/not.claimable/i` (review-overturned); skip any `disposition` field ⏎ (held/shelved by decree); skip `submission_state === 'DISCLOSED_FREE'` ⏎ (VDP freebies are never claim-ready). ⏎ 2. **Re-validates**: fresh `~/Projects/the-bounty-hunter/ops/claim-check.mjs` run per package; nonze ⏎ `claim_rejected` telemetry (stdout tail 300 chars), `rejected++`. ⏎ 3. **Commits**: `git add` the package; if staged diff non-empty → ⏎ `commit -m "claim(<id>): accept <slug>"`; if clean → reuse last commit ⏎ touching the path. No commit containing the bytes → `claim_commit_failed`. ⏎ 4. **Byte-proofs the tag target**: `git diff --quiet <sha> -- <pkg>` must be ⏎ clean — the tag must point at bytes equal to what's on disk. ⏎ 5. **Tags**: `claim-ready/<id>/<slug>`. Existing tag on the SAME sha → reuse; ⏎ existing tag on a DIFFERENT sha → `claim_tag_conflict`, rejected, never]
+LOST-RECORDED md:420 [lost-base] ops/sighting.sh:8 (not checked)
+LOST-RECORDED md:421 [lost-base] ops/sighting.sh:17 (not checked)
+LOST-RECORDED md:422 [lost-base] ops/sighting.sh:24 (not checked)
+LOST-RECORDED md:430 [lost-base] ops/ev-report.mjs:21 (not checked)
+LOST-RECORDED md:430 [lost-base] ops/rank.mjs:43 (not checked)
+LOST-RECORDED md:430 [lost-base] ops/fleet-dispatch.mjs:21 (not checked)
+LOST-RECORDED md:431 [lost-base] ops/park-disposition.mjs:12 (not checked)
+LOST-RECORDED md:431 [lost-base] ops/import-board.mjs:30 (not checked)
+LOST-RECORDED md:432 [lost-base] ops/finalize-all.mjs:11 (not checked)
+LOST-RECORDED md:432 [lost-base] ops/validate.mjs:18 (not checked)
+LOST-RECORDED md:432 [lost-base] ops/registry-check.mjs:12 (not checked)
+LOST-RECORDED md:433 [lost-base] ops/check-freshness.mjs:12 (not checked)
+LOST-RECORDED md:433 [lost-base] ops/claim-index.mjs:11 (not checked)
+LOST-RECORDED md:434 [lost-base] ops/reroute-drill.mjs:10 (not checked)
+LOST-RECORDED md:437 [lost-base] ops/rank.mjs:140 (not checked)
+LOST-RECORDED md:437 [lost-base] ops/rank.mjs:203 (not checked)
+LOST-RECORDED md:438 [lost-base] ops/rank.mjs:222 (not checked)
+LOST-RECORDED md:438 [lost-base] ops/shared.mjs:39 (not checked)
+LOST-RECORDED md:438 [lost-base] ops/park-disposition.mjs:43 (not checked)
+LOST-RECORDED md:439 [lost-base] ops/park-disposition.mjs:53 (not checked)
+LOST-RECORDED md:442 [lost-base] ops/ev-report.mjs:17 (not checked)
+LOST-RECORDED md:466 [lost-base] fleets/mission-template.md:50 (not checked)
+LOST-RECORDED md:466 [lost-base] docs/genesis-plan.md:15 (not checked)
+LOST-RECORDED md:467 [lost-base] docs/genesis-plan.md:17 (not checked)
+LOST-RECORDED md:468 [lost-base] .omp/agents/scope-evidence-custodian.md:83 (not checked)
+LOST-RECORDED md:469 [lost-base] .omp/agents/the-bounty-hunter.md:28 (not checked)
+LOST-RECORDED md:470 [lost-base] ops/finalize-all.mjs:20 (not checked)
+LOST-RECORDED md:478 [lost-base] ops/park-disposition.mjs:14 (not checked)
+LOST-RECORDED md:479 [lost-base] ops/park-disposition.mjs:41 (not checked)
+LOST-RECORDED md:481 [lost-base] ops/park-disposition.mjs:13 (not checked)
+LOST-RECORDED md:482 [lost-base] ops/park-disposition.mjs:23-25 (not checked)
+LOST-RECORDED md:483 [lost-base] ops/park-disposition.mjs:28-32 (not checked)
+LOST-RECORDED md:484 [lost-base] ops/park-disposition.mjs:21 (not checked)
+LOST-RECORDED md:487 [lost-base] ops/park-disposition.mjs:18 (not checked)
+LOST-RECORDED md:494 [lost-base] ops/park-disposition.mjs:19 (not checked)
+LOST-RECORDED md:495 [lost-base] ops/park-disposition.mjs:32 (not checked)
+LOST-RECORDED md:496 [lost-base] ops/park-disposition.mjs:36-39 (not checked)
+LOST-RECORDED md:500 [lost-base] ops/park-disposition.mjs:45-49 (not checked)
+LOST-RECORDED md:501 [lost-base] ops/park-disposition.mjs:52 (not checked)
+LOST-RECORDED md:502 [lost-base] ops/park-disposition.mjs:43 (not checked)
+LOST-RECORDED md:505 [lost-base] ops/park-disposition.mjs:56 (not checked)
+LOST-RECORDED md:508 [lost-base] ops/park-disposition.mjs:61-65 (not checked)
+LOST-RECORDED md:509 [lost-base] ops/park-disposition.mjs:67-70 (not checked)
+LOST-RECORDED md:510 [lost-base] ops/park-disposition.mjs:72-73 (not checked)
+LOST-RECORDED md:512 [lost-base] ops/park-disposition.mjs:75-77 (not checked)
+LOST-RECORDED md:513 [lost-base] ops/park-disposition.mjs:78 (not checked)
+LOST-RECORDED md:516 [lost-base] ops/park-disposition.mjs:70 (not checked)
+LOST-RECORDED md:524 [lost-base] ops/park-disposition.mjs:18-21 (not checked)
+LOST-RECORDED md:533 [lost-base] ops/park-disposition.mjs:62-65 (not checked)
+LOST-RECORDED md:534 [lost-base] ops/park-disposition.mjs:59 (not checked)
+LOST-RECORDED md:580 [lost-tree] docs/wrap-report.md:93 (not checked)
+LOST-RECORDED md:581 [lost-tree] fleets/claimer-mission.md:22 (not checked)
+LOST-RECORDED md:581 [lost-tree] fleets/claimer-mission.md:29 (not checked)
+LOST-RECORDED md:582 [lost-tree] claims/mozilla-security-bounties/lando-diff-warning-missing-authz/report.md:79-82 (not checked)
+LOST-RECORDED md:583 [lost-tree] claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:35 (not checked)
+LOST-RECORDED md:584 [lost-tree] docs/claim-ready-index.md:32-38 (not checked)
+LOST-RECORDED md:584 [lost-tree] ops/claim-index.mjs:4 (not checked)
+LOST-RECORDED md:585 [lost-tree] claims/bugcrowd-seek/honest-zero/submit/BLOCKED.md:17-20 (not checked)
+LOST-RECORDED md:586 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15 (not checked)
+LOST-RECORDED md:587 [lost-base] fleets/mission-template.md:20 (not checked)
+LOST-RECORDED md:587 [lost-tree] docs/continuation-notes.md:19 (not checked)
+LOST-RECORDED md:587 [lost-tree] docs/continuation-notes.md:26 (not checked)
+LOST-RECORDED md:588 [lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:4-5 (not checked)
+LOST-RECORDED md:588 [lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:21 (not checked)
+LOST-RECORDED md:588 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:2 (not checked)
+LOST-RECORDED md:588 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:5 (not checked)
+LOST-RECORDED md:588 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:21 (not checked)
+LOST-RECORDED md:589 [lost-tree] docs/claim-runbook.md:11-20 (not checked)
+LOST-RECORDED md:593 [lost-tree] docs/wrap-report.md:19 (not checked)
+LOST-RECORDED md:601 [lost-tree] fleets/claimer-mission.md:29 (not checked)
+LOST-RECORDED md:604 [lost-tree] docs/wrap-report.md:23 (not checked)
+LOST-RECORDED md:605 [lost-tree] fleets/claimer-mission.md:22 (not checked)
+LOST-RECORDED md:606 [lost-tree] claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:32 (not checked)
+LOST-RECORDED md:607 [lost-tree] docs/wrap-report.md:19 (not checked)
+LOST-RECORDED md:611 [lost-tree] docs/wrap-report.md:18 (not checked)
+LOST-RECORDED md:614 [lost-tree] claims/mozilla-security-bounties/lando-diff-warning-missing-authz/report.md:79-82 (not checked)
+LOST-RECORDED md:617 [lost-tree] docs/wrap-report.md:17 (not checked)
+LOST-RECORDED md:621 [lost-tree] claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:35 (not checked)
+LOST-RECORDED md:623 [lost-tree] docs/claim-runbook.md:3-5 (not checked)
+LOST-RECORDED md:624 [lost-tree] ops/claim-index.mjs:4 (not checked)
+LOST-RECORDED md:629 [lost-tree] docs/claim-ready-index.md:3 (not checked)
+LOST-RECORDED md:631 [lost-tree] docs/claim-ready-index.md:32-38 (not checked)
+LOST-RECORDED md:632 [lost-tree] docs/wrap-report.md:118 (not checked)
+LOST-RECORDED md:638 [lost-tree] claims/bugcrowd-seek/honest-zero/submit/BLOCKED.md:17-20 (not checked)
+LOST-RECORDED md:639 [lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:5 (not checked)
+LOST-RECORDED md:639 [lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:56 (not checked)
+LOST-RECORDED md:642 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15 (not checked)
+LOST-RECORDED md:642 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:31 (not checked)
+LOST-RECORDED md:642 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:34 (not checked)
+LOST-RECORDED md:643 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:34-35 (not checked)
+LOST-RECORDED md:645 [lost-base] fleets/mission-template.md:20 (not checked)
+LOST-RECORDED md:648 [lost-tree] fleets/ufo-archive-2026/missions/groknight-mentor/lane-connector.md:24 (not checked)
+LOST-RECORDED md:650 [lost-tree] docs/continuation-notes.md:19 (not checked)
+LOST-RECORDED md:650 [lost-tree] docs/continuation-notes.md:26 (not checked)
+LOST-RECORDED md:651 [lost-tree] docs/continuation-notes.md:20-22 (not checked)
+LOST-RECORDED md:655 [lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:4-5 (not checked)
+LOST-RECORDED md:656 [lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:21 (not checked)
+LOST-RECORDED md:656 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:9-16 (not checked)
+LOST-RECORDED md:658 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:2 (not checked)
+LOST-RECORDED md:658 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:5 (not checked)
+LOST-RECORDED md:658 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:21 (not checked)
+LOST-RECORDED md:659 [lost-tree] docs/wrap-report.md:20 (not checked)
+LOST-RECORDED md:661 [lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:2 (not checked)
+LOST-RECORDED md:661 [lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:13 (not checked)
+LOST-RECORDED md:662 [lost-tree] docs/wrap-report.md:21 (not checked)
+LOST-RECORDED md:662 [lost-tree] docs/wrap-report.md:157 (not checked)
+LOST-RECORDED md:663 [lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:25 (not checked)
+LOST-RECORDED md:663 [lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:48 (not checked)
+LOST-RECORDED md:669 [lost-tree] docs/claim-runbook.md:11-20 (not checked)
+LOST-RECORDED md:670 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:2 (not checked)
+LOST-RECORDED md:670 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:5 (not checked)
+LOST-RECORDED md:674 [lost-tree] docs/wrap-report.md:99 (not checked)
+LOST-RECORDED md:695 [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/receipts/k8s-nodebound-token-impersonation.json:5-8 (not checked)
+LOST-RECORDED md:695 [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/submission-receipts.csv:2 (not checked)
+LOST-RECORDED md:695 [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/receipts/ld-node-stream-tls-bypass.json:5-6 (not checked)
+LOST-RECORDED md:695 [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/submission-receipts.csv:3 (not checked)
+LOST-RECORDED md:695 [lost-tree] fleets/run/portal-reconciliation-2026-09-11.json:9-11 (not checked)
+LOST-RECORDED md:695 [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/queue.json:11-12 (not checked)
+OK md:696 corpus/knowledge/ufo-archive-2026.md:150-154  [14. Claims marked "verified" but never executed (coinbase vectors 3-4 + ⏎ path-form boundary); overclaims contradicted by the package's own ⏎ evidence (spacex "both resolvers" — DoH only; "unlimited requests" — ⏎ superhuman; "filed by Elastic" unevidenced; "documented multi-tenant ⏎ isolation" — code-comment only; "no live host contacted" class).]
+OK md:697 corpus/knowledge/ufo-archive-2026.md:145-149  [13. Stale file:line citations — the single most common narrative defect ⏎ (metamask :161→:162, elastic :604→:605 check + api.search.go range, ⏎ aiven README.rst:706 misattribution + stale witnesses, web3 cite ranges ⏎ narrower than function extents, superhuman steps, web1 READY.md ⏎ systematically stale line numbers).]
+LOST-RECORDED md:809 [lost-base] ops/ev-report.mjs:28-29 (not checked)
+LOST-RECORDED md:810 [lost-base] ops/ev-report.mjs:17 (not checked)
+LOST-RECORDED md:811 [lost-base] ops/ev-report.mjs:92 (not checked)
+OK md:821 corpus/knowledge/mission-control.md:3  [Source: `~/Projects/bounties/ops/fleet-dispatch.mjs` (read in full, 427]
+LOST-RECORDED md:835 [lost-base] ops/ev-report.mjs:77 (not checked)
+LOST-RECORDED md:837 [lost-base] ops/ev-report.mjs:73 (not checked)
+LOST-RECORDED md:837 [lost-base] ops/ev-report.mjs:78 (not checked)
+LOST-RECORDED md:838 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:839 [lost-base] ops/ev-report.mjs:74 (not checked)
+LOST-RECORDED md:839 [lost-base] ops/ev-report.mjs:82 (not checked)
+LOST-RECORDED md:840 [lost-base] ops/ev-report.mjs:86-89 (not checked)
+LOST-RECORDED md:840 [lost-base] ops/ev-report.mjs:46 (not checked)
+LOST-RECORDED md:843 [lost-base] ops/ev-report.mjs:47 (not checked)
+LOST-RECORDED md:847 [lost-base] ops/ev-report.mjs:47 (not checked)
+LOST-RECORDED md:848 [lost-base] ops/ev-report.mjs:91 (not checked)
+LOST-RECORDED md:850 [lost-base] ops/ev-report.mjs:91 (not checked)
+LOST-RECORDED md:851 [lost-base] ops/ev-report.mjs:92 (not checked)
+LOST-RECORDED md:852 [lost-base] ops/ev-report.mjs:23-26 (not checked)
+LOST-RECORDED md:853 [lost-base] ops/ev-report.mjs:30-33 (not checked)
+LOST-RECORDED md:854 [lost-base] ops/ev-report.mjs:38-41 (not checked)
+LOST-RECORDED md:854 [lost-base] ops/ev-report.mjs:43 (not checked)
+LOST-RECORDED md:861 [lost-base] ops/ev-report.mjs:70 (not checked)
+LOST-RECORDED md:862 [lost-base] ops/ev-report.mjs:50 (not checked)
+LOST-RECORDED md:863 [lost-base] ops/ev-report.mjs:65 (not checked)
+LOST-RECORDED md:864 [lost-base] ops/ev-report.mjs:59-70 (not checked)
+LOST-RECORDED md:865 [lost-base] ops/ev-report.mjs:69 (not checked)
+LOST-RECORDED md:873 [lost-base] ops/rank.mjs:55-59 (not checked)
+LOST-RECORDED md:873 [lost-base] ops/rank.mjs:56-58 (not checked)
+LOST-RECORDED md:877 [lost-base] ops/rank.mjs:63 (not checked)
+LOST-RECORDED md:878 [lost-base] ops/rank.mjs:66-77 (not checked)
+LOST-RECORDED md:879 [lost-base] ops/rank.mjs:92 (not checked)
+LOST-RECORDED md:879 [lost-base] ops/rank.mjs:118-119 (not checked)
+LOST-RECORDED md:880 [lost-base] ops/rank.mjs:104 (not checked)
+LOST-RECORDED md:881 [lost-base] bounty-map/schema.json:40 (not checked)
+LOST-RECORDED md:882 [lost-base] ops/ev-report.mjs:78 (not checked)
+LOST-RECORDED md:890 [lost-base] ops/rank.mjs:123 (not checked)
+LOST-RECORDED md:892 [lost-base] ops/fleet-dispatch.mjs:11 (not checked)
+LOST-RECORDED md:894 [lost-base] ops/fleet-dispatch.mjs:156 (not checked)
+LOST-RECORDED md:894 [lost-tree] ops/fleet-dispatch.mjs:204 (not checked)
+LOST-RECORDED md:898 [lost-base] ops/rank.mjs:46 (not checked)
+LOST-RECORDED md:899 [lost-base] ops/rank.mjs:48-49 (not checked)
+LOST-RECORDED md:900 [lost-base] ops/rank.mjs:161 (not checked)
+LOST-RECORDED md:900 [lost-base] ops/rank.mjs:163 (not checked)
+LOST-RECORDED md:902 [lost-base] ops/rank.mjs:53 (not checked)
+LOST-RECORDED md:902 [lost-base] ops/rank.mjs:140 (not checked)
+LOST-RECORDED md:903 [lost-base] ops/rank.mjs:141-142 (not checked)
+LOST-RECORDED md:909 [lost-base] ops/rank.mjs:178 (not checked)
+LOST-RECORDED md:910 [lost-base] ops/rank.mjs:179 (not checked)
+LOST-RECORDED md:918 [lost-base] ops/rank.mjs:216-219 (not checked)
+LOST-RECORDED md:920 [lost-base] ops/rank.mjs:223 (not checked)
+LOST-RECORDED md:920 [lost-base] ops/rank.mjs:229 (not checked)
+LOST-RECORDED md:923 [lost-base] ops/rank.mjs:231-235 (not checked)
+LOST-RECORDED md:923 [lost-base] ops/rank.mjs:241 (not checked)
+LOST-RECORDED md:924 [lost-base] ops/rank.mjs:214 (not checked)
+LOST-RECORDED md:929 [lost-base] ops/rank.mjs:92-96 (not checked)
+LOST-RECORDED md:930 [lost-base] ops/rank.mjs:105-108 (not checked)
+LOST-RECORDED md:931 [lost-base] ops/rank.mjs:151 (not checked)
+LOST-RECORDED md:931 [lost-base] ops/rank.mjs:164 (not checked)
+LOST-RECORDED md:932 [lost-base] ops/rank.mjs:164-165 (not checked)
+LOST-RECORDED md:932 [lost-base] ops/rank.mjs:247 (not checked)
+LOST-RECORDED md:933 [lost-base] ops/rank.mjs:185 (not checked)
+LOST-RECORDED md:933 [lost-base] ops/rank.mjs:175 (not checked)
+LOST-RECORDED md:934 [lost-base] ops/rank.mjs:200-204 (not checked)
+LOST-RECORDED md:935 [lost-base] ops/rank.mjs:209-219 (not checked)
+LOST-RECORDED md:938 [lost-base] bounty-map/schema.json:34 (not checked)
+LOST-RECORDED md:939 [lost-base] bounty-map/schema.json:32-52 (not checked)
+LOST-RECORDED md:940 [lost-base] ops/ev-report.mjs:17 (not checked)
+LOST-RECORDED md:943 [lost-base] ops/fleet-dispatch.mjs:152 (not checked)
+LOST-RECORDED md:943 [lost-tree] ops/fleet-dispatch.mjs:200 (not checked)
+LOST-RECORDED md:944 [lost-base] ops/fleet-dispatch.mjs:155 (not checked)
+LOST-RECORDED md:951 [lost-base] ops/rank.mjs:126-137 (not checked)
+LOST-RECORDED md:952 [lost-base] ops/rank.mjs:136 (not checked)
+LOST-RECORDED md:957 [lost-base] ops/ev-report.mjs:55 (not checked)
+LOST-RECORDED md:957 [lost-base] ops/rank.mjs:56 (not checked)
+LOST-RECORDED md:957 [lost-base] ops/ev-report.mjs:77 (not checked)
+LOST-RECORDED md:958 [lost-base] ops/ev-report.mjs:55 (not checked)
+LOST-RECORDED md:958 [lost-base] ops/rank.mjs:56 (not checked)
+LOST-RECORDED md:958 [lost-base] ops/ev-report.mjs:77 (not checked)
+LOST-RECORDED md:959 [lost-base] ops/ev-report.mjs:55 (not checked)
+LOST-RECORDED md:959 [lost-base] ops/rank.mjs:56 (not checked)
+LOST-RECORDED md:959 [lost-base] ops/ev-report.mjs:77 (not checked)
+LOST-RECORDED md:960 [lost-base] ops/ev-report.mjs:55 (not checked)
+LOST-RECORDED md:960 [lost-base] ops/rank.mjs:56 (not checked)
+LOST-RECORDED md:960 [lost-base] ops/ev-report.mjs:77 (not checked)
+LOST-RECORDED md:961 [lost-base] ops/ev-report.mjs:56 (not checked)
+LOST-RECORDED md:961 [lost-base] ops/rank.mjs:92 (not checked)
+LOST-RECORDED md:961 [lost-base] ops/ev-report.mjs:78 (not checked)
+LOST-RECORDED md:962 [lost-base] ops/ev-report.mjs:56 (not checked)
+LOST-RECORDED md:962 [lost-base] ops/rank.mjs:57 (not checked)
+LOST-RECORDED md:962 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:963 [lost-base] ops/ev-report.mjs:56 (not checked)
+LOST-RECORDED md:963 [lost-base] ops/rank.mjs:57 (not checked)
+LOST-RECORDED md:963 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:964 [lost-base] ops/ev-report.mjs:57 (not checked)
+LOST-RECORDED md:964 [lost-base] ops/rank.mjs:57 (not checked)
+LOST-RECORDED md:964 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:965 [lost-base] ops/ev-report.mjs:57 (not checked)
+LOST-RECORDED md:965 [lost-base] ops/rank.mjs:57 (not checked)
+LOST-RECORDED md:965 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:966 [lost-base] ops/ev-report.mjs:57 (not checked)
+LOST-RECORDED md:966 [lost-base] ops/rank.mjs:58 (not checked)
+LOST-RECORDED md:966 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:969 [lost-base] bounty-map/schema.json:46 (not checked)
+LOST-RECORDED md:970 [lost-base] bounty-map/schema.json:47 (not checked)
+LOST-RECORDED md:971 [lost-base] bounty-map/schema.json:48 (not checked)
+LOST-RECORDED md:971 [lost-base] bounty-map/schema.json:35-51 (not checked)
+LOST-RECORDED md:999 [lost-base] check-freshness.mjs:61 (not checked)
+OK md:1079 corpus/SOURCES.md:55-56  [| S049 | 网络安全众测平台帮助 - CNVD — https://zc.cnvd.org.cn/news/helpList | docs | A | CNVD's own help-page  ⏎ | S050 | 360SRC 外部漏洞处理和评分标准 V2.0 — https://security.360.cn/Reward/rules | docs | A | 360SRC's own ha]
+OK md:1079 corpus/instruments/capture-binding-check.py:1-92  [#!/usr/bin/env python3 ⏎ """Bind every capture-manifest record to its registry row and to fetch provenance. ⏎  ⏎ Usage: python3 corpus/instruments/capture-binding-check.py [--root DIR] [--selftest] [--scratch DIR] ⏎  ⏎ The round-33 C1 counter, hardened in round 34. A capture directory can hold real ⏎ bytes and still be unauditable: nothing in `manifest.json` says which documented ⏎ URL those bytes came from, when they were fetched, or whether a file in the ⏎ directory is accounted for at all. This instrument walks every snapshot ⏎ directory under `corpus/source-snapshots/` - recursively - and applies four ⏎ rules. ⏎  ⏎ A. MANIFEST PRESENCE AND PER-FILE BINDING. Every snapshot directory - a ⏎ directory that holds a `manifest.json` or that holds any captured source ⏎ file of its own - must carry a `manifest.json`; a directory with captures ⏎ and no manifest is `FAIL rule=missing-manifest dir=<dir>`. Inside a ⏎ manifest directory, every capture file must be accounted for: ⏎  ⏎ A1. it is named by the `path` of at least one `sources[]` record; or ⏎ A2. the manifest's top-level `orphans` list declares it, as an object ⏎ `{"path": "<file name in this directory>", "reason": "<non-empty>"}`. ⏎ A declared orphan keeps the exit status at 0 and is still printed as ⏎ `orphan=<file>` on the AUDIT line - the listing is the record that ⏎ the file is known and unbound, not a silent pass; ⏎ otherwise `FAIL rule=orphan-capture file=<file> dir=<dir>`. ⏎ A declaration whose file is absent is `FAIL rule=orphan-declared-missing` ⏎ (a stale listing), and a malformed `orphans` list is a manifest-shape ⏎ error (exit 2). Orphans never change `records=`/`bound=`/`unbound=`, so a ⏎ declaration cannot be used to inflate the binding counts. ⏎  ⏎ Nested snapshot directories are audited in their own right: the walk ⏎ descends whether or not the parent is a snapshot directory, and a nested ⏎ directory is named by its path below `corpus/source-snapshots/` ⏎ (`round-30/inner`). A parent's per-file check considers only its own direct ⏎ files, because a nested directory's files are that directory's subject. ⏎  ⏎ B. URL BINDING (claims-erratum-1, the L1's id-scoped ruling). Every manifest ⏎ record must bind to its OWN `corpus/SOURCES.md` registry row: ⏎  ⏎ B1. the row `| <record id> | ... |` must exist - otherwise ⏎ `FAIL rule=no-row record=<id>` (a fabricated id); ⏎ B2. the row id must be unique in the registry - two rows with the same ⏎ id are `FAIL rule=dup-id record=<id> rows=<n>`; ⏎ B3. a row whose `status` cell is `rejected` cannot anchor a record: ⏎ `FAIL rule=rejected-row-anchor record=<id> row=<id>`. A rejected row ⏎ is a documented refusal, so a capture claiming it is bound to a ⏎ source the lane has refused; ⏎ B4. the row's source cell must carry exactly one `https://` token. A row ⏎ with two or more is `FAIL rule=double-https-row row=<id> n=<n>` and ⏎ cannot unambiguously bind anything - the record pointing at it is ⏎ `FAIL rule=url-ambiguous record=<id> row=<id> tokens=<n>`; ⏎ B5. the record's `url` must equal, byte-for-byte, the `https://` token in ⏎ that row's source cell (column 2) - otherwise ⏎ `FAIL rule=url-mismatch record=<id>`. A record with no `url` field at ⏎ all is `url-mismatch ... detail=absent`. ⏎  ⏎ A URL that also appears in a DIFFERENT row (the registry's S024/S029 and ⏎ S006/S028 duplicate-URL rows) or in prose outside the registry table is ⏎ NOT a failure: see the informational `multi_row_url=N` count on the AUDIT ⏎ line. The frozen claim's predicate (erratum 1) keeps its `unbound=0` ⏎ target under this reading, and the registry's pre-existing W04 ⏎ duplicate-URL warnings stay census facts outside this claim. ⏎  ⏎ C. PROVENANCE. Every record must carry either a strict-UTC `fetched_utc` or ⏎ `"archival": true`. A `fetched_utc` value is strict UTC only when it is an ⏎ ISO-8601 timestamp whose suffix is `Z` or `+00:00` and whose fields are a ⏎ real calendar instant, e.g. `2026-10-26T04:16:06Z`: ⏎  ⏎ - a placeholder (`pending`, `tbd`, `unknown`, `none`, ...) is ⏎ `FAIL rule=fetched-utc ... detail=pending`; ⏎ - a local or non-zero offset (`2026-10-25T23:14:00-03:00`, the round-32 ⏎ R8 field) is `FAIL rule=fetched-utc ... detail=local-offset`; ⏎ - anything else unparsable (`2026-13-01T00:00:00Z`, a bare date) is ⏎ `FAIL rule=fetched-utc ... detail=malformed`; ⏎ - an absent value is `FAIL rule=provenance-missing` when the record has ⏎ no archival exemption, `detail=absent` folded into that line. ⏎  ⏎ Records whose snapshot directory is `round-32` or a later round MUST carry ⏎ a strict-UTC `fetched_utc`: the archival exemption is closed for them, ⏎ because their fetch instant is recorded. A directory name that does not ⏎ parse as `round-<N>` is treated as a modern round (no archival exemption). ⏎ A present-but-invalid `fetched_utc` fails in every round, including the ⏎ legacy rounds - the field is an assertion whether or not the round requires ⏎ it. ⏎  ⏎ D. MANIFEST INTEGRITY. Duplicate records inside one manifest fail: two ⏎ records in the same directory carrying the same `id` is ⏎ `FAIL rule=dup-record field=id value=<id> count=<n>`, and two records ⏎ naming the same capture `path` is the `field=path` form. A duplicated ⏎ record means the manifest's record count overstates the captures it ⏎ documents. ⏎ ]
+OK md:1079 corpus/instruments/capture-binding-check.py:166-181  [PENDING_VALUES = frozenset({"pending", "tbd", "todo", "unknown", "none", "null", "n/a", "na", "unset ⏎ MODERN_ROUND = 32   # round-32+ records must carry fetched_utc; the archival exemption is closed ⏎ STATUS_REJECTED = "rejected" ⏎ STATUS_COLUMN = 7   # | id | source | kind | tier | scope | anchor | teaches | status | ... ⏎ SCRIPT = os.path.abspath(__file__) ⏎  ⏎  ⏎ def parse_round(dirname): ⏎ """Round number of a snapshot directory name, or None when it does not parse. ⏎  ⏎ A nested directory is named by its path below source-snapshots, so the round ⏎ is read from the first path component (`round-30/inner` is round 30).""" ⏎ m = ROUND_RE.match(dirname.split("/", 1)[0]) ⏎ return int(m.group(1)) if m else None ⏎  ⏎ ]
+OK md:1079 corpus/instruments/capture-binding-check.py:184-262  [return [token.rstrip(".,;:") for token in URL_TOKEN.findall(cell)] ⏎  ⏎  ⏎ def load_registry(root): ⏎ """Return (rows_by_id, cells) for every `| S0xx |` row in corpus/SOURCES.md. ⏎  ⏎ `rows_by_id` maps a row id to its list of (source cell, status) pairs (a ⏎ duplicate id is visible as a list longer than one); `cells` is every row's ⏎ source cell in registry order, for the cross-row `multi_row_url` count.""" ⏎ path = os.path.join(root, "corpus", "SOURCES.md") ⏎ rows_by_id, cells = {}, [] ⏎ with open(path, encoding="utf-8") as fh: ⏎ for line in fh: ⏎ m = ROW_RE.match(line) ⏎ if not m: ⏎ continue ⏎ parts = [cell.strip() for cell in line.rstrip("\n").strip().strip("|").split("|")] ⏎ cell = parts[1] if len(parts) > 1 else "" ⏎ status = parts[STATUS_COLUMN] if len(parts) > STATUS_COLUMN else "" ⏎ rows_by_id.setdefault(m.group(1), []).append((cell, status)) ⏎ cells.append(cell) ⏎ return rows_by_id, cells ⏎  ⏎  ⏎ def double_https_rows(rows_by_id): ⏎ """Rows whose source cell carries two or more `https://` tokens. ⏎  ⏎ A two-token cell cannot say which document the row names, so it can bind ⏎ nothing: the row is a failure and every record pointing at it is ambiguous.""" ⏎ offenders = [] ⏎ for row_id in sorted(rows_by_id): ⏎ for cell, _status in rows_by_id[row_id]: ⏎ tokens = row_tokens(cell) ⏎ if len(tokens) > 1: ⏎ offenders.append((row_id, len(tokens))) ⏎ return offenders ⏎  ⏎  ⏎ def url_row_count(cells, url): ⏎ """How many registry rows carry `url` text in their source cell.""" ⏎ return sum(1 for cell in cells if url in cell) ⏎  ⏎  ⏎ def snapshot_dirs(root): ⏎ """Yield (relname, path, has_manifest) for every snapshot directory, parents first. ⏎  ⏎ A directory is a snapshot directory when it holds `manifest.json` or any ⏎ captured source file of its own; subdirectories are walked whether or not ⏎ their parent is a snapshot directory, so a nested capture directory is ⏎ audited in its own right under the name `<parent>/<child>`.""" ⏎ base = os.path.join(root, "corpus", "source-snapshots") ⏎ for dirpath, dirnames, filenames in os.walk(base): ⏎ dirnames.sort() ⏎ relname = os.path.relpath(dirpath, base) ⏎ if relname == os.curdir: ⏎ continue ⏎ files = sorted(name for name in filenames ⏎ if os.path.isfile(os.path.join(dirpath, name))) ⏎ if "manifest.json" in files: ⏎ yield relname, dirpath, True ⏎ continue ⏎ if files: ⏎ yield relname, dirpath, False ⏎  ⏎  ⏎ def classify_fetched(value): ⏎ """Classify a `fetched_utc` value. Returns (ok, detail).""" ⏎ if not isinstance(value, str) or not value.strip(): ⏎ return False, "malformed" ⏎ text = value.strip() ⏎ if text.lower() in PENDING_VALUES: ⏎ return False, "pending" ⏎ m = UTC_STAMP_RE.match(text) ⏎ if m: ⏎ try: ⏎ datetime.datetime(*(int(part) for part in m.groups())) ⏎ except ValueError: ⏎ return False, "malformed" ⏎ return True, None]
+OK md:1080 .ufo/waves/round-33/claims-erratum-1.md:1-36  [# C1 erratum 1 — Rule B binding semantics (L1 ruling, before any measurement) ⏎  ⏎ Filed 2026-10-26 by the L1 (KasegiR33) after ScoutManifestAudit surfaced a Rule B hazard at ⏎ base. This erratum clarifies the frozen C1 interface contract; it does not change the frozen ⏎ claim's predicate sentence, counters, kill rule or targets. No seat had scored when it was filed. ⏎  ⏎ ## Finding (ScoutManifestAudit §4) ⏎  ⏎ - URL `https://eur-lex.europa.eu/eli/reg/2024/2847/oj/eng` is carried by TWO registry rows: ⏎ S024 (queued) and S029 (mined, supersedes S024). Record S029 exists in the round-23 manifest. ⏎ - URL `https://docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq` is carried by ⏎ TWO registry rows: S006 (mined) and S028 (rejected duplicate-row proposal). Record S006 exists ⏎ in the round-24 manifest. ⏎ - URL for S048 occurs once as a registry-row source cell (row S048) and once as raw text inside ⏎ a Search-log bullet (line 72) — not a row cell. ⏎  ⏎ Under a global "URL appears in exactly one registry row" reading, records S029 and S006 could never ⏎ bind (2 row matches), so `unbound=0` would be unattainable without touching immutable registry rows ⏎ (R8), which no seat may do this round. ⏎  ⏎ ## Ruling (binding for ExecCaptureBinding, ExecManifestUpgrade, RevC1Instrument, CritC1Kill) ⏎  ⏎ Rule B binds each record to its OWN registry row: ⏎  ⏎ 1. For a record with id `Sxxx`, locate the registry row `| Sxxx | ... |` in ⏎ `corpus/SOURCES.md` (source cell). If NO row carries that id -> failure `no-row` (fabrication). ⏎ 2. The record's `url` must equal the row's URL byte-for-byte (the URL = the `https://` token in ⏎ the row's source cell). Mismatch -> failure `url-mismatch`. ⏎ 3. If TWO rows carry the same id (never observed), -> failure `dup-id`. ⏎ 4. A URL that also appears in other rows (S024/S029, S006/S028) or in prose (search log) is NOT a ⏎ failure: the checker prints an informational count `multi_row_url=N` (records whose URL text ⏎ appears in more than one row) and the receipts disclose it. The registry's pre-existing W04 ⏎ duplicate-URL warnings are census facts outside this claim. ⏎ 5. `bound` = records satisfying 1+2 (and rule C). `unbound` = records failing 1, 2, 3 or rule C. ⏎  ⏎ Predicate sentence, kill rule, counters and the 40/40/0 target are unchanged.]
+OK md:1097 corpus/source-snapshots/round-32/S050.txt:70  [本标准适用于 360 集团发布的产品和业务，此外 360 集团所投资的公司、子公司、合资公]
+OK md:1100 corpus/lessons/round-34-verifier-spotcheck.md:177  [- **D3 — gates unregistered at the registry home.**]
+OK md:1102 .ufo/waves/round-34/wave1/ExecCaptureBindingHarden.md:505-507  [that keeps both limbs honest. Live suite: `closed=9/9 exit=0`; `--selftest` prints ⏎ `selftest case=R8 live=pass fixture=rejected control=pass verdict=pass` and ⏎ `selftest cases=9 failures=0`, exit 0. The positive-control fixture is the `+00:00` value I]
+OK md:1102 .ufo/waves/round-34/wave1/MutSelftestSummary.md:332  [- Full counter re-run on the same current bytes: `mutants=3 killed=3 survivors=0 invalid=0`,]
+[exit 0]
+
+$ python3 corpus/instruments/density.py SKILL.md --label r39
+# Density census — r39 (1114 lines, 27 blocks)
+# ev = path-cites + concrete-tbl-rows + numerics + signatures; dens = ev*100/nb
+# num: unique numeric tokens (no bare years, no letter-adjacent fragments, no
+#      enumeration markers, no date/time stamps; letter-free code spans count);
+# sig: unique ALL-CAPS parts >=5 chars incl. non-path-like code spans, minus
+#      GENERIC_SIG (full rules: see density.py docstring)
+
+| # | block | lines | nb | cites | tbl | num | sig | ev | dens |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | Pipeline (observed, not invented) | 18 | 15 | 1 | 0 | 0 | 1 | 2 | 13.3 |
+| 2 | Program-rule checklist (step 1 of any mission) | 70 | 65 | 22 | 0 | 44 | 0 | 66 | 101.5 |
+| 3 | Policy access playbook (fleet-learned) | 10 | 8 | 24 | 5 | 8 | 0 | 37 | 462.5 |
+| 4 | Finding-triage decision table | 37 | 32 | 24 | 7 | 15 | 4 | 50 | 156.2 |
+| 5 | Intake surface — the map is decorative, ingestion is hidden | 51 | 47 | 15 | 0 | 30 | 4 | 49 | 104.3 |
+| 6 | Mission ledger & audit store | 27 | 24 | 21 | 0 | 16 | 6 | 43 | 179.2 |
+| 7 | Mission control plane | 28 | 26 | 17 | 0 | 14 | 2 | 33 | 126.9 |
+| 8 | UFO runtime workspaces — the untracked `.ufo/` layer + `.omp/` | 42 | 38 | 25 | 0 | 30 | 4 | 59 | 155.3 |
+| 9 | Ops integrity layer — invariants, intake, finalize | 130 | 122 | 103 | 0 | 20 | 14 | 137 | 112.3 |
+| 10 | VDP disclosure packages (sibling format) | 26 | 23 | 18 | 0 | 8 | 1 | 27 | 117.4 |
+| 11 | Retirement lane — autopsies & the detail regex | 62 | 57 | 30 | 0 | 19 | 4 | 53 | 93.0 |
+| 12 | Evidence-package anatomy | 28 | 24 | 20 | 6 | 13 | 3 | 42 | 175.0 |
+| 13 | Disclosure anti-patterns (all observed in fleet wrap review) | 115 | 110 | 68 | 10 | 47 | 3 | 128 | 116.4 |
+| 14 | Claim-hardening wave — the defect layer above the gates | 35 | 30 | 22 | 10 | 21 | 9 | 62 | 206.7 |
+| 15 | Submitted-state registry — the do-not-refile set | 50 | 46 | 25 | 0 | 20 | 5 | 50 | 108.7 |
+| 16 | Operator queue — live audit | 40 | 36 | 18 | 0 | 16 | 1 | 35 | 97.2 |
+| 17 | Triage economics | 172 | 156 | 126 | 18 | 46 | 15 | 205 | 131.4 |
+| 18 | Gates & probes registry | 9 | 6 | 1 | 2 | 4 | 7 | 14 | 233.3 |
+| 19 | Cited paths (verified 2026-09-28 against the then-live tree; round-13 full-set re-audit 705/708 resolved — **and as of round 15 the `~/Projects/bounties` root itself is gone**, so every path below is `[lost-tree]`; **round-19 re-census (2026-10-14): the mirror and origin-work roots that used to carry the exceptions are also gone**, so there are no live exceptions left — the previous clause "unless it has a mirror equivalent in `~/Projects/the-bounty-hunter` or lives under `~/Projects/origin-work/open-bug-bounties`" is historical. Resolvability is measured, not assumed: `corpus/instruments/resolve.py`, census of record `corpus/instruments/citation-survival.md` — SKILL.md 47/289 = 16.26 % before the round-15 re-anchor, 222/486 = 45.68 % at round-15 close, re-censused at round 19; this header is itself inside the measured file, so the figure is a fixed point only to ±1 token) | 38 | 36 | 66 | 0 | 41 | 6 | 113 | 313.9 |
+| 20 | Frontier decision table (round 22) | 13 | 10 | 10 | 5 | 3 | 2 | 20 | 200.0 |
+| 21 | Round-29 Gates & probes registry addition (appended 2026-10-25) | 8 | 5 | 1 | 1 | 5 | 7 | 14 | 280.0 |
+| 22 | Round-29 frontier note (appended 2026-10-25) | 5 | 2 | 2 | 0 | 1 | 1 | 4 | 200.0 |
+| 23 | Round-30 Gates & probes registry addition (appended 2026-10-25) | 10 | 6 | 3 | 2 | 6 | 4 | 15 | 250.0 |
+| 24 | Round-31 Gates & probes registry addition (appended 2026-10-25) | 13 | 8 | 27 | 2 | 18 | 6 | 53 | 662.5 |
+| 25 | Round-33 Gates & probes registry addition (appended 2026-10-26) | 20 | 12 | 22 | 1 | 23 | 6 | 52 | 433.3 |
+| 26 | Round-35 Gates & probes registry addition (appended 2026-10-26) | 13 | 8 | 31 | 2 | 14 | 10 | 57 | 712.5 |
+| 27 | Round-36 Gates & probes registry addition (appended 2026-10-26) | 9 | 8 | 26 | 5 | 11 | 2 | 44 | 550.0 |
+| | **mean dens** | | | | | | | | **233.1** |
+
+Total path-citation instances: 768 across 27 blocks.
+[exit 0]
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/limb-ledger.json
+guard invalid-live-baseline  verdict=invalid:live-baseline want=invalid:live-baseline ok
+guard invalid-find-count     verdict=invalid:find-count   want=invalid:find-count   ok
+guard invalid-timeout        verdict=invalid:timeout      want=invalid:timeout      ok
+guard cases=3 failures=0
+LIMB RA-parse live=0/y mutant=1/n verdict=killed
+LIMB RA-cwd live=0/y mutant=1/n verdict=killed
+LIMB RA-paths live=0/y mutant=1/n verdict=killed
+LIMB RA-cdroot live=0/y mutant=1/n verdict=killed
+LIMB RA-instrument live=0/y mutant=1/n verdict=killed
+LIMB RA-own live=0/y mutant=1/n verdict=killed
+LIMB RA-completeness live=0/y mutant=1/n verdict=killed
+LIMB RA-expect-missing live=0/y mutant=1/n verdict=killed
+LIMB RA-expect-unexpected live=0/y mutant=1/n verdict=killed
+LIMB SR-stem-mismatch live=1/y mutant=0/n verdict=killed
+LIMB SR-occurrence-not-unique live=1/y mutant=0/n verdict=killed
+LIMB FR-missing-entry live=1/y mutant=1/n verdict=killed
+LIMB FR-duplicate-entry live=1/y mutant=0/n verdict=killed
+CONTROL CTL-noop verdict=invalid:noop expected=invalid:noop ok=y
+CONTROL CTL-nocompile verdict=invalid:nocompile expected=invalid:nocompile ok=y
+CONTROL CTL-equivalent verdict=survivor expected=survivor ok=y
+limbs=13 killed=13 survivors=0
+controls=3 rejected=3
+[exit 0]
+
+$ python3 corpus/instruments/limb-mutation-check.py
+usage: limb-mutation-check.py [-h] [--ledger LEDGER] [--root ROOT]
+                              [--selftest]
+limb-mutation-check: --ledger is required
+[exit 2 — --ledger is required; the documented form above is the runnable one]
+
+$ bash corpus/instruments/r38-closure.sh --export-ref 480b1a505a2dfc14a4f718d16d63808247214d0a --work /fast/scratch/hyaku/kasegi-r39/ExecArchiveChecks/work-live
+export-ref=480b1a505a2dfc14a4f718d16d63808247214d0a mode=export lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=85d33ea9d386926e88f9818bbdae5c49ef9cf951363ea09de641cb22a26979a6
+G1 payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=1 closed=1
+G2 payload=receipt=1,sentinel=1,export-ref=1,ancestor=1,diff-clean=0,digest-match=1,run-lines=1,closed-line=1,selftest-lines=1,selftest-summary=1,scorecard-ref=1,shonen-ref=1,head-token-lines=0 closed=0
+G3 payload=resolutions-section=1,line-tokens=8,added-pending=1,added-placeholders=0,diff-read=ok closed=0
+G4 payload=dispatches=1,pairs=1,seats-ok=1,read=ok closed=1
+G5 payload=round38-section=1,final-lane-commit-lines=0,correction=1,f3246559=2,anchor-ancestor=2 closed=1
+G6 payload=r36=absent,r37=absent,r38=absent,work=outside,tolerated=none,read=ok closed=1
+G7 payload=filled-section=1,correction=1,proposal-rows=7,missing=0 closed=1
+G8 payload=r37-suite=1,r37-closed=0,r37-exit=1 closed=0
+closed=5/8 exit=1
+[exit 1]
+
+$ bash corpus/instruments/r38-closure.sh --selftest --export-ref 480b1a505a2dfc14a4f718d16d63808247214d0a --work /fast/scratch/hyaku/kasegi-r39/ExecArchiveChecks/work-selftest
+selftest export-ref=480b1a505a2dfc14a4f718d16d63808247214d0a lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin suite-sha256=85d33ea9d386926e88f9818bbdae5c49ef9cf951363ea09de641cb22a26979a6
+selftest detail=G1 positive=pass payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=1
+selftest detail=G1 mutant=province-correction-absent rejected=1 limb=province-correction=0
+selftest detail=G1 mutant=readme-fence-open rejected=1 limb=readme-fence=open
+selftest detail=G1 mutant=declared-block-byte-flip rejected=1 limb=declared-ok=0
+selftest case=G1 positive=pass mutants=3/3 verdict=pass
+selftest detail=G2 positive=fail rc=1 payload=receipt=1,sentinel=1,export-ref=1,ancestor=1,diff-clean=0,digest-match=1,run-lines=1,closed-line=1,selftest-lines=1,selftest-summary=1,scorecard-ref=1,shonen-ref=1,head-token-lines=0
+selftest detail=G2 mutant=sentinel-v1 rejected=1 limb=sentinel=0
+selftest detail=G2 mutant=digest-mismatch rejected=1 limb=digest-match=0
+selftest detail=G2 mutant=final-head-hash-in-section rejected=1 limb=head-token-lines=1
+selftest detail=G2 mutant=correction-line-inside-section rejected=1 limb=head-token-lines=1
+selftest detail=G2 mutant=export-ref-not-ancestor rejected=1 limb=ancestor=0
+selftest detail=G2 mutant=post-receipt-diff-extra rejected=1 limb=diff-clean=0
+selftest case=G2 positive=fail mutants=6/6 verdict=fail
+selftest detail=G3 positive=fail rc=1 payload=resolutions-section=1,line-tokens=8,added-pending=1,added-placeholders=0,diff-read=ok
+selftest detail=G3 mutant=added-placeholder-token rejected=1 limb=added-placeholders=1
+selftest detail=G3 mutant=missing-line-token rejected=1 limb=line-tokens=7
+selftest case=G3 positive=fail mutants=2/2 verdict=fail
+selftest detail=G4 positive=pass payload=dispatches=1,pairs=1,seats-ok=1,read=ok
+selftest detail=G4 mutant=results-absent rejected=1 limb=pairs=0
+selftest detail=G4 mutant=seat-count-short rejected=1 limb=seats-ok=0
+selftest case=G4 positive=pass mutants=2/2 verdict=pass
+selftest detail=G5 positive=pass payload=round38-section=1,final-lane-commit-lines=0,correction=1,f3246559=2,anchor-ancestor=2
+selftest detail=G5 mutant=final-label-in-section rejected=1 limb=final-lane-commit-lines=1
+selftest detail=G5 mutant=correction-absent rejected=1 limb=correction=0
+selftest detail=G5 mutant=round38-section-absent rejected=1 limb=round38-section=0
+selftest detail=G5 mutant=correction-line-inside-section rejected=1 limb=final-lane-commit-lines=1
+selftest case=G5 positive=pass mutants=4/4 verdict=pass
+selftest detail=G6 positive=pass payload=r36=absent,r37=absent,r38=absent,work=outside,tolerated=none,read=ok
+selftest detail=G6 control=own-work-dir accepted=1 payload=r36=absent,r37=absent,r38=empty,work=inside,tolerated=/fast/scratch/hyaku/kasegi-r39/ExecArchiveChecks/work-selftest/mut/g6-control/kasegi-r38/seat,read=ok
+selftest detail=G6 mutant=r36-leftover-file rejected=1 limb=r36=present
+selftest detail=G6 mutant=r37-leftover-file rejected=1 limb=r37=present
+selftest detail=G6 mutant=r38-residual-seat rejected=1 limb=r38=present
+selftest detail=G6 mutant=r38-parent-sibling-leftover rejected=1 limb=r38=present
+selftest detail=G6 control=nested-clean-chain accepted=1 payload=r36=absent,r37=absent,r38=empty,work=inside,tolerated=/fast/scratch/hyaku/kasegi-r39/ExecArchiveChecks/work-selftest/mut/g6-r38-nested/kasegi-r38/seat,read=ok
+selftest detail=G6 mutant=unreadable-root rejected=1 limb=r37=unreadable
+selftest case=G6 positive=pass mutants=5/5 verdict=pass
+selftest detail=G7 positive=pass payload=filled-section=1,correction=1,proposal-rows=7,missing=0
+selftest detail=G7 mutant=proposal-row-absent rejected=1 limb=missing=1
+selftest detail=G7 mutant=correction-absent rejected=1 limb=correction=0
+selftest case=G7 positive=pass mutants=2/2 verdict=pass
+selftest detail=G8 positive=fail rc=1 payload=r37-suite=1,r37-closed=0,r37-exit=1
+selftest detail=G8 mutant=carry-over-red rejected=1 limb=r37-closed=0
+selftest detail=G8 mutant=carry-over-suite-absent rejected=1 limb=r37-suite=0
+selftest case=G8 positive=fail mutants=2/2 verdict=fail
+selftest cases=8 failures=3
+selftest judge=own-report accepted=0
+selftest judge=forged-summary rejected=1
+selftest judge=forged-caselines rejected=1
+selftest judge=forged-failed-cases rejected=1
+selftest judge=forged-detail-free rejected=1
+selftest judge=forged-7-cases rejected=1
+[exit 1]
+
+$ git show 480b1a505a2dfc14a4f718d16d63808247214d0a:corpus/instruments/r38-closure.sh | sha256sum
+85d33ea9d386926e88f9818bbdae5c49ef9cf951363ea09de641cb22a26979a6  -
+[exit 0 — equals the suite-sha256= line printed by both r38-closure runs above]
+
+$ ls -d /fast/scratch/hyaku/kasegi-r3* ; ls -la /fast/scratch/hyaku/kasegi-r37 /fast/scratch/hyaku/kasegi-r38
+/fast/scratch/hyaku/kasegi-r39
+/fast/scratch/hyaku/kasegi-r39-l1
+ls: cannot access '/fast/scratch/hyaku/kasegi-r37': No such file or directory
+ls: cannot access '/fast/scratch/hyaku/kasegi-r38': No such file or directory
+[exit 2 — kasegi-r37 and kasegi-r38 absent; kasegi-r39 holds this round only]

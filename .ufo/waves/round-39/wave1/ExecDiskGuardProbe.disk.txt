@@ -1,0 +1,150 @@
+probe=ExecDiskGuardProbe lane=kasegi round=39 wave=kasegi-r39-build
+utc=2026-10-26T19:34:02Z host=plazir27 point_in_time=snapshot (re-run section G at filing)
+lane_head=d65d823e7c84813c192b20ee757a8761f878a61f
+
+## A. disk guard (scripts/hyaku/disk-guard.sh)
+guard_status_exit=0 guard_check_exit=0
+verdict=green (0 = every root below SOFT_PCT)
+thresholds SOFT_PCT=70 TARGET_PCT=60 HARD_PCT=90 IDLE_MIN=45 MIN_AGE_MIN=10 (scripts/hyaku/hyaku.env)
+roots=/tmp /var/tmp /fast/scratch/hyaku
+free_space=/dev/nvme1n1p2 619G avail (24% used) mount=/fast; /dev/nvme1n1p1 126G avail (3% used) mount=/tmp; /dev/mapper/root 586G avail (35% used) mount=/home
+--- status output (verbatim) ---
+root                             use%     free
+/tmp                               3%   125.2G
+/var/tmp                          35%   585.6G
+/fast/scratch/hyaku               24%   618.1G
+
+top consumers /tmp
+    363.1M idle=3564  /tmp/.mount_appimap0T6hX
+      6.6M  idle=90  /tmp/tameshi-r14-evidence-disposition-selftest.yi4hybxt
+      6.6M idle=129  /tmp/tameshi-r14-evidence-disposition-selftest.5rdyq4ss
+      6.6M idle=174  /tmp/tameshi-r14-evidence-disposition-selftest.37e7lu_c
+      6.6M idle=129  /tmp/tameshi-r14-evidence-disposition-selftest.uecaob8e
+      6.6M idle=227  /tmp/tameshi-r14-evidence-disposition-selftest.q2086ffc
+      6.6M idle=129  /tmp/tameshi-r14-evidence-disposition-selftest.nu08wcyz
+      6.6M idle=174  /tmp/tameshi-r14-evidence-disposition-selftest.6xmu9ro4
+      6.6M idle=174  /tmp/tameshi-r14-evidence-disposition-selftest.6fbcfpmg
+      6.6M  idle=90  /tmp/tameshi-r14-evidence-disposition-selftest.1t9d6qnd
+      6.6M idle=129  /tmp/tameshi-r14-evidence-disposition-selftest.t55ces3b
+      6.6M  idle=91  /tmp/tameshi-r14-evidence-disposition-selftest.jbk6mz9b
+      6.6M idle=174  /tmp/tameshi-r14-evidence-disposition-selftest.a8f5eomn
+      6.6M idle=213  /tmp/tameshi-r14-evidence-disposition-selftest.yp0q9r3y
+      6.6M idle=196  /tmp/tameshi-r14-evidence-disposition-selftest.wank__by
+
+top consumers /var/tmp
+    201.8M idle=147  /var/tmp/souji-r21-replay-eq45dano
+     11.6M idle=147  /var/tmp/r15-census-config.3tk6qehq
+     10.3M idle=138  /var/tmp/r15-census-config.psjsbayp
+      9.8M idle=150  /var/tmp/r15-census-config.xec8q0wl
+      7.1M idle=147  /var/tmp/r17-census-hygiene._ke3xywa
+      1.1M idle=146  /var/tmp/souji-r18-FixtureR18Bounded.6bewdtxp
+      1.1M   idle=7  /var/tmp/souji-r18-FixtureR18Bounded.du6kpc_5
+      720K idle=147  /var/tmp/souji-r16-lgfixture-vnbltez6
+        0K idle=265  /var/tmp/systemd-private-bcbf8b4825bb4aa5b379018848f39361-upower.service-HTSwYU
+        0K idle=265  /var/tmp/systemd-private-bcbf8b4825bb4aa5b379018848f39361-systemd-logind.service-FjCSG5
+        0K idle=265  /var/tmp/systemd-private-bcbf8b4825bb4aa5b379018848f39361-power-profiles-daemon.service-Eub2xY
+        0K idle=265  /var/tmp/systemd-private-bcbf8b4825bb4aa5b379018848f39361-polkit.service-MSoTZl
+        0K idle=265  /var/tmp/systemd-private-bcbf8b4825bb4aa5b379018848f39361-iwd.service-3V0IPc
+        0K idle=265  /var/tmp/systemd-private-bcbf8b4825bb4aa5b379018848f39361-dbus-broker.service-GPn6WF
+        0K idle=265  /var/tmp/systemd-private-bcbf8b4825bb4aa5b379018848f39361-bluetooth.service-v5pKiE
+
+top consumers /fast/scratch/hyaku
+      3.1G   idle=0  /fast/scratch/hyaku/kaidoku-r40
+      1.3G  idle=38  /fast/scratch/hyaku/tameshi-r48
+      1.0G   idle=0  /fast/scratch/hyaku/kasegi-r39
+      1.0G  idle=18  /fast/scratch/hyaku/mado-r45
+    960.9M  idle=29  /fast/scratch/hyaku/tsukuroi-r42
+    523.7M   idle=1  /fast/scratch/hyaku/kengaku-r41
+    405.7M  idle=24  /fast/scratch/hyaku/souji-r33
+      172K idle=739  /fast/scratch/hyaku/base-census.sh
+      120K idle=111  /fast/scratch/hyaku/kaidoku-r37
+       36K   idle=1  /fast/scratch/hyaku/kasegi-r39-l1
+       20K   idle=8  /fast/scratch/hyaku/_d.txt
+       12K   idle=3  /fast/scratch/hyaku/kaidoku-r38
+        4K  idle=73  /fast/scratch/hyaku/line137.txt
+        0K   idle=4  /fast/scratch/hyaku/tabi-r34
+        0K idle=237  /fast/scratch/hyaku/souji-r31
+--- df -h ---
+Filesystem        Size  Used Avail Use% Mounted on
+/dev/nvme1n1p2    804G  185G  619G  24% /fast
+/dev/nvme1n1p1    128G  2.7G  126G   3% /tmp
+/dev/mapper/root  930G  310G  586G  35% /home
+--- df -Pk ---
+Filesystem       1024-blocks      Used Available Capacity Mounted on
+/dev/nvme1n1p2     842131708 193975612 648156096      24% /fast
+/dev/nvme1n1p1     134117380   2810436 131306944       3% /tmp
+/dev/mapper/root   974646272 324338228 614101228      35% /home
+
+## B. scratch roots kasegi-r3[6-9] under /fast/scratch/hyaku
+glob_note=kasegi-r3[6-9]* also matches the longer sibling root kasegi-r39-l1
+kasegi-r36     absent
+kasegi-r37     absent
+kasegi-r38     absent
+kasegi-r39     present entries=37 size_mb=1115 unreadable=0
+kasegi-r39-l1  present entries=8 size_mb=1 unreadable=0
+
+## C. entries under /fast/scratch/hyaku/kasegi-r39 (per-entry, same snapshot as E/F)
+entry                      attribution  entries     mb idle_m  note
+CritDesignReview           wave-seat          4      1      1  roster member (wave1/swarm-registry.json)
+CritFreezeAudit            wave-seat          6      1      0  roster member (wave1/swarm-registry.json)
+ExecArchiveNoHarmMirror    wave-seat      16465    273      0  roster member (wave1/swarm-registry.json)
+ExecAssimilationIds        wave-seat         38      8      0  roster member (wave1/swarm-registry.json)
+ExecCensusAfterMirror      wave-seat       8208    136      2  roster member (wave1/swarm-registry.json)
+ExecConsiderthese          wave-seat          2      1      1  roster member (wave1/swarm-registry.json)
+ExecConsidertheseLedger    wave-seat          3      1      0  roster member (wave1/swarm-registry.json)
+ExecCorrectionsR2          wave-seat         18      1      0  roster member (wave1/swarm-registry.json)
+ExecDiskGuardProbe         self               4      1      0  this probe; deleted at yield (lane-addendum 7.2)
+ExecG4ResultsFixture       wave-seat        151      2      0  roster member (wave1/swarm-registry.json)
+ExecGradedSelftestFixture  wave-seat         30      1      2  roster member (wave1/swarm-registry.json)
+ExecHarnessProbe           wave-seat       8226    137      2  roster member (wave1/swarm-registry.json)
+ExecJunkRecheck            wave-seat         10      1      0  roster member (wave1/swarm-registry.json)
+ExecMistakesDraft          wave-seat          1      1      1  roster member (wave1/swarm-registry.json)
+ExecNoHarmFixture          wave-seat        259      1      0  roster member (wave1/swarm-registry.json)
+ExecNoPlaceholderScan      wave-seat         43      1      0  roster member (wave1/swarm-registry.json)
+ExecPinnedG8Fixture        wave-seat       8106    132      0  roster member (wave1/swarm-registry.json)
+ExecProofSuiteSelftest     wave-seat         54      1      1  roster member (wave1/swarm-registry.json)
+ExecRunbookChecks          wave-seat          4      1      0  roster member (wave1/swarm-registry.json)
+ExecSuiteBuild             wave-seat       8209    136      1  roster member (wave1/swarm-registry.json)
+ExecWholeTailFixture       wave-seat        217      1      1  roster member (wave1/swarm-registry.json)
+RevAssimilationBlock       wave-seat         16      1      0  roster member (wave1/swarm-registry.json)
+RevControls-2              NONROSTER      16419    272      0  not a dispatched seat name, not in 49-seat roster; owner hint=RevControls
+RevCorrections             wave-seat          0      0      2  roster member (wave1/swarm-registry.json)
+RevFrontierAmendments      wave-seat          3      1      0  roster member (wave1/swarm-registry.json)
+RevRowsCensus              wave-seat          3      1      0  roster member (wave1/swarm-registry.json)
+RevScratchDiscipline       wave-seat          1      1      1  roster member (wave1/swarm-registry.json)
+ScoutSiblingF22            wave-seat          6      1      1  roster member (wave1/swarm-registry.json)
+ScribeEntryF22             wave-seat         12      1      2  roster member (wave1/swarm-registry.json)
+ScribeLessonGate           wave-seat         14      9      0  roster member (wave1/swarm-registry.json)
+ScribeReportInputs         wave-seat          3      1      1  roster member (wave1/swarm-registry.json)
+ScribeRowS057              wave-seat          3      1      3  roster member (wave1/swarm-registry.json)
+ScribeRowsRejected         wave-seat         68      1      0  roster member (wave1/swarm-registry.json)
+ScribeSearchLog            wave-seat          8      8      2  roster member (wave1/swarm-registry.json)
+ScribeShonen               wave-seat          7      1      0  roster member (wave1/swarm-registry.json)
+ScribeSpotCheckList        wave-seat          5      1      0  roster member (wave1/swarm-registry.json)
+ScribeWaveEvidence         wave-seat          6      1      2  roster member (wave1/swarm-registry.json)
+totals: entries=37 size_mb=1139 wave_seats=35 self=1 nonroster=1
+
+## D. sibling root /fast/scratch/hyaku/kasegi-r39-l1
+owner=l1 entries=8 size_mb=1 files=integration-check.sh integration-checklist.md landed-texts.md lesson-draft.md make-declared-blocks.sh make-receipt.sh report-draft.md report-full.md
+g6_named_root=false purge_lane_covers=false (purge-lane kasegi 39 removes exactly /fast/scratch/hyaku/kasegi-r39)
+
+## E. attribution
+belongs_to_this_wave=35 seat dirs named in wave1/swarm-registry.json under kasegi-r39
+belongs_to_this_wave_l1_root=/fast/scratch/hyaku/kasegi-r39-l1 (L1 own scratch, not a seat --work)
+leftovers=none_by_content naming_deviation=RevControls-2
+  RevControls-2: roster has RevControls=True; dir kasegi-r39/RevControls=False; dir kasegi-r39/RevControls-2=True; entries=16419 size_mb=272; content=base/ lane export written outside the dispatch-specified path kasegi-r39/RevControls/
+heavy_consumers_mb_ge_100=ExecArchiveNoHarmMirror=273mb RevControls-2=272mb ExecHarnessProbe=137mb ExecSuiteBuild=136mb ExecCensusAfterMirror=136mb ExecPinnedG8Fixture=132mb
+l1_root_size_mb=1
+prior_samples_kasegi-r39=14 entries all empty (19:30Z), 38 entries (19:31Z), 37 entries (this snapshot)
+
+## F. G6 reading at this probe
+g6_kasegi-r37=absent g6_kasegi-r38=absent g6_kasegi-r39=present_entries=37
+g6_pass_now=false expected=wave-1 in flight, 35 seat --work dirs live and all younger than IDLE_MIN=45
+g6_pass_at_filing=every wave-seat dir gone; kasegi-r39 holds only the closure run own --work; no kasegi-r3[6-9]* entry survives at /fast/scratch/hyaku
+g6_fail_closed=unreadable=0 at this probe (dirs readable+searchable); a gate must report read=fail, never zero, when it cannot list a dir
+g6_strict_reader_risk=kasegi-r39-l1 matches the kasegi-r3[6-9]* prefix and is not removed by purge-lane kasegi 39
+
+## G. recheck at filing (after seats delete their scratch)
+ls -1d /fast/scratch/hyaku/kasegi-r3[6-9]* 2>/dev/null
+for d in /fast/scratch/hyaku/kasegi-r3[6-9]*; do printf '%s entries=%s\n' "$d" "$(ls -1A "$d" | wc -l)"; done
+bash /home/vgpnk/Projects/shokunin/scripts/hyaku/disk-guard.sh status

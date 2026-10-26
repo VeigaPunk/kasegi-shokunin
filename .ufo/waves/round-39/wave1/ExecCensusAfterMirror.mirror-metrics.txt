@@ -1,0 +1,280 @@
+# ExecCensusAfterMirror — after-state mirror metrics (kasegi-shokunin round 39)
+
+Seat: ExecCensusAfterMirror (leaf, wave 1). Date: 2026-10-26. Judged axis: depth:verifiability.
+Purpose: compose a scratch mirror of the intended round-39 after-state and run the frozen C2
+after-metrics on it, recording the exact commands and their output.
+
+## Mirror construction (all writes under /fast/scratch/hyaku/kasegi-r39/ExecCensusAfterMirror)
+
+    S=/fast/scratch/hyaku/kasegi-r39/ExecCensusAfterMirror        # TMPDIR=$S for every run
+    git -C <lane> archive 480b1a505a2dfc14a4f718d16d63808247214d0a | tar -x -C $S/mirror-base
+    git -C <lane> archive 7beae6098f58cba99b0a9d1ac387edc664c0abe4 | tar -x -C $S/mirror-after
+
+mirror-base is the before-state control. mirror-after is the lane HEAD at measure time
+(7beae60 = base + claims freeze + wave-1 spec/dispatch + claims erratum 1) with the wave-1
+deliverable artifacts applied:
+
+- corpus/source-snapshots/round-39/S057.txt + manifest.json   <- ExecFrontierCapture.S057.txt / .manifest.json
+- corpus/SOURCES.md: S056/S057/S058/S059 rows after the S055 row <- ScribeRowS057.row.md,
+  ScribeRowsRejected.S056/.S058/.S059.row.md; search-log bullet before "## Leads (unopened)"
+  <- ScribeSearchLog.searchlog.append.md; registry-changes bullets appended at EOF
+  <- ScribeRowsRejected.registry-changes.md
+- corpus/README.md: EOF append <- ScribeFrontierF22.readme.append.md
+- corpus/knowledge/cisa-when-to-issue-vex.md <- ScribeEntryF22.entry.md
+- corpus/instruments/knowledge-expected.txt: sorted insert of the new entry
+- PROVINCE.md: EOF append <- ScribeProvinceF22.province.append.md
+- corpus/instruments/r39-closure.sh <- ExecSuiteBuild.r39-closure.sh (ABSENT at measure time; see note)
+
+mirror-after-cd is a measurement variant of mirror-after in which every knowledge entry's
+`recheck:` line has its `cd <lane>` prefix retargeted onto the mirror root (recheck lines only;
+entry prose untouched). Reason: recheck-audit's (b) cwd / (d) cdroot limbs and the frontier
+harness execute the line with `cwd=<root>` and the line's own `cd` overrides it, so the
+landed-byte form can only be exercised against the real lane. The variant is a shape check;
+the landed-byte form's lane-root result must be re-measured after the L1 lands the same bytes.
+
+## After-metric table (target = frozen claim C2 / erratum 1; measured = this mirror)
+
+| metric | command | target | measured on mirror-after / mirror-after-cd |
+|---|---|---|---|
+| census | sources-census.sh validate --file <mirror>/corpus/SOURCES.md | exit 0, W04 S028/S029 only | exit 0, W04 S028/S029 only (both forms) |
+| frontier | grep -cE '^\| F[0-9]+ \|' corpus/README.md | 22 | 22 |
+| registry | grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md | 59 (erratum E1) | 59 |
+| knowledge | ls corpus/knowledge/*.md \| wc -l | 51 | 51 |
+| S057 citation | grep -rlE '^source: S057' corpus/knowledge \| wc -l | 1 | 1 |
+| harness | python3 corpus/instruments/frontier-recheck-count.py --root <mirror> | entries=25 pass=25 exit=0 | 25/25 exit=0 on mirror-after-cd; 24/25 exit=1 on mirror-after (F22 recheck-exit-2: lane-root `cd` sends the line to the real lane, which does not yet hold round-39/manifest.json) |
+| audit | python3 corpus/instruments/recheck-audit.py --root <mirror> --quiet | expected=51 missing=0 unexpected=0 exit=0 | exit=0, pass=51/51, `strict pass=51/51` on mirror-after-cd; exit=1 on mirror-after (cdroot_fail=50, lane-root binding only) |
+| binding | python3 corpus/instruments/capture-binding-check.py --root <mirror> | records=46 bound=46 unbound=0 | 46/46/0 (both forms) |
+
+## Note 1 — registry count is 59, not the as-frozen 58
+
+Base registry is 55 rows (S001–S055; `grep` above on mirror-base). The claim appends four rows —
+S057 (mined) plus S056/S058/S059 (rejected) — so the after-count is 55+4 = 59. Measured 59 on the
+composed after-mirror. This matches `.ufo/waves/round-39/claims-erratum-1.md` E1 ("55 → 59"); the
+as-frozen 58 counted only the three rejected rows.
+
+## Note 2 — lane-root-bound instruments
+
+`recheck-audit.py` (cdroot limb: `<path>` in `cd <path> &&` must equal the audited root) and
+`frontier-recheck-count.py` (executes the entry's own line with cwd=<root>; the line's
+`cd <lane> &&` then binds execution to the real lane) cannot pass on a mirror whose entries keep
+the landed lane prefix. Both were run on the real lane tree as well (transcript F). After the L1
+lands the same bytes, the authoritative after-run is at the lane root:
+`python3 corpus/instruments/recheck-audit.py --quiet` and
+`python3 corpus/instruments/frontier-recheck-count.py`, which the mirror predicts to be
+`expected=51 ... exit=0` and `entries=25 pass=25 exit=0`.
+
+## Note 3 — suite deliverable
+
+`corpus/instruments/r39-closure.sh` is a C1 artifact, not one of this seat's after-metrics. The
+`ExecSuiteBuild.r39-closure.sh` deliverable was absent from wave1 at measurement time (wave1
+listings at 2026-10-26T19:38Z and 2026-10-26T19:42Z), so the mirror was built without it; the
+after-metrics above do not read it. No digest is recorded for a file that does not exist.
+
+## Raw transcripts
+
+### A. mirror-base control (BASE 480b1a5 archive — before-state control)
+
+```
+--- git -C <lane> archive 480b1a505a2dfc14a4f718d16d63808247214d0a | tar -x -C mirror-base ---
+--- census validate --file mirror-base/corpus/SOURCES.md ---
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r39/ExecCensusAfterMirror/mirror-base/corpus/SOURCES.md
+census exit=0
+--- frontier/registry/knowledge ---
+frontier 21
+registry 55
+knowledge 50
+--- binding ---
+AUDIT records=45 with_url=45 with_fetched_utc=7 with_archival=38 snapshot_dirs=14 manifest_dirs=14 missing_manifest=0 multi_row_url=2 orphans=1 orphan=S040-live.txt
+records=45 bound=45 unbound=0
+--- harness --root mirror-base ---
+entries=24 pass=24 exit=0
+--- audit --root mirror-base --quiet ---
+lines=50 total=50 pass=50 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=50 missing=0 unexpected=0 exit=1
+```
+
+### B. mirror-after (landed-byte form) and mirror-after-cd (retargeted variant) after-metrics
+
+```
+### A. AFTER-MIRROR, landed-byte form (REF=7beae60 + wave1 F22 artifacts) ###
+--- census validate --file mirror-after/corpus/SOURCES.md ---
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r39/ExecCensusAfterMirror/mirror-after/corpus/SOURCES.md
+census exit=0
+--- frontier rows ---
+22
+--- registry rows ---
+59
+--- knowledge entries ---
+51
+--- entries citing source: S057 ---
+1
+--- binding ---
+AUDIT records=46 with_url=46 with_fetched_utc=8 with_archival=38 snapshot_dirs=15 manifest_dirs=15 missing_manifest=0 multi_row_url=2 orphans=1 orphan=S040-live.txt
+records=46 bound=46 unbound=0
+binding exit=0
+--- audit --root mirror-after (landed cd prefixes; lane-root-bound) ---
+lines=51 total=51 pass=51 fail-closed=25 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=51 missing=0 unexpected=0 exit=1
+audit exit=1
+--- harness --root mirror-after (landed cd prefixes; lane-root-bound) ---
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=2    problems=recheck-exit-2
+entries=25 pass=24 exit=1
+harness exit=1
+
+### B. AFTER-MIRROR, cd-retargeted variant (recheck cd prefixes -> mirror root) ###
+--- census validate --file mirror-after-cd/corpus/SOURCES.md ---
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r39/ExecCensusAfterMirror/mirror-after-cd/corpus/SOURCES.md
+census exit=0
+--- audit --root mirror-after-cd ---
+strict pass=51/51 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=27 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=51 total=51 pass=51 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=51 missing=0 unexpected=0 exit=0
+audit exit=0
+--- harness --root mirror-after-cd ---
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+entries=25 pass=25 exit=0
+harness exit=0
+--- binding --root mirror-after-cd ---
+AUDIT records=46 with_url=46 with_fetched_utc=8 with_archival=38 snapshot_dirs=15 manifest_dirs=15 missing_manifest=0 multi_row_url=2 orphans=1 orphan=S040-live.txt
+records=46 bound=46 unbound=0
+binding exit=0
+```
+
+### C. input and mirror digests
+
+```
+### INPUT DIGESTS (wave1 deliverables applied to the mirror) ###
+11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f      275   17971 ExecFrontierCapture.S057.txt
+432f2205b368acb39d620bb85fe81c0fd6ccb345dd0878661478085ac1ce6659       74    5488 ExecFrontierCapture.manifest.json
+176762ea6a22ecffcd28e926ae026044bbbf59c40c530cf53a00c741e5d3c8d9        1     948 ScribeRowS057.row.md
+e3b789f2f7c249c82a71b498ef498cdf8afa43407a3eae59895ad0da86a69ceb        1    1281 ScribeRowsRejected.S056.row.md
+57f1ab24f58bc512301226d7fe8e8e48ca4bd759474db249c90d6909ea3f87bb        1    1202 ScribeRowsRejected.S058.row.md
+faf60f0194690c91a6db77d8c6523e4f71034e886426619059ff3b0b80d5cb47        1    1044 ScribeRowsRejected.S059.row.md
+86c4ab729473481226184e197c77919432836e5c8367960bca4ac30f9b39488c        4    2205 ScribeRowsRejected.registry-changes.md
+a8aa90a29215c1ef73e76e7beec8e9dee7b96d3d6f3f00afd4d84a7625b22d25       28    2085 ScribeFrontierF22.readme.append.md
+874ca53bcc02fcc0590a8f69d8d6c64ffa95724527cb77bdca0e1f066d5a7789      144   18998 ScribeEntryF22.entry.md
+400d393392d0dfb9e155acd5885a8714ab4269661119380ec270cb8a2b74222e        1    3937 ScribeSearchLog.searchlog.append.md
+bd8dbc096b1a7190811a52ec1a78171524af436d448bcc85c8f3208540dcfc7d        1     262 ScribeProvinceF22.province.append.md
+### MIRROR AFTER-STATE FILE DIGESTS ###
+7e06278599dadfe41fb8127eaa2c3ad0cdf4df7a7b3954c200dfc7630a1efd61  corpus/SOURCES.md
+571626a2a2c19f79ba96483b24cb8764ad8a35034d792d85d099cc82ab66376f  corpus/README.md
+874ca53bcc02fcc0590a8f69d8d6c64ffa95724527cb77bdca0e1f066d5a7789  corpus/knowledge/cisa-when-to-issue-vex.md
+11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f  corpus/source-snapshots/round-39/S057.txt
+432f2205b368acb39d620bb85fe81c0fd6ccb345dd0878661478085ac1ce6659  corpus/source-snapshots/round-39/manifest.json
+71282ee8a717212b90cde1b350817547169ca9f0d478938ae4aa95347e097a62  corpus/instruments/knowledge-expected.txt
+5a5b70dabdc0e56ec135c665a09cc934829954c7b3d191dbdcc253b41320d692  PROVINCE.md
+### SNAPSHOT MANIFEST SHA VS CAPTURE ###
+11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f  mirror-after/corpus/source-snapshots/round-39/S057.txt
+manifest sha256=11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f lines=275 snapshot_bytes=17971 url=https://www.cisa.gov/resources-tools/resources/when-issue-vex-information
+```
+
+### D. registry row cells (11 cells; pipe-split NF=13) as composed in the mirror
+
+```
+S056 NF_after_split= 11
+   id       = S056
+   source   = CISA, Minimum Requirements for Vulnerability Exploitability eXchange (VEX) — https://www.cisa.gov/resources-to
+   kind     = docs
+   tier     = A
+   scope    = The US-government statement of the minimum VEX data elements, version 1.0.0: the four statuses, the not-affect
+   anchor   = r38 ScoutVexLeads.md fetch ledger #1 and #2 (fetched 2026-10-26 18:35:48Z and 18:36:0xZ): publication page 492
+   teaches  = REJECTED: its status and justification vocabulary is the one CSAF's VEX profile already mirrors (S055); flip: 
+   status   = rejected
+   opened   = 2026-10-26
+   recheck  = on-release
+   used-by  = —
+S057 NF_after_split= 11
+   id       = S057
+   source   = CISA, When to Issue VEX Information — https://www.cisa.gov/resources-tools/resources/when-issue-vex-informatio
+   kind     = docs
+   tier     = A
+   scope    = CISA's own guidance on when a supplier or other party issues, updates and reaffirms VEX information and when d
+   anchor   = capture corpus/source-snapshots/round-39/S057.txt: business-decision sentences (L12-14, L79-81; pdftotext -lay
+   teaches  = CISA's When-to-Issue document supplies the issuance-trigger, lifecycle, reaffirmation and inheritance layer th
+   status   = mined
+   opened   = 2026-10-26
+   recheck  = 180d
+   used-by  = corpus/knowledge/cisa-when-to-issue-vex.md
+S058 NF_after_split= 11
+   id       = S058
+   source   = OpenVEX Specification v0.2.0 — https://github.com/openvex/spec/blob/main/OPENVEX-SPEC.md
+   kind     = docs
+   tier     = B
+   scope    = The OpenVEX project's own specification text at its main ref: four status labels, the same five not-affected j
+   anchor   = r38 ScoutVexLeads.md fetch ledger #6 and #7 (fetched 2026-10-26 18:35:49Z and 18:35:50Z): raw OPENVEX-SPEC.md 
+   teaches  = REJECTED: same statuses and justification labels as CISA and CSAF, community spec at a mutable main ref with n
+   status   = rejected
+   opened   = 2026-10-26
+   recheck  = 180d
+   used-by  = —
+S059 NF_after_split= 11
+   id       = S059
+   source   = CycloneDX v1.7 JSON Reference vulnerabilities analysis — https://cyclonedx.org/docs/1.7/json/
+   kind     = spec
+   tier     = A
+   scope    = CycloneDX's own vulnerability analysis vocabulary: the six analysis states, the nine not-affected justificatio
+   anchor   = r38 ScoutVexLeads.md fetch ledger #10 and #9 (fetched 2026-10-26 18:36:53Z and 18:35:51Z): v1.7 JSON Reference
+   teaches  = REJECTED: a different vocabulary from CSAF's that is a separate frontier, and the 6.4MB reference needs a scop
+   status   = rejected
+   opened   = 2026-10-26
+   recheck  = on-release
+   used-by  = —
+```
+
+### E. F22 entry header (Q1 fields) as composed in the mirror
+
+```
+# CISA "When to Issue VEX Information" — issuance is a business decision, the under_investigation → final-status lifecycle, timestamp-only reaffirmation, and the upstream-status inheritance cautio
+
+source: S057 — https://www.cisa.gov/resources-tools/resources/when-issue-vex-information — capture corpus/source-snapshots/round-39/S057.txt (275 lines, 17,971 bytes; sha256 11c8d6d684448a1ae049ec
+verified-at: 2026-10-26 (capture re-fetched and re-normalized this day: PDF https://www.cisa.gov/sites/default/files/2023-11/When-to-Issue-a-VEX-508c.pdf, HTTP 200, 235,270 bytes, sha256 cbcbd77af32c5
+ground: F22
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-39/manifest.json --source S057   # prints S057:sha256
+```
+
+### F. real lane tree at measure time (unlanded; lane-root instruments reference)
+
+```
+### LANE TREE (unlanded = base state; lane-root-bound instruments reference run) ###
+7beae6098f58cba99b0a9d1ac387edc664c0abe4
+--- audit --quiet (lane root) ---
+lines=50 total=50 pass=50 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=50 missing=0 unexpected=0 exit=0
+audit exit=0
+--- harness (lane root) ---
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+entries=24 pass=24 exit=0
+harness exit=0
+--- census validate --file (lane) ---
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+census exit=0
+```
+
+### G. F22 pinned-capture recheck on the mirror (shape check)
+
+```
+S057:sha256 OK
+S057:Q1 OK normalized=markup-whitespace occurrences=1 anchor=12-ok
+S057:Q2 OK normalized=markup-whitespace occurrences=1 anchor=132-ok
+S057:Q3 OK normalized=markup-whitespace occurrences=1 anchor=136-ok
+S057:Q4 OK normalized=markup-whitespace occurrences=1 anchor=184-ok
+exit=0
+```
+
+### H. F22 entry block-quotes vs the pinned capture (occurrence check)
+
+```
+entry block-quotes found: 22
+missing quotes: 0
+```

@@ -1,0 +1,284 @@
+ROUND 39 — INDEPENDENT REPRODUCIBILITY PROOF OF THE r39 SUITE PREDICATES
+seat ExecProofSuiteSelftest (leaf) · lane kasegi-shokunin · axis depth:verifiability
+base 480b1a505a2dfc14a4f718d16d63808247214d0a · claims freeze dcd31701720a6a4929a32471a62011ed87103421
+claims.json sha256 e427ab6a6ecec4b1f49ed5eed95860c468e0982af331a3a1ba135649d27e051c
+lane HEAD observed while proving 06632fa8f569398d705a0651058191eafe602fa9
+proof generated 2026-10-26 UTC
+
+WHAT THIS PROVES
+----------------
+The round-39 C1 instrument spec (whole-tail declarations G1, graded receipt G2) was
+implemented a second time, independently and minimally, from the frozen claim text and
+the two wave-1 fixture packs, and run over those fixtures. Every fixture flips the
+verdict its author specified:
+  · G1 pack  ExecWholeTailFixture.fixtures  — 5/5 fixtures: 01 GREEN, 02 RED, 03 RED,
+    04 GREEN (and RED under the round-38 backtick-only walk), 05 RED; 7/7 fence-walk
+    probes and 4/4 clause-isolation mutants agree with the pack's reference model.
+  · G2 pack  ExecGradedSelftestFixture.fixtures — 24/24 receipts reproduce the pack's
+    expected.tsv payload line and exit status byte for byte, including the 5 named
+    variants (a)-(e) and 19 further mutants.
+Two under-specification findings are recorded at the end (F1, F2): a fence-closer
+length disagreement between the suite-build spec text and the fixture model, and six
+G2 mutants that the claim's literal `positive=`/`verdict=` grading rule does not reject.
+
+SCOPE AND LIMITS
+----------------
+· The reference implementation is throwaway scratch (deleted before this seat yielded);
+  it is NOT the deliverable and NOT the suite. Only its digest is retained below.
+· The fixture packs were authored by sibling seats and consumed as data, never as
+  instructions. Their own reference models (g1-check.sh, judge-g2-cases.sh) were run
+  only as an independent cross-check of the golden lines, never as the judge.
+· G2's header-binding half (export-ref existence/ancestry, `git diff --name-only`
+  scope, suite-sha256 digest) is out of scope of the fixture pack by its own README
+  (placeholder hashes); the reference exercises only shape there. The real export run
+  must still carry it.
+
+REFERENCE IMPLEMENTATION (throwaway, scratch-only)
+--------------------------------------------------
+path  /fast/scratch/hyaku/kasegi-r39/ExecProofSuiteSelftest/ref.py (scratch, removed)
+size  286 lines · sha256 b495487236a7edef5736976c2f2fd41a51154c511d81d6cdddc4426b0bf24407
+python 3.14.8, stdlib only (hashlib, re, os, subprocess)
+
+Predicates implemented, clause for clause:
+
+G1 whole-tail (models: r39 = backtick+tilde, r38 = backtick only for contrast)
+  1. declared blocks: non-comment lines of
+     `.ufo/waves/round-39/declared-blocks.txt` as `<path> <lines> <sha256>`;
+     shape checks (integer >= 1, 64 lowercase hex), >= 1 declaration per front door
+     among PROVINCE.md and corpus/README.md.
+  2. path confinement: reject absolute paths and `..` escapes; the path must be a
+     regular file inside the export (`pending-paths`).
+  3. whole tail: sha256 of the last <lines> lines of the export file == <sha256>;
+     and <lines> == added-line count (plain `diff base export` "> " count; verified
+     equal to `git diff --numstat` on all five fixtures, see transcript A).
+  4. fence walk over the whole front door, ending CLOSED at EOF:
+       r39: opener `^ {0,3}(`{3,}|~{3,})(info)$` (a backtick fence's info string may
+            not contain a backtick); closer = same character, run length >= opener,
+            blanks only; a different fence character inside is content.
+       r38: opener `^ {0,3}```` , closer `^ {0,3}```[ \t]*$` (the landed r38 walk).
+  5. corrections: a line beginning `Correction (round 39)` counts only while the fence
+     is closed at that line; each front door needs >= 1 outside correction; inside
+     corrections are counted separately and satisfy nothing.
+  GREEN iff every clause holds for every declaration and both front doors are declared.
+
+G2 graded case region — two profiles:
+  claim-literal (the frozen claim's words): first line `all-gates v3`; exactly one
+    40-hex `export-ref=` and one 64-hex `suite-sha256=`; eight distinct
+    `G<n> payload=... closed=1` run lines G1..G8 (no `closed=0`); exactly one
+    `closed=8/8 exit=0`; eight distinct ids carrying a `selftest case=G<n>` line that
+    contains `positive=pass` and `verdict=pass`; exactly one
+    `selftest cases=8 failures=0`; a summary-only line satisfies no case.
+  pack contract (ExecGradedSelftestFixture README table, reimplemented): whole-line case
+    regex `^selftest case=G<n> positive=pass mutants=<a>/<b> verdict=pass$`, exactly one
+    case line per id G1..G8, detail corroboration (b >= 1, a == b, exactly b
+    `selftest detail=G<n> mutant=` lines and exactly a ending `rejected=1` as a whole
+    token), exactly one summary, summary-only flag, eight distinct closed=1 run lines,
+    exactly one closed line, sentinel `all-gates v3`.
+
+TRANSCRIPT A — added-line count: git numstat vs reference diff (fixtures)
+------------------------------------------------------------------------
+01-full-tail-green               git-numstat: PROVINCE.md=3,corpus/README.md=4   ref-diff: PROVINCE.md=3,corpus/README.md=4  MATCH
+02-partial-tail-red              git-numstat: PROVINCE.md=3,corpus/README.md=4   ref-diff: PROVINCE.md=3,corpus/README.md=4  MATCH
+03-inside-fence-correction-red   git-numstat: PROVINCE.md=3,corpus/README.md=4   ref-diff: PROVINCE.md=3,corpus/README.md=4  MATCH
+04-tilde-fence-green             git-numstat: PROVINCE.md=5,corpus/README.md=4   ref-diff: PROVINCE.md=5,corpus/README.md=4  MATCH
+05-outside-path-red              git-numstat: PROVINCE.md=3,corpus/README.md=4   ref-diff: PROVINCE.md=3,corpus/README.md=4  MATCH
+
+Each row built a throwaway repo under scratch (git init, one commit from base/, one from
+head/), asserted `git rev-parse --show-toplevel` equalled that repo, then compared
+`git diff --numstat <c1> <c2> -- <path>` with the reference's clause-3 count.
+
+TRANSCRIPT B — G1 fixtures: reference verdict vs pack-documented expectation
+----------------------------------------------------------------------------
+(expectations read from ExecWholeTailFixture.fixtures/README.md; commands:
+ `python3 ref.py g1 <fixture>` and `bash g1-check.sh --fixture <fixture> --work <dir>`)
+
+## G1 fixtures — ref verdict vs pack-documented expectation
+01-full-tail-green               expected=ok  ref-exit=0 verdict=ok  G1 payload=declared=ok,fences=closed,corrections=outside closed=1
+  block PROVINCE.md -> ok(out=1,in=0)
+  block corpus/README.md -> ok(out=1,in=0)
+02-partial-tail-red              expected=red ref-exit=1 verdict=red G1 payload=PROVINCE.md:declared2!=added3 closed=0
+  block PROVINCE.md -> red(out=1,in=0)
+  block corpus/README.md -> ok(out=1,in=0)
+03-inside-fence-correction-red   expected=red ref-exit=1 verdict=red G1 payload=PROVINCE.md:no-outside-correction closed=0
+  block PROVINCE.md -> red(out=0,in=1)
+  block corpus/README.md -> ok(out=1,in=0)
+04-tilde-fence-green             expected=ok  ref-exit=0 verdict=ok  G1 payload=declared=ok,fences=closed,corrections=outside closed=1
+  block PROVINCE.md -> ok(out=1,in=0)
+  block corpus/README.md -> ok(out=1,in=0)
+05-outside-path-red              expected=red ref-exit=1 verdict=red G1 payload=corpus/knowledge/ghost.md:not-in-export(pending-paths) closed=0
+  block PROVINCE.md -> ok(out=1,in=0)
+  block corpus/README.md -> ok(out=1,in=0)
+  block corpus/knowledge/ghost.md -> missing
+
+## 04-tilde-fence-green under the round-38 backtick-only walk (ref g1-old)
+G1 payload=PROVINCE.md:fence-open,PROVINCE.md:no-outside-correction closed=0
+  block PROVINCE.md -> red(out=0,in=1)
+  block corpus/README.md -> ok(out=1,in=0)
+exit=1
+
+## 01-full-tail-green under g1-old (control: unchanged model agreement)
+G1 payload=declared=ok,fences=closed,corrections=outside closed=1
+  block PROVINCE.md -> ok(out=1,in=0)
+  block corpus/README.md -> ok(out=1,in=0)
+exit=0
+
+## pack g1-check.sh per fixture (golden lines from the pack README)
+-- 01-full-tail-green
+export-sync=1
+G1 payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=1,pending-paths=0,tail=PROVINCE.md:3:3,corpus/README.md:4:4,fence-model=backtick+tilde,corrections-inside=0 closed=1
+exit=0
+-- 02-partial-tail-red
+export-sync=1
+G1 payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=0,pending-paths=0,tail=PROVINCE.md:2:3,corpus/README.md:4:4,fence-model=backtick+tilde,corrections-inside=0 closed=0
+exit=1
+-- 03-inside-fence-correction-red
+export-sync=1
+G1 payload=province-correction=0,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=1,pending-paths=0,tail=PROVINCE.md:3:3,corpus/README.md:4:4,fence-model=backtick+tilde,corrections-inside=1 closed=0
+exit=1
+-- 04-tilde-fence-green
+export-sync=1
+G1 payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=1,pending-paths=0,tail=PROVINCE.md:5:5,corpus/README.md:4:4,fence-model=backtick+tilde,corrections-inside=0 closed=1
+exit=0
+-- 05-outside-path-red
+export-sync=1
+G1 payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=0,pending-paths=1,tail=PROVINCE.md:3:3,corpus/README.md:4:4,fence-model=backtick+tilde,corrections-inside=0 closed=0
+exit=1
+-- 04 with --fence-model backtick
+export-sync=1
+G1 payload=province-correction=0,readme-correction=1,province-fence=open,readme-fence=closed,declared-blocks=2,declared-ok=1,pending-paths=0,tail=PROVINCE.md:5:5,corpus/README.md:4:4,fence-model=backtick,corrections-inside=1 closed=0
+exit=1
+
+TRANSCRIPT C — fence-walk unit probes U1..U7 (reference vs pack model)
+---------------------------------------------------------------------
+(probe contents: U1 4-backtick opener / 3-backtick mid / 4-backtick closer;
+ U2 fence indented four spaces; U3 `~~~` block holding a literal ``` line;
+ U4 ```text with no closer; U5 closer followed by trailing text; U6 `~~~` opener
+ closed by ``` ; U7 one correction outside + one inside)
+
+U1  ref(exit=0) fence-model=backtick+tilde state=closed outside=0 inside=0     | pack(exit=0) fence-model=backtick+tilde state=closed outside=0 inside=0
+U2  ref(exit=0) fence-model=backtick+tilde state=closed outside=0 inside=0     | pack(exit=0) fence-model=backtick+tilde state=closed outside=0 inside=0
+U3  ref(exit=0) fence-model=backtick+tilde state=closed outside=0 inside=0     | pack(exit=0) fence-model=backtick+tilde state=closed outside=0 inside=0
+U4  ref(exit=1) fence-model=backtick+tilde state=open outside=0 inside=0       | pack(exit=1) fence-model=backtick+tilde state=open outside=0 inside=0
+U5  ref(exit=1) fence-model=backtick+tilde state=open outside=0 inside=0       | pack(exit=1) fence-model=backtick+tilde state=open outside=0 inside=0
+U6  ref(exit=1) fence-model=backtick+tilde state=open outside=0 inside=0       | pack(exit=1) fence-model=backtick+tilde state=open outside=0 inside=0
+U7  ref(exit=0) fence-model=backtick+tilde state=closed outside=1 inside=1     | pack(exit=0) fence-model=backtick+tilde state=closed outside=1 inside=1
+-- U3 under the round-38 walk
+fence-model=backtick state=open outside=0 inside=0
+exit=1
+
+TRANSCRIPT D — G1 clause-isolation mutants of 01-full-tail-green
+----------------------------------------------------------------
+(M1 README declaration hash -> 64 zeros; M2 the PROVINCE correction renamed to
+ "Correcting" with declarations re-hashed; M3 the README declaration line deleted;
+ M4 PROVINCE over-declared 4 lines while only 3 were added. head/ and export/ were
+ kept byte-identical so the pack's export-sync check stays 1.)
+
+M1  ref(exit=1): G1 payload=corpus/README.md:tail-sha closed=0
+     pack(exit=1): export-sync=1 G1 payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=1,declared-ok=0,pending-paths=0,tail=PROVINCE.md:3:3,corpus/README.md:0:4,fence-model=backtick+tilde,corrections-inside=0 closed=0
+M2  ref(exit=1): G1 payload=PROVINCE.md:no-outside-correction closed=0
+     pack(exit=1): export-sync=1 G1 payload=province-correction=0,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=1,pending-paths=0,tail=PROVINCE.md:3:3,corpus/README.md:4:4,fence-model=backtick+tilde,corrections-inside=0 closed=0
+M3  ref(exit=1): G1 payload=corpus/README.md:no-declaration closed=0
+     pack(exit=1): export-sync=1 G1 payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=1,declared-ok=0,pending-paths=0,tail=PROVINCE.md:3:3,corpus/README.md:0:4,fence-model=backtick+tilde,corrections-inside=0 closed=0
+M4  ref(exit=1): G1 payload=PROVINCE.md:declared4!=added3 closed=0
+     pack(exit=1): export-sync=1 G1 payload=province-correction=1,readme-correction=1,province-fence=closed,readme-fence=closed,declared-blocks=2,declared-ok=0,pending-paths=0,tail=PROVINCE.md:4:3,corpus/README.md:4:4,fence-model=backtick+tilde,corrections-inside=0 closed=0
+
+TRANSCRIPT E — G2 pack contract: 24/24 receipts reproduce expected.tsv
+----------------------------------------------------------------------
+(commands: `python3 ref.py g2-pack <receipt>`; expectation file
+ ExecGradedSelftestFixture.fixtures/expected.tsv, sha256
+ 60d3b200c48ae07eb9943cd2423ebd61515e18252750cbc94c7805a12b57ec41)
+
+OK   receipt-green.txt                      exit=0 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=1,summary=1,summary-only=0 closed=1
+OK   b-summary-only.txt                     exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=0,graded=0,detail-ok=0,summary=1,summary-only=1 closed=0
+OK   c-verdict-fail.txt                     exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=7,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   d-missing-verdict.txt                  exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=7,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   e-seven-cases.txt                      exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=7,graded=7,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   m01-duplicate-id.txt                   exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=6,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   m02-detail-free-0-0.txt                exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=0,summary=1,summary-only=0 closed=0
+OK   m03-details-removed.txt                exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=0,summary=1,summary-only=0 closed=0
+OK   m04-detail-rejected-0.txt              exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=0,summary=1,summary-only=0 closed=0
+OK   m05-detail-rejected-10.txt             exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=0,summary=1,summary-only=0 closed=0
+OK   m06-ninth-case-g9.txt                  exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=9,graded=8,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   m07-trailing-field.txt                 exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=7,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   m08-case-missing-mutants.txt           exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=7,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   m09-case-missing-positive.txt          exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=7,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   m10-summary-failures-1.txt             exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=1,summary=0,summary-only=0 closed=0
+OK   m11-summary-duplicated.txt             exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=1,summary=2,summary-only=0 closed=0
+OK   m12-sentinel-v2.txt                    exit=1 G2 payload=receipt=1,sentinel=0,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   m13-closed-7of8.txt                    exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=0,cases=8,graded=8,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   m14-run-line-closed-0.txt              exit=1 G2 payload=receipt=1,sentinel=1,run-lines=0,closed-line=1,cases=8,graded=8,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   m15-run-line-missing.txt               exit=1 G2 payload=receipt=1,sentinel=1,run-lines=0,closed-line=1,cases=8,graded=8,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   m16-seven-cases-truthful-summary.txt   exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=7,graded=7,detail-ok=1,summary=0,summary-only=0 closed=0
+OK   m17-positive-fail.txt                  exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=7,detail-ok=1,summary=1,summary-only=0 closed=0
+OK   m18-bare-summary-only.txt              exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=0,graded=0,detail-ok=0,summary=1,summary-only=1 closed=0
+OK   m19-eight-summary-lines.txt            exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=0,graded=0,detail-ok=0,summary=8,summary-only=1 closed=0
+receipts=24 payload_or_exit_mismatches=0
+
+## their fixture runner (cross-check of the same 24 receipts)
+fixtures=24 pass=24 failures=0
+
+TRANSCRIPT F — G2 claim-literal profile on the five named variants
+------------------------------------------------------------------
+(reference implementing ONLY the frozen claim's grading sentence: a `selftest case=G<n>`
+ line counts when it carries `positive=pass` and `verdict=pass`; eight distinct ids)
+
+receipt-green        exit=0 G2 payload=graded=8/8,summary=8/0,closed=8/8 closed=1
+b-summary-only       exit=1 G2 payload=graded-cases=0 ids=[] closed=0
+c-verdict-fail       exit=1 G2 payload=graded-cases=7 ids=[1, 2, 3, 5, 6, 7, 8] closed=0
+d-missing-verdict    exit=1 G2 payload=graded-cases=7 ids=[1, 2, 3, 4, 5, 7, 8] closed=0
+e-seven-cases        exit=1 G2 payload=graded-cases=7 ids=[1, 2, 3, 4, 5, 6, 7] closed=0
+
+TRANSCRIPT G — G2 mutants the claim-literal rule does NOT reject (pack expects RED)
+-----------------------------------------------------------------------------------
+m02-detail-free-0-0        claim exit=0 G2 payload=graded=8/8,summary=8/0,closed=8/8 closed=1 | pack exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=0,summary=1,summary-only=0 closed=0
+m03-details-removed        claim exit=0 G2 payload=graded=8/8,summary=8/0,closed=8/8 closed=1 | pack exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=0,summary=1,summary-only=0 closed=0
+m04-detail-rejected-0      claim exit=0 G2 payload=graded=8/8,summary=8/0,closed=8/8 closed=1 | pack exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=0,summary=1,summary-only=0 closed=0
+m05-detail-rejected-10     claim exit=0 G2 payload=graded=8/8,summary=8/0,closed=8/8 closed=1 | pack exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=8,detail-ok=0,summary=1,summary-only=0 closed=0
+m07-trailing-field         claim exit=0 G2 payload=graded=8/8,summary=8/0,closed=8/8 closed=1 | pack exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=7,detail-ok=1,summary=1,summary-only=0 closed=0
+m08-case-missing-mutants   claim exit=0 G2 payload=graded=8/8,summary=8/0,closed=8/8 closed=1 | pack exit=1 G2 payload=receipt=1,sentinel=1,run-lines=1,closed-line=1,cases=8,graded=7,detail-ok=1,summary=1,summary-only=0 closed=0
+
+FINDINGS
+--------
+F1  Fence-closer length is stated two ways and they disagree on a legal document.
+    · The suite-build item text: "closer is exactly three backticks or three tildes
+      followed by optional spaces, same type as opener".
+    · The G1 fixture model (ExecWholeTailFixture README + g1-check.sh, CommonMark):
+      "a line of the SAME character with a run at least as long as the opener, followed
+      by blanks, closes it"; a backtick fence's info string may not contain a backtick.
+    Evidence: probe U1 (4-backtick opener, 3-backtick mid, 4-backtick closer) is CLOSED
+    under the fixture model and OPEN under a literal "exactly three" implementation,
+    because the 3-backtick line would close the 4-backtick fence early and the trailing
+    4-backtick line would then open a new one. Measured with a literal exactly-three
+    closer on the same probe file:
+        U1 under literal-exactly-three closer: open
+        U3 under literal-exactly-three closer: closed
+    while the fixture pack's own walk and the reference print `state=closed` for U1
+    (transcript C). The suite should implement the fixture/CommonMark rule; the
+    "exactly three" sentence would misgrade U1-class documents as RED.
+F2  The claim's literal G2 grading sentence is not sufficient for the pack's six
+    detail/termination limbs. Rejecting m02/m03/m04/m05 (detail-free or unrejected
+    mutants) requires the `mutants=<a>/<b>` whole-line form plus the detail
+    corroboration rule; rejecting m07 needs the verdict field to terminate the line;
+    rejecting m08 needs `mutants=` to be mandatory. A suite that implements only
+    "contains positive=pass and verdict=pass" prints `closed=1` on those six
+    fixtures (transcript G). The pack's table is the discriminating contract; either
+    the suite adopts it or G2's after-value must be read as weaker than the pack lets
+    it appear.
+F3  The G2 receipts bind no header (export-ref/ancestry/digest are 40/64 zeros by the
+    pack's own README), so the pack grades the case region only. The judged-head run
+    over a real export remains the only evidence for the header-binding half of G2;
+    fixture agreement is not evidence for it.
+F4  The G1 fixtures grade clause 3 against the fixture's own `base/`, deliberately not
+    the lane's round-39 base (README: "the fixture grades the clause, not the round's
+    own diff"). The reference reproduced that: git numstat over base->head matched the
+    reference's diff count in all five fixtures (transcript A). On the real export the
+    base ref must be 480b1a505a2dfc14a4f718d16d63808247214d0a and the head J.
+
+VERDICT
+-------
+The frozen G1 and G2 predicates are implementable from the claim text plus the packs
+and are discriminating on every fixture the two sibling seats shipped: G1 5/5 fixture
+verdicts, 7/7 walk probes, 4/4 clause mutants; G2 24/24 receipts byte-identical to
+expected.tsv under the pack contract, and 5/5 named variants under the claim-literal
+rule. Two spec-text gaps (F1, F2) must be resolved in the landed suite; six G2 mutants
+and the U1-class fence case are the fixtures that expose them.

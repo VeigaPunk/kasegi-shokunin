@@ -1,0 +1,502 @@
+
+
+======================================================================
+## 0. Preamble
+======================================================================
+run started (UTC): 2026-10-26T19:36:21Z
+host: Linux 7.2.11-arch1-1
+bash: GNU bash, version 5.3.20(1)-release (x86_64-pc-linux-gnu)
+git:  git version 2.56.0
+scratch S: /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture
+lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+
+--- disk guard must be green before a heavy pass ---
+$ bash /home/vgpnk/Projects/shokunin/scripts/hyaku/disk-guard.sh status 2>&1 | sed -n '1,6p'
+root                             use%     free
+/tmp                               3%   125.2G
+/var/tmp                          35%   585.6G
+/fast/scratch/hyaku               23%   618.9G
+
+top consumers /tmp
+[exit 0]
+
+--- the defect being reproduced, verbatim from the round-38 lesson (M38-7 row) ---
+$ sed -n '289p' '/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-38.md'
+| M38-7 | scope / misroot | Wave seat ExecNoHarm's fixture driver wrote relative paths before `cd` while its cwd was the fleet root (2026-10-26T15:29:11−03:00): it truncated the fleet-root `LOG.md`/`SCORECARD.md` and created `PROVINCE.md`, `SHONEN.md`, `SKILL.md` and `corpus/*` there. The seat restored the fleet files from fleet HEAD blobs; the orchestrator verified the fleet ledgers byte-equal to HEAD (no loss). | orchestrator notice to the L1 (round 38, in-session); `git -C /home/vgpnk/Projects/shokunin status --porcelain` at the L1 misroot sweep shows no kasegi file | none — the wave context forbade fleet writes and required absolute paths, but nothing enforced it inside a seat's own fixture driver | wave contexts from round 39 require every fixture driver to `cd "$S"` (its scratch) before any relative write and to assert `pwd` is under `$S`; `ExecNoHarm.sh` itself (`--repo`) is not re-run from the fleet root | a driver that writes before `cd` reproduces the misroot in a scratch fixture whose cwd is a throwaway git repo |
+[exit 0]
+
+--- that row's fix / able-to-fail cells, verbatim ---
+$ awk 'NR==289' '/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-38.md' | tr '|' '\n' | sed -n '7,9p'
+ wave contexts from round 39 require every fixture driver to `cd "$S"` (its scratch) before any relative write and to assert `pwd` is under `$S`; `ExecNoHarm.sh` itself (`--repo`) is not re-run from the fleet root 
+ a driver that writes before `cd` reproduces the misroot in a scratch fixture whose cwd is a throwaway git repo 
+
+[exit 0]
+
+--- sandbox scripts under test ---
+$ sha256sum '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/build-fleet.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fresh-fixture.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/guard-run.sh'
+e28511ecbc1e790c0495b0e6040fd348f784abe6bec1a6efae160a1ae4309bea  /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/build-fleet.sh
+8c446944b06f98f7344f319782028e36225f465245b7d018442680f8d0a1ed6c  /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fresh-fixture.sh
+719fa2af4e7559add61eaf02fae6012ce5f2358fed33c1b624e10c94675ce1ba  /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh
+775804870f0b55ce8c6222b297c74af2401a600852cc457d9490f1e81ca73d41  /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/guard-run.sh
+[exit 0]
+
+
+======================================================================
+## 1. Build the sandbox: F = fake fleet root (git repo, tracked-like files)
+======================================================================
+sandbox cleared under /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture
+$ bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/build-fleet.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet'
+fake fleet root /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet at 63b7d23 (toplevel assertion passed)
+[exit 0]
+$ git -C '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' ls-tree -r --name-only HEAD
+LOG.md
+MANIFEST.json
+SCORECARD.md
+[exit 0]
+$ wc -l '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/LOG.md' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/SCORECARD.md'
+  40 /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/LOG.md
+  60 /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/SCORECARD.md
+ 100 total
+[exit 0]
+$ bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fresh-fixture.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture'
+fixture /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture at 4411698
+[exit 0]
+
+baseline F digest: 1a2df6bb10ce62a7a7528e5836de6f37db21a058fdd5c635e927b55720ad222b
+F file digest list (files outside .git):
+8badd85863eca2153f7cf635ec773ff79e7555579746a993fba621509c0ae2cb  ./LOG.md
+cb5d69aea09ab4a7588c7c51d152e7004ba2597f16af602aa43151841e9c0e1e  ./MANIFEST.json
+0d797a011b802db5ab7d03f60c5e239ab5c625e8154dfd75bf6153ccacbc80d7  ./SCORECARD.md
+F digest: 1a2df6bb10ce62a7a7528e5836de6f37db21a058fdd5c635e927b55720ad222b
+F git status --porcelain (empty == pristine):
+[end status]
+$ cp -a '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet.pristine' && echo 'pristine copy kept for restore'
+pristine copy kept for restore
+[exit 0]
+
+
+======================================================================
+## 2. LIMB 1 -- UNGUARDED reproduction: cwd = F, driver writes relative paths before cd
+======================================================================
+NOTE: this is the M38-7 invocation shape: the seat shell sits in the fleet root
+$ cd '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' && pwd -P
+/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet
+[exit 0]
+$ cd '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' && bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture'
+driver: finished, cwd=/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture fixture=/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture
+[exit 0]
+
+--- what the driver did to F ---
+F file digest list (files outside .git):
+9c83ddf9fd9b1dfda2a9ae69e8a6221c863df8b2ee27299fc4268a24e39f305e  ./LOG.md
+cb5d69aea09ab4a7588c7c51d152e7004ba2597f16af602aa43151841e9c0e1e  ./MANIFEST.json
+e41611be86a67a27ef526f585278abff36d560046e0fac66ae571be2e205788f  ./PROVINCE.md
+3c8671e4e4e6a602198d6180aea7f1a6f224f038ad0fce869d9926ca578ddd04  ./SCORECARD.md
+a1ab6455c0f22a3b4c33189f6ceb24fe125fc3e1354dbcec0016df20dd018004  ./SHONEN.md
+c8342c164ec414644db1092ca3a779a94ece06c4676f4dcd96fc2773b72570ae  ./SKILL.md
+81c50a75d38443522ba9211d7c6fb3193ac6492bd5469d60ad15b530b5f02fb8  ./corpus/README.md
+F digest: bfbf7f5fcaa5b269b1cd40b624314ab3c63e4b6d053c3043010c7de32c1d205c
+F git status --porcelain (empty == pristine):
+ M LOG.md
+ M SCORECARD.md
+?? PROVINCE.md
+?? SHONEN.md
+?? SKILL.md
+?? corpus/
+[end status]
+$ git -C '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' diff --stat
+ LOG.md       | 41 +---------------------------------------
+ SCORECARD.md | 61 +-----------------------------------------------------------
+ 2 files changed, 2 insertions(+), 100 deletions(-)
+[exit 0]
+$ wc -l '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/LOG.md' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/SCORECARD.md'
+ 1 /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/LOG.md
+ 1 /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/SCORECARD.md
+ 2 total
+[exit 0]
+$ head -1 '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/LOG.md'
+LOG (truncated by the fixture driver)
+[exit 0]
+$ ls -l '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/PROVINCE.md' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/SHONEN.md' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/SKILL.md' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/corpus/README.md'
+-rw-r--r-- 1 vgpnk vgpnk 48 Oct 26 16:36 /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/corpus/README.md
+-rw-r--r-- 1 vgpnk vgpnk 43 Oct 26 16:36 /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/PROVINCE.md
+-rw-r--r-- 1 vgpnk vgpnk 41 Oct 26 16:36 /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/SHONEN.md
+-rw-r--r-- 1 vgpnk vgpnk 40 Oct 26 16:36 /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/SKILL.md
+[exit 0]
+DAMAGE: tracked LOG.md and SCORECARD.md truncated; PROVINCE.md, SHONEN.md, SKILL.md, corpus/README.md created in F.
+That is exactly the M38-7 event list (round-38.md:289).
+RECORD LIMB 1 unguarded (cwd=F)                       | F=CHANGED | driver=yes  | exit=0
+
+
+======================================================================
+## 3. Restore F; prove the baseline is recoverable
+======================================================================
+F restored from the pristine copy
+VERDICT[after restore]: F byte-identical to baseline (1a2df6bb10ce62a7a7528e5836de6f37db21a058fdd5c635e927b55720ad222b)
+
+
+======================================================================
+## 4. LIMB 2 -- GUARD clause 1 (CWD)
+======================================================================
+NOTE: F is nested inside S in this sandbox, so the plain prefix test alone would be vacuous;
+NOTE: 2a tests the prefix (a seat scratch narrower than F), 2b tests the protected-root exclusion.
+
+--- 2a: scratch prefix does not contain the caller cwd ---
+$ bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fresh-fixture.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture'
+fixture /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture at 4411698
+[exit 0]
+$ cd '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' && SCRATCH_ROOT='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work' FIXTURE_DIR='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture' bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/guard-run.sh' bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture'
+guard: REFUSED [CWD]: caller cwd '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' is not under scratch '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work'
+guard: driver not started
+[exit 90]
+RECORD LIMB 2a guard clause 1 (prefix)                | F=same    | driver=no   | exit=90
+$ ls '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture/setup.log' 2>&1
+ls: cannot access '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture/setup.log': No such file or directory
+[exit 2]
+
+--- 2b: cwd is inside the scratch prefix but is the protected root ---
+$ bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fresh-fixture.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture'
+fixture /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture at 4411698
+[exit 0]
+$ cd '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' && SCRATCH_ROOT='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture' FIXTURE_DIR='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture' FLEET_ROOT='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/guard-run.sh' bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture'
+guard: REFUSED [CWD]: caller cwd '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' is inside protected root '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet'
+guard: driver not started
+[exit 90]
+RECORD LIMB 2b guard clause 1 (protected)             | F=same    | driver=no   | exit=90
+VERDICT[LIMB 2]: F byte-identical to baseline (1a2df6bb10ce62a7a7528e5836de6f37db21a058fdd5c635e927b55720ad222b)
+
+
+======================================================================
+## 5. LIMB 3 -- GUARD clause 2 (WRITES): cwd under scratch, declared write names a fleet-root path
+======================================================================
+$ bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fresh-fixture.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture'
+fixture /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture at 4411698
+[exit 0]
+$ cd '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work' && SCRATCH_ROOT='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture' FIXTURE_DIR='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture' FLEET_ROOT='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' DRIVER_WRITES='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/LOG.md /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/SCORECARD.md' bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/guard-run.sh' bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture'
+guard: REFUSED [TRACKED-WRITE]: declared write '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet/LOG.md' is inside fleet root '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' and is tracked at HEAD
+guard: driver not started
+[exit 90]
+RECORD LIMB 3 guard clause 2 (writes)                 | F=same    | driver=no   | exit=90
+$ ls -A '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work'
+[exit 0]
+
+
+======================================================================
+## 6. LIMB 4 -- GUARD clause 3 (TOPLEVEL): fixture nested inside another repo
+======================================================================
+$ rm -rf '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo' && cp -a '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet.pristine' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo' && mkdir -p '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo/nested' && echo 'nested-repo built from the pristine copy'
+nested-repo built from the pristine copy
+[exit 0]
+$ git -C '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo/nested' rev-parse --show-toplevel
+/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo
+[exit 0]
+$ cd '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work' && SCRATCH_ROOT='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture' FIXTURE_DIR='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo/nested' bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/guard-run.sh' bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo/nested'
+guard: REFUSED [TOPLEVEL]: fixture toplevel '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo' != fixture dir '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo/nested'
+guard: driver not started
+[exit 90]
+RECORD LIMB 4a guard clause 3 (toplevel)              | F=same    | driver=no   | exit=90
+$ git -C '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo' log --oneline
+63b7d23 fixture fleet root
+[exit 0]
+$ git -C '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo' status --porcelain
+[exit 0]
+
+--- 4b -- why clause 3 has teeth: the same nested fixture WITHOUT the guard ---
+NOTE: cwd is the enclosing repo and the fixture is its subdirectory: 'git add -A' from a subdirectory stages the whole worktree
+$ cd '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo' && bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo/nested'
+driver: finished, cwd=/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo/nested fixture=/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo/nested
+[exit 0]
+$ git -C '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo' log --stat --oneline -1
+38b888e fixture: setup from misroot-driver.sh
+ LOG.md           | 41 +------------------------------------
+ PROVINCE.md      |  1 +
+ SCORECARD.md     | 61 +-------------------------------------------------------
+ SHONEN.md        |  1 +
+ SKILL.md         |  1 +
+ corpus/README.md |  1 +
+ nested/setup.log |  1 +
+ 7 files changed, 7 insertions(+), 100 deletions(-)
+[exit 0]
+$ git -C '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/nested-repo' status --porcelain
+[exit 0]
+HARM: the misroot became a commit in the enclosing repo (the LOG.md/SCORECARD.md truncation is now in its history).
+This copy lives inside scratch S; the real F was not the target of this limb.
+RECORD LIMB 4b unguarded nested control               | F=same    | driver=yes  | exit=0
+
+
+======================================================================
+## 7. LIMB 5 -- POSITIVE: all clauses green, driver runs, damage confined to scratch
+======================================================================
+$ bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fresh-fixture.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture'
+fixture /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture at 4411698
+[exit 0]
+$ cd '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos' && SCRATCH_ROOT='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture' FIXTURE_DIR='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture' FLEET_ROOT='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet' DRIVER_WRITES='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos/LOG.md /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos/SCORECARD.md /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos/PROVINCE.md /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos/SHONEN.md /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos/SKILL.md /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos/corpus/README.md' DRIVER_CWD='/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos' bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/guard-run.sh' bash '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture'
+guard: PASS [cwd=/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos toplevel=/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture fleet=/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fakefleet]
+driver: finished, cwd=/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture fixture=/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture
+[exit 0]
+
+--- the relative writes landed in scratch, not in F ---
+$ ls -A '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos'
+corpus
+LOG.md
+PROVINCE.md
+SCORECARD.md
+SHONEN.md
+SKILL.md
+[exit 0]
+$ wc -l '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos/LOG.md' '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos/SCORECARD.md'
+ 1 /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos/LOG.md
+ 1 /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/work-pos/SCORECARD.md
+ 2 total
+[exit 0]
+$ git -C '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fixture' log --oneline
+5da85b8 fixture: setup from misroot-driver.sh
+4411698 fixture base
+[exit 0]
+RECORD LIMB 5 positive (cwd under S)                  | F=same    | driver=yes  | exit=0
+
+
+======================================================================
+## 8. Summary (recorded from the runs above)
+======================================================================
+label                                          | F         | driver      | exit
+-----------------------------------------------+-----------+-------------+--------
+LIMB 1 unguarded (cwd=F)                       | F=CHANGED | driver=yes  | exit=0
+LIMB 2a guard clause 1 (prefix)                | F=same    | driver=no   | exit=90
+LIMB 2b guard clause 1 (protected)             | F=same    | driver=no   | exit=90
+LIMB 3 guard clause 2 (writes)                 | F=same    | driver=no   | exit=90
+LIMB 4a guard clause 3 (toplevel)              | F=same    | driver=no   | exit=90
+LIMB 4b unguarded nested control               | F=same    | driver=yes  | exit=0
+LIMB 5 positive (cwd under S)                  | F=same    | driver=yes  | exit=0
+
+baseline F digest: 1a2df6bb10ce62a7a7528e5836de6f37db21a058fdd5c635e927b55720ad222b
+final    F digest: 1a2df6bb10ce62a7a7528e5836de6f37db21a058fdd5c635e927b55720ad222b
+
+
+======================================================================
+## 9. What a round-39 wave context must carry
+======================================================================
+M38-7's fix cell (round-38.md:289) reads: "wave contexts from round 39 require every
+fixture driver to `cd "$S"` (its scratch) before any relative write and to assert
+`pwd` is under `$S`", with "able to fail: a driver that writes before `cd` reproduces
+the misroot in a scratch fixture whose cwd is a throwaway git repo".  The measured
+limbs above turn that sentence into an invariant.  Paste-ready clause text:
+
+--- begin paste-ready clause ---------------------------------------------------
+FIXTURE-DRIVER GUARD (round-39; closes M38-7)
+
+1. Every seat creates its scratch S=/fast/scratch/hyaku/kasegi-r39/<SEATNAME>/ and
+   brings its shell there (`cd "$S"`) before it writes, builds, or runs anything.
+2. Every fixture driver is invoked through a guard that, in this order, refuses
+   unless:
+     a. the caller's cwd is under S and is not inside a protected root
+        (the fleet root /home/vgpnk/Projects/shokunin is always protected);
+     b. no write path the driver declares lies inside a protected root;
+     c. `git -C <fixture> rev-parse --show-toplevel` prints <fixture> itself;
+     d. (then) it cd's into S -- or DRIVER_CWD, itself under S -- and execs the
+        driver there, so relative writes can only land in scratch.
+3. A refusing guard exits 90 and the driver never starts.
+4. The seat records one positive run AND one refused run, with the refusal's exit
+   status and the protected root's digest before/after.  A guard with no recorded
+   refusal is prose, not enforcement.
+5. `corpus/instruments/ExecNoHarm.sh` is not re-run from the fleet root.
+--- end paste-ready clause -----------------------------------------------------
+
+What each measured limb buys, and the limits:
+
+- Limb 2a (guard clause 1, prefix test) is the literal fix cell: cwd outside scratch -> REFUSED, exit 90,
+  driver not started, F byte-identical.  This is the M38-7 precondition itself.
+- Limb 2b (guard clause 1, protected-root exclusion) exists because a prefix test is
+  only as good as the prefix: in this sandbox F is nested under S, so "cwd under S" is satisfied by the
+  fleet-root stand-in.  In production F is outside S and either half suffices; the
+  exclusion costs one pattern match and removes the nesting hazard.
+- Limb 3 (guard clause 2, declared writes) is a declaration check, so it cannot see an
+  undeclared absolute write.  It is defence in depth; clause 1 is the enforcement.  A driver
+  that genuinely needs an absolute target must be given one under S.
+- Limb 4 (guard clause 3, toplevel) is the second half of the fix cell with teeth: the unguarded
+  control (limb 4b) shows a nested fixture turning the misroot into a commit
+  ("7 files changed, 7 insertions(+), 100 deletions(-)" -- the truncation is now in
+  the enclosing repo's history).  A toplevel assertion before `git add`/`commit`
+  refuses that path.
+- Cost, measured: one wrapper invocation plus five environment variables; the whole
+  demo (one fake fleet root, five fixture-repo rebuilds, three git histories) takes
+  roughly a second on this host (wall time recorded at the end of this transcript).
+- Scope of the demonstration: F is a stand-in built inside seat scratch, so the
+  damage in limb 1 and limb 4b lands on copies, never on the fleet root or the lane.
+  No lane or fleet file was written by this seat; only $S was.
+
+
+======================================================================
+## 10. Appendix -- sandbox scripts (byte sources of every command above)
+======================================================================
+
+--- build-fleet.sh ---
+$ sha256sum '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/build-fleet.sh'
+e28511ecbc1e790c0495b0e6040fd348f784abe6bec1a6efae160a1ae4309bea  /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/build-fleet.sh
+[exit 0]
+$ cat '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/build-fleet.sh'
+#!/usr/bin/env bash
+# build-fleet.sh <dir> -- a fake fleet root: tracked-like files, committed, own repo root.
+set -u -o pipefail
+F=${1:?usage: build-fleet.sh <dir>}
+case $F in /fast/scratch/hyaku/kasegi-r39/*) ;; *) echo "refusing target outside seat scratch: $F" >&2; exit 2 ;; esac
+rm -rf "$F"
+mkdir -p "$F"
+seq 1 40 | sed 's/^/LOG line /' >"$F/LOG.md"
+seq 1 60 | sed 's/^/SCORECARD line /' >"$F/SCORECARD.md"
+printf '{"manifest": "fixture"}\n' >"$F/MANIFEST.json"
+git -c init.defaultBranch=main -C "$F" init -q
+git -C "$F" add -A
+git -C "$F" -c user.name=fixture -c user.email=fixture@invalid commit -qm 'fixture fleet root'
+[ "$(git -C "$F" rev-parse --show-toplevel)" = "$F" ] || { echo "toplevel assertion failed" >&2; exit 2; }
+printf 'fake fleet root %s at %s (toplevel assertion passed)\n' "$F" "$(git -C "$F" rev-parse --short HEAD)"
+[exit 0]
+
+--- fresh-fixture.sh ---
+$ sha256sum '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fresh-fixture.sh'
+8c446944b06f98f7344f319782028e36225f465245b7d018442680f8d0a1ed6c  /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fresh-fixture.sh
+[exit 0]
+$ cat '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/fresh-fixture.sh'
+#!/usr/bin/env bash
+# fresh-fixture.sh <dir> -- a clean one-commit fixture repo, own worktree root.
+set -u -o pipefail
+D=${1:?usage: fresh-fixture.sh <dir>}
+case $D in /fast/scratch/hyaku/kasegi-r39/*) ;; *) echo "refusing target outside seat scratch: $D" >&2; exit 2 ;; esac
+rm -rf "$D"
+mkdir -p "$D"
+git -c init.defaultBranch=main -C "$D" init -q
+printf 'base\n' >"$D/base.txt"
+git -C "$D" add -A
+git -C "$D" -c user.name=fixture -c user.email=fixture@invalid commit -qm 'fixture base'
+printf 'fixture %s at %s\n' "$D" "$(git -C "$D" rev-parse --short HEAD)"
+[exit 0]
+
+--- misroot-driver.sh ---
+$ sha256sum '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh'
+719fa2af4e7559add61eaf02fae6012ce5f2358fed33c1b624e10c94675ce1ba  /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh
+[exit 0]
+$ cat '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/misroot-driver.sh'
+#!/usr/bin/env bash
+# misroot-driver.sh -- reproduces the M38-7 driver shape (round 38, 2026-10-26T15:29:11-03:00).
+#
+# The shape: fixture setup writes RELATIVE paths, and the fixture root is only
+# learned afterwards (here as $1).  Whatever directory the caller's shell happens
+# to sit in receives those writes.  When that directory was the fleet root, the
+# round-38 seat truncated LOG.md / SCORECARD.md and created PROVINCE.md, SHONEN.md,
+# SKILL.md and corpus/README.md there.
+#
+#   usage: misroot-driver.sh <fixture-dir>
+#
+# No absolute path appears before the `cd`, by design: that is the defect.
+
+set -u -o pipefail
+
+D=${1:?usage: misroot-driver.sh <fixture-dir>}
+
+# ---- fixture setup: relative writes, executed BEFORE any `cd` (the M38-7 shape) ----
+printf 'LOG (truncated by the fixture driver)\n' > LOG.md
+printf 'SCORECARD (truncated by the fixture driver)\n' > SCORECARD.md
+printf '# PROVINCE (created by the fixture driver)\n' > PROVINCE.md
+printf '# SHONEN (created by the fixture driver)\n' > SHONEN.md
+printf '# SKILL (created by the fixture driver)\n' > SKILL.md
+mkdir -p corpus
+printf '# corpus/README (created by the fixture driver)\n' > corpus/README.md
+
+# ---- only here does the driver learn where the fixture actually is ----
+cd "$D" || { printf 'driver: cannot enter fixture %s\n' "$D" >&2; exit 2; }
+printf 'driver run\n' >>setup.log
+git -C "$D" add -A >/dev/null 2>&1
+git -C "$D" -c user.name=fixture -c user.email=fixture@invalid \
+  commit -qm 'fixture: setup from misroot-driver.sh' >/dev/null 2>&1
+printf 'driver: finished, cwd=%s fixture=%s\n' "$(pwd -P)" "$D"
+[exit 0]
+
+--- guard-run.sh ---
+$ sha256sum '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/guard-run.sh'
+775804870f0b55ce8c6222b297c74af2401a600852cc457d9490f1e81ca73d41  /fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/guard-run.sh
+[exit 0]
+$ cat '/fast/scratch/hyaku/kasegi-r39/ExecNoHarmFixture/guard-run.sh'
+#!/usr/bin/env bash
+# guard-run.sh -- the round-39 mandated guard for fixture drivers (closes M38-7).
+#
+# Clauses, evaluated in order, before the driver's first instruction runs:
+#
+#   1 CWD        the caller's cwd must already be under $SCRATCH_ROOT and must not
+#                be inside a protected root ($FLEET_ROOT).  The M38-7 precondition
+#                -- cwd = the fleet root -- violates the second half; a seat shell
+#                that has not cd'd into scratch violates the first.
+#   2 WRITES     every absolute path the driver declares it will write must lie
+#                outside $FLEET_ROOT.  This is a declaration check (defence in
+#                depth): it cannot see a write the driver does not declare.
+#   3 TOPLEVEL   the fixture used for git mutations must be its own worktree root:
+#                `git -C "$FIXTURE_DIR" rev-parse --show-toplevel` == "$FIXTURE_DIR".
+#                Nested fixtures are refused, because `git add -A` from a
+#                subdirectory stages the whole enclosing worktree.
+#   4 CD+EXEC    cd into $DRIVER_CWD (default $SCRATCH_ROOT; must be under scratch)
+#                and exec the driver, so relative writes can only land in scratch.
+#
+#   usage: SCRATCH_ROOT=<S> FIXTURE_DIR=<D> [FLEET_ROOT=<F>] [DRIVER_WRITES="<abs> ..."] \
+#          [DRIVER_CWD=<dir under S>] guard-run.sh <driver> [driver args...]
+#
+# Exit: driver's own status when it runs; 90 when a clause refuses (driver never starts).
+
+set -u -o pipefail
+
+S=${SCRATCH_ROOT:?SCRATCH_ROOT unset}
+D=${FIXTURE_DIR:?FIXTURE_DIR unset}
+FLEET=${FLEET_ROOT:-}
+WRITES=${DRIVER_WRITES:-}
+RUN_CWD=${DRIVER_CWD:-$S}
+
+refuse() {
+  printf 'guard: REFUSED [%s]: %s\n' "$1" "$2" >&2
+  printf 'guard: driver not started\n' >&2
+  exit 90
+}
+
+# clause 1 -- caller cwd under scratch, and outside every protected root
+caller=$(pwd -P)
+case $caller in
+  "$S" | "$S"/*) ;;
+  *) refuse CWD "caller cwd '$caller' is not under scratch '$S'" ;;
+esac
+if [ -n "$FLEET" ]; then
+  case $caller in
+    "$FLEET" | "$FLEET"/*)
+      refuse CWD "caller cwd '$caller' is inside protected root '$FLEET'" ;;
+  esac
+fi
+
+# clause 2 -- no declared write inside the fleet root
+if [ -n "$FLEET" ]; then
+  for p in $WRITES; do
+    case $p in
+      "$FLEET" | "$FLEET"/*)
+        rel=${p#"$FLEET"/}
+        if git -C "$FLEET" cat-file -e "HEAD:$rel" 2>/dev/null; then
+          refuse TRACKED-WRITE "declared write '$p' is inside fleet root '$FLEET' and is tracked at HEAD"
+        fi
+        refuse FLEET-WRITE "declared write '$p' is inside fleet root '$FLEET'"
+        ;;
+    esac
+  done
+fi
+
+# clause 3 -- fixture must be its own worktree root
+top=$(git -C "$D" rev-parse --show-toplevel 2>/dev/null) ||
+  refuse NOT-A-REPO "fixture '$D' is not inside a git worktree"
+[ "$top" = "$D" ] ||
+  refuse TOPLEVEL "fixture toplevel '$top' != fixture dir '$D'"
+
+# clause 4 -- move into scratch, then hand over
+case $RUN_CWD in
+  "$S" | "$S"/*) ;;
+  *) refuse CD "DRIVER_CWD '$RUN_CWD' is not under scratch '$S'" ;;
+esac
+cd "$RUN_CWD" || refuse CD "cannot enter '$RUN_CWD'"
+printf 'guard: PASS [cwd=%s toplevel=%s fleet=%s]\n' "$(pwd -P)" "$top" "${FLEET:-none}"
+exec "$@"
+[exit 0]
+
+demo wall time: 459 ms
+run finished (UTC): 2026-10-26T19:36:22Z

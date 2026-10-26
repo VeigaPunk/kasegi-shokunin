@@ -65,3 +65,31 @@ landing's completeness was re-measured. `open` on proposals 4 and 6 records an o
 explicit no-change note, not a refusal; no proposal here is `declined`. This section is an end-of-file
 append (R6/R9): the base table, the round-31 flip block and the re-pin note above are unedited, and a later
 flip lands as a new section rather than as an edit to a row.
+
+## Round-39 dispositions (appended 2026-10-26)
+Correction (round 39): this file carries two numberings and the older sections do not say which is which. The
+base table at `:11-16` and the round-31 flip block at `:22-33` number the six proposals of
+`considerthese/2026-10-25.md`; the round-38 section at `:45-67` and this section number the seven proposals of
+`considerthese/2026-10-26.md`, so the label “1.” names different proposals in different tables. The round-38
+row at `:54` reports the distance-to-next-score thread as `open` before and after round 38 although that
+thread was already flipped `mined round 31 → corpus/instruments/score-gap.py` at `:28` under the 2026-10-25
+numbering: round 31 mined the measurement and round 39 mines the criteria text, so row 1 below records a
+round-39 landing and not a first mining.
+
+| proposal | status | evidence |
+|---|---|---|
+| 1. Make “distance to next score” explicit | **mined round 39** (criteria; the round-31 measurement stands) | The criteria block drafted at `.ufo/waves/round-39/wave1/ExecConsiderthese.scorecard.append.md` (heading `## Distance-to-next-score (round 39, mined from considerthese 2026-10-26 proposal 1)`) lands in `SCORECARD.md` §Saturation in the same commit as this append, stating the verifiability-5 bar (0 gated rechecks plus the `SCORECARD.md:331` audit bar) and the coverage-8 criterion `(20 + F_admitted) / (20 + F_total) = 1.000`. At base `480b1a5` both `grep -c 'Distance-to-next-score' SCORECARD.md` and `grep -c 'Threshold for 8' SCORECARD.md` return 0. The gap it makes explicit, measured read-only by `corpus/instruments/score-gap.py`: `gap: 24 of 50 rechecks still gated on a lost base; score 5 needs 0 gated unsupported claims`, with `recheck: lines=50 executes=26 gated=24 broken=0 exit=0` and `strict pass=50/50 cdroot_fail=0 instrument_fail=0 own_fail=0`; coverage counters at base are `frontier rows 21`, `registry rows 55` and frontier harness `entries=24 pass=24 exit=0` (`.ufo/waves/round-39/wave1/ExecScoreGap.gap.txt:23,36,92,100,101,160`). |
+| 2. Run one end-to-end domain task round | **open (unchanged)** | The frozen round-39 claims (`.ufo/waves/round-39/claims.json`: C1 the export-mode closure suite, C2 F22 VEX-issuance coverage) name no end-to-end domain task, and the box-2 evidence line `SHONEN.md:182-183` (round 38) keeps `[~]`. Nothing this round moves it. |
+| 3. Add a quiescence gate before `complete` | **carried: mined → landed r36, hardened r38, expanded round 39 to the phased-commit order check** | `corpus/QUALITY.md:292` (R33 closure order: every round artifact before the judged head, the judged head named only by reference to the gate receipt, the report filed after the last lane commit) plus the round-39 C1 limbs in `.ufo/waves/round-39/claims.json`: G2 requires the receipt's `export-ref` to be ancestor-or-equal of REF with `git diff --name-only <export-ref> REF` listing only the receipt, and G5 requires zero `Final lane commit:` lines in the `## Round 39` section and in the SHONEN round-39 lines. The round-38 seat-identity and scratch-quiescence limbs (G4/G6) are carried in `corpus/instruments/r38-closure.sh`. |
+| 4. Cap or externalise wave evidence | **open (unchanged; operator-owned)** | Measured at base `480b1a5`: `git ls-tree -r --name-only` → 7,479 tracked files, 7,190 under `.ufo/` (96.1 %); `git ls-tree -r -l` → 124,950,336 bytes, 118,529,503 under `.ufo/` (94.9 %); the lane tree at base carries no `.gitattributes` at all (`git ls-tree -r --name-only 480b1a5` → 0 paths matching `gitattributes`), so no LFS filter exists. The keep-or-externalise decision is operator-owned and no release, LFS or prune artefact is committed. |
+| 5. Land the owed F18 `PROVINCE.md` amendment | **landed r36 → resolved-landed (round 39)** | The amendment is present at `PROVINCE.md:77`, opening `[r36 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F18 — CISA Known Exploited Vulnerabilities catalog` and naming `admitted round 35` plus the entry `corpus/knowledge/cisa-kev-catalog.md` (source S052). The round-38 section already read `unchanged (landed r36)` at `:58`; round 39 marks the row resolved-landed instead of carrying it as open work. |
+| 6. Re-tune my own cadence and depth | **open (unchanged)** | `considerthese/` holds 8 files, one per day `2026-10-19.md` … `2026-10-26.md`; the frozen round-39 claims name no second daily run, no standing per-round digest section and no weekly read-only cloud pass, so the cadence is unchanged this round. |
+| 7. Keep a proposal-status ledger | **mined → landed r37, filled round 38, extended round 39** | `corpus/QUALITY.md:278` (R31) names `corpus/knowledge/considerthese-proposals-ledger.md` as the disposition home; the round-38 section at `:45-67` filled the seven 2026-10-26 rows; this section rows all seven again (7 of 7 proposals rowed, none omitted), which is the round-39 fill. |
+
+Scope: statuses are documentary. The base figures were measured at `480b1a505a2dfc14a4f718d16d63808247214d0a`
+with `git ls-tree -r -l`, `python3 corpus/instruments/score-gap.py` and `grep` on `SCORECARD.md`,
+`PROVINCE.md` and `SHONEN.md`; the round-39 landing is cited by path and is not re-measured here. `mined`
+means a cited lane record names a corresponding landing; it does not establish that a proposal is closed.
+This section is an end-of-file append (R6/R9): the base table, the round-31 flip block, the re-pin note and
+the round-38 section above are unedited, and a later flip lands as a new section rather than as an edit to a
+row.

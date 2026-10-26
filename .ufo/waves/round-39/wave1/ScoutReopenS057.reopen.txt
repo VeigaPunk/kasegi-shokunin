@@ -1,0 +1,13 @@
+S057 re-open (round 39), access-date duty
+UA: kasegi-shokunin/1.0 (curl -sS -L --max-time 90), no redirects observed (final URL equals request URL)
+page  url=https://www.cisa.gov/resources-tools/resources/when-issue-vex-information
+page  fetch_utc=2026-10-26T19:30:41Z http=200 bytes=54453 sha256=4e6aa483c20013bb84d43d166e3f20c91fba63ece7c35861f6d95c8b61af0e4d
+page  publication_date=<time datetime="2023-11-06T12:00:00Z">November 06, 2023</time> (field "Publish Date", page.html line 1127); later datetime values 2026-10-22, 2026-10-16, 2026-09-16 belong to related-content cards
+pdf   url=https://www.cisa.gov/sites/default/files/2023-11/When-to-Issue-a-VEX-508c.pdf (single href on the page)
+pdf   fetch_utc=2026-10-26T19:30:54Z http=200 content_type=application/pdf bytes=235270 sha256=cbcbd77af32c589eaf85aef4e3911b133fd95ccdedd80b56b40e9c0909450d99
+pdf   last_modified=Mon, 06 Nov 2023 15:43:40 GMT etag="39706-6097db7d52c78"; pdf text front matter "Publication date: November 2023"
+norm  method=corpus/instruments/capture-source.py pdf_to_text() (pdftotext -enc UTF-8 + collapse) on the fetched bytes
+norm  lines=275 bytes=17971 sha256=11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f
+compare normalized text vs .ufo/waves/round-39/wave1/ExecFrontierCapture.S057.txt: cmp exit 0 (byte-identical, same sha256)
+compare corpus/source-snapshots/round-39/S057.txt: absent from the lane working tree when checked after the fetches (committed path not yet written); the wave1 deliverable is the stand-in
+compare round-38 scout record (ScoutVexLeads): page 54453 B sha 4e6aa483...0e4d, PDF 235270 B sha cbcbd77a...0d99 -- both unchanged

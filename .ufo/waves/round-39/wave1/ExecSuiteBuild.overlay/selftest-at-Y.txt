@@ -1,0 +1,67 @@
+selftest export-ref=b3a3b06b5acb1c17d584636b70c9cbdc9e8b04fc lane=/fast/scratch/hyaku/kasegi-r39/ExecSuiteBuild/ov/repo suite-sha256=2856a210d7838e61ea68e1867b76693abd00916307dea5b830c8574298b4222b
+deviation=non-default --lane
+deviation=non-default --scratch-root
+selftest detail=G1 positive=pass payload=declared=2,valid=2,front-doors=2,tail-match=2,pure-append=1,paths=1,province-fence=closed,readme-fence=closed,corrections-outside=1,corrections-inside=0,corrections-declared=1,diff-read=ok
+selftest detail=G1 control=whole-tail-green accepted=1 payload=declared=2,valid=2,front-doors=2,tail-match=2,pure-append=1,paths=1,province-fence=closed,readme-fence=closed,corrections-outside=1,corrections-inside=0,corrections-declared=1,diff-read=ok
+selftest detail=G1 mutant=declared-short-of-added rejected=1 limb=valid=0
+selftest detail=G1 mutant=tilde-opener-closed-by-backticks rejected=1 limb=readme-fence=open
+selftest detail=G1 mutant=correction-inside-fence rejected=1 limb=corrections-inside=1
+selftest detail=G1 mutant=declaration-path-escape rejected=1 limb=paths=0
+selftest case=G1 positive=pass mutants=4/4 verdict=pass
+selftest detail=G2 positive=pass payload=receipt=1,sentinel=1,export-ref=1,ancestor=1,diff-clean=1,diff-read=ok,digest-match=1,export-suite=1,run-lines=8,closed-lines=0,distinct-ids=8,closed-line=1,graded-cases=8,ungraded-cases=0,selftest-summary=1,scorecard-ref=1,shonen-ref=1,final-lane-commit=0
+selftest detail=G2 mutant=sentinel-v2 rejected=1 limb=sentinel=0
+selftest detail=G2 mutant=digest-mismatch rejected=1 limb=digest-match=0
+selftest detail=G2 mutant=summary-only-case-line rejected=1 limb=graded-cases=0
+selftest detail=G2 mutant=case-verdict-fail rejected=1 limb=graded-cases=7
+selftest detail=G2 mutant=seven-graded-cases rejected=1 limb=graded-cases=7
+selftest detail=G2 mutant=final-label-in-section rejected=1 limb=final-lane-commit=1
+selftest detail=G2 mutant=export-ref-not-ancestor rejected=1 limb=ancestor=0
+selftest detail=G2 mutant=post-receipt-diff-extra rejected=1 limb=diff-clean=0
+selftest case=G2 positive=pass mutants=8/8 verdict=pass
+selftest detail=G3 positive=pass payload=added-quotes=1,covered=1,uncovered=0,report-only=0,diff-read=ok
+selftest detail=G3 control=quoted-run-transcribed accepted=1 payload=added-quotes=1,covered=1,uncovered=0,report-only=0,diff-read=ok
+selftest detail=G3 mutant=quote-without-transcript rejected=1 limb=uncovered=1
+selftest detail=G3 mutant=transcript-outside-final-gates rejected=1 limb=uncovered=1
+selftest case=G3 positive=pass mutants=2/2 verdict=pass
+selftest detail=G4 positive=pass payload=dispatches=1,pairs=1,seats-ok=1,zero-task=0,read=ok
+selftest detail=G4 mutant=results-absent rejected=1 limb=pairs=0
+selftest detail=G4 mutant=duplicate-identity rejected=1 limb=seats-ok=0
+selftest detail=G4 mutant=seat-count-short rejected=1 limb=seats-ok=0
+selftest detail=G4 mutant=zero-task-dispatch rejected=1 limb=zero-task=1
+selftest detail=G4 mutant=results-unparseable rejected=1 limb=pairs=0
+selftest detail=G4 mutant=results-wave-mismatch rejected=1 limb=pairs=0
+selftest case=G4 positive=pass mutants=6/6 verdict=pass
+selftest detail=G5 positive=pass payload=round39-section=1,final-lane-commit=0,correction=1,correction-labeled=1
+selftest detail=G5 mutant=final-label-in-section rejected=1 limb=final-lane-commit=1
+selftest detail=G5 mutant=correction-absent rejected=1 limb=correction=0
+selftest detail=G5 mutant=correction-unlabeled rejected=1 limb=correction-labeled=0
+selftest detail=G5 mutant=round39-section-absent rejected=1 limb=round39-section=0
+selftest case=G5 positive=pass mutants=4/4 verdict=pass
+selftest detail=G6 positive=pass payload=r37=absent,r38=absent,r39=absent,work=outside,tolerated=none,read=ok
+selftest detail=G6 control=own-work-dir accepted=1 payload=r37=absent,r38=absent,r39=empty,work=inside,tolerated=/fast/scratch/hyaku/kasegi-r39/ExecSuiteBuild/ov/run/ys/mut/g6-control/kasegi-r39/seat,read=ok
+selftest detail=G6 mutant=r37-leftover-file rejected=1 limb=r37=present
+selftest detail=G6 mutant=r38-residual-seat rejected=1 limb=r38=present
+/fast/scratch/hyaku/kasegi-r39/ExecSuiteBuild/r39-closure.sh: line 555: cd: /fast/scratch/hyaku/kasegi-r39/ExecSuiteBuild/ov/run/ys/mut/g6-r39/kasegi-r39/seat/leftover.txt: Not a directory
+selftest detail=G6 mutant=r39-parent-sibling-leftover rejected=1 limb=r39=present
+selftest detail=G6 control=nested-clean-chain accepted=1 payload=r37=absent,r38=absent,r39=empty,work=inside,tolerated=/fast/scratch/hyaku/kasegi-r39/ExecSuiteBuild/ov/run/ys/mut/g6-nested/kasegi-r39/seat,read=ok
+find: ‘/fast/scratch/hyaku/kasegi-r39/ExecSuiteBuild/ov/run/ys/mut/g6-unreadable/kasegi-r37’: Permission denied
+selftest detail=G6 mutant=unreadable-root rejected=1 limb=r37=unreadable
+selftest case=G6 positive=pass mutants=4/4 verdict=pass
+selftest detail=G7 positive=pass payload=section=1,after-round38=1,correction=1,rows=4,proposal-1=1,proposal-3=1
+selftest detail=G7 mutant=proposal-3-row-absent rejected=1 limb=proposal-3=0
+selftest detail=G7 mutant=correction-absent rejected=1 limb=correction=0
+selftest detail=G7 mutant=section-before-round38 rejected=1 limb=after-round38=0
+selftest case=G7 positive=pass mutants=3/3 verdict=pass
+selftest detail=G8 positive=pass payload=pin-ref=2387dcf6ccfefcfb703783387b9aade8fc82abfa,pinned-sha=1,export-copy=1,r37-copy=1,r37-closed=1,r37-exit=0
+selftest detail=G8 mutant=export-copy-digest-mismatch rejected=1 limb=export-copy=0
+selftest detail=G8 mutant=export-copy-absent rejected=1 limb=r37-copy=0
+selftest detail=G8 mutant=pinned-run-red rejected=1 limb=r37-closed=0
+selftest case=G8 positive=pass mutants=3/3 verdict=pass
+selftest cases=8 failures=0
+selftest judge=own-report accepted=1
+selftest judge=forged-summary rejected=1
+selftest judge=forged-caselines rejected=1
+selftest judge=forged-failed-cases rejected=1
+selftest judge=forged-detail-free rejected=1
+selftest judge=forged-7-cases rejected=1
+selftest judge=forged-no-verdict rejected=1

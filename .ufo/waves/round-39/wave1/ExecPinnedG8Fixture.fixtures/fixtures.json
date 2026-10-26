@@ -1,0 +1,103 @@
+{
+  "schema": "kasegi-r39-g8p-fixture-set-v1",
+  "instrument": "corpus/instruments/r39-closure.sh",
+  "limb": "G8",
+  "limb_statement": "the export's corpus/instruments/r37-closure.sh must hash to the bytes `git show <pinned-commit>:corpus/instruments/r37-closure.sh` returns, and the run of the PINNED bytes must end `closed=14/14 exit=0` with exit 0",
+  "pinned": {
+    "commit": "2387dcf6ccfefcfb703783387b9aade8fc82abfa",
+    "path": "corpus/instruments/r37-closure.sh",
+    "extract": "git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 2387dcf6ccfefcfb703783387b9aade8fc82abfa:corpus/instruments/r37-closure.sh",
+    "blob": "68ac41e8fdab46ba508800a377f396e663f2a436",
+    "sha256": "0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d",
+    "bytes": 73132,
+    "lines": 1558,
+    "files": [
+      "pinned/r37-closure.sh",
+      "pinned/sha256.txt",
+      "pinned/commit.txt",
+      "pinned/path.txt"
+    ]
+  },
+  "payload_keys": [
+    "pinned-sha256",
+    "export-sha256",
+    "digest-match",
+    "r37-suite",
+    "r37-closed",
+    "r37-exit"
+  ],
+  "closed_rule": "closed=1 iff digest-match=1 AND r37-suite=1 AND r37-closed=1 AND r37-exit=0; otherwise closed=0",
+  "run_rule": "r37-closed=1 iff the last non-empty line of the case's run transcript is exactly `closed=14/14 exit=0`; the transcript is always the run of the PINNED bytes, never of the export copy",
+  "digest_rule": "digest-match=1 iff the export copy exists and its sha256 equals pinned.sha256; an absent copy prints export-sha256=- with digest-match=0, r37-suite=0, r37-closed=0, r37-exit=1",
+  "harness": {
+    "path": "g8-pinned-check.sh",
+    "invocation": "bash g8-pinned-check.sh",
+    "expected_file": "expected/expected.txt",
+    "reads": "pinned/ bytes, each case's case.env and run transcript, expected/expected.txt; no lane, no git object, no network"
+  },
+  "cases": [
+    {
+      "name": "positive",
+      "source": "pinned",
+      "export_sha256": "0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d",
+      "digest_match": 1,
+      "r37_suite": 1,
+      "r37_closed": 1,
+      "run_exit": 0,
+      "expect_closed": 1,
+      "run_provenance": "committed .ufo/waves/round-37/final-gates/all-gates.txt lines 8-22 (the pinned bytes' own recorded run; the receipt's suite-sha256 is the pinned digest)",
+      "purpose": "the pinned export copy and a 14/14 run: GREEN"
+    },
+    {
+      "name": "negative-mutated",
+      "source": "copy",
+      "export_sha256": "4a5aea99d88d5750e43556a0501491a6c70443852abe09dbdecd7d0e71060483",
+      "digest_match": 0,
+      "r37_suite": 1,
+      "r37_closed": 1,
+      "run_exit": 0,
+      "expect_closed": 0,
+      "mutation": "byte 78 (1-based): '1' -> '2' in the line-2 comment `claim C1` -> `claim C2`; 73132 bytes / 1558 lines unchanged, `cmp -l` reports exactly one differing byte, both parse under `bash -n`",
+      "run_provenance": "the same committed 14/14 block as positive/: G8 executes the pinned bytes, so the run line is identical and only the export copy differs",
+      "purpose": "digest mismatch with a 14/14 run line: RED on digest-match alone"
+    },
+    {
+      "name": "negative-open",
+      "source": "pinned",
+      "export_sha256": "0da98e37b5a87e0ca7cb3d5f05ea05b992adbc4091095276848818a30342434d",
+      "digest_match": 1,
+      "r37_suite": 1,
+      "r37_closed": 0,
+      "run_exit": 1,
+      "expect_closed": 0,
+      "run_provenance": "measured this round: the pinned bytes run with `--export-ref 2387dcf6ccfefcfb703783387b9aade8fc82abfa` against a lane whose HEAD is not that ref (E9 head-match=0, status-dirty=7), ending `closed=13/14 exit=1`",
+      "purpose": "pinned digest but a run short of 14/14: RED on r37-closed and r37-exit"
+    },
+    {
+      "name": "negative-absent",
+      "source": "absent",
+      "export_sha256": "-",
+      "digest_match": 0,
+      "r37_suite": 0,
+      "r37_closed": 0,
+      "run_exit": 1,
+      "expect_closed": 0,
+      "run_provenance": "none: the export carries no corpus/instruments/r37-closure.sh",
+      "purpose": "control for the round-38 carry-over-suite-absent mutant: fail-closed, RED"
+    }
+  ],
+  "measured_controls": [
+    {
+      "id": "mutation-neutrality",
+      "command": "bash <mutant> --export-ref 2387dcf6... --lane <lane> --work <work>/r37-mutant vs bash <pinned> --export-ref 2387dcf6... --lane <lane> --work <work>/r37-pinned",
+      "result": "after normalising the suite-sha256 header the two runs differ only in E10 (digest-match=1 -> 0) and the total (closed=13/14 -> closed=12/14); E1-E9 and E11-E14 are byte-identical, so the mutation changes no check's reading except the digest read",
+      "meaning": "the one-byte mutation is behaviour-neutral for the suite's checks; the digest limb is the only thing that can catch it"
+    },
+    {
+      "id": "coordinated-receipt-edit",
+      "command": "export 2387dcf6 to a scratch tree; replace its r37-closure.sh with the mutant; rewrite the three `suite-sha256=` lines of its .ufo/waves/round-37/final-gates/all-gates.txt to the mutant digest; call check_e10 from the mutant bytes and from the pinned bytes",
+      "result": "mutant-executing: all-gates=1,suite-file=1,header=1,ancestor=1,digest-match=1,run-lines=14,recorded-closed=1,selftest-cases=14,selftest-summary=1,crossrun=1,placeholders=0 rc=0; pinned-executing on the same tree: identical payload with digest-match=0 rc=1",
+      "meaning": "a coordinated edit makes the export's own E10 accept the mutant copy (so its run would be 14/14 at a green E9 head), which is why G8' must pin the digest from the git object at 2387dcf6 and not from a receipt inside the export"
+    }
+  ]
+}

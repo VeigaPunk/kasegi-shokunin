@@ -1,0 +1,95 @@
+# capture identity
+capture_file=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-39/wave1/ExecFrontierCapture.S057.txt
+capture_bytes=17971 capture_lines=275 capture_sha256=11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f
+capture_seat_manifest=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-39/wave1/ExecFrontierCapture.manifest.json sha256=432f2205b368acb39d620bb85fe81c0fd6ccb345dd0878661478085ac1ce6659
+manifest_declared_sha256=11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f
+instrument=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/source-recheck.py sha256=fd2e01e88c8c45a949f48d67b3154ae87a95aeba0b6a9c42fbf64641b5b9c003
+# assertions carried
+junk: parsed 4 claims from c2-controls/junk-f22.md
+  J1 norm_occurrences=0 len_norm=123 CISA's When to Issue VEX Information mandates a strict protocol that determines when a supplier must issue VEX information.
+  J2 norm_occurrences=0 len_norm=53 Once a VEX status is issued it must never be changed.
+  J3 norm_occurrences=0 len_norm=269 The When to Issue VEX Information document defines the five not-affected justification labels (component_not_present, vulnerable_code_not_present, vulnerable_code_not_in_execute_path, vulnerable_code_cannot_be_controlled_by_adversary, inline_mitigations_already_exist).
+  J4 norm_occurrences=0 len_norm=123 CISA requires every VEX statement to include an exploitation-likelihood score, and its action_statement field is mandatory.
+positive: Q1 raw_occurrences=0 norm_occurrences=1
+  Q1 Whether, and when, to issue VEX information is a business decision for most suppliers and possibly a more individual decision for independent open source developers.
+  Q2 VEX users choose the most appropriate tools for their ecosystems.
+isolation: J1..J4 genuine sentences (seat Q1/Q2/Q3 + capture L170)
+# manifest digests
+junk-manifest.json sha256=9dafce3647086cd082ab5ebb53d9b9601fd43ff76f701e595c5503afc388470a
+positive-manifest.json sha256=ec89444f0ded8869219e01170bf7d0748b159a895ff46bf0a19510e433022feb
+isolation-manifest.json sha256=4247d882f83184c90b3095d7a84e7dd7490f65d1f8c53f7f42b25b952186917a
+=== junk manifest (delivered as ExecJunkRecheck.manifest.json): 4 fabricated claims from c2-controls/junk-f22.md ===
+S057:sha256 OK
+S057:J1 MISMATCH reason=quote-not-found
+S057:J2 MISMATCH reason=quote-not-found
+S057:J3 MISMATCH reason=quote-not-found
+S057:J4 MISMATCH reason=quote-not-found
+exit=1
+=== positive control: real Q1 quote (+ capture L170 sentence) ===
+S057:sha256 OK
+S057:Q1 OK normalized=markup-whitespace occurrences=1
+S057:Q2 OK occurrences=1
+exit=0
+=== isolation control: same ids J1..J4, same path/sha256, genuine sentences ===
+S057:sha256 OK
+S057:J1 OK normalized=markup-whitespace occurrences=1
+S057:J2 OK normalized=markup-whitespace occurrences=1
+S057:J3 OK normalized=markup-whitespace occurrences=1
+S057:J4 OK occurrences=1
+exit=0
+=== appendix: positive-manifest.json (exact bytes used) ===
+{
+ "schema_version": 1,
+ "sources": [
+  {
+   "id": "S057",
+   "path": "S057.txt",
+   "quotes": [
+    {
+     "id": "Q1",
+     "location": "genuine Q1 of the S057 capture (same quote/anchor as ExecFrontierCapture.manifest.json)",
+     "quote": "Whether, and when, to issue VEX information is a business decision for most suppliers and possibly a more individual decision for independent open source developers."
+    },
+    {
+     "id": "Q2",
+     "location": "genuine one-line sentence, capture L170",
+     "quote": "VEX users choose the most appropriate tools for their ecosystems."
+    }
+   ],
+   "sha256": "11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f"
+  }
+ ]
+}
+=== appendix: isolation-manifest.json (exact bytes used) ===
+{
+ "schema_version": 1,
+ "sources": [
+  {
+   "id": "S057",
+   "path": "S057.txt",
+   "quotes": [
+    {
+     "id": "J1",
+     "location": "genuine capture Q1",
+     "quote": "Whether, and when, to issue VEX information is a business decision for most suppliers and possibly a more individual decision for independent open source developers."
+    },
+    {
+     "id": "J2",
+     "location": "genuine capture Q2",
+     "quote": "Ideally, when a new vulnerability is disclosed, an \u201cunder_investigation\u201d status should be issued. When the investigation has concluded, status should be updated"
+    },
+    {
+     "id": "J3",
+     "location": "genuine capture Q3",
+     "quote": "VEX information includes timestamps to indicate when the information was first issued and most recently updated. By updating a timestamp but not changing status or other information, a VEX issuer can reaffirm that the current status remains accurate at the present time."
+    },
+    {
+     "id": "J4",
+     "location": "genuine capture L170",
+     "quote": "VEX users choose the most appropriate tools for their ecosystems."
+    }
+   ],
+   "sha256": "11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f"
+  }
+ ]
+}

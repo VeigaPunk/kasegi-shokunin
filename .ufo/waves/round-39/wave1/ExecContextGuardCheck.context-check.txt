@@ -1,0 +1,17 @@
+Round-39 wave1 context guard-clause check
+subject: kasegi-shokunin/.ufo/waves/round-39/wave1-spec.json (.context)
+spec file: 413733 bytes sha256=f1b6a508f7625f837305a55faa09cf82a5805bcafb0cd7929951ffcef2656bb3
+context: 7033 chars / 7045 UTF-8 bytes / 20 lines sha256=0237c91d54a1a7561f73c58c938c45d0cb0609d78bd45581866e9e1c48a437b4
+dispatch taskCall.context: byte-identical sha256=0237c91d54a1a7561f73c58c938c45d0cb0609d78bd45581866e9e1c48a437b4 (49 tasks)
+
+[PASS] SEAT_GUARD wording — line 18: "Host guard (SEAT_GUARD). Your tools start at the fleet root: cd to your scratch first and use absolute paths for every read/write."
+[PASS] pacman pause — line 16: "pacman transactions are PAUSED host-wide — never run pacman (no -S/-Sy/-Syu/-U/-R); use `uv tool install`, `npx`, or an official binary into ~/.local/bin instead"
+[PASS] no agent://all — line 20: "Do not message agent://all."
+[PASS] absolute-path-only writes — line 18: "use absolute paths for every read/write"; write scope at line 10 binds every artifact to an absolute path under the lane.
+[PASS] Report trailer relative to lane — line 10: "Every `Report:` trailer path is relative to /home/vgpnk/Projects/shokunin/kasegi-shokunin — write it at /home/vgpnk/Projects/shokunin/kasegi-shokunin/<that path>."
+
+delivery: 49/49 spec item prompts carry the full context verbatim; 49/49 dispatch tasks carry it (task = "/skill:godspeed\n\n" + spec prompt + item tail, no truncation; shortest task 7638 bytes); each required clause occurs exactly once in the context and once per delivered task.
+also present: lane-repo-only, fleet-root read-only, mutating git/jj ban, scratch-dir removal before yield, scratch root /fast/scratch/hyaku/kasegi-r39/<SEATNAME>/, PATH-directory write ban, fleet-root tracked-file write ban.
+
+result: 5/5 required clauses present, 49/49 seats covered, 0 missing.
+scope: wave1-spec.json .context and its dispatch propagation only. The separate "# Host guard (orchestrator; applies to every seat)" block is injected outside this spec file and is not part of this check.

@@ -1,0 +1,4 @@
+- [~] box 1 — decision tables / error patterns / checklists (round 39): the Gates & probes registry gains the `r39-closure.sh` row appended at EOF; every base line stays byte-identical.
+- [~] box 2 — end-to-end domain task (round 39): no new domain hunt this round; the closest executed work is the F22 capture with its harness run and the r39 closure suite.
+- [~] box 3 — instructions / evidence (round 39): judged head: export-ref of .ufo/waves/round-39/final-gates/all-gates.txt — the receipt records the run, the graded selftest and the two required reds.
+- [~] box 4 — reflection (round 39): the self-referential counting-command defect (R1/M39-1) is recorded in the round-39 lesson and the QUALITY append.

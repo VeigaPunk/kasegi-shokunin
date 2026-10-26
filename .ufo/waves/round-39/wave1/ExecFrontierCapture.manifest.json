@@ -1,0 +1,74 @@
+{
+ "schema_version": 1,
+ "purpose": "Round-39 F22 captured-source assertions for S057 (CISA, When to Issue VEX Information, publication page November 6, 2023; the issuance, lifecycle, timestamp-reaffirmation and upstream-inheritance layer of VEX publishing that the CSAF VEX profile does not carry). Two fetches on 2026-10-26T19:30:55Z with curl -sS -L --max-time 90 under the UA kasegi-shokunin/1.0: the registry landing page (HTTP 200, text/html; charset=utf-8, 54453 raw bytes, sha256 4e6aa483c20013bb84d43d166e3f20c91fba63ece7c35861f6d95c8b61af0e4d) and the 508c PDF it links (HTTP 200, application/pdf, 235270 raw bytes, sha256 cbcbd77af32c589eaf85aef4e3911b133fd95ccdedd80b56b40e9c0909450d99). The COMMITTED capture is the PDF's converted text (S057.txt), not the landing page: the page is a publication stub whose body repeats the introduction and links the PDF, so the page fetch is metadata and its digest is recorded under landing_page. The `url` field is the registry URL of the S057 row (capture-binding-check B5 binds it byte-for-byte); the bytes quoted are the PDF at capture_url.",
+ "sources": [
+  {
+   "id": "S057",
+   "path": "S057.txt",
+   "url": "https://www.cisa.gov/resources-tools/resources/when-issue-vex-information",
+   "capture_url": "https://www.cisa.gov/sites/default/files/2023-11/When-to-Issue-a-VEX-508c.pdf",
+   "fetched_utc": "2026-10-26T19:30:55Z",
+   "fetched_bytes": 235270,
+   "snapshot_bytes": 17971,
+   "lines": 275,
+   "sha256": "11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f",
+   "snapshot_sha256": "11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f",
+   "raw_sha256": "cbcbd77af32c589eaf85aef4e3911b133fd95ccdedd80b56b40e9c0909450d99",
+   "raw_bytes": 235270,
+   "tool": "corpus/instruments/capture-source.py pdf_to_text(): pdftotext -enc UTF-8 on the raw PDF bytes, then collapse() (<u>/</u> kept, CRLF/CR to LF, runs of space/tab/NBSP collapsed, lines trimmed, blank lines dropped, UTF-8, final newline)",
+   "normalized": "capture-source.py pdf_to_text(): pdftotext -enc UTF-8, runs of space/tab/NBSP collapsed, blank lines dropped, UTF-8, final newline",
+   "http": {
+    "status": 200,
+    "content_type": "application/pdf",
+    "final_url": "https://www.cisa.gov/sites/default/files/2023-11/When-to-Issue-a-VEX-508c.pdf",
+    "redirects": 0,
+    "user_agent": "kasegi-shokunin/1.0",
+    "fetched_utc": "2026-10-26T19:30:55Z",
+    "date": "Mon, 26 Oct 2026 19:30:55 GMT",
+    "last_modified": "Mon, 06 Nov 2023 15:43:40 GMT",
+    "content_length": 235270,
+    "etag": "\"39706-6097db7d52c78\""
+   },
+   "landing_page": {
+    "url": "https://www.cisa.gov/resources-tools/resources/when-issue-vex-information",
+    "role": "metadata only; not the committed capture",
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "fetched_utc": "2026-10-26T19:30:55Z",
+    "redirects": 0,
+    "raw_bytes": 54453,
+    "raw_sha256": "4e6aa483c20013bb84d43d166e3f20c91fba63ece7c35861f6d95c8b61af0e4d",
+    "snapshot_bytes": 3497,
+    "snapshot_sha256": "c868f04a56c4fcc8dcfedc7354b2c65df5e47c8d55caf0f0502005e030360db2",
+    "lines": 135,
+    "tool": "corpus/instruments/capture-source.py html_to_text()"
+   },
+   "quotes": [
+    {
+     "id": "Q1",
+     "quote": "Whether, and when, to issue VEX information is a business decision for most suppliers and possibly a more individual decision for independent open source developers.",
+     "anchor": 12,
+     "location": "L12-L14 of the committed capture ('Whether,' closes L12); Introduction. The issuance decision is declared discretionary, the document's own scoping statement and the reason its guidance is advisory rather than protocol-mandated (the same point recurs at L79-L83 under 'When VEX information could be issued')."
+    },
+    {
+     "id": "Q2",
+     "quote": "Ideally, when a new vulnerability is disclosed, an “under_investigation” status should be issued. When the investigation has concluded, status should be updated",
+     "anchor": 132,
+     "location": "L132-L134; body of 'Status changes' (heading L131). Names the under_investigation lifecycle: an initial under_investigation status on disclosure, then an update once the investigation concludes (L134-L135 continue 'for example, noting that the product is “affected” or “not_affected.”')."
+    },
+    {
+     "id": "Q3",
+     "quote": "VEX information includes timestamps to indicate when the information was first issued and most recently updated. By updating a timestamp but not changing status or other information, a VEX issuer can reaffirm that the current status remains accurate at the present time.",
+     "anchor": 136,
+     "location": "L136-L138; closing paragraph of 'Status changes'. Defines timestamp-only reaffirmation: the document states the status is still accurate at the present time without a status change."
+    },
+    {
+     "id": "Q4",
+     "quote": "Strictly speaking, consumers should not assume the status of an upstream component applies to a product that uses the component. Each component or product throughout a supply chain may require an independent VEX evaluation.",
+     "anchor": 184,
+     "location": "L184-L186; 'Status inheritance' under 'Software supply chain considerations' (heading L179-L181). The caution; L187-L191 states the exception, that a not_affected status justified by component_not_present or vulnerable_code_not_present may be inherited unless the vulnerable code is re-introduced downstream."
+    }
+   ]
+  }
+ ]
+}

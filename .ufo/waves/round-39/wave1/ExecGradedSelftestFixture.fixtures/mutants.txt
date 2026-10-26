@@ -1,0 +1,28 @@
+# G2' mutant list — embed each row as a negative control under G2.
+# Columns: id<TAB>fixture<TAB>expected closed<TAB>mutation
+# The exact expected `G2 payload=... closed=` line per fixture is expected.tsv;
+# judge-g2-cases.sh must print it byte-for-byte.
+P-G2-01	receipt-green.txt	1	unmutated all-gates v3 receipt (positive control): eight graded case lines, detail-backed, one summary
+M-G2-01	b-summary-only.txt	0	variant (b): all `selftest case=`/`selftest detail=` lines removed, `selftest cases=8 failures=0` kept — a summary-only line must satisfy no case
+M-G2-02	c-verdict-fail.txt	0	variant (c): G4 case line `positive=pass ... verdict=pass` -> `verdict=fail`
+M-G2-03	d-missing-verdict.txt	0	variant (d): G6 case line loses its ` verdict=pass` field
+M-G2-04	e-seven-cases.txt	0	variant (e): G8 case+detail lines removed, summary still claims `cases=8` — a lying summary must not rescue a 7-case run
+M-G2-05	m01-duplicate-id.txt	0	G3 case line duplicated, G7 case line removed: eight case lines, seven graded ids, one id twice
+M-G2-06	m02-detail-free-0-0.txt	0	every case line rewritten to `mutants=0/0`, detail lines removed — shape-only pass
+M-G2-07	m03-details-removed.txt	0	case lines claim 2/2 but all `selftest detail=G<n> mutant=` lines are gone
+M-G2-08	m04-detail-rejected-0.txt	0	one G2 mutant detail flipped to `rejected=0`
+M-G2-09	m05-detail-rejected-10.txt	0	one G5 mutant detail changed to `rejected=10` — `rejected=1` must be a whole token
+M-G2-10	m06-ninth-case-g9.txt	0	a ninth graded-looking `selftest case=G9 ... verdict=pass` line with its detail line
+M-G2-11	m07-trailing-field.txt	0	G1 case line gains ` note=ok` after `verdict=pass` — the verdict field must terminate the line
+M-G2-12	m08-case-missing-mutants.txt	0	G3 case line loses its `mutants=<a>/<b>` field
+M-G2-13	m09-case-missing-positive.txt	0	G5 case line loses its `positive=pass` field
+M-G2-14	m10-summary-failures-1.txt	0	summary rewritten to `selftest cases=8 failures=1`
+M-G2-15	m11-summary-duplicated.txt	0	two `selftest cases=8 failures=0` lines — exactly one is required
+M-G2-16	m12-sentinel-v2.txt	0	first line `all-gates v2` with a perfect case region — the case region alone must not close G2
+M-G2-17	m13-closed-7of8.txt	0	`closed=8/8 exit=0` -> `closed=7/8 exit=1`
+M-G2-18	m14-run-line-closed-0.txt	0	G5 run line reports `closed=0`
+M-G2-19	m15-run-line-missing.txt	0	the `G8 payload=... closed=1` run line is absent (seven run lines)
+M-G2-20	m16-seven-cases-truthful-summary.txt	0	seven case lines plus `selftest cases=7 failures=0` — a truthful summary cannot close a short run
+M-G2-21	m17-positive-fail.txt	0	G7 case line `positive=fail mutants=0/1 verdict=fail`
+M-G2-22	m18-bare-summary-only.txt	0	the selftest region is one bare `selftest cases=8 failures=0` line, no selftest header, no case lines
+M-G2-23	m19-eight-summary-lines.txt	0	eight summary lines and zero case lines — repetition does not manufacture cases

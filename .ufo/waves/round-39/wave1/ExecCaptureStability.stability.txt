@@ -1,0 +1,18 @@
+S057 capture reproducibility probe — 2026-10-26, kasegi-shokunin round 39
+
+Registry URL: https://www.cisa.gov/resources-tools/resources/when-issue-vex-information
+Served as text/html; charset=utf-8, HTTP/2 200, 54453 bytes, cache-control "private, no-cache, must-revalidate" (no ETag, no Last-Modified on the landing page). The landing page carries the title, publish date 2023-11-06, the abstract and a Resource Materials row ("When to Issue VEX Information, PDF, 229.76 KB") that links the 508c PDF; the 9-page document body is that PDF, not the landing page.
+
+Landing page, fetch A: 2026-10-26T19:30:29Z, UA kasegi-shokunin/1.0, HTTP 200, 54453 bytes, raw sha256 4e6aa483c20013bb84d43d166e3f20c91fba63ece7c35861f6d95c8b61af0e4d.
+Landing page, fetch B: 2026-10-26T19:31:35Z, UA kasegi-shokunin/1.0-recheck, HTTP 200, 54453 bytes, raw sha256 4e6aa483c20013bb84d43d166e3f20c91fba63ece7c35861f6d95c8b61af0e4d. Raw bytes byte-identical (cmp equal).
+Normalized (capture-source.py html_to_text(): script/style removed, block tags to newlines, remaining tags stripped, html.unescape, space/tab/NBSP runs collapsed, blank lines dropped, UTF-8, final newline): 3497 bytes, 135 lines, sha256 c868f04a56c4fcc8dcfedc7354b2c65df5e47c8d55caf0f0502005e030360db2 for both fetches, byte-identical (cmp equal).
+
+Linked PDF: https://www.cisa.gov/sites/default/files/2023-11/When-to-Issue-a-VEX-508c.pdf
+Served as application/pdf, HTTP/2 200, 235270 bytes (229.76 KiB, matching the landing page's stated file size), last-modified Mon, 06 Nov 2023 15:43:40 GMT, etag "39706-6097db7d52c78"; PDF 1.7, 9 pages, Title "When to Issue VEX Information", Author CISA, CreationDate 2023-11-02, not encrypted.
+PDF fetch A: 2026-10-26T19:30:44Z, UA kasegi-shokunin/1.0, raw sha256 cbcbd77af32c589eaf85aef4e3911b133fd95ccdedd80b56b40e9c0909450d99.
+PDF fetch B: 2026-10-26T19:31:41Z, UA kasegi-shokunin/1.0-recheck, raw sha256 cbcbd77af32c589eaf85aef4e3911b133fd95ccdedd80b56b40e9c0909450d99. Raw bytes byte-identical (cmp equal).
+PDF text (pdftotext -layout, 19718 bytes, 400 lines): sha256 d32b961ce530e97389e08db6e160bd98fa88db91f8620a1604ee50a81d5daa35 for both fetches, byte-identical (cmp equal).
+Same text after whitespace collapse as capture-source.py pdf_to_text() ends it (17977 bytes, 278 lines): sha256 03dd22dcd761ed1e39f7c35fa074d3d9bb3f6e9b498746c6432ff60098e9480a for both fetches, byte-identical (cmp equal).
+The instrument's own path (pdftotext -enc UTF-8 without -layout, then collapse; 17971 bytes, 275 lines): sha256 11c8d6d684448a1ae049ecf4881cd98172fad7333a9fd7829e6b12c9b5d64f2f on both fetches, byte-identical (cmp equal).
+
+Verdict: both resources were stable across two fetches 66 s apart (landing page) and 57 s apart (PDF), from the same host with different User-Agent strings; raw and normalized digests agree in every leg. A third landing-page fetch at 2026-10-26T19:30:36Z, made by `capture-source.py --kind html` under its own instrument User-Agent, produced the same 3497-byte, 135-line normalized snapshot (sha256 c868f04a56c4fcc8dcfedc7354b2c65df5e47c8d55caf0f0502005e030360db2). The manifest's sha256 binds the snapshot bytes; a re-fetch inside a ~1-minute window reproduces those bytes exactly. Scope of the claim: byte stability over this observed window only. The landing page is served with cache-control private, no-cache, must-revalidate, so it is not advertised as immutable; the PDF is immutable in practice (Last-Modified 2023-11-06, ETag present) but neither resource is claimed stable beyond the measured interval. A capture of the landing page alone yields the abstract and metadata (3497 normalized bytes); the document body is reached only through the linked 508c PDF.

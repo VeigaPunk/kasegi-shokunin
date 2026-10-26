@@ -1,0 +1,1 @@
+[r39 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F22 — CISA When to Issue VEX Information (VEX issuance/lifecycle/reaffirmation/inheritance guidance) — admitted round 39; entry corpus/knowledge/cisa-when-to-issue-vex.md (source S057)
