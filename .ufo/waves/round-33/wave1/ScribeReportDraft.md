@@ -470,3 +470,40 @@ $ grep -n 'capture-binding-check' SCORECARD.md | head -1                  # capa
 No counter named in `claims.json` was re-run by this seat: every before/after value above is quoted
 from the receipt that produced it, on the commit that receipt names. Where this seat ran a command,
 it is listed in this section only.
+
+---
+
+## Late-state appendix (appended 2026-10-26; earlier text left byte-identical)
+
+**The lane advanced after this draft was written, and one IRC message delivered round-34 facts.**
+Both are recorded here rather than folded into the sections above, so no round-33 before/after
+value is silently re-scoped.
+
+1. **Lane tip.** At drafting the tip was `9f98488` (see §Stale-lane). It is now
+   `206e510` (`round-34: wave-1 spec (65 seats, v2 policy), validated plan and dispatch`), with
+   `014ee2d` (`round-33 verifier spot-check (integrator, hyaku): non-author admit/reject`) between
+   them; `git rev-list --left-right --count origin/master...master` → `0 0`. The round-33
+   measurement column is unaffected: every after-value above was taken at `9f98488` and remains the
+   round-33 record.
+2. **Round-34 state on disk (verified read-only, not round-33 evidence).** `.ufo/waves/round-34/`
+   holds its own `claims.json`, `claims-erratum-1.md`, `c1-controls/`, `c2-controls/`,
+   `census-before.txt`, `assimilation/`, `wave1/`, frozen at `29f606d` with spec `206e510`.
+   `corpus/README.md:361` carries the `F17` row (Immunefi VSCS v2.2 → `knowledge/immunefi-vscs-v2-2-smart-contract-severity.md`),
+   and `corpus/SOURCES.md:57` carries the `S051` row (Immunefi severity classification v2.2).
+   None of these rows existed at round-33 measurement time and none is cited by any round-33
+   number here.
+3. **Facts delivered by IRC from `KasegiR34`, recorded verbatim as received and scoped to round 34:**
+   (i) round-34 `claims-erratum-1.md` re-scopes the C1 counting literal to the landed tree —
+   `records=41 bound=41 unbound=0`, with the intermediate `unbound=1` / `FAIL rule=no-row record=S051`
+   state named as the rule-B proof (read on disk at `.ufo/waves/round-34/claims-erratum-1.md`);
+   (ii) harness after-state `entries=20 pass=20 exit=0` incl. `PASS F17 ids=S051`, README F17 row
+   appended by `ExecHarnessAfter` (26 inserted / 0 deleted); (iii) the C2 junk-twin kill rests on
+   `RevEntryF17`'s quote grep plus source-recheck, **not** on the harness counter (counter passes an
+   invented row naming it — their finding F-B); (iv) the C1 audit reports `orphans=1
+   orphan=S040-live.txt` (R6), strict-UTC `fetched=2` (R8), `missing_manifest=0`, `multi_row_url=2`;
+   (v) `r-defect-closure.sh` needs R24 to reach 9/9, `ExecQualityAppends` landing it. Items (ii),
+   (iii) and (v) are **not verified by this seat** — no round-34 receipt was read — and are carried
+   as received, not as measurement.
+4. **No round-33 contradiction.** `records=40 → 41`, `entries=19 → 20` and `F16 → F17` are round-34
+   increments over the round-33 values reported above; the round-33 predicate sentence in
+   `claims.json` remains the 40-record snapshot the erratum labels a scope note.

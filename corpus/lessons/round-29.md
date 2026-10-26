@@ -261,3 +261,77 @@ seat installed nothing. Answering model recorded per seat in the receipts.
    promote `check_q9.py` (M29-3).
 4. `ScribeScorecard` lands the round-29 SCORECARD section (score held 4 / 7 / 9; no move).
 5. Final `SentScope` sweep after integration; refresh `receipt-index.txt` (ExecAssembleReceipts).
+
+## Erratum (round 34) — M33-3: the `SOURCES.md` line anchors cited from this lesson are stale by +7
+
+Appended 2026-10-26 (round 34) to `corpus/lessons/round-29.md` at lane base `014ee2d` — changed-file
+scope: this file only; pre-append sha256
+`78ae8080fc3653b2f7291df7fd229ff4aeccc9965db2042c1825ca1f5aa52f5b`, 263 lines. Nothing above this
+block is edited (QUALITY R6/R9: append-only, every pointer re-opened against the cited revision,
+base and changed-file scope named). Apparatus: **M33-3** (`corpus/lessons/round-33.md` § Mistakes),
+carried open at round-33 close (`corpus/lessons/round-33.md` § Open items item 6) and still open
+here.
+
+### The citations that moved
+
+`M29-9` (this file, `:214`) cites `corpus/SOURCES.md:83` for the R8 S043 old→new change cell, and
+`corpus/lessons/round-29-verifier-spotcheck.md:74` cites the same `SOURCES.md:83` for the same
+cell. At the round-29 integration commit `0ab8929` that cell sat at line 83; the round-33 six-line
+append (2 registry rows at `:55`–`:56`, 1 Search-log bullet at `:75`, 3 `## Registry changes` lines
+at `:98`–`:100`) carried it to line **90**. **The current pointer is `corpus/SOURCES.md:90`**;
+`:83` now names the `## Registry changes` heading, not the S043 cell. The
+`round-29-verifier-spotcheck.md:74` mention carries the same stale value — that file is not this
+seat's write scope and stays byte-identical, so this block states the correction for both mentions.
+
+Also re-opened: `M29-9`'s "`corpus/SOURCES.md` S043 row cell (line 49)" is **still line 49** in
+today's registry (the only rows added after it are S049/S050 at `:55`/`:56`), so that pointer needs
+no change.
+
+### Current `corpus/SOURCES.md` anchors
+
+Measured 2026-10-26T05:33Z on `corpus/SOURCES.md` at `014ee2d` (100 lines, sha256
+`b22c7f0173e75e0c8c49cbf4b6e7f307fc2b1d9299ce282c1f78aadfc944d13b`). Column 2 is the same file at
+the round-29 integration commit, column 3 at the round-33 claims base, column 4 now:
+
+| anchor | round-29 (`0ab8929`, 86 lines) | round-33 base (`690b69d`, 94 lines) | now (`014ee2d`, 100 lines) | drift since round-29 |
+|---|---|---|---|---|
+| `## Registry` | 3 | 3 | 3 | 0 |
+| S043 registry row (cited as "line 49") | 49 | 49 | **49** | 0 |
+| `## Paths` | 53 | 56 | 58 | +5 |
+| `## Search log` | 60 | 63 | 65 | +5 |
+| `## Leads (unopened)` | 70 | 74 | 77 | +7 |
+| `## Registry changes` | 76 | 80 | 83 | +7 |
+| S043 R8 change cell (the cited `:83`) | 83 | 87 | **90** | **+7** |
+
+Producing command (read-only `git show`; prints line counts and every `##` heading plus the S043
+change-cell line, as line numbers in file order):
+
+```sh
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+for rev in 0ab8929 690b69d 9f98488 HEAD; do
+  printf '%s lines=%s ' "$rev" "$(git show $rev:corpus/SOURCES.md | wc -l)"
+  git show $rev:corpus/SOURCES.md | grep -n '^## \|^Change cell old → new: the S043' | cut -d: -f1 | tr '\n' ' '
+  echo
+done
+```
+
+output (2026-10-26T05:33Z; column order = `## Registry`, `## Paths`, `## Search log`, `## Leads`,
+`## Registry changes`, S043 change cell):
+
+```
+0ab8929 lines=86 3 53 60 70 76 83
+690b69d lines=94 3 56 63 74 80 87
+9f98488 lines=100 3 58 65 77 83 90
+HEAD lines=100 3 58 65 77 83 90
+```
+
+### Reading rule carried forward
+
+A `corpus/SOURCES.md:NNN` pointer filed before round 33 is off by `(current line of its target −
+NNN)`: +7 for the S043 change cell today, and it moves with every append. Cite the anchor text
+(`Change cell old → new: the S043 …`) or re-measure with the command above before citing a number.
+The section offsets this round did not cite (`## Paths`, `## Search log`, `## Leads`) are given
+above so a future pointer can be opened against this revision instead of re-derived. Post-append
+digest of this file is recorded in the round-34 seat receipt
+(`.ufo/waves/round-34/wave1/ExecLessonErrata.md`); `head -263` is byte-identical to the pre-append
+file.

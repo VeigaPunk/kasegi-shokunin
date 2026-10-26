@@ -72,3 +72,4 @@ this round's admission (round-31 claims, C2), and its entry binds the frontier a
 against the round-31 capture `corpus/source-snapshots/round-31/S048.txt`.
 
 [r33 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F16 — Chinese crowdsourced-testing platform scope and reward rules (CNVD 众测, 360SRC) — admitted round 33
+[r34 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F17 — Immunefi Vulnerability Severity Classification System v2.2 (Web3/smart-contract bounty severity classification) — admitted round 34

@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "purpose": "Round-34 F17 captured-source assertions for S051 (Immunefi Vulnerability Severity Classification System v2.2, https://immunefi.com/immunefi-vulnerability-severity-classification-system-v2-2/), captured 2026-10-26T05:31:10Z with corpus/instruments/capture-source.py (instrument UA kasegi-shokunin/1.0; HTTP status=200, fetched_bytes=219383, snapshot_bytes=8502, sha256 4fd8ed981808b9b9632fd8a4536305e36c82fa98f319bb1cbc7fdb0514b325a5). The page is Next.js SSR: the severity body text is present in the served HTML, not injected client-side, and the snapshot carries all three scope tables (Blockchain/DLT L57, Smart Contracts L72, Websites and Apps L97) plus the five level names (L47-L51). SHA-256 pins the committed local capture; the record carries its registry `url` and a strict-UTC `fetched_utc` instant (no local offset). Normalization (QUALITY Q8): source-recheck.py normalize() strips <u>...</u> markup and collapses whitespace to single spaces, so quotes that the converter wrapped across source lines are asserted as the normalized sentence and flagged as such in their `location`. QUALITY Q9: sixteen quotes were measured at exactly one occurrence under the declared normalization; two are non-unique in this capture and carry an `anchor` line number that source-recheck.py B2 verifies, because they are the printed bullets and not a converter-joined span: `Permanent freezing of funds` also occurs at L62 in the Blockchain/DLT table (anchor=77), and `1. None- Best practices` also occurs at L71 in that table (anchor=96). Every quote therefore names a line of this capture; none asserts text that the extractor joined across two source lines except where `location` says so (Q2, Q5, Q6). One exception is declared rather than hidden: Q2 (the five level names) spans five source lines and no four-line anchor window holds all five, so it carries no `anchor` field and relies on uniqueness. This manifest verifies captured bytes; it does not establish that the host serves the same bytes again, and its assertions were measured against S051.txt only.",
+  "sources": [
+    {
+      "id": "S051",
+      "path": "S051.txt",
+      "sha256": "4fd8ed981808b9b9632fd8a4536305e36c82fa98f319bb1cbc7fdb0514b325a5",
+      "url": "https://immunefi.com/immunefi-vulnerability-severity-classification-system-v2-2/",
+      "fetched_utc": "2026-10-26T05:31:10Z",
+      "quotes": [
+        {
+          "id": "Q1",
+          "quote": "At Immunefi, we classify bugs on a simplified 5-level scale:",
+          "anchor": 46,
+          "location": "L46; the scale's own statement: five levels, no finer grading."
+        },
+        {
+          "id": "Q2",
+          "quote": "Critical High Medium Low None",
+          "location": "L47-L51; the five level names, one per source line, asserted as the whitespace-joined sequence (declared normalization). No anchor field: the names span five lines and source-recheck.py's anchor window is four lines, so uniqueness under normalization is the check."
+        },
+        {
+          "id": "Q3",
+          "quote": "The development of this scale took into consideration multiple factors that may affect a vulnerability and its likelihood of exploitation",
+          "anchor": 52,
+          "location": "L52; the scale considers likelihood factors but finalizes by impact."
+        },
+        {
+          "id": "Q4",
+          "quote": "finalizes them largely by the impact that they cause",
+          "anchor": 52,
+          "location": "L52; the impact-decides clause completing Q3 — severity is set by consequence, not by category."
+        },
+        {
+          "id": "Q5",
+          "quote": "The table below is mostly concerned with the consequence of a successful exploit.",
+          "anchor": 53,
+          "location": "L53-L54; the classification focus, wrapped by the converter across two source lines (asserted normalized)."
+        },
+        {
+          "id": "Q6",
+          "quote": "the level of the bug may be downgraded to reflect that or rejected.",
+          "anchor": 55,
+          "location": "L55-L56; elevated privileges or uncommon user interaction downgrade or reject a finding — the discretion clause, wrapped across two source lines (asserted normalized)."
+        },
+        {
+          "id": "Q7",
+          "quote": "5. Critical- Any governance voting result manipulation",
+          "anchor": 74,
+          "location": "L74; Smart Contracts Critical cell, first bullet, bound to the 5. Critical level marker. The converter merged this first bullet onto the level line; the remaining Critical bullets follow one per line (L75-L83)."
+        },
+        {
+          "id": "Q8",
+          "quote": "Direct theft of any user funds, whether at-rest or in-motion, other than unclaimed yield",
+          "anchor": 75,
+          "location": "L75; Smart Contracts 5. Critical, funds bullet. The captured wording is exact as quoted; the level marker is on L74, not repeated on this line."
+        },
+        {
+          "id": "Q9",
+          "quote": "Permanent freezing of funds",
+          "anchor": 77,
+          "location": "L77; the Smart Contracts 5. Critical permanent-freezing bullet, quoted as printed. Non-unique in the capture: the same words also occur at L62 in the Blockchain/DLT Critical cell, hence anchor=77 (QUALITY Q9/B2)."
+        },
+        {
+          "id": "Q10",
+          "quote": "Miner-extractable value (MEV)",
+          "anchor": 79,
+          "location": "L79; Smart Contracts 5. Critical MEV bullet."
+        },
+        {
+          "id": "Q11",
+          "quote": "Protocol insolvency",
+          "anchor": 83,
+          "location": "L83; final Smart Contracts 5. Critical bullet — the Critical cell reaches beyond theft to protocol-level failure."
+        },
+        {
+          "id": "Q12",
+          "quote": "Temporary freezing of funds",
+          "anchor": 88,
+          "location": "L88; Smart Contracts 4. High bullet — temporary freezing is High while permanent freezing is Critical."
+        },
+        {
+          "id": "Q13",
+          "quote": "Griefing (e.g. no profit motive for an attacker, but damage to the users or the protocol)",
+          "anchor": 92,
+          "location": "L92; Smart Contracts 3. Medium bullet — griefing without profit motive is Medium."
+        },
+        {
+          "id": "Q14",
+          "quote": "Unbounded gas consumption",
+          "anchor": 94,
+          "location": "L94; final Smart Contracts 3. Medium bullet."
+        },
+        {
+          "id": "Q15",
+          "quote": "Smart contract unable to operate due to lack of token funds",
+          "anchor": 90,
+          "location": "L90; Smart Contracts 3. Medium, first bullet."
+        },
+        {
+          "id": "Q16",
+          "quote": "Contract fails to deliver promised returns, but doesn't lose value",
+          "anchor": 95,
+          "location": "L95; Smart Contracts 2. Low cell — the only Low bullet, defined by absence of value loss."
+        },
+        {
+          "id": "Q17",
+          "quote": "1. None- Best practices",
+          "anchor": 96,
+          "location": "L96; the Smart Contracts 1. None cell, quoted as printed. Non-unique in the capture: the same cell text also occurs at L71 in the Blockchain/DLT table, hence anchor=96 (QUALITY Q9/B2)."
+        },
+        {
+          "id": "Q18",
+          "quote": "Execute arbitrary system commands",
+          "anchor": 99,
+          "location": "L99; Websites and Apps 5. Critical, first bullet — the third scope table, so the Smart Contracts cell is one scope of a per-scope system, not the whole system."
+        }
+      ]
+    }
+  ]
+}

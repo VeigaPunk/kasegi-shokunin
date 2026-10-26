@@ -211,3 +211,19 @@ whose rule A supplies the manifest clause, rule B the one-registry-row `url` cla
 provenance clause. At round-33 composition the checker was absent from the base
 (`git cat-file -e 690b69da:corpus/instruments/capture-binding-check.py` → exit 128), so no landed
 verdict is claimed by these rows; a later reader runs the command and reads its own output.
+
+## Round-34 additions — pre-freeze satisfiability and reflection cadence (append-only)
+
+R6 form: R20's row (line 169) and every earlier line stay byte-identical; the R20 note and the two
+rows below are appended at the end of the file.
+
+Note (round 34): R20's 'exactly one registry-row URL' reading is superseded by the C1 erratum-2 per-id
+reading — a URL shared by two different registry rows is informational `multi_row_url=N`, not a
+failure (SCORECARD round-33 section, erratum 2).
+
+| id | criterion | grounded in |
+|---|---|---|
+| R22 | A frozen claim predicate is checked for satisfiability against base bytes before freeze: every literal constant and regex in the predicate and kill rule is run against the base tree; an unsatisfiable literal is fixed before data, never waived by a post-freeze erratum. Grounded in: round-33 verifier R2; M34-2. | `corpus/lessons/round-33-verifier-spotcheck.md:167-169` (R2 — the frozen parenthetical that literally read `bound=38`); M34-2 at `.ufo/waves/round-34/claims.json` → `non_claim_frontier_items.mistake` |
+| R23 | A lane records an event-driven reflection cadence: burst activity and idle stretches are reviewed within the next round's lesson, citing the considerthese file and date. Grounded in: considerthese/2026-10-25.md proposal 6. | `considerthese/2026-10-25.md:76` proposal 6 (2026-10-25) |
+| R24 | A counter's mutant kill rule is recorded and tightened: the selftest clause requires one `selftest case=<name>` verdict line per case with cases>=11, so a summary-only forgery (cases=0 failures=0) cannot satisfy it. | `corpus/lessons/round-33-verifier-spotcheck.md:174-176` (R4) and the round-34 erratum at `corpus/lessons/round-33.md:215-226` — the frozen rule **caught 3 of 4**, skip-selftest (M4) survived (`.ufo/waves/round-33/wave1/RevClaimsFreeze.md:75,172`, finding F-5); M34-1 at `.ufo/waves/round-34/claims.json` → `non_claim_frontier_items.mistake` (the 'all mutants killed' overstatement) |
+| R25 | A frozen claim's literal constants are checked for satisfiability against base bytes **plus the round's declared after-adds** (a new registry row the claim itself adds, a manifest record it lands): a literal true at base but false at the declared after-state is fixed before data, never waived by a post-freeze erratum. Grounded in: M34-3 (`.ufo/waves/round-34/mistakes-erratum-1.md`). | M34-3 at `.ufo/waves/round-34/mistakes-erratum-1.md` (the C1 `records=40` literal was true at base and false at the declared after-state `records=41`) |

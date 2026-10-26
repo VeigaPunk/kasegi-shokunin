@@ -1,0 +1,33 @@
+# gate evidence, measured 2026-10-26T05:33:39Z, cwd=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+$ git rev-parse HEAD
+206e5108f1190e61b3e2622d21cab8a5d921650c
+$ git diff --numstat 014ee2d -- SKILL.md PROVINCE.md   (base -> worktree)
+numstat_rc=0
+$ git diff --numstat 014ee2d HEAD -- SKILL.md PROVINCE.md   (base -> HEAD)
+numstat_head_rc=0
+$ git diff 014ee2d -- SKILL.md PROVINCE.md | grep -cE '^-[^-]'   (deletion lines)
+0
+$ git rev-parse 014ee2d:SKILL.md 29f606d:SKILL.md HEAD:SKILL.md
+cdde78cc6b5b9d6608426a9f3c7354f78700fb0f
+cdde78cc6b5b9d6608426a9f3c7354f78700fb0f
+cdde78cc6b5b9d6608426a9f3c7354f78700fb0f
+$ git rev-parse 014ee2d:PROVINCE.md 29f606d:PROVINCE.md HEAD:PROVINCE.md
+791ae064a7a641dbe626297b2ca0ecd5628374ba
+791ae064a7a641dbe626297b2ca0ecd5628374ba
+791ae064a7a641dbe626297b2ca0ecd5628374ba
+$ git cat-file -p HEAD:SKILL.md | sha256sum ; sha256sum SKILL.md
+b11b60857986c3d735876da168042fe150b8c80fbdf2792263a29cf2a8e3ed84  -
+b11b60857986c3d735876da168042fe150b8c80fbdf2792263a29cf2a8e3ed84  SKILL.md
+$ git cat-file -p HEAD:PROVINCE.md | sha256sum ; sha256sum PROVINCE.md
+b57de5d9517d0ba67a7317d66f5ccc270b4e4a206ace8f27e20e9ec964abd679  -
+b57de5d9517d0ba67a7317d66f5ccc270b4e4a206ace8f27e20e9ec964abd679  PROVINCE.md
+$ git status --porcelain --untracked-files=no
+ M SCORECARD.md
+ M corpus/QUALITY.md
+ M corpus/instruments/frontier-recheck-count.py
+ M corpus/lessons/round-33.md
+ M corpus/source-snapshots/round-32/manifest.json
+$ wc -l SKILL.md PROVINCE.md
+  1090 SKILL.md
+    74 PROVINCE.md
+  1164 total

@@ -2,6 +2,7 @@
 """Count Frontier entries whose own `recheck:` line re-verifies their own sources.
 
 Usage: python3 corpus/instruments/frontier-recheck-count.py [--root DIR] [--json PATH]
+       python3 corpus/instruments/frontier-recheck-count.py --selftest [--scratch DIR]
 
 The round-24 C1 counter. A bare shell loop over `recheck:` lines measures
 whatever the line happens to say: point every entry at one captured source, or
@@ -10,7 +11,11 @@ write `recheck: true`, and the loop reports 8/8 with no capture work done
 line to the entry it belongs to before it runs it:
 
   A. the `--source` ids on the `recheck:` line must equal the entry's own
-     `source:` id set — no cross-entry credit, no dropped id;
+     declared source set, in BOTH directions — no dropped id (a declared
+     source the line does not re-verify) and no undeclared id (a line that
+     re-verifies a source the entry never declares, e.g. a line copied from
+     another entry, or a source left credentialed by a bare prose mention after
+     its declaration line was dropped);
   B. the named manifest must exist, be schema-valid, and list every one of
      those ids;
   C. the line must be a `source-recheck.py` invocation with `--manifest` and at
@@ -27,9 +32,43 @@ fails closed before any line runs:
   F. two admitted rows resolving to the same entry realpath fail the run with
      a `DUPLICATE-ENTRY` note naming the duplicate rows and the entry.
 
+Rule A's two directions print different problem names so a receipt names the
+limb that fired: `header-sources-not-rechecked` (a declared id missing from the
+line's `--source` selections; the name is kept from the round-31 contract and
+the limb now covers the whole declared set) and
+`selection-not-declared-by-entry` (a `--source` id the entry never declares). A
+selection that is not even mentioned in the entry text stays
+`selection-not-cited-by-entry`.
+
+The declared set is the union of the entry's two declaration shapes, both of
+which the corpus uses: a header `source:` line per source (F09/F10/F13/F14) and
+a per-source evidence list item that starts with the id, `- S002,
+"Assessment": "…"` (the round-24 F01–F05 entries, whose single header line
+declares the primary source and whose evidence list declares the rest). A
+capture-path mention in prose or in a blockquote attribution (`S050.txt:70`) is
+a reference, not a declaration. Measured residue of that shape rule: for the
+five evidence-list entries a header `source:` line can be dropped without rule
+A firing, because the id stays declared by its evidence bullets; those entries
+lose only the header's URL/section provenance, not the entry↔source binding.
+
 Exit 0 when every admitted Frontier entry passes, 1 otherwise (any failing
 row, a missing entry, or a duplicate entry realpath), 2 on a harness/read
 error.
+
+`--selftest` runs this file as a subprocess against six fixture lanes — one per
+limb of rule A, both declaration shapes, and the citation limb — and prints a
+`selftest case=<name> exit=<N> want=<N> verdict=<pass|fail>` line per case plus
+`selftest cases=N failures=F`; it exits 0 only when F=0. The fixtures carry
+their own stub `source-recheck.py` and manifest, so the selftest measures the
+harness's binding rules and never the lane. `bidirectional-holds` pins the pass
+path; `selection-not-declared` is the reverse direction (an extra `--source`
+mentioned in prose only must fail); `header-source-not-rechecked` is the
+forward direction; `evidence-list-declares-selection` and
+`evidence-declared-not-rechecked` cover the evidence-list declaration shape on
+the pass and forward-fail sides; and
+`selection-neither-declared-nor-mentioned` asserts both problems, in that
+order. Scratch defaults to `$HYAKU_SCRATCH`, then `$TMPDIR`, then
+`/fast/scratch/hyaku`, and is removed before exit.
 
 This instrument measures recheck coverage only: a passing entry proves its
 pinned captures still hold its own assertions, not that the entry's claims are
@@ -39,11 +78,14 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 
 FRONTIER_ROW = re.compile(r"^\|\s*(F\d+)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*`?([^|`]+?)`?\s*\|")
 SOURCE_LINE = re.compile(r"^source:\s*(S\d{3,})")
+EVIDENCE_LINE = re.compile(r"^(?:[-*]|\d+[.)])\s+(S\d{3,})\b")
 RECHECK_LINE = re.compile(r"^recheck:\s*(.+)$")
 RECHECK_SOURCE = re.compile(r"--source\s+(S\d{3,})")
 RECHECK_MANIFEST = re.compile(r"--manifest\s+(\S+)")
@@ -62,11 +104,24 @@ def read_frontier(root):
 
 
 def entry_contract(root, entry_path):
-    """Return (declared ids, cited ids, recheck line, recheck ids, manifest).
+    """Return (declared ids, cited ids, recheck line, recheck ids, manifest,
+    evidence ids).
 
-    `declared` is the header `source:` id set; `cited` is every S-id the entry's
-    body mentions. The recheck must select a superset of the header ids (nothing
-    dropped) and a subset of the cited ids (no cross-entry credit).
+    `declared` is the header `source:` id set; `evidence` is the subset of ids
+    the entry declares in its own per-source evidence list (a list item that
+    starts with an S-id, `- S002, "Assessment": "…"`). Together they are the
+    entry's declared source set — the two declaration shapes the corpus uses
+    (one header line per source, as F09/F10/F13/F14 do, or one evidence bullet
+    per source, as the round-24 F01–F05 entries do). `cited` is the set of S-ids
+    the entry mentions outside those declaration lines — prose, blockquote
+    attributions and evidence items — so the recheck line's own `--source` ids
+    cannot satisfy the citation limb by construction (M33-6 / R9).
+
+    The recheck must select exactly the declared set (`declared ∪ evidence ==
+    recheck_ids`, both directions: no dropped id, no undeclared id) and a
+    subset of the cited ids (no cross-entry credit). A bare capture-path
+    mention in prose or in a blockquote attribution (`S050.txt:70`) is a
+    reference, not a declaration.
 
     Returns None when the entry file exists under neither candidate path
     (`root/<entry_path>` or the corpus-relative form); callers must treat None
@@ -77,25 +132,32 @@ def entry_contract(root, entry_path):
         full = os.path.join(root, "corpus", entry_path)
     if not os.path.isfile(full):
         return None
-    declared, cited, recheck, manifest = [], set(), "", None
-    with open(full, encoding="utf-8") as fh:
-        body = fh.read()
-    for sid in re.findall(r"S\d{3,}", body):
-        cited.add(sid)
+    declared, evidence, cited, recheck, manifest = [], [], set(), "", None
     with open(full, encoding="utf-8") as fh:
         for line in fh:
             m = SOURCE_LINE.match(line)
             if m:
                 declared.append(m.group(1))
                 continue
+            m = EVIDENCE_LINE.match(line)
+            if m:
+                evidence.append(m.group(1))
             m = RECHECK_LINE.match(line)
-            if m and not recheck:
-                recheck = m.group(1).strip()
+            if m:
+                if not recheck:
+                    recheck = m.group(1).strip()
+                continue
+            # A declaration line is not evidence that the entry *cites* the
+            # source: counting the recheck line's own `--source` ids as
+            # citation made this limb vacuous by construction (M33-6 / R9).
+            for sid in re.findall(r"S\d{3,}", line):
+                cited.add(sid)
     recheck_ids = RECHECK_SOURCE.findall(recheck)
     m = RECHECK_MANIFEST.search(recheck)
     if m:
         manifest = m.group(1).strip("`'\"")
-    return sorted(declared), sorted(cited), recheck, sorted(recheck_ids), manifest
+    return (sorted(declared), sorted(cited), recheck, sorted(recheck_ids), manifest,
+            sorted(evidence))
 
 
 def manifest_ids(root, manifest):
@@ -120,6 +182,7 @@ def evaluate(root, entry_path):
         return {
             "entry": entry_path,
             "declared_ids": [],
+            "evidence_declared_ids": [],
             "cited_ids": [],
             "recheck_ids": [],
             "manifest": None,
@@ -128,11 +191,12 @@ def evaluate(root, entry_path):
             "problems": ["missing-entry"],
             "status": "FAIL",
         }
-    declared, cited, recheck, recheck_ids, manifest = contract
+    declared, cited, recheck, recheck_ids, manifest, evidence = contract
     full = os.path.join(root, entry_path)
     if not os.path.isfile(full):
         full = os.path.join(root, "corpus", entry_path)
     realpath = os.path.realpath(full)
+    declared_set = set(declared) | set(evidence)
     problems = []
     if not declared:
         problems.append("no-source-line")
@@ -144,8 +208,10 @@ def evaluate(root, entry_path):
         problems.append("no-source-selection")
     if not manifest:
         problems.append("no-manifest")
-    if declared and recheck_ids and not set(declared).issubset(set(recheck_ids)):
+    if declared_set and recheck_ids and not declared_set.issubset(set(recheck_ids)):
         problems.append("header-sources-not-rechecked")
+    if declared_set and recheck_ids and not set(recheck_ids).issubset(declared_set):
+        problems.append("selection-not-declared-by-entry")
     if recheck_ids and not set(recheck_ids).issubset(set(cited)):
         problems.append("selection-not-cited-by-entry")
     listed = manifest_ids(root, manifest) if manifest else None
@@ -163,6 +229,7 @@ def evaluate(root, entry_path):
     return {
         "entry": entry_path,
         "declared_ids": declared,
+        "evidence_declared_ids": evidence,
         "cited_ids": cited,
         "recheck_ids": recheck_ids,
         "manifest": manifest,
@@ -173,12 +240,150 @@ def evaluate(root, entry_path):
     }
 
 
+# --- selftest -----------------------------------------------------------------
+#
+# One case per limb of rule A, plus controls for the two declaration shapes and
+# the citation limb. Each fixture root is a miniature lane: a Frontier table
+# naming one entry, that entry's header + prose + evidence list + `recheck:`
+# line, a schema-1 manifest, and a stub `corpus/instruments/source-recheck.py`
+# that exits 0 — so a case failure can only come from the harness's own
+# binding, never from a capture.
+
+SELFTEST_README = (
+    "| id | topic | status | entry | sources | note |\n"
+    "|---|---|---|---|---|---|\n"
+    "| F98 | fixture topic | admitted | knowledge/fixture.md | %s | selftest fixture |\n"
+)
+
+SELFTEST_ENTRY = (
+    "# fixture entry\n"
+    "\n"
+    "%s"
+    "\n"
+    "%s"
+    "\n"
+    "%s"
+    "\n"
+    "recheck: python3 corpus/instruments/source-recheck.py "
+    "--manifest corpus/source-snapshots/fixture/manifest.json %s\n"
+)
+
+SELFTEST_STUB = (
+    '#!/usr/bin/env python3\n'
+    '"""Selftest stub: the harness under test owns every binding rule."""\n'
+    'import sys\n'
+    "\n"
+    "sys.exit(0)\n"
+)
+
+
+def build_fixture(root, header_ids, recheck_ids, prose_ids=(), evidence_ids=()):
+    """Write one fixture lane. `prose_ids` are mentioned in a sentence only
+    (a reference, not a declaration); `evidence_ids` get a per-source evidence
+    list item (`- S002, "fixture section": "fixture quote"`)."""
+    mentioned = sorted(set(header_ids) | set(prose_ids) | set(evidence_ids))
+    manifest_ids_all = sorted(set(mentioned) | set(recheck_ids))
+    for sub in (("corpus", "instruments"), ("corpus", "source-snapshots", "fixture"),
+                ("knowledge",)):
+        os.makedirs(os.path.join(root, *sub))
+    with open(os.path.join(root, "corpus", "README.md"), "w", encoding="utf-8") as fh:
+        fh.write(SELFTEST_README % ", ".join(header_ids))
+    with open(os.path.join(root, "knowledge", "fixture.md"), "w", encoding="utf-8") as fh:
+        fh.write(SELFTEST_ENTRY % (
+            "".join("source: %s — selftest fixture header line\n" % sid for sid in header_ids),
+            "Body mentions %s in prose only.\n" % ", ".join(mentioned),
+            "".join('- %s, "fixture section": "fixture quote"\n' % sid
+                    for sid in evidence_ids),
+            " ".join("--source %s" % sid for sid in recheck_ids)))
+    with open(os.path.join(root, "corpus", "source-snapshots", "fixture", "manifest.json"),
+              "w", encoding="utf-8") as fh:
+        json.dump({"schema_version": 1, "purpose": "frontier-recheck selftest fixture",
+                   "sources": [{"id": sid, "path": "%s.txt" % sid}
+                               for sid in manifest_ids_all]},
+                  fh, indent=1, sort_keys=True)
+        fh.write("\n")
+    with open(os.path.join(root, "corpus", "instruments", "source-recheck.py"),
+              "w", encoding="utf-8") as fh:
+        fh.write(SELFTEST_STUB)
+
+
+SELFTEST_CASES = [
+    # name, header ids, recheck ids, prose-only ids, evidence ids,
+    # expected exit, expected substrings
+    ("bidirectional-holds", ("S001", "S002"), ("S001", "S002"), (), (), 0,
+     ["PASS", "ids=S001,S002", "entries=1 pass=1 exit=0"]),
+    ("selection-not-declared", ("S001", "S002"), ("S001", "S002", "S003"), ("S003",), (), 1,
+     ["problems=selection-not-declared-by-entry", "entries=1 pass=0 exit=1"]),
+    ("header-source-not-rechecked", ("S001", "S002"), ("S001",), (), (), 1,
+     ["problems=header-sources-not-rechecked", "entries=1 pass=0 exit=1"]),
+    ("evidence-list-declares-selection", ("S001",), ("S001", "S002"), (), ("S002",), 0,
+     ["PASS", "ids=S001", "entries=1 pass=1 exit=0"]),
+    ("evidence-declared-not-rechecked", ("S001",), ("S001",), (), ("S002",), 1,
+     ["problems=header-sources-not-rechecked", "entries=1 pass=0 exit=1"]),
+    ("selection-neither-declared-nor-mentioned", ("S001", "S002"),
+     ("S001", "S002", "S003"), (), (), 1,
+     ["problems=selection-not-declared-by-entry,selection-not-cited-by-entry",
+      "entries=1 pass=0 exit=1"]),
+]
+
+
+def scratch_base(arg=None):
+    """Scratch root: explicit arg, else $HYAKU_SCRATCH, else $TMPDIR, else a platform default."""
+    for candidate in (arg, os.environ.get("HYAKU_SCRATCH"), os.environ.get("TMPDIR")):
+        if candidate:
+            return candidate
+    return "/fast/scratch/hyaku" if os.path.isdir("/fast/scratch") else tempfile.gettempdir()
+
+
+def selftest(scratch_arg=None, out=sys.stdout):
+    base = scratch_base(scratch_arg)
+    os.makedirs(base, exist_ok=True)
+    scratch = tempfile.mkdtemp(prefix="frontier-recheck-selftest-", dir=base)
+    failures = 0
+    try:
+        for (name, header_ids, recheck_ids, prose_ids, evidence_ids,
+             want_exit, want_lines) in SELFTEST_CASES:
+            root = os.path.join(scratch, name)
+            os.makedirs(root)
+            build_fixture(root, header_ids, recheck_ids, prose_ids, evidence_ids)
+            proc = subprocess.run(
+                [sys.executable, os.path.abspath(__file__), "--root", root],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            problems = []
+            if proc.returncode != want_exit:
+                problems.append("exit=%d want=%d" % (proc.returncode, want_exit))
+            for line in want_lines:
+                if line not in proc.stdout:
+                    problems.append("missing=%r" % line)
+            if problems:
+                failures += 1
+            print("selftest case=%s exit=%d want=%d verdict=%s"
+                  % (name, proc.returncode, want_exit, "fail" if problems else "pass"),
+                  file=out)
+            for problem in problems:
+                print("selftest problem=%s case=%s" % (problem, name), file=out)
+            if problems:
+                print("selftest stdout case=%s\n%s" % (name, proc.stdout.rstrip()), file=out)
+                if proc.stderr:
+                    print("selftest stderr case=%s\n%s" % (name, proc.stderr.rstrip()), file=out)
+    finally:
+        shutil.rmtree(scratch, ignore_errors=True)
+    print("selftest cases=%d failures=%d" % (len(SELFTEST_CASES), failures), file=out)
+    return 0 if failures == 0 else 1
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--root", default=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     parser.add_argument("--json", default=None, help="write a JSON receipt here")
+    parser.add_argument("--selftest", action="store_true",
+                        help="run the fixture cases instead of checking the lane")
+    parser.add_argument("--scratch", default=None,
+                        help="scratch root for selftest fixtures (default $HYAKU_SCRATCH, then $TMPDIR)")
     args = parser.parse_args(argv)
 
+    if args.selftest:
+        return selftest(args.scratch)
     root = os.path.abspath(args.root)
     try:
         rows = read_frontier(root)

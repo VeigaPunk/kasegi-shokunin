@@ -1,6 +1,17 @@
 {
  "schema_version": 1,
- "purpose": "Round-26 captures for the F11 admission (ISO/IEC 29147/30111 division-of-labour theme; JPCERT/CC 2026 P-guideline). S041.txt was captured by capture-source.py on 2026-10-25T12:34:17Z; the sha256 binds those bytes and the quotes are asserted against them by corpus/instruments/source-recheck.py. S040-live.txt was not present in corpus/source-snapshots/round-26/ at manifest build time (ScoutS040Probe fetch not landed), so S040 is skipped this round — noted per the ExecManifestRecheck assignment.",
+ "purpose": "Round-26 captures for the F11 admission (ISO/IEC 29147/30111 division-of-labour theme; JPCERT/CC 2026 P-guideline). This manifest accounts for exactly the two files committed in this directory. (1) `sources` holds one record, S041.txt: 147267 B, 2354 lines, sha256 e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47, captured by capture-source.py from https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf at 2026-10-25T12:34:17Z (`.ufo/waves/round-26/wave1/ExecCaptureS041.md:17`); round-26 predates the round-32 strict-UTC rule, so the record carries `archival: true` and the capture instant lives in that receipt, not in a `fetched_utc` field. corpus/instruments/source-recheck.py asserts the seven pinned quotes against those bytes. (2) S040-live.txt has no `sources` record and is declared in the top-level `orphans` list below: 33463 B, 503 lines, sha256 b7f7b55ff3fc723ec5f9ffb2da47f640f0cef12d2f969a5e35754eee0c4e286c, fetched 2026-10-25T12:34:27Z by ScoutS040Probe through capture-source.py from the S040 redirect target https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html (canonical registry url https://www.cisco.com/c/en/us/about/security-center/security-vulnerability-policy.html, 2 redirects, instrument UA required) — `.ufo/waves/round-26/wave1/ScoutS040Probe.md:57`. It cannot be a `sources` record: source-recheck.py Q9 B1 requires a record `path` stem to equal its registry id, and `S040-live` names no registry row. corpus/instruments/capture-binding-check.py audits the per-file coverage (round-33 defect R6 closure). The `orphans` entry's `sha256`/`row`/`row_url`/`captured_url`/`fetched_utc` fields are informational only: that checker validates `path` and `reason` and asserts neither field; the sha256 is the `sha256sum` of the committed bytes (measured 2026-10-26) and the instant is the ScoutS040Probe receipt's capture time.",
+ "orphans": [
+  {
+   "path": "S040-live.txt",
+   "reason": "Live probe capture of the S040 page, fetched by ScoutS040Probe after this manifest was built; it documents the S040 redirect chain and the instrument-UA requirement, but no registry row id `S040-live` exists and source-recheck.py B1 requires a record path stem to equal its id, so it is declared here instead of bound as a `sources` record.",
+   "sha256": "b7f7b55ff3fc723ec5f9ffb2da47f640f0cef12d2f969a5e35754eee0c4e286c",
+   "row": "S040",
+   "row_url": "https://www.cisco.com/c/en/us/about/security-center/security-vulnerability-policy.html",
+   "captured_url": "https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html",
+   "fetched_utc": "2026-10-25T12:34:27Z"
+  }
+ ],
  "sources": [
   {
    "id": "S041",

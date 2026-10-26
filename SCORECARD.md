@@ -985,8 +985,8 @@ Frozen before dispatch in `.ufo/waves/round-33/claims.json` (base
 `690b69dae23ab9f4ccf056ba2d619cadc2abb3c4`, claims-freeze commit
 `6e55c8d58a3e63efe11c0df47068bfc479bfc8e0`, Rule-B erratum commit `53bfa59f…`, wave-1
 integration commit `9f9848816503aa0cd566fc2efdc5e69ea501a253`). **Final lane commit:
-`<LANE_HASH>`** — the L1 replaces this marker; the wave-1 value above is the commit the
-after-column seats measured, not the closing commit. Receipts land under
+`7963976e60b2564860553c6ab4838128d5ca06ea`** (filled in round 34, R1); the wave-1 value above
+is the commit the after-column seats measured, not the closing commit. Receipts land under
 `.ufo/waves/round-33/` (`c1-controls/`, `c2-controls/`, `census-before.txt`,
 `assimilation/`, `watchdog-digest.txt`, `wave1/`; 54 seat receipts plus
 `swarm-registry.json` at this seat's gate). This file carried **no round-32 section** at
@@ -1010,6 +1010,29 @@ scored: rule B binds a record to its **own** id row by byte-exact token match, a
 two different ids is informational (`multi_row_url=2`), and two rows with the same id are
 `dup-id`. The landed instrument implements it (`case_duplicate_id_rows`, `case_shared_url_passes`)
 and the frozen counters are reported under the erratum reading, not the literal one.
+
+**Erratum 2, disclosed (round-34 append, round-25 form).** The frozen C1 kill-rule
+parenthetical above — a `url` that greps to "0 or 2+ matches" is a failure — is scoped **per id**,
+not globally. `"0 or 2+ matches = failure"` applies within a single record's own id scope: it
+reads that record's own `corpus/SOURCES.md` row, so a hit count of zero or two-or-more is about
+that one row's id token, not a whole-file or whole-registry count. A URL shared by two *different*
+rows is informational (`multi_row_url=N`) and does not fail rule B; two rows carrying the same id
+**do** fail, and the instrument names that `dup-id`. At the landed bytes `multi_row_url=2` is
+exactly the two manifest records S029 and S006 (their URLs are also the S024 and S028 rows'
+URLs), so the global reading would fail both and leave `bound=38` of 40 records, while the per-id
+reading binds `records=40 bound=40 unbound=0`. The landed selftest pins both directions
+(`case_duplicate_id_rows`, `case_shared_url_passes`). Erratum 1 remains the correction of record
+for the round-33 counters; this block restates its reading in the kill rule's own words so the
+frozen sentence and the measured reading no longer diverge on their face.
+
+**Pre-freeze satisfiability step, recorded (QUALITY R22).** Before any claim is frozen, each
+literal constant and regex in its predicate and kill rule is evaluated against the base bytes for
+satisfiability. A literal that is unsatisfiable at base is corrected **before** dispatch, never
+waived by a post-freeze erratum. Round 33 froze C1 with two such literals — "exactly one
+registry-row URL" and "0 or 2+ matches" — both false against the two shared-URL pairs the registry
+had carried since round 24, which is why erratum 1 and this erratum 2 had to be filed after
+dispatch. `corpus/QUALITY.md` R22 is the appended criterion, grounded in the routed R2 defect
+(`corpus/lessons/round-33-verifier-spotcheck.md` §5 R2) and mistake M34-2.
 
 **C1 blind spots, recorded (not filed as failures).** `wave1/CritC1Kill.md` measures H1–H8:
 capture bytes are not bound by the checker (truncated `S050.txt`, deleted `S049.txt` and a
@@ -1084,8 +1107,137 @@ depth:verifiability at 4 the lowest-axis obligation stays active.
 | 33 | depth:verifiability | 4 (no capture-binding instrument; 38 manifest records carry no `url`, none carries fetch provenance; the round-32 snapshot dir has no manifest; a summary-printing fake passes) | 4 held (`records=40 bound=40 unbound=0` exit 0 twice byte-identically, 9/9 dirs manifest-bound, 2 round-32 `fetched_utc` + 38 `archival: true`, `selftest cases=11 failures=0`, base bytes fail closed naming `dir=round-32`, fake rejected, 40 sha pins via `source-recheck`, no corpus regression) | `corpus/instruments/capture-binding-check.py`, the nine `corpus/source-snapshots/*/manifest.json`, `corpus/SOURCES.md`, `.ufo/waves/round-33/wave1/{ExecRegressionC1,ExecNoHarmFinal,ExecDeterminism,RevC1Instrument,CritC1Kill}.md` |
 | 33 | coverage | 7 (frontier 15, entries citing S049/S050 0/0, registry 48, harness 18/18, manifest absent → recheck exit 2) | 7 held (frontier 16, entries citing 1/1, registry 50, census exit 0 with base warnings only, harness 19/19 incl. `PASS F16`, 14 quote assertions `occurrences=1` exit 0) | `corpus/README.md` F16 row, `corpus/SOURCES.md` S049/S050, `corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md`, `corpus/source-snapshots/round-32/manifest.json`, `.ufo/waves/round-33/wave1/{ExecHarnessC2,ExecCensusAfter,RevRowS049,RevRowS050,RevEntryF16}.md` |
 
-**Round-33 final lane commit: `<LANE_HASH>`** — the L1 replaces this marker. Every value in
+**Round-33 final lane commit: `7963976e60b2564860553c6ab4838128d5ca06ea`** (filled in round 34, R1). Every value in
 this section was measured at the wave-1 integration commit `9f98488…` on the quiescent bytes
 digested under § Measurement state; the closing commit may add seat receipts, `LOG.md`,
 `SHONEN.md`, `corpus/lessons/round-33.md` and this section itself, none of which any counter
 above reads.
+
+Correction (round 34): the two lane-hash placeholders above (R1) were replaced with the round-33
+final hash `7963976e60b2564860553c6ab4838128d5ca06ea` (lane tip `014ee2d7aa8c3c095ff57ae51097606a9906228c`
+after the verifier spot-check commit); the placeholder token no longer occurs in this file, and
+the round-34 closure check R1 reads that count as 0.
+
+## Round 34 — frozen claims C1/C2 (2026-10-26)
+
+Frozen before dispatch in `.ufo/waves/round-34/claims.json` (base
+`014ee2d7aa8c3c095ff57ae51097606a9906228c`, claims-freeze commit
+`29f606dbdd28aff6fd4573ab4b90788bbb90af13`, wave-1 spec/dispatch commit `206e5108f1190e61b3e2622d21cab8a5d921650c`),
+together with the do-nothing controls committed at the freeze
+(`c1-controls/fake-suite.sh`, `c1-controls/fake-killrule.py`, `c2-controls/junk-f17.md` +
+`c2-controls/junk-checker.py`), the frozen before-controls (`c1-controls/before.txt`,
+`c2-controls/before.txt`) and `census-before.txt`. **Final lane commit: the L1 fills this line in the
+closing commit.** This section is written at the wave-1 integration state on the bytes digested under
+§ Measurement state, claims no lane-commit hash, and deliberately introduces no placeholder token —
+round-33 R1's defect was a published placeholder, the C1 counter reads that count as 0, and nothing
+here moves it. Receipts land under `.ufo/waves/round-34/` (`c1-controls/`, `c2-controls/`,
+`census-before.txt`, `claims-erratum-1.md`, `assimilation/`, `wave1/`; 58 seat receipts at this
+seat's read). The last round heading at this round's base is round 33, so C1's and C2's last-change
+column stays 33 and every before-column below is the frozen control measured at this round's base
+bytes. The round-34 subject is instrument-soundness closure for the nine round-33 verifier-routed
+defects R1–R9 (C1) and frontier F17 / Immunefi Vulnerability Severity Classification System v2.2
+(C2).
+
+| Claim | Axis | Before | After | Verdict and evidence | Last change |
+|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest non-retired, 4) | suite absent (`ls_exit=2`); `capture-binding-check --selftest` **`cases=11 failures=0`**; two survivors of the frozen round-33 rule (`skip-selftest` summary mutant prints `selftest cases=0 failures=0` exit 0; `accept-record-without-url` prints `records=2 bound=2 unbound=0` exit 0); SCORECARD lane-hash markers **2**; round-32 `fetched_utc` `2026-10-25T23:14:00-03:00` ×2; round-26 manifest `records=1 paths=['S041.txt']` with `S040-live.txt` unlisted; `QUALITY.md` R20 `exactly one` ×1 with no appended note; no round-34 erratum in `corpus/lessons/round-33.md`; `frontier-recheck-count.py` rule A one-directional; no junk-twin control (`c2-controls/` absent at base); base-tree audit `records=40 bound=40 unbound=0 exit=0` (`c1-controls/before.txt`, `c2-controls/before.txt`, `.ufo/waves/round-34/census-before.txt`; base audit re-derived by `RevC1BeforeAfter` B8) | `bash corpus/instruments/r-defect-closure.sh` → nine `R# check=… open=0` lines, **`closed=9/9 exit=0`**; `--selftest` → nine `selftest case=R# live=pass fixture=rejected verdict=pass` lines, **`selftest cases=9 failures=0`**, exit 0; on base bytes **`closed=0/9 exit=1`** with a named reason per check; `capture-binding-check --selftest` → **`selftest cases=23 failures=0`** exit 0 (`3d9e5e0d…`, 892 lines), the nine named new cases present; plain audit **`records=41 bound=41 unbound=0 exit=0`** with `missing_manifest=0 multi_row_url=2 orphans=1 orphan=S040-live.txt` over ten snapshot dirs (erratum 1); `kill-rule-check.py` → `mutants=3 killed=3 survivors=0 invalid=0`, `gates=7 failed=0`, `controls=4 rejected=4`, **`survivors=0`**, exit 0 (`c279d952…`, 881 lines); lane-hash markers **0** + appended `Correction (round 34)` naming `7963976e`/`014ee2d`; round-32 manifest `fetched_utc` `2026-10-26T04:16:06Z`/`04:16:16Z` (`72ab4e68…`); round-26 manifest binds `S040-live.txt` as a declared `orphans` entry with `purpose` corrected (`33ac33c3…`); `QUALITY.md` gains the R20 note, R22 (pre-freeze satisfiability), R23 (reflection cadence) and R24 (per-case kill rule) (`77d99df9…`); `corpus/lessons/round-33.md` carries R7 (`:140`) and R4 (`:215`) errata (`f69472f3…`); rule A bidirectional with both limbs killed at mutation depth (`1be79af6…`); junk twin committed at freeze (`2752a994…`) and rejected | **Verified, score held 4.** Every frozen C1 counter is met on quiescent bytes and the failure direction is demonstrated: the suite reads `0/9` on base bytes, its `--selftest` fixture per case reintroduces that case's own round-33 defect, and the committed do-nothing controls reach the target summary without work (`fake-suite.sh` prints `closed=9/9` with no case table; `fake-killrule.py` prints `survivors=0` and is `opaque` against a real survivor witness). Mutation depth on top: 18/18 suite checks killed (`MutRSuiteChecks`), both rule-A limbs killed (`MutFrontierRuleA`), `skip-selftest` and `accept-record-without-url` killed by the new counter, and the counter's own false-zero route closed three ways (`ExecKillRuleCheck` §9). Independent re-derivation: `RevC1BeforeAfter` (before receipt honest, six counters match), `RevClaimsFreeze` (§3 battery MATCH incl. marker count 0), `RevRSuite`, `CritC1Kill`. Disclosures, not waivers, in the paragraphs below | 33 (held 34) |
+| C2 | coverage (7) | `frontier_admitted=16`; registry rows **50**, `S051` rows **0**, entries citing `source: S051` **0**; harness `entries=19 pass=19 exit=0`; `source-recheck` on the absent round-34 manifest `manifest UNAVAILABLE reason=missing`, `recheck_exit=2`; census exit 0 with `W04 S028` + `W04 S029` only; `corpus/knowledge/*.md` 45; junk twin exists at freeze and its shape counters pass it 3/3 (`c2-controls/before.txt`, `c1-controls/fake-controls-receipt.txt`) | frontier admitted **17** (appended `## Round-34 admission` section, 26 inserted / 0 deleted); registry rows **51**, `S051` row **1** (`corpus/SOURCES.md:57`, tier A, `mined`, opened 2026-10-26, `used-by` the entry), 5 inserted / 0 deleted vs freeze; entries citing `source: S051` **1**; `corpus/knowledge/*.md` **46**; harness **`entries=20 pass=20 exit=0`** incl. `PASS F17 knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051 exit=0` and `declared_ids == recheck_ids == ['S051']`; `source-recheck --source S051` → `sha256 OK` + 18 assertions OK, **exit 0** (`4fd8ed98…` capture, `d5077f81…` manifest, `fetched_utc=2026-10-26T05:31:10Z`); census **exit 0** with exactly `W04 S028` + `W04 S029` + `ok`, six-command battery `rows=51 malformed=0 tier=A=48 B=1 C=2 status=mined=39 queued=9 rejected=3 dups=`; junk twin (`2752a994…`, committed at freeze) rejected when its fabricated sentence is checked against the committed capture (`MISMATCH reason=quote-not-found`, exit 1) and not admitted | **Verified on every frozen C2 counter, score held 7**, with two wording deviations disclosed rather than adopted: 16 of 18 assertions print `occurrences=1` and Q9/Q17 print `occurrences=2` under verified anchors `anchor=77-ok`/`anchor=96-ok` (the kill rule's `exit != 0` clause is unaffected), and the junk twin's own `recheck:` line exits 0 because it names the real manifest — the rejection lives in the reviewer-built manifest and in non-admission, not in the counter. Reviewer posture is reported verbatim below: `RevEntryF17` **ADMIT** on `948b202e…`, `RevRowS051` **matches**, `RevJunkTwin` **holds** on all four criteria, `RevCensus`/`RevC2BeforeAfter`/`ExecCensusAfter`/`ExecRegressionC2` all reproduce the counters, and `CritC2Kill`'s verdict is *"C2 holds as declared for the landed tree, and the gate is not provenance-sound"* (G1–G5) | 33 (held 34) |
+| depth:density | 9 | mean **201.7**, 25 blocks, 710 path-citation instances (`SKILL.md` `b11b6085…`, 1090 lines — the round-33 final bytes) | mean **201.7**, 25 blocks, 710 cites, 1090 lines; `SKILL.md` and `PROVINCE.md` absent from `git diff --numstat 014ee2d7` (0 lines changed, both sides the same bytes); `anchorcheck.py SKILL.md` → `12 in-range cite instances, 0 bad`, `LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0`, exit 0 (`RevNoHarm` §A–§C, the independent reviewer; no `ExecNoHarmFinal` receipt had landed at this seat's read) | **Unchanged (held 9), no harm, no move claimed.** The round adds instruments, manifests, lessons and registry rows and no `SKILL.md`/`PROVINCE.md` byte, so the density census reproduces round 33 exactly on the same committed instrument; every failure class in `anchorcheck.py` is at its recorded value, and the one authorised deletion set (2 lane-hash marker lines + in-place instrument/manifest replacements) is mapped to frozen-claim text line by line in `RevNoHarm` §A | r15 (held r34) |
+
+**Erratum 1, disclosed (post-freeze, filed by the L1 before any scoring seat).** C1's counting
+command named `records=40 bound=40 unbound=0` as the "unchanged C1 instrument baseline"; round-34's
+own C2 capture adds the `S051` record, so the audit surface is 41 records. `.ufo/waves/round-34/claims-erratum-1.md`
+rules the literal a round-33 scope note and keeps the invariant `bound=records, unbound=0, exit 0`:
+measured **`records=41 bound=41 unbound=0 exit=0`**. Intermediate readings are labelled PRE-STATE and
+are not after-columns: `records=41 bound=40 unbound=1 exit=1` with `FAIL rule=no-row record=S051`
+(`ExecCaptureBindingHarden` §3, before the registry row landed — itself the proof that rule B binds a
+record to its row) and `selftest cases=11 failures=0` in `ExecManifestR32Normalize` §4d, measured on
+the round-33 instrument bytes before the hardening landed.
+
+**C2 predicate wording, disclosed (no score change).** The frozen sentence "source-recheck S051 prints
+every assertion occurrences=1" is not literally true: 16 assertions print `occurrences=1` and Q9/Q17
+print `occurrences=2` with verified anchors, exit 0. `RevClaimsFreeze` D-2 files this as the same
+summarization-beyond-measured-evidence class the round files as M34-1 and recommends an appended
+claims erratum rewording the clause to "every assertion OK (`occurrences=1`, or `occurrences=2` with a
+verified anchor for Q9/Q17), `sha256 OK`, exit 0". `ExecSnapshotR34` §6.2, `ExecRegistryAppend` §5,
+`RevC2BeforeAfter` counter 6 and `CritC2Kill` §9 report the same measurement. This section reports the
+measured shape and does not restate the literal.
+
+**C1 blind spots, recorded (not filed as failures).** `CritC1Kill` attacks the landed instruments and
+these survive, each named with its measured route: a two-edit self-mutation that rewrites the
+counter's summary line still prints `survivors=0` (the header's `counter_sha256=` is printed but not
+compared — bind the counter before trusting the zero; §3b); `fetched_utc` provenance is uncertifiable
+by either instrument (any real calendar instant passes; the landed values are provenance-backed by
+`ScoutLiveDrift`, which the instruments cannot see; §4); a snapshot directory with `"sources": []`
+and every capture declared as an orphan prints `records=0 … unbound=0` at exit 0 — the degenerate
+all-orphan route is outside rule A and outside R9 (`ExecRDefectClosureSuite` §11.7 states the same);
+the marker check is spelling-brittle (a respelled placeholder passes R1); and the report-verifier's
+case-line-count limb is implemented but not self-witnessed by a fixture
+(`ExecCaptureBindingHarden` §Peer finding, `CritC1Kill` §Additional states). The kill-rule probe set
+is a bounded oracle by construction, the comment-only survivor row is the deliberate instance, and the
+suite's R1–R4/R6/R7 checks are presence tests whose fixtures prove they *can* fail, not that the prose
+is truthful. C1's "committed" clause for the junk twin is also outside the suite, which reads bytes:
+commit membership is the L1's/regression seat's check (`ExecRDefectClosureSuite` §11.3).
+
+**C2 reviewer posture, reported verbatim for the canonical judge.** `RevEntryF17`:
+**"ADMIT. The final bytes (`948b202e…`) satisfy Q1–Q10 on measured evidence"** — the earlier
+`e71fbcd9…` bytes were superseded before verdict, so the earlier digest quoted in `ExecRegistryAppend`
+§1 is PRE-STATE and not the reviewed entry. `RevJunkTwin`: **"the junk-twin control holds"** on
+committed-at-freeze membership, shape counters 3/3, gate rejection, and entry-review non-admission;
+`CritC2Kill` G5 records that the twin's own declared `recheck:` line exits 0 and that its quoted
+sentence is partly real text from `S051.txt:75`, so G5's smallest correction is an erratum defining
+the gate invocation. `CritC2Kill`'s residual gaps G1–G4 (no provenance binding, entry body unbound,
+`mined` unbound to a capture, harness rule D may leave the tested root) are stated with a smallest
+safe correction each and are not round-34 kill clauses. `RevRowS051` finds the row, Search-log bullet
+and R8 lines truthful with two prose-only observations; `ExecHarnessAfter` F-A records that the README
+F17 row had no owning seat and was appended under L1 authorization (26/0 lines, exactly one row).
+
+**Measurement state.** Values above were measured on the wave-1 working tree with per-seat bookend
+digests, and this seat re-read the digests below at the writing moment: `corpus/SOURCES.md`
+`4c85ff86…` (105 lines, 51 rows), `corpus/README.md` `876be9cc…`, the F17 entry `948b202e…` (113
+lines), `corpus/source-snapshots/round-34/manifest.json` `d5077f81…`, `round-34/S051.txt`
+`4fd8ed98…`, `round-32/manifest.json` `72ab4e68…`, `round-26/manifest.json` `33ac33c3…`,
+`capture-binding-check.py` `3d9e5e0d…` (892 lines), `r-defect-closure.sh` `357a7e49…` (688 lines),
+`kill-rule-check.py` `c279d952…` (881 lines), `frontier-recheck-count.py` `1be79af6…` (433 lines),
+`corpus/instruments/README.md` `d021b317…` (960 lines), `corpus/QUALITY.md` `77d99df9…` (228 lines),
+`corpus/lessons/round-33.md` `f69472f3…`, `corpus/lessons/round-29.md` `4afb96be…`, `SKILL.md`
+`b11b6085…`, `PROVINCE.md` unchanged, `c2-controls/junk-f17.md` `2752a994…`, `claims.json`
+`dedb9ea8…` (byte-identical to the freeze commit's blob). Supersessions are recorded rather than
+compared: `frontier-recheck-count.py` moved `87b14892…` → `8a79010d…` → `1be79af6…` (docstring and
+README-reference only; `MutFrontierRuleA` ran its matrix at both later digests with identical
+verdicts, and the author seat confirmed `1be79af6…` final); `QUALITY.md` moved `2bb724fb…` →
+`77d99df9…` at the same 228 lines inside its own appended block; `r-defect-closure.sh` moved
+`7aca98b3…` → `357a7e49…` between `RevClaimsFreeze`/`RevC1BeforeAfter` and
+`ExecRDefectClosureSuite`'s final run, and the earlier R8 descriptor those receipts quote
+(`^YYYY-MM-DDTHH:MM:SSZ$`) is the pre-parse generation — the landed R8 also requires a real
+`datetime.fromisoformat` instant, added after `CritC1Kill` §4b showed a `…Tgarbage-not-a-timeZ` value
+passing the frozen shape regex while rule C calls it `detail=malformed`; `kill-rule-check.py` churned
+through seven generations, all named in `ExecKillRuleCheck` §0, with the final `c279d952…` the one the
+quoted `survivors=0` run used. One worktree artefact outside the lane is reported, not adopted:
+`RevNoHarm` §D found `/home/vgpnk/Projects/shokunin/baseline-plain.txt` (850 B, untracked, sha256
+`56f08a92…`) written at the read-only fleet root during the wave — content-harm-free, a seat-scope
+violation by an unattributable round-34 participant.
+
+**Capabilities: no row enters this round.** `capture-binding-check` entered the table in round 33 and
+its round-33 row's "run an 11-case `--selftest`" clause is superseded by the landed instrument's
+**23 cases** (`selftest cases=23 failures=0`, `3d9e5e0d…`); per the L1's integration note that
+supersession is recorded here as a note rather than an in-place edit of the round-33 row (this seat is
+append-only), and the master `## Capabilities` table is otherwise unchanged. `r-defect-closure.sh` and
+`kill-rule-check.py` are demonstrated to their own contract with base-tree failure directions and
+mutation batteries, but their capability rows are the L1's decision, not this section's claim.
+
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3. No capability entry enters this
+round, so the capability window is not restarted (last entry round 33). With depth:verifiability still
+at 4 the lowest-axis obligation stays active, and the C1 blind spots above are the route it points at.
+
+### Round-34 move-log rows
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 34 | depth:verifiability | 4 (suite absent, `selftest cases=11`, two frozen-rule survivors, 2 markers, local-offset `fetched_utc`, unlisted S040 capture, one-directional rule A, no junk-twin control) | 4 held (`closed=9/9 exit=0` / `selftest cases=9 failures=0` / base `closed=0/9 exit=1`; `selftest cases=23 failures=0`; `survivors=0` with 7 gates and 4/4 controls; markers 0 + correction; strict-UTC round-32 stamps; S040 orphan declared; rule A bidirectional; junk twin committed and rejected; 18/18 suite mutants and both rule-A limbs killed) | `corpus/instruments/{r-defect-closure.sh,kill-rule-check.py,capture-binding-check.py,frontier-recheck-count.py}`, `corpus/source-snapshots/round-{26,32}/manifest.json`, `corpus/QUALITY.md`, `corpus/lessons/round-33.md`, `.ufo/waves/round-34/wave1/{ExecRDefectClosureSuite,ExecKillRuleCheck,ExecCaptureBindingHarden,ExecFrontierBidirectional,ExecScorecardMarkers,ExecErratum2,ExecQualityAppends,ExecLessonErrata,ExecS040Orphan,ExecManifestR32Normalize,RevC1BeforeAfter,RevClaimsFreeze,RevRSuite,MutRSuiteChecks,MutKillRuleMutants,MutFrontierRuleA,CritC1Kill}.md` |
+| 34 | coverage | 7 (frontier 16, entries citing S051 0, registry 50, harness 19/19, round-34 manifest absent → recheck exit 2, junk twin uncommitted) | 7 held (frontier 17, entries citing 1, registry 51 with S051 row 1, harness 20/20 incl. `PASS F17`, `source-recheck S051` 18 assertions OK exit 0, census exit 0 with base warnings only, 46 knowledge entries, junk twin rejected by the reviewer-built manifest) | `corpus/README.md` F17 row, `corpus/SOURCES.md:57` S051 + `:77` Search-log bullet + `:103-105` R8 lines, `corpus/knowledge/immunefi-vscs-v2-2-smart-contract-severity.md`, `corpus/source-snapshots/round-34/{S051.txt,manifest.json}`, `.ufo/waves/round-34/c2-controls/junk-f17.md`, `.ufo/waves/round-34/wave1/{ExecSnapshotR34,ExecHarnessAfter,ExecRegistryAppend,ExecCensusAfter,ExecRegressionC2,RevC2BeforeAfter,RevCensus,RevRowS051,RevEntryF17,RevJunkTwin,CritC2Kill}.md` |
+
+**Round-34 final lane commit: filled by the L1 in the closing commit.** Every value in this section
+was measured at the wave-1 integration state on the quiescent bytes digested under § Measurement
+state; the closing commit may add seat receipts, `LOG.md`, `SHONEN.md`, `corpus/lessons/round-34.md`
+and this section itself, none of which any counter above reads.

@@ -136,3 +136,112 @@ The other five proposals are **unchanged**, with the reason stated from the lane
 ## Touched surfaces and provenance
 
 This lesson's only production path is `corpus/lessons/round-33.md`; the scoped seat report is `.ufo/waves/round-33/wave1/ScribeLesson.md` (it holds the commands, their output and the file digest). Evidence paths are named inline, principally `.ufo/waves/round-33/{claims.json,claims-erratum-1.md,census-before.txt,c1-controls/*,c2-controls/*,assimilation/*,watchdog-digest.txt,wave1-spec.json,wave1-dispatch.json,wave1.ready}` and `wave1/{ScoutManifestAudit,ScoutLiveDrift,ScoutPackageThemes,ScoutF16Sweep,ScoutDatawalk,ConnSibling,ConnOwnership,ConnClaims,ExecCaptureBinding,ExecManifestUpgrade,ExecManifest32,ExecEntryF16,ExecRegistryAppend,ExecCensusDry,ExecExpectedList,ExecHarnessC2,ExecRegressionC1,ExecCensusAfter,ExecErratumCheck,ExecQuarantine,ExecNoHarmFinal,ExecGrowthMeasurement,ExecDeterminism,ExecForeignCwd,ExecBeforeReceipts,RevEntryF16,RevRowS049,RevRowS050,RevQuoteSweep,RevManifestUpgrade,RevClaimsFreeze,RevNoHarm,CritC1Kill,CritC2Kill,CritExpansion,CritBoundary,MutCtrUnbound,MutCtrUrlMismatch,MutCtrFetchMissing,MutCtrSelftestSkip,MutLegacyManifestDrop,MutManifestLegacy,MutEntryF16,SentCred,ScribeQuality,ScribeReadmeF16,ScribeInstrReadme,ScribeProvince,ScribeSkillGate,ScribeSearchLog}.md`. Read-only outside the lane: `/home/vgpnk/Projects/shokuknow/merge/kasegi/` and `/home/vgpnk/Projects/shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md` (read by other seats; this seat read only the lesson, claims, receipts, register rows and lane bytes). No package tool was run, nothing was written there, no network fetch was made by this seat, no bounty target was contacted, and no credential material is reproduced here. No git/jj mutation: `rev-parse`, `log`, `show`, `ls-tree`, `diff`, `status` only. No tool was installed or upgraded. Scratch `/fast/scratch/hyaku/kasegi-r33/ScribeLesson/` held only the two bookend digest files and was removed before yield.
+
+## Erratum (round 34) — R7: the S049/S050 quote counts and the S050 sentence line
+
+Appended 2026-10-26 (round 34) to `corpus/lessons/round-33.md` at lane base `014ee2d` — changed-file
+scope: this file only; pre-append sha256
+`ca17591d4a36e1a6623adb9acb7ac2bc0a3dbd87c24f3913229fe0b4b781feb2`, 138 lines. Nothing above this
+block is edited (QUALITY R6/R9: a numerical erratum names its base and changed-file scope, re-opens
+every line pointer against the cited revision, and leaves the filed assertion byte-identical).
+Routed by `corpus/lessons/round-33-verifier-spotcheck.md:181` (R7).
+
+### (a) Quote lengths at `corpus/lessons/round-33.md:31-32` — 19 → 31 and 23 → 22
+
+The filed lines read "Quote (19 characters, `S049.txt:214`, accessed 2026-10-26)" and "Quote
+(23 characters, `S050.txt:591`, accessed 2026-10-26)". Corrected counts, with the command that
+produces them (run 2026-10-26T05:32Z on the committed captures):
+
+```sh
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+printf '%s' '众测平台仅接收客户授权测试范围内的安全漏洞，不接受互联网漏洞。' | wc -m   # 31
+printf '%s' '未纳入安全服务的资产一般情况下不收录相关漏洞' | wc -m                    # 22
+```
+
+Counting convention, so the figures re-derive (R3/R19): the count covers the quoted characters
+only; the 「」 corner brackets are the lesson's delimiters and are excluded — including them the
+same two `printf … | wc -m` runs print 33 and 24. Both strings occur on exactly one line of their
+captures (`grep -cF` → `1` each; 20272 B / 426-line S049 and 31016 B / 630-line S050), at
+`S049.txt:214`, whose opening clause the S049 quote is, and `S050.txt:591`, where the S050 quote
+follows the `10、` enumerator. Locations, access dates and capture digests (`962a451a…1cb8`,
+`2f9c6406…6888`) stand, so both admits stand; only the two counts moved. Independently found by
+`wave1/RevGateSpot.md` § Findings 1 (`len()` in python3 → 31 and 22), which left this file
+unedited.
+
+### (b) The S050 applicability sentence is at `S050.txt:70`, not `:69`
+
+`sed -n '69,71p' corpus/source-snapshots/round-32/S050.txt`:
+
+```
+69: 一、适用范围
+70: 本标准适用于 360 集团发布的产品和业务，此外 360 集团所投资的公司、子公司、合资公
+71: 司等也在收录范围内，具体范围可参考 https://security.360.cn/Product/product。
+```
+
+The section heading `一、适用范围` is L69 (the string occurs twice in the capture: a
+table-of-contents copy at L25, the heading at L69); the applicability sentence begins at **L70**
+and wraps into L71, `合资公司` being split across the line break — the wrap this file's `## Gate`
+§ "Capture quirks" already states. **Every citation of `:69` for that sentence is corrected to
+`:70`.** Sweep of the lane (`corpus/`, `SKILL.md`, `SCORECARD.md`, `LOG.md`) plus the fleet report,
+each pointer classified:
+
+| Citation | What it names | Verdict |
+|---|---|---|
+| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-33/kasegi.md:61` (fleet report, read-only to the lane; sha256 `0a2c6758…41b3e7c6`) — 「本标准适用于 360 集团发布的产品和业务」 `(S050.txt:69)` | the applicability sentence's opening clause | **corrected to `S050.txt:70`** — this is R7's citation slip (the quoted clause is L70's first line) |
+| `corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md:97` — `S050.txt:70` | the same sentence | already correct, no change |
+| same entry `:4` — `一、适用范围 (L69-71)` | section span (heading + wrapped sentence) | correct as a range |
+| `corpus/SOURCES.md:56` (S050 row cell) — `一、适用范围 L69-71 (the sentence wraps across L70-L71)` | section span with the wrap named | correct |
+| `corpus/lessons/round-32-verifier-spotcheck.md:73` — "适用范围 at L69" | the heading | correct |
+| this file `:46` — `§一 L69–71` | the section | correct |
+| `.ufo/waves/round-33/wave1/{ScoutF16Sweep.md:92, ExecRegistryAppend.md:69, RevRowS050.md:75, RevGateSpot.md:67, ScoutPackageThemes.md:62}` | section spans / the L69 heading with L70-71 named as the sentence | correct as filed |
+
+No lane production file cites `:69` for the sentence; the single sentence-level slip is the fleet
+report line, and this block is its correction of record (that path is outside this lane's write
+scope — it was read-only). Sweep command:
+
+```sh
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+grep -rn 'S050\.txt:69\|(L69\|适用范围 L69' --include=*.md corpus/ SCORECARD.md LOG.md SKILL.md
+```
+
+### What this erratum does not change
+
+The admits F16/S049 and F16/S050, the quote locations, the access dates, the capture digests and
+every counter in this lesson are untouched; R7's two limbs are a character count and a one-line
+pointer. Post-append digest of this file is recorded in the round-34 seat receipt
+(`.ufo/waves/round-34/wave1/ExecLessonErrata.md`); `head -138` of this file is byte-identical to
+the pre-append file.
+
+## Erratum (round 34) — R4: "all mutants killed" overstated; the frozen kill rule caught 3 of 4
+
+Appended 2026-10-26 (round 34) to `corpus/lessons/round-33.md` at lane base `014ee2d` — changed-file
+scope: this file only (append-only; the paragraph below is added for R4's closure, see
+`corpus/lessons/round-33-verifier-spotcheck.md:174`). Routed by **R4**; the lesson and the fleet
+report asserted a mutant obligation that the round-33 receipts do not support.
+
+The fleet report's C1 verdict line reads "C1: target met. 40/40/0 with all mutants killed, fake
+rejected, selftest 11/11" (`/home/vgpnk/Projects/shokunin/.ufo/reports/round-33/kasegi.md:49`,
+read-only to this lane; sha256 `0a2c6758…41b3e7c6`). Measured on the round-33 receipts, the
+counter's four mutants were killed **3 of 4 (3/4)** under the frozen kill rule as written, plus a
+separate plain-run survivor:
+
+| mutant | verdict under the frozen kill rule | evidence |
+|---|---|---|
+| M1 accept-a-record-without-url | **caught** — `selftest cases=11 failures=1` exit 1, case `record-without-url` `exit=0 want=1` | `wave1/RevClaimsFreeze.md` § "The four counter mutants" |
+| M2 accept-url-not-in-registry | **caught** — `failures=1`, case `url-mismatch` | same |
+| M3 skip-fetched_utc-requirement | **caught** — `failures=1`, case `round-32-record-without-fetched_utc` | same |
+| M4 skip-selftest | **survived** — prints `selftest cases=9 failures=0` exit 0 without running any fixture; the kill rule's selftest clause as worded does not bite | same, finding F-5: "M4 skip-selftest is **NOT** caught by the kill rule text" |
+| accept-record-without-url (plain run) | **survived** — `records=2 bound=2 unbound=0` exit 0 on a url-less fixture, on both pinned generations of the instrument | `wave1/MutCtrUnbound.md` § Verdict ("**SURVIVOR** under the frozen C1 kill rule as tasked (plain run)") |
+
+So "all mutants killed" is corrected to: **3 of the 4 counter mutants killed under the frozen kill
+rule (3/4), M4 surviving it, and one plain-run survivor on the url-missing limb** — not all killed.
+Both survivors are killed only by a clause outside the plain-run rule: the selftest clause (M4) and
+the round-34 tightened rule requiring `cases>=11` with one `selftest case=` verdict line per case
+(C1's survivor counter, `corpus/instruments/kill-rule-check.py` — absent at this append, `test -e`
+→ exit 1 at 2026-10-26T05:42Z, landing in the same round's C1 work). The overstatement is recorded as
+mistake **M34-1** in the round-34 claims
+(`.ufo/waves/round-34/claims.json` `non_claim_frontier_items.mistake`).
+
+What this erratum does not change: the binding measurement itself — `records=40 bound=40 unbound=0`,
+`binding_exit=0`, `selftest cases=11 failures=0` — stands as filed. The overstated fact was the
+mutant obligation, not the binding count.

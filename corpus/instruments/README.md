@@ -654,3 +654,307 @@ counts `url=` equal to `records=`, `archival=` 38 over the eight legacy manifest
 added, moved or lost — re-measure, do not adjust the target. A drop of `url_bound`
 below `records` on the legacy manifests means a row's URL text moved in
 `corpus/SOURCES.md`; that is a registry defect, not a capture defect.
+
+## Round-34 hardening — `capture-binding-check.py` rules A3–A5, B3–B4, C1, D (C1 R5/R6/R8)
+
+Appended at file end; no line above moved (R6 convention). Instrument digest before
+`b4182665ba5cf5441d6495d7de3d59a4c6f8d679d5e9d85c38d16abfb6d0b7f9` (492 lines) →
+after `3d9e5e0ddbaaccf91db255b4a978d49a1d44a2c54cd7cc1fef22c78330da99fa` (892 lines),
+measured with `sha256sum` on the landed bytes. The round-33 section above is left
+untouched, so its targets are now **superseded**: the digest, `selftest cases=11`, the
+AUDIT line drawn without `orphans=`/`orphan=` tokens, and the two "known limits" that
+read a two-token cell leniently and a `rejected` row as binding like a `mined` row.
+Its historical numbers stay true of the round-33 bytes; do not re-measure them against
+this file.
+
+### What the four rules now say (failure names are the contract)
+
+| rule | addition this round | a defect prints |
+|---|---|---|
+| A | **Per-file binding.** Every capture file directly inside a manifest directory must be named by some `sources[].path`, or declared in the manifest's top-level `orphans` list as `{"path": "<file name in that directory>", "reason": "<non-empty>"}`. An undeclared capture fails; a declared one still prints `orphan=<file>` on the AUDIT line and leaves the exit status at 0 — the listing is the record that the file is known and unbound. A declaration whose file is absent is a stale listing. | `FAIL rule=orphan-capture file=<f> dir=<d>`, `FAIL rule=orphan-declared-missing file=<f> dir=<d>` |
+| A | **Nested snapshot directories.** The walk descends regardless of whether the parent is a snapshot directory; a nested directory is audited on its own and named by its path below `corpus/source-snapshots/`. A parent's per-file check reads only its own direct files. | `FAIL rule=missing-manifest dir=round-31/inner` |
+| B | **Two-token rows fail.** A source cell carrying two or more `https://` tokens cannot say which document the row names, so the row fails and every record pointing at it is ambiguous. This replaces the round-33 lenient branch (`a row that carries two URL tokens binds when the record's url is one of them`), which was untested on the live tree precisely because all rows carry one token. | `FAIL rule=double-https-row row=<id> n=<n>`, `FAIL rule=url-ambiguous record=<id> row=<id> tokens=<n>` |
+| B | **A `rejected` row cannot anchor a record.** Status is column 8 of the row (index 7 after the empty-first-cell split). This replaces the round-33 limit (`whatever its status … a rejected or queued row's URL binds a record exactly like a mined row's`); a capture claiming a refused source is now a failure, and `queued` still binds. | `FAIL rule=rejected-row-anchor record=<id> row=<id>` |
+| C | **Strict UTC.** `fetched_utc` must be an ISO-8601 timestamp with a `Z` or `+00:00` suffix and real calendar fields. Placeholders, local or non-zero offsets and malformed values each fail with their own `detail`; an absent value keeps the round-33 `provenance-missing` line. A present-but-invalid value fails in every round, legacy rounds included — the field is an assertion whether or not the round requires it. | `FAIL rule=fetched-utc record=<id> dir=<d> detail=pending\|local-offset\|malformed` |
+| D | **Manifest integrity.** Two records in one manifest carrying the same `id`, or naming the same capture `path`, fail: the record count otherwise overstates the captures documented. | `FAIL rule=dup-record field=id\|path value=<v> count=<n> dir=<d>` |
+
+Orphans, duplicate records and rejected anchors never move `records=`/`bound=`/`unbound=`:
+`records - bound = unbound` stays the printed invariant and the exit status stays the
+verdict, so a summary-only grep is still not a reading.
+
+### Selftest is now a report, not a summary (the F-5 shape)
+
+`--selftest` runs one fixture tree per case plus two report-verifier cases and prints
+exactly one `selftest case=<name> exit=<n> want=<n> verdict=<pass|fail>` line per case,
+then `selftest cases=23 failures=0`. The report checker (`judge_selftest_report`) rejects
+a report with no case lines (`summary-only-report`), a case line whose `exit` ≠ `want`, a
+duplicated or missing case line, and a summary whose `cases`/`failures` disagree with the
+lines — the round-33 F-5 shape, where a mutant that skipped every fixture printed
+`selftest cases=N failures=0` and passed. `summary-only-selftest-rejected` feeds that
+forged report to the checker and requires rejection; `complete-selftest-report-accepted`
+feeds a well-formed one and requires acceptance, so the limb is proven discriminating
+rather than always-reject.
+
+Named cases (23): `clean-all-pass`, `missing-manifest-dir`, `record-without-url`,
+`shared-url-between-two-records`, `duplicate-id-rows`, `url-mismatch`, `no-row`,
+`shared-url-not-a-failure`, `round-32-record-without-fetched_utc`,
+`pre-round-32-record-without-archival`, `round-32-record-with-fetched_utc-passes`,
+`pre-round-32-archival-passes`, `fetched-utc-pending-rejected`,
+`fetched-utc-local-offset-rejected`, `per-file-orphan-detected`,
+`per-file-orphan-listed`, `nested-snapshot-dir`, `nested-snapshot-missing-manifest`,
+`dup-record-in-manifest`, `double-https-row`, `rejected-row-anchor`,
+`summary-only-selftest-rejected`, `complete-selftest-report-accepted`.
+
+`url-matching-two-rows` is retired (R5): its fixture built a duplicate-id registry, not a
+shared-URL one. The renamed `shared-url-between-two-records` builds two records sharing
+one URL across distinct rows and asserts `multi_row_url=2` at exit 0; `duplicate-id-rows`
+keeps the `rule=dup-id` coverage under a name that matches its fixture.
+
+### Old bytes pass, new bytes reject — the discrimination matrix
+
+Nine fixture shapes, run against the round-33 bytes and the landed bytes from the same
+roots (each built once in a scratch tree, `--root` on each copy). `exit` is the
+instrument's own verdict:
+
+| fixture shape | round-33 bytes | landed bytes |
+|---|---|---|
+| `fetched_utc: "pending"` (round-32) | exit 0, `records=1 bound=1 unbound=0` | exit 1, `detail=pending` |
+| `fetched_utc: "2026-10-25T23:14:00-03:00"` | exit 0, bound 1 | exit 1, `detail=local-offset` |
+| undeclared capture file beside a full manifest | exit 0, bound 1 | exit 1, `rule=orphan-capture file=S009.txt dir=round-30` |
+| declared orphan (same file, `orphans` list) | exit 0 (key ignored) | exit 0, `orphans=1 orphan=S009.txt` |
+| nested dir with its own manifest | exit 0, `records=1` (inner unread) | exit 0, `records=2 snapshot_dirs=2` |
+| nested dir with captures, no manifest | exit 0 | exit 1, `dir=round-31/inner` |
+| duplicate `id` and duplicate `path` in one manifest | exit 0, `records=3 bound=3` | exit 1, two `rule=dup-record` lines |
+| two-`https://` registry row | exit 0, bound 1 | exit 1, `double-https-row n=2` + `url-ambiguous` |
+| record anchored to a `rejected` row | exit 0, bound 1 | exit 1, `rejected-row-anchor` |
+| clean two-record control | exit 0, bound 2 | exit 0, bound 2 (unchanged) |
+
+Also measured: a malformed `orphans` declaration (bare string element) is exit 2
+`UNAVAILABLE reason=manifest-shape … orphans` on the landed bytes and exit 0 on the
+round-33 bytes, because the key was invisible to them.
+
+### Live tree at landing time (and the one open sibling)
+
+```text
+MANIFEST round-34 records=1 url_bound=0 fetched=1 archival=0
+AUDIT records=41 with_url=41 with_fetched_utc=3 with_archival=38 snapshot_dirs=10 manifest_dirs=10 missing_manifest=0 multi_row_url=2 orphans=1 orphan=S040-live.txt
+FAIL rule=no-row record=S051 dir=round-34
+records=41 bound=40 unbound=1
+binding_exit=1
+```
+
+`orphans=1 orphan=S040-live.txt` is round-26's declaration
+(`corpus/source-snapshots/round-26/manifest.json` sha256
+`33ac33c3caa6d43f3772b8cf8532b37cdb50f48db8ba667b5dd90645e8eacefa`): the file is named
+and unbound, no `orphan-capture` failure, `records=` untouched. The single FAIL line is
+a **C2 sibling in flight**, not a capture defect — round-34 landed its `sources` record
+for S051 before the registry row, so rule B1 has no row to bind to yet. Once
+`corpus/SOURCES.md` carries `| S051 |`, the same bytes print
+`records=41 bound=41 unbound=0`, `binding_exit=0`. Read the pair, not the literal 40 in
+the round-33 section above: the invariant is `bound=records`, and the record total moves
+whenever a round adds a capture.
+
+Re-verify targets after this section: digest `3d9e5e0…`; `selftest cases=23 failures=0`
+with `selftest_exit=0`; `grep -c 'detail=local-offset'` = 0; `orphans=1
+orphan=S040-live.txt` with 0 `rule=orphan-capture` lines; `missing_manifest=0` over ten
+snapshot directories. A run that prints `records=41 bound=40` is reading the in-flight
+C2 tree; a run that prints fewer than 23 case lines is not the landed selftest.
+
+### Addendum — the C2 row landed inside the same wave; live gate is green
+
+The in-flight state quoted above closed while this wave was still running:
+`corpus/SOURCES.md` gained `| S051 |` (registry rows 50 → 51), so rule B1 now has a row to
+bind. Measured on the same instrument bytes `3d9e5e0…`:
+
+```text
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=41 with_url=41 with_fetched_utc=3 with_archival=38 snapshot_dirs=10 manifest_dirs=10 missing_manifest=0 multi_row_url=2 orphans=1 orphan=S040-live.txt
+records=41 bound=41 unbound=0
+binding_exit=0
+```
+
+`bound=records` at `binding_exit=0`, with `orphans=1 orphan=S040-live.txt` still the only
+orphan token and no `FAIL` line of any class. The ten `MANIFEST` lines are unchanged from
+the block above except `round-34 url_bound=0 → 1`. Re-verify targets are therefore:
+digest `3d9e5e0…`; `selftest cases=23 failures=0`; `records=41 bound=41 unbound=0` at
+`binding_exit=0`; `grep -c 'detail=local-offset'` = 0; `orphans=1 orphan=S040-live.txt`
+with zero `rule=orphan-capture` lines.
+
+## Round-34 amendment — `frontier-recheck-count.py` rule A is bidirectional (C1, R9)
+
+Appended at file end; no line above moved (R6). Round-34 seat ExecFrontierBidirectional.
+Instrument bytes: `sha256 aa60b58126569a1c8ec04409011df5f6225a9c18f2a77ea6410cd1d0d5dc0893`
+(228 lines, lane base `014ee2d7`) → `1be79af60cb5cb4c1662e4f0e14201a4f372df01513608481297fd564cd48249`
+(433 lines, worktree). Receipt `.ufo/waves/round-34/wave1/ExecFrontierBidirectional.md`.
+
+**The gap (R9, round-33 `MutEntryF16.md:179`).** Rule A ran one direction:
+`header-sources-not-rechecked` fired on `declared ⊄ recheck_ids` (a declared id the
+line does not re-verify), and the mirror — `recheck_ids ⊄ declared`, a `--source` the
+entry never declares — had no check. The only filter on that side was
+`selection-not-cited-by-entry`, and `cited` was *every* `S\d{3,}` in the whole file,
+including the recheck line's own `--source` ids, so it was satisfied by construction:
+vacuous. Measured on the base bytes: dropping `source: S050` from
+`corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md` leaves
+`PASS F16 … exit=0`, `entries=19 pass=19 exit=0` — the survivor, reproduced.
+
+**The repair, two parts.**
+
+1. **Rule A runs both ways** against the entry's *declared source set*:
+   `header-sources-not-rechecked` (declared ⊄ recheck) and the new
+   `selection-not-declared-by-entry` (recheck ⊄ declared). Different problem names,
+   so a receipt names the limb that fired.
+2. **`cited` no longer counts declaration lines.** It is now built from every line
+   except a `source:` line and the `recheck:` line, so
+   `selection-not-cited-by-entry` fires when a selection is mentioned nowhere else in
+   the entry. Evidence-list items (`- S002, …`) still count — they are citations.
+
+**What "declared" means, and why it is not header-only.** The corpus uses two
+declaration shapes: one header `source:` line per source (F09, F10, F13, F14) and one
+per-source evidence item, `- S002, "Assessment": "…"` (the round-24 F01–F05 entries,
+whose single header line declares the primary source and whose evidence list declares
+the rest, e.g. `corpus/knowledge/cvss-v4-severity-and-vector.md:2` S001 header plus
+`:26-29` S002 items). The declared set is their union. Measured: a header-only rule
+fails five admitted rows (F01 S002; F02 S004/S005; F03 S007/S008; F04 S010–S012;
+F05 S014/S015) — `entries=19 pass=14 exit=1` — because those entries' rechecks
+legitimately cover their evidence lists. The union rule keeps the tree green at
+`entries=20 pass=20 exit=0`, F17 included (measured after F17 landed; `entries=19
+pass=19 exit=0` on the tree before it).
+
+**Residue, stated rather than hidden.** For the five evidence-list entries a header
+`source:` line can still be dropped without rule A firing, because the id stays
+declared by its evidence items; those entries lose only the header's URL/section
+provenance, not the entry↔source binding. Closing that residue means giving F01–F05
+one header line per declared source (the F09/F10/F13/F14 shape) and then requiring
+header-only membership; that is an entry-content change, not an instrument change, and
+is the L1's call. It is **not** closed by this amendment.
+
+**Selftest (new).** `--selftest [--scratch DIR]` runs six fixture lanes and prints
+`selftest case=<name> exit=N want=N verdict=<pass|fail>` plus
+`selftest cases=6 failures=0`, exit 0. Each fixture carries a stub
+`corpus/instruments/source-recheck.py` and a schema-1 manifest, so a case failure can
+only come from the harness's own binding. Cases: `bidirectional-holds` (pass path),
+`selection-not-declared` (reverse limb; extra `--source` mentioned in prose only),
+`header-source-not-rechecked` (forward limb), `evidence-list-declares-selection`
+(second declaration shape passes), `evidence-declared-not-rechecked` (forward limb
+over the evidence shape), `selection-neither-declared-nor-mentioned` (both problems,
+in that order).
+
+**Measured demos (scratch copies of the lane; lane untouched).**
+
+| # | mutation | base `aa60b581…` | landed (rule code == `1be79af6…`) |
+|---|---|---|---|
+| 1 | F16 `source: S050` header line deleted | `PASS F16 ids=S049 exit=0`, `entries=19 pass=19 exit=0` | `FAIL F16 ids=S049 exit=- problems=selection-not-declared-by-entry`, `entries=19 pass=18 exit=1` |
+| 2 | F16 recheck `--source S050` clause deleted | `FAIL … problems=header-sources-not-rechecked`, exit 1 | identical (forward limb unchanged) |
+| 3 | reverse check deleted from the instrument | — | `selection-not-declared` fixture flips `FAIL`→`PASS` (`entries=1 pass=1 exit=0`) |
+| 4 | forward check deleted from the instrument | — | `header-source-not-rechecked` fixture flips `FAIL`→`PASS` |
+| 5 | no-op patch | — | `noop_changes_bytes=False` |
+
+`limb-ledger.json` rows `FR-missing-entry` / `FR-duplicate-entry` still apply: each
+`find` occurs exactly once in the landed bytes, and the two fixture roots print
+`problems=missing-entry` / `DUPLICATE-ENTRY F98,F97 … entries=2 pass=2 exit=1`.
+
+**Pin note.** `SKILL.md:1069` cites `aa60b581…` inside a sentence dated "Measured at
+append time (working tree, 2026-10-25)" — a dated measurement, not a live target. This
+section is the current pin for the worktree bytes; the integration commit belongs to
+the L1.
+
+**Re-verify (from the lane root):**
+
+```
+sha256sum corpus/instruments/frontier-recheck-count.py
+python3 corpus/instruments/frontier-recheck-count.py --selftest; echo "selftest_exit=$?"
+python3 corpus/instruments/frontier-recheck-count.py; echo "exit=$?"
+```
+
+Targets: digest `1be79af6…`; `selftest cases=6 failures=0` with `selftest_exit=0`;
+`entries=20 pass=20 exit=0` once F17 has landed (`entries=19 pass=19 exit=0` on the
+tree this seat measured). A drop in `pass` means an entry's recheck line and its
+declared set drifted apart — read the `problems=` token before editing either side.
+
+## Round-34 additions — `kill-rule-check.py` (C1 survivor-mutant counter)
+
+`corpus/instruments/kill-rule-check.py`. Round 33 measured its C1 mutant set under a
+kill rule that accepted a `--selftest` span with no per-case evidence (a forged
+`selftest cases=0 failures=0` exited 0 and was recorded as caught — verifier defect
+R4, F-5) and under a plain-run rule that let a url-less manifest record bind. This
+counter replays the three named mutants against a **copy** of the landed instrument
+bytes and applies a tightened rule with two independent oracles:
+
+- **Output shape.** A `--selftest` span is accepted only with one
+  `selftest case=<name> … verdict=pass` line per case, a `selftest cases=N failures=0`
+  summary where N equals the case-line count, the pristine bytes' case-name multiset,
+  and (pristine side only) `N >= CASE_FLOOR=19`. A summary-only span is rejected as
+  `summary-only`; a forged `cases=0` summary is rejected by the floor and by the
+  case-set comparison.
+- **External fixtures.** Eight fixture lanes, one per documented failure family:
+  `record-without-url` (no `url` → exit 1, `detail=absent`, `unbound=1`),
+  `per-file-orphan` (capture with no record → exit 1, `rule=orphan-capture`,
+  `orphans=1 orphan=S009.txt`), `unnamed-record-id` (no `id` → `rule=no-row
+  record=<unnamed>`, exit 1), `stale-orphan-declaration` (declared orphan absent →
+  `rule=orphan-declared-missing`, exit 1), `malformed-fetched-utc` (impossible
+  UTC-shaped stamp **and** unparsable string → `detail=malformed`, exit 1),
+  `punctuated-url-cell` (registry cell URL ending in `.` still binds its clean
+  record url → exit 0, `url_bound=1`), `malformed-orphan-declaration` (declared
+  orphan without a `reason` → exit 2, `reason=manifest-shape`), `nested-legacy-round`
+  (`round-31/inner` is legacy: an archival record passes → exit 0). These do not
+  read the mutant's own selftest.
+- **Named-row pins and gates.** `ROW_PINS` holds the literal `find` and
+  `find\0replace` sha256 of each named row, so a substituted named patch is
+  `invalid:anchor-mismatch`; the `named-rows` gate requires the pinned name set to
+  equal `MUTANTS` with each name present once; a `killed` verdict with an empty
+  `killed_by` is `invalid:inconsistent-kill`. An edit that rewrites the summary line
+  itself is not defensible in-band — the header prints `counter_sha256`, so bind the
+  counter bytes before trusting the zero.
+
+Each row is an exactly-once `find`/`replace` (QUALITY R17): `find` must occur once,
+the patch must change bytes, and the mutant must compile (`py_compile`) before any
+probe. An unevaluable row is `invalid:<reason>` (exit 1); it is never relabelled
+killed or counted as a survivor. `killed` means "a probe the pristine bytes pass is
+failed by the mutant", not "the mutated limb is the sole cause".
+
+```
+sha256sum corpus/instruments/capture-binding-check.py corpus/instruments/kill-rule-check.py
+python3 corpus/instruments/kill-rule-check.py; echo "exit=$?"
+python3 corpus/instruments/kill-rule-check.py --selftest; echo "selftest_exit=$?"
+```
+
+Measured at instrument digest `3d9e5e0d…` (40556 B, 892 lines, `--selftest`
+`cases=23`): three `mutant=<name> killed=1` lines (`skip-selftest-summary` by
+`selftest-shape`; `accept-record-without-url` by `selftest-shape` + `record-without-url`;
+`per-file-binding-removal` by `selftest-shape` + `per-file-orphan`),
+`controls=4 rejected=4`, `gates=7 failed=0`, and the final `survivors=0`, exit 0.
+Counter bytes of record: `c279d952cba54f3f7d502a7a5e056be640146adc5b21a88b1d8dd65bfcdb5d61`
+(43138 B, 881 lines), which prints `counter_sha256=c279d952…` in its header.
+
+The probe set grew under attack. `MutKillRuleMutants` reported three behaviour-bearing
+survivors at earlier generations (`unnamed-id-guard-removal`, `url-token-normalization-removal`,
+and the two `malformed` acceptance variants); `CritC1Kill` reported a false-zero path
+(a substituted named row plus a forced `killed` verdict). Replayed at the current bytes
+through `--row-file`, every reported survivor is killed by exactly the probe that pins
+its limb and by no other probe (`selftest-shape` shows `mutant=pass` for each):
+`unnamed-record-id`, `punctuated-url-cell`, `malformed-fetched-utc` (one record per
+malformed path), `stale-orphan-declaration` — measured `mutants=9 killed=8
+survivors=1 invalid=0` where the single survivor is the deliberately comment-only red
+row. The critic's two-edit attack now fails three ways: `invalid:anchor-mismatch`
+(pin), `invalid:inconsistent-kill` (guard, with the pin check removed), and
+`GATE fail name=named-rows` (a renamed row), each at exit 1.
+
+Controls, on every run: `CTL-noop` (`invalid:noop`, never a kill), `CTL-nocompile`
+(`invalid:nocompile`, never a kill), `CTL-equivalent` (a comment-only patch no probe
+can see: `survivor`, and the witness line `witness_survivors=1 witness_exit=1`), and
+`CTL-fake-killrule` — the newest `.ufo/waves/round-*/c1-controls/fake-killrule.py`,
+which prints `survivors=0` without replaying anything: its span carries no `mutant=`
+line, no patch digest and no `mutants=` line (`verdict=opaque`) and still prints
+`survivors=0` on the survivor witness, so `differs=1`. An attack seat adds rows with
+`--row-file PATH` (`{"rows": [{"name","find","replace","note"}]}`), measured and
+counted like the named rows: a deliberately surviving row prints `survivors=1` and
+exits 1. `--selftest` checks only this counter's verdict arithmetic (green / one
+survivor / one invalid), not the instrument.
+
+**Known limits.** Patch anchors bind to the bytes measured at run time — different
+instrument bytes produce `invalid:find-count` and exit 1 rather than a silent zero.
+The fixture probes assert the documented contract lines, not every printed line, so a
+mutant that leaves those lines intact survives. A selftest-only defect (mutant 1) has
+no external probe by construction. The fake control binds to the newest round's
+`c1-controls/fake-killrule.py`; if that path moves, the control reports `absent`
+(`ok=0`, a failed gate) until `--fake PATH` is supplied — it is never skipped.

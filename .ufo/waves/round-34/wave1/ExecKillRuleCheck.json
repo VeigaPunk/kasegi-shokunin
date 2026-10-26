@@ -1,0 +1,374 @@
+{
+ "case_floor": 19,
+ "controls": [
+  {
+   "expect": "invalid:noop",
+   "id": "CTL-noop",
+   "ok": true,
+   "verdict": "invalid:noop"
+  },
+  {
+   "expect": "invalid:nocompile",
+   "id": "CTL-nocompile",
+   "ok": true,
+   "verdict": "invalid:nocompile"
+  },
+  {
+   "expect": "survivor",
+   "id": "CTL-equivalent",
+   "ok": true,
+   "verdict": "survivor"
+  }
+ ],
+ "fake": {
+  "differs": 1,
+  "ok": true,
+  "verdict": "opaque"
+ },
+ "gates_failed": 0,
+ "instrument": "corpus/instruments/capture-binding-check.py",
+ "instrument_bytes": 40556,
+ "instrument_sha256": "3d9e5e0ddbaaccf91db255b4a978d49a1d44a2c54cd7cc1fef22c78330da99fa",
+ "invalid": 0,
+ "killed": 3,
+ "mutants": [
+  {
+   "find_count": 1,
+   "find_sha256": "e6262244cffa1e1ecd5a1703c701356bf632b5413ca87be220d17b38211587d9",
+   "killed_by": [
+    "selftest-shape"
+   ],
+   "mutant_sha256": "b9d40dbee7521dbd9e492655df734e062fde69f43b3333df1b1227c7a3becc97",
+   "name": "skip-selftest-summary",
+   "note": "forges the round-33 F-5 report: the case loop is never reached, so `--selftest` prints `selftest cases=0 failures=0` and exits 0",
+   "patch_sha256": "c457083e5d99f9f0e3e6a2da8c3aa2381025925294b5a3131248a91902ad561a",
+   "probes": [
+    {
+     "exit": 0,
+     "mutant": "fail",
+     "pristine": "pass",
+     "probe": "selftest-shape",
+     "reasons": [
+      "summary-only",
+      "case-set-mismatch"
+     ]
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "record-without-url",
+     "reasons": []
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "per-file-orphan",
+     "reasons": []
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "unnamed-record-id",
+     "reasons": []
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "stale-orphan-declaration",
+     "reasons": []
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "malformed-fetched-utc",
+     "reasons": []
+    },
+    {
+     "exit": 0,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "punctuated-url-cell",
+     "reasons": []
+    },
+    {
+     "exit": 2,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "malformed-orphan-declaration",
+     "reasons": []
+    },
+    {
+     "exit": 0,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "nested-legacy-round",
+     "reasons": []
+    }
+   ],
+   "status": "ok",
+   "verdict": "killed"
+  },
+  {
+   "find_count": 1,
+   "find_sha256": "cbf461982c746e9dc27cded492b2dfa8ae6b11d140fd54f05b053bc68a939148",
+   "killed_by": [
+    "selftest-shape",
+    "record-without-url"
+   ],
+   "mutant_sha256": "5897a1f044bcbf3fe90e21f8222a5336bd5b604dfe897fed16cbea6721b688b7",
+   "name": "accept-record-without-url",
+   "note": "drops rule B's url-required limb: a manifest record with no `url` binds (the round-33 plain-run survivor)",
+   "patch_sha256": "83cbd622ad2fd1e26cfe2cedaf7e919be840f997084eb8f8f41ab06e61a98637",
+   "probes": [
+    {
+     "exit": 1,
+     "mutant": "fail",
+     "pristine": "pass",
+     "probe": "selftest-shape",
+     "reasons": [
+      "exit=1",
+      "failures=1",
+      "case-verdict"
+     ]
+    },
+    {
+     "exit": 0,
+     "mutant": "fail",
+     "pristine": "pass",
+     "probe": "record-without-url",
+     "reasons": [
+      "exit=0 want=1",
+      "missing='detail=absent'",
+      "missing='unbound=1'"
+     ]
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "per-file-orphan",
+     "reasons": []
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "unnamed-record-id",
+     "reasons": []
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "stale-orphan-declaration",
+     "reasons": []
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "malformed-fetched-utc",
+     "reasons": []
+    },
+    {
+     "exit": 0,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "punctuated-url-cell",
+     "reasons": []
+    },
+    {
+     "exit": 2,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "malformed-orphan-declaration",
+     "reasons": []
+    },
+    {
+     "exit": 0,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "nested-legacy-round",
+     "reasons": []
+    }
+   ],
+   "status": "ok",
+   "verdict": "killed"
+  },
+  {
+   "find_count": 1,
+   "find_sha256": "f1a44079b9477ef222bb422bcccc59f91127d96464ccc7b9979132c8b0ea9a80",
+   "killed_by": [
+    "selftest-shape",
+    "per-file-orphan"
+   ],
+   "mutant_sha256": "616ce9dd0637a23b8738ee1ae97e0668319507a828dfbb212536c79b6a8769cd",
+   "name": "per-file-binding-removal",
+   "note": "drops rule A's per-file orphan detection: a capture file with no manifest record is neither listed nor failed",
+   "patch_sha256": "f872ef12408d9162e2386817b3904a197c5ca37f531e9386896dbc5c23838427",
+   "probes": [
+    {
+     "exit": 1,
+     "mutant": "fail",
+     "pristine": "pass",
+     "probe": "selftest-shape",
+     "reasons": [
+      "exit=1",
+      "failures=2",
+      "case-verdict"
+     ]
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "record-without-url",
+     "reasons": []
+    },
+    {
+     "exit": 0,
+     "mutant": "fail",
+     "pristine": "pass",
+     "probe": "per-file-orphan",
+     "reasons": [
+      "exit=0 want=1",
+      "missing='rule=orphan-capture'",
+      "missing='orphans=1 orphan=S009.txt'"
+     ]
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "unnamed-record-id",
+     "reasons": []
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "stale-orphan-declaration",
+     "reasons": []
+    },
+    {
+     "exit": 1,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "malformed-fetched-utc",
+     "reasons": []
+    },
+    {
+     "exit": 0,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "punctuated-url-cell",
+     "reasons": []
+    },
+    {
+     "exit": 2,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "malformed-orphan-declaration",
+     "reasons": []
+    },
+    {
+     "exit": 0,
+     "mutant": "pass",
+     "pristine": "pass",
+     "probe": "nested-legacy-round",
+     "reasons": []
+    }
+   ],
+   "status": "ok",
+   "verdict": "killed"
+  }
+ ],
+ "pristine": {
+  "malformed-fetched-utc": {
+   "exit": 1,
+   "ok": true,
+   "reasons": [],
+   "stable": true
+  },
+  "malformed-orphan-declaration": {
+   "exit": 2,
+   "ok": true,
+   "reasons": [],
+   "stable": true
+  },
+  "nested-legacy-round": {
+   "exit": 0,
+   "ok": true,
+   "reasons": [],
+   "stable": true
+  },
+  "per-file-orphan": {
+   "exit": 1,
+   "ok": true,
+   "reasons": [],
+   "stable": true
+  },
+  "punctuated-url-cell": {
+   "exit": 0,
+   "ok": true,
+   "reasons": [],
+   "stable": true
+  },
+  "record-without-url": {
+   "exit": 1,
+   "ok": true,
+   "reasons": [],
+   "stable": true
+  },
+  "selftest-shape": {
+   "exit": 0,
+   "ok": true,
+   "reasons": [],
+   "stable": true
+  },
+  "stale-orphan-declaration": {
+   "exit": 1,
+   "ok": true,
+   "reasons": [],
+   "stable": true
+  },
+  "unnamed-record-id": {
+   "exit": 1,
+   "ok": true,
+   "reasons": [],
+   "stable": true
+  }
+ },
+ "pristine_case_names": [
+  "clean-all-pass",
+  "missing-manifest-dir",
+  "record-without-url",
+  "shared-url-between-two-records",
+  "duplicate-id-rows",
+  "url-mismatch",
+  "no-row",
+  "shared-url-not-a-failure",
+  "round-32-record-without-fetched_utc",
+  "pre-round-32-record-without-archival",
+  "round-32-record-with-fetched_utc-passes",
+  "pre-round-32-archival-passes",
+  "fetched-utc-pending-rejected",
+  "fetched-utc-local-offset-rejected",
+  "per-file-orphan-detected",
+  "per-file-orphan-listed",
+  "nested-snapshot-dir",
+  "nested-snapshot-missing-manifest",
+  "dup-record-in-manifest",
+  "double-https-row",
+  "rejected-row-anchor",
+  "summary-only-selftest-rejected",
+  "complete-selftest-report-accepted"
+ ],
+ "schema": "kill-rule-check-v1",
+ "survivors": 0
+}

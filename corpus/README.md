@@ -340,3 +340,29 @@ rewritten (R9): at round 33 the frontier stands at **16/16 admitted** — F01-F0
 at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
 F15 at round 31, F16 at round 33. The 0/18 sentence is untouched: the lost-domain denominator
 still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+## Round-34 admission — coverage map row and Frontier F17 (appended 2026-10-26)
+
+The coverage map above is not edited in place (R6): the round-34 entry
+`knowledge/immunefi-vscs-v2-2-smart-contract-severity.md` (Frontier F17, source S051; source basis:
+Immunefi's own Vulnerability Severity Classification System v2.2 at
+https://immunefi.com/immunefi-vulnerability-severity-classification-system-v2-2/, captured
+2026-10-26 under `corpus/source-snapshots/round-34/`) is recorded here as an appended amendment so
+every existing line keeps its number. The coverage-map row is appended here rather than inserted
+into the map, and the F17 frontier row is listed here on the same table shape as the frontier
+above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Web3/smart-contract bounty severity classification (round 34) | knowledge/immunefi-vscs-v2-2-smart-contract-severity.md | S051 — public primary, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F17 | Immunefi Vulnerability Severity Classification System v2.2 — Web3/smart-contract bounty severity classification | admitted | knowledge/immunefi-vscs-v2-2-smart-contract-severity.md | S051 | Read a level from Immunefi's own per-asset-class table: the five numbered levels rank impacts inside one scope table, the level is fixed largely by impact — "finalizes them largely by the impact that they cause" (S051.txt:52) — under a downgrade-or-reject carve-out for elevated privileges or uncommon user interaction (S051.txt:55-56), and the funds boundary is whose funds and for how long they stay frozen: theft of any user funds is Critical (S051.txt:75) while "Temporary freezing of funds" is High (S051.txt:88). The page carries no CVSS mapping, no reward figure and no version-selection rule (FC-2/FC-3/FC-4), so neither a payout nor portability across asset classes follows from a level. |
+
+[r34 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 34 the frontier stands at **17/17 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34. The 0/18 sentence is untouched: the lost-domain
+denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.
