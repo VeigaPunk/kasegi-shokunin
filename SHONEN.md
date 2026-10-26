@@ -1,5 +1,9 @@
 # kasegi-shokunin — Promotion checklist
 
+> Current pointers: the round-35 paragraphs appended at the end of this file are the boxes' current
+> evidence. The four paragraphs immediately below are the round-34 state, retained as history.
+> All four boxes remain `[~]`.
+
 Promotion to shokunin requires all of:
 
 - [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
@@ -82,24 +86,74 @@ move claimed), `anchorcheck.py SKILL.md` exit 0 with the same failure classes (0
 boxes stay `[~]` with these pointers.
 
 - [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
-      — evidence (round 35): SKILL.md gained the `## Round-35 Gates & probes registry addition`
-      (+13/0), registering r-defect-closure.sh and kill-rule-check.py with name / gate|probe /
-      entry command / verdict map / selftest spelling / pinned-value path / write scope / owner
-      (D3); no-harm: `anchorcheck.py SKILL.md` 0 bad, exit 0; density mean ≈ 201.2 held. Box stays `[~]`.
+      — evidence (round 35, base `3266c99`; integration commits `aa6ad99` / `0aee0ef`, tip `5a25337`):
+      the Gates & probes registry home now carries the round-34 instruments' rows at
+      `SKILL.md:1097` (`r-defect-closure.sh`) and `:1098` (`kill-rule-check.py`), each with name /
+      gate|probe / entry command / verdict map / selftest spelling / pinned-value path / write
+      scope / owner (spotcheck D3; receipt `.ufo/waves/round-35/wave1/ExecD3SkillRegistry.md`).
+      `git diff --numstat 3266c99 -- SKILL.md` = `13 0` (end-of-file append only, 1104 lines,
+      sha256 `daeff71b…`). No-harm receipt `.ufo/waves/round-35/wave1/ExecNoHarmFinal.md` §1–§2:
+      the base limb `3266c99:SKILL.md` (`ba5ebe5d…`, 1091 lines, 25 blocks, 711 cites) still reads
+      mean **201.2**, while the landed bytes read mean **220.9** (26 blocks, 742 cites — the one new
+      high-density block); `anchorcheck.py SKILL.md` exits 0 with `LOST-RECORDED=306 PIN-BROKEN=0
+      ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0`, `16 in-range cite instances, 0 bad`. The independent
+      `RevNoHarm.md` §A–§C reproduces both limbs and the 0-deletion diff, and discloses one transient
+      mid-write `BASE-ABSENT` read that is not reproducible on the pinned bytes. `SCORECARD.md` now
+      carries two round-35 depth:density records: the integration stub at `:1269` still says “no-harm
+      guard mean ≈ 201.2”, while the receipt-grounded section's guard row at `:1314` binds both
+      figures — base `ba5ebe5d…` 201.2 / 25 blocks / 711 cites, landed `daeff71b…` 220.9 / 26 blocks
+      / 742 cites — and discloses the stub cell as contradicted, the closing commit being the
+      reconciliation point. Box stays `[~]`; no non-author has checked it.
 
 - [~] At least one end-to-end domain task executed and logged in LOG.md
-      — evidence (round 35): no new end-to-end hunt-to-claim task ran; the closest executed
-      measurement is the CISA KEV capture + source-recheck (Q1–Q5 occurrences=1, exit 0) and the
-      C1 closure suite (7/7). Box stays `[~]`.
+      — evidence (round 35): **no new end-to-end domain task ran this round.** `LOG.md` carries the
+      committed round heading `## Round 35` at `:1651` (1659 lines), and it logs instruments and an
+      admission, not a hunt-to-claim task; the wave spec has no domain-task seat. The KEV work is a
+      measurement, not a domain hunt: `.ufo/waves/round-35/wave1/ExecC2Capture.md` §1–§6 captures one
+      document (`status=200`, 1,479,694 bytes / 27,870 lines, sha256 `d69349e8…`, exit 0),
+      `source-recheck.py --manifest …/round-35/manifest.json --source S052` prints Q1–Q5 each
+      `occurrences=1` with `sha256 OK`, exit 0, and the CSV alternative is measured then discarded.
+      The closest executed end-to-end work remains instrument closure: `r35-defect-closure.sh` plain
+      run `closed=7/7 exit=0` and `--selftest` `cases=7 failures=0` (this seat, §Measurement state).
+      Box stays `[~]`.
 
 - [~] Instructions executable by an agent without oral context
-      — evidence (round 35): `recheck-audit.py --quiet` prints `strict pass=47/47` and
-      `expect=present expected=47 missing=0 unexpected=0 exit=0`; `r35-defect-closure.sh` plain run
-      `closed=7/7 exit=0`, `--selftest cases=7 failures=0`; all recheck lines `bash -n`-parseable,
-      cwd-invariant. Box stays `[~]`.
+      — evidence (round 35, measured 2026-10-26T07:02Z): the F18 entry
+      `corpus/knowledge/cisa-kev-catalog.md` (91 lines, sha256 `e9de994d…`) is the 47th
+      `corpus/knowledge/*.md` entry, and `corpus/instruments/knowledge-expected.txt` is synced to it
+      (49 lines, sha256 `d2e99ca6…`). `python3 corpus/instruments/recheck-audit.py` prints
+      `strict pass=47/47 cdroot_fail=0 instrument_fail=0 own_fail=0` and
+      `expect=present expected=47 missing=0 unexpected=0 exit=0` (double run in
+      `.ufo/waves/round-35/wave1/ExecExpectedListSync.md` §4; this seat's `--quiet` run exit 0). The
+      new suite is executable end to end on the landed tree: `bash corpus/instruments/r35-
+      defect-closure.sh` → `D1–D7 … open=0`, `closed=7/7 exit=0`, and `--selftest` →
+      `selftest cases=7 failures=0`, exit 0 with seven `live=pass fixture=rejected` case lines and
+      the forged-summary / forged-caselines / short-report / fake-suite / fake-plain judges all
+      rejecting (this seat's post-fix runs; corpus receipts `ExecClosureSuite.md` §5–§6,
+      `ExecSelftestFixtures.md` §3, `RevClosureSuite.md` §4). Box stays `[~]`.
 
 - [~] No cross-domain bleed (PROVINCE.md still accurate)
-      — evidence (round 35): PROVINCE.md untouched (0 changed lines); F18 sits inside the province
-      (core "program rules, claim packages"; precedent F13/F16/F17 severity-scope rows); sibling
-      sweep 20/20: no contested scope (kake's BOD 20-01 lines are VDP-publishing, not
-      exploitation-status — ruled no collision). Box stays `[~]`.
+      — evidence (round 35, base `3266c99`): `PROVINCE.md` is unchanged at this seat's read — 75
+      lines, sha256 `b4bb5fee…`, `git diff --numstat 3266c99 -- PROVINCE.md` empty; `RevNoHarm.md`
+      §A records it as PASS (`git diff --stat … -- PROVINCE.md` empty, exit 0). F18 sits inside the
+      province (core "program rules, claim packages"; the F13/F16/F17 severity-scope precedent).
+      `ScoutSiblingSweep.md` and `ConnSibling-ruling-draft.md` rule **“F18 / S052 is uncontested by
+      any sibling corpus; no report-to-lane item arises this round”** across 20 sibling lanes — the
+      only CISA hits are kake's rejection record of the BOD 20-01 VDP template (VDP publication
+      path, not exploitation-status prioritization) and shokuknow's doctrine row assigning
+      `cisa.gov` to kasegi (affirmative ratification). The append-only F18 frontier amendment is
+      **owed and not applied** at this read: `grep -c 'F18' PROVINCE.md` = 0 and the appended list
+      stops at F17 (`PROVINCE.md:75`); its form is a one-line end-of-file append under R6. Box stays
+      `[~]`.
+
+**Round-35 measurement state (ScribeShonen, 2026-10-26T07:02Z; tip re-read at 07:06Z).** Live tree HEAD `5a25337` (integration `0aee0ef`, C1 integration `aa6ad99`), base `3266c993…`. Digests read at this seat's
+measurement: `SKILL.md` `daeff71b…` (1104 lines), `SCORECARD.md` `5ea6f459…` (1404 lines, after the
+receipt-grounded round-35 section; this seat's first pass read `085cffd6…` / 1282 lines),
+`corpus/QUALITY.md` `d4f83bb1…` (250 lines), `corpus/README.md` `277f04ce…` (396 lines),
+`corpus/SOURCES.md` `0f95a132…` (112 lines), F18 entry `e9de994d…` (91 lines),
+`knowledge-expected.txt` `d2e99ca6…` (49 lines), `r35-defect-closure.sh` `0ae4b484…` (834 lines),
+`PROVINCE.md` `b4bb5fee…` (75 lines). An intervening run at ~06:58Z read `closed=6/7 exit=1`: the
+round-35 SCORECARD append had reintroduced the `filled by the L1` placeholder at `:1271` (D1 class);
+commit `8ce6fb4` reworded that sentence, and the plain and `--selftest` runs after it are 7/7 and
+`cases=7 failures=0` (exit 0). All four boxes stay `[~]`: a wave seat is the lane and cannot write
+a checked box; promotion needs a named non-author verifier.

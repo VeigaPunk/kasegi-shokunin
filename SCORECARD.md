@@ -1280,3 +1280,125 @@ Move-log rows:
 | 35 | coverage | 7 (frontier 17, registry 51) | 7 held (frontier 18, registry 52, S052) | F18 row; S052 row; entry; capture/manifest |
 
 Saturation unchanged: line 9/10 per owned axis, window N = 3. Lowest non-retired axis still depth:verifiability (4).
+
+## Round 35 — frozen claims C1/C2 (2026-10-26)
+
+Frozen before dispatch in `.ufo/waves/round-35/claims.json` (sha256
+`fe0dae8957c38f9c697b1b851a528bdf516f949f6ee3ba1ca2846e61d1ea2982`, `frozen_at_utc`
+`2026-10-26T07:30:00Z`, attempt 1; base `3266c9937b03062d9bbc2f436e20820115ed179c`, claims-freeze
+commit `617496b9c6e92bc671e7e78b83df69a04470d0e9`, wave-1 spec/dispatch commit
+`da2d3c687f82a9814ee71c91c930cb733050d37c`, one v2 wave of 64 seats), together with the do-nothing
+controls committed at the freeze (`c1-controls/fake-suite.sh` `292aaac0…`, `c2-controls/junk-f18.md`
+`0abec359…`), the frozen before-controls (`c1-controls/before.txt` `352d3da2…`, `c2-controls/before.txt`
+`28357003…`) and `census-before.txt` `74fc6a26…`. Receipts land under `.ufo/waves/round-35/`
+(`c1-controls/`, `c2-controls/`, `census-before.txt`, `assimilation/`, `claims-erratum-d5.md`,
+`wave1/`; 60 seat receipts at this seat's read). The last round heading at this round's base is round 34,
+so C1's and C2's last-change column stays 34 and every before-column below is the frozen control measured
+at this round's base bytes. The round-35 subject is instrument-soundness closure for the seven round-34
+verifier-routed defects D1–D7 (C1) and frontier F18 / the CISA Known Exploited Vulnerabilities catalog
+(C2).
+
+**This section and the integration stub above it.** A 19-line `## Round 35` block carried by integration
+commit `0aee0ef…` sits at `SCORECARD.md:1263-1281`, immediately before this section. It is not this
+seat's text — no wave receipt claims it, and this seat wrote nothing to `SCORECARD.md` before this append
+— and it is thin by construction: three table rows, a measurement-state line and a move-log pair, with no
+per-defect evidence. This section is the receipt-grounded record and supersedes it; the closing commit is
+the reconciliation point. One cell of the stub is contradicted by measurement and is restated in the guard
+row below: its `depth:density` row reads `mean ≈ 201.2`, which is the lane-base blob's value, while the
+landed `SKILL.md` measures **220.9** (byte binding in the guard row).
+
+| Claim | Axis | Before | After | Verdict and evidence | Last change |
+|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest non-retired, 4) | suite absent (`ls_exit=2`); lane-commit placeholder prose **1** line plus its second spelling **1**; `c1c6a5f` citations **0**; stale `201.7` depth:density-row lines **2**, corrected `201.2` **0**; `SKILL.md` registry greps **0 / 0**; results file tracked **0** and provenance note **0**; `claims-erratum-d5.md` absent; round-34 `L1Integration.md` dead-seat sentence **1**, `Correction (round 35)` **0**; `QUALITY.md` supersedes rows **0 0** (`c1-controls/before.txt`, reproduced 12/12 from the base export by `RevC1BeforeAfter` §2) | `corpus/instruments/r35-defect-closure.sh` (`0ae4b484…`, 834 lines, seven checks D1–D7, 17 clause mutants) reads `closed=7/7 exit=0` on the landed tree — `D1 check=placeholders=0,lane-hash-markers=0,correction-c1c6a5f=3 open=0`, `D2 …erratum-mean=3,row-bytes=1 open=0`, `D3 …registry-r-defect-closure=4,registry-kill-rule=4 open=0`, `D4 …tracked=1,provenance=1 open=0`, `D5 …discriminating-invocation=5,per-id-occurrences=5 open=0`, `D6 …dead-seat-sentence=0,correction-round-35=1 open=0`, `D7 …supersedes-R22=1,supersedes-R23=1 open=0` — and `--selftest` prints `selftest cases=7 failures=0` exit 0; the base export reads `closed=0/7 exit=1` and the committed fake suite is rejected by the suite's own judge (`judge=fake-suite rejected=1`, `judge=fake-plain rejected=1`, `judge=complete-report accepted=1`). Per defect: **D1** both marker spellings 0, round-34 tip hash on 3 lines, appended `Correction (round 35)`; **D2** appended erratum naming the corrected mean `201.2` plus a measurement-state paragraph binding both figures to blobs, stale row's opening bytes intact (`row-bytes=1`); **D3** `SKILL.md:1097-1098` rows for `r-defect-closure.sh` / `kill-rule-check.py`, greps 4 / 4, append `13 0`; **D4** `tracked=1,provenance=1` (results `3afa3581…`, 312874 B; note `e1c44301…`, 5639 B); **D5** erratum present, `discriminating invocation` ×5, `per-id occurrences` ×5; **D6** dead-seat sentence 0, `Correction (round 35)` 1; **D7** `supersedes R22` 1 / `supersedes R23` 1 in `QUALITY.md` (250 lines, `d4f83bb1…`) | **Verified, score held 4.** Both suite counters and all seven per-check payloads were read by this seat on the landed bytes at the writing moment (commands in `.ufo/waves/round-35/wave1/ScribeScorecard.md` §2); the base direction `closed=0/7 exit=1`, the all-fixed-tree `cases=7 failures=0`, the 17/17 mutant credit and the fake-suite rejection are `ExecClosureSuite` §4–§8 with `MutClosureSuite` (14/14 vacuous+delete mutants killed, no survivor) and `MutFixturesLimbs`; the eight per-defect landings are `ExecD1Markers`, `ExecD2DensityRow`, `ExecD3SkillRegistry`, `ExecD4ResultsTrack`, `ScribeErratumD5`, `RevD5D6D7`, `ScribeQualityDraft`, each re-derived by `RevD1D2`/`RevD3D4`/`RevD5D6D7`/`RevC1BeforeAfter`. Disclosed limits in the C1 blind-spots paragraph below | 34 (held 35) |
+| C2 | coverage (7) | `frontier_admitted=17`; registry rows **51**, `S052` rows **0**, entries citing `source: S052` **0**; harness `entries=20 pass=20 exit=0`; `source-recheck` on the absent round-35 manifest prints `manifest UNAVAILABLE reason=missing`, `recheck_exit=2`; census exit 0 with `W04 S028` + `W04 S029` only; `corpus/knowledge/*.md` **46** (`c2-controls/before.txt`, reproduced cell-for-cell on a do-nothing export by `MutCounterBase` and `ExecDoNothingReject` §2) | frontier admitted **18** (`corpus/README.md` `277f04ce…`, `28 0`, F18 row); registry rows **52** with the `S052` row at `corpus/SOURCES.md:58` (kind `dataset`, tier A scoped to CISA's own catalog statements, status `mined`, opened 2026-10-26, recheck `90d`, used-by the entry), `5 → 7` insertions append-only, `rows=52 malformed=0`; entries citing `source: S052` **1** — `corpus/knowledge/cisa-kev-catalog.md` (91 lines, `e9de994d…`); capture `corpus/source-snapshots/round-35/S052.txt` (1479694 B, 27870 lines, `d69349e8…`, fetched `2026-10-26T06:32:40Z`, HTTP 200, requested URL == effective URL) with `manifest.json` `06bfcc71…` (5631 B, record S052, five assertions Q1–Q5 anchored at L2/L3/L4/L15472/L19165); harness **`entries=21 pass=21 exit=0`** including `PASS F18 knowledge/cisa-kev-catalog.md ids=S052 exit=0`; `source-recheck S052` **exit 0**, every assertion `occurrences=1`, `sha256 OK`; census **exit 0** with the two base warnings only; `corpus/knowledge/*.md` **47**; `knowledge-expected.txt` `d2e99ca6…` (47 rows) | **Verified, score held 7.** The five C2 counting commands were re-run by this seat on the landed bytes at the writing moment (receipt §2); the junk twin is rejected on the executable route, not on its own `recheck:` line: its two quoted sentences measure **0 / 0** occurrences in the pinned capture and the quote-comparison invocation prints `MISMATCH reason=quote-not-found` exit 1 (`ScribeErratumD5` §3, `ExecDoNothingReject` §3, `MutJunkTwin`), and it is not admitted (no row, no entry, non-author refusal on record). Reviewer posture and residual gaps in the C2 paragraph below | 34 (held 35) |
+| depth:density | 9 | mean **201.2**, 25 blocks, 711 path-citation instances (`SKILL.md` `ba5ebe5d…`, 1091 lines — the lane-base blob; `PROVINCE.md` `b4bb5fee…`, 75 lines) | mean **220.9**, 26 blocks, 742 cites (`SKILL.md` `daeff71b…`, 1104 lines; `PROVINCE.md` byte-unchanged), the entire move carried by the EOF-appended block 26 — the D3 Gates & probes registry addition, 12 appended lines in an `13 0` diff, block dens 712.5 | **Unchanged (held 9), no harm, no move claimed.** Both sides measured with the committed `density.py` (`ee803726…`) on named bytes: base 201.2 / 25 / 711, landed 220.9 / 26 / 742. Zero existing `SKILL.md` lines changed, so no reflow or form-gaming is possible; the rise is one new block entering an unweighted mean. `anchorcheck.py SKILL.md` (`d0f35f8c…`, unchanged) reads `16 in-range cite instances, 0 bad; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0`, exit 0, so the verdict-class vector is unmoved (base: 12 in-range, same classes). `git diff --numstat` vs base: `SKILL.md 13 0`, `PROVINCE.md` and `LOG.md` unchanged, `corpus/README.md 28 0`, `corpus/SOURCES.md 7 0`, `knowledge-expected.txt 1 0`, and `SCORECARD.md 33 15` — the only non-append-only production file, whose 15 deletions are exactly the two round-34 placeholder paragraphs D1 was assigned to rewrite in place (`RevNoHarm` §A, `ExecNoHarmFinal` §3) | r15 (held r35) |
+
+**One C1 clause was broken and repaired inside this round, and the repair is disclosed.** At integration
+commit `0aee0ef…` the stub block above carried a lane-commit sentence that reprinted the D1 placeholder
+verbatim, which re-armed C1's marker clause: on those bytes `r35-defect-closure.sh` read
+`D1 check=placeholders=1,…,open=1` → `closed=6/7 exit=1`, i.e. the frozen kill rule
+(`claims.json` → C1 `counting_commands[2]`, the literal must count 0) was live-broken by the integration
+commit itself. The clause was then reworded in place to name `0aee0ef…` and assert nothing about the
+closing commit; this seat measured the repaired tree (`placeholders=0`, `closed=7/7 exit=0`) and reports
+the episode rather than the repaired-only state, because the class — a lane-commit sentence that quotes
+the placeholder it is meant to remove — is the same one round-34's D1 filed and round-33's R1 before it.
+No token of the placeholder is reproduced in this section.
+
+**C1 blind spots, recorded (not filed as failures).** `CritC1Kill` attacks the landed suite and reports
+that C1 "survives attack 1(a), the base control and attack 4's literal form; it does not survive attack
+1(b), 2, 3 (check-level), 4 (with a mention present) or 5": nothing binds the counter's own bytes, so
+"proved by the suite's own `--selftest`" is discharged by the artifact under test (its correction F-1 is a
+one-command digest pin, the L1's to land); three of the seven clauses are file-wide literal greps a
+negation or a heading satisfies; and the counter cannot see a *prose* placeholder spelling — the suite's
+header records that limit, and the D1 clause covers the two literals the frozen kill rule names. `D2`'s
+"no deletion" limb is byte survival of the row's opening, not a `git diff --numstat` deletion count,
+because neither a `git archive` export nor a fixture tree can run git (`ExecClosureSuite` §2, finding 4).
+`RevClosureSuite` and `RevSelftestFixtures` reviewed the suite mid-iteration (`c748dd70…` → `cba8c95b…` →
+`d7ad8438…` → `a4f80067…` → `0ae4b484…`) and their two findings are in the landed bytes: the
+fixture-detail judgement was anchored at `reason=` and would have rejected the honest report once the tree
+went green (fixed to `reason=.*<clause>`), and D5's `erratum-file` clause had no mutant (fixed with a
+cascading mutant). Both instruments also read the lane root by default: a copied-tree run reports
+`BASE-ABSENT=11` on clean bytes (`ExecNoHarmFinal` F6), which is a verification-seat trap, not a defect.
+The kill-rule probe set is a bounded oracle by construction, and the seven checks are presence tests whose
+fixtures prove they *can* fail, not that the prose they read is truthful.
+
+**C2 reviewer posture, reported verbatim for the canonical judge.** `RevEntryF18` first verdict:
+**"REFUSE — one criterion: Q2, for Claim 4b only."** with both repair paths named; final verdict on the
+landed bytes `e9de994d…`: **"ADMIT. Q1–Q10 all PASS"**, with two residual notes (the live-page
+directive-status statement remains unregistered by design; the README frontier row was still 17 at that
+review's check). `RevRowS052`: **"matches"** on the row, the Search-log bullet and the three R8 lines,
+with per-criterion verdicts. `CritC2Kill` records five residual gaps, of which G5 is the one that matters
+for the kill rule — `PASS F18 ids=S052` is binding + recheck, narrower than its name suggests — and the
+frozen twin clause is only measurable through the quote-comparison invocation the D5 erratum defines;
+`MutC2Entry` kills its entry-layer mutants (M1 dropped `source:` line → harness `no-source-line` exit 1;
+M2a paraphrased quote → `quote-not-found` exit 1; M4 wrong `--source` → exit 1) and `MutJunkTwin` records
+the twin's rejection. Two scope limitations are reported rather than repaired: the landed Search-log
+bullet's sweep does not cover `corpus/lessons/*.md`, where one incidental token exists
+(`corpus/lessons/round-22.md:91`), and the dispatch URL in the C2 ticket
+(`https://www.cisa.gov/known-exploited-vulnerabilities.json`) returns HTTP 404 under three user agents —
+the captured feed is the catalog's own JSON path, one directory over, and every registry, manifest and
+entry byte carries that path.
+
+**Measurement state.** Values above were measured at the wave-1 integration state (commits `aa6ad99…` and
+`0aee0ef…` in the lane) with per-seat bookend digests, and this seat re-read every digest below at the
+writing moment: `corpus/SOURCES.md` `0f95a132…` (112 lines, 52 rows), `corpus/README.md` `277f04ce…`
+(396 lines), the F18 entry `e9de994d…` (91 lines), `corpus/source-snapshots/round-35/manifest.json`
+`06bfcc71…` (5631 B) and `round-35/S052.txt` `d69349e8…` (1479694 B, 27870 lines),
+`r35-defect-closure.sh` `0ae4b484…` (834 lines), `kill-rule-check.py` `c279d952…` (881 lines),
+`frontier-recheck-count.py` `1be79af6…`, `source-recheck.py` `fd2e01e8…`, `knowledge-expected.txt`
+`d2e99ca6…`, `corpus/instruments/README.md` `d021b317…` (960 lines), `corpus/QUALITY.md` `d4f83bb1…` (250
+lines), `SKILL.md` `daeff71b…` (1104 lines), `PROVINCE.md` `b4bb5fee…` (75 lines), `claims.json`
+`fe0dae89…` (byte-identical to the freeze blob), `.ufo/waves/round-34/wave1-results.json` `3afa3581…` and
+its note `e1c44301…`. Supersessions are recorded rather than compared: `claims-erratum-d5.md` moved
+`e2e7202d…` (06:38Z) → `0d304b92…` (06:41Z) → `eee0bb57…` (this seat's read) as its §5 attribution was
+corrected from C2 to `C1.after[10]` (`RevD5D6D7` F5); the suite moved through the five digests named in
+the blind-spots paragraph, and the quoted per-check payloads are the landed `0ae4b484…` run;
+`corpus/README.md` and `corpus/SOURCES.md` both grew while the wave ran (`28 0` and `5 0 → 7 0`), the
+final counts being 18 frontier rows and 52 registry rows. Two files are non-append-only this round and
+both are disclosed above: `SCORECARD.md` (`33 15`, D1's assigned in-place rewrite) and the round-34
+`wave1/L1Integration.md` (`3` deletions, the D6 correction, which the suite's own `dead-seat-sentence == 0`
+clause forces to be in place rather than appended — `RevD5D6D7` §shape nuance).
+
+**Capabilities: no row enters this round.** `r35-defect-closure.sh` is a defect-closure counter, not a
+capability: it demonstrates seven *filed* defects closed and runs a 17-clause mutation battery, but it
+adds no new thing the lane can do to the domain. The master `## Capabilities` table and the round-33 row
+are unchanged, and the capability window is not restarted (last entry round 33).
+
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3. No capability entry enters this round,
+so the capability window does not restart. With depth:verifiability still at 4 the lowest-axis obligation
+stays active, and the C1 blind spots above are the route it points at; the round's own distance-to-next-
+score measurement is filed in `.ufo/waves/round-35/wave1/ExecScoreGap.md` and minted as `QUALITY.md` R26.
+
+### Round-35 move-log rows
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 35 | depth:verifiability | 4 (suite absent; seven D1–D7 defects open on the base export, `closed=0/7`; placeholder prose present; stale density row; gates unregistered; results file untracked; no D5 erratum; stale dead-seat sentence; no supersession rows) | 4 held (`closed=7/7 exit=0` / `--selftest cases=7 failures=0` / base `closed=0/7 exit=1`; 17/17 clause mutants credited, 14/14 vacuous+delete mutants killed; fake suite and fake plain rejected by the judge; seven per-defect payloads green) | `corpus/instruments/r35-defect-closure.sh`, `corpus/instruments/r35-fixtures/`, `SCORECARD.md` D1/D2 corrections, `SKILL.md:1097-1104`, `.ufo/waves/round-34/wave1-results.json` + `.provenance.md`, `.ufo/waves/round-35/claims-erratum-d5.md`, `.ufo/waves/round-34/wave1/L1Integration.md`, `corpus/QUALITY.md` R26/R27, `.ufo/waves/round-35/wave1/{ExecClosureSuite,MutClosureSuite,MutFixturesLimbs,ExecD1Markers,ExecD2DensityRow,ExecD3SkillRegistry,ExecD4ResultsTrack,ScribeErratumD5,RevD5D6D7,ScribeQualityDraft,RevC1BeforeAfter,CritC1Kill}.md` |
+| 35 | coverage | 7 (frontier 17, registry 51, entries citing S052 0, harness 20/20, round-35 manifest absent → recheck exit 2, knowledge 46, junk twin committed and unadjudicated) | 7 held (frontier 18, registry 52 with the S052 row, entries citing 1, harness 21/21 incl. `PASS F18 … ids=S052`, `source-recheck S052` five assertions `occurrences=1` exit 0, census exit 0 with the two base warnings only, knowledge 47, junk twin rejected on the quote-comparison route) | `corpus/README.md` F18 row, `corpus/SOURCES.md:58` + `:79` + `:108-110`, `corpus/knowledge/cisa-kev-catalog.md`, `corpus/source-snapshots/round-35/{S052.txt,manifest.json}`, `corpus/instruments/knowledge-expected.txt`, `.ufo/waves/round-35/c2-controls/junk-f18.md`, `.ufo/waves/round-35/wave1/{ExecC2Capture,ExecRegistryAppend,ExecExpectedListSync,ExecDoNothingReject,MutCounterBase,MutC2Entry,MutJunkTwin,RevEntryF18,RevRowS052,RevC2BeforeAfter,CritC2Kill}.md` |
+
+**Round-35 integration commits: `aa6ad99…` (C1 D4/D6/D7 landings) and `0aee0ef…` (integration: lesson,
+scorecard stub, SHONEN, LOG, wave receipts, assimilation artifacts).** The closing lane commit is not
+known at this seat's read and is not asserted here; every counter above reads committed content and does
+not depend on it. Every value in this section was measured on the wave-1 integration bytes digested under
+§ Measurement state; the closing commit may add seat receipts, `LOG.md`, `SHONEN.md`,
+`corpus/lessons/round-35.md` and this section itself, none of which any counter above reads.
