@@ -1492,3 +1492,18 @@ any counter above reads.
 Final lane commit: e666d902337a49dcbfc77880939874f39c6f477b
 
 **Round-36 measured closure (appended after integration).** Measured at the final lane head `274fa9ae908db5800013778098f4d426281b46e2` (export run): `r36-closure.sh --export-ref 274fa9ae…` -> `closed=9/9 exit=0`; `--selftest` -> `cases=9 failures=0`; negative controls `3266c993` -> `closed=0/9 exit=1`, `0aee0ef` -> `closed=3/9 exit=1`; C2 counters: frontier rows 19 (`grep -cE '^\| F[0-9]+ \|' corpus/README.md`), registry rows 53 (`S053` row present), entries citing `source: S053` 1, knowledge files 48, harness `entries=22 pass=22 exit=0` incl. `PASS F19 … ids=S053`, `source-recheck --source S053` exit 0 (Q1–Q4 `occurrences=1`), `recheck-audit.py` `strict pass=48/48 … expected=48` exit 0, `capture-binding-check.py` `records=43 bound=43` exit 0, census exit 0 (W04 S028/S029 only). Disclosed limits: the integrated suite's limbs are presence/shape tests; three post-integration attack fixtures are kill-rule-hit classes (E3 retraction-section row, E7 negation row, E8 two bare tokens) plus the wider CritC1Kill matrix — recorded in `corpus/lessons/round-36.md` and `ExecC1SuiteBuild.md` § Post-integration residuals, round-37 backlog.
+
+## Round 37 result
+
+| Axis | Score before r37 | Score after r37 | Evidence pointer | Last change |
+|---|---:|---:|---|---|
+| depth:verifiability | 4 | 4 (held) | `r37-closure.sh` export suite E1–E14: `closed=14/14 exit=0` at the r37 final lane head; `--selftest` `cases=14 failures=0`; r36 base cc692008 export `closed<14/14 exit=1`; r36 judged head a23dc478 export `closed<14/14 exit=1`. Round-36 verifier routed defects D1–D6 closed (receipt `.ufo/waves/round-37/final-gates/all-gates.txt`). | r37 (held) |
+| coverage | 7 | 7 (held) | Frontier F20 (SSVC) admitted 19→20; registry S054 row added (53→54, tier A, mined, opened 2026-10-26); entry `corpus/knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md` cites `source: S054`; harness `entries=23 pass=23 exit=0` incl. `PASS F20 ids=S054`; source-recheck S054 exit 0; census exit 0 (W04 S028/S029 only); knowledge 48→49; junk twin `c2-controls/junk-f20.md` rejected. | r37 (held) |
+| depth:density | 9 | 9 | Non-target guard only: SKILL.md append-only (registry rows only); no density move claimed. | r15 (held r37) |
+
+Measured before commit (freeze `224df74d…`): c1-controls/before.txt, c2-controls/before.txt, census-before.txt.
+Measured after: `bash corpus/instruments/r37-closure.sh --export-ref <r37-final-head>` → `closed=14/14 exit=0`; `grep -cE '^\| F[0-9]+ \|' corpus/README.md` → 20; `grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md` → 54; `python3 corpus/instruments/frontier-recheck-count.py` → `entries=23 pass=23 exit=0`; `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-37/manifest.json --source S054` → exit 0; `python3 corpus/instruments/capture-binding-check.py` → `records=44 bound=44 unbound=0`; `python3 corpus/instruments/recheck-audit.py --quiet` → `strict pass=49/49 … expected=49 missing=0 unexpected=0 exit=0`; census exit 0.
+
+Anchor ancestor (r36 lane head): `c20300df516eb5575d8db2aaad1f0cf4913e7981` — the r36 Final-lane-commit label previously pointing at the intermediate ancestor e666d902 is corrected per E12 (see round-37 lesson).
+
+Final lane commit: f3246559bed2fd085dde860e00247ce394f02bad (round-37 wave-evidence ancestor; the round's final head is named in the report).

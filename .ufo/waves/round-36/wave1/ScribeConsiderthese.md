@@ -196,3 +196,41 @@ receipt. E9 is filed on the **final lane head**, after the L1's integration comm
 - Landing `QUALITY.md` R28 and the `PROVINCE.md` F18/F19 amendment, and giving either a fail-closed
   check (proposals 3/5, §4 F-1/F-5).
 - Any cap/externalise/LFS decision on `.ufo/` evidence (proposal 4) — operator call.
+
+## 8. Post-integration addendum (appended 2026-10-26T17:13Z, read at lane head `b362068`)
+
+Sections 1–7 are timestamped at the round-36 freeze `b47f2cd` and are left as written. This addendum
+records what became observable after the round-36 integration; it does not retro-edit the table.
+
+- Lane advanced: round-36 integrated (`a23dc47` final gate receipts, `c20300d` WAVE-DONE,
+  `b56a416` verifier spot-check), then round 37 opened (`224df74` freeze, `f324655` wave evidence,
+  `b362068` claims-erratum-1). Round-36 traces are clean: the 6 dirty entries in
+  `git status --porcelain` are all `.ufo/waves/round-37/` paths, and this receipt is committed.
+- Pending landings now present: `corpus/QUALITY.md` ends at **R29** (`:263` R28, `:264` R29);
+  `PROVINCE.md` carries the r36 F18 and F19 frontier amendments as end-of-file appends (last two
+  lines); `corpus/instruments/r36-closure.sh` exists. The ledger is byte-unchanged (`c354ca02…`,
+  35 lines) and still has no 2026-10-26 section.
+- **Correction to §4 F-1/F-5 now that row text is readable: R28 is not the quiescence-gate row.**
+  `corpus/QUALITY.md:263` R28 is the closure-order criterion ("claims rest on committed paths at the
+  quoted head … a `git archive` export"); `:264` R29 is the SKILL registry exact-basename criterion.
+  No QUALITY row contains "quiescence" or `git status --porcelain` (grep 0). Proposal 3 is therefore
+  implemented as **E9 in `r36-closure.sh` only**; `corpus/lessons/round-36.md:40` records it as
+  "adopted (R28 + E9)", and that row reference does not match the row's text. The adoption stands as
+  a gate with a fail-closed check and no QUALITY record row.
+- Proposal 5 remains checkless after integration: `grep -c 'PROVINCE'
+  corpus/instruments/r36-closure.sh` → 0. The amendment landed; nothing fails if a future amendment
+  is owed and unlanded.
+- Mid-wave diagnostic, disclosed: I ran `bash corpus/instruments/r36-closure.sh --export-ref
+  b362068` read-only at 17:12Z from the dirty round-37 worktree → `closed=8/9 exit=1`, E9
+  `payload=status-dirty=6,scratch-seat-dirs=0,head-match=1,lane-root=1,scratch-root=present
+  closed=0`. That is E9 doing its job on a live mid-wave tree (the 6 dirty entries are round-37 wave
+  files), not a defect in the round-36 claim, whose 9/9 belongs to the final round-36 head.
+- Path note for proposal 7 (relayed by `ScribeQualityRows-2`, verified here): the shorthand
+  `corpus/considerthese-ledger.md` appears in **round-37** `claims.json:78` (the round-36 file is 75
+  lines and contains 0 occurrences). At `b362068` the shorthand is not a tracked file
+  (`git ls-files corpus/considerthese-ledger.md` → 0); the durable tracked ledger is
+  `corpus/knowledge/considerthese-proposals-ledger.md` (`c354ca02…`, 35 lines: header `:1-7`, table
+  header `:9` with rows `:11-16`, Limits `:18`, flips heading `:22`, flip table header `:26`,
+  proposal-2 flip `:28`, five `unchanged` rows `:29-33`, audit sentence `:35`). §2 row 7 and §4 F-3
+  cite the tracked path; this seat created no file at the shorthand.
+

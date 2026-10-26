@@ -33,3 +33,11 @@ Appended by `ScribeConsiderthese` in round 31. Append-only: the table and the `r
 | 6. Event-driven reflections | `open` | `unchanged` | No round-28..30 lesson records a landing or a decline, and a lane-wide grep for `event-driven` / `push listener` over `corpus/`, `SKILL.md`, `PROVINCE.md`, `SCORECARD.md` and `LOG.md` returns no match (measured by this seat in round 31); the proposal therefore remains open. |
 
 Round-31 audit at append time, with the `recheck:` line above left byte-identical: `python3 corpus/instruments/recheck-audit.py --quiet` → `strict pass=44/44 cdroot_fail=0 instrument_fail=0 own_fail=0`, `exit=0`. This section is documentation-only and, like the table above, asserts no score move and gives no instruction to probe, scan, log in to, or submit against any target.
+
+## Round-37 dispositions (appended 2026-10-26, R31 home)
+
+
+
+## Re-pin note (appended 2026-10-26)
+
+As recorded by the round-37 lesson, the row at `:28` pinned score-gap.py at sha256 `855869bf…` / 548 lines; the live file at landing is sha256 `57584fda83b813e44fb2e2cb6cb2b1e4af1dd20f07877a6b119db9ba9feb43cf` / 554 lines — the re-pin is owed and this entry records it (R19).

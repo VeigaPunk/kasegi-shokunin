@@ -396,3 +396,59 @@ F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35. The 0/18 sen
 untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count
 stays outside it.
 
+
+
+The coverage map above is not edited in place (R6): the round-37 entry
+`knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md` (Frontier F20, source S054;
+source basis: CERT/CC's SSVC "What is SSVC?" overview tutorial at
+https://certcc.github.io/SSVC/tutorials/ssvc_overview/ — the overview page, not the docs home, per
+`claims-erratum-1.md` and capture-binding rule B5 — captured 2026-10-26, status 200, under
+`corpus/source-snapshots/round-37/`) is recorded here as an appended amendment so every existing
+line keeps its number. The coverage-map row is appended here rather than inserted into the map, and
+the F20 frontier row is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Stakeholder-specific vulnerability categorization (round 37) | knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md | S054 — public primary, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F20 | SSVC (Stakeholder-Specific Vulnerability Categorization) — stakeholder-tailored, decision-point-based prioritization | admitted | knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md | S054 | Read a priority from one stakeholder's decision model, not a universal score: "A decision point itself is not representative of risk, but the series of decisions point values help a stakeholder determine how risky a vulnerability is" (S054.txt:277; the page's own typo "decisions point values" is quoted verbatim), and the inputs are per-system — Exposure asks how difficult it is for an attacker to access a system from the open Internet (S054.txt:367). Keep it distinct from CVSS severity, KEV status and EPSS likelihood: SSVC categorizes "by priority based on risk that varies among stakeholders" (S054.txt:259), and the page contrasts itself with systems that "rate on technical severity" (S054.txt:247) while naming no CVSS metric and defining neither severity nor exploitability in prose — CVSS, EPSS and KEV appear only in site navigation, so source those definitions from S001/S002, S052 and S053. Read "Carnegie Mellon" only as the site footer's owner statement, not as a methodology claim. |
+
+[r37 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 37 the frontier stands at **20/20 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at
+round 37. The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18
+surfaces present, and the frontier count stays outside it.
+
+```
+
+| property | value |
+|---|---|
+| sha256 (block bytes) | `2ebd8cd2881b020cb0e234658adf132cf4741c1d226e1d7c267f7d71c5b7e97b` |
+| bytes / lines | 2947 / 27 |
+| row shape | six cells (id, topic, status, entry, sources, next), topic names SSVC as stakeholder-tailored decision-point prioritization, entry path `knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md`, source `S054` |
+| count line | `[r37 amendment, appended 2026-10-26]` naming `20/20 admitted` and F01-F08 r23, F09 r24, F10 r25, F11 r26, F12 r28, F13 r29, F14 r30, F15 r31, F16 r33, F17 r34, F18 r35, F19 r36, F20 r37; the 0/18 sentence is declared untouched |
+| URL choice | overview tutorial page per `claims-erratum-1.md`; the paragraph says so and why (capture-binding B5) |
+
+## 4. Validation on a scratch mirror (append, not edit)
+
+Fixture: `git archive HEAD PROVINCE.md corpus` exported into
+`/fast/scratch/hyaku/kasegi-r37/ScribeFrontierAmendments/mirror`, both blocks appended with Python to the
+copies only. Measured on that mirror:
+
+| check | command | observed |
+|---|---|---|
+| pure addition (PROVINCE) | `diff orig PROVINCE.md \| grep -c '^<'` | `0` (2 added lines) |
+| pure addition (README) | `diff orig corpus/README.md \| grep -c '^<'` | `0` (27 added lines) |
+| frontier row count | `grep -cE '^\| F[0-9]+ \|' corpus/README.md` | `20` (target `20`) |
+| row cells | pipe-split of the F20 line | 6 cells; next cell 155 words |
+| section header | `grep -c '^## Round-37 admission' corpus/README.md` | `1` |
+| count line | `grep -c 'frontier stands at \*\*20/20 admitted\*\*' corpus/README.md` | `1` |
+| PROVINCE line | `grep -c '^\[r37 Frontier amendment' PROVINCE.md` | `1` |
+| sizes | `wc -l` on the mirror | `PROVINCE.md` 80, `corpus/README.md` 425 |
+
+Harness on the same mirror (`HYAKU_SCRATCH=<scratch> python3 corpus/instruments/frontier-recheck-count.py
+--root <mirror>`, tail):

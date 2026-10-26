@@ -167,3 +167,12 @@ a checked box; promotion needs a named non-author verifier.
       — evidence (round 36): `recheck-audit.py` strict pass=48/48 expected=48 exit=0; frontier harness entries=22 pass=22 exit=0 incl. PASS F19 ids=S053; r36 suite `--export-ref <final>` closed=9/9 exit=0; census exit 0. Box stays `[~]`.
 - [~] No cross-domain bleed (PROVINCE.md still accurate)
       — evidence (round 36): PROVINCE.md amended with F18 (round 35 admission, previously owed) and F19; sibling sweep over 20 lanes finds no EPSS ground (ConnSibling ruling); S053/F19 uncontested. Box stays `[~]`.
+
+- [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
+      — evidence (round 37, final lane head <r37-final-lane-hash>): the Gates & probes registry now carries the r37-closure.sh row plus the D5-corrected single-choice r36-closure.sh row (E13); `anchorcheck.py SKILL.md` exit 0; density/anchor post-append re-measurement <fill>. Box stays `[~]`; no non-author check.
+- [~] At least one end-to-end domain task executed and logged in LOG.md
+      — evidence (round 37): no new end-to-end domain hunt ran; closest executed measurement: C1 suite + C2 SSVC capture/harness. Box stays `[~]`.
+- [~] Instructions executable by an agent without oral context
+      — evidence (round 37): `recheck-audit.py` strict pass=49/49 expected=49 exit=0; frontier harness entries=23 pass=23 exit=0 incl. PASS F20 ids=S054; source-recheck S054 exit 0; capture-binding records=44 bound=44; census exit 0; r37 suite `--selftest` cases=14 failures=0 and `--export-ref <r37-final-lane-hash>` closed=14/14 exit=0 (raw transcript committed at .ufo/waves/round-37/final-gates/all-gates.txt). Box stays `[~]`.
+- [~] No cross-domain bleed (PROVINCE.md still accurate)
+      — evidence (round 37): PROVINCE.md F20 amendment appended; F20/S054 uncontested across 20 sibling lanes (ConnSibling/ScoutF20Sibling ruling); junk twin rejected. Box stays `[~]`.
