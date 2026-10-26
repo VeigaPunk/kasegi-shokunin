@@ -158,3 +158,12 @@ round-35 SCORECARD append had reintroduced the `filled by the L1` placeholder at
 commit `8ce6fb4` reworded that sentence, and the plain and `--selftest` runs after it are 7/7 and
 `cases=7 failures=0` (exit 0). All four boxes stay `[~]`: a wave seat is the lane and cannot write
 a checked box; promotion needs a named non-author verifier.
+
+- [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
+      — evidence (round 36): Gates & probes registry now registers `r35-defect-closure.sh` and `r36-closure.sh` by exact basename (E3); `anchorcheck.py SKILL.md` exit 0; suite `r36-closure.sh --selftest` cases=9 failures=0 at the final head. Box stays `[~]`; no non-author check.
+- [~] At least one end-to-end domain task executed and logged in LOG.md
+      — evidence (round 36): no new end-to-end domain hunt ran; closest executed measurement: F19 EPSS live capture + source-recheck S053 + the r36 closure suite (C1/C2). Box stays `[~]`.
+- [~] Instructions executable by an agent without oral context
+      — evidence (round 36): `recheck-audit.py` strict pass=48/48 expected=48 exit=0; frontier harness entries=22 pass=22 exit=0 incl. PASS F19 ids=S053; r36 suite `--export-ref <final>` closed=9/9 exit=0; census exit 0. Box stays `[~]`.
+- [~] No cross-domain bleed (PROVINCE.md still accurate)
+      — evidence (round 36): PROVINCE.md amended with F18 (round 35 admission, previously owed) and F19; sibling sweep over 20 lanes finds no EPSS ground (ConnSibling ruling); S053/F19 uncontested. Box stays `[~]`.

@@ -73,3 +73,6 @@ against the round-31 capture `corpus/source-snapshots/round-31/S048.txt`.
 
 [r33 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F16 — Chinese crowdsourced-testing platform scope and reward rules (CNVD 众测, 360SRC) — admitted round 33
 [r34 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F17 — Immunefi Vulnerability Severity Classification System v2.2 (Web3/smart-contract bounty severity classification) — admitted round 34
+
+[r36 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F18 — CISA Known Exploited Vulnerabilities catalog (prioritization by known in-the-wild exploitation status) — admitted round 35; entry `corpus/knowledge/cisa-kev-catalog.md` (source S052)
+[r36 Frontier amendment, appended 2026-10-26, end-of-file append per R6] F19 — FIRST Exploit Prediction Scoring System (EPSS) (exploitation-likelihood scoring, 0–1 probability) — admitted round 36; entry `corpus/knowledge/epss-exploit-prediction-scoring.md` (source S053)

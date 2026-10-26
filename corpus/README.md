@@ -386,6 +386,7 @@ above.
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
 | F18 | CISA Known Exploited Vulnerabilities catalog — exploitation-status-based prioritization distinct from CVSS severity | admitted | knowledge/cisa-kev-catalog.md | S052 | Keep the catalog's remediation clock attached to the directive that binds it: BOD 26-04 supersedes the revoked BOD 22-01 and uses KEV status as one of four risk-priority factors (public exposure, KEV status, automatability, technical impact), with 3-day remediation for the most urgent cases; KEV listing is an exploitation-status signal, not a severity score — the feed carries no severity field (12 keys x 1756 records, cvss 0). |
+| F19 | FIRST EPSS exploitation-likelihood scoring | admitted | knowledge/epss-exploit-prediction-scoring.md | S053 | EPSS estimates the probability that a published CVE will be exploited in the wild in the next 30 days; treat it as a likelihood signal distinct from CVSS severity and KEV catalog status |
 
 [r35 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
 and each later amendment paragraph states its own round; those are retained as history, not
@@ -394,3 +395,4 @@ at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29,
 F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35. The 0/18 sentence is
 untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count
 stays outside it.
+
