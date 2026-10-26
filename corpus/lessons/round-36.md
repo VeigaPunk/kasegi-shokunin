@@ -1,6 +1,6 @@
 # Round 36 — kasegi
 
-Lane: `kasegi-shokunin`. Base `cc692008b0cfd58d18275aa6c4aed79620120799`; claims-freeze `b47f2cdf17d9f6021cbdb4db1add09a9dbf4f1d6`; final lane commit `FINAL_LANE_HASH` (filled at closure). Shape: one v2 wave `kasegi-r36-build`, 64 seats (executor 18, scribe 12, reviewer 10, critic 6, scout 6, mutation-tester 5, connector 3, sentinel 2, simplifier 2; attack roles 23/64 = 35.9%).
+Lane: `kasegi-shokunin`. Base `cc692008b0cfd58d18275aa6c4aed79620120799`; claims-freeze `b47f2cdf17d9f6021cbdb4db1add09a9dbf4f1d6`; final lane commit `e666d902337a49dcbfc77880939874f39c6f477b` (filled at closure). Shape: one v2 wave `kasegi-r36-build`, 64 seats (executor 18, scribe 12, reviewer 10, critic 6, scout 6, mutation-tester 5, connector 3, sentinel 2, simplifier 2; attack roles 23/64 = 35.9%).
 
 ## Frozen claims — before → after
 

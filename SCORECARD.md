@@ -1488,3 +1488,5 @@ asserts no closing commit; (iii) `E3` reads exact basenames, and the freeze `SKI
 section was measured on the claims-freeze bytes digested under § Measurement state; the closure may add
 seat receipts, `LOG.md`, `SHONEN.md`, `corpus/lessons/round-36.md` and this section itself, none of which
 any counter above reads.
+
+Final lane commit: e666d902337a49dcbfc77880939874f39c6f477b
