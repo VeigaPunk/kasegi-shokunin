@@ -1,0 +1,28 @@
+# C1 after (round 30, run at the landed bytes; instrument sha256 below)
+## instrument digests at run time (settled: no change for >=29 min before this run)
+aa60b58126569a1c8ec04409011df5f6225a9c18f2a77ea6410cd1d0d5dc0893  corpus/instruments/frontier-recheck-count.py
+33602a9df53a4cadd7b7aa2b6ccea9b25235888799a3b71e87906de1fc622c6f  corpus/instruments/source-recheck.py
+## A1 missing-entry fixture (harness-root-a1)
+FAIL     F98  knowledge/zz-missing.md                              ids=-              exit=-    problems=missing-entry
+entries=1 pass=0 exit=1
+a1_exit=1 (names row id F98; no FileNotFoundError traceback)
+## A2 duplicate-target fixture (harness-root-a2)
+PASS     F98  knowledge/dup-entry.md                               ids=S003           exit=0   
+PASS     F97  knowledge/dup-entry.md                               ids=S003           exit=0   
+DUPLICATE-ENTRY F98,F97 knowledge/dup-entry.md
+entries=2 pass=2 exit=1
+a2_exit=1 (names the duplicate entry)
+## B1 stem-mismatch (manifest-b1)
+S043:manifest MISMATCH reason=stem-mismatch
+b1_exit=1 (reason=stem-mismatch)
+## B2 double-occurrence (manifest-b2, as committed)
+S045:manifest MISMATCH reason=stem-mismatch
+b2_exit=1 (failure reason present; the committed fixture's path B2.txt stem != id S045, so the occurrence limb is preempted; see report note)
+## B2 occurrence-limb probe (scratch: fixture path renamed B2.txt -> S045.txt, bytes unchanged)
+S045:sha256 OK
+S045:Q1 MISMATCH reason=occurrence-not-unique
+scratch_b2_occurrence_exit=1
+## Regression (real corpus, same bytes)
+python3 corpus/instruments/frontier-recheck-count.py -> entries=17 pass=17 exit=0 (incl. PASS F14 knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047)
+manifest sweep (round-23..30, per-id source-recheck): all sources exit 0, including round-29 S043/S044/S045 (base passes unchanged) and round-30 S046/S047/S041
+source-recheck.py --selftest: cases=9 failures=0 exit=0
