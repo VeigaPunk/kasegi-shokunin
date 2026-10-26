@@ -1,0 +1,115 @@
+M31-1 RED-BEFORE (seat ExecErratumCheck, round 31, wave 1)  — part 1 (SCORECARD) and part 2 (LOG.md)
+Recorded 2026-10-25 before any ScribeErratum / ScribeLogR30 edit byte.
+Answering model: devin/deepseek-v4-1-flash (route-table decision; never passed by this seat).
+No repo edits by this seat; this file is the only artifact of the red run.
+
+PRE-EDIT DIGESTS (cwd = /home/vgpnk/Projects/shokunin/kasegi-shokunin)
+$ sha256sum SCORECARD.md LOG.md corpus/instruments/recheck-audit.py
+cac64dbdb8cd9ed834a6deca44c5b4fd5874f1e95d2f1118f919c3ccb84811b9  SCORECARD.md
+0a1865e90f29c5d4a20fa3fda8f9daf6b6293bbec95710bafcda0cf65d537221  LOG.md
+3fc0d751f2a5819879d440f8ef62b607376a8b6914d7edf9fe1b2fc25662d4e1  corpus/instruments/recheck-audit.py
+$ git status --porcelain -- SCORECARD.md LOG.md corpus/instruments/
+(empty — all three clean; recheck-audit.py digest equals the frozen base digest 3fc0d751…)
+SCORECARD.md sha256 re-checked immediately before every run below: unchanged (cac64dbd…).
+
+STALE PREMISE, located (pointer corrected by ScribeQuality's independent read and confirmed here):
+SCORECARD.md:813 is the sentence head "**recheck-audit open item (outside the frozen claims).** `recheck-audit.py`";
+the stale backticked reading `expect=present expected=43 missing=0 unexpected=0 exit=1` lands on SCORECARD.md:814.
+CORRECTED LIVE OUTPUT (read-only, same tree):
+$ python3 corpus/instruments/recheck-audit.py --quiet > /tmp/era-audit.txt 2>&1; echo "audit_exit=$?"; grep -E 'strict pass|^expect=' /tmp/era-audit.txt
+audit_exit=0
+strict pass=43/43 cdroot_fail=0 instrument_fail=0 own_fail=0
+expect=present expected=43 missing=0 unexpected=0 exit=0
+(full tail: lines=43 total=43 pass=43 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0)
+
+=== CHECK A — SCORECARD stale paragraph closed by an appended r31 erratum (bash-n-parseable) ===
+Canonical form (exit 0 = closed, exit 1 = still open). Optional $1 = file under test (default SCORECARD.md),
+so the same bytes are what the mutant control runs against a scratch copy:
+
+  cd /home/vgpnk/Projects/shokunin/kasegi-shokunin || exit 9
+  f=${1:-SCORECARD.md}
+  n=$(grep -c 'recheck-audit open item' "$f")
+  l=$(grep -nE '(([Rr]31)|([Rr]ound[- ]31))[[:space:]]+[Ee]rrata?' "$f" | head -1 | cut -d: -f1)
+  c=0
+  if [ -n "$l" ] && tail -n +"$l" "$f" | grep -q 'recheck-audit open item' \
+     && tail -n +"$l" "$f" | grep -q 'strict pass=43/43'; then c=1; fi
+  printf 'file=%s stale_paragraphs=%s erratum_anchor=%s names_item_and_cites_corrected_audit=%s\n' "$f" "$n" "${l:-none}" "$c"
+  if [ "$n" -eq 0 ] || [ "$c" -eq 1 ]; then echo "erratum_closure=closed"; exit 0; else echo "erratum_closure=open"; exit 1; fi
+
+Semantics: open while the stale paragraph exists (n>=1) and no r31/Round-31 "Errata" anchor is followed by
+both (a) the phrase `recheck-audit open item` and (b) the corrected audit text `strict pass=43/43`.
+Closed either when the paragraph is gone (n==0; not reachable under append-only) or when such an erratum exists.
+
+RED-BEFORE (live file):
+file=SCORECARD.md stale_paragraphs=1 erratum_anchor=none names_item_and_cites_corrected_audit=0
+erratum_closure=open
+EXIT CODE: 1
+
+DISCRIMINATION MATRIX (same check, scratch copies of the pre-edit bytes in mktemp -d, deleted after the run):
+  A live ................................................. open  exit=1
+  B synthetic single line `- **r31 erratum (recheck-audit open item).** … strict pass=43/43` .. closed exit=0
+  C synthetic `### Round-31 errata (appended)` + naming bullet + `Corrected audit output: strict pass=43/43 …` .. closed exit=0
+  D MUTANT: erratum lines deleted from the scratch copy ........... open  exit=1
+  E erratum names the item but the `strict pass=43/43` citation removed .. open  exit=1
+  F cites `strict pass=43/43` but never names the item ................... open  exit=1
+  G `## Round 31 — frozen claims C1/C2` section containing both phrases but no `Errata` anchor .. open  exit=1
+Verbatim D (the mutant control required by the item):
+  $ grep -vE 'r31 erratum|Round-31 errata|recheck-audit open item` paragraph above|Corrected audit output' block.md > mut.md
+  file=mut.md stale_paragraphs=1 erratum_anchor=none names_item_and_cites_corrected_audit=0
+  erratum_closure=open
+  exit=1
+
+=== CHECK B — round-30 LOG.md entry missing (bash-n-parseable) ===
+Heading shape verified in-file first: the file's round sections use `## Round 29 — 2026-10-25 — …` (:1404),
+`## Round 28 …` (:1338), `## Round 27 …` (:1315), `## Round 26 …` (:1305), `## Round 25 …` (:1246), plus the
+lowercase form `## 2026-10-25 — round 23: …` (:1114), and the close-outs use `###` sub-sections.
+A naive `^## .*[Rr]ound[- ]30` also matches a round-31 heading that merely MENTIONS round-30 (measured: NEG
+case E below), so the shipped check takes the FIRST round-number token of each heading and counts headings
+whose first token is 30; both the strict-h2 and the h2-or-h3 counts are printed (h3 tolerance disclosed):
+
+  cd /home/vgpnk/Projects/shokunin/kasegi-shokunin || exit 9
+  f=${1:-LOG.md}
+  h2=$(awk '/^## /{ h=$0; sub(/^## */,"",h); if (match(h,/[Rr]ound[- ]?[0-9]+/)) { t=substr(h,RSTART,RLENGTH); gsub(/[^0-9]/,"",t); if (t+0==30) n++ } } END{print n+0}' "$f")
+  h23=$(awk '/^#{2,3} /{ h=$0; sub(/^#{2,3} */,"",h); if (match(h,/[Rr]ound[- ]?[0-9]+/)) { t=substr(h,RSTART,RLENGTH); gsub(/[^0-9]/,"",t); if (t+0==30) n++ } } END{print n+0}' "$f")
+  printf 'file=%s round30_h2_headings=%s round30_h2_or_h3_headings=%s\n' "$f" "$h2" "$h23"
+  if [ "$h23" -ge 1 ]; then echo "log_closure=closed"; exit 0; else echo "log_closure=open"; exit 1; fi
+
+RED-BEFORE (live pre-edit file, sha256 0a1865e9…):
+file=LOG.md round30_h2_headings=0 round30_h2_or_h3_headings=0
+log_closure=open
+EXIT CODE: 1
+(The first cut of this check used only the `^## ` form and printed `round30_first_token_headings=0` — same
+verdict, exit 1; the shipped form above is what the after run uses.)
+
+DISCRIMINATION MATRIX, run with the SHIPPED form on the committed pre-entry bytes
+(`git show HEAD:LOG.md` -> sha256 0a1865e9…, i.e. byte-identical to the live red-before file; scratch copies
+in mktemp -d, deleted after the run):
+  PRE-STATE committed pre-entry bytes ............ h2=0 h2_or_h3=0  open   exit=1
+  B synthetic `## Round 30 — 2026-10-25 — synthetic` ... h2=1 h2_or_h3=1  closed exit=0
+  C synthetic `## 2026-10-25 — round 30: synthetic` ..... h2=1 h2_or_h3=1  closed exit=0
+  C2 synthetic `### Round-30 backfill (appended)` ....... h2=0 h2_or_h3=1  closed exit=0 (h3 tolerance, disclosed)
+  D MUTANT: entry heading deleted from the scratch copy . h2=0 h2_or_h3=0  open   exit=1
+  E NEG: round-30 only mentioned inside `## Round 31 — … round-30 …` .. h2=0 h2_or_h3=0 open exit=1
+  F NEG: an existing `### Round-28 close-out correction (appended)` .. h2=0 h2_or_h3=0 open exit=1
+
+=== OUT-OF-SCOPE OBSERVATION (measured, routed; not a gate of M31-1) ===
+ScribeQuality reported a third stale premise in the same instrument family. Verified here, read-only, and
+CORRECTED in one respect (their "six cases" is not what the instrument prints):
+$ python3 corpus/instruments/recheck-audit.py --selftest > /tmp/era-st.txt 2>&1; echo "selftest_exit=$?"
+selftest_exit=0
+$ grep -cE '^selftest ' /tmp/era-st.txt        -> 18
+$ grep -cE ' ok$' /tmp/era-st.txt              -> 18   (grep -c 'FAIL' -> 0)
+$ grep -nE 'cases=|failures=' /tmp/era-st.txt   -> no match (the instrument prints no `cases=N failures=M` summary line)
+Case names, first tokens: good prose cwd ghost degenerate elsewhere ownonly selftesty sourced basetest basestate
+parseonly instonly completeness expect-missing expect-unexpected complete-empty complete-missing-line.
+The citation to correct lives in corpus/QUALITY.md:77 (record R13, specimen sentence):
+  "… `python3 corpus/instruments/recheck-audit.py --selftest` → `selftest cases=4 failures=0 exit=0`, where `cwd.md`
+   isolates `cwd` and `ghost.md` isolates `paths`; …"
+Live: 18 case lines, all `ok`, exit 0, no such summary line — so `cases=4` is not reproducible on landed bytes.
+This is QUALITY.md territory (ScribeQuality) plus an erratum-shaped fix (ScribeErratum); it is NOT one of the two
+M31-1 parts and this seat does not gate on it. A same-shape check would be
+`q=$(grep -c 'cases=4' corpus/QUALITY.md)` with closure requiring an r31 Errata anchor naming `cases=4`.
+
+STATE LABEL: every reading above is PRE-STATE (bytes before ScribeErratum / ScribeLogR30 edit). Re-run the same
+two canonical commands on quiescent bytes after their receipts land; the green-after results belong in
+ExecErratumCheck-after.txt and are never compared to a PRE-STATE number.

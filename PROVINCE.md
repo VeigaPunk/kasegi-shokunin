@@ -50,3 +50,23 @@ Sibling lanes are reported, not absorbed:
 - kengaku — LLM evaluation and benchmarks
 
 Live-target testing is refused; this corpus is documentation only.
+
+## Frontier amendment — F12-F15 (appended round 31, 2026-10-25)
+
+[r31 amendment, appended 2026-10-25; end-of-file append per R6, so every existing line keeps its
+number] The Frontier section above names F01–F10 and F11 only. This amendment appends the four
+admissions it does not name, without editing that paragraph:
+
+- F12 — Japanese state-coordinated disclosure workflow — admitted round 28
+- F13 — Program severity ladders and reward scales — admitted round 29
+- F14 — Japanese severity vocabulary and the handling-priority model — admitted round 30
+- F15 — vendor-side research programme as an intake route for other vendors' bugs (Microsoft
+  MSVR) — admitted round 31; entry `corpus/knowledge/vendor-third-party-finding-coordination.md`
+  (header `ground: F15`, `source: S048`, capture `corpus/source-snapshots/round-31/S048.txt`)
+
+[r31 correction, R9] The "10/10 admitted" parenthetical in the Frontier paragraph above is the
+round-25 frontier state (F10 was the round-25 admission) and is retained as history rather than
+rewritten; the frontier as of round 31 is F01–F15. Titles and round attributions for F12–F14 are
+read from the `corpus/README.md` frontier rows at :213, :264 and :284; F15's round attribution is
+this round's admission (round-31 claims, C2), and its entry binds the frontier as `ground: F15`
+against the round-31 capture `corpus/source-snapshots/round-31/S048.txt`.

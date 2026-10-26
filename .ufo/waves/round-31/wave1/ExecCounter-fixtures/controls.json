@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "limbs": [],
+  "controls": [
+    {
+      "id": "CTL-noop",
+      "instrument": "corpus/instruments/probe.py",
+      "find": "MODE = \"pass\"",
+      "replace": "MODE = \"pass\"",
+      "kill": "python3 {inst}",
+      "live_exit": 0,
+      "signal": "^probe ok$",
+      "expect": "invalid:noop",
+      "note": "no-op patch"
+    },
+    {
+      "id": "CTL-nocompile",
+      "instrument": "corpus/instruments/probe.py",
+      "find": "def main():",
+      "replace": "def main(:",
+      "kill": "python3 {inst}",
+      "live_exit": 0,
+      "signal": "^probe ok$",
+      "expect": "invalid:nocompile",
+      "note": "syntax-error patch"
+    },
+    {
+      "id": "CTL-equivalent",
+      "instrument": "corpus/instruments/probe.py",
+      "find": "MODE = \"pass\"",
+      "replace": "MODE = 'pass'",
+      "kill": "python3 {inst}",
+      "live_exit": 0,
+      "signal": "^probe ok$",
+      "expect": "survivor",
+      "note": "semantically equivalent patch"
+    }
+  ]
+}

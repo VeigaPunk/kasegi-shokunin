@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "limbs": [
+    {
+      "id": "FX-grepkill",
+      "instrument": "corpus/instruments/probe.py",
+      "find": "MODE = \"pass\"",
+      "replace": "MODE = \"fail\"",
+      "kill": "grep -q 'MODE = \"fail\"' {inst}",
+      "live_exit": 0,
+      "signal": "^probe ok$",
+      "note": "a kill that only reads the patched bytes never runs the mutant"
+    }
+  ],
+  "controls": []
+}

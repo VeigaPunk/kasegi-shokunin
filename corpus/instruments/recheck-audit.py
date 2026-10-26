@@ -226,9 +226,6 @@ def selftest():
             "parseonly.md": ("recheck: cd %s && test -d ~/Projects/bounties (fails closed today)" % tmp, False, False),
             "instonly.md": ("recheck: cd %s && ls corpus/knowledge/instonly.md corpus/knowledge/target.md" % tmp, True, False),
         }
-        for name, (line, _, _) in cases.items():
-            with open(os.path.join(tmp, "corpus/knowledge", name), "w") as handle:
-                handle.write("# fixture\n\n" + line + "\n")
         for name, (line, want_pass, want_strict) in cases.items():
             with open(os.path.join(tmp, "corpus/knowledge", name), "w") as handle:
                 handle.write("# fixture\n\n" + line + "\n")
@@ -297,9 +294,51 @@ def selftest():
                 "selftest %-15s exit=%d want=1 missing=%s unexpected=%s %s"
                 % (label, rc, receipt["missing_entries"], receipt["unexpected_entries"], "ok" if ok else "FAIL")
             )
-        # 13 per-entry fixtures + 2 tree-level expected-list fixtures (completeness
-        # is an auxiliary sanity line above, not counted as a case)
-        total_cases = len(cases) + 2
+        # completeness through main(): the exit rule's own `complete` conjunct must red
+        # an empty knowledge dir (total == 0) and a dir carrying a recheck-less file
+        # (lines < total). The auxiliary line above recomputes its own formula, so it
+        # cannot catch a `complete` verdict that main() never consumes.
+        for label, extra, want_lines, want_total in (
+            ("complete-empty", (), 0, 0),
+            ("complete-missing-line", ("nol.md",), 1, 2),
+        ):
+            tree = os.path.join(tmp, label)
+            os.makedirs(os.path.join(tree, "corpus/knowledge"))
+            os.makedirs(os.path.join(tree, "corpus/instruments"))
+            open(os.path.join(tree, "corpus/instruments/tool.py"), "w").close()
+            if extra:
+                line = "recheck: cd %s && python3 corpus/instruments/tool.py corpus/knowledge/good.md" % tree
+                with open(os.path.join(tree, "corpus/knowledge/good.md"), "w") as handle:
+                    handle.write("# fixture\n\n" + line + "\n")
+                for name in extra:
+                    with open(os.path.join(tree, "corpus/knowledge", name), "w") as handle:
+                        handle.write("# no recheck\n")
+            receipt_path = os.path.join(tree, "receipt.json")
+            rc = main(["--root", tree, "--cdroot", tree, "--quiet", "--json", receipt_path])
+            with open(receipt_path, encoding="utf-8") as handle:
+                receipt = json.load(handle)
+            ok = (
+                rc == 1
+                and receipt["complete"] is False
+                and receipt["lines"] == want_lines
+                and receipt["total_knowledge_files"] == want_total
+            )
+            if not ok:
+                failures += 1
+            print(
+                "selftest %-21s exit=%d want=1 lines=%d/%d complete=%s %s"
+                % (
+                    label,
+                    rc,
+                    receipt["lines"],
+                    receipt["total_knowledge_files"],
+                    receipt["complete"],
+                    "ok" if ok else "FAIL",
+                )
+            )
+        # 13 per-entry fixtures + 4 tree-level main() fixtures (2 expected-list, 2
+        # completeness; the completeness sanity line above is not counted as a case)
+        total_cases = len(cases) + 4
         return 1 if failures else 0
 
 

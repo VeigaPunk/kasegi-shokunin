@@ -1,0 +1,132 @@
+# ExecCounter fixture transcript (fast cases) — generated 2026-10-26T00:00:57Z
+# subject: corpus/instruments/limb-mutation-check.py sha256 c660a95ff92ff1d578c6458faf868ac2c41c5d1854da3fe2a97f48ee71118a0f
+
+$ python3 corpus/instruments/limb-mutation-check.py --selftest
+selftest killed                 verdict=killed               want=killed               ok
+selftest survivor               verdict=survivor             want=survivor             ok
+selftest invalid-find-count     verdict=invalid:find-count   want=invalid:find-count   ok
+selftest invalid-noop           verdict=invalid:noop         want=invalid:noop         ok
+selftest invalid-nocompile      verdict=invalid:nocompile    want=invalid:nocompile    ok
+selftest invalid-import         verdict=invalid:import       want=invalid:import       ok
+selftest invalid-import-exit    verdict=invalid:import       want=invalid:import       ok
+selftest invalid-live-baseline  verdict=invalid:live-baseline want=invalid:live-baseline ok
+selftest invalid-timeout        verdict=invalid:timeout      want=invalid:timeout      ok
+selftest invalid-nondeterministic verdict=invalid:live-baseline want=invalid:live-baseline ok
+selftest invalid-mutant-baseline verdict=invalid:mutant-baseline want=invalid:mutant-baseline ok
+selftest validate-vacuous-signal rejected=True  want=True  ok
+selftest validate-kill-reads-bytes rejected=True  want=True  ok
+selftest validate-kill-chained  rejected=True  want=True  ok
+selftest validate-control-misbound rejected=True  want=True  ok
+selftest validate-control-bound rejected=False want=False ok
+selftest validate-valid-row     rejected=False want=False ok
+selftest aggregate-green       ok
+selftest aggregate-survivor    ok
+selftest control-verdict-rule  ok
+selftest cases=20 failures=0
+selftest_exit=0
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/killed.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+LIMB FX-killed live=0/y mutant=1/n verdict=killed
+limbs=1 killed=1 survivors=0
+controls=0 rejected=0
+exit=0
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/survivor.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+LIMB FX-survivor live=0/y mutant=0/y verdict=survivor
+limbs=1 killed=0 survivors=1
+controls=0 rejected=0
+exit=1
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/invalid-find-count.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+LIMB FX-find-count live=0/y mutant=-/- verdict=invalid:find-count
+limbs=1 killed=0 survivors=0
+controls=0 rejected=0
+exit=1
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/invalid-find-twice.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+LIMB FX-find-twice live=0/y mutant=-/- verdict=invalid:find-count
+limbs=1 killed=0 survivors=0
+controls=0 rejected=0
+exit=1
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/invalid-noop.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+LIMB FX-noop live=0/y mutant=-/- verdict=invalid:noop
+limbs=1 killed=0 survivors=0
+controls=0 rejected=0
+exit=1
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/invalid-nocompile.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+LIMB FX-nocompile live=0/y mutant=-/- verdict=invalid:nocompile
+limbs=1 killed=0 survivors=0
+controls=0 rejected=0
+exit=1
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/invalid-import.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+LIMB FX-import live=0/y mutant=-/- verdict=invalid:import
+limbs=1 killed=0 survivors=0
+controls=0 rejected=0
+exit=1
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/invalid-live-baseline.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+LIMB FX-live-baseline live=0/n mutant=-/- verdict=invalid:live-baseline
+limbs=1 killed=0 survivors=0
+controls=0 rejected=0
+exit=1
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/green.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+LIMB FX-green-killed live=0/y mutant=1/n verdict=killed
+CONTROL CTL-noop verdict=invalid:noop expected=invalid:noop ok=y
+limbs=1 killed=1 survivors=0
+controls=1 rejected=1
+exit=0
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/controls.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+CONTROL CTL-noop verdict=invalid:noop expected=invalid:noop ok=y
+CONTROL CTL-nocompile verdict=invalid:nocompile expected=invalid:nocompile ok=y
+CONTROL CTL-equivalent verdict=survivor expected=survivor ok=y
+limbs=0 killed=0 survivors=0
+controls=3 rejected=3
+exit=0
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/controls-mismatch.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+CONTROL CTL-probe-mismatch verdict=survivor expected=invalid:noop ok=n
+limbs=0 killed=0 survivors=0
+controls=1 rejected=0
+exit=1
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/validation-vacuous-signal.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+limb-mutation-check: limbs[0].signal matches the empty string and cannot discriminate a run
+exit=2
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/validation-kill-reads-bytes.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+limb-mutation-check: limbs[0].kill must run the instrument as a program: expected `python3 [flags] {inst}` at a command boundary
+exit=2
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/validation-kill-chained.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+limb-mutation-check: limbs[0].kill must end at the instrument invocation; '&' follows {inst}
+exit=2
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/validation-control-misbound.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+limb-mutation-check: controls[0].expect must be 'survivor' for control id CTL-equivalent
+exit=2
+
+$ (usage) python3 corpus/instruments/limb-mutation-check.py
+usage: limb-mutation-check.py [-h] [--ledger LEDGER] [--root ROOT]
+                              [--selftest]
+limb-mutation-check: --ledger is required
+exit=2
+
+$ (missing ledger) python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/absent.json
+limb-mutation-check: ledger not found: .ufo/waves/round-31/wave1/ExecCounter-fixtures/absent.json
+exit=2
+
+$ (default --root derived from script path, script copied into the fixture lane)
+LIMB FX-killed live=0/y mutant=1/n verdict=killed
+limbs=1 killed=1 survivors=0
+controls=0 rejected=0
+exit=0
+
+$ (empty ledger: the frozen iff, boundary) python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/ExecCounter-fixtures/empty.json --root .ufo/waves/round-31/wave1/ExecCounter-fixtures/lane
+limbs=0 killed=0 survivors=0
+controls=0 rejected=0
+exit=0

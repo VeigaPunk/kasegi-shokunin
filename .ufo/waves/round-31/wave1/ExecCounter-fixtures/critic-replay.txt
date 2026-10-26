@@ -1,0 +1,77 @@
+# critic attack ledgers replayed on final bytes c660a95ff92ff1d578c6458faf868ac2c41c5d1854da3fe2a97f48ee71118a0f
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/CritC1Kill-scratch/degenerate-ledger.json --root $PWD
+limb-mutation-check: limbs[0].kill must run the instrument as a program: expected `python3 [flags] {inst}` at a command boundary
+exit=2
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/CritC1Kill-scratch/degenerate-ledger-controls.json --root $PWD
+limb-mutation-check: limbs[0].kill must run the instrument as a program: expected `python3 [flags] {inst}` at a command boundary
+exit=2
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/CritC1Kill-scratch/vacuous-signal-ledger.json --root $PWD
+limb-mutation-check: limbs[0].signal matches the empty string and cannot discriminate a run
+exit=2
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/CritC1Kill-scratch/honest-survivor-ledger.json --root $PWD
+LIMB SR-equivalent-honest live=0/y mutant=0/y verdict=survivor
+CONTROL CTL-noop verdict=invalid:noop expected=invalid:noop ok=y
+CONTROL CTL-nocompile verdict=invalid:nocompile expected=invalid:nocompile ok=y
+CONTROL CTL-equivalent verdict=survivor expected=survivor ok=y
+limbs=1 killed=0 survivors=1
+controls=3 rejected=3
+exit=1
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/CritC1Kill-scratch/one-degenerate-limb-ledger.json --root $PWD
+LIMB RA-parse live=0/y mutant=0/y verdict=survivor
+LIMB RA-cwd live=0/y mutant=1/n verdict=killed
+LIMB RA-paths live=0/y mutant=1/n verdict=killed
+LIMB RA-cdroot live=0/y mutant=1/n verdict=killed
+LIMB RA-instrument live=0/y mutant=1/n verdict=killed
+LIMB RA-own live=0/y mutant=1/n verdict=killed
+LIMB RA-completeness live=0/y mutant=1/n verdict=killed
+LIMB RA-expect-missing live=0/y mutant=1/n verdict=killed
+LIMB RA-expect-unexpected live=0/y mutant=1/n verdict=killed
+LIMB SR-stem-mismatch live=1/y mutant=0/n verdict=killed
+LIMB SR-occurrence-not-unique live=1/y mutant=0/n verdict=killed
+LIMB FR-missing-entry live=1/y mutant=1/n verdict=killed
+LIMB FR-duplicate-entry live=1/y mutant=0/n verdict=killed
+CONTROL CTL-noop verdict=invalid:noop expected=invalid:noop ok=y
+CONTROL CTL-nocompile verdict=invalid:nocompile expected=invalid:nocompile ok=y
+CONTROL CTL-equivalent verdict=survivor expected=survivor ok=y
+limbs=13 killed=12 survivors=1
+controls=3 rejected=3
+exit=1
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/CritC1Kill-scratch/residual-crash-ledger.json --root $PWD
+LIMB RA-parse live=0/y mutant=-/- verdict=invalid:import
+LIMB RA-cwd live=0/y mutant=-/- verdict=invalid:import
+LIMB RA-paths live=0/y mutant=-/- verdict=invalid:import
+LIMB RA-cdroot live=0/y mutant=-/- verdict=invalid:import
+LIMB RA-instrument live=0/y mutant=-/- verdict=invalid:import
+LIMB RA-own live=0/y mutant=-/- verdict=invalid:import
+LIMB RA-completeness live=0/y mutant=-/- verdict=invalid:import
+LIMB RA-expect-missing live=0/y mutant=-/- verdict=invalid:import
+LIMB RA-expect-unexpected live=0/y mutant=-/- verdict=invalid:import
+LIMB SR-stem-mismatch live=0/y mutant=-/- verdict=invalid:import
+LIMB SR-occurrence-not-unique live=0/y mutant=-/- verdict=invalid:import
+LIMB FR-missing-entry live=0/y mutant=-/- verdict=invalid:import
+LIMB FR-duplicate-entry live=0/y mutant=-/- verdict=invalid:import
+CONTROL CTL-noop verdict=invalid:noop expected=invalid:noop ok=y
+CONTROL CTL-nocompile verdict=invalid:nocompile expected=invalid:nocompile ok=y
+CONTROL CTL-equivalent verdict=survivor expected=survivor ok=y
+limbs=13 killed=0 survivors=0
+controls=3 rejected=3
+exit=1
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/CritC1Kill-scratch/post-gate-ledger.json --root $PWD
+limb-mutation-check: limbs[1].kill must end at the instrument invocation; '&' follows {inst}
+exit=2
+
+$ python3 corpus/instruments/limb-mutation-check.py --ledger .ufo/waves/round-31/wave1/CritC1Kill-scratch/three-state-kill-ledger.json --root $PWD
+LIMB RA-parse live=0/y mutant=0/y verdict=survivor
+CONTROL CTL-noop verdict=invalid:noop expected=invalid:noop ok=y
+CONTROL CTL-nocompile verdict=invalid:nocompile expected=invalid:nocompile ok=y
+CONTROL CTL-equivalent verdict=survivor expected=survivor ok=y
+limbs=1 killed=0 survivors=1
+controls=3 rejected=3
+exit=1

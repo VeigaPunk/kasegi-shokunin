@@ -1,0 +1,170 @@
+{
+ "version": 1,
+ "limbs": [
+  {
+   "id": "RA-parse",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "capture_output=True).returncode == 0",
+   "replace": "capture_output=True).returncode == 0  # crit-eq",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest parseonly\\.md .*\\bok$",
+   "note": "frozen limb (a) parse: the bash -n gate is defeated, so every returncode (including the syntax-error 2) counts as parseable; isolated by parseonly.md, the only fixture whose frozen verdict depends on parse alone"
+  },
+  {
+   "id": "RA-cwd",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "lane_rc == foreign_rc and lane_digest == foreign_digest",
+   "replace": "True",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest cwd\\.md .*\\bok$",
+   "note": "frozen limb (b) cwd: lane-root vs foreign-cwd exit+digest equality collapsed to True; isolated by cwd.md (a relative corpus/instruments path runs from the lane root and fails from /)"
+  },
+  {
+   "id": "RA-paths",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "limbs[\"paths\"] = named and not missing",
+   "replace": "limbs[\"paths\"] = True",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest ghost\\.md .*\\bok$",
+   "note": "frozen limb (c) paths: the named-and-exists conjunction collapsed to True; isolated by ghost.md (names an absent corpus/knowledge path while parse and cwd still pass)"
+  },
+  {
+   "id": "RA-cdroot",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "os.path.abspath(cd_target) == (cdroot or root)",
+   "replace": "True",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest elsewhere\\.md .*\\bok$",
+   "note": "strict limb (d) cdroot: the 'cd <path> &&' target is no longer compared with the audited root; isolated by elsewhere.md (cd /tmp passes both frozen limbs, so only cdroot decides)"
+  },
+  {
+   "id": "RA-instrument",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "strict[\"instrument\"] = bool(instruments) or base_test",
+   "replace": "strict[\"instrument\"] = True",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest instonly\\.md .*\\bok$",
+   "note": "strict limb (e) instrument: the corpus/instruments-or-base-test requirement collapsed to True; isolated by instonly.md (own file named, cdroot ok, no instrument named)"
+  },
+  {
+   "id": "RA-own",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "strict[\"own\"] = own or sourced or base_state",
+   "replace": "strict[\"own\"] = True",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest selftesty\\.md .*\\bok$",
+   "note": "strict limb (f) own: the own/sourced/base-state disjunction collapsed to True; isolated by selftesty.md (instrument ok, the entry's own file not named)"
+  },
+  {
+   "id": "RA-completeness",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "    complete = len(entries) == total and total > 0\n    expect_ok = not expect_active or (not missing_entries and not unexpected_entries)",
+   "replace": "    complete = True  # mutant: completeness limb disabled\n    expect_ok = not expect_active or (not missing_entries and not unexpected_entries)",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest complete-empty\\s+exit=1 want=1 lines=0/0 complete=False ok$[\\s\\S]*^selftest complete-missing-line\\s+exit=1 want=1 lines=1/2 complete=False ok$",
+   "note": "completeness: main()'s own 'complete' verdict collapsed to True. On the pre-round-31 bytes this was the one RA survivor (mutant compiled, find once, exit 0, stdout byte-identical to pristine). Round 31 added the two main()-level fixtures this signal keys on. Only 'total > 0' is observable alone, because strict_passed == total already implies len(entries) == total (strict_passed <= len(entries) <= total); complete-empty carries the exit flip, complete-missing-line carries the receipt complete=False flip"
+  },
+  {
+   "id": "RA-expect-missing",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "sorted(wanted - actual)",
+   "replace": "[]",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest expect-missing .*\\bok$",
+   "note": "expected-list missing set collapsed to []: a committed entry deleted from the tree no longer reds the audit; isolated by the expect-missing tree fixture (rc must be 1 and missing_entries must name ghost-absent.md)"
+  },
+  {
+   "id": "RA-expect-unexpected",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "sorted(actual - wanted)",
+   "replace": "[]",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest expect-unexpected .*\\bok$",
+   "note": "expected-list unexpected set collapsed to []: an extra tree entry no longer reds the audit; isolated by the expect-unexpected tree fixture (rc must be 1 and unexpected_entries must name extra.md)"
+  },
+  {
+   "id": "SR-stem-mismatch",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "    if Path(path).stem != source_id:\n",
+   "replace": "    if False:  # SR-stem-mismatch mutant: B1 stem check dropped\n",
+   "kill": "python3 {inst} --manifest {root}/corpus/instruments/limb-fixtures/sr/stem-mismatch/manifest.json --source SFIX-STEM",
+   "live_exit": 1,
+   "signal": "reason=stem-mismatch",
+   "note": "B1 (QUALITY Q9): a capture whose file stem differs from the record id is rejected before any byte pin. Fixture corpus/instruments/limb-fixtures/sr/stem-mismatch: record SFIX-STEM, capture SFIX-STEM-capture.txt with a correct sha256 pin and a quote that occurs exactly once, so B1 is the only failing limb; the B1-dropping mutant prints sha256 OK and exits 0."
+  },
+  {
+   "id": "SR-occurrence-not-unique",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "        if occurrences > 1 and anchor_verdict_result != \"ok\":\n",
+   "replace": "        if occurrences > 1 and anchor_verdict_result != \"ok\" and anchor_verdict_result != \"missing\":  # SR-occurrence-not-unique mutant\n",
+   "kill": "python3 {inst} --manifest {root}/corpus/instruments/limb-fixtures/sr/occurrence-not-unique/manifest.json --source SFIX-REPEAT",
+   "live_exit": 1,
+   "signal": "reason=occurrence-not-unique",
+   "note": "B2 (QUALITY Q9): a quote occurring more than once without a verified anchor is rejected. Fixture corpus/instruments/limb-fixtures/sr/occurrence-not-unique is stem-correct (capture SFIX-REPEAT.txt, id SFIX-REPEAT) so B1 cannot preempt, closing M30-1; the quote occurs exactly twice with no anchor and the mutant that lets missing anchors pass prints occurrences=2 anchor=MISSING and exits 0."
+  },
+  {
+   "id": "FR-missing-entry",
+   "instrument": "corpus/instruments/frontier-recheck-count.py",
+   "find": "    if not os.path.isfile(full):\n        return None\n",
+   "replace": "",
+   "kill": "python3 {inst} --root {root}/corpus/instruments/limb-fixtures/fr/fr-missing-entry",
+   "live_exit": 1,
+   "signal": "FAIL\\s+F98\\s+knowledge/zz-missing\\.md\\s+ids=-\\s+exit=-\\s+problems=missing-entry\\nentries=1 pass=0 exit=1\\n?",
+   "note": "Drops the fail-closed missing-entry guard in entry_contract (E): the mutant raises FileNotFoundError on the absent entry (traceback, still exit 1), so the kill is by signal, not exit. Fixture corpus/instruments/limb-fixtures/fr/fr-missing-entry holds one admitted row F98 naming knowledge/zz-missing.md and nothing else, so problems=missing-entry is the only failure marker. Measured r31: live 1/sig-y, mutant 1/sig-n."
+  },
+  {
+   "id": "FR-duplicate-entry",
+   "instrument": "corpus/instruments/frontier-recheck-count.py",
+   "find": "    seen_realpath = {}\n    for record in records:\n        rp = record.get(\"realpath\")\n        if rp is None:\n            continue\n        if rp in seen_realpath:\n            duplicate = (seen_realpath[rp], record[\"frontier\"], record[\"entry\"])\n            break\n        seen_realpath[rp] = record[\"frontier\"]\n    if duplicate:\n        print(\"DUPLICATE-ENTRY %s,%s %s\" % (duplicate[0], duplicate[1], duplicate[2]))\n    fail_closed = duplicate is not None or not records or passed != len(records)\n",
+   "replace": "    fail_closed = not records or passed != len(records)\n",
+   "kill": "python3 {inst} --root {root}/corpus/instruments/limb-fixtures/fr/fr-duplicate-entry",
+   "live_exit": 1,
+   "signal": "PASS\\s+F98\\s+knowledge/dup-entry\\.md\\s+ids=S003\\s+exit=0[ \\t]*\\nPASS\\s+F97\\s+knowledge/dup-entry\\.md\\s+ids=S003\\s+exit=0[ \\t]*\\nDUPLICATE-ENTRY F98,F97 knowledge/dup-entry\\.md\\nentries=2 pass=2 exit=1\\n?",
+   "note": "Drops the duplicate-realpath fail-closed block (F) only: both admitted rows F98/F97 still PASS their own A-D contract on the same entry file, so the mutant flips exit 1 -> 0 with no DUPLICATE-ENTRY line (killed by exit and by signal). Fixture corpus/instruments/limb-fixtures/fr/fr-duplicate-entry carries a stem-correct S003 capture + schema-1 manifest and a relative source-recheck.py invocation, so no other problem class fires."
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTL-noop",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "def digest(data):",
+   "replace": "def digest(data):",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest parseonly\\.md .*\\bok$",
+   "expect": "invalid:noop",
+   "note": "control, bound to the RA-parse limb's own instrument/kill/signal/live_exit: find == replace on a real, exactly-once line (`def digest(data):` in recheck-audit.py). The mutated bytes ARE the original bytes, so the counter must stop at invalid:noop before compiling or running anything; a counter that calls this killed is rubber-stamping."
+  },
+  {
+   "id": "CTL-nocompile",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "def digest(data):",
+   "replace": "def digest(data)",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest parseonly\\.md .*\\bok$",
+   "expect": "invalid:nocompile",
+   "note": "control, bound to the RA-parse limb's own instrument/kill/signal/live_exit: the same exactly-once line truncated to `def digest(data)` drops the colon, so the mutant cannot parse and py_compile must reject it as invalid:nocompile. The broken mutant also exits 1 and loses the selftest signal, so a counter without the compile gate would mislabel this row killed."
+  },
+  {
+   "id": "CTL-equivalent",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "def normalize(text):",
+   "replace": "def normalize(text):  # equivalent control patch: comment only, no behavior change",
+   "kill": "python3 {inst} --manifest {root}/corpus/instruments/limb-fixtures/sr/stem-mismatch/manifest.json --source SFIX-STEM",
+   "live_exit": 1,
+   "signal": "reason=stem-mismatch",
+   "expect": "survivor",
+   "note": "control, bound to the SR-stem-mismatch limb's own instrument/kill/signal/live_exit: a comment appended to a real, exactly-once line (`def normalize(text):` in source-recheck.py). The patch compiles and the B1 fixture run keeps its exit and reason=stem-mismatch, so a kill that demonstrably sees SR-stem-mismatch sees no difference here: the honest verdict is survivor, and a counter reporting killed would be inflating kills with a patch that changes no behavior."
+  }
+ ]
+}

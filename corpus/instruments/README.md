@@ -325,3 +325,169 @@ numbers the pre-change bytes print
 change no verdict class there. A drop of the `BOUNTIES-ABSENT` count to 0 means
 the arm or its print path regressed; a sweep that moves a class means a matcher
 widened, which must be documented here with its before/after.
+
+## Round-31 additions — one-limb mutation ledger + score-gap reporter
+
+Appended at file end; no line above moved (R6). Four new paths, all stdlib-only and
+read-only over the lane: `corpus/instruments/limb-mutation-check.py` (counter),
+`corpus/instruments/limb-ledger.json` (13 limbs + 3 controls as data),
+`corpus/instruments/limb-fixtures/` (isolating fixture roots the SR/FR kill commands
+need), and `corpus/instruments/score-gap.py` (read-only distance-to-score-5 reporter,
+considerthese 2026-10-25 proposal 2). Every number below was measured by this scribe
+seat at the digests in the re-verify block; figures from earlier digests of the same
+files are labelled superseded, never mixed in.
+
+| path | what it measures | run |
+|---|---|---|
+| `corpus/instruments/limb-mutation-check.py` | one-limb mutation discrimination of the three recheck-family instruments. Per ledger row: copy the lane's `corpus/` into a fresh `tempfile.mkdtemp` scratch lane, run the row's kill on the **unmutated** scratch copy, confirm the same `(exit, signal)` a second time (a nondeterministic baseline is `invalid:live-baseline`), require `find` to occur exactly once, require the patch to change bytes, `py_compile` the mutant, exec the mutant's module level in a subprocess (must exit 0 **and** print a sentinel, else `invalid:import`), then run the kill on the mutated bytes. `killed` iff the mutant's exit differs from `live_exit` or the signal no longer matches. | `python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/limb-ledger.json` → `limbs=13 killed=13 survivors=0` / `controls=3 rejected=3`, exit 0; `--selftest` → `selftest cases=20 failures=0`, exit 0 |
+| `corpus/instruments/limb-ledger.json` | the frozen 13 rows in contract order (RA x9: parse, cwd, paths, cdroot, instrument, own, completeness, expect-missing, expect-unexpected; SR x2: stem-mismatch, occurrence-not-unique; FR x2: missing-entry, duplicate-entry) plus 3 controls (`CTL-noop` ⇒ `invalid:noop`, `CTL-nocompile` ⇒ `invalid:nocompile`, `CTL-equivalent` ⇒ `survivor`), each control bound to a real limb's instrument/kill/signal/`live_exit`. | read by the counter; `python3 -c 'import json;json.load(open("corpus/instruments/limb-ledger.json"))'` → `version=1 limbs=13 controls=3` |
+| `corpus/instruments/limb-fixtures/` | isolating fixture roots for the SR/FR kill commands: `sr/stem-mismatch` (record `SFIX-STEM`, capture `SFIX-STEM-capture.txt`, correct sha256 pin, unique quote — so only B1 fails), `sr/occurrence-not-unique` (stem-correct `SFIX-REPEAT.txt` == id, quote twice, no anchor — the M30-1 closure), `fr/fr-missing-entry` (one admitted row naming an absent entry), `fr/fr-duplicate-entry` (two admitted rows, one entry realpath, both rows PASS their own A–D contract). 10 files, 40K. | via the ledger's kill commands; individually `python3 corpus/instruments/frontier-recheck-count.py --root corpus/instruments/limb-fixtures/fr/fr-missing-entry` or `python3 corpus/instruments/source-recheck.py --manifest corpus/instruments/limb-fixtures/sr/occurrence-not-unique/manifest.json --source SFIX-REPEAT` |
+| `corpus/instruments/score-gap.py` | distance to the next `depth:verifiability` score: (1) `recheck-audit.py --quiet` lines/executes/gated/broken + exit, (2) `anchorcheck.py SKILL.md` verdict buckets + exit, (3) the committed citation-survival lane/SKILL rates with that file's own definition sentence, (4) the `SCORECARD.md` line number and quoted score-5 threshold sentence, (5) one computed `gap:` line. Prints the sha256 of every input. **Not a claim; asserts no score move.** | `python3 corpus/instruments/score-gap.py [--root <lane>]` (any cwd) → exit 0; `--selftest` → `selftest fields=7 failures=0`, exit 0; exit 2 only when an input is missing/unreadable |
+
+### The counter's measured output (landed bytes, quiescent)
+
+`python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/limb-ledger.json`
+from the lane root, 2026-10-26T00:05Z, exit 0, stdout sha256
+`9b3864854a22644fda6ac6f3d8b34a56d8e9dec0173da75138662c8fb64ff838` on two runs:
+
+```text
+LIMB RA-parse live=0/y mutant=1/n verdict=killed
+LIMB RA-cwd live=0/y mutant=1/n verdict=killed
+LIMB RA-paths live=0/y mutant=1/n verdict=killed
+LIMB RA-cdroot live=0/y mutant=1/n verdict=killed
+LIMB RA-instrument live=0/y mutant=1/n verdict=killed
+LIMB RA-own live=0/y mutant=1/n verdict=killed
+LIMB RA-completeness live=0/y mutant=1/n verdict=killed
+LIMB RA-expect-missing live=0/y mutant=1/n verdict=killed
+LIMB RA-expect-unexpected live=0/y mutant=1/n verdict=killed
+LIMB SR-stem-mismatch live=1/y mutant=0/n verdict=killed
+LIMB SR-occurrence-not-unique live=1/y mutant=0/n verdict=killed
+LIMB FR-missing-entry live=1/y mutant=1/n verdict=killed
+LIMB FR-duplicate-entry live=1/y mutant=0/n verdict=killed
+CONTROL CTL-noop verdict=invalid:noop expected=invalid:noop ok=y
+CONTROL CTL-nocompile verdict=invalid:nocompile expected=invalid:nocompile ok=y
+CONTROL CTL-equivalent verdict=survivor expected=survivor ok=y
+limbs=13 killed=13 survivors=0
+controls=3 rejected=3
+```
+
+Two rows are killed by signal alone, not by exit: `FR-missing-entry` (the mutant still
+exits 1, through an uncaught `FileNotFoundError` traceback) and every RA row (mutant
+exit 1 plus the isolating case line stops matching). `live=1` on the SR/FR rows is
+correct, not a failing baseline: those three limbs protect a fail-closed exit 1, and the
+counter's rule compares the mutant **against** `live_exit`.
+
+### Known limits (measured, not assumed)
+
+- **The counter cannot tell whether a `find` patches the line its `id` names.** The
+  frozen row schema has no code-location field, so isolation lives in each row's `note`,
+  in the fixtures above, and in the per-limb cross-run matrices the executors published
+  (`ExecRALimbs.md` §4, `ExecSRLimbs.md` §5, `ExecFRLimbs.md` §C2). An attack seat's
+  degenerate ledger of 13 equivalent patches prints the target summary lines and exits 0
+  (`CritC1Kill.md` §3.1); the claim's closure clause — hand-re-derive a row and require
+  the instrument's own report to move — is what rejects it. That closure remains open at
+  the claim level (attack A7), not closed by the counter.
+- **`--root` scores any tree and the frozen stdout grammar names neither root nor
+  digests** (attack A11, open). The published figure is pinned only because the claim's
+  command runs from the lane root.
+- **The 13-id set is not asserted** (attack A12, open and moot here: the landed ledger
+  carries exactly the frozen ids).
+- **`killed` means "the run differs", not "the named limb decided it".** A mutant that
+  guts a whole module body still imports and reads `killed` (attack A6); only the
+  one-limb `find`/`replace` pairs and the isolating fixtures make the 13 verdicts
+  limb-attributable.
+- **`invalid:timeout` and `invalid:import` extend the frozen verdict enum**
+  (`invalid:live-baseline|find-count|noop|nocompile`); both are implemented and
+  selftested, and the enum extension is routed to the L1 rather than silently widened.
+- **Rows are coupled to print formats through their `signal` regexes.** The RA signals
+  key on `selftest <case>` lines; the FR signals encode the harness' column padding
+  (`\s+`, `[ \t]*`). A reformat turns the row `invalid:live-baseline` — loud, exit
+  non-zero — never a silent pass, but the row must then be re-derived.
+- **Two `find` texts are multi-line for uniqueness.** `RA-completeness` needs the
+  following `expect_ok` line (the bare production line also matches the selftest oracle),
+  and `FR-missing-entry` needs `return None` (the bare `if not os.path.isfile(full):`
+  occurs three times).
+- **`score-gap.py` reads the committed r18 census of record**, not a live re-resolve:
+  re-running `resolve.py` rewrites `citation-survival.md`/`.tsv`, which is a write. Its
+  `gated` field is `recheck-audit.py`'s own definition (the line runs and fails closed on
+  an absent base), and its threshold field depends on one English sentence in
+  `SCORECARD.md` — a reword makes it exit 2 rather than print a stale line number.
+- **Fixture ids are synthetic.** `SFIX-STEM` / `SFIX-REPEAT` sit outside the `S0xx`
+  registry namespace and under `corpus/instruments/limb-fixtures/`, not
+  `corpus/source-snapshots/`; the census reads only `corpus/SOURCES.md`. The tree is
+  invisible to both instruments that walk the corpus: `recheck-audit.py` globs
+  `corpus/knowledge/*.md` only, and the fr tree contains no backtick token, so
+  `resolve.py`'s collection is identical with and without it (measured in
+  `ExecFRLimbs.md` §F: 2201 distinct citations / 4311 occurrences / 85 citing files,
+  delta 0). The RA limbs need no fixture tree — their kill is `--selftest`, which builds
+  its own temporary trees.
+- **Not claimed: the two FR mutants no current oracle kills** (dropping
+  `no-source-selection`; dropping the `not-a-recheck-invocation` branch). They are
+  outside the frozen 13, so they are not ledger rows; the isolating fixtures that would
+  catch them are described in `MutFRExisting.md` and were not landed.
+
+### R13 / R11 relation
+
+R13 asks that each limb of a counter be shown load-bearing by a fixture that fails
+**that** limb and no other, and that a discrimination figure be a measurement on the
+landed bytes. The 13 rows answer the first half directly: every RA row's `signal` keys on
+one `selftest` case line, and the SR/FR rows key on a fixture whose only failing limb is
+the patched one. Where a limb had no failing oracle, the fixture was **added**, not
+relabelled: `RA-completeness` was a proven survivor on the pre-round-31 bytes (mutant
+compiled, `find` once, exit 0, stdout byte-identical), and the fix is the two `main()`-level
+selftest cases `complete-empty` and `complete-missing-line`; `source-recheck.py` gained
+the adjacent `quote-absent` case after `MutSRExisting.md` measured a survivor on
+`reason=quote-not-found`. Both strengthenings are selftest cases, not new ledger rows, so
+the frozen 13 stay 13. `frontier-recheck-count.py` needed no edit: its two limbs are
+load-bearing on unchanged bytes once a fixture-backed kill exists.
+
+R11 is why the digest discipline below matters. The counter changed at least six times
+during the wave (`9e729daf` → `eb9b87ff` → `b4223ed9` → `cde7c2b6` → `bd18c244` →
+`c660a95f`); every figure in this section was measured by this seat at `c660a95f`, and
+the merge receipt's earlier-digest figures are superseded, not averaged. The open limits
+listed above (A7, A11, A12, A6) are the R11 statement that this counter's discrimination
+is published, not assumed.
+
+### Digests after the C1 edits
+
+Measured by this seat with `sha256sum` on quiescent bytes (2026-10-26T00:05Z, before and
+after the counter run, identical), from the lane root:
+
+| path | before round 31 | landed |
+|---|---|---|
+| `corpus/instruments/recheck-audit.py` | `3fc0d751f2a5819879d440f8ef62b607376a8b6914d7edf9fe1b2fc25662d4e1` | `5d4842da6103f17c7798ca2078a77288820bd8b90432348cd2cc012e1faf7f09` |
+| `corpus/instruments/source-recheck.py` | `33602a9df53a4cadd7b7aa2b6ccea9b25235888799a3b71e87906de1fc622c6f` | `fd2e01e88c8c45a949f48d67b3154ae87a95aeba0b6a9c42fbf64641b5b9c003` |
+| `corpus/instruments/frontier-recheck-count.py` | `aa60b58126569a1c8ec04409011df5f6225a9c18f2a77ea6410cd1d0d5dc0893` | `aa60b58126569a1c8ec04409011df5f6225a9c18f2a77ea6410cd1d0d5dc0893` (unchanged) |
+| `corpus/instruments/limb-mutation-check.py` | absent | `c660a95ff92ff1d578c6458faf868ac2c41c5d1854da3fe2a97f48ee71118a0f` |
+| `corpus/instruments/limb-ledger.json` | absent | `c042adf6b25c78b65e3f5c1e9898095f355599a188cfe08ba2547765d6ed03be` |
+| `corpus/instruments/score-gap.py` | absent | `855869bf97ae2081c24ed28630d587ad2988872b6625f6e0a1f8c7b2e3f201fb` |
+
+The three "before" digests are the base bytes of the round-31 claims' do-nothing control.
+`recheck-audit.py` gained two `main()`-level selftest cases; `source-recheck.py` gained
+`quote-absent`; `frontier-recheck-count.py` is byte-identical to base, so its digest
+change set is empty by construction. These are working-tree digests — the round's
+integration commit was not available to this seat, so no commit-pinned claim is made here.
+
+The score-gap reporter's own field lines on the same bytes (its full block, including the
+sha256 of each input, is in `ExecScoreGap.md` §6): `recheck: lines=44 executes=20 gated=24
+broken=0 exit=0`, `anchorcheck: in-range=7 bad=0 lost-recorded=306 origin=0 outside-base=0
+base-absent=0 exit=0`, `threshold: SCORECARD.md:331`, and `gap: 24 of 44 rechecks still
+gated on a lost base; score 5 needs 0 gated unsupported claims`. The reporter is not a
+claim and moves no score.
+
+### Re-verify (from the lane root; run after any edit to these files)
+
+    sha256sum corpus/instruments/recheck-audit.py corpus/instruments/source-recheck.py corpus/instruments/frontier-recheck-count.py corpus/instruments/limb-mutation-check.py corpus/instruments/limb-ledger.json corpus/instruments/score-gap.py
+    python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/limb-ledger.json; echo "counter_exit=$?"
+    python3 corpus/instruments/limb-mutation-check.py --selftest; echo "counter_selftest_exit=$?"
+    python3 corpus/instruments/score-gap.py; echo "score_gap_exit=$?"
+    python3 corpus/instruments/score-gap.py --selftest; echo "score_gap_selftest_exit=$?"
+
+Targets: the six digests above; `limbs=13 killed=13 survivors=0` with
+`controls=3 rejected=3` and exit 0 (stdout sha256
+`9b3864854a22644fda6ac6f3d8b34a56d8e9dec0173da75138662c8fb64ff838`); `selftest cases=20
+failures=0`; and the reporter's `gap:` line — which is *supposed* to move when a recheck
+base returns, so re-read it rather than diffing it. A LIMB line that stops showing
+`live` != `mutant` in exit or signal, or any `verdict=` other than `killed`, means the
+subject instrument's print format or its fixtures moved: re-derive that row, do not edit
+the summary.

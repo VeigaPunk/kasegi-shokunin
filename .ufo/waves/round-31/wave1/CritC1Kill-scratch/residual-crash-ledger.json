@@ -1,0 +1,170 @@
+{
+ "version": 1,
+ "limbs": [
+  {
+   "id": "RA-parse",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "RECHECK_RE = re.compile(r\"^recheck:[ \\t]*(.*)$\")",
+   "replace": "RECHECK_RE = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "^strict pass=\\d+/\\d+",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "RA-cwd",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "CORPUS_PATH_RE = re.compile(r\"corpus/[A-Za-z0-9_.\\-/]+\\.(?:md|py|json|txt|tsv)\")",
+   "replace": "CORPUS_PATH_RE = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "^strict pass=\\d+/\\d+",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "RA-paths",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "HOME_BASE_RE = re.compile(r\"~/Projects/[A-Za-z0-9_.\\-/]+\")",
+   "replace": "HOME_BASE_RE = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "^strict pass=\\d+/\\d+",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "RA-cdroot",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "BASE_TEST_RE = re.compile(r\"test[ \\t]+-[def][ \\t]+~/Projects/\")",
+   "replace": "BASE_TEST_RE = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "^strict pass=\\d+/\\d+",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "RA-instrument",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "INSTRUMENT_RE = re.compile(r\"corpus/instruments/[A-Za-z0-9_.\\-]+\\.py\")",
+   "replace": "INSTRUMENT_RE = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "^strict pass=\\d+/\\d+",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "RA-own",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "CD_RE = re.compile(r\"^cd[ \\t]+([^&;]+?)[ \\t]*&&\")",
+   "replace": "CD_RE = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "^strict pass=\\d+/\\d+",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "RA-completeness",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "FROZEN_LIMBS = (\"parse\", \"cwd\", \"paths\")",
+   "replace": "FROZEN_LIMBS = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "^strict pass=\\d+/\\d+",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "RA-expect-missing",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "STRICT_LIMBS = (\"parse\", \"cwd\", \"paths\", \"cdroot\", \"instrument\", \"own\")",
+   "replace": "STRICT_LIMBS = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "^strict pass=\\d+/\\d+",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "RA-expect-unexpected",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "import argparse",
+   "replace": "import argparse\n_CRIT = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "^strict pass=\\d+/\\d+",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "SR-stem-mismatch",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "SCHEMA_VERSION = 1",
+   "replace": "SCHEMA_VERSION = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "selftest cases=\\d+ failures=0",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "SR-occurrence-not-unique",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "MIN_QUOTE_CHARS = 12",
+   "replace": "MIN_QUOTE_CHARS = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "selftest cases=\\d+ failures=0",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "FR-missing-entry",
+   "instrument": "corpus/instruments/frontier-recheck-count.py",
+   "find": "SOURCE_LINE = re.compile(r\"^source:\\s*(S\\d{3,})\")",
+   "replace": "SOURCE_LINE = _crit_undefined_limb",
+   "kill": "python3 {inst} --root {root}",
+   "live_exit": 0,
+   "signal": "entries=\\d+ pass=\\d+ exit=0",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "FR-duplicate-entry",
+   "instrument": "corpus/instruments/frontier-recheck-count.py",
+   "find": "RECHECK_SOURCE = re.compile(r\"--source\\s+(S\\d{3,})\")",
+   "replace": "RECHECK_SOURCE = _crit_undefined_limb",
+   "kill": "python3 {inst} --root {root}",
+   "live_exit": 0,
+   "signal": "entries=\\d+ pass=\\d+ exit=0",
+   "note": "class C residual: module-level NameError at import; compiles, dies before the limb runs"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTL-noop",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "def digest(data):",
+   "replace": "def digest(data):",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest parseonly\\.md .*\\bok$",
+   "expect": "invalid:noop",
+   "note": "control, bound to the RA-parse limb's own instrument/kill/signal/live_exit: find == replace on a real, exactly-once line (`def digest(data):` in recheck-audit.py). The mutated bytes ARE the original bytes, so the counter must stop at invalid:noop before compiling or running anything; a counter that calls this killed is rubber-stamping."
+  },
+  {
+   "id": "CTL-nocompile",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "def digest(data):",
+   "replace": "def digest(data)",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest parseonly\\.md .*\\bok$",
+   "expect": "invalid:nocompile",
+   "note": "control, bound to the RA-parse limb's own instrument/kill/signal/live_exit: the same exactly-once line truncated to `def digest(data)` drops the colon, so the mutant cannot parse and py_compile must reject it as invalid:nocompile. The broken mutant also exits 1 and loses the selftest signal, so a counter without the compile gate would mislabel this row killed."
+  },
+  {
+   "id": "CTL-equivalent",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "def normalize(text):",
+   "replace": "def normalize(text):  # equivalent control patch: comment only, no behavior change",
+   "kill": "python3 {inst} --manifest {root}/corpus/instruments/limb-fixtures/sr/stem-mismatch/manifest.json --source SFIX-STEM",
+   "live_exit": 1,
+   "signal": "reason=stem-mismatch",
+   "expect": "survivor",
+   "note": "control, bound to the SR-stem-mismatch limb's own instrument/kill/signal/live_exit: a comment appended to a real, exactly-once line (`def normalize(text):` in source-recheck.py). The patch compiles and the B1 fixture run keeps its exit and reason=stem-mismatch, so a kill that demonstrably sees SR-stem-mismatch sees no difference here: the honest verdict is survivor, and a counter reporting killed would be inflating kills with a patch that changes no behavior."
+  }
+ ]
+}

@@ -1,0 +1,1 @@
+../../../../../../../../corpus/knowledge/authorization-safe-harbor-and-scope.md

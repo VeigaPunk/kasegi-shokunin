@@ -1,0 +1,1 @@
+../../../../../../../../corpus/knowledge/cvss-v4-severity-and-vector.md

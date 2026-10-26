@@ -1,0 +1,94 @@
+{
+ "limbs": [
+  {
+   "id": "RA-parse",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "capture_output=True).returncode == 0",
+   "replace": "capture_output=True).returncode >= 0",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest parseonly\\.md .*\\bok$",
+   "note": "frozen limb (a) parse: the bash -n gate is defeated, so every returncode (including the syntax-error 2) counts as parseable; isolated by parseonly.md, the only fixture whose frozen verdict depends on parse alone"
+  },
+  {
+   "id": "RA-cwd",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "lane_rc == foreign_rc and lane_digest == foreign_digest",
+   "replace": "True",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest cwd\\.md .*\\bok$",
+   "note": "frozen limb (b) cwd: lane-root vs foreign-cwd exit+digest equality collapsed to True; isolated by cwd.md (a relative corpus/instruments path runs from the lane root and fails from /)"
+  },
+  {
+   "id": "RA-paths",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "limbs[\"paths\"] = named and not missing",
+   "replace": "limbs[\"paths\"] = True",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest ghost\\.md .*\\bok$",
+   "note": "frozen limb (c) paths: the named-and-exists conjunction collapsed to True; isolated by ghost.md (names an absent corpus/knowledge path while parse and cwd still pass)"
+  },
+  {
+   "id": "RA-cdroot",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "os.path.abspath(cd_target) == (cdroot or root)",
+   "replace": "True",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest elsewhere\\.md .*\\bok$",
+   "note": "strict limb (d) cdroot: the 'cd <path> &&' target is no longer compared with the audited root; isolated by elsewhere.md (cd /tmp passes both frozen limbs, so only cdroot decides)"
+  },
+  {
+   "id": "RA-instrument",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "strict[\"instrument\"] = bool(instruments) or base_test",
+   "replace": "strict[\"instrument\"] = True",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest instonly\\.md .*\\bok$",
+   "note": "strict limb (e) instrument: the corpus/instruments-or-base-test requirement collapsed to True; isolated by instonly.md (own file named, cdroot ok, no instrument named)"
+  },
+  {
+   "id": "RA-own",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "strict[\"own\"] = own or sourced or base_state",
+   "replace": "strict[\"own\"] = True",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest selftesty\\.md .*\\bok$",
+   "note": "strict limb (f) own: the own/sourced/base-state disjunction collapsed to True; isolated by selftesty.md (instrument ok, the entry's own file not named)"
+  },
+  {
+   "id": "RA-completeness",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "    complete = len(entries) == total and total > 0\n    expect_ok = not expect_active or (not missing_entries and not unexpected_entries)",
+   "replace": "    complete = True  # mutant: completeness limb disabled\n    expect_ok = not expect_active or (not missing_entries and not unexpected_entries)",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest complete-empty\\s+exit=1 want=1 lines=0/0 complete=False ok$[\\s\\S]*^selftest complete-missing-line\\s+exit=1 want=1 lines=1/2 complete=False ok$",
+   "note": "completeness: main()'s own 'complete' verdict collapsed to True. On the pre-round-31 bytes this was the one RA survivor (mutant compiled, find once, exit 0, stdout byte-identical to pristine). Round 31 added the two main()-level fixtures this signal keys on. Only 'total > 0' is observable alone, because strict_passed == total already implies len(entries) == total (strict_passed <= len(entries) <= total); complete-empty carries the exit flip, complete-missing-line carries the receipt complete=False flip"
+  },
+  {
+   "id": "RA-expect-missing",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "sorted(wanted - actual)",
+   "replace": "[]",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest expect-missing .*\\bok$",
+   "note": "expected-list missing set collapsed to []: a committed entry deleted from the tree no longer reds the audit; isolated by the expect-missing tree fixture (rc must be 1 and missing_entries must name ghost-absent.md)"
+  },
+  {
+   "id": "RA-expect-unexpected",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "sorted(actual - wanted)",
+   "replace": "[]",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "(?m)^selftest expect-unexpected .*\\bok$",
+   "note": "expected-list unexpected set collapsed to []: an extra tree entry no longer reds the audit; isolated by the expect-unexpected tree fixture (rc must be 1 and unexpected_entries must name extra.md)"
+  }
+ ]
+}

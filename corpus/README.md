@@ -289,3 +289,28 @@ state and is retained as history, not rewritten (R9): at round 30 the frontier s
 26, F12 at round 28, F13 at round 29, F14 at round 30. The 0/18 sentence is untouched: the
 lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
 outside it.
+
+## Round-31 admission — coverage map row and Frontier F15 (appended 2026-10-25)
+
+The coverage map above is not edited in place (R6): the round-31 entry
+`knowledge/vendor-third-party-finding-coordination.md` (Frontier F15, source S048; source
+basis: the Microsoft Security Response Center's own Microsoft Security Vulnerability
+Research (MSVR) page, captured 2026-10-25 under `corpus/source-snapshots/round-31/`) is
+recorded here as an appended amendment so every existing line keeps its number. The
+coverage-map row is appended here rather than inserted into the map, and the F15 frontier
+row is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| A vendor's research programme as an intake route for other vendors' bugs (round 31) | knowledge/vendor-third-party-finding-coordination.md | S048 — public primary, opened 2026-10-25 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F15 | A vendor's research programme as an intake route for other vendors' bugs | admitted | knowledge/vendor-third-party-finding-coordination.md | S048 | Record which party coordinates a multi-vendor finding — the vendor itself, as S048's three intake routes and self-named coordinator role state, or an external centre, as F10's S039/S040 rows route it — and read no clock, contact or agreement into an intake route: the pinned capture states none. |
+
+[r31 amendment, appended 2026-10-25] The parenthetical above records the round-26 frontier
+state and is retained as history, not rewritten (R9): at round 31 the frontier stands at
+**15/15 admitted** — F01-F08 at round 23, F09 at round 24, F10 at round 25, F11 at round
+26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round 31. The 0/18 sentence
+is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.

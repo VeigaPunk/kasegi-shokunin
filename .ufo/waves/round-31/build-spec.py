@@ -137,4 +137,9 @@ if __name__ == "__main__":
         build("wave1", W1, "kasegi-r31-build", "round-31 build wave: C1 limb-mutation ledger + counter; C2 F15 MSVR admission")
     elif which == "wave2":
         exec(open(os.path.join(RD, "wave2-items.py")).read())
+        a = CONTEXT.index("## FILE OWNERSHIP")
+        b = CONTEXT.index("Bounds (all seats):")
+        own2 = ("## WAVE 2 SCOPE (falsify wave; wave 1 has landed and is quiescent: read its receipts under {RD}/wave1/)\n"
+                "Seats are READ-ONLY on the lane except these single-writer paths: {LANE}/corpus/instruments/limb-mutation-check.py and limb-ledger.json: ExecCounterFix (fixes only) | {LANE}/corpus/QUALITY.md: ScribeQualityFix (fixes only) | {LANE}/corpus/lessons/round-31.md: ScribeLesson | {LANE}/SCORECARD.md: ScribeScorecard (append-only) | {LANE}/SHONEN.md: ScribeShonen | every {WD}/<YourName>.md receipt: its own seat. All attack work happens in mktemp scratch copies; never edit instruments, entries, registry, README, SKILL.md or PROVINCE.md (report defects; the L1 routes fixes).\n\n")
+        CONTEXT = CONTEXT[:a] + own2 + CONTEXT[b:]
         build("wave2", W2, "kasegi-r31-falsify", "round-31 falsify wave: attack C1/C2 landed bytes")

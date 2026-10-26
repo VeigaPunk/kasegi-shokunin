@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "limbs": [
+    {
+      "id": "SMOKE-RA-parse",
+      "instrument": "corpus/instruments/recheck-audit.py",
+      "find": "capture_output=True).returncode == 0",
+      "replace": "capture_output=True).returncode >= 0",
+      "kill": "python3 {inst} --selftest",
+      "live_exit": 0,
+      "signal": "selftest parseonly\\.md\\s+pass want=False\\s+got=False",
+      "note": "throwaway smoke row on the real corpus (not the landed ledger)"
+    },
+    {
+      "id": "SMOKE-SR-stem",
+      "instrument": "corpus/instruments/source-recheck.py",
+      "find": "Path(path).stem != source_id",
+      "replace": "False",
+      "kill": "python3 {inst} --selftest",
+      "live_exit": 0,
+      "signal": "SELFTEST stem-mismatch PASS",
+      "note": "throwaway smoke row on the real corpus (not the landed ledger)"
+    },
+    {
+      "id": "SMOKE-FR-missing-entry",
+      "instrument": "corpus/instruments/frontier-recheck-count.py",
+      "find": "    if contract is None:\n",
+      "replace": "    if False:\n",
+      "kill": "D=$(mktemp -d) && mkdir -p \"$D/corpus/knowledge\" && printf '%s\\n' '| F01 | ghost row | admitted | knowledge/ghost-absent.md |' > \"$D/corpus/README.md\" && python3 {inst} --root \"$D\"; rc=$?; rm -rf \"$D\"; exit $rc",
+      "live_exit": 1,
+      "signal": "FAIL\\s+F01\\s+knowledge/ghost-absent\\.md\\s.*problems=missing-entry",
+      "note": "throwaway smoke row on the real corpus (not the landed ledger)"
+    }
+  ],
+  "controls": []
+}

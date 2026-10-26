@@ -1,0 +1,47 @@
+{
+ "version": 1,
+ "limbs": [
+  {
+   "id": "SR-equivalent-honest",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "MIN_QUOTE_CHARS = 12",
+   "replace": "MIN_QUOTE_CHARS = 12  # eq",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "selftest cases=[0-9]+ failures=0",
+   "note": "behavior-equivalent patch, honest exercise kill -> must be survivor"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTL-noop",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "SCHEMA_VERSION = 1",
+   "replace": "SCHEMA_VERSION = 1",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "selftest cases=[0-9]+ failures=0",
+   "expect": "invalid:noop"
+  },
+  {
+   "id": "CTL-nocompile",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "SCHEMA_VERSION = 1",
+   "replace": "SCHEMA_VERSION = (",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "selftest cases=[0-9]+ failures=0",
+   "expect": "invalid:nocompile"
+  },
+  {
+   "id": "CTL-equivalent",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "MIN_QUOTE_CHARS = 12",
+   "replace": "MIN_QUOTE_CHARS = 12  # eq",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "selftest cases=[0-9]+ failures=0",
+   "expect": "survivor"
+  }
+ ]
+}

@@ -1,0 +1,100 @@
+M31-1 GREEN-AFTER (seat ExecErratumCheck, round 31, wave 1) — part 1 (SCORECARD) and part 2 (LOG.md)
+Recorded after ScribeErratum.md (11240 B) and ScribeLogR30.md (14486 B) landed. Model: devin/deepseek-v4-1-flash.
+No repo edits by this seat. Byte identity of the two subject files held across every run below.
+
+QUIESCENCE PROOF (the subject files did not move under the runs)
+== QUIESCENCE PRE  ==
+5fa41aef7c8e795e0fb2efac8989ca5df1727aa35cb8b3da079e329b5e660dc7  SCORECARD.md
+864deb7df810539d3a92a9c520c94e218836233da42378ba774e48bbf339cf1b  LOG.md
+== QUIESCENCE POST ==
+5fa41aef7c8e795e0fb2efac8989ca5df1727aa35cb8b3da079e329b5e660dc7  SCORECARD.md
+864deb7df810539d3a92a9c520c94e218836233da42378ba774e48bbf339cf1b  LOG.md
+$ wc -l SCORECARD.md LOG.md   ->  860 SCORECARD.md / 1582 LOG.md
+Pre-edit digests for the red-before side (ExecErratumCheck-before.txt): SCORECARD cac64dbd…, LOG 0a1865e9….
+Match to the seats' own reports: ScribeErratum cac64dbd… -> 5fa41aef… (835 -> 860 lines, append-only);
+ScribeLogR30 0a1865e9… -> 864deb7d… (1467 -> 1582 lines, append-only).
+
+=== CHECK A — SCORECARD stale paragraph, closed by the appended r31 erratum ===
+  cd /home/vgpnk/Projects/shokunin/kasegi-shokunin || exit 9
+  f=${1:-SCORECARD.md}
+  n=$(grep -c 'recheck-audit open item' "$f")
+  l=$(grep -nE '(([Rr]31)|([Rr]ound[- ]31))[[:space:]]+[Ee]rrata?' "$f" | head -1 | cut -d: -f1)
+  c=0
+  if [ -n "$l" ] && tail -n +"$l" "$f" | grep -q 'recheck-audit open item' \
+     && tail -n +"$l" "$f" | grep -q 'strict pass=43/43'; then c=1; fi
+  printf 'file=%s stale_paragraphs=%s erratum_anchor=%s names_item_and_cites_corrected_audit=%s\n' "$f" "$n" "${l:-none}" "$c"
+  if [ "$n" -eq 0 ] || [ "$c" -eq 1 ]; then echo "erratum_closure=closed"; exit 0; else echo "erratum_closure=open"; exit 1; fi
+
+GREEN-AFTER OUTPUT (verbatim):
+file=SCORECARD.md stale_paragraphs=2 erratum_anchor=837 names_item_and_cites_corrected_audit=1
+erratum_closure=closed
+EXIT CODE: 0
+
+Anchor line, verbatim: `### Round-31 erratum to the round-30 section` (SCORECARD.md:837); the naming line
+SCORECARD.md:839 begins "r31 erratum: the paragraph `recheck-audit open item (outside the frozen claims)` filed at
+`SCORECARD.md:813-819` …", and the measured-output block after it carries
+`strict pass=43/43 cdroot_fail=0 instrument_fail=0 own_fail=0` plus `expect=present expected=43 missing=0 unexpected=0 exit=0`.
+stale_paragraphs moved 1 -> 2 exactly as designed (the erratum quotes the phrase); the stale paragraph itself is
+still at :813-819, byte-identical, i.e. the erratum was APPENDED, never rewritten (R9/R25-1).
+
+=== CHECK B — round-30 LOG.md entry ===
+  cd /home/vgpnk/Projects/shokunin/kasegi-shokunin || exit 9
+  f=${1:-LOG.md}
+  h2=$(awk '/^## /{ h=$0; sub(/^## */,"",h); if (match(h,/[Rr]ound[- ]?[0-9]+/)) { t=substr(h,RSTART,RLENGTH); gsub(/[^0-9]/,"",t); if (t+0==30) n++ } } END{print n+0}' "$f")
+  h23=$(awk '/^#{2,3} /{ h=$0; sub(/^#{2,3} */,"",h); if (match(h,/[Rr]ound[- ]?[0-9]+/)) { t=substr(h,RSTART,RLENGTH); gsub(/[^0-9]/,"",t); if (t+0==30) n++ } } END{print n+0}' "$f")
+  printf 'file=%s round30_h2_headings=%s round30_h2_or_h3_headings=%s\n' "$f" "$h2" "$h23"
+  if [ "$h23" -ge 1 ]; then echo "log_closure=closed"; exit 0; else echo "log_closure=open"; exit 1; fi
+
+GREEN-AFTER OUTPUT (verbatim):
+file=LOG.md round30_h2_headings=1 round30_h2_or_h3_headings=2
+log_closure=closed
+EXIT CODE: 0
+
+Both counts printed, so the tolerance is disclosed rather than hidden: the canonical round-entry level in this
+file is `## ` (h2 = 1, LOG.md:1469 `## Round 30 — 2026-10-25 — instrument conformance … + F14 Japanese severity
+vocabulary assimilation (one v2 wave, 64 seats)`); the h3 tolerance (LOG.md:1550
+`### Round-30 checks re-run for this append (round 31, quiescent committed bytes)`) exists because the file's
+earlier close-outs use `###` sub-sections, so an h3-only backfill would otherwise read as still-missing.
+First-round-token rule, not a naive substring: a `## Round 31 — … round-30 …` heading does NOT satisfy it
+(NEG case E in ExecErratumCheck-before.txt).
+
+=== MUTANT CONTROLS (scratch copies of the post bytes, mktemp -d, deleted after the run; lane tree untouched) ===
+$ head -n 836 SCORECARD.md > "$D/sc-mutant.md"        # erratum block (lines 837-EOF) deleted
+file=/tmp/…/sc-mutant.md stale_paragraphs=1 erratum_anchor=none names_item_and_cites_corrected_audit=0
+erratum_closure=open
+exit=1
+$ head -n 1468 LOG.md > "$D/log-mutant.md"            # round-30 entry (lines 1469-EOF) deleted
+file=/tmp/…/log-mutant.md round30_h2_headings=0 round30_h2_or_h3_headings=0
+log_closure=open
+exit=1
+$ git show HEAD:LOG.md > "$D/log-pre.md"              # independent reproduction: committed pre-entry bytes
+file=/tmp/…/log-pre.md round30_h2_headings=0 round30_h2_or_h3_headings=0
+log_closure=open
+exit=1
+
+So the green is carried by the erratum bytes and the LOG entry bytes and by nothing else: delete either from a copy
+of the post file and the check returns to exit 1. (The pre-entry mutant is the exact red-before object, reproduced
+from git rather than from a hand-edit.)
+
+=== IN-FLIGHT OBSERVATION (bound 6 / M30-3; NOT a reading of M31-1, never compared to the 43/43 above) ===
+The corpus is being edited by the C1 seats while this ran, so a `recheck-audit.py` run NOW measures in-flight bytes:
+$ python3 corpus/instruments/recheck-audit.py --quiet   ->  strict pass=44/44 cdroot_fail=0 instrument_fail=0 own_fail=0
+                                                            expect=present expected=43 missing=0 unexpected=1 exit=1
+                                                            audit_exit=1
+$ python3 corpus/instruments/recheck-audit.py | grep -i unexpected
+unexpected=corpus/knowledge/vendor-third-party-finding-coordination.md
+$ git status --porcelain corpus/
+ M corpus/instruments/recheck-audit.py          (ExecRALimbs, mid-edit)
+ M corpus/instruments/source-recheck.py         (ExecSRLimbs, mid-edit)
+?? corpus/instruments/limb-fixtures/
+?? corpus/instruments/limb-mutation-check.py
+?? corpus/instruments/score-gap.py
+?? corpus/knowledge/vendor-third-party-finding-coordination.md   (ExecEntryF15's new F15 entry)
+?? corpus/source-snapshots/round-31/
+$ wc -l corpus/instruments/knowledge-expected.txt  ->  45
+Labels: IN-FLIGHT / NON-COMPARATIVE. The 43/43 cited by the erratum was measured at 23:33:27Z on quiescent
+pre-C1 bytes (digest 3fc0d751…, reproduced by this seat and by ScribeErratum); it is not superseded by this
+in-flight 44/44 and must not be quoted against it. Owner of the gap: ExecExpectedList (knowledge-expected.txt)
++ ExecEntryF15 (new entry) at quiescent post-land bytes; re-run there is the canonical after for C1, not this file.
+
+TOOLING: nothing installed or upgraded this seat (no pacman, no uv/npx); stdlib shell/grep/awk only.

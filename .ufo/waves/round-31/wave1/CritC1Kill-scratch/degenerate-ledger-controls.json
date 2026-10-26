@@ -1,0 +1,167 @@
+{
+ "version": 1,
+ "limbs": [
+  {
+   "id": "RA-parse",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "FROZEN_LIMBS = (\"parse\", \"cwd\", \"paths\")",
+   "replace": "FROZEN_LIMBS = (\"parse\", \"cwd\", \"paths\")  # crit-eq",
+   "kill": "grep -cxF 'FROZEN_LIMBS = (\"parse\", \"cwd\", \"paths\")' {inst}",
+   "live_exit": 0,
+   "signal": "^1$",
+   "note": "class A: byte-inspection kill on a behavior-equivalent comment patch"
+  },
+  {
+   "id": "RA-cwd",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "STRICT_LIMBS = (\"parse\", \"cwd\", \"paths\", \"cdroot\", \"instrument\", \"own\")",
+   "replace": "STRICT_LIMBS = (\"parse\", \"cwd\", \"paths\", \"cdroot\", \"instrument\", \"own\")  # crit-eq",
+   "kill": "grep -cxF 'STRICT_LIMBS = (\"parse\", \"cwd\", \"paths\", \"cdroot\", \"instrument\", \"own\")' {inst}",
+   "live_exit": 0,
+   "signal": "^1$",
+   "note": "class A: byte-inspection kill on a behavior-equivalent comment patch"
+  },
+  {
+   "id": "RA-paths",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "CD_RE = re.compile(r\"^cd[ \\t]+([^&;]+?)[ \\t]*&&\")",
+   "replace": "CD_RE = re.compile(r\"^cd[ \\t]+([^&;]+?)[ \\t]*&&\")  # crit-eq",
+   "kill": "grep -cxF 'CD_RE = re.compile(r\"^cd[ \\t]+([^&;]+?)[ \\t]*&&\")' {inst}",
+   "live_exit": 0,
+   "signal": "^1$",
+   "note": "class A: byte-inspection kill on a behavior-equivalent comment patch"
+  },
+  {
+   "id": "RA-cdroot",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "INSTRUMENT_RE = re.compile(r\"corpus/instruments/[A-Za-z0-9_.\\-]+\\.py\")",
+   "replace": "INSTRUMENT_RE = re.compile(r\"corpus/instruments/[A-Za-z0-9_.\\-]+\\.py\")  # crit-eq",
+   "kill": "grep -cxF 'INSTRUMENT_RE = re.compile(r\"corpus/instruments/[A-Za-z0-9_.\\-]+\\.py\")' {inst}",
+   "live_exit": 0,
+   "signal": "^1$",
+   "note": "class A: byte-inspection kill on a behavior-equivalent comment patch"
+  },
+  {
+   "id": "RA-instrument",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "BASE_TEST_RE = re.compile(r\"test[ \\t]+-[def][ \\t]+~/Projects/\")",
+   "replace": "BASE_TEST_RE = re.compile(r\"test[ \\t]+-[def][ \\t]+~/Projects/\")  # crit-eq",
+   "kill": "grep -cxF 'BASE_TEST_RE = re.compile(r\"test[ \\t]+-[def][ \\t]+~/Projects/\")' {inst}",
+   "live_exit": 0,
+   "signal": "^1$",
+   "note": "class A: byte-inspection kill on a behavior-equivalent comment patch"
+  },
+  {
+   "id": "RA-own",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "RECHECK_RE = re.compile(r\"^recheck:[ \\t]*(.*)$\")",
+   "replace": "RECHECK_RE = re.compile(r\"^recheck:[ \\t]*(.*)$\")  # crit-eq",
+   "kill": "if [ -e .crit-RA-own ]; then echo CRIT-SECOND-RUN; exit 7; fi; touch .crit-RA-own; echo CRIT-FIRST-RUN; exit 0",
+   "live_exit": 0,
+   "signal": "CRIT-FIRST-RUN",
+   "note": "class B: stateful kill; the live run creates the marker, the mutant run trips it"
+  },
+  {
+   "id": "RA-completeness",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "def parse_ok(cmd):",
+   "replace": "def parse_ok(cmd):  # crit-eq",
+   "kill": "if [ -e .crit-RA-completeness ]; then echo CRIT-SECOND-RUN; exit 7; fi; touch .crit-RA-completeness; echo CRIT-FIRST-RUN; exit 0",
+   "live_exit": 0,
+   "signal": "CRIT-FIRST-RUN",
+   "note": "class B: stateful kill; the live run creates the marker, the mutant run trips it"
+  },
+  {
+   "id": "RA-expect-missing",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "def load_expected(path):",
+   "replace": "def load_expected(path):  # crit-eq",
+   "kill": "if [ -e .crit-RA-expect-missing ]; then echo CRIT-SECOND-RUN; exit 7; fi; touch .crit-RA-expect-missing; echo CRIT-FIRST-RUN; exit 0",
+   "live_exit": 0,
+   "signal": "CRIT-FIRST-RUN",
+   "note": "class B: stateful kill; the live run creates the marker, the mutant run trips it"
+  },
+  {
+   "id": "RA-expect-unexpected",
+   "instrument": "corpus/instruments/recheck-audit.py",
+   "find": "def expected_mismatch(root, expected):",
+   "replace": "def expected_mismatch(root, expected):  # crit-eq",
+   "kill": "if [ -e .crit-RA-expect-unexpected ]; then echo CRIT-SECOND-RUN; exit 7; fi; touch .crit-RA-expect-unexpected; echo CRIT-FIRST-RUN; exit 0",
+   "live_exit": 0,
+   "signal": "CRIT-FIRST-RUN",
+   "note": "class B: stateful kill; the live run creates the marker, the mutant run trips it"
+  },
+  {
+   "id": "SR-stem-mismatch",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "SCHEMA_VERSION = 1",
+   "replace": "SCHEMA_VERSION = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "selftest cases=[0-9]+ failures=0",
+   "note": "class C: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "SR-occurrence-not-unique",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "MIN_QUOTE_CHARS = 12   # normalized minimum: a shorter \"quote\" matches any capture",
+   "replace": "MIN_QUOTE_CHARS = _crit_undefined_limb",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "selftest cases=[0-9]+ failures=0",
+   "note": "class C: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "FR-missing-entry",
+   "instrument": "corpus/instruments/frontier-recheck-count.py",
+   "find": "SOURCE_LINE = re.compile(r\"^source:\\s*(S\\d{3,})\")",
+   "replace": "SOURCE_LINE = _crit_undefined_limb",
+   "kill": "python3 {inst} --root {root}",
+   "live_exit": 0,
+   "signal": "entries=[0-9]+ pass=[0-9]+ exit=0",
+   "note": "class C: module-level NameError at import; compiles, dies before the limb runs"
+  },
+  {
+   "id": "FR-duplicate-entry",
+   "instrument": "corpus/instruments/frontier-recheck-count.py",
+   "find": "RECHECK_SOURCE = re.compile(r\"--source\\s+(S\\d{3,})\")",
+   "replace": "RECHECK_SOURCE = _crit_undefined_limb",
+   "kill": "python3 {inst} --root {root}",
+   "live_exit": 0,
+   "signal": "entries=[0-9]+ pass=[0-9]+ exit=0",
+   "note": "class C: module-level NameError at import; compiles, dies before the limb runs"
+  }
+ ],
+ "controls": [
+  {
+   "id": "CTL-noop",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "SCHEMA_VERSION = 1",
+   "replace": "SCHEMA_VERSION = 1",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "selftest cases=[0-9]+ failures=0",
+   "expect": "invalid:noop"
+  },
+  {
+   "id": "CTL-nocompile",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "SCHEMA_VERSION = 1",
+   "replace": "SCHEMA_VERSION = (",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "selftest cases=[0-9]+ failures=0",
+   "expect": "invalid:nocompile"
+  },
+  {
+   "id": "CTL-equivalent",
+   "instrument": "corpus/instruments/source-recheck.py",
+   "find": "MIN_QUOTE_CHARS = 12",
+   "replace": "MIN_QUOTE_CHARS = 12",
+   "kill": "python3 {inst} --selftest",
+   "live_exit": 0,
+   "signal": "selftest cases=[0-9]+ failures=0",
+   "expect": "invalid:noop"
+  }
+ ]
+}

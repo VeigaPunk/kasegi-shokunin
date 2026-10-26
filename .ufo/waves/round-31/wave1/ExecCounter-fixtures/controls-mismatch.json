@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "limbs": [],
+  "controls": [
+    {
+      "id": "CTL-probe-mismatch",
+      "instrument": "corpus/instruments/probe.py",
+      "find": "MODE = \"pass\"",
+      "replace": "MODE = 'pass'",
+      "kill": "python3 {inst}",
+      "live_exit": 0,
+      "signal": "^probe ok$",
+      "expect": "invalid:noop",
+      "note": "declared expectation deliberately wrong: verdict is survivor"
+    }
+  ]
+}

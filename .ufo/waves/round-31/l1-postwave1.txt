@@ -1,0 +1,114 @@
+# L1 post-wave1 quiescent run 2026-10-26T00:15:06Z base=eadedef402e0e23c9e84303c6bb66100f843066e
+$ python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/limb-ledger.json
+LIMB RA-completeness live=0/y mutant=1/n verdict=killed
+LIMB RA-expect-missing live=0/y mutant=1/n verdict=killed
+LIMB RA-expect-unexpected live=0/y mutant=1/n verdict=killed
+LIMB SR-stem-mismatch live=1/y mutant=0/n verdict=killed
+LIMB SR-occurrence-not-unique live=1/y mutant=0/n verdict=killed
+LIMB FR-missing-entry live=1/y mutant=1/n verdict=killed
+LIMB FR-duplicate-entry live=1/y mutant=0/n verdict=killed
+CONTROL CTL-noop verdict=invalid:noop expected=invalid:noop ok=y
+CONTROL CTL-nocompile verdict=invalid:nocompile expected=invalid:nocompile ok=y
+CONTROL CTL-equivalent verdict=survivor expected=survivor ok=y
+limbs=13 killed=13 survivors=0
+controls=3 rejected=3
+exit=0
+$ python3 corpus/instruments/limb-mutation-check.py --selftest
+selftest invalid-nondeterministic verdict=invalid:live-baseline want=invalid:live-baseline ok
+selftest invalid-mutant-baseline verdict=invalid:mutant-baseline want=invalid:mutant-baseline ok
+selftest validate-vacuous-signal rejected=True  want=True  ok
+selftest validate-kill-reads-bytes rejected=True  want=True  ok
+selftest validate-kill-chained  rejected=True  want=True  ok
+selftest validate-control-misbound rejected=True  want=True  ok
+selftest validate-control-bound rejected=False want=False ok
+selftest validate-valid-row     rejected=False want=False ok
+selftest aggregate-green       ok
+selftest aggregate-survivor    ok
+selftest control-verdict-rule  ok
+selftest cases=20 failures=0
+exit=0
+$ python3 corpus/instruments/recheck-audit.py --quiet
+strict pass=44/44 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=20 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=44 total=44 pass=44 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=44 missing=0 unexpected=0 exit=0
+exit=0
+$ python3 corpus/instruments/recheck-audit.py --selftest
+expect=present expected=1 missing=0 unexpected=1 exit=1
+selftest expect-unexpected exit=1 want=1 missing=[] unexpected=['corpus/knowledge/extra.md'] ok
+strict pass=0/0 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=0 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=0 total=0 pass=0 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=absent expected=0 missing=0 unexpected=0 exit=1
+selftest complete-empty        exit=1 want=1 lines=0/0 complete=False ok
+strict pass=1/2 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=1 gated=0 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=1 total=2 pass=1 fail-closed=0 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=absent expected=0 missing=0 unexpected=0 exit=1
+selftest complete-missing-line exit=1 want=1 lines=1/2 complete=False ok
+exit=0
+$ python3 corpus/instruments/source-recheck.py --selftest
+SELFTEST clean PASS expected-exit=0 observed-exit=0 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST corrupt PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256 observed-ids=S900:sha256
+SELFTEST missing-source PASS expected-exit=2 observed-exit=2 expected-ids=S900:source observed-ids=S900:source
+SELFTEST missing-manifest PASS expected-exit=2 observed-exit=2 expected-ids=manifest observed-ids=manifest
+SELFTEST stem-mismatch PASS expected-exit=1 observed-exit=1 expected-ids=S901:manifest observed-ids=S901:manifest
+SELFTEST double-occurrence PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST double-occurrence-anchored PASS expected-exit=0 observed-exit=0 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST double-occurrence-out-of-range PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST double-occurrence-broken PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+SELFTEST quote-absent PASS expected-exit=1 observed-exit=1 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1
+selftest cases=10 failures=0
+exit=0
+$ python3 corpus/instruments/anchorcheck.py --selftest
+selftest cases=12 failures=0
+skip=0
+limbs=9 covered=9
+exit=0
+$ python3 corpus/instruments/frontier-recheck-count.py
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+entries=18 pass=18 exit=0
+exit=0
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-31/manifest.json --source S048
+S048:sha256 OK
+S048:Q1 OK occurrences=1
+S048:Q2 OK occurrences=1
+S048:Q3 OK occurrences=1
+S048:Q4 OK occurrences=1
+S048:Q5 OK occurrences=1
+S048:Q6 OK occurrences=1
+S048:Q7 OK occurrences=1
+S048:Q8 OK occurrences=1
+exit=0
+$ python3 corpus/instruments/score-gap.py
+cmd: python3 corpus/instruments/anchorcheck.py SKILL.md (cwd=/home/vgpnk/Projects/shokunin/kasegi-shokunin)
+anchorcheck: in-range=7 bad=0 lost-recorded=306 origin=0 outside-base=0 base-absent=0 exit=0
+[3] citation-survival census (committed figures)
+cmd: grep -nE '^Numerator = |^- (lane total|SKILL\.md alone): ' corpus/instruments/citation-survival.md
+census-definition: Numerator = RESOLVES + MIRROR-EQUIVALENT + INTERNAL. Denominator = all distinct citations appearing in that scope (a citation in both scopes enters both denominators).
+census-lane: 134/1480 = 9.05%
+census-skill: 32/506 = 6.32%
+[4] score-5 threshold
+cmd: grep -nE 'Threshold for 5:.*unsupported current claims' SCORECARD.md
+threshold: SCORECARD.md:331 "Threshold for 5: a non-author audit passing 25/25 source chains and 0 unsupported current claims."
+[5] gap
+gap: 24 of 44 rechecks still gated on a lost base; score 5 needs 0 gated unsupported claims
+exit=0
+frontier_admitted=15
+entries_citing_S048=1
+rows_S048=1
+registry_rows=48
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+census_exit=0

@@ -1,0 +1,1 @@
+../../../../../../../../corpus/knowledge/vendor-disclosure-policies-as-corpus-objects.md

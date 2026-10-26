@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "limbs": [
+    {
+      "id": "FX-green-killed",
+      "instrument": "corpus/instruments/probe.py",
+      "find": "MODE = \"pass\"",
+      "replace": "MODE = \"fail\"",
+      "kill": "python3 {inst}",
+      "live_exit": 0,
+      "signal": "^probe ok$",
+      "note": "all-good aggregate: one killed limb plus one rejected control"
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTL-noop",
+      "instrument": "corpus/instruments/probe.py",
+      "find": "MODE = \"pass\"",
+      "replace": "MODE = \"pass\"",
+      "kill": "python3 {inst}",
+      "live_exit": 0,
+      "signal": "^probe ok$",
+      "expect": "invalid:noop",
+      "note": "no-op patch must be rejected as invalid:noop"
+    }
+  ]
+}

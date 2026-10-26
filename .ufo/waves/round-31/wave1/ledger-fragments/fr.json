@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "limbs": [
+    {
+      "id": "FR-missing-entry",
+      "instrument": "corpus/instruments/frontier-recheck-count.py",
+      "find": "    if not os.path.isfile(full):\n        return None\n",
+      "replace": "",
+      "kill": "python3 {inst} --root {root}/corpus/instruments/limb-fixtures/fr/fr-missing-entry",
+      "live_exit": 1,
+      "signal": "FAIL\\s+F98\\s+knowledge/zz-missing\\.md\\s+ids=-\\s+exit=-\\s+problems=missing-entry\\nentries=1 pass=0 exit=1\\n?",
+      "note": "Drops the fail-closed missing-entry guard in entry_contract (E): the mutant raises FileNotFoundError on the absent entry (traceback, still exit 1), so the kill is by signal, not exit. Fixture corpus/instruments/limb-fixtures/fr/fr-missing-entry holds one admitted row F98 naming knowledge/zz-missing.md and nothing else, so problems=missing-entry is the only failure marker. Measured r31: live 1/sig-y, mutant 1/sig-n."
+    },
+    {
+      "id": "FR-duplicate-entry",
+      "instrument": "corpus/instruments/frontier-recheck-count.py",
+      "find": "    seen_realpath = {}\n    for record in records:\n        rp = record.get(\"realpath\")\n        if rp is None:\n            continue\n        if rp in seen_realpath:\n            duplicate = (seen_realpath[rp], record[\"frontier\"], record[\"entry\"])\n            break\n        seen_realpath[rp] = record[\"frontier\"]\n    if duplicate:\n        print(\"DUPLICATE-ENTRY %s,%s %s\" % (duplicate[0], duplicate[1], duplicate[2]))\n    fail_closed = duplicate is not None or not records or passed != len(records)\n",
+      "replace": "    fail_closed = not records or passed != len(records)\n",
+      "kill": "python3 {inst} --root {root}/corpus/instruments/limb-fixtures/fr/fr-duplicate-entry",
+      "live_exit": 1,
+      "signal": "PASS\\s+F98\\s+knowledge/dup-entry\\.md\\s+ids=S003\\s+exit=0[ \\t]*\\nPASS\\s+F97\\s+knowledge/dup-entry\\.md\\s+ids=S003\\s+exit=0[ \\t]*\\nDUPLICATE-ENTRY F98,F97 knowledge/dup-entry\\.md\\nentries=2 pass=2 exit=1\\n?",
+      "note": "Drops the duplicate-realpath fail-closed block (F) only: both admitted rows F98/F97 still PASS their own A-D contract on the same entry file, so the mutant flips exit 1 -> 0 with no DUPLICATE-ENTRY line (killed by exit and by signal). Fixture corpus/instruments/limb-fixtures/fr/fr-duplicate-entry carries a stem-correct S003 capture + schema-1 manifest and a relative source-recheck.py invocation, so no other problem class fires."
+    }
+  ],
+  "controls": []
+}

@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "limbs": [
+    {
+      "id": "FX-timeout",
+      "instrument": "corpus/instruments/probe.py",
+      "find": "MODE = \"pass\"",
+      "replace": "MODE = \"fail\"",
+      "kill": "if grep -q 'MODE = \"fail\"' {inst}; then sleep 130; fi; python3 {inst}",
+      "live_exit": 0,
+      "signal": "^probe ok$",
+      "note": "only the mutated run hangs; the frozen 120 s cap must yield invalid:timeout"
+    }
+  ],
+  "controls": []
+}

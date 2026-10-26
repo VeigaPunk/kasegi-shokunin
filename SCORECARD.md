@@ -833,3 +833,28 @@ depth:verifiability at 4 the lowest-axis obligation stays active.
 |---|---|---|---|---|
 | 30 | depth:verifiability | 4 (A1 traceback/no row marker; A2 duplicate passes; B1 stem passes; B2 double-occurrence passes) | 4 held (A1 exit 1 naming F98; A2 exit 1 naming duplicate; B1 exit 1 reason=stem-mismatch; B2 exit 1 reason present; selftest 9/9; 34 base-passing real rechecks preserved) | `corpus/instruments/frontier-recheck-count.py`, `corpus/instruments/source-recheck.py`, `.ufo/waves/round-30/c1-controls/`, `wave1/ExecImplSourceRecheck.md`, `wave1/ExecMutantsC1.md`, `wave1/CritC1Kill.md` |
 | 30 | coverage | 7 (frontier 13, S046/047 citations 0, registry 45, harness 16/16) | 7 held (frontier 14, citations 1, registry 47, census exit 0, harness 17/17, rechecks exit 0) | `corpus/README.md` F14 row, `corpus/SOURCES.md` S046/S047, `corpus/source-snapshots/round-30/manifest.json`, `.ufo/waves/round-30/harness-after.txt` |
+
+### Round-31 erratum to the round-30 section
+
+r31 erratum: the paragraph `recheck-audit open item (outside the frozen claims)` filed at `SCORECARD.md:813-819` was true when it was composed and is **superseded** by the final round-30 ledger-recheck correction, not withdrawn as an error. At composition the strict instrument/own limbs rejected the then-current `considerthese-proposals-ledger.md` recheck form, so the audit printed `expect=present expected=43 missing=0 unexpected=0 exit=1`. The correction changed that recheck to `density.py` over its own entry (`corpus/knowledge/considerthese-proposals-ledger.md:5`, sha256 `d91889e5f7d77c3695c366521c348569b4f29269632e0bfc927105600a6c250d`); the audit now prints `strict pass=43/43 cdroot_fail=0 instrument_fail=0 own_fail=0` and `expect=present expected=43 missing=0 unexpected=0 exit=0`, exit 0. The filed paragraph stays byte-identical (append-only, R6/R9).
+
+Pointers: `corpus/lessons/round-30.md` § Close-out erratum (records the ledger-recheck change and the final `strict pass=43/43`, `executes=19 gated=24 broken=0`); `corpus/lessons/round-30-verifier-spotcheck.md` §5 item 4 (routed defect: correct this stale paragraph).
+
+Live re-run, cwd = lane root, quiescent bytes (`corpus/instruments/recheck-audit.py` sha256 `3fc0d751f2a5819879d440f8ef62b607376a8b6914d7edf9fe1b2fc25662d4e1`, unchanged from this wave's red-before digest; working tree clean for `corpus/`):
+
+```sh
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py --quiet; echo "audit_exit=$?"
+```
+
+Measured 2026-10-25T23:33:27Z, exit 0:
+
+```text
+strict pass=43/43 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=19 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=43 total=43 pass=43 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=43 missing=0 unexpected=0 exit=0
+```
+
+Measurement limit, recorded rather than hidden: the same command on a `git archive` export of lane base `b374febbb33ccadade78a787279707fd5d2e6e1d` at a different path prints `strict pass=1/43 cdroot_fail=42 instrument_fail=0 own_fail=0 … exit=1`, because strict limb (d) requires the `cd <path> &&` target to equal the audited root (`corpus/instruments/recheck-audit.py:27`, `:137`) and 42 entry rechecks cd to the canonical lane path. A copy-relative run is therefore not a base measurement; the value quoted above is the lane-root one. If `recheck-audit.py` bytes change later this round (the C1 limb work), re-run and label any new value with its date.
+
+Capabilities clause, corrected: the round-30 headline "no row added this round" holds for round 30 (no round-30 capability table exists), but its parenthetical "(last capability entry round 25)" (`SCORECARD.md:825`) is false — round 26 added `source-capture-pdf` (`SCORECARD.md:580-584`, first-working round 26), so the last capability entry as of round 30 is round 26 and any stagnation count starts there. The filed sentence is left byte-identical; this erratum is the correction of record.

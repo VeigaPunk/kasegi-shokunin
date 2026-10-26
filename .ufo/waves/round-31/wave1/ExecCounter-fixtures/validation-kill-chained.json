@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "limbs": [
+    {
+      "id": "FX-chained",
+      "instrument": "corpus/instruments/probe.py",
+      "find": "MODE = \"pass\"",
+      "replace": "MODE = \"pass\"  # equivalent",
+      "kill": "python3 {inst} --selftest && grep -q 'MODE' {inst}",
+      "live_exit": 0,
+      "signal": "^probe ok$",
+      "note": "a chain after the invocation can flip the exit on a comment patch"
+    }
+  ],
+  "controls": []
+}

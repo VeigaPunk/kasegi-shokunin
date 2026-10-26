@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "purpose": "Round-31 F15 captured-source assertions for S048 (Microsoft Security Vulnerability Research, https://www.microsoft.com/en-us/msrc/msvr), the new lane row for the vendor third-party-finding coordination theme. The SHA-256 pin binds the committed local capture; assertions quote the page text exactly. Normalization: capture-source.py's html_to_text() output is compared under source-recheck.py normalize() (markup tags such as <u>...</u> stripped, all whitespace collapsed to single spaces), so a quote may span a wrapped line; every quote below was measured exactly-once under that normalization before it was written here, so no assertion carries an anchor. Quirk: snapshot line 2 (\"This is the Trace Id: <32 hex>\") is a per-request identifier and is never quoted; the pin therefore binds these committed bytes, not a refetch.",
+  "sources": [
+    {
+      "id": "S048",
+      "path": "S048.txt",
+      "sha256": "2001ad7732a16cd385b649a3eb2b9f2c6000fd90ca1cce219868a646cbc67e55",
+      "quotes": [
+        {"id":"Q1","quote":"MSVR learns about vulnerabilities in third-party products in three ways","location":"L31; the three-route intake sentence that heads the list of routes (routes follow on L32-L34)."},
+        {"id":"Q2","quote":"These vulnerabilities are reported to the MSVR team, which then works with the affected vendor to fix the issue.","location":"L32; route 1, internal Microsoft engineers finding third-party software flaws."},
+        {"id":"Q3","quote":"These issues are coordinated by MSVR.","location":"L33; route 2, external researcher reports to the MSRC that affect a third-party product or both parties — the statement that third-party findings are coordinated by MSVR."},
+        {"id":"Q4","quote":"Any issues are reported to the affected vendor under accepted Coordinated Vulnerability Disclosure practices.","location":"L34; route 3, Microsoft's own research projects on non-Microsoft products."},
+        {"id":"Q5","quote":"as a vendor affected by vulnerabilities in its products and services","location":"L35; role 1 of three — Microsoft as the affected vendor."},
+        {"id":"Q6","quote":"as a finder of new vulnerabilities in third-party products and services","location":"L35; role 2 of three — Microsoft as a finder in third-party products."},
+        {"id":"Q7","quote":"as a coordinator of vulnerabilities that affect multiple vendors","location":"L35; role 3 of three — Microsoft as coordinator across vendors."},
+        {"id":"Q8","quote":"This coordination takes place under Microsoft's Coordinated Vulnerability Disclosure (CVD) approach.","location":"L35; the CVD framing sentence that introduces the three roles (ASCII apostrophe; L30 uses the curly form and is not quoted here)."}
+      ]
+    }
+  ]
+}

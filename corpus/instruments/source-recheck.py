@@ -375,6 +375,18 @@ def selftest(out=sys.stdout):
             expected_substr="reason=anchor-broken",
         )
 
+        # Round-31: the final `else` (a quote absent from the capture) had no
+        # failing case, so accepting a not-found quote survived the selftest
+        # (MutSRExisting M5). This case pins that rejection path.
+        absent_quote = make_manifest(
+            "quote-absent", "S900",
+            [{"id": "Q1", "quote": "absent from the fixture capture"}],
+        )
+        run_case(
+            "quote-absent", absent_quote, 1, ["S900:sha256", "S900:Q1"],
+            expected_substr="S900:Q1 MISMATCH reason=quote-not-found",
+        )
+
     failed = sum(1 for passed in cases if not passed)
     print(f"selftest cases={len(cases)} failures={failed}", file=out)
     return 0 if failed == 0 else 1
@@ -385,7 +397,7 @@ def main(argv=None):
     parser.add_argument("--manifest", help="JSON manifest with local source paths, SHA-256 pins, and quote assertions")
     parser.add_argument("--source", help="check one source ID from the manifest")
     parser.add_argument("--selftest", action="store_true",
-                        help="run isolated controls: clean/corrupt/missing plus B1 stem and B2 anchor limbs")
+                        help="run isolated controls: clean/corrupt/missing plus B1 stem, B2 anchor and quote-absent limbs")
     args = parser.parse_args(argv)
 
     if args.selftest:

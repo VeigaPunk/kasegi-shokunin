@@ -1465,3 +1465,118 @@ labelled PENDING until the L1's close re-run records it.
   `occurrences=1`).
 - Integration commit hash to be recorded here when it exists; before then, no after column is final.
 - Lesson Gate to carry the quarantine verdicts per row and any refusals with flip conditions.
+
+## Round 30 — 2026-10-25 — instrument conformance (frontier missing-entry/duplicate, source stem/occurrence) + F14 Japanese severity vocabulary assimilation (one v2 wave, 64 seats)
+
+**Late append, made in round 31.** Round 30 closed with no entry here: the round-30 lane seat's
+editor repeatedly returned stale tag `#B26C` while rejecting the current hash `#114E`, and the
+round-30 lesson records that "no LOG bytes changed" (`corpus/lessons/round-30.md`, close-out erratum,
+residual bullet). The superseded state is that absence: at round-31 HEAD
+`8a8916c7043bd873d191b30dd1744b241b91f4d9`, `grep -i 'round 30\|round-30' LOG.md` returned 0 lines and
+`git log -- LOG.md` last touched this file at `0ab8929` (round 29). The round-30 verifier routed the
+gap as routed defect 2 (`corpus/lessons/round-30-verifier-spotcheck.md` §5). This append is written by
+round-31 seat `ScribeLogR30` on answering model `devin/deepseek-v4-1-flash`; it reconstructs round 30
+from committed bytes at the hashes below, touches no other LOG byte, and alters no frozen claim.
+
+Frozen claims `.ufo/waves/round-30/claims.json` (`frozen_at_utc` `2026-10-25T18:55:00Z`); lane base
+`a94871315cafa368f79c17d8c62d71fddd967986`; claims-freeze commit
+`3c5573541300ba0fd3d89372dda3d841172eaa3f`; wave-1 dispatch commit
+`002e92ce07ed398334ef7cd8ca08d3fd99631351`. Landed integration commit
+`5703f9fbf70ba0717e5c6890f4c338cd5be00b7b` (round-30 C1 conformance + C2 F14), final post-commit
+evidence commit `6262daca0feab0ea7a8672cef0398b0754f38f47`, and the lane tip / pushed master recorded
+by the round-30 verifier `bc1a1e140914e65673daa586232128c964216ceb` (final close-out errata and gate
+evidence). All three verified now with `git cat-file -e <hash>^{commit}`; `git merge-base --is-ancestor`
+holds for 5703f9f → 6262dac → bc1a1e1 → HEAD.
+
+- **C1 depth:verifiability (4, held) — instrument conformance for the frontier recheck harness and
+  the captured-source quote checker.** Before, at freeze (`.ufo/waves/round-30/c1-controls/before.txt`,
+  `before-run-2.txt`; instrument digests `c8a62888354ba60dae85d4510653312413e293c0114177627e2e6770a0b88261`
+  and `9fe6a4a07fdbbd83a9b64a588a14d02b154fd5de81e460b97519675d69a79b96`): A1 exit 1 with an uncaught
+  `FileNotFoundError` traceback and no named-row marker; A2 exit 0 `pass=2` on a duplicate entry
+  realpath; B1 exit 0 (stem mismatch passes); B2 exit 0 `occurrences=2 anchor=MISSING`. After, as the
+  committed bytes show (`post-commit-recheck-output.txt` at `6262dac`, `harness-after.txt` at
+  `5703f9f`): A1 exit 1 naming the row and path (`problems=missing-entry`); A2 exit 1
+  (`DUPLICATE-ENTRY F98,F97`); B1 exit 1 `reason=stem-mismatch`; B2 exit 1 with a failure reason —
+  the frozen `manifest-b2.json` declares `id=S045` over `path=B2.txt`, so the B1 stem limb fires
+  first, and the occurrence limb is demonstrated by `source-recheck.py --selftest` (`cases=9
+  failures=0`, exit 0) plus a supplementary same-stem fixture (live exit 1
+  `reason=occurrence-not-unique`, mutant exit 0). Verdict per the non-author verifier: **improved,
+  score held 4**. Caveat preserved, not relabelled: mistake M30-1 (B2 fixture does not isolate its
+  claimed limb) stays open and is routed to round 31 (spotcheck §5 item 3); frozen claims were not
+  mutated in place.
+- **C2 coverage (7, held) — F14 Japanese severity vocabulary and handling-priority model.** Before
+  (`.ufo/waves/round-30/c2-controls/before.txt`, `census-before.txt`): frontier admitted 13; entries
+  citing `S04[6-7]` 0; registry 45 rows; census exit 0; harness `entries=16 pass=16 exit=0`. After, at
+  the landed bytes: frontier admitted **14**; entries citing S046/S047 **1** (the F14 entry); registry
+  **47** rows (S046/S047 appended after S045, tier A/mined); census **exit 0** with the unchanged W04
+  S028/S029 duplicate-URL warnings only; harness `entries=17 pass=17 exit=0` including
+  `PASS F14 … ids=S041,S046,S047`; per-source rechecks S046/S047/S041 exit 0 on manifest
+  `dfc8835750bbdcbc2480fc579f7204ba8215d3018d0bd0942e4ea97f3e5e75a6`, with S047 Q1
+  `occurrences=3 anchor=123-ok` and Q3 `occurrences=2 anchor=130-ok`. Verdict: **improved, score held
+  7**.
+- **Assimilation gate.** Theme: Japanese severity vocabulary and the handling-priority model, from the
+  read-only merge package `/home/vgpnk/Projects/shokuknow/merge/kasegi/`. Staged rows resolved by
+  document identity, never by arithmetic: staged S049 (IPA JVN activity report) → lane S046; staged
+  S050 (IPA 2026 Q3 registration report) → lane S047; staged S043 (JPCERT/CC guideline) →
+  already-registered lane S041 (reused, no new row). Three staged knowledge candidates were refused
+  with flip conditions (`chinese-criminal-thresholds-and-authorisation.md`,
+  `program-scope-rules-and-asset-boundaries.md`, `claim-packaging-and-report-quality.md`); no QUALITY
+  criterion was relaxed and no refused file was copied into the lane. Quarantine slice verdicts
+  (7 rows, none adopted): S037 `fetched-no-quote`; S054 `fetched-no-quote`; S048 `unfetchable`;
+  S065 `reachable-quote-located`; S068 `already-mined-by-document` (byte-equal to S040); S069 and
+  S070 `unfetchable` (redirect then TLS verification failure, no bypass).
+- **Registry and no-harm.** Registry **45 → 47**; no pre-existing row changed; R8 changes logged in
+  `corpus/SOURCES.md`; `corpus/README.md` received the append-only F14 frontier and coverage-map rows;
+  `SKILL.md` gained a gate-registry append only; `PROVINCE.md` unchanged. The verifier measured
+  `git diff a948713..bc1a1e -- SCORECARD.md` as 53 insertions / 0 deletions with no axis score
+  reduced, and reported no axis harmed. Verification boundary preserved: `RevNoHarm.md` did not
+  independently certify every final-byte comparison (notably PROVINCE), so "no harm found in the
+  committed diff" is the claim, not a fully independent no-harm audit.
+- **Waves.** One v2-policy wave, `kasegi-r30-build`: 64 seats spawned, resume 0 (dispatch
+  `.ufo/waves/round-30/wave1-dispatch.json`); declared roles scout 6, connector 4, executor 15,
+  scribe 13, reviewer 10, critic 4, mutation-tester 4, sentinel 2, revenger 1, simplifier 1. Spec
+  `.ufo/waves/round-30/wave1-spec.json`, seat reports under `.ufo/waves/round-30/wave1/`.
+  `wave1-results.json` / `WAVE-DONE` never arrived, so executed role mix and dead-seat counts remain
+  unavailable (disclosed, not inferred from role labels).
+- **Verifier close-out (conformance).** Report `.ufo/reports/round-30/kasegi.md` committed by lane
+  identity as `e959bfc63c99e0ec9e6bb55c7ceb0e357805124b`; one `## SHONEN` heading with 4 box lines;
+  all five cited hashes exist and are ancestors of master; lane `ahead=0 behind=0` at
+  `bc1a1e1`. Status-neutral routed defect recorded there: 8 untracked round-30 leftovers in the lane
+  repo.
+- **Tooling.** No tool installed or upgraded; no pacman transaction attempted (host-wide pause).
+  Answering model recorded on round-30 seat receipts: `inception/mercury-3` (config route table; no
+  seat passes a model itself).
+
+### Round-30 checks re-run for this append (round 31, quiescent committed bytes)
+
+Run by `ScribeLogR30` against `bc1a1e1` — every count is read from `bc1a1e1` blobs
+(`git show`/`git grep`), so concurrent round-31 edits cannot affect it, and a `git archive bc1a1e1
+corpus` export was used where a script needed a root:
+
+- `git cat-file -e` for `5703f9f`/`6262dac`/`bc1a1e1` → all present; ancestry chain holds (above).
+- `git show bc1a1e1:corpus/SOURCES.md | grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|'` → **47**.
+- `scripts/sources-census.sh validate --file <export>/corpus/SOURCES.md` → `file ok`, exit **0**, the
+  two W04 S028/S029 warnings and no E-code.
+- `grep -cE '^\|.*admitted' <export>/corpus/README.md` → **14**.
+- `git grep -lE '^source: S04[6-7] ' bc1a1e1 -- corpus/knowledge | wc -l` → **1**
+  (`japanese-severity-vocabulary-and-impact-model.md`).
+- Blob digests at `bc1a1e1`, computed now: `frontier-recheck-count.py` `aa60b58126569a1c8ec04409011df5f6225a9c18f2a77ea6410cd1d0d5dc0893`;
+  `source-recheck.py` `33602a9df53a4cadd7b7aa2b6ccea9b25235888799a3b71e87906de1fc622c6f`;
+  `round-30/manifest.json` `dfc8835750bbdcbc2480fc579f7204ba8215d3018d0bd0942e4ea97f3e5e75a6`;
+  F14 entry `f584f06c74942a36d9bce6bb97adcb7ab3bd1b2b0503faf8a68d5c60f4494a32` — each equal to the
+  string the round-30 lesson and SCORECARD carry.
+- `git show 6262dac:.ufo/waves/round-30/post-commit-recheck-output.txt` → first the C1
+  negative-control block (`a1_exit=1`, `a2_exit=1`, `b1_exit=1`, `b2_exit=1`, each the expected
+  exit, with `entries=1 pass=0 exit=1` and `entries=2 pass=2 exit=1` for the two harness roots), then
+  the after state: `entries=17 pass=17 exit=0`, `harness_exit=0`, `recheck_exit=0`,
+  `post_commit_recheck_exit=0`, with the S046/S047/S041 `sha256 OK` and assertion lines present.
+- **Boundary:** the instruments themselves were not re-executed now. Round 31 assigns
+  `recheck-audit.py`, `source-recheck.py` and `frontier-recheck-count.py` to live executor seats, so
+  any run in this lane now measures in-flight bytes and is non-comparative (bound 6 / M30-3); the
+  after-state above rests on the committed receipts at `6262dac`, and the canonical re-run at
+  quiescent round-31 bytes belongs to the round-31 receipt seats.
+- **Still open at round 31 (not closed by this append):** the 8 untracked round-30 leftovers
+  (spotcheck §5 item 1); B2 fixture isolation (item 3); the stale `SCORECARD.md` round-30
+  "recheck-audit open item … exit=1" paragraph, superseded by the erratum's final
+  `strict pass=43/43 … exit=0` (item 4, another round-31 seat's append); and the missing
+  `wave1-results.json`/`WAVE-DONE` (item 5). This entry closes only the LOG absence.

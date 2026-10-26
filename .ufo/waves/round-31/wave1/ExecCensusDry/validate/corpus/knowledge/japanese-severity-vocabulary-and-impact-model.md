@@ -1,0 +1,1 @@
+../../../../../../../../corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md

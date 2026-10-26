@@ -1,0 +1,22 @@
+[
+  {
+    "id": "SR-stem-mismatch",
+    "instrument": "corpus/instruments/source-recheck.py",
+    "find": "    if Path(path).stem != source_id:\n",
+    "replace": "    if False:  # SR-stem-mismatch mutant: B1 stem check dropped\n",
+    "kill": "python3 {inst} --manifest {root}/corpus/instruments/limb-fixtures/sr/stem-mismatch/manifest.json --source SFIX-STEM",
+    "live_exit": 1,
+    "signal": "reason=stem-mismatch",
+    "note": "B1 (QUALITY Q9): a capture whose file stem differs from the record id is rejected before any byte pin. Fixture corpus/instruments/limb-fixtures/sr/stem-mismatch: record SFIX-STEM, capture SFIX-STEM-capture.txt with a correct sha256 pin and a quote that occurs exactly once, so B1 is the only failing limb; the B1-dropping mutant prints sha256 OK and exits 0."
+  },
+  {
+    "id": "SR-occurrence-not-unique",
+    "instrument": "corpus/instruments/source-recheck.py",
+    "find": "        if occurrences > 1 and anchor_verdict_result != \"ok\":\n",
+    "replace": "        if occurrences > 1 and anchor_verdict_result != \"ok\" and anchor_verdict_result != \"missing\":  # SR-occurrence-not-unique mutant\n",
+    "kill": "python3 {inst} --manifest {root}/corpus/instruments/limb-fixtures/sr/occurrence-not-unique/manifest.json --source SFIX-REPEAT",
+    "live_exit": 1,
+    "signal": "reason=occurrence-not-unique",
+    "note": "B2 (QUALITY Q9): a quote occurring more than once without a verified anchor is rejected. Fixture corpus/instruments/limb-fixtures/sr/occurrence-not-unique is stem-correct (capture SFIX-REPEAT.txt, id SFIX-REPEAT) so B1 cannot preempt, closing M30-1; the quote occurs exactly twice with no anchor and the mutant that lets missing anchors pass prints occurrences=2 anchor=MISSING and exits 0."
+  }
+]

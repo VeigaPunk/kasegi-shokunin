@@ -1,0 +1,36 @@
+live instrument corpus/instruments/source-recheck.py sha256=fd2e01e88c8c45a949f48d67b3154ae87a95aeba0b6a9c42fbf64641b5b9c003
+== live (lane bytes) ==
+[stem] exit=1 stdout='SFIX-STEM:manifest MISMATCH reason=stem-mismatch' stderr=''
+[repeat] exit=1 stdout='SFIX-REPEAT:sha256 OK\nSFIX-REPEAT:Q1 MISMATCH reason=occurrence-not-unique' stderr=''
+== one-limb mutants ==
+mutant SR-stem-mismatch: sha256=6302635bf94d9012746b6190851750a00b80ddd1473a56ba516ba67c3049c01b py_compile=ok
+  [stem OWN] exit=0 stdout='SFIX-STEM:sha256 OK\nSFIX-STEM:Q1 OK occurrences=1' stderr=''
+  [repeat other] exit=1 stdout='SFIX-REPEAT:sha256 OK\nSFIX-REPEAT:Q1 MISMATCH reason=occurrence-not-unique' stderr=''
+mutant SR-occurrence-not-unique: sha256=8477c0cdc46f1e4b9d51d4b5e902fc0166bea6247ae72fec675d8f597f7da636 py_compile=ok
+  [stem other] exit=1 stdout='SFIX-STEM:manifest MISMATCH reason=stem-mismatch' stderr=''
+  [repeat OWN] exit=0 stdout='SFIX-REPEAT:sha256 OK\nSFIX-REPEAT:Q1 OK occurrences=2 anchor=MISSING' stderr=''
+== M5 strengthening (accept a not-found quote) ==
+mutant M5: sha256=ed61d8175ca8f1e10d268c7e47c03cadaf6750681ad2db3a92f6142ec282e239 py_compile=ok
+  pristine selftest exit=0 selftest cases=10 failures=0 fail_lines=[]
+  M5 selftest exit=1 selftest cases=10 failures=1 fail_lines=['SELFTEST quote-absent FAIL expected-exit=1 observed-exit=0 expected-ids=S900:sha256,S900:Q1 observed-ids=S900:sha256,S900:Q1']
+== do-nothing control: round-30 freeze bytes (no B1/B2) ==
+freeze sha256=9fe6a4a07fdbbd83a9b64a588a14d02b154fd5de81e460b97519675d69a79b96
+[stem] exit=0 stdout='SFIX-STEM:sha256 OK\nSFIX-STEM:Q1 OK occurrences=1' stderr=''
+[repeat] exit=0 stdout='SFIX-REPEAT:sha256 OK\nSFIX-REPEAT:Q1 OK occurrences=2 anchor=MISSING' stderr=''
+== verdict table ==
+SR-occurrence-not-unique   repeat  exit=0
+SR-occurrence-not-unique   stem    exit=1
+SR-stem-mismatch           repeat  exit=1
+SR-stem-mismatch           stem    exit=0
+freeze                     repeat  exit=0
+freeze                     stem    exit=0
+live                       repeat  exit=1
+live                       stem    exit=1
+== assertions ==
+PASS live stem exit 1 with reason
+PASS live repeat exit 1 with reason
+PASS mutant SR-stem-mismatch own fixture flips to 0
+PASS mutant SR-stem-mismatch leaves repeat at 1
+PASS mutant SR-occurrence-not-unique own fixture flips to 0
+PASS mutant SR-occurrence-not-unique leaves stem at 1
+PASS freeze bytes pass both fixtures (0,0) - limbs absent
