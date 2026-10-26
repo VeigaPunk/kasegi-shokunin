@@ -201,3 +201,8 @@ Correction (round 39): box 3's round-38 evidence line ("r38 suite run + selftest
 
 Round-39 measured state: judged head: export-ref of .ufo/waves/round-39/final-gates/all-gates.txt (claims-erratum-1.md E4).
 Correction (round 39): the round-39 suite's recorded 8/8 receipt is not independently reproducible as committed proof: G2 accepts mutated payload values and G6 depends on scratch-root state (`wave2/CritG2Exploit.md`, `wave2/CritC1Kill.md`). Its green isolated-clone/selftest evidence is reported with those limits; box 3 remains `[~]`, not independently verified.
+
+## BLOCK SHONEN.md
+
+Correction (round 40): the round-39 box 3 evidence line ("suite `--selftest` graded cases=8 failures=0 at the verification ref") is contradicted by the committed receipt at Y `8371e7ac9f32cae5ed72f8c28205634603f836fa`, which records `closed=7/8 exit=1` and `selftest failures=1` (`selftest cases=8 failures=1`, `selftest-exit=1`, `G2 positive=fail`; all-gates v5, sha256 8d46d7b251fd6736ba1841814274201176d3a7628f9330e8c9b1917013741471).
+Correction (round 40): read the line as: the suite ran, seven of eight checks close, and the graded selftest carries one failing case; the 8/8 exists only in the discarded attempt-1 receipt at `5006097a` (`run-utc=2026-10-26T21:35:00Z`, after its containing commit), and the two green limbs are not independent — G2 accepts forged payload values (mut-f/g/h/j/k, `wave2/CritG2Exploit.md`), G6 depends on a scratch root the seats populate (`wave2/CritC1Kill.md`) — so box 3 stays `[~]`, not independently verified. Verifier R2's ask, quoted: "Append `Correction (round 40)` lines naming the final receipt values in each record."
