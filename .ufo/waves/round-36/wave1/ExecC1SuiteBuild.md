@@ -376,6 +376,22 @@ wording rather than a stronger reading:
 | 11 | fully fabricated report (nine case lines + nine `detail … mutant=forged rejected=1` lines) | shape-wise identical to a real report | out of reach of a text judge | only running the suite distinguishes execution from fabrication; the judge stays shape-based (as r35's) |
 | 12 | fabricated `--lane` repo prints `closed=9/9` | `--lane` is honoured for review proofs | does **not** conform to the frozen command (canonical lane) | same scope gate as #10: `closed=9/9 exit=0` only when `lane` and `scratch-root` are canonical |
 
+**Clause-4 disclosure (critic and I agree on this):** three of the twelve are kill-rule hits on the
+integrated bytes, not limits — **#4 E3 retraction section**, **#8 E7 negation row**, **#9 E8 two bare
+tokens**. Each is a tree where the check prints `closed=1` while the defect its clause names
+(unregistered / no supersession row / correction not recorded) is present, so a judge using those
+fixtures could kill C1. They are disclosed here rather than folded into the limits list. #10/#12 are
+invocation-scope only: the frozen counting command passes no `--lane`/`--scratch-root`, so a
+non-canonical invocation is outside the claim's measurement (the `deviation=` line makes it visible).
+
+**Measured after integration:** `caa3146` and `e666d90` read `closed=6/9` (E1 bound=0, E4 note=0,
+E9 dirty); **`2c26a97` reads `closed=8/9 exit=1` with only E9 open** (`status-dirty=4`,
+`scratch-seat-dirs=4`, `head-match=1`) — independently reproduced by me and by CritC1Kill. At that
+head the round-36 line is `Final lane commit: e666d902…` (`SCORECARD.md:1492`) while HEAD is
+`2c26a97`, so `bound=1` certifies "resolvable ancestor", exactly the frozen limb and not "the
+closing commit" — the `on-head` limb is the first item of the round-37 backlog for that reason.
+Only quiescence remains for `closed=9/9`.
+
 Ordered round-37 backlog, by value: (a) E1 `on-head` (#1/#2), (b) E9/E12 canonical-scope gate that
 makes a non-canonical run unable to print `exit=0` (#10/#12), (c) E3 retraction + type-cell (#4),
 (d) E7 negation row (#8), (e) E8 `M36-[0-9]` + quoted line (#9), (f) E2 one-line statement + stale

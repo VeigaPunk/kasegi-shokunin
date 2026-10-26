@@ -493,6 +493,14 @@ knowledge_entries=47, harness=entries=21 pass=21 exit=0, junk_present=1`; census
 `3266c993` → `closed=0/9 exit=1`; `0aee0ef` → `closed=4/9 exit=1`; `b47f2cd` → `closed=5/9 exit=1`;
 selftest at HEAD `cases=9 failures=4`; green-path proof on a synthesized tree `green_closed=9/9`.
 
+**Those payloads are not a reading of the bytes now in the lane.** During this draft the worktree gained
+`corpus/instruments/r36-closure.sh` (mtime `2026-10-26 12:54:34 -0300`, untracked at this read):
+**894 lines / 39,022 B, sha256 `4db1ae70c76afd28b29e9ec24c2e44835322c61fa33e30c966f75ce0dfadb7c4`**,
+`bash -n` exit 0. This seat hashed and header-read it read-only and **did not execute it**; the header states
+the same E1–E9 semantics (five-line E1 window plus ancestry, E3 exact basenames, E4 `.provenance.md`, E8
+`M36` plus the stale line, E9 status/scratch/head). A `closed=9/9` claim must be run on the committed bytes
+and the suite's digest recorded in the closing receipt.
+
 ### 2.3 E-check subjects measured by this seat
 
 ```
@@ -669,6 +677,11 @@ watchdog.log:1527  2026-10-26T12:31:14-03:00 launch kasegi round=36 pgid=14809 d
    (the earlier `:59,:85,:123,:373` list was stale after the fix); (d) the § Mistakes section now states that
    its four bullets are **anchors** and that the six-field rows from `wave1/ScribeMistakes.md` § 1 are appended
    under them, instead of claiming rows already pasted.
+9. **The suite's measured revision and the suite's landed revision are different objects.** The export runs and
+   the selftest quoted in § 2.2 belong to draft `ff616adc…` (737 lines / 28,980 B). The file present in the
+   worktree at `12:54:34 -0300` is `4db1ae70…` (894 lines / 39,022 B, untracked, `bash -n` exit 0). Both are
+   read-only facts; no `closed=K/9` value in this receipt was produced by `4db1ae70…`, and this seat did not
+   execute it.
 
 ## 5. Touched surfaces and provenance
 

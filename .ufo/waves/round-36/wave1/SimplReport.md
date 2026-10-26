@@ -21,7 +21,7 @@ digest stated; re-grep the quoted string rather than trusting a number.
 | draft | path | state at final read (2026-10-26T15:5xZ) |
 |---|---|---|
 | report | `.ufo/waves/round-36/wave1/ScribeReportDraft.md` | 425 lines, sha256 `03b3a87b0e…`; 75 `[MEASURE` slots |
-| lesson | `wave1/ScribeGateLesson.md` (lesson text inside) | 732 lines, sha256 `a3a26cdea5…` |
+| lesson | `wave1/ScribeGateLesson.md` (lesson text inside) | 742 lines, sha256 `5956552d0a…` |
 | scorecard | `wave1/ScribeScorecard.md` | 205 lines, sha256 `6711d4c671…` |
 | LOG entry | `wave1/ScribeLOG.md` | 146 lines, sha256 `828901a11e…` |
 | SHONEN | `wave1/ScribeShonen.md` | 296 lines, sha256 `2eb561fb2a…` |
@@ -245,7 +245,7 @@ not rewritten.
 
 ## 5. Cross-draft contradiction matrix (what the L1 must reconcile before landing)
 
-| topic | report `03b3a87b` | lesson `a3a26cde` | scorecard `6711d4c6` | LOG `828901a1` | SHONEN `2eb561fb` | authoritative |
+| topic | report `03b3a87b` | lesson `5956552d` | scorecard `6711d4c6` | LOG `828901a1` | SHONEN `2eb561fb` | authoritative |
 |---|---|---|---|---|---|---|
 | E4 beside-note | absent at freeze, owed (fixed) | absent, owed | absent; after-cell says "adds the note" (F4) | measured 0, not listed as landing | **"present"** (C1) | 0 — suite + `ls` |
 | fixture corpus | none (fixed) | none | none | **"Landed r36-fixtures/"** (C2) | none | none lands (suite deviation 3) |
