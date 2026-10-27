@@ -1,0 +1,18 @@
+=== c1 do-nothing control, run at base 5053a7f46de35784cff4b56756906e9014a38276 ===
+Recorded by KasegiR42 before any round-42 data.
+
+--- r42 suite absent at base:
+$ bash corpus/instruments/r42-closure.sh
+bash: corpus/instruments/r42-closure.sh: No such file or directory
+(observed suite exit = 127; the suite cannot print closed=13/13 — do-nothing cannot reach the after-state)
+
+--- r41 suite present at base:
+$ ls -la corpus/instruments/r41-closure.sh -> 93905 bytes
+
+--- r41 suite run against base export (expected RED: base cannot print closed=13/13; observed defeats):
+$ bash corpus/instruments/r41-closure.sh --export-ref 5053a7f46de35784cff4b56756906e9014a38276 \
+    --work /fast/scratch/hyaku/kasegi-r42/l1-ctl/work --scratch-root /fast/scratch/hyaku/kasegi-r42/l1-ctl
+selftest cases=12 failures=8
+closed=8/12 exit=1
+(observed suite exit = 1 — the tail lines above are verbatim from the run; I1/I3 evidence-union and
+token-boundary defect families remain open at base, per the r41 verifier's routed queue)

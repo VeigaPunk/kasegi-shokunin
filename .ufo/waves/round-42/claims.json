@@ -1,0 +1,70 @@
+{
+ "lane": "kasegi",
+ "round": 42,
+ "attempt": 1,
+ "base": "5053a7f46de35784cff4b56756906e9014a38276",
+ "frozen_at_utc": "2026-10-28T12:05:00Z",
+ "frozen_by": "KasegiR42 (L1, kasegi round 42)",
+ "axes_owned": [
+  "depth:density",
+  "depth:verifiability",
+  "coverage"
+ ],
+ "saturation": {
+  "line": "9/10 per owned axis",
+  "window": "N=3"
+ },
+ "lowest_non_retired_axis": "depth:verifiability (4)",
+ "fresh_start_rule": "run-10 fresh-start (kasegi blocked at run-9 end by three rejected closures r39-r41): the last three verifier spot-checks were read first (round-39, round-40, round-41). Both claims declare after-states a do-nothing control cannot reach — control receipts committed at c1-controls/do-nothing.txt and c2-controls/before.txt before any data was produced. Claims follow the verifier's own queued direction (SCORECARD.md 'Planned for round 42'): C1 repairs the routed defeat families first and then freezes the predicate this file carries; C2 works a frontier lead distinct from RFC 9116 (F24 stays parked: the L0 scope question filed in round 41 is unanswered at freeze time).",
+ "judged_head_rule": "The round-42 judged head J is the lane commit that carries every round-42 change except the receipt; the lane tip Y adds only the receipt (.ufo/waves/round-42/final-gates/all-gates.txt). Lane files never name J by hash (a commit cannot contain its own hash); the report names J and Y. Counting commands over the suite run at Y; negative controls run at base 5053a7f46de35784cff4b56756906e9014a38276 and round-41 judged head 1f7464612ac4c44e39886b82e812610d3c039b13.",
+ "claim_design_lesson": "Rounds 39-41 failed because the frozen kill rule fired on the lane's own committed attack evidence after the receipt: committed fixtures showed checks passing while their named defects were present. Round 42 turns that failure mode into the counter: each repaired check carries a REPLAY limb that re-executes every committed defeat artifact against the current suite bytes and requires rejection. The kill rule names the seven repair families explicitly; a committed artifact at Z showing the current suite accepting an input within a named family kills the claim — new attack findings outside the seven families are routed defects, not kill clauses, exactly as the last three closures ruled them.",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "score_before": 4,
+   "score_after": "held 4",
+   "predicate": "The committed instrument `corpus/instruments/r42-closure.sh` runs in export mode only (`--export-ref <hash>` extracts the lane tree via `git -C <lane> archive <hash> | tar -x` into a work dir outside the lane; a plain run refuses exit 2) and prints one `J<n> payload=... closed=0|1` line per check J1-J13 followed by `closed=13/13 exit=0`, exit 0 only for 13/13, on the round-42 verification ref Y; `--selftest --export-ref Y` prints thirteen graded lines `selftest case=J<n> ... positive=pass ... verdict=pass` and `selftest cases=13 failures=0`; exports of base 5053a7f46de35784cff4b56756906e9014a38276 and round-41 judged head 1f7464612ac4c44e39886b82e812610d3c039b13 each print `closed<13/13 exit=1`. The thirteen checks close the round-41 verifier's routed queue (corpus/lessons/round-41-verifier-spotcheck.md section 5) and the round-41 wave-2 attack findings: J1 per-correction evidence (family F-EVID: every `Correction (round <n>)` line set in SCORECARD.md, LOG.md and SHONEN.md grades the named overclaim not verified AND names each firing evidence identifier per-record, not as a union — the committed r41 evidence-not-named union mutation must be rejected on replay); J2 token-boundary tally validation (family F-TOKEN: a `closed=<n>/<m>` or `failures=<k>` value is read only as a whole token bounded by non-digit, non-slash characters — the committed `closed=10/100` mangled-value mutation must be rejected on replay); J3 SKILL.md registry integrity (family F-TABLE: the Gates-and-probes table has no blank line between header separator and its last row, no instrument basename appears in more than one row, and bare internal pipes / leading-whitespace cells are rejected — the committed MutSkillTablePipes variants must be rejected on replay); J4 declared-blocks completeness (family F-DECL: every round-N artifact path that a check reads is declared in declared-blocks.txt and a path read outside the export root through a symlink is rejected — the committed T7 and CritDeclarationCoverage probes must be rejected on replay); J5 scratch-baseline hygiene (family F-SCAN: the suite's scratch scan covers `kasegi-r4[0-9]*` prefixes and an outside-configured-root stray under a seat-named dir is detected — the committed MutScratchTiming probe must be rejected on replay, evaluated inside the suite's own scratch root, never host-global state); J6 capture-binding integrity (family F-BIND: corpus/instruments/capture-binding-check.py rejects a manifest record whose capture path is absent and a record whose url field is mutated — the committed r41 missing-path and URL-variant mutations must be rejected on replay by running the real instrument over mutated scratch manifests); J7 frontier-counter status-flip detection (family F-FLIP: corpus/instruments/frontier-recheck-count.py exits nonzero when an admitted frontier row's PASS line is absent or a row status flips — the committed r41 status-flip probe must be rejected on replay); J8 receipt integrity (family F-RCPT: the Y receipt is the teed transcript of run+selftest whose recorded payload values are compared against the values the suite re-derives — forged payload values are rejected, inheriting the r40/r41 I2/I8 design); J9 negative controls (base and round-41 judged-head exports print closed<13/13 exit=1; an unresolvable --export-ref reports a distinct ref-not-found red, never a vacuous closed<13/13); J10 graded-selftest isolation (each selftest case runs the suite over a private mutated copy; a case must not read another case's state); J11 SCORECARD correction uniqueness (family F-CORR: no `Correction (round <n>)` block is duplicated verbatim — the committed r41 duplicated-block state must be detected, not silently passed); J12 no tracked deletions in corpus paths and corpus/instruments/density.py byte-identical to base (depth:density no-harm guard); J13 quiescence (no uncommitted lane changes and no leftover kasegi-r4[0-9]* scratch entry inside the suite's own scratch root at receipt time — evaluated inside the suite's scratch root, bound to the exported ref by name).",
+   "kill_rule": "Any of: the suite is absent from the Y export; the Y export prints closed!=13/13 or exit!=0; the selftest prints fewer than thirteen graded case lines, any failure, or a summary-only line satisfies a case; the base or round-41 judged-head export prints closed=13/13; a plain run exits other than 2; an unresolvable --export-ref does not produce its distinct red; a committed artifact at Z — including any wave-2 attack receipt — shows the CURRENT suite bytes accepting an input within one of the seven named repair families F-EVID / F-TOKEN / F-TABLE / F-DECL / F-SCAN / F-BIND / F-FLIP (an in-family escape not yet rejected); the committed replay limb of any J1-J7 check is absent or skipped (a defeat that is not replayed is not repaired); the final receipt is missing, is not the teed transcript of one observed run+selftest at its named ref, or its run-utc is after its containing commit.",
+   "counting_commands": [
+    "bash corpus/instruments/r42-closure.sh --export-ref <Y> --work <scratch>/work --scratch-root <scratch> -> closed=13/13 exit=0",
+    "bash corpus/instruments/r42-closure.sh --selftest --export-ref <Y> --work <scratch>/work --scratch-root <scratch> -> selftest cases=13 failures=0 exit=0 with thirteen `selftest case=J<n> ... positive=pass ... verdict=pass` lines",
+    "bash corpus/instruments/r42-closure.sh --export-ref 5053a7f46de35784cff4b56756906e9014a38276 --work <scratch>/w1 --scratch-root <scratch> -> closed<13/13 exit=1",
+    "bash corpus/instruments/r42-closure.sh --export-ref 1f7464612ac4c44e39886b82e812610d3c039b13 --work <scratch>/w2 --scratch-root <scratch> -> closed<13/13 exit=1",
+    "bash corpus/instruments/r42-closure.sh -> exit 2 (plain run refused)"
+   ],
+   "before": [
+    "see .ufo/waves/round-42/c1-controls/do-nothing.txt — the frozen counter run against the base tree: r42 suite absent (exit 127, cannot print closed=13/13); the r41 suite at base prints closed=10/12 exit=1 with the I1 evidence-not-named and I3 mangled-token defeats alive. Routed queue open at base: I1 per-correction evidence, I3 token boundary, I7 bare-pipe/leading-whitespace, I5/I12 declaration completeness, I6 outside-configured-root stray, capture-binding missing-path/URL variants, frontier-counter status-flip blind spot (round-41 verifier §5 item 6); D-r41-1 duplicated Correction blocks; D-r41-3 SKILL registry split table + duplicate r40-closure.sh row."
+   ],
+   "after": [
+    "closed=13/13 exit=0 at Y; graded selftest cases=13 failures=0 with the selftest transcript teed in the receipt; base and r41-judged-head exports red; every routed family closed by its named check with committed defeats replayed to rejection; receipt = teed transcript of run+selftest at Y"
+   ]
+  },
+  {
+   "id": "C2",
+   "axis": "coverage",
+   "score_before": 8,
+   "score_after": "held 8",
+   "predicate": "One new frontier topic F25 is admitted 24->25 with a coverage-map row in corpus/README.md and an appended F25 amendment in PROVINCE.md; the topic is chosen by a wave-1 scout lead screen from machine-readable vulnerability-data standards the lane does not yet hold (lead class: the OSV schema or the CVE Record Format — the scout must verify no lane row/entry already covers the chosen document and must reject at least one screened candidate with reason + flip recorded in the lesson Gate block with URL, access date and ≤25-word located quote, closing D-r41-2); one new registry row S064 (status mined, opened this round) is appended with a capture corpus/source-snapshots/round-42/S064.txt plus a manifest.json record passing `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-42/manifest.json --source S064` and bound under capture-binding-check.py; one knowledge entry corpus/knowledge/<slug>.md carries the provenance trio (`source: S064`, `verified-at:`, executable `recheck:` line); the frontier harness prints entries=28 pass=28 exit=0 including `PASS F25`; capture-binding prints records=56 bound=56 unbound=0; recheck-audit prints expected=61 missing=0 unexpected=0 exit=0; the sources census exits 0 with only the standing W04 S028/S029 warnings; the coverage measure stays 1.000; a junk twin control is rejected. F24/RFC 9116 is NOT revisited (open L0 scope question).",
+   "kill_rule": "Any of: no F25 frontier row or its status cell not `admitted`; no S064 row opened this round, or its capture failing source-recheck, or its manifest record unbound; the entry missing, lacking the provenance trio, or failing its recheck line; harness not entries=28 pass=28 or no `PASS F25` line; capture-binding unbound!=0; recheck-audit expected!=61; census exit!=0 or a new W/E code; no screened reject recorded in the Gate block (reason + flip + URL + date + ≤25-word located quote); the chosen topic's document already covered by a lane row or entry (the scout's no-overlap check false); a junk twin accepted (a mined-marked row without capture+entry+harness pass — the O4 class); any tracked deletion in corpus paths; the measure reading below 1.000.",
+   "counting_commands": [
+    "grep -cE '^\\| F[0-9]+ \\|' corpus/README.md -> 24 -> 25",
+    "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md -> 63 -> 64",
+    "awk -F'|' '/^\\|[[:space:]]*S064[[:space:]]*\\|/ {s=$9; gsub(/[[:space:]]/,\"\",s); if(s==\"mined\") n++} END{print n+0}' corpus/SOURCES.md -> 0 -> 1",
+    "grep -rlE '^source: S064' corpus/knowledge | wc -l -> 0 -> 1",
+    "ls corpus/knowledge/*.md | wc -l -> 60 -> 61",
+    "python3 corpus/instruments/frontier-recheck-count.py -> entries=28 pass=28 exit=0",
+    "python3 corpus/instruments/capture-binding-check.py -> records=56 bound=56 unbound=0",
+    "python3 corpus/instruments/recheck-audit.py --quiet -> expected=61 missing=0 unexpected=0 exit=0",
+    "bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> exit 0"
+   ],
+   "before": [
+    "see .ufo/waves/round-42/c2-controls/before.txt — frontier 24 (F25 absent), registry 63 (S064+ absent), entries citing S064+ 0, knowledge 60, harness entries=27 pass=27, binding records=55 bound=55, audit expected=60, census exit 0. Do-nothing control reaches none of the after-state values."
+   ],
+   "after": [
+    "frontier 25 (F25 admitted), registry 64 (S064 mined), entry citing S064 1, knowledge 61, harness 28/28 incl PASS F25, binding 56/56, audit expected=61, census exit 0, measure 45/45 = 1.000, one screened reject recorded with URL/date/quote"
+   ]
+  }
+ ],
+ "errata": []
+}

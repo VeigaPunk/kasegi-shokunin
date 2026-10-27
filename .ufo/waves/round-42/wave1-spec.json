@@ -1,0 +1,333 @@
+{
+ "wave": "kasegi-r42-build",
+ "reportDir": ".ufo/waves/round-42/wave1",
+ "maxLanes": 64,
+ "axes": [
+  "depth:verifiability",
+  "coverage"
+ ],
+ "milestone": "round-42 build wave 1 (fresh-start): C1 r42-closure.sh J1-J13 suite with replay limbs closing the 7 routed families; C2 F25 lead screen + S064 capture/rows/entry; assimilation checks; considerthese mining; first falsifiers of the freeze",
+ "context": "# Round\nkasegi-shokunin round 42, dispatched by the L1 (agent KasegiR42) via the inline spawn handoff (hyaku run 10; run-10 fresh-start round). Lane repo /home/vgpnk/Projects/shokunin/kasegi-shokunin is the ONLY lane repo. The fleet root /home/vgpnk/Projects/shokunin is read-only to you — never write there. /home/vgpnk/Projects/shokuknow is read-only — never write there, never run its campaign tools. Base commit 5053a7f46de35784cff4b56756906e9014a38276; frozen claims at /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json (read it first; do not edit). Before-controls: c1-controls/do-nothing.txt, c2-controls/before.txt under the same dir.\n\nFrozen claims (summary; claims.json is authoritative):\n- C1 depth:verifiability (score 4, held): new committed suite corpus/instruments/r42-closure.sh, export mode only (`--export-ref <hash>` -> `git -C <lane> archive <hash> | tar -x` into a work dir outside the lane; plain run refuses exit 2; `--selftest` prints thirteen GRADED `selftest case=J<n> ... positive=pass ... verdict=pass` lines), prints `closed=13/13 exit=0` on the round-42 verification ref Y (= judged head J + receipt only) and `selftest cases=13 failures=0`; base 5053a7f46de35784cff4b56756906e9014a38276 and round-41 judged head 1f7464612ac4c44e39886b82e812610d3c039b13 exports print closed<13/13 exit=1; unresolvable --export-ref prints a distinct ref-not-found red. Checks J1-J13 close the round-41 verifier routed queue (corpus/lessons/round-41-verifier-spotcheck.md section 5) and the r41 wave-2 attack findings — seven named repair families: F-EVID per-correction evidence, F-TOKEN token-boundary tallies, F-TABLE SKILL.md registry integrity, F-DECL declared-blocks completeness, F-SCAN scratch hygiene incl outside-configured-root strays, F-BIND capture-binding missing-path/URL variants, F-FLIP frontier-counter status-flip detection — plus J8 receipt integrity (teed transcript, payload values re-derived not trusted), J9 negative controls, J10 graded-selftest isolation, J11 SCORECARD correction uniqueness (no duplicated Correction block), J12 no tracked corpus deletions + density.py byte-identical, J13 quiescence inside the suite's own scratch root. EVERY repaired check carries a REPLAY limb that re-executes its committed defeat artifact against the current suite bytes and requires rejection.\n- C2 coverage (score 8, held): one frontier topic F25 admitted 24->25 (coverage-map row + PROVINCE amendment); the topic is a machine-readable vulnerability-data standard the lane does not hold — scout lead screen across candidate docs (OSV schema, CVE Record Format, alternates); ONE mined registry row S064 + at least ONE rejected screened row S065+ (status rejected, reason + flip, Gate records URL/date/<=25-word located quote — closes D-r41-2); capture corpus/source-snapshots/round-42/S064.txt + manifest.json record passing source-recheck; knowledge entry with provenance trio; harness entries=28 pass=28 incl PASS F25; binding 56/56; audit expected=61; registry 63 -> 64+R (R>=1); census exit 0; measure 45/45 = 1.000. F24/RFC 9116 is PARKED (open L0 scope question — never re-mine it, never reference it as a candidate).\n\nRead your item spec below fully before acting. You are a leaf seat (no subagent spawning, except one read-only labrat probe allowed for executors). Work only your item. No placeholders or plan text — land real evidence: commands you ran with their actual output.\n\nWrite scope. Your ONLY allowed writes are (1) your receipt at /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/<SEATNAME>.md (write it last), (2) byte-exact deliverable files your item names, written beside the receipt as /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/<SEATNAME>.<suffix>, and (3) scratch under your scratch dir. Every `Report:` trailer path is relative to /home/vgpnk/Projects/shokunin/kasegi-shokunin — write it at /home/vgpnk/Projects/shokunin/kasegi-shokunin/<that path>. Never edit any other file in the lane repo, the fleet repo, sibling lane repos, or source trees (/home/vgpnk/Projects/shokuknow, ~/Projects/*). Never run a mutating git/jj command anywhere (no add/commit/push/checkout/reset/stash; no jj describe/new/commit/squash/rebase/bookmark/undo/git). Lanes commit only through the L1.\n\nDeliverable discipline. When your item delivers text the L1 will land, put ONLY the landable bytes in the deliverable file — no validation tables, no notes, no headings that are not part of the landed text. Put validation evidence in the receipt, outside the deliverable. Give the deliverable's line count and sha256.\n\nScratch. Create S=/fast/scratch/hyaku/kasegi-r42/<SEATNAME>/ with mkdir -p and bind ALL scratch/work copies there (TMPDIR=$S, --work under $S); never rely on an inherited TMPDIR; /tmp only for files under 50 MB. Remove your scratch dir before you yield (`trap 'rm -rf -- \"$S\"' EXIT` in shell; `finally: shutil.rmtree` in Python), after copying receipts/deliverables into the wave dir. A seat whose scratch dir survives is a defect. Do not run a heavy pass while the disk guard is not green: `bash /home/vgpnk/Projects/shokunin/scripts/hyaku/disk-guard.sh status`.\n\nTooling. Tooling authorization (operator 2026-10-19): you may install/upgrade tools that help the task, after reading /home/vgpnk/.omp/agent/RULES.md (official channels only; record tool/version/channel/reason in your receipt). pacman transactions are PAUSED host-wide — never run pacman; use `uv tool install`, `npx`, or an official binary into ~/.local/bin instead. Never edit ~/.omp/agent/config.yml or ~/.omp/agent/mcp.json (operator-owned). Never restart a host service.\n\nHost guard (SEAT_GUARD). Your tools start at the fleet root: cd to your scratch first and use absolute paths for every read/write. If you build a git fixture, create it as D=$(mktemp -d -p \"$S\") && git -C \"$D\" init -q and verify `git -C \"$D\" rev-parse --show-toplevel` equals \"$D\" before any commit; never use a throwaway git identity anywhere else. Never write to any PATH directory (~/.local/bin, /usr/bin). Never write fleet-root tracked files.\n\nNetwork fetches: `curl -sS -L --max-time 90 -A kasegi-shokunin/1.0`; record HTTP status, bytes and the UTC fetch time in your receipt.\n\nRules. Keep moves that improve an axis and harm none. Do not message agent://all. Do not run your own swarm. A seat keeps the route chain it captured at spawn. Godspeed posture governs your work: name the axes, iterate cheap in parallel, keep moves that improve any axis and harm none, never stall in clarifying-question loops.\n",
+ "items": [
+  {
+   "name": "ExecSuiteCore",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecSuiteCore.r42-closure.sh` (byte-exact suite) + `ExecSuiteCore.transcripts.txt` + receipt.\nAuthor the committed suite `corpus/instruments/r42-closure.sh` per the frozen C1 predicate. First STUDY the round-41 suite /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r41-closure.sh (export harness, receipt machinery, graded selftest, I1-I12) — the r42 suite reuses its proven harness and repairs its defeated limbs. Structure: export mode ONLY (`--export-ref <hash>` -> `git -C <lane> archive <hash> | tar -xf - -C <work>/export`); plain run refuses exit 2; `--selftest --export-ref <hash>` runs thirteen graded cases; an unresolvable ref prints `ref-not-found` and exits 1 (never a vacuous pass). Thirteen checks J1-J13 exactly as claims.json's C1 predicate enumerates them. Read the seat deliverables in .ufo/waves/round-42-wave dir as they land (ExecJ*-*.sh limbs, ExecReplayHarness.sh) and integrate them — each J check MUST carry its REPLAY limb: it re-executes its family's committed defeat artifacts (from /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave2/ and /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/../round-40/wave2/) against the current suite and requires rejection. Transcript: run the suite over an exported copy of the CURRENT lane tip (git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive HEAD | tar -x into your scratch) and over base 5053a7f46de35784cff4b56756906e9014a38276; record every J line's payload and the final tally. Suite must be self-contained bash+python3+coreutils, no network, honoring TMPDIR/--work/--scratch-root args. Receipt names deliverable sha256+lines and the transcripts."
+  },
+  {
+   "name": "ExecReplayHarness",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecReplayHarness.sh` (sourceable bash library) + `ExecReplayHarness.spec.txt` + receipt.\nBuild the replay-limb library the r42 suite sources: a function `replay_defeat <artifact> <mode>` that (a) reconstructs the mutated input state a committed defeat artifact describes, (b) runs the CURRENT suite's named check limb over it, (c) returns 0 iff the limb REJECTS it (nonzero/closes=0). Enumerate the defeat catalog: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave2/{CritC1KillRule.md,RevC1Counters.md,MutSkillTablePipes.md,CritDeclarationCoverage.md,MutScratchTiming.md,CritI12Necessity.md,CritDigestSelftest.md,CritReceiptBootstrap.md,MutSuite.findings.txt} and /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/wave2/{RevC1Counters.defeats.txt,CritKillRule.md,CritKillRule.h6-escapes.sh,MutH6H10.md}. The spec file maps every defeat artifact -> family (F-EVID/F-TOKEN/F-TABLE/F-DECL/F-SCAN/F-BIND/F-FLIP) -> expected rejection mechanism. Any artifact you cannot map is listed UNMAPPED with a proposed family; the L1 decides. No defeats are replayed by re-running 91KB files: the limbs under test are the check functions, invoked on mutated fixtures your library materializes under the seat scratch."
+  },
+  {
+   "name": "ExecJ1Evidence",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecJ1Evidence.sh` (sourceable bash limb: `check_j1 <export>` prints `J1 payload=... closed=0|1`) + `ExecJ1Evidence.transcript.txt` + receipt.\nFamily F-EVID. The r41 I1 defect: evidence was collected as a cross-record UNION, so removing one correction's evidence kept aggregate evidence=3/3 green (committed defeat: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave2/CritC1KillRule.md, RevC1Counters.md). Requirement: for EVERY record block (SCORECARD.md `## BLOCK SCORECARD.md`-style blocks / Correction (round N) line sets in SCORECARD.md, LOG.md, SHONEN.md), EACH correction individually must (a) grade the named overclaim not-verified AND (b) name each firing evidence identifier. Per-correction check, never a union: the committed union mutant (evidence removed from one correction) MUST be rejected on replay. Study r41 suite check_i1 (~lines 902-906) and its selftest mutants; keep what held, fix the aggregation. Transcript shows: green run over lane HEAD export, rejected run over the committed union mutant, plus ≥2 fresh mutants of your own (e.g. one correction naming only 2 of 3 evidence ids; one correction whose verdict phrase is softened)."
+  },
+  {
+   "name": "ExecJ2Token",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecJ2Token.sh` (sourceable bash limb `check_j2`) + `ExecJ2Token.transcript.txt` + receipt.\nFamily F-TOKEN. The r41 I3 defect: `closed=10/100` still satisfied a substring/value-presence tally check (committed defeat: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave2/RevC1Counters.md — selftest detail `mutant=mangled-value-token rejected=0`). Requirement: every `closed=<n>/<m>` / `failures=<k>` / `cases=<k>` value is extracted as a WHOLE TOKEN bounded by non-digit non-slash characters (regex word boundaries are NOT sufficient — `closed=10/100` contains `closed=10/` as a substring; require the full value equality against expected). Study r41 suite value_present (~lines 438-459, 960-980, mutant at ~1757-1759). Transcript shows: green over HEAD export, rejected over committed `closed=10/100` mutant, plus your own boundary mutants (`closed=13/130`, `failures=10`, `closed=1/13`, leading-space variants, `xclosed=13/13x`)."
+  },
+  {
+   "name": "ExecJ3Registry",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverables: `ExecJ3Registry.sh` (sourceable limb `check_j3`) + `ExecJ3Registry.skill-fix.txt` (the corrected SKILL.md registry block bytes) + `ExecJ3Registry.transcript.txt` + receipt.\nFamily F-TABLE. Round-41 defects: SKILL.md Gates-and-probes registry table is SPLIT from its last row by a blank line (r40 D6 residue: separator L1120, blank L1121, r40 row L1122) AND the r40-closure.sh row now appears twice (round-40 block and round-41 block). Deliverables: (a) the corrected registry block for landing — contiguous table, each instrument basename in exactly one row, r40-closure.sh registered once (keep the round-40 block row, remove the duplicate in the round-41 block or merge per the file's own convention — read SKILL.md tail first); (b) `check_j3` asserting: no blank line between a table header separator and its following rows; every *.sh basename in `corpus/instruments/r*-closure.sh` appears in exactly one registry row; bare internal pipes inside a row's cells and leading-whitespace first cells are REJECTED (committed mutants: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave2/MutSkillTablePipes.md). Transcript shows green over the FIXED table bytes (applied to a scratch copy of the export), red over the CURRENT broken table at HEAD — wait: HEAD still carries the defect; the limb must distinguish `pre-repair state` (fails) from `post-repair` (passes). Design: check_j3 fails closed on the defect; the L1 lands the fix before the receipt run. Your transcript proves both states on scratch copies."
+  },
+  {
+   "name": "ExecJ4Decl",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverables: `ExecJ4Decl.sh` (sourceable limb `check_j4`) + `ExecJ4Decl.declared-blocks.txt` (regenerated declarations for the r42 suite) + `ExecJ4Decl.transcript.txt` + receipt.\nFamily F-DECL. Round-41 defects: T7 declared-path escape (a declared path read OUTSIDE the export root through a symlink passed) and CritDeclarationCoverage (I5/I12 did not require every changed artifact path a check reads to be declared). Requirement: every artifact path any check reads inside the export is declared in .ufo/waves/round-42/declared-blocks.txt (or the suite's declared list); a declared path resolving outside the export root (symlink escape, `..` escape, absolute path) is rejected; a read path not in the declaration is rejected. Study r41 suite check_i5 + /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave2/CritDeclarationCoverage.md + /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave2/CritI12Necessity.md (the H9/T7 routing). Regenerate declared-blocks.txt listing every path the r42 suite reads, with sha256 where stable (dyn files marked). Transcript: green over HEAD export, rejected over (a) symlinked declaration, (b) an undeclared-path read probe, (c) a `..`-escaped declaration."
+  },
+  {
+   "name": "ExecJ5Scan",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecJ5Scan.sh` (sourceable limb `check_j5`) + `ExecJ5Scan.transcript.txt` + receipt.\nFamily F-SCAN. Round-41 defect: I6's scratch scan (a) missed `kasegi-r39`-sibling prefixes (looked only under `kasegi-r39/` literal), (b) missed an outside-configured-root stray (MutScratchTiming). Requirement: the scan enumerates `$HYAKU_SCRATCH/kasegi-r4[0-9]*`-shaped dirs under the SUITE'S OWN scratch root argument (never a hardcoded host path — the suite receives --scratch-root and evaluates only beneath it); a seat-named stray (anything not matching this run's own --work dir) is detected; an outside-configured-root stray is detected by scanning the parent of the given scratch root for kasegi-r4[0-9]* entries, BUT the check must not read host-global state — it operates on a materialized tree: the suite materializes a fixture root under --work and scans THAT, so the check is deterministic. Design: the limb scans two roots — (i) the declared live root arg for leftovers (reported as `strays`, evaluated against this run's own paths), (ii) a fixture root the selftest populates. Transcript shows: green when clean, rejected over planted `kasegi-r41/SeatX` and `kasegi-r42/OtherSeat` strays and one outside-configured-root stray."
+  },
+  {
+   "name": "ExecJ6Bind",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverables: `ExecJ6Bind.capture-binding-check.py` (patched instrument, byte-exact) + `ExecJ6Bind.transcript.txt` + receipt.\nFamily F-BIND. Round-41 defect (in kasegi-r41-falsify-results.json / wave2): corpus/instruments/capture-binding-check.py accepts (a) a manifest record whose capture path is ABSENT and (b) a record whose url field is MUTATED. Read the committed instrument; add checks: every manifest record's capture path exists under the lane corpus/source-snapshots/, its recorded sha256 equals the file's sha256, and its recorded url byte-identically matches the SOURCES.md row's url cell for that source id. Deliverable is the patched file for landing (same CLI contract, still exit 0 on the CURRENT committed corpus — run it to prove `records=55 bound=55 unbound=0` at base). Transcript: base run exit 0; rejected runs over scratch manifests with (a) missing capture path, (b) mutated url, (c) mutated sha256, (d) url with trailing slash variant."
+  },
+  {
+   "name": "ExecJ7Flip",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverables: `ExecJ7Flip.frontier-recheck-count.py` (patched instrument, byte-exact) + `ExecJ7Flip.transcript.txt` + receipt.\nFamily F-FLIP. Round-41 defect (in kasegi-r41-falsify-results.json): frontier-recheck-count.py drops a status-flipped frontier row silently — 26/26 exit 0 without the explicit `PASS F24` line (the flipped row vanished from the count instead of failing). Requirement: the instrument enumerates EVERY `| F<n> |` row in corpus/README.md, requires an explicit `PASS F<n> ... ids=<S>` per row with status `admitted`, and exits nonzero if any frontier row is non-admitted, missing its PASS line, or bound to an absent source id — never silently drops a row. Deliverable for landing; must print `entries=27 pass=27 exit=0` at base (prove it). Transcript: base green; rejected runs over scratch READMEs with (a) one row status `queued`, (b) one admitted row missing its recheck, (c) one row citing S999."
+  },
+  {
+   "name": "ExecJ8Receipt",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecJ8Receipt.sh` (sourceable limb `check_j8` + `make_receipt`) + `ExecJ8Receipt.spec.txt` + receipt.\nFamily F-RCPT. Inherit the r41 I2/I8 receipt design (receipt = teed transcript of run+selftest at Y, time-basis=ref-commit, run-utc = ref's committer instant, payload values compared against re-derived values, forgery classes rejected: missed control, payload-contradicting, future-dated, foreign-ref, nonexistent-ref, summary-only, tampered-payload-line) — study r41 suite I2/I8 limbs and /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave2/{CritReceiptBootstrap.md,CritDigestSelftest.md}. Requirement: the receipt's recorded payload lines are re-derived by the suite at receipt time and compared token-for-token; a receipt carrying values the suite did not print is rejected. Spec file lists the receipt's exact line grammar. Transcript: accept on a real tee; reject on each forgery class."
+  },
+  {
+   "name": "ExecJ9NegCtl",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecJ9NegCtl.sh` (sourceable limb `check_j9`) + `ExecJ9NegCtl.transcript.txt` + receipt.\nNegative controls. The suite run at any ref runs nested exports: base 5053a7f46de35784cff4b56756906e9014a38276 and r41 judged head 1f7464612ac4c44e39886b82e812610d3c039b13 each exported inside the work dir, the SAME suite invoked recursively on them, required output `closed<13/13 exit=1`; an unresolvable ref (e.g. deadbeef…) prints `ref-not-found` and exits 1 distinctly (never `closed<13/13`). Study r41 I10/I12 limbs. Transcript: all three controls with real outputs."
+  },
+  {
+   "name": "ExecJ10Isolate",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecJ10Isolate.sh` (sourceable limb `check_j10`) + `ExecJ10Isolate.notes.txt` + receipt.\nGraded-selftest isolation. Each selftest case materializes its mutated copy under a private dir, invokes the suite entrypoint on it, and asserts isolation (no case reads another case's fixture dir; scratch baseline diffed before/after each case — a case that leaks files outside its own dir fails). Notes specify the per-case directory grammar. Transcript: isolation proof over two cases."
+  },
+  {
+   "name": "ExecJ11Corr",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecJ11Corr.sh` (sourceable limb `check_j11`) + `ExecJ11Corr.transcript.txt` + receipt.\nFamily F-CORR. D-r41-1: SCORECARD.md carries four `Correction (round 41)` entries duplicated verbatim (lines ~1602-1605 and ~1607-1610) — the check asserts: for every `Correction (round <n>)` line in SCORECARD.md/LOG.md/SHONEN.md, its normalized text occurs exactly ONCE per file (duplicate verbatim lines are rejected). The CURRENT lane state contains the duplication — the L1 will land an appended dedup note; design the check so it passes when each distinct correction text appears once (appended deduplication erratum keeps history, marks the dup) — define precisely: the limb counts `Correction (round N)` lines with identical normalized bodies per file and requires count==1 per distinct body, PLUS an appended `Correction-dedup (round 42)` marker naming the duplicated lines exists in SCORECARD.md. Transcript: red over current HEAD export, green over a scratch copy with the dedup marker appended."
+  },
+  {
+   "name": "ExecJ12J13",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecJ12J13.sh` (sourceable limbs `check_j12` + `check_j13`) + `ExecJ12J13.transcript.txt` + receipt.\nJ12: no tracked deletions in corpus paths vs base 5053a7f46de35784cff4b56756906e9014a38276 (`git -C <lane> diff --name-status <base> <ref> -- corpus/` has zero D rows) AND `corpus/instruments/density.py` sha256 identical to base's (ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710). J13 quiescence: inside the suite's own scratch root, no uncommitted changes in a clone of the exported ref and no `kasegi-r4[0-9]*` entry other than this run's own --work (J13 is evaluated inside the suite's scratch, bound to the exported ref by name — never host-global). Transcript: both greens over HEAD export + two planted-failure cases."
+  },
+  {
+   "name": "ExecSelftest",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecSelftest.transcript.txt` + `ExecSelftest.mutants.txt` + receipt.\nOnce ExecSuiteCore's deliverable exists in the wave dir, COPY it to scratch and run its `--selftest --export-ref <lane-tip>` and `--export-ref <base>`; record every case line. Additionally run five selftest mutants of your own across different J limbs (take the family's committed mutant shape, apply to a fresh fixture). Report which cases failed and why (expected at this pre-integration stage: receipt-dependent checks red). This is an instrument QA seat, not acceptance."
+  },
+  {
+   "name": "ExecControls",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecControls.junk-f25.txt` + `ExecControls.junk-recheck.txt` + receipt.\nBuild the C2 junk twin control: on a scratch copy of the lane corpus, fabricate a `mined`-marked S999 row + F25-lookalike frontier row with NO capture/entry/harness pass; run corpus/instruments/frontier-recheck-count.py, capture-binding-check.py and the census against the mutated copy; every instrument must REJECT it (exit nonzero or unbound/missing counted). Deliverable: the fabricated junk file (landable under .ufo/waves/round-42/c2-controls/) + the rejection transcript."
+  },
+  {
+   "name": "ScoutF25Lead",
+   "role": "scout",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverables: `ScoutF25Lead.facts.txt` + `ScoutF25Lead.S064.txt` (the capture) + `ScoutF25Lead.manifest-record.json` + `ScoutF25Lead.reject-record.txt` + receipt.\nYou are the F25 lead screen. Candidates (machine-readable vulnerability-data standards the lane does NOT hold — verify each against `grep -il` over corpus/SOURCES.md + corpus/knowledge/*.md + corpus/README.md): (a) OSV schema (https://ossf.github.io/osv-schema/), (b) CVE Record Format 5.x (https://raw.githubusercontent.com/CVEProject/cve-schema/main/schema/docs/CVE_Record_Format_bundled.json or the schema docs), (c) one alternate you find (e.g. FIRST VIN, GHSA unauthenticated advisory API doc, NVD API 2.0 docs). For EACH: verify no lane row/entry already covers its document family; check sibling overlap by grepping /home/vgpnk/Projects/shokunin/*-shokunin/corpus/knowledge/*.md for the doc's key terms (kake's security-txt entry overlapped F24 — do not repeat that miss). Fetch each candidate doc (curl -sS -L --max-time 90 -A kasegi-shokunin/1.0; record code/bytes/sha256/UTC). PICK exactly ONE: prefer the doc that is (i) primary first-party, (ii) normative, (iii) disjoint from lane+sibling ground. Capture it fully (HTML -> readable text or raw JSON, normalized line endings) as the S064 capture with a located <=25-word quote for each of 3 Gate quotes. For the REJECTED candidate(s): fetch it, record URL + access date + <=25-word located quote + honest reason + flip condition in reject-record.txt (closes D-r41-2). Facts file lists every candidate's verdict."
+  },
+  {
+   "name": "ScoutSibling",
+   "role": "scout",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScoutSibling.txt` + receipt. Sibling-overlap scan, independent of ScoutF25Lead: enumerate every sibling lane repo /home/vgpnk/Projects/shokunin/*-shokunin (exclude kasegi-shokunin); for the OSV schema AND the CVE Record Format doc families, grep each sibling's corpus/knowledge/ + corpus/SOURCES.md + SKILL.md for the doc's URL stems and key terms (`osv`, `affected`, `cve record`, `cveSchema`, `CVE_Record_Format`, `cve.org`, `schema.cve.org`). Report per doc per lane: hit count + file:line. If either doc has substantive sibling ground, name it — the F25 pick must avoid it."
+  },
+  {
+   "name": "ScoutLeads",
+   "role": "scout",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScoutLeads.txt` + receipt. Re-open the two standing leads and verdict whether their rejection flips fired — read /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ScoutLeads.md first for the probe pattern. Lead 1: S062 OASIS CSAF v2.1 `os/` flip — fetch https://docs.oasis-open.org/csaf/csaf/v2.1/ listing and .../os/csaf-v2.1-os.html; flip fires only when os/ exists with 'OASIS Standard' front matter. Lead 2: S061 CISA VEX Status Justifications PDF — fetch + sha256 vs the recorded `9a4027c68674a99678bfd18d0897cdb213a2db59b568054b2b86439ff0cf513f`; confirm the five labels still carried normatively by S055's capture. Verdict STANDS/FLIPPED per lead with fetch ledger."
+  },
+  {
+   "name": "ScoutInstruments",
+   "role": "scout",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScoutInstruments.txt` + receipt. Inventory the C2 instrument chain with exact entry points: source-recheck.py, capture-binding-check.py, frontier-recheck-count.py, recheck-audit.py, knowledge-expected.txt — for each: the CLI args the frozen C2 counting commands use, where manifest/capture paths are bound, and the two r41 wave-2 findings against them (missing-path/URL-variant acceptances; status-flip blind spot). Map each finding to the exact function+line the J6/J7 repair must touch."
+  },
+  {
+   "name": "ScoutDefeatsR41",
+   "role": "scout",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScoutDefeatsR41.txt` + receipt. Catalog every committed defeat artifact in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave2/ (read each file): for each, the check it defeats, the mutation class, whether the r41 suite's selftest already detects it (graded lines in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/final-gates/all-gates.txt), and the r42 family it maps to (F-EVID/F-TOKEN/F-TABLE/F-DECL/F-SCAN/F-BIND/F-FLIP/none-new). Output = the complete replay catalog the suite's replay limbs must cover; UNMAPPED entries flagged."
+  },
+  {
+   "name": "ScoutDefeatsR40",
+   "role": "scout",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScoutDefeatsR40.txt` + receipt. Same cataloging duty over /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/wave2/ (RevC1Counters.defeats.txt T2-T14, CritKillRule.md F1-F8, CritKillRule.h6-escapes.sh, MutH6H10.md D2, MutH1H5) and round-39/wave2/ (CritG2Exploit.md, CritC1Kill.md). For each: check defeated, mutation class, which r41/r42 check or family should already reject it. UNMAPPED flagged."
+  },
+  {
+   "name": "ScoutFreshStart",
+   "role": "scout",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScoutFreshStart.txt` + receipt. Fresh-start coverage matrix: read corpus/lessons/{round-39,round-40,round-41}-verifier-spotcheck.md sections 5 and every claim/routed defect they name; read the frozen claims.json J1-J13 + C2 list; produce the matrix routed-defect -> J<n>/C2-item that closes it; flag any routed defect with NO closing check. This is the round's coverage-of-debt receipt."
+  },
+  {
+   "name": "ScoutConsiderthese",
+   "role": "scout",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScoutConsiderthese.txt` + receipt. Read /home/vgpnk/Projects/shokunin/kasegi-shokunin/considerthese/2026-10-26.md (the newest file) and corpus/knowledge/considerthese-proposals-ledger.md; list every proposal still unimplemented; recommend the ONE to mine this round (at most one per round) with its landing shape (lesson / QUALITY criterion / SOURCES row citing considerthese/<file> + date). Do not edit considerthese/."
+  },
+  {
+   "name": "ScoutAssimilation",
+   "role": "scout",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScoutAssimilation.txt` + `ScoutAssimilation.quarantine-slice` + `ScoutAssimilation.collisions` + receipt. Read /home/vgpnk/Projects/shokuknow/merge/kasegi/{MERGE-REPORT.md,SOURCES.append.md} (read-only!) and run the §10 checks in YOUR scratch: id-collision check (0-3-space tolerant extractor over corpus/SOURCES.md vs the staged append file — write reg-ids/staged-ids/collisions to scratch then copy collisions as deliverable); quarantine slice extraction: `awk -F'|' -v l='kasegi' '$2 ~ (\"`\" l \"`\") && $3 ~ /round[0-9]+/ && $4 ~ /S[0-9]+/ {print $4, $5}' /home/vgpnk/Projects/shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md` -> deliverable. Hand-check each slice row: fetch the cited source and locate the quote; verdict adoptable/quarantined/unverifiable per row with evidence. Expected outcome this round: `Assimilation: none` — your verdicts justify it."
+  },
+  {
+   "name": "ScoutPrecedent",
+   "role": "scout",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScoutPrecedent.txt` + receipt. Escape-class sweep across /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/../round-39/wave2/ + round-40/wave2/ + round-41/wave2/ receipts: list every escape CLASS that recurs (substring/value-acceptance, fence-blindness, count-relative forgery, environment-dependent checks, symlink escapes, missing-transcript quotes) and name which r42 family covers each; flag any class NOT covered by J1-J13 — those are wave-2 ammunition."
+  },
+  {
+   "name": "ExecC2Rows",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverables: `ExecC2Rows.registry-rows.txt` + `ExecC2Rows.readme-row.txt` + `ExecC2Rows.province-amendment.txt` + `ExecC2Rows.manifest-record.json` + `ExecC2Rows.knowledge-expected.txt` + receipt.\nAfter ScoutF25Lead files its facts+capture+manifest-record, build the landable rows: (a) S064 SOURCES.md registry row (13 cells, census-schema: mined, kind+tier per the doc, opened 2026-10-28, recheck cadence, used-by the entry path, no literal | in cells) + S065 rejected row(s) per ScoutF25Lead's reject-record (status rejected, reason+flip, used-by `—`); (b) corpus/README.md F25 frontier row matching the file's row grammar (status admitted, entry path, S064, teaches cell <= the file's established style); (c) PROVINCE.md `[r42 Frontier amendment]` appended block; (d) manifest.json record for corpus/source-snapshots/round-42/ (sha256/lines/bytes/url/fetched-utc/recheck assertions Q1-Q4 from the capture); (e) updated knowledge-expected.txt line. If ScoutF25Lead has not landed by your read, WAIT for its file — do not guess the topic. All deliverables byte-exact landable bytes only."
+  },
+  {
+   "name": "ExecHarnessSync",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecHarnessSync.runbook.txt` + receipt. Prepare the post-integration instrument runbook: the exact commands (python3 corpus/instruments/frontier-recheck-count.py -> entries=28 pass=28; capture-binding-check.py -> 56/56; recheck-audit.py --quiet -> expected=61; source-recheck.py --manifest corpus/source-snapshots/round-42/manifest.json --source S064 -> exit 0; sources-census.sh validate -> exit 0) with expected outputs, run against a scratch copy of the corpus AS IF the C2 rows landed (copy corpus into scratch, apply ExecC2Rows deliverables if present, run the instruments there with --root where supported). Report which commands already discriminate."
+  },
+  {
+   "name": "ScribeC2Entry",
+   "role": "scribe",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScribeC2Entry.entry.md` (byte-exact knowledge entry) + receipt. Write corpus/knowledge/<slug>.md for the F25 topic AFTER ScoutF25Lead+ExecC2Rows file their pick — study corpus/knowledge/rfc-9116-security-txt.md and cyclonedx-analysis-subtree.md for the provenance trio (source:/verified-at:/recheck:), the teaches/limits structure, QUALITY.md bar. Body: what the document teaches a bounty/security researcher, 3+ anchored limbs to the S064 capture (path:line), rejected over-generalizations, limits. Name the file with the lane's slug convention."
+  },
+  {
+   "name": "ScribeC2Gate",
+   "role": "scribe",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScribeC2Gate.gate-block.txt` + receipt. Draft the round-42 lesson `## Gate` block: admit F25/S064 with URL + 2026-10-28 access date + three <=25-word located quotes (from ScoutF25Lead capture), PLUS the screened reject row(s) with URL + date + located quote + reason + flip (D-r41-2 closure — the Gate MUST record >=1 reject). Byte-exact landable markdown."
+  },
+  {
+   "name": "ScribeLesson",
+   "role": "scribe",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScribeLesson.lesson.md` (the corpus/lessons/round-42.md skeleton) + receipt. Draft the round-42 lesson: header with base/freeze/J/Y placeholders marked `<pending>` where unknowable; Frozen claims table; ## Mistakes with M42-1 (evidence-union class, evidence r41 wave2 transcripts, captured-by new QUALITY criterion, fix J1) and M42-2 (token-boundary class, captured-by J2); ## Gate placeholder; wave-shape paragraph (two v1 waves; connector seats in BOTH waves this round — D-r41-5); ## Wave-2 falsification placeholder."
+  },
+  {
+   "name": "ScribeScorecard",
+   "role": "scribe",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScribeScorecard.round42.txt` + receipt. Draft the SCORECARD.md `## Round 42 result` section + move-log rows + `Correction (round 42)` lines for D-r41-1 (note the duplicated r41 correction blocks, append-only, named once) and the r41 C1/C2 honest standings. Include the dedup marker line `Correction-dedup (round 42): duplicated Correction (round 41) blocks at SCORECARD.md lines <a-b> and <c-d> — the second occurrence is the stray; both kept as history.` Do not invent measured values — use `<pending>` placeholders."
+  },
+  {
+   "name": "ScribeShonenLog",
+   "role": "scribe",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScribeShonenLog.shonen-append.txt` + `ScribeShonenLog.log-round42.txt` + receipt. Draft the SHONEN.md round-42 append (four boxes, `[~]` asserted-by-author with evidence pointers; box 2 honestly notes no end-to-end domain hunt) and the LOG.md `## Round 42` entry skeleton (append-only, names claims, axes, evidence paths; `<pending>` for unmeasured values)."
+  },
+  {
+   "name": "ScribeCorrections",
+   "role": "scribe",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScribeCorrections.blocks.txt` + receipt. Draft appended corrections/errata this round needs: (1) the SCORECARD dedup note for the duplicated `Correction (round 41)` entries (names both line ranges, kept as history); (2) an erratum for any r41 line that graded C1 as anything but not-verified; (3) the attack-tally correction pattern for the report. Each block byte-exact landable."
+  },
+  {
+   "name": "ScribeQuality",
+   "role": "scribe",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ScribeQuality.criteria.txt` + receipt. Draft new corpus/QUALITY.md criteria (next R-numbers after the file's current max — read it first): R-a (a receipt is only ever the unedited tee of one observed run; run-utc printed by the run); R-b (evidence claims are per-correction, never union aggregates); R-c (counted values are whole tokens); R-d (a check's selftest mutants must include the committed defeat shape for its family). Byte-exact criterion blocks matching the file's grammar."
+  },
+  {
+   "name": "CritClaims",
+   "role": "critic",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Attack the FROZEN claims: (1) can a do-nothing control reach any after-state? (2) is C1's kill rule self-consistent — does replaying-to-rejection actually close a defect, and can an in-family escape evade the F-* enumeration? (3) is C2's topic axis really coverage (new surface) and not quality re-scoring? (4) are C1 and C2 causally separable? File `CritClaims.md` with each attack's verdict: FIRES / DEFENDED / ROUTED."
+  },
+  {
+   "name": "CritC1Design",
+   "role": "critic",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Attack the J1-J13 design BEFORE the suite exists: for each J, state the weakest implementation that still meets the predicate and whether that implementation is vacuous (can never red). Flag J-checks whose green proves nothing. File `CritC1Design.md`."
+  },
+  {
+   "name": "CritC2",
+   "role": "critic",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Attack frozen C2: (1) is the OSV/CVE-Record lead class in-province (bounty/security research) and distinct from held ground (CSAF/VEX/CycloneDX/CVE rules/CVSS/EPSS/KEV/SSVC/RFC 9116)? (2) can a do-nothing scout pass the screen? (3) does the >=1-reject requirement invite a fabricated rejection? File `CritC2.md`."
+  },
+  {
+   "name": "RevSuitePlan",
+   "role": "reviewer",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Review /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r41-closure.sh as the r42 base: per I-check, verdict KEEP / REPAIR / REPLACE with line pointers; flag harness machinery (export, receipt, selftest grading) that must change. File `RevSuitePlan.md`."
+  },
+  {
+   "name": "RevC1Counters",
+   "role": "reviewer",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Run EVERY frozen C1 counting command at base (suite absent -> exit 127; r41 suite at base -> closed!=13/13). Verify the base export of r41 suite prints the known defeats (I1/I3 survived). Also verify claims.json's 'before' text matches observed. File `RevC1Counters.md` with transcripts."
+  },
+  {
+   "name": "RevC2Shape",
+   "role": "reviewer",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Verify C2 counting commands discriminate: run each at base (all print before-values); on a scratch copy mutate ONE after-state value at a time (fake F25 row without entry, fake S064 without capture, entry without provenance trio) and show at least one command distinguishes each. File `RevC2Shape.md`."
+  },
+  {
+   "name": "MutDesign",
+   "role": "mutation-tester",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Mutation-test the claim->check MAP: for each J1-J13 propose the concrete mutant a weak check would pass (e.g. J1: union evidence; J2: substring tally; J5: literal-prefix-only scan; J7: silent row-drop). Mark which committed r40/r41 artifact already demonstrates it. File `MutDesign.md`."
+  },
+  {
+   "name": "MutPredicates",
+   "role": "mutation-tester",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Attempt the cheapest satisfaction of each frozen predicate: for C1, a suite that prints the required lines without checking; for C2, mined-marked rows without capture (the O4 junk class). Show whether the counting commands alone catch each cheat — where they don't, name the missing limb. File `MutPredicates.md`."
+  },
+  {
+   "name": "MutC2Counters",
+   "role": "mutation-tester",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Mutate each C2 after-state on a scratch corpus copy: frontier row 24->25 without PASS, registry 63->65 with a queued S064, entry citing S064 without recheck line, knowledge 61 without source: trio, binding 56/56 with one unbound. Per mutation name the frozen command that must catch it and whether it does. File `MutC2Counters.md`."
+  },
+  {
+   "name": "CritKillRule",
+   "role": "critic",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Attack the new kill rule: the seven F-* families are an enumeration — find a defeat class INSIDE one family's intent that its enumeration misses (e.g. F-EVID: union across FILES not records; F-TOKEN: separator variants `closed = 13/13`, `closed:13/13`; F-TABLE: pipe-escaped cells `\\|`). Where the family wording has a hole, name it verbatim. File `CritKillRule.md`."
+  },
+  {
+   "name": "CritReceiptUtc",
+   "role": "critic",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Attack time-basis=ref-commit: can a receipt be forged whose run-utc matches the ref committer instant while the transcript is fabricated? What binds the receipt's payload lines to an actual run? Compare to r41 all-gates.txt. File `CritReceiptUtc.md`."
+  },
+  {
+   "name": "RevQuality",
+   "role": "reviewer",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Read corpus/QUALITY.md fully: which existing criteria already cover this round's mistake classes (union evidence, token boundaries, receipt forgery, scratch hygiene)? Propose only the genuinely missing criteria with R-numbers. File `RevQuality.md`."
+  },
+  {
+   "name": "RevFreshStart",
+   "role": "reviewer",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Verify fresh-start discipline: confirm the last three rejected closures were read (spot-check files exist and their routed queues match claims.json's families), each after-state is unreachable by a do-nothing control (run the controls yourself), and no claim narrows after landing. File `RevFreshStart.md`."
+  },
+  {
+   "name": "CritSync",
+   "role": "critic",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Attack C2 integration edges: (1) entry lands before its S064 row -> harness sees what? (2) manifest record bound but capture unreadable? (3) rejected S065 row counted as registry growth? (4) F25 amendment in PROVINCE without the README row? File `CritSync.md`."
+  },
+  {
+   "name": "LabratReplay",
+   "role": "scout",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Read-only probe: on scratch copies, replay the two surviving r41 defeats EXACTLY — (a) I1 evidence-not-named union mutant, (b) I3 `closed=10/100` token mutant — against the r41 suite limbs (extract check_i1/value_present to a scratch harness), printing the raw outputs that pin the reproduction for J1/J2 test fixtures. File `LabratReplay.md` + `LabratReplay.transcript.txt`."
+  },
+  {
+   "name": "RevRegistry",
+   "role": "reviewer",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Review the SKILL.md registry repair plan: read SKILL.md tail (Gates & probes block, ~L1090-end); verify the D-r41-3 defect exactly (blank line position, duplicate row identity); check ExecJ3Registry's fix preserves every required registration; no row lost. File `RevRegistry.md`."
+  },
+  {
+   "name": "RevLessonShape",
+   "role": "reviewer",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Read corpus/lessons/round-41.md and round-40.md fully: list structural defects the round-42 lesson must avoid (duplicated ## Gate, garbled census line, missing reject rows in Gate, stale attack-tally). File `RevLessonShape.md`."
+  },
+  {
+   "name": "CritInstruments",
+   "role": "critic",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Attack the C2 instrument assumptions: read source-recheck.py and find the mutation it cannot catch (e.g. capture correct but quotes swapped between records? manifest sha256 matching a DIFFERENT capture?); read capture-binding-check.py for further blind spots beyond missing-path/URL-variant. File `CritInstruments.md`."
+  },
+  {
+   "name": "CritBoundary",
+   "role": "critic",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Boundary check for the F25 pick: for BOTH candidates (OSV schema, CVE Record Format), evaluate shared-ground risk vs held rows: CVE Record Format vs S030/S031 CNA rules (rules govern assignment, schema governs record structure — is that disjoint enough?); OSV vs S055 CSAF / S060 CycloneDX (advisory-doc families — is OSV a distinct schema surface?). Also check kake/kengaku corpora yourself. File `CritBoundary.md` with per-candidate disjointness verdicts."
+  },
+  {
+   "name": "MutScan",
+   "role": "mutation-tester",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Propose the J5 scan mutant matrix beyond r41's 4 known: outside-configured-root, sibling-round prefixes kasegi-r3*/kasegi-r5*, nested seat dirs, dot-prefixed strays, case variants, symlinks pointing outside the suite scratch. For each state the detection mechanism required. File `MutScan.md`."
+  },
+  {
+   "name": "MutBind",
+   "role": "mutation-tester",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Mutation battery design for F-BIND and F-FLIP: enumerate >=8 capture-binding mutations (missing path, url trailing slash, url https->http, sha256 of different file, record for absent source id, extra unbound record, manifest valid-JSON-wrong-schema, duplicate record) and >=6 frontier-counter mutations (status flip admitted->queued, missing PASS line, ids cell without S064, recheck exit nonzero counted pass, entries line forged, silent skip). File `MutBind.md`."
+  },
+  {
+   "name": "ConnCrossClaims",
+   "role": "connector",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ConnCrossClaims.txt` + receipt. Cross-claim pattern scan: (1) the correction ledger across SCORECARD/LOG/SHONEN/lessons — which past corrections are still unmarked? (2) which wave-1 deliverables interact (suite depends on J-limbs; C2 rows depend on scout pick) — flag ordering hazards the L1 must sequence."
+  },
+  {
+   "name": "ConnWave2Seed",
+   "role": "connector",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ConnWave2Seed.txt` + receipt. Wave-2 seeding: read every wave-1 attack-seat receipt as it lands; distill the >=32 distinct attack items wave 2 must run (re-run each frozen counter, replay every committed defeat per family, attack the receipt, re-open S064 live, junk twin). Ordered list with seat-role suggestions."
+  },
+  {
+   "name": "SentinelScope",
+   "role": "sentinel",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Scope watch: list the wave1 dir at start; re-list every ~10 min; report any file appearing outside <SEATNAME>.<suffix>+receipt shape, any write outside .ufo/waves/round-42/wave1/, any sibling/fleet-root touch. File `SentinelScope.md`."
+  },
+  {
+   "name": "SentinelMisroot",
+   "role": "sentinel",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Misroot watch: `git -C /home/vgpnk/Projects/shokunin status --porcelain` at start and every ~10 min; any new untracked file a kasegi seat wrote at fleet root is a misroot — record path+content fingerprint. File `SentinelMisroot.md`."
+  },
+  {
+   "name": "SimplifierSuite",
+   "role": "simplifier",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. YAGNI review of the J1-J13 design: which checks duplicate each other (J5 vs J13 overlap?), which limbs could be single-purpose simpler? Recommend removals only where behavior stays verified. File `SimplifierSuite.md`."
+  },
+  {
+   "name": "RevengerReceipt",
+   "role": "revenger",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Reverse-engineer how the r41 receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/final-gates/all-gates.txt was produced: find the generator (wave1 ExecSuiteCore make_receipt / make-receipt.sh references in wave receipts), the exact tee grammar, and what binds payload lines to the run. Output = receipt-production spec for r42. File `RevengerReceipt.md`."
+  },
+  {
+   "name": "ExecAssimilation",
+   "role": "executor",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Deliverable: `ExecAssimilation.txt` + receipt. Run the §10 assimilation checks in YOUR scratch (never write shokuknow): A=$S/assimilation; grep -oE '^ {0,3}\\|[[:space:]]*S[0-9]{3,}' corpus/SOURCES.md | grep -oE 'S[0-9]+' | sort > reg-ids; same over /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md -> staged-ids; comm -12 -> collisions. ALSO prove the guard once: build a scratch registry with an indented `  | S002 |` row a staged id collides with; verify collisions is nonempty (else the guard is broken). Report both id lists' counts, collision count, and whether the lane can adopt anything this round (expected: no — report the verdict)."
+  },
+  {
+   "name": "RevC2Entry",
+   "role": "reviewer",
+   "prompt": "/skill:godspeed\n\nRead /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/claims.json first (frozen claims; do not edit). Receipt-only item. Pre-review the C2 entry requirements: study corpus/knowledge/cyclonedx-analysis-subtree.md and rfc-9116-security-txt.md; write the acceptance checklist ScribeC2Entry's deliverable must satisfy (provenance trio exact keys, anchored limbs, rejected over-generalizations, limits section, QUALITY bar). File `RevC2Entry.md`."
+  }
+ ]
+}
