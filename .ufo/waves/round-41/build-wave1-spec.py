@@ -3,7 +3,7 @@
 import json
 
 LANE = "/home/vgpnk/Projects/shokunin/kasegi-shokunin"
-BASE = "5b29ea1439450b712581edf5f0bf98dfb262ab"
+BASE = "5b29ea1439450b712581edf5f0f0bf98dfb262ab"
 FREEZE = "fbba3d96cdf8d37c1ea41304a1ba35691329684b"
 R40J = "c7aea5ef97902f38289cbdc1cf267068876a62dd"
 

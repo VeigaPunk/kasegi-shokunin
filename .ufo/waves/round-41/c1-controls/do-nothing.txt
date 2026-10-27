@@ -3,3 +3,4 @@ $ bash corpus/instruments/r41-closure.sh --export-ref 5b29ea1439450b712581edf5f0
 bash: corpus/instruments/r41-closure.sh: No such file or directory
 exit=127
 verdict: suite absent — the do-nothing control cannot print closed=12/12 exit=0; target unreachable without the claimed work
+Erratum (freeze, same round): the base hash literal committed in the freeze files was a 38-hex transcription (…f5f0bf98…, missing f0) that resolves to no object; corrected to the 40-char 5b29ea1439450b712581edf5f0f0bf98dfb262ab (same commit, prefix 5b29ea14) — caught by seat ScribeShonenLog. This control's verdict is unchanged: the suite was absent (exit 127) at base either way. Mined as the round's freeze-typo mistake; the freeze-time dry-run guard (git rev-parse --verify of every 40-char literal) is the fix.
