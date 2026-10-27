@@ -1,0 +1,4 @@
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2) | one `H<n> payload=… closed=0|1` line per check H1-H10, then `closed=K/10 exit=0|1`; exit 0 only for K=10; `--selftest` prints ten graded `selftest case=H<i> … verdict=pass|fail` lines and `selftest cases=10 failures=<k>` | `bash corpus/instruments/r40-closure.sh --selftest` → `selftest cases=10 failures=0` exit 0 | base a7af2ce63bce153757d39bf66b366a96caf30c13 and r39 judged head 8371e7ac9f32cae5ed72f8c28205634603f836fa → closed<10/10 exit=1 | read-only (export and receipt-out in scratch/` --receipt-out` only) | kasegi (round 40; sha256 bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e, 1734 lines) |

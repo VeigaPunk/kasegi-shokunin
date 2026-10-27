@@ -1,0 +1,223 @@
+### I8 per-variant receipt-forgery detector — proof transcripts
+# honest base receipt : /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-40/final-gates/all-gates.txt
+# fresh comparison run: /fast/scratch/hyaku/kasegi-r41/ExecI8Forge/fresh.txt (suite re-run at d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5; byte-identical to the committed receipt)
+# detector            : /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI8Forge.sh
+# date                : 2026-10-27T08:44:51Z
+
+=== base
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd named-ref-committer=2026-10-26T22:32:37Z exported-ref=d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5 exported-ref-committer=2026-10-26T22:33:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b body-lines=10 declared=10 run-utc=2026-10-26T22:32:37Z now=2026-10-27T08:44:51Z
+I8 verdict=clean flags=0/6 variants=-
+CHECK expected-variant=NONE expected-flagged=0 total-flags=0 verdict=clean flags=0/6 variants=-
+COUNT-RELATIVE-REFERENCE forged=rejected
+
+=== payload-contradicting
+I8 variant=payload-contradicting flag=1 ids=H1
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd named-ref-committer=2026-10-26T22:32:37Z exported-ref=d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5 exported-ref-committer=2026-10-26T22:33:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b body-lines=10 declared=10 run-utc=2026-10-26T22:32:37Z now=2026-10-27T08:44:51Z
+I8 verdict=forged flags=1/6 variants=payload-contradicting
+CHECK expected-variant=payload-contradicting expected-flagged=1 total-flags=1 verdict=forged flags=1/6 variants=payload-contradicting
+COUNT-RELATIVE-REFERENCE forged=rejected
+
+=== future-dated
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=1 detail=run-utc=2999-01-01T00:00:00Z after-clock=2026-10-27T08:44:52Z
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd named-ref-committer=2026-10-26T22:32:37Z exported-ref=d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5 exported-ref-committer=2026-10-26T22:33:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b body-lines=10 declared=10 run-utc=2999-01-01T00:00:00Z now=2026-10-27T08:44:52Z
+I8 verdict=forged flags=1/6 variants=future-dated
+CHECK expected-variant=future-dated expected-flagged=1 total-flags=1 verdict=forged flags=1/6 variants=future-dated
+COUNT-RELATIVE-REFERENCE forged=rejected
+
+=== foreign-ref
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=1 detail=named-ref=8371e7ac9f32cae5ed72f8c28205634603f836fa diff-paths=304 expected=1(.ufo/waves/round-40/final-gates/all-gates.txt)
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=8371e7ac9f32cae5ed72f8c28205634603f836fa named-ref-committer=2026-10-26T20:55:17Z exported-ref=d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5 exported-ref-committer=2026-10-26T22:33:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b body-lines=10 declared=10 run-utc=2026-10-26T20:55:17Z now=2026-10-27T08:44:52Z
+I8 verdict=forged flags=1/6 variants=foreign-ref
+CHECK expected-variant=foreign-ref expected-flagged=1 total-flags=1 verdict=forged flags=1/6 variants=foreign-ref
+COUNT-RELATIVE-REFERENCE forged=rejected
+
+=== nonexistent-ref
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=1 detail=named-ref=0000000000000000000000000000000000000000 resolves=no
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=0000000000000000000000000000000000000000 named-ref-committer= exported-ref=d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5 exported-ref-committer=2026-10-26T22:33:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b body-lines=10 declared=10 run-utc=2026-10-26T22:32:37Z now=2026-10-27T08:44:52Z
+I8 verdict=forged flags=1/6 variants=nonexistent-ref
+CHECK expected-variant=nonexistent-ref expected-flagged=1 total-flags=1 verdict=forged flags=1/6 variants=nonexistent-ref
+COUNT-RELATIVE-REFERENCE forged=rejected
+
+=== summary-only
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=1 detail=expected=10 body-lines=0 declared=10 fresh-checks=10
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd named-ref-committer=2026-10-26T22:32:37Z exported-ref=d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5 exported-ref-committer=2026-10-26T22:33:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b body-lines=0 declared=10 run-utc=2026-10-26T22:32:37Z now=2026-10-27T08:44:52Z
+I8 verdict=forged flags=1/6 variants=summary-only
+CHECK expected-variant=summary-only expected-flagged=1 total-flags=1 verdict=forged flags=1/6 variants=summary-only
+COUNT-RELATIVE-REFERENCE forged=accepted
+
+=== tampered-payload-line
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=1 ids=H7
+I8 facts=named-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd named-ref-committer=2026-10-26T22:32:37Z exported-ref=d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5 exported-ref-committer=2026-10-26T22:33:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b body-lines=10 declared=10 run-utc=2026-10-26T22:32:37Z now=2026-10-27T08:44:52Z
+I8 verdict=forged flags=1/6 variants=tampered-payload-line
+CHECK expected-variant=tampered-payload-line expected-flagged=1 total-flags=1 verdict=forged flags=1/6 variants=tampered-payload-line
+COUNT-RELATIVE-REFERENCE forged=rejected
+
+=== double-defect
+I8 variant=payload-contradicting flag=1 ids=H1
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=1 ids=H7
+I8 facts=named-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd named-ref-committer=2026-10-26T22:32:37Z exported-ref=d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5 exported-ref-committer=2026-10-26T22:33:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b body-lines=10 declared=10 run-utc=2026-10-26T22:32:37Z now=2026-10-27T08:44:52Z
+I8 verdict=forged flags=2/6 variants=payload-contradicting,tampered-payload-line
+CHECK expected-variant=NONE expected-flagged=0 total-flags=2 verdict=forged flags=2/6 variants=payload-contradicting,tampered-payload-line
+COUNT-RELATIVE-REFERENCE forged=rejected
+
+=== mask-h3-tamper
+I8 variant=payload-contradicting flag=1 ids=H3
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd named-ref-committer=2026-10-26T22:32:37Z exported-ref=d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5 exported-ref-committer=2026-10-26T22:33:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b body-lines=10 declared=10 run-utc=2026-10-26T22:32:37Z now=2026-10-27T08:44:52Z
+I8 verdict=forged flags=1/6 variants=payload-contradicting
+CHECK expected-variant=payload-contradicting expected-flagged=1 total-flags=1 verdict=forged flags=1/6 variants=payload-contradicting
+COUNT-RELATIVE-REFERENCE forged=accepted
+
+=== discriminate-h3
+I8 variant=payload-contradicting flag=1 ids=H3
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd named-ref-committer=2026-10-26T22:32:37Z exported-ref=d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5 exported-ref-committer=2026-10-26T22:33:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b body-lines=10 declared=10 run-utc=2026-10-26T22:32:37Z now=2026-10-27T08:44:52Z
+I8 verdict=forged flags=1/6 variants=payload-contradicting
+CHECK expected-variant=payload-contradicting expected-flagged=1 total-flags=1 verdict=forged flags=1/6 variants=payload-contradicting
+COUNT-RELATIVE-REFERENCE forged=accepted
+
+=== discriminate-h4
+I8 variant=payload-contradicting flag=1 ids=H4
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd named-ref-committer=2026-10-26T22:32:37Z exported-ref=d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5 exported-ref-committer=2026-10-26T22:33:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b body-lines=10 declared=10 run-utc=2026-10-26T22:32:37Z now=2026-10-27T08:44:52Z
+I8 verdict=forged flags=1/6 variants=payload-contradicting
+CHECK expected-variant=payload-contradicting expected-flagged=1 total-flags=1 verdict=forged flags=1/6 variants=payload-contradicting
+COUNT-RELATIVE-REFERENCE forged=rejected
+
+############################################################
+# CROSS-CHECK: the wave-40 wave-2 ground-truth variant files
+# (.ufo/waves/round-40/wave2/CritReceiptForge.variant-*.txt)
+# run against the wave-2 fixture F = J(3074c767) + committed receipt.
+# The fresh comparison run there is byte-identical to
+# CritReceiptForge.control-original.txt.
+############################################################
+
+=== wave-2 control-original
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a named-ref-committer=2026-10-26T21:56:22Z exported-ref=1f8ef6103120ab0c76b45d2fd35075fb90a5e3eb exported-ref-committer=2026-10-27T08:39:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7b8cda36c793c5855fa6ffcb78d241fca47f0d3679b2d7c38f7a959042463484 body-lines=10 declared=10 run-utc=2026-10-26T21:56:22Z now=2026-10-27T08:44:59Z
+I8 verdict=clean flags=0/6 variants=-
+detector-exit=0
+
+=== wave-2 variant-a-forged-payload
+I8 variant=payload-contradicting flag=1 ids=H1
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a named-ref-committer=2026-10-26T21:56:22Z exported-ref=1f8ef6103120ab0c76b45d2fd35075fb90a5e3eb exported-ref-committer=2026-10-27T08:39:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7b8cda36c793c5855fa6ffcb78d241fca47f0d3679b2d7c38f7a959042463484 body-lines=10 declared=10 run-utc=2026-10-26T21:56:22Z now=2026-10-27T08:44:59Z
+I8 verdict=forged flags=1/6 variants=payload-contradicting
+detector-exit=1
+
+=== wave-2 variant-b-future-utc
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=1 detail=run-utc=2999-01-01T00:00:00Z after-clock=2026-10-27T08:44:59Z
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a named-ref-committer=2026-10-26T21:56:22Z exported-ref=1f8ef6103120ab0c76b45d2fd35075fb90a5e3eb exported-ref-committer=2026-10-27T08:39:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7b8cda36c793c5855fa6ffcb78d241fca47f0d3679b2d7c38f7a959042463484 body-lines=10 declared=10 run-utc=2999-01-01T00:00:00Z now=2026-10-27T08:44:59Z
+I8 verdict=forged flags=1/6 variants=future-dated
+detector-exit=1
+
+=== wave-2 variant-c1-foreign-ref-r39
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=1 detail=named-ref=8371e7ac9f32cae5ed72f8c28205634603f836fa diff-paths=194 expected=1(.ufo/waves/round-40/final-gates/all-gates.txt)
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=8371e7ac9f32cae5ed72f8c28205634603f836fa named-ref-committer=2026-10-26T20:55:17Z exported-ref=1f8ef6103120ab0c76b45d2fd35075fb90a5e3eb exported-ref-committer=2026-10-27T08:39:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7b8cda36c793c5855fa6ffcb78d241fca47f0d3679b2d7c38f7a959042463484 body-lines=10 declared=10 run-utc=2026-10-26T20:55:17Z now=2026-10-27T08:44:59Z
+I8 verdict=forged flags=1/6 variants=foreign-ref
+detector-exit=1
+
+=== wave-2 variant-c2-nonexistent-ref
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=1 detail=named-ref=0000000000000000000000000000000000000000 resolves=no
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=0000000000000000000000000000000000000000 named-ref-committer= exported-ref=1f8ef6103120ab0c76b45d2fd35075fb90a5e3eb exported-ref-committer=2026-10-27T08:39:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7b8cda36c793c5855fa6ffcb78d241fca47f0d3679b2d7c38f7a959042463484 body-lines=10 declared=10 run-utc=2026-10-26T21:56:22Z now=2026-10-27T08:44:59Z
+I8 verdict=forged flags=1/6 variants=nonexistent-ref
+detector-exit=1
+
+=== wave-2 variant-d-summary-only
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=1 detail=expected=10 body-lines=0 declared=10 fresh-checks=10
+I8 variant=tampered-payload-line flag=0 ids=-
+I8 facts=named-ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a named-ref-committer=2026-10-26T21:56:22Z exported-ref=1f8ef6103120ab0c76b45d2fd35075fb90a5e3eb exported-ref-committer=2026-10-27T08:39:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7b8cda36c793c5855fa6ffcb78d241fca47f0d3679b2d7c38f7a959042463484 body-lines=0 declared=10 run-utc=2026-10-26T21:56:22Z now=2026-10-27T08:44:59Z
+I8 verdict=forged flags=1/6 variants=summary-only
+detector-exit=1
+
+=== wave-2 variant-h7line-tampered
+I8 variant=payload-contradicting flag=0 ids=-
+I8 variant=future-dated flag=0 detail=in-window
+I8 variant=foreign-ref flag=0 detail=binds
+I8 variant=nonexistent-ref flag=0 detail=resolves
+I8 variant=summary-only flag=0 detail=complete-body
+I8 variant=tampered-payload-line flag=1 ids=H7
+I8 facts=named-ref=3074c7679d6f527ec3930d7748ccce1dbae4a58a named-ref-committer=2026-10-26T21:56:22Z exported-ref=1f8ef6103120ab0c76b45d2fd35075fb90a5e3eb exported-ref-committer=2026-10-27T08:39:07Z receipt-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-suite-sha256=bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e export-receipt-sha256=7b8cda36c793c5855fa6ffcb78d241fca47f0d3679b2d7c38f7a959042463484 body-lines=10 declared=10 run-utc=2026-10-26T21:56:22Z now=2026-10-27T08:44:59Z
+I8 verdict=forged flags=1/6 variants=tampered-payload-line
+detector-exit=1
+

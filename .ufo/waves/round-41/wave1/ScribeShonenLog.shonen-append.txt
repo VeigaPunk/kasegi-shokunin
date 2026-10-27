@@ -1,0 +1,56 @@
+
+- [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
+      — evidence (round 41, base `5b29ea1439450b712581edf5f0f0bf98dfb262ab`): the base limb is
+      measured, not inferred — `SKILL.md` 1122 lines, sha256
+      `ad20fc3d371302301b49088ae41c0a227cf6067ea0c6c8078f2f000d1ca457c1`, and `git diff --numstat
+      5b29ea1439450b712581edf5f0f0bf98dfb262ab -- SKILL.md` is empty at the round-41 spec head
+      (`b3b08b2`); `density.py SKILL.md` mean **233.5** over 28 blocks, 774 path-citation instances,
+      exit 0; `anchorcheck.py SKILL.md` exit 0 with `16 in-range cite instances, 0 bad; 16 distinct
+      anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0`. D6 repair: the
+      round-40 append block breaks its own table — header `SKILL.md:1119`, separator `:1120`, blank
+      `:1121`, the `r40-closure.sh` row `:1122`, so that row renders outside its header; round 41
+      repairs it by `<<<SKILL-DIFF>>>`: one correctly formed block appended at EOF (header row,
+      separator, then the `r41-closure.sh` row with no intervening blank line), every base line
+      byte-identical and the round's deletion count zero. Box stays `[~]`; no non-author check.
+
+- [~] At least one end-to-end domain task executed and logged in LOG.md
+      — evidence (round 41): **no new end-to-end domain task ran this round.** The wave spec
+      `.ufo/waves/round-41/wave1-spec.json` dispatches 60 seats — executor 17, scout 11, reviewer 9,
+      scribe 6, critic 6, mutation-tester 5, connector 2, sentinel 2, simplifier 1, revenger 1 — and
+      none is a hunt-to-claim seat; `LOG.md` carried no `## Round 41` heading at base (1734 lines,
+      `grep -c '^## Round 41' LOG.md` = 0). The closest executed work is measurement, not a domain
+      hunt: the round-41 F24 capture `corpus/source-snapshots/round-41/S063.txt` with its manifest
+      record, its `source-recheck` quote checks and harness admission, and the r41 suite run itself
+      (`[L1-MEASURE]` at the verification ref). Box stays `[~]`.
+
+- [~] Instructions executable by an agent without oral context
+      — evidence (round 41, base `5b29ea1439450b712581edf5f0f0bf98dfb262ab`): the counters run from
+      committed bytes with no oral context. Suite limb (`[L1-MEASURE]` at Y): `bash
+      corpus/instruments/r41-closure.sh --export-ref <<<Y>>>` → `closed=12/12 exit=0`;
+      `--selftest --export-ref <<<Y>>>` → `selftest cases=12 failures=0` with twelve graded
+      `selftest case=I<n> … positive=pass … verdict=pass` lines; a plain run refuses with exit 2; the
+      base and round-40 judged-head (`c7aea5ef…`) exports print `closed<12/12 exit=1`. The receipt
+      `.ufo/waves/round-41/final-gates/all-gates.txt` must be the teed transcript of both runs with
+      `time-basis=ref-commit` and `run-utc` equal to the ref's committer instant. C2 at base
+      (`.ufo/waves/round-41/c2-controls/before.txt`): frontier 23, registry 62, knowledge 59,
+      `entries=26 pass=26`, `records=54 bound=54 unbound=0`, audit `lines=59 total=59`,
+      `expected=59 missing=0 unexpected=0 exit=0`; the after-state the claim declares is
+      `entries=27 pass=27` incl. `PASS F24 … ids=S063`, `records=55 bound=55 unbound=0`, registry
+      63, knowledge 60, and `recheck-audit.py --quiet` → `<<<AUDIT>>>` (the claim's after-state carries
+      `expected=60 missing=0 unexpected=0 exit=0`). Census exit 0 with only the
+      standing W04 S028/S029 at base (`census-before.txt`); the after-state is `[L1-MEASURE]`. Box
+      stays `[~]`; no non-author check.
+
+- [~] No cross-domain bleed (PROVINCE.md still accurate)
+      — evidence (round 41, base `5b29ea1439450b712581edf5f0f0bf98dfb262ab`): F24 (RFC 9116
+      security.txt — the machine-readable disclosure-channel discovery standard: the
+      `/.well-known/security.txt` location, field semantics, Expires handling, the encryption
+      requirement) sits inside the core paragraph — "comprises program rules, scopes, and claim
+      packages; the core also covers triage and claim gates, and submission/disclosure packaging"
+      (`PROVINCE.md:29-30`) — as the discovery half of the disclosure surface, with the F13/F14
+      severity-scope and F22 VEX precedents, so no re-scope is claimed. `PROVINCE.md` is 161 lines,
+      sha256 `62c6d8db7437435c5c2f5c98b33010d864246c63906b5401211e739ea4c1e9c1` at base, and its
+      appended frontier list stops at F23 (`:161`); the `[r41 Frontier amendment]` F24 line is an
+      end-of-file append landed at integration, with `git diff --numstat
+      5b29ea1439450b712581edf5f0f0bf98dfb262ab -- PROVINCE.md` showing a zero deletion count.
+      Sibling scan: `<<<SIBLING>>>`. Nothing absorbed; box stays `[~]`.

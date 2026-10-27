@@ -1,0 +1,404 @@
+# Round-41 post-integration instrument runbook — C2 (F24 / S063 / RFC 9116)
+
+Seat: ExecC2Instruments · 2026-10-27 · lane `/home/vgpnk/Projects/shokunin/kasegi-shokunin`
+· base `5b29ea1439450b712581edf5f0f0bf98dfb262ab` (40-char; the 38-char literal in the
+dispatched prompt is unresolvable and is corrected by the L1 in
+`.ufo/waves/round-41/wave1/CORRECTIONS-L1.md`).
+
+This runbook is the post-integration command list with the exact expected outputs for the
+C2 after-state. Every command below is runnable today on the base tree; the F24 rows marked
+`(after F24 lands)` are the ones that only reach their expected value once the round-41
+C2 artefacts are landed.
+
+---
+
+## 0. Environment and constants
+
+```bash
+LANE=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+FLEET=/home/vgpnk/Projects/shokunin
+BASE=5b29ea1439450b712581edf5f0f0bf98dfb262ab
+export TMPDIR=/fast/scratch/hyaku/kasegi-r41/ExecC2Instruments   # never inherit an unset TMPDIR
+cd "$LANE"
+```
+
+The four gate instruments live in `corpus/instruments/`. All four are stdlib-only Python 3
+(no third-party imports, no network access, no writes outside their own scratch dir).
+
+---
+
+## 1. Exact invocation shapes (read from `--help` at the base tree)
+
+| instrument | invocation | notes |
+|---|---|---|
+| `source-recheck.py` | `python3 corpus/instruments/source-recheck.py --manifest <path> --source S### [--selftest]` | `--manifest` and `--source` are both required for a lane check; with neither it exits 2 (`manifest UNAVAILABLE reason=missing-required-argument`). `--selftest` runs 10 isolated control cases. |
+| `capture-binding-check.py` | `python3 corpus/instruments/capture-binding-check.py [--root DIR] [--selftest] [--scratch DIR]` | `--root` defaults to the lane root derived from the script path. `--selftest` runs 23 fixture cases. |
+| `frontier-recheck-count.py` | `python3 corpus/instruments/frontier-recheck-count.py [--root DIR] [--json PATH] [--selftest] [--scratch DIR]` | `--root` defaults to the lane root. `--selftest` runs 6 fixture cases. |
+| `recheck-audit.py` | `python3 corpus/instruments/recheck-audit.py [--root DIR] [--foreign DIR] [--cdroot DIR] [--expect PATH] [--json PATH] [--selftest] [--quiet]` | `--foreign` defaults to `/`; `--cdroot` defaults to `--root`; `--expect` defaults to `<root>/corpus/instruments/knowledge-expected.txt` when that file exists. `--selftest` prints one `selftest <case> exit=… want=… ok` line per case (17 cases over 18 lines: 13 per-entry + `expect-missing` + `expect-unexpected` + `complete-empty` + `complete-missing-line`, plus a `completeness` sanity line that is not a case) and exits 0; it prints **no** `selftest cases=N failures=F` summary line, so its verdict is the exit status. |
+
+Fleet census (not a lane instrument; lives at the fleet root):
+
+```bash
+bash $FLEET/scripts/sources-census.sh validate --root $FLEET kasegi
+```
+
+---
+
+## 2. Ordered post-integration command list
+
+Run in this order. Each step's expected output is the value the C2 claim counts.
+
+### Step 1 — capture-side recheck (one source)
+
+```bash
+python3 corpus/instruments/source-recheck.py \
+  --manifest corpus/source-snapshots/round-41/manifest.json --source S063
+```
+
+Expected (after F24 lands):
+
+```
+S063:sha256 OK
+S063:Q1 OK occurrences=1 anchor=7-ok
+S063:Q2 OK occurrences=1 anchor=15-ok
+S063:Q3 OK occurrences=1 anchor=50-ok
+```
+
+exit 0. Any `MISMATCH` → exit 1; `manifest UNAVAILABLE` → exit 2.
+
+### Step 2 — frontier harness
+
+```bash
+python3 corpus/instruments/frontier-recheck-count.py
+```
+
+Expected (after F24 lands): one `PASS` line per admitted frontier row, including
+
+```
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0
+```
+
+followed by
+
+```
+entries=27 pass=27 exit=0
+```
+
+exit 0. Exit 1 on any failing row, on a missing entry (`problems=missing-entry`), or on
+`DUPLICATE-ENTRY`.
+
+Note the counter's unit: `entries=` counts admitted **entry files**, not frontier rows. F09,
+F10 and F11 each name two entries in one row, so 24 frontier rows yield `entries=27`
+(24 rows + 3 extra entries). A checker that expects `entries == frontier rows` will
+mis-read 27 against 24.
+
+### Step 3 — capture binding
+
+```bash
+python3 corpus/instruments/capture-binding-check.py
+```
+
+Expected (after F24 lands): a `MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0`
+line, then the `AUDIT` line, then
+
+```
+records=55 bound=55 unbound=0
+```
+
+exit 0. Any `FAIL` line → exit 1.
+
+### Step 4 — recheck audit
+
+```bash
+python3 corpus/instruments/recheck-audit.py --quiet
+```
+
+Expected (after F24 lands):
+
+```
+strict pass=60/60 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=36 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=60 total=60 pass=60 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=60 missing=0 unexpected=0 exit=0
+```
+
+exit 0. `expect=absent` means the expected-list file was not found at the audited root;
+`missing=<name>` means the list names an entry the tree lacks; `unexpected=<name>` means the
+tree has an entry the list does not name — either one exits 1.
+
+### Step 5 — census
+
+```bash
+bash $FLEET/scripts/sources-census.sh validate --root $FLEET kasegi
+```
+
+Expected (after F24 lands):
+
+```
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+```
+
+exit 0, with only the two standing W04 warnings (S028/S029). Any `E##` line → exit 1.
+
+### Step 6 — the coverage counters the C2 claim names
+
+```bash
+grep -cE '^\| F[0-9]+ \|' corpus/README.md                                   # -> 24
+awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md   # -> 24
+grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md        # -> 63
+awk -F'|' '/^\|[[:space:]]*S063[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md   # -> 1
+grep -rlE '^source: S063' corpus/knowledge | wc -l                          # -> 1
+ls corpus/knowledge/*.md | wc -l                                           # -> 60
+```
+
+Expected: `24`, `24`, `63`, `1`, `1`, `60`.
+
+### Step 7 — the r22 measure
+
+`F_total` = frontier rows in `corpus/README.md` plus every `corpus/SOURCES.md` registry row
+still `queued`; `F_admitted` = frontier rows whose status cell is `admitted`.
+
+```bash
+F_TOT=$(grep -cE '^\| F[0-9]+ \|' corpus/README.md)
+F_ADM=$(awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md)
+QUEUED=$(awk -F'|' '/^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="queued") n++} END{print n+0}' corpus/SOURCES.md)
+echo "$((20+F_ADM))/$((20+F_TOT+QUEUED))"
+```
+
+Expected (after F24 lands): `44/44` (1.000, zero queued rows).
+
+### Step 8 — the committed gate selftests (unchanged by F24, but re-run them)
+
+```bash
+python3 corpus/instruments/source-recheck.py --selftest           # selftest cases=10 failures=0
+python3 corpus/instruments/capture-binding-check.py --selftest     # selftest cases=23 failures=0
+python3 corpus/instruments/frontier-recheck-count.py --selftest    # selftest cases=6 failures=0
+python3 corpus/instruments/recheck-audit.py --selftest             # 17 'selftest <case> … ok' lines
+```
+
+All four exit 0. The first three print a `selftest cases=N failures=F` summary line;
+`recheck-audit.py --selftest` does not — read its exit status.
+
+---
+
+## 3. Baseline outputs on the CURRENT base tree (the discrimination baseline)
+
+Measured 2026-10-27 against base `5b29ea1439450b712581edf5f0f0bf98dfb262ab` (lane HEAD
+`b3b08b2` = build spec + claims freeze; `git diff base..HEAD -- corpus` is empty, so the
+corpus bytes at base and at HEAD are identical).
+
+`frontier-recheck-count.py`:
+
+```
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041          exit=0
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md  ids=S041,S042      exit=0
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050 exit=0
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051        exit=0
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054 exit=0
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055       exit=0
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0
+entries=26 pass=26 exit=0
+```
+
+exit 0.
+
+`capture-binding-check.py`:
+
+```
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+AUDIT records=54 with_url=54 with_fetched_utc=16 with_archival=38 snapshot_dirs=16 manifest_dirs=16 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+records=54 bound=54 unbound=0
+```
+
+exit 0.
+
+`recheck-audit.py --quiet`:
+
+```
+strict pass=59/59 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=35 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=59 total=59 pass=59 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=59 missing=0 unexpected=0 exit=0
+```
+
+exit 0.
+
+`source-recheck.py --manifest corpus/source-snapshots/round-40/manifest.json --source S060`:
+
+```
+S060:sha256 OK
+S060:Q1 OK occurrences=1 anchor=7-ok
+S060:Q2 OK occurrences=1 anchor=15-ok
+S060:Q3 OK occurrences=1 anchor=50-ok
+```
+
+exit 0.
+
+`source-recheck.py --manifest corpus/source-snapshots/round-41/manifest.json --source S063`
+(base tree, manifest absent):
+
+```
+manifest UNAVAILABLE reason=missing
+```
+
+exit 2.
+
+`sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`:
+
+```
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+```
+
+exit 0.
+
+Base-tree counters: frontier rows 23, admitted 23, registry rows 62, S063 rows 0, entries
+citing S063 0, knowledge files 59, queued 0, measure `43/43`.
+
+Base-tree selftests: `source-recheck` `cases=10 failures=0`, `capture-binding-check`
+`cases=23 failures=0`, `frontier-recheck-count` `cases=6 failures=0`, `recheck-audit` 17
+`selftest <case> … ok` lines — all exit 0.
+
+---
+
+## 4. Baseline → after-state delta table
+
+| counter | base (measured) | after F24 lands | command |
+|---|---|---|---|
+| frontier rows | 23 | 24 | `grep -cE '^\| F[0-9]+ \|' corpus/README.md` |
+| admitted frontier rows | 23 | 24 | `awk -F'|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md` |
+| registry rows | 62 | 63 | `grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md` |
+| S063 mined rows | 0 | 1 | `awk -F'|' '/^\|[[:space:]]*S063[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md` |
+| entries citing S063 | 0 | 1 | `grep -rlE '^source: S063' corpus/knowledge \| wc -l` |
+| knowledge files | 59 | 60 | `ls corpus/knowledge/*.md \| wc -l` |
+| queued registry rows | 0 | 0 | step 7's `QUEUED` |
+| frontier harness | `entries=26 pass=26 exit=0` | `entries=27 pass=27 exit=0` incl. `PASS F24 ... ids=S063` | `python3 corpus/instruments/frontier-recheck-count.py` |
+| capture binding | `records=54 bound=54 unbound=0` | `records=55 bound=55 unbound=0` | `python3 corpus/instruments/capture-binding-check.py` |
+| recheck audit | `lines=59 total=59 ... expected=59` | `lines=60 total=60 ... expected=60 missing=0 unexpected=0 exit=0` | `python3 corpus/instruments/recheck-audit.py --quiet` |
+| census | exit 0, W04 S028/S029 | exit 0, W04 S028/S029 (unchanged) | `bash $FLEET/scripts/sources-census.sh validate --root $FLEET kasegi` |
+| r22 measure | `43/43` | `44/44` | step 7 |
+
+---
+
+## 5. Integration order (measured, stepwise)
+
+Each row below was produced by extracting a FRESH copy of the lane, adding exactly one
+artefact, and running all four gates plus the measure. The gate that is red at each step is
+the gate that the missing artefact would have caught — this is the ordering constraint the
+round-41 C2 lander must respect.
+
+| step | artefact added | frontier | binding | audit | census | measure | red because |
+|---|---|---|---|---|---|---|---|
+| 0 | nothing (base tree) | 26/26 exit=0 | 54/54 unb=0 | exp=present 59 exit=0 | exit=0 | 43/43 | — (base is green) |
+| 1 | `corpus/source-snapshots/round-41/S063.txt` + `manifest.json` | 26/26 exit=0 | 55/54 unb=1 **exit=1** | exp=present 59 exit=0 | exit=0 | 43/43 | `FAIL rule=no-row record=S063 dir=round-41` — the manifest record has no registry row to bind to |
+| 2 | registry row S063 (mined) in `corpus/SOURCES.md` | 26/26 exit=0 | 55/55 unb=0 | exp=present 59 exit=0 | **exit=1** | 43/43 | `E11 S063 missing used-by corpus/knowledge/rfc-9116-security-txt.md` — the census resolves the `used-by` cell against the tree on disk |
+| 3 | `corpus/knowledge/rfc-9116-security-txt.md` | 26/26 exit=0 | 55/55 unb=0 | exp=present 59 **unexp=1 exit=1** | exit=0 | 43/43 | `unexpected=corpus/knowledge/rfc-9116-security-txt.md` — the audit's expected-list does not name the new entry |
+| 4 | `corpus/instruments/knowledge-expected.txt` row | 26/26 exit=0 | 55/55 unb=0 | exp=present 60 exit=0 | exit=0 | 43/43 | — |
+| 5 | `corpus/README.md` coverage-map row + F24 frontier row | **27/27 exit=0** | 55/55 unb=0 | exp=present 60 exit=0 | exit=0 | **44/44** | — |
+| 6 | `PROVINCE.md` F24 amendment | 27/27 exit=0 | 55/55 unb=0 | exp=present 60 exit=0 | exit=0 | 44/44 | — |
+
+**The order that works: capture + manifest → registry row → knowledge entry →
+knowledge-expected.txt row → README coverage-map row + F24 frontier row → PROVINCE
+amendment.** The registry row and the knowledge entry are a pair: either order alone leaves
+one gate red (census `E11` at step 2, audit `unexpected=` at step 3). Landing all six in one
+commit satisfies every gate simultaneously.
+
+---
+
+## 6. Falsification probes (each F24 artefact is load-bearing)
+
+Run against scratch copies of the F24 mirror; each probe changes exactly one thing and the
+named gate must go red.
+
+| probe | mutation | gate | observed |
+|---|---|---|---|
+| A | delete the S063 registry row from `corpus/SOURCES.md` | `capture-binding-check.py` | `FAIL rule=no-row record=S063 dir=round-41`, `records=55 bound=54 unbound=1`, exit 1 |
+| B | empty `sources` in `corpus/source-snapshots/round-41/manifest.json` | `source-recheck.py` | `manifest UNAVAILABLE reason=missing-sources`, exit 2; `frontier-recheck-count.py` → `FAIL F24 ... problems=manifest-missing-ids`, `entries=27 pass=26 exit=1` |
+| C | remove the new row from `corpus/instruments/knowledge-expected.txt` | `recheck-audit.py --quiet` | `expect=present expected=59 missing=0 unexpected=1 exit=1`, exit 1 |
+| D | append one byte to `corpus/source-snapshots/round-41/S063.txt` | `source-recheck.py` | `S063:sha256 MISMATCH expected=d6862622…6779 actual=e32faaf8…4341`, exit 1 |
+| E | set the S063 status cell to `queued` | census / measure | census exit 0 (it does **not** reject `queued`), but the measure moves to `44/45` — the measure is the gate that catches it |
+| F | set the S063 tier cell to `Z` | census | `E06 S063 tier=Z`, exit 1 |
+| G | set the F24 frontier status cell to `queued` | frontier harness / measure | the harness drops the row and stays green at `entries=26 pass=26 exit=0`; the measure moves to `43/44` — the measure is the gate that catches it |
+
+Probes E and G are the two gaps in the current instrument set: neither the census nor the
+frontier harness rejects a `queued` row, so the r22 measure (step 7) is the only gate that
+holds the C2 after-state together. A lander who checks only steps 2–4 of this runbook would
+miss both.
+
+---
+
+## 7. Mirror-reproduction notes (for the L1's own dry run)
+
+The F24 stand-in used to produce sections 3 and 5 lives only in scratch and is **not
+landable bytes**: the capture is a byte copy of the round-40 F23 capture
+(`corpus/source-snapshots/round-40/S060.txt`, sha256
+`d68626222139e8399bd421bbf023c030e6cace071cacbfc8abe659c629ce6779`, 4889 bytes, 111 lines),
+renamed to `S063.txt`, and the manifest record carries `url`/`capture_url`
+`https://www.rfc-editor.org/rfc/rfc9116.txt` so the binding rule B5 URL comparison holds.
+The real RFC 9116 capture replaces it at landing; the stand-in exists only to prove the
+integration order before the real bytes exist.
+
+Two mirror-only adaptations were applied, both of them round-40 precedent
+(`.ufo/waves/round-40/wave2/MutEntries.md` § B1):
+
+1. The recheck lines' literal `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin &&` was
+   rewritten to `cd <mirror> &&` in all 58 affected `corpus/knowledge/*.md` files, so the
+   executed lines re-check mirror bytes instead of the live lane. Without this the harnesses
+   execute the committed lines against the untouched lane and the mirror is not measured at
+   all. Verified: an unadapted mirror run of `recheck-audit.py --root <mirror> --cdroot
+   <mirror>` reports `lines=59 total=59 ... exit=1` (the `cdroot` limb fails), while
+   `--cdroot /home/vgpnk/Projects/shokunin/kasegi-shokunin` reports exit 0 against the live
+   lane — neither measures the mirror.
+2. `shokunin.conf` was copied from the fleet root into the mirror root so the census
+   `--root <mirror>` resolves the `kasegi` lane.
+
+The mirror was extracted with `git -C $LANE archive b3b08b2 | tar -x -C <mirror>`; no
+mutating git command was run anywhere.
+
+---
+
+## 8. Cleanup
+
+```bash
+rm -rf /fast/scratch/hyaku/kasegi-r41/ExecC2Instruments
+```
+
+The scratch dir is removed before the seat yields. A surviving `kasegi-r41` scratch dir is
+an I6-class round-41 defect.

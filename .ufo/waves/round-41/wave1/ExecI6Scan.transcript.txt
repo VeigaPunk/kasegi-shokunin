@@ -1,0 +1,207 @@
+
+===== 0. environment =====
+date-utc=2026-10-27T09:08:43Z
+bash=GNU bash, version 5.3.20(1)-release (x86_64-pc-linux-gnu)
+limb=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh
+limb-sha256=e9341dcac5781e0ee41e004a53ab0c02f84f62932714222f7235abfca5bb2e25
+limb-lines=510
+family=default kasegi-r41 (kasegi_r41 matched via separator folding)
+
+===== 1. SANDBOX SCRATCH ROOT WITH THE FIVE REQUIRED STRAYS =====
+sandbox tree:
+  .kasegi-r41-dot
+  Kasegi_R41-stray
+  container
+  container/kasegi-r41-nested
+  kasegi-r41-stray
+  kasegi_r41_stray
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --detail --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/work
+strays=5,read=ok,scanned=5,excluded=none,tolerated=none,error=none
+stray: kasegi-r41-stray
+stray: Kasegi_R41-stray
+stray: kasegi_r41_stray
+stray: container/kasegi-r41-nested
+stray: .kasegi-r41-dot
+exit=1
+
+[expected] strays=5 read=ok exit=1 (each of the five strays reds once)
+
+===== 2. EACH STRAY IN ISOLATION REDS EXACTLY ONCE =====
+
+-- solo: kasegi-r41-stray
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --check --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/work
+strays=1,read=ok
+exit=1
+
+-- solo: Kasegi_R41-stray
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --check --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/work
+strays=1,read=ok
+exit=1
+
+-- solo: kasegi_r41_stray
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --check --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/work
+strays=1,read=ok
+exit=1
+
+-- solo: container/kasegi-r41-nested (nested)
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --check --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/work
+strays=1,read=ok
+exit=1
+
+-- solo: .kasegi-r41-dot (dot-prefixed)
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --check --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/work
+strays=1,read=ok
+exit=1
+
+[expected] strays=1 read=ok exit=1 for each
+
+===== 3. REMOVING THE STRAYS GREENS THE RUN =====
+sandbox tree after removal:
+  (empty)
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --detail --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/work
+strays=0,read=ok,scanned=0,excluded=none,tolerated=none,error=none
+exit=0
+
+[expected] strays=0 read=ok exit=0
+
+===== 4. THE PASSED WORK DIR NEVER REDS =====
+-- work dir is itself family-named, and lives INSIDE the scanned root
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --detail --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch/kasegi-r41-work
+strays=0,read=ok,scanned=1,excluded=none,tolerated=kasegi-r41-work,error=none
+exit=0
+
+-- work dir contents are also family-named (must not red)
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --detail --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch/kasegi-r41-work
+strays=0,read=ok,scanned=2,excluded=kasegi-r41-work/kasegi-r41-inner,tolerated=kasegi-r41-work,error=none
+exit=0
+
+-- work dir on a CLEAN CHAIN under a family-named container
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --detail --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch/kasegi-r41-container/work
+strays=0,read=ok,scanned=1,excluded=none,tolerated=kasegi-r41-container,error=none
+exit=0
+
+[expected] strays=0 read=ok exit=0 in every case
+
+===== 5. FAIL-CLOSED ON AN UNREADABLE (chmod 000) ROOT =====
+mode of the scanned root: 0
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --detail --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch/locked --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/work
+strays=0,read=fail,scanned=0,excluded=none,tolerated=none,error=none
+exit=1
+
+-- a searchable but NOT listable root (mode 0311)
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --detail --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch/locked --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/work
+strays=0,read=fail,scanned=0,excluded=none,tolerated=none,error=‘/fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch/locked’:permission-denied 
+exit=1
+
+-- a nonexistent root (F6 fail-open escape)
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --detail --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch/does-not-exist --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/work
+strays=0,read=fail,scanned=0,excluded=none,tolerated=none,error=none
+exit=1
+
+-- a non-directory root
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --detail --scratch-root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/scratch-is-a-file --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/sandbox/work
+strays=0,read=fail,scanned=0,excluded=none,tolerated=none,error=none
+exit=1
+
+[expected] read=fail exit=1 in every case
+
+===== 6. KILL-RULE FIXTURES F1-F6 (per the landed ExecI11KillRule.fixtures.txt) =====
+=== F1: nested leftover under a top-level container ===
+F1 nested-leftover                             out=strays=1,read=ok                         rc=1 verdict=RED-OK
+F1 control clean-root                          out=strays=0,read=ok                         rc=0 verdict=GREEN-OK
+=== F2: round container geometry, clean-chain tolerance ===
+F2 container+nested-leftover                   out=strays=2,read=ok                         rc=1 verdict=RED-OK
+F2 control container-holds-only-work           out=strays=0,read=ok                         rc=0 verdict=GREEN-OK
+=== F3: dotfile scratch dir ===
+F3 dotfile-family                              out=strays=1,read=ok                         rc=1 verdict=RED-OK
+F3 control dotfile-nonfamily                   out=strays=0,read=ok                         rc=0 verdict=GREEN-OK
+F3 counterpart no-dot-family                   out=strays=1,read=ok                         rc=1 verdict=RED-OK
+=== F4: case / unicode-separator variants ===
+F4 three-variants                              out=strays=3,read=ok                         rc=1 verdict=RED-OK
+F4 control r40-name-out-of-family              out=strays=0,read=ok                         rc=0 verdict=GREEN-OK
+=== F5: ancestor-prefix tolerance requires a clean chain ===
+F5 symlink-to-ancestor                         out=strays=1,read=ok                         rc=1 verdict=RED-OK
+F5 control symlink-directly-to-work            out=strays=0,read=ok                         rc=0 verdict=GREEN-OK
+F5 variant dir-holding-work-plus-junk          out=strays=1,read=ok                         rc=1 verdict=RED-OK
+=== F6: nonexistent / non-directory scratch root fails closed ===
+F6 nonexistent-root                            out=strays=0,read=fail                       rc=1 verdict=RED-OK
+F6 variant non-directory-root                  out=strays=0,read=fail                       rc=1 verdict=RED-OK
+F6 control existing-empty-root                 out=strays=0,read=ok                         rc=0 verdict=GREEN-OK
+=== item-spec scenario: the five required strays ===
+ITEM five-strays                               out=strays=5,read=ok                         rc=1 verdict=RED-OK
+ITEM strays-removed                            out=strays=0,read=ok                         rc=0 verdict=GREEN-OK
+ITEM work-dir-never-reds                       out=strays=0,read=ok                         rc=0 verdict=GREEN-OK
+ITEM chmod-000-root                            out=strays=0,read=fail                       rc=1 verdict=RED-OK
+=== item-spec scenario: each stray reds ONCE (per-stray isolation) ===
+ITEM solo kasegi-r41-stray                     out=strays=1,read=ok                         rc=1 verdict=RED-OK
+ITEM solo Kasegi_R41-stray                     out=strays=1,read=ok                         rc=1 verdict=RED-OK
+ITEM solo kasegi_r41_stray                     out=strays=1,read=ok                         rc=1 verdict=RED-OK
+ITEM solo container/kasegi-r41-nested          out=strays=1,read=ok                         rc=1 verdict=RED-OK
+ITEM solo .kasegi-r41-dot                      out=strays=1,read=ok                         rc=1 verdict=RED-OK
+fixture-failures=0
+
+===== 7. GRADED SELFTEST OF THE LIMB =====
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --self-test --root /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/probe
+selftest probe scratch-root=/fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/probe/scratch sandbox=/fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/probe live-root-read=no
+selftest policy=family=kasegi-r41 case-insensitive,separator-insensitive,recursive,dot-inclusive,fail-closed,chain=strict
+selftest case=I6 clean-root-green expect=green got=green payload=strays=0,read=ok,scanned=0,excluded=none,tolerated=none,error=none
+selftest case=I6 clean-root-green positive=pass verdict=pass
+selftest case=I6 five-strays-red expect=red got=red payload=strays=5,read=ok,scanned=5,excluded=none,tolerated=none,error=none
+stray: kasegi-r41-stray
+stray: Kasegi_R41-stray
+stray: kasegi_r41_stray
+stray: container/kasegi-r41-nested
+stray: .kasegi-r41-dot
+selftest case=I6 five-strays-red positive=pass verdict=pass
+selftest case=I6 strays-removed-green expect=green got=green payload=strays=0,read=ok,scanned=0,excluded=none,tolerated=none,error=none
+selftest case=I6 strays-removed-green positive=pass verdict=pass
+selftest case=I6 work-dir-family-named-green expect=green got=green payload=strays=0,read=ok,scanned=1,excluded=none,tolerated=kasegi-r41-work,error=none
+selftest case=I6 work-dir-family-named-green positive=pass verdict=pass
+selftest case=I6 work-dir-contents-green expect=green got=green payload=strays=0,read=ok,scanned=2,excluded=kasegi-r41-work/kasegi-r41-inner,tolerated=kasegi-r41-work,error=none
+selftest case=I6 work-dir-contents-green positive=pass verdict=pass
+selftest case=I6 work-chain-clean-green expect=green got=green payload=strays=0,read=ok,scanned=1,excluded=none,tolerated=kasegi-r41-container,error=none
+selftest case=I6 work-chain-clean-green positive=pass verdict=pass
+selftest case=I6 work-chain-contaminated-red expect=red got=red payload=strays=1,read=ok,scanned=1,excluded=none,tolerated=none,error=none
+stray: kasegi-r41-container
+selftest case=I6 work-chain-contaminated-red positive=pass verdict=pass
+selftest case=I6 stray-regular-file-red expect=red got=red payload=strays=1,read=ok,scanned=1,excluded=none,tolerated=none,error=none
+stray: kasegi-r41-file
+selftest case=I6 stray-regular-file-red positive=pass verdict=pass
+selftest case=I6 stray-dangling-symlink-red expect=red got=red payload=strays=1,read=ok,scanned=1,excluded=none,tolerated=none,error=none
+stray: kasegi-r41-dangling
+selftest case=I6 stray-dangling-symlink-red positive=pass verdict=pass
+selftest case=I6 unreadable-entry-red expect=red got=red payload=strays=1,read=fail,scanned=1,excluded=none,tolerated=none,error=‘/fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/probe/scratch/kasegi-r41-locked’:permission-denied 
+stray: kasegi-r41-locked
+selftest case=I6 unreadable-entry-red positive=pass verdict=pass
+selftest case=I6 listable-failure-root-red expect=red got=red payload=strays=0,read=fail,scanned=0,excluded=none,tolerated=none,error=‘/fast/scratch/hyaku/kasegi-r41/ExecI6Scan/transcript/probe/scratch/listed’:permission-denied 
+selftest case=I6 listable-failure-root-red positive=pass verdict=pass
+selftest case=I6 unreadable-root-red expect=red got=red payload=strays=0,read=fail,scanned=0,excluded=none,tolerated=none,error=none
+selftest case=I6 unreadable-root-red positive=pass verdict=pass
+selftest case=I6 missing-root-red expect=red got=red payload=strays=0,read=fail,scanned=0,excluded=none,tolerated=none,error=none
+selftest case=I6 missing-root-red positive=pass verdict=pass
+selftest case=I6 deep-nested-red expect=red got=red payload=strays=1,read=ok,scanned=1,excluded=none,tolerated=none,error=none
+stray: deep/deeper/kasegi-r41-deep
+selftest case=I6 deep-nested-red positive=pass verdict=pass
+selftest case=I6 unicode-separator-red expect=red got=red payload=strays=1,read=ok,scanned=1,excluded=none,tolerated=none,error=none
+stray: kasegi‑r41‑stray
+selftest case=I6 unicode-separator-red positive=pass verdict=pass
+selftest case=I6 out-of-family-green expect=green got=green payload=strays=0,read=ok,scanned=0,excluded=none,tolerated=none,error=none
+selftest case=I6 out-of-family-green positive=pass verdict=pass
+selftest cases=16 failures=0
+selftest verdict=pass
+exit=0
+
+===== 8. LIVE ROOT SCAN (read-only, /fast/scratch/hyaku) =====
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-41/wave1/ExecI6Scan.sh --detail --scratch-root /fast/scratch/hyaku --work /fast/scratch/hyaku/kasegi-r41/ExecI6Scan/live-work
+strays=1,read=ok,scanned=1,excluded=none,tolerated=none,error=none
+stray: kasegi-r41
+exit=1
+
+[note] The live root carries every seat's scratch, and the round-41
+container kasegi-r41 is itself a family match, so a live-root scan is
+expected to red on the container whenever the chain to --work is not
+clean (F2).  Any read=fail above is also a real scan error: a single
+unreadable directory anywhere under the root (e.g. in another lane's
+scratch) fail-closes the whole scan by design.  The suite must scan an
+isolated root, or place --work on a clean chain inside the container,
+exactly as the round-40 wave-1 reference limb documented.

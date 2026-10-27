@@ -1,0 +1,31 @@
+Staged-package assimilation re-check — kasegi round 41, wave 1
+
+Package under test: /home/vgpnk/Projects/shokuknow/merge/kasegi/ (corpus-expansion-1, staged 2026-10-24): 94 accepted rows S031-S124 plus 67 knowledge entries. Lane at read time: corpus/SOURCES.md holds 62 rows and corpus/knowledge/ holds 59 entries.
+
+Comparison 1 — corpus/knowledge/japanese-domestic-disclosure-workflow.md (exact path collision)
+
+- Staged (3,617 B): two source lines under package ids S042 (IPA process page) and S043 (JPCERT 2026 guideline); verified 2026-10-23; describes the web-application path as a "six-step flow"; no verbatim line anchors.
+- Lane (18,544 B): adopted this staged entry under F12 — its own `ground:` line says so — and re-grounded every quote on the lane's round-28 captures under lane ids S042 (IPA page) and S041 (the same JPCERT guideline, already registered). It pins ~30 verbatim quotes to capture line numbers with manifest assertions, and corrects the staged text where the captures disagree: the web path is seven steps, not six. Same two source documents; the lane version is strictly deeper (withdrawal rule, self-report path, falsifiable rules, rejected over-generalizations, limits).
+- Verdict: SUPERSEDED. Copying the staged file over the lane's would delete ~15 KB of verified content and re-introduce a known factual error.
+
+Comparison 2 — corpus/knowledge/program-severity-ladders-and-reward-scales.md (exact path collision)
+
+- Staged (3,187 B): four package sources — S032/S033 (Bugcrowd VRT README and CWE map), S034 (CNVD 众测 help page), S036 (BILISRC V1.7); a four-ladder table and the CNVD worked example (one CVSS-10 RCE scores 12/10/7/4 depending on enterprise size and report quality).
+- Lane (8,095 B): adopted the Bugcrowd half only, re-grounded on round-29 captures under lane ids S044/S045 plus S043 (the HackerOne policy record), with manifest-pinned quotes and falsifiable checks. Its Limits section records that CNVD 众测 and BILISRC were deliberately not adopted into this entry. The CNVD ground landed separately in corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md under lane S049 (zc.cnvd.org.cn help page, round-32 capture) and S050 (360SRC V2.0), opened 2026-10-26 — 360SRC was chosen as the vendor-SRC ladder.
+- Verdict: SUPERSEDED on every named ladder except one residual: the BILISRC V1.7 document (security.bilibili.com) exists nowhere in the lane registry (`bilibili` absent from corpus/SOURCES.md). Additive residue: one tier-A Chinese vendor-SRC spec.
+
+Comparison 3 — corpus/knowledge/authorization-safe-harbor-and-scope.md (lane file targeted by two staged amendments)
+
+- Lane (4,445 B): rule plus evidence on S006/S007/S008 (HackerOne safe-harbor FAQ, Bugcrowd disclose.io, CISA VDP template), verified 2026-10-19 — safe harbor belongs to the policy that grants it; a badge grants neither scope nor method. No Japanese administrative-law or MSRC content.
+- Staged amendments: there is no exact-name staged file; the package flat-stages `authorization-safe-harbor-and-scope-2026-10-23-amendment.md` and `-r4-amendment.md` as "new-file" entries. (This also means the checklist's `amendments/` directory does not exist in the package as shipped.)
+  - Amendment A (5,620 B; package S053 METI 告示第19号, S058 IPA advisory-notice page, S054 Cabinet Office 要請, S057 Pepabo): adds a three-layer administrative-law answer — the ministerial notice defines every actor, IPA's own page publishes the framework's non-enforcement, and the 2026 statute adds a Cabinet Office pre-publication track — plus one private safe harbour. Of these documents the lane registry holds only Pepabo — as S038, opened independently and cited by vendor-policy entries, never from the safe-harbor entry. The METI notice, the IPA 留意事項 page and the Cabinet Office request are absent from corpus/SOURCES.md.
+  - Amendment B (3,544 B; package S066/S067 MSRC bounty guidelines and pentest rules of engagement): answers the round-1 open question — a Western safe harbour made operative by naming the CFAA, the DMCA and the Washington Criminal Code; authorization stopping at proof of concept; the accidental-access stop/notify/delete/acknowledge sequence. Both documents are absent from the lane registry.
+- Verdict: ADDITIVE on both amendments' core ground — the lane entry is a thinner, differently shaped answer — with one redundant slice (Pepabo, already lane S038).
+
+Package-staleness verdict
+
+On this three-entry sample the package is SUPERSEDED at the exact-collision paths and only partially additive at its amendment targets. Package-level: SOURCES.append.md assumes a 30-row lane whose first free id is S031; the lane now commits 62 rows, and every id in the overlap range S031-S062 already names a different, independently re-registered lane document (staged S031 HackerOne policy = lane S043; staged S057 Pepabo = lane S038; staged S033 Bugcrowd CWE map vs lane S033 e-Gov statute text). A verbatim append would collide on all 32 shared ids and duplicate dozens of documents under conflicting numbers; the package's own S063 (a Gazette case) would also collide with this round's F24 S063 (RFC 9116) once C2 lands. The package cannot be landed as written.
+
+Recommendation — adopt one theme, re-grounded, not appended
+
+Adopt the single theme "safe harbour and authorization beyond platform policy": land the two staged amendments' documents as a lane amendment to the existing entry — the METI 取扱規程, the IPA advisory-notice page, the Cabinet Office request, and the two MSRC documents — re-captured under fresh lane ids (S064+, since the package's own id space collides at S031-S062). Reasons: (1) it is the only sampled ground that is unambiguously additive — five of the six documents are absent from the lane registry; (2) it answers a question the lane explicitly left open (the amendment names the round-1 ledger item); (3) every other sampled item is already held deeper. Do not adopt the package wholesale or append SOURCES.append.md verbatim: on this sample that would overwrite two strictly better lane entries, re-introduce a corrected factual error, duplicate at least four already-registered documents, and corrupt the id space. Residual worth a later ticket if capacity permits: staged BILISRC V1.7 (package S036) as a second Chinese vendor-SRC ladder beside lane S050.

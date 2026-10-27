@@ -1,0 +1,229 @@
+ExecI7Registry.transcript.txt — round-41 I7 registry-limb proof transcript.
+
+Seat: ExecI7Registry (executor, leaf). Lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+(read-only to this seat: no lane file edited, no git/jj mutation).
+Date (UTC): 2026-10-27T08:40:47Z  Host: linux 7.2.11-arch1-1, GNU awk 5.4.1, bash 5.3.20.
+
+Limb under test: ExecI7Registry.check.sh, function i7_registry_row_check
+  <skill_md_path> <instrument_basename>.
+Sourcing it defines the function and runs nothing (proved below).
+
+All fixtures below are scratch files under the seat scratch dir
+/fast/scratch/hyaku/kasegi-r41/ExecI7Registry/. The lane SKILL.md is only ever READ.
+
+==============================================================================
+SECTION 1 — the three required proofs (T13 mention-only rejected; an honest
+row passes; a row after a blank line is rejected), over scratch SKILL.md copies
+==============================================================================
+------------------------------------------------------------
+# fixture F1 — honest row (scratch SKILL.md copy, correct table)
+registry=1,basename=r41-closure.sh,candidates=1,valid=1,line=5,mentions=0
+exit=0
+-- F1 negative control: same file, a basename that is absent --
+registry=0,basename=r99-closure.sh,candidates=0,valid=0,line=0,mentions=0,reason=no-candidate-row
+exit=1
+------------------------------------------------------------
+# fixture F2 — T13 mention-only (name NOT in field 2)
+-- F2a: mention inside a table row, field 2 is not the basename --
+registry=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row
+exit=1
+-- F2b: prose mention only, no table row at all --
+registry=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row
+exit=1
+------------------------------------------------------------
+# fixture F3 — D6 live breakage: row after a blank line
+-- F3a: the live lane SKILL.md, r40-closure.sh (broken at L1119-1122) --
+registry=0,basename=r40-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L1122:preceding-line-not-a-table-row+header-row-has-no-name-cell
+exit=1
+-- F3b: the live lane SKILL.md, r39-closure.sh (a well-formed row) --
+registry=1,basename=r39-closure.sh,candidates=1,valid=1,line=1115,mentions=0
+exit=0
+-- F3c: the live lane SKILL.md, r40-closure.sh after the D6 repair --
+registry=1,basename=r40-closure.sh,candidates=1,valid=1,line=1121,mentions=0
+exit=0
+------------------------------------------------------------
+# fixture F4 — the row appended after a blank line is still rejected
+registry=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L6:preceding-line-not-a-table-row+header-row-has-no-name-cell
+exit=1
+------------------------------------------------------------
+# fixture F5 — truncated row (<8 fields) is not a registry row
+registry=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row
+exit=1
+------------------------------------------------------------
+# fixture F6 — usage / missing-file errors are fail-closed
+registry=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=0,reason=file-missing
+exit=2
+registry=0,basename=,candidates=0,valid=0,line=0,mentions=0,reason=usage
+exit=2
+
+==============================================================================
+SECTION 2 — D6 repair landing proofs (the appended block, the inlined
+repair, the block alone, and the no-blank-line landing that must NOT pass)
+==============================================================================
+------------------------------------------------------------
+# L0 — the live SKILL.md BEFORE the repair (D6 breakage at L1119-1122)
+registry=0,basename=r40-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L1122:preceding-line-not-a-table-row+header-row-has-no-name-cell
+exit=1
+-- live file structure around the breakage --
+1117:[## Round-40 Gates & probes registry addition (appended 2026-10-26)]
+1118:[]
+1119:[| name | type | entry command | verdict map | self-test | pinned-value]
+1120:[|---|---|---|---|---|---|---|---|]
+1121:[]
+1122:[| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --ex]
+------------------------------------------------------------
+# L1 — repair APPENDED at the end of SKILL.md (the append-only landing)
+-- tail of the repaired file --
+1119:[| name | type | entry command | verdict map | self-test | pinned-value]
+1120:[|---|---|---|---|---|---|---|---|]
+1121:[]
+1122:[| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --ex]
+1123:[]
+1124:[| name | type | entry command | verdict map | self-test | pinned-value]
+1125:[|---|---|---|---|---|---|---|---|]
+1126:[| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --ex]
+-- limb verdict for r40-closure.sh --
+registry=1,basename=r40-closure.sh,candidates=2,valid=1,line=1126,mentions=0
+exit=0
+------------------------------------------------------------
+# L2 — repair INLINED: the blank line at L1121 removed, row re-attached
+-- structure --
+1117:[## Round-40 Gates & probes registry addition (appended 2026-10-26)]
+1118:[]
+1119:[| name | type | entry command | verdict map | self-test | pinned-value]
+1120:[|---|---|---|---|---|---|---|---|]
+1121:[| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --ex]
+-- limb verdict for r40-closure.sh --
+registry=1,basename=r40-closure.sh,candidates=1,valid=1,line=1121,mentions=0
+exit=0
+------------------------------------------------------------
+# L3 — the fix bytes as a standalone block (header+separator+row, no context)
+registry=1,basename=r40-closure.sh,candidates=1,valid=1,line=4,mentions=0
+exit=0
+------------------------------------------------------------
+# L4 — the fix bytes appended WITHOUT the leading blank line (must still be a table)
+-- structure (note: no blank between the old row and the new header) --
+1119:[| name | type | entry command | verdict map | self-test | pinned-value]
+1120:[|---|---|---|---|---|---|---|---|]
+1121:[]
+1122:[| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --ex]
+1123:[| name | type | entry command | verdict map | self-test | pinned-value]
+1124:[|---|---|---|---|---|---|---|---|]
+1125:[| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --ex]
+registry=0,basename=r40-closure.sh,candidates=2,valid=0,line=0,mentions=0,reason=L1122:preceding-line-not-a-table-row+header-row-has-no-name-cell;L1125:header-row-has-no-name-cell
+exit=1
+------------------------------------------------------------
+# L5 — the limb on the fix bytes alone, proving the block is self-contained
+registry=1,basename=r40-closure.sh,candidates=1,valid=1,line=4,mentions=0
+exit=0
+
+==============================================================================
+SECTION 3 — edge-case sweep over the live lane SKILL.md (read-only)
+==============================================================================
+------------------------------------------------------------
+# E1 — sweep every basename the live SKILL.md registry names
+r35-defect-closure.sh      registry=1,basename=r35-defect-closure.sh,candidates=1,valid=1,line=1110,mentions=0
+r36-closure.sh             registry=1,basename=r36-closure.sh,candidates=2,valid=2,line=1111,mentions=0
+r37-closure.sh             registry=1,basename=r37-closure.sh,candidates=1,valid=1,line=1112,mentions=0
+r38-closure.sh             registry=1,basename=r38-closure.sh,candidates=1,valid=1,line=1114,mentions=0
+r39-closure.sh             registry=1,basename=r39-closure.sh,candidates=1,valid=1,line=1115,mentions=0
+r40-closure.sh             registry=0,basename=r40-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L1122:preceding-line-not-a-table-row+header-row-has-no-name-cell
+r41-closure.sh             registry=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=0,reason=no-candidate-row
+recheck-audit.py           registry=1,basename=recheck-audit.py,candidates=1,valid=1,line=981,mentions=4
+density.py                 registry=0,basename=density.py,candidates=0,valid=0,line=0,mentions=0,reason=no-candidate-row
+anchorcheck.py             registry=1,basename=anchorcheck.py,candidates=2,valid=2,line=982,mentions=2
+------------------------------------------------------------
+# E2 — header row without a 'name' cell is not a registry table
+registry=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell
+exit=1
+------------------------------------------------------------
+# E3 — header present but no separator row under it
+registry=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:no-delimiter-row-under-header
+exit=1
+------------------------------------------------------------
+# E4 — backticked / spaced basename in field 2 is NOT an exact match
+registry=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row
+exit=1
+------------------------------------------------------------
+# E5 — the appended-repair scenario: old broken row + appended good row
+-- E5a: r40-closure.sh (old row broken, appended row good) --
+registry=1,basename=r40-closure.sh,candidates=2,valid=1,line=1126,mentions=0
+exit=0
+-- E5b: r41-closure.sh absent in the same file --
+registry=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=0,reason=no-candidate-row
+exit=1
+------------------------------------------------------------
+# E6 — idempotence: the same input gives the same output
+run1: registry=0,basename=r40-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L1122:preceding-line-not-a-table-row+header-row-has-no-name-cell
+run2: registry=0,basename=r40-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L1122:preceding-line-not-a-table-row+header-row-has-no-name-cell
+identical=yes
+------------------------------------------------------------
+# E7 — the check reads only the file it is given (no writes, no git)
+SKILL.md sha256 before=ad20fc3d371302301b49088ae41c0a227cf6067ea0c6c8078f2f000d1ca457c1
+SKILL.md sha256 after =ad20fc3d371302301b49088ae41c0a227cf6067ea0c6c8078f2f000d1ca457c1
+unchanged=yes
+?? .ufo/waves/round-41/kasegi-r41-build.ready
+?? .ufo/waves/round-41/kasegi-r41-build.ready.dispatched
+?? .ufo/waves/round-41/wave1-run.err
+?? .ufo/waves/round-41/wave1/ConnCrossClaims.md
+?? .ufo/waves/round-41/wave1/ConnCrossClaims.txt
+(git status above shows only untracked wave-41 build files, i.e. no lane edit)
+------------------------------------------------------------
+# E8 — a row whose field 2 merely CONTAINS the basename is rejected
+registry=1,basename=r41-closure.sh,candidates=1,valid=1,line=4,mentions=1
+exit=0
+
+==============================================================================
+SECTION 4 — mutation battery: every clause of the limb is load-bearing
+(each mutant collapses exactly one clause of the SHIPPED awk program; a
+mutant that changes no fixture payload is a SURVIVOR = the clause is not
+discriminating). All 13 mutants are killed.
+==============================================================================
+extracted awk program: 2375 bytes
+
+== baseline (unmutated shipped limb) ==
+F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+header-row-has-no-name-cell F4=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:no-delimiter-row-under-header F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter 
+(F1 must be 1; F2..F8 must be 0)
+
+== mutants (one clause collapsed each) ==
+M1 exact-field2-match      killed    F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+header-row-has-no-name-cell F4=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:no-delimiter-row-under-header F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter 
+M2 field-count>=8          killed    F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+header-row-has-no-name-cell F4=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:no-delimiter-row-under-header F6=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter 
+M3 preceding-line-check    killed    F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:header-row-has-no-name-cell F4=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:no-delimiter-row-under-header F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter 
+M4 header-name-check       killed    F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+no-delimiter-row-under-header F4=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:no-delimiter-row-under-header F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter 
+M5 delimiter-row-check     killed    F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+header-row-has-no-name-cell F4=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter 
+M6 row-below-delimiter     killed    F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+header-row-has-no-name-cell F4=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:no-delimiter-row-under-header F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=1,basename=---,candidates=1,valid=1,line=2,mentions=0 
+M7 table-line-check        killed    F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+header-row-has-no-name-cell F4=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:no-delimiter-row-under-header F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F7=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter 
+M8 has_name-name-cell      killed    F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+no-delimiter-row-under-header F4=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:no-delimiter-row-under-header F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter 
+M9 mentions-count          killed    F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=0,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+header-row-has-no-name-cell F4=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:no-delimiter-row-under-header F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=0,reason=no-candidate-row F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=0,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=0,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter 
+M10 registry-1-rule        killed    F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=1,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1 F3=1,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0 F4=1,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0 F5=1,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0 F6=1,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1 F7=1,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1 F8=1,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1 F9=1,basename=---,candidates=1,valid=0,line=0,mentions=0 
+M11 is_sep-cell-shape      killed    F1=1,basename=r41-closure.sh,candidates=1,valid=1,line=3,mentions=0 F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+header-row-has-no-name-cell F4=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:row-not-below-delimiter 
+M12 run-start-scan         killed    F1=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+header-row-has-no-name-cell F4=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:header-row-has-no-name-cell F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:header-row-has-no-name-cell 
+M13 run-start-walk         killed    F1=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F2=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F3=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L4:preceding-line-not-a-table-row+header-row-has-no-name-cell F4=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L3:header-row-has-no-name-cell F5=0,basename=r41-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L2:header-row-has-no-name-cell F6=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F7=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F8=0,basename=r41-closure.sh,candidates=0,valid=0,line=0,mentions=1,reason=no-candidate-row F9=0,basename=---,candidates=1,valid=0,line=0,mentions=0,reason=L2:header-row-has-no-name-cell 
+
+==============================================================================
+SECTION 5 — sourceability and side-effect freedom
+==============================================================================
+$ cat > /tmp/src2.sh <<'EOF'
+set -u
+LANE=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+before=$(sha256sum "$LANE/SKILL.md" | cut -d' ' -f1)
+. /fast/scratch/hyaku/kasegi-r41/ExecI7Registry/ExecI7Registry.check.sh
+after=$(sha256sum "$LANE/SKILL.md" | cut -d' ' -f1)
+echo "function defined after sourcing: $(type -t i7_registry_row_check)"
+echo "sourcing produced no stdout: (nothing above this line)"
+echo "SKILL.md unchanged by sourcing: $([ "$before" = "$after" ] && echo yes || echo NO)"
+echo "call after sourcing:"
+i7_registry_row_check "$LANE/SKILL.md" r39-closure.sh; echo "exit=$?"
+echo "exit code of a failing call:"
+i7_registry_row_check "$LANE/SKILL.md" r40-closure.sh; echo "exit=$?"
+EOF
+$ bash /tmp/src2.sh
+function defined after sourcing: function
+sourcing produced no stdout: (nothing above this line)
+SKILL.md unchanged by sourcing: yes
+call after sourcing:
+registry=1,basename=r39-closure.sh,candidates=1,valid=1,line=1115,mentions=0
+exit=0
+exit code of a failing call:
+registry=0,basename=r40-closure.sh,candidates=1,valid=0,line=0,mentions=0,reason=L1122:preceding-line-not-a-table-row+header-row-has-no-name-cell
+exit=1

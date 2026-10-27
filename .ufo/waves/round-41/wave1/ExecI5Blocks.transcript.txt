@@ -1,0 +1,154 @@
+ExecI5Blocks.transcript.txt — kasegi-shokunin round-41, seat ExecI5Blocks
+I5 declared-blocks validator — proof transcripts
+===========================================================================
+
+WHAT THIS TRANSCRIPT SHOWS
+  1. CASE A  the required rejection: a scratch export containing the symlink
+             `pwn -> /etc`, declared in declared-blocks.txt, is REJECTED by the
+             I5 validator (exit 1, reason=escapes-root).
+  2. CASE B  the required green: an honest declared append is GREEN (exit 0).
+  3. CASE C2 the load-bearing comparison: the VERBATIM round-40 H9 limb
+             (path_safe + check_h9, extracted byte-exactly from the committed
+             corpus/instruments/r40-closure.sh with `git show`) grades the
+             symlink-to-FILE escape GREEN (valid=1, exit 0) — the round-40
+             wave-2 T7 defect — while this I5 limb reds it.
+  4. CASE D  one honest declaration plus one escaping symlink in the same
+             file: the honest one passes, the symlink reds, the check reds.
+  5. CASE E  no false reds on real lane data: the REAL round-40
+             declared-blocks.txt (293 declarations) grades green under I5.
+  6. CASE F  the same real export with a `pwn -> /etc` symlink declared on top:
+             the injected declaration reds with reason=escapes-root and the
+             check goes closed=0.
+  7. the limb's own selftest: 14 cases, 0 failures, including a legacy
+             control showing the round-40 rule set is GREEN on the T7 fixture.
+
+ENVIRONMENT
+  limb:      ExecI5Blocks.sh (this seat's deliverable; sourceable bash limb)
+  host:      Linux 7.2.11-arch1-1, git 2.56.0, GNU coreutils, GNU grep (PCRE)
+  scratch:   /fast/scratch/hyaku/kasegi-r41/ExecI5Blocks (removed at yield)
+  lane read: /home/vgpnk/Projects/shokunin/kasegi-shokunin (READ-ONLY; the
+             only lane commands are `git show` / `git archive` / `git diff`)
+  no network fetch was performed by this seat.
+
+FIXTURE SAFETY
+  Every git fixture is created with `git -C "$D" init -q` under the seat's
+  scratch dir and its toplevel is asserted with
+  `git -C "$D" rev-parse --show-toplevel` before any commit; the assertion
+  output is in the transcript below. No throwaway git identity was written
+  anywhere: every commit uses `git -c user.name=... -c user.email=...` on the
+  command line, so no config file is modified.
+
+===========================================================================
+
+=== proof.sh: I5 declared-blocks validator ===
+limb=/fast/scratch/hyaku/kasegi-r41/ExecI5Blocks/ExecI5Blocks.sh
+host-date-utc=2026-10-27T08:42:51Z
+git=git version 2.56.0
+
+fixture-toplevel=/fast/scratch/hyaku/kasegi-r41/ExecI5Blocks/proof/fixture
+toplevel-assert=ok
+base-ref=d536b243cbb9f6b8e18df6e5007be3327a5e97fe
+ref=7f421699afde385fd9f646e9ff7317f567ee279e
+
+export-tree:
+  total 4
+  drwxr-xr-x 2 vgpnk vgpnk 36 Oct 27 05:42 .
+  drwxr-xr-x 4 vgpnk vgpnk 35 Oct 27 05:42 ..
+  -rw-r--r-- 1 vgpnk vgpnk 54 Oct 27 05:42 PROVINCE.md
+  lrwxrwxrwx 1 vgpnk vgpnk  4 Oct 27 05:42 pwn -> /etc
+
+symlink-pwn-target=/etc
+readlink-f-pwn=/etc
+export-root-canonical=/fast/scratch/hyaku/kasegi-r41/ExecI5Blocks/proof/export
+
+honest-sha=373d762acbb45cd8ed43de96792ea28baab89f770ee84620700ed1d2b48744e5
+outside-sha=5bc082fb5108e773dbf59b277ef07ff7bdd5b9514d8faf1436fa15ba1ebc1522
+
+--- CASE A: declared-blocks.txt declares the escaping symlink 'pwn -> /etc' ---
+declared-blocks.txt:
+  pwn 1 5bc082fb5108e773dbf59b277ef07ff7bdd5b9514d8faf1436fa15ba1ebc1522
+$ bash ExecI5Blocks.sh --check --export-root /fast/scratch/hyaku/kasegi-r41/ExecI5Blocks/proof/export --lane /fast/scratch/hyaku/kasegi-r41/ExecI5Blocks/proof/fixture --base d536b243cbb9f6b8e18df6e5007be3327a5e97fe --ref 7f421699afde385fd9f646e9ff7317f567ee279e --declared /fast/scratch/hyaku/kasegi-r41/ExecI5Blocks/proof/declared-blocks.txt
+I5-decl path=pwn lines=1 verdict=fail reason=escapes-root
+I5 payload=declared=1,valid=0,tail=0,malformed=0,pure=1,paths=1,canon=0,nul=0,diff-read=ok closed=0
+exit=1
+
+--- CASE B: declared-blocks.txt declares the honest append ---
+declared-blocks.txt:
+  PROVINCE.md 3 373d762acbb45cd8ed43de96792ea28baab89f770ee84620700ed1d2b48744e5
+$ bash ExecI5Blocks.sh --check --export-root /fast/scratch/hyaku/kasegi-r41/ExecI5Blocks/proof/export --lane /fast/scratch/hyaku/kasegi-r41/ExecI5Blocks/proof/fixture --base d536b243cbb9f6b8e18df6e5007be3327a5e97fe --ref 7f421699afde385fd9f646e9ff7317f567ee279e --declared /fast/scratch/hyaku/kasegi-r41/ExecI5Blocks/proof/declared-blocks.txt
+I5-decl path=PROVINCE.md lines=3 verdict=pass reason=-
+I5 payload=declared=1,valid=1,tail=1,malformed=0,pure=1,paths=1,canon=1,nul=0,diff-read=ok closed=1
+exit=0
+
+--- CASE C: the round-40 H9 rule set (NO containment clause) on the SAME T7 fixture ---
+legacy declared=1 valid=1 tail=1 pure=1 paths=1  -> the escape was GREEN under round-40 rules
+  (round-40 wave-2 defeat record: .ufo/waves/round-40/wave2/RevC1Counters.defeats.txt, D2/T7)
+
+--- CASE D: one honest declaration + one escaping symlink in the same file ---
+I5-decl path=PROVINCE.md lines=3 verdict=pass reason=-
+I5-decl path=pwn lines=1 verdict=fail reason=escapes-root
+I5 payload=declared=2,valid=1,tail=1,malformed=0,pure=1,paths=1,canon=0,nul=0,diff-read=ok closed=0
+exit=1
+
+--- CASE C2: the VERBATIM round-40 H9 limb vs this I5 limb, same fixture ---
+=== measurement: round-40 H9 (NO containment) vs I5 (containment) ===
+
+--- measure: symlink-to-file (declared symlink pwn -> /etc/passwd) ---
+  declared-blocks.txt: pwn 1 5bc082fb5108e773dbf59b277ef07ff7bdd5b9514d8faf1436fa15ba1ebc1522
+  export symlink: pwn -> /etc/passwd
+  readlink -f export/pwn = /etc/passwd
+  export root canonical = /fast/scratch/hyaku/kasegi-r41/ExecI5Blocks/proof/m-symlink-to-file/export
+  r40 r40-h9 payload=declared=1,valid=1,tail=1,pure=1,paths=1,diff-read=ok
+  r40 r40-h9 exit=0
+  i5   I5-decl path=pwn lines=1 verdict=fail reason=escapes-root
+  i5   I5 payload=declared=1,valid=0,tail=0,malformed=0,pure=1,paths=1,canon=0,nul=0,diff-read=ok closed=0
+
+--- measure: symlink-to-dir (declared symlink pwn -> /etc) ---
+  declared-blocks.txt: pwn 1 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  export symlink: pwn -> /etc
+  readlink -f export/pwn = /etc
+  export root canonical = /fast/scratch/hyaku/kasegi-r41/ExecI5Blocks/proof/m-symlink-to-dir/export
+  r40 r40-h9 payload=declared=1,valid=0,tail=0,pure=1,paths=0,diff-read=ok
+  r40 r40-h9 exit=1
+  i5   I5-decl path=pwn lines=1 verdict=fail reason=escapes-root
+  i5   I5 payload=declared=1,valid=0,tail=0,malformed=0,pure=1,paths=1,canon=0,nul=0,diff-read=ok closed=0
+
+
+--- CASE E: the REAL lane declared-blocks.txt (293 declarations, round-40 judged head) ---
+  declared file: .ufo/waves/round-40/declared-blocks.txt (293 lines)
+$ bash ExecI5Blocks.sh --check --export-root <real export> --lane $LANE --base a7af2ce63bce153757d39bf66b366a96caf30c13 --ref c7aea5ef97902f38289cbdc1cf267068876a62dd --declared .ufo/waves/round-40/declared-blocks.txt
+I5 payload=declared=293,valid=293,tail=293,malformed=0,pure=1,paths=1,canon=1,nul=0,diff-read=ok closed=1
+exit=0
+
+--- CASE F: the SAME real export with a symlink 'pwn -> /etc' declared on top ---
+  injected declaration: pwn 1 5bc082fb5108e773dbf59b277ef07ff7bdd5b9514d8faf1436fa15ba1ebc1522
+I5-decl path=pwn lines=1 verdict=fail reason=escapes-root
+I5 payload=declared=294,valid=293,tail=293,malformed=0,pure=1,paths=1,canon=0,nul=0,diff-read=ok closed=0
+exit=1
+
+--- limb selftest (all 12 cases) ---
+selftest case=I5 honest verdict=pass reason=-
+selftest case=I5 t7-symlink-escape verdict=pass reason=escapes-root
+selftest case=I5 symlink-to-directory verdict=pass reason=escapes-root
+selftest case=I5 path-dotdot verdict=pass reason=path-escape
+selftest case=I5 path-absolute verdict=pass reason=path-absolute
+selftest case=I5 path-nul verdict=pass reason=nul-byte
+selftest case=I5 tail-mismatch verdict=pass reason=tail-mismatch
+selftest case=I5 diff-added-mismatch verdict=pass reason=diff-mismatch
+selftest case=I5 diff-with-deletion verdict=pass reason=diff-deleted
+selftest case=I5 lines-exceed-file verdict=pass reason=lines-exceed-file
+selftest case=I5 path-absent verdict=pass reason=absent
+selftest case=I5 inner-symlink verdict=pass reason=symlink-declared
+selftest case=I5 malformed-line verdict=pass reason=malformed-line
+selftest case=I5 malformed-line-2 verdict=pass reason=malformed-line
+selftest legacy=round40-h9 case=t7-symlink-escape verdict=green
+selftest cases=14 failures=0
+selftest-exit=0
+
+=== proof.sh summary ===
+case-A-t7-symlink-exit=1 (want 1)
+case-B-honest-exit=0 (want 0)
+case-D-mixed-exit=1 (want 1)
+case-E-real-lane-293-exit=0 (want 0)
+case-F-real-lane-t7-exit=1 (want 1)
+RESULT=as-expected

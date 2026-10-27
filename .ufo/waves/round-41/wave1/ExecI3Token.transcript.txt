@@ -1,0 +1,135 @@
+=== 0. the fixtures (byte-exact) ===
+--- fixture-defeat.md
+Correction (round 40): the final round-39 receipt records `closed=7/80 and failures=10`.
+--- fixture-honest.md
+Correction (round 40): the final round-39 receipt records `closed=7/8 exit=1` and `selftest failures=1`.
+--- fixture-both.md
+Correction (round 40): the final round-39 receipt records `closed=7/80 and failures=10`.
+Correction (round 40): the graded selftest records `closed=7/8 exit=1` and `selftest failures=1`.
+
+=== limb digest ===
+$ sha256sum /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh
+9ea0adba6b11485eac794a04e54622e9f6a835ef4d17c73af3640523f72dcb4a  /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh
+$ wc -l /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh
+293 /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh
+
+=== 1. honest fixture: green ===
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/fixture-honest.md --round 40 --value closed=7/8 --value failures=1
+corrections=1,named=1,missing=0,missing-values=-,values=2,mode=any
+rc=0
+
+=== 2. round-40 T2 defeat fixture: red ===
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/fixture-defeat.md --round 40 --value closed=7/8 --value failures=1
+corrections=1,named=0,missing=2,missing-values=closed=7/8,failures=1,values=2,mode=any
+rc=1
+
+=== 3. both fixtures in one file: green (the honest line satisfies it) ===
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/fixture-both.md --round 40 --value closed=7/8 --value failures=1
+corrections=2,named=1,missing=0,missing-values=-,values=2,mode=any
+rc=0
+
+=== 4. the substring matcher the round-40 suite used (index()), on the SAME defeat fixture ===
+$ grep -cF "closed=7/8" fixture-defeat.md   # the round-40 H2 substring test: green on a lie
+1
+$ grep -cF "failures=1" fixture-defeat.md
+1
+
+=== 5. the defeat fixture under the defeat VALUES (must match exactly) ===
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/fixture-defeat.md --round 40 --value closed=7/80 --value failures=10
+corrections=1,named=1,missing=0,missing-values=-,values=2,mode=any
+rc=0
+
+=== 6. one value at a time ===
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/fixture-defeat.md --round 40 --value closed=7/8
+corrections=1,named=0,missing=1,missing-values=closed=7/8,values=1,mode=any
+rc=1
+
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/fixture-defeat.md --round 40 --value closed=7/80
+corrections=1,named=1,missing=0,missing-values=-,values=1,mode=any
+rc=0
+
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/fixture-defeat.md --round 40 --value failures=1
+corrections=1,named=0,missing=1,missing-values=failures=1,values=1,mode=any
+rc=1
+
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/fixture-defeat.md --round 40 --value failures=10
+corrections=1,named=1,missing=0,missing-values=-,values=1,mode=any
+rc=0
+
+=== 7. real lane records, round-40 correction lines ===
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md --round 40 --value closed=7/8 --value failures=1
+corrections=2,named=1,missing=0,missing-values=-,values=2,mode=any
+rc=0
+
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md --round 40 --value closed=7/8 --value failures=1
+corrections=2,named=1,missing=0,missing-values=-,values=2,mode=any
+rc=0
+
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/SHONEN.md --round 40 --value closed=7/8 --value failures=1
+corrections=3,named=1,missing=0,missing-values=-,values=2,mode=any
+rc=0
+
+=== 8. real lane records, the defeat values (red) ===
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md --round 40 --value closed=7/80 --value failures=10
+corrections=2,named=0,missing=2,missing-values=closed=7/80,failures=10,values=2,mode=any
+rc=1
+
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md --round 40 --value closed=7/80 --value failures=10
+corrections=2,named=0,missing=2,missing-values=closed=7/80,failures=10,values=2,mode=any
+rc=1
+
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /home/vgpnk/Projects/shokunin/kasegi-shokunin/SHONEN.md --round 40 --value closed=7/80 --value failures=10
+corrections=3,named=0,missing=2,missing-values=closed=7/80,failures=10,values=2,mode=any
+rc=1
+
+=== 9. line anchor: only `^Correction (round N)` lines are read ===
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/anchor.md --round 40 --value closed=7/8 --value failures=1
+corrections=0,named=0,missing=2,missing-values=closed=7/8,failures=1,values=2,mode=any
+rc=1
+
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/anchor.md --round 41 --value closed=7/8 --value failures=1
+corrections=0,named=0,missing=2,missing-values=closed=7/8,failures=1,values=2,mode=any
+rc=1
+
+=== 10. the limb considered lines ===
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/fixture-honest.md --round 40 --value closed=7/8
+corrections=1,named=1,missing=0,missing-values=-,values=1,mode=any
+rc=0
+
+=== 11. limb selftest ===
+$ env TMPDIR=/fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --selftest
+corrections=1,named=1,missing=0,missing-values=-,values=2,mode=any
+selftest case=honest values=2 matched=2 verdict=pass
+corrections=1,named=0,missing=2,missing-values=closed=7/8,failures=1,values=2,mode=any
+selftest case=defeat values=2 matched=0 verdict=pass
+corrections=0,named=0,missing=2,missing-values=closed=7/8,failures=1,values=2,mode=any
+selftest case=unanchored values=2 matched=0 verdict=pass
+corrections=2,named=1,missing=0,missing-values=-,values=2,mode=any
+selftest case=mixed values=2 matched=2 verdict=pass
+corrections=2,named=0,missing=0,missing-values=-,values=2,mode=any
+selftest case=split-any values=2 matched=2 verdict=pass
+corrections=2,named=0,missing=0,missing-values=-,values=2,mode=same-line
+selftest case=split-same-line values=2 matched=0 verdict=pass
+rc=0
+
+=== 12. fail-closed on a missing file ===
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/does-not-exist.md --round 40 --value closed=7/8 --value failures=1
+corrections=0,named=0,missing=2,missing-values=-,values=2,mode=any,error=file-absent
+rc=2
+
+=== 12b. the underscore knob (I3_STRICT_UNDERSCORE) ===
+$ bash /fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh --file /fast/scratch/hyaku/kasegi-r41/ExecI3Token/tx/underscore.md --round 40 --value closed=7/8 --value failures=1
+corrections=1,named=1,missing=0,missing-values=-,values=2,mode=any
+rc=0
+
+$ I3_STRICT_UNDERSCORE=1 bash ExecI3Token.sh --file underscore.md --round 40 --value closed=7/8 --value failures=1
+corrections=1,named=0,missing=2,missing-values=closed=7/8,failures=1,values=2,mode=any
+rc=1
+
+=== 13. sourcing does not execute the CLI ===
+$ bash -c set -e; . "/fast/scratch/hyaku/kasegi-r41/ExecI3Token/ExecI3Token.sh"; type -t i3_token_match; type -t i3_correction_lines; type -t i3_token_match_same_line
+function
+function
+function
+rc=0
+

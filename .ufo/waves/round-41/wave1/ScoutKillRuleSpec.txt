@@ -1,0 +1,102 @@
+# ScoutKillRuleSpec — the eight CritKillRule escape states (F1-F8)
+# Source: .ufo/waves/round-40/wave2/CritKillRule.md sections 1-3, plus
+#   CritKillRule.pending-variants.md and CritKillRule.worktree-clean.sh.
+# Count authority: round-41 CORRECTIONS-L1.md item 2 — the committed section-2
+#   headings F1-F8 are authoritative (eight states); the file's intro prose
+#   ("Verdict: 7 distinct escape states reproduced.") undercounts and is
+#   superseded for the count. I11 target: escapes=8 red=8 naming F1-F8.
+
+[1] name: F1 — a leftover scratch dir nested under any top-level container is invisible (top-level-only scan)
+    setup:
+      mkdir -p $SB/scratch/container/kasegi-r40-stray
+      bash r40-closure.sh --export-ref 3074c76 --lane <LANE> \
+          --scratch-root $SB/scratch --work $SB/work
+      # -> H6 payload=strays=0,read=ok closed=1
+    limb escaped: H6 scratch-leftover scan
+    missed clause: the H6 limb scans only `find $root -mindepth 1 -maxdepth 1` (one level). A real leftover kasegi-r40-* dir placed under any top-level sibling — e.g. /fast/scratch/hyaku/<something>/kasegi-r40-stray — is never seen. Kill-rule text: "any leftover kasegi-r39*/r40 scratch entry at filing other than the passed --work dir" — no depth qualifier; a nested leftover is a real leftover. The instrument only audits one directory level of one root.
+    fix: scan the scratch root recursively for the name family (bounded depth, e.g. find -maxdepth 3), or at minimum also audit the round container's immediate children when --work is inside it, and tolerate only the single clean chain to --work. (Section 4 gives F1/F2 one combined correction bullet.)
+
+[2] name: F2 — on the live host, the round's own scratch container either reds H6 or hides every leftover, depending only on where --work sits (invocation-geometry dependence)
+    setup (verified with the REAL default root; /fast/scratch/hyaku/kasegi-r40 — the round's scratch container, top-level, family-matching — exists at filing):
+      # work genuinely outside the container (/tmp):
+      bash r40-closure.sh --export-ref 3074c76 --lane <LANE> --work /tmp/crk-out.XXXX
+      # -> H6 payload=strays=1,read=ok closed=0        (the container itself is "a leftover")
+      # work inside the container (standard layout):
+      bash r40-closure.sh --export-ref 3074c76 --lane <LANE> --work .../kasegi-r40/<x>/work
+      # -> H6 payload=strays=0,read=ok closed=1        (green; every seat scratch inside is nested & invisible)
+    limb escaped: H6 scratch-leftover scan
+    missed clause: the scratch clause fires only when work sits outside the container — and in that case it fires on the round's own container, not on any actual leftover. In the standard layout (work inside the container) the clause is green regardless of what junk any seat left behind anywhere inside the container tree. The kill clause is not a stable predicate of "leftovers exist"; it is a predicate of the invocation geometry.
+    fix: same combined F1/F2 correction — recursive/bounded-depth scan, audit the round container's immediate children when --work is inside it, and tolerate only the single clean chain to --work.
+
+[3] name: F3 — dotfile scratch dir escapes (contradicts the wave-1 frozen contract)
+    setup:
+      mkdir -p $SB/scratch/.kasegi-r40-seat
+      bash r40-closure.sh --export-ref 3074c76 --scratch-root $SB/scratch --work $SB/work
+      # -> H6 payload=strays=0,read=ok closed=1
+    limb escaped: H6 scratch-leftover scan
+    missed clause: the committed limb does not strip a leading dot before matching the family (b=${e##*/}; case $b in kasegi-r39*|kasegi-r40*)), so .kasegi-r40-seat is invisible. The wave-1 frozen-contract probe (ExecH6ScratchFixtures.sibling-dir.sh) explicitly specified "after stripping one leading dot … `sibling-dotdir expect=red`"; the committed instrument deviates and goes green.
+    fix: normalize the family match — strip one leading dot, match case-insensitively, and normalize Unicode separators (-, ‑, −, _, whitespace) before comparison. (Section 4 groups this fix with F4's.)
+
+[4] name: F4 — case / Unicode-separator name variants escape the family match
+    setup:
+      mkdir -p "$SB/scratch/Kasegi-r40-stray" "$SB/scratch/$(printf 'kasegi\u2011r40\u2011stray')"
+      bash r40-closure.sh --export-ref 3074c76 --scratch-root $SB/scratch --work $SB/work
+      # -> H6 payload=strays=0,read=ok closed=1
+    limb escaped: H6 scratch-leftover scan
+    missed clause: family match is byte-literal and case-sensitive. Escapes: Kasegi-r40-stray (capital K); kasegi‑r40‑stray (U+2011 non-breaking hyphen instead of -); also kasegi_r40_stray, kasegi−r40−stray (U+2212), U+2329/27E8 look-alikes.
+    fix: same as [3] — normalize the family match: strip one leading dot, match case-insensitively, and normalize Unicode separators (-, ‑, −, _, whitespace) before comparison.
+
+[5] name: F5 — ancestor-prefix tolerance does not require a clean chain
+    setup:
+      ln -s $SB $SB/scratch/kasegi-r40-link     # sandbox root containing work + lots else
+      bash r40-closure.sh --export-ref 3074c76 --scratch-root $SB/scratch --work $SB/work
+      # -> H6 payload=strays=0,read=ok closed=1
+    limb escaped: H6 scratch-leftover scan
+    missed clause: tolerance is `case $realw in "$r"|"$r"/*) continue ;;` — a raw path prefix. A family-named top-level symlink whose realpath is ANY ancestor of --work is silently tolerated, even though it is not the work dir and contains far more than a clean chain; the wave-1 contract required "every level from the entry down to --work contains exactly the next component and nothing else". A real directory named kasegi-r40-* that contains --work and also other junk is likewise tolerated — the chain is never checked for cleanliness. (Symlink -> / actually reds for the wrong reason: with r=/, the pattern becomes "$r"/* -> //*, which never matches a normal work path. The escape is real for any non-root ancestor.)
+    fix: replace the raw path-prefix tolerance with the wave-1 contract's clean chain check — each level between entry and work must contain exactly the next component and nothing else; a symlink is tolerated only if it resolves directly to the work dir.
+
+[6] name: F6 — a nonexistent (or non-directory) --scratch-root silently disables the scan (fail-open)
+    setup:
+      bash r40-closure.sh --export-ref 3074c76 --scratch-root $SB/scratch-nonexistent --work $SB/work
+      # -> H6 payload=strays=0,read=ok closed=1
+    limb escaped: H6 scratch-leftover scan
+    missed clause: check_h6 does `if [ -d "$root" ]` — when false, the whole scan is skipped and the limb prints strays=0,read=ok and returns green. Any caller who controls --scratch-root (the counting command does not pass it, but the tool accepts it) can green H6 regardless of the real scratch state. The documented posture is "fail-closed on a scan error"; a missing root is a scan error and is treated as clean.
+    fix: treat a missing/non-directory --scratch-root as read=fail (fail-closed), and reject --scratch-root values that are not a real directory.
+
+[7] name: F7 — a pending marker spelled differently does not fire the literal grep
+    setup (per CritKillRule.pending-variants.md — write any one of these marker lines into corpus/lessons/round-40.md; each carries the same pending intent; fixture CritKillRule.pending-variants.md):
+      ⟨ pending    (space after U+27E8)
+      〈pending    (U+2329 left-pointing angle bracket)
+      <pending    (ASCII)
+      ⟨Pending / ⟨PENDING   (case)
+      verification transcript from the fixture:
+      $ grep -c '⟨pending' CritKillRule.pending-variants.md
+      0
+      $ printf '⟨ pending\n〈pending\n<pending\n⟨Pending\n⟨PENDING\n' | grep -c '⟨pending'
+      0
+      $ printf '⟨pending\n' | grep -c '⟨pending'
+      1
+    limb escaped: the pending-marker kill clause — `grep -c '⟨pending' corpus/lessons/round-40.md` != 0
+    missed clause: the clause fires only on the exact bytes U+27E8 ⟨ + "pending"; respellings with identical intent (⟨ pending space, 〈pending U+2329, <pending ASCII, ⟨Pending, ⟨PENDING) all yield count 0. It enforces one byte spelling, not the semantic state "no unfinished markers in the round lesson". Current round-40.md has no ⟨ at all (grep -c '⟨pending' = 0).
+    fix: broaden the pending-marker grep to a normalized class (⟨[[:space:]]*[Pp]ending, 〈pending, <pending, case variants) and/or require a resolved-marker table in the round lesson (round-39 precedent).
+
+[8] name: F8 — a working tree that appears clean while a file changed (git-status blindness)
+    setup (per CritKillRule.worktree-clean.sh, in a fresh fixture repo — D=$(mktemp -d); git init -q .; assert rev-parse --show-toplevel equals D):
+      git init -q .
+      printf 'v1\n' > tracked.txt
+      mkdir -p sub
+      printf 'sub/\n' > .gitignore
+      git add -A && git commit -qm init
+      # (a) tracked file changed after `git update-index --skip-worktree` (same for --assume-unchanged):
+      git update-index --skip-worktree tracked.txt
+      printf 'v1-exfiltrated\n' > tracked.txt
+      git status --porcelain   # []        (clean)
+      git diff HEAD --stat     # []        (also empty — both gates miss the change)
+      # (b) untracked file matching .gitignore / .git/info/exclude:
+      printf 'junk\n' > sub/ignored-new
+      git status --porcelain   # []
+      # control without the flag, same file change:
+      git status --porcelain   # [ M tracked.txt]
+    limb escaped: the "lane working tree not clean at filing" clause — enforced outside the instrument with `git -C <lane> status --porcelain` (per scripts/hyaku/closure-prompt.md).
+    missed clause: two mechanisms make git status report clean while a real uncommitted change exists — (a) `git update-index --skip-worktree` (same for --assume-unchanged) on a tracked file hides its content changes from BOTH git status --porcelain and git diff HEAD; (b) an untracked file matching .gitignore / .git/info/exclude is invisible. A defect committed as such an uncommitted edit escapes the clean-tree kill clause — and also escapes git diff HEAD.
+    fix: at filing, also run `git diff HEAD --name-status` (catches skip-worktree-hidden tracked changes only if combined with a --no-skip-worktree listing — the durable fix is to forbid skip-worktree/assume-unchanged markers in the lane and to check `git ls-files -v` for them) and check untracked files with `--untracked-files=all` plus a scan that does not honor .gitignore (`git status --porcelain --untracked-files=all --ignored` is a stricter gate).

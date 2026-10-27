@@ -1,0 +1,59 @@
+RFC 9116 — A File Format to Aid in Security Vulnerability Disclosure
+====================================================================
+capture: corpus/source-snapshots/round-41/S063.txt (raw rfc-editor text/plain, 45129 bytes, sha256 79d19ce7a4a35496981095a27fd992797a9fc4d6f3649c2a1e14f494607c61f9, fetched 2026-10-27T08:18:37Z HTTP 200 from https://www.rfc-editor.org/rfc/rfc9116.txt with curl -sS -L --max-time 90 -A kasegi-shokunin/1.0)
+datatracker: https://datatracker.ietf.org/doc/rfc9116/ (text/html, 80220 bytes, sha256 dacfed24ebf0ebb625667fd56d984b9d7c789a509d9321b2dfb2362268d59aff, fetched 2026-10-27T08:18:38Z HTTP 200, same curl profile)
+
+1. Identity (capture lines 5-13, 23-37; datatracker metadata block)
+- Title: "A File Format to Aid in Security Vulnerability Disclosure" (capture line 12)
+- RFC number: 9116 (capture line 6; datatracker "RFC 9116")
+- Publication month/year: April 2022 (capture line 9; datatracker "(April 2022)")
+- Status: Category Informational — capture lines 25-26: "This document is not an Internet Standards Track specification; it is published for informational purposes." NOT Standards Track, NOT Proposed Standard.
+- Stream: IETF (capture lines 5 and 28-29 "a product of the Internet Engineering Task Force (IETF)"; datatracker "RFC stream: Internet Engineering Task Force (IETF)")
+- Authors: E. Foudil, Y. Shafranovich (Nightwatch Cybersecurity); datatracker "Was: draft-foudil-securitytxt (individual in sec area)", responsible AD Benjamin Kaduk, page last updated 2026-05-20.
+
+2. Well-known URI (Section 3 "Location of the security.txt File", capture lines 437-446)
+- Requirement sentence (lines 439-441, 13 words): "For web-based services, organizations MUST place the "security.txt" file under the "/.well-known/" path"
+- Full rule context: per [RFC8615] of a domain name or IP address; legacy top-level placement allowed only as redirect; if both locations present, the "/.well-known/" copy MUST be used (lines 442-446).
+- Access rule: "The file MUST be accessed via HTTP 1.0 or a higher version, and the file access MUST use the "https" scheme ... It MUST have a Content-Type of "text/plain" with the default charset parameter set to "utf-8"" (lines 448-451).
+- Scope: "A "security.txt" file MUST only apply to the domain or IP address in the URI used to retrieve it, not to any of its subdomains or parent domains" (Section 3.1, lines 460-462).
+
+3. Field definitions (Section 2.5 "Field Definitions", capture line 235)
+- Default rule (line 237): "Unless otherwise stated, all fields MUST be considered optional."
+- Per-field table (name — section — requirement level — evidence lines):
+  - Acknowledgments — 2.5.1 (line 239) — optional by default; if a web URI it MUST begin with "https://" (lines 248-249)
+  - Canonical — 2.5.2 (line 264) — optional by default; web URI MUST begin "https://" (lines 268-270); if the retrieval URI is not listed in any Canonical field the file contents SHOULD NOT be trusted (lines 276-278)
+  - Contact — 2.5.3 (line 286) — "This field MUST always be present in a "security.txt" file." (lines 290-291); value MUST follow RFC3986 URI syntax, "mailto"/"tel" schemes for email/phone (lines 296-299); occurrences SHOULD be in order of preference (line 301)
+  - Encryption — 2.5.4 (line 314) — optional by default; "Keys MUST NOT appear in this field. Instead, the value of this field MUST be a URI pointing to a location where the key can be retrieved." (lines 316-319); web URI MUST begin "https://" (lines 319-321)
+  - Expires — 2.5.5 (line 341) — MUST always be present and MUST NOT appear more than once (line 351); RFC3339 timestamp format (lines 345-347)
+  - Hiring — 2.5.6 (line 355) — optional by default; web URI MUST begin "https://" (lines 358-359)
+  - Policy — 2.5.7 (line 363) — optional by default; web URI MUST begin "https://" (lines 367-369)
+  - Preferred-Languages — 2.5.8 (line 375) — optional by default; "If this field is included, then at least one value MUST be listed." (lines 379-380); "This field MUST NOT appear more than once." (line 388); values are RFC5646 language tags; absent field → English may be assumed (lines 381-383)
+
+4. Expires field semantics incl. the one-year rule (Section 2.5.5, capture lines 341-353)
+- Semantics (lines 343-345): "The "Expires" field indicates the date and time after which the data contained in the "security.txt" file is considered stale and should not be used (as per Section 5.3)."
+- Format (lines 345-347): value formatted per the Internet profiles of ISO.8601-1/-2 as defined in RFC3339.
+- One-year rule (lines 347-349): "It is RECOMMENDED that the value of this field be less than a year into the future to avoid staleness."
+- Presence rule (line 351): "This field MUST always be present and MUST NOT appear more than once."
+- Worked example (line 353): "Expires: 2021-12-31T18:37:07z"
+
+5. Encryption field text (Section 2.5.4, capture lines 314-322)
+- Definition (lines 316-319): "The "Encryption" field indicates an encryption key that security researchers should use for encrypted communication. Keys MUST NOT appear in this field. Instead, the value of this field MUST be a URI pointing to a location where the key can be retrieved."
+- Web-URI rule (lines 319-321): "If this field indicates a web URI, then it MUST begin with "https://" (as per Section 2.7.2 of [RFC7230])."
+- Verification duty (lines 323-325): authenticity verification is always the researcher's responsibility; the key must not be assumed to be the Section 2.3 signature key.
+- Examples (lines 327-335): https URI, OPENPGPKEY DNS record, openpgp4fpr fingerprint.
+
+6. Security Considerations pointer (Section 5, capture line 680)
+- The file itself as attack surface when unsigned/stale/compromised:
+  - Section 5.1 "Compromised Files and Incident Response" (line 686), lines 688-689: "An attacker that has compromised a website is able to compromise the "security.txt" file as well or set up a redirect to their own site." Mitigations named at lines 697-700: use the Canonical field, digitally sign the file (Section 2.3), monitor for tampering; researchers should verify the digital signature and check historical records before use (lines 702-704).
+  - Section 5.3 "Incorrect or Stale Information" (line 721), lines 723-728: stale or incorrect data misroutes reports "thus exposing possible security issues to third parties. Not having a "security.txt" file may be preferable to having stale information in this file."
+  - Section 5.4 "Intentionally Malformed Files, Resources, and Reports" (line 737), lines 743-745: parsers may refuse "files larger than 32 KBs, those with fields longer than 2,048 characters, or those containing more than 1,000 lines"; the Section 4 ABNF grammar is the validity check.
+  - Section 5.2 "Redirects" (line 713) and 5.7 "Protecting Data in Transit" (line 782) cover redirect and transport trust.
+
+7. IANA registration section (Section 6, capture line 836)
+- 6.1 "Well-Known URIs Registry" (line 842): IANA updated the Well-Known URIs registry — URI suffix "security.txt", change controller IETF, specification RFC 9116, status "permanent" (lines 844-850). Resources referenced inside a security.txt MUST NOT point into the Well-Known URIs namespace unless registered with IANA (lines 837-840).
+- 6.2 "Registry for security.txt Fields" (line 852): created per RFC8126; new registrations/updates under Expert Review (lines 857-859); each new field thus registered "is considered optional by this specification" (lines 859-861). Initial registry (lines 878-950) lists the eight fields of item 3 with Multiple Appearances flags: Acknowledgments yes, Canonical yes, Contact yes, Expires no, Encryption yes, Hiring yes, Policy yes, Preferred-Languages no.
+
+8. Lane coverage verdict (grep -rni 'security\.txt\|rfc 9116\|rfc9116\|9116' over corpus/ SKILL.md, 2026-10-27)
+- RFC 9116 is NOT an admitted ground anywhere in the lane. Pre-r15 operational stub mentions only: corpus/knowledge/policy-access-playbook.md:12 ("RFC 9116 security.txt | Stub ≠ scope | No assets + no grant → park"), corpus/knowledge/retirement-autopsies.md:19 and :127 (stub retry-method notes), corpus/knowledge/submitted-registry.md:90 (a VDP submission routed via a vendor's security.txt contact, not the RFC as ground), SKILL.md:131 (the same stub row), SKILL.md:453 and :486 (operational VDP-routing prose).
+- In-passing citations inside other sources' captures (no RFC-9116 row of their own): corpus/source-snapshots/round-24/S003.txt:173-178 (CISA VDP guide citing RFC 9116), round-24/S011.txt:685 (bare word), round-25/S040.txt:81-82 + round-26/S040-live.txt:81-82 (Cisco compliance line), round-38/S055.txt:470-471 and :3853-3861 (CSAF spec citing it as the CSAF-field carrier), round-40/S021.txt:357-358 (EU policy FAQ mentioning it as optional).
+- corpus/knowledge/rfc-9116-security-txt.md does not exist. Registry holds 62 rows, last is S062 — S063 is free. Frontier ends at F23 — F24 is free. No frontier row covers machine-readable disclosure-channel discovery via /.well-known/security.txt.

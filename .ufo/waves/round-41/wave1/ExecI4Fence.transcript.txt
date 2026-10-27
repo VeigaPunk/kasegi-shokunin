@@ -1,0 +1,242 @@
+=== I4 fence limb -- proof transcript ===
+utc=2026-10-27T08:25:49Z
+limb=/fast/scratch/hyaku/kasegi-r41/ExecI4Fence/ExecI4Fence.sh
+bash=5.3.20(1)-release awk=GNU Awk 5.4.1, API 4.1, PMA Avon 8-g1, (GNU MPFR 4.2.2, GNU MP 6.3.0)
+
+--- PROOF (a): 'Correction (round 41)' inside a 4-backtick fence is fenced; outside-set empty ---
+$ cat fx/a-fourbacktick-correction.md
+# Round 41 ledger
+
+````markdown
+Correction (round 41): C1 is NOT verified on the frozen counter; the round-40
+suite ran green (closed=10/10 exit=0) while its kill rule fired.
+````
+
+End of ledger.
+$ fence_report fx/a-fourbacktick-correction.md
+fence-report file=fx/a-fourbacktick-correction.md
+1	OUTSIDE	fence=CLOSED
+2	OUTSIDE	fence=CLOSED
+3	INSIDE	fence=OPEN
+4	INSIDE	fence=OPEN
+5	INSIDE	fence=OPEN
+6	INSIDE	fence=CLOSED
+7	OUTSIDE	fence=CLOSED
+8	OUTSIDE	fence=CLOSED
+outside=4 inside=4 eof=CLOSED
+$ fence_outside_match fx/a-fourbacktick-correction.md '^Correction [(]round 41[)]'
+count=0 lines=
+$ fence_outside_set fx/a-fourbacktick-correction.md
+1 2 7 8
+$ fence_line_state fx/a-fourbacktick-correction.md 4   # the correction line
+INSIDE
+$ fence_eof_state fx/a-fourbacktick-correction.md
+CLOSED
+
+--- PROOF (b): T3 shape -- one correction of four is fenced -> outside count 3 ---
+$ cat fx/b-t3-style.md
+Correction (round 41): record one -- C1 not verified, evidence T2/T4/T7/T13/T14.
+Correction (round 41): record two -- C1 not verified, evidence CritKillRule.
+````markdown
+Correction (round 41): record three -- this one is inside a 4-backtick fence.
+````
+Correction (round 41): record four -- C1 not verified, evidence MutH6H10.
+$ fence_outside_match fx/b-t3-style.md '^Correction [(]round 41[)]'
+count=3 lines=1 2 6
+$ fence_outside_lines fx/b-t3-style.md
+1
+2
+6
+$ fence_report fx/b-t3-style.md
+fence-report file=fx/b-t3-style.md
+1	OUTSIDE	fence=CLOSED
+2	OUTSIDE	fence=CLOSED
+3	INSIDE	fence=OPEN
+4	INSIDE	fence=OPEN
+5	INSIDE	fence=CLOSED
+6	OUTSIDE	fence=CLOSED
+outside=3 inside=3 eof=CLOSED
+$ fence_eof_state fx/b-t3-style.md
+CLOSED
+
+--- PROOF (c): fenced pseudo-table row carrying M39-2 is fenced ---
+$ cat fx/c-fenced-pseudorow.md
+# QUALITY ledger
+
+| id | note |
+| --- | --- |
+```text
+| M39-2 | pseudo row inside a fence |
+```
+
+After the fence.
+$ fence_outside_match fx/c-fenced-pseudorow.md 'M39-2'
+count=0 lines=
+$ fence_report fx/c-fenced-pseudorow.md
+fence-report file=fx/c-fenced-pseudorow.md
+1	OUTSIDE	fence=CLOSED
+2	OUTSIDE	fence=CLOSED
+3	OUTSIDE	fence=CLOSED
+4	OUTSIDE	fence=CLOSED
+5	INSIDE	fence=OPEN
+6	INSIDE	fence=OPEN
+7	INSIDE	fence=CLOSED
+8	OUTSIDE	fence=CLOSED
+9	OUTSIDE	fence=CLOSED
+outside=6 inside=3 eof=CLOSED
+$ fence_line_state fx/c-fenced-pseudorow.md 5   # the M39-2 row
+INSIDE
+$ fence_eof_state fx/c-fenced-pseudorow.md
+CLOSED
+
+--- PROOF (d): well-formed file -> fence state CLOSED at EOF ---
+$ cat fx/d-wellformed.md
+# Round 41 ledger
+
+Correction (round 41): C1 not verified on the frozen counter.
+
+```text
+inside a 3-backtick fence
+```
+
+```python
+def f():
+    return 1
+```
+
+~~~text
+inside a 3-tilde fence
+~~~
+
+Done.
+$ fence_report fx/d-wellformed.md
+fence-report file=fx/d-wellformed.md
+1	OUTSIDE	fence=CLOSED
+2	OUTSIDE	fence=CLOSED
+3	OUTSIDE	fence=CLOSED
+4	OUTSIDE	fence=CLOSED
+5	INSIDE	fence=OPEN
+6	INSIDE	fence=OPEN
+7	INSIDE	fence=CLOSED
+8	OUTSIDE	fence=CLOSED
+9	INSIDE	fence=OPEN
+10	INSIDE	fence=OPEN
+11	INSIDE	fence=OPEN
+12	INSIDE	fence=CLOSED
+13	OUTSIDE	fence=CLOSED
+14	INSIDE	fence=OPEN
+15	INSIDE	fence=OPEN
+16	INSIDE	fence=CLOSED
+17	OUTSIDE	fence=CLOSED
+18	OUTSIDE	fence=CLOSED
+outside=8 inside=10 eof=CLOSED
+$ fence_eof_state fx/d-wellformed.md
+CLOSED
+$ fence_audit fx/d-wellformed.md
+outside=8 inside=10 eof=CLOSED
+
+--- EXTRA (e): mixed markers and fence lengths ---
+$ cat fx/e-mixed.md
+top
+````
+```
+three backticks do not close a four-backtick fence
+```
+still inside
+````
+after the 4-backtick fence
+~~~
+```
+three backticks do not close a tilde fence
+```
+still inside
+~~~
+after the 3-tilde fence
+~~~~
+tilde fence of four
+~~~~
+after the 4-tilde fence
+$ fence_report fx/e-mixed.md
+fence-report file=fx/e-mixed.md
+1	OUTSIDE	fence=CLOSED
+2	INSIDE	fence=OPEN
+3	INSIDE	fence=OPEN
+4	INSIDE	fence=OPEN
+5	INSIDE	fence=OPEN
+6	INSIDE	fence=OPEN
+7	INSIDE	fence=CLOSED
+8	OUTSIDE	fence=CLOSED
+9	INSIDE	fence=OPEN
+10	INSIDE	fence=OPEN
+11	INSIDE	fence=OPEN
+12	INSIDE	fence=OPEN
+13	INSIDE	fence=OPEN
+14	INSIDE	fence=CLOSED
+15	OUTSIDE	fence=CLOSED
+16	INSIDE	fence=OPEN
+17	INSIDE	fence=OPEN
+18	INSIDE	fence=CLOSED
+19	OUTSIDE	fence=CLOSED
+outside=4 inside=15 eof=CLOSED
+$ fence_eof_state fx/e-mixed.md
+CLOSED
+
+--- EXTRA (f): unclosed fence -> OPEN at EOF (fail-closed) ---
+$ cat fx/f-unclosed.md
+text
+```
+never closed
+$ fence_eof_state fx/f-unclosed.md
+OPEN
+
+--- BASELINE: the round-40 scanner (h2_scan) on the same fixtures ---
+$ . corpus/instruments/r40-closure.sh ; h2_scan fx/a-fourbacktick-correction.md
+h2_scan a-fourbacktick-correction.md : 0 0 open
+h2_scan b-t3-style.md                : 0 0 open
+h2_scan d-wellformed.md              : 0 0 closed
+  (r40 h2_scan cannot close a 4-backtick fence: it reports 'fences=open' on a well-formed file.)
+
+--- LIMB SELF-TEST (graded) ---
+$ fence_selftest
+selftest case=A payload=outside=0,fences=CLOSED verdict=pass
+selftest case=B payload=outside=3,fences=CLOSED verdict=pass
+selftest case=C payload=outside=0,fences=CLOSED verdict=pass
+selftest case=D payload=outside=1,fences=CLOSED verdict=pass
+selftest case=E payload=outside=0/0,fences=CLOSED verdict=pass
+selftest case=F payload=fences=OPEN verdict=pass
+selftest case=G payload=outside=0,fences=CLOSED verdict=pass
+selftest rc=0
+
+--- CROSS-CHECK: differential against the reference CommonMark parser ---
+reference: python 'commonmark' 0.9.2 (CommonMark 0.29 reference implementation)
+install:   uv tool install commonmark   (official PyPI; also provides the cmark binary)
+$ uv run --with commonmark python diff_commonmark.py
+plain                      OK  ref=- limb=-
+three-backtick             OK  ref=[2, 3, 4, 5] limb=[2, 3, 4, 5]
+three-backtick-info        OK  ref=[2, 3, 4] limb=[2, 3, 4]
+four-backtick              OK  ref=[2, 3, 4, 5, 6] limb=[2, 3, 4, 5, 6]
+four-backtick-nested-close OK  ref=[2, 3, 4, 5] limb=[2, 3, 4, 5]
+tilde                      OK  ref=[2, 3, 4] limb=[2, 3, 4]
+tilde-four                 OK  ref=[2, 3, 4, 5, 6] limb=[2, 3, 4, 5, 6]
+tilde-inside-backtick      OK  ref=[2, 3, 4, 5, 6] limb=[2, 3, 4, 5, 6]
+backtick-inside-tilde      OK  ref=[2, 3, 4, 5, 6] limb=[2, 3, 4, 5, 6]
+unclosed                   OK  ref=[2, 3] limb=[2, 3]
+unclosed-tilde             OK  ref=[2, 3] limb=[2, 3]
+indented-3                 OK  ref=[2, 3, 4] limb=[2, 3, 4]
+indented-4                 OK  ref=- limb=-
+info-with-backtick         OK  ref=[4, 5] limb=[4, 5]
+info-with-tilde-backtick   OK  ref=[2, 3, 4] limb=[2, 3, 4]
+closer-with-trailing       OK  ref=[2, 3, 4] limb=[2, 3, 4]
+closer-with-text           OK  ref=[2, 3, 4, 5] limb=[2, 3, 4, 5]
+empty-fence                OK  ref=[2, 3] limb=[2, 3]
+fence-after-paragraph      OK  ref=[3, 4, 5] limb=[3, 4, 5]
+two-fences                 OK  ref=[1, 2, 3, 5, 6, 7] limb=[1, 2, 3, 5, 6, 7]
+longer-closer              OK  ref=[2, 3, 4] limb=[2, 3, 4]
+shorter-closer             OK  ref=[2, 3, 4, 5, 6] limb=[2, 3, 4, 5, 6]
+tilde-longer-closer        OK  ref=[2, 3, 4] limb=[2, 3, 4]
+blank-lines-inside         OK  ref=[1, 2, 3, 4, 5, 6] limb=[1, 2, 3, 4, 5, 6]
+fence-at-eof               OK  ref=[2, 3, 4] limb=[2, 3, 4]
+fence-at-eof-no-close      OK  ref=[2, 3] limb=[2, 3]
+backtick-run-5             OK  ref=[2, 3, 4, 5] limb=[2, 3, 4, 5]
+differential cases=27 diffs=0
+differential rc=0

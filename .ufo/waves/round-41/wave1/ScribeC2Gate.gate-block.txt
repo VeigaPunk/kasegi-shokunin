@@ -1,0 +1,30 @@
+### Admitted — F24 / S063 (RFC 9116 security.txt)
+- **Row.** S063, kind spec, tier A, status mined, opened 2026-10-27, recheck on-release, used-by
+  `corpus/knowledge/rfc-9116-security-txt.md`; row deliverable `wave1/ExecC2Rows.registry-row.txt`
+  (byte-identical).
+- **Source / capture.** `https://www.rfc-editor.org/rfc/rfc9116.txt`; access 2026-10-27 (fetched
+  2026-10-27T08:19:23Z, HTTP 200, 45129 raw bytes). Capture
+  `corpus/source-snapshots/round-41/S063.txt` is the full normalized text (CRLF->LF, no HTML):
+  842 lines, 39301 B, sha256 `925512e715be5fae950f3eec88805197d4007875dac825c5603d44d2b71e2faa`.
+- **Quotes (≤25 words, located in the capture).** §3 (18 words, L335): `"If a
+  "security.txt" file is present in both locations, the one in the "/.well-known/" path MUST be
+  used."` — the requirement that resolves a legacy top-level copy against the well-known path.
+  §2.5.5 (20 words, L270): `"It is RECOMMENDED that the value of this field be less
+  than a year into the future to avoid staleness."` §5.3 (15 words, L536): `"Not having
+  a "security.txt" file may be preferable to having stale information in this file."`
+- **Entry.** `corpus/knowledge/rfc-9116-security-txt.md` (`source: S063`, `verified-at: 2026-10-27`,
+  `ground: F24`, executable `recheck:`). Its limbs anchor to §3 (the `/.well-known/` location and the
+  legacy top-level redirect), §2.5.3 and §2.5.5 (Contact and Expires are the only fields that must
+  always be present, and Expires must not appear more than once), §2.5.4 (the field carries a key
+  URI, never a key) and §2.5.7 (the Policy link); the entry separates the machine-readable discovery
+  channel from the policy text it points at (F10).
+- **Frontier admission.** F24 row + coverage-map row + `PROVINCE.md` `[r41 Frontier amendment]`
+  appended (deliverables `wave1/ExecC2Rows.readme-row.txt`,
+  `wave1/ExecC2Rows.province-amendment.txt`) puts the frontier at 23 -> 24 rows, F24/24 admitted.
+- **Limit.** RFC 9116 is Informational, not Standards Track (Status of This Memo: the document is
+  not an Internet Standards Track specification), so the row's tier A rests on the document's own
+  BCP 14 keyword discipline (§1.2) rather than on IETF Standard status; and the one-year Expires
+  window is RECOMMENDED, not required, so a publisher may lawfully set a later date and the capture
+  cannot by itself prove a file stale. The capture is the rfc-editor plain text only — the HTML/XML
+  renditions and any errata are not in it — and every section number above is the RFC's own
+  numbering.

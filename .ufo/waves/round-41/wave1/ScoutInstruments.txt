@@ -1,0 +1,254 @@
+ScoutInstruments — C2 instrument-chain inventory (round-41 base state)
+
+Base of record: lane commit 5b29ea1439450b712581edf5f0f0bf98dfb262ab (prefix 5b29ea14).
+`git diff 5b29ea1 b3b08b2 -- corpus/` is empty: corpus/ is byte-identical across base,
+claims-freeze (fbba3d9) and wave-1 HEAD (b3b08b2), so lane-tree instrument runs below
+are the base-tree outputs. Base-export cross-check: capture-binding-check.py and
+source-recheck.py were re-run against a `git archive 5b29ea1` extraction under
+/fast/scratch; outputs were byte-identical to the lane runs.
+
+1. corpus/instruments/source-recheck.py — quote/sha256 pins vs captured bytes
+
+CLI:
+  python3 corpus/instruments/source-recheck.py --manifest PATH [--source ID]
+  python3 corpus/instruments/source-recheck.py --selftest
+Default (no args): `manifest UNAVAILABLE reason=missing-required-argument`, exit 2.
+
+Semantics:
+- --manifest PATH (required for a run): schema_version==1 JSON with top-level
+  `sources` list; records sorted by id before checking. --source ID filters to one
+  record (unknown id: `<id>:source UNAVAILABLE reason=not-listed`, exit 2).
+- Per record checks, in order:
+  (a) path present, relative, non-empty -> else `<id>:manifest UNAVAILABLE reason=invalid-path` (exit 2);
+  (b) B1: Path(path).stem == record id -> else `<id>:manifest MISMATCH reason=stem-mismatch` (exit 1);
+  (c) sha256 field must match [0-9a-f]{64} -> else `UNAVAILABLE reason=invalid-sha256` (exit 2);
+  (d) quotes non-empty list; each quote id valid per [A-Za-z0-9][A-Za-z0-9._-]* and unique
+      per record; quote text non-empty; normalize(quote) (whitespace-collapse + <u>/</u>
+      markup strip) must be >= 12 chars -> else UNAVAILABLE with reason=invalid-quote-id /
+      duplicate-quote-id / empty-quote / quote-too-short-to-be-evidence (exit 2);
+  (e) capture read with manifest-dir containment (resolve + commonpath) -> `UNAVAILABLE
+      reason=outside-manifest-directory|missing|unreadable` (exit 2);
+  (f) sha256 of capture bytes must equal the pin -> `<id>:sha256 MISMATCH expected=… actual=…` (exit 1);
+  (g) per quote (output sorted by quote id): count normalized occurrences; a quote
+      occurring >1 time must carry an integer `anchor` line whose 4-line window holds the
+      normalized quote (`anchor=N-ok`), else MISMATCH reason=occurrence-not-unique /
+      anchor-out-of-range / anchor-broken (exit 1); unique quote prints
+      `<id>:<qid> OK occurrences=N` or `OK normalized=markup-whitespace occurrences=N`;
+      zero occurrences: `MISMATCH reason=quote-not-found` (exit 1).
+- Exit codes: 0 all records OK; 1 any MISMATCH; 2 any UNAVAILABLE / usage error.
+  Status aggregation: any 2 -> exit 2; else any 1 -> exit 1.
+- Q-ids (Q1..Qn) are per-record arbitrary ids under the same ID_RE; the base corpus
+  uses Q1..Q3 per record. The instrument itself numbers checks B1/B2 (stem, anchor),
+  not Q1-Q6; "Q1-Q6" reading = the quote assertions of one record.
+
+Base outputs (verbatim):
+- Full round-40 manifest run: 24 lines, all `S0xx:sha256 OK` + `S0xx:Qn OK occurrences=…
+  anchor=N-ok` (incl. two `normalized=markup-whitespace` lines), final `exit=0`.
+- --selftest: 10 cases (clean, corrupt, missing-source, missing-manifest, stem-mismatch,
+  double-occurrence{,-anchored,-out-of-range,-broken}, quote-absent), final line
+  `selftest cases=10 failures=0`, exit 0.
+
+2. corpus/instruments/capture-binding-check.py — registry/provenance binding of captures
+
+CLI:
+  python3 corpus/instruments/capture-binding-check.py [--root DIR] [--selftest [--scratch DIR]]
+Default --root: the lane root derived from the script location (three dirs up). Fails
+`UNAVAILABLE reason=no-snapshot-tree <root>` exit 2 when <root>/corpus/source-snapshots
+is absent. Reads only <root>/corpus/SOURCES.md + <root>/corpus/source-snapshots/.
+
+Manifest discovery: os.walk under corpus/source-snapshots/ (dirnames sorted, parents
+first). A directory is a "snapshot directory" iff it holds manifest.json OR holds any
+regular file of its own; nested dirs are audited in their own right, named by path
+below source-snapshots (e.g. round-30/inner). A dir with files but no manifest.json is
+`FAIL rule=missing-manifest dir=<dir>`.
+
+Rules:
+- A per-file binding: every direct capture file must be a record's `path` value or be
+  declared in the manifest's top-level `orphans` list ({path, reason} objects, both
+  non-empty); undeclared -> `FAIL rule=orphan-capture file=<f> dir=<d>`; declared-but-absent
+  -> `FAIL rule=orphan-declared-missing`; malformed orphans list -> UNAVAILABLE exit 2.
+  Orphans never change records=/bound=/unbound=.
+- B registry row binding per record: row `| <id> | …` must exist (rule=no-row); row id
+  unique (rule=dup-id); row status cell != rejected (rule=rejected-row-anchor); the row's
+  source cell (column 2) must carry exactly one https:// token (rule=double-https-row at
+  row level, rule=url-ambiguous at record level); record `url` must equal that token
+  byte-for-byte (rule=url-mismatch; a record with no url is `detail=absent`). The same URL
+  text occurring in another row is informational only: AUDIT `multi_row_url=N`.
+- C provenance: record needs a strict-UTC `fetched_utc` (regex
+  ^\d{4}-\d{2}-\d{2}T…(Z|\+00:00)$ + real calendar instant) or `"archival": true`; but
+  snapshot dirs round-32 or later (round parsed from the first path component; a
+  non-round name counts as modern) MUST carry strict-UTC fetched_utc — the archival
+  exemption is closed for them. Placeholder values (pending/tbd/…) detail=pending;
+  non-zero offsets detail=local-offset; otherwise detail=malformed; absent on a modern
+  record -> `rule=provenance-missing … detail=absent`. A present-but-invalid stamp fails
+  in every round.
+- D manifest integrity: duplicate record ids or duplicate paths within one manifest ->
+  `FAIL rule=dup-record field=id|path value=… count=…`.
+- `bound` means: record passes B AND C. Summary prints `records=<N> bound=<N> unbound=0`
+  (unbound = records - bound), one `MANIFEST <dir> records=N url_bound=M fetched=K
+  archival=L` line per manifest dir, then one `AUDIT records=… with_url=… with_fetched_utc=…
+  with_archival=… snapshot_dirs=… manifest_dirs=… missing_manifest=… multi_row_url=…
+  orphans=…` line with one `orphan=<file>` token per orphan, then FAIL lines.
+- Exit: 0 only when no failures; 1 on any FAIL; 2 on read/usage/manifest-shape errors.
+
+Base output (verbatim, identical on lane and on the base export):
+  16 MANIFEST lines (round-23 … round-40, records 4/19/5/1/2/3/3/1/2/1/1/1/1/1/1/8)
+  AUDIT records=54 with_url=54 with_fetched_utc=16 with_archival=38 snapshot_dirs=16
+    manifest_dirs=16 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+  records=54 bound=54 unbound=0 ; exit=0
+  (S040-live.txt is a declared orphan in corpus/source-snapshots/round-26/manifest.json.)
+- --selftest: 23 fixture cases, `selftest cases=23 failures=0`, exit 0.
+
+3. corpus/instruments/frontier-recheck-count.py — entry recheck-line binding harness
+
+CLI:
+  python3 corpus/instruments/frontier-recheck-count.py [--root DIR] [--json PATH] [--selftest [--scratch DIR]]
+Default --root: script-location-derived lane root. Exit 2 on read error; exit 1 when any
+admitted row fails, an entry is missing, or two rows share one entry realpath; exit 0
+only when every admitted entry passes.
+
+Mapping F-rows to entries: reads corpus/README.md; FRONTIER_ROW
+(^\|\s*(F\d+)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*`?([^|`]+?)`?\s*\|) matches a row
+ANYWHERE in the file — rows appended in later amendment sections count exactly like
+rows in the main frontier table. Column 3 must be exactly `admitted` (after strip);
+column 4 (backtick-trimmed) is the entry path, comma-split when a topic governs more
+than one entry. Each entry resolves as <root>/<entry> or <root>/corpus/<entry> (README
+rows name corpus-relative paths like knowledge/…; None -> fail-closed `missing-entry`).
+
+Per-entry contract (from the entry file):
+- declared ids = header lines `source: S0xx`; evidence ids = list items starting
+  `- S0xx` / `* S0xx` / `N. S0xx`; declared set = union. cited ids = every S0xx mention
+  outside declaration lines (prose, blockquotes).
+- recheck line = FIRST line matching `^recheck:\s*(.+)$`; its ids = all `--source S0xx`;
+  its manifest = the `--manifest <path>` token, stripped of quotes/backticks.
+Checks (problems named on the FAIL line):
+  no-source-line / no-recheck-line / not-a-recheck-invocation (must name
+  source-recheck.py and not contain --selftest) / no-source-selection / no-manifest /
+  header-sources-not-rechecked (declared not a subset of --source ids) /
+  selection-not-declared-by-entry (a --source id not declared) /
+  selection-not-cited-by-entry (a --source id not mentioned anywhere in the entry) /
+  manifest-unreadable / manifest-missing-ids (manifest schema_version!=1, or unreadable,
+  or lacking a selected id) / recheck-exit-<N>. Only when problems is empty is the line
+  executed: `bash -c <line>` with cwd=<root>; its exit code is the entry's result.
+PASS line format (printf "%-8s %-4s %-52s ids=%-14s exit=%-4s%s"):
+  `PASS     F23  knowledge/cyclonedx-analysis-subtree.md             ids=S060           exit=0`
+  where `ids=` prints the HEADER-declared ids only (evidence-list ids never appear there).
+Summary lines: `DUPLICATE-ENTRY <F-a>,<F-b> <entry>` when rule F fires, then
+`entries=<N> pass=<P> exit=<0|1>`. --json writes
+{kasegi-frontier-recheck-receipt-v1, root, entries, pass, duplicate_entry, records[]}
+with per-record {entry, frontier, title, declared_ids, evidence_declared_ids, cited_ids,
+recheck_ids, manifest, realpath, exit, problems, status}.
+
+Base output (verbatim): 26 PASS lines (23 frontier rows; F09, F10, F11 each govern two
+entries), final `entries=26 pass=26 exit=0` (exit 0). --selftest: 6 cases
+(bidirectional-holds, selection-not-declared, header-source-not-rechecked,
+evidence-list-declares-selection, evidence-declared-not-rechecked,
+selection-neither-declared-nor-mentioned), `selftest cases=6 failures=0`.
+
+4. corpus/instruments/recheck-audit.py — per-entry recheck-line audit
+
+CLI:
+  python3 corpus/instruments/recheck-audit.py [--root DIR] [--foreign DIR] [--cdroot DIR]
+      [--expect PATH] [--json PATH] [--selftest] [--quiet]
+Defaults: --root cwd; --foreign /; --cdroot defaults to --root (set it when auditing a
+scratch copy); --expect defaults to <root>/corpus/instruments/knowledge-expected.txt when
+that file exists (else expect=absent).
+
+What it audits: every corpus/knowledge/*.md file (one directory level, sorted glob).
+The audited line is the FIRST `^recheck:[ \t]*(.*)$` line in the file; a file with no
+recheck line is not audited and breaks completeness (lines < total).
+
+Frozen limbs (pass): parse = `bash -n -c` exit 0; cwd = identical exit status AND
+identical sha256(stdout+\x00+stderr) when run from <root> and from --foreign (300 s
+timeout); paths = names >=1 corpus/… md|py|json|txt|tsv path (or a ~/Projects/… base)
+and every corpus/ path named exists under <root>. Strict limbs (pass_strict):
++ cdroot (a leading `cd <path> &&` must target --cdroot), + instrument (names an
+existing corpus/instruments/<name>.py or a `test -d/-e/-f ~/Projects/…` base test),
++ own (names the entry's own corpus/knowledge/<file>, or pairs --source with a
+corpus/source-snapshots/ manifest, or is a bare base-state test naming no corpus path).
+class: executes (lane_exit 0) / gated (parses but lane_exit != 0 — the line fails
+closed on an absent base; still counts as passing its form limbs) / broken.
+
+Completeness: lines == total_knowledge_files > 0 and every entry pass_strict; plus, when
+an expected list is active, set equality between the list and the tree
+(missing=<name> / unexpected=<name> make the audit red; the list is one sorted lane-
+relative path per line, `#` comments allowed). knowledge-expected.txt location: exactly
+<root>/corpus/instruments/knowledge-expected.txt unless --expect overrides.
+
+--quiet output fields (printed even under --quiet; per-entry lines are suppressed):
+  strict pass=<strict_passed>/<total> cdroot_fail=<N> instrument_fail=<N> own_fail=<N>
+  executes=<E> gated=<G> broken=<B>  (gated = …; broken = …)
+  lines=<L> total=<T> pass=<P> fail-closed=<F> parse_fail=… cwd_fail=… paths_fail=… exit=<N>
+  expect=present|absent expected=<N> missing=<N> unexpected=<N> exit=<N>
+--json adds receipt fields: instrument_sha256, root, cdroot, foreign_cwd, lines,
+total_knowledge_files, complete, pass, pass_strict, fail_closed, executes_today, gated,
+broken, failing_limbs, strict_failing_limbs, expect, expected_entries, missing_entries,
+unexpected_entries, entries[] (entry, command, limbs, strict, missing_paths, cd_target,
+lane_exit, foreign_exit, lane_output_sha256, foreign_output_sha256, class, pass,
+pass_strict). Exit 0 only when ok = passed==lines and complete and pass_strict==total
+and expect_ok; else 1.
+
+Base --quiet output (verbatim):
+  strict pass=59/59 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=35 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=59 total=59 pass=59 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+  expect=present expected=59 missing=0 unexpected=0 exit=0  (exit 0)
+
+5. Adjacent gate: scripts/sources-census.sh
+  bash scripts/sources-census.sh validate --root <fleet> kasegi
+Base output: two W04 duplicate-url lines (S028, S029) then
+`kasegi ok <lane>/corpus/SOURCES.md`; validate exit 0. A new registry row must not
+introduce a new W/E code or the census (and C2's census gate) goes red.
+
+6. F24-integration risk flags (assumptions the S063/F24 landings could break)
+  F1. frontier `ids=` prints header `source:` ids ONLY. If the F24 entry declares S063
+      only via an evidence bullet, the PASS line prints `ids=-`; the frozen counter
+      `PASS F24 ids=S063` needs a header line `source: S063` (which the counting
+      command `grep -rlE '^source: S063' corpus/knowledge` also requires — line start,
+      no indent, single space after the colon per SOURCE_LINE's `^source:\s*(S\d{3,})`).
+  F2. README F-row must begin at column 0: the counting command is
+      `grep -cE '^\| F[0-9]+ \|'`; an indented row would not count and FRONTIER_ROW
+      would also miss it. Status cell (col 3) must be exactly `admitted`.
+  F3. Row status cell is the 8th cell (`| id | source | kind | tier | scope | anchor |
+      teaches | status | …`); the mined-counting awk reads $9. status must be `mined`,
+      not `rejected` (rejected-row-anchor FAILs the S063 record).
+  F4. The S063 row's source cell (col 2) must contain exactly ONE https:// token and the
+      manifest record's `url` must equal it byte-for-byte. `capture_url` is ignored by
+      the binding rules (base manifests carry it; only `url` binds). A second https
+      token anywhere in the cell (prose URL) is a double-https-row failure.
+  F5. corpus/source-snapshots/round-41/ should hold exactly manifest.json + S063.txt.
+      Any extra regular file is an orphan-capture FAIL unless declared in a top-level
+      `orphans` list; a record naming a nonexistent path is not this instrument's rule
+      but source-recheck fails it closed (UNAVAILABLE reason=missing, exit 2).
+  F6. Round provenance: round-41 >= 32, so the record MUST carry a strict-UTC
+      fetched_utc (`Z` or `+00:00`, real instant). `archival: true` is not an
+      exemption for round-41; a placeholder or offset stamp is a fetched-utc FAIL.
+  F7. source-recheck B1: record `path` stem must equal `S063` (i.e. path `S063.txt`),
+      path relative. Every quote's normalized text must be >= 12 chars; any quote
+      occurring more than once needs an integer `anchor` whose 4-line window holds it.
+  F8. knowledge-expected.txt is order-sensitive only by convention (set equality is the
+      rule), but the file is kept sorted: insert `corpus/knowledge/rfc-9116-security-txt.md`
+      between lines 47 (`retirement-autopsies.md`) and 48 (`root-loss-2026-10-12.md`).
+      expected=59 -> 60 is the audited gate; an unsorted insert still passes but breaks
+      the file's stated invariant ("Sorted list … keep in sync").
+  F9. recheck-audit cwd limb runs the line from <root> and from / and compares output
+      digests: the F24 line must be cwd-independent — the 58/59 base lines use an
+      absolute `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && …`. cdroot limb:
+      that absolute cd must equal --cdroot (default --root; the closure harness audits
+      copies with --cdroot set). own limb: the canonical line names the manifest under
+      corpus/source-snapshots/ with --source S063 — that satisfies `own` without naming
+      the entry file itself.
+  F10. frontier rule F: the F24 entry realpath must not equal any other admitted row's
+      entry realpath (DUPLICATE-ENTRY fails the whole run).
+  F11. Alphabetical/ordering assumptions: capture-binding prints MANIFEST lines in
+      os.walk order (dirnames sorted: round-41 sorts after round-40 — appending the new
+      dir is safe); source-recheck prints records sorted by id and quotes sorted by
+      quote id (per-record quote ids need not be Q1..Qn); recheck-audit and
+      frontier-recheck glob in sorted order; no receipt may assume manifest record
+      order inside a file.
+  F12. multi_row_url is informational (base = 3 from the pre-existing S024/S029 and
+      S006/S028 shared URLs); keep the S063 URL text out of every other registry row's
+      source cell so the count stays at 3 and no url-ambiguous risk exists.
+  F13. The claim's "measure 44/44 = 1.000" is not one of these four instruments (no
+      `measure` script exists under scripts/hyaku or scripts/); treat it as an adjacent
+      fleet-side gate outside this inventory.

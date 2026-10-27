@@ -261,3 +261,26 @@ CritSourceTruth: all 8 round-40 captures match manifest digests/lines/bytes; sou
 S016/S060. ConnPatterns suggestions (extend census E11 used-by limb; port H4 scan to lesson Gate; derive
 H2/H3 expectations from committed records) recorded for round 41.
 
+
+## Erratum (round 41)
+
+Appended at the verifier's direction (`corpus/lessons/round-40-verifier-spotcheck.md` §5 routed defects
+D4 and D5); no committed line above is edited.
+
+- **D4a — duplicated `## Gate` heading.** The heading `## Gate` is committed twice, at L29 and L31,
+  with only a blank line between them. The L31 heading is the operative one — it introduces the
+  per-source gate review that follows; the L29 line is a stray duplicate.
+- **D4b — garbled census line L27.** The committed text reads `tier A +3?mined S016/S017/S019/S020/
+  S021/S023/S025/S060, rejected S061/S062, carried S022/S024 flips)` — the intended open parenthesis
+  was typed as `?` and the close parenthesis is unmatched. Read the line as the wave-2 falsification
+  section's own reading (L243–L245): "tier A +3 (mined S016/S017/S019/S020/S021/S023/S025/S060;
+  rejected S061/S062; carried S022/S024 flips)".
+- **D5 — wrong attack-role tally at L9.** The committed line reads `wave 2 33/35 = 94%; round total
+  50/89`. The dispatch JSONs committed under `.ufo/waves/round-40/` disagree. Wave 2
+  (`kasegi-r40-falsify`, committed as `wave2-dispatch.json`, 35 members) seats reviewer 12 + critic 7 +
+  mutation-tester 6 = 12 + 7 + 6 = 25 attack roles — 25/35 = 71.4%, not 33/35 = 94%. Wave 1
+  (`kasegi-r40-build`, `wave1-dispatch.json`, 54 members) seats reviewer 12 + critic 3 +
+  mutation-tester 2 = 17 — 17/54 = 31.5%, matching L9 as committed. Round total: 17 + 25 = 42 —
+  42/89 = 47.2%, not 50/89. The lesson's own role lists (L7–L8 and the Wave-2 falsification
+  preamble at L213) independently name the same wave-2 seats: 12 + 7 + 6 = 25 attack roles, so L9
+  is a transcription error, not a role-definition dispute.

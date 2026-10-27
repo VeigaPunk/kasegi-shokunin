@@ -1,0 +1,214 @@
+# I9 — graded-selftest payload-value isolation: contract and prototype
+
+Round 41, seat `ExecI9Isolate`. Deliverable for the r41 suite core
+(`corpus/instruments/r41-closure.sh`), claim **C1 / depth:verifiability**, limb
+**I9**.
+
+---
+
+## 1. The comparison contract (one paragraph, as required)
+
+> Every graded selftest case `I<n>` MUST compare the check's **ACTUAL payload
+> values** — not the closed bit alone — against the **expected payload values
+> declared for that case's own fixture**, and the comparison MUST be
+> **per case**: a case's verdict is a function of that case's own check
+> payload and of that case's own mutant fixtures only, never of a shared
+> count-relative "N of M payloads agreed" counter and never of any sibling
+> case's payload. Concretely, the suite MUST (a) declare, per case, an
+> **expected payload map** (a list of `key=value` pairs) for the case's green
+> fixture and, per mutant fixture, the **expected rejection payload map** that
+> names the reopened limb; (b) parse a payload as a comma-separated list of
+> `key=value` tokens with **unique keys** and **no comma inside a value**, and
+> treat an unparseable payload as a **non-match** (fail closed); (c) compare
+> **key-by-key and value-by-value**, requiring the **same key set** and
+> **byte-identical values** for every key — never a substring test, never a
+> count of agreeing keys, never the closed bit on its own; (d) require the
+> positive limb to satisfy **both** `closed=1` **and** `payload-match=1`
+> against the green fixture's expected map; (e) require each mutant limb to
+> satisfy **both** a non-zero exit **and** `payload-match=1` against that
+> mutant's own expected rejection map, so a mutant that exits non-zero for the
+> **wrong reason** (right exit code, wrong payload values) is **rejected=0**;
+> and (f) aggregate the per-case comparisons into a single per-case
+> `payload-match` field, so a one-token tamper in one check's payload drives
+> **exactly one** case's `payload-match=0` → `positive=fail` → `verdict=fail`
+> and leaves every sibling case's `payload-match=1` and `verdict=pass`
+> untouched. A case that is graded green must have earned it on **values**,
+> not on an exit code.
+
+### Why the closed bit alone is insufficient (the defect this closes)
+
+The r40 suite (`corpus/instruments/r40-closure.sh`, commit
+`5b29ea1439450b712581edf5f0bf98dfb262ab`) grades every case with `st_pos()`
+(lines 1287–1297), which asserts **only the check's exit code**:
+
+```bash
+st_pos() { # ID TREE REF
+  local id=$1 tree=$2 ref=$3
+  local out rc
+  out=$(run_check "$id" "$tree"); rc=$?
+  if [ "$rc" -eq 0 ]; then
+    printf 'selftest detail=%s positive=pass payload=%s\n' "$id" "$out"
+```
+
+The payload is echoed into a detail line and **never compared** against the
+values the fixture is supposed to produce. Round-40 wave-2
+`.ufo/waves/round-40/wave2/MutH1H5.md` measured the consequence (its "Runs and
+verdicts" table, mutant M-H3): a check that reports **wrong payload values
+while still exiting 0** — H3 payload `mentions=323,rows=83` instead of
+`mentions=1,rows=1` — still graded `case=H3 positive=pass`; the mutant was
+killed only *incidentally*, by the mutant count falling to `0/2`, not by the
+positive limb noticing the wrong values. The same report's observation 2 names
+the second half of the defect: `payload_matches` (r40 lines 419–431) is a
+**shared, count-relative** comparator used by H5 and H7, so one tampered
+payload line moves a counter that gates *other* checks (`mutH5`'s plain run
+prints `payload-match=9` while two payload values contradict the receipt), and
+the M-H5 patch (trust-on-presence) shows the value comparison can be blinded
+while the count still looks healthy.
+
+I9 therefore has two halves, and the contract above pins both: **compare
+values, per case** (half one) and **never let one case's payload move another
+case's verdict** (half two).
+
+---
+
+## 2. The exact output line format
+
+The graded case line, one per check, in fixed id order:
+
+```
+selftest case=I<n> <label> positive=pass|fail payload-match=1|0 verdict=pass|fail
+```
+
+Fields, in order:
+
+| field | meaning |
+|---|---|
+| `case=I<n>` | the check id, `n` = 1..12, one line per id, each id exactly once, in ascending order |
+| `<label>` | the case's own label — a single whitespace-free token naming the check's subject (e.g. `corrections`, `criterion-row`, `located-quotes`) |
+| `positive=pass\|fail` | the **positive limb**: `pass` iff the check's exit code was 0 **and** its actual payload matched the green fixture's expected map |
+| `payload-match=1\|0` | the **value comparison**, aggregated over every payload comparison the case made (positive limb + each mutant limb): `1` iff every one of them matched its expected map byte-for-byte, `0` otherwise |
+| `verdict=pass\|fail` | the **graded** outcome: `pass` iff `positive=pass` **and** `payload-match=1` **and** every mutant limb was rejected with its expected rejection payload |
+
+Two rules the judge must enforce, so a summary-only or detail-free forgery
+cannot satisfy a case (carried over from r40's `judge_selftest_report`, lines
+1577–1603, and tightened):
+
+1. Exactly twelve `^selftest case=I([1-9]|1[0-2]) ` lines, one per id, each
+   id appearing **exactly once**; each graded line must end `verdict=pass$`,
+   carry `positive=pass` and `payload-match=1`.
+2. Each case's `payload-match=1` must be **backed by detail lines**: at least
+   one `^selftest detail=I<n> positive=pass ` line and at least one
+   `^selftest detail=I<n> mutant=… rejected=1 ` line for that id. A case line
+   with no detail behind it is rejected, and so is a case line that claims
+   `payload-match=1` while any of that id's detail lines shows a value
+   mismatch.
+
+The summary line is unchanged in shape:
+
+```
+selftest cases=12 failures=0
+```
+
+Detail lines carry the per-limb evidence, exactly as in r40:
+
+```
+selftest detail=I<n> positive=pass payload=<k=v,...>
+selftest detail=I<n> positive=fail rc=<n> payload=<k=v,...>
+selftest detail=I<n> mutant=<label> rejected=1 payload=<k=v,...>
+selftest detail=I<n> mutant=<label> rejected=0 rc=<n> payload=<k=v,...>
+```
+
+**Backwards compatibility note for the suite core.** The r41 claim's predicate
+already states the selftest must print twelve graded `selftest case=I<n> ...
+positive=pass ... verdict=pass` lines and `selftest cases=12 failures=0`. The
+format above satisfies that predicate verbatim (`positive=pass` and
+`verdict=pass` are both present, `verdict=` is last), and the r40 field
+`mutants=<ok>/<n>` is **replaced** by the pair `positive=` + `payload-match=`
+so that the value comparison is visible on the graded line itself. If the
+suite core prefers to keep `mutants=<ok>/<n>` on the graded line, it must
+appear **after** `verdict=` or as a separate field, never in place of
+`payload-match=`, and the judge must still require `payload-match=1`.
+
+---
+
+## 3. The prototype (scratch; demonstrated, not landed)
+
+`ExecI9Isolate` prototyped the contract in scratch against the **real
+committed r40 check functions** (`check_h2`, `check_h3`, `check_h4`, sourced
+read-only from the lane at `5b29ea1439450b712581edf5f0bf98dfb262ab`) and the
+**real lane export** at `HEAD` (`b3b08b2`, obtained read-only via
+`git -C <lane> archive HEAD | tar -x` into scratch). The prototype exercised
+exactly the three properties the contract names:
+
+* **honest payload → case pass** — section A: three synthetic green fixtures
+  whose expected payload maps are ground truth *by construction of the
+  fixture*, each graded `positive=pass payload-match=1 verdict=pass`, and each
+  mutant limb rejected with its expected rejection payload;
+  `selftest cases=3 failures=0`.
+* **one-byte payload tamper → that case fails with `positive=fail`, other
+  cases unaffected** — section C: the export copy received **one extra prose
+  mention** of `M39-2` in `corpus/QUALITY.md`. The check's payload went from
+  `mentions=1,rows=1` to `mentions=2,rows=1` — a **1-byte** difference
+  (measured with `cmp -l`) — while its **exit code stayed 0**. The graded
+  result: `selftest case=I2 criterion-row positive=fail payload-match=0
+  verdict=fail`, while `I1` and `I3` stayed `positive=pass payload-match=1
+  verdict=pass`. Under the r40-style exit-code-only grading the same fixture
+  reads `positive=pass` (section D) — the defect r40 cannot see.
+* **no sibling case reds through a shared payload-match counter** — section E:
+  the r40-style shared counter reads `control=2/3`, i.e. it *is* moved by the
+  tamper; the per-case comparison reads `I1=1 I2=0 I3=1`, i.e. only the
+  tampered case moved. Section F shows the other half: a mutant that exits
+  non-zero but reports the **wrong** payload values
+  (`mentions=2,rows=0` where `mentions=1,rows=0` was declared) is
+  `exact-match=0`, so an exit-code-only grader would accept a rejection for
+  the wrong reason.
+
+The prototype script, its full transcript, the byte-level tamper measurement
+and the digests are in the seat receipt
+`.ufo/waves/round-41/wave1/ExecI9Isolate.md`. The prototype is **scratch
+only**: it is not a deliverable the L1 lands, and it is deleted with the
+seat's scratch directory.
+
+---
+
+## 4. What the suite core must implement (checklist)
+
+1. A per-case **expected payload map** for each check `I<n>`'s green fixture,
+   and a per-mutant **expected rejection payload map**. The expected values
+   must be **pinned per fixture**, not recomputed from the same run (a
+   self-comparison proves nothing) — for the live export the maps are the
+   values measured against the export **at the verification ref Y** (for the
+   corrections check the shape is
+   `corrections=<n>,named=<n>,missing=0,fences=closed`; the concrete `n`
+   depends on how many `Correction (round 41)` lines the L1 lands, so it must
+   be measured at Y, not assumed).
+2. A **payload parser** that splits on `,` into `key=value` tokens, rejects
+   duplicate keys and commas inside values, and returns *no match* for an
+   unparseable payload.
+3. A **per-key, per-value exact comparator** (same key set, byte-identical
+   values). No substring tests, no count-relative comparisons, no exit-code
+   substitutes.
+4. `st_pos`-equivalent that requires **exit 0 AND payload-match 1**, and a
+   mutant grader that requires **non-zero exit AND payload-match 1 against
+   that mutant's declared expected rejection payload**.
+5. The graded line format of §2, with `payload-match` aggregating all of the
+   case's comparisons, and a judge that rejects summary-only, detail-free,
+   duplicate-id and `payload-match=0`-but-`verdict=pass` forgeries.
+6. A committed **tamper fixture** for the isolation property: one fixture that
+   changes exactly one payload value of exactly one check by one byte while
+   leaving that check's exit code at 0, such that the graded selftest shows
+   that one case `positive=fail payload-match=0 verdict=fail` and every
+   sibling case `verdict=pass`.
+
+---
+
+## 5. Scope and honesty
+
+This seat produced **no lane-repo change**: the r41 suite is the suite core's
+(`ExecSuiteCore`) to write, and the L1 lands every file. This deliverable is
+the I9 specification plus a scratch prototype; the receipt carries the
+transcript and the measurements. No claim is made here that the r41 suite
+already implements this contract — the prototype demonstrates that the
+contract is implementable against the real r40 check functions and the real
+export, and the suite core still has to build it into
+`corpus/instruments/r41-closure.sh`.

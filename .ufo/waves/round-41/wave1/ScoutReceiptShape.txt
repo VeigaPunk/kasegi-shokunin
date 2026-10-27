@@ -1,0 +1,210 @@
+R41 RECEIPT CONTRACT (all-gates v1) — the round-41 closure receipt format
+==========================================================================
+
+File: .ufo/waves/round-41/final-gates/all-gates.txt — 31 LF-terminated lines,
+no trailing blank line, no other bytes. The receipt is the teed transcript of
+BOTH the suite run and the graded selftest in one canonical ordering. Nothing
+is restamped, reordered or normalised between the stdout the producing run
+prints and the committed bytes; the frozen kill rule reds a receipt at Y that
+is not byte-identical to the transcript of the run that produced it.
+
+EXACT LINE LAYOUT (1-based; the order below is mandatory):
+
+   1   all-gates v1
+   2   export-ref=<40 lowercase hex>
+   3   suite-sha256=<64 lowercase hex>
+   4   time-basis=ref-commit
+   5   run-utc=<YYYY-MM-DDTHH:MM:SSZ>
+   6   I1 payload=<k=v,...> closed=<0|1>
+   7   I2 payload=<k=v,...> closed=<0|1>
+   8   I3 payload=<k=v,...> closed=<0|1>
+   9   I4 payload=<k=v,...> closed=<0|1>
+  10   I5 payload=<k=v,...> closed=<0|1>
+  11   I6 payload=<k=v,...> closed=<0|1>
+  12   I7 payload=<k=v,...> closed=<0|1>
+  13   I8 payload=<k=v,...> closed=<0|1>
+  14   I9 payload=<k=v,...> closed=<0|1>
+  15   I10 payload=<k=v,...> closed=<0|1>
+  16   I11 payload=<k=v,...> closed=<0|1>
+  17   I12 payload=<k=v,...> closed=<0|1>
+  18   selftest case=I1 <evidence> positive=<pass|fail> <evidence> verdict=<pass|fail>
+  ...
+  29   selftest case=I12 <evidence> positive=<pass|fail> <evidence> verdict=<pass|fail>
+  30   selftest cases=12 failures=0
+  31   closed=12/12 exit=0
+
+The selftest block sits between the twelve run lines and the final closed line;
+`closed=12/12 exit=0` is the last line of the file. There are no other lines:
+no `selftest detail=`, no `selftest judge=`, no `selftest export-ref=`, no
+`suite problem=`, no blank or comment lines — all diagnostics go to stderr so
+that the graded selftest's canonical stdout is exactly the 13-line block this
+receipt tees.
+
+HEADER LINES (1-5)
+
+  1  `all-gates v1` — fixed literal sentinel, byte-exact first line.
+  2  `^export-ref=[0-9a-f]{40}$` — exactly once in the file. It names the
+     judged head J: the commit the transcript was produced at. It is never Y
+     (a commit cannot contain its own hash). Rule: when the export under test
+     contains a committed receipt, the transcript adopts that receipt's
+     declared ref (so a re-run at Y re-prints the J-produced bytes); when no
+     receipt is in the export (base, round-40 head, or J itself), the
+     transcript names the run's own ref.
+  3  `^suite-sha256=[0-9a-f]{64}$` — exactly once. sha256 of the export's own
+     `corpus/instruments/r41-closure.sh` bytes; `unreadable` when the read
+     fails (which can never equal a recorded 64-hex digest).
+  4  `time-basis=ref-commit` — fixed literal, exactly once. Declares that the
+     stamp is a property of the named ref, not of the clock.
+  5  `^run-utc=[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$` —
+     exactly once. Equals the committer instant of the receipt's named
+     export-ref rendered as UTC (derivation below), and is not-future: no
+     later than the verification clock plus 120 seconds of skew (the r40
+     iso_past rule).
+
+RUN LINES (6-17)
+
+  `^I([1-9]|1[0-2]) payload=<P> closed=<0|1>$` — exactly one line per check id
+  I1..I12, in fixed id order, each id exactly once. `<P>` is the check's
+  comma-joined k=v payload recomputed from the export; it contains no space,
+  no newline and no ` closed=` substring (so a forged ` closed=1` inside a
+  payload cannot mint a second closed flag). Green: every line ends
+  `closed=1`.
+
+SELFTEST BLOCK (18-30)
+
+  Lines 18-29: `^selftest case=I([1-9]|1[0-2]) ... positive=<pass|fail> ...
+  verdict=<pass|fail>$` — exactly one graded line per case I1..I12, in fixed
+  id order, each id exactly once. `positive=` appears before `verdict=`, and
+  `verdict=` is the last field. The fields between carry that case's own
+  grading evidence: a mutant-rejection tally of the r40 shape
+  `mutants=<ok>/<n>` (n >= 1 — a case whose fixtures never ran is not green)
+  plus the per-case payload-comparison fact I9 requires. A green line reads
+  `positive=pass ... verdict=pass` with every evidence field green.
+  Line 30: `selftest cases=12 failures=0` — literal when the graded selftest
+  is green; a failing selftest prints `selftest cases=<n> failures=<k>` with
+  its true counts.
+
+FINAL LINE (31)
+
+  `closed=12/12 exit=0` — literal, iff all twelve checks closed. Otherwise
+  `closed=<k>/12 exit=1` with the true closed count. This is the last line.
+
+SHAPE INVARIANTS THE VERIFIER COUNTS (r40 field names in parentheses)
+
+  sentinel=1; header-lines=5 in the exact order above; run-lines=12;
+  selftest-case-lines=12 in order; selftest-summary-lines=1; closed-line=1;
+  total lines = 31 (body-lines=26); closed-0=0 in a green receipt; no
+  duplicate ids; every recorded payload re-derived equal (payload-match; the
+  I2 line is rebuilt from the receipt minus its own I2 line so the
+  self-reference is closed, never trusted — r40 h7_inner pattern).
+
+RUN-UTC DERIVATION (exact commands)
+
+  e=$(git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin \
+        log -1 --format=%ct <export-ref>)
+  TZ=UTC date -u -d "@$e" +%Y-%m-%dT%H:%M:%SZ
+
+  `%ct` is the COMMITTER epoch of export-ref (not `%at` author, never a wall
+  clock); the epoch is rendered to canonical UTC with `date -u`. Verified
+  against the lane's committed r40 receipt: `git log -1 --format=%ct
+  c7aea5ef97902f38289cbdc1cf267068876a62dd` -> 1793053957 -> `date -u -d
+  @1793053957` -> 2026-10-26T22:32:37Z = the committed run-utc. Unresolvable
+  ref -> print `unreadable` (never an empty string). Do not render `%cI`/`%ci`
+  text: those keep the recorded offset (19:32:37-03:00) and false-negative a
+  textual compare; the epoch render is timezone-immune by construction.
+
+EXPORT-REF ANCESTOR / RECEIPT-ONLY RULE
+
+  The receipt at Y names J (its parent). The verifier requires:
+    git -C lane merge-base --is-ancestor <export-ref> <Y>   -> exit 0
+    git -C lane diff --name-only <export-ref> <Y>           -> exactly the
+      receipt path `.ufo/waves/round-41/final-gates/all-gates.txt`, nothing else
+  A nonexistent, foreign or non-ancestor export-ref fails both limbs (r40
+  h7_inner pattern: ancestor / diff-clean / diff-read).
+
+BYTE-IDENTITY CHECK — VERIFIER SIDE (I2's byte-identity limb)
+
+  On the committed receipt inside the export:
+  1. Assert every shape invariant above; any missing/extra/duplicate line is
+     red, and a summary-only body (no run lines, only tallies) is red.
+  2. Recompute each I<n> payload from the export and require the recorded
+     `I<n> payload=` equal (the recorded I2 payload is rebuilt, not trusted).
+  3. Re-grade the selftest over the export's own suite/fixtures and require
+     the 13 recorded graded lines equal — fixtures are deterministic, so a
+     re-grade is byte-stable.
+  4. Rebuild the canonical 31-line transcript (header from the receipt's
+     declared ref + export suite digest; run lines from recomputed payloads;
+     selftest block from the re-grade; final tally from the closed count) and
+     require `cmp -s` equality with the committed file. A forged value, a
+     re-stamped run-utc, a foreign ref, an extra or missing line, a duplicate
+     id or a summary-only body reds the limb.
+
+BYTE-IDENTITY CHECK — OPERATOR SIDE (re-run with tee; diff)
+
+  d=$(mktemp -d)
+  git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive <Y> | tar -x -C "$d"
+  bash "$d/corpus/instruments/r41-closure.sh" --export-ref <Y> \
+      --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work "$d/work" \
+      | tee "$d/rerun.txt"
+  diff "$d/rerun.txt" "$d/.ufo/waves/round-41/final-gates/all-gates.txt"
+  cmp -s "$d/rerun.txt" "$d/.ufo/waves/round-41/final-gates/all-gates.txt" && echo BYTE-IDENTICAL
+
+  `diff` must print nothing; `cmp -s` exits 0. The tee capture and the
+  committed file are compared raw — nothing is normalised away. Because the
+  transcript contains no clock, path, host or cwd bytes, two runs over the
+  same ref are byte-identical on any clean scratch root.
+
+PRODUCTION FLOW (the measured green window)
+
+  - At J the receipt is absent by construction, so I2 reds fail-closed and a
+    plain `--export-ref J` run prints `closed=11/12 exit=1` (only I2 red).
+  - Produce the receipt at J:
+      bash corpus/instruments/r41-closure.sh --export-ref <J> \
+          --receipt-out .ufo/waves/round-41/final-gates/all-gates.txt \
+          --lane <lane> --work <outside-lane dir>
+    The suite seeds the pending receipt (canonical green flags) so the bytes
+    it writes already carry the green I2 verdict and the green selftest
+    block; the written bytes name J and equal the transcript a plain run
+    prints at Y. Commit exactly those bytes — and only when they read
+    `closed=12/12` — as Y = J + receipt (the sole J..Y path).
+  - Verify at Y: the re-run-with-tee + diff above is empty and the run ends
+    `closed=12/12 exit=0`, exit 0.
+
+RED-RUN VARIANT AND NEGATIVE CONTROLS
+
+  A red transcript keeps the identical 31-line layout and carries the run's
+  own recorded statuses: failed checks print `closed=0` with their red
+  payloads; the selftest block prints the actually observed graded lines
+  (`positive=fail`/`verdict=fail`, `failures=<k>`); the last line is
+  `closed=<k>/12 exit=1`. A receipt is never a tally the run did not print.
+  Base 5b29ea1439450b712581edf5f0bf98dfb262ab and round-40 judged head
+  c7aea5ef97902f38289cbdc1cf267068876a62dd exports print `closed<12/12 exit=1`.
+
+DETERMINISM REQUIREMENTS
+
+  The transcript is a function of the export tree, the ref-scoped git facts
+  (committer instant, ancestry, name-only diff, numstat) and the executing
+  suite bytes only. No wall clock, absolute path, hostname, PID or scratch
+  path may appear on any line. Fixture names in selftest evidence fields are
+  stable constants of the suite. Host-sensitive limbs: the I6 scratch-family
+  scan reads live state, so produce and verify the receipt on a scratch root
+  holding zero `kasegi-r41*` strays other than the run's own --work dir; a
+  receipt produced on a dirty scratch root reproduces only on a dirty one.
+
+GREEN EXAMPLE AT Y (illustrative; payload keys are each check's own facts):
+
+  all-gates v1
+  export-ref=<J 40-hex>
+  suite-sha256=<sha256 of export corpus/instruments/r41-closure.sh>
+  time-basis=ref-commit
+  run-utc=<J committer instant, e.g. 2026-10-27THH:MM:SSZ>
+  I1 payload=corrections=3,named=3,missing=0,evidence=3 closed=1
+  I2 payload=receipt=1,...,payload-match=11,i2-line=1 closed=1
+  I3 payload=values=...,substring=rejected closed=1
+  ... I4-I11 ...
+  I12 payload=base=red,r40=red,declared=<n>/<n>,append-only=1,density=1,deletions=0,census=0 closed=1
+  selftest case=I1 positive=pass mutants=1/1 match=limb verdict=pass
+  ... I2-I11 ...
+  selftest case=I12 positive=pass mutants=1/1 match=limb verdict=pass
+  selftest cases=12 failures=0
+  closed=12/12 exit=0

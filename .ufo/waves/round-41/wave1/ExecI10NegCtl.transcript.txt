@@ -1,0 +1,140 @@
+# kasegi round-41 wave1 / ExecI10NegCtl — transcript
+# I10: the killable negative-control acceptance (closes MutH6H10 defect D2).
+# Substrate: corpus/instruments/r40-closure.sh (sha256 bdbd18a3239c3467c79b5c487a8e3256c2cae1678752cea2487a5eaa12897f1e)
+#   with its H8 negative-control limb replaced by the round-41 I10 design.
+# The prototype and its mutant live in scratch; the lane repo is read-only here.
+
+## the exact acceptance predicate (one line, as implemented)
+[ "$b" -lt "$g" ] && [ "$r" -lt "$g" ] && [ "$g" -lt "${#CHECK_IDS[@]}" ] && [ "$bc" -eq 1 ] && [ "$rc" -eq 1 ] && [ "$gc" -eq 1 ]
+
+# b  = ACTUAL nested tally of the EXPORT'S OWN suite over the round-41 base
+#      commit 5b29ea1439450b712581edf5f0f0bf98dfb262ab, in leaf mode (no recursion)
+# r  = the same over the round-40 judged head c7aea5ef97902f38289cbdc1cf267068876a62dd
+# g  = the same over the receipt's declared export-ref: the LEAF-CAPPED GREEN
+#      CEILING, i.e. the tally a green tree reaches when the only red limb is the
+#      leaf cap itself.  bc/rc/gc are the three nested exit codes (must be 1 = red).
+# With ${#CHECK_IDS[@]} = 12 the bound is g <= 11 and a control must print
+# closed = K <= 10 < 12 with exit 1; a tally that REACHES g is a leaf-capped green
+# base and is REJECTED.  g < N proves the leaf cap bit (a ceiling of N would make
+# the comparison vacuous again).  The prototype below carries 10 check ids, so the
+# bound printed in its payloads is g <= 9 (it measured g = 8/10).
+
+## BEFORE — the r40 limb accepts a leaf-capped green base (defect D2)
+# base control pointed at the r40 green window d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5:
+# the nested run scores exactly the leaf cap (7/10) and `-lt 10` accepts it.
+H8 payload=base=7/10,base-exit=1,r39=2/10,r39-exit=1 closed=1
+closed=8/10 exit=1
+
+# the M-H8a mutation of that limb (`-lt 10` -> `-le 10`, sha256 below) is
+# behaviourally IDENTICAL on every reachable nested tally => unkillable:
+    d17760b3d09dc0658d57c51a3c0ff217599b0438863a5ab246b311d435389c6f  /fast/scratch/hyaku/kasegi-r41/ExecI10NegCtl/mut/r40-h8a.sh
+    H8 payload=base=7/10,base-exit=1,r39=2/10,r39-exit=1 closed=1
+# (that mutant sha256 equals the one MutH6H10 recorded for M-H8a, byte for byte)
+
+## PRISTINE prototype — graded selftest green
+# fixture J=b2a22c9178ec935eed8d349cca5a94343e6bf070  Y=138591e115c85246b4d1bdc8e784929b0867308f  (git diff --name-only J Y = the receipt only)
+# executing bytes: f268122b84ac83db658f72903a53788801f3d2da3c9be4cd898401f982ea048a
+# plain run at Y:
+    all-gates v4
+    export-ref=b2a22c9178ec935eed8d349cca5a94343e6bf070
+    suite-sha256=f268122b84ac83db658f72903a53788801f3d2da3c9be4cd898401f982ea048a
+    time-basis=ref-commit
+    run-utc=2026-10-27T09:10:22Z
+    H1 payload=suite=1,digest=1,registry=1,registry-in=skill closed=1
+    H2 payload=corrections=8,named=5,missing=0,fences=closed closed=1
+    H3 payload=mentions=1,rows=1 closed=1
+    H4 payload=s056=1,s058=1,s059=1,oversize=0 closed=1
+    H5 payload=source=1,control=8/8,utc=1,forged-payload=rejected,future-dated=rejected,summary-only=rejected closed=1
+    H6 payload=strays=0,read=ok closed=1
+    H7 payload=sentinel=1,ref=b2a22c9178ec935eed8d349cca5a94343e6bf070,digest=1,time-basis=1,run-utc=1,not-future=1,header-lines=5,run-lines=10,body-lines=11,closed-0=0,closed-line=1,ancestor=1,diff-clean=1,diff-read=ok,payload-match=9,h7-line=1 closed=1
+    I10 payload=base=5/10,base-exit=1,base-at-cap=0,cap=8/10,cap-exit=1,r40=7/10,r40-exit=1,r40-at-cap=0 closed=1
+    H9 payload=declared=293,valid=293,tail=293,pure=1,paths=1,diff-read=ok closed=1
+    H10 payload=skill-del=0,province-del=0,density=1,deleted=0,diff-read=ok closed=1
+    closed=10/10 exit=0
+# plain transcript vs the EXPORTED receipt:
+    cmp clean (byte identical)
+# graded selftest (case lines, I10 details, summary, judge):
+    selftest export-ref=138591e115c85246b4d1bdc8e784929b0867308f suite-sha256=f268122b84ac83db658f72903a53788801f3d2da3c9be4cd898401f982ea048a
+    selftest case=H1 positive=pass mutants=3/3 verdict=pass
+    selftest case=H2 positive=pass mutants=3/3 verdict=pass
+    selftest case=H3 positive=pass mutants=2/2 verdict=pass
+    selftest case=H4 positive=pass mutants=3/3 verdict=pass
+    selftest case=H5 positive=pass mutants=2/2 verdict=pass
+    selftest case=H6 positive=pass mutants=4/4 verdict=pass
+    selftest case=H7 positive=pass mutants=6/6 verdict=pass
+    selftest detail=I10 positive=pass payload=base=5/10,base-exit=1,base-at-cap=0,cap=8/10,cap-exit=1,r40=7/10,r40-exit=1,r40-at-cap=0
+    selftest detail=I10 mutant=leaf-capped-green-base rejected=1 limb=base-at-cap=1
+    selftest detail=I10 mutant=leaf-capped-green-r40-head rejected=1 limb=r40-at-cap=1
+    selftest detail=I10 mutant=base-ref-unresolvable rejected=1 limb=base-exit=2
+    selftest detail=I10 mutant=r40-ref-unresolvable rejected=1 limb=r40-exit=2
+    selftest case=I10 positive=pass mutants=4/4 verdict=pass
+    selftest case=H9 positive=pass mutants=5/5 verdict=pass
+    selftest case=H10 positive=pass mutants=3/3 verdict=pass
+    selftest cases=10 failures=0
+    selftest judge=own-report accepted=1
+    selftest judge=forged-summary rejected=1
+    selftest judge=forged-caselines rejected=1
+    selftest judge=forged-failed-cases rejected=1
+    selftest judge=forged-detail-free rejected=1
+    selftest judge=forged-9-cases rejected=1
+    selftest judge=forged-no-verdict rejected=1
+
+## MUTANT prototype (M-H8a class: comparison operator weakened) — graded selftest red
+# the one-token mutation applied to the prototype:
+    -     && [ "$b" -lt "$g" ] && [ "$r" -lt "$g" ] \
+    +     && [ "$b" -le "$g" ] && [ "$r" -lt "$g" ] \
+    f268122b84ac83db658f72903a53788801f3d2da3c9be4cd898401f982ea048a  /fast/scratch/hyaku/kasegi-r41/ExecI10NegCtl/proto/r40-closure.sh
+    8c08d118d74d87782d24af6101d73898d20e252be16dd5e237f4891562259ce7  /fast/scratch/hyaku/kasegi-r41/ExecI10NegCtl/mut/r40-closure.sh
+# fixture J=3ef939d64b9b3b80b329a2cf6758b53cf53135d9  Y=2fe6aea094f3ebf8258c564efd4e0495e113305b  (git diff --name-only J Y = the receipt only)
+# plain run at Y (the mutation is invisible to the run: the real controls stay
+# strictly below the ceiling — only the selftest boundary fixture flips):
+    all-gates v4
+    export-ref=3ef939d64b9b3b80b329a2cf6758b53cf53135d9
+    suite-sha256=8c08d118d74d87782d24af6101d73898d20e252be16dd5e237f4891562259ce7
+    time-basis=ref-commit
+    run-utc=2026-10-27T09:10:27Z
+    H1 payload=suite=1,digest=1,registry=1,registry-in=skill closed=1
+    H2 payload=corrections=8,named=5,missing=0,fences=closed closed=1
+    H3 payload=mentions=1,rows=1 closed=1
+    H4 payload=s056=1,s058=1,s059=1,oversize=0 closed=1
+    H5 payload=source=1,control=8/8,utc=1,forged-payload=rejected,future-dated=rejected,summary-only=rejected closed=1
+    H6 payload=strays=0,read=ok closed=1
+    H7 payload=sentinel=1,ref=3ef939d64b9b3b80b329a2cf6758b53cf53135d9,digest=1,time-basis=1,run-utc=1,not-future=1,header-lines=5,run-lines=10,body-lines=11,closed-0=0,closed-line=1,ancestor=1,diff-clean=1,diff-read=ok,payload-match=9,h7-line=1 closed=1
+    I10 payload=base=5/10,base-exit=1,base-at-cap=0,cap=8/10,cap-exit=1,r40=7/10,r40-exit=1,r40-at-cap=0 closed=1
+    H9 payload=declared=293,valid=293,tail=293,pure=1,paths=1,diff-read=ok closed=1
+    H10 payload=skill-del=0,province-del=0,density=1,deleted=0,diff-read=ok closed=1
+    closed=10/10 exit=0
+# plain transcript vs the EXPORTED receipt:
+    cmp clean (byte identical)
+# graded selftest (case lines, I10 details, summary, judge):
+    selftest export-ref=2fe6aea094f3ebf8258c564efd4e0495e113305b suite-sha256=8c08d118d74d87782d24af6101d73898d20e252be16dd5e237f4891562259ce7
+    selftest case=H1 positive=pass mutants=3/3 verdict=pass
+    selftest case=H2 positive=pass mutants=3/3 verdict=pass
+    selftest case=H3 positive=pass mutants=2/2 verdict=pass
+    selftest case=H4 positive=pass mutants=3/3 verdict=pass
+    selftest case=H5 positive=pass mutants=2/2 verdict=pass
+    selftest case=H6 positive=pass mutants=4/4 verdict=pass
+    selftest case=H7 positive=pass mutants=6/6 verdict=pass
+    selftest detail=I10 positive=pass payload=base=5/10,base-exit=1,base-at-cap=0,cap=8/10,cap-exit=1,r40=7/10,r40-exit=1,r40-at-cap=0
+    selftest detail=I10 mutant=leaf-capped-green-base rejected=0 rc=0 payload=base=8/10,base-exit=1,base-at-cap=1,cap=8/10,cap-exit=1,r40=7/10,r40-exit=1,r40-at-cap=0
+    selftest detail=I10 mutant=leaf-capped-green-r40-head rejected=1 limb=r40-at-cap=1
+    selftest detail=I10 mutant=base-ref-unresolvable rejected=1 limb=base-exit=2
+    selftest detail=I10 mutant=r40-ref-unresolvable rejected=1 limb=r40-exit=2
+    selftest case=I10 positive=pass mutants=3/4 verdict=fail
+    selftest case=H9 positive=pass mutants=5/5 verdict=pass
+    selftest case=H10 positive=pass mutants=3/3 verdict=pass
+    selftest cases=10 failures=2
+    selftest judge=own-report accepted=0
+    selftest judge=forged-summary rejected=1
+    selftest judge=forged-caselines rejected=1
+    selftest judge=forged-failed-cases rejected=1
+    selftest judge=forged-detail-free rejected=1
+    selftest judge=forged-9-cases rejected=1
+    selftest judge=forged-no-verdict rejected=1
+
+## verdict
+# pristine: selftest case=I10 positive=pass mutants=4/4 verdict=pass, cases=10 failures=0, exit 0
+# mutant  : selftest case=I10 positive=pass mutants=3/4 verdict=fail, cases=10 failures=2, exit 1
+#           flipped limb: leaf-capped-green-base rejected=0 rc=0 payload=base=8/10,...,base-at-cap=1,cap=8/10,...
+# The once-unreachable boundary (the leaf-capped green tally) is now a reachable,
+# asserted fixture, so the weakened comparison cannot survive the graded selftest.
