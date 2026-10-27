@@ -6,11 +6,13 @@ commit carrying every round-41 change except the receipt; verification ref Y = J
 `.ufo/waves/round-41/final-gates/all-gates.txt` only. Lane files never name J by hash (a commit cannot
 contain its own hash); the report names J and Y. Counting commands run over the suite run at Y; negative
 controls run at base `5b29ea1439450b712581edf5f0f0bf98dfb262ab` and round-40 judged head
-`c7aea5ef97902f38289cbdc1cf267068876a62dd`. Shape: `<<<WAVES>>>`.
+`c7aea5ef97902f38289cbdc1cf267068876a62dd`. Shape: two v1 waves, 60-seat build + 33-seat falsify = 93
+seats (within 64–128); no residual call.
 
-Attack share: wave 1 `kasegi-r41-build` 20/60 = 33.3% (reviewer 9 + critic 6 + mutation-tester 5, counted
-from the `wave1-dispatch.json` registry members, `counts.spawn` 60); wave 2 and the round total are counted
-from the wave-2 dispatch when it lands, never estimated: `<<<WAVE2-TALLY>>>`.
+Attack share: wave 1 `kasegi-r41-build` 20/60 = 33.3% (reviewer 9 + critic 6 + mutation-tester 5),
+counted from `wave1-dispatch.json`; wave 2 `kasegi-r41-falsify` 32/33 = 97.0% (reviewer 7 + critic 13 +
+mutation-tester 12; one scout), total 52/93 = 55.9%. Wave 2 had 0 connector seats (conformance item);
+wave 1 had 2. Dead seats: 0 (all 93 settled).
 
 ## Frozen claims
 
@@ -18,8 +20,8 @@ Before → after, as frozen in `.ufo/waves/round-41/claims.json` (2026-10-27T09:
 
 | Claim | Axis | Before | After |
 |---|---|---|---|
-| C1 | depth:verifiability (4, held) | suite absent — base export exits 127 and nothing prints `closed=12/12` (`c1-controls/do-nothing.txt`); open routed defects D1 (r40 C1 graded verified while its kill rule fires), D2 (Y-level selftest tally without a transcript), D3 (H1/H2/H3/H5/H6/H7/H8/H9 instrument survivors + 8 CritKillRule escape states), D4 (lesson duplicated Gate heading + garbled census line), D5 (lesson attack-tally error), D6 (SKILL.md registry table broken) | `r41-closure.sh` landed and export-mode only (plain run exits 2); `closed=12/12 exit=0` at Y; graded `selftest cases=12 failures=0` with BOTH transcripts teed in the receipt (`time-basis=ref-commit`, `run-utc` = ref committer instant); base and r40-head exports red; every routed defect closed by the check that names it (I1-I12) |
-| C2 | coverage (8, held) | frontier 23 (F24 absent); registry 62 (S063 absent); entries citing S063 0; knowledge 59; queued 0; admitted 23; harness 26/26; binding 54/54; audit lines 59 expected 59; census exit 0 (W04 S028/S029 only) — `c2-controls/before.txt` | frontier 24 (F24 admitted); registry 63 (S063 mined); entry citing S063 1; knowledge 60; harness 27/27 incl `PASS F24 ids=S063`; binding 55/55; audit expected=60; census exit 0; measure 44/44 = 1.000 |
+| C1 | depth:verifiability (4, held) | suite absent — base export exits 127 and nothing prints `closed=12/12` (`c1-controls/do-nothing.txt`); routed defects D1-D6 | `r41-closure.sh` landed export-only. At the integrated probe ref, I1's evidence-not-named and I3's mangled-value-token defeats survive and selftest fails; final Y run/receipt is recorded below. C1 is not verified on the frozen kill rule, so no score move is claimed. |
+| C2 | coverage (8, held) | frontier 23 (F24 absent); registry 62 (S063 absent); entries citing S063 0; knowledge 59; queued 0; admitted 23; harness 26/26; binding 54/54; audit lines 59 expected 59; census exit 0 (W04 S028/S029 only) — `c2-controls/before.txt` | F24 row and S063 evidence landed; measured frontier 24, registry 63 (S063 mined), entry 1, knowledge 60, harness 27/27, binding 55/55, audit expected 60, census exit 0, measure 44/44. However, wave-2 CritProvinceBoundary found substantive shared RFC 9116 ground with kake; C2 coverage credit is not verified and no score move is claimed. |
 
 ## Mistakes
 
@@ -69,5 +71,40 @@ SOURCES.md received an appended search-log item and the S063 registry row.
 
 ## Wave-2 falsification
 
-`<<<WAVE2>>>` — appended when the round-41 falsify wave reports: per-claim verdicts, attack tallies counted
-from the wave-2 dispatch, and each routed defect named with the check that reds it.
+The falsify wave settled 33/33 seats: reviewers 7, critics 13, mutation-testers 12, scout 1; dead 0.
+The round has 0 connector seats in wave 2 (conformance item); wave 1 carried two connectors.
+
+**C1 — not verified.** At the integrated probe ref, committed I1 and I3 defeat fixtures survived:
+removing evidence from one correction kept I1's cross-record evidence union at 3/3, and the
+`closed=10/100` mangled tally left I3 green. `CritC1KillRule.md` and `RevC1Counters.md` preserve the
+transcripts. The integrated probe also had a missing final receipt and scratch-root strays, so its
+I2/I6 positives are not final-Y verdicts; the post-wave receipt run is recorded at the later Y
+measurement. The frozen C1 claim cannot be repaired in this round.
+
+**C2 — source checks pass; coverage not verified.** After correcting the round-41 manifest to S063
+only, source-recheck Q1-Q3 passed at anchors 330/270/235, frontier harness was 27/27, capture binding
+55/55, audit 60/60, and the source census exited 0. Wave-2 found the capture-binding checker accepts
+missing-path and URL-variant mutations and the frontier count drops a status-flipped F24 to 26/26
+without a nonzero exit; the frozen after-state remains distinguishable by the required F24 line
+and exact 27/27 tally. More importantly for admission, the `CritProvinceBoundary` finding in
+`.ufo/waves/round-41/kasegi-r41-falsify-results.json` documents shared RFC 9116 ground with kake's
+existing `security-txt-publishing.md` on fields, host scope, expiry and non-authorization;
+publisher-versus-researcher labels do not by themselves prove disjoint coverage.
+No coverage-score increase is claimed pending the boundary judgment.
+
+Other falsification results remain bounded to their probes: `MutSkillTablePipes.md` found bare
+internal pipes and leading first-cell whitespace survive I7; `CritDeclarationCoverage.md` found
+I5/I12 do not require every changed path to be declared (its probe did not show a green suite);
+`MutScratchTiming.md` found an outside-configured-root stray is not seen by I6, outside the committed
+fixture clause as tested. `CritI12Necessity.md` confirms the H9/T7 out-of-export symlink escape
+routes through I5. The full seat outputs are in `.ufo/waves/round-41/wave2/` and
+`kasegi-r41-falsify-results.json`.
+
+## considerthese (round 41)
+
+Proposal 7, “Keep a proposal-status ledger,” was the one still-unimplemented item mined from
+`considerthese/2026-10-26.md` (read 2026-10-27): appended its missing `## Round-40 dispositions`
+section to `corpus/knowledge/considerthese-proposals-ledger.md`, covering all seven proposals.
+Proposal 2's remaining checker was not mined because the only exemplar is PARKED with authorization,
+prior-submission and reviewer-distinctness gates failing by construction; proposals 4 and 6 remain
+operator-owned.

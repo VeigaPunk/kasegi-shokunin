@@ -1,0 +1,206 @@
+{
+ "lane": "kasegi",
+ "round": 41,
+ "wave": "kasegi-r41-falsify",
+ "seats": 33,
+ "results": [
+  {
+   "name": "RevC1Counters",
+   "agent": "reviewer",
+   "output": "{\n  \"receipt\": \".ufo/waves/round-41/wave2/RevC1Counters.md\",\n  \"findings\": [\n    {\n      \"severity\": \"High\",\n      \"finding\": \"I3\u2019s `mangled-value-token` mutation survives: its `closed=10/100` fixture leaves `tally=3/3` and is not rejected.\"\n    },\n    {\n      \"severity\": \"High\",\n      \"finding\": \"I1\u2019s `evidence-not-named` mutation survives: removing evidence from one correction leaves aggregate `evidence=3/3`.\"\n    }\n  ],\n  \"verification_gaps\": [\n    \"Final Y/receipt did not exist, so final-Y counters and receipt comparison were not possible. The integrated-ref run is not final-Y verification.\",\n    \"Integrated-ref suite: 10/12; selftest: 6 failures. Base and round-40 negatives were red; plain run refused with exit 2.\",\n    \"Independent plain reads corroborated declared-block hashes, registry row, density digest and census exit 0. Scratch was removed.\"\n  ]\n}",
+   "note": null
+  },
+  {
+   "name": "CritC1KillRule",
+   "agent": "critic",
+   "output": "{\n  \"counterexample\": \"Integrated r41 selftest at export ad7147532cb702b0d541d40499874552183d9132 showed I1 `evidence-not-named` and I3 `mangled-value-token` defeat mutations were accepted (rejected=0, rc=0, unchanged green payload). Overall selftest exited 1 with 6 failures.\",\n  \"evidence\": \"Exact observed transcript excerpts and command, impact axes, smallest correction, other selftest results, and limitations recorded in `.ufo/waves/round-41/wave2/CritC1KillRule.md`. Scratch cleaned by EXIT trap. No final J/Y verification claimed.\",\n  \"impacted_axes\": [\n    \"depth:verifiability\",\n    \"coverage\"\n  ],\n  \"smallest_safe_correction\": \"Strengthen I1's evidence-specific named-identifier test and construct its negative by mutating/removing those exact identifiers; correct I3's token-boundary mutant and require it to produce a changed payload and red verdict. Re-run full selftest.\"\n}",
+   "note": null
+  },
+  {
+   "name": "MutSuite",
+   "agent": "mutation-tester",
+   "output": "{\n  \"status\": \"inconclusive\",\n  \"report\": \".ufo/waves/round-41/wave2/MutSuite.md\",\n  \"supporting_file\": \".ufo/waves/round-41/wave2/MutSuite.findings.txt\",\n  \"finding\": \"Pristine graded selftest at ad7147532cb702b0d541d40499874552183d9132 exits 1 with failures=7 (I1,I2,I3,I6 red). Valid isolated mutant kills therefore cannot be claimed; three mutant probes were run but baseline failure makes attribution inconclusive. Scratch removed.\"\n}",
+   "note": null
+  },
+  {
+   "name": "RevReceipt",
+   "agent": "reviewer",
+   "output": "{\n  \"status\": \"blocked\",\n  \"findings\": [\n    \"Cannot verify final Y receipt: assignment specifies verification ref ad7147532cb702b0d541d40499874552183d9132 as the current integrated scratch-probe ref, and explicitly says final judged head J/Y are created only after falsify wave; do not claim final Y verification.\",\n    \"At that ref, `.ufo/waves/round-41/wave2` has no committed receipt files. The live directory contains only uncommitted artifacts (including `swarm-registry.json`); `RevReceipt` is marked kind=spawn, agentId=null, item=null.\",\n    \"The lane working tree has unrelated/uncommitted wave outputs. No files were written.\"\n  ],\n  \"attempted\": [\n    \"Read frozen claims.json.\",\n    \"Checked disk guard status.\",\n    \"Checked lane status, inspected ad714 ref and committer instant, and listed committed wave2 paths at that ref.\",\n    \"Inspected live wave2 directory and registry.\"\n  ],\n  \"verification_gaps\": [\n    \"No final Y or receipt exists at the supplied probe ref; therefore no same-ref tee/diff, run-UTC comparison against Y, payload re-derivation from Y export, or suite-sha256 comparison can be honestly performed.\"\n  ]\n}",
+   "note": null
+  },
+  {
+   "name": "CritC2Live",
+   "agent": "critic",
+   "output": "{\n  \"report\": \".ufo/waves/round-41/wave2/CritC2Live.md\",\n  \"finding\": \"Live fetched RFC representation hash differs from normalized committed capture hash, but not evidence of changed RFC; all three exact quotes matched once in live and capture, section anchors and provenance trio passed, counters passed.\",\n  \"evidence\": \"HTTP 200, 45129 bytes, SHA256 live 79d19ce7a4a35496981095a27fd992797a9fc4d6f3649c2a1e14f494607c61f9; capture SHA256 925512e715be5fae950f3eec88805197d4007875dac825c5603d44d2b71e2faa. Recheck S063 OK Q1-Q3 occurrences=1 anchors 330/270/235. Frontier 27/27, binding 63/63, audit 60 expected, census exit 0 with W04 S028/S029 only.\",\n  \"axes\": [\n    \"depth:verifiability\",\n    \"coverage\"\n  ],\n  \"smallest_safe_correction\": \"Do not infer content change from hashes of distinct representations; preserve distinction. No confirmed correction needed.\"\n}",
+   "note": null
+  },
+  {
+   "name": "MutC2Chain",
+   "agent": "mutation-tester",
+   "output": "{\n  \"mutant\": \"F24 row status admitted\u2192explored in scratch mirror\",\n  \"expected_detector\": \"frontier-recheck-count.py must fail F24\",\n  \"output\": \"entries=26 pass=26 exit=0; F24 absent from output\",\n  \"verdict\": \"survived (coverage finding). Baselines: frontier 27/27; binding 63/63; source-recheck S063 SHA/Q1-Q3 OK. recheck-audit baseline exit 1, strict pass 1/60 (cdroot failures), making audit-related mutations inconclusive.\",\n  \"restoration_evidence\": \"No lane edits; all mutations used disposable archive scratch. Scratch removed by EXIT trap. Receipt written at .ufo/waves/round-41/wave2/MutC2Chain.md. Before/after hashes not retained; scratch status mutation was disposable.\"\n}",
+   "note": null
+  },
+  {
+   "name": "RevCorrectionsFinal",
+   "agent": "reviewer",
+   "output": "{\n  \"verdict\": \"PASS for assigned correction checks\",\n  \"report\": \".ufo/waves/round-41/wave2/RevCorrectionsFinal.md\",\n  \"evidence\": {\n    \"grep_counts\": {\n      \"SCORECARD.md\": 8,\n      \"LOG.md\": 3,\n      \"SHONEN.md\": 3\n    },\n    \"required_tokens\": \"present across correction blocks\",\n    \"frozen_counter_grade\": \"not verified stated\",\n    \"receipt_truth\": \"closed=10/10 exit=0 at round-40 Y cited\",\n    \"D2_gap\": \"selftest transcript gap disclosed in all three records\",\n    \"token_boundary\": \"closed=7/80 and failures=10 appear only as quoted T2 defect evidence, not correction outcome values\"\n  },\n  \"verification_gap\": \"LSP unavailable (xd://lsp not mounted); no final Y verification claimed.\"\n}",
+   "note": null
+  },
+  {
+   "name": "CritFresh",
+   "agent": "critic",
+   "output": "{\n  \"finding\": \"Assignment identity conflict: explicit prompt says CritFresh, but authoritative wave2-spec.json CritFresh item matches it exactly; no issue. Scope appears read-only investigation with receipt-only allowed.\",\n  \"next\": \"Need investigate section 5 sources and round41 fixtures, current ref; no edits except CritFresh.md receipt.\"\n}",
+   "note": null
+  },
+  {
+   "name": "CritDigestSelftest",
+   "agent": "critic",
+   "output": "{\n  \"report\": \".ufo/waves/round-41/wave2/CritDigestSelftest.md\",\n  \"findings\": [\n    \"I2 selftest includes mutation rejection for recorded payload contradiction and reordered selftest lines.\",\n    \"Committed I2 selftest does not exercise suite-sha256 mutation or duplicate case line; those assigned attacks remain untested.\",\n    \"At integrated ref ad7147532cb702b0d541d40499874552183d9132, suite run and selftest exit red; I2 selftest positive fails and overall selftest has 6 failures.\",\n    \"C2 not directly attacked.\"\n  ]\n}",
+   "note": null
+  },
+  {
+   "name": "MutScratchTiming",
+   "agent": "mutation-tester",
+   "output": "{\n  \"mutant\": \"Family-named `/tmp/kasegi_r41_outside_probe`, outside the configured scratch root; no post-scan race was introduced.\",\n  \"expected_detector\": \"I6 scratch scan in the committed export suite, run and graded selftest against isolated scratch paths.\",\n  \"output\": \"Pristine and external-stray runs both reported `I6 payload=strays=0,read=ok,scanned=0 closed=1`. Selftest I6 reported 5/5 mutants rejected, but contains neither outside-root nor post-scan race fixture. Runs exited 1 overall; the pristine integrated-ref baseline is inconclusive due to unrelated open receipt/selftest defects.\",\n  \"verdict\": \"Outside-root stray survived I6; frozen kill rule does not route this host-state mutation as a committed-fixture kill. No final Y verification claimed.\",\n  \"restoration\": \"Suite SHA-256 unchanged before/after: 3971a112c077dd4ffb5536bf0956db0572fb022f19ec135349d639cd96fc52fd. Scratch and `/tmp` stray removed by trap. Findings written to `.ufo/waves/round-41/wave2/MutScratchTiming.md`. No tools installed.\"\n}",
+   "note": null
+  },
+  {
+   "name": "CritDeclarationCoverage",
+   "agent": "critic",
+   "output": "{\n  \"counterexample\": \"The I5 predicate validates only paths present in declared-blocks.txt; it never compares that declared path set to the full changed-path set. This permits an omitted changed file to evade I5's per-declaration loop in principle.\",\n  \"evidence\": \"Scratch-clone mutation committed as d9c87946115c096aa755a92033e730e202ca5146 after appending SCORECARD.md and corpus/QUALITY.md. Suite returned exit 1, I5/I12 valid=130 vs declared=132, overall closed=8/12. I6 also independently red due the scratch scan, so no green survivor was demonstrated. Source: r41-closure.sh lines 1054-1115 and 1118-1125.\",\n  \"impacted_axes\": [\n    \"depth:verifiability\",\n    \"coverage\"\n  ],\n  \"smallest_safe_correction\": \"Require exact coverage between all changed paths and declared paths, explicitly accounting for any contract-defined exclusions; add separate selftests for undeclared append and omitted changed path. The current probe establishes a predicate coverage gap but not a passing kill-rule escape.\"\n}",
+   "note": null
+  },
+  {
+   "name": "MutFreshnessCensus",
+   "agent": "mutation-tester",
+   "output": "{\n  \"mutant\": \"Not executed; no mutation occurred.\",\n  \"expected_detector\": \"sources-census validate on the changed registry and frozen C2 kill-rule matching.\",\n  \"output\": \"Pristine validation reports W04 S028 and W04 S029, then kasegi ok. Frozen kill rule does not expressly enumerate either requested attack (overdue mined row; duplicate URL with invalid/no-target supersedes).\",\n  \"verdict\": \"Inconclusive; requested mutant-specific outputs unavailable.\",\n  \"restoration_evidence\": \"No modified bytes were made. Scratch was removed on command exit; no before/after mutation hashes exist. Scoped report written to .ufo/waves/round-41/wave2/MutFreshnessCensus.md.\"\n}",
+   "note": null
+  },
+  {
+   "name": "CritLessonTally",
+   "agent": "critic",
+   "output": "{\n  \"counterexample\": \"The round-40 lesson L9 attack arithmetic is internally and externally inconsistent: dispatch-derived attack-role counts are 17/54 in wave 1, 25/35 in wave 2, and 42/89 overall, not 33/35 and 50/89. The round-41 lesson erratum now records those corrected values. No new arithmetic counterexample was found.\",\n  \"evidence\": \"Read frozen claims and round-40 lesson; inspected the verifier spot-check routing D4/D5. From integrated ref ad7147532cb702b0d541d40499874552183d9132, `jq` grouped dispatch task entries by agent: wave1 reviewer=12, critic=3, mutation-tester=2; wave2 reviewer=12, critic=7, mutation-tester=6. Sums: 17, 25, 42; percentages: 31.5%, 71.4%, 47.2%. Round-41 lesson erratum lines 278-286 correctly explains correction. Attempted `r41-closure.sh --export-ref ad7147532cb702b0d541d40499874552183d9132` and `--selftest` with lane/work args; both timed out at 240s. Selftest emitted only its export-ref/suite-sha256 header before timeout. Therefore I1/I4 behavior was NOT reproduced, and no pass claim is made.\",\n  \"impacted_axes\": [\n    \"depth:verifiability\",\n    \"coverage\"\n  ],\n  \"smallest_safe_correction\": \"Do not mark I1/I4 as reproduced from this seat; retain the existing corrective arithmetic and evidence. Re-run the instrument with its expected scratch/root setup if needed. Keep evidence filename paths explicit and plausible, e.g. `wave2/CritKillRule.md`. No further edits were made.\"\n}",
+   "note": null
+  },
+  {
+   "name": "LabCaptureTruth",
+   "agent": "scout",
+   "output": "{\n  \"observed\": \"Scratch guard passed. Probe aborted with exit 2 before either requested comparison: source-recheck rejected the fabricated manifest as `manifest UNAVAILABLE reason=missing-sources`; shell `set -e` then stopped the run. No counterfeit-pass or genuine-omitted-quote result is established.\",\n  \"paths\": [\n    \"corpus/instruments/source-recheck.py:117-213\",\n    \"corpus/instruments/capture-binding-check.py\"\n  ],\n  \"confidence\": \"High for the observed failure and checker input requirements; no conclusion about the falsification hypothesis.\",\n  \"remaining_unknowns\": [\n    \"The expected top-level manifest `sources` format was not inspected, so the fake manifest was not self-consistent with checker schema.\",\n    \"Capture-binding checker was not run.\",\n    \"Genuine S063 capture was not rechecked with the required quote omitted.\",\n    \"No receipt was written.\"\n  ]\n}",
+   "note": null
+  },
+  {
+   "name": "MutBindingExistence",
+   "agent": "mutation-tester",
+   "output": "{\n  \"seat\": \"MutBindingExistence\",\n  \"mutant\": \"S063 manifest record path replaced by missing filename; URL fields case-changed and trailing-slash variants\",\n  \"expected_detector\": \"capture-binding-check.py records bound count; source-recheck.py independently checks capture integrity\",\n  \"output\": \"Baseline records=63 bound=63 unbound=0 exit 0. Missing filename: binding unchanged/exit 0; source-recheck red only on stem-mismatch/exit 1. Case-changed and trailing-slash URL fields: binding unchanged/exit 0; source-recheck SHA and Q1-Q3 remained green/exit 0.\",\n  \"verdict\": \"Survived: binding does not validate record path existence or URL identity. The missing filename variant also changes the required S063 stem, so that source-recheck red is not proof of existence validation. URL behavior was independently green under both mutations.\",\n  \"restoration\": \"All mutation bytes were confined to scratch copies; source manifest was recopied from pristine lane each mutation. Scratch removed by EXIT trap. No lane code/data modified. Findings receipt written to .ufo/waves/round-41/wave2/MutBindingExistence.md\"\n}",
+   "note": null
+  },
+  {
+   "name": "CritRegistryRecordCompleteness",
+   "agent": "critic",
+   "output": "{\n  \"counterexample\": \"Both structural mutations appear outside the binding check's completeness contract: `check()` iterates only records that exist in manifests, validates each record against registry rows, then validates captures against manifest paths. It never requires every mined registry row to have a manifest record, nor rejects a manifest record merely because its registry row is not mined.\",\n  \"evidence\": \"Local source `corpus/instruments/capture-binding-check.py` lines 351-461: load_registry + snapshot dirs; each manifest's `sources` list is iterated at 394-428; captures are checked against manifest record paths at 434-444; no registry-status-to-record reconciliation exists. Frozen C2 kill rule text (claims.json C2, line 48) explicitly catches an unbound manifest record and a mined-marked row without capture+entry+harness pass, but does not explicitly name orphaned/unmined manifest record. The specified absent-S063-record variant would reduce records/bound counts and likely break frozen exact 55/55 count, but that is a count proxy, not a structural bijection guarantee; if substituted/compensated by another record, counters can remain satisfied. The converse non-mined S063 record may still bind because bind_record's contract is row/URL, not status.\",\n  \"impacted_axes\": [\n    \"coverage\",\n    \"depth:verifiability\"\n  ],\n  \"smallest_safe_correction\": \"Add a dedicated registry/manifest reconciliation rule to binding check: for mined rows, require exactly one manifest record keyed by ID; for manifest records, require the corresponding registry row status to be mined (or an explicit archival exception). Add selftest cases for missing mined record and non-mined-row manifest record, and include these assertions in C2 kill criteria. Do not treat aggregate record counts as proof of completeness.\",\n  \"verification\": \"No mutation runs or fixture transcript completed; this is a source-grounded counterexample, not a reproduced finding.\"\n}",
+   "note": null
+  },
+  {
+   "name": "MutAuditUnexpected",
+   "agent": "mutation-tester",
+   "output": "{\n  \"assignment\": \"MutAuditUnexpected\",\n  \"report\": \".ufo/waves/round-41/wave2/MutAuditUnexpected.md\",\n  \"verdict\": \"Partially killed. Recheck-audit flagged the unlisted markdown entry and exited 1. Capture-binding-check exited 0, reporting records=63 bound=63 unbound=0; the unreferenced S999 mined row was not detected.\",\n  \"scratch\": \"Probe copy was removed; no tools installed; no final Y verification claimed.\"\n}",
+   "note": null
+  },
+  {
+   "name": "CritUpstreamAuthenticity",
+   "agent": "critic",
+   "output": "{\n  \"counterexample\": \"The source-recheck command succeeds using only local manifest and capture; it cannot independently establish capture provenance, fidelity to the live response, or current upstream content. This boundary is already disclosed by the entry.\",\n  \"evidence\": \"Live fetch of https://www.rfc-editor.org/rfc/rfc9116.txt at 2026-10-27T11:44:20Z UTC: HTTP 200, 45,129 bytes, 1,122 lines, SHA-256 79d19ce7a4a35496981095a27fd992797a9fc4d6f3649c2a1e14f494607c61f9. Compared live RFC content with entry claims and three pinned quotes; no material mismatch. Re-ran source-recheck (sha256 OK; Q1-Q3 OK, one occurrence each, expected capture anchors) and the frontier/binding/audit counters (27/27; 63/63; 60 expected, no missing/unexpected).\",\n  \"impacted_axes\": [\n    \"depth:verifiability\",\n    \"coverage\"\n  ],\n  \"smallest_safe_correction\": \"None to entry/capture. Preserve the existing distinction between live retrieval and normalized capture; do not treat their unequal digests as proof of an RFC change or byte identity. Receipt: .ufo/waves/round-41/wave2/CritUpstreamAuthenticity.md\"\n}",
+   "note": null
+  },
+  {
+   "name": "MutExportRecheck",
+   "agent": "mutation-tester",
+   "output": "{\n  \"mutant\": \"The entry's `recheck:` command hard-codes `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin`, defeating execution against an arbitrary exported tree.\",\n  \"expected_detector\": \"Run the exact entry command from a clean archive export; a portable command should inspect that export rather than the lane checkout.\",\n  \"output\": \"Exit 0: `S063:sha256 OK`, then Q1-Q3 OK lines (normalized=markup-whitespace; anchors 330, 270, 235). The command first changes to the lane path, so this output is lane-checkout evidence, not export evidence.\",\n  \"verdict\": \"Portability claim falsified: command is lane-bound. Recheck result is not evidence that the clean export passes.\",\n  \"restoration_evidence\": \"No repository bytes mutated, hence no restoration necessary. Scratch was removed via cleanup trap. During subsequent inspection the path showed unrelated pre-existing `.ufo` contents; cleanup may have removed that pre-existing scratch data. Findings written to `.ufo/waves/round-41/wave2/MutExportRecheck.md`.\"\n}",
+   "note": null
+  },
+  {
+   "name": "RevCaptureNormalization",
+   "agent": "reviewer",
+   "output": "{\n  \"findings\": [],\n  \"report\": \".ufo/waves/round-41/wave2/RevCaptureNormalization.md\",\n  \"receipt\": \".ufo/waves/round-41/wave2/RevCaptureNormalization.receipt.md\",\n  \"evidence\": [\n    \"Live fetch HTTP 200; 45,129 bytes; raw SHA-256 79d19ce7a4a35496981095a27fd992797a9fc4d6f3649c2a1e14f494607c61f9; 1,122 lines; BOM present; zero CR bytes.\",\n    \"Recreated capture exactly from committed collapse() implementation: byte-identical 39,301-byte, 842-line snapshot; SHA-256 925512e715be5fae950f3eec88805197d4007875dac825c5603d44d2b71e2faa; BOM retained at first line.\",\n    \"Manifest's raw and normalized measurements matched; source-recheck returned SHA OK and Q1-Q3 OK with unique occurrences and valid anchors.\"\n  ],\n  \"verdict\": \"No actionable S063 capture/manifest/recheck mismatch reproduced. One live fetch only; no final Y verification claimed.\"\n}",
+   "note": null
+  },
+  {
+   "name": "CritProvinceBoundary",
+   "agent": "critic",
+   "output": "{\n  \"counterexample\": \"F24 itself may be in-province, but its stated boundary against kake is not cleanly evidenced: the researcher/publisher split is asserted, while kasegi\u2019s entry deliberately teaches policy and permission distinctions and kake\u2019s admission already teaches RFC 9116 fields, scope, expiry, redirects, and non-authorization. Shared ground includes those semantics, not merely a citation.\",\n  \"evidence\": [\n    \"PROVINCE.md:3, 24-33 puts bounty/security research, program rules, claim packages, triage/gates, and disclosure packaging in core; lines 45-50 explicitly designate kake as a sibling whose evidence is reported, not absorbed.\",\n    \"PROVINCE.md:163 calls F24 \u2018security.txt\u2019 discovery and lists its path, fields, and Expires clock, but does not itself establish exclusivity for that content.\",\n    \"kake-shokunin/corpus/knowledge/security-txt-publishing.md:4 scopes its entry to GitHub Pages publisher delivery and disclaims what an operator-owned property serves; lines 65-73 nevertheless cover host scope, policy scope, no permission, and staleness. Lines 44-63 cover Contact, Expires, Encryption, and fields.\",\n    \"kasegi-shokunin/corpus/knowledge/rfc-9116-security-txt.md:34-47 covers host scope, policy details, stale/redirect handling, and no permission; its distinct researcher/triage framing therefore overlaps material already present in kake\u2019s admission.\",\n    \"The wave-1 ScoutSibling.txt:15-16 and CritC2.md:30-42 conclude disjointness based on \u2018publisher\u2019 versus \u2018researcher\u2019 labels and a round-38 precedent about CSAF extension semantics. That precedent is narrower than the actual shared RFC 9116 content and does not adjudicate this broader overlap.\"\n  ],\n  \"impacted_axes\": [\n    \"coverage\",\n    \"depth:verifiability\"\n  ],\n  \"smallest_safe_correction\": \"Do not claim the entire RFC 9116/security.txt content as disjoint merely by assigning publisher-side versus researcher-side labels. Narrow F24 to the kasegi-specific triage/disclosure-channel decision rules not already taught in kake (with explicit shared-ground/citation mapping), or mark the overlapping RFC field/scope/expiry/non-authorization material as adjacent and reported-not-absorbed. Keep the RFC itself from being treated as permission or target authorization.\"\n}",
+   "note": null
+  },
+  {
+   "name": "MutFrontierParser",
+   "agent": "mutation-tester",
+   "output": "{\n  \"mutant\": \"Appended admitted-looking F999 row pointing to missing knowledge file in isolated integrated-tree copy.\",\n  \"expected_detector\": \"frontier-recheck-count.py should fail closed if fake admitted frontier rows are counted and lack valid entries.\",\n  \"output\": \"Pristine: entries=27 pass=27 exit=0. Mutated: FAIL F999 ... problems=missing-entry; entries=28 pass=27 exit=1. Restored copy: entries=27 pass=27 exit=0.\",\n  \"verdict\": \"Killed by harness; note frozen regex-only README count can count syntactically matching decoys, but integrated harness rejects this one. Narrow result only; no broader C2 claim inferred.\",\n  \"restoration_evidence\": \"Pristine and restored README SHA256 557103682e7b040ee1ba521063c674cbab5673a91cfa1080fe21972b1fc512db. Scratch deleted. Mutated hash was not recorded because command stopped on expected nonzero detector exit before checksum capture.\",\n  \"receipt\": \".ufo/waves/round-41/wave2/MutFrontierParser.md\"\n}",
+   "note": null
+  },
+  {
+   "name": "CritReceiptBootstrap",
+   "agent": "critic",
+   "output": "{\n  \"counterexample\": \"At integrated ref ad7147532cb702b0d541d40499874552183d9132, a --receipt-out run produced a receipt byte-identical to stdout (2481 bytes; cmp exit 0), but the transcript was red: exit 1, closed=10/12, I2 cmp=0/i2-line=0 and I6 strays=3/read=fail. The no-receipt run was also red, with I2 receipt=0 and closed=10/12.\",\n  \"evidence\": \"Recorded full relevant transcript values, commands, and source locations in .ufo/waves/round-41/wave2/CritReceiptBootstrap.md. `--receipt-out` advanced I2 to receipt=1, payload-match=11/11, ancestor=1 and diff-clean=1, but selftest-verdicts=8, summary=0, closed-line=0 and cmp=0 remained red. Selftest had 6 failures. No final Y verification was performed.\",\n  \"impacted_axes\": [\n    \"depth:verifiability\",\n    \"coverage\"\n  ],\n  \"smallest_safe_correction\": \"Do not treat output/file byte equality on this red run as proof of a green bootstrap or Y stability. Preserve the bootstrap mechanism; demonstrate a clean-scratch 12/12 run at J and then a receipt-only Y export run with I2 cmp=1/i2-line=1 and byte-identical transcript.\"\n}",
+   "note": null
+  },
+  {
+   "name": "MutSelftestBaseline",
+   "agent": "mutation-tester",
+   "output": "",
+   "note": null
+  },
+  {
+   "name": "RevRunUtc",
+   "agent": "reviewer",
+   "output": "{\n  \"findings\": [],\n  \"residual_risk\": \"No actionable I2 defect reproduced: the implementation normalizes committer epoch to UTC and independently enforces a wall-clock upper bound with 120-second skew. Future-date commit mutation was not exercised because host Git rejected tested GIT_COMMITTER_DATE formats.\",\n  \"verification_gaps\": [\n    \"No future committer timestamp could be created or checked against the live predicate; details are in the scoped report.\",\n    \"No full suite/counter or final Y verification performed.\"\n  ],\n  \"deliverables\": [\n    \".ufo/waves/round-41/wave2/RevRunUtc.md\",\n    \".ufo/waves/round-41/wave2/RevRunUtc.receipt.md\"\n  ],\n  \"scratch_removed\": true\n}",
+   "note": null
+  },
+  {
+   "name": "MutExportRefReemit",
+   "agent": "mutation-tester",
+   "output": "{\n  \"mutant\": \"Attempted scratch mutation reversed I2's merge-base ancestry argument; not executed because receipt fixture absent at supplied integrated ref.\",\n  \"expected_detector\": \"Run at integrated ref with altered R41_RECEIPT_TARGET/export-ref; capture I2 payload and closure; repeat with ancestry mutant and compare ancestry/diff-clean.\",\n  \"output\": \"fatal: path '.ufo/waves/round-41/final-gates/all-gates.txt' does not exist in 'ad7147532cb702b0d541d40499874552183d9132'\\nsource_sha256_before=3971a112c077dd4ffb5536bf0956db0572fb022f19ec135349d639cd96fc52fd after=3971a112c077dd4ffb5536bf0956db0572fb022f19ec135349d639cd96fc52fd\\nNo suite output.\",\n  \"verdict\": \"inconclusive; baseline unavailable. Static code suggests ref is sourced from receipt and checked as ancestor of current REF_RESOLVED, with diff-clean allowing only receipt path.\",\n  \"restoration_evidence\": \"Authoritative suite SHA-256 unchanged before/after: 3971a112c077dd4ffb5536bf0956db0572fb022f19ec135349d639cd96fc52fd. Scratch removed.\"\n}",
+   "note": null
+  },
+  {
+   "name": "CritCommitTimestamp",
+   "agent": "critic",
+   "output": "{\n  \"counterexample\": \"Sandbox-created commits with arbitrary committer dates demonstrate inclusive acceptance through verification-clock +120 seconds; +121 seconds rejects. A range of 119, 120, 121, 3600, and 86400 seconds produced the transcript in the report.\",\n  \"evidence\": \"Code review: ref_utc reads Git committer epoch; iso_past compares parsed time against current clock plus 120 seconds. Reproduced via isolated fixture commit metadata. No final J/Y verification claimed.\",\n  \"impacted_axes\": [\n    \"depth:verifiability\",\n    \"coverage\"\n  ],\n  \"smallest_safe_correction\": \"No correction to frozen claim. It explicitly permits 120-second future skew. Immutable wall-clock provenance would require a future claim defining a trusted clock/attestation or zero-skew policy.\",\n  \"report\": \".ufo/waves/round-41/wave2/CritCommitTimestamp.md\",\n  \"limitations\": \"The sandbox tested the helper's exact comparison semantics, not a full suite run.\"\n}",
+   "note": null
+  },
+  {
+   "name": "MutAncestorGuard",
+   "agent": "mutation-tester",
+   "output": "{\n  \"mutant\": \"I2 receipt export-ref replaced with resolvable non-ancestor base commit and nonexistent 40-hex commit\",\n  \"expected_detector\": \"I2 selftest should distinguish ancestor rejection from ref-not-found; export suite should be red for each and identify ref-not-found distinctly\",\n  \"output\": \"Baseline at ad7147532cb702b0d541d40499874552183d9132 was inconclusive (selftest cases=12 failures=7; suite closed=10/12, I2 positive failed). Non-ancestor I2 detail: foreign-ref rejected=1 limb=ancestor=0, but case verdict=fail due baseline failure. Nonexistent suite: I2 payload=ref-not-found,ref=0000000000000000000000000000000000000001; closed=0/12 exit=1. Nonexistent selftest: cases=0 failures=0, exit=1.\",\n  \"verdict\": \"inconclusive; expected distinct rejection behaviors observed, but baseline failure prevents a killed classification\",\n  \"restoration\": \"No lane bytes mutated. Each probe used archived bytes in scratch and shell trap removed scratch. Receipt report written to .ufo/waves/round-41/wave2/MutAncestorGuard.md; no tools installed.\"\n}",
+   "note": null
+  },
+  {
+   "name": "CritYDeltaClean",
+   "agent": "critic",
+   "output": "{\n  \"counterexample\": \"The requested J\u2192Y delta containing the receipt plus a tracked unrelated file is rejected by I2\u2019s implementation: diff-clean starts true but becomes false for every changed path other than the receipt.\",\n  \"evidence\": \"At ad7147532cb702b0d541d40499874552183d9132, r41-closure.sh lines 783\u2013797 perform git diff --name-only and compare each nonempty path against $RECEIPT; check_i2 requires diff-clean=1 at lines 939\u2013941. No constructed commit-graph/diff transcript was run, so this is source-grounded rather than an executed mutation finding. No final-Y verification claimed.\",\n  \"impacted_axes\": [\n    \"depth:verifiability: requested attack appears defended; stronger fixture would provide execution evidence\",\n    \"coverage: no impact identified\"\n  ],\n  \"smallest_safe_correction\": \"None indicated. Preserve the per-path equality check; if extra verification is desired, exercise J\u2192Y in an isolated scratch fixture and assert diff-clean=0 when Y adds the receipt plus an unrelated tracked file.\",\n  \"report\": \".ufo/waves/round-41/wave2/CritYDeltaClean.md\"\n}",
+   "note": null
+  },
+  {
+   "name": "MutSkillTablePipes",
+   "agent": "mutation-tester",
+   "output": "{\n  \"mutant\": \"I7 SKILL.md registry row mutations: blank preceding line, embedded bare pipe in command, leading whitespace in first cell, and row outside contiguous table.\",\n  \"expected_detector\": \"The suite's `registry_row_state` parser must reject malformed/dislocated candidate rows; `ok=0` indicates killed, `ok=1` indicates survivor.\",\n  \"output\": \"Pristine rows=1,cells=10,broken=0,ok=1. Blank line rows=1,cells=10,broken=1,ok=0 (killed). Bare pipe rows=1,cells=11,broken=0,ok=1 (survived). Leading cell whitespace rows=1,cells=10,broken=0,ok=1 (survived). Outside table rows=1,cells=10,broken=1,ok=0 (killed). Full bounded baseline exit 1, closed=10/12, I7 closed=1 and selftest I7 mutants=2/2; whole-run baseline inconclusive because unrelated I2/I6 positives failed.\",\n  \"verdict\": \"Two killed, two survived; survivors are I7 coverage findings. No final Y verification claimed.\",\n  \"restoration_evidence\": \"All mutations were confined to disposable exported SKILL.md copies. Original lane tree was not modified. Scratch directory removed by EXIT trap. Findings and required receipt written to the authorized wave2 paths.\"\n}",
+   "note": null
+  },
+  {
+   "name": "RevErratumLanding",
+   "agent": "reviewer",
+   "output": "{\n  \"findings\": [],\n  \"residual_risk\": \"No actionable issue found in the appended D4/D5 erratum. It labels corrections as append-only, preserves original erroneous lines, correctly explains duplicate Gate heading and census typo, and derives roles directly from committed dispatch JSON.\",\n  \"verification_gaps\": \"Reviewed integrated round-40 lesson bytes and parsed both committed dispatch JSONs. No final Y verification claimed.\"\n}",
+   "note": null
+  },
+  {
+   "name": "CritI12Necessity",
+   "agent": "critic",
+   "output": "{\n  \"counterexample\": \"Round-40 H9/T7 symlink fixture: committed `pwn` symlink points outside export to matching host-tail bytes; transcript records `rc=0 payload=declared=1,valid=1,tail=1,pure=1,paths=1,diff-read=ok`. This directly demonstrates the routed defect.\",\n  \"evidence\": \"Inspected round-40 RevC1Counters.md and byte transcript; round-41 declared_blocks_check now rejects final-path symlinks and requires realpath under export before tail hashing. At integrated ref, I12 closed=1 with 132 declarations valid; base and round-40 refs I12 closed=0 (`neg-red=0`). Base declaration counts are zero and `pure=1`, so the declaration-only condition is vacuously true; the full predicate is not reached. I12 selftest is 3/3, but overall selftest reports 7 failures; no final Y verification.\",\n  \"impacted_axes\": [\n    \"depth:verifiability\",\n    \"coverage\"\n  ],\n  \"smallest_safe_correction\": \"Retain the canonical-containment guard and whole-tail/zero-deletion checks. Add an I5/I12 selftest fixture reproducing T7 with an outside-export symlink and matching tail digest; assert it reds (canon=0/paths=0). Phrase do-nothing non-reachability only for full I12, not its vacuously satisfied empty-declaration subcondition.\",\n  \"report\": \".ufo/waves/round-41/wave2/CritI12Necessity.md\",\n  \"cleanup\": \"Seat scratch removed; no tools installed.\"\n}",
+   "note": null
+  },
+  {
+   "name": "RevScanOwnership",
+   "agent": "reviewer",
+   "output": "{\n  \"status\": \"complete\",\n  \"report\": \".ufo/waves/round-41/wave2/RevScanOwnership.md\",\n  \"receipt\": \".ufo/waves/round-41/wave2/RevScanOwnership.receipt.md\",\n  \"findings\": [],\n  \"residual_risk\": [\n    \"I6 scanner implementation is duplicated in the standalone module and suite core.\",\n    \"Disable-I6 byte-mutated end-to-end attack not executed; explicitly reported as a verification gap.\"\n  ],\n  \"verification\": \"At integrated ref ad7147532cb702b0d541d40499874552183d9132: clean-root run showed I6 green and I11 escapes=8,red=8 with F1-F8 red; overall exit 1 because I2 receipt was not yet present. No final-Y claim.\"\n}",
+   "note": null
+  }
+ ]
+}
