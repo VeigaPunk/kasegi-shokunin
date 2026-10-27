@@ -108,3 +108,15 @@ section to `corpus/knowledge/considerthese-proposals-ledger.md`, covering all se
 Proposal 2's remaining checker was not mined because the only exemplar is PARKED with authorization,
 prior-submission and reviewer-distinctness gates failing by construction; proposals 4 and 6 remain
 operator-owned.
+
+## Final Y measurement (post-Y closure)
+
+The final receipt at Y `0f64b8c5b3522d4db2160db087002e3a5f321880`,
+`.ufo/waves/round-41/final-gates/all-gates.txt`, is the 31-line transcript of the run at its named
+J ref, sha256 `0915f51d774e5f4bd744912b6b2a87b7387f5437730bef166457766ca10b9e94`; its header records
+`time-basis=ref-commit` and `run-utc=2026-10-27T12:16:34Z`. Replaying the suite at Y yielded
+`closed=10/12 exit=1`; the graded selftest yielded `selftest cases=12 failures=6` and exit 1.
+I1's per-correction evidence mutant and I3's `closed=10/100` mutant remain accepted; I2 receipt
+comparison and I6 scratch scan also red in the Y replay. Thus the transcript is recorded as an
+honest failed closure, not as a verified C1 result. The plain run refuses exit 2; the base and
+round-40-head controls remain red.
