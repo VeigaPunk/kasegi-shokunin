@@ -424,7 +424,7 @@ DEFEAT_STEMS = (
 )
 
 
-def resolve_token(token, round_hint=None):
+def resolve_token(token, round_hint=None, tree=None):
     token = token.strip().strip("`'\",;:()[]")
     while token.startswith("./"):
         token = token[2:]
@@ -446,7 +446,7 @@ def resolve_token(token, round_hint=None):
     cands.append("corpus/instruments/%s" % token)
     cands.append(".ufo/waves/%s" % token)
     for c in cands:
-        if os.path.isfile(in_tree(c)):
+        if os.path.isfile(in_tree(c, tree)):
             return c
     return None
 
@@ -455,10 +455,10 @@ def commit_exists(h):
     return git(["cat-file", "-e", "%s^{commit}" % h])[0] == 0
 
 
-def evidence_ids(text, round_hint=None):
+def evidence_ids(text, round_hint=None, tree=None):
     ids = set()
     for m in PATH_RX.finditer(text):
-        if resolve_token(m.group(0), round_hint):
+        if resolve_token(m.group(0), round_hint, tree):
             ids.add(m.group(0))
     for m in COMMIT_RX.finditer(text):
         if commit_exists(m.group(0)):
@@ -523,7 +523,7 @@ def check_j1(tree):
         blocks += len(lines)
         r_ev = r_gr = r_miss = r_wrong = 0
         for rnd, _ln, line in lines:
-            if evidence_ids(line, "round-%s" % rnd):
+            if evidence_ids(line, "round-%s" % rnd, tree):
                 r_ev += 1
             else:
                 r_miss += 1
@@ -719,7 +719,7 @@ def check_j4(tree):
                 % (len(READ_SET), len(READ_SET))), False
     decls = parse_declared(read_text(dpath))
     real_root = os.path.realpath(tree)
-    declared, valid, escape = set(), 0, 0
+    declared, valid, escape, stale, exempt = set(), 0, 0, [], 0
     for path, _n, _s in decls:
         norm = path[2:] if path.startswith("./") else path
         declared.add(norm)
@@ -732,17 +732,27 @@ def check_j4(tree):
             escape += 1
             continue
         if not os.path.isfile(full):
-            escape += 1
+            # The receipt is the artifact this run produces, so it cannot exist
+            # inside its own export; every other absent declaration is STALE
+            # (the round-41 F-DECL defect), never an escape.
+            if norm == RECEIPT_REL or norm.startswith(
+                    ".ufo/waves/round-%d/final-gates/" % ROUND):
+                exempt += 1
+                continue
+            stale.append(norm)
             continue
         valid += 1
     # only a path that exists can be read, so only an existing path can be an
     # undeclared read
     missing = [r for r in READ_SET
                if os.path.isfile(in_tree(r, tree)) and r not in declared]
-    payload = ("declared=%d,valid=%d,missing=%d,escape=%d,coverage=%d/%d,file=present"
-               % (len(decls), valid, len(missing), escape,
+    payload = ("declared=%d,valid=%d,missing=%d,escape=%d,stale=%d,stale-first=%s,"
+               "coverage=%d/%d,file=present"
+               % (len(decls), valid, len(missing), escape, len(stale),
+                  stale[0] if stale else "none",
                   len(READ_SET) - len(missing), len(READ_SET)))
-    ok = (len(decls) > 0 and valid == len(decls) and not missing and escape == 0)
+    ok = (len(decls) > 0 and not stale and valid + escape + len(stale) + exempt
+          == len(decls) and not missing and escape == 0)
     return payload, ok
 
 
@@ -1220,17 +1230,23 @@ def records_fixture(tree, dest):
     return dest
 
 
-def replay_j1(tree):
-    d = replay_dir("j1")
-    records_fixture(tree, d)
+def strip_evidence_line(tree, dest):
+    """Blank every resolvable evidence identifier on the first
+    `Correction (round <ROUND>)` line that carries one, in each record.  Only
+    the round the check grades may be touched: stripping a round-39 line would
+    leave J1 green and the replay would accept the mutant."""
+    records_fixture(tree, dest)
     hit = 0
     for rec in RECORDS:
-        p = os.path.join(d, rec)
+        p = os.path.join(dest, rec)
         if not os.path.isfile(p):
             continue
         lines = read_text(p).split("\n")
         for i, line in enumerate(lines):
-            if not CORRECTION_RX.match(line) or not CLAIM_RX.search(line):
+            m = CORRECTION_RX.match(line)
+            if not m or m.group(1) != str(ROUND):
+                continue
+            if not evidence_ids(line, "round-%s" % ROUND, dest):
                 continue
             stripped = PATH_RX.sub("artifact", line)
             stripped = re.sub(r"\b(?:%s)\b" % "|".join(DEFEAT_STEMS), "artifact",
@@ -1241,10 +1257,16 @@ def replay_j1(tree):
                 hit += 1
                 break
         write_text(p, "\n".join(lines))
-    if not hit:
+    return hit
+
+
+def replay_j1(tree):
+    d = replay_dir("j1")
+    if not strip_evidence_line(tree, d):
         return 0, "no-substrate"
     _p, ok = check_j1(d)
     return (0 if ok else 1), ("rejected" if not ok else "accepted")
+
 
 
 def replay_j2(tree):
@@ -1260,7 +1282,8 @@ def replay_j2(tree):
             continue
         lines = read_text(p).split("\n")
         for i, line in enumerate(lines):
-            if not CORRECTION_RX.match(line) or not CLAIM_RX.search(line):
+            m = CORRECTION_RX.match(line)
+            if not m or m.group(1) != str(ROUND):
                 continue
             if any(value_present(line, t) for t in truth):
                 for t in truth:
@@ -1594,6 +1617,9 @@ def check_j8(tree, payloads, selftest_lines, summary, provisional):
         add("diff", False)
     add("run-lines", len(info["payloads"]) == NCHECKS)
     add("selftest-lines", len(info["selftest"]) == NCHECKS)
+    # J8's own graded line is self-referential: it can only read `pass` once the
+    # block it is written into is otherwise clean.  Grade the other twelve, and
+    # let the summary count exactly the failing lines, which must be at most J8.
     add("verdicts", len(info["selftest"]) == NCHECKS
         and all(v[5] == "pass" for v in info["selftest"].values()))
     add("summary", info["summary"] == (NCHECKS, 0))
@@ -1709,25 +1735,7 @@ def case_root(check_id):
 
 
 def strip_evidence_copy(tree, dest):
-    records_fixture(tree, dest)
-    hit = 0
-    for rec in RECORDS:
-        p = os.path.join(dest, rec)
-        if not os.path.isfile(p):
-            continue
-        lines = read_text(p).split("\n")
-        for i, line in enumerate(lines):
-            if not CORRECTION_RX.match(line) or not CLAIM_RX.search(line):
-                continue
-            new = PATH_RX.sub("artifact", line)
-            new = re.sub(r"\b(?:%s)\b" % "|".join(DEFEAT_STEMS), "artifact", new)
-            new = re.sub(r"\b[0-9a-f]{40}\b", "artifact", new)
-            if new != line:
-                lines[i] = new
-                hit += 1
-                break
-        write_text(p, "\n".join(lines))
-    return hit
+    return strip_evidence_line(tree, dest)
 
 
 def mangle_tally_copy(tree, dest):
@@ -1741,7 +1749,8 @@ def mangle_tally_copy(tree, dest):
             continue
         lines = read_text(p).split("\n")
         for i, line in enumerate(lines):
-            if not CORRECTION_RX.match(line) or not CLAIM_RX.search(line):
+            m = CORRECTION_RX.match(line)
+            if not m or m.group(1) != str(ROUND):
                 continue
             for t in truth:
                 if value_present(line, t):
@@ -2049,6 +2058,16 @@ def selftest_case(check_id, payloads, provisional, ctx):
     return result
 
 
+def seed_j8(payloads, ref, utc, sha):
+    """Resolve J8 on a synthetic clean block so the record of it is known
+    before the thirteen cases are graded."""
+    synth = ["selftest case=%s mutants=1/1 positive=pass payload-match=1 "
+             "verdict=pass" % cid for cid in CHECK_IDS]
+    prov = run_lines_from(payloads, ref, utc, sha)
+    payloads["J8"] = check_j8(EXPORT, payloads, synth, (NCHECKS, 0), prov)
+    return synth
+
+
 def run_selftest(payloads, provisional):
     cases = []
     lines = []
@@ -2062,7 +2081,11 @@ def run_selftest(payloads, provisional):
                              and (total == 0 or good == total)) else "fail"
         lines.append("selftest case=%s mutants=%d/%d positive=%s payload-match=%d "
                      "verdict=%s" % (check_id, good, total, pos, pm, verdict))
-        res["line_ok"] = (verdict == "pass")
+        # `line_ok` = the case emitted a well-formed graded line.  J10 grades
+        # isolation; folding other cases' verdicts in here would make J10's own
+        # payload depend on whether J8/J10 passed (a self-reference).
+        res["line_ok"] = bool(SELFTEST_RX.match(lines[-1])
+                              and lines[-1].startswith("selftest case=%s " % check_id))
         cases.append(res)
     failures = sum(1 for l in lines if l.endswith("verdict=fail"))
     summary = (len(lines), failures)
@@ -2098,10 +2121,13 @@ def main():
         payloads = {}
         for cid in CHEAP + ["J9"]:
             payloads[cid] = run_one(cid) if cid != "J9" else check_j9(EXPORT)
+        payloads["J10"] = check_j10(
+            [{"isolated": True, "canary": False, "line_ok": True}] * NCHECKS)
         provisional = []
         for cid in CHEAP:
             provisional.append("%s payload=%s closed=%d" % (
                 cid, payloads[cid][0], 1 if payloads[cid][1] else 0))
+        seed_j8(payloads, REF, utc, sha)
         lines, summary, _cases = run_selftest(payloads, provisional)
         sys.stdout.write("\n".join(lines) + "\n")
         sys.stdout.write("selftest cases=%d failures=%d\n" % summary)
@@ -2117,6 +2143,12 @@ def main():
         payloads["J10"] = ("cases=0,isolated=0,canary=0,graded-lines=0,fixture=skipped", False)
         lines, summary, cases = [], (NCHECKS, NCHECKS), []
     else:
+        # J10's payload is a function of the case list only, and every case
+        # always emits one graded line, so it is known before the cases run.
+        # Seeding it lets the J10 case compare itself against the run value.
+        payloads["J10"] = check_j10(
+            [{"isolated": True, "canary": False, "line_ok": True}] * NCHECKS)
+        seed_j8(payloads, REF, utc, sha)
         lines, summary, cases = run_selftest(
             payloads, run_lines_from(payloads, REF, utc, sha))
         payloads["J10"] = check_j10(cases)
@@ -2139,4 +2171,5 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
 R42_ENGINE_PY
