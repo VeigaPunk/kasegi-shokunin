@@ -651,3 +651,18 @@ does not assert how other projects or vendors handle disclosure.
 | F27 | Linux kernel's own security-bugs reporting process: the e-mail report channel and its security-team Cc rule, the 7-day release postponement ceiling with a 14-day exception, and the AI-found, binary-only and unreproducible refusal rules | admitted | `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` | S071 | Keep the kernel process distinct from other projects' and vendors' disclosure policies; re-open the process page before relying on its dated postponement figures. |
 
 [r45 amendment, appended 2026-10-28] The 26/26 count on the round-44 amendment line above records the round-44 state and is retained as history (R9). At round 45 the public-practice frontier stands at **27/27 admitted** — F01-F26 as previously recorded and F27 admitted this round. The lost-domain denominator remains 0/18; the frontier count is separate.
+
+## Round-46 admission - coverage map row and Frontier F28 (appended 2026-10-28)
+
+The coverage map and frontier table above are not edited in place (R6). The round-46 entry
+`corpus/knowledge/github-private-vulnerability-reporting.md` (F28, source S073) records GitHub's private vulnerability reporting as a reporter-side flow: private reporting is enabled by owners of public repositories and is separate from the repository's SECURITY.md file; the report is filed through the advisory form under the repository's Security and quality tab; the form requires a summary, details, proof of concept and impact statement by default; the AI-assistance disclosure is optional; submission adds the reporter as a collaborator and credited user on the proposed advisory; and only the repository maintainer can merge from a temporary private fork. Its evidence is limited to this one GitHub Docs page; it does not assert how maintainers triage reports, what the GitHub Security Advisory database holds, or how CVEs are assigned.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| GitHub private vulnerability reporting: reporter-side flow of the repository advisory form (enablement, separation from SECURITY.md, default required fields, optional AI-assistance disclosure, automatic reporter credit, maintainer-only private-fork merge) (round 46) | `corpus/knowledge/github-private-vulnerability-reporting.md` | S073 — GitHub Docs "Privately reporting a security vulnerability" page (`corpus/source-snapshots/round-46/S073.txt` capture), opened 2026-10-28; capture and located quotes in `corpus/source-snapshots/round-46/manifest.json` |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F28 | GitHub private vulnerability reporting, reporter flow: enablement by owners of public repositories, separation from SECURITY.md, the advisory form's default required fields, the optional AI-assistance disclosure, automatic reporter collaborator and credit, and the temporary private fork that only the maintainer can merge | admitted | `corpus/knowledge/github-private-vulnerability-reporting.md` | S073 | Keep the reporter flow distinct from the Linux kernel's e-mail process (F27) and from the AI-finding validation rules; re-open the GitHub Docs page before relying on its form fields or enablement wording. Maintainer handling, the GitHub Security Advisory database and CVE assignment are outside F28. |
+
+[r46 amendment, appended 2026-10-28] The 27/27 count on the round-45 amendment line above records the round-45 state and is retained as history (R9). At round 46 the public-practice frontier stands at **28/28 admitted** — F01-F27 as previously recorded and F28 admitted this round. The lost-domain denominator remains 0/18; the frontier count is separate.

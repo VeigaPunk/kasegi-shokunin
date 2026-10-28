@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""r46-c1-gate.py — round-46 C1 counter (depth:verifiability), v1.
+"""r46-c1-gate.py — round-46 C1 counter (depth:verifiability), v1.1 (hardened after the wave-1 falsification; erratum E1, see .ufo/waves/round-46/counter-errata.md; v1 sha256 b0c730c834b4d7c6b16ac56f8c574ac599e8ae651aa02c5b2408fd736dd82294).
 
 WHAT IT MEASURES
     How many of the lane's `recheck:` lines are *gated* (run, then fail closed on a
@@ -24,18 +24,19 @@ TWO MODES
         PASS needs: section present once, >= 6 rows with unique ids, every anchor a
         regular non-symlink file under corpus/instruments/ or corpus/source-snapshots/
         inside TREE (never the entry itself), a <= 40-line range inside the file, and the
-        token (>= 6 chars, whitespace-normalised) inside those lines; >= 2 distinct anchor files.
+        token (>= 8 chars, whitespace-normalised) inside those lines; >= 2 distinct anchor files; no repeated (anchor, range) or token.
     --root TREE --baseline BASE                      aggregate counter, seven limbs
         L1  gated lines at TREE <= 22, broken = 0, lines >= base lines
         L2  regrounded set R = gated(BASE) - gated(TREE): |R| >= 2 and gated(TREE) = gated(BASE) - |R|
-        L3  every entry of R: recheck line names no ~/ or $HOME path and runs this gate's --entry mode on itself
-        L4  every entry of R: per-entry mode (this script's own bytes, not the tree's) exits 0 at TREE
-        L5  every entry of R: append-only — every BASE line except the recheck line is, in order, a prefix of TREE's
-        L6  every entry of R: each row is load-bearing — blanking that row's token in a scratch copy of the
-            anchored file turns per-entry mode non-zero (all rows of all entries of R)
-        L7  entries gated at BASE and still gated at TREE keep their BASE recheck line byte-identical
-    Rechecks run with the leading `cd <path> &&` stripped and cwd = TREE (an export root measures
-    itself, not the live lane); gated = parses (`bash -n`) and exits non-zero; broken = does not parse.
+        L3  every entry of R: exactly one `recheck:` line, and it is `cd <lane> && python3 corpus/instruments/r46-c1-gate.py --entry corpus/knowledge/<itself>.md` (optional trailing ` # comment`), no ~/ or $HOME path
+        L4  every entry of R: per-entry mode (this script's own bytes, not the tree's) exits 0 at TREE and every anchored file is byte-identical to BASE's
+        L5  every entry of R: append-only — every BASE line except the recheck line is, in order, a prefix of TREE's, and the BASE recheck command survives verbatim as one `restoration-recheck:` line
+        L6  every entry of R: each row is load-bearing — after an unmutated scratch copy reads green, blanking that row's token
+            inside its anchored lines turns per-entry mode red on exactly that row (all rows of all entries of R)
+        L7  entries gated at BASE and still gated at TREE are byte-identical to BASE
+    Rechecks run with the leading `cd <path> &&` stripped and cwd = TREE (an export root measures itself, not the live lane), under the
+    grader's own environment: BASE and TREE are read under the same HOME, so a host change moves both readings and L2 (the regrounded set)
+    stays 0; gated = parses (`bash -n`) and exits non-zero; broken = does not parse.
 
     READ-ONLY on TREE and BASE; scratch under --work / TMPDIR; never runs git; stdlib only.
 OUTPUT
@@ -54,12 +55,24 @@ import tempfile
 SECTION = "## Re-ground (round 46)"
 TARGET_GATED = 22
 MIN_ROWS = 6
+MIN_TOKEN = 8
+LANE_CD = "/home/vgpnk/Projects/shokunin/kasegi-shokunin"
 MIN_REGROUNDED = 2
 ANCHOR_DIRS = ("corpus/instruments/", "corpus/source-snapshots/")
 SELF = os.path.abspath(__file__)
 RECHECK_RE = re.compile(r"^recheck:[ \t]*(.*)$")
 CD_RE = re.compile(r"^cd[ \t]+[^&;]+?[ \t]*&&[ \t]*")
 HOME_RE = re.compile(r"(?:~/|\$HOME|\$\{HOME\}|/home/)")
+RESTORE_RE = re.compile(r"^restoration-recheck:[ \t]*(.*)$")
+
+
+def exact_line(entry_name: str) -> re.Pattern:
+    return re.compile(r"^cd " + re.escape(LANE_CD) + r" && python3 corpus/instruments/r46-c1-gate\.py --entry corpus/knowledge/"
+                      + re.escape(entry_name) + r"(?:[ \t]+#.*)?$")
+
+
+def grader_env() -> dict:
+    return dict(os.environ)  # unchanged: the BASE reading is taken under the same environment, so a host change moves both
 
 
 def norm(s: str) -> str:
@@ -98,50 +111,55 @@ def section_rows(text: str) -> tuple[list[list[str]] | None, str]:
     return rows, "rows=%d" % len(rows)
 
 
-def check_row(root: str, entry_rel: str, row: list[str]) -> tuple[bool, str, str | None]:
+def check_row(root: str, entry_rel: str, row: list[str]) -> tuple[bool, str, str | None, tuple | None]:
     if len(row) != 4:
-        return False, "cells=%d" % len(row), None
+        return False, "cells=%d" % len(row), None, None
     m = re.fullmatch(r"`([A-Za-z0-9_./-]+):(\d+)(?:-(\d+))?`", row[2])
     t = re.fullmatch(r"`([^`]+)`", row[3])
     if not m or not t:
-        return False, "anchor-or-token-not-backticked", None
+        return False, "anchor-or-token-not-backticked", None, None
     rel, a, b = m.group(1), int(m.group(2)), int(m.group(3) or m.group(2))
     tok = norm(t.group(1))
-    if not rel.startswith(ANCHOR_DIRS) or ".." in rel.split("/") or rel == entry_rel:
-        return False, "anchor-dir-or-self", rel
+    if not rel.startswith(ANCHOR_DIRS) or ".." in rel.split("/") or rel == entry_rel or rel.endswith("r46-c1-gate.py"):
+        return False, "anchor-dir-or-self", rel, None
     fp = os.path.join(root, rel)
     if os.path.islink(fp) or not os.path.isfile(fp) or not os.path.realpath(fp).startswith(os.path.realpath(root) + os.sep):
-        return False, "anchor-not-a-regular-file-in-tree", rel
-    if len(tok) < 6 or a < 1 or b < a or b - a > 39:
-        return False, "token-or-range-bad", rel
+        return False, "anchor-not-a-regular-file-in-tree", rel, None
+    if len(tok) < MIN_TOKEN or a < 1 or b < a or b - a > 39:
+        return False, "token-or-range-bad", rel, None
     lines = (read(fp) or "").splitlines()
     if b > len(lines):
-        return False, "range-past-eof", rel
-    if tok not in norm(" ".join(lines[a - 1:b])):
-        return False, "token-not-in-lines", rel
-    return True, "token-located", rel
+        return False, "range-past-eof", rel, None
+    window = norm(" ".join(lines[a - 1:b]))
+    if tok not in window:
+        return False, "token-not-in-lines", rel, None
+    return True, "token-located", rel, (rel, a, b, tok)
 
 
 def entry_mode(root: str, entry: str) -> int:
     rel = os.path.relpath(os.path.abspath(os.path.join(root, entry)), root) if not os.path.isabs(entry) else os.path.relpath(entry, root)
+    name = os.path.basename(rel)
     text = read(os.path.join(root, rel))
     if text is None:
-        print("reground entry=%s rows=0 ok=0 exit=1 read=entry-absent" % os.path.basename(entry))
+        print("reground entry=%s rows=0 ok=0 exit=1 read=entry-absent" % name)
         return 1
     rows, why = section_rows(text)
     if rows is None:
-        print("reground entry=%s rows=0 ok=0 exit=1 read=%s" % (os.path.basename(rel), why))
+        print("reground entry=%s rows=0 ok=0 exit=1 read=%s" % (name, why))
         return 1
-    ok, files = 0, set()
+    ok, files, keys = 0, set(), []
     ids = [r[0] for r in rows if r]
     for r in rows:
-        good, read_, f = check_row(root, rel, r)
+        good, read_, f, key = check_row(root, rel, r)
         print("row %s ok=%d read=%s" % (r[0] if r else "?", int(good), read_))
         ok += int(good)
         if good and f:
             files.add(f)
-    good = bool(rows) and ok == len(rows) and len(rows) >= MIN_ROWS and len(set(ids)) == len(ids) and len(files) >= 2
-    print("reground entry=%s rows=%d ok=%d files=%d exit=%d" % (os.path.basename(rel), len(rows), ok, len(files), 0 if good else 1))
+        if key:
+            keys.append(key)
+    distinct = len({(k[0], k[1], k[2]) for k in keys}) == len(keys) and len({k[3] for k in keys}) == len(keys)
+    good = (bool(rows) and ok == len(rows) and len(rows) >= MIN_ROWS and len(set(ids)) == len(ids) and len(files) >= 2 and distinct)
+    print("reground entry=%s rows=%d ok=%d files=%d distinct=%d exit=%d" % (name, len(rows), ok, len(files), int(distinct), 0 if good else 1))
     return 0 if good else 1
 
 
@@ -154,19 +172,24 @@ def classify(root: str) -> dict[str, dict]:
         if not fn.endswith(".md"):
             continue
         text = read(os.path.join(kd, fn)) or ""
+        n = sum(1 for ln in text.splitlines() if RECHECK_RE.match(ln))
         line = recheck_line(text)
         if line is None:
             continue
         if subprocess.run(["bash", "-n", "-c", line], capture_output=True).returncode != 0:
-            out[fn] = {"line": line, "class": "broken"}
+            out[fn] = {"line": line, "class": "broken", "n": n}
             continue
         cmd = CD_RE.sub("", line, count=1)
         try:
-            rc = subprocess.run(["bash", "-c", cmd], cwd=root, capture_output=True, timeout=180).returncode
+            rc = subprocess.run(["bash", "-c", cmd], cwd=root, capture_output=True, timeout=180, env=grader_env()).returncode
         except subprocess.TimeoutExpired:
             rc = 124
-        out[fn] = {"line": line, "class": "executes" if rc == 0 else "gated"}
+        out[fn] = {"line": line, "class": "executes" if rc == 0 else "gated", "n": n}
     return out
+
+
+def entry_lines(root: str, e: str) -> list[str]:
+    return (read(os.path.join(root, "corpus/knowledge", e)) or "").splitlines()
 
 
 def gate_list(root: str, base: str, work: str):
@@ -181,30 +204,50 @@ def gate_list(root: str, base: str, work: str):
     res.append(("L1", ok, "gated=%d broken=%d lines=%d/base=%d" % (len(gt), len(broken), len(ct), len(cb))))
     ok = len(reg) >= MIN_REGROUNDED and len(gt) == len(gb) - len(reg) and not (gt - gb)
     res.append(("L2", ok, "base-gated=%d regrounded=%d %s" % (len(gb), len(reg), ",".join(reg))))
-    bad3 = []
-    for e in reg:
-        ln = ct[e]["line"]
-        if HOME_RE.search(CD_RE.sub("", ln, count=1)) or ("r46-c1-gate.py" not in ln) or ("--entry corpus/knowledge/%s" % e) not in ln:
-            bad3.append(e)
-    res.append(("L3", bool(reg) and not bad3, "bad=%s" % ",".join(bad3) if bad3 else "recheck-lines-clean=%d" % len(reg)))
+    bad3 = [e for e in reg if not exact_line(e).match(ct[e]["line"]) or ct[e]["n"] != 1
+            or HOME_RE.search(CD_RE.sub("", ct[e]["line"], count=1))]
+    res.append(("L3", bool(reg) and not bad3, "bad=%s" % ",".join(bad3) if bad3 else "recheck-lines-exact=%d" % len(reg)))
     bad4 = []
     for e in reg:
         p = subprocess.run([sys.executable, "-I", SELF, "--entry", "corpus/knowledge/" + e, "--root", root], capture_output=True, text=True, timeout=120)
-        if p.returncode != 0:
+        rows, _ = section_rows("\n".join(entry_lines(root, e)))
+        planted = False
+        for r in rows or []:
+            m = re.fullmatch(r"`([A-Za-z0-9_./-]+):\d+(?:-\d+)?`", r[2]) if len(r) == 4 else None
+            if not m:
+                planted = True
+                continue
+            bp, tp = os.path.join(base, m.group(1)), os.path.join(root, m.group(1))
+            if not (os.path.isfile(bp) and os.path.isfile(tp) and read(bp) == read(tp)):
+                planted = True
+        if p.returncode != 0 or planted:
             bad4.append(e)
-    res.append(("L4", bool(reg) and not bad4, "bad=%s" % ",".join(bad4) if bad4 else "entry-mode-green=%d" % len(reg)))
+    res.append(("L4", bool(reg) and not bad4, "bad=%s" % ",".join(bad4) if bad4 else "entry-mode-green-anchors-unchanged=%d" % len(reg)))
     bad5 = []
     for e in reg:
-        b = [x for x in (read(os.path.join(base, "corpus/knowledge", e)) or "").splitlines() if not RECHECK_RE.match(x)]
-        t = [x for x in (read(os.path.join(root, "corpus/knowledge", e)) or "").splitlines() if not RECHECK_RE.match(x)]
-        if t[:len(b)] != b or len(t) == len(b):
+        bl = entry_lines(base, e)
+        tl = entry_lines(root, e)
+        base_re = [x for x in bl if RECHECK_RE.match(x)]
+        rest_ok = [x for x in tl if RESTORE_RE.match(x)]
+        want = "restoration-recheck: " + base_re[0][len("recheck:"):].strip() if base_re else None
+        b = [x for x in bl if not RECHECK_RE.match(x)]
+        t = [x for x in tl if not RECHECK_RE.match(x) and not RESTORE_RE.match(x)]
+        if t[:len(b)] != b or len(t) == len(b) or len(base_re) != 1 or rest_ok != [want]:
             bad5.append(e)
-    res.append(("L5", bool(reg) and not bad5, "bad=%s" % ",".join(bad5) if bad5 else "append-only=%d" % len(reg)))
-    # L6: per-row load-bearing mutation in a scratch copy of corpus/
+    res.append(("L5", bool(reg) and not bad5, "bad=%s" % ",".join(bad5) if bad5 else "append-only-restoration-kept=%d" % len(reg)))
+    # L6: each row load-bearing, in a scratch copy of corpus/, with an unmutated green control first
     survivors, mutants = [], 0
     for e in reg:
-        text = read(os.path.join(root, "corpus/knowledge", e)) or ""
-        rows, _ = section_rows(text)
+        rows, _ = section_rows("\n".join(entry_lines(root, e)))
+        sc0 = tempfile.mkdtemp(prefix="r46c1c-", dir=work)
+        try:
+            shutil.copytree(os.path.join(root, "corpus"), os.path.join(sc0, "corpus"), symlinks=True, ignore=shutil.ignore_patterns("lessons", "__pycache__"))
+            c = subprocess.run([sys.executable, "-I", SELF, "--entry", "corpus/knowledge/" + e, "--root", sc0], capture_output=True, text=True, timeout=120)
+            if c.returncode != 0:
+                survivors.append("%s:unmutated-copy-not-green" % e)
+                continue
+        finally:
+            shutil.rmtree(sc0, ignore_errors=True)
         for r in rows or []:
             m = re.fullmatch(r"`([A-Za-z0-9_./-]+):(\d+)(?:-(\d+))?`", r[2]) if len(r) == 4 else None
             t = re.fullmatch(r"`([^`]+)`", r[3]) if len(r) == 4 else None
@@ -213,29 +256,30 @@ def gate_list(root: str, base: str, work: str):
                 continue
             sc = tempfile.mkdtemp(prefix="r46c1-", dir=work)
             try:
-                shutil.copytree(os.path.join(root, "corpus"), os.path.join(sc, "corpus"), symlinks=True,
-                                ignore=shutil.ignore_patterns("lessons", "__pycache__"))
+                shutil.copytree(os.path.join(root, "corpus"), os.path.join(sc, "corpus"), symlinks=True, ignore=shutil.ignore_patterns("lessons", "__pycache__"))
                 fp = os.path.join(sc, m.group(1))
-                raw = open(fp, "r", encoding="utf-8").read()
+                ls = open(fp, "r", encoding="utf-8").read().split("\n")
+                a, b = int(m.group(2)), int(m.group(3) or m.group(2))
                 tok = t.group(1)
-                if tok in raw:
-                    open(fp, "w", encoding="utf-8").write(raw.replace(tok, "#" * len(tok)))
-                else:  # token only matches after normalisation: blank every line of the anchored range
-                    ls = raw.split("\n")
-                    a, b = int(m.group(2)), int(m.group(3) or m.group(2))
+                hit = [i for i in range(a - 1, min(b, len(ls))) if tok in ls[i]]
+                if hit:
+                    for i in hit:
+                        ls[i] = ls[i].replace(tok, "#" * len(tok))
+                else:  # the token only matches after whitespace normalisation (it spans lines): blank the whole range
                     for i in range(a - 1, min(b, len(ls))):
                         ls[i] = "#" * len(ls[i])
-                    open(fp, "w", encoding="utf-8").write("\n".join(ls))
+                open(fp, "w", encoding="utf-8").write("\n".join(ls))
                 mutants += 1
                 p = subprocess.run([sys.executable, "-I", SELF, "--entry", "corpus/knowledge/" + e, "--root", sc], capture_output=True, text=True, timeout=120)
-                if p.returncode == 0:
+                red = [ln.split()[1] for ln in p.stdout.splitlines() if ln.startswith("row ") and " ok=0 " in ln]
+                if p.returncode == 0 or red != [r[0]]:
                     survivors.append("%s:%s" % (e, r[0]))
             finally:
                 shutil.rmtree(sc, ignore_errors=True)
     res.append(("L6", bool(reg) and mutants >= MIN_ROWS * len(reg) and not survivors,
                 "mutants=%d survivors=%s" % (mutants, ",".join(survivors) or "none")))
     still = sorted(gb & gt)
-    bad7 = [e for e in still if cb[e]["line"] != ct[e]["line"]]
+    bad7 = [e for e in still if (read(os.path.join(base, "corpus/knowledge", e)) or "") != (read(os.path.join(root, "corpus/knowledge", e)) or "")]
     res.append(("L7", not bad7, "still-gated=%d changed=%s" % (len(still), ",".join(bad7) or "none")))
     return res, len(gt)
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""r46-c2-gate.py — round-46 C2 counter (coverage), v1.
+"""r46-c2-gate.py — round-46 C2 counter (coverage), v1.1 (hardened after the wave-1 falsification; erratum E1, see .ufo/waves/round-46/counter-errata.md; v1 sha256 0ee958578b5923706178081a94dae471682f02f74492bb4a3b54a118c12ec3f6).
 
 WHAT IT MEASURES
     One frontier move, F28 (GitHub private vulnerability reporting, the reporter-side
@@ -60,11 +60,13 @@ PINS = {
     "S073-row": None,
     "F28-row": None,
     "source-recheck.py": "fd2e01e88c8c45a949f48d67b3154ae87a95aeba0b6a9c42fbf64641b5b9c003",
-    "base-knowledge-content": "f734506f3041f6802602ba43c8ce7164f7df156c176b48a51549cd809171e4df",
+    "base-knowledge-content": "5e0796fd3617f7626880950a5b25d1818f58eff58a12dec99ce7a0f3836b8f47",
     "base-knowledge-names": "bf3044814698b31b2d63a47ef6933cfe4d2d09635c2d717b05c8adf0bf719f5d",
 }
 if os.environ.get("R46_PINS_OVERRIDE"):  # selftests only: the grader's environment, never the graded tree's; a null value disables that one pin
     PINS.update(json.load(open(os.environ["R46_PINS_OVERRIDE"])))
+CONTENT_EXEMPT = {"claim-package-contract.md", "claim-gates.md"}
+BODY = (556, 583)  # the page body inside the capture (the rest is site navigation); a quote located elsewhere is not support
 SECTIONS = ["## Scope and decision rule", "## Overlap and novelty", "## Limits", "## Falsifiable package rule"]
 URL = "https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/report-privately"
 CORES = [
@@ -137,7 +139,7 @@ def registry_lines(root: str) -> list[str]:
     t = txt(root, "corpus/SOURCES.md") or ""
     out, inreg = [], False
     for ln in live_lines(t):
-        if re.match(r"^ {0,3}## ", ln):
+        if re.match(r"^ {0,3}#{1,6} ", ln):
             inreg = bool(re.match(r"^ {0,3}## Registry\b", ln))
             continue
         if inreg:
@@ -179,6 +181,11 @@ def g1(root: str) -> tuple[bool, str]:
     return True, f"rows=28 admitted=28 {why}"
 
 
+def sect_words(body: str, heading: str) -> int:
+    m = re.search("^" + re.escape(heading) + r"\s*$(.*?)(?=^## |\Z)", body, re.M | re.S)
+    return len(re.findall(r"\w+", m.group(1))) if m else 0
+
+
 def g2(root: str) -> tuple[bool, str]:
     p, why = entry_path(root)
     if p is None:
@@ -188,11 +195,18 @@ def g2(root: str) -> tuple[bool, str]:
         return False, "entry-not-the-pinned-bytes"
     body = "\n".join(live_lines(raw_b.decode("utf-8", "replace")))
     head = body.splitlines()[:8]
-    ok_s = any(h.startswith("source: S073 — " + URL + " — ") for h in head)
+    ok_s = any(h.startswith("source: S073 \u2014 " + URL + " \u2014 ") for h in head)
     ok_v = any(h == "verified-at: 2026-10-28" for h in head)
-    ok_r = any(h.startswith("recheck: ") and "source-recheck.py" in h and "--source S073" in h for h in head)
+    ok_r = any(h.startswith("recheck: ") and "source-recheck.py" in h and re.search(r"--source S073(?:\s|$)", h) and "round-46/manifest.json" in h for h in head)
     secs = sum(1 for sct in SECTIONS if re.search("^" + re.escape(sct) + r"\s*$", body, re.M))
-    tbl = len([ln for ln in body.splitlines() if re.match(r"^\|[^|]+\|[^|]+\|[^|]+\|\s*$", ln)]) - 2
+    full = sum(1 for sct in SECTIONS if sect_words(body, sct) >= (12 if sct.startswith("## Falsifiable") else 25))
+    rows = []
+    for ln in body.splitlines():
+        if re.match(r"^\|[^|]+\|[^|]+\|[^|]+\|\s*$", ln):
+            cells = [c.strip() for c in ln.strip().strip("|").split("|")]
+            if all(len(re.findall(r"\w+", c)) >= 2 for c in cells) and re.search(r"S073\.txt:\d+", cells[1] + " " + cells[0]):
+                rows.append(cells)
+    tbl = len(rows)
     refs = re.findall(r"corpus/knowledge/([A-Za-z0-9._-]+\.md):(\d+)", body)
     refok = 0
     for fn, ln in refs:
@@ -202,8 +216,8 @@ def g2(root: str) -> tuple[bool, str]:
     need = {"linux-kernel-security-bugs-reporting-process.md", "ai-assisted-finding-validation.md"}
     have = {fn for fn, ln in refs}
     ok_x = need <= have and refok == len(refs)
-    good = ok_s and ok_v and ok_r and secs == len(SECTIONS) and tbl >= 6 and ok_x
-    return good, f"source={int(ok_s)} verified-at={int(ok_v)} recheck={int(ok_r)} sections={secs}/{len(SECTIONS)} table-rows={tbl} xrefs={refok}/{len(refs)}"
+    good = ok_s and ok_v and ok_r and secs == len(SECTIONS) and full == len(SECTIONS) and tbl >= 6 and ok_x
+    return good, f"source={int(ok_s)} verified-at={int(ok_v)} recheck={int(bool(ok_r))} sections={secs}/{len(SECTIONS)} full={full}/{len(SECTIONS)} table-rows={tbl} xrefs={refok}/{len(refs)}"
 
 
 def g3(root: str) -> tuple[bool, str]:
@@ -226,9 +240,15 @@ def g3(root: str) -> tuple[bool, str]:
         return False, "snapshot-not-the-pinned-capture"
     bad = []
     if row[3] != "A": bad.append("tier")
+    if row[2] != "docs": bad.append("kind")
+    if len(re.findall(r"\w+", row[4])) < 8: bad.append("scope-words")
+    if len(re.findall(r"\w+", row[6])) < 8: bad.append("teaches-words")
+    if not re.fullmatch(r"(?:\d+d|on-release|\d{4}-\d{2}-\d{2})", row[9]): bad.append("recheck-cell")
+    if "S073.txt" not in row[5] or not re.search(r"(?:\bL\d+|\blines?\s+\d+|S073\.txt:\d+)", row[5]): bad.append("anchor-locator")
     if row[7] != "mined": bad.append("status")
     if row[8] != "2026-10-28": bad.append("opened")
-    if URL not in row[1]: bad.append("url")
+    u = re.findall(r"https?://\S+", row[1])
+    if not u or u[0].rstrip(".,;)") != URL: bad.append("url")
     if p is None or p not in row[10]: bad.append("used-by")
     if snap_sha not in row[5]: bad.append("anchor-sha")
     return (not bad), ("row-S073=ok" if not bad else "bad=" + ",".join(bad))
@@ -248,7 +268,12 @@ def g4(root: str) -> tuple[bool, str]:
     oks = len(re.findall(r"^S073:Q\d+ OK ", out, re.M))
     mt = norm(open(man, encoding="utf-8").read())
     miss = [c for c in MANIFEST_CORES if norm(c) not in mt]
-    good = rc == 0 and "S073:sha256 OK" in out and oks >= 8 and not miss and "BROKEN" not in out
+    try:
+        qs = json.load(open(man, encoding="utf-8"))["sources"][0]["quotes"]
+        distinct = len({q["quote"] for q in qs}) == len(qs) == oks and len({q["anchor"] for q in qs}) >= 7
+    except Exception:
+        distinct = False
+    good = rc == 0 and "S073:sha256 OK" in out and oks >= 8 and not miss and "BROKEN" not in out and distinct
     return good, f"recheck-rc={rc} quotes-ok={oks} frozen-cores-missing={len(miss)}"
 
 
@@ -256,39 +281,43 @@ def g5(root: str) -> tuple[bool, str]:
     p, why = entry_path(root)
     if p is None:
         return False, why
-    body = txt(root, p) or ""
+    body = "\n".join(live_lines(txt(root, p) or ""))
     snap = (txt(root, "corpus/source-snapshots/round-46/S073.txt") or "").splitlines()
     allcurly = re.findall("\u201c([^\u201d]+)\u201d", body)
     spans = re.findall("\u201c([^\u201d]+)\u201d\\s*\\(`?S073\\.txt:(\\d+)(?:-(\\d+))?`?", body)
+    straight = [q for q in re.findall('"([^"\\n]{12,})"', body) if len(q.split()) >= 4]
+    straight_cited = re.findall('"([^"\\n]{12,})"\\s*\\(`?S073\\.txt:(\\d+)(?:-(\\d+))?`?', body)
     passed, failed = [], 0
-    for q, a, b in spans:
+    for q, a, b in spans + straight_cited:
         a = int(a)
         b = int(b) if b else a
         window = norm(" ".join(snap[max(a - 1, 0):b]))
         nq = norm(q)
-        if len(nq.split()) <= 25 and nq and nq in window:
+        if len(nq.split()) <= 25 and nq and a >= BODY[0] and b <= BODY[1] and b - a <= 11 and nq in window:
             passed.append(nq)
         else:
             failed += 1
     cores = [c for c in CORES if any(re.search(c, q) for q in passed)]
-    uncited = len(allcurly) - len(spans)
+    uncited = (len(allcurly) - len(spans)) + (len(straight) - len(straight_cited))
     ok = failed == 0 and uncited == 0 and len(passed) >= 4 and len(cores) == len(CORES)
-    return ok, f"spans={len(spans)} located={len(passed)} failed={failed} uncited={uncited} cores={len(cores)}/{len(CORES)}"
+    return ok, f"spans={len(spans) + len(straight_cited)} located={len(passed)} failed={failed} uncited={uncited} cores={len(cores)}/{len(CORES)}"
 
 
 def g6(root: str) -> tuple[bool, str]:
     d = os.path.join(root, "corpus/knowledge")
-    names = sorted(f for f in os.listdir(d) if f.endswith(".md")) if os.path.isdir(d) else []
+    everything = sorted(os.listdir(d)) if os.path.isdir(d) else []
+    names = [f for f in everything if f.endswith(".md") and os.path.isfile(os.path.join(d, f))]
+    nested = sum(1 for _r, _d, fs in os.walk(d) for f in fs if f.endswith(".md")) if os.path.isdir(d) else 0
     p, why = entry_path(root)
-    base_like = [n for n in names if p is None or "corpus/knowledge/" + n != p]
+    base_like = [n for n in everything if p is None or "corpus/knowledge/" + n != p]
     base_ok = sha(("\n".join(base_like) + "\n").encode()) == PINS["base-knowledge-names"]
-    try:
-        cont = sha("\n".join("%s %s" % (n, sha(open(os.path.join(d, n), "rb").read())) for n in base_like).encode())
+    try:  # the two entries claim C1 re-grounds are exempt from the content pin (their names stay pinned): C2 is verifiable without C1 landed
+        cont = sha("\n".join("%s %s" % (n, sha(open(os.path.join(d, n), "rb").read())) for n in base_like if n not in CONTENT_EXEMPT).encode())
     except OSError:
         cont = ""
     base_ok = base_ok and (PINS["base-knowledge-content"] is None or cont == PINS["base-knowledge-content"])
     sized = p is not None and os.path.getsize(os.path.join(root, p)) >= 3000
-    return (len(names) == 65 and base_ok and sized), f"knowledge={len(names)} base-names-intact={int(base_ok)} entry-bytes-ok={int(sized)}"
+    return (len(names) == 65 and len(everything) == 65 and nested == 65 and base_ok and sized), f"knowledge={len(names)} entries={len(everything)} nested-md={nested} base-intact={int(base_ok)} entry-bytes-ok={int(sized)}"
 
 
 def g7(root: str) -> tuple[bool, str]:
