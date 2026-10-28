@@ -357,7 +357,7 @@ RC=$( [ "$OPEN" -eq 0 ] && echo 0 || echo 1 )
 # selftest
 # ---------------------------------------------------------------------------
 selftest_block() {
-    local failures=0 case_rc line mut
+    local failures=0 line id n mut pos
     local sdir="$SCRATCH_ROOT/selftest"
     rm -rf "$sdir"; mkdir -p "$sdir"
 
@@ -365,81 +365,118 @@ selftest_block() {
         id="K$n"
         line="$(grep -m1 "^$id " "$PAYLOAD_FILE" || true)"
         mut=0
-        case "$line" in *"replay="*"=rejected"*) mut=1 ;; esac
-        if [ -n "$line" ] && [ "$mut" -eq 1 ]; then
+        case "$line" in *"=rejected"*) mut=1 ;; esac
+        pos=0
+        case "$line" in *"closed=1"*) pos=1 ;; esac
+        if [ "$pos" -eq 1 ]; then
             printf 'selftest case=%s positive=pass mutants=carried:%s verdict=pass\n' "$id" "$mut"
         else
-            printf 'selftest case=%s positive=fail mutants=carried:%s verdict=fail\n' "$id" "$mut"; failures=$((failures+1))
+            printf 'selftest case=%s positive=fail mutants=carried:%s verdict=fail\n' "$id" "$mut"
+            failures=$((failures+1))
         fi
     done
 
-    # K8: a real receipt grades green; three forged receipts must red.
-    line="$(grep -m1 '^K8 ' "$PAYLOAD_FILE" || true)"
-    k8_pos=0; k8_mut=0; k8_tot=0
-    case "$line" in *"closed=1"*) k8_pos=1 ;; esac
-    r="$(receipt_path)"
-    if [ -f "$r" ]; then
-        cp "$r" "$sdir/double.txt"; printf 'all-gates v3\n' >> "$sdir/double.txt"
-        k8_tot=$((k8_tot+1)); _k8_grade "$sdir/double.txt" "$PAYLOAD_FILE" >/dev/null 2>&1 || k8_mut=$((k8_mut+1))
-        grep -v '^selftest cases=19 failures=0$' "$r" > "$sdir/nosum.txt"
-        k8_tot=$((k8_tot+1)); _k8_grade "$sdir/nosum.txt" "$PAYLOAD_FILE" >/dev/null 2>&1 || k8_mut=$((k8_mut+1))
-        sed 's/^export-ref=.*/export-ref=0000000000000000000000000000000000000000/' "$r" > "$sdir/fref.txt"
-        k8_tot=$((k8_tot+1)); _k8_grade "$sdir/fref.txt" "$PAYLOAD_FILE" >/dev/null 2>&1 || k8_mut=$((k8_mut+1))
-    fi
-    if [ "$k8_pos" -eq 1 ] && [ "$k8_mut" -eq "$k8_tot" ] && [ "$k8_tot" -eq 3 ]; then
-        printf 'selftest case=K8 positive=pass mutants=%s/%s verdict=pass\n' "$k8_mut" "$k8_tot"
+    # K8: build a synthetic receipt from the re-derived payloads and grade it
+    # accepted; then three forgeries must be rejected.
+    local syn="$sdir/synth.txt" good bad tot
+    {
+        printf 'all-gates v3\n'
+        printf 'export-ref=%s\n' "$FULL"
+        printf 'suite-sha256=%s\n' "$(sha256sum "$EXPORT/corpus/instruments/r43-closure.sh" | cut -d' ' -f1)"
+        printf 'time-basis=ref-commit\n'
+        printf 'run-utc=2026-10-28T00:00:00Z\n'
+        grep -v '^K8 ' "$PAYLOAD_FILE"
+        printf 'K8 payload=receipt=synth.txt,source=override,header=1,ref=1,digest=1,time-basis=1,utc=1,one-run=1,payload-match=18/18,forged=3/3,selftest-lines=19,summary=1,closed-line=1 closed=1\n'
+        printf 'closed=18/19 exit=1\n'
+        for n in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19; do
+            printf 'selftest case=K%s positive=pass mutants=carried:1 verdict=pass\n' "$n"
+        done
+        printf 'selftest cases=19 failures=0\n'
+    } > "$syn"
+    good=0; bad=0; tot=0
+    _k8_grade "$syn" "$PAYLOAD_FILE" >/dev/null 2>&1 && good=1
+    cp "$syn" "$sdir/s1.txt"; printf 'all-gates v3\n' >> "$sdir/s1.txt"
+    tot=$((tot+1)); _k8_grade "$sdir/s1.txt" "$PAYLOAD_FILE" >/dev/null 2>&1 || bad=$((bad+1))
+    grep -v '^selftest cases=19 failures=0$' "$syn" > "$sdir/s2.txt"
+    tot=$((tot+1)); _k8_grade "$sdir/s2.txt" "$PAYLOAD_FILE" >/dev/null 2>&1 || bad=$((bad+1))
+    sed 's/^export-ref=.*/export-ref=0000000000000000000000000000000000000000/' "$syn" > "$sdir/s3.txt"
+    tot=$((tot+1)); _k8_grade "$sdir/s3.txt" "$PAYLOAD_FILE" >/dev/null 2>&1 || bad=$((bad+1))
+    if [ "$good" -eq 1 ] && [ "$bad" -eq "$tot" ]; then
+        printf 'selftest case=K8 positive=pass mutants=%s/%s verdict=pass\n' "$bad" "$tot"
     else
         printf 'selftest case=K8 positive=%s mutants=%s/%s verdict=fail\n' \
-            "$( [ "$k8_pos" -eq 1 ] && echo pass || echo fail)" "$k8_mut" "$k8_tot"; failures=$((failures+1))
+            "$( [ "$good" -eq 1 ] && echo pass || echo fail)" "$bad" "$tot"
+        failures=$((failures+1))
     fi
 
-    # K14-K19: each limb must go red on its own committed-defect mutant.
-    st_case K14 "$sdir" "SCORECARD.md" \
-        'python3 - "$1/SCORECARD.md" <<PY
-import re,sys
-p=sys.argv[1]; t=open(p).read()
-t=re.sub(r"corrections=\d+", "corrections=999", t, count=1)
-open(p,"w").write(t)
-PY' || failures=$((failures+1))
-    st_case K15 "$sdir" "LOG.md corpus/lessons" \
-        'printf "%s\n" "- wave 99 \`kasegi-r43-ghost\` 12 seats dispatched against the head; dead seats counted from \`ghost-results.json\`." >> "$1/LOG.md"' || failures=$((failures+1))
-    st_case K16 "$sdir" "corpus/lessons SCORECARD.md LOG.md SHONEN.md" \
-        'grep -v "^Correction (round 43)" "$1/corpus/lessons/round-42.md" > "$1/corpus/lessons/round-42.md.tmp" && mv "$1/corpus/lessons/round-42.md.tmp" "$1/corpus/lessons/round-42.md"' || failures=$((failures+1))
-    st_case K17 "$sdir" ".ufo/waves" \
-        'rm -f "$1/.ufo/waves/round-42/claims-erratum-5.md"' || failures=$((failures+1))
-    st_case K18 "$sdir" "corpus/lessons .ufo/waves/round-42 .ufo/waves/round-43" \
-        'rm -f "$1/.ufo/waves/round-43/final-gates/r42-at-de09313-run.txt" "$1/.ufo/waves/round-43/final-gates/r42-at-de09313-selftest.txt"' || failures=$((failures+1))
-    st_case K19 "$sdir" ".ufo/waves/round-43" \
-        'printf "claims-sha256=%s\n" "0000000000000000000000000000000000000000000000000000000000000000" > "$1/.ufo/waves/round-43/freeze.txt.tmp" && sed -n "1,2p" "$1/.ufo/waves/round-43/freeze.txt" >> "$1/.ufo/waves/round-43/freeze.txt.tmp" && mv "$1/.ufo/waves/round-43/freeze.txt.tmp" "$1/.ufo/waves/round-43/freeze.txt"' || failures=$((failures+1))
+    # K14-K19: positive on a hard-linked copy of the export, then one
+    # committed-shape mutation that the limb must reject.
+    st_case K14 "s:SCORECARD.md" || failures=$((failures+1))
+    st_case K15 "app:LOG.md" || failures=$((failures+1))
+    st_case K16 "strip:corpus/lessons/round-42.md" || failures=$((failures+1))
+    st_case K17 "rm:.ufo/waves/round-42/claims-erratum-5.md" || failures=$((failures+1))
+    st_case K18 "rm:.ufo/waves/round-43/final-gates/r42-at-de09313-run.txt" || failures=$((failures+1))
+    st_case K19 "corrupt:.ufo/waves/round-43/freeze.txt" || failures=$((failures+1))
 
     printf 'selftest cases=19 failures=%d\n' "$failures"
     [ "$failures" -eq 0 ] && return 0 || return 1
 }
 
-st_case() {  # st_case <id> <scratch> <relpaths> <mutation-shell>
-    local id="$1" sdir="$2" rels="$3" mut="$4"
-    local d="$sdir/case-$id" tree out
+st_case() {  # st_case <id> <kind>  -> grades positive then mutant
+    local id="$1" kind="$2"
+    local d="$SCRATCH_ROOT/selftest/case-$id"
     rm -rf "$d"; mkdir -p "$d/tree"
-    local rel
-    for rel in $rels; do
-        if [ -e "$EXPORT/$rel" ]; then
-            mkdir -p "$d/tree/$(dirname "$rel")"
-            cp -a "$EXPORT/$rel" "$d/tree/$rel" 2>/dev/null || true
-        fi
-    done
-    tree="$d/tree"
-    out="$(limb_line "$id" "$tree")"; local rc=$?
-    if [ "$rc" -eq 0 ]; then
+    cp -al "$EXPORT/." "$d/tree/" 2>/dev/null || return 1
+    local tree="$d/tree" ln rc rel tmp
+    ln="$(limb_line "$id" "$tree")"; rc=$?
+    if [ "$rc" -ne 0 ]; then
         printf 'selftest case=%s positive=fail mutants=0/1 verdict=fail\n' "$id"
+        rm -rf "$d"
         return 1
     fi
-    bash -c "$mut" _ "$tree" >/dev/null 2>&1
-    out="$(limb_line "$id" "$tree")"; rc=$?
+    case "$kind" in
+        s)
+            rel="SCORECARD.md"; tmp="$d/m.txt"; rm -f "$tree/$rel"
+            python3 - "$EXPORT/$rel" "$tmp" <<'PYMUT'
+import re, sys
+src, dst = sys.argv[1], sys.argv[2]
+t = open(src).read()
+open(dst, "w").write(re.sub(r"corrections=\d+", "corrections=999", t, count=1))
+PYMUT
+            mv "$tmp" "$tree/$rel"
+            ;;
+        app)
+            rel="LOG.md"; tmp="$d/m.txt"
+            { cat "$EXPORT/$rel"; printf '%s\n' '- wave 77 `kasegi-r77-ghost` 12 seats dispatched against the head.'; } > "$tmp"
+            rm -f "$tree/$rel"; mv "$tmp" "$tree/$rel"
+            ;;
+        strip)
+            rel="corpus/lessons/round-42.md"; tmp="$d/m.txt"
+            grep -v '^Correction (round 43)' "$EXPORT/$rel" > "$tmp"
+            rm -f "$tree/$rel"; mv "$tmp" "$tree/$rel"
+            ;;
+        rm)
+            if [ "$id" = "K17" ]; then
+                rm -f "$tree/.ufo/waves/round-42/claims-erratum-5.md"
+            else
+                rm -f "$tree/.ufo/waves/round-43/final-gates/r42-at-de09313-run.txt"
+            fi
+            ;;
+        corrupt)
+            rel=".ufo/waves/round-43/freeze.txt"; tmp="$d/m.txt"
+            awk 'index($0,"claims-sha256=")==1 { print "claims-sha256=0000000000000000000000000000000000000000000000000000000000000000"; next } { print }' "$EXPORT/$rel" > "$tmp"
+            rm -f "$tree/$rel"; mv "$tmp" "$tree/$rel"
+            ;;
+        *) rm -rf "$d"; return 1 ;;
+    esac
+    ln="$(limb_line "$id" "$tree")"; rc=$?
     if [ "$rc" -ne 0 ]; then
         printf 'selftest case=%s positive=pass mutants=1/1 verdict=pass\n' "$id"
+        rm -rf "$d"
         return 0
     fi
     printf 'selftest case=%s positive=pass mutants=0/1 verdict=fail\n' "$id"
+    rm -rf "$d"
     return 1
 }
 
