@@ -1,0 +1,48 @@
+{
+  "schema": "kasegi-round-claims-v2",
+  "lane": "kasegi",
+  "round": 46,
+  "author": "KasegiR46",
+  "base": "914ca0b6956f01d87b2e252ffad06fe74ec5d9ba",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "before": "24 of the 64 `recheck:` lines are gated (they run and fail closed on a lost base; recheck-audit.py `executes=40 gated=24 broken=0`; score-gap.py `gap: 24 of 64 rechecks still gated`); 23 of them open with `test -d ~/Projects/...`. The committed round-43 gate corpus/instruments/claim-package-check.py (+ fixtures) now implements the contract that corpus/knowledge/claim-package-contract.md and claim-gates.md describe, but neither entry's recheck line touches it.",
+      "after": "At least 2 of the 24 gated entries are re-grounded on committed bytes: gated 24 -> <=22 (the intended pair is claim-package-contract.md and claim-gates.md), each re-grounded entry carrying an appended `## Re-ground (round 46)` section of >=6 rows (claim, committed anchor path:line, token) over >=2 committed files, a recheck line that runs `r46-c1-gate.py --entry` on itself with no ~/ or $HOME path, every BASE line kept (append-only), and every row load-bearing (blanking the row's token in a scratch copy turns the entry check red). Entries still gated keep their BASE recheck line byte-identical. No score move is claimed: depth:verifiability stays 4 unless both promotion limbs move (SCORECARD.md `Distance-to-next-score`); the move is the measured distance 24 -> <=22 gated lines.",
+      "kill_rule": "C1 fails if the counter prints fixed<7/7 at the final lane revision; or if any control in controls/freeze-controls.txt grades fixed=7/7; or if a non-author reading finds a re-grounded entry whose rows do not support the entry's current claims (the rows are the semantic check the counter cannot make); or if the counter's seven limb sentences change after a seat has scored (bug fixes that keep a limb's sentence are logged as counter errata in counter-errata.md with a plain re-derivation that does not use the counter).",
+      "counter_cmd": "python3 {tool}/corpus/instruments/r46-c1-gate.py --root {tree} --baseline {base}",
+      "expect_before": "c1-gate fixed=1/7 exit=1",
+      "expect_after": "c1-gate fixed=7/7 exit=0",
+      "plain": [
+        "grep -lE '^recheck:.*test -d ~/Projects/' corpus/knowledge/*.md | wc -l   # base 23, target <=21",
+        "python3 corpus/instruments/recheck-audit.py --root . --quiet | grep '^executes='   # on the lane tip: base executes=40 gated=24 broken=0, target gated<=22 broken=0",
+        "python3 corpus/instruments/score-gap.py | grep '^gap:'   # base `gap: 24 of 64 rechecks still gated ...`"
+      ],
+      "freeze_tree_reading": "At the freeze commit the counter reads the same line as at the base (the claimed work is not yet done): c1-gate fixed=1/7 exit=1.",
+      "control": ".ufo/waves/round-46/controls/freeze-controls.txt"
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "before": "27 admitted public-practice frontier rows (F01-F27), 64 knowledge entries, 72 SOURCES rows; GitHub's private vulnerability reporting (the reporter-side flow of a repository's built-in advisory form) is held nowhere in corpus/ (grep -rliE 'private vulnerability reporting|privately report' corpus/knowledge corpus/SOURCES.md corpus/README.md prints nothing). Base reading of the counter: c2-gate fixed=1/7 (only the census limb holds); at the freeze tree it reads 2/7 (the S073 capture and manifest are committed at freeze, so the capture limb G4 also holds) - both stated, neither narrows the target.",
+      "after": "28 admitted frontier rows with F28 = GitHub private vulnerability reporting (reporter flow), one new tier-A mined row S073 with a sha-pinned snapshot (corpus/source-snapshots/round-46/S073.txt, sha256 66c96a61...1930) and eight located manifest quotes, one new knowledge entry (65 total) whose curly quotes are each located in snapshot lines and which cites the five frozen cores (private reporting is separate from SECURITY.md and only works where enabled; default required fields; the optional AI-assistance disclosure; automatic collaborator and credit; only the maintainer merges from the temporary private fork), a stated contrast with F27 (AI-assisted finds) and F04, census exit 0.",
+      "kill_rule": "C2 fails if r46-c2-gate.py prints fixed<7/7 at the final lane revision; or if any control (do-nothing base, junk-row, fabricated-quote, uncited-filler) grades 7/7; or if the non-author closure re-opening the page does not locate the cited quotes; or if the entry restates the page without a decision rule a reporter can act on. The target (28 admitted rows, 65 entries) is not narrowed after landing.",
+      "counter_cmd": "python3 {tool}/corpus/instruments/r46-c2-gate.py --root {tree}",
+      "expect_before": "c2-gate fixed=1/7 exit=1",
+      "expect_after": "c2-gate fixed=7/7 exit=0",
+      "secondary": "python3 {tool}/corpus/instruments/r44-frontier-count.py --root {tree} --expect 28  # base: frontier rows=27 admitted=27 exit 1",
+      "plain": [
+        "grep -cE '^\\| F[0-9]+ \\|' corpus/README.md   # 27 -> 28",
+        "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md   # 72 -> >=73 (S073 mined)",
+        "find corpus/knowledge -maxdepth 1 -name '*.md' | wc -l   # 64 -> 65",
+        "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-46/manifest.json --source S073   # sha256 OK + 8 quotes OK",
+        "grep -rliE 'private vulnerability reporting|privately report' corpus/knowledge corpus/SOURCES.md corpus/README.md   # base: nothing; tip: README, SOURCES, the new entry"
+      ],
+      "freeze_tree_reading": "c2-gate fixed=2/7 exit=1 at the freeze tree (G4 capture + G7 census).",
+      "control": ".ufo/waves/round-46/controls/freeze-controls.txt"
+    }
+  ],
+  "sourced_claim": "C2 rests on S073 (opened 2026-10-28T22:56Z by the L1; snapshot corpus/source-snapshots/round-46/S073.txt).",
+  "frontier_step": "SOURCES rows 72 -> >=73 (S073 tier A mined); S072/S070 supersede pair recorded in the registry notes; considerthese/2026-10-26.md proposal 3 (quiescence gate) mined with the round-45 landing/ordering mistake; mined mistake in corpus/lessons/round-46.md ## Mistakes"
+}

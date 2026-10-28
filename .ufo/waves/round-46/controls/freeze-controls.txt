@@ -1,0 +1,91 @@
+== c1 do-nothing (tree = baseline = base export)
+gate L1 pass=0 read=gated=24 broken=0 lines=64/base=64
+gate L2 pass=0 read=base-gated=24 regrounded=0 
+gate L3 pass=0 read=recheck-lines-clean=0
+gate L4 pass=0 read=entry-mode-green=0
+gate L5 pass=0 read=append-only=0
+gate L6 pass=0 read=mutants=0 survivors=none
+gate L7 pass=1 read=still-gated=24 changed=none
+c1-gate fixed=1/7 exit=1
+exit=1
+== c1 marker-only (two recheck lines replaced by `true`)
+gate L1 pass=1 read=gated=22 broken=0 lines=64/base=64
+gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+gate L3 pass=0 read=bad=claim-gates.md,claim-package-contract.md
+gate L4 pass=0 read=bad=claim-gates.md,claim-package-contract.md
+gate L5 pass=0 read=bad=claim-gates.md,claim-package-contract.md
+gate L6 pass=0 read=mutants=0 survivors=none
+gate L7 pass=1 read=still-gated=22 changed=none
+c1-gate fixed=3/7 exit=1
+exit=1
+== c1 fabricated-anchors (gate line + six rows whose tokens are not in the anchored lines)
+gate L1 pass=0 read=gated=24 broken=0 lines=64/base=64
+gate L2 pass=0 read=base-gated=24 regrounded=0 
+gate L3 pass=0 read=recheck-lines-clean=0
+gate L4 pass=0 read=entry-mode-green=0
+gate L5 pass=0 read=append-only=0
+gate L6 pass=0 read=mutants=0 survivors=none
+gate L7 pass=0 read=still-gated=24 changed=claim-gates.md,claim-package-contract.md
+c1-gate fixed=0/7 exit=1
+exit=1
+== c1 single-anchor-file (six real rows, all one file)
+gate L1 pass=0 read=gated=24 broken=0 lines=64/base=64
+gate L2 pass=0 read=base-gated=24 regrounded=0 
+gate L3 pass=0 read=recheck-lines-clean=0
+gate L4 pass=0 read=entry-mode-green=0
+gate L5 pass=0 read=append-only=0
+gate L6 pass=0 read=mutants=0 survivors=none
+gate L7 pass=0 read=still-gated=24 changed=claim-gates.md,claim-package-contract.md
+c1-gate fixed=0/7 exit=1
+exit=1
+== c1 gutted-entry (valid rows, but the entry's body was deleted to un-gate it)
+gate L1 pass=1 read=gated=22 broken=0 lines=64/base=64
+gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+gate L3 pass=1 read=recheck-lines-clean=2
+gate L4 pass=1 read=entry-mode-green=2
+gate L5 pass=0 read=bad=claim-gates.md,claim-package-contract.md
+gate L6 pass=1 read=mutants=12 survivors=none
+gate L7 pass=1 read=still-gated=22 changed=none
+c1-gate fixed=6/7 exit=1
+exit=1
+== c2 do-nothing (base export)
+gate G1 pass=0 read=rows=27 admitted=27 dup=0
+gate G2 pass=0 read=F28-rows=0
+gate G3 pass=0 read=row-S073=absent-or-malformed
+gate G4 pass=0 read=manifest-absent
+gate G5 pass=0 read=F28-rows=0
+gate G6 pass=0 read=knowledge=64 base-names-intact=1 entry-bytes-ok=0
+gate G7 pass=1 read=census-rc=0 ok-line=1
+c2-gate fixed=1/7 exit=1
+exit=1
+== c2 junk-row (F28 + S073 rows and a header-only entry)
+gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+gate G2 pass=0 read=source=1 verified-at=1 recheck=1 sections=0/4 table-rows=-2 xrefs=0/0
+gate G3 pass=1 read=row-S073=ok
+gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+gate G5 pass=0 read=spans=0 located=0 failed=0 uncited=0 cores=0/5
+gate G6 pass=0 read=knowledge=65 base-names-intact=1 entry-bytes-ok=0
+gate G7 pass=1 read=census-rc=0 ok-line=1
+c2-gate fixed=4/7 exit=1
+exit=1
+== c2 fabricated-quote (one curly quote that the capture does not hold)
+gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+gate G2 pass=0 read=source=1 verified-at=1 recheck=1 sections=1/4 table-rows=-2 xrefs=0/0
+gate G3 pass=1 read=row-S073=ok
+gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+gate G5 pass=0 read=spans=1 located=0 failed=1 uncited=0 cores=0/5
+gate G6 pass=0 read=knowledge=65 base-names-intact=1 entry-bytes-ok=0
+gate G7 pass=1 read=census-rc=0 ok-line=1
+c2-gate fixed=4/7 exit=1
+exit=1
+== c2 uncited-filler (all four headings, 600 words of filler, no citations)
+gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+gate G2 pass=0 read=source=1 verified-at=1 recheck=1 sections=4/4 table-rows=-2 xrefs=0/0
+gate G3 pass=1 read=row-S073=ok
+gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+gate G5 pass=0 read=spans=0 located=0 failed=0 uncited=0 cores=0/5
+gate G6 pass=1 read=knowledge=65 base-names-intact=1 entry-bytes-ok=1
+gate G7 pass=1 read=census-rc=0 ok-line=1
+c2-gate fixed=5/7 exit=1
+exit=1
+controls total=9 red=9 green=0
