@@ -1,0 +1,214 @@
+=== ExecSelftest mutants — kasegi-shokunin round 42 ===
+=== seat: ExecSelftest (instrument QA; NOT acceptance) ===
+=== method: each mutant applies a COMMITTED-FAMILY defeat shape to a FRESH
+=== fixture (a new mirror commit over the lane tip + suite tip), and the
+=== CURRENT bytes of the landed limb are then run over the pristine fixture
+=== and over the mutant fixture.  A mutant the limb REJECTS (exit != 0 /
+=== closed=0) is a repair that holds; a mutant the limb ACCEPTS (exit 0 /
+=== closed=1) is an IN-FAMILY ESCAPE and would fire the C1 kill rule.
+===
+=== SCOPE NOTE (honest limit): the r42 suite deliverable
+=== .ufo/waves/round-42/wave1/ExecSuiteCore.r42-closure.sh had NOT landed by
+=== the end of this seat's window (polled ~2h), so the SUITE-level runs
+=== (--selftest --export-ref <tip>, --export-ref <base>) could not be
+=== executed.  The per-mutant verdicts below are measured against the
+=== LANDED J-LIMBS, which are the same limbs the suite sources.
+
+######## MUT-J11-F-CORR-duplicate.sh ########
+######## MUT-J11-F-CORR-duplicate.sh ########
+### apply-exit=0
+### mutant-commit=fcf35f2dbe529b4e732870face37278ba694a183
+### tip=707e1abdbc37e6529d0a585083fcdb15db94293b
+### mutated paths:
+M	LOG.md
+M	SCORECARD.md
+### ---- apply output ----
+SCORECARD correction lines at: [1601, 1602, 1603, 1604, 1606, 1607, 1608, 1609]
+duplicated 9 lines verbatim after line 1610
+LOG.md: inserted a verbatim duplicate of correction line 1736
+SCORECARD round-41 correction count: 16
+LOG.md round-41 correction count:     4
+### ---- limb verdicts ----
+limb=ExecJ11Corr.sh fixture=pristine exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ11Corr.sh fixture=mutant exit=1 output=records=3,corrections=57,distinct=27,dups=5,dup-distinct=5,dup-lines=30,dup-records=2,unexcused=5,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/5,recorded=0
+limb=ExecJ12J13.sh fixture=pristine exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ12J13.sh fixture=mutant exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ5Scan.sh fixture=pristine exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ5Scan.sh fixture=mutant exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ8Receipt.sh fixture=pristine exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ8Receipt.sh fixture=mutant exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ9NegCtl.sh fixture=pristine exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+limb=ExecJ9NegCtl.sh fixture=mutant exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+
+######## MUT-J12-J13-tracked-deletion.sh ########
+######## MUT-J12-J13-tracked-deletion.sh ########
+### apply-exit=0
+### mutant-commit=cc240f2bbdbac51f94011fa50f96cb2444c5d989
+### tip=707e1abdbc37e6529d0a585083fcdb15db94293b
+### mutated paths:
+D	corpus/source-snapshots/round-41/S063.txt
+### ---- apply output ----
+deleting tracked corpus file: corpus/source-snapshots/round-41/S063.txt
+925512e715be5fae950f3eec88805197d4007875dac825c5603d44d2b71e2faa  corpus/source-snapshots/round-41/S063.txt
+remaining corpus snapshot count: 55
+### ---- limb verdicts ----
+limb=ExecJ11Corr.sh fixture=pristine exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ11Corr.sh fixture=mutant exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ12J13.sh fixture=pristine exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ12J13.sh fixture=mutant exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ5Scan.sh fixture=pristine exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ5Scan.sh fixture=mutant exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ8Receipt.sh fixture=pristine exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ8Receipt.sh fixture=mutant exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ9NegCtl.sh fixture=pristine exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+limb=ExecJ9NegCtl.sh fixture=mutant exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+
+######## MUT-J1-F-EVID-union.sh ########
+######## MUT-J1-F-EVID-union.sh ########
+### apply-exit=0
+### mutant-commit=714a5a86537e21abc29a82fa2e8fbc75cece02bb
+### tip=707e1abdbc37e6529d0a585083fcdb15db94293b
+### mutated paths:
+M	SCORECARD.md
+### ---- apply output ----
+SCORECARD.md: 16 correction lines stripped of evidence paths
+evidence path refs left in SCORECARD correction lines:
+20
+grep: Unmatched ( or \(
+### ---- limb verdicts ----
+limb=ExecJ11Corr.sh fixture=pristine exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ11Corr.sh fixture=mutant exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ12J13.sh fixture=pristine exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ12J13.sh fixture=mutant exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ5Scan.sh fixture=pristine exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ5Scan.sh fixture=mutant exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ8Receipt.sh fixture=pristine exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ8Receipt.sh fixture=mutant exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ9NegCtl.sh fixture=pristine exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+limb=ExecJ9NegCtl.sh fixture=mutant exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+
+######## MUT-J2-F-TOKEN-mangled.sh ########
+######## MUT-J2-F-TOKEN-mangled.sh ########
+### apply-exit=0
+### mutant-commit=a7d05cd7b6b575a1f78a4baa60ff797d557b5a59
+### tip=707e1abdbc37e6529d0a585083fcdb15db94293b
+### mutated paths:
+M	LOG.md
+M	SCORECARD.md
+M	SHONEN.md
+### ---- apply output ----
+SCORECARD.md: 9 correction lines mangled (closed=<n>/<m> -> closed=<n>/<m>0)
+LOG.md: 5 correction lines mangled (closed=<n>/<m> -> closed=<n>/<m>0)
+SHONEN.md: 6 correction lines mangled (closed=<n>/<m> -> closed=<n>/<m>0)
+records mutated: 3
+--- token distribution in SCORECARD.md after mutation ---
+      5 closed=0/7
+      7 closed=0/9
+      2 closed=10/10
+      2 closed=10/100
+      2 closed=10/12
+      2 closed=14/14
+      1 closed=2/10
+      1 closed=3/10
+      1 closed=3/9
+      1 closed=6/7
+      5 closed=7/7
+      1 closed=7/8
+      2 closed=7/80
+      2 closed=7/800
+      1 closed=8/8
+      4 closed=8/80
+      7 closed=9/9
+### ---- limb verdicts ----
+limb=ExecJ11Corr.sh fixture=pristine exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ11Corr.sh fixture=mutant exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ12J13.sh fixture=pristine exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ12J13.sh fixture=mutant exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ5Scan.sh fixture=pristine exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ5Scan.sh fixture=mutant exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ8Receipt.sh fixture=pristine exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ8Receipt.sh fixture=mutant exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ9NegCtl.sh fixture=pristine exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+limb=ExecJ9NegCtl.sh fixture=mutant exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+
+######## MUT-J3-F-TABLE-split.sh ########
+######## MUT-J3-F-TABLE-split.sh ########
+### apply-exit=0
+### mutant-commit=5242fe11688bd4b5a8562a1e7b87714f7be1d52d
+### tip=707e1abdbc37e6529d0a585083fcdb15db94293b
+### mutated paths:
+M	SKILL.md
+### ---- apply output ----
+inserted blank line after registry separator at line 1127 (table split)
+added a SPLIT r42-closure.sh registry row
+SKILL.md mutated: split + bare-pipe + leading-whitespace
+1130:|  r41-closure.sh | gate | `bash corpus/instruments/r41-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-
+1138:| r42-closure.sh | gate | `bash corpus/instruments/r42-closure.sh --export-ref <hash>` | one `J<n> payload=... closed=0|1` line per check J1-J13,
+### ---- limb verdicts ----
+limb=ExecJ11Corr.sh fixture=pristine exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ11Corr.sh fixture=mutant exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ12J13.sh fixture=pristine exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ12J13.sh fixture=mutant exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ5Scan.sh fixture=pristine exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ5Scan.sh fixture=mutant exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ8Receipt.sh fixture=pristine exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ8Receipt.sh fixture=mutant exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ9NegCtl.sh fixture=pristine exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+limb=ExecJ9NegCtl.sh fixture=mutant exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+
+######## MUT-J5-F-SCAN-outside.sh ########
+######## MUT-J5-F-SCAN-outside.sh ########
+### apply-exit=0
+### mutant-commit=b37e1cdbbae67719920d305b749eb35132c76299
+### tip=707e1abdbc37e6529d0a585083fcdb15db94293b
+### mutated paths:
+### ---- apply output ----
+planted:
+  (a) outside scope stray : /fast/scratch/hyaku/kasegi-r42/ExecSelftest/limbstage/MUT-J5-F-SCAN-outside.sh/scope/kasegi-r42-ExecSelftest-mutant
+  (b) case-variant dir    : /fast/scratch/hyaku/kasegi-r42/ExecSelftest/limbstage/MUT-J5-F-SCAN-outside.sh/sr/Kasegi_R40_stray
+  (c) family-named file   : /fast/scratch/hyaku/kasegi-r42/ExecSelftest/limbstage/MUT-J5-F-SCAN-outside.sh/sr/kasegi-r42-ready
+  (d) work-area stray     : /fast/scratch/hyaku/kasegi-r42/ExecSelftest/limbstage/MUT-J5-F-SCAN-outside.sh/sr/work/kasegi-r42-work-stray
+/fast/scratch/hyaku/kasegi-r42/ExecSelftest/limbstage/MUT-J5-F-SCAN-outside.sh/scope/kasegi-r42-ExecSelftest-mutant
+/fast/scratch/hyaku/kasegi-r42/ExecSelftest/limbstage/MUT-J5-F-SCAN-outside.sh/scope/kasegi-r42-ExecSelftest-mutant/stray
+/fast/scratch/hyaku/kasegi-r42/ExecSelftest/limbstage/MUT-J5-F-SCAN-outside.sh/sr/Kasegi_R40_stray
+/fast/scratch/hyaku/kasegi-r42/ExecSelftest/limbstage/MUT-J5-F-SCAN-outside.sh/sr/kasegi-r42-ready
+/fast/scratch/hyaku/kasegi-r42/ExecSelftest/limbstage/MUT-J5-F-SCAN-outside.sh/sr/work
+/fast/scratch/hyaku/kasegi-r42/ExecSelftest/limbstage/MUT-J5-F-SCAN-outside.sh/sr/work/kasegi-r42-work-stray
+### ---- limb verdicts ----
+limb=ExecJ11Corr.sh fixture=pristine exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ11Corr.sh fixture=mutant exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ12J13.sh fixture=pristine exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ12J13.sh fixture=mutant exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ5Scan.sh fixture=pristine exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ5Scan.sh fixture=mutant exit=1 output=J5 payload=strays=2,outside=1,read=ok,scanned=4,scope=on closed=0
+limb=ExecJ8Receipt.sh fixture=pristine exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ8Receipt.sh fixture=mutant exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ9NegCtl.sh fixture=pristine exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+limb=ExecJ9NegCtl.sh fixture=mutant exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+
+######## MUT-J7-F-FLIP-status.sh ########
+######## MUT-J7-F-FLIP-status.sh ########
+### apply-exit=0
+### mutant-commit=0ea6aeaede330b13f7e12cc6c6ec0d404676fc6a
+### tip=707e1abdbc37e6529d0a585083fcdb15db94293b
+### mutated paths:
+M	corpus/README.md
+### ---- apply output ----
+flipped F01 status admitted -> explored
+added decoy row | F999 | naming an absent entry file
+--- frontier rows after mutation ---
+25
+1
+1
+### ---- limb verdicts ----
+limb=ExecJ11Corr.sh fixture=pristine exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ11Corr.sh fixture=mutant exit=1 output=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+limb=ExecJ12J13.sh fixture=pristine exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ12J13.sh fixture=mutant exit=1 output=deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=fail
+limb=ExecJ5Scan.sh fixture=pristine exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ5Scan.sh fixture=mutant exit=0 output=J5 payload=strays=0,outside=0,read=ok,scanned=0,scope=on closed=1
+limb=ExecJ8Receipt.sh fixture=pristine exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ8Receipt.sh fixture=mutant exit=1 output=receipt=0,sentinel=0,ref=0,digest=0,time-basis=0,run-utc=0,not-future=0,ancestor=0,diff-clean=0,diff-read=ok,header-lines=0,run-lines=0,selftest-lines=0,selftest-verdicts=0,summary=0,closed-line=0,payload-match=0/0,closed-match=0/0,selftest-match=0/0,control=0
+limb=ExecJ9NegCtl.sh fixture=pristine exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+limb=ExecJ9NegCtl.sh fixture=mutant exit=2 output=suite=none,error=no-work-dir,base=?,r41=?,ceiling=?,refnf=?
+

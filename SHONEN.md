@@ -228,3 +228,60 @@ Correction (round 41): the `--selftest cases=10 failures=0` half, also quoted by
 - [~] At least one end-to-end domain task executed and logged in LOG.md — evidence: no live target-domain hunt ran; the round curated RFC 9116 as format knowledge, not an authorized domain task. Box remains `[~]`.
 - [~] Instructions executable by an agent without oral context — evidence: C2 source-recheck/frontier/binding/audit/census counters pass; C1 final receipt run is `closed=10/12 exit=1` and graded selftest has 6 failures, so the round does not verify the closure suite. Box remains `[~]`.
 - [~] No cross-domain bleed (PROVINCE.md still accurate) — evidence: F24 was appended, but wave 2 found shared RFC 9116 fields/scope/expiry/non-authorization material in kake's existing `security-txt-publishing.md`; L0 scope ruling requested, no coverage credit claimed. Box remains `[~]`.
+
+## Round 42 evidence
+
+- [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
+      — evidence (round 42, base `5053a7f46de35784cff4b56756906e9014a38276`; lane docs byte-unchanged
+      base → claims freeze `0566bd66e93d429b2df8b6751cf10cbdc391e79b`): `SKILL.md` 1129 lines, sha256
+      `f8e7a5d3be74699329162635b26731e0ce156483dc17bd29a3323eef15413e00`; `density.py SKILL.md` mean
+      **237.1** over 29 blocks, 780 path-citation instances, exit 0; `anchorcheck.py SKILL.md`
+      `16 in-range cite instances, 0 bad; 16 distinct anchors` plus
+      `LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0`, exit 0. The round's
+      registry move is the `r42-closure.sh` row appended in one well-formed Gates & probes block,
+      with the D-r41-3 residue repaired (the round-40 block whose header/separator/row are split by
+      a blank line, and the duplicated `r40-closure.sh` row): the repair, the post-append density
+      re-measurement and the `anchorcheck` re-run are `<pending>` at the round's judged head (J3 /
+      F-TABLE; `density.py` byte-identical to base sha256
+      `ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710` under J12). Box stays
+      `[~]`; no non-author check.
+
+- [~] At least one end-to-end domain task executed and logged in LOG.md
+      — evidence (round 42): **no end-to-end domain hunt ran this round.** The wave-1 dispatch is 64
+      build seats — executor 19, scout 11, critic 8, reviewer 8, scribe 7, mutation-tester 5,
+      connector 2, sentinel 2, simplifier 1, revenger 1 (`.ufo/waves/round-42/wave1-dispatch.json`,
+      64 members) — and none is a hunt-to-claim seat; `grep -c '^## Round 42' LOG.md` = 0 at the
+      claims freeze (1750 lines). The closest executed work is measurement, not a domain hunt: the
+      F25 lead screen, the S064 capture with its `source-recheck` quote checks and harness
+      admission, and the C1 suite run itself. Box stays `[~]`.
+
+- [~] Instructions executable by an agent without oral context
+      — evidence (round 42, base `5053a7f46de35784cff4b56756906e9014a38276`): the counters run from
+      committed bytes with no oral context. Base controls (measured): the
+      `.ufo/waves/round-42/c1-controls/do-nothing.txt` control records the r42 suite absent at base —
+      `bash corpus/instruments/r42-closure.sh` exits 127 there and cannot print `closed=13/13` — and
+      the r41 suite at `closed=8/12 exit=1` with `selftest cases=12 failures=8`;
+      `.ufo/waves/round-42/c2-controls/before.txt` records frontier 24, registry 63, knowledge 60,
+      `entries=27 pass=27`, `records=55 bound=55 unbound=0`, `expected=60`. After-state at Y
+      `<pending>`: `bash corpus/instruments/r42-closure.sh --export-ref <Y>` → `closed=13/13 exit=0`;
+      `--selftest --export-ref <Y>` → `selftest cases=13 failures=0` with thirteen graded
+      `selftest case=J<n> … positive=pass … verdict=pass` lines; a plain run refuses exit 2; the base
+      `5053a7f4…` and round-41 judged head `1f7464612ac4c44e39886b82e812610d3c039b13` exports print
+      `closed<13/13 exit=1`; an unresolvable `--export-ref` prints its distinct ref-not-found red;
+      the receipt `.ufo/waves/round-42/final-gates/all-gates.txt` tees both transcripts. C2 at Y
+      `<pending>`: frontier 25, registry 64+R, knowledge 61, `entries=28 pass=28` incl. `PASS F25`,
+      `records=56 bound=56 unbound=0`, `expected=61`, census exit 0, measure 45/45 = 1.000. Box stays
+      `[~]`; no non-author check.
+
+- [~] No cross-domain bleed (PROVINCE.md still accurate)
+      — evidence (round 42, base `5053a7f46de35784cff4b56756906e9014a38276`): `PROVINCE.md` is 163
+      lines, sha256 `5b88bc43a5a5c64ec7710882c7af1268ef8de94f4b360492ab989e9e21e2ea9a`, unchanged
+      base → claims freeze; the round's only province move is one `[r42 Frontier amendment]` F25
+      line appended at end of file, `<pending>` at the judged head. F25's topic is a
+      machine-readable vulnerability-data standard (the lead class the freeze names: the OSV schema
+      or the CVE Record Format) — the data-standard layer under the claim-package and triage
+      province that F18/F19/F20/F21/F23 already sit in — and the scout's no-overlap check against
+      existing lane rows and entries is `<pending>`. F24 (RFC 9116) stays PARKED: the round-41 L0
+      scope question on shared security.txt ground with kake is unanswered at freeze time, so it is
+      neither re-mined nor referenced as a candidate. Sibling scan `<pending>`. Box stays `[~]`.
+

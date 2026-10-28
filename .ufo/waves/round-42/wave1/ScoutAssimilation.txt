@@ -1,0 +1,39 @@
+Assimilation (merge/kasegi, corpus-expansion-1, staged S031-S124): none adopted this round.
+
+ID-collision check (0-3-space-tolerant extractor over corpus/SOURCES.md vs merge/kasegi/SOURCES.append.md):
+lane registry ids 63 (S001-S063); staged ids 94 (S031-S124); id collisions 33 (S031-S063).
+Every staged row sits inside the lane's live S-space; none may be appended under its staged id, so adoption
+requires id remapping to S064+ plus gate review. Two of the seven quarantine rows fail even if remapped
+(quotes not verbatim); a third duplicates a lane row's source. Evidence: ScoutAssimilation.collisions,
+ScoutAssimilation.quarantine-slice.
+
+Quarantine-slice hand check (absent-defect-register.md, 7 kasegi rows; all re-fetched 2026-10-28 UTC):
+
+id       class                    fetch                         quote in fetched bytes            verdict
+S037     payload-absent           200 24131 B openstd.samr.gov.cn absent (see note)                 quarantined
+S054     payload-absent           200 513648 B ipa.go.jp PDF      absent (see note)                 quarantined
+S048     unreachable              404 748 B (record deleted)      not checkable                     unverifiable
+S065     unreachable              200 7465472 B npc.gov.cn PDF    present verbatim                  adoptable*
+S068     unreachable              200 94027 B cisco.com           present verbatim (source typo `2018 ,`)  quarantined
+S069     unreachable              200 1470121 B draft PDF         present verbatim                  adoptable*
+S070     unreachable              200 234182 B draft PDF          present verbatim                  adoptable*
+
+* adoptable = quote reproduces verbatim in the fetched source; still needs id remap + gate review before landing.
+
+Row evidence:
+- S037 (GB/T 30279-2020 catalogue page): every token of the Gate quote exists on the page — name, 现行,
+  2020-11-19, 2021-06-01 — but not as one string: the 英文标准名称, 在线预览 and CCS L80 / ICS 35.040 rows
+  sit between the 中文标准名称 value and the 标准状态/发布日期/实施日期 rows (page text ~L296-312). The Gate's
+  "whitespace-normalised" claim is wrong: the quote skips three table rows; it is a reassembly, not a located quote.
+- S054 (request_to_ipa.pdf): the source reads 脆弱性（（法第42条第１項に規定する脆弱性をいう。以下同じ。）の悪用が
+  確認されたもの又は疑われるもの; the Gate quote drops the inline parenthetical unmarked — not verbatim.
+- S048 (gbDetailed?id=3B865...): Apache Tomcat 404 "gbDetailed.jsp 未找到"; sibling record id=4C30E22D...
+  returns 200 and the platform root serves 200, so the single record id is dead. Staged S091 covers the same
+  plan 20260806-T-469 at the live id and could substitute under a new anchor.
+- S068 (Cisco policy): quote reproduces verbatim including the source's own `29147:2018 ,` typo, but the lane
+  already holds this URL as registry S040 — the staged row is a duplicate-source re-registration.
+- S065/S069/S070: quotes reproduce verbatim at the fetched bytes; byte counts match the Gate notes exactly
+  (7465472 / 1470121 / 234182). S069/S070 needed the documented two-hop path: std.samr.gov.cn 302 -> token URL
+  fetched over plain http (kass.sacinfo.org.cn TLS chain incomplete, curl (60)).
+
+Verdict: no staged row is landable as-is this round — Assimilation: none.

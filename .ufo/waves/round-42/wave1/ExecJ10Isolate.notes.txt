@@ -1,0 +1,166 @@
+J10 graded-selftest isolation — per-case directory grammar and the proof it enables.
+Companion to ExecJ10Isolate.sh (the sourceable limb providing check_j10).
+
+1. WHAT THIS CLOSES
+
+   A graded selftest can print `verdict=pass` for every case while one case
+   reads another case's fixture and grades itself from it — or while a case
+   writes into the shared scratch area and poisons the next case. The
+   transcript looks perfect and the closure is false. J10 therefore proves
+   isolation by observing what the cases actually did, never by reading what
+   the suite says they did.
+
+2. THE GRAMMAR (what a conforming graded selftest must do)
+
+   For every graded case with identifier <ID> (J1..J13 in this round):
+
+   G1  PRIVATE PATH. The case materializes its mutated copy under a path that
+       carries <ID> as a whole component, case-insensitively: the component
+       is <ID> itself or <ID> followed by a non-alphanumeric separator. So
+       `<work>/cases/J7/` and `<work>/mut/J7-fixture/` both belong to J7,
+       while `J70` does not. All such paths sit under the work root the suite
+       was given (`--work`). One case may own several of them. Two cases may
+       not claim the same path: that is a shared fixture and is reported as
+       `shared`.
+
+   G2  NO CROSS-CASE READ. Inside case <ID>'s execution window, no path
+       belonging to another case is read. A read of a sibling's fixture is a
+       `foreign` touch and fails the check regardless of what the case
+       concludes.
+
+   G3  NO LEAK. Inside case <ID>'s execution window, nothing is created in the
+       shared scratch root (`--scratch-root`) outside the case's own paths.
+       This is the per-case scratch baseline diff: the scratch root is shared
+       state, so a file appearing in it during one case's window was written
+       by that case, and a file written outside the case's own paths is a leak.
+
+   G4  EXERCISED. The case read at least one real file under its own paths
+       inside its window. Opening the directory that `mkdir -p` just created
+       is not evidence of use: an inert fixture proves nothing about
+       isolation and is reported as `unused`.
+
+   G5  MATERIALIZED IN PLACE. The case's fixture is created inside the case's
+       own execution window, not during a setup phase before the graded cases
+       run. A fixture that predates the previous case's completion cannot be
+       attributed to a case at all and is reported as `precreated`.
+
+   The suite's own transcript (`selftest case=<ID> ... verdict=pass`) is not
+   evidence for G1-G5. It is used for exactly one thing: naming the case set
+   the suite claims to grade. A suite that prints thirteen pass lines while
+   violating G2 is red here.
+
+3. THE EXECUTION WINDOW
+
+   Isolation is a statement about a case, and a case is a span of execution,
+   so the trace is cut into windows:
+
+     - when the suite writes each case's verdict line as that case finishes,
+       the window is bounded by the previous case's verdict write and the
+       case's own verdict write (exact per-case bounds);
+     - when the suite prints every graded line at the end, the verdict writes
+       carry no per-case timing and the windows come from the order in which
+       the case fixtures are created instead (the next case's creation closes
+       the previous window).
+
+   In the bulk mode a fixture that was pre-created in a setup phase cannot be
+   told apart from one created at the start of its case, so G5 is enforced
+   only in the per-case-verdict mode; a suite that wants G5 checked must write
+   each verdict as its case finishes.
+
+   Suite-level work — extracting the export, assembling the transcript, the
+   final `closed=` line — falls outside every window and is never attributed
+   to a case. A suite that runs cases in one process and a suite that gives
+   each case its own process are both handled: the window, not the pid, is the
+   unit of attribution. The arrangement is reported anyway, as `mode=proc`
+   (each case in its own process) or `mode=shared` (cases share a process).
+
+4. HOW THE LIMB OBSERVES IT
+
+   check_j10 runs the suite's graded selftest under strace in a sandbox it
+   owns (`<work>/j10-sandbox`, scratch `<scratch>/j10-<pid>`), both outside
+   the lane, and reads the syscall trace:
+
+     open/openat/creat   read vs. create/write, from the flags; an
+                         O_DIRECTORY open counts as touching a directory,
+                         not as reading a file
+     mkdir/mkdirat       directory creation (the window boundary)
+     chdir               relative-path resolution: coreutils `mkdir -p`
+                         chdir's into each component, so a trace read
+                         literally would mis-place every directory it creates
+     rename/unlink/...   creation-family effects
+     stat/...            reads (only S_IFREG results count for G4)
+     write               the `selftest case=<ID>` verdict write, when the
+                         suite emits one per case, gives the window end
+
+   The scratch-root baseline is snapshotted before and after the traced run
+   and diffed; the per-case diff is the set of create events inside each
+   window.
+
+   The limb never trusts a suite-produced report and never reads the lane
+   working tree: the suite under test is the copy inside the export tree.
+
+5. RECURSION AND LEAF MODE
+
+   check_j10 spawns the suite's graded selftest, and the graded selftest calls
+   check_j10 back. The limb sets J10_NEST=1 on the traced child; in that mode
+   it prints `nest=1,...` and exits 1 without spawning, so the nested run is
+   red by construction and the recursion is finite. This mirrors the round-41
+   suite's R41_DEPTH leaf mode. A nested run's own J10 line is therefore
+   expected to read `nest=1`; it is not evidence about the outer suite.
+
+6. THE PAYLOAD
+
+   One line, counts only, deterministic for a given export tree (the receipt
+   check re-derives payload values, so a varying payload would itself be a
+   defect):
+
+     cases=<n>        graded cases the suite declared in its selftest output
+     found=<n>        of those, cases whose private path was observed
+     missing=<n>      declared cases with no private path observed
+     shared=<n>       paths claimed by more than one case
+     precreated=<n>   cases whose fixture predates their own window
+     unused=<n>       cases that never read a file under their own paths
+     foreign=<n>      reads of another case's path inside a window
+     leaks=<n>        files created in the scratch root outside the case paths
+     windows=<n>      execution windows derived from the trace
+     mode=proc|shared whether each case ran in its own process
+     scratch-added=<n> entries the whole traced run added to the scratch root
+
+   closed iff cases>=2 AND missing=0 AND shared=0 AND precreated=0 AND
+   unused=0 AND foreign=0 AND leaks=0. Every other shape is a red with a name,
+   never a vacuous pass: a missing suite prints `suite=0`, a missing tracer
+   prints `tracer=0`, an unreadable trace prints `tracer=failed`, a failed
+   analysis prints `analysis=failed`, and a nested run prints `nest=1`.
+
+7. DEFEATS THIS LIMB REJECTS (measured against a two-case reference harness)
+
+   Each variant is a two-case reference suite (J1, J2) run through the limb;
+   the receipt carries the transcript.
+
+     clean      both cases own their path, read only it, write only it
+                -> cases=2 found=2 missing=0 shared=0 precreated=0 unused=0
+                   foreign=0 leaks=0   exit 0
+     foreign    J2 reads J1's fixture file
+                -> foreign=1   exit 1   (detail names the path read)
+     leak       J2 writes into the shared scratch root
+                -> leaks=1   exit 1   (scratch-added=1)
+     unused     J2 materializes a directory and never reads it
+                -> unused=1   exit 1
+     samedir    both cases share one directory
+                -> found=1 missing=1 unused=1   exit 1
+     shared     both cases run in one process
+                -> mode=shared, still attributed by window: clean when the
+                   windows are clean, foreign=1 / leaks=1 when they are not
+
+8. WHAT THE LIMB DOES NOT CLAIM
+
+   - It does not judge whether a mutation is the right defect for its check;
+     that is J1-J9 and J11-J13.
+   - It does not claim the cases are logically independent beyond the file
+     system: cases may share the read-only export tree (it is outside every
+     case path) and that is not a violation.
+   - Reads outside the sandbox roots (the lane, /usr, /etc) are not attributed
+     to a case; the sandbox is what the suite was given to work in.
+   - It is not free: it runs the suite's graded selftest once under strace.
+     The analysis is cached per (suite digest, ref) under the work root, so
+     the run phase and the selftest case pay for it once.

@@ -1,0 +1,22 @@
+ScoutF25Lead — round-42 F25 lead screen: REJECTED candidates (closes D-r41-2 evidence: URL, access date, ≤25-word located quote, honest reason, flip condition for each).
+
+Two screened rejects; both verified against lane ground and sibling ground before recording.
+
+R1 — OSV schema (Open Source Vulnerability format)
+  url: https://ossf.github.io/osv-schema/
+  access date: 2026-10-28 (fetched 2026-10-28T11:06:45Z, HTTP 200, 228890 bytes, raw sha256 8cf1e3d3f9e10eba902d03af6c281d6bc5e71c22dc351fcb4b811c64030570e8)
+  located quote (14 words, capture line 9 of the normalized page text): "This document defines a standard interchange format for describing"
+    — the sentence completes on the next normalized line with "vulnerabilities in open source packages." (L10); quote pinned at the sentence's first line, unique occurrence.
+  reason: screened out on the disjointness tie-break, not on quality — it is a primary first-party normative spec (OSSF, JSON encoding with published validation schema, "This format is stable, but further backwards compatible changes may still be made." at capture line 17), but the sibling kaidoku-shokunin lane already holds an OSV record instance (SOURCES.md row S015: api.osv.dev/v1/vulns/CVE-2025-55305), leaving the OSV document family adjacent in the sibling ground; the picked candidate (CVE Record Format) has zero hits in every lane and ships its normative artifact as the self-contained bundled JSON Schema itself rather than an HTML page about a schema published elsewhere, which maximizes verifiability for the same frontier slot.
+  flip: re-open OSV if the F25 row/knowledge entry for the CVE Record Format is withdrawn, or if a future frontier needs OSV-specific range semantics (affected[].ranges[].events / database_specific extracted_events) that the CVE format cannot express.
+
+R2 — NVD API 2.0 CVE response schema (NVD Vulnerability Data API 2.2.4)
+  url: https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema
+  access date: 2026-10-28 (fetched 2026-10-28T11:08:16Z, HTTP 200, 10394 bytes, raw sha256 2b9c4e8ab7e6e42aa17ea787f58167beff47c119c6f291405f86ac19c6149e01)
+  located quote (10 words, served line 96): "Metric scores for a vulnerability as found on NVD."
+    — the metrics.description field; the same block carries NVD-only keys evaluatorComment/evaluatorSolution/evaluatorImpact and cisa* fields (served L36-L57), evidence that this document is NVD's own enriched view.
+  reason: screened out on the primary-of-record criterion — this schema specifies one downstream consumer's API response shape ("NVD Vulnerability Data API"), i.e. a derived, NVD-enriched projection of the CVE record, not the canonical record standard; the lane-adjacent discipline (S052 KEV catalog: treat a downstream catalog's fields as that catalog's, not the standard's) argues for capturing the primary CVE Record Format instead.
+    note: nvd.nist.gov/developers/vulnerabilities was also fetched (HTTP 200, 2092 bytes, 2026-10-28T11:06:45Z) but returns only the Angular application shell behind a Cloudflare challenge — no document text; the schema JSON on csrc.nist.gov is the same document family's normative artifact and was captured instead. Reject evidence quotes the schema, not the shell.
+  flip: re-open if a frontier targets NVD-specific enrichments (vulnStatus, evaluator* fields, cisa* mirror fields, NVD-side metrics/weaknesses) or the API interface contract (resultsPerPage/startIndex pagination) that the CVE Record Format does not carry.
+
+Screened but not needing a row: GHSA unauthenticated advisory API doc — sibling mori-shokunin already holds a GitHub Security Advisory page (SOURCES.md S012, GHSA-652q-wxr6-h5j6); the family is adjacent in sibling ground and weaker on disjointness than both finalists, so it was not promoted to a fetch. FIRST VIN — no standalone normative document found; not fetched.

@@ -1748,3 +1748,61 @@ Correction (round 41): the bullet's `graded selftest cases=10 failures=0` is unc
 - Wave shape: two v1 waves, wave 1 `kasegi-r41-build` 60 seats + wave 2 `kasegi-r41-falsify` 33 seats = 93 (64–128 band); attack roles 20/60 and 32/33, total 52/93. Dead seats: 0. Wave 2 had 0 connector seats (conformance item; wave 1 had two). No residual call.
 - Wave-2 routed findings: I1/I3 falsification escapes; C2 source/manifest binding gaps and kake overlap; I7 bare-pipe/whitespace parser survivors; I12 declaration completeness gap not shown to pass; outside-root I6 stray outside the committed-fixture kill clause. Full per-seat output is in `.ufo/waves/round-41/kasegi-r41-falsify-results.json` and `.ufo/waves/round-41/wave2/`.
 - SCORECARD's four round-41 correction lines for r40 C1 were accidentally appended twice; they remain byte-identical. The I1 false-acceptance finding reinforces the need for per-correction evidence checks; no prior scorecard lines were rewritten.
+
+Erratum sweep (round 42, r41 C1 grading): no round-41 line in any grading slot grades C1 as anything but not verified, so no erratum is issued against an r41 record; the slots read were `SCORECARD.md` `## Round 41 result` depth:verifiability row (line 1616, `4 (held; not verified)`), `LOG.md` round-41 entry (lines 1742-1743, `both unverified` and `C1 remains not verified under its frozen kill rule`), `SHONEN.md` round-41 box 3 (line 229, `does not verify the closure suite`), `corpus/lessons/round-41.md` claims row and verdict (lines 23 and 77, `C1 is not verified` and `C1 — not verified`), and the round-41 report C1 paragraph (`.ufo/reports/round-41/kasegi.md:26`, `so C1 is not verified`). Two lines read affirmative on a bare `C1.*verified` grep and neither grades C1: `corpus/lessons/round-41-verifier-spotcheck.md:6`, `the C1 suite/selftest was evidence-verified from committed bytes only`, describes the reviewer's method (line 42 of the same file grades `NOT VERIFIED`), and the M41-1 mistakes row `corpus/lessons/round-41.md:30`, `round-40 graded C1 **verified** while its frozen kill rule fired`, records the round-40 overclaim under correction rather than asserting it. Within the r40/r41 records, the affirmative C1-verified lines are round-40's: `SCORECARD.md:1595` and `LOG.md:1728`, each withdrawn by the `Correction (round 41)` blocks at `SCORECARD.md` 1602-1605 / 1607-1610 and `LOG.md` 1736, and the round-40 report's C1 line `.ufo/reports/round-40/kasegi.md:32` (`4 → 4 (held; verified)`), which still stands because a prior round's fleet report is outside this lane's append surface: it is routed, not corrected here.
+
+## Round 42 (attempt 1, fresh-start)
+
+- Frozen claims (`.ufo/waves/round-42/claims.json`, freeze commit
+  `0566bd66e93d429b2df8b6751cf10cbdc391e79b`, base `5053a7f46de35784cff4b56756906e9014a38276`):
+  C1 on axis depth:verifiability (score 4, held) and C2 on axis coverage (score 8, held); both are
+  asserted, not admitted, until a non-author verifier closes them. Before-controls
+  `.ufo/waves/round-42/c1-controls/do-nothing.txt` and `.ufo/waves/round-42/c2-controls/before.txt`
+  were committed before any round-42 data, and a do-nothing run reaches none of the declared
+  after-states.
+- C1 (depth:verifiability, 4 held): `corpus/instruments/r42-closure.sh` J1–J13 lands export-only —
+  `--export-ref <hash>` extracts the lane with `git -C <lane> archive <hash> | tar -x` into a work
+  dir outside the lane, a plain run refuses exit 2 — and closes the round-41 verifier's seven routed
+  families F-EVID (J1 per-correction evidence), F-TOKEN (J2 token-boundary tallies), F-TABLE (J3
+  SKILL.md registry integrity), F-DECL (J4 declared-blocks completeness), F-SCAN (J5 scratch hygiene
+  incl. outside-configured-root strays), F-BIND (J6 capture-binding missing-path/URL variants) and
+  F-FLIP (J7 frontier-counter status-flip detection), plus J8 receipt integrity (teed transcript,
+  payload values re-derived not trusted), J9 negative controls, J10 graded-selftest isolation, J11
+  SCORECARD correction uniqueness, J12 no tracked corpus deletions with `density.py` byte-identical,
+  J13 quiescence inside the suite's own scratch root; every J1–J7 check carries a REPLAY limb that
+  re-executes its committed defeat artifact against the current suite bytes and requires rejection.
+  At Y `<pending>`: `closed=13/13 exit=0`, `selftest cases=13 failures=0`; base `5053a7f4…` and
+  round-41 judged head `1f7464612ac4c44e39886b82e812610d3c039b13` exports print
+  `closed<13/13 exit=1`; an unresolvable `--export-ref` prints its distinct ref-not-found red; receipt
+  `.ufo/waves/round-42/final-gates/all-gates.txt` = teed run + selftest transcript
+  (`time-basis=ref-commit`).
+- C2 (coverage, 8 held): the claim admits F25 24 → 25 with a coverage-map row in `corpus/README.md`
+  and an appended `[r42 Frontier amendment]` in `PROVINCE.md`; the topic is a machine-readable
+  vulnerability-data standard the lane does not hold (lead class: the OSV schema or the CVE Record
+  Format), chosen by the wave-1 lead screen with its no-overlap check recorded `<pending>`. S064 is
+  mined (capture `corpus/source-snapshots/round-42/S064.txt` + its `manifest.json` record, the
+  `source-recheck` result `<pending>`) and at least one screened candidate S065+ is rejected with
+  reason + flip, URL, access date and ≤25-word located quote in `corpus/lessons/round-42.md` §Gate —
+  the D-r41-2 reject direction. Knowledge entry `<pending>` with its provenance trio. The claim's
+  declared after-state — registry 63 → 64+R, knowledge 60 → 61, harness `entries=28 pass=28` incl.
+  `PASS F25`, capture-binding `records=56 bound=56 unbound=0`, `recheck-audit.py --quiet`
+  `expected=61 missing=0 unexpected=0`, census exit 0, measure 45/45 = 1.000 — is a target, not a
+  measurement; every after-state value is `<pending>` at Y.
+- Frontier (claim target): `corpus/README.md` 24 → 25 F-rows; `corpus/SOURCES.md` 63 → 64+R rows
+  (the mined S064 plus the screened rejects); F24 stays parked pending the round-41 L0 scope ruling
+  and is neither re-mined nor cited as a candidate.
+- Repairs (round-41 verifier §5): D-r41-1 — the four `Correction (round 41)` SCORECARD entries were
+  appended twice (`:1602-1605` and `:1607-1610`); recorded here, not rewritten (append-only), with
+  J11 enforcing correction-block uniqueness from this round on. D-r41-3 — the split round-40 registry
+  table and duplicated `r40-closure.sh` row `<pending>`. D-r41-4 — the report's §6 stale-lane line
+  `<pending>`. D-r41-5 — wave-2 connector seats `<pending>`.
+- Mistakes: minted in `corpus/lessons/round-42.md` §Mistakes — `<pending>`.
+- Assimilation: `.ufo/waves/round-42/assimilation/` receipts and
+  `.ufo/waves/round-42/wave1/ExecAssimilation.md` — `<pending>`.
+- considerthese: the round's `considerthese/<date>.md` proposals and their dispositions in
+  `corpus/knowledge/considerthese-proposals-ledger.md` — `<pending>`.
+- Wave shape: wave 1 `kasegi-r42-build` 64 seats — executor 19, scout 11, critic 8, reviewer 8,
+  scribe 7, mutation-tester 5, connector 2, sentinel 2, simplifier 1, revenger 1
+  (`.ufo/waves/round-42/wave1-dispatch.json`); wave 2 `<pending>`; dead seats `<pending>`.
+- Tooling: no pacman transactions (host-wide pause); package/install moves `<pending>`.
+

@@ -1,0 +1,49 @@
+SIBLING-OVERLAP SCAN — kasegi-shokunin round 42 (seat ScoutSibling; independent of ScoutF25Lead; scan date 2026-10-28 UTC)
+
+SCOPE
+- Sibling lanes enumerated: 20 (every /home/vgpnk/Projects/shokunin/*-shokunin except kasegi-shokunin).
+- In-scope surfaces per lane: corpus/knowledge/**, corpus/SOURCES.md, SKILL.md (absent in audio-shokunin, game-dev-2d-shokunin); plus corpus/README.md frontier maps (all 20 exist) and a whole-corpus sweep for out-of-scope disclosure.
+- Term sets. OSV schema family: \bosv\b, osv.dev, ossf.github.io, affected. CVE Record Format family: cve record, cveSchema, CVE_Record_Format, cve.org, schema.cve.org (also probed cveproject.github.io, cveawg, vulnogram, cve-services — zero hits).
+
+RESULT PER DOC FAMILY
+
+DOC 1 — CVE Record Format: ZERO substantive sibling ground. No hits in any in-scope surface of any of the 20 lanes (0 lines / 0 files, all lanes). Clean for F25.
+  Out-of-scope context (informational, not coverage):
+  - kagi-shokunin/corpus/lessons/round-28.md:43,151 — NVD REST JSON 2.0 queried for one CVE (services.nvd.nist.gov/rest/json/cves/2.0); recorded as NOT REGISTERED rejection, not a registry row.
+  - revenger-shokunin/corpus/snapshots/claude-red-security.md:39 — prose pointer https://www.cve.org/PartnerInformation/ListofPartners (MITRE CNA list) inside a captured third-party doc; not the record format.
+
+DOC 2 — OSV schema: NO lane holds the schema document itself (ossf.github.io/osv-schema, osv.dev doc pages — zero hits fleet-wide). ONE substantive-adjacent holding found:
+  - kaidoku-shokunin/corpus/SOURCES.md:21 — row S015 | "OSV CVE-2025-55305 record — https://api.osv.dev/v1/vulns/CVE-2025-55305" | dataset | status mined. The row teaches field-level reading of an OSV-format record instance: details, affected[].ranges[].database_specific.extracted_events, references. In-scope hit lines: 1.
+  - kaidoku corpus/lessons/round-13.md:42 (record quote) and :59 (limitation: details prose vs extracted_events mismatch) — lesson ground for the same row (outside scoped surfaces).
+  - kaidoku corpus/evidence/round-30/c1/pypi-uv-0.13.0.json:1 — embedded audit JSON with "source":"osv" and https://osv.dev/vulnerability/GHSA-hq85-5cpj-mr62 links (outside scoped surfaces).
+  - mori-shokunin/corpus/SOURCES.md:18 — row S012 GHSA-652q-wxr6-h5j6 GitHub repository advisory (docs|A|mined): maintainer advisory bounding affected/patched versions; recheck captures under corpus/evidence/recheck-r32/S012.src and lesson rows round-12.md:138, round-32.md:24. Adjacent vulnerability-data document, NOT the OSV schema.
+  - kotodama-shokunin/corpus/knowledge/linguistics/syntax-typology.md:11,32 — false positive: "OSV" = object-subject-verb linguistic word-order class, unrelated.
+
+TERM-NOISE TABLE (in-scope surfaces; pattern-hit lines incl. generic prose 'affected'; 'osv-family' = osv|osv.dev|ossf.github.io; 'cve-family' = the CVE term set)
+  lane                osv-family lines   cve-family lines   'affected'-pattern files/lines
+  audio-shokunin      0                  0                  0/0
+  chousa-shokunin     0                  0                  3/4
+  game-dev-2d         0                  0                  0/0
+  game-dev-3d         0                  0                  1/1
+  kagi-shokunin       0                  0                  0/0
+  kaidoku-shokunin    1 (SOURCES.md:21)  0                  9/9 (S015 row + 8 knowledge notes; all generic 'affected')
+  kake-shokunin       0                  0                  2/3
+  kama-shokunin       0                  0                  1/1
+  kengaku-shokunin    0                  0                  4/4
+  kotoba-shokunin     0                  0                  0/0
+  kotodama-shokunin   2 (syntax-typology.md:11,32 — linguistic OSV, false positive)   0   32/64
+  kumitate-shokunin   0                  0                  2/2
+  lore-shokunin       0                  0                  5/15
+  mado-shokunin       0                  0                  2/2
+  mori-shokunin       0                  0                  4/4 (incl SOURCES.md:18 'affected versions' — adjacent advisory row)
+  revenger-shokunin   0                  0                  1/1
+  souji-shokunin      0                  0                  0/0
+  tabi-shokunin       0                  0                  4/6
+  tameshi-shokunin    0                  0                  2/2
+  tsukuroi-shokunin   0                  0                  9/10
+  corpus/README.md frontier maps (all 20 lanes): 0 hits for the full term set.
+
+VERDICT FOR THE F25 PICK
+- CVE Record Format: no sibling ground at all — safest pick against the kill clause "the chosen topic's document already covered by a lane row or entry".
+- OSV schema: the schema document itself is unheld fleet-wide, BUT kaidoku holds a mined OSV-format record instance (S015) with field-level lesson ground, and mori holds a GHSA advisory row — OSV-family is materially weaker on the overlap axis.
+- Recommendation: prefer the CVE Record Format for F25/S064; if OSV schema is chosen, the lead's no-overlap argument must explicitly distinguish schema-document vs record-instance coverage and cite this scan.

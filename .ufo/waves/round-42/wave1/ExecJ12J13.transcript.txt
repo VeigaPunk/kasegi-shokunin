@@ -1,0 +1,114 @@
+ExecJ12J13 transcript — round-42 closure-suite limbs J12 and J13
+=====================================================================
+lane            = /home/vgpnk/Projects/shokunin/kasegi-shokunin
+base            = 5053a7f46de35784cff4b56756906e9014a38276 (round-42 base)
+exported ref    = 514ff62d61ee9bc717a20a02a22c65ec0c5124ed (lane HEAD at transcript time)
+limb            = .ufo/waves/round-42/wave1/ExecJ12J13.sh
+scratch         = /fast/scratch/hyaku/kasegi-r42/ExecJ12J13/probe-final/scratch
+work            = /fast/scratch/hyaku/kasegi-r42/ExecJ12J13/probe-final/scratch/work
+host tools      = git 2.56.0, coreutils realpath/find/sha256sum
+
+The probe exports the ref with the suite's export mode
+(git -C <lane> archive <ref> | tar -xf - -C <tree>), sources the limb, and
+runs every case below.  Each scenario prints the limb's payload line, then
+one graded verdict per assertion.  An assertion passes when the payload
+carries the expected value AND the limb's exit status is the expected one.
+
+--------------------------------------------------------------------------------
+SECTION 1 — the two greens over the HEAD export
+--------------------------------------------------------------------------------
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive --format=tar 514ff62d61ee9bc717a20a02a22c65ec0c5124ed | tar -xf - -C <tree>
+$ check_j12 <tree> 514ff62d61ee9bc717a20a02a22c65ec0c5124ed
+j12 payload: deleted=0,renamed=0,density=1,base-density=1,missing=0,diff-read=ok (rc=0)
+probe case=j12-green-payload verdict=pass
+probe case=j12-green-rc verdict=pass
+$ check_j13 <tree> <ref>
+j13 payload: clone=ok,ref=ok,uncommitted=0,drift=0,untracked=0,strays=0,leftovers=0,read=ok,scope=own (rc=0)
+probe case=j13-green-payload verdict=pass
+probe case=j13-green-rc verdict=pass
+
+--------------------------------------------------------------------------------
+SECTION 2 — the planted-failure matrix (graded selftest mutants)
+--------------------------------------------------------------------------------
+
+Scenarios, in order, each RED (exit 1):
+  1  j12  a tracked corpus path deleted relative to the base
+  2  j13  a leftover kasegi-r4x entry in the suite's scratch root
+  3  j13  a leftover seat dir (non-family name) in the suite's scratch root
+  4  j13  uncommitted drift: a modified file in the exported tree
+  5  j13  stat-cache attack: same size and restored mtime
+  6  j13  an extra untracked file in the exported tree
+  7  j12  density.py mutated in the exported tree
+  8  j12  a corpus path renamed away (a rename is a deletion)
+  9  j13  a family symlink resolving to an ancestor of --work
+ 10  j13  an unresolvable exported ref
+ 11  j13  a host-global scratch scope
+ 12  j13  the --work dir outside the scanned scratch root
+ 13  j12  a wrong base (base-density must fail closed)
+ 14  j13  a tracked file missing from the exported tree
+ 15  j12  density.py absent from the exported tree
+ 16  j13  the exported tree is a different commit's tree
+ 17  j13  a family-shaped ancestor of --work with a dirty chain
+
+j12 planted-deletion payload: deleted=1,renamed=0,density=1,base-density=1,missing=0,diff-read=ok (rc=1)
+probe case=j12-planted-deletion-red verdict=pass
+probe case=j12-planted-deletion-rc verdict=pass
+j13 planted-stray payload: clone=ok,ref=ok,uncommitted=0,drift=0,untracked=0,strays=1,leftovers=1,read=ok,scope=own (rc=1)
+probe case=j13-planted-stray-red verdict=pass
+probe case=j13-planted-stray-rc verdict=pass
+j13 planted-leftover-seatdir payload: clone=ok,ref=ok,uncommitted=0,drift=0,untracked=0,strays=0,leftovers=1,read=ok,scope=own (rc=1)
+probe case=j13-planted-leftover-seatdir-red verdict=pass
+probe case=j13-planted-leftover-seatdir-rc verdict=pass
+j13 planted-drift payload: clone=ok,ref=ok,uncommitted=1,drift=1,untracked=0,strays=0,leftovers=0,read=ok,scope=own (rc=1)
+probe case=j13-planted-drift-red verdict=pass
+probe case=j13-planted-drift-red-drift verdict=pass
+probe case=j13-planted-drift-rc verdict=pass
+j13 planted-statcache payload: clone=ok,ref=ok,uncommitted=1,drift=1,untracked=0,strays=0,leftovers=0,read=ok,scope=own (rc=1)
+probe case=j13-planted-statcache-red verdict=pass
+probe case=j13-planted-statcache-rc verdict=pass
+j13 planted-untracked payload: clone=ok,ref=ok,uncommitted=1,drift=0,untracked=1,strays=0,leftovers=0,read=ok,scope=own (rc=1)
+probe case=j13-planted-untracked-red verdict=pass
+probe case=j13-planted-untracked-rc verdict=pass
+j12 planted-density payload: deleted=0,renamed=0,density=0,base-density=1,missing=0,diff-read=ok (rc=1)
+probe case=j12-planted-density-red verdict=pass
+probe case=j12-planted-density-rc verdict=pass
+j12 planted-rename payload: deleted=1,renamed=0,density=1,base-density=1,missing=0,diff-read=ok (rc=1)
+probe case=j12-planted-rename-red verdict=pass
+probe case=j12-planted-rename-rc verdict=pass
+j13 planted-symlink payload: clone=ok,ref=ok,uncommitted=0,drift=0,untracked=0,strays=1,leftovers=2,read=ok,scope=own (rc=1)
+probe case=j13-planted-symlink-red verdict=pass
+probe case=j13-planted-symlink-rc verdict=pass
+j13 planted-badref payload: clone=ok,ref=fail,uncommitted=0,drift=0,untracked=0,strays=0,leftovers=0,read=fail,scope=own (rc=1)
+probe case=j13-planted-badref-red verdict=pass
+probe case=j13-planted-badref-rc verdict=pass
+j13 host-global payload: clone=ok,ref=ok,uncommitted=0,drift=0,untracked=0,strays=0,leftovers=0,read=ok,scope=host-global (rc=1)
+probe case=j13-host-global-red verdict=pass
+probe case=j13-host-global-rc verdict=pass
+j13 work-outside-root payload: clone=fail,ref=fail,uncommitted=0,drift=0,untracked=0,strays=0,leftovers=0,read=fail,scope=own (rc=1)
+probe case=j13-work-outside-root-red verdict=pass
+probe case=j13-work-outside-root-rc verdict=pass
+j12 wrong-base payload: deleted=0,renamed=0,density=0,base-density=0,missing=0,diff-read=fail (rc=1)
+probe case=j12-wrong-base-red verdict=pass
+probe case=j12-wrong-base-rc verdict=pass
+j13 planted-missing-file payload: clone=ok,ref=ok,uncommitted=1,drift=1,untracked=0,strays=0,leftovers=0,read=ok,scope=own (rc=1)
+probe case=j13-planted-missing-file-red verdict=pass
+probe case=j13-planted-missing-file-red-uncommitted verdict=pass
+probe case=j13-planted-missing-file-rc verdict=pass
+j12 planted-missing-density payload: deleted=0,renamed=0,density=0,base-density=0,missing=1,diff-read=ok (rc=1)
+probe case=j12-planted-missing-density-red verdict=pass
+probe case=j12-planted-missing-density-rc verdict=pass
+j13 planted-wrong-tree payload: clone=ok,ref=ok,uncommitted=1,drift=1,untracked=0,strays=0,leftovers=0,read=ok,scope=own (rc=1)
+probe case=j13-planted-wrong-tree-red verdict=pass
+probe case=j13-planted-wrong-tree-rc verdict=pass
+j13 planted-dirty-chain payload: clone=ok,ref=ok,uncommitted=0,drift=0,untracked=0,strays=1,leftovers=3,read=ok,scope=own (rc=1)
+probe case=j13-planted-dirty-chain-red verdict=pass
+probe case=j13-planted-dirty-chain-rc verdict=pass
+probe cases=40 failures=0
+
+--------------------------------------------------------------------------------
+SECTION 3 — summary
+--------------------------------------------------------------------------------
+probe cases=40 failures=0
+graded assertions = 40 (20 payload/rc assertions over 17 scenarios)
+failures          = 0

@@ -1,0 +1,107 @@
+### ExecJ1Evidence transcript — J1 (family F-EVID), round-42 closure suite
+
+$ bash --version | head -1
+GNU bash, version 5.3.20(1)-release (x86_64-pc-linux-gnu)
+$ uname -srm
+Linux 7.2.11-arch1-1 x86_64
+$ date -u +%Y-%m-%dT%H:%M:%SZ
+2026-10-28T12:13:14Z
+$ git -C "$LANE" rev-parse HEAD   # the ref every run below reads
+514ff62d61ee9bc717a20a02a22c65ec0c5124ed
+
+$ sha256sum ExecJ1Evidence.sh; wc -l ExecJ1Evidence.sh
+20d95cfbbe5f203dc3dbb4808eddf9a61508546904391f19249bf29a49382463
+574
+
+### 1. export the lane HEAD tree (read-only: git archive)
+$ git -C "$LANE" archive --format=tar HEAD | tar -xf - -C "$E"
+
+### 2. J1 over the lane HEAD export (positive)
+$ source ExecJ1Evidence.sh; check_j1 "$E"
+J1 payload=records=3,rounds=1,lines=4,graded=4/4,evidence=4/4,missing=0,detail=SCORECARD.md:r41:2/2/2;LOG.md:r41:1/1/1;SHONEN.md:r41:1/1/1,fail=none closed=1
+rc=0  r41-union-tally=3/3
+
+### 3. the committed defeat re-executed against the COMMITTED round-41 I1 limb
+    fixture: in every record the first `Correction (round 41)` line is replaced
+    by the round-41 selftest replacement, which names no evidence identifier
+$ source corpus/instruments/r41-closure.sh; check_i1 "$E"   # clean export
+$ source corpus/instruments/r41-closure.sh; check_i1 "$D"   # union mutant
+clean  : records=3,lines=14,graded=3,evidence=3/3,missing=0         rc=0
+mutant : records=3,lines=14,graded=3,evidence=3/3,missing=0         rc=0
+
+### 4. J1 over the same committed union mutant (the replay-harness e4 case)
+$ j1_mutant_union; check_j1
+J1 payload=records=3,rounds=1,lines=4,graded=4/4,evidence=1/4,missing=0,detail=SCORECARD.md:r41:2/1/2;LOG.md:r41:1/0/1;SHONEN.md:r41:1/0/1,fail=SCORECARD.md:1602:r41:evidence;LOG.md:1736:r41:evidence;SHONEN.md:221:r41:evidence closed=0
+rc=1  r41-union-tally=3/3
+
+### 5. per-record variants of the defeat (replay-harness e1/e2/e3)
+$ strip evidence from every member line of SCORECARD.md; check_j1
+J1 payload=records=3,rounds=1,lines=4,graded=4/4,evidence=2/4,missing=0,detail=SCORECARD.md:r41:2/0/2;LOG.md:r41:1/1/1;SHONEN.md:r41:1/1/1,fail=SCORECARD.md:1602:r41:evidence;SCORECARD.md:1607:r41:evidence closed=0
+rc=1  r41-union-tally=3/3
+
+$ strip evidence from every member line of LOG.md; check_j1
+J1 payload=records=3,rounds=1,lines=4,graded=4/4,evidence=3/4,missing=0,detail=SCORECARD.md:r41:2/2/2;LOG.md:r41:1/0/1;SHONEN.md:r41:1/1/1,fail=LOG.md:1736:r41:evidence closed=0
+rc=1  r41-union-tally=3/3
+
+$ strip evidence from every member line of SHONEN.md; check_j1
+J1 payload=records=3,rounds=1,lines=4,graded=4/4,evidence=3/4,missing=0,detail=SCORECARD.md:r41:2/2/2;LOG.md:r41:1/1/1;SHONEN.md:r41:1/0/1,fail=SHONEN.md:221:r41:evidence closed=0
+rc=1  r41-union-tally=3/3
+
+### 6. fresh mutant: one correction names only 2 of the 3 evidence ids
+$ j1_mutant_partial_evidence; check_j1
+J1 payload=records=3,rounds=1,lines=4,graded=4/4,evidence=1/4,missing=0,detail=SCORECARD.md:r41:2/1/2;LOG.md:r41:1/0/1;SHONEN.md:r41:1/0/1,fail=SCORECARD.md:1602:r41:evidence;LOG.md:1736:r41:evidence;SHONEN.md:221:r41:evidence closed=0
+rc=1  r41-union-tally=3/3
+
+### 7. fresh mutant: one correction verdict phrase softened
+$ j1_mutant_soft_verdict; check_j1
+J1 payload=records=3,rounds=1,lines=4,graded=2/4,evidence=4/4,missing=0,detail=SCORECARD.md:r41:1/2/2;LOG.md:r41:1/1/1;SHONEN.md:r41:0/1/1,fail=SCORECARD.md:1602:r41:verdict;SHONEN.md:221:r41:verdict closed=0
+rc=1  r41-union-tally=3/3
+
+### 8. fresh mutant: one correction moved inside a CommonMark fence
+$ j1_mutant_fenced; check_j1
+J1 payload=records=3,rounds=1,lines=1,graded=1/1,evidence=1/1,missing=2,detail=SCORECARD.md:r41:1/1/1;LOG.md:r41:0;SHONEN.md:r41:0,fail=none closed=0
+rc=1  r41-union-tally=3/3
+
+### 9. fresh mutant: one record loses its whole correction block
+$ j1_mutant_deleted_record; check_j1
+J1 payload=records=3,rounds=1,lines=3,graded=3/3,evidence=3/3,missing=1,detail=SCORECARD.md:r41:2/2/2;LOG.md:r41:0;SHONEN.md:r41:1/1/1,fail=none closed=0
+rc=1  r41-union-tally=3/3
+
+### 10. fresh mutant: one correction names a SUPERSTRING of an evidence id
+$ j1_mutant_superstring; check_j1
+J1 payload=records=3,rounds=1,lines=4,graded=4/4,evidence=1/4,missing=0,detail=SCORECARD.md:r41:2/1/2;LOG.md:r41:1/0/1;SHONEN.md:r41:1/0/1,fail=SCORECARD.md:1602:r41:evidence;LOG.md:1736:r41:evidence;SHONEN.md:221:r41:evidence closed=0
+rc=1  r41-union-tally=3/3
+
+### 11. graded selftest over the current limb bytes
+$ j1_selftest_export "$E" "$T/st"
+selftest detail=J1 mutant=union union-evidence=3 rejected=1
+selftest detail=J1 mutant=partial-evidence union-evidence=3 rejected=1
+selftest detail=J1 mutant=soft-verdict union-evidence=3 rejected=1
+selftest detail=J1 mutant=fenced union-evidence=3 rejected=1
+selftest detail=J1 mutant=deleted-record union-evidence=3 rejected=1
+selftest detail=J1 mutant=superstring union-evidence=3 rejected=1
+selftest case=J1 mutants=6/6 positive=pass verdict=pass
+selftest cases=1 failures=0
+rc=0
+
+### 12. fail-closed edges
+$ check_j1 /nonexistent/j1
+J1 payload=records=0,rounds=0,lines=0,graded=0/0,evidence=0/0,missing=0,detail=none,fail=export-root-missing closed=0
+rc=1
+$ check_j1 ""   (empty argument)
+J1 payload=records=0,rounds=0,lines=0,graded=0/0,evidence=0/0,missing=0,detail=none,fail=export-root-missing closed=0
+rc=1
+$ J1_ROUNDS=(99)   (audited round with no declared evidence table)
+J1 payload=records=3,rounds=1,lines=0,graded=0/0,evidence=0/0,missing=0,detail=none,fail=round-99:evidence-table-missing closed=0
+rc=1
+$ grounding artifacts removed from a records-only copy
+J1 payload=records=3,rounds=1,lines=0,graded=0/0,evidence=0/0,missing=0,detail=none,fail=round-41:evidence-not-grounded closed=0
+rc=1
+
+### 13. helper robustness: a missing round argument defaults to the audited round
+$ j1_members "$E/LOG.md"      # no round argument
+1736	Correction (round 41): the `## Round 40` C1 bullet's "4 hel
+$ j1_members "$E/LOG.md" 41   # explicit round argument
+1736	Correction (round 41): the `## Round 40` C1 bullet's "4 hel
+
+### end

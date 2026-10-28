@@ -1,0 +1,70 @@
+# round-42 C2 junk twin — the O4 class: a mined-marked row with no capture, no entry and no harness pass
+
+control: negative — every byte below is fabricated. Nothing here was fetched, mined or verified.
+source: S999 — https://ossf.github.io/osv-schema/ — no capture exists for this row.
+forged-at: 2026-10-28 (kasegi-shokunin round 42, seat ExecControls).
+ground: F25 (adversarial twin — must NOT be admitted in place of the real F25/S064 admission).
+expected: on any tree carrying this twin, corpus/instruments/frontier-recheck-count.py exits 1,
+  corpus/instruments/capture-binding-check.py exits 1 with unbound=1, and the sources census
+  exits 1 with E11. The twin must be rejected by a conjunction of instruments, never by one.
+
+This file is a CONTROL FIXTURE, not evidence. It is never landed in corpus/. It documents the
+exact bytes that the round-42 C2 junk-twin control injects into scratch copies of the lane
+corpus; the rejection transcript is .ufo/waves/round-42/c2-controls/junk-f25-recheck.txt.
+
+## 1. The fabricated registry row (appended inside the `## Registry` section of corpus/SOURCES.md)
+
+    | S999 | OSV schema (fabricated twin - never fetched) - https://ossf.github.io/osv-schema/ | spec | A | Fabricated twin scope: a machine-readable vulnerability record format claimed as mined without a capture | Fabricated twin anchor: none | Fabricated twin teaches: nothing - this row exists only to be rejected | mined | 2026-10-28 | 180d | corpus/knowledge/junk-f25-osv-schema.md |
+
+The row is `mined` and its `used-by` cell names a knowledge file that does not exist.
+
+## 2. The fabricated frontier row (appended to corpus/README.md)
+
+    | F25 | OSV schema - the machine-readable vulnerability record format (fabricated twin, not an admission) | admitted | knowledge/junk-f25-osv-schema.md | S999 | Fabricated twin: no capture, no entry, no harness pass - every instrument must reject it. |
+
+The row is `admitted` and names a knowledge entry that does not exist.
+
+## 3. The fabricated snapshot manifest (corpus/source-snapshots/round-42-junk/manifest.json)
+
+    {
+      "purpose": "round-42 junk twin: claims a capture that was never fetched",
+      "schema_version": 1,
+      "sources": [
+        {
+          "id": "S999",
+          "location": "fabricated twin - no upstream section",
+          "path": "S999.txt",
+          "quotes": [
+            {
+              "id": "Q1",
+              "location": "fabricated twin",
+              "quote": "A claim that exists in no upstream document."
+            }
+          ],
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    }
+
+The record claims a capture with no `url`, no `fetched_utc` and no capture bytes behind it:
+corpus/source-snapshots/round-42-junk/S999.txt is never written.
+
+## 4. What each instrument does with the twin
+
+Measured on scratch copies of the lane corpus; the full transcript is the sibling file.
+
+- frontier-recheck-count.py — the F25 row resolves to an entry that does not exist:
+  `FAIL F25 knowledge/junk-f25-osv-schema.md ids=- exit=- problems=missing-entry`,
+  `entries=28 pass=27 exit=1` (exit 1).
+- capture-binding-check.py — the manifest record cannot bind:
+  `FAIL rule=url-mismatch record=S999 detail=absent dir=round-42-junk`,
+  `FAIL rule=provenance-missing record=S999 dir=round-42-junk`,
+  `records=56 bound=55 unbound=1` (exit 1).
+- sources-census.sh validate — the mined row's used-by path is missing on disk:
+  `E11 S999 missing used-by corpus/knowledge/junk-f25-osv-schema.md` (exit 1).
+- source-recheck.py on the junk manifest — `S999:source UNAVAILABLE reason=missing` (exit 2).
+- the C2 measure conjunct — `criterion met=no` (the harness conjunct fails).
+
+The rejection does not rest on the census alone: with the row's used-by cell set to the em-dash
+so the census's E11 limb cannot fire, the frontier harness and the capture-binding check still
+reject the twin (exit 1 each).

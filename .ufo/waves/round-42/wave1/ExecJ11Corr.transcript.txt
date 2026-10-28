@@ -1,0 +1,79 @@
+# ExecJ11Corr.transcript.txt — kasegi round 42, wave 1, seat ExecJ11Corr
+# limb J11 (family F-CORR): SCORECARD correction-block uniqueness + the recorded dedup exception
+run-utc=2026-10-28T11:26:55Z
+lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane-tip-at-transcript=8be06a90c4440aaea07f2988c3bd1e3baff5052b
+export-ref=0566bd66e93d429b2df8b6751cf10cbdc391e79b (the claims-freeze commit; the duplicated block is byte-identical at every lane commit)
+base=5053a7f46de35784cff4b56756906e9014a38276
+r41-judged-head=1f7464612ac4c44e39886b82e812610d3c039b13
+limb=ExecJ11Corr.sh
+limb-sha256=5474fcc0254d5e7b8745d0db7a747102d84c153150340291aa522b225ff2ad9b
+limb-lines=606
+scratch=/fast/scratch/hyaku/kasegi-r42/ExecJ11Corr (removed at the end of the seat)
+
+## 0. the committed duplication at HEAD (read-only, no lane write)
+```
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show HEAD:SCORECARD.md | grep -n "^Correction (round 41):" | cut -d: -f1 | tr "\n" " "
+1602 1603 1604 1605 1607 1608 1609 1610 
+$ diff <(sed -n "1602,1605p" SCORECARD.md) <(sed -n "1607,1610p" SCORECARD.md) && echo IDENTICAL
+IDENTICAL
+```
+
+## 1. RED over the HEAD export (no dedup marker recorded yet)
+```
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive 0566bd66e93d429b2df8b6751cf10cbdc391e79b | tar -x -C /fast/scratch/hyaku/kasegi-r42/ExecJ11Corr/tw/head
+$ bash ExecJ11Corr.sh --tree /fast/scratch/hyaku/kasegi-r42/ExecJ11Corr/tw/head
+J11 payload=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0 closed=0
+exit=1
+```
+
+## 2. RED over the two negative-control refs named in the frozen claims
+```
+$ bash ExecJ11Corr.sh --tree <export of 5053a7f46de35784cff4b56756906e9014a38276>
+J11 payload=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0 closed=0
+exit=1
+$ bash ExecJ11Corr.sh --tree <export of 1f7464612ac4c44e39886b82e812610d3c039b13>
+J11 payload=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0 closed=0
+exit=1
+```
+
+## 3. GREEN over a scratch copy with the mandated dedup marker appended
+```
+$ grep "^Correction-dedup (round 42):" .ufo/waves/round-42/wave1/ScribeScorecard.round42.txt >> <copy>/SCORECARD.md
+$ bash ExecJ11Corr.sh --tree <copy>
+J11 payload=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=0,fenced=0,eof-closed=3/3,marker=1,marker-line=1629,marker-substantive=1,marker-appended=1,marker-rounds=41,marker-lines=1,marker-covers=4/4,recorded=1 closed=1
+exit=0
+```
+
+## 4. GREEN over the full planned round-42 landing (the three scribe appends applied verbatim)
+```
+$ bash ExecJ11Corr.sh --tree <landing copy>
+J11 payload=records=3,corrections=33,distinct=29,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=0,fenced=0,eof-closed=3/3,marker=1,marker-line=1634,marker-substantive=1,marker-appended=1,marker-rounds=41,marker-lines=1,marker-covers=4/4,recorded=1 closed=1
+exit=0
+```
+
+## 5. GREEN over the ScribeCorrections BLOCK 1 carrier (same mandated sentence + measurements)
+```
+$ bash ExecJ11Corr.sh --tree <copy with the ScribeCorrections carrier>
+J11 payload=records=3,corrections=31,distinct=27,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=0,fenced=0,eof-closed=3/3,marker=1,marker-line=1629,marker-substantive=1,marker-appended=1,marker-rounds=41,marker-lines=1,marker-covers=4/4,recorded=1 closed=1
+exit=0
+```
+
+## 6. REPLAY: the in-family defeat artifacts, each re-executed against the current limb bytes
+```
+$ bash ExecJ11Corr.sh --tree <landing copy> --replay <work>
+replay fixture=tree-under-test accepted=1 payload=records=3,corrections=33,distinct=29,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=0,fenced=0,eof-closed=3/3,marker=1,marker-line=1634,marker-substantive=1,marker-appended=1,marker-rounds=41,marker-lines=1,marker-covers=4/4,recorded=1
+replay fixture=nomarker rejected=1 limb=unexcused=[1-9] payload=records=3,corrections=34,distinct=29,dups=5,dup-distinct=5,dup-lines=5,dup-records=1,unexcused=5,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/5,recorded=0
+replay fixture=stub-marker rejected=1 limb=marker-substantive=0 payload=records=3,corrections=33,distinct=29,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+replay fixture=marker-names-no-line rejected=1 limb=marker-covers=0/4 payload=records=3,corrections=33,distinct=29,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+replay fixture=marker-names-no-round rejected=1 limb=unexcused=[1-9] payload=records=3,corrections=33,distinct=29,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+replay fixture=marker-not-appended rejected=1 limb=marker-appended=0 payload=records=3,corrections=33,distinct=29,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+replay fixture=marker-fenced rejected=1 limb=marker=0 payload=records=3,corrections=33,distinct=29,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+replay fixture=marker-covers-no-group rejected=1 limb=marker-covers=0/4 payload=records=3,corrections=33,distinct=29,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=0,marker-substantive=0,marker-appended=0,marker-rounds=,marker-lines=0,marker-covers=0/4,recorded=0
+replay fixture=marker-names-partial-range rejected=1 limb=marker-covers=0/4 payload=records=3,corrections=33,distinct=29,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=4,fenced=0,eof-closed=3/3,marker=0,marker-line=1634,marker-substantive=1,marker-appended=1,marker-rounds=41,marker-lines=1,marker-covers=0/4,recorded=1
+replay fixture=unexcused-duplicate-in-log rejected=1 limb=unexcused=[1-9] payload=records=3,corrections=34,distinct=29,dups=5,dup-distinct=5,dup-lines=5,dup-records=2,unexcused=1,fenced=0,eof-closed=3/3,marker=0,marker-line=1634,marker-substantive=1,marker-appended=1,marker-rounds=39+41,marker-lines=1,marker-covers=4/5,recorded=1
+replay fixture=whitespace-variant-duplicate rejected=1 limb=unexcused=[1-9] payload=records=3,corrections=34,distinct=29,dups=5,dup-distinct=5,dup-lines=5,dup-records=2,unexcused=1,fenced=0,eof-closed=3/3,marker=0,marker-line=1634,marker-substantive=1,marker-appended=1,marker-rounds=39+41,marker-lines=1,marker-covers=4/5,recorded=1
+replay fixture=open-fence rejected=1 limb=eof-closed=2/3 payload=records=3,corrections=33,distinct=29,dups=4,dup-distinct=4,dup-lines=4,dup-records=1,unexcused=0,fenced=0,eof-closed=2/3,marker=1,marker-line=1634,marker-substantive=1,marker-appended=1,marker-rounds=41,marker-lines=1,marker-covers=4/4,recorded=1
+replay fixtures=12 failures=0
+exit=0
+```

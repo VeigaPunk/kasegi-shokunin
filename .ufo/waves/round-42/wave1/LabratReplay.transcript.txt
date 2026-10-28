@@ -1,0 +1,104 @@
+
+=== replay environment ===
+lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+export-ref=ad7147532cb702b0d541d40499874552183d9132
+suite-limbs=/fast/scratch/hyaku/kasegi-r42/LabratReplay/limbs.sh sha256=18c81e0e4a5f4df4f7a1fc74ed8b22d2aea127431be66151761607f060246748
+suite-sha256(defeat-ref)=3971a112c077dd4ffb5536bf0956db0572fb022f19ec135349d639cd96fc52fd
+suite-sha256(judged-head)=3971a112c077dd4ffb5536bf0956db0572fb022f19ec135349d639cd96fc52fd
+suite-sha256(worktree)=3971a112c077dd4ffb5536bf0956db0572fb022f19ec135349d639cd96fc52fd
+
+=== export ===
+export ok: ad7147532cb702b0d541d40499874552183d9132 -> /fast/scratch/hyaku/kasegi-r42/LabratReplay/export
+SCORECARD.md: outside-fence Correction (round 41) lines = 8
+LOG.md: outside-fence Correction (round 41) lines = 3
+SHONEN.md: outside-fence Correction (round 41) lines = 3
+
+=== selftest_case_i1 (verbatim suite body) ===
+selftest detail=I1 positive=pass payload=records=3,lines=14,graded=3,evidence=3/3,missing=0
+selftest detail=I1 mutant=evidence-not-named rejected=0 rc=0 payload=records=3,lines=14,graded=3,evidence=3/3,missing=0
+selftest detail=I1 mutant=grading-absent rejected=1 limb=graded=2
+
+=== selftest_case_i3 (verbatim suite body) ===
+selftest detail=I3 positive=pass payload=exact=2/2,substring=2/2,records=3,tally=3/3,mangled=0
+selftest detail=I3 mutant=mangled-value-token rejected=0 rc=0 payload=exact=2/2,substring=2/2,records=3,tally=3/3,mangled=0
+
+replay summary: cases=2 failures=4 (limb-level: only I1/I3 replayed)
+
+=== mechanism evidence (verbatim helpers only) ===
+--- I1: evidence-not-named union survives
+before: correction lines per record: SCORECARD.md=8 LOG.md=3 SHONEN.md=3 
+SCORECARD.md correction lines AFTER replace_line (evidence stems survive on the duplicated lines):
+1:Correction (round 41): the round-40 claim C1 is not verified on the frozen counter; the round-40 receipt truth is closed=10/10 exit=0.
+2:Correction (round 41): the `## Round 40 result` depth:verifiability row's "4 (held; verified)" is withdrawn to score 4 held, not verified: the receipt committed at Y `d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5` (`.ufo/waves/round-40/final-gates/all-gates.txt`, sha256 7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b) records `closed=10/10 exit=0` with H1–H10 all `closed=1` over `export-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd` (`time-basis=ref-commit`, `run-utc=2026-10-26T22:32:37Z`), and a green suite run is not claim admission when the frozen kill rule fires.
+3:Correction (round 41): the row's `graded --selftest cases=10 failures=0` carries no committed transcript: the Y receipt holds no `selftest` line, and the only committed graded tally is over scratch Y′ (`wave2/RevC1Counters.md` R7, report-only), so the quote is withdrawn as evidence (round-40 verifier D2).
+4:Correction (round 41): the round-41 receipt at its Y tees the transcripts of BOTH the suite run and the graded selftest (I2, `time-basis=ref-commit`, `run-utc` equal to the ref's committer instant), so a Y-level selftest tally can no longer be quoted without its transcript.
+5:Correction (round 41): round-40 C1 is not verified on the frozen counter (NOT verified), because the kill rule's "a committed fixture shows a check passing while its defect is present" limb fires on committed fixtures: `wave2/RevC1Counters.defeats.txt` T2 (`closed=7/80` and `failures=10` accepted as green by substring), T4 (a fenced pseudo-table row), T7 (a declared block read outside the export through a symlink), T13 (a mention-only registry row) and T14 (H6 case/separator strays); `wave2/CritKillRule.md`'s eight committed escape states F1–F8 (L1 freeze correction 2: the committed headings are authoritative) with their committed reproducer `wave2/CritKillRule.h6-escapes.sh`; and `wave2/MutH6H10.md` D2 (pristine H8 accepts a leaf-capped green base as its negative control).
+6:Correction (round 41): the `## Round 40 result` depth:verifiability row's "4 (held; verified)" is withdrawn to score 4 held, not verified: the receipt committed at Y `d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5` (`.ufo/waves/round-40/final-gates/all-gates.txt`, sha256 7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b) records `closed=10/10 exit=0` with H1–H10 all `closed=1` over `export-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd` (`time-basis=ref-commit`, `run-utc=2026-10-26T22:32:37Z`), and a green suite run is not claim admission when the frozen kill rule fires.
+7:Correction (round 41): the row's `graded --selftest cases=10 failures=0` carries no committed transcript: the Y receipt holds no `selftest` line, and the only committed graded tally is over scratch Y′ (`wave2/RevC1Counters.md` R7, report-only), so the quote is withdrawn as evidence (round-40 verifier D2).
+8:Correction (round 41): the round-41 receipt at its Y tees the transcripts of BOTH the suite run and the graded selftest (I2, `time-basis=ref-commit`, `run-utc` equal to the ref's committer instant), so a Y-level selftest tally can no longer be quoted without its transcript.
+mutant payload (verbatim check_i1): rc=0 payload=records=3,lines=14,graded=3,evidence=3/3,missing=0
+check_i1 evidence limb reads union over ALL qualified lines per record; evidence=3/3 while the line under test names none.
+--- I3: mangled closed=10/100 token survives
+value_present probe on the MANGLED value (expect rc=1, token boundary works): rc=1 (mangled correctly fails the probe)
+value_present probe on the HONEST value (expect rc=0): rc=0 (honest matches)
+SCORECARD.md correction lines AFTER replace_line (first line mangled; duplicated lines keep closed=10/10):
+1:Correction (round 41): the round-40 claim C1 is not verified on the frozen counter; the round-40 receipt truth is closed=10/100 exit=0; the evidence is .ufo/waves/round-40/wave2/RevC1Counters.defeats.txt, .ufo/waves/round-40/wave2/CritKillRule.md and .ufo/waves/round-40/wave2/MutH6H10.md.
+2:Correction (round 41): the `## Round 40 result` depth:verifiability row's "4 (held; verified)" is withdrawn to score 4 held, not verified: the receipt committed at Y `d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5` (`.ufo/waves/round-40/final-gates/all-gates.txt`, sha256 7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b) records `closed=10/10 exit=0` with H1–H10 all `closed=1` over `export-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd` (`time-basis=ref-commit`, `run-utc=2026-10-26T22:32:37Z`), and a green suite run is not claim admission when the frozen kill rule fires.
+5:Correction (round 41): round-40 C1 is not verified on the frozen counter (NOT verified), because the kill rule's "a committed fixture shows a check passing while its defect is present" limb fires on committed fixtures: `wave2/RevC1Counters.defeats.txt` T2 (`closed=7/80` and `failures=10` accepted as green by substring), T4 (a fenced pseudo-table row), T7 (a declared block read outside the export through a symlink), T13 (a mention-only registry row) and T14 (H6 case/separator strays); `wave2/CritKillRule.md`'s eight committed escape states F1–F8 (L1 freeze correction 2: the committed headings are authoritative) with their committed reproducer `wave2/CritKillRule.h6-escapes.sh`; and `wave2/MutH6H10.md` D2 (pristine H8 accepts a leaf-capped green base as its negative control).
+6:Correction (round 41): the `## Round 40 result` depth:verifiability row's "4 (held; verified)" is withdrawn to score 4 held, not verified: the receipt committed at Y `d0fe34d3fa27ff4de745a0c54c203fa8bf7141e5` (`.ufo/waves/round-40/final-gates/all-gates.txt`, sha256 7f55d540d6f41b5112d11bceb9e60e1d217308476b63ecd8c86c34e87ff1c79b) records `closed=10/10 exit=0` with H1–H10 all `closed=1` over `export-ref=c7aea5ef97902f38289cbdc1cf267068876a62dd` (`time-basis=ref-commit`, `run-utc=2026-10-26T22:32:37Z`), and a green suite run is not claim admission when the frozen kill rule fires.
+mutant payload (verbatim check_i3): rc=0 payload=exact=2/2,substring=2/2,records=3,tally=3/3,mangled=0
+check_i3 hit-break takes the FIRST bounded tally in any correction line of the record; a surviving duplicate supplies closed=10/10, so the mangled first line is never counted (mangled=0, tally=3/3).
+
+=== committed-artifact comparison ===
+committed (wave2/CritC1KillRule.md, export-ref ad71475, suite-sha256 3971a112):
+  committed: selftest detail=I1 positive=pass payload=records=3,lines=14,graded=3,evidence=3/3,missing=0
+  committed: selftest detail=I1 mutant=evidence-not-named rejected=0 rc=0 payload=records=3,lines=14,graded=3,evidence=3/3,missing=0
+  committed: selftest detail=I3 positive=pass payload=exact=2/2,substring=2/2,records=3,tally=3/3,mangled=0
+  committed: selftest detail=I3 mutant=mangled-value-token rejected=0 rc=0 payload=exact=2/2,substring=2/2,records=3,tally=3/3,mangled=0
+  committed: selftest case=I1 mutants=1/2 positive=fail payload-match=0 verdict=fail
+  committed: selftest case=I3 mutants=0/1 positive=fail payload-match=0 verdict=fail
+observed (this replay, verbatim limbs on the same ref):
+  observed:  selftest detail=I1 positive=pass payload=records=3,lines=14,graded=3,evidence=3/3,missing=0
+  observed:  selftest detail=I1 mutant=evidence-not-named rejected=0 rc=0 payload=records=3,lines=14,graded=3,evidence=3/3,missing=0
+  observed:  selftest detail=I1 mutant=grading-absent rejected=1 limb=graded=2
+  observed:  selftest detail=I3 positive=pass payload=exact=2/2,substring=2/2,records=3,tally=3/3,mangled=0
+  observed:  selftest detail=I3 mutant=mangled-value-token rejected=0 rc=0 payload=exact=2/2,substring=2/2,records=3,tally=3/3,mangled=0
+  observed:  selftest case=I1 mutants=1/2 positive=fail payload-match=0 verdict=fail
+  observed:  selftest case=I3 mutants=0/1 positive=fail payload-match=0 verdict=fail
+--- line-level pin (committed vs observed, in artifact order)
+PIN: all six committed defeat lines reproduced BYTE-IDENTICAL
+PIN mutant=evidence-not-named : byte-identical
+PIN mutant=mangled-value-token : byte-identical
+
+=== verbatim limb inventory ===
+source: corpus/instruments/r41-closure.sh @ ad7147532cb702b0d541d40499874552183d9132
+suite sha256: 3971a112c077dd4ffb5536bf0956db0572fb022f19ec135349d639cd96fc52fd
+limbs.sh sha256: 18c81e0e4a5f4df4f7a1fc74ed8b22d2aea127431be66151761607f060246748
+limb                        line-span    bytes  sha256(block)
+ROUND40_TALLY               242-242         27  654b57ee490c8c94dbc0877dea6bc181d9ad65674d9e06c60bcae09e7f55c004
+RECORDS                     249-249         40  51fca361b324888d7916257bd414414575a001355d2d6be468c1f69f8305c137
+EVIDENCE                    250-250         47  bc48412fbf22cdd22880278fc5aa1b835978a495970740d02e5987b7f2344350
+LESSONS                     251-251         64  2a4abec4da8512729428af543085d8628611b1a13a502ab0a8f04edce4677bb8
+declare -A POS_PAYLOAD      273-273         26  5f14945384a1026c911645e87c7e4994db285244b4455f188fad03b185587cbb
+FENCE_AWK                   519-568       1716  2546cadb4f3d9190fddd8bc67372065b75cefae1cb73c681f081a12c2761fa24
+fence_awk                   570-574        162  3e74e821f2ee4454c445fc557d2d96d2c625d9e5c3d6bc5ced561f5c834f6b0d
+fence_match                 577-599        919  aca456fa6c9a73a23af2b883fb4b0376c126b79baf857994a1860012a1d9089d
+value_present               443-459        514  288d47cfb8b96cf2917be686e7e4ebaaac2d6bdc71639f2388c8c008bc205a8e
+qualified_corrections       884-889        229  f2b8248a73d3ae44e4e905fc764b73e2b10ad3b1fcf0d3f19afb6ea23a82c9f6
+check_i1                    891-914       1005  26782d5308c2564360cc8068ff30b4b04da4fc4d697185b6176c4268ee2618a9
+check_i3                    950-982       1396  724495099d3813b26583d985acffae6d41082e83f5b517190f970c6a1f2f6c3c
+run_check                   1593-1596       74  db489eb82d5a9183ee25689fa6f7c9e24ca34a633bb386e62b7facca0cc1b7f5
+st_pos                      1622-1632      344  397b5bca0afeb6d9fd8960c6806bea3de87d7d60ef132fda441218ce989fa642
+st_neg                      1638-1651      522  619cbdb0c45ef9fe8d59fbaf951cb8ac25ce1a5adf1e2c2974ce9c4ea646e051
+st_verdict                  1654-1664      504  2f71dadbdfca886dd4541ed2ad88bdeabde55cdd33d24ad59bac31e4d8b33bcd
+fixture_tree                1669-1679      390  e74c4f75e3e77ed03a32cce9418d605dc39c66c9e6c0d82e48c5c6977377a83c
+replace_line                1683-1690      234  cbee2ee1866b98213d950486add3bac35d7ffb5644daed460e3741962f116e94
+append_line                 1693-1695       59  1f8b1990ecca48fac9574301b4f526a77841df40d5f08a25f83055e3ebd6c1bb
+selftest_case_i1            1699-1715     1031  8777a007b4a173a7367ef59f2cb6ee2c0726a34bb35aae85cf720c524df85db3
+selftest_case_i3            1752-1761      658  8e37b322f73ff4a32890f14abeeee23cb9c24610cc6a470ddd672d7113842242
+
+harness additions (NOT suite bytes): globals CASES/FAILS/WORK/EXPORT/MUT/REF_RESOLVED,
+the `git archive` export, the say() banner, mechanism probes (fence_match/replace_line/
+value_present re-invoked verbatim on fixture copies), and the committed-artifact pin.
+replay.sh sha256: bcb93fdb12454f130ba7ee9d112f44102ce413493f6c20df8390bbde6980e66a
+stderr bytes: 0

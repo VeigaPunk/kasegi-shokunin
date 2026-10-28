@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "purpose": "Round-42 capture for F25 / CVE Record Format (S064), opened 2026-10-28. Lead-screen pick of ScoutF25Lead.",
+  "sources": [
+    {
+      "id": "S064",
+      "path": "S064.txt",
+      "files": ["S064.txt"],
+      "url": "https://raw.githubusercontent.com/CVEProject/cve-schema/main/schema/docs/CVE_Record_Format_bundled.json",
+      "capture_url": "https://raw.githubusercontent.com/CVEProject/cve-schema/main/schema/docs/CVE_Record_Format_bundled.json",
+      "status": 200,
+      "fetched_utc": "2026-10-28T11:06:45Z",
+      "fetched_bytes": 133616,
+      "size_bytes": 84520,
+      "snapshot_bytes": 84520,
+      "lines": 3545,
+      "full_text_lines": 3545,
+      "full_text_bytes": 84520,
+      "full_text_sha256": "b90a51f7b356e7683483d9ac0753e3eb06fe3ab53806a57fdd4bf129b2f141fa",
+      "sha256": "b90a51f7b356e7683483d9ac0753e3eb06fe3ab53806a57fdd4bf129b2f141fa",
+      "snapshot_sha256": "b90a51f7b356e7683483d9ac0753e3eb06fe3ab53806a57fdd4bf129b2f141fa",
+      "raw_sha256": "44c703322b1fcc532bc1c93f3993a0ba042c1a2831aae8cf39c4fbb707d03c8f",
+      "raw_bytes": 133616,
+      "raw_lines": 3545,
+      "scope": "FULL DOCUMENT, no slice: the capture is the complete CVE_Record_Format_bundled.json document served at the capture_url (a single bundled JSON Schema draft-07 file, 3545 served lines), so capture line k = normalized document line k and lines == full_text_lines == 3545.",
+      "tool": "corpus/instruments/capture-source.py --kind text applied to the curl -sS -L --max-time 90 -A kasegi-shokunin/1.0 body (collapse(): CRLF/CR to LF, runs of space/tab/NBSP collapsed, lines trimmed, blank lines dropped, UTF-8, final newline). The instrument's own fetch at 2026-10-28T11:09:10Z returned status=200, fetched_bytes=133616, snapshot_bytes=84520 and the identical snapshot sha256; cmp of the two capture files exited 0 (byte-identical).",
+      "normalized": "capture-source.py collapse(): CRLF/CR to LF, runs of space/tab/NBSP collapsed, lines trimmed, blank lines dropped, UTF-8, final newline. The served body is UTF-8 without BOM and LF line endings (0 CR bytes); the collapse removes the JSON indent runs, so capture lines carry no leading whitespace.",
+      "http": {
+        "status": 200,
+        "content_type": "text/plain; charset=utf-8",
+        "final_url": "https://raw.githubusercontent.com/CVEProject/cve-schema/main/schema/docs/CVE_Record_Format_bundled.json",
+        "redirects": 0,
+        "user_agent": "kasegi-shokunin/1.0",
+        "fetched_utc": "2026-10-28T11:06:45Z",
+        "date": "Wed, 28 Oct 2026 11:06:45 GMT",
+        "content_length": 133616,
+        "etag": "\"0f0fd4e1071844d6906d768c94ad16c76ba7c6680b04b533b5ec2ca7c32b7470\"",
+        "cache_control": "max-age=300",
+        "server": "GitHub.com"
+      },
+      "quotes": [
+        {
+          "id": "Q1",
+          "quote": "cve-schema specifies the CVE JSON record format. This is the blueprint for a rich set of JSON data",
+          "anchor": 5,
+          "location": "L5; the top-level 'description' property of the bundled schema (title 'CVE JSON record format' at L4, $id cveproject.github.io/cve-schema/schema/CVE_Record_Format.json at L3). The full sentence continues that CNA/ADP submissions describe a CVE Record; the quote is the first two sentences, a unique occurrence."
+        },
+        {
+          "id": "Q2",
+          "quote": "When a CNA populates the data associated with a CVE ID as a CVE Record",
+          "anchor": 3466,
+          "location": "L3466; the 'Published' branch description inside the top-level oneOf (L3463), whose required set is dataType, dataVersion, cveMetadata, containers (L3500-L3504); containers requires exactly one 'cna' plus optional 'adp' entries (L3478-L3496). Unique occurrence."
+        },
+        {
+          "id": "Q3",
+          "quote": "A Rejected CVE Record remains on the CVE List so that users can know when it is invalid.",
+          "anchor": 3510,
+          "location": "L3510; the 'Rejected' branch description inside the top-level oneOf (L3507), whose cveMetadata binds cveMetadataRejected (state enum [REJECTED] at L575-L580) and whose containers admit 'cna' only, no 'adp' (L3518-L3533). Unique occurrence."
+        }
+      ]
+    }
+  ]
+}

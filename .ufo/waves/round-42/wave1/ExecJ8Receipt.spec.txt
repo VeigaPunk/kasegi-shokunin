@@ -1,0 +1,177 @@
+ROUND-42 RECEIPT CONTRACT (v1) — normative grammar for J8
+==========================================================
+File: .ufo/waves/round-42/final-gates/all-gates.txt
+Meaning: the receipt IS the teed transcript of one graded run of
+corpus/instruments/r42-closure.sh (the run plus its graded selftest).
+It is not a summary: every check's payload value and every graded selftest
+case line the run printed appears in it, byte for byte, in the order below.
+
+1. SHAPE
+--------
+Exactly 33 lines, each terminated by one LF, no blank line, no leading or
+trailing whitespace, no carriage return, no BOM. LF-only. The file ends
+after the 33rd LF.
+
+  lines  1-5    header
+  lines  6-18   run lines, J1..J13 in ascending numeric order
+  lines 19-31   graded selftest case lines, J1..J13 in ascending order
+  line  32      selftest summary
+  line  33      closed line
+
+2. HEADER (lines 1-5)
+---------------------
+  line 1  all-gates v1
+  line 2  export-ref=<40 lowercase hex>
+  line 3  suite-sha256=<64 lowercase hex>
+  line 4  time-basis=ref-commit
+  line 5  run-utc=<YYYY-MM-DDTHH:MM:SSZ>
+
+  line 2  the commit the transcript was teed at: the judged head J when the
+          receipt is committed at Y = J + this file. The commit a receipt
+          cannot contain is never the commit it names.
+  line 3  sha256 of corpus/instruments/r42-closure.sh AS EXPORTED at the
+          verification ref (not of the working-tree copy).
+  line 4  literal; there is no other time basis.
+  line 5  the committer instant (%ct) of the ref on line 2, formatted UTC as
+          YYYY-MM-DDTHH:MM:SSZ. It is a property of that commit, never a
+          wall-clock stamp. A run-utc that is not that instant is RED.
+
+3. RUN LINES (lines 6-18)
+-------------------------
+  ^J<n> payload=<payload> closed=<0|1>$
+  n = 1..13 ascending, exactly one line per id.
+
+  <payload> is a comma-joined list of key=value tokens: no spaces, no empty
+  token, no trailing comma. Each check defines its own token set; the value
+  is opaque to J8 and is compared token for token.
+
+  <0|1> is the closed bit the run computed for that check.
+
+  THE VALUE IS RE-DERIVED, NEVER TRUSTED. For each id the suite recomputes
+  the payload from the export at receipt time and compares it against the
+  recorded one token by token (split on ',', both sequences byte-equal, in
+  order). A receipt carrying a value the suite did not print is RED — a
+  prefix match, a substring match and a superset are all mismatches.
+
+  The J8 line is the one exception and it is closed, not trusted: its
+  <payload> must equal the canonical bundle (section 6).
+
+4. GRADED SELFTEST CASE LINES (lines 19-31)
+-------------------------------------------
+  ^selftest case=J<n> mutants=<ok>/<n> positive=<pass|fail> payload-match=<0|1> verdict=<pass|fail>$
+  n = 1..13 ascending, exactly one line per id.
+
+  These are the graded case lines the run's own selftest printed. For every
+  id except J8 the line must be byte-identical to the line the suite's
+  running selftest printed now; a receipt carrying a verdict the suite did
+  not print is RED.
+
+5. SUMMARY AND CLOSED LINES (lines 32-33)
+-----------------------------------------
+  line 32  selftest cases=13 failures=0
+  line 33  closed=13/13 exit=0
+
+  Both are exact literals for a green run. A receipt that reports any
+  failure, or a tally below 13/13, is not a green receipt: it can only be
+  produced for a green run and J8 reds on anything else.
+
+6. THE CANONICAL BUNDLE (the J8 line's payload)
+-----------------------------------------------
+The J8 payload is a fixed-order fact bundle plus the control flag:
+
+  receipt=1,sentinel=1,ref=1,digest=1,time-basis=1,run-utc=1,not-future=1,
+  ancestor=1,diff-clean=1,diff-read=ok,tree-bind=1,header-lines=5,run-lines=13,
+  selftest-lines=12,selftest-verdicts=12,summary=1,closed-line=1,
+  payload-match=12/12,closed-match=12/12,selftest-match=12/12,control=1
+  (shown wrapped; the receipt carries it on one line)
+
+  ref=1            the named ref resolves as a commit
+  digest=1         line 3 equals the exported suite's digest
+  run-utc=1        line 5 equals the named ref's committer instant
+  not-future=1     line 5 is not later than the verification clock
+  ancestor=1       the named ref is an ancestor of the verified ref
+  diff-clean=1     the diff named-ref..verified-ref lists only this file
+  tree-bind=1      the export IS the verified ref's tree with respect to
+                   this file: the export carries it iff that ref's tree
+                   carries it, and when both carry it the bytes are the same
+                   blob (so exporting one tree while naming another is RED)
+  header-lines=5   the first five lines match section 2 positionally
+  run-lines=13     thirteen run lines present
+  selftest-lines=12 / selftest-verdicts=12
+                   the twelve OTHER graded case lines are present and pass
+                   (the J8 case line is excluded: it is the self-reference)
+  summary=1        line 32 present exactly once
+  closed-line=1    line 33 present exactly once
+  payload-match=12/12
+                   twelve OTHER payload values equal the re-derived values
+  closed-match=12/12
+                   twelve OTHER closed bits equal the re-derived bits
+  selftest-match=12/12
+                   twelve OTHER graded case lines equal the fresh ones
+  control=1        the honest control transcript grades clean (section 8)
+
+  HOW THE SELF-REFERENCE IS CLOSED: the bundle is computed from the
+  canonical transcript — the transcript this run would write now, built from
+  the re-derived payload values, the freshly re-executed graded selftest
+  lines and the ref-scoped facts. It never reads the value recorded on the
+  receipt's own J8 line, so the fixed point exists and is reached in one
+  rewrite. The receipt's J8 payload must equal the bundle with its closed
+  bit at 1.
+
+7. FORGERY CLASSES (each decided by ONE absolute predicate, disjoint loci)
+--------------------------------------------------------------------------
+  missed-control        a required control ELEMENT is absent or duplicated:
+                        a header line, any of the thirteen graded case lines,
+                        the summary line, the closed line
+  payload-contradicting a run line's payload (or its closed bit) contradicts
+                        the value the suite re-derived for that check, or the
+                        receipt carries a run line for an id the suite never
+                        printed
+  future-dated          line 5 is not the committer instant of the ref on
+                        line 2, or it post-dates the verification clock
+                        (now + 120 s)
+  foreign-ref           the named ref resolves but is not BOUND to the
+                        verified tree: the export is not the verification
+                        ref's tree (tree-bind=0), or the named ref is not an
+                        ancestor of the verification ref, or the diff between
+                        them lists a path other than this file
+  nonexistent-ref       the named ref does not resolve as a commit
+  summary-only          line 33 declares a closed tally larger than the
+                        number of run lines the receipt carries
+  tampered-payload-line the receipt's own J8 payload is not the canonical
+                        bundle for this run
+
+  Each predicate reads its own locus and the independently derived facts. No
+  predicate compares a count in one artifact with a count in another, and no
+  predicate is "the number of mismatches went up". A receipt carrying one
+  defect raises exactly one class; a receipt carrying several raises several.
+  The check is green only when every class is missed.
+
+8. THE CONTROL
+--------------
+The control is the honest transcript assembled from the re-derived values of
+this run (never from the receipt under test). It must grade clean under the
+six receipt-content classes; if it does not, the detector itself is broken
+and the bundle carries control=0, which no honest receipt records.
+
+9. PRODUCER RULES
+-----------------
+  - The transcript is produced by make_receipt (or by a producer whose bytes
+    are identical to it). The receipt must equal the run's teed stdout.
+  - The export-ref adopted is the one the receipt already in the export
+    names; without one it is the ref under verification. That is what makes
+    the bytes written at J and the bytes read at Y the same bytes.
+  - The transcript is a function of the tree and the ref-scoped facts only:
+    two runs over the same ref are byte-identical.
+
+10. HOST CONTRACT (ordering and invariance)
+-------------------------------------------
+  ORDERING. J8 must run after (a) the other twelve checks have produced
+  their payload values and (b) the graded selftest has produced its thirteen
+  case lines. J8 grades a receipt against values that exist.
+
+  INVARIANCE. The other twelve payload values and the other twelve graded
+  case lines must be byte-identical between the run at J and the run at Y.
+  The receipt path therefore must not be read by any tree-dependent check
+  and must not appear in any selftest fixture: it does not exist in the tree
+  at J and it does exist in the tree at Y.

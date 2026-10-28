@@ -1,0 +1,230 @@
+Round-42 post-integration instrument runbook — kasegi lane
+==========================================================
+
+Five instruments gate the round-42 C2 coverage landing (frontier F25, registry row
+S064, its capture, its knowledge entry). Run them in this order from the lane root.
+Each command is independent; run all five even when an earlier one is green, because
+no single command covers the whole landing (see section 7).
+
+    cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+
+Every command below writes only to stdout. None of them mutates the lane.
+
+
+1. Frontier harness — the admitted frontier rows re-verify their own sources
+---------------------------------------------------------------------------
+
+    python3 corpus/instruments/frontier-recheck-count.py
+
+Expected (exit 0):
+
+    PASS     F25  knowledge/<slug>.md          ids=S064           exit=0
+    entries=28 pass=28 exit=0
+
+Read the COUNT, not only the exit code. The harness scores one line per ADMITTED
+frontier row: a row whose status cell is anything other than `admitted` is not scored
+at all, so a status flip lowers `entries` (28 -> 27) and still exits 0. `entries=28
+pass=28` and a `PASS F25` line are both required.
+
+
+2. Capture binding — every manifest record binds to its registry row and its fetch
+----------------------------------------------------------------------------------
+
+    python3 corpus/instruments/capture-binding-check.py
+
+Expected (exit 0):
+
+    MANIFEST round-42 records=1 url_bound=1 fetched=1 archival=0
+    records=56 bound=56 unbound=0
+
+The round-42 manifest must carry exactly one record, `id: S064`, whose `url` is
+byte-identical to the one https:// token in the S064 row's source cell, and whose
+`fetched_utc` is a UTC stamp (`2026-10-28T11:06:45Z` format). The capture file
+`corpus/source-snapshots/round-42/S064.txt` must be the file named by the record's
+`path`.
+
+The instrument never opens the capture bytes: a corrupted or missing capture leaves
+this command green (section 7).
+
+
+3. Recheck audit — every knowledge entry's own recheck line is executable
+-----------------------------------------------------------------------------
+
+    python3 corpus/instruments/recheck-audit.py --quiet
+
+Expected (exit 0):
+
+    strict pass=61/61 cdroot_fail=0 instrument_fail=0 own_fail=0
+    executes=37 gated=24 broken=0
+    lines=61 total=61 pass=61 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+    expect=present expected=61 missing=0 unexpected=0 exit=0
+
+This command's `--root` defaults to the CURRENT WORKING DIRECTORY, unlike the other
+four (whose default is the lane that owns the script). Run it from the lane root, or
+pass `--root` explicitly. From a foreign cwd it prints `lines=0 total=0` and
+`expect=absent` and exits 1.
+
+`expected=61 missing=0 unexpected=0` is the drift guard: `corpus/instruments/knowledge-expected.txt`
+must list the new entry, and the entry file must exist. A stale list prints
+`unexpected=<file>`; a missing entry prints `missing=<file>`. Both are red.
+
+`gated=24` is the standing count of entries whose recheck line runs and fails closed
+on an absent base (the bounty bases absent since 2026-09-28); it is expected and does
+not affect the exit status.
+
+
+4. Source recheck — the pinned quotes still sit in the pinned capture
+-----------------------------------------------------------------------
+
+    python3 corpus/instruments/source-recheck.py \
+        --manifest corpus/source-snapshots/round-42/manifest.json --source S064
+
+Expected (exit 0):
+
+    S064:sha256 OK
+    S064:Q1 OK occurrences=1 anchor=5-ok
+    S064:Q2 OK occurrences=1 anchor=3466-ok
+    S064:Q3 OK occurrences=1 anchor=3510-ok
+
+`S064:sha256 OK` is the capture-digest check against the manifest's pin; the `Q<n>`
+lines are the three pinned quotes, each with its occurrence count and anchor. A
+changed capture prints `S064:sha256 MISMATCH expected=<pin> actual=<digest>` and exits
+1; an absent capture prints `S064:source UNAVAILABLE reason=missing` and exits 2; an
+id the manifest does not list prints `S064:source UNAVAILABLE reason=not-listed` and
+exits 2.
+
+
+5. Sources census — the registry rows are schema-valid
+--------------------------------------------------------
+
+    bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate \
+        --root /home/vgpnk/Projects/shokunin kasegi
+
+Expected (exit 0):
+
+    kasegi    W04    S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+    kasegi    W04    S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+    kasegi    ok     /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+
+Those two W04 warnings are the standing pair. Any other W or E code is a defect.
+The census checks the row grammar, not the mining: the S064 row must be 13 cells
+(id, source, kind, tier, scope, anchor, teaches, status, opened, recheck, used-by),
+`kind` in the enum, `tier` in A/B/C, `status` in queued/mined/rejected, `opened` an
+ISO date not in the future, `recheck` an ISO date, an `Nd` cadence or a symbolic
+cadence (a bare em dash is NOT a cadence and raises E09), and `used-by` a path that
+exists on disk.
+
+To count the registry as well:
+
+    bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh census \
+        --root /home/vgpnk/Projects/shokunin kasegi
+
+    kasegi    rows   63 -> 64      (S064 only)  or  65      (S064 plus one rejected row)
+
+
+6. The same five commands against a scratch copy
+-------------------------------------------------
+
+Before integration, rehearse on a copy instead of the lane:
+
+    S=/fast/scratch/hyaku/kasegi-r42/rehearsal
+    mkdir -p "$S" && cp -a /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus "$S/corpus"
+
+    python3 "$S/corpus/instruments/frontier-recheck-count.py" --root "$S"
+    python3 "$S/corpus/instruments/capture-binding-check.py"    --root "$S"
+    python3 "$S/corpus/instruments/recheck-audit.py" --root "$S" --cdroot "$S" --quiet
+    python3 "$S/corpus/instruments/source-recheck.py" \
+        --manifest "$S/corpus/source-snapshots/round-42/manifest.json" --source S064
+    bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate "$S"
+
+Before the landing lands, `corpus/source-snapshots/round-42/manifest.json` is absent
+and the section-4 command prints `manifest UNAVAILABLE reason=missing` and exits 2;
+after the landing it must exit 0.
+
+Two rules make a scratch run meaningful:
+
+  a) The knowledge entries' `recheck:` lines begin `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin &&`.
+     Inside a copy they still cd into the REAL lane, so the copy's audit executes the
+     real lane's artifacts and its `cdroot` limb fails against the copy. Repoint every
+     entry's `cd <lane> &&` prefix at the copy, and pass `--cdroot` naming the
+     directory the entries cd into:
+
+         sed -i "s|cd /home/vgpnk/Projects/shokunin/kasegi-shokunin \&\&|cd $S \&\&|" \
+             "$S"/corpus/knowledge/*.md
+
+     (the ampersands are escaped: in a sed replacement a bare `&` stands for the
+     whole match and would paste the old text back in)
+
+     Without the repoint, `recheck-audit.py --root "$S" --cdroot "$S"` reports
+     `cdroot_fail=59` and exits 1, and `frontier-recheck-count.py` reports
+     `recheck-exit-2` for the new entry instead of the defect under test.
+
+  b) The frontier harness and the closure suite's capture/binding limbs run the
+     entry's own `recheck:` line with the audited root as the working directory. A
+     mutated root must therefore carry the capture and the manifest the line names,
+     or the harness reports the missing file instead of the injected defect.
+
+
+7. What each command does and does not discriminate
+
+    frontier-recheck-count.py
+      catches: a missing or unreadable entry, a manifest that does not list the
+               selected source, a recheck line that selects a source the entry does
+               not declare or does not cite, a recheck line that exits non-zero
+               (missing capture, moved quote, wrong manifest path).
+      does NOT catch: a frontier row whose status cell is not `admitted` — the row
+               is simply not scored, so the count drops and the exit stays 0.
+      does NOT catch: a deleted or corrupted capture by itself — it sees the recheck
+               line's exit code, so it goes red only because the recheck failed.
+
+    capture-binding-check.py
+      catches: a manifest record with no registry row, a duplicated row id, a record
+               anchored to a rejected row, a `url` that is absent from the row's
+               source cell or that cell carrying two https:// tokens, a missing or
+               malformed `fetched_utc`, an orphaned capture file, a declared orphan
+               file that is absent, a duplicate id or path inside one manifest.
+      does NOT catch: the capture bytes — a deleted or corrupted capture leaves it
+               green at `records=56 bound=56 unbound=0`.
+      does NOT catch: a registry row whose `status` cell is `queued` instead of
+               `mined`; binding ignores the mined status.
+
+    recheck-audit.py
+      catches: a missing `recheck:` line, a line that is not one shell command, a
+               line whose result depends on the working directory, a line naming a
+               corpus path that does not exist, a line that names no instrument, a
+               line not bound to its own entry, an entry missing from
+               knowledge-expected.txt, an entry listed but absent.
+      does NOT catch: the capture bytes or the mined status — it scores the FORM of
+               the line, not what the line proves.
+
+    source-recheck.py
+      catches: a capture whose digest differs from the pin, a capture that is
+               absent, an id the manifest does not list, a pinned quote that no
+               longer occurs, a quote that occurs more than once without a verifying
+               anchor, an anchor that is out of range or broken, a capture stem that
+               does not equal the record id.
+      does NOT catch: the registry row — it reads the manifest and the capture only.
+
+    sources-census.sh validate
+      catches: a malformed row, a bad id, a duplicate id, a kind/tier/status outside
+               the enum, a future or malformed `opened`, an invalid `recheck`
+               cadence, a community row at tier A, a `used-by` path that does not
+               exist, a row-shaped line outside the Registry section, a duplicate URL
+               across scopes (W04).
+      does NOT catch: whether the row was mined, whether the capture exists, whether
+               the entry exists beyond the `used-by` path, or a capture whose bytes
+               are wrong.
+
+Three consequences for the round-42 landing:
+
+  - The F25 row's `admitted` status cell and the S064 row's `mined` status cell are
+    not enforced by any of the five commands. Check them directly:
+
+        grep -E '^\| F25 \|' corpus/README.md
+        awk -F'|' '/^[[:space:]]*S064[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); print s}' corpus/SOURCES.md
+
+  - A green capture-binding run says nothing about the capture. Section 4 is the only
+    command that reads the capture bytes; run it even when section 2 is green.
+
+  - The frontier harness must be read as `entries=28 pass=28` plus a `PASS F25` line.
+    Its exit code alone cannot see a status flip.

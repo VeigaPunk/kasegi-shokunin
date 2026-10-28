@@ -1,0 +1,41 @@
+ScoutF25Lead — round-42 F25 lead screen facts (machine-readable vulnerability-data standard; all checks run 2026-10-28).
+
+VERDICT: PICK = CVE Record Format (CVE JSON record format, CVEProject/cve-schema bundled JSON Schema)
+- s064 url (byte-equal for SOURCES.md source cell AND manifest url, one https token): https://raw.githubusercontent.com/CVEProject/cve-schema/main/schema/docs/CVE_Record_Format_bundled.json
+- kind: spec | tier: A | status: mined (proposed row id S064)
+- F25 frontier-row suggestion: "CVE Record Format 5.x (CVE JSON record format) — the canonical machine-readable CVE record: dataType/dataVersion/cveMetadata/containers, one 'cna' plus optional 'adp' containers, PUBLISHED/REJECTED states" (distinct from F07 CNA operational rules, which govern assignment not record shape; S031.txt mentions "CVE Record Format" once inside rule 5.2 prose, not as a captured spec)
+
+LANE-GROUND VERIFICATION (kasegi-shokunin, all against base tree):
+- grep -liE 'osv|cve.?record.?format|cve.schema|cve_schema|CVE_Record|ghsa|nvd' over corpus/SOURCES.md + corpus/README.md + corpus/knowledge/*.md -> only incidental mentions: "CVE Records" as dataset objects in cwe-top25-2025-methodology.md (S013 quotes), "CVE record" as a record instance in epss/cisa-cvd entries, and S031.txt (CNA Rules capture) naming "the CVE Record Format" once in rule 5.2 prose — no row or entry captures the format spec itself.
+- No frontier row F01-F24 covers a record-format document (F21 CSAF/VEX, F23 CycloneDX analysis subtree are different standards; F07 is CNA assignment rules).
+- Zero captured artifacts for any candidate: corpus/source-snapshots/*/S*.txt holds no osv-schema/cve-schema/nvd capture.
+
+SIBLING-GROUND VERIFICATION (all /home/vgpnk/Projects/shokunin/*-shokunin corpora):
+- kaidoku-shokunin SOURCES.md S015 = one OSV *record* instance (api.osv.dev/v1/vulns/CVE-2025-55305, dataset) — adjacent to the OSV schema spec, not identical; recorded per ScribeC2Gate-2's independent screen, concurred.
+- mori-shokunin SOURCES.md S012 = one GHSA advisory page (GHSA-652q-wxr6-h5j6) — adjacent to the GHSA-API-doc candidate; deprioritized GHSA accordingly.
+- No sibling corpus hit for cve-schema / CVE_Record_Format / CVE Record Format document, osv-schema doc, or NVD API schema.
+
+FETCH LEDGER (UA kasegi-shokunin/1.0, -L --max-time 90):
+- 2026-10-28T11:06:45Z cve  HTTP 200  133616 B  sha256 44c703322b1fcc532bc1c93f3993a0ba042c1a2831aae8cf39c4fbb707d03c8f  (PICKED — captured)
+- 2026-10-28T11:06:45Z osv  HTTP 200  228890 B  sha256 8cf1e3d3f9e10eba902d03af6c281d6bc5e71c22dc351fcb4b811c64030570e8  (rejected R1)
+- 2026-10-28T11:06:45Z nvd-page  HTTP 200  2092 B  sha256 800245b306bcb666e3b05df8cf63ad11aa6f02f288c544dd637aac524d3a526a  (Angular shell behind Cloudflare challenge, no document text)
+- 2026-10-28T11:08:16Z nvd-schema  HTTP 200  10394 B  sha256 2b9c4e8ab7e6e42aa17ea787f58167beff47c119c6f291405f86ac19c6149e01  (rejected R2 — same family's normative artifact)
+- 2026-10-28T11:09:10Z instrument refetch (capture-source.py --kind text)  HTTP 200 133616 B raw / 84520 B snapshot — byte-identical to deliverable capture (cmp exit 0)
+
+CANDIDATE VERDICTS:
+(a) OSV schema — REJECTED (R1 in reject-record): primary+normative, but document family adjacent in sibling ground (kaidoku S015 OSV record) and its canonical artifact is HTML describing a schema published separately; CVE format wins disjointness + direct machine-verifiability. flip recorded.
+(b) CVE Record Format bundled schema — PICKED (S064): primary first-party (CVEProgram/cve-schema repo, $id cveproject.github.io/cve-schema/schema/CVE_Record_Format.json), normative JSON Schema draft-07, fully disjoint; capture 3545 lines / 84520 bytes, snapshot sha256 b90a51f7b356e7683483d9ac0753e3eb06fe3ab53806a57fdd4bf129b2f141fa.
+(c) NVD API 2.0 CVE response schema 2.2.4 — REJECTED (R2): downstream NVD-enriched view (evaluator*/cisa* fields), not the canonical record standard; dev-doc page behind Cloudflare shell. flip recorded.
+Screened-not-fetched: GHSA advisory API (mori S012 adjacency), FIRST VIN (no standalone normative doc).
+
+S064 GATE QUOTES (all verified unique; source-recheck exit 0 — S064:sha256 OK, Q1-Q3 OK anchor-verified):
+- Q1 L5 (18w): "cve-schema specifies the CVE JSON record format. This is the blueprint for a rich set of JSON data"
+- Q2 L3466 (15w): "When a CNA populates the data associated with a CVE ID as a CVE Record"
+- Q3 L3510 (18w): "A Rejected CVE Record remains on the CVE List so that users can know when it is invalid."
+
+DELIVERABLE BINDING NOTES:
+- ScoutF25Lead.S064.txt = the capture (collapse() of the served body; 0 CR bytes, no BOM, no trailing-blank differences).
+- ScoutF25Lead.manifest-record.json = the complete corpus/source-snapshots/round-42/manifest.json bytes (single S064 record; land as-is; instrument-verified against the capture: exit 0).
+- ScoutF25Lead.reject-record.txt = R1/R2 Gate evidence (url + date + located quote + reason + flip each).
+- Row-ids suggestion for landing: S064 mined row; rejected screened rows S065 (OSV) and S066 (NVD schema) with reason+flip in the teaches cell per S022/S024 precedent; registry 63 -> 64+R with R=2.
+- F24/RFC 9116 parked: not screened, not referenced as a candidate.

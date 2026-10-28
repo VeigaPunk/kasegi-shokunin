@@ -177,7 +177,15 @@ moves only on measurements of the actual lane corpus and domain roots.
   `recheck:` line before running it (header `source:` ids must be covered by the
   `--source` selections, the selections must be cited in the entry, the named
   manifest must list them, and the line must be a `source-recheck.py` invocation
-  with `--source`). Prints one line per entry and `entries=K pass=P exit=0|1`.
+  with `--source`). Rule G (round 42): a frontier census runs over **every**
+  `| F<n> |` row before the records — a `FRONTIER-CENSUS rows=N admitted=N
+  closed=N problem-rows=N registry=N|absent` line, then `FRONTIER-PASS <id>` /
+  `FRONTIER-FAIL <id> status=<status> ids=<ids> problems=<...>` per row; the
+  three row-failure problems are `status-not-admitted`, `missing-pass-line` and
+  `source-id-absent:<id>` (an id bound by the row's README `sources` cell or its
+  entries with no `corpus/SOURCES.md` row). Prints one line per entry and
+  `entries=K pass=P exit=0|1` (the summary line stays last; `entries` counts
+  the raw row set plus records, so a status flip can never shrink it).
 - `corpus/source-snapshots/round-24/manifest.json` — 19 captured records, 76
   assertions: S001–S015 (the five round-22 Frontier entries) and S032–S035 (the
   round-24 F09 admissions). Every assertion was measured exactly-once in its own
@@ -438,8 +446,17 @@ compiled, `find` once, exit 0, stdout byte-identical), and the fix is the two `m
 selftest cases `complete-empty` and `complete-missing-line`; `source-recheck.py` gained
 the adjacent `quote-absent` case after `MutSRExisting.md` measured a survivor on
 `reason=quote-not-found`. Both strengthenings are selftest cases, not new ledger rows, so
-the frozen 13 stay 13. `frontier-recheck-count.py` needed no edit: its two limbs are
-load-bearing on unchanged bytes once a fixture-backed kill exists.
+the frozen 13 stay 13. `frontier-recheck-count.py` needed no edit at round 34:
+its two limbs were load-bearing on unchanged bytes once a fixture-backed kill
+exists.
+
+[r42 counter amendment, appended 2026-10-28, end-of-file append per R6] Round 42
+hardened the same counter with rule G (the frontier census above): it now fails
+the run when a `| F<n> |` row's status cell is not `admitted`, when an admitted
+row owns no PASS record, or when an id the row binds has no registry row.
+Re-measured: 566 lines, sha256 `010897bc8614c3ef3bb008eb4cdbb6c79f01a7c0afa280bc902e709dda9f1bd6`;
+selftest 6 cases unchanged in number and wording; `FRONTIER-*` lines precede the
+per-entry records (byte-identical record lines).
 
 R11 is why the digest discipline below matters. The counter changed at least six times
 during the wave (`9e729daf` → `eb9b87ff` → `b4223ed9` → `cde7c2b6` → `bd18c244` →
@@ -457,7 +474,7 @@ after the counter run, identical), from the lane root:
 |---|---|---|
 | `corpus/instruments/recheck-audit.py` | `3fc0d751f2a5819879d440f8ef62b607376a8b6914d7edf9fe1b2fc25662d4e1` | `5d4842da6103f17c7798ca2078a77288820bd8b90432348cd2cc012e1faf7f09` |
 | `corpus/instruments/source-recheck.py` | `33602a9df53a4cadd7b7aa2b6ccea9b25235888799a3b71e87906de1fc622c6f` | `fd2e01e88c8c45a949f48d67b3154ae87a95aeba0b6a9c42fbf64641b5b9c003` |
-| `corpus/instruments/frontier-recheck-count.py` | `aa60b58126569a1c8ec04409011df5f6225a9c18f2a77ea6410cd1d0d5dc0893` | `aa60b58126569a1c8ec04409011df5f6225a9c18f2a77ea6410cd1d0d5dc0893` (unchanged) |
+| `corpus/instruments/frontier-recheck-count.py` | `aa60b58126569a1c8ec04409011df5f6225a9c18f2a77ea6410cd1d0d5dc0893` | `010897bc8614c3ef3bb008eb4cdbb6c79f01a7c0afa280bc902e709dda9f1bd6` (round 42, rule G frontier census) |
 | `corpus/instruments/limb-mutation-check.py` | absent | `c660a95ff92ff1d578c6458faf868ac2c41c5d1854da3fe2a97f48ee71118a0f` |
 | `corpus/instruments/limb-ledger.json` | absent | `c042adf6b25c78b65e3f5c1e9898095f355599a188cfe08ba2547765d6ed03be` |
 | `corpus/instruments/score-gap.py` | absent | `855869bf97ae2081c24ed28630d587ad2988872b6625f6e0a1f8c7b2e3f201fb` |

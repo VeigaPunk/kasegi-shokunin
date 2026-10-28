@@ -1,0 +1,90 @@
+## Assimilation: none adopted
+
+Id-collision rerun (this seat, read-only, the guard's own 0–3-space extractor
+`grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}'` applied to both sides, ids intersected with
+`comm -12`): lane `corpus/SOURCES.md` at HEAD `0566bd66` holds **63** rows and **63** ids, unique,
+`S001`–`S063`; staged `shokuknow/merge/kasegi/SOURCES.append.md` (`sha256 4fe049cb…73eb`, 100 lines,
+89,718 B, mtime `2026-10-24 23:33:20 −03:00`) holds **94** ids, unique, `S031`–`S124`. `comm -12` →
+**33** collisions: `S031 S032 S033 S034 S035 S036 S037 S038 S039 S040 S041 S042 S043 S044 S045 S046
+S047 S048 S049 S050 S051 S052 S053 S054 S055 S056 S057 S058 S059 S060 S061 S062 S063`. Artifact
+digests: `reg-ids` `10deac7a4a52fa2d1a84daf7d8ad840930228488e6eea9fe67e5cfb3928a72e8`, `staged-ids`
+`550a0129a446ae9bf0c6da3d86574b308dcadc7f4f4a2a03f704b9716948019f`, `collisions`
+`c60db3a338b2e8a36c524466ab5072be189d8597371954bd97d832b5592b6e43`.
+
+Four facts keep the number honest:
+
+- **It is head-relative.** 33 is the registry-63 reading. C2 lands `S064` after this measurement;
+  adding `S064` to the lane id list and re-running `comm -12` against the unchanged staged list
+  prints **34** (`S031`–`S064`), so the lesson must state the registry size it read, never the
+  figure alone.
+- **The drift is mass, not scattered.** The collision band is **contiguous** — `S031`…`S063`, every
+  id the package could have used against a 30-row registry. The package was staged when the lane
+  held 30 rows; the lane has since grown by 33. This is the §10 "drift a read-only check cannot
+  fix" case (mass id drift), so it is a renumber-and-L0-question matter, not an arithmetic shift.
+- **Id collisions are not document collisions.** Of the 33 colliding ids, **32** name a *different*
+  document in the lane than in the package and only **1** names the same one (`S042` =
+  `https://www.ipa.go.jp/security/todokede/vuln/process.html` = lane `S042`). Examples: staged `S047`
+  = `sse.com.cn` vs lane `S047` = `ipa.go.jp`; staged `S052` = `cnnvd.org.cn` vs lane `S052` =
+  `cisa.gov` KEV feed; staged `S063` = `gongbao.court.gov.cn` vs lane `S063` = `rfc-editor.org`
+  RFC 9116. A registered number is not a registered document.
+- **The incoming row is already taken twice over.** Staged `S064` is the JPCERT P-guideline 付録6
+  (`jpcert.or.jp/vh/partnership_guideline2026.pdf`), a document the lane already holds as `S041` —
+  and `S064` is the id C2 needs for the round's own new row. It must not be renumbered into `S064`.
+  The same URL is staged three times (`S043`, `S064`, `S076`), so appending the package's free rows
+  verbatim also lands three rows on one URL.
+
+Guard proof (this seat, scratch, twice): on `| S001 | x |` + `  | S002 | y |` against `| S002 | y |`
+the 0–3-space extractor reports `collisions=[S002] count=1`, while the column-zero-only pattern
+`grep -oE '^\|…'` reports `count=0` on the same bytes; re-run against the **real** inputs, indenting
+the live lane row `| S031 |` by two spaces, the 0–3-space extractor still finds `S031` (33
+collisions) and the column-zero-only pattern drops it (32 collisions, `S031` absent). An indent sweep
+(`1`–`5` leading spaces on one `S099` row) matches at 1, 2 and 3 and misses at 4 and 5 — the 0–3-space
+tolerance is load-bearing and 4+ spaces is the guard's blind spot. Neither real input carries an
+`S`-row indented one or more spaces (both `grep -cE '^ {1,3}\|'` and `grep -cE '^ {4,}\|'` → 0 on
+each side), so the count above is unaffected. The census premise holds on real bytes: an indented
+`S031` row inside a scratch lane mirror leaves the census verdict byte-identical
+(`sources-census.sh validate --root <mirror> <mirror>/kasegi-shokunin` → exit 0, same two `W04`
+warnings and the same `ok` line, before and after the indent).
+
+Adoption gate (scratch, no lane write): appending the package's **collision-free** rows
+(`S064`–`S124`, 61 rows) verbatim to a scratch mirror of the lane registry and gating it with
+`/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root <mirror> <mirror>/kasegi-shokunin`
+exits **1** with **104 E-class findings**: 60 `E11` (dangling `used-by` — 49 of the 50 distinct
+targets named by those rows do not exist in the lane corpus), 43 `E09` (prose `recheck` cells such
+as `90d — re-open the 公告 page and confirm … (ran 2026-10-24)`, which is not a valid ISO date,
+`NNd` or symbolic cadence), and 1 `E01` (`S120 fields=12` — the row carries a backslash-escaped pipe
+`\|` inside its `scope` cell, so it splits into 12 columns instead of 11). **Not one** of the 61 rows
+is clean as staged. Nine further `W04` warnings name duplicate URLs across scopes — five of them
+(`S064`, `S068`, `S076`, `S080`, `S123`) against documents the lane already holds under other ids —
+and three `W01` flag tier-C `mined` rows.
+
+Standing refusals — the seven staged entries of `corpus/lessons/round-35.md` § Standing refusals,
+re-measured against the package (byte-identical: `SOURCES.append.md` `4fe049cb…73eb`, mtime
+`2026-10-24 23:33:20 −03:00`): **0 of 7 flips met**, so all seven reasons stand.
+
+- `program-scope-rules-and-asset-boundaries.md` — `ground: F09` collides with the admitted lane
+  F09; the staged file carries 0 located quotes and no executable `recheck:`.
+- `claim-packaging-and-report-quality.md` — cites `S036` (BILISRC V1.7); the lane's `S036` is
+  Cybozu's policy page and `BILISRC` appears in no lane row and no capture.
+- `cn-crowdsourced-testing-roles-and-conduct.md` — `S081`/`S082` are in no lane row and no capture.
+- `chinese-crowd-testing-national-standard-2026-10-23.md` — `S077`/`S078`/`S079` are in no lane row.
+- `chinese-criminal-thresholds-and-authorisation.md` — its three PRC legal sources are in no lane
+  row or capture; the ids it cites resolve to *other* documents.
+- `chinese-program-severity-instrument.md` — `sse.com.cn` is in no lane row and the anchor
+  `newsType_6` is in no lane capture.
+- `program-severity-ladders-and-reward-scales.md` — the same-name lane file differs
+  (`6c05c98f…` vs `35de5f8b…`); no supersedes row.
+
+Quarantine slice: the read-only register
+`shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md` (`sha256
+5afe1810a6c3d62f37987b575a954f5b1197daa23005d4bb2f1d982f64bad833`, 375 lines, 83,621 B) yields 7
+kasegi rows under the frozen awk, byte-identical to the round-37 stored slice
+(`sha256 d02acb68cb40164978146cf0f15f18a8f8a66d3c3470b3f6198e9e072911b862`):
+`S037 payload-absent`, `S054 payload-absent`, `S048` / `S065` / `S068` / `S069` / `S070` all
+"the cited source could not be fetched, so no quote was checked". Every slice row stays
+quarantined: none is hand-checked present-and-adoptable as quoted this round, so 0 are adopted.
+
+Assimilation result: **none adopted** — the collision band is a 33-id mass drift a read-only check
+cannot fix (the §10 clause routes it to an L0 question and no adoption), no staged row is
+appendable as-is (104 E-class census findings on the 61 collision-free rows), no standing refusal
+flip is met, and no quarantine row is hand-checked adoptable.

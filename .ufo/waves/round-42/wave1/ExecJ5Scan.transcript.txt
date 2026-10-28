@@ -1,0 +1,169 @@
+# ExecJ5Scan — round-42 J5 scratch-hygiene limb: evidence transcript
+# seat: ExecJ5Scan (executor, leaf) — family F-SCAN
+# generated-by: /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/gen_transcript.sh
+# limb sha256: 157cd803bcacf97a2c43a0c5535e7df24f5abd7e7d6f5142f46183b76642eee0
+# host date (UTC): 2026-10-28T11:37:18Z
+# every fixture below lives under the seat scratch dir; the live host
+# scratch root is NEVER read by this transcript.
+
+== 0. sourceability and argument immunity ==
+
+$ bash -c source '/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh'; echo "sourced-ok j5_function_count=$(declare -F | grep -c '^declare -f j5_')"; echo "check_j5_type=$(type -t check_j5)"
+sourced-ok j5_function_count=25
+check_j5_type=function
+exit=0
+
+$ bash -c source '/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh'; check_j5 '/fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/scratch' '/fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/work'
+J5 payload=strays=0,outside=0,read=fail,scanned=0,scope=off closed=0
+exit=1
+
+== 1. graded selftest (15 cases) ==
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh --self-test --sandbox /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/sbx
+selftest probe sandbox=/fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/sbx family=kasegi-r4[0-9]* live-root-read=no
+selftest policy=family-shape,case-insensitive,separator-insensitive,recursive,dot-inclusive,fail-closed,outside-scope=materialized-fixture-parent
+selftest case=J5 clean-green expect=green got=green positive=pass verdict=pass payload=strays=0,outside=0,read=ok,scanned=0,scope=on
+selftest case=J5 sibling-round-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 foreign-seat-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 two-planted-red expect=red got=red positive=pass verdict=pass payload=strays=2,outside=0,read=ok,scanned=2,scope=on
+selftest case=J5 outside-root-red expect=red got=red positive=pass verdict=pass payload=strays=0,outside=1,read=ok,scanned=1,scope=on
+selftest case=J5 own-work-green expect=green got=green positive=pass verdict=pass payload=strays=0,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 own-work-contents-green expect=green got=green positive=pass verdict=pass payload=strays=0,outside=0,read=ok,scanned=2,scope=on
+selftest case=J5 family-symlink-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=2,scope=on
+selftest case=J5 dot-prefixed-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 case-separator-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 nested-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 empty-container-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 family-file-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 family-shaped-root-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=0,scope=on
+selftest case=J5 missing-root-red expect=red got=red positive=pass verdict=pass payload=strays=0,outside=0,read=fail,scanned=0,scope=on
+selftest case=J5 missing-work-red expect=red got=red positive=pass verdict=pass payload=strays=0,outside=0,read=fail,scanned=0,scope=on
+selftest cases=16 failures=0
+selftest verdict=pass
+exit=0
+
+== 2. replay of the two COMMITTED round-41/round-40 defeat artifacts ==
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh --replay-defeats --sandbox /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/sbx2
+replay probe sandbox=/fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/sbx2 family=kasegi-r4[0-9]*
+replay defeat=D-A sibling-round-prefix rejected=1 verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+replay defeat=D-B outside-configured-root rejected=1 verdict=pass payload=strays=0,outside=1,read=ok,scanned=1,scope=on
+replay control=clean accepted=1 verdict=pass payload=strays=0,outside=0,read=ok,scanned=0,scope=on
+replay defeats=2 failures=0
+replay verdict=pass
+exit=0
+
+== 3. the three required planted-stray scenarios ==
+
+--- 3a. GREEN when clean ---
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh --check --root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/scratch --work /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/work --outside-root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture/scratch
+strays=0,outside=0,read=ok,scanned=0,scope=on
+exit=0
+
+--- 3b. REJECTED over planted kasegi-r41/SeatX ---
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh --detail --root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/scratch --work /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/work --outside-root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture/scratch
+strays=1,outside=0,read=ok,scanned=1,scope=on
+scope=/fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture
+stray: kasegi-r41/SeatX
+exit=1
+
+--- 3c. REJECTED over planted kasegi-r42/OtherSeat ---
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh --detail --root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/scratch --work /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/work --outside-root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture/scratch
+strays=1,outside=0,read=ok,scanned=1,scope=on
+scope=/fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture
+stray: kasegi-r42/OtherSeat
+exit=1
+
+--- 3d. REJECTED over planted kasegi-r40/SeatX (sibling round prefix) ---
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh --detail --root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/scratch --work /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/work --outside-root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture/scratch
+strays=1,outside=0,read=ok,scanned=1,scope=on
+scope=/fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture
+stray: kasegi-r40/SeatX
+exit=1
+
+--- 3e. REJECTED over one outside-configured-root stray ---
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh --detail --root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/scratch --work /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/work --outside-root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture/scratch
+strays=0,outside=1,read=ok,scanned=1,scope=on
+scope=/fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture
+outside-stray: kasegi-r42
+exit=1
+
+== 4. fail-closed probes ==
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh --check --root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/scratch --work /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/work --outside-root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture/scratch
+strays=1,outside=0,read=fail,scanned=1,scope=on
+exit=1
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh --check --root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/scratch --work /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/work --outside-root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture/scratch
+strays=0,outside=0,read=fail,scanned=0,scope=on
+exit=1
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh --check --root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/scratch/nope --work /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/work --outside-root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture/scratch
+strays=0,outside=0,read=fail,scanned=0,scope=on
+exit=1
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ5Scan.sh --check --root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/scratch --work /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/nope --outside-root /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/fx/fixture/scratch
+strays=0,outside=0,read=fail,scanned=0,scope=on
+exit=1
+
+== 5. mutation probe: four weakened copies of the limb bytes ==
+
+# Each mutant is a COPY of the limb in scratch; the lane file is never mutated.
+
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+AssertionError: 0
+--- M1: family narrowed back to the r41 literal kasegi-r41 ---
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/mut/m1.sh --replay-defeats --sandbox /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/sbx3
+replay probe sandbox=/fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/sbx3 family=kasegi-r41
+replay defeat=D-A sibling-round-prefix rejected=0 verdict=FAIL payload=strays=0,outside=0,read=ok,scanned=0,scope=on
+replay defeat=D-B outside-configured-root rejected=1 verdict=pass payload=strays=0,outside=1,read=ok,scanned=1,scope=on
+replay control=clean accepted=1 verdict=pass payload=strays=0,outside=0,read=ok,scanned=0,scope=on
+replay defeats=2 failures=1
+replay verdict=fail
+exit=1
+
+--- M2: outside limb disabled ---
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/mut/m2.sh --replay-defeats --sandbox /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/sbx4
+replay probe sandbox=/fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/sbx4 family=kasegi-r4[0-9]*
+replay defeat=D-A sibling-round-prefix rejected=1 verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=off
+replay defeat=D-B outside-configured-root rejected=0 verdict=FAIL payload=strays=0,outside=0,read=ok,scanned=0,scope=off
+replay control=clean accepted=1 verdict=pass payload=strays=0,outside=0,read=ok,scanned=0,scope=off
+replay defeats=2 failures=1
+replay verdict=fail
+exit=1
+
+--- M3: seat-level children ignored ---
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/mut/m3.sh --replay-defeats --sandbox /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/sbx5
+bash: /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/mut/m3.sh: No such file or directory
+exit=127
+
+--- M4: fail-open on a missing work dir ---
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/mut/m4.sh --self-test --sandbox /fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/sbx6
+selftest probe sandbox=/fast/scratch/hyaku/kasegi-r42/ExecJ5Scan/tx/sbx6 family=kasegi-r4[0-9]* live-root-read=no
+selftest policy=family-shape,case-insensitive,separator-insensitive,recursive,dot-inclusive,fail-closed,outside-scope=materialized-fixture-parent
+selftest case=J5 clean-green expect=green got=green positive=pass verdict=pass payload=strays=0,outside=0,read=ok,scanned=0,scope=on
+selftest case=J5 sibling-round-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 foreign-seat-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 two-planted-red expect=red got=red positive=pass verdict=pass payload=strays=2,outside=0,read=ok,scanned=2,scope=on
+selftest case=J5 outside-root-red expect=red got=red positive=pass verdict=pass payload=strays=0,outside=1,read=ok,scanned=1,scope=on
+selftest case=J5 own-work-green expect=green got=green positive=pass verdict=pass payload=strays=0,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 own-work-contents-green expect=green got=green positive=pass verdict=pass payload=strays=0,outside=0,read=ok,scanned=2,scope=on
+selftest case=J5 family-symlink-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=2,scope=on
+selftest case=J5 dot-prefixed-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 case-separator-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 nested-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 empty-container-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 family-file-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=1,scope=on
+selftest case=J5 family-shaped-root-red expect=red got=red positive=pass verdict=pass payload=strays=1,outside=0,read=ok,scanned=0,scope=on
+selftest case=J5 missing-root-red expect=red got=red positive=pass verdict=pass payload=strays=0,outside=0,read=fail,scanned=0,scope=on
+selftest case=J5 missing-work-red expect=red got=green positive=fail verdict=fail payload=strays=0,outside=0,read=ok,scanned=0,scope=on
+selftest cases=16 failures=1
+selftest verdict=fail
+exit=1
+

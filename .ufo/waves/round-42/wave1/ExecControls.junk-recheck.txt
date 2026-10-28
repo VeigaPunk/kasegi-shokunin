@@ -1,0 +1,1225 @@
+# Round-42 C2 junk-twin control - rejection transcript
+
+seat        ExecControls (kasegi-shokunin round 42, wave 1)
+lane        /home/vgpnk/Projects/shokunin/kasegi-shokunin
+            (read-only: no mutating git/jj command was run; no lane file was
+             written by this seat)
+claims      .ufo/waves/round-42/claims.json, claim C2 (frozen; not edited)
+census      /home/vgpnk/Projects/shokunin/scripts/sources-census.sh
+python      3.14.8
+run-utc     2026-10-28T11:35:50Z
+scratch     /fast/scratch/hyaku/kasegi-r42/ExecControls  (removed after this transcript and the two deliverables
+            were copied into .ufo/waves/round-42/wave1/)
+network     none - the junk twin is fabricated by design; nothing was fetched
+
+Junk twin under test - the O4 class named in the round-42 C2 kill rule:
+"a mined-marked row without capture+entry+harness pass".
+  registry row   | S999 | OSV schema (fabricated twin - never fetched) - https://ossf.github.io/osv-schema/ | spec | A | Fabricated twin scope: a machine-readable vulnerability record format claimed as mined without a capture | Fabricated twin anchor: none | Fabricated twin teaches: nothing - this row exists only to be rejected | mined | 2026-10-28 | 180d | corpus/knowledge/junk-f25-osv-schema.md |
+  frontier row   | F25 | OSV schema - the machine-readable vulnerability record format (fabricated twin, not an admission) | admitted | knowledge/junk-f25-osv-schema.md | S999 | Fabricated twin: no capture, no entry, no harness pass - every instrument must reject it. |
+  entry path     corpus/knowledge/junk-f25-osv-schema.md (never written in J1-J3)
+  manifest       corpus/source-snapshots/round-42-junk/manifest.json (never written in J1-J2)
+
+Masters
+  frozen  git -C <lane> archive 5053a7f46de35784cff4b56756906e9014a38276
+          the claims' frozen base - the tree .ufo/waves/round-42/c2-controls/
+          before.txt was measured on (frontier 24, registry 63, knowledge 60).
+  live    copy of the lane working tree at run time (.git and .jj excluded)
+
+Every landed `recheck:` line in every arm is retargeted to that arm's own
+root, so the audit's cdroot limb measures the tree under test and not the
+live lane.
+
+Arms are a monotone ladder; each adds one layer of fabrication.  J1-J6 are
+the O4 class (no capture bytes, no harness pass).  P5 is a labelled PROBE
+OUTSIDE the O4 class: it has a capture, an entry and a harness pass, and is
+measured only to locate the edge of the local guard.
+
+==============================================================================
+ARM base   (/fast/scratch/hyaku/kasegi-r42/ExecControls/base)
+frozen master, retargeted only - the POSITIVE CONTROL
+==============================================================================
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && grep -cE '^\| F[0-9]+ \|' corpus/README.md)
+24
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md)
+63
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && awk -F'|' '/^\|[[:space:]]*S064[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && awk -F'|' '/^\|[[:space:]]*S999[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && bash -c 'grep -rlE "^source: S064" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && bash -c 'grep -rlE "^source: S999" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && bash -c 'ls corpus/knowledge/*.md | wc -l')
+60
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && python3 corpus/instruments/frontier-recheck-count.py)
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0   
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+entries=27 pass=27 exit=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && python3 corpus/instruments/capture-binding-check.py)
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+records=55 bound=55 unbound=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && python3 corpus/instruments/recheck-audit.py --quiet)
+strict pass=60/60 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=36 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=60 total=60 pass=60 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=60 missing=0 unexpected=0 exit=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-42-junk/manifest.json --source S999)
+manifest UNAVAILABLE reason=missing
+exit=2
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/base && bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /fast/scratch/hyaku/kasegi-r42/ExecControls/base /fast/scratch/hyaku/kasegi-r42/ExecControls/base)
+base	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+base	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+base	ok	/fast/scratch/hyaku/kasegi-r42/ExecControls/base/corpus/SOURCES.md
+exit=0
+
+--- arm verdict: all three instruments green (frontier harness, capture binding, census) ---
+
+$ python3 /fast/scratch/hyaku/kasegi-r42/ExecControls/measure.py /fast/scratch/hyaku/kasegi-r42/ExecControls/base   (the C2 after-state measure conjunct)
+measure: frontier_rows=24 admitted=24 queued=0 F_total=24
+measure: (20+24)/(20+24) = 44/44 = 1.0000
+measure: harness entries=27 pass=27 exit=0 -> admitted-entries-all-pass=yes
+measure: criterion met=yes
+exit=0
+
+--- the three named instruments on base ---
+frontier-recheck-count.py        exit=0  entries=27 pass=27 exit=0
+capture-binding-check.py         exit=0  records=55 bound=55 unbound=0
+sources-census.sh validate       exit=0  no E-code
+
+==============================================================================
+ARM J1   (/fast/scratch/hyaku/kasegi-r42/ExecControls/J1)
+frozen master + the fabricated registry row S999 (status mined; used-by names a knowledge file that does not exist).  No frontier row, no manifest, no capture, no entry.
+==============================================================================
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && grep -cE '^\| F[0-9]+ \|' corpus/README.md)
+24
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md)
+64
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && awk -F'|' '/^\|[[:space:]]*S064[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && awk -F'|' '/^\|[[:space:]]*S999[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && bash -c 'grep -rlE "^source: S064" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && bash -c 'grep -rlE "^source: S999" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && bash -c 'ls corpus/knowledge/*.md | wc -l')
+60
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && python3 corpus/instruments/frontier-recheck-count.py)
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0   
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+entries=27 pass=27 exit=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && python3 corpus/instruments/capture-binding-check.py)
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+records=55 bound=55 unbound=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && python3 corpus/instruments/recheck-audit.py --quiet)
+strict pass=60/60 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=36 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=60 total=60 pass=60 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=60 missing=0 unexpected=0 exit=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-42-junk/manifest.json --source S999)
+manifest UNAVAILABLE reason=missing
+exit=2
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 && bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /fast/scratch/hyaku/kasegi-r42/ExecControls/J1 /fast/scratch/hyaku/kasegi-r42/ExecControls/J1)
+J1	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+J1	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+J1	E11	S999 missing used-by corpus/knowledge/junk-f25-osv-schema.md
+exit=1
+
+--- arm verdict: census rejects (E11 missing used-by); the other two instruments have nothing yet to see ---
+
+$ python3 /fast/scratch/hyaku/kasegi-r42/ExecControls/measure.py /fast/scratch/hyaku/kasegi-r42/ExecControls/J1   (the C2 after-state measure conjunct)
+measure: frontier_rows=24 admitted=24 queued=0 F_total=24
+measure: (20+24)/(20+24) = 44/44 = 1.0000
+measure: harness entries=27 pass=27 exit=0 -> admitted-entries-all-pass=yes
+measure: criterion met=yes
+exit=0
+
+--- the three named instruments on J1 ---
+frontier-recheck-count.py        exit=0  entries=27 pass=27 exit=0
+capture-binding-check.py         exit=0  records=55 bound=55 unbound=0
+sources-census.sh validate       exit=1  J1	E11	S999 missing used-by corpus/knowledge/junk-f25-osv-schema.md
+
+==============================================================================
+ARM J2   (/fast/scratch/hyaku/kasegi-r42/ExecControls/J2)
+J1 + the F25-lookalike frontier row (admitted; names the missing entry).
+==============================================================================
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && grep -cE '^\| F[0-9]+ \|' corpus/README.md)
+25
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md)
+64
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && awk -F'|' '/^\|[[:space:]]*S064[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && awk -F'|' '/^\|[[:space:]]*S999[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && bash -c 'grep -rlE "^source: S064" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && bash -c 'grep -rlE "^source: S999" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && bash -c 'ls corpus/knowledge/*.md | wc -l')
+60
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && python3 corpus/instruments/frontier-recheck-count.py)
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0   
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+FAIL     F25  knowledge/junk-f25-osv-schema.md                     ids=-              exit=-    problems=missing-entry
+entries=28 pass=27 exit=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && python3 corpus/instruments/capture-binding-check.py)
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+records=55 bound=55 unbound=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && python3 corpus/instruments/recheck-audit.py --quiet)
+strict pass=60/60 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=36 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=60 total=60 pass=60 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=60 missing=0 unexpected=0 exit=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-42-junk/manifest.json --source S999)
+manifest UNAVAILABLE reason=missing
+exit=2
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 && bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /fast/scratch/hyaku/kasegi-r42/ExecControls/J2 /fast/scratch/hyaku/kasegi-r42/ExecControls/J2)
+J2	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+J2	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+J2	E11	S999 missing used-by corpus/knowledge/junk-f25-osv-schema.md
+exit=1
+
+--- arm verdict: the frontier harness now sees the twin and must reject it; the census still rejects on E11 ---
+
+$ python3 /fast/scratch/hyaku/kasegi-r42/ExecControls/measure.py /fast/scratch/hyaku/kasegi-r42/ExecControls/J2   (the C2 after-state measure conjunct)
+measure: frontier_rows=25 admitted=25 queued=0 F_total=25
+measure: (20+25)/(20+25) = 45/45 = 1.0000
+measure: harness entries=28 pass=27 exit=1 -> admitted-entries-all-pass=no
+measure: criterion met=no
+exit=0
+
+--- the three named instruments on J2 ---
+frontier-recheck-count.py        exit=1  entries=28 pass=27 exit=1
+capture-binding-check.py         exit=0  records=55 bound=55 unbound=0
+sources-census.sh validate       exit=1  J2	E11	S999 missing used-by corpus/knowledge/junk-f25-osv-schema.md
+
+==============================================================================
+ARM J3   (/fast/scratch/hyaku/kasegi-r42/ExecControls/J3)
+J2 + a snapshot manifest that CLAIMS S999: no url, no fetch provenance, no capture bytes behind it.
+==============================================================================
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && grep -cE '^\| F[0-9]+ \|' corpus/README.md)
+25
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md)
+64
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && awk -F'|' '/^\|[[:space:]]*S064[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && awk -F'|' '/^\|[[:space:]]*S999[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && bash -c 'grep -rlE "^source: S064" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && bash -c 'grep -rlE "^source: S999" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && bash -c 'ls corpus/knowledge/*.md | wc -l')
+60
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && python3 corpus/instruments/frontier-recheck-count.py)
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0   
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+FAIL     F25  knowledge/junk-f25-osv-schema.md                     ids=-              exit=-    problems=missing-entry
+entries=28 pass=27 exit=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && python3 corpus/instruments/capture-binding-check.py)
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-42-junk records=1 url_bound=0 fetched=0 archival=0
+AUDIT records=56 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=18 manifest_dirs=18 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+FAIL rule=url-mismatch record=S999 detail=absent dir=round-42-junk
+FAIL rule=provenance-missing record=S999 dir=round-42-junk
+records=56 bound=55 unbound=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && python3 corpus/instruments/recheck-audit.py --quiet)
+strict pass=60/60 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=36 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=60 total=60 pass=60 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=60 missing=0 unexpected=0 exit=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-42-junk/manifest.json --source S999)
+S999:source UNAVAILABLE reason=missing
+exit=2
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 && bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /fast/scratch/hyaku/kasegi-r42/ExecControls/J3 /fast/scratch/hyaku/kasegi-r42/ExecControls/J3)
+J3	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+J3	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+J3	E11	S999 missing used-by corpus/knowledge/junk-f25-osv-schema.md
+exit=1
+
+--- arm verdict: THE O4 TWIN - a mined-marked row + an F25-lookalike frontier row with no capture, no entry and no harness pass. ---
+
+$ python3 /fast/scratch/hyaku/kasegi-r42/ExecControls/measure.py /fast/scratch/hyaku/kasegi-r42/ExecControls/J3   (the C2 after-state measure conjunct)
+measure: frontier_rows=25 admitted=25 queued=0 F_total=25
+measure: (20+25)/(20+25) = 45/45 = 1.0000
+measure: harness entries=28 pass=27 exit=1 -> admitted-entries-all-pass=no
+measure: criterion met=no
+exit=0
+
+--- the three named instruments on J3 ---
+frontier-recheck-count.py        exit=1  entries=28 pass=27 exit=1
+capture-binding-check.py         exit=1  records=56 bound=55 unbound=1
+sources-census.sh validate       exit=1  J3	E11	S999 missing used-by corpus/knowledge/junk-f25-osv-schema.md
+
+==============================================================================
+ARM J4   (/fast/scratch/hyaku/kasegi-r42/ExecControls/J4)
+J3 + the fabricated knowledge entry file (no source: line, no recheck: line).
+==============================================================================
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && grep -cE '^\| F[0-9]+ \|' corpus/README.md)
+25
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md)
+64
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && awk -F'|' '/^\|[[:space:]]*S064[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && awk -F'|' '/^\|[[:space:]]*S999[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && bash -c 'grep -rlE "^source: S064" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && bash -c 'grep -rlE "^source: S999" corpus/knowledge | wc -l')
+1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && bash -c 'ls corpus/knowledge/*.md | wc -l')
+61
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && python3 corpus/instruments/frontier-recheck-count.py)
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0   
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+FAIL     F25  knowledge/junk-f25-osv-schema.md                     ids=S999           exit=-    problems=no-recheck-line,no-source-selection,no-manifest
+entries=28 pass=27 exit=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && python3 corpus/instruments/capture-binding-check.py)
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-42-junk records=1 url_bound=0 fetched=0 archival=0
+AUDIT records=56 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=18 manifest_dirs=18 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+FAIL rule=url-mismatch record=S999 detail=absent dir=round-42-junk
+FAIL rule=provenance-missing record=S999 dir=round-42-junk
+records=56 bound=55 unbound=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && python3 corpus/instruments/recheck-audit.py --quiet)
+strict pass=60/61 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=36 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=60 total=61 pass=60 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=60 missing=0 unexpected=1 exit=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-42-junk/manifest.json --source S999)
+S999:source UNAVAILABLE reason=missing
+exit=2
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 && bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /fast/scratch/hyaku/kasegi-r42/ExecControls/J4 /fast/scratch/hyaku/kasegi-r42/ExecControls/J4)
+J4	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+J4	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+J4	ok	/fast/scratch/hyaku/kasegi-r42/ExecControls/J4/corpus/SOURCES.md
+exit=0
+
+--- arm verdict: Still no capture bytes and still no harness pass; the entry exists only as a file. ---
+
+$ python3 /fast/scratch/hyaku/kasegi-r42/ExecControls/measure.py /fast/scratch/hyaku/kasegi-r42/ExecControls/J4   (the C2 after-state measure conjunct)
+measure: frontier_rows=25 admitted=25 queued=0 F_total=25
+measure: (20+25)/(20+25) = 45/45 = 1.0000
+measure: harness entries=28 pass=27 exit=1 -> admitted-entries-all-pass=no
+measure: criterion met=no
+exit=0
+
+--- the three named instruments on J4 ---
+frontier-recheck-count.py        exit=1  entries=28 pass=27 exit=1
+capture-binding-check.py         exit=1  records=56 bound=55 unbound=1
+sources-census.sh validate       exit=0  no E-code
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! WARNING - the arm below is NOT the junk twin.  P5 carries a
+! self-consistent forged capture, a knowledge entry and a harness pass.
+! It is measured only to locate the edge of the local guard; a green
+! result here is a boundary observation, not a claim defect.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+==============================================================================
+ARM P5   (/fast/scratch/hyaku/kasegi-r42/ExecControls/P5)
+PROBE, OUTSIDE THE O4 CLASS - J4 + a self-consistent forged capture (forged bytes plus a manifest binding them with url + fetched_utc + sha256) + a recheck: line that runs it + the expected-list line.
+==============================================================================
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && grep -cE '^\| F[0-9]+ \|' corpus/README.md)
+25
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md)
+64
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && awk -F'|' '/^\|[[:space:]]*S064[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && awk -F'|' '/^\|[[:space:]]*S999[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && bash -c 'grep -rlE "^source: S064" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && bash -c 'grep -rlE "^source: S999" corpus/knowledge | wc -l')
+1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && bash -c 'ls corpus/knowledge/*.md | wc -l')
+61
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && python3 corpus/instruments/frontier-recheck-count.py)
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0   
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+PASS     F25  knowledge/junk-f25-osv-schema.md                     ids=S999           exit=0   
+entries=28 pass=28 exit=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && python3 corpus/instruments/capture-binding-check.py)
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-42-junk records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=56 with_url=56 with_fetched_utc=18 with_archival=38 snapshot_dirs=18 manifest_dirs=18 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+records=56 bound=56 unbound=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && python3 corpus/instruments/recheck-audit.py --quiet)
+strict pass=61/61 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=37 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=61 total=61 pass=61 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=61 missing=0 unexpected=0 exit=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-42-junk/manifest.json --source S999)
+S999:sha256 OK
+S999:Q1 OK occurrences=1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 && bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /fast/scratch/hyaku/kasegi-r42/ExecControls/P5 /fast/scratch/hyaku/kasegi-r42/ExecControls/P5)
+P5	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+P5	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+P5	ok	/fast/scratch/hyaku/kasegi-r42/ExecControls/P5/corpus/SOURCES.md
+exit=0
+
+--- arm verdict: P5 IS NOT THE JUNK TWIN: it carries a capture, an entry and a harness pass. ---
+
+$ python3 /fast/scratch/hyaku/kasegi-r42/ExecControls/measure.py /fast/scratch/hyaku/kasegi-r42/ExecControls/P5   (the C2 after-state measure conjunct)
+measure: frontier_rows=25 admitted=25 queued=0 F_total=25
+measure: (20+25)/(20+25) = 45/45 = 1.0000
+measure: harness entries=28 pass=28 exit=0 -> admitted-entries-all-pass=yes
+measure: criterion met=yes
+exit=0
+
+--- the three named instruments on P5 ---
+frontier-recheck-count.py        exit=0  entries=28 pass=28 exit=0
+capture-binding-check.py         exit=0  records=56 bound=56 unbound=0
+sources-census.sh validate       exit=0  no E-code
+
+==============================================================================
+ARM LIVE-J3   (/fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3)
+the same O4 twin cut from a copy of the LIVE lane working tree at run time.
+==============================================================================
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && grep -cE '^\| F[0-9]+ \|' corpus/README.md)
+25
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md)
+64
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && awk -F'|' '/^\|[[:space:]]*S064[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && awk -F'|' '/^\|[[:space:]]*S999[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && bash -c 'grep -rlE "^source: S064" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && bash -c 'grep -rlE "^source: S999" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && bash -c 'ls corpus/knowledge/*.md | wc -l')
+60
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && python3 corpus/instruments/frontier-recheck-count.py)
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0   
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+FAIL     F25  knowledge/junk-f25-osv-schema.md                     ids=-              exit=-    problems=missing-entry
+entries=28 pass=27 exit=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && python3 corpus/instruments/capture-binding-check.py)
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-42-junk records=1 url_bound=0 fetched=0 archival=0
+AUDIT records=56 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=18 manifest_dirs=18 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+FAIL rule=url-mismatch record=S999 detail=absent dir=round-42-junk
+FAIL rule=provenance-missing record=S999 dir=round-42-junk
+records=56 bound=55 unbound=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && python3 corpus/instruments/recheck-audit.py --quiet)
+strict pass=60/60 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=36 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=60 total=60 pass=60 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=60 missing=0 unexpected=0 exit=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-42-junk/manifest.json --source S999)
+S999:source UNAVAILABLE reason=missing
+exit=2
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 && bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3 /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3)
+LIVE-J3	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+LIVE-J3	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+LIVE-J3	E11	S999 missing used-by corpus/knowledge/junk-f25-osv-schema.md
+exit=1
+
+--- arm verdict: Same construction as J3, on the tree the L1 will land on. ---
+
+$ python3 /fast/scratch/hyaku/kasegi-r42/ExecControls/measure.py /fast/scratch/hyaku/kasegi-r42/ExecControls/LIVE-J3   (the C2 after-state measure conjunct)
+measure: frontier_rows=25 admitted=25 queued=0 F_total=25
+measure: (20+25)/(20+25) = 45/45 = 1.0000
+measure: harness entries=28 pass=27 exit=1 -> admitted-entries-all-pass=no
+measure: criterion met=no
+exit=0
+
+--- the three named instruments on LIVE-J3 ---
+frontier-recheck-count.py        exit=1  entries=28 pass=27 exit=1
+capture-binding-check.py         exit=1  records=56 bound=55 unbound=1
+sources-census.sh validate       exit=1  LIVE-J3	E11	S999 missing used-by corpus/knowledge/junk-f25-osv-schema.md
+
+==============================================================================
+ARM J5   (/fast/scratch/hyaku/kasegi-r42/ExecControls/J5)
+the O4 twin with the registry row's used-by cell set to the em-dash, so the census's E11 limb (a mined row whose used-by path is missing on disk) cannot fire.
+==============================================================================
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && grep -cE '^\| F[0-9]+ \|' corpus/README.md)
+25
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md)
+64
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && awk -F'|' '/^\|[[:space:]]*S064[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && awk -F'|' '/^\|[[:space:]]*S999[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && bash -c 'grep -rlE "^source: S064" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && bash -c 'grep -rlE "^source: S999" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && bash -c 'ls corpus/knowledge/*.md | wc -l')
+60
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && python3 corpus/instruments/frontier-recheck-count.py)
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0   
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+FAIL     F25  knowledge/junk-f25-osv-schema.md                     ids=-              exit=-    problems=missing-entry
+entries=28 pass=27 exit=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && python3 corpus/instruments/capture-binding-check.py)
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-42-junk records=1 url_bound=0 fetched=0 archival=0
+AUDIT records=56 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=18 manifest_dirs=18 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+FAIL rule=url-mismatch record=S999 detail=absent dir=round-42-junk
+FAIL rule=provenance-missing record=S999 dir=round-42-junk
+records=56 bound=55 unbound=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && python3 corpus/instruments/recheck-audit.py --quiet)
+strict pass=60/60 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=36 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=60 total=60 pass=60 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=60 missing=0 unexpected=0 exit=0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-42-junk/manifest.json --source S999)
+S999:source UNAVAILABLE reason=missing
+exit=2
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 && bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /fast/scratch/hyaku/kasegi-r42/ExecControls/J5 /fast/scratch/hyaku/kasegi-r42/ExecControls/J5)
+J5	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+J5	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+J5	W03	S999 mined but unused
+J5	ok	/fast/scratch/hyaku/kasegi-r42/ExecControls/J5/corpus/SOURCES.md
+exit=0
+
+--- arm verdict: asks WHICH instrument still rejects the twin when the census limb is blinded. ---
+
+$ python3 /fast/scratch/hyaku/kasegi-r42/ExecControls/measure.py /fast/scratch/hyaku/kasegi-r42/ExecControls/J5   (the C2 after-state measure conjunct)
+measure: frontier_rows=25 admitted=25 queued=0 F_total=25
+measure: (20+25)/(20+25) = 45/45 = 1.0000
+measure: harness entries=28 pass=27 exit=1 -> admitted-entries-all-pass=no
+measure: criterion met=no
+exit=0
+
+--- the three named instruments on J5 ---
+frontier-recheck-count.py        exit=1  entries=28 pass=27 exit=1
+capture-binding-check.py         exit=1  records=56 bound=55 unbound=1
+sources-census.sh validate       exit=0  no E-code
+
+==============================================================================
+ARM J6   (/fast/scratch/hyaku/kasegi-r42/ExecControls/J6)
+the O4 twin plus a fabricated entry that DOES carry a recheck: line naming S999, so the harness's recheck limb (not its missing-entry limb) is the one under test.
+==============================================================================
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && grep -cE '^\| F[0-9]+ \|' corpus/README.md)
+25
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md)
+64
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && awk -F'|' '/^\|[[:space:]]*S064[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && awk -F'|' '/^\|[[:space:]]*S999[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); if(s=="mined") n++} END{print n+0}' corpus/SOURCES.md)
+1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && bash -c 'grep -rlE "^source: S064" corpus/knowledge | wc -l')
+0
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && bash -c 'grep -rlE "^source: S999" corpus/knowledge | wc -l')
+1
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && bash -c 'ls corpus/knowledge/*.md | wc -l')
+61
+exit=0
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && python3 corpus/instruments/frontier-recheck-count.py)
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0   
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+FAIL     F25  knowledge/junk-f25-osv-schema.md                     ids=S999           exit=2    problems=recheck-exit-2
+entries=28 pass=27 exit=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && python3 corpus/instruments/capture-binding-check.py)
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-42-junk records=1 url_bound=0 fetched=0 archival=0
+AUDIT records=56 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=18 manifest_dirs=18 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+FAIL rule=url-mismatch record=S999 detail=absent dir=round-42-junk
+FAIL rule=provenance-missing record=S999 dir=round-42-junk
+records=56 bound=55 unbound=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && python3 corpus/instruments/recheck-audit.py --quiet)
+strict pass=61/61 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=36 gated=25 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=61 total=61 pass=61 fail-closed=25 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=60 missing=0 unexpected=1 exit=1
+exit=1
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-42-junk/manifest.json --source S999)
+S999:source UNAVAILABLE reason=missing
+exit=2
+
+$ (cd /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 && bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /fast/scratch/hyaku/kasegi-r42/ExecControls/J6 /fast/scratch/hyaku/kasegi-r42/ExecControls/J6)
+J6	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+J6	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+J6	ok	/fast/scratch/hyaku/kasegi-r42/ExecControls/J6/corpus/SOURCES.md
+exit=0
+
+--- arm verdict: the harness must still fail the twin, now on the recheck limb. ---
+
+$ python3 /fast/scratch/hyaku/kasegi-r42/ExecControls/measure.py /fast/scratch/hyaku/kasegi-r42/ExecControls/J6   (the C2 after-state measure conjunct)
+measure: frontier_rows=25 admitted=25 queued=0 F_total=25
+measure: (20+25)/(20+25) = 45/45 = 1.0000
+measure: harness entries=28 pass=27 exit=1 -> admitted-entries-all-pass=no
+measure: criterion met=no
+exit=0
+
+--- the three named instruments on J6 ---
+frontier-recheck-count.py        exit=1  entries=28 pass=27 exit=1
+capture-binding-check.py         exit=1  records=56 bound=55 unbound=1
+sources-census.sh validate       exit=0  no E-code
+
+
+==============================================================================
+SUMMARY - the three named instruments per arm (exit status is the verdict)
+==============================================================================
+ARM        frontier-recheck-count.py    capture-binding-check.py     sources-census validate     
+base       exit=0 entries=27 pass=27 exit= exit=0 records=55 bound=55 unbo exit=0 no E-code            
+J1         exit=0 entries=27 pass=27 exit= exit=0 records=55 bound=55 unbo exit=1 J1	E11	S999 missing used
+J2         exit=1 entries=28 pass=27 exit= exit=0 records=55 bound=55 unbo exit=1 J2	E11	S999 missing used
+J3         exit=1 entries=28 pass=27 exit= exit=1 records=56 bound=55 unbo exit=1 J3	E11	S999 missing used
+J4         exit=1 entries=28 pass=27 exit= exit=1 records=56 bound=55 unbo exit=0 no E-code            
+P5         exit=0 entries=28 pass=28 exit= exit=0 records=56 bound=56 unbo exit=0 no E-code            
+LIVE-J3    exit=1 entries=28 pass=27 exit= exit=1 records=56 bound=55 unbo exit=1 LIVE-J3	E11	S999 missing
+J5         exit=1 entries=28 pass=27 exit= exit=1 records=56 bound=55 unbo exit=0 no E-code            
+J6         exit=1 entries=28 pass=27 exit= exit=1 records=56 bound=55 unbo exit=0 no E-code            
+
+The O4 twin (J3) and its live-tree replay (LIVE-J3) are rejected by ALL
+THREE named instruments.  J5 blinds the census's E11 limb (used-by set to
+the em-dash) and the frontier harness and the capture-binding check still
+reject it; J4 shows the census alone going green once the used-by PATH
+exists, while the harness and the binding check still reject.  The twin is
+therefore rejected by a CONJUNCTION of instruments, not by the census alone.
+
+C2 COUNTING-COMMAND LEDGER — what the twin reads against each counter the
+claim names (the C2 after-state is the claim's own target column):
+C2 counting command                              after-state target             twin (J3) reads                    verdict
+frontier rows (grep -cE '^\| F[0-9]+ \|')        25                             25                                 SATISFIED
+registry rows (grep -cE S[0-9]{3,})              64                             64                                 SATISFIED
+S064 mined rows (awk, status cell)               1                              0                                  not satisfied
+entries citing S064 (grep -rlE '^source: S064')  1                              0                                  not satisfied
+knowledge files (ls corpus/knowledge/*.md)       61                             60                                 not satisfied
+harness (frontier-recheck-count.py)              entries=28 pass=28             entries=28 pass=27 exit=1          REJECTED
+capture binding (capture-binding-check.py)       records=56 bound=56 unbound=0  records=56 bound=55 unbound=1      REJECTED
+recheck audit (recheck-audit.py --quiet)         expected=61 missing=0 unexpected=0 exit=0 expected=60 missing=0 unexpected=0 exit=0 not satisfied
+census (sources-census.sh validate)              exit 0                         exit 1 (E11 S999 missing used-by)  REJECTED
+
+The twin SATISFIES the two raw row-count greps (frontier 25, registry 64) —
+so a verifier reading only those two counters would see the after-state
+numbers on a forged tree.  It cannot satisfy the remaining seven, and the
+three named instruments each red on it independently.  The C2 after-state is
+therefore reachable only as a CONJUNCTION, never by row-count arithmetic.
+
+==============================================================================
+POSITIVE CONTROL - the same three instruments on the LIVE lane tree
+==============================================================================
+
+$ (cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/frontier-recheck-count.py)
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0   
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+entries=27 pass=27 exit=0
+exit=0
+
+$ (cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/capture-binding-check.py)
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+records=55 bound=55 unbound=0
+exit=0
+
+$ (cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin/kasegi-shokunin /home/vgpnk/Projects/shokunin/kasegi-shokunin)
+kasegi-shokunin	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi-shokunin	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi-shokunin	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+exit=0
+

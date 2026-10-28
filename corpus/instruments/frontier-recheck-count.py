@@ -32,6 +32,24 @@ fails closed before any line runs:
   F. two admitted rows resolving to the same entry realpath fail the run with
      a `DUPLICATE-ENTRY` note naming the duplicate rows and the entry.
 
+Rule G — the frontier census — enumerates EVERY `| F<n> |` row of
+`corpus/README.md`, whatever its status cell, so a row can never drop out of the
+count unseen. A row fails the run when its status cell is not `admitted`
+(`status-not-admitted`), when it is admitted but owns no PASS record
+(`missing-pass-line`), and when it is bound to a source id the registry
+`corpus/SOURCES.md` does not declare (`source-id-absent:<id>`); every row's
+bound id set is its README `sources` cell plus the ids its entries declare. The
+census prints one `FRONTIER-PASS <id> ids=<ids>` or `FRONTIER-FAIL <id>
+status=<status> ids=<ids> problems=<...>` line per row BEFORE the per-entry
+records, so the row set is auditable independently of the record count — the
+round-41 status flip (one row's cell changed away from `admitted`, the row
+silently vanished and the count self-consistently greened) is rejected here. A
+row that is not admitted still contributes one FAIL record per entry cell, so
+`entries=` counts the raw row set and never shrinks under a status flip. The
+registry limb is skipped, and reported as `registry=absent`, when the root
+carries no `corpus/SOURCES.md` (a miniature fixture lane) — a root WITH a
+registry must declare every id its rows bind.
+
 Rule A's two directions print different problem names so a receipt names the
 limb that fired: `header-sources-not-rechecked` (a declared id missing from the
 line's `--source` selections; the name is kept from the round-31 contract and
@@ -84,6 +102,8 @@ import sys
 import tempfile
 
 FRONTIER_ROW = re.compile(r"^\|\s*(F\d+)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*`?([^|`]+?)`?\s*\|")
+FRONTIER_SOURCES = re.compile(r"^\|\s*(F\d+)\s*\|[^|]*\|[^|]*\|[^|]*\|\s*([^|]*?)\s*\|")
+REGISTRY_ROW = re.compile(r"^\|\s*(S\d{3,})\s*\|", re.MULTILINE)
 SOURCE_LINE = re.compile(r"^source:\s*(S\d{3,})")
 EVIDENCE_LINE = re.compile(r"^(?:[-*]|\d+[.)])\s+(S\d{3,})\b")
 RECHECK_LINE = re.compile(r"^recheck:\s*(.+)$")
@@ -101,6 +121,31 @@ def read_frontier(root):
             if m:
                 rows.append((m.group(1), m.group(2), m.group(3), m.group(4).strip()))
     return rows
+
+
+def read_frontier_sources(root):
+    """Return {row id: sorted source ids its README `sources` cell names}."""
+    cells = {}
+    path = os.path.join(root, "corpus", "README.md")
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            m = FRONTIER_SOURCES.match(line)
+            if m:
+                cells[m.group(1)] = sorted(set(re.findall(r"S\d{3,}", m.group(2))))
+    return cells
+
+
+def read_registry_ids(root):
+    """Return the source ids corpus/SOURCES.md registers, or None when the root
+    carries no registry (a miniature fixture lane has none, and then the
+    registry limb of rule G is not decidable and is reported, not applied)."""
+    path = os.path.join(root, "corpus", "SOURCES.md")
+    try:
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
+    except OSError:
+        return None
+    return set(REGISTRY_ROW.findall(text))
 
 
 def entry_contract(root, entry_path):
@@ -238,6 +283,78 @@ def evaluate(root, entry_path):
         "problems": problems,
         "status": "PASS" if not problems else "FAIL",
     }
+
+
+def frontier_row_record(fid, entry, problems, declared_ids):
+    """Return a FAIL record for a row that rule G refuses to score.
+
+    A row whose status cell is not `admitted` is not evaluated (its entry may
+    not exist yet), but it still contributes one record per entry cell so the
+    `entries=` denominator counts the raw row set and cannot shrink under a
+    status flip."""
+    return {
+        "entry": entry,
+        "declared_ids": list(declared_ids),
+        "evidence_declared_ids": [],
+        "cited_ids": [],
+        "recheck_ids": [],
+        "manifest": None,
+        "realpath": None,
+        "exit": None,
+        "problems": list(problems),
+        "status": "FAIL",
+        "frontier": fid,
+    }
+
+
+def frontier_census(rows, records, registry, sources):
+    """Return (census lines, failed, summary) for rule G.
+
+    Every README frontier row is enumerated. A row fails the run when its
+    status cell is not `admitted` (`status-not-admitted`), when it is admitted
+    but owns no PASS record (`missing-pass-line`), or when an id it binds — its
+    README `sources` cell plus the ids its entries declare — has no row in
+    `corpus/SOURCES.md` (`source-id-absent:<id>`). The registry limb is only
+    applied when a registry exists; `registry=absent` says so in the summary
+    instead of passing quietly."""
+    by_row = {}
+    for record in records:
+        by_row.setdefault(record["frontier"], []).append(record)
+    lines, failures = [], []
+    admitted = closed = problem_rows = 0
+    for fid, _title, status, _cell in rows:
+        row_records = by_row.get(fid, [])
+        bound = set(sources.get(fid, []))
+        for record in row_records:
+            bound.update(record["declared_ids"])
+            bound.update(record["evidence_declared_ids"])
+        problems = []
+        if status != "admitted":
+            problems.append("status-not-admitted")
+        else:
+            admitted += 1
+            if not any(r["status"] == "PASS" for r in row_records):
+                problems.append("missing-pass-line")
+        if registry is not None:
+            for sid in sorted(bound - registry):
+                problems.append("source-id-absent:%s" % sid)
+        ids = ",".join(sorted(bound)) or "-"
+        if problems:
+            problem_rows += 1
+            failures.extend("%s %s" % (fid, problem) for problem in problems)
+            lines.append("FRONTIER-FAIL %s status=%s ids=%s problems=%s" % (
+                fid, status, ids, ",".join(problems)))
+        else:
+            closed += 1
+            lines.append("FRONTIER-PASS %s ids=%s" % (fid, ids))
+    lines.insert(0, "FRONTIER-CENSUS rows=%d admitted=%d closed=%d problem-rows=%d registry=%s" % (
+        len(rows), admitted, closed, problem_rows,
+        "absent" if registry is None else len(registry)))
+    summary = {"rows": len(rows), "admitted": admitted, "closed": closed,
+               "problem_rows": problem_rows,
+               "registry": None if registry is None else len(registry),
+               "failures": failures}
+    return lines, bool(failures), summary
 
 
 # --- selftest -----------------------------------------------------------------
@@ -390,19 +507,32 @@ def main(argv=None):
     except OSError as exc:
         print("harness UNAVAILABLE reason=read-error %s" % exc)
         return 2
-    admitted = [r for r in rows if r[2] == "admitted"]
+    sources = read_frontier_sources(root)
+    registry = read_registry_ids(root)
     records = []
-    for fid, title, _status, cell in admitted:
+    for fid, title, status, cell in rows:
         # A topic may govern more than one entry (`entry, entry` in one cell).
-        for entry in [part.strip() for part in cell.split(",") if part.strip()]:
-            record = evaluate(root, entry)
+        entries = [part.strip() for part in cell.split(",") if part.strip()]
+        for entry in entries or ["-"]:
+            if status == "admitted":
+                record = evaluate(root, entry)
+            else:
+                # Rule G: a row that is not admitted is never scored, but it
+                # still occupies its entry cells in the count (see the docstring).
+                record = frontier_row_record(fid, entry, ["status-not-admitted"],
+                                             sources.get(fid, []))
             record["frontier"] = fid
             record["title"] = title
             records.append(record)
-            print("%-8s %-4s %-52s ids=%-14s exit=%-4s%s" % (
-                record["status"], fid, entry, ",".join(record["declared_ids"]) or "-",
-                "-" if record["exit"] is None else record["exit"],
-                (" problems=" + ",".join(record["problems"])) if record["problems"] else ""))
+    census_lines, census_failed, census = frontier_census(rows, records, registry, sources)
+    for line in census_lines:
+        print(line)
+    for record in records:
+        print("%-8s %-4s %-52s ids=%-14s exit=%-4s%s" % (
+            record["status"], record["frontier"], record["entry"],
+            ",".join(record["declared_ids"]) or "-",
+            "-" if record["exit"] is None else record["exit"],
+            (" problems=" + ",".join(record["problems"])) if record["problems"] else ""))
     passed = sum(1 for r in records if r["status"] == "PASS")
     duplicate = None
     seen_realpath = {}
@@ -417,12 +547,15 @@ def main(argv=None):
     if duplicate:
         print("DUPLICATE-ENTRY %s,%s %s" % (duplicate[0], duplicate[1], duplicate[2]))
     fail_closed = duplicate is not None or not records or passed != len(records)
+    if census_failed:
+        fail_closed = True
     print("entries=%d pass=%d exit=%d" % (len(records), passed, 1 if fail_closed else 0))
     if args.json:
         with open(args.json, "w", encoding="utf-8") as fh:
             json.dump({"schema": "kasegi-frontier-recheck-receipt-v1", "root": root,
                        "entries": len(records), "pass": passed,
                        "duplicate_entry": duplicate[2] if duplicate else None,
+                       "frontier_census": census,
                        "records": records},
                       fh, indent=2, sort_keys=True)
             fh.write("\n")

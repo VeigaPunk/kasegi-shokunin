@@ -1,0 +1,312 @@
+ScoutInstruments — C2 instrument-chain inventory (round-42 base state)
+
+Base of record: lane HEAD (round-42 base 5053a7f46de35784cff4b56756906e9014a38276).
+Line numbers below are the live-tree numbers at this base; instrument sha256 prefixes
+are in the receipt. Frozen claim C2 counting commands are reproduced verbatim from
+.ufo/waves/round-42/claims.json; the two r41 wave-2 findings are mapped to the exact
+functions/lines the J6 (F-BIND) and J7 (F-FLIP) repairs must touch.
+
+======================================================================
+1. corpus/instruments/source-recheck.py — quote/sha256 pins vs captured bytes
+======================================================================
+
+Entry point: main() L395-411 -> recheck() L216-238 -> load_manifest() L52-82 +
+check_source() L117-213.
+
+CLI the frozen C2 commands use:
+  python3 corpus/instruments/source-recheck.py \
+      --manifest corpus/source-snapshots/round-42/manifest.json --source S064
+  (--manifest required for a run; --source selects one record; --selftest exists
+  but is NOT used by the frozen command set.)
+
+Path binding:
+- --manifest PATH is read relative to the invocation cwd (Path(path).resolve,
+  L54). All record captures are bound to the MANIFEST directory, not cwd:
+  base = manifest_path.parent.resolve(strict=True) (L156-158), resolved =
+  (base / record["path"]).resolve(strict=True) (L159), containment enforced by
+  os.path.commonpath((base, resolved)) == base (L160) -> a path escaping the
+  manifest dir prints `<id>:source UNAVAILABLE reason=outside-manifest-directory`
+  exit 2; absent file -> `reason=missing` exit 2 (L164-166).
+- Record fields consumed: id (valid per ID_RE, unique in manifest, L72-80),
+  path (relative, non-empty, stem must equal id -> MISMATCH reason=stem-mismatch
+  exit 1, L120-126), sha256 ([0-9a-f]{64} pin vs captured bytes, L128-131,
+  L171-174), quotes (non-empty list; each id valid+unique; normalized quote
+  >= 12 chars; occurrences counted over whitespace-collapsed, markup-stripped
+  text; >1 occurrence requires integer `anchor` line whose 4-line window holds
+  the quote -> anchor=N-ok else MISMATCH occurrence-not-unique /
+  anchor-out-of-range / anchor-broken, L85-114 + L186-212).
+- Exit: 0 all checked records OK; 1 any MISMATCH; 2 any UNAVAILABLE/usage.
+- Record fields IGNORED by this instrument: url, capture_url, fetched_utc,
+  files[], used_by, http{} — url identity is not checked here (it is
+  capture-binding-check's rule B).
+
+Baseline (live lane): `--manifest corpus/source-snapshots/round-41/manifest.json
+--source S063` -> `S063:sha256 OK`, `S063:Q1..Q3 OK` (anchors 330/270/235-ok),
+exit 0. For S064 the new record must sit in corpus/source-snapshots/round-42/
+with capture file S064.txt beside manifest.json.
+
+======================================================================
+2. corpus/instruments/capture-binding-check.py — F-BIND target (J6)
+======================================================================
+
+Entry point: main() L871-888 -> check() L351-461.
+Rules (docstring L13-116): A manifest presence + per-file binding; B URL binding
+(record -> its own SOURCES.md row); C provenance (strict-UTC fetched_utc or
+"archival": true; round-32+ needs fetched_utc, MODERN_ROUND=32 L167);
+D duplicate (field,value) records inside one manifest.
+
+CLI the frozen C2 commands use:
+  python3 corpus/instruments/capture-binding-check.py    (no args)
+  -> expected `records=56 bound=56 unbound=0` at Y (55/55 at base).
+  --root DIR defaults to three dirs up from __file__ (L873-874); --selftest
+  [--scratch DIR] (L875-878). For a J6 replay limb over a mutated scratch
+  manifest the correct invocation is `--root <scratch-lane>`; the default binds
+  to the tree the script itself sits in.
+
+Path binding:
+- Registry: <root>/corpus/SOURCES.md, rows matched by `^\|\s*(S\d{3,})\s*\|`
+  (ROW_RE L159); source cell = column 2, status = column 7 (STATUS_COLUMN L169);
+  source-cell URL tokens via `https?://[^\s|]+` with trailing `.,;:` stripped
+  (row_tokens L182-184).
+- Manifests: os.walk under <root>/corpus/source-snapshots/ (snapshot_dirs
+  L227-246): a directory holding manifest.json OR any regular file is a
+  snapshot dir; nested dirs audited as `<parent>/<child>`.
+- Per manifest record, bind_record() L283-305 (rule B): id must name exactly
+  one row (no-row/dup-id), row status `rejected` refused (L294-295),
+  record["url"] must be a non-empty string (L298 -> detail=absent) and must be
+  a MEMBER of the row's source-cell token list (L303-304 -> url-mismatch);
+  two+ tokens on the row -> url-ambiguous (L300-302) plus row-level
+  double-https-row (double_https_rows L208-219, check L365-366).
+- provenance_ok() L268-280 + classify_fetched L249-265 (rule C).
+- Orphan direction (file -> record) ONLY: capture_files() L330-333 lists direct
+  files; bound_paths = set(record.get("path") ...) L434-436; a file no record
+  names -> FAIL rule=orphan-capture (L437-442) unless declared in the top-level
+  `orphans` list (orphan_paths L308-327); a declared-but-absent orphan ->
+  orphan-declared-missing (L443-444).
+- `bound` in the summary = records satisfying BOTH rule B and rule C (L427-428);
+  `unbound = records - bound` (L458-459).
+
+F-BIND finding (r41 wave-2 MutBindingExistence.md): two surviving mutants, and
+the live-tree cause is confirmed by reproduction on a fixture lane:
+
+  (a) MISSING-PATH — confirmed live this round (scout fixture, M2): a record
+      whose `path` names NO file (file deleted, path string unchanged) prints
+      `records=1 bound=1 unbound=0` exit 0. The reverse direction is absent:
+      bound_paths (L434-436) is a set used only to exclude already-named files
+      from the orphan check; no line ever tests that record["path"] exists.
+      The instrument's own docstring disclaims it: L125-128 "The reverse
+      direction (a record naming a file that is absent) is not a rule here".
+      NOTE the r41 receipt's headline variant (path=S063-missing.txt WITH the
+      real S063.txt still in place) is not silent — it dies as orphan-capture
+      (my M1: FAIL rule=orphan-capture, exit 1). The silent variant is the
+      file-deleted/no-stray-file shape, which the receipt itself flags as the
+      untested-but-implied blind spot. The J6 replay artifact must therefore
+      be a manifest whose record path is absent AND whose directory holds no
+      extra stray capture.
+
+      REPAIR SITE: inside check()'s `for record in records:` loop (L394-428)
+      or immediately after bound_paths is built (L434-436) — both have the
+      manifest dir `path` variable in scope. Add a per-record existence limb:
+      `os.path.isfile(os.path.join(path, record["path"]))` for every record
+      carrying a non-empty string path -> `FAIL rule=record-path-missing`
+      (name of the FAIL rule is the suite's choice; the limb must also feed
+      `bound`/`unbound` or the FAIL line alone suffices since exit is driven by
+      `failures` at L461). Also decide non-string/absent path records: today
+      `record.get("path")` non-string is silently excluded from bound_paths
+      (L435-436) — a record with no `path` at all passes as bound; the repair
+      should treat a missing/invalid path field as record-path-missing too.
+      Path-safety note: a record path containing `../` or an absolute path is
+      also unvalidated here (source-recheck's containment is a different
+      instrument); an isfile() check on the joined path is the minimal repair.
+
+  (b) URL-VARIANT — partially confirmed live: record["url"] mutation does NOT
+      survive (my fixture M3 case-variant `.../RFC/rfc9116.txt` and M4 trailing
+      slash both -> FAIL rule=url-mismatch record=S063 row=S063, unbound=1,
+      exit 1). The surviving variant is the SECONDARY url field: mutating
+      `capture_url` alone (url intact) prints bound=1 unbound=0 exit 0 (my M5).
+      bind_record reads ONLY record.get("url") (L297); `capture_url`,
+      `http.final_url` and `files[]` are never read anywhere in the instrument.
+      The r41 receipt claims the both-fields mutation survived, which cannot
+      reproduce against the current bytes — the receipt's own explanation
+      (`bind_record` exact-matches record.url only) proves the checked field is
+      `url`; treat the committed replay artifact as needing verification, but
+      the REPAIR for the URL-variant family is to bind every URL-typed record
+      field the record schema carries.
+
+      REPAIR SITE: bind_record() L297-304 — after the `url not in tokens`
+      check, cross-check `record["capture_url"]` (and `record["http"]["final_url"]`
+      when present) equals the bound token / equals record["url"]; a divergent
+      secondary URL field -> FAIL (e.g. rule=capture-url-mismatch). Alternative
+      placement: per-record inside check()'s record loop (L394-428) beside the
+      provenance limb; but bind_record already owns the row-token context, so
+      L297-304 is the tightest site.
+
+  Additional unbound surface found during this inventory (routed but outside
+  the two named variants): record["files"] is never read (a record can claim
+  extra files not checked); `used_by`/`used-by` is never read (MutC2Chain probe
+  E was inconclusive — there is NO instrument limb binding a record to the
+  row's used-by cell; E11 dangling-usedby is the census's job, not this
+  instrument's).
+
+  Selftest hook for J6: fixture case-builders live at L517-660 (record()
+  builder L517-526, write_manifest L489-506); the CASES table L662-737 is where
+  the new `record-path-missing` and `capture-url-divergence` cases register
+  (each entry: name, builder, expected exit, expected stdout lines).
+
+======================================================================
+3. corpus/instruments/frontier-recheck-count.py — F-FLIP target (J7)
+======================================================================
+
+Entry point: main() L375-429 -> read_frontier() L94-103 -> evaluate() L179-240
+-> entry_contract() L106-160 + manifest_ids() L163-176.
+
+CLI the frozen C2 commands use:
+  python3 corpus/instruments/frontier-recheck-count.py    (no args)
+  -> expected `entries=28 pass=28 exit=0` incl `PASS F25` at Y (27/27 at base).
+  --root DIR (L377, default three dirs up from __file__), --json PATH receipt
+  (L378), --selftest [--scratch DIR] (L379-382).
+
+Path binding:
+- Frontier table: <root>/corpus/README.md, row regex FRONTIER_ROW L86 captures
+  (id, title, status, entry-cell); status = column 3, entry = column 4
+  (read_frontier L94-103). The entry cell may hold multiple comma-separated
+  entry paths (L396-397).
+- Entry file: looked up at <root>/<entry> then <root>/corpus/<entry>
+  (L129-134); absent both -> contract None -> problems=["missing-entry"]
+  (L181-193).
+- Inside the entry (L136-160): header `source: Sxxx` lines = declared ids;
+  evidence bullets starting with an S-id = evidence-declared ids; recheck:
+  line = first `^recheck:\s*(.+)$` match; its `--source` ids (RECHECK_SOURCE
+  L90) and `--manifest` arg (RECHECK_MANIFEST L91) are parsed.
+- evaluate() rule limbs (L200-228): no-source-line / no-recheck-line /
+  not-a-recheck-invocation (must name source-recheck.py and not --selftest,
+  L205-206) / no-source-selection / no-manifest / header-sources-not-rechecked
+  (declared∪evidence ⊄ recheck ids, L211-212) /
+  selection-not-declared-by-entry (L213-214) / selection-not-cited-by-entry
+  (L215-216) / manifest-unreadable / manifest-missing-ids (L217-221). Only when
+  problem-free is the recheck line EXECUTED as `bash -c <line>` with cwd=root
+  (L222-228) — non-zero exit becomes recheck-exit-N.
+- DUPLICATE-ENTRY realpath check L407-418; summary `entries=N pass=M exit=E`
+  L419-420.
+
+F-FLIP finding (r41 wave-2 MutC2Chain probe A + spotcheck §5 item 6): changing
+an F-row's status cell from `admitted` to `explored` removes the row from the
+denominator — observed live this round on a fixture lane: pristine
+`entries=2 pass=2 exit=0`; after `admitted -> explored` (and again `-> parked`)
+`entries=1 pass=1 exit=0`, NO FAIL line, the flipped row silently gone. The
+claim text calls this "a row status flips" and "an admitted frontier row's
+PASS line is absent". Root cause is one line:
+
+  REPAIR SITE: main() L393 — `admitted = [r for r in rows if r[2] == "admitted"]`.
+  Rows whose status is anything else are discarded before evaluation. The
+  repair must either (i) evaluate every `| F<n> |` row and fail non-admitted
+  ones (a new problem string e.g. `row-status-not-admitted` surfaced through
+  evaluate()/the record problems list at L200-228, with the row counted in
+  entries= so exit!=0 via fail_closed L419), or (ii) keep the admitted filter
+  but hard-fail when any F-row's status is not `admitted`. Current lane state
+  has all 24 F-rows `admitted`, so (i) is safe — no legitimately non-admitted
+  row exists today. If a `parked` row were ever legitimate, (ii) needs an
+  allowlist — decide at J7 design time; the frozen kill rule only requires
+  detection of the flip.
+  Supporting sites: read_frontier already returns status (index 2) at L102 —
+  no parser change needed; the `_status` variable at L395 is currently
+  discarded (named `_status`, i.e. read but unused). Selftest hook:
+  build_fixture() L280-307 writes SELFTEST_README (L252-256); SELFTEST_CASES
+  L310-327 — a status-flip case needs the fixture README to emit a
+  non-admitted row, which the current SELFTEST_README template may not
+  support (verify and extend the template's status cell).
+
+======================================================================
+4. corpus/instruments/recheck-audit.py — audit of every knowledge recheck line
+======================================================================
+
+Entry point: main() L345-479 -> collect() L169-175 -> audit_entry() L109-166 ->
+load_expected() L178-185 + expected_mismatch() L188-194.
+
+CLI the frozen C2 commands use:
+  python3 corpus/instruments/recheck-audit.py --quiet
+  -> expected `expect=present expected=61 missing=0 unexpected=0 exit=0` at Y
+  (60 at base).
+  --root default os.getcwd() (L347) — the counting command MUST be invoked with
+  cwd = lane root (unlike the other instruments it does not derive root from
+  __file__). --foreign default `/` (L348); --cdroot for scratch copies (L349-353);
+  --expect PATH override (L354-359); --json; --selftest.
+
+Path binding:
+- Entries globbed at <root>/corpus/knowledge/*.md (collect L171); each entry's
+  FIRST `^recheck:` line is audited (L110-118).
+- Frozen limbs (a-c, FROZEN_LIMBS L88): bash -n parse (L121); identical exit
+  AND identical stdout+stderr sha256 between lane-root cwd and --foreign cwd
+  (L122-128); at least one corpus/... path or ~/Projects base test named, every
+  named corpus path existing under root (L129-132, CORPUS_PATH_RE L83).
+- Strict limbs (d-f, STRICT_LIMBS L89): cdroot — `cd <p> &&` must target the
+  audited root or --cdroot (L135-137); instrument — names an existing
+  corpus/instruments/*.py or a ~/Projects test (L138-140); own — names the
+  entry's own file, or pairs `--source` with a corpus/source-snapshots/
+  manifest, or is a bare base-state test (L141-147).
+- Completeness: len(entries) == number of corpus/knowledge/*.md files, >0
+  (L389); expected-list set equality against <root>/corpus/instruments/
+  knowledge-expected.txt (default when present, L370-375) — missing=/unexpected=
+  sets printed at L408-412, folded into `ok` at L390-391; summary line printed
+  L465-474.
+- For the S064 knowledge entry: its `recheck:` line must parse, be
+  cwd-independent, name corpus paths that exist (the S064 capture + manifest),
+  pass the strict limbs (the corpus convention `cd <lane> && python3
+  corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/
+  round-42/manifest.json --source S064` satisfies cdroot+instrument+own via the
+  `sourced` limb L142), and the entry filename must be appended to
+  knowledge-expected.txt in sorted order (else unexpected=<name> fires).
+
+Baseline: `expect=present expected=60 missing=0 unexpected=0`,
+`strict pass=60/60`, `lines=60 total=60 pass=60`, exit 0.
+
+======================================================================
+5. corpus/instruments/knowledge-expected.txt — expected-set file (data, not code)
+======================================================================
+
+Entry point: consumed by recheck-audit.py load_expected() L178-185; located at
+<root>/corpus/instruments/knowledge-expected.txt by default (main L370-373) or
+via --expect.
+
+Format/binding: one lane-relative `corpus/knowledge/<slug>.md` path per line,
+sorted, `#` comment lines and blanks skipped. Current content: 60 entry lines +
+2 comment lines (62 total; last entry vendor-third-party-finding-coordination.md).
+C2 update: append the new S064 entry filename IN SORTED ORDER (the file is a
+sorted list — an out-of-order append still satisfies set equality but breaks the
+file's own stated invariant on line 2) -> expected=61.
+
+======================================================================
+6. Census (adjacent frozen command, for completeness)
+======================================================================
+
+bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate \
+    --root /home/vgpnk/Projects/shokunin kasegi  -> exit 0
+Mode `validate` (arg parsing L68-82), lane id `kasegi` selects
+<root>/kasegi-shokunin/corpus/SOURCES.md; 13-col row shape (E01) incl status
+and used-by cells; codes E01-E13 + W01-W05 (header L24-38). Standing
+warnings W04 S028/S029 are the only allowed output. Read-only (writes only
+stdout/--out, header L7).
+
+======================================================================
+Summary — where each J-check repair lands
+======================================================================
+
+J6 (F-BIND, capture-binding-check.py):
+  - record-path existence: check() L394-428 record loop / after bound_paths
+    L434-436. The blind spot proven live: absent file -> exit 0 (reproduced).
+  - secondary-URL-field binding: bind_record() L297-304 (url comparison
+    block). The blind spot proven live: capture_url divergence -> exit 0
+    (reproduced); record url mutation already dies as url-mismatch.
+  - selftest registration: CASES L662-737; builders L517-660.
+
+J7 (F-FLIP, frontier-recheck-count.py):
+  - admitted-only denominator: main() L393 (`admitted = [r for r in rows if
+    r[2] == "admitted"]`); evaluate() L179-240 problems list for the new
+    problem name; fail_closed L419 already propagates.
+  - selftest registration: SELFTEST_CASES L310-327; fixture README template
+    L252-256 (status cell may need parameterizing).
+
+Both instruments expose `--root`, so the r42 REPLAY limb runs the exported
+instrument binary against a mutated scratch lane root — the r41 suite never
+invoked either instrument (run_check dispatches only check_i* shell fns at
+L1593-1596), so J6/J7 are new limbs, not modifications of r41 checks.

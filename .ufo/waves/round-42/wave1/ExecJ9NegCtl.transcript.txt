@@ -1,0 +1,210 @@
+=== ExecJ9NegCtl — J9 negative controls: the three controls with real outputs ===
+
+The J9 limb is a sourceable bash file that defines check_j9 TREE REF. The
+suite core (corpus/instruments/r42-closure.sh) sources it and calls
+check_j9 "$EXPORT" "$REF_RESOLVED"; the limb prints ONE payload line
+and returns 0 (closed) or 1 (open).
+
+The round-42 suite is authored by a sibling seat and is not committed at
+this seat's write time, so the runs below use a r42-SHAPED STAND-IN suite
+built in a scratch git fixture: it implements the C1 contract the limb is
+written against (export mode only, plain run refused with exit 2, one
+'J<n> payload=... closed=0|1' line per check J1-J13, a 'closed=K/13
+exit=0|1' tally, an unresolvable ref printing a distinct ref-not-found
+red, and R42_DEPTH=1 leaf mode). The stand-in's twelve non-J9 checks are
+artifact-driven, so the two control trees score red for a TREE-DEPENDENT
+reason and not by accident.
+
+The two control refs are the REAL lane refs, fetched into the fixture repo
+from the lane: base 5053a7f46de35784cff4b56756906e9014a38276 and the
+round-41 judged head 1f7464612ac4c44e39886b82e812610d3c039b13.
+
+=== 0. the fixture (scratch only; the lane is untouched) ===
+$ git -C $FIX rev-parse --verify 5053a7f46de35784cff4b56756906e9014a38276^{commit}
+5053a7f46de35784cff4b56756906e9014a38276
+$ git -C $FIX rev-parse --verify 1f7464612ac4c44e39886b82e812610d3c039b13^{commit}
+1f7464612ac4c44e39886b82e812610d3c039b13
+$ git -C $FIX log --oneline -1
+1a64edd fixture: r42-shaped tree
+FIX_HEAD=1a64edd4195ad3925133614322790043dd8a6217
+
+=== 1. the limb's own selftest (stub-driven; the stub suite answers per ref) ===
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ExecJ9NegCtl.sh --selftest
+selftest case=honest-controls-accepted expect=green verdict=pass
+selftest case=leaf-capped-green-base-rejected expect=red verdict=pass
+selftest case=green-base-rejected expect=red verdict=pass
+selftest case=unresolvable-control-rejected expect=red verdict=pass
+selftest case=summary-only-control-rejected expect=red verdict=pass
+selftest case=mangled-tally-rejected expect=red verdict=pass
+selftest case=lying-tally-rejected expect=red verdict=pass
+selftest case=dead-ref-green-tally-rejected expect=red verdict=pass
+selftest cases=8 failures=0
+rc=0
+
+=== 2. the limb's replay fixtures (every in-family defeat is REJECTED) ===
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ExecJ9NegCtl.sh --replay-fixtures /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/rp /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/dbg/tree /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/fixture-repo
+replay fixture=honest-control accepted=1 limb=honest-control payload=suite=export,base-K=5,base-rc=1,base-lines=13,base-closed1=5,base-treedep=red,base-verdicts=yes,r41-K=7,r41-rc=1,r41-lines=13,r41-closed1=7,r41-treedep=red,r41-verdicts=yes,ceiling=12,refnf-K=0,refnf-rc=1,refnf-kind=status,refnf-mark=1,closed=1
+replay fixture=leaf-capped-green-base rejected=1 limb=base-ceiling payload=suite=export,base-K=12,base-rc=1,base-lines=13,base-closed1=12,base-treedep=red,base-verdicts=no,r41-K=12,r41-rc=1,r41-lines=13,r41-closed1=12,r41-treedep=red,r41-verdicts=no,ceiling=12,refnf-K=0,refnf-rc=1,refnf-kind=status,refnf-mark=1,closed=0
+replay fixture=green-base rejected=1 limb=base-K payload=suite=export,base-K=13,base-rc=1,base-lines=13,base-closed1=13,base-treedep=red,base-verdicts=no,r41-K=13,r41-rc=1,r41-lines=13,r41-closed1=13,r41-treedep=red,r41-verdicts=no,ceiling=13,refnf-K=0,refnf-rc=1,refnf-kind=status,refnf-mark=1,closed=0
+replay fixture=unresolvable-control rejected=1 limb=base-ref-not-found payload=suite=export,base-K=0,base-rc=1,base-lines=13,base-closed1=0,base-treedep=red,base-verdicts=no,r41-K=0,r41-rc=1,r41-lines=13,r41-closed1=0,r41-treedep=red,r41-verdicts=no,ceiling=12,refnf-K=0,refnf-rc=1,refnf-kind=status,refnf-mark=1,closed=0
+replay fixture=summary-only-control rejected=1 limb=base-lines payload=suite=export,base-K=5,base-rc=1,base-lines=0,base-closed1=0,base-treedep=red,base-verdicts=no,r41-K=5,r41-rc=1,r41-lines=0,r41-closed1=0,r41-treedep=red,r41-verdicts=no,ceiling=12,refnf-K=5,refnf-rc=1,refnf-kind=none,refnf-mark=0,closed=0
+replay fixture=mangled-tally rejected=1 limb=base-tally payload=suite=export,base-K=?,base-rc=1,base-lines=13,base-closed1=13,base-treedep=red,base-verdicts=no,r41-K=?,r41-rc=1,r41-lines=13,r41-closed1=13,r41-treedep=red,r41-verdicts=no,ceiling=13,refnf-K=?,refnf-rc=1,refnf-kind=none,refnf-mark=0,closed=0
+replay fixture=lying-tally rejected=1 limb=base-closed1 payload=suite=export,base-K=11,base-rc=1,base-lines=13,base-closed1=13,base-treedep=red,base-verdicts=no,r41-K=11,r41-rc=1,r41-lines=13,r41-closed1=13,r41-treedep=red,r41-verdicts=no,ceiling=13,refnf-K=11,refnf-rc=1,refnf-kind=none,refnf-mark=0,closed=0
+replay fixture=dead-ref-green-tally rejected=1 limb=refnf-mark payload=suite=export,base-K=13,base-rc=0,base-lines=13,base-closed1=9,base-treedep=red,base-verdicts=no,r41-K=13,r41-rc=0,r41-lines=13,r41-closed1=9,r41-treedep=red,r41-verdicts=no,ceiling=12,refnf-K=13,refnf-rc=0,refnf-kind=none,refnf-mark=0,closed=0
+replay fixture=payload-mentions-ref-not-found accepted=1 limb=payload-mentions-ref-not-found payload=suite=export,base-K=5,base-rc=1,base-lines=13,base-closed1=5,base-treedep=red,base-verdicts=yes,r41-K=5,r41-rc=1,r41-lines=13,r41-closed1=5,r41-treedep=red,r41-verdicts=yes,ceiling=12,refnf-K=0,refnf-rc=1,refnf-kind=status,refnf-mark=1,closed=1
+replay fixtures=9 failures=0
+rc=0
+
+=== 3. the green window: the suite at the round-42 tree ===
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/fixture-repo/corpus/instruments/r42-closure.sh --export-ref 1a64edd4195ad3925133614322790043dd8a6217 --lane /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/fixture-repo --work /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/w1/work --scratch-root /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/w1/scratch
+J1 payload=artifact=SCORECARD.md closed=1
+J2 payload=artifact=corpus/README.md closed=1
+J3 payload=artifact=SKILL.md closed=1
+J4 payload=artifact=corpus/SOURCES.md closed=1
+J5 payload=artifact=corpus/knowledge closed=1
+J6 payload=artifact=corpus/source-snapshots closed=1
+J7 payload=artifact=PROVINCE.md closed=1
+J8 payload=artifact=LOG.md closed=1
+J10 payload=artifact=corpus/lessons closed=1
+J11 payload=artifact=SHONEN.md closed=1
+J12 payload=artifact=corpus/instruments/density.py closed=1
+J13 payload=artifact=corpus/instruments/frontier-recheck-count.py closed=1
+J9 payload=suite=export,base-K=0,base-rc=1,base-lines=13,base-closed1=0,base-treedep=red,base-verdicts=yes,r41-K=0,r41-rc=1,r41-lines=13,r41-closed1=0,r41-treedep=red,r41-verdicts=yes,ceiling=12,refnf-K=0,refnf-rc=1,refnf-kind=status,refnf-mark=1,closed=1 closed=1
+selftest cases=13 failures=0
+closed=13/13 exit=0
+rc=0
+
+=== 4. CONTROL 1 — the base commit 5053a7f46de35784cff4b56756906e9014a38276 ===
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/fixture-repo/corpus/instruments/r42-closure.sh --export-ref 5053a7f46de35784cff4b56756906e9014a38276 --lane /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/fixture-repo --work /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ctl-base/work --scratch-root /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ctl-base/scratch
+J1 payload=artifact=none closed=0
+J2 payload=artifact=none closed=0
+J3 payload=artifact=none closed=0
+J4 payload=artifact=none closed=0
+J5 payload=artifact=none closed=0
+J6 payload=artifact=none closed=0
+J7 payload=artifact=none closed=0
+J8 payload=artifact=none closed=0
+J10 payload=artifact=none closed=0
+J11 payload=artifact=none closed=0
+J12 payload=artifact=none closed=0
+J13 payload=artifact=none closed=0
+J9 payload=suite=self,base-K=0,base-rc=1,base-lines=13,base-closed1=0,base-treedep=red,base-verdicts=yes,r41-K=0,r41-rc=1,r41-lines=13,r41-closed1=0,r41-treedep=red,r41-verdicts=yes,ceiling=12,refnf-K=0,refnf-rc=1,refnf-kind=status,refnf-mark=1,closed=1 closed=1
+selftest cases=13 failures=0
+closed=1/13 exit=1
+rc=1
+
+=== 5. CONTROL 2 — the round-41 judged head 1f7464612ac4c44e39886b82e812610d3c039b13 ===
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/fixture-repo/corpus/instruments/r42-closure.sh --export-ref 1f7464612ac4c44e39886b82e812610d3c039b13 --lane /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/fixture-repo --work /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ctl-r41/work --scratch-root /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ctl-r41/scratch
+J1 payload=artifact=none closed=0
+J2 payload=artifact=none closed=0
+J3 payload=artifact=none closed=0
+J4 payload=artifact=none closed=0
+J5 payload=artifact=none closed=0
+J6 payload=artifact=none closed=0
+J7 payload=artifact=none closed=0
+J8 payload=artifact=none closed=0
+J10 payload=artifact=none closed=0
+J11 payload=artifact=none closed=0
+J12 payload=artifact=none closed=0
+J13 payload=artifact=none closed=0
+J9 payload=suite=self,base-K=0,base-rc=1,base-lines=13,base-closed1=0,base-treedep=red,base-verdicts=yes,r41-K=0,r41-rc=1,r41-lines=13,r41-closed1=0,r41-treedep=red,r41-verdicts=yes,ceiling=12,refnf-K=0,refnf-rc=1,refnf-kind=status,refnf-mark=1,closed=1 closed=1
+selftest cases=13 failures=0
+closed=1/13 exit=1
+rc=1
+
+=== 6. CONTROL 3 — an unresolvable ref (deadbeef…) ===
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/fixture-repo/corpus/instruments/r42-closure.sh --export-ref deadbeefdeadbeefdeadbeefdeadbeefdeadbeef --lane /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/fixture-repo --work /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ctl-dead/work --scratch-root /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ctl-dead/scratch
+suite-ref-status=ref-not-found
+export-ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef
+J1 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J2 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J3 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J4 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J5 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J6 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J7 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J8 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J9 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J10 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J11 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J12 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J13 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+selftest cases=0 failures=0
+closed=0/13 exit=1
+rc=1
+
+=== 7. the plain run is refused (exit 2) ===
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/fixture-repo/corpus/instruments/r42-closure.sh --lane /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/fixture-repo --work /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ctl-plain/work --scratch-root /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ctl-plain/scratch
+r42-closure: refusing to run against the live worktree: this suite is export-mode only.
+rc=2
+
+=== 8. the nested control transcripts the J9 limb read ===
+The limb writes each nested run's transcript next to the work dir; these
+are the three transcripts it graded (plus the depth-capped J9 line each
+nested run printed for itself):
+
+--- j9-base.out ---
+J1 payload=artifact=none closed=0
+J2 payload=artifact=none closed=0
+J3 payload=artifact=none closed=0
+J4 payload=artifact=none closed=0
+J5 payload=artifact=none closed=0
+J6 payload=artifact=none closed=0
+J7 payload=artifact=none closed=0
+J8 payload=artifact=none closed=0
+J10 payload=artifact=none closed=0
+J11 payload=artifact=none closed=0
+J12 payload=artifact=none closed=0
+J13 payload=artifact=none closed=0
+J9 payload=suite=leaf,depth=1,base=?,r41=?,ceiling=?,refnf=? closed=0
+selftest cases=13 failures=0
+closed=0/13 exit=1
+
+--- j9-r41.out ---
+J1 payload=artifact=none closed=0
+J2 payload=artifact=none closed=0
+J3 payload=artifact=none closed=0
+J4 payload=artifact=none closed=0
+J5 payload=artifact=none closed=0
+J6 payload=artifact=none closed=0
+J7 payload=artifact=none closed=0
+J8 payload=artifact=none closed=0
+J10 payload=artifact=none closed=0
+J11 payload=artifact=none closed=0
+J12 payload=artifact=none closed=0
+J13 payload=artifact=none closed=0
+J9 payload=suite=leaf,depth=1,base=?,r41=?,ceiling=?,refnf=? closed=0
+selftest cases=13 failures=0
+closed=0/13 exit=1
+
+--- j9-dead.out ---
+suite-ref-status=ref-not-found
+export-ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef
+J1 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J2 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J3 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J4 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J5 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J6 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J7 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J8 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J9 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J10 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J11 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J12 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J13 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+selftest cases=0 failures=0
+closed=0/13 exit=1
+
+--- the leaf-mode J9 line each nested run printed for itself ---
+grep -h '^J9 payload=' /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/w1/work/j9-*.out
+J9 payload=suite=leaf,depth=1,base=?,r41=?,ceiling=?,refnf=? closed=0
+J9 payload=ref-not-found,ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0
+J9 payload=suite=leaf,depth=1,base=?,r41=?,ceiling=?,refnf=? closed=0
+
+=== 9. digests ===
+$ sha256sum /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ExecJ9NegCtl.sh
+89cce69b9a3d0f46312bce51c7d2bfcdbaf63b92892a782094e895f95d2bbc7d  /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ExecJ9NegCtl.sh
+$ wc -l /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ExecJ9NegCtl.sh
+931 /fast/scratch/hyaku/kasegi-r42/ExecJ9NegCtl/ExecJ9NegCtl.sh
+

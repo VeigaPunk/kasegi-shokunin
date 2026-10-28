@@ -1,0 +1,92 @@
+## Gate
+
+### Admitted — F25 / S064 (CVE Record Format)
+
+- **Lead screen (2026-10-28, three candidates).** Machine-readable vulnerability-data standards the lane
+  does not hold were screened before any fetch: the OSV schema, the CVE Record Format bundled JSON
+  Schema, and the NVD Vulnerability Data API 2.2.4 schema. Lane ground first — `grep -liE
+  'osv|cve.?record.?format|cve.schema|CVE_Record|nvd'` over `corpus/SOURCES.md`, `corpus/README.md` and
+  `corpus/knowledge/*.md` finds no row and no entry that captures any of the three documents; the only
+  near hit is the S031 CNA Rules capture, which names "the CVE Record Format" as an approved format in
+  seven places across §4.5.5 and §5.1-§5.2 (`corpus/source-snapshots/round-23/S031.txt:L102-L116`)
+  without the format document itself. Sibling ground over
+  every `/home/vgpnk/Projects/shokunin/*-shokunin` corpus: no hit for `cve-schema` or
+  `CVE_Record_Format`; kaidoku's S015 holds one OSV *record instance*
+  (`api.osv.dev/v1/vulns/CVE-2025-55305`, dataset), adjacent to the OSV schema but not the schema
+  document. Pick = CVE Record Format: it is the canonical record standard (the NVD schema is one
+  consumer's NVD-enriched projection of it, and the OSV schema is a different record format whose family
+  kaidoku has begun reading), it is primary first-party (`CVEProject/cve-schema`), and its normative
+  artifact is the bundled JSON Schema itself.
+- **Row.** S064, kind spec, tier A, status mined, opened 2026-10-28, recheck on-release, used-by
+  `corpus/knowledge/cve-json-record-format.md`; row deliverable
+  `wave1/ExecC2Rows.registry-rows.txt`.
+- **Source / capture.** `https://raw.githubusercontent.com/CVEProject/cve-schema/main/schema/docs/CVE_Record_Format_bundled.json`;
+  access 2026-10-28 (fetched 2026-10-28T11:06:45Z, HTTP 200, 133616 raw bytes, raw sha256
+  `44c703322b1fcc532bc1c93f3993a0ba042c1a2831aae8cf39c4fbb707d03c8f`). Capture
+  `corpus/source-snapshots/round-42/S064.txt` is the complete document, no slice — capture line k is
+  document line k — normalized by `corpus/instruments/capture-source.py --kind text` (CRLF/CR to LF,
+  space/tab/NBSP runs collapsed, lines trimmed, blank lines dropped, UTF-8, final newline): 3545 lines,
+  84520 B, sha256 `b90a51f7b356e7683483d9ac0753e3eb06fe3ab53806a57fdd4bf129b2f141fa`.
+- **Quotes (≤25 words, located in the capture).** L5 (18 words): "cve-schema specifies the CVE JSON
+  record format. This is the blueprint for a rich set of JSON data" — the bundled schema's own
+  top-level description: the CVE Record is the unit CNAs and ADPs submit. L3466 (15 words): "When a CNA
+  populates the data associated with a CVE ID as a CVE Record" — the `Published` branch of the
+  top-level `oneOf` (title at L3465), whose object requires `dataType`, `dataVersion`, `cveMetadata`
+  and `containers` (L3500-L3505) and whose `containers` requires `cna` while `adp` stays optional
+  (L3478-L3498). L3510 (18 words): "A Rejected CVE Record remains on the CVE List so that users can
+  know when it is invalid." — the `Rejected` branch (title at L3509): rejection is a state of the same
+  record, not its deletion, which is what makes invalidation observable to a consumer.
+- **Entry.** `corpus/knowledge/cve-json-record-format.md` (`source: S064`,
+  `verified-at: 2026-10-28`, `ground: F25`, executable `recheck:`), its limbs anchored to L5, L3466 and
+  L3510 above plus the container rule (`cna` required, `adp` optional) and the two-state root; it
+  separates record shape (this format) from assignment policy (F07 / the S031 CNA Rules, which governs
+  who may assign an ID) and from the consumption-side formats the lane already holds (S055 CSAF v2.0,
+  S060 CycloneDX analysis subtree).
+- **Frontier admission.** F25 row + coverage-map row + `PROVINCE.md` `[r42 Frontier amendment]` appended
+  (deliverables `wave1/ExecC2Rows.readme-row.txt`, `wave1/ExecC2Rows.province-amendment.txt`) puts the
+  frontier at 24 -> 25 rows, F25/25 admitted.
+- **Limit.** The capture is the schema artifact, not the CVE Program's prose specification: `required`
+  arrays and the two-branch `oneOf` constrain the shape of an instance, but no line in it states who may
+  assign an ID or when a record should be rejected. Its normative force is JSON Schema draft-07
+  (`$schema`, L2) over a moving raw `main` ref pinned only by the raw sha256 above; the `$id` (L3)
+  names the rendered `cveproject.github.io` copy, which can drift from the captured bytes, and a new
+  bundled version would change the document without changing the URL, so the on-release recheck must
+  compare hashes rather than fetch success. The row's "5.x" label rests on the schema's own
+  `dataVersion` pattern (`^5\.(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*))?$`, L482) and its `default` `5.2.0`
+  (L483), not on a published version of record in the capture; errata and version history sit outside
+  it.
+
+### Rejected — the screened floor (closes D-r41-2)
+
+- **S065 (OSV schema — Open Source Vulnerability format, v1.9.2)** —
+  `https://ossf.github.io/osv-schema/`; access 2026-10-28 (fetched 2026-10-28T11:06:45Z, HTTP 200,
+  228890 bytes, sha256 `8cf1e3d3f9e10eba902d03af6c281d6bc5e71c22dc351fcb4b811c64030570e8`). Located
+  quote (14 words; "Purpose", opening sentence, L9-L10 of the page normalized by
+  `capture-source.py --kind text`): "This document defines a standard interchange format for describing
+  vulnerabilities in open source packages." REJECTED: primary and normative, but the OSV document family
+  is already named in the sibling ground (kaidoku S015 holds an OSV record instance, so that lane has
+  begun reading the format), and its canonical artifact is an HTML page describing a schema published
+  elsewhere, whereas the picked document's normative artifact is the bundle itself; for one frontier
+  slot the disjoint, directly verifiable document wins. Flip: re-open if S064's row or the F25 entry is
+  withdrawn, or if a frontier needs OSV-specific range semantics (`affected[].ranges[].events`,
+  `database_specific.extracted_events`) that the CVE format cannot express.
+- **S066 (NVD Vulnerability Data API 2.2.4 schema)** —
+  `https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema`; access 2026-10-28 (fetched
+  2026-10-28T11:08:16Z, HTTP 200, 10394 bytes, sha256
+  `2b9c4e8ab7e6e42aa17ea787f58167beff47c119c6f291405f86ac19c6149e01`). Located quote (9 words; served
+  L96, the `metrics.description` field): "Metric scores for a vulnerability as found on NVD." REJECTED:
+  this schema specifies one downstream consumer's API response shape — its own title reads "JSON Schema
+  for NVD Vulnerability Data API version 2.2.4" — and carries NVD-only keys (`evaluatorComment`,
+  `evaluatorSolution`, `evaluatorImpact`, `cisa*`), so it is a derived, NVD-enriched projection of the
+  CVE record, not the canonical record standard; the same document family's canonical artifact is the
+  picked S064 bundle. Flip: re-open if a frontier targets NVD-specific enrichment (`vulnStatus`,
+  `evaluator*`, `cisa*`, NVD-side metrics or weaknesses) or the API interface contract
+  (`resultsPerPage`/`startIndex` pagination) that the CVE format does not carry.
+- Screened and dropped without a row: the GHSA unauthenticated advisory API doc (sibling mori S012
+  already holds a GitHub Security Advisory page, so the family is adjacent in sibling ground and weaker
+  on disjointness than both fetched finalists) and FIRST VIN (no standalone normative document found;
+  not fetched).
+
+The round-41 Gate recorded no reject, so the outside spot-check had nothing to sample (D-r41-2). This
+block records two, each with URL, 2026-10-28 access date, a located ≤25-word quote, an honest reason on
+a named criterion, and a flip condition.

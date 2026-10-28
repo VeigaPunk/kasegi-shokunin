@@ -7,8 +7,8 @@ The round-33 C1 counter, hardened in round 34. A capture directory can hold real
 bytes and still be unauditable: nothing in `manifest.json` says which documented
 URL those bytes came from, when they were fetched, or whether a file in the
 directory is accounted for at all. This instrument walks every snapshot
-directory under `corpus/source-snapshots/` - recursively - and applies four
-rules.
+directory under `corpus/source-snapshots/` - recursively - and applies the
+rules below.
 
   A. MANIFEST PRESENCE AND PER-FILE BINDING. Every snapshot directory - a
      directory that holds a `manifest.json` or that holds any captured source
@@ -90,6 +90,44 @@ rules.
      record means the manifest's record count overstates the captures it
      documents.
 
+  E. CAPTURE-BYTES BINDING (round-42, the wave-2 F-BIND defect). Rules A-D bind
+     a record to a file NAME, a registry URL and a fetch stamp; they never read
+     the capture. A manifest could therefore name a file that is absent, or pin
+     a digest no file satisfies, and still print `bound=records`. For every
+     `sources[]` record:
+
+       E1. its `path` must resolve inside its own snapshot directory and name a
+           regular file there - otherwise
+           `FAIL rule=capture-missing record=<id> path=<path>`. A path that
+           climbs out of the directory (`../S999.txt`) is the same line: the
+           record names bytes outside the directory that is being audited;
+       E2. the record's `sha256` - the digest of the capture bytes - must equal
+           the file's sha256, otherwise `FAIL rule=digest-mismatch
+           record=<id> sha256=<pinned>`. A value that is not 64 lowercase hex
+           digits is `FAIL rule=digest-invalid`. A record that pins nothing
+           (field absent, empty, or the `"0"*64` fixture sentinel) is
+           `FAIL rule=digest-missing` in round-32 and later, and an
+           informational, printed exemption (`digest_unpinned=N` on the AUDIT
+           line) in the legacy rounds - the declared-exemption shape rule C
+           already uses for `archival`. The other two digest fields of a record
+           are pinned the same way where they can be: `snapshot_sha256`, the
+           same assertion under the round-39+ name, must equal the file digest
+           (`FAIL rule=digest-mismatch field=snapshot_sha256 ...`), while
+           `full_text_sha256` pins the extracted document text, which is not the
+           snapshot bytes (S060's full text is not its HTML capture), so only
+           its shape - 64 lowercase hex digits - is checked;
+       E3. the two fetched-URL fields agree: `capture_url` and
+           `http.final_url` must be byte-identical when both are present, and a
+           `http.final_url` must be the record's `url` or its `capture_url` -
+           otherwise `FAIL rule=capture-url-mismatch record=<id>`. A redirect
+           is a legal difference between `url` and `capture_url` (S057, S025
+           capture the PDF behind the advisory); a disagreement between the
+           fields describing one fetch is not.
+
+     Rule E changes `bound`: a record failing E is `unbound` exactly as a
+     record failing B or C is, so a manifest whose captures are absent or
+     tampered can no longer print `bound=records`.
+
 Output. One `MANIFEST` line per manifest directory
 
     MANIFEST <dir> records=N url_bound=M fetched=K archival=L
@@ -100,14 +138,16 @@ one `FAIL` line per failure, then exactly one summary line
 
     records=<total> bound=<total> unbound=<U>
 
-where `bound` counts records satisfying rules B **and** C, and `unbound` counts
-records failing B or C, so the printed invariant is `unbound = records - bound`
-(the same value the contract calls "<bound-failures>"). The AUDIT line reports
+where `bound` counts records satisfying rules B, C **and** E, and `unbound`
+counts records failing B, C or E, so the printed invariant is
+`unbound = records - bound` (the same value the contract calls
+"<bound-failures>"). The AUDIT line reports
 `records=<total> with_url=<records carrying a url field> with_fetched_utc=<...>
 with_archival=<...> snapshot_dirs=<...> manifest_dirs=<...>
 missing_manifest=<...> multi_row_url=<records whose URL text also occurs in
-another registry row> orphans=<capture files no record names>` followed by one
-`orphan=<file>` token per such file.
+another registry row> digest_unpinned=<legacy-round records pinning no digest>
+orphans=<capture files no record names>` followed by one `orphan=<file>` token
+per such file.
 
 Exit 0 only when every rule passes; 1 on any failure; 2 on a usage or read
 error (absent root, absent/unreadable SOURCES.md, unparsable manifest JSON,
@@ -121,11 +161,12 @@ Known limits (measured, not assumed):
   `id` field: a record whose id names a row but whose capture bytes came from a
   different document is bound by this instrument and would only be caught by
   `source-recheck.py` (quote/sha256 pins) or a human reader.
-- Rule A binds captures to records by file name, not by content: a capture whose
-  bytes were copied from a different document is named by a record and passes.
-  The reverse direction (a record naming a file that is absent) is not a rule
-  here - `source-recheck.py` fails closed on a missing capture, and the round-34
-  assignment scopes this instrument to capture-file coverage.
+- Rule A binds captures to records by file name, not by content, and rule E2
+  binds them by the digest the manifest itself declares: a capture whose bytes
+  were copied from a different document still passes when the manifest pins the
+  copied bytes' digest. What rule E removes is the silent case - a capture named
+  but absent, a path leaving the directory, and a stale digest are failures, not
+  absences.
 - The row's URL is the `https://` token found in the source cell with trailing
   `.,;:` stripped; byte-equality is then exact. A row carrying two or more
   tokens is now a failure (rule B4) rather than a lenient match.
@@ -147,6 +188,7 @@ every fixture can print the summary without running a case. Prints
 """
 import argparse
 import datetime
+import hashlib
 import json
 import os
 import re
@@ -165,6 +207,8 @@ OFFSET_STAMP_RE = re.compile(
     r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,9})?[+-]\d{2}:?\d{2}\Z")
 PENDING_VALUES = frozenset({"pending", "tbd", "todo", "unknown", "none", "null", "n/a", "na", "unset"})
 MODERN_ROUND = 32   # round-32+ records must carry fetched_utc; the archival exemption is closed
+ZERO_DIGEST = "0" * 64   # the lane's fixture convention for "no digest declared"
+DIGEST_RE = re.compile(r"^[0-9a-f]{64}\Z")
 STATUS_REJECTED = "rejected"
 STATUS_COLUMN = 7   # | id | source | kind | tier | scope | anchor | teaches | status | ...
 SCRIPT = os.path.abspath(__file__)
@@ -348,8 +392,80 @@ def duplicate_records(records):
     return duplicates
 
 
+def capture_binding(record, dirpath, round_no):
+    """Rule E for one record. Returns ([FAIL line fragments], digest_unpinned).
+
+    E1 resolves the record's `path` against its own snapshot directory and
+    requires a regular file there; E2 compares the record's capture-bytes pins
+    (`sha256`, and `snapshot_sha256` when present) with the capture bytes (a
+    `sha256` pin is mandatory from round-32 on; the round<=31 all-zero sentinel
+    stays a printed exemption) and requires the document-text pin
+    (`full_text_sha256`) to be a digest at all; E3 requires the record's
+    fetched-URL fields to agree with each other. A path that escapes the
+    directory through `..` is reported as E1: the record names bytes outside its
+    own capture directory, which is exactly what a manifest may not do."""
+    record_id = record.get("id")
+    label = record_id if isinstance(record_id, str) and record_id.strip() else "<unnamed>"
+    fragments = []
+    unpinned = False
+    raw = record.get("path")
+    if not (isinstance(raw, str) and raw.strip()):
+        return ["rule=capture-missing record=%s path=<absent>" % label], unpinned
+    base = os.path.realpath(dirpath)
+    target = os.path.realpath(os.path.join(base, raw))
+    if os.path.commonpath([base, target]) != base or not os.path.isfile(target):
+        return ["rule=capture-missing record=%s path=%s" % (label, raw)], unpinned
+
+    with open(target, "rb") as fh:
+        actual = hashlib.sha256(fh.read()).hexdigest()
+
+    pinned = record.get("sha256")
+    if pinned is None:
+        value = ""
+    elif isinstance(pinned, str):
+        value = pinned.strip()
+    else:
+        value = None
+    if value is None or (value and not DIGEST_RE.match(value)):
+        fragments.append("rule=digest-invalid record=%s" % label)
+    elif not value or value == ZERO_DIGEST:
+        if round_no is None or round_no >= MODERN_ROUND:
+            fragments.append("rule=digest-missing record=%s" % label)
+        else:
+            unpinned = True
+    elif actual != value:
+        fragments.append("rule=digest-mismatch record=%s sha256=%s" % (label, value))
+
+    snapshot = record.get("snapshot_sha256")
+    if isinstance(snapshot, str) and snapshot.strip() not in ("", ZERO_DIGEST):
+        snapshot_value = snapshot.strip()
+        if not DIGEST_RE.match(snapshot_value):
+            fragments.append("rule=digest-invalid field=snapshot_sha256 record=%s" % label)
+        elif snapshot_value != actual:
+            fragments.append("rule=digest-mismatch field=snapshot_sha256 record=%s sha256=%s"
+                             % (label, snapshot_value))
+    full_text = record.get("full_text_sha256")
+    if isinstance(full_text, str) and full_text.strip() and not DIGEST_RE.match(full_text.strip()):
+        fragments.append("rule=digest-invalid field=full_text_sha256 record=%s" % label)
+
+    url = record.get("url")
+    capture_url = record.get("capture_url")
+    http = record.get("http")
+    final_url = http.get("final_url") if isinstance(http, dict) else None
+    if isinstance(capture_url, str) and isinstance(final_url, str):
+        if capture_url != final_url:
+            fragments.append("rule=capture-url-mismatch record=%s capture_url=%s final_url=%s"
+                             % (label, capture_url, final_url))
+    elif isinstance(final_url, str):
+        documented = [value for value in (url, capture_url) if isinstance(value, str)]
+        if documented and final_url not in documented:
+            fragments.append("rule=capture-url-mismatch record=%s final_url=%s"
+                             % (label, final_url))
+    return fragments, unpinned
+
+
 def check(root, out=sys.stdout):
-    """Apply rules A-D. Returns exit status 0 (pass) / 1 (failure) / 2 (read error)."""
+    """Apply rules A-E. Returns exit status 0 (pass) / 1 (failure) / 2 (read error)."""
     try:
         rows_by_id, cells = load_registry(root)
         snapshot_list = list(snapshot_dirs(root))
@@ -359,7 +475,7 @@ def check(root, out=sys.stdout):
 
     manifests, missing, failures = [], [], []
     totals = {"records": 0, "with_url": 0, "with_fetched_utc": 0,
-              "with_archival": 0, "bound": 0, "multi_row_url": 0}
+              "with_archival": 0, "bound": 0, "multi_row_url": 0, "digest_unpinned": 0}
     orphans = []
 
     for row_id, count in double_https_rows(rows_by_id):
@@ -424,7 +540,13 @@ def check(root, out=sys.stdout):
                     failures.append("FAIL rule=fetched-utc record=%s dir=%s detail=%s"
                                     % (label, name, detail))
 
-            if url_ok and prov_ok:
+            capture_fragments, digest_unpinned = capture_binding(record, path, round_no)
+            if digest_unpinned:
+                totals["digest_unpinned"] += 1
+            failures.extend("FAIL %s dir=%s" % (fragment, name)
+                            for fragment in capture_fragments)
+
+            if url_ok and prov_ok and not capture_fragments:
                 totals["bound"] += 1
 
         for field, value, count in duplicate_records(records):
@@ -447,10 +569,11 @@ def check(root, out=sys.stdout):
               % (name, len(records), url_bound, fetched, archival), file=out)
 
     audit = ("AUDIT records=%d with_url=%d with_fetched_utc=%d with_archival=%d "
-             "snapshot_dirs=%d manifest_dirs=%d missing_manifest=%d multi_row_url=%d orphans=%d"
+             "snapshot_dirs=%d manifest_dirs=%d missing_manifest=%d multi_row_url=%d "
+             "digest_unpinned=%d orphans=%d"
              % (totals["records"], totals["with_url"], totals["with_fetched_utc"],
                 totals["with_archival"], len(snapshot_list), len(manifests), len(missing),
-                totals["multi_row_url"], len(orphans)))
+                totals["multi_row_url"], totals["digest_unpinned"], len(orphans)))
     audit += "".join(" orphan=%s" % capture for _name, capture in orphans)
     print(audit, file=out)
     for line in failures:
@@ -486,10 +609,14 @@ def write_registry(root, rows):
         fh.write("".join(lines))
 
 
-def write_manifest(root, dirname, records, orphans=None):
+def write_manifest(root, dirname, records, orphans=None, pin_digests=True):
     """Write a fixture snapshot directory with its manifest and one capture per record.
 
-    `dirname` may carry a slash, which builds a nested snapshot directory."""
+    `dirname` may carry a slash, which builds a nested snapshot directory. Unless
+    `pin_digests` is false, every record that leaves `sha256` unset (or at the
+    `ZERO_DIGEST` sentinel) is pinned to the sha256 of the bytes just written for
+    it, computed AFTER every capture is in place so a record naming a shared path
+    pins the file that survives."""
     path = os.path.join(root, "corpus", "source-snapshots", dirname)
     os.makedirs(path, exist_ok=True)
     for record in records:
@@ -497,6 +624,15 @@ def write_manifest(root, dirname, records, orphans=None):
         if isinstance(capture, str):
             with open(os.path.join(path, capture), "w", encoding="utf-8") as fh:
                 fh.write("fixture capture bytes for %s\n" % record.get("id", "?"))
+    if pin_digests:
+        for record in records:
+            capture = record.get("path")
+            if not isinstance(capture, str) or record.get("sha256") not in (None, "", ZERO_DIGEST):
+                continue
+            target = os.path.join(path, capture)
+            if os.path.isfile(target):
+                with open(target, "rb") as fh:
+                    record["sha256"] = hashlib.sha256(fh.read()).hexdigest()
     payload = {"schema_version": 1, "purpose": "capture-binding selftest fixture",
                "sources": records}
     if orphans is not None:
@@ -659,6 +795,77 @@ def case_rejected_row_anchor(root):
     write_manifest(root, "round-30", [record("S026", url=ALPHA, fetched=STAMP)])
 
 
+def case_capture_missing(root):
+    write_registry(root, [("S001", ALPHA)])
+    write_manifest(root, "round-30", [record("S001", url=ALPHA, fetched=STAMP)])
+    os.remove(os.path.join(root, "corpus", "source-snapshots", "round-30", "S001.txt"))
+
+
+def case_capture_escape(root):
+    write_registry(root, [("S001", ALPHA)])
+    escaping = record("S001", url=ALPHA, fetched=STAMP)
+    escaping["path"] = "../S999.txt"
+    write_manifest(root, "round-30", [escaping])
+
+
+def case_digest_mismatch(root):
+    write_registry(root, [("S001", ALPHA)])
+    pinned = record("S001", url=ALPHA, fetched=STAMP)
+    pinned["sha256"] = "f" * 64
+    write_manifest(root, "round-30", [pinned], pin_digests=False)
+
+
+def case_digest_invalid(root):
+    write_registry(root, [("S001", ALPHA)])
+    pinned = record("S001", url=ALPHA, fetched=STAMP)
+    pinned["sha256"] = "not-a-digest"
+    write_manifest(root, "round-30", [pinned], pin_digests=False)
+
+
+def case_digest_unpinned_modern(root):
+    write_registry(root, [("S001", ALPHA)])
+    unpinned = record("S001", url=ALPHA, fetched=STAMP)
+    unpinned["sha256"] = ZERO_DIGEST
+    write_manifest(root, "round-32", [unpinned], pin_digests=False)
+
+
+def case_digest_unpinned_legacy(root):
+    write_registry(root, [("S001", ALPHA)])
+    unpinned = record("S001", url=ALPHA, fetched=STAMP)
+    unpinned["sha256"] = ZERO_DIGEST
+    write_manifest(root, "round-30", [unpinned], pin_digests=False)
+
+
+def case_capture_url_mismatch(root):
+    write_registry(root, [("S001", ALPHA)])
+    redirected = record("S001", url=ALPHA, fetched=STAMP)
+    redirected["capture_url"] = BETA
+    redirected["http"] = {"status": 200, "final_url": ALPHA}
+    write_manifest(root, "round-30", [redirected])
+
+
+def case_url_trailing_slash(root):
+    write_registry(root, [("S001", ALPHA)])
+    write_manifest(root, "round-30", [record("S001", url=ALPHA + "/", fetched=STAMP)])
+
+
+def case_snapshot_digest_mismatch(root):
+    write_registry(root, [("S001", ALPHA)])
+    pinned = record("S001", url=ALPHA, fetched=STAMP)
+    pinned["snapshot_sha256"] = "f" * 64
+    write_manifest(root, "round-32", [pinned])
+
+
+def case_snapshot_digest_matches(root):
+    write_registry(root, [("S001", ALPHA)])
+    pinned = record("S001", url=ALPHA, fetched=STAMP)
+    write_manifest(root, "round-32", [pinned])
+    with open(os.path.join(root, "corpus", "source-snapshots", "round-32", "S001.txt"),
+              "rb") as fh:
+        pinned["snapshot_sha256"] = hashlib.sha256(fh.read()).hexdigest()
+    write_manifest(root, "round-32", [pinned])
+
+
 CASES = [
     # name, builder, expected exit, expected stdout lines
     ("clean-all-pass", case_clean, 0,
@@ -735,6 +942,36 @@ CASES = [
     ("rejected-row-anchor", case_rejected_row_anchor, 1,
      ["FAIL rule=rejected-row-anchor record=S026 row=S026 dir=round-30",
       "records=1 bound=0 unbound=1"]),
+    ("capture-path-missing-rejected", case_capture_missing, 1,
+     ["FAIL rule=capture-missing record=S001 path=S001.txt dir=round-30",
+      "MANIFEST round-30 records=1 url_bound=1 fetched=1 archival=0",
+      "records=1 bound=0 unbound=1"]),
+    ("capture-path-escape-rejected", case_capture_escape, 1,
+     ["FAIL rule=capture-missing record=S001 path=../S999.txt dir=round-30",
+      "records=1 bound=0 unbound=1"]),
+    ("digest-mismatch-rejected", case_digest_mismatch, 1,
+     ["FAIL rule=digest-mismatch record=S001 sha256=",
+      "records=1 bound=0 unbound=1"]),
+    ("digest-invalid-rejected", case_digest_invalid, 1,
+     ["FAIL rule=digest-invalid record=S001 dir=round-30",
+      "records=1 bound=0 unbound=1"]),
+    ("digest-unpinned-modern-rejected", case_digest_unpinned_modern, 1,
+     ["FAIL rule=digest-missing record=S001 dir=round-32",
+      "records=1 bound=0 unbound=1"]),
+    ("digest-unpinned-legacy-listed", case_digest_unpinned_legacy, 0,
+     ["digest_unpinned=1",
+      "records=1 bound=1 unbound=0"]),
+    ("capture-url-mismatch-rejected", case_capture_url_mismatch, 1,
+     ["FAIL rule=capture-url-mismatch record=S001 capture_url=",
+      "records=1 bound=0 unbound=1"]),
+    ("url-trailing-slash-rejected", case_url_trailing_slash, 1,
+     ["FAIL rule=url-mismatch record=S001 row=S001 dir=round-30",
+      "records=1 bound=0 unbound=1"]),
+    ("snapshot-digest-mismatch-rejected", case_snapshot_digest_mismatch, 1,
+     ["FAIL rule=digest-mismatch field=snapshot_sha256 record=S001 sha256=",
+      "records=1 bound=0 unbound=1"]),
+    ("snapshot-digest-matches", case_snapshot_digest_matches, 0,
+     ["records=1 bound=1 unbound=0"]),
 ]
 
 

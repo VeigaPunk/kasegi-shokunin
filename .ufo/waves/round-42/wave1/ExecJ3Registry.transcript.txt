@@ -1,0 +1,203 @@
+# ExecJ3Registry.transcript — round-42 C1 J3 (family F-TABLE)
+# lane /home/vgpnk/Projects/shokunin/kasegi-shokunin
+# seat ExecJ3Registry; base 5053a7f46de35784cff4b56756906e9014a38276; lane HEAD below
+# every line beginning "$ " was executed in this run; output follows it verbatim
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse HEAD
+514ff62d61ee9bc717a20a02a22c65ec0c5124ed
+$ sha256sum SKILL.md at HEAD, at base 5053a7f46de35784cff4b56756906e9014a38276, at round-41 judged head 1f7464612ac4c44e39886b82e812610d3c039b13
+f8e7a5d3be74699329162635b26731e0ce156483dc17bd29a3323eef15413e00  SKILL.md
+f8e7a5d3be74699329162635b26731e0ce156483dc17bd29a3323eef15413e00  -
+f8e7a5d3be74699329162635b26731e0ce156483dc17bd29a3323eef15413e00  -
+$ wc -l SKILL.md
+1129
+
+## 1. the deliverable identity
+$ wc -l /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ3Registry.sh /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ3Registry.skill-fix.txt
+  541 /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ3Registry.sh
+  151 /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-42/wave1/ExecJ3Registry.skill-fix.txt
+  692 total
+$ sha256sum ExecJ3Registry.sh ExecJ3Registry.skill-fix.txt
+8418dc6d61de37e156fb5f63ab1d55601da3b90918add032af205b03a2b3520b  ExecJ3Registry.sh
+22785bde5f6abdd51292dc6dabb6afb6bfce3fbfc583b17688d20727deb0f171  ExecJ3Registry.skill-fix.txt
+
+## 2. export the lane refs (read-only: git archive | tar -x)
+$ rm -rf export-head export-base export-r41head && mkdir -p export-head export-base export-r41head
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive HEAD | tar -x -C export-head
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive 5053a7f46de35784cff4b56756906e9014a38276 | tar -x -C export-base
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive 1f7464612ac4c44e39886b82e812610d3c039b13 | tar -x -C export-r41head
+$ ls export-head/corpus/instruments/r*-closure.sh
+/fast/scratch/hyaku/kasegi-r42/ExecJ3Registry/export-head/corpus/instruments/r35-defect-closure.sh
+/fast/scratch/hyaku/kasegi-r42/ExecJ3Registry/export-head/corpus/instruments/r36-closure.sh
+/fast/scratch/hyaku/kasegi-r42/ExecJ3Registry/export-head/corpus/instruments/r37-closure.sh
+/fast/scratch/hyaku/kasegi-r42/ExecJ3Registry/export-head/corpus/instruments/r38-closure.sh
+/fast/scratch/hyaku/kasegi-r42/ExecJ3Registry/export-head/corpus/instruments/r39-closure.sh
+/fast/scratch/hyaku/kasegi-r42/ExecJ3Registry/export-head/corpus/instruments/r40-closure.sh
+/fast/scratch/hyaku/kasegi-r42/ExecJ3Registry/export-head/corpus/instruments/r41-closure.sh
+/fast/scratch/hyaku/kasegi-r42/ExecJ3Registry/export-head/corpus/instruments/r-defect-closure.sh
+
+## 3. J3 on the CURRENT (broken) table at HEAD — RED, fail-closed on the defect
+$ bash ExecJ3Registry.sh --detail export-head
+defect: badcells L981 cells=9 want=8
+defect: badcells L982 cells=9 want=8
+defect: badcells L1041 cells=9 want=8
+defect: badcells L1054 cells=9 want=8
+defect: badcells L1055 cells=9 want=8
+defect: split L1119 registry table has no data row
+defect: orphan L1122 r40-closure.sh is not inside a registry table
+defect: dup L0 r40-closure.sh rows=2
+tables=9,rows=18,split=1,orphan=1,badcells=5,leadws=0,indent=0,dup=1,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+exit=1
+$ bash ExecJ3Registry.sh --check export-head
+tables=9,rows=18,split=1,orphan=1,badcells=5,leadws=0,indent=0,dup=1,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+exit=1
+$ bash ExecJ3Registry.sh --line export-head   # the composed suite line (harness convention)
+J3 payload=tables=9,rows=18,split=1,orphan=1,badcells=5,leadws=0,indent=0,dup=1,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok closed=0
+exit=1
+
+## 4. negative controls: base and round-41 judged head are RED too
+$ bash ExecJ3Registry.sh --check export-base
+tables=9,rows=18,split=1,orphan=1,badcells=5,leadws=0,indent=0,dup=1,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+exit=1
+$ bash ExecJ3Registry.sh --check export-r41head
+tables=9,rows=18,split=1,orphan=1,badcells=5,leadws=0,indent=0,dup=1,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+exit=1
+
+## 5. apply ExecJ3Registry.skill-fix.txt to a scratch copy of the export
+# SKILL.md lines 1..976 are unchanged; the deliverable replaces lines 977..1129 (to EOF)
+$ cp -a export-head export-fixed
+$ head -976 export-fixed/SKILL.md > SKILL.md.new && cat ExecJ3Registry.skill-fix.txt >> SKILL.md.new && mv SKILL.md.new export-fixed/SKILL.md
+$ wc -l export-fixed/SKILL.md && sha256sum export-fixed/SKILL.md
+1127 /fast/scratch/hyaku/kasegi-r42/ExecJ3Registry/export-fixed/SKILL.md
+3e90d62057c2e62ce67f443e73d6a8f68e8e0c94d468a8eaade7a0c4121900a8  /fast/scratch/hyaku/kasegi-r42/ExecJ3Registry/export-fixed/SKILL.md
+
+## 6. the landed bytes: every line the block changes (display truncated at 140 columns)
+$ diff -u export-head/SKILL.md export-fixed/SKILL.md | grep -E '^(@@|[-+][^-+])' | cut -c1-140
+@@ -978,8 +978,8 @@
+-| recheck-audit.py | gate|probe | python3 corpus/instruments/recheck-audit.py [--json <out>] | 0 clean \| 1 failed \| undeclared nonzero ->
+-| anchorcheck.py | gate|probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: exit 0 clean \| exit 1 on MISSING-FILE/P
++| recheck-audit.py | gate\|probe | python3 corpus/instruments/recheck-audit.py [--json <out>] | 0 clean \| 1 failed \| undeclared nonzero -
++| anchorcheck.py | gate\|probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: exit 0 clean \| exit 1 on MISSING-FILE/
+@@ -1038,7 +1038,7 @@
+-| anchorcheck.py | gate|probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: exit 0 clean \| exit 1 on MISSING-FILE/P
++| anchorcheck.py | gate\|probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: exit 0 clean \| exit 1 on MISSING-FILE/
+@@ -1051,8 +1051,8 @@
+-| frontier-recheck-count.py | gate|probe | python3 corpus/instruments/frontier-recheck-count.py [--root DIR] [--json PATH] | exit 0 when ev
+-| source-recheck.py | gate|probe | python3 corpus/instruments/source-recheck.py --manifest <path> --source S### | exit 0 when every pinned 
++| frontier-recheck-count.py | gate\|probe | python3 corpus/instruments/frontier-recheck-count.py [--root DIR] [--json PATH] | exit 0 when e
++| source-recheck.py | gate\|probe | python3 corpus/instruments/source-recheck.py --manifest <path> --source S### | exit 0 when every pinned
+@@ -1118,12 +1118,10 @@
+-| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scr
++| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scr
+-| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scr
+$ diff -u export-head/SKILL.md export-fixed/SKILL.md | grep -cE '^@@'
+4
+
+## 7. escape / bare-pipe census of both states (escaped `|` inside a cell is the lane convention)
+$ grep -c 'gate|probe' export-head/SKILL.md ; grep -c 'gate\\|probe' export-head/SKILL.md
+bare gate|probe: 5
+escaped gate\|probe: 6
+$ grep -c 'gate|probe' export-fixed/SKILL.md ; grep -c 'gate\\|probe' export-fixed/SKILL.md
+bare gate|probe: 0
+escaped gate\|probe: 11
+
+## 8. J3 on the FIXED bytes — GREEN
+$ bash ExecJ3Registry.sh --check export-fixed
+tables=9,rows=18,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+exit=0
+$ bash ExecJ3Registry.sh --line export-fixed
+J3 payload=tables=9,rows=18,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok closed=1
+exit=0
+$ bash ExecJ3Registry.sh --detail export-fixed
+tables=9,rows=18,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+exit=0
+
+## 9. REPLAY limb: the committed F-TABLE defeat shapes re-executed against the FIXED bytes
+# m1/m2/m3/m4 are the four .ufo/waves/round-41/wave2/MutSkillTablePipes.md probes
+# (blank line before the suite row, bare pipe in an entry command, leading whitespace
+# in the first cell, suite row moved outside the contiguous table); m5/m10 are D-r41-3
+# duplicates; m6-m9 are the wave-2 seed shapes 79-83/86.
+$ rm -rf replay && bash ExecJ3Registry.sh --self-test export-fixed replay
+selftest detail=J3 case=positive accepted=1 payload=tables=9,rows=18,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest detail=J3 mutant=m1-blank-before-row rejected=1 payload=tables=9,rows=17,split=1,orphan=1,badcells=0,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest detail=J3 mutant=m2-bare-pipe-command rejected=1 payload=tables=9,rows=18,split=0,orphan=0,badcells=1,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest detail=J3 mutant=m3-leading-ws-first-cell rejected=1 payload=tables=9,rows=18,split=0,orphan=0,badcells=0,leadws=1,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest detail=J3 mutant=m4-row-moved-outside rejected=1 payload=tables=9,rows=17,split=1,orphan=1,badcells=0,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest detail=J3 mutant=m5-duplicate-row rejected=1 payload=tables=9,rows=19,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=1,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest detail=J3 mutant=m6-indented-duplicate rejected=1 payload=tables=9,rows=19,split=0,orphan=0,badcells=0,leadws=0,indent=1,dup=1,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest detail=J3 mutant=m7-blank-header-separator rejected=1 payload=tables=9,rows=17,split=1,orphan=1,badcells=0,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest detail=J3 mutant=m8-row-deleted rejected=1 payload=tables=9,rows=17,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=0,missing=1,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest detail=J3 mutant=m9-legacy-bare-pipe rejected=1 payload=tables=9,rows=18,split=0,orphan=0,badcells=1,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest detail=J3 mutant=m10-duplicate-in-table rejected=1 payload=tables=9,rows=19,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=1,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest detail=J3 mutant=m11-cross-table-duplicate rejected=1 payload=tables=9,rows=19,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=1,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+selftest cases=12 failures=0
+exit=0
+
+## 10. the Y-state coupling (documented, not hidden): the suite-under-test basename
+$ : > export-fixed/corpus/instruments/r42-closure.sh   # stand-in for the round-42 suite bytes
+$ bash ExecJ3Registry.sh --check export-fixed   # no r42 registry row yet: own exemption -> GREEN
+tables=9,rows=18,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+exit=0
+$ J3_OWN='' bash ExecJ3Registry.sh --check export-fixed   # exemption disabled -> missing=1 RED
+tables=9,rows=18,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=0,missing=1,unknown=0,declared=1,own=,read=ok
+exit=1
+
+## 11. declared pair (erratum E3): the r36-closure.sh two-row pair is exempt from dup only
+$ bash ExecJ3Registry.sh --check export-fixed   # default J3_DECLARED_PAIRS=r36-closure.sh
+tables=9,rows=18,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+exit=0
+$ J3_DECLARED_PAIRS='' bash ExecJ3Registry.sh --check export-fixed   # strict one-row mode -> dup=1 RED
+tables=9,rows=18,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=1,missing=0,unknown=0,declared=0,own=r42-closure.sh,read=ok
+exit=1
+$ sed -n '1111p;1113p' export-fixed/SKILL.md | cut -c1-96
+| r36-closure.sh | gate\|probe | `bash corpus/instruments/r36-closure.sh --export-ref <hash>` (e
+| r36-closure.sh | gate | `bash corpus/instruments/r36-closure.sh --export-ref <hash>` (export-m
+
+## 12. the recommended (NOT delivered) r42 registry row must be pipe-clean and single
+$ cp -a export-fixed y-one; append a Round-42 block header and ONE r42-closure.sh row to y-one/SKILL.md
+$ tail -5 y-one/SKILL.md | cut -c1-120
+## Round-42 Gates & probes registry addition (appended 2026-10-28)
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| r42-closure.sh | gate | `bash corpus/instruments/r42-closure.sh --export-ref <hash> [--lane DIR] [--work DIR] [--scrat
+$ bash ExecJ3Registry.sh --check y-one   # exactly one r42 row -> GREEN
+tables=10,rows=19,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=0,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+exit=0
+$ cp -a y-one y-two && cat r42-row.txt >> y-two/SKILL.md && bash ExecJ3Registry.sh --check y-two
+tables=10,rows=20,split=0,orphan=0,badcells=0,leadws=0,indent=0,dup=1,missing=0,unknown=0,declared=1,own=r42-closure.sh,read=ok
+exit=1
+
+## 12b. the repaired tail: the Round-40 table is contiguous and holds exactly one r40 row
+$ sed -n '1117,1127p' export-fixed/SKILL.md | cut -c1-96
+## Round-40 Gates & probes registry addition (appended 2026-10-26)
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owne
+|---|---|---|---|---|---|---|---|
+| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --export-ref <hash> [--receipt
+
+## Round-41 Gates & probes registry addition (appended 2026-10-27)
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owne
+|---|---|---|---|---|---|---|---|
+| r41-closure.sh | gate | `bash corpus/instruments/r41-closure.sh --export-ref <hash> [--receipt
+
+## 13. no row lost: every on-disk closure suite still has a registry row (missing=0 above)
+# r42-closure.sh rows=0 is the pre-integration state proven in section 10 (own exemption).
+$ for b in $(ls export-fixed/corpus/instruments/r*-closure.sh); do n=${b##*/}; printf '%-26s rows=%s\n' "$n" "$(grep -c "^| $n |" export-fixed/SKILL.md)"; done
+r35-defect-closure.sh      rows=1
+r36-closure.sh             rows=2
+r37-closure.sh             rows=1
+r38-closure.sh             rows=1
+r39-closure.sh             rows=1
+r40-closure.sh             rows=1
+r41-closure.sh             rows=1
+r42-closure.sh             rows=0
+r-defect-closure.sh        rows=1
+
+## 14. clean-state statement
+# every export, fixture and sandbox above lives under /fast/scratch/hyaku/kasegi-r42/ExecJ3Registry
+# and is removed with that directory before this seat yields. No lane file was
+# written: the only lane writes are this receipt and the three wave-1 deliverables.
+
+end of transcript

@@ -1,0 +1,28 @@
+
+## Round-42 admission — coverage map row and Frontier F25 (appended 2026-10-28)
+
+The coverage map above is not edited in place (R6): the round-42 entry
+`knowledge/cve-json-record-format.md` (Frontier F25, source S064; source basis: the CVE JSON record
+format at https://raw.githubusercontent.com/CVEProject/cve-schema/main/schema/docs/CVE_Record_Format_bundled.json — the CVE Program's own bundled JSON Schema for the machine-readable CVE record,
+its four required root properties, its one `cna` container plus optional `adp` containers, and its
+PUBLISHED and REJECTED states — captured 2026-10-28 under `corpus/source-snapshots/round-42/`) is
+recorded here as an appended amendment so every existing line keeps its number. The coverage-map row
+is appended here rather than inserted into the map, and the F25 frontier row is listed here on the
+same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| The machine-readable CVE record (CVE JSON record format) (round 42) | knowledge/cve-json-record-format.md | S064 — public primary, opened 2026-10-28 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F25 | CVE JSON record format (CVE Record Format) — the machine-readable CVE record (four required root keys, one `cna` container plus optional `adp` containers, PUBLISHED and REJECTED states) | admitted | knowledge/cve-json-record-format.md | S064 | Read a CVE record's shape from the schema that defines it, not from a CNA's prose: the record is exactly four root properties — `dataType`, `dataVersion`, `cveMetadata`, `containers` — with `additionalProperties: false` in both root branches (S064.txt:L3500-L3506, S064.txt:L3536-L3542), `dataType` is the single-value enum `CVE_RECORD` (S064.txt:L472-L477), and the format version travels inside the record, defaulting to `5.2.0` under a `5.x` pattern (S064.txt:L479-L484). Every record carries one `cna` container (S064.txt:L3494-L3496, S064.txt:L3530-L3532) and only the PUBLISHED branch admits `adp` containers (S064.txt:L3485-L3492); a REJECTED record keeps its place on the CVE List — "A Rejected CVE Record remains on the CVE List so that users can know when it is invalid." (S064.txt:L3510). |
+
+[r42 amendment, appended 2026-10-28] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 42 the frontier stands at **25/25 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round
+37, F21 at round 38, F22 at round 39, F23 at round 40, F24 at round 41, F25 at round 42. The 0/18
+sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.

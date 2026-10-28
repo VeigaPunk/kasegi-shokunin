@@ -1,0 +1,285 @@
+==================================================================================
+capture-binding-check.py - F-BIND replay transcript (round 42, wave 1, ExecJ6Bind)
+==================================================================================
+lane repo      : /home/vgpnk/Projects/shokunin/kasegi-shokunin
+lane base      : 5053a7f46de35784cff4b56756906e9014a38276
+deliverable    : .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py
+committed file : corpus/instruments/capture-binding-check.py
+scratch root   : /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind (deleted before this seat yields; every copy below lived there)
+host           : Linux 7.2.11-arch1-1 x86_64, Python 3.14.8, 2026-10-28T12:10:27Z
+
+$ sha256sum corpus/instruments/capture-binding-check.py .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py
+  3d9e5e0ddbaaccf91db255b4a978d49a1d44a2c54cd7cc1fef22c78330da99fa  corpus/instruments/capture-binding-check.py
+  ebc206d433b334a9f844ef9726fe87fb9cb2a78cf8f41943add605869da00ec7  .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py
+$ wc -l corpus/instruments/capture-binding-check.py .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py
+    892 corpus/instruments/capture-binding-check.py
+   1129 .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py
+   2021 total
+
+----------------------------------------------------------------------------------
+1. BASE RUN - the deliverable on the lane as committed (must stay green)
+----------------------------------------------------------------------------------
+$ python3 .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py --root /home/vgpnk/Projects/shokunin/kasegi-shokunin
+  MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+  MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+  MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+  MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+  MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+  MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+  MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+  MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+  MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+  MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+  MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+  MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+  MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+  MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+  MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+  MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+  MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+  records=55 bound=55 unbound=0
+  exit=0
+
+----------------------------------------------------------------------------------
+2. SELFTEST - 31 graded fixture cases, each on its own fresh lane tree
+----------------------------------------------------------------------------------
+$ HYAKU_SCRATCH=$S/st2 python3 .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py --selftest
+  selftest case=capture-path-missing-rejected exit=1 want=1 verdict=pass
+  selftest case=capture-path-escape-rejected exit=1 want=1 verdict=pass
+  selftest case=digest-mismatch-rejected exit=1 want=1 verdict=pass
+  selftest case=digest-invalid-rejected exit=1 want=1 verdict=pass
+  selftest case=digest-unpinned-modern-rejected exit=1 want=1 verdict=pass
+  selftest case=digest-unpinned-legacy-listed exit=0 want=0 verdict=pass
+  selftest case=capture-url-mismatch-rejected exit=1 want=1 verdict=pass
+  selftest case=url-trailing-slash-rejected exit=1 want=1 verdict=pass
+  selftest case=snapshot-digest-mismatch-rejected exit=1 want=1 verdict=pass
+  selftest case=snapshot-digest-matches exit=0 want=0 verdict=pass
+  selftest cases=33 failures=0
+  exit=0 (31 case lines, all verdict=pass; the case lines above are the rule-E cases)
+
+----------------------------------------------------------------------------------
+2b. DIGEST FIELD SEMANTICS - which record fields ARE the capture bytes (measured,
+    so rule E2 pins what it can and documents what it cannot)
+----------------------------------------------------------------------------------
+$ python3 - <<PY   # compare every manifest record digest field with its capture file
+    sha256           carried=55 equal_to_capture_bytes=55 differs= 0
+    snapshot_sha256  carried= 7 equal_to_capture_bytes= 7 differs= 0
+    full_text_sha256 carried= 2 equal_to_capture_bytes= 1 differs= 1
+    raw_sha256       carried=11 equal_to_capture_bytes= 0 differs=11
+    reading: sha256 and snapshot_sha256 are the capture-bytes pin; raw_sha256 pins the
+    pre-normalization fetch (11/11 differ by design); full_text_sha256 pins extracted
+    text (S060's text is not its HTML snapshot bytes)
+
+----------------------------------------------------------------------------------
+3. REPLAY - the round-41 wave-2 mutations over scratch copies of corpus/
+   (/fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/<variant> holds a full copy of the lane corpus; the mutation is one
+   change to round-41's S063 record or to its capture file)
+----------------------------------------------------------------------------------
+$ cat $S/mutate.py    # the mutation harness used below
+  #!/usr/bin/env python3
+  """Apply one F-BIND mutation to a scratch copy of the lane corpus.
+  
+  Usage: mutate.py <variant> <lane-copy-root>
+  
+  The mutated record is always round-41's S063 (the record the round-41 wave-2
+  attack used). Every variant writes exactly one change and prints it.
+  """
+  import json
+  import os
+  import sys
+  
+  VARIANTS = ("a-missing-path", "b-mutated-url", "c-mutated-sha256",
+              "d-url-trailing-slash", "e-capture-url-trailing-slash",
+              "f-mutated-snapshot-sha256")
+  
+  
+  def main(argv):
+      if len(argv) != 3 or argv[1] not in VARIANTS:
+          print(__doc__, file=sys.stderr)
+          return 2
+      variant, root = argv[1], argv[2]
+      snap = os.path.join(root, "corpus", "source-snapshots", "round-41")
+      manifest_path = os.path.join(snap, "manifest.json")
+      with open(manifest_path, encoding="utf-8") as fh:
+          manifest = json.load(fh)
+      record = [item for item in manifest["sources"] if item.get("id") == "S063"][0]
+  
+      if variant == "a-missing-path":
+          target = os.path.join(snap, record["path"])
+          os.remove(target)
+          print("mutation=%s removed=%s" % (variant, target))
+          print("record path still names %r" % record["path"])
+          return 0
+      if variant == "b-mutated-url":
+          before = record["url"]
+          record["url"] = before.replace("/rfc/rfc9116.txt", "/RFC/rfc9116.txt")
+          print("mutation=%s url before=%s after=%s" % (variant, before, record["url"]))
+      elif variant == "c-mutated-sha256":
+          before = record["sha256"]
+          record["sha256"] = "f" * 64 if before != "f" * 64 else "e" * 64
+          print("mutation=%s sha256 before=%s after=%s" % (variant, before, record["sha256"]))
+      elif variant == "d-url-trailing-slash":
+          before = record["url"]
+          record["url"] = before + "/"
+          print("mutation=%s url before=%s after=%s" % (variant, before, record["url"]))
+      elif variant == "e-capture-url-trailing-slash":
+          before = record["capture_url"]
+          record["capture_url"] = before + "/"
+          print("mutation=%s capture_url before=%s after=%s final_url=%s"
+                % (variant, before, record["capture_url"], record["http"]["final_url"]))
+      elif variant == "f-mutated-snapshot-sha256":
+          before = record["snapshot_sha256"]
+          record["snapshot_sha256"] = "f" * 64 if before != "f" * 64 else "e" * 64
+          print("mutation=%s snapshot_sha256 before=%s after=%s (sha256 left untouched)"
+                % (variant, before, record["snapshot_sha256"]))
+      with open(manifest_path, "w", encoding="utf-8") as fh:
+          json.dump(manifest, fh, indent=2, sort_keys=True)
+          fh.write("\n")
+      return 0
+  
+  
+  if __name__ == "__main__":
+      sys.exit(main(sys.argv))
+
+=== variant a-missing-path =================================================================
+$ cp -a corpus /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/a-missing-path/corpus
+$ python3 $S/mutate.py a-missing-path /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/a-missing-path
+  mutation=a-missing-path removed=/fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/a-missing-path/corpus/source-snapshots/round-41/S063.txt
+  record path still names 'S063.txt'
+
+-- committed instrument (corpus/instruments/capture-binding-check.py, the bytes the
+-- round-41 wave-2 attack measured):
+$ python3 corpus/instruments/capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/a-missing-path
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+  records=55 bound=55 unbound=0
+  exit=0
+
+-- patched instrument (the deliverable):
+$ python3 .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/a-missing-path
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+  FAIL rule=capture-missing record=S063 path=S063.txt dir=round-41
+  records=55 bound=54 unbound=1
+  exit=1
+
+=== variant b-mutated-url =================================================================
+$ cp -a corpus /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/b-mutated-url/corpus
+$ python3 $S/mutate.py b-mutated-url /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/b-mutated-url
+  mutation=b-mutated-url url before=https://www.rfc-editor.org/rfc/rfc9116.txt after=https://www.rfc-editor.org/RFC/rfc9116.txt
+
+-- committed instrument (corpus/instruments/capture-binding-check.py, the bytes the
+-- round-41 wave-2 attack measured):
+$ python3 corpus/instruments/capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/b-mutated-url
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+  FAIL rule=url-mismatch record=S063 row=S063 dir=round-41
+  records=55 bound=54 unbound=1
+  exit=1
+
+-- patched instrument (the deliverable):
+$ python3 .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/b-mutated-url
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+  FAIL rule=url-mismatch record=S063 row=S063 dir=round-41
+  records=55 bound=54 unbound=1
+  exit=1
+
+=== variant c-mutated-sha256 =================================================================
+$ cp -a corpus /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/c-mutated-sha256/corpus
+$ python3 $S/mutate.py c-mutated-sha256 /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/c-mutated-sha256
+  mutation=c-mutated-sha256 sha256 before=925512e715be5fae950f3eec88805197d4007875dac825c5603d44d2b71e2faa after=ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+-- committed instrument (corpus/instruments/capture-binding-check.py, the bytes the
+-- round-41 wave-2 attack measured):
+$ python3 corpus/instruments/capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/c-mutated-sha256
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+  records=55 bound=55 unbound=0
+  exit=0
+
+-- patched instrument (the deliverable):
+$ python3 .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/c-mutated-sha256
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+  FAIL rule=digest-mismatch record=S063 sha256=ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff dir=round-41
+  records=55 bound=54 unbound=1
+  exit=1
+
+=== variant d-url-trailing-slash =================================================================
+$ cp -a corpus /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/d-url-trailing-slash/corpus
+$ python3 $S/mutate.py d-url-trailing-slash /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/d-url-trailing-slash
+  mutation=d-url-trailing-slash url before=https://www.rfc-editor.org/rfc/rfc9116.txt after=https://www.rfc-editor.org/rfc/rfc9116.txt/
+
+-- committed instrument (corpus/instruments/capture-binding-check.py, the bytes the
+-- round-41 wave-2 attack measured):
+$ python3 corpus/instruments/capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/d-url-trailing-slash
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+  FAIL rule=url-mismatch record=S063 row=S063 dir=round-41
+  records=55 bound=54 unbound=1
+  exit=1
+
+-- patched instrument (the deliverable):
+$ python3 .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/d-url-trailing-slash
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+  FAIL rule=url-mismatch record=S063 row=S063 dir=round-41
+  records=55 bound=54 unbound=1
+  exit=1
+
+=== variant e-capture-url-trailing-slash =================================================================
+$ cp -a corpus /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/e-capture-url-trailing-slash/corpus
+$ python3 $S/mutate.py e-capture-url-trailing-slash /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/e-capture-url-trailing-slash
+  mutation=e-capture-url-trailing-slash capture_url before=https://www.rfc-editor.org/rfc/rfc9116.txt after=https://www.rfc-editor.org/rfc/rfc9116.txt/ final_url=https://www.rfc-editor.org/rfc/rfc9116.txt
+
+-- committed instrument (corpus/instruments/capture-binding-check.py, the bytes the
+-- round-41 wave-2 attack measured):
+$ python3 corpus/instruments/capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/e-capture-url-trailing-slash
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+  records=55 bound=55 unbound=0
+  exit=0
+
+-- patched instrument (the deliverable):
+$ python3 .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/e-capture-url-trailing-slash
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+  FAIL rule=capture-url-mismatch record=S063 capture_url=https://www.rfc-editor.org/rfc/rfc9116.txt/ final_url=https://www.rfc-editor.org/rfc/rfc9116.txt dir=round-41
+  records=55 bound=54 unbound=1
+  exit=1
+
+=== variant f-mutated-snapshot-sha256 =================================================================
+$ cp -a corpus /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/f-mutated-snapshot-sha256/corpus
+$ python3 $S/mutate.py f-mutated-snapshot-sha256 /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/f-mutated-snapshot-sha256
+  mutation=f-mutated-snapshot-sha256 snapshot_sha256 before=925512e715be5fae950f3eec88805197d4007875dac825c5603d44d2b71e2faa after=ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff (sha256 left untouched)
+
+-- committed instrument (corpus/instruments/capture-binding-check.py, the bytes the
+-- round-41 wave-2 attack measured):
+$ python3 corpus/instruments/capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/f-mutated-snapshot-sha256
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+  records=55 bound=55 unbound=0
+  exit=0
+
+-- patched instrument (the deliverable):
+$ python3 .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r42/ExecJ6Bind/mut/f-mutated-snapshot-sha256
+  AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+  FAIL rule=digest-mismatch field=snapshot_sha256 record=S063 sha256=ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff dir=round-41
+  records=55 bound=54 unbound=1
+  exit=1
+
+----------------------------------------------------------------------------------
+4. NO-HARM PROBE - the committed sibling counter over the patched bytes
+----------------------------------------------------------------------------------
+$ HYAKU_SCRATCH=$S/krc python3 corpus/instruments/kill-rule-check.py --instrument .ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py --scratch $S/krc2
+  KILL-RULE instrument=.ufo/waves/round-42/wave1/ExecJ6Bind.capture-binding-check.py sha256=ebc206d433b334a9f844ef9726fe87fb9cb2a78cf8f41943add605869da00ec7 bytes=52275 lines=1129 floor=19 counter_sha256=c279d952cba54f3f7d502a7a5e056be640146adc5b21a88b1d8dd65bfcdb5d61
+  probe selftest-shape pristine=pass exit=0
+  probe record-without-url pristine=pass exit=1
+  probe per-file-orphan pristine=pass exit=1
+  probe unnamed-record-id pristine=pass exit=1
+  probe stale-orphan-declaration pristine=pass exit=1
+  probe malformed-fetched-utc pristine=pass exit=1
+  probe punctuated-url-cell pristine=pass exit=0
+  probe malformed-orphan-declaration pristine=pass exit=2
+  probe nested-legacy-round pristine=pass exit=0
+  pristine selftest cases=33 case-lines=33 floor=19 floor_met=1
+  mutant=skip-selftest-summary killed=1
+  mutant=accept-record-without-url killed=1
+  mutant=per-file-binding-removal killed=1
+  mutants=3 killed=3 survivors=0 invalid=0
+  survivors=0
+  exit=0
+
+==================================================================================
+end of transcript

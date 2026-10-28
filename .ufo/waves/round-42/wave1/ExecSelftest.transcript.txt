@@ -1,0 +1,71 @@
+=== ExecSelftest transcript — kasegi-shokunin round 42 ===
+=== seat: ExecSelftest (instrument QA; NOT acceptance) ===
+=== lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin ===
+=== base: 5053a7f46de35784cff4b56756906e9014a38276 ===
+=== r41 judged head: 1f7464612ac4c44e39886b82e812610d3c039b13 ===
+=== lane tip at read time: 514ff62d61ee9bc717a20a02a22c65ec0c5124ed ===
+
+######## harness build: scratch git mirror preserving the lane commit hashes ########
+toplevel-asserted: /fast/scratch/hyaku/kasegi-r42/ExecSelftest/mirror
+hash-preserved: 5053a7f46de35784cff4b56756906e9014a38276
+hash-preserved: 1f7464612ac4c44e39886b82e812610d3c039b13
+hash-preserved: 0566bd66e93d429b2df8b6751cf10cbdc391e79b
+MIRROR=/fast/scratch/hyaku/kasegi-r42/ExecSelftest/mirror
+SUITE_TIP=707e1abdbc37e6529d0a585083fcdb15db94293b
+707e1ab mirror: r42 tip + suite
+
+MIRROR_TIP=707e1abdbc37e6529d0a585083fcdb15db94293b
+
+######## harness proof: the r41 suite run end-to-end through the same driver ########
+# (the r41 suite is the r42 suite's proven ancestor; this shows the export
+# harness, the --selftest machinery and the payload table all work here)
+$ bash corpus/instruments/r41-closure.sh --export-ref <mirror-tip> --lane <mirror> --work <scratch>/work --scratch-root <scratch>
+### payload table (work/payloads.tsv), verbatim:
+I1	records=3,lines=14,graded=3,evidence=3/3,missing=0	1
+I3	exact=2/2,substring=2/2,records=3,tally=3/3,mangled=0	1
+I4	records=3,fenced=0,eof=closed,erratum=1,gate=1,tally=1,census=1	1
+I5	declared=153,valid=149,tail=149,malformed=0,pure=1,paths=1,canon=1,nul=0,diff-read=ok,file=present	0
+I6	strays=6,read=fail,scanned=6	0
+I7	mentions=1,rows=1,well-formed=1,table=1,cells=10,broken=0,r40-table=1	1
+I10	suite=1,base=3/12,base-exit=1,r40=3/12,r40-exit=1,probe=3/3	1
+I11	escapes=8,red=8,F1=red F2=red F3=red F4=red F5=red F6=red F7=red F8=red,pending=0,read=ok	1
+I12	declared=153,valid=149,tail=149,pure=1,skill-del=0,province-del=0,density=1,deleted=0,census=1,ref-not-found=1,markers=0,neg-red=1	0
+I8	control=missed/missed,payload-contradicting=rejected,future-dated=rejected,foreign-ref=rejected,nonexistent-ref=rejected,summary-only=rejected,tampered-payload-line=rejected	1
+I9	cases=12,isolated=12	1
+
+######## instrument-level mutation evidence (F-BIND, F-FLIP) ########
+=== instrument-level mutation evidence (F-BIND, F-FLIP) ===
+utc=2026-10-28T11:44:15Z
+
+######## F-BIND: capture-binding-check.py, missing capture file ########
+# the r41 wave-2 MutBindingExistence.md defeat: a manifest record whose
+# capture path is ABSENT (path kept, file deleted) must be rejected.
+$ python3 inst.py --root <scratch>/bt   # PRISTINE
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+records=55 bound=55 unbound=0
+exit=0
+$ rm corpus/source-snapshots/round-41/S063.txt   # MUTANT: capture file deleted, record path kept
+$ python3 inst.py --root <scratch>/bt   # MUTANT
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+records=55 bound=55 unbound=0
+exit=0
+
+######## F-BIND: url case-flip (a shape the instrument already rejects) ########
+$ python3 inst.py --root <scratch>/bt2   # MUTANT: url case-flipped
+AUDIT records=55 with_url=55 with_fetched_utc=17 with_archival=38 snapshot_dirs=17 manifest_dirs=17 missing_manifest=0 multi_row_url=3 orphans=1 orphan=S040-live.txt
+FAIL rule=url-mismatch record=S063 row=S063 dir=round-41
+records=55 bound=54 unbound=1
+exit=1
+
+######## F-FLIP: frontier-recheck-count.py, frontier row status flip ########
+$ python3 frontier-recheck-count.py --root <scratch>/ft   # PRISTINE
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+entries=27 pass=27 exit=0
+exit=0
+flipped F01: admitted -> explored
+$ python3 frontier-recheck-count.py --root <scratch>/ft   # MUTANT: one row flipped
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+entries=26 pass=26 exit=0
+exit=0

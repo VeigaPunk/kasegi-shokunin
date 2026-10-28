@@ -1,0 +1,139 @@
+=== ExecJ4Decl transcript — round 42, family F-DECL (J4)
+date-utc=2026-10-28T12:12:14Z
+lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+HEAD=514ff62d61ee9bc717a20a02a22c65ec0c5124ed
+BASE=5053a7f46de35784cff4b56756906e9014a38276
+R41-JUDGED-HEAD=1f7464612ac4c44e39886b82e812610d3c039b13
+limb=/fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/ExecJ4Decl.sh lines=806 sha256=ff5b811f1972a1b170e35114349c9bcbb4589d4cba32f9eddf19502236a0c98b
+
+=== 1. the limb sources cleanly and defines the documented entry points
+$ source '/fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/ExecJ4Decl.sh' && declare -F check_j4 j4_line j4_read j4_regen j4_pin | sed 's/^/  defined: /'
+  defined: check_j4
+  defined: j4_line
+  defined: j4_read
+  defined: j4_regen
+  defined: j4_pin
+[exit=0]
+
+$ source '/fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/ExecJ4Decl.sh' && printf 'J4_ROUND=%s DECL=%s SUITE=%s RECEIPT=%s BASE=%s\n' "$J4_ROUND" "$J4_DECL_REL" "$J4_SUITE_REL" "$J4_RECEIPT_REL" "$J4_BASE_DEFAULT"
+J4_ROUND=42 DECL=.ufo/waves/round-42/declared-blocks.txt SUITE=corpus/instruments/r42-closure.sh RECEIPT=.ufo/waves/round-42/final-gates/all-gates.txt BASE=5053a7f46de35784cff4b56756906e9014a38276
+[exit=0]
+
+=== 2. regenerate the declaration file for the current judged tree
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/ExecJ4Decl.sh --regen /home/vgpnk/Projects/shokunin/kasegi-shokunin 5053a7f46de35784cff4b56756906e9014a38276 514ff62d61ee9bc717a20a02a22c65ec0c5124ed /fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/work/declared-blocks.txt
+[exit=0]
+
+$ wc -l < declared-blocks.txt; sha256sum declared-blocks.txt
+324
+dd73e00e41e187ed4a1ecb6906008b64e9603c3692b1035b4318e3ee37ab2d65  /fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/work/declared-blocks.txt
+
+$ head -6 declared-blocks.txt / grep -c " dyn unpinned$"
+.ufo/waves/round-42/build-wave1-spec.py 206 c96caf30208cdf9d8d9947026f58ce0d5989160b4e6f42fe19fff2202b339f91
+.ufo/waves/round-42/c1-controls/do-nothing.txt 18 7b8efa5a48e65f717221219a583f1825218b70b930422188d97592909afa193d
+.ufo/waves/round-42/c2-controls/before.txt 10 242356553cfe6d6bf0e84041caa81d5b8ed85448a2ddac8eb8ce08527ce85ecf
+.ufo/waves/round-42/census-before.txt 4 88a3c813135f4c7260c65918ff51981e668ca31c50c83cec0995db11f170747a
+.ufo/waves/round-42/claims-erratum-1.md 50 d3e5e1e2a58834afcb543efdaa6f8a176dd3ce866003f2960e1aa6c4a5b37403
+.ufo/waves/round-42/claims-erratum-2.md 35 51741a32ad26aa5d2d4253959f56d46f923388658f5d574fde21898741b68e10
+dyn-unpinned records: 3
+pinned records: 321
+
+=== 3. export the judged tree (export mode is the only run mode)
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive 514ff62d61ee | tar -xf - -C /fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/work/export
+exported files=8228
+[landed the regenerated declaration file at .ufo/waves/round-42/declared-blocks.txt]
+
+=== 4. GREEN over the judged export
+$ bash ExecJ4Decl.sh --check /fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/work/export 514ff62d61ee
+declared=324,valid=324,pinned=321,dyn=3,malformed=0,paths=1,canon=1,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=ok,file=present
+[exit=0]
+
+=== 5. REJECT (a) T7: a declared path that is a SYMLINK to bytes outside the export
+    (the historical round-40 wave-2 T7 shape: the DIGEST clause passes, so only
+     containment can catch it)
+$ printf "pwn 1 %s\n" 557c6d0a847cf4a36d145fa4fc99a05fc87d49bf522ae6cc0628e3ffe7dd2a9d >> declared-blocks.txt; ln -s /fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/work/outside-fixture.md pwn
+tail -n 1 of the symlinked target = 557c6d0a847cf4a36d145fa4fc99a05fc87d49bf522ae6cc0628e3ffe7dd2a9d  (== the declared digest: the OLD digest clause passes)
+declared=325,valid=324,pinned=321,dyn=3,malformed=0,paths=0,canon=0,symlink=1,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=ok,file=present
+[exit=1]
+
+=== 6. REJECT (a2) an already-declared path replaced by a symlink to an outside file
+$ ln -s /etc/hostname /fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/work/t7b/corpus/README.md
+declared=324,valid=323,pinned=320,dyn=3,malformed=0,paths=0,canon=0,symlink=1,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=ok,file=present
+[exit=1]
+
+=== 7. REJECT (b) undeclared-path read probe
+probe path (exists in the export, unchanged since base, NOT declared): considerthese/2026-10-26.md
+  6372 bytes /fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/work/undecl/considerthese/2026-10-26.md
+$ source ExecJ4Decl.sh; j4_read <export> considerthese/2026-10-26.md
+  stderr: j4_read: undeclared path considerthese/2026-10-26.md
+  [exit=3]
+$ printf "considerthese/2026-10-26.md\n" > read-ledger.txt  (the ledger records the read)
+declared=324,valid=324,pinned=321,dyn=3,malformed=0,paths=1,canon=1,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=1,reads-undeclared=1,literals=0,literal-undeclared=0,ledger=ok,file=present
+[exit=1]
+
+=== 8. REJECT (c) a ".."-escaped declaration
+$ printf "../outside-fixture.md 1 000..\n" >> declared-blocks.txt
+declared=325,valid=324,pinned=321,dyn=3,malformed=0,paths=0,canon=0,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=ok,file=present
+[exit=1]
+
+=== 9. REJECT (c2) an ABSOLUTE-path declaration
+$ printf "/etc/hostname 1 <sha of /etc/hostname>\n" >> declared-blocks.txt
+declared=325,valid=324,pinned=321,dyn=3,malformed=0,paths=0,canon=1,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=ok,file=present
+[exit=1]
+
+=== 10. REJECT (d) changed-path coverage — the CritDeclarationCoverage closure
+     (one changed path removed from the declaration set)
+$ grep -v "^.ufo/waves/round-42/census-before.txt " declared-blocks.txt > (mutated)
+changed paths base..HEAD: 12
+declared=323,valid=323,pinned=320,dyn=3,malformed=0,paths=1,canon=1,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=1,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=ok,file=present
+[exit=1]
+
+=== 11. REJECT (e) a tampered pin — the digest clause bites
+$ printf "corpus/README.md 1 000..\n" >> declared-blocks.txt
+declared=325,valid=324,pinned=321,dyn=3,malformed=0,paths=1,canon=1,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=ok,file=present
+[exit=1]
+
+=== 12. NON-VACUITY: an empty declaration file is red
+$ : > declared-blocks.txt
+declared=0,valid=0,pinned=0,dyn=0,malformed=0,paths=1,canon=1,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=12,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=ok,file=present
+[exit=1]
+
+=== 13. NEGATIVE CONTROLS: base and the r41 judged head have no round-42 declaration
+$ ls <base export>/.ufo/waves/round-42/declared-blocks.txt
+  ls: cannot access '/fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/work/base/.ufo/waves/round-42/declared-blocks.txt': No such file or directory
+declared=0,valid=0,pinned=0,dyn=0,malformed=0,paths=0,canon=0,symlink=0,nul=0,diff-read=fail,changed=0,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=absent,file=missing
+[exit=1]
+
+$ ls <r41 judged head export>/.ufo/waves/round-42/declared-blocks.txt
+  ls: cannot access '/fast/scratch/hyaku/kasegi-r42/ExecJ4Decl/work/r41/.ufo/waves/round-42/declared-blocks.txt': No such file or directory
+declared=0,valid=0,pinned=0,dyn=0,malformed=0,paths=0,canon=0,symlink=0,nul=0,diff-read=fail,changed=0,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=absent,file=missing
+[exit=1]
+
+=== 14. Y TRANSITION: the declaration generated at J still holds after the receipt
+     (Y = J + the receipt; the receipt is declared `dyn unpinned`)
+$ mkdir -p <export>/.ufo/waves/round-42/final-gates; printf "all-gates v1\n" > all-gates.txt
+declared=324,valid=324,pinned=321,dyn=3,malformed=0,paths=1,canon=1,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=ok,file=present
+[exit=0]
+
+=== 15. READ COVERAGE: a suite literal that is UNDECLARED is rejected
+     (ConnWave2Seed item 92 / DECL-READ-UNDECLARED: an unchanged, undeclared
+      path a check reads must not slip through the changed-path proxy)
+$ cat > <export>/corpus/instruments/r42-closure.sh  (a suite naming considerthese/2026-10-26.md)
+  the path is unchanged since base (diff rows=0) and NOT declared
+declared=324,valid=324,pinned=321,dyn=3,malformed=0,paths=1,canon=1,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=2,literal-undeclared=1,ledger=ok,file=present
+[exit=1]
+
+$ printf "considerthese/2026-10-26.md <lines> <sha256>\n" >> declared-blocks.txt  (declare it)
+declared=325,valid=325,pinned=322,dyn=3,malformed=0,paths=1,canon=1,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=2,literal-undeclared=0,ledger=ok,file=present
+[exit=0]
+
+=== 16. the suite-facing run line (J4 payload=... closed=0|1)
+$ source ExecJ4Decl.sh; j4_line <judged export> <ref>
+  J4 payload=declared=324,valid=324,pinned=321,dyn=3,malformed=0,paths=1,canon=1,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=ok,file=present closed=1
+$ source ExecJ4Decl.sh; j4_line <tampered export> <ref>
+  J4 payload=declared=325,valid=324,pinned=321,dyn=3,malformed=0,paths=1,canon=1,symlink=0,nul=0,diff-read=ok,changed=12,changed-undeclared=0,changed-symlink=0,reads=0,reads-undeclared=0,literals=0,literal-undeclared=0,ledger=ok,file=present closed=0
+
+=== 17. the lane was never written to
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain | wc -l
+128
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain | grep -c "ExecJ4Decl"
+0

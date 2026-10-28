@@ -1,0 +1,156 @@
+Escape-class sweep — round-39/wave2 + round-40/wave2 + round-41/wave2 receipts
+vs the round-42 repair map (F-EVID F-TOKEN F-TABLE F-DECL F-SCAN F-BIND F-FLIP
++ J8 receipt integrity / J9 negative controls / J10 selftest isolation /
+J11 correction uniqueness / J12 no-deletion+density / J13 scratch quiescence)
+
+CLASSES THAT RECUR (covered by a named r42 family or J8-J13)
+EC-01 substring/value-acceptance: a check greps a token without boundaries, so
+  a wrong value containing the right substring greens. Recurs r39 (G2 shape;
+  M38-09 `^closed=8/8` prefix), r40 (D1 `closed=7/80`+`failures=10`; H8
+  count-relative; H3 mention-only row), r41 (I3 `closed=10/100` mutant
+  `mangled-value-token rejected=0`). COVERS: J2 F-TOKEN (+J1 where the value
+  is correction evidence).
+EC-02 fence-blindness: a record/row inside a ``` fence (or under a broken
+  fence grammar) is counted as a live record. Recurs r39 (G1 b/c/e probes),
+  r40 (T3/T4: H2 4-backtick ok, H3 fenced pseudo-row green). COVERS: J1
+  F-EVID (r41 I4 fence-aware scanner repair). NOTE: verify the r42 replay
+  limb includes the QUALITY.md criterion-row-in-fence variant (r40 T4), not
+  only correction-block fences.
+EC-03 count-relative forgery: the clause counts lines/mutations/conditions
+  instead of re-deriving values (R1/G2 class; H5/H7 summary-count reliance).
+  Recurs r39 (G4, M38-10/-11/-12/-13 dropped conjuncts), r40 (CritKillRule
+  note on count-relative gates; MutH6H10 D2 unkillable H8 predicate), r41
+  (C1 kill-rule wording). COVERS: J8 (payload values re-derived, not trusted)
+  + J9 (negative controls re-run).
+EC-04 environment-dependent checks: the verdict flips on invocation geometry
+  (TMPDIR unset -> /tmp outside family root red; work inside vs outside the
+  container), host clock, cwd. Recurs r40 (CritKillRule F2; CritCounterSoup
+  R8/R9/R10), r41 (I6 green only under contained work; MutSuite positive
+  read=fail on absent seat scratch root). COVERS: J5 F-SCAN + J13.
+  BOUNDARY: r41 CritCommitTimestamp shows not-future accepts <=120s
+  committer-date skew — a wall-clock boundary, not a family defect.
+EC-05 symlink escapes: a committed symlink resolves outside the export so a
+  limb reads uncommitted bytes. Recurs r40 (D5/T7 declared `pwn` symlink;
+  F1r relative `..` quality symlink; suite/receipt/corpus/scorecard/skill
+  symlink probes in RevC1Sandbox). COVERS: J4 F-DECL (canonicalize under
+  export root) + J5 F-SCAN (dangling/family symlinks) + J13.
+EC-06 missing-transcript quotes: a tally is asserted that no committed
+  transcript backs. Recurs r39 (CritC1Kill verdict 3: zero-detail selftest
+  shape accepted; landed receipt itself had 0 detail lines), r40 (verifier
+  D2: `cases=10 failures=0` quoted with no committed transcript). COVERS:
+  J8 (teed transcript; payload re-derived; selftest block graded).
+EC-07 shape-only grading: case lines well-formed but detail-free pass.
+  Recurs r39 (forged reports battery; MutSelftestGrading), r40 (six forged
+  report shapes; variant-d summary-only). COVERS: J8 + J10 (thirteen graded
+  `case=J<n> ... verdict=pass` lines; summary-only does not satisfy).
+EC-08 union-aggregation hides the defective record: per-block requirement
+  graded on a cross-record union. r41 (I1 `evidence=3/3` green after one
+  correction's evidence removed; `evidence-not-named rejected=0`). COVERS:
+  J1 F-EVID (per-correction evidence).
+EC-09 declaration completeness gap: declared-blocks validates listed paths
+  but never compares the declaration set to the full BASE..REF changed set.
+  r41 (CritDeclarationCoverage; r40 D5 residue). COVERS: J4 F-DECL.
+EC-10 name-family normalization evasion: case/separator/dot variants of the
+  scratch family name go unmatched (`Kasegi-r40`, `kasegi_r40`, `.kasegi`,
+  U+2011 hyphen). Recurs r40 (D6/T14; CritKillRule F3/F4), r41 I6 mutants
+  cover them only in-suite. COVERS: J5 F-SCAN.
+EC-11 fail-open on missing/unreadable scan root: `[ -d root ]` skipped scan
+  prints green; unreadable entry ignored. Recurs r40 (F6; LabExportClean
+  M2/M5/M9/M10), r41 (I6 `unreadable-scratch-root` mutant). COVERS: J5
+  F-SCAN + J13.
+EC-12 literal-marker single-spelling: a pending/closed marker enforced as
+  one byte spelling; look-alike respellings pass. r40 (CritKillRule F7;
+  `<pending`, `Pending`, U+2329). COVERS: J5 F-SCAN (r41 I11 folded the
+  pending-marker probes into the F1-F8 replay family).
+EC-13 foreign-ref / ancestor receipt games: receipt names a resolvable but
+  wrong ref (r39 head, nonexistent hash); the Y delta is not receipt-only.
+  Recurs r40 (CritReceiptForge c1/c2), r41 (MutAncestorGuard; MutExportRefReemit
+  source-level). COVERS: J8 + J9 (distinct ref-not-found red; ancestor +
+  receipt-only diff).
+EC-14 frontier status-flip blind spot: status cell flipped admitted->explored
+  shrinks the harness denominator instead of failing (26/26 exit 0 without a
+  FAIL/PASS F-line). r41 MutC2Chain A; r39 MutFrontierRow M3 same shape.
+  COVERS: J7 F-FLIP.
+EC-15 binding granularity: manifest record path/URL case/trailing-slash or
+  basename variants stay `bound` while the capture binding intends exact
+  identity. r41 MutBindingExistence (3 survivors), MutC2Row two-URL cell.
+  COVERS: J6 F-BIND (missing-path/URL variants replay).
+EC-16 isolated grading / selftest-attribution: mutants "killed" only by the
+  suite-sha256 self-digest tripwire, invisible once the receipt is
+  regenerated; or baseline red makes kills unattributable. Recurs r39
+  (MutSuiteLimbs M0; CritMutantAssault 18/22 tripwire-only), r41 (MutSuite
+  inconclusive; I2 `cmp=0`). COVERS: J10 (graded selftest isolation).
+EC-17 duplicated record acceptance: the same Correction block lands twice
+  and every count stays green. r41 D-r41-1 (SCORECARD lines 1602-1605 ==
+  1607-1610). COVERS: J11.
+EC-18 corpus-deletion blindness: a tracked deletion inside corpus paths is
+  not fenced by the suite. Recurs r40 (H10 limb; r39 head `deleted=1`), r41
+  I12. COVERS: J12 (+ density.py byte-identical).
+EC-19 scratch quiescence / stale-work reuse: leftover family dirs, pre-seeded
+  work dirs, or a suite that reuses stale export bytes. Recurs r40
+  (CritCounterSoup R1/R2; RevC1Sandbox stale-work-*), r41 (RevScanOwnership
+  contaminated-root run). COVERS: J13 + J5.
+
+CLASSES OBSERVED IN THE SWEEP BUT NOT COVERED BY J1-J13 (wave-2 ammunition;
+outside the seven kill-rule families, so routed-defect class per the freeze)
+X-01 lane-bound `cd` inside `recheck:` lines: every knowledge entry's recheck
+  command begins `cd /home/vgpnk/.../kasegi-shokunin &&`, so a recheck
+  executed from a clean export validates the lane checkout, not the exported
+  bytes; a mutated export's recheck still greens. Recurs r39
+  (MutFrontierRow C-ESC: corrupted mirror capture PASSes with cd prefix
+  intact), r41 (MutExportRecheck: exact entry command greens from export cwd
+  only because of the leading `cd`). NOT in J1-J13. Route: corpus-side gate
+  or a C2-side check; live against the claim's export-only posture.
+X-02 entry-content drift under structure-only gates: quote truncation,
+  number change, falsifiable-rule deletion, credential insertion inside
+  knowledge entries survive source-recheck/recheck-audit/frontier-harness on
+  all eight round-40 entries (40/41 mutants survived; only a dropped
+  `source:` line on the frontier entry died). Recurs r40 (MutEntries), r39
+  (CritC2Kill b3: header+recheck+manifest all swapped to S054 while entry
+  body keeps S057 quotes -> PASS; b4: row sources cell read by no
+  instrument). NOT in J1-J13 (J6 binds record->row/capture, not
+  entry-body->quote-set). Wave-2 ammunition against C2's gates.
+X-03 registry-row orphan acceptance: an unreferenced mined row with no
+  capture+manifest+entry stays `bound=... unbound=0` and census-clean —
+  binding counts records, not rows. r41 MutAuditUnexpected (S999 survived;
+  knowledge orphan killed). r42 C2's kill clause names the O4 "junk twin"
+  only in the mined-with-capture direction; the orphaned row is the inverse
+  gap. NOT in J1-J13.
+X-04 registry-cell drift below E/W granularity: tier A->C (W01 only),
+  kind docs->spec (silent), status mined->queued (silent histogram shift),
+  second URL in the source cell (first-URL normalization only), malformed
+  rows exempt from used-by check. r39 MutC2Row (3/6 silent + 1 W01-only).
+  C2's kill clause fires only on NEW W/E codes. NOT in J1-J13.
+X-05 dispatch/results pairing and seat-identity binding: duplicate `id` with
+  a `name` field counted distinct, one results file vouching for two
+  dispatches, `wave` field as path traversal to read results outside the
+  export. r39 CritG4Exploit (4/8 named vectors killed; 1 KILL + 3 adjacent
+  escapes). Surface retired by the r40+ suite redesign (no G4-equivalent
+  limb in J1-J13); flagged as historical — wave-2 should confirm no
+  wave-accounting limb sneaks back in unbound.
+X-06 quote-evasion classes on the <=25-word Gate/capture rule: hyphen-joining
+  (42 real words -> 21 tokens) and location-token inside a URL (`:7` in a
+  host path). r40 RevC1Counters D3/D4. J6 binds presence, not counting
+  method; the C2 kill rule names "a <=25-word located quote" — verify the
+  screened-reject check uses a word counter that is hyphen/URL-safe. Partial.
+X-07 scanner-implementation duplication drift: r41 owns two copies of the
+  H6/I6 scan (in-suite `scan_scratch` lines 630-667 and standalone I6
+  module); a fix to one silently diverges from the other. r41
+  RevScanOwnership (drift risk, no surviving escape shown). NOT a named
+  family; verify the r42 F-SCAN repair keeps a single implementation.
+X-08 committed-defeat artifacts never replayed: the rounds-39/40/41 closures
+  all failed on evidence committed after the receipt that showed an
+  in-family check still green; the fix class is "replay every defeat
+  artifact at current suite bytes". This meta-class is the C1 design intent
+  (every J1-J7 carries a REPLAY limb) — listed here so wave-2 treats any
+  skipped/absent limb as kill-rule ammunition (the kill rule names it).
+
+One-round-only classes (observed, not recurring — no r42 flag needed unless a
+second instance lands): git-status blindness via skip-worktree/assume-
+unchanged/ignored files (r40 F8 — covered spirit-wise by J12/J13 filing-time
+gates but not by an in-suite limb; nearest relative is EC-04), wall-clock
+timestamp window (r41 CritCommitTimestamp — boundary behavior, not a defect),
+unresolved `--export-ref` distinct-red (single round, J9-bound), do-nothing
+control reachability (r41 CritI12Necessity — vacuous sub-predicate bound by
+the negative-control limb), outside-root stray created after the scan
+(r41 MutScratchTiming — inherent post-scan invisibility, boundary).

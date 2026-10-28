@@ -1,0 +1,94 @@
+# ScoutDefeatsR40 catalog — round-40/wave2 + round-39/wave2 defeat inventory → r41/r42 check map
+# Lane: kasegi-shokunin. Base refs: r40 suite J=3074c76 (sha bdbd18a3), r39 Y=5006097 (r39 suite 2856a210).
+# Columns: ID | src file | attacked limb | status | mutation class | expected rejector (r41 I1-I12, r42 J1-J13/F-*)
+# status: DEFEATED (limb green while defect present) | CAUGHT (limb red, no defeat) | SURVIVOR (selftest fails to kill mutant)
+# r42 families (claims.json C1): F-EVID=J1 F-TOKEN=J2 F-TABLE=J3 F-DECL=J4 F-SCAN=J5 F-BIND=J6 F-FLIP=J7
+#   J8=receipt integrity(F-RCPT) J9=neg-controls J10=selftest isolation J11=Correction uniqueness(F-CORR) J12=no-harm/density J13=quiescence
+# UNMAPPED = no committed r41 limb or claimed r42 J-check replays or rejects the class. PARTIAL = covered limb exists, subclass residual open.
+
+== A. round-40/wave2/RevC1Counters.defeats.txt (T1-T14; T12 never existed) ==
+T1   | RevC1Counters.defeats.txt:7-8    | r40 H2 corrections   | CAUGHT   | positive control (honest values)                    | r41 I1 | r42 J1/F-EVID | control
+T2   | RevC1Counters.defeats.txt:9-10   | r40 H2 corrections   | DEFEATED | substring value match (closed=7/80, failures=10)    | r41 I3 | r42 J2/F-TOKEN | MAPPED; named in r41 I3 + r41 Correction lines
+T3   | RevC1Counters.defeats.txt:11-12  | r40 H2 fences        | CAUGHT   | CommonMark 4-backtick fence (err-red, not a defeat) | r41 I4 fence_awk >=3-run | r42 J1 adjacency | MAPPED control
+T4   | RevC1Counters.defeats.txt:13-14  | r40 H3 criterion row | DEFEATED | fenced pseudo-table row counted (no fence awareness)| r41 I3/I4 fence_match | r42 J1/F-EVID, J3 | MAPPED; named in r41 Correction lines
+T5   | RevC1Counters.defeats.txt:15-16  | r40 H4 quote/location| DEFEATED | URL-colon location-token false positive             | none   | none            | UNMAPPED — H4 limb dropped from r41 suite; no quote/location conjunct checker committed (source-recheck grades manifest pins, not Gate conjuncts); C2 kill-rule text only
+T6   | RevC1Counters.defeats.txt:17-19  | r40 H4 word cap      | DEFEATED | hyphen-joined tokens evade 25-word cap              | none   | none            | UNMAPPED — same dropped-H4 root cause as T5
+T7   | RevC1Counters.defeats.txt:22-25  | r40 H9 declared paths| DEFEATED | declared symlink reads outside export root          | r41 I5/I12 canon clause | r42 J4/F-DECL | MAPPED; named in r41 I5 comment + r42 J4 replay
+T8   | RevC1Counters.defeats.txt:26-28  | r40 H7 tree binding  | CAUGHT   | patched SOURCES.md on Y (post-receipt tree tamper)  | r41 I2 byte rebuild | r42 J8 | MAPPED control
+T9   | RevC1Counters.defeats.txt:29-31  | r40 H7 tree binding  | CAUGHT   | patched SCORECARD.md on Y                           | r41 I2 byte rebuild | r42 J8 | MAPPED control
+T10  | RevC1Counters.defeats.txt:34-38  | r40 H8 neg-controls  | CAUGHT   | forged-env receipt (R40_NEG_BASE=r39head): reds at produce and re-run (value binding held, receipt never green) | r41 I10 | r42 J9 | MAPPED control
+T11  | RevC1Counters.defeats.txt:39-45  | r40 H6 provenance    | DEFEATED | lying --scratch-root; audited root leaves no fingerprint in receipt — unfalsifiable post-hoc | r41 I6 (scan only) | r42 J5+J13 | PARTIAL — root-fingerprint fix never landed; r42 J13 binds scan "to the exported ref by name", post-hoc binding subclass still unreplayed
+T13  | RevC1Counters.defeats.txt:46-49  | r40 H1 registry row  | DEFEATED | mention-only row satisfies registry regex           | r41 I7 | r42 J3/F-TABLE | MAPPED; named in r41 I7 + r41 Correction lines
+T14  | RevC1Counters.defeats.txt:51-54  | r40 H6 name family   | DEFEATED | case + underscore separators evade byte-literal glob| r41 I6 | r42 J5/F-SCAN | MAPPED; named in r41 I6 + Correction lines
+
+== B. round-40/wave2/CritKillRule.md (F1-F8; suite-escape states vs committed H6 limb + kill clauses) ==
+F1 | CritKillRule.md:41-56   | r40 H6 scan depth      | DEFEATED | nested leftover under top-level container (maxdepth-1 scan) | r41 I11 probe_f1 + I6 recursive | r42 J5/F-SCAN | MAPPED
+F2 | CritKillRule.md:58-78   | r40 H6 scan geometry   | DEFEATED | work-inside-container hides all leftovers; work-outside fires on container itself (invocation-geometry predicate) | r41 I11 probe_f2 + I6 clean-chain | r42 J5/F-SCAN (+J13) | MAPPED
+F3 | CritKillRule.md:80-92   | r40 H6 name match      | DEFEATED | dotfile family entry invisible (leading dot not stripped)   | r41 I11 probe_f3 + I6 dot-inclusive | r42 J5/F-SCAN | MAPPED
+F4 | CritKillRule.md:94-105  | r40 H6 name match      | DEFEATED | case/Unicode-separator variants (Kasegi-r40, U+2011, _)     | r41 I11 probe_f4 + I6 normalization | r42 J5/F-SCAN | MAPPED
+F5 | CritKillRule.md:107-125 | r40 H6 tolerance chain | DEFEATED | family symlink→ancestor of --work tolerated via raw path prefix; no clean-chain check | r41 I11 probe_f5 | r42 J5/F-SCAN | MAPPED
+F6 | CritKillRule.md:127-140 | r40 H6 fail-open guard | DEFEATED | nonexistent --scratch-root skips scan entirely (strays=0)   | r41 I11 probe_f6 (read=fail) | r42 J5/F-SCAN | MAPPED
+F7 | CritKillRule.md:142-150 | kill-rule grep clause  | DEFEATED | pending-marker respellings (⟨ pending, 〈, ASCII <, case) evade literal grep '⟨pending' | r41 I11 probe_f7 via pending_scan class | none explicit | PARTIAL/UNMAPPED-residual — r42 kill_rule carries no pending clause; J13 text names only uncommitted+scratch leftovers; whether r42 suite inherits pending_scan is a J13-spec gap
+F8 | CritKillRule.md:152-172 | filing clean-tree gate | DEFEATED | skip-worktree/assume-unchanged + gitignored untracked → git status porcelain clean while changed | r41 I11 probe_f8 via worktree_state flags/dirty/ignored | r42 J13 (if inherits) | PARTIAL — verify r42 J13 keeps ls-files -v + --ignored limbs, not plain porcelain
+
+== C. round-40/wave2/CritKillRule.h6-escapes.sh (committed defeat artifact; verbatim r40 check_h6 limb + 10 scenarios) ==
+fixture | h6-escapes.sh:15-50 | r40 check_h6 limb | DEFEATED | byte-exact limb reproducer: m1 stray-dir=red, m2 dotfile=green, m3 uppercase=green, m4 U+2011=green, m5 nested=green, m6 ancestor-symlink=green, m7 work-symlink=green(tolerated), m8 dangling=red, m9 unreadable=red, m10 regular-file=red | r41 I11 probes f1-f6 + I6 | r42 J5/F-SCAN replay limb | MAPPED — J5 claims replay of "MutScratchTiming probe" (r41-era artifact); this r40 reproducer covers identical states via i11_probe_f1-f6; r42 replay MUST name this file or the I6-class limbs it drives
+sha256 | CritKillRule.md:232 | — | — | 2f154c7de7547f633bbb15d18cac94f47429ab8ef052b2febcc49f753080ec44 (recorded at filing)
+
+== D. round-40/wave2/MutH6H10.md ==
+D2 | MutH6H10.md:132-156 | r40 H8 acceptance floor | DEFEATED | negative-control predicate unkillable: leaf cap floors any nested run at 7/10 exit=1 → pristine H8 accepts a byte-identical-to-green base (M-H8a -lt→-le equivalent) | r41 I10 (acceptance demands tree-dependent reds I1/I2/I7) | r42 J9 | MAPPED; named in r41 I10 header + Correction lines
+D1 | MutH6H10.md:102-130 | r40 H7 cmp clause      | DEFEATED | selftest-coverage survivor: cmp -s removal leaves reordered-receipt accepted; no fixture isolates the byte-compare | r41 I9 isolation + I2 cmp rebuild | r42 J10 (+J8) | MAPPED — committed fixture h7-reorder-receipt.txt is the replay target
+F1 | MutH6H10.md:53-71   | r40 selftest window    | DEFEATED | spec/window gap: selftest --export-ref unexecutable at lane tip (receipt untracked → export lacks it → H7-positive red); green selftest measured only on scratch fixture-Y | r41 seeding-at-J design (I2 contract) | r42 claims judged_head_rule | MAPPED — r41 seeds canonical receipt inside export so J-run is the fixed point
+M-H6a/b | MutH6H10.md:90-91 | r40 H6 limbs        | KILLED   | wrong-root + prefix-dropped mutations die on selftest fixtures | r41 I6/I11 | r42 J5 | MAPPED control
+M-H9a  | MutH6H10.md:94   | r40 H9 tail equality | KILLED   | dropped whole-tail added-line check flipped by declared-short-of-added fixture | r41 I5/I12 | r42 J4 | MAPPED control
+M-H10a/b | MutH6H10.md:95-96 | r40 H10 guards   | KILLED   | deleted-path + append-only guards flipped by selftest fixtures | r41 I12 | r42 J12 | MAPPED control
+
+== E. round-40/wave2/MutH1H5.md (mutant sweep H1-H5) ==
+H4-survivor | MutH1H5.md:109,118-146 | r40 H4 quote/date conjuncts | SURVIVOR | selftest fixture-set gap: dropping `date` conjunct changes nothing observable (fixtures die on url/oversize limbs); probe fixture h4-nodate.txt reds pristine, greens mutant | none | none | UNMAPPED — r41 dropped the H4 limb entirely; the conjunct class (located-quote + access-date) has no committed checker; replay of h4-nodate.txt impossible against r41/r42 suites
+M-H1 | MutH1H5.md:96,106 | r40 H1 registry row    | KILLED   | suite-name ERE rename → registry=0 detected              | r41 I7 | r42 J3/F-TABLE | MAPPED control
+M-H2 | MutH1H5.md:97,107 | r40 H2 value naming    | KILLED   | unconditional named++ → values-not-named fixture rejected=0 | r41 I1/I3 | r42 J1+F-TOKEN | MAPPED control
+M-H3 | MutH1H5.md:98,108 | r40 H3 M39-2 token    | KILLED   | empty -F pattern counts every line                        | r41 fence/table row limbs | r42 J3 | MAPPED control
+M-H5 | MutH1H5.md:100,110| r40 H5/H7 payload_matches | KILLED | presence-only count → forged-payload=accepted detected | r41 I8 independent flags | r42 J8 | MAPPED control (obs.1/2: count-relative + shared payload_matches fixed by I8 per-forgery flags)
+
+== F. round-39/wave2/CritG2Exploit.md (receipt-grading limb G2) ==
+a  | CritG2Exploit.md:72-74  | r39 G2 graded-cases | CAUGHT   | all case lines removed, summary kept → graded-cases=0     | r41 I2 rebuild | r42 J8/J10 | MAPPED control
+b  | CritG2Exploit.md:75     | r39 G2 verdict token| CAUGHT   | one verdict=fail → graded 7/ungraded 1                     | r41 I2 | r42 J8 | MAPPED control
+c  | CritG2Exploit.md:76     | r39 G2 distinct ids | CAUGHT+  | duplicated G7 id → graded-ids=7 (red BUT payload byte-identical to green — unobservable) | r41 I2 byte-equal rebuild | r42 J8 | MAPPED (observability note: r42 transcript prints graded-cases; any duplicate id breaks byte equality)
+d  | CritG2Exploit.md:77     | r39 G2 sentinel     | CAUGHT   | all-gates v3→v2                                          | r41 I2 sentinel limb | r42 J8 | MAPPED control
+e  | CritG2Exploit.md:78     | r39 G2 ancestor/diff| CAUGHT   | export-ref=Y at REF=J → ancestor=0                        | r41 I2 ancestor+diff-clean | r42 J8 | MAPPED control
+f  | CritG2Exploit.md:116-119| r39 G2 case grammar | DEFEATED | case lines with NO mutants= field grade green (shape-only) | r40 H5/H7 → r41 I2/I8 | r42 J8 | MAPPED (F2)
+g  | CritG2Exploit.md:119    | r39 G2 case grammar | DEFEATED | mutants=0/0 grades green — mutants field never parsed      | r40 H5/H7 → r41 I2/I8 | r42 J8 | MAPPED (F2; erratum-E5 class)
+h  | CritG2Exploit.md:120    | r39 G2 run grammar  | DEFEATED | empty `payload=` accepted by `.*`                          | r40 H7 → r41 I2 | r42 J8 | MAPPED (F2)
+i  | CritG2Exploit.md:121    | r39 G2 ref semantics| DEFEATED | self-naming export-ref=Y at REF=Y: vacuous diff accepted   | r40 H7 (receipt-only diff) → r41 I2 | r42 J8 | MAPPED (F5 spec gap → closed by receipt-only-diff rule)
+j  | CritG2Exploit.md:122    | r39 G2 case grammar | DEFEATED | mutants=0/1 (zero rejected) grades green                   | r40 H5/H7 → r41 I2/I8 | r42 J8 | MAPPED (F2)
+k  | CritG2Exploit.md:123    | r39 G2 anchoring    | DEFEATED | indented ninth case line invisible to ^selftest case=      | r41 I2 byte-equal rebuild (extra line breaks cmp) | r42 J8 | MAPPED (F4 evasion — whitespace variant; byte rebuild supersedes anchoring)
+
+== G. round-39/wave2/CritC1Kill.md (frozen-counter + attack attempts + kill findings K1-K6) ==
+CC-counting | CritC1Kill.md:76-90 | r39 frozen counting cmd | DEFEATED | satisfiability/state-dependence: J-run capped 7/8, lane-Y 6/8 (G6 scratch live-scan + G8 lane-dirty pinning); 8/8 only under non-default --lane/--scratch-root | r40 H6 family scan + r41 I2/I6 design | r42 J13 + judged_head_rule | MAPPED — r42 J13 evaluates inside suite's own scratch root bound to ref; r41 receipts print deviation= lines
+a1 | CritC1Kill.md:180-184 | r39 G2 run-lines     | CAUGHT   | nine G<n> closed=1 lines → run-lines=9                | r41 I2 | r42 J8 | MAPPED control
+a2 | CritC1Kill.md:188-191 | r39 G2 case lines    | CAUGHT   | summary-only selftest line → graded-cases=0           | r41 I2 | r42 J8/J10 | MAPPED control
+a3 | CritC1Kill.md:197-200 | r39 G2 verdict field | CAUGHT   | case lines without verdict= → ungraded-cases=8        | r41 I2 | r42 J8 | MAPPED control
+a4 | CritC1Kill.md:206-220 | r39 G2 vs judge      | DEFEATED | detail-free well-formed case lines accepted by G2, rejected by suite's own judge; landed receipt itself is that shape (K1) | r40 H7 transcript → r41 I2/I9 | r42 J8/J10 | MAPPED — r41 requires detail lines + per-case payload compare
+b  | CritC1Kill.md:226-234 | r39 G1 declared tail | CAUGHT   | undersized declared tail → valid=1/front-doors=0      | r40 H9 → r41 I5/I12 | r42 J4 | MAPPED control
+c  | CritC1Kill.md:240-245 | r39 G4 dispatch      | CAUGHT   | zero-task dispatch pair → zero-task=1                 | n/a (G4 retired) | n/a | MAPPED-historical; class retired with G4
+d  | CritC1Kill.md:251-269 | r39 G8 pin digest    | CAUGHT   | changed r37 bytes + changed PIN constant → pinned-sha=0 | r41 I12 density pin (class-generalized) | r42 J12 | MAPPED (byte-identity class)
+e  | CritC1Kill.md:273-279 | r39 G1 completeness  | DEFEATED | undeclared appended tail (40 invented lines) accepted — E5.2 "every added tail" unimplemented, 271 undeclared added files | r41 I5/I12 declared_blocks_check | r42 J4/F-DECL | MAPPED — J4 text: "every round-N artifact path that a check reads is declared"; K2's full-enumeration scope depends on J4 impl breadth
+f  | CritC1Kill.md:285-292 | r39 G5/G2 scoping    | DEFEATED | duplicate `## Round 39` section: md_section reads LAST only → planted "Final lane commit" invisible | r41 I1/I3 (line-anchored corrections; section scoping gone) | r42 J11 partial | PARTIAL — J11 names duplicated *Correction blocks* verbatim; duplicated `## Round N` heading class not named
+K1 | CritC1Kill.md:300-326 | see a4               | DEFEATED | receipt lacks execution evidence; composed not captured | r41 I2/I9 | r42 J8 | MAPPED
+K1b| CritC1Kill.md:328-341 | r39 export-ref authority | DEFEATED | circular identity: receipt defines+certifies head via tree-equal empty commit | r41 I2 (names parent, diff=receipt-only) + claims counting cmds | r42 J8 + counting_commands | MAPPED — Y=J+receipt enforced by diff rule and frozen commands
+K3 | CritC1Kill.md:364-382 | r39 E5.7 anchor      | DEFEATED | line-anchored counter misses bullet-prefixed correction (LOG.md 0/4); authored/counted style mismatch | r41 I1 (records authored line-anchored, verified SCORECARD 8/LOG 3/SHONEN 3) | r42 J1 | MAPPED
+K4 | CritC1Kill.md:384-394 | r39 E5.1 wording     | DEFEATED | payload= on case lines unsatisfiable: instrument puts payloads on detail lines | r41 transcript grammar v1 (detail= lines are the transcript) | r42 J8 | MAPPED (grammar redesign supersedes)
+K5 | CritC1Kill.md:396-410 | r39 run-utc provenance | DEFEATED | receipt run-utc post-dates its containing commit (false provenance, unparsed) | r40 H7 time-basis → r41 I2 committer-instant + not-future | r42 J8 + kill_rule (run-utc-after-commit kills) | MAPPED
+K6 | CritC1Kill.md:412-421 | r39 md_section scope | DEFEATED | see (f) — last-section-only scan | r41 I1/I3 | r42 J11 partial | PARTIAL (same residual as f)
+
+== Summary counts ==
+DEFEATED (limb green while defect present), distinct committed defeats: 32
+  A-defeats 8 (T2 T4 T5 T6 T7 T11 T13 T14) + B-escapes 8 (F1-F8)
+  + C fixture h6-escapes.sh replays the F1-F6 states (defeat scenarios m2-m6; controls m1 m7-m10, not counted separately)
+  + D 3 (MutH6H10 D1 D2 F1) + CritG2Exploit 6 (f g h i j k) + CritC1Kill 7 (a4 e f K1b K3 K4 K5; K1=a4, K6=f dedup)
+CAUGHT/controls: T1 T3 T8 T9 T10; h6-escapes m1 m7 m8 m9 m10; CritG2Exploit a-e; CritC1Kill a1 a2 a3 b c d
+SURVIVOR (selftest gap): MutH1H5 H4 only; KILLED mutants: M-H6a M-H6b M-H9a M-H10a M-H10b M-H1 M-H2 M-H3 M-H5 (+M-inert byte-identity control)
+UNMAPPED: T5, T6, MutH1H5-H4 — all the r40-H4 Gate-conjunct class (limb retired at r41; no r41/r42 owner; committed replay artifact h4-nodate.txt has no check to run against)
+PARTIAL: T11 (audited-root fingerprint never bound into receipt), F7 (pending-marker clause absent from r42 claims/J13 text),
+  F8 (J13 inheritance of ls-files -v/--ignored limbs unverified), CritC1Kill f/K6 (duplicate ## Round-N heading not named by J11)
+T12: absent from the committed artifact — upstream numbering gap, not a missing defeat

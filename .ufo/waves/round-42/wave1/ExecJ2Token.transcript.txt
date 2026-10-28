@@ -1,0 +1,114 @@
+ExecJ2Token transcript — round-42 C1 suite limb J2 (family F-TOKEN: token-boundary tallies)
+lane   : /home/vgpnk/Projects/shokunin/kasegi-shokunin
+limb   : .ufo/waves/round-42/wave1/ExecJ2Token.sh  (sourceable; defines check_j2)
+scratch: /fast/scratch/hyaku/kasegi-r42/ExecJ2Token  (removed after the run, per the seat protocol)
+Every block below is the verbatim output of the command printed above it.
+
+==============================================================================
+1. GREEN over the lane HEAD export
+==============================================================================
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse HEAD
+514ff62d61ee9bc717a20a02a22c65ec0c5124ed
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive HEAD | tar -x -C /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/work/head; find /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/work/head -type f | wc -l
+exported 8228 files
+[exit=0]
+
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/ExecJ2Token.sh --tree /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/work/head
+J2 payload=records=3,graded=3,fenced=0,resid=0,near=0,cited=9/9,anch=7/7,truth=ok,probe=22/22,accept=10/10,reject=12/12 closed=1
+[exit=0]
+
+The limb was also green at the HEAD the seat was spawned on (0566bd6, the
+round-42 claims+controls commit), before the L1 landed further work:
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive 0566bd6 | tar -x -C /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/work/head-spawn
+exported 8225 files from 0566bd6
+[exit=0]
+
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/ExecJ2Token.sh --tree /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/work/head-spawn
+J2 payload=records=3,graded=3,fenced=0,resid=0,near=0,cited=9/9,anch=7/7,truth=ok,probe=22/22,accept=10/10,reject=12/12 closed=1
+[exit=0]
+
+==============================================================================
+2. the extractor battery and the REPLAY limb: the committed `closed=10/100`
+   defeat and the family's boundary mutants must all be REJECTED
+==============================================================================
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/ExecJ2Token.sh --export-ref HEAD --work /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/work/self --selftest
+J2 payload=records=3,graded=3,fenced=0,resid=0,near=0,cited=9/9,anch=7/7,truth=ok,probe=22/22,accept=10/10,reject=12/12 closed=1
+probe=22/22,accept=10/10,reject=12/12
+replay fixture=unmutated-tree accepted=1 limb=positive payload=records=3,graded=3,fenced=0,resid=0,near=0,cited=9/9,anch=7/7,truth=ok,probe=22/22,accept=10/10,reject=12/12
+replay fixture=committed-mangled-value-token rejected=1 limb=near payload=records=3,graded=3,fenced=0,resid=0,near=1,cited=9/9,anch=7/7,truth=ok,probe=22/22,accept=10/10,reject=12/12
+replay fixture=boundary-closed-13-130 rejected=1 limb=near payload=records=3,graded=3,fenced=0,resid=0,near=1,cited=9/9,anch=6/7,truth=ok,probe=22/22,accept=10/10,reject=12/12
+replay fixture=boundary-closed-1-13 rejected=1 limb=near payload=records=3,graded=3,fenced=0,resid=0,near=1,cited=9/9,anch=6/7,truth=ok,probe=22/22,accept=10/10,reject=12/12
+replay fixture=boundary-leading-space-value rejected=1 limb=resid payload=records=3,graded=3,fenced=0,resid=1,near=0,cited=9/9,anch=6/7,truth=ok,probe=22/22,accept=10/10,reject=12/12
+replay fixture=boundary-leading-space-key rejected=1 limb=resid payload=records=3,graded=3,fenced=0,resid=1,near=0,cited=9/9,anch=6/7,truth=ok,probe=22/22,accept=10/10,reject=12/12
+replay fixture=boundary-xclosed rejected=1 limb=resid payload=records=3,graded=3,fenced=0,resid=1,near=0,cited=9/9,anch=6/7,truth=ok,probe=22/22,accept=10/10,reject=12/12
+replay fixture=boundary-trailing-word rejected=1 limb=resid payload=records=3,graded=3,fenced=0,resid=1,near=0,cited=9/9,anch=6/7,truth=ok,probe=22/22,accept=10/10,reject=12/12
+replay fixture=boundary-ratio-tail rejected=1 limb=resid payload=records=3,graded=3,fenced=0,resid=1,near=0,cited=9/9,anch=6/7,truth=ok,probe=22/22,accept=10/10,reject=12/12
+replay fixture=boundary-failures-10 rejected=1 limb=near payload=records=3,graded=3,fenced=0,resid=0,near=1,cited=9/9,anch=7/7,truth=ok,probe=22/22,accept=10/10,reject=12/12
+replay fixtures=10 failures=0
+[exit=0]
+
+==============================================================================
+3. the same limb over the two negative-control refs of the C1 predicate
+   (base 5053a7f..., round-41 judged head 1f74646...).  J2 grades the frozen
+   closure corpus, so it is green there; the suite's negative controls are
+   carried by the checks that grade round-42 artifacts (J1/J8/J11).
+==============================================================================
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/ExecJ2Token.sh --export-ref 5053a7f46de35784cff4b56756906e9014a38276 --work /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/work/base
+J2 payload=records=3,graded=3,fenced=0,resid=0,near=0,cited=9/9,anch=7/7,truth=ok,probe=22/22,accept=10/10,reject=12/12 closed=1
+[exit=0]
+
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/ExecJ2Token.sh --export-ref 1f7464612ac4c44e39886b82e812610d3c039b13 --work /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/work/r41h
+J2 payload=records=3,graded=3,fenced=0,resid=0,near=0,cited=9/9,anch=7/7,truth=ok,probe=22/22,accept=10/10,reject=12/12 closed=1
+[exit=0]
+
+==============================================================================
+4. Y SIMULATION — the round-42 corrections appended in the shape the round-41
+   corrections use (each cites the previous round's receipt truth)
+==============================================================================
+appended to SCORECARD.md / LOG.md / SHONEN.md (one line each):
+  Correction (round 42): ... the round-41 receipt at
+  `.ufo/waves/round-41/final-gates/all-gates.txt` records `closed=10/12 exit=1`
+  and graded `selftest cases=12 failures=6`.
+$ . ./ExecJ2Token.sh; j2_fixture head sim; <append the round-42 correction to each record>; check_j2 sim
+J2 payload=records=3,graded=4,fenced=0,resid=0,near=0,cited=12/12,anch=10/10,truth=ok,probe=22/22,accept=10/10,reject=12/12 closed=1
+[exit=0]
+[exit=0]
+
+and with the round-42 correction additionally QUOTING the repaired defect
+(`closed=10/100`) and the round-42 target (`closed=13/13`) — still GREEN, so the
+new records may quote the defect freely:
+$ ... same, plus a quoted `closed=10/100` and `closed=13/13` ...; check_j2 sim3
+J2 payload=records=3,graded=4,fenced=0,resid=0,near=0,cited=12/12,anch=9/9,truth=ok,probe=22/22,accept=10/10,reject=12/12 closed=1
+[exit=0]
+[exit=0]
+
+==============================================================================
+5. THE COMMITTED DEFEAT, LIVE — the committed round-41 suite still ACCEPTS its
+   own mangled-value-token mutant (rejected=0); J2 over the same ref, given
+   the same committed mutation, REJECTS it (rejected=1).
+==============================================================================
+$ bash corpus/instruments/r41-closure.sh --selftest --export-ref 1f74646... \
+      --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work <work>/r41self --scratch-root <work>/r41scratch
+  (the lines of that run that name the I3 defect; full run in the receipt)
+selftest detail=I3 positive=pass payload=exact=2/2,substring=2/2,records=3,tally=3/3,mangled=0
+selftest detail=I3 mutant=mangled-value-token rejected=0 rc=0 payload=exact=2/2,substring=2/2,records=3,tally=3/3,mangled=0
+selftest case=I3 mutants=0/1 positive=fail payload-match=0 verdict=fail
+selftest cases=12 failures=5
+
+$ bash /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/ExecJ2Token.sh --export-ref 1f74646... --work <work>/r41h2 --selftest
+$ ... | grep -E '^(J2 payload=|replay fixture=committed-mangled-value-token|replay fixtures=)'
+J2 payload=records=3,graded=3,fenced=0,resid=0,near=0,cited=9/9,anch=7/7,truth=ok,probe=22/22,accept=10/10,reject=12/12 closed=1
+replay fixture=committed-mangled-value-token rejected=1 limb=near payload=records=3,graded=3,fenced=0,resid=0,near=1,cited=9/9,anch=7/7,truth=ok,probe=22/22,accept=10/10,reject=12/12
+replay fixtures=10 failures=0
+[exit=0]
+
+==============================================================================
+6. the deliverable's own bytes
+==============================================================================
+$ wc -l ExecJ2Token.sh; sha256sum ExecJ2Token.sh
+682
+2ae17efebe09eca90beca06e8b3b644c7e983b882a5b09e47b7894118136e408  /fast/scratch/hyaku/kasegi-r42/ExecJ2Token/ExecJ2Token.sh
+
+scratch removed: yes (the seat protocol requires it; the receipt and the two
+deliverables were copied into .ufo/waves/round-42/wave1/ first).

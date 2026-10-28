@@ -1,0 +1,118 @@
+kasegi round-42 coverage-of-debt matrix — routed-defect -> closing check
+scope: corpus/lessons/{round-39,round-40,round-41}-verifier-spotcheck.md section 5,
+plus the r41 wave-2 committed attack findings they carry, against frozen
+claims.json J1-J13 (C1) and the C2 item list. Format: routed-id < defect :: closing item
+(status). Items marked NO-CLOSING-CHECK are routed defects no J<n>/C2 item closes.
+"closed-in-prior-round" rows record debt retired before this round (kept for ancestry).
+
+R41 routed queue (verifier section 5, 2026-10-27 — authoritative open set)
+  D-r41-1 < SCORECARD Correction (round 41) block duplicated verbatim (L1602-1605 = L1607-1610)
+          :: J11/F-CORR (duplicated-block detection). LIVE at base. caveat: base itself is
+             duplicated, so J11 red unless scoped to new r42 corrections or the lane appends a
+             dedup marker/correction — decision needed by suite owner.
+  D-r41-2 < Gate recorded no reject; nothing to sample in reject direction
+          :: C2 lead-screen item (>=1 screened candidate rejected with reason + flip + URL +
+             access date + <=25-word located quote, Gate block). Closed only if C2 lands it.
+  D-r41-3 < SKILL.md registry still split (L1120 separator, blank L1121, row L1122) AND
+            r40-closure.sh row duplicated (L1122 + L1128 in round-41 block)
+          :: J3/F-TABLE (no blank line header-separator..last-row; no instrument basename in
+             >1 row; bare internal pipes and leading-whitespace cells rejected; committed
+             MutSkillTablePipes variants replayed to rejection). LIVE at base. caveat: base
+             itself violates both J3 invariants — J3 must scope to the newest block + an
+             appended repair/de-dup marker, or the lane must append repair text; unscoped J3
+             is red at Y by construction.
+  D-r41-4 < report lacks prompt section-6 "Stale-lane" line :: NO-CLOSING-CHECK
+             (report-conformance; L1-owned in round-42 report; outside J1-J13 and C2).
+  D-r41-5 < wave 2 carried 0 connector seats :: NO-CLOSING-CHECK
+             (dispatch-shape conformance; L1-owned wave-2 spec; outside J1-J13 and C2).
+  routed I1 < per-correction evidence union accepted evidence-not-named
+          :: J1/F-EVID (per-record evidence naming; replays committed r41
+             evidence-not-named union mutation — RevC1Counters finding 1, CritC1KillRule).
+  routed I3 < closed=10/100 mangled tally accepted (token-boundary)
+          :: J2/F-TOKEN (whole-token value boundary; replays committed r41
+             mangled-value-token mutation — RevC1Counters finding 1).
+  routed I7 < bare-pipe and leading-whitespace first-cell registry variants survive
+          :: J3/F-TABLE (replays committed MutSkillTablePipes variants).
+  routed I5/I12 < declaration completeness — changed paths not required to be declared;
+            T7/H9 symlink-outside-export declared read; whole-tail limb kept
+          :: J4/F-DECL (replays committed T7 and CritDeclarationCoverage probes).
+  routed I6 < outside-configured-root stray not seen by scratch scan
+          :: J5/F-SCAN (kasegi-r4[0-9]* prefix coverage; outside-configured-root seat-named
+             stray detected inside suite scratch root; replays MutScratchTiming probe) +
+             J13 (leftover kasegi-r4[0-9]* entry at receipt time inside own scratch root).
+  routed capture-binding < missing-path and URL-case/trailing-slash manifest mutations accepted
+          :: J6/F-BIND (real capture-binding-check.py over mutated scratch manifests; replays
+             committed MutBindingExistence mutations).
+  routed frontier-counter < status-flip blind spot (F24 admitted->explored dropped to
+            26/26 exit 0, no FAIL F24 line)
+          :: J7/F-FLIP (frontier-recheck-count.py exits nonzero on missing admitted-row PASS
+             line or status flip; replays committed MutC2Chain probe-A).
+  routed (J8-lineage) < receipt payload values not re-derived; selftest tally quoted without
+            transcript (r40 D2; r39 CritG2Exploit mut-f/g/h/j/k)
+          :: J8/F-RCPT (Y receipt = teed run+selftest transcript; recorded payloads compared
+             against suite re-derived values; forged payload values rejected).
+  routed (J9-lineage) < negative controls: base and r41-head exports closed<13/13 exit 1;
+            unresolvable --export-ref distinct ref-not-found red, never vacuous closed<13/13
+          :: J9 (also inherits r39 R3 base-control discipline and the plain-run exit-2 rule).
+  routed (J10-lineage) < graded-selftest isolation (selftest cases must not read each other's
+            state; r41 MutSuite probe showed baseline/positive confounds)
+          :: J10 (private mutated copy per case).
+  routed (J12-lineage) < tracked corpus deletions + density.py mutation (r41 I12 selftest
+            mutants; no-harm guard)
+          :: J12 (density.py byte-identical to base 5053a7f4; no tracked corpus deletions).
+  routed (J13-lineage) < quiescence — uncommitted lane changes + scratch leftovers at filing
+            (r39 R4 kasegi-r39-l1 leftover; r41 MutScratchTiming)
+          :: J13 (inside suite's own scratch root, bound to exported ref by name).
+
+R40 routed defects (verifier section 5, 2026-10-26 — ancestry; current-status noted)
+  D1 < C1 graded verified while frozen kill rule fired :: closed-in-r41-records
+       (Correction (round 41) lines in SCORECARD L1602-1605 + dup L1607-1610, LOG L1736-1738,
+       SHONEN L221-223); surviving instrument-side defects map to J1-J7 replay limbs.
+  D2 < selftest tally quoted without committed transcript :: closed-in-r41 (I2 design) ->
+       J8 (r42 receipt must tee BOTH run and selftest transcripts).
+  D3 < wave-2 instrument survivors H1-H10 :: all mapped to r41 I-checks and carried to J:
+       H2->J2, H3->J1(J4 fence accounting), H9->J4, H6->J5/J13, H1->J3, H5->J8, H7->J8,
+       H8-unkillable->J8/J10, 7 kill-rule escape states->J-family replay limbs (committed
+       CritKillRule.h6-escapes.sh F1-F8 rejected at r41 I11; r42 replays its own J-defeats).
+  D4 < lesson hygiene (duplicate ## Gate L29/L31; garbled census L27) :: closed-in-r41
+       (Erratum (round 41) section appended at round-40.md L265-277).
+  D5 < attack-role tally disagreement (33/35=94%, 50/89 wrong) :: closed-in-r41
+       (same erratum L279-286 recounts 25/35=71.4% and 42/89=47.2%).
+  D6 < SKILL.md registry table broken :: carried into D-r41-3 -> J3 (still live at base).
+  D7 < queued->rejected row shape ambiguity (CORPUS.md rule collision) :: NO-CLOSING-CHECK
+       and not kasegi-owned (protocol-lane contract ambiguity; status-neutral).
+
+R39 routed defects (verifier section 5, 2026-10-26 — ancestry; all retired or mapped)
+  R1 < attempt-1 receipt unmined, run-utc after commit :: closed-in-r40 (M40-1 mistakes row;
+       H5/H7 receipt=teed-transcript rules; R37 QUALITY criterion). r42 analogue: J8 +
+       C1 kill rule (receipt run-utc must not post-date its containing commit).
+  R2 < r39 records still stated C1 8/8 :: closed-in-r40 (Correction (round 40) lines,
+       SCORECARD L1588-1589, LOG L1723-1724, SHONEN L207-208). Instrument echo -> J1.
+  R3 < report said controls printed 2/8 while committed reds.txt shows 1/8 :: closed-in-r40
+       (base/r39-head negatives re-measured genuine 3/10 and 2/10 exit 1, round-40.md L222-223).
+       Instrument echo -> J9.
+  R4 < scratch left at filing (kasegi-r39-l1 sibling name missed by narrow G6) :: directory
+       removed round-40; widening lives on as J5 prefix coverage + J13 quiescence.
+  R5 < M39-2 captured-by none, no criterion :: closed-in-r40 (R37 criterion appended to
+       QUALITY.md; grep -c M39-2 corpus/QUALITY.md = 1).
+  R6 < Gate rows for S056/S058/S059 rejects lacked URL/date/quote :: closed-in-r40
+       (round-39.md L101-105 Gate additions section appends all three).
+  R7 < instrument findings G2/G6 (payload values unbound; scratch-root quiet dependence)
+       :: carried -> J8 (payload re-derivation) and J5/J13 (own-scratch-root binding).
+
+R41 wave-2 coverage-side findings not in the verifier queue but inside C2/J scope
+  MutAuditUnexpected < unreferenced mined registry row survives capture-binding silently
+       :: C2 junk-twin control (mined-marked row requires capture+entry+harness pass;
+          O4 class named in C2 kill rule). Also bounded by audit expected=61.
+  MutFrontierParser decoy row < killed by r41 harness :: r42 analogue covered by C2
+          harness entries=28 pass=28 incl PASS F25 (fail-closed behavior re-measured).
+  MutC2Chain probes B-E inconclusive (recheck-audit strict-cdroot baseline failure)
+       :: C2 recheck-audit expected=61 missing=0 unexpected=0 exit 0 re-measures;
+          the strict-baseline weakness is a residual unknown, not routed.
+
+Summary: 17 routed defects/items closed by J1-J13 or C2 items; 2 routed defects with
+NO closing check (D-r41-4 report Stale-lane line, D-r41-5 wave-2 connector seats — both
+L1-owned conformance items); 1 not-kasegi-owned (r40 D7); 2 live-base collision flags
+(J3 table invariants and J11 dedup detection are violated by the committed base bytes —
+the suite must scope or the lane must append repair/dedup markers or those checks are
+red at Y by construction).

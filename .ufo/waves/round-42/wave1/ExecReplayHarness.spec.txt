@@ -1,0 +1,402 @@
+ExecReplayHarness.spec.txt — round-42 defeat catalog
+=====================================================
+
+Purpose
+-------
+This file is the map from every committed defeat artifact to (a) the repair
+family it exercises, (b) the expected rejection mechanism the repaired limb
+must exhibit, and (c) the catalog case id that materializes the defeat and
+runs the limb.  ExecReplayHarness.sh is the executable form: it carries the
+same catalog and exposes
+
+    replay_defeat <artifact> <mode>
+    replay_report   [mode]
+
+where <mode> is fixture | export | list.  The L1 binds each family to its
+own check through REPLAY_LIMB_MAP (or by accepting the default candidate
+list in the library); the verdicts below are what the repaired round-42 suite
+must produce.
+
+Exit-code contract of replay_defeat
+-----------------------------------
+  0  every selected defeat was REJECTED by the current suite's limb, and the
+     same limb ACCEPTED the pristine fixture (the control run).  The family is
+     closed.
+  1  at least one selected defeat was ACCEPTED by the limb: the family is
+     still open.  This is the kill signal.
+  2  not gradable: the limb is unresolvable, the fixture could not be
+     materialized, or the limb rejected the PRISTINE fixture, so no verdict is
+     attributable.  Never a silent pass.
+
+The control run is what makes exit 0 meaningful.  A limb that rejects every
+input would otherwise score every defeat as closed; requiring the pristine
+fixture to be green makes that impossible.
+
+Family -> limb binding
+----------------------
+The seven routed families and the limb that must reject their defeats:
+
+  F-EVID   per-correction evidence          default limb check_j1 (fallback check_i1)
+  F-TOKEN  token-boundary tallies           default limb check_j2 (fallback check_i3)
+  F-TABLE  SKILL.md registry integrity      default limb check_j3 (fallback check_i7)
+  F-DECL   declared-blocks completeness     default limb check_j4 (fallback check_i5, check_i12)
+  F-SCAN   scratch hygiene                  default limb check_j5 (fallback check_i6)
+  F-BIND   capture-binding variants         default limb check_j6 (fallback the capture-binding-check.py instrument)
+  F-FLIP   frontier-counter status flip    default limb check_j7 (fallback the frontier-recheck-count.py instrument)
+
+The J-ids are the round-42 suite's own checks (the claim's J1-J13); the
+I-ids are the round-41 fallbacks, so one library drives both.  The J-ids were
+read out of the frozen claim (`.ufo/waves/round-42/claims.json`, C1
+predicate), which assigns J1 per-correction evidence (F-EVID), J2
+token-boundary tally validation (F-TOKEN), J3 SKILL.md registry integrity
+(F-TABLE), J4 declared-blocks completeness (F-DECL), J5 scratch-baseline
+hygiene (F-SCAN), J6 capture-binding integrity (F-BIND) and J7
+frontier-counter status-flip detection (F-FLIP); J8-J13 are receipt
+integrity, negative controls, graded-selftest isolation, correction
+uniqueness, no-deletion/density and scratch quiescence, which are outside the
+seven routed families.  The L1 still pins the final mapping with
+REPLAY_LIMB_MAP, e.g.
+
+  REPLAY_LIMB_MAP='F-EVID=check_j1;F-TOKEN=check_j2;F-TABLE=check_j3;F-DECL=check_j4;F-SCAN=check_j5;F-BIND=check_j6;F-FLIP=check_j7'
+
+Catalog
+-------
+id | family | artifact | expected rejection mechanism
+
+F-EVID (per-correction evidence)
+  e1.evidence-not-named | F-EVID | .ufo/waves/round-41/wave2/CritC1KillRule.md
+    Every SCORECARD.md Correction block names no kill-rule evidence, so the
+    per-block evidence count must fall below the member total.  Measured on
+    the landed J1: evidence=2/4 closed=0 rc=1 — TWO members are lost, not one,
+    because SCORECARD.md carries the D-r41-1 duplicated block (L1602 and
+    L1607), and the union across surviving blocks stays 3/3, which is exactly
+    why a union tally cannot see the removal.
+  e2.evidence-not-named-log | F-EVID | .ufo/waves/round-41/wave2/RevC1Counters.md
+    The LOG.md Correction block names no evidence; a cross-record union must
+    not mask it.  Measured on the landed J1: evidence=3/4 closed=0 rc=1
+    (fail=LOG.md:1736), union 3/3.
+  e3.evidence-not-named-shonen | F-EVID | .ufo/waves/round-41/wave2/RevC1Counters.md
+    The SHONEN.md Correction block names no evidence; per-correction evidence
+    must be enforced.  Measured on the landed J1: evidence=3/4 closed=0 rc=1
+    (fail=SHONEN.md:221), union 3/3.
+  e4.evidence-not-named-union | F-EVID | .ufo/waves/round-41/wave2/CritC1KillRule.md
+    The CANONICAL committed mutant (r41-closure.sh selftest_case_i1): the first
+    Correction block of EVERY record (SCORECARD.md, LOG.md, SHONEN.md) is
+    stripped of its evidence names while each record's remaining blocks keep
+    them.  A limb that unions evidence across records or across blocks still
+    sees the full set, so it must be made per-block.  Verified twice: the
+    committed r41 I1 returns evidence=3/3 rc=0 on this state (escape), and the
+    landed J1 returns evidence=1/4 closed=0 rc=1 with
+    fail=SCORECARD.md:1602;LOG.md:1736;SHONEN.md:221 while the union stays
+    3/3 — the first-block-only strip leaves SCORECARD:1607 holding all three
+    identifiers, which is precisely why the union tally cannot see it.
+
+F-TOKEN (token-boundary tallies)
+  t1.mangled-tally-first-line | F-TOKEN | .ufo/waves/round-41/wave2/CritC1KillRule.md
+    One Correction block states the tally as closed=10/100 while a sibling
+    block of the same record still states closed=10/10: the value must match
+    as a bounded token in that very block (payload tally=2/3 or mangled=1) and
+    the limb must exit nonzero.
+  t2.mangled-tally-every-correction | F-TOKEN | .ufo/waves/round-41/wave2/MutSuite.findings.txt
+    Every Correction block of the record states the mangled tally: the record
+    must not tally green (payload tally=2/3) and the limb must exit nonzero.
+  t3.mangled-tally-every-mention | F-TOKEN | .ufo/waves/round-40/wave2/RevC1Counters.defeats.txt
+    Every mention of the truth tally in the record is the strict superset
+    closed=10/100: a substring match must not satisfy a token-boundary match
+    (payload substring=2/2) and the limb must exit nonzero.
+
+F-TABLE (SKILL.md registry integrity)
+  b1.registry-bare-pipe | F-TABLE | .ufo/waves/round-41/wave2/MutSkillTablePipes.md
+    A bare pipe inside the entry-command cell inflates the cell count
+    (cells=11); the row must be rejected as malformed (payload broken=1 or
+    ok=0) and the limb must exit nonzero.
+  b2.registry-leading-space | F-TABLE | .ufo/waves/round-41/wave2/MutSkillTablePipes.md
+    Leading whitespace in the first cell must not be trimmed into a match
+    (payload ok=0 or rows=0) and the limb must exit nonzero.
+  b3.registry-mention-only | F-TABLE | .ufo/waves/round-40/wave2/RevC1Counters.defeats.txt
+    A mention-only row is not a registry row: the row count must be 0
+    (payload rows=0) and the limb must exit nonzero.
+  b4.registry-blank-line | F-TABLE | .ufo/waves/round-41/wave2/CritC1KillRule.md
+    A blank line before the row breaks the contiguous table (payload
+    broken=1) and the limb must exit nonzero.
+
+F-DECL (declared-blocks completeness)
+  d1.declared-omits-changed-path | F-DECL | .ufo/waves/round-41/wave2/CritDeclarationCoverage.md
+    A changed path that is absent from the declaration file is a completeness
+    violation: the declared set must be compared with the changed set (the
+    dropped declaration must make the limb red, not merely lower the counts)
+    and the limb must exit nonzero.
+  d2.declared-symlink-outside | F-DECL | .ufo/waves/round-41/wave2/CritI12Necessity.md
+    A declared path that is a symlink resolving outside the export must be
+    rejected (payload canon=0, paths=0) and the limb must exit nonzero.
+  d3.declared-short-of-added | F-DECL | .ufo/waves/round-40/wave2/MutH6H10.md
+    A declaration one line short of the added block must not validate
+    (payload tail<declared) and the limb must exit nonzero.
+
+F-SCAN (scratch hygiene)
+  s1.stray-outside-root | F-SCAN | .ufo/waves/round-41/wave2/MutScratchTiming.md
+    A family-named leftover outside the configured scan root must be detected
+    (payload strays>=1 or read=fail) and the limb must exit nonzero.
+  s2.stray-case-separator | F-SCAN | .ufo/waves/round-40/wave2/CritKillRule.md
+    A family-named leftover in another case or with another separator must be
+    detected (payload strays>=1) and the limb must exit nonzero.
+  s3.stray-dot-prefixed | F-SCAN | .ufo/waves/round-40/wave2/CritKillRule.md
+    A dot-prefixed family-named leftover must be detected (payload strays>=1)
+    and the limb must exit nonzero.
+  s4.stray-nested | F-SCAN | .ufo/waves/round-40/wave2/CritKillRule.md
+    A family-named leftover nested below the scan root must be detected
+    (payload strays>=1) and the limb must exit nonzero.
+  s5.stray-ancestor-symlink | F-SCAN | .ufo/waves/round-40/wave2/CritKillRule.h6-escapes.sh
+    A family-named symlink to an ancestor of the work dir must be detected
+    (payload strays>=1) and the limb must exit nonzero.
+  s6.scan-root-missing | F-SCAN | .ufo/waves/round-40/wave2/CritKillRule.md
+    A nonexistent scan root must fail closed (payload read=fail) and the limb
+    must exit nonzero.
+  s7.stray-unreadable | F-SCAN | .ufo/waves/round-40/wave2/CritKillRule.h6-escapes.sh
+    An unreadable family-named leftover must fail closed (payload read=fail
+    or strays>=1) and the limb must exit nonzero.
+  s8.stray-sibling-round | F-SCAN | .ufo/waves/round-41/wave2/MutScratchTiming.md
+    A leftover named for a SIBLING round (kasegi-r<round-1> or
+    kasegi-r<round+1>) must be detected: the claim's J5 requires the scan to
+    cover the whole kasegi-r4[0-9]* prefix, not only this round's own family
+    (payload strays>=1) and the limb must exit nonzero.
+
+F-BIND (capture-binding missing-path/URL variants)
+  c1.binding-missing-path | F-BIND | .ufo/waves/round-41/wave2/MutBindingExistence.md
+    A manifest record whose path names a file that does not exist must be
+    unbound (records=<n> bound=<n-1> unbound=1) and the instrument must exit
+    nonzero.  The old capture is removed with it so the orphan rule cannot
+    fire and mask the missing-path defect.
+  c2.binding-url-case | F-BIND | .ufo/waves/round-41/wave2/MutBindingExistence.md
+    A manifest record whose URL differs in case from the registry row must be
+    unbound and the instrument must exit nonzero.
+  c3.binding-url-trailing-slash | F-BIND | .ufo/waves/round-41/wave2/MutBindingExistence.md
+    A manifest record whose URL carries a trailing slash must be unbound and
+    the instrument must exit nonzero.
+
+F-FLIP (frontier-counter status-flip detection)
+  p1.frontier-status-flip | F-FLIP | .ufo/waves/round-41/wave2/MutC2Chain.md
+    A frontier row whose status cell flips away from admitted must be
+    reported, not silently dropped from the denominator: the run must not
+    shrink from entries=27 to entries=26 with pass=26 and exit=0, and the
+    instrument must exit nonzero.
+  p2.frontier-decoy-row | F-FLIP | .ufo/waves/round-41/wave2/MutFrontierParser.md
+    A frontier row naming a non-existent entry must fail (FAIL F999 ...
+    missing-entry) and the instrument must exit nonzero.
+
+Defeat artifacts mapped to a family
+----------------------------------
+Every artifact named in the round-42 seat assignment, with the family it
+exercises.  An artifact that carries no defeat this catalog can replay is
+listed UNMAPPED with a proposed family, and the L1 decides.
+
+  .ufo/waves/round-41/wave2/CritC1KillRule.md       F-EVID, F-TOKEN, F-TABLE
+      (I1 evidence-not-named escape; I3 mangled-value-token escape;
+       I7 blank-line row break)
+  .ufo/waves/round-41/wave2/RevC1Counters.md       F-EVID, F-TOKEN
+      (finding 1: I3 token-boundary grading; finding 2: I1 per-correction
+       evidence aggregation)
+  .ufo/waves/round-41/wave2/MutSkillTablePipes.md   F-TABLE
+      (bare pipe inside an entry command; leading whitespace in the first
+       cell; both survived)
+  .ufo/waves/round-41/wave2/CritDeclarationCoverage.md  F-DECL
+      (declarations are a validated subset, not a completeness assertion)
+  .ufo/waves/round-41/wave2/MutScratchTiming.md     F-SCAN
+      (a family-named stray outside the configured scan root is not observed)
+  .ufo/waves/round-41/wave2/CritI12Necessity.md     F-DECL
+      (T7: a declared path resolving outside the export; no selftest builds
+       the witness)
+  .ufo/waves/round-41/wave2/CritDigestSelftest.md   F-RECEIPT (proposed)
+      (I2 digest-after-run and duplicate-case-line mutations are not
+       exercised).  Proposed family F-RECEIPT: the r42 claim assigns receipt
+       integrity to J8, which is outside the seven routed families; the
+       L1 decides whether J8 takes these cases or whether they stay
+       unreplayed.
+  .ufo/waves/round-41/wave2/CritReceiptBootstrap.md F-RECEIPT (proposed)
+      (I2 bootstrap: the receipt is absent at the pre-Y ref, so the green
+       receipt is never established).  Same proposal as above.
+  .ufo/waves/round-41/wave2/MutSuite.findings.txt   F-TOKEN
+      (the byte-level mutant probes; the token-boundary class is the
+       replayable defect)
+  .ufo/waves/round-41/wave2/MutBindingExistence.md  F-BIND
+      (missing capture path; URL case variant; URL trailing-slash variant)
+  .ufo/waves/round-41/wave2/MutC2Chain.md           F-FLIP
+      (a frontier row's status cell flips away from admitted and the
+       counter reports 26/26 exit 0)
+  .ufo/waves/round-41/wave2/MutFrontierParser.md    F-FLIP
+      (a decoy frontier row naming a non-existent entry)
+  .ufo/waves/round-40/wave2/RevC1Counters.defeats.txt  F-TOKEN, F-TABLE, F-DECL, F-SCAN
+      (T2 substring values; T7 symlink declaration; T13 mention-only
+       registry row; T14 case/separator strays)
+  .ufo/waves/round-40/wave2/CritKillRule.md         F-SCAN
+      (F1 nested leftover; F2 container geometry; F3 dotfile escape; F4
+       case/separator escape; F5 ancestor symlink; F6 fail-open missing
+       root; F7 pending-marker spelling; F8 working-tree blindness)
+  .ufo/waves/round-40/wave2/CritKillRule.h6-escapes.sh  F-SCAN
+      (the executable H6 escape fixture: m1-m10 scenarios)
+  .ufo/waves/round-40/wave2/MutH6H10.md             F-SCAN, F-DECL, F-RECEIPT (proposed)
+      (M-H6a/M-H6b scan-root and family-prefix escapes; M-H9a a
+       declaration one line short of the added block; M-H7a the receipt
+       re-run byte comparison, which is receipt integrity and is proposed
+       F-RECEIPT)
+
+  UNMAPPED (no replayable input state in this catalog; proposed family in
+  brackets; the L1 decides):
+  .ufo/waves/round-41/wave2/MutSuite.md              [F-TOKEN]  the suite
+      byte-mutation probe; it mutates the suite, not an input state, so the
+      harness cannot replay it as a fixture.
+  .ufo/waves/round-41/wave2/MutSkillTablePipes.findings.md  [F-TABLE]
+      the narrative of the same probes b1/b2 carry.
+  .ufo/waves/round-40/wave2/CritKillRule.pending-variants.md  [F-SCAN]
+      pending-marker spellings; the pending clause is not one of the seven
+      routed families (it belongs to the lesson/erratum clause).
+  .ufo/waves/round-40/wave2/CritKillRule.worktree-clean.sh  [F-SCAN]
+      the git-status blindness (F8) needs a real git repository state, not a
+      scratch fixture.
+  .ufo/waves/round-40/wave2/RevC1Counters.md         [F-TOKEN, F-DECL]  the
+      round-40 narrative of the same T-series the defeats.txt carries
+      byte-exactly; the byte transcript is the replayable artifact.
+  .ufo/waves/round-40/wave2/MutH1H5.md              [F-RECEIPT]  the
+      round-40 receipt/isolation mutants; receipt integrity, outside the
+      seven routed families.
+  .ufo/waves/round-40/wave2/CritReceiptForge.md     [F-RECEIPT]  forged
+      receipt variants; receipt integrity, outside the seven routed
+      families.
+
+F-EVID payload vocabulary (measured)
+------------------------------------
+`evidence=<n>/<m>` counts MEMBERS — correction blocks — not identifiers:
+`m` is the member total (4 on the round-41 record set: SCORECARD.md L1602 and
+L1607, LOG.md L1736, SHONEN.md L221) and `n` is how many of them name all
+three identifiers.  The identifier set itself is fixed at the three round-41
+stems (RevC1Counters, CritKillRule, MutH6H10) and must not be widened.
+`union=<k>/3` is the cross-record overlap of those identifiers and stays 3/3
+on every mutant below — that is the defect the per-block rule closes.
+`graded=<n>/<m>` has the same member shape for the verdict clause.
+
+Measured readings on the landed J1 (lane HEAD 514ff62, fixture = lane export
+plus the round-40/wave2 grounding tree):
+
+    pristine   evidence=4/4 closed=1 rc=0  union 3/3
+    e4         evidence=1/4 closed=0 rc=1  union 3/3  fail=SCORECARD.md:1602;LOG.md:1736;SHONEN.md:221
+    e1         evidence=2/4 closed=0 rc=1  union 3/3  fail=1602;1607
+    e2         evidence=3/4 closed=0 rc=1  union 3/3  fail=LOG.md:1736
+    e3         evidence=3/4 closed=0 rc=1  union 3/3  fail=SHONEN.md:221
+
+These totals are taken with J1's default `J1_ROUNDS=(41)`.  If the L1 later
+enables the round-42 block (`J1_ROUNDS=(41 42)` plus `J1_EVIDENCE_MAP[42]`),
+the payload keeps its GRAMMAR and only the totals move: `rounds=1` becomes
+`rounds=2`, `lines=` becomes the sum over both blocks, `detail=` gains an
+`r42:` group per record, and `evidence=<n>/<m>` keeps its member-count
+meaning now taken over both blocks.  `closed=0|1` and `fail=` keep their
+meaning, and the three round-41 stems stay fixed (round 42 declares its own).
+Read `rounds=` to know which block set produced the totals.  The rejection
+key is invariant: `closed=0` or a nonzero exit, which is what the library
+tests; a `rounds=2` reading is the documented extension, not drift.
+
+Fixture requirement for F-EVID / F-TOKEN
+----------------------------------------
+A round-42 J1 limb GROUNDS each declared evidence identifier in the committed
+wave-2 artifact that carries it and fails `evidence-not-grounded` when those
+files are absent.  The grounding round is NOT the running suite's round: the
+r42 J1 audits the round-41 correction blocks (`J1_ROUNDS=(41)`) and therefore
+grounds under `.ufo/waves/round-40/wave2` even when the r42 suite runs.
+
+The library therefore carries EVERY `.ufo/waves/round-4*/wave2` tree the
+export holds in every F-EVID / F-TOKEN fixture — a superset, because a
+round-token-derived path would carry the wrong tree for a limb that audits an
+earlier round, and the pristine control would then red with
+`evidence-not-grounded`, making the case UNGRADED (exit 2) rather than
+gradable.  A records-only fixture is refused the same way: control red,
+UNGRADED, never a silent pass.
+
+J1 polarity (confirmed by that seat): `check_j1` exits 0 with `closed=1` when
+the defect is absent and exits 1 with `closed=0` when it is present.  The
+library's rejection test is `rc != 0` OR output contains `closed=0`, so J1's
+red maps to REJECTED as required.  `check_j1` reads `$1` only.
+
+Provenance of each family
+-------------------------
+  F-EVID   round-41 verifier spot-check section 5, routed item 1
+           ("I1 per-correction evidence enforcement"); defeat reproduced by
+           .ufo/waves/round-41/wave2/CritC1KillRule.md and RevC1Counters.md.
+  F-TOKEN  round-41 verifier spot-check section 5, routed item 2 ("I3
+           token-boundary grading"); defeats in CritC1KillRule.md,
+           RevC1Counters.md, MutSuite.findings.txt and the round-40
+           RevC1Counters.defeats.txt T2.
+  F-TABLE  round-41 verifier spot-check section 5, routed item 3 ("I7
+           bare-pipe/leading-whitespace parser variants"); defeats in
+           MutSkillTablePipes.md and the round-40 T13.
+  F-DECL   round-41 verifier spot-check section 5, routed item 4 ("I5/I12
+           declaration completeness"); defeats in CritDeclarationCoverage.md,
+           CritI12Necessity.md and MutH6H10.md.
+  F-SCAN   round-41 verifier spot-check section 5, routed item 5 (the
+           outside-configured-root I6 stray); defeats in MutScratchTiming.md
+           and the round-40 CritKillRule.md / CritKillRule.h6-escapes.sh.
+  F-BIND   round-41 verifier spot-check section 5, routed item 6 (the
+           capture-binding missing-path/URL variants); defeat in
+           MutBindingExistence.md.
+  F-FLIP   round-41 verifier spot-check section 5, routed item 6 (the
+           frontier counter's status-flip blind spot, 26/26 exit 0 without
+           the explicit PASS line); defeats in MutC2Chain.md and
+           MutFrontierParser.md.
+
+Measured state at the base commit
+---------------------------------
+Against the current suite bytes (corpus/instruments/r41-closure.sh at the
+round-41 judged head 1f7464612ac4c44e39886b82e812610d3c039b13, base
+5b29ea1439450b712581edf5f0f0bf98dfb262ab), the library reproduces the
+committed wave-2 findings exactly, which is the harness's own validation:
+
+  F-EVID   e1, e2, e3  ACCEPTED  (evidence=3/3, missing=0) - the round-41
+           I1 union aggregation still accepts a record whose blocks name no
+           evidence, because the union covers the other records.
+           e4           ACCEPTED  (evidence=3/3, missing=0) - the canonical
+           committed mutant (first block of every record) is masked by each
+           record's remaining blocks: the same union defect one level down.
+  F-TOKEN  t1           ACCEPTED  (tally=3/3, mangled=0) - the round-41 I3
+           defect survives.
+           t2, t3        REJECTED  (tally=2/3, mangled=1) - the same clause
+           rejects when every mention is mangled, so the token clause is
+           present but its granularity is per record, not per block.
+  F-TABLE  b1           ACCEPTED  (cells=11, broken=0) - bare pipe survives.
+           b2           ACCEPTED  (cells=10, broken=0) - leading space
+           survives.
+           b3, b4        REJECTED  (rows=0 / broken=1).
+  F-DECL   d1           ACCEPTED  (declared=153, valid=153) - dropping a
+           declaration for a changed path is not a completeness violation
+           today.
+           d2, d3        REJECTED  (canon=0/paths=0, tail<declared).
+  F-SCAN   s1           ACCEPTED  (strays=0, read=ok, scanned=0) - the
+           outside-root stray is not observed.
+           s8           ACCEPTED  (strays=0) - a stray named for the SIBLING
+           round (kasegi-r40 while grading the r41 suite) is invisible: the
+           round-41 scan matches only its own family, so the kasegi-r4[0-9]*
+           prefix coverage the claim requires is not there yet.
+           s2..s7        REJECTED  (strays=1 or read=fail).
+  F-BIND   c1           ACCEPTED  (records=55 bound=55 unbound=0) - the
+           dangling capture path is not a binding failure: the record is
+           still counted bound even though its path names no present file.
+           c2, c3        REJECTED  (unbound=1, FAIL rule=url-mismatch) - the
+           current instrument DOES reject the URL variants.
+
+  Note on the round-41 F-BIND finding (MutBindingExistence.md): that artifact
+  reports all three variants as surviving, with the byte-identical counter
+  line "records=63 bound=63 unbound=0 exit 0" for the pristine baseline AND
+  for all three mutated probes.  That identity is the signature of a probe
+  that never re-read its own mutation: the counter's --root default is the
+  lane, so a run without --root grades the pristine lane and cannot see a
+  scratch-copy edit.  Re-measured at the same reference
+  (ad7147532cb702b0d541d40499874552183d9132) with --root pointed at the
+  mutated copy, the two URL variants are rejected (FAIL rule=url-mismatch,
+  unbound=1) and only the missing-path variant survives.  The harness
+  therefore treats c1 as the open F-BIND defect and c2/c3 as already
+  closed; the L1 decides whether c2/c3 still belong in the r42 replay set.
+  F-FLIP   p1           ACCEPTED  (entries=26 pass=26 exit=0) - the flipped
+           row silently leaves the denominator, exactly as MutC2Chain
+           recorded.
+           p2           REJECTED  (entries=28 pass=27 exit=1).
+
+The ACCEPTED rows are the defeats the round-42 repairs must close.  A
+round-42 suite that rejects every one of them makes replay_defeat exit 0 for
+each family.
