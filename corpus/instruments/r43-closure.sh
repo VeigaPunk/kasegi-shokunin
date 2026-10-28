@@ -157,7 +157,14 @@ check_k8() {  # check_k8 <payload-file-with-K-lines>  -> prints one K8 line
     closed=$(grep -cE '^closed=(18/19 exit=1|19/19 exit=0)$' "$r")
     local ok_hdr=0 ok_ref=0 ok_dig=0 ok_tb=0 ok_utc=0 ok_one=0
     [ "$hdr" -eq 1 ] && ok_hdr=1
-    [ "$ref_line" = "$FULL" ] && ok_ref=1
+    if [ "$ref_line" = "$FULL" ]; then
+        ok_ref=1
+    elif git -C "$LANE" merge-base --is-ancestor "$ref_line" "$FULL" 2>/dev/null; then
+        # Y = judged head + this receipt only: the receipt names the head it was
+        # produced at, and the only path between that head and the ref under
+        # test is the receipt itself.
+        [ "$(git -C "$LANE" diff --name-only "$ref_line" "$FULL" 2>/dev/null)" = "$RECEIPT_REL" ] && ok_ref=1
+    fi
     dg="$(sha256sum "$EXPORT/corpus/instruments/r43-closure.sh" 2>/dev/null | cut -d' ' -f1)"
     [ -n "$dg" ] && [ "$digest" = "$dg" ] && ok_dig=1
     [ "$tb" -eq 1 ] && ok_tb=1
@@ -244,7 +251,13 @@ _k8_grade() {  # grade a receipt file against the re-derived payloads
     summary=$(grep -c '^selftest cases=19 failures=0$' "$r")
     closedd=$(grep -cE '^closed=(18/19 exit=1|19/19 exit=0)$' "$r")
     [ "$hdr" -eq 1 ] || return 1
-    [ "$ref_line" = "$FULL" ] || return 1
+    if [ "$ref_line" = "$FULL" ]; then
+        :
+    elif git -C "$LANE" merge-base --is-ancestor "$ref_line" "$FULL" 2>/dev/null; then
+        [ "$(git -C "$LANE" diff --name-only "$ref_line" "$FULL" 2>/dev/null)" = "$RECEIPT_REL" ] || return 1
+    else
+        return 1
+    fi
     [ "$utc" -eq 1 ] && [ "$one" -eq 1 ] || return 1
     [ "$tb" -eq 1 ] || return 1
     [ "$selft" -eq 19 ] || return 1
