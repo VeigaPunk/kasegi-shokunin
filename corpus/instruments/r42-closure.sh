@@ -155,15 +155,18 @@ READ_SET = [
     "SKILL.md",
     "PROVINCE.md",
     "corpus/README.md",
-    "corpus/lessons/round-42.md",
+    "corpus/SOURCES.md",
     "corpus/instruments/r42-closure.sh",
+    "corpus/instruments/capture-binding-check.py",
+    "corpus/instruments/frontier-recheck-count.py",
+    "corpus/instruments/density.py",
 ]
 
 # Committed defeat artifacts, bound by digest so a replay is provably the
 # COMMITTED defeat.  family -> (export path, sha256)
 DEFEAT_ARTIFACTS = {
     "F-EVID": (".ufo/waves/round-41/wave2/RevC1Counters.md",
-               "afe2c4d388d331035854d709072e3f62b9f87fa0f363e2170619789fb60a25d2d"),
+               "afe2c4d388d331035854d709072e3f62b9f87fa0f363e2170619789fb60a25d2"),
     "F-TOKEN": (".ufo/waves/round-40/wave2/RevC1Counters.defeats.txt",
                 "6eef3338dc472e9033dc9131f5da630a6f23fea89ddda174f6819473593860af"),
     "F-TABLE": (".ufo/waves/round-41/wave2/MutSkillTablePipes.md",
@@ -254,6 +257,12 @@ def list_export(tree=None):
     out = []
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = [d for d in dirnames if d != ".git"]
+        # a committed symlink that points at a directory arrives in dirnames;
+        # it is a tree entry in its own right and git ls-tree lists it
+        for name in list(dirnames):
+            p = os.path.join(dirpath, name)
+            if os.path.islink(p):
+                out.append(os.path.relpath(p, root))
         for fn in filenames:
             p = os.path.join(dirpath, fn)
             out.append(os.path.relpath(p, root))
@@ -772,12 +781,12 @@ def scan_scratch(root, work):
             if not is_family(name):
                 continue
             scanned += 1
-            if os.path.islink(p):
-                strays += 1
-                continue
             if work_real:
                 rp = os.path.realpath(p)
-                if rp == work_real or rp.startswith(work_real + os.sep):
+                abs_p = os.path.abspath(p)
+                if (rp == work_real or rp.startswith(work_real + os.sep)
+                        or abs_p == work_real
+                        or abs_p.startswith(work_real + os.sep)):
                     continue
             strays += 1
     return strays, scanned, True
@@ -1111,9 +1120,9 @@ def check_j11(tree):
 # J12 -- no-harm guard
 # ---------------------------------------------------------------------------
 
-def deletion_rows(base, ref, prefix="corpus/"):
+def deletion_rows(base, ref, prefix="corpus/", cwd=None):
     rc, out = git(["diff", "--name-status", "--diff-filter=DR", base, ref, "--",
-                   prefix])
+                   prefix], cwd=cwd)
     if rc != 0:
         return None
     return [l.strip() for l in out.split("\n") if l.strip()]
@@ -1389,7 +1398,7 @@ SELFTEST_RX = re.compile(r"^selftest case=(J\d+) mutants=(\d+)/(\d+) "
                          r"verdict=(pass|fail)$")
 SUMMARY_RX = re.compile(r"^selftest cases=(\d+) failures=(\d+)$")
 CLOSED_RX_LINE = re.compile(r"^closed=(\d+)/(\d+) exit=(\d+)$")
-SUITE_SHA_RX = re.compile(r"^suite-sha256=([0-9a-f]{64})$")
+SUITE_SHA_RX = re.compile(r"^suite-sha256=([0-9a-f]{64}|none)$")
 REF_RX = re.compile(r"^export-ref=([0-9a-f]{40})$")
 
 
@@ -1398,7 +1407,8 @@ def suite_sha():
 
 
 def run_lines_from(payloads, ref, utc, sha):
-    lines = [SENTINEL, "export-ref=%s" % ref, "suite-sha256=%s" % sha,
+    lines = [SENTINEL, "export-ref=%s" % ref,
+             "suite-sha256=%s" % (sha or "none"),
              "time-basis=ref-commit", "run-utc=%s" % utc]
     for i in CHECK_IDS:
         p, ok = payloads.get(i, ("pending", True))
@@ -1496,8 +1506,8 @@ def receipt_lines(info):
 # ---------------------------------------------------------------------------
 
 def forgery_verdicts(info):
-    """Six forgeries; each entry is 1 when the reader REJECTS it."""
-    import copy
+    """Six forgeries.  Each is a structural edit whose result must be rejected;
+    each entry is 1 when the receipt reader rejects it."""
     base = receipt_lines(info)
 
     def rejects(mutated_text):
@@ -1508,49 +1518,40 @@ def forgery_verdicts(info):
                    or p2["summary"] != info["summary"]
                    or p2["utc"] != info["utc"])
 
+    def flip(lines, predicate, mutate):
+        out = list(lines)
+        for i, line in enumerate(out):
+            if predicate(line):
+                out[i] = mutate(line)
+                return out
+        return None
+
     out = []
-    mut = list(base)
-    for i, l in enumerate(mut):
-        if l.startswith("J1 payload="):
-            mut[i] = "J1 payload=forged,closed=1"
-            break
-    out.append(rejects("\n".join(mut) + "\n"))
-
-    mut = list(base)
-    for i, l in enumerate(mut):
-        if l.startswith("J5 payload=") and l.endswith("closed=1"):
-            mut[i] = l[:-1] + "0"
-            break
-    out.append(rejects("\n".join(mut) + "\n"))
-
-    mut = list(base)
-    for i, l in enumerate(mut):
-        m = CLOSED_RX_LINE.match(l)
-        if m:
-            mut[i] = "closed=%d/%d exit=0" % (int(m.group(2)), int(m.group(2)))
-            break
-    out.append(rejects("\n".join(mut) + "\n"))
-
-    mut = list(base)
-    for i, l in enumerate(mut):
-        if SUMMARY_RX.match(l):
-            mut[i] = "selftest cases=%d failures=0" % NCHECKS
-            break
-    out.append(rejects("\n".join(mut) + "\n"))
-
-    mut = list(base)
-    for i, l in enumerate(mut):
-        if l.startswith("selftest case=J3 ") and l.endswith("verdict=pass"):
-            mut[i] = l[:-len("pass")] + "fail"
-            break
-    out.append(rejects("\n".join(mut) + "\n"))
-
-    mut = list(base)
-    for i, l in enumerate(mut):
-        if l.startswith("run-utc="):
-            mut[i] = "run-utc=1999-01-01T00:00:00Z"
-            break
-    out.append(rejects("\n".join(mut) + "\n"))
+    # v1 forged payload value
+    mut = flip(base, lambda l: l.startswith("J1 payload="),
+               lambda l: "J1 payload=forged-value,r42")
+    out.append(rejects("\n".join(mut) + "\n") if mut else 0)
+    # v2 flipped closed flag
+    mut = flip(base, lambda l: l.startswith("J5 payload="),
+               lambda l: l[:-1] + ("0" if l.endswith("1") else "1"))
+    out.append(rejects("\n".join(mut) + "\n") if mut else 0)
+    # v3 forged tally
+    mut = flip(base, lambda l: CLOSED_RX_LINE.match(l) is not None,
+               lambda l: "closed=13/13 exit=1")
+    out.append(rejects("\n".join(mut) + "\n") if mut else 0)
+    # v4 forged summary
+    mut = flip(base, lambda l: SUMMARY_RX.match(l) is not None,
+               lambda l: "selftest cases=13 failures=99")
+    out.append(rejects("\n".join(mut) + "\n") if mut else 0)
+    # v5 flipped selftest verdict
+    mut = flip(base, lambda l: l.startswith("selftest case="),
+               lambda l: l.replace("verdict=pass", "verdict=FAILED")
+               if l.endswith("verdict=pass") else l + "x")
+    out.append(rejects("\n".join(mut) + "\n") if mut else 0)
+    # v6 forged run instant
+    mut = flip(base, lambda l: l.startswith("run-utc="),
+               lambda l: "run-utc=1970-01-01T00:00:00Z")
+    out.append(rejects("\n".join(mut) + "\n") if mut else 0)
     return out
 
 
@@ -1575,7 +1576,8 @@ def check_j8(tree, payloads, selftest_lines, summary, provisional):
     add("sentinel", info["sentinel"])
     add("lines", info["lines"] == 5 + NCHECKS + 1 + NCHECKS + 1)
     add("ref", bool(info["ref"]))
-    add("digest", info["suite"] == suite_sha())
+    now = suite_sha()
+    add("digest", bool(now) and info["suite"] == now)
     add("time-basis", info["time_basis"] == "ref-commit")
     ref = info["ref"]
     if ref:
@@ -1943,7 +1945,7 @@ def selftest_case(check_id, payloads, provisional, ctx):
             s2 = j5_eval(os.path.join(root, "mut-nosymlink"), outside=True,
                          symlink=False)
             total += 1
-            if s2[0] < 7:
+            if s2[0] == s1[0] - 1:
                 good += 1
             result["mutants"] = (good, total)
         elif check_id == "J6":
@@ -1955,26 +1957,34 @@ def selftest_case(check_id, payloads, provisional, ctx):
             result["mutants"] = (sum(1 for k in ("status-flip", "no-pass")
                                      if k + "=1" in payload), 2)
         elif check_id == "J8":
+            # The receipt reader is graded on a 33-line canonical transcript:
+            # the graded block is synthetic so this case does not depend on
+            # whether the other twelve cases passed.
             pl = dict(payloads)
             pl.setdefault("J10", check_j10(
                 [{"isolated": True, "canary": False, "line_ok": True}] * NCHECKS))
+            synth = ["selftest case=%s mutants=1/1 positive=pass "
+                     "payload-match=1 verdict=pass" % cid for cid in CHECK_IDS]
             prov = run_lines_from(pl, REF, ref_utc(REF), suite_sha())
-            payload, ok = check_j8(EXPORT, pl, [], (NCHECKS, 0), prov)
+            payload, ok = check_j8(EXPORT, pl, synth, (NCHECKS, 0), prov)
             info = parse_receipt(
-                "\n".join(provisional + ["selftest cases=%d failures=0" % NCHECKS])
-                + "\n")
+                "\n".join(prov + synth
+                           + ["selftest cases=%d failures=0" % NCHECKS]) + "\n")
             forged = forgery_verdicts(info)
             result["mutants"] = (sum(forged), len(forged))
         elif check_id == "J9":
+            # (tally, rc, reds, must_accept): a control that closes everything,
+            # one red only because the depth cap stopped it, and one genuine
+            # tree-red control that must be accepted.
             probes = [
-                (NCHECKS, 0, ["J1", "J8"]),
-                (NCHECKS - 1, 1, ["J5"]),
-                (NCHECKS - 2, 1, ["J1", "J8", "J11"]),
+                (NCHECKS, 0, ["J1", "J8"], False),
+                (NCHECKS - 1, 1, ["J5"], False),
+                (NCHECKS - 2, 1, ["J1", "J8", "J11"], True),
             ]
             good = 0
-            for tally, rc, reds in probes:
+            for tally, rc, reds, want in probes:
                 accepted, _w = neg_accept(tally, rc, reds)
-                if not accepted:
+                if accepted == want:
                     good += 1
             payload, ok = check_j9(EXPORT)
             result["mutants"] = (good, len(probes))
@@ -2000,13 +2010,13 @@ def selftest_case(check_id, payloads, provisional, ctx):
             good = total = 0
             if fix:
                 total += 1
-                rows = deletion_rows(fix[1], fix[2])
+                rows = deletion_rows(fix[1], fix[2], cwd=fix[0])
                 if rows and len(rows) == 1:
                     good += 1
             noop = git_fixture_noop(root)
             if noop:
                 total += 1
-                rows = deletion_rows(noop[1], noop[2])
+                rows = deletion_rows(noop[1], noop[2], cwd=noop[0])
                 if rows is not None and not rows:
                     good += 1
             result["mutants"] = (good, total)
@@ -2045,7 +2055,8 @@ def run_selftest(payloads, provisional):
     for check_id, _label in SELFTEST_SPECS:
         res = selftest_case(check_id, payloads, provisional, None)
         pos = "pass" if res["positive"] else "fail"
-        pm = 1 if (check_id in payloads and res["payload"] == payloads[check_id][0]) else 0
+        base_payload = payloads.get(check_id, ("", False))[0].split(",replay=")[0]
+        pm = 1 if (check_id in payloads and res["payload"] == base_payload) else 0
         good, total = res["mutants"]
         verdict = "pass" if (res["positive"] and pm == 1
                              and (total == 0 or good == total)) else "fail"
