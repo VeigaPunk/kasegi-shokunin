@@ -40,12 +40,11 @@ import signal
 import subprocess
 import sys
 import tempfile
+import time
 
 SCHEMA = "kasegi-round-claims-v2"
 REQUIRED = ("counter_cmd", "expect_before", "expect_after")
 DEFAULT_TIMEOUT = 300
-PURE_DEFAULT = "/fast/scratch/hyaku/kasegi-r45/L1/pure"
-FROZEN_BASE_REV = "dc5bb8c6e31efc4a6650819df85e79b72fd64bcd"
 
 
 def snapshot(base):
@@ -182,22 +181,16 @@ def check(claims_path, tool_root, base, work=None, timeout=DEFAULT_TIMEOUT):
 # ----------------------------------------------------------------------------- selftest
 
 def locate_readme(base_arg):
-    """Real base README bytes: --base, the L1 pure export, or git show of the frozen base."""
-    cands = [p for p in (base_arg, PURE_DEFAULT) if p]
-    for root in cands:
-        p = os.path.join(root, "corpus", "README.md")
+    """README bytes for the round-44 defect shape: --base's corpus/README.md when given, else a built-in table of the
+    frontier shape (`| F<NN> | topic | admitted | entry | sources | next |`, status the THIRD cell), 25 admitted rows,
+    so the selftest has no dependency on any scratch path or git history."""
+    if base_arg:
+        p = os.path.join(base_arg, "corpus", "README.md")
         if os.path.isfile(p):
             return open(p, "rb").read(), p
-    here = os.path.dirname(os.path.abspath(__file__))
-    for top in (os.path.dirname(os.path.dirname(here)), os.getcwd()):
-        try:
-            data = subprocess.run(
-                ["git", "-C", top, "show", "%s:corpus/README.md" % FROZEN_BASE_REV],
-                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True).stdout
-            return data, "git:%s:%s" % (top, FROZEN_BASE_REV)
-        except (OSError, subprocess.CalledProcessError):
-            continue
-    return None, None
+    rows = ["| id | topic | status | entry | sources | next |", "|---|---|---|---|---|---|"]
+    rows += ["| F%02d | topic %d | admitted | knowledge/e%d.md | S%03d | next |" % (i, i, i, i) for i in range(1, 26)]
+    return ("\n".join(rows) + "\n").encode(), "builtin:25-admitted-frontier-rows"
 
 
 def admitted_rows(readme_bytes):
@@ -329,6 +322,43 @@ def selftest(work=None, base_arg=None, timeout=DEFAULT_TIMEOUT):
     case("14-mixed-ok-and-fail",
          [claim("A", cmd="echo 'T fixed=0 exit=1'; : {tree}"), claim("B", cmd="echo 'nope'; : {tree}")], 1,
          ["FC-NO-MATCH"], extra=lambda o: ("claims=2 base_ok=1 exit=1" == o[-1].replace("freeze-check ", ""), "claims=2 base_ok=1"))
+
+    # 15 expect_after as a SUBSTRING of a longer base line must still trip FC-AFTER-AT-BASE (a whole-line-only check would miss it)
+    case("15-after-value-inside-longer-line",
+         [claim(cmd="echo 'T fixed=0 exit=1'; echo 'note: T fixed=1 exit=0 (stale)'")], 1, ["FC-AFTER-AT-BASE"])
+
+    # 16 mtime-only mutation of a base file (same size, same bytes) is a mutation
+    case("16-counter-touches-base-file-same-size",
+         [claim(cmd="sleep 0.05; printf 'x\\n' > {tree}/marker.txt; echo 'T fixed=0 exit=1'")], 1, ["FC-BASE-MUTATED"])
+
+    # 17 a new empty directory in the base is a mutation
+    case("17-counter-makes-base-dir",
+         [claim(cmd="mkdir {tree}/newdir; echo 'T fixed=0 exit=1'")], 1, ["FC-BASE-MUTATED"])
+
+    # 18 timeout kills the WHOLE process group (a grandchild must not outlive the check)
+    t18 = time.monotonic()
+    case("18-timeout-kills-grandchild",
+         [claim(cmd="(sleep 59.37 &) ; sleep 59.38")], 1, ["FC-TIMEOUT"], tmo=1)
+    el18 = time.monotonic() - t18
+    results.append(("18a-timeout-returns-promptly", el18 < 20, "elapsed=%.1fs (a kill that leaves a grandchild holding the pipe blocks ~59s)" % el18))
+    survivors = []
+    for pid in os.listdir("/proc"):
+        if pid.isdigit():
+            try:
+                cl = open("/proc/%s/cmdline" % pid, "rb").read().replace(b"\0", b" ")
+            except OSError:
+                continue
+            if b"sleep 59.37" in cl or b"sleep 59.38" in cl:
+                survivors.append(pid)
+    results.append(("18b-no-grandchild-survives-timeout", not survivors, "survivors=%s" % survivors))
+    for pid in survivors:
+        try:
+            os.kill(int(pid), 9)
+        except OSError:
+            pass
+
+    # 19 a command that names only {base} is fine (tree == base)
+    case("19-base-placeholder-only", [claim(cmd=": {base}; echo 'T fixed=0 exit=1'", raw=True)], 0, [])
 
     failures = 0
     lines = []

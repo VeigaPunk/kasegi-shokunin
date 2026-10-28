@@ -166,4 +166,4 @@ Correction (round 38): PROVINCE.md L79-L152 — the whole round-37 append — ho
 
 [r44 Frontier amendment, appended 2026-10-28, end-of-file append per R6] F26 — Google Cloud VRP program scope and customer-resource testing boundary — admitted round 44; entry `corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md` (source S069)
 
-[r45 Frontier amendment, appended 2026-10-28, end-of-file append per R6] F27 — Linux kernel security-bugs reporting process (private security list, 7-day release postponement ceiling with a 14-day exception, AI-found, binary-only and unreproducible refusal rules) — admitted round 45; entry `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` (source S071)
+[r45 Frontier amendment, appended 2026-10-28, end-of-file append per R6] F27 — Linux kernel security-bugs reporting process (e-mail report channel with a security-team Cc rule, 7-day release postponement ceiling with a 14-day exception, AI-found, binary-only and unreproducible refusal rules) — admitted round 45; entry `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` (source S071)

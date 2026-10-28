@@ -635,8 +635,8 @@ Correction (round 44, appended 2026-10-28): the novel F26 ground is the Cloud VR
 
 The coverage map and frontier table above are not edited in place (R6). The round-45 entry
 `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` (F27, source S071) records the
-Linux kernel's own security-bugs reporting process as published on docs.kernel.org: the private
-security list, the report requirements (version range, reproducer, no binary-only executables),
+Linux kernel's own security-bugs reporting process as published on docs.kernel.org: the e-mail
+report channel and its security-team Cc rule, the report requirements (version range, reproducer, no binary-only executables),
 the fix-release postponement ceiling (7 calendar days from the start of the release process, with an
 exceptional extension to 14), and the process's refusal rules (AI-assisted finds treated as public;
 unreproducible issues are not security bugs). Its evidence is limited to this one process page; it
@@ -644,10 +644,10 @@ does not assert how other projects or vendors handle disclosure.
 
 | Area | Entry | Source basis |
 |---|---|---|
-| Linux kernel security-bugs reporting process: private report channel, release postponement ceiling and refusal rules (round 45) | `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` | S071 — docs.kernel.org security-bugs process page (`_sources/process/security-bugs.rst.txt` capture), opened 2026-10-28; capture and located quotes in `corpus/source-snapshots/round-45/manifest.json` |
+| Linux kernel security-bugs reporting process: e-mail report channel, release postponement ceiling and refusal rules (round 45) | `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` | S071 — docs.kernel.org security-bugs process page (`_sources/process/security-bugs.rst.txt` capture), opened 2026-10-28; capture and located quotes in `corpus/source-snapshots/round-45/manifest.json` |
 
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
-| F27 | Linux kernel's own security-bugs reporting process: the private security list, the 7-day release postponement ceiling with a 14-day exception, and the AI-found, binary-only and unreproducible refusal rules | admitted | `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` | S071 | Keep the kernel process distinct from other projects' and vendors' disclosure policies; re-open the process page before relying on its dated postponement figures. |
+| F27 | Linux kernel's own security-bugs reporting process: the e-mail report channel and its security-team Cc rule, the 7-day release postponement ceiling with a 14-day exception, and the AI-found, binary-only and unreproducible refusal rules | admitted | `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` | S071 | Keep the kernel process distinct from other projects' and vendors' disclosure policies; re-open the process page before relying on its dated postponement figures. |
 
 [r45 amendment, appended 2026-10-28] The 26/26 count on the round-44 amendment line above records the round-44 state and is retained as history (R9). At round 45 the public-practice frontier stands at **27/27 admitted** — F01-F26 as previously recorded and F27 admitted this round. The lost-domain denominator remains 0/18; the frontier count is separate.

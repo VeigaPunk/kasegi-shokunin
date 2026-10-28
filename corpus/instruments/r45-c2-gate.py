@@ -57,10 +57,15 @@ CENSUS = "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh"
 TOOL_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PINS = {
     "S071.txt": "0918dcfa7979f348c9004bf3ce6e183507367185fe69f4e0c7688521e9346f40",
-    "manifest.json": "125339d9ec21bfdc7a07a164fd2e7023c1f4976daa1f34e18aaba4edba05f459",
+    "manifest.json": "e227d8e71f32603fed50eb1304fa332e6202dcf042e96897bb78710ef615734b",
+    "entry": "bec66635c49f20cde8d0e194b16e172d6889101e0aee9248c095f9a57d19d267",
+    "S071-row": "77484f859b76575e2fcd9885791ba4d3c3a226fb10f8753f4153a9dee4e0b814",
+    "F27-row": "04d7fdd0f6ddd24ed0911bb6a0ff6d76c9330877759cc38828b5b8a91508d532",
+    "source-recheck.py": "fd2e01e88c8c45a949f48d67b3154ae87a95aeba0b6a9c42fbf64641b5b9c003",
+    "base-knowledge-content": "3626acec0fddb583ae5553b76aa3c53cb777f31f29f28f4d846cf129b4f1f65c",
     "base-knowledge-names": "a93599be6ca5784d5fbcdc6340d14b6cfc7409ab392ab7399bc934a873c66bed",
 }
-if os.environ.get("R45_PINS_OVERRIDE"):  # selftests only: the grader's environment, never the graded tree's
+if os.environ.get("R45_PINS_OVERRIDE"):  # selftests only: the grader's environment, never the graded tree's; a null value disables that one pin
     PINS.update(json.load(open(os.environ["R45_PINS_OVERRIDE"])))
 SECTIONS = ["## Scope and decision rule", "## Overlap and novelty", "## Limits", "## Falsifiable package rule"]
 URL = "https://docs.kernel.org/process/security-bugs.html"
@@ -108,12 +113,14 @@ def sha(b: bytes) -> str:
 def live_lines(t: str) -> list[str]:
     """Lines outside HTML comments and fenced code blocks."""
     t = re.sub(r"(?s)<!--.*?-->", "", t)
-    out, fence = [], False
+    out, fence = [], None
     for ln in t.splitlines():
-        if ln.strip().startswith("```"):
-            fence = not fence
+        st = ln.strip()
+        if st.startswith("```") or st.startswith("~~~"):
+            mark = st[:3]
+            fence = None if fence == mark else (fence or mark)
             continue
-        if not fence:
+        if fence is None:
             out.append(ln)
     return out
 
@@ -167,6 +174,9 @@ def g1(root: str) -> tuple[bool, str]:
     f27 = [r for r in rows if r[0] == "F27"][0]
     if f27[2] != "admitted" or p is None:
         return False, why
+    raw = [ln for ln in live_lines(txt(root, "corpus/README.md") or "") if re.match(r"^\| F27 \|", ln)]
+    if len(raw) != 1 or (PINS["F27-row"] is not None and sha(raw[0].strip().encode("utf-8")) != PINS["F27-row"]):
+        return False, "F27-row-not-the-pinned-line"
     return True, f"rows=27 admitted=27 {why}"
 
 
@@ -174,7 +184,10 @@ def g2(root: str) -> tuple[bool, str]:
     p, why = entry_path(root)
     if p is None:
         return False, why
-    body = txt(root, p) or ""
+    raw_b = open(os.path.join(root, p), "rb").read()
+    if PINS["entry"] is not None and sha(raw_b) != PINS["entry"]:
+        return False, "entry-not-the-pinned-bytes"
+    body = "\n".join(live_lines(raw_b.decode("utf-8", "replace")))
     head = body.splitlines()[:8]
     ok_s = any(h.startswith("source: S071 — " + URL + " — ") for h in head)
     ok_v = any(h == "verified-at: 2026-10-28" for h in head)
@@ -202,6 +215,8 @@ def g3(root: str) -> tuple[bool, str]:
         c = [x.strip() for x in hits[0].strip().strip("|").split("|")]
         if len(c) == 11:
             row = c
+        if PINS["S071-row"] is not None and sha(hits[0].strip().encode("utf-8")) != PINS["S071-row"]:
+            return False, "S071-row-not-the-pinned-line"
     if row is None:
         return False, "row-S071=absent-or-malformed"
     try:
@@ -226,7 +241,10 @@ def g4(root: str) -> tuple[bool, str]:
         return False, "manifest-absent"
     if sha(open(man, "rb").read()) != PINS["manifest.json"]:
         return False, "manifest-not-the-pinned-bytes"
-    rc, out = run([sys.executable, os.path.join(TOOL_ROOT, "corpus/instruments/source-recheck.py"), "--manifest", man,
+    rcb = open(os.path.join(TOOL_ROOT, "corpus/instruments/source-recheck.py"), "rb").read()
+    if PINS["source-recheck.py"] is not None and sha(rcb) != PINS["source-recheck.py"]:
+        return False, "source-recheck-not-the-pinned-bytes"
+    rc, out = run([sys.executable, "-I", os.path.join(TOOL_ROOT, "corpus/instruments/source-recheck.py"), "--manifest", man,
                    "--source", "S071"], root)
     oks = len(re.findall(r"^S071:Q\d+ OK ", out, re.M))
     mt = norm(open(man, encoding="utf-8").read())
@@ -265,6 +283,11 @@ def g6(root: str) -> tuple[bool, str]:
     p, why = entry_path(root)
     base_like = [n for n in names if p is None or "corpus/knowledge/" + n != p]
     base_ok = sha(("\n".join(base_like) + "\n").encode()) == PINS["base-knowledge-names"]
+    try:
+        cont = sha("\n".join("%s %s" % (n, sha(open(os.path.join(d, n), "rb").read())) for n in base_like).encode())
+    except OSError:
+        cont = ""
+    base_ok = base_ok and (PINS["base-knowledge-content"] is None or cont == PINS["base-knowledge-content"])
     sized = p is not None and os.path.getsize(os.path.join(root, p)) >= 3000
     return (len(names) == 64 and base_ok and sized), f"knowledge={len(names)} base-names-intact={int(base_ok)} entry-bytes-ok={int(sized)}"
 

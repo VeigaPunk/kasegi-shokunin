@@ -1,0 +1,19 @@
+# freeze-tree reading: freeze commit 8cf62c8 export, counters at their freeze-commit bytes (v1)
+$ python3 corpus/instruments/r45-routed-defects.py --root <freeze> --baseline <base>
+limb R1 fixed=0 read=row-S072=absent
+limb R2 fixed=0 read=quality-not-append-only-or-unchanged
+limb R3 fixed=0 read=selftest-rc=2-tokens=None
+limb R4 fixed=0 read=freeze-check-absent
+limb R5 fixed=0 read=refiled-absent
+routed-defects total=5 fixed=0 unresolved=5 exit=1
+exit=1
+$ python3 corpus/instruments/r45-c2-gate.py --root <freeze>
+gate G1 pass=0 read=rows=26 admitted=26 dup=0
+gate G2 pass=0 read=F27-rows=0
+gate G3 pass=0 read=row-S071=absent-or-malformed
+gate G4 pass=1 read=recheck-rc=0 quotes-ok=5 frozen-cores-missing=0
+gate G5 pass=0 read=F27-rows=0
+gate G6 pass=0 read=knowledge=63
+gate G7 pass=1 read=census-rc=0
+c2-gate fixed=2/7 exit=1
+exit=1

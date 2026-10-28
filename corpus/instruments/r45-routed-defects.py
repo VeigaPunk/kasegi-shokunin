@@ -66,10 +66,19 @@ import tempfile
 TOOL_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PINS = {
     "S072.txt": "364166c4a23e5071f6768a158253366db0e8d1ca6f1ce14a9a7384a60ba0a025",
-    "freeze-check.py": "a38d8dc1319ff0bdab1bc557643b192cf201312fe0f7d681e430c40817305888",
-    "r44-frontier-count.py": "2409d2402c65522f02dbbaad9b7c472aa625eda5a5847215f63af208dcc9f0d4",
+    "freeze-check.py": "6809c99cd9a491bd343365ed36548d8ae81cd55d1a29d47252f7aa898cab079c",
+    "r44-frontier-count.py": "966da7739160a837f57f06e98079c3d7f04ab4975d97d53126a56a1df70cf93a",
     "r44-routed-defects.py": "d5438c67befaefadf46e44474330771d5d5b7b3b8f0c5ec3df11ef422ca7ba90",
     "refiled-body": "03fe3af53006dc7561b6080b5bd923312569a5a2b8ca3d7b6ad3722da9f226c0",
+    "R1-row": "a81e05d28128cf1d76b9d7616ea955cbd4e4fecc2af60a9a8a149d0803b11b9c",
+    "R1-corr": "1a7dbdefe50978a80353c2533027690c03c8608a844175ef4243499b7aa0c187",
+    "R2-R47": "ab375d48780d09566806ce68ed47a60b06cc7e40891006cb5d5bc77d51263900",
+    "R2-R48": "7255d97d7456b8ea8a3d22f04d64681a7054331efb55c0c5d55093b761135ef7",
+    "R2-R49": "e1b43f7ae5401bcbf829968004ff80a0b624b3c282b0d96696c3a07399cfb9d4",
+    "R3-skill-r44-frontier-count.py": "035d2e9feb9bdbb2558d4615222c8f6be696e3bd95b75dcc6f620aa6d7f9c02b",
+    "R3-skill-r44-routed-defects.py": "bfbe33563f6b9e9a243302698d38aeb07d081ec3644f163f3afd3efa43b0efea",
+    "R3-skill-wave-registry.py": "f6064805acfe0fe4309871216943f51a0b91962f16976c24303015aee5eb36c9",
+    "R3-readme-r44-frontier-count.py": "035d2e9feb9bdbb2558d4615222c8f6be696e3bd95b75dcc6f620aa6d7f9c02b",
     "claims.json": "bbe40503281c90eb9d70f469d7bac10125b285758ca9675be9894ce6c12c6206",
 }
 if os.environ.get("R45_PINS_OVERRIDE"):  # selftests only: the grader's environment, never the graded tree's
@@ -87,17 +96,31 @@ def norm(s: str) -> str:
     return " ".join(s.split())
 
 
+def live_lines(t: str) -> list[str]:
+    """Lines outside HTML comments and fenced code blocks (``` and ~~~)."""
+    t = re.sub(r"(?s)<!--.*?-->", "", t)
+    out, fence = [], None
+    for ln in t.splitlines():
+        st = ln.strip()
+        if st.startswith("```") or st.startswith("~~~"):
+            mark = st[:3]
+            fence = None if fence == mark else (fence or mark)
+            continue
+        if fence is None:
+            out.append(ln)
+    return out
+
+
+def pinned(key: str, line: str) -> bool:
+    if key in PINS and PINS[key] is None:  # grader-side override only (selftests): this one pin is disabled
+        return True
+    return sha(line.strip().encode("utf-8")) == PINS.get(key)
+
+
 def registry_lines(root: str) -> list[str]:
     """Lines of the real registry table only: after `## Registry`, before the next `## `, outside fences and HTML comments."""
-    t = txt(root, "corpus/SOURCES.md") or ""
-    t = re.sub(r"(?s)<!--.*?-->", "", t)
-    out, inreg, fence = [], False, False
-    for ln in t.splitlines():
-        if ln.strip().startswith("```"):
-            fence = not fence
-            continue
-        if fence:
-            continue
+    out, inreg = [], False
+    for ln in live_lines(txt(root, "corpus/SOURCES.md") or ""):
         if re.match(r"^ {0,3}## ", ln):
             inreg = bool(re.match(r"^ {0,3}## Registry\b", ln))
             continue
@@ -150,12 +173,15 @@ def limb_r1(root: str, base: str) -> tuple[bool, str]:
     if row is None:
         return False, "row-S072=absent"
     # columns: id source kind tier scope anchor teaches status opened recheck used-by
+    rowline = [ln for ln in registry_lines(root) if re.match(r"^ {0,3}\|\s*S072\s*\|", ln)][0]
+    if not pinned("R1-row", rowline):
+        return False, "S072-row-not-the-pinned-line"
     teaches, status = row[6], row[7]
     if not teaches.startswith("supersedes S070 —"):
         return False, "teaches-not-supersedes"
     if status != "rejected":
         return False, f"status={status}"
-    if not re.search(r"flip:\s*\S", teaches):
+    if not re.search(r"flip:\s*(?:\S+\s+){7,}\S+", teaches):  # a checkable condition: at least eight words, not `tbd`
         return False, "flip-absent"
     if not re.search(r"(?<![0-9])10[ ,]?029(?![0-9])", teaches):
         return False, "size-token-absent"
@@ -165,15 +191,15 @@ def limb_r1(root: str, base: str) -> tuple[bool, str]:
     new = raw_row_line(root, "S070")
     if old is None or old != new:
         return False, "S070-row-changed-or-baseline-absent"
-    man = "corpus/source-snapshots/round-45/manifest.json"
+    man = ".ufo/waves/round-45/source-recon/S072.manifest.json"
     if rd(root, man) is None:
         return False, "manifest-absent"
-    rc, out = run([sys.executable, os.path.join(TOOL_ROOT, "corpus/instruments/source-recheck.py"), "--manifest",
+    rc, out = run([sys.executable, "-I", os.path.join(TOOL_ROOT, "corpus/instruments/source-recheck.py"), "--manifest",
                    os.path.join(root, man), "--source", "S072"], root)
     oks = len(re.findall(r"^S072:Q\d+ OK ", out, re.M))
     if rc != 0 or "S072:sha256 OK" not in out or oks < 2:
         return False, f"recheck-rc={rc}-quotes={oks}"
-    snap = rd(root, "corpus/source-snapshots/round-45/S072.txt")
+    snap = rd(root, ".ufo/waves/round-45/source-recon/S072.txt")
     if snap is None or sha(snap) != PINS["S072.txt"] or PINS["S072.txt"] not in row[5]:
         return False, "snapshot-not-the-pinned-capture-or-not-in-anchor"
     snapnorm = norm(snap.decode("utf-8", "replace"))
@@ -185,8 +211,8 @@ def limb_r1(root: str, base: str) -> tuple[bool, str]:
     hit = []
     for ln in tail.splitlines():
         if ln.startswith("Correction (round 45") and "S072" in ln and re.search(r"(?<![0-9])10[ ,]?029(?![0-9])", ln):
-            spans = re.findall(r"[\u201c\"]([^\u201d\"]{30,})[\u201d\"]", ln)
-            if any(len(norm(sp).split()) >= 6 and norm(sp) in snapnorm for sp in spans):
+            spans = re.findall("\u201c([^\u201d]{30,})\u201d", ln)
+            if any(len(norm(sp).split()) >= 6 and norm(sp) in snapnorm for sp in spans) and pinned("R1-corr", ln):
                 hit.append(ln)
     if not hit:
         return False, "lesson-correction-absent-or-quotes-no-located-S072-span"
@@ -205,7 +231,8 @@ def limb_r2(root: str, base: str) -> tuple[bool, str]:
     qb = rd(base, "corpus/QUALITY.md")
     if q is None or qb is None or not q.startswith(qb) or q == qb:
         return False, "quality-not-append-only-or-unchanged"
-    tail = q[len(qb):].decode("utf-8", "replace")
+    tail_raw = q[len(qb):].decode("utf-8", "replace")
+    tail = "\n".join(live_lines(tail_raw))
     if len(re.findall(r"^## Round-45 additions", tail, re.M)) != 1:
         return False, "round-45-heading!=1"
     seen = 0
@@ -217,6 +244,8 @@ def limb_r2(root: str, base: str) -> tuple[bool, str]:
         if len(cells) != 3:
             return False, f"{rid}-cells={len(cells)}"
         crit, ground = cells[1], cells[2]
+        if not pinned("R2-" + rid, lines[0]):
+            return False, f"{rid}-row-not-the-pinned-line"
         if "corpus/lessons/round-44.md" not in ground:
             return False, f"{rid}-ungrounded"
         for nd in needles:
@@ -248,7 +277,7 @@ def limb_r3(root: str, base: str) -> tuple[bool, str]:
     b = rd(root, "corpus/instruments/r44-frontier-count.py")
     if b is None or sha(b) != PINS["r44-frontier-count.py"]:
         return False, "r44-frontier-count-not-the-pinned-bytes"
-    rc, out = run([sys.executable, s, "--selftest"], root)
+    rc, out = run([sys.executable, "-I", s, "--selftest"], root)
     tk = selftest_tokens(out)
     if rc != 0 or tk is None or tk[1] != 0 or tk[0] < 8:
         return False, f"selftest-rc={rc}-tokens={tk}"
@@ -256,16 +285,18 @@ def limb_r3(root: str, base: str) -> tuple[bool, str]:
     skb = txt(base, "SKILL.md") or ""
     if not sk.startswith(skb):
         return False, "SKILL-not-append-only"
-    m = re.search(r"^## Round-45 Gates & probes registry addition.*?(?=^## |\Z)", sk[len(skb):], re.M | re.S)
+    m = re.search(r"^## Round-45 Gates & probes registry addition.*?(?=^## |\Z)", "\n".join(live_lines(sk[len(skb):])) + "\n", re.M | re.S)
     if not m:
         return False, "registry-section-absent"
     for name in ("r44-frontier-count.py", "r44-routed-defects.py", "wave-registry.py"):
         rows = [ln for ln in m.group(0).splitlines() if re.match(r"^\|\s*%s\s*\|" % re.escape(name), ln)]
         if len(rows) != 1 or len(rows[0].strip().strip("|").split("|")) != 8:
             return False, f"registry-row-{name}={len(rows)}"
-    rd_ = txt(root, "corpus/instruments/README.md") or ""
-    if not re.search(r"^\|\s*`?r44-frontier-count\.py`?\s*\|", rd_, re.M):
-        return False, "readme-row-absent"
+        if not pinned("R3-skill-" + name, rows[0]):
+            return False, f"registry-row-{name}-not-the-pinned-line"
+    rd_rows = [ln for ln in live_lines(txt(root, "corpus/instruments/README.md") or "") if re.match(r"^\|\s*`?r44-frontier-count\.py`?\s*\|", ln)]
+    if len(rd_rows) != 1 or not pinned("R3-readme-r44-frontier-count.py", rd_rows[0]):
+        return False, "readme-row-absent-or-not-the-pinned-line"
     return True, f"selftest-cases={tk[0]}"
 
 
@@ -275,7 +306,7 @@ def limb_r4(root: str, base: str) -> tuple[bool, str]:
         return False, "freeze-check-absent"
     if sha(open(fc, "rb").read()) != PINS["freeze-check.py"]:
         return False, "freeze-check-not-the-pinned-bytes"
-    rc, out = run([sys.executable, fc, "--selftest"], root)
+    rc, out = run([sys.executable, "-I", fc, "--selftest"], root)
     tk = selftest_tokens(out)
     if rc != 0 or tk is None or tk[1] != 0 or tk[0] < 6:
         return False, f"selftest-rc={rc}-tokens={tk}"
@@ -283,7 +314,7 @@ def limb_r4(root: str, base: str) -> tuple[bool, str]:
     cb = rd(root, ".ufo/waves/round-45/claims.json")
     if cb is None or sha(cb) != PINS["claims.json"]:
         return False, "claims-not-the-frozen-bytes"
-    rc, out = run([sys.executable, fc, "--claims", claims, "--tool-root", TOOL_ROOT, "--base", base], TOOL_ROOT)
+    rc, out = run([sys.executable, "-I", fc, "--claims", claims, "--tool-root", TOOL_ROOT, "--base", base], TOOL_ROOT)
     if rc != 0 or not re.search(r"^freeze-check claims=2 base_ok=2\b", out, re.M):
         return False, f"replay-rc={rc}"
     return True, f"selftest-cases={tk[0]} replay=base_ok=2"
@@ -303,6 +334,8 @@ def limb_r5(root: str, base: str) -> tuple[bool, str]:
     end = [i for i, ln in enumerate(lines) if ln == "exit=0"]
     if len(end) != 1 or end[0] <= inv[0]:
         return False, "exit0-line-absent"
+    if inv[0] != 0 or end[0] != len(lines) - 1:  # QUALITY R37/R39: no hand-written header, nothing appended after the run
+        return False, "receipt-has-lines-before-the-invocation-or-after-exit"
     body = lines[inv[0] + 1:end[0]]
     o = rd(base, ".ufo/waves/round-44/controls/final-attempt3.txt")
     n = rd(root, ".ufo/waves/round-44/controls/final-attempt3.txt")
