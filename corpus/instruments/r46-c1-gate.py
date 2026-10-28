@@ -36,7 +36,8 @@ TWO MODES
         L7  entries gated at BASE and still gated at TREE are byte-identical to BASE
     Rechecks run with the leading `cd <path> &&` stripped and cwd = TREE (an export root measures itself, not the live lane), under the
     grader's own environment: BASE and TREE are read under the same HOME, so a host change moves both readings and L2 (the regrounded set)
-    stays 0; gated = parses (`bash -n`) and exits non-zero; broken = does not parse.
+    stays 0; only allow-listed line shapes are executed (see allowed(): `test`, `git -C <dir> rev-parse HEAD`, `python3 corpus/instruments/<x>.py`
+    run from THIS lane's instruments, a minimal environment); gated = allow-listed, parses and exits non-zero; broken = does not parse or is not allow-listed.
 
     READ-ONLY on TREE and BASE; scratch under --work / TMPDIR; never runs git; stdlib only.
 OUTPUT
@@ -71,8 +72,24 @@ def exact_line(entry_name: str) -> re.Pattern:
                       + re.escape(entry_name) + r"(?:[ \t]+#.*)?$")
 
 
+TOOL_LANE = os.path.dirname(os.path.dirname(os.path.dirname(SELF)))
+SEG_TEST = re.compile(r"^test (?:! )?-[defs] [~A-Za-z0-9_./-]+$")
+SEG_GIT = re.compile(r"^git -C [~A-Za-z0-9_./-]+ rev-parse HEAD$")
+SEG_PY = re.compile(r"^python3 corpus/instruments/[A-Za-z0-9_.-]+\.py(?: (?:[A-Za-z0-9_./~=:,+-]+|'[^'$`\\]*'))*(?: \| grep -x '[^'$`\\]*')?$")
+
+
+def allowed(cmd: str) -> bool:
+    """Only the line shapes the lane's 64 rechecks actually use are ever executed: `&&`-joined `test`, `set -o pipefail`,
+    `git -C <dir> rev-parse HEAD` and `python3 corpus/instruments/<name>.py <plain args> [| grep -x '<literal>']`.
+    Anything else is `broken` (never run), so a hostile or careless line turns L1 red instead of running."""
+    segs = cmd.split(" && ")
+    return all(SEG_TEST.match(x) or x == "set -o pipefail" or SEG_GIT.match(x) or SEG_PY.match(x) for x in segs)
+
+
 def grader_env() -> dict:
-    return dict(os.environ)  # unchanged: the BASE reading is taken under the same environment, so a host change moves both
+    """Minimal environment: no tokens, agent sockets or other host secrets reach a tree-supplied line. HOME is kept (the
+    lines test ~/Projects/...); BASE and TREE are read under the same one, so a host change moves both readings."""
+    return {k: os.environ[k] for k in ("HOME", "PATH", "TMPDIR") if k in os.environ} | {"LANG": "C"}
 
 
 def norm(s: str) -> str:
@@ -180,6 +197,12 @@ def classify(root: str) -> dict[str, dict]:
             out[fn] = {"line": line, "class": "broken", "n": n}
             continue
         cmd = CD_RE.sub("", line, count=1)
+        cmd = re.sub(r"[ \t]+#.*$", "", cmd)
+        if not allowed(cmd):
+            out[fn] = {"line": line, "class": "broken", "n": n}
+            continue
+        # instruments run from the grader's own lane (cwd stays the tree): a tree cannot swap in its own instrument
+        cmd = cmd.replace("python3 corpus/instruments/", "python3 " + TOOL_LANE + "/corpus/instruments/")
         try:
             rc = subprocess.run(["bash", "-c", cmd], cwd=root, capture_output=True, timeout=180, env=grader_env()).returncode
         except subprocess.TimeoutExpired:
