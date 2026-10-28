@@ -1804,3 +1804,5 @@ Erratum sweep (round 42, r41 C1 grading): no round-41 line in any grading slot g
   (`.ufo/waves/round-42/wave1-dispatch.json`); wave 2 `kasegi-r42-falsify` 36 seats dispatched against the repaired head; dead seats counted from `wave2-results.json` in the round report.
 - Tooling: no pacman transactions (host-wide pause); package/install moves: none this round.
 
+
+Correction (round 43): the sentence at LOG.md:1804 — "wave 2 `kasegi-r42-falsify` 36 seats dispatched against the repaired head; dead seats counted from `wave2-results.json` in the round report" — is superseded as never-true: wave 2 `kasegi-r42-falsify` was handed off and not taken, no seat ran, and `.ufo/waves/round-42/wave2-results.json` does not exist at `ab98fac9dce87130bc4f66de89e30650d63943dc` (`ls .ufo/waves/round-42/wave2-results.json` → "No such file or directory", exit 2; that directory holds only `kasegi-r42-falsify.ready`, `wave2-dispatch.json`, `wave2-spec.json`, `wave2-run.err` and the `wave2/` receipt directory). The executed round-42 wave is wave 1 `kasegi-r42-build`, 64 seats (`kasegi-r42-build-results.json`), so the round total is 64, not 100. RD42-2.

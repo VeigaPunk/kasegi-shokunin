@@ -147,3 +147,6 @@ each committed defeat artifact re-executed by its replay limb.
 The round-41 Gate recorded no reject, so the outside spot-check had nothing to sample (D-r41-2). This
 block records two, each with URL, 2026-10-28 access date, a located ≤25-word quote, an honest reason on
 a named criterion, and a flip condition.
+
+
+Correction (round 43): the two wave-2 sentences at corpus/lessons/round-42.md:11 ("wave 2 dispatched 36 seats; the round total is 100") and :16 ("36 seats, 32 attack roles"), together with the `## Wave-2 falsification` section at :52 whose promised per-claim verdicts, attack tallies and per-family replay status depend on a round-42 falsify report that was never produced, are superseded as never-true: wave 2 `kasegi-r42-falsify` was handed off and not taken, no seat ran, and `.ufo/waves/round-42/wave2-results.json` does not exist at `ab98fac9dce87130bc4f66de89e30650d63943dc`, so the round total is 64 (wave 1 `kasegi-r42-build`, 64 results) and the `## Wave-2 falsification` promise was never fulfilled — the section promised verdicts the wave never generated. RD42-3, RD42-4.
