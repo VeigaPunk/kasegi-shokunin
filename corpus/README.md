@@ -598,4 +598,3 @@ F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round
 37, F21 at round 38, F22 at round 39, F23 at round 40, F24 at round 41, F25 at round 42. The 0/18
 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
 frontier count stays outside it.
-
