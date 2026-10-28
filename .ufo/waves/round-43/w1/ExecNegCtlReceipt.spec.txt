@@ -1,0 +1,241 @@
+ROUND-43 RECEIPT CONTRACT (v3) — normative grammar for K8
+==========================================================
+File: .ufo/waves/round-43/final-gates/all-gates.txt
+Meaning: the receipt IS the transcript of ONE graded run of
+corpus/instruments/r43-closure.sh (the run and its graded selftest, printed
+into one stream and teed without an edit). It is not a summary: every check's
+payload value and every graded selftest case line the run printed appears in
+it, byte for byte, in the order below.
+
+1. SHAPE
+--------
+Exactly 2N+7 = 45 lines, each terminated by one LF, no blank line, no leading
+or trailing whitespace, no carriage return, no BOM. LF-only. The file ends
+after the 45th LF. N = 19 (the suite's check count).
+
+  line   1      header line 1
+  lines  2-5    header lines 2-5
+  lines  6-24   payload lines, K1..K19 in ascending numeric order
+  line   25     closed line
+  lines  26-44  graded selftest case lines, K1..K19 in ascending order
+  line   45     selftest summary
+
+A transcript of two runs concatenated is 90 lines and is also rejected by the
+`lines` fact and by the `composed-of-two-runs` class (section 7).
+
+2. HEADER (lines 1-5)
+---------------------
+  line 1  all-gates v3
+  line 2  export-ref=<40 lowercase hex>
+  line 3  suite-sha256=<64 lowercase hex>
+  line 4  time-basis=ref-commit
+  line 5  run-utc=<YYYY-MM-DDTHH:MM:SSZ>
+
+  line 2  the commit the transcript was teed at: the judged head J when the
+          receipt is committed at Y = J + this file. The commit a receipt
+          cannot contain is never the commit it names.
+  line 3  sha256 of corpus/instruments/r43-closure.sh AS EXPORTED at the
+          verification ref (never of a working-tree copy).
+  line 4  literal; there is no other time basis.
+  line 5  the committer instant (%ct) of the ref on line 2, formatted UTC.
+          It is a property of that commit, never a wall-clock stamp.
+
+3. PAYLOAD LINES (lines 6-24)
+-----------------------------
+  ^K<n> payload=<payload> closed=<0|1>$
+  n = 1..19 ascending, exactly one line per id, in this order.
+
+  <payload> is a comma-joined list of key=value tokens: no spaces, no empty
+  token, no trailing comma. Each check defines its own token set; the value is
+  opaque to K8 and is compared token for token.
+
+  THE VALUE IS RE-DERIVED, NEVER TRUSTED. For each id the suite recomputes the
+  payload from the export at receipt time and compares it against the recorded
+  one token by token: both sequences are split on ',', and the resulting
+  token sequences must be byte-identical, in order. A prefix match, a
+  substring match and a superset are all mismatches. A receipt carrying a
+  value the suite did not print is RED.
+
+  THE SELF LINE (K8) is the one exception and it is CLOSED, not trusted: its
+  <payload> must equal the canonical bundle (section 6). It is compared in
+  full, token for token, like every other line: K8's own value is bound.
+
+4. CLOSED LINE (line 25)
+------------------------
+  ^closed=<n>/<m> exit=<0|1>$
+
+  m = 19 (the check count). n = the number of `closed=1` payload lines the
+  receipt carries, K8 included. exit=0 iff n = m, exit=1 otherwise.
+
+  The tally is checked for TRUTHFULNESS against the lines the same receipt
+  carries: a receipt that declares more closed checks than it lists is
+  `summary-only` (section 7). A red transcript can be a faithful tee; only a
+  claim the bytes do not support is RED.
+
+5. GRADED SELFTEST CASE LINES (lines 26-44)
+------------------------------------------
+  ^selftest case=K<n> mutants=<ok>/<n> positive=<pass|fail> payload-match=<0|1> verdict=<pass|fail>$
+  n = 1..19 ascending, exactly one line per id, in this order.
+
+  Each line is the graded line the run's own selftest printed. Two bindings:
+    (a) CONTENT-BOUND: for every id except K8 the line must be byte-identical
+        to the line the suite's running selftest prints NOW (the
+        `selftest_line` hook). A block relabelled from another round, or one
+        whose `mutants=<ok>/<n>` counts were rewritten, is not that line and
+        is RED. The K8 case line is excluded: it is the self-reference.
+    (b) INTERNALLY CONSISTENT (truthfulness): `verdict=pass` iff
+        positive=pass and payload-match=1 and (mutants n = 0 or ok = n).
+
+  The summary line (line 45) is
+  ^selftest cases=19 failures=<k>$
+  with k equal to the number of `verdict=fail` case lines the receipt carries.
+  A summary that reports a failure count the case lines do not carry is RED.
+
+6. THE CANONICAL BUNDLE (K8's own payload)
+------------------------------------------
+The K8 payload is a fixed-order fact bundle. Cell order:
+
+  receipt=<rel>                  the constant receipt path (never "(canonical)")
+  sentinel=1                     line 1 is the v3 sentinel
+  lines=1                        the exact 45-line, LF-only shape of section 1
+  ref=1                          line 2 names a commit that resolves
+  digest=1                       line 3 equals the exported suite's sha256
+  time-basis=1                   line 4 is `ref-commit`
+  utc=1                          line 5 equals the named ref's committer instant
+  not-future=1                   line 5 is not later than the verification clock
+  ancestor=1                     the named ref is an ancestor of the verified ref
+  diff-clean=1                   diff named..verified lists nothing but the receipt
+  diff-read=ok                   that diff was readable at all
+  tree-bind=1                    the export IS the verified ref's tree for this
+                                 file: it carries the receipt iff that ref does,
+                                 and when both carry it the blob is the same
+  header-lines=1                 all five header lines match section 2
+  run-lines=1                    all nineteen payload lines present, in order
+  selftest-lines=1               all nineteen case lines present, in order
+  verdicts=1                     every case line is well formed and its verdict
+                                 is consistent with its own fields (pass iff
+                                 positive=pass, payload-match=1 and the mutant
+                                 count is complete)
+  summary=1                      the summary is present and truthful
+  closed-line=1                  the closed line is present and truthful
+  no-stray=1                     no line outside the skeleton of section 1
+  payload-match=1                every OTHER payload and closed bit equals the
+                                 re-derived one
+  selftest-match=1               every OTHER case line equals the fresh one
+  payload-match=<m>/<n>          m of the n OTHER payload values matched
+  selftest-match=<m>/<n>         m of the n OTHER case lines matched
+  forged=<k>/<n>                 k of the n receipt-content classes were missed
+
+  n = 18 (nineteen checks minus the self id). The bundle never reads the value
+  recorded on the receipt's own K8 line and never counts the K8 case line, so
+  it is invariant under the self-claim rewrite and the fixed point exists.
+
+  THE SELF-CLAIM IS REF-STABLE. The bundle carries `receipt=<rel>`, a
+  constant, and no `source=` cell: the source label flips from canonical to
+  committed the moment the receipt lands, so including it would make the
+  J-minted receipt fail its own claim at Y — the bootstrap defect recorded for
+  r41. Every other cell is a function of the tree and the ref-scoped facts, so
+  the bundle computed at J equals the bundle computed at Y.
+
+7. THE EIGHT RECEIPT-CONTENT CLASSES
+------------------------------------
+Each class is ONE ABSOLUTE PREDICATE over a named locus of the receipt's own
+bytes plus independently derived facts. No predicate compares a count in one
+artifact with a count in another artifact, and no predicate is "the number of
+mismatches went up". The loci are disjoint by construction: a receipt carrying
+one defect raises exactly one class, and the honest control raises none.
+
+  missed-control          a required ELEMENT is ABSENT (count 0): a header
+                          line, a payload line, the closed line, a graded case
+                          line, the summary line
+  composed-of-two-runs    the transcript is not one run: more than one
+                          `all-gates ...` header line or more than one
+                          `run-utc=` line
+  payload-contradicting   a recorded payload or closed bit contradicts the
+                          value the suite RE-DERIVED for that same check, or
+                          the receipt carries a run line for an id the suite
+                          never printed, or a re-derived value is unavailable
+  future-dated            `run-utc` is not the committer instant of the ref on
+                          `export-ref=`, or it post-dates the verification
+                          clock (now + 120 s)
+  foreign-ref             the named ref resolves but is not BOUND to the
+                          verified tree: the export is not the verified ref's
+                          tree for this file, or the named ref is not an
+                          ancestor of it, or the diff between them lists a path
+                          other than the receipt
+  nonexistent-ref         the named ref (or the ref line) does not resolve as
+                          a commit
+  summary-only            the closed line declares a tally larger than the
+                          number of payload lines the receipt carries
+  tampered-payload-line   the receipt's own K8 line does not carry the
+                          canonical bundle for this run (the self-claim was
+                          edited)
+
+  `rejected` means the class WAS detected; `missed` means it was not. K8 is
+  closed only when every class is missed AND the recorded K8 line (payload and
+  closed bit) is the canonical bundle's.
+
+  Shape defects that are neither an absence nor a duplicated header/instant
+  (a duplicated payload line, a duplicated closed line) are decided by the
+  positional skeleton: `lines=0` and `no-stray=0`, and K8 is red, without a
+  named class.
+
+8. THE CONTROL
+--------------
+The control is the honest transcript assembled from the re-derived values of
+this run (never from the receipt under test). It must grade clean under every
+class; if it does not, the detector itself is broken and `forged` falls below
+n/n, which no honest receipt records. `--battery DIR` prints the control's
+verdict and one line per class.
+
+9. PRODUCER RULES
+-----------------
+  - The transcript is produced by `make_receipt` (or by a producer whose bytes
+    are identical to it): header, nineteen payload lines, the closed line,
+    nineteen graded case lines, the summary. It equals the run's teed stdout
+    with the selftest block appended, and differs from it on ONE line: the K8
+    line, which carries the canonical bundle instead of the suite's own K8
+    payload. That exception is the self-reference, and it is bound by
+    section 7's tampered-payload-line class.
+  - The export-ref adopted is the one the receipt already in the export names;
+    without one it is the ref under verification. That is what makes the bytes
+    written at J and the bytes read at Y the same bytes.
+  - The transcript is a function of the tree and the ref-scoped facts only:
+    two runs over the same ref are byte-identical.
+
+10. HOST CONTRACT (ordering and invariance)
+-------------------------------------------
+  ORDERING. K8 must run after (a) the other eighteen checks have produced
+  their payload values and (b) the graded selftest has produced its nineteen
+  case lines. K8 grades a receipt against values that exist.
+
+  INVARIANCE. The other eighteen payload values and the other eighteen graded
+  case lines must be byte-identical between the run at J and the run at Y.
+  The receipt path must not be read by any tree-dependent check and must not
+  appear in any selftest fixture: it does not exist in the tree at J and it
+  does exist in the tree at Y.
+
+11. K9 — THE NEGATIVE CONTROLS (the companion limb)
+---------------------------------------------------
+  K9 payload grammar (the round-42 J9 grammar, carried):
+
+    K9 payload=depth=1,base=<0|1>,r41=<0|1>,accept=tree-red,cap=nested
+
+  depth=1    the driver refuses a plain run (exit 2) and reports an
+             unresolvable ref as its own `ref-not-found` red (exit 1) with NO
+             `closed=<n>/<m>` tally line — an unresolvable ref is never a
+             vacuous closed=0/19.
+  base=1     the suite re-invoked recursively over base
+             ab98fac9dce87130bc4f66de89e30650d63943dc returned exit 1 with a
+             tally strictly below 19, all nineteen payload lines present, and
+             at least two TREE reds (a run that is red only because a
+             capability is missing is not a control).
+  r41=1      the same over the round-41 judged head
+             1f7464612ac4c44e39886b82e812610d3c039b13.
+
+  The nested invocation always passes `--leaf` (depth 1) and its own scratch
+  dir outside the lane; the parent's KNEGCTL_*/R42_*/R43_* environment is
+  stripped so the child cannot inherit the parent's export or receipt path.
+
+  The r43 base ref is ab98fac9dce87130bc4f66de89e30650d63943dc; the round-41
+  judged head is 1f7464612ac4c44e39886b82e812610d3c039b13.

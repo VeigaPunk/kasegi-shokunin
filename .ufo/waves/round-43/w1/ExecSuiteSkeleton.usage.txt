@@ -1,0 +1,106 @@
+r43-closure.sh -- round-43 closure suite (export mode only)
+
+LANDING
+  cp ExecSuiteSkeleton.r43-closure.sh corpus/instruments/r43-closure.sh
+
+INVOCATION
+  bash corpus/instruments/r43-closure.sh --export-ref <hash> \
+       --work <dir-outside-lane>/w --scratch-root <dir-outside-lane>
+  bash corpus/instruments/r43-closure.sh --selftest --export-ref <hash> \
+       --work <dir>/w --scratch-root <dir>
+  bash corpus/instruments/r43-closure.sh --export-ref <hash> ... --only K14
+  bash corpus/instruments/r43-closure.sh -h|--help
+
+  --lane <dir>          lane repo (default /home/vgpnk/Projects/shokunin/kasegi-shokunin,
+                        overridable with R43_LANE_DEFAULT)
+  --export-ref <hash>   required for every run: the ref is exported with
+                        git -C <lane> archive <hash> | tar -x -C <work>/export
+  --work <dir>          export root; the resolved work tree MUST lie outside the
+                        lane or the run refuses with exit 2
+  --scratch-root <dir>  fixtures + nested control runs; when omitted the parent
+                        of --work is used, then $TMPDIR, else exit 2.  There is
+                        no fallback to a literal /tmp.
+  --receipt-out <path>  one unedited tee of one run (see GRAMMAR); ignored with
+                        --leaf
+  --selftest            print only the nineteen graded case lines + summary
+  --leaf                nested depth-1: K9/K10 deferred, no receipt
+  --only K<n>           grade one leaf check (K1..K7, K11..K19); K8/K9/K10 are
+                        aggregates and are refused with exit 2
+
+EXITS
+  0  all nineteen closed (or, under --selftest, zero failures)
+  1  any check open; also the distinct red for an unresolvable ref:
+     ERROR ref-not-found ref=<token> closed=0 exit=1
+  2  usage error, including a plain run with no --export-ref
+
+GRAMMAR
+  run mode, stdout:
+    all-gates v3
+    export-ref=<40 hex>
+    suite-sha256=<64 hex|none>          (the export's copy of this suite)
+    time-basis=ref-commit
+    run-utc=<YYYY-MM-DDTHH:MM:SSZ>      (committer instant of the ref)
+    K<n> payload=<cells> closed=0|1     (K1..K19, numeric order)
+    closed=<n>/19 exit=0|1
+
+  --receipt-out: those 25 lines, then
+    selftest case=K<n> positive=pass|fail mutants=<ok>/<total> verdict=pass|fail
+    ... nineteen, id order ...
+    selftest cases=19 failures=<k>
+  i.e. 45 lines, the printed transcript first, byte for byte.
+
+  --selftest, stdout: the nineteen graded lines and the summary only.
+  A graded line carries no payload-match field: verdict=pass already requires
+  positive=pass, a payload byte-identical to the run's line for that check, and
+  a nonempty mutant battery with every mutant rejected.  A case that builds no
+  mutant cannot pass.
+
+CHECKS
+  K1..K13  the round-42 J1..J13 checks carried: same payload cell names, same
+           replay limbs (K1..K7 re-execute their committed defeat artifact,
+           digest-pinned, and must reject it).  They grade the round-42
+           closure, which is the state the r42 suite certified: ROUND=42, the
+           round-42 declared-blocks file, the r42-closure.sh registry row.
+  K14..K19 narrative-evidence slots (RD42-1 .. RD42-6, RD42-8): each prints
+           K<n> payload=stub closed=0 until its limb lands, so the suite is
+           <19/19 until then.  That is deliberate: a slot that reported
+           closed=1 without its limb would claim evidence the lane does not
+           have.
+
+LIMB INTEGRATION (K14..K19)
+  Per slot, two functions in the engine are the seam:
+    def check_k<n>(_tree):        -> (payload, ok)   # payload cells, no replay=
+    def limb_mutants(_check_id, _root): -> (rejected, built)
+  Replace the slot body and the mutation battery together; LIMB_SLOTS,
+  LIMB_CHECKS, SELFTEST_SPECS and DETERMINISTIC pick both up without edits.
+  Requirements the harness already enforces:
+    * payload cells: comma separated key=value, no spaces, no ref name, no
+      host path, no wall clock -- K8 re-derives every deterministic payload at
+      the receipt's ref and requires an exact match (payload-match=18/18).
+    * the slot must build at least one mutant from the committed round-42
+      defect bytes and reject it; `mutants=<ok>/<total>` reports the width and
+      verdict=pass requires ok=total>0.
+    * closed=1 only when the check can see its own defect: at base
+      ab98fac9dce87130bc4f66de89e30650d63943dc the slot must be red.
+
+K8 NOTES
+  K8 grades the round-43 receipt path
+  .ufo/waves/round-43/final-gates/all-gates.txt.  When that file is absent from
+  the graded tree (any ref before the receipt lands) K8 grades a canonical
+  transcript built from the run's own payloads and says source=canonical; a
+  committed receipt must claim the full closure and is graded strictly
+  (sentinel, 45 lines, suite digest, ref committer instant, ancestry, at most
+  one changed path, 19 payload lines, 19 verdict=pass lines, summary (19,0),
+  closed=19/19 exit=0, no stray line, payload-match 18/18, six forgeries
+  rejected).
+
+  K1..K13 grade the round-42 closure rather than a round-43 re-derivation
+  because the frozen C1 predicate lands no round-43 corrections, no round-43
+  declared-blocks file and no r43-closure.sh registry row before the judge; a
+  K4 pointed at a round-43 declaration would make C1 unsatisfiable.  Only K8's
+  subject moves to round 43, because the suite must grade the receipt it
+  produces.
+
+NO NETWORK, NO LANE WRITES
+  The suite reads the export and read-only git state in the lane; it writes
+  only under <scratch-root> and the --receipt-out path.

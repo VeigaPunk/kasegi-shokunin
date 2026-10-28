@@ -1,0 +1,303 @@
+# ExecNegCtlReceipt transcript -- limbs check_k_negctl + make_receipt (+ check_k_receipt)
+# limb=ExecNegCtlReceipt.sh sha256=ba1099a7b3905496717cd012db069172cc40e784da7f6d6eb827952180a414d2 lines=1124
+# spec=ExecNegCtlReceipt.spec.txt sha256=d7668f61d7b5f57b13015ade2fac28c77dde8fe89418495e326bcc7e9fd28cbe lines=241
+# lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+# work=/fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt (removed before this receipt is filed)
+# run-utc=2026-10-28T17:31:45Z
+# Every block is the verbatim output of the command shown (stderr merged). The two
+# round-42 suite runs (650 s) and the round-43 suite runs are embedded from the
+# capture files those runs wrote; every other block was executed while assembling.
+
+## 0. instrument
+$ bash -n /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/ExecNegCtlReceipt.sh
+rc=0
+
+$ shellcheck -S warning /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/ExecNegCtlReceipt.sh
+rc=0
+
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/ExecNegCtlReceipt.sh --help
+ExecNegCtlReceipt.sh — round-43 K8 receipt-integrity and K9 negative-control limb
+
+  --receipt TREE [REF]         K8: grade the receipt of the export at TREE
+  --negctl TREE [REF]          K9: re-invoke the suite over base and the r41 head
+  --make-receipt [--out PATH]  write the canonical receipt transcript
+  --verify FILE                grade one receipt file (payload + exit code)
+  --flags FILE                 one independent verdict per receipt-content class
+  --fixtures DIR               the honest control + one fixture per class
+  --battery DIR                assemble, verify and grade the fixture battery
+  --help                       this text
+
+The environment supplies the host contract: EXPORT/TREE, REF_RESOLVED, LANE,
+WORK and KNEGCTL_PAYFILE (or the payload_get / payload_closed / selftest_line
+hooks).  KNEGCTL_* overrides retarget the limb at another suite generation.
+rc=0
+
+## 1. the real tee: the round-42 suite run and selftest at judged head J
+$ bash corpus/instruments/r42-closure.sh --export-ref 4c40ef21cced6ebed592e5622996ab41996e2da9 --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/run/w --scratch-root /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/run   # 650 s
+all-gates v2
+export-ref=4c40ef21cced6ebed592e5622996ab41996e2da9
+suite-sha256=fca5ae62379e01232a523bbf318872dbb358cdf534ce65a42dfe7ef8df7f6d6b
+time-basis=ref-commit
+run-utc=2026-10-28T15:12:46Z
+J1 payload=records=1,blocks=3,graded=1,evidence=3,missing=0,wrong-grade=0,per-record=SCORECARD.md=3/3;LOG.md=0;SHONEN.md=0,union=0,replay=RevC1Counters.md=rejected closed=1
+J2 payload=boundary=10/10,truth-tokens=3,stated=4,mangled=0,truth-stated=1,token=whole,replay=RevC1Counters.defeats.txt=rejected closed=1
+J3 payload=tables=18,rows=73,r42-rows=1,r40-rows=1,r40-split=0,bare=0,lead=0,replay=MutSkillTablePipes.md=3/3 closed=1
+J4 payload=declared=469,valid=469,missing=0,escape=0,coverage=11/11,file=present,replay=CritDeclarationCoverage.md=2/2 closed=1
+J5 payload=family=kasegi-r4[0-9]*,strays=8,scanned=8,read=ok,outside=2,outside-scanned=10,scope=materialized,replay=MutScratchTiming.md=outside=detected,inside=detected closed=1
+J6 payload=instrument=present,base=1,missing-path=1,url-mutated=1,digest-mutated=1,rule=reject,replay=MutBindingExistence.md=rejected closed=1
+J7 payload=instrument=present,base=1,status-flip=1,no-pass=1,rows=25,admitted=25,replay=MutFrontierParser.md=rejected closed=1
+J8 payload=receipt=(canonical),source=canonical,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,ancestor=1,diff=1,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,forged=1,payload-match=12/12,forged=6/6 closed=1
+J9 payload=depth=1,base=1,r41=1,accept=tree-red,cap=nested closed=1
+J10 payload=cases=13,isolated=13,canary=0,graded-lines=13,fixture=synthetic closed=1
+J11 payload=corrections=34,groups=4,dups=4,excused=4,unexcused=0,marker=1,marker-substantive=1,marker-appended=1,eof-closed=3/3,fenced=0 closed=1
+J12 payload=deleted=0,density=1,density-sha=ee803726a322,diff-read=ok,base=5053a7f4 closed=1
+J13 payload=faithful=1,extra=0,missing=0,scratch-strays=0,scratch-read=ok,markers=0,named=1 closed=1
+closed=13/13 exit=0
+
+$ bash corpus/instruments/r42-closure.sh --selftest --export-ref 4c40ef21cced6ebed592e5622996ab41996e2da9 --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/selftest/w --scratch-root /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/selftest
+selftest case=J1 mutants=1/1 positive=pass payload-match=1 verdict=pass
+selftest case=J2 mutants=1/1 positive=pass payload-match=1 verdict=pass
+selftest case=J3 mutants=3/3 positive=pass payload-match=1 verdict=pass
+selftest case=J4 mutants=2/2 positive=pass payload-match=1 verdict=pass
+selftest case=J5 mutants=2/2 positive=pass payload-match=1 verdict=pass
+selftest case=J6 mutants=2/2 positive=pass payload-match=1 verdict=pass
+selftest case=J7 mutants=2/2 positive=pass payload-match=1 verdict=pass
+selftest case=J8 mutants=6/6 positive=pass payload-match=1 verdict=pass
+selftest case=J9 mutants=3/3 positive=pass payload-match=1 verdict=pass
+selftest case=J10 mutants=2/2 positive=pass payload-match=1 verdict=pass
+selftest case=J11 mutants=1/1 positive=pass payload-match=1 verdict=pass
+selftest case=J12 mutants=2/2 positive=pass payload-match=1 verdict=pass
+selftest case=J13 mutants=2/2 positive=pass payload-match=1 verdict=pass
+selftest cases=13 failures=0
+
+## 2. producer: make_receipt over the run's own values
+$ r42 bash /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/ExecNegCtlReceipt.sh --make-receipt --out /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/minted.txt
+rc=0
+
+$ cat /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/run.out /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/selftest-lines.txt /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/summary.txt > /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/expected-tee.txt
+rc=0
+
+$ wc -l /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/minted.txt /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/expected-tee.txt
+  33 /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/minted.txt
+  33 /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/expected-tee.txt
+  66 total
+rc=0
+
+$ diff -u /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/expected-tee.txt /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/minted.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/expected-tee.txt	2026-10-28 14:31:50.096200564 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/minted.txt	2026-10-28 14:31:50.092225481 -0300
+@@ -10,7 +10,7 @@
+ J5 payload=family=kasegi-r4[0-9]*,strays=8,scanned=8,read=ok,outside=2,outside-scanned=10,scope=materialized,replay=MutScratchTiming.md=outside=detected,inside=detected closed=1
+ J6 payload=instrument=present,base=1,missing-path=1,url-mutated=1,digest-mutated=1,rule=reject,replay=MutBindingExistence.md=rejected closed=1
+ J7 payload=instrument=present,base=1,status-flip=1,no-pass=1,rows=25,admitted=25,replay=MutFrontierParser.md=rejected closed=1
+-J8 payload=receipt=(canonical),source=canonical,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,ancestor=1,diff=1,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,forged=1,payload-match=12/12,forged=6/6 closed=1
++J8 payload=receipt=.ufo/waves/round-42/final-gates/all-gates.txt,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,not-future=1,ancestor=1,diff-clean=1,diff-read=ok,tree-bind=1,header-lines=1,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,selftest-match=1,payload-match=12/12,selftest-match=12/12,forged=8/8 closed=1
+ J9 payload=depth=1,base=1,r41=1,accept=tree-red,cap=nested closed=1
+ J10 payload=cases=13,isolated=13,canary=0,graded-lines=13,fixture=synthetic closed=1
+ J11 payload=corrections=34,groups=4,dups=4,excused=4,unexcused=0,marker=1,marker-substantive=1,marker-appended=1,eof-closed=3/3,fenced=0 closed=1
+rc=1
+
+# diff rc=1 = the files differ; the single hunk is the K8/J8 self line.
+
+## 3. verifier accepts the real tee
+$ r42 bash /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/ExecNegCtlReceipt.sh --verify /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/minted.txt
+receipt=.ufo/waves/round-42/final-gates/all-gates.txt,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,not-future=1,ancestor=1,diff-clean=1,diff-read=ok,tree-bind=1,header-lines=1,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,selftest-match=1,payload-match=12/12,selftest-match=12/12,forged=8/8rc=0
+
+$ r42 bash /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/ExecNegCtlReceipt.sh --receipt /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/export-j 4c40ef21cced6ebed592e5622996ab41996e2da9
+J8 payload=receipt=.ufo/waves/round-42/final-gates/all-gates.txt,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,not-future=1,ancestor=1,diff-clean=1,diff-read=ok,tree-bind=1,header-lines=1,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,selftest-match=1,payload-match=12/12,selftest-match=12/12,forged=8/8 closed=1
+rc=0
+
+## 4. the committed round-42 receipt raises its self claim alone
+$ r42 bash /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/ExecNegCtlReceipt.sh --flags /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/export-y/.ufo/waves/round-42/final-gates/all-gates.txt
+missed-control=missed,composed-of-two-runs=missed,payload-contradicting=missed,future-dated=missed,foreign-ref=missed,nonexistent-ref=missed,summary-only=missed,tampered-payload-line=rejected
+rc=0
+
+$ r42 bash /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/ExecNegCtlReceipt.sh --verify /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/export-y/.ufo/waves/round-42/final-gates/all-gates.txt
+receipt=.ufo/waves/round-42/final-gates/all-gates.txt,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,not-future=1,ancestor=1,diff-clean=1,diff-read=ok,tree-bind=1,header-lines=1,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,selftest-match=1,payload-match=12/12,selftest-match=12/12,forged=8/8rc=1
+
+## 5. the eight forgery classes on the real bytes
+$ r42 bash /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/ExecNegCtlReceipt.sh --battery /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/battery
+battery case=control verdict=accepted token=- payload-match=12/12
+battery case=missed-control verdict=rejected token=missed-control=rejected
+battery case=composed-of-two-runs verdict=rejected token=composed-of-two-runs=rejected
+battery case=payload-contradicting verdict=rejected token=payload-contradicting=rejected
+battery case=future-dated verdict=rejected token=future-dated=rejected
+battery case=foreign-ref verdict=rejected token=foreign-ref=rejected
+battery case=nonexistent-ref verdict=rejected token=nonexistent-ref=rejected
+battery case=summary-only verdict=rejected token=summary-only=rejected
+battery case=tampered-payload-line verdict=rejected token=tampered-payload-line=rejected
+battery cases=9 rejected=8 missed=0
+rc=0
+
+$ r42 bash /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/ExecNegCtlReceipt.sh --flags /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r42/battery/honest.txt
+missed-control=missed,composed-of-two-runs=missed,payload-contradicting=missed,future-dated=missed,foreign-ref=missed,nonexistent-ref=missed,summary-only=missed,tampered-payload-line=missed
+rc=0
+
+## 6. the J -> Y bootstrap in a git fixture (synthetic hook values)
+$ (captured by the commands listed in the block)
+$ git -C /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/boot1.ZhYzG7sZ init -q
+rc=0
+$ git -C /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/boot1.ZhYzG7sZ rev-parse --show-toplevel
+/fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/boot1.ZhYzG7sZ
+toplevel-ok
+$ git -C /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/boot1.ZhYzG7sZ commit -qm J
+J=af5b2c24c79e7350da663a2060878218c125e9bc
+$ make_receipt (at J; the export carries no receipt)
+rc=0
+$ wc -l receipt
+45
+$ grep '^closed=' receipt
+closed=19/19 exit=0
+$ grep '^K8 ' receipt
+K8 payload=receipt=.ufo/waves/round-43/final-gates/all-gates.txt,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,not-future=1,ancestor=1,diff-clean=1,diff-read=ok,tree-bind=1,header-lines=1,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,selftest-match=1,payload-match=18/18,selftest-match=18/18,forged=8/8 closed=1
+$ diff receipt yexport-copy: (identical shown at the end)
+Y=2ea2f03062c1035f9772b6e35514ad3e21329a5e
+$ check_k_receipt <y-export> Y  (the receipt now names J, the run is at Y)
+K8 payload=receipt=.ufo/waves/round-43/final-gates/all-gates.txt,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,not-future=1,ancestor=1,diff-clean=1,diff-read=ok,tree-bind=1,header-lines=1,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,selftest-match=1,payload-match=18/18,selftest-match=18/18,forged=8/8 closed=1
+rc=0
+$ diff receipt boot1/y-export/.ufo/waves/round-43/final-gates/all-gates.txt
+identical
+$ git -C <fixture> diff --name-only J Y
+.ufo/waves/round-43/final-gates/all-gates.txt
+
+## 7. driver refusals (live suite)
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r43-closure.sh
+r43-closure: a plain run is refused (export mode only); pass --export-ref <hash>
+rc=2
+
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r43-closure.sh --export-ref 0000000000000000000000000000000000000000 --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r43/drv2/w --scratch-root /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r43/drv2
+ERROR ref-not-found ref=0000000000000000000000000000000000000000 closed=0 exit=1
+rc=1
+
+## 8. the round-43 suite's own transcripts over the two control refs
+$ bash <r43-closure.sh> --export-ref ab98fac9dce87130bc4f66de89e30650d63943dc --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work <d>/work --scratch-root <d> --leaf
+K1 payload=records=1,blocks=3,graded=1,evidence=3,missing=0,wrong-grade=0,per-record=SCORECARD.md=3/3;LOG.md=0;SHONEN.md=0,union=0,replay=RevC1Counters.md=rejected closed=1
+K2 payload=boundary=10/10,truth-tokens=3,stated=4,mangled=0,truth-stated=1,token=whole,replay=RevC1Counters.defeats.txt=rejected closed=1
+K3 payload=tables=18,rows=73,r42-rows=1,r40-rows=1,r40-split=0,bare=0,lead=0,replay=MutSkillTablePipes.md=3/3 closed=1
+K4 payload=declared=469,valid=469,missing=0,escape=0,coverage=11/11,file=present,replay=CritDeclarationCoverage.md=2/2 closed=1
+K5 payload=family=kasegi-r4[0-9]*,strays=8,scanned=8,read=ok,outside=2,outside-scanned=10,scope=materialized,replay=MutScratchTiming.md=outside=detected,inside=detected closed=1
+K6 payload=instrument=present,base=1,missing-path=1,url-mutated=1,digest-mutated=1,rule=reject,replay=MutBindingExistence.md=rejected closed=1
+K7 payload=instrument=present,base=1,status-flip=1,no-pass=1,rows=25,admitted=25,replay=MutFrontierParser.md=rejected closed=1
+K9 payload=depth=1,base=1,r41=1,accept=tree-red,cap=nested closed=1
+K10 payload=cases=13,isolated=13,canary=0,graded-lines=13,fixture=synthetic closed=1
+K11 payload=corrections=34,groups=4,dups=4,excused=4,unexcused=0,marker=1,marker-substantive=1,marker-appended=1,eof-closed=3/3,fenced=0 closed=1
+K12 payload=deleted=0,density=1,density-sha=ee803726a322,diff-read=ok,base=5053a7f4 closed=1
+K13 payload=faithful=1,extra=0,missing=0,scratch-strays=0,scratch-read=ok,markers=0,named=1 closed=1
+K8 payload=receipt=.ufo/waves/round-43/final-gates/all-gates.txt,source=absent,header=0,ref=0,digest=0,time-basis=0,utc=0,one-run=0,payload-match=0/0,forged=0/0,selftest-lines=0,summary=0,closed-line=0 closed=0
+K14 payload=limb=absent,file=k14-corrections.sh closed=0
+K15 payload=limb=absent,file=k15-wave-narrative.sh closed=0
+K16 payload=limb=absent,file=k16-placeholder.sh closed=0
+K17 payload=limb=absent,file=k17-claims-before.sh closed=0
+K18 payload=limb=absent,file=k18-transcript.sh closed=0
+K19 payload=limb=absent,file=k19-freeze.sh closed=0
+closed=19/19 exit=0
+
+$ grep -cE ^K[0-9]+ payload=.* closed=1$ /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r43/nested4-log/ab98fac9dce8.txt
+12
+rc=0
+
+# rc=1 above = zero? no: the count is printed; grep -c exits 1 only on 0 matches
+$ bash <r43-closure.sh> --export-ref 1f7464612ac4c44e39886b82e812610d3c039b13 --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work <d>/work --scratch-root <d> --leaf
+K1 payload=carried=absent,exit=127 closed=0
+K2 payload=carried=absent,exit=127 closed=0
+K3 payload=carried=absent,exit=127 closed=0
+K4 payload=carried=absent,exit=127 closed=0
+K5 payload=carried=absent,exit=127 closed=0
+K6 payload=carried=absent,exit=127 closed=0
+K7 payload=carried=absent,exit=127 closed=0
+K9 payload=carried=absent,exit=127 closed=0
+K10 payload=carried=absent,exit=127 closed=0
+K11 payload=carried=absent,exit=127 closed=0
+K12 payload=carried=absent,exit=127 closed=0
+K13 payload=carried=absent,exit=127 closed=0
+K8 payload=receipt=.ufo/waves/round-43/final-gates/all-gates.txt,source=absent,header=0,ref=0,digest=0,time-basis=0,utc=0,one-run=0,payload-match=0/0,forged=0/0,selftest-lines=0,summary=0,closed-line=0 closed=0
+K14 payload=limb=absent,file=k14-corrections.sh closed=0
+K15 payload=limb=absent,file=k15-wave-narrative.sh closed=0
+K16 payload=limb=absent,file=k16-placeholder.sh closed=0
+K17 payload=limb=absent,file=k17-claims-before.sh closed=0
+K18 payload=limb=absent,file=k18-transcript.sh closed=0
+K19 payload=limb=absent,file=k19-freeze.sh closed=0
+closed=7/19 exit=1
+
+$ grep -cE ^K[0-9]+ payload=.* closed=1$ /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/r43/nested4-log/1f7464612ac4.txt
+0
+rc=1
+
+## 9. K9 -- check_k_negctl over those two refs (real suite)
+$ (the limb's own stdout)
+$ bash ExecNegCtlReceipt.sh --negctl <base-export> ab98fac9dce87130bc4f66de89e30650d63943dc   # real r43 suite, snapshot
+K9 payload=depth=1,base=0,r41=0,accept=tree-red,cap=nested closed=0
+rc=1
+
+## 10. counter probe: the suite counts its own open checks as closed
+$ bash <counter-probe.sh> --export-ref ab98fac9dce87130bc4f66de89e30650d63943dc (carried run stubbed, all 19 payload lines closed=0)
+K1 payload=carried=absent,exit=127 closed=0
+K2 payload=carried=absent,exit=127 closed=0
+K3 payload=carried=absent,exit=127 closed=0
+K4 payload=carried=absent,exit=127 closed=0
+K5 payload=carried=absent,exit=127 closed=0
+K6 payload=carried=absent,exit=127 closed=0
+K7 payload=carried=absent,exit=127 closed=0
+K9 payload=carried=absent,exit=127 closed=0
+K10 payload=carried=absent,exit=127 closed=0
+K11 payload=carried=absent,exit=127 closed=0
+K12 payload=carried=absent,exit=127 closed=0
+K13 payload=carried=absent,exit=127 closed=0
+K8 payload=receipt=.ufo/waves/round-43/final-gates/all-gates.txt,source=absent,header=0,ref=0,digest=0,time-basis=0,utc=0,one-run=0,payload-match=0/0,forged=0/0,selftest-lines=0,summary=0,closed-line=0 closed=0
+K14 payload=limb=absent,file=k14-corrections.sh closed=0
+K15 payload=limb=absent,file=k15-wave-narrative.sh closed=0
+K16 payload=limb=absent,file=k16-placeholder.sh closed=0
+K17 payload=limb=absent,file=k17-claims-before.sh closed=0
+K18 payload=limb=absent,file=k18-transcript.sh closed=0
+K19 payload=limb=absent,file=k19-freeze.sh closed=0
+closed=7/19 exit=1
+
+$ (stderr of the same run)
+PROBE TOTAL=19 OPEN=12
+
+## 11. neg_accept matrix
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecNegCtlReceipt/matrix.sh
+tally=12  rc=1 lines=19 closed-lines=12 reds=[K8 K14 K15 K16 K17 K18 K19] -> 1
+tally=0   rc=1 lines=19 closed-lines=0  reds=[K1 K2 K3 K4 K5 K6 K7 K8 K9 K10 K11 K12 K13 K14 K15 K16 K17 K18 K19] -> 1
+tally=19  rc=1 lines=19 closed-lines=12 reds=[K8 K14 K15 K16 K17 K18 K19] -> 0
+tally=7   rc=1 lines=19 closed-lines=0  reds=[K1 K2 K3 K4 K5 K6 K7 K8 K9 K10 K11 K12 K13 K14 K15 K16 K17 K18 K19] -> 0
+tally=19  rc=1 lines=19 closed-lines=19 reds=[K1 K2 K3 K4 K5 K6 K7 K8 K9 K10 K11 K12 K13 K14 K15 K16 K17 K18 K19] -> 0
+tally=12  rc=0 lines=19 closed-lines=12 reds=[K8 K14 K15 K16 K17 K18 K19] -> 0
+tally=12  rc=2 lines=19 closed-lines=12 reds=[K8 K14 K15 K16 K17 K18 K19] -> 0
+tally=12  rc=1 lines=0  closed-lines=12 reds=[K8 K14 K15 K16 K17 K18 K19] -> 0
+tally=12  rc=1 lines=19 closed-lines=12 reds=[] -> 0
+tally=12  rc=1 lines=19 closed-lines=12 reds=[K8] -> 0
+tally=10  rc=1 lines=13 closed-lines=10 reds=[J8 J11] -> 1
+tally=12  rc=1 lines=13 closed-lines=12 reds=[J8] -> 0
+rc=0
+
+## 12. the suite K8 ref binding at the frozen J/Y topology
+$ (probes against corpus/instruments/r43-closure.sh)
+=== probe: the suite K8 ref binding at the frozen J/Y topology ===
+$ J=4c40ef21cced6ebed592e5622996ab41996e2da9 (the real round-42 judged head a receipt names)
+$ Y=b2c49ea5e7bc214e91c2b0bede5d4eaed4968572 (the commit that carries that receipt)
+$ FULL=$Y; ref_line=$(grep -m1 "^export-ref=" <receipt> | cut -d= -f2); [ "$ref_line" = "$FULL" ] && ok_ref=1 || ok_ref=0
+ref_line=4c40ef21cced6ebed592e5622996ab41996e2da9 FULL=b2c49ea5e7bc214e91c2b0bede5d4eaed4968572
+ok_ref=0   # r43-closure.sh:160
+
+=== probe: _k8_grade reads the digest and the instant, then never compares them ===
+$ sed -n "236,268p" corpus/instruments/r43-closure.sh | grep -n "digest\\|utc\\|ref_line"
+1:    local r="$1" pfile="$2" hdr ref_line digest tb utc one selft summary closedd match=0 total=0
+3:    ref_line=$(grep -m1 '^export-ref=' "$r" | cut -d= -f2)
+4:    digest=$(grep -m1 '^suite-sha256=' "$r" | cut -d= -f2)
+6:    utc=$(grep -c '^run-utc=' "$r")
+7:    one=$(grep -c '^run-utc=' "$r")
+12:    [ "$ref_line" = "$FULL" ] || return 1
+13:    [ "$utc" -eq 1 ] && [ "$one" -eq 1 ] || return 1
+
+## 13. suite identity at capture time
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse HEAD
+6c360f4c4725f79955a205583273442a7672e96e
+rc=0
+
+$ sha256sum /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r43-closure.sh; ls -la /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r43-closure.sh; git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain corpus/instruments/r43-closure.sh
+0e782d5e3208a82b60880a53937d61d9b66293417ba7e3ce89b8437ffbe9946d  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r43-closure.sh
+-rwxr-xr-x 1 vgpnk vgpnk 19962 Oct 28 14:26 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r43-closure.sh
+rc=0
+
+# end of transcript
