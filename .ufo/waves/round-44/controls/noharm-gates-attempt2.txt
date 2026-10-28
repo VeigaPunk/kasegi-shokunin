@@ -1,0 +1,31 @@
+# No-harm gates re-run on the live lane root, 2026-10-28 (attempt 2, post wave-2 integration).
+
+## python3 corpus/instruments/recheck-audit.py
+executes=39 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=63 total=63 pass=63 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=63 missing=0 unexpected=0 exit=0
+exit=0
+
+## python3 corpus/instruments/capture-binding-check.py
+AUDIT records=58 with_url=58 with_fetched_utc=20 with_archival=38 snapshot_dirs=20 manifest_dirs=20 missing_manifest=0 multi_row_url=3 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+records=58 bound=58 unbound=0
+exit=0
+
+## python3 corpus/instruments/frontier-recheck-count.py
+PASS     F26  knowledge/google-cloud-vrp-customer-resource-boundary.md ids=S069           exit=0   
+entries=29 pass=29 exit=0
+exit=0
+
+## python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-44/manifest.json --source S069
+S069:sha256 OK
+S069:Q1 OK normalized=markup-whitespace occurrences=1 anchor=61-ok
+S069:Q2 OK normalized=markup-whitespace occurrences=1 anchor=62-ok
+S069:Q3 OK normalized=markup-whitespace occurrences=1 anchor=70-ok
+S069:Q4 OK normalized=markup-whitespace occurrences=1 anchor=76-ok
+S069:Q5 OK normalized=markup-whitespace occurrences=1 anchor=10-ok
+exit=0
+
+## bash corpus/instruments/r43-closure.sh --selftest (round-43 suite, carried gates)
+r43-closure: a plain run is refused (export mode only); pass --export-ref <hash>
+exit=0
+# bash corpus/instruments/r43-closure.sh --selftest --export-ref fdc20ad6 (round-43 receipt Y)
