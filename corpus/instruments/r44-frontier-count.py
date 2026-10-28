@@ -78,6 +78,13 @@ def main(argv: list[str]) -> int:
     rows, admitted, ids = count_frontier(args.root)
     if args.ids:
         print("frontier-ids=" + ",".join(ids))
+    # R44W2Rev10 false-pass shape: a duplicated frontier row would inflate the
+    # admitted count without adding a distinct holding. Duplicate ids are a
+    # defect, never a pass.
+    dupes = sorted({i for i in ids if ids.count(i) > 1})
+    if dupes:
+        print(f"frontier duplicate-ids={','.join(dupes)} verdict=DEFECT exit=1")
+        return 1
     print(f"frontier rows={rows} admitted={admitted}")
     if args.expect is not None and admitted != args.expect:
         print(f"frontier expected={args.expect} admitted={admitted} verdict=SHORT exit=1")

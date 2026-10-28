@@ -150,3 +150,54 @@ improved (F26, S069, S070 and the two new instruments landed); quality
 improved (both claims carry a committed counter and a red-before control);
 discernment is unprovable-but-better in-lane only — the admit/reject
 spot-check is prepared but the adjudication belongs to the non-author closure.
+
+## Attempt 2, wave 2 — the falsify wave and what it changed
+
+Wave 2 (one v1 wave, 40 seats: 14 reviewer, 8 critic, 6 mutation-tester,
+5 executor, 3 scout, 3 connector, 1 revenger; attack share 28/40 = 70 %)
+attacked the committed tree `8063547` (attempt 2's first landing). Round total:
+66 + 40 = 106 seats, inside the 64–128 band. All 40 seats settled with
+non-empty output; reports under `.ufo/waves/round-44/wave2/`.
+
+### What the wave falsified, and what changed because of it
+
+| Finding | Seat | What changed |
+|---|---|---|
+| The v1 counter graded a strongest-marker-only tree `fixed=8 unresolved=0` — every bound artifact had been fabricated with plausible content and no repair performed. | `wave2/R44W2Exec05.md` | The v2 counter pins the stable artifacts by sha256 (`PINS` in `corpus/instruments/r44-routed-defects.py`): a fabricated tree must reproduce the genuine bytes, i.e. do the work. A `FABRICATED-ARTIFACTS` mutant is now graded in the selftest and must be rejected. |
+| Presence-only predicates accepted denials (D4), filename mentions instead of registry rows (D7), a nonfunctional emitter stub and fabricated seat names (D5), a token-only receipt (D8), a rewritten row that kept its token (D1), and D3's history check was satisfied by the correction's own quotation. | `wave2/R44W2Rev09.md` | v2 requires the affirmative `planner=L1` token and rejects denials; line-anchored README table rows plus the preserved original SHONEN bullet with the correction after it; the emitter must carry its refusal logic and the registry's `names=` list must EQUAL the committed results file's seat names; D8 digest-pins the receipt; D1 pins the row's measured cell; D3 counts only the original occurrences before the correction. |
+| The K17-escape mechanism claim was wrong in substance: the `closed=13/19` token sits in the round-43 claims.json AFTER-cell, K17 skips after-cells, so its `claims-erratum*` escape never fires for that token; K18 treats the token as superseded from the spot-check's own prescription; neither check was widened. The same commit was self-contradictory (the erratum says K17 skips after-cells while the lesson asserted the K17 mechanism). | `wave2/R44W2Rev02.md`, `wave2/R44W2Revenger01.md` (D2 verdict: letter only, mechanism void) | This correction is the mechanism statement of record; limb D2 requires the lesson to carry `K17`, `after-cell` and `K18`, applies K17's own same-paragraph predicate shape to the erratum, and requires K17's wildcard glob to be able to match the erratum file. The check that sees the literal is this counter's D2 limb. |
+| The round-44 export-ref sidecar carried `export-ref=ab98fac9…` — the round-43 measurement base — while the paired run receipt `.ufo/waves/round-43/final-gates/r42-at-de09313-run.txt:2` carries `export-ref=de09313e8edb98280b19767d0094bb2dd8031d73`. | `wave2/R44W2Rev09.md` | The sidecar was corrected to the run receipt's value and limb D5 now requires the sidecar's export-ref to EQUAL the paired run receipt's, so this error class is graded. |
+| The stale round-43 registry (`names=` empty at `.ufo/waves/round-43/w1-REGISTRY.txt:7`) was still the only committed registry of that round; the v1 counter checked only the new one. | `wave2/R44W2Conn01.md` | `controls/round43-registry-names.txt` records the stale field as superseded (the round-43 file stays byte-identical); limb D5 requires that note. |
+| `r44-frontier-count.py` would have counted a duplicated frontier row twice. | `wave2/R44W2Rev10.md` | Duplicate frontier ids are now a `DEFECT` verdict with exit 1. |
+| The SCORECARD prose said "eleven marker-only mutants"; the v1 battery was ten mutants plus one positive (eleven cases). | `wave2/R44W2Crit01.md` (numeral-slip finding) | Corrected wording in the SCORECARD round-44 append: nineteen mutants plus one positive = twenty graded cases in v2. |
+
+Not changed, with reasons: Crit01's "the report-owed sections are unfiled" is
+the normal order — the report is filed last, after the lane lands; Exec01's
+`recheck-audit` exit 1 was a run-context artifact (the audit ran against an
+export whose recheck lines `cd` into the live lane path; the committed receipt
+`controls/recheck-audit-after.txt` is 63/63 on the lane root); Rev12's Q5
+locator drift (manifest anchor `:10`, entry `:10-11`, registry `:9-11`) keeps
+the quote inside every cited range and is recorded here rather than rewritten;
+Conn03's CLI adjacency with kaidoku's `routed-defects.py` is a distinct
+basename (`r44-routed-defects.py`) and no shared receipt path.
+
+### Mistakes (added by the falsify wave)
+
+| ID | Error | Captured by | Correction / disposition | Evidence that the correction can fail closed |
+|---|---|---|---|---|
+| M44-9 | The attempt-2 export-ref sidecar stated the wrong export (`ab98fac9…`, the round-43 measurement base) for a round-42 receipt whose paired run receipt says `de09313…`. | R44W2Rev09's contradiction finding against `.ufo/waves/round-43/final-gates/r42-at-de09313-run.txt:2` | The sidecar was corrected and limb D5 now requires the sidecar's export-ref to equal the paired run receipt's, digest-pinned. | A `D5-wrong-export-ref` mutant (any other 40-hex value) is rejected by the digest pin and the equality check; see the v2 selftest receipt. |
+| M44-10 | The v1 counter accepted a fully fabricated evidence tree (`fixed=8 unresolved=0` with no repair performed) and several presence-only predicates accepted denials, stubs and rewrites. | R44W2Exec05, R44W2Rev09, R44W2Rev02, R44W2Revenger01 | The v2 counter pins the stable artifacts by sha256, requires the affirmative tokens, the refusal logic, the names equality, the line-anchored rows and the ordering checks, and grades a `FABRICATED-ARTIFACTS` mutant. | The v2 selftest: twenty graded cases (nineteen mutants plus one positive), `selftest cases=20 failures=0`; the baseline export still grades `unresolved=8`. |
+
+### D2 — the mechanism statement of record
+
+The `closed=13/19` token sits in the AFTER-cell of the round-43
+`.ufo/waves/round-43/claims.json` C1 (`claims.json:41`); K17 grades before-cell
+tokens only and skips after-cells, so K17's `claims-erratum*` escape covers a
+BEFORE-cell occurrence and never fires for this token (R44W2Rev02 measured
+identical K17 payloads with and without the erratum). K18 treats the token as
+superseded because the spot-check's own §6.1 prescribes the supersession — a
+marker-bound coverage, not a fail-closed one. No check was widened. The
+committed check that sees the literal is this round's counter limb D2, which
+applies K17's same-paragraph predicate shape (literal + superseded vocabulary
+in one paragraph) to the erratum file and requires the escape's wildcard glob
+to be able to match it.

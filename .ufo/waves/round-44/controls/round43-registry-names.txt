@@ -1,0 +1,27 @@
+Round-43 wave registry — the stale `names=` field, recorded as superseded (round 44, attempt 2)
+
+Routed defect 5 of `corpus/lessons/round-43-verifier-spotcheck.md` §6 names
+`.ufo/waves/round-43/w1-REGISTRY.txt:7`: the file asserts `seats=73` while its
+`names=` field is empty, so the registry could not be checked against the seats
+that actually ran.
+
+Disposition (append-only; the round-43 file is wave evidence from a settled
+round and is not rewritten):
+
+- The stale line stays byte-identical at `.ufo/waves/round-43/w1-REGISTRY.txt:7`
+  (`names=` with no value). It is superseded as a *usable* registry by the
+  round-44 registry `.ufo/waves/round-44/wave-registry.txt`, whose `names=`
+  field carries all 66 seat names of wave 1 and whose `seats=` count is
+  cross-checked against `.ufo/waves/round-44/wave1-results.json` by
+  `corpus/instruments/r44-routed-defects.py` limb D5.
+- The emitter defect is fixed at the source: `corpus/instruments/wave-registry.py`
+  refuses (exit 1) to emit a registry whose `seats=` count and named seat list
+  disagree, so the empty-`names=` shape can never be produced again by this
+  lane. R44W2Rev05 exercised the refusal path and recorded exit 1.
+- The round-43 seat names remain recoverable from the round-43 evidence the
+  registry summarises: `.ufo/waves/round-43/kasegi-r43-hyaku-results.json`
+  (73 named seat outputs) and the per-seat report files under
+  `.ufo/waves/round-43/w1/`.
+
+This note is the committed record that the stale `names=` field is superseded,
+not silently forgotten; limb D5 requires it.

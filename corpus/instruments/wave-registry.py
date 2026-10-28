@@ -47,6 +47,8 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--out", required=True)
     ap.add_argument("--lane", default="kasegi")
     ap.add_argument("--wave", default=None, help="wave name (default: derived from the results file)")
+    ap.add_argument("--policy", default="ufo-wave-policy-v2.json (wave band 64-128, hard ceiling 256)",
+                    help="the policy line recorded in the registry")
     args = ap.parse_args(argv)
 
     try:
@@ -92,7 +94,7 @@ def main(argv: list[str]) -> int:
     lines = [
         f"wave={wave}",
         f"lane={args.lane}",
-        "policy=ufo-wave-policy-v2.json (wave band 64-128, hard ceiling 256)",
+        f"policy={args.policy}",
         f"seats={seats}",
         "roles=" + ",".join(f"{k}={v}" for k, v in sorted(counts.items())),
         f"attack_seats={attack} ({100.0 * attack / seats:.1f}%) = reviewer+critic+mutation-tester+security-reviewer",

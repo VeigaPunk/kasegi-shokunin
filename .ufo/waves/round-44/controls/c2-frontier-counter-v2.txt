@@ -1,0 +1,11 @@
+# C2 frontier counter (v2, duplicate-id guard) and frozen string, 2026-10-28
+$ python3 corpus/instruments/r44-frontier-count.py --root $S/base-export --expect 26
+frontier rows=25 admitted=25
+frontier expected=26 admitted=25 verdict=SHORT exit=1
+exit=1
+$ python3 corpus/instruments/r44-frontier-count.py --root . --expect 26
+frontier rows=26 admitted=26
+exit=0
+$ grep -cE '^\| F[0-9]+ \| admitted \|' corpus/README.md   # frozen C2 string, verbatim
+0
+exit=1

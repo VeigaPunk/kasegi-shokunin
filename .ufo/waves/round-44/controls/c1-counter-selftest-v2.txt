@@ -1,0 +1,24 @@
+# C1 counter v2 — selftest (2026-10-28, final).
+$ python3 corpus/instruments/r44-routed-defects.py --root . --selftest --work $S
+selftest case=POSITIVE verdict=pass fixed=8 unresolved=0
+selftest case=FABRICATED-ARTIFACTS verdict=pass detail=unresolved limbs: D1,D2,D3,D5,D8
+selftest case=D1-marker-only verdict=pass detail=.ufo/waves/round-43/claims-erratum-6.md absent
+selftest case=D1-row-rewritten verdict=pass detail=the round-43 row's measured cell was rewritten (append-only violated)
+selftest case=D2-erratum-missing verdict=pass detail=.ufo/waves/round-43/claims-erratum-6.md absent
+selftest case=D2-paragraph-split verdict=pass detail=.ufo/waves/round-43/claims-erratum-6.md digest mismatch (51daca3c596a…) — not the measured bytes
+selftest case=D3-marker-only verdict=pass detail=corpus/lessons/round-43.md digest mismatch (3196a8a41100…) — not the measured bytes
+selftest case=D3-originals-rewritten verdict=pass detail=corpus/lessons/round-43.md digest mismatch (4069ac79376e…) — not the measured bytes
+selftest case=D4-count-mismatch verdict=pass detail=the LOG claims 999 wave-1 seats; the committed results file names 66
+selftest case=D4-denial verdict=pass detail=the round-44 LOG section does not record the affirmative planner=L1 mapping
+selftest case=D5-leftover-back verdict=pass detail=aborted-write leftover .ufo/waves/round-43/final-gates/all-gates.at-Y.txt.tmp is present
+selftest case=D5-empty-names verdict=pass detail=.ufo/waves/round-44/wave-registry.txt digest mismatch (179622de8a66…) — not the measured bytes
+selftest case=D5-fabricated-names verdict=pass detail=.ufo/waves/round-44/wave-registry.txt digest mismatch (ee9776cf20cb…) — not the measured bytes
+selftest case=D5-stub-emitter verdict=pass detail=the emitter does not carry its seats/names refusal logic
+selftest case=D5-wrong-export-ref verdict=pass detail=.ufo/waves/round-43/final-gates/r42-at-de09313-selftest.export-ref.md digest mismatch (7a43f3f1546c…) — not the measured bytes
+selftest case=D5-no-sidecar verdict=pass detail=.ufo/waves/round-43/final-gates/r42-at-de09313-selftest.export-ref.md absent
+selftest case=D6-no-final-blank verdict=pass detail=SHONEN.md does not end with the restored final empty line
+selftest case=D7-rows-missing verdict=pass detail=corpus/instruments/README.md carries no table row for r43-closure.sh
+selftest case=D8-fabricated-receipt verdict=pass detail=.ufo/waves/round-44/controls/missing-suite-base.txt digest mismatch (8fde78b7618f…) — not the measured bytes
+selftest case=D8-no-receipt verdict=pass detail=.ufo/waves/round-44/controls/missing-suite-base.txt absent
+selftest cases=20 failures=0
+exit=0

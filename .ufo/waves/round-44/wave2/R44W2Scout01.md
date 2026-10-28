@@ -1,0 +1,1517 @@
+# R44W2Scout01 — sibling-overlap recon for F26
+
+Seat: `R44W2Scout01` (leaf scout; no subagent dispatch). Round 44 attempt 2, wave 2.
+Item: does any sibling lane's `corpus/knowledge` tree already own the Google Cloud VRP customer-resource boundary, and does kasegi F26 duplicate that holding?
+Axes: coverage of every sibling knowledge file; precision (ownership versus a shared word); verifiability (path:line or a named zero).
+
+## Verdict
+
+**Not falsified. F26 does not duplicate a sibling holding.**
+
+No sibling `corpus/knowledge` file owns the Google Cloud VRP customer-resource boundary. Across 20 sibling lanes and 1,286 knowledge files, zero files contain `bughunters`, the Cloud VRP rules path `cloud-vulnerability-reward-program`, `Google Cloud VRP` / `cloud vrp`, `vulnerability reward`, `reward program`, `customer-resource` / `customer resource`, `customer-owned` / `customer owned`, `do not test customer`, `google-owned infrastructure`, the word `VRP`, `customer project(s)`, `customer IP`, `google-friends`, `ineligible for a reward`, or `bc.googleusercontent`. No knowledge path contains `vrp`, `bughunter`, `reward-program`, or `google-cloud`.
+
+Nineteen knowledge files match a looser token (`bounty`, `Google Cloud`, `googleusercontent`, `appspot`). A second pass adds two kama files on `multi-tenant`. Each is classified below. None states the Cloud VRP scope limit, the customer-resource testing prohibition, the customer-IP-range rule, or the reward-ineligibility rule that F26 records.
+
+This seat cannot show a sibling owner. It does not score C1, and it does not by itself confirm C2's novelty against kasegi's own F01/F03/F09/F13 (those are in-lane, and F26 already distinguishes them at `corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md:24-28`).
+
+## F26 under comparison
+
+Committed tree under attack: `8063547d0ce647d6f9eafc3c8d0a502616685218`. `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse HEAD` prints that same hash. `git diff --exit-code 8063547d0ce647d6f9eafc3c8d0a502616685218 -- corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md` exits 0. `git ls-tree -l` on that path at that commit: mode `100644`, blob `2800b9c5161702b7429c5fb6b003fb41d22f981c`, size 5843.
+
+The entry's own boundary, read at that blob (working tree matches):
+
+- `corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md:1` title `Google Cloud VRP: customer-resource boundary`.
+- `:3` source S069, URL `https://bughunters.google.com/about/rules/google-friends/cloud-vulnerability-reward-program-rules`, section "Do Not Test Customer Projects & Resources".
+- `:11-12` quotes the program text that scope is limited to Google-owned infrastructure and that testing customer resources is prohibited, and names `*.bc.googleusercontent.com` and `*.appspot.com` as example customer-owned domains.
+- `:17` reward-ineligibility if finding or verifying involved customer resources.
+- `:28` the novel rule: a Google-owned asset inside a customer IP block is still unauthorized testing.
+
+Frozen claims were read and not edited: `.ufo/waves/round-44/claims.json` C2 `after` requires F26 plus a new knowledge entry. Section 6 of `corpus/lessons/round-43-verifier-spotcheck.md:97-108` is the eight routed defects; none of them is this overlap question.
+
+## Method
+
+Read-only. No sibling tree, fleet-root tracked file, shokuknow byte, or git/jj state was written. No tool was installed. Scratch was `/fast/scratch/hyaku/kasegi-r44/R44W2Scout01/` and is removed before yield.
+
+Fleet-root `rg` is not evidence here. `/home/vgpnk/Projects/shokunin/.gitignore:1` is `*-shokunin/`, so a search rooted at the fleet skips every lane, including kasegi. The census opened each knowledge file from the lane directory.
+
+Census (Python `os.walk` of `<lane>/corpus/knowledge`, UTF-8 with `errors=replace`, no `READ_FAIL`): 20 sibling lanes, 1,286 files. Strict and near tokens were applied to the full text of every file. A second pass re-read the same 1,286 files for `bug hunter`, `customer project(s)`, `customer IP`, `multi-tenant`, `google-friends`, `ineligible for a reward`, `reward eligibility` / `reward-ineligib`, and `bc.googleusercontent` (3 hit lines, all kama prefix-cache).
+
+Sibling lanes present: audio-shokunin, chousa-shokunin, game-dev-2d-shokunin, game-dev-3d-shokunin, kagi-shokunin, kaidoku-shokunin, kake-shokunin, kama-shokunin, kengaku-shokunin, kotoba-shokunin, kotodama-shokunin, kumitate-shokunin, lore-shokunin, mado-shokunin, mori-shokunin, revenger-shokunin, souji-shokunin, tabi-shokunin, tameshi-shokunin, tsukuroi-shokunin.
+
+Per-lane knowledge file counts: audio=18, chousa=83, game-dev-2d=5, game-dev-3d=47, kagi=25, kaidoku=139, kake=61, kama=40, kengaku=55, kotoba=65, kotodama=253, kumitate=61, lore=26, mado=69, mori=74, revenger=19, souji=31, tabi=59, tameshi=65, tsukuroi=91. Sum = 1286.
+
+## Classified hits (not ownership)
+
+| File:line | What it holds | Ruling |
+|---|---|---|
+| `kake-shokunin/corpus/knowledge/field-performance-cwv.md:116,141,153` | CrUX API calls need a Google Cloud API key; kake holds no key; key custody routes to the operator and kagi | Adjacent product doc. Not VRP scope or customer-resource testing. |
+| `kake-shokunin/corpus/knowledge/google-user-triggered-fetchers.md:21-23,49` | Google's crawler page: a site hosted on Google Cloud fetching RSS; reverse-DNS mask `gae.googleusercontent.com` for user-owned fetchers | Publisher crawl hygiene. The hostname is an identifier for fetchers, not the Cloud VRP customer-domain prohibition. |
+| `kake-shokunin/corpus/knowledge/googlebot-verification.md:32,46,50,54,76` | Same documentation set: user-triggered fetcher masks, `gae.googleusercontent.com`, a GCP site fetching RSS, reverse DNS of `googleusercontent.com` | Same ruling as the fetchers entry. No reward program, no customer-project testing rule. |
+| `kumitate-shokunin/corpus/knowledge/visibility-lease-ack-deadlines.md:1` | Source line cites Google Cloud Pub/Sub subscriber lease-management docs beside SQS and NATS | Broker lease semantics. Not a VRP. |
+| `tabi-shokunin/corpus/knowledge/chromium-156-release-pin-recheck.md:3` | Source URL `https://chromiumdash.appspot.com/fetch_releases?...` | The substring `appspot` is Chromium Dash. It is not the Cloud VRP example `*.appspot.com` customer domain. |
+| `kama-shokunin/corpus/knowledge/prefix-cache-reuse-models.md:23` and `prefix-cache-reuse-models-amendment-2026-10-23.md:16,27` | A prefix-cache hash collision in a multi-tenant setup can serve one tenant's cached KV to another | Model-serving cache. Not Cloud VRP multi-tenant escape or customer IP range. |
+| `chousa-shokunin/corpus/knowledge/scope-refusal-r12.md:21` | Phrase table routes `bug bounty` / `claim package(s)` / `kasegi` to `SCOPE_BOUNTY_ABSORBED` → kasegi | Refusal that names kasegi as owner. Not a Cloud VRP entry. |
+| `chousa-shokunin/corpus/knowledge/scope-phrase-gap-r18.md:28` | Notes `bug bounties` vs `bug bounty` inflection | Method debt. No program text. |
+| `chousa-shokunin/corpus/knowledge/fenced-heading-r17.md:14` | Example of a refused province `domain: bounty program scope` | Refusal example. |
+| `kama-shokunin/corpus/knowledge/cross-lane-scope.md:43,51` | kama retains endpoint identity; kasegi retains bounty/target-scope research | Handoff to kasegi. |
+| `kotoba-shokunin/corpus/knowledge/sibling-description-rewrites-round8.md:259-280` | Audits kasegi's skill description: "bounty & security research"; "kasegi owns the bounty tree" | Citation of kasegi, not a kotoba holding of Cloud VRP rules. |
+| `kotoba-shokunin/corpus/knowledge/sibling-overlap-census-round49.md:77` and `sibling-overlap-census-round74.md:61,92` | Census rows quote kasegi `PROVINCE.md` / `SKILL.md` domain line | Same. |
+| `kotoba-shokunin/corpus/knowledge/sibling-citation-routing-round16.json:500,637,651,1905-1906,2744-2758` and `sibling-citation-routing-round16.md:102` | Routing records of kasegi paths (`bounty-fleet`, lost `the-bounty-hunter`, Immunefi/Cantina/HackenProof page-capture notes) | Kotoba citation routing. No Google Cloud VRP. |
+| `kake-shokunin/corpus/knowledge/origin-repos.md:49` | Repo-name glob `veigapunk-bounty-audit-*` | Name token only. |
+| `kumitate-shokunin/corpus/knowledge/ops-watchers.md:30` | Watcher "Refires stale bounty-hunt UFOs" | Orchestration vocabulary. |
+| `revenger-shokunin/corpus/knowledge/round-72-tool-landscape.md:64,82` | "cross-lane game and bounty content is not absorbed"; a bounty-hunter request is routed to kasegi | Explicit non-absorption. |
+| `tabi-shokunin/corpus/knowledge/csrf-defense-shape-boundary.md:19` | Security judgment "belongs to kasegi (the fleet roster's bounty/security-research lane)" | Names kasegi. Does not hold the Cloud VRP rule. |
+| `kotodama-shokunin/corpus/knowledge/civilizations/arabia-pre-islamic.md:137` | Qur'an 2:198 "seeking bounty" as trade during pilgrimage | Word collision. |
+
+## Outside the knowledge trees (supplement, not a substitute)
+
+Opened 78 sibling files: each lane's `corpus/SOURCES.md`, `PROVINCE.md`, `corpus/README.md`, and `SKILL.md`, except the two that are absent (`audio-shokunin/SKILL.md`, `game-dev-2d-shokunin/SKILL.md`). Strict pattern `bughunters.google|cloud-vulnerability-reward-program|Google Cloud VRP|Do Not Test Customer|customer-resource boundary`: **0 hits**.
+
+`/home/vgpnk/Projects/shokuknow/doctrine` and `/home/vgpnk/Projects/shokuknow/merge`: 0 hits for `bughunters`, `cloud-vulnerability-reward`, `Google Cloud VRP`, `Vulnerability Reward Program`, `cloud-vulnerability-reward-program`, `Do Not Test Customer Projects`.
+
+One shokuknow hit for `bughunters.google`, and it is not a knowledge entry and not the Cloud VRP boundary: `/home/vgpnk/Projects/shokuknow/lanes/tabi/round2/.work/webmcp-tools-readme.md:37-40` is a copied project disclaimer: "This is not an officially supported Google product. This project is not eligible for the Google Open Source Software Vulnerability Rewards Program" linking `https://bughunters.google.com/open-source-security`. That is the OSS VRP, not `cloud-vulnerability-reward-program-rules`, and it does not state a customer-resource testing rule.
+
+## Limitations
+
+- Sibling trees were the live worktrees on disk, not pinned to `8063547` (that commit is kasegi's). An uncommitted sibling file on disk would have been opened; sibling git history was not searched.
+- Assigned surface was `corpus/knowledge`. Lessons, `.ufo/`, and evidence blobs outside `corpus/knowledge` were not enumerated file by file. The 78-file SOURCES/PROVINCE/README/SKILL pass is a supplement.
+- shokuknow was token-searched under `doctrine/`, `merge/`, and the one `bughunters` hit under `lanes/`. It was not a named-file census of every shokuknow path.
+- No network fetch. No package installed (pacman paused; nothing needed).
+
+## Files checked
+
+Every path below was opened and scanned. Counts match the walk.
+
+### audio-shokunin (18)
+
+- `audio-shokunin/corpus/knowledge/2026-10-12-audio-checklist.md`
+- `audio-shokunin/corpus/knowledge/2026-10-12-fixture-battery.md`
+- `audio-shokunin/corpus/knowledge/2026-10-12-threshold-calibration.md`
+- `audio-shokunin/corpus/knowledge/2026-10-13-sox-act-autodetect-predicate.md`
+- `audio-shokunin/corpus/knowledge/2026-10-13-sox-ffmpeg-packet-residue.md`
+- `audio-shokunin/corpus/knowledge/2026-10-13-sox-validbits-codec-map.md`
+- `audio-shokunin/corpus/knowledge/2026-10-14-ffmpeg-cross-decoder-transport.md`
+- `audio-shokunin/corpus/knowledge/2026-10-14-sox-autodetect-preemptor-ordering.md`
+- `audio-shokunin/corpus/knowledge/2026-10-14-sox-extension-suffix.md`
+- `audio-shokunin/corpus/knowledge/2026-10-14-sox-fifo-hold-bound.md`
+- `audio-shokunin/corpus/knowledge/2026-10-14-sox-posttable-fallback.md`
+- `audio-shokunin/corpus/knowledge/2026-10-14-sox-preemptor-map-complete.md`
+- `audio-shokunin/corpus/knowledge/2026-10-14-sox-transport-axis.md`
+- `audio-shokunin/corpus/knowledge/2026-10-19-ebur128-dualmono-and-true-peak-on-fixtures.md`
+- `audio-shokunin/corpus/knowledge/2026-10-19-game-loudness-whole-mix-protocol.md`
+- `audio-shokunin/corpus/knowledge/2026-10-19-godot-wav-import-default-qoa.md`
+- `audio-shokunin/corpus/knowledge/2026-10-19-loudnorm-short-sfx-regimes.md`
+- `audio-shokunin/corpus/knowledge/seed.md`
+
+### chousa-shokunin (83)
+
+- `chousa-shokunin/corpus/knowledge/.gitkeep`
+- `chousa-shokunin/corpus/knowledge/aggregator-vs-source-r36.md`
+- `chousa-shokunin/corpus/knowledge/anchor-boundaries-r4.md`
+- `chousa-shokunin/corpus/knowledge/archived-export-intake.md`
+- `chousa-shokunin/corpus/knowledge/archives-verified-r9.md`
+- `chousa-shokunin/corpus/knowledge/audit-r11.md`
+- `chousa-shokunin/corpus/knowledge/bash-local-expansion-r35.md`
+- `chousa-shokunin/corpus/knowledge/capture-bash-pin-r39.md`
+- `chousa-shokunin/corpus/knowledge/capture-path-pin-r41.md`
+- `chousa-shokunin/corpus/knowledge/chain-resolution-r3.md`
+- `chousa-shokunin/corpus/knowledge/chinese-prisma-s-reception-r52.md`
+- `chousa-shokunin/corpus/knowledge/chinese-search-record-r39.md`
+- `chousa-shokunin/corpus/knowledge/citation-chain-fidelity-r24.md`
+- `chousa-shokunin/corpus/knowledge/citation-count-semantics-r37.md`
+- `chousa-shokunin/corpus/knowledge/citation-matching-semantics-r41.md`
+- `chousa-shokunin/corpus/knowledge/citation-version-binding-r36.md`
+- `chousa-shokunin/corpus/knowledge/citation-version-binding-r37.md`
+- `chousa-shokunin/corpus/knowledge/claim-pin-provenance-r37.md`
+- `chousa-shokunin/corpus/knowledge/claim-record-fields-r33.md`
+- `chousa-shokunin/corpus/knowledge/claim-support-states-r24.md`
+- `chousa-shokunin/corpus/knowledge/claim-support-test-r37-amendment-2026-10-23.md`
+- `chousa-shokunin/corpus/knowledge/claim-support-test-r37.md`
+- `chousa-shokunin/corpus/knowledge/claim-verification-r2.md`
+- `chousa-shokunin/corpus/knowledge/cnki-citation-check-r40.md`
+- `chousa-shokunin/corpus/knowledge/contextual-source-admission-r24.md`
+- `chousa-shokunin/corpus/knowledge/dead-zone-pcre-r34.md`
+- `chousa-shokunin/corpus/knowledge/denylist-r22.md`
+- `chousa-shokunin/corpus/knowledge/engine-swap-canary-r36.md`
+- `chousa-shokunin/corpus/knowledge/env-pin-capture-r38.md`
+- `chousa-shokunin/corpus/knowledge/evidence-archive-field-policy-r41.md`
+- `chousa-shokunin/corpus/knowledge/evidence-pool-versioning-r39-amendment-2026-10-23.md`
+- `chousa-shokunin/corpus/knowledge/evidence-pool-versioning-r39.md`
+- `chousa-shokunin/corpus/knowledge/evidence-snapshot-coverage-r40.md`
+- `chousa-shokunin/corpus/knowledge/exempt-hop-audit-r32.md`
+- `chousa-shokunin/corpus/knowledge/fenced-anchor-r23.md`
+- `chousa-shokunin/corpus/knowledge/fenced-heading-r17.md`
+- `chousa-shokunin/corpus/knowledge/gate-baseline-r12.md`
+- `chousa-shokunin/corpus/knowledge/gate-baseline-r8.md`
+- `chousa-shokunin/corpus/knowledge/grep-pin-r35.md`
+- `chousa-shokunin/corpus/knowledge/grey-literature-and-chinese-search-record-r40.md`
+- `chousa-shokunin/corpus/knowledge/grey-literature-field-china-r42.md`
+- `chousa-shokunin/corpus/knowledge/hardening-r10.md`
+- `chousa-shokunin/corpus/knowledge/hardlink-alias-r13.md`
+- `chousa-shokunin/corpus/knowledge/html-comment-r20.md`
+- `chousa-shokunin/corpus/knowledge/istic-citation-verification-r39.md`
+- `chousa-shokunin/corpus/knowledge/japanese-prisma-item-wording-r40.md`
+- `chousa-shokunin/corpus/knowledge/japanese-search-record-niph-form-r52.md`
+- `chousa-shokunin/corpus/knowledge/japanese-search-record-r38-amendment-2026-10-23.md`
+- `chousa-shokunin/corpus/knowledge/japanese-search-record-r38.md`
+- `chousa-shokunin/corpus/knowledge/json-delimiter-r24.md`
+- `chousa-shokunin/corpus/knowledge/keyed-engine-output-equivalence-r35.md`
+- `chousa-shokunin/corpus/knowledge/line-binding-r31.md`
+- `chousa-shokunin/corpus/knowledge/long-span-argv-r34.md`
+- `chousa-shokunin/corpus/knowledge/manifest-append-lock-r32.md`
+- `chousa-shokunin/corpus/knowledge/metadata-screen-r25.md`
+- `chousa-shokunin/corpus/knowledge/mount-alias-r14.md`
+- `chousa-shokunin/corpus/knowledge/normative-reference-chain-china-r57.md`
+- `chousa-shokunin/corpus/knowledge/per-record-argv-attribution-r36.md`
+- `chousa-shokunin/corpus/knowledge/pin-capture-env-r37.md`
+- `chousa-shokunin/corpus/knowledge/pointer-boundary-r21.md`
+- `chousa-shokunin/corpus/knowledge/quality-control-guideline-issued-text-r48.md`
+- `chousa-shokunin/corpus/knowledge/quote-reopen-r29.md`
+- `chousa-shokunin/corpus/knowledge/quote-reopen-r30.md`
+- `chousa-shokunin/corpus/knowledge/reader-allocation-r26.md`
+- `chousa-shokunin/corpus/knowledge/receipt-binding-r38.md`
+- `chousa-shokunin/corpus/knowledge/receipt-expectation-digests-r40.md`
+- `chousa-shokunin/corpus/knowledge/receipt-verifier-subject-r39.md`
+- `chousa-shokunin/corpus/knowledge/recheck-due-r26.md`
+- `chousa-shokunin/corpus/knowledge/reference-integrity-r7.md`
+- `chousa-shokunin/corpus/knowledge/registry-link-r26.md`
+- `chousa-shokunin/corpus/knowledge/revision-binding-r31.md`
+- `chousa-shokunin/corpus/knowledge/root-slash-boundary-r15.md`
+- `chousa-shokunin/corpus/knowledge/scope-phrase-gap-r18.md`
+- `chousa-shokunin/corpus/knowledge/scope-refusal-r12.md`
+- `chousa-shokunin/corpus/knowledge/search-log-method-r39.md`
+- `chousa-shokunin/corpus/knowledge/search-tracking-record-r40.md`
+- `chousa-shokunin/corpus/knowledge/source-type-taxonomy-r36.md`
+- `chousa-shokunin/corpus/knowledge/source-type-taxonomy-r37.md`
+- `chousa-shokunin/corpus/knowledge/sweep-symlink-r19.md`
+- `chousa-shokunin/corpus/knowledge/sweeps-rejections-r5.md`
+- `chousa-shokunin/corpus/knowledge/verification-r16.md`
+- `chousa-shokunin/corpus/knowledge/verify-all-r6.md`
+- `chousa-shokunin/corpus/knowledge/western-instrument-alignment-r50.md`
+
+### game-dev-2d-shokunin (5)
+
+- `game-dev-2d-shokunin/corpus/knowledge/2026-10-12-production-checklist.md`
+- `game-dev-2d-shokunin/corpus/knowledge/2026-10-19-physics-replay-boundary.md`
+- `game-dev-2d-shokunin/corpus/knowledge/2026-10-19-res-uid-runtime-authority.md`
+- `game-dev-2d-shokunin/corpus/knowledge/2026-10-19-tilemaplayer-body-rid-attribution.md`
+- `game-dev-2d-shokunin/corpus/knowledge/seed.md`
+
+### game-dev-3d-shokunin (47)
+
+- `game-dev-3d-shokunin/corpus/knowledge/engines.md`
+- `game-dev-3d-shokunin/corpus/knowledge/godot-floor-angle-threshold.md`
+- `game-dev-3d-shokunin/corpus/knowledge/godot-headless-not-render.md`
+- `game-dev-3d-shokunin/corpus/knowledge/rea.md`
+- `game-dev-3d-shokunin/corpus/knowledge/seed.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/audit-reference.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/seat01.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/seat02.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/seat03.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/seat04.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/seat05.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/seat06.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/seat07.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/seat08.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/seat09.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/seat10.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/.manifest.d/seat11.sha256`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/PROVENANCE.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/README.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/adaptation-kimi.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/actors-scene.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/animation-controlrig.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/assets-content.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/blueprints.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/editor-general.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/gameplay-gas.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/materials.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/meshes-textures.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/scripting-programmatic.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/sequencer.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/testing-automation.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/ui-umg-slate.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/executability/vfx-niagara-dataflow.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/gate/README.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/gate/run_gate.sh`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/.claude-plugin/plugin.json`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/.gitignore`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/CODEOWNERS`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/LICENSE`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/README.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/hooks/hooks.json`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/hooks/unreal-context.sh`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/skills/create-toolset/SKILL.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/skills/unreal-mcp/SKILL.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/skills/unreal-mcp/references/operations.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/skills/unreal-mcp/references/setup.md`
+- `game-dev-3d-shokunin/corpus/knowledge/unreal-mcp/upstream/skills/unreal-skill/SKILL.md`
+
+### kagi-shokunin (25)
+
+- `kagi-shokunin/corpus/knowledge/adjacency-breadth.md`
+- `kagi-shokunin/corpus/knowledge/adjacency-scope.md`
+- `kagi-shokunin/corpus/knowledge/cdp-bridge-1password.md`
+- `kagi-shokunin/corpus/knowledge/checklist-execution.md`
+- `kagi-shokunin/corpus/knowledge/claim-ledger.md`
+- `kagi-shokunin/corpus/knowledge/config-layering.md`
+- `kagi-shokunin/corpus/knowledge/control-plane-hardening.md`
+- `kagi-shokunin/corpus/knowledge/credential-isolation.md`
+- `kagi-shokunin/corpus/knowledge/drift-gate.md`
+- `kagi-shokunin/corpus/knowledge/feature-bound-credential-review.md`
+- `kagi-shokunin/corpus/knowledge/handler-on-disk-state.md`
+- `kagi-shokunin/corpus/knowledge/handler-trust-boundary.md`
+- `kagi-shokunin/corpus/knowledge/janitor-command-surface.md`
+- `kagi-shokunin/corpus/knowledge/janitor-env-contract.md`
+- `kagi-shokunin/corpus/knowledge/janitor-lifecycle.md`
+- `kagi-shokunin/corpus/knowledge/onepassword-machine-credentials.md`
+- `kagi-shokunin/corpus/knowledge/op-cli-surface.md`
+- `kagi-shokunin/corpus/knowledge/op-env-refs.md`
+- `kagi-shokunin/corpus/knowledge/op-ref-consumption.md`
+- `kagi-shokunin/corpus/knowledge/sops-age-key-rotation.md`
+- `kagi-shokunin/corpus/knowledge/substrate-deferral.md`
+- `kagi-shokunin/corpus/knowledge/surface-census.md`
+- `kagi-shokunin/corpus/knowledge/tac-evidence-integrity.md`
+- `kagi-shokunin/corpus/knowledge/transcript-hygiene.md`
+- `kagi-shokunin/corpus/knowledge/vault-openbao-token-lease-lifecycle.md`
+
+### kaidoku-shokunin (139)
+
+- `kaidoku-shokunin/corpus/knowledge/.gitkeep`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-asar-surface.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-crash-evidence.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-doctor-taxonomy.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-elf-observation-jq.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-ghidra-install.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-java-runtime.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-managed-assemblies.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-mcp-registrations.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-pacman-packages.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-pe-surface.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-asar-deep-obsidian.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-crash-inspect-probe.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-doctor-reverify-r2.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-evidence-bundle-schema.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-firmware-probe.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-frontier-prereqs.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-jq-shadow-verdict.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-libjq-engine.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-pe-e2e-proof.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-provider-capability-matrix.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-skill-references-deep.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r2-version-diff-compare.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-apk-inventory.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-appimage.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-evm-interface.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-jq-provenance.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-keyed-archive-carriers.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-mcp-session.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-node-addons.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-pe-arm64.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-renderer-asar.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-runtime-observation.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-typora-signal.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r3-verb-coverage.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-05-signal-asar.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-06-1password-asar.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-07-jsc-bytecode.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-08-observe-verbs.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-09-js-export-compare.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-10-real-version-pair.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-11-managed-unlock.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-12-godot-arm64-scale.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-13-pwntools-persist.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-14-libsignal.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-15-appimage-inner.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4-16-frontier-rescan.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4u-01-firmware-deep.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4u-02-jadx-decode.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4u-03-unblob-extract.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4u-04-dnfile-il.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4u-05-wakaru-oom.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r4u-06-adb-surface.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r5-01-riscv-bypass.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r5-02-call-targets-jq.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r7-01-queue-a-ops.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r7-02-queue-a-ops-2.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r8-01-queue-a-ops.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-r8-02-queue-a-ops-2.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-rea-cli-surface.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-rea-live-jq-e2e.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-rea-self-documentation.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-13-rea-skill-contract.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-14-r10-01-queue-ops.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-14-r10-02-queue-ops-2.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-14-r11-01-queue-ops.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-14-r11-02-queue-ops-2.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-14-r12-01-queue-b-ready.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-14-r12-02-queue-b-ledger.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-14-r14-01-queue-b-residual.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-14-r14-02-final-sweep.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-14-r9-01-queue-a-ops.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-14-r9-02-queue-a-ops-2.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-16-l7-01-inspect-go-binary.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-16-l7-02-inspect-rust-binary.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-16-l7-03-inspect-electron-fuses.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-16-l7-04-inspect-sqlite-database.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-16-l7-05-search-bytes.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-16-l7-06-inspect-with-objdump.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-16-l8-01-6p4-symmetry-battery.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-18-arc2-r6-pe-midrung.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-18-arc2-r7-pe-wall.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-19-arc3-r1-evm-real-solc.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-19-arc3-r10-rust-evidence-id-domain.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-19-arc3-r11-inspect-artifact-evidence-id-domain.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-19-arc3-r12-go-evidence-id-domain.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-19-arc3-r3-evm-optimizer-shapes.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-19-arc3-r4-evm-vyper-leg.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-19-arc3-r6-viair-dispatch-shape.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-19-arc3-r7-evm-evidence-id-domain.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-19-arc3-r8-vyper-optimizer-dispatch-shapes.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-19-arc3-r9-viair-fallback-miss.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-20-r14-go-version-diagnosis.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-20-r15-go-snapshot-inventory.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-20-r16-go-selection-preview.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-20-r17-go-carrier-diagnostics.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-20-r18-swiss-map-replay.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-20-r19-go125-toolchain-replay.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-20-r20-go1246-first-failure-forecast.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-20-r20-harmony-application-graph.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-20-r20-objdump-architecture-list.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-20-r20-rizin-command-observation.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-20-r20-wasm-interfaces.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-21-r22-flutter-positive-dart-refusal.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-21-r22-flutter-static-boundary.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-21-r23-dart-legacy-layout-boundary.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-21-r23-offline-signal-envelopes.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-21-r24-pcap-family-envelopes.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-22-r25-evm-selector-name-resolution.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-22-r26-native-reader-evidence-id-identity.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-22-r27-renamed-copy-evidence-id-identity.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-22-r28-evm-heldout-selector-naming.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-22-r28-openchain-filtered-flag.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-22-r29-evm-fresh-selector-naming.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-22-r29-openchain-filtered-unseen.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-23-r30-rust-auditable-positive.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-23-r30-rust-auditable-refusals.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-23-r31-sqlite-positive.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-23-r31-sqlite-refusals.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-23-r32-arm64x-hybrid-pe.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-23-r33-chpe-structural-profile.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-23-r34-elf-version-needs.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-25-r34b-pre-freeze-shortcut-replay-gate-stop.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-binwalk-v3-unit-of-work.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-r36-sasquatch-squashfs-recursion.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-r38-sasquatch-be-squashfs-recursion.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-r39-be-squashfs-v4-core.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-r39-sqfs-outcome-triage.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-r40-avm-be-squashfs-core.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-r40-sqfs-triage-v2.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-r41-avm-be-squashfs-core.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-r41-sqfs-triage-v3.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-r42-sqfs-triage-v4.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-r42-squashfs-v3-core.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-unblob-format-matrix.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-26-unblob-sasquatch-dependency.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-27-r43-sqfs-triage-v4-scored.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-27-sasquatch-release-matrix.md`
+- `kaidoku-shokunin/corpus/knowledge/2026-10-28-r44-squashfs-v1v2-core.md`
+
+### kake-shokunin (61)
+
+- `kake-shokunin/corpus/knowledge/accessibility-review-cards.json`
+- `kake-shokunin/corpus/knowledge/accessibility-review-packet.md`
+- `kake-shokunin/corpus/knowledge/baidu-dead-link-types.md`
+- `kake-shokunin/corpus/knowledge/baidu-friendly-crawl-guidance.md`
+- `kake-shokunin/corpus/knowledge/baidu-mobile-matching-error-causes.md`
+- `kake-shokunin/corpus/knowledge/baidu-spider-identification.md`
+- `kake-shokunin/corpus/knowledge/baidu-spider-unblocking.md`
+- `kake-shokunin/corpus/knowledge/baidu-spider3-dead-link-model.md`
+- `kake-shokunin/corpus/knowledge/canonical-selection.md`
+- `kake-shokunin/corpus/knowledge/claim-count-derivation.md`
+- `kake-shokunin/corpus/knowledge/commit-citation-hygiene.md`
+- `kake-shokunin/corpus/knowledge/crawl-budget-consequences.md`
+- `kake-shokunin/corpus/knowledge/crawl-error-status-table.md`
+- `kake-shokunin/corpus/knowledge/crawl-scope-per-host.md`
+- `kake-shokunin/corpus/knowledge/crawler-identity-signals.md`
+- `kake-shokunin/corpus/knowledge/crawler-identity.md`
+- `kake-shokunin/corpus/knowledge/drift-detection.md`
+- `kake-shokunin/corpus/knowledge/dynamic-rendering-workaround-limits.md`
+- `kake-shokunin/corpus/knowledge/field-performance-cwv.md`
+- `kake-shokunin/corpus/knowledge/fire-journal-codes.md`
+- `kake-shokunin/corpus/knowledge/fleet-registry.md`
+- `kake-shokunin/corpus/knowledge/free-read-verbs.md`
+- `kake-shokunin/corpus/knowledge/freshness-pins.json`
+- `kake-shokunin/corpus/knowledge/freshness-sidecar.json`
+- `kake-shokunin/corpus/knowledge/freshness-sweep.md`
+- `kake-shokunin/corpus/knowledge/ghp-custom-domain.md`
+- `kake-shokunin/corpus/knowledge/ghp-etag-anatomy.md`
+- `kake-shokunin/corpus/knowledge/ghp-served-set.md`
+- `kake-shokunin/corpus/knowledge/ghp-subpath-spotcheck.md`
+- `kake-shokunin/corpus/knowledge/google-user-triggered-fetchers.md`
+- `kake-shokunin/corpus/knowledge/googlebot-verification.md`
+- `kake-shokunin/corpus/knowledge/js-rendering-queue.md`
+- `kake-shokunin/corpus/knowledge/keeper-timer-inert.md`
+- `kake-shokunin/corpus/knowledge/kimi-subpath-audit.md`
+- `kake-shokunin/corpus/knowledge/link-preview-metadata.md`
+- `kake-shokunin/corpus/knowledge/mirror-pitfalls.md`
+- `kake-shokunin/corpus/knowledge/ops-automation.md`
+- `kake-shokunin/corpus/knowledge/origin-repos.md`
+- `kake-shokunin/corpus/knowledge/pages-base-path.md`
+- `kake-shokunin/corpus/knowledge/probe-delta-alerting.md`
+- `kake-shokunin/corpus/knowledge/publish-channels.md`
+- `kake-shokunin/corpus/knowledge/publish-queue.md`
+- `kake-shokunin/corpus/knowledge/receipt-integrity.md`
+- `kake-shokunin/corpus/knowledge/redirect-rewrite-rules.md`
+- `kake-shokunin/corpus/knowledge/render-static-sites.md`
+- `kake-shokunin/corpus/knowledge/render-web-services.md`
+- `kake-shokunin/corpus/knowledge/response-header-expectations.md`
+- `kake-shokunin/corpus/knowledge/robots-txt-limits.md`
+- `kake-shokunin/corpus/knowledge/robots-txt-rules.md`
+- `kake-shokunin/corpus/knowledge/security-txt-publishing.md`
+- `kake-shokunin/corpus/knowledge/sitemap-orphan-audit.md`
+- `kake-shokunin/corpus/knowledge/speedrun-pipeline.md`
+- `kake-shokunin/corpus/knowledge/static-canonical-preflight.md`
+- `kake-shokunin/corpus/knowledge/vault-properties.md`
+- `kake-shokunin/corpus/knowledge/yahoo-japan-deleted-url-recrawl.md`
+- `kake-shokunin/corpus/knowledge/yahoo-japan-link-target-crawl-restriction.md`
+- `kake-shokunin/corpus/knowledge/yahoo-japan-nonexistent-url-recrawl.md`
+- `kake-shokunin/corpus/knowledge/yahoo-japan-rel-nofollow-semantics.md`
+- `kake-shokunin/corpus/knowledge/yahoo-japan-robots-pattern-syntax.md`
+- `kake-shokunin/corpus/knowledge/yahoo-japan-robots-txt-basics.md`
+- `kake-shokunin/corpus/knowledge/yahoo-japan-robots-txt-refusal-rules.md`
+
+### kama-shokunin (40)
+
+- `kama-shokunin/corpus/knowledge/alias-endpoint-normalization.md`
+- `kama-shokunin/corpus/knowledge/battery-execution-evidence.md`
+- `kama-shokunin/corpus/knowledge/chat-adapter-outcomes.md`
+- `kama-shokunin/corpus/knowledge/completion-request-plane.md`
+- `kama-shokunin/corpus/knowledge/consumer-registry.md`
+- `kama-shokunin/corpus/knowledge/context-capacity-engine-sides.md`
+- `kama-shokunin/corpus/knowledge/context-capacity.md`
+- `kama-shokunin/corpus/knowledge/cross-lane-scope.md`
+- `kama-shokunin/corpus/knowledge/drift-timeline.md`
+- `kama-shokunin/corpus/knowledge/echo-discriminating-counters.md`
+- `kama-shokunin/corpus/knowledge/endpoint-health-probe-conventions.md`
+- `kama-shokunin/corpus/knowledge/endpoint-identity.md`
+- `kama-shokunin/corpus/knowledge/engine-pin-watch.md`
+- `kama-shokunin/corpus/knowledge/error-is-not-a-verdict.md`
+- `kama-shokunin/corpus/knowledge/free-tier-provider-limits.md`
+- `kama-shokunin/corpus/knowledge/gguf-declared-identity.md`
+- `kama-shokunin/corpus/knowledge/gguf-runtime-compatibility-boundary.md`
+- `kama-shokunin/corpus/knowledge/instrument-run-agreement.md`
+- `kama-shokunin/corpus/knowledge/kv-cache-reclamation-models.md`
+- `kama-shokunin/corpus/knowledge/listener-census.md`
+- `kama-shokunin/corpus/knowledge/llamacpp-loading-lifecycle.md`
+- `kama-shokunin/corpus/knowledge/loopback-listener-ownership.md`
+- `kama-shokunin/corpus/knowledge/ollama-evidence-replay.md`
+- `kama-shokunin/corpus/knowledge/ollama-live-amendment-r61.md`
+- `kama-shokunin/corpus/knowledge/ollama-live-lifecycle.md`
+- `kama-shokunin/corpus/knowledge/prefix-cache-reuse-models-amendment-2026-10-23.md`
+- `kama-shokunin/corpus/knowledge/prefix-cache-reuse-models.md`
+- `kama-shokunin/corpus/knowledge/runtime-health-surface-matrix.md`
+- `kama-shokunin/corpus/knowledge/runtime-health-surface-processes.md`
+- `kama-shokunin/corpus/knowledge/self-assessment-at-writing.md`
+- `kama-shokunin/corpus/knowledge/served-identity-crosswalk-amendment-2026-10-24-r16.md`
+- `kama-shokunin/corpus/knowledge/served-identity-crosswalk.md`
+- `kama-shokunin/corpus/knowledge/served-model-id-resolution.md`
+- `kama-shokunin/corpus/knowledge/served-model-identity.md`
+- `kama-shokunin/corpus/knowledge/serving-alias-contract.md`
+- `kama-shokunin/corpus/knowledge/serving-metrics-crosswalk.md`
+- `kama-shokunin/corpus/knowledge/sglang-docs-version-pinning-amendment-2026-10-23.md`
+- `kama-shokunin/corpus/knowledge/sglang-docs-version-pinning.md`
+- `kama-shokunin/corpus/knowledge/sglang-native-route-deprecation.md`
+- `kama-shokunin/corpus/knowledge/snapshot-history.md`
+
+### kengaku-shokunin (55)
+
+- `kengaku-shokunin/corpus/knowledge/agent-time-horizon-and-task-validity.md`
+- `kengaku-shokunin/corpus/knowledge/attrib-prior-art-r21.md`
+- `kengaku-shokunin/corpus/knowledge/attrib-r21.md`
+- `kengaku-shokunin/corpus/knowledge/attribution-interval-calibration.md`
+- `kengaku-shokunin/corpus/knowledge/bailian-cli-telemetry.md`
+- `kengaku-shokunin/corpus/knowledge/bench-arena-fresh-run.md`
+- `kengaku-shokunin/corpus/knowledge/bench-arena-round11-power.md`
+- `kengaku-shokunin/corpus/knowledge/bench-arena-round12-ladder.md`
+- `kengaku-shokunin/corpus/knowledge/bench-arena-round5-battery.md`
+- `kengaku-shokunin/corpus/knowledge/bench-arena-round6-stability.md`
+- `kengaku-shokunin/corpus/knowledge/bench-arena-round7-noise-n25.md`
+- `kengaku-shokunin/corpus/knowledge/bench-arena-round7-scaffold-ablation.md`
+- `kengaku-shokunin/corpus/knowledge/bench-arena-round8-horizon.md`
+- `kengaku-shokunin/corpus/knowledge/bench-arena-round9-replication.md`
+- `kengaku-shokunin/corpus/knowledge/bench-arena-task27-timeout-anatomy.md`
+- `kengaku-shokunin/corpus/knowledge/benchmark-grader-semantics.md`
+- `kengaku-shokunin/corpus/knowledge/benchmark-saturation-and-lifecycle.md`
+- `kengaku-shokunin/corpus/knowledge/benchmark-selection.md`
+- `kengaku-shokunin/corpus/knowledge/benchmark-task-validity-checklist.md`
+- `kengaku-shokunin/corpus/knowledge/benchmark-verifier-execution-model.md`
+- `kengaku-shokunin/corpus/knowledge/contamination-detection-and-transparency.md`
+- `kengaku-shokunin/corpus/knowledge/contamination-transparency-card.md`
+- `kengaku-shokunin/corpus/knowledge/eval-design-digest-2.md`
+- `kengaku-shokunin/corpus/knowledge/eval-design-digest-3.md`
+- `kengaku-shokunin/corpus/knowledge/eval-prior-art-calibration.md`
+- `kengaku-shokunin/corpus/knowledge/eval-theory-notes.md`
+- `kengaku-shokunin/corpus/knowledge/extraction-policy-comparison.md`
+- `kengaku-shokunin/corpus/knowledge/fixture-honest-geometry.md`
+- `kengaku-shokunin/corpus/knowledge/gemini-benchmark-suite.md`
+- `kengaku-shokunin/corpus/knowledge/godspeed-eval-findings.md`
+- `kengaku-shokunin/corpus/knowledge/grader-perturbation-audit.md`
+- `kengaku-shokunin/corpus/knowledge/kimi-model-routing-round18.md`
+- `kengaku-shokunin/corpus/knowledge/ledger-route-telemetry.md`
+- `kengaku-shokunin/corpus/knowledge/llm-judge-calibration.md`
+- `kengaku-shokunin/corpus/knowledge/local-bench-arena.md`
+- `kengaku-shokunin/corpus/knowledge/local-model-index.md`
+- `kengaku-shokunin/corpus/knowledge/open-model-catalogs.md`
+- `kengaku-shokunin/corpus/knowledge/paired-eval-uncertainty-reporting.md`
+- `kengaku-shokunin/corpus/knowledge/probe-battery-r19.md`
+- `kengaku-shokunin/corpus/knowledge/served-endpoint-identity-pin.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-build-pmars-grader.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-circuit-fibsqrt-grader.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-constraints-scheduling-grader.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-db-wal-recovery-grader.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-feal-differential-cryptanalysis-grader.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-feal-linear-cryptanalysis-grader.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-git-leak-recovery-grader.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-git-webserver-grader.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-password-recovery-grader.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-polyglot-c-py-grader.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-protein-assembly-grader.md`
+- `kengaku-shokunin/corpus/knowledge/tb2-regex-log-grader.md`
+- `kengaku-shokunin/corpus/knowledge/telemetry-run-design.md`
+- `kengaku-shokunin/corpus/knowledge/webarena-config-projection.md`
+- `kengaku-shokunin/corpus/knowledge/webarena-task-spec-audit.md`
+
+### kotoba-shokunin (65)
+
+- `kotoba-shokunin/corpus/knowledge/agent-def-audit-round6.md`
+- `kotoba-shokunin/corpus/knowledge/agent-definition-files-round56.md`
+- `kotoba-shokunin/corpus/knowledge/agent-defs-commands-and-round-prompts.md`
+- `kotoba-shokunin/corpus/knowledge/agents-md-and-dispatch-surfaces.md`
+- `kotoba-shokunin/corpus/knowledge/allowed-tools-sdk-round81.md`
+- `kotoba-shokunin/corpus/knowledge/allowed-tools-surfaces-round80.md`
+- `kotoba-shokunin/corpus/knowledge/alwayson-checklist-round7.md`
+- `kotoba-shokunin/corpus/knowledge/alwayson-rule-files-round53.md`
+- `kotoba-shokunin/corpus/knowledge/anatomy-and-compression.md`
+- `kotoba-shokunin/corpus/knowledge/checklist-execution-round15.md`
+- `kotoba-shokunin/corpus/knowledge/checklist-execution-round16.md`
+- `kotoba-shokunin/corpus/knowledge/checklist-execution-round17.md`
+- `kotoba-shokunin/corpus/knowledge/chinese-vendor-skill-surfaces-round73.md`
+- `kotoba-shokunin/corpus/knowledge/claim-census-round12.md`
+- `kotoba-shokunin/corpus/knowledge/claim-scope-audit-round9.md`
+- `kotoba-shokunin/corpus/knowledge/claude-md-surface.md`
+- `kotoba-shokunin/corpus/knowledge/client-trust-gates-round68.md`
+- `kotoba-shokunin/corpus/knowledge/cold-run-round11.md`
+- `kotoba-shokunin/corpus/knowledge/command-files-round58.md`
+- `kotoba-shokunin/corpus/knowledge/compound-clause-citation-round63.md`
+- `kotoba-shokunin/corpus/knowledge/corpus-integrity-round11.md`
+- `kotoba-shokunin/corpus/knowledge/dispatch-prompt-audit-round7.md`
+- `kotoba-shokunin/corpus/knowledge/erratum-absorption-round62.md`
+- `kotoba-shokunin/corpus/knowledge/explicit-invocation-round55.md`
+- `kotoba-shokunin/corpus/knowledge/fail-closed-and-anti-patterns.md`
+- `kotoba-shokunin/corpus/knowledge/fleet-commit-resolution-round66.md`
+- `kotoba-shokunin/corpus/knowledge/fleet-skill-audit-round5.md`
+- `kotoba-shokunin/corpus/knowledge/frontmatter-rule-authorities-round48.md`
+- `kotoba-shokunin/corpus/knowledge/frontmatter-trigger-surface.md`
+- `kotoba-shokunin/corpus/knowledge/g7-span-closure-round65.md`
+- `kotoba-shokunin/corpus/knowledge/g7-span-pinning-round64.md`
+- `kotoba-shokunin/corpus/knowledge/harness-independent-round37.md`
+- `kotoba-shokunin/corpus/knowledge/harness-independent-round41-census.md`
+- `kotoba-shokunin/corpus/knowledge/harness-router-models-round9.md`
+- `kotoba-shokunin/corpus/knowledge/harness-system-prompt.md`
+- `kotoba-shokunin/corpus/knowledge/harness-verifier-round10.md`
+- `kotoba-shokunin/corpus/knowledge/hook-files-round59.md`
+- `kotoba-shokunin/corpus/knowledge/independent-verification-round12.md`
+- `kotoba-shokunin/corpus/knowledge/instruction-authority-ladder-round67.md`
+- `kotoba-shokunin/corpus/knowledge/instruction-surface-census-round13.md`
+- `kotoba-shokunin/corpus/knowledge/instruction-surface-remeasure-round13.md`
+- `kotoba-shokunin/corpus/knowledge/mcp-server-instructions-round52.md`
+- `kotoba-shokunin/corpus/knowledge/opencode-extraction-round14.md`
+- `kotoba-shokunin/corpus/knowledge/opencode-offer-trace-round8.md`
+- `kotoba-shokunin/corpus/knowledge/plugin-manifests-round57.md`
+- `kotoba-shokunin/corpus/knowledge/render-mechanism-round7.md`
+- `kotoba-shokunin/corpus/knowledge/resident-index-and-rungs-round72.md`
+- `kotoba-shokunin/corpus/knowledge/scoped-rules-counter-round61.md`
+- `kotoba-shokunin/corpus/knowledge/scoped-rules-round60.md`
+- `kotoba-shokunin/corpus/knowledge/sibling-citation-routing-round16.json`
+- `kotoba-shokunin/corpus/knowledge/sibling-citation-routing-round16.md`
+- `kotoba-shokunin/corpus/knowledge/sibling-citation-routing-round21.md`
+- `kotoba-shokunin/corpus/knowledge/sibling-description-rewrites-round8.md`
+- `kotoba-shokunin/corpus/knowledge/sibling-overlap-census-round49.md`
+- `kotoba-shokunin/corpus/knowledge/sibling-overlap-census-round74.md`
+- `kotoba-shokunin/corpus/knowledge/skill-activation-telemetry.md`
+- `kotoba-shokunin/corpus/knowledge/skill-eval-artefacts-round70.md`
+- `kotoba-shokunin/corpus/knowledge/skill-listing-thresholds-round54.md`
+- `kotoba-shokunin/corpus/knowledge/skill-name-precedence-round69.md`
+- `kotoba-shokunin/corpus/knowledge/skill-overlap-levers-round51.md`
+- `kotoba-shokunin/corpus/knowledge/skill-selection-rules-round50.md`
+- `kotoba-shokunin/corpus/knowledge/spec-skill-creation-craft-round74.md`
+- `kotoba-shokunin/corpus/knowledge/substrate-pin-guard-round23.md`
+- `kotoba-shokunin/corpus/knowledge/trigger-miss-proxy-round6.md`
+- `kotoba-shokunin/corpus/knowledge/writing-revision-calibration-round61.md`
+
+### kotodama-shokunin (253)
+
+- `kotodama-shokunin/corpus/knowledge/civilizations/aegean-minoan-mycenaean.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/africa-primary-sources.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/ainu.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/akan.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/aksum-ethiopia.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/algonquian.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/amazigh-berber.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/amazonia-tupi-guarani.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/anatolia-hittite.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/ancestral-puebloan.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/arabia-pre-islamic.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/australia-aboriginal.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/austronesia-philippines-taiwan.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/bali.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/balts.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/benin.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/burma.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/byzantium.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/carthage.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/celts.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/chimu.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/china-han.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/china-ming.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/china-qing.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/china-shang-zhou.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/china-song.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/china-tang.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/dine-navajo.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/egypt-ancient.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/etruria.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/finnic-sami.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/fon-dahomey.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/germanic-norse.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/greece-classical.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/haudenosaunee.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/hawaii.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/hopi.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/igbo.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/inca.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/india-classical-sanskrit.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/india-mughal.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/india-tamil-sangam.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/india-vedic.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/inuit.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/islamic-caliphate-arabic.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/israel-ancient-hebrew.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/japan-edo.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/japan-heian.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/japan-medieval-sengoku.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/japan-yayoi-kofun.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/java-majapahit.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/khmer-angkor.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/kongo-kingdom.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/korea-joseon.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/korea-three-kingdoms-goryeo.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/lakota-plains.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/levant-canaan-phoenician.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/malagasy-madagascar.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/mali-songhai.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/mamluk.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/maori.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/maya-classic.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/mesoamerica-primary-sources.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/mesopotamia-sumer-akkad.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/mexica-aztec.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/mississippian.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/moche.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/mongol.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/muisca.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/nazca.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/newar-nepal.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/nubia-kush.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/olmec.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/ottoman.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/pacific-northwest.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/parthia.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/persia-achaemenid.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/persia-sasanian.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/polynesia-navigation.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/rapa-nui.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/rome.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/ryukyu.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/scythian-saka.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/siam-thai.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/slavs-early.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/sogdian-silk-road.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/swahili-coast.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/taino.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/thrace-dacia.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/tibet.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/turkic-steppe.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/vietnam.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/yoruba.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/zapotec-mixtec.md`
+- `kotodama-shokunin/corpus/knowledge/civilizations/zimbabwe-shona.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/adornment-body-codes.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/agrarian-field-system-lexicon.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/architecture-settlement-lexicon.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/bathing-and-body-hygiene.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/calendar-festival-systems.amend-2026-10-24.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/calendar-festival-systems.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/cartography-and-mapmaking.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/costume-semiotics.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/craft-artisan-lexicon.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/cuisine-food-lexicon.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/dance-performance-movement-codes.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/dress-through-eras.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/era-periodization-models.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/fire-fuel-light.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/footwear-codes-terminology.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/funerary-material-culture.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/furniture-interior-lexicon.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/games-play-sport-contests.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/garment-lexicon-crosslinguistic.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/hair-grooming-codes.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/headgear-head-covering-codes.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/heritage-taxonomy-models.amend-2026-10-24-r13.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/heritage-taxonomy-models.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/hunting-foraging-subsistence.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/masks-masquerade.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/material-culture-inference-method.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/medicine-healing-codes.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/music-instrument-lexicon.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/pastoralism-animal-husbandry.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/ritual-garments.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/scent-perfume-aromatics-codes.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/sumptuary-law-rank-display.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/textile-technology.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/timekeeping-instruments.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/trade-economy-lexicon.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/transport-mobility-lexicon.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/vessel-container-lexicon.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/warrior-material-culture.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/worldbuilding-setting-practice.amend-2026-10-23.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/worldbuilding-setting-practice.md`
+- `kotodama-shokunin/corpus/knowledge/culture-material/writing-media-surface-economy.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/color-terminology.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/conlang-methodology.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/conlang-scholarship.amend-2026-10-23.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/conlang-scholarship.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/dialect-register-consistency.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/gesture-co-speech-pointing.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/historical-linguistics.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/kinship-terminology.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/language-contact.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/language-shift-obsolescence-revival.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/language-socialization-and-acquisition.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/linguistic-anthropology.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/morphological-typology.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/naming-systems.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/numerals-and-measures.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/orality-formulaic-language.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/phonetics-phonology.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/politeness-taboo-euphemism.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/register-lexicon-ceilings.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/register-strata-attestation.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/sacred-registers-liturgical-language.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/semantic-fields-lexicon-building.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/semantics-pragmatics.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/sign-languages-manual-modality.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/sociolinguistics-registers.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/sound-symbolism.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/speech-surrogates-whistled-drummed.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/syntax-typology.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/taboo-strata-lifecycle.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/toponymy-place-names.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/translation-protocol-fidelity.md`
+- `kotodama-shokunin/corpus/knowledge/linguistics/writing-systems.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/amulets-talismans-apotropaic-marks.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/animal-symbolism.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/binding-speech-complex.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/celestial-symbolism-calendars.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/color-symbolism.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/comparative-frameworks.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/cosmology-cosmography.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/creation-myths-taxonomy.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/death-afterlife-eschatology.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/direction-symbolism.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/divination-omen-systems.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/eschatology-world-end-systems.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/flood-traditions.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/heraldry-emblems-identity-marks.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/hero-journey-variants.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/mineral-stone-symbolism.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/monsters-hybrid-beings.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/motif-index-usage.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/myth-folktale-genres.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/myth-ritual-theories.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/narrative-structure-frameworks.amend-2026-10-23.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/narrative-structure-frameworks.amend-2026-10-23b.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/narrative-structure-frameworks.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/number-symbolism.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/pantheon-archetypes.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/plant-symbolism.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/purity-pollution-boundary-systems.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/ritual-liminality.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/sacred-kingship-mythic-charter.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/sacred-topography-pilgrimage.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/symbolism-synthesis-method.md`
+- `kotodama-shokunin/corpus/knowledge/myth-symbol/trickster.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/conlang-blueprint-template.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/consistency-verification-checklist.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/contact-scenario-builder.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/costume-language-coupling-table.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/coupling-model.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/cultural-translation-protocol.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/deity-name-derivation-pipeline.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/dialect-faction-map-workflow.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/era-language-staging.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/era-material-scoped-reconciliation.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/era-myth-language-costume-matrix.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/finding-disposition-workflow.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/generated-artifact-lifecycle.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/glossary-registry-format.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/hold-set-contract-in-brief.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/loanword-material-dating.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/migration-founder-effects.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/multi-culture-creole-workshop.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/myth-to-language-derivation.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/naming-canon-workflow.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/religion-language-co-evolution.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/source-discipline-calibration.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/symbol-lexicon-colexification.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/symbolism-consistency-rules.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/taboo-euphemism-lifecycle.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/typed-label-routing-workflow.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/urban-rural-register-ecology.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/worked-example-mini-culture.md`
+- `kotodama-shokunin/corpus/knowledge/synthesis/worldbible-integration-contract.md`
+- `kotodama-shokunin/corpus/knowledge/verification/append-only-record-verification.md`
+- `kotodama-shokunin/corpus/knowledge/verification/calibration-registry.md`
+- `kotodama-shokunin/corpus/knowledge/verification/citation-format-and-source-registry.md`
+- `kotodama-shokunin/corpus/knowledge/verification/contact-strata-verification-gate.md`
+- `kotodama-shokunin/corpus/knowledge/verification/costume-era-consistency-gate.md`
+- `kotodama-shokunin/corpus/knowledge/verification/gate-battery-surface-verification.md`
+- `kotodama-shokunin/corpus/knowledge/verification/gate-frozen-run-standard.md`
+- `kotodama-shokunin/corpus/knowledge/verification/generated-artifact-roundtrip-verification.md`
+- `kotodama-shokunin/corpus/knowledge/verification/header-conformance-readings.md`
+- `kotodama-shokunin/corpus/knowledge/verification/index-sweep-verification.md`
+- `kotodama-shokunin/corpus/knowledge/verification/internal-consistency-audit.md`
+- `kotodama-shokunin/corpus/knowledge/verification/label-channel-routing-verification.md`
+- `kotodama-shokunin/corpus/knowledge/verification/lexicon-coverage-audit.md`
+- `kotodama-shokunin/corpus/knowledge/verification/myth-consistency-gate.md`
+- `kotodama-shokunin/corpus/knowledge/verification/naming-collision-gate.md`
+- `kotodama-shokunin/corpus/knowledge/verification/phonology-sanity-gate.md`
+- `kotodama-shokunin/corpus/knowledge/verification/pre-declared-hold-set-reconciliation.md`
+- `kotodama-shokunin/corpus/knowledge/verification/provenance-audit-ledger-format.md`
+- `kotodama-shokunin/corpus/knowledge/verification/real-world-inspiration-boundaries.md`
+- `kotodama-shokunin/corpus/knowledge/verification/to-verify-triage-protocol.md`
+- `kotodama-shokunin/corpus/knowledge/verification/two-reader-interop-agreement.md`
+- `kotodama-shokunin/corpus/knowledge/verification/verification-independence-anti-circularity.md`
+- `kotodama-shokunin/corpus/knowledge/verification/verification-method-overview.md`
+- `kotodama-shokunin/corpus/knowledge/verification/worked-example-verification.md`
+
+### kumitate-shokunin (61)
+
+- `kumitate-shokunin/corpus/knowledge/agent-isolation-substrates.md`
+- `kumitate-shokunin/corpus/knowledge/at-least-once-dedupe.md`
+- `kumitate-shokunin/corpus/knowledge/bounded-redelivery-budgets.md`
+- `kumitate-shokunin/corpus/knowledge/cost-and-profile.md`
+- `kumitate-shokunin/corpus/knowledge/counter-amendment-discipline.md`
+- `kumitate-shokunin/corpus/knowledge/dispatch-shapes.md`
+- `kumitate-shokunin/corpus/knowledge/distill-and-l3.md`
+- `kumitate-shokunin/corpus/knowledge/durable-execution-and-fanout-primitives-2026-10-24.md`
+- `kumitate-shokunin/corpus/knowledge/durable-execution-failure-detection.md`
+- `kumitate-shokunin/corpus/knowledge/enqueue-admission.md`
+- `kumitate-shokunin/corpus/knowledge/executable-scorecard.md`
+- `kumitate-shokunin/corpus/knowledge/fail-closed-clock-validation.md`
+- `kumitate-shokunin/corpus/knowledge/failure-recovery-replay.md`
+- `kumitate-shokunin/corpus/knowledge/failure-telemetry.md`
+- `kumitate-shokunin/corpus/knowledge/gate-verdict.md`
+- `kumitate-shokunin/corpus/knowledge/invocation-attestation.md`
+- `kumitate-shokunin/corpus/knowledge/jj-workspace-seat-containment.md`
+- `kumitate-shokunin/corpus/knowledge/kimi-binary-secrets.md`
+- `kumitate-shokunin/corpus/knowledge/kimi-config-plane.md`
+- `kumitate-shokunin/corpus/knowledge/kimi-lane-definitions.md`
+- `kumitate-shokunin/corpus/knowledge/kimi-mcp-plane.md`
+- `kumitate-shokunin/corpus/knowledge/kimi-modes-machinery.md`
+- `kumitate-shokunin/corpus/knowledge/kimi-residue-files.md`
+- `kumitate-shokunin/corpus/knowledge/kimi-session-state.md`
+- `kumitate-shokunin/corpus/knowledge/kimi-skills-plugins.md`
+- `kumitate-shokunin/corpus/knowledge/layer-axes.md`
+- `kumitate-shokunin/corpus/knowledge/live-surface-probe.md`
+- `kumitate-shokunin/corpus/knowledge/local-ship.md`
+- `kumitate-shokunin/corpus/knowledge/loop-driver.md`
+- `kumitate-shokunin/corpus/knowledge/mcp-deprecation-registry.md`
+- `kumitate-shokunin/corpus/knowledge/mcp-orchestration-contract.md`
+- `kumitate-shokunin/corpus/knowledge/member-claims-gate.md`
+- `kumitate-shokunin/corpus/knowledge/mount-order-and-bind-scope.md`
+- `kumitate-shokunin/corpus/knowledge/multi-agent-coordinator-topologies.md`
+- `kumitate-shokunin/corpus/knowledge/native-admission-detail.md`
+- `kumitate-shokunin/corpus/knowledge/native-judge-pipeline.md`
+- `kumitate-shokunin/corpus/knowledge/native-transcript-ledger-seats.md`
+- `kumitate-shokunin/corpus/knowledge/native-trial-launch.md`
+- `kumitate-shokunin/corpus/knowledge/omp-agent-root.md`
+- `kumitate-shokunin/corpus/knowledge/omp-installed-release-mcp-runtime.md`
+- `kumitate-shokunin/corpus/knowledge/omp-task-contract.md`
+- `kumitate-shokunin/corpus/knowledge/ops-watchers.md`
+- `kumitate-shokunin/corpus/knowledge/pinned-evidence.md`
+- `kumitate-shokunin/corpus/knowledge/queue-and-claim.md`
+- `kumitate-shokunin/corpus/knowledge/queue-summary.md`
+- `kumitate-shokunin/corpus/knowledge/receipt-identity-canonicalization.md`
+- `kumitate-shokunin/corpus/knowledge/reconcile-and-cycle.md`
+- `kumitate-shokunin/corpus/knowledge/remaining-scripts-census.md`
+- `kumitate-shokunin/corpus/knowledge/round-close-gate.md`
+- `kumitate-shokunin/corpus/knowledge/route-probe-cluster.md`
+- `kumitate-shokunin/corpus/knowledge/route-resolution.md`
+- `kumitate-shokunin/corpus/knowledge/runtime-remainder-census.md`
+- `kumitate-shokunin/corpus/knowledge/runtime-support.md`
+- `kumitate-shokunin/corpus/knowledge/sighting-wall.md`
+- `kumitate-shokunin/corpus/knowledge/singleton-and-queue-ownership.md`
+- `kumitate-shokunin/corpus/knowledge/successor-chain.md`
+- `kumitate-shokunin/corpus/knowledge/swarm-wave-lifecycle.md`
+- `kumitate-shokunin/corpus/knowledge/temporal-worker-versioning-pinning.md`
+- `kumitate-shokunin/corpus/knowledge/test-inventories.md`
+- `kumitate-shokunin/corpus/knowledge/visibility-lease-ack-deadlines.md`
+- `kumitate-shokunin/corpus/knowledge/worker-heartbeat-liveness.md`
+
+### lore-shokunin (26)
+
+- `lore-shokunin/corpus/knowledge/2026-10-12-lore-consistency-checklist.md`
+- `lore-shokunin/corpus/knowledge/2026-10-12-lore-decision-table.md`
+- `lore-shokunin/corpus/knowledge/2026-10-12-malformed-error-patterns.md`
+- `lore-shokunin/corpus/knowledge/holder-assessment-boundary.md`
+- `lore-shokunin/corpus/knowledge/r100-crossing-arc-synthesis.md`
+- `lore-shokunin/corpus/knowledge/r100-provenance-semantics-boundary.md`
+- `lore-shokunin/corpus/knowledge/r101-r10-register-first-entry.md`
+- `lore-shokunin/corpus/knowledge/r102-debt-ledger.json`
+- `lore-shokunin/corpus/knowledge/r102-freshness-sweep.md`
+- `lore-shokunin/corpus/knowledge/r102-push-synthesis-r95-r102.md`
+- `lore-shokunin/corpus/knowledge/r103-canon-status-and-supersession.md`
+- `lore-shokunin/corpus/knowledge/r74-slate-wording-decision-table.md`
+- `lore-shokunin/corpus/knowledge/r87-provenance-chain-decision-table.md`
+- `lore-shokunin/corpus/knowledge/r88-sourced-inspiration-decision-table.md`
+- `lore-shokunin/corpus/knowledge/r89-cross-cluster-contradiction.md`
+- `lore-shokunin/corpus/knowledge/r91-c9-watch.md`
+- `lore-shokunin/corpus/knowledge/r93-r8-worked-example.md`
+- `lore-shokunin/corpus/knowledge/r94-cross-myth-design-comparison.md`
+- `lore-shokunin/corpus/knowledge/r95-aftermath-scope-note.md`
+- `lore-shokunin/corpus/knowledge/r96-response-scope-note.md`
+- `lore-shokunin/corpus/knowledge/r97-acknowledgment-scope-note.md`
+- `lore-shokunin/corpus/knowledge/r98-clerk-scope-note.md`
+- `lore-shokunin/corpus/knowledge/r99-gate-blind-spot-table.md`
+- `lore-shokunin/corpus/knowledge/r99-lapse-scope-note.md`
+- `lore-shokunin/corpus/knowledge/reference-ledger.md`
+- `lore-shokunin/corpus/knowledge/seed.md`
+
+### mado-shokunin (69)
+
+- `mado-shokunin/corpus/knowledge/animation-table-r26.md`
+- `mado-shokunin/corpus/knowledge/arc-synthesis.md`
+- `mado-shokunin/corpus/knowledge/bind-table-r25.md`
+- `mado-shokunin/corpus/knowledge/closeout-r11.md`
+- `mado-shokunin/corpus/knowledge/config-drift-r12.md`
+- `mado-shokunin/corpus/knowledge/config-health-report-r3.md`
+- `mado-shokunin/corpus/knowledge/config-option-table-r39.md`
+- `mado-shokunin/corpus/knowledge/dispatcher-semantics-r25.md`
+- `mado-shokunin/corpus/knowledge/dispatcher-surface-and-request-grammar-r26.md`
+- `mado-shokunin/corpus/knowledge/event-delivery-limits-r26.md`
+- `mado-shokunin/corpus/knowledge/event-queue-observability-r37.md`
+- `mado-shokunin/corpus/knowledge/executor-test-sufficiency.md`
+- `mado-shokunin/corpus/knowledge/gate-mutation-proof.md`
+- `mado-shokunin/corpus/knowledge/gate-mutation-sweep-r8.md`
+- `mado-shokunin/corpus/knowledge/gate-standing-use.md`
+- `mado-shokunin/corpus/knowledge/host-bar-producer-census-r40.md`
+- `mado-shokunin/corpus/knowledge/hyprctl-flags-r28.md`
+- `mado-shokunin/corpus/knowledge/hyprctl-getoption-native-forms-r40.md`
+- `mado-shokunin/corpus/knowledge/hyprctl-verification-layer.md`
+- `mado-shokunin/corpus/knowledge/hyprland-bind-key-match-r50.md`
+- `mado-shokunin/corpus/knowledge/hyprland-config-era-r12.md`
+- `mado-shokunin/corpus/knowledge/hyprland-config-plane.md`
+- `mado-shokunin/corpus/knowledge/hyprland-dispatcher-dispatch-r51.md`
+- `mado-shokunin/corpus/knowledge/hyprland-focus-grab-r41.md`
+- `mado-shokunin/corpus/knowledge/hyprland-gkeep-geometry-r43.md`
+- `mado-shokunin/corpus/knowledge/hyprland-gkeep-size-request-r44.md`
+- `mado-shokunin/corpus/knowledge/hyprland-input-devices-r46.md`
+- `mado-shokunin/corpus/knowledge/hyprland-monitor-rule-r45.md`
+- `mado-shokunin/corpus/knowledge/hyprland-synthetic-dispatch-r52-errata-r53.md`
+- `mado-shokunin/corpus/knowledge/hyprland-synthetic-dispatch-r52.md`
+- `mado-shokunin/corpus/knowledge/idle-lock-chain-armed-r14.md`
+- `mado-shokunin/corpus/knowledge/idle-lock-never-asked-r12.md`
+- `mado-shokunin/corpus/knowledge/idle-lock-offered-in-the-bar-r15.md`
+- `mado-shokunin/corpus/knowledge/idle-lock-plane.md`
+- `mado-shokunin/corpus/knowledge/idle-lock-route-r17.md`
+- `mado-shokunin/corpus/knowledge/input-debugging-boundaries-r15.md`
+- `mado-shokunin/corpus/knowledge/ipc-contract-r25.md`
+- `mado-shokunin/corpus/knowledge/keybind-rule-semantics.md`
+- `mado-shokunin/corpus/knowledge/mutation-testing-r28.md`
+- `mado-shokunin/corpus/knowledge/omarchy-drift-watch.md`
+- `mado-shokunin/corpus/knowledge/output-colour-boundaries-r14.md`
+- `mado-shokunin/corpus/knowledge/province-accuracy-selfaudit.md`
+- `mado-shokunin/corpus/knowledge/remaining-planes-census.md`
+- `mado-shokunin/corpus/knowledge/request-limits-upstream-r31.md`
+- `mado-shokunin/corpus/knowledge/request-socket-live-bound-r8.md`
+- `mado-shokunin/corpus/knowledge/rule-attribution-r24.md`
+- `mado-shokunin/corpus/knowledge/snapshot-diff-receipt-r9.md`
+- `mado-shokunin/corpus/knowledge/terminal-route-r17.md`
+- `mado-shokunin/corpus/knowledge/terminal-trees-r23.md`
+- `mado-shokunin/corpus/knowledge/terminals-and-omarchy.md`
+- `mado-shokunin/corpus/knowledge/theme-route-r18.md`
+- `mado-shokunin/corpus/knowledge/theme-wallpaper-plane.md`
+- `mado-shokunin/corpus/knowledge/tripwire-binding-boundaries-r21.md`
+- `mado-shokunin/corpus/knowledge/tripwire-lifetime-recovery-r22.md`
+- `mado-shokunin/corpus/knowledge/tripwire-precision-r20.md`
+- `mado-shokunin/corpus/knowledge/walker-deep-r9.md`
+- `mado-shokunin/corpus/knowledge/walker-deep.md`
+- `mado-shokunin/corpus/knowledge/walker-live-surface.md`
+- `mado-shokunin/corpus/knowledge/walker-route-r18.md`
+- `mado-shokunin/corpus/knowledge/waybar-module-text-route-r25.md`
+- `mado-shokunin/corpus/knowledge/waybar-observation-boundaries-r16.md`
+- `mado-shokunin/corpus/knowledge/waybar-walker-plane.md`
+- `mado-shokunin/corpus/knowledge/waybar-walker-semantics.md`
+- `mado-shokunin/corpus/knowledge/wayland-protocol-boundaries-r13.md`
+- `mado-shokunin/corpus/knowledge/window-rule-effects-getprop.md`
+- `mado-shokunin/corpus/knowledge/workspace-rules-r27.md`
+- `mado-shokunin/corpus/knowledge/xdg-portal-routing-r12.md`
+- `mado-shokunin/corpus/knowledge/xdg-terminal-selection-r47.md`
+- `mado-shokunin/corpus/knowledge/xkb-keymap-compile-r48.md`
+
+### mori-shokunin (74)
+
+- `mori-shokunin/corpus/knowledge/.gitkeep`
+- `mori-shokunin/corpus/knowledge/audit-r11.md`
+- `mori-shokunin/corpus/knowledge/c1s-cwd-r43.md`
+- `mori-shokunin/corpus/knowledge/census-cgroup-levels-r45.md`
+- `mori-shokunin/corpus/knowledge/commit-runway-read-r53.md`
+- `mori-shokunin/corpus/knowledge/conform-bindings-r41.md`
+- `mori-shokunin/corpus/knowledge/conform-scope-r40.md`
+- `mori-shokunin/corpus/knowledge/conform-source-order-r42.md`
+- `mori-shokunin/corpus/knowledge/containment-timed-supersede-r38.md`
+- `mori-shokunin/corpus/knowledge/disk-runway-enospc-r55.md`
+- `mori-shokunin/corpus/knowledge/disk-write-rate-r33.md`
+- `mori-shokunin/corpus/knowledge/dispatch-ledger-r18.md`
+- `mori-shokunin/corpus/knowledge/drift-pin-r10.md`
+- `mori-shokunin/corpus/knowledge/drift-repin-r20.md`
+- `mori-shokunin/corpus/knowledge/driver-events-r58.md`
+- `mori-shokunin/corpus/knowledge/driver-liveness-r56.md`
+- `mori-shokunin/corpus/knowledge/earlyoom-invocation-scope-r30.md`
+- `mori-shokunin/corpus/knowledge/entry-claims-hardening-r60.md`
+- `mori-shokunin/corpus/knowledge/evidence-minimization-r18.md`
+- `mori-shokunin/corpus/knowledge/freeze-order-r18.md`
+- `mori-shokunin/corpus/knowledge/gate-ancestry-r39.md`
+- `mori-shokunin/corpus/knowledge/harness-job-capacity-r25.md`
+- `mori-shokunin/corpus/knowledge/inheritance-d72ac16-r42.md`
+- `mori-shokunin/corpus/knowledge/jj-branch-anchor-r17.md`
+- `mori-shokunin/corpus/knowledge/journal-alarm-routing-r14.md`
+- `mori-shokunin/corpus/knowledge/journal-cursor-window-r16.md`
+- `mori-shokunin/corpus/knowledge/journal-disk-usage-total-r51.md`
+- `mori-shokunin/corpus/knowledge/journal-positive-evidence-r15.md`
+- `mori-shokunin/corpus/knowledge/journal-reach-r49.md`
+- `mori-shokunin/corpus/knowledge/kernel-oom-line-attribution-r12.md`
+- `mori-shokunin/corpus/knowledge/kernel-v7.3-recheck-r53.md`
+- `mori-shokunin/corpus/knowledge/kernel-v7.3-recheck-r54.md`
+- `mori-shokunin/corpus/knowledge/kernel-v7.3-recheck-r55.md`
+- `mori-shokunin/corpus/knowledge/kill-classes-by-message-id-r12.md`
+- `mori-shokunin/corpus/knowledge/lane-silence-r2.md`
+- `mori-shokunin/corpus/knowledge/memavailable-estimate-r51.md`
+- `mori-shokunin/corpus/knowledge/memory-failure-kills-r54.md`
+- `mori-shokunin/corpus/knowledge/observability-census-r1.md`
+- `mori-shokunin/corpus/knowledge/observability-surfaces-r2.md`
+- `mori-shokunin/corpus/knowledge/oom-evidence-loss-r38.md`
+- `mori-shokunin/corpus/knowledge/oom-kill-counter-kernel-only-r12.md`
+- `mori-shokunin/corpus/knowledge/oom-memcg-stat-r50.md`
+- `mori-shokunin/corpus/knowledge/oom-tracepoints-r47.md`
+- `mori-shokunin/corpus/knowledge/oom-victim-context-r41.md`
+- `mori-shokunin/corpus/knowledge/oom-victim-selection-r27.md`
+- `mori-shokunin/corpus/knowledge/overcommit-commit-limit-r52.md`
+- `mori-shokunin/corpus/knowledge/pid-probe-conclusion-r44.md`
+- `mori-shokunin/corpus/knowledge/progressing-weak-r2.md`
+- `mori-shokunin/corpus/knowledge/quota-observability-r48.md`
+- `mori-shokunin/corpus/knowledge/retention-reconciliation-r22.md`
+- `mori-shokunin/corpus/knowledge/roster-truth-r12.md`
+- `mori-shokunin/corpus/knowledge/s235-sha-correction-r43.md`
+- `mori-shokunin/corpus/knowledge/seat-terminal-status-r17.md`
+- `mori-shokunin/corpus/knowledge/selftest-flake-r9.md`
+- `mori-shokunin/corpus/knowledge/silence-cutover-r3.md`
+- `mori-shokunin/corpus/knowledge/silence-grading-r2.md`
+- `mori-shokunin/corpus/knowledge/source-drift-content-anchor-r38.md`
+- `mori-shokunin/corpus/knowledge/source-drift-hardening-r37.md`
+- `mori-shokunin/corpus/knowledge/source-drift-r36.md`
+- `mori-shokunin/corpus/knowledge/structured-journal-scopes-r13.md`
+- `mori-shokunin/corpus/knowledge/surfaces-r7.md`
+- `mori-shokunin/corpus/knowledge/surfaces-r8.md`
+- `mori-shokunin/corpus/knowledge/system-pressure-r24.md`
+- `mori-shokunin/corpus/knowledge/userspace-oom-killers-r12.md`
+- `mori-shokunin/corpus/knowledge/userspace-oom-killers-r26.md`
+- `mori-shokunin/corpus/knowledge/verdict-contract-r13.md`
+- `mori-shokunin/corpus/knowledge/verdict-machine-r4.md`
+- `mori-shokunin/corpus/knowledge/verdict-machine-r5.md`
+- `mori-shokunin/corpus/knowledge/verdict-machine-r6.md`
+- `mori-shokunin/corpus/knowledge/vote-binding-r56.md`
+- `mori-shokunin/corpus/knowledge/watchdog-identity-r31.md`
+- `mori-shokunin/corpus/knowledge/watchdog-unclosed-r57.md`
+- `mori-shokunin/corpus/knowledge/wave-settlement-artifacts-r59.md`
+- `mori-shokunin/corpus/knowledge/wave-settlement-r20.md`
+
+### revenger-shokunin (19)
+
+- `revenger-shokunin/corpus/knowledge/2026-10-12-rea-readiness-checklist.md`
+- `revenger-shokunin/corpus/knowledge/commonjs-destructured-require-edges.md`
+- `revenger-shokunin/corpus/knowledge/digest-scope-versus-provenance.md`
+- `revenger-shokunin/corpus/knowledge/evm-saved-interface-candidates.md`
+- `revenger-shokunin/corpus/knowledge/pe-resource-directory-layout.md`
+- `revenger-shokunin/corpus/knowledge/round-62-commonjs-require-name-evidence.md`
+- `revenger-shokunin/corpus/knowledge/round-62-evm-dispatch-byte-evidence.md`
+- `revenger-shokunin/corpus/knowledge/round-63-zip-central-directory-evidence.md`
+- `revenger-shokunin/corpus/knowledge/round-64-firmware-region-byte-evidence.md`
+- `revenger-shokunin/corpus/knowledge/round-65-apk-axml-byte-evidence.md`
+- `revenger-shokunin/corpus/knowledge/round-67-apk-axml-byte-evidence.md`
+- `revenger-shokunin/corpus/knowledge/round-68-apk-axml-byte-evidence.md`
+- `revenger-shokunin/corpus/knowledge/round-69-apk-axml-byte-evidence.md`
+- `revenger-shokunin/corpus/knowledge/round-70-apk-axml-byte-evidence.md`
+- `revenger-shokunin/corpus/knowledge/round-71-apk-axml-byte-evidence.md`
+- `revenger-shokunin/corpus/knowledge/round-72-tool-landscape.md`
+- `revenger-shokunin/corpus/knowledge/seed.md`
+- `revenger-shokunin/corpus/knowledge/tool-validation-by-function-and-version.md`
+- `revenger-shokunin/corpus/knowledge/utf16-unpaired-surrogates-in-resource-names.md`
+
+### souji-shokunin (31)
+
+- `souji-shokunin/corpus/knowledge/count-objects-garbage-readings-r25.md`
+- `souji-shokunin/corpus/knowledge/count-objects-linked-worktree-garbage.md`
+- `souji-shokunin/corpus/knowledge/docstring-class-continuation-lines-r40.md`
+- `souji-shokunin/corpus/knowledge/drift-record-invalid-utf8-r40.md`
+- `souji-shokunin/corpus/knowledge/dupe-finders-detect-then-act.md`
+- `souji-shokunin/corpus/knowledge/duplicate-verdict-byte-equality.md`
+- `souji-shokunin/corpus/knowledge/duplicate-verdict-identity.md`
+- `souji-shokunin/corpus/knowledge/fleet-prune-numerator-r35.md`
+- `souji-shokunin/corpus/knowledge/git-auto-maintenance-prunes-worktrees.md`
+- `souji-shokunin/corpus/knowledge/git-auto-maintenance-trigger-set-r23.md`
+- `souji-shokunin/corpus/knowledge/git-auto-maintenance-trigger-set.md`
+- `souji-shokunin/corpus/knowledge/git-grace-periods-and-expire-to.md`
+- `souji-shokunin/corpus/knowledge/git-repo-structure-common-dir.md`
+- `souji-shokunin/corpus/knowledge/git-repo-structure-readonly.md`
+- `souji-shokunin/corpus/knowledge/git-strict-descendant-relation-r40.md`
+- `souji-shokunin/corpus/knowledge/jj-abandoned-object-mtime-clock.md`
+- `souji-shokunin/corpus/knowledge/jj-colocation-receipts.md`
+- `souji-shokunin/corpus/knowledge/jj-dropped-keep-object-lifetime.md`
+- `souji-shokunin/corpus/knowledge/jj-keep-ref-expiry.md`
+- `souji-shokunin/corpus/knowledge/obsidian-ledger.tsv`
+- `souji-shokunin/corpus/knowledge/origin-record-durability-r28.md`
+- `souji-shokunin/corpus/knowledge/origin-record-exclusivity-r28.md`
+- `souji-shokunin/corpus/knowledge/origin-record-format-gvfs-r40.md`
+- `souji-shokunin/corpus/knowledge/origin-record-mechanism-set-r33.md`
+- `souji-shokunin/corpus/knowledge/origin-record-writer-r27.md`
+- `souji-shokunin/corpus/knowledge/process-residue-observations.md`
+- `souji-shokunin/corpus/knowledge/quarantine-origin-record-fields-r24.md`
+- `souji-shokunin/corpus/knowledge/quarantine-same-filesystem-rename.md`
+- `souji-shokunin/corpus/knowledge/quarantine-staging-no-copy-r23.md`
+- `souji-shokunin/corpus/knowledge/repo-size-census-readonly.md`
+- `souji-shokunin/corpus/knowledge/trash-spec-restorable-quarantine.md`
+
+### tabi-shokunin (59)
+
+- `tabi-shokunin/corpus/knowledge/adjacency-drift-audit-r36.md`
+- `tabi-shokunin/corpus/knowledge/arc-synthesis.md`
+- `tabi-shokunin/corpus/knowledge/archive-receipt-r10.md`
+- `tabi-shokunin/corpus/knowledge/archive-receipt-r5.md`
+- `tabi-shokunin/corpus/knowledge/archive-receipt-r8.md`
+- `tabi-shokunin/corpus/knowledge/aria-loopback-round-13.md`
+- `tabi-shokunin/corpus/knowledge/async-step-evidence.md`
+- `tabi-shokunin/corpus/knowledge/bfcache-runtime-observed-round-25.md`
+- `tabi-shokunin/corpus/knowledge/bidi-gate-selftest-round-34.md`
+- `tabi-shokunin/corpus/knowledge/bidi-runtime-gate-v2-round-33.md`
+- `tabi-shokunin/corpus/knowledge/browser-surface-census.md`
+- `tabi-shokunin/corpus/knowledge/carried-debt-closure-r8.md`
+- `tabi-shokunin/corpus/knowledge/cdp-evidence-patterns.md`
+- `tabi-shokunin/corpus/knowledge/chrome-remote-debugging-profile-boundary.md`
+- `tabi-shokunin/corpus/knowledge/chromium-156-release-pin-recheck.md`
+- `tabi-shokunin/corpus/knowledge/closeout-r11.md`
+- `tabi-shokunin/corpus/knowledge/committed-bytes-verification-round-42.md`
+- `tabi-shokunin/corpus/knowledge/csrf-defense-shape-boundary.md`
+- `tabi-shokunin/corpus/knowledge/environment-injection-measurement-integrity-round-41.md`
+- `tabi-shokunin/corpus/knowledge/example-domain-observation.md`
+- `tabi-shokunin/corpus/knowledge/executor-test-sufficiency.md`
+- `tabi-shokunin/corpus/knowledge/external-class-fixture-v2.md`
+- `tabi-shokunin/corpus/knowledge/harness-hardening-round-18.md`
+- `tabi-shokunin/corpus/knowledge/host-published-rate-limit-headers.md`
+- `tabi-shokunin/corpus/knowledge/hygiene-sweep-r4.md`
+- `tabi-shokunin/corpus/knowledge/interaction-approval-table.md`
+- `tabi-shokunin/corpus/knowledge/layer-routing-synthesis.md`
+- `tabi-shokunin/corpus/knowledge/live-dynamic-capture.md`
+- `tabi-shokunin/corpus/knowledge/loopback-pin-stability.md`
+- `tabi-shokunin/corpus/knowledge/multi-step-journey.md`
+- `tabi-shokunin/corpus/knowledge/navigation-history-bfcache-evidence.md`
+- `tabi-shokunin/corpus/knowledge/network-evidence-rung.md`
+- `tabi-shokunin/corpus/knowledge/packet-readiness-r7.md`
+- `tabi-shokunin/corpus/knowledge/playwright-accessible-locators-and-snapshots.md`
+- `tabi-shokunin/corpus/knowledge/playwright-firefox-loopback-round-38.md`
+- `tabi-shokunin/corpus/knowledge/playwright-firefox-session-bound-tcp-round-39.md`
+- `tabi-shokunin/corpus/knowledge/rate-limit-policy-fields.md`
+- `tabi-shokunin/corpus/knowledge/rate-signal-decision-table.md`
+- `tabi-shokunin/corpus/knowledge/redirect-and-retry-after-semantics.md`
+- `tabi-shokunin/corpus/knowledge/source-recheck-round-12.md`
+- `tabi-shokunin/corpus/knowledge/source-recheck-round-18.md`
+- `tabi-shokunin/corpus/knowledge/source-recheck-round-25.md`
+- `tabi-shokunin/corpus/knowledge/state-changing-matrix-r9.md`
+- `tabi-shokunin/corpus/knowledge/stateful-fixture-evidence.md`
+- `tabi-shokunin/corpus/knowledge/user-public-observation.md`
+- `tabi-shokunin/corpus/knowledge/web-flake-retry-evidence.md`
+- `tabi-shokunin/corpus/knowledge/webbridge-daemon-disposition.md`
+- `tabi-shokunin/corpus/knowledge/webbridge-plugin-anatomy.md`
+- `tabi-shokunin/corpus/knowledge/webbridge-revival-assessment.md`
+- `tabi-shokunin/corpus/knowledge/webdriver-bidi-capability-matrix.md`
+- `tabi-shokunin/corpus/knowledge/webdriver-bidi-firefox-runtime-round-35.md`
+- `tabi-shokunin/corpus/knowledge/webdriver-bidi-runtime-round-32.md`
+- `tabi-shokunin/corpus/knowledge/webmcp-chromium-loopback-round-16.md`
+- `tabi-shokunin/corpus/knowledge/webmcp-completion-lifecycle-round-20.md`
+- `tabi-shokunin/corpus/knowledge/webmcp-declarative-validation-round-19.md`
+- `tabi-shokunin/corpus/knowledge/webmcp-invocation-round-17.md`
+- `tabi-shokunin/corpus/knowledge/webmcp-lifecycle-oracle-round-22.md`
+- `tabi-shokunin/corpus/knowledge/webmcp-nonautosubmit-round-21-corrected.md`
+- `tabi-shokunin/corpus/knowledge/webmcp-nonautosubmit-round-21.md`
+
+### tameshi-shokunin (65)
+
+- `tameshi-shokunin/corpus/knowledge/arm-class-matrix.md`
+- `tameshi-shokunin/corpus/knowledge/callback-authoritative-accounting.md`
+- `tameshi-shokunin/corpus/knowledge/change-aware-resweep-cadence.md`
+- `tameshi-shokunin/corpus/knowledge/closeout-r11.md`
+- `tameshi-shokunin/corpus/knowledge/delta-debugging-minimization-contract.md`
+- `tameshi-shokunin/corpus/knowledge/executable-self-assessment.md`
+- `tameshi-shokunin/corpus/knowledge/executor-test-sufficiency.md`
+- `tameshi-shokunin/corpus/knowledge/fixture-shrinking-pilot.md`
+- `tameshi-shokunin/corpus/knowledge/flaky-aware-verdict-evidence.md`
+- `tameshi-shokunin/corpus/knowledge/fleet-kill-rate-ledger.md`
+- `tameshi-shokunin/corpus/knowledge/fleet-suite-census.md`
+- `tameshi-shokunin/corpus/knowledge/gates-survey-kagi.md`
+- `tameshi-shokunin/corpus/knowledge/gates-survey-kumitate.md`
+- `tameshi-shokunin/corpus/knowledge/golden-comparison-verdict.md`
+- `tameshi-shokunin/corpus/knowledge/guard-kill-closure.md`
+- `tameshi-shokunin/corpus/knowledge/hermetic-env-differential.md`
+- `tameshi-shokunin/corpus/knowledge/incremental-pin-disposition.md`
+- `tameshi-shokunin/corpus/knowledge/input-keyed-coldread-credit.md`
+- `tameshi-shokunin/corpus/knowledge/mte-report-interop.md`
+- `tameshi-shokunin/corpus/knowledge/mutation-case-kagi-census.md`
+- `tameshi-shokunin/corpus/knowledge/mutation-case-kagi-checklist.md`
+- `tameshi-shokunin/corpus/knowledge/mutation-case-kagi-drift-pins.md`
+- `tameshi-shokunin/corpus/knowledge/mutation-case-kimi-census.md`
+- `tameshi-shokunin/corpus/knowledge/mutation-case-kumitate-cite-check.md`
+- `tameshi-shokunin/corpus/knowledge/mutation-case-kumitate-claims.md`
+- `tameshi-shokunin/corpus/knowledge/mutation-case-kumitate-round-gate.md`
+- `tameshi-shokunin/corpus/knowledge/mutation-case-kumitate-sources-check.md`
+- `tameshi-shokunin/corpus/knowledge/mutation-case-mado-verify.md`
+- `tameshi-shokunin/corpus/knowledge/mutation-case-tsukuroi-census.md`
+- `tameshi-shokunin/corpus/knowledge/mutation-score-semantics.md`
+- `tameshi-shokunin/corpus/knowledge/operator-runbook.md`
+- `tameshi-shokunin/corpus/knowledge/oracle-anchored-survivors.md`
+- `tameshi-shokunin/corpus/knowledge/pbt-generator-pilot.md`
+- `tameshi-shokunin/corpus/knowledge/pit-outcome-vocabulary.md`
+- `tameshi-shokunin/corpus/knowledge/r3-snapshot-fixture-update-paths.md`
+- `tameshi-shokunin/corpus/knowledge/r40-write-form-misses.md`
+- `tameshi-shokunin/corpus/knowledge/r41-variable-destination-writes.md`
+- `tameshi-shokunin/corpus/knowledge/r42-attribute-and-outflag-destinations.md`
+- `tameshi-shokunin/corpus/knowledge/r43-survivor-resolution-rule.md`
+- `tameshi-shokunin/corpus/knowledge/r44-anchor-refresh-rule.md`
+- `tameshi-shokunin/corpus/knowledge/r5-undetected-flaky-failures.md`
+- `tameshi-shokunin/corpus/knowledge/r6-flaky-failures-cluster.md`
+- `tameshi-shokunin/corpus/knowledge/r6-snapshot-practice-corpus.md`
+- `tameshi-shokunin/corpus/knowledge/r8-flakiness-not-static.md`
+- `tameshi-shokunin/corpus/knowledge/r8-flaky-cost-baseline.md`
+- `tameshi-shokunin/corpus/knowledge/r8-golden-update-flag.md`
+- `tameshi-shokunin/corpus/knowledge/r8-gtest-order-and-seed.md`
+- `tameshi-shokunin/corpus/knowledge/r8-gtest-primer-independence.md`
+- `tameshi-shokunin/corpus/knowledge/r9-false-red-rate.md`
+- `tameshi-shokunin/corpus/knowledge/receipt-revision-binding.md`
+- `tameshi-shokunin/corpus/knowledge/regression-tally-completeness.md`
+- `tameshi-shokunin/corpus/knowledge/repeated-control-precondition.md`
+- `tameshi-shokunin/corpus/knowledge/replay-projection-hardening.md`
+- `tameshi-shokunin/corpus/knowledge/required-command-binding.md`
+- `tameshi-shokunin/corpus/knowledge/runner-tally-audit-v2.md`
+- `tameshi-shokunin/corpus/knowledge/runner-tally-audit.md`
+- `tameshi-shokunin/corpus/knowledge/scratch-root-contract.md`
+- `tameshi-shokunin/corpus/knowledge/self-hardening-r6.md`
+- `tameshi-shokunin/corpus/knowledge/service-limits.md`
+- `tameshi-shokunin/corpus/knowledge/service-optin-protocol.md`
+- `tameshi-shokunin/corpus/knowledge/service-standing-state.md`
+- `tameshi-shokunin/corpus/knowledge/survivor-fixture-minimization.md`
+- `tameshi-shokunin/corpus/knowledge/verification-patterns-fleet.md`
+- `tameshi-shokunin/corpus/knowledge/witness-equivalence-rule.md`
+- `tameshi-shokunin/corpus/knowledge/witness-scoped-kill-verdict.md`
+
+### tsukuroi-shokunin (91)
+
+- `tsukuroi-shokunin/corpus/knowledge/adjacency-anchors-r19.json`
+- `tsukuroi-shokunin/corpus/knowledge/adjacency-anchors-r19.md`
+- `tsukuroi-shokunin/corpus/knowledge/adjacency-handoffs-fleet-r1.json`
+- `tsukuroi-shokunin/corpus/knowledge/adjacency-handoffs-fleet-r1.md`
+- `tsukuroi-shokunin/corpus/knowledge/adjacency-mori-oom-r27.json`
+- `tsukuroi-shokunin/corpus/knowledge/adjacency-mori-oom-r27.md`
+- `tsukuroi-shokunin/corpus/knowledge/adjacency-recheck-2026-10-19.md`
+- `tsukuroi-shokunin/corpus/knowledge/alpm-package-anatomy-r41.md`
+- `tsukuroi-shokunin/corpus/knowledge/arch-news-gate-2026.md`
+- `tsukuroi-shokunin/corpus/knowledge/aur-drift-receipt-r9.md`
+- `tsukuroi-shokunin/corpus/knowledge/aur-risk-plane-ver-s6.md`
+- `tsukuroi-shokunin/corpus/knowledge/aur-risk-plane-ver-s7.md`
+- `tsukuroi-shokunin/corpus/knowledge/aur-risk-plane.md`
+- `tsukuroi-shokunin/corpus/knowledge/boot-chain-r17.json`
+- `tsukuroi-shokunin/corpus/knowledge/boot-chain-r17.md`
+- `tsukuroi-shokunin/corpus/knowledge/boot-plane.md`
+- `tsukuroi-shokunin/corpus/knowledge/boot-writers-r19.json`
+- `tsukuroi-shokunin/corpus/knowledge/boot-writers-r19.md`
+- `tsukuroi-shokunin/corpus/knowledge/btrfs-repair-r31.json`
+- `tsukuroi-shokunin/corpus/knowledge/btrfs-repair-r31.md`
+- `tsukuroi-shokunin/corpus/knowledge/btrfs-scrub-grounding-r45.md`
+- `tsukuroi-shokunin/corpus/knowledge/btrfs-scrub-record-r42.md`
+- `tsukuroi-shokunin/corpus/knowledge/btrfs-scrub-record-r43.md`
+- `tsukuroi-shokunin/corpus/knowledge/btrfs-scrub-record-r44.md`
+- `tsukuroi-shokunin/corpus/knowledge/btrfs-space-r30.json`
+- `tsukuroi-shokunin/corpus/knowledge/btrfs-space-r30.md`
+- `tsukuroi-shokunin/corpus/knowledge/calibration-synthesis.md`
+- `tsukuroi-shokunin/corpus/knowledge/census-closeout-receipt-r10.md`
+- `tsukuroi-shokunin/corpus/knowledge/census-identity-r46.md`
+- `tsukuroi-shokunin/corpus/knowledge/closeout-r11.md`
+- `tsukuroi-shokunin/corpus/knowledge/contract-corrections-r20.md`
+- `tsukuroi-shokunin/corpus/knowledge/coredump-count-unit-r34.md`
+- `tsukuroi-shokunin/corpus/knowledge/degraded-triage-r4.md`
+- `tsukuroi-shokunin/corpus/knowledge/driver-firmware-plane.md`
+- `tsukuroi-shokunin/corpus/knowledge/errno-contract-variance-r37.md`
+- `tsukuroi-shokunin/corpus/knowledge/executor-test-sufficiency.md`
+- `tsukuroi-shokunin/corpus/knowledge/foreign-provenance-r6.md`
+- `tsukuroi-shokunin/corpus/knowledge/freshness-recheck-r17.json`
+- `tsukuroi-shokunin/corpus/knowledge/freshness-recheck-r18.json`
+- `tsukuroi-shokunin/corpus/knowledge/host-health-report-r3.md`
+- `tsukuroi-shokunin/corpus/knowledge/initramfs-v42-sysroot-recovery.md`
+- `tsukuroi-shokunin/corpus/knowledge/journal-boot-plane.md`
+- `tsukuroi-shokunin/corpus/knowledge/journalctl-v262-field-filter-r36.md`
+- `tsukuroi-shokunin/corpus/knowledge/kernel-taint-r27.json`
+- `tsukuroi-shokunin/corpus/knowledge/kernel-taint-r27.md`
+- `tsukuroi-shokunin/corpus/knowledge/kill-event-deep-r8.md`
+- `tsukuroi-shokunin/corpus/knowledge/kill-oom-boundary-r33.md`
+- `tsukuroi-shokunin/corpus/knowledge/memory-arm-mutants-s8.md`
+- `tsukuroi-shokunin/corpus/knowledge/memory-arm-ver-s8.md`
+- `tsukuroi-shokunin/corpus/knowledge/memory-pressure-r25.json`
+- `tsukuroi-shokunin/corpus/knowledge/memory-pressure-r25.md`
+- `tsukuroi-shokunin/corpus/knowledge/mount-errno-contract-r37.md`
+- `tsukuroi-shokunin/corpus/knowledge/oom-event-plane.md`
+- `tsukuroi-shokunin/corpus/knowledge/package-state-plane.md`
+- `tsukuroi-shokunin/corpus/knowledge/pacman-backup-files-r35.md`
+- `tsukuroi-shokunin/corpus/knowledge/pacman-exec-environment-r40.md`
+- `tsukuroi-shokunin/corpus/knowledge/pacman-hook-order-r38.md`
+- `tsukuroi-shokunin/corpus/knowledge/pacman-transaction-order-r39.md`
+- `tsukuroi-shokunin/corpus/knowledge/pacnew-plane.md`
+- `tsukuroi-shokunin/corpus/knowledge/partial-upgrade-recheck-r15.json`
+- `tsukuroi-shokunin/corpus/knowledge/partial-upgrade-recheck-r15.md`
+- `tsukuroi-shokunin/corpus/knowledge/path-reconciliation-r23.md`
+- `tsukuroi-shokunin/corpus/knowledge/pause-lift-gate-r24.json`
+- `tsukuroi-shokunin/corpus/knowledge/pause-lift-gate-r24.md`
+- `tsukuroi-shokunin/corpus/knowledge/root-dac-correction-r13.json`
+- `tsukuroi-shokunin/corpus/knowledge/root-dac-correction-r13.md`
+- `tsukuroi-shokunin/corpus/knowledge/root-dac-decision-r12.json`
+- `tsukuroi-shokunin/corpus/knowledge/root-dac-decision-r12.md`
+- `tsukuroi-shokunin/corpus/knowledge/seat-boundary-r22.json`
+- `tsukuroi-shokunin/corpus/knowledge/seat-boundary-r22.md`
+- `tsukuroi-shokunin/corpus/knowledge/section-citation-errata-r16.json`
+- `tsukuroi-shokunin/corpus/knowledge/section-citation-errata-r16.md`
+- `tsukuroi-shokunin/corpus/knowledge/selector-contract-r21-corrected.json`
+- `tsukuroi-shokunin/corpus/knowledge/selector-contract-r21-corrected.md`
+- `tsukuroi-shokunin/corpus/knowledge/selector-contract-r21.json`
+- `tsukuroi-shokunin/corpus/knowledge/selector-contract-r21.md`
+- `tsukuroi-shokunin/corpus/knowledge/snapper-eacces-mechanism.md`
+- `tsukuroi-shokunin/corpus/knowledge/source-locator-clarification-r15.json`
+- `tsukuroi-shokunin/corpus/knowledge/source-locator-clarification-r15.md`
+- `tsukuroi-shokunin/corpus/knowledge/source-scope-correction-r14.json`
+- `tsukuroi-shokunin/corpus/knowledge/source-scope-correction-r14.md`
+- `tsukuroi-shokunin/corpus/knowledge/statement-corrections-r18.json`
+- `tsukuroi-shokunin/corpus/knowledge/storage-health-r26.json`
+- `tsukuroi-shokunin/corpus/knowledge/storage-health-r26.md`
+- `tsukuroi-shokunin/corpus/knowledge/structured-edit-r23.json`
+- `tsukuroi-shokunin/corpus/knowledge/structured-edit-r23.md`
+- `tsukuroi-shokunin/corpus/knowledge/systemd-user-plane.md`
+- `tsukuroi-shokunin/corpus/knowledge/timer-drift-plane.md`
+- `tsukuroi-shokunin/corpus/knowledge/update-safety-note.md`
+- `tsukuroi-shokunin/corpus/knowledge/update-safety-v2.md`
+- `tsukuroi-shokunin/corpus/knowledge/update-safety-v3.md`
+
+### Supplementary files opened
+
+- `audio-shokunin/corpus/SOURCES.md`
+- `audio-shokunin/PROVINCE.md`
+- `audio-shokunin/corpus/README.md`
+- `chousa-shokunin/corpus/SOURCES.md`
+- `chousa-shokunin/PROVINCE.md`
+- `chousa-shokunin/corpus/README.md`
+- `chousa-shokunin/SKILL.md`
+- `game-dev-2d-shokunin/corpus/SOURCES.md`
+- `game-dev-2d-shokunin/PROVINCE.md`
+- `game-dev-2d-shokunin/corpus/README.md`
+- `game-dev-3d-shokunin/corpus/SOURCES.md`
+- `game-dev-3d-shokunin/PROVINCE.md`
+- `game-dev-3d-shokunin/corpus/README.md`
+- `game-dev-3d-shokunin/SKILL.md`
+- `kagi-shokunin/corpus/SOURCES.md`
+- `kagi-shokunin/PROVINCE.md`
+- `kagi-shokunin/corpus/README.md`
+- `kagi-shokunin/SKILL.md`
+- `kaidoku-shokunin/corpus/SOURCES.md`
+- `kaidoku-shokunin/PROVINCE.md`
+- `kaidoku-shokunin/corpus/README.md`
+- `kaidoku-shokunin/SKILL.md`
+- `kake-shokunin/corpus/SOURCES.md`
+- `kake-shokunin/PROVINCE.md`
+- `kake-shokunin/corpus/README.md`
+- `kake-shokunin/SKILL.md`
+- `kama-shokunin/corpus/SOURCES.md`
+- `kama-shokunin/PROVINCE.md`
+- `kama-shokunin/corpus/README.md`
+- `kama-shokunin/SKILL.md`
+- `kengaku-shokunin/corpus/SOURCES.md`
+- `kengaku-shokunin/PROVINCE.md`
+- `kengaku-shokunin/corpus/README.md`
+- `kengaku-shokunin/SKILL.md`
+- `kotoba-shokunin/corpus/SOURCES.md`
+- `kotoba-shokunin/PROVINCE.md`
+- `kotoba-shokunin/corpus/README.md`
+- `kotoba-shokunin/SKILL.md`
+- `kotodama-shokunin/corpus/SOURCES.md`
+- `kotodama-shokunin/PROVINCE.md`
+- `kotodama-shokunin/corpus/README.md`
+- `kotodama-shokunin/SKILL.md`
+- `kumitate-shokunin/corpus/SOURCES.md`
+- `kumitate-shokunin/PROVINCE.md`
+- `kumitate-shokunin/corpus/README.md`
+- `kumitate-shokunin/SKILL.md`
+- `lore-shokunin/corpus/SOURCES.md`
+- `lore-shokunin/PROVINCE.md`
+- `lore-shokunin/corpus/README.md`
+- `lore-shokunin/SKILL.md`
+- `mado-shokunin/corpus/SOURCES.md`
+- `mado-shokunin/PROVINCE.md`
+- `mado-shokunin/corpus/README.md`
+- `mado-shokunin/SKILL.md`
+- `mori-shokunin/corpus/SOURCES.md`
+- `mori-shokunin/PROVINCE.md`
+- `mori-shokunin/corpus/README.md`
+- `mori-shokunin/SKILL.md`
+- `revenger-shokunin/corpus/SOURCES.md`
+- `revenger-shokunin/PROVINCE.md`
+- `revenger-shokunin/corpus/README.md`
+- `revenger-shokunin/SKILL.md`
+- `souji-shokunin/corpus/SOURCES.md`
+- `souji-shokunin/PROVINCE.md`
+- `souji-shokunin/corpus/README.md`
+- `souji-shokunin/SKILL.md`
+- `tabi-shokunin/corpus/SOURCES.md`
+- `tabi-shokunin/PROVINCE.md`
+- `tabi-shokunin/corpus/README.md`
+- `tabi-shokunin/SKILL.md`
+- `tameshi-shokunin/corpus/SOURCES.md`
+- `tameshi-shokunin/PROVINCE.md`
+- `tameshi-shokunin/corpus/README.md`
+- `tameshi-shokunin/SKILL.md`
+- `tsukuroi-shokunin/corpus/SOURCES.md`
+- `tsukuroi-shokunin/PROVINCE.md`
+- `tsukuroi-shokunin/corpus/README.md`
+- `tsukuroi-shokunin/SKILL.md`
+
+### shokuknow paths token-searched, plus the one hit file opened
+
+- `/home/vgpnk/Projects/shokuknow/doctrine/` (content search, 0 strict hits)
+- `/home/vgpnk/Projects/shokuknow/merge/` (content search, 0 strict hits)
+- `/home/vgpnk/Projects/shokuknow/lanes/tabi/round2/.work/webmcp-tools-readme.md:37-40` (opened; OSS VRP disclaimer, not Cloud VRP)
+
