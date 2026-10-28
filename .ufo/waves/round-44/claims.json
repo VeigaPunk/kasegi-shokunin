@@ -1,0 +1,27 @@
+{
+  "schema": "kasegi-round-claims-v1",
+  "lane": "kasegi",
+  "round": 44,
+  "author": "KasegiR44",
+  "frozen_at": "2026-10-28",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "before": "8 actionable defects routed by the round-43 non-author spot-check remain unresolved; independently re-count the eight frozen items in corpus/lessons/round-43-verifier-spotcheck.md §6 before implementation.",
+      "after": "0 of those same 8 frozen routed defects remain unresolved, proven by one committed read-only counter over committed lane evidence; all eight have append-only fixes and at least one red-before control per changed gate.",
+      "kill_rule": "If a do-nothing replay against the frozen base can report all 8 fixed, or if any frozen defect remains unresolved at the final lane revision, C1 fails. The list and predicate are not widened after freeze.",
+      "counter": "python3 corpus/instruments/r44-routed-defects.py --root <lane-export> --baseline <frozen-base>",
+      "control": ".ufo/waves/round-44/controls/c1-do-nothing.txt"
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "before": "25 admitted public-practice frontier rows (F01-F25), 68 SOURCES registry rows and 62 knowledge entries; one source-grounded frontier move is absent.",
+      "after": "26 admitted frontier rows, at least one newly opened tier-A source row cited by a new knowledge entry, 63 knowledge entries, plus a recorded reject and non-author admit/reject spot-check; SOURCES census validates exit 0.",
+      "kill_rule": "A do-nothing replay cannot reach F26 or the new sourced entry; no coverage credit unless F26, its captured source, knowledge entry and registry row all land and the non-author gate agrees.",
+      "counter": "grep -cE '^\\| F[0-9]+ \\| admitted \\|' corpus/README.md; grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md; find corpus/knowledge -maxdepth 1 -name '*.md' | wc -l",
+      "control": ".ufo/waves/round-44/controls/c2-do-nothing.txt"
+    }
+  ]
+}

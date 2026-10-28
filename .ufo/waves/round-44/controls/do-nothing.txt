@@ -1,0 +1,25 @@
+Round 44 frozen do-nothing controls, measured 2026-10-28 before implementation/seat dispatch.
+Base lane revision: 5ab3a60a5cb09e5880d11e8a1b96f9b29d368c7a (master).
+
+C1 predicate set: numbered routed defects in corpus/lessons/round-43-verifier-spotcheck.md §6.
+Command: grep -Ec '^6\\. Routed defects|^[0-9]+\\. \\*\\*' corpus/lessons/round-43-verifier-spotcheck.md
+Observed: 8
+Do-nothing result: none of the 8 defects has an r44 correction at this base; no r44 counter exists. Thus the frozen target 0 unresolved cannot be reached by do-nothing.
+
+C2 baseline commands and stdout:
+grep -cE '^\\| F[0-9]+ \\| .* \\| admitted \\|' corpus/README.md => 25
+grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md => 68
+find corpus/knowledge -maxdepth 1 -name '*.md' | wc -l => 62
+The staged frontier target F26 + a new cited knowledge entry is absent; do-nothing cannot produce the frozen after-state.
+
+Inherited capability control:
+python3 corpus/instruments/claim-package-check.py --selftest => selftest cases=10 failures=0
+
+Census baseline (proper fleet root invocation):
+/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+stdout: kasegi W04 S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+stdout: kasegi W04 S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+stdout: kasegi ok /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+exit=0
+
+No source rows, knowledge, claim correction, or frontier change existed before this freeze.
