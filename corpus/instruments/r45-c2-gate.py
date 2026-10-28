@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""r45-c2-gate.py — round-45 C2 counter (coverage), v1.
+"""r45-c2-gate.py — round-45 C2 counter (coverage), v1.1 (hardened after the wave-1 falsification).
 
 WHAT IT MEASURES
     One frontier move, F27 (Linux kernel security-bugs reporting process; row
@@ -26,6 +26,15 @@ WHAT IT MEASURES
     G6  `find corpus/knowledge -maxdepth 1 -name '*.md' | wc -l` == 64.
     G7  `sources-census.sh validate --file <root>/corpus/SOURCES.md` exits 0.
 
+    VERSION 1.1 (erratum E1, predicate and gate names unchanged; v1 digest 5e0796168cfe09f1e7db1b270a4f563cb40516c676d2c5c7921b46cd70730082).
+    Wave 1 falsified v1 (`.ufo/waves/round-45/wave1/R45RevGate*`, `R45Mut*`, `R45CritKillC2.md`): G1 accepted an existing unrelated or empty
+    entry and rows inside comments/fences, G2 accepted a header-only stub and a URL suffix, G3 accepted a self-pinned empty snapshot, G4 ran a
+    tree-supplied source-recheck against a tree-supplied manifest, G5 accepted uncited and fabricated-capture quotes, G6 accepted padding,
+    G7 honored an env-overridden census.  v1.1: rows are read only from the real tables (no comments/fences), the F27 entry must be a unique
+    regular file with the required sections and located cross-references, the frozen captures and the manifest are pinned by sha256, source-recheck.py
+    runs from THIS script's own lane, every curly-quoted span in the entry must be a located S071 citation, the knowledge dir must equal the 63
+    base names plus exactly the F27 entry, and the census path is a constant.
+
     READ-ONLY; stdlib; honors TMPDIR; never runs git.
 
 USAGE
@@ -38,12 +47,22 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import os
 import re
 import subprocess
 import sys
 
-CENSUS = os.environ.get("SOURCES_CENSUS", "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh")
+CENSUS = "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh"
+TOOL_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+PINS = {
+    "S071.txt": "0918dcfa7979f348c9004bf3ce6e183507367185fe69f4e0c7688521e9346f40",
+    "manifest.json": "125339d9ec21bfdc7a07a164fd2e7023c1f4976daa1f34e18aaba4edba05f459",
+    "base-knowledge-names": "a93599be6ca5784d5fbcdc6340d14b6cfc7409ab392ab7399bc934a873c66bed",
+}
+if os.environ.get("R45_PINS_OVERRIDE"):  # selftests only: the grader's environment, never the graded tree's
+    PINS.update(json.load(open(os.environ["R45_PINS_OVERRIDE"])))
+SECTIONS = ["## Scope and decision rule", "## Overlap and novelty", "## Limits", "## Falsifiable package rule"]
 URL = "https://docs.kernel.org/process/security-bugs.html"
 CORES = [
     r"up to 7 calendar days",
@@ -82,13 +101,42 @@ def run(cmd: list[str], cwd: str) -> tuple[int, str]:
     return p.returncode, p.stdout + p.stderr
 
 
+def sha(b: bytes) -> str:
+    return hashlib.sha256(b).hexdigest()
+
+
+def live_lines(t: str) -> list[str]:
+    """Lines outside HTML comments and fenced code blocks."""
+    t = re.sub(r"(?s)<!--.*?-->", "", t)
+    out, fence = [], False
+    for ln in t.splitlines():
+        if ln.strip().startswith("```"):
+            fence = not fence
+            continue
+        if not fence:
+            out.append(ln)
+    return out
+
+
 def frontier(root: str) -> tuple[list[list[str]], str]:
     t = txt(root, "corpus/README.md") or ""
     rows = []
-    for ln in t.splitlines():
+    for ln in live_lines(t):
         if re.match(r"^\| F\d+ \|", ln):
             rows.append([c.strip() for c in ln.strip().strip("|").split("|")])
     return rows, t
+
+
+def registry_lines(root: str) -> list[str]:
+    t = txt(root, "corpus/SOURCES.md") or ""
+    out, inreg = [], False
+    for ln in live_lines(t):
+        if re.match(r"^ {0,3}## ", ln):
+            inreg = bool(re.match(r"^ {0,3}## Registry\b", ln))
+            continue
+        if inreg:
+            out.append(ln)
+    return out
 
 
 def entry_path(root: str) -> tuple[str | None, str]:
@@ -97,11 +145,15 @@ def entry_path(root: str) -> tuple[str | None, str]:
     if len(f27) != 1 or len(f27[0]) < 4:
         return None, "F27-rows=%d" % len(f27)
     m = re.findall(r"knowledge/[A-Za-z0-9._-]+\.md", f27[0][3])
-    for p in m:
-        full = os.path.join("corpus", p)
-        if os.path.isfile(os.path.join(root, full)):
-            return full, "entry=" + full
-    return None, "F27-entry-missing"
+    if len(m) != 1:
+        return None, "F27-entry-cell-paths=%d" % len(m)
+    full = os.path.join("corpus", m[0])
+    fp = os.path.join(root, full)
+    if os.path.islink(fp) or not os.path.isfile(fp):
+        return None, "F27-entry-not-a-regular-file"
+    if any(m[0] in r[3] for r in rows if r[0] != "F27" and len(r) > 3):
+        return None, "F27-entry-shared-with-another-row"
+    return full, "entry=" + full
 
 
 def g1(root: str) -> tuple[bool, str]:
@@ -122,34 +174,49 @@ def g2(root: str) -> tuple[bool, str]:
     p, why = entry_path(root)
     if p is None:
         return False, why
-    head = (txt(root, p) or "").splitlines()[:8]
-    ok_s = any(h.startswith("source: S071 — " + URL) for h in head)
+    body = txt(root, p) or ""
+    head = body.splitlines()[:8]
+    ok_s = any(h.startswith("source: S071 — " + URL + " — ") for h in head)
     ok_v = any(h == "verified-at: 2026-10-28" for h in head)
-    ok_r = any(h.startswith("recheck:") and len(h) > 10 for h in head)
-    return (ok_s and ok_v and ok_r), f"source={int(ok_s)} verified-at={int(ok_v)} recheck={int(ok_r)}"
+    ok_r = any(h.startswith("recheck: ") and "source-recheck.py" in h and "--source S071" in h for h in head)
+    secs = sum(1 for sct in SECTIONS if re.search("^" + re.escape(sct) + r"\s*$", body, re.M))
+    tbl = len([ln for ln in body.splitlines() if re.match(r"^\|[^|]+\|[^|]+\|[^|]+\|\s*$", ln)]) - 2
+    refs = re.findall(r"corpus/knowledge/([A-Za-z0-9._-]+\.md):(\d+)", body)
+    refok = 0
+    for fn, ln in refs:
+        t = txt(root, "corpus/knowledge/" + fn)
+        if t is not None and 1 <= int(ln) <= len(t.splitlines()):
+            refok += 1
+    need = {"coordinated-disclosure-timelines.md", "ai-assisted-finding-validation.md"}
+    have = {fn for fn, ln in refs}
+    ok_x = need <= have and refok == len(refs)
+    good = ok_s and ok_v and ok_r and secs == len(SECTIONS) and tbl >= 6 and ok_x
+    return good, f"source={int(ok_s)} verified-at={int(ok_v)} recheck={int(ok_r)} sections={secs}/{len(SECTIONS)} table-rows={tbl} xrefs={refok}/{len(refs)}"
 
 
 def g3(root: str) -> tuple[bool, str]:
     p, _ = entry_path(root)
     row = None
-    for ln in (txt(root, "corpus/SOURCES.md") or "").splitlines():
-        if re.match(r"^ {0,3}\|\s*S071\s*\|", ln):
-            c = [x.strip() for x in ln.strip().strip("|").split("|")]
-            if len(c) == 11:
-                row = c
+    hits = [ln for ln in registry_lines(root) if re.match(r"^ {0,3}\|\s*S071\s*\|", ln)]
+    if len(hits) == 1:
+        c = [x.strip() for x in hits[0].strip().strip("|").split("|")]
+        if len(c) == 11:
+            row = c
     if row is None:
         return False, "row-S071=absent-or-malformed"
     try:
-        sha = hashlib.sha256(open(os.path.join(root, "corpus/source-snapshots/round-45/S071.txt"), "rb").read()).hexdigest()
+        snap_sha = sha(open(os.path.join(root, "corpus/source-snapshots/round-45/S071.txt"), "rb").read())
     except OSError:
         return False, "snapshot-absent"
+    if snap_sha != PINS["S071.txt"]:
+        return False, "snapshot-not-the-pinned-capture"
     bad = []
     if row[3] != "A": bad.append("tier")
     if row[7] != "mined": bad.append("status")
     if row[8] != "2026-10-28": bad.append("opened")
     if URL not in row[1]: bad.append("url")
     if p is None or p not in row[10]: bad.append("used-by")
-    if sha not in row[5]: bad.append("anchor-sha")
+    if snap_sha not in row[5]: bad.append("anchor-sha")
     return (not bad), ("row-S071=ok" if not bad else "bad=" + ",".join(bad))
 
 
@@ -157,7 +224,9 @@ def g4(root: str) -> tuple[bool, str]:
     man = os.path.join(root, "corpus/source-snapshots/round-45/manifest.json")
     if not os.path.isfile(man):
         return False, "manifest-absent"
-    rc, out = run([sys.executable, os.path.join(root, "corpus/instruments/source-recheck.py"), "--manifest", man,
+    if sha(open(man, "rb").read()) != PINS["manifest.json"]:
+        return False, "manifest-not-the-pinned-bytes"
+    rc, out = run([sys.executable, os.path.join(TOOL_ROOT, "corpus/instruments/source-recheck.py"), "--manifest", man,
                    "--source", "S071"], root)
     oks = len(re.findall(r"^S071:Q\d+ OK ", out, re.M))
     mt = norm(open(man, encoding="utf-8").read())
@@ -172,7 +241,8 @@ def g5(root: str) -> tuple[bool, str]:
         return False, why
     body = txt(root, p) or ""
     snap = (txt(root, "corpus/source-snapshots/round-45/S071.txt") or "").splitlines()
-    spans = re.findall(r"“([^”]+)”\s*\(`?S071\.txt:(\d+)(?:-(\d+))?`?", body)
+    allcurly = re.findall("\u201c([^\u201d]+)\u201d", body)
+    spans = re.findall("\u201c([^\u201d]+)\u201d\\s*\\(`?S071\\.txt:(\\d+)(?:-(\\d+))?`?", body)
     passed, failed = [], 0
     for q, a, b in spans:
         a = int(a)
@@ -184,19 +254,25 @@ def g5(root: str) -> tuple[bool, str]:
         else:
             failed += 1
     cores = [c for c in CORES if any(re.search(c, q) for q in passed)]
-    ok = failed == 0 and len(passed) >= 4 and len(cores) == len(CORES)
-    return ok, f"spans={len(spans)} located={len(passed)} failed={failed} cores={len(cores)}/{len(CORES)}"
+    uncited = len(allcurly) - len(spans)
+    ok = failed == 0 and uncited == 0 and len(passed) >= 4 and len(cores) == len(CORES)
+    return ok, f"spans={len(spans)} located={len(passed)} failed={failed} uncited={uncited} cores={len(cores)}/{len(CORES)}"
 
 
 def g6(root: str) -> tuple[bool, str]:
     d = os.path.join(root, "corpus/knowledge")
-    n = len([f for f in os.listdir(d) if f.endswith(".md") and os.path.isfile(os.path.join(d, f))]) if os.path.isdir(d) else -1
-    return n == 64, f"knowledge={n}"
+    names = sorted(f for f in os.listdir(d) if f.endswith(".md")) if os.path.isdir(d) else []
+    p, why = entry_path(root)
+    base_like = [n for n in names if p is None or "corpus/knowledge/" + n != p]
+    base_ok = sha(("\n".join(base_like) + "\n").encode()) == PINS["base-knowledge-names"]
+    sized = p is not None and os.path.getsize(os.path.join(root, p)) >= 3000
+    return (len(names) == 64 and base_ok and sized), f"knowledge={len(names)} base-names-intact={int(base_ok)} entry-bytes-ok={int(sized)}"
 
 
 def g7(root: str) -> tuple[bool, str]:
     rc, out = run(["bash", CENSUS, "validate", "--file", os.path.join(root, "corpus/SOURCES.md")], root)
-    return rc == 0, f"census-rc={rc}"
+    ok_line = bool(re.search(r"^\S+\tok\t", out, re.M))
+    return rc == 0 and ok_line, f"census-rc={rc} ok-line={int(ok_line)}"
 
 
 GATES = [("G1", g1), ("G2", g2), ("G3", g3), ("G4", g4), ("G5", g5), ("G6", g6), ("G7", g7)]

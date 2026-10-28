@@ -165,3 +165,5 @@ Correction (round 38): PROVINCE.md L79-L152 — the whole round-37 append — ho
 [r42 Frontier amendment, appended 2026-10-28, end-of-file append per R6] F25 — CVE JSON record format (the machine-readable CVE record: the four required root properties dataType/dataVersion/cveMetadata/containers, one 'cna' container plus optional 'adp' containers, and the PUBLISHED and REJECTED states) — admitted round 42; entry corpus/knowledge/cve-json-record-format.md (source S064)
 
 [r44 Frontier amendment, appended 2026-10-28, end-of-file append per R6] F26 — Google Cloud VRP program scope and customer-resource testing boundary — admitted round 44; entry `corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md` (source S069)
+
+[r45 Frontier amendment, appended 2026-10-28, end-of-file append per R6] F27 — Linux kernel security-bugs reporting process (private security list, 7-day release postponement ceiling with a 14-day exception, AI-found, binary-only and unreproducible refusal rules) — admitted round 45; entry `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` (source S071)

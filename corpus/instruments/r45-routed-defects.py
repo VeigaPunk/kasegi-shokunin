@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""r45-routed-defects.py — round-45 C1 counter (depth:verifiability), v1.
+"""r45-routed-defects.py — round-45 C1 counter (depth:verifiability), v1.1 (hardened after the wave-1 falsification).
 
 WHAT IT MEASURES
     The five status-bearing routed defects of
@@ -37,6 +37,15 @@ WHAT IT MEASURES
     value is read as a whole token and printed.  READ-ONLY over --root and
     --baseline; never runs git.  Honors TMPDIR (no hardcoded /tmp).
 
+VERSION 1.1 (erratum E1, predicate and limb names unchanged; v1 digest 82004c700decbc3453baa57919ccff71cbfe322a8d2a71b558d75951c24f04ee)
+    Wave 1 falsified v1 (`.ufo/waves/round-45/wave1/R45Rev*`, `R45Mut*`, `R45ExecSelftestC1.md`): vacuous `flip: tbd`, a row inside a code fence,
+    a stub freeze-check/selftest that prints the tokens, a weakened claims file replayed from the graded tree, a hand-typed receipt, directory
+    `enforced-by` targets.  v1.1 binds CONTENT: the frozen source capture is pinned by sha256, code artifacts (r44-frontier-count.py, freeze-check.py,
+    r44-routed-defects.py) are pinned by sha256 so a stub must reproduce the genuine bytes, the claims file replayed by R4 must equal the frozen
+    claims sha, rows are read only from the real registry table (not fences/comments), the lesson correction must quote located S072 text, and the
+    R5 receipt body must equal the pinned one-run output of the r44 selftest at c950fa3.  source-recheck.py and freeze-check.py run from THIS script's own lane
+    (the grader's tool root), never from the graded tree.
+
 USAGE
     python3 corpus/instruments/r45-routed-defects.py --root TREE --baseline TREE
 OUTPUT
@@ -49,10 +58,52 @@ import argparse
 import hashlib
 import os
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 
-CENSUS = os.environ.get("SOURCES_CENSUS", "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh")
+TOOL_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+PINS = {
+    "S072.txt": "364166c4a23e5071f6768a158253366db0e8d1ca6f1ce14a9a7384a60ba0a025",
+    "freeze-check.py": "a38d8dc1319ff0bdab1bc557643b192cf201312fe0f7d681e430c40817305888",
+    "r44-frontier-count.py": "2409d2402c65522f02dbbaad9b7c472aa625eda5a5847215f63af208dcc9f0d4",
+    "r44-routed-defects.py": "d5438c67befaefadf46e44474330771d5d5b7b3b8f0c5ec3df11ef422ca7ba90",
+    "refiled-body": "03fe3af53006dc7561b6080b5bd923312569a5a2b8ca3d7b6ad3722da9f226c0",
+    "claims.json": "bbe40503281c90eb9d70f469d7bac10125b285758ca9675be9894ce6c12c6206",
+}
+if os.environ.get("R45_PINS_OVERRIDE"):  # selftests only: the grader's environment, never the graded tree's
+    import json as _json
+    PINS.update(_json.load(open(os.environ["R45_PINS_OVERRIDE"])))
+
+
+def sha(b: bytes) -> str:
+    return hashlib.sha256(b).hexdigest()
+
+
+def norm(s: str) -> str:
+    s = re.sub(r"</?u>|\*\*|``", "", s)
+    s = s.replace("\u2019", "'").replace("\u2018", "'").replace("\u201c", '"').replace("\u201d", '"')
+    return " ".join(s.split())
+
+
+def registry_lines(root: str) -> list[str]:
+    """Lines of the real registry table only: after `## Registry`, before the next `## `, outside fences and HTML comments."""
+    t = txt(root, "corpus/SOURCES.md") or ""
+    t = re.sub(r"(?s)<!--.*?-->", "", t)
+    out, inreg, fence = [], False, False
+    for ln in t.splitlines():
+        if ln.strip().startswith("```"):
+            fence = not fence
+            continue
+        if fence:
+            continue
+        if re.match(r"^ {0,3}## ", ln):
+            inreg = bool(re.match(r"^ {0,3}## Registry\b", ln))
+            continue
+        if inreg:
+            out.append(ln)
+    return out
 
 
 def rd(root: str, rel: str) -> bytes | None:
@@ -79,9 +130,8 @@ def run(cmd: list[str], cwd: str, env_extra: dict | None = None, timeout: int = 
 
 
 def sources_rows(root: str) -> dict[str, list[str]]:
-    t = txt(root, "corpus/SOURCES.md") or ""
     rows: dict[str, list[str]] = {}
-    for line in t.splitlines():
+    for line in registry_lines(root):
         if re.match(r"^ {0,3}\|\s*S\d{3,}\s*\|", line):
             cells = line.strip().strip("|").split("|")
             if len(cells) == 11:
@@ -90,10 +140,8 @@ def sources_rows(root: str) -> dict[str, list[str]]:
 
 
 def raw_row_line(root: str, sid: str) -> str | None:
-    for line in (txt(root, "corpus/SOURCES.md") or "").splitlines():
-        if re.match(r"^ {0,3}\|\s*%s\s*\|" % re.escape(sid), line):
-            return line
-    return None
+    found = [ln for ln in registry_lines(root) if re.match(r"^ {0,3}\|\s*%s\s*\|" % re.escape(sid), ln)]
+    return found[0] if len(found) == 1 else None
 
 
 def limb_r1(root: str, base: str) -> tuple[bool, str]:
@@ -120,23 +168,28 @@ def limb_r1(root: str, base: str) -> tuple[bool, str]:
     man = "corpus/source-snapshots/round-45/manifest.json"
     if rd(root, man) is None:
         return False, "manifest-absent"
-    rc, out = run([sys.executable, os.path.join(root, "corpus/instruments/source-recheck.py"), "--manifest",
+    rc, out = run([sys.executable, os.path.join(TOOL_ROOT, "corpus/instruments/source-recheck.py"), "--manifest",
                    os.path.join(root, man), "--source", "S072"], root)
     oks = len(re.findall(r"^S072:Q\d+ OK ", out, re.M))
     if rc != 0 or "S072:sha256 OK" not in out or oks < 2:
         return False, f"recheck-rc={rc}-quotes={oks}"
     snap = rd(root, "corpus/source-snapshots/round-45/S072.txt")
-    if snap is None or hashlib.sha256(snap).hexdigest() not in row[5]:
-        return False, "snapshot-sha-not-in-anchor"
+    if snap is None or sha(snap) != PINS["S072.txt"] or PINS["S072.txt"] not in row[5]:
+        return False, "snapshot-not-the-pinned-capture-or-not-in-anchor"
+    snapnorm = norm(snap.decode("utf-8", "replace"))
     les = txt(root, "corpus/lessons/round-44.md") or ""
     les_b = txt(base, "corpus/lessons/round-44.md") or ""
     if not les.startswith(les_b) or not les_b:
         return False, "round-44-lesson-not-append-only"
     tail = les[len(les_b):]
-    hit = [ln for ln in tail.splitlines() if ln.startswith("Correction (round 45") and "S072" in ln
-           and re.search(r"(?<![0-9])10[ ,]?029(?![0-9])", ln)]
+    hit = []
+    for ln in tail.splitlines():
+        if ln.startswith("Correction (round 45") and "S072" in ln and re.search(r"(?<![0-9])10[ ,]?029(?![0-9])", ln):
+            spans = re.findall(r"[\u201c\"]([^\u201d\"]{30,})[\u201d\"]", ln)
+            if any(len(norm(sp).split()) >= 6 and norm(sp) in snapnorm for sp in spans):
+                hit.append(ln)
     if not hit:
-        return False, "lesson-correction-absent"
+        return False, "lesson-correction-absent-or-quotes-no-located-S072-span"
     return True, f"S072=supersedes recheck-quotes={oks} corrections={len(hit)}"
 
 
@@ -173,8 +226,14 @@ def limb_r2(root: str, base: str) -> tuple[bool, str]:
         if not paths:
             return False, f"{rid}-enforced-by-absent"
         for p in paths:
-            if not os.path.exists(os.path.join(root, p.split(" ")[0])):
-                return False, f"{rid}-enforced-by-missing-{p}"
+            if not os.path.isfile(os.path.join(root, p.split(" ")[0])):
+                return False, f"{rid}-enforced-by-not-a-file-{p}"
+        if len(crit) < 300:
+            return False, f"{rid}-criterion-too-short"
+        les_lines = len((txt(root, "corpus/lessons/round-44.md") or "").splitlines())
+        refs = [int(n) for n in re.findall(r"corpus/lessons/round-44\.md:(\d+)", crit + " " + ground)]
+        if not refs or any(r < 1 or r > les_lines for r in refs):
+            return False, f"{rid}-line-refs-absent-or-out-of-range"
         seen += 1
     return True, f"criteria={seen}"
 
@@ -186,6 +245,9 @@ def selftest_tokens(out: str) -> tuple[int, int] | None:
 
 def limb_r3(root: str, base: str) -> tuple[bool, str]:
     s = os.path.join(root, "corpus/instruments/r44-frontier-count.py")
+    b = rd(root, "corpus/instruments/r44-frontier-count.py")
+    if b is None or sha(b) != PINS["r44-frontier-count.py"]:
+        return False, "r44-frontier-count-not-the-pinned-bytes"
     rc, out = run([sys.executable, s, "--selftest"], root)
     tk = selftest_tokens(out)
     if rc != 0 or tk is None or tk[1] != 0 or tk[0] < 8:
@@ -211,12 +273,17 @@ def limb_r4(root: str, base: str) -> tuple[bool, str]:
     fc = os.path.join(root, "corpus/instruments/freeze-check.py")
     if not os.path.exists(fc):
         return False, "freeze-check-absent"
+    if sha(open(fc, "rb").read()) != PINS["freeze-check.py"]:
+        return False, "freeze-check-not-the-pinned-bytes"
     rc, out = run([sys.executable, fc, "--selftest"], root)
     tk = selftest_tokens(out)
     if rc != 0 or tk is None or tk[1] != 0 or tk[0] < 6:
         return False, f"selftest-rc={rc}-tokens={tk}"
     claims = os.path.join(root, ".ufo/waves/round-45/claims.json")
-    rc, out = run([sys.executable, fc, "--claims", claims, "--tool-root", root, "--base", base], root)
+    cb = rd(root, ".ufo/waves/round-45/claims.json")
+    if cb is None or sha(cb) != PINS["claims.json"]:
+        return False, "claims-not-the-frozen-bytes"
+    rc, out = run([sys.executable, fc, "--claims", claims, "--tool-root", TOOL_ROOT, "--base", base], TOOL_ROOT)
     if rc != 0 or not re.search(r"^freeze-check claims=2 base_ok=2\b", out, re.M):
         return False, f"replay-rc={rc}"
     return True, f"selftest-cases={tk[0]} replay=base_ok=2"
@@ -229,17 +296,26 @@ def limb_r5(root: str, base: str) -> tuple[bool, str]:
         return False, "refiled-absent"
     if re.search(r"^(usage:|.*error:)", t, re.M | re.I):
         return False, "usage-or-error-line-present"
-    if not re.search(r"^selftest cases=20 failures=0\s*$", t, re.M):
-        return False, "selftest-token-absent"
-    if not re.search(r"(^|\s)exit=0\s*$", t, re.M):
-        return False, "exit0-absent"
-    if not re.search(r"--root \S+ --selftest --work \S+", t):
-        return False, "invocation-absent"
+    lines = t.splitlines()
+    inv = [i for i, ln in enumerate(lines) if ln == "$ python3 corpus/instruments/r44-routed-defects.py --root <tip> --selftest --work <scratch>"]
+    if len(inv) != 1:
+        return False, f"invocation-lines={len(inv)}"
+    end = [i for i, ln in enumerate(lines) if ln == "exit=0"]
+    if len(end) != 1 or end[0] <= inv[0]:
+        return False, "exit0-line-absent"
+    body = lines[inv[0] + 1:end[0]]
     o = rd(base, ".ufo/waves/round-44/controls/final-attempt3.txt")
     n = rd(root, ".ufo/waves/round-44/controls/final-attempt3.txt")
     if o is None or o != n:
         return False, "original-receipt-changed"
-    return True, "refiled=ok original=unchanged"
+    r44 = rd(root, "corpus/instruments/r44-routed-defects.py")
+    if r44 is None or sha(r44) != PINS["r44-routed-defects.py"]:
+        return False, "r44-counter-not-the-pinned-bytes"
+    # The r44 selftest only passes on the round-44 tip export (c950fa3): at later lane trees its limb D4 reads unresolved
+    # (recorded in SKILL.md, Round-45 registry row), so the body is bound by sha256 of the genuine one-run output instead of a re-run.
+    if sha("\n".join(body).encode()) != PINS["refiled-body"] or not re.search(r"^selftest cases=20 failures=0$", "\n".join(body), re.M):
+        return False, "receipt-body-not-the-pinned-run-output"
+    return True, "refiled=pinned-run-output original=unchanged"
 
 
 LIMBS = [("R1", limb_r1), ("R2", limb_r2), ("R3", limb_r3), ("R4", limb_r4), ("R5", limb_r5)]
