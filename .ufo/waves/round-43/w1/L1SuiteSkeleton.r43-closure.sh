@@ -423,7 +423,7 @@ selftest_block() {
 }
 
 st_case() {  # st_case <id> <kind>  -> grades positive then mutant
-    local id="$1" kind="$2"
+    local id="$1" kind="${2%%:*}"
     local d="$SCRATCH_ROOT/selftest/case-$id"
     rm -rf "$d"; mkdir -p "$d/tree"
     cp -al "$EXPORT/." "$d/tree/" 2>/dev/null || return 1
