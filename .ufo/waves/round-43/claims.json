@@ -1,0 +1,78 @@
+{
+ "lane": "kasegi",
+ "round": 43,
+ "attempt": 1,
+ "base": "ab98fac9dce87130bc4f66de89e30650d63943dc",
+ "frozen_at_utc": "2026-10-28T16:37:07Z",
+ "frozen_by": "KasegiR43 (L1, kasegi round 43)",
+ "axes_owned": [
+  "depth:density",
+  "depth:verifiability",
+  "coverage"
+ ],
+ "saturation": {
+  "line": "9/10 per owned axis",
+  "window": "N=3"
+ },
+ "lowest_non_retired_axis": "depth:verifiability (4)",
+ "judged_head_rule": "The round-43 judged head J is the lane commit that carries every round-43 change except the receipt; the lane tip Y adds only .ufo/waves/round-43/final-gates/all-gates.txt. Lane files never name J by hash (a commit cannot contain its own hash); the report names J and Y. Counting commands run over the suite at Y; negative controls run at base ab98fac9dce87130bc4f66de89e30650d63943dc and round-41 judged head 1f7464612ac4c44e39886b82e812610d3c039b13.",
+ "claim_design_lesson": "The r42 suite is green at 13/13 over the r42 tip while six routed narrative/hygiene defects (RD42-1, -2, -3, -4, -5, -6, -8) sit in committed lane records: the counter cannot see a record that contradicts the run it describes. Round 43's increment is narrative-evidence binding: six new checks K14-K19 make each such statement machine-gradable, red at base and green only after the round lands an appended correction that names the superseded statement. The r42 suite at base is the do-nothing control: it prints closed=13/13 and reaches none of the new after-state.",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "type": "measured",
+   "score_before": 4,
+   "score_after": "held 4",
+   "predicate": "The committed instrument `corpus/instruments/r43-closure.sh` runs in export mode only (`--export-ref <hash>` extracts `git -C <lane> archive <hash> | tar -x` into a work dir outside the lane; a plain run refuses exit 2) and prints one `K<n> payload=... closed=0|1` line per check K1-K19 followed by `closed=19/19 exit=0` on the round-43 verification ref Y, exit 0 only at 19/19; `--selftest --export-ref Y` prints nineteen graded lines `selftest case=K<n> ... positive=pass ... verdict=pass` and `selftest cases=19 failures=0`. K1-K13 keep the r42 J1-J13 payload grammar and their replay limbs (each committed r41/r42 defeat artifact is re-executed and rejected). K14-K19 are the new narrative-evidence checks: K14 every `corrections=<n>` literal in SCORECARD.md/LOG.md/SHENON.md equals the value the suite re-derives at the same export, or is named superseded by a committed `Correction (round 43)` line; K15 every sentence in LOG.md or corpus/lessons asserting that a named `kasegi-rNN-*` wave was dispatched has `.ufo/waves/round-NN/<wave>-results.json`, or is named never-true by a `Correction (round 43)` line; K16 the round-42 lesson's `## Wave-2 falsification` promise is named unfulfilled by a `Correction (round 43)` line; K17 every `closed=`/`failures=` literal in a claims.json `before`/`after` cell appears in the control receipt that cell cites, or is named superseded by a committed claims erratum; K18 every `closed=`/`selftest cases=` value quoted in round-42/43 lane records appears in a committed transcript under the round's final-gates/ or c1-controls/, or its line carries `report-only`, or it is named superseded by a `Correction (round 43)`/claims-erratum line; K19 the round-43 freeze record's `frozen_at_utc` is not earlier than the latest `measured-at=` timestamp in the two committed control receipts and the receipts carry that line. Base ab98fac9 and round-41 judged head 1f7464612ac4c44e39886b82e812610d3c039b13 exports each print closed<19/19 exit=1, and at base every one of K14-K19 is open (each new check must see its own committed defect at base); the exact base figure is measured during integration and quoted in the report, never pre-declared. An unresolvable --export-ref prints `ref-not-found` and exits 1.",
+   "kill_rule": "Any of: r43-closure.sh absent from the Y export; Y prints closed!=19/19 or exit!=0; the selftest prints fewer than nineteen graded case lines, any failure, or a summary-only line satisfies a case; the base export prints closed=19/19, or any of K14-K19 is closed at base; the round-41 head export prints closed=19/19; a plain run exits other than 2; an unresolvable ref does not print its distinct ref-not-found red; a committed K1-K13 replay limb is absent or skips its defeat; any K14-K19 mutant built from the committed r42 defeat bytes is accepted; a K14-K19 check passes at base (a check that cannot see its own defect is not repaired); the receipt is not one unedited tee of one run.",
+   "counting_commands": [
+    "bash corpus/instruments/r43-closure.sh -> exit 2 (plain run refused)",
+    "bash corpus/instruments/r43-closure.sh --export-ref <Y> --work <scratch>/w --scratch-root <scratch> -> closed=19/19 exit=0",
+    "bash corpus/instruments/r43-closure.sh --selftest --export-ref <Y> --work <scratch>/w --scratch-root <scratch> -> selftest cases=19 failures=0, nineteen graded verdict=pass lines",
+    "bash corpus/instruments/r43-closure.sh --export-ref ab98fac9dce87130bc4f66de89e30650d63943dc --work <scratch>/w1 --scratch-root <scratch> -> closed<19/19 exit=1 with K14-K19 open",
+    "bash corpus/instruments/r43-closure.sh --export-ref 1f7464612ac4c44e39886b82e812610d3c039b13 --work <scratch>/w2 --scratch-root <scratch> -> closed<19/19 exit=1",
+    "bash corpus/instruments/r43-closure.sh --export-ref deadbeefdeadbeefdeadbeefdeadbeefdeadbeef -> ref-not-found, exit 1"
+   ],
+   "before": [
+    "see .ufo/waves/round-43/c1-controls/do-nothing.txt (measured-at line present): the r43 suite is absent at base (exit 127); the r42 suite - the do-nothing stand-in - runs over the base export and prints `closed=12/13 exit=1` (J8 red only because the base carries commits after the r42 receipt) while all six routed defects are present in committed bytes and NO check in the thirteen grades any of them: SCORECARD.md:1634 carries `corrections=33` against the suite's own live `corrections=34`; LOG.md:1804 says `wave 2 kasegi-r42-falsify 36 seats dispatched` with no `.ufo/waves/round-42/wave2-results.json`; corpus/lessons/round-42.md:11-16 repeats that wave-2 dispatch and round total; its `## Wave-2 falsification` section (line 52) promises verdicts `when the round-42 falsify wave reports`; corpus/lessons/round-42-verifier-spotcheck.md:65 and .ufo/waves/round-42/claims-erratum-4.md:9 quote `closed=10/13` with no committed transcript printing it; round-42 claims.json C1 `before` says `closed=10/12` while its own control prints `closed=8/12`."
+   ],
+   "after": [
+    "closed=19/19 exit=0 at Y; graded selftest cases=19 failures=0; base export closed=13/19 exit=1 with exactly K14-K19 open; round-41 head red; plain run exit 2; ref-not-found distinct; every K1-K13 replay limb still rejects its committed defeat; each K14-K19 mutant rejects; receipt = one unedited tee of the run+selftest at Y"
+   ]
+  },
+  {
+   "id": "C2",
+   "axis": "coverage",
+   "type": "capability-acquisition",
+   "score_before": 8,
+   "score_after": "held 8 (capability row enters)",
+   "predicate": "The six-file claim-package contract (corpus/knowledge/claim-package-contract.md, documentation only since the ops/* executables were lost) gains an executable gate: `corpus/instruments/claim-package-check.py <package-dir>` prints one `RULE <id> verdict=pass|fail` line for each of eight rules - R-FILES (the six contract files present), R-MANIFEST (schema_version, per-artifact sha256 over the bytes, polarity enum, at least one positive, relative paths inside the package with no symlink escape), R-REDACT (one same-digest redaction receipt per artifact with nonempty distinct producer and verifier), R-CUSTODIAN (non-empty chain, every action's matched_grant_id nonempty and scope_signal exactly NO_SCOPE_OBJECTION, head_sha256 equal to the last decision digest and to manifest.expected_head_sha256), R-PROVENANCE (agents and requested/resolved models, commands with exit codes, pin, policy_sha256, external_effects_performed empty, secrets attestation), R-STATUS (manifest_sha256 binds the manifest bytes, claim_review holds hard_gates, subchecks and a reviewer with an identity distinct from every producer), R-REPORT (report.md carries `Scope excerpt`, the verbatim marker `No submission performed`, and every artifact's sha256 it cites), R-NOSECRET (no secret-shaped token in any package text) - then `package=<path> rules=8 pass=<k> fail=<m> verdict=WELL-FORMED|DEFECT exit=0|1`. At Y the committed exemplar `corpus/instruments/fixtures/claim-package/exemplar/` prints `rules=8 pass=8 fail=0 verdict=WELL-FORMED exit=0`; nine committed defect fixtures each print `verdict=DEFECT exit=1` with the fixture's own rule failing; `claim-package-check.py --selftest` prints one graded line per case and `selftest cases=10 failures=0`, the ten cases being the nine defect classes plus the degenerate always-pass control, which the selftest rejects. The exemplar is built from one public disclosed report captured this round under a new mined registry row, documented by the entry `corpus/knowledge/claim-package-gate.md`; `claimable` stays false and the operator gates are named in `claim_checklist.md`.",
+   "kill_rule": "Any of: the instrument absent from the Y export; the exemplar not exiting 0 with rules=8 pass=8; any of the nine defect fixtures accepted (exit 0) or its named rule not the failing one; the degenerate always-pass control accepted by the selftest; `selftest cases=10 failures=0` not printed, or a summary-only line satisfies a case; the gate reading package bytes from outside the package directory it is given; the entry missing the provenance trio or failing its own recheck; the new registry row not `mined` or its capture not bound by capture-binding-check; census exit!=0; a tracked deletion in corpus/; the exemplar naming a submission performed.",
+   "counting_commands": [
+    "python3 corpus/instruments/claim-package-check.py corpus/instruments/fixtures/claim-package/exemplar -> rules=8 pass=8 fail=0 verdict=WELL-FORMED exit=0",
+    "python3 corpus/instruments/claim-package-check.py --selftest -> selftest cases=10 failures=0 exit=0",
+    "grep -c '^RULE ' <(python3 corpus/instruments/claim-package-check.py corpus/instruments/fixtures/claim-package/exemplar) -> 8",
+    "ls corpus/instruments/fixtures/claim-package/ | grep -c '^defect-' -> 9",
+    "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md -> 66 -> >=68",
+    "grep -rlE '^source: S067' corpus/knowledge | wc -l -> 0 -> 1",
+    "ls corpus/knowledge/*.md | wc -l -> 61 -> 62",
+    "python3 corpus/instruments/capture-binding-check.py -> records=56 bound=56 unbound=0 -> records=57 bound=57 unbound=0",
+    "python3 corpus/instruments/recheck-audit.py --quiet -> expected=61 -> expected=62",
+    "python3 corpus/instruments/frontier-recheck-count.py -> entries=28 pass=28 exit=0 (no frontier row changes)",
+    "bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> exit 0"
+   ],
+   "before": [
+    "see .ufo/waves/round-43/c2-controls/before.txt: `corpus/instruments/claim-package-check.py` and `corpus/instruments/fixtures/claim-package/` absent at base; registry 66 rows with S067+ absent; knowledge 61 files with no entry citing S067; capture-binding records=56 bound=56 unbound=0; recheck-audit expected=61; frontier harness entries=28 pass=28; census exit 0. No instrument in corpus/instruments/ has a claim-package basename."
+   ],
+   "after": [
+    "claim-package-check.py prints rules=8 pass=8 verdict=WELL-FORMED exit=0 on the exemplar and rejects nine defect fixtures; selftest cases=10 failures=0; registry >=68 with S067 mined and one reject row; capture bound (records=57 bound=57 unbound=0); knowledge 62 with the entry citing S067; recheck-audit expected=62; census exit 0; capability row `claim-package-gate` enters SCORECARD.md with the command as its evidence pointer"
+   ]
+  }
+ ],
+ "controls": {
+  "c1": ".ufo/waves/round-43/c1-controls/do-nothing.txt",
+  "c2": ".ufo/waves/round-43/c2-controls/before.txt"
+ },
+ "errata": []
+}
