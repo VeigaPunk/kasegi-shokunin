@@ -163,3 +163,5 @@ Correction (round 38): PROVINCE.md L79-L152 — the whole round-37 append — ho
 [r41 Frontier amendment, appended 2026-10-27, end-of-file append per R6] F24 — RFC 9116 security.txt (the machine-readable disclosure-channel discovery file: the /.well-known/ location, eight defined fields with Contact and Expires required, and the Expires staleness clock) — admitted round 41; entry corpus/knowledge/rfc-9116-security-txt.md (source S063)
 
 [r42 Frontier amendment, appended 2026-10-28, end-of-file append per R6] F25 — CVE JSON record format (the machine-readable CVE record: the four required root properties dataType/dataVersion/cveMetadata/containers, one 'cna' container plus optional 'adp' containers, and the PUBLISHED and REJECTED states) — admitted round 42; entry corpus/knowledge/cve-json-record-format.md (source S064)
+
+[r44 Frontier amendment, appended 2026-10-28, end-of-file append per R6] F26 — Google Cloud VRP program scope and customer-resource testing boundary — admitted round 44; entry `corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md` (source S069)

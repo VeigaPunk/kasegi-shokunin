@@ -1,0 +1,17 @@
+# R44Review11 — Lane report requirements
+
+## Finding
+
+**Mandatory evidence pointers are under-specified in the current round plan artifact set; do not credit report conformance from a general summary alone.** The frozen C1 explicitly requires append-only fixes and “at least one red-before control per changed gate” (`.ufo/waves/round-44/claims.json:11-15`), while C2 requires a newly opened tier-A source row cited by a new knowledge entry, recorded reject and non-author admit/reject spot-check, and a passing SOURCES census (`claims.json:20-24`). The dispatch sets reportDir to `.ufo/waves/round-44/wave1` (`wave1-dispatch.json:21-24`) and individual task prompts demand exact committed-file/line or command evidence and no verdict inflation (`wave1-dispatch.json:762-763`), but these are not themselves an explicit final-report checklist. A conforming final report therefore needs paths/line or commit pointers to each of the eight frozen defect corrections and red-before control evidence, the measured C1 counter output/baseline, and for C2 the F26 row, captured source and locus, linked knowledge entry, registry row, reject, non-author spot-check result, plus census command/stdout/exit.
+
+A distinct inherited report requirement is explicit in the frozen spot-check: report must record planner=L1 mapping and L2-floor/residual-call line (`corpus/lessons/round-43-verifier-spotcheck.md:26,104`); that same source says the prior report omitted both. The current wave policy gives seat count evidence (`wave1-dispatch.json:6-19`, 762+ tasks) but a seat count alone does not establish planner identity or L2-floor satisfaction/residual status. Include those fields with supporting dispatch/plan and actual call evidence; record residual as none only if observed.
+
+The prior report illustrates why each pointer must resolve: it asserts report pointer to `corpus/instruments/README.md`, while spot-check says `git grep` there found zero hits and corrects the pointer (`round-43-verifier-spotcheck.md:30,107`). Likewise the previous SHONEN assessment is explicitly limited: three boxes mechanically checkable, box 2 not checkable because no submission was performed (`round-43-verifier-spotcheck.md:112`). Do not convert unavailable evidence into `[x]` or a passing assertion.
+
+## Do-nothing discrimination
+
+Frozen control says the baseline contains 8 unresolved routed defects and lacks any r44 correction/counter, and C2 baseline is 25 admitted rows, 68 registry rows, 62 knowledge entries (`controls/do-nothing.txt:4-13`). Those baseline observations distinguish no-op from target counts, but cannot alone prove each correction, causality, red-before behavior, or source-grounded C2 acceptance. Require committed evidence and replayable commands rather than counting report prose.
+
+## Evidence / limits
+
+Read-only review of claims, do-nothing control, wave dispatch/spec, and round-43 verifier spot-check. `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --short` showed pre-existing untracked `controls/census-invocation-error.txt`, `wave1.ready.partial`, `wave1/R44Review1.md`, and `wave1/R44Review2.md`; no changes made to them. Attempted required scratch creation at `$HYAKU_SCRATCH/kasegi-r44/R44Review11/`; `HYAKU_SCRATCH` is unset and `mkdir` returned `Permission denied`, so scratch could not be created. No LSP device/status was available in the exposed tool inventory. No tests/instruments run; no tools installed. Report path: `.ufo/waves/round-44/wave1/R44Review11.md`.

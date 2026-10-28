@@ -1,0 +1,5 @@
+R44 C1 counter-trial disposition, 2026-10-28.
+
+`r44-routed-defects.py` was drafted to implement the frozen C1 counter, but it is NOT an accepted verifier and is not present under `corpus/instruments/` at the final tree. Its marker-only selftest output (`r44-routed-defects-selftest.txt`, 11 cases, 0 failures) is not admission evidence: it tested the same substrings the counter accepted. The lane's Critic1 constructed a marker-only export of the frozen base with no repairs and showed the counter returning `fixed=8 unresolved=0 exit=0` (`wave1/R44Critic1.md:21-29`). Critic3 and Critic4 independently found false positives for the hash-numeral and report-completeness limbs (`wave1/R44Critic3.md:58-95`, `wave1/R44Critic4.md:22-35`).
+
+Disposition: discard the counter as a production gate, leave the frozen claims/control bytes unchanged, and report C1 unverified. The round-43 correction text, source receipts, and report additions are not treated as a measured 0/8 result. The after-state is not credited.

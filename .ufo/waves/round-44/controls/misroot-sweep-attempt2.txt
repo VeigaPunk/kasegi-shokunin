@@ -1,0 +1,19 @@
+Round-44 attempt-2 misroot sweep, 2026-10-28 (L1 KasegiR44a2).
+
+Command: `git -C /home/vgpnk/Projects/shokunin status --porcelain` (no pathspec).
+
+Observed at the fleet root: 45 entries, all of them pre-existing and none of
+them written by this attempt — 42 entries under `.scratch/` (orchestrator-owned
+run state and the closure-r54 working copies; never a misroot and never
+touched by a lane), the tracked-but-modified `.scratch/goal-20261028-hyaku-run11.md`
+(orchestrator-owned), the pre-existing tracked files `o.bin`, `oldrep1.out`,
+`oldrep2.out`, and the pre-existing untracked directory `lane3/`.
+
+No file written by this attempt's seats or by the L1 landed at the fleet root:
+every write of the attempt targeted `/home/vgpnk/Projects/shokunin/kasegi-shokunin`
+by absolute path. Nothing was copied in, nothing was deleted at the fleet root.
+
+The attempt-1 sweep (`controls/misroot-sweep.txt`) removed three count-output
+files (`25`, `62`, `68`) that had been written into the lane root by a
+round-44 command; the equivalent files are not recreated here because the
+round-44 commands write their receipts under `.ufo/waves/round-44/controls/`.

@@ -975,3 +975,19 @@ mutant that leaves those lines intact survives. A selftest-only defect (mutant 1
 no external probe by construction. The fake control binds to the newest round's
 `c1-controls/fake-killrule.py`; if that path moves, the control reports `absent`
 (`ok=0`, a failed gate) until `--fake PATH` is supplied — it is never skipped.
+
+## Round-44 registry addition — the round-43 instruments and the round-44 counter (appended 2026-10-28)
+
+The round-43 SHONEN bullet named `corpus/instruments/README.md` as the registry
+for the two round-43 instruments; this file existed but carried no matching row
+(routed defect 7 of `corpus/lessons/round-43-verifier-spotcheck.md` §6). The rows
+are appended here. The gates' home registry remains the `SKILL.md` *Gates &
+probes* section, which already carries the same rows; this section makes the
+pointer in the round-43 bullet true as written.
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| r43-closure.sh | gate | `bash corpus/instruments/r43-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2) | one `K<n> payload=… closed=0\|1` per K1-K19, then `closed=K/19 exit=0\|1`; exit 0 only for K=19 | `bash corpus/instruments/r43-closure.sh --selftest --export-ref <hash>` → nineteen graded cases and `selftest cases=19 failures=0` | `.ufo/waves/round-43/claims.json`, `.ufo/waves/round-43/final-gates/`, `corpus/instruments/r43-limbs/` | read-only (export and receipt-out in scratch only) | kasegi (round 43; 19 checks) |
+| claim-package-check.py | gate | `python3 corpus/instruments/claim-package-check.py <package-dir>` | one `RULE <id> verdict=pass\|fail` per rule; `package=<path> rules=8 pass=<k> fail=<m> verdict=WELL-FORMED\|DEFECT exit=0\|1` | `python3 corpus/instruments/claim-package-check.py --selftest` → `selftest cases=10 failures=0` | `corpus/instruments/fixtures/claim-package/` (exemplar and nine named defect fixtures) | read-only over the supplied package | kasegi (round 43) |
+| r44-routed-defects.py | counter | `python3 corpus/instruments/r44-routed-defects.py --root <tree> [--baseline <tree>]` | one `R44-D<n> status=fixed\|unresolved detail=…` line per limb (eight routed defects of `corpus/lessons/round-43-verifier-spotcheck.md` §6), then `routed-defects total=8 fixed=<k> unresolved=<n> exit=0\|1`; exit 0 only when unresolved=0 | `python3 corpus/instruments/r44-routed-defects.py --root <tree> --selftest --work <dir>` → one `selftest case=<id> verdict=pass\|fail` per case and `selftest cases=<n> failures=<k>`; every mutant keeps the prose marker and drops the artifact the limb binds to, and must be rejected | `.ufo/waves/round-43/claims-erratum-6.md`, `corpus/lessons/round-43.md`, `corpus/lessons/round-44.md`, `LOG.md`, `SHONEN.md`, `SCORECARD.md`, `corpus/instruments/README.md` | read-only over the graded tree; the selftest writes only under `--work` | kasegi (round 44) |
+| wave-registry.py | emitter | `python3 corpus/instruments/wave-registry.py --results <wave>-results.json --out <registry> [--lane kasegi]` | writes `wave=`, `lane=`, `policy=`, `seats=`, `roles=`, `attack_seats=`, `names=`; refuses (exit 1) when the results file's `seats` count and its named seats disagree, so an empty `names=` field can never be emitted | the round-44 registry `.ufo/waves/round-44/wave-registry.txt` is its committed output and is graded by `r44-routed-defects.py` limb D5 | `.ufo/waves/round-44/wave1-results.json` | writes only the `--out` path | kasegi (round 44) |

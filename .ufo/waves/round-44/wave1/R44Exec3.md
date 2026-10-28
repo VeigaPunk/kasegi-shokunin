@@ -1,0 +1,21 @@
+# R44Exec3 — why `names=` is empty
+
+## Finding
+
+`.ufo/waves/round-43/w1-REGISTRY.txt:7` is literally `names=` followed by newline, although line 4 says `seats=73`. This is not missing seat data: the committed artifacts expose all 73 names. The defect is an unfilled/failed value in the hand-composed text summary, not a short wave. The exact producing command is not preserved, so a specific typo cannot be asserted as fact.
+
+## Evidence and discrimination
+
+- `git show HEAD:.ufo/waves/round-43/w1-REGISTRY.txt | cat -A` ends with `names=$`. `git log --format='%H %cI %s' -- .ufo/waves/round-43/w1-REGISTRY.txt` shows one touching commit, `9e6800ea919c6879de4a154883d1e284a9c6b026` (the judged-head commit); it was never subsequently corrected.
+- Names are present in four committed sources: `w1-spec.json` has 73 unique `items[].name`; `w1/swarm-registry.json` has 73 member keys; `w1-dispatch.json` has 73 `.registry.members` keys; and line 2 of `w1.ready.dispatched` is a 73-key map. The round-43 spec item keys are `name,prompt,role` (73 items, none with `item`). Thus no-data / zero-seat explanations are falsified.
+- The summary’s `seats=73`, role counts, and attack count agree with the structured records: both spec and swarm registry role counts are `connector=2, critic=7, executor=23, mutation-tester=5, revenger=2, reviewer=11, scout=9, scribe=10, sentinel=2, simplifier=2`; critic+reviewer+mutation-tester = 23, and 23/73 rounds to 31.5%. A usable name list existed in those same records.
+- Timing: spec and swarm-registry mtimes are `2026-10-28T16:37:01Z`; the text summary is `16:38:51Z`; `w1.ready.dispatched` is `16:45:42Z`; results are `17:45:51Z`. This rules out names being unavailable from the pre-dispatch spec/registry. The later dispatch/results artifacts cannot explain the original empty value, though they also contain names.
+- A reproducible likely failure mode, **not proof of the historical command**: querying top-level `.members` in `w1-dispatch.json` gives empty stdout and jq exit 5 (`Error: cannot use null as iterable`); the correct path `.registry.members` yields 73 names. The text file does not retain its writer command, so this is a plausible wrong-path/unchecked-substitution explanation, not a verified attribution.
+- The cited wave tool source, `/home/vgpnk/Projects/ufo-fsd-alpha/scripts/ufo-swarm-wave.mjs`, documents and writes the JSON swarm registry only (lines 60–77 and 648–655); it has no `REGISTRY.txt`, `names=`, `roles=`, or `attack_seats=` emitter. The r43 spec builder writes only `w1-spec.json` (`.ufo/waves/round-43/build-w1-spec.py:252–256`). No suite instrument references this summary (`grep -rn 'REGISTRY' corpus/instruments/` only finds unrelated SOURCES row parsing), and it is absent from `ExecCarryChecks.declared-blocks.txt`. Accordingly the spotcheck’s “Fix the emitter” at `corpus/lessons/round-43-verifier-spotcheck.md:105` names no extant emitter; the committed artifact was not protected by a generator or gate.
+- Related empty-slot signature: the r43 spec items have `prompt` but no `item`; wave-tool line 1234 persists `item: lane.item`. Consequently all 73 r43 members have null `item` in both dispatch and swarm registry. The same-shaped r44 spec has `item,name,role`, and its 66 members have no null items. This corroborates an r43 input-shape/empty-value issue, but does not itself prove how the separate `names=` line was produced.
+
+The spotcheck’s line 27 says the seat set is attested “only” by dispatch members and `w1.ready.dispatched`; that is incomplete: the committed spec and `w1/swarm-registry.json` are two additional independent 73-name attestations.
+
+## Limitation and handling
+
+No retained source records the `w1-REGISTRY.txt` write command; I searched the available session logs and found only later references. Therefore I can establish that the slot was empty despite available names and show a reproducible wrong-path mechanism, but cannot claim which exact substitution the author used. No tool was installed. `HYAKU_SCRATCH` was unset; the mandated seat scratch directory was created under lane `.ufo/scratch/kasegi-r44/` and removed. I briefly created `.ufo/waves/round-43/err.txt` for jq stderr during the reproduction and removed it in the same command; a subsequent check confirmed it absent. No tracked file was changed.

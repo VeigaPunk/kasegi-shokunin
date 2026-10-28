@@ -610,3 +610,23 @@ committed exemplar `instruments/fixtures/claim-package/exemplar/` and nine one-d
 `instruments/fixtures/claim-package/defect-1-missing-file` through `defect-9-secret`, documented by
 the new entry `knowledge/claim-package-gate.md`. NO frontier row (F01-F25) changes and the measured
 ratio is unchanged: 25/25 admitted, still 0 of 18 lost-domain surfaces present.
+
+## Round-44 admission — coverage map row and Frontier F26 (appended 2026-10-28)
+
+The coverage map and frontier table above are not edited in place (R6). The round-44 entry
+`knowledge/google-cloud-vrp-customer-resource-boundary.md` (F26, source S069) records the
+Google Cloud VRP's own customer-resource testing boundary. Its evidence is limited to this
+program's rule text; it does not assert general authorization or speak for Google's other
+programs.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Google Cloud VRP program scope and customer-resource reward eligibility (round 44) | `knowledge/google-cloud-vrp-customer-resource-boundary.md` | S069 — official Google Cloud VRP rules, opened 2026-10-28; capture and located quotes in `corpus/source-snapshots/round-44/manifest.json` |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F26 | Google Cloud VRP's own program scope, customer-resource testing prohibition and reward-ineligibility boundary | admitted | `knowledge/google-cloud-vrp-customer-resource-boundary.md` | S069 | Keep the Cloud VRP boundary distinct from general authorization, other Google reward programs, and customer permission; re-open the policy before relying on it. |
+
+[r44 amendment, appended 2026-10-28] The 25/25 parenthetical above records the round-43 state and is retained as history (R9). At round 44 the public-practice frontier stands at **26/26 admitted** — F01-F25 as previously recorded and F26 admitted this round. The lost-domain denominator remains 0/18; the frontier count is separate.
+
+Correction (round 44, appended 2026-10-28): the novel F26 ground is the Cloud VRP's customer-IP-range prohibition (including that a Google-owned asset found inside a customer CIDR is still unauthorized) and the safe local-reproduction boundary for unsafe multi-tenant escapes (`knowledge/google-cloud-vrp-customer-resource-boundary.md`, S069.txt:73-87). This is distinct from the generic scope/authorization/reward distinctions already held under F03, F09, F13 and F01; the F26 table row itself remains byte-identical.

@@ -1,0 +1,9 @@
+Round-44 pre-fix recheck measurement, observed 2026-10-28; relevant stdout excerpt (not the full harness transcript):
+recheck line then in the new F26 entry: `180d — cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-44/manifest.json --source S069`
+command: `python3 corpus/instruments/frontier-recheck-count.py`
+FRONTIER-CENSUS rows=26 admitted=26 closed=25 problem-rows=1 registry=70
+FRONTIER-FAIL F26 status=admitted ids=S069 problems=missing-pass-line
+FAIL     F26  knowledge/google-cloud-vrp-customer-resource-boundary.md ids=S069 exit=127 problems=recheck-exit-127
+entries=29 pass=28 exit=1
+command exit=1
+Cause: the cadence text preceded the shell command, so the recheck parser tried to execute `180d`; the intended `cd`-prefixed command never ran.

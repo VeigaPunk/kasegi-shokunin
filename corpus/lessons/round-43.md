@@ -163,3 +163,13 @@ theme serves a frozen claim and the staged `S067` (Microsoft MSRC pentest rules 
 different document from the lane `S067` this round mints. The collision list stands as a refusal input, not
 a map; the round's C2 source is a §2b row minted this round, never a staged-package adoption. Verdict:
 **none adopted, 0 adoptable, no renumber map filed.**
+
+Correction (round 43; appended round 44): the "29-character prefix" numeral at
+`corpus/lessons/round-43.md:90` and `:101` is superseded — the fix pointer
+`c6ae07c6a541e0e96d0040afb6` is **26 characters**, not 29. Counting command:
+`printf %s c6ae07c6a541e0e96d0040afb6 | wc -c` → `26`; the full
+**40 character** hash is `c6ae07c6a541e0e96d0040afb62b45dd37711300`
+(`printf %s c6ae07c6a541e0e96d0040afb62b45dd37711300 | wc -c` → `40`). The two
+original sentences stay byte-identical as history; this appended paragraph is the
+effective statement, and it is what `corpus/instruments/r44-routed-defects.py`
+limb D3 grades.

@@ -1,0 +1,17 @@
+# C2 — the frozen counter string, replayed verbatim (defective: 0 in both worlds).
+$ grep -cE '^\| F[0-9]+ \| admitted \|' corpus/README.md   # frozen claims.json C2 counter
+base 5ab3a60:
+0
+exit=1
+after tree:
+0
+exit=1
+
+## C2 — the table-aware counter over the SAME predicate (status cell = third cell).
+$ python3 corpus/instruments/r44-frontier-count.py --root $S/base-export --expect 26
+frontier rows=25 admitted=25
+frontier expected=26 admitted=25 verdict=SHORT exit=1
+exit=1
+$ python3 corpus/instruments/r44-frontier-count.py --root . --expect 26
+frontier rows=26 admitted=26
+exit=0

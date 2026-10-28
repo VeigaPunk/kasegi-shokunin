@@ -1132,3 +1132,13 @@ Re-verify: `sha256sum corpus/instruments/r-defect-closure.sh corpus/instruments/
 | name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
 |---|---|---|---|---|---|---|---|
 | r42-closure.sh | gate | `bash corpus/instruments/r42-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2; unresolvable `--export-ref` prints a distinct ref-not-found red) | one `J<n> payload=… closed=0\|1` line per check J1-J13, then `closed=K/13 exit=0\|1`; exit 0 only for K=13; a `REPLAY <family>` limb re-executes each committed defeat artifact and must print fail | `bash corpus/instruments/r42-closure.sh --selftest --export-ref <hash>` → thirteen graded `selftest case=J<n> … verdict=pass\|fail` lines and `selftest cases=13 failures=0` exit 0 | base `5053a7f46de35784cff4b56756906e9014a38276` and r41 judged head `1f7464612ac4c44e39886b82e812610d3c039b13` → `closed<13/13 exit=1` | read-only (export and receipt-out in scratch only) | kasegi (round 42; suite + replay limbs)
+
+## Round-44 Gates & probes registry correction — round-43 instrument basenames (appended 2026-10-28)
+
+The round-43 report incorrectly named `corpus/instruments/README.md` as the registry for these instruments; that file exists but contains no matching rows. The registry home is this `SKILL.md` Gates & probes registry.
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| claim-package-check.py | gate | `python3 corpus/instruments/claim-package-check.py <package-dir>` | one `RULE <id> verdict=pass\|fail` per rule; `package=<path> rules=8 pass=<k> fail=<m> verdict=WELL-FORMED\|DEFECT exit=0\|1` | `python3 corpus/instruments/claim-package-check.py --selftest` → `selftest cases=10 failures=0` | `corpus/instruments/fixtures/claim-package/` (exemplar and named defect fixtures) | read-only over supplied package | kasegi |
+| r43-closure.sh | gate | `bash corpus/instruments/r43-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2) | one `K<n> payload=… closed=0\|1` per K1-K19, then `closed=K/19 exit=0\|1`; exit 0 only for K=19 | `bash corpus/instruments/r43-closure.sh --selftest --export-ref <hash>` → nineteen graded cases and `selftest cases=19 failures=0` | `.ufo/waves/round-43/claims.json`, `.ufo/waves/round-43/final-gates/`, `corpus/instruments/r43-limbs/` | read-only (export and receipt-out in scratch only) | kasegi (round 43; 19 checks) |
+

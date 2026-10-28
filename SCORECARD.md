@@ -1687,3 +1687,20 @@ Measured before (frozen controls, read at base `ab98fac9dce87130bc4f66de89e30650
 | 43 | depth:density | 9 (no density move queued) | 9 held (non-target guard: `density.py` byte-identical to base, blob sha256 `ee803726a322…`) | `git cat-file blob ab98fac9dce87130bc4f66de89e30650d63943dc:corpus/instruments/density.py \| sha256sum` |
 
 Correction (round 43): this line closes D-r41-1's duplicate-correction state and supersedes the RD42-1 cell without rewriting either: the duplicated `Correction (round 41)` block pair at `SCORECARD.md:1602-1605` and `SCORECARD.md:1607-1610` remains byte-identical history — no deletion, no reorder, no rewrite — and from round 43 that state is graded, not only marker-excused: `corpus/instruments/r43-closure.sh` K14 re-counts `Correction (round <n>)` lines and distinct bodies across `SCORECARD.md`, `LOG.md` and `SHONEN.md` on the K11 ledger semantics and prints `live=corrections=` and `groups=` in its own payload, while the stale `corrections=` cell at `SCORECARD.md:1634` is named as superseded by the round-43 correction block landed for RD42-1, so the cell is superseded, never rewritten. The live count is the K14 line's `live=corrections=` field at the round-43 verification ref, not a literal restated here.
+
+Correction (round 43; appended round 44): the C1 move-log row's base-export literal `closed=13/19 exit=1` is superseded. No committed run of the landed `r43-closure.sh` exists at base `ab98fac9dce87130bc4f66de89e30650d63943dc`; the 13/19 figure came from draft/stub evidence and is not a measured result. The committed control records the r42 stand-in at `closed=12/13 exit=1`, while the r43 suite itself is absent at that base. See `.ufo/waves/round-43/claims-erratum-6.md` and the round-44 control receipt.
+
+## Round-44 capability disposition
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 44 | depth:verifiability | 4 (round-43 score) | 4 held; C1 unverified, no delta | `.ufo/waves/round-44/controls/r44-counter-trial-disposition.txt`; `wave1/R44Critic1.md`, `R44Critic2.md` |
+| 44 | coverage | 8 (round-43 score) | 8 held; C2 unverified, no delta | `.ufo/waves/round-44/controls/c2-frozen-counter-replay.txt`; `wave1/R44Critic11.md`; no independent nonauthor spot-check |
+| 44 | depth:density | 9 (round-43 score) | 9 held; no target or measurement | `.ufo/waves/round-44/controls/do-nothing.txt` |
+
+The frozen C2 counter `grep -cE '^\| F[0-9]+ \| admitted \|' corpus/README.md` prints 0 at both the frozen base and the after tree; it cannot certify F26. The *different* table-aware diagnostic in `controls/c2-counter-audit.txt` returns 25→26, with registry rows 68→70 and knowledge files 62→63. These are structural observations, not a C2 verdict. C1's draft counter is rejected for accepting a marker-only false-green; it was removed from production paths. Round-44 score changes: none. Saturation: unchanged; the lowest non-retired axis remains depth:verifiability at 4.
+
+### Planned evidence gates for round 45
+
+- `depth:verifiability`: freeze a counter over committed artifacts and require red on both the do-nothing export and marker-only mutants before scoring; a correction paragraph alone cannot satisfy a defect.
+- `coverage`: freeze a table-correct counter and committed-export basis, then obtain a nonauthor admit/reject spot-check before claiming coverage movement.
