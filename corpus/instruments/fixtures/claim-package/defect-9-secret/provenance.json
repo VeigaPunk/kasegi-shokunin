@@ -1,0 +1,96 @@
+{
+ "schema_version": "provenance/v1",
+ "agents": [
+  {
+   "identity": "exec-exemplar-package",
+   "transition": "capture S067 -> evidence artifacts",
+   "requested_model": "cursor/deepseek-v41-flash-1017",
+   "resolved_model": "cursor/deepseek-v41-flash-1017",
+   "role": "package producer"
+  },
+  {
+   "identity": "exemplar-redaction-pass",
+   "transition": "evidence artifacts -> manifest digests and redaction receipts",
+   "requested_model": "cursor/deepseek-v41-flash-1017",
+   "resolved_model": "cursor/deepseek-v41-flash-1017",
+   "role": "artifact re-hash and redaction-scan pass"
+  }
+ ],
+ "transitions": [
+  {
+   "index": 1,
+   "agent": "exec-exemplar-package",
+   "requested_model": "cursor/deepseek-v41-flash-1017",
+   "resolved_model": "cursor/deepseek-v41-flash-1017",
+   "from": "capture S067",
+   "to": "evidence artifacts"
+  },
+  {
+   "index": 2,
+   "agent": "exemplar-redaction-pass",
+   "requested_model": "cursor/deepseek-v41-flash-1017",
+   "resolved_model": "cursor/deepseek-v41-flash-1017",
+   "from": "evidence artifacts",
+   "to": "manifest digests and redaction receipts"
+  }
+ ],
+ "identity_note": "Both identities are fixture roles executed by one seat in one run; the redaction verifier is not an independent third party, which is why reviewer distinctness stays a named residual gate.",
+ "commands": [
+  {
+   "command": "curl -sS -L --max-time 90 -A kasegi-shokunin/1.0 https://curl.se/docs/CVE-2025-9086.html",
+   "exit_code": 0
+  },
+  {
+   "command": "python3 corpus/instruments/capture-source.py --id S067 --url https://curl.se/docs/CVE-2025-9086.html --out refetch.txt --kind html",
+   "exit_code": 0
+  },
+  {
+   "command": "cp landed ExecSourceCapture.S067.txt capture.txt",
+   "exit_code": 0
+  },
+  {
+   "command": "cmp capture.txt landed ExecSourceCapture.S067.txt",
+   "exit_code": 0
+  },
+  {
+   "command": "cp capture.txt evidence/source-capture.txt",
+   "exit_code": 0
+  },
+  {
+   "command": "sed -n '82,91p' capture.txt (+3 header lines) > evidence/source-excerpt.txt",
+   "exit_code": 0
+  },
+  {
+   "command": "sed -n '95,97p' capture.txt (+3 header lines) > evidence/solution-fixed-in.txt",
+   "exit_code": 0
+  },
+  {
+   "command": "sed -n '102,105p' capture.txt (+3 header lines) > evidence/disclosure-timeline.txt",
+   "exit_code": 0
+  },
+  {
+   "command": "sha256sum source-capture.txt source-excerpt.txt solution-fixed-in.txt disclosure-timeline.txt",
+   "exit_code": 0
+  }
+ ],
+ "pin": {
+  "remote": "https://github.com/VeigaPunk/kasegi-shokunin.git",
+  "commit": "4cb6d4ae768481e1a14afbedc2d865a060ebacfd"
+ },
+ "policy_sha256": "7e35413a8b4f9648191d2769c06596035213548c2f7ea308184442318f975c8b",
+ "source": {
+  "id": "S067",
+  "url": "https://curl.se/docs/CVE-2025-9086.html",
+  "sha256": "7e35413a8b4f9648191d2769c06596035213548c2f7ea308184442318f975c8b",
+  "lines": 109,
+  "fetched_utc": "2026-10-28T16:46:34Z"
+ },
+ "external_effects_performed": [],
+ "secrets_attestation": {
+  "no_secrets": true,
+  "findings": 0,
+  "by": "exemplar-redaction-pass",
+  "method": "pattern scan of every package file for private-key headers, op:// references, bearer/authorization tokens, labelled hex secrets and session cookies; zero hits"
+ },
+ "api_key": "0123456789abcdef0123456789abcdef01234567"
+}
