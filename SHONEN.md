@@ -241,7 +241,7 @@ Correction (round 41): the `--selftest cases=10 failures=0` half, also quoted by
       registry move is the `r42-closure.sh` row appended in one well-formed Gates & probes block,
       with the D-r41-3 residue repaired (the round-40 block whose header/separator/row are split by
       a blank line, and the duplicated `r40-closure.sh` row): the repair, the post-append density
-      re-measurement and the `anchorcheck` re-run are `<pending>` at the round's judged head (J3 /
+      re-measurement and the `anchorcheck` re-run are measured at the round's judged head: J3 `tables=18,rows=73,r42-rows=1,r40-rows=1,r40-split=0,bare=0,lead=0`; `density.py SKILL.md` mean **234.2** over 30 blocks (1134 lines, 782 path-citation instances); `anchorcheck.py SKILL.md` `16 in-range cite instances, 0 bad` (J3 /
       F-TABLE; `density.py` byte-identical to base sha256
       `ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710` under J12). Box stays
       `[~]`; no non-author check.
@@ -262,14 +262,12 @@ Correction (round 41): the `--selftest cases=10 failures=0` half, also quoted by
       `bash corpus/instruments/r42-closure.sh` exits 127 there and cannot print `closed=13/13` — and
       the r41 suite at `closed=8/12 exit=1` with `selftest cases=12 failures=8`;
       `.ufo/waves/round-42/c2-controls/before.txt` records frontier 24, registry 63, knowledge 60,
-      `entries=27 pass=27`, `records=55 bound=55 unbound=0`, `expected=60`. After-state at Y
-      `<pending>`: `bash corpus/instruments/r42-closure.sh --export-ref <Y>` → `closed=13/13 exit=0`;
+      `entries=27 pass=27`, `records=55 bound=55 unbound=0`, `expected=60`. After-state at Y: `bash corpus/instruments/r42-closure.sh --export-ref <Y>` → `closed=13/13 exit=0`;
       `--selftest --export-ref <Y>` → `selftest cases=13 failures=0` with thirteen graded
       `selftest case=J<n> … positive=pass … verdict=pass` lines; a plain run refuses exit 2; the base
       `5053a7f4…` and round-41 judged head `1f7464612ac4c44e39886b82e812610d3c039b13` exports print
       `closed<13/13 exit=1`; an unresolvable `--export-ref` prints its distinct ref-not-found red;
-      the receipt `.ufo/waves/round-42/final-gates/all-gates.txt` tees both transcripts. C2 at Y
-      `<pending>`: frontier 25, registry 64+R, knowledge 61, `entries=28 pass=28` incl. `PASS F25`,
+      the receipt `.ufo/waves/round-42/final-gates/all-gates.txt` tees both transcripts. C2 at Y: frontier 25, registry 64+R, knowledge 61, `entries=28 pass=28` incl. `PASS F25`,
       `records=56 bound=56 unbound=0`, `expected=61`, census exit 0, measure 45/45 = 1.000. Box stays
       `[~]`; no non-author check.
 
@@ -277,11 +275,11 @@ Correction (round 41): the `--selftest cases=10 failures=0` half, also quoted by
       — evidence (round 42, base `5053a7f46de35784cff4b56756906e9014a38276`): `PROVINCE.md` is 163
       lines, sha256 `5b88bc43a5a5c64ec7710882c7af1268ef8de94f4b360492ab989e9e21e2ea9a`, unchanged
       base → claims freeze; the round's only province move is one `[r42 Frontier amendment]` F25
-      line appended at end of file, `<pending>` at the judged head. F25's topic is a
+      line appended at end of file, present at the judged head. F25's topic is a
       machine-readable vulnerability-data standard (the lead class the freeze names: the OSV schema
       or the CVE Record Format) — the data-standard layer under the claim-package and triage
       province that F18/F19/F20/F21/F23 already sit in — and the scout's no-overlap check against
-      existing lane rows and entries is `<pending>`. F24 (RFC 9116) stays PARKED: the round-41 L0
+      existing lane rows and entries is recorded in `wave1/ScoutC2Screen.md`. F24 (RFC 9116) stays PARKED: the round-41 L0
       scope question on shared security.txt ground with kake is unanswered at freeze time, so it is
-      neither re-mined nor referenced as a candidate. Sibling scan `<pending>`. Box stays `[~]`.
+      neither re-mined nor referenced as a candidate. Sibling scan recorded in `wave1/ScoutC2Screen.md` (no sibling lane holds the CVE Record Format). Box stays `[~]`.
 

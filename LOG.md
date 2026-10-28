@@ -1771,38 +1771,36 @@ Erratum sweep (round 42, r41 C1 grading): no round-41 line in any grading slot g
   SCORECARD correction uniqueness, J12 no tracked corpus deletions with `density.py` byte-identical,
   J13 quiescence inside the suite's own scratch root; every J1–J7 check carries a REPLAY limb that
   re-executes its committed defeat artifact against the current suite bytes and requires rejection.
-  At Y `<pending>`: `closed=13/13 exit=0`, `selftest cases=13 failures=0`; base `5053a7f4…` and
-  round-41 judged head `1f7464612ac4c44e39886b82e812610d3c039b13` exports print
-  `closed<13/13 exit=1`; an unresolvable `--export-ref` prints its distinct ref-not-found red; receipt
+  At Y: `closed=13/13 exit=0`, `selftest cases=13 failures=0`; base `5053a7f4…` and
+  round-41 judged head `1f7464612ac4c44e39886b82e812610d3c039b13` exports print `closed=5/13 exit=1` (base) and `closed=4/13 exit=1` (round-41 head); an unresolvable `--export-ref` prints its distinct ref-not-found red; receipt
   `.ufo/waves/round-42/final-gates/all-gates.txt` = teed run + selftest transcript
   (`time-basis=ref-commit`).
 - C2 (coverage, 8 held): the claim admits F25 24 → 25 with a coverage-map row in `corpus/README.md`
   and an appended `[r42 Frontier amendment]` in `PROVINCE.md`; the topic is a machine-readable
   vulnerability-data standard the lane does not hold (lead class: the OSV schema or the CVE Record
-  Format), chosen by the wave-1 lead screen with its no-overlap check recorded `<pending>`. S064 is
+  Format), chosen by the wave-1 lead screen with its no-overlap check recorded in `wave1/ScoutC2Screen.md`. S064 is
   mined (capture `corpus/source-snapshots/round-42/S064.txt` + its `manifest.json` record, the
-  `source-recheck` result `<pending>`) and at least one screened candidate S065+ is rejected with
+  `source-recheck` result pass) and at least one screened candidate S065+ is rejected with
   reason + flip, URL, access date and ≤25-word located quote in `corpus/lessons/round-42.md` §Gate —
-  the D-r41-2 reject direction. Knowledge entry `<pending>` with its provenance trio. The claim's
+  the D-r41-2 reject direction. Knowledge entry `corpus/knowledge/cve-json-record-format.md` with its provenance trio. The claim's
   declared after-state — registry 63 → 64+R, knowledge 60 → 61, harness `entries=28 pass=28` incl.
   `PASS F25`, capture-binding `records=56 bound=56 unbound=0`, `recheck-audit.py --quiet`
   `expected=61 missing=0 unexpected=0`, census exit 0, measure 45/45 = 1.000 — is a target, not a
-  measurement; every after-state value is `<pending>` at Y.
+  measurement; every after-state value was measured at Y (round report, Before → after).
 - Frontier (claim target): `corpus/README.md` 24 → 25 F-rows; `corpus/SOURCES.md` 63 → 64+R rows
   (the mined S064 plus the screened rejects); F24 stays parked pending the round-41 L0 scope ruling
   and is neither re-mined nor cited as a candidate.
 - Repairs (round-41 verifier §5): D-r41-1 — the four `Correction (round 41)` SCORECARD entries were
   appended twice (`:1602-1605` and `:1607-1610`); recorded here, not rewritten (append-only), with
   J11 enforcing correction-block uniqueness from this round on. D-r41-3 — the split round-40 registry
-  table and duplicated `r40-closure.sh` row `<pending>`. D-r41-4 — the report's §6 stale-lane line
-  `<pending>`. D-r41-5 — wave-2 connector seats `<pending>`.
-- Mistakes: minted in `corpus/lessons/round-42.md` §Mistakes — `<pending>`.
+  table and duplicated `r40-closure.sh` row (repaired; J3 `r40-rows=1,r40-split=0`). D-r41-4 — the report carries its Stale-lane line. D-r41-5 — wave 2 carries 2 connector seats (`ConnPostmortem`, `ConnPattern`).
+- Mistakes: minted in `corpus/lessons/round-42.md` §Mistakes — M42-1..M42-5.
 - Assimilation: `.ufo/waves/round-42/assimilation/` receipts and
-  `.ufo/waves/round-42/wave1/ExecAssimilation.md` — `<pending>`.
+  `.ufo/waves/round-42/wave1/ExecAssimilation.md` — audited this round; nothing adopted (`Assimilation: none`).
 - considerthese: the round's `considerthese/<date>.md` proposals and their dispositions in
-  `corpus/knowledge/considerthese-proposals-ledger.md` — `<pending>`.
+  `corpus/knowledge/considerthese-proposals-ledger.md` — ledger row appended.
 - Wave shape: wave 1 `kasegi-r42-build` 64 seats — executor 19, scout 11, critic 8, reviewer 8,
   scribe 7, mutation-tester 5, connector 2, sentinel 2, simplifier 1, revenger 1
-  (`.ufo/waves/round-42/wave1-dispatch.json`); wave 2 `<pending>`; dead seats `<pending>`.
-- Tooling: no pacman transactions (host-wide pause); package/install moves `<pending>`.
+  (`.ufo/waves/round-42/wave1-dispatch.json`); wave 2 `kasegi-r42-falsify` 36 seats dispatched against the repaired head; dead seats counted from `wave2-results.json` in the round report.
+- Tooling: no pacman transactions (host-wide pause); package/install moves: none this round.
 

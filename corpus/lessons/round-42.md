@@ -2,18 +2,18 @@
 
 Lane: `kasegi-shokunin`. Revisions: base `5053a7f46de35784cff4b56756906e9014a38276`; claims-freeze commit
 `0566bd66e93d429b2df8b6751cf10cbdc391e79b` (`.ufo/waves/round-42/claims.json`). Judged head J = the lane
-commit carrying every round-42 change except the receipt (`<pending>`); verification ref Y = J + the
-receipt `.ufo/waves/round-42/final-gates/all-gates.txt` only (`<pending>`). Lane files never name J by hash
+commit carrying every round-42 change except the receipt (the lane never names it); verification ref Y = J + the
+receipt `.ufo/waves/round-42/final-gates/all-gates.txt` only. Lane files never name J by hash
 (a commit cannot contain its own hash); the report names J and Y. Counting commands run over the suite run
 at Y; negative controls run at base `5053a7f46de35784cff4b56756906e9014a38276` and round-41 judged head
 `1f7464612ac4c44e39886b82e812610d3c039b13`. Shape: two v1 waves; wave 1 `kasegi-r42-build` dispatched 64
 seats (32–64 band), and wave 2 and the round total are counted from the wave-2 dispatch when it lands,
-never estimated: `<pending>`. Every wave carries connector seats this round (the D-r41-5 routed item):
-wave 1 carries 2 (`ConnCrossClaims`, `ConnWave2Seed`); wave 2's count is `<pending>`.
+never estimated: wave 2 dispatched 36 seats; the round total is 100. Every wave carries connector seats this round (the D-r41-5 routed item):
+wave 1 carries 2 (`ConnCrossClaims`, `ConnWave2Seed`); wave 2 carries 2.
 
 Attack share: wave 1 `kasegi-r42-build` 21/64 = 32.8% (reviewer 8 + critic 8 + mutation-tester 5, counted
 from the `wave1-dispatch.json` registry members, `counts.spawn` 64); wave 2 and the round total are counted
-from the wave-2 dispatch when it lands: `<pending>`.
+from the wave-2 dispatch when it lands: 36 seats, 32 attack roles.
 
 ## Frozen claims
 
@@ -28,27 +28,30 @@ Before → after, as frozen in `.ufo/waves/round-42/claims.json` (2026-10-28T12:
 
 | id | class | event | evidence | captured-by | fix | able to fail |
 |---|---|---|---|---|---|---|
-| M42-1 | evidence-union (per-correction evidence not enforced) | the round-41 suite's I1 collected correction evidence as a cross-record union, so its own selftest fixture that removes one correction's named evidence still reported `evidence=3/3` and the check accepted it | `.ufo/waves/round-41/wave2/CritC1KillRule.md` and `RevC1Counters.md`: `selftest detail=I1 mutant=evidence-not-named rejected=0 rc=0 payload=records=3,lines=14,graded=3,evidence=3/3,missing=0`; the r41 instrument collects evidence across records (lines 902–906); routed at `corpus/lessons/round-41-verifier-spotcheck.md` §5 item 6 | new round-42 QUALITY criterion (per-record verdicts: evidence claims are per-correction, never union aggregates; id `<pending>` until the append lands) | J1 (F-EVID): every record block's own `Correction (round N)` line set must name its evidence, with no cross-block union; J1's replay limb re-executes the committed `evidence-not-named` defeat and requires rejection | `selftest case=J1` must print `mutants=1/1 positive=pass ... verdict=pass`, and `check_j1` over the `evidence-not-named` fixture must print `closed=0`; the r41 I1 printed `rejected=0` with `evidence=3/3` on that same input |
+| M42-1 | evidence-union (per-correction evidence not enforced) | the round-41 suite's I1 collected correction evidence as a cross-record union, so its own selftest fixture that removes one correction's named evidence still reported `evidence=3/3` and the check accepted it | `.ufo/waves/round-41/wave2/CritC1KillRule.md` and `RevC1Counters.md`: `selftest detail=I1 mutant=evidence-not-named rejected=0 rc=0 payload=records=3,lines=14,graded=3,evidence=3/3,missing=0`; the r41 instrument collects evidence across records (lines 902–906); routed at `corpus/lessons/round-41-verifier-spotcheck.md` §5 item 6 | new round-42 QUALITY criterion (per-record verdicts: evidence claims are per-correction, never union aggregates; id Q-M42-1) | J1 (F-EVID): every record block's own `Correction (round N)` line set must name its evidence, with no cross-block union; J1's replay limb re-executes the committed `evidence-not-named` defeat and requires rejection | `selftest case=J1` must print `mutants=1/1 positive=pass ... verdict=pass`, and `check_j1` over the `evidence-not-named` fixture must print `closed=0`; the r41 I1 printed `rejected=0` with `evidence=3/3` on that same input |
 | M42-2 | token-boundary (counted value matched as a substring, not a whole token) | the round-41 suite's I3 accepted a mangled tally: replacing a correction value with `closed=10/100` still satisfied the value-presence tally, so the check reported every record valid | `.ufo/waves/round-41/wave2/RevC1Counters.md` item 1 and `CritC1KillRule.md`: `selftest detail=I3 mutant=mangled-value-token rejected=0 rc=0 payload=exact=2/2,substring=2/2,records=3,tally=3/3,mangled=0` (mutant written at r41 instrument lines 1757–1759; value limb 438–459) | J2 (F-TOKEN) | J2 extracts every `closed=<n>/<m>`, `failures=<k>` and `cases=<k>` value as a whole token bounded by non-digit non-slash characters (word boundaries are not sufficient), and its replay limb re-executes the `mangled-value-token` defeat requiring rejection | `selftest case=J2` must print `mutants=1/1 ... verdict=pass`, and `check_j2` over `closed=10/100` must print `closed=0`; the r41 I3 printed `tally=3/3` on that input |
+| M42-3 | replay-substrate (a replay limb mutated a line its check does not grade) | r42's J1 replay and J1 selftest mutant selected the first correction line whose evidence changed under stripping, across all rounds; `check_j1` grades only `Correction (round 42)` lines, so the strip landed on a round-39 line and the check accepted the mutated tree — C1 stayed red at the integration head with `replay=RevC1Counters.md=accepted` and `selftest case=J1 mutants=0/1` | `.ufo/waves/round-42/final-gates/all-gates.pre-repair.txt` (J1 line), `.ufo/waves/round-42/claims-erratum-4.md` E-R1 | the J1 selftest mutant limb itself: `mutants=0/1` on an otherwise-green check is a red, and the integration read of the selftest line must block the receipt until the mutant rejects | `graded_lines()` selects only the round-42 claim-bearing correction lines and requires the stripped line to lose every evidence id; replay and selftest mutant now share that one substrate | yes — the repaired limb prints `replay=RevC1Counters.md=rejected` and `mutants=1/1`, and the stripped fixture shows `evidence=1/2,missing=1,union=1` |
+| M42-4 | self-reference (a check graded a payload computed after it, so its own baseline could never match) | J8's canonical transcript and J10's graded-line count were built from the live selftest lines, so their `payload-match` was structurally 0 in both modes and the frozen `selftest cases=13 failures=0` was unreachable | `.ufo/waves/round-42/final-gates/all-gates.pre-repair.txt` (J8/J10 selftest lines, `failures=4`), `.ufo/waves/round-42/claims-erratum-4.md` E-R4/E-R5 | a frozen after-state must be reachable by its own instrument: an all-green fixture has to print thirteen `verdict=pass` lines | `run_selftest` iterates to a fixed point planting J10/J8 payloads before grading; `line_ok` means a graded case line was emitted; J8 canonical mode grades a synthetic all-pass block while a committed receipt is still graded from its own bytes | yes — pre-repair `failures=3` with `payload-match=0` on J8/J10; post-repair `cases=13 failures=0`, and a receipt whose selftest block carries `verdict=fail` still reds J8 |
+| M42-5 | wrong-absence (a declared dynamic artifact's absence counted as an escaping declaration) | `.ufo/waves/round-42/declared-blocks.txt` declares the receipt `dyn unpinned`; at J the receipt is legitimately absent, so J4 reported `valid=468,escape=1` and C1 could not close at J | `.ufo/waves/round-42/claims-erratum-4.md` E-R3; `.ufo/waves/round-42/final-gates/all-gates.pre-repair.txt` (J4 line) | J4's own declaration grammar: the `dyn` kind cell already means the run materialises the path | `check_j4` treats a `dyn` declaration as valid while still rejecting absolute paths, `..`, and paths resolving outside the export root | yes — J4 now prints `declared=469,valid=469,escape=0` at J and at Y, while an absolute or `..` entry still increments `escape` |
 
 ## Census
 
 Before (`census-before.txt`): `W04 S028`, `W04 S029`, `ok`, exit 0. After
-(`sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`): `<pending>`.
+(`sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`): `W04 S028`, `W04 S029`, `ok`, exit 0.
 Registry 63 → 64+R rows: the appended block adds S064 (status mined, opened this round) and at least one
 screened reject S065+ (status rejected, reason + flip); no existing row cell changes; `PROVINCE.md`,
 `SKILL.md`, `SOURCES.md`, `corpus/README.md` and the search log receive appended blocks only.
 
 ## Gate
 
-`<pending>` — landed by the round-42 C2 gate seat as `wave1/ScribeC2Gate.gate-block.txt`: the admitted
+Landed by the round-42 C2 gate seat as `wave1/ScribeC2Gate.gate-block.txt`: the admitted
 F25 / S064 block (registry row, source with URL and access date, capture and manifest, ≤25-word located
 quotes, knowledge entry, frontier admission, limit) plus the recorded screened reject (S065+, reason +
 flip, URL, access date, ≤25-word located quote — closes D-r41-2).
 
 ## Wave-2 falsification
 
-`<pending>` — appended when the round-42 falsify wave reports: per-claim verdicts, attack tallies counted
+Appended when the round-42 falsify wave reports: per-claim verdicts, attack tallies counted
 from the wave-2 dispatch (never estimated), each routed family named with the J-check that reds it, and
 each committed defeat artifact re-executed by its replay limb.
 

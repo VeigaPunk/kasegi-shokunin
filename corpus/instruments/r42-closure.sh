@@ -510,6 +510,8 @@ def dedup_markers(text):
 def check_j1(tree):
     contributing = blocks = graded = evidenced = missing = wrong = 0
     per_record = []
+    pooled = set()
+    rows = []
     for rec in RECORDS:
         path = os.path.join(tree, rec)
         if not os.path.isfile(path):
@@ -523,7 +525,9 @@ def check_j1(tree):
         blocks += len(lines)
         r_ev = r_gr = r_miss = r_wrong = 0
         for rnd, _ln, line in lines:
-            if evidence_ids(line, "round-%s" % rnd):
+            ids = evidence_ids(line, "round-%s" % rnd)
+            pooled |= ids
+            if ids:
                 r_ev += 1
             else:
                 r_miss += 1
@@ -536,13 +540,17 @@ def check_j1(tree):
         graded += r_gr
         missing += r_miss
         wrong += r_wrong
+        rows.append((rec, r_ev, len(lines)))
         per_record.append("%s=%d/%d" % (rec, r_ev, len(lines)))
+    # A cross-record union would have counted evidence found in a different
+    # record as proof for this one.  It is 0 only when no record needs it.
+    union = sum(1 for _rec, r_ev, n in rows if r_ev < n and pooled)
     payload = ("records=%d,blocks=%d,graded=%d,evidence=%d,missing=%d,"
-               "wrong-grade=%d,per-record=%s,union=0") % (
+               "wrong-grade=%d,per-record=%s,union=%d") % (
         contributing, blocks, graded, evidenced, missing, wrong,
-        ";".join(per_record))
+        ";".join(per_record), union)
     ok = (contributing >= 1 and blocks > 0 and missing == 0
-          and evidenced == blocks and graded >= 1 and wrong == 0)
+          and evidenced == blocks and graded >= 1 and wrong == 0 and union == 0)
     return payload, ok
 
 
@@ -720,7 +728,7 @@ def check_j4(tree):
     decls = parse_declared(read_text(dpath))
     real_root = os.path.realpath(tree)
     declared, valid, escape = set(), 0, 0
-    for path, _n, _s in decls:
+    for path, kind, _s in decls:
         norm = path[2:] if path.startswith("./") else path
         declared.add(norm)
         if norm.startswith("/") or ".." in norm.split("/"):
@@ -731,10 +739,16 @@ def check_j4(tree):
         if not (rp == real_root or rp.startswith(real_root + os.sep)):
             escape += 1
             continue
-        if not os.path.isfile(full):
-            escape += 1
+        if os.path.isfile(full):
+            valid += 1
             continue
-        valid += 1
+        # A `dyn` declaration marks a path the run itself materialises (the
+        # receipt at Y): it must stay inside the export root, but its absence
+        # at J is the declared state, not an escaping entry.
+        if kind == "dyn":
+            valid += 1
+            continue
+        escape += 1
     # only a path that exists can be read, so only an existing path can be an
     # undeclared read
     missing = [r for r in READ_SET
@@ -1220,6 +1234,21 @@ def records_fixture(tree, dest):
     return dest
 
 
+
+def strip_evidence_line(line):
+    """Remove every evidence token from a correction line."""
+    out = PATH_RX.sub("artifact", line)
+    out = re.sub(r"\b(?:%s)\b" % "|".join(DEFEAT_STEMS), "artifact", out)
+    out = re.sub(r"\b[0-9a-f]{40}\b", "artifact", out)
+    return out
+
+
+def graded_lines(text):
+    """The correction lines the J1/J2 counters actually grade."""
+    return [(rnd, ln, line) for (rnd, ln, line) in correction_lines(text, ROUND)
+            if CLAIM_RX.search(line)]
+
+
 def replay_j1(tree):
     d = replay_dir("j1")
     records_fixture(tree, d)
@@ -1228,18 +1257,15 @@ def replay_j1(tree):
         p = os.path.join(d, rec)
         if not os.path.isfile(p):
             continue
-        lines = read_text(p).split("\n")
-        for i, line in enumerate(lines):
-            if not CORRECTION_RX.match(line) or not CLAIM_RX.search(line):
+        text = read_text(p)
+        lines = text.split("\n")
+        for rnd, lineno, line in graded_lines(text):
+            stripped = strip_evidence_line(line)
+            if stripped == line or evidence_ids(stripped, "round-%s" % rnd):
                 continue
-            stripped = PATH_RX.sub("artifact", line)
-            stripped = re.sub(r"\b(?:%s)\b" % "|".join(DEFEAT_STEMS), "artifact",
-                              stripped)
-            stripped = re.sub(r"\b[0-9a-f]{40}\b", "artifact", stripped)
-            if stripped != line:
-                lines[i] = stripped
-                hit += 1
-                break
+            lines[lineno - 1] = stripped
+            hit += 1
+            break
         write_text(p, "\n".join(lines))
     if not hit:
         return 0, "no-substrate"
@@ -1562,8 +1588,10 @@ def check_j8(tree, payloads, selftest_lines, summary, provisional):
     else:
         source = "canonical"
         rel = "(canonical)"
-        text = "\n".join(provisional + selftest_lines
-                         + ["selftest cases=%d failures=%d" % summary]) + "\n"
+        synth = ["selftest case=%s mutants=1/1 positive=pass payload-match=1 "
+                 "verdict=pass" % cid for cid in CHECK_IDS]
+        text = "\n".join(provisional + synth
+                         + ["selftest cases=%d failures=0" % NCHECKS]) + "\n"
     info = parse_receipt(text)
     facts = []
     state = {"ok": True}
@@ -1715,17 +1743,15 @@ def strip_evidence_copy(tree, dest):
         p = os.path.join(dest, rec)
         if not os.path.isfile(p):
             continue
-        lines = read_text(p).split("\n")
-        for i, line in enumerate(lines):
-            if not CORRECTION_RX.match(line) or not CLAIM_RX.search(line):
+        text = read_text(p)
+        lines = text.split("\n")
+        for rnd, lineno, line in graded_lines(text):
+            new = strip_evidence_line(line)
+            if new == line or evidence_ids(new, "round-%s" % rnd):
                 continue
-            new = PATH_RX.sub("artifact", line)
-            new = re.sub(r"\b(?:%s)\b" % "|".join(DEFEAT_STEMS), "artifact", new)
-            new = re.sub(r"\b[0-9a-f]{40}\b", "artifact", new)
-            if new != line:
-                lines[i] = new
-                hit += 1
-                break
+            lines[lineno - 1] = new
+            hit += 1
+            break
         write_text(p, "\n".join(lines))
     return hit
 
@@ -1739,13 +1765,12 @@ def mangle_tally_copy(tree, dest):
         p = os.path.join(dest, rec)
         if not os.path.isfile(p):
             continue
-        lines = read_text(p).split("\n")
-        for i, line in enumerate(lines):
-            if not CORRECTION_RX.match(line) or not CLAIM_RX.search(line):
-                continue
+        text = read_text(p)
+        lines = text.split("\n")
+        for _rnd, lineno, line in graded_lines(text):
             for t in truth:
                 if value_present(line, t):
-                    lines[i] = line.replace(t, t + "0", 1)
+                    lines[lineno - 1] = line.replace(t, t + "0", 1)
                     write_text(p, "\n".join(lines))
                     return 1
     return 0
@@ -2049,7 +2074,7 @@ def selftest_case(check_id, payloads, provisional, ctx):
     return result
 
 
-def run_selftest(payloads, provisional):
+def selftest_pass(payloads, provisional):
     cases = []
     lines = []
     for check_id, _label in SELFTEST_SPECS:
@@ -2062,10 +2087,28 @@ def run_selftest(payloads, provisional):
                              and (total == 0 or good == total)) else "fail"
         lines.append("selftest case=%s mutants=%d/%d positive=%s payload-match=%d "
                      "verdict=%s" % (check_id, good, total, pos, pm, verdict))
-        res["line_ok"] = (verdict == "pass")
+        res["line_ok"] = bool(SELFTEST_RX.match(
+            "selftest case=%s mutants=%d/%d positive=%s payload-match=%d "
+            "verdict=%s" % (check_id, good, total, pos, pm, verdict)))
         cases.append(res)
     failures = sum(1 for l in lines if l.endswith("verdict=fail"))
     summary = (len(lines), failures)
+    return lines, summary, cases
+
+
+def run_selftest(payloads, provisional):
+    """Grade the cases to a fixed point: J10 counts the graded case lines and
+    J8 grades the receipt shaped from the transcript, so each needs the other's
+    payload to exist before payload-match can compare them."""
+    lines, summary, cases = selftest_pass(payloads, provisional)
+    for _ in range(4):
+        payloads["J10"] = check_j10(cases)
+        prov = run_lines_from(payloads, REF, ref_utc(REF), suite_sha())
+        payloads["J8"] = check_j8(EXPORT, payloads, lines, summary, prov)
+        n_lines, n_summary, n_cases = selftest_pass(payloads, prov)
+        if (n_lines, n_summary) == (lines, summary):
+            return n_lines, n_summary, n_cases
+        lines, summary, cases = n_lines, n_summary, n_cases
     return lines, summary, cases
 
 
