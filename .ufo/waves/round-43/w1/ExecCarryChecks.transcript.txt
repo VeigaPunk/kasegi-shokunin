@@ -1,0 +1,147 @@
+# ExecCarryChecks transcript — round 43 K1-K13 carry
+
+measured-at=2026-10-28T17:15:43Z
+lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+base=ab98fac9dce87130bc4f66de89e30650d63943dc
+bash=GNU bash, version 5.3.20(1)-release (x86_64-pc-linux-gnu)
+python=Python 3.14.8 (main, Oct  2 2026, 10:23:31) [GCC 16.2.1 20260810]
+git=git version 2.56.0
+
+== 1. the r42 suite over an export of base (the baseline to match) ==
+$ bash corpus/instruments/r42-closure.sh --export-ref ab98fac9dce87130bc4f66de89e30650d63943dc --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work /fast/scratch/hyaku/kasegi-r43/ExecCarryChecks/r42base/work --scratch-root /fast/scratch/hyaku/kasegi-r43/ExecCarryChecks/r42base
+all-gates v2
+export-ref=ab98fac9dce87130bc4f66de89e30650d63943dc
+suite-sha256=fca5ae62379e01232a523bbf318872dbb358cdf534ce65a42dfe7ef8df7f6d6b
+time-basis=ref-commit
+run-utc=2026-10-28T16:27:52Z
+J1 payload=records=1,blocks=3,graded=1,evidence=3,missing=0,wrong-grade=0,per-record=SCORECARD.md=3/3;LOG.md=0;SHONEN.md=0,union=0,replay=RevC1Counters.md=rejected closed=1
+J2 payload=boundary=10/10,truth-tokens=3,stated=4,mangled=0,truth-stated=1,token=whole,replay=RevC1Counters.defeats.txt=rejected closed=1
+J3 payload=tables=18,rows=73,r42-rows=1,r40-rows=1,r40-split=0,bare=0,lead=0,replay=MutSkillTablePipes.md=3/3 closed=1
+J4 payload=declared=469,valid=469,missing=0,escape=0,coverage=11/11,file=present,replay=CritDeclarationCoverage.md=2/2 closed=1
+J5 payload=family=kasegi-r4[0-9]*,strays=8,scanned=8,read=ok,outside=2,outside-scanned=10,scope=materialized,replay=MutScratchTiming.md=outside=detected,inside=detected closed=1
+J6 payload=instrument=present,base=1,missing-path=1,url-mutated=1,digest-mutated=1,rule=reject,replay=MutBindingExistence.md=rejected closed=1
+J7 payload=instrument=present,base=1,status-flip=1,no-pass=1,rows=25,admitted=25,replay=MutFrontierParser.md=rejected closed=1
+J8 payload=receipt=.ufo/waves/round-42/final-gates/all-gates.txt,source=committed,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,ancestor=1,diff=0,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,forged=1,payload-match=12/12,forged=6/6 closed=0
+J9 payload=depth=1,base=1,r41=1,accept=tree-red,cap=nested closed=1
+J10 payload=cases=13,isolated=13,canary=0,graded-lines=13,fixture=synthetic closed=1
+J11 payload=corrections=34,groups=4,dups=4,excused=4,unexcused=0,marker=1,marker-substantive=1,marker-appended=1,eof-closed=3/3,fenced=0 closed=1
+J12 payload=deleted=0,density=1,density-sha=ee803726a322,diff-read=ok,base=5053a7f4 closed=1
+J13 payload=faithful=1,extra=0,missing=0,scratch-strays=0,scratch-read=ok,markers=0,named=1 closed=1
+closed=12/13 exit=1
+
+== 2. the r43 carry over the same export ==
+$ bash <S>/r43-carry.sh --export-ref ab98fac9dce87130bc4f66de89e30650d63943dc --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work /fast/scratch/hyaku/kasegi-r43/ExecCarryChecks/c43base/work --scratch-root /fast/scratch/hyaku/kasegi-r43/ExecCarryChecks/c43base
+all-gates v3
+export-ref=ab98fac9dce87130bc4f66de89e30650d63943dc
+suite-sha256=none
+time-basis=ref-commit
+run-utc=2026-10-28T16:27:52Z
+K1 payload=records=1,blocks=3,graded=1,evidence=3,missing=0,wrong-grade=0,per-record=SCORECARD.md=3/3;LOG.md=0;SHONEN.md=0,union=0,replay=RevC1Counters.md=rejected closed=1
+K2 payload=boundary=10/10,truth-tokens=3,stated=4,mangled=0,truth-stated=1,token=whole,replay=RevC1Counters.defeats.txt=rejected closed=1
+K3 payload=tables=18,rows=73,r42-rows=1,r40-rows=1,r40-split=0,bare=0,lead=0,replay=MutSkillTablePipes.md=3/3 closed=1
+K4 payload=declared=469,valid=469,missing=0,escape=0,coverage=13/13,file=present,replay=CritDeclarationCoverage.md=2/2 closed=1
+K5 payload=family=kasegi-r4[0-9]*,strays=8,scanned=8,read=ok,outside=2,outside-scanned=10,scope=materialized,replay=MutScratchTiming.md=outside=detected,inside=detected closed=1
+K6 payload=instrument=present,base=1,missing-path=1,url-mutated=1,digest-mutated=1,rule=reject,replay=MutBindingExistence.md=rejected closed=1
+K7 payload=instrument=present,base=1,status-flip=1,no-pass=1,rows=25,admitted=25,replay=MutFrontierParser.md=rejected closed=1
+K8 payload=receipt=(canonical),source=canonical,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,ancestor=1,diff=1,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,forged=1,payload-match=18/18,forged=6/6 closed=1
+K9 payload=depth=1,base=1,r41=1,accept=tree-red,cap=nested closed=1
+K10 payload=cases=19,isolated=19,canary=0,graded-lines=19,fixture=synthetic closed=1
+K11 payload=corrections=34,groups=4,dups=4,excused=4,unexcused=0,marker=1,marker-substantive=1,marker-appended=1,eof-closed=3/3,fenced=0 closed=1
+K12 payload=deleted=0,density=1,density-sha=ee803726a322,diff-read=ok,base=5053a7f4 closed=1
+K13 payload=faithful=1,extra=0,missing=0,scratch-strays=0,scratch-read=ok,markers=0,named=1 closed=1
+K14 payload=limb=absent,owner=ExecK14 closed=0
+K15 payload=limb=absent,owner=ExecK15 closed=0
+K16 payload=limb=absent,owner=ExecK16 closed=0
+K17 payload=limb=absent,owner=ExecK17 closed=0
+K18 payload=limb=absent,owner=ExecK18 closed=0
+K19 payload=limb=absent,owner=ExecK19 closed=0
+closed=13/19 exit=1
+
+== 3. payload comparison, r42 J<n> vs r43 K<n> (id substituted) ==
+$ python3 compare.py /fast/scratch/hyaku/kasegi-r43/ExecCarryChecks/r42base.out /fast/scratch/hyaku/kasegi-r43/ExecCarryChecks/c43base.out
+K1  identical  closed r42=1 r43=1
+K2  identical  closed r42=1 r43=1
+K3  identical  closed r42=1 r43=1
+K4  DIFFERS   closed r42=1 r43=1
+    cell coverage           r42=11/11 r43=13/13
+K5  identical  closed r42=1 r43=1
+K6  identical  closed r42=1 r43=1
+K7  identical  closed r42=1 r43=1
+K8  DIFFERS   closed r42=0 r43=1
+    cell receipt            r42=.ufo/waves/round-42/final-gates/all-gates.txt r43=(canonical)
+    cell source             r42=committed r43=canonical
+    cell diff               r42=0 r43=1
+    cell payload-match      r42=12/12 r43=18/18
+K9  identical  closed r42=1 r43=1
+K10 DIFFERS   closed r42=1 r43=1
+    cell cases              r42=13 r43=19
+    cell isolated           r42=13 r43=19
+    cell graded-lines       r42=13 r43=19
+K11 identical  closed r42=1 r43=1
+K12 identical  closed r42=1 r43=1
+K13 identical  closed r42=1 r43=1
+compared=13/13
+
+== 4. the r43 carry over a scratch tree = base + the round-43 additions ==
+   (/fast/scratch/hyaku/kasegi-r43/ExecCarryChecks/tree43b: clone of the lane at ab98fac9dce87130bc4f66de89e30650d63943dc + .ufo/waves/round-43/{claims,freeze,controls,declared-blocks},
+    corpus/instruments/r43-closure.sh, the SKILL.md r43 row, and two round-43 corrections)
+$ bash <tree43b>/corpus/instruments/r43-closure.sh --export-ref 029823ad776b6fb223e2f111922e196f84ae4e5b --lane <tree43b> --work /fast/scratch/hyaku/kasegi-r43/ExecCarryChecks/t43run/work --scratch-root /fast/scratch/hyaku/kasegi-r43/ExecCarryChecks/t43run
+all-gates v3
+export-ref=029823ad776b6fb223e2f111922e196f84ae4e5b
+suite-sha256=4572ac133aa20dc5cebe56bb5c89588101aae51c8603ec00f2b3b2be42425f62
+time-basis=ref-commit
+run-utc=2026-10-28T17:03:07Z
+K1 payload=records=2,blocks=2,graded=2,evidence=2,missing=0,wrong-grade=0,per-record=SCORECARD.md=1/1;LOG.md=1/1;SHONEN.md=0,union=0,replay=RevC1Counters.md=rejected closed=1
+K2 payload=boundary=10/10,truth-tokens=4,stated=6,mangled=0,truth-stated=2,token=whole,replay=RevC1Counters.defeats.txt=rejected closed=1
+K3 payload=tables=18,rows=74,r43-rows=1,r40-rows=1,r40-split=0,bare=0,lead=0,replay=MutSkillTablePipes.md=3/3 closed=1
+K4 payload=declared=21,valid=21,missing=0,escape=0,coverage=19/19,file=present,replay=CritDeclarationCoverage.md=2/2 closed=1
+K5 payload=family=kasegi-r4[0-9]*,strays=8,scanned=8,read=ok,outside=2,outside-scanned=10,scope=materialized,replay=MutScratchTiming.md=outside=detected,inside=detected closed=1
+K6 payload=instrument=present,base=1,missing-path=1,url-mutated=1,digest-mutated=1,rule=reject,replay=MutBindingExistence.md=rejected closed=1
+K7 payload=instrument=present,base=1,status-flip=1,no-pass=1,rows=25,admitted=25,replay=MutFrontierParser.md=rejected closed=1
+K8 payload=receipt=(canonical),source=canonical,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,ancestor=1,diff=1,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,forged=1,payload-match=18/18,forged=6/6 closed=1
+K9 payload=depth=1,base=1,r41=1,accept=tree-red,cap=nested closed=1
+K10 payload=cases=19,isolated=19,canary=0,graded-lines=19,fixture=synthetic closed=1
+K11 payload=corrections=36,groups=4,dups=4,excused=4,unexcused=0,marker=1,marker-substantive=1,marker-appended=1,eof-closed=3/3,fenced=0 closed=1
+K12 payload=deleted=0,density=1,density-sha=ee803726a322,diff-read=ok,base=5053a7f4 closed=1
+K13 payload=faithful=1,extra=0,missing=0,scratch-strays=0,scratch-read=ok,markers=0,named=1 closed=1
+K14 payload=limb=absent,owner=ExecK14 closed=0
+K15 payload=limb=absent,owner=ExecK15 closed=0
+K16 payload=limb=absent,owner=ExecK16 closed=0
+K17 payload=limb=absent,owner=ExecK17 closed=0
+K18 payload=limb=absent,owner=ExecK18 closed=0
+K19 payload=limb=absent,owner=ExecK19 closed=0
+closed=13/19 exit=1
+
+== 5. refusals ==
+$ bash <S>/r43-carry.sh
+r43-closure: a plain run is refused (export mode only)
+r43-closure: usage: r43-closure.sh --export-ref <hash> [options]
+exit=2
+
+$ bash <S>/r43-carry.sh --export-ref deadbeefdeadbeefdeadbeefdeadbeefdeadbeef
+ERROR ref-not-found ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0 exit=1
+exit=1
+
+== 6. the delivered declaration list ==
+$ python3 gen-decl.py <S>/declared-blocks.txt
+SCORECARD.md 1662 41bdbc07738482e156d552958dff2c8dd8b9a77c9f6c25b082a8ee9741673e39
+LOG.md 1808 b7a4633a1a53e0e03db40becde75d92df161951abb1f29a77d9546e48c6f5b29
+SHONEN.md 285 153a87306502881b060804c11b6c0e08644101583894036803f8f60a5eec81e7
+SKILL.md 1134 9eef84d163173c8e840732458d70b5c14050289cbf0c4f0d2414780a74f92b57
+PROVINCE.md 165 8deea5ea1c58457341aa58252639de2156a3c3b92b7b395de3b9c75609e7ccc2
+corpus/README.md 612 82dedcea2055d9425179addd11fe17ef0a5abdc17be5f9cb4322e9fe742f40b6
+corpus/SOURCES.md 147 fd96d38b03585db8952740958e87db6aa0a4b54f0abb30d9ca3f9a7a1b60c358
+corpus/instruments/capture-binding-check.py 1129 ebc206d433b334a9f844ef9726fe87fb9cb2a78cf8f41943add605869da00ec7
+corpus/instruments/frontier-recheck-count.py 566 010897bc8614c3ef3bb008eb4cdbb6c79f01a7c0afa280bc902e709dda9f1bd6
+corpus/instruments/density.py 208 ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710
+corpus/lessons/round-42.md 152 a619da81faf1d5603bf5004cad279ce904b34a2b3a0d8c0626382078f00f31b5
+.ufo/waves/round-42/final-gates/all-gates.txt 33 8e42256eb249b9fe69de1bb7b5a7e63d8e8bf0a64385c00a0a145c5f1f36aa8c
+.ufo/waves/round-42/c1-controls/do-nothing.txt 18 7b8efa5a48e65f717221219a583f1825218b70b930422188d97592909afa193d
+.ufo/waves/round-43/claims.json 78 a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
+.ufo/waves/round-43/freeze.txt 4 568b42229d8c62bb5754fcc08ee48685a4c11857dbf612b5d58857112230ed8e
+.ufo/waves/round-43/c1-controls/do-nothing.txt 45 221d20331e7d673f3ce3a3778ede2dccb0094620cd51867da0c609f6e2f7a08e
+.ufo/waves/round-43/c2-controls/before.txt 25 14c58348252713bbd507fbef4e2680ab1709528b986d036a5e5157d48f9bf50b
+corpus/lessons/round-43.md dyn unpinned
+corpus/instruments/r43-closure.sh dyn unpinned
+.ufo/waves/round-43/declared-blocks.txt dyn unpinned
+.ufo/waves/round-43/final-gates/all-gates.txt dyn unpinned

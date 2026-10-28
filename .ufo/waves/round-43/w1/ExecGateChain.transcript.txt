@@ -1,0 +1,322 @@
+ExecGateChain.rules.py transcript -- round-43 C2 (R-CUSTODIAN, R-STATUS)
+utc: 2026-10-28T16:42:13Z
+python: 3.14.8
+module: /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py
+module sha256: 6f0f1c42082652cdfd8ea6172ee96ab2e8450aca2fc20397e051adffa102c542
+
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mkpkg.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final
+pkg=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg manifest_sha256=8f278356a358d45d9d897161fb6ffcffd6ef26d65fca7b4db3b145b4a7e43086 expected_head=60466f2cb1706ff5a7b763b59b1aec40d5f8cbd591004969d5422771d2033108 chain=2
+[exit 0]
+
+## 0. scratch package bytes (these are the digest inputs)
+--- evidence/manifest.json
+{
+ "artifacts": [
+  {
+   "path": "capture.html",
+   "polarity": "positive",
+   "sha256": "a502f7f99ea9abee8cda3fbe66c8437fcb9592439b9b2cd564fe155e689e96c2"
+  },
+  {
+   "path": "scope.txt",
+   "polarity": "negative",
+   "sha256": "eaf846d042a7a9e317ade22ff500ce2299ec556bbd9c024663de79416679e01d"
+  }
+ ],
+ "expected_head_sha256": "60466f2cb1706ff5a7b763b59b1aec40d5f8cbd591004969d5422771d2033108",
+ "redactions": [
+  {
+   "artifact_sha256": "a502f7f99ea9abee8cda3fbe66c8437fcb9592439b9b2cd564fe155e689e96c2",
+   "producer": "producer-a",
+   "scanned_artifact_sha256": "a502f7f99ea9abee8cda3fbe66c8437fcb9592439b9b2cd564fe155e689e96c2",
+   "verifier": "verifier-b"
+  },
+  {
+   "artifact_sha256": "eaf846d042a7a9e317ade22ff500ce2299ec556bbd9c024663de79416679e01d",
+   "producer": "producer-a",
+   "scanned_artifact_sha256": "eaf846d042a7a9e317ade22ff500ce2299ec556bbd9c024663de79416679e01d",
+   "verifier": "verifier-b"
+  }
+ ],
+ "schema_version": "evidence-manifest/v1"
+}
+--- custodian-receipts.json
+{
+ "chain": [
+  {
+   "action": "fetch-scope",
+   "input_sha256": "9006e9838bb98f262e7c356ac806bcf47deb6f5eac7d430674f39b6243f29856",
+   "decision_sha256": "cd295ccf111b4db4dd9d8bfe4ce44e56af70b3b18a9bad3156615dfc56a20841",
+   "matched_grant_id": "grant-fetch-scope",
+   "scope_signal": "NO_SCOPE_OBJECTION"
+  },
+  {
+   "action": "capture-report",
+   "input_sha256": "99f5feb5e2086c2479caa4615f975627379d710d5d35999a03eb1c41ddfc2fca",
+   "decision_sha256": "60466f2cb1706ff5a7b763b59b1aec40d5f8cbd591004969d5422771d2033108",
+   "matched_grant_id": "grant-capture-report",
+   "scope_signal": "NO_SCOPE_OBJECTION"
+  }
+ ],
+ "head_sha256": "60466f2cb1706ff5a7b763b59b1aec40d5f8cbd591004969d5422771d2033108"
+}
+--- status.json
+{
+ "manifest_sha256": "8f278356a358d45d9d897161fb6ffcffd6ef26d65fca7b4db3b145b4a7e43086",
+ "claimable": true,
+ "finding_count": 1,
+ "claim_review": {
+  "hard_gates": {
+   "written_scope": "PASS",
+   "authorization": "PASS",
+   "evidence_integrity": "PASS",
+   "no_duplicate_or_prior_submission": "PASS"
+  },
+  "subchecks": {
+   "no_secrets": "PASS",
+   "operator_attribution": "PASS"
+  },
+  "reviewer": {
+   "identity": "reviewer-c",
+   "role": "kx-reviewer",
+   "requested_model": "model-requested",
+   "resolved_model": "model-resolved",
+   "fallback": false
+  }
+ }
+}
+--- files
+claim_checklist.md
+custodian-receipts.json
+provenance.json
+report.md
+status.json
+evidence/capture.html
+evidence/manifest.json
+evidence/scope.txt
+
+## 1. sourceable load: importlib spec_from_file_location
+$ /usr/bin/python3 -c import importlib.util as u
+spec = u.spec_from_file_location('chain_rules', '/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py')
+m = u.module_from_spec(spec); spec.loader.exec_module(m)
+print('RULE_IDS=%r' % (m.RULE_IDS,))
+ok, detail = m.rule_custodian('/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg')
+print('rule_custodian -> verdict=%s detail=%s' % (ok, detail))
+ok, detail = m.rule_status('/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg')
+print('rule_status    -> verdict=%s detail=%s' % (ok, detail))
+RULE_IDS=['R-CUSTODIAN', 'R-STATUS']
+rule_custodian -> verdict=True detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+rule_status    -> verdict=True detail=manifest-bind=ok gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=true blocker=n/a
+[exit 0]
+
+## 2. baseline: the scratch package passing both rules
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=pass detail=manifest-bind=ok gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg rules=2 pass=2 fail=0
+[exit 0]
+baseline both-pass ok=yes
+
+## 3. seven mutations: each must fail its OWN rule with its count
+
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mutate.py empty-chain /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/empty-chain
+mutated empty-chain -> /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/empty-chain
+[exit 0]
+--- delta custodian-receipts.json
+--- pkg/custodian-receipts.json
++++ empty-chain/custodian-receipts.json
+@@ -1,18 +1,3 @@
+ {
+- "chain": [
+-  {
+-   "action": "fetch-scope",
+-   "input_sha256": "9006e9838bb98f262e7c356ac806bcf47deb6f5eac7d430674f39b6243f29856",
+-   "decision_sha256": "cd295ccf111b4db4dd9d8bfe4ce44e56af70b3b18a9bad3156615dfc56a20841",
+-   "matched_grant_id": "grant-fetch-scope",
+-   "scope_signal": "NO_SCOPE_OBJECTION"
+-  },
+-  {
+-   "action": "capture-report",
+-   "input_sha256": "99f5feb5e2086c2479caa4615f975627379d710d5d35999a03eb1c41ddfc2fca",
+-   "decision_sha256": "60466f2cb1706ff5a7b763b59b1aec40d5f8cbd591004969d5422771d2033108",
+-   "matched_grant_id": "grant-capture-report",
+-   "scope_signal": "NO_SCOPE_OBJECTION"
+-  }
+- ],
++ "chain": [],
+  "head_sha256": "60466f2cb1706ff5a7b763b59b1aec40d5f8cbd591004969d5422771d2033108"
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/empty-chain
+RULE R-CUSTODIAN verdict=fail detail=actions=0 grant-bad=0 scope-bad=0 fields-bad=0 head=bad expected-head=ok
+RULE R-STATUS verdict=pass detail=manifest-bind=ok gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/empty-chain rules=2 pass=1 fail=1
+[exit 1]
+mutation empty-chain expected=R-CUSTODIAN observed=R-CUSTODIAN count=actions=0 other-rule=pass:yes verdict=pass
+
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mutate.py wrong-scope /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/wrong-scope
+mutated wrong-scope -> /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/wrong-scope
+[exit 0]
+--- delta custodian-receipts.json
+--- pkg/custodian-receipts.json
++++ wrong-scope/custodian-receipts.json
+@@ -14,3 +14,3 @@
+    "matched_grant_id": "grant-capture-report",
+-   "scope_signal": "NO_SCOPE_OBJECTION"
++   "scope_signal": "HARD_STOP"
+   }
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/wrong-scope
+RULE R-CUSTODIAN verdict=fail detail=actions=2 grant-bad=0 scope-bad=1 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=pass detail=manifest-bind=ok gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/wrong-scope rules=2 pass=1 fail=1
+[exit 1]
+mutation wrong-scope expected=R-CUSTODIAN observed=R-CUSTODIAN count=scope-bad=1 other-rule=pass:yes verdict=pass
+
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mutate.py head-mismatch /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/head-mismatch
+mutated head-mismatch -> /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/head-mismatch
+[exit 0]
+--- delta custodian-receipts.json
+--- pkg/custodian-receipts.json
++++ head-mismatch/custodian-receipts.json
+@@ -17,3 +17,3 @@
+  ],
+- "head_sha256": "60466f2cb1706ff5a7b763b59b1aec40d5f8cbd591004969d5422771d2033108"
++ "head_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+ }
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/head-mismatch
+RULE R-CUSTODIAN verdict=fail detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=bad expected-head=bad
+RULE R-STATUS verdict=pass detail=manifest-bind=ok gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/head-mismatch rules=2 pass=1 fail=1
+[exit 1]
+mutation head-mismatch expected=R-CUSTODIAN observed=R-CUSTODIAN count=head=bad other-rule=pass:yes verdict=pass
+
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mutate.py manifest-digest-mismatch /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/manifest-digest-mismatch
+mutated manifest-digest-mismatch -> /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/manifest-digest-mismatch
+[exit 0]
+--- delta status.json
+--- pkg/status.json
++++ manifest-digest-mismatch/status.json
+@@ -1,3 +1,3 @@
+ {
+- "manifest_sha256": "8f278356a358d45d9d897161fb6ffcffd6ef26d65fca7b4db3b145b4a7e43086",
++ "manifest_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "claimable": true,
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/manifest-digest-mismatch
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=fail detail=manifest-bind=bad gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/manifest-digest-mismatch rules=2 pass=1 fail=1
+[exit 1]
+mutation manifest-digest-mismatch expected=R-STATUS observed=R-STATUS count=manifest-bind=bad other-rule=pass:yes verdict=pass
+
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mutate.py reviewer-producer /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/reviewer-producer
+mutated reviewer-producer -> /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/reviewer-producer
+[exit 0]
+--- delta status.json
+--- pkg/status.json
++++ reviewer-producer/status.json
+@@ -16,3 +16,3 @@
+   "reviewer": {
+-   "identity": "reviewer-c",
++   "identity": "producer-a",
+    "role": "kx-reviewer",
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/reviewer-producer
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=fail detail=manifest-bind=ok gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=1 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/reviewer-producer rules=2 pass=1 fail=1
+[exit 1]
+mutation reviewer-producer expected=R-STATUS observed=R-STATUS count=reviewer-collide=1 other-rule=pass:yes verdict=pass
+
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mutate.py claimable-true-failing-gate /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/claimable-true-failing-gate
+mutated claimable-true-failing-gate -> /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/claimable-true-failing-gate
+[exit 0]
+--- delta status.json
+--- pkg/status.json
++++ claimable-true-failing-gate/status.json
+@@ -7,3 +7,3 @@
+    "written_scope": "PASS",
+-   "authorization": "PASS",
++   "authorization": "FAIL",
+    "evidence_integrity": "PASS",
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/claimable-true-failing-gate
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=fail detail=manifest-bind=ok gates=4 gates-fail=1 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/claimable-true-failing-gate rules=2 pass=1 fail=1
+[exit 1]
+mutation claimable-true-failing-gate expected=R-STATUS observed=R-STATUS count=gates-fail=1 other-rule=pass:yes verdict=pass
+
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mutate.py claimable-false-no-blocker /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/pkg /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/claimable-false-no-blocker
+mutated claimable-false-no-blocker -> /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/claimable-false-no-blocker
+[exit 0]
+--- delta status.json
+--- pkg/status.json
++++ claimable-false-no-blocker/status.json
+@@ -2,3 +2,3 @@
+  "manifest_sha256": "8f278356a358d45d9d897161fb6ffcffd6ef26d65fca7b4db3b145b4a7e43086",
+- "claimable": true,
++ "claimable": false,
+  "finding_count": 1,
+@@ -7,3 +7,3 @@
+    "written_scope": "PASS",
+-   "authorization": "PASS",
++   "authorization": "FAIL",
+    "evidence_integrity": "PASS",
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/claimable-false-no-blocker
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=fail detail=manifest-bind=ok gates=4 gates-fail=1 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=false blocker=no
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/claimable-false-no-blocker rules=2 pass=1 fail=1
+[exit 1]
+mutation claimable-false-no-blocker expected=R-STATUS observed=R-STATUS count=blocker=no other-rule=pass:yes verdict=pass
+
+## 4. fail-closed probe (extra, not one of the seven): truncated JSON
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/truncated-status
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=fail detail=error=Unterminated string starting at
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/truncated-status rules=2 pass=1 fail=1
+[exit 1]
+truncated-status fails closed ok=yes
+
+## 5. isolation probes (extra, not one of the seven)
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/expected-head-drift
+RULE R-CUSTODIAN verdict=fail detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=bad
+RULE R-STATUS verdict=pass detail=manifest-bind=ok gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/expected-head-drift rules=2 pass=1 fail=1
+[exit 1]
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/symlinked-status
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=fail detail=error=symlink
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/symlinked-status rules=2 pass=1 fail=1
+[exit 1]
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/fallback-not-bool
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=fail detail=manifest-bind=ok gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=bad reviewer-collide=0 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/fallback-not-bool rules=2 pass=1 fail=1
+[exit 1]
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/finding-count-zero
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=fail detail=manifest-bind=ok gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=0 reviewer-fields=ok reviewer-collide=0 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/finding-count-zero rules=2 pass=1 fail=1
+[exit 1]
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/claimable-false-named
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=pass detail=manifest-bind=ok gates=4 gates-fail=1 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=false blocker=yes
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/claimable-false-named rules=2 pass=2 fail=0
+[exit 0]
+probe expected-head-drift isolates the manifest leg ok=yes
+probe symlinked status.json refused (error=symlink) ok=yes
+probe string fallback rejected (reviewer-fields=bad) ok=yes
+probe claimable=true finding_count=0 rejected ok=yes
+probe claimable=false with named blocker accepted ok=yes
+
+## 6. contract-shape tolerance probes (extra)
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/gates-as-list
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=pass detail=manifest-bind=ok gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/gates-as-list rules=2 pass=2 fail=0
+[exit 0]
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/ExecGateChain.rules.py /fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/decisions-key
+RULE R-CUSTODIAN verdict=pass detail=actions=2 grant-bad=0 scope-bad=0 fields-bad=0 head=ok expected-head=ok
+RULE R-STATUS verdict=pass detail=manifest-bind=ok gates=4 gates-fail=0 subchecks=2 subchecks-fail=0 finding_count=1 reviewer-fields=ok reviewer-collide=0 claimable=true blocker=n/a
+package=/fast/scratch/hyaku/kasegi-r43/ExecGateChain/final/mut/decisions-key rules=2 pass=2 fail=0
+[exit 0]
+probe list-of-objects gates accepted ok=yes
+probe decisions-key chain accepted ok=yes
+
+mutations=7 caught=7 baseline=pass truncated-fail-closed=pass probes=7/7

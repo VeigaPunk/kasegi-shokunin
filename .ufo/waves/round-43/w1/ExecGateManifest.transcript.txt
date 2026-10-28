@@ -1,0 +1,86 @@
+$ python3 build.py
+exit=0
+
+$ python3 rules.py pkg-good
+RULE R-FILES verdict=pass detail=files=6/6 missing=0 notregular=0
+RULE R-MANIFEST verdict=pass detail=artifacts=2 positive=1 negative=1 digest-bad=0 escape=0 missing=0 shape=0
+RULE R-REDACT verdict=pass detail=redactions=2 artifacts=2 covered=2 unbound=0 identity-bad=0 digest-bad=0
+exit=0
+
+$ python3 probe.py
+callable=rule_files,rule_manifest,rule_redact
+rule_files {"detail": "files=6/6 missing=0 notregular=0", "id": "R-FILES", "verdict": "pass"}
+rule_manifest {"detail": "artifacts=2 positive=1 negative=1 digest-bad=0 escape=0 missing=0 shape=0", "id": "R-MANIFEST", "verdict": "pass"}
+rule_redact {"detail": "redactions=2 artifacts=2 covered=2 unbound=0 identity-bad=0 digest-bad=0", "id": "R-REDACT", "verdict": "pass"}
+exit=0
+
+$ python3 rules.py pkg-m1-missing-file
+RULE R-FILES verdict=fail detail=files=5/6 missing=1 notregular=0 fail=missing-file
+RULE R-MANIFEST verdict=pass detail=artifacts=2 positive=1 negative=1 digest-bad=0 escape=0 missing=0 shape=0
+RULE R-REDACT verdict=pass detail=redactions=2 artifacts=2 covered=2 unbound=0 identity-bad=0 digest-bad=0
+exit=1
+
+$ python3 rules.py pkg-m2-wrong-digest
+RULE R-FILES verdict=pass detail=files=6/6 missing=0 notregular=0
+RULE R-MANIFEST verdict=fail detail=artifacts=2 positive=1 negative=1 digest-bad=1 escape=0 missing=0 shape=0 fail=digest-mismatch
+RULE R-REDACT verdict=pass detail=redactions=2 artifacts=2 covered=2 unbound=0 identity-bad=0 digest-bad=0
+exit=1
+
+$ python3 rules.py pkg-m3-negative-only
+RULE R-FILES verdict=pass detail=files=6/6 missing=0 notregular=0
+RULE R-MANIFEST verdict=fail detail=artifacts=2 positive=0 negative=2 digest-bad=0 escape=0 missing=0 shape=0 fail=no-positive
+RULE R-REDACT verdict=pass detail=redactions=2 artifacts=2 covered=2 unbound=0 identity-bad=0 digest-bad=0
+exit=1
+
+$ python3 rules.py pkg-m4-escape
+RULE R-FILES verdict=pass detail=files=6/6 missing=0 notregular=0
+RULE R-MANIFEST verdict=fail detail=artifacts=2 positive=1 negative=1 digest-bad=0 escape=1 missing=0 shape=0 fail=path-escape
+RULE R-REDACT verdict=pass detail=redactions=2 artifacts=2 covered=2 unbound=0 identity-bad=0 digest-bad=0
+exit=1
+
+$ python3 rules.py pkg-m5-empty-redactions
+RULE R-FILES verdict=pass detail=files=6/6 missing=0 notregular=0
+RULE R-MANIFEST verdict=pass detail=artifacts=2 positive=1 negative=1 digest-bad=0 escape=0 missing=0 shape=0
+RULE R-REDACT verdict=fail detail=redactions=0 artifacts=2 covered=0 unbound=0 identity-bad=0 digest-bad=0 uncovered=2 fail=empty-redactions,uncovered-artifact
+exit=1
+
+$ python3 rules.py pkg-m6-same-identity
+RULE R-FILES verdict=pass detail=files=6/6 missing=0 notregular=0
+RULE R-MANIFEST verdict=pass detail=artifacts=2 positive=1 negative=1 digest-bad=0 escape=0 missing=0 shape=0
+RULE R-REDACT verdict=fail detail=redactions=2 artifacts=2 covered=0 unbound=0 identity-bad=2 digest-bad=0 uncovered=2 fail=identity,uncovered-artifact
+exit=1
+
+$ python3 rules.py pkg-x7-dotdot-inside
+RULE R-FILES verdict=pass detail=files=6/6 missing=0 notregular=0
+RULE R-MANIFEST verdict=fail detail=artifacts=2 positive=1 negative=1 digest-bad=0 escape=1 missing=0 shape=0 fail=path-escape
+RULE R-REDACT verdict=pass detail=redactions=2 artifacts=2 covered=2 unbound=0 identity-bad=0 digest-bad=0
+exit=1
+
+$ python3 rules.py pkg-x8-symlink
+RULE R-FILES verdict=pass detail=files=6/6 missing=0 notregular=0
+RULE R-MANIFEST verdict=fail detail=artifacts=2 positive=1 negative=1 digest-bad=0 escape=1 missing=0 shape=0 fail=path-escape
+RULE R-REDACT verdict=pass detail=redactions=2 artifacts=2 covered=2 unbound=0 identity-bad=0 digest-bad=0
+exit=1
+
+$ python3 rules.py pkg-x9-corrupt-manifest
+RULE R-FILES verdict=pass detail=files=6/6 missing=0 notregular=0
+RULE R-MANIFEST verdict=fail detail=artifacts=0 positive=0 negative=0 digest-bad=0 escape=0 missing=0 shape=0 fail=manifest-unparsable
+RULE R-REDACT verdict=fail detail=redactions=0 artifacts=0 covered=0 unbound=0 identity-bad=0 digest-bad=0 fail=manifest-unparsable
+exit=1
+
+$ python3 rules.py pkg-x10-scanned-digest
+RULE R-FILES verdict=pass detail=files=6/6 missing=0 notregular=0
+RULE R-MANIFEST verdict=pass detail=artifacts=2 positive=1 negative=1 digest-bad=0 escape=0 missing=0 shape=0
+RULE R-REDACT verdict=fail detail=redactions=2 artifacts=2 covered=2 unbound=0 identity-bad=0 digest-bad=1 fail=receipt-digest
+exit=1
+
+$ python3 rules.py pkg-x11-symlinked-contract-file
+RULE R-FILES verdict=fail detail=files=6/6 missing=0 notregular=1 fail=not-regular-file
+RULE R-MANIFEST verdict=pass detail=artifacts=2 positive=1 negative=1 digest-bad=0 escape=0 missing=0 shape=0
+RULE R-REDACT verdict=pass detail=redactions=2 artifacts=2 covered=2 unbound=0 identity-bad=0 digest-bad=0
+exit=1
+
+$ python3 rules.py no-such-package
+package=no-such-package verdict=ERROR
+exit=2
+

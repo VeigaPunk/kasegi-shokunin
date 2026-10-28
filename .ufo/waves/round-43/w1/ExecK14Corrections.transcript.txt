@@ -1,0 +1,208 @@
+# K14 limb evidence -- ExecK14Corrections, kasegi-shokunin round 43 (post-review revision).
+# Generated 2026-10-28T16:50:36Z (UTC) by one driver run in /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections; every command and its real output follow.
+# lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin base=ab98fac9dce87130bc4f66de89e30650d63943dc head=4cb6d4ae768481e1a14afbedc2d865a060ebacfd
+# stdout of check_k14 is exactly one "K14 payload=... closed=0|1" line; the stale/
+# superseded diagnostics are stderr and are captured here with 2>&1.
+# This run includes the two reproducers RevK14 filed (sections 8 and 9).
+
+## 0. the limb and the exports
+$ sha256sum ExecK14Corrections.sh
+4a4945b085d7f2a6e81dedbd195fe62ace214d4b0d000e2049acd3864cc48d4c  ExecK14Corrections.sh
+exit=0
+$ wc -l ExecK14Corrections.sh
+202 ExecK14Corrections.sh
+exit=0
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse HEAD
+4cb6d4ae768481e1a14afbedc2d865a060ebacfd
+exit=0
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin cat-file -e ab98fac9dce87130bc4f66de89e30650d63943dc:corpus/instruments/r42-closure.sh
+exit=0
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin cat-file -e 4cb6d4ae768481e1a14afbedc2d865a060ebacfd:corpus/instruments/r42-closure.sh
+exit=0
+$ rm -rf base head && mkdir base head && git -C $L archive $BASE | tar -x -C base && git -C $L archive $HEAD | tar -x -C head
+base export exit=0
+head export exit=0
+
+## 1. the live ledger is the r42 engine s own check_j11 over the SAME export
+$ python3 ledger.py /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/base
+engine=r42-closure.sh RECORDS=SCORECARD.md,LOG.md,SHONEN.md ROUND=42
+check_j11=('corrections=34,groups=4,dups=4,excused=4,unexcused=0,marker=1,marker-substantive=1,marker-appended=1,eof-closed=3/3,fenced=0', True)
+exit=0
+$ python3 ledger.py /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/head
+engine=r42-closure.sh RECORDS=SCORECARD.md,LOG.md,SHONEN.md ROUND=42
+check_j11=('corrections=34,groups=4,dups=4,excused=4,unexcused=0,marker=1,marker-substantive=1,marker-appended=1,eof-closed=3/3,fenced=0', True)
+exit=0
+
+## 2. RED at base ab98fac9: the stale literal is named on stderr
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/base
+K14 stale=SCORECARD.md:1634 corrections=33 live=34
+K14 payload=literals=2,stale=1,superseded=0,live=corrections=34,groups=4 closed=0
+exit=1
+$ grep -n corrections=33 $S/base/SCORECARD.md | cut -c1-140
+1634:Correction (round 42): D-r41-1's measurement is no longer pending: the r42 suite at Y prints `J11 payload=corrections=33,groups=4,dups=
+$ sed -n 1634p $S/base/SCORECARD.md | cut -c1-200
+Correction (round 42): D-r41-1's measurement is no longer pending: the r42 suite at Y prints `J11 payload=corrections=33,groups=4,dups=4,excused=4,unexcused=0,marker=1,marker-substantive=1,marker-appe
+
+## 3. RED at head 4cb6d4ae768481e1a14afbedc2d865a060ebacfd: same literal, the round-43 tree has not superseded it yet
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/head
+K14 stale=SCORECARD.md:1634 corrections=33 live=34
+K14 payload=literals=2,stale=1,superseded=0,live=corrections=34,groups=4 closed=0
+exit=1
+
+## 4. sourceable limb, called from another cwd
+$ cd / && bash -c "set -u; . /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/ExecK14Corrections.sh; check_k14 /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/head"
+K14 stale=SCORECARD.md:1634 corrections=33 live=34
+K14 payload=literals=2,stale=1,superseded=0,live=corrections=34,groups=4 closed=0
+exit=1
+
+## 5. GREEN: a scratch tree where an appended Correction (round 43) line names it
+$ cp -a head fx-green
+$ echo <Correction (round 43): RD42-1 -- the `corrections=33` literal at SCORECARD.md:1634 is superseded; the live ledger behind this line is 35 corrections over 4 distinct bodies.> >> fx-green/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-green
+K14 superseded=SCORECARD.md:1634 corrections=33 live=35
+K14 superseded=SCORECARD.md:1661 corrections=33 live=35
+K14 payload=literals=3,stale=0,superseded=2,live=corrections=35,groups=4 closed=1
+exit=0
+
+## 6. GREEN: the expected landing shape -- 2 SCORECARD + 1 LOG round-43 corrections (live 34+3=37)
+$ cp -a head fx-y37
+$ echo <Correction (round 43): RD42-1 -- the `corrections=33` literal at SCORECARD.md:1634 (the r42 J11 payload quote) is superseded by this line: the live ledger behind this line is 37 corrections over 4 distinct bodies.> >> fx-y37/SCORECARD.md
+$ echo <Correction (round 43): C1/C2 round-43 close -- the r43 suite is graded at Y and every K-line is recorded in its receipt; no literal in this file claims a ledger value the instrument does not derive.> >> fx-y37/SCORECARD.md
+$ echo <Correction (round 43): the round-43 wave landed and the r43 suite is the round s counter; the live correction ledger is derived by the suite itself at Y, never quoted from a prior round.> >> fx-y37/LOG.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-y37
+K14 superseded=SCORECARD.md:1634 corrections=33 live=37
+K14 superseded=SCORECARD.md:1661 corrections=33 live=37
+K14 payload=literals=3,stale=0,superseded=2,live=corrections=37,groups=4 closed=1
+exit=0
+
+## 7. mutants: each must be rejected (closed=0, exit=1)
+$ cp -a head fx-bare
+$ echo <The r42 suite printed corrections=99 at its first Y.> >> fx-bare/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-bare
+K14 stale=SCORECARD.md:1634 corrections=33 live=34
+K14 stale=SCORECARD.md:1661 corrections=99 live=34
+K14 payload=literals=3,stale=2,superseded=0,live=corrections=34,groups=4 closed=0
+exit=1
+$ cp -a head fx-neartok
+$ echo <The r42 suite printed corrections=330 at its first Y.> >> fx-neartok/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-neartok
+K14 stale=SCORECARD.md:1634 corrections=33 live=34
+K14 stale=SCORECARD.md:1661 corrections=330 live=34
+K14 payload=literals=3,stale=2,superseded=0,live=corrections=34,groups=4 closed=0
+exit=1
+$ cp -a head fx-evidence
+$ echo <RevK14 evidence: mutant=SCORECARD.md:1634 corrections=99 closed=0 (the mutant re-introduces the stale literal).> >> fx-evidence/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-evidence
+K14 stale=SCORECARD.md:1634 corrections=33 live=34
+K14 payload=literals=2,stale=1,superseded=0,live=corrections=34,groups=4 closed=0
+exit=1
+$ cp -a head fx-twoline
+$ echo <Ledger snapshot: corrections=33 groups=99 were both recorded once.> >> fx-twoline/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-twoline
+K14 stale=SCORECARD.md:1634 corrections=33 live=34
+K14 stale=SCORECARD.md:1661 corrections=33 live=34
+K14 stale=SCORECARD.md:1661 groups=99 live=4
+K14 payload=literals=4,stale=3,superseded=0,live=corrections=34,groups=4 closed=0
+exit=1
+$ cp -a head fx-crossfile
+$ echo <Correction (round 43): the corrections=33 literal at SCORECARD.md:1634 is superseded and stale.> >> fx-crossfile/LOG.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-crossfile
+K14 stale=SCORECARD.md:1634 corrections=33 live=35
+K14 superseded=LOG.md:1807 corrections=33 live=35
+K14 payload=literals=3,stale=1,superseded=1,live=corrections=35,groups=4 closed=0
+exit=1
+$ cp -a head fx-fenced
+$ echo <```> >> fx-fenced/SCORECARD.md
+$ echo <corrections=99> >> fx-fenced/SCORECARD.md
+$ echo <```> >> fx-fenced/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-fenced
+K14 stale=SCORECARD.md:1634 corrections=33 live=34
+K14 stale=SCORECARD.md:1662 corrections=99 live=34
+K14 payload=literals=3,stale=2,superseded=0,live=corrections=34,groups=4 closed=0
+exit=1
+$ cp -a head fx-liveassert
+$ echo <Correction (round 43): the `corrections=33` literal is superseded; live=corrections=99 is what the suite reports.> >> fx-liveassert/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-liveassert
+K14 superseded=SCORECARD.md:1634 corrections=33 live=35
+K14 superseded=SCORECARD.md:1661 corrections=33 live=35
+K14 stale=SCORECARD.md:1661 corrections=99 live=35
+K14 payload=literals=4,stale=1,superseded=2,live=corrections=35,groups=4 closed=0
+exit=1
+$ cp -a head fx-wronground
+$ echo <Correction (round 42): the corrections=33 literal at SCORECARD.md:1634 is superseded.> >> fx-wronground/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-wronground
+K14 stale=SCORECARD.md:1634 corrections=33 live=35
+K14 stale=SCORECARD.md:1661 corrections=33 live=35
+K14 payload=literals=3,stale=2,superseded=0,live=corrections=35,groups=4 closed=0
+exit=1
+$ cp -a head fx-fencedpayload
+$ echo <```> >> fx-fencedpayload/SCORECARD.md
+$ echo <K14 payload=literals=2,stale=0,superseded=0,live=corrections=99,groups=4 closed=1> >> fx-fencedpayload/SCORECARD.md
+$ echo <```> >> fx-fencedpayload/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-fencedpayload
+K14 stale=SCORECARD.md:1634 corrections=33 live=34
+K14 payload=literals=2,stale=1,superseded=0,live=corrections=34,groups=4 closed=0
+exit=1
+$ cp -a head fx-payloadplain
+$ echo <A quoted run line: J11 payload=corrections=99,groups=4,dups=0 closed=1.> >> fx-payloadplain/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-payloadplain
+K14 stale=SCORECARD.md:1634 corrections=33 live=34
+K14 stale=SCORECARD.md:1661 corrections=99 live=34
+K14 payload=literals=4,stale=2,superseded=0,live=corrections=34,groups=4 closed=0
+exit=1
+$ cp -a head fx-earlier
+$ python3: insert a Correction (round 43) line at SCORECARD.md:4 (ABOVE the carrier)
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-earlier
+K14 superseded=SCORECARD.md:4 corrections=33 live=35
+K14 stale=SCORECARD.md:1635 corrections=33 live=35
+K14 payload=literals=3,stale=1,superseded=1,live=corrections=35,groups=4 closed=0
+exit=1
+
+## 8. RevK14 F1 reproducer: the word "attack" must not license a payload line
+$ mkdir -p fx-f1/corpus/instruments && cp head/corpus/instruments/r42-closure.sh fx-f1/corpus/instruments/ && seq 1 33 > correction bodies
+$ echo <The r43 suite at Y prints `K14 payload=literals=2,stale=0,superseded=0,live=corrections=31,groups=0 closed=1` for the 23/73 attack share> >> fx-f1/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-f1
+K14 stale=SCORECARD.md:34 corrections=31 live=33
+K14 payload=literals=2,stale=1,superseded=0,live=corrections=33,groups=0 closed=0
+exit=1
+# required (RevK14 §4): literals=2,stale=1,closed=0 with live=corrections=33
+
+## 9. RevK14 F2 reproducer: a live= claim on a mutant= line is still graded
+$ mkdir -p fx-f2/corpus/instruments && cp head/corpus/instruments/r42-closure.sh fx-f2/corpus/instruments/ && seq 1 3 > correction bodies
+$ echo <defect evidence: mutant=`corrections=1` was rejected by the battery; live=corrections=99> >> fx-f2/SCORECARD.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-f2
+K14 stale=SCORECARD.md:4 corrections=99 live=3
+K14 payload=literals=1,stale=1,superseded=0,live=corrections=3,groups=0 closed=0
+exit=1
+# required (RevK14 §4): literals=1,stale=1,closed=0
+
+## 10. refusal: the r42 engine is absent from the export
+$ cp -a head fx-engineabsent
+$ echo <Correction (round 43): `corrections=33` is superseded; the live ledger behind this line is 35 corrections.> >> fx-engineabsent/SCORECARD.md
+$ rm /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-engineabsent/corpus/instruments/r42-closure.sh
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-engineabsent
+K14 error=engine-unreadable path=corpus/instruments/r42-closure.sh
+K14 payload=literals=0,stale=0,superseded=0,live=corrections=0,groups=0 closed=0
+exit=1
+
+## 11. K14 against the real round-43 correction blocks (wave-dir scribe deliverables, read-only)
+$ sha256sum /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeCorrections.scorecard.txt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeCorrections.log.txt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeCorrections.lesson42.txt
+27424eb13e025c8c5ad55d3ba5927d70a0286cb436efd22c9659bca10e035f07  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeCorrections.scorecard.txt
+7e8f71992d374866f11ab2803bca7ea77a840e3017a039e1e012771b27332b41  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeCorrections.log.txt
+37423d8b2943e116d1511d44ee8a0786b875032f684abcf085fc9543bb4922d6  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeCorrections.lesson42.txt
+exit=0
+$ cp -a head fx-land
+$ cat $W/ScribeCorrections.scorecard.txt >> fx-land/SCORECARD.md && cat $W/ScribeCorrections.log.txt >> fx-land/LOG.md && cat $W/ScribeCorrections.lesson42.txt >> fx-land/corpus/lessons/round-42.md
+$ bash ExecK14Corrections.sh /fast/scratch/hyaku/kasegi-r43/ExecK14Corrections/fx-land
+K14 superseded=SCORECARD.md:1634 corrections=33 live=36
+K14 superseded=SCORECARD.md:1661 corrections=33 live=36
+K14 payload=literals=3,stale=0,superseded=2,live=corrections=36,groups=4 closed=1
+exit=0
+
+## 12. stdout stays one line (payload only)
+$ bash ExecK14Corrections.sh $S/fx-y37 2>/dev/null | wc -l
+1
+$ bash ExecK14Corrections.sh $S/base 2>/dev/null
+K14 payload=literals=2,stale=1,superseded=0,live=corrections=34,groups=4 closed=0
+
+# end of K14 evidence.

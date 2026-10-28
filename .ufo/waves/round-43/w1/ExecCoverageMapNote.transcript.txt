@@ -1,0 +1,136 @@
+ExecCoverageMapNote — transcript
+seat: ExecCoverageMapNote (leaf, round 43, wave 1)
+lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+base: ab98fac9dce87130bc4f66de89e30650d63943dc   lane HEAD at work: 4cb6d4a
+utc: 2026-10-28T16:49:55Z
+deliverable: .ufo/waves/round-43/w1/ExecCoverageMapNote.append.md
+landing: cat .ufo/waves/round-43/w1/ExecCoverageMapNote.append.md >> corpus/README.md
+
+== corpus/README.md at the time of writing (this seat does not edit it)
+
+$ grep -cE '^\| F[0-9]+ \|' corpus/README.md
+25
+[exit=0]
+
+$ wc -l corpus/README.md
+600 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md
+
+$ sha256sum corpus/README.md
+bb897bf07b3e6e14706817679be49450d98bba28be313bce7362965b3ba29a6b  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md
+
+== the append block itself
+
+$ wc -c .ufo/waves/round-43/w1/ExecCoverageMapNote.append.md
+914 /fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/ExecCoverageMapNote.append.md
+
+$ wc -l .ufo/waves/round-43/w1/ExecCoverageMapNote.append.md
+12 /fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/ExecCoverageMapNote.append.md
+
+$ sha256sum .ufo/waves/round-43/w1/ExecCoverageMapNote.append.md
+77db2f8b18f4f6496e92c02f7e5451a92109615c566e575dd0b0cd760a7ca09c  /fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/ExecCoverageMapNote.append.md
+
+$ od -An -c -N1 ...append.md   # first byte = the blank-line separator
+  \n
+
+$ awk 'length>m{m=length}END{print "max-line-len="m}' ...append.md
+max-line-len=99
+
+$ grep -c "```" ...append.md
+0
+[exit=1]  (no fence line: the block opens or closes none)
+
+$ grep -cE '^\| F[0-9]+ \|' ...append.md
+0
+[exit=1]  (the block introduces no frontier row)
+
+== append-only simulation on a scratch copy (README.before.md -> cat block >> README.after.md)
+
+$ wc -c README.before.md README.after.md
+ 58224 /fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.before.md
+ 59138 /fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.after.md
+117362 total
+
+$ wc -l README.before.md README.after.md
+   600 /fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.before.md
+   612 /fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.after.md
+  1212 total
+
+$ sha256sum README.before.md README.after.md
+bb897bf07b3e6e14706817679be49450d98bba28be313bce7362965b3ba29a6b  /fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.before.md
+82dedcea2055d9425179addd11fe17ef0a5abdc17be5f9cb4322e9fe742f40b6  /fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.after.md
+
+$ grep -cE '^\| F[0-9]+ \|' README.before.md README.after.md
+/fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.before.md:25
+/fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.after.md:25
+
+$ grep -c "```" README.before.md README.after.md
+/fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.before.md:2
+/fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.after.md:2
+
+$ grep -c '^## ' README.before.md README.after.md
+/fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.before.md:17
+/fast/scratch/hyaku/kasegi-r43/ExecCoverageMapNote/README.after.md:18
+
+$ head -c 58224 README.after.md | cmp - README.before.md
+[exit=0]  (before is a byte-identical prefix: the block is a pure EOF append)
+
+$ tail -2 README.before.md; echo ---; sed -n '1,4p' ...append.md
+sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
+---
+
+## Round-43 note — the claim-package contract gains an instrumented surface (appended 2026-10-28)
+
+The coverage map above and the frontier table are not edited in place (R6). The map's
+
+== frontier harness: no frontier row changes, ratio unchanged
+
+$ python3 corpus/instruments/frontier-recheck-count.py
+[exit=0]
+
+$ head -1 frontier.out
+FRONTIER-CENSUS rows=25 admitted=25 closed=25 problem-rows=0 registry=66
+
+$ tail -1 frontier.out
+entries=28 pass=28 exit=0
+
+== grounding the block's three names: gate rule ids, fixture dirs, entry path
+
+$ grep -oE 'R-[A-Z]+' .ufo/waves/round-43/w1/ExecGateCore.rules.txt | sort -u | wc -l
+8
+
+$ ls -d .ufo/waves/round-43/w1/ExecGateFixtures.defect-* | wc -l
+9
+
+$ ls -d .ufo/waves/round-43/w1/ExecGateFixtures.defect-* | sed 's#.*/##'
+ExecGateFixtures.defect-1-missing-file
+ExecGateFixtures.defect-2-digest
+ExecGateFixtures.defect-3-negative
+ExecGateFixtures.defect-4-escape
+ExecGateFixtures.defect-5-redaction
+ExecGateFixtures.defect-6-custodian
+ExecGateFixtures.defect-7-reviewer
+ExecGateFixtures.defect-8-marker
+ExecGateFixtures.defect-9-secret
+
+$ grep -o 'corpus/knowledge/claim-package-gate.md' .ufo/waves/round-43/claims.json | head -1
+corpus/knowledge/claim-package-gate.md
+
+$ sed -n '9,11p' corpus/README.md   # the map row the note names
+| Area | Entry | Source basis |
+|---|---|---|
+| Claim-package contract | `knowledge/claim-package-contract.md` | `fleets/mission-template.md` + live packages |
+
+== the block, line-numbered (12 lines; the first is the blank-line separator)
+$
+## Round-43 note M-bM-^@M-^T the claim-package contract gains an instrumented surface (appended 2026-10-28)$
+$
+The coverage map above and the frontier table are not edited in place (R6). The map's$
+`Claim-package contract` row has so far been documentation-only M-bM-^@M-^T one entry,$
+`knowledge/claim-package-contract.md`, describing gates whose `ops/claim-check.mjs` went with$
+`~/Projects/bounties` M-bM-^@M-^T and this round the contract gains an executable surface:$
+`instruments/claim-package-check.py` (eight rules, one `RULE <id> verdict=` line each) over the$
+committed exemplar `instruments/fixtures/claim-package/exemplar/` and nine one-delta fixtures$
+`instruments/fixtures/claim-package/defect-1-missing-file` through `defect-9-secret`, documented by$
+the new entry `knowledge/claim-package-gate.md`. NO frontier row (F01-F25) changes and the measured$
+ratio is unchanged: 25/25 admitted, still 0 of 18 lost-domain surfaces present.$

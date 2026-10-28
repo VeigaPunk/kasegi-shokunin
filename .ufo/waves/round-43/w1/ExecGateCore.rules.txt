@@ -1,0 +1,160 @@
+claim-package-check.py — rule table (kasegi-shokunin round 43, seat ExecGateCore)
+
+gate     corpus/instruments/claim-package-check.py
+usage    claim-package-check.py <package-dir> [--json]
+         claim-package-check.py --selftest
+exit     0 every rule passes; 1 any rule fails; 2 usage error, package argument
+         missing or not a directory, or --selftest with no implementation present
+line     RULE <id> verdict=pass|fail detail=<short>
+summary  package=<path> rules=8 pass=<k> fail=<m> verdict=WELL-FORMED|DEFECT exit=0|1
+error    package=<path> verdict=ERROR exit=2
+
+Source of truth: corpus/knowledge/claim-package-contract.md (six files) and
+corpus/knowledge/claim-gates.md (per-gate derivations of the lost
+ops/claim-check.mjs). Keys those two documents do not state are marked
+[convention] below: the lane chose them, the gate enforces them, and the round-43
+receipt says so.
+
+P0 CONFINEMENT (every path any rule opens, no exceptions)
+  A path is rejected when it is not a string, is empty, is absolute or starts
+  with '~', contains a backslash or NUL, or has any '..' component (an outright
+  ban: a '..' that happens to resolve inside the package is still a fail). Every
+  component is lstat'ed; a symlink at any component is rejected. The real path
+  must equal the package root or start with root + '/'. The final component must
+  be a regular file. Manifest artifact paths are resolved as 'evidence/<path>'.
+P1 FAIL-CLOSED (R30)
+  Any P0 rejection, read error, JSON parse error, wrong JSON top-level type, or
+  internal exception is a FAIL of the rule that needed the input. A rule never
+  returns pass when it could not inspect what it grades.
+
+R-FILES — the six contract files present
+  inputs   report.md, claim_checklist.md, evidence/manifest.json,
+           custodian-receipts.json, provenance.json, status.json
+  pass iff all six are regular, non-symlink, non-empty files under P0 and each of
+           the four JSON files decodes to a JSON object
+  detail   files=6,missing=<n>,bad=<n>
+  contract "report.md | claim_checklist.md | evidence/manifest.json |
+           custodian-receipts.json | provenance.json | status.json" (table)
+
+R-MANIFEST — schema, per-artifact digest over the bytes, polarity, confinement
+  pass iff manifest.schema_version == "evidence-manifest/v1"
+           manifest.sequence is a number (bool excluded)
+           manifest.expected_head_sha256 is 64 hex
+           artifacts is a non-empty list; each entry has a unique `path` (relative,
+           confined by P0), a 64-hex `sha256` equal to sha256(evidence/<path>
+           bytes recomputed by the gate, never trusted from the file), and
+           `polarity` in {positive, negative} with at least one positive
+  detail   artifacts=<n>,positive=<n>,digest-bad=0,escape=0
+  contract "schema_version: \"evidence-manifest/v1\". Per-artifact sha256 +
+           polarity ∈ {positive, negative}; ≥1 positive required. Artifact paths
+           are relative to evidence/, must stay inside the package, no symlink
+           traversal."
+
+R-REDACT — one same-digest receipt per artifact, distinct producer/verifier
+  pass iff manifest.redactions is a non-empty list
+           each artifact is bound by exactly one receipt; the receipt names it by
+           `artifact` (the manifest path, or 'evidence/<path>') or, when no path
+           field exists, by a digest that matches exactly one artifact [convention]
+           receipt.artifact_sha256 == receipt.scanned_artifact_sha256 == the
+           manifest artifact sha256 (case-insensitive hex)
+           producer and verifier are non-empty and differ (case-insensitive)
+           no receipt is left unbound, no artifact is missing a receipt
+  detail   artifacts=<n>,receipts=<n>,missing=0,digest-mismatch=0
+  contract "redactions[]: one same-digest receipt per artifact with nonempty,
+           distinct producer/verifier identities. redactions:[] is never
+           claim-ready."; "artifact_sha256 === scanned_artifact_sha256 === a.sha256
+           AND nonempty distinct producer/verifier" (claim-gates)
+
+R-CUSTODIAN — decision chain, scope signal, grant id, three-way head binding
+  pass iff chain (or `decisions`, claim-gates naming) is a non-empty list
+           every decision has a non-empty `action`, 64-hex input_sha256 and
+           decision_sha256, a non-empty matched_grant_id, and scope_signal
+           exactly "NO_SCOPE_OBJECTION" (exact string; HARD_STOP and any other
+           value fail)
+           head_sha256 is 64 hex, equals the last decision's decision_sha256, and
+           equals manifest.expected_head_sha256
+  detail   chain=<n>,grant-miss=0,signal-bad=0,head=bound
+  contract "Non-empty decision chain {action, input_sha256, decision_sha256,
+           matched_grant_id, scope_signal}. Every action: nonempty
+           matched_grant_id AND scope_signal exactly \"NO_SCOPE_OBJECTION\".
+           head_sha256 == final decision digest == manifest.expected_head_sha256."
+
+R-PROVENANCE — agents/models, commands/exit codes, pin, policy, no effects
+  pass iff agents is a non-empty list; each entry has non-empty transition,
+           requested_model and resolved_model
+           commands is a non-empty list; each entry has a non-empty command and
+           an integer exit_code (bool excluded)
+           pin.remote is non-empty and pin.commit matches 7-64 hex
+           policy_sha256 is 64 hex
+           external_effects_performed is exactly []
+           secrets_attestation is a non-empty string, or an object with
+           "no_secrets": true [convention: the object shape; the contract states
+           only "secrets attestation"]
+  detail   agents=<n>,commands=<n>,pin=ok,effects=none,secrets=ok
+  contract "Agents + requested/resolved models per transition, commands + exit
+           codes, pin (remote + commit), policy_sha256, external_effects_performed:
+           [], secrets attestation."
+
+R-STATUS — manifest-byte binding, reviewer distinctness, claimable coherence
+  pass iff status.manifest_sha256 is 64 hex and equals sha256 over the current
+           evidence/manifest.json bytes (recomputed)
+           claim_review holds hard_gates and subchecks dictionaries that carry
+           all of written_scope, authorization, evidence_integrity,
+           no_duplicate_or_prior_submission and no_secrets, operator_attribution
+           claim_review.reviewer has a non-empty identity, non-empty
+           requested_model and resolved_model, and a boolean fallback
+           the reviewer identity differs (case-insensitive) from every producer
+           and verifier identity named in the manifest's redaction receipts
+           claimable is a boolean; when true every hard gate and subcheck value is
+           exactly "PASS" and finding_count is an integer >= 1; when false at
+           least one blocker is named (non-empty blockers[]/residual_gates[], or a
+           non-empty verdict/claimability_blocker/blocked_reason string)
+  detail   manifest=bound,reviewer=distinct,gates=6/6,claimable=<bool>[,blocker=named]
+  contract "manifest_sha256 binds status to manifest bytes. claim_review holds
+           hard_gates + subchecks + reviewer (distinct identity, requested/resolved
+           model, fallback flag)."; "DONE requires reviewer APPROVED ... producer
+           never self-approves" (claim-gates)
+  not gated (stated in the contract table, never machine-checked by the lost
+  tool, and not claimed by this gate): status.state/severity/reward, the report's
+  prose severity language, and the reviewer role string.
+
+R-REPORT — markers, program URL, cited digests bound to the manifest
+  pass iff report.md matches /scope\s+excerpt/i
+           report.md contains the exact literal "No submission performed"
+           report.md contains at least one https:// URL [convention: the shape of
+           "program + official URL"; the contract states the URL, not its scheme]
+           every whole 64-hex token in report.md (bounded by non-hex characters on
+           both sides) equals an artifacts[].sha256 of the manifest
+  detail   scope-excerpt=ok,marker=ok,url=ok,cited=<n>,unbound=0
+  contract "Title; program + official URL; \"Scope excerpt\" = verbatim policy
+           text + URL + observed_at + content sha256; ... literal marker \"No
+           submission performed\""; "every artifact's sha256 it cites" (C2)
+  consequence: the excerpt's own content sha256 must be registered as a manifest
+  artifact (e.g. evidence/scope-excerpt.txt) — it is cited, so it must be bound.
+
+R-NOSECRET — no secret-shaped token in the package text
+  pass iff the package tree has no symlink entry (blanket ban), no file over
+           5*1024*1024 bytes, and no byte file matches any secret shape:
+             private-key header  -----BEGIN [A-Z0-9 ]*PRIVATE KEY-----
+             op:// reference     op://<3+ chars>
+             bearer value        bearer <16+ token chars>
+             authorization value authorization ["']?[:=]["']?(bearer )?<16+ chars>
+             labelled credential api_key|secret|token|password ["']?[:=]["']?<16+ chars>
+             session cookie      session_cookie ["']?[:=]["']?<16+ non-space chars>
+           the closing quote may be escaped (\"), because JSON stores a quoted
+           value that way; a value under 16 characters is not a hit
+  detail   hits=<n>,first=<relative path>,shape=<pattern name>; a pass reports
+           files-scanned=ok,symlinks=0,oversize=0,hits=0
+  contract "Regex over every non-symlink file ≤5 MiB in the package, read as
+           UTF-8 — no text/binary filter: /(api[_-]?key|secret|token|password|
+           bearer)\s*[:=]\s*[\"']?[A-Za-z0-9_\-]{16,}/i. Any hit errors."; the
+           blanket symlink ban and the 5 MiB cap are claim-gates' non-regex gates.
+  the matched text is never printed: a receipt must not leak what it reports.
+
+COUPLINGS the fixtures and the exemplar must respect (measured, not assumed)
+  editing a manifest `sha256` without touching the artifact bytes reds
+  R-MANIFEST, R-REDACT (receipt digest vs manifest digest) and, when the report
+  cites the true digest, R-REPORT. The single-rule digest delta is byte mutation.
+  deleting a contract file reds R-FILES and the rule that owns that file; the
+  first failing rule in the order above is R-FILES.
+  a symlink artifact reds R-MANIFEST (confinement) and R-NOSECRET (blanket ban).

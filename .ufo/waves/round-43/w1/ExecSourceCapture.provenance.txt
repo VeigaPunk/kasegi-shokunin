@@ -1,0 +1,73 @@
+S067 access record — curl project security advisory CVE-2025-9086
+=================================================================
+
+Source id:        S067
+URL (requested):  https://curl.se/docs/CVE-2025-9086.html
+URL (effective):  https://curl.se/docs/CVE-2025-9086.html
+Redirect chain:   0 hops (request URL == effective URL; %{num_redirects}=0)
+HTTP status:      200 (HTTP/2)
+Byte count (raw): 10455 bytes served, 10455 bytes received (%{size_download}=10455,
+                  content-length: 10455)
+UTC fetch:        request started 2026-10-28T16:46:33Z, response headers dated
+                  Wed, 28 Oct 2026 16:46:34Z, command ended 2026-10-28T16:46:34Z
+User agent:       kasegi-shokunin/1.0
+Method:           GET, unauthenticated (no cookie, no token, no login, no
+                  customer data; single public page)
+Content-Type:     text/html
+Last-Modified:    Sun, 25 Oct 2026 11:18:21 GMT
+ETag:             "28d7-65ea85f0593b9"
+Server / cache:   nginx/1.31.3; via: 1.1 varnish, 1.1 varnish;
+                  x-cache: HIT, HIT
+
+Fetch command (raw bytes captured to raw.html):
+  curl -sS -L --max-time 90 -A kasegi-shokunin/1.0 \
+       -D raw.headers -o raw.html \
+       -w 'code=%{http_code} bytes=%{size_download} redirects=%{num_redirects} effective=%{url_effective}' \
+       https://curl.se/docs/CVE-2025-9086.html
+  -> code=200 bytes=10455 redirects=0 effective=https://curl.se/docs/CVE-2025-9086.html
+
+Raw bytes digest:
+  sha256(raw.html) = 58ca99006c3299456ae7a40a0fb268cef6213f1ce5d07eb2c98f1dcc56716ebd
+  size             = 10455
+  This digest equals the body digest independently fetched by ScoutSourceHunt
+  (w1/ScoutSourceHunt.md, fetch 2026-10-28T16:40:33Z), so the host served the
+  same document to two separate fetches under the same user agent.
+
+Normalization (corpus/instruments/capture-source.py, --kind html: <script>/<style>
+blocks dropped, block tags turned into line breaks, tags stripped, entities
+decoded, whitespace collapsed per line, blank lines dropped):
+  instrument run : python3 corpus/instruments/capture-source.py --id S067 \
+                     --url https://curl.se/docs/CVE-2025-9086.html \
+                     --out .../S067.txt --kind html
+                 -> S067 status=200 fetched_bytes=10455 snapshot_bytes=3822
+                    sha256=7e35413a8b4f9648191d2769c06596035213548c2f7ea308184442318f975c8b
+                    utc=2026-10-28T16:46:41Z
+  independent    : html_to_text(raw.html) -> snapshot_bytes=3822,
+                   lines=109, sha256=7e35413a8b4f9648191d2769c06596035213548c2f7ea308184442318f975c8b
+The instrument's own refetch and the normalization of the curl-captured raw bytes
+agree byte-for-byte, so the raw digest above binds the landed snapshot.
+
+Landed snapshot:
+  path    = corpus/source-snapshots/round-43/S067.txt
+  bytes   = 3822
+  lines   = 109
+  sha256  = 7e35413a8b4f9648191d2769c06596035213548c2f7ea308184442318f975c8b
+
+Quote anchors (line numbers in the landed snapshot):
+  Q1 L69  Project curl Security Advisory, September 10 2025 Permalink
+  Q2 L82  CWE-125: Out-of-bounds Read
+  Q3 L84  Bug bounty: 505 USD
+  Q4 L88  Affected versions: curl 8.13.0 to and including 8.15.0
+  Q5 L97  Fixed-in: https://github.com/curl/curl/commit/c6ae07c6a541e0e96d0040afb6
+  Q6 L103 This issue was reported to the curl project on August 11, 2025. We contacted distros@openwall on September 5, 2025.
+
+Selection boundary: the deterministic rule was the scout's single recommended
+document (w1/ScoutSourceHunt.md); the JSON sibling CVE-2025-9086.json, the
+disclosure-policy page /dev/vuln-disclosure.html, the HackerOne original report
+and the GHSA-v676-f8gm-92r9 page are NOT part of this capture. The HTML fix link
+(L97) carries the served 29-character prefix; the full 40-character commit hash
+exists only in the JSON sibling and was deliberately not spliced into these bytes.
+
+Boundary: this record states what the host served at the instant above. It does
+not claim the advisory is current today or that the page will serve the same
+bytes again; source-recheck.py verifies the landed bytes, not upstream freshness.

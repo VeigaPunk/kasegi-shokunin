@@ -1,0 +1,332 @@
+# ExecK19Freeze transcript -- sourceable limb `check_k19` (RD42-6 freeze order)
+# limb=ExecK19Freeze.sh
+# limb-sha256=75f9552ec4958905b76c33f154ecaf0cdd099426d8bd0b321846167d8539e52f
+# limb-lines=247
+# lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+# work=/fast/scratch/hyaku/kasegi-r43/ExecK19Freeze
+# run-utc=2026-10-28T16:55:28Z
+# invocation: check_k19 <export-root> [<commit-utc>] -- the two-argument form is the
+#   suite-shaped call: <commit-utc> is the ISO 8601 Z committer instant of the export ref.
+
+## A. exports (read-only: git archive of one commit, extracted outside the lane)
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive ab98fac9dce87130bc4f66de89e30650d63943dc | tar -x -C $S/base
+ab98fac9dce87130bc4f66de89e30650d63943dc
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive HEAD | tar -x -C $S/live
+4cb6d4ae768481e1a14afbedc2d865a060ebacfd
+$ date -u -d @$(git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show -s --format=%ct <ref>) +%Y-%m-%dT%H:%M:%SZ   # per export ref
+ab98fac9dce87130bc4f66de89e30650d63943dc 2026-10-28T16:27:52Z
+4cb6d4ae768481e1a14afbedc2d865a060ebacfd 2026-10-28T16:37:11Z
+base/.ufo/waves/round-43: ls: cannot access '/fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/base/.ufo/waves/round-43': No such file or directory
+live round-43 entries: build-w1-spec.py c1-controls c2-controls census-before.txt claims.json freeze.txt w1-dispatch.json w1-run.err w1-spec.json 
+
+## B. the committed record under grade
+$ cat live/.ufo/waves/round-43/freeze.txt
+frozen-at=2026-10-28T16:37:07Z
+measured-at-max=2026-10-28T16:34:15Z
+claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
+base=ab98fac9dce87130bc4f66de89e30650d63943dc
+$ sha256sum live/.ufo/waves/round-43/claims.json
+a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
+$ grep -n '"lane"\|"round"\|"frozen_at_utc"\|"c1"\|"c2"' live/.ufo/waves/round-43/claims.json
+2: "lane": "kasegi",
+3: "round": 43,
+6: "frozen_at_utc": "2026-10-28T16:37:07Z",
+74:  "c1": ".ufo/waves/round-43/c1-controls/do-nothing.txt",
+75:  "c2": ".ufo/waves/round-43/c2-controls/before.txt"
+$ grep -n 'measured-at=' live/.ufo/waves/round-43/c1-controls/do-nothing.txt live/.ufo/waves/round-43/c2-controls/before.txt
+/fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/c1-controls/do-nothing.txt:2:measured-at=2026-10-28T16:32:23Z
+/fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/c2-controls/before.txt:2:measured-at=2026-10-28T16:34:15Z
+
+## C. scenarios -- one line and one return status each
+--- base ab98fac9 with its own commit time: no .ufo/waves/round-43/freeze.txt -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/base 2026-10-28T16:27:52Z; echo rc=$?
+K19 payload=freeze=absent,order=bad,sha=mismatch closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- live round-43 commit, one argument (suite convention) -> green
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live; echo rc=$?
+K19 payload=freeze=present,order=ok,sha=match closed=1
+rc=0
+expected=green observed=green verdict=match
+
+--- live round-43 commit, with the commit-time bound -> green
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=ok,sha=match closed=1
+rc=0
+expected=green observed=green verdict=match
+
+--- m-early: label 16:30:00Z earlier than the control max 16:34:15Z -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-early 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-late-baddigest: label kept (later than the max), digest forged -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-late-baddigest 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=ok,sha=mismatch closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-dupe-measured: c1 carries two measured-at lines -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-dupe-measured 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-offset: label in the r42 offset form (-03:00), not ISO-Z -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-offset 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-missing-line: record loses its base= line -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-missing-line 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=mismatch closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-label-drift: label one second after the claims label -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-label-drift 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-max-drift: measured-at-max no control measured -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-max-drift 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-badjson: claims.json replaced by '{' -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-badjson 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=mismatch closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-noclaims: claims.json removed -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-noclaims 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=mismatch closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-round42: claims round=42, digest regenerated -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-round42 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-round-float: claims round=43.0 (JSON float), digest regenerated -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-round-float 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-lane-souji: claims lane=souji, digest regenerated -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-lane-souji 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-alias: controls.c2 := controls.c1 with a coherent record -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-alias 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-future: label 17:10:00Z, coherent digest, commit-time bound 16:37:11Z -> red
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-future 2026-10-28T16:37:11Z; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+expected=red observed=red verdict=match
+
+--- m-future without the bound (the bound is what closes this class)
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-future; echo rc=$?
+K19 payload=freeze=present,order=ok,sha=match closed=1
+rc=0
+expected=green observed=green verdict=match
+
+## D. the exact edits behind each mutant
+--- m-early
+$ diff -u live/.ufo/waves/round-43/freeze.txt m-early/.ufo/waves/round-43/freeze.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/freeze.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-early/.ufo/waves/round-43/freeze.txt	2026-10-28 13:55:28.491771006 -0300
+@@ -1,4 +1,4 @@
+-frozen-at=2026-10-28T16:37:07Z
++frozen-at=2026-10-28T16:30:00Z
+ measured-at-max=2026-10-28T16:34:15Z
+ claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
+ base=ab98fac9dce87130bc4f66de89e30650d63943dc
+
+--- m-late-baddigest
+$ diff -u live/.ufo/waves/round-43/freeze.txt m-late-baddigest/.ufo/waves/round-43/freeze.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/freeze.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-late-baddigest/.ufo/waves/round-43/freeze.txt	2026-10-28 13:55:28.511497753 -0300
+@@ -1,4 +1,4 @@
+ frozen-at=2026-10-28T16:37:07Z
+ measured-at-max=2026-10-28T16:34:15Z
+-claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
++claims-sha256=f4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
+ base=ab98fac9dce87130bc4f66de89e30650d63943dc
+
+--- m-dupe-measured
+$ diff -u live/.ufo/waves/round-43/c1-controls/do-nothing.txt m-dupe-measured/.ufo/waves/round-43/c1-controls/do-nothing.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/c1-controls/do-nothing.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-dupe-measured/.ufo/waves/round-43/c1-controls/do-nothing.txt	2026-10-28 13:55:28.525683031 -0300
+@@ -43,3 +43,4 @@
+ RD42-6 freeze label:
+ 2026-10-28T12:05:00Z
+ 2026-10-28T08:00:01-03:00
++measured-at=2026-10-28T16:35:00Z
+
+--- m-offset
+$ diff -u live/.ufo/waves/round-43/freeze.txt m-offset/.ufo/waves/round-43/freeze.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/freeze.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-offset/.ufo/waves/round-43/freeze.txt	2026-10-28 13:55:28.537713528 -0300
+@@ -1,4 +1,4 @@
+-frozen-at=2026-10-28T16:37:07Z
++frozen-at=2026-10-28T08:00:01-03:00
+ measured-at-max=2026-10-28T16:34:15Z
+ claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
+ base=ab98fac9dce87130bc4f66de89e30650d63943dc
+
+--- m-missing-line
+$ diff -u live/.ufo/waves/round-43/freeze.txt m-missing-line/.ufo/waves/round-43/freeze.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/freeze.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-missing-line/.ufo/waves/round-43/freeze.txt	2026-10-28 13:55:28.544945077 -0300
+@@ -1,4 +1,3 @@
+ frozen-at=2026-10-28T16:37:07Z
+ measured-at-max=2026-10-28T16:34:15Z
+ claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
+-base=ab98fac9dce87130bc4f66de89e30650d63943dc
+
+--- m-label-drift
+$ diff -u live/.ufo/waves/round-43/freeze.txt m-label-drift/.ufo/waves/round-43/freeze.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/freeze.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-label-drift/.ufo/waves/round-43/freeze.txt	2026-10-28 13:55:28.554127585 -0300
+@@ -1,4 +1,4 @@
+-frozen-at=2026-10-28T16:37:07Z
++frozen-at=2026-10-28T16:37:08Z
+ measured-at-max=2026-10-28T16:34:15Z
+ claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
+ base=ab98fac9dce87130bc4f66de89e30650d63943dc
+
+--- m-max-drift
+$ diff -u live/.ufo/waves/round-43/freeze.txt m-max-drift/.ufo/waves/round-43/freeze.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/freeze.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-max-drift/.ufo/waves/round-43/freeze.txt	2026-10-28 13:55:28.568107843 -0300
+@@ -1,4 +1,4 @@
+ frozen-at=2026-10-28T16:37:07Z
+-measured-at-max=2026-10-28T16:34:15Z
++measured-at-max=2026-10-28T16:34:16Z
+ claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
+ base=ab98fac9dce87130bc4f66de89e30650d63943dc
+
+--- m-badjson
+$ stat -c '%s bytes %n' live/.ufo/waves/round-43/claims.json m-badjson/.ufo/waves/round-43/claims.json
+12109 bytes /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/claims.json
+2 bytes /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-badjson/.ufo/waves/round-43/claims.json
+$ head -c 4 m-badjson/.ufo/waves/round-43/claims.json | od -An -c
+   {  \n
+
+--- m-noclaims
+$ ls m-noclaims/.ufo/waves/round-43/claims.json
+ls: cannot access '/fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-noclaims/.ufo/waves/round-43/claims.json': No such file or directory
+
+--- m-round42
+$ diff -u live/.ufo/waves/round-43/freeze.txt m-round42/.ufo/waves/round-43/freeze.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/freeze.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-round42/.ufo/waves/round-43/freeze.txt	2026-10-28 13:55:28.593367669 -0300
+@@ -1,4 +1,4 @@
+ frozen-at=2026-10-28T16:37:07Z
+ measured-at-max=2026-10-28T16:34:15Z
+-claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
++claims-sha256=09812af2550ca508c96f5146204039838eaee91339d6a94ee170e645b057ad3f
+ base=ab98fac9dce87130bc4f66de89e30650d63943dc
+$ grep -n '"round"' m-round42/.ufo/waves/round-43/claims.json
+3: "round": 42,
+
+--- m-round-float
+$ diff -u live/.ufo/waves/round-43/freeze.txt m-round-float/.ufo/waves/round-43/freeze.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/freeze.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-round-float/.ufo/waves/round-43/freeze.txt	2026-10-28 13:55:28.598523888 -0300
+@@ -1,4 +1,4 @@
+ frozen-at=2026-10-28T16:37:07Z
+ measured-at-max=2026-10-28T16:34:15Z
+-claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
++claims-sha256=77c95628c78b44b76777b678e787c4382002e74c0da797dda2ea117024edf1ff
+ base=ab98fac9dce87130bc4f66de89e30650d63943dc
+$ grep -n '"round"' m-round-float/.ufo/waves/round-43/claims.json
+3: "round": 43.0,
+
+--- m-lane-souji
+$ diff -u live/.ufo/waves/round-43/freeze.txt m-lane-souji/.ufo/waves/round-43/freeze.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/freeze.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-lane-souji/.ufo/waves/round-43/freeze.txt	2026-10-28 13:55:28.618023554 -0300
+@@ -1,4 +1,4 @@
+ frozen-at=2026-10-28T16:37:07Z
+ measured-at-max=2026-10-28T16:34:15Z
+-claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
++claims-sha256=47615f39acabc7d932882647dc26bbe6b7ced6e77cd0ec462f2d566ce83e4aa5
+ base=ab98fac9dce87130bc4f66de89e30650d63943dc
+$ grep -n '"lane"' m-lane-souji/.ufo/waves/round-43/claims.json
+2: "lane": "souji",
+
+--- m-alias
+$ diff -u live/.ufo/waves/round-43/freeze.txt m-alias/.ufo/waves/round-43/freeze.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/freeze.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-alias/.ufo/waves/round-43/freeze.txt	2026-10-28 13:55:28.620269784 -0300
+@@ -1,4 +1,4 @@
+-frozen-at=2026-10-28T16:37:07Z
+-measured-at-max=2026-10-28T16:34:15Z
+-claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
++frozen-at=2026-10-28T16:32:23Z
++measured-at-max=2026-10-28T16:32:23Z
++claims-sha256=bc4a33c23428dfb389e5f6c20f7abb0a558c4667f63ecb5f1362e50f72126653
+ base=ab98fac9dce87130bc4f66de89e30650d63943dc
+$ grep -n '"c1"\|"c2"' m-alias/.ufo/waves/round-43/claims.json
+74:  "c1": ".ufo/waves/round-43/c1-controls/do-nothing.txt",
+75:  "c2": ".ufo/waves/round-43/c1-controls/do-nothing.txt"
+
+--- m-future
+$ diff -u live/.ufo/waves/round-43/freeze.txt m-future/.ufo/waves/round-43/freeze.txt
+--- /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live/.ufo/waves/round-43/freeze.txt	2026-10-28 13:37:11.000000000 -0300
++++ /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/m-future/.ufo/waves/round-43/freeze.txt	2026-10-28 13:55:28.621953704 -0300
+@@ -1,4 +1,4 @@
+-frozen-at=2026-10-28T16:37:07Z
++frozen-at=2026-10-28T17:10:00Z
+ measured-at-max=2026-10-28T16:34:15Z
+-claims-sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630
++claims-sha256=35f5a2fd0460f9898a680d54f07bea9686ad2591ae91cbe4bf37765618d402a5
+ base=ab98fac9dce87130bc4f66de89e30650d63943dc
+$ grep -n '"frozen_at_utc"' m-future/.ufo/waves/round-43/claims.json
+6: "frozen_at_utc": "2026-10-28T17:10:00Z",
+
+## E. defensive and contract behaviour
+--- no argument -> red, never a vacuous pass
+$ check_k19; echo rc=$?
+K19 payload=freeze=absent,order=bad,sha=mismatch closed=0
+rc=1
+--- an explicitly empty second argument -> red, never an ignored bound
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live ""; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+--- an offset-form bound -> red (only a Z-normalized instant is a bound)
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/live 2026-10-28T13:37:11-03:00; echo rc=$?
+K19 payload=freeze=present,order=bad,sha=match closed=0
+rc=1
+--- a sourced limb returns 1 on red and does not exit the caller
+$ check_k19 /fast/scratch/hyaku/kasegi-r43/ExecK19Freeze/base 2026-10-28T16:27:52Z >/dev/null; echo survived-rc=$?; echo caller-alive
+survived-rc=1
+caller-alive
+--- sourcing defines exactly one function and prints nothing
+$ bash -c 'source /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK19Freeze.sh >/dev/null; declare -F | wc -l; declare -F check_k19'
+1
+check_k19
+--- syntax: bash -n writes nothing; its rc and byte count are the evidence
+$ bash -n /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK19Freeze.sh; echo rc=$?; bash -n /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK19Freeze.sh 2>&1 | wc -c
+rc=0
+0
+
+## F. tally
+red-cases=15 green-cases=3

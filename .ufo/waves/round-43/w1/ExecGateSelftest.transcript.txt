@@ -1,0 +1,78 @@
+claim-package gate --selftest: transcript
+kasegi-shokunin round 43, seat ExecGateSelftest (C2 selftest implementation)
+run_at_utc: 2026-10-28T16:51:29Z
+
+Inputs are the wave deliverables at their landing paths. No lane file was read or
+written: the lane tree does not yet carry claim-package-check.py.
+
+  gate core  corpus/instruments/claim-package-check.py
+             = .ufo/waves/round-43/w1/ExecGateCore.claim-package-check.py
+               802 lines, sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+  selftest   pasted byte-exactly above the gate anchor line
+             "# <!-- selftest-body-paste-anchor: paste run_selftest(...) ABOVE this guard -->"
+             = .ufo/waves/round-43/w1/ExecGateSelftest.selftest.py
+               616 lines, sha256 04951ca0e72050725fc01a16ba1e42d7a52bd29bb0ae653b164a39ed39b57b17
+  fixtures   corpus/instruments/fixtures/claim-package/defect-<k>/  <- .ufo/waves/round-43/w1/ExecGateFixtures.defect-<k>/
+             corpus/instruments/fixtures/claim-package/index.txt  <- .ufo/waves/round-43/w1/ExecGateFixtures.index.txt
+             corpus/instruments/fixtures/claim-package/exemplar/  <- .ufo/waves/round-43/w1/ExecExemplarPackage.*
+
+  fixture content digests (sha256 over the sorted "<relpath> <sha256>" lines):
+    defect-1-missing-file    acaa7b9346a6a021cc944c4a6da37ed5e51c1d33a01d5d084c08fb389926891d
+    defect-2-digest          6eed25c1b306b423b1b2312d8588c33959b3a3b286d2ef43dc56bd9661818bb0
+    defect-3-negative        54a410b4e3b56fef13cd6351de9912d23175ab5078da183012dd2b673f33bf05
+    defect-4-escape          01b76e1fcb64733de89c2ae1841e7172e2ce707ac68c2acb96bc98fb743e91c2
+    defect-5-redaction       90678f96ce49c65b3de269c6c0e9dd83ab8fb80d443ace5cc5ad6a3a6ee52b51
+    defect-6-custodian       3227fbc348ed17ad8916c050e74cdb85133f631ee4490f05d550cbe80cfa70ca
+    defect-7-reviewer        e2021578d135cc367b1088c59880498213519529ab0f53ddc81d96c95afbc384
+    defect-8-marker          e5338fb85115ef60169c231c9bd688be5fa90a5ab2301ae0a714e9178fdec96c
+    defect-9-secret          67d82a7ebdd33d1889cf60e248c3494135ce14d1bf6936d81192f66d74a22e06
+    exemplar                 2e1f1a97703140d0d4b6271627ae69b6806e8a4502f627816defbbade5e26a30
+
+Assembly (reproduces ./claim-package-check.py above ./fixtures):
+  python3 - <<'EOF'
+  from pathlib import Path
+  core = Path("ExecGateCore.claim-package-check.py").read_text()
+  body = Path("ExecGateSelftest.selftest.py").read_text()
+  anchor = "# <!-- selftest-body-paste-anchor: paste run_selftest(...) ABOVE this guard -->"
+  head, tail = core.split(anchor, 1)
+  Path("claim-package-check.py").write_text(head + body + "\n\n" + anchor + tail)
+  EOF
+  mkdir -p fixtures/claim-package
+  for d in ExecGateFixtures.defect-*; do n=$(basename "$d"); cp -a "$d" "fixtures/claim-package/${n#ExecGateFixtures.}"; done
+
+Each case runs in its own dir under TMPDIR with a sitecustomize audit hook that
+tags every gate open as read or write; a case that reads a sibling case dir or the
+canonical fixtures root, or writes anywhere outside its own dir, is failed
+(detail=sibling-read|source-fixture-read|external-write|sibling-write|source-fixture-write).
+
+A. the gate's own --selftest (ten graded cases):
+$ python3 claim-package-check.py --selftest
+selftest case=1 class=defect fixture=defect-1-missing-file expected=R-FILES observed=R-FILES verdict=pass
+selftest case=2 class=defect fixture=defect-2-digest expected=R-MANIFEST observed=R-MANIFEST verdict=pass
+selftest case=3 class=defect fixture=defect-3-negative expected=R-MANIFEST observed=R-MANIFEST verdict=pass
+selftest case=4 class=defect fixture=defect-4-escape expected=R-MANIFEST observed=R-MANIFEST verdict=pass
+selftest case=5 class=defect fixture=defect-5-redaction expected=R-REDACT observed=R-REDACT verdict=pass
+selftest case=6 class=defect fixture=defect-6-custodian expected=R-CUSTODIAN observed=R-CUSTODIAN verdict=pass
+selftest case=7 class=defect fixture=defect-7-reviewer expected=R-STATUS observed=R-STATUS verdict=pass
+selftest case=8 class=defect fixture=defect-8-marker expected=R-REPORT observed=R-REPORT verdict=pass
+selftest case=9 class=defect fixture=defect-9-secret expected=R-NOSECRET observed=R-NOSECRET verdict=pass
+selftest case=10 class=degenerate fixture=always-pass expected=reject observed=rejected-9/9 verdict=pass
+selftest cases=10 failures=0
+exit=0
+
+B. degenerate control: the same selftest implementation with the gate replaced by an
+   always-pass stand-in that prints eight "RULE <id> verdict=pass detail=stub" lines and
+   "verdict=WELL-FORMED exit=0". Every one of the nine defect cases is rejected:
+$ python3 selftest.py --gate always-pass.py --fixtures fixtures/claim-package
+selftest case=1 class=defect fixture=defect-1-missing-file expected=R-FILES observed=none verdict=fail detail=verdict=well-formed
+selftest case=2 class=defect fixture=defect-2-digest expected=R-MANIFEST observed=none verdict=fail detail=verdict=well-formed
+selftest case=3 class=defect fixture=defect-3-negative expected=R-MANIFEST observed=none verdict=fail detail=verdict=well-formed
+selftest case=4 class=defect fixture=defect-4-escape expected=R-MANIFEST observed=none verdict=fail detail=verdict=well-formed
+selftest case=5 class=defect fixture=defect-5-redaction expected=R-REDACT observed=none verdict=fail detail=verdict=well-formed
+selftest case=6 class=defect fixture=defect-6-custodian expected=R-CUSTODIAN observed=none verdict=fail detail=verdict=well-formed
+selftest case=7 class=defect fixture=defect-7-reviewer expected=R-STATUS observed=none verdict=fail detail=verdict=well-formed
+selftest case=8 class=defect fixture=defect-8-marker expected=R-REPORT observed=none verdict=fail detail=verdict=well-formed
+selftest case=9 class=defect fixture=defect-9-secret expected=R-NOSECRET observed=none verdict=fail detail=verdict=well-formed
+selftest case=10 class=degenerate fixture=always-pass expected=reject observed=rejected-9/9 verdict=pass
+selftest cases=10 failures=9
+exit=1

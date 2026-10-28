@@ -1,0 +1,36 @@
+{
+ "schema_version": "custodian-receipts/v1",
+ "policy": "every matched grant carries scope_signal NO_SCOPE_OBJECTION; the head binds the manifest",
+ "decision_formula": "decision_sha256 = sha256(action + '|' + input_sha256 + '|' + matched_grant_id + '|' + 'NO_SCOPE_OBJECTION')",
+ "attest_input_formula": "input_sha256 = sha256(evidence/manifest.json bytes with expected_head_sha256 set to \"\")",
+ "chain": [
+  {
+   "seq": 1,
+   "action": "scope-triage",
+   "input_sha256": "9b81dd48db37b26303360334229c630f3e8ff32767b0ed68dd32a98e1d69e543",
+   "matched_grant_id": "R43-EXEMPLAR-SCOPE-001",
+   "scope_signal": "NO_SCOPE_OBJECTION",
+   "decided_by": "exemplar-custodian",
+   "decision_sha256": "5de3f818740682a5f96210c51470252747cc96414a28669f9442bcffb8bf6214"
+  },
+  {
+   "seq": 2,
+   "action": "evidence-freeze",
+   "input_sha256": "aea498a6c5a8c9f851a77b1f9cab133e01213e4b41159a3faf27640d454f580a",
+   "matched_grant_id": "R43-EXEMPLAR-EVIDENCE-001",
+   "scope_signal": "NO_SCOPE_OBJECTION",
+   "decided_by": "exemplar-custodian",
+   "decision_sha256": "2f2153f9f5693585005dfe18a9cc364b734c9c8ad6192a4a378f6d359167b5cf"
+  },
+  {
+   "seq": 3,
+   "action": "manifest-attest",
+   "input_sha256": "701d536f4f4a3337b3e97c2b3237c457524b5561c68cf70d9f4164acc9783ceb",
+   "matched_grant_id": "R43-EXEMPLAR-ATTEST-001",
+   "scope_signal": "NO_SCOPE_OBJECTION",
+   "decided_by": "exemplar-custodian",
+   "decision_sha256": "46b50b67491860280b6a5edbae59229d4e3609b9d262c6749aab8d50b6f9bf9f"
+  }
+ ],
+ "head_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+}

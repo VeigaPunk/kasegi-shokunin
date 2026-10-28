@@ -1,0 +1,92 @@
+# K17 (ExecK17ClaimsBefore) transcript — commands and their actual output
+# lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+# base=ab98fac9dce87130bc4f66de89e30650d63943dc  round-41 judged head=1f7464612ac4c44e39886b82e812610d3c039b13  round-43 freeze=4cb6d4a
+
+## 1. the limb parses; a plain run is refused (export mode only)
+$ bash -n /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK17ClaimsBefore.sh
+exit=0
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK17ClaimsBefore.sh
+ExecK17ClaimsBefore: refusing to run against the live worktree: this limb is export-mode only.
+ExecK17ClaimsBefore: pass --export-ref <hash> (or --tree <exported dir>).
+exit=2
+
+## 2. BASE EXPORT ab98fac9 — RED: the r42 C1 before literal closed=10/12
+##    is not printed by its cited control (which prints closed=8/12)
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK17ClaimsBefore.sh --export-ref ab98fac9dce87130bc4f66de89e30650d63943dc --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/w-base
+K17 detail round=round-42 claim=C1 field=before token=closed=10/12 cited=.ufo/waves/round-42/c1-controls/do-nothing.txt control-prints=closed=13/13+closed=8/12 result=unbacked
+K17 payload=claims=20,tokens=3,verified=2,superseded=0,unbacked=1 closed=0
+exit=1
+
+## 3. GREEN: a scratch copy of the base export plus a committed
+##    round-42/claims-erratum-1.md that quotes closed=10/12 and says superseded
+$ cat /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/green/.ufo/waves/round-42/claims-erratum-1.md
+# round-42 claims erratum 5 (scratch fixture for K17)
+
+RD42-8: the C1 `before` cell quotes the r41 closure result `closed=10/12`, but the
+control it cites prints `closed=8/12`. That literal is superseded by the control value.
+exit=0
+##    the fixture tree is a hardlink copy: the base export is unchanged
+$ bash -c git\ -C\ \"\$1\"\ show\ \"\$2:.ufo/waves/round-42/claims-erratum-1.md\"\ \|\ sha256sum\;\ sha256sum\ \"\$3/.ufo/waves/round-42/claims-erratum-1.md\" _ /home/vgpnk/Projects/shokunin/kasegi-shokunin ab98fac9dce87130bc4f66de89e30650d63943dc /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/base
+d3e5e1e2a58834afcb543efdaa6f8a176dd3ce866003f2960e1aa6c4a5b37403  -
+d3e5e1e2a58834afcb543efdaa6f8a176dd3ce866003f2960e1aa6c4a5b37403  /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/base/.ufo/waves/round-42/claims-erratum-1.md
+exit=0
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK17ClaimsBefore.sh --tree /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/green
+K17 detail round=round-42 claim=C1 field=before token=closed=10/12 by=claims-erratum-1.md result=superseded
+K17 payload=claims=20,tokens=3,verified=2,superseded=1,unbacked=0 closed=1
+exit=0
+
+## 4. NEAR-TOKEN: closed=10/120 beside closed=10/12 in the same cell — the
+##    mangled twin is NOT counted and the payload prints it as rejected
+mutated round-42/claims.json: closed=10/12 -> closed=10/12 (mangled twin closed=10/120)
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK17ClaimsBefore.sh --tree /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/near
+K17 detail round=round-42 claim=C1 field=before token=closed=10/12 by=claims-erratum-1.md result=superseded
+K17 detail round=round-42 claim=C1 field=before token=closed=10/120 result=rejected near-token
+K17 payload=claims=20,tokens=3,verified=2,superseded=1,unbacked=0,rejected=closed=10/120 closed=0
+exit=1
+
+## 5. ROUND-43 FREEZE EXPORT 4cb6d4a — still RED on the historical r42 token;
+##    the round-43 before cell QUOTES closed=10/13 and closed=10/12 from other
+##    records and those quotations are skipped (quoted=2)
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK17ClaimsBefore.sh --export-ref 4cb6d4a --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/w-head
+K17 detail round=round-42 claim=C1 field=before token=closed=10/12 cited=.ufo/waves/round-42/c1-controls/do-nothing.txt control-prints=closed=13/13+closed=8/12 result=unbacked
+K17 detail round=round-43 claim=C1 field=before token=closed=10/13 record=.ufo/waves/round-42/claims-erratum-4.md result=quoted
+K17 detail round=round-43 claim=C1 field=before token=closed=10/12 record=claims.json result=quoted
+K17 payload=claims=21,tokens=5,verified=4,superseded=0,unbacked=1,quoted=2 closed=0
+exit=1
+
+## 6. the same round-43 freeze export plus the round-42 erratum -> GREEN
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK17ClaimsBefore.sh --tree /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/head
+K17 detail round=round-42 claim=C1 field=before token=closed=10/12 by=claims-erratum-5.md result=superseded
+K17 detail round=round-43 claim=C1 field=before token=closed=10/13 record=.ufo/waves/round-42/claims-erratum-4.md result=quoted
+K17 detail round=round-43 claim=C1 field=before token=closed=10/12 record=claims.json result=quoted
+K17 payload=claims=21,tokens=5,verified=4,superseded=1,unbacked=0,quoted=2 closed=1
+exit=0
+
+## 7. ROUND-41 JUDGED HEAD 1f746461 — no round-42/43 claims exist there yet,
+##    so only the r41 before token is in the population (claims=19 tokens=1)
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK17ClaimsBefore.sh --export-ref 1f7464612ac4c44e39886b82e812610d3c039b13 --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --work /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/w-r41
+K17 payload=claims=19,tokens=1,verified=1,superseded=0,unbacked=0 closed=1
+exit=0
+
+## 8. graded fixtures: repaired tree accepts, five mutants reject
+$ bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK17ClaimsBefore.sh --tree /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/base --selftest --work /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/selftest-work
+K17 detail round=round-42 claim=C1 field=before token=closed=10/12 cited=.ufo/waves/round-42/c1-controls/do-nothing.txt control-prints=closed=13/13+closed=8/12 result=unbacked
+K17 payload=claims=20,tokens=3,verified=2,superseded=0,unbacked=1 closed=0
+K17 replay committed-defect expected=reject observed=reject payload=claims=20,tokens=3,verified=2,superseded=0,unbacked=1 verdict=pass
+K17 replay repaired expected=accept observed=accept payload=claims=20,tokens=3,verified=2,superseded=1,unbacked=0 verdict=pass
+K17 replay erratum-without-superseded expected=reject observed=reject payload=claims=20,tokens=3,verified=2,superseded=0,unbacked=1 verdict=pass
+K17 replay near-token expected=reject observed=reject payload=claims=20,tokens=3,verified=2,superseded=1,unbacked=0,rejected=closed=10/120 verdict=pass
+K17 replay fabricated-value expected=reject observed=reject payload=claims=20,tokens=4,verified=2,superseded=1,unbacked=1 verdict=pass
+K17 replay citation-missing expected=reject observed=reject payload=claims=20,tokens=3,verified=1,superseded=1,unbacked=1 verdict=pass
+K17 selftest cases=6 failures=0
+exit=1
+
+## 9. the suite-side contract: source the limb, call check_k17 (no output at source time)
+$ bash -c source\ \"\$1\"\ \|\|\ exit\ 9\;\ echo\ sourced-ok\;\ check_k17\ \"\$2\"\;\ echo\ \"rc=\$\?\"\;\ printf\ \"k17_payload=%s\\n\"\ \"\$\(k17_payload\ \"\$2\"\)\" _ /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK17ClaimsBefore.sh /fast/scratch/hyaku/kasegi-r43/ExecK17ClaimsBefore/base
+sourced-ok
+K17 detail round=round-42 claim=C1 field=before token=closed=10/12 cited=.ufo/waves/round-42/c1-controls/do-nothing.txt control-prints=closed=13/13+closed=8/12 result=unbacked
+K17 payload=claims=20,tokens=3,verified=2,superseded=0,unbacked=1 closed=0
+rc=1
+K17 detail round=round-42 claim=C1 field=before token=closed=10/12 cited=.ufo/waves/round-42/c1-controls/do-nothing.txt control-prints=closed=13/13+closed=8/12 result=unbacked
+k17_payload=claims=20,tokens=3,verified=2,superseded=0,unbacked=1
+exit=0

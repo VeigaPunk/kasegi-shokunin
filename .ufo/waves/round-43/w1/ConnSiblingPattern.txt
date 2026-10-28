@@ -1,0 +1,445 @@
+sibling-pattern scan — kasegi-shokunin round 43 (seat ConnSiblingPattern)
+base ab98fac9dce87130bc4f66de89e30650d63943dc · 17 sibling lane repos inspected, the 9 that
+carry an instrument tree read, none written
+
+Scope. The round-43 deliverables are corpus/instruments/r43-closure.sh (K1-K19: K1-K13 keep
+the r42 J1-J13 payload grammar and replay limbs, K14-K19 are new narrative-evidence checks)
+and corpus/instruments/claim-package-check.py (eight RULE lines, an exemplar, nine defect
+fixtures, --selftest cases=10). Every entry names the sibling bytes, the kasegi deliverable
+it should inform, and a verdict: ADOPT (the sibling closes a gap kasegi has), HOLD (kasegi
+already has an equivalent; the sibling text is the yardstick, not an import), CONTRADICTS
+(importing it as written would violate a frozen kasegi contract). Kasegi's own convention is
+cited where it is the reason for a HOLD or a CONTRADICTS.
+
+===============================================================================
+1. EXPORT-MODE GATE STRUCTURE
+===============================================================================
+
+P1.1 ADOPT — tar-member containment is a separate, testable step.
+kaidoku-shokunin/tools/round-44/c2-counter.py:752-786 `extract_tar` never calls system
+`tar`: members have `./` stripped, absolute names dropped, `target` must satisfy
+`target.startswith(dest + os.sep)`, and a symlink is only created after `os.path.abspath`
+of the link target is proven to stay inside `dest`. c2-counter.py:790-802 `export_tree`
+feeds it `git archive --format=tar` and raises `Unevaluable` on a non-zero archive, so a
+ref that exports partially is exit 2, never a short tree.
+Informs: r43-closure.sh export build (the r42 driver's `git -C "$LANE" archive | tar -x`,
+r42-closure.sh:86-92). `tar -x` alone honours `..` and absolute members; the export feeds
+every K-check, so one escaping member would let a K read a path it must not see.
+Note the frozen contract does not require the hardened extractor; this is the cheap
+insurance version, and it is the only sibling form that makes containment an explicit line.
+
+P1.2 ADOPT — export the tree into a temporary directory that dies with the process, and let
+SIGTERM reach the cleanup.
+kaidoku-shokunin/tools/round-44/c2-counter.py:13-16 (tree exported into `--work`, read-only);
+kama-shokunin/tools/round42-digest-audit.py:290-294 (`tempfile.TemporaryDirectory` around the
+`tar -x`); kama-shokunin/tools/round41-pinwatch-audit.py:210-215:
+    export = tempfile.mkdtemp(prefix="r41c2-")
+    atexit.register(shutil.rmtree, export, True)  # round 42: remove the export (R41A10-10)
+    signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))  # round 42: SIGTERM must reach atexit
+Informs: r43-closure.sh driver. The r42 driver creates `$WORK/export` with `rm -rf` at
+r42-closure.sh:86 and never removes it on exit, and installs no signal handler (grep shows
+no `SIGTERM|atexit|trap` in r42-closure.sh). A cancelled seat therefore leaves the export
+behind — the same class R41A10-10 fixed in kama. SIGTERM→exit 143 is the part most lanes
+forget: without it `atexit` never runs on a killed run.
+
+P1.3 ADOPT — "exit 2 means could-not-evaluate and never counts as a pass" phrased in the tool.
+kaidoku-shokunin/tools/round-44/c2-counter.py:23-24: "Exit 2 means COULD-NOT-EVALUATE, never
+'not a pass': it never counts toward the target." chousa-shokunin/tools/research-gate.sh:5968-5970
+states the same doctrine as a lesson ("a two-valued contract would let cannot-compare
+masquerade as clean"). Informs: r43-closure.sh header and the K9/K10 self-acceptance arms —
+the C1 claim needs the *third* value to be visibly distinct from red, and the distinct
+`ref-not-found` red keeps the same job for an unresolvable ref.
+
+P1.4 HOLD — kasegi's export-mode gate is already the strictest form read.
+kasegi corpus/instruments/r42-closure.sh:1-27 declares usage, the transcript grammar, and the
+exit table in the header; :56-60 refuses a plain run with exit 2; :66-71 prints
+`ERROR ref-not-found ref=<hash> closed=0 exit=1` for an unresolvable ref. No sibling
+instrument read combines "plain run refused" + "unresolvable ref is a *red*, not a usage
+error" in one file. r43-closure.sh must reproduce these three shapes byte-for-byte; the
+sibling files are useful only as the place to check that the doctrine text is not narrowed.
+
+===============================================================================
+2. RECEIPT GRAMMAR
+===============================================================================
+
+P2.1 ADOPT — a receipt is a *transcript plus* its graded selftest, and the receipt reader is
+graded on a canonical synthetic transcript, not on the live run.
+kasegi corpus/instruments/r42-closure.sh:16-24 ("The receipt written by --receipt-out is that
+transcript followed by the thirteen graded selftest lines and the `selftest cases=13
+failures=<k>` line") and :1584-1600 with :1985-1999: check_j8 is exercised against a
+synthetic 33-line canonical transcript so the receipt reader cannot pass merely because the
+other twelve checks happened to be green. Informs: r43-closure.sh K8 (receipt) and K10
+(selftest-case grading). This is already kasegi's design; keep the synthetic-transcript limb
+for the nineteen-line r43 form, and keep the forgery arms (`forgery_verdicts`,
+r42-closure.sh:1534) — a receipt that is one unedited tee is exactly the property the frozen
+kill rule names, so the reader must be able to red on a spliced one.
+
+P2.2 ADOPT — one machine line per (revision, tool) pair plus a summary line, with a
+could-not-evaluate exit.
+tsukuroi-shokunin/tools/check-report-receipts.py:1-11: "one JSON line per cited revision/tool
+pair and a summary JSON line. Exit 0 when all citations are receipted, 1 when any are not,
+and 2 when the report or lane revision cannot be read." Informs: r43-closure.sh K15 (quoted
+closed= values vs committed transcripts). K15's job is the same shape: each quoted value is
+one line, the summary counts them, and an unreadable transcript must be exit 2 rather than a
+silent zero.
+
+P2.3 ADOPT — corrections are a keyed ledger, and an unmatched key is itself a defect.
+kama-shokunin/tools/report-landing-audit.py:10-42: finite mechanical defect kinds (no prose
+judgment), then `errata-unmatched` and `errata-invalid` classes; "A defect is corrected only
+by a row with equal round, kind and token." Informs: r43-closure.sh K14 (the `corrections=<n>`
+literal) and the appended r42 correction for RD42-1. The key point is that the *correction*
+is graded, not only the original statement: an appended paragraph that names a different
+literal is `errata-unmatched`, not a fix. This is the single most transferable receipt idea
+in the scan, because C1's whole predicate is "the counters cannot see a record that
+contradicts the run it describes".
+
+P2.4 ADOPT (narrow) — two receipt identities, not one.
+tameshi-shokunin/tools/receipt-measure.py:1-9: "The runner's SHA-256 belongs in a receipt's
+`runner_sha256`; `instrument_sha256` stays the frozen round20-measure instrument identity."
+Informs: r43-closure.sh receipt header — `suite-sha256` (r42-closure.sh:18) pins the runner;
+if r43 also consumes frozen fixture bytes (claim-package exemplar, defect fixtures) each needs
+its own digest in the receipt, or a fixture edit is invisible to the receipt check.
+
+P2.5 HOLD — the mori `check()` harness shape.
+mori-shokunin/tools/mori-census.sh:3278-3330: `check() { # LABEL WANT_RC WANT_VERDICT
+[WANT_RE...] }`, capture to a file, assert exit, assert exactly one verdict line, reject
+shell-diagnostic noise, then assert every required regex. Informs: any bash-side case added to
+r43-closure.sh. Kasegi already grades the same five things in Python (`selftest case=` line
+grammar, r42-closure.sh:1422-1425); do not build a second harness in bash — but if a bash
+arm appears, take the noise check with it.
+
+===============================================================================
+3. SELFTEST MUTANT GRAMMAR
+===============================================================================
+
+P3.1 ADOPT — two distinct mutant classes; kasegi has only the first.
+kasegi corpus/instruments/r42-closure.sh:1930-2060 mutates the *subject*: a copy of the
+export with evidence stripped / tallies mangled / declaration broken, then asserts the check
+goes red (`mutants=<rejected>/<built>`). kaidoku-shokunin/tools/round-34/replay-gate.py:165-172
+mutates the *implementation*:
+    MUTANTS = [
+        ("always-clean", "if over:", "if False:", "red-mut", 2),
+        ("no-positive-check", "if not positive[\"met_target\"]:", "if False:", "positive-below", 3),
+        ("vacuous-no-shortcut-floor", "... len(shortcuts) < MIN_SHORTCUTS:", "...", "two-shortcuts-unevaluable", 3),
+    ]
+and :258-275 runs each as a single `source.replace(needle, replacement, 1)` and counts it
+*killed* when `run.returncode != expected_exit`. Informs: r43-closure.sh `--selftest` for
+K14-K19. The subject-mutant class proves a check can see a bad record; it cannot prove the
+check is non-vacuous. "always-clean" is the direct counter to the r42 lesson in claims.json —
+a K14-K19 whose implementation were reduced to `closed=1` must be killed by the red case.
+
+P3.2 ADOPT — the anchor-missing guard.
+kaidoku-shokunin/tools/round-34/replay-gate.py:260-263: `if needle not in source:
+failures.append(mutant_name + "-anchor-missing"); continue`. Informs: the same K14-K19
+mutant table. Without it, an unrelated refactor of r43-closure.sh silently disarms every
+implementation mutant and the selftest still prints `cases=19 failures=0`. This is the
+cheapest single line in the scan and the one most likely to be omitted.
+
+P3.3 ADOPT — dual witness for the expected set: committed file plus in-code literal.
+kotodama-shokunin/tools/gates/handoff-packet-check.py:686-701: reads
+`fixtures/handoff-packet-check.expected` (one ID per line), asserts
+`set(expected_ids) == set(got)` AND `set(FIXTURE_EXPECTED) == set(expected_ids)` AND
+`got == FIXTURE_EXPECTED`; the comment names the disagreement as the failure ("in-code
+expected counts and the committed .expected file disagree"). Informs: the claim-package
+defect-fixture table (nine fixtures, one rule each). A committed `.expected` per fixture
+cannot drift with the gate source, and an in-code table cannot drift with the fixture bytes;
+requiring both to agree closes the "the fixture was edited to match the gate" class.
+
+P3.4 ADOPT — assert the *exact* failing-rule set, not containment.
+kotodama-shokunin/tools/gates/handoff-packet-check.py:741-747 and :795-806:
+`{f["id"] for f in findings} == {"HO-CANON-MARKER"}`. Informs: claim-package-check.py
+fixture grading. The C2 kill rule says a defect fixture fails when "its named rule [is] not
+the failing one" — `==` is that sentence; `in` is not, because a gate that fails every rule
+would still contain the named one.
+
+P3.5 ADOPT — mutation by one deterministic string replacement on a clean control.
+kotodama-shokunin/tools/gates/handoff-packet-check.py:724-830 builds every probe as
+`CONTROL_PACKET.replace(<one exact cell>, <one mutated cell>)`; the clean control asserts
+`control_code == EXIT_CLEAN` and `control_findings == []` first, and a malformed-input arm
+asserts exit 2. Informs: claim-package-check.py `--selftest cases=10` (nine defect classes
+plus the degenerate control). The control-then-one-edit shape is what makes "this fixture
+fails for exactly this reason" provable; nine hand-authored trees would not be.
+
+P3.6 ADOPT — the tautology control family stated in the frozen predicate.
+kama-shokunin/tools/round60-c2-counter.py:12-17 declares "the 5 control families (tautology
+predicates, flipped verdicts, corrupted quotes, dropped lines, tampered capture) are all
+rejected, errors=0", and :246-249 implements the tautology arm by rewriting every predicate
+to `True` and requiring the score to stop being met. Informs: claim-package-check.py
+`--selftest` "degenerate always-pass control, which it must reject". Kasegi's C2 needs exactly
+this arm; kama's phrasing ("tautology") is also the wording to reuse in the receipt.
+
+P3.7 ADOPT — a stable diff vocabulary makes "the superseded token is gone" an assertable
+substring.
+chousa-shokunin/tools/research-gate.sh:4213-4234 `gate_drift_field_report`: for a baseline and a
+new line it emits `-<key>` when a baseline field is absent from the new line, `+<key>` when a new
+field is absent from the baseline, and a bare `<key>` when the value changed; when no key differs
+it names the line id "instead of a silent change" (:4230-4233). The case at :5963-5966 renames one
+field with a single `sed` and then asserts the literals `'+finds'` and `'-findings'` — both are
+substrings of that report, so the case proves the *removal* of the old field as well as the arrival
+of the new one. :5927-5934 keeps the count honest separately: exactly one GATE_DRIFT line on an
+exit-0/1 run, none on exit 2.
+Informs: r43-closure.sh K14 and the correction appended for RD42-1. RD42-1 is a supersession —
+`corrections=33` at SCORECARD.md:1634 against the suite's own `corrections=34` — and the graded
+property is that the superseded literal no longer states the live value. Kasegi's selftest line
+grammar (r42-closure.sh:1422-1425) carries `positive=pass|fail` and `payload-match=0|1` and has no
+negative form, so in the transcript "old literal still present" and "old literal replaced" are
+indistinguishable. Take one of the two available shapes: a `-token` assertion form, or a K14
+payload field that names the superseded literal so its absence is observable.
+
+P3.8 HOLD — case numbering is part of the contract.
+chousa-shokunin/tools/research-gate.sh:5880-5882: "Appended after the r7 cases so cases 1-74
+keep their case numbers, names and exits." Informs: r43-closure.sh K1-K19. Kasegi's r42
+already orders J1-J13 and appends; the r43 analogue is K1-K13 keeping their r42 payloads and
+K14-K19 being appended, never inserted. A sibling statement of the rule is the reason to
+write it into the r43 header.
+
+P3.9 ADOPT — assert the verdict class; put the fixture-specific label behind an opt-in.
+souji-shokunin/tools/cand-c2-clusterc-selftest.sh:56-62 (`cc_ok` / `cc_bad` / `cc_check`) and
+:99-115: `cc_refusal_ok` asserts `[ "$v" != SAFE ]` — any non-SAFE verdict is a refusal — and only
+when `C2_STRICT_LABELS=1` does it additionally demand the exact receipt label. The comment at
+:90-98 gives the reason: "a label-coupled corpus reports safety-preserving integration as failure
+and cannot serve as a cross-candidate gate."
+Informs: claim-package-check.py's nine defect fixtures, and K14-K19. C2's frozen wording is already
+class-based ("its named rule not the failing one"), so the rule id is the graded token and the
+human message must stay free — otherwise a wording improvement inside the gate reads as a fixture
+regression and the exemplar's `pass=8` becomes brittle. The same holds for K14-K19: grade
+`closed=0` plus the named payload field, not the payload string.
+
+P3.10 HOLD — a failing case's diagnostic goes on its own line; the machine line stays anchored.
+chousa-shokunin/tools/research-gate.sh:4490-4494 (the same pair repeats at :4522-4526 and
+:4552-4556): the machine line `FAIL-case <name> exit=<n> want=<n> ...` is printed, then the whole
+failing output is echoed on separate lines prefixed `    | `. Informs: r43-closure.sh `--selftest`.
+Kasegi's case grammar is `$`-anchored (r42-closure.sh:1422-1424, `... verdict=(pass|fail)$`), so a
+`why=` field cannot be appended to the machine line without breaking the parser that reads it. A
+failing r43 case therefore has to emit its diagnostic beside the line, or the frozen C1 selftest
+shape is lost — worked example to copy, not a redesign.
+
+===============================================================================
+4. DECLARATION BLOCKS
+===============================================================================
+
+P4.1 ADOPT — the header declares the verdict form, the exit table, the selftest summary form,
+and the finding-ID inventory before any code.
+chousa-shokunin/tools/research-gate.sh:1-30: file purpose, `Verdict: RESEARCH_GATE: CLEAN|DRIFT`,
+`Exit: 0 CLEAN | 1 DRIFT | 2 setup/usage`, `Selftest: RESEARCH_GATE_SELFTEST: PASS (N cases) |
+FAIL (fail/N)`, severity semantics, then the per-ID grammar with a comment per ID.
+kotodama-shokunin/tools/gates/handoff-packet-check.py:1-70 does the same with a level per ID
+(`HO-DATA HOLD, exit 2`, `HO-MISSING FAIL`, ...) and an explicit "Interface" and "Output"
+section. Informs: r43-closure.sh lines 1-27 (the r42 header extended) and
+claim-package-check.py's module docstring. Kasegi's r42 header is already close; the two
+additions worth taking are (a) the per-rule inventory with the level/exit of each, and (b)
+naming what a blank/placeholder cell means before the rules.
+
+P4.2 ADOPT — a closed enum for the setup-failure line, with one reason per defect.
+mado-shokunin/tools/mado-geometry.py:27-31: "Setup failure: stdout is exactly one line
+`MADO_GEOMETRY: SETUP <reason>`, exit 2, reason one of usage | unreadable | too_large |
+bad_json. A PATH that is missing, unreadable, a directory, a FIFO or any non-regular file is
+unreadable." Informs: claim-package-check.py's exit-2 arms (unreadable package dir,
+oversize manifest, bad JSON) and r43-closure.sh's `ERROR ref-not-found` /
+`ERROR export-failed` lines. One line, one reason, closed vocabulary — the C2 kill rule
+depends on a defect fixture's failure being attributable.
+
+P4.3 ADOPT — the Provenance block for anything re-implemented from another tree.
+chousa-shokunin/tools/quarantine-check.py:21-29: names the file the semantics were
+re-implemented from, then two boundary sentences — "The campaign's checker is NEVER run from
+this lane: it writes into the campaign tree" and "a row whose source has no local capture is
+reported as unverifiable, never as a fabrication." Informs: the C2 knowledge entry
+corpus/knowledge/claim-package-gate.md and the provenance trio the kill rule requires. This
+is the exact sentence shape for "the exemplar is built from one public disclosed report, the
+campaign tools were not run, and an unbound artifact is unverifiable rather than absent".
+
+P4.4 ADOPT — the predicate sentence is quoted, with its source path, in the declaration and in
+the receipt.
+tsukuroi-shokunin/tools/check-package-anatomy-r41.py:32: "Predicate (same sentence in the
+declaration, here and in the receipt)". chousa-shokunin/tools/inference-ground.py:11:
+"Rule (the same sentence as `corpus/evidence/round46/claims.md`, claim C1)". Informs:
+r43-closure.sh header — the C1 predicate from .ufo/waves/round-43/claims.json, verbatim, with
+the claims path and the claim id. It makes "the tool grades the frozen sentence" checkable
+without reading prose.
+
+P4.5 HOLD — kasegi's declaration file is a digest manifest, and that is a different object.
+.ufo/waves/round-42/declared-blocks.txt carries `<path> <lines> <sha256>` per entry with the
+`dyn` marker for a path the run materialises (consumed by check_j4, r42-closure.sh:723-760,
+including the `dyn` branch at :745-750). Siblings declare contracts in prose docstrings;
+kasegi additionally declares the *bytes* it will read, and J4/K4 require every read path to
+be declared. Do not replace the digest manifest with a prose declaration — they answer
+different questions.
+
+===============================================================================
+5. WHOLE-TOKEN MATCHERS
+===============================================================================
+
+P5.1 ADOPT — the hyphen/apostrophe joiner rule.
+chousa-shokunin/tools/research-gate.sh:1867-1906. `TOK_WS` and `TOK_PUNCT` are the two
+boundary classes; membership is asked with `[[ $SET == *"$c"* ]]` so a multibyte character
+misses both and is therefore a word character (:1860-1866). `tok_left_ok`/`tok_right_ok` then
+special-case `-` and `'`: they are boundaries *only* when they do not join two word
+characters — "word-internal joiner" (:1885-1891, :1899-1905).
+Informs: r43-closure.sh `token_at` (r42-closure.sh:348-370). Kasegi's `TOKEN_BAD` is
+`0123456789/.=_` + ASCII alnum, so `-` and `:` are treated as boundaries. Measured over the
+r42 `token_at` source, re-executed: `closed=19/19-rc1` and `closed=19/19:61` both read as
+whole tokens (2 of 6 boundary probes diverge from the intended reading; the four digit,
+comma, paren and control probes agree). The same two probes under chousa's `tok_right_ok`:
+the hyphen case becomes a non-boundary (correct), the colon case still passes — `:` is in
+`TOK_PUNCT` there too. So the joiner rule fixes the hyphen class outright and neither lane
+closes the colon class; if K15 quotes `closed=` values, take the joiner rule and declare the
+colon as a named limit rather than implying it is closed.
+Command: both readers re-executed verbatim in python3 from their source bytes —
+`TOKEN_BAD`/`token_at`/`value_present` from r42-closure.sh:348-370, and
+`TOK_WS`/`TOK_PUNCT`/`tok_word_char`/`tok_right_ok` from research-gate.sh:1867-1906 — over the
+probes `closed=19/19 exit=0`, `-rc1`, `:61`, `,`, `)` and `190`. Six probes: four agree everywhere,
+kasegi diverges on two (hyphen, colon), chousa on one (colon).
+
+P5.2 ADOPT — hex-class boundaries, not `\b`, for digests.
+kama-shokunin/tools/digest-ledger.py:70: `TOKEN = re.compile(r"(?<![0-9a-fA-F])[0-9a-f]{64}(?![0-9a-fA-F])")`,
+with the limits named at :39-53 ("only exact 64-character runs are tokens. A cited 'digest' of
+another length (a 65-character run, ...), an upper-case digest, abbreviated digests ... are
+not seen. A mixed-case neighbour ... is not a token boundary either"). tsukuroi-shokunin/tools/check-report-receipts.py:23-30
+applies the same shape to git abbreviations: `HEX = r"[0-9a-fA-F]{4,40}"` with
+`(?<![0-9a-fA-F])(...) (?![0-9a-fA-F])`. Informs: claim-package-check.py R-MANIFEST (per-artifact
+sha256) and R-CUSTODIAN (`head_sha256` equality). A 64-hex field matched with `\b` accepts a
+65-hex run's prefix; the hex class does not. Kasegi's digit-extension probe
+(`closed=13/13` vs `closed=13/130`, r42-closure.sh:562-563) is the same insight for a decimal
+token; digests need the hex form.
+
+P5.3 ADOPT — state the matcher's ceiling and confirm the whole span.
+chousa-shokunin/tools/research-gate.sh:1922-1923 names the ceiling
+(`TOK_DIRECT_SPAN_MAX=32764`, `TOK_CHUNK_BYTES=4096`) and :1962-1990 matches the span's first
+chunk, then confirms each candidate with `[[ ${hay:offset:slen} == "$span" ]]` — "a chunk
+match alone is not the span, and the confirmation is what makes a mutated or split span read
+as absent". Informs: r43-closure.sh K14 (the `corrections=<n>` literal) and K18 (the claims.json
+"before" literal, which the C1 control shows as a long sentence). A prefix match over a long
+literal turns a truncated or split quote into a pass; the chunk-plus-confirm shape is the
+fix, and the named ceiling is what makes the behaviour auditable rather than accidental.
+
+P5.4 HOLD — `\b` is adequate for word tokens and wrong for everything else.
+mori-shokunin/tools/mori-routed-r24.py:174 `D5_ROUND1_RE = re.compile(r"\bround\s+1\b")` with
+the comment "round 1 as a whole token: round 12 and round 13 must not match" — correct here
+because both edges are letters, and it is the cheapest form. tsukuroi-shokunin/tools/check-kernel-taint.py:241-243
+shows the narrower deliberate variant for row IDs: `(?<![A-Za-z0-9])%s(?![0-9])` — the right
+edge blocks only digits, so an `S###` id followed by a letter still matches. That asymmetry is
+intentional for `S`+digits and would be a defect if copied onto `closed=` or a digest. Use
+`\b` only where both edges are guaranteed word characters.
+
+P5.5 HOLD — kasegi already carries a boundary-probe table; extend it, do not replace it.
+r42-closure.sh:561-572 `BOUNDARY_PROBES` is ten `(hay, needle, want)` rows including
+`closed=13/13` vs `13/130` / `13/13x` / `xclosed=` / `13/13/5` and `failures=6` vs `60` /
+`6.5`, summed at :581-583 and required complete before J2 can close. Informs: K2/K15. The
+right move is to append the hyphen and colon rows above to this table, so the r43 suite
+carries the measured divergence rather than a prose promise.
+
+===============================================================================
+6. FAIL-CLOSED READS
+===============================================================================
+
+P6.1 ADOPT — one reader with a distinct code per failure class.
+kama-shokunin/tools/kama-ollama-evidence.py:137-174 `read_json_file`: `os.open` with
+`O_NONBLOCK` (a FIFO cannot block the gate), `fstat` + `stat.S_ISREG`, a loop that reads until
+`len(buffer) > MAX_INPUT_BYTES` and then fails (`_input_too_large`, :158 — one byte past the
+bound is read, so the boundary is exact both ways), then `_input_not_utf8`, then
+`json.loads(..., object_pairs_hook=_pairs, parse_constant=_constant)` where `_pairs` fails on
+a duplicate key (:125-130) and `_constant` on a non-finite number (:132-134). Informs:
+claim-package-check.py's manifest/custodian/provenance/status reads. R-MANIFEST hashes bytes
+and R-STATUS binds `manifest_sha256`; a reader that silently takes the last duplicate key can
+be made to hash one object and grade another. The duplicate-key and byte-bound classes are
+the two kasegi readers do not currently state.
+
+P6.2 ADOPT — an unmeasurable input is not a match.
+chousa-shokunin/tools/research-gate.sh:2219-2224: the digest read assigns
+`sha_actual=unreadable` on read failure *and* on a value that is not 64 lowercase hex, then
+routes to `observed=stale` rather than leaving the previous verdict; the comment is "fail
+closed: an unmeasurable source is not a match (r31)". Informs: K18 (claims.json "before"
+literal vs control) and claim-package R-PROVENANCE's own recheck. The kill rule for C2
+already names "the entry … failing its own recheck"; this is the shape that makes a broken
+recheck red rather than skipped.
+
+P6.3 ADOPT — an unclosed delimiter is literal to EOF, not a shadowing chance.
+chousa-shokunin/tools/research-gate.sh:6303-6310: a fenced `## Meta` must not shadow the real
+heading — "unclosed opener = plain text, fail closed", with the pre-fix behaviour named as
+"the bypass". Informs: any K-check that reads SCORECARD.md / LOG.md section bodies (K14, K17,
+K18). Kasegi's r42 fence handling exists (`fence_scan` at r42-closure.sh:306, `outside_lines` at
+:333, `fence_open_at_eof` at :337-342); the rule to hold is that `fence_open_at_eof`
+returning True must make a section-boundary check red, not lenient.
+
+P6.4 ADOPT — a child git process gets a built environment, not the ambient one.
+kotodama-shokunin/tools/harness/receipt_guard.py:56-64 strips every `GIT_*` name from the
+inherited environment and sets `GIT_OPTIONAL_LOCKS=0`, `GIT_NO_REPLACE_OBJECTS=1`, `LC_ALL=C`
+on `git --literal-pathspecs -C <root>`. Informs: r43-closure.sh's `git archive` and the K12
+deletion-walk fixture. `GIT_NO_REPLACE_OBJECTS=1` is the load-bearing one for a gate that
+compares blob identities: a replace ref in the export repo makes `git cat-file` answer a
+different object than the bytes on disk, and `--literal-pathspecs` stops a declared path
+containing glob characters from selecting siblings.
+
+P6.5 ADOPT — fail-closed *ordering* across a chain of digest links.
+kaidoku-shokunin/tools/round-42/fetch-carrier.py:59: "Fail-closed ordering: for each carrier
+every digest link is checked *before* the next"; :2 "fail-closed at every link".
+Informs: claim-package R-MANIFEST → R-REDACT → R-STATUS, which form a digest chain
+(artifact sha256 → redaction same-digest receipt → `manifest_sha256`). Grading all eight rules
+concurrently lets a later rule read a digest a failed earlier rule never established; the
+ordering rule is what makes `pass=8` mean eight links, not eight independent checks.
+
+===============================================================================
+7. CONTRADICTIONS (the L1 decides; nothing here edits a sibling)
+===============================================================================
+
+X1. "Absence is exit 2" must NOT be imported for an unresolvable ref.
+chousa-shokunin/tools/research-gate.sh:5968-5970 makes absence/malformation exit 2 so that cannot-compare
+cannot masquerade as clean. kasegi's frozen C1 contract says the opposite for one specific
+object: an unresolvable ref prints `ref-not-found` and exits *1*, and the kill rule makes
+"an unresolvable ref does not print its distinct ref-not-found red" a defeat. Both are right
+about different objects — an absent *input baseline* is cannot-compare (2); an absent *ref*
+is a red (1), because the ref is what is being graded. r43-closure.sh must not fold the two.
+This is the highest-risk import in the scan: it reads as a principle and is a contract
+violation in this position.
+
+X2. Exit 3 must not enter the r43 exit table.
+kaidoku-shokunin/tools/round-34/replay-gate.py uses `3` for UNEVALUABLE and `2` for REFUSED
+(SELFTEST_CASES at :156-163, the mutant expectations at :166-172). kasegi's frozen table is 0/1/2 only
+(r42-closure.sh:26-27), and the C1 kill rule names "a plain run exits other than 2" as a
+defeat. Take kaidoku's *mutant grammar* (P3.1, P3.2) and kama's *tautology arm* (P3.6);
+leave its exit numbering.
+
+X3. A summary line whose shape varies by condition is not available to kasegi.
+mado-shokunin/tools/mado-geometry.py:65-70 deliberately prints `maximized=`/`fullscreen=` only when
+maximized+fullscreen > 0, "so a dump with no maximized or fullscreen matched client prints the
+round-43 line unchanged" — a calibrated exception for a monitor dump. kasegi's equivalents
+divide cleanly: a `K<n> payload=k=v,...` line may grow fields between rounds (r42's payloads
+did), but the summary lines (`closed=19/19 exit=0`, `selftest cases=19 failures=0`,
+`package=… rules=8 pass=<k> fail=<m> verdict=… exit=…`) are fixed field sets, because K8/K10
+and the C2 summary are themselves parsed. Do not adopt the conditional-shape licence.
+
+X4. A committed `.expected` file may not be the only witness, and an in-code table may not be
+the only witness — but kasegi cannot make the *fixture* the witness either.
+kotodama-shokunin/tools/gates/handoff-packet-check.py:697-701 requires the committed file, the in-code table, and
+the emitted set to agree. kasegi's C2 additionally requires nine *separate* fixture
+directories that each print `verdict=DEFECT exit=1` with their own rule failing — a stronger
+requirement than kotodama's single fixture. Adopt the triple-agreement assertion; do not
+adopt kotodama's single-fixture economy, which would satisfy the check while leaving eight
+defect classes unexercised.
+
+X5. The r41 SIGPIPE class is closed in r42 and must stay closed.
+mori-shokunin/tools/mori-census.sh:3301-3324 is the fix (capture to `$OUT_FILE`, grep the
+file) for producer-pipe consumer races, and mori records the class at
+corpus/lessons/2026-10-15-selftest-grep-sigpipe-race.md:4-30 ("grep -q exits the moment it
+sees a match … pipefail makes the pipeline's rc 141 … the `||` guard reads rc≠0 as 'no
+match'"). Kasegi's r41 suite carries 12 such sites (r41-closure.sh:904, 973, 1029, 1030, 1031,
+1186, 1570, 1571, 1572, 1642, 1935, 1936; counted with `grep -c 'grep -q'` → 12);
+r42-closure.sh carries 0. This is not an import but a regression corpus: if any K14-K19 arm is
+written in bash, those twelve sites are the shapes not to reproduce. Kasegi has no lesson file
+recording the class (no `corpus/lessons/*` mentions sigpipe), so the r42 fix currently rests
+on the code alone.
+
+===============================================================================
+8. WHAT NOT TO TAKE
+===============================================================================
+
+- A per-lane `tools/` layout. Siblings put instruments under `tools/`; kasegi's contract
+  names `corpus/instruments/`, and every counting command in the frozen claims is written
+  against that path. Path shape is part of the claim.
+- Interactive/stdin surfaces. kotodama's `-` stdin arm and mado's stdin JSON arm are useful
+  for tools called by hand; r43-closure.sh is export-mode only and a stdin arm would be a
+  second way in, which the plain-run refusal exists to prevent.
+- Fuzzy or "review-level" verdicts. The `FAIL / REVIEW / HOLD` three-level vocabulary
+  (kotodama-shokunin/tools/gates/handoff-packet-check.py:49-70) is right for a document gate with judgment; the
+  K14-K19 checks are mechanical, and a review level would give a silent third state to a
+  predicate that must be closed=0|1.

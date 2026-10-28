@@ -1,0 +1,202 @@
+# ExecGateProvReport rule module transcript (R-PROVENANCE / R-REPORT / R-NOSECRET)
+# module: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecGateProvReport.rules.py
+# fixture tree: a six-file claim package plus one mutation per defect class, built under TMPDIR
+
+import-check module=ExecGateProvReport.rules.py result-keys=counts,detail,id,reasons,verdict rules=3 verdicts=pass,pass,pass
+import-check emitted=RULE R-PROVENANCE verdict=pass | RULE R-REPORT verdict=pass | RULE R-NOSECRET verdict=pass
+
+$ python3 ExecGateProvReport.rules.py pkg   # passing-package
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=pkg rules=3 pass=3 fail=0 verdict=WELL-FORMED
+exit=0
+case=pkg expected=none observed=none exit-want=0 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py alias-pkg   # alternate-key-names
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=alias-pkg rules=3 pass=3 fail=0 verdict=WELL-FORMED
+exit=0
+case=alias-pkg expected=none observed=none exit-want=0 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py core-shape-pkg   # core-table-shape
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=core-shape-pkg rules=3 pass=3 fail=0 verdict=WELL-FORMED
+exit=0
+case=core-shape-pkg expected=none observed=none exit-want=0 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py probe-13-symlink-outside   # symlink-banned-not-read
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=fail detail=files=7 hits=0 symlinks=1 oversize=0 classes=none fail=symlink-entry
+package=probe-13-symlink-outside rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=probe-13-symlink-outside expected=R-NOSECRET observed=R-NOSECRET exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-1-external-effects-object   # M1-empty-external-effects
+RULE R-PROVENANCE verdict=fail detail=agents=1 transitions=1 commands=1 fail=external-effects-not-empty-list
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=mut-1-external-effects-object rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-1-external-effects-object expected=R-PROVENANCE observed=R-PROVENANCE exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-1b-external-effects-absent   # M1b-external-effects-absent
+RULE R-PROVENANCE verdict=fail detail=agents=1 transitions=1 commands=1 fail=external-effects-absent
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=mut-1b-external-effects-absent rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-1b-external-effects-absent expected=R-PROVENANCE observed=R-PROVENANCE exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-1c-attestation-findings   # attestation-findings-nonzero
+RULE R-PROVENANCE verdict=fail detail=agents=1 transitions=1 commands=1 fail=attestation-not-clean
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=mut-1c-attestation-findings rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-1c-attestation-findings expected=R-PROVENANCE observed=R-PROVENANCE exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-2-missing-pin   # M2-missing-pin
+RULE R-PROVENANCE verdict=fail detail=agents=1 transitions=1 commands=1 fail=pin-missing
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=mut-2-missing-pin rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-2-missing-pin expected=R-PROVENANCE observed=R-PROVENANCE exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-2b-agent-without-transition   # agent-without-transition
+RULE R-PROVENANCE verdict=fail detail=agents=1 transitions=0 commands=1 fail=transitions-empty
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=mut-2b-agent-without-transition rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-2b-agent-without-transition expected=R-PROVENANCE observed=R-PROVENANCE exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-3-report-no-marker   # M3-report-without-marker
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=fail detail=cited=1 manifest=2 absent=0 fail=no-submission-marker-absent
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=mut-3-report-no-marker rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-3-report-no-marker expected=R-REPORT observed=R-REPORT exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-4-report-absent-digest   # M4-report-cites-absent-digest
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=fail detail=cited=2 manifest=2 absent=1 fail=cited-digest-absent
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=mut-4-report-absent-digest rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-4-report-absent-digest expected=R-REPORT observed=R-REPORT exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-5-op-ref   # M5-op-ref
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=fail detail=files=7 hits=1 symlinks=0 oversize=0 classes=op-ref at=claim_checklist.md:11 fail=secret-shaped-token
+package=mut-5-op-ref rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-5-op-ref expected=R-NOSECRET observed=R-NOSECRET exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-6-labelled-token   # M6-labelled-hex-token
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=fail detail=files=7 hits=1 symlinks=0 oversize=0 classes=labelled-hex at=provenance.json:26 fail=secret-shaped-token
+package=mut-6-labelled-token rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-6-labelled-token expected=R-NOSECRET observed=R-NOSECRET exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-7-private-key   # extra-private-key-header
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=fail detail=files=7 hits=1 symlinks=0 oversize=0 classes=private-key at=claim_checklist.md:11 fail=secret-shaped-token
+package=mut-7-private-key rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-7-private-key expected=R-NOSECRET observed=R-NOSECRET exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-8-authorization-bearer   # extra-authorization-bearer
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=fail detail=files=7 hits=1 symlinks=0 oversize=0 classes=bearer-token at=report.md:26 fail=secret-shaped-token
+package=mut-8-authorization-bearer rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-8-authorization-bearer expected=R-NOSECRET observed=R-NOSECRET exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-8b-authorization-token   # extra-authorization-token
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=fail detail=files=7 hits=1 symlinks=0 oversize=0 classes=authorization-token at=report.md:26 fail=secret-shaped-token
+package=mut-8b-authorization-token rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-8b-authorization-token expected=R-NOSECRET observed=R-NOSECRET exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-9-session-cookie   # extra-session-cookie
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=fail detail=files=7 hits=2 symlinks=0 oversize=0 classes=session-cookie at=claim_checklist.md:11 fail=secret-shaped-token
+package=mut-9-session-cookie rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-9-session-cookie expected=R-NOSECRET observed=R-NOSECRET exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-9b-session-cookie-key   # extra-session-cookie-key
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=fail detail=files=7 hits=1 symlinks=0 oversize=0 classes=session-cookie at=provenance.json:26 fail=secret-shaped-token
+package=mut-9b-session-cookie-key rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-9b-session-cookie-key expected=R-NOSECRET observed=R-NOSECRET exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-10-provenance-unparseable   # R30-provenance-unparseable
+RULE R-PROVENANCE verdict=fail detail=agents=0 transitions=0 commands=0 fail=unparseable
+RULE R-REPORT verdict=pass detail=cited=1 manifest=2 absent=0
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=mut-10-provenance-unparseable rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-10-provenance-unparseable expected=R-PROVENANCE observed=R-PROVENANCE exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-11-manifest-unparseable   # R30-manifest-unparseable
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=fail detail=cited=0 manifest=0 absent=0 fail=manifest-unparseable
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=mut-11-manifest-unparseable rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-11-manifest-unparseable expected=R-REPORT observed=R-REPORT exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py mut-12-report-binary   # R30-report-not-utf8
+RULE R-PROVENANCE verdict=pass detail=agents=1 transitions=1 commands=1
+RULE R-REPORT verdict=fail detail=cited=0 manifest=0 absent=0 fail=report-unreadable
+RULE R-NOSECRET verdict=pass detail=files=7 hits=0 symlinks=0 oversize=0 classes=none
+package=mut-12-report-binary rules=3 pass=2 fail=1 verdict=DEFECT
+exit=1
+case=mut-12-report-binary expected=R-REPORT observed=R-REPORT exit-want=1 verdict=pass
+leak-check needles=6 matches=0 value-redacted=yes
+
+$ python3 ExecGateProvReport.rules.py absent-package-dir
+package=absent-package-dir verdict=ERROR
+exit=2
+case=absent-package-dir expected=exit2-ERROR observed=exit2 verdict=pass
+
+transcript cases=22 graded=21 mismatches=0 value-matches=0

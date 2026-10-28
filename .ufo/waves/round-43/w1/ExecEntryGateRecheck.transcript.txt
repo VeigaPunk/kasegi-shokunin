@@ -1,0 +1,110 @@
+# ExecEntryGateRecheck transcript — kasegi-shokunin round 43, seat ExecEntryGateRecheck
+# purpose: prove corpus/knowledge/claim-package-gate.md's recheck line is a real recheck (QUALITY Q7/Q10/R12)
+# base ab98fac9dce87130bc4f66de89e30650d63943dc; lane /home/vgpnk/Projects/shokunin/kasegi-shokunin
+# run_utc=2026-10-28T16:59:53Z  (the round-43 C2 files had landed in the lane when this transcript was produced)
+
+## 1. The line (deliverable): ONE shell line, cd-prefixed; the trailing # note is part of the same line
+$ cat /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/line.txt
+  cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test -s corpus/knowledge/claim-package-gate.md && set -o pipefail && python3 corpus/instruments/claim-package-check.py --selftest | grep -x 'selftest cases=10 failures=0' && python3 corpus/instruments/claim-package-check.py corpus/instruments/fixtures/claim-package/exemplar | grep -x 'package=corpus/instruments/fixtures/claim-package/exemplar rules=8 pass=8 fail=0 verdict=WELL-FORMED exit=0'  # fails closed: a missing gate, a selftest that stops grading ten cases, or an exemplar that stops passing exits non-zero
+  exit=0 stdout_sha256=fbee7c32f17a1566e6e25653c0ccafeb0d494688a5189b6e99c5534b78adc26d
+  line_bytes=570 line_sha256=fbee7c32f17a1566e6e25653c0ccafeb0d494688a5189b6e99c5534b78adc26d newlines=1
+
+## 2. bash -n parses the line as one command
+$ bash -n -c "$(cat /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/line.txt)"
+  exit=0
+
+## 3. Lane state this transcript measures (read-only for this seat; no git mutation run)
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse HEAD
+  5b4a8503fd7ab1ccf5bcb0630763db8ab73d211d
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain | grep -E 'claim-package|knowledge-expected'
+$ sha256sum corpus/instruments/claim-package-check.py corpus/instruments/claim-package-selftest.py corpus/knowledge/claim-package-gate.md
+  8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6  corpus/instruments/claim-package-check.py
+  04951ca0e72050725fc01a16ba1e42d7a52bd29bb0ae653b164a39ed39b57b17  corpus/instruments/claim-package-selftest.py
+  f53109d842b185ed49ca599fda221351caf03df9d3443c5d50c8bb19a0cb5940  corpus/knowledge/claim-package-gate.md
+  fixture_dirs=9 expected_list_has_entry=1
+
+## 4. The line's lane-root run: exit 0
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && bash -c "$(cat /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/line.txt)"
+  selftest cases=10 failures=0
+  package=corpus/instruments/fixtures/claim-package/exemplar rules=8 pass=8 fail=0 verdict=WELL-FORMED exit=0
+  exit=0 stdout_sha256=30ca9575c2811abaa0f77abedeb22fdccf475dc37596961979efef4e458f33ed
+
+## 5. Foreign-cwd runs (audit cwd limb: same exit status and same stdout digest as the lane-root run)
+$ cd / && bash -c "$(cat /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/line.txt)"
+  selftest cases=10 failures=0
+  package=corpus/instruments/fixtures/claim-package/exemplar rules=8 pass=8 fail=0 verdict=WELL-FORMED exit=0
+  exit=0 stdout_sha256=30ca9575c2811abaa0f77abedeb22fdccf475dc37596961979efef4e458f33ed
+$ cd /tmp && bash -c "$(cat /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/line.txt)"
+  selftest cases=10 failures=0
+  package=corpus/instruments/fixtures/claim-package/exemplar rules=8 pass=8 fail=0 verdict=WELL-FORMED exit=0
+  exit=0 stdout_sha256=30ca9575c2811abaa0f77abedeb22fdccf475dc37596961979efef4e458f33ed
+
+## 6. Mutant: one rule's verdict computation flipped to always-pass, built from the landed bytes in scratch
+# the lane is read-only to this seat, so the mutation is applied to a cp -a copy of the landed corpus;
+# the copy's gate/companion/entry bytes equal the lane's (sha256 above) until the one two-line change.
+$ rm -rf /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/mut && mkdir -p /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/mut && cp -a /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/mut/corpus && python3 - (apply the diff to /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/mut/corpus/instruments/claim-package-check.py)
+# the landed gate renamed its internals (_GATE_RULE_ORDER/_GATE_RULE_IMPL) so the companion selftest cannot collide;
+# the mutation is an early forced-pass branch for one rule, inserted at the top of the per-rule loop:
+    for rule_id in _GATE_RULE_ORDER:
++       if rule_id == 'R-REPORT':
++           results.append({'id': rule_id, 'verdict': 'pass', 'detail': 'forced-pass'}); continue
+        try:
+  mutation_exit=0
+  8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/claim-package-check.py
+  dae79bd4407aeda67289bf164d9713bae131d9052761a0491bafd64edc5c4609  /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/mut/corpus/instruments/claim-package-check.py
+# the mutation is real: the mutant gate now accepts the R-REPORT defect fixture
+$ cd /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/mut && python3 corpus/instruments/claim-package-check.py corpus/instruments/fixtures/claim-package/defect-8-marker
+  RULE R-FILES verdict=pass detail=files=6,missing=0,bad=0
+  RULE R-MANIFEST verdict=pass detail=artifacts=4,positive=3,digest-bad=0,escape=0
+  RULE R-REDACT verdict=pass detail=artifacts=4,receipts=4,missing=0,digest-mismatch=0
+  RULE R-CUSTODIAN verdict=pass detail=chain=3,grant-miss=0,signal-bad=0,head=bound
+  RULE R-PROVENANCE verdict=pass detail=agents=2,commands=9,pin=ok,effects=none,secrets=ok
+  RULE R-STATUS verdict=pass detail=manifest=bound,reviewer=distinct,gates=6/6,claimable=false,blocker=named
+  RULE R-REPORT verdict=pass detail=forced-pass
+  RULE R-NOSECRET verdict=pass detail=files-scanned=ok,symlinks=0,oversize=0,hits=0
+  package=corpus/instruments/fixtures/claim-package/defect-8-marker rules=8 pass=8 fail=0 verdict=WELL-FORMED exit=0
+  exit=0 stdout_sha256=80555840c927d7cf77aa247ffc271fd8c487e1cb558288c180945198f801f24f
+
+### 6a. The line against the mutant (two cwds): nonzero, empty output
+$ cd /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/mut && bash -c "$(sed 's|/home/vgpnk/Projects/shokunin/kasegi-shokunin|/fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/mut|' /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/line.txt)"
+  exit=1 stdout_bytes=0 stderr_bytes=0
+$ cd / && bash -c "$(sed 's|/home/vgpnk/Projects/shokunin/kasegi-shokunin|/fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/mut|' /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/line.txt)"
+  exit=1 stdout_bytes=0 stderr_bytes=0
+# why it reds: the companion selftest grades the gate file beside it; case 8 can no longer observe R-REPORT
+$ cd /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/mut && TMPDIR=/fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/tmp python3 corpus/instruments/claim-package-check.py --selftest | grep -E 'verdict=fail|cases='
+  selftest case=8 class=defect fixture=defect-8-marker expected=R-REPORT observed=none verdict=fail detail=verdict=well-formed
+  selftest cases=10 failures=1
+
+## 7. Restore: the mutant copy is discarded; the lane's gate bytes never changed and the line is green again
+$ rm -rf /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/mut /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/tree && cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && sha256sum corpus/instruments/claim-package-check.py && bash -c "$(cat /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/line.txt)"
+  gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+  selftest cases=10 failures=0
+  package=corpus/instruments/fixtures/claim-package/exemplar rules=8 pass=8 fail=0 verdict=WELL-FORMED exit=0
+  exit=0
+
+## 8. recheck-audit.py --quiet
+### 8a. Live lane after landing: expected=62 and the new entry is counted and executing
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py --quiet
+  strict pass=62/62 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=38 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=62 total=62 pass=62 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+  expect=present expected=62 missing=0 unexpected=0 exit=0
+  exit=0 stdout_sha256=2906f4bfc152036e00d32c670cb14f85dcca0b0afff7f7c1c744dcc6eb1e11b0
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py --json /fast/scratch/hyaku/kasegi-r43/ExecEntryGateRecheck/audit.json --quiet   (entry record)
+  strict pass=62/62 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=38 gated=24 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+  lines=62 total=62 pass=62 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+  expect=present expected=62 missing=0 unexpected=0 exit=0
+  exit=0 stdout_sha256=2906f4bfc152036e00d32c670cb14f85dcca0b0afff7f7c1c744dcc6eb1e11b0
+  new-entry record: frozen=111 strict=111111 lane_exit=0 foreign_exit=0 class=executes
+  entries=62 expected_entries=62 missing=0 unexpected=0
+
+### 8b. Pre-landing measurement by this seat (command + output retained; no longer re-runnable) — the same audit before the entry existed
+  run_utc=2026-10-28T16:52:07Z  root=/home/vgpnk/Projects/shokunin/kasegi-shokunin  entry absent
+  strict pass=61/61 cdroot_fail=0 instrument_fail=0 own_fail=0
+  executes=37 gated=24 broken=0
+  lines=61 total=61 pass=61 fail-closed=24 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+  expect=present expected=61 missing=0 unexpected=0 exit=0
+  => landing the entry moves expected 61 -> 62; the live 8a run above is that after-state.
+
+# end transcript

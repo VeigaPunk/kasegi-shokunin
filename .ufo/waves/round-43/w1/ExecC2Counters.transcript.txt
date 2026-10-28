@@ -1,0 +1,14 @@
+# ExecC2Counters base run
+# lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin head=4cb6d4ae768481e1a14afbedc2d865a060ebacfd base=ab98fac9dce87130bc4f66de89e30650d63943dc (git diff --stat base..head excluding .ufo is empty)
+# date=2026-10-28T16:47:59Z tmpdir=/fast/scratch/hyaku/kasegi-r43/ExecC2Counters/tmp
+1. grep -cE '^\|[[:space:]]*F[0-9]+[[:space:]]*\|' corpus/README.md -> 25
+2. grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md -> 66
+3. awk -F'|' '$2 ~ /^ *S[0-9]+ *$/ {id=$2; gsub(/[^0-9]/,"",id); if (id+0>=67) n++; if (id+0==67) {s=$9; gsub(/^ +| +$/,"",s); found=1}} END {printf "rows>=S067=%d status=%s\n", n+0, (found ? s : "absent")}' corpus/SOURCES.md -> rows>=S067=0 status=absent
+4. grep -rlE '^source: S067' corpus/knowledge | wc -l -> 0
+5. ls corpus/knowledge/*.md | wc -l -> 61
+6. python3 corpus/instruments/capture-binding-check.py -> records=56 bound=56 unbound=0 exit=0
+7. python3 corpus/instruments/recheck-audit.py --quiet -> expected=61 exit=0
+8. python3 corpus/instruments/frontier-recheck-count.py -> entries=28 pass=28 exit=0 shell-exit=0
+9. bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> exit=0
+10. ls corpus/instruments/fixtures/claim-package/ | grep -c '^defect-' -> 0 dir=absent
+# exit=0

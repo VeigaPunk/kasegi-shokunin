@@ -1,0 +1,45 @@
+kasegi round 43, seat ExecRegistryRows — registry collision and duplicate-ground check
+cwd: /home/vgpnk/Projects/shokunin/kasegi-shokunin (2026-10-28, UTC)
+
+1. Duplicate-id check over the current registry, the exact command the seat spec names:
+$ grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' corpus/SOURCES.md | grep -oE 'S[0-9]+' | sort | uniq -d
+(no output — no id is printed twice)
+
+2. The two target ids are absent before the append:
+$ grep -nE '^\| *S06[78] *\|' corpus/SOURCES.md
+(no output; exit 1)
+
+3. Registry row count before the append:
+$ grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md
+66
+
+4. The same collision check over a scratch copy of the registry with the two delivered rows inserted after S066:
+$ grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' <scratch>/root/kasegi-shokunin/corpus/SOURCES.md | grep -oE 'S[0-9]+' | sort | uniq -d
+(no output)
+$ grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' <scratch>/root/kasegi-shokunin/corpus/SOURCES.md
+68
+$ grep -cE '^\| *S06[78] *\|' <scratch>/root/kasegi-shokunin/corpus/SOURCES.md
+2
+
+5. Delivered row shape — outer pipes included, so 11 cells is NF=13:
+$ awk -F'|' '{printf "line %d NF=%d\n", NR, NF}' ExecRegistryRows.rows.txt
+line 1 NF=13
+line 2 NF=13
+No cell carries an escaped pipe, and NF=13 also rules out a literal pipe inside a cell.
+
+6. Exactly one https token per delivered row (capture-binding-check rule B4 counts the tokens in the source cell; the row carries no token anywhere else):
+$ (per row) grep -oE 'https?://[^ |]+' | wc -l
+1
+1
+The S067 token is byte-equal to the capture manifest's record url, https://curl.se/docs/CVE-2025-9086.html (rule B5), which the binding run in the receipt proves (records=1 bound=1 unbound=0).
+
+7. Duplicate-ground sweep beyond ids:
+$ grep -onE 'curl|CVE-2025-9086|8\.16\.0|GHSA-v676|505 USD' corpus/SOURCES.md
+94:curl
+One hit: the word "curl" inside the round-35 search-log bullet at L94, in prose and not in a table row (the Registry rows occupy L9-L72). No registry row mentions the CVE id, the GHSA id, version 8.16.0 or the award figure.
+$ grep -rlnE 'CVE-2025-9086|GHSA-v676' corpus/knowledge
+(no output; exit 1) — neither identifier is stated in any knowledge entry.
+$ grep -rlE 'CVE-2025-9086|GHSA-v676' /home/vgpnk/Projects/shokunin --include=SOURCES.md
+(no output; exit 1) over 597 SOURCES.md files under the fleet root (find /home/vgpnk/Projects/shokunin -name SOURCES.md | wc -l = 597), so no sibling lane holds either row.
+
+8. Census validator over the scratch copy: exit 0, `kasegi ok <scratch>/root/kasegi-shokunin/corpus/SOURCES.md`, with only the two pre-existing W04 duplicate-URL warnings on S028 and S029 (full output in the receipt).

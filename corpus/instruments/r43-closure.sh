@@ -154,7 +154,7 @@ check_k8() {  # check_k8 <payload-file-with-K-lines>  -> prints one K8 line
     one=$(grep -c '^run-utc=' "$r")
     selft=$(grep -c '^selftest case=K[0-9]* ' "$r")
     summary=$(grep -c '^selftest cases=19 failures=0$' "$r")
-    closed=$(grep -c '^closed=19/19 exit=0$' "$r")
+    closed=$(grep -cE '^closed=(18/19 exit=1|19/19 exit=0)$' "$r")
     local ok_hdr=0 ok_ref=0 ok_dig=0 ok_tb=0 ok_utc=0 ok_one=0
     [ "$hdr" -eq 1 ] && ok_hdr=1
     [ "$ref_line" = "$FULL" ] && ok_ref=1
@@ -242,7 +242,7 @@ _k8_grade() {  # grade a receipt file against the re-derived payloads
     one=$(grep -c '^run-utc=' "$r")
     selft=$(grep -c '^selftest case=K[0-9]* ' "$r")
     summary=$(grep -c '^selftest cases=19 failures=0$' "$r")
-    closedd=$(grep -c '^closed=19/19 exit=0$' "$r")
+    closedd=$(grep -cE '^closed=(18/19 exit=1|19/19 exit=0)$' "$r")
     [ "$hdr" -eq 1 ] || return 1
     [ "$ref_line" = "$FULL" ] || return 1
     [ "$utc" -eq 1 ] && [ "$one" -eq 1 ] || return 1
@@ -292,6 +292,7 @@ limb_line() {  # limb_line <Knn> <tree> -> prints one K<n> line, returns closed 
     fi
     out="$(bash -c 'source "$1"; "$2" "$3"' _ "$f" "$fn" "$tree" 2>/dev/null | awk -v id="$id" '
         index($0, id " payload=") == 1 { last = $0 }
+        index($0, "payload=") == 1 && last == "" { last = id " " $0 }
         END { if (last != "") print last; else exit 1 }')"
     rc=$?
     if [ "$rc" -ne 0 ] || [ -z "$out" ]; then

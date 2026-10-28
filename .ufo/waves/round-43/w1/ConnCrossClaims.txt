@@ -1,0 +1,123 @@
+ConnCrossClaims — round-43 C1×C2 cross-claim read-set, landing order and interaction map
+measured-at=2026-10-28T16:55:46Z..16:57:12Z  base=ab98fac9dce87130bc4f66de89e30650d63943dc  lane-head=4cb6d4ae768481e1a14afbedc2d865a060ebacfd
+claims.json sha256=a4c03e1e8224549dd864eb7c6befa025cbb0e9b639c0233eeff2287dd15a6630 (= freeze.txt claims-sha256; never edited)
+Probe tree for every "landed" figure below: `git -C <lane> archive HEAD | tar -x` into scratch, then the cited w1 deliverables applied at their landing paths. Figures marked probe are measurements of the probe tree, not of a lane commit.
+
+1. DELIVERABLES EACH CLAIM READS (w1 file -> landing path -> reader)
+
+1.1 C1 (suite corpus/instruments/r43-closure.sh, K1-K19)
+  ExecSuiteSkeleton.r43-closure.sh  -> corpus/instruments/r43-closure.sh    suite body; K8 hashes it (suite-sha256 in the receipt)
+  ExecK14Corrections.sh             -> K14 limb (sourceable)               K14
+  ExecK15WaveNarrative.sh           -> K15 limb                            K15
+  ExecK16Placeholder.sh             -> K16 limb                            K16
+  ExecK17ClaimsBefore.sh            -> K17 limb                            K17
+  ExecK18Transcript.sh              -> K18 limb                            K18
+  ExecK19Freeze.sh                  -> K19 limb                            K19
+  ExecCarryChecks.declared-blocks.txt -> .ufo/waves/round-43/declared-blocks.txt   K4 (only file K4 reads by name)
+  ExecSelftest19.sh                 -> selftest runner block               K10 + `--selftest`
+  ExecNegCtlReceipt.sh              -> receipt grammar + negative controls K8, K9
+  ExecTranscriptDe0931.txt          -> .ufo/waves/round-43/final-gates/r42-at-de09313.txt  K18 evidence store
+  ScribeCorrections.scorecard.txt   -> EOF append SCORECARD.md             K1, K2, K11, K14
+  ScribeCorrections.log.txt         -> EOF append LOG.md                   K1, K2, K11, K14, K15
+  ScribeCorrections.lesson42.txt    -> EOF append corpus/lessons/round-42.md K15, K16, K18 (supersede source)
+  ScribeScorecardRound43.append.md  -> EOF append SCORECARD.md             K1, K11, K14 (not a K18 quote source)
+  ScribeLogEntry.log-entry.md       -> EOF append LOG.md                   K1, K11, K14, K15
+  ScribeShonenLines.append.md       -> EOF append SHONEN.md                K11, K14 (not a K18 quote source)
+  ScribeLessonDraft.round-43-lesson.md -> corpus/lessons/round-43.md       K18 (quote source), K15
+  ScribeClaimsErratum.claims-erratum-1.md -> .ufo/waves/round-43/claims-erratum-1.md AND a copy under .ufo/waves/round-42/  K17 (only the round-42 copy can excuse round-42's claims.json), K18 (quote + supersede source)
+  Corpus records read as evidence/quote sources: SCORECARD.md, LOG.md, SHONEN.md, SKILL.md, corpus/README.md, corpus/SOURCES.md, corpus/lessons/round-42*.md, corpus/lessons/round-43*.md, .ufo/waves/round-4{2,3}/**
+  Unchanged instruments read: corpus/instruments/r42-closure.sh (K14 sources its embedded engine; K1's grammar), capture-binding-check.py (K6), frontier-recheck-count.py (K7), density.py (K12, sha pinned ee803726a322)
+
+1.2 C2 (claim-package gate + capability row)
+  ExecGateCore.claim-package-check.py -> corpus/instruments/claim-package-check.py (reads only the package dir it is given)
+  ExecGateManifest.rules.py / ExecGateChain.rules.py / ExecGateProvReport.rules.py -> merged rule bodies (R-FILES/MANIFEST/REDACT, R-CUSTODIAN/R-STATUS, R-PROVENANCE/R-REPORT/R-NOSECRET)
+  ExecGateFixtures.defect-{1..9}-*  -> corpus/instruments/fixtures/claim-package/defect-*   (nine one-delta packages)
+  ExecGateSelftest.selftest.py      -> gate --selftest (ten cases incl. the degenerate always-pass control)
+  ExecGateSelftest.transcript.txt   -> .ufo/waves/round-43/w1/ (C2 evidence AND a C1 K18 evidence file)
+  ExecExemplarPackage.{report.md,claim_checklist.md,manifest.json,custodian-receipts.json,provenance.json,status.json} -> fixtures/claim-package/exemplar/
+  ScribeExemplarReport.report.md / .claim-checklist.md -> exemplar report.md + claim_checklist.md (operator gates named, claimable=false)
+  ExecSourceCapture.S067.txt / .manifest.json -> corpus/source-snapshots/round-43/{S067.txt,manifest.json}  (K6 reads every manifest.json)
+  ExecRegistryRows.rows.txt         -> corpus/SOURCES.md rows S067/S068 (must go INSIDE ## Registry)
+  ScribeKnowledgeGate.entry.md      -> corpus/knowledge/claim-package-gate.md (census E11 target; recheck-audit expected list)
+  ExecEntryGateRecheck.entry-fix.txt -> the entry's `recheck:` line (recheck-audit parses it)
+  ExecCoverageMapNote.append.md     -> corpus/README.md append (frontier table untouched)
+  ScribeQualityRows.append.md       -> corpus/QUALITY.md append
+  corpus/knowledge/claim-package-contract.md (pre-existing) and corpus/instruments/knowledge-expected.txt (must gain one line)
+  ExecC2Counters.bundle.sh/.transcript.txt -> the ten counting commands + base run (not read by any K check)
+  ScribeReportSkeleton.report.md -> fleet-root .ufo/reports/round-43/kasegi.md, outside the lane: no K check reads it
+
+2. SAFE LANDING ORDER (each step names what must already exist and what it unblocks)
+  E0 committed at freeze: claims.json (sha above), freeze.txt, c1/c2-controls, w1 dispatch. K19 reads exactly these; editing claims.json to fix any figure breaks K19's claims-sha256 equality — corrections go through the erratum only.
+  E1 C2 corpus content, in this order: (a) corpus/source-snapshots/round-43/{S067.txt,manifest.json}; (b) corpus/knowledge/claim-package-gate.md; (c) corpus/instruments/knowledge-expected.txt + corpus/knowledge/claim-package-gate.md; (d) corpus/SOURCES.md rows inserted after the last `| S` row (NOT at EOF); (e) corpus/README.md coverage append; (f) corpus/QUALITY.md row.
+     (a)+(b) must precede (d): census E11 fails while the row's used-by path is absent (measured exit 1), and clears once the entry exists (measured exit 0).
+     (d) at EOF fails census E12 twice ("row outside Registry section", measured exit 1); inside the table it validates (measured rows 66 -> 68, exit 0).
+  E2 C2 instrument + fixtures: corpus/instruments/claim-package-check.py, fixtures/claim-package/exemplar/ (6 files), fixtures/claim-package/defect-1..9/. Needed before C2's own counters and before E8 if any of these paths are declared.
+  E3 C1 suite: corpus/instruments/r43-closure.sh, final bytes. K8 embeds its sha256 in the receipt and re-checks it; editing the suite after the receipt is generated reddens K8 (`digest=0`).
+  E4 evidence transcripts the records will quote: .ufo/waves/round-43/w1/ExecGateSelftest.transcript.txt (binds `selftest cases=10 failures=0`), .ufo/waves/round-43/final-gates/r42-at-de09313.txt (binds the r42 12/13 figures), any base-run transcript placed under .ufo/waves/round-43/.
+  E5 record appends at EOF only: SCORECARD (correction line, then the round-43 section), LOG (correction line, then the entry), SHONEN append, corpus/lessons/round-42.md correction line, corpus/lessons/round-43.md.
+     Appending at EOF keeps every `Correction (round 43)` line AFTER the stale literal it names (K14 requires a LATER line in the SAME file; SCORECARD:1634 -> line 1662 in the probe).
+  E6 errata: .ufo/waves/round-43/claims-erratum-1.md (the spec path) AND a copy under .ufo/waves/round-42/ (K17's escape looks only in the graded round's own dir). Both need a lowercase-`superseded` line quoting closed=12/12, closed=13/19 and selftest cases=13 failures=3.
+  E7 (K18 fixed point) any lane record that quotes the suite's after-state (`closed=19/19`, `selftest cases=19 failures=0`) before the receipt exists carries `report-only` on that line — otherwise the J generation run reddens K18 and cannot print 19/19. The L1 report may quote the figure freely: it is fleet-root, not a lane record.
+  E8 declared-blocks LAST: generate .ufo/waves/round-43/declared-blocks.txt from the final tree; declare `.ufo/waves/round-43/declared-blocks.txt` and `.ufo/waves/round-43/final-gates/all-gates.txt` as `dyn`; every other declared path must exist at the run ref.
+  E9 commit J (everything above, no receipt). Run the suite at J -> receipt; require closed=19/19 exit=0.
+  E10 commit Y = J plus .ufo/waves/round-43/final-gates/all-gates.txt only. Run every counting command at Y.
+
+3. WHICH FILE MUST EXIST BEFORE WHICH CHECK/Counter CAN CLOSE
+  corpus/knowledge/claim-package-gate.md        -> census E11, recheck-audit expected=62, C2 entry provenance
+  corpus/instruments/claim-package-check.py     -> C2 gate counters; also the entry's `recheck:` line (recheck-audit parse/gated)
+  corpus/source-snapshots/round-43/manifest.json-> capture-binding records=57 (measured 57/57 unbound=0) and K6's digest mutant pick (min_round=32, need_sha)
+  corpus/instruments/r43-closure.sh             -> K8 digest, every K payload line
+  .ufo/waves/round-42/<erratum copy>            -> K17 closed (measured: erratum only in round-43 => unbacked=1 closed=0; copy in round-42 => superseded=1 unbacked=0 closed=1)
+  .ufo/waves/round-43/w1/ExecGateSelftest.transcript.txt -> K18 binding of `selftest cases=10 failures=0` (measured unbound 4 -> 2)
+  .ufo/waves/round-43/final-gates/all-gates.txt -> K8 source=committed, K18 binding of `closed=19/19` and `selftest cases=19 failures=0` (measured unbound 3 -> 0)
+  .ufo/waves/round-43/declared-blocks.txt       -> K4 (absent => file=absent closed=0; declared-but-absent => escape>=1 closed=0; present+complete => closed=1)
+
+4. TWO-WAY COUPLINGS (measured on the probe tree)
+  4.1 C2 bytes -> C1 counters
+   - K12: C2 may only ADD under corpus/. `deleted=0` is `git diff --diff-filter=DR base..REF -- corpus/`; a move or rename of any corpus file reddens it. Probe with all C2 payloads: deleted=0 closed=1.
+   - K13: every C2 file must be committed; `faithful` compares the export to `git ls-tree REF`. Uncommitted landing => extra>0.
+   - K4: a declared C2 path that is absent reds as escape, not missing (probe: declared=14,valid=13,escape=1 closed=0). A C2 read path that exists but is undeclared reds as missing. Generate E8 after E1-E7.
+   - K3: C2 must not leave a row whose first cell is an `rNN-closure.sh` basename outside SKILL.md's table (r40-split). claim-package-check.py is not a closure basename; probe tables=18,rows=73,r42-rows=1,r40-rows=1,r40-split=0 closed=1.
+   - K7: the README coverage append must carry no `| F<dd> |` row. Probe: rows=25 admitted=25 closed=1; frontier-recheck-count entries=28 pass=28 exit=0.
+   - K6: the new round-43 manifest is a candidate for the digest-mutant pick; its record must bind (sha256 + existing path). Probe: base=1, missing-path=1, url-mutated=1, digest-mutated=1 closed=1.
+   - K1/K11/K14: C2 adds no `Correction (round 43)` line, so the ledger stays at 34 + 3 record correction lines = 37. One extra correction line (from any seat) moves the live value and makes every existing `corrections=` literal stale.
+  4.2 C1 bytes -> C2 counters
+   - corpus/README.md and corpus/SOURCES.md are shared: C1's K7 reads README's F rows and C1's K3 reads SKILL.md; the census reads SOURCES. An EOF row append (E1d done wrong) reddens the C2 census and leaves K3/K7 untouched.
+   - K18 binds values from C2's own transcripts: K18's evidence store is every file under .ufo/waves/round-4{2,3}/ that is not a record, so a C2 transcript can certify a C1 record quote regardless of the transcript's own verdict. At 16:57:12Z .ufo/waves/round-43/w1/ExecGateSelftest.transcript.txt (sha b4e8b2d4...) prints `selftest cases=10 failures=0` at line 60 and ends `selftest cases=10 failures=9 / exit=1`; K18 binds the line-60 token.
+   - K4's manifest, if generated over the whole tree, must be regenerated after any late C2 file (e.g. a fixture added at the last minute) or that path becomes a declared-absent escape.
+
+5. PLACES WHERE ONE CLAIM'S BYTES CAN REDDEN THE OTHER'S COUNTER
+  | landing move                                   | reddens                                   | probe |
+  | SOURCES rows appended at EOF                   | C2 census E12, exit 1                     | measured exit 1 |
+  | SOURCES rows without the used-by entry         | C2 census E11, exit 1                     | measured exit 1 |
+  | knowledge entry without the expected-list line | C2 recheck-audit unexpected=1             | rule: corpus/instruments/recheck-audit.py:44-51 |
+  | any corpus delete/rename                       | C1 K12 deleted>0                          | filter DR over corpus/, base..REF |
+  | a declared path the run cannot see             | C1 K4 escape>=1                           | measured declared=14,valid=13,escape=1 closed=0 |
+  | row with first cell rNN-closure.sh outside table| C1 K3 r40-split>0                        | closure_basenames + ROW_RX |
+  | new `| F<dd> |` row in README                  | C1 K7 base!=1 / frontier exit!=0          | measured clean without one |
+  | extra `Correction (round 43)` line             | C1 K11/K14 corrections= literal stale     | 34 -> 37 for the three landed lines |
+  | `closed=19/19` in a lane record before the receipt | C1 K18 unbound>0 at J                 | measured unbound=3 closed=0 |
+  | `closed=13/19` anywhere in a K18 quote source  | C1 K18 unbound>0 at Y                     | measured unbound includes lesson-43:26 and erratum:9 |
+  | erratum landed only at .ufo/waves/round-43/    | C1 K17 unbacked=1 closed=0                | measured; round-42 copy closes it |
+  | gate transcript absent from the lane           | C1 K18 unbound 2 (cases=10 quotes)        | measured 4 -> 2 when landed |
+
+6. CONTRADICTIONS (stated, not smoothed)
+  6.1 Base figure. claims.json C1 `after` and the L1 summary say base ab98fac9 prints `closed=13/19` with exactly K14-K19 open. That is unreachable while K1-K13 are carried: K4 reads `.ufo/waves/round-43/declared-blocks.txt`, which does not exist at base (`git cat-file -e ab98fac9:.ufo/waves/round-43/declared-blocks.txt` -> fatal: does not exist, exit 128), so K4 prints `file=absent` and closes 0; K8's `locate_receipt` finds no round-43 receipt at base and falls back to `.ufo/waves/round-42/final-gates/all-gates.txt`, a 13-check receipt, so `lines` (expects 5+19+1+19+1=45) and `closed-line` (expects (19,19,0)) both fail. Derived base: 11/19 exit=1 with K4, K8, K14-K19 open. The frozen predicate's own escape is "the exact base figure is measured during integration and quoted in the report, never pre-declared"; the report must quote the measured figure, and the 13/19 in claims.json is superseded (claims.json cannot be edited: K19 checks its sha256).
+  6.2 K18 scope. The predicate says a committed transcript "under the round's final-gates/ or c1-controls/". The limb accepts any non-record file under .ufo/waves/round-42/ and .ufo/waves/round-43/ recursively, and explicitly excludes SCORECARD.md/LOG.md/SHONEN.md as quote sources (they are K14 sources and supersede-marker sources only). Landing must follow the limb; ScribeScorecardRound43.append.md's `closed=13/19` is outside K18's population, the lesson's is not.
+  6.3 K17 escape dir. The limb's `superseded_by(round_dir, token)` lists errata in `os.path.dirname(<claims.json>)`. The erratum seat lands `.ufo/waves/round-43/claims-erratum-1.md`, but the only unbacked before-token is round-42's `closed=10/12`; measured closed=0 with the file only in round-43, closed=1 with a copy in round-42. A single copy under .ufo/waves/round-42/ (or the L1 landing it there too) is required.
+  6.4 J/Y fixed point. K18 cannot see the receipt that its own run produces, so a lane record quoting `closed=19/19` before Y reddens the J run. Measured pre-receipt: unbound=3 (corpus/lessons/round-43.md:26: `closed=19/19` twice + `selftest cases=19 failures=0`); with `report-only` on that line: unbound=0 closed=1; at Y with the receipt: bound=41 unbound=0 closed=1. Without E7 the round cannot print 19/19.
+  6.5 Record name. claims.json (and the L1 summary) write `SHENON.md`; the lane file and the r42 RECORDS list are `SHONEN.md`. A limb implementing the claims text literally would skip the record and silently pass; no K14/K11 figure above includes a SHENON.md file.
+
+7. MEASURED LANDING PROBE (probe tree, not a lane run)
+  K1  records=1,blocks=3,evidence=3,missing=0,wrong-grade=0,union=0 closed=1
+  K3  tables=18,rows=73,r42-rows=1,r40-rows=1,r40-split=0,bare=0,lead=0 closed=1
+  K4  declared=24,valid=24,missing=0,escape=0,coverage=11/11,file=present closed=1 (r42 READ_SET; r43 suite absent at probe time, so corpus/instruments/r43-closure.sh undeclared/absent)
+  K6  instrument=present,base=1,missing-path=1,url-mutated=1,digest-mutated=1 closed=1
+  K7  instrument=present,base=1,status-flip=1,no-pass=1,rows=25,admitted=25 closed=1
+  K11 corrections=37,groups=4,dups=4,excused=4,unexcused=0,marker=1,eof-closed=3/3 closed=1  (34 at base + SCORECARD x2 + LOG x1; the round-42 lesson line is not a RECORDS file)
+  K12 deleted=0,density=1,density-sha=ee803726a322,diff-read=ok,base=5053a7f4 closed=1
+  K14 literals=3,stale=0,superseded=2,live=corrections=37,groups=4 closed=1
+  K17 claims=21,tokens=5,verified=4,superseded=1,unbacked=0,quoted=2 closed=1 (with the round-42 erratum copy)
+  K18 pre-receipt, after-state lines report-only: quotes=51,bound=38,report-only=7,superseded=6,unbound=0 closed=1
+  K18 at Y (receipt present): quotes=51,bound=41,report-only=4,superseded=6,unbound=0 closed=1
+  C2  binding records=57 bound=57 unbound=0; knowledge 62; SOURCES rows 68; defect fixtures 9; census exit 0; frontier entries=28 pass=28

@@ -1,0 +1,9 @@
+defect-1-missing-file R-FILES rm claim_checklist.md (one of the six contract files absent)
+defect-2-digest R-MANIFEST append one byte to the first evidence artifact (manifest.artifacts[0].path); the declared sha256 is unchanged
+defect-3-negative R-MANIFEST every artifacts[].polarity "positive" -> "negative" (zero positive artifacts); resealed
+defect-4-escape R-MANIFEST manifest.artifacts[0].path := "../escape.txt" (a `..` path escaping evidence/ and the package); resealed
+defect-5-redaction R-REDACT manifest.redactions := [] (no redaction receipt for any artifact); resealed
+defect-6-custodian R-CUSTODIAN custodian-receipts.json head_sha256 := 64x'f' (breaks head == final decision == manifest.expected_head_sha256)
+defect-7-reviewer R-STATUS status.claim_review.reviewer.identity := manifest.redactions[0].producer (reviewer == producer)
+defect-8-marker R-REPORT report.md literal "No submission performed" replaced with "No filing has been made."
+defect-9-secret R-NOSECRET provenance.json gains top-level "api_key": 40 lowercase hex (labelled-hex secret shape)

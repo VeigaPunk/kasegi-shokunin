@@ -1,0 +1,292 @@
+
+===== 0. environment =====
+$ date -u +%Y-%m-%dT%H:%M:%SZ
+2026-10-28T16:50:10Z
+[exit=0]
+$ uname -sr
+Linux 7.2.11-arch1-1
+[exit=0]
+$ bash --version
+GNU bash, version 5.3.20(1)-release (x86_64-pc-linux-gnu)
+Copyright (C) 2025 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+
+This is free software; you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+[exit=0]
+$ python3 -V
+Python 3.14.8
+[exit=0]
+
+===== 1. limb identity =====
+$ sha256sum /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh
+14a195b1eb7ec61550bf4938f62ae7856dbae0c1a49dc7aba078f7b97304e93a  /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh
+[exit=0]
+$ wc -l /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh
+450 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh
+[exit=0]
+
+===== 2. export the base ref (read-only lane git) =====
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse ab98fac9dce87130bc4f66de89e30650d63943dc
+ab98fac9dce87130bc4f66de89e30650d63943dc
+[exit=0]
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive ab98fac9dce87130bc4f66de89e30650d63943dc | tar -x -C /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/base
+[exit=0]
+$ sh -c find '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/base' -type f | wc -l
+8384
+[exit=0]
+$ sh -c ls '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/base/corpus/lessons'/*.md | wc -l
+65
+[exit=0]
+
+===== 3. base export: K15 must be open, naming each unbacked sentence =====
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/base
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 payload=sentences=5,unbacked=3,superseded=0,mismatch=0 closed=0
+[exit=1]
+
+===== 4. green: the correction blocks appended to LOG.md and corpus/lessons/round-42.md =====
+$ tail -2 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/green/LOG.md
+
+Correction (round 43): `LOG.md:1804` — "wave 2 `kasegi-r42-falsify` 36 seats dispatched against the repaired head" is never-true for the `kasegi-r42-falsify` wave: no `.ufo/waves/round-42/wave2-results.json` exists; wave 2 was handed off and not taken.
+[exit=0]
+$ tail -2 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/green/corpus/lessons/round-42.md
+
+Correction (round 43): `corpus/lessons/round-42.md:11,16` — "wave 2 dispatched 36 seats; the round total is 100" / "36 seats, 32 attack roles": round 42 wave 2 (`kasegi-r42-falsify`) is never-true; no `.ufo/waves/round-42/wave2-results.json`; the round total stands without it.
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/green
+K15 payload=sentences=5,unbacked=0,superseded=3,mismatch=0 closed=1
+[exit=0]
+$ K15_VERBOSE=1 bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/green
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 superseded-by=1808
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 superseded-by=151
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 superseded-by=151
+K15 payload=sentences=5,unbacked=0,superseded=3,mismatch=0 closed=1
+[exit=0]
+$ bash -c bash '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh' '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/green' 2>&1 | wc -l
+1
+[exit=0]
+
+===== 4b. the correction blocks as drafted in .ufo/waves/round-43/w1/ (the bytes the L1 appends) =====
+$ sha256sum /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeCorrections.log.txt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeCorrections.lesson42.txt
+7e8f71992d374866f11ab2803bca7ea77a840e3017a039e1e012771b27332b41  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeCorrections.log.txt
+37423d8b2943e116d1511d44ee8a0786b875032f684abcf085fc9543bb4922d6  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeCorrections.lesson42.txt
+[exit=0]
+$ cat .ufo/waves/round-43/w1/ScribeCorrections.log.txt >> evidence/LOG.md
+[exit=0]
+$ cat .ufo/waves/round-43/w1/ScribeCorrections.lesson42.txt >> evidence/corpus/lessons/round-42.md
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/landed
+K15 payload=sentences=5,unbacked=0,superseded=3,mismatch=0 closed=1
+[exit=0]
+
+===== 4c. the round-43 LOG entry as drafted: dispatched needs its results artifact =====
+$ sha256sum /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeLogEntry.log-entry.md
+b8a0897fd7a10a5efb06283a4fd78c7b220021bfb903e140c45afeb344c3fafb  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ScribeLogEntry.log-entry.md
+[exit=0]
+$ cat .ufo/waves/round-43/w1/ScribeLogEntry.log-entry.md >> evidence/LOG.md
+[exit=0]
+$ grep -n kasegi-r43-hyaku /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/y/LOG.md
+1934:- Wave shape: one v2 wave `kasegi-r43-hyaku`, 73 seats dispatched — executor 23, reviewer 11, scribe 10,
+1937:  critic 7 plus mutation-tester 5); dead seats: `<pending: L1 reads kasegi-r43-hyaku-results.json>`
+1938:  (`.ufo/waves/round-43/kasegi-r43-hyaku-results.json`, `seats` 73).
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/y
+K15 detail=LOG.md:1934 wave=kasegi-r43-hyaku round=43 stated-seats=73 unbacked=no-evidence
+K15 payload=sentences=6,unbacked=1,superseded=3,mismatch=0 closed=0
+[exit=1]
+$ python3 -c "<write .ufo/waves/round-43/kasegi-r43-hyaku-results.json seats=73>"
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/y
+K15 payload=sentences=6,unbacked=0,superseded=3,mismatch=0 closed=1
+[exit=0]
+
+===== 5. results file present but 35 seats against 36 claimed (red, mismatch) =====
+$ python3 -c "<write .ufo/waves/round-42/wave2-results.json seats=35>"
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/m35
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 mismatch=seats=35 path=.ufo/waves/round-42/wave2-results.json
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 mismatch=seats=35 path=.ufo/waves/round-42/wave2-results.json
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 mismatch=seats=35 path=.ufo/waves/round-42/wave2-results.json
+K15 payload=sentences=5,unbacked=0,superseded=0,mismatch=3 closed=0
+[exit=1]
+
+===== 6. results file present with the claimed 36 seats (green, no correction needed) =====
+$ python3 -c "<write .ufo/waves/round-42/wave2-results.json seats=36>"
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/m36
+K15 payload=sentences=5,unbacked=0,superseded=0,mismatch=0 closed=1
+[exit=0]
+
+===== 7. empty results artifact (red, corrupt) =====
+$ : > /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/empty/.ufo/waves/round-42/wave2-results.json
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/empty
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 mismatch=corrupt path=.ufo/waves/round-42/wave2-results.json
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 mismatch=corrupt path=.ufo/waves/round-42/wave2-results.json
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 mismatch=corrupt path=.ufo/waves/round-42/wave2-results.json
+K15 payload=sentences=5,unbacked=0,superseded=0,mismatch=3 closed=0
+[exit=1]
+
+===== 8. artifact whose own round field contradicts its path (red) =====
+$ python3 -c "<write .ufo/waves/round-42/wave2-results.json round=41 seats=36>"
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/wronground
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 mismatch=artifact-round-mismatch path=.ufo/waves/round-42/wave2-results.json
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 mismatch=artifact-round-mismatch path=.ufo/waves/round-42/wave2-results.json
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 mismatch=artifact-round-mismatch path=.ufo/waves/round-42/wave2-results.json
+K15 payload=sentences=5,unbacked=0,superseded=0,mismatch=3 closed=0
+[exit=1]
+
+===== 9. sentence names a wave whose round differs from the record's round (resolved from the sentence: round 41) =====
+$ tail -2 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/foreign/corpus/lessons/round-42.md
+
+Round shape note: wave 2 `kasegi-r41-falsify` 33 seats dispatched against the repaired head.
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/foreign
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 payload=sentences=6,unbacked=3,superseded=0,mismatch=0 closed=0
+[exit=1]
+
+===== 10. same sentence with a wrong count (33 real vs 39 claimed) -> red =====
+$ tail -2 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/foreignbad/corpus/lessons/round-42.md
+
+Round shape note: wave 2 `kasegi-r41-falsify` 39 seats dispatched against the repaired head.
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/foreignbad
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:151 wave=kasegi-r41-falsify round=41 stated-seats=39 mismatch=seats=33 path=.ufo/waves/round-41/kasegi-r41-falsify-results.json
+K15 payload=sentences=6,unbacked=3,superseded=0,mismatch=1 closed=0
+[exit=1]
+
+===== 11. wave name carrying a hyphen and a number =====
+$ tail -2 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/hyphnum/corpus/lessons/round-42.md
+
+Round shape note: wave 2 `kasegi-r42-falsify-2` 36 seats dispatched against the repaired head.
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/hyphnum
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:151 wave=kasegi-r42-falsify-2 round=42 stated-seats=36 unbacked=no-evidence
+K15 payload=sentences=6,unbacked=4,superseded=0,mismatch=0 closed=0
+[exit=1]
+
+===== 12. round-total sentence with no named wave (out of scope by the rule) =====
+$ tail -2 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/totalonly/corpus/lessons/round-42.md
+
+The round total is 100 across both waves, counted when wave 2 lands.
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/totalonly
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 payload=sentences=5,unbacked=3,superseded=0,mismatch=0 closed=0
+[exit=1]
+
+===== 13. past-tense dispatch in a fabricated historical lesson (red) =====
+$ cat /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/historical/corpus/lessons/round-18-history.md
+# Round 18 — historical note
+
+Shape: wave 1 `kasegi-r18-build` 40 seats were dispatched in one batch.
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/historical
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-18-history.md:3 wave=kasegi-r18-build round=18 stated-seats=40 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 payload=sentences=6,unbacked=4,superseded=0,mismatch=0 closed=0
+[exit=1]
+
+===== 14. a correction without never-true / not taken does not retire the sentence =====
+$ tail -2 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/weak/LOG.md
+
+Correction (round 43): `LOG.md:1804` mentioned a `kasegi-r42-falsify` wave dispatch.
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/weak
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 payload=sentences=5,unbacked=3,superseded=0,mismatch=0 closed=0
+[exit=1]
+
+===== 15. a correction above the sentence is not a follower =====
+$ python3 -c "<prepend a Correction (round 43) line to LOG.md>"
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/first
+K15 detail=LOG.md:1806 wave=kasegi-r42-falsify round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 payload=sentences=5,unbacked=3,superseded=0,mismatch=0 closed=0
+[exit=1]
+
+===== 16. named wave with a count and a dispatch verb but no wave label (red) =====
+$ tail -2 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/nolabel/corpus/lessons/round-42.md
+
+Round shape note: `kasegi-r42-falsify` 36 seats dispatched against the repaired head.
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/nolabel
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:151 wave=kasegi-r42-falsify round=42 stated-seats=36 unbacked=no-evidence
+K15 payload=sentences=6,unbacked=4,superseded=0,mismatch=0 closed=0
+[exit=1]
+
+===== 17. correction written as a bold list item =====
+$ tail -2 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/bold/LOG.md
+
+- **Correction (round 43)**: `LOG.md:1804` `kasegi-r42-falsify` wave 2 dispatch is never-true.
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/bold
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 payload=sentences=5,unbacked=2,superseded=1,mismatch=0 closed=0
+[exit=1]
+
+===== 18. a correction block does not swallow the entry that follows it =====
+$ tail -3 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/blockthen/LOG.md
+Correction (round 43): `LOG.md:1804` `kasegi-r42-falsify` wave 2 dispatch is never-true.
+## Round 43
+- Wave shape: wave 1 `kasegi-r43-build` 73 seats dispatched in one v2 wave.
+[exit=0]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/blockthen
+K15 detail=LOG.md:1810 wave=kasegi-r43-build round=43 stated-seats=73 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 payload=sentences=6,unbacked=3,superseded=1,mismatch=0 closed=0
+[exit=1]
+
+===== 19. read-only export (the limb attempts no write) =====
+$ sh -c bash '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh' '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/ro'
+K15 detail=LOG.md:1804 wave=kasegi-r42-falsify round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:11 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 detail=corpus/lessons/round-42.md:16 wave=wave2 round=42 stated-seats=36 unbacked=no-evidence
+K15 payload=sentences=5,unbacked=3,superseded=0,mismatch=0 closed=0
+[exit=1]
+
+===== 20. determinism: two runs at base are byte-identical =====
+$ bash -c bash '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh' '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/base' > '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/run1.txt' 2>&1; bash '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh' '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/base' > '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/run2.txt' 2>&1; diff '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/run1.txt' '/fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/run2.txt' && printf 'runs identical\n'
+runs identical
+[exit=0]
+
+===== 21. sourceable form: source then call =====
+$ bash -c 'source /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh; check_k15 /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/green'
+K15 payload=sentences=5,unbacked=0,superseded=3,mismatch=0 closed=1
+[exit=0]
+
+===== 22. usage error (no export dir) and a tree without LOG.md =====
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh
+K15 payload=sentences=0,unbacked=0,superseded=0,mismatch=0 closed=0
+K15 usage: check_k15 <export-dir>
+[exit=2]
+$ bash /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/k15.sh /fast/scratch/hyaku/kasegi-r43/ExecK15WaveNarrative/evidence/nolog
+K15 detail=LOG.md absent reason=no-export-tree
+K15 payload=sentences=0,unbacked=0,superseded=0,mismatch=0 closed=0
+[exit=1]

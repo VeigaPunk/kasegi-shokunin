@@ -1,0 +1,132 @@
+ExecK18Transcript.transcript.txt -- K18 (RD42-5) observed runs
+limb      3551a0fc5a18d9e94e4f3f11a07520f6fd8082842cafad00d1b98f862495a89e  lines=278
+generated 2026-10-28T17:09:46Z
+export    git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive <ref> | tar -x -C <scratch>/fix/<fixture>
+tee       ExecK18Transcript.de09313-tee.txt sha256=44a53379bf3151d8f1667aa8f6c3417dc77b5a4e0149afac3288e04ea42d9db6 lines=33
+
+########## 0. live lane worktree (not an export; round-43 records are present,
+   round-43 seat receipts are claims and do not bind, final-gates/ is still empty)
+$ bash ExecK18Transcript.sh /home/vgpnk/Projects/shokunin/kasegi-shokunin --verbose
+K18 payload=quotes=28,bound=27,report-only=0,superseded=0,unbound=1 closed=0
+K18 unbound token=selftest cases=13 failures=3 at corpus/lessons/round-42-verifier-spotcheck.md:65
+K18 scope records=4 transcripts=163
+rc=1
+
+########## 1. base export ab98fac9dce87130bc4f66de89e30650d63943dc -- RED, names closed=10/13
+$ bash ExecK18Transcript.sh /fast/scratch/hyaku/kasegi-r43/ExecK18Transcript/fix/base --verbose
+K18 payload=quotes=22,bound=19,report-only=0,superseded=0,unbound=3 closed=0
+K18 unbound token=closed=10/13 at corpus/lessons/round-42-verifier-spotcheck.md:65
+K18 unbound token=selftest cases=13 failures=3 at corpus/lessons/round-42-verifier-spotcheck.md:65
+K18 unbound token=closed=10/13 at corpus/lessons/round-42-verifier-spotcheck.md:177
+K18 scope records=2 transcripts=160
+rc=1
+
+########## 2. base export + the de09313 tee at .ufo/waves/round-43/final-gates/r42-at-de09313.txt -- GREEN
+$ cp ExecK18Transcript.de09313-tee.txt <export>/.ufo/waves/round-43/final-gates/r42-at-de09313.txt
+$ bash ExecK18Transcript.sh /fast/scratch/hyaku/kasegi-r43/ExecK18Transcript/fix/tee --verbose
+K18 payload=quotes=22,bound=22,report-only=0,superseded=0,unbound=0 closed=1
+K18 scope records=2 transcripts=161
+rc=0
+
+########## 3. forged summary-only transcript instead of the tee -- still RED
+$ cat <export>/.ufo/waves/round-43/final-gates/forged.txt   # header + summary, no J payloads, no 10/13
+$ bash ExecK18Transcript.sh /fast/scratch/hyaku/kasegi-r43/ExecK18Transcript/fix/forged --verbose
+K18 payload=quotes=22,bound=19,report-only=0,superseded=0,unbound=3 closed=0
+K18 unbound token=closed=10/13 at corpus/lessons/round-42-verifier-spotcheck.md:65
+K18 unbound token=selftest cases=13 failures=3 at corpus/lessons/round-42-verifier-spotcheck.md:65
+K18 unbound token=closed=10/13 at corpus/lessons/round-42-verifier-spotcheck.md:177
+K18 scope records=2 transcripts=161
+rc=1
+
+########## 4. transcript carrying a DIFFERENT denominator (10/100, failures=30) -- still RED
+$ cat <export>/.ufo/waves/round-43/final-gates/denominator.txt
+closed=10/100 exit=1
+selftest cases=13 failures=30
+$ bash ExecK18Transcript.sh /fast/scratch/hyaku/kasegi-r43/ExecK18Transcript/fix/denom --verbose
+K18 payload=quotes=22,bound=19,report-only=0,superseded=0,unbound=3 closed=0
+K18 unbound token=closed=10/13 at corpus/lessons/round-42-verifier-spotcheck.md:65
+K18 unbound token=selftest cases=13 failures=3 at corpus/lessons/round-42-verifier-spotcheck.md:65
+K18 unbound token=closed=10/13 at corpus/lessons/round-42-verifier-spotcheck.md:177
+K18 scope records=2 transcripts=161
+rc=1
+
+########## 5. trailing punctuation on an unbacked value -- token still extracted, RED
+$ cat <export>/.ufo/waves/round-43/probe-punctuation.md
+# probe: trailing punctuation
+The probe run prints `closed=11/12,` and ends `selftest cases=7 failures=1.` here.
+$ bash ExecK18Transcript.sh /fast/scratch/hyaku/kasegi-r43/ExecK18Transcript/fix/punct --verbose
+K18 payload=quotes=24,bound=22,report-only=0,superseded=0,unbound=2 closed=0
+K18 unbound token=closed=11/12 at .ufo/waves/round-43/probe-punctuation.md:2
+K18 unbound token=selftest cases=7 failures=1 at .ufo/waves/round-43/probe-punctuation.md:2
+K18 scope records=3 transcripts=161
+rc=1
+
+########## 6. fenced transcript pasted into a lesson, no committed transcript -- still RED
+   (a record never certifies its own quote)
+$ bash ExecK18Transcript.sh /fast/scratch/hyaku/kasegi-r43/ExecK18Transcript/fix/fenced --verbose
+K18 payload=quotes=24,bound=19,report-only=0,superseded=0,unbound=5 closed=0
+K18 unbound token=closed=10/13 at corpus/lessons/round-42-verifier-spotcheck.md:65
+K18 unbound token=selftest cases=13 failures=3 at corpus/lessons/round-42-verifier-spotcheck.md:65
+K18 unbound token=closed=10/13 at corpus/lessons/round-42-verifier-spotcheck.md:177
+K18 unbound token=closed=10/13 at corpus/lessons/round-43-probe.md:7
+K18 unbound token=selftest cases=13 failures=3 at corpus/lessons/round-43-probe.md:8
+K18 scope records=3 transcripts=160
+rc=1
+
+########## 7. report-only escape on a line that carries values -- GREEN (report-only=2)
+$ bash ExecK18Transcript.sh /fast/scratch/hyaku/kasegi-r43/ExecK18Transcript/fix/rponly --verbose
+K18 payload=quotes=24,bound=22,report-only=2,superseded=0,unbound=0 closed=1
+K18 scope records=3 transcripts=161
+rc=0
+
+########## 8. claims-erratum supersede entry quoting the tokens -- GREEN (superseded=5)
+$ bash ExecK18Transcript.sh /fast/scratch/hyaku/kasegi-r43/ExecK18Transcript/fix/supersede --verbose
+K18 payload=quotes=24,bound=19,report-only=0,superseded=5,unbound=0 closed=1
+K18 scope records=3 transcripts=160
+rc=0
+
+########## 9. why the tee must be the ref own bytes, not the current instrument
+   (a run transcript prints suite-sha256= of the EXPORTED suite, so the runner is
+    identified by the sha256 of the file that was executed)
+$ sha256sum <lane>/corpus/instruments/r42-closure.sh          # runner A: current (repaired)
+fca5ae62379e01232a523bbf318872dbb358cdf534ce65a42dfe7ef8df7f6d6b  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r42-closure.sh
+$ bash <lane>/corpus/instruments/r42-closure.sh --export-ref de09313... --work <scratch>/w-cur --scratch-root <scratch>
+closed=12/13 exit=1
+rc=1
+
+$ git -C <lane> show de09313:corpus/instruments/r42-closure.sh > r42-de09313.sh
+$ sha256sum r42-de09313.sh    # runner B: the bytes at that ref
+d92c0de1e3b4d01ca330994c781fda6aeb0cfd874f00f6d17641c3f6bc73f464  /fast/scratch/hyaku/kasegi-r43/ExecK18Transcript/r42-de09313.sh
+$ bash r42-de09313.sh --export-ref de09313... --work <scratch>/w --scratch-root <scratch> --receipt-out receipt.txt
+closed=10/13 exit=1
+rc=1
+$ grep "^selftest cases=" receipt.txt
+selftest cases=13 failures=3
+
+########## 10. deliverable tee provenance
+$ wc -l ExecK18Transcript.de09313-tee.txt
+33 /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK18Transcript.de09313-tee.txt
+$ sha256sum ExecK18Transcript.de09313-tee.txt
+44a53379bf3151d8f1667aa8f6c3417dc77b5a4e0149afac3288e04ea42d9db6  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-43/w1/ExecK18Transcript.de09313-tee.txt
+$ cmp ExecK18Transcript.de09313-tee.txt receipt.txt   # landed file vs the suite own --receipt-out receipt
+cmp: identical
+$ grep -nE "^closed=10/13 exit=1$|^selftest cases=13 failures=3$" ExecK18Transcript.de09313-tee.txt
+19:closed=10/13 exit=1
+33:selftest cases=13 failures=3
+
+########## 11. Y simulation: HEAD tree + round-43 records + the 33-line tee -- GREEN
+   (same tree with only the run-only transcript already landed in final-gates -- still RED)
+generated 2026-10-28T17:10:25Z
+$ git -C <lane> archive HEAD | tar -x -C <scratch>/sim ; cp -a .ufo/waves/round-43 <scratch>/sim/.ufo/waves/
+$ cp ExecK18Transcript.de09313-tee.txt <scratch>/sim/.ufo/waves/round-43/final-gates/r42-at-de09313.txt
+$ bash ExecK18Transcript.sh <scratch>/sim --verbose
+K18 payload=quotes=28,bound=28,report-only=0,superseded=0,unbound=0 closed=1
+K18 scope records=4 transcripts=164
+rc=0
+
+$ cp .ufo/waves/round-43/final-gates/r42-at-de09313-run.txt <scratch>/sim/.ufo/waves/round-43/final-gates/   # run-only, 19 lines
+$ bash ExecK18Transcript.sh <scratch>/sim --verbose
+K18 payload=quotes=28,bound=27,report-only=0,superseded=0,unbound=1 closed=0
+K18 unbound token=selftest cases=13 failures=3 at corpus/lessons/round-42-verifier-spotcheck.md:65
+K18 scope records=4 transcripts=163
+rc=1
