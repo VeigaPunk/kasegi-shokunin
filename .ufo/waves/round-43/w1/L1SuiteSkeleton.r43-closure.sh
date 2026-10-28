@@ -327,39 +327,39 @@ want() {
 
 PAYLOAD_FILE="$WORK/payloads.txt"
 : > "$PAYLOAD_FILE"
-OPEN=0
-TOTAL=0
-
-emit() {  # emit <id> <line> <closed>
-    printf '%s\n' "$2" >> "$PAYLOAD_FILE"
-    printf '%s\n' "$2"
-    TOTAL=$((TOTAL + 1))
-    [ "$3" -eq 1 ] || OPEN=$((OPEN + 1))
-}
+mkdir -p "$WORK/pl"
+: > "$WORK/pl/all"
 
 for n in 1 2 3 4 5 6 7 9 10 11 12 13; do
     id="K$n"
     want "$id" || continue
     cl="$(carried_line "$n")"
     if [ -z "$cl" ]; then
-        emit "$id" "$id payload=carried=absent,exit=$CARRIED_RC closed=0" 0
-        continue
+        printf '%s payload=carried=absent,exit=%s closed=0\n' "$id" "$CARRIED_RC" > "$WORK/pl/$id"
+    else
+        printf '%s %s\n' "$id" "$cl" > "$WORK/pl/$id"
     fi
-    case "$cl" in
-        *"closed=1") emit "$id" "$id $cl" 1 ;;
-        *) emit "$id" "$id $cl" 0 ;;
-    esac
+    cat "$WORK/pl/$id" >> "$WORK/pl/all"
 done
-
-if want K8; then
-    k8="$(check_k8 "$PAYLOAD_FILE")"; k8rc=$?
-    emit K8 "$k8" "$k8rc"
-fi
 
 for id in K14 K15 K16 K17 K18 K19; do
     want "$id" || continue
-    ln="$(limb_line "$id" "$EXPORT")"; rc=$?
-    emit "$id" "$ln" "$rc"
+    limb_line "$id" "$EXPORT" > "$WORK/pl/$id" 2>/dev/null || true
+    [ -s "$WORK/pl/$id" ] || printf '%s payload=limb=error closed=0\n' "$id" > "$WORK/pl/$id"
+    cat "$WORK/pl/$id" >> "$WORK/pl/all"
+done
+
+if want K8; then
+    check_k8 "$WORK/pl/all" > "$WORK/pl/K8" 2>/dev/null
+    [ -s "$WORK/pl/K8" ] || printf 'K8 payload=receipt=absent closed=0\n' > "$WORK/pl/K8"
+fi
+
+# emit in numeric order, whatever order the checks ran in
+for n in $(seq 1 19); do
+    id="K$n"
+    [ -f "$WORK/pl/$id" ] || continue
+    cat "$WORK/pl/$id"
+    cat "$WORK/pl/$id" >> "$PAYLOAD_FILE"
 done
 
 TOTAL=$(wc -l < "$PAYLOAD_FILE" | tr -d ' ')
