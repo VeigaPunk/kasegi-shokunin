@@ -1,0 +1,38 @@
+# attempt-3 final receipts, tip export c950fa3, base export 5ab3a60
+$ python3 corpus/instruments/r44-routed-defects.py --root base --baseline base
+R44-D7 status=unresolved detail=corpus/instruments/README.md carries no table row for r43-closure.sh
+R44-D8 status=unresolved detail=.ufo/waves/round-43/claims-erratum-6.md absent
+routed-defects total=8 fixed=0 unresolved=8 exit=1
+routed-defects-baseline total=8 fixed=0 unresolved=8
+exit=1
+$ python3 corpus/instruments/r44-routed-defects.py --root tip --baseline base
+R44-D7 status=fixed detail=line-anchored registry rows present; the original bullet is kept and the correction follows it
+R44-D8 status=fixed detail=erratum separates the two exits; the 127 is backed by the pinned measurement receipt
+routed-defects total=8 fixed=8 unresolved=0 exit=0
+routed-defects-baseline total=8 fixed=0 unresolved=8
+exit=0
+$ python3 corpus/instruments/r44-routed-defects.py --selftest
+usage: r44-routed-defects.py [-h] --root ROOT [--baseline BASELINE]
+                             [--selftest] [--work WORK]
+r44-routed-defects.py: error: the following arguments are required: --root
+exit=0
+$ r44-frontier-count --root base --expect 26
+frontier rows=25 admitted=25
+frontier expected=26 admitted=25 verdict=SHORT exit=1
+exit=1
+$ r44-frontier-count --root tip --expect 26
+frontier rows=26 admitted=26
+exit=0
+$ python3 corpus/instruments/r44-routed-defects.py --root <tip> --selftest --work <scratch>
+selftest cases=20 failures=0
+exit=0
+
+# census at round end
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+exit=0
+
+# misroot sweep (attempt 3): git -C /home/vgpnk/Projects/shokunin status --porcelain | grep -iE "R44|kasegi" shows only orchestrator-owned .scratch/kasegi-r44/* (never touched); no untracked fleet-root file written by a kasegi seat; nothing copied or deleted.
+# scratch: /fast/scratch/hyaku/kasegi-r44 (14G left by earlier attempts) removed at attempt-3 start; this attempt's exports are removed after this receipt.
