@@ -128,11 +128,11 @@ F-DECL / F-SCAN / F-BIND / F-FLIP) escape was found; the C1 kill rule is not tri
 
 ## 4. Axis verdicts
 
-| Axis | Before → after (lane) | Verifier verdict | Reading | Evidence |
-|---|---|---|---|---|
-| depth:verifiability | 4 → 4 (held) | **met** | frozen predicate; erratum 4 = implementation repair, disclosed | C1 rows 1–9 above; 10/10 falsification attacks killed |
-| coverage | 8 → 8 (held) | **met** | frozen predicate; erratum 1 adds reject rows to the registry count | C2 rows 1–11 above; junk twin rejected |
-| depth:density | 9 → 9 | **unchanged (no harm)** | no-harm guard only | `density.py` sha256 identical at base and Y (`ee803726a322…`); `git diff --diff-filter=D` base→Y = 0 paths; J12 `deleted=0 density=1` |
+| Axis | Claim (before → after) | Claim verdict | Axis grade | Reading | Evidence |
+|---|---|---|---|---|---|
+| depth:verifiability | C1 4 → 4 (held) | **met** | **unchanged** (score held; predicate verified, no increase claimed) | frozen predicate; erratum 4 = implementation repair, disclosed | C1 rows 1–9 above; 10/10 falsification attacks killed |
+| coverage | C2 8 → 8 (held) | **met** | **improved** (F25 admitted 24→25, registry 63→66, knowledge 60→61 — the axis measurably expanded although the score band held) | frozen predicate; erratum 1 adds reject rows to the registry count | C2 rows 1–11 above; junk twin rejected |
+| depth:density | 9 → 9 | not claimed | **unchanged (no harm)** | no-harm guard only | `density.py` sha256 identical at base and Y (`ee803726a322…`); `git diff --diff-filter=D` base→Y = 0 paths; J12 `deleted=0 density=1` |
 
 Saturation stays 9/10 per owned axis, window N=3; the lowest non-retired axis remains depth:verifiability (4), which
 this round measured but did not raise — the report claims no increase and the verifier confirms no increase is
@@ -186,7 +186,8 @@ correctly never landed in `corpus/` (harness counts unaffected).
 ## 8. Verdict
 
 Both in-force claims verify at Y under their frozen predicates (C1 with erratum 4's disclosed implementation repair,
-C2 with erratum 1's reject rows), no owned axis is harmed, and the falsification pass finds no in-family escape.
-`admitted: true`. Seven routed defects, all narrative/timestamp hygiene or the undispatched wave; none touches a
-claim's measurement. The round's own admission does not depend on them, and the next round must clear them before
-adding new claims.
+C2 with erratum 1's reject rows) — claim verdicts **met / met** — and no owned axis is harmed: axis grades
+**depth:verifiability unchanged, coverage improved, depth:density unchanged (no harm)**. The falsification pass finds
+no in-family escape. `admitted: true`. Seven routed defects, all narrative/timestamp hygiene or the undispatched
+wave; none touches a claim's measurement. The round's own admission does not depend on them, and the next round must
+clear them before adding new claims.
