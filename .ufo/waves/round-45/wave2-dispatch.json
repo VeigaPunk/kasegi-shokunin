@@ -1,0 +1,635 @@
+{
+  "schema": "ufo-swarm-wave-dispatch-v1",
+  "wave": "kasegi-r45-falsify",
+  "policy": {
+    "source": "config",
+    "maxLanes": 128,
+    "minLanes": 16,
+    "waveMinLanes": 32,
+    "waveMaxLanes": 64,
+    "declaredMaxLanes": 128,
+    "hardCeiling": 256,
+    "rampBatchSize": 5,
+    "rampIntervalMs": 700,
+    "globalRunnerCeiling": 1056
+  },
+  "counts": {
+    "spawn": 37,
+    "resume": 0,
+    "total": 37
+  },
+  "registry": {
+    "schema": "ufo-swarm-registry-v1",
+    "path": ".ufo/waves/round-45/wave2/swarm-registry.json",
+    "reportDir": ".ufo/waves/round-45/wave2",
+    "members": {
+      "R45W2ExecSelftestC1": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": "Adapt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1/R45ExecSelftestC1.draft/r45-counters-selftest-c1.py to counter v1.1 and write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave2/R45W2ExecSelftestC1.draft/r45-counters-selftest-c1.py (stdlib). v1.1 pins artifacts (see the PINS dict in the counter): the synthetic COMPLETE tree must satisfy it, so compute pins for your synthetic artifacts and pass them to the counter through the grader-side env var R45_PINS_OVERRIDE=<json file> (keys S072.txt, freeze-check.py, r44-frontier-count.py, r44-routed-defects.py, claims.json, refiled-body); the real pins stay untouched. Keep the wave-1 mutants, drop mutants v1.1 makes moot only if you show the v1.1 limb rejects them, add >=8 mutants for the v1.1 limbs (code byte flipped, claims weakened, row in a fence/comment, vacuous flip, criterion too short, line ref out of range, receipt body edited). The selftest must scratch under $HYAKU_SCRATCH/kasegi-r45/selftest-c1 (not the old seat name), take --lane (default the lane), print `selftest cases=<N> failures=<F>` last, exit 0 iff F==0, and honour TMPDIR. Run it against an export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4 and report the printed output. Also report every mutant the v1.1 counter fails to reject (a false-green is the finding). Do not edit the counter.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2ExecSelftestC2": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": "Adapt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1/R45ExecSelftestC2.draft/r45-counters-selftest-c2.py to counter v1.1 and write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave2/R45W2ExecSelftestC2.draft/r45-counters-selftest-c2.py (stdlib). v1.1 pins the S071 snapshot, the manifest and the 63 base knowledge names, runs source-recheck from the counter's own lane, requires the entry to have four sections, a >=6-row table and located xrefs to coordinated-disclosure-timelines.md and ai-assisted-finding-validation.md, every curly span cited, and a 3000-byte entry; pass synthetic pins through the grader-side env var R45_PINS_OVERRIDE=<json file> (keys S071.txt, manifest.json, base-knowledge-names). Keep the wave-1 mutants that still apply, add >=8 for the v1.1 gates (uncited curly span, comment-hidden F27 row, fenced S071 row, entry shared with another F row, symlinked entry, missing section, short entry, dangling xref, padded knowledge dir). Scratch under $HYAKU_SCRATCH/kasegi-r45/selftest-c2; take --lane; print `selftest cases=<N> failures=<F>` last. Run it against an export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4 and report the printed output and any mutant the v1.1 counter fails to reject. Do not edit the counter.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevQuotes1": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "F27 entry quote review 1: in corpus/knowledge/linux-kernel-security-bugs-reporting-process.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) take the curly-quoted spans number 1 to 8 in file order; for each, locate the words in corpus/source-snapshots/round-45/S071.txt at the cited lines (`sed -n`), then in the LIVE rendered page https://docs.kernel.org/process/security-bugs.html (curl, strip tags); report each as OK / MISMATCH (word-level diff) / LOOSE-RANGE (cited range wider than needed) and whether the surrounding sentence in the entry states what the quote supports (paraphrase fidelity). A quote that is stitched, truncated mid-sentence so its meaning flips, or cited at the wrong lines is BROKEN.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevQuotes2": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "F27 entry quote review 2: in corpus/knowledge/linux-kernel-security-bugs-reporting-process.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) take the curly-quoted spans number 9 to 16 in file order; for each, locate the words in corpus/source-snapshots/round-45/S071.txt at the cited lines (`sed -n`), then in the LIVE rendered page https://docs.kernel.org/process/security-bugs.html (curl, strip tags); report each as OK / MISMATCH (word-level diff) / LOOSE-RANGE (cited range wider than needed) and whether the surrounding sentence in the entry states what the quote supports (paraphrase fidelity). A quote that is stitched, truncated mid-sentence so its meaning flips, or cited at the wrong lines is BROKEN.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevQuotes3": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "F27 entry quote review 3: in corpus/knowledge/linux-kernel-security-bugs-reporting-process.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) take the curly-quoted spans number 17 to 24 in file order; for each, locate the words in corpus/source-snapshots/round-45/S071.txt at the cited lines (`sed -n`), then in the LIVE rendered page https://docs.kernel.org/process/security-bugs.html (curl, strip tags); report each as OK / MISMATCH (word-level diff) / LOOSE-RANGE (cited range wider than needed) and whether the surrounding sentence in the entry states what the quote supports (paraphrase fidelity). A quote that is stitched, truncated mid-sentence so its meaning flips, or cited at the wrong lines is BROKEN.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevClaimsA": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "F27 entry non-quote claims, first half: take every sentence of corpus/knowledge/linux-kernel-security-bugs-reporting-process.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) in the sections `## Scope and decision rule` and the table's `package consequence` column that asserts something about what the source says or requires; verify each against corpus/source-snapshots/round-45/S071.txt (sed -n the lines). Report sentences that go beyond the source (inference presented as the page's rule), with the nearest source text. Include the table row about AI-assisted findings ('A package may not describe an AI-assisted finding as private-only') and the 'linux-distros' / CVE rows.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevClaimsB": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "F27 entry non-quote claims, second half: sections `## Overlap and novelty`, `## Limits`, `## Falsifiable package rule`, `## Rejected over-generalizations` of corpus/knowledge/linux-kernel-security-bugs-reporting-process.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4). Verify every `corpus/knowledge/<file>:<line>` cross-reference (open the file at that line: does it say what the entry says it says?), the statement that the capture carries no version string (grep S071.txt for 7.3), and each 'rejected claim' (is it really something a reader would believe, and does the cited line refute it?).",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevNovelty": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "Coverage-credit review of F27: read corpus/README.md coverage map (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) and the F02/F04/F10/F15 entries; decide, with quoted evidence, whether F27 is a NEW holding or a restatement. List what a reader of the pre-round corpus could not have answered that F27 answers (concrete questions with the answer's S071 line), and what it duplicates. State whether coverage may honestly be credited as moved and what the report should say.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevRows": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "Registry review: rows S071 and S072 in corpus/SOURCES.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) against /home/vgpnk/Projects/shokunin/CORPUS.md SOURCES contract rules 1-6 and the live S069/S070 rows: cell semantics (anchor names section + revision; teaches one grounded benefit; used-by paths exist; opened date; recheck cadence), every line number cited in the anchor cells (S071 section headings with L-numbers; S072 `L17/L57/L107/L171/L249` and `L148-L149`) is right in the snapshots (sed -n), sha256/bytes/lines recomputed with sha256sum/wc, tier justification. Run `bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file <export>/corpus/SOURCES.md` and report exact output.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevQualityRows": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "QUALITY.md review: rows R47, R48, R49 and the `## Round-45 additions` block in corpus/QUALITY.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4). Does each criterion state a checkable rule, avoid duplicating R38-R46 (read them), carry an `enforced-by:` path that truly enforces it (open the script: does it? e.g. does corpus/instruments/freeze-check.py enforce R47 'prints its declared before-value on the do-nothing control'? does r45-routed-defects.py enforce R48 'presence-only'? does source-recheck.py enforce R49 'capture method parity'?), and cite lesson lines (`corpus/lessons/round-44.md:NN`) that actually say what is claimed (sed -n each)? Also verify the R6 head line numbers (bytes 78651, sha dd753497f7138c395230df48443d3d356ca0d67c3d8a8cd24d9989103dd43d03 of the first 78651 bytes of the pre-round file: `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show dc5bb8c6e31efc4a6650819df85e79b72fd64bcd:corpus/QUALITY.md | head -c 78651 | sha256sum`).",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevCorrection": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "Correction review: the `Correction (round 45, appended 2026-10-28)` paragraph at the end of corpus/lessons/round-44.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4). Verify every number (HTTP 200, 10029 chars, 10030 with the trailing newline, sha256, 312 lines), the located quotes against corpus/source-snapshots/round-45/S072.txt, the claim the earlier reason was wrong (quote the round-44 text it corrects), that the file is a pure append (`git diff dc5bb8c6e31efc4a6650819df85e79b72fd64bcd 6662a4276b6f7bd61e23e12058414e09dd71b9e4 -- corpus/lessons/round-44.md` shows only added lines), and that it does not rewrite history. Also check it separates S070's wrong reason from the verifier spot-check's wording.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevAdmissionBlock": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "Admission-block review: the `## Round-45 admission` block at the end of corpus/README.md and the r45 line at the end of PROVINCE.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) against the round-44 block they copy. Check: the F27 row shape (six cells, status third), the 27/27 count line and its claim about the 0/18 denominator, the entry path, pure-append diffs (`git diff dc5bb8c6e31efc4a6650819df85e79b72fd64bcd 6662a4276b6f7bd61e23e12058414e09dd71b9e4 -- corpus/README.md PROVINCE.md | grep -c '^-[^-]'` must be 0), PROVINCE 'Refuses/Adjacent' scope (kernel material is OK for bounty/security research? adjacency to other lanes), and run `python3 corpus/instruments/r44-frontier-count.py --root <export> --expect 27` and frontier-recheck-count.py.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevRegistryRows": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "Registry accuracy review: the six rows of `## Round-45 Gates & probes registry addition` in SKILL.md and the four README rows (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4). For each tool run the command the row documents against the export (--selftest where claimed) and compare printed tokens, verdict map and exit codes with the row's text; also check the r44-routed-defects.py row's claim that limb D4 reads unresolved at later trees (run its counter against the export and against a git archive of c950fa3) and the claim 'selftest cases=43 failures=0 mutants=10 rejected=10'. Report every row/cell that does not match what the tool printed.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevNoHarm": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "No-harm review: produce the full file-level diff base->tip (`git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff --name-status dc5bb8c6e31efc4a6650819df85e79b72fd64bcd 6662a4276b6f7bd61e23e12058414e09dd71b9e4` excluding .ufo/waves) and classify each hunk in the production files (SKILL.md, PROVINCE.md, SCORECARD.md, LOG.md untouched?, corpus/*) as pure append / row insertion / replacement; list any line REMOVED or CHANGED (r44-frontier-count.py is a deliberate replacement - say what behaviour changed byte-for-byte on the real README: run old and new on the base README with and without --expect/--ids). Run density.py on SKILL.md base vs tip, anchorcheck.py, recheck-audit.py, frontier-recheck-count.py, capture-binding-check.py if it takes a --root, and report any axis harm (depth:density 9, depth:verifiability 4, coverage 8).",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevFreezeCheck": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "Attack corpus/instruments/freeze-check.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4, sha256 a38d8dc1319ff0bdab1bc557643b192cf201312fe0f7d681e430c40817305888): read it, then build claims files in scratch that make `freeze-check claims=N base_ok=N exit=0` print while the freeze-hygiene defect is present (a counter whose output at base merely CONTAINS the expected line while contradicting it, a counter that edits the base tree and restores it, an expect_before that is a prefix of a different line, a {tree}-less command smuggled through shell metacharacters, env tricks). Report recipe and printed output, or HOLDS after >=5 genuine constructions.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevFrontierSelftest": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "Attack the new --selftest of corpus/instruments/r44-frontier-count.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4, sha256 2409d2402c65522f02dbbaad9b7c472aa625eda5a5847215f63af208dcc9f0d4): make mutated copies of the counting code (status compared to a different cell, comments counted, header counted, duplicate ids ignored, --expect compared with >=) and run each copy's --selftest; any mutant whose selftest still prints `failures=0` is a survivor. Report the survivors list first with the exact edit; also check that the selftest uses no hardcoded /tmp and honours TMPDIR/--work.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2RevRefiledReceipt": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": "Receipt review (limb R5): .ufo/waves/round-44/controls/final-attempt3-refiled.txt in the export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4. Is it the unedited tee of one observed run (QUALITY R39)? It is a header-commented transcript of `r44-routed-defects.py --selftest` at export c950fa3: re-run that exact invocation against `git archive c950fa3` and compare line-for-line; check the spot-check wording (item 5: 're-file the selftest invocation line without the failed call') is satisfied and that the original final-attempt3.txt is unchanged (cmp against dc5bb8c6e31efc4a6650819df85e79b72fd64bcd). Also report whether R39's 'no hand-written header' clause is violated by the `#` header lines.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2CritKillC1v11": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": "Re-falsify C1 after hardening: read the frozen kill rule in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/claims.json and the v1.1 counter (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4). Find a tree that prints `routed-defects total=5 fixed=5` while a routed defect of spot-check section 6 items 1-5 is still present - for every limb name the cheapest tree and run it; the pinned bytes make forgery require the genuine files, so attack what the pins DON'T cover (S072 row prose, the three QUALITY rows' prose beyond keywords, SKILL/README registry rows, the lesson correction wording, TOOL_ROOT trust). Report each construction with the printed line.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2CritKillC2v11": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": "Re-falsify C2 after hardening: the v1.1 gate (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) now requires sections, a table, xrefs, a 3000-byte entry and pinned captures. Find a landing that reaches `c2-gate fixed=7/7` yet adds no coverage or contains text the source does not support (e.g. an entry that pads the sections with generic prose, quotes four sentences and cites F02/F04 lines that do not support the overlap claims). State what remains un-gated and whether the non-author closure clause in the claim can be satisfied by someone with network access only.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2CritErratumRule": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": "Process critic: the round prompt (section 9) says a rule changed after any seat has scored is not the claim's rule. Wave 1 seats scored counter v1 and falsified it; the L1 then hardened both counters to v1.1 keeping the predicate sentences. Decide, with quotes from /home/vgpnk/Projects/shokunin/.ufo/prompts/kasegi-round-45.md section 9 and the r44 precedent (corpus/lessons/round-44.md 'Attempt 2, wave 2'; .ufo/waves/round-44/claims.json vs corpus/instruments/r44-routed-defects.py v2), whether v1->v1.1 is a legitimate counter erratum or a changed rule; list exactly what a closure reader must see on record (v1 and v1.1 digests, what each attack changed, a statement that predicate sentences are unchanged) and diff the v1 counter (git show 8cf62c879e6e6b031e67412f8fac1fba0bd378cf:corpus/instruments/r45-routed-defects.py) against v1.1 limb by limb for any PREDICATE change (not just hardening).",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2CritAxisHonesty": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": "Score-honesty critic: the round will report depth:verifiability 4 held, coverage 8 held, density 9 held (no score moves) with trend verdicts. Read SCORECARD.md 'Distance-to-next-score' (lines ~1532-1562) and the wave-1 critics R45CritAxisC1.md / R45CritAxisC2.md in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1/; decide whether holding every score is the honest statement for these two claims, whether C1 should be reported as quality-trend work, and what the report must say so that no reader mistakes the counters' green for a score move. Quote the promotion bars.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2CritRedBefore": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": "Red-before critic (QUALITY R42/R47): for each repair in this round (S070 correction, R47-R49, r44-frontier-count selftest, freeze-check, refiled receipt) name the committed red-before state in which the same command exits non-clean for the named reason with the fix as the only delta (e.g. `r44-frontier-count.py --selftest` exits 2 at base; `r45-routed-defects.py` R<n> reads fixed=0 at base). Find any repair that has NO red-before in the committed bytes (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4 plus dc5bb8c6e31efc4a6650819df85e79b72fd64bcd) and say what receipt would supply it.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2CritSourceTrust": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": "Source-trust critic: S071 is the RST source of docs.kernel.org/process/security-bugs.html captured 2026-10-28; the page is served from docs.kernel.org (kernel.org infra) and carries rules that the kernel security team states of itself. Check for an upstream second authority (the kernel git tree `Documentation/process/security-bugs.rst`, the kernel.org MAINTAINERS entry for the security team) that confirms the 7/14-day text and the AI-report rule at the same revision; report a located quote from it if reachable (curl only; documentation). Decide whether the entry's `verified-at`/`recheck` fields are honest given that the capture has no version string.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2CritLessonMining": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": "Mistake-mining critic: read the mistake candidates R45ScoutMistakes found (/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1/R45ScoutMistakes.md) and the lesson skeleton draft (/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1/R45ScribeLesson.draft/lesson-skeleton.md); propose the 3 best mistakes for corpus/lessons/round-45.md `## Mistakes` (class, evidence pointer, captured-by, fix with a red-before), including: (a) the freeze commit already holds the S071/S072 captures so the C2 counter reads 2/7 on the freeze tree while the frozen before-value says 1/7 at base; (b) r44-routed-defects.py reads fixed=7 at later trees (D4 `rfind('## Round 44')`), so a gate's receipts go stale after a later append; (c) wave-1 counter v1 was passable by stubs/presence. For each give a command that can fail.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2CritCoverageClaimScope": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": "Scope critic: PROVINCE.md says the lane refuses anything outside bounty & security research and reports cross-domain evidence. The Linux-kernel security-bugs process: is it in province (program rules / disclosure of one upstream project's intake and embargo)? Does the entry drift into kernel engineering, patch submission, CVE assignment policy (that is F07/F25 ground) or legal advice? List each statement near the boundary with entry line numbers, and say whether it needs a Limits sentence or removal.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2MutC1R1R2": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": "Mutation-test the v1.1 C1 limbs R1 and R2 of r45-routed-defects.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 10 distinct single-edit mutants that each reintroduce the defect the targeted limb stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2MutC1R3R4": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": "Mutation-test the v1.1 C1 limbs R3 and R4 of r45-routed-defects.py (registry rows, README row, selftest tokens, claims replay, TOOL_ROOT behaviour) (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 10 distinct single-edit mutants that each reintroduce the defect the targeted limb stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2MutC1R5": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": "Mutation-test the v1.1 C1 limb R5 of r45-routed-defects.py plus the do-nothing / marker-only controls in .ufo/waves/round-45/controls/freeze-controls.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 8 distinct single-edit mutants that each reintroduce the defect the targeted limb stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2MutC2G12": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": "Mutation-test the v1.1 C2 gates G1 and G2 of r45-c2-gate.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 10 distinct single-edit mutants that each reintroduce the defect the targeted gate stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2MutC2G34": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": "Mutation-test the v1.1 C2 gates G3 and G4 of r45-c2-gate.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 10 distinct single-edit mutants that each reintroduce the defect the targeted gate stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2MutC2G5": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": "Mutation-test the v1.1 C2 gate G5 of r45-c2-gate.py (quote location, 25-word rule, cores, uncited spans) (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 12 distinct single-edit mutants that each reintroduce the defect the targeted gate stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2MutC2G67": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": "Mutation-test the v1.1 C2 gates G6 and G7 of r45-c2-gate.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 8 distinct single-edit mutants that each reintroduce the defect the targeted gate stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2MutFreezeCheck": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": "Mutation-test corpus/instruments/freeze-check.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4): mutate its source (comparison operators, whole-line match, expect_after check, base-mutation snapshot, timeout handling) in 12 distinct single-edit copies and run each copy's `--selftest`; a mutant whose selftest still prints `failures=0` is a survivor. Report survivors first with the exact edit and which selftest case should have caught it.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2ScoutLiveReopen": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": "Second live re-open for the non-author-style check: fetch https://docs.kernel.org/process/security-bugs.html and the RST https://docs.kernel.org/_sources/process/security-bugs.rst.txt now; sha256 and line-count against /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-45/S071.txt (sha256 0918dcfa7979f348c9004bf3ce6e183507367185fe69f4e0c7688521e9346f40); then fetch https://bughunters.google.com/rest/v1/articles/about/rules/about-this-section, extract `.body` with jq, compare with S072.txt (sha256 364166c4a23e5071f6768a158253366db0e8d1ca6f1ce14a9a7384a60ba0a025). Report drift or equality and the HTTP headers (last-modified). Read-only.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2ScoutGitHistory": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": "Find a second authority for the kernel security-bugs text: the same RST in the kernel git history (https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/plain/Documentation/process/security-bugs.rst, or the GitHub mirror raw URL) at today's master; diff it against /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-45/S071.txt (whitespace-normalised) and report whether the five manifest quotes and the 7/14-day sentence exist there too, plus the latest commit touching the file (git.kernel.org log page) with its date. Read-only; curl only.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2ScoutAdjacentRecheck": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": "Adjacency re-sweep on the landed tree: grep the sibling lanes' corpora (/home/vgpnk/Projects/shokunin/*-shokunin/corpus, read-only) for text overlapping F27's subject (embargo ceiling, AI-assisted report rules, kernel security list) and for SOURCES ids S071/S072 in their registries (shared-namespace collision per the S069 footnote); report exact grep commands and outputs, `none` with the sweep when empty.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      },
+      "R45W2ConnCrossClaim": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "connector",
+        "item": "Cross-claim pattern finder on the landed tree: build from an export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4 (a) a C1-only tree (remove the F27 row, entry, S071 row, snapshot S071) and (b) a C2-only tree (remove the S072 row, the round-44 correction, R47-R49, the SKILL/README registry rows, freeze-check.py, the refiled receipt); run both counters on both and report whether each claim verifies without the other (causal separability) and which shared file (SOURCES.md, README.md, SKILL.md, instruments README, census, manifest.json, claims.json) couples them.",
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "falsify the integrated tree and counters v1.1"
+      }
+    }
+  },
+  "compaction": {
+    "applied": false,
+    "mechanism": null,
+    "reason": "template_invocation",
+    "savedBytes": 0,
+    "payloadBytesBefore": 0,
+    "payloadBytesAfter": 0
+  },
+  "taskCall": {
+    "context": "Round 45 kasegi only (lane repo /home/vgpnk/Projects/shokunin/kasegi-shokunin), FALSIFY wave. Frozen claims: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/claims.json (freeze commit 8cf62c879e6e6b031e67412f8fac1fba0bd378cf, record /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/freeze.txt). C1 = depth:verifiability: five routed defects R1-R5 of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-44-verifier-spotcheck.md section 6. C2 = coverage: frontier F27 = Linux kernel security-bugs reporting process (row S071). Wave 1 (64 seats, /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1/, results /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1-results.json) falsified counter v1; the L1 integrated the drafts and hardened both counters to v1.1 (same predicates; pinned captures and code, tool-root execution, registry-table-only rows, located quotes). The integration tree to attack is lane commit 6662a4276b6f7bd61e23e12058414e09dd71b9e4 (round base dc5bb8c6e31efc4a6650819df85e79b72fd64bcd): ALWAYS export it with `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive 6662a4276b6f7bd61e23e12058414e09dd71b9e4 | tar -x -C <your scratch>` and attack the EXPORT, never the moving lane working tree. Counters: /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r45-routed-defects.py (C1, v1.1) and r45-c2-gate.py (C2, v1.1); landed artifacts: corpus/knowledge/linux-kernel-security-bugs-reporting-process.md, corpus/SOURCES.md rows S071/S072, corpus/QUALITY.md rows R47-R49, SKILL.md and corpus/instruments/README.md round-45 registry rows, corpus/README.md Round-45 admission block, PROVINCE.md r45 line, corpus/lessons/round-44.md Correction (round 45), corpus/instruments/freeze-check.py, corpus/instruments/r44-frontier-count.py (selftest added), .ufo/waves/round-44/controls/final-attempt3-refiled.txt. Pure base export (never edit it; copy): /fast/scratch/hyaku/kasegi-r45/L1/pure. The L1 is the only writer; seats return findings and DRAFTS. Read-only seats make no edits anywhere. Executor seats write only /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave2/<YourSeatName>.draft/ plus their Report file. Every `Report:` trailer path is relative to /home/vgpnk/Projects/shokunin/kasegi-shokunin - write it at /home/vgpnk/Projects/shokunin/kasegi-shokunin/<that path>. All paths absolute under /home/vgpnk/Projects/shokunin/kasegi-shokunin; your tools start at the fleet root, so a relative path lands in the FLEET repo (forbidden). Never commit, push, or run any mutating git/jj command anywhere (read-only git log/show/diff/archive is fine); never touch the fleet repo, sibling lanes, MANIFEST.json, .ufo/state or ~/Projects/shokuknow. Scratch root is $HYAKU_SCRATCH/kasegi-r45/<YourSeatName>/ with HYAKU_SCRATCH defaulting to /fast/scratch/hyaku (mkdir -p, pass TMPDIR explicitly; /tmp only for files under 50 MB); any fixture repo is created as D=$(mktemp -d -p $SCRATCH) && git -C \"$D\" init -q and every git call names -C \"$D\"; remove your scratch dir before you yield. A /tmp path is never citable evidence: output goes in your Report file. Tooling authorization (operator, 2026-10-19): you may install or upgrade tools that help the task; first read /home/vgpnk/.omp/agent/RULES.md (official channels, update-safety gate; record tool/version/channel/reason). pacman guard: all pacman transactions are PAUSED host-wide; install via uv tool / npx / an official binary in ~/.local/bin or file an L0 question; never pacman -Sy/-Syu/-U/-R, never downgrade or restart a host service. No credential material, session URLs or op:// references. Live-target testing is refused: documentation only. Report format: first line `VERDICT: <HOLDS|BROKEN|DRAFT-READY|BLOCKED|INFO>`; then findings each naming the exact thing attacked, the command you ran and the output it printed (quote it), then limitations. Name what you attack in every finding. A claimed result must be a re-run you performed.",
+    "tasks": [
+      {
+        "name": "R45W2ExecSelftestC1",
+        "agent": "executor",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Adapt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1/R45ExecSelftestC1.draft/r45-counters-selftest-c1.py to counter v1.1 and write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave2/R45W2ExecSelftestC1.draft/r45-counters-selftest-c1.py (stdlib). v1.1 pins artifacts (see the PINS dict in the counter): the synthetic COMPLETE tree must satisfy it, so compute pins for your synthetic artifacts and pass them to the counter through the grader-side env var R45_PINS_OVERRIDE=<json file> (keys S072.txt, freeze-check.py, r44-frontier-count.py, r44-routed-defects.py, claims.json, refiled-body); the real pins stay untouched. Keep the wave-1 mutants, drop mutants v1.1 makes moot only if you show the v1.1 limb rejects them, add >=8 mutants for the v1.1 limbs (code byte flipped, claims weakened, row in a fence/comment, vacuous flip, criterion too short, line ref out of range, receipt body edited). The selftest must scratch under $HYAKU_SCRATCH/kasegi-r45/selftest-c1 (not the old seat name), take --lane (default the lane), print `selftest cases=<N> failures=<F>` last, exit 0 iff F==0, and honour TMPDIR. Run it against an export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4 and report the printed output. Also report every mutant the v1.1 counter fails to reject (a false-green is the finding). Do not edit the counter.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2ExecSelftestC1.md"
+      },
+      {
+        "name": "R45W2ExecSelftestC2",
+        "agent": "executor",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Adapt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1/R45ExecSelftestC2.draft/r45-counters-selftest-c2.py to counter v1.1 and write /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave2/R45W2ExecSelftestC2.draft/r45-counters-selftest-c2.py (stdlib). v1.1 pins the S071 snapshot, the manifest and the 63 base knowledge names, runs source-recheck from the counter's own lane, requires the entry to have four sections, a >=6-row table and located xrefs to coordinated-disclosure-timelines.md and ai-assisted-finding-validation.md, every curly span cited, and a 3000-byte entry; pass synthetic pins through the grader-side env var R45_PINS_OVERRIDE=<json file> (keys S071.txt, manifest.json, base-knowledge-names). Keep the wave-1 mutants that still apply, add >=8 for the v1.1 gates (uncited curly span, comment-hidden F27 row, fenced S071 row, entry shared with another F row, symlinked entry, missing section, short entry, dangling xref, padded knowledge dir). Scratch under $HYAKU_SCRATCH/kasegi-r45/selftest-c2; take --lane; print `selftest cases=<N> failures=<F>` last. Run it against an export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4 and report the printed output and any mutant the v1.1 counter fails to reject. Do not edit the counter.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2ExecSelftestC2.md"
+      },
+      {
+        "name": "R45W2RevQuotes1",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: F27 entry quote review 1: in corpus/knowledge/linux-kernel-security-bugs-reporting-process.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) take the curly-quoted spans number 1 to 8 in file order; for each, locate the words in corpus/source-snapshots/round-45/S071.txt at the cited lines (`sed -n`), then in the LIVE rendered page https://docs.kernel.org/process/security-bugs.html (curl, strip tags); report each as OK / MISMATCH (word-level diff) / LOOSE-RANGE (cited range wider than needed) and whether the surrounding sentence in the entry states what the quote supports (paraphrase fidelity). A quote that is stitched, truncated mid-sentence so its meaning flips, or cited at the wrong lines is BROKEN.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevQuotes1.md"
+      },
+      {
+        "name": "R45W2RevQuotes2",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: F27 entry quote review 2: in corpus/knowledge/linux-kernel-security-bugs-reporting-process.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) take the curly-quoted spans number 9 to 16 in file order; for each, locate the words in corpus/source-snapshots/round-45/S071.txt at the cited lines (`sed -n`), then in the LIVE rendered page https://docs.kernel.org/process/security-bugs.html (curl, strip tags); report each as OK / MISMATCH (word-level diff) / LOOSE-RANGE (cited range wider than needed) and whether the surrounding sentence in the entry states what the quote supports (paraphrase fidelity). A quote that is stitched, truncated mid-sentence so its meaning flips, or cited at the wrong lines is BROKEN.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevQuotes2.md"
+      },
+      {
+        "name": "R45W2RevQuotes3",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: F27 entry quote review 3: in corpus/knowledge/linux-kernel-security-bugs-reporting-process.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) take the curly-quoted spans number 17 to 24 in file order; for each, locate the words in corpus/source-snapshots/round-45/S071.txt at the cited lines (`sed -n`), then in the LIVE rendered page https://docs.kernel.org/process/security-bugs.html (curl, strip tags); report each as OK / MISMATCH (word-level diff) / LOOSE-RANGE (cited range wider than needed) and whether the surrounding sentence in the entry states what the quote supports (paraphrase fidelity). A quote that is stitched, truncated mid-sentence so its meaning flips, or cited at the wrong lines is BROKEN.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevQuotes3.md"
+      },
+      {
+        "name": "R45W2RevClaimsA",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: F27 entry non-quote claims, first half: take every sentence of corpus/knowledge/linux-kernel-security-bugs-reporting-process.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) in the sections `## Scope and decision rule` and the table's `package consequence` column that asserts something about what the source says or requires; verify each against corpus/source-snapshots/round-45/S071.txt (sed -n the lines). Report sentences that go beyond the source (inference presented as the page's rule), with the nearest source text. Include the table row about AI-assisted findings ('A package may not describe an AI-assisted finding as private-only') and the 'linux-distros' / CVE rows.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevClaimsA.md"
+      },
+      {
+        "name": "R45W2RevClaimsB",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: F27 entry non-quote claims, second half: sections `## Overlap and novelty`, `## Limits`, `## Falsifiable package rule`, `## Rejected over-generalizations` of corpus/knowledge/linux-kernel-security-bugs-reporting-process.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4). Verify every `corpus/knowledge/<file>:<line>` cross-reference (open the file at that line: does it say what the entry says it says?), the statement that the capture carries no version string (grep S071.txt for 7.3), and each 'rejected claim' (is it really something a reader would believe, and does the cited line refute it?).. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevClaimsB.md"
+      },
+      {
+        "name": "R45W2RevNovelty",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Coverage-credit review of F27: read corpus/README.md coverage map (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) and the F02/F04/F10/F15 entries; decide, with quoted evidence, whether F27 is a NEW holding or a restatement. List what a reader of the pre-round corpus could not have answered that F27 answers (concrete questions with the answer's S071 line), and what it duplicates. State whether coverage may honestly be credited as moved and what the report should say.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevNovelty.md"
+      },
+      {
+        "name": "R45W2RevRows",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Registry review: rows S071 and S072 in corpus/SOURCES.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) against /home/vgpnk/Projects/shokunin/CORPUS.md SOURCES contract rules 1-6 and the live S069/S070 rows: cell semantics (anchor names section + revision; teaches one grounded benefit; used-by paths exist; opened date; recheck cadence), every line number cited in the anchor cells (S071 section headings with L-numbers; S072 `L17/L57/L107/L171/L249` and `L148-L149`) is right in the snapshots (sed -n), sha256/bytes/lines recomputed with sha256sum/wc, tier justification. Run `bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file <export>/corpus/SOURCES.md` and report exact output.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevRows.md"
+      },
+      {
+        "name": "R45W2RevQualityRows",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: QUALITY.md review: rows R47, R48, R49 and the `## Round-45 additions` block in corpus/QUALITY.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4). Does each criterion state a checkable rule, avoid duplicating R38-R46 (read them), carry an `enforced-by:` path that truly enforces it (open the script: does it? e.g. does corpus/instruments/freeze-check.py enforce R47 'prints its declared before-value on the do-nothing control'? does r45-routed-defects.py enforce R48 'presence-only'? does source-recheck.py enforce R49 'capture method parity'?), and cite lesson lines (`corpus/lessons/round-44.md:NN`) that actually say what is claimed (sed -n each)? Also verify the R6 head line numbers (bytes 78651, sha dd753497f7138c395230df48443d3d356ca0d67c3d8a8cd24d9989103dd43d03 of the first 78651 bytes of the pre-round file: `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show dc5bb8c6e31efc4a6650819df85e79b72fd64bcd:corpus/QUALITY.md | head -c 78651 | sha256sum`).. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevQualityRows.md"
+      },
+      {
+        "name": "R45W2RevCorrection",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Correction review: the `Correction (round 45, appended 2026-10-28)` paragraph at the end of corpus/lessons/round-44.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4). Verify every number (HTTP 200, 10029 chars, 10030 with the trailing newline, sha256, 312 lines), the located quotes against corpus/source-snapshots/round-45/S072.txt, the claim the earlier reason was wrong (quote the round-44 text it corrects), that the file is a pure append (`git diff dc5bb8c6e31efc4a6650819df85e79b72fd64bcd 6662a4276b6f7bd61e23e12058414e09dd71b9e4 -- corpus/lessons/round-44.md` shows only added lines), and that it does not rewrite history. Also check it separates S070's wrong reason from the verifier spot-check's wording.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevCorrection.md"
+      },
+      {
+        "name": "R45W2RevAdmissionBlock",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Admission-block review: the `## Round-45 admission` block at the end of corpus/README.md and the r45 line at the end of PROVINCE.md (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) against the round-44 block they copy. Check: the F27 row shape (six cells, status third), the 27/27 count line and its claim about the 0/18 denominator, the entry path, pure-append diffs (`git diff dc5bb8c6e31efc4a6650819df85e79b72fd64bcd 6662a4276b6f7bd61e23e12058414e09dd71b9e4 -- corpus/README.md PROVINCE.md | grep -c '^-[^-]'` must be 0), PROVINCE 'Refuses/Adjacent' scope (kernel material is OK for bounty/security research? adjacency to other lanes), and run `python3 corpus/instruments/r44-frontier-count.py --root <export> --expect 27` and frontier-recheck-count.py.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevAdmissionBlock.md"
+      },
+      {
+        "name": "R45W2RevRegistryRows",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Registry accuracy review: the six rows of `## Round-45 Gates & probes registry addition` in SKILL.md and the four README rows (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4). For each tool run the command the row documents against the export (--selftest where claimed) and compare printed tokens, verdict map and exit codes with the row's text; also check the r44-routed-defects.py row's claim that limb D4 reads unresolved at later trees (run its counter against the export and against a git archive of c950fa3) and the claim 'selftest cases=43 failures=0 mutants=10 rejected=10'. Report every row/cell that does not match what the tool printed.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevRegistryRows.md"
+      },
+      {
+        "name": "R45W2RevNoHarm",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: No-harm review: produce the full file-level diff base->tip (`git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff --name-status dc5bb8c6e31efc4a6650819df85e79b72fd64bcd 6662a4276b6f7bd61e23e12058414e09dd71b9e4` excluding .ufo/waves) and classify each hunk in the production files (SKILL.md, PROVINCE.md, SCORECARD.md, LOG.md untouched?, corpus/*) as pure append / row insertion / replacement; list any line REMOVED or CHANGED (r44-frontier-count.py is a deliberate replacement - say what behaviour changed byte-for-byte on the real README: run old and new on the base README with and without --expect/--ids). Run density.py on SKILL.md base vs tip, anchorcheck.py, recheck-audit.py, frontier-recheck-count.py, capture-binding-check.py if it takes a --root, and report any axis harm (depth:density 9, depth:verifiability 4, coverage 8).. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevNoHarm.md"
+      },
+      {
+        "name": "R45W2RevFreezeCheck",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Attack corpus/instruments/freeze-check.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4, sha256 a38d8dc1319ff0bdab1bc557643b192cf201312fe0f7d681e430c40817305888): read it, then build claims files in scratch that make `freeze-check claims=N base_ok=N exit=0` print while the freeze-hygiene defect is present (a counter whose output at base merely CONTAINS the expected line while contradicting it, a counter that edits the base tree and restores it, an expect_before that is a prefix of a different line, a {tree}-less command smuggled through shell metacharacters, env tricks). Report recipe and printed output, or HOLDS after >=5 genuine constructions.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevFreezeCheck.md"
+      },
+      {
+        "name": "R45W2RevFrontierSelftest",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Attack the new --selftest of corpus/instruments/r44-frontier-count.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4, sha256 2409d2402c65522f02dbbaad9b7c472aa625eda5a5847215f63af208dcc9f0d4): make mutated copies of the counting code (status compared to a different cell, comments counted, header counted, duplicate ids ignored, --expect compared with >=) and run each copy's --selftest; any mutant whose selftest still prints `failures=0` is a survivor. Report the survivors list first with the exact edit; also check that the selftest uses no hardcoded /tmp and honours TMPDIR/--work.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevFrontierSelftest.md"
+      },
+      {
+        "name": "R45W2RevRefiledReceipt",
+        "agent": "reviewer",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Receipt review (limb R5): .ufo/waves/round-44/controls/final-attempt3-refiled.txt in the export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4. Is it the unedited tee of one observed run (QUALITY R39)? It is a header-commented transcript of `r44-routed-defects.py --selftest` at export c950fa3: re-run that exact invocation against `git archive c950fa3` and compare line-for-line; check the spot-check wording (item 5: 're-file the selftest invocation line without the failed call') is satisfied and that the original final-attempt3.txt is unchanged (cmp against dc5bb8c6e31efc4a6650819df85e79b72fd64bcd). Also report whether R39's 'no hand-written header' clause is violated by the `#` header lines.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2RevRefiledReceipt.md"
+      },
+      {
+        "name": "R45W2CritKillC1v11",
+        "agent": "critic",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Re-falsify C1 after hardening: read the frozen kill rule in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/claims.json and the v1.1 counter (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4). Find a tree that prints `routed-defects total=5 fixed=5` while a routed defect of spot-check section 6 items 1-5 is still present - for every limb name the cheapest tree and run it; the pinned bytes make forgery require the genuine files, so attack what the pins DON'T cover (S072 row prose, the three QUALITY rows' prose beyond keywords, SKILL/README registry rows, the lesson correction wording, TOOL_ROOT trust). Report each construction with the printed line.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2CritKillC1v11.md"
+      },
+      {
+        "name": "R45W2CritKillC2v11",
+        "agent": "critic",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Re-falsify C2 after hardening: the v1.1 gate (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4) now requires sections, a table, xrefs, a 3000-byte entry and pinned captures. Find a landing that reaches `c2-gate fixed=7/7` yet adds no coverage or contains text the source does not support (e.g. an entry that pads the sections with generic prose, quotes four sentences and cites F02/F04 lines that do not support the overlap claims). State what remains un-gated and whether the non-author closure clause in the claim can be satisfied by someone with network access only.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2CritKillC2v11.md"
+      },
+      {
+        "name": "R45W2CritErratumRule",
+        "agent": "critic",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Process critic: the round prompt (section 9) says a rule changed after any seat has scored is not the claim's rule. Wave 1 seats scored counter v1 and falsified it; the L1 then hardened both counters to v1.1 keeping the predicate sentences. Decide, with quotes from /home/vgpnk/Projects/shokunin/.ufo/prompts/kasegi-round-45.md section 9 and the r44 precedent (corpus/lessons/round-44.md 'Attempt 2, wave 2'; .ufo/waves/round-44/claims.json vs corpus/instruments/r44-routed-defects.py v2), whether v1->v1.1 is a legitimate counter erratum or a changed rule; list exactly what a closure reader must see on record (v1 and v1.1 digests, what each attack changed, a statement that predicate sentences are unchanged) and diff the v1 counter (git show 8cf62c879e6e6b031e67412f8fac1fba0bd378cf:corpus/instruments/r45-routed-defects.py) against v1.1 limb by limb for any PREDICATE change (not just hardening).. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2CritErratumRule.md"
+      },
+      {
+        "name": "R45W2CritAxisHonesty",
+        "agent": "critic",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Score-honesty critic: the round will report depth:verifiability 4 held, coverage 8 held, density 9 held (no score moves) with trend verdicts. Read SCORECARD.md 'Distance-to-next-score' (lines ~1532-1562) and the wave-1 critics R45CritAxisC1.md / R45CritAxisC2.md in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1/; decide whether holding every score is the honest statement for these two claims, whether C1 should be reported as quality-trend work, and what the report must say so that no reader mistakes the counters' green for a score move. Quote the promotion bars.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2CritAxisHonesty.md"
+      },
+      {
+        "name": "R45W2CritRedBefore",
+        "agent": "critic",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Red-before critic (QUALITY R42/R47): for each repair in this round (S070 correction, R47-R49, r44-frontier-count selftest, freeze-check, refiled receipt) name the committed red-before state in which the same command exits non-clean for the named reason with the fix as the only delta (e.g. `r44-frontier-count.py --selftest` exits 2 at base; `r45-routed-defects.py` R<n> reads fixed=0 at base). Find any repair that has NO red-before in the committed bytes (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4 plus dc5bb8c6e31efc4a6650819df85e79b72fd64bcd) and say what receipt would supply it.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2CritRedBefore.md"
+      },
+      {
+        "name": "R45W2CritSourceTrust",
+        "agent": "critic",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Source-trust critic: S071 is the RST source of docs.kernel.org/process/security-bugs.html captured 2026-10-28; the page is served from docs.kernel.org (kernel.org infra) and carries rules that the kernel security team states of itself. Check for an upstream second authority (the kernel git tree `Documentation/process/security-bugs.rst`, the kernel.org MAINTAINERS entry for the security team) that confirms the 7/14-day text and the AI-report rule at the same revision; report a located quote from it if reachable (curl only; documentation). Decide whether the entry's `verified-at`/`recheck` fields are honest given that the capture has no version string.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2CritSourceTrust.md"
+      },
+      {
+        "name": "R45W2CritLessonMining",
+        "agent": "critic",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Mistake-mining critic: read the mistake candidates R45ScoutMistakes found (/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1/R45ScoutMistakes.md) and the lesson skeleton draft (/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-45/wave1/R45ScribeLesson.draft/lesson-skeleton.md); propose the 3 best mistakes for corpus/lessons/round-45.md `## Mistakes` (class, evidence pointer, captured-by, fix with a red-before), including: (a) the freeze commit already holds the S071/S072 captures so the C2 counter reads 2/7 on the freeze tree while the frozen before-value says 1/7 at base; (b) r44-routed-defects.py reads fixed=7 at later trees (D4 `rfind('## Round 44')`), so a gate's receipts go stale after a later append; (c) wave-1 counter v1 was passable by stubs/presence. For each give a command that can fail.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2CritLessonMining.md"
+      },
+      {
+        "name": "R45W2CritCoverageClaimScope",
+        "agent": "critic",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Scope critic: PROVINCE.md says the lane refuses anything outside bounty & security research and reports cross-domain evidence. The Linux-kernel security-bugs process: is it in province (program rules / disclosure of one upstream project's intake and embargo)? Does the entry drift into kernel engineering, patch submission, CVE assignment policy (that is F07/F25 ground) or legal advice? List each statement near the boundary with entry line numbers, and say whether it needs a Limits sentence or removal.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2CritCoverageClaimScope.md"
+      },
+      {
+        "name": "R45W2MutC1R1R2",
+        "agent": "mutation-tester",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Mutation-test the v1.1 C1 limbs R1 and R2 of r45-routed-defects.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 10 distinct single-edit mutants that each reintroduce the defect the targeted limb stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2MutC1R1R2.md"
+      },
+      {
+        "name": "R45W2MutC1R3R4",
+        "agent": "mutation-tester",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Mutation-test the v1.1 C1 limbs R3 and R4 of r45-routed-defects.py (registry rows, README row, selftest tokens, claims replay, TOOL_ROOT behaviour) (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 10 distinct single-edit mutants that each reintroduce the defect the targeted limb stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2MutC1R3R4.md"
+      },
+      {
+        "name": "R45W2MutC1R5",
+        "agent": "mutation-tester",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Mutation-test the v1.1 C1 limb R5 of r45-routed-defects.py plus the do-nothing / marker-only controls in .ufo/waves/round-45/controls/freeze-controls.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 8 distinct single-edit mutants that each reintroduce the defect the targeted limb stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2MutC1R5.md"
+      },
+      {
+        "name": "R45W2MutC2G12",
+        "agent": "mutation-tester",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Mutation-test the v1.1 C2 gates G1 and G2 of r45-c2-gate.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 10 distinct single-edit mutants that each reintroduce the defect the targeted gate stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2MutC2G12.md"
+      },
+      {
+        "name": "R45W2MutC2G34",
+        "agent": "mutation-tester",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Mutation-test the v1.1 C2 gates G3 and G4 of r45-c2-gate.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 10 distinct single-edit mutants that each reintroduce the defect the targeted gate stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2MutC2G34.md"
+      },
+      {
+        "name": "R45W2MutC2G5",
+        "agent": "mutation-tester",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Mutation-test the v1.1 C2 gate G5 of r45-c2-gate.py (quote location, 25-word rule, cores, uncited spans) (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 12 distinct single-edit mutants that each reintroduce the defect the targeted gate stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2MutC2G5.md"
+      },
+      {
+        "name": "R45W2MutC2G67",
+        "agent": "mutation-tester",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Mutation-test the v1.1 C2 gates G6 and G7 of r45-c2-gate.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4; counter bytes unchanged): write a recipe script in scratch that starts from a copy of the tip export (all limbs/gates green) and applies 8 distinct single-edit mutants that each reintroduce the defect the targeted gate stands for, runs the counter and prints `mutant=<name> rejected=0|1`. A mutant that survives (counter still green while the defect is present) is the finding; list survivors first with the exact edit. Pins make byte forgeries moot - target what the pins do not cover.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2MutC2G67.md"
+      },
+      {
+        "name": "R45W2MutFreezeCheck",
+        "agent": "mutation-tester",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Mutation-test corpus/instruments/freeze-check.py (export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4): mutate its source (comparison operators, whole-line match, expect_after check, base-mutation snapshot, timeout handling) in 12 distinct single-edit copies and run each copy's `--selftest`; a mutant whose selftest still prints `failures=0` is a survivor. Report survivors first with the exact edit and which selftest case should have caught it.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2MutFreezeCheck.md"
+      },
+      {
+        "name": "R45W2ScoutLiveReopen",
+        "agent": "scout",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Second live re-open for the non-author-style check: fetch https://docs.kernel.org/process/security-bugs.html and the RST https://docs.kernel.org/_sources/process/security-bugs.rst.txt now; sha256 and line-count against /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-45/S071.txt (sha256 0918dcfa7979f348c9004bf3ce6e183507367185fe69f4e0c7688521e9346f40); then fetch https://bughunters.google.com/rest/v1/articles/about/rules/about-this-section, extract `.body` with jq, compare with S072.txt (sha256 364166c4a23e5071f6768a158253366db0e8d1ca6f1ce14a9a7384a60ba0a025). Report drift or equality and the HTTP headers (last-modified). Read-only.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2ScoutLiveReopen.md"
+      },
+      {
+        "name": "R45W2ScoutGitHistory",
+        "agent": "scout",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Find a second authority for the kernel security-bugs text: the same RST in the kernel git history (https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/plain/Documentation/process/security-bugs.rst, or the GitHub mirror raw URL) at today's master; diff it against /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-45/S071.txt (whitespace-normalised) and report whether the five manifest quotes and the 7/14-day sentence exist there too, plus the latest commit touching the file (git.kernel.org log page) with its date. Read-only; curl only.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2ScoutGitHistory.md"
+      },
+      {
+        "name": "R45W2ScoutAdjacentRecheck",
+        "agent": "scout",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Adjacency re-sweep on the landed tree: grep the sibling lanes' corpora (/home/vgpnk/Projects/shokunin/*-shokunin/corpus, read-only) for text overlapping F27's subject (embargo ceiling, AI-assisted report rules, kernel security list) and for SOURCES ids S071/S072 in their registries (shared-namespace collision per the S069 footnote); report exact grep commands and outputs, `none` with the sweep when empty.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2ScoutAdjacentRecheck.md"
+      },
+      {
+        "name": "R45W2ConnCrossClaim",
+        "agent": "connector",
+        "task": "/skill:godspeed\n\nYou are a leaf lane in kasegi round 45 (falsify wave); no delegation or background work (the one card-permitted exception: an executor may spawn one read-only labrat probe). Your single item: Cross-claim pattern finder on the landed tree: build from an export of 6662a4276b6f7bd61e23e12058414e09dd71b9e4 (a) a C1-only tree (remove the F27 row, entry, S071 row, snapshot S071) and (b) a C2-only tree (remove the S072 row, the round-44 correction, R47-R49, the SKILL/README registry rows, freeze-check.py, the refiled receipt); run both counters on both and report whether each claim verifies without the other (causal separability) and which shared file (SOURCES.md, README.md, SKILL.md, instruments README, census, manifest.json, claims.json) couples them.. Work only in the lane's research scope. Cite exact evidence (path:line or command + printed output), discriminate against a do-nothing control, and state limitations. Do not commit, push, mutate git/jj/index, or touch shared production files. Remove scratch on exit. Return concise structured findings.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: falsify the integrated tree and counters v1.1\n\nReport: write your scoped findings to .ufo/waves/round-45/wave2/R45W2ConnCrossClaim.md"
+      }
+    ]
+  },
+  "resumeSends": [],
+  "note": "Issue exactly one batched task call with taskCall ({context, tasks}); never split a wave into multiple task calls (one-swarm-per-wave). Then one hub send per resumeSends entry: hub send --to <entry.resume> --message <entry.message> (entry.name is bookkeeping, not a hub field)."
+}
