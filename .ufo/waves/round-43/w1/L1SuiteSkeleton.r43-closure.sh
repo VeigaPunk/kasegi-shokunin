@@ -349,7 +349,9 @@ for id in K14 K15 K16 K17 K18 K19; do
     emit "$id" "$ln" "$rc"
 done
 
-CLOSED=$((TOTAL - OPEN))
+TOTAL=$(wc -l < "$PAYLOAD_FILE" | tr -d ' ')
+CLOSED=$(grep -c 'closed=1$' "$PAYLOAD_FILE" || true)
+OPEN=$((TOTAL - CLOSED))
 printf 'closed=%d/%d exit=%d\n' "$CLOSED" "$TOTAL" "$( [ "$OPEN" -eq 0 ] && echo 0 || echo 1)"
 RC=$( [ "$OPEN" -eq 0 ] && echo 0 || echo 1 )
 
@@ -459,7 +461,7 @@ PYMUT
             if [ "$id" = "K17" ]; then
                 rm -f "$tree/.ufo/waves/round-42/claims-erratum-5.md"
             else
-                rm -f "$tree/.ufo/waves/round-43/final-gates/r42-at-de09313-run.txt"
+                rm -f "$tree/.ufo/waves/round-43/final-gates/r42-at-de09313-run.txt" "$tree/.ufo/waves/round-43/final-gates/r42-at-de09313-selftest.txt"
             fi
             ;;
         corrupt)
