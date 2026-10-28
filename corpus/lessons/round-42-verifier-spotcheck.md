@@ -191,3 +191,126 @@ C2 with erratum 1's reject rows) — claim verdicts **met / met** — and no own
 no in-family escape. `admitted: true`. Seven routed defects, all narrative/timestamp hygiene or the undispatched
 wave; none touches a claim's measurement. The round's own admission does not depend on them, and the next round must
 clear them before adding new claims.
+
+## 9. Second closure pass — independent re-verification (2026-10-28, closure re-dispatch)
+
+This section records a fresh hyaku non-author closure seat (`CloseKasegiR42`) re-dispatched after §1–§8 and the
+ledger row had landed. It re-derived every figure from committed bytes instead of inheriting §1–§8. The readings
+agree with §1–§8 except where §9.6 names defects the first pass did not carry. This seat wrote no lane byte: the
+lane worktree was clean (`git status --porcelain` empty, `jj-lane.sh state` `tracked=0 untracked=0`) before and
+after, and every suite run used a private work dir under `/tmp/verif-kasegi-r42/`.
+
+### 9.1 Step-1 re-check
+
+| Item | Command (this seat) | Observed |
+|---|---|---|
+| report path/name | `.ufo/reports/round-42/kasegi.md` in the fleet repo | present |
+| attribution | `git log -1 --format='%an <%ae> %cn <%ce>' 68abb231` | `kasegi-shokunin <kasegi@shokunin.local>` author **and** committer — pass |
+| lands last | report authored 12:20:56 -03, committed 12:21:17 -03; Y `b2c49ea5` 12:15:28 -03; driver `complete` 12:22:31 -03 | report after all lane work, before mission completion — pass |
+| cited commits | `git merge-base --is-ancestor <c> master` over all 16 cited hashes | 16/16 `ANCESTOR-OK` (tested against the branch ref, never `@{u}`) |
+| lane clean and pushed | `jj-lane.sh state …/kasegi-shokunin`; `git status --porcelain`; `git ls-remote origin refs/heads/master` | `ahead=0 behind=0 tracked=0 untracked=0`; status empty; remote `ad20c026…` = local — pass |
+| `## SHONEN` heading | `grep -c '^## SHONEN'`; box-line count | 1 heading, 4 `[~]` lines, 0 `[x]` — pass (report contract; see RD42-9 for the file's canonical form) |
+| prompt contract | `.ufo/prompts/kasegi-round-42.md` (682 lines) | mission/axes + 1–3 claims L5–L37; report path L100; required sections incl. SHONEN L104–L118; commit-then-push L133; L2 floor ≥8 in one batched call L80–L82; write scope L423 — all five child-lane items and the round-level items present |
+| route map | run-11 map label L154 vs `MISSION.md` §L2 concurrency L61–L66 | MISSION's role-class buckets are explicitly advisory; the concrete alias map is the operator's global host table (`task.agentModelOverrides`). The connector bucket (heavy) differs from the label (`@m_flash`) but is operator-side, not a lane defect |
+| round shape | `wave1-dispatch.json`, `kasegi-r42-build-results.json`, `wave2-dispatch.json`, `.ready` | wave 1: 64 `taskCall.tasks` = 64 results, 64 unique names, 0 empty outputs; role mix 19/11/8/8/7/5/2/2/1/1 — matches the report and the 21/64 = 32.8 % attack share; wave 2: `counts.spawn=36`, 36 `taskCall.tasks`, 31 attack roles (32 with sentinel), `.ready` 175 B and **no** `.ready.dispatched`, no `wave2-results.json` — undispatched exactly as declared |
+| census | `scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` | exit 0; `W04 S028`, `W04 S029`, `kasegi ok …/corpus/SOURCES.md` — identical to `.ufo/waves/round-42/census-before.txt` |
+
+### 9.2 Claims — re-measured by this seat
+
+C1, `corpus/instruments/r42-closure.sh`, export mode only:
+
+| # | Command | Observed |
+|---|---|---|
+| 1 | `bash corpus/instruments/r42-closure.sh` | `a plain run is refused (export mode only)` — **exit 2** |
+| 2 | `… --export-ref b2c49ea5… --work /tmp/verif-kasegi-r42/y` | **`closed=13/13 exit=0`**; J payloads reproduce the committed receipt, incl. `J8 … payload-match=12/12, forged=6/6 closed=1`, `J11 … corrections=34`, `J12 … density-sha=ee803726a322` |
+| 3 | `… --selftest --export-ref b2c49ea5…` | thirteen `selftest case=J1..J13 … positive=pass payload-match=1 verdict=pass` lines; **`selftest cases=13 failures=0`** |
+| 4 | `… --export-ref 5053a7f46de35784cff4b56756906e9014a38276` | `closed=5/13 exit=1` |
+| 5 | `… --export-ref 1f7464612ac4c44e39886b82e812610d3c039b13` | `closed=4/13 exit=1` |
+| 6 | `… --export-ref deadbeefdeadbeefdeadbeefdeadbeefdeadbeef` | `ERROR ref-not-found … closed=0 exit=1` — distinct red |
+| 7 | `git show J:corpus/instruments/r42-closure.sh \| sha256sum`, same at Y and in the worktree | `fca5ae62379e01232a523bbf318872dbb358cdf534ce65a42dfe7ef8df7f6d6b` in all three |
+| 8 | `git diff --stat J Y` | one path, `.ufo/waves/round-42/final-gates/all-gates.txt`, 33 insertions |
+| 9 | receipt `run-utc` vs commit Y time | `2026-10-28T15:12:46Z` < `15:15:28Z` — pass |
+| 10 | replay limbs in this seat's run | `J1 …=rejected`, `J2 …=rejected`, `J3 …=3/3`, `J4 …=2/2`, `J5 outside=detected,inside=detected`, `J6 …=rejected`, `J7 …=rejected` |
+
+C2, base column re-derived from `git archive 5053a7f4 | tar -x -C /tmp/verif-kasegi-r42/base`; after column at Y's
+corpus bytes:
+
+| # | Command | Base | Y |
+|---|---|---|---|
+| 1 | `grep -cE '^\| F[0-9]+ \|' corpus/README.md` | 24 | **25** |
+| 2 | `grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md` | 63 | **66** (0 malformed rows: `awk … NF!=13` prints 0) |
+| 3 | S064 status probe `awk … if(s=="mined")` | — | **1** (S065/S066 cells read `rejected`) |
+| 4 | `grep -rlE '^source: S064' corpus/knowledge \| wc -l` | — | **1** |
+| 5 | `ls corpus/knowledge/*.md \| wc -l` | 60 | **61** |
+| 6 | `python3 corpus/instruments/frontier-recheck-count.py` | `entries=27 pass=27 exit=0` | **`entries=28 pass=28 exit=0`** incl `PASS F25 … ids=S064` |
+| 7 | `python3 corpus/instruments/capture-binding-check.py` | `records=55 bound=55 unbound=0` | **`records=56 bound=56 unbound=0`** |
+| 8 | `python3 corpus/instruments/recheck-audit.py --quiet` | `expected=60` | **`expected=61 missing=0 unexpected=0 exit=0`**, `pass=61/61` |
+| 9 | `bash scripts/sources-census.sh validate --root … kasegi` | exit 0, two `W04` | exit 0, same two `W04` |
+| 10 | README measure `awk …` | `44/44 = 1.000` | **`45/45 = 1.000`** |
+| 11 | `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-42/manifest.json --source S064` | — | `S064:sha256 OK` + `Q1..Q4 OK occurrences=1 anchor=5/3466/3510/480-ok`, exit 0 |
+
+No-harm checks: `git diff --diff-filter=D --name-only 5053a7f4 b2c49ea5` = **0 paths**; capture
+`corpus/source-snapshots/round-42/S064.txt` = 3,545 lines / 84,520 B / `b90a51f7b356e7683483d9ac0753e3eb06fe3ab53806a57fdd4bf129b2f141fa`,
+equal to the row, the entry and the report; `density.py` sha unchanged at J (`J12 density-sha=ee803726a322`). The
+binding audit's single `orphans=1 orphan=S040-live.txt` is present at base as well (`records=55` run) — pre-existing,
+not this round's harm.
+
+### 9.3 Falsification — attacks run by this seat
+
+Throwaway clone `/tmp/verif-kasegi-clone` (branches from Y, never pushed); each attack graded by the frozen suite in
+export mode with `--lane` pointing at the clone.
+
+| # | Attack (family) | Observed at the attacked ref | Killed? |
+|---|---|---|---|
+| a1 | receipt `J3 … rows=73` forged to `rows=99` (F-RCPT) | `J8 … payload-match=0 … payload-match=11/12 closed=0`; `closed=12/13 exit=1` | yes |
+| a2 | F25 row `admitted`→`rejected` (F-FLIP) | `J7 … base=0 … admitted=24, replay=MutFrontierParser.md=accepted closed=0`; `closed=11/13 exit=1` | yes |
+| a3 | a `Correction (round 39)` line duplicated verbatim (F-CORR) | `J11 … corrections=35, groups=5, dups=5, excused=4, unexcused=1, marker-appended=0 closed=0`; `closed=11/13 exit=1` | yes |
+
+All three are in-family and killed by the landed bytes; no in-family escape surfaced, so the C1 kill rule does not
+trigger. This independently reproduces three of §3's ten attacks (a1, a2 and a4 there).
+
+### 9.4 Discernment spot-check — re-opened by this seat
+
+| Item | Decision | Re-opened source | Agree? | Reason |
+|---|---|---|---|---|
+| F25 / S064 (CVE Record Format) | admit | capture `corpus/source-snapshots/round-42/S064.txt` L5, L3466, L3510 + `source-recheck.py` | **agree** | all three located quotes verbatim: L5 "cve-schema specifies the CVE JSON record format. This is the blueprint for a rich set of JSON data" (18 words), L3466 "When a CNA populates the data associated with a CVE ID as a CVE Record" (15), L3510 "A Rejected CVE Record remains on the CVE List so that users can know when it is invalid." (18); `S064:sha256 OK` and `Q1..Q4 … anchor=…-ok`, exit 0; the document is a first-party spec and the lane held nothing in this family |
+| S065 (OSV schema) | reject | live `https://ossf.github.io/osv-schema/`, re-fetched 2026-10-28 | **agree** | HTTP 200, 228,890 B, sha256 `8cf1e3d3f9e10eba902d03af6c281d6bc5e71c22dc351fcb4b811c64030570e8` — byte-identical to the round's recorded fetch; the quoted sentence is verbatim at raw-HTML L298 (page-text L9–L10 under `capture-source.py`, both records consistent) and "Version 1.9.2 (October 13, 2026)" at L288; the reject reason names a real criterion (sibling kaidoku S015 already holds an OSV record instance; this is an HTML page describing a schema published elsewhere) and a flip condition |
+| S066 (NVD API 2.0 schema) | reject | live `https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema`, re-fetched | **agree** | HTTP 200, 10,394 B, sha256 `2b9c4e8ab7e6e42aa17ea787f58167beff47c119c6f291405f86ac19c6149e01` — byte-identical; served L96 `"description": "Metric scores for a vulnerability as found on NVD."` exactly (9 words); L3 title is "JSON Schema for NVD Vulnerability Data API version 2.2.4", which grounds the "derived, NVD-enriched projection" reason |
+| S064 registry row | new row | `corpus/SOURCES.md` cells + binding instrument | **agree** | kind `spec`, tier A, status `mined`, opened 2026-10-28, used-by the entry; `records=56 bound=56 unbound=0` |
+
+No item was "could not re-open": the admit was checked against committed capture bytes and its executable recheck,
+both rejects against the live first-party artifacts, with digests matching the round's recorded fetches.
+
+### 9.5 Axis verdicts — identical to §4
+
+| Axis | Claim (before → after) | Claim verdict | Axis grade | Evidence |
+|---|---|---|---|---|
+| depth:verifiability | C1 4 → 4 held | **met** | **unchanged** | 9.2 rows 1–10; 3/3 in-family attacks killed; `claims.json` byte-unchanged after the freeze (`git diff 0566bd66 b2c49ea5 -- …/claims.json` empty), so erratum 4 moved the implementation only |
+| coverage | C2 8 → 8 held | **met** | **improved** | 9.2 rows 1–11 (F25 24→25, registry 63→66, knowledge 60→61, harness 28/28); score band held, corpus measurably expanded |
+| depth:density | 9 → 9 not claimed | not claimed | **unchanged (no harm)** | 0 tracked deletions base→Y; `density.py` sha unchanged at J and Y |
+
+Saturation 9/10, window N=3 unchanged; the lowest non-retired axis (depth:verifiability, 4) was this round's C1 —
+measured and held, with no increase claimed anywhere.
+
+### 9.6 Defects added by this pass (routed; owner kasegi-shokunin; next round)
+
+RD42-8 — **before-number mismatch in the frozen claim.** `claims.json` C1 `before` says "the r41 suite at base
+prints `closed=10/12 exit=1`", but the pointer it cites, `.ufo/waves/round-42/c1-controls/do-nothing.txt`, prints
+`closed=8/12 exit=1` (`selftest cases=12 failures=8`), and the report's own C1 row 3 repeats 8/12; 10/12 is the r41
+suite's count at its own head, not at base. Status-neutral: the before state is red either way and the after state
+(13/13 at Y) is untouched. Required next round: an appended `Correction (round 43)` naming the superseded before
+sentence (never a rewrite of `claims.json`).
+
+RD42-9 — **`SHONEN.md` canonical form, drift continued.** PROTOCOL §File contract confines the file to the seed block
+plus "the box character plus one indented evidence line per box". The r42 block (`SHONEN.md`,
+`## Round 42 evidence`, 55 added lines) carries a heading and multi-line evidence per box; the r34/r35 blocks already
+did. Status-neutral: all four boxes remain `[~]` with resolvable pointers and no `[x]` was written. Required next
+round: one indented evidence line per box, no added `## Round N evidence` heading.
+
+### 9.7 Verdict — stands
+
+Both in-force claims verify at Y by this seat's own re-execution (**met / met**); axis grades
+**depth:verifiability unchanged, coverage improved, depth:density unchanged (no harm)** — identical to §4 and to the
+ledger row. `admitted: true` stands. Routed defects are now RD42-1..RD42-9: narrative, timestamp and form hygiene
+plus the undispatched wave; none moves a claim's measurement or the admission. The ledger row's pointer is re-pinned
+to this revision by a `closure-correction`; no status or verdict changes.
