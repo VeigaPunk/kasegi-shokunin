@@ -1,0 +1,17 @@
+$ python3 corpus/instruments/capture-binding-check.py --root <export of 6662a42>   # red-before: S072 (a rejected row) anchored a corpus manifest record
+AUDIT records=60 with_url=60 with_fetched_utc=22 with_archival=38 snapshot_dirs=21 manifest_dirs=21 missing_manifest=0 multi_row_url=3 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+FAIL rule=rejected-row-anchor record=S072 row=S072 dir=round-45
+records=60 bound=59 unbound=1
+exit=1
+$ python3 corpus/instruments/capture-binding-check.py --root <export of 3106889>   # after: S072 capture moved beside the wave evidence
+MANIFEST round-45 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=59 with_url=59 with_fetched_utc=21 with_archival=38 snapshot_dirs=21 manifest_dirs=21 missing_manifest=0 multi_row_url=3 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+records=59 bound=59 unbound=0
+exit=0
+$ python3 corpus/instruments/r44-routed-defects.py --root <export of 3106889> --selftest --work <scratch>   # M45-2: the r44 selftest is red at later trees (D4 binds the last '## Round 44' heading)
+selftest case=D8-no-receipt verdict=pass detail=.ufo/waves/round-44/controls/missing-suite-base.txt absent
+selftest cases=20 failures=1
+exit=1
+$ grep -c 'logistics of QA” (' <entry at 6662a42>  # M45-4: the truncated quote; tip count follows
+1
+0

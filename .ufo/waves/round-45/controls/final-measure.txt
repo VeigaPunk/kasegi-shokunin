@@ -1,0 +1,931 @@
+measured-at-rev: 3106889 base: dc5bb8c6e31efc4a6650819df85e79b72fd64bcd
+## C1 (depth:verifiability)
+$ python3 -B corpus/instruments/r45-routed-defects.py --root /fast/scratch/hyaku/kasegi-r45/L1/fm/base --baseline /fast/scratch/hyaku/kasegi-r45/L1/fm/base
+limb R1 fixed=0 read=row-S072=absent
+limb R2 fixed=0 read=quality-not-append-only-or-unchanged
+limb R3 fixed=0 read=r44-frontier-count-not-the-pinned-bytes
+limb R4 fixed=0 read=freeze-check-absent
+limb R5 fixed=0 read=refiled-absent
+routed-defects total=5 fixed=0 unresolved=5 exit=1
+exit=1
+$ python3 -B corpus/instruments/r45-routed-defects.py --root /fast/scratch/hyaku/kasegi-r45/L1/fm/tip --baseline /fast/scratch/hyaku/kasegi-r45/L1/fm/base
+limb R1 fixed=1 read=S072=supersedes recheck-quotes=2 corrections=1
+limb R2 fixed=1 read=criteria=3
+limb R3 fixed=1 read=selftest-cases=61
+limb R4 fixed=1 read=selftest-cases=27 replay=base_ok=2
+limb R5 fixed=1 read=refiled=pinned-run-output original=unchanged
+routed-defects total=5 fixed=5 unresolved=0 exit=0
+exit=0
+$ python3 -B corpus/instruments/freeze-check.py --claims /fast/scratch/hyaku/kasegi-r45/L1/fm/tip/.ufo/waves/round-45/claims.json --tool-root /fast/scratch/hyaku/kasegi-r45/L1/fm/tip --base /fast/scratch/hyaku/kasegi-r45/L1/fm/base
+claim C1 base_read=routed-defects total=5 fixed=0 unresolved=5 exit=1 verdict=ok
+claim C2 base_read=c2-gate fixed=1/7 exit=1 verdict=ok
+freeze-check claims=2 base_ok=2 exit=0
+exit=0
+$ python3 -B corpus/instruments/freeze-check.py --selftest --work /fast/scratch/hyaku/kasegi-r45/L1/fm/w1
+case 1-good-claim-red-counter-exit1 PASS exit want=0 got=0 ids want=[] got=[] verdict=ok | claim C base_read=T fixed=0 exit=1 verdict=ok
+case 2-round44-frozen-grep-real-readme PASS exit want=1 got=1 ids want=['FC-NO-MATCH'] got=['FC-NO-MATCH'] table-aware admitted=25, frozen grep read 0 (readme builtin:25-admitted-frontier-rows) | claim C base_read=0 verdict=FAIL
+case 3-do-nothing-green-only-after-line PASS exit want=1 got=1 ids want=['FC-AFTER-AT-BASE', 'FC-NO-MATCH'] got=['FC-AFTER-AT-BASE', 'FC-NO-MATCH'] | claim C base_read=T fixed=1 exit=0 verdict=FAIL
+case 3b-after-line-present-beside-before-line PASS exit want=1 got=1 ids want=['FC-AFTER-AT-BASE'] got=['FC-AFTER-AT-BASE'] | claim C base_read=T fixed=0 exit=1 verdict=FAIL
+case 4-missing-expect_before PASS exit want=1 got=1 ids want=['FC-MISSING-FIELD'] got=['FC-MISSING-FIELD'] | claim C base_read=T fixed=0 exit=1 verdict=FAIL
+case 4b-empty-expect_before PASS exit want=1 got=1 ids want=['FC-MISSING-FIELD'] got=['FC-MISSING-FIELD'] | claim C base_read=T fixed=0 exit=1 verdict=FAIL
+case 4c-missing-expect_after PASS exit want=1 got=1 ids want=['FC-MISSING-FIELD'] got=['FC-MISSING-FIELD'] | claim C base_read=T fixed=0 exit=1 verdict=FAIL
+case 4d-missing-counter_cmd PASS exit want=1 got=1 ids want=['FC-MISSING-FIELD'] got=['FC-MISSING-FIELD'] | claim C base_read=n/a verdict=FAIL
+case 5-counter-crash-no-matching-line PASS exit want=1 got=1 ids want=['FC-NO-MATCH'] got=['FC-NO-MATCH'] base_read=last line | claim C base_read=RuntimeError: boom verdict=FAIL
+case 6-substring-suffix-fixed=0x PASS exit want=1 got=1 ids want=['FC-NO-MATCH'] got=['FC-NO-MATCH'] | claim C base_read=fixed=0x verdict=FAIL
+case 6b-substring-prefix-xfixed=0 PASS exit want=1 got=1 ids want=['FC-NO-MATCH'] got=['FC-NO-MATCH'] | claim C base_read=xfixed=0 verdict=FAIL
+case 7-before-equals-after PASS exit want=1 got=1 ids want=['FC-AFTER-AT-BASE', 'FC-BEFORE-EQ-AFTER'] got=['FC-AFTER-AT-BASE', 'FC-BEFORE-EQ-AFTER'] | claim C base_read=T 0 verdict=FAIL
+case 8-counter-timeout PASS exit want=1 got=1 ids want=['FC-TIMEOUT'] got=['FC-TIMEOUT'] | claim C base_read=<no-output> verdict=FAIL
+case 9-duplicate-claim-id PASS exit want=1 got=1 ids want=['FC-DUP-ID'] got=['FC-DUP-ID'] | claim C1 base_read=T fixed=0 exit=1 verdict=ok // claim C1 base_read=T fixed=0 exit=1 verdict=FAIL
+case 10-counter-reads-no-tree-placeholder PASS exit want=1 got=1 ids want=['FC-NO-TREE'] got=['FC-NO-TREE'] | claim C base_read=T fixed=0 exit=1 verdict=FAIL
+case 11-wrong-schema PASS exit want=1 got=1 ids want=['FC-SCHEMA'] got=['FC-SCHEMA'] | claim C base_read=T fixed=0 exit=1 verdict=ok
+case 11b-no-claims PASS exit want=1 got=1 ids want=['FC-NO-CLAIMS'] got=['FC-NO-CLAIMS'] | 
+case 12-counter-mutates-base PASS exit want=1 got=1 ids want=['FC-BASE-MUTATED'] got=['FC-BASE-MUTATED'] | claim C base_read=T fixed=0 exit=1 verdict=FAIL
+case 13-env-tmpdir-cwd-contract PASS exit want=0 got=0 ids want=[] got=[] | claim C base_read=env=1 tmp=/fast/scratch/hyaku/kasegi-r45/L1/fm/w1/freeze-check-selftest-rf8jqlaw/tmp cwd=/fast/scratch/hyaku/kasegi-r45/L1/fm/w1/freeze-che...
+case 14-mixed-ok-and-fail PASS exit want=1 got=1 ids want=['FC-NO-MATCH'] got=['FC-NO-MATCH'] claims=2 base_ok=1 | claim A base_read=T fixed=0 exit=1 verdict=ok // claim B base_read=nope verdict=FAIL
+case 15-after-value-inside-longer-line PASS exit want=1 got=1 ids want=['FC-AFTER-AT-BASE'] got=['FC-AFTER-AT-BASE'] | claim C base_read=T fixed=0 exit=1 verdict=FAIL
+case 16-counter-touches-base-file-same-size PASS exit want=1 got=1 ids want=['FC-BASE-MUTATED'] got=['FC-BASE-MUTATED'] | claim C base_read=T fixed=0 exit=1 verdict=FAIL
+case 17-counter-makes-base-dir PASS exit want=1 got=1 ids want=['FC-BASE-MUTATED'] got=['FC-BASE-MUTATED'] | claim C base_read=T fixed=0 exit=1 verdict=FAIL
+case 18-timeout-kills-grandchild PASS exit want=1 got=1 ids want=['FC-TIMEOUT'] got=['FC-TIMEOUT'] | claim C base_read=<no-output> verdict=FAIL
+case 18a-timeout-returns-promptly PASS elapsed=1.0s (a kill that leaves a grandchild holding the pipe blocks ~59s)
+case 18b-no-grandchild-survives-timeout PASS survivors=[]
+case 19-base-placeholder-only PASS exit want=0 got=0 ids want=[] got=[] | claim C base_read=T fixed=0 exit=1 verdict=ok
+selftest cases=27 failures=0
+exit=0
+$ python3 -B corpus/instruments/r44-frontier-count.py --selftest --work /fast/scratch/hyaku/kasegi-r45/L1/fm/w2
+case cli/26-rows-26-admitted: ok exit=0 stdout=['frontier rows=26 admitted=26']
+case cli/27-rows-27-admitted: ok exit=0 stdout=['frontier rows=27 admitted=27']
+case cli/expect-27-on-27-passes: ok exit=0 stdout=['frontier rows=27 admitted=27']
+case cli/expect-27-on-26-short: ok exit=1 stdout=['frontier rows=26 admitted=26', 'frontier expected=27 admitted=26 verdict=SHORT exit=1']
+case cli/expect-26-on-26-passes: ok exit=0 stdout=['frontier rows=26 admitted=26']
+case cli/expect-26-on-27-also-mismatch: ok exit=1 stdout=['frontier rows=27 admitted=27', 'frontier expected=26 admitted=27 verdict=SHORT exit=1']
+case cli/duplicate-id-is-defect: ok exit=1 stdout=['frontier duplicate-ids=F05 verdict=DEFECT exit=1']
+case cli/duplicate-id-beats-expect: ok exit=1 stdout=['frontier duplicate-ids=F05 verdict=DEFECT exit=1']
+case cli/queued-row-counted-not-admitted: ok exit=0 stdout=['frontier rows=26 admitted=25']
+case cli/header-and-separator-not-counted: ok exit=0 stdout=['frontier rows=0 admitted=0']
+case cli/header-and-separator-with-one-row: ok exit=0 stdout=['frontier rows=1 admitted=1']
+case cli/status-in-second-cell-not-admitted: ok exit=0 stdout=['frontier rows=3 admitted=0']
+case cli/admitted-in-note-cell-not-admitted: ok exit=0 stdout=['frontier rows=2 admitted=1']
+case cli/status-match-is-case-exact: ok exit=0 stdout=['frontier rows=2 admitted=1']
+case cli/ids-flag-prints-ids-first: ok exit=0 stdout=['frontier-ids=F01,F02,F03', 'frontier rows=3 admitted=2']
+case cli/missing-readme-is-zero-rows: ok exit=0 stdout=['frontier rows=0 admitted=0']
+case cli/missing-readme-with-expect-is-short: ok exit=1 stdout=['frontier rows=0 admitted=0', 'frontier expected=26 admitted=0 verdict=SHORT exit=1']
+case cli/root-not-a-directory-exits-2: ok exit=2 stdout=[]
+case cli/expect-binds-admitted-not-rows-short: ok exit=1 stdout=['frontier rows=26 admitted=25', 'frontier expected=26 admitted=25 verdict=SHORT exit=1']
+case cli/expect-binds-admitted-not-rows-pass: ok exit=0 stdout=['frontier rows=26 admitted=25']
+case cli/status-not-admitted-is-not-admitted: ok exit=0 stdout=['frontier rows=2 admitted=1']
+case cli/status-admitted-with-suffix-is-not-admitted: ok exit=0 stdout=['frontier rows=2 admitted=1']
+case cli/html-comment-row-not-counted: ok exit=0 stdout=['frontier-ids=F01', 'frontier rows=1 admitted=1']
+case cli/indented-row-not-counted: ok exit=0 stdout=['frontier-ids=F01', 'frontier rows=1 admitted=1']
+case cli/three-cell-row-is-counted: ok exit=0 stdout=['frontier rows=2 admitted=2']
+case cli/two-cell-row-is-skipped: ok exit=0 stdout=['frontier rows=1 admitted=1']
+case cli/ids-printed-beside-duplicate-defect: ok exit=1 stdout=['frontier-ids=F01,F01', 'frontier duplicate-ids=F01 verdict=DEFECT exit=1']
+case memory/26-rows-26-admitted: ok 
+case memory/27-rows-27-admitted: ok 
+case memory/expect-27-on-27-passes: ok 
+case memory/expect-27-on-26-short: ok 
+case memory/expect-26-on-26-passes: ok 
+case memory/expect-26-on-27-also-mismatch: ok 
+case memory/duplicate-id-is-defect: ok 
+case memory/duplicate-id-beats-expect: ok 
+case memory/queued-row-counted-not-admitted: ok 
+case memory/header-and-separator-not-counted: ok 
+case memory/header-and-separator-with-one-row: ok 
+case memory/status-in-second-cell-not-admitted: ok 
+case memory/admitted-in-note-cell-not-admitted: ok 
+case memory/status-match-is-case-exact: ok 
+case memory/ids-flag-prints-ids-first: ok 
+case memory/expect-binds-admitted-not-rows-short: ok 
+case memory/expect-binds-admitted-not-rows-pass: ok 
+case memory/status-not-admitted-is-not-admitted: ok 
+case memory/status-admitted-with-suffix-is-not-admitted: ok 
+case memory/html-comment-row-not-counted: ok 
+case memory/indented-row-not-counted: ok 
+case memory/three-cell-row-is-counted: ok 
+case memory/two-cell-row-is-skipped: ok 
+case memory/ids-printed-beside-duplicate-defect: ok 
+case mutant/status-compared-to-queued: ok rejected_by=['26-rows-26-admitted', '27-rows-27-admitted', 'expect-27-on-27-passes']
+case mutant/status-read-from-second-cell: ok rejected_by=['26-rows-26-admitted', '27-rows-27-admitted', 'expect-27-on-27-passes']
+case mutant/row-regex-counts-any-table-row: ok rejected_by=['26-rows-26-admitted', '27-rows-27-admitted', 'expect-27-on-27-passes']
+case mutant/admitted-matched-anywhere-in-line: ok rejected_by=['status-in-second-cell-not-admitted', 'admitted-in-note-cell-not-admitted', 'status-not-admitted-is-not-admitted']
+case mutant/every-row-counted-admitted: ok rejected_by=['queued-row-counted-not-admitted', 'status-in-second-cell-not-admitted', 'admitted-in-note-cell-not-admitted']
+case mutant/status-match-case-insensitive: ok rejected_by=['status-match-is-case-exact']
+case mutant/do-nothing-counter: ok rejected_by=['26-rows-26-admitted', '27-rows-27-admitted', 'expect-27-on-27-passes']
+case mutant/duplicate-check-removed: ok rejected_by=['duplicate-id-is-defect', 'duplicate-id-beats-expect', 'ids-printed-beside-duplicate-defect']
+case mutant/short-check-only-when-below: ok rejected_by=['expect-26-on-27-also-mismatch']
+case mutant/short-check-only-when-above: ok rejected_by=['expect-27-on-26-short', 'expect-binds-admitted-not-rows-short']
+mutants=10 rejected=10
+selftest cases=61 failures=0
+exit=0
+$ python3 -B corpus/instruments/r45-counters-selftest-c1.py --lane /fast/scratch/hyaku/kasegi-r45/L1/fm/tip --base /fast/scratch/hyaku/kasegi-r45/L1/fm/base
+synthetic pins (R45_PINS_OVERRIDE): R1-corr=None R1-row=None R2-R47=None R2-R48=None R2-R49=None R3-readme-r44-frontier-count.py=None R3-skill-r44-frontier-count.py=None R3-skill-r44-routed-defects.py=None R3-skill-wave-registry.py=None S072.txt=364166c4a23e claims.json=bbe40503281c freeze-check.py=8b7f54184a75 r44-frontier-count.py=48a916fcb719 r44-routed-defects.py=d5438c67befa refiled-body=03fe3af53006
+GOOD counter output:
+  limb R1 fixed=1 read=S072=supersedes recheck-quotes=2 corrections=1
+  limb R2 fixed=1 read=criteria=3
+  limb R3 fixed=1 read=selftest-cases=8
+  limb R4 fixed=1 read=selftest-cases=8 replay=base_ok=2
+  limb R5 fixed=1 read=refiled=pinned-run-output original=unchanged
+  routed-defects total=5 fixed=5 unresolved=0 exit=0
+
+case control-good-tree verdict=ok total_fixed=5 rc=0 expect fixed=5 R1=1 R2=1 R3=1 R4=1 R5=1
+case control-do-nothing-base verdict=ok total_fixed=0 rc=1 expect fixed=0 (pins override active)
+case control-null-mutant verdict=ok total_fixed=5 unchanged clone must stay fixed=5 (harness does not flag everything)
+case control-marker-only verdict=ok total_fixed=0 prose markers only, no artifacts: expect fixed=0
+case control-good-tree-under-real-pins verdict=ok no override: the synthetic code must NOT satisfy the real pins; R1=0(S072-row-not-the-pinned-line) R2=0(R47-row-not-the-pinned-line) R3=0(r44-frontier-count-not-the-pinned-bytes) R4=0(freeze-check-not-the-pinned-bytes) R5=1(refiled=pinned-run-output original=unchanged)
+case r1-snapshot-byte-flipped limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-45/source-recon/S072.txt read=recheck-rc=1-quotes=0
+case r1-manifest-quote-dropped limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-45/source-recon/S072.manifest.json read=recheck-rc=0-quotes=1
+case r1-forged-snapshot-self-consistent limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-45/source-recon/S072.manifest.json,.ufo/waves/round-45/source-recon/S072.txt,corpus/SOURCES.md read=snapshot-not-the-pinned-capture-or-not-in-anchor
+case r1-anchor-sha-wrong limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=snapshot-not-the-pinned-capture-or-not-in-anchor
+case r1-s070-row-edited limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=S070-row-changed-or-baseline-absent
+case r1-s070-row-duplicated limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=S070-row-changed-or-baseline-absent
+case r1-teaches-not-supersedes limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=teaches-not-supersedes
+case r1-status-admitted limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=status=admitted
+case r1-flip-clause-removed limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=flip-absent
+case r1-flip-vacuous-tbd limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=flip-absent
+case r1-flip-vacuous-colon-dot limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=flip-absent
+case r1-size-token-absent limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=size-token-absent
+case r1-row-in-code-fence limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=row-S072=absent
+case r1-row-in-html-comment limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=row-S072=absent
+case r1-row-after-registry limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=row-S072=absent
+case r1-row-indented-code-block limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=row-S072=absent
+case r1-row-10-cells limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/SOURCES.md read=row-S072=absent
+case r1-correction-wrong-size limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/lessons/round-44.md read=lesson-correction-absent-or-quotes-no-located-S072-span
+case r1-correction-content-free limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/lessons/round-44.md read=lesson-correction-absent-or-quotes-no-located-S072-span
+case r1-correction-quote-unlocated limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/lessons/round-44.md read=lesson-correction-absent-or-quotes-no-located-S072-span
+case r1-correction-quote-absent limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/lessons/round-44.md read=lesson-correction-absent-or-quotes-no-located-S072-span
+case r1-correction-indented limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/lessons/round-44.md read=lesson-correction-absent-or-quotes-no-located-S072-span
+case r1-lesson-not-append-only limb=R1 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/lessons/round-44.md read=round-44-lesson-not-append-only
+case r2-enforced-by-missing limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R48-enforced-by-not-a-file-corpus/instruments/does-not-exist.py
+case r2-enforced-by-directory limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R47-enforced-by-not-a-file-corpus
+case r2-enforced-by-absent limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R49-enforced-by-absent
+case r2-quality-prefix-edited limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=quality-not-append-only-or-unchanged
+case r2-r49-ungrounded limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R49-ungrounded
+case r2-duplicate-heading limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=round-45-heading!=1
+case r2-r47-lacks-before-data limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R47-missing-before data
+case r2-r48-lacks-presence-only limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R48-missing-presence-only
+case r2-row-duplicated limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R48-rows=2
+case r2-criterion-too-short limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R47-criterion-too-short
+case r2-line-ref-out-of-range limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R48-line-refs-absent-or-out-of-range
+case r2-line-ref-zero limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R48-line-refs-absent-or-out-of-range
+case r2-line-ref-absent limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R49-line-refs-absent-or-out-of-range
+case r2-vacuous-criterion limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R48-criterion-too-short
+case r2-row-in-code-fence limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R49-rows=0
+case r2-row-in-html-comment limb=R2 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/QUALITY.md read=R49-rows=0
+case r2-padded-filler-criterion limb=R2 target_fixed=1 total_fixed=5 rc=0 verdict=info-accepted changed=corpus/QUALITY.md read=criteria=3
+case r2-enforced-by-unrelated-file limb=R2 target_fixed=1 total_fixed=5 rc=0 verdict=info-accepted changed=corpus/QUALITY.md read=criteria=3
+case r3-code-byte-flipped limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/r44-frontier-count.py read=r44-frontier-count-not-the-pinned-bytes
+case r3-code-trailing-newline limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/r44-frontier-count.py read=r44-frontier-count-not-the-pinned-bytes
+case r3-frontier-absent limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/r44-frontier-count.py read=r44-frontier-count-not-the-pinned-bytes
+case r3-stub-selftest limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/r44-frontier-count.py read=r44-frontier-count-not-the-pinned-bytes
+case r3-selftest-7-cases limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/r44-frontier-count.py read=selftest-rc=0-tokens=(7, 0)
+case r3-selftest-failure limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/r44-frontier-count.py read=selftest-rc=1-tokens=(8, 1)
+case r3-registry-row-7-cells limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=SKILL.md read=registry-row-wave-registry.py=1
+case r3-registry-row-duplicated limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=SKILL.md read=registry-row-r44-routed-defects.py=2
+case r3-registry-row-prose-only limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=SKILL.md read=registry-row-wave-registry.py=0
+case r3-registry-row-in-code-fence limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=SKILL.md read=registry-row-wave-registry.py=0
+case r3-registry-row-in-html-comment limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=SKILL.md read=registry-row-wave-registry.py=0
+case r3-registry-section-renamed limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=SKILL.md read=registry-section-absent
+case r3-readme-row-bullet limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/README.md read=readme-row-absent-or-not-the-pinned-line
+case r3-readme-row-in-code-fence limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/README.md read=readme-row-absent-or-not-the-pinned-line
+case r3-skill-not-append-only limb=R3 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=SKILL.md read=SKILL-not-append-only
+case r4-code-byte-flipped limb=R4 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/freeze-check.py read=freeze-check-not-the-pinned-bytes
+case r4-stub-freeze-check limb=R4 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/freeze-check.py read=freeze-check-not-the-pinned-bytes
+case r4-freeze-selftest-5-cases limb=R4 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/freeze-check.py read=selftest-rc=0-tokens=(5, 0)
+case r4-freeze-selftest-failure limb=R4 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/freeze-check.py read=selftest-rc=1-tokens=(8, 1)
+case r4-freeze-absent limb=R4 target_fixed=0 total_fixed=3 rc=1 verdict=rejected changed=corpus/instruments/freeze-check.py read=freeze-check-absent
+case r4-claims-weakened limb=R4 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-45/claims.json read=claims-not-the-frozen-bytes
+case r4-claims-expect-changed limb=R4 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-45/claims.json read=claims-not-the-frozen-bytes
+case r4-claims-trailing-newline limb=R4 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-45/claims.json read=claims-not-the-frozen-bytes
+case r4-claims-absent limb=R4 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-45/claims.json read=claims-not-the-frozen-bytes
+case r4-claims-replay-short limb=R4 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-45/claims.json read=replay-rc=1
+case r5-usage-line limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=usage-or-error-line-present
+case r5-error-line-only limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=usage-or-error-line-present
+case r5-original-changed limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3.txt read=original-receipt-changed
+case r5-invocation-absent limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=invocation-lines=0
+case r5-invocation-twice limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=invocation-lines=2
+case r5-exit-nonzero limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=exit0-line-absent
+case r5-cases-19 limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=receipt-body-not-the-pinned-run-output
+case r5-receipt-body-edited limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=receipt-body-not-the-pinned-run-output
+case r5-receipt-body-line-deleted limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=receipt-body-not-the-pinned-run-output
+case r5-receipt-body-extra-line limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=receipt-body-not-the-pinned-run-output
+case r5-fabricated-receipt limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=receipt-body-not-the-pinned-run-output
+case r5-fabricated-comment-invocation limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=invocation-lines=0
+case r5-r44-counter-edited limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=corpus/instruments/r44-routed-defects.py read=r44-counter-not-the-pinned-bytes
+case r5-refiled-absent limb=R5 target_fixed=0 total_fixed=4 rc=1 verdict=rejected changed=.ufo/waves/round-44/controls/final-attempt3-refiled.txt read=refiled-absent
+INFO-ACCEPTED (not counted) mutant=r2-padded-filler-criterion limb=R2 recipe: INFO: R48 criterion padded with 400 chars of filler to pass the length floor (class word + any file + a ref) | counter read: limb R2 fixed=1 read=criteria=3
+INFO-ACCEPTED (not counted) mutant=r2-enforced-by-unrelated-file limb=R2 recipe: INFO: R47 enforced-by names LOG.md (an existing file that enforces nothing); predicate as written asks only that the path exists | counter read: limb R2 fixed=1 read=criteria=3
+selftest cases=85 failures=0
+exit=0
+## C2 (coverage)
+$ python3 -B corpus/instruments/r45-c2-gate.py --root /fast/scratch/hyaku/kasegi-r45/L1/fm/base
+gate G1 pass=0 read=rows=26 admitted=26 dup=0
+gate G2 pass=0 read=F27-rows=0
+gate G3 pass=0 read=row-S071=absent-or-malformed
+gate G4 pass=0 read=manifest-absent
+gate G5 pass=0 read=F27-rows=0
+gate G6 pass=0 read=knowledge=63 base-names-intact=1 entry-bytes-ok=0
+gate G7 pass=1 read=census-rc=0 ok-line=1
+c2-gate fixed=1/7 exit=1
+exit=1
+$ python3 -B corpus/instruments/r45-c2-gate.py --root /fast/scratch/hyaku/kasegi-r45/L1/fm/tip
+gate G1 pass=1 read=rows=27 admitted=27 entry=corpus/knowledge/linux-kernel-security-bugs-reporting-process.md
+gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 table-rows=13 xrefs=5/5
+gate G3 pass=1 read=row-S071=ok
+gate G4 pass=1 read=recheck-rc=0 quotes-ok=30 frozen-cores-missing=0
+gate G5 pass=1 read=spans=29 located=29 failed=0 uncited=0 cores=4/4
+gate G6 pass=1 read=knowledge=64 base-names-intact=1 entry-bytes-ok=1
+gate G7 pass=1 read=census-rc=0 ok-line=1
+c2-gate fixed=7/7 exit=0
+exit=0
+$ python3 -B corpus/instruments/r44-frontier-count.py --root /fast/scratch/hyaku/kasegi-r45/L1/fm/base --expect 27
+frontier rows=26 admitted=26
+frontier expected=27 admitted=26 verdict=SHORT exit=1
+exit=1
+$ python3 -B corpus/instruments/r44-frontier-count.py --root /fast/scratch/hyaku/kasegi-r45/L1/fm/tip --expect 27
+frontier rows=27 admitted=27
+exit=0
+$ python3 -B corpus/instruments/r45-counters-selftest-c2.py --lane /fast/scratch/hyaku/kasegi-r45/L1/fm/tip
+counter=/fast/scratch/hyaku/kasegi-r45/L1/fm/tip/corpus/instruments/r45-c2-gate.py
+lane=/fast/scratch/hyaku/kasegi-r45/L1/fm/tip
+ok   control C0 unmutated synthetic tree: fixed=7/7 failing=-
+ok   control C1 no-op rewrite of README (same bytes): fixed=7/7 failing=-
+ok   control C2 25-word genuine span (boundary): fixed=7/7 failing=-
+ok   control C3 entry exactly 3000 bytes (boundary): fixed=7/7 failing=-
+ok   control C4 table with exactly 6 data rows (the default tree): fixed=7/7 failing=-
+ok   control C5 decoy F27 row inside a code fence is ignored: fixed=7/7 failing=-
+ok   control C6 decoy F27 row inside an HTML comment is ignored: fixed=7/7 failing=-
+ok   control C8 SOURCES_CENSUS=/nonexistent in grader env is ignored (constant census): fixed=7/7 failing=-
+ok   control C9 tree-local source-recheck.py present and ignored (valid tree): fixed=7/7 failing=-
+ok   control C10 counter's own-lane copy of the real source-recheck.py passes: fixed=7/7 failing=-
+ok   control C11 the real lane tree with real pins (no override): fixed=7/7 failing=-
+ok   control C12 extra non-.md file in knowledge/ is not counted: fixed=7/7 failing=-
+ok   mutant M01 fabricated 7-day quote: target=G5 failing=G5 fixed=6/7
+ok   mutant M02 quote cited at wrong line (200): target=G5 failing=G5 fixed=6/7
+ok   mutant M03 26-word quote: target=G5 failing=G5 fixed=6/7
+ok   mutant M04 tier B: target=G3 failing=G3 fixed=6/7
+ok   mutant M05 status queued: target=G3 failing=G3 fixed=6/7
+ok   mutant M06 used-by missing (—): target=G3 failing=G3 fixed=6/7
+ok   mutant M07 used-by names another file: target=G3 failing=G3 fixed=6/7
+ok   mutant M08 snapshot byte flipped: target=G3,G4 failing=G3,G4 fixed=5/7
+ok   mutant M09 manifest Q5 removed: target=G4 failing=G4 fixed=6/7
+ok   mutant M10 manifest Q1 text edited: target=G4 failing=G4 fixed=6/7
+ok   mutant M11 manifest sha wrong: target=G4 failing=G4 fixed=6/7
+ok   mutant M12 manifest absent: target=G4 failing=G4 fixed=6/7
+ok   mutant M13 63 knowledge files: target=G6 failing=G6 fixed=6/7
+ok   mutant M14 65 knowledge files: target=G6 failing=G6 fixed=6/7
+ok   mutant M15 duplicate F id (F25->F26): target=G1 failing=G1 fixed=6/7
+ok   mutant M16 F27 status queued: target=G1 failing=G1 fixed=6/7
+ok   mutant M17 F26 status queued (26/27 admitted): target=G1 failing=G1 fixed=6/7
+ok   mutant M18 26 frontier rows: target=G1 failing=G1 fixed=6/7
+ok   mutant M19 F27 entry file missing: target=G1 failing=G1,G2,G3,G5,G6 fixed=2/7 collateral=G2,G3,G5,G6
+ok   mutant M20 entry lacks source: line: target=G2 failing=G2 fixed=6/7
+ok   mutant M21 verified-at wrong date: target=G2 failing=G2 fixed=6/7
+ok   mutant M22 entry lacks recheck: line: target=G2 failing=G2 fixed=6/7
+ok   mutant M23 source: line wrong URL: target=G2 failing=G2 fixed=6/7
+ok   mutant M24 SOURCES row S071 absent: target=G3 failing=G3 fixed=6/7
+ok   mutant M25 anchor without sha: target=G3 failing=G3 fixed=6/7
+ok   mutant M26 anchor with wrong sha: target=G3 failing=G3 fixed=6/7
+ok   mutant M27 row has 10 cells: target=G3 failing=G3,G7 fixed=5/7 collateral=G7
+ok   mutant M28 source cell wrong URL: target=G3 failing=G3 fixed=6/7
+ok   mutant M29 opened date wrong: target=G3 failing=G3 fixed=6/7
+ok   mutant M30 kind enum violation: target=G7 failing=G7 fixed=6/7
+ok   mutant M31 duplicate URL+scope row (E04): target=G7 failing=G7 fixed=6/7
+ok   mutant M32 opened in the future (E08): target=G7 failing=G3,G7 fixed=5/7 collateral=G3
+ok   mutant M33 dangling used-by path (E11): target=G7 failing=G7 fixed=6/7
+ok   mutant M34 near-miss quote (8 for 7 days): target=G5 failing=G5 fixed=6/7
+ok   mutant M35 fabricated binary-only quote: target=G5 failing=G5 fixed=6/7
+ok   mutant M36 fabricated AI quote (private): target=G5 failing=G5 fixed=6/7
+ok   mutant M37 fabricated unreproducible quote: target=G5 failing=G5 fixed=6/7
+ok   mutant M38 quote borrowed from S072 cited as S071: target=G5 failing=G5 fixed=6/7
+ok   mutant M39 straight quotes only (no span parsed): target=G5 failing=G5 fixed=6/7
+ok   mutant M40 extra fabricated sixth span: target=G5 failing=G5 fixed=6/7
+ok   mutant M41 AI span citation dropped (core unlocated): target=G5 failing=G5 fixed=6/7
+ok   mutant M42 binary-only citation removed: target=G5 failing=G5 fixed=6/7
+ok   mutant M43 7-day quote replaced by paraphrase: target=G5 failing=G5 fixed=6/7
+ok   mutant M44 citation one line past the quote: target=G5 failing=G5 fixed=6/7
+ok   mutant M45 reversed citation range: target=G5 failing=G5 fixed=6/7
+ok   mutant M46 multi-line quote cited at first line only: target=G5 failing=G5 fixed=6/7
+ok   mutant N01 uncited curly span (new sentence): target=G5 failing=G5 fixed=6/7
+ok   mutant N02 uncited curly span restating a REAL quote: target=G5 failing=G5 fixed=6/7
+ok   mutant N03 curly span with citation separated by words: target=G5 failing=G5 fixed=6/7
+ok   mutant N04 curly span followed by an em-dash and unparenthesised citation: target=G5 failing=G5 fixed=6/7
+ok   mutant N05 uncited curly span inside a table cell: target=G5 failing=G5 fixed=6/7
+ok   mutant N06 comment-hidden F27 row (block comment): target=G1 failing=G1,G2,G3,G5,G6 fixed=2/7 collateral=G2,G3,G5,G6
+ok   mutant N07 comment-hidden F27 row (inline comment): target=G1 failing=G1,G2,G3,G5,G6 fixed=2/7 collateral=G2,G3,G5,G6
+ok   mutant N08 fenced F27 row: target=G1 failing=G1,G2,G3,G5,G6 fixed=2/7 collateral=G2,G3,G5,G6
+ok   mutant N09 live decoy second F27 row (28 rows, duplicate id): target=G1 failing=G1,G2,G3,G5,G6 fixed=2/7 collateral=G2,G3,G5,G6
+ok   mutant N10 fenced S071 row: target=G3 failing=G3 fixed=6/7
+ok   mutant N11 S071 row inside an HTML comment: target=G3 failing=G3 fixed=6/7
+ok   mutant N12 S071 row moved under ## Paths: target=G3 failing=G3,G7 fixed=5/7 collateral=G7
+ok   mutant N13 F27 entry shared with the F26 row: target=G1 failing=G1,G2,G3,G5,G6 fixed=2/7 collateral=G2,G3,G5,G6
+ok   mutant N14 F27 entry cell lists two knowledge paths: target=G1 failing=G1,G2,G3,G5,G6 fixed=2/7 collateral=G2,G3,G5,G6
+ok   mutant N15 F27 entry cell names no path: target=G1 failing=G1,G2,G3,G5,G6 fixed=2/7 collateral=G2,G3,G5,G6
+ok   mutant N16 F27 entry is a symlink (to a file outside knowledge/): target=G1 failing=G1,G2,G3,G5,G6 fixed=2/7 collateral=G2,G3,G5,G6
+ok   mutant N17 F27 entry path is a directory: target=G1 failing=G1,G2,G3,G5,G6 fixed=2/7 collateral=G2,G3,G5,G6
+ok   mutant N18 F27 cell points at an unrelated existing stub: target=G2,G3,G5 failing=G1,G2,G3,G5,G6 fixed=2/7 collateral=G1,G6
+ok   mutant N19 empty entry file: target=G2,G5,G6 failing=G2,G5,G6 fixed=4/7
+ok   mutant N20 header-only entry (title + trio): target=G2,G5,G6 failing=G2,G5,G6 fixed=4/7
+ok   mutant N21 missing section: Scope and decision rule: target=G2 failing=G2 fixed=6/7
+ok   mutant N22 missing section: Overlap and novelty: target=G2 failing=G2 fixed=6/7
+ok   mutant N23 missing section: Limits: target=G2 failing=G2 fixed=6/7
+ok   mutant N24 missing section: Falsifiable package rule: target=G2 failing=G2 fixed=6/7
+ok   mutant N25 section heading with a suffix: target=G2 failing=G2 fixed=6/7
+ok   mutant N26 section heading indented one space: target=G2 failing=G2 fixed=6/7
+ok   mutant N27 table has 5 data rows: target=G2 failing=G2 fixed=6/7
+ok   mutant N28 entry has no table: target=G2,G5 failing=G2,G5,G6 fixed=4/7 collateral=G6
+ok   mutant N29 short entry: 2999 bytes: target=G6 failing=G6 fixed=6/7
+ok   mutant N30 short entry: 2500 bytes: target=G6 failing=G6 fixed=6/7
+ok   mutant N31 dangling xref: line 9999: target=G2 failing=G2 fixed=6/7
+ok   mutant N32 dangling xref: line 0: target=G2 failing=G2 fixed=6/7
+ok   mutant N33 xref names a ghost file: target=G2 failing=G2 fixed=6/7
+ok   mutant N34 xref to coordinated-disclosure-timelines.md replaced: target=G2 failing=G2 fixed=6/7
+ok   mutant N35 xref to ai-assisted-finding-validation.md replaced: target=G2 failing=G2 fixed=6/7
+ok   mutant N36 no xrefs at all: target=G2 failing=G2 fixed=6/7
+ok   mutant N37 xref target coordinated-disclosure-timelines.md truncated below the cited line: target=G2 failing=G2 fixed=6/7
+ok   mutant N38 xref target ai-assisted-finding-validation.md truncated below the cited line: target=G2 failing=G2 fixed=6/7
+ok   mutant N39 xref target replaced by a directory named *.md: target=G2 failing=G2 fixed=6/7
+ok   mutant N40 padded knowledge dir: base name swapped for a pad name (still 64): target=G6 failing=G6 fixed=6/7
+ok   mutant N41 padded knowledge dir: a base file renamed (still 64): target=G6 failing=G6 fixed=6/7
+ok   mutant N42 padded knowledge dir: pad added, cross-referenced base dropped (64): target=G6 failing=G2,G6 fixed=5/7 collateral=G2
+ok   mutant N43 self-pinned empty snapshot (anchor sha = sha256 of empty): target=G3,G4,G5 failing=G3,G4,G5 fixed=4/7
+ok   mutant N44 snapshot with one trailing newline appended: target=G3 failing=G3,G4 fixed=5/7 collateral=G4
+ok   mutant N45 manifest with one trailing newline appended: target=G4 failing=G4 fixed=6/7
+ok   mutant N46 Q5 core moved to a free-form manifest note: target=G4 failing=G4 fixed=6/7
+ok   mutant N47 tree-supplied always-OK source-recheck.py + flipped snapshot: target=G3,G4 failing=G3,G4 fixed=5/7
+ok   mutant N48 counter's own-lane source-recheck.py prints nothing (exit 0): target=G4 failing=G4 fixed=6/7
+ok   mutant N49 counter's own-lane source-recheck.py exits 1 after OK lines: target=G4 failing=G4 fixed=6/7
+ok   mutant N50 source: line has no section-anchors tail: target=G2 failing=G2 fixed=6/7
+ok   mutant N51 source: line URL with an appended suffix: target=G2 failing=G2 fixed=6/7
+ok   mutant N52 provenance trio pushed below line 8: target=G2 failing=G2 fixed=6/7
+ok   mutant N53 recheck: line without --source S071: target=G2 failing=G2 fixed=6/7
+ok   mutant N54 env SOURCES_CENSUS=<always-ok script> + kind enum violation: target=G7 failing=G7 fixed=6/7
+ok   mutant N55 real pins active: synthetic stubs are not the 63 base names: target=G6 failing=G1,G2,G3,G6 fixed=3/7 collateral=G1,G2,G3
+ok   mutant N56 real tree + grader pin override with a wrong S071.txt hash: target=G3 failing=G3 fixed=6/7
+ok   mutant N57 decoy duplicate S071 row inside a comment (G3 ignores it, the census does not): target=G7 failing=G7 fixed=6/7
+probe P1 whole-file citation range 1-N on a true quote: ACCEPTED (counter blind) failing=- fixed=7/7
+probe P2 used-by = entry path + '.bak' suffix: ACCEPTED (counter blind) failing=- fixed=7/7
+probe P3 F27 sources cell says S001 not S071: ACCEPTED (counter blind) failing=- fixed=7/7
+probe P4 a base knowledge file replaced by a DIRECTORY named *.md: ACCEPTED (counter blind) failing=- fixed=7/7
+probe P5 a base knowledge file emptied (names intact): ACCEPTED (counter blind) failing=- fixed=7/7
+probe P6 xref line valid but unrelated (:20): ACCEPTED (counter blind) failing=- fixed=7/7
+probe P7 required heading only inside an HTML comment: rejected failing=G2 fixed=6/7
+probe P8 fabricated quote in single curly marks, uncited: ACCEPTED (counter blind) failing=- fixed=7/7
+probe P9 fabricated quote in straight marks, uncited: ACCEPTED (counter blind) failing=- fixed=7/7
+probe P10 stray unbalanced opening curly mark: ACCEPTED (counter blind) failing=- fixed=7/7
+probe P11 uncited curly span inside an HTML comment: rejected failing=G5 fixed=6/7
+probe P12 table of six junk 3-column rows, spans moved to bullets: ACCEPTED (counter blind) failing=- fixed=7/7
+probe P13 span citation followed by an S072 citation: ACCEPTED (counter blind) failing=- fixed=7/7
+probe P14 junk HTML comment after a citation: ACCEPTED (counter blind) failing=- fixed=7/7
+probes accepted=12/14 (informational, not counted)
+selftest cases=115 failures=0
+exit=0
+## counting commands (CORPUS.md rules)
+base SOURCES rows: 70  knowledge: 63
+tip SOURCES rows: 72  knowledge: 64
+## census, recheck, binding, density (tip export; census on the tip SOURCES.md)
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /fast/scratch/hyaku/kasegi-r45/L1/fm/tip/corpus/SOURCES.md
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r45/L1/fm/tip/corpus/SOURCES.md
+exit=0
+$ python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-45/manifest.json --source S071
+S071:sha256 OK
+S071:Q1 OK normalized=markup-whitespace occurrences=1 anchor=310-ok
+S071:Q10 OK normalized=markup-whitespace occurrences=1 anchor=39-ok
+S071:Q11 OK normalized=markup-whitespace occurrences=1 anchor=41-ok
+S071:Q12 OK normalized=markup-whitespace occurrences=1 anchor=92-ok
+S071:Q13 OK occurrences=1 anchor=96-ok
+S071:Q14 OK occurrences=1 anchor=99-ok
+S071:Q15 OK normalized=markup-whitespace occurrences=1 anchor=210-ok
+S071:Q16 OK occurrences=1 anchor=257-ok
+S071:Q17 OK normalized=markup-whitespace occurrences=1 anchor=271-ok
+S071:Q18 OK normalized=markup-whitespace occurrences=1 anchor=272-ok
+S071:Q19 OK normalized=markup-whitespace occurrences=1 anchor=275-ok
+S071:Q2 OK normalized=markup-whitespace occurrences=1 anchor=95-ok
+S071:Q20 OK occurrences=1 anchor=305-ok
+S071:Q21 OK normalized=markup-whitespace occurrences=1 anchor=305-ok
+S071:Q22 OK normalized=markup-whitespace occurrences=1 anchor=309-ok
+S071:Q23 OK occurrences=1 anchor=312-ok
+S071:Q24 OK normalized=markup-whitespace occurrences=1 anchor=313-ok
+S071:Q25 OK normalized=markup-whitespace occurrences=1 anchor=208-ok
+S071:Q26 OK normalized=markup-whitespace occurrences=1 anchor=333-ok
+S071:Q27 OK occurrences=1 anchor=201-ok
+S071:Q28 OK normalized=markup-whitespace occurrences=1 anchor=371-ok
+S071:Q29 OK occurrences=1 anchor=117-ok
+S071:Q3 OK normalized=markup-whitespace occurrences=1 anchor=39-ok
+S071:Q30 OK occurrences=1 anchor=332-ok
+S071:Q4 OK normalized=markup-whitespace occurrences=1 anchor=41-ok
+S071:Q5 OK normalized=markup-whitespace occurrences=1 anchor=20-ok
+S071:Q6 OK normalized=markup-whitespace occurrences=1 anchor=17-ok
+S071:Q7 OK normalized=markup-whitespace occurrences=1 anchor=21-ok
+S071:Q8 OK normalized=markup-whitespace occurrences=1 anchor=22-ok
+S071:Q9 OK normalized=markup-whitespace occurrences=1 anchor=23-ok
+exit=0
+$ python3 -B corpus/instruments/source-recheck.py --manifest .ufo/waves/round-45/source-recon/S072.manifest.json --source S072
+S072:sha256 OK
+S072:Q1 OK normalized=markup-whitespace occurrences=1 anchor=148-ok
+S072:Q2 OK normalized=markup-whitespace occurrences=1 anchor=2-ok
+exit=0
+$ python3 -B corpus/instruments/capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r45/L1/fm/tip
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-42 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-43 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-44 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-45 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=59 with_url=59 with_fetched_utc=21 with_archival=38 snapshot_dirs=21 manifest_dirs=21 missing_manifest=0 multi_row_url=3 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+records=59 bound=59 unbound=0
+exit=0
+$ python3 -B corpus/instruments/frontier-recheck-count.py --root /fast/scratch/hyaku/kasegi-r45/L1/fm/tip
+FRONTIER-CENSUS rows=27 admitted=27 closed=27 problem-rows=0 registry=72
+FRONTIER-PASS F01 ids=S001,S002
+FRONTIER-PASS F02 ids=S003,S004,S005
+FRONTIER-PASS F03 ids=S006,S007,S008
+FRONTIER-PASS F04 ids=S009,S010,S011,S012
+FRONTIER-PASS F05 ids=S013,S014,S015
+FRONTIER-PASS F06 ids=S018
+FRONTIER-PASS F07 ids=S031
+FRONTIER-PASS F08 ids=S029
+FRONTIER-PASS F09 ids=S032,S033,S034,S035
+FRONTIER-PASS F10 ids=S036,S037,S038,S039,S040
+FRONTIER-PASS F11 ids=S041
+FRONTIER-PASS F12 ids=S041,S042
+FRONTIER-PASS F13 ids=S043,S044,S045
+FRONTIER-PASS F14 ids=S041,S046,S047
+FRONTIER-PASS F15 ids=S048
+FRONTIER-PASS F16 ids=S049,S050
+FRONTIER-PASS F17 ids=S051
+FRONTIER-PASS F18 ids=S052
+FRONTIER-PASS F19 ids=S053
+FRONTIER-PASS F20 ids=S054
+FRONTIER-PASS F21 ids=S055
+FRONTIER-PASS F22 ids=S057
+FRONTIER-PASS F23 ids=S060
+FRONTIER-PASS F24 ids=S063
+FRONTIER-PASS F25 ids=S064
+FRONTIER-PASS F26 ids=S069
+FRONTIER-PASS F27 ids=S071
+PASS     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=0   
+PASS     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=0   
+PASS     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=0   
+PASS     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=0   
+PASS     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=0   
+PASS     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=0   
+PASS     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=0   
+PASS     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=0   
+PASS     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=0   
+PASS     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=0   
+PASS     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=0   
+PASS     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=0   
+PASS     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=0   
+PASS     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=0   
+PASS     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=0   
+PASS     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=0   
+PASS     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=0   
+PASS     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=0   
+PASS     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=0   
+PASS     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=0   
+PASS     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=0   
+PASS     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=0   
+PASS     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=0   
+PASS     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=0   
+PASS     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=0   
+PASS     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=0   
+PASS     F25  knowledge/cve-json-record-format.md                  ids=S064           exit=0   
+PASS     F26  knowledge/google-cloud-vrp-customer-resource-boundary.md ids=S069           exit=0   
+PASS     F27  corpus/knowledge/linux-kernel-security-bugs-reporting-process.md ids=S071           exit=0   
+entries=30 pass=30 exit=0
+exit=0
+$ python3 -B corpus/instruments/density.py SKILL.md --label r45final
+# Density census — r45final (1155 lines, 32 blocks)
+# ev = path-cites + concrete-tbl-rows + numerics + signatures; dens = ev*100/nb
+# num: unique numeric tokens (no bare years, no letter-adjacent fragments, no
+#      enumeration markers, no date/time stamps; letter-free code spans count);
+# sig: unique ALL-CAPS parts >=5 chars incl. non-path-like code spans, minus
+#      GENERIC_SIG (full rules: see density.py docstring)
+
+| # | block | lines | nb | cites | tbl | num | sig | ev | dens |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | Pipeline (observed, not invented) | 18 | 15 | 1 | 0 | 0 | 1 | 2 | 13.3 |
+| 2 | Program-rule checklist (step 1 of any mission) | 70 | 65 | 22 | 0 | 44 | 0 | 66 | 101.5 |
+| 3 | Policy access playbook (fleet-learned) | 10 | 8 | 24 | 5 | 8 | 0 | 37 | 462.5 |
+| 4 | Finding-triage decision table | 37 | 32 | 24 | 7 | 15 | 4 | 50 | 156.2 |
+| 5 | Intake surface — the map is decorative, ingestion is hidden | 51 | 47 | 15 | 0 | 30 | 4 | 49 | 104.3 |
+| 6 | Mission ledger & audit store | 27 | 24 | 21 | 0 | 16 | 6 | 43 | 179.2 |
+| 7 | Mission control plane | 28 | 26 | 17 | 0 | 14 | 2 | 33 | 126.9 |
+| 8 | UFO runtime workspaces — the untracked `.ufo/` layer + `.omp/` | 42 | 38 | 25 | 0 | 30 | 4 | 59 | 155.3 |
+| 9 | Ops integrity layer — invariants, intake, finalize | 130 | 122 | 103 | 0 | 20 | 14 | 137 | 112.3 |
+| 10 | VDP disclosure packages (sibling format) | 26 | 23 | 18 | 0 | 8 | 1 | 27 | 117.4 |
+| 11 | Retirement lane — autopsies & the detail regex | 62 | 57 | 30 | 0 | 19 | 4 | 53 | 93.0 |
+| 12 | Evidence-package anatomy | 28 | 24 | 20 | 6 | 13 | 3 | 42 | 175.0 |
+| 13 | Disclosure anti-patterns (all observed in fleet wrap review) | 115 | 110 | 68 | 10 | 47 | 3 | 128 | 116.4 |
+| 14 | Claim-hardening wave — the defect layer above the gates | 35 | 30 | 22 | 10 | 21 | 9 | 62 | 206.7 |
+| 15 | Submitted-state registry — the do-not-refile set | 50 | 46 | 25 | 0 | 20 | 5 | 50 | 108.7 |
+| 16 | Operator queue — live audit | 40 | 36 | 18 | 0 | 16 | 1 | 35 | 97.2 |
+| 17 | Triage economics | 172 | 156 | 126 | 18 | 46 | 15 | 205 | 131.4 |
+| 18 | Gates & probes registry | 9 | 6 | 1 | 2 | 4 | 7 | 14 | 233.3 |
+| 19 | Cited paths (verified 2026-09-28 against the then-live tree; round-13 full-set re-audit 705/708 resolved — **and as of round 15 the `~/Projects/bounties` root itself is gone**, so every path below is `[lost-tree]`; **round-19 re-census (2026-10-14): the mirror and origin-work roots that used to carry the exceptions are also gone**, so there are no live exceptions left — the previous clause "unless it has a mirror equivalent in `~/Projects/the-bounty-hunter` or lives under `~/Projects/origin-work/open-bug-bounties`" is historical. Resolvability is measured, not assumed: `corpus/instruments/resolve.py`, census of record `corpus/instruments/citation-survival.md` — SKILL.md 47/289 = 16.26 % before the round-15 re-anchor, 222/486 = 45.68 % at round-15 close, re-censused at round 19; this header is itself inside the measured file, so the figure is a fixed point only to ±1 token) | 38 | 36 | 66 | 0 | 41 | 6 | 113 | 313.9 |
+| 20 | Frontier decision table (round 22) | 13 | 10 | 10 | 5 | 3 | 2 | 20 | 200.0 |
+| 21 | Round-29 Gates & probes registry addition (appended 2026-10-25) | 8 | 5 | 1 | 1 | 5 | 7 | 14 | 280.0 |
+| 22 | Round-29 frontier note (appended 2026-10-25) | 5 | 2 | 2 | 0 | 1 | 1 | 4 | 200.0 |
+| 23 | Round-30 Gates & probes registry addition (appended 2026-10-25) | 10 | 6 | 3 | 2 | 6 | 4 | 15 | 250.0 |
+| 24 | Round-31 Gates & probes registry addition (appended 2026-10-25) | 13 | 8 | 27 | 2 | 18 | 6 | 53 | 662.5 |
+| 25 | Round-33 Gates & probes registry addition (appended 2026-10-26) | 21 | 13 | 23 | 1 | 25 | 6 | 55 | 423.1 |
+| 26 | Round-35 Gates & probes registry addition (appended 2026-10-26) | 13 | 8 | 31 | 2 | 14 | 10 | 57 | 712.5 |
+| 27 | Round-36 Gates & probes registry addition (appended 2026-10-26) | 11 | 9 | 29 | 6 | 12 | 2 | 49 | 544.4 |
+| 28 | Round-40 Gates & probes registry addition (appended 2026-10-26) | 6 | 4 | 3 | 1 | 6 | 0 | 10 | 250.0 |
+| 29 | Round-41 Gates & probes registry addition (appended 2026-10-27) | 6 | 4 | 3 | 1 | 6 | 0 | 10 | 250.0 |
+| 30 | Round-42 Gates & probes registry addition (appended 2026-10-28) | 6 | 4 | 4 | 1 | 4 | 1 | 10 | 250.0 |
+| 31 | Round-44 Gates & probes registry correction — round-43 instrument basenames (appended 2026-10-28) | 10 | 6 | 11 | 2 | 5 | 2 | 20 | 333.3 |
+| 32 | Round-45 Gates & probes registry addition (appended 2026-10-28) | 10 | 9 | 23 | 6 | 12 | 14 | 55 | 611.1 |
+| | **mean dens** | | | | | | | | **249.1** |
+
+Total path-citation instances: 816 across 32 blocks.
+exit=0
+$ python3 -B corpus/instruments/density.py SKILL.md --label r45base
+# Density census — r45base (1144 lines, 31 blocks)
+# ev = path-cites + concrete-tbl-rows + numerics + signatures; dens = ev*100/nb
+# num: unique numeric tokens (no bare years, no letter-adjacent fragments, no
+#      enumeration markers, no date/time stamps; letter-free code spans count);
+# sig: unique ALL-CAPS parts >=5 chars incl. non-path-like code spans, minus
+#      GENERIC_SIG (full rules: see density.py docstring)
+
+| # | block | lines | nb | cites | tbl | num | sig | ev | dens |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | Pipeline (observed, not invented) | 18 | 15 | 1 | 0 | 0 | 1 | 2 | 13.3 |
+| 2 | Program-rule checklist (step 1 of any mission) | 70 | 65 | 22 | 0 | 44 | 0 | 66 | 101.5 |
+| 3 | Policy access playbook (fleet-learned) | 10 | 8 | 24 | 5 | 8 | 0 | 37 | 462.5 |
+| 4 | Finding-triage decision table | 37 | 32 | 24 | 7 | 15 | 4 | 50 | 156.2 |
+| 5 | Intake surface — the map is decorative, ingestion is hidden | 51 | 47 | 15 | 0 | 30 | 4 | 49 | 104.3 |
+| 6 | Mission ledger & audit store | 27 | 24 | 21 | 0 | 16 | 6 | 43 | 179.2 |
+| 7 | Mission control plane | 28 | 26 | 17 | 0 | 14 | 2 | 33 | 126.9 |
+| 8 | UFO runtime workspaces — the untracked `.ufo/` layer + `.omp/` | 42 | 38 | 25 | 0 | 30 | 4 | 59 | 155.3 |
+| 9 | Ops integrity layer — invariants, intake, finalize | 130 | 122 | 103 | 0 | 20 | 14 | 137 | 112.3 |
+| 10 | VDP disclosure packages (sibling format) | 26 | 23 | 18 | 0 | 8 | 1 | 27 | 117.4 |
+| 11 | Retirement lane — autopsies & the detail regex | 62 | 57 | 30 | 0 | 19 | 4 | 53 | 93.0 |
+| 12 | Evidence-package anatomy | 28 | 24 | 20 | 6 | 13 | 3 | 42 | 175.0 |
+| 13 | Disclosure anti-patterns (all observed in fleet wrap review) | 115 | 110 | 68 | 10 | 47 | 3 | 128 | 116.4 |
+| 14 | Claim-hardening wave — the defect layer above the gates | 35 | 30 | 22 | 10 | 21 | 9 | 62 | 206.7 |
+| 15 | Submitted-state registry — the do-not-refile set | 50 | 46 | 25 | 0 | 20 | 5 | 50 | 108.7 |
+| 16 | Operator queue — live audit | 40 | 36 | 18 | 0 | 16 | 1 | 35 | 97.2 |
+| 17 | Triage economics | 172 | 156 | 126 | 18 | 46 | 15 | 205 | 131.4 |
+| 18 | Gates & probes registry | 9 | 6 | 1 | 2 | 4 | 7 | 14 | 233.3 |
+| 19 | Cited paths (verified 2026-09-28 against the then-live tree; round-13 full-set re-audit 705/708 resolved — **and as of round 15 the `~/Projects/bounties` root itself is gone**, so every path below is `[lost-tree]`; **round-19 re-census (2026-10-14): the mirror and origin-work roots that used to carry the exceptions are also gone**, so there are no live exceptions left — the previous clause "unless it has a mirror equivalent in `~/Projects/the-bounty-hunter` or lives under `~/Projects/origin-work/open-bug-bounties`" is historical. Resolvability is measured, not assumed: `corpus/instruments/resolve.py`, census of record `corpus/instruments/citation-survival.md` — SKILL.md 47/289 = 16.26 % before the round-15 re-anchor, 222/486 = 45.68 % at round-15 close, re-censused at round 19; this header is itself inside the measured file, so the figure is a fixed point only to ±1 token) | 38 | 36 | 66 | 0 | 41 | 6 | 113 | 313.9 |
+| 20 | Frontier decision table (round 22) | 13 | 10 | 10 | 5 | 3 | 2 | 20 | 200.0 |
+| 21 | Round-29 Gates & probes registry addition (appended 2026-10-25) | 8 | 5 | 1 | 1 | 5 | 7 | 14 | 280.0 |
+| 22 | Round-29 frontier note (appended 2026-10-25) | 5 | 2 | 2 | 0 | 1 | 1 | 4 | 200.0 |
+| 23 | Round-30 Gates & probes registry addition (appended 2026-10-25) | 10 | 6 | 3 | 2 | 6 | 4 | 15 | 250.0 |
+| 24 | Round-31 Gates & probes registry addition (appended 2026-10-25) | 13 | 8 | 27 | 2 | 18 | 6 | 53 | 662.5 |
+| 25 | Round-33 Gates & probes registry addition (appended 2026-10-26) | 21 | 13 | 23 | 1 | 25 | 6 | 55 | 423.1 |
+| 26 | Round-35 Gates & probes registry addition (appended 2026-10-26) | 13 | 8 | 31 | 2 | 14 | 10 | 57 | 712.5 |
+| 27 | Round-36 Gates & probes registry addition (appended 2026-10-26) | 11 | 9 | 29 | 6 | 12 | 2 | 49 | 544.4 |
+| 28 | Round-40 Gates & probes registry addition (appended 2026-10-26) | 6 | 4 | 3 | 1 | 6 | 0 | 10 | 250.0 |
+| 29 | Round-41 Gates & probes registry addition (appended 2026-10-27) | 6 | 4 | 3 | 1 | 6 | 0 | 10 | 250.0 |
+| 30 | Round-42 Gates & probes registry addition (appended 2026-10-28) | 6 | 4 | 4 | 1 | 4 | 1 | 10 | 250.0 |
+| 31 | Round-44 Gates & probes registry correction — round-43 instrument basenames (appended 2026-10-28) | 9 | 6 | 11 | 2 | 5 | 2 | 20 | 333.3 |
+| | **mean dens** | | | | | | | | **237.4** |
+
+Total path-citation instances: 793 across 31 blocks.
+exit=0
+$ python3 -B corpus/instruments/anchorcheck.py SKILL.md
+
+== SKILL.md: 16 in-range cite instances, 0 bad; 16 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+LOST-RECORDED md:57 [lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:1-57 (not checked)
+LOST-RECORDED md:78 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15 (not checked)
+LOST-RECORDED md:79 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:34-35 (not checked)
+LOST-RECORDED md:83 [lost-tree] evidence/hackerone-starbucks-japan/scope-snapshot.json:112-118 (not checked)
+LOST-RECORDED md:85 [lost-tree] evidence/sherlock-106/scope-snapshot.json:12-15 (not checked)
+LOST-RECORDED md:89 [lost-tree] claims/bugcrowd-opus-guard-market/honest-zero/evidence/scope-snapshot.json:24 (not checked)
+LOST-RECORDED md:102 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:18 (not checked)
+LOST-RECORDED md:103 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:9 (not checked)
+LOST-RECORDED md:104 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:27-28 (not checked)
+LOST-RECORDED md:105 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:52 (not checked)
+LOST-RECORDED md:106 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:18 (not checked)
+LOST-RECORDED md:107 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:36 (not checked)
+LOST-RECORDED md:108 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:33 (not checked)
+LOST-RECORDED md:109 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:31 (not checked)
+LOST-RECORDED md:111 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:19-20 (not checked)
+LOST-RECORDED md:113 [lost-tree] claims/cantina-pendle/ingestion-20260915/provenance.json:27-31 (not checked)
+LOST-RECORDED md:115 [lost-tree] claims/hackerone-wordpress/honest-zero-wp-cli/provenance.json:8 (not checked)
+LOST-RECORDED md:117 [lost-tree] claims/hackerone-anthropic/honest-zero-claude-code/provenance.json:29 (not checked)
+LOST-RECORDED md:119 [lost-tree] claims/hackerone-airtable/honest-zero-mcp-cli/provenance.json:32 (not checked)
+OK md:120 corpus/knowledge/program-quirks.md:10  [- **$100 submission deposit** — the claimability gate is a read-only]
+LOST-RECORDED md:128 [lost-tree] docs/autopsies/hackerone-figma.md:6 (not checked)
+LOST-RECORDED md:128 [lost-tree] evidence/paypal-bug-bounty/provenance.json:27 (not checked)
+LOST-RECORDED md:128 [lost-tree] evidence/hackerone-1password/fetch-evidence/graphql-request-20260905T165623Z.json:2 (not checked)
+LOST-RECORDED md:129 [lost-tree] evidence/bugcrowd-barracuda/scope-snapshot.json:11 (not checked)
+LOST-RECORDED md:129 [lost-tree] evidence/bugcrowd-barracuda/scope-snapshot.json:42 (not checked)
+LOST-RECORDED md:129 [lost-tree] evidence/bugcrowd-asana/scope-snapshot.json:12 (not checked)
+LOST-RECORDED md:129 [lost-tree] docs/autopsies/bugcrowd-openai.md:6 (not checked)
+LOST-RECORDED md:129 [lost-tree] docs/autopsies/bugcrowd-spacex.md:6 (not checked)
+LOST-RECORDED md:129 [lost-tree] docs/autopsies/bugcrowd-blofin-crypto-mbb-og.md:6 (not checked)
+LOST-RECORDED md:129 [lost-tree] docs/continuation-notes.md:50 (not checked)
+LOST-RECORDED md:129 [lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:54 (not checked)
+LOST-RECORDED md:130 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:9 (not checked)
+LOST-RECORDED md:130 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:37 (not checked)
+LOST-RECORDED md:130 [lost-tree] claims/cantina-pendle/ingestion-20260915/provenance.json:32-33 (not checked)
+LOST-RECORDED md:130 [lost-tree] claims/hackenproof-atomone/honest-zero-atomone/provenance.json:36 (not checked)
+LOST-RECORDED md:130 [lost-tree] .ufo/bounty-fleet/ledger/telemetry.jsonl:181 (not checked)
+LOST-RECORDED md:131 [lost-tree] evidence/bugcrowd-asana/scope-snapshot.json:12 (not checked)
+LOST-RECORDED md:131 [lost-tree] evidence/bugcrowd-barracuda/scope-snapshot.json:45 (not checked)
+LOST-RECORDED md:132 [lost-tree] docs/autopsies/hackerone-six-group.md:6 (not checked)
+OK md:132 corpus/knowledge/policy-access-playbook.md:13  [| Terms-gated policy | SIX Group: reading Program Rules requires terms acceptance | Terms acceptance]
+LOST-RECORDED md:141 [lost-tree] claims/intigriti-yahoo/ingestion-20260914/status.json:2 (not checked)
+LOST-RECORDED md:141 [lost-tree] claims/intigriti-yahoo/ingestion-20260914/status.json:11 (not checked)
+LOST-RECORDED md:323 [lost-base] ops/shared.mjs:7 (not checked)
+LOST-RECORDED md:324 [lost-base] ops/validate.mjs:56 (not checked)
+LOST-RECORDED md:325 [lost-base] ops/shared.mjs:8 (not checked)
+LOST-RECORDED md:327 [lost-base] ops/validate.mjs:28 (not checked)
+LOST-RECORDED md:329 [lost-base] ops/shared.mjs:11 (not checked)
+LOST-RECORDED md:331 [lost-base] ops/shared.mjs:25-31 (not checked)
+LOST-RECORDED md:333 [lost-base] ops/shared.mjs:33-34 (not checked)
+LOST-RECORDED md:334 [lost-base] ops/shared.mjs:38 (not checked)
+LOST-RECORDED md:335 [lost-base] ops/shared.mjs:39 (not checked)
+LOST-RECORDED md:338 [lost-tree] ops/shared.mjs:55 (not checked)
+OK md:338 corpus/knowledge/ops-invariants.md:24  [| `gitMutationBlocker` | fail-closed preflight | refuses when rebase-merge/rebase-apply/MERGE_HEAD/C]
+LOST-RECORDED md:341 [lost-base] ops/shared.mjs:13-22 (not checked)
+LOST-RECORDED md:346 [lost-base] ops/shared.mjs:36-41 (not checked)
+LOST-RECORDED md:358 [lost-base] ops/validate.mjs:27 (not checked)
+LOST-RECORDED md:359 [lost-base] ops/validate.mjs:118 (not checked)
+LOST-RECORDED md:360 [lost-base] ops/validate.mjs:119 (not checked)
+LOST-RECORDED md:361 [lost-base] ops/validate.mjs:120-121 (not checked)
+LOST-RECORDED md:362 [lost-base] ops/validate.mjs:63-65 (not checked)
+LOST-RECORDED md:364 [lost-base] ops/validate.mjs:72-73 (not checked)
+LOST-RECORDED md:365 [lost-base] ops/validate.mjs:82 (not checked)
+LOST-RECORDED md:367 [lost-base] ops/validate.mjs:125-130 (not checked)
+LOST-RECORDED md:370 [lost-base] ops/registry-check.mjs:57-80 (not checked)
+LOST-RECORDED md:371 [lost-base] ops/registry-check.mjs:70-72 (not checked)
+LOST-RECORDED md:373 [lost-base] ops/registry-check.mjs:82-108 (not checked)
+LOST-RECORDED md:374 [lost-base] ops/registry-check.mjs:117-118 (not checked)
+LOST-RECORDED md:376 [lost-base] ops/registry-check.mjs:121-122 (not checked)
+LOST-RECORDED md:377 [lost-base] ops/registry-check.mjs:134-157 (not checked)
+LOST-RECORDED md:378 [lost-base] ops/registry-check.mjs:159-170 (not checked)
+LOST-RECORDED md:379 [lost-base] ops/registry-check.mjs:34-43 (not checked)
+LOST-RECORDED md:380 [lost-base] ops/registry-check.mjs:190 (not checked)
+LOST-RECORDED md:382 [lost-base] ops/reroute-drill.mjs:2-3 (not checked)
+LOST-RECORDED md:383 [lost-base] ops/reroute-drill.mjs:20 (not checked)
+LOST-RECORDED md:384 [lost-base] ops/reroute-drill.mjs:44-57 (not checked)
+LOST-RECORDED md:385 [lost-base] ops/reroute-drill.mjs:60 (not checked)
+LOST-RECORDED md:386 [lost-base] ops/reroute-drill.mjs:63-69 (not checked)
+LOST-RECORDED md:389 [lost-base] ops/check-freshness.mjs:15 (not checked)
+LOST-RECORDED md:391 [lost-base] ops/check-freshness.mjs:43 (not checked)
+LOST-RECORDED md:392 [lost-base] ops/check-freshness.mjs:50 (not checked)
+LOST-RECORDED md:393 [lost-base] ops/check-freshness.mjs:59 (not checked)
+LOST-RECORDED md:394 [lost-base] ops/check-freshness.mjs:61 (not checked)
+LOST-RECORDED md:397 [lost-base] ops/check-freshness.mjs:14 (not checked)
+LOST-RECORDED md:408 [lost-base] ops/import-board.mjs:132 (not checked)
+LOST-RECORDED md:414 [lost-base] ops/finalize-all.mjs:25 (not checked)
+OK md:416 corpus/knowledge/intake-and-finalize.md:78-92  [For every `claims/<id>/<slug>/status.json` it then: ⏎  ⏎ 1. **Filters**: skip `state !== 'DONE'`; skip verdict matching ⏎ `/not.claimable/i` (review-overturned); skip any `disposition` field ⏎ (held/shelved by decree); skip `submission_state === 'DISCLOSED_FREE'` ⏎ (VDP freebies are never claim-ready). ⏎ 2. **Re-validates**: fresh `~/Projects/the-bounty-hunter/ops/claim-check.mjs` run per package; nonze ⏎ `claim_rejected` telemetry (stdout tail 300 chars), `rejected++`. ⏎ 3. **Commits**: `git add` the package; if staged diff non-empty → ⏎ `commit -m "claim(<id>): accept <slug>"`; if clean → reuse last commit ⏎ touching the path. No commit containing the bytes → `claim_commit_failed`. ⏎ 4. **Byte-proofs the tag target**: `git diff --quiet <sha> -- <pkg>` must be ⏎ clean — the tag must point at bytes equal to what's on disk. ⏎ 5. **Tags**: `claim-ready/<id>/<slug>`. Existing tag on the SAME sha → reuse; ⏎ existing tag on a DIFFERENT sha → `claim_tag_conflict`, rejected, never]
+LOST-RECORDED md:420 [lost-base] ops/sighting.sh:8 (not checked)
+LOST-RECORDED md:421 [lost-base] ops/sighting.sh:17 (not checked)
+LOST-RECORDED md:422 [lost-base] ops/sighting.sh:24 (not checked)
+LOST-RECORDED md:430 [lost-base] ops/ev-report.mjs:21 (not checked)
+LOST-RECORDED md:430 [lost-base] ops/rank.mjs:43 (not checked)
+LOST-RECORDED md:430 [lost-base] ops/fleet-dispatch.mjs:21 (not checked)
+LOST-RECORDED md:431 [lost-base] ops/park-disposition.mjs:12 (not checked)
+LOST-RECORDED md:431 [lost-base] ops/import-board.mjs:30 (not checked)
+LOST-RECORDED md:432 [lost-base] ops/finalize-all.mjs:11 (not checked)
+LOST-RECORDED md:432 [lost-base] ops/validate.mjs:18 (not checked)
+LOST-RECORDED md:432 [lost-base] ops/registry-check.mjs:12 (not checked)
+LOST-RECORDED md:433 [lost-base] ops/check-freshness.mjs:12 (not checked)
+LOST-RECORDED md:433 [lost-base] ops/claim-index.mjs:11 (not checked)
+LOST-RECORDED md:434 [lost-base] ops/reroute-drill.mjs:10 (not checked)
+LOST-RECORDED md:437 [lost-base] ops/rank.mjs:140 (not checked)
+LOST-RECORDED md:437 [lost-base] ops/rank.mjs:203 (not checked)
+LOST-RECORDED md:438 [lost-base] ops/rank.mjs:222 (not checked)
+LOST-RECORDED md:438 [lost-base] ops/shared.mjs:39 (not checked)
+LOST-RECORDED md:438 [lost-base] ops/park-disposition.mjs:43 (not checked)
+LOST-RECORDED md:439 [lost-base] ops/park-disposition.mjs:53 (not checked)
+LOST-RECORDED md:442 [lost-base] ops/ev-report.mjs:17 (not checked)
+LOST-RECORDED md:466 [lost-base] fleets/mission-template.md:50 (not checked)
+LOST-RECORDED md:466 [lost-base] docs/genesis-plan.md:15 (not checked)
+LOST-RECORDED md:467 [lost-base] docs/genesis-plan.md:17 (not checked)
+LOST-RECORDED md:468 [lost-base] .omp/agents/scope-evidence-custodian.md:83 (not checked)
+LOST-RECORDED md:469 [lost-base] .omp/agents/the-bounty-hunter.md:28 (not checked)
+LOST-RECORDED md:470 [lost-base] ops/finalize-all.mjs:20 (not checked)
+LOST-RECORDED md:478 [lost-base] ops/park-disposition.mjs:14 (not checked)
+LOST-RECORDED md:479 [lost-base] ops/park-disposition.mjs:41 (not checked)
+LOST-RECORDED md:481 [lost-base] ops/park-disposition.mjs:13 (not checked)
+LOST-RECORDED md:482 [lost-base] ops/park-disposition.mjs:23-25 (not checked)
+LOST-RECORDED md:483 [lost-base] ops/park-disposition.mjs:28-32 (not checked)
+LOST-RECORDED md:484 [lost-base] ops/park-disposition.mjs:21 (not checked)
+LOST-RECORDED md:487 [lost-base] ops/park-disposition.mjs:18 (not checked)
+LOST-RECORDED md:494 [lost-base] ops/park-disposition.mjs:19 (not checked)
+LOST-RECORDED md:495 [lost-base] ops/park-disposition.mjs:32 (not checked)
+LOST-RECORDED md:496 [lost-base] ops/park-disposition.mjs:36-39 (not checked)
+LOST-RECORDED md:500 [lost-base] ops/park-disposition.mjs:45-49 (not checked)
+LOST-RECORDED md:501 [lost-base] ops/park-disposition.mjs:52 (not checked)
+LOST-RECORDED md:502 [lost-base] ops/park-disposition.mjs:43 (not checked)
+LOST-RECORDED md:505 [lost-base] ops/park-disposition.mjs:56 (not checked)
+LOST-RECORDED md:508 [lost-base] ops/park-disposition.mjs:61-65 (not checked)
+LOST-RECORDED md:509 [lost-base] ops/park-disposition.mjs:67-70 (not checked)
+LOST-RECORDED md:510 [lost-base] ops/park-disposition.mjs:72-73 (not checked)
+LOST-RECORDED md:512 [lost-base] ops/park-disposition.mjs:75-77 (not checked)
+LOST-RECORDED md:513 [lost-base] ops/park-disposition.mjs:78 (not checked)
+LOST-RECORDED md:516 [lost-base] ops/park-disposition.mjs:70 (not checked)
+LOST-RECORDED md:524 [lost-base] ops/park-disposition.mjs:18-21 (not checked)
+LOST-RECORDED md:533 [lost-base] ops/park-disposition.mjs:62-65 (not checked)
+LOST-RECORDED md:534 [lost-base] ops/park-disposition.mjs:59 (not checked)
+LOST-RECORDED md:580 [lost-tree] docs/wrap-report.md:93 (not checked)
+LOST-RECORDED md:581 [lost-tree] fleets/claimer-mission.md:22 (not checked)
+LOST-RECORDED md:581 [lost-tree] fleets/claimer-mission.md:29 (not checked)
+LOST-RECORDED md:582 [lost-tree] claims/mozilla-security-bounties/lando-diff-warning-missing-authz/report.md:79-82 (not checked)
+LOST-RECORDED md:583 [lost-tree] claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:35 (not checked)
+LOST-RECORDED md:584 [lost-tree] docs/claim-ready-index.md:32-38 (not checked)
+LOST-RECORDED md:584 [lost-tree] ops/claim-index.mjs:4 (not checked)
+LOST-RECORDED md:585 [lost-tree] claims/bugcrowd-seek/honest-zero/submit/BLOCKED.md:17-20 (not checked)
+LOST-RECORDED md:586 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15 (not checked)
+LOST-RECORDED md:587 [lost-base] fleets/mission-template.md:20 (not checked)
+LOST-RECORDED md:587 [lost-tree] docs/continuation-notes.md:19 (not checked)
+LOST-RECORDED md:587 [lost-tree] docs/continuation-notes.md:26 (not checked)
+LOST-RECORDED md:588 [lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:4-5 (not checked)
+LOST-RECORDED md:588 [lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:21 (not checked)
+LOST-RECORDED md:588 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:2 (not checked)
+LOST-RECORDED md:588 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:5 (not checked)
+LOST-RECORDED md:588 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:21 (not checked)
+LOST-RECORDED md:589 [lost-tree] docs/claim-runbook.md:11-20 (not checked)
+LOST-RECORDED md:593 [lost-tree] docs/wrap-report.md:19 (not checked)
+LOST-RECORDED md:601 [lost-tree] fleets/claimer-mission.md:29 (not checked)
+LOST-RECORDED md:604 [lost-tree] docs/wrap-report.md:23 (not checked)
+LOST-RECORDED md:605 [lost-tree] fleets/claimer-mission.md:22 (not checked)
+LOST-RECORDED md:606 [lost-tree] claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:32 (not checked)
+LOST-RECORDED md:607 [lost-tree] docs/wrap-report.md:19 (not checked)
+LOST-RECORDED md:611 [lost-tree] docs/wrap-report.md:18 (not checked)
+LOST-RECORDED md:614 [lost-tree] claims/mozilla-security-bounties/lando-diff-warning-missing-authz/report.md:79-82 (not checked)
+LOST-RECORDED md:617 [lost-tree] docs/wrap-report.md:17 (not checked)
+LOST-RECORDED md:621 [lost-tree] claims/hackerone-airtable/airtable-js-record-id-path-traversal/claim_checklist.md:35 (not checked)
+LOST-RECORDED md:623 [lost-tree] docs/claim-runbook.md:3-5 (not checked)
+LOST-RECORDED md:624 [lost-tree] ops/claim-index.mjs:4 (not checked)
+LOST-RECORDED md:629 [lost-tree] docs/claim-ready-index.md:3 (not checked)
+LOST-RECORDED md:631 [lost-tree] docs/claim-ready-index.md:32-38 (not checked)
+LOST-RECORDED md:632 [lost-tree] docs/wrap-report.md:118 (not checked)
+LOST-RECORDED md:638 [lost-tree] claims/bugcrowd-seek/honest-zero/submit/BLOCKED.md:17-20 (not checked)
+LOST-RECORDED md:639 [lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:5 (not checked)
+LOST-RECORDED md:639 [lost-tree] claims/bugcrowd-seek/honest-zero/evidence/scope-snapshot.json:56 (not checked)
+LOST-RECORDED md:642 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:14-15 (not checked)
+LOST-RECORDED md:642 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:31 (not checked)
+LOST-RECORDED md:642 [lost-tree] claims/cantina-pendle/ingestion-20260915/INGESTION.md:34 (not checked)
+LOST-RECORDED md:643 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:34-35 (not checked)
+LOST-RECORDED md:645 [lost-base] fleets/mission-template.md:20 (not checked)
+LOST-RECORDED md:648 [lost-tree] fleets/ufo-archive-2026/missions/groknight-mentor/lane-connector.md:24 (not checked)
+LOST-RECORDED md:650 [lost-tree] docs/continuation-notes.md:19 (not checked)
+LOST-RECORDED md:650 [lost-tree] docs/continuation-notes.md:26 (not checked)
+LOST-RECORDED md:651 [lost-tree] docs/continuation-notes.md:20-22 (not checked)
+LOST-RECORDED md:655 [lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:4-5 (not checked)
+LOST-RECORDED md:656 [lost-tree] claims/cantina-pendle/ingestion-20260915/status.json:21 (not checked)
+LOST-RECORDED md:656 [lost-tree] claims/cantina-pendle/ingestion-20260915/claim_checklist.md:9-16 (not checked)
+LOST-RECORDED md:658 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:2 (not checked)
+LOST-RECORDED md:658 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:5 (not checked)
+LOST-RECORDED md:658 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:21 (not checked)
+LOST-RECORDED md:659 [lost-tree] docs/wrap-report.md:20 (not checked)
+LOST-RECORDED md:661 [lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:2 (not checked)
+LOST-RECORDED md:661 [lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:13 (not checked)
+LOST-RECORDED md:662 [lost-tree] docs/wrap-report.md:21 (not checked)
+LOST-RECORDED md:662 [lost-tree] docs/wrap-report.md:157 (not checked)
+LOST-RECORDED md:663 [lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:25 (not checked)
+LOST-RECORDED md:663 [lost-tree] claims/hackerone-wordpress/unchecked-aaaa-ssrf/status.json:48 (not checked)
+LOST-RECORDED md:669 [lost-tree] docs/claim-runbook.md:11-20 (not checked)
+LOST-RECORDED md:670 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:2 (not checked)
+LOST-RECORDED md:670 [lost-tree] claims/hackerone-3cx/sudo-nopasswd-argument-injection-root/status.json:5 (not checked)
+LOST-RECORDED md:674 [lost-tree] docs/wrap-report.md:99 (not checked)
+LOST-RECORDED md:695 [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/receipts/k8s-nodebound-token-impersonation.json:5-8 (not checked)
+LOST-RECORDED md:695 [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/submission-receipts.csv:2 (not checked)
+LOST-RECORDED md:695 [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/receipts/ld-node-stream-tls-bypass.json:5-6 (not checked)
+LOST-RECORDED md:695 [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/submission-receipts.csv:3 (not checked)
+LOST-RECORDED md:695 [lost-tree] fleets/run/portal-reconciliation-2026-09-11.json:9-11 (not checked)
+LOST-RECORDED md:695 [lost-base] ~/Projects/origin-work/open-bug-bounties/claim-packages/submission-review/queue.json:11-12 (not checked)
+OK md:696 corpus/knowledge/ufo-archive-2026.md:150-154  [14. Claims marked "verified" but never executed (coinbase vectors 3-4 + ⏎ path-form boundary); overclaims contradicted by the package's own ⏎ evidence (spacex "both resolvers" — DoH only; "unlimited requests" — ⏎ superhuman; "filed by Elastic" unevidenced; "documented multi-tenant ⏎ isolation" — code-comment only; "no live host contacted" class).]
+OK md:697 corpus/knowledge/ufo-archive-2026.md:145-149  [13. Stale file:line citations — the single most common narrative defect ⏎ (metamask :161→:162, elastic :604→:605 check + api.search.go range, ⏎ aiven README.rst:706 misattribution + stale witnesses, web3 cite ranges ⏎ narrower than function extents, superhuman steps, web1 READY.md ⏎ systematically stale line numbers).]
+LOST-RECORDED md:809 [lost-base] ops/ev-report.mjs:28-29 (not checked)
+LOST-RECORDED md:810 [lost-base] ops/ev-report.mjs:17 (not checked)
+LOST-RECORDED md:811 [lost-base] ops/ev-report.mjs:92 (not checked)
+OK md:821 corpus/knowledge/mission-control.md:3  [Source: `~/Projects/bounties/ops/fleet-dispatch.mjs` (read in full, 427]
+LOST-RECORDED md:835 [lost-base] ops/ev-report.mjs:77 (not checked)
+LOST-RECORDED md:837 [lost-base] ops/ev-report.mjs:73 (not checked)
+LOST-RECORDED md:837 [lost-base] ops/ev-report.mjs:78 (not checked)
+LOST-RECORDED md:838 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:839 [lost-base] ops/ev-report.mjs:74 (not checked)
+LOST-RECORDED md:839 [lost-base] ops/ev-report.mjs:82 (not checked)
+LOST-RECORDED md:840 [lost-base] ops/ev-report.mjs:86-89 (not checked)
+LOST-RECORDED md:840 [lost-base] ops/ev-report.mjs:46 (not checked)
+LOST-RECORDED md:843 [lost-base] ops/ev-report.mjs:47 (not checked)
+LOST-RECORDED md:847 [lost-base] ops/ev-report.mjs:47 (not checked)
+LOST-RECORDED md:848 [lost-base] ops/ev-report.mjs:91 (not checked)
+LOST-RECORDED md:850 [lost-base] ops/ev-report.mjs:91 (not checked)
+LOST-RECORDED md:851 [lost-base] ops/ev-report.mjs:92 (not checked)
+LOST-RECORDED md:852 [lost-base] ops/ev-report.mjs:23-26 (not checked)
+LOST-RECORDED md:853 [lost-base] ops/ev-report.mjs:30-33 (not checked)
+LOST-RECORDED md:854 [lost-base] ops/ev-report.mjs:38-41 (not checked)
+LOST-RECORDED md:854 [lost-base] ops/ev-report.mjs:43 (not checked)
+LOST-RECORDED md:861 [lost-base] ops/ev-report.mjs:70 (not checked)
+LOST-RECORDED md:862 [lost-base] ops/ev-report.mjs:50 (not checked)
+LOST-RECORDED md:863 [lost-base] ops/ev-report.mjs:65 (not checked)
+LOST-RECORDED md:864 [lost-base] ops/ev-report.mjs:59-70 (not checked)
+LOST-RECORDED md:865 [lost-base] ops/ev-report.mjs:69 (not checked)
+LOST-RECORDED md:873 [lost-base] ops/rank.mjs:55-59 (not checked)
+LOST-RECORDED md:873 [lost-base] ops/rank.mjs:56-58 (not checked)
+LOST-RECORDED md:877 [lost-base] ops/rank.mjs:63 (not checked)
+LOST-RECORDED md:878 [lost-base] ops/rank.mjs:66-77 (not checked)
+LOST-RECORDED md:879 [lost-base] ops/rank.mjs:92 (not checked)
+LOST-RECORDED md:879 [lost-base] ops/rank.mjs:118-119 (not checked)
+LOST-RECORDED md:880 [lost-base] ops/rank.mjs:104 (not checked)
+LOST-RECORDED md:881 [lost-base] bounty-map/schema.json:40 (not checked)
+LOST-RECORDED md:882 [lost-base] ops/ev-report.mjs:78 (not checked)
+LOST-RECORDED md:890 [lost-base] ops/rank.mjs:123 (not checked)
+LOST-RECORDED md:892 [lost-base] ops/fleet-dispatch.mjs:11 (not checked)
+LOST-RECORDED md:894 [lost-base] ops/fleet-dispatch.mjs:156 (not checked)
+LOST-RECORDED md:894 [lost-tree] ops/fleet-dispatch.mjs:204 (not checked)
+LOST-RECORDED md:898 [lost-base] ops/rank.mjs:46 (not checked)
+LOST-RECORDED md:899 [lost-base] ops/rank.mjs:48-49 (not checked)
+LOST-RECORDED md:900 [lost-base] ops/rank.mjs:161 (not checked)
+LOST-RECORDED md:900 [lost-base] ops/rank.mjs:163 (not checked)
+LOST-RECORDED md:902 [lost-base] ops/rank.mjs:53 (not checked)
+LOST-RECORDED md:902 [lost-base] ops/rank.mjs:140 (not checked)
+LOST-RECORDED md:903 [lost-base] ops/rank.mjs:141-142 (not checked)
+LOST-RECORDED md:909 [lost-base] ops/rank.mjs:178 (not checked)
+LOST-RECORDED md:910 [lost-base] ops/rank.mjs:179 (not checked)
+LOST-RECORDED md:918 [lost-base] ops/rank.mjs:216-219 (not checked)
+LOST-RECORDED md:920 [lost-base] ops/rank.mjs:223 (not checked)
+LOST-RECORDED md:920 [lost-base] ops/rank.mjs:229 (not checked)
+LOST-RECORDED md:923 [lost-base] ops/rank.mjs:231-235 (not checked)
+LOST-RECORDED md:923 [lost-base] ops/rank.mjs:241 (not checked)
+LOST-RECORDED md:924 [lost-base] ops/rank.mjs:214 (not checked)
+LOST-RECORDED md:929 [lost-base] ops/rank.mjs:92-96 (not checked)
+LOST-RECORDED md:930 [lost-base] ops/rank.mjs:105-108 (not checked)
+LOST-RECORDED md:931 [lost-base] ops/rank.mjs:151 (not checked)
+LOST-RECORDED md:931 [lost-base] ops/rank.mjs:164 (not checked)
+LOST-RECORDED md:932 [lost-base] ops/rank.mjs:164-165 (not checked)
+LOST-RECORDED md:932 [lost-base] ops/rank.mjs:247 (not checked)
+LOST-RECORDED md:933 [lost-base] ops/rank.mjs:185 (not checked)
+LOST-RECORDED md:933 [lost-base] ops/rank.mjs:175 (not checked)
+LOST-RECORDED md:934 [lost-base] ops/rank.mjs:200-204 (not checked)
+LOST-RECORDED md:935 [lost-base] ops/rank.mjs:209-219 (not checked)
+LOST-RECORDED md:938 [lost-base] bounty-map/schema.json:34 (not checked)
+LOST-RECORDED md:939 [lost-base] bounty-map/schema.json:32-52 (not checked)
+LOST-RECORDED md:940 [lost-base] ops/ev-report.mjs:17 (not checked)
+LOST-RECORDED md:943 [lost-base] ops/fleet-dispatch.mjs:152 (not checked)
+LOST-RECORDED md:943 [lost-tree] ops/fleet-dispatch.mjs:200 (not checked)
+LOST-RECORDED md:944 [lost-base] ops/fleet-dispatch.mjs:155 (not checked)
+LOST-RECORDED md:951 [lost-base] ops/rank.mjs:126-137 (not checked)
+LOST-RECORDED md:952 [lost-base] ops/rank.mjs:136 (not checked)
+LOST-RECORDED md:957 [lost-base] ops/ev-report.mjs:55 (not checked)
+LOST-RECORDED md:957 [lost-base] ops/rank.mjs:56 (not checked)
+LOST-RECORDED md:957 [lost-base] ops/ev-report.mjs:77 (not checked)
+LOST-RECORDED md:958 [lost-base] ops/ev-report.mjs:55 (not checked)
+LOST-RECORDED md:958 [lost-base] ops/rank.mjs:56 (not checked)
+LOST-RECORDED md:958 [lost-base] ops/ev-report.mjs:77 (not checked)
+LOST-RECORDED md:959 [lost-base] ops/ev-report.mjs:55 (not checked)
+LOST-RECORDED md:959 [lost-base] ops/rank.mjs:56 (not checked)
+LOST-RECORDED md:959 [lost-base] ops/ev-report.mjs:77 (not checked)
+LOST-RECORDED md:960 [lost-base] ops/ev-report.mjs:55 (not checked)
+LOST-RECORDED md:960 [lost-base] ops/rank.mjs:56 (not checked)
+LOST-RECORDED md:960 [lost-base] ops/ev-report.mjs:77 (not checked)
+LOST-RECORDED md:961 [lost-base] ops/ev-report.mjs:56 (not checked)
+LOST-RECORDED md:961 [lost-base] ops/rank.mjs:92 (not checked)
+LOST-RECORDED md:961 [lost-base] ops/ev-report.mjs:78 (not checked)
+LOST-RECORDED md:962 [lost-base] ops/ev-report.mjs:56 (not checked)
+LOST-RECORDED md:962 [lost-base] ops/rank.mjs:57 (not checked)
+LOST-RECORDED md:962 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:963 [lost-base] ops/ev-report.mjs:56 (not checked)
+LOST-RECORDED md:963 [lost-base] ops/rank.mjs:57 (not checked)
+LOST-RECORDED md:963 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:964 [lost-base] ops/ev-report.mjs:57 (not checked)
+LOST-RECORDED md:964 [lost-base] ops/rank.mjs:57 (not checked)
+LOST-RECORDED md:964 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:965 [lost-base] ops/ev-report.mjs:57 (not checked)
+LOST-RECORDED md:965 [lost-base] ops/rank.mjs:57 (not checked)
+LOST-RECORDED md:965 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:966 [lost-base] ops/ev-report.mjs:57 (not checked)
+LOST-RECORDED md:966 [lost-base] ops/rank.mjs:58 (not checked)
+LOST-RECORDED md:966 [lost-base] ops/ev-report.mjs:79-81 (not checked)
+LOST-RECORDED md:969 [lost-base] bounty-map/schema.json:46 (not checked)
+LOST-RECORDED md:970 [lost-base] bounty-map/schema.json:47 (not checked)
+LOST-RECORDED md:971 [lost-base] bounty-map/schema.json:48 (not checked)
+LOST-RECORDED md:971 [lost-base] bounty-map/schema.json:35-51 (not checked)
+LOST-RECORDED md:999 [lost-base] check-freshness.mjs:61 (not checked)
+OK md:1079 corpus/SOURCES.md:55-56  [| S049 | 网络安全众测平台帮助 - CNVD — https://zc.cnvd.org.cn/news/helpList | docs | A | CNVD's own help-page  ⏎ | S050 | 360SRC 外部漏洞处理和评分标准 V2.0 — https://security.360.cn/Reward/rules | docs | A | 360SRC's own ha]
+OK md:1079 corpus/instruments/capture-binding-check.py:1-92  [#!/usr/bin/env python3 ⏎ """Bind every capture-manifest record to its registry row and to fetch provenance. ⏎  ⏎ Usage: python3 corpus/instruments/capture-binding-check.py [--root DIR] [--selftest] [--scratch DIR] ⏎  ⏎ The round-33 C1 counter, hardened in round 34. A capture directory can hold real ⏎ bytes and still be unauditable: nothing in `manifest.json` says which documented ⏎ URL those bytes came from, when they were fetched, or whether a file in the ⏎ directory is accounted for at all. This instrument walks every snapshot ⏎ directory under `corpus/source-snapshots/` - recursively - and applies the ⏎ rules below. ⏎  ⏎ A. MANIFEST PRESENCE AND PER-FILE BINDING. Every snapshot directory - a ⏎ directory that holds a `manifest.json` or that holds any captured source ⏎ file of its own - must carry a `manifest.json`; a directory with captures ⏎ and no manifest is `FAIL rule=missing-manifest dir=<dir>`. Inside a ⏎ manifest directory, every capture file must be accounted for: ⏎  ⏎ A1. it is named by the `path` of at least one `sources[]` record; or ⏎ A2. the manifest's top-level `orphans` list declares it, as an object ⏎ `{"path": "<file name in this directory>", "reason": "<non-empty>"}`. ⏎ A declared orphan keeps the exit status at 0 and is still printed as ⏎ `orphan=<file>` on the AUDIT line - the listing is the record that ⏎ the file is known and unbound, not a silent pass; ⏎ otherwise `FAIL rule=orphan-capture file=<file> dir=<dir>`. ⏎ A declaration whose file is absent is `FAIL rule=orphan-declared-missing` ⏎ (a stale listing), and a malformed `orphans` list is a manifest-shape ⏎ error (exit 2). Orphans never change `records=`/`bound=`/`unbound=`, so a ⏎ declaration cannot be used to inflate the binding counts. ⏎  ⏎ Nested snapshot directories are audited in their own right: the walk ⏎ descends whether or not the parent is a snapshot directory, and a nested ⏎ directory is named by its path below `corpus/source-snapshots/` ⏎ (`round-30/inner`). A parent's per-file check considers only its own direct ⏎ files, because a nested directory's files are that directory's subject. ⏎  ⏎ B. URL BINDING (claims-erratum-1, the L1's id-scoped ruling). Every manifest ⏎ record must bind to its OWN `corpus/SOURCES.md` registry row: ⏎  ⏎ B1. the row `| <record id> | ... |` must exist - otherwise ⏎ `FAIL rule=no-row record=<id>` (a fabricated id); ⏎ B2. the row id must be unique in the registry - two rows with the same ⏎ id are `FAIL rule=dup-id record=<id> rows=<n>`; ⏎ B3. a row whose `status` cell is `rejected` cannot anchor a record: ⏎ `FAIL rule=rejected-row-anchor record=<id> row=<id>`. A rejected row ⏎ is a documented refusal, so a capture claiming it is bound to a ⏎ source the lane has refused; ⏎ B4. the row's source cell must carry exactly one `https://` token. A row ⏎ with two or more is `FAIL rule=double-https-row row=<id> n=<n>` and ⏎ cannot unambiguously bind anything - the record pointing at it is ⏎ `FAIL rule=url-ambiguous record=<id> row=<id> tokens=<n>`; ⏎ B5. the record's `url` must equal, byte-for-byte, the `https://` token in ⏎ that row's source cell (column 2) - otherwise ⏎ `FAIL rule=url-mismatch record=<id>`. A record with no `url` field at ⏎ all is `url-mismatch ... detail=absent`. ⏎  ⏎ A URL that also appears in a DIFFERENT row (the registry's S024/S029 and ⏎ S006/S028 duplicate-URL rows) or in prose outside the registry table is ⏎ NOT a failure: see the informational `multi_row_url=N` count on the AUDIT ⏎ line. The frozen claim's predicate (erratum 1) keeps its `unbound=0` ⏎ target under this reading, and the registry's pre-existing W04 ⏎ duplicate-URL warnings stay census facts outside this claim. ⏎  ⏎ C. PROVENANCE. Every record must carry either a strict-UTC `fetched_utc` or ⏎ `"archival": true`. A `fetched_utc` value is strict UTC only when it is an ⏎ ISO-8601 timestamp whose suffix is `Z` or `+00:00` and whose fields are a ⏎ real calendar instant, e.g. `2026-10-26T04:16:06Z`: ⏎  ⏎ - a placeholder (`pending`, `tbd`, `unknown`, `none`, ...) is ⏎ `FAIL rule=fetched-utc ... detail=pending`; ⏎ - a local or non-zero offset (`2026-10-25T23:14:00-03:00`, the round-32 ⏎ R8 field) is `FAIL rule=fetched-utc ... detail=local-offset`; ⏎ - anything else unparsable (`2026-13-01T00:00:00Z`, a bare date) is ⏎ `FAIL rule=fetched-utc ... detail=malformed`; ⏎ - an absent value is `FAIL rule=provenance-missing` when the record has ⏎ no archival exemption, `detail=absent` folded into that line. ⏎  ⏎ Records whose snapshot directory is `round-32` or a later round MUST carry ⏎ a strict-UTC `fetched_utc`: the archival exemption is closed for them, ⏎ because their fetch instant is recorded. A directory name that does not ⏎ parse as `round-<N>` is treated as a modern round (no archival exemption). ⏎ A present-but-invalid `fetched_utc` fails in every round, including the ⏎ legacy rounds - the field is an assertion whether or not the round requires ⏎ it. ⏎  ⏎ D. MANIFEST INTEGRITY. Duplicate records inside one manifest fail: two ⏎ records in the same directory carrying the same `id` is ⏎ `FAIL rule=dup-record field=id value=<id> count=<n>`, and two records ⏎ naming the same capture `path` is the `field=path` form. A duplicated ⏎ record means the manifest's record count overstates the captures it ⏎ documents. ⏎ ]
+OK md:1079 corpus/instruments/capture-binding-check.py:166-181  [were copied from a different document still passes when the manifest pins the ⏎ copied bytes' digest. What rule E removes is the silent case - a capture named ⏎ but absent, a path leaving the directory, and a stale digest are failures, not ⏎ absences. ⏎ - The row's URL is the `https://` token found in the source cell with trailing ⏎ `.,;:` stripped; byte-equality is then exact. A row carrying two or more ⏎ tokens is now a failure (rule B4) rather than a lenient match. ⏎ - The registry is read as column 2 of every `| S0xx |` row, whatever the row's ⏎ status; rule B3 is the one status that changes a verdict. Duplicate URL ⏎ *values* across different ids are not a failure, per erratum 1. ⏎ - The instrument writes nothing outside its scratch directory, and only ⏎ `--selftest` creates a scratch directory at all. ⏎  ⏎ `--selftest` runs this file as a subprocess against one fixture lane tree per ⏎ case, each built in a fresh temporary directory (under `--scratch`, else ⏎ `$HYAKU_SCRATCH`, else `$TMPDIR`, else the platform temp dir; removed at exit),]
+OK md:1079 corpus/instruments/capture-binding-check.py:184-262  [checker itself. A summary-only report (`selftest cases=N failures=0` with no ⏎ `selftest case=` verdict line) is a failure, not a pass: a mutant that skips ⏎ every fixture can print the summary without running a case. Prints ⏎ `selftest cases=N failures=F` and exits 0 only when F=0. ⏎ """ ⏎ import argparse ⏎ import datetime ⏎ import hashlib ⏎ import json ⏎ import os ⏎ import re ⏎ import shutil ⏎ import subprocess ⏎ import sys ⏎ import tempfile ⏎  ⏎ SCHEMA_VERSION = 1 ⏎ ROW_RE = re.compile(r"^\|\s*(S\d{3,})\s*\|") ⏎ URL_TOKEN = re.compile(r"https?://[^\s|]+") ⏎ ROUND_RE = re.compile(r"round-(\d+)\Z") ⏎ UTC_STAMP_RE = re.compile( ⏎ r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,9})?(?:Z|\+00:00)\Z") ⏎ OFFSET_STAMP_RE = re.compile( ⏎ r"^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,9})?[+-]\d{2}:?\d{2}\Z") ⏎ PENDING_VALUES = frozenset({"pending", "tbd", "todo", "unknown", "none", "null", "n/a", "na", "unset ⏎ MODERN_ROUND = 32   # round-32+ records must carry fetched_utc; the archival exemption is closed ⏎ ZERO_DIGEST = "0" * 64   # the lane's fixture convention for "no digest declared" ⏎ DIGEST_RE = re.compile(r"^[0-9a-f]{64}\Z") ⏎ STATUS_REJECTED = "rejected" ⏎ STATUS_COLUMN = 7   # | id | source | kind | tier | scope | anchor | teaches | status | ... ⏎ SCRIPT = os.path.abspath(__file__) ⏎  ⏎  ⏎ def parse_round(dirname): ⏎ """Round number of a snapshot directory name, or None when it does not parse. ⏎  ⏎ A nested directory is named by its path below source-snapshots, so the round ⏎ is read from the first path component (`round-30/inner` is round 30).""" ⏎ m = ROUND_RE.match(dirname.split("/", 1)[0]) ⏎ return int(m.group(1)) if m else None ⏎  ⏎  ⏎ def row_tokens(cell): ⏎ """The `https://` tokens of a registry source cell, trailing `.,;:` stripped.""" ⏎ return [token.rstrip(".,;:") for token in URL_TOKEN.findall(cell)] ⏎  ⏎  ⏎ def load_registry(root): ⏎ """Return (rows_by_id, cells) for every `| S0xx |` row in corpus/SOURCES.md. ⏎  ⏎ `rows_by_id` maps a row id to its list of (source cell, status) pairs (a ⏎ duplicate id is visible as a list longer than one); `cells` is every row's ⏎ source cell in registry order, for the cross-row `multi_row_url` count.""" ⏎ path = os.path.join(root, "corpus", "SOURCES.md") ⏎ rows_by_id, cells = {}, [] ⏎ with open(path, encoding="utf-8") as fh: ⏎ for line in fh: ⏎ m = ROW_RE.match(line) ⏎ if not m: ⏎ continue ⏎ parts = [cell.strip() for cell in line.rstrip("\n").strip().strip("|").split("|")] ⏎ cell = parts[1] if len(parts) > 1 else "" ⏎ status = parts[STATUS_COLUMN] if len(parts) > STATUS_COLUMN else "" ⏎ rows_by_id.setdefault(m.group(1), []).append((cell, status)) ⏎ cells.append(cell) ⏎ return rows_by_id, cells ⏎  ⏎  ⏎ def double_https_rows(rows_by_id): ⏎ """Rows whose source cell carries two or more `https://` tokens. ⏎  ⏎ A two-token cell cannot say which document the row names, so it can bind ⏎ nothing: the row is a failure and every record pointing at it is ambiguous.""" ⏎ offenders = [] ⏎ for row_id in sorted(rows_by_id): ⏎ for cell, _status in rows_by_id[row_id]: ⏎ tokens = row_tokens(cell) ⏎ if len(tokens) > 1: ⏎ offenders.append((row_id, len(tokens)))]
+OK md:1080 .ufo/waves/round-33/claims-erratum-1.md:1-36  [# C1 erratum 1 — Rule B binding semantics (L1 ruling, before any measurement) ⏎  ⏎ Filed 2026-10-26 by the L1 (KasegiR33) after ScoutManifestAudit surfaced a Rule B hazard at ⏎ base. This erratum clarifies the frozen C1 interface contract; it does not change the frozen ⏎ claim's predicate sentence, counters, kill rule or targets. No seat had scored when it was filed. ⏎  ⏎ ## Finding (ScoutManifestAudit §4) ⏎  ⏎ - URL `https://eur-lex.europa.eu/eli/reg/2024/2847/oj/eng` is carried by TWO registry rows: ⏎ S024 (queued) and S029 (mined, supersedes S024). Record S029 exists in the round-23 manifest. ⏎ - URL `https://docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq` is carried by ⏎ TWO registry rows: S006 (mined) and S028 (rejected duplicate-row proposal). Record S006 exists ⏎ in the round-24 manifest. ⏎ - URL for S048 occurs once as a registry-row source cell (row S048) and once as raw text inside ⏎ a Search-log bullet (line 72) — not a row cell. ⏎  ⏎ Under a global "URL appears in exactly one registry row" reading, records S029 and S006 could never ⏎ bind (2 row matches), so `unbound=0` would be unattainable without touching immutable registry rows ⏎ (R8), which no seat may do this round. ⏎  ⏎ ## Ruling (binding for ExecCaptureBinding, ExecManifestUpgrade, RevC1Instrument, CritC1Kill) ⏎  ⏎ Rule B binds each record to its OWN registry row: ⏎  ⏎ 1. For a record with id `Sxxx`, locate the registry row `| Sxxx | ... |` in ⏎ `corpus/SOURCES.md` (source cell). If NO row carries that id -> failure `no-row` (fabrication). ⏎ 2. The record's `url` must equal the row's URL byte-for-byte (the URL = the `https://` token in ⏎ the row's source cell). Mismatch -> failure `url-mismatch`. ⏎ 3. If TWO rows carry the same id (never observed), -> failure `dup-id`. ⏎ 4. A URL that also appears in other rows (S024/S029, S006/S028) or in prose (search log) is NOT a ⏎ failure: the checker prints an informational count `multi_row_url=N` (records whose URL text ⏎ appears in more than one row) and the receipts disclose it. The registry's pre-existing W04 ⏎ duplicate-URL warnings are census facts outside this claim. ⏎ 5. `bound` = records satisfying 1+2 (and rule C). `unbound` = records failing 1, 2, 3 or rule C. ⏎  ⏎ Predicate sentence, kill rule, counters and the 40/40/0 target are unchanged.]
+OK md:1098 corpus/source-snapshots/round-32/S050.txt:70  [本标准适用于 360 集团发布的产品和业务，此外 360 集团所投资的公司、子公司、合资公]
+OK md:1101 corpus/lessons/round-34-verifier-spotcheck.md:177  [- **D3 — gates unregistered at the registry home.**]
+OK md:1103 .ufo/waves/round-34/wave1/ExecCaptureBindingHarden.md:505-507  [that keeps both limbs honest. Live suite: `closed=9/9 exit=0`; `--selftest` prints ⏎ `selftest case=R8 live=pass fixture=rejected control=pass verdict=pass` and ⏎ `selftest cases=9 failures=0`, exit 0. The positive-control fixture is the `+00:00` value I]
+OK md:1103 .ufo/waves/round-34/wave1/MutSelftestSummary.md:332  [- Full counter re-run on the same current bytes: `mutants=3 killed=3 survivors=0 invalid=0`,]
+exit=0

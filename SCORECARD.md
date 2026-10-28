@@ -1736,3 +1736,39 @@ Counting commands, one per claim, both re-runnable against an exported tree:
 Correction (round 44; falsify wave): the wave-2 seats falsified the first landing's counter and evidence. A fully fabricated evidence tree graded `fixed=8 unresolved=0` (`wave2/R44W2Exec05.md`); presence-only predicates accepted denials, stub emitters, fabricated seat names, filename mentions and a token-only receipt (`wave2/R44W2Rev09.md`); the K17-escape mechanism claim was wrong in substance — the `closed=13/19` token is an AFTER-cell token K17 never grades (`wave2/R44W2Rev02.md`, `wave2/R44W2Revenger01.md`); and the round-44 export-ref sidecar contradicted the paired run receipt. The corrections are the v2 counter (sha256-pinned artifacts, affirmative tokens, ordering checks, refusal logic, names equality), the corrected sidecar, the superseded-registry note and the corrected lesson mechanism statement (`corpus/lessons/round-44.md`, M44-9/M44-10). The frozen claims file and the frozen counter string stay byte-identical.
 
 Correction (round 44; prose numeral): the earlier prose "eleven marker-only mutants" was imprecise — the v1 battery was ten mutants plus one positive (eleven graded cases); the v2 battery is nineteen mutants plus one positive (twenty graded cases).
+
+
+## Round 45 result
+
+Frozen at `.ufo/waves/round-45/claims.json` (freeze commit `8cf62c879e6e6b031e67412f8fac1fba0bd378cf`, base `dc5bb8c6e31efc4a6650819df85e79b72fd64bcd`). Counter errata and the before-value erratum: `.ufo/waves/round-45/counter-errata.md`. Receipts: `.ufo/waves/round-45/controls/final-measure.txt` (measured at lane commit `3106889`).
+
+| Axis | Score before r45 | Score after r45 | Evidence pointer | Last change |
+|---|---:|---:|---|---|
+| depth:verifiability | 4 | 4 held — measured, no promotion limb moved | C1 `python3 corpus/instruments/r45-routed-defects.py --root <tree> --baseline <base>`: base `routed-defects total=5 fixed=0 unresolved=5 exit=1`, tip `fixed=5 unresolved=0 exit=0` (`controls/final-measure.txt`) | r45 (held) |
+| coverage | 8 | 8 held — measured (+1 admitted frontier row; not a coverage-ratio move) | C2 `python3 corpus/instruments/r45-c2-gate.py --root <tree>`: base `fixed=1/7 exit=1`, tip `fixed=7/7 exit=0`; `r44-frontier-count.py --expect 27`: base 26 (exit 1), tip 27 (exit 0) | r45 (held) |
+| depth:density | 9 | 9 held — non-target guard: `density.py` byte-identical; SKILL.md mean 237.4 → 248.4 from an appended registry block, not credited as depth | `controls/final-measure.txt` | r45 (held) |
+
+### Round-45 move-log rows
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 45 | depth:verifiability | 0 of 5 routed defects resolved (base) | 5 of 5 at `3106889` by counter v1.2; the counter was falsified twice (wave 1: v1; wave 2: v1.1) and hardened each time; selftests `cases=85 failures=0` and `cases=115 failures=0` | `corpus/instruments/r45-routed-defects.py`; `.ufo/waves/round-45/counter-errata.md`; `controls/final-measure.txt` |
+| 45 | coverage | 26 admitted frontier rows, 70 SOURCES rows, 63 knowledge entries | 27, 72, 64; S071 `mined` (tier A), S072 `rejected` (supersedes S070) | `corpus/README.md` Round-45 admission block; `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md`; `corpus/SOURCES.md` S071/S072; `corpus/source-snapshots/round-45/manifest.json` |
+
+Counting commands, one per claim (re-runnable on an export):
+
+- **C1** — `python3 corpus/instruments/r45-routed-defects.py --root <tree> --baseline <base-export>` → `routed-defects total=5 fixed=<k> unresolved=<n> exit=0|1`; base `fixed=0`, tip `fixed=5`.
+- **C2** — `python3 corpus/instruments/r45-c2-gate.py --root <tree>` → `c2-gate fixed=<k>/7 exit=0|1`; base `fixed=1/7`, tip `fixed=7/7`; secondary `python3 corpus/instruments/r44-frontier-count.py --root <tree> --expect 27`.
+
+The honest reading of the green counters: they are pinned-artifact graders (a tree must carry the genuine bytes); they do not certify that the entry adds analysis beyond restating S071 — that judgment is the non-author closure's, and the wave-2 coverage reviewer found the topic new to the corpus (`wave2/R45W2RevNovelty.md`).
+
+### Round-45 capabilities
+
+| Capability | What it can now do | Evidence pointer | First-working round |
+|---|---|---|---|
+| Frozen-counter base replay (`freeze-check.py`) | Replays every frozen counter command at the base export, requires its declared before-line as a whole line and fails when the after-line is already present or the counter mutates the base | `python3 corpus/instruments/freeze-check.py --claims .ufo/waves/round-45/claims.json --tool-root <tree> --base <base-export>` → `freeze-check claims=2 base_ok=2 exit=0`; selftest `cases=27 failures=0` (`controls/final-measure.txt`) | 45 |
+
+### Planned evidence gates for round 46
+
+- `depth:verifiability`: state each claim's before-value per start tree (base and freeze tree) and run `capture-binding-check.py --root` and the census before dispatching a wave.
+- `coverage`: obtain a non-author admit/reject spot-check of S071/S072 before any coverage statement beyond +1 row; keep rejected-row captures outside `corpus/source-snapshots/`.
