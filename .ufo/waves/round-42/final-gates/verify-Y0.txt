@@ -1,0 +1,39 @@
+### run at Y0 697c6b9beda8b3585d7a489bfb7f4cde6af84f4f
+run-utc=2026-10-28T14:59:50Z
+J1 payload=records=1,blocks=3,graded=1,evidence=3,missing=0,wrong-grade=0,per-record=SCORECARD.md=3/3;LOG.md=0;SHONEN.md=0,union=0,replay=RevC1Counters.md=rejected closed=1
+J2 payload=boundary=10/10,truth-tokens=3,stated=4,mangled=0,truth-stated=1,token=whole,replay=RevC1Counters.defeats.txt=rejected closed=1
+J3 payload=tables=18,rows=73,r42-rows=1,r40-rows=1,r40-split=0,bare=0,lead=0,replay=MutSkillTablePipes.md=3/3 closed=1
+J4 payload=declared=469,valid=469,missing=0,escape=0,coverage=11/11,file=present,replay=CritDeclarationCoverage.md=2/2 closed=1
+J5 payload=family=kasegi-r4[0-9]*,strays=8,scanned=8,read=ok,outside=2,outside-scanned=10,scope=materialized,replay=MutScratchTiming.md=outside=detected,inside=detected closed=1
+J6 payload=instrument=present,base=1,missing-path=1,url-mutated=1,digest-mutated=1,rule=reject,replay=MutBindingExistence.md=rejected closed=1
+J7 payload=instrument=present,base=1,status-flip=1,no-pass=1,rows=25,admitted=25,replay=MutFrontierParser.md=rejected closed=1
+J8 payload=receipt=.ufo/waves/round-42/final-gates/all-gates.txt,source=committed,sentinel=1,lines=1,ref=1,digest=1,time-basis=1,utc=1,ancestor=1,diff=1,run-lines=1,selftest-lines=1,verdicts=1,summary=1,closed-line=1,no-stray=1,payload-match=1,forged=1,payload-match=12/12,forged=6/6 closed=1
+J9 payload=depth=1,base=1,r41=1,accept=tree-red,cap=nested closed=1
+J10 payload=cases=13,isolated=13,canary=0,graded-lines=13,fixture=synthetic closed=1
+J11 payload=corrections=34,groups=4,dups=4,excused=4,unexcused=0,marker=1,marker-substantive=1,marker-appended=1,eof-closed=3/3,fenced=0 closed=1
+J12 payload=deleted=0,density=1,density-sha=ee803726a322,diff-read=ok,base=5053a7f4 closed=1
+J13 payload=faithful=1,extra=0,missing=0,scratch-strays=0,scratch-read=ok,markers=0,named=1 closed=1
+closed=13/13 exit=0
+run exit=0
+
+### selftest at Y0
+selftest case=J12 mutants=2/2 positive=pass payload-match=1 verdict=pass
+selftest case=J13 mutants=2/2 positive=pass payload-match=1 verdict=pass
+selftest cases=13 failures=0
+selftest exit=0
+
+### plain run (no --export-ref)
+r42-closure: a plain run is refused (export mode only)
+r42-closure: usage: r42-closure.sh --export-ref <hash> [options]
+plain exit=0
+
+### unresolvable ref
+ERROR ref-not-found ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0 exit=1
+ref exit=0
+
+### exit codes re-captured without a pipe
+plain run exit=2
+r42-closure: a plain run is refused (export mode only)
+r42-closure: usage: r42-closure.sh --export-ref <hash> [options]
+unresolvable ref exit=1
+ERROR ref-not-found ref=deadbeefdeadbeefdeadbeefdeadbeefdeadbeef closed=0 exit=1
