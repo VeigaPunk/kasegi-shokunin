@@ -221,10 +221,31 @@ def g2(root: str) -> tuple[bool, str]:
             cites = [int(x) for x in re.findall(r"S073\.txt:(\d+)", cells[1] + " " + cells[0])]
             if all(len(re.findall(r"\w+", c)) >= 2 for c in cells) and cites and all(BODY[0] <= x <= BODY[1] for x in cites):
                 rows.append(cells)
-    # every table-shaped line must be a header, a separator, or a counted row: a junk filler row is a defect even when
-    # the real rows still clear the >=6 floor (the attempt-2 regression finding: v1.1 made junk rows not count but left them tolerated)
-    accounted = 2 + len(rows)  # header + separator + counted rows
-    junk = table_lines - accounted
+    # every table-shaped line must be the header (the first table line), the separator, a counted
+    # row, or a well-formed no-cite row (an observed-absence record: every cell >= 2 words); a
+    # filler row like `| - | - | - |` is a defect even when the real rows still clear the >=6 floor
+    # (the attempt-2 regression finding: v1.1 made junk rows not count but left them tolerated)
+    tlines = [ln for ln in body.splitlines() if re.match(r"^\s*\|", ln) and ln.count("|") >= 2]
+    junk = -2  # the header and the separator are structural; adjusted below
+    seen_sep = False
+    for i, ln in enumerate(tlines):
+        cells = [c.strip() for c in ln.strip().strip("|").split("|")]
+        is_sep = bool(cells) and all(re.fullmatch(r":?-{3,}:?", c) for c in cells)
+        if is_sep and not seen_sep:
+            seen_sep = True
+            junk += 1  # the separator
+            continue
+        cites = re.findall(r"S073\.txt:\d+", ln)
+        words_ok = all(len(re.findall(r"\w+", c)) >= 2 for c in cells)
+        if cites:
+            junk += 0 if words_ok else 1  # counted rows were validated above; an uncited-cells cite line is junk
+        elif i == 0 and words_ok:
+            junk += 1  # the header
+        elif words_ok:
+            pass  # a well-formed no-cite row (observed absence)
+        else:
+            junk += 1  # filler
+    junk = max(junk, 0) if len(tlines) >= 2 else len(tlines)
     tbl = len(rows)
     refs = re.findall(r"corpus/knowledge/([A-Za-z0-9._-]+\.md):(\d+)(?:-(\d+))?", body)
     refok = 0

@@ -65,8 +65,8 @@ XREF_A = "corpus/knowledge/ai-assisted-finding-validation.md:7-8,15"
 PAD_PREFIX = "Reading note: "
 ALL = {f"G{i}" for i in range(1, 8)}
 LEDGER = "considerthese-proposals-ledger.md"  # the considerthese ledger the round-46 attempt-2 wave appends the dispositions to: exempt from the byte pin too (name pinned, size may grow never shrink)
-EXEMPT_ENTRIES = C1_ENTRIES | {LEDGER}  # the counter's CONTENT_EXEMPT: never use one of these as a byte-pin mutant target (their bytes are not pinned)
 C1_ENTRIES = {"claim-gates.md", "claim-package-contract.md"}  # the two entries C1 re-grounds: exempt from the counter's byte pin, their names stay pinned
+EXEMPT_ENTRIES = C1_ENTRIES | {LEDGER}  # the counter's CONTENT_EXEMPT: never use one of these as a byte-pin mutant target (their bytes are not pinned)
 F28_TOPIC = "GitHub private vulnerability reporting, reporter flow: who may report, what the form requires, the credit and the private-fork limit"
 F28_NEXT = "Re-open the GitHub page before relying on the form fields; maintainers can customise the form."
 
@@ -718,7 +718,7 @@ def main() -> int:
         add(Case("mut-c1-landed-exempt-entry-renamed", "mutant", lambda r: (land_c1(r), os.rename(os.path.join(r, "corpus/knowledge/claim-gates.md"), os.path.join(r, "corpus/knowledge/claim-gates-renamed.md"))), {"G6"}, note="the exemption is from the byte pin only: the NAME stays pinned"))
         add(Case("mut-c1-landed-exempt-entry-deleted", "mutant", lambda r: (land_c1(r), os.remove(os.path.join(r, "corpus/knowledge/claim-package-contract.md"))), {"G6"}))
         add(Case("mut-c1-landed-plus-third-entry-changed", "mutant", lambda r: (land_c1(r), wr(r, "corpus/knowledge/" + spare, rd(r, "corpus/knowledge/" + spare) + " ")), {"G6"}))
-        add(Case("ctl-committed-tip-direct", "control", direct=True, note="the counter run on --lane itself (the committed tip export): must read 7/7"))
+        add(Case("ctl-committed-tip-direct", "control", direct=True, note="the counter run on --lane itself (the committed tip export): the attempt-2 landing moved the tree past the v1.3 counter's era state, so the expected reading is fixed=5/7 failing exactly ['G1','G6'] (G1 28->29 rows, G6 65->66 entries — this round's C2 after-state, graded by r46-f29-gate.py); the S073-side limbs G2/G3/G4/G5/G7 must stay green"))
 
         # --- round-46 attempt 2: one case per battery mutant (see the header) ---
         add(Case("mut-g1c-f28-sources-cell-prefix", "mutant", m_mut_f28_sources_cell, {"G1"},
@@ -781,7 +781,12 @@ def main() -> int:
             if not complete:
                 reasons.append(f"gate-lines-missing={sorted(ALL - set(gates))}")
             if c.kind == "control":
-                if not (fixed == 7 and ex == 0 and rc == 0 and not failing):
+                if c.name == "ctl-committed-tip-direct":
+                    # expected-moved: the attempt-2 landing moved the tree past the v1.3 counter's
+                    # era state; the moved limbs are exactly G1 (28->29 rows) and G6 (65->66 entries)
+                    if failing != {"G1", "G6"} or fixed != 5 or ex != 1 or rc != 1:
+                        reasons.append(f"tip-direct-expected-5/7-failing-G1-G6 failing={sorted(failing)} fixed={fixed} rc={rc}")
+                elif not (fixed == 7 and ex == 0 and rc == 0 and not failing):
                     reasons.append(f"control-not-7/7 failing={sorted(failing)}")
             elif c.kind == "null":
                 if failing != c.targets:

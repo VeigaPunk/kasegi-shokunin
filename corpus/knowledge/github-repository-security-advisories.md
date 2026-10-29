@@ -131,9 +131,11 @@ target repository, each checked against the page's own line:
 3. The CVE identification number was requested from GitHub while the advisory was still private: “Requesting a CVE
    identification number doesn't make your security advisory public.” (`S074.txt:25`) The package must also record
    GitHub as the assigning body on this route, “GitHub is a CVE Numbering Authority (CNA) and is authorized to assign
-   CVE identification numbers.” (`S074.txt:24`), and, if the project uses another numbering authority's identifier,
-   the boundary “GitHub cannot assign CVEs to your project if it is covered by another CNA.” (`S074.txt:26`) A
-   package that treats the CVE request as the publication event fails on the request-does-not-publish line.
+   CVE identification numbers.” (`S074.txt:24`), and the boundary is COVERAGE by another CNA, not use of another
+   authority's identifier — a project covered by its most-appropriate-scope CNA (the F07 rule:
+   `corpus/knowledge/cna-assignment-and-vulnerability-rules.md:36`) is one “GitHub cannot assign CVEs to your
+   project if it is covered by another CNA.” (`S074.txt:26`) applies to, whether or not that CNA has assigned an
+   identifier yet. A package that treats the CVE request as the publication event fails on the request-does-not-publish line.
 4. A fix version was added before publication: “you should add a fix version to a security advisory prior to
    publishing the advisory” (`S074.txt:38`)
 

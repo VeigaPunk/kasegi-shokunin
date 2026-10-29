@@ -1,0 +1,329 @@
+{
+  "schema": "ufo-swarm-registry-v1",
+  "wave": null,
+  "createdAt": "2026-10-29T21:26:15.141Z",
+  "updatedAt": "2026-10-29T23:41:16.864Z",
+  "reportDir": ".ufo/waves/round-46/attempt2/wave2",
+  "members": {
+    "R46bW2ExecRerunC1": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "executor",
+      "item": "re-run the C1 counting chain at fe0f56b78b811dbb89bc7f2e17580d11b1b6ebd4 vs base 04af9bc92229232ea5cce8b32bfe59dd969eb26d exports (git archive both): `python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-mutbat.py --root <integ export> --pure /fast/scratch/hyaku/kasegi-r46/L1/pure2 --work <scratch> --counter c1 --jobs 8` (expect uncaught=0), the c2 twin (expect uncaught=0), the extended /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-counters-selftest-c1.py and /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-counters-selftest-c2.py baselines (expect failures=0 at the integration tree), and the plain lines: `grep -cE '^\\| F[0-9]+ \\|'`, SOURCES rows, knowledge files, absence sweep. Quote every line; any value off the claim's after-state is BROKEN.",
+      "axes": [
+        "depth:verifiability"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2ExecRerunC2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "executor",
+      "item": "re-run the C2 counting chain at the integration export: `python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-f29-gate.py --root <integ>` (expect 7/7), `python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r44-frontier-count.py --root <integ> --expect 29`, `python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/source-recheck.py --manifest /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/manifest.json --source S074` (expect exit 0), `python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py --root <integ>` (expect unbound=0), census `bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file <integ>/corpus/SOURCES.md` (exit 0), and the prior-attempt instruments on the SAME export: /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-c1-gate.py --root <integ> --baseline <base export> (expect 7/7) and r46-c2-gate.py --root <integ> (expect 7/7 — its v1.3 amendment if landed). Quote every line.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2ExecRerunLive": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "executor",
+      "item": "re-run the selftest/battery suite on the LIVE lane (not an export): /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-counters-selftest-c1.py --pure /fast/scratch/hyaku/kasegi-r46/L1/pure2 --work <scratch> --jobs 8; /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-counters-selftest-c2.py --pure /fast/scratch/hyaku/kasegi-r46/L1/pure2; /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-selftest-f29.py if landed; `python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-mutbat.py --root /home/vgpnk/Projects/shokunin/kasegi-shokunin --pure /fast/scratch/hyaku/kasegi-r46/L1/pure2 --work <scratch> --counter both --jobs 8 | grep mutbat`; `python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-f29-gate.py --root /home/vgpnk/Projects/shokunin/kasegi-shokunin`. Expect the claim after-values. Then the export-vs-live delta: any value that differs between the integration export and the live tree is a finding (uncommitted drift).",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2ScoutS074Live": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "scout",
+      "item": "re-open https://docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories live (record HTTP status + final URL), then locate every quoted span of the LANDED entry /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/github-repository-security-advisories.md in the LIVE page (normalise whitespace; the pinned capture /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/S074.txt is the fallback): report any quote the live page no longer holds (drift = BROKEN for C2's kill rule), and any entry statement the page does not support (overclaim = M46-3 class).",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2RevEntryClaims": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "reviewer",
+      "item": "attack the landed entry /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/github-repository-security-advisories.md against /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/S074.txt line by line: every quote located (<= 25 words, range holds it); every claimed contrast with F28/F07 actually stated by the sources; the decision rule actionable; Limits honest about the sibling pages. One finding per defect with entry line + capture line.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2RevRegistryText": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "reviewer",
+      "item": "attack the registry surface: the S074 row in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md (11 cells, tier/kind/status/opened/recheck/used-by/anchor correct vs /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/manifest.json), the README admission block (row shape, status third cell, 29/29 count line), the PROVINCE F29 line (scope limit present), knowledge-expected.txt (+1), the instruments README + SKILL.md registry rows (commands actually run). Quote each defect.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2RevClaimC1": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "reviewer",
+      "item": "attack the C1 verdict end-to-end: replay /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/controls/mutbat-before.txt (before) against the integration values; audit the equivalence entries used for the formerly-uncaught mutants (read the committed proof map; falsify one proof by constructing the input class it claims impossible — if any constructible input flips a verdict under the mutant, the equivalence is false and C1 is BROKEN).",
+      "axes": [
+        "depth:verifiability"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2RevClaimC2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "reviewer",
+      "item": "attack the C2 verdict: the frontier row admits F29 with status third-cell; the entry cites five frozen cores inside located live spans (re-locate each yourself); the census exits 0; the claim's after-values hold; the target (29/66) was not narrowed post-freeze (diff /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/claims.json against the freeze commit). Any gap = BROKEN.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2MutGate1": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "mutation-tester",
+      "item": "single-edit mutants (>= 10, your own, not the R50 set) of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-f29-gate.py against the landed tree export: every mutant that keeps the marker must flip the gate red on the LANDED tree (the landed tree is a positive). Survivors = false-green class = finding with recipe.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2MutGate2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "mutation-tester",
+      "item": "independent: >= 10 further own mutants of /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-f29-gate.py (target H4/H5/H6 — the quote and pin machinery: tolerance windows, span limits, word counts, anchor parsing). Report survivors.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2MutSelfF29": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "mutation-tester",
+      "item": "mutation-test the landed /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-selftest-f29.py: for >= 8 of its cases, remove or invert the case's core assertion in a scratch copy — the selftest must then report failures>0 (a case that cannot fail is dead weight masking a limb). Report per-case.",
+      "axes": [
+        "depth:verifiability"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2MutSelfC1": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "mutation-tester",
+      "item": "run the landed battery --counter c1 against the landed tree; then verify each formerly-uncaught mutant is now caught: for M06,M07,M08,M11,M12,M13,M14,M17,M18,M19 quote the extended selftest's per-mutant failure lines (or the equivalence proof ids). Any mutant still failures=0 without an equivalence id = C1 BROKEN.",
+      "axes": [
+        "depth:verifiability"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2MutSelfC2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "mutation-tester",
+      "item": "same for --counter c2's formerly-uncaught set (read /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/controls/mutbat-before.txt for the uncaught list): quote the extended selftest's lines proving each is now caught or equivalence-proven.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2MutBattery2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "mutation-tester",
+      "item": "verify the battery v1.1's f29 mode end-to-end: run `python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-mutbat.py --root <integ export> --pure /fast/scratch/hyaku/kasegi-r46/L1/pure2 --work <scratch> --counter f29` and reconcile its per-mutant lines against the R50 receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/controls/f29-r50-receipt.txt (11 flips must read caught; the 9 disclosed must read equivalent-or-caught after the selftest landed). Mismatch = finding.",
+      "axes": [
+        "depth:verifiability"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2MutLanding": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "mutation-tester",
+      "item": "mutation-test the landing gate /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-landing-gate.py (or its attempt-2 successor): >= 6 single-edit mutants (drop the cleanliness check, drop the ls-remote equality, accept two SHONEN headings) — each must flip the gate red on a fixture pair built in scratch (D=$(mktemp -d -p $SCRATCH) && git -C \"$D\" init -q; never elsewhere). Report per-mutant.",
+      "axes": [
+        "depth:verifiability"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2MutPinAmend": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "mutation-tester",
+      "item": "if the r46-c2-gate.py v1.3 ledger exemption landed: verify with mutants — a shrunk ledger, a stubbed ledger, a swapped-name ledger must each still turn G6 red (name-pinned non-shrink holds), AND the v1.2 bytes at eb874bc86ad7a6cfec299088e5a2d7ec68cf61b7 still read 7/7 on their era export (history intact). If v1.3 did not land, verify the ledger row was NOT appended (G6 green at the tip) and say which deferral the report must carry.",
+      "axes": [
+        "depth:verifiability"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2CritVerdictC1": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "critic",
+      "item": "final C1 audit: is the after-value the value the committed receipts print (re-derive ONE of them yourself)? Is the axis named by the surface the round changed (instrument soundness = depth:verifiability, not coverage)? Could a do-nothing control have reached uncaught=0 (the before-value receipt says otherwise — check its base replay is honest)? Name the weakest link in the chain freeze->before->after.",
+      "axes": [
+        "depth:verifiability"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2CritVerdictC2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "critic",
+      "item": "final C2 audit: name the surface moved (a new source class on the lane's frontier — maintainer-side advisory lifecycle) and the command that would show it unmoved at the base. Re-run the absence sweep at both exports. Is any admission limb satisfied only by the L1's own reading (unverified by machine or seat)? Name it.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2CritNovelty2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "critic",
+      "item": "re-run the novelty test on the LANDED corpus: name >= 8 practitioner questions the corpus now answers that it could not at 04af9bc92229232ea5cce8b32bfe59dd969eb26d (git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin grep at both revisions). Fewer than 8 = the frontier move is thin — say so.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2CritCalib2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "critic",
+      "item": "calibration re-scan at the integration tree: SCORECARD/SHONEN/LOG self-assessment cells vs the observed state (run the cheap commands). Name mismatches with path:line; include the round's own new rows.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2CritScope": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "critic",
+      "item": "province-fit audit: the landed F29 ground vs /home/vgpnk/Projects/shokunin/kasegi-shokunin/PROVINCE.md (bounty/security research, program rules, claim packages); the reporter/maintainer boundary vs F28's scope-out sentence; the CNA boundary vs F07; live-target testing absent (documentation only). Any bleed or absorbed sibling ground = finding.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2CritErrata2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "critic",
+      "item": "errata audit: every counter/instrument change this round (mutbat v1.1, selftest extensions, any v1.3 gate amendment) must be logged as errata with a plain re-derivation that does not use the changed instrument (read /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/ counter-errata file when landed). Is the claims.json byte-identical to the freeze? (`diff <(git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show fe0f56b78b811dbb89bc7f2e17580d11b1b6ebd4:.ufo/waves/round-46/attempt2/claims.json) /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/claims.json`). Name any unlogged change.",
+      "axes": [
+        "depth:verifiability"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2SentFinal": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "sentinel",
+      "item": "final integrity pass on the landed tree: every new instrument read-only on its --root; no tree-supplied execution outside the allow-listed shapes; no hardcoded scratch paths in committed files (grep corpus/instruments for /fast/ and /tmp/ — the two known dead PURE defaults must be fixed or named as errata); no credentials/session material in the wave dir.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2RevengerW2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "revenger",
+      "item": "rebuild the prior attempt's wave-2 attacks against the landed tree: from /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/wave2/R46W2MutSelftestC1.md take probes P1/P2/P3 recipes and re-run them against the LANDED counter+entry state — the counter must still reject each (the entries' anchors are the same bytes). Any acceptance = regression.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2ConnW2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "connector",
+      "item": "cross-seat scan (run LAST): read /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/wave2/*.md reports; name (1) findings confirmed by >= 2 seats, (2) contradictions, (3) the three findings the L1 must fix before the report, ranked. Quote seat + line.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2SimplW2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "simplifier",
+      "item": "dead-weight pass over the landed instruments: duplicated logic between /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-selftest-f29.py and the fixture builders, unreachable branches added by the extensions, docstring drift. Findings only, with identical-behavior arguments.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2RevSelftestW2": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "reviewer",
+      "item": "diff-audit the extended selftests at the integration tree vs their committed drafts (/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/wave1/R46bExecSelftestC1.draft/, R46bExecSelftestC2.draft/ when present): every case the L1 changed or dropped during integration is a finding unless the accompanying receipt shows it failing identically; run the extended baselines once more and quote the tallies.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2RevLessonGate": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "reviewer",
+      "item": "attack the lesson's Gate block (corpus/lessons/round-46.md attempt-2 section, if landed): every <= 25-word quote must sit on its manifest anchor line in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/manifest.json and in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/S074.txt (`sed -n 'Np'`); every reject/flip entry must carry a reason + flip condition; the admit must cite S074 with the pinned sha. Quote each defect.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2ScoutCensusPair": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "scout",
+      "item": "re-run the census pair and the registry guards: `bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` now (expect exit 0; compare against /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/controls/sources-census-before.txt — same three W04 warnings plus any new one, which must be explained: does S074 share a URL with a held row?), the SOURCES row-shape guards the census does not check (11 cells, no escaped pipes) on the S074 row, and the registry Search-log/Registry-changes bullets' counts against the real sweeps.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2MutPlain": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "mutation-tester",
+      "item": "mutation-test the plain-measure script /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/wave1/R46bExecPlain.draft/plain-measure2.sh (or its landed successor): >= 5 single-edit mutants (drop the absence sweep, count knowledge files recursively, unquote a grep) — each must change a printed value on the landed tree so a verifier can detect the tampering. Report per-mutant.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2MutNoHarm": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "mutation-tester",
+      "item": "mutation-test the no-harm script /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/wave1/R46bExecNoharm.draft/noharm.sh: >= 4 mutants (drop the numstat exclusion inversion so wave files hide, drop the density line, mis-set the base rev) — each must be detectable in its output (a wrong base rev prints a diff the receipt's base hash contradicts). Report per-mutant.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    },
+    "R46bW2CritHonestStop": {
+      "kind": "spawn",
+      "agentId": null,
+      "role": "critic",
+      "item": "honest-stop audit of the round's claims: for every limb of both claims, name the check that verifies it and WHO ran it (L1, seat, or nobody). Any limb whose only support is an unrun check or a placeholder = the honest-stop list the report must carry. Read the claims file, the wave receipts, and the integration commit; quote the gap per limb or state none.",
+      "axes": [
+        "coverage"
+      ],
+      "milestone": "one wave item, spec in task text"
+    }
+  }
+}

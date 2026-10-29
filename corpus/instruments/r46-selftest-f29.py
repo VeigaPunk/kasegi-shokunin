@@ -184,9 +184,17 @@ def build_positive(dest: str, lane: str) -> None:
     readme = open(os.path.join(lane, README_REL), encoding="utf-8").read()
     frows = [ln for ln in readme.splitlines() if ln.startswith("| F") and ln.count("|") >= 6]
     frows = [ln for ln in frows if ln.split("|")[1].strip().startswith("F")]
-    if len(frows) != 28:
-        raise SystemExit("selftest: lane README carries %d frontier rows, expected 28" % len(frows))
-    out = readme.replace(frows[-1], frows[-1] + "\n" + F29_ROW, 1)
+    if len(frows) == 29 and frows[-1].startswith("| F29 |"):
+        # the landed tree already carries the F29 row: the positive tree IS the landed README
+        out = readme
+    elif len(frows) == 28:
+        f29row = ("| F29 | GitHub repository security advisories — the maintainer-side advisory lifecycle "
+                  "(draft, private fork, CVE via GitHub as CNA, credit, publication, fix version) | admitted | "
+                  "corpus/knowledge/github-repository-security-advisories.md | S074 | Keep the maintainer flow "
+                  "distinct from the reporter flow (F28); re-open the page before relying on its mechanics. |")
+        out = readme.replace(frows[-1], frows[-1] + "\n" + f29row, 1)
+    else:
+        raise SystemExit("selftest: lane README carries %d frontier rows, expected 28 (pre-landing) or 29 (landed)" % len(frows))
     with open(os.path.join(dest, README_REL), "w", encoding="utf-8") as fh:
         fh.write(out)
     with open(os.path.join(dest, SOURCES_REL), "w", encoding="utf-8") as fh:

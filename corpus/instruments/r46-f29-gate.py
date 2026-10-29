@@ -78,7 +78,7 @@ MAN_REL = "corpus/source-snapshots/round-46-a2/manifest.json"
 BODY = (1, 42)
 SNAP_LINES = 42
 LEDGER = "considerthese-proposals-ledger.md"
-LEDGER_MIN_BYTES = 30696  # the ledger's byte size at the freeze tip; it may grow, never shrink
+LEDGER_MIN_BYTES = 40843  # the ledger's byte size at the attempt-2 landing (30696 base bytes + the Round-46 dispositions append); it may grow, never shrink
 
 PINS = {
     "S074.txt": "1296528d5be0882703a1ac4ec32dda420910df4e77a1a9588284f1468c278039",
