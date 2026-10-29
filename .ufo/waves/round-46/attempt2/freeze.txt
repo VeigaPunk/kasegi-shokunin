@@ -1,0 +1,11 @@
+frozen-at 2026-10-29T21:55:00Z
+base 04af9bc92229232ea5cce8b32bfe59dd969eb26d
+claims-sha256 ca73279f5464cf6395028c7e848b5d82bfec95794f03b7fd9b1a61cf000ca1d0
+mutbat-sha256-v1 f7a7cdfa187ef6f2a074e9bda06af7d6163e43da69593b500b95c2c3a29e7fa8
+f29-gate-sha256-v1 a1091e246a51c1c1e710a18c6e8c9ba0cd4004069233a452ba446048de6fb8cd
+S074-sha256 1296528d5be0882703a1ac4ec32dda420910df4e77a1a9588284f1468c278039
+manifest-a2-sha256 46e8077ac89edb0335711826ecb7abf3a1b7eefedc7108c3f6d936135481569f
+source-recheck-sha256 fd2e01e88c8c45a949f48d67b3154ae87a95aeba0b6a9c42fbf64641b5b9c003
+controls controls/sources-census-before.txt (exit 0, three W04 warnings, census-before); controls/f29-gate-at-base.txt (f29-gate fixed=1/7 exit=1 at the base export 04af9bc9); controls/mutbat-before.txt (sha256 13c21fcd9e04c76b769013e56cb8db4f6546c52b2a436c08376b9f3459efb1fd, BATEXIT=1: c1 uncaught=7, c2 uncaught=13, baseline_failures=0 both); controls/selftest-baselines.txt (c1 76/0, c2 137/0); controls/f29-r50-receipt.txt (21 mutants, 11 defect-tree flips, 9 disclosed with reasons)
+freeze-check replay: run-controls.sh (wave 1) re-derives every declared before-value at the base export before any seat result is integrated
+note the attempt-1 instruments r46-c1-gate.py / r46-c2-gate.py and their selftests are byte-identical to base 04af9bc9 at this freeze (verified: git diff base..HEAD empty on those paths at freeze time); the round's C1 work extends the selftests and the battery only

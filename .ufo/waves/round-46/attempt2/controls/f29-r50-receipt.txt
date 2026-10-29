@@ -1,0 +1,68 @@
+# R50 pre-freeze mutant pass — r46-f29-gate.py v1 (round 46 attempt 2)
+
+Counter: `corpus/instruments/r46-f29-gate.py` v1 (sha256 at freeze, see freeze.txt).
+Fixtures: `.ufo/waves/round-46/attempt2/controls/f29-fixture.py` (positive/junk/fabricated trees)
+and `.ufo/waves/round-46/attempt2/controls/f29-defects.py` (17 per-limb defect variants).
+Positive tree reads `f29-gate fixed=7/7 exit=0`; junk tree `fixed=3/7` (H2/H5 red:
+2/7 quotes located, 0/5 cores); fabricated tree `fixed=3/7` (5/7 located, 4/5 cores).
+Run date: 2026-10-29, scratch `/fast/scratch/hyaku/kasegi-r46/L1/f29r50/` (removed after landing).
+
+## Mutants defined: 21 (3 per limb H1-H7)
+
+## Defect-tree pairing (limb-level pass flip)
+
+| pair | defect | mutant | base limb | mutant limb | verdict |
+|---|---|---|---|---|---|
+| 1 | duprow (duplicate live F29 row) | H1a counts-loose | H1=0 | H1=0 | NOT-SHOWN (a) |
+| 2 | fencedf29 (F29 row inside a code fence) | H1b raw-loose | H1=0 | H1=0 | NOT-SHOWN (a) |
+| 3 | src0740 (sources cell S0740) | H1c src-boundary | H1=0 | H1=1 | FLIP |
+| 4 | vjunk (verified-at gains a comment) | H2a verified-loose | H2=0 | H2=1 | FLIP |
+| 5 | thinsection (6-word Scope prose, table kept) | H2b wordfloor-low | H2=1 | H2=1 | NOT-SHOWN (b) |
+| 6 | badnames (xrefs to unrelated in-range files) | H2c need-empty | H2=0 | H2=1 | FLIP |
+| 7 | row9cells (S074 row loses two cells) | H3a cells-loose | H3=0 | H3=0 | NOT-SHOWN (c) |
+| 8 | thinscope (scope cell three words) | H3b scope-low | H3=0 | H3=1 | FLIP |
+| 9 | kindcase (kind cell `Docs`) | H3c kind-dead | H3=0 | H3=1 | FLIP |
+| 10 | manws (manifest + trailing blank line) | H4a manifest-unpinned | H4=0 | H4=1 | FLIP |
+| 11 | fewquotes (only the five core quotes kept) | H4b quotes-low | H4=0 | H4=0 | NOT-SHOWN (d) |
+| 12 | dupquote (one quote duplicated) | H4c distinct-dropped | H4=0 | H4=0 | NOT-SHOWN (d) |
+| 13 | widespan (quote cited 1-42) | H5a span-wide | H5=0 | H5=1 | FLIP |
+| 14 | longquote (30-word real-text quote) | H5b words-wide | H5=0 | H5=1 | FLIP |
+| 15 | fewspans (G5 row removed, 6 spans remain) | H5c pass-low | H5=0 | H5=0 | NOT-SHOWN (e) |
+| 16 | nestedmd (knowledge/sub/note.md) | H6a counts-loose | H6=0 | H6=1 | FLIP |
+| 17 | entrymutant (pinned entry gains a line) | H6b pin-dropped | H6=0 | H6=1 | FLIP |
+| 18 | symlink (corpus is a symlink) | H7b symlink-dead | H7=0 | H7=1 | FLIP |
+| 19 | row9cells tree, H7 limb | H7a verdict-or | H7=0 | H7=0 | NOT-SHOWN (f) |
+| 20 | positive tree, H7 limb | H7c okline-loose | H7=1 | H7=1 | NOT-SHOWN (f) |
+
+Result: mutants=21, defect-flips shown=11 (H1c, H2a, H2c, H3b, H3c, H4a, H5a, H5b, H6a, H6b, H7b),
+not-shown=10, all disclosed below. R50 requires >= 3 mutants per limb and every survivor closed or
+disclosed: every mutant here either flips a defect tree (clause graded) or carries a named reason.
+
+## Disclosures (the NOT-SHOWN mutants)
+
+(a) H1a/H1b — the H1 counts clause and the one-live-row clause are shadowed at gate level by the
+    later F29-presence/duplicate-id clauses: any tree that trips counts (rows=28/30) or duplicates
+    the row also trips `dup` or `entry-shared`, so no single-defect tree isolates them. The clauses
+    are belt-and-braces; the wave-1 selftest grades them on synthetic tables with a controlled id set.
+(b) H2b — the per-section word floor is shadowed by the section's own table: a section that still
+    carries its >= 6-row table always clears 25 words, and a section stripped below 25 words loses
+    the table and trips table-rows. Graded at selftest level in wave 1.
+(c) H3a — relaxing the 11-cell test to >= 9 re-parses the row but the shifted cells then fail the
+    status/opened/cadence literals, so the tree stays red: the relaxation is closed by construction
+    (a 9-cell row cannot satisfy the positional checks).
+(d) H4b/H4c — H4 pins the manifest bytes (H4a, flip shown), so any manifest edit that would exercise
+    the quote-count or distinctness floors is already red at the pin; the floors are not isolable at
+    gate level. Graded at selftest level in wave 1 (the selftest rebuilds PINS for its synthetic trees).
+(e) H5c — the >= 4 located floor is shadowed by `failed == 0` + the H2 table-rows >= 6 conjunct: an
+    entry with a 6-row cited table always has >= 4 located spans. Graded at selftest level in wave 1.
+(f) H7a/H7c — both grade the census OUTPUT shape (`rc == 0` + an `ok` tab line). The census script
+    lives at the fleet root and is not mutated by this lane; a tree with census rc=0 never lacks the
+    ok line, so no lane-side defect tree isolates them. Disclosed as census-dependent; the census
+    itself is gated upstream (the fleet SOURCES contract).
+
+## Frozen duty carried into the claim
+
+The claim (C2) kill rule requires the wave-1 selftest (`r46-selftest-f29.py`, built in wave 1 and
+committed with the landing) to grade clauses (a), (b), (d), (e) on synthetic trees, and the battery
+extension (`r46-mutbat.py --counter f29`) to reach `uncaught=0` for the f29 gate with the same
+caught-or-equivalent predicate as C1's counters.

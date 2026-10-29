@@ -1,0 +1,52 @@
+{
+  "schema": "kasegi-round-claims-v2",
+  "lane": "kasegi",
+  "round": 46,
+  "attempt": 2,
+  "author": "KasegiR46",
+  "base": "04af9bc92229232ea5cce8b32bfe59dd969eb26d",
+  "note": "Re-dispatched round 46 after the attempt-1 honest-stop (operator wrap-up, run 11). Attempt 1's claims (.ufo/waves/round-46/claims.json, frozen 9f23aab) landed their work but were never adjudicated; this attempt declares NEW claims against the post-attempt-1 tree. The attempt-1 counters r46-c1-gate.py / r46-c2-gate.py are NOT edited by this round's claims (any amendment is a logged erratum); this round's surface is their selftests, the battery, and one new frontier admission.",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "type": "measured",
+      "before": "The two round-46 claim counters (corpus/instruments/r46-c1-gate.py, r46-c2-gate.py — the attempt-1 frozen instruments, unchanged at base 04af9bc9) are graded by committed selftests (r46-counters-selftest-c1.py: cases=76 failures=0; r46-counters-selftest-c2.py: cases=137 failures=0 at base, receipt controls/selftest-baselines.txt), but their mutation coverage is unmeasured and incomplete: the frozen battery corpus/instruments/r46-mutbat.py (v1) at the base prints `mutbat counter=c1 mutants=20 caught=13 equivalent=0 uncaught=7 baseline_failures=0` and `mutbat counter=c2 mutants=21 caught=8 equivalent=0 uncaught=13 baseline_failures=0` (receipt controls/mutbat-before.txt, sha256 13c21fcd9e04c76b769013e56cb8db4f6546c52b2a436c08376b9f3459efb1fd, BATEXIT=1). C1 uncaught: M06-L3-home-dropped, M07-L3-home-no-abs, M13-L6-control-dropped, M14-L6-exit-ignored, M18-anchor-dirs-wide, M19-L2-eq-relaxed, M20-syntax-ignored. C2 uncaught: G1c-src-boundary, G2a-verified-prefix, G2b-wordfloor-low, G2c-need-empty, G3a-cells-loose, G4b-quotes-low, G5c-pass-low, G6a-guards-dead, G6b-integrity-loose, G6c-size-low, G7a-verdict-or, G7b-symlink-dead, G7c-okline-loose. A do-nothing control (selftests untouched, battery as-is) cannot reach uncaught=0: the before receipt IS that control's output.",
+      "after": "Every mutant of the frozen battery is graded by the committed selftests: at the final lane revision the battery prints `mutbat counter=c1 mutants=20 caught=<k1> equivalent=<e1> uncaught=0 baseline_failures=0` and `mutbat counter=c2 mutants=21 caught=<k2> equivalent=<e2> uncaught=0 baseline_failures=0` (caught + equivalent == mutants, baseline failures=0 both), where every equivalent verdict names a committed proof (an --equivalent map entry pointing at a written argument file; a mutant with neither a failing selftest case nor a committed proof keeps the claim red), the extended selftests (r46-counters-selftest-c1.py, r46-counters-selftest-c2.py) keep `failures=0` baselines at the final revision with their new dedicated cases each failing under its targeted mutant (per-mutant verification receipt), and the planned new f29-gate selftest (r46-selftest-f29.py) reaches the same caught-or-equivalent state for the f29 gate's 21 mutants via the battery's f29 mode (battery v1.1, logged as erratum). The selftests' extension and the battery's f29 mode are the claim's work; the two counters' limb semantics are unchanged (any byte change to them is a logged erratum with a plain re-derivation).",
+      "kill_rule": "C1 fails if either battery summary at the final revision prints uncaught>0 or baseline_failures!=0; or if an equivalent verdict's proof file is missing, empty, or falsified by a constructed input (a reviewer who builds an input class where the mutated clause changes a verdict kills that equivalence and with it the claim); or if a do-nothing control (selftests untouched at base) grades uncaught=0 (the before-value must stay reproducible at the base export); or if a new dedicated case cannot fail under its targeted mutant (a case that passes under its own mutant tests nothing); or if the counters' limb sentences change after a seat has scored (bug fixes are logged as errata in the attempt-2 errata file with a plain re-derivation that does not use the changed instrument).",
+      "counter_cmd": "python3 {tool}/corpus/instruments/r46-mutbat.py --root {tree} --pure {pure} --work {work} --counter both --jobs 8",
+      "expect_before": "mutbat counter=c1 mutants=20 caught=13 equivalent=0 uncaught=7 baseline_failures=0; mutbat counter=c2 mutants=21 caught=8 equivalent=0 uncaught=13 baseline_failures=0",
+      "expect_after": "mutbat counter=c1 mutants=20 caught+equivalent=20 uncaught=0 baseline_failures=0; mutbat counter=c2 mutants=21 caught+equivalent=21 uncaught=0 baseline_failures=0",
+      "plain": [
+        "python3 corpus/instruments/r46-counters-selftest-c1.py --pure <pure> --work <scratch> --jobs 8 | tail -1   # base: cases=76 failures=0; after: cases>76 failures=0",
+        "python3 corpus/instruments/r46-counters-selftest-c2.py --pure <pure> | tail -1   # base: cases=137 failures=0; after: cases>137 failures=0",
+        "grep -c 'def case_' corpus/instruments/r46-counters-selftest-c1.py corpus/instruments/r46-counters-selftest-c2.py   # the case-count move behind the tallies"
+      ],
+      "freeze_tree_reading": "At the freeze commit the battery prints exactly the before pair above (the claimed work is not yet done); controls/mutbat-before.txt is that run.",
+      "control": ".ufo/waves/round-46/attempt2/controls/freeze-controls.txt"
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "type": "measured",
+      "before": "28 admitted public-practice frontier rows (F01-F28), 65 knowledge entries, 73 SOURCES rows; GitHub's maintainer-side repository-security-advisory lifecycle (draft advisory, temporary private fork, CVE request via GitHub as CNA, credit, publication, fix-version duty) is held nowhere: at base 04af9bc9 the absence sweep `grep -rliE 'repository securit. advisor|GHSA' corpus/knowledge corpus/SOURCES.md corpus/README.md` prints 2 files (the F28 entry's scope-out note and the S068 rejected-database row's search-log context — no SOURCES row for this ground, no README admission, no entry), the admission gate `python3 corpus/instruments/r46-f29-gate.py --root <base export>` prints `f29-gate fixed=1/7 exit=1` (controls/f29-gate-at-base.txt), and the do-nothing controls (junk-entry tree, fabricated-quote tree) read 3/7 (controls receipts).",
+      "after": "29 admitted frontier rows with F29 = GitHub repository security advisories (the maintainer-side advisory lifecycle; the reporter-side flow stays F28), one new tier-A mined row S074 with a sha-pinned snapshot (corpus/source-snapshots/round-46-a2/S074.txt, sha256 1296528d5be0882703a1ac4ec32dda420910df4e77a1a9588284f1468c278039, 42 lines) and nine located manifest quotes, one new knowledge entry (66 total) whose curly quotes are each located in snapshot lines and which states a decision rule a maintainer can act on (draft before publish, fix version before publish, CVE request while private) plus the F28/F07 contrasts, absence sweep 2 -> 4 files (README, SOURCES, the entry, + the ledger-class growth is separate), census exit 0, capture binding unbound=0, and the R50 pre-freeze mutant receipt controls/f29-r50-receipt.txt (21 mutants, 11 defect-tree flips, 9 disclosed) carried into the f29 selftest the wave builds.",
+      "kill_rule": "C2 fails if r46-f29-gate.py prints fixed<7/7 at the final lane revision; or if any control (do-nothing base export, junk-entry tree, fabricated-quote tree) grades 7/7; or if the non-author closure re-opening the page cannot locate the cited quotes; or if the entry restates the page without a decision rule a maintainer can act on; or if the frontier row's sources cell names any source other than S074 for the same ground (double-counting). The target (29 admitted rows, 66 entries, S074 mined) is not narrowed after landing.",
+      "counter_cmd": "python3 {tool}/corpus/instruments/r46-f29-gate.py --root {tree}",
+      "expect_before": "f29-gate fixed=1/7 exit=1 (base export; 2/7 at the freeze tree where the capture and manifest are committed)",
+      "expect_after": "f29-gate fixed=7/7 exit=0",
+      "secondary": "python3 {tool}/corpus/instruments/r44-frontier-count.py --root {tree} --expect 29  # base: frontier rows=28 admitted=28 exit 1",
+      "plain": [
+        "grep -cE '^\\| F[0-9]+ \\|' corpus/README.md   # 28 -> 29",
+        "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md   # 73 -> >=74 (S074 mined)",
+        "find corpus/knowledge -maxdepth 1 -name '*.md' | wc -l   # 65 -> 66",
+        "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-46-a2/manifest.json --source S074   # sha256 OK + 9 quotes OK",
+        "grep -rliE 'repository securit. advisor|GHSA' corpus/knowledge corpus/SOURCES.md corpus/README.md | wc -l   # base 2 -> 4"
+      ],
+      "freeze_tree_reading": "f29-gate fixed=2/7 exit=1 at the freeze tree (H4 capture + H7 census green; the live lane today reads exactly that).",
+      "control": ".ufo/waves/round-46/attempt2/controls/freeze-controls.txt"
+    }
+  ],
+  "sourced_claim": "C2 rests on S074 (opened 2026-10-29T20:19:30Z by the L1; snapshot corpus/source-snapshots/round-46-a2/S074.txt; manifest corpus/source-snapshots/round-46-a2/manifest.json — a NEW manifest beside the attempt-1 one, which stays byte-identical because the attempt-1 receipts pin its sha256 01f0257261d1a69b58c26856997e877cea092eb12b681421a7e9f0df74f79d34).",
+  "frontier_step": "SOURCES rows 73 -> >=74 (S074 tier A mined, new snapshot dir round-46-a2); considerthese ledger dispositions append (the attempt-1 routed item) lands this round together with the r46-c2-gate.py ledger-exemption amendment if the wave verifies it, else the deferral is carried; mined mistake in corpus/lessons/round-46.md attempt-2 section (M46-4: mutation coverage shipped unmeasured — QUALITY R50 captured it); census before/after receipts in controls/."
+}
