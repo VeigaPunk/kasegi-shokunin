@@ -20,9 +20,8 @@ for T in base tip; do
   echo "# $T"
   ( cd "$S/$T"; echo "recheck lines guarded by test -d ~/Projects: $(grep -lE '^recheck:.*test -d ~/Projects/' corpus/knowledge/*.md | wc -l)" )
 done
-if [ -f "$S/tip/.ufo/waves/round-46/wave2/plain-measure.sh" ]; then
-  for T in base tip; do echo "# plain-measure.sh $T"; bash "$S/tip/.ufo/waves/round-46/wave2/plain-measure.sh" "$S/$T"; done
-fi
+for T in base tip; do echo "# r46-plain-measure.sh $T"; bash "$S/tip/corpus/instruments/r46-plain-measure.sh" "$S/$T"; done
+for e in claim-gates.md claim-package-contract.md; do echo "# plain-rows.sh tip $e"; bash "$S/tip/.ufo/waves/round-46/controls/plain-rows.sh" "$S/tip" "$e" | tail -1; done
 echo "## C2 (coverage) - counter"
 run python3 -B corpus/instruments/r46-c2-gate.py --root "$S/base"
 run python3 -B corpus/instruments/r46-c2-gate.py --root "$S/tip"
@@ -36,7 +35,7 @@ for T in base tip; do
 done
 echo "## selftests (tip export)"
 for f in r46-counters-selftest-c1.py r46-counters-selftest-c2.py; do
-  [ -f "corpus/instruments/$f" ] && run python3 -B corpus/instruments/$f --lane "$S/tip" --base "$S/base"
+  [ -f "corpus/instruments/$f" ] && run python3 -B corpus/instruments/$f --lane "$S/tip" --pure "$S/base"
 done
 [ -f corpus/instruments/r46-landing-gate.py ] && run python3 -B corpus/instruments/r46-landing-gate.py --selftest --work "$S/w3"
 echo "## census, recheck, binding, density (tip export; census on the tip SOURCES.md)"
