@@ -1,28 +1,34 @@
 #!/usr/bin/env python3
-"""r46-counters-selftest-c2.py — selftest for corpus/instruments/r46-c2-gate.py (round 46, C2, frontier F28).
+"""r46-counters-selftest-c2.py — selftest for corpus/instruments/r46-c2-gate.py v1.1 (round 46, C2, frontier F28; wave-2 rewrite of the wave-1 v1 selftest).
 
-Builds, per case, a COMPLETE synthetic C2 tree in scratch from a copy of the pure base export (--pure):
+Builds, per case, a COMPLETE synthetic C2 tree in scratch from a copy of the pure base export (--pure) that satisfies the v1.1 limbs:
   corpus/README.md            the base's frontier F01..F27 plus a live F28 row (`admitted`, third cell) -> corpus/knowledge/<entry>
-  corpus/SOURCES.md           the base registry plus an S073 row: tier A, mined, opened 2026-10-28, snapshot sha256 in the anchor cell,
-                              used-by = the entry
-  corpus/knowledge/<entry>    github-private-vulnerability-reporting.md: provenance trio, four sections, an 8-row 3-cell table,
-                              curly spans each followed by (`S073.txt:N[-M]`) with N located by SEARCH in the real capture (never
-                              hard-coded), covering all five frozen cores, two cross-references to
+  corpus/SOURCES.md           the base registry plus an S073 row under `## Registry`: tier A, kind docs, scope and teaches cells >= 8 words,
+                              an anchor cell naming S073.txt, a line locator and the snapshot sha256, recheck 180d, mined, opened 2026-10-28,
+                              used-by = the entry, the canonical URL first in the source cell
+  corpus/knowledge/<entry>    github-private-vulnerability-reporting.md: provenance trio, the four required sections (each >= 25 words, the
+                              falsifiable-rule section >= 12; the byte pad sits in the preamble so it never inflates a section), a table
+                              under its own heading with 8 three-cell rows of which 7 carry a located `S073.txt:N` cite, curly spans each
+                              followed by (`S073.txt:N[-M]`) with N located by SEARCH in the real capture (never hard-coded) inside body
+                              lines 556-583 and spanning <= 12 lines, covering all five frozen cores, cross-references to
                               linux-kernel-security-bugs-reporting-process.md and ai-assisted-finding-validation.md, padded to 3600 bytes
   corpus/source-snapshots/round-46/{S073.txt,manifest.json}   byte copies from --lane
-The base's real 64 knowledge files make the counter's REAL pins hold (no R46_PINS_OVERRIDE is ever set). The tree carries no
-source-recheck.py: the counter runs the lane's own (its TOOL_ROOT).
+The base's real 64 knowledge files make the counter's REAL pins hold (no R46_PINS_OVERRIDE is set, except in the four `repin` cases, whose
+per-case grader-side override file pins the manifest to its EDITED bytes so only the distinctness limb can fire). The base's two C1 entries are the
+BASE bytes; `land_c1` swaps in the lane's re-grounded bytes (the exempt entries). The tree carries no source-recheck.py: the counter runs
+the lane's own (its TOOL_ROOT).
 
 Case classes (controls and mutants are counted; probes are printed, never counted):
   null     the unmodified pure base (no F28 row, no S073 row, no entry): must NOT reach 7/7 (G1-G6 fail, G7 passes)
-  control  the complete tree and boundary variants that must print `c2-gate fixed=7/7 exit=0`
+  control  the complete tree, boundary variants, the C1-landed tree and the committed tip itself: must print `c2-gate fixed=7/7 exit=0`
   mutant   one defect; the targeted gate(s) must read pass=0, all seven gate lines must be present, and no gate outside
-           target|allowed-collateral may fail
+           target|allowed-collateral may fail. The wave-1 survivors (R46MutC2a/b/c, R46RevC2G2/G3/G5) are named in each case's note
   probe    accepted-by-design questions
 `--do-nothing-control` runs every case against a stub that always prints 7/7: every mutant must then be reported as accepted (FAIL).
+`--counter PATH` grades another counter (e.g. the frozen v1): the survivors then print `ACCEPTED-targeted-gate-passes`.
 
 Usage: python3 r46-counters-selftest-c2.py [--lane DIR] [--pure DIR] [--counter PATH] [--do-nothing-control] [--keep] [-v]
-READ-ONLY on --lane and --pure; scratch only under $HYAKU_SCRATCH/kasegi-r46/R46ExecSelftestC2/ (removed on exit unless --keep).
+READ-ONLY on --lane and --pure; scratch only under $HYAKU_SCRATCH/kasegi-r46/R46W2ExecSelftestC2/ (removed on exit unless --keep).
 Prints `selftest cases=<N> failures=<F>` last; exit 0 iff F == 0.
 """
 from __future__ import annotations
@@ -51,6 +57,7 @@ XREF_K = "corpus/knowledge/linux-kernel-security-bugs-reporting-process.md:11-12
 XREF_A = "corpus/knowledge/ai-assisted-finding-validation.md:7-8,15"
 PAD_PREFIX = "Reading note: "
 ALL = {f"G{i}" for i in range(1, 8)}
+C1_ENTRIES = {"claim-gates.md", "claim-package-contract.md"}  # the two entries C1 re-grounds: exempt from the counter's byte pin, their names stay pinned
 F28_TOPIC = "GitHub private vulnerability reporting, reporter flow: who may report, what the form requires, the credit and the private-fork limit"
 F28_NEXT = "Re-open the GitHub page before relying on the form fields; maintainers can customise the form."
 
@@ -141,9 +148,11 @@ def entry_text(spans, size: int = 3600) -> str:
         "verified-at: 2026-10-28",
         "recheck: cd " + LANE + " && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-46/manifest.json --source S073 # 180d",
         "",
+        PAD_PREFIX + ".",  # the byte pad sits in the preamble, outside every required section, so a section's own words are never inflated by it
+        "",
         SECTIONS[0],
         "",
-        "This synthetic entry records what GitHub's own page says about private reporting.",
+        "This synthetic entry records what GitHub's own page says about reporting a security vulnerability privately to the maintainers of a public repository, from the reporter's side only (page body `S073.txt:556-579`). The table below lists each observed question with the page text and the consequence for a claim package.",
         "",
         "| observed question | page text | package consequence |",
         "|---|---|---|",
@@ -154,21 +163,18 @@ def entry_text(spans, size: int = 3600) -> str:
         "",
         SECTIONS[1],
         "",
-        "Already held in this corpus:",
+        "Kernel intake is an e-mail route to a closed list; this page is a web form on a hosting platform. The channels differ, so a package must not mix their steps, and a reporter must not carry one project's rule over to the other.",
         "",
-        f"- F27 (`{XREF_K}`) records the kernel's own e-mail intake; this page is a web-form channel instead.",
-        f"- F04 (`{XREF_A}`) holds that an AI-originated finding stays a candidate until reproduction is recorded.",
-        "",
-        "New here: the platform's reporter-side form flow.",
+        f"- F27 (`{XREF_K}`) is the kernel's e-mail intake.",
+        f"- F04 (`{XREF_A}`) keeps AI findings as candidates.",
         "",
         SECTIONS[2],
         "",
-        "- One platform's page, not a standard. Documentation only: no contact with anyone and no probing of any system.",
-        PAD_PREFIX + ".",
+        "One platform's page, not a standard. Documentation only: no contact with anyone and no probing of any system took place. Maintainers can customise the form. The page body is `S073.txt:556-579`; a sweep with `grep -n -i cve S073.txt` printed nothing, so the page states no CVE handling and none is inferred here.",
         "",
         SECTIONS[3],
         "",
-        "When a package describes a GitHub private report, check each stated step against the table above in order.",
+        "When a package describes a GitHub private report, check each stated step against the table above in order, starting from the enablement fact at `S073.txt:564`.",
         "",
     ]
     return fit("\n".join(out), size)
@@ -250,8 +256,8 @@ def drop_row(root, key):
 
 
 class Case:
-    def __init__(self, name, kind, mut=None, targets=(), allow=(), env=None, note=""):
-        self.name, self.kind, self.mut = name, kind, mut or (lambda r: None)
+    def __init__(self, name, kind, mut=None, targets=(), allow=(), env=None, note="", direct=False, repin=False):
+        self.name, self.kind, self.mut, self.direct, self.repin = name, kind, mut or (lambda r: None), direct, repin
         self.targets, self.allow, self.env, self.note = set(targets), set(allow), env or {}, note
 
 
@@ -273,7 +279,7 @@ def main() -> int:
     ap.add_argument("-v", action="store_true")
     a = ap.parse_args()
 
-    seat_dir = os.path.join(os.environ.get("HYAKU_SCRATCH") or "/fast/scratch/hyaku", "kasegi-r46", "R46ExecSelftestC2")
+    seat_dir = os.path.join(os.environ.get("HYAKU_SCRATCH") or "/fast/scratch/hyaku", "kasegi-r46", "R46W2ExecSelftestC2")
     os.makedirs(seat_dir, exist_ok=True)
     work = tempfile.mkdtemp(prefix="c2st-", dir=seat_dir)
     tmp = os.path.join(work, "tmp")
@@ -301,9 +307,9 @@ def main() -> int:
         # the two knowledge files a delete/rename mutant may touch: not cross-referenced, not a SOURCES used-by
         sources_txt = open(os.path.join(a.pure, SOURCES), encoding="utf-8").read()
         spare = next(n for n in sorted(os.listdir(os.path.join(a.pure, "corpus/knowledge")))
-                     if n.endswith(".md") and n not in sources_txt and n not in ("ai-assisted-finding-validation.md", "linux-kernel-security-bugs-reporting-process.md"))
+                     if n.endswith(".md") and n not in sources_txt and n not in C1_ENTRIES and n not in ("ai-assisted-finding-validation.md", "linux-kernel-security-bugs-reporting-process.md"))
         spare2 = next(n for n in sorted(os.listdir(os.path.join(a.pure, "corpus/knowledge")))
-                      if n.endswith(".md") and n not in sources_txt and n != spare and n not in ("ai-assisted-finding-validation.md", "linux-kernel-security-bugs-reporting-process.md"))
+                      if n.endswith(".md") and n not in sources_txt and n not in C1_ENTRIES and n != spare and n not in ("ai-assisted-finding-validation.md", "linux-kernel-security-bugs-reporting-process.md"))
 
         base = os.path.join(work, "base-syn")
         build(a.pure, a.lane, snap, spans, base)
@@ -332,6 +338,28 @@ def main() -> int:
         def add_before_limits(r, text):
             sub(r, ENTRY_REL, SECTIONS[2], text + "\n\n" + SECTIONS[2])
 
+        SECT_FLOORS = [25, 25, 25, 12]  # words per required section (the package rule's own section is >= 12), counted as \w+ runs
+
+        def sect_words(t, heading):
+            m = re.search("^" + re.escape(heading) + r"\s*$(.*?)(?=^## |\Z)", t, re.M | re.S)
+            return len(re.findall(r"\w+", m.group(1))) if m else -1
+
+        def set_section(r, i, body):
+            t = ent(r)
+            n = re.subn("^(" + re.escape(SECTIONS[i]) + r"[ \t]*\n)(.*?)(?=^## |\Z)", lambda m: m.group(1) + ("\n" + body + "\n\n" if body else "\n"), t, count=1, flags=re.M | re.S)
+            assert n[1] == 1, "set_section harness bug"
+            wr(r, ENTRY_REL, n[0])
+            assert sect_words(ent(r), SECTIONS[i]) == len(re.findall(r"\w+", body)), "set_section word-count harness bug"
+
+        def land_c1(r):  # the C1-landed tree: the lane's two re-grounded entries replace the base bytes (exempt from the byte pin)
+            for fn in sorted(C1_ENTRIES):
+                shutil.copyfile(os.path.join(a.lane, "corpus/knowledge", fn), os.path.join(r, "corpus/knowledge", fn))
+
+        for fn in C1_ENTRIES:  # the control is not vacuous: the lane's bytes differ from the base's
+            assert open(os.path.join(a.lane, "corpus/knowledge", fn), "rb").read() != open(os.path.join(a.pure, "corpus/knowledge", fn), "rb").read(), fn
+        for i, f in enumerate(SECT_FLOORS):  # the complete tree clears every floor, and clears the thinnest one by margin
+            assert sect_words(rd(base, ENTRY_REL), SECTIONS[i]) >= f + 1, (SECTIONS[i], sect_words(rd(base, ENTRY_REL), SECTIONS[i]))
+
         C: list[Case] = []
         add = C.append
 
@@ -342,7 +370,6 @@ def main() -> int:
         add(Case("ctl-complete-tree", "control"))
         add(Case("ctl-25-word-span-boundary", "control", lambda r: add_before_limits(r, f"- Page text for the not-enabled case: “{w25}” ({cite(la, la)})")))
         add(Case("ctl-range-citation-577-578", "control", lambda r: sub(r, ENTRY_REL, cite(spans['credit'][1], spans['credit'][2]), "`S073.txt:%d-%d`" % (spans['credit'][1], spans['merge'][2]))))
-        add(Case("ctl-entry-exactly-3000-bytes", "control", lambda r: refit(r, 3000)))
         add(Case("ctl-six-table-rows-boundary", "control", lambda r: (drop_row(r, "anyone"), drop_row(r, None))))
         add(Case("ctl-whitespace-and-markup-in-span", "control", lambda r: sub(r, ENTRY_REL, "“By default, you must provide", "“By  **default**, you  must provide")))
         add(Case("ctl-f28-decoy-in-comment-and-fence", "control", lambda r: wr(r, README, rd(r, README) + "\n<!--\n| F28 | decoy | admitted | knowledge/stub.md | S073 | x |\n-->\n```\n| F28 | decoy | queued | knowledge/stub2.md | S073 | x |\n```\n")))
@@ -362,7 +389,6 @@ def main() -> int:
         add(Case("mut-citation-without-quote-marks-for-core", "mutant", lambda r: sub(r, ENTRY_REL, k("merge"), f"the maintainer alone merges ({cite(ma, mb)})"), {"G5"}))
         add(Case("mut-core-ai-removed-others-intact", "mutant", lambda r: sub(r, ENTRY_REL, k("ai"), "AI assistance is a form option"), {"G5"}))
         add(Case("mut-core-enabled-removed-others-intact", "mutant", lambda r: sub(r, ENTRY_REL, k("enabled"), "the feature must be enabled"), {"G5"}))
-        add(Case("mut-fabricated-quote-in-fenced-block", "mutant", lambda r: add_before_limits(r, "```\n“GitHub guarantees a response within 24 hours” (`S073.txt:577`)\n```"), {"G5"}))
         add(Case("mut-quote-slightly-reworded", "mutant", lambda r: sub(r, ENTRY_REL, "“" + Q["credit"] + "”", "“GitHub automatically adds the reporter as a collaborator and as a credited user on the proposed advisory.”"), {"G5"}))
         # G3 registry row
         add(Case("mut-wrong-tier-B", "mutant", lambda r: sub(r, SOURCES, "| docs | A | The reporter-side", "| docs | B | The reporter-side"), {"G3"}, allow={"G7"}))
@@ -398,7 +424,6 @@ def main() -> int:
         add(Case("mut-65-files-base-swapped-for-pad", "mutant", lambda r: (os.remove(os.path.join(r, "corpus/knowledge", spare)), wr(r, "corpus/knowledge/pad-swap.md", "# pad\n")), {"G6"}))
         add(Case("mut-65-files-base-renamed", "mutant", lambda r: os.rename(os.path.join(r, "corpus/knowledge", spare2), os.path.join(r, "corpus/knowledge", spare2[:-3] + "-renamed.md")), {"G6"}))
         add(Case("mut-base-file-byte-changed", "mutant", lambda r: wr(r, "corpus/knowledge/" + spare, rd(r, "corpus/knowledge/" + spare) + " "), {"G6"}))
-        add(Case("mut-entry-2999-bytes", "mutant", lambda r: refit(r, 2999), {"G6"}))
         # G1 frontier
         add(Case("mut-duplicate-f-id", "mutant", lambda r: sub(r, README, "| F26 |", "| F27 |"), {"G1"}))
         add(Case("mut-duplicate-f28-row", "mutant", lambda r: sub(r, README, f28_row(), f28_row() + "\n" + f28_row()), {"G1"}, allow={"G2", "G3", "G5", "G6"}))
@@ -437,35 +462,95 @@ def main() -> int:
         add(Case("mut-xref-to-missing-file", "mutant", lambda r: sub(r, ENTRY_REL, XREF_K, XREF_K.replace("linux-kernel-security-bugs-reporting-process", "linux-kernel-security-bugs-reporting-processs")), {"G2"}))
         # G7 census
         add(Case("mut-census-dangling-extra-used-by", "mutant", lambda r: sub(r, SOURCES, "| 180d | " + ENTRY_REL + " |", "| 180d | " + ENTRY_REL + ", corpus/knowledge/no-such-file.md |"), {"G7"}))
-        add(Case("mut-census-bad-kind", "mutant", lambda r: sub(r, SOURCES, "| docs | A | The reporter-side", "| blog | A | The reporter-side"), {"G7"}))
-        add(Case("mut-census-bad-recheck", "mutant", lambda r: sub(r, SOURCES, "| mined | 2026-10-28 | 180d | " + ENTRY_REL, "| mined | 2026-10-28 | 2026-13-45 | " + ENTRY_REL), {"G7"}))
+        add(Case("mut-census-bad-kind", "mutant", lambda r: sub(r, SOURCES, "| docs | A | The reporter-side", "| blog | A | The reporter-side"), {"G7"}, allow={"G3"}))
+        add(Case("mut-census-bad-recheck", "mutant", lambda r: sub(r, SOURCES, "| mined | 2026-10-28 | 180d | " + ENTRY_REL, "| mined | 2026-10-28 | 2026-13-45 | " + ENTRY_REL), {"G7"}, allow={"G3"}))
         add(Case("mut-census-future-opened", "mutant", lambda r: sub(r, SOURCES, "| mined | 2026-10-28 | 180d | " + ENTRY_REL, "| mined | 2099-01-01 | 180d | " + ENTRY_REL), {"G7"}, allow={"G3"}))
         add(Case("mut-census-registry-missing", "mutant", lambda r: os.remove(os.path.join(r, SOURCES)), {"G7"}, allow={"G3"}))
 
-        # ------------------------------------------------------------------ probes (accepted-by-design questions; printed, not counted)
-        P: list[Case] = []
-        P.append(Case("probe-wide-window-citation-1-589-for-real-quote", "probe", lambda r: sub(r, ENTRY_REL, cite(spans["credit"][1], spans["credit"][2]), "`S073.txt:1-589`"), note="wrong-location real quote hides in a whole-file window"))
-        P.append(Case("probe-core-quote-from-page-chrome-line", "probe", lambda r: add_before_limits(r, "- Navigation text: “Collaborate in a fork” (`S073.txt:%d`)" % snap.locate("Collaborate in a fork")[0]), note="a located quote from non-article page chrome"))
-        P.append(Case("probe-single-curly-quotes-uncited", "probe", lambda r: add_before_limits(r, "- A reporter may ‘submit a report’ at any hour."), note="‘single’ curly quotes are not counted as curly spans"))
-        P.append(Case("probe-straight-quoted-fabrication", "probe", lambda r: add_before_limits(r, '- The page says "GitHub guarantees a response within 24 hours".'), note="straight-quoted fabricated text is invisible to G5"))
-        P.append(Case("probe-fabricated-prose-no-quote-marks", "probe", lambda r: add_before_limits(r, "- GitHub guarantees maintainers respond within 24 hours (S073.txt:577)."), note="an unquoted false claim is invisible to G5"))
-        P.append(Case("probe-extra-knowledge-subdir-file", "probe", lambda r: (os.makedirs(os.path.join(r, "corpus/knowledge/sub")), wr(r, "corpus/knowledge/sub/extra.md", "# x\n")), note="G6 counts only maxdepth-1"))
+        # ------------------------------------------------------------------ v1.1 survivors of the wave-1 falsification (each must now read red on the named gate)
+        # G2: the recheck line, the section word floors, the table content
+        add(Case("mut-recheck-source-S0730", "mutant", lambda r: sub(r, ENTRY_REL, "--source S073 ", "--source S0730 "), {"G2"}, note="wave-1 R46MutC2a S1: `--source S073` was a substring test"))
+        add(Case("ctl-recheck-source-S073-at-end-of-line", "control", lambda r: sub(r, ENTRY_REL, " # 180d\n", "\n")))
+        add(Case("mut-recheck-manifest-other-round", "mutant", lambda r: sub(r, ENTRY_REL, "round-46/manifest.json", "round-45/manifest.json"), {"G2"}))
+        for i, (sct, floor) in enumerate(zip(SECTIONS, SECT_FLOORS)):
+            nm = ["scope", "overlap", "limits", "falsifiable"][i]
+        add(Case("mut-limits-section-emptied", "mutant", lambda r: set_section(r, 2, ""), {"G2"}, note="wave-1 R46MutC2a S3: an emptied Limits section passed on the heading alone"))
+        add(Case("mut-table-six-rows-one-uncited", "mutant", lambda r: (drop_row(r, "anyone"), drop_row(r, "initiate")), {"G2"}, note="six data rows, one without a located S073.txt:N cite: five count"))
 
-        def junk_table(r):  # six junk 3-cell rows stand in for the table; the real quotes move to bullets
+        def junk_rows(r, filler):  # five real located rows stay; the three non-core rows are swapped for junk 3-cell lines
+            for kk in NONCORE_ROWS:
+                drop_row(r, kk)
+            sub(r, ENTRY_REL, "|---|---|---|\n", "|---|---|---|\n" + (filler + "\n") * 3)
+
+        add(Case("mut-table-junk-dash-rows", "mutant", lambda r: junk_rows(r, "| - | - | - |"), {"G2"}, note="wave-1 R46MutC2a S2"))
+        add(Case("mut-table-junk-letter-rows", "mutant", lambda r: junk_rows(r, "| a | b | c |"), {"G2"}))
+
+        def junk_table(r):  # six junk 3-cell rows stand in for the table; the real quotes move to cited bullets
             t = ent(r)
             for key, q, c2 in ROWS:
-                ln = row_line(key, q, c2, spans)
-                t = t.replace(ln + "\n", "")
-            t = t.replace("|---|---|---|\n", "|---|---|---|\n" + "| a | b | c |\n" * 6 + "\n" + "".join("- " + k(kk) + "\n" for kk in Q) + "- no response time\n")
-            assert t.count("| a | b | c |") == 6 and "Who may submit" not in t, "junk_table harness bug"
+                t = t.replace(row_line(key, q, c2, spans) + "\n", "")
+            t = t.replace("|---|---|---|\n", "|---|---|---|\n" + "| - | - | - |\n" * 6 + "\n" + "".join("- " + k(kk) + "\n" for kk in Q) + "- no response time\n")
+            assert t.count("| - | - | - |") == 6 and "Who may submit" not in t, "junk_table harness bug"
             wr(r, ENTRY_REL, t)
 
-        P.append(Case("probe-junk-table-rows-with-quotes-in-bullets", "probe", junk_table, note="G2 counts any 3-cell pipe lines, not table content"))
+        add(Case("mut-table-six-junk-rows-quotes-in-bullets", "mutant", junk_table, {"G2"}))
+        add(Case("mut-table-rows-without-numeric-cite", "mutant", lambda r: wr(r, ENTRY_REL, "\n".join(re.sub(r"\(`S073\.txt:[\d-]+`\)", "(`S073.txt`)", ln) if ln.startswith("| ") else ln for ln in ent(r).split("\n"))), {"G2", "G5"}, note="a row counts only with a located S073.txt:N cite; the curly quotes also lose their cites (G5)"))
+        # G3: the registry row content and the registry scope
+        add(Case("mut-row-scope-seven-words", "mutant", lambda r: sub(r, SOURCES, "The reporter-side flow of GitHub private vulnerability reporting only; maintainer-side handling is outside this row", "reporter flow only, nothing else here"), {"G3"}, allow={"G7"}))
+        add(Case("mut-row-teaches-seven-words", "mutant", lambda r: sub(r, SOURCES, "Read the platform's own reporter steps before planning a private report", "Read the reporter steps first"), {"G3"}, allow={"G7"}))
+        add(Case("mut-row-anchor-without-locator", "mutant", lambda r: sub(r, SOURCES, "page headings Privately reporting a security vulnerability L560 and the numbered steps L567-L579; ", "the whole page; "), {"G3"}, allow={"G7"}))
+        add(Case("mut-row-recheck-cell-filler", "mutant", lambda r: sub(r, SOURCES, "| mined | 2026-10-28 | 180d | " + ENTRY_REL, "| mined | 2026-10-28 | soon | " + ENTRY_REL), {"G3"}, allow={"G7"}))
+        add(Case("mut-row-url-wrapped-in-other-host", "mutant", lambda r: sub(r, SOURCES, "— " + URL + " |", "— https://redirect.example.invalid/?u=" + URL + " |"), {"G3"}, allow={"G7"}, note="wave-1 R46MutC2a S4: the canonical URL only had to occur somewhere in the cell"))
+        add(Case("ctl-row-second-url-after-canonical", "control", lambda r: sub(r, SOURCES, URL + " | docs |", URL + " (legacy: https://docs.github.com/en/code-security/old-path) | docs |")))
+        add(Case("mut-row-filler-cells", "mutant", lambda r: wr(r, SOURCES, rd(r, SOURCES).replace(line_of(r, SOURCES, "| S073 |"), "| S073 | - | - | A | - | - | - | mined | 2026-10-28 | 180d | " + ENTRY_REL + " |")), {"G3"}, allow={"G7"}))
+        add(Case("mut-row-after-sub-heading-in-registry", "mutant", lambda r: wrap_line(r, SOURCES, "| S073 |", "### Appendix", ""), {"G3"}, allow={"G7"}, note="a heading resets the registry reading: the row is no longer in `## Registry`"))
+        # G4: the manifest's quote texts (the real pin makes any edit red; the repinned cases isolate the distinctness limb)
+        add(Case("mut-manifest-duplicate-quote-real-pin", "mutant", lambda r: man_edit(r, lambda s: s["quotes"].append(dict(s["quotes"][-1], id="Q9"))), {"G4"}))
+        add(Case("ctl-manifest-reserialised-repinned", "control", lambda r: man_edit(r, lambda s: None), repin=True, note="grader-side override re-pins the re-serialised manifest, nothing else edited: isolates the distinctness limb from the pin"))
+        add(Case("mut-manifest-duplicate-quote-repinned", "mutant", lambda r: man_edit(r, lambda s: s["quotes"].append(dict(s["quotes"][-1], id="Q9"))), {"G4"}, repin=True, note="wave-1 R46MutC2b P4: the distinctness limb alone"))
+        add(Case("ctl-manifest-seven-distinct-anchors-repinned", "control", lambda r: man_edit(r, lambda s: s["quotes"][1].update(quote="Anyone can privately report a security vulnerability", anchor=560)), repin=True, note="distinct texts, 7 distinct anchors: the boundary of the anchor limb; source-recheck still reads every quote OK"))
+        add(Case("mut-manifest-six-distinct-anchors-repinned", "mutant", lambda r: man_edit(r, lambda s: (s["quotes"][1].update(quote="Anyone can privately report a security vulnerability", anchor=560), s["quotes"][3].update(quote="to repository maintainers", anchor=560))), {"G4"}, repin=True, note="distinct texts, 6 distinct anchors < 7; every quote still reads OK in source-recheck (a bare anchor edit would be BROKEN there, which would not isolate the limb)"))
+        # G5: the cited window
+        add(Case("mut-citation-1-589-real-quote", "mutant", lambda r: sub(r, ENTRY_REL, cite(spans["credit"][1], spans["credit"][2]), "`S073.txt:1-589`"), {"G5"}, note="wave-1 R46MutC2b M07: a whole-file window hid a wrong location"))
+        add(Case("mut-citation-line-0", "mutant", lambda r: sub(r, ENTRY_REL, cite(spans["credit"][1], spans["credit"][2]), "`S073.txt:0`"), {"G5"}))
+        add(Case("mut-citation-range-0-577", "mutant", lambda r: sub(r, ENTRY_REL, cite(spans["credit"][1], spans["credit"][2]), "`S073.txt:0-577`"), {"G5"}))
+        add(Case("ctl-citation-12-lines", "control", lambda r: sub(r, ENTRY_REL, cite(spans["credit"][1], spans["credit"][2]), "`S073.txt:566-577`")))
+        add(Case("mut-citation-13-lines", "mutant", lambda r: sub(r, ENTRY_REL, cite(spans["credit"][1], spans["credit"][2]), "`S073.txt:565-577`"), {"G5"}))
+        add(Case("ctl-citation-starts-at-body-line-556", "control", lambda r: sub(r, ENTRY_REL, cite(spans["anyone"][1], spans["anyone"][2]), "`S073.txt:556-560`")))
+        add(Case("mut-citation-starts-at-555", "mutant", lambda r: sub(r, ENTRY_REL, cite(spans["anyone"][1], spans["anyone"][2]), "`S073.txt:555-560`"), {"G5"}))
+        add(Case("ctl-citation-ends-at-body-line-583", "control", lambda r: sub(r, ENTRY_REL, cite(spans["credit"][1], spans["credit"][2]), "`S073.txt:577-583`")))
+        add(Case("mut-citation-ends-at-584", "mutant", lambda r: sub(r, ENTRY_REL, cite(spans["credit"][1], spans["credit"][2]), "`S073.txt:577-584`"), {"G5"}))
+        add(Case("mut-core-quote-from-page-chrome-line", "mutant", lambda r: sub(r, ENTRY_REL, k("merge"), "“Collaborate in a fork” (`S073.txt:%d`)" % snap.locate("Collaborate in a fork")[0]), {"G5"}, note="a located quote from site navigation outside lines 556-583 is not support"))
+        add(Case("mut-core-row-in-html-comment", "mutant", lambda r: wrap_line(r, ENTRY_REL, "| " + ROWS[4][1] + " |", "<!--", "-->"), {"G5"}, note="a core that exists only inside a comment is not live"))
+        add(Case("mut-core-row-in-fenced-block", "mutant", lambda r: wrap_line(r, ENTRY_REL, "| " + ROWS[4][1] + " |", "```", "```"), {"G5"}))
+        add(Case("mut-ascii-quoted-fabrication-cited", "mutant", lambda r: add_before_limits(r, '- The page says "GitHub guarantees a response within 24 hours" (`S073.txt:577`).'), {"G5"}))
+        add(Case("mut-ascii-quoted-fabrication-uncited", "mutant", lambda r: add_before_limits(r, '- The page says "GitHub guarantees a response within 24 hours".'), {"G5"}, note="wave-1 R46MutC2b P1/P2: ASCII quotes were invisible"))
+        add(Case("mut-ascii-quoted-real-quote-wide-cite", "mutant", lambda r: sub(r, ENTRY_REL, k("merge"), '"%s" (`S073.txt:1-589`)' % Q["merge"]), {"G5"}))
+        # G6: the knowledge directory holds exactly the 65 entries; C1's two re-grounded entries are exempt from the byte pin only
+        add(Case("mut-non-md-file-in-knowledge", "mutant", lambda r: wr(r, "corpus/knowledge/stray.txt", "x\n"), {"G6"}, note="wave-1 R46MutC2c S1"))
+        add(Case("mut-hidden-file-in-knowledge", "mutant", lambda r: wr(r, "corpus/knowledge/.keep", ""), {"G6"}))
+        add(Case("mut-nested-md-in-knowledge-subdir", "mutant", lambda r: (os.makedirs(os.path.join(r, "corpus/knowledge/sub")), wr(r, "corpus/knowledge/sub/extra.md", "# x\n")), {"G6"}, note="wave-1 R46MutC2c S2"))
+        add(Case("ctl-c1-landed-two-entries", "control", land_c1))
+        add(Case("mut-c1-landed-exempt-entry-renamed", "mutant", lambda r: (land_c1(r), os.rename(os.path.join(r, "corpus/knowledge/claim-gates.md"), os.path.join(r, "corpus/knowledge/claim-gates-renamed.md"))), {"G6"}, note="the exemption is from the byte pin only: the NAME stays pinned"))
+        add(Case("mut-c1-landed-exempt-entry-deleted", "mutant", lambda r: (land_c1(r), os.remove(os.path.join(r, "corpus/knowledge/claim-package-contract.md"))), {"G6"}))
+        add(Case("mut-c1-landed-plus-third-entry-changed", "mutant", lambda r: (land_c1(r), wr(r, "corpus/knowledge/" + spare, rd(r, "corpus/knowledge/" + spare) + " ")), {"G6"}))
+        add(Case("ctl-committed-tip-direct", "control", direct=True, note="the counter run on --lane itself (the committed tip export): must read 7/7"))
+
+        # ------------------------------------------------------------------ probes (accepted-by-design questions; printed, not counted)
+        P: list[Case] = []
+        P.append(Case("probe-fabricated-quote-in-fenced-block", "probe", lambda r: add_before_limits(r, "```\n“GitHub guarantees a response within 24 hours” (`S073.txt:577`)\n```"), note="a fenced block is code, not a quotation: v1.1 reads live lines only, so a fenced fabrication is not graded"))
+        P.append(Case("probe-single-curly-quotes-uncited", "probe", lambda r: add_before_limits(r, "- A reporter may ‘submit a report’ at any hour."), note="‘single’ curly quotes are not counted as curly spans"))
+        P.append(Case("probe-fabricated-prose-no-quote-marks", "probe", lambda r: add_before_limits(r, "- GitHub guarantees maintainers respond within 24 hours (S073.txt:577)."), note="an unquoted false claim is invisible to G5"))
+        P.append(Case("probe-fabricated-curly-quote-in-html-comment", "probe", lambda r: add_before_limits(r, "<!-- “GitHub guarantees a response within 24 hours” (`S073.txt:577`) -->"), note="a comment is not rendered; the counter reads live lines only, so a hidden fabrication is not graded"))
         P.append(Case("probe-unclosed-html-comment-before-f28-row", "probe", lambda r: sub(r, README, f28_row(), "<!--\n" + f28_row()), note="renderer hides the row; counter keeps it live"))
         P.append(Case("probe-four-tick-fence-with-inner-three-tick-line", "probe", lambda r: sub(r, README, f28_row(), "````\n```\n" + f28_row() + "\n````"), note="renderer treats the row as fenced code; counter closes the fence early"))
         P.append(Case("probe-entry-pad-is-garbage-bytes", "probe", lambda r: refit(r, 9000), note="G6 floor is bytes, not content"))
 
         def run_case(c: Case):
+            env = dict(base_env)
+            env.update(c.env)
+            if c.direct:  # the committed tip itself (--lane), graded read-only: the counter never writes under --root
+                return run_counter(counter, a.lane, env)
             dest = os.path.join(work, "case")
             if os.path.exists(dest):
                 shutil.rmtree(dest)
@@ -474,8 +559,11 @@ def main() -> int:
             else:
                 shutil.copytree(base, dest, symlinks=True)
                 c.mut(dest)
-            env = dict(base_env)
-            env.update(c.env)
+            if c.repin:  # grader-side override file (never the graded tree's): pin the manifest to the EDITED bytes so only the distinctness limb can fire
+                pf = os.path.join(work, "pins-repin.json")
+                with open(pf, "w") as fh:
+                    json.dump({"manifest.json": hashlib.sha256(open(os.path.join(dest, MAN_REL), "rb").read()).hexdigest()}, fh)
+                env["R46_PINS_OVERRIDE"] = pf
             return run_counter(counter, dest, env)
 
         for c in C:

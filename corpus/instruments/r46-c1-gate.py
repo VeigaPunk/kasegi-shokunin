@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""r46-c1-gate.py — round-46 C1 counter (depth:verifiability), v1.1 (hardened after the wave-1 falsification; erratum E1, see .ufo/waves/round-46/counter-errata.md; v1 sha256 b0c730c834b4d7c6b16ac56f8c574ac599e8ae651aa02c5b2408fd736dd82294).
+"""r46-c1-gate.py — round-46 C1 counter (depth:verifiability), v1.2 (hardened after the wave-1 and wave-2 falsification; errata E1 and E2, see .ufo/waves/round-46/counter-errata.md; v1 sha256 b0c730c834b4d7c6b16ac56f8c574ac599e8ae651aa02c5b2408fd736dd82294).
 
 WHAT IT MEASURES
     How many of the lane's `recheck:` lines are *gated* (run, then fail closed on a
@@ -20,7 +20,7 @@ WHAT IT MEASURES
 TWO MODES
     --entry corpus/knowledge/X.md [--root TREE]     per-entry re-ground check (the recheck line)
         one `row G<n> ok=0|1 read=<token>` line each, then
-        `reground entry=X rows=<n> ok=<k> exit=0|1`
+        `reground entry=X rows=<n> ok=<k> files=<f> distinct=0|1 exit=0|1`
         PASS needs: section present once, >= 6 rows with unique ids, every anchor a
         regular non-symlink file under corpus/instruments/ or corpus/source-snapshots/
         inside TREE (never the entry itself), a <= 40-line range inside the file, and the
@@ -36,7 +36,7 @@ TWO MODES
         L7  entries gated at BASE and still gated at TREE are byte-identical to BASE
     Rechecks run with the leading `cd <path> &&` stripped and cwd = TREE (an export root measures itself, not the live lane), under the
     grader's own environment: BASE and TREE are read under the same HOME, so a host change moves both readings and L2 (the regrounded set)
-    stays 0; only allow-listed line shapes are executed (see allowed(): `test`, `git -C <dir> rev-parse HEAD`, `python3 corpus/instruments/<x>.py`
+    stays 0; only allow-listed line shapes are executed (see allowed(): `test`, `set -o pipefail`, `git -C <dir> rev-parse HEAD`, `python3 corpus/instruments/<x>.py`
     run from THIS lane's instruments, a minimal environment); gated = allow-listed, parses and exits non-zero; broken = does not parse or is not allow-listed.
 
     READ-ONLY on TREE and BASE; scratch under --work / TMPDIR; never runs git; stdlib only.
@@ -46,6 +46,7 @@ OUTPUT
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import re
 import shutil
@@ -75,12 +76,13 @@ def exact_line(entry_name: str) -> re.Pattern:
 TOOL_LANE = os.path.dirname(os.path.dirname(os.path.dirname(SELF)))
 SEG_TEST = re.compile(r"^test (?:! )?-[defs] [~A-Za-z0-9_./-]+$")
 SEG_GIT = re.compile(r"^git -C [~A-Za-z0-9_./-]+ rev-parse HEAD$")
-SEG_PY = re.compile(r"^python3 corpus/instruments/[A-Za-z0-9_.-]+\.py(?: (?:[A-Za-z0-9_./~=:,+-]+|'[^'$`\\]*'))*(?: \| grep -x '[^'$`\\]*')?$")
+SEG_PY = re.compile(r"^python3 corpus/instruments/(?:anchorcheck|source-recheck|claim-package-check|density|r46-c1-gate)\.py(?: (?:[A-Za-z0-9_./~=:,+-]+|'[^'$`\\]*'))*(?: \| grep -x '[^'$`\\]*')?$")
 
 
 def allowed(cmd: str) -> bool:
     """Only the line shapes the lane's 64 rechecks actually use are ever executed: `&&`-joined `test`, `set -o pipefail`,
-    `git -C <dir> rev-parse HEAD` and `python3 corpus/instruments/<name>.py <plain args> [| grep -x '<literal>']`.
+    `git -C <dir> rev-parse HEAD` and `python3 corpus/instruments/<name>.py <plain args> [| grep -x '<literal>']` for the five instruments the lane's rechecks use
+    (anchorcheck, source-recheck, claim-package-check, density, r46-c1-gate).
     Anything else is `broken` (never run), so a hostile or careless line turns L1 red instead of running."""
     segs = cmd.split(" && ")
     return all(SEG_TEST.match(x) or x == "set -o pipefail" or SEG_GIT.match(x) or SEG_PY.match(x) for x in segs)
@@ -99,14 +101,33 @@ def norm(s: str) -> str:
 
 def read(path: str) -> str | None:
     try:
-        with open(path, "r", encoding="utf-8") as fh:
+        with open(path, "r", encoding="utf-8", newline="") as fh:  # newline="": CRLF/CR/LF are never translated, so byte edits stay visible
             return fh.read()
-    except OSError:
+    except (OSError, UnicodeDecodeError):
         return None
 
 
+def lines_of(text: str) -> list[str]:
+    return text.split("\n")  # exact: U+2028, \r and \x0b are not line breaks here
+
+
+def live_lines(text: str) -> list[str]:
+    """Lines outside HTML comments and fenced code blocks (what a renderer shows as prose and tables)."""
+    text = re.sub(r"(?s)<!--.*?-->", lambda m: "\n" * m.group(0).count("\n"), text)
+    out, fence = [], None
+    for ln in lines_of(text):
+        st = ln.strip()
+        if st.startswith("```") or st.startswith("~~~"):
+            mark = st[:3]
+            fence = None if fence == mark else (fence or mark)
+            out.append("")
+            continue
+        out.append("" if fence else ln)
+    return out
+
+
 def recheck_line(text: str) -> str | None:
-    for ln in text.splitlines():
+    for ln in lines_of(text):
         m = RECHECK_RE.match(ln)
         if m:
             return m.group(1).strip()
@@ -115,16 +136,26 @@ def recheck_line(text: str) -> str | None:
 
 def section_rows(text: str) -> tuple[list[list[str]] | None, str]:
     """Rows of the single `## Re-ground (round 46)` section; None when it is absent or repeated."""
-    lines = text.splitlines()
+    raw = [i for i, ln in enumerate(lines_of(text)) if ln.strip() == SECTION]
+    lines = live_lines(text)
     starts = [i for i, ln in enumerate(lines) if ln.strip() == SECTION]
-    if len(starts) != 1:
-        return None, "section-count=%d" % len(starts)
-    rows = []
+    if len(starts) != 1 or len(raw) != 1:
+        return None, "section-count=live%d/raw%d" % (len(starts), len(raw))
+    rows, stray = [], 0
     for ln in lines[starts[0] + 1:]:
         if re.match(r"^#{1,6} ", ln):
             break
+        if not re.match(r"^\s*\|", ln):
+            continue
+        cells = [c.strip() for c in ln.strip().strip("|").split("|")]
         if re.match(r"^\|\s*G\d+\s*\|", ln):
-            rows.append([c.strip() for c in ln.strip().strip("|").split("|")])
+            rows.append(cells)
+        elif cells and (cells[0].lower() == "id" or set(cells[0]) <= set("-: ")):
+            continue  # header and separator rows
+        else:
+            stray += 1
+    if stray:
+        return None, "stray-table-rows=%d (indented, lowercase-id or non-G rows are not read, so they fail the entry)" % stray
     return rows, "rows=%d" % len(rows)
 
 
@@ -142,11 +173,12 @@ def check_row(root: str, entry_rel: str, row: list[str]) -> tuple[bool, str, str
     fp = os.path.join(root, rel)
     if os.path.islink(fp) or not os.path.isfile(fp) or not os.path.realpath(fp).startswith(os.path.realpath(root) + os.sep):
         return False, "anchor-not-a-regular-file-in-tree", rel, None
-    if len(tok) < MIN_TOKEN or a < 1 or b < a or b - a > 39:
+    if len(tok) < MIN_TOKEN or sum(c.isalnum() for c in tok) < 6 or a < 1 or b < a or b - a > 39:
         return False, "token-or-range-bad", rel, None
-    lines = (read(fp) or "").splitlines()
-    if b > len(lines):
-        return False, "range-past-eof", rel, None
+    raw = read(fp)
+    lines = lines_of(raw or "")
+    if raw is None or b > len(lines) or "\r" in "".join(lines[a - 1:b]) or "\u2028" in "".join(lines[a - 1:b]):
+        return False, "range-past-eof-or-unusual-line-breaks", rel, None
     window = norm(" ".join(lines[a - 1:b]))
     if tok not in window:
         return False, "token-not-in-lines", rel, None
@@ -164,7 +196,7 @@ def entry_mode(root: str, entry: str) -> int:
     if rows is None:
         print("reground entry=%s rows=0 ok=0 exit=1 read=%s" % (name, why))
         return 1
-    ok, files, keys = 0, set(), []
+    ok, files, keys, digests = 0, set(), [], set()
     ids = [r[0] for r in rows if r]
     for r in rows:
         good, read_, f, key = check_row(root, rel, r)
@@ -172,10 +204,11 @@ def entry_mode(root: str, entry: str) -> int:
         ok += int(good)
         if good and f:
             files.add(f)
+            digests.add(hashlib.sha256((read(os.path.join(root, f)) or "").encode("utf-8")).hexdigest())
         if key:
             keys.append(key)
     distinct = len({(k[0], k[1], k[2]) for k in keys}) == len(keys) and len({k[3] for k in keys}) == len(keys)
-    good = (bool(rows) and ok == len(rows) and len(rows) >= MIN_ROWS and len(set(ids)) == len(ids) and len(files) >= 2 and distinct)
+    good = (bool(rows) and ok == len(rows) and len(rows) >= MIN_ROWS and len(set(ids)) == len(ids) and len(files) >= 2 and len(digests) >= 2 and distinct)
     print("reground entry=%s rows=%d ok=%d files=%d distinct=%d exit=%d" % (name, len(rows), ok, len(files), int(distinct), 0 if good else 1))
     return 0 if good else 1
 
@@ -189,7 +222,10 @@ def classify(root: str) -> dict[str, dict]:
         if not fn.endswith(".md"):
             continue
         text = read(os.path.join(kd, fn)) or ""
-        n = sum(1 for ln in text.splitlines() if RECHECK_RE.match(ln))
+        n = sum(1 for ln in lines_of(text) if RECHECK_RE.match(ln))
+        nl = sum(1 for ln in live_lines(text) if RECHECK_RE.match(ln))
+        if nl != n:
+            n = 99  # a recheck line hidden in a comment or a fence: never exactly one
         line = recheck_line(text)
         if line is None:
             continue
@@ -212,7 +248,7 @@ def classify(root: str) -> dict[str, dict]:
 
 
 def entry_lines(root: str, e: str) -> list[str]:
-    return (read(os.path.join(root, "corpus/knowledge", e)) or "").splitlines()
+    return lines_of(read(os.path.join(root, "corpus/knowledge", e)) or "")
 
 
 def gate_list(root: str, base: str, work: str):
@@ -251,7 +287,10 @@ def gate_list(root: str, base: str, work: str):
         bl = entry_lines(base, e)
         tl = entry_lines(root, e)
         base_re = [x for x in bl if RECHECK_RE.match(x)]
+        live_tl = live_lines("\n".join(tl))
         rest_ok = [x for x in tl if RESTORE_RE.match(x)]
+        if [x for x in live_tl if RESTORE_RE.match(x)] != rest_ok:
+            rest_ok = ["hidden-restoration-line"]
         want = "restoration-recheck: " + base_re[0][len("recheck:"):].strip() if base_re else None
         b = [x for x in bl if not RECHECK_RE.match(x)]
         t = [x for x in tl if not RECHECK_RE.match(x) and not RESTORE_RE.match(x)]

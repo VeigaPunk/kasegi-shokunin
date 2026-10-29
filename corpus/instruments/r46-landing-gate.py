@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 """r46-landing-gate.py -- quiescence + landing-order gate for a kasegi round (stdlib, reads only).
 
-Closes two routed items:
-  * round-45 verifier spot-check section 6 item 1 (`corpus/lessons/round-45-verifier-spotcheck.md`):
-    the report commit a1f7761 (author 19:30:06) names, as final, the lane commit 2998baa
-    (19:36:31) that did not yet exist when the report was written;
-  * `considerthese/2026-10-26.md` proposal 3: a quiescence gate before `complete`
-    (`git status --porcelain` empty + the placeholder grep of
-    `corpus/instruments/r35-defect-closure.sh` D1).
+Adopts `considerthese/2026-10-26.md` proposal 3: a quiescence gate before `complete`
+(`git status --porcelain` empty + the placeholder grep of
+`corpus/instruments/r35-defect-closure.sh` D1) and a landing-order check after the report is filed
+(cited lane hash resolves, is an ancestor of the branch, is the remote tip when called final, and its
+COMMITTER time is not later than the committer time of the fleet commit that adds the report).
+
+What it deliberately does NOT check (round-46 wave 2, `R46W2CritMistake`, `R46W2RevLanding`): the AUTHOR
+time of the report commit. The round-45 spot-check read a1f7761's author stamp (19:30:06) against the
+lane commit's 19:36:31 and called it an ordering defect; the committer clocks (19:37:42 vs 19:36:31) and
+both reflogs show the lane commit existed first, and an amend/rebase/jj rewrite keeps the author stamp
+while moving the committer stamp. An author-time check therefore fails every honest rewritten history
+(round-44, round-28 and the round-45 pair) and cannot tell it from a real inversion; the first version of
+this gate carried it and was withdrawn.
 
 Modes (exactly one):
   --pre-report  --lane DIR --branch master --round N [--jj-lane PATH]
@@ -29,10 +35,6 @@ Modes (exactly one):
                        `ls-remote origin refs/heads/<branch>` tip (or --tip REV for a replay)
       date-order       every cited hash's committer time <= committer time of the fleet commit
                        that ADDS the report (`git log --diff-filter=A` in the fleet)
-      date-order-author  every cited hash's committer time <= AUTHOR time of that same fleet
-                       commit.  The committer time can be moved later by an amend/rebase/jj
-                       rewrite; the author time is when the report text was written, and it is
-                       the clock the round-45 defect inverted.
       shonen-heading   exactly one line matches `^## SHONEN`
   --selftest [--work DIR]   fixture lane + fleet; prints `selftest cases=N failures=F`
 
@@ -246,7 +248,7 @@ def post_report(lane, branch, report, fleet, tip_override=None):
     rows = [ln.split() for ln in out.splitlines() if ln.strip()]
     add = rows[-1] if rc == 0 and rows and len(rows[-1]) == 4 else None
     if not add:
-        for cid in ("date-order", "date-order-author"):
+        for cid in ("date-order",):
             checks.append((cid, False, "report-not-added-in-fleet=" + tok(rel)))
     else:
         rct, rci, rat, rai = int(add[0]), add[1], int(add[2]), add[3]
@@ -259,8 +261,7 @@ def post_report(lane, branch, report, fleet, tip_override=None):
                 continue
             if int(f[0]) > worst_ct:
                 worst, worst_ct, worst_ci = h, int(f[0]), f[1]
-        for cid, lim, lim_iso, lab in (("date-order", rct, rci, "report-commit-committer"),
-                                       ("date-order-author", rat, rai, "report-commit-author")):
+        for cid, lim, lim_iso, lab in (("date-order", rct, rci, "report-commit-committer"),):
             if not cites:
                 checks.append((cid, False, none))
                 continue
@@ -487,7 +488,7 @@ def s_post_date_inversion(ctx):
     commit_report(ctx, report_text(c3), author=T0 + 200, committer=T0 + 210)
 
 
-def s_post_author_inversion(ctx):  # the round-45 shape: committer time moved later by a rewrite
+def s_post_author_inversion(ctx):  # the round-45 shape: author time earlier, committer time moved later by a rewrite: an HONEST history, must pass
     commit_report(ctx, report_text(ctx["c2"]), author=T0 + 90, committer=T0 + 210)
 
 
@@ -521,7 +522,7 @@ def s_post_missing_report(ctx):
 
 
 ALL_POST = {"report-readable", "cited-hashes", "resolves", "ancestor", "final-is-tip",
-            "date-order", "date-order-author", "shonen-heading"}
+            "date-order", "shonen-heading"}
 
 CASES = [
     ("pre-clean-positive", pre_case(s_clean, [])),
@@ -538,17 +539,17 @@ CASES = [
     ("pre-do-nothing-control-no-lane", pre_case(s_nolane, ["tree-clean", "jj-state", "remote-tip", "placeholders"])),
     ("post-clean-positive", post_case(s_post_clean, [])),
     ("post-report-with-no-cited-hash", post_case(s_post_nohash, ["cited-hashes", "resolves", "ancestor", "final-is-tip",
-                                                                  "date-order", "date-order-author"])),
-    ("post-unresolvable-hash", post_case(s_post_unresolvable, ["resolves", "ancestor", "date-order", "date-order-author"])),
+                                                                  "date-order"])),
+    ("post-unresolvable-hash", post_case(s_post_unresolvable, ["resolves", "ancestor", "date-order"])),
     ("post-non-ancestor-hash", post_case(s_post_nonancestor, ["ancestor"])),
     ("post-table-commit-column-non-ancestor", post_case(s_post_table_nonancestor, ["ancestor"])),
-    ("post-date-inversion-committer-and-author", post_case(s_post_date_inversion, ["date-order", "date-order-author"])),
-    ("post-date-inversion-author-only-round45-shape", post_case(s_post_author_inversion, ["date-order-author"])),
+    ("post-date-inversion-committer-and-author", post_case(s_post_date_inversion, ["date-order"])),
+    ("post-honest-rewrite-author-earlier-than-cited-round45-shape", post_case(s_post_author_inversion, [])),
     ("post-two-shonen-headings", post_case(s_post_two_shonen, ["shonen-heading"])),
     ("post-zero-shonen-headings", post_case(s_post_zero_shonen, ["shonen-heading"])),
     ("post-final-hash-not-tip", post_case(s_post_final_not_tip, ["final-is-tip"])),
     ("post-no-final-sentence-fails-closed", post_case(s_post_no_final, ["final-is-tip"])),
-    ("post-report-untracked-in-fleet", post_case(s_post_untracked_report, ["date-order", "date-order-author"])),
+    ("post-report-untracked-in-fleet", post_case(s_post_untracked_report, ["date-order"])),
     ("post-tip-moved-after-report-live-tip", post_case(s_post_tip_moved, ["final-is-tip"])),
     ("post-tip-moved-after-report-replay-override", post_case(s_post_tip_moved, [], tip=lambda c: c["c2"])),
     ("post-do-nothing-control-missing-report", post_case(s_post_missing_report, ALL_POST)),
@@ -597,7 +598,7 @@ def selftest(work, jj):
                                capture_output=True, text=True)
             last = p.stdout.rstrip("\n").split("\n")[-1]
             ok = (p.returncode == want_exit
-                  and last == "landing-gate mode=post-report checks=8 fail=%d exit=%d" % (want_fail, want_exit))
+                  and last == "landing-gate mode=post-report checks=7 fail=%d exit=%d" % (want_fail, want_exit))
             fails += 0 if ok else 1
             print("selftest case=%s exit=%d last=%s verdict=%s" % (name, p.returncode, tok(last), "pass" if ok else "fail"))
         print("selftest cases=%d failures=%d" % (n, fails))

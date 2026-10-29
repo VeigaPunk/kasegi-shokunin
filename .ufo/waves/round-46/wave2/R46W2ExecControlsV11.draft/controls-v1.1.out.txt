@@ -1,0 +1,400 @@
+tip=5437afeaf9b642c267bba3c31f00ae701e49da68 base=914ca0b6956f01d87b2e252ffad06fe74ec5d9ba freeze=9f23aab4636b620cdcf7ac3d3a29a5a06dd184b5
+v1.1 tools (lane, == tip blobs: yes): c1 99e0ee555b68e517 c2 b52fea3183a393fa
+v1 tools (frozen, git show 9f23aab4636b): c1 b0c730c834b4d7c6 c2 0ee958578b592370
+-- good tip tree, v1.1 c1 (sanity, not a control)
+   gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+   gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+   gate L3 pass=1 read=recheck-lines-exact=2
+   gate L4 pass=1 read=entry-mode-green-anchors-unchanged=2
+   gate L5 pass=1 read=append-only-restoration-kept=2
+   gate L6 pass=1 read=mutants=46 survivors=none
+   gate L7 pass=1 read=still-gated=22 changed=none
+   c1-gate fixed=7/7 exit=0
+   exit=0
+-- good tree for v1 c1 (sanity, not a control)
+   gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+   gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+   gate L3 pass=1 read=recheck-lines-clean=2
+   gate L4 pass=1 read=entry-mode-green=2
+   gate L5 pass=1 read=append-only=2
+   gate L6 pass=1 read=mutants=46 survivors=none
+   gate L7 pass=1 read=still-gated=22 changed=none
+   c1-gate fixed=7/7 exit=0
+   exit=0
+-- good tip tree, v1.1 c2 (sanity, not a control)
+   gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+   gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=8 xrefs=4/4
+   gate G3 pass=1 read=row-S073=ok
+   gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+   gate G5 pass=1 read=spans=21 located=21 failed=0 uncited=0 cores=5/5
+   gate G6 pass=1 read=knowledge=65 entries=65 nested-md=65 base-intact=1 entry-bytes-ok=1
+   gate G7 pass=1 read=census-rc=0 ok-line=1
+   c2-gate fixed=7/7 exit=0
+   exit=0
+-- good tree for v1 c2 (sanity, not a control)
+   gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+   gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 table-rows=8 xrefs=4/4
+   gate G3 pass=1 read=row-S073=ok
+   gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+   gate G5 pass=1 read=spans=21 located=21 failed=0 uncited=0 cores=5/5
+   gate G6 pass=1 read=knowledge=65 base-names-intact=1 entry-bytes-ok=1
+   gate G7 pass=1 read=census-rc=0 ok-line=1
+   c2-gate fixed=7/7 exit=0
+   exit=0
+-- info: v1 C2 on the UNMODIFIED tip tree (the two re-grounded entries differ from BASE; counter-errata C2-E5)
+   gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+   gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 table-rows=8 xrefs=4/4
+   gate G3 pass=1 read=row-S073=ok
+   gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+   gate G5 pass=1 read=spans=21 located=21 failed=0 uncited=0 cores=5/5
+   gate G6 pass=0 read=knowledge=65 base-names-intact=0 entry-bytes-ok=1
+   gate G7 pass=1 read=census-rc=0 ok-line=1
+   c2-gate fixed=6/7 exit=1
+   exit=1
+
+== c1 do-nothing (tree = baseline = base export)
+v1.1  gate L1 pass=0 read=gated=24 broken=0 lines=64/base=64
+v1.1  gate L2 pass=0 read=base-gated=24 regrounded=0 
+v1.1  gate L3 pass=0 read=recheck-lines-exact=0
+v1.1  gate L4 pass=0 read=entry-mode-green-anchors-unchanged=0
+v1.1  gate L5 pass=0 read=append-only-restoration-kept=0
+v1.1  gate L6 pass=0 read=mutants=0 survivors=none
+v1.1  gate L7 pass=1 read=still-gated=24 changed=none
+v1.1  c1-gate fixed=1/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate L1 pass=0 read=gated=24 broken=0 lines=64/base=64
+v1    gate L2 pass=0 read=base-gated=24 regrounded=0 
+v1    gate L3 pass=0 read=recheck-lines-clean=0
+v1    gate L4 pass=0 read=entry-mode-green=0
+v1    gate L5 pass=0 read=append-only=0
+v1    gate L6 pass=0 read=mutants=0 survivors=none
+v1    gate L7 pass=1 read=still-gated=24 changed=none
+v1    c1-gate fixed=1/7 exit=1
+v1    exit=1 reads=RED
+
+== c1 comment-trick (`cd LANE && true  # r46-c1-gate.py --entry ...`, valid rows kept)
+v1.1  gate L1 pass=0 read=gated=22 broken=2 lines=65/base=64
+v1.1  gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1.1  gate L3 pass=0 read=bad=claim-gates.md,claim-package-contract.md
+v1.1  gate L4 pass=1 read=entry-mode-green-anchors-unchanged=2
+v1.1  gate L5 pass=1 read=append-only-restoration-kept=2
+v1.1  gate L6 pass=1 read=mutants=46 survivors=none
+v1.1  gate L7 pass=1 read=still-gated=22 changed=none
+v1.1  c1-gate fixed=5/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+v1    gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1    gate L3 pass=1 read=recheck-lines-clean=2
+v1    gate L4 pass=1 read=entry-mode-green=2
+v1    gate L5 pass=1 read=append-only=2
+v1    gate L6 pass=1 read=mutants=46 survivors=none
+v1    gate L7 pass=1 read=still-gated=22 changed=none
+v1    c1-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+== c1 cd-home (`cd ~/Projects/bounties && python3 corpus/instruments/r46-c1-gate.py --entry ...`)
+v1.1  gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+v1.1  gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1.1  gate L3 pass=0 read=bad=claim-gates.md,claim-package-contract.md
+v1.1  gate L4 pass=1 read=entry-mode-green-anchors-unchanged=2
+v1.1  gate L5 pass=1 read=append-only-restoration-kept=2
+v1.1  gate L6 pass=1 read=mutants=46 survivors=none
+v1.1  gate L7 pass=1 read=still-gated=22 changed=none
+v1.1  c1-gate fixed=6/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+v1    gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1    gate L3 pass=1 read=recheck-lines-clean=2
+v1    gate L4 pass=1 read=entry-mode-green=2
+v1    gate L5 pass=1 read=append-only=2
+v1    gate L6 pass=1 read=mutants=46 survivors=none
+v1    gate L7 pass=1 read=still-gated=22 changed=none
+v1    c1-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+== c1 shadow-recheck (`recheck: true` line above the real gate line)
+v1.1  gate L1 pass=0 read=gated=22 broken=2 lines=65/base=64
+v1.1  gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1.1  gate L3 pass=0 read=bad=claim-gates.md,claim-package-contract.md
+v1.1  gate L4 pass=1 read=entry-mode-green-anchors-unchanged=2
+v1.1  gate L5 pass=1 read=append-only-restoration-kept=2
+v1.1  gate L6 pass=1 read=mutants=46 survivors=none
+v1.1  gate L7 pass=1 read=still-gated=22 changed=none
+v1.1  c1-gate fixed=5/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+v1    gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1    gate L3 pass=0 read=bad=claim-gates.md,claim-package-contract.md
+v1    gate L4 pass=1 read=entry-mode-green=2
+v1    gate L5 pass=1 read=append-only=2
+v1    gate L6 pass=1 read=mutants=46 survivors=none
+v1    gate L7 pass=1 read=still-gated=22 changed=none
+v1    c1-gate fixed=6/7 exit=1
+v1    exit=1 reads=RED
+
+== c1 planted-anchor (comment appended to claim-package-check.py, contract G1 re-anchored on it)
+v1.1  gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+v1.1  gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1.1  gate L3 pass=1 read=recheck-lines-exact=2
+v1.1  gate L4 pass=0 read=bad=claim-gates.md,claim-package-contract.md
+v1.1  gate L5 pass=1 read=append-only-restoration-kept=2
+v1.1  gate L6 pass=1 read=mutants=46 survivors=none
+v1.1  gate L7 pass=1 read=still-gated=22 changed=none
+v1.1  c1-gate fixed=6/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+v1    gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1    gate L3 pass=1 read=recheck-lines-clean=2
+v1    gate L4 pass=1 read=entry-mode-green=2
+v1    gate L5 pass=1 read=append-only=2
+v1    gate L6 pass=1 read=mutants=46 survivors=none
+v1    gate L7 pass=1 read=still-gated=22 changed=none
+v1    c1-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+== c1 restoration-recheck removed (both entries)
+v1.1  gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+v1.1  gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1.1  gate L3 pass=1 read=recheck-lines-exact=2
+v1.1  gate L4 pass=1 read=entry-mode-green-anchors-unchanged=2
+v1.1  gate L5 pass=0 read=bad=claim-gates.md,claim-package-contract.md
+v1.1  gate L6 pass=1 read=mutants=46 survivors=none
+v1.1  gate L7 pass=1 read=still-gated=22 changed=none
+v1.1  c1-gate fixed=6/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+v1    gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1    gate L3 pass=1 read=recheck-lines-clean=2
+v1    gate L4 pass=1 read=entry-mode-green=2
+v1    gate L5 pass=1 read=append-only=2
+v1    gate L6 pass=1 read=mutants=46 survivors=none
+v1    gate L7 pass=1 read=still-gated=22 changed=none
+v1    c1-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+== c1 hollow-rows (claim cells rotated: rows about the lost claim-check.mjs anchored to the committed gate)
+v1.1  gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+v1.1  gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1.1  gate L3 pass=1 read=recheck-lines-exact=2
+v1.1  gate L4 pass=1 read=entry-mode-green-anchors-unchanged=2
+v1.1  gate L5 pass=1 read=append-only-restoration-kept=2
+v1.1  gate L6 pass=1 read=mutants=46 survivors=none
+v1.1  gate L7 pass=1 read=still-gated=22 changed=none
+v1.1  c1-gate fixed=7/7 exit=0
+v1.1  exit=0 reads=GREEN
+v1    gate L1 pass=1 read=gated=22 broken=0 lines=65/base=64
+v1    gate L2 pass=1 read=base-gated=24 regrounded=2 claim-gates.md,claim-package-contract.md
+v1    gate L3 pass=1 read=recheck-lines-clean=2
+v1    gate L4 pass=1 read=entry-mode-green=2
+v1    gate L5 pass=1 read=append-only=2
+v1    gate L6 pass=1 read=mutants=46 survivors=none
+v1    gate L7 pass=1 read=still-gated=22 changed=none
+v1    c1-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+== c1 hostile-line (`recheck: touch <scratch marker>` in unrelated citation-bases.md; marker must not be created)
+v1.1  gate L1 pass=0 read=gated=21 broken=1 lines=65/base=64
+v1.1  gate L2 pass=1 read=base-gated=24 regrounded=3 citation-bases.md,claim-gates.md,claim-package-contract.md
+v1.1  gate L3 pass=0 read=bad=citation-bases.md
+v1.1  gate L4 pass=0 read=bad=citation-bases.md
+v1.1  gate L5 pass=0 read=bad=citation-bases.md
+v1.1  gate L6 pass=0 read=mutants=46 survivors=citation-bases.md:unmutated-copy-not-green
+v1.1  gate L7 pass=1 read=still-gated=21 changed=none
+v1.1  c1-gate fixed=2/7 exit=1
+v1.1  marker-created=0
+v1.1  exit=1 reads=RED
+v1    gate L1 pass=1 read=gated=21 broken=0 lines=65/base=64
+v1    gate L2 pass=1 read=base-gated=24 regrounded=3 citation-bases.md,claim-gates.md,claim-package-contract.md
+v1    gate L3 pass=0 read=bad=citation-bases.md
+v1    gate L4 pass=0 read=bad=citation-bases.md
+v1    gate L5 pass=0 read=bad=citation-bases.md
+v1    gate L6 pass=1 read=mutants=46 survivors=none
+v1    gate L7 pass=1 read=still-gated=21 changed=none
+v1    c1-gate fixed=4/7 exit=1
+v1    marker-created=1
+v1    exit=1 reads=GREEN
+
+== c1 home-override (do-nothing tree under a scratch HOME that holds ~/Projects/bounties)
+v1.1  gate L1 pass=1 read=gated=6 broken=0 lines=64/base=64
+v1.1  gate L2 pass=0 read=base-gated=6 regrounded=0 
+v1.1  gate L3 pass=0 read=recheck-lines-exact=0
+v1.1  gate L4 pass=0 read=entry-mode-green-anchors-unchanged=0
+v1.1  gate L5 pass=0 read=append-only-restoration-kept=0
+v1.1  gate L6 pass=0 read=mutants=0 survivors=none
+v1.1  gate L7 pass=1 read=still-gated=6 changed=none
+v1.1  c1-gate fixed=2/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate L1 pass=1 read=gated=6 broken=0 lines=64/base=64
+v1    gate L2 pass=0 read=base-gated=6 regrounded=0 
+v1    gate L3 pass=0 read=recheck-lines-clean=0
+v1    gate L4 pass=0 read=entry-mode-green=0
+v1    gate L5 pass=0 read=append-only=0
+v1    gate L6 pass=0 read=mutants=0 survivors=none
+v1    gate L7 pass=1 read=still-gated=6 changed=none
+v1    c1-gate fixed=2/7 exit=1
+v1    exit=1 reads=RED
+
+== c2 do-nothing (base export)
+v1.1  gate G1 pass=0 read=rows=27 admitted=27 dup=0
+v1.1  gate G2 pass=0 read=F28-rows=0
+v1.1  gate G3 pass=0 read=row-S073=absent-or-malformed
+v1.1  gate G4 pass=0 read=manifest-absent
+v1.1  gate G5 pass=0 read=F28-rows=0
+v1.1  gate G6 pass=0 read=knowledge=64 entries=64 nested-md=64 base-intact=1 entry-bytes-ok=0
+v1.1  gate G7 pass=1 read=census-rc=0 ok-line=1
+v1.1  c2-gate fixed=1/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate G1 pass=0 read=rows=27 admitted=27 dup=0
+v1    gate G2 pass=0 read=F28-rows=0
+v1    gate G3 pass=0 read=row-S073=absent-or-malformed
+v1    gate G4 pass=0 read=manifest-absent
+v1    gate G5 pass=0 read=F28-rows=0
+v1    gate G6 pass=0 read=knowledge=64 base-names-intact=1 entry-bytes-ok=0
+v1    gate G7 pass=1 read=census-rc=0 ok-line=1
+v1    c2-gate fixed=1/7 exit=1
+v1    exit=1 reads=RED
+
+== c2 wrong-source recheck (`--source S0730`)
+v1.1  gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1.1  gate G2 pass=0 read=source=1 verified-at=1 recheck=0 sections=4/4 full=4/4 table-rows=8 xrefs=4/4
+v1.1  gate G3 pass=1 read=row-S073=ok
+v1.1  gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1.1  gate G5 pass=1 read=spans=21 located=21 failed=0 uncited=0 cores=5/5
+v1.1  gate G6 pass=1 read=knowledge=65 entries=65 nested-md=65 base-intact=1 entry-bytes-ok=1
+v1.1  gate G7 pass=1 read=census-rc=0 ok-line=1
+v1.1  c2-gate fixed=6/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1    gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 table-rows=8 xrefs=4/4
+v1    gate G3 pass=1 read=row-S073=ok
+v1    gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1    gate G5 pass=1 read=spans=21 located=21 failed=0 uncited=0 cores=5/5
+v1    gate G6 pass=1 read=knowledge=65 base-names-intact=1 entry-bytes-ok=1
+v1    gate G7 pass=1 read=census-rc=0 ok-line=1
+v1    c2-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+== c2 junk-table-rows (three real rows replaced by `| - | - | - |`)
+v1.1  gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1.1  gate G2 pass=0 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=5 xrefs=4/4
+v1.1  gate G3 pass=1 read=row-S073=ok
+v1.1  gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1.1  gate G5 pass=1 read=spans=18 located=18 failed=0 uncited=0 cores=5/5
+v1.1  gate G6 pass=1 read=knowledge=65 entries=65 nested-md=65 base-intact=1 entry-bytes-ok=1
+v1.1  gate G7 pass=1 read=census-rc=0 ok-line=1
+v1.1  c2-gate fixed=6/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1    gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 table-rows=8 xrefs=4/4
+v1    gate G3 pass=1 read=row-S073=ok
+v1    gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1    gate G5 pass=1 read=spans=18 located=18 failed=0 uncited=0 cores=5/5
+v1    gate G6 pass=1 read=knowledge=65 base-names-intact=1 entry-bytes-ok=1
+v1    gate G7 pass=1 read=census-rc=0 ok-line=1
+v1    c2-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+== c2 emptied-Limits (heading kept, body deleted)
+v1.1  gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1.1  gate G2 pass=0 read=source=1 verified-at=1 recheck=1 sections=4/4 full=3/4 table-rows=8 xrefs=4/4
+v1.1  gate G3 pass=1 read=row-S073=ok
+v1.1  gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1.1  gate G5 pass=1 read=spans=15 located=15 failed=0 uncited=0 cores=5/5
+v1.1  gate G6 pass=1 read=knowledge=65 entries=65 nested-md=65 base-intact=1 entry-bytes-ok=1
+v1.1  gate G7 pass=1 read=census-rc=0 ok-line=1
+v1.1  c2-gate fixed=6/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1    gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 table-rows=8 xrefs=4/4
+v1    gate G3 pass=1 read=row-S073=ok
+v1    gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1    gate G5 pass=1 read=spans=15 located=15 failed=0 uncited=0 cores=5/5
+v1    gate G6 pass=1 read=knowledge=65 base-names-intact=1 entry-bytes-ok=1
+v1    gate G7 pass=1 read=census-rc=0 ok-line=1
+v1    c2-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+== c2 source-cell URL wrapped in another host (SOURCES.md S073 row)
+v1.1  gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1.1  gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=8 xrefs=4/4
+v1.1  gate G3 pass=0 read=bad=url
+v1.1  gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1.1  gate G5 pass=1 read=spans=21 located=21 failed=0 uncited=0 cores=5/5
+v1.1  gate G6 pass=1 read=knowledge=65 entries=65 nested-md=65 base-intact=1 entry-bytes-ok=1
+v1.1  gate G7 pass=1 read=census-rc=0 ok-line=1
+v1.1  c2-gate fixed=6/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1    gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 table-rows=8 xrefs=4/4
+v1    gate G3 pass=1 read=row-S073=ok
+v1    gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1    gate G5 pass=1 read=spans=21 located=21 failed=0 uncited=0 cores=5/5
+v1    gate G6 pass=1 read=knowledge=65 base-names-intact=1 entry-bytes-ok=1
+v1    gate G7 pass=1 read=census-rc=0 ok-line=1
+v1    c2-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+== c2 citation-range 1-589 (one cite widened to the whole capture)
+v1.1  gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1.1  gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=8 xrefs=4/4
+v1.1  gate G3 pass=1 read=row-S073=ok
+v1.1  gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1.1  gate G5 pass=0 read=spans=21 located=20 failed=1 uncited=0 cores=4/5
+v1.1  gate G6 pass=1 read=knowledge=65 entries=65 nested-md=65 base-intact=1 entry-bytes-ok=1
+v1.1  gate G7 pass=1 read=census-rc=0 ok-line=1
+v1.1  c2-gate fixed=6/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1    gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 table-rows=8 xrefs=4/4
+v1    gate G3 pass=1 read=row-S073=ok
+v1    gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1    gate G5 pass=1 read=spans=21 located=21 failed=0 uncited=0 cores=5/5
+v1    gate G6 pass=1 read=knowledge=65 base-names-intact=1 entry-bytes-ok=1
+v1    gate G7 pass=1 read=census-rc=0 ok-line=1
+v1    c2-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+== c2 core-in-HTML-comment (the AI-assistance row wrapped in <!-- -->)
+v1.1  gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1.1  gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=7 xrefs=4/4
+v1.1  gate G3 pass=1 read=row-S073=ok
+v1.1  gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1.1  gate G5 pass=0 read=spans=20 located=20 failed=0 uncited=0 cores=4/5
+v1.1  gate G6 pass=1 read=knowledge=65 entries=65 nested-md=65 base-intact=1 entry-bytes-ok=1
+v1.1  gate G7 pass=1 read=census-rc=0 ok-line=1
+v1.1  c2-gate fixed=6/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1    gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 table-rows=7 xrefs=4/4
+v1    gate G3 pass=1 read=row-S073=ok
+v1    gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1    gate G5 pass=1 read=spans=21 located=21 failed=0 uncited=0 cores=5/5
+v1    gate G6 pass=1 read=knowledge=65 base-names-intact=1 entry-bytes-ok=1
+v1    gate G7 pass=1 read=census-rc=0 ok-line=1
+v1    c2-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+== c2 extra-non-md-file (corpus/knowledge/notes.txt)
+v1.1  gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1.1  gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=8 xrefs=4/4
+v1.1  gate G3 pass=1 read=row-S073=ok
+v1.1  gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1.1  gate G5 pass=1 read=spans=21 located=21 failed=0 uncited=0 cores=5/5
+v1.1  gate G6 pass=0 read=knowledge=65 entries=66 nested-md=65 base-intact=0 entry-bytes-ok=1
+v1.1  gate G7 pass=1 read=census-rc=0 ok-line=1
+v1.1  c2-gate fixed=6/7 exit=1
+v1.1  exit=1 reads=RED
+v1    gate G1 pass=1 read=rows=28 admitted=28 entry=corpus/knowledge/github-private-vulnerability-reporting.md
+v1    gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 table-rows=8 xrefs=4/4
+v1    gate G3 pass=1 read=row-S073=ok
+v1    gate G4 pass=1 read=recheck-rc=0 quotes-ok=8 frozen-cores-missing=0
+v1    gate G5 pass=1 read=spans=21 located=21 failed=0 uncited=0 cores=5/5
+v1    gate G6 pass=1 read=knowledge=65 base-names-intact=1 entry-bytes-ok=1
+v1    gate G7 pass=1 read=census-rc=0 ok-line=1
+v1    c2-gate fixed=7/7 exit=0
+v1    exit=0 reads=GREEN
+
+v1 false-greens (green under v1, red under v1.1; the red-before evidence for the errata): c1 comment-trick; c1 cd-home; c1 planted-anchor; c1 restoration-recheck removed; c1 hostile-line; c2 wrong-source recheck; c2 junk-table-rows; c2 emptied-Limits; c2 source-cell URL wrapped in another host; c2 citation-range 1-589; c2 core-in-HTML-comment; c2 extra-non-md-file
+v1.1 greens (must be none): c1 hollow-rows
+v1 total=17 red=4 green=13
+controls total=17 red=16 green=1

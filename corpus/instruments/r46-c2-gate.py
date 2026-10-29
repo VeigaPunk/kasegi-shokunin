@@ -1,37 +1,40 @@
 #!/usr/bin/env python3
-"""r46-c2-gate.py — round-46 C2 counter (coverage), v1.1 (hardened after the wave-1 falsification; erratum E1, see .ufo/waves/round-46/counter-errata.md; v1 sha256 0ee958578b5923706178081a94dae471682f02f74492bb4a3b54a118c12ec3f6).
+"""r46-c2-gate.py — round-46 C2 counter (coverage), v1.2 (hardened after the wave-1 and wave-2 falsification; errata E1 and E2, see .ufo/waves/round-46/counter-errata.md; v1 sha256 0ee958578b5923706178081a94dae471682f02f74492bb4a3b54a118c12ec3f6).
 
 WHAT IT MEASURES
-    One frontier move, F28 (GitHub private vulnerability reporting, the reporter-side
-    flow; row S073, capture `corpus/source-snapshots/round-46/S073.txt`), counted through
-    seven limbs that a junk row, a sourceless row or an entry that quotes text the source
-    does not hold cannot satisfy (the limbs carry the round-46 v1.2 hardening: real tables
-    only, pinned captures, tool-side source-recheck, every curly quote located, base
-    knowledge directory pinned, constant census path):
+    One frontier move, F28 (GitHub private vulnerability reporting, the reporter-side flow; row S073, capture
+    `corpus/source-snapshots/round-46/S073.txt`), counted through seven limbs that a junk row, a sourceless row or an
+    entry that quotes text the source does not hold cannot satisfy. The entry and row bytes are NOT pinned (they did
+    not exist at freeze); the limbs grade structure and located quotes, and the non-author closure re-opens the page.
 
-    G1  frontier table: exactly 28 rows and 28 `admitted` (status = third cell),
-        no duplicate ids, row F28 admitted, its entry cell names one `knowledge/*.md`
-        path that exists under --root and is shared with no other row.
-    G2  that entry opens with the provenance trio: `source: S073 — <canonical URL> — `,
-        `verified-at: 2026-10-28`, a `recheck:` line running source-recheck.py --source S073;
-        carries the four sections of the round-46 entry shape, >= 6 table rows and
-        cross-references (file:line, in range) to ai-assisted-finding-validation.md and
-        linux-kernel-security-bugs-reporting-process.md.
-    G3  SOURCES.md row S073: 11 cells, tier A, status `mined`, opened 2026-10-28,
-        source cell holds the canonical URL, `used-by` lists the entry path, the anchor
-        cell carries the snapshot's sha256.
-    G4  capture: this lane's source-recheck.py exits 0 on manifest S073 (sha256 OK and
-        >= 8 quotes OK) and the manifest holds the five frozen quote cores.
-    G5  entry citations: every curly-quoted span followed by a backticked `S073.txt:N[-M]`
-        citation is located (whitespace/markup-normalised) in snapshot lines N..M, every
-        span is <= 25 words, at least four pass, no curly quote is uncited, and the five
-        frozen cores each appear inside a located span.
-    G6  `find corpus/knowledge -maxdepth 1 -name '*.md' | wc -l` == 65 and the other 64 files
-        are the round-46 tip's bytes.
-    G7  `sources-census.sh validate --file <root>/corpus/SOURCES.md` exits 0.
-
-    The knowledge entry and the F28 / S073 row bytes are NOT pinned (they do not exist at freeze):
-    the gate grades structure and located quotes, and the non-author closure re-opens the page.
+    G1  frontier table: exactly 28 rows and 28 `admitted` (status = third cell), no duplicate ids, row F28 admitted,
+        its sources cell names S073, its entry cell names one `knowledge/*.md` path that exists under --root and is
+        shared with no other row.
+    G2  that entry opens with the provenance trio (`source: S073 — <canonical URL> — `, `verified-at: 2026-10-28`,
+        and exactly one `recheck:` line of the exact form `cd <lane> && python3 corpus/instruments/source-recheck.py
+        --manifest corpus/source-snapshots/round-46/manifest.json --source S073` plus an optional ` # comment`);
+        carries the four sections of the round-45 entry shape, each with real content (>= 25 words, the package rule
+        >= 12; Scope cites S073.txt, Overlap holds >= 2 corpus/knowledge file:line references, Limits cites S073.txt
+        or a backticked sweep command, the package rule cites S073.txt); a >= 6-row table whose cells each hold >= 2
+        words and whose cites lie inside the page body (lines 556-583); cross-references corpus/knowledge/<f>.md:N[-M]
+        in range to linux-kernel-security-bugs-reporting-process.md and ai-assisted-finding-validation.md.
+    G3  SOURCES.md row S073 under `## Registry` only: 11 cells, kind docs, tier A, status `mined`, opened 2026-10-28,
+        the FIRST URL of the source cell is the canonical URL, scope and teaches >= 8 words, a cadence or date in the
+        recheck cell, an anchor cell naming the capture, a line locator inside lines 556-589 and the snapshot sha256,
+        `used-by` naming the entry.
+    G4  capture: this lane's source-recheck.py exits 0 on manifest S073 (sha256 OK and >= 8 quotes OK), the S073
+        record's quote texts are pairwise distinct with >= 7 distinct anchors, and the five frozen cores sit inside
+        those quote records (not in a note field).
+    G5  entry citations: every quoted span anywhere in the file (curly, or ASCII/single-curly of >= 4 words, comments
+        and fences included) is followed by a backticked `S073.txt:N[-M]` citation located (whitespace/markup-normalised)
+        in snapshot lines N..M, inside the page body (556-583), spanning <= 12 lines and <= 25 words; at least four pass
+        and the five frozen cores each appear inside a located span that is live text.
+    G6  `find corpus/knowledge -maxdepth 1 -name '*.md' | wc -l` == 65, the directory holds nothing else (no non-md file,
+        no nested .md, no symlink) and the other 64 names are the round-45 tip's; 62 of them are pinned byte for byte, and
+        the two entries claim C1 re-grounds are exempt from the byte pin (names pinned, size may grow never shrink), so
+        C2 is verifiable without C1 landed and the reverse.
+    G7  `sources-census.sh validate --file <root>/corpus/SOURCES.md` exits 0 (corpus/ and SOURCES.md are not symlinks).
+        The census script lives at the fleet root, outside the lane: this limb depends on it.
 
     READ-ONLY; stdlib; honors TMPDIR; never runs git.
 
@@ -66,6 +69,9 @@ PINS = {
 if os.environ.get("R46_PINS_OVERRIDE"):  # selftests only: the grader's environment, never the graded tree's; a null value disables that one pin
     PINS.update(json.load(open(os.environ["R46_PINS_OVERRIDE"])))
 CONTENT_EXEMPT = {"claim-package-contract.md", "claim-gates.md"}
+EXEMPT_BASE_SIZE = {'claim-gates.md': 6742, 'claim-package-contract.md': 5169}  # the exempt entries may grow (C1 appends) but never shrink: a gutted entry is red
+LANE = "/home/vgpnk/Projects/shokunin/kasegi-shokunin"
+RECHECK_LINE = re.compile(r"^recheck: cd " + re.escape(LANE) + r" && python3 corpus/instruments/source-recheck\.py --manifest corpus/source-snapshots/round-46/manifest\.json --source S073(?: +#.*)?$")
 BODY = (556, 583)  # the page body inside the capture (the rest is site navigation); a quote located elsewhere is not support
 SECTIONS = ["## Scope and decision rule", "## Overlap and novelty", "## Limits", "## Falsifiable package rule"]
 URL = "https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/report-privately"
@@ -175,6 +181,8 @@ def g1(root: str) -> tuple[bool, str]:
     f27 = [r for r in rows if r[0] == "F28"][0]
     if f27[2] != "admitted" or p is None:
         return False, why
+    if len(f27) < 5 or not re.search(r"\bS073\b", f27[4]):
+        return False, "F28-sources-cell-lacks-S073"
     raw = [ln for ln in live_lines(txt(root, "corpus/README.md") or "") if re.match(r"^\| F28 \|", ln)]
     if len(raw) != 1 or (False):
         return False, "F28-row-not-the-pinned-line"
@@ -197,27 +205,36 @@ def g2(root: str) -> tuple[bool, str]:
     head = body.splitlines()[:8]
     ok_s = any(h.startswith("source: S073 \u2014 " + URL + " \u2014 ") for h in head)
     ok_v = any(h == "verified-at: 2026-10-28" for h in head)
-    ok_r = any(h.startswith("recheck: ") and "source-recheck.py" in h and re.search(r"--source S073(?:\s|$)", h) and "round-46/manifest.json" in h for h in head)
+    ok_r = sum(1 for ln in body.splitlines() if ln.startswith("recheck:")) == 1 and any(RECHECK_LINE.match(h) for h in head)
     secs = sum(1 for sct in SECTIONS if re.search("^" + re.escape(sct) + r"\s*$", body, re.M))
     full = sum(1 for sct in SECTIONS if sect_words(body, sct) >= (12 if sct.startswith("## Falsifiable") else 25))
     rows = []
     for ln in body.splitlines():
         if re.match(r"^\|[^|]+\|[^|]+\|[^|]+\|\s*$", ln):
             cells = [c.strip() for c in ln.strip().strip("|").split("|")]
-            if all(len(re.findall(r"\w+", c)) >= 2 for c in cells) and re.search(r"S073\.txt:\d+", cells[1] + " " + cells[0]):
+            cites = [int(x) for x in re.findall(r"S073\.txt:(\d+)", cells[1] + " " + cells[0])]
+            if all(len(re.findall(r"\w+", c)) >= 2 for c in cells) and cites and all(BODY[0] <= x <= BODY[1] for x in cites):
                 rows.append(cells)
     tbl = len(rows)
-    refs = re.findall(r"corpus/knowledge/([A-Za-z0-9._-]+\.md):(\d+)", body)
+    refs = re.findall(r"corpus/knowledge/([A-Za-z0-9._-]+\.md):(\d+)(?:-(\d+))?", body)
     refok = 0
-    for fn, ln in refs:
+    for fn, ln, ln2 in [(r[0], r[1], r[2] or r[1]) for r in refs]:
         t = txt(root, "corpus/knowledge/" + fn)
-        if t is not None and 1 <= int(ln) <= len(t.splitlines()):
+        if t is not None and 1 <= int(ln) <= int(ln2) <= len(t.splitlines()):
             refok += 1
+    refs = [(r[0], r[1]) for r in refs]
     need = {"linux-kernel-security-bugs-reporting-process.md", "ai-assisted-finding-validation.md"}
     have = {fn for fn, ln in refs}
     ok_x = need <= have and refok == len(refs)
-    good = ok_s and ok_v and ok_r and secs == len(SECTIONS) and full == len(SECTIONS) and tbl >= 6 and ok_x
-    return good, f"source={int(ok_s)} verified-at={int(ok_v)} recheck={int(bool(ok_r))} sections={secs}/{len(SECTIONS)} full={full}/{len(SECTIONS)} table-rows={tbl} xrefs={refok}/{len(refs)}"
+    def sect(heading):
+        m = re.search("^" + re.escape(heading) + r"\s*$(.*?)(?=^## |\Z)", body, re.M | re.S)
+        return m.group(1) if m else ""
+    anchored = (re.search(r"S073\.txt:\d+", sect(SECTIONS[0])) is not None
+                and len(re.findall(r"corpus/knowledge/[A-Za-z0-9._-]+\.md:\d+", sect(SECTIONS[1]))) >= 2
+                and re.search(r"S073\.txt:\d+|`(?:grep|sed) ", sect(SECTIONS[2])) is not None
+                and re.search(r"S073\.txt:\d+", sect(SECTIONS[3])) is not None)
+    good = ok_s and ok_v and ok_r and secs == len(SECTIONS) and full == len(SECTIONS) and tbl >= 6 and ok_x and anchored
+    return good, f"source={int(ok_s)} verified-at={int(ok_v)} recheck={int(bool(ok_r))} sections={secs}/{len(SECTIONS)} full={full}/{len(SECTIONS)} anchored={int(anchored)} table-rows={tbl} xrefs={refok}/{len(refs)}"
 
 
 def g3(root: str) -> tuple[bool, str]:
@@ -244,7 +261,8 @@ def g3(root: str) -> tuple[bool, str]:
     if len(re.findall(r"\w+", row[4])) < 8: bad.append("scope-words")
     if len(re.findall(r"\w+", row[6])) < 8: bad.append("teaches-words")
     if not re.fullmatch(r"(?:\d+d|on-release|\d{4}-\d{2}-\d{2})", row[9]): bad.append("recheck-cell")
-    if "S073.txt" not in row[5] or not re.search(r"(?:\bL\d+|\blines?\s+\d+|S073\.txt:\d+)", row[5]): bad.append("anchor-locator")
+    loc = re.search(r"(?:lines?|\bL)\s*(\d+)\s*[-\u2013]\s*L?(\d+)", row[5])
+    if "S073.txt" not in row[5] or not loc or not (BODY[0] <= int(loc.group(1)) <= int(loc.group(2)) <= 589): bad.append("anchor-locator")
     if row[7] != "mined": bad.append("status")
     if row[8] != "2026-10-28": bad.append("opened")
     u = re.findall(r"https?://\S+", row[1])
@@ -266,13 +284,14 @@ def g4(root: str) -> tuple[bool, str]:
     rc, out = run([sys.executable, "-I", os.path.join(TOOL_ROOT, "corpus/instruments/source-recheck.py"), "--manifest", man,
                    "--source", "S073"], root)
     oks = len(re.findall(r"^S073:Q\d+ OK ", out, re.M))
-    mt = norm(open(man, encoding="utf-8").read())
-    miss = [c for c in MANIFEST_CORES if norm(c) not in mt]
     try:
-        qs = json.load(open(man, encoding="utf-8"))["sources"][0]["quotes"]
+        rec = [x for x in json.load(open(man, encoding="utf-8"))["sources"] if x.get("id") == "S073"]
+        qs = rec[0]["quotes"] if len(rec) == 1 else []
+        mt = norm(" ".join(q["quote"] for q in qs))
         distinct = len({q["quote"] for q in qs}) == len(qs) == oks and len({q["anchor"] for q in qs}) >= 7
     except Exception:
-        distinct = False
+        mt, distinct = "", False
+    miss = [c for c in MANIFEST_CORES if norm(c) not in mt]
     good = rc == 0 and "S073:sha256 OK" in out and oks >= 8 and not miss and "BROKEN" not in out and distinct
     return good, f"recheck-rc={rc} quotes-ok={oks} frozen-cores-missing={len(miss)}"
 
@@ -281,14 +300,17 @@ def g5(root: str) -> tuple[bool, str]:
     p, why = entry_path(root)
     if p is None:
         return False, why
-    body = "\n".join(live_lines(txt(root, p) or ""))
+    raw = txt(root, p) or ""
+    live = "\n".join(live_lines(raw))
     snap = (txt(root, "corpus/source-snapshots/round-46/S073.txt") or "").splitlines()
-    allcurly = re.findall("\u201c([^\u201d]+)\u201d", body)
-    spans = re.findall("\u201c([^\u201d]+)\u201d\\s*\\(`?S073\\.txt:(\\d+)(?:-(\\d+))?`?", body)
-    straight = [q for q in re.findall('"([^"\\n]{12,})"', body) if len(q.split()) >= 4]
-    straight_cited = re.findall('"([^"\\n]{12,})"\\s*\\(`?S073\\.txt:(\\d+)(?:-(\\d+))?`?', body)
+    cite = "\\s*\\(`?S073\\.txt:(\\d+)(?:-(\\d+))?`?"
+    curly = "\u201c([^\u201d]+)\u201d"
+    # every quoted span anywhere in the raw file (comments and fences included) must be cited and located
+    spans = re.findall(curly + cite, raw) + re.findall('"([^"]+)"' + cite, raw, re.S)
+    single = re.findall("\u2018([^\u2019]+)\u2019", raw)
+    quoted = re.findall(curly, raw) + [q for q in re.findall('"([^"]+)"', raw, re.S) if len(q.split()) >= 4] + [q for q in single if len(q.split()) >= 4]
     passed, failed = [], 0
-    for q, a, b in spans + straight_cited:
+    for q, a, b in spans:
         a = int(a)
         b = int(b) if b else a
         window = norm(" ".join(snap[max(a - 1, 0):b]))
@@ -297,10 +319,11 @@ def g5(root: str) -> tuple[bool, str]:
             passed.append(nq)
         else:
             failed += 1
-    cores = [c for c in CORES if any(re.search(c, q) for q in passed)]
-    uncited = (len(allcurly) - len(spans)) + (len(straight) - len(straight_cited))
-    ok = failed == 0 and uncited == 0 and len(passed) >= 4 and len(cores) == len(CORES)
-    return ok, f"spans={len(spans) + len(straight_cited)} located={len(passed)} failed={failed} uncited={uncited} cores={len(cores)}/{len(CORES)}"
+    live_spans = {norm(q) for q, _a, _b in re.findall(curly + cite, live)}
+    cores = [c for c in CORES if any(re.search(c, q) for q in passed if q in live_spans)]
+    uncited = len(quoted) - len(spans)
+    ok = failed == 0 and uncited <= 0 and len(passed) >= 4 and len(cores) == len(CORES)
+    return ok, f"spans={len(spans)} located={len(passed)} failed={failed} uncited={max(uncited, 0)} cores={len(cores)}/{len(CORES)}"
 
 
 def g6(root: str) -> tuple[bool, str]:
@@ -317,10 +340,16 @@ def g6(root: str) -> tuple[bool, str]:
         cont = ""
     base_ok = base_ok and (PINS["base-knowledge-content"] is None or cont == PINS["base-knowledge-content"])
     sized = p is not None and os.path.getsize(os.path.join(root, p)) >= 3000
+    links = [x for x in (os.path.join(root, "corpus"), d) if os.path.islink(x)] + [n for n in everything if os.path.islink(os.path.join(d, n))]
+    grown = all(os.path.isfile(os.path.join(d, n)) and os.path.getsize(os.path.join(d, n)) >= sz for n, sz in EXEMPT_BASE_SIZE.items())
+    if links or not grown:
+        return False, f"symlinks={len(links)} exempt-entries-not-shrunk={int(grown)}"
     return (len(names) == 65 and len(everything) == 65 and nested == 65 and base_ok and sized), f"knowledge={len(names)} entries={len(everything)} nested-md={nested} base-intact={int(base_ok)} entry-bytes-ok={int(sized)}"
 
 
 def g7(root: str) -> tuple[bool, str]:
+    if os.path.islink(os.path.join(root, "corpus")) or os.path.islink(os.path.join(root, "corpus/SOURCES.md")):
+        return False, "census-input-is-a-symlink"
     rc, out = run(["bash", CENSUS, "validate", "--file", os.path.join(root, "corpus/SOURCES.md")], root)
     ok_line = bool(re.search(r"^\S+\tok\t", out, re.M))
     return rc == 0 and ok_line, f"census-rc={rc} ok-line={int(ok_line)}"
