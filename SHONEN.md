@@ -301,3 +301,16 @@ registry, which carries the same two rows. The round-43 sentence stays
 byte-identical as history; this appended paragraph is the effective pointer, and
 `corpus/instruments/r44-routed-defects.py` limb D7 grades it. Box stays `[~]`.
 
+## Round 46 evidence
+
+All four boxes stay `[~]`; `[x]` is operator-owned and no non-author verifier has judged this round yet.
+
+- [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
+      — evidence (round 46, base `914ca0b6`): `SKILL.md` gains one appended block, `## Round-46 Gates & probes registry addition` (six rows: `r46-c1-gate.py`, `r46-c2-gate.py`, `r46-landing-gate.py`, the two selftests and `r46-plain-measure.sh`, each with entry command, verdict map, self-test and pinned-value path); `density.py SKILL.md` mean 249.1 → 258.7 (an appended block, not credited as depth); `anchorcheck.py SKILL.md` `16 in-range cite instances, 0 bad`. The F28 entry `corpus/knowledge/github-private-vulnerability-reporting.md` carries 27 located quotes (`r46-c2-gate.py` G5 `spans=27 located=27`) and a falsifiable package rule. No non-author verifier.
+- [~] At least one end-to-end domain task executed and logged in LOG.md
+      — evidence (round 46): none new. No target testing or submission was performed (documentation only); the closest work is the S073 capture and the two re-grounded entries (`corpus/knowledge/claim-package-contract.md`, `claim-gates.md`), whose 46 rows are re-located against the committed claim-package gate by `controls/plain-rows.sh` (`rows=21 located=21`, `rows=25 located=25`). The box stays `[~]` until the operator authorizes a domain task.
+- [~] Instructions executable by an agent without oral context
+      — evidence (round 46): every counting command runs from a committed export and prints its reading: `.ufo/waves/round-46/controls/final-measure.txt` (measured at lane commit `eb874bc`: `c1-gate fixed=1/7 exit=1` → `fixed=7/7 exit=0`; `c2-gate fixed=1/7 exit=1` → `fixed=7/7 exit=0`; plain lines `c1b=24` → `22`, frontier `27` → `28`; selftests `76`, `137` and `30` cases, `failures=0`). No non-author verifier.
+- [~] No cross-domain bleed (PROVINCE.md still accurate)
+      — evidence (round 46): `PROVINCE.md` gained one appended F28 line with a scope limit (reporter flow only; maintainer handling, the GitHub Advisory Database and CVE assignment stay out); the sibling sweep `wave1/R46ScoutAdjacent.md` found no sibling lane holding reporter-side GitHub private vulnerability reporting, and `wave1/R46ConnSibling.md` found no sibling round-46 claim on it. No non-author verifier.
+

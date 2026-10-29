@@ -1772,3 +1772,40 @@ The honest reading of the green counters: they are pinned-artifact graders (a tr
 
 - `depth:verifiability`: state each claim's before-value per start tree (base and freeze tree) and run `capture-binding-check.py --root` and the census before dispatching a wave.
 - `coverage`: obtain a non-author admit/reject spot-check of S071/S072 before any coverage statement beyond +1 row; keep rejected-row captures outside `corpus/source-snapshots/`.
+
+## Round 46 result
+
+Frozen at `.ufo/waves/round-46/claims.json` (freeze commit `9f23aab4636b620cdcf7ac3d3a29a5a06dd184b5`, base `914ca0b6956f01d87b2e252ffad06fe74ec5d9ba`). Counter errata and the classification decision: `.ufo/waves/round-46/counter-errata.md`. Receipts: `.ufo/waves/round-46/controls/final-measure.txt` (measured at lane commit `eb874bc86ad7a6cfec299088e5a2d7ec68cf61b7`), `controls/controls-v1.2.out.txt` (17 controls; 11 red-before), `controls/selftest-vs-frozen-v1.txt`.
+
+| Axis | Score before r46 | Score after r46 | Evidence pointer | Last change |
+|---|---:|---:|---|---|
+| depth:verifiability | 4 | 4 held — measured (gated rechecks 24 → 22), no promotion limb completed | C1 `python3 corpus/instruments/r46-c1-gate.py --root <tree> --baseline <base>`: base `c1-gate fixed=1/7 exit=1`, tip `fixed=7/7 exit=0`; plain `python3 corpus/instruments/recheck-audit.py --root . --quiet \| grep '^executes='` on the tip prints `gated=22` (base `gated=24`) | r46 (held) |
+| coverage | 8 | 8 held — measured (+1 admitted frontier row; not a coverage-ratio move) | C2 `python3 corpus/instruments/r46-c2-gate.py --root <tree>`: base `fixed=1/7 exit=1` (`2/7` at the freeze tree), tip `fixed=7/7 exit=0`; plain frontier rows 27 → 28, SOURCES rows 72 → 73, knowledge files 64 → 65 | r46 (held) |
+| depth:density | 9 | 9 held — non-target guard: `density.py` byte-identical; SKILL.md mean 249.1 → 258.7 from the appended registry block, not credited as depth | `controls/final-measure.txt` | r46 (held) |
+
+### Round-46 held-axis promotion limbs (the next claim each held score targets)
+
+- **depth:verifiability 4 → 5** (`## Distance-to-next-score`, `SCORECARD.md:1536`). Limb 1: zero gated rechecks — the base reads `gated=24 of 64`, the tip `gated=22 of 65`: 22 to go. Limb 2: the score-5 audit bar (`SCORECARD.md:331`, "a non-author audit passing 25/25 source chains and 0 unsupported current claims") — untouched, only a non-author closure can grade it. The next claim targets limb 1: the census `wave1/R46ScoutCensus1-8.md` classifies each remaining gated entry as fully, partly or not re-groundable on committed bytes; the DATA-half entries cannot be re-grounded (`wave1/R46Revenger.md`) and need an operator ruling to leave the denominator (L0 kasegi round-15).
+- **coverage 8**: the only written promotion heading is `### coverage, 7 → 8` (`SCORECARD.md:1547`); it reads `(20 + F_admitted)/(20 + F_total) = 1.000` at the tip (frontier rows 28, admitted 28, queued registry rows 0). No 8 → 9 criterion exists; none is invented here. Coverage stays held with no promotion limb; the next frontier move is an expansion count, and the operator half (0/18 domain surfaces present) is unchanged.
+
+### Round-46 move-log rows
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 46 | depth:verifiability | 24 of 64 `recheck:` lines gated (`recheck-audit.py` `executes=40 gated=24 broken=0`; `r46-c1-gate.py` `fixed=1/7`) | 22 of 65 at `eb874bc` (`executes=43 gated=22 broken=0`; `fixed=7/7`); the counter read 7/7 on eleven defect trees at v1 and was hardened twice (errata E1, E2); C1's faithfulness rests on a side-by-side reading of 46 rows, which the counter cannot make | `corpus/instruments/r46-c1-gate.py`; `corpus/knowledge/claim-package-contract.md`, `claim-gates.md` (`## Re-ground (round 46)`); `controls/final-measure.txt`; `wave2/R46W2RevGround*.md` |
+| 46 | coverage | 27 admitted frontier rows, 72 SOURCES rows, 64 knowledge entries | 28, 73, 65; S073 `mined` (tier A, docs) | `corpus/README.md` Round-46 admission block; `corpus/knowledge/github-private-vulnerability-reporting.md`; `corpus/SOURCES.md` S073; `corpus/source-snapshots/round-46/manifest.json` |
+
+Counting commands, one per claim (re-runnable on an export):
+
+- **C1** — `python3 corpus/instruments/r46-c1-gate.py --root <tree> --baseline <base-export>` → `c1-gate fixed=<k>/7 exit=<c>`; base `fixed=1/7` (the freeze tree reads the same), tip `fixed=7/7`; plain: `bash corpus/instruments/r46-plain-measure.sh <tree>` prints `c1a=23`/`c1b=24` at the base and `c1a=21`/`c1b=22` at the tip; `bash .ufo/waves/round-46/controls/plain-rows.sh <tree> <entry>.md` prints `rows=25 located=25` and `rows=21 located=21`.
+- **C2** — `python3 corpus/instruments/r46-c2-gate.py --root <tree>` → `c2-gate fixed=<k>/7 exit=<c>`; base `fixed=1/7`, freeze tree `fixed=2/7`, tip `fixed=7/7`; secondary `python3 corpus/instruments/r44-frontier-count.py --root <tree> --expect 28` (base `verdict=SHORT` exit 1, tip exit 0); plain `c2a=27 → 28`, `c2b=72 → 73`, `c2c=64 → 65`, `c2d=0 → 3`.
+
+The honest reading of the green counters: they are mechanical graders. C1's rows are checked for location, load-bearing and append-only, never for meaning; `controls-v1.2.out.txt` prints `c1 hollow-rows` GREEN as the disclosed limit. The side-by-side row review (`wave2/R46W2RevGround*.md`) found three BROKEN verdicts over 46 rows (overreach and circular witnesses), all reworded in the wave-2 integration; a non-author must re-read the rows before C1 is called verified.
+
+**Capabilities: no row enters this round** (the gates and selftests are counters; `r46-landing-gate.py` has been run on fixtures and replayed on three real report pairs, not yet as the filing gate of a landed round). **Saturation unchanged:** line 9/10 per owned axis, window N = 3; the lowest non-retired axis stays depth:verifiability (4), which C1 worked.
+
+### Planned evidence gates for round 47
+
+- `depth:verifiability`: state each claim's before-value per start tree and run `capture-binding-check.py --root` and the census BEFORE dispatching a wave (round 46 read `bound=59 unbound=1` at the freeze tree); run the single-edit mutant battery (QUALITY R50) against any new counter before freezing it; a re-ground names who read its rows side by side.
+- `coverage`: obtain a non-author admit/reject spot-check of S073 before any coverage statement beyond +1 row; append the considerthese ledger row with the pin amendment (the ledger is byte-pinned by C2 G6 this round).
+
