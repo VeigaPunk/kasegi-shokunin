@@ -1,0 +1,33 @@
+G3a END-TO-END — does a new selftest case actually CATCH the G3a-cells-loose mutant?
+
+Command: python3 g3a_e2e.py
+  (builds a scratch copy of the COMMITTED selftest with ONE case added, runs it against the
+   pristine counter and against the battery-exact G3a mutant counter, and compares failures=)
+
+Printed (verbatim):
+scratch selftest written: /fast/scratch/hyaku/kasegi-r46/R46bMutSelfC2a/work/g3a-uz0yider/selftest-ext.py
+EXTENDED selftest vs PRISTINE counter: failures=0
+    ok   mutant  mut-s073-row-twelve-cells-extra-at-end fixed=5/7 failing=['G3', 'G7']
+EXTENDED selftest vs G3a MUTANT counter: failures=1
+    FAIL mutant  mut-s073-row-twelve-cells-extra-at-end fixed=6/7 failing=['G7']  <- ACCEPTED-targeted-gate-passes=['G3']
+
+VERDICT: the new case CATCHES the G3a mutant (failures 0 -> 1)
+
+The case added to the selftest's case list (one line, existing selftest symbols only):
+  add(Case("mut-s073-row-twelve-cells-extra-at-end", "mutant",
+      lambda r: sub(r, SOURCES, line_of(r, SOURCES, "| S073 |"),
+                     line_of(r, SOURCES, "| S073 |")[:-1] + " | extra |"), {"G3"}, allow={"G7"}))
+
+Why it works (verified on the real builder's row): the S073 registry row has 11 cells and the
+counter reads row[7]=status, row[8]=opened, row[9]=recheck-cadence, row[10]=used-by
+(corpus/instruments/r46-c2-gate.py:263,266,267,270). Appending the extra cell at the END leaves
+positions 0..10 UNCHANGED, so all four tail literals still satisfy the mutant's relaxed
+"len(c) >= 9" parse; the pristine counter's "len(c) == 11" rejects the row, so G3 is red pristine
+and green under the mutant. G7 is collateral-red in BOTH (the extra cell also breaks the census's
+13-field contract), hence allow={"G7"}.
+
+This DISAGREES with the sibling gap scout (wave1/R46bScoutSelftestC2Gap.md, E1), which classes
+G3a as "equivalent-by-construction" on the argument that a >=12-cell row "shifts the
+mined/date/recheck/used-by literals off positions 7-10". That shift does not happen when the extra
+cell is appended at the END. The sibling's own executed 12-cell craft inserted the extra cell
+elsewhere (a duplicated anchor cell), which does shift the tail.

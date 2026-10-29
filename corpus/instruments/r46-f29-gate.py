@@ -90,7 +90,7 @@ PINS = {
 
 RECHECK_LINE = re.compile(
     r"^recheck: cd " + re.escape(LANE_CD) + r" && python3 corpus/instruments/source-recheck\.py --manifest "
-    + re.escape(MAN_REL) + r" --source S074(?: +#.*)?$")
+    + re.escape(MAN_REL) + r" --source S074(?: +#[ 0-9A-Za-z./_-]+)?$")  # the comment is a cadence note only: no shell metacharacters
 SECTIONS = ["## Scope and decision rule", "## Overlap and novelty", "## Limits", "## Falsifiable package rule"]
 CORES = [
     r"privately discuss and fix a security vulnerability",
@@ -120,9 +120,13 @@ def live_lines(text: str) -> list[str]:
         if st.startswith("```") or st.startswith("~~~"):
             fence = not fence
             continue
-        if fence or not st or st.startswith("<!--"):
+        if fence or not st:
             continue
-        out.append(ln)
+        clean = re.sub(r"<!--.*?-->", " ", ln)  # mid-line HTML comments are not rendered text
+        clean = clean.strip()
+        if not clean or clean.startswith("<!--"):
+            continue
+        out.append(clean)
     return out
 
 
@@ -137,10 +141,22 @@ def txt(root: str, rel: str) -> str | None:
 def frontier(root: str) -> list[list[str]]:
     rows = []
     for ln in live_lines(txt(root, "corpus/README.md") or ""):
-        if re.match(r"^\| F\d+ \|", ln):
-            cells = [c.strip() for c in ln.strip().strip("|").split("|")]
+        st = ln.lstrip()
+        if re.match(r"^\| F\d+ \|", st):
+            cells = [c.strip() for c in st.strip().strip("|").split("|")]
             rows.append(cells)
     return rows
+
+
+def frontier_anywhere(root: str) -> int:
+    """Lines anywhere in the README bytes (fence-stripped, zero-width chars removed) that look like an F-row.
+    The strict parsed count must equal this: a duplicate, indented, commented or zero-width-disguised row is a defect."""
+    n = 0
+    for ln in live_lines(txt(root, "corpus/README.md") or ""):
+        clean = re.sub(r"[\u200b\u200c\u200d\ufeff]", "", ln)
+        if re.search(r"\| *F\d+ *\|", clean):
+            n += 1
+    return n
 
 
 def entry_path(root: str) -> tuple[str | None, str]:
@@ -169,14 +185,17 @@ def h1(root: str) -> tuple[bool, str]:
         return False, "F29-row-or-entry-missing %s" % why
     if len(f29[0]) < 5 or not re.search(r"\bS074\b", f29[0][4]):
         return False, "F29-sources-cell-lacks-S074"
-    if ENTRY not in f29[0][3]:
-        return False, "F29-entry-cell-not-ENTRY"
+    if ENTRY not in f29[0][3] or f29[0][3].strip().strip("`") != ENTRY:
+        return False, "F29-entry-cell-not-exactly-ENTRY"  # backticks are the lane's row decoration; the cell must name exactly this path
     shared = [r[0] for r in rows if len(r) > 3 and ENTRY in r[3] and r[0] != "F29"]
     if shared:
         return False, "entry-shared-with=%s" % ",".join(shared)
-    raw = [ln for ln in live_lines(txt(root, "corpus/README.md") or "") if re.match(r"^\| F29 \|", ln)]
+    raw = [ln for ln in live_lines(txt(root, "corpus/README.md") or "") if re.match(r"^\| F29 \|", ln.lstrip())]
     if len(raw) != 1:
         return False, "F29-row-not-one-live-line"
+    anywhere = frontier_anywhere(root)
+    if anywhere != len(rows):
+        return False, "F-rows-visible=%d parsed=%d (duplicate, commented, indented or zero-width ghost rows)" % (anywhere, len(rows))
     return True, "rows=29 admitted=29 F29=admitted"
 
 
@@ -243,12 +262,14 @@ def h3(root: str) -> tuple[bool, str]:
     if len(re.findall(r"\w+", row[4])) < 8: bad.append("scope-words")
     if len(re.findall(r"\w+", row[6])) < 8: bad.append("teaches-words")
     if not re.fullmatch(r"(?:\d+d|on-release|\d{4}-\d{2}-\d{2})", row[9]): bad.append("recheck-cell")
-    loc = re.search(r"(?:lines?|\bL)\s*(\d+)\s*[-\u2013]\s*L?(\d+)", row[5])
-    if SNAP_REL.rsplit("/", 1)[-1] not in row[5] or not loc or not (BODY[0] <= int(loc.group(1)) <= int(loc.group(2)) <= SNAP_LINES): bad.append("anchor-locator")
+    locs = re.finditer(r"(?:lines?|\bL)\s*(\d+)\s*[-\u2013]\s*L?(\d+)\s+of\s+(\S+)", row[5])
+    ok_loc = any(m.group(3).rstrip(".,;)'\"") == SNAP_REL and BODY[0] <= int(m.group(1)) <= int(m.group(2)) <= SNAP_LINES
+                 for m in locs)
+    if SNAP_REL not in row[5] or not ok_loc: bad.append("anchor-locator")  # the locator must be bound to THIS capture's path
     if row[7] != "mined": bad.append("status")
     if row[8] != VERIFIED_AT: bad.append("opened")
-    u = re.findall(r"https?://\S+", row[1])
-    if not u or u[0].rstrip(".,;)") != URL: bad.append("url")
+    urls = [x.rstrip(".,;)") for x in re.findall(r"https?://\S+", row[1])]
+    if not urls or any(x != URL for x in urls): bad.append("url")  # every URL in the source cell is the canonical one: no redirector wrap
     if p is None or p not in row[10]: bad.append("used-by")
     if snap_sha not in row[5]: bad.append("anchor-sha")
     return (not bad), ("row-S074=ok" if not bad else "bad=" + ",".join(bad))
@@ -334,6 +355,9 @@ def h6(root: str) -> tuple[bool, str]:
 def h7(root: str) -> tuple[bool, str]:
     if os.path.islink(os.path.join(root, "corpus")) or os.path.islink(os.path.join(root, "corpus/SOURCES.md")):
         return False, "census-input-is-a-symlink"
+    reg = sum(1 for ln in (txt(root, "corpus/SOURCES.md") or "").splitlines() if ln.strip() == "## Registry")
+    if reg != 1:
+        return False, "registry-sections=%d (exactly one expected; a duplicated Registry section is a structural corruption the census does not see)" % reg
     p = subprocess.run(["bash", CENSUS, "validate", "--file", os.path.join(root, "corpus/SOURCES.md")],
                        capture_output=True, text=True, timeout=120)
     ok_line = bool(re.search(r"^\S+\tok\t", p.stdout, re.M))

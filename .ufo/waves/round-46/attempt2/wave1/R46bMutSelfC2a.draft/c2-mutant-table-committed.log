@@ -1,0 +1,34 @@
+BASELINE selftest=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-counters-selftest-c2.py baseline_failures=0
+mutant=G1a-counts-loose baseline_failures=0 mutant_failures=2 verdict=caught
+mutant=G1b-path-dropped baseline_failures=0 mutant_failures=5 verdict=caught
+mutant=G1c-src-boundary baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G2a-verified-prefix baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G2b-wordfloor-low baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G2c-need-empty baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G3a-cells-loose baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G3b-scope-words-low baseline_failures=0 mutant_failures=1 verdict=caught
+mutant=G3c-kind-dead baseline_failures=0 mutant_failures=94 verdict=caught
+mutant=G4a-manifest-unpinned baseline_failures=0 mutant_failures=1 verdict=caught
+mutant=G4b-quotes-low baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G4c-distinct-dropped baseline_failures=0 mutant_failures=2 verdict=caught
+mutant=G5a-span-wide baseline_failures=0 mutant_failures=1 verdict=caught
+mutant=G5b-words-wide baseline_failures=0 mutant_failures=2 verdict=caught
+mutant=G5c-pass-low baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G6a-guards-dead baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G6b-integrity-loose baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G6c-size-low baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G7a-verdict-or baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G7b-symlink-dead baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+mutant=G7c-okline-loose baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+Traceback (most recent call last):
+  File "/fast/scratch/hyaku/kasegi-r46/R46bMutSelfC2a/drv.py", line 112, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/fast/scratch/hyaku/kasegi-r46/R46bMutSelfC2a/drv.py", line 97, in main
+    print("mutbat counter=c2 mutants=%d caught=%d equivalent=0 uncaught=%d baseline_failures=0" %
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+          (len(results), caught, len(surv), len(surv)))
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: not all arguments converted during string formatting
+mutbat counter=c2 mutants=21 caught=8 equivalent=0 uncaught=13 baseline_failures=0
+SURVIVORS failures=0: G1c-src-boundary G2a-verified-prefix G2b-wordfloor-low G2c-need-empty G3a-cells-loose G4b-quotes-low G5c-pass-low G6a-guards-dead G6b-integrity-loose G6c-size-low G7a-verdict-or G7b-symlink-dead G7c-okline-loose

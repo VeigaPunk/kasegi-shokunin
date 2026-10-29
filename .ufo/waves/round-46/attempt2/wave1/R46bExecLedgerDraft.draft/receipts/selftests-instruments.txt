@@ -1,0 +1,13 @@
+# Lane instruments re-run by this seat (read-only on the lane; scratch work dirs only).
+# The runs print one line per case; the summary lines and the last case lines are below.
+
+# python3 corpus/instruments/r46-landing-gate.py --selftest --work <scratch>
+selftest case=cli-positive exit=0 last=landing-gate_mode=post-report_checks=7_fail=0_exit=0 verdict=pass
+selftest case=cli-two-shonen exit=1 last=landing-gate_mode=post-report_checks=7_fail=1_exit=1 verdict=pass
+selftest cases=30 failures=0
+
+# python3 corpus/instruments/claim-package-selftest.py
+selftest case=8 class=defect fixture=defect-8-marker expected=R-REPORT observed=R-REPORT verdict=pass
+selftest case=9 class=defect fixture=defect-9-secret expected=R-NOSECRET observed=R-NOSECRET verdict=pass
+selftest case=10 class=degenerate fixture=always-pass expected=reject observed=rejected-9/9 verdict=pass
+selftest cases=10 failures=0

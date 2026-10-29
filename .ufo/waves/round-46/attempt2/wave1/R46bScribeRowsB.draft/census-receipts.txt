@@ -1,0 +1,35 @@
+# Census receipts — R46bScribeRowsB (round 46 attempt 2)
+scratch: /fast/scratch/hyaku/kasegi-r46/R46bScribeRowsB ; TMPDIR=/fast/scratch/hyaku/kasegi-r46/R46bScribeRowsB/tmp ; date: 2026-10-29T21:29:49Z
+
+## CONTROL (do-nothing): base export 04af9bc, no S074 row
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /fast/scratch/hyaku/kasegi-r46/R46bScribeRowsB/base/corpus/SOURCES.md --today 2026-10-29
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r46/R46bScribeRowsB/base/corpus/SOURCES.md
+exit=0
+
+## TREATMENT: draft row inserted after S073; the paired knowledge entry does not exist yet
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /fast/scratch/hyaku/kasegi-r46/R46bScribeRowsB/treatment/corpus/SOURCES.md --today 2026-10-29
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	E11	S074 missing used-by corpus/knowledge/github-repository-security-advisories.md
+exit=1
+
+## CONTROL B: same tree + the paired knowledge entry present (placeholder file)
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /fast/scratch/hyaku/kasegi-r46/R46bScribeRowsB/treatB/corpus/SOURCES.md --today 2026-10-29
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r46/R46bScribeRowsB/treatB/corpus/SOURCES.md
+exit=0
+
+## MUTANT A: row recheck cell 90d -> 90 days
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /fast/scratch/hyaku/kasegi-r46/R46bScribeRowsB/mutA/corpus/SOURCES.md --today 2026-10-29
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	E09	S074 recheck=90 days
+file	E11	S074 missing used-by corpus/knowledge/github-repository-security-advisories.md
+exit=1

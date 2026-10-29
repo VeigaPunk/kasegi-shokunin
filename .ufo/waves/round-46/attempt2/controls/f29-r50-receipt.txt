@@ -66,3 +66,13 @@ The claim (C2) kill rule requires the wave-1 selftest (`r46-selftest-f29.py`, bu
 committed with the landing) to grade clauses (a), (b), (d), (e) on synthetic trees, and the battery
 extension (`r46-mutbat.py --counter f29`) to reach `uncaught=0` for the f29 gate with the same
 caught-or-equivalent predicate as C1's counters.
+
+## Correction (integration, 2026-10-29 — ScribeLog finding)
+
+The table above carries 20 pairing rows but declares 21 mutants: `H6c-size-low` has no pairing row.
+H6c (the landed-entry byte floor `>= 3000`) is NOT-SHOWN for the same reason as (b): a truncated
+entry drops below H2's word floors and loses table rows, so no single-defect tree isolates the size
+clause at gate level; it is graded by `r46-selftest-f29.py` (rebuilt-PINS tree with a padded short
+entry). With H6c the tally is mutants=21 = 11 flips + 10 not-shown, and the Result line's
+"not-shown=10" stands; only the table was one row short. The receipt is append-only at this
+correction; the pairing rows above are unchanged.

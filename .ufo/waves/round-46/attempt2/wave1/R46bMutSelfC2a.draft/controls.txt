@@ -1,0 +1,31 @@
+CONTROL EVIDENCE — R46bMutSelfC2a
+
+=== 1. The selftest's OWN do-nothing control (stub counter always prints 7/7).
+Command: python3 corpus/instruments/r46-counters-selftest-c2.py --pure $S/pure --do-nothing-control
+Printed (tail):
+  probe       probe-fabricated-prose-no-quote-marks fixed=7/7 failing=[] (ACCEPTED) -- an unquoted false claim is invisible to G5
+  probe       probe-fabricated-curly-quote-in-html-comment fixed=7/7 failing=[] (ACCEPTED) -- a comment is not rendered; the counter reads live lines only, so a hidden fabrication is not graded
+  probe       probe-unclosed-html-comment-before-f28-row fixed=7/7 failing=[] (ACCEPTED) -- renderer hides the row; counter keeps it live
+  probe       probe-four-tick-fence-with-inner-three-tick-line fixed=7/7 failing=[] (ACCEPTED) -- renderer treats the row as fenced code; counter closes the fence early
+  probe       probe-entry-pad-is-garbage-bytes fixed=7/7 failing=[] (ACCEPTED) -- G6 floor is bytes, not content
+  selftest cases=137 failures=118
+
+  => 118 of 137 cases FAIL when the counter is a do-nothing stub. The grading is live, not vacuous:
+     every case really depends on the counter's own verdicts.
+
+=== 2. My own do-nothing control: a BYTE-LEVEL change to the counter with NO behaviour change.
+Command: python3 noop.py --selftest <committed selftest> --pure $S/pure --work $S/work-noop
+Printed:
+control=no-op-append-comment counter_bytes_before=20598 counter_bytes_after=20659
+mutant=NOOP-append-comment baseline_failures=0 mutant_failures=0 verdict=UNCAUGHT
+
+  => a behaviour-neutral byte change is graded failures=0 (NOT caught). So the 'caught' verdicts
+     in the mutant table are caused by behaviour, not by the mere fact that the counter file changed.
+
+=== 3. Probe power: negative + positive controls.
+Command: python3 discriminating.py
+Printed:
+  NEGATIVE CONTROL (docstring-only edit): gates that differ = [] -> probe power OK
+  POSITIVE CONTROL (G1c on an S0730 sources cell): gates that differ = ['G1']
+
+  => an inert edit flips no gate; a live edit flips exactly the gate it targets.

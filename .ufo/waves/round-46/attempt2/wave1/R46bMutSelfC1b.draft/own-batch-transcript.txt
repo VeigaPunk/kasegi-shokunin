@@ -1,0 +1,38 @@
+lane-counter sha256 before = 95f2eb7933841d6cd06a0041af613204cbfe29e96a38a218499a71846cdb03b7
+mutant=N03-range-window                   mutant_failures=0 verdict=survived 
+mutant=N04-self-anchor-ban                mutant_failures=0 verdict=survived 
+mutant=N00-control-comment-only           mutant_failures=0 verdict=survived 
+mutant=N07-range-past-eof                 mutant_failures=0 verdict=survived 
+mutant=N09-duplicate-row-id               mutant_failures=2 verdict=caught case L4-duplicate-row-id                          L1=1 L2=1 L3=1 L4=1 L5=1 L6=1 L7=1 fixed=7/7 exit=0 targets=L1,L2 verdict=FALSE-GREEN | case L4-duplicate-row-id+stubbed-gate-copy        L1=1 L2=1 L3=1 L4=1 L5=1 L6=1 L7=1 fixed=7/7 exit=0 targets=L1,L2 verdict=FALSE-GREEN | case R-claim-text-unrelated-to-anchor             L1=1 L2=1 L3=1 L4=1 L5=1 L6=1 L7=1 fixed=7/7 exit=0 targets=- verdict=RESI
+mutant=N06-realpath-containment           mutant_failures=0 verdict=survived 
+mutant=N02-alnum-floor                    mutant_failures=0 verdict=survived 
+mutant=N08-cr-line-break-check            mutant_failures=0 verdict=survived 
+mutant=N17-comment-not-stripped           mutant_failures=6 verdict=caught case TIP-7of7                                     L1=0 L2=0 L3=0 L4=0 L5=0 L6=0 L7=1 fixed=1/7 exit=1 targets=- verdict=UNEXPECTED | case L7-still-gated-line-edited                   L1=0 L2=0 L3=0 L4=0 L5=0 L6=0 L7=1 fixed=1/7 exit=1 targets=L7 verdict=UNEXPECTED | case P-exactly-six-rows                           L1=0 L2=0 L3=0 L4=0 L5=0 L6=0 L7=1 fixed=1/7 exit=1 targets=- verdict=UNEXPECTED
+mutant=N10-two-distinct-anchor-files      mutant_failures=0 verdict=survived 
+mutant=N16-allowed-test-segment-widened   mutant_failures=5 verdict=caught case TIP-7of7                                     L1=0 L2=1 L3=1 L4=1 L5=1 L6=1 L7=1 fixed=6/7 exit=1 targets=- verdict=UNEXPECTED | case P-exactly-six-rows                           L1=0 L2=1 L3=1 L4=1 L5=1 L6=1 L7=1 fixed=6/7 exit=1 targets=- verdict=UNEXPECTED | case P-prose-after-table                          L1=0 L2=1 L3=1 L4=1 L5=1 L6=1 L7=1 fixed=6/7 exit=1 targets=- verdict=UNEXPECTED
+mutant=N11-two-distinct-file-digests      mutant_failures=0 verdict=survived 
+mutant=N12-token-distinctness             mutant_failures=2 verdict=caught case L4-duplicate-token                           L1=1 L2=1 L3=1 L4=1 L5=1 L6=0 L7=1 fixed=6/7 exit=1 targets=L1,L2 verdict=UNEXPECTED | case L4-duplicate-token+stubbed-gate-copy         L1=1 L2=1 L3=1 L4=1 L5=1 L6=0 L7=1 fixed=6/7 exit=1 targets=L1,L2 verdict=UNEXPECTED | case R-claim-text-unrelated-to-anchor             L1=1 L2=1 L3=1 L4=1 L5=1 L6=1 L7=1 fixed=7/7 exit=0 targets=- verdict=RESIDU
+mutant=N14-stray-table-rows               mutant_failures=0 verdict=survived 
+mutant=N15-cd-strip-allows-semicolon      mutant_failures=0 verdict=survived 
+mutant=N18-hidden-recheck-count           mutant_failures=0 verdict=survived 
+mutant=N23-allowed-segment-split          mutant_failures=6 verdict=caught case TIP-7of7                                     L1=0 L2=0 L3=0 L4=0 L5=0 L6=0 L7=1 fixed=1/7 exit=1 targets=- verdict=UNEXPECTED | case L7-still-gated-line-edited                   L1=0 L2=0 L3=0 L4=0 L5=0 L6=0 L7=1 fixed=1/7 exit=1 targets=L7 verdict=UNEXPECTED | case P-exactly-six-rows                           L1=0 L2=0 L3=0 L4=0 L5=0 L6=0 L7=1 fixed=1/7 exit=1 targets=- verdict=UNEXPECTED
+mutant=N19-first-recheck-line-wins        mutant_failures=1 verdict=caught case L3-base-line-kept-as-second-recheck          L1=0 L2=0 L3=1 L4=1 L5=1 L6=1 L7=0 fixed=4/7 exit=1 targets=L3 verdict=UNEXPECTED | case R-claim-text-unrelated-to-anchor             L1=1 L2=1 L3=1 L4=1 L5=1 L6=1 L7=1 fixed=7/7 exit=0 targets=- verdict=RESIDUAL-FALSE-GREEN | UNEXPECTED L3-base-line-kept-as-second-recheck: recipe=claim-gates: the BASE line kept verbatim as a second `recheck:` line
+mutant=N21-read-newline-translated        mutant_failures=0 verdict=survived 
+mutant=N20-grader-env-drops-home          mutant_failures=1 verdict=caught case HOME-bounties-tip                            L1=1 L2=1 L3=1 L4=1 L5=1 L6=1 L7=1 fixed=7/7 exit=0 targets=L2 verdict=UNEXPECTED | case R-claim-text-unrelated-to-anchor             L1=1 L2=1 L3=1 L4=1 L5=1 L6=1 L7=1 fixed=7/7 exit=0 targets=- verdict=RESIDUAL-FALSE-GREEN | UNEXPECTED HOME-bounties-tip: recipe=synthetic tip; grader HOME = a scratch home that HAS Projects/bounties | reads=L1:gate
+mutant=N22-norm-drops-curly-single-quotes mutant_failures=0 verdict=survived 
+lane-counter sha256 after  = 95f2eb7933841d6cd06a0041af613204cbfe29e96a38a218499a71846cdb03b7  unchanged=True
+ownmutants total=21 caught=7 survived=14 other=0
+SURVIVOR N00-control-comment-only failures=0
+SURVIVOR N02-alnum-floor failures=0
+SURVIVOR N03-range-window failures=0
+SURVIVOR N04-self-anchor-ban failures=0
+SURVIVOR N06-realpath-containment failures=0
+SURVIVOR N07-range-past-eof failures=0
+SURVIVOR N08-cr-line-break-check failures=0
+SURVIVOR N10-two-distinct-anchor-files failures=0
+SURVIVOR N11-two-distinct-file-digests failures=0
+SURVIVOR N14-stray-table-rows failures=0
+SURVIVOR N15-cd-strip-allows-semicolon failures=0
+SURVIVOR N18-hidden-recheck-count failures=0
+SURVIVOR N21-read-newline-translated failures=0
+SURVIVOR N22-norm-drops-curly-single-quotes failures=0

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""r46-c2-gate.py — round-46 C2 counter (coverage), v1.2 (hardened after the wave-1 and wave-2 falsification; errata E1 and E2, see .ufo/waves/round-46/counter-errata.md; v1 sha256 0ee958578b5923706178081a94dae471682f02f74492bb4a3b54a118c12ec3f6).
+"""r46-c2-gate.py — round-46 C2 counter (coverage), v1.3 (attempt-2 erratum E3: the considerthese ledger joins the
+content-exempt set — its name stays pinned, its bytes may grow never shrink; v1.2's hardening (errata E1 and E2, see
+.ufo/waves/round-46/counter-errata.md) is unchanged; v1 sha256 0ee958578b5923706178081a94dae471682f02f74492bb4a3b54a118c12ec3f6).
 
 WHAT IT MEASURES
     One frontier move, F28 (GitHub private vulnerability reporting, the reporter-side flow; row S073, capture
@@ -30,9 +32,10 @@ WHAT IT MEASURES
         in snapshot lines N..M, inside the page body (556-583), spanning <= 12 lines and <= 25 words; at least four pass
         and the five frozen cores each appear inside a located span that is live text.
     G6  `find corpus/knowledge -maxdepth 1 -name '*.md' | wc -l` == 65, the directory holds nothing else (no non-md file,
-        no nested .md, no symlink) and the other 64 names are the round-45 tip's; 62 of them are pinned byte for byte, and
-        the two entries claim C1 re-grounds are exempt from the byte pin (names pinned, size may grow never shrink), so
-        C2 is verifiable without C1 landed and the reverse.
+        no nested .md, no symlink) and the other 64 names are the round-45 tip's; 61 of them are pinned byte for byte, and
+        three entries are exempt from the byte pin (names pinned, size may grow never shrink): the two entries claim C1
+        re-grounds, and the considerthese ledger, which the round-46 attempt-2 wave appends the dispositions to. So C2 is
+        verifiable without C1 landed, without the ledger append, and the reverse.
     G7  `sources-census.sh validate --file <root>/corpus/SOURCES.md` exits 0 (corpus/ and SOURCES.md are not symlinks).
         The census script lives at the fleet root, outside the lane: this limb depends on it.
 
@@ -63,13 +66,13 @@ PINS = {
     "S073-row": None,
     "F28-row": None,
     "source-recheck.py": "fd2e01e88c8c45a949f48d67b3154ae87a95aeba0b6a9c42fbf64641b5b9c003",
-    "base-knowledge-content": "5e0796fd3617f7626880950a5b25d1818f58eff58a12dec99ce7a0f3836b8f47",
+    "base-knowledge-content": "2c4ccfb65fdb5b727a3bc0c2465f6091b535663abd81126b81e76fdaae83a9a7",
     "base-knowledge-names": "bf3044814698b31b2d63a47ef6933cfe4d2d09635c2d717b05c8adf0bf719f5d",
 }
 if os.environ.get("R46_PINS_OVERRIDE"):  # selftests only: the grader's environment, never the graded tree's; a null value disables that one pin
     PINS.update(json.load(open(os.environ["R46_PINS_OVERRIDE"])))
-CONTENT_EXEMPT = {"claim-package-contract.md", "claim-gates.md"}
-EXEMPT_BASE_SIZE = {'claim-gates.md': 6742, 'claim-package-contract.md': 5169}  # the exempt entries may grow (C1 appends) but never shrink: a gutted entry is red
+CONTENT_EXEMPT = {"claim-package-contract.md", "claim-gates.md", "considerthese-proposals-ledger.md"}
+EXEMPT_BASE_SIZE = {'claim-gates.md': 6742, 'claim-package-contract.md': 5169, 'considerthese-proposals-ledger.md': 30696}  # the exempt entries may grow (C1 appends; the round-46 attempt-2 wave appends the ledger dispositions) but never shrink: a gutted entry is red
 LANE = "/home/vgpnk/Projects/shokunin/kasegi-shokunin"
 RECHECK_LINE = re.compile(r"^recheck: cd " + re.escape(LANE) + r" && python3 corpus/instruments/source-recheck\.py --manifest corpus/source-snapshots/round-46/manifest\.json --source S073(?: +#.*)?$")
 BODY = (556, 583)  # the page body inside the capture (the rest is site navigation); a quote located elsewhere is not support
@@ -209,12 +212,19 @@ def g2(root: str) -> tuple[bool, str]:
     secs = sum(1 for sct in SECTIONS if re.search("^" + re.escape(sct) + r"\s*$", body, re.M))
     full = sum(1 for sct in SECTIONS if sect_words(body, sct) >= (12 if sct.startswith("## Falsifiable") else 25))
     rows = []
+    table_lines = 0
     for ln in body.splitlines():
+        if re.match(r"^\s*\|", ln) and ln.count("|") >= 2:
+            table_lines += 1
         if re.match(r"^\|[^|]+\|[^|]+\|[^|]+\|\s*$", ln):
             cells = [c.strip() for c in ln.strip().strip("|").split("|")]
             cites = [int(x) for x in re.findall(r"S073\.txt:(\d+)", cells[1] + " " + cells[0])]
             if all(len(re.findall(r"\w+", c)) >= 2 for c in cells) and cites and all(BODY[0] <= x <= BODY[1] for x in cites):
                 rows.append(cells)
+    # every table-shaped line must be a header, a separator, or a counted row: a junk filler row is a defect even when
+    # the real rows still clear the >=6 floor (the attempt-2 regression finding: v1.1 made junk rows not count but left them tolerated)
+    accounted = 2 + len(rows)  # header + separator + counted rows
+    junk = table_lines - accounted
     tbl = len(rows)
     refs = re.findall(r"corpus/knowledge/([A-Za-z0-9._-]+\.md):(\d+)(?:-(\d+))?", body)
     refok = 0
@@ -233,7 +243,7 @@ def g2(root: str) -> tuple[bool, str]:
                 and len(re.findall(r"corpus/knowledge/[A-Za-z0-9._-]+\.md:\d+", sect(SECTIONS[1]))) >= 2
                 and re.search(r"S073\.txt:\d+|`(?:grep|sed) ", sect(SECTIONS[2])) is not None
                 and re.search(r"S073\.txt:\d+", sect(SECTIONS[3])) is not None)
-    good = ok_s and ok_v and ok_r and secs == len(SECTIONS) and full == len(SECTIONS) and tbl >= 6 and ok_x and anchored
+    good = ok_s and ok_v and ok_r and secs == len(SECTIONS) and full == len(SECTIONS) and tbl >= 6 and junk == 0 and ok_x and anchored
     return good, f"source={int(ok_s)} verified-at={int(ok_v)} recheck={int(bool(ok_r))} sections={secs}/{len(SECTIONS)} full={full}/{len(SECTIONS)} anchored={int(anchored)} table-rows={tbl} xrefs={refok}/{len(refs)}"
 
 
@@ -334,7 +344,7 @@ def g6(root: str) -> tuple[bool, str]:
     p, why = entry_path(root)
     base_like = [n for n in everything if p is None or "corpus/knowledge/" + n != p]
     base_ok = sha(("\n".join(base_like) + "\n").encode()) == PINS["base-knowledge-names"]
-    try:  # the two entries claim C1 re-grounds are exempt from the content pin (their names stay pinned): C2 is verifiable without C1 landed
+    try:  # the three exempt entries (the two entries claim C1 re-grounds and the considerthese ledger the attempt-2 wave appends to) are exempt from the content pin (their names stay pinned): C2 is verifiable without C1 landed and without the ledger append
         cont = sha("\n".join("%s %s" % (n, sha(open(os.path.join(d, n), "rb").read())) for n in base_like if n not in CONTENT_EXEMPT).encode())
     except OSError:
         cont = ""

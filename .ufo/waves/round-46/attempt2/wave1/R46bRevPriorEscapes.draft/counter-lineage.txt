@@ -1,0 +1,11 @@
+Counter lineage (command: git -C <lane> show <rev>:corpus/instruments/<file> | sha256sum; revs from the seat text and freeze records):
+
+rev        c1-gate sha256                                                  c2-gate sha256
+5437afe    99e0ee555b68e5177f33e49e8024469608297a412171b190f66b1bba189475cc  b52fea3183a393fa2f5bb40879241034e9db0b45f7914244d9f3bed134958621
+93140c1    95f2eb7933841d6cd06a0041af613204cbfe29e96a38a218499a71846cdb03b7  647bd5b7b62685519d8d396bf2d02eca7ad0bb440dd5c4041beabfaa45ea2909
+04af9bc    95f2eb7933841d6cd06a0041af613204cbfe29e96a38a218499a71846cdb03b7  647bd5b7b62685519d8d396bf2d02eca7ad0bb440dd5c4041beabfaa45ea2909
+
+attempt-1 freeze (9f23aab) pinned v1: c1 b0c730c834b4d7c6b16ac56f8c574ac599e8ae651aa02c5b2408fd736dd82294, c2 0ee958578b5923706178081a94dae471682f02f74492bb4a3b54a118c12ec3f6 (both falsifier reports attacked v1).
+5437afe carries v1.1 (errata E1); 93140c1 and the tip 04af9bc carry v1.2 (errata E2). Working tree == tip on both counters (sha256sum of the files matches git show 04af9bc:...).
+
+Counter version strings at the tip: r46-c1-gate.py docstring "v1.2 (hardened after the wave-1 and wave-2 falsification; errata E1 and E2 ...; v1 sha256 b0c730c8...)"; r46-c2-gate.py docstring "v1.2 ... v1 sha256 0ee95857...".

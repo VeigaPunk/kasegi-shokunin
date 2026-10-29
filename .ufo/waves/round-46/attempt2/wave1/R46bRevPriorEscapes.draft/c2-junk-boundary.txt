@@ -1,0 +1,16 @@
+C2 boundary runs on the same tree (output piped through grep -E '^(gate G2|gate G5|c2-gate)').
+
+== (b) two junk rows (rows 17 and 18 both `| - | - | - |`) ==
+gate G2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 anchored=1 table-rows=6 xrefs=4/4
+gate G5 pass=1 read=spans=25 located=25 failed=0 uncited=0 cores=5/5
+c2-gate fixed=7/7 exit=0
+RC-b=0
+
+== (c) three junk rows (rows 17, 18, 19 all `| - | - | - |`) ==
+gate G2 pass=0 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 anchored=1 table-rows=5 xrefs=4/4
+gate G5 pass=1 read=spans=24 located=24 failed=0 uncited=0 cores=5/5
+c2-gate fixed=6/7 exit=1
+RC-c=1
+
+Independent oracle on the three-junk entry (python3, mirrors the wave-1 report's oracle):
+oracle: data rows with pinned anchor in body 556-583 = 5 (need 6)

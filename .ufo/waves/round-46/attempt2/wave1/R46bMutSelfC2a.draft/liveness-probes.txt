@@ -1,0 +1,145 @@
+LIVENESS PROBES — R46bMutSelfC2a (per-mutant pristine-vs-mutant gate differential)
+
+Method (probe.py, scratch only):
+  build the tree with the COMMITTED selftest's own builder (ST.build: ST.build(pure, LANE, snap, spans, dest)),
+  apply ONE isolating defect that isolates the mutant's clause, then run the PRISTINE counter
+  (copied instruments dir, unmodified) and the MUTANT counter (same tree, one frozen-battery edit applied
+  via MB.apply_mutant, which asserts the old-substring occurs exactly once) on the SAME tree.
+  A gate that is RED under pristine and GREEN under the mutant is an OBSERVABLE difference: a selftest
+  case targeting that gate (allowing the other red gates as collateral) would catch the mutant.
+
+Command (one probe):  python3 probe.py --mutant <ID> --pure $S/pure --work $S/work-probe
+
+RESULTS (verbatim probe output)
+
+######## G1c-src-boundary
+mutant=G1c-src-boundary
+pristine: c2-gate fixed=6/7 exit=1  gates={'G1': 0, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 1}
+mutant:   c2-gate fixed=7/7 exit=0  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 1}
+=> LIVE-DIFFERENTIAL on G1. Isolating defect: F28's sources cell says "S0730" (the pristine clause is
+   re.search(r"\bS073\b", f27[4]) — the word boundary rejects S0730; the mutant's re.search(r"S073", f27[4])
+   accepts it).
+
+######## G2a-verified-prefix
+mutant=G2a-verified-prefix
+pristine: c2-gate fixed=6/7 exit=1  gates={'G1': 1, 'G2': 0, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 1}
+mutant:   c2-gate fixed=7/7 exit=0  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 1}
+=> LIVE-DIFFERENTIAL on G2. Isolating defect: the entry's provenance line reads
+   "verified-at: 2026-10-28 (reviewed)" (pristine wants exact equality; the mutant accepts a prefix).
+
+######## G2b-wordfloor-low
+probe: G2b Limits section word count = 9 (pristine floor 25, mutant floor 5)
+mutant=G2b-wordfloor-low
+pristine: c2-gate fixed=6/7 exit=1  gates={'G1': 1, 'G2': 0, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 1}
+mutant:   c2-gate fixed=7/7 exit=0  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 1}
+=> LIVE-DIFFERENTIAL on G2. Isolating defect: the "## Limits" section carries 9 words (>= the mutant's
+   floor 5, < the pristine floor 25) and keeps its S073.txt anchor, so only the word-floor conjunct fires.
+
+######## G2c-need-empty
+mutant=G2c-need-empty
+pristine: c2-gate fixed=6/7 exit=1  gates={'G1': 1, 'G2': 0, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 1}
+mutant:   c2-gate fixed=7/7 exit=0  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 1}
+=> LIVE-DIFFERENTIAL on G2. Isolating defect: the Overlap section's two corpus/knowledge cross-references
+   point at claim-gates.md and claim-package-contract.md instead of the two REQUIRED files
+   (need = {linux-kernel-security-bugs-reporting-process.md, ai-assisted-finding-validation.md} -> set()).
+
+######## G3a-cells-loose
+mutant=G3a-cells-loose
+pristine: c2-gate fixed=5/7 exit=1  gates={'G1': 1, 'G2': 1, 'G3': 0, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 0}
+mutant:   c2-gate fixed=6/7 exit=1  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 0}
+=> G3 IS observable (pristine G3=0, mutant G3=1); G7 is collateral-red in BOTH (the extra trailing cell
+   also breaks the census's 13-field contract). A selftest case targeting G3 with G7 allowed as
+   collateral WOULD catch this mutant.
+
+######## G4b-quotes-low
+probe: G4b repin file = .../pins-repin.json (quotes now 7)
+mutant=G4b-quotes-low
+pristine: c2-gate fixed=6/7 exit=1  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 0, 'G5': 1, 'G6': 1, 'G7': 1}
+mutant:   c2-gate fixed=7/7 exit=0  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 1}
+=> LIVE-DIFFERENTIAL on G4. Isolating defect: the manifest keeps 7 quotes (Q1 removed) and the grader-side
+   R46_PINS_OVERRIDE re-pins the EDITED manifest, so the count conjunct (oks >= 8 -> >= 1) fires alone.
+
+######## G6a-guards-dead
+probe: G6a claim-gates.md size = 9 bytes (floor 6742)
+mutant=G6a-guards-dead
+pristine: c2-gate fixed=6/7 exit=1  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 0, 'G7': 1}
+mutant:   c2-gate fixed=7/7 exit=0  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 1}
+=> LIVE-DIFFERENTIAL on G6. Isolating defect: corpus/knowledge/claim-gates.md is present but SHRUNK to
+   9 bytes (the names pin and the content pin still hold, so only the exempt-never-shrink conjunct fires).
+
+######## G6b-integrity-loose  (probe with a nested .md under corpus/knowledge/sub)
+pristine: c2-gate fixed=6/7 exit=1  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 0, 'G7': 1}
+mutant:   c2-gate fixed=6/7 exit=1  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 0, 'G7': 1}
+=> SHADOWED on this input: the nested .md also breaks the pristine len(names)==65 conjunct, so G6 stays
+   red either way. The mutant's dropped conjunct (nested == 65) is not isolated by this input.
+
+######## G6c-size-low  (entry rewritten to 7 bytes)
+entry size now: 7
+pristine gates {'G1': 1, 'G2': 0, 'G3': 1, 'G4': 1, 'G5': 0, 'G6': 0, 'G7': 1} red ['G2', 'G5', 'G6']
+mutant gates   {'G1': 1, 'G2': 0, 'G3': 1, 'G4': 1, 'G5': 0, 'G6': 1, 'G7': 1} red ['G2', 'G5']
+GATES THAT DIFFER: ['G6']
+=> LIVE-DIFFERENTIAL on G6 (G2/G5 are collateral-red in both). Isolating defect: the entry file is
+   present but under the 3000-byte floor.
+
+######## G7b-symlink-dead
+mutant=G7b-symlink-dead
+pristine: c2-gate fixed=6/7 exit=1  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 0}
+mutant:   c2-gate fixed=7/7 exit=0  gates={'G1': 1, 'G2': 1, 'G3': 1, 'G4': 1, 'G5': 1, 'G6': 1, 'G7': 1}
+=> LIVE-DIFFERENTIAL on G7. Isolating defect: corpus/SOURCES.md is a SYMLINK (pristine refuses the
+   symlinked census input; the mutant's `pass  # mutant G7b` lets the census run on it anyway).
+
+######## G7a-verdict-or / G7c-okline-loose  (3 scenarios, pristine vs mutant G7)
+### clean
+   G7a-verdict-or       pristine_G7=1 mutant_G7=1 | mutant read='census-rc=0 ok-line=1'
+   G7c-okline-loose     pristine_G7=1 mutant_G7=1 | mutant read='census-rc=0 ok-line=1'
+### E-code-kind
+   G7a-verdict-or       pristine_G7=0 mutant_G7=0 | mutant read='census-rc=1 ok-line=0'
+   G7c-okline-loose     pristine_G7=0 mutant_G7=0 | mutant read='census-rc=1 ok-line=0'
+### W-code-usedby
+   G7a-verdict-or       pristine_G7=1 mutant_G7=1 | mutant read='census-rc=0 ok-line=1'
+   G7c-okline-loose     pristine_G7=1 mutant_G7=1 | mutant read='census-rc=0 ok-line=1'
+=> NO DIFFERENCE observed on these three inputs. G7a (rc==0 and ok_line -> rc==0 or ok_line) and G7c
+   (the ok-line regex drops its trailing \t) are both coupled to the FLEET census script's output
+   contract, which lives outside the lane (/home/vgpnk/Projects/shokunin/scripts/sources-census.sh).
+   The census emits the ok line as "<lane>\tok\t<file>" and returns rc=1 together with no ok line on
+   any E-code, so rc==0 <=> ok_line on every input I could construct; these two need the fleet-side
+   census (or a lane-internal stub of it) to be isolable.
+
+================================================================================
+EQUIVALENCE PROOFS (the survivors whose clause is provably DEAD, not merely uncovered)
+
+Command: python3 equiv.py   (verbatim output)
+
+=== G5c-pass-low: len(passed) >= 4  ->  len(passed) >= 1
+  G5 requires len(cores) == len(CORES) == 5 AND len(passed) >= 4.
+  A "located span" is a curly-quoted string that appears in the capture at its cited
+  line window; the pristine G5b word limit caps one span at 25 words. The minimum
+  word count for ONE span to hold TWO of the five frozen cores is:
+  enabled+form=185, enabled+ai=212, enabled+credit=278, enabled+merge=302,
+  form+ai=35, form+credit=101, form+merge=125, ai+credit=70, ai+merge=94,
+  credit+merge=30.
+  Every pair exceeds 25 words, so no two cores can share a span: len(cores)==5
+  IMPLIES len(passed)>=5. The "len(passed) >= 4" conjunct can therefore never
+  change a verdict on ANY input -> G5c-pass-low is EQUIVALENT (dead clause).
+  (It would only become observable under G5b-words-wide, i.e. if the word limit
+  were raised past 30 words -- which is a different mutant.)
+
+=== G6b-integrity-loose: drops the "nested == 65" conjunct
+  g6 computes:
+    names      = [f for f in os.listdir(d) if f.endswith(".md") and isfile(f)]   (top level)
+    everything = sorted(os.listdir(d))                                            (top level, incl. dirs)
+    nested     = .md files found by os.walk(d)                                    (recursive)
+  The mutant keeps `len(names) == 65 and len(everything) == 65`. If both hold, then
+  ALL 65 top-level entries are .md regular files, so NO subdirectory exists at the
+  top level, so os.walk finds exactly those 65 .md files -> nested == 65 always.
+  => the dropped conjunct is implied by the two the mutant keeps: G6b-integrity-loose
+  is EQUIVALENT (dead clause), and no input can distinguish it.
+
+=== G7a-verdict-or / G7c-okline-loose
+  Both grade the CENSUS OUTPUT, and the census script lives OUTSIDE the lane at
+  /home/vgpnk/Projects/shokunin/scripts/sources-census.sh (the counter hardcodes
+  CENSUS = that absolute path). The committed selftest cannot redirect it, and the
+  census emits the ok line as "<lane>\tok\t<file>" and returns rc=1 with NO ok line
+  on any E-code, so on every input I could construct rc==0 <=> ok_line.
+  These two are NOT provably equivalent from inside the lane: they are isolable only
+  by changing the fleet-side census or by giving the counter a census override.

@@ -1,0 +1,34 @@
+# R46bScribeSkillRegistry — receipt: do-nothing control (append applied vs not)
+# control  = git archive HEAD export (noappend)
+# treatment= the same export + SKILL-append.md and README-append.md applied
+# baseline for the round-45 counter = dc5bb8c6e31efc4a6650819df85e79b72fd64bcd export
+
+## r45-routed-defects.py --root <tree> --baseline <r45 base>
+CONTROL:
+limb R1 fixed=1 read=S072=supersedes recheck-quotes=2 corrections=1
+limb R2 fixed=1 read=criteria=3
+limb R3 fixed=1 read=selftest-cases=61
+limb R4 fixed=1 read=selftest-cases=27 replay=base_ok=2
+limb R5 fixed=1 read=refiled=pinned-run-output original=unchanged
+routed-defects total=5 fixed=5 unresolved=0 exit=0
+TREATMENT:
+limb R1 fixed=1 read=S072=supersedes recheck-quotes=2 corrections=1
+limb R2 fixed=1 read=criteria=3
+limb R3 fixed=1 read=selftest-cases=61
+limb R4 fixed=1 read=selftest-cases=27 replay=base_ok=2
+limb R5 fixed=1 read=refiled=pinned-run-output original=unchanged
+routed-defects total=5 fixed=5 unresolved=0 exit=0
+
+## anchorcheck.py (cwd = the tree under test)
+noappend   SKILL.md                         == SKILL.md: 16 in-range cite instances, 0 bad; 16 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+noappend   corpus/instruments/README.md     == corpus/instruments/README.md: 5 in-range cite instances, 0 bad; 5 distinct anchors; LOST-RECORDED=2 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=4
+appended   SKILL.md                         == SKILL.md: 16 in-range cite instances, 0 bad; 16 distinct anchors; LOST-RECORDED=306 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=0
+appended   corpus/instruments/README.md     == corpus/instruments/README.md: 5 in-range cite instances, 0 bad; 5 distinct anchors; LOST-RECORDED=2 PIN-BROKEN=0 ORIGIN=0 OUTSIDE-BASE=0 BASE-ABSENT=4
+
+## r46-c1-gate.py / r46-c2-gate.py / r46-f29-gate.py
+noappend   c1-gate: c1-gate fixed=7/7 exit=0
+noappend   c2-gate: c2-gate fixed=7/7 exit=0
+noappend   f29-gate: f29-gate fixed=2/7 exit=1
+appended   c1-gate: c1-gate fixed=7/7 exit=0
+appended   c2-gate: c2-gate fixed=7/7 exit=0
+appended   f29-gate: f29-gate fixed=2/7 exit=1

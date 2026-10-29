@@ -1,0 +1,27 @@
+=== R46bScribeRowsA — census receipts (kasegi round 46 attempt 2, seat: registry drafter A) ===
+date: 2026-10-29T21:34:03Z
+scratch: /fast/scratch/hyaku/kasegi-r46/R46bScribeRowsA
+
+--- R1: census validate, scratch copy WITH the S074 row (entry file not yet written) ---
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /fast/scratch/hyaku/kasegi-r46/R46bScribeRowsA/work/corpus/SOURCES.md
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	E11	S074 missing used-by corpus/knowledge/github-repository-security-advisories.md
+EXIT=1
+
+--- R2: same command, same tree, entry file present (placeholder) ---
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /fast/scratch/hyaku/kasegi-r46/R46bScribeRowsA/ctrl2/corpus/SOURCES.md
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r46/R46bScribeRowsA/ctrl2/corpus/SOURCES.md
+EXIT=0
+
+--- R3: do-nothing control, same tree WITHOUT the S074 row ---
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /fast/scratch/hyaku/kasegi-r46/R46bScribeRowsA/ctrl3/corpus/SOURCES.md
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r46/R46bScribeRowsA/ctrl3/corpus/SOURCES.md
+EXIT=0

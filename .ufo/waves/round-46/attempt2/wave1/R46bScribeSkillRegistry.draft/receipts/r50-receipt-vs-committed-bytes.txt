@@ -1,0 +1,54 @@
+# R46bScribeSkillRegistry — receipt: the R50 receipt vs the committed control bytes
+# R50 receipt = .ufo/waves/round-46/attempt2/controls/f29-r50-receipt.txt
+
+## receipt text (lines 6-7) — VERBATIM
+Positive tree reads `f29-gate fixed=7/7 exit=0`; junk tree `fixed=3/7` (H2/H5 red:
+2/7 quotes located, 0/5 cores); fabricated tree `fixed=3/7` (5/7 located, 4/5 cores).
+
+## my re-run of the committed f29-fixture.py + r46-f29-gate.py
+--- positive ---
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H5 pass=1 read=spans=7 located=7 failed=0 uncited=0 cores=5/5
+f29-gate fixed=7/7 exit=0
+--- junk ---
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H5 pass=0 read=spans=7 located=2 failed=5 uncited=0 cores=0/5
+f29-gate fixed=6/7 exit=1
+--- fabricated ---
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H5 pass=0 read=spans=7 located=5 failed=2 uncited=0 cores=4/5
+f29-gate fixed=6/7 exit=1
+
+## why: the fixture docstring vs the committed JUNK constant
+  junk       the positive tree with the entry replaced by marker-only filler (no located
+             quotes) — must NOT read 7/7 (H2/H5 red);
+--- committed JUNK constant (f29-fixture.py:79-83) ---
+JUNK = ENTRY.replace("privately discuss and fix a security vulnerability", "handle the matter carefully")
+JUNK = JUNK.replace("temporary private fork", "a special collaboration space")
+JUNK = JUNK.replace("authorized to assign CVE identification numbers", "allowed to hand out identifiers")
+JUNK = JUNK.replace("reviews the request within 72 hours", "is quick about it")
+JUNK = JUNK.replace("add a fix version to a security advisory prior to publishing", "get the version right early")
+
+## the receipt names src0740 (pair 3); the committed builder does not carry it
+18:| 3 | src0740 (sources cell S0740) | H1c src-boundary | H1=0 | H1=1 | FLIP |
+grep -c src0740 f29-defects.py -> 0
+unknown defect src0740
+
+## every defect tree the committed builder carries, gate read
+duprow       red=[H1] fixed=6/7
+fencedf29    red=[H1] fixed=6/7
+vjunk        red=[H2] fixed=6/7
+thinsection  red=[H6] fixed=6/7
+badnames     red=[H2] fixed=6/7
+row9cells    red=[H3,H7] fixed=5/7
+thinscope    red=[H3] fixed=6/7
+kindcase     red=[H3,H7] fixed=5/7
+manws        red=[H4] fixed=6/7
+fewquotes    red=[H4] fixed=6/7
+dupquote     red=[H4] fixed=6/7
+widespan     red=[H5] fixed=6/7
+longquote    red=[H5] fixed=6/7
+fewspans     red=[H2,H5] fixed=5/7
+nestedmd     red=[H6] fixed=6/7
+entrymutant  red=[H6] fixed=6/7
+symlink      red=[H6,H7] fixed=5/7

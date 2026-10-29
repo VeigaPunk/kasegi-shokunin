@@ -1,0 +1,1 @@
+/usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-mutbat.py --root /fast/scratch/hyaku/kasegi-r46/R46bMutBattery/sc-S3 --pure /fast/scratch/hyaku/kasegi-r46/R46bMutBattery/pure --work /fast/scratch/hyaku/kasegi-r46/R46bMutBattery/work/CONTROL-S3/w --counter both --jobs 8

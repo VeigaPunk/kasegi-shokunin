@@ -1,0 +1,18 @@
+C1 mutant = wave-1 R46RevC1L3.md Finding-1 recipe, rebuilt: corpus/knowledge/claim-gates.md:125 replaced with
+  recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && true  # r46-c1-gate.py --entry corpus/knowledge/claim-gates.md
+(same tree as the control plus this single edit). v1.2 counter.
+Command: TMPDIR=$S/tmp python3 $S/c1tree/corpus/instruments/r46-c1-gate.py --root $S/c1tree --baseline /fast/scratch/hyaku/kasegi-r46/L1/pure2 --work $S/tmp
+
+gate L1 pass=0 read=gated=23 broken=1 lines=64/base=64
+gate L2 pass=0 read=base-gated=24 regrounded=1 claim-gates.md
+gate L3 pass=0 read=bad=claim-gates.md
+gate L4 pass=0 read=bad=claim-gates.md
+gate L5 pass=0 read=bad=claim-gates.md
+gate L6 pass=0 read=mutants=0 survivors=claim-gates.md:unmutated-copy-not-green
+gate L7 pass=1 read=still-gated=23 changed=none
+c1-gate fixed=1/7 exit=1
+MUTANT-RC=1
+
+Prior v1 reading of the same recipe (quoted from wave1/R46RevC1L3.md Finding 1):
+gate L3 pass=1 read=recheck-lines-clean=1
+c1-gate fixed=2/7 exit=1

@@ -1,0 +1,57 @@
+=== R46bScribeRowsA — absence-sweep receipts (kasegi round 46 attempt 2, frontier F29 / row S074) ===
+date: 2026-10-29T21:34:29Z
+base export: git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive 04af9bc92229232ea5cce8b32bfe59dd969eb26d corpus | tar -x -C /fast/scratch/hyaku/kasegi-r46/R46bScribeRowsA/base
+
+--- S1: file-level sweep on the base export ---
+$ grep -rliE 'repository securit. advisor|GHSA' corpus/knowledge corpus/SOURCES.md corpus/README.md
+corpus/knowledge/github-private-vulnerability-reporting.md
+corpus/SOURCES.md
+EXIT=0
+
+--- S2: README-only count ---
+$ grep -ciE 'repository securit. advisor|GHSA' corpus/README.md
+0
+EXIT=1
+
+--- S3: does S074 already exist in the registry or README? ---
+$ grep -rn 'S074' corpus/SOURCES.md corpus/README.md
+EXIT=1
+
+--- S4: line-level hits ---
+$ grep -rniE 'repository securit. advisor|GHSA' corpus/knowledge corpus/SOURCES.md corpus/README.md | cut -c1-95
+corpus/knowledge/github-private-vulnerability-reporting.md:40:- The page does not state the mai
+corpus/knowledge/github-private-vulnerability-reporting.md:43:- Four linked pages appear only a
+corpus/SOURCES.md:74:| S068 | GitHub Advisory Database entry GHSA-v676-f8gm-92r9 for CVE-2025-9
+corpus/SOURCES.md:157:- Public disclosed advisory pair for the claim-package gate exemplar (rou
+EXIT=0
+
+--- S5: the same sweep on the LIVE lane (read-only) ---
+$ grep -rliE 'repository securit. advisor|GHSA' /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md
+/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/github-private-vulnerability-reporting.md
+/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+EXIT=0
+
+--- S6: counts behind the bullet ---
+$ find corpus/knowledge -maxdepth 1 -name '*.md' | wc -l
+65
+$ grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md
+73
+$ grep -cE '^\| F[0-9]+ \|' corpus/README.md
+28
+$ grep -c 'repository-security-advisories' corpus/SOURCES.md
+0
+
+--- S7: capture digest + size + manifest record (S074), read from the LIVE lane (the a2 capture is committed at HEAD fe0f56b, after the base 04af9bc9) ---
+$ sha256sum /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/S074.txt
+1296528d5be0882703a1ac4ec32dda420910df4e77a1a9588284f1468c278039  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/S074.txt
+$ wc -lc /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/S074.txt
+  42 7087 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/S074.txt
+$ sha256sum /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46/manifest.json /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/manifest.json
+01f0257261d1a69b58c26856997e877cea092eb12b681421a7e9f0df74f79d34  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46/manifest.json
+46e8077ac89edb0335711826ecb7abf3a1b7eefedc7108c3f6d936135481569f  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/manifest.json
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff --name-status 04af9bc92229232ea5cce8b32bfe59dd969eb26d HEAD -- corpus/source-snapshots/
+A	corpus/source-snapshots/round-46-a2/S074.txt
+A	corpus/source-snapshots/round-46-a2/manifest.json
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 04af9bc92229232ea5cce8b32bfe59dd969eb26d:corpus/source-snapshots/round-46/manifest.json | sha256sum
+01f0257261d1a69b58c26856997e877cea092eb12b681421a7e9f0df74f79d34  -
+(attempt-1 manifest byte-identical at base, at HEAD and in the worktree)

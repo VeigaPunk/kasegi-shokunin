@@ -1,0 +1,42 @@
+mutant	limb	verdict	sha256	recipe_old	recipe_new	observed
+A1-live-lines-fence-dropped	H1	FALSE-GREEN	dbff06592cde01a39b59e373e3515fcbc36b878913114c354fa4c209bf833700	        if fence or not st or st.startswith("<!--"):	        if not st or st.startswith("<!--"):	fencedf29
+A2-entry-cell-dropped	H1	SURVIVOR	29a82ced7892c274df76c88a2e184b5ecdd2612ed4513a47c48b4987eaea69ee	    if ENTRY not in f29[0][3]:	    if False:	
+A3-entry-shared-dropped	H1	SURVIVOR	92d018fad94402a1875a6a5e78f03db3f9e7fb5d7c1c53ed2c3dc305755674c4	    if shared:	    if False:	
+A4-one-live-row-loosened	H1	SURVIVOR	a669f1c6d9d5e2182addf6e85eb498e67a275077f9cc0f1e01e7792036afb62e	    if len(raw) != 1:	    if len(raw) < 1:	
+A5-s074-boundary-widened	H1	FALSE-GREEN	03b141ffc8730dcffd15839c3f4b9efed23882ed229fab93be386697a4b3dabe	re.search(r"\bS074\b", f29[0][4])	re.search(r"\bS074\d?\b", f29[0][4])	src0740
+B1-verified-at-prefix	H2	FALSE-GREEN	aeec9095598dcb2b7c0cb072879762cd542d826a04ea4452f7c5327e2ed92c94	    ok_v = any(h == "verified-at: " + VERIFIED_AT for h in head)	    ok_v = any(h.startswith("verified-at: " + VERIFIED_AT) for h in head)	vjunk
+B2-xref-need-dropped	H2	FALSE-GREEN	508fe24728d8f5459aad89d7b77f4768e56d35328544c1ed603c594eb6ea29d4	    ok_x = need <= have and refok == len(refs)	    ok_x = refok == len(refs)	badnames
+B3-table-rows-floor	H2	LIMP-FLIP	c1a3e4935bdd9c52cf720ffa70a547b6433631e961df7ad1ff14a0b303638d32	and len(rows) >= 6 and ok_x and anchored	and len(rows) >= 5 and ok_x and anchored	fewspans:H2
+B4-recheck-count-loosened	H2	SURVIVOR	28bc13694979fee3064b53fce777f1cdaf5c27bc6521a8a0cf933366b62b4f18	ok_r = sum(1 for ln in body.splitlines() if ln.startswith("recheck:")) == 1 and any(RECHECK_LINE.match(h) for h in head)	ok_r = sum(1 for ln in body.splitlines() if ln.startswith("recheck:")) >= 1 and any(RECHECK_LINE.match(h) for h in head)	
+B5-cell-word-floor	H2	SURVIVOR	42810a9dd9bb11f606723b28513c588628e045c91613fa653f355a143646eeb3	if all(len(re.findall(r"\w+", c)) >= 2 for c in cells[1:])	if all(len(re.findall(r"\w+", c)) >= 1 for c in cells[1:])	
+C1-scope-words-floor	H3	FALSE-GREEN	5001ab735473e91a7356516306bb96847fa6d46c9c97aaefa273a89cb671746d	if len(re.findall(r"\w+", row[4])) < 8: bad.append("scope-words")	if len(re.findall(r"\w+", row[4])) < 3: bad.append("scope-words")	thinscope
+C2-kind-literal-case	H3	LIMP-FLIP	8114e50d183699e8a02d30cb57bad0e5c2cb0d30136de595bb0495c954cc7692	if row[2] != "docs": bad.append("kind")	if row[2] != "Docs": bad.append("kind")	kindcase:H3
+C3-tier-literal	H3	POS-BREAK	00f0a5b063976f2b50765fb07cf6d31e5774e53ec81bbc92d74e4d79a68648fa	if row[3] != "A": bad.append("tier")	if row[3] != "B": bad.append("tier")	HH3
+C4-url-equality-dropped	H3	SURVIVOR	b2b4e8f6978a5f45e3f64f57bc1f89fb32c35c8a49e4e66fa510f33f18271a6a	if not u or u[0].rstrip(".,;)") != URL: bad.append("url")	if not u: bad.append("url")	
+C5-anchor-locator-range	H3	SURVIVOR	682ab567c5fab06c1f23e1270b4c3699bd0e3f01d813fa69c1d8d7da4a047ec0	not (BODY[0] <= int(loc.group(1)) <= int(loc.group(2)) <= SNAP_LINES)	not (BODY[0] <= int(loc.group(1)) <= int(loc.group(2)))	
+D1-manifest-pin-dropped	H4	FALSE-GREEN	9ba1384bf720c7c7f71b317c02286cd1bfad570b792130097eeb2ac9c830a7a6	if sha(open(man, "rb").read()) != PINS["manifest.json"]:	if False:	manws
+D2-recheck-pin-dropped	H4	SURVIVOR	d443a17c23c1a1f40e454e5a56985801c9a072267838780f0740b9fbcfb7b43e	if sha(rcb) != PINS["source-recheck.py"]:	if False:	
+D3-quote-count-floor	H4	SURVIVOR	d58d4d7e9b2be17ccb5997e05153125a5ec901912442488f33b221dc1ac9f603	good = rc == 0 and "S074:sha256 OK" in out and oks >= 8 and not miss	good = rc == 0 and "S074:sha256 OK" in out and oks >= 1 and not miss	
+D4-sha-ok-conjunct-dropped	H4	SURVIVOR	8e142a8f2595141339e541487129934beb67f065b1846c8cd10663db63762884	good = rc == 0 and "S074:sha256 OK" in out and oks >= 8 and not miss and "BROKEN" not in out and distinct	good = rc == 0 and oks >= 8 and not miss and "BROKEN" not in out and distinct	
+E1-span-width	H5	FALSE-GREEN	17eb658322a38cb4fbb5c5e249908fb707e30e04fecda6ecbf3832a68eb0db2d	and b - a <= 11 and nq in window	and b - a <= 41 and nq in window	widespan
+E2-word-cap	H5	FALSE-GREEN	ab0fa598bcdeb65272007e5ae78a00924c1af1ff6bad02534d21aa11ffc37c20	if len(nq.split()) <= 25 and nq and	if len(nq.split()) <= 250 and nq and	longquote
+E3-core-count	H5	LIMP-FLIP	6d23ab4cb49060652f89e1adbd16d375a51b8465bef2994f0b1590decc3bf1f4	len(passed) >= 4 and len(cores) == len(CORES)	len(passed) >= 4 and len(cores) >= len(CORES) - 1	fewspans:H5
+E4-passed-floor	H5	SURVIVOR	49df6289dfeb31059cc8a9a4cb3eef92768fa57f15a424935fd264fdf08f7de9	and len(passed) >= 4 and len(cores) == len(CORES)	and len(passed) >= 1 and len(cores) == len(CORES)	
+E5-uncited-tolerance	H5	SURVIVOR	1e13e2d3d4e1775f5f7ec31b6929e23b406efe9b18478345343850bd695b664c	ok = failed == 0 and uncited <= 0 and	ok = failed == 0 and uncited <= 2 and	
+F1-entry-size-floor	H6	FALSE-GREEN	91eaba1424211aa48926a74fb4ad7418b5c105b7f3ca0f7807a1f0a1d88f5527	sized = os.path.getsize(os.path.join(root, p)) >= 3000	sized = os.path.getsize(os.path.join(root, p)) >= 100	thinsection
+F2-content-pin-dropped	H6	FALSE-GREEN	30358c6173ab67ae6da76a4dc5b4b7165f11b15c9d71ccdc2515cc1f1cd58418	base_ok = base_ok and cont == PINS["base-knowledge-content"] and ledger_ok	base_ok = base_ok and ledger_ok	entrymutant
+F3-nested-count	H6	SURVIVOR	c14f67f88318769a661876326550149b01f7eed4a819d93df101462f7fc185c9	and len(everything) == 66 and nested == 66 and base_ok	and len(everything) == 66 and nested >= 66 and base_ok	
+F4-symlink-clause-dropped	H6	LIMP-FLIP	ec3e76006c66986ff2add438e67ace159b3f49dcf44cc5e0aa3e5054cc9c9951	and sized and not links,	and sized and True,	symlink:H6
+G1-symlink-guard-dropped	H7	LIMP-FLIP	9a4dd20ddb475f86b7cdb57ad66341c006f7c8e44a565e003805c4fa2645808f	if os.path.islink(os.path.join(root, "corpus")) or os.path.islink(os.path.join(root, "corpus/SOURCES.md")):	if False:	symlink:H7
+G2-ok-line-tab-dropped	H7	SURVIVOR	0f660a40c72e8d7b80574f9f2e97c52e4054a22879cdf4a00b87475bd2ed534c	ok_line = bool(re.search(r"^\S+\tok\t", p.stdout, re.M))	ok_line = bool(re.search(r"^\S+\tok", p.stdout, re.M))	
+G3-verdict-or	H7	SURVIVOR	14bec18ffdc7ce69b555d5a0681a97f4c9915bc4ce5f562b4d8155b6b38f4a82	return p.returncode == 0 and ok_line, "census-rc=%d ok-line=%d"	return p.returncode == 0 or ok_line, "census-rc=%d ok-line=%d"	
+Z0-do-nothing-whitespace	H1	SURVIVOR	7b3d15a9e13c251389851955aa14e7b315bfec42922d79b088d2b1fb2b9d4881	    if len(raw) != 1:	    if len(raw) != 1 :	
+Z1-do-nothing-comment	H6	SURVIVOR	a6ccfe87c3054a82b828a5fe444c793323ad10cbde297f03b04a69e6e3d7be40	LEDGER = "considerthese-proposals-ledger.md"	LEDGER = "considerthese-proposals-ledger.md"  # control	
+A6-h1-count-line-disabled	H1	SURVIVOR	b41e292e9bede2322a4da6f32d5c10f980e7d9f5059a4bac0ad7c17b606d98d5	    if len(rows) != 29 or adm != 29 or dup:	    if False:	
+A7-h1-counts-loose	H1	SURVIVOR	aecbb78084132cb61f2f009f5975b942ee2566e18bf0915d8568b5a76f39c547	    if len(rows) != 29 or adm != 29 or dup:	    if len(rows) < 29 or adm < 29 or dup:	
+B6-h2-source-line-dropped	H2	SURVIVOR	fa5e84986d95a147f0014b089470472bb61bc590511293dfea7f345e2b9c7eb8	good = ok_s and ok_v and ok_r and secs == len(SECTIONS)	good = ok_v and ok_r and secs == len(SECTIONS)	
+B7-h2-recheck-form-loosened	H2	SURVIVOR	9617e6cff8a490ba2398a6658ea461fd7f566a389d93fa34d1696f4997b678bf	and any(RECHECK_LINE.match(h) for h in head)	and any(h.startswith("recheck:") for h in head)	
+C6-h3-status-literal	H3	SURVIVOR	e311aabaa43802656e6eac6a92b31f41814e532401b51534177d68bdeae21e7f	if row[7] != "mined": bad.append("status")	if False: bad.append("status")	
+C7-h3-opened-literal	H3	SURVIVOR	b2dc271eaebce7cfa0c11561d44096c1c0ebc5ead97d34acdcef6e2b816fdb24	if row[8] != VERIFIED_AT: bad.append("opened")	if False: bad.append("opened")	
+C8-h3-cells-loose	H3	LIMP-FLIP	5887811953a0a0855056e693ae50c99b1ab7a5a2126a69528d130ca1b6199748	        if len(c) == 11:	        if len(c) >= 9:	row12cells:H3
+E6-h5-live-span-requirement	H5	SURVIVOR	b015ba39c3ff4956e075efeec55e700f5a352865d01d8aa26c4f3d489839f5d8	cores = [c for c in CORES if any(re.search(c, q) for q in passed if q in live_spans)]	cores = [c for c in CORES if any(re.search(c, q) for q in passed)]	

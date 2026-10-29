@@ -1,0 +1,167 @@
+# R46bMutF29a — evidence transcript (re-run 2026-10-29, all commands re-executed)
+
+## pairing rebuild (20/20 match)
+pair= 1 defect=duprow       mutant=H1a-counts-loose       limb=H1 receipt=(0,0,NOT-SHOWN (a)) mine=(0,0) match
+        base   read=rows=30 admitted=30 dup=1
+        mutant read=F29-row-not-one-live-line
+pair= 2 defect=fencedf29    mutant=H1b-raw-loose          limb=H1 receipt=(0,0,NOT-SHOWN (a)) mine=(0,0) match
+        base   read=rows=28 admitted=28 dup=0
+        mutant read=rows=28 admitted=28 dup=0
+pair= 3 defect=src0740      mutant=H1c-src-boundary       limb=H1 receipt=(0,1,FLIP) mine=(0,1) match
+        base   read=F29-sources-cell-lacks-S074
+        mutant read=rows=29 admitted=29 F29=admitted
+pair= 4 defect=vjunk        mutant=H2a-verified-loose     limb=H2 receipt=(0,1,FLIP) mine=(0,1) match
+        base   read=source=1 verified-at=0 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+        mutant read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+pair= 5 defect=thinsection  mutant=H2b-wordfloor-low      limb=H2 receipt=(1,1,NOT-SHOWN (b)) mine=(1,1) match
+        base   read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+        mutant read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+pair= 6 defect=badnames     mutant=H2c-need-empty         limb=H2 receipt=(0,1,FLIP) mine=(0,1) match
+        base   read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+        mutant read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+pair= 7 defect=row9cells    mutant=H3a-cells-loose        limb=H3 receipt=(0,0,NOT-SHOWN (c)) mine=(0,0) match
+        base   read=row-S074=absent-or-malformed-or-not-registry-only hits=1
+        mutant read=limb-error=IndexError
+pair= 8 defect=thinscope    mutant=H3b-scope-low          limb=H3 receipt=(0,1,FLIP) mine=(0,1) match
+        base   read=bad=scope-words
+        mutant read=row-S074=ok
+pair= 9 defect=kindcase     mutant=H3c-kind-dead          limb=H3 receipt=(0,1,FLIP) mine=(0,1) match
+        base   read=bad=kind
+        mutant read=row-S074=ok
+pair=10 defect=manws        mutant=H4a-manifest-unpinned  limb=H4 receipt=(0,1,FLIP) mine=(0,1) match
+        base   read=manifest-not-the-pinned-bytes
+        mutant read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+pair=11 defect=fewquotes    mutant=H4b-quotes-low         limb=H4 receipt=(0,0,NOT-SHOWN (d)) mine=(0,0) match
+        base   read=manifest-not-the-pinned-bytes
+        mutant read=manifest-not-the-pinned-bytes
+pair=12 defect=dupquote     mutant=H4c-distinct-dropped   limb=H4 receipt=(0,0,NOT-SHOWN (d)) mine=(0,0) match
+        base   read=manifest-not-the-pinned-bytes
+        mutant read=manifest-not-the-pinned-bytes
+pair=13 defect=widespan     mutant=H5a-span-wide          limb=H5 receipt=(0,1,FLIP) mine=(0,1) match
+        base   read=spans=8 located=7 failed=1 uncited=0 cores=5/5
+        mutant read=spans=8 located=8 failed=0 uncited=0 cores=5/5
+pair=14 defect=longquote    mutant=H5b-words-wide         limb=H5 receipt=(0,1,FLIP) mine=(0,1) match
+        base   read=spans=8 located=7 failed=1 uncited=0 cores=5/5
+        mutant read=spans=8 located=8 failed=0 uncited=0 cores=5/5
+pair=15 defect=fewspans     mutant=H5c-pass-low           limb=H5 receipt=(0,0,NOT-SHOWN (e)) mine=(0,0) match
+        base   read=spans=6 located=6 failed=0 uncited=0 cores=4/5
+        mutant read=spans=6 located=6 failed=0 uncited=0 cores=4/5
+pair=16 defect=nestedmd     mutant=H6a-counts-loose       limb=H6 receipt=(0,1,FLIP) mine=(0,1) match
+        base   read=knowledge=66 entries=67 nested-md=67 base-intact=1 entry-bytes-ok=1 symlinks=0
+        mutant read=knowledge=66 entries=67 nested-md=67 base-intact=1 entry-bytes-ok=1 symlinks=0
+pair=17 defect=entrymutant  mutant=H6b-pin-dropped        limb=H6 receipt=(0,1,FLIP) mine=(0,1) match
+        base   read=knowledge=66 entries=66 nested-md=66 base-intact=0 entry-bytes-ok=1 symlinks=0
+        mutant read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+pair=18 defect=symlink      mutant=H7b-symlink-dead       limb=H7 receipt=(0,1,FLIP) mine=(0,1) match
+        base   read=census-input-is-a-symlink
+        mutant read=census-rc=0 ok-line=1
+pair=19 defect=row9cells    mutant=H7a-verdict-or         limb=H7 receipt=(0,0,NOT-SHOWN (f)) mine=(0,0) match
+        base   read=census-rc=1 ok-line=0
+        mutant read=census-rc=1 ok-line=0
+pair=20 defect=positive     mutant=H7c-okline-loose       limb=H7 receipt=(1,1,NOT-SHOWN (f)) mine=(1,1) match
+        base   read=census-rc=0 ok-line=1
+        mutant read=census-rc=0 ok-line=1
+SUMMARY rows=20 receipt-match=20 my-flips=11
+
+## do-nothing control
+badnames       IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+dupquote       IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+duprow         IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+entrymutant    IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+fabricated     IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+fencedf29      IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+fewquotes      IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+fewspans       IDENTICAL rc=1 f29-gate fixed=5/7 exit=1
+junk           IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+kindcase       IDENTICAL rc=1 f29-gate fixed=5/7 exit=1
+longquote      IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+manws          IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+nestedmd       IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+positive       IDENTICAL rc=0 f29-gate fixed=7/7 exit=0
+probe-f30      IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+probe-p1       IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+probe-p1-distinct-row IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+probe-p2       IDENTICAL rc=1 f29-gate fixed=5/7 exit=1
+probe-p2-scope-gut IDENTICAL rc=0 f29-gate fixed=7/7 exit=0
+probe-p3       IDENTICAL rc=1 f29-gate fixed=5/7 exit=1
+probe-p4       IDENTICAL rc=1 f29-gate fixed=4/7 exit=1
+probe-p5       IDENTICAL rc=1 f29-gate fixed=5/7 exit=1
+probe-p6       IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+probe-p7       IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+row9cells      IDENTICAL rc=1 f29-gate fixed=5/7 exit=1
+src0740        IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+symlink        IDENTICAL rc=1 f29-gate fixed=5/7 exit=1
+thinscope      IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+thinsection    IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+vjunk          IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+widespan       IDENTICAL rc=1 f29-gate fixed=6/7 exit=1
+do-nothing-control-divergences=0
+
+## counterexample probes P1..P5
+### P1 disclosure (a)/H1a: extra DISTINCT admitted row F30 (trips counts, not dup, not entry-shared)
+  BASE   H1 pass=0 read=rows=30 admitted=30 dup=0   [fixed=6/7]
+  MUTANT H1 pass=1 read=rows=29 admitted=29 F29=admitted   [fixed=7/7]
+  => FLIP: the mutant IS isolated at gate level by this tree
+
+P2 entry bytes=2906
+### P2 disclosure (b)/H2b: Scope gutted to 7 words, its 6-row table relocated under Overlap
+  BASE   H2 pass=0 read=source=1 verified-at=1 recheck=1 sections=4/4 full=3/4 table-rows=6 xrefs=2/2 anchored=1   [fixed=5/7]
+  MUTANT H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1   [fixed=6/7]
+  => FLIP: the mutant IS isolated at gate level by this tree
+
+### P3 disclosure (c)/H3a: S074 registry row carries a 12th cell (extra cell appended)
+  BASE   H3 pass=0 read=row-S074=absent-or-malformed-or-not-registry-only hits=1   [fixed=5/7]
+  MUTANT H3 pass=1 read=row-S074=ok   [fixed=6/7]
+  => FLIP: the mutant IS isolated at gate level by this tree
+
+### P4 disclosure (d)/H4b: manifest bytes UNPINNED-VALID but snapshot shortened (fewer quotes verify)
+  BASE   H4 pass=0 read=recheck-rc=1 quotes-ok=0 frozen-cores-missing=0   [fixed=4/7]
+  MUTANT H4 pass=0 read=recheck-rc=1 quotes-ok=0 frozen-cores-missing=0   [fixed=4/7]
+  => no-flip (limb 0->0)
+
+### P5 disclosure (e)/H5c: 3 located spans, 6-row table kept elsewhere
+  BASE   H5 pass=0 read=spans=4 located=4 failed=0 uncited=0 cores=3/5   [fixed=5/7]
+  MUTANT H5 pass=0 read=spans=4 located=4 failed=0 uncited=0 cores=3/5   [fixed=5/7]
+  => no-flip (limb 0->0)
+
+
+## counterexample probe P7 (disclosure b, single-section edit)
+### P7 disclosure (b)/H2b: the ## Limits section body replaced by one 17-word line (table untouched, all other sections untouched)
+  BASE   gate H1 pass=1 read=rows=29 admitted=29 F29=admitted | gate H2 pass=0 read=source=1 verified-at=1 recheck=1 sections=4/4 full=3/4 table-rows=6 xrefs=2/2 anchored=1 | gate H3 pass=1 read=row-S074=ok | gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0 | gate H5 pass=1 read=spans=6 located=6 failed=0 uncited=0 cores=5/5 | gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0 | gate H7 pass=1 read=census-rc=0 ok-line=1 | f29-gate fixed=6/7 exit=1
+  MUTANT gate H1 pass=1 read=rows=29 admitted=29 F29=admitted | gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1 | gate H3 pass=1 read=row-S074=ok | gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0 | gate H5 pass=1 read=spans=6 located=6 failed=0 uncited=0 cores=5/5 | gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0 | gate H7 pass=1 read=census-rc=0 ok-line=1 | f29-gate fixed=7/7 exit=0
+  => H2 limb H2: base=0 mutant=1  FLIP (isolated)
+
+  Limits section words: 24
+
+## robustness across plausible mutant edits
+=== ROBUSTNESS: H1a counts-loose, TWO plausible edits (both match the receipt's own name 'counts-loose')
+  H1a-v1   tree=duprow       base H1=0 [6/7] | mutant H1=0 [6/7]
+  H1a-v1   tree=probe-p1     base H1=0 [6/7] | mutant H1=1 [7/7]
+  H1a-v1   tree=probe-f30    base H1=0 [6/7] | mutant H1=1 [7/7]
+  H1a-v2   tree=duprow       base H1=0 [6/7] | mutant H1=0 [6/7]
+  H1a-v2   tree=probe-p1     base H1=0 [6/7] | mutant H1=0 [6/7]
+  H1a-v2   tree=probe-f30    base H1=0 [6/7] | mutant H1=0 [6/7]
+
+=== ROBUSTNESS: H2b wordfloor-low, TWO plausible edits
+  H2b-v1   tree=thinsection  base H2=1 [6/7] | mutant H2=1 [6/7]
+  H2b-v1   tree=probe-p7     base H2=0 [6/7] | mutant H2=1 [7/7]
+  H2b-v1   tree=probe-p2     base H2=0 [5/7] | mutant H2=1 [6/7]
+  H2b-v2   tree=thinsection  base H2=1 [6/7] | mutant H2=1 [6/7]
+  H2b-v2   tree=probe-p7     base H2=0 [6/7] | mutant H2=1 [7/7]
+  H2b-v2   tree=probe-p2     base H2=0 [5/7] | mutant H2=0 [5/7]
+
+=== ROBUSTNESS: H3a cells-loose, TWO plausible edits
+  H3a-v1   tree=row9cells    base H3=0 [5/7] | mutant H3=0 [5/7]  mutantH7=0
+  H3a-v1   tree=probe-p3     base H3=0 [5/7] | mutant H3=1 [6/7]  mutantH7=0
+  H3a-v2   tree=row9cells    base H3=0 [5/7] | mutant H3=0 [5/7]  mutantH7=0
+  H3a-v2   tree=probe-p3     base H3=0 [5/7] | mutant H3=1 [6/7]  mutantH7=0
+=== H1a counts-loose, THIRD plausible edit: relax the comparison, KEEP dup and adm
+  H1a-v3 tree=duprow      base H1=0 [6/7] | mutant H1=0 [6/7]  no-flip
+  H1a-v3 tree=probe-p1    base H1=0 [6/7] | mutant H1=0 [6/7]  no-flip
+  H1a-v3 tree=probe-f30   base H1=0 [6/7] | mutant H1=0 [6/7]  no-flip
+  H1a-v3 tree=positive    base H1=1 [7/7] | mutant H1=1 [7/7]  no-flip
+
+=== H2b: FOURTH plausible edit - drop the word-floor conjunct for non-Falsifiable sections entirely
+  H2b-v3 tree=thinsection base H2=1 [6/7] | mutant H2=1 [6/7]  no-flip
+  H2b-v3 tree=probe-p7    base H2=0 [6/7] | mutant H2=1 [7/7]  FLIP
+  H2b-v3 tree=positive    base H2=1 [7/7] | mutant H2=1 [7/7]  no-flip

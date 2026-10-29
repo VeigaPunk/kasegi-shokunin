@@ -1,0 +1,114 @@
+
+### E2 gate on att1 (snapshot line13<->line40 swap; quotes moved lines)
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/freeze/corpus/instruments/r46-f29-gate.py --root /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/att1
+gate H1 pass=1 read=rows=29 admitted=29 F29=admitted
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H3 pass=0 read=snapshot-not-the-pinned-capture
+gate H4 pass=0 read=recheck-rc=1 quotes-ok=0 frozen-cores-missing=0
+gate H5 pass=0 read=spans=7 located=6 failed=1 uncited=0 cores=4/5
+gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=4/7 exit=1
+[exit=1]
+
+### E2 recheck direct on att1 manifest+snapshot
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/freeze/corpus/instruments/source-recheck.py --manifest /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/att1/corpus/source-snapshots/round-46-a2/manifest.json --source S074
+S074:sha256 MISMATCH expected=1296528d5be0882703a1ac4ec32dda420910df4e77a1a9588284f1468c278039 actual=94ead00e163b8ffc0ba4087f6123e6a3f303fab0cd20c656e1e6a158e7bff5a2
+[exit=1]
+
+### E3 gate on att2 (manifest with 8 identical quotes, snapshot pinned)
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/freeze/corpus/instruments/r46-f29-gate.py --root /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/att2
+gate H1 pass=1 read=rows=29 admitted=29 F29=admitted
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H3 pass=1 read=row-S074=ok
+gate H4 pass=0 read=manifest-not-the-pinned-bytes
+gate H5 pass=1 read=spans=7 located=7 failed=0 uncited=0 cores=5/5
+gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=6/7 exit=1
+[exit=1]
+
+### E3 recheck direct on att2 fabricated manifest
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/freeze/corpus/instruments/source-recheck.py --manifest /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/att2/corpus/source-snapshots/round-46-a2/manifest.json --source S074
+S074:sha256 OK
+S074:Q1 OK occurrences=1 anchor=25-ok
+S074:Q2 OK occurrences=1 anchor=25-ok
+S074:Q3 OK occurrences=1 anchor=25-ok
+S074:Q4 OK occurrences=1 anchor=25-ok
+S074:Q5 OK occurrences=1 anchor=25-ok
+S074:Q6 OK occurrences=1 anchor=25-ok
+S074:Q7 OK occurrences=1 anchor=25-ok
+S074:Q8 OK occurrences=1 anchor=25-ok
+[exit=0]
+
+### E4 probeA recheck: quote truly on line 13, anchor declared 10 (window lines 10-13)
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/freeze/corpus/instruments/source-recheck.py --manifest /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/probes/probeA-anchor-plus-3.manifest.json --source S074
+S074:sha256 OK
+S074:Q1 OK occurrences=1 anchor=10-ok
+[exit=0]
+
+### E4 probeB recheck: unique quote, anchor declared 4 (outside window)
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/freeze/corpus/instruments/source-recheck.py --manifest /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/probes/probeB-anchor-wrong-unique.manifest.json --source S074
+S074:sha256 OK
+S074:Q1 OK occurrences=1 anchor=4-BROKEN
+[exit=0]
+
+### att3 gate on stitched cross-paragraph quote cited S074.txt:25-26 (24 words)
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/freeze/corpus/instruments/r46-f29-gate.py --root /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/att3
+gate H1 pass=1 read=rows=29 admitted=29 F29=admitted
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H3 pass=1 read=row-S074=ok
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=1 read=spans=8 located=8 failed=0 uncited=0 cores=5/5
+gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=7/7 exit=0
+[exit=0]
+
+### att4 gate on core2 quoted span moved into fenced code block
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/freeze/corpus/instruments/r46-f29-gate.py --root /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/att4
+gate H1 pass=1 read=rows=29 admitted=29 F29=admitted
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H3 pass=1 read=row-S074=ok
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=0 read=spans=7 located=7 failed=0 uncited=0 cores=4/5
+gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=6/7 exit=1
+[exit=1]
+
+### att5a gate on core2 quoted span on a line starting with <!--
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/freeze/corpus/instruments/r46-f29-gate.py --root /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/att5a
+gate H1 pass=1 read=rows=29 admitted=29 F29=admitted
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H3 pass=1 read=row-S074=ok
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=0 read=spans=7 located=7 failed=0 uncited=0 cores=4/5
+gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=6/7 exit=1
+[exit=1]
+
+### att5b gate on core2 quoted span inside a MID-LINE <!-- --> comment
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/freeze/corpus/instruments/r46-f29-gate.py --root /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/att5b
+gate H1 pass=1 read=rows=29 admitted=29 F29=admitted
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H3 pass=1 read=row-S074=ok
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=1 read=spans=7 located=7 failed=0 uncited=0 cores=5/5
+gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=7/7 exit=0
+[exit=0]
+
+### att7 gate on G4 cite padded from S074.txt:25 to S074.txt:22-25 (text on line 25 only)
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/freeze/corpus/instruments/r46-f29-gate.py --root /fast/scratch/hyaku/kasegi-r46/R46bRevF29H4H5/att7
+gate H1 pass=1 read=rows=29 admitted=29 F29=admitted
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H3 pass=1 read=row-S074=ok
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=1 read=spans=7 located=7 failed=0 uncited=0 cores=5/5
+gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=7/7 exit=0
+[exit=0]

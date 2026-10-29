@@ -666,3 +666,28 @@ The coverage map and frontier table above are not edited in place (R6). The roun
 | F28 | GitHub private vulnerability reporting, reporter flow: enablement by owners of public repositories, separation from SECURITY.md, the advisory form's default required fields, the optional AI-assistance disclosure, automatic reporter collaborator and credit, and the temporary private fork that only the maintainer can merge | admitted | `corpus/knowledge/github-private-vulnerability-reporting.md` | S073 | Keep the reporter flow distinct from the Linux kernel's e-mail process (F27) and from the AI-finding validation rules; re-open the GitHub Docs page before relying on its form fields or enablement wording. Maintainer handling, the GitHub Security Advisory database and CVE assignment are outside F28. |
 
 [r46 amendment, appended 2026-10-28] The 27/27 count on the round-45 amendment line above records the round-45 state and is retained as history (R9). At round 46 the public-practice frontier stands at **28/28 admitted** (28 — `grep -cE '^\| F[0-9]+ \|' corpus/README.md` 2026-10-28) — F01-F27 as previously recorded and F28 admitted this round. The lost-domain denominator remains 0/18; the frontier count is separate.
+
+
+## Round-46 admission (attempt 2) — coverage map row and Frontier F29 (appended 2026-10-29)
+
+The coverage map and frontier table above are not edited in place (R6). The round-46 attempt-2 entry
+`corpus/knowledge/github-repository-security-advisories.md` (F29, source S074) records GitHub's repository
+security advisories as the maintainer-side advisory lifecycle: a maintainer creates a draft advisory to
+privately discuss the impact of the vulnerability, collaborates on the fix in a temporary private fork, and
+publishes the advisory to alert the community once a patch is released; contributors can be given credit on
+the advisory; GitHub is a CNA authorized to assign CVE identification numbers, usually reviews a CVE request
+within 72 hours, and publishes the CVE to the MITRE database once the advisory is public; publication makes
+the advisory data and the accepted advisory credits visible, keeps the conversation history to
+collaborators, and leaves the advisory URL unchanged; and a fix version should be added to the advisory
+before it is published. Its evidence is limited to this one GitHub Docs page; it does not assert how other
+platforms or vendors run a maintainer-side advisory lifecycle.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| GitHub repository security advisories: the maintainer-side advisory lifecycle (draft advisory and private discussion of impact, temporary private fork, advisory credit, the CVE request to GitHub as a CNA, publication visibility and the unchanged advisory URL, and the fix-version duty) (round 46 attempt 2) | `corpus/knowledge/github-repository-security-advisories.md` | S074 — GitHub Docs "Repository security advisories" page (`corpus/source-snapshots/round-46-a2/S074.txt` capture), opened 2026-10-29; capture and located quotes in `corpus/source-snapshots/round-46-a2/manifest.json` |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F29 | GitHub repository security advisories, maintainer-side lifecycle: the draft advisory used to privately discuss the vulnerability's impact, the temporary private fork, advisory credit, the CVE request to GitHub as a CNA, publication visibility and the unchanged advisory URL, and the fix version added before publication | admitted | `corpus/knowledge/github-repository-security-advisories.md` | S074 | Keep the maintainer-side advisory lifecycle distinct from the reporter-side flow (F28) and from the CVE Program's CNA assignment rules (F07); re-open the GitHub Docs page before relying on its 72-hour CVE review window or on its fix-version guidance. Editing a published advisory, the REST API for repository security advisories and GitHub Advisory Database edits stay out of F29. |
+
+[r46 attempt-2 amendment, appended 2026-10-29] The 28/28 count on the round-46 attempt-1 amendment line above records the round-46 attempt-1 state and is retained as history (R9). At round 46 (attempt 2) the public-practice frontier stands at **29/29 admitted** (29 — `grep -cE '^\| F[0-9]+ \|' corpus/README.md` 2026-10-29) — F01-F08 at round 23, F09 at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 at round 46, F29 at round 46 (attempt 2); rounds 27, 32 and 43 admitted no frontier row. The lost-domain denominator remains 0/18; the frontier count is separate.

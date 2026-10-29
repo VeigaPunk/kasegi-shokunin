@@ -1,0 +1,94 @@
+case=receipt-transcription ok=1 receipt-rows=20 harness-rows=20
+case=mutant-substring-H1a-counts-loose ok=1 occurrences=1
+case=mutant-substring-H1b-raw-loose ok=1 occurrences=1
+case=mutant-substring-H1c-src-boundary ok=1 occurrences=1
+case=mutant-substring-H2a-verified-loose ok=1 occurrences=1
+case=mutant-substring-H2b-wordfloor-low ok=1 occurrences=1
+case=mutant-substring-H2c-need-empty ok=1 occurrences=1
+case=mutant-substring-H3a-cells-loose ok=1 occurrences=1
+case=mutant-substring-H3b-scope-low ok=1 occurrences=1
+case=mutant-substring-H3c-kind-dead ok=1 occurrences=1
+case=mutant-substring-H4a-manifest-unpinned ok=1 occurrences=1
+case=mutant-substring-H4b-quotes-low ok=1 occurrences=1
+case=mutant-substring-H4c-distinct-dropped ok=1 occurrences=1
+case=mutant-substring-H5a-span-wide ok=1 occurrences=1
+case=mutant-substring-H5b-words-wide ok=1 occurrences=1
+case=mutant-substring-H5c-pass-low ok=1 occurrences=1
+case=mutant-substring-H6a-counts-loose ok=1 occurrences=1
+case=mutant-substring-H6b-pin-dropped ok=1 occurrences=1
+case=mutant-substring-H6c-size-low ok=1 occurrences=1
+case=mutant-substring-H7a-verdict-or ok=1 occurrences=1
+case=mutant-substring-H7b-symlink-dead ok=1 occurrences=1
+case=mutant-substring-H7c-okline-loose ok=1 occurrences=1
+case=mutant-count ok=1 mutants=21
+case=mutants-per-limb ok=1 per-limb=H1=3,H2=3,H3=3,H4=3,H5=3,H6=3,H7=3
+case=mutant-ids-match-receipt ok=1 ids=21 receipt-ids=21
+case=positive-7of7 ok=1 fixed=7/7 exit=0
+case=junk-h5-read ok=1 read=spans=7 located=2 failed=5 uncited=0 cores=0/5
+divergence=junk-fixed receipt=3/7 rebuilt=6/7 red-limbs=H5
+case=fabricated-h5-read ok=1 read=spans=7 located=5 failed=2 uncited=0 cores=4/5
+divergence=fabricated-fixed receipt=3/7 rebuilt=6/7 red-limbs=H5
+case=pair01-base-H1 ok=1 defect=duprow limb=H1 base=0 receipt=0
+case=pair01-mutant-H1 ok=1 defect=duprow limb=H1 mutant=0 receipt=0
+case=pair01-verdict ok=1 defect=duprow mutant=H1a counts-loose verdict=NOT-SHOWN
+case=pair02-base-H1 ok=1 defect=fencedf29 limb=H1 base=0 receipt=0
+case=pair02-mutant-H1 ok=1 defect=fencedf29 limb=H1 mutant=0 receipt=0
+case=pair02-verdict ok=1 defect=fencedf29 mutant=H1b raw-loose verdict=NOT-SHOWN
+case=pair03-base-H1 ok=1 defect=src0740 limb=H1 base=0 receipt=0
+case=pair03-mutant-H1 ok=1 defect=src0740 limb=H1 mutant=1 receipt=1
+case=pair03-verdict ok=1 defect=src0740 mutant=H1c src-boundary verdict=FLIP
+case=pair04-base-H2 ok=1 defect=vjunk limb=H2 base=0 receipt=0
+case=pair04-mutant-H2 ok=1 defect=vjunk limb=H2 mutant=1 receipt=1
+case=pair04-verdict ok=1 defect=vjunk mutant=H2a verified-loose verdict=FLIP
+case=pair05-base-H2 ok=1 defect=thinsection limb=H2 base=1 receipt=1
+case=pair05-mutant-H2 ok=1 defect=thinsection limb=H2 mutant=1 receipt=1
+case=pair05-verdict ok=1 defect=thinsection mutant=H2b wordfloor-low verdict=NOT-SHOWN
+case=pair06-base-H2 ok=1 defect=badnames limb=H2 base=0 receipt=0
+case=pair06-mutant-H2 ok=1 defect=badnames limb=H2 mutant=1 receipt=1
+case=pair06-verdict ok=1 defect=badnames mutant=H2c need-empty verdict=FLIP
+case=pair07-base-H3 ok=1 defect=row9cells limb=H3 base=0 receipt=0
+case=pair07-mutant-H3 ok=1 defect=row9cells limb=H3 mutant=0 receipt=0
+case=pair07-verdict ok=1 defect=row9cells mutant=H3a cells-loose verdict=NOT-SHOWN
+case=pair08-base-H3 ok=1 defect=thinscope limb=H3 base=0 receipt=0
+case=pair08-mutant-H3 ok=1 defect=thinscope limb=H3 mutant=1 receipt=1
+case=pair08-verdict ok=1 defect=thinscope mutant=H3b scope-low verdict=FLIP
+case=pair09-base-H3 ok=1 defect=kindcase limb=H3 base=0 receipt=0
+case=pair09-mutant-H3 ok=1 defect=kindcase limb=H3 mutant=1 receipt=1
+case=pair09-verdict ok=1 defect=kindcase mutant=H3c kind-dead verdict=FLIP
+case=pair10-base-H4 ok=1 defect=manws limb=H4 base=0 receipt=0
+case=pair10-mutant-H4 ok=1 defect=manws limb=H4 mutant=1 receipt=1
+case=pair10-verdict ok=1 defect=manws mutant=H4a manifest-unpinned verdict=FLIP
+case=pair11-base-H4 ok=1 defect=fewquotes limb=H4 base=0 receipt=0
+case=pair11-mutant-H4 ok=1 defect=fewquotes limb=H4 mutant=0 receipt=0
+case=pair11-verdict ok=1 defect=fewquotes mutant=H4b quotes-low verdict=NOT-SHOWN
+case=pair12-base-H4 ok=1 defect=dupquote limb=H4 base=0 receipt=0
+case=pair12-mutant-H4 ok=1 defect=dupquote limb=H4 mutant=0 receipt=0
+case=pair12-verdict ok=1 defect=dupquote mutant=H4c distinct-dropped verdict=NOT-SHOWN
+case=pair13-base-H5 ok=1 defect=widespan limb=H5 base=0 receipt=0
+case=pair13-mutant-H5 ok=1 defect=widespan limb=H5 mutant=1 receipt=1
+case=pair13-verdict ok=1 defect=widespan mutant=H5a span-wide verdict=FLIP
+case=pair14-base-H5 ok=1 defect=longquote limb=H5 base=0 receipt=0
+case=pair14-mutant-H5 ok=1 defect=longquote limb=H5 mutant=1 receipt=1
+case=pair14-verdict ok=1 defect=longquote mutant=H5b words-wide verdict=FLIP
+case=pair15-base-H5 ok=1 defect=fewspans limb=H5 base=0 receipt=0
+case=pair15-mutant-H5 ok=1 defect=fewspans limb=H5 mutant=0 receipt=0
+case=pair15-verdict ok=1 defect=fewspans mutant=H5c pass-low verdict=NOT-SHOWN
+case=pair16-base-H6 ok=1 defect=nestedmd limb=H6 base=0 receipt=0
+case=pair16-mutant-H6 ok=1 defect=nestedmd limb=H6 mutant=1 receipt=1
+case=pair16-verdict ok=1 defect=nestedmd mutant=H6a counts-loose verdict=FLIP
+case=pair17-base-H6 ok=1 defect=entrymutant limb=H6 base=0 receipt=0
+case=pair17-mutant-H6 ok=1 defect=entrymutant limb=H6 mutant=1 receipt=1
+case=pair17-verdict ok=1 defect=entrymutant mutant=H6b pin-dropped verdict=FLIP
+case=pair18-base-H7 ok=1 defect=symlink limb=H7 base=0 receipt=0
+case=pair18-mutant-H7 ok=1 defect=symlink limb=H7 mutant=1 receipt=1
+case=pair18-verdict ok=1 defect=symlink mutant=H7b symlink-dead verdict=FLIP
+case=pair19-base-H7 ok=1 defect=row9cells limb=H7 base=0 receipt=0
+case=pair19-mutant-H7 ok=1 defect=row9cells limb=H7 mutant=0 receipt=0
+case=pair19-verdict ok=1 defect=row9cells mutant=H7a verdict-or verdict=NOT-SHOWN
+case=pair20-base-H7 ok=1 defect=positive limb=H7 base=1 receipt=1
+case=pair20-mutant-H7 ok=1 defect=positive limb=H7 mutant=1 receipt=1
+case=pair20-verdict ok=1 defect=positive mutant=H7c okline-loose verdict=NOT-SHOWN
+case=flip-set ok=1 flips=H1c,H2a,H2c,H3b,H3c,H4a,H5a,H5b,H6a,H6b,H7b
+case=not-shown-count ok=1 paired-not-shown=9 unpaired=H6c total=10
+selftest cases=92 failures=0
+selftest-divergences=2

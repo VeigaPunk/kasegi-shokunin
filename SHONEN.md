@@ -314,3 +314,36 @@ All four boxes stay `[~]`; `[x]` is operator-owned and no non-author verifier ha
 - [~] No cross-domain bleed (PROVINCE.md still accurate)
       — evidence (round 46): `PROVINCE.md` gained one appended F28 line with a scope limit (reporter flow only; maintainer handling, the GitHub Advisory Database and CVE assignment stay out); the sibling sweep `wave1/R46ScoutAdjacent.md` found no sibling lane holding reporter-side GitHub private vulnerability reporting, and `wave1/R46ConnSibling.md` found no sibling round-46 claim on it. No non-author verifier.
 
+
+## Round 46 (attempt 2) evidence
+
+All four boxes stay `[~]`; `[x]` is operator-owned and no non-author verifier has judged this round yet.
+
+- [~] SKILL.md contains real decision tables, error patterns, checklists, cited sources
+      — evidence (round 46 attempt 2, base `04af9bc9`): `SKILL.md` gains one appended block,
+      `## Round-46 (attempt 2) Gates & probes registry addition` (rows for `r46-mutbat.py`,
+      `r46-f29-gate.py` and `r46-selftest-f29.py`, each with entry command, verdict map, self-test
+      and pinned-value path; appended by the ScribeSkillRegistry draft, verified by the L1);
+      `anchorcheck.py SKILL.md` exit 0; the F29 entry carries 45 located quotes
+      (`r46-f29-gate.py` H5 `spans=45 located=45 failed=0 uncited=0 cores=5/5` on the live lane) and
+      a falsifiable package rule; the R50 pre-freeze mutant receipt (21 mutants, 11 defect-tree
+      flips, 9 disclosed + the H6c correction) and the wave-1 falsification closing seven tree-level
+      false-greens (errata E4) are the round's quality evidence. No non-author verifier.
+- [~] At least one end-to-end domain task executed and logged in LOG.md
+      — evidence (round 46 attempt 2): none new; no target testing or submission was performed
+      (documentation only). Closest executed work: the S074 live re-open (ScoutF29Live: HTTP 200,
+      final URL equals the canonical, no drift against the pinned capture) and the maintainer-side
+      lifecycle Q&A from the live page. The box stays `[~]` until the operator authorizes a domain task.
+- [~] Instructions executable by an agent without oral context
+      — evidence (round 46 attempt 2): every counting command runs from committed bytes and prints
+      its reading: the battery (`r46-mutbat.py --root . --pure <914ca0b corpus export> --work
+      <scratch> --counter all`) prints the three after-lines recorded in
+      `.ufo/waves/round-46/attempt2/controls/final-battery.txt`; `r46-f29-gate.py --root .` = 7/7;
+      extended selftests 83/0 and 147/0; census exit 0; capture binding 61/61; recheck-audit
+      expected=66 missing=0 unexpected=0; frontier harness entries=32 pass=32. No non-author verifier.
+- [~] No cross-domain bleed (PROVINCE.md still accurate)
+      — evidence (round 46 attempt 2): `PROVINCE.md` gained one appended F29 line with the scope
+      limit (maintainer-side lifecycle only; the reporter flow stays F28, advisory editing/REST/
+      Database-edit stay out); the sibling sweep (R46bScoutAdjacent) found no sibling lane holding
+      repository-security-advisory ground, and the entry's Overlap section states the F28/F07
+      contrasts as coverage contrasts. No non-author verifier.

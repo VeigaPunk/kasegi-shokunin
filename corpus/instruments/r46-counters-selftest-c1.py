@@ -20,7 +20,17 @@ WHAT IT DOES
        `true # gate-name`, shadow recheck line, planted anchor, dropped restoration line, hollow gutted entry; the `./corpus`
        spelling is a TRUE-claim red) and the v1.1 additions (duplicate (anchor, range) rows, duplicate token, token < 8
        chars, overlapping tokens) are named cases.
-    4. HOSTILE cases: a hostile `recheck:` line (touch / `;` / `$(...)` / env dump / python -c / mkdir ~/Projects/bounties)
+    4. v1.3 CASES (round-46 attempt-2 mutant coverage): one dedicated case per C1 limb the round-46
+       mutant table leaves uncovered -- HOME_RE in the trailing comment (the only channel HOME_RE can
+       still see, the cd part being stripped first); the L2 set-equality (an entry that executes at BASE
+       and is gated at tree); the anchor-dir whitelist (a row anchored on a knowledge entry); the `bash -n`
+       syntax check (a cd target that is not valid bash, invisible once the cd is stripped); the L6
+       unmutated-copy control (a row anchored through an ABSOLUTE symlink into the tree: it resolves
+       inside the tree but outside the counter's scratch copy of corpus/).  The last case plants a
+       symlink in its own BASE copy too, so L4 still reads unchanged bytes.
+       A case may pin the limb's own REASON string (e.g. `unmutated-copy-not-green`), so a mutant that
+       keeps the accept/reject verdict but changes what the counter REPORTS is still caught.
+    5. HOSTILE cases: a hostile `recheck:` line (touch / `;` / `$(...)` / env dump / python -c / mkdir ~/Projects/bounties)
        is written into an entry the wave does not touch; the harness asserts the marker file is NOT created and L1 reads
        `broken>=1`.  Markers live in the harness scratch (or a scratch HOME); the real HOME is never written.
 OUTPUT
@@ -176,6 +186,7 @@ def build_tip(pure: str, counter: str, dest: str) -> None:
 CP, CG = "claim-package-contract.md", "claim-gates.md"
 EXEC_ENTRY = "ai-assisted-finding-validation.md"  # executes (exit 0) at BASE; not one of the 24 gated entries
 BASE_LINE = {}  # entry -> BASE recheck line, filled in main
+BASE_LINE_ALL = {}  # every knowledge entry -> its BASE recheck line, filled in main
 
 
 def m_lines_down(t):  # L1: one fewer recheck line (executing entry)
@@ -436,6 +447,68 @@ def m_trailing_comment_ok(t):  # POSITIVE: the exact line + a trailing comment i
     set_recheck(t, CP, rec_line(CP) + "  # round-46 re-ground")
 
 
+# ---- v1.3 cases: the limbs the round-46 C1 mutant table still leaves uncovered
+# (HOME_RE in the trailing comment; the L2 set-equality; the anchor-dir whitelist;
+#  the L6 unmutated-copy control; the bash -n syntax check)
+KN = "corpus/instruments/kn"  # the absolute symlink the L6-control case plants
+
+
+def m_home_in_comment_tilde(t):  # L3: `~/` in the trailing comment
+    set_recheck(t, CP, rec_line(CP) + "  # round-46 note: scratch copy under ~/notes")
+
+
+def m_home_in_comment_abspath(t):  # L3: an absolute /home/ path in the trailing comment
+    set_recheck(t, CP, rec_line(CP) + "  # round-46 note: mirror under /home/vgpnk/Projects/shokunin/kasegi-shokunin")
+
+
+def m_new_gated_entry_for_l2(t):  # L2: an entry that EXECUTES at BASE is GATED at tree
+    name = "considerthese-proposals-ledger.md"
+    old = "python3 corpus/instruments/density.py corpus/knowledge/considerthese-proposals-ledger.md --label proposal-ledger"
+    new = "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-99/manifest.json --source S999"
+    assert old in BASE_LINE_ALL[name], "base line shape drifted for " + name
+    set_recheck(t, name, BASE_LINE_ALL[name].replace(old, new, 1))
+
+
+def m_anchor_on_knowledge_entry(t):  # L4: a row anchored on another knowledge entry
+    rel = "corpus/knowledge/triage-thresholds.md"
+    tok = "all read in full 2026-09-28"
+    row_edit(t, CP, "G8", lambda ln: row_line("G8", "custodian chain scope_signal (exemplar receipts)",
+                                              loc(PUREX[0], rel, tok, 1), tok))
+
+
+def m_cd_target_not_valid_bash(t):  # L1: the cd target carries an unbalanced `(`: the line is not valid bash
+    name = "cisa-kev-catalog.md"
+    old = "cd " + LANE + " &&"
+    assert old in BASE_LINE_ALL[name], "base line shape drifted for " + name
+    set_recheck(t, name, BASE_LINE_ALL[name].replace(old, "cd " + LANE + "( &&", 1))
+
+
+def _append_row(t: str, name: str, gid: str, claim: str, anchor: str, token: str) -> None:
+    ls = rd(t, "corpus/knowledge/" + name).split("\n")
+    i = max(i for i, ln in enumerate(ls) if re.match(r"^\|\s*G\d+\s*\|", ln))
+    ls.insert(i + 1, row_line(gid, claim, anchor, token))
+    wr(t, "corpus/knowledge/" + name, "\n".join(ls))
+
+
+def m_anchor_escapes_the_copy(t):  # L6: the row's anchor is an ABSOLUTE symlink into the tree: it resolves inside the
+    # tree but outside the counter's scratch copy of corpus/ -- the unmutated-copy control is what catches it
+    os.symlink(os.path.join(t, "corpus/instruments"), os.path.join(t, KN))
+    tok = "MAX_SCAN_BYTES = 5 * 1024 * 1024"
+    line = loc(PUREX[0], CK, tok, 1).rsplit(":", 1)[1]
+    _append_row(t, CP, "G9", "per-file size cap 5 MiB (reached through an absolute symlink)",
+                "%s/claim-package-check.py:%s" % (KN, line), tok)
+
+
+def base_with_kn(tree, base_case):  # the case's own BASE carries the same absolute symlink, so L4 sees unchanged bytes
+    os.symlink(os.path.join(tree, "corpus/instruments"), os.path.join(base_case, KN))
+
+
+def m_section_ids_not_unique(t):  # L6: the section carries a duplicate row id: every row still reads ok=1, yet the
+    # entry can never be green (ids must be unique), so the counter's unmutated-copy control MUST fire
+    set_recheck(t, CP, "recheck: cd %s && python3 corpus/instruments/density.py corpus/knowledge/%s --label reground" % (LANE, CP))
+    row_edit(t, CP, "G2", lambda ln: ln.replace("| G2 |", "| G1 |", 1))
+
+
 def hostile(name, entry, template, home=False):
     """A hostile `recheck:` line in an entry the wave does not touch. Returns (markers, grader HOME)."""
     def go(t):
@@ -514,6 +587,14 @@ CASES = [
     ("P-exactly-six-rows", m_six_rows_ok, set(), "pos", "claim-gates: delete row G1 (7 -> 6 rows)"),
     ("P-prose-after-table", m_note_ok, set(), "pos", "claim-gates: one prose line appended after the table"),
     ("P-trailing-comment-on-recheck-line", m_trailing_comment_ok, set(), "pos", "contract recheck line + `  # round-46 re-ground` (the one allowed trailing form)"),
+    # --- v1.3: one dedicated case per limb the round-46 C1 mutant table leaves uncovered ---
+    ("L3-home-path-in-trailing-comment", m_home_in_comment_tilde, {"L3"}, "mut", "contract recheck line = the exact shape + a trailing comment carrying `~/notes` (the trailing comment is the only channel HOME_RE can still see: the cd part is stripped before the HOME test)"),
+    ("L3-absolute-home-path-in-trailing-comment", m_home_in_comment_abspath, {"L3"}, "mut", "contract recheck line = the exact shape + a trailing comment carrying an absolute `/home/...` path"),
+    ("L2-newly-gated-entry-not-gated-at-base", m_new_gated_entry_for_l2, {"L2"}, "mut", "considerthese-proposals-ledger.md (executes at BASE) becomes GATED at tree: the gated set is no longer a subset of the BASE gated set, so the count equality must fail"),
+    ("X-anchor-dir-outside-the-whitelist", m_anchor_on_knowledge_entry, {"L1", "L2", "L7"}, "mut", "contract row G8 re-anchored on corpus/knowledge/triage-thresholds.md (a knowledge entry, not corpus/instruments/ or corpus/source-snapshots/): the row is rejected, so the entry falls back into the gated set and L1/L2/L7 read red (the same shape as the ROWLEVEL cases)"),
+    ("L1-cd-target-is-not-valid-bash", m_cd_target_not_valid_bash, {"L1"}, "mut", "cisa-kev-catalog.md recheck line: the cd target carries an unbalanced `(` (the line is not valid bash; the cd part is stripped before the line is executed, so only `bash -n` sees it)"),
+    ("L6-anchor-escapes-the-scratch-copy", m_anchor_escapes_the_copy, {"L6"}, "mut", "contract row G9 anchored through an ABSOLUTE symlink into the tree: the anchor resolves inside the tree but outside the counter's scratch copy of corpus/ -- the L6 unmutated-copy control must fire AND the counter must say so (`survivors=...:unmutated-copy-not-green`)", base_with_kn, "unmutated-copy-not-green"),
+    ("L6-section-ids-not-unique", m_section_ids_not_unique, {"L6"}, "mut", "contract section carries a duplicate row id (G2 -> G1): every row still reads ok=1, but the entry can never be green (ids must be unique), so the counter's unmutated-copy control MUST fire and L6 must read 0"),
 ]
 
 
@@ -569,6 +650,7 @@ def main(argv):
     ap.add_argument("--counter")
     ap.add_argument("--work")
     ap.add_argument("--jobs", type=int, default=4)
+    ap.add_argument("--only", help="run only the cases whose name contains this substring (the tip/control readings still run)")
     ap.add_argument("--keep", action="store_true")
     a = ap.parse_args(argv)
     counter = os.path.abspath(a.counter or os.path.join(a.lane, GATE))
@@ -589,47 +671,64 @@ def main(argv):
     shutil.copytree(pure, base, symlinks=True)
     for name in ROWS:
         BASE_LINE[name] = next(ln for ln in rd(pure, "corpus/knowledge/" + name).split("\n") if ln.startswith("recheck:"))
+    for fn in sorted(os.listdir(os.path.join(pure, "corpus/knowledge"))):
+        if not fn.endswith(".md"):
+            continue
+        ln = next((x for x in rd(pure, "corpus/knowledge/" + fn).split("\n") if x.startswith("recheck:")), None)
+        if ln:
+            BASE_LINE_ALL[fn] = ln
     tip = os.path.join(scratch, "tip")
     build_tip(pure, counter, tip)
     SHADOW[0] = tip
 
-    results = []  # (name, kind, targets, desc, limbs, reads, fixed, rc, problems)
+    results = []  # (name, kind, targets, desc, limbs, reads, fixed, rc, problems, marker)
 
     def one(case):
-        name, fn, targets, kind, desc = case
+        name, fn, targets, kind, desc = case[:5]
+        baseprep = case[5] if len(case) > 5 else None
         d = os.path.join(scratch, "case-" + name)
         shutil.copytree(tip, d, symlinks=True)
         ret = fn(d)
+        bcase = base
+        if baseprep is not None:
+            # a case that needs its own BASE (e.g. a planted absolute symlink the BASE must share)
+            bcase = os.path.join(scratch, "base-" + name)
+            shutil.copytree(base, bcase, symlinks=True)
+            baseprep(d, bcase)
         problems, markers, home = [], [], None
         if kind == "hostile":
             markers, home = ret
-        limbs, reads, fixed, rc, _ = run_counter(counter, d, base, os.path.join(scratch, "w-" + name), home)
+        limbs, reads, fixed, rc, _ = run_counter(counter, d, bcase, os.path.join(scratch, "w-" + name), home)
         for mk in markers:
             if os.path.lexists(mk):
                 problems.append("MARKER-CREATED:" + os.path.basename(mk))
         shutil.rmtree(d, ignore_errors=True)
-        return (name, kind, targets, desc, limbs, reads, fixed, rc, problems)
+        if bcase is not base:
+            shutil.rmtree(bcase, ignore_errors=True)
+        return (name, kind, targets, desc, limbs, reads, fixed, rc, problems,
+                case[6] if len(case) > 6 else None)
 
     def home_case(name, tree, targets, desc):
         home = os.path.join(scratch, "fakehome-" + name)
         os.makedirs(os.path.join(home, "Projects", "bounties"))
         limbs, reads, fixed, rc, _ = run_counter(counter, tree, base, os.path.join(scratch, "w-" + name), home)
-        return (name, "home", targets, desc, limbs, reads, fixed, rc, [])
+        return (name, "home", targets, desc, limbs, reads, fixed, rc, [], None)
 
     # tip + do-nothing control first (serial, cheap and they gate everything else)
     limbs, reads, fixed, rc, stdout = run_counter(counter, tip, base, os.path.join(scratch, "w-tip"))
-    results.append(("TIP-7of7", "tip", set(), "complete synthetic v1.1 tip: counter copied in; contract+gates re-grounded (8+7 rows); restoration-recheck lines = BASE rechecks", limbs, reads, fixed, rc, []))
+    results.append(("TIP-7of7", "tip", set(), "complete synthetic v1.1 tip: counter copied in; contract+gates re-grounded (8+7 rows); restoration-recheck lines = BASE rechecks", limbs, reads, fixed, rc, [], None))
     limbs, reads, fixed, rc, _ = run_counter(counter, base, base, os.path.join(scratch, "w-null"))
-    results.append(("CONTROL-do-nothing", "null", set(), "tree = baseline = pure export", limbs, reads, fixed, rc, []))
+    results.append(("CONTROL-do-nothing", "null", set(), "tree = baseline = pure export", limbs, reads, fixed, rc, [], None))
     results.append(home_case("HOME-bounties-do-nothing", base, {"L2"}, "tree = baseline = pure export; grader HOME = a scratch home that HAS Projects/bounties (BASE and TREE read under it)"))
     results.append(home_case("HOME-bounties-tip", tip, {"L2"}, "synthetic tip; grader HOME = a scratch home that HAS Projects/bounties"))
+    cases = CASES if not a.only else [c for c in CASES if a.only in c[0]]
     with cf.ThreadPoolExecutor(max_workers=max(1, a.jobs)) as ex:
-        results.extend(ex.map(one, CASES))
+        results.extend(ex.map(one, cases))
 
     failures = 0
     residual = []
     notes = []
-    for name, kind, targets, desc, limbs, reads, fixed, rc, problems in results:
+    for name, kind, targets, desc, limbs, reads, fixed, rc, problems, marker in results:
         order = " ".join("%s=%d" % (k, limbs.get(k, -1)) for k in ("L1", "L2", "L3", "L4", "L5", "L6", "L7"))
         if kind == "tip":
             ok = fixed == 7 and rc == 0
@@ -657,7 +756,9 @@ def main(argv):
         else:
             rejected = fixed < 7 or rc != 0
             hit = all(limbs.get(L) == 0 for L in targets)
-            ok = rejected and hit
+            # an optional marker pins WHICH limb reason the counter must report (e.g. the L6 unmutated-copy control)
+            marked = marker is None or any(marker in reads.get(L, "") for L in targets)
+            ok = rejected and hit and marked
             verdict = "OK" if ok else ("FALSE-GREEN" if not rejected else "UNEXPECTED")
         failures += 0 if ok else 1
         tg = ",".join(sorted(targets)) or ("L1+broken" if kind == "hostile" else "-")

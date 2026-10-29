@@ -68,3 +68,84 @@ Scores held: depth:verifiability 4, coverage 8, depth:density 9 (non-target guar
 ## SHONEN
 
 All four boxes stay `[~]`; the round-46 evidence paragraph is in `SHONEN.md` (`## Round 46 evidence`).
+
+## Attempt 2 (2026-10-29, L1 `KasegiR46`; re-dispatched round after the attempt-1 honest-stop)
+
+Base `04af9bc92229232ea5cce8b32bfe59dd969eb26d` (the attempt-1 tip plus the closure-era stale-ready
+removal); claims frozen at `fe0f56b78b811dbb89bc7f2e17580d11b1b6ebd4`
+(`.ufo/waves/round-46/attempt2/claims.json` sha256 `ca73279f5464cf6395028c7e848b5d82bfec95794f03b7fd9b1a61cf000ca1d0`,
+`freeze.txt`). C1 (`depth:verifiability`): the two attempt-1 counters reach full mutation coverage —
+the frozen battery (`r46-mutbat.py` v1) at the base prints `uncaught=7` (c1) and `uncaught=13` (c2)
+(`controls/mutbat-before.txt`), and the after-state is `uncaught=0` with every equivalent verdict
+backed by a committed proof. C2 (`coverage`): frontier F29 = GitHub repository security advisories,
+the maintainer-side advisory lifecycle (row S074, capture `corpus/source-snapshots/round-46-a2/S074.txt`,
+sha256 `1296528d5be0882703a1ac4ec32dda420910df4e77a1a9588284f1468c278039`), 28 -> 29 admitted rows,
+65 -> 66 entries, admission gate `r46-f29-gate.py` (R50 pre-freeze mutant receipt:
+`controls/f29-r50-receipt.txt`, 21 mutants, 11 defect-tree flips, 9 disclosed). Neither claim is
+exploratory. The attempt-1 counters `r46-c1-gate.py` / `r46-c2-gate.py` are not edited by the claims;
+their amendments (v1.3 ledger exemption + junk-row conjunct) are errata E3 of this attempt
+(`.ufo/waves/round-46/attempt2/counter-errata.md`), and the attempt-1 receipts stay reproducible at
+their era export (`eb874bc` reads `fixed=7/7` under the v1.3 bytes).
+
+## Mistakes (attempt 2)
+
+| ID | Class | Error | Evidence pointer | Captured by | Fix | Evidence the fix can fail |
+|---|---|---|---|---|---|---|
+| M46-4 | unmeasured-coverage | The attempt-1 round shipped counters whose mutation coverage was asserted by controls and selftest tallies but never measured against a mutant battery; the attempt-2 battery measured 7 (c1) + 13 (c2) uncaught clause-level mutants on the day-old instruments, including an uncaught L6-control drop and an uncaught L2-equality relaxation. | `.ufo/waves/round-46/attempt2/controls/mutbat-before.txt` (c1 `uncaught=7`, c2 `uncaught=13`, BATEXIT=1); mutants table `corpus/instruments/r46-mutbat.py` | QUALITY R50 (the author must run a single-edit mutant battery before the freeze; the attempt-1 round wrote R50 AFTER its freeze — the rule was mined but not yet mechanical) | `r46-mutbat.py` (committed, frozen before the wave) makes the battery the claim's counter: the after-state is `uncaught=0` with caught-or-committed-proof semantics; the extended selftests (83 + 147 cases) carry the dedicated cases | red-before: `controls/mutbat-before.txt`; a re-run of the v1 battery at the base still prints uncaught=7/13 (the battery's own do-nothing replay in `run-controls.sh`) |
+| M46-5 | wrong-attack-class | The attempt-2 pre-freeze falsification of the new f29 gate ran only counter-mutants (R50) and no tree-level false-green probes; the wave-1 reviewers found seven tree-level false-greens the mutant pass could not see (indented duplicate frontier rows, entry-cell substring aliasing, recheck comment carrying shell text, redirector-wrapped URL, wrong-file locator, mid-line-comment core text, duplicated Registry section relayed green by the census). | `wave1/R46bRevF29H1.md` (F1, F3), `wave1/R46bRevF29H2H3.md` (F1, F3, F5), `wave1/R46bRevF29H4H5.md` (F2), `wave1/R46bRevF29H6H7.md` (F5, F6); the R50 receipt lists none of them | QUALITY R48 (limbs bind content and are graded by mutants that keep the marker and remove the content — i.e. TREE mutations) — R50 covers the counter side only; the tree side had no pre-freeze duty | gate v1.1 closes all seven (`counter-errata.md` E4: loose-indent parse + anywhere-count, exact entry cell, cadence-only comment tail, all-URLs-canonical, path-bound locator, mid-line comment strip, single-Registry-heading check) and QUALITY R53 (below) makes tree-level false-green probes a pre-freeze duty | the reviewer receipts quote each defect tree reading `fixed=7/7` on v1 and red on v1.1 (re-run at integration on the fixture builders) |
+| M46-6 | stale-instrument-state | The attempt-1 C2 counter byte-pins its era state (28 frontier rows, 65 entries), so any later round's honest landing moves it red at the new tip; the attempt-1 report's open item (the considerthese ledger row) was blocked by that same pin for a full round. | attempt-1 `counter-errata.md` G6; this attempt's v1.3 reading at the tip (`5/7`: G1 28->29, G6 65->66 moved by THIS round's landing, recorded in `controls/final-measure.sh` output) | QUALITY R49's inverse: an instrument that pins era bytes needs its exemption story stated at freeze time, not discovered when a later round trips it | erratum E3 (ledger exemption with re-derived content pin; era-export receipts re-verified 7/7) and the report states the attempt-1 counter's tip reading as EXPECTED-MOVED, graded instead by `r46-f29-gate.py` | the era-export run (`final-measure.sh`) prints 7/7 under v1.3 bytes at `eb874bc` while the same bytes print 5/7 at the moved tip — the two lines are the fix's proof |
+
+## Gate — frontier, source, and rejection (attempt 2)
+
+Admitted: F29, GitHub repository security advisories — the maintainer-side advisory lifecycle
+(draft advisory, temporary private fork, CVE request via GitHub as CNA with the 72-hour review
+clock, the not-public and other-CNA boundaries, credit, publication visibility, the fix-version
+duty), source S074 (tier A, kind docs, scope: GitHub's own statement of the maintainer-side flow
+only; the reporter-side flow stays F28; advisory editing, the REST API and the Advisory Database
+edit flow are out). URL
+`https://docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories`
+(served there after one redirect from the `about-repository-security-advisories` URL; the FINAL url
+is the canonical one recorded in the manifest and row), access 2026-10-29T20:19:30Z, HTTP 200,
+capture `corpus/source-snapshots/round-46-a2/S074.txt` (42 lines, 7087 bytes,
+sha256 `1296528d5be0882703a1ac4ec32dda420910df4e77a1a9588284f1468c278039`, manifest
+`corpus/source-snapshots/round-46-a2/manifest.json` sha256 `46e8077ac89edb0335711826ecb7abf3a1b7eefedc7108c3f6d936135481569f`).
+Entry `corpus/knowledge/github-repository-security-advisories.md` (45 located quotes,
+`f29-gate` H5 `spans=45 located=45 failed=0 uncited=0 cores=5/5`).
+
+Gate quotes (<= 25 words each, verified at their manifest anchors):
+Q1 "Repository security advisories allow maintainers of public repositories to privately discuss and fix a security vulnerability in a project." (S074.txt:10);
+Q2 "Privately collaborate to fix the vulnerability in a temporary private fork." (`S074.txt:13`);
+Q3 "You can give credit to individuals who contributed to a security advisory." (S074.txt:17);
+Q4 "GitHub is a CVE Numbering Authority (CNA) and is authorized to assign CVE identification numbers." (S074.txt:24);
+Q5 "GitHub usually reviews the request within 72 hours." (S074.txt:25);
+Q6 "Requesting a CVE identification number doesn't make your security advisory public." (S074.txt:25);
+Q7 "GitHub cannot assign CVEs to your project if it is covered by another CNA." (S074.txt:26);
+Q8 "Anyone can see the current version of the advisory data, as well as any advisory credits that the credited users have accepted." (S074.txt:31);
+Q9 "you should add a fix version to a security advisory prior to publishing the advisory" (S074.txt:38).
+
+Rejected, with reason and flip: (1) the GitHub Advisory Database as the F29 source — the database
+row class was already screened and rejected in round 43 (S068, tier B REJECTED: it republishes
+NVD's record; record-completeness defect), and the database is the publication target of F29, not
+the lifecycle's first-party statement; flip: a first-party GitHub statement of the database's own
+editing flow (a page the S074 capture names but does not hold) would be a new row. (2) The
+repository-advisories REST API page — the S074 capture names it as a pointer only (S074.txt:16);
+a leads entry, not an opened source this round; flip: opened + located quotes in a later round.
+(3) The prior-attempt ZDI lead stays a lead (round-46 attempt-1 flip condition unchanged).
+
+Status/recheck/used-by changes (old -> new): none on pre-existing rows — the SOURCES.md diff against
+base `04af9bc9` is additive (S074 row + one Search-log bullet + two Registry-changes bullets);
+`capture-binding-check.py --root` records=61 bound=61 unbound=0 (S074 binds its entry).
+
+considerthese: the attempt-1 deferral is closed — the `## Round-46 dispositions` section is appended
+to `corpus/knowledge/considerthese-proposals-ledger.md` (draft by ExecLedgerDraft, applied by the L1;
+the v1.3 content-pin exemption is errata E3), closing the attempt-1 routed item.
+
+Spot-check slots for the non-author closure (not filled by the lane): (1) re-open the S074 URL and
+locate Q1-Q9 in the live page; (2) the F29 entry: does it state a decision rule a maintainer can act
+on (the C2 kill rule); (3) run `r46-mutbat.py --root <tip export> --pure <914ca0b corpus export>
+--work <scratch> --counter all` and read the three `uncaught=` values; (4) read the equivalence
+proofs (`corpus/instruments/r46-mutant-equivalents/`) and try to falsify one; (5) re-run the
+absence sweep at the base and tip exports (2 -> 4 files).
+
+Census (attempt 2): before `controls/sources-census-before.txt` (exit 0, three W04 warnings);
+after (round end) the same three warnings and `kasegi ok`, exit 0 (`controls/final-measure.txt`).

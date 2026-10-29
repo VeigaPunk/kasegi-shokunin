@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""r46-counters-selftest-c2.py — selftest for corpus/instruments/r46-c2-gate.py v1.1 (round 46, C2, frontier F28; wave-2 rewrite of the wave-1 v1 selftest).
+"""r46-counters-selftest-c2.py — selftest for corpus/instruments/r46-c2-gate.py v1.3 (round 46, C2, frontier F28; wave-2 rewrite of the wave-1 v1 selftest; v1.3 adds the considerthese ledger to the counter's content-exempt set, and this selftest mirrors it).
 
 Builds, per case, a COMPLETE synthetic C2 tree in scratch from a copy of the pure base export (--pure) that satisfies the v1.1 limbs:
   corpus/README.md            the base's frontier F01..F27 plus a live F28 row (`admitted`, third cell) -> corpus/knowledge/<entry>
@@ -25,6 +25,13 @@ Case classes (controls and mutants are counted; probes are printed, never counte
            target|allowed-collateral may fail. The wave-1 survivors (R46MutC2a/b/c, R46RevC2G2/G3/G5) are named in each case's note
   probe    accepted-by-design questions
 `--do-nothing-control` runs every case against a stub that always prints 7/7: every mutant must then be reported as accepted (FAIL).
+
+Round-46 attempt 2 (mutant discrimination).  corpus/instruments/r46-mutbat.py mutates ONE line of the C2 counter
+and asks whether this selftest notices.  The cases named `mut-g<N><x>-*` below are the trees that answer that
+question: each one is a tree the FROZEN counter REJECTS (its targeted gate is red) while the matching mutant
+ACCEPTS it (that gate turns green), so running this selftest against the mutant reports a failure and the battery
+records the mutant as caught.  Each case names the mutant it discriminates and carries the collateral gates it is
+allowed to trip (`allow=`).  Ten mutants are discriminated this way: G1c, G2a, G2b, G2c, G3a, G4b, G5c, G6a, G6c, G7b.
 `--counter PATH` grades another counter (e.g. the frozen v1): the survivors then print `ACCEPTED-targeted-gate-passes`.
 
 Usage: python3 r46-counters-selftest-c2.py [--lane DIR] [--pure DIR] [--counter PATH] [--do-nothing-control] [--keep] [-v]
@@ -57,6 +64,8 @@ XREF_K = "corpus/knowledge/linux-kernel-security-bugs-reporting-process.md:11-12
 XREF_A = "corpus/knowledge/ai-assisted-finding-validation.md:7-8,15"
 PAD_PREFIX = "Reading note: "
 ALL = {f"G{i}" for i in range(1, 8)}
+LEDGER = "considerthese-proposals-ledger.md"  # the considerthese ledger the round-46 attempt-2 wave appends the dispositions to: exempt from the byte pin too (name pinned, size may grow never shrink)
+EXEMPT_ENTRIES = C1_ENTRIES | {LEDGER}  # the counter's CONTENT_EXEMPT: never use one of these as a byte-pin mutant target (their bytes are not pinned)
 C1_ENTRIES = {"claim-gates.md", "claim-package-contract.md"}  # the two entries C1 re-grounds: exempt from the counter's byte pin, their names stay pinned
 F28_TOPIC = "GitHub private vulnerability reporting, reporter flow: who may report, what the form requires, the credit and the private-fork limit"
 F28_NEXT = "Re-open the GitHub page before relying on the form fields; maintainers can customise the form."
@@ -255,6 +264,181 @@ def drop_row(root, key):
     sub(root, ENTRY_REL, ln[0] + "\n", "")
 
 
+# --- round-46 attempt 2: the battery's mutant-discriminating cases -----------
+# corpus/instruments/r46-mutbat.py mutates ONE line of the C2 counter and asks
+# whether the committed selftest notices.  A case below is a tree the FROZEN
+# counter REJECTS (its targeted gate is red) while the matching mutant ACCEPTS
+# it (that gate turns green): running this selftest against the mutant then
+# reports a failure, which is how the battery records the mutant as caught.
+# Each case names the mutant it discriminates.
+
+MUT_XREF_FILE = "claim-anatomy-sample.md"   # a base knowledge file: not exempt, not the F28 entry
+MUT_LINK_FILE = "citation-bases.md"          # a base knowledge file, used by the G6a symlink case
+# Two doctored capture lines: each carries several of the counter's five frozen
+# cores, so two located spans can carry all five.  The pinned capture keeps the
+# cores at least 30 words apart, which is why the G5c case doctors the capture
+# and trips the capture's own pins (G3, G4) as collateral.
+MUT_PACK_A = ("only report vulnerabilities privately for repositories where this feature is enabled "
+              "summary, details, proof of concept, and impact statement I used AI assistance")
+MUT_PACK_B = ("credited user on the proposed advisory only the repository maintainer can merge "
+              "changes from that private fork into the parent repository")
+
+
+def _replace_first_line(root: str, rel: str, prefix: str, new: str) -> None:
+    """Replace the first line of `rel` that starts with `prefix`."""
+    ls = rd(root, rel).split("\n")
+    i = next(k for k, ln in enumerate(ls) if ln.startswith(prefix))
+    ls[i] = new
+    wr(root, rel, "\n".join(ls))
+
+
+def m_mut_f28_sources_cell(r: str) -> None:
+    """G1c: the F28 frontier row's sources cell names S0730, not S073.  The
+    frozen counter requires the whole-word source id; the mutant's plain
+    substring search accepts the prefix."""
+    sub(r, README, f28_row(), f28_row().replace("| S073 |", "| S0730 |"))
+
+
+def m_mut_verified_at_prefix(r: str) -> None:
+    """G2a: the entry's verified-at line carries a time suffix.  The frozen
+    counter compares the whole line; the mutant only checks the prefix."""
+    sub(r, ENTRY_REL, "verified-at: 2026-10-28", "verified-at: 2026-10-28T00:00:00Z")
+
+
+def m_mut_limits_word_floor(r: str) -> None:
+    """G2b: the Limits section holds 13 words - under the frozen counter's
+    25-word floor, over the mutant's 5-word floor."""
+    _replace_first_line(r, ENTRY_REL, "One platform's page, not a standard.",
+                        "The page body is `S073.txt:556-579`; no CVE handling is stated here.")
+
+
+def m_mut_overlap_xref_swapped(r: str) -> None:
+    """G2c: the entry's second cross-reference names another knowledge file, so
+    the required ai-assisted-finding-validation.md is never referenced.  The
+    frozen counter's need-set check rejects that; the mutant's empty need-set
+    accepts it."""
+    sub(r, ENTRY_REL, XREF_A, "corpus/knowledge/%s:1" % MUT_XREF_FILE)
+
+
+def m_mut_registry_row_cells(r: str) -> None:
+    """G3a: the S073 registry row carries a twelfth cell.  The frozen counter
+    demands exactly eleven cells; the mutant accepts nine or more.  The census
+    reads the same row, so G7 trips as well (allowed collateral)."""
+    sub(r, SOURCES, "| 180d | " + ENTRY_REL + " |", "| 180d | " + ENTRY_REL + " | extra |")
+
+
+def m_mut_manifest_quote_count(r: str) -> None:
+    """G4b: the manifest keeps seven verified quotes.  The frozen counter wants
+    eight OK quotes; the mutant wants one.  The grader re-pins the edited
+    manifest (repin=True) so that only the quote-count limb can fire."""
+    m = json.loads(rd(r, MAN_REL))
+    for rec in m["sources"]:
+        if rec["id"] == "S073":
+            rec["quotes"] = [q for q in rec["quotes"] if q["id"] != "Q2"]
+    wr(r, MAN_REL, json.dumps(m, indent=2, ensure_ascii=False))
+
+
+def m_mut_knowledge_symlink(r: str) -> None:
+    """G6a: a base knowledge file is a symlink to an identical copy outside the
+    knowledge directory.  The frozen counter's symlink guard rejects it; the
+    mutant's guard is dead."""
+    kd = os.path.join(r, "corpus/knowledge")
+    tgt = os.path.join(r, "corpus/knowledge-linktarget")
+    os.makedirs(tgt, exist_ok=True)
+    shutil.copyfile(os.path.join(kd, MUT_LINK_FILE), os.path.join(tgt, MUT_LINK_FILE))
+    os.remove(os.path.join(kd, MUT_LINK_FILE))
+    os.symlink(os.path.join("..", "knowledge-linktarget", MUT_LINK_FILE), os.path.join(kd, MUT_LINK_FILE))
+
+
+def m_mut_sources_symlink(r: str) -> None:
+    """G7b: corpus/SOURCES.md is a symlink to an identical copy in the same
+    directory.  The frozen counter refuses a symlinked registry; the mutant's
+    guard is dead and the census validates the copy."""
+    shutil.copyfile(os.path.join(r, SOURCES), os.path.join(r, "corpus/SOURCES-copy.md"))
+    os.remove(os.path.join(r, SOURCES))
+    os.symlink("SOURCES-copy.md", os.path.join(r, SOURCES))
+
+
+def m_mut_entry_byte_floor(r: str) -> None:
+    """G6c: the entry is trimmed below the counter's 3000-byte floor while
+    every other limb stays green.  The frozen counter's size floor rejects it;
+    the mutant's three-byte floor accepts it."""
+    ls = [ln for ln in rd(r, ENTRY_REL).split("\n") if not ln.startswith(PAD_PREFIX)]
+    wr(r, ENTRY_REL, "\n".join(ls))
+    _replace_first_line(r, ENTRY_REL, "This synthetic entry records what GitHub's own page says",
+                        "This entry records the page's own statements (`S073.txt:556-579`) and their consequences.")
+    _replace_first_line(r, ENTRY_REL, "Kernel intake is an e-mail route to a closed list;",
+                        "Kernel intake is an e-mail route; this page is a web form. The channels differ, so a package must not mix their steps.")
+
+
+def m_mut_five_cores_two_spans(r: str) -> None:
+    """G5c: two located spans carry all five of the counter's frozen cores.
+    The frozen counter wants at least four located spans; the mutant wants one.
+    The capture is doctored so the cores sit close together, which trips the
+    capture's own pins (G3, G4) as collateral."""
+    ls = rd(r, SNAP_REL).split("\n")
+    ls[559] = MUT_PACK_A
+    ls[560] = MUT_PACK_B
+    wr(r, SNAP_REL, "\n".join(ls))
+    wr(r, ENTRY_REL, g5c_entry_text())
+
+
+def g5c_entry_text() -> str:
+    """The G5c entry: a complete, valid C2 entry whose table carries the five
+    frozen cores in two located spans."""
+    rows = [
+        ("Which private reports does the page enable?",
+         "\u201c" + MUT_PACK_A + "\u201d", "`S073.txt:560`", "Check the feature is enabled first."),
+        ("Who is credited, and who may merge a fix?",
+         "\u201c" + MUT_PACK_B + "\u201d", "`S073.txt:561`", "Record the credit and the maintainer role."),
+        ("What does the form require by default?",
+         "the page lists the required fields", "`S073.txt:562`", "Carry the listed fields by default."),
+        ("What if the feature is off?",
+         "the page points at the security policy", "`S073.txt:563`", "Fall back to the security policy."),
+        ("Does the page set a response time?",
+         "the page states no response time", "`S073.txt:564`", "Record that no time is stated."),
+        ("Does the page mention CVE handling?",
+         "the page states no CVE handling", "`S073.txt:565`", "Record that no CVE handling is stated."),
+    ]
+    out = [
+        "# GitHub private vulnerability reporting, reporter flow (synthetic)",
+        "",
+        "source: S073 \u2014 " + URL + " \u2014 Privately reporting a security vulnerability (S073.txt:560-579)",
+        "verified-at: 2026-10-28",
+        "recheck: cd " + LANE + " && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-46/manifest.json --source S073 # 180d",
+        "",
+        PAD_PREFIX + ".",
+        "",
+        SECTIONS[0],
+        "",
+        "This entry records the page's own statements (`S073.txt:560-579`) and the consequence a package should carry for each one.",
+        "",
+        "| observed question | page text | package consequence |",
+        "|---|---|---|",
+    ]
+    for q, t, cite_s, c in rows:
+        out.append("| %s | %s (%s) | %s |" % (q, t, cite_s, c))
+    out += [
+        "",
+        SECTIONS[1],
+        "",
+        "Kernel intake is an e-mail route to a closed list; this page is a web form on a hosting platform. The channels differ, so a package must not mix their steps.",
+        "",
+        "- F27 (`%s`) is the kernel's e-mail intake." % XREF_K,
+        "- F04 (`%s`) keeps AI findings as candidates." % XREF_A,
+        "",
+        SECTIONS[2],
+        "",
+        "One platform's page, not a standard. Documentation only: no contact with anyone and no probing of any system took place. Maintainers can customise the form. The page body is `S073.txt:560-579`; the page states no CVE handling.",
+        "",
+        SECTIONS[3],
+        "",
+        "When a package describes a GitHub private report, check each stated step against the table above in order, starting from the enablement fact at `S073.txt:560`.",
+        "",
+    ]
+    return fit("\n".join(out), 3600)
+
+
 class Case:
     def __init__(self, name, kind, mut=None, targets=(), allow=(), env=None, note="", direct=False, repin=False):
         self.name, self.kind, self.mut, self.direct, self.repin = name, kind, mut or (lambda r: None), direct, repin
@@ -307,9 +491,9 @@ def main() -> int:
         # the two knowledge files a delete/rename mutant may touch: not cross-referenced, not a SOURCES used-by
         sources_txt = open(os.path.join(a.pure, SOURCES), encoding="utf-8").read()
         spare = next(n for n in sorted(os.listdir(os.path.join(a.pure, "corpus/knowledge")))
-                     if n.endswith(".md") and n not in sources_txt and n not in C1_ENTRIES and n not in ("ai-assisted-finding-validation.md", "linux-kernel-security-bugs-reporting-process.md"))
+                     if n.endswith(".md") and n not in sources_txt and n not in EXEMPT_ENTRIES and n not in ("ai-assisted-finding-validation.md", "linux-kernel-security-bugs-reporting-process.md"))
         spare2 = next(n for n in sorted(os.listdir(os.path.join(a.pure, "corpus/knowledge")))
-                      if n.endswith(".md") and n not in sources_txt and n not in C1_ENTRIES and n != spare and n not in ("ai-assisted-finding-validation.md", "linux-kernel-security-bugs-reporting-process.md"))
+                      if n.endswith(".md") and n not in sources_txt and n not in EXEMPT_ENTRIES and n != spare and n not in ("ai-assisted-finding-validation.md", "linux-kernel-security-bugs-reporting-process.md"))
 
         base = os.path.join(work, "base-syn")
         build(a.pure, a.lane, snap, spans, base)
@@ -352,7 +536,7 @@ def main() -> int:
             assert sect_words(ent(r), SECTIONS[i]) == len(re.findall(r"\w+", body)), "set_section word-count harness bug"
 
         def land_c1(r):  # the C1-landed tree: the lane's two re-grounded entries replace the base bytes (exempt from the byte pin)
-            for fn in sorted(C1_ENTRIES):
+            for fn in sorted(EXEMPT_ENTRIES):
                 shutil.copyfile(os.path.join(a.lane, "corpus/knowledge", fn), os.path.join(r, "corpus/knowledge", fn))
 
         for fn in C1_ENTRIES:  # the control is not vacuous: the lane's bytes differ from the base's
@@ -535,6 +719,28 @@ def main() -> int:
         add(Case("mut-c1-landed-exempt-entry-deleted", "mutant", lambda r: (land_c1(r), os.remove(os.path.join(r, "corpus/knowledge/claim-package-contract.md"))), {"G6"}))
         add(Case("mut-c1-landed-plus-third-entry-changed", "mutant", lambda r: (land_c1(r), wr(r, "corpus/knowledge/" + spare, rd(r, "corpus/knowledge/" + spare) + " ")), {"G6"}))
         add(Case("ctl-committed-tip-direct", "control", direct=True, note="the counter run on --lane itself (the committed tip export): must read 7/7"))
+
+        # --- round-46 attempt 2: one case per battery mutant (see the header) ---
+        add(Case("mut-g1c-f28-sources-cell-prefix", "mutant", m_mut_f28_sources_cell, {"G1"},
+                  note="G1c: the F28 row's sources cell reads S0730 - the frozen counter needs the whole-word id S073"))
+        add(Case("mut-g2a-verified-at-prefix", "mutant", m_mut_verified_at_prefix, {"G2"},
+                  note="G2a: the entry's verified-at line is 2026-10-28T00:00:00Z - the frozen counter compares the whole line"))
+        add(Case("mut-g2b-limits-word-floor", "mutant", m_mut_limits_word_floor, {"G2"},
+                  note="G2b: the Limits section holds 13 words - under the frozen counter's 25-word floor, over the mutant's 5-word floor"))
+        add(Case("mut-g2c-overlap-xref-swapped", "mutant", m_mut_overlap_xref_swapped, {"G2"},
+                  note="G2c: the entry's second cross-reference names %s, so the required ai-assisted entry is never referenced" % MUT_XREF_FILE))
+        add(Case("mut-g3a-registry-row-cells", "mutant", m_mut_registry_row_cells, {"G3"}, allow={"G7"},
+                  note="G3a: the S073 registry row carries a twelfth cell - the frozen counter demands exactly eleven"))
+        add(Case("mut-g4b-manifest-quote-count", "mutant", m_mut_manifest_quote_count, {"G4"}, repin=True,
+                  note="G4b: the manifest keeps seven verified quotes - the frozen counter wants eight OK quotes, the mutant wants one"))
+        add(Case("mut-g5c-five-cores-two-spans", "mutant", m_mut_five_cores_two_spans, {"G5"}, allow={"G3", "G4"},
+                  note="G5c: two located spans carry all five frozen cores - the frozen counter wants four located spans, the mutant wants one"))
+        add(Case("mut-g6a-knowledge-file-symlink", "mutant", m_mut_knowledge_symlink, {"G6"},
+                  note="G6a: a base knowledge file is a symlink to an identical copy outside the knowledge directory"))
+        add(Case("mut-g6c-entry-byte-floor", "mutant", m_mut_entry_byte_floor, {"G6"},
+                  note="G6c: the entry is trimmed under the 3000-byte floor with every other limb green"))
+        add(Case("mut-g7b-sources-md-symlink", "mutant", m_mut_sources_symlink, {"G7"},
+                  note="G7b: corpus/SOURCES.md is a symlink to an identical copy - the frozen counter refuses a symlinked registry"))
 
         # ------------------------------------------------------------------ probes (accepted-by-design questions; printed, not counted)
         P: list[Case] = []

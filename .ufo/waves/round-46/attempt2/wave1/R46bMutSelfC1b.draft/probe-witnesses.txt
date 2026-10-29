@@ -1,0 +1,298 @@
+##### N00-control-comment-only
+PROBE N00 control (entry mode)                     no-difference (equivalent at this surface)
+PROBE N00 control (aggregate)                      no-difference (equivalent at this surface)
+PROBE-SUMMARY N00 equivalent-at-this-surface
+
+##### N01-cell-count-floor
+PROBE N01 5-cell row                               DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -6,2 +6,2 @@
+   -row G6 ok=0 read=cells=5
+   -reground entry=probe.md rows=6 ok=5 files=2 distinct=1 exit=1
+   +row G6 ok=1 read=token-located
+   +reground entry=probe.md rows=6 ok=6 files=2 distinct=1 exit=0
+PROBE-SUMMARY N01 DIFFERENT
+
+##### N02-alnum-floor
+PROBE N02 9-char token, 5 alnum                    DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1 +1 @@
+   -row G1 ok=0 read=token-or-range-bad
+   +row G1 ok=1 read=token-located
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=5 files=2 distinct=1 exit=1
+   +reground entry=probe.md rows=6 ok=6 files=3 distinct=1 exit=0
+PROBE-SUMMARY N02 DIFFERENT
+
+##### N03-range-window
+PROBE N03 101-line anchor range                    DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1 +1 @@
+   -row G1 ok=0 read=token-or-range-bad
+   +row G1 ok=1 read=token-located
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=5 files=2 distinct=1 exit=1
+   +reground entry=probe.md rows=6 ok=6 files=3 distinct=1 exit=0
+PROBE-SUMMARY N03 DIFFERENT
+
+##### N04-self-anchor-ban
+PROBE N04 row anchored on the entry                no-difference (equivalent at this surface)
+PROBE-SUMMARY N04 equivalent-at-this-surface
+PROBE N04 self-anchor clause (redundant)           pristine=row G1 ok=0 read=anchor-dir-or-self
+PROBE                                              mutant  =row G1 ok=0 read=anchor-dir-or-self
+PROBE N04 self-anchor clause                       no-difference (equivalent at this surface)
+PROBE-SUMMARY N04b equivalent-at-this-surface
+
+##### N05-gate-self-anchor-ban
+PROBE N05 row anchored on the counter              DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1 +1 @@
+   -row G1 ok=0 read=anchor-dir-or-self
+   +row G1 ok=1 read=token-located
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=5 files=2 distinct=1 exit=1
+   +reground entry=probe.md rows=6 ok=6 files=3 distinct=1 exit=0
+PROBE-SUMMARY N05 DIFFERENT
+
+##### N06-realpath-containment
+PROBE N06 anchor outside tree                      DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1 +1 @@
+   -row G1 ok=0 read=anchor-not-a-regular-file-in-tree
+   +row G1 ok=1 read=token-located
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=5 files=2 distinct=1 exit=1
+   +reground entry=probe.md rows=6 ok=6 files=3 distinct=1 exit=0
+PROBE-SUMMARY N06 DIFFERENT
+
+##### N07-range-past-eof
+PROBE N07 anchor range past EOF                    DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1 +1 @@
+   -row G1 ok=0 read=range-past-eof-or-unusual-line-breaks
+   +row G1 ok=1 read=token-located
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=5 files=2 distinct=1 exit=1
+   +reground entry=probe.md rows=6 ok=6 files=3 distinct=1 exit=0
+PROBE-SUMMARY N07 DIFFERENT
+
+##### N08-cr-line-break-check
+PROBE N08 CRLF anchor file                         DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1,3 +1,3 @@
+   -row G1 ok=0 read=range-past-eof-or-unusual-line-breaks
+   -row G2 ok=0 read=range-past-eof-or-unusual-line-breaks
+   -row G3 ok=0 read=range-past-eof-or-unusual-line-breaks
+   +row G1 ok=1 read=token-located
+   +row G2 ok=1 read=token-located
+   +row G3 ok=1 read=token-located
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=3 files=1 distinct=1 exit=1
+   +reground entry=probe.md rows=6 ok=6 files=2 distinct=1 exit=0
+PROBE-SUMMARY N08 DIFFERENT
+
+##### N09-duplicate-row-id
+PROBE N09 duplicate row id                         DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=6 files=2 distinct=1 exit=1
+   +reground entry=probe.md rows=6 ok=6 files=2 distinct=1 exit=0
+PROBE-SUMMARY N09 DIFFERENT
+
+##### N10-two-distinct-anchor-files
+PROBE N10 one anchor file                          no-difference (equivalent at this surface)
+PROBE-SUMMARY N10 equivalent-at-this-surface
+PROBE N10 composed with N11 (digests>=1)           DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=6 files=1 distinct=1 exit=1
+   +reground entry=probe.md rows=6 ok=6 files=1 distinct=1 exit=0
+PROBE-SUMMARY N10b DIFFERENT
+PROBE N10 files>=2 clause (redundant)              pristine=reground entry=probe.md rows=6 ok=6 files=1 distinct=1 exit=1
+PROBE                                              mutant  =reground entry=probe.md rows=6 ok=6 files=1 distinct=1 exit=1
+PROBE N10 files>=2 clause                          no-difference (equivalent at this surface)
+PROBE-SUMMARY N10c equivalent-at-this-surface
+
+##### N11-two-distinct-file-digests
+PROBE N11 two identical anchor files               DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=6 files=2 distinct=1 exit=1
+   +reground entry=probe.md rows=6 ok=6 files=2 distinct=1 exit=0
+PROBE-SUMMARY N11 DIFFERENT
+
+##### N12-token-distinctness
+PROBE N12 duplicate token                          DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=6 files=3 distinct=0 exit=1
+   +reground entry=probe.md rows=6 ok=6 files=3 distinct=1 exit=0
+PROBE-SUMMARY N12 DIFFERENT
+
+##### N13-section-heading-raw-count
+PROBE N13 hidden 2nd heading                       DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1 +1,7 @@
+   -reground entry=probe.md rows=0 ok=0 exit=1 read=section-count=live1/raw2
+   +row G1 ok=1 read=token-located
+   +row G2 ok=1 read=token-located
+   +row G3 ok=1 read=token-located
+   +row G4 ok=1 read=token-located
+   +row G5 ok=1 read=token-located
+   +row G6 ok=1 read=token-located
+   +reground entry=probe.md rows=6 ok=6 files=2 distinct=1 exit=0
+PROBE-SUMMARY N13 DIFFERENT
+
+##### N14-stray-table-rows
+PROBE N14 stray table row                          DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1 +1,7 @@
+   -reground entry=probe.md rows=0 ok=0 exit=1 read=stray-table-rows=1 (indented, lowercase-id or non-G rows are not read, so they fail the entry)
+   +row G1 ok=1 read=token-located
+   +row G2 ok=1 read=token-located
+   +row G3 ok=1 read=token-located
+   +row G4 ok=1 read=token-located
+   +row G5 ok=1 read=token-located
+   +row G6 ok=1 read=token-located
+   +reground entry=probe.md rows=6 ok=6 files=2 distinct=1 exit=0
+PROBE-SUMMARY N14 DIFFERENT
+
+##### N15-cd-strip-allows-semicolon
+PROBE N15 cd-target-with-semicolon                 DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1 +1 @@
+   -gate L1 pass=0 read=gated=0 broken=1 lines=1/base=1
+   +gate L1 pass=1 read=gated=0 broken=0 lines=1/base=1
+   @@ -8 +8 @@
+   -c1-gate fixed=1/7 exit=1
+   +c1-gate fixed=2/7 exit=1
+PROBE-SUMMARY N15 DIFFERENT
+
+##### N16-allowed-test-segment-widened
+PROBE N16 hostile semicolon segment                pristine-marker=False mutant-marker=True
+   --- pristine
+   +++ mutant
+   @@ -1 +1 @@
+   -gate L1 pass=0 read=gated=0 broken=1 lines=1/base=1
+   +gate L1 pass=1 read=gated=0 broken=0 lines=1/base=1
+   @@ -8 +8 @@
+   -c1-gate fixed=1/7 exit=1
+   +c1-gate fixed=2/7 exit=1
+PROBE-SUMMARY N16 DIFFERENT
+
+##### N17-comment-not-stripped
+PROBE N17 trailing comment on recheck line         DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1,2 +1,2 @@
+   -gate L1 pass=1 read=gated=1 broken=0 lines=1/base=1
+   -gate L2 pass=0 read=base-gated=1 regrounded=0 
+   +gate L1 pass=0 read=gated=0 broken=1 lines=1/base=1
+   +gate L2 pass=0 read=base-gated=0 regrounded=0 
+   @@ -7,2 +7,2 @@
+   -gate L7 pass=1 read=still-gated=1 changed=none
+   -c1-gate fixed=2/7 exit=1
+   +gate L7 pass=1 read=still-gated=0 changed=none
+   +c1-gate fixed=1/7 exit=1
+PROBE-SUMMARY N17 DIFFERENT
+
+##### N18-hidden-recheck-count
+PROBE N18 hidden recheck line                      DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -3 +3 @@
+   -gate L3 pass=0 read=bad=probe.md
+   +gate L3 pass=1 read=recheck-lines-exact=1
+   @@ -8 +8 @@
+   -c1-gate fixed=4/7 exit=1
+   +c1-gate fixed=5/7 exit=1
+PROBE-SUMMARY N18 DIFFERENT
+
+##### N19-first-recheck-line-wins
+PROBE N19 first-vs-last recheck line               DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1,2 +1,2 @@
+   -gate L1 pass=0 read=gated=0 broken=1 lines=1/base=1
+   -gate L2 pass=0 read=base-gated=0 regrounded=0 
+   +gate L1 pass=1 read=gated=1 broken=0 lines=1/base=1
+   +gate L2 pass=0 read=base-gated=1 regrounded=0 
+   @@ -7,2 +7,2 @@
+   -gate L7 pass=1 read=still-gated=0 changed=none
+   -c1-gate fixed=1/7 exit=1
+   +gate L7 pass=1 read=still-gated=1 changed=none
+   +c1-gate fixed=2/7 exit=1
+PROBE-SUMMARY N19 DIFFERENT
+
+##### N20-grader-env-drops-home
+PROBE N20 grader HOME not passed down              DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1,2 +1,2 @@
+   -gate L1 pass=1 read=gated=0 broken=0 lines=1/base=1
+   -gate L2 pass=0 read=base-gated=0 regrounded=0 
+   +gate L1 pass=1 read=gated=1 broken=0 lines=1/base=1
+   +gate L2 pass=0 read=base-gated=1 regrounded=0 
+   @@ -7 +7 @@
+   -gate L7 pass=1 read=still-gated=0 changed=none
+   +gate L7 pass=1 read=still-gated=1 changed=none
+PROBE-SUMMARY N20 DIFFERENT
+
+##### N21-read-newline-translated
+PROBE N21 CRLF anchor read                         DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1,3 +1,3 @@
+   -row G1 ok=0 read=range-past-eof-or-unusual-line-breaks
+   -row G2 ok=0 read=range-past-eof-or-unusual-line-breaks
+   -row G3 ok=0 read=range-past-eof-or-unusual-line-breaks
+   +row G1 ok=1 read=token-located
+   +row G2 ok=1 read=token-located
+   +row G3 ok=1 read=token-located
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=3 files=1 distinct=1 exit=1
+   +reground entry=probe.md rows=6 ok=6 files=2 distinct=1 exit=0
+PROBE-SUMMARY N21 DIFFERENT
+
+##### N22-norm-drops-curly-single-quotes
+PROBE N22 U+2018 vs ASCII quote                    DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1 +1 @@
+   -row G1 ok=1 read=token-located
+   +row G1 ok=0 read=token-not-in-lines
+   @@ -7 +7 @@
+   -reground entry=probe.md rows=6 ok=6 files=3 distinct=1 exit=0
+   +reground entry=probe.md rows=6 ok=5 files=2 distinct=1 exit=1
+PROBE-SUMMARY N22 DIFFERENT
+
+##### N23-allowed-segment-split
+PROBE N23 two-segment recheck line                 DIFFERENT
+   --- pristine
+   +++ mutant
+   @@ -1,2 +1,2 @@
+   -gate L1 pass=1 read=gated=1 broken=0 lines=1/base=1
+   -gate L2 pass=0 read=base-gated=1 regrounded=0 
+   +gate L1 pass=0 read=gated=0 broken=1 lines=1/base=1
+   +gate L2 pass=0 read=base-gated=0 regrounded=0 
+   @@ -7,2 +7,2 @@
+   -gate L7 pass=1 read=still-gated=1 changed=none
+   -c1-gate fixed=2/7 exit=1
+   +gate L7 pass=1 read=still-gated=0 changed=none
+   +c1-gate fixed=1/7 exit=1
+PROBE-SUMMARY N23 DIFFERENT
+

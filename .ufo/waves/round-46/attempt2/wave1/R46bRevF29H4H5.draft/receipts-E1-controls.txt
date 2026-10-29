@@ -1,0 +1,53 @@
+### E1a gate on BASE export 04af9bc9
+gate H1 pass=0 read=rows=28 admitted=28 dup=0
+gate H2 pass=0 read=entry-absent advisor-named=
+gate H3 pass=0 read=row-S074=absent-or-malformed-or-not-registry-only hits=0
+gate H4 pass=0 read=manifest-absent
+gate H5 pass=0 read=entry-absent advisor-named=
+gate H6 pass=0 read=entry-absent advisor-named=
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=1/7 exit=1
+
+### E1b gate on FREEZE export fe0f56b
+gate H1 pass=0 read=rows=28 admitted=28 dup=0
+gate H2 pass=0 read=entry-absent advisor-named=
+gate H3 pass=0 read=row-S074=absent-or-malformed-or-not-registry-only hits=0
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=0 read=entry-absent advisor-named=
+gate H6 pass=0 read=entry-absent advisor-named=
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=2/7 exit=1
+rc=1
+
+### E1c gate on POSITIVE fixture tree
+gate H1 pass=1 read=rows=29 admitted=29 F29=admitted
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H3 pass=1 read=row-S074=ok
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=1 read=spans=7 located=7 failed=0 uncited=0 cores=5/5
+gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=7/7 exit=0
+rc=0
+
+### E1d gate on JUNK fixture tree
+gate H1 pass=1 read=rows=29 admitted=29 F29=admitted
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H3 pass=1 read=row-S074=ok
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=0 read=spans=7 located=2 failed=5 uncited=0 cores=0/5
+gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=6/7 exit=1
+rc=1
+
+### E1e gate on FABRICATED fixture tree
+gate H1 pass=1 read=rows=29 admitted=29 F29=admitted
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=6 xrefs=2/2 anchored=1
+gate H3 pass=1 read=row-S074=ok
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=0 read=spans=7 located=5 failed=2 uncited=0 cores=4/5
+gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=6/7 exit=1
+rc=1

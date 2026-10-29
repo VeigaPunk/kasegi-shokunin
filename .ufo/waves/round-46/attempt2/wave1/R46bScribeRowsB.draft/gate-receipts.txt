@@ -1,0 +1,45 @@
+# F29 gate + source-recheck receipts — R46bScribeRowsB (round 46 attempt 2)
+date: 2026-10-29T21:29:58Z
+
+## source-recheck (committed instrument, committed manifest)
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-46-a2/manifest.json --source S074
+S074:sha256 OK
+S074:Q1 OK occurrences=1 anchor=10-ok
+S074:Q2 OK occurrences=1 anchor=13-ok
+S074:Q3 OK occurrences=1 anchor=17-ok
+S074:Q4 OK occurrences=1 anchor=24-ok
+S074:Q5 OK occurrences=1 anchor=25-ok
+S074:Q6 OK occurrences=1 anchor=25-ok
+S074:Q7 OK occurrences=1 anchor=26-ok
+S074:Q8 OK occurrences=1 anchor=31-ok
+S074:Q9 OK occurrences=1 anchor=38-ok
+exit=0
+
+## F29 gate on the draft tree (S074 row + placeholder entry + the a2 capture)
+$ python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/r46-f29-gate.py --root /fast/scratch/hyaku/kasegi-r46/R46bScribeRowsB/gate
+gate H1 pass=0 read=rows=28 admitted=28 dup=0
+gate H2 pass=0 read=source=0 verified-at=0 recheck=0 sections=0/4 full=0/4 table-rows=0 xrefs=0/0 anchored=0
+gate H3 pass=1 read=row-S074=ok
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=0 read=spans=0 located=0 failed=0 uncited=0 cores=0/5
+gate H6 pass=0 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=0 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=3/7 exit=1
+exit=1
+
+## F29 gate mutant 1: the S074 row tier cell A -> B
+gate H3 pass=0 read=bad=tier
+f29-gate fixed=2/7 exit=1
+
+## F29 gate mutant 2: the S074 row recheck cell 90d -> 90 days
+gate H3 pass=0 read=bad=recheck-cell
+gate H7 pass=0 read=census-rc=1 ok-line=0
+f29-gate fixed=1/7 exit=1
+
+## digests
+1296528d5be0882703a1ac4ec32dda420910df4e77a1a9588284f1468c278039  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/S074.txt
+46e8077ac89edb0335711826ecb7abf3a1b7eefedc7108c3f6d936135481569f  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46-a2/manifest.json
+01f0257261d1a69b58c26856997e877cea092eb12b681421a7e9f0df74f79d34  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-46/manifest.json
+fd2e01e88c8c45a949f48d67b3154ae87a95aeba0b6a9c42fbf64641b5b9c003  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/source-recheck.py
+S074.txt: 42 lines, 7087 bytes
+round-46-a2/manifest.json: 2163 bytes on disk

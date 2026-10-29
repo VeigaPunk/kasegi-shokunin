@@ -1,0 +1,427 @@
+CONTROL S1  rc=1 d1=OK  | frozen-receipt scenario
+      CONTRACT-OK CONTROL-S1.txt
+CONTROL S2  rc=1 d1=OK  | with an --equivalent map (one real proof, one dangling proof path)
+      CONTRACT-OK CONTROL-S2.txt
+CONTROL S3  rc=1 d1=OK  | drift: one mutant's anchor no longer occurs (the runner must fail loudly)
+      CONTRACT-OK CONTROL-S3.txt
+CONTROL S4  rc=1 d1=OK  | the c1 selftest crashes (the runner must report BASELINE-DIRTY)
+      CONTRACT-OK CONTROL-S4.txt
+CONTROL S5  rc=1 d1=OK  | the mutant copy fails (the runner must fail loudly, not skip silently)
+      CONTRACT-OK CONTROL-S5.txt
+CONTROL S6  rc=1 d1=OK  | one mutant's selftest crashes (the runner must still print its line)
+      CONTRACT-OK CONTROL-S6.txt
+        OBSERVATION O1 counter c1: mutant M06-L3-home-dropped carries mutant_failures=-1 (the selftest produced no verdict)
+B01  S1  caught-when-failures-zero        lines=[166] rc=0  KILLED-D1
+      CONTRACT-FAIL B01-S1.txt
+        VIOLATION R4 counter c1: mutant M06-L3-home-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M07-L3-home-no-abs verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M13-L6-control-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M14-L6-exit-ignored verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M18-anchor-dirs-wide verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M19-L2-eq-relaxed verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M20-syntax-ignored verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G1c-src-boundary verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2a-verified-prefix verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2b-wordfloor-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2c-need-empty verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G3a-cells-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G4b-quotes-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G5c-pass-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6a-guards-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6b-integrity-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6c-size-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7a-verdict-or verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7b-symlink-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7c-okline-loose verdict=caught but mutant_failures=0
+B01  S2  caught-when-failures-zero        lines=[166] rc=0  KILLED-D1
+      CONTRACT-FAIL B01-S2.txt
+        VIOLATION R4 counter c1: mutant M06-L3-home-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M07-L3-home-no-abs verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M13-L6-control-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M14-L6-exit-ignored verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M18-anchor-dirs-wide verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M19-L2-eq-relaxed verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M20-syntax-ignored verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G1c-src-boundary verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2a-verified-prefix verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2b-wordfloor-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2c-need-empty verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G3a-cells-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G4b-quotes-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G5c-pass-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6a-guards-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6b-integrity-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6c-size-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7a-verdict-or verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7b-symlink-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7c-okline-loose verdict=caught but mutant_failures=0
+B01  S3  caught-when-failures-zero        lines=[166] rc=1  KILLED-D1
+      CONTRACT-FAIL B01-S3.txt
+        VIOLATION R4 counter c1: mutant M06-L3-home-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M07-L3-home-no-abs verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M13-L6-control-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M14-L6-exit-ignored verdict=caught but mutant_failures=0
+B01  S4  caught-when-failures-zero        lines=[166] rc=1  KILLED-D1
+      CONTRACT-FAIL B01-S4.txt
+        VIOLATION R4 counter c2: mutant G1c-src-boundary verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2a-verified-prefix verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2b-wordfloor-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2c-need-empty verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G3a-cells-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G4b-quotes-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G5c-pass-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6a-guards-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6b-integrity-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6c-size-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7a-verdict-or verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7b-symlink-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7c-okline-loose verdict=caught but mutant_failures=0
+B01  S5  caught-when-failures-zero        lines=[166] rc=1  SURVIVED
+B01  S6  caught-when-failures-zero        lines=[166] rc=1  KILLED-D1
+      CONTRACT-FAIL B01-S6.txt
+        VIOLATION R4 counter c1: mutant M01-L1-target-24 verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M02-L1-broken-ignored verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M03-L1-floor-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M04-L2-one-reground verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M05-L3-shape-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M07-L3-home-no-abs verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M08-L4-bytes-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M09-L4-planted-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M10-L4-symlink-ok verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M11-L5-prefix-flip verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M12-L5-restore-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M13-L6-control-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M14-L6-exit-ignored verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M15-L7-always-true verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M16-min-rows-5 verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M17-min-token-1 verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M18-anchor-dirs-wide verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M19-L2-eq-relaxed verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M20-syntax-ignored verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G1c-src-boundary verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2a-verified-prefix verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2b-wordfloor-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2c-need-empty verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G3a-cells-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G4b-quotes-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G5c-pass-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6a-guards-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6b-integrity-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6c-size-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7a-verdict-or verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7b-symlink-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7c-okline-loose verdict=caught but mutant_failures=0
+        OBSERVATION O1 counter c1: mutant M06-L3-home-dropped carries mutant_failures=-1 (the selftest produced no verdict)
+B02  S1  swap-caught-equivalent-in-summary lines=[177] rc=1  KILLED-D1
+      CONTRACT-FAIL B02-S1.txt
+        VIOLATION R3 counter c1: summary caught=0 but 13 per-mutant lines say caught
+        VIOLATION R3 counter c1: summary equivalent=13 but 0 per-mutant lines say equivalent
+        VIOLATION R3 counter c2: summary caught=0 but 8 per-mutant lines say caught
+        VIOLATION R3 counter c2: summary equivalent=8 but 0 per-mutant lines say equivalent
+B02  S2  swap-caught-equivalent-in-summary lines=[177] rc=1  KILLED-D1
+      CONTRACT-FAIL B02-S2.txt
+        VIOLATION R3 counter c1: summary caught=0 but 13 per-mutant lines say caught
+        VIOLATION R3 counter c1: summary equivalent=13 but 0 per-mutant lines say equivalent
+        VIOLATION R3 counter c2: summary caught=1 but 8 per-mutant lines say caught
+        VIOLATION R3 counter c2: summary equivalent=8 but 1 per-mutant lines say equivalent
+B02  S3  swap-caught-equivalent-in-summary lines=[177] rc=1  SURVIVED
+B02  S4  swap-caught-equivalent-in-summary lines=[177] rc=1  KILLED-D1
+      CONTRACT-FAIL B02-S4.txt
+        VIOLATION R3 counter c2: summary caught=0 but 8 per-mutant lines say caught
+        VIOLATION R3 counter c2: summary equivalent=8 but 0 per-mutant lines say equivalent
+B02  S5  swap-caught-equivalent-in-summary lines=[177] rc=1  SURVIVED
+B02  S6  swap-caught-equivalent-in-summary lines=[177] rc=1  KILLED-D1
+      CONTRACT-FAIL B02-S6.txt
+        VIOLATION R3 counter c2: summary caught=0 but 8 per-mutant lines say caught
+        VIOLATION R3 counter c2: summary equivalent=8 but 0 per-mutant lines say equivalent
+        OBSERVATION O1 counter c1: mutant M06-L3-home-dropped carries mutant_failures=-1 (the selftest produced no verdict)
+B03  S1  swap-verdict-label-equivalent    lines=[171] rc=1  SURVIVED
+B03  S2  swap-verdict-label-equivalent    lines=[171] rc=1  KILLED-D1
+      CONTRACT-FAIL B03-S2.txt
+        VIOLATION R4 counter c2: mutant G1c-src-boundary verdict=caught but mutant_failures=0
+        VIOLATION R3 counter c2: summary caught=8 but 9 per-mutant lines say caught
+        VIOLATION R3 counter c2: summary equivalent=1 but 0 per-mutant lines say equivalent
+B03  S3  swap-verdict-label-equivalent    lines=[171] rc=1  SURVIVED
+B03  S4  swap-verdict-label-equivalent    lines=[171] rc=1  SURVIVED
+B03  S5  swap-verdict-label-equivalent    lines=[171] rc=1  SURVIVED
+B03  S6  swap-verdict-label-equivalent    lines=[171] rc=1  SURVIVED
+B04  S1  equivalent-without-proof-file    lines=[169] rc=1  SURVIVED
+B04  S2  equivalent-without-proof-file    lines=[169] rc=1  KILLED-D2
+B04  S3  equivalent-without-proof-file    lines=[169] rc=1  SURVIVED
+B04  S4  equivalent-without-proof-file    lines=[169] rc=1  SURVIVED
+B04  S5  equivalent-without-proof-file    lines=[169] rc=1  SURVIVED
+B04  S6  equivalent-without-proof-file    lines=[169] rc=1  SURVIVED
+B05  S1  exit-0-despite-uncaught          lines=[180] rc=0  KILLED-D1
+      CONTRACT-FAIL B05-S1.txt
+        VIOLATION R8 exit status 0 but a summary reports uncaught>0
+B05  S2  exit-0-despite-uncaught          lines=[180] rc=0  KILLED-D1
+      CONTRACT-FAIL B05-S2.txt
+        VIOLATION R8 exit status 0 but a summary reports uncaught>0
+B05  S3  exit-0-despite-uncaught          lines=[180] rc=1  SURVIVED
+B05  S4  exit-0-despite-uncaught          lines=[180] rc=0  KILLED-D1
+      CONTRACT-FAIL B05-S4.txt
+        VIOLATION R8 exit status 0 but counter(s) c1 were BASELINE-DIRTY
+        VIOLATION R8 exit status 0 but a summary reports uncaught>0
+B05  S5  exit-0-despite-uncaught          lines=[180] rc=1  SURVIVED
+B05  S6  exit-0-despite-uncaught          lines=[180] rc=0  KILLED-D1
+      CONTRACT-FAIL B05-S6.txt
+        VIOLATION R8 exit status 0 but a summary reports uncaught>0
+        OBSERVATION O1 counter c1: mutant M06-L3-home-dropped carries mutant_failures=-1 (the selftest produced no verdict)
+B06  S1  skip-a-mutant-silently           lines=[159] rc=1  KILLED-D1
+      CONTRACT-FAIL B06-S1.txt
+        VIOLATION R2 counter c1: summary mutants=20 but 19 per-mutant lines were printed
+        VIOLATION R3 counter c1: caught+equivalent+uncaught=19 != mutants=20
+        VIOLATION R10 counter c1: per-mutant ids differ from the mutant table (19 printed vs 20 in table, order different-set)
+        VIOLATION R2 counter c2: summary mutants=21 but 20 per-mutant lines were printed
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=20 != mutants=21
+        VIOLATION R10 counter c2: per-mutant ids differ from the mutant table (20 printed vs 21 in table, order different-set)
+B06  S2  skip-a-mutant-silently           lines=[159] rc=1  KILLED-D1
+      CONTRACT-FAIL B06-S2.txt
+        VIOLATION R2 counter c1: summary mutants=20 but 19 per-mutant lines were printed
+        VIOLATION R3 counter c1: caught+equivalent+uncaught=19 != mutants=20
+        VIOLATION R10 counter c1: per-mutant ids differ from the mutant table (19 printed vs 20 in table, order different-set)
+        VIOLATION R2 counter c2: summary mutants=21 but 20 per-mutant lines were printed
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=20 != mutants=21
+        VIOLATION R10 counter c2: per-mutant ids differ from the mutant table (20 printed vs 21 in table, order different-set)
+B06  S3  skip-a-mutant-silently           lines=[159] rc=1  SURVIVED
+B06  S4  skip-a-mutant-silently           lines=[159] rc=1  KILLED-D1
+      CONTRACT-FAIL B06-S4.txt
+        VIOLATION R2 counter c2: summary mutants=21 but 20 per-mutant lines were printed
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=20 != mutants=21
+        VIOLATION R10 counter c2: per-mutant ids differ from the mutant table (20 printed vs 21 in table, order different-set)
+B06  S5  skip-a-mutant-silently           lines=[159] rc=1  SURVIVED
+B06  S6  skip-a-mutant-silently           lines=[159] rc=1  KILLED-D1
+      CONTRACT-FAIL B06-S6.txt
+        VIOLATION R2 counter c1: summary mutants=20 but 19 per-mutant lines were printed
+        VIOLATION R3 counter c1: caught+equivalent+uncaught=19 != mutants=20
+        VIOLATION R10 counter c1: per-mutant ids differ from the mutant table (19 printed vs 20 in table, order different-set)
+        VIOLATION R2 counter c2: summary mutants=21 but 20 per-mutant lines were printed
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=20 != mutants=21
+        VIOLATION R10 counter c2: per-mutant ids differ from the mutant table (20 printed vs 21 in table, order different-set)
+        OBSERVATION O1 counter c1: mutant M06-L3-home-dropped carries mutant_failures=-1 (the selftest produced no verdict)
+B07  S1  apply-failure-swallowed          lines=[116] rc=1  SURVIVED
+B07  S2  apply-failure-swallowed          lines=[116] rc=1  SURVIVED
+B07  S3  apply-failure-swallowed          lines=[116] rc=1  KILLED-D2
+B07  S4  apply-failure-swallowed          lines=[116] rc=1  SURVIVED
+B07  S5  apply-failure-swallowed          lines=[116] rc=1  SURVIVED
+B07  S6  apply-failure-swallowed          lines=[116] rc=1  SURVIVED
+B08  S1  baseline-dirty-ignored           lines=[153] rc=1  SURVIVED
+B08  S2  baseline-dirty-ignored           lines=[153] rc=1  SURVIVED
+B08  S3  baseline-dirty-ignored           lines=[153] rc=1  SURVIVED
+B08  S4  baseline-dirty-ignored           lines=[153] rc=1  KILLED-D2
+B08  S5  baseline-dirty-ignored           lines=[153] rc=1  SURVIVED
+B08  S6  baseline-dirty-ignored           lines=[153] rc=1  SURVIVED
+B09  S1  uncaught-not-counted             lines=[173] rc=0  KILLED-D1
+      CONTRACT-FAIL B09-S1.txt
+        VIOLATION R3 counter c1: summary uncaught=0 but 7 per-mutant lines say uncaught
+        VIOLATION R3 counter c1: caught+equivalent+uncaught=13 != mutants=20
+        VIOLATION R3 counter c2: summary uncaught=0 but 13 per-mutant lines say uncaught
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=8 != mutants=21
+B09  S2  uncaught-not-counted             lines=[173] rc=0  KILLED-D1
+      CONTRACT-FAIL B09-S2.txt
+        VIOLATION R3 counter c1: summary uncaught=0 but 7 per-mutant lines say uncaught
+        VIOLATION R3 counter c1: caught+equivalent+uncaught=13 != mutants=20
+        VIOLATION R3 counter c2: summary uncaught=0 but 12 per-mutant lines say uncaught
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=9 != mutants=21
+B09  S3  uncaught-not-counted             lines=[173] rc=1  SURVIVED
+B09  S4  uncaught-not-counted             lines=[173] rc=1  KILLED-D1
+      CONTRACT-FAIL B09-S4.txt
+        VIOLATION R3 counter c2: summary uncaught=0 but 13 per-mutant lines say uncaught
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=8 != mutants=21
+B09  S5  uncaught-not-counted             lines=[173] rc=1  SURVIVED
+B09  S6  uncaught-not-counted             lines=[173] rc=0  KILLED-D1
+      CONTRACT-FAIL B09-S6.txt
+        VIOLATION R3 counter c1: summary uncaught=0 but 20 per-mutant lines say uncaught
+        VIOLATION R3 counter c1: caught+equivalent+uncaught=0 != mutants=20
+        VIOLATION R3 counter c2: summary uncaught=0 but 13 per-mutant lines say uncaught
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=8 != mutants=21
+        OBSERVATION O1 counter c1: mutant M06-L3-home-dropped carries mutant_failures=-1 (the selftest produced no verdict)
+B10  S1  verdict-label-uncaught-to-caught lines=[174] rc=1  KILLED-D1
+      CONTRACT-FAIL B10-S1.txt
+        VIOLATION R4 counter c1: mutant M06-L3-home-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M07-L3-home-no-abs verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M13-L6-control-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M14-L6-exit-ignored verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M18-anchor-dirs-wide verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M19-L2-eq-relaxed verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M20-syntax-ignored verdict=caught but mutant_failures=0
+        VIOLATION R3 counter c1: summary caught=13 but 20 per-mutant lines say caught
+        VIOLATION R3 counter c1: summary uncaught=7 but 0 per-mutant lines say uncaught
+        VIOLATION R4 counter c2: mutant G1c-src-boundary verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2a-verified-prefix verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2b-wordfloor-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2c-need-empty verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G3a-cells-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G4b-quotes-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G5c-pass-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6a-guards-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6b-integrity-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6c-size-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7a-verdict-or verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7b-symlink-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7c-okline-loose verdict=caught but mutant_failures=0
+        VIOLATION R3 counter c2: summary caught=8 but 21 per-mutant lines say caught
+        VIOLATION R3 counter c2: summary uncaught=13 but 0 per-mutant lines say uncaught
+B10  S2  verdict-label-uncaught-to-caught lines=[174] rc=1  KILLED-D1
+      CONTRACT-FAIL B10-S2.txt
+        VIOLATION R4 counter c1: mutant M06-L3-home-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M07-L3-home-no-abs verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M13-L6-control-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M14-L6-exit-ignored verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M18-anchor-dirs-wide verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M19-L2-eq-relaxed verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M20-syntax-ignored verdict=caught but mutant_failures=0
+        VIOLATION R3 counter c1: summary caught=13 but 20 per-mutant lines say caught
+        VIOLATION R3 counter c1: summary uncaught=7 but 0 per-mutant lines say uncaught
+        VIOLATION R4 counter c2: mutant G2a-verified-prefix verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2b-wordfloor-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2c-need-empty verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G3a-cells-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G4b-quotes-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G5c-pass-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6a-guards-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6b-integrity-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6c-size-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7a-verdict-or verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7b-symlink-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7c-okline-loose verdict=caught but mutant_failures=0
+        VIOLATION R3 counter c2: summary caught=8 but 20 per-mutant lines say caught
+        VIOLATION R3 counter c2: summary uncaught=12 but 0 per-mutant lines say uncaught
+B10  S3  verdict-label-uncaught-to-caught lines=[174] rc=1  KILLED-D1
+      CONTRACT-FAIL B10-S3.txt
+        VIOLATION R4 counter c1: mutant M06-L3-home-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M07-L3-home-no-abs verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M13-L6-control-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M14-L6-exit-ignored verdict=caught but mutant_failures=0
+B10  S4  verdict-label-uncaught-to-caught lines=[174] rc=1  KILLED-D1
+      CONTRACT-FAIL B10-S4.txt
+        VIOLATION R4 counter c2: mutant G1c-src-boundary verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2a-verified-prefix verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2b-wordfloor-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2c-need-empty verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G3a-cells-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G4b-quotes-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G5c-pass-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6a-guards-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6b-integrity-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6c-size-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7a-verdict-or verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7b-symlink-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7c-okline-loose verdict=caught but mutant_failures=0
+        VIOLATION R3 counter c2: summary caught=8 but 21 per-mutant lines say caught
+        VIOLATION R3 counter c2: summary uncaught=13 but 0 per-mutant lines say uncaught
+B10  S5  verdict-label-uncaught-to-caught lines=[174] rc=1  SURVIVED
+B10  S6  verdict-label-uncaught-to-caught lines=[174] rc=1  KILLED-D1
+      CONTRACT-FAIL B10-S6.txt
+        VIOLATION R4 counter c1: mutant M01-L1-target-24 verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M02-L1-broken-ignored verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M03-L1-floor-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M04-L2-one-reground verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M05-L3-shape-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M06-L3-home-dropped verdict=caught but mutant_failures=-1
+        VIOLATION R4 counter c1: mutant M07-L3-home-no-abs verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M08-L4-bytes-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M09-L4-planted-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M10-L4-symlink-ok verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M11-L5-prefix-flip verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M12-L5-restore-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M13-L6-control-dropped verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M14-L6-exit-ignored verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M15-L7-always-true verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M16-min-rows-5 verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M17-min-token-1 verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M18-anchor-dirs-wide verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M19-L2-eq-relaxed verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c1: mutant M20-syntax-ignored verdict=caught but mutant_failures=0
+        VIOLATION R3 counter c1: summary caught=0 but 20 per-mutant lines say caught
+        VIOLATION R3 counter c1: summary uncaught=20 but 0 per-mutant lines say uncaught
+        VIOLATION R4 counter c2: mutant G1c-src-boundary verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2a-verified-prefix verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2b-wordfloor-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G2c-need-empty verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G3a-cells-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G4b-quotes-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G5c-pass-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6a-guards-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6b-integrity-loose verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G6c-size-low verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7a-verdict-or verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7b-symlink-dead verdict=caught but mutant_failures=0
+        VIOLATION R4 counter c2: mutant G7c-okline-loose verdict=caught but mutant_failures=0
+        VIOLATION R3 counter c2: summary caught=8 but 21 per-mutant lines say caught
+        VIOLATION R3 counter c2: summary uncaught=13 but 0 per-mutant lines say uncaught
+        OBSERVATION O1 counter c1: mutant M06-L3-home-dropped carries mutant_failures=-1 (the selftest produced no verdict)
+B11  S1  exit-flag-not-set                lines=[179] rc=0  KILLED-D1
+      CONTRACT-FAIL B11-S1.txt
+        VIOLATION R8 exit status 0 but a summary reports uncaught>0
+B11  S2  exit-flag-not-set                lines=[179] rc=0  KILLED-D1
+      CONTRACT-FAIL B11-S2.txt
+        VIOLATION R8 exit status 0 but a summary reports uncaught>0
+B11  S3  exit-flag-not-set                lines=[179] rc=1  SURVIVED
+B11  S4  exit-flag-not-set                lines=[179] rc=1  SURVIVED
+B11  S5  exit-flag-not-set                lines=[179] rc=1  SURVIVED
+B11  S6  exit-flag-not-set                lines=[179] rc=0  KILLED-D1
+      CONTRACT-FAIL B11-S6.txt
+        VIOLATION R8 exit status 0 but a summary reports uncaught>0
+        OBSERVATION O1 counter c1: mutant M06-L3-home-dropped carries mutant_failures=-1 (the selftest produced no verdict)
+B12  S1  mutant-count-lie                 lines=[177] rc=1  KILLED-D1
+      CONTRACT-FAIL B12-S1.txt
+        VIOLATION R2 counter c1: summary mutants=21 but 20 per-mutant lines were printed
+        VIOLATION R2 counter c1: summary mutants=21 but the mutant table has 20
+        VIOLATION R3 counter c1: caught+equivalent+uncaught=20 != mutants=21
+        VIOLATION R2 counter c2: summary mutants=22 but 21 per-mutant lines were printed
+        VIOLATION R2 counter c2: summary mutants=22 but the mutant table has 21
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=21 != mutants=22
+B12  S2  mutant-count-lie                 lines=[177] rc=1  KILLED-D1
+      CONTRACT-FAIL B12-S2.txt
+        VIOLATION R2 counter c1: summary mutants=21 but 20 per-mutant lines were printed
+        VIOLATION R2 counter c1: summary mutants=21 but the mutant table has 20
+        VIOLATION R3 counter c1: caught+equivalent+uncaught=20 != mutants=21
+        VIOLATION R2 counter c2: summary mutants=22 but 21 per-mutant lines were printed
+        VIOLATION R2 counter c2: summary mutants=22 but the mutant table has 21
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=21 != mutants=22
+B12  S3  mutant-count-lie                 lines=[177] rc=1  SURVIVED
+B12  S4  mutant-count-lie                 lines=[177] rc=1  KILLED-D1
+      CONTRACT-FAIL B12-S4.txt
+        VIOLATION R2 counter c2: summary mutants=22 but 21 per-mutant lines were printed
+        VIOLATION R2 counter c2: summary mutants=22 but the mutant table has 21
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=21 != mutants=22
+B12  S5  mutant-count-lie                 lines=[177] rc=1  SURVIVED
+B12  S6  mutant-count-lie                 lines=[177] rc=1  KILLED-D1
+      CONTRACT-FAIL B12-S6.txt
+        VIOLATION R2 counter c1: summary mutants=21 but 20 per-mutant lines were printed
+        VIOLATION R2 counter c1: summary mutants=21 but the mutant table has 20
+        VIOLATION R3 counter c1: caught+equivalent+uncaught=20 != mutants=21
+        VIOLATION R2 counter c2: summary mutants=22 but 21 per-mutant lines were printed
+        VIOLATION R2 counter c2: summary mutants=22 but the mutant table has 21
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=21 != mutants=22
+        OBSERVATION O1 counter c1: mutant M06-L3-home-dropped carries mutant_failures=-1 (the selftest produced no verdict)
+B13  S1  per-mutant-line-omitted          lines=[175] rc=1  SURVIVED
+B13  S2  per-mutant-line-omitted          lines=[175] rc=1  SURVIVED
+B13  S3  per-mutant-line-omitted          lines=[175] rc=1  SURVIVED
+B13  S4  per-mutant-line-omitted          lines=[175] rc=1  SURVIVED
+B13  S5  per-mutant-line-omitted          lines=[175] rc=1  SURVIVED
+B13  S6  per-mutant-line-omitted          lines=[175] rc=1  KILLED-D1
+      CONTRACT-FAIL B13-S6.txt
+        VIOLATION R2 counter c1: summary mutants=20 but 19 per-mutant lines were printed
+        VIOLATION R3 counter c1: summary uncaught=20 but 19 per-mutant lines say uncaught
+        VIOLATION R10 counter c1: per-mutant ids differ from the mutant table (19 printed vs 20 in table, order different-set)
+M01  S1  copy-failure-skipped-silently    lines=[164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, '+2 lines'] rc=1  SURVIVED
+M01  S2  copy-failure-skipped-silently    lines=[164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, '+2 lines'] rc=1  SURVIVED
+M01  S3  copy-failure-skipped-silently    lines=[164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, '+2 lines'] rc=1  SURVIVED
+M01  S4  copy-failure-skipped-silently    lines=[164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, '+2 lines'] rc=1  SURVIVED
+M01  S5  copy-failure-skipped-silently    lines=[164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, '+2 lines'] rc=0  KILLED-D1
+      CONTRACT-FAIL M01-S5.txt
+        VIOLATION R2 counter c1: summary mutants=20 but 0 per-mutant lines were printed
+        VIOLATION R3 counter c1: caught+equivalent+uncaught=0 != mutants=20
+        VIOLATION R10 counter c1: per-mutant ids differ from the mutant table (0 printed vs 20 in table, order different-set)
+        VIOLATION R2 counter c2: summary mutants=21 but 0 per-mutant lines were printed
+        VIOLATION R3 counter c2: caught+equivalent+uncaught=0 != mutants=21
+        VIOLATION R10 counter c2: per-mutant ids differ from the mutant table (0 printed vs 21 in table, order different-set)
+M01  S6  copy-failure-skipped-silently    lines=[164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, '+2 lines'] rc=1  SURVIVED
+N01  S1  do-nothing-control               lines=[146] rc=1  SURVIVED
+N01  S2  do-nothing-control               lines=[146] rc=1  SURVIVED
+N01  S3  do-nothing-control               lines=[146] rc=1  SURVIVED
+N01  S4  do-nothing-control               lines=[146] rc=1  SURVIVED
+N01  S5  do-nothing-control               lines=[146] rc=1  SURVIVED
+N01  S6  do-nothing-control               lines=[146] rc=1  SURVIVED

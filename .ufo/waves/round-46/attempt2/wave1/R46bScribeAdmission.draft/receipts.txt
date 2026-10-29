@@ -1,0 +1,113 @@
+# R46bScribeAdmission — receipts
+
+Scratch tree = git -C <lane> archive HEAD corpus PROVINCE.md | tar -x -C <scratch> (frozen base 04af9bc9 corpus at HEAD ee03806), plus this seat's blocks (a)/(b)/(c) applied, plus (for the treated runs) a sibling seat's DRAFT entry file and a sibling's DRAFT S074 SOURCES row.
+
+Scratch root: /fast/scratch/hyaku/kasegi-r46/R46bScribeAdmission (removed on exit).
+
+## REQUIRED CHECK — frontier counter on the scratch tree with the F29 row
+
+```
+$ python3 corpus/instruments/r44-frontier-count.py --root <scratch-with-F29-row> --expect 29 --ids
+frontier-ids=F01,F02,F03,F04,F05,F06,F07,F08,F09,F10,F11,F12,F13,F14,F15,F16,F17,F18,F19,F20,F21,F22,F23,F24,F25,F26,F27,F28,F29
+frontier rows=29 admitted=29
+rc=0
+```
+
+## CONTROL — same tree with block (a) removed (do-nothing)
+
+```
+$ python3 corpus/instruments/r44-frontier-count.py --root <scratch-without-F29-row> --expect 29
+frontier rows=28 admitted=28
+frontier expected=29 admitted=28 verdict=SHORT exit=1
+rc=1
+```
+
+## CONTROL — r46-f29-gate.py without the F29 row
+
+```
+$ python3 corpus/instruments/r46-f29-gate.py --root <scratch-without-F29-row>
+gate H1 pass=0 read=rows=28 admitted=28 dup=0
+gate H2 pass=0 read=entry-absent advisor-named=
+gate H3 pass=0 read=row-S074=absent-or-malformed-or-not-registry-only hits=0
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=0 read=entry-absent advisor-named=
+gate H6 pass=0 read=entry-absent advisor-named=
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=2/7 exit=1
+rc=1
+```
+
+## TREATED — r46-f29-gate.py with block (a)+(c) + sibling entry/registry drafts
+
+```
+$ python3 corpus/instruments/r46-f29-gate.py --root <scratch-treated>
+gate H1 pass=1 read=rows=29 admitted=29 F29=admitted
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=10 xrefs=6/6 anchored=1
+gate H3 pass=1 read=row-S074=ok
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=9 frozen-cores-missing=0
+gate H5 pass=1 read=spans=28 located=28 failed=0 uncited=0 cores=5/5
+gate H6 pass=1 read=knowledge=66 entries=66 nested-md=66 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f29-gate fixed=7/7 exit=0
+rc=0
+```
+
+## TREATED — recheck-audit.py (the AFTER values with block (c) applied)
+
+```
+$ python3 corpus/instruments/recheck-audit.py --root <scratch-treated> --cdroot <lane>
+strict pass=66/66 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=44 gated=22 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=66 total=66 pass=66 fail-closed=22 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=66 missing=0 unexpected=0 exit=0
+rc=0
+```
+
+## CONTROL — recheck-audit.py with block (c) reverted (entry present, expected-list stale)
+
+```
+$ python3 corpus/instruments/recheck-audit.py --root <scratch-treated-no-c> --cdroot <lane>
+strict pass=66/66 cdroot_fail=0 instrument_fail=0 own_fail=0
+lines=66 total=66 pass=66 fail-closed=22 parse_fail=0 cwd_fail=0 paths_fail=0 exit=1
+expect=present expected=65 missing=0 unexpected=1 exit=1
+rc=1
+```
+
+## TREATED — frontier-recheck-count.py (the AFTER values)
+
+```
+$ python3 corpus/instruments/frontier-recheck-count.py --root <scratch-treated>
+FRONTIER-CENSUS rows=29 admitted=29 closed=29 problem-rows=0 registry=74
+FRONTIER-PASS F29 ids=S074
+PASS     F29  corpus/knowledge/github-repository-security-advisories.md ids=S074           exit=0   
+entries=32 pass=32 exit=0
+rc=0
+```
+
+## LIVE LANE — frontier-recheck-count.py before the entry lands
+
+```
+$ python3 corpus/instruments/frontier-recheck-count.py --root .
+FRONTIER-CENSUS rows=28 admitted=28 closed=28 problem-rows=0 registry=73
+entries=31 pass=31 exit=0
+rc=0
+```
+
+## LIVE LANE — recheck-audit.py before the entry lands
+
+```
+$ python3 corpus/instruments/recheck-audit.py
+strict pass=65/65 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=43 gated=22 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=65 total=65 pass=65 fail-closed=22 parse_fail=0 cwd_fail=0 paths_fail=0 exit=0
+expect=present expected=65 missing=0 unexpected=0 exit=0
+rc=0
+```
+
+## Plain counters — LIVE vs TREATED
+
+```
+$ (grep -rliE "repository securit. advisor|GHSA" corpus/knowledge corpus/SOURCES.md corpus/README.md | wc -l); grep -cE "^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|" corpus/SOURCES.md; find corpus/knowledge -maxdepth 1 -name "*.md" | wc -l; grep -cE "^\| F[0-9]+ \|" corpus/README.md
+/home/vgpnk/Projects/shokunin/kasegi-shokunin -> absence-sweep files=2  SOURCES rows=73  knowledge md=65  frontier rows=28
+/fast/scratch/hyaku/kasegi-r46/R46bScribeAdmission/tree -> absence-sweep files=4  SOURCES rows=74  knowledge md=66  frontier rows=29
+```

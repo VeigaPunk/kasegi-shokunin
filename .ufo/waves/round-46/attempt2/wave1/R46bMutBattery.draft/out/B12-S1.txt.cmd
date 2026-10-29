@@ -1,0 +1,1 @@
+/usr/bin/python3 -B /fast/scratch/hyaku/kasegi-r46/R46bMutBattery/mutbat-B12.py --root /fast/scratch/hyaku/kasegi-r46/R46bMutBattery/sc-S1 --pure /fast/scratch/hyaku/kasegi-r46/R46bMutBattery/pure --work /fast/scratch/hyaku/kasegi-r46/R46bMutBattery/work/B12-S1/w --counter both --jobs 8

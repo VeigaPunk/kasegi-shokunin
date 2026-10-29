@@ -1,0 +1,41 @@
+c1 M01-L1-target-24 | TARGET_GATED = 22 => TARGET_GATED = 24
+c1 M02-L1-broken-ignored | <= TARGET_GATED and not broken and len(ct) >= len(cb) => <= TARGET_GATED and len(ct) >= len(cb)
+c1 M03-L1-floor-dropped | and len(ct) >= len(cb) => 
+c1 M04-L2-one-reground | len(reg) >= MIN_REGROUNDED => len(reg) >= 1
+c1 M05-L3-shape-loose | (?:[ \t]+#.*)?$ => .*$
+c1 M06-L3-home-dropped | or HOME_RE.search(CD_RE.sub("", ct[e]["line"], count=1)) => 
+c1 M07-L3-home-no-abs | re.compile(r"(?:~/|\$HOME|\$\{HOME\}|/home/)") => re.compile(r"(?:~/|\$HOME|\$\{HOME\})")
+c1 M08-L4-bytes-dropped | and read(bp) == read(tp)): => ):
+c1 M09-L4-planted-dropped | if p.returncode != 0 or planted: => if p.returncode != 0:
+c1 M10-L4-symlink-ok | if os.path.islink(fp) or not os.path.isfile(fp) => if not os.path.isfile(fp)
+c1 M11-L5-prefix-flip | if t[:len(b)] != b or => if t[:len(b)] == b or
+c1 M12-L5-restore-dropped | or rest_ok != [want]: => :
+c1 M13-L6-control-dropped | if c.returncode != 0: => if False:
+c1 M14-L6-exit-ignored | if p.returncode == 0 or red != [r[0]]: => if red != [r[0]]:
+c1 M15-L7-always-true | res.append(("L7", not bad7, => res.append(("L7", True,
+c1 M16-min-rows-5 | MIN_ROWS = 6 => MIN_ROWS = 5
+c1 M17-min-token-1 | MIN_TOKEN = 8 => MIN_TOKEN = 1
+c1 M18-anchor-dirs-wide | ANCHOR_DIRS = ("corpus/instruments/", "corpus/source-snapsho => ANCHOR_DIRS = ("corpus/instruments/", "corpus/source-snapsho
+c1 M19-L2-eq-relaxed | and len(gt) == len(gb) - len(reg) and not (gt - gb) => and len(gt) <= len(gb)
+c1 M20-syntax-ignored | if subprocess.run(["bash", "-n", "-c", line], capture_output => if False:
+c2 G1a-counts-loose | if len(rows) != 28 or adm != 28 or dup: => if len(rows) < 28 or adm < 28:
+c2 G1b-path-dropped | if f27[2] != "admitted" or p is None: => if f27[2] != "admitted":
+c2 G1c-src-boundary | re.search(r"\bS073\b", f27[4]) => re.search(r"S073", f27[4])
+c2 G2a-verified-prefix | ok_v = any(h == "verified-at: 2026-10-28" for h in head) => ok_v = any(h.startswith("verified-at: 2026-10-28") for h in 
+c2 G2b-wordfloor-low | (12 if sct.startswith("## Falsifiable") else 25) => (1 if sct.startswith("## Falsifiable") else 5)
+c2 G2c-need-empty | need = {"linux-kernel-security-bugs-reporting-process.md", " => need = set()
+c2 G3a-cells-loose | if len(c) == 11: => if len(c) >= 9:
+c2 G3b-scope-words-low | if len(re.findall(r"\w+", row[4])) < 8: bad.append("scope-wo => if len(re.findall(r"\w+", row[4])) < 2: bad.append("scope-wo
+c2 G3c-kind-dead | if row[2] != "docs": bad.append("kind") => if row[2] != "Docs": bad.append("kind")
+c2 G4a-manifest-unpinned | if sha(open(man, "rb").read()) != PINS["manifest.json"]: => if False:
+c2 G4b-quotes-low | oks >= 8 and not miss => oks >= 1 and not miss
+c2 G4c-distinct-dropped | and "BROKEN" not in out and distinct => and "BROKEN" not in out
+c2 G5a-span-wide | b - a <= 11 => b - a <= 110
+c2 G5b-words-wide | len(nq.split()) <= 25 => len(nq.split()) <= 250
+c2 G5c-pass-low | len(passed) >= 4 => len(passed) >= 1
+c2 G6a-guards-dead | if links or not grown: => if False:
+c2 G6b-integrity-loose | return (len(names) == 65 and len(everything) == 65 and neste => return (len(names) == 65 and base_ok and sized),
+c2 G6c-size-low | os.path.getsize(os.path.join(root, p)) >= 3000 => os.path.getsize(os.path.join(root, p)) >= 3
+c2 G7a-verdict-or | return rc == 0 and ok_line, f"census-rc={rc} ok-line={int(ok => return rc == 0 or ok_line, f"census-rc={rc} ok-line={int(ok_
+c2 G7b-symlink-dead | return False, "census-input-is-a-symlink" => pass  # mutant G7b
+c2 G7c-okline-loose | re.search(r"^\S+\tok\t", out, re.M) => re.search(r"^\S+\tok", out, re.M)

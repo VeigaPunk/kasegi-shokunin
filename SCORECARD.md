@@ -1809,3 +1809,30 @@ The honest reading of the green counters: they are mechanical graders. C1's rows
 - `depth:verifiability`: state each claim's before-value per start tree and run `capture-binding-check.py --root` and the census BEFORE dispatching a wave (round 46 read `bound=59 unbound=1` at the freeze tree); run the single-edit mutant battery (QUALITY R50) against any new counter before freezing it; a re-ground names who read its rows side by side.
 - `coverage`: obtain a non-author admit/reject spot-check of S073 before any coverage statement beyond +1 row; append the considerthese ledger row with the pin amendment (the ledger is byte-pinned by C2 G6 this round).
 
+
+## Round 46 (attempt 2) result
+
+Frozen at `.ufo/waves/round-46/attempt2/claims.json` (freeze commit `fe0f56b78b811dbb89bc7f2e17580d11b1b6ebd4`,
+base `04af9bc92229232ea5cce8b32bfe59dd969eb26d`; claims sha256 `ca73279f5464cf6395028c7e848b5d82bfec95794f03b7fd9b1a61cf000ca1d0`).
+The attempt-1 instruments `r46-c1-gate.py` / `r46-c2-gate.py` are byte-identical at the freeze to the base
+(the round's C1 work extends their selftests and adds the battery; the only counter amendments are logged
+errata E3/E4 in `.ufo/waves/round-46/attempt2/counter-errata.md`).
+
+| Axis | Before | After | Evidence pointer | Last change |
+|---|---|---|---|---|
+| depth:verifiability | 4 | 4 held — measured (counter mutation coverage closed: the frozen battery's 41 mutants across both attempt-1 counters go from 20 uncaught to 0 uncaught / all caught-or-committed-proof; no promotion limb moved — the promotion limbs live in the Scorecard's own Distance-to-next-score section and are not battery limbs) | before: `.ufo/waves/round-46/attempt2/controls/mutbat-before.txt` (c1 `uncaught=7` of 20, c2 `uncaught=13` of 21, `baseline_failures=0`, BATEXIT=1); after: `controls/final-battery.txt` (c1 `caught+equivalent=20 uncaught=0`, c2 `caught+equivalent=21 uncaught=0`; equivalences: M14 with the 15-tree differential proof, G6b/G7a/G7c with the probe — proofs committed at `corpus/instruments/r46-mutant-equivalents/`); extended selftests `cases=83 failures=0` / `cases=147 failures=0` | r46a2 (held) |
+| coverage | 8 | 8 held — measured (admitted frontier rows 28 -> 29 with F29; a +1 row is an expansion count, not a coverage-ratio move — same reading as round 45) | `corpus/instruments/r46-f29-gate.py --root <tree>`: base export `fixed=1/7 exit=1` (`controls/f29-gate-at-base.txt`), freeze tree `fixed=2/7`, tip `fixed=7/7 exit=0`; secondary `r44-frontier-count.py --expect 29`: base 28 exit 1, tip 29 exit 0; plain: frontier rows 28 -> 29, SOURCES rows 73 -> 74, knowledge entries 65 -> 66, absence sweep 2 -> 4 files; source S074 `mined` (capture sha-pinned, 9 quotes OK); census exit 0; capture binding `records=61 bound=61 unbound=0` | r46a2 (held) |
+| depth:density | 9 | 9 held — non-target guard | `density.py` byte-identical base -> tip; the SKILL.md mean moves only by the appended Gates & probes registry block, not credited as depth | r46a2 (held) |
+
+### Move log (attempt 2)
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 46a2 | depth:verifiability | battery before: c1 7/20 uncaught (M06, M07, M13, M14, M18, M19, M20), c2 13/21 uncaught (G1c, G2a, G2b, G2c, G3a, G4b, G5c, G6a, G6b, G6c, G7a, G7b, G7c); selftests 76/0 and 137/0 | battery after: 0 uncaught across 41 mutants (every residual a committed-proof equivalence); selftests 83/0 and 147/0; the f29 gate's 21 mutants graded by `r46-selftest-f29.py` through the battery's f29 mode | `controls/mutbat-before.txt` -> `controls/final-battery.txt`; errata E1-E4 |
+| 46a2 | coverage | frontier 28 (F01-F28), SOURCES 73, knowledge 65; the maintainer-side advisory lifecycle held nowhere (absence sweep 2 files, both scope-out/context mentions) | frontier 29 (F29 = GitHub repository security advisories, maintainer side, scope-limited), SOURCES 74 (S074 tier A mined), knowledge 66, absence sweep 4 files | `controls/f29-gate-at-base.txt`; `r46-f29-gate.py --root .` = 7/7; the S074 lesson Gate block |
+
+**Capabilities: no row enters this round** (the battery, selftest and gate are counters, not new capabilities).
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3; the lowest non-retired axis stays
+depth:verifiability (4), which C1 worked. The score is held, not moved: the axis number is a
+lane-owned judgment and the promotion limbs did not move; the measured increment is graded under the
+quality trend.

@@ -1,0 +1,21 @@
+counter(frozen base 04af9bc9, byte-equal to working tree): sha256=95f2eb7933841d6cd06a0041af613204cbfe29e96a38a218499a71846cdb03b7
+mutant M06: sha256=e534e1b39297b11fad55158783c6fc55cc75b623113610b691064f81afb8ff38
+mutant M07: sha256=093639c869b82be547b9a485c26afc403fca541901ea5bd8b24e2a1e9588c806
+mutant M14: sha256=e0a62050b5a8a2554cc511b3a4466a6163025f7f926f775c557986f508f8201f
+mutant M19: sha256=8f9610a2b5a56672c14da8656f976ec3b61cb1626c08751a29cc9074f52ca79e
+
+stdout byte-comparison (python == on the full gate stdout):
+  cmp orig-tip   vs M06-tip    -> IDENTICAL
+  cmp orig-tip   vs M07-tip    -> IDENTICAL
+  cmp orig-tip   vs M19-tip    -> IDENTICAL
+  cmp orig-tip   vs M14-tip    -> IDENTICAL
+  cmp orig-pure  vs M06-pure   -> IDENTICAL
+  cmp orig-pure  vs M14-pure   -> IDENTICAL
+  cmp orig-T14   vs M14-T14    -> IDENTICAL
+  cmp orig-T6    vs M14-T6     -> IDENTICAL
+  cmp orig-T19   vs M14-T19    -> IDENTICAL
+  cmp orig-T6    vs M06-T6     -> DIFFERS
+  cmp orig-T7    vs M07-T7     -> DIFFERS
+  cmp orig-T19   vs M19-T19    -> DIFFERS
+
+full stdout of every run is in this directory as <tag>.out
