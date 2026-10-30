@@ -1,0 +1,35 @@
+{
+  "round": 50,
+  "lane": "kasegi",
+  "base": "c5e36360f5226c97d28f1937961b15c90e58827f",
+  "frozen_at": "2026-10-30",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "kind": "capability-acquisition",
+      "score_before": 4,
+      "frozen_sentence": "The lane ships a committed census-freshness gate corpus/instruments/census-freshness-check.py that exits 0 only when the committed corpus/instruments/citation-survival.md and corpus/instruments/citation-survival.tsv are byte-identical to the files corpus/instruments/resolve.py generates over the current tree, whose committed self-test demonstrates exit 1 on a stale-census fixture and on a tampered-census fixture, and which at the round's measured tip prints CENSUS-FRESH=ok with exit 0.",
+      "counter": "python3 corpus/instruments/census-freshness-check.py /home/vgpnk/Projects/shokunin/kasegi-shokunin",
+      "expect_after": "stdout contains CENSUS-FRESH=ok and exit code is 0 at the measured tip; at a base-commit export the same command cannot print CENSUS-FRESH=ok (instrument absent) and the self-test prints both mutant cases failing closed",
+      "kill_rule": "capture-free success, a gate that greenlights a stale or tampered census, a self-test that cannot fail, or a census regenerated after the gate run it certifies",
+      "do_nothing_control": "run the counter at a git-export of the base commit: census-freshness-check.py does not exist there, so the control cannot print CENSUS-FRESH=ok (committed receipt controls/do-nothing-c1.txt)"
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "kind": "frontier-admission",
+      "score_before": 8,
+      "frozen_sentence": "The lane admits frontier row F31 — EPSS exploit-prediction scoring (probability of exploitation in the wild, distinct from CVSS severity semantics F01, CWE ranking methodology F05, platform reward ladders F13 and CISA KEV presence F18) — grounded on tier-A registry row S080 (status mined, opened 2026-10-30, used-by the new entry) pinned to round-50 capture corpus/source-snapshots/round-50/S080.txt whose byte count and sha256 match corpus/source-snapshots/round-50/manifest.json, with located quotes that source-recheck.py --source S080 re-verifies with exit 0; the frozen counter python3 corpus/instruments/frontier-recheck-count.py at the measured tip prints FRONTIER-CENSUS rows=31 admitted=31 closed=31 problem-rows=0 registry=80 and entries=34 pass=34 exit=0.",
+      "counter": "python3 corpus/instruments/frontier-recheck-count.py",
+      "expect_after": "FRONTIER-CENSUS rows=31 admitted=31 closed=31 problem-rows=0 registry=80; entries=34 pass=34 exit=0; sha256sum corpus/source-snapshots/round-50/S080.txt matches the manifest sha256",
+      "kill_rule": "quote-not-found or sha mismatch from source-recheck.py, a capture that is not first-party FIRST EPSS material, an F31 row whose entry overlaps F01/F05/F13/F18 ground without a stated distinction, or any FRONTIER-FAIL record",
+      "do_nothing_control": "run the counter at a git-export of the base commit: FRONTIER-CENSUS rows=30 admitted=30 closed=30 problem-rows=0 registry=79 and entries=33 pass=33, so the frozen expect_after is unreachable without the round's work (committed receipt controls/do-nothing-c2.txt)"
+    }
+  ],
+  "non_targets": [
+    "depth:density (9): guard only, no density credit",
+    "no axis retired or split",
+    "no SCORECARD score asserted by the lane; scores are held and reported"
+  ]
+}
