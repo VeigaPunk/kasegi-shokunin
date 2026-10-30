@@ -83,3 +83,17 @@ Gate-quote completion for S075's non-suppression teaches cell: “In no cases wi
 Assimilation: none. `.ufo/waves/round-47/w1/R47ScoutMerge.md` and `.ufo/waves/round-47/w1/R47ExecMergeGuard.md` record 74 registry ids, 94 staged ids and 44 collisions (S031–S074); the two-space S002 fixture is caught by the 0–3-space guard. No staged theme covers the chosen broker-policy ground. Eight kasegi quarantine data rows were counted; none was adopted or treated as verified. No renumber map exists because nothing was appended from staging.
 
 considerthese: screened the latest `considerthese/2026-10-26.md` against the landed proposal ledger; no additional adoption this round. Proposals 2's domain-task remainder, 4's externalisation and 6's cadence remain open, not fulfilled by provenance/receipt work (`.ufo/waves/round-47/w1/R47ScoutConsiderthese.md`).
+
+## Final measurement and verdict boundary
+
+Measured executable/corpus revision `f0809bcaefe9f2b576d6e4d7a0d2ed43ebae214d`; `.ufo/waves/round-47/controls/final-measure.txt`: C1 mechanical 11/11, exit 0; C2 6/7, exit 1; historical F29 gate 3/7, exit 1. C1 remains not fully verified because of the refused harmful clause and false-green controls; C2 remains unmet. No claimed improvement is rerolled.
+
+End census: 76 rows, exit 0; W04 warnings S028/S029/S072/S076. Capture binding 63/63, exit 0. Audit at the declared lane root: 67/67, executes=45, gated=22, broken=0, exit 0. Export-only CD-root strict checking fails (66 cdroot_fail) because the lines explicitly cd to the real lane; both that failure and the properly rooted supplementary run are retained. The old manifests/captures and frozen claim/counter bytes remain unchanged.
+
+Plain ledger (`python3 .ufo/waves/round-47/final-counts.py --root TREE`): frontier 29→29, registry 74→76, knowledge 66→67; scaffold `to append` lines 2→0; fences 4→0; old citation lines 54→0 (59→0 occurrences); F29 layout 145→145. SKILL density proxy 275.1→273.6 from the added registry block is a numeric regression, not hidden by reformatting. No universal no-harm pass or score increase is claimed.
+
+Trend self-assessment: expansion unchanged (no new frontier); quality improved in corrected policy/provenance semantics with the density-proxy regression and counter defects explicitly disclosed; discernment unchanged pending independent outside sampling of this round's admit/reject decisions. This is an honest-stop round, not an admitted round.
+
+Misroot sweep: `git -C /home/vgpnk/Projects/shokunin status --porcelain` showed only operator-owned `.scratch/goal-20261029-hyaku-run12.md` and unrelated `rerun-daemons.log`; no kasegi round-47 seat misroot was found or removed. Both unrelated surfaces were left untouched.
+
+Completion self-evaluation: accuracy 4 (all unresolved claim limits and proxy regression disclosed); completeness 4 (safe reachable repairs landed; frozen targets fail honestly rather than being narrowed); clarity 4 (mechanical and semantic verdicts separated); actionability 4 (pinned commands/receipts, independent closure still required); conciseness 3 (historical receipt/registry bulk remains). Average 3.8. Improvements: keep future coverage claims outside already-held surfaces; derive all required state transitions against the existing no-harm gates before freeze.

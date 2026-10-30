@@ -347,3 +347,10 @@ All four boxes stay `[~]`; `[x]` is operator-owned and no non-author verifier ha
       Database-edit stay out); the sibling sweep (R46bScoutAdjacent) found no sibling lane holding
       repository-security-advisory ground, and the entry's Overlap section states the F28/F07
       contrasts as coverage contrasts. No non-author verifier.
+
+## Round 47 evidence (asserted only)
+
+- [~] Cited decision material remains: the corrected F29 entry and the S075 ZDI coordinator case; `corpus/lessons/round-47.md`, source manifest and final-measure receipt. Lane reviewers are not non-author promotion verifiers.
+- [~] No new completed bounty submission or end-to-end domain package is claimed. This round executes source/provenance repairs and diagnostic gates; frozen C1/C2 remain unmet in full.
+- [~] Rechecks execute at the declared lane root: 67/67, gated=22, broken=0, exit 0; `.ufo/waves/round-47/controls/final-measure.txt`. Frozen-counter self-invocation limitations and false greens are disclosed in the SKILL registry and counter erratum.
+- [~] `PROVINCE.md` remains unchanged. No F30 admission or cross-domain absorption; ZDI is an F02 case. No named independent promotion verifier has checked these boxes.

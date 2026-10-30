@@ -1836,3 +1836,26 @@ errata E3/E4 in `.ufo/waves/round-46/attempt2/counter-errata.md`).
 depth:verifiability (4), which C1 worked. The score is held, not moved: the axis number is a
 lane-owned judgment and the promotion limbs did not move; the measured increment is graded under the
 quality trend.
+
+## Round 47 result — honest stop (attempt 3)
+
+Frozen claims: `.ufo/waves/round-47/claims.json`, commit `308a2cb2dc7bdce233461cc1ac49dd88e51c6193`; base `fc8e0af27fbfa13220cd245700e9cb7e5e94dfc8`. Measured executable/corpus revision: `f0809bcaefe9f2b576d6e4d7a0d2ed43ebae214d`; receipts `.ufo/waves/round-47/controls/final-measure.txt`, `counts-before.json`, `counts-after.json` under that controls directory.
+
+| Axis | Before | After | Verdict and evidence |
+|---|---:|---:|---|
+| depth:verifiability | 4 | 4 held; delta 0 | C1 mechanical limbs 0/11 → 11/11; **claim not fully verified**: its frozen S074 mined→rejected clause is refused because the demonstrated B3 regression is harmful. Wave-1 false-green controls remain valid counterexamples. `r47-routed-defects.py --root TREE`; no promotion limb completed, gated rechecks remain 22. |
+| coverage | 8 | 8 held; delta 0 | C2 **unmet**: `r47-f30-gate.py --root TREE` reads 1/7 → 6/7, H1 red. Frontier rows remain 29, not the target 30. ZDI is sourced F02 enrichment, not new frontier. |
+| depth:density | 9 | 9 held; no improvement claimed | Frozen `density.py` unchanged; SKILL mean **275.1 → 273.6** (34→35 blocks) due the appended registry block. Numeric regression is disclosed, not reformatted away or called a no-harm pass. The score/promotion bar is not redefined. |
+
+### Round-47 measured move log
+
+- C1: source scaffold lines containing `to append` 2→0; fence markers 4→0; old S074 citation matching lines 54→0 (59→0 occurrences); F29 entry stays 145 lines. S076 re-capture is reproduced twice by the committed instrument. S074 stays mined historical; only used-by changes to the round-46 lesson. This is useful repair, not fulfillment of the frozen harmful transition.
+- C2: frontier 29→29; SOURCES 74→76; knowledge entries 66→67. Both new rows are docs/tier-A/mined, S075 for the F02 case and S076 for the reproducible F29 successor. A source-row increase is not coverage.
+- Counting command for the plain ledger: `python3 .ufo/waves/round-47/final-counts.py --root TREE`, against the base and measured exports. Final census exit 0; binding 63/63; actual lane-root audit 67/67 with gated=22, broken=0, exit 0. Export-only strict CD-root check fails (66 cdroot_fail); the declared-root supplementary audit is separately receipted, not silently substituted.
+- Exact plain-expression misses remain: `supersedes S074` matches 2 lines, not its frozen target 1; broad policy-name-file count is not a new-surface measure. No frozen target or counter byte changes after scoring.
+
+**Capabilities:** none added. **Saturation/retirement:** unchanged; lowest non-retired axis remains depth:verifiability. No axis promotion or universal no-harm assertion is claimed. The round stops honestly; it does not reroll either failed claim.
+
+### Planned evidence gates (not a new round dispatch)
+
+Keep frozen diagnostic evidence separate from semantic admission. Any later proposal must first defeat the actual multiline-comment/fence, invisible-row and status-binding counterexamples; choose uncovered ground before freezing coverage. Preserve historical capture bindings and require a genuinely independent admit/reject spot-check before claiming outside discernment agreement.
