@@ -134,3 +134,114 @@ stale R50 tree /fast/scratch/hyaku/kasegi-r46/L1/f29r50/fab re-graded with the f
 ## 2. r46-mutbat.py (frozen v1) replay at the base export
 # the mutant lines and both summary lines must equal /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-46/attempt2/controls/mutbat-before.txt
 # the two counters run concurrently (each has its own --work dir)
+
+### 2a. --counter c1
+mutant=M01-L1-target-24 baseline_failures=0 mutant_failures=26 verdict=caught
+mutant=M02-L1-broken-ignored baseline_failures=0 mutant_failures=8 verdict=caught
+mutant=M03-L1-floor-dropped baseline_failures=0 mutant_failures=1 verdict=caught
+mutant=M04-L2-one-reground baseline_failures=0 mutant_failures=25 verdict=caught
+mutant=M05-L3-shape-loose baseline_failures=0 mutant_failures=3 verdict=caught
+mutant=M06-L3-home-dropped baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M07-L3-home-no-abs baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M08-L4-bytes-dropped baseline_failures=0 mutant_failures=1 verdict=caught
+mutant=M09-L4-planted-dropped baseline_failures=0 mutant_failures=4 verdict=caught
+mutant=M10-L4-symlink-ok baseline_failures=0 mutant_failures=2 verdict=caught
+mutant=M11-L5-prefix-flip baseline_failures=0 mutant_failures=5 verdict=caught
+mutant=M12-L5-restore-dropped baseline_failures=0 mutant_failures=3 verdict=caught
+mutant=M13-L6-control-dropped baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M14-L6-exit-ignored baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M15-L7-always-true baseline_failures=0 mutant_failures=1 verdict=caught
+mutant=M16-min-rows-5 baseline_failures=0 mutant_failures=2 verdict=caught
+mutant=M17-min-token-1 baseline_failures=0 mutant_failures=2 verdict=caught
+mutant=M18-anchor-dirs-wide baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M19-L2-eq-relaxed baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M20-syntax-ignored baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutbat counter=c1 mutants=20 caught=13 equivalent=0 uncaught=7 baseline_failures=0
+exit=1
+
+### 2b. --counter c2
+mutant=G1a-counts-loose baseline_failures=0 mutant_failures=2 verdict=caught
+mutant=G1b-path-dropped baseline_failures=0 mutant_failures=5 verdict=caught
+mutant=G1c-src-boundary baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G2a-verified-prefix baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G2b-wordfloor-low baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G2c-need-empty baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G3a-cells-loose baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G3b-scope-words-low baseline_failures=0 mutant_failures=1 verdict=caught
+mutant=G3c-kind-dead baseline_failures=0 mutant_failures=94 verdict=caught
+mutant=G4a-manifest-unpinned baseline_failures=0 mutant_failures=1 verdict=caught
+mutant=G4b-quotes-low baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G4c-distinct-dropped baseline_failures=0 mutant_failures=2 verdict=caught
+mutant=G5a-span-wide baseline_failures=0 mutant_failures=1 verdict=caught
+mutant=G5b-words-wide baseline_failures=0 mutant_failures=2 verdict=caught
+mutant=G5c-pass-low baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G6a-guards-dead baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G6b-integrity-loose baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G6c-size-low baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G7a-verdict-or baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G7b-symlink-dead baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=G7c-okline-loose baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutbat counter=c2 mutants=21 caught=8 equivalent=0 uncaught=13 baseline_failures=0
+exit=1
+before-value comparison
+  mine   (c1 run + c2 run): 43 kept lines
+  receipt (controls/mutbat-before.txt): 43 kept lines
+  RESULT: IDENTICAL — every mutant line and both summary lines match the frozen receipt
+comparison exit=0 (0 = the replay reproduces the frozen before-value lines)
+CHECK 2 mutbat replay reproduces the frozen before-value lines: PASS (expected=0 actual=0)
+CHECK 2a mutbat --counter c1 exit status (uncaught>0 => 1): PASS (expected=1 actual=1)
+CHECK 2b mutbat --counter c2 exit status (uncaught>0 => 1): PASS (expected=1 actual=1)
+
+## 3. stub-selftest control (the battery must grade the selftest, not markers)
+# the tree is copied to scratch, its c1 selftest is replaced by a stub whose cases all
+# pass (failures=0 unconditionally), and the battery is rerun: every mutant must read
+# verdict=uncaught and the battery must exit 1.
+# the stubbed tree is a copy of the LIVE lane (git archive HEAD corpus); its counter is
+# byte-identical to the base export's counter, so the stub control grades the same bytes:
+  lane HEAD  r46-c1-gate.py sha256: 95f2eb7933841d6cd06a0041af613204cbfe29e96a38a218499a71846cdb03b7
+  base export r46-c1-gate.py sha256: 95f2eb7933841d6cd06a0041af613204cbfe29e96a38a218499a71846cdb03b7
+  lane HEAD  r46-counters-selftest-c1.py sha256 (the file the stub replaces): 03079421b07639baabfc942ef4a022c9a8798ff8bc81f029d4b73c6a8b54e2fd
+
+$ python3 /fast/scratch/hyaku/kasegi-r46/R46bExecControls.401054/tools/corpus/instruments/r46-mutbat.py --root /fast/scratch/hyaku/kasegi-r46/R46bExecControls.401054/stubtree --pure /fast/scratch/hyaku/kasegi-r46/R46bExecControls.401054/pure --work /fast/scratch/hyaku/kasegi-r46/R46bExecControls.401054/work/mut-stub --counter c1 --jobs 8
+mutant=M01-L1-target-24 baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M02-L1-broken-ignored baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M03-L1-floor-dropped baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M04-L2-one-reground baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M05-L3-shape-loose baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M06-L3-home-dropped baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M07-L3-home-no-abs baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M08-L4-bytes-dropped baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M09-L4-planted-dropped baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M10-L4-symlink-ok baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M11-L5-prefix-flip baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M12-L5-restore-dropped baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M13-L6-control-dropped baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M14-L6-exit-ignored baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M15-L7-always-true baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M16-min-rows-5 baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M17-min-token-1 baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M18-anchor-dirs-wide baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M19-L2-eq-relaxed baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutant=M20-syntax-ignored baseline_failures=0 mutant_failures=0 verdict=uncaught
+mutbat counter=c1 mutants=20 caught=0 equivalent=0 uncaught=20 baseline_failures=0
+exit=1
+summary: caught=0 uncaught=20 uncaught-verdict lines=20 battery exit=1
+CHECK 3 stub selftest: the battery exits 1: PASS (expected=1 actual=1)
+CHECK 3 stub selftest: every mutant line reads verdict=uncaught: PASS (expected=20 actual=20)
+CHECK 3 stub selftest: the summary reads uncaught=20 caught=0: PASS (expected=20 0 actual=20 0)
+
+## 4. sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+exit=0
+W04 warning lines: 3
+CHECK 4 census validate exits 0: PASS (expected=0 actual=0)
+CHECK 4 census validate prints three W04 warnings: PASS (expected=3 actual=3)
+
+## verdict
+checks: 13   failed: 0
+# receipt-end (a run that does not print this line was interrupted)
+
+VERDICT: HOLDS — every declared before-value re-derived from committed bytes (13 checks, 0 failed).
