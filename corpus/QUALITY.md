@@ -399,3 +399,9 @@ All existing criteria remain unchanged. This block is grounded in `corpus/lesson
 | id | criterion | grounded in |
 |---|---|---|
 | R54 | A superseding source row does not automatically reject its predecessor. Before changing a captured row to rejected, run the retained capture-binding check on a scratch before/after pair. If rejection creates `rejected-row-anchor`, preserve the historical mined row and its pinned evidence, change only permitted used-by/status/recheck cells as justified, and log old→new. If a frozen claim demanded the harmful transition, report that claim unmet; do not weaken B3 or rewrite the frozen predicate to manufacture success. | M47-3; the independent D7 probe discriminated `records=3 bound=3` from `bound=2 unbound=1` by changing only S074's status; `.ufo/waves/round-47/w1/R47RevD7.receipts.txt`. |
+
+## Round-48 addition — count the intended rendered record
+
+| id | criterion | grounded in |
+|---|---|---|
+| R55 | A plain expression used as a frozen row target anchors the table-row shape and whole identifier cells, not a phrase also found in prose. Enumerate the matches before freezing. A checklist is its canonical seed plus permitted marks and one evidence line per box; historical assessments belong in reports, not appended replacement checklists. | `corpus/lessons/round-48.md` M48-1/M48-2; round-47 non-author spot-check R1/R2. The actual drift fixture and phrase-versus-row discrimination are retained under `.ufo/waves/round-48/controls/`. |
