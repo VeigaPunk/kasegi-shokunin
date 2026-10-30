@@ -405,3 +405,12 @@ All existing criteria remain unchanged. This block is grounded in `corpus/lesson
 | id | criterion | grounded in |
 |---|---|---|
 | R55 | A plain expression used as a frozen row target anchors the table-row shape and whole identifier cells, not a phrase also found in prose. Enumerate the matches before freezing. A checklist is its canonical seed plus permitted marks and one evidence line per box; historical assessments belong in reports, not appended replacement checklists. | `corpus/lessons/round-48.md` M48-1/M48-2; round-47 non-author spot-check R1/R2. The actual drift fixture and phrase-versus-row discrimination are retained under `.ufo/waves/round-48/controls/`. |
+
+## Round-48 attempt-2 addition — catch what the attempt-1 gates missed
+
+| id | criterion | grounded in |
+|---|---|---|
+| R56 | A Gate's stated word count for a located quote comes from `wc -w` on the quoted text, run again at each round that cites it. A hand-typed count is a claim to re-measure, not evidence. | `corpus/lessons/round-48.md` M48-3 (16 claimed, 14 measured). |
+| R57 | A frozen battery's positive control is the byte sequence the claim actually ships, not a pre-freeze draft. If the shipped bytes differ from every fixture, add a non-frozen fixture for them before scoring; never amend the frozen fixture file. | `corpus/lessons/round-48.md` M48-4; wave-1 `R48Review31.md` findings 1-2. |
+| R58 | A lowest-axis claim must move a metric that the axis counter itself reads. A claim that changes only a file the axis census never reads is labelled nominal and its score is held, with the non-moving metric named. | `corpus/lessons/round-48.md` M48-5; wave-1 `R48Review28.md` section 1. |
+| R59 | A counter with a documented verdict map must return the mapped exit for unreadable input, including NUL bytes and special filenames. An uncaught exception that exits 1 is a verdict-map violation even when it fails closed. | `corpus/lessons/round-48.md` M48-6; wave-1 `R48Review17.md` observation 1 (case 28). |

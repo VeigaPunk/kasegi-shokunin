@@ -2056,3 +2056,12 @@ Correction (round 43): the wave-shape bullet above states `70 of the 73 seats re
 - Mistakes mined into `corpus/lessons/round-48.md` `## Mistakes`: M48-3 (quote word count 16 claimed, 14 measured; corrected in the Gate), M48-4 (positive-control provenance; open, routed to round 49), M48-5 (lowest-axis label without a moved metric; disclosed, routed to round 49).
 - Density non-target proxy moved (273.6 → 270.1 over 35 → 36 blocks) from the appended registry block; disclosed in SCORECARD, not reformatted. Frontier 29 → 29; SOURCES 76 → 77 (S077 only).
 - Verdict: C1 verified on its frozen predicate; axis score held at 4; non-author spot-check outstanding.
+
+## Round 48 — attempt 2 wave settlement and post-wave corrections
+
+- Wave 1 (`kasegi-r48-canonical`, v2, 64 seats) settled: `.ufo/waves/round-48/wave1-results.json` (dispatcher `done` 12:25:07). Output by role: executor 20/20, mutation-tester 14/20, reviewer 11/11, critic 4/4, connector 2/2, scout 1/2, scribe 3/4, sentinel 0/1. Attack-role seats with output: 29 of 36.
+- Nine seats ended with empty final output after 2–4 tool calls and wrote no report: R48Probe28, R48Probe34, R48Probe36, R48Probe38, R48Review19, R48Review20 (mutation-testers), R48Review12 (scout), R48Review27 (scribe), R48Review30 (sentinel). Their transcripts record no error text. None was replaced.
+- The `WAVE-DONE` message did not reach this attempt; the results file is the settlement of record. Routed to the operator through the L0 channel (`.ufo/l0-questions.md`, kasegi round-48 line).
+- Corrections from the wave: mined M48-6 (NUL byte in a pointer token gives an uncaught exception, exit 1, a verdict-map violation that fails closed) in `corpus/lessons/round-48.md`; added QUALITY R56–R59 for the uncaught round-48 mistakes M48-3..M48-6. Seat finding R48Review26 (S077 snapshot drift) was checked and not reproduced: the snapshot and the live protocol are both 46958 bytes with a 0-line diff.
+- Verdict unchanged: C1 verified on its frozen predicate; score held at 4; non-author spot-check outstanding.
+- Correction to the attempt-2 entry above (append-only, not rewritten): its statement that the dispatcher re-keyed the wave's `WAVE-DONE` to this attempt was an inference from the dispatcher's bootstrap rule. The message did not arrive; the settlement record is the results file. The attempt-2 inherited-state bullet is withdrawn on that point only.
