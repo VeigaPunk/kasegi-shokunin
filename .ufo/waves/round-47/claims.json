@@ -1,0 +1,54 @@
+{
+ "schema": "kasegi-round-claims-v2",
+ "lane": "kasegi",
+ "round": 47,
+ "author": "KasegiR47a3",
+ "base": "fc8e0af27fbfa13220cd245700e9cb7e5e94dfc8",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "type": "routed-defect-closure",
+   "before": "The round-46 non-author closure's four lane-repo routed defects (D5-D8 of corpus/lessons/round-46-verifier-spotcheck.md sections 7-8) all stand at base fc8e0af: the SOURCES.md drafting scaffold (L1 instruction prose at :113-:120 and :177-:181, two ```markdown fences at :121-:123 and :182-:185) holds the round-46 Search-log bullet and both S074 Registry-changes bullets unlanded; the admitted F29 entry carries three false sentences (its :11 and :89 claim all 42 capture lines are body prose when the capture carries page chrome; its :16 claims the page's own order when the page states the CVE request before the fix-version material; its :111-:112 claim three S074.txt cases permit publish-without-fix-version when :40 forbids it); the pinned 42-line S074 capture is produced by no committed instrument (capture-source.py --kind html yields 610 lines), so its 90d recheck cannot produce a comparing re-capture; the repository-advisories REST-API lead and the ZDI id-resolution/S068-precision lesson notes are unrecorded. Counter reading at base: routed-defects total=11 fixed=0 unresolved=11 exit=1.",
+   "after": "All four defects closed in the lane tree, measured by the frozen counter: corpus/instruments/r47-routed-defects.py --root <tree> prints routed-defects total=11 fixed=11 unresolved=0 exit=0 - the three round-46 bullets landed as real bullets in their real sections (## Search log, ## Registry changes) and the scaffold prose and fences are gone (four scaffold phrase types 4->0, grep lines containing 'to append' 2->0, fence markers 4->0); the F29 entry's three false sentences corrected in place at unchanged line count (145 lines), its citations re-anchored to the committed reproducible capture corpus/source-snapshots/round-47/S076.txt (S074.txt citations 59->0, every S076.txt span located in the pinned capture inside body lines 558-600); the superseding registry row S076 (teaches opens supersedes S074, CORPUS rule 2) registered with the sha-pinned manifest the committed source-recheck.py verifies exit 0; S074 status mined->rejected and used-by -> corpus/lessons/round-46.md logged old->new; the REST-API lead bullet added under ## Leads (unopened); round-46 lesson carries an appended ## Corrections (round 47) section and round-47 lesson names the dropped seat findings, the ZDI reservation resolution and the S068 n=1 precision note. No score move is claimed: depth:verifiability stays 4 unless both promotion limbs move (SCORECARD Distance-to-next-score: 0 gated rechecks + the non-author 25/25 chains audit); this claim repairs provenance of what the lane holds, graded under the quality trend.",
+   "kill_rule": "C1 fails if the counter prints fixed<11/11 at the final lane revision; or if any control in controls/freeze-controls.txt grades fixed=11/11 (the do-nothing base export, a marker-only fix tree, an entry with the false phrases merely commented); or if a non-author reading finds a corrected sentence that still misstates the capture, or a landed bullet that differs from its fence original, or a re-anchored span citing a chrome line; or if a limb's sentence changes after a seat has scored (bug fixes that keep a limb's sentence are logged as counter errata in counter-errata.md with a plain re-derivation that does not use the counter).",
+   "counter_cmd": "python3 {tool}/corpus/instruments/r47-routed-defects.py --root {tree} --baseline {base}",
+   "expect_before": "routed-defects total=11 fixed=0 unresolved=11 exit=1",
+   "expect_after": "routed-defects total=11 fixed=11 unresolved=0 exit=0",
+   "mechanical_limits": "Pre-freeze R50 battery: C1 35 counter mutants, 19 caught, 16 uncaught, baseline_failures=0. Every uncaught id and edit is disclosed in controls/mutbat-receipt.txt and corpus/instruments/r47-mutbat.py. These are selftest-coverage gaps, not claimed equivalents; no full mutation coverage is claimed. The 43-case tree-probe selftest is green. Semantic truth, rendered section placement and novelty remain independent review duties.",
+   "plain": [
+    "grep -c 'to append' corpus/SOURCES.md   # base 2, target 0",
+    "grep -c '```' corpus/SOURCES.md   # base 4, target 0",
+    "grep -c 'all 42 lines are body prose' corpus/knowledge/github-repository-security-advisories.md   # base 1, target 0",
+    "grep -c 'three cases' corpus/knowledge/github-repository-security-advisories.md   # base 2; contextual only: the corrected text retains the true phrase 'three cases that follow, only two'; not the kill rule",
+    "grep -c 'S074.txt:' corpus/knowledge/github-repository-security-advisories.md   # base 54 matching lines (59 instances), target 0",
+    "grep -c 'supersedes S074' corpus/SOURCES.md   # base 0, target 1",
+    "grep -c 'docs.github.com/en/rest/security-advisories' corpus/SOURCES.md   # base 0, target 1",
+    "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-47/manifest.json --source S076   # base fails (no manifest), target exit 0"
+   ],
+   "freeze_tree_reading": "At the freeze commit the counter reads the same line as at the base (the fixes are not yet landed): routed-defects total=11 fixed=0 unresolved=11 exit=1. The freeze carries only the instruments, the round-47 captures/manifest, claims and controls.",
+   "control": ".ufo/waves/round-47/controls/freeze-controls.txt"
+  },
+  {
+   "id": "C2",
+   "axis": "coverage",
+   "type": "frontier-admission",
+   "before": "29 admitted public-practice frontier rows (F01-F29), 74 SOURCES registry rows, 66 knowledge entries; the Zero Day Initiative disclosure policy - the third-party broker's acquisition-disclosure timeline (120-day vendor deadline with no stated start event, fifteen-business-day public-advisory fallback trigger, tiered 30/60/90-day patch-regression windows, sole-discretion rare extensions, limited-advisory publication at deadline, the never-kept-quiet rule) - is held nowhere in corpus/ (grep -rliE 'zero day initiative|zerodayinitiative' corpus/knowledge corpus/SOURCES.md corpus/README.md prints only advisory-index and lesson mentions, none of the policy; precise absence grep zerodayinitiative.com/advisories/disclosure_policy|TrendAI|five business days|fifteen business days printed nothing). Base reading of the counter: f30-gate fixed=1/7 (only the census limb holds); at the freeze tree it reads 2/7 (the S075 capture and manifest are committed at freeze, so the capture limb H4 also holds) - both stated, neither narrows the target.",
+   "after": "30 admitted frontier rows with F30 = Zero Day Initiative disclosure policy (the third-party broker's acquisition-disclosure timeline), one new tier-A docs row S075 with the sha-pinned snapshot corpus/source-snapshots/round-47/S075.txt (sha256 9dee8161...04e1, two same-instrument captures byte-identical, zero drift against the 2026-10-28 seat capture) and ten located manifest quotes, one new knowledge entry (67 total) whose every quoted span is located in the snapshot body (lines 20-27), whose decision rule states a researcher-checkable rule (a broker deadline is broker-controlled with no stated start event; never cite it as a vendor clock) and one rejected over-generalization, which states the F02/F15 division explicitly (F02 compares coordinator timelines with attribution; F15 holds vendor intake programmes; F30 adds the broker that acquires) and carries the scope limits (policy page text only; advisories, reward rules and the researcher submission page out), census exit 0. The round-46 flip condition for this row is discharged by the claim itself: the claim IS the ZDI deadline rule, opened and cited this round (corpus/lessons/round-46.md Gate reject 2 flip). No coverage-ratio move is claimed: (20+F_admitted)/(20+F_total) stays 1.000; the +1 admitted row is an expansion count, same reading as rounds 45 and 46.",
+   "kill_rule": "C2 fails if r47-f30-gate.py prints fixed<7/7 at the final lane revision; or if any control (do-nothing base, junk row, indented duplicate row, ghost row, fabricated or unlocated quote, out-of-body span, altered manifest or capture, junk-entry tree) grades 7/7; or if the non-author closure re-opening the ZDI policy URL does not locate the cited quotes in the live page; or if the entry's decision rule is not one a researcher can act on before submitting to a broker; or if a limb's sentence changes after a seat has scored (counter errata only, with plain re-derivations).",
+   "counter_cmd": "python3 {tool}/corpus/instruments/r47-f30-gate.py --root {tree}",
+   "expect_before": "f30-gate fixed=1/7 exit=1",
+   "mechanical_limits": "Pre-freeze R50 battery: C2 21 counter mutants, 3 caught, 18 uncaught, baseline_failures=0. Each survivor is disclosed in controls/mutbat-receipt.txt and corpus/instruments/r47-mutbat.py; none is called equivalent or proof of correctness. No full mutation coverage is claimed. In particular, F02 overlap is disputed prior art, not settled by a new numbered row; admission requires the independent semantic review in the kill rule.",
+   "expect_after": "f30-gate fixed=7/7 exit=0",
+   "plain": [
+    "grep -cE '^\\| F[0-9]+ \\|' corpus/README.md   # base 29, target 30",
+    "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md   # base 74, round end 76 (S075 = C2's row; S076 = C1's D7 superseding row, counted and attributed separately)",
+    "find corpus/knowledge -maxdepth 1 -name '*.md' | wc -l   # base 66, target 67",
+    "grep -rliE 'zero day initiative|zerodayinitiative' corpus/knowledge corpus/SOURCES.md corpus/README.md | wc -l   # base 0 policy-bearing files, target >= 3 (entry, SOURCES row, README admission block)",
+    "bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi   # base exit 0 (3 W04), target exit 0 (W04 may grow for the S074/S076 shared URL, warning-only like S072/S070)"
+   ],
+   "freeze_tree_reading": "At the freeze commit the counter reads f30-gate fixed=2/7 exit=1 (H4 capture limb holds: the S075 snapshot and manifest are committed at freeze; the entry, row and README block are not yet landed).",
+   "control": ".ufo/waves/round-47/controls/freeze-controls.txt"
+  }
+ ]
+}
