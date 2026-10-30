@@ -13,7 +13,7 @@ independent admission or promotion judgment.
 | id | class | evidence pointer | captured-by | fix |
 |---|---|---|---|---|
 | M1 | Wrong-axis claim and stale self-description | `round-22-verifier-spotcheck.md`: C1 REJECTED-HONEST-STOP; original r22 lesson line 5 says unmeasured after the work landed; SCORECARD repertoire rollout deferral contradicted its populated row | R7 (new); R4 did not catch an axis mismatch | Freeze C1 against actual copied resolver output; correct scorecard placeholder; append this correction rather than rewrite the filed r22 lesson. R22 header/historical-marking work is provenance/freshness, not an admitted depth move. |
-| M2 | Admitted entries carried prose rather than executable rechecks | `round-22-verifier-spotcheck.md`: five r22 new rechecks exit 2; `knowledge/cvss-v4-severity-and-vector.md` line 4 begins “On each” | Q7 (new); Q1 was too permissive about URL/cadence | Replace same-line rechecks with a local pinned-source command; its output must distinguish captured support from fresh network verification. Missing/corrupt captured-source controls must fail; existing lost-base legacy rechecks remain red and marked historical. |
+| M2 | Admitted entries carried prose rather than executable rechecks | `round-22-verifier-spotcheck.md`: five r22 new rechecks exit 2; `corpus/knowledge/cvss-v4-severity-and-vector.md` line 4 begins “On each” | Q7 (new); Q1 was too permissive about URL/cadence | Replace same-line rechecks with a local pinned-source command; its output must distinguish captured support from fresh network verification. Missing/corrupt captured-source controls must fail; existing lost-base legacy rechecks remain red and marked historical. |
 | M3 | Stale line pointers in filed lessons | `round-22.md` M3 points README:168, M14 points README:145; current evidence is README:176–177 and README:153–156 respectively at the opening revision | R9 (new); R2 | This new correction names the matching text and opening revision. M3 is the critic's partial docs-only search missing a lost-tree decree; M14 is the missing round-2 record. Old pointers remain historical, not silently repaired. |
 | M4 | Deletion tally scope was not re-derived | `round-22-verifier-spotcheck.md`: reported 22 versus actual 32 deletions | R9 (new); R2 | Retain the original record and publish a base/path-scoped numstat correction in this lesson after the history derivation; never infer text loss merely from same-line suffix replacements. |
 | M5 | Exact quote, wrong filed-record heading | `round-22.md:82` Gate S006 gives “What is safe harbor?” for the scope quote; S006 row and knowledge entry already name the correct heading; official page re-opened 2026-10-20 | R8/R9 (new); Q3 | Correct location is “How to Enable Safe Harbors (Program Owners & Admins)”. This appended erratum fixes the filed Gate record; no correction to S006 immutable fields is warranted. The proposed duplicate source row S028 is rejected, not a second authority. |
@@ -164,9 +164,9 @@ and snapshots): flipped digest → `S018:sha256 MISMATCH`, exit 1; missing sourc
 path → `S029:source UNAVAILABLE reason=missing`, exit 2; fabricated quote →
 `S030:fabricated MISMATCH reason=quote-not-found`, exit 1.
 
-Admission rows: `corpus/README.md` § Frontier F06→`knowledge/multiparty-vulnerability-coordination.md`
-(S018), F07→`knowledge/cna-assignment-and-vulnerability-rules.md` (S030,
-supersedes S022), F08→`knowledge/cra-manufacturer-reporting-duties.md` (S029,
+Admission rows: `corpus/README.md` § Frontier F06→`corpus/knowledge/multiparty-vulnerability-coordination.md`
+(S018), F07→`corpus/knowledge/cna-assignment-and-vulnerability-rules.md` (S030,
+supersedes S022), F08→`corpus/knowledge/cra-manufacturer-reporting-duties.md` (S029,
 supersedes S024). Counting commands:
 `grep -cE '^\| F0[6-8] .*\| admitted \|' corpus/README.md` → **0 → 3**;
 `grep -cE '^\| F0[1-8] .*\| admitted \|' corpus/README.md` → **5 → 8**.

@@ -83,7 +83,7 @@ recoverability), escalated the three operator decisions it cannot make
 (reorg vs deletion, recoverability, PROVINCE re-point) to `.ufo/l0-questions.md`,
 reported the cross-lane blast radius (339 references across 8 lane repos; no
 sibling had noticed) without editing any sibling, and pushed nothing to the
-mirror's remote (outside the `MISSION.md:49-56` allow-list). Wrote zero bytes
+mirror's remote (outside the `/home/vgpnk/Projects/shokunin/MISSION.md:49-56` allow-list). Wrote zero bytes
 under `~/Projects/**`. Two adjacent traps named for the next round: the attached
 `ufo_sighting` tmux hosts a live external agent session (capture panes, never
 send keys), and the mirror's ops scripts are runnable but must never be run in

@@ -7,12 +7,12 @@ report `/home/vgpnk/projects/shokunin/.ufo/reports/round-7/kasegi.md`.
 
 - **The ops tail — last name-only surface.** Six `ops/` scripts plus the
   four `sighting*.sh` wrappers and the `shared.mjs` constants were cited
-  but unread. Full reads → `knowledge/ops-invariants.md` (shared constants:
+  but unread. Full reads → `corpus/knowledge/ops-invariants.md` (shared constants:
   BANNED=cursor/opencode, PARKED empty since 2026-09-04, K3_SEATS
   judge/planner, gitMutationBlocker; validate.mjs schema-subset +
   referential checks; registry-check.mjs seven-check lane↔card bijection;
   reroute-drill simulation-only lane identity proof; check-freshness 26 h
-  live-source alarm; sighting windows) and `knowledge/intake-and-finalize.md`
+  live-source alarm; sighting windows) and `corpus/knowledge/intake-and-finalize.md`
   (import-board binding/P6/P7/S4 mechanics; finalize-all batch claim sweep).
   Every `ops/` file is now first-read, not inferred.
 

@@ -5,7 +5,7 @@ report `/home/vgpnk/projects/shokunin/.ufo/reports/round-5/kasegi.md`.
 
 ## What I closed
 
-- **`fleets/` control plane → `knowledge/mission-control.md`.** The layer
+- **`fleets/` control plane → `corpus/knowledge/mission-control.md`.** The layer
   between program records and claim packages was the biggest undocumented
   surface: `fleet-dispatch.mjs` read in full (queue-score weighting,
   2 h leases, tmux pane rotation + reconcile, sole-committer + byte-proofed

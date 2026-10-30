@@ -87,7 +87,7 @@ Two entries, one theme: `corpus/knowledge/vendor-disclosure-policies-as-corpus-o
 `corpus/knowledge/vendor-disclosure-policy-commitments-crosswalk.md` (133 lines, Cisco's PSIRT
 crosswalked against them on eleven dimensions). Both are re-grounded from this round's own
 captures, not copied from the package. The before claim is specifically **no admitted frontier
-entry** covered a product vendor's own product-handling policy: base `SOURCES.md:22` already
+entry** covered a product vendor's own product-handling policy: base `corpus/SOURCES.md:22` already
 had S016 (Anthropic CVD policy) queued, not admitted, and `vdp-disclosure-packages.md:13,23-24`
 held an intake-route fragment, not the vendor's standing policy object. A critic confirmed no
 exact admitted entry overlap, and a connector confirmed no sibling lane holds F10 (chousa cedes

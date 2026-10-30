@@ -241,10 +241,10 @@ from the captures alone.
 
 ## What this adds beyond F13 and F15
 
-F13 (`knowledge/program-severity-ladders-and-reward-scales.md`, S043-S045) holds English-language
+F13 (`corpus/knowledge/program-severity-ladders-and-reward-scales.md`, S043-S045) holds English-language
 platform objects: a HackerOne policy record, the Bugcrowd VRT priorities, and the VRT's CWE
 crosswalk. Its working rule is that each ladder is that platform's suggested baseline. F15
-(`knowledge/vendor-third-party-finding-coordination.md`, S048) holds one vendor's research
+(`corpus/knowledge/vendor-third-party-finding-coordination.md`, S048) holds one vendor's research
 programme as an intake route.
 
 Three things here are not in either:

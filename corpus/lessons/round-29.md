@@ -243,7 +243,7 @@ measured: exit 0, **45 rows** (tier A 42 / B 1 / C 2; mined 33, queued 9, reject
 S028/S029 only — `ScribeSourcesGate`, `RevC2Registry`, `ExecCanonC2`, and this seat agree.
 
 **Scope and safety.** No write to the fleet root, sibling lanes, `/home/vgpnk/Projects/shokuknow`
-(read-only), lane git index, `.ufo/state`, or `MANIFEST.json`. Live network use: three captures
+(read-only), lane git index, `/home/vgpnk/Projects/shokunin/.ufo/state`, or `MANIFEST.json`. Live network use: three captures
 (S043 via documented curl fallback after the instrument stub) plus verification probes, all public
 GETs with the instrument UA; no fixture contacted a live target.
 

@@ -5,7 +5,7 @@ report `/home/vgpnk/projects/shokunin/.ufo/reports/round-3/kasegi.md`.
 
 ## What I closed
 
-- **Gate-list gap → `knowledge/claim-gates.md`.** Read `ops/claim-check.mjs`
+- **Gate-list gap → `corpus/knowledge/claim-gates.md`.** Read `ops/claim-check.mjs`
   in full (233 lines) plus `claim-index.mjs` and `prepare-claims.mjs`. Facts
   worth keeping: the duplicate-submission guard is GLOBAL (scans all
   `claims/*/*/status.json` for same slug or same ≥16-char title with a prior
@@ -13,7 +13,7 @@ report `/home/vgpnk/projects/shokunin/.ufo/reports/round-3/kasegi.md`.
   `kx-reviewer`; `prepare-claims.mjs` restores original payload bytes if the
   post-write recheck fails — manifest-bound payloads are immutable without
   re-review.
-- **`vdp-disclosures/` walked → `knowledge/vdp-disclosure-packages.md`.** It is
+- **`vdp-disclosures/` walked → `corpus/knowledge/vdp-disclosure-packages.md`.** It is
   a distinct four-file package shape (ROUTE/cover-note/report/SUBMITTED), not
   the six-file claim contract; free + fully attributed per operator decree;
   sent via the vendor's security.txt Contact route (H1 embedded_submissions).

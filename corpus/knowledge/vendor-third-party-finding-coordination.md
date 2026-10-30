@@ -60,7 +60,7 @@ third-party coordination under its own CVD approach (L35).
 
 ## What this adds beyond F06 and F10
 
-F06 (`knowledge/multiparty-vulnerability-coordination.md`, S018 FIRST v1.1) holds the role
+F06 (`corpus/knowledge/multiparty-vulnerability-coordination.md`, S018 FIRST v1.1) holds the role
 vocabulary: its coordinator is an "Optional participant that can assist vendors and finders"
 (line 25), so its worksheet asks a package to record whether a coordinator exists rather
 than to assume one. Nothing at line 25 says the coordinator cannot be a vendor, and F06 has
@@ -70,13 +70,13 @@ F10 holds vendors' published policy objects, not a programme (`corpus/README.md`
 "A vendor's published policy is a standing first-party statement, not a programme"). Its
 overlap with S048 is conceded in three differently shaped places: (a) an external centre —
 Hitachi reports an issue that spills beyond Hitachi-group products to the partnership's
-届出窓口 (S039.txt:506, quoted in `knowledge/vendor-disclosure-policies-as-corpus-objects.md`
+届出窓口 (S039.txt:506, quoted in `corpus/knowledge/vendor-disclosure-policies-as-corpus-objects.md`
 Claim 7), and Cisco, for a report that "may impact multiple vendors", works with coordination
 centres such as CERT/CC, CERT-FI, JP-CERT or NPSA to "manage a coordinated industry
 disclosure" (S040.txt:185-193, the `cisco-jpcert-partner` row of
-`knowledge/vendor-disclosure-policy-commitments-crosswalk.md`); (b) products the vendor
+`corpus/knowledge/vendor-disclosure-policy-commitments-crosswalk.md`); (b) products the vendor
 uses — Cybozu's handling scope covers 当社が利用しているサードパーティー製品 (S036.txt:15,
-quoted at line 35 of `knowledge/vendor-disclosure-policies-as-corpus-objects.md`), the third-party
+quoted at line 35 of `corpus/knowledge/vendor-disclosure-policies-as-corpus-objects.md`), the third-party
 products Cybozu itself uses; (c) internal detection with no coordinator named — 社内での検出
 (line 23 of the same entry). None of the three is a vendor stating a programme whose subject
 is other vendors' products, and none names the vendor as coordinator.
@@ -98,7 +98,7 @@ difference of kind rather than of ground:
    direction of the Cybozu third-party-products scope). This is a difference in what the
    page is about, not a new corpus-object type.
 
-F11 (`knowledge/iso-29147-and-30111-division-of-labour.md`, S041) holds the
+F11 (`corpus/knowledge/iso-29147-and-30111-division-of-labour.md`, S041) holds the
 outward-disclosure / inward-handling division of labour and assigns no finder or coordinator
 seat to a vendor, so it carries none of the additions.
 

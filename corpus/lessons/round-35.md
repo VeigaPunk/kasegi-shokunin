@@ -181,7 +181,7 @@ quarantine rows and seven standing refusals; the admit leg is met by the round's
 
 `wave1/ConnSibling-ruling-draft.md` (drafted for this lesson; its re-runnable evidence is in
 `wave1/ConnSibling.md`, which this seat did not open — the draft's own verdict line is what is quoted)
-rules on every CISA/KEV-ground hit in the sibling lanes under `PROTOCOL.md:457-461` and kasegi's
+rules on every CISA/KEV-ground hit in the sibling lanes under `/home/vgpnk/Projects/shokunin/PROTOCOL.md:457-461` and kasegi's
 `PROVINCE.md` Adjacent ("Sibling lanes are reported, not absorbed"):
 
 - **19 of 20 sibling lanes hold zero hits.** The only tokens are `kake-shokunin`'s *rejection record*

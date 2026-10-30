@@ -489,8 +489,8 @@ is absent a hard failure, which is why the transient red is evidence the gate wo
 
 **Scope and safety.** No write to the fleet root, any sibling lane, `/home/vgpnk/Projects/shokuknow`
 (read-only; `merge/kasegi/` max mtime 2026-10-24T23:33Z, 0 files newer than the wave — ExecScopeSweep
-limb 3, SentinelScope §3), `.ufo/state`, `.scratch`, `MANIFEST.json`, `templates/` or fleet
-`scripts/`. No credential material, session or private URL in any artifact written this round
+limb 3, SentinelScope §3), `/home/vgpnk/Projects/shokunin/.ufo/state`, `.scratch`, `MANIFEST.json`, `/home/vgpnk/Projects/shokunin/templates/` or fleet
+`/home/vgpnk/Projects/shokunin/scripts/`. No credential material, session or private URL in any artifact written this round
 (SentinelScope §2 scans production diffs, the entry, the snapshots and the scratch tree; the only
 lookalikes are prose uses of "token" and page-content strings inside a captured policy document).
 Live network use: 2 dispatched captures plus 11 verification probes, all GETs with the instrument UA

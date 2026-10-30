@@ -8,7 +8,7 @@ sentinel/scout/revenger/executor/scribe) — all read-only.
 ## What I closed
 
 - **Submitted-state / do-not-refile gap.** Merged the scattered set into
-  `knowledge/submitted-registry.md`: 3 verified H1 filings (4002776 closed
+  `corpus/knowledge/submitted-registry.md`: 3 verified H1 filings (4002776 closed
   dup, 4002810 closed dup, 4002789 not_established), 3 archive-era filings
   (4028846 k8s, a169f309 launchdarkly, e4f41218-6036-… mattermost —
   owning mission claim-web1), 3 probable orphans (4028904/4028953 elastic,

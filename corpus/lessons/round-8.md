@@ -10,7 +10,7 @@ report `/home/vgpnk/projects/shokunin/.ufo/reports/round-8/kasegi.md`.
   single richest unread artifact class: 19 `missions/claim-*/report.json`
   files from the claim-hardening wave — structured before/after defect
   censuses over real `claims/` packages. Extracted a 22-class defect
-  taxonomy (`knowledge/ufo-archive-2026.md`) that is the empirical superset
+  taxonomy (`corpus/knowledge/ufo-archive-2026.md`) that is the empirical superset
   of `claim-check.mjs`: gate-binding defects the checker catches, plus the
   checker-invisible layer (stale packet drafts materially wrong about
   affected versions, narratives claiming "verified" for never-executed

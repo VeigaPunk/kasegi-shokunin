@@ -6,7 +6,7 @@ report `/home/vgpnk/projects/shokunin/.ufo/reports/round-6/kasegi.md`.
 ## What I closed
 
 - **`ops/park-disposition.mjs` + `docs/autopsies/` →
-  `knowledge/retirement-autopsies.md`.** The retirement half of the
+  `corpus/knowledge/retirement-autopsies.md`.** The retirement half of the
   pipeline was the last undocumented ops surface: classifier precedence
   (LEARNED → RETRY_METHOD → RETIRE_AUTH → RETRY_TRANSIENT → REVIEW),
   autopsy schema + requeue procedure (delete autopsy AND status file),
