@@ -5,8 +5,8 @@ from collections import Counter
 
 L = "/home/vgpnk/Projects/shokunin/kasegi-shokunin"
 W = L + "/.ufo/waves/round-46/attempt2"
-INTEG = "AT-INTEGRATION"       # patched by the L1 before validation
-FREEZE = "AT-FREEZE"
+INTEG = "fe0f56b78b811dbb89bc7f2e17580d11b1b6ebd4"       # patched by the L1 before validation
+FREEZE = "fe0f56b78b811dbb89bc7f2e17580d11b1b6ebd4"
 BASE = "04af9bc92229232ea5cce8b32bfe59dd969eb26d"
 PURE = "/fast/scratch/hyaku/kasegi-r46/L1/pure2"
 SNAP = L + "/corpus/source-snapshots/round-46-a2/S074.txt"
