@@ -1,0 +1,24 @@
+# REST-API lead URL variants — R47W2SafetyBoundary (2026-10-30)
+
+Same unopened lead, two committed spellings:
+
+1. corpus/lessons/round-47.md:39
+   https://docs.github.com/en/rest/security-advisories/repository-security-advisories
+2. corpus/SOURCES.md:124 (## Leads (unopened) bullet)
+   https://docs.github.com/en/rest/security-advisories/repository-advisories
+3. corpus/instruments/r47-counters-selftest.py:155 (fixture lead bullet)
+   https://docs.github.com/en/rest/security-advisories/repository-security-advisories
+   (lesson variant)
+
+The S076 capture names the sibling only as link text, no URL:
+corpus/source-snapshots/round-47/S076.txt:574 "REST API endpoints for
+repository security advisories". Both spellings share the prefix pinned by
+the frozen C1/C2 plain greps ('docs.github.com/en/rest/security-advisories'),
+so no frozen counter discriminates them.
+
+Impact: an unopened lead is a do-not-open boundary marker; ambiguous identity
+means a future round could open one spelling, declare the lead consumed, and
+leave the other spelling unexamined (or vice versa).
+
+Smallest safe correction: pick one URL in the lead bullet (and lesson), note
+the other as an alias or drop it; no frozen predicate depends on the choice.

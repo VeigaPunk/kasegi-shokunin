@@ -36,7 +36,7 @@ ZDI id reservation precision (D8): the old lead's proposed S074 was consumed by 
 
 S068 precision (D8): S068 is **one GHSA advisory entry**, not the GitHub Advisory Database's documentation. The old lesson's 'database row class' statement overgeneralized an n=1 precedent. Rejection of the database as a source for the maintainer lifecycle can stand independently: a publication destination is not the lifecycle's first-party policy.
 
-REST-API page: https://docs.github.com/en/rest/security-advisories/repository-security-advisories remains an unopened lead, not a source row. Rejected for this round's admission because its body has not been opened and grounded here; flip: open it in its own round, locate quotes and demonstrate new ground.
+REST-API page: https://docs.github.com/en/rest/security-advisories/repository-advisories remains an unopened lead, not a source row. Rejected for this round's admission because its body has not been opened and grounded here; flip: open it in its own round, locate quotes and demonstrate new ground. This corrects the earlier draft's /repository-security-advisories basename; no network opening is implied.
 
 ## Registry changes
 
@@ -67,3 +67,19 @@ Admit S075's bounded policy facts as F02 enrichment and S076's reproducible capt
 Registry cells old→new: S074 used-by `corpus/knowledge/github-repository-security-advisories.md` → `corpus/lessons/round-46.md`; S074 status `mined` → `mined`, recheck `90d` → `90d` (unchanged). No other pre-existing status/recheck/used-by cell changes. New S075/S076 rows are docs/tier-A/mined and cite their opened captures. Old S074 anchor wording that calls every line prose is marked historical and corrected by the superseding row and this lesson; immutable cells are not rewritten.
 
 M47-3 fix refinement: preserve historical mined capture bindings rather than reject the predecessor. The demonstrated B3 red-before arm remains in `.ufo/waves/round-47/w1/R47RevD7.receipts.txt`; R54 explicitly captures why a frozen harmful after-state must be reported unmet.
+
+## Wave-2 integration record
+
+All 32 integrated-review seats settled; Main delivered WAVE-DONE for wave2. The scoped review confirms verbatim D5 payload landing, 813 protected registry cells unchanged, same 145-line F29 layout, and no F30 row. It also found additional inherited F29 semantic overclaims and missing ZDI Q3 qualifications; those are corrected before landing, not left unmarked.
+
+New mistake M47-7 (scope): optional GitHub private-fork/CVE capabilities and qualified fix-version advice had become a mandatory package conformance rule. Evidence: `.ufo/waves/round-47/w2/R47W2F29Claims.md` and `.ufo/waves/round-47/w2/R47W2FixVersion.md`; captured-by Q3/Q4. Fix: retain the source's optional/qualified wording and validate only actions a package actually claims. Source-supported without-fix and republication cases are negative examples that defeat the old blanket rules.
+
+The source manifest remains frozen. Its pre-admission F30 wording and inclusive body-window metadata are explicitly corrected in `.ufo/waves/round-47/counter-errata.md`, not silently rewritten. That erratum also names the four red old-F29-gate limbs, the frozen-fixture/current-entry differences and era-paired knowledge expectations.
+
+SOURCES.md anchor migration precision: historical references include `corpus/lessons/round-46.md` and earlier sweep notes inside SOURCES.md itself; no newly broken live caller was identified by `.ufo/waves/round-47/w2/R47W2AnchorMigration.md`. The old round-35 “now at :79” note is historical; the KEV search-log bullet is currently at SOURCES.md:105, not the S073 row now occupying the old position. Prefer source ids/section names for current reading.
+
+Gate-quote completion for S075's non-suppression teaches cell: “In no cases will an acquired vulnerability be \"kept quiet\" because a product vendor does not wish to address it.” (`S075.txt:26`, access 2026-10-30). The full assertion, rather than its opening fragment, grounds the policy detail.
+
+Assimilation: none. `.ufo/waves/round-47/w1/R47ScoutMerge.md` and `.ufo/waves/round-47/w1/R47ExecMergeGuard.md` record 74 registry ids, 94 staged ids and 44 collisions (S031–S074); the two-space S002 fixture is caught by the 0–3-space guard. No staged theme covers the chosen broker-policy ground. Eight kasegi quarantine data rows were counted; none was adopted or treated as verified. No renumber map exists because nothing was appended from staging.
+
+considerthese: screened the latest `considerthese/2026-10-26.md` against the landed proposal ledger; no additional adoption this round. Proposals 2's domain-task remainder, 4's externalisation and 6's cadence remain open, not fulfilled by provenance/receipt work (`.ufo/waves/round-47/w1/R47ScoutConsiderthese.md`).

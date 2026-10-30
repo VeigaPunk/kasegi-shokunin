@@ -1,0 +1,59 @@
+# R47W2C1Verdict receipts — executed probes and static reads
+
+All execution read-only. Scratch /fast/scratch/hyaku/kasegi-r47/R47W2C1Verdict/ (deleted after this file was saved). No git/jj mutation; no production edit; no install (none needed). Lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin (HEAD f074bff; integrated 65e19bd; base fc8e0af; freeze 308a2cb).
+
+## 1. Provenance / identity
+
+- Integrated corpus export: `git archive 65e19bdb142c90a08103eb4b2af60c71218a920e corpus | tar -x -C <scratch>/tree-integrated` (executed).
+- Counter bytes at integrated export: sha256 e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee — equals freeze pin `.ufo/waves/round-47/freeze.txt:3` (executed sha256sum).
+- claims.json sha256 dc9d95cdf006a9da1c067afacc7a99cefcf8b81033093157daf7b1b1768e6064 identical at freeze 308a2cb, at 65e19bd, and in working tree (executed `git show <rev>:... | sha256sum` ×2 + sha256sum).
+- `git diff --stat 65e19bd HEAD -- corpus` = 0 lines: corpus identical between integrated revision and HEAD (executed).
+- Flip arm: copy of the integrated export with ONLY the S074 row status cell `| mined |` → `| rejected |` (executed in scratch; row tail after flip: `| rejected | 2026-10-29 | 90d | corpus/lessons/round-46.md |`).
+
+## 2. Frozen C1 counter on the INTEGRATED tree (executed, first such measurement on record)
+
+Command: `python3 -I <tree-integrated>/corpus/instruments/r47-routed-defects.py --root <tree-integrated>`
+
+```
+limb L1 (D5) fixed=1 read=scaffold-phrases=0
+limb L2 (D5) fixed=1 read=bullets-landed fences=0
+limb L3 (D5) fixed=0 read=corrections-section-present content=0
+limb L4 (D6) fixed=1 read=prose-claims-corrected chrome=present
+limb L5 (D6) fixed=1 read=order-claim-corrected
+limb L6 (D6) fixed=1 read=fix-version-cases-corrected
+limb L7 (D6) fixed=1 read=dropped-findings-named in=corpus/lessons/round-47.md
+limb L8 (D7) fixed=1 read=row-S076=ok
+limb L9 (D7) fixed=1 read=spans=47 located=47 failed=0 uncited=0
+limb L10 (D8) fixed=1 read=rest-api-lead-bullet-present
+limb L11 (D8) fixed=1 read=zdi-reservation=1 s068-precision=1
+routed-defects total=11 fixed=10 unresolved=1 exit=1
+process_exit=1
+```
+
+## 3. Flip-arm counter (S074 rejected) — blindness proof (executed)
+
+Command: same counter, `--root <tree-flip>`. Output limb lines BYTE-IDENTICAL to §2 (same L3 red, same ten greens, same totals 10/11 exit=1). No limb reads S074's status or used-by cells; the frozen sentence's disputed transition is invisible to the counter in both directions (refused tree and performed tree grade the same).
+
+## 4. Capture-binding (B3) witness on the same two trees (executed)
+
+- Integrated: `python3 -I <tree-integrated>/corpus/instruments/capture-binding-check.py --root <tree-integrated>` → `records=63 bound=63 unbound=0`, EXIT=0.
+- Flip arm: same command on `<tree-flip>` → `FAIL rule=rejected-row-anchor record=S074 row=S074 dir=round-46-a2`, `records=63 bound=62 unbound=1`, EXIT=1.
+Performing the frozen `mined→rejected` transition breaks B3 on the actual integrated tree (63-record audit), not only on R47RevD7's 3-record fixture (w1/R47RevD7.receipts.txt).
+
+## 5. L3 root cause (static)
+
+- `corpus/lessons/round-46.md:153` = `## Corrections (round 47)`; the D5 bullet at `:155` says "one **Search-log** and two **Registry-changes** bullets" (hyphenated).
+- Counter L3 predicate (`corpus/instruments/r47-routed-defects.py:139-143`): tail after the heading must contain `SOURCES.md` AND `fence` AND (`Search log` OR `Registry changes`) unhyphenated. Both conjuncts hold ("corpus/SOURCES.md", "fences"); the disjunction fails: no unhyphenated occurrence anywhere from `:153` to EOF (awk token scan, executed).
+- The selftest's green fixture DOES carry the unhyphenated forms — `corpus/instruments/r47-counters-selftest.py:167-168` "landed in their real sections (`## Search log`, `## Registry changes`)" — so `c1-green` passes while the landed text fails: fixture and landed bytes diverge at exactly this predicate.
+
+## 6. Static plain measures on the integrated export (executed greps)
+
+- entry `corpus/knowledge/github-repository-security-advisories.md`: 145 lines (frozen unchanged line count ✓); `S074.txt:` count 0 (re-anchored ✓).
+- SOURCES.md: fence markers 0 ✓; `to append` 0 ✓; `supersedes S074` matches 2 lines (:82 S076 row teaches — L8-required; :175 Registry-changes bullet) vs frozen plain target 1 (benign drift, not kill-rule-bound); `docs.github.com/en/rest/security-advisories` 1 ✓ (:124 lead).
+- SOURCES.md:80 S074 row tail: `| mined | 2026-10-29 | 90d | corpus/lessons/round-46.md |` — status refusal confirmed at the row itself; :176 logs used-by old→new and "Status remains `mined`".
+
+## 7. Prior wave measurements (no integrated-tree counter run existed before §2)
+
+- w1/R47ExecGateReplay.md: base 0/11 + 1/7 (matches frozen before-values); pre-landing working tree C1 2/11 (L7, L11 only). Not the integrated tree.
+- w1/R47ExecFreezeGates.md:7-8: selftest 43/0 (synthetic fixtures); counters on the same pre-landing tree 2/11. Not the integrated tree.
+- grep of all w1 receipts for `fixed=11|fixed=10|content=0`: only synthetic selftest fixtures and mutant probes; no landed-tree counter reading recorded before this seat.

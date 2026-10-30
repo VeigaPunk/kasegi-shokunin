@@ -1,0 +1,24 @@
+# L3 token mismatch — integrated tree, R47W2SafetyBoundary (2026-10-30)
+
+Frozen counter: corpus/instruments/r47-routed-defects.py:176-183 (L3):
+requires in the `## Corrections (round 47)` tail of corpus/lessons/round-46.md
+the literals "SOURCES.md" AND "fence" AND ("Search log" OR "Registry changes").
+
+Landed correction (D5 bullet) writes the hyphenated compounds:
+- grep -c 'Search log\|Registry changes'  (tail after `## Corrections (round 47)`)  -> 0
+- grep -c 'Search-log\|Registry-changes'  (same tail)                              -> 1
+
+Executed counter at integrated 65e19bdb142c90a08103eb4b2af60c71218a920e:
+`limb L3 (D5) fixed=0 read=corrections-section-present content=0`;
+total `routed-defects total=11 fixed=10 unresolved=1 exit=1`
+(full output: gate-routed-defects-integrated.txt).
+
+All committed L3 mentions (.ufo/waves/round-47/w1/R47ConnCross.md:19,
+R47CritSever.md:20, R47ExecGateReplay.md:16,48) are base/mid-integration
+readings (`corrections-section-absent`); no committed receipt records the
+final 10/11 state.
+
+Smallest safe correction: one-line prose addition to the D5 correction bullet
+naming the sections unhyphenated ("## Search log", "## Registry changes"), or
+a counter-errata note per .ufo/waves/round-47/counter-errata.md conventions.
+C1 remains unmet either way per its frozen kill rule (fixed<11 fails).

@@ -1,0 +1,63 @@
+# R47W2FrozenLimits receipt: frozen-counter replay on freeze and integrated trees (executed 2026-10-30)
+# Method: `git archive <rev> | tar -x -C <scratch tree>` for 308a2cb and 65e19bd, then
+#   python3 -I <tree>/corpus/instruments/r47-routed-defects.py --root <tree> --baseline fc8e0af27fbfa13220cd245700e9cb7e5e94dfc8
+#   python3 -I <tree>/corpus/instruments/r47-f30-gate.py --root <tree>
+# Counters invoked are the byte-frozen instruments themselves (see R47W2FrozenLimits.bytes.txt). Diagnostic replay only; NOT frozen validation. No battery, no selftests.
+
+== freeze-tree (308a2cb) C1 ==
+limb L1 (D5) fixed=0 read=scaffold-phrases=4
+limb L2 (D5) fixed=0 read=bad=fence-markers=4,search-log-bullet-absent,s074-row-bullet-absent,capture-note-bullet-absent
+limb L3 (D5) fixed=0 read=corrections-section-absent
+limb L4 (D6) fixed=0 read=false-phrases=2
+limb L5 (D6) fixed=0 read=order-phrase-still-present
+limb L6 (D6) fixed=0 read=two-cases-absent
+limb L7 (D6) fixed=0 read=dropped-findings-unnamed
+limb L8 (D7) fixed=0 read=row-S076=absent-or-duplicated hits=0
+limb L9 (D7) fixed=0 read=old-citations=59
+limb L10 (D8) fixed=0 read=rest-api-lead-bullet-absent
+limb L11 (D8) fixed=0 read=round-47-lesson-absent
+routed-defects total=11 fixed=0 unresolved=11 exit=1
+exit=1
+-> matches claims.json C1 freeze_tree_reading verbatim.
+
+== freeze-tree (308a2cb) C2 ==
+gate H1 pass=0 read=rows=29 admitted=29 dup=0
+gate H2 pass=0 read=entry-absent zdi-named=
+gate H3 pass=0 read=row-S075=absent-or-malformed-or-not-registry-only hits=0
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=10 frozen-cores-missing=0
+gate H5 pass=0 read=entry-absent zdi-named=
+gate H6 pass=0 read=entry-absent zdi-named=
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f30-gate fixed=2/7 exit=1
+exit=1
+-> matches claims.json C2 freeze_tree_reading ("fixed=2/7"; H4 capture limb holds at freeze).
+
+== integ-tree (65e19bd) C1 ==
+limb L1 (D5) fixed=1 read=scaffold-phrases=0
+limb L2 (D5) fixed=1 read=bullets-landed fences=0
+limb L3 (D5) fixed=0 read=corrections-section-present content=0
+limb L4 (D6) fixed=1 read=prose-claims-corrected chrome=present
+limb L5 (D6) fixed=1 read=order-claim-corrected
+limb L6 (D6) fixed=1 read=fix-version-cases-corrected
+limb L7 (D6) fixed=1 read=dropped-findings-named in=corpus/lessons/round-47.md
+limb L8 (D7) fixed=1 read=row-S076=ok
+limb L9 (D7) fixed=1 read=spans=47 located=47 failed=0 uncited=0
+limb L10 (D8) fixed=1 read=rest-api-lead-bullet-present
+limb L11 (D8) fixed=1 read=zdi-reservation=1 s068-precision=1
+routed-defects total=11 fixed=10 unresolved=1 exit=1
+exit=1
+-> BELOW frozen expect_after (fixed=11 unresolved=0 exit=0). C1 kill rule "fails if the counter prints fixed<11/11 at the final lane revision" fires at the integrated revision. Independently corroborated by w2/R47W2Gates.md + w2/R47W2Gates-c1.stdout (working-tree run, identical 10/11 L3 red).
+
+== integ-tree (65e19bd) C2 ==
+gate H1 pass=0 read=rows=29 admitted=29 dup=0
+gate H2 pass=1 read=source=1 verified-at=1 recheck=1 sections=4/4 full=4/4 table-rows=10 xrefs=4/4 anchored=1
+gate H3 pass=1 read=row-S075=ok
+gate H4 pass=1 read=recheck-rc=0 quotes-ok=10 frozen-cores-missing=0
+gate H5 pass=1 read=spans=10 located=10 failed=0 uncited=0 cores=5/5
+gate H6 pass=1 read=knowledge=67 entries=67 nested-md=67 base-intact=1 entry-bytes-ok=1 symlinks=0
+gate H7 pass=1 read=census-rc=0 ok-line=1
+f30-gate fixed=6/7 exit=1
+exit=1
+-> BELOW frozen expect_after (fixed=7/7 exit=0): H1 red because there is no F30 row (rows=29). This is the documented decision (ZDI retained as F02 enrichment), so the miss is intentional, logged in corpus/lessons/round-47.md and .ufo/waves/round-47/counter-errata.md.
+
+Scratch trees deleted after receipts saved.

@@ -1,0 +1,45 @@
+# R47W2FrozenLimits receipt: L3 (D5) red root cause and disclosure cross-checks (executed + static, 2026-10-30)
+
+## Executed predicate test on integ-tree corpus/lessons/round-46.md
+Frozen predicate, corpus/instruments/r47-routed-defects.py:175-183:
+  m = re.search(r"^## Corrections \(round 47\)\s*$", t, re.M)   # heading found at lesson :153
+  tail = t[m.start():]
+  ok = ("SOURCES.md" in tail) and ("fence" in tail) and ("Search log" in tail or "Registry changes" in tail)
+
+Test output (integrated tree 65e19bd):
+  SOURCES.md in tail: True
+  fence in tail: True            (from "removes the instruction prose and fences", lesson :155)
+  'Search log' in tail: False
+  'Registry changes' in tail: False
+  'Search-log' in tail: True     (lesson :155: "one Search-log and two Registry-changes bullets")
+  'Registry-changes' in tail: True
+  L3 ok = False
+=> content=0 comes from hyphenation, not missing substance. The frozen scaffold phrases
+   (r47-routed-defects.py:72-76) use the section names with spaces and backticks:
+   "The `## Search log` bullet to append", "`## Registry changes` bullets to append".
+   Lines :48 and :136 of the same lesson also hyphenate but precede the Corrections heading,
+   so they are irrelevant to L3.
+
+## Smallest safe correction (integration owner only; not performed by this seat)
+At corpus/lessons/round-46.md:155 write the section names as the headings read:
+  "... landed with one `## Search log` and two `## Registry changes` bullets ..."
+Expected effect by the frozen counter only: L3 fixed=1 -> integrated C1 reads fixed=11/11 exit=0.
+This is a tree-prose edit; counter/claim bytes stay frozen. 11/11 would still NOT make C1 fully
+verified: the frozen S074 mined->rejected after-state remains unperformed (B3 no-harm;
+counter-errata.md "Claim outcomes are not narrowed").
+
+## Receipt<->harness consistency (executed)
+mutbat-receipt.txt mutant lines: 56 (unique 56); r47-mutbat.py mutant triples: 56 (unique 56);
+bidirectional set difference empty. Uncaught in receipt: 34; caught: 22.
+Arithmetic: C1 19 caught + 16 uncaught = 35; C2 3 caught + 18 uncaught = 21; 16+18 = 34 disclosed survivors.
+Both battery summary lines end exit=1 (a battery exit 1 is not a pass; lesson M47-5).
+
+## Selftest pins inside frozen r47-counters-selftest.py (static, :55-56)
+MAN_SHA  = 6168521b5f5555fd06f2a63c1dc0e8543cd89f8146f79f684daf586f32f35e9b  == freeze.txt manifest pin
+SNAP75_SHA = 9dee8161347af85ed0c65d1d296a2d432fdb67f9a86017d36427166b4bad04e1 == freeze.txt S075 pin
+
+## H4 docstring vs code (static; disclosed, not amended)
+corpus/instruments/r47-f30-gate.py:44-45 docstring: ">= 8 quotes OK), the S075 record's quote texts are
+pairwise distinct with >= 7 distinct anchors"; code :313: len({q["anchor"] ...}) >= 5.
+Disclosed pre-freeze in .ufo/waves/round-47/counter-errata.md section 1 as implementation disclosure;
+frozen bytes untouched (see bytes receipt). Ten S075 quote records occupy five distinct lines (21,23,24,25,26).

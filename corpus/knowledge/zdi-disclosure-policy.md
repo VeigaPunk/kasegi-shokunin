@@ -17,8 +17,8 @@ This F02 case study records TrendAI ZDI's policy for its third-party broker acqu
 | Responsive vendor | “four months (120 days) to address the vulnerability” (`S075.txt:24`) | Preserve both stated units and leave the unstated clock start unknown. |
 | Deadline consequence | “publish a limited advisory including mitigation” (`S075.txt:24`) | Preserve the nonresponse or inadequate explanation condition rather than assuming unconditional publication. |
 | Exceptional extension | “granted only in rare circumstances” (`S075.txt:24`) | Record ZDI's sole discretion; an extension is not a vendor entitlement. |
-| Faulty patch urgency | “active exploitation is detected or imminent” (`S075.txt:25`) | Apply the 30-day branch only to critical-rated faulty-patch disclosures with this condition. |
-| Partial patch protection | “a disclosure window of 60 days” (`S075.txt:25`) | Apply to critical or high severity with some original-patch protection and no imminent exploitation. |
+| Faulty patch urgency | “For critical-rated bugs where active exploitation is detected or imminent, the vendor will have 30 days” (`S075.txt:25`) | Apply the 30-day branch only to critical-rated faulty-patch disclosures with this condition. |
+| Partial patch protection | “critical- and high-severity vulnerabilities where the original patch does offer some protection and exploitation is not imminent” (`S075.txt:25`); “a disclosure window of 60 days” (`S075.txt:25`) | Preserve both partial protection and no imminent exploitation, not merely severity. |
 | Other patch regressions | “a time of 90 days” (`S075.txt:25`) | Keep the residual branch within incomplete or faulty patch disclosures, not all reports. |
 
 The 15-business-day branch is permissive, not an automatic publication promise (`S075.txt:23`). The 120-day branch couples a limited advisory to vendor nonresponse or inability to provide a reasonable explanation at deadline, and leaves extensions to TrendAI ZDI's sole discretion (`S075.txt:24`). These conditions require distinct package fields: a recorded interval alone cannot establish the applicable publication date. For an acquired vulnerability a vendor declines to address, TrendAI ZDI states that suppression will not follow merely from that refusal; it offers coordinated public disclosure with effective workarounds (`S075.txt:26`).
@@ -34,3 +34,9 @@ This entry covers policy page text only, specifically the pinned body at `S075.t
 ## Falsifiable package rule
 
 A researcher can check a proposed package against `S075.txt:23-25`: it must name TrendAI ZDI as policy owner, identify the response or faulty-patch branch, preserve that branch's conditions and units, and mark the 120-day start event unknown unless separately evidenced. Reject the over-generalization that every acquired finding must be published exactly 120 days after acquisition: line 24 neither names acquisition as the clock start nor removes its publication conditions, and lines 23 and 25 supply different conditional intervals. A package claiming a computed date solely from this page fails this rule when the required start event is unstated.
+
+## Located support for branch qualifications
+
+The tiered category is explicitly “vulnerability disclosures resulting from an incomplete or otherwise faulty security patch” (`S075.txt:25`). Its residual branch is “All other reports in this category will be given a time of 90 days.” (`S075.txt:25`), not every ordinary report.
+
+The acquired-finding disposition is stated as “In no cases will an acquired vulnerability be "kept quiet" because a product vendor does not wish to address it.” (`S075.txt:26`). This is ZDI's policy assertion, not evidence of actual conduct and not new frontier credit.
