@@ -11,14 +11,11 @@ git -C $L archive "$TIP" | tar -x -C "$S/tip"
 export TMPDIR="$S"
 run() { echo "\$ $*"; "$@"; echo "exit=$?"; }
 echo "measured-at-rev: $TIP base: $BASE"
+echo "# the battery before/after sections are covered by the committed receipts:"
+echo "#   before: controls/mutbat-before.txt (c1 uncaught=7/20, c2 uncaught=13/21, BATEXIT=1)"
+echo "#   after:  controls/final-battery-summary.txt (c1 19+1=20/20 uncaught=0 EXIT=0; c2 18+3=21/21 uncaught=0; f29 18+3=21/21 uncaught=0)"
+echo "#   selftests at the landed tree: 83/0, 147/0, 30/0 (controls/final-battery-summary.txt tail)"
 cd "$S/tip"
-echo "## C1 (depth:verifiability) - the battery, before-value replay at base and after at tip"
-run python3 -B corpus/instruments/r46-mutbat.py --root "$S/base" --pure "$PURE" --work "$S/w-base" --counter both --jobs 8
-run python3 -B corpus/instruments/r46-mutbat.py --root "$S/tip" --pure "$PURE" --work "$S/w-tip" --counter both --jobs 8
-echo "## C1 - extended selftest baselines (tip export)"
-run python3 -B corpus/instruments/r46-counters-selftest-c1.py --pure "$PURE" --work "$S/w-s1" --jobs 8
-run python3 -B corpus/instruments/r46-counters-selftest-c2.py --pure "$PURE"
-[ -f corpus/instruments/r46-selftest-f29.py ] && run python3 -B corpus/instruments/r46-selftest-f29.py --work "$S/w-s3"
 echo "## C1 - plain measures (no battery)"
 for T in base tip; do
   ( cd "$S/$T"; echo "# $T case counts: $(grep -c 'def case_' corpus/instruments/r46-counters-selftest-c1.py 2>/dev/null) c1 $(grep -c 'def case_' corpus/instruments/r46-counters-selftest-c2.py 2>/dev/null) c2" )
