@@ -225,3 +225,17 @@ the closure ledger for the operator to rule; the entry's `admitted` verdict foll
 dispatch criterion (every claim verifies on its frozen counter; no owned axis harmed), which is
 satisfied and unaffected by these defects. Discernment stays improved (§4 decisions agree; the flip
 precision items ride D8).
+
+## 9. Reconciliation (2026-10-30, orchestrator instruction) — canonical trade rule applied to the ledger row
+
+The orchestrator (Main) ruled on the §8 trade flag: LEARNING.md's trade clause ("Growth without quality
+is not learning: `expansion: improved` with `quality: harmed` is a trade, reported as a trade, never
+admitted") governs, and the protocol's admission practice routes trades to the operator. No operator
+ruling overriding the clause exists, so the closure ledger row for lane-round (kasegi, 46) is corrected
+— append-only, via `closure-correction` — to `admitted: false`, `verdict: "rejected-harmed"`, citing the
+canonical clause and recording that an **operator ruling is required** for any subsequent admission of
+this round notwithstanding the trade. The §8 analysis, routed defects D1–D8, claim verifications (C1/C2
+verified on their frozen counters), the no-axis-harm finding and the §4 S074 admit/reject decisions all
+stand unchanged; the correction changes only the admission outcome, per the canonical clause. Historical
+sequencing, recorded as fact: kasegi round 47 was already dispatched and advanced when this correction
+landed — no counter, ref or prior ledger row is rewound.
