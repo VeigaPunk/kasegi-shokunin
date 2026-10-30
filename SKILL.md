@@ -1186,3 +1186,15 @@ These are frozen diagnostic counters, not admission authorities. Wave-1 attacks 
 Safe corpus handling learned this round: preserve a superseded source's captured historical evidence; do not reject its row merely to make a new provenance counter green. `corpus/QUALITY.md` R54 and `corpus/lessons/round-47.md` record the red-before B3 demonstration. A broker's deadline is not a vendor's own policy; the ZDI case belongs under F02 rather than a duplicate numbered frontier.
 
 Round-47 registry precision: the historical capture-binding row at :1077 labels B3 as url-mismatch; the current instrument's B3 is `rejected-row-anchor` (`capture-binding-check.py`). R54 and this round's B3 receipts use the current code's definition, not that old row label.
+
+## Round-48 author-checklist form checker
+
+This procedural checker repairs the lane's own promotion checklist, not a bounty gate.
+It does not certify a domain task, evidence truth, source recovery or promotion.
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| shonen-form.py | gate, restricted author-assessment grammar | `python3 corpus/instruments/shonen-form.py --root TREE` | 0 clean form; 1 noncanonical; 2 could-not-evaluate/unreadable or argparse usage | `python3 corpus/instruments/shonen-form-selftest.py --root TREE --work SCRATCH`; separate runner, not a direct self-invocation flag (conformance limitation) | `.ufo/waves/round-48/claims.json`, `controls/fixtures.json`; selftest verifies fixture SHA256 | read-only TREE; runner writes isolated SCRATCH then removes it | kasegi |
+
+Checklist history stays in per-round reports and `.ufo/waves/round-48/controls/shonen-before.txt`;
+restoring the seed does not erase or upgrade those historical assessments. See S077 and QUALITY R55.

@@ -1859,3 +1859,29 @@ Frozen claims: `.ufo/waves/round-47/claims.json`, commit `308a2cb2dc7bdce233461c
 ### Planned evidence gates (not a new round dispatch)
 
 Keep frozen diagnostic evidence separate from semantic admission. Any later proposal must first defeat the actual multiline-comment/fence, invisible-row and status-binding counterexamples; choose uncovered ground before freezing coverage. Preserve historical capture bindings and require a genuinely independent admit/reject spot-check before claiming outside discernment agreement.
+
+## Round 48 result — attempt 2 (C1 verified on its frozen predicate; score held)
+
+Frozen claim C1: `.ufo/waves/round-48/claims.json` (claims sha256 `b8022cdf…`; freeze `3546f70`; base `903d47e`). Frozen counter `corpus/instruments/shonen-form.py` sha256 `0ab32a2c…`, unchanged since `3546f70`. Measured revision `3d7e042` (restored SHONEN.md). Receipts: `.ufo/waves/round-48/attempt2/` (`c1-measure.txt`, `selftest.txt`, `census-end.txt`, `counts-before-after.txt`, `density.txt`, `r2-discrimination.txt`).
+
+| Axis | Before | After | Verdict and evidence |
+|---|---:|---:|---|
+| depth:verifiability | 4 | 4 held; delta 0 | C1 predicate **verified** on the frozen counter: base `903d47e` `canonical=0 finding=SF-PREAMBLE exit=1` (356 lines, 52 boxes, archived checklist sha `596122c0…`); measured `3d7e042` `canonical=1 finding=SF-CLEAN exit=0` (12 lines, 4 boxes). Frozen selftest `cases=17 failures=0`. Score not moved: this is a checklist-form repair, and `resolve.py` censuses SKILL.md and corpus only, never SHONEN.md (wave-1 `R48Review28`). The claim is nominal on its axis; disclosed as M48-5, not hidden. |
+| coverage | 8 | 8 held; delta 0 | Not claimed. Frontier rows 29→29 (`counts-before-after.txt`); SOURCES 76→77 with S077 (own-work, tier A, mined) as normative form, not frontier ground. |
+| depth:density | 9 | 9 held; non-target proxy moved | Proxy disclosed, not reformatted: `density.py` mean on `SKILL.md` 273.6 (35 blocks, base) → 270.1 (36 blocks, working tree), from the appended `Round-48 author-checklist form checker` block (`density.txt`). Score is not claimed to move; same disclosure pattern as round 47. |
+
+### Round-48 attempt-2 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 48a2 | depth:verifiability | `canonical=0 SF-PREAMBLE exit=1`; SHONEN.md 356 lines, 52 author marks | `canonical=1 SF-CLEAN exit=0`; SHONEN.md 12 lines, 4 boxes, pointers resolve | `attempt2/c1-measure.txt`; commit `3d7e042` |
+| 48a2 | depth:verifiability (counter) | attempt-1 runner `shonen-form-selftest.py` present, uncommitted, no receipt on record | committed this round; `shonen-form-selftest.py` `cases=17 failures=0`, fixtures SHA pin verified | `attempt2/selftest.txt` |
+
+**Capabilities: none added.** The `shonen-form.py` gate is a protocol-conformance instrument registered in SKILL.md, not a repertoire row. **Saturation unchanged:** line 9/10 per owned axis, window N = 3; lowest non-retired axis remains depth:verifiability (4), and C1 works it nominally (M48-5).
+
+**Non-author verification:** outstanding. Wave-1 seats are lane seats, not outside verifiers; the outside spot-check of this round's admit (S077) and of the reject path is not yet on record.
+
+### Planned for round 49 (not frozen)
+
+1. **depth:verifiability (4, lowest):** route M48-5 and M48-4 into a claim whose counter reads a metric the axis actually measures (`resolve.py` citation survival over SKILL.md and corpus). Before and after from the same census command; no SHONEN-only credit.
+2. **Fixture provenance (M48-4):** add a new non-frozen fixture file whose positive control is the shipped SHONEN.md bytes (sha `b1352168…`) and whose mutants cover the unchecked-box-with-evidence shape. The frozen `fixtures.json` is not amended.
