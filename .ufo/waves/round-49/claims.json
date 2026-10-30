@@ -1,0 +1,39 @@
+{
+  "schema": "kasegi-round-claims-v2",
+  "lane": "kasegi",
+  "round": 49,
+  "author": "KasegiR49",
+  "base": "9b1662a2fa0e7c7b0ad6c4d45cb7786f27bdd03b",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "type": "metric-move-on-the-axis-counter",
+      "predicate": "Every path-like citation in the lane's own files that names a file which exists on disk but is written so that the resolver cannot open it is re-grounded to a path that opens, and every repair is recorded in the committed ledger corpus/instruments/citation-reground-ledger.md; the axis counter corpus/instruments/citation-ground-check.py then reads zero remaining members of that scope.",
+      "before": "unresolved-class=68 over lane-authored files (class-lane-bare=57, class-fleet-relative=11); class-total=147 with 79 members blocked by protected files (round-*-verifier-spotcheck.md, round-*-aggregator-*.md) that the lane may not edit; the axis census at the base commit reads lane total 1071/4696 = 22.81%, corpus 1038/4307 = 24.10%, SKILL 130/694 = 18.73%.",
+      "after": "unresolved-class=0, ledger-rows=68, rows-resolving=68, findings=0, exit 0; the axis census on the same tree reads a strictly higher lane rate, its numerator at least 19 higher than the base numerator (19 repairs create a fresh distinct citation, 49 merge into an existing one).",
+      "counter_cmd": "python3 {tool}/corpus/instruments/citation-ground-check.py --root {tree} --fleet-root /home/vgpnk/Projects/shokunin --ledger {tree}/corpus/instruments/citation-reground-ledger.md",
+      "expect_before": "unresolved-class=68",
+      "expect_after": "unresolved-class=0",
+      "kill_rule": "Fails if unresolved-class is not 0 at the final measured revision, if any ledger row's new path does not exist, if any ledger row points into a lost tree (~/Projects/bounties, ~/Projects/the-bounty-hunter, ~/Projects/origin-work), or if any repair changes a citation's referent (a re-ground to a different file that merely happens to exist). The 79 protected-file members stay named debt and are never counted as repaired. The axis census may not be re-derived from a different scope or definition to manufacture the rate; the census command, its scope and its instrument bytes are the ones frozen here.",
+      "control": ".ufo/waves/round-49/controls/do-nothing.txt",
+      "mechanical_limits": "The counter grades citation shape and path resolvability, not the truth of a citation's claim. It cannot decide whether a repaired path is the referent the sentence means; that judgment is per row, recorded in the ledger's referent note, and attacked by the round's reviewer and critic seats. Protected files (outside the lane's write scope) are enumerated and disclosed, never edited. Lost-tree citations are out of scope on this host and are not repairable.",
+      "source": "own-work: corpus/knowledge/citation-bases.md (LANE rule) and corpus/instruments/resolve.py (the axis instrument), both read at the base commit"
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "type": "frontier-admission",
+      "predicate": "One new frontier surface is admitted into the coverage map: the CVE Services API publication surface, backed by a tier-A first-party capture (S078), a knowledge entry whose own recheck line re-verifies its own declared source, and a registry row; the frontier census reads one more admitted row and the new entry's own recheck passes.",
+      "before": "FRONTIER-CENSUS rows=29 admitted=29 closed=29 problem-rows=0 registry=77; entries=32 pass=32 exit=0",
+      "after": "FRONTIER-CENSUS rows=30 admitted=30 closed=30 problem-rows=0 registry=78; entries=33 pass=33 exit=0; source-recheck.py --manifest corpus/source-snapshots/round-49/manifest.json --source S078 exits 0; capture-binding-check.py exits 0.",
+      "counter_cmd": "python3 {tool}/corpus/instruments/frontier-recheck-count.py --root {tree}",
+      "expect_before": "FRONTIER-CENSUS rows=29 admitted=29 closed=29 problem-rows=0 registry=77",
+      "expect_after": "FRONTIER-CENSUS rows=30 admitted=30 closed=30 problem-rows=0 registry=78",
+      "kill_rule": "Fails if the frontier census does not read rows=30 admitted=30 with problem-rows=0, if the new entry's recheck line does not exit 0, if the capture's bytes do not match the manifest digest, if any quote in the entry or the Gate block is not located in the captured bytes, or if the admitted surface duplicates an already admitted frontier row. A rejected source or a duplicated surface is recorded with its reason and the claim is then unmet, never widened.",
+      "control": ".ufo/waves/round-49/controls/do-nothing.txt",
+      "mechanical_limits": "The census grades row shape, admission status, the entry's own recheck and the registry binding; it does not judge novelty by itself. The novelty argument (why the CVE Services publication surface is not F25's record format nor F07's CNA rules) is a written argument for the non-author closure, not a mechanical property.",
+      "source": "S078 — https://raw.githubusercontent.com/CVEProject/cve-services/master/api-docs/openapi.json — CVE Services API OpenAPI 2.8.8.1 (first-party, CVE Program), opened 2026-10-30, capture corpus/source-snapshots/round-49/S078.txt"
+    }
+  ]
+}
