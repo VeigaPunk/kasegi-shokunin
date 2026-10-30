@@ -9,31 +9,31 @@ its source. No generic filler. [r22 correction: this holds for the 25 legacy ent
 | Area | Entry | Source basis |
 |---|---|---|
 | Claim-package contract | `knowledge/claim-package-contract.md` | `fleets/mission-template.md` + live packages |
-| Complete claim-gate list | `knowledge/claim-gates.md` | `ops/claim-check.mjs`, `ops/claim-index.mjs`, `ops/prepare-claims.mjs` (read in full) |
-| Policy access per platform | `knowledge/policy-access-playbook.md` | `mission-template.md`, `docs/autopsies/`, `claims/bugcrowd-seek/` |
-| Triage economics | `knowledge/ev-model.md` | `ops/ev-report.mjs`, `bounty-map/schema.json` |
-| Mission outcome statistics | `knowledge/terminal-classes.md` | `docs/continuation-notes.md`, `docs/review-verdicts.jsonl`, `docs/wrap-report.md` |
-| VDP disclosure packages | `knowledge/vdp-disclosure-packages.md` | `vdp-disclosures/anthropic-plugin-dev-cmd-injection/` + `claims/*-vdp-no-payout/` |
+| Complete claim-gate list | `corpus/knowledge/claim-gates.md` | `ops/claim-check.mjs`, `ops/claim-index.mjs`, `ops/prepare-claims.mjs` (read in full) |
+| Policy access per platform | `corpus/knowledge/policy-access-playbook.md` | `mission-template.md`, `docs/autopsies/`, `claims/bugcrowd-seek/` |
+| Triage economics | `corpus/knowledge/ev-model.md` | `ops/ev-report.mjs`, `bounty-map/schema.json` |
+| Mission outcome statistics | `corpus/knowledge/terminal-classes.md` | `docs/continuation-notes.md`, `docs/review-verdicts.jsonl`, `docs/wrap-report.md` |
+| VDP disclosure packages | `corpus/knowledge/vdp-disclosure-packages.md` | `vdp-disclosures/anthropic-plugin-dev-cmd-injection/` + `claims/*-vdp-no-payout/` |
 | Mission ledger + ops | `knowledge/mission-ledger.md` | `ledger/*.jsonl` census, `ops/shared.mjs`/`rank.mjs`/`import-board.mjs`/`fleet-dispatch.mjs`, `docs/plan-round0.md` |
-| Mission control plane | `knowledge/mission-control.md` | `ops/fleet-dispatch.mjs` full read, `fleets/missions|run|leases|priority|state-snapshots`, `claimer-mission.md`, `review-mission.md`, sighting scripts, `RUNBOOK-resume.md`, `.ufo-mission-report-bh*`, `.ufo-ingestion/`, `.ufo-warden/` |
+| Mission control plane | `corpus/knowledge/mission-control.md` | `ops/fleet-dispatch.mjs` full read, `fleets/missions|run|leases|priority|state-snapshots`, `claimer-mission.md`, `review-mission.md`, sighting scripts, `RUNBOOK-resume.md`, `.ufo-mission-report-bh*`, `.ufo-ingestion/`, `.ufo-warden/` |
 | Per-program audit store | `knowledge/evidence-dir.md` | `evidence/` census (592 dirs), `ops/fleet-dispatch.mjs`, `evidence/bugcrowd-seek/`, `evidence/sherlock-8/` |
-| Retirement + autopsies | `knowledge/retirement-autopsies.md` | `ops/park-disposition.mjs` full read, `docs/autopsies/` 31-file census, `fleets/run/` live classifier re-run |
-| Ops integrity layer | `knowledge/ops-invariants.md` | `ops/shared.mjs` (BANNED/PARKED/K3/TELEMETRY_EVENTS/gitMutationBlocker), `validate.mjs`, `registry-check.mjs`, `reroute-drill.mjs`, `check-freshness.mjs`, `sighting*.sh` — all read in full |
-| Board intake + batch finalize | `knowledge/intake-and-finalize.md` | `ops/import-board.mjs` (binding/P6/P7/S4) + `ops/finalize-all.mjs` (claim sweep/tag/atomic push) — full reads |
-| Claim-hardening defect taxonomy + archive | `knowledge/ufo-archive-2026.md` | `fleets/ufo-archive-2026/` full walk: 20 `claim-*` report.json defect censuses (round-12 correction), keeper/whipper (b1k-NNN origin), inquiries briefs, programs/ old evidence shape |
-| Submitted-state / do-not-refile registry | `knowledge/submitted-registry.md` | live census: all `claims/*/*/status.json` submission fields (19 signatures), `ledger/missions.jsonl` SUBMITTED/DISCLOSED_FREE, `portal-reconciliation-2026-09-11.json`, `final-audit.json`, `origin-work/open-bug-bounties/claim-packages/submission-review/` (real receipt store), VDP `SUBMITTED.md`, `claim-ready/*`+`claim-hold/*` tags, `_claimer.status.json`, 15 status-less stub dirs |
-| Operator queue audit | `knowledge/operator-queue.md` | live `claim-check.mjs` re-run of all 12 queued rows + `claim-index.mjs` source read (`claim-hold/*` inert), per-row checklist gates, runbook distill, anthropic↔VDP fingerprint byte-match |
-| Intake surface (map census, ingestion path, registry decrees) | `knowledge/intake-surface.md` | 1088-record census, `fleet-dispatch.mjs::buildQueue` scoring source read, `.ufo-ingestion/` full walk, `fleets/registry.json` decree ledger, live `check-freshness`/`validate` runs |
-| UFO runtime workspaces (`.ufo/` layer + `.omp/`) | `knowledge/ufo-workspaces.md` | full census: 25 `bh*` warden workspaces + 22 reports + `reroutes.jsonl` (121 records), `bounty-fleet/` 805 M keeper tree (second `missions.jsonl`), `sessions/` bpolish1..8 (refile verdict NONE + grep traps), `grok-bounty-assessment-20260911/` (frozen, self-invalidating), `claim-recovery/`, `.omp/` tracked-vs-live, root `README.md`/`.gitignore` |
-| Repo git state | `knowledge/repo-git-state.md` | live `git status/branch/rev-list/merge-base/ls-files`: stalled mid-rebase ≥17 days, 903 dirty entries, 12 tags pushed, `claim-ship` superseded ancestor, claims/ 198 tracked files vs 3361 on disk |
-| Target checkouts + provenance pins | `knowledge/target-checkouts.md` | `pendle-core-v2-public/` (shallow clone `f242659`=v6.10.0, pin-bound), `george/` parked, 187/255 `provenance.json` pin census, `[lost-tree] claim-check.mjs:96-97` never validates pins (lost-tree line range; mirror `ops/claim-check.mjs` is only 83 lines) |
-| Canonical triage thresholds (gates/weights/constants, line-cited) | `knowledge/triage-thresholds.md` | full reads of `ops/claim-check.mjs`+`ev-report.mjs`+`fleet-dispatch.mjs`+`shared.mjs`+`bounty-map/schema.json` + live censuses; 3-way verified round-13 (L1 read × executor draft × reviewer derivation) |
+| Retirement + autopsies | `corpus/knowledge/retirement-autopsies.md` | `ops/park-disposition.mjs` full read, `docs/autopsies/` 31-file census, `fleets/run/` live classifier re-run |
+| Ops integrity layer | `corpus/knowledge/ops-invariants.md` | `ops/shared.mjs` (BANNED/PARKED/K3/TELEMETRY_EVENTS/gitMutationBlocker), `validate.mjs`, `registry-check.mjs`, `reroute-drill.mjs`, `check-freshness.mjs`, `sighting*.sh` — all read in full |
+| Board intake + batch finalize | `corpus/knowledge/intake-and-finalize.md` | `ops/import-board.mjs` (binding/P6/P7/S4) + `ops/finalize-all.mjs` (claim sweep/tag/atomic push) — full reads |
+| Claim-hardening defect taxonomy + archive | `corpus/knowledge/ufo-archive-2026.md` | `fleets/ufo-archive-2026/` full walk: 20 `claim-*` report.json defect censuses (round-12 correction), keeper/whipper (b1k-NNN origin), inquiries briefs, programs/ old evidence shape |
+| Submitted-state / do-not-refile registry | `corpus/knowledge/submitted-registry.md` | live census: all `claims/*/*/status.json` submission fields (19 signatures), `ledger/missions.jsonl` SUBMITTED/DISCLOSED_FREE, `portal-reconciliation-2026-09-11.json`, `final-audit.json`, `origin-work/open-bug-bounties/claim-packages/submission-review/` (real receipt store), VDP `SUBMITTED.md`, `claim-ready/*`+`claim-hold/*` tags, `_claimer.status.json`, 15 status-less stub dirs |
+| Operator queue audit | `corpus/knowledge/operator-queue.md` | live `claim-check.mjs` re-run of all 12 queued rows + `claim-index.mjs` source read (`claim-hold/*` inert), per-row checklist gates, runbook distill, anthropic↔VDP fingerprint byte-match |
+| Intake surface (map census, ingestion path, registry decrees) | `corpus/knowledge/intake-surface.md` | 1088-record census, `fleet-dispatch.mjs::buildQueue` scoring source read, `.ufo-ingestion/` full walk, `fleets/registry.json` decree ledger, live `check-freshness`/`validate` runs |
+| UFO runtime workspaces (`.ufo/` layer + `.omp/`) | `corpus/knowledge/ufo-workspaces.md` | full census: 25 `bh*` warden workspaces + 22 reports + `reroutes.jsonl` (121 records), `bounty-fleet/` 805 M keeper tree (second `missions.jsonl`), `sessions/` bpolish1..8 (refile verdict NONE + grep traps), `grok-bounty-assessment-20260911/` (frozen, self-invalidating), `claim-recovery/`, `.omp/` tracked-vs-live, root `README.md`/`.gitignore` |
+| Repo git state | `corpus/knowledge/repo-git-state.md` | live `git status/branch/rev-list/merge-base/ls-files`: stalled mid-rebase ≥17 days, 903 dirty entries, 12 tags pushed, `claim-ship` superseded ancestor, claims/ 198 tracked files vs 3361 on disk |
+| Target checkouts + provenance pins | `corpus/knowledge/target-checkouts.md` | `pendle-core-v2-public/` (shallow clone `f242659`=v6.10.0, pin-bound), `george/` parked, 187/255 `provenance.json` pin census, `[lost-tree] claim-check.mjs:96-97` never validates pins (lost-tree line range; mirror `ops/claim-check.mjs` is only 83 lines) |
+| Canonical triage thresholds (gates/weights/constants, line-cited) | `corpus/knowledge/triage-thresholds.md` | full reads of `ops/claim-check.mjs`+`ev-report.mjs`+`fleet-dispatch.mjs`+`shared.mjs`+`bounty-map/schema.json` + live censuses; 3-way verified round-13 (L1 read × executor draft × reviewer derivation) |
 | Per-program quirks (fee/precondition patterns) | `knowledge/program-quirks.md` | sibling-package sampling (dydx same-blocker class; morpho/euler/uniswap/reserve honest-zero) — index-orphaned until round 13 |
-| Claim-anatomy sample (per-program `status.json`) | `knowledge/claim-anatomy-sample.md` | round-14: 20 NEW full reads via deterministic stratified rule (script preserved, L1-reproduced); 10→30/280 = 10.7%; deviation classes D1-D13 with anchors |
-| Source-tree loss + mirror provenance (PROVINCE root absent) | `knowledge/source-tree-loss-2026-09-28.md` | round-15: detection commands, 23:32Z–23:51:31Z disappearance window, per-file mirror provenance (`wc -l` + sha256 + anchor verdicts for 11 files), forensic blind spots, anchor-base rule, resolvability census, the never-re-verifiable DATA-half list, 9 L2 audit corrections |
-| Root loss — second event (mirror + origin-work absent; ufo-fsd relocated) | `knowledge/root-loss-2026-10-12.md` | round-19 re-census: `the-bounty-hunter` and the whole `origin-work` tree ABSENT (no relocated copy); `ufo-fsd-alpha` relocated intact to `~/Projects/ufo-fsd-alpha` @ `964f443e`; `[lost-base]` vocabulary, derived-root instruments, `BASE-ABSENT` verdict |
-| Depth instruments (committed, re-runnable; r23 adds `mirror-containment-check.py` + `mirror-containment-fixtures.json` and `source-recheck.py` + `source-snapshots/round-23/manifest.json`; r24 adds `capture-source.py`, `resolve-dispatch-check.py` + `resolve-dispatch-fixtures.json`, `frontier-recheck-count.py` and `source-snapshots/round-24/manifest.json`) | `instruments/{density.py,resolve.py,anchorcheck.py,mirror-containment-check.py,source-recheck.py,README.md}` + `instruments/citation-survival.{md,tsv}` | round-15: evidence-density census, live citation-resolvability census (instrument of record + definition + known limits), mirror anchor range/semantic gate; bar rule `BAR_R15 = 142.5` frozen + conjunctive ≥60 % resolvability gate from r16 |
-| Lessons | `lessons/round-1.md` … `lessons/round-15.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
+| Claim-anatomy sample (per-program `status.json`) | `corpus/knowledge/claim-anatomy-sample.md` | round-14: 20 NEW full reads via deterministic stratified rule (script preserved, L1-reproduced); 10→30/280 = 10.7%; deviation classes D1-D13 with anchors |
+| Source-tree loss + mirror provenance (PROVINCE root absent) | `corpus/knowledge/source-tree-loss-2026-09-28.md` | round-15: detection commands, 23:32Z–23:51:31Z disappearance window, per-file mirror provenance (`wc -l` + sha256 + anchor verdicts for 11 files), forensic blind spots, anchor-base rule, resolvability census, the never-re-verifiable DATA-half list, 9 L2 audit corrections |
+| Root loss — second event (mirror + origin-work absent; ufo-fsd relocated) | `corpus/knowledge/root-loss-2026-10-12.md` | round-19 re-census: `the-bounty-hunter` and the whole `origin-work` tree ABSENT (no relocated copy); `ufo-fsd-alpha` relocated intact to `~/Projects/ufo-fsd-alpha` @ `964f443e`; `[lost-base]` vocabulary, derived-root instruments, `BASE-ABSENT` verdict |
+| Depth instruments (committed, re-runnable; r23 adds `mirror-containment-check.py` + `mirror-containment-fixtures.json` and `source-recheck.py` + `corpus/source-snapshots/round-23/manifest.json`; r24 adds `capture-source.py`, `resolve-dispatch-check.py` + `resolve-dispatch-fixtures.json`, `frontier-recheck-count.py` and `corpus/source-snapshots/round-24/manifest.json`) | `instruments/{density.py,resolve.py,anchorcheck.py,mirror-containment-check.py,source-recheck.py,README.md}` + `instruments/citation-survival.{md,tsv}` | round-15: evidence-density census, live citation-resolvability census (instrument of record + definition + known limits), mirror anchor range/semantic gate; bar rule `BAR_R15 = 142.5` frozen + conjunctive ≥60 % resolvability gate from r16 |
+| Lessons | `lessons/round-1.md` … `corpus/lessons/round-15.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
 | CVSS v4.0 severity and vector semantics | knowledge/cvss-v4-severity-and-vector.md | S001, S002 — public primary, opened 2026-10-19 |
 | Coordinated-disclosure timelines | knowledge/coordinated-disclosure-timelines.md | S003, S004, S005 — public primary, opened 2026-10-19 |
 | Authorization, safe harbor, and scope | knowledge/authorization-safe-harbor-and-scope.md | S006, S007, S008 — public primary, opened 2026-10-19 |
@@ -57,7 +57,7 @@ its source. No generic filler. [r22 correction: this holds for the 25 legacy ent
   `path:line` cites across 21 `knowledge/*.md` files no longer resolve, and the
   DATA-half censuses (1088 records, 280 packages, 592 evidence dirs, 7227
   telemetry lines, 31 autopsies, the `.git` rebase state) can never be
-  re-verified. Recorded round 15 in `knowledge/source-tree-loss-2026-09-28.md`;
+  re-verified. Recorded round 15 in `corpus/knowledge/source-tree-loss-2026-09-28.md`;
   operator decision requested in `../../../.ufo/l0-questions.md` (reorg vs
   deletion, recoverability, PROVINCE re-point). Two surviving roots:
   `~/Projects/the-bounty-hunter` (frozen 2026-09-05 code mirror, censused r15)
@@ -70,17 +70,17 @@ its source. No generic filler. [r22 correction: this holds for the 25 legacy ent
   this corpus is now a historical record — `[lost-base]` where anchored —
   unless the sentence re-anchors it to `~/Projects/ufo-fsd-alpha` (the one
   tree that relocated intact, HEAD `964f443e`). Evidence:
-  `knowledge/root-loss-2026-10-12.md`; vocabulary: `knowledge/citation-bases.md`.
+  `corpus/knowledge/root-loss-2026-10-12.md`; vocabulary: `corpus/knowledge/citation-bases.md`.
 - Anchor bases are pinned per file, and only 1 of 21 `knowledge/*.md` entries
   (`triage-thresholds.md`, pinned to blob `fc6d398` for its `SKILL.md:NNN`
   cites) carries an explicit pin so far — pinning the other 20 is the r16
   `depth:verifiability` move.
 - ~~ops tail (`validate`/`registry-check`/`reroute-drill`/`check-freshness`/
   `finalize-all`/sighting scripts + `shared.mjs` constants) name-only~~ —
-  CLOSED round 7: `knowledge/ops-invariants.md` + `knowledge/intake-and-finalize.md`.
+  CLOSED round 7: `corpus/knowledge/ops-invariants.md` + `corpus/knowledge/intake-and-finalize.md`.
 
 - ~~`ops/claim-check.mjs` gate list~~ — CLOSED round 1:
-  `knowledge/claim-gates.md` holds the full extracted gate list.
+  `corpus/knowledge/claim-gates.md` holds the full extracted gate list.
 - Cantina fee/precondition pattern: siblings sampled (dydx same blocker class;
   morpho/euler/uniswap/reserve honest-zero) — see `program-quirks.md`.
 - ~~`vgn-bounty-lab/` unwalked~~ — CLOSED round 4: empty `git init`, zero
@@ -91,34 +91,34 @@ its source. No generic filler. [r22 correction: this holds for the 25 legacy ent
   `knowledge/mission-ledger.md` (transition counts, telemetry event census,
   ops inventory).
 - ~~`fleets/ufo-archive-2026/` unwalked~~ — CLOSED round 8:
-  `knowledge/ufo-archive-2026.md` (19-mission defect taxonomy, b1k-NNN
+  `corpus/knowledge/ufo-archive-2026.md` (19-mission defect taxonomy, b1k-NNN
   keeper origin, `claim-packages/`→`claims/` naming drift, reconciliation
   evidence chain).
-- ~~`fleets/registry.json` lane→model routing — possibly cross-domain~~ — CLOSED round 11: `knowledge/intake-surface.md` (in-domain: `operator_decrees` is the authoritative decree ledger — claim queue order, 3cx never-filed, intel hold, freebie attribution flip — plus lane/bucket routing consumed by validate/registry-check).
+- ~~`fleets/registry.json` lane→model routing — possibly cross-domain~~ — CLOSED round 11: `corpus/knowledge/intake-surface.md` (in-domain: `operator_decrees` is the authoritative decree ledger — claim queue order, 3cx never-filed, intel hold, freebie attribution flip — plus lane/bucket routing consumed by validate/registry-check).
 - `george/` (49G comma.ai research dir) — parked round 4: no claim package
   references it; revisit only if one does.
 - ~~No consolidated do-not-submit list~~ — CLOSED round 9:
-  `knowledge/submitted-registry.md` (3 verified H1 + 3 archive-era live in
+  `corpus/knowledge/submitted-registry.md` (3 verified H1 + 3 archive-era live in
   origin-work tree + 3 probable orphans + 1 VDP; Anthropic claim↔VDP
   same-finding collision verified by live claim-check OK; origin-work
   corpus outside every scan; field-spelling + polarity traps; 15
   status-less stub dirs; root zips = dated snapshots).
 - ~~`claim-hold/*` semantics + queued-row audit~~ — CLOSED round 10:
-  `knowledge/operator-queue.md` (claim-index ignores hold tags → 3 held rows
+  `corpus/knowledge/operator-queue.md` (claim-index ignores hold tags → 3 held rows
   queued; anthropic row = own VDP disclosure, verified byte-identical;
   per-row residual-gate dossier).
 
 - ~~`.ufo/bh*/` mission workspaces, `.ufo/sessions/`, `.ufo/bounty-fleet/`, and
   `grok-bounty-assessment-20260911` un-censused~~ — CLOSED round 12:
-  `knowledge/ufo-workspaces.md` (25 bh workspaces incl. the 507 M foreign-tree
+  `corpus/knowledge/ufo-workspaces.md` (25 bh workspaces incl. the 507 M foreign-tree
   outlier; warden producer + lifecycle; keeper tree with the second
   `missions.jsonl`; 8 bpolish seats, refile verdict NONE, 471-false-positive
   grep trap; frozen self-invalidating grok assessment; `.omp/` second routing
   truth; 656 claims files cite `.ufo/` paths, 51/543 refs already dangling).
 - `pendle-core-v2-public/` (63 M vendored hunt target, never named in LOG) +
   the provenance-pin contract — CLOSED round 12:
-  `knowledge/target-checkouts.md`.
-- Repo git runtime state — CLOSED round 12: `knowledge/repo-git-state.md`
+  `corpus/knowledge/target-checkouts.md`.
+- Repo git runtime state — CLOSED round 12: `corpus/knowledge/repo-git-state.md`
   (stalled mid-rebase since before 2026-09-11, `gitMutationBlocker` refuses
   all fleet commits, all Sep 7–15 work working-tree-only; escalated to L0 via
   `.ufo/l0-questions.md`).
@@ -153,7 +153,7 @@ its source. No generic filler. [r22 correction: this holds for the 25 legacy ent
 - ~~Per-program claim anatomy is ~3.6% sampled (≈10 of 280 status-gated
   packages read line-by-line)~~ — ADVANCED round 14: +20 full reads via a
   deterministic stratified selection (script preserved + L1 re-run) →
-  **30/280 = 10.7%** (`knowledge/claim-anatomy-sample.md`; D1-D13 deviation
+  **30/280 = 10.7%** (`corpus/knowledge/claim-anatomy-sample.md`; D1-D13 deviation
   classes, 260/280 packages deviate from the canonical key set). The full
   100% census remains a future coverage sub-axis candidate — deliberate,
   not a gap-by-omission.
@@ -187,8 +187,8 @@ its source. No generic filler. [r22 correction: this holds for the 25 legacy ent
 
 | Entry | Evidence status |
 |---|---|
-| `lessons/round-17-mirror-relocation.md` | Inherited interrupted-worker record; preserved verbatim. Round-number and mutable-filesystem guard corrections are in the new round-21 entry, not rewritten into this historical lesson. |
-| `lessons/round-21-routing-blocked.md` | Routing-blocked authority audit, zero verified-round credit; inherited CLI behavior re-executed, failed 32/506 replays preserved, Git-export versus live-filesystem definitions separated. |
+| `corpus/lessons/round-17-mirror-relocation.md` | Inherited interrupted-worker record; preserved verbatim. Round-number and mutable-filesystem guard corrections are in the new round-21 entry, not rewritten into this historical lesson. |
+| `corpus/lessons/round-21-routing-blocked.md` | Routing-blocked authority audit, zero verified-round credit; inherited CLI behavior re-executed, failed 32/506 replays preserved, Git-export versus live-filesystem definitions separated. |
 
 No new domain knowledge is admitted by this index addition. The required
 quality bar `corpus/QUALITY.md` is absent; it remains conformance debt.
@@ -226,7 +226,7 @@ frontier count stays outside it.
 ## Round-28 reconciliation — coverage map and expected list (appended 2026-10-25)
 
 The coverage map above is not edited in place: the round-28 entry
-`knowledge/japanese-domestic-disclosure-workflow.md` (Frontier F12, sources S041 + S042; source
+`corpus/knowledge/japanese-domestic-disclosure-workflow.md` (Frontier F12, sources S041 + S042; source
 basis: the JPCERT/CC 2026 早期警戒パートナーシップガイドライン re-captured this round plus the new
 IPA 脆弱性関連情報の届出受付業務における取扱いプロセス row S042, both captured 2026-10-25 under
 `corpus/source-snapshots/round-28/`) is recorded here as an appended amendment so every existing
@@ -247,7 +247,7 @@ list was not regenerated). Once the round-28 entry landed the audit duly printed
 ## Round-29 admission — coverage map row and Frontier F13 (appended 2026-10-25)
 
 The coverage map above is not edited in place (R6): the round-29 entry
-`knowledge/program-severity-ladders-and-reward-scales.md` (Frontier F13, sources S043 +
+`corpus/knowledge/program-severity-ladders-and-reward-scales.md` (Frontier F13, sources S043 +
 S044 + S045; source basis: the HackerOne standard program policy set, the Bugcrowd VRT
 README and the Bugcrowd VRT CWE crosswalk, all captured 2026-10-25 under
 `corpus/source-snapshots/round-29/`) is recorded here as an appended amendment so every
@@ -257,7 +257,7 @@ frontier above.
 
 | Area | Entry | Source basis |
 |---|---|---|
-| Program severity ladders and reward scales (round 29) | `knowledge/program-severity-ladders-and-reward-scales.md` | S043, S044, S045 — public primary, opened 2026-10-25 |
+| Program severity ladders and reward scales (round 29) | `corpus/knowledge/program-severity-ladders-and-reward-scales.md` | S043, S044, S045 — public primary, opened 2026-10-25 |
 
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
@@ -266,7 +266,7 @@ frontier above.
 ## Round-30 admission — coverage map row and Frontier F14 (appended 2026-10-25)
 
 The coverage map above is not edited in place (R6): the round-30 entry
-`knowledge/japanese-severity-vocabulary-and-impact-model.md` (Frontier F14, sources S046 +
+`corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md` (Frontier F14, sources S046 +
 S047 + S041; source basis: the IPA JVN activity report PDF and the IPA JVN quarterly
 registration report, both first registered this round, plus the already-registered
 JPCERT/CC 2026 guideline S041, all captured 2026-10-25 under
@@ -277,7 +277,7 @@ frontier above.
 
 | Area | Entry | Source basis |
 |---|---|---|
-| Japanese severity vocabulary and handling-priority model (round 30) | `knowledge/japanese-severity-vocabulary-and-impact-model.md` | S046, S047 (S041) — public primary, opened 2026-10-25 |
+| Japanese severity vocabulary and handling-priority model (round 30) | `corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md` | S046, S047 (S041) — public primary, opened 2026-10-25 |
 
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
@@ -293,7 +293,7 @@ outside it.
 ## Round-31 admission — coverage map row and Frontier F15 (appended 2026-10-25)
 
 The coverage map above is not edited in place (R6): the round-31 entry
-`knowledge/vendor-third-party-finding-coordination.md` (Frontier F15, source S048; source
+`corpus/knowledge/vendor-third-party-finding-coordination.md` (Frontier F15, source S048; source
 basis: the Microsoft Security Response Center's own Microsoft Security Vulnerability
 Research (MSVR) page, captured 2026-10-25 under `corpus/source-snapshots/round-31/`) is
 recorded here as an appended amendment so every existing line keeps its number. The
@@ -318,7 +318,7 @@ frontier count stays outside it.
 ## Round-33 admission — coverage map row and Frontier F16 (appended 2026-10-26)
 
 The coverage map above is not edited in place (R6): the round-33 entry
-`knowledge/chinese-crowdsourced-testing-scope-and-rewards.md` (Frontier F16, sources S049 + S050;
+`corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md` (Frontier F16, sources S049 + S050;
 source basis: the CNVD 众测 platform's 使用手册 at https://zc.cnvd.org.cn/news/helpList and
 360SRC's 外部漏洞处理和评分标准 V2.0 at https://security.360.cn/Reward/rules, both captured
 2026-10-25 under `corpus/source-snapshots/round-32/`) is recorded here as an appended amendment so
@@ -344,7 +344,7 @@ still holds 0 of 18 surfaces present, and the frontier count stays outside it.
 ## Round-34 admission — coverage map row and Frontier F17 (appended 2026-10-26)
 
 The coverage map above is not edited in place (R6): the round-34 entry
-`knowledge/immunefi-vscs-v2-2-smart-contract-severity.md` (Frontier F17, source S051; source basis:
+`corpus/knowledge/immunefi-vscs-v2-2-smart-contract-severity.md` (Frontier F17, source S051; source basis:
 Immunefi's own Vulnerability Severity Classification System v2.2 at
 https://immunefi.com/immunefi-vulnerability-severity-classification-system-v2-2/, captured
 2026-10-26 under `corpus/source-snapshots/round-34/`) is recorded here as an appended amendment so
@@ -370,7 +370,7 @@ denominator still holds 0 of 18 surfaces present, and the frontier count stays o
 ## Round-35 admission — coverage map row and Frontier F18 (appended 2026-10-26)
 
 The coverage map above is not edited in place (R6): the round-35 entry
-`knowledge/cisa-kev-catalog.md` (Frontier F18, source S052; source basis:
+`corpus/knowledge/cisa-kev-catalog.md` (Frontier F18, source S052; source basis:
 CISA's Known Exploited Vulnerabilities JSON feed at
 https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
 (catalogVersion 2026.10.23, count 1756), captured 2026-10-26 under
@@ -399,7 +399,7 @@ stays outside it.
 
 
 The coverage map above is not edited in place (R6): the round-37 entry
-`knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md` (Frontier F20, source S054;
+`corpus/knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md` (Frontier F20, source S054;
 source basis: CERT/CC's SSVC "What is SSVC?" overview tutorial at
 https://certcc.github.io/SSVC/tutorials/ssvc_overview/ — the overview page, not the docs home, per
 `claims-erratum-1.md` and capture-binding rule B5 — captured 2026-10-26, status 200, under
@@ -429,7 +429,7 @@ surfaces present, and the frontier count stays outside it.
 |---|---|
 | sha256 (block bytes) | `2ebd8cd2881b020cb0e234658adf132cf4741c1d226e1d7c267f7d71c5b7e97b` |
 | bytes / lines | 2947 / 27 |
-| row shape | six cells (id, topic, status, entry, sources, next), topic names SSVC as stakeholder-tailored decision-point prioritization, entry path `knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md`, source `S054` |
+| row shape | six cells (id, topic, status, entry, sources, next), topic names SSVC as stakeholder-tailored decision-point prioritization, entry path `corpus/knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md`, source `S054` |
 | count line | `[r37 amendment, appended 2026-10-26]` naming `20/20 admitted` and F01-F08 r23, F09 r24, F10 r25, F11 r26, F12 r28, F13 r29, F14 r30, F15 r31, F16 r33, F17 r34, F18 r35, F19 r36, F20 r37; the 0/18 sentence is declared untouched |
 | URL choice | overview tutorial page per `claims-erratum-1.md`; the paragraph says so and why (capture-binding B5) |
 
@@ -459,7 +459,7 @@ Correction (round 38): corpus/README.md L399-L454 — the whole round-37 append 
 ## Round-38 admission — coverage map row and Frontier F21 (appended 2026-10-26)
 
 The coverage map above is not edited in place (R6): the round-38 entry
-`knowledge/csaf-vex-product-status-and-justifications.md` (Frontier F21, source S055;
+`corpus/knowledge/csaf-vex-product-status-and-justifications.md` (Frontier F21, source S055;
 source basis: the OASIS CSAF TC's own normative text, the CSAF 2.0 OASIS Standard at
 https://docs.oasis-open.org/csaf/csaf/v2.0/os/csaf-v2.0-os.html — the standard document itself, not
 a summary page or the TC's home — captured 2026-10-26T18:25:51Z, HTTP status 200, 272441 bytes /
@@ -488,7 +488,7 @@ surfaces present, and the frontier count stays outside it.
 ## Round-39 admission — coverage map row and Frontier F22 (appended 2026-10-26)
 
 The coverage map above is not edited in place (R6): the round-39 entry
-`knowledge/cisa-when-to-issue-vex.md` (Frontier F22, source S057; source basis: CISA's own
+`corpus/knowledge/cisa-when-to-issue-vex.md` (Frontier F22, source S057; source basis: CISA's own
 "When to Issue VEX Information" page at
 https://www.cisa.gov/resources-tools/resources/when-issue-vex-information — the issuance,
 lifecycle, timestamp-reaffirmation and upstream-inheritance guidance that sits beyond the CSAF
@@ -517,7 +517,7 @@ still holds 0 of 18 surfaces present, and the frontier count stays outside it.
 ## Round-40 admission — coverage map row and Frontier F23 (appended 2026-10-26)
 
 The coverage map above is not edited in place (R6): the round-40 entry
-`knowledge/cyclonedx-analysis-subtree.md` (Frontier F23, source S060; source basis: the CycloneDX
+`corpus/knowledge/cyclonedx-analysis-subtree.md` (Frontier F23, source S060; source basis: the CycloneDX
 v1.7 JSON reference's `vulnerabilities[].analysis` subtree at https://cyclonedx.org/docs/1.7/json/ —
 the `analysis.state`, `analysis.justification` and `analysis.response` fields that record an
 analyst's decision about a vulnerability — captured 2026-10-26 under `corpus/source-snapshots/round-40/`)
@@ -545,7 +545,7 @@ outside it.
 ## Round-41 admission — coverage map row and Frontier F24 (appended 2026-10-27)
 
 The coverage map above is not edited in place (R6): the round-41 entry
-`knowledge/rfc-9116-security-txt.md` (Frontier F24, source S063; source basis: RFC 9116 "A File
+`corpus/knowledge/rfc-9116-security-txt.md` (Frontier F24, source S063; source basis: RFC 9116 "A File
 Format to Aid in Security Vulnerability Disclosure" at https://www.rfc-editor.org/rfc/rfc9116.txt —
 the machine-readable disclosure-channel discovery format, its `/.well-known/` location rule, its
 eight defined fields with Contact and Expires the only REQUIRED ones and its Expires staleness
@@ -605,31 +605,31 @@ The coverage map above and the frontier table are not edited in place (R6). The 
 `Claim-package contract` row has so far been documentation-only — one entry,
 `knowledge/claim-package-contract.md`, describing gates whose `ops/claim-check.mjs` went with
 `~/Projects/bounties` — and this round the contract gains an executable surface:
-`instruments/claim-package-check.py` (eight rules, one `RULE <id> verdict=` line each) over the
+`corpus/instruments/claim-package-check.py` (eight rules, one `RULE <id> verdict=` line each) over the
 committed exemplar `instruments/fixtures/claim-package/exemplar/` and nine one-delta fixtures
 `instruments/fixtures/claim-package/defect-1-missing-file` through `defect-9-secret`, documented by
-the new entry `knowledge/claim-package-gate.md`. NO frontier row (F01-F25) changes and the measured
+the new entry `corpus/knowledge/claim-package-gate.md`. NO frontier row (F01-F25) changes and the measured
 ratio is unchanged: 25/25 admitted, still 0 of 18 lost-domain surfaces present.
 
 ## Round-44 admission — coverage map row and Frontier F26 (appended 2026-10-28)
 
 The coverage map and frontier table above are not edited in place (R6). The round-44 entry
-`knowledge/google-cloud-vrp-customer-resource-boundary.md` (F26, source S069) records the
+`corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md` (F26, source S069) records the
 Google Cloud VRP's own customer-resource testing boundary. Its evidence is limited to this
 program's rule text; it does not assert general authorization or speak for Google's other
 programs.
 
 | Area | Entry | Source basis |
 |---|---|---|
-| Google Cloud VRP program scope and customer-resource reward eligibility (round 44) | `knowledge/google-cloud-vrp-customer-resource-boundary.md` | S069 — official Google Cloud VRP rules, opened 2026-10-28; capture and located quotes in `corpus/source-snapshots/round-44/manifest.json` |
+| Google Cloud VRP program scope and customer-resource reward eligibility (round 44) | `corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md` | S069 — official Google Cloud VRP rules, opened 2026-10-28; capture and located quotes in `corpus/source-snapshots/round-44/manifest.json` |
 
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
-| F26 | Google Cloud VRP's own program scope, customer-resource testing prohibition and reward-ineligibility boundary | admitted | `knowledge/google-cloud-vrp-customer-resource-boundary.md` | S069 | Keep the Cloud VRP boundary distinct from general authorization, other Google reward programs, and customer permission; re-open the policy before relying on it. |
+| F26 | Google Cloud VRP's own program scope, customer-resource testing prohibition and reward-ineligibility boundary | admitted | `corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md` | S069 | Keep the Cloud VRP boundary distinct from general authorization, other Google reward programs, and customer permission; re-open the policy before relying on it. |
 
 [r44 amendment, appended 2026-10-28] The 25/25 parenthetical above records the round-43 state and is retained as history (R9). At round 44 the public-practice frontier stands at **26/26 admitted** — F01-F25 as previously recorded and F26 admitted this round. The lost-domain denominator remains 0/18; the frontier count is separate.
 
-Correction (round 44, appended 2026-10-28): the novel F26 ground is the Cloud VRP's customer-IP-range prohibition (including that a Google-owned asset found inside a customer CIDR is still unauthorized) and the safe local-reproduction boundary for unsafe multi-tenant escapes (`knowledge/google-cloud-vrp-customer-resource-boundary.md`, S069.txt:73-87). This is distinct from the generic scope/authorization/reward distinctions already held under F03, F09, F13 and F01; the F26 table row itself remains byte-identical.
+Correction (round 44, appended 2026-10-28): the novel F26 ground is the Cloud VRP's customer-IP-range prohibition (including that a Google-owned asset found inside a customer CIDR is still unauthorized) and the safe local-reproduction boundary for unsafe multi-tenant escapes (`corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md`, S069.txt:73-87). This is distinct from the generic scope/authorization/reward distinctions already held under F03, F09, F13 and F01; the F26 table row itself remains byte-identical.
 
 ## Round-45 admission — coverage map row and Frontier F27 (appended 2026-10-28)
 
@@ -700,3 +700,27 @@ platforms or vendors run a maintainer-side advisory lifecycle.
 | F29 current capture provenance | `corpus/knowledge/github-repository-security-advisories.md` | S076 supersedes S074 for the current entry; committed-instrument capture under `corpus/source-snapshots/round-47/` |
 
 No F30 row is admitted: the proposed ZDI timeline frontier duplicates F02's existing coordinator/trigger/interval discipline. The opened policy is useful enrichment, not a new frontier count. The existing F29 row above is historical; its current entry now cites S076 while the S074 capture remains retained for round-46 history. This does not retroactively change the round-46 rejected-harmed verdict. `PROVINCE.md` stays unchanged.
+## Round-49 admission — coverage map row and Frontier F30 (appended 2026-10-30)
+
+The coverage map above is not edited in place (R6): the round-49 entry
+`corpus/knowledge/cve-services-publication-api.md` (Frontier F30, source S078;
+source basis: the CVE Program's own OpenAPI document for the CVE Services API, captured 2026-10-30 under
+`corpus/source-snapshots/round-49/`) is recorded here as an appended amendment so every existing line keeps
+its number. The coverage-map row is appended here rather than inserted into the map, and the F30 frontier row
+is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| CVE Services publication API (round 49) | `corpus/knowledge/cve-services-publication-api.md` | S078 — first-party spec, opened 2026-10-30 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F30 | CVE Services publication API — the CVE Program's own write path (identifier reservation, CNA-container publication and update, rejection, ADP-container enrichment, CNA↔Secretariat conversation) | admitted | `corpus/knowledge/cve-services-publication-api.md` | S078 | Read the publication state from the endpoint that writes it, not from the record's fields: reserving an identifier, publishing a CNA container, rejecting the record and adding an ADP container are four different endpoints with three different actors (CNA, Secretariat, ADP), so "the CVE is published" names no single call (`S078.txt:125`, `S078.txt:1368`, `S078.txt:1594`, `S078.txt:1798`). Keep this write path distinct from F25's record format and F07's numbering rules; re-open the capture before relying on an endpoint's actor list. |
+
+[r49 amendment, appended 2026-10-30] The round-47 note above ("No F30 row is admitted: the proposed ZDI timeline
+frontier duplicates F02's existing coordinator/trigger/interval discipline") is the round-47 verdict on the ZDI
+candidate and stays standing as history; it is not this round's F30. The frontier as of round 49 is F01–F30
+admitted: F01-F08 at round 23, F09 at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round
+29, F14 at round 30, F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at
+round 37, F21 at round 38, F22 at round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44,
+F27 at round 45, F28 and F29 at round 46, F30 at round 49.

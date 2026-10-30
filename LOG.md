@@ -2070,3 +2070,50 @@ Correction (round 43): the wave-shape bullet above states `70 of the 73 seats re
 - Correction to the attempt-2 entry above (append-only, not rewritten): its statement that the dispatcher re-keyed the wave's `WAVE-DONE` to this attempt was an inference from the dispatcher's bootstrap rule. The message did not arrive; the settlement record is the results file. The attempt-2 inherited-state bullet is withdrawn on that point only.
 - Count correction (append-only): the bullet above says "Attack-role seats with output: 29 of 36". The strict attack set is reviewer, critic and mutation-tester (the sentinel is not an attack role): 35 seats, 29 with output. The 36 figure counted the sentinel and is withdrawn.
 - Scope correction (append-only): the `considerthese-proposals-ledger.md` section that the wave-1 integration commit `e76c16d` appended (`## Round-48 dispositions`) is considerthese mining under protocol section 10, which a frozen-claim resume defers to the lane's next round. It is reverted to its `c7be2bc` bytes in the following lane commit. The LOG bullet that describes the section as landed is withdrawn; no proposal is credited as claim work this round.
+## Round 49 — citation-base grounding and the CVE Services publication surface (L1 KasegiR49)
+
+- Two declared claims, frozen before any seat scored: C1 on depth:verifiability (the lane's lowest
+  non-retired axis, score 4) and C2 on coverage (a new frontier row). Base
+  `9b1662a2fa0e7c7b0ad6c4d45cb7786f27bdd03b`; freeze commit `1954022d91c2063d0ce25bb5551778bc0b3e70f3`; claim
+  file `.ufo/waves/round-49/claims.json` (sha256 `c299aeaf…`); do-nothing control
+  `.ufo/waves/round-49/controls/do-nothing.txt`; `freeze-check.py` replay at the base export reads
+  `claims=2 base_ok=2 exit=0`.
+- C1 (depth:verifiability, metric move on the axis counter): the frozen counter
+  `corpus/instruments/citation-ground-check.py` (sha256 `988a5370…`, unchanged since the freeze; self-test
+  `selftest cases=10 failures=0`) enumerates two classes of citation that names an existing file but cannot be
+  opened from the lane root — LANE-internal cites written without the `corpus/` prefix (the lane's own base
+  rule in `corpus/knowledge/citation-bases.md` says the resolver tries the lane root only) and fleet-root-
+  relative cites (the vocabulary had no FLEET base). At the base it reads `unresolved-class=68`
+  (class-lane-bare=57, class-fleet-relative=11; class-total=147 with 79 members blocked by protected files the
+  lane may not edit). 68 members were re-grounded at 109 sites, each recorded in the committed ledger
+  `corpus/instruments/citation-reground-ledger.md` with the referent note; the counter then reads
+  `unresolved-class=0 ledger-rows=68 rows-resolving=68 findings=0`, exit 0.
+- The vocabulary gains a FLEET base entry and a round-49 amendment to rule 6 (a base repair that keeps every
+  line anchor and every sentence is not the rewrite rule 6 forbids); the amendment is in
+  `corpus/knowledge/citation-bases.md` and is logged with the reason.
+- C2 (coverage, frontier F30): the CVE Program's own OpenAPI document for the CVE Services API (2.8.8.1) was
+  opened by the L1 on 2026-10-30 and captured as `corpus/source-snapshots/round-49/S078.txt` (sha256
+  `1403e607…`, 282553 bytes, 8374 lines) with the manifest `corpus/source-snapshots/round-49/manifest.json`
+  (8 assertions, each exactly-once at its pinned anchor; `source-recheck.py --source S078` exits 0;
+  `capture-binding-check.py --root .` exits 0). The admitted entry is
+  `corpus/knowledge/cve-services-publication-api.md` (ground F30): the write path — identifier reservation,
+  CNA-container publication and update, rejection, ADP-container enrichment and the CNA↔Secretariat
+  conversation — kept distinct from F25's record format and F07's numbering rules. The frontier census moves
+  `FRONTIER-CENSUS rows=29 admitted=29 closed=29 problem-rows=0 registry=77` →
+  `FRONTIER-CENSUS rows=30 admitted=30 closed=30 problem-rows=0 registry=78` (`entries=33 pass=33 exit=0`).
+- Registry: rows 77 → 78; one row added (S078, kind `spec`, tier A, status `mined`, opened 2026-10-30, recheck
+  `90d`, used-by the new entry); no pre-existing row's status, recheck or used-by cell was touched. The
+  round-49 Search-log bullet records the bounded study, its counts and its stop rationale. The census prints
+  the same four W04 duplicate-URL warnings as before and exits 0.
+- Frontier: rows 29 → 30 (F30 admitted at round 49). The round-47 sentence "No F30 row is admitted" is the
+  round-47 verdict on the ZDI candidate and stays standing as history; the round-49 README amendment names it
+  as such.
+- Mistakes mined into `corpus/lessons/round-49.md` § Mistakes: a stale instrument census quoted as current (the
+  committed census described a 50-file corpus and a 9.05% lane rate where the live instrument on the same tree
+  read 22.81%), the counter's own two defects caught by its self-test before the freeze (substring token
+  comparison, fixture layout), a past verdict read as a standing ban, and the vocabulary's missing FLEET base.
+- Scores: depth:verifiability 4 held (delta 0 — the claim moved the citation-survival metric the axis counter
+  reads; the score-5 bar is a different measurement and `score-gap.py` still prints "gap: 22 of 68 rechecks
+  still gated on a lost base"), coverage 8 held (delta 0 — the frontier gained a row; the coverage score's
+  denominator is the lost domain root's 18-surface set, 0 present), depth:density 9 held (`SKILL.md` unedited).
+  No capability row enters.

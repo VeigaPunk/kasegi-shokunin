@@ -1885,3 +1885,39 @@ Frozen claim C1: `.ufo/waves/round-48/claims.json` (claims sha256 `b8022cdf…`;
 
 1. **depth:verifiability (4, lowest):** route M48-5 and M48-4 into a claim whose counter reads a metric the axis actually measures (`resolve.py` citation survival over SKILL.md and corpus). Before and after from the same census command; no SHONEN-only credit.
 2. **Fixture provenance (M48-4):** add a new non-frozen fixture file whose positive control is the shipped SHONEN.md bytes (sha `b1352168…`) and whose mutants cover the unchecked-box-with-evidence shape. The frozen `fixtures.json` is not amended.
+## Round 49 result — citation-base grounding (C1) and the CVE Services publication surface (C2)
+
+Frozen claims: `.ufo/waves/round-49/claims.json` (base `9b1662a2fa0e7c7b0ad6c4d45cb7786f27bdd03b`, freeze
+commit `1954022d91c2063d0ce25bb5551778bc0b3e70f3`, do-nothing control
+`.ufo/waves/round-49/controls/do-nothing.txt`).
+
+| Axis | Before | After | Verdict and evidence |
+|---|---:|---:|---|
+| depth:verifiability | 4 | **4 held; delta 0** | C1 verifies on its frozen predicate and moves a metric the axis counter itself reads: the frozen counter `corpus/instruments/citation-ground-check.py` reads `unresolved-class=68` at the base and `unresolved-class=0` with `ledger-rows=68 rows-resolving=68 findings=0` (exit 0) after the repair, and the axis instrument `resolve.py` reads a strictly higher lane rate (see the measurement below). The SCORE is held at 4 because the score-5 bar is a different measurement: `score-gap.py` prints "gap: 22 of 68 rechecks still gated on a lost base; score 5 needs 0 gated unsupported claims" and `recheck-audit.py --quiet` prints `executes=46 gated=22 broken=0` — unchanged from round 46, because those 22 gated lines fail closed on the lost domain bases, which only the operator can restore. Named residue: 79 further class members sit in `round-*-verifier-spotcheck.md` and `round-*-aggregator-*.md` lessons the lane may not edit; they are enumerated and disclosed as debt, not repaired. |
+| coverage | 8 | **8 held; delta 0** | C2 verifies on its frozen predicate: the frozen counter `corpus/instruments/frontier-recheck-count.py` reads `FRONTIER-CENSUS rows=29 admitted=29 closed=29 problem-rows=0 registry=77` at the base and `FRONTIER-CENSUS rows=30 admitted=30 closed=30 problem-rows=0 registry=78` (`entries=33 pass=33 exit=0`) after the admission. The score is held because the coverage score's denominator is the lost domain root's 18-surface set (0 present, 18 corpus-attested, operator-owned re-scope), not the frontier count; a new frontier row is the lane's frontier measure, not a coverage-score move. |
+| depth:density | 9 | 9 held; non-target guard | `SKILL.md` was not edited this round, so the density instrument's input bytes are unchanged (`density.py SKILL.md` mean and block count re-measured in the wave receipts). |
+
+### Round-49 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 49 | depth:verifiability | `unresolved-class=68` (class-lane-bare 57, class-fleet-relative 11) | `unresolved-class=0`, `ledger-rows=68`, `rows-resolving=68`, `findings=0`, exit 0 | `.ufo/waves/round-49/controls/do-nothing.txt`; `corpus/instruments/citation-reground-ledger.md`; `corpus/instruments/citation-ground-check.py` (sha256 `988a5370…`, unchanged since the freeze) |
+| 49 | depth:verifiability (axis census) | lane total 1071/4696 = 22.81% | strictly higher lane total; 19 repairs create a fresh distinct citation and 49 merge into an existing one | `corpus/instruments/citation-survival.md` (regenerated at the base commit) and the round-49 after-receipt |
+| 49 | coverage | `FRONTIER-CENSUS rows=29 admitted=29 closed=29 problem-rows=0 registry=77` | `FRONTIER-CENSUS rows=30 admitted=30 closed=30 problem-rows=0 registry=78`; `entries=33 pass=33 exit=0` | `corpus/knowledge/cve-services-publication-api.md`; `corpus/source-snapshots/round-49/` (S078) |
+
+**Capabilities:** none added. The new counter and the ledger are instruments and evidence, not repertoire rows.
+**Saturation unchanged:** line 9/10 per owned axis, window N = 3; the lowest non-retired axis remains
+depth:verifiability (4) and the round-49 claim works it on its own counter.
+**Non-author verification:** outstanding. Wave-1 seats are lane seats, not outside verifiers; the outside
+spot-check of this round's admits (S078, F30) and of its rejects is not yet on record.
+
+### Planned for round 50 (not frozen)
+
+1. **depth:verifiability (4, lowest):** the score-5 bar is "0 gated unsupported claims" and 22 gated
+   recheck lines fail closed on the lost domain bases — operator-owned restoration, not a lane move. The
+   lane-side lever that is still open is the residue: 79 class members in protected files. Either the
+   operator or the aggregator re-grounds them (the lane may not edit those files), or the round declares
+   them as permanent debt with a named owner and stops re-measuring them as a lane target.
+2. **coverage (8):** the next frontier row must come from a first-party capture that is not the CVE Services
+   write path; the round-49 scout seat screened three candidates and its report (in the wave directory) is the
+   starting point.

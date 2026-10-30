@@ -1,0 +1,48 @@
+{
+  "schema": "kasegi-shipped-fixture-v1",
+  "note": "Non-frozen fixture file (round 49, M48-4). The round-48 frozen fixture file is NOT amended: its only `canonical` fixture is the pre-freeze draft (sha b476c7aa...), not the bytes the lane actually shipped (sha b1352168...). This file carries the shipped bytes as the positive control and the shapes the round-48 checker accepts or rejects, each with the verdict the checker must print. The runner is corpus/instruments/shonen-shipped-fixture-check.py.",
+  "shipped_positive_control": {
+    "id": "shipped-bytes",
+    "source": "SHONEN.md at the lane tip",
+    "sha256": "b1352168dd7322e73f7ab2ff3e4793c77084845305d1b3a9a9e6a94a034a46d0",
+    "expect_finding": "SF-CLEAN",
+    "expect_exit": 0,
+    "why": "the byte sequence the round-48 claim actually shipped is the positive control; the pre-freeze draft is not"
+  },
+  "fixtures": [
+    {
+      "id": "unchecked-box-with-evidence",
+      "why": "the shape no round-48 fixture covered: the shipped boxes with their marks replaced by an unchecked box, keeping each evidence line",
+      "transform": "unchecked-with-evidence",
+      "expect_finding": "SF-CLEAN",
+      "expect_exit": 0,
+      "verdict_kind": "characterisation",
+      "note": "the checker grades FORM and marks, not the author's assessment; an unchecked box with a resolvable evidence line is a legal author-side form. Documented as a disclosed limit of the frozen grammar, not as a rejected mutant."
+    },
+    {
+      "id": "unchecked-box-without-evidence",
+      "why": "the pristine four-unchecked-box seed the round-48 limits named as reading SF-CLEAN",
+      "transform": "unchecked-without-evidence",
+      "expect_finding": "SF-CLEAN",
+      "expect_exit": 0,
+      "verdict_kind": "characterisation",
+      "note": "a marker-only checklist passes; `canonical=1` must not be read as evidence of assessment substance."
+    },
+    {
+      "id": "removed-box",
+      "why": "a mutant that must stay killed: the first box line removed",
+      "transform": "remove-first-box",
+      "expect_finding": "SF-BOX",
+      "expect_exit": 1,
+      "verdict_kind": "mutant"
+    },
+    {
+      "id": "nul-in-evidence-pointer",
+      "why": "the routed defect M48-6: a NUL byte inside an evidence pointer token is unreadable input and must return the instrument's mapped exit 2 with a named finding, not an uncaught ValueError",
+      "transform": "nul-in-pointer",
+      "expect_finding": "SF-UNREADABLE",
+      "expect_exit": 2,
+      "verdict_kind": "mutant"
+    }
+  ]
+}

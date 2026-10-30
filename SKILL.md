@@ -1196,5 +1196,21 @@ It does not certify a domain task, evidence truth, source recovery or promotion.
 |---|---|---|---|---|---|---|---|
 | shonen-form.py | gate, restricted author-assessment grammar | `python3 corpus/instruments/shonen-form.py --root TREE` | 0 clean form; 1 noncanonical; 2 could-not-evaluate/unreadable or argparse usage | `python3 corpus/instruments/shonen-form-selftest.py --root TREE --work SCRATCH`; separate runner, not a direct self-invocation flag (conformance limitation) | `.ufo/waves/round-48/claims.json`, `controls/fixtures.json`; selftest verifies fixture SHA256 | read-only TREE; runner writes isolated SCRATCH then removes it | kasegi |
 
+## Round-49 shipped-fixture runner and citation-ground gate
+
+Both instruments are procedural: they repair and grade the lane's own bookkeeping, not a bounty gate.
+Neither certifies a domain task, evidence truth, source recovery or promotion.
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| shonen-shipped-fixture-check.py | probe, shipped-bytes positive control and the shapes the round-48 battery does not cover | `python3 corpus/instruments/shonen-shipped-fixture-check.py --root TREE` | 0 every case matches; 1 a case fails; 2 the shipped bytes, the fixture file or the checker cannot be read | `python3 corpus/instruments/shonen-shipped-fixture-check.py --root TREE --work SCRATCH` (prints `selftest cases=5 failures=0`) | `corpus/instruments/shonen-shipped-fixtures.json` (the shipped SHONEN.md bytes pinned by sha256 `b1352168…`) | reads only; writes nothing outside its scratch tree | kasegi |
+| citation-ground-check.py | gate, citation-base grounding over the lane's own files | `python3 corpus/instruments/citation-ground-check.py --root TREE --fleet-root FLEET --ledger LEDGER` | 0 no class member survives and every ledger row resolves; 1 a class member or a ledger row fails; 2 an input cannot be read | `python3 corpus/instruments/citation-ground-check.py --selftest` (prints `selftest cases=10 failures=0`) | `corpus/instruments/citation-reground-ledger.md` (68 rows) | reads only; writes nothing outside its scratch tree | kasegi |
+
+`shonen-form.py` was amended in round 49 to map unreadable input (a NUL byte inside an evidence pointer)
+to its registered exit 2 with the named finding `SF-UNREADABLE`, closing the round-48 closure's routed
+defect M48-6; the amendment touches only that path, the round-48 claim's measurement never fed a NUL byte,
+and the round-48 self-test still reads `selftest cases=17 failures=0`. See QUALITY R60, R61 and the round-49
+lesson.
+
 Checklist history stays in per-round reports and `.ufo/waves/round-48/controls/shonen-before.txt`;
 restoring the seed does not erase or upgrade those historical assessments. See S077 and QUALITY R55.

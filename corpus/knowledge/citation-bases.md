@@ -119,6 +119,39 @@ plain prose.
    content-verified against the current target line (mapping of record: the
    round-18 `LOG.md` entry + regenerated citation census).
 
+**FLEET** means the fleet repository that holds this lane: `/home/vgpnk/Projects/shokunin`, the parent
+directory of the lane root. It carries the protocol and its appendix
+(`/home/vgpnk/Projects/shokunin/PROTOCOL.md`, `/home/vgpnk/Projects/shokunin/PROTOCOL-APPENDIX.md`), the
+mission and axes files (`/home/vgpnk/Projects/shokunin/MISSION.md`,
+`/home/vgpnk/Projects/shokunin/AXES.md`), the corpus contract and the learning path
+(`/home/vgpnk/Projects/shokunin/CORPUS.md`, `/home/vgpnk/Projects/shokunin/LEARNING.md`), the ledger and
+roadmap (`/home/vgpnk/Projects/shokunin/MANIFEST.json`,
+`/home/vgpnk/Projects/shokunin/ROADMAP.md`), the round-prompt and script directories
+(`/home/vgpnk/Projects/shokunin/templates/`, `/home/vgpnk/Projects/shokunin/scripts/`), the driver's runtime
+(`/home/vgpnk/Projects/shokunin/.ufo/`, which holds the round reports and the driver state) and the sibling
+lane repositories (`/home/vgpnk/Projects/shokunin/<lane>-shokunin/`). A citation of one of those files
+written fleet-root-relative names a file that exists but that the lane resolver cannot open, because the
+resolver tries the LANE root for relative paths and the lane root's parent is not a base it searches. Write
+the absolute fleet path instead; the repair keeps the file and the line anchor and changes nothing else.
+Round 49 added this base and repaired 11 such citations; the ledger is
+`corpus/instruments/citation-reground-ledger.md` and the counter is
+`corpus/instruments/citation-ground-check.py`. The lesson of the repair is the lane's own: writing the
+fleet root's file names bare — while documenting the base that forbids exactly that — reintroduced the very
+class the round closed, and the counter caught it in the lane's own new text.
+
+## Rule 6, round-49 amendment — a base repair is not the rewrite rule 6 forbids
+
+Rule 6 (above) keeps pre-round-16 lessons' bare cites as they are, because rewriting a lesson's anchors
+"would either falsify the record or require per-round archaeology". That concern is about the ANCHOR: a
+lesson's `path:NNN` states what a file said at that lesson's round, and moving a line number falsifies the
+historical claim. Round 49 repairs neither the anchor nor the sentence: each repair changes only the BASE
+PREFIX of a LANE-internal or fleet-root-relative cite, keeps every line number exactly as the lesson wrote
+it, edits no sentence, and records the referent reasoning per row in the ledger. A round-49 repair is
+therefore outside the rewrite rule 6 forbids; a repair that moved a line number, or that pointed a cite at a
+different file with the same name, would be inside it and is refused. The census consequence is stated
+plainly: after the round-49 repair the census no longer counts those cites GONE, and the ledger is the
+receipt that says which referent each repaired path names.
+
 ## Provenance (round-22 correction, appended)
 
 source: Lane rounds 18–19 — LOG.md:705-716 and 790-793; base vocabulary in sections Base names and Rules that prevent silent base changes.

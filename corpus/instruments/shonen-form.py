@@ -60,7 +60,15 @@ def main():
     try:
         raw = (args.file or args.root / 'SHONEN.md').read_bytes()
         result = grade(raw.decode('utf-8'), args.root)
-    except (OSError, UnicodeError) as exc:
+    except (OSError, UnicodeError, ValueError) as exc:
+        # Round-49 amendment (M48-6, routed by the round-48 non-author closure): a NUL byte
+        # inside an evidence-pointer token raises ValueError inside pathlib, which this
+        # except clause did not cover, so the instrument exited 1 with a traceback and no
+        # finding line — a verdict-map violation against its own registry row (unreadable
+        # input -> exit 2).  ValueError is now mapped to the same SF-UNREADABLE verdict.
+        # The amendment touches only the unreadable-input path: the round-48 claim's
+        # measurement never fed a NUL byte, and the round-48 self-test still reads
+        # `selftest cases=17 failures=0`.
         print(f'shonen-form canonical=0 finding=SF-UNREADABLE error={type(exc).__name__} exit=2')
         return 2
     code = 0 if result == 'SF-CLEAN' else 1
