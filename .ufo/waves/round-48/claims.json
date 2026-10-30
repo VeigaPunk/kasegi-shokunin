@@ -1,0 +1,24 @@
+{
+  "schema": "kasegi-round-claims-v2",
+  "lane": "kasegi",
+  "round": 48,
+  "author": "KasegiR48",
+  "base": "903d47e13058982460f0d90c1c2b9c7c02680646",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "type": "routed-defect-closure",
+      "predicate": "SHONEN.md conforms to the canonical four-box author-assessment grammar with existing local evidence pointers; this is form validation, not promotion or evidence truth.",
+      "before": "Canonical checklist absent: actual round-47 drift contains 52 author marks and accumulated assessment blocks.",
+      "after": "shonen-form canonical=1 finding=SF-CLEAN exit=0",
+      "counter_cmd": "python3 {tool}/corpus/instruments/shonen-form.py --root {tree}",
+      "expect_before": "shonen-form canonical=0 finding=SF-PREAMBLE exit=1",
+      "expect_after": "shonen-form canonical=1 finding=SF-CLEAN exit=0",
+      "kill_rule": "Fails if canonical=0 at final measured revision, or a tested hidden/commented/duplicate checklist passes the frozen checker, or restoration loses historical bytes (archive must retain SHA256 596122c0f6b598d49eeb384898dc124d41ddb4ea867a569d77402d83017e9c05). A checker source amendment after seat scoring cannot validate this frozen claim. Semantic evidence and promotion stay independently judged.",
+      "control": ".ufo/waves/round-48/controls/do-nothing.txt",
+      "mechanical_limits": "Specific author-side grammar: x marks are rejected (independence cannot be established mechanically). Evidence pointer existence is checked, not semantic truth. Scores held; no source restoration or end-to-end bounty task claimed.",
+      "source": "S077: normative protocol File contract and Promotion gates, opened 2026-10-30, snapshot controls/protocol-source.txt"
+    }
+  ]
+}
