@@ -2138,3 +2138,17 @@ Correction (round 43): the wave-shape bullet above states `70 of the 73 seats re
 - Lane tip at the close of the round: `7bfafc50220c0bfe6fed7ba0251dd19d5a528c71` (plus the commits made in
   this entry), pushed to the lane remote; the report is filed on the fleet repo and cites that hash.
 
+## Round 49 — correction to the filed report (append-only)
+
+- The round-49 report's C1 section stated that the isolated effect of the citation repair had been measured on
+  two scratch exports (the landed tree and the same tree with the repair reversed at the ledger's sites). That
+  measurement was **never taken**: the exports were deleted while their `resolve.py` runs were still in flight,
+  the landed-tree run then failed with `FileNotFoundError` (exit 1) and the reversed-tree run produced no
+  output. The sentence is withdrawn by an appended erratum in the report, which states what was measured (the
+  whole-tree census difference between the base commit's regenerated census and the measured tip's census,
+  1071/4696 = 22.81 % → 1115/4758 = 23.43 %, plus the counter-derived 49-merge/19-fresh arithmetic) and what
+  was not (the isolated effect). The claim's predicate does not depend on it: it is the frozen counter's
+  `unresolved-class=68 → 0`, re-derivable by one command over committed bytes. The mistake is mined in
+  `corpus/lessons/round-49.md` § Mistakes: a measurement sentence may not be written before its run has
+  produced an output.
+
