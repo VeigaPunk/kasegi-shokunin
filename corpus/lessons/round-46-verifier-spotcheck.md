@@ -159,3 +159,69 @@ No owned axis harmed. Both claims verify → the round is admittable.
   fully checkable by a non-author on the current evidence — promotion review is operator-owned.
 - L0 open question carried (routed around, not blocking): whether the 22 remaining gated `recheck:`
   entries may be re-labelled historical records.
+
+## 8. Addendum (2026-10-30, post-landing) — deep-read seat audit; four further routed defects; quality trend amended
+
+A read-only critic seat dispatched for this closure re-opened the S074 admit end-to-end (row cells,
+manifest, quotes, live page, gate receipt) and read the wave seat files against the landed corpus.
+Its report arrived after this file's first landing; every load-bearing claim below was re-verified
+against committed bytes by the closure before being queued here (counterexample 3 is seat-executed,
+closure-corroborated: no committed producer of the 42-line capture exists — `grep -rln 'reader-style\|7087'
+corpus/instruments/` hits only the selftest fixture value).
+
+The **admit/reject decisions in §4 stand** (S074 admit sound: sha-pinned capture, 9/9 quotes ≤25 words
+at their anchors, live HTTP 200 zero drift, scope honestly limited; the three rejects survive — reject
+(a) on the independent ground this file already cited: the database is F29's publication target, not
+the lifecycle's first-party statement). **Claims C1/C2 remain verified; no owned axis harmed; the
+round's admission verdict is unchanged** under the closure's dispatch criterion (every claim verifies,
+no axis harmed). What changes: the quality trend (§6) and the routed-defect queue.
+
+- **D5 — unlanded drafting scaffold committed into `corpus/SOURCES.md` (verified).** Lines ~115-123 and
+  ~176-185 carry L1 instruction prose ("The `## Search log` bullet to append", "Append inside
+  `## Registry changes` … the file ends at `:162`" — the file is 185 lines) with the F29 Search-log
+  bullet and both S074 Registry-changes bullets trapped inside ```markdown fences — never landed as
+  section bullets; `## Leads (unopened)` was never extended. Found by the round's own seat
+  (`R46bW2ScoutCensusPair.md:70` Finding 6) and not fixed or queued. This makes lesson `round-46.md:136`
+  ("S074 row + one Search-log bullet + two Registry-changes bullets") materially misleading — the bytes
+  were added, inside fences. Fix: land the three bullets as real bullets, delete the prose/fences, and
+  append a correction line to the lesson's status sentence.
+- **D6 — three false sentences still standing in the admitted F29 entry (verified).**
+  `corpus/knowledge/github-repository-security-advisories.md:11` and `:88-89` ("body prose is
+  S074.txt:1-42 / all 42 lines are body prose") — false: L1 "In this article", L4 "Copy markdown",
+  L5/L7 headings are page chrome; `:16` "in the order the page states it" — false for steps 3-4 (the
+  page states the CVE request, `S074.txt:24-25`, before the fix-version material, `:38`);
+  `:111-112` "the three cases at S074.txt:40, :41 and :42 let a maintainer publish without a fix
+  version" — false: `:40` says "wait to disclose the issue when the fix is ready", which forbids
+  publish-without-fix; only `:41`-`:42` permit it. All named by the round's own seats
+  (`R46bW2ConnW2.md:290-292`, citing `R46bW2RevEntryClaims` F1 and wave-1 `R46bConnPatterns` M1);
+  wave-2 integration `c8641e7` landed only the CNA-boundary rewording and queued nothing for the rest
+  (lesson and report: zero mentions). Fix: three one-line edits + a lesson erratum naming the dropped
+  seat findings.
+- **D7 — the pinned capture is not reproducible by any committed instrument (seat-executed,
+  closure-corroborated).** `capture-source.py --kind html` today → 610 lines / 19804 bytes; the live
+  `Accept: text/markdown` variant → 68 lines / 7807 bytes; neither matches the committed 42-line /
+  7087-byte `S074.txt`, and no committed script or receipt produces that rendering. The page itself is
+  unchanged (raw fetch bytes = manifest `bytes`; all 42 lines locate live), so this is a provenance gap,
+  not drift; the pinned sha is honest. Consequence: the row's `recheck: 90d` cannot produce a comparing
+  re-capture. Fix: commit the producing recipe, or re-capture with `capture-source.py` and re-pin
+  sha/anchors/entry citations.
+- **D8 — reject (c)'s id reservation silently voided (verified).** Attempt-1's ZDI seat proposed "next
+  free S-id after … S073, so S074" (`wave1/R46ScoutLeadZDI.md:54`); S074 was consumed by the F29 row and
+  no reassignment is recorded — a future round executing that flip would propose a duplicate id. Also
+  for precision: reject (a)'s lesson wording ("the database row class was already screened and rejected
+  in round 43 (S068…)") overstates an n=1 precedent (S068 is one GHSA advisory entry, not the database's
+  documentation), and reject (b)'s REST-API URL is recorded nowhere in `corpus/` (pointer only at
+  `S074.txt:16`; no `## Leads` bullet). Fix: lesson note reassigning the ZDI flip to the next free id
+  (S075+) and a Leads bullet for the REST-API page.
+
+**Trend amendment (supersedes §6's quality line):** quality is graded **harmed** for the round as it
+ended — LEARNING.md's literal harm condition fires: sentences of an admitted entry were found false
+during the round by the lane's own committed seats and left unmarked (no erratum, no queued
+correction), with the registry scaffold and provenance gap in the same state. The round's verified
+quality content stands as itemized in §6 and is not in dispute; this addendum queues the defects (the
+closure's routing act marks them), and the correction is owed in the lane's next round. The
+expansion-improved / quality-harmed combination is a **trade** under LEARNING.md, flagged here and in
+the closure ledger for the operator to rule; the entry's `admitted` verdict follows the closure
+dispatch criterion (every claim verifies on its frozen counter; no owned axis harmed), which is
+satisfied and unaffected by these defects. Discernment stays improved (§4 decisions agree; the flip
+precision items ride D8).
