@@ -1,0 +1,11 @@
+--- /fast/scratch/hyaku/kasegi-r47/R47MutSelftest/instr/r47-counters-selftest.py	2026-10-30 08:07:02.272717680 -0300
++++ /fast/scratch/hyaku/kasegi-r47/R47MutSelftest/mut2/r47-counters-selftest.py	2026-10-30 08:51:56.940854559 -0300
+@@ -435,7 +435,7 @@
+     m = json.load(open(p, encoding="utf-8"))
+     for s in m["sources"]:
+         if s["id"] == "S075":
+-            s["quotes"] = s["quotes"][:3]
++            s["quotes"] = s["quotes"][:10]  # MUT M2: c2-fewquotes defect tree self-heals
+     open(p, "w", encoding="utf-8").write(json.dumps(m, indent=1) + "\n")
+ 
+ 

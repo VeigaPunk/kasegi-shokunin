@@ -1,0 +1,11 @@
+--- /fast/scratch/hyaku/kasegi-r47/R47MutSelftest/instr/r47-counters-selftest.py	2026-10-30 08:07:02.272717680 -0300
++++ /fast/scratch/hyaku/kasegi-r47/R47MutSelftest/mut3/r47-counters-selftest.py	2026-10-30 08:51:56.945854554 -0300
+@@ -244,7 +244,7 @@
+             open(p, "w", encoding="utf-8").write(fn(s))
+         return apply
+ 
+-    mk("s1left", w("corpus/SOURCES.md", lambda s: s.replace("## Leads (unopened)", "Append inside `## Search log` as before\n\n## Leads (unopened)")))
++    mk("s1left", lambda t: None)  # MUT M3: c1-s1left defect tree self-heals (no mutation applied)
+     mk("fenceleft", w("corpus/SOURCES.md", lambda s: s + "\n```markdown\n- stray fenced bullet\n```\n"))
+     mk("regbullet-missing", w("corpus/SOURCES.md", lambda s: re.sub(r"^- S074 row added: new row.*\n", "", s, flags=re.M)))
+     mk("nocorrection", w("corpus/lessons/round-46.md", lambda s: s.replace(LESSON46_CORRECTIONS, "")))

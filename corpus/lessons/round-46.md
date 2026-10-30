@@ -149,3 +149,11 @@ absence sweep at the base and tip exports (2 -> 4 files).
 
 Census (attempt 2): before `controls/sources-census-before.txt` (exit 0, three W04 warnings);
 after (round end) the same three warnings and `kasegi ok`, exit 0 (`controls/final-measure.txt`).
+
+## Corrections (round 47)
+
+- D5: the statement above that the S074 row landed with one Search-log and two Registry-changes bullets described bytes trapped inside drafting fences. Round 47 lands those three bullets verbatim as real section bullets in `corpus/SOURCES.md` and removes the instruction prose and fences. This is an explicit line-anchor migration: SOURCES.md lines below the deleted scaffold move; the old locations quoted in historical lessons remain historical, not current locators. Registry rows themselves retain their immutable cells.
+- D6: the dropped findings in `.ufo/waves/round-46/attempt2/wave2/R46bW2RevEntryClaims.md`, `.ufo/waves/round-46/attempt2/wave2/R46bW2ConnW2.md` and `.ufo/waves/round-46/attempt2/wave1/R46bConnPatterns.md` identified the capture-chrome, source-order and fix-version-case errors. The F29 entry now distinguishes chrome from prose, states that the page puts the CVE request before the fix-version discussion, and distinguishes the two publish-without-fix cases from the qualified imminent-fix instruction to wait. Same-line replacements preserve its 145-line layout.
+- D7: the original S074 capture and manifest remain byte-identical historical evidence. The current F29 entry instead cites S076, re-captured through the committed `capture-source.py --kind html` instrument. Its producing method is reproducible at the observed instants; this does not retroactively reproduce the original 42-line rendering or guarantee future server bytes.
+- D8: S068 is one GHSA advisory entry, not the Advisory Database's documentation. The unopened repository-advisories REST-API page is now a Leads bullet. The old ZDI lead's proposed S074 was consumed; round 47 allocates S075 to the re-opened policy, without treating a suggested id as a reservation or automatically admitting new frontier ground.
+- The round-46 `rejected-harmed` closure stands. These repairs neither rewrite its verdict nor convert its old receipts into measurements of the new tree.

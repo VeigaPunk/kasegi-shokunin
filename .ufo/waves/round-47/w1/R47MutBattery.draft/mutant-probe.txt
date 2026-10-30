@@ -1,0 +1,9 @@
+# per-mutant end-to-end probes, scratch copies of live instruments mutated once (text.count(old)==1 precheck)
+# cmd: python3 mutant_probe.py c1:L1b-always-true c1:L5c-order-inverted c1:L11c-or-verdict c2:H3b-scope-low c2:H6a-counts-loose c2:H7a-verdict-or
+c1:L1b-always-true mutant_failures=1 verdict=caught | selftest cases=20 failures=1 exit=1
+c1:L5c-order-inverted mutant_failures=1 verdict=caught | selftest cases=20 failures=1 exit=1
+c1:L11c-or-verdict mutant_failures=1 verdict=caught | selftest cases=20 failures=1 exit=1
+c2:H3b-scope-low mutant_failures=1 verdict=caught | selftest cases=23 failures=1 exit=1
+c2:H6a-counts-loose mutant_failures=1 verdict=caught | selftest cases=23 failures=1 exit=1
+c2:H7a-verdict-or mutant_failures=0 verdict=NOT-CAUGHT | selftest cases=23 failures=0 exit=0
+probe overall_exit=1   # expected: H7a intentionally included as a receipt survivor probe

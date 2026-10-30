@@ -1,0 +1,11 @@
+--- pristine/r47-f30-gate.py
++++ A3-H2-source-prefix.py
+@@ -223,7 +223,7 @@
+         return False, why
+     body = "\n".join(live_lines(txt(root, p) or ""))
+     head = body.splitlines()[:8]
+-    ok_s = any(h.startswith("source: S075 \u2014 " + URL + " \u2014 ") for h in head)
++    ok_s = any(h.startswith("source: S075") for h in head)
+     ok_v = any(h == "verified-at: " + VERIFIED_AT for h in head)
+     ok_r = sum(1 for ln in body.splitlines() if ln.startswith("recheck:")) == 1 and any(RECHECK_LINE.match(h) for h in head)
+     secs = sum(1 for sct in SECTIONS if re.search("^" + re.escape(sct) + r"\s*$", body, re.M))

@@ -1,0 +1,128 @@
+[
+  {
+    "id": "A1-L1-lowercase-haystack",
+    "limb": "l1",
+    "old": "if p in t]",
+    "new": "if p in t.lower()]",
+    "pristine": "selftest cases=20 failures=0 exit=0",
+    "mutated": "selftest cases=20 failures=1 exit=1",
+    "restored": "selftest cases=20 failures=0 exit=0",
+    "verdict": "caught",
+    "before_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "mutated_sha256": "a5551accd69061949238c4e60e5991533a0aaeb4fe50835981d3e599aac5790a",
+    "restored_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "pristine_witness": [
+      false,
+      "scaffold-phrases=1"
+    ],
+    "mutant_witness": [
+      true,
+      "scaffold-phrases=0"
+    ]
+  },
+  {
+    "id": "A2-L2-unbounded-search-section",
+    "limb": "l2",
+    "old": "search = section(raw, \"Search log\")",
+    "new": "search = raw",
+    "pristine": "selftest cases=20 failures=0 exit=0",
+    "mutated": "selftest cases=20 failures=0 exit=0",
+    "restored": "selftest cases=20 failures=0 exit=0",
+    "verdict": "survived-non-equivalent",
+    "before_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "mutated_sha256": "57f08d30b3bdb1f5d0cb8618402510e5b90b5512eeefcba19ffb992f22a6277b",
+    "restored_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "pristine_witness": [
+      false,
+      "bad=search-log-bullet-absent"
+    ],
+    "mutant_witness": [
+      true,
+      "bullets-landed fences=0"
+    ]
+  },
+  {
+    "id": "A3-L3-unanchored-heading-tail",
+    "limb": "l3",
+    "old": "r\"^## Corrections \\(round 47\\)\\s*$\"",
+    "new": "r\"^## Corrections \\(round 47\\)\\s*\"",
+    "pristine": "selftest cases=20 failures=0 exit=0",
+    "mutated": "selftest cases=20 failures=0 exit=0",
+    "restored": "selftest cases=20 failures=0 exit=0",
+    "verdict": "survived-non-equivalent",
+    "before_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "mutated_sha256": "6b209f599d2574bd01b75cb6656ae41aa6c26efcfd517d10cbc998675dec8fcd",
+    "restored_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "pristine_witness": [
+      false,
+      "corrections-section-absent"
+    ],
+    "mutant_witness": [
+      true,
+      "corrections-section-present content=1"
+    ]
+  },
+  {
+    "id": "A4-L4-chrome-substring",
+    "limb": "l4",
+    "old": "r\"\\bchrome\\b\"",
+    "new": "r\"chrome\"",
+    "pristine": "selftest cases=20 failures=0 exit=0",
+    "mutated": "selftest cases=20 failures=0 exit=0",
+    "restored": "selftest cases=20 failures=0 exit=0",
+    "verdict": "survived-non-equivalent",
+    "before_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "mutated_sha256": "b8739d2babeb7eaad613782c95e8654e3eafdedfb25512a6729585ec50f1570f",
+    "restored_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "pristine_witness": [
+      false,
+      "chrome-note-absent"
+    ],
+    "mutant_witness": [
+      true,
+      "prose-claims-corrected chrome=present"
+    ]
+  },
+  {
+    "id": "A5-L5-order-prefix-only",
+    "limb": "l5",
+    "old": "if \"CVE request before the fix-version\" not in t:",
+    "new": "if \"CVE request\" not in t:",
+    "pristine": "selftest cases=20 failures=0 exit=0",
+    "mutated": "selftest cases=20 failures=0 exit=0",
+    "restored": "selftest cases=20 failures=0 exit=0",
+    "verdict": "survived-non-equivalent",
+    "before_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "mutated_sha256": "4166aeea80376d3399d915d0c45d6c4676d2162d2c923a783a439f37148e5534",
+    "restored_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "pristine_witness": [
+      false,
+      "corrected-order-sentence-absent"
+    ],
+    "mutant_witness": [
+      true,
+      "order-claim-corrected"
+    ]
+  },
+  {
+    "id": "A6-L6-newline-blind",
+    "limb": "l6",
+    "old": "r\"three cases[^.]*let a maintainer publish\"",
+    "new": "r\"three cases[^.\\n]*let a maintainer publish\"",
+    "pristine": "selftest cases=20 failures=0 exit=0",
+    "mutated": "selftest cases=20 failures=0 exit=0",
+    "restored": "selftest cases=20 failures=0 exit=0",
+    "verdict": "survived-non-equivalent",
+    "before_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "mutated_sha256": "3db7acd0c6f454bb62921cdc8040c78020a63eae1d9e2a7cc6a2fe2fa9b9282b",
+    "restored_sha256": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+    "pristine_witness": [
+      false,
+      "three-cases-still-present"
+    ],
+    "mutant_witness": [
+      true,
+      "fix-version-cases-corrected"
+    ]
+  }
+]

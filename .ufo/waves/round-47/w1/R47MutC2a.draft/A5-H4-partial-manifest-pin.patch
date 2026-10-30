@@ -1,0 +1,11 @@
+--- pristine/r47-f30-gate.py
++++ A5-H4-partial-manifest-pin.py
+@@ -297,7 +297,7 @@
+     man = os.path.join(root, MAN_REL)
+     if not os.path.isfile(man):
+         return False, "manifest-absent"
+-    if sha(open(man, "rb").read()) != PINS["manifest.json"]:
++    if sha(open(man, "rb").read())[:12] != PINS["manifest.json"][:12]:
+         return False, "manifest-not-the-pinned-bytes"
+     rcb = open(os.path.join(INSTRUMENTS, "source-recheck.py"), "rb").read()
+     if sha(rcb) != PINS["source-recheck.py"]:

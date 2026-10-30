@@ -1,0 +1,24 @@
+$ python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-source.py --id S076 --url https://docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories --kind html --out /fast/scratch/hyaku/kasegi-r47/R47RevD7/S076-1.txt
+S076 status=200 fetched_bytes=582877 snapshot_bytes=19804 sha256=9bd8ab57dac9cc605355c60831f51e02b92f5e34990aa99a49566d207e6bbb38 utc=2026-10-30T11:43:48Z out=/fast/scratch/hyaku/kasegi-r47/R47RevD7/S076-1.txt
+EXIT=0
+$ python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-source.py --id S076 --url https://docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories --kind html --out /fast/scratch/hyaku/kasegi-r47/R47RevD7/S076-2.txt
+S076 status=200 fetched_bytes=582877 snapshot_bytes=19804 sha256=9bd8ab57dac9cc605355c60831f51e02b92f5e34990aa99a49566d207e6bbb38 utc=2026-10-30T11:43:49Z out=/fast/scratch/hyaku/kasegi-r47/R47RevD7/S076-2.txt
+EXIT=0
+two_capture_sha256=['9bd8ab57dac9cc605355c60831f51e02b92f5e34990aa99a49566d207e6bbb38', '9bd8ab57dac9cc605355c60831f51e02b92f5e34990aa99a49566d207e6bbb38']
+manifest_sha256=9bd8ab57dac9cc605355c60831f51e02b92f5e34990aa99a49566d207e6bbb38
+two_equal=True manifest_equal=[True, True]
+do-nothing-control
+$ python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r47/R47RevD7/binding
+MANIFEST round-46-a2 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-47 records=2 url_bound=2 fetched=2 archival=0
+AUDIT records=3 with_url=3 with_fetched_utc=3 with_archival=0 snapshot_dirs=2 manifest_dirs=2 missing_manifest=0 multi_row_url=2 digest_unpinned=0 orphans=0
+records=3 bound=3 unbound=0
+EXIT=0
+S074-rejected
+$ python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py --root /fast/scratch/hyaku/kasegi-r47/R47RevD7/binding
+MANIFEST round-46-a2 records=1 url_bound=0 fetched=1 archival=0
+MANIFEST round-47 records=2 url_bound=2 fetched=2 archival=0
+AUDIT records=3 with_url=3 with_fetched_utc=3 with_archival=0 snapshot_dirs=2 manifest_dirs=2 missing_manifest=0 multi_row_url=2 digest_unpinned=0 orphans=0
+FAIL rule=rejected-row-anchor record=S074 row=S074 dir=round-46-a2
+records=3 bound=2 unbound=1
+EXIT=1

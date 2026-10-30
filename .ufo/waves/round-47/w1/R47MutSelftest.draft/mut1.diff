@@ -1,0 +1,11 @@
+--- /fast/scratch/hyaku/kasegi-r47/R47MutSelftest/instr/r47-counters-selftest.py	2026-10-30 08:07:02.272717680 -0300
++++ /fast/scratch/hyaku/kasegi-r47/R47MutSelftest/mut1/r47-counters-selftest.py	2026-10-30 08:51:56.936854564 -0300
+@@ -217,7 +217,7 @@
+     txt = add_registry_row(txt, S076_ROW)
+     txt = edit_row_cells(txt, "S074", status="rejected", used_by="corpus/lessons/round-46.md")
+     open(p, "w", encoding="utf-8").write(txt)
+-    open(os.path.join(t, ENTRY29), "w", encoding="utf-8").write(entry29_fixed(""))
++    pass  # MUT M1: build_c1_green skips the F29 entry fix (base false sentences stay)
+     open(os.path.join(t, "corpus/lessons/round-46.md"), "a", encoding="utf-8").write(LESSON46_CORRECTIONS)
+     open(os.path.join(t, "corpus/lessons/round-47.md"), "w", encoding="utf-8").write(LESSON47_STUB)
+     snap_src = os.path.join(LANE, "corpus/source-snapshots/round-47")

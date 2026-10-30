@@ -1,0 +1,11 @@
+--- pristine/r47-f30-gate.py
++++ A1-H1-upper-bound.py
+@@ -195,7 +195,7 @@
+     ids = [r[0] for r in rows]
+     adm = sum(1 for r in rows if len(r) > 2 and r[2] == "admitted")
+     dup = len(ids) - len(set(ids))
+-    if len(rows) != 30 or adm != 30 or dup:
++    if len(rows) > 30 or adm > 30 or dup:
+         return False, "rows=%d admitted=%d dup=%d" % (len(rows), adm, dup)
+     p, why = entry_path(root)
+     f30 = [r for r in rows if r[0] == "F30"]

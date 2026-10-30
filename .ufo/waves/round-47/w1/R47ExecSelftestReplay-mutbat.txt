@@ -1,0 +1,66 @@
+c1 L1a-phrase0-only | hits = [p for p in SCAFFOLD_PHRASES if p in t] => hits = [p for p in SCAFFOLD_PHRASES[:1] if p in t]
+c1 L1b-always-true | return not hits, ("scaffold-phrases=%d" % len(hits)) if hits => return True, "scaffold-phrases=0"
+c1 L1c-wrong-file |     t = txt(root, SOURCES) or ""
+    hits = =>     t = txt(root, ENTRY) or ""
+    hits =
+c1 L2a-fences-ignored | if fences:
+        bad.append("fence-markers=%d" % fences) => if False:
+        bad.append("fence-markers=%d" % fences)
+c1 L2b-slbullet-loose | r"^- Repository security advisory lifecycle sweep \(round 46 => r"^- XXX"
+c1 L2c-regbullet-loose | if not re.search(r"^- S074 row added: new row", reg, re.M): => if False:
+c1 L2d-notebullet-loose | if not re.search(r"^- Capture directory note: `corpus/source => if False:
+c1 L3b-content-true | ok = ("SOURCES.md" in tail) and ("fence" in tail) and ("Sear => ok = True
+c1 L3c-third-clip-dropped | ok = ("SOURCES.md" in tail) and ("fence" in tail) and ("Sear => ok = ("SOURCES.md" in tail) and ("fence" in tail)
+c1 L3d-return-true | return ok, "corrections-section-present content=%d" % int(ok => return True, "corrections-section-present"
+c1 L4a-phrases-empty | bad = [p for p in FALSE_PHRASES[:2] if p in t] => bad = []
+c1 L4b-chrome-ignored | if not re.search(r"\bchrome\b", t): => if False:
+c1 L4c-phrase1-only | bad = [p for p in FALSE_PHRASES[:2] if p in t] => bad = [p for p in FALSE_PHRASES[1:2] if p in t]
+c1 L5a-order-ignored | if FALSE_PHRASES[2] in t:
+        return False, "order-phras => if False:
+        return False, "order-phrase-still-present"
+c1 L5b-corrected-loose | if "CVE request before the fix-version" not in t: => if False:
+c1 L5c-order-inverted | if FALSE_PHRASES[2] in t:
+        return False, "order-phras => if FALSE_PHRASES[2] not in t:
+        return False, "order-p
+c1 L6a-threecase-loose | if re.search(r"three cases[^.]*let a maintainer publish", t) => if False:
+c1 L6b-twocase-loose | if "two cases" not in t: => if False:
+c1 L6c-forbid-loose | if "wait to disclose the issue when the fix is ready" not in => if False:
+c1 L7a-one-name-only | if "R46bW2RevEntryClaims" in t and "R46bConnPatterns" in t a => if "R46bW2RevEntryClaims" in t and re.search(r"dropped|not c
+c1 L7b-keyword-loose | re.search(r"dropped|not carried|erratum", t, re.I) => re.search(r".", t)
+c1 L7c-keyword-invert | re.search(r"dropped|not carried|erratum", t, re.I) => re.search(r"XYZNOPE", t)
+c1 L8a-supersede-loose | if not c[6].startswith("supersedes S074"): => if False:
+c1 L8b-sha-loose | if "round-47/S076.txt" not in c[5] or "9bd8ab57dac9cc605355c => if "round-47/S076.txt" not in c[5]:
+c1 L8c-recheck-ignored | if p2.returncode != 0 or "S076:sha256 OK" not in p2.stdout: => if False:
+c1 L8d-cells-loose | if len(c) != 11: => if len(c) < 9:
+c1 L9a-oldcite-ignored | old = t.count("S074.txt:")
+    if old: => old = 0
+    if old:
+c1 L9b-range-loose | if len(nq.split()) <= 25 and nq and rng[0] <= a <= b <= rng[ => if len(nq.split()) <= 25 and nq and nq in window:
+c1 L9c-pass-low | ok = failed == 0 and uncited <= 0 and passed >= 20 => ok = failed == 0
+c1 L10a-url-loose | and "docs.github.com/en/rest/security-advisories" in ln] => and "docs.github.com" in ln]
+c1 L10b-bullet-loose | if ln.lstrip().startswith("- ") => if True
+c1 L10c-url-invert | and "docs.github.com/en/rest/security-advisories" in ln] => and "docs.github.com/en/rest/security-advisories" not in ln]
+c1 L11a-zdi-only | a = "ZDI" in t and "reservation" in t => a = "ZDI" in t
+c1 L11b-precision-only | b = "S068" in t and "one GHSA advisory entry" in t => b = "S068" in t
+c1 L11c-or-verdict | return a and b, "zdi-reservation=%d s068-precision=%d" % (in => return a or b, "zdi-reservation=%d s068-precision=%d" % (int
+c2 H1a-counts-loose | if len(rows) != 30 or adm != 30 or dup: => if len(rows) < 30 or adm < 30 or dup:
+c2 H1b-raw-loose | if len(raw) != 1: => if len(raw) > 1:
+c2 H1c-src-boundary | re.search(r"\bS075\b", f30[0][4]) => re.search(r"S075", f30[0][4])
+c2 H2a-verified-loose | ok_v = any(h == "verified-at: " + VERIFIED_AT for h in head) => ok_v = any(h.startswith("verified-at: " + VERIFIED_AT) for h
+c2 H2b-wordfloor-low | (12 if sct.startswith("## Falsifiable") else 25) => (1 if sct.startswith("## Falsifiable") else 5)
+c2 H2c-need-empty | need = {"coordinated-disclosure-timelines.md", "vendor-third => need = set()
+c2 H3a-cells-loose | if len(c) == 11: => if len(c) >= 9:
+c2 H3b-scope-low | if len(re.findall(r"\w+", row[4])) < 8: bad.append("scope-wo => if len(re.findall(r"\w+", row[4])) < 2: bad.append("scope-wo
+c2 H3c-kind-dead | if row[2] != "docs": bad.append("kind") => if row[2] not in ("docs", "Docs"): bad.append("kind")
+c2 H4a-manifest-unpinned | if sha(open(man, "rb").read()) != PINS["manifest.json"]: => if False:
+c2 H4b-quotes-low | oks >= 8 and not miss => oks >= 1 and not miss
+c2 H4c-distinct-dropped | and "BROKEN" not in out and distinct => and "BROKEN" not in out
+c2 H5a-span-wide | b - a <= 11 => b - a <= 110
+c2 H5b-words-wide | len(nq.split()) <= 25 => len(nq.split()) <= 250
+c2 H5c-pass-low | len(passed) >= 4 => len(passed) >= 1
+c2 H6a-counts-loose | len(names) == 67 and len(everything) == 67 and nested == 67 => len(names) == 67 and len(everything) >= 67 and nested >= 67
+c2 H6b-pin-dropped | base_ok = base_ok and cont == PINS["base-knowledge-content"] => base_ok = base_ok and ledger_ok
+c2 H6c-size-low | os.path.getsize(os.path.join(root, p)) >= 3000 => os.path.getsize(os.path.join(root, p)) >= 3
+c2 H7a-verdict-or | p.returncode == 0 and ok_line => p.returncode == 0 or ok_line
+c2 H7b-symlink-dead | return False, "census-input-is-a-symlink" => pass  # mutant H7b
+c2 H7c-okline-loose | re.search(r"^\S+\tok\t", p.stdout, re.M) => re.search(r"^\S+\tok", p.stdout, re.M)

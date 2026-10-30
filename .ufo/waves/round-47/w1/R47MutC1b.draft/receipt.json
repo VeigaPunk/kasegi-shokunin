@@ -1,0 +1,201 @@
+{
+ "freeze_pins": {
+  "lane_counter_sha": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+  "freeze_counter_sha": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+  "freeze_selftest_sha": "4c7c0aab5b5eb3885965bd9e0ec3c1b8ddda7f3f393af6a3863c6eeea6347ec4"
+ },
+ "pristine_run1": {
+  "rc": 0,
+  "failures": 0
+ },
+ "pristine_run2": {
+  "rc": 0,
+  "failures": 0
+ },
+ "pristine_stdout_identical": true,
+ "counter_base": {
+  "rc": 1,
+  "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+ },
+ "counter_freeze": {
+  "rc": 1,
+  "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+ },
+ "counter_green_pristine": {
+  "rc": 0,
+  "summary": "routed-defects total=11 fixed=11 unresolved=0 exit=0"
+ },
+ "mutants": [
+  {
+   "id": "L7d-lesson46-dropped",
+   "old_count": 1,
+   "mutant_counter_sha": "976c51e5e2626cfa3c24ddf2b3b28ad694081e9dfe2a3ec9a505652c668701cb",
+   "mutant_bytes": {
+    "old": "for rel in (LESSON47, LESSON46):",
+    "new": "for rel in (LESSON47,):"
+   },
+   "mutant_failures": 0,
+   "selftest_rc": 0,
+   "verdict": "uncaught",
+   "divergent_cases": [],
+   "trees": {
+    "green": {
+     "rc": 0,
+     "summary": "routed-defects total=11 fixed=11 unresolved=0 exit=0"
+    },
+    "base": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    },
+    "freeze": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    }
+   }
+  },
+  {
+   "id": "L8e-manifest-pin-dropped",
+   "old_count": 1,
+   "mutant_counter_sha": "a3d8894d782c94b27df2cd262f4612bf2226333a384dc9237e66283a97e0f95f",
+   "mutant_bytes": {
+    "old": "if not os.path.isfile(man) or sha(open(man, \"rb\").read()) != MAN_SHA:",
+    "new": "if not os.path.isfile(man):"
+   },
+   "mutant_failures": 1,
+   "selftest_rc": 1,
+   "verdict": "caught",
+   "divergent_cases": [],
+   "trees": {
+    "green": {
+     "rc": 0,
+     "summary": "routed-defects total=11 fixed=11 unresolved=0 exit=0"
+    },
+    "base": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    },
+    "freeze": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    }
+   }
+  },
+  {
+   "id": "L9d-body-bounds-off-by-one",
+   "old_count": 1,
+   "mutant_counter_sha": "ebd279d3e77cd6ad1f6e52e9ef56baf02fe16534ac57d07eab87d5ad0f689bb7",
+   "mutant_bytes": {
+    "old": "rng[0] <= a <= b <= rng[1] and b - a <= 11",
+    "new": "rng[0] - 1 <= a <= b <= rng[1] + 1 and b - a <= 11"
+   },
+   "mutant_failures": 0,
+   "selftest_rc": 0,
+   "verdict": "uncaught",
+   "divergent_cases": [],
+   "trees": {
+    "green": {
+     "rc": 0,
+     "summary": "routed-defects total=11 fixed=11 unresolved=0 exit=0"
+    },
+    "base": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    },
+    "freeze": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    }
+   }
+  },
+  {
+   "id": "L9e-uncited-masked",
+   "old_count": 1,
+   "mutant_counter_sha": "f11fea7dcbc2adeba4ab1350a9675b2a80cb0d2df9622277a1e050aeead03db8",
+   "mutant_bytes": {
+    "old": "ok = failed == 0 and uncited <= 0 and passed >= 20",
+    "new": "ok = failed == 0 and passed >= 20"
+   },
+   "mutant_failures": 1,
+   "selftest_rc": 1,
+   "verdict": "caught",
+   "divergent_cases": [],
+   "trees": {
+    "green": {
+     "rc": 0,
+     "summary": "routed-defects total=11 fixed=11 unresolved=0 exit=0"
+    },
+    "base": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    },
+    "freeze": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    }
+   }
+  },
+  {
+   "id": "L10d-lead-anywhere",
+   "old_count": 1,
+   "mutant_counter_sha": "a074aaca34a78d88feecc75f1065098b6c78d06161a5325af20af30352ce993d",
+   "mutant_bytes": {
+    "old": "leads = section(raw, \"Leads (unopened)\")",
+    "new": "leads = raw"
+   },
+   "mutant_failures": 0,
+   "selftest_rc": 0,
+   "verdict": "uncaught",
+   "divergent_cases": [],
+   "trees": {
+    "green": {
+     "rc": 0,
+     "summary": "routed-defects total=11 fixed=11 unresolved=0 exit=0"
+    },
+    "base": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    },
+    "freeze": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    }
+   }
+  },
+  {
+   "id": "L11d-precision-phrase-wide",
+   "old_count": 1,
+   "mutant_counter_sha": "42a64d7bf3a405e822b9ddef238f72b00a795b2e4117c1b9c8fb37e11694eaae",
+   "mutant_bytes": {
+    "old": "b = \"S068\" in t and \"one GHSA advisory entry\" in t",
+    "new": "b = \"S068\" in t and \"GHSA advisory\" in t"
+   },
+   "mutant_failures": 0,
+   "selftest_rc": 0,
+   "verdict": "uncaught",
+   "divergent_cases": [],
+   "trees": {
+    "green": {
+     "rc": 0,
+     "summary": "routed-defects total=11 fixed=11 unresolved=0 exit=0"
+    },
+    "base": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    },
+    "freeze": {
+     "rc": 1,
+     "summary": "routed-defects total=11 fixed=0 unresolved=11 exit=1"
+    }
+   }
+  }
+ ],
+ "restoration": {
+  "lane_counter_sha_after": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+  "freeze_counter_sha_after": "e6ede7b668155fc173ad9a1c0f83168f173d6c31b12ecb85da406e1660424aee",
+  "lane_unchanged": true
+ },
+ "pristine_run3_after_mutants": {
+  "rc": 0,
+  "failures": 0
+ }
+}

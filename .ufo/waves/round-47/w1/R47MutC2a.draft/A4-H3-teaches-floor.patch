@@ -1,0 +1,11 @@
+--- pristine/r47-f30-gate.py
++++ A4-H3-teaches-floor.py
+@@ -278,7 +278,7 @@
+     if row[3] != "A": bad.append("tier")
+     if row[2] != "docs": bad.append("kind")
+     if len(re.findall(r"\w+", row[4])) < 8: bad.append("scope-words")
+-    if len(re.findall(r"\w+", row[6])) < 8: bad.append("teaches-words")
++    if len(re.findall(r"\w+", row[6])) < 1: bad.append("teaches-words")
+     if not re.fullmatch(r"(?:\d+d|on-release|\d{4}-\d{2}-\d{2})", row[9]): bad.append("recheck-cell")
+     locs = re.finditer(r"(?:lines?|\bL)\s*(\d+)\s*[-\u2013]\s*L?(\d+)\s+of\s+(\S+)", row[5])
+     ok_loc = any(m.group(3).rstrip(".,;)'\"") == SNAP_REL and BODY[0] <= int(m.group(1)) <= int(m.group(2)) <= SNAP_LINES
