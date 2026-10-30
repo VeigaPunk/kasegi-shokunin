@@ -2117,3 +2117,24 @@ Correction (round 43): the wave-shape bullet above states `70 of the 73 seats re
   still gated on a lost base"), coverage 8 held (delta 0 — the frontier gained a row; the coverage score's
   denominator is the lost domain root's 18-surface set, 0 present), depth:density 9 held (`SKILL.md` unedited).
   No capability row enters.
+
+## Round 49 — wave disposition and close (L1 KasegiR49)
+
+- Wave 1 (`kasegi-r49-citation-ground-and-cve-services`, one v2 wave, 64 seats, policy v2 band 64-128,
+  validator exit 0) was built, committed (`.ufo/waves/round-49/wave1-spec.json`, `wave1-dispatch.json`,
+  `controls/class-before.json`) and released **UN-DISPATCHED** by the operator's wrap-up ruling: the ready
+  file `.ufo/waves/round-49/wave1.ready` (13:02) was never spawned, no seat ran, no seat report exists, no
+  `wave1-results.json` was written and no WAVE-DONE message arrived. No seat count, no role mix and no dead
+  seat is reported for a wave that never ran; no falsification credit is claimed from it.
+- The round's own falsification therefore rests on the frozen predicates, each re-derivable by one command:
+  `citation-ground-check.py` reads `unresolved-class=0 ledger-rows=68 rows-resolving=68 findings=0` (exit 0)
+  against the base's `unresolved-class=68`; `frontier-recheck-count.py` reads
+  `FRONTIER-CENSUS rows=30 admitted=30 closed=30 problem-rows=0 registry=79` against the base's
+  `rows=29 admitted=29 closed=29 problem-rows=0 registry=77`; `freeze-check.py` replayed both claims at the
+  base export and read `claims=2 base_ok=2 exit=0`. Independent non-author verification remains outstanding
+  and is stated as such in the report.
+- Round-end source census: `sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` → the
+  four pre-existing W04 duplicate-URL warnings (S028, S029, S072, S076) and `kasegi ok …`, `CENSUS_EXIT=0`.
+- Lane tip at the close of the round: `7bfafc50220c0bfe6fed7ba0251dd19d5a528c71` (plus the commits made in
+  this entry), pushed to the lane remote; the report is filed on the fleet repo and cites that hash.
+

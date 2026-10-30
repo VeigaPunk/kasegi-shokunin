@@ -46,12 +46,19 @@ id-collision screen showed mass id drift between the package's older registry ba
 registry, so no staged row is appendable without wholesale renumbering; the package also holds no
 citation-base or CVE Services ground.
 
-**Spot-check:** the round's gate decisions (admit S078 / admit F30; refuse the Bugcrowd lead; refuse the
-staged package) have **no independent non-author spot-check yet**. The wave-1 seats are lane seats, not
-outside verifiers; the outside check that exists (`corpus/lessons/round-48-verifier-spotcheck.md`) covers the
-prior round. The round's own falsification arm is the 64-seat wave-1 dispatch (reviewer, critic,
-mutation-tester, labrat seats: 31 of 64 seats are attack roles), whose findings are recorded in the
-"Wave-1 integration" section below.
+**Spot-check:** the round's gate decisions (admit S078 / admit F30; refuse the Bugcrowd lead as the rejected
+row S079; refuse the staged package) have **no independent non-author spot-check**. The outside check that
+exists (`corpus/lessons/round-48-verifier-spotcheck.md`) covers the prior round, not this one.
+
+**Wave disposition — validated, released UN-DISPATCHED.** The round built and validated its falsification arm
+and the operator released it undispatched: the 64-seat wave-1 spec (`.ufo/waves/round-49/wave1-spec.json`,
+policy v2, band 64-128, 64 spawn seats, 31 of them attack roles) and its rendered dispatch
+(`wave1-dispatch.json`) were committed and the ready file (`wave1.ready`, written 13:02) was taken by the
+lane's own hand, but the operator's wrap-up ruling released the wave **without spawning a single seat** (the
+same ruling as SoujiR45 r45). No seat ran, no seat report exists, no `wave1-results.json` was written and no
+WAVE-DONE message was received. This round therefore claims **no falsification credit from wave 1**: the
+two claims verify on their frozen predicates by re-derivable commands, and the round's independent
+non-author verification duty remains outstanding.
 
 ## Limits
 
@@ -67,6 +74,8 @@ mutation-tester, labrat seats: 31 of 64 seats are attack roles), whose findings 
   push-scope allow-list at round 15 and the fleet file's push scope now begins at line 81. The repair keeps
   the file and the historical anchor and records the drift in the ledger's referent note; the anchor was not
   silently rewritten.
+- The wave that was to falsify this round never ran; the round's admission rests on the frozen predicates
+  alone, which is why the report states the honest stop rather than an admitted round.
 - The C2 capture is one release of one document. The recheck verifies the pinned bytes and the located
   quotes; it does not claim that the live service still behaves this way, and the entry claims nothing about
   request bodies, rate limits or error codes.

@@ -1921,3 +1921,13 @@ spot-check of this round's admits (S078, F30) and of its rejects is not yet on r
 2. **coverage (8):** the next frontier row must come from a first-party capture that is not the CVE Services
    write path; the round-49 scout seat screened three candidates and its report (in the wave directory) is the
    starting point.
+
+### Round-49 wave disposition — validated, released undispatched (appended 2026-10-30)
+
+The round's 64-seat wave 1 (`.ufo/waves/round-49/wave1-spec.json`, policy v2, validator exit 0) was built,
+committed and handed over through `.ufo/waves/round-49/wave1.ready`, and the operator's wrap-up ruling
+released it **without spawning a seat**. The two claims therefore verify on their frozen predicates only
+(`unresolved-class=68 → 0`; `FRONTIER-CENSUS rows=29 → 30 admitted`), with no falsification credit from a
+wave that never ran and no independent non-author verification on record. The verdict lines above stand; the
+outside spot-check of this round's admits (S078, F30) and of its rejects is outstanding.
+
