@@ -1,0 +1,46 @@
+fresh-world                  md-only        exit=0         want=0       pass
+fresh-world                  tsv-only       exit=0         want=0       pass
+fresh-world                  length-only    exit=0         want=0       pass
+fresh-world                  stale-exit-0   exit=0         want=0       pass
+fresh-world                  error-exit-0   exit=0         want=0       pass
+fresh-world                  no-restore     exit=0         want=0       pass
+world-stale-tree             pristine       exit=1         want!=0      pass
+world-stale-tree             md-only        exit=1         want!=0      pass
+world-stale-tree             tsv-only       exit=1         want!=0      pass
+world-stale-tree             length-only    exit=1         want!=0      pass
+world-stale-tree             stale-exit-0   exit=0         want!=0      RED
+world-stale-tree             error-exit-0   exit=1         want!=0      pass
+world-stale-tree             no-restore     exit=1         want!=0      pass
+world-tamper-md              pristine       exit=1         want!=0      pass
+world-tamper-md              md-only        exit=1         want!=0      pass
+world-tamper-md              tsv-only       exit=0         want!=0      RED
+world-tamper-md              length-only    exit=1         want!=0      pass
+world-tamper-md              stale-exit-0   exit=0         want!=0      RED
+world-tamper-md              error-exit-0   exit=1         want!=0      pass
+world-tamper-md              no-restore     exit=1         want!=0      pass
+world-tamper-tsv             pristine       exit=1         want!=0      pass
+world-tamper-tsv             md-only        exit=0         want!=0      RED
+world-tamper-tsv             tsv-only       exit=1         want!=0      pass
+world-tamper-tsv             length-only    exit=1         want!=0      pass
+world-tamper-tsv             stale-exit-0   exit=0         want!=0      RED
+world-tamper-tsv             error-exit-0   exit=1         want!=0      pass
+world-tamper-tsv             no-restore     exit=1         want!=0      pass
+world-tamper-same-length     pristine       exit=1         want!=0      pass
+world-tamper-same-length     md-only        exit=1         want!=0      pass
+world-tamper-same-length     tsv-only       exit=0         want!=0      RED
+world-tamper-same-length     length-only    exit=0         want!=0      RED
+world-tamper-same-length     stale-exit-0   exit=0         want!=0      RED
+world-tamper-same-length     error-exit-0   exit=1         want!=0      pass
+world-tamper-same-length     no-restore     exit=1         want!=0      pass
+world-restore                pristine       bytes-unchanged=True want=True    pass
+world-restore                no-restore     bytes-changed=True want=True (mutant exposes its limb) pass
+
+## per-mutant closure (RED rows are the distinguishing demonstrations)
+mutant=md-only CLOSED by world-tamper-tsv
+mutant=tsv-only CLOSED by world-tamper-md,world-tamper-same-length
+mutant=length-only CLOSED by world-tamper-same-length
+mutant=stale-exit-0 CLOSED by world-stale-tree,world-tamper-md,world-tamper-tsv,world-tamper-same-length
+mutant=error-exit-0 SURVIVOR — no battery world exercises its limb; named as a disclosed mechanical limit
+mutant=no-restore CLOSED by world-restore
+battery rows=36 red=8 (red rows are demonstrations, not failures)
+battery verdict=complete mutants=6 closed=5 survivors=1 (error-exit-0: no fixture forces a resolver failure; the error limb's fail-closed behavior is instead evidenced by the base-export control exiting 2 on a missing instrument)

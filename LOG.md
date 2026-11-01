@@ -2152,3 +2152,52 @@ Correction (round 43): the wave-shape bullet above states `70 of the 73 seats re
   `corpus/lessons/round-49.md` § Mistakes: a measurement sentence may not be written before its run has
   produced an output.
 
+
+## Round 50 — census-freshness gate (C1) and the OSV affected-range surface (C2'), on a new host
+
+- Host change of record: the round ran on a Windows workspace (Git Bash, `python` 3.13.15; the `python3`
+  name is the Microsoft Store stub; `/home/vgpnk` and `/fast` are absent). The inherited round-50 freeze
+  (`.ufo/waves/round-50/claims.json`, commits `a2de23b`/`28c65eb`) did not survive contact with that fact,
+  and the round supersedes it by `.ufo/waves/round-50/claims-erratum-1.md` + `claims.v2.json`
+  (`freeze-v2.txt`): D1 — the frozen C2 surface (EPSS) is already admitted as F19 (`PROVINCE.md:78`, entry
+  `corpus/knowledge/epss-exploit-prediction-scoring.md`, source S053); D2 — every frozen counter command
+  names `python3` + `/home/vgpnk/...`, absent here, and the same binding sits in all 67 committed entry
+  recheck lines, so `entries=34 pass=34` is unreachable on this host regardless of lane work; D3 — the
+  committed `controls/do-nothing-c2.txt` prints 30 `FRONTIER-PASS` rows and `entries=33 pass=33`, an output
+  no run on this host can produce (the real base-export run reads `entries=33 pass=0`), while its sibling
+  `do-nothing-c1.txt` carries a Windows CPython error string. The original control is kept byte-identical as
+  mistake evidence; the working control is `controls/do-nothing-c2-winhost.txt`. All five mistakes are mined
+  in `corpus/lessons/round-50.md` § Mistakes.
+- C1 (depth:verifiability 4, lowest non-retired axis — capability acquisition): shipped
+  `corpus/instruments/census-freshness-check.py`. At the measured tip it prints `CENSUS-FRESH=ok files=2`
+  exit 0 (`.ufo/waves/round-50/controls/c1-gate-final.txt`); its selftest reads
+  `selftest cases=3 failures=0` with the stale-tree and tampered-census fixtures reading exit 1
+  (`controls/c1-gate-selftest.txt`); the pre-freeze mutant battery reads `mutants=6 closed=5 survivors=1`
+  with the survivor (error-exit-0) named as a disclosed mechanical limit (`controls/c1-mutbat.txt`,
+  builder `controls/c1-mutbat.py`). The gate always restores the census bytes it finds. Motivating state it
+  now gates: the inherited committed census at the base read 201 files / 4758 distinct citations while the
+  live tree read 202 / 4771 (`.ufo/waves/round-50/r50-live-resolve.txt`) — the round-49 mistake class
+  (stale census quoted as current) is now an exit 1. The census of record is regenerated at the tip (203
+  files / 4784 distinct) and the score is HELD at 4: the score-5 bar stays `score-gap.py`'s 22 gated lines
+  on the lost domain bases (operator-owned), and the 67 host-bound recheck lines are filed as L0 debt
+  (fleet `.ufo/l0-questions.md`, kasegi round-50 row), not repaired by this round.
+- C2' (coverage 8): admitted frontier row F31 — OSV affected-range events — on registry row S080 (OpenSSF's
+  own OSV format specification page, https://ossf.github.io/osv-schema/, kind `spec`, tier A, opened
+  2026-11-01, capture `corpus/source-snapshots/round-50/S080.txt` sha256 `97b850a4…`, 70913 bytes, 1462
+  lines, fetched 2026-11-01T01:17:14Z at HTTP 200 with the same 228890 raw-byte count the round-42 S065
+  screen recorded, manifest with 16 assertions Q1-Q16, `source-recheck.py --source S080` exit 0 and
+  `BROKEN=0`). Entry `corpus/knowledge/osv-affected-range-events.md`; SOURCES row S080 records the re-open
+  of S065 under its own recorded flip condition (OSV-specific range semantics the CVE format cannot
+  express); README F31 row + round-50 admission block appended at EOF (R6); PROVINCE r50 amendment line
+  appended. Counter before→after ON THIS HOST: `FRONTIER-CENSUS rows=30 admitted=30 closed=0
+  problem-rows=30 registry=79`, `entries=33 pass=0`, no F31 line (`controls/do-nothing-c2-winhost.txt`) →
+  `FRONTIER-CENSUS rows=31 admitted=31 closed=1 problem-rows=30 registry=80`, `entries=34 pass=1` with the
+  single pass `PASS F31 ids=S080 exit=0` and all 33 inherited fails carrying exactly `recheck-exit-1`
+  (`controls/c2-counter-final.txt`). The score is HELD at 8: the coverage denominator remains the lost
+  domain root's 18-surface set; F31 is the frontier measure (30→31), as recorded in the round-49 result.
+- Non-targets held: `SKILL.md` untouched (density guard), no axis retired or split, no score asserted.
+- Wave disposition: the inherited wave-1 spec (32 seats, commit `28c65eb`) is stale against `claims.v2.json`
+  (its seats attack the superseded EPSS freeze and its CONTEXT names Linux-only roots) and no AgentSwarm
+  surface exists on this host; no seat ran, no results exist, no falsification credit is claimed.
+- Round-end receipts: sources census validate exit 0 at round start and round end (report carries both);
+  round-end lane tip cited in the report.

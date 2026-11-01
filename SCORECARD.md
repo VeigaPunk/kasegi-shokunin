@@ -1931,3 +1931,53 @@ released it **without spawning a seat**. The two claims therefore verify on thei
 wave that never ran and no independent non-author verification on record. The verdict lines above stand; the
 outside spot-check of this round's admits (S078, F30) and of its rejects is outstanding.
 
+
+## Round 50 result — census-freshness gate (C1) and the OSV affected-range surface (C2'); freeze superseded
+
+Frozen claims: `.ufo/waves/round-50/claims.v2.json` (base `c5e36360f5226c97d28f1937961b15c90e58827f`), which
+SUPERSEDES the inherited `.ufo/waves/round-50/claims.json` freeze (commits `a2de23b`/`28c65eb`) per
+`.ufo/waves/round-50/claims-erratum-1.md`: D1 — the frozen C2 surface (EPSS) was already admitted as F19;
+D2 — the frozen counter commands name `python3` and `/home/vgpnk/...`, both absent on the host that ran this
+round (the binding is shared by all 67 committed entry recheck lines); D3 — the committed
+`controls/do-nothing-c2.txt` prints an output no run on this host can produce, and is retained byte-identical
+as mistake evidence beside the real `controls/do-nothing-c2-winhost.txt`. All five mistakes are mined in
+`corpus/lessons/round-50.md`.
+
+| Axis | Before | After | Verdict and evidence |
+|---|---:|---:|---|
+| depth:verifiability | 4 | **4 held; delta 0** | C1 verifies on its re-frozen predicate and is a capability acquisition (row below): the new gate `corpus/instruments/census-freshness-check.py` prints `CENSUS-FRESH=ok files=2` exit 0 at the measured tip (`controls/c1-gate-final.txt`), its committed self-test reads `selftest cases=3 failures=0` with stale-tree and tampered-census fixtures at exit 1 (`controls/c1-gate-selftest.txt`), and its pre-freeze battery reads `mutants=6 closed=5 survivors=1` with the survivor named (`controls/c1-mutbat.txt`). The gate is the fix for the round-49 stale-census mistake and would have caught the base state it inherits: the committed census at base read 201 files / 4758 distinct against a live 202 / 4771 (`.ufo/waves/round-50/r50-live-resolve.txt`). The census of record is regenerated at the tip (203 files / 4784 distinct). Score HELD at 4: the score-5 bar is still `score-gap.py`'s 22 gated lines on the lost domain bases (operator-owned) and the lane-side residue is now named as the 67 host-bound recheck lines (L0 kasegi round-50), not repaired. |
+| coverage | 8 | **8 held; delta 0** | C2' verifies on its re-frozen predicate: frontier F31 (OSV affected-range events) admitted on S080 (OpenSSF's own specification page, capture `corpus/source-snapshots/round-50/S080.txt`, sha256 `97b850a4…`, 16 assertions Q1-Q16, `source-recheck.py --source S080` exit 0, `BROKEN=0`), entry `corpus/knowledge/osv-affected-range-events.md`, SOURCES row recording the S065 flip re-open, README F31 row and PROVINCE line appended at EOF. Counter before→after ON THIS HOST: `rows=30 admitted=30 closed=0 problem-rows=30 registry=79`, `entries=33 pass=0`, no F31 line (`controls/do-nothing-c2-winhost.txt`) → `rows=31 admitted=31 closed=1 problem-rows=30 registry=80`, `entries=34 pass=1`, the single pass `PASS F31 ids=S080 exit=0`, all 33 inherited fails exactly `recheck-exit-1` (`controls/c2-counter-final.txt`). Score HELD at 8: the denominator is the lost domain root's 18-surface set (0 present, operator-owned re-scope); F31 moves the frontier measure 30→31, not the coverage score. |
+| depth:density | 9 | 9 held; non-target guard | `SKILL.md` was not edited this round, so the density instrument's input bytes are unchanged. |
+
+### Round-50 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 50 | depth:verifiability | committed census of record stale at base (201 files / 4758 distinct vs live 202 / 4771); nothing failed when a round quoted it | gate exits 0 only on byte-identity with a fresh regeneration (`CENSUS-FRESH=ok files=2`), exit 1 on stale/tampered fixtures, exit 2 unmeasurable; found bytes always restored | `corpus/instruments/census-freshness-check.py`; `controls/c1-gate-final.txt`, `controls/c1-gate-selftest.txt`, `controls/c1-mutbat.txt` (+ `controls/c1-mutbat.py` builder) |
+| 50 | coverage | `FRONTIER-CENSUS rows=30 admitted=30 closed=0 problem-rows=30 registry=79`, `entries=33 pass=0` (this host) | `FRONTIER-CENSUS rows=31 admitted=31 closed=1 problem-rows=30 registry=80`, `entries=34 pass=1`, `PASS F31 ids=S080 exit=0` | `controls/do-nothing-c2-winhost.txt` → `controls/c2-counter-final.txt`; `corpus/knowledge/osv-affected-range-events.md`; `corpus/source-snapshots/round-50/` (S080 + manifest) |
+
+**Capabilities:** one row enters the table (demonstrated running this round):
+
+| name | what it can now do | evidence pointer | first-working round |
+|---|---|---|---|
+| `census-freshness-check` | prove the committed `citation-survival` census of record is byte-identical to what `resolve.py` generates over the current tree, exit 1 on stale or tampered censuses, exit 2 unmeasurable, and leave the found bytes exactly as they were | `python corpus/instruments/census-freshness-check.py <lane-root>` → `CENSUS-FRESH=ok files=2` exit 0; `--selftest` → `selftest cases=3 failures=0`; battery `mutants=6 closed=5 survivors=1` | 50 |
+
+**Saturation:** line 9/10 per owned axis unchanged; the capability entry RESTARTS the stagnation window at
+round 50 (last capability entry: 50; prior: 25 per the round-30 erratum, then none until this round). The
+lowest non-retired axis remains depth:verifiability (4) and C1 works it on its own instrument.
+
+**Non-author verification:** outstanding. No seat ran (the inherited wave spec is stale against
+`claims.v2.json` and no AgentSwarm surface exists on this host); the most recent outside spot-check covers
+round 49 (`corpus/lessons/round-49-verifier-spotcheck.md`). The claims verify on their re-frozen predicates
+by re-derivable commands only.
+
+### Planned for round 51 (not frozen)
+
+1. **depth:verifiability (4, lowest):** decide the 67-entry host-bound recheck-line class with the operator
+   (L0 kasegi round-50): either an authorized portability repair (same-line rewrite per R6, anchors kept, a
+   `python3 || python` fallback form proven by F31's entry) or it stays disclosed debt with the operator as
+   named owner; the score-5 bar (0 gated unsupported claims) stays operator-owned via `score-gap.py`'s 22
+   gated lines.
+2. **coverage (8):** the S065 flip is spent by F31; scout a fresh first-party capture for F32 (not the CVE
+   Services write path, not EPSS, not OSV) and screen it against the province BEFORE any freeze — the
+   round-50 D1 lesson makes the pre-freeze neighbor check mandatory.

@@ -1,0 +1,38 @@
+{
+  "round": 50,
+  "lane": "kasegi",
+  "base": "c5e36360f5226c97d28f1937961b15c90e58827f",
+  "supersedes": ".ufo/waves/round-50/claims.json per claims-erratum-1.md (D1 duplicate surface, D2 host-unportable predicates, D3 unproducible control)",
+  "frozen_at": "2026-11-01",
+  "host": "Windows workspace (win32 10.0.26200 x64, Git Bash); interpreter `python` 3.13.15; `python3` absent (Store stub); `/home/vgpnk` absent",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "kind": "capability-acquisition",
+      "score_before": 4,
+      "frozen_sentence": "The lane ships a committed census-freshness gate corpus/instruments/census-freshness-check.py that exits 0 only when the committed corpus/instruments/citation-survival.md and corpus/instruments/citation-survival.tsv are byte-identical to the files corpus/instruments/resolve.py generates over the current tree, whose committed self-test demonstrates exit 1 on a stale-census fixture and on a tampered-census fixture, and which at the round's measured tip prints CENSUS-FRESH=ok with exit 0.",
+      "counter": "python corpus/instruments/census-freshness-check.py <lane-root>   # host-portable: sys.executable runs the lane's own resolve.py; on this host <lane-root> = C:/Users/jpvei/.zcode/workspace/95b1ba4d-5089-47a4-9fd8-54adebbce2ae/fleet/kasegi-shokunin",
+      "expect_after": "stdout contains CENSUS-FRESH=ok and exit code is 0 at the measured tip; the committed self-test prints selftest cases=3 failures=0 with the stale-census and tampered-census cases reading exit 1 (receipt .ufo/waves/round-50/controls/c1-gate-selftest.txt); the gate restores the committed census bytes on every run, so a stale or tampered census cannot be greened by running it",
+      "kill_rule": "capture-free success, a gate that greenlights a stale or tampered census, a self-test that cannot fail, or a census regenerated after the gate run it certifies",
+      "do_nothing_control": "run the counter at a base-commit export: census-freshness-check.py does not exist there, so the control cannot print CENSUS-FRESH=ok (committed receipt controls/do-nothing-c1.txt, produced on this host)"
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "kind": "frontier-admission",
+      "score_before": 8,
+      "frozen_sentence": "The lane admits frontier row F31 — OSV affected-range events (the OSV format's per-package version timeline: affected[].ranges[].events with introduced/fixed/last_affected/limit, at least one introduced event, an implicit limit \"*\", and three range types whose orderings are evaluated by SemVer precedence, ecosystem logic or Git reachability; distinct from F25's CVE Record one-boundary version entries, F21's CSAF/VEX product status and F23's CycloneDX analysis states; a re-open of the round-42 S065 screen under its own recorded flip condition) — grounded on tier-A registry row S080 (status mined, opened 2026-11-01, used-by the new entry) pinned to round-50 capture corpus/source-snapshots/round-50/S080.txt whose byte count and sha256 match corpus/source-snapshots/round-50/manifest.json, with located quotes that source-recheck.py --source S080 re-verifies with exit 0 (16 assertions Q1-Q16, each exactly-once at its pinned anchor); on THIS host the frozen counter python corpus/instruments/frontier-recheck-count.py at the measured tip prints FRONTIER-CENSUS rows=31 admitted=31 closed=1 problem-rows=30 registry=80 with entries=34 pass=1, the single pass being `PASS F31 ... ids=S080 exit=0`, and all 33 inherited row failures carry the single problem class recheck-exit-1 (their recheck lines name the absent Linux root /home/vgpnk and a python3 this host lacks — no missing-entry, no manifest problem); at the base export the same counter prints FRONTIER-CENSUS rows=30 admitted=30 closed=0 problem-rows=30 registry=79, entries=33 pass=0, and no F31 line anywhere.",
+      "counter": "python corpus/instruments/frontier-recheck-count.py   # run from the lane root; the F31 entry's recheck line is interpreter-portable (python3 || python fallback) so this host can execute it",
+      "expect_after": "FRONTIER-CENSUS rows=31 admitted=31 closed=1 problem-rows=30 registry=80; entries=34 pass=1 with PASS F31 ids=S080 exit=0; exactly 33 FAIL entry records and every one problems=recheck-exit-1; sha256 of corpus/source-snapshots/round-50/S080.txt matches the manifest; source-recheck.py --manifest corpus/source-snapshots/round-50/manifest.json --source S080 exits 0",
+      "kill_rule": "quote-not-found or sha mismatch from source-recheck.py, a capture that is not the OpenSSF project's own specification page, an F31 row whose entry overlaps F25/F21/F23 ground without a stated distinction, a re-open that does not fire the recorded S065 flip condition, or any FRONTIER-FAIL record on F31",
+      "do_nothing_control": "run the counter at a base-commit export (corpus + SKILL.md files via git show, built this host): FRONTIER-CENSUS rows=30 admitted=30 closed=0 problem-rows=30 registry=79, entries=33 pass=0, zero F31 lines, so the frozen expect_after is unreachable without the round's work (committed receipt controls/do-nothing-c2-winhost.txt)"
+    }
+  ],
+  "non_targets": [
+    "depth:density (9): guard only, no density credit",
+    "no axis retired or split",
+    "no SCORECARD score asserted by the lane; scores are held and reported",
+    "the inherited 30-row recheck-exit-1 debt is disclosed, not repaired this round: it is the 67-entry host-bound recheck-line class (L0 question filed), not a lane-editable surface this round"
+  ]
+}
