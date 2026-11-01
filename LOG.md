@@ -2316,12 +2316,13 @@ C3 screen extension), then the round's own capability and coverage moves landed 
   text-renderable copy of the developer-hub documentation). Registry rows 82 → 84 (R8); no pre-existing row's
   status/recheck/used-by cell changed (S066 byte-identical). Sources-census validate exit 0 at round start and round
   end (the 5 known W04 duplicate-url warnings, unchanged).
-- Mistakes mined (5 first-run catches, none committed; 2 inherited fixed): the rev-2 acknowledgment check passed the
+- Mistakes mined (6 catches; the first five before any commit, the sixth over the final committed tree; 2 inherited fixed): the rev-2 acknowledgment check passed the
   pre-erratum lesson (fixed: separate-occurrence window rule + case-i); the rev-1 AFTER run measured the Erratum's own
   annotation-shaped reference against itself (fixed: self-referential-span skip + case-h); the F33 entry cited S083
   only on declaration lines (`selection-not-cited-by-entry`, fixed: capture-line citations in the claim attributions);
   S083's first Q8 was below the 12-char quote floor (`quote-too-short-to-be-evidence`, fixed: longer quote); the
-  freeze.txt build printed binary-mode `*` markers (fixed before commit). Lesson: `corpus/lessons/round-52.md`;
+  freeze.txt build printed binary-mode `*` markers (fixed before commit); and over the final committed tree the
+  round's own auditor flagged three annotation-shaped figures in the round-52 lesson's own prose (catch (f), the instrument policing the class catching the round documenting the class — prose rephrased, audit re-run green `annotated=5 ok=5 erratum-on-record=2 failures=0`, census regenerated unchanged 209/4912, gate receipt rev 3). Lesson: `corpus/lessons/round-52.md`;
   figures superseded by `claims-erratum-1.md` + `freeze.txt` rev 1b.
 - Non-targets held: `SKILL.md` untouched (density guard), no axis retired or split, no score asserted; the 67
   host-bound recheck lines stay operator-owned disclosed debt (L0 kasegi round-50 unanswered, routed around);
