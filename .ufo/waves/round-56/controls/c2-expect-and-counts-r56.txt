@@ -1,0 +1,42 @@
+# round-56 C2 expect-and-counts receipt over the landed tree
+run-utc=2026-11-01T16:18:46Z
+
+$ python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-56/manifest.json --source S088
+S088:sha256 OK
+S088:Q1 OK occurrences=1 anchor=1-ok
+S088:Q2 OK occurrences=1 anchor=1-ok
+S088:Q3 OK occurrences=1 anchor=1-ok
+S088:Q4 OK occurrences=1 anchor=1-ok
+S088:Q5 OK occurrences=1 anchor=1-ok
+S088:Q6 OK occurrences=1 anchor=1-ok
+[exit=0]
+
+$ python corpus/instruments/capture-binding-check.py | tail -2
+AUDIT records=71 with_url=71 with_fetched_utc=33 with_archival=38 snapshot_dirs=32 manifest_dirs=32 missing_manifest=0 multi_row_url=7 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+records=71 bound=71 unbound=0
+[exit=0]
+
+$ wc -l -c corpus/source-snapshots/round-56/S088.txt
+   1 7204 corpus/source-snapshots/round-56/S088.txt
+$ sha256sum corpus/source-snapshots/round-56/S088.txt
+09ce0b10436f67c35f7ccf3a8dcfec0489d209d6698ee2fa75cf4b6f5873935e *corpus/source-snapshots/round-56/S088.txt
+
+$ ls corpus/knowledge/*.md | wc -l
+75
+$ grep -c "^corpus/knowledge/" corpus/instruments/knowledge-expected.txt
+75
+$ LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt && echo sort-clean
+sort-clean
+[exit=0]
+
+# the lead-line pins (see claims-erratum-1: the freeze wanted 1 for the loose string; the correct pins are:)
+$ grep -c "CISA ADP list page" corpus/SOURCES.md  # 3 at base, 3 at tip (141 r53 bullet / 143 the lead / 200 r54 bullet)
+3
+$ grep -c "CISA ADP list page (the Vulnrichment" corpus/SOURCES.md  # the exact lead line: 1 at base, 1 at tip
+1
+$ grep -F "CISA ADP list page (the Vulnrichment" corpus/SOURCES.md | sha256sum  # = the base sha 90b336a2...
+90b336a2b0a3cd6ee2dceecf6eaf2a45b5954741b6eb45e8a2abc8892ed31a98 *-
+
+$ python corpus/instruments/figure-audit.py | tail -1  # C1 stays green across the C2 bytes
+FIGURE-AUDIT figures=27 ok=27 stale=0 exit=0
+[exit=0]

@@ -876,3 +876,33 @@ round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F3
 F36 at round 55.
 The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
 frontier count stays outside it.
+
+## Round-56 admission — coverage map row and Frontier F37 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-56 entry
+`corpus/knowledge/cisa-vulnrichment-record-list.md` (Frontier F37, source S088;
+source basis: the CISA Vulnrichment published record list read through GitHub's git-trees
+machine interface at the repository's default ref —
+https://api.github.com/repos/cisagov/vulnrichment/git/trees/develop — the recorded CISA ADP
+list-page lead at `corpus/SOURCES.md:142`, named in the round-52 SCORECARD planned-for-53,
+captured 2026-11-01, status 200, under `corpus/source-snapshots/round-56/`) is recorded here as
+an appended amendment so every existing line keeps its number. The coverage-map row is appended
+here rather than inserted into the map, and the F37 frontier row is listed here on the same table
+shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| CISA ADP record publication catalog (round 56) | `corpus/knowledge/cisa-vulnrichment-record-list.md` | S088 — first-party machine-interface catalog (GitHub git-trees read of cisagov/vulnrichment at the default ref), opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F37 | CISA Vulnrichment published record list — the catalog surface of CISA's ADP record publication (the 28 per-year record folders 1999-2026 with no gap, the six non-record support entries beside them, the content-addressed completeness pin `"truncated":false` at top sha e8d691a5, and the 8501-byte README blob whose round-51 snapshot sha still reproduces) | admitted | knowledge/cisa-vulnrichment-record-list.md | S088 | Read the record list as the catalog of CISA's enrichment publication, kept distinct from the rules F32 admits: the record folders are exactly the years 1999-2026, 28 = 2026−1999+1 with no gap (`S088.txt:1`, Q1/Q2), and the year-form count re-derives from the capture. The list object self-declares complete (`"truncated":false`, Q5) at its content address (Q6) — a moved top sha at a later re-open is a different list state by construction; the ref is mutable, the pin is the arbiter. The rules text sits in the list as one README blob of 8501 bytes (Q3) whose round-51 snapshot sha 2da09414 reproduces same-day — the check on F32's scope limit: rules live in README/flowcharts, not in the catalog. flowcharts.md (Q4, 3916 bytes) is named by the list but its details are declared changeable by the README itself (S081.txt:9) — process description, not enrichment data. Distinctness: F32 keeps the data rules, F25 the record format, F30 the CVE Services write path, F33 NVD's serving, F20 the SSVC framework (the flowcharts' details unasserted). Scope limit: the catalog surface only — the year folders' contents, sync cadence, commit history, rate limits and authentication are unasserted; the releases variant of the surface is empty (probed, no rows claimable). |
+
+[r56 amendment, appended 2026-11-01] The frontier as of round 56 is F01-F37 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F34 at round 53, F35 at round 54,
+F36 at round 55, F37 at round 56.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
