@@ -1021,3 +1021,33 @@ this row's writing, not a committed instrument.
 ## Round-47 instrument registry pointer
 
 The authoritative round-47 registry rows are in `SKILL.md` under “Round-47 Gates & probes registry”. New files: `r47-routed-defects.py`, `r47-f30-gate.py`, `r47-counters-selftest.py`, `r47-mutbat.py`; fixture data: `entry29-fixed-bytes.md`. Counters remain byte-frozen at `308a2cb2`; their green values are mechanical, not admission. Pre-freeze selftest: 43 cases, zero failures; mutation coverage remains incomplete (34 survivors), and wave-1 tree attacks demonstrate additional false greens. Exact commands, exit maps, dependencies and scratch ownership are in the authoritative registry, not duplicated here.
+
+## `census-freshness-check.py` — the census-of-record freshness gate (round 50)
+
+`python corpus/instruments/census-freshness-check.py <lane-repo-root>` exits 0 with
+`CENSUS-FRESH=ok` only when the committed `citation-survival.md` and
+`citation-survival.tsv` are byte-identical to what `resolve.py` generates over the
+current tree (round-49 lesson mistake 1: the lane quoted a stale census as current).
+Exit 1 = `CENSUS-FRESH=stale` (stale or tampered — the gate reads bytes, not
+motives); exit 2 = unmeasurable (missing instrument/census or a failed resolver
+run) — fail-closed. The gate always restores the census bytes it found: a run
+leaves the tree exactly as it stood, and a stale census is preserved as evidence,
+never silently repaired by the checker.
+
+`--selftest` builds three disposable fixture lanes around a copy of the lane's own
+`resolve.py` — fresh (want 0), stale-tree (want 1), tampered-census (want 1) — and
+prints `selftest cases=3 failures=F`. Pre-freeze battery (round-50 receipt
+`.ufo/waves/round-50/controls/c1-mutbat.txt`): six mutants — md-only
+compare, tsv-only compare, length-only compare, stale-exit flipped to 0,
+resolver-error swallowed, restore omitted — each distinguished from the pristine
+gate on a defect world built for its limb, except the swallowed resolver error,
+which no fixture world exercises and which is named as the battery's one disclosed
+survivor (the error limb's fail-closed behavior is evidenced instead by the
+base-export control exiting 2 on a missing instrument).
+
+Known limit (recorded, not hidden): the generated census embeds the lane root path
+it was generated from, so the committed census of record is bound to one host path;
+moving the lane re-baselines the census and the gate reads stale until
+regeneration. The round-50 census is regenerated on the Windows workspace host
+(2026-11-01); a Linux-host run of the gate against those bytes reads stale by this
+mechanism, not by drift.
