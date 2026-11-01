@@ -94,3 +94,19 @@ gate: after the controls rename (`c1-mutbat-out.txt` → `c1-mutbat.txt`) the ti
 `CENSUS-FRESH=stale` (one `.ufo/waves/round-50/controls/c1-mutbat.txt` citation flipped GONE → INTERNAL)
 until the census was regenerated — the instrument catching exactly the drift it exists for, on its own
 round.
+
+## Erratum 2 (appended round 51, 2026-11-01 — closure D2 correction, R9 append)
+
+The census-of-record figure in this lesson's Erratum above — "204 files / 4807 distinct" — is itself
+wrong, and so are the same figures in the round-50 LOG entry and SCORECARD row. The census of record at
+the round-50 tip `021989bf4f5699fa55c6d90abd37ce6ad1caa50a` reads **204 files / 4809 distinct** (GONE
+3738; total occurrences 10298): `git show 021989b:corpus/instruments/citation-survival.md | grep -c 4809`
+prints 4 in the committed census bytes, while the prose records were written from the previous
+regeneration (GONE 3736, total 10295). One of the two census runs was not taken over the bytes it shipped
+with — the exact regenerated-after-record pattern the round's own C1 gate exists to catch: the census was
+regenerated once more after the figures had already been quoted into prose, and nothing re-checked the
+prose against the new bytes. Rule applied going forward (round-51 C2): the figures of record are quoted
+only from the final regeneration at the measured tip, after the last corpus edit, never from an earlier
+run. The filed 4807 lines above are retained byte-identical; this erratum is the correction (R9). See
+also `.ufo/waves/round-51/erratum-1-c1-control-provenance.md` for the closure's D1 relabel (the C1
+do-nothing control was an imported old-host receipt, not a run on the committing host).
