@@ -2177,8 +2177,8 @@ Correction (round 43): the wave-shape bullet above states `70 of the 73 seats re
   builder `controls/c1-mutbat.py`). The gate always restores the census bytes it finds. Motivating state it
   now gates: the inherited committed census at the base read 201 files / 4758 distinct citations while the
   live tree read 202 / 4771 (`.ufo/waves/round-50/r50-live-resolve.txt`) — the round-49 mistake class
-  (stale census quoted as current) is now an exit 1. The census of record is regenerated at the tip (203
-  files / 4784 distinct) and the score is HELD at 4: the score-5 bar stays `score-gap.py`'s 22 gated lines
+  (stale census quoted as current) is now an exit 1. The census of record is regenerated at the tip (204
+  files / 4807 distinct; corrected from the pre-lesson regeneration per the lesson erratum) and the score is HELD at 4: the score-5 bar stays `score-gap.py`'s 22 gated lines
   on the lost domain bases (operator-owned), and the 67 host-bound recheck lines are filed as L0 debt
   (fleet `.ufo/l0-questions.md`, kasegi round-50 row), not repaired by this round.
 - C2' (coverage 8): admitted frontier row F31 — OSV affected-range events — on registry row S080 (OpenSSF's

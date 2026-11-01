@@ -84,3 +84,13 @@ commands only.
   recheck verifies the pinned bytes and located quotes; it does not claim the live page still says this.
 - The battery's one survivor (error-exit-0) is named, not hidden: no fixture world forces a resolver
   failure; the error limb's fail-closed behavior is evidenced by the base-export control exiting 2.
+
+## Erratum (appended before round close, 2026-11-01)
+
+The census figures first filed in this lesson and in the SCORECARD/LOG round-50 rows — "203 files / 4784
+distinct" — were the pre-lesson regeneration (run 1). The census of record regenerated over the final tree
+reads **204 files / 4807 distinct**; the figures above are corrected to it. The gap itself demonstrated the
+gate: after the controls rename (`c1-mutbat-out.txt` → `c1-mutbat.txt`) the tip read
+`CENSUS-FRESH=stale` (one `.ufo/waves/round-50/controls/c1-mutbat.txt` citation flipped GONE → INTERNAL)
+until the census was regenerated — the instrument catching exactly the drift it exists for, on its own
+round.
