@@ -1,0 +1,27 @@
+# Round-51 probe — public GitHub mirror VeigaPunk/open-bug-bounties vs the lost origin-work checkout
+# Recorded inventory (SCORECARD r15 coverage row; corpus/knowledge/citation-bases.md:35): HEAD 1307b8b, 26 package dirs + 3 files, submission-review/claims 21 entries, 43 .ufo-missions, 5 data/ inventories.
+# Probed 2026-10-31/11-01 on the Windows host, read-only gh api + git ls-remote:
+$ gh api repos/VeigaPunk/open-bug-bounties --jq "{full_name, default_branch, pushed_at, size, description}"
+{"default_branch":"main","description":"Public Open Bug Bounties board (GitHub Pages mirror of ChatGPT site)","full_name":"VeigaPunk/open-bug-bounties","pushed_at":"2026-10-31T17:17:48Z","size":1912}
+$ git ls-remote https://github.com/VeigaPunk/open-bug-bounties.git HEAD
+4c895519d7a59da17fe95d304614c463bbfa416c	HEAD
+$ gh api "repos/VeigaPunk/open-bug-bounties/commits/1307b8b" --jq "{sha, message}"
+{"message":"No commit found for SHA: 1307b8b","documentation_url":"https://docs.github.com/rest/commits/commits#get-a-commit","status":"422"}gh: No commit found for SHA: 1307b8b (HTTP 422)
+IDENTITY-CHECK=FAIL (recorded HEAD 1307b8b absent from mirror history; identity unproven)
+$ gh api repos/VeigaPunk/open-bug-bounties/contents --jq ".[] | \"\(.type) \(.name)\""
+dir .github
+file .gitignore
+dir .omp
+file README.md
+dir app
+dir data
+file eslint.config.mjs
+file next.config.ts
+file package-lock.json
+file package.json
+file postcss.config.mjs
+dir public
+dir scripts
+dir tests
+file tsconfig.json
+ROOT-INVENTORY: 15 entries; no submission-review/, no .ufo-missions/ at root -> neither matches the recorded r15 inventory; no recovery ground for RECEIPT-STORE-LOST from this mirror.

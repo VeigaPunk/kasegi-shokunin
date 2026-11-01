@@ -1,0 +1,50 @@
+{
+  "round": 51,
+  "lane": "kasegi",
+  "base": "bcd5d89a65ab612ef88e3d49cea0ef3cb3ccca09",
+  "frozen_at": "2026-11-01",
+  "host": "Windows workspace (win32 10.0.26200 x64, Git Bash); interpreter `python` 3.13.15 (C:\\Users\\jpvei\\AppData\\Local\\Programs\\Python\\Python313\\python.exe); `python3` = Microsoft Store stub (exit 49, 'Python was not found'); /home and /fast absent",
+  "carry_in": "round-50 non-author closure routed two first-priority defects: D1 (do-nothing-c1.txt provenance mislabel + wrong 'Windows CPython error string' claim) and D2 (census-figure number drift 4807 prose vs 4809 certified at 021989b). Both are claimed this round as C1 and C2.",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "kind": "evidence-integrity",
+      "score_before": 4,
+      "frozen_sentence": "The lane's C1 do-nothing control of record is a receipt this host actually produced: .ufo/waves/round-51/controls/do-nothing-c1-winhost.txt carries a run of the round-50 C1' counter command (python corpus/instruments/census-freshness-check.py <root>) against a base-commit export of c5e3636 built on this host via per-file git show (git archive dies on NTFS-uncheckoutable paths), and .ufo/waves/round-51/erratum-1-c1-control-provenance.md relabels the round-50 controls/do-nothing-c1.txt as an imported old-host (Linux) receipt — retained byte-identical as mistake evidence — and corrects the factually wrong 'Windows CPython error string' host-distinguishing claim (this host has no working python3 and no /fast; its Windows CPython prints the interpreter's own exe path and a backslash-quoted target path that the imported receipt does not carry).",
+      "counter": "rebuild the export and re-run, per the commands embedded in the receipt header; plus: grep -c 'python3: can' .ufo/waves/round-51/controls/do-nothing-c1-winhost.txt  # must print 0 (the imported receipt's error line must not appear in the host-produced one)",
+      "expect_after": "do-nothing-c1-winhost.txt ends C1_EXIT=2 with this host's interpreter path (Python313\\python.exe) and a C:\\\\-quoted target path in the error line; python3 --version on this host prints the Store-stub message (exit 49) and python /fast/... prints the Git-mount path form (controls/probe-host-r51.txt), so no run on this host reproduces the round-50 imported receipt's bytes; the erratum names every location that asserted the old label (round-50 report, claims.v2.json do_nothing_control, claims-erratum-1.md 'What survives unchanged', lesson round-50 M3) and stays append-only against those bytes",
+      "kill_rule": "a 'host-produced' receipt whose bytes this host cannot re-derive (the D1 class itself), an erratum that rewrites a filed line instead of appending, or a relabel that leaves the wrong 'Windows CPython' claim standing anywhere uncorrected",
+      "do_nothing_control": "the claim's subject IS the control: before this round, zero C1-control receipts in the lane are reproducible on this host (the sole C1 control is the imported /fast receipt); the winhost receipt is the after-state"
+    },
+    {
+      "id": "C2",
+      "axis": "calibration",
+      "kind": "append-only-correction",
+      "score_before": "unprovable-but-better (calibration is not a scored owned axis; verdict row, not a number)",
+      "frozen_sentence": "The census-of-record figure correction owed by round-50 closure D2 lands append-only: corpus/lessons/round-50.md gains an Erratum 2 naming 204 files / 4809 distinct as the census of record at 021989b (the committed citation-survival.md bytes there), LOG.md and SCORECARD.md gain round-51 corrections naming 4809 and leaving every 4807 line byte-identical, and the lesson names the regenerated-after-record pattern the round-50 C1 gate exists to catch. At this round's end the census of record is re-measured at the final tip and its figures are quoted only from that final regeneration.",
+      "counter": "grep -c '4809' corpus/lessons/round-50.md LOG.md SCORECARD.md; grep -c '204 files / 4807 distinct' SCORECARD.md corpus/lessons/round-50.md LOG.md",
+      "expect_after": "'4809' rows rise from 0 to at least 1 in each of the three record files (before: 0/0/0 at base bcd5d89; the only in-scope 4809 bytes were the certified census itself), while the three '204 files / 4807 distinct' filed lines stay byte-identical (append-only, R9); the gate at the final tip prints CENSUS-FRESH=ok files=2",
+      "kill_rule": "a correction that rewrites the filed 4807 lines, a 4809 figure asserted from anything but the certified bytes (git show 021989b:corpus/instruments/citation-survival.md) or the final regeneration, or a prose figure written before the final census regeneration this round",
+      "do_nothing_control": "at base bcd5d89: grep -c '4809' on the three record files prints 0 0 0 and no correction of record exists — the do-nothing world cannot produce the errata without this round's work"
+    },
+    {
+      "id": "C3",
+      "axis": "coverage",
+      "kind": "frontier-admission",
+      "score_before": 8,
+      "frozen_sentence": "The lane admits frontier row F32 — CISA Vulnrichment: the public repository of CISA's enrichment of public CVE records through CISA's ADP (Authorized Data Publisher) container, where every analyzed CVE gets three SSVC decision points, higher-risk CVEs get CWE and/or CVSS enrichment, KEV-listed CVEs get a KEV block, the originating CNA's data always takes precedence and the ADP drops its own assessments when the CNA later populates the fields, SSVC data carries a major.minor.patch version encoding (currently 2.0.3 = SSVC 2.0, CISA Coordinator tree 3), and CPE strings were discontinued 2024-12-10; distinct from F18's KEV catalog, F20's SSVC framework, F22's VEX issuance guidance, F25's CVE record format and F30's CVE Services interface (the pre-freeze neighbor screen named all five) — grounded on tier-A registry row S081 (status mined, opened 2026-11-01, used-by the new entry) pinned to round-51 capture corpus/source-snapshots/round-51/S081.txt (sha256 2da0941448d88f48bfc7275c6444abf3aaf57244719e64b3b3ab6591f4458b65, 8290 bytes, 120 lines, fetched 2026-11-01T02:48:34Z, HTTP 200, 8501 raw bytes — CISA's own README.md at the repo's default branch develop), with 12 exactly-once quote assertions Q1-Q12 at pinned anchors that source-recheck.py --source S081 re-verifies with exit 0; the counter at the measured tip prints FRONTIER-CENSUS rows=32 admitted=32 closed=2 problem-rows=30 registry=82 with entries=35 pass=2, the F32 pass reading PASS F32 ids=S081 exit=0, and all 33 inherited row failures still carrying exactly the recheck-exit-1 class; the registry gains exactly two rows this round (S081 mined; S082 rejected with reason and flip — the public VeigaPunk/open-bug-bounties mirror whose history provably lacks the lost checkout's recorded HEAD 1307b8b).",
+      "counter": "python corpus/instruments/frontier-recheck-count.py   # run from the lane root",
+      "expect_after": "FRONTIER-CENSUS rows=32 admitted=32 closed=2 problem-rows=30 registry=82; entries=35 pass=2 with PASS F32 ids=S081 exit=0; exactly 33 FAIL entry records and every one problems=recheck-exit-1; sha256 of corpus/source-snapshots/round-51/S081.txt matches the manifest; source-recheck.py --manifest corpus/source-snapshots/round-51/manifest.json --source S081 exits 0",
+      "kill_rule": "quote-not-found or sha mismatch from source-recheck.py, a capture that is not CISA's own vulnrichment README, an F32 row whose entry overlaps F18/F20/F22/F25/F30 ground without a stated distinction, a neighbor screen run after the freeze instead of before it, or any FRONTIER-FAIL record on F32",
+      "do_nothing_control": "run the counter at a base-commit export of bcd5d89 (corpus + SKILL.md via per-file git show, built this host): FRONTIER-CENSUS rows=31 admitted=31 closed=1 problem-rows=30 registry=80, entries=34 pass=1, and no F32 line anywhere (committed receipt .ufo/waves/round-51/controls/do-nothing-c2-r51-winhost.txt)"
+    }
+  ],
+  "non_targets": [
+    "depth:density (9): guard only — SKILL.md untouched this round, no density credit",
+    "no axis retired or split; the owned-axis set stays depth:density, depth:verifiability, coverage",
+    "no SCORECARD score asserted by the lane; scores held and reported; C2 records a calibration verdict row, not a number",
+    "the 67 host-bound recheck lines stay operator-owned disclosed debt: L0 kasegi round-50 is unanswered and the round routes around it (no portability rewrite)",
+    "the VeigaPunk mirror is recorded as a screened rejection (S082) with the identity question answered negatively on the probed evidence; no recovery of RECEIPT-STORE-LOST is claimed"
+  ]
+}
