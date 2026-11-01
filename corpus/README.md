@@ -797,3 +797,27 @@ at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29,
 round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
 round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52. The 0/18 sentence is untouched: the
 lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+The coverage map above is not edited in place (R6): the round-53 entry
+`corpus/knowledge/nvd-api-2.0-response-schema.md` (Frontier F34, source S085;
+source basis: NIST's own JSON Schema artifact for the NVD Vulnerability Data API 2.0 response, served
+from NIST's csrc host and captured 2026-11-01 under `corpus/source-snapshots/round-53/` — the same
+10394-raw-byte artifact the round-42 S066 screen recorded) is recorded here as an appended amendment
+so every existing line keeps its number. The coverage-map row is appended here rather than inserted
+into the map, and the F34 frontier row is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| NVD API 2.0 response schema (round 53) | `corpus/knowledge/nvd-api-2.0-response-schema.md` | S085 — first-party spec (NIST's own schema artifact), opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F34 | NVD API 2.0 response schema — the JSON Schema that defines the response F33 admitted as served (the versioned 2.2.4 contract document under draft-07, the schema-REQUIRED envelope keys, the per-record required five id/published/lastModified/references/descriptions, the CVE-id pattern, the NVD-only evaluatorComment/evaluatorSolution/evaluatorImpact and cisaExploitAdd/cisaActionDue/cisaRequiredAction/cisaVulnerabilityName mirror fields, NVD's own metrics vocabulary, and the declared ssvcV203 container) | admitted | knowledge/nvd-api-2.0-response-schema.md | S085 | Read the schema as the contract and F33's capture as an instance of it: the envelope F33 observed served is here REQUIRED (resultsPerPage among the required seven — S085.txt:505, Q13), and the mirror fields F33's Limits deferred are schema-DECLARED properties of every record (S085.txt:36/39/42 evaluator*, S085.txt:45/53 cisa*, Q4-Q8) that one live response need not carry — absence of an evaluator*/cisa* field in a served record is an instance fact, not a contract fact. Read a metrics entry as NVD-container vocabulary ("Metric scores for a vulnerability as found on NVD." S085.txt:96, Q9) whose source attribution lives in the entry's own source/type fields (F33's Primary/Secondary rule), and the ssvcV203 container as a declared metric only — the SSVC framework stays F20, the ADP program stays F32. A record id must match `^CVE-[0-9]{4}-[0-9]{4,}$` (S085.txt:329, Q11) and every record carries the required five. Distinct from F25/S064 (NVD's derived projection of the canonical record format — the r42 S066 primary-of-record reading, unchanged), F33/S083 (definition vs instance; this is the "natural next capture" F33's Limits named), F32/S081 and F18/F19/F30 (no KEV/EPSS/write-path ground). S066 is re-opened under the UNspent term of its own flip (evaluator*/cisa* mirror fields; the interface-contract term was the one F33 spent) and the rejected row stays byte-identical. Scope limit: a response-body schema defines no rate limits, authentication, query parameters or error responses — none is asserted; the referenced external schema documents (cvss-v*.json, ssvc-v2.0.3.json, cve_affected_1.0.json) are not captured. |
+
+[r53 amendment, appended 2026-11-01] The frontier as of round 53 is F01-F34 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F34 at round 53. The 0/18 sentence
+is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
+outside it.
