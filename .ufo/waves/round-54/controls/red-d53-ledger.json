@@ -1,0 +1,20 @@
+{
+ "schema_version": 1,
+ "what": "RED CONTROL - not a lane file: the two r53 trailer/metadata literals AS FILED, each audited against its re-derivation; both must read stale and the audit must exit 1",
+ "figures": [
+  {
+   "id": "d53-1-trailer",
+   "record": ".ufo/waves/round-53/controls/c2-counter-final-r53.txt:9 trailer prose 'the 34 inherited recheck-exit-1 entry records'",
+   "recorded": "34",
+   "derive": "python corpus/instruments/frontier-recheck-count.py 2>/dev/null | grep -c '^FAIL'",
+   "want": "34"
+  },
+  {
+   "id": "d53-2-lines",
+   "record": "round-53 '543 lines' metadata (manifest.json lines field / SOURCES.md S085 row / F34 entry header)",
+   "recorded": "543",
+   "derive": "wc -l < corpus/source-snapshots/round-53/S085.txt",
+   "want": "543"
+  }
+ ]
+}

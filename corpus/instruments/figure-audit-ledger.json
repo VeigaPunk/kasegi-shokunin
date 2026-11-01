@@ -1,0 +1,78 @@
+{
+ "schema_version": 1,
+ "what": "recorded figures re-derived against committed bytes; whole-value comparison (never substring); any stale figure or failed derive exits 1, unreadable ledger exits 2",
+ "routed_origin": "round-53 closure D53-1 (receipt trailer '34 inherited' vs its own measured FAIL_entry_records=33) and D53-2 (capture metadata 543 lines vs wc -l 542) - corpus/lessons/round-53-verifier-spotcheck.md section 6",
+ "figures": [
+  {
+   "id": "frontier-rows",
+   "record": ".ufo/waves/round-53/controls/do-nothing-c2-r53.txt FRONTIER-CENSUS rows=34, quoted in SCORECARD.md round-53 move-log",
+   "recorded": "34",
+   "rev": "32782bd",
+   "derive": "git show 32782bd:corpus/README.md | grep -cE '^\\| F[0-9]+ \\|'",
+   "want": "34"
+  },
+  {
+   "id": "registry-rows",
+   "record": ".ufo/waves/round-53/controls/c2-counter-final-r53.txt FRONTIER-CENSUS registry=85, quoted in SCORECARD.md round-53 move-log",
+   "recorded": "85",
+   "rev": "32782bd",
+   "derive": "git show 32782bd:corpus/SOURCES.md | grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|'",
+   "want": "85"
+  },
+  {
+   "id": "knowledge-expected-entries",
+   "record": ".ufo/waves/round-53/controls/c1-after-lane-r53.txt expected=71 (at 586cdda) superseded to 72 by the round-53 C2 append at the r53 tip",
+   "recorded": "72",
+   "rev": "32782bd",
+   "derive": "git show 32782bd:corpus/instruments/knowledge-expected.txt | grep -c '^corpus/knowledge/'",
+   "want": "72"
+  },
+  {
+   "id": "knowledge-files",
+   "record": "SCORECARD.md round-53 move-log 'knowledge 71 -> 72'",
+   "recorded": "72",
+   "rev": "32782bd",
+   "derive": "git ls-tree --name-only 32782bd -- corpus/knowledge/ | grep -c '\\.md$'",
+   "want": "72"
+  },
+  {
+   "id": "capture-lines-s085",
+   "record": "corpus/source-snapshots/round-53/manifest.json lines field + SOURCES.md S085 row + F34 entry header all say 543; superseded by the round-54 D53-2 correction (wc -l prints 542): .ufo/waves/round-54/controls/routed-d53-corrections.md",
+   "recorded": "543 (filed; superseded by the r54 D53-2 correction)",
+   "rev": "32782bd",
+   "derive": "git show 32782bd:corpus/source-snapshots/round-53/S085.txt | wc -l",
+   "want": "542"
+  },
+  {
+   "id": "capture-bytes-s085",
+   "record": "SOURCES.md S085 row and F34 entry header (7590 snapshot bytes = 7589 content bytes + 1 trailing newline)",
+   "recorded": "7590",
+   "rev": "32782bd",
+   "derive": "git show 32782bd:corpus/source-snapshots/round-53/S085.txt | wc -c",
+   "want": "7590"
+  },
+  {
+   "id": "capture-lines-s086",
+   "record": "corpus/source-snapshots/round-54/manifest.json lines field (731) and the S086 registry row",
+   "recorded": "731",
+   "note": "capture landed at the round-54 freeze commit; bytes pinned by .ufo/waves/round-54/claims.json",
+   "derive": "wc -l < corpus/source-snapshots/round-54/S086.txt",
+   "want": "731"
+  },
+  {
+   "id": "capture-sha256-s086",
+   "record": "corpus/source-snapshots/round-54/manifest.json sha256 field",
+   "recorded": "fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f",
+   "note": "capture landed at the round-54 freeze commit; bytes pinned by .ufo/waves/round-54/claims.json",
+   "derive": "sha256sum corpus/source-snapshots/round-54/S086.txt | cut -d' ' -f1",
+   "want": "fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f"
+  },
+  {
+   "id": "fail-entry-records",
+   "record": ".ufo/waves/round-53/controls/c2-counter-final-r53.txt:8 FAIL_entry_records=33 (the :9 trailer's '34' is superseded by the r54 D53-1 correction); 33 = entries - pass, preserved by the declared round-54 after-state (38-5=33)",
+   "recorded": "33 (the class-check line; the trailer's 34 superseded)",
+   "derive": "python corpus/instruments/frontier-recheck-count.py 2>/dev/null | grep -c '^FAIL'",
+   "want": "33"
+  }
+ ]
+}
