@@ -8,7 +8,7 @@ Mirror root for bounty-path equivalence: `C:\Users\jpvei/Projects/the-bounty-hun
 
 ## Totals
 
-- distinct path-like citations: **4807** (total occurrences: 10295; a citation cited in both scopes counts once)
+- distinct path-like citations: **4809** (total occurrences: 10298; a citation cited in both scopes counts once)
 - distinct citations appearing in SKILL.md: 701 (of which SKILL-only: 701)
 - distinct citations appearing in corpus: 0
 
@@ -16,11 +16,11 @@ Mirror root for bounty-path equivalence: `C:\Users\jpvei/Projects/the-bounty-hun
 |---|---|
 | RESOLVES | 8 |
 | MIRROR-EQUIVALENT | 0 |
-| GONE | 3736 |
+| GONE | 3738 |
 | INTERNAL | 1063 |
 | OTHER *(root-domain bucket, orthogonal: the brief says classify other roots as RESOLVES/GONE)* | 8 resolve / 203 gone = 211 |
 
-Terminal outcome classes sum to the distinct total: RESOLVES(8) + MIRROR-EQUIVALENT(0) + INTERNAL(1063) + GONE(3736) = 4807.
+Terminal outcome classes sum to the distinct total: RESOLVES(8) + MIRROR-EQUIVALENT(0) + INTERNAL(1063) + GONE(3738) = 4809.
 Of the 8 RESOLVES, 8 are non-lane roots (domain `other`: origin-work, /tmp, ~/projects …); 0 are lane-repo-absolute.
 Of the 0 MIRROR-EQUIVALENT, 0 were written as `~/Projects/bounties/...` (domain `bounty`), 0 were bounty-root-relative bare paths (domain `rel`).
 
@@ -30,7 +30,7 @@ Numerator = RESOLVES + MIRROR-EQUIVALENT + INTERNAL. Denominator = all distinct 
 
 - SKILL.md alone: **131/701 = 18.69%**
 - corpus alone: **0/0 = n/a**
-- lane total (SKILL.md + corpus): **1071/4807 = 22.28%**
+- lane total (SKILL.md + corpus): **1071/4809 = 22.27%**
 
 ## Noise sub-census (GONE tokens that are rule artifacts, not citable paths)
 
@@ -47,13 +47,13 @@ Flag counts (a token can carry several flags):
 | synthetic | 602 |
 
 - GONE citations carrying any noise flag: 1189
-- GONE citations with no noise flag (genuine vanished paths): 2547
+- GONE citations with no noise flag (genuine vanished paths): 2549
 - citations containing glob/placeholder syntax (`* ? [ { } <...>`): 843
 
 Noise-adjusted rates (denominator excludes noise-flagged citations):
 - SKILL: 129/349 = 36.96%
 - CORPUS: 0/0 = n/a
-- ALL: 1016/3563 = 28.52%
+- ALL: 1016/3565 = 28.50%
 
 ## Scope x class matrix
 
@@ -88,7 +88,7 @@ grep -ohP '`[^`\n]+`' SKILL.md corpus/README.md corpus/*/*.md \
  | sort -u | wc -l
 ```
 
-Result: both yield **4807** distinct citations, and
+Result: both yield **4809** distinct citations, and
 `diff <(pipeline to file) <(cut -f1 citation-survival.tsv | tail -n +2 | sort -u)` is empty (sets identical, not just counts).
 Re-running `resolve.py` twice leaves both outputs byte-identical (md5 stable).
 
