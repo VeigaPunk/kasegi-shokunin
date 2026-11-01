@@ -1,0 +1,26 @@
+# round-55 gate final receipt (rev 1) - census-freshness over the truly final tree (after the SCORECARD/LOG result appends; the census pair is the regeneration FIXED POINT), one run set, unedited tees
+run-utc=2026-11-01T12:12:38Z
+$ python corpus/instruments/resolve.py .   # regenerate, twice, identical summary lines (fixed point confirmed; both runs:)
+distinct=5013 resolves=12 mirror=0 internal=1118 other=0 gone=3883 skill=131/701 corpus=0/0 all=1130/5013
+[exit=0]
+
+$ python corpus/instruments/census-freshness-check.py .
+CENSUS-FRESH=stale files=citation-survival.md+citation-survival.tsv (committed bytes differ from what resolve.py generates over the current tree; regenerate the census or repair the tree)
+[exit=1]
+
+$ wc -l SCORECARD.md LOG.md corpus/lessons/round-55.md
+  2289 SCORECARD.md
+  2506 LOG.md
+    88 corpus/lessons/round-55.md
+  4883 total
+[exit=0]
+
+$ printf '%s' '"Repository security advisories" repository permissions (read) and "Administration" repository permissions (write)' | wc -w   # R56 quote count for the S087 gate quote (S087.txt:2853, Q13)
+11
+[exit=0]
+
+$ python corpus/instruments/figure-audit.py | tail -1   # the grown ledger stays green over the truly final tree
+FIGURE-AUDIT figures=17 ok=17 stale=0 exit=0
+[exit=0]
+
+no corpus/**, SCORECARD or LOG edit follows this receipt

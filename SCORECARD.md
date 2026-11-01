@@ -2229,3 +2229,61 @@ their frozen predicates by re-derivable commands only.
    47); S086's own unasserted surfaces (aggregate-score computation/weights, publisher/API, Prox) are a further lead
    family if a future claim needs them; every next frontier row clears the extended pre-freeze screen including the
    downstream-consumer sweep.
+
+## Round 55 result — the routed DF-1/DF-2 carry-in (non-claim, addressed first), the figure-audit ledger growth 9 → 17 (C1, capability extension, held), and the GitHub repository security advisories REST API surface (C2)
+
+Frozen claims: `.ufo/waves/round-55/claims.json` (freeze commit `fd7838c1ffc3c4a36de58c9bcf73729d476df94c`, base
+`ed60637394b170a4120fda501b9b9c5387f2df24` — the round-54 closure tip), landed before implementation with the S087 capture +
+manifest + the extended pre-freeze screen + the do-nothing/stand-in/binding/recheck receipts in the same commit. The round-54
+non-author closure (verdict admitted=true) routed two status-neutral defects; the carry-in landed FIRST as a routed non-claim
+(`d0237d6`): (DF-2) the before-state receipt cited by cfdf059 but never committed was regenerated as
+`.ufo/waves/round-54/controls/d53-base-greps-r54.txt` naming the same five sha pins, the four filed literals each exactly once
+at base and the measured 542/7590/33 — every limb re-run live before landing, so every citation resolves; (DF-1) the r54
+report/freeze prose "0 mentions in base SCORECARD" superseded by 2 (the cited receipt's own limb prints 2; base bytes re-derive
+2 at SCORECARD.md:2102,:2158 — the r52-planned/r53-routed sibling text) via the appended R9-form erratum
+`.ufo/waves/round-55/controls/df1-mentions-erratum.md` with its closure check printing `df1-erratum=closed` exit 0 — no filed
+byte edited. The one-per-round stand-in dry-run caught the round's biggest own mistake pre-data (the v1 stand-in omitted the
+uncommitted capture pair and the counter read F36 `manifest-unreadable`; v2 is the of-record dry-run — mined in the lesson).
+
+| Axis | Before | After | Verdict and evidence |
+|---|---:|---:|---|
+| depth:verifiability | 4 | **4 held; delta 0 — nominal capability-extension move, labelled per QUALITY R58** | C1 verifies: the figure-audit ledger grows 9 → 17 pinned figures (`00832d2`). The round-54 figures fold in rev-pinned to `5108584aab38a1919992c46d0224f6ec1cb59363` (frontier-rows-r54 35, registry-rows-r54 86, entries-r54 38 via the F-row entry-cell comma split, knowledge-expected-r54 73, knowledge-files-r54 73) and the DF-1 do-nothing mention counts are pinned machine-checkably (figure-audit-mentions-base-scorecard 2 — naming the superseded filed-prose 0, mentions-base-log 0, mentions-base-knowledge-expected 0, the latter two via awk whole-count so a zero prints with exit 0). Receipts: selftest `cases=5 failures=0` exit 0 (`controls/c1-selftest-r55.txt`); GREEN over the lane root `FIGURE-AUDIT figures=17 ok=17 stale=0 exit=0` (`controls/c1-green-lane-r55.txt`, run before any C2 byte — every new derive addresses committed revs or the invariant FAIL-record count 33 = 38−5 = 39−6, so the audit stays green across C2); RED control over the DF-1 prose figures AS FILED plus two wrong fold-figures reads 3 stale exit 1 (`controls/c1-red-df1-r55.txt` + `red-df1-ledger.json`); do-nothing at base ed60637 in the freeze commit (`controls/c1-donothing-r55.txt`: 9 ids at base, the new entry ids 0, the base ledger 9/9 green over the lane root). Score HELD at 4: the moved object is the re-derivation repertoire (9 → 17 machine-checked figures), not the citation-resolution census the axis counter reads — the non-moving metric is named (R58), and the score-5 bar stays `score-gap.py`'s gated lines on the lost domain bases, operator-owned (L0 r50/46 routed around). |
+| coverage | 8 | **8 held; delta 0** | C2 verifies: frontier F36 admitted on S087 — GitHub Docs' own REST reference page for repository security advisories (`https://docs.github.com/en/rest/security-advisories/repository-advisories`), first admission of the round-47 lead (then SOURCES.md:137, provenance `corpus/source-snapshots/round-47/S076.txt:574`; the lead line's bytes unchanged, flip recorded in the registry bullets), opened 2026-11-01. Capture `corpus/source-snapshots/round-55/S087.txt` (3407 lines, 137738 snapshot bytes over 937712 fetched HTML bytes, sha256 `3eebdf47…`; three same-sha instrument opens + two identical raw-HTML curl opens this round; 14 assertions Q1-Q14 each occurrences=1 at its pinned anchor, `source-recheck --source S087` exit 0). Entry `corpus/knowledge/github-repository-security-advisories-rest-api.md`: attribution, 4 falsifiable claims with rejected over-generalizations (the twelve-endpoint family with per-endpoint permission tiers and the list endpoint's unauthenticated public-resource carve-out; the POST/PATCH create-update pair with the required-body contract and the closed published/closed/draft vocabulary; the standalone ghsa_id-keyed 202-Accepted CVE request; the private-fork route that alone names a second permission set), distinctness vs F28/F29/F30 argued from the neighbor screen, honest Limits (rate limits/plan-gated parameters/response examples/error schemas unasserted; live docs.github.com pinned by sha). Extended pre-freeze screen incl. the downstream-consumer sweep run at base BEFORE the freeze (`controls/neighbor-screen-r55.txt`: the URL held by no README/PROVINCE/knowledge row; only F29 the concepts-lifecycle neighbor; zero snapshot consumers). Committed `d9d77ec`: README F36 row + r55 admission block at EOF (+29/−0), PROVINCE r55 amendment (+2/−0), SOURCES S087 row inserted after S086 + hunt bullet + row-added bullet (+3/−0, zero deleted lines, no existing row touched), `knowledge-expected.txt` 73 → 74 (insert BEFORE `github-repository-security-advisories.md`, `'-' < '.'` byte-wise, `LC_ALL=C sort -c` clean). Counter before→after ON THIS HOST: do-nothing `rows=35 admitted=35 closed=5 problem-rows=30 registry=86`, `entries=38 pass=5`, zero F36 lines, FAIL records 33 (`controls/do-nothing-c2-r55.txt`, per-file base export of ed60637) → `rows=36 admitted=36 closed=6 problem-rows=30 registry=87`, `FRONTIER-PASS F36 ids=S087`, `entries=39 pass=6`, FAIL records 33 (=39−6, invariant) (`controls/c2-counter-final-r55.txt`); capture-binding 69 → `records=70 bound=70 unbound=0` exit 0, `multi_row_url=7` unchanged 7 → 7 (`controls/capture-binding-r55.txt`, both runs pre-freeze, re-confirmed in the final receipt); expect limb 73 → expected=74 missing=0 unexpected=0. Score HELD at 8: the denominator is the lost domain root's 18-surface set (operator-owned re-scope); F36 moves the frontier measure 35 → 36, not the coverage score. |
+| depth:density | 9 | 9 held; non-target guard | `SKILL.md` was not edited this round; the round-54 non-target guard reasoning applies unchanged (R6: SKILL.md is the lane's most line-cited file). |
+| calibration | verdict-only (not a scored owned axis) | improved (verdict row per the round-51/52/53/54 precedents; no score asserted) | The carry-in landed append-only with byte pins and runnable closure checks (`df1-erratum=closed` exit 0, and the r54 `d53-corrections=closed` re-derivable); six Mistakes rows in the round-55 lesson carry class/captured-by/fix — two mined routed defects (DF-2 the unresolvable pointer; DF-1 the memory-composed prose count) and four own-catches, three of them BEFORE their data landed (the v1 stand-in's incomplete declared-adds list caught by the dry-run limb; the export-root audit draft caught by the fail-closed derive limb before the of-record receipt; the three non-unique manifest quotes caught by the pre-freeze recheck) and one at the capture's byte-verification step (the MSYS grep CR artifact settled by a byte-level read); the D53-3/AgentSwarm operator routing stays via the L0 channel, never treated as answered. |
+
+**Census of record at this round's tip (quoted only from the final regeneration):** the round-54 tip read
+215 files / 4978 distinct → the round-55 tip reads the figures in the gate receipt
+`controls/gate-final-r55.txt` (`CENSUS-FRESH=ok`), measured after the last corpus/SCORECARD/LOG edit —
+quoted there, not here, so this cell cannot drift from the receipt (the round-54 practice: the lesson quotes
+by pointer). Bookkeeping move only (R58 nominal labeling on C1): no citation-resolution move is claimed.
+
+### Round-55 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 55 | depth:verifiability | 9 pinned figures; the r54 figures and the DF-1 mention counts stood un-re-derived; the DF-1 prose drift was caught by the closure judge's reading, not by any lane instrument | 17 pinned figures: the r54 state folds in rev-pinned (35/86/38/73/73) and the DF-1 mentions pin machine-checkably (2/0/0); the prose figures AS FILED read stale (red exit 1); selftest 5/0; green 17/0 exit 0 | `controls/c1-selftest-r55.txt`; `controls/c1-green-lane-r55.txt`; `controls/c1-red-df1-r55.txt`; `controls/c1-donothing-r55.txt`; `.ufo/waves/round-55/controls/df1-mentions-erratum.md` |
+| 55 | coverage | `FRONTIER-CENSUS rows=35 admitted=35 closed=5 problem-rows=30 registry=86`, `entries=38 pass=5`, zero F36 (this host, base export) | `FRONTIER-CENSUS rows=36 admitted=36 closed=6 problem-rows=30 registry=87`, `FRONTIER-PASS F36 ids=S087`, `entries=39 pass=6`, FAIL records 33 invariant | `controls/do-nothing-c2-r55.txt` -> `controls/c2-counter-final-r55.txt`; `corpus/knowledge/github-repository-security-advisories-rest-api.md`; `corpus/source-snapshots/round-55/` (S087 + manifest) |
+| 55 | calibration | the r54 closure's routed DF-1/DF-2 standing | DF-2 receipt regenerated with every limb re-run live (all citations resolve); DF-1 superseded append-only with a runnable closure check; the machine-catching ledger entries landed with C1 | `.ufo/waves/round-54/controls/d53-base-greps-r54.txt`; `.ufo/waves/round-55/controls/df1-mentions-erratum.md` |
+
+**Capabilities:** the round-54 `move-log-figure-audit` row is extended in place of a new row: the capability's ledger
+grows 9 → 17 (the first-working round stays 54; the extension evidence is this round's green/red/selftest receipts —
+recorded in this round section per the round-43/R6-append practice).
+
+**Saturation:** line 9/10 per owned axis; lowest non-retired axis remains depth:verifiability (4); the nudge is not
+active (the repertoire moved this round — the ledger grew 9 → 17 with three new receipts).
+**Non-author verification:** outstanding. No seats ran (no AgentSwarm surface on this host; routed via L0); the most
+recent outside spot-check is the round-54 closure that routed the defects this round fixes. The claims verify on their
+frozen predicates by re-derivable commands only.
+
+### Planned for round 56 (not frozen)
+
+1. **depth:verifiability (4, lowest):** the figure-audit ledger keeps growing one round at a time — fold the round-55
+   figures in (rows=36, registry=87, entries=39, expected=74) rev-pinned to this round's tip, so every future figure
+   drift stays machine-caught the round after it lands; the 30 problem-rows / 33 host-bound FAIL records, the 67
+   `cd /home/...` recheck lines and the limb-mutation replay's python3 dependency stay operator-owned (L0 kasegi
+   round-50/46 unanswered) and must NOT be re-declared as a lane target.
+2. **coverage (8):** the remaining recorded leads are the CISA ADP list page (a check on F32's scope limit) and
+   S087's own unasserted surfaces (rate limits, plan-gated parameters — the developer-hub pages were JS-walled for the
+   lane instrument at S084, so the REST reference's sibling parameter documentation is the checkable form); every next
+   frontier row clears the extended pre-freeze screen including the downstream-consumer sweep.

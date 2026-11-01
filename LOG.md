@@ -2456,3 +2456,51 @@ Round lesson: `corpus/lessons/round-54.md` (5 Mistakes rows: the two mined route
 Gate: S086 with the 12-word quote at S086.txt:415; Limits: host-bound classes operator-owned, moving-`main` caveat;
 considerthese: idle stretch, all proposals dispositioned, nothing adopted — `Assimilation: none — shokuknow
 unreachable`). SCORECARD round-54 result section + capabilities row `move-log-figure-audit` + planned-for-55 appended.
+
+## Round 55 (2026-11-01) — carry-in DF-1/DF-2 addressed first (routed non-claim), C1 the figure-audit ledger 9 → 17 (depth:verifiability, nominal per R58), C2 frontier F35 → F36 on S087 (coverage, score held)
+
+- Freeze `fd7838c` (base `ed60637` = the round-54 closure tip): claims frozen before implementation; the S087
+  capture (3407 lines / 137738 bytes, sha `3eebdf47…`, three same-sha instrument opens + two identical curl
+  opens) + manifest (14 Q each occurrences=1) + the extended pre-freeze screen + do-nothing/stand-in/binding/recheck
+  receipts land in the same commit (`controls/neighbor-screen-r55.txt`, `do-nothing-c2-r55.txt`,
+  `c2-standin-dryrun-r55.txt` — v1 caught omitting the capture pair pre-data, v2 of-record,
+  `capture-binding-r55.txt` 69→70, `s087-recheck-r55.txt`, `c1-donothing-r55.txt`).
+- Carry-in FIRST, routed non-claim (`d0237d6`): DF-2 — the before-state receipt cited by cfdf059 but never
+  committed regenerated as `.ufo/waves/round-54/controls/d53-base-greps-r54.txt` (same five sha pins: SOURCES@base
+  `06c92e6a…`, nvd entry@base `15eb2d05…` = tip, receipt `be69ece7…`, manifest `eb6ffa60…`, capture `4d1c4e77…`;
+  four filed literals ×1 at base; measured 542/7590/33 — every limb re-run live before landing); DF-1 — the r54
+  report/freeze prose "0 mentions in base SCORECARD" superseded by 2 (the cited receipt's own limb prints 2;
+  base bytes re-derive 2 at SCORECARD.md:2102,:2158 — the r52-planned/r53-routed sibling text) via the appended
+  R9-form erratum `.ufo/waves/round-55/controls/df1-mentions-erratum.md`, closure check `df1-erratum=closed`
+  exit 0; no filed byte edited.
+- C1 `00832d2` (depth:verifiability 4, capability extension, held per R58): the figure-audit ledger grows 9 → 17 —
+  the r54 figures fold in rev-pinned to `5108584` (frontier-rows-r54 35, registry-rows-r54 86, entries-r54 38 via
+  the F-row entry-cell comma split, knowledge-expected-r54 73, knowledge-files-r54 73) and the DF-1 mention counts
+  pin machine-checkably (scorecard 2, log 0, knowledge-expected 0 via awk whole-count). Receipts: selftest
+  `cases=5 failures=0` exit 0 (`controls/c1-selftest-r55.txt`); GREEN `figures=17 ok=17 stale=0` exit 0
+  (`controls/c1-green-lane-r55.txt`, run before any C2 byte; every new derive addresses committed revs or the
+  invariant FAIL count 33); RED over the DF-1 prose AS FILED + two wrong fold-figures reads 3 stale exit 1
+  (`controls/c1-red-df1-r55.txt` + `red-df1-ledger.json`); do-nothing at base in the freeze commit (9 ids at base,
+  new ids 0, base ledger 9/9).
+- C2 `d9d77ec` (coverage 8, frontier F35 → F36, score held — operator-owned denominator): F36 = GitHub Docs' own
+  REST reference page for repository security advisories, first admission of the round-47 lead (SOURCES.md:137,
+  provenance S076.txt:574; lead bytes unchanged, flip recorded in the registry bullets). Entry
+  `corpus/knowledge/github-repository-security-advisories-rest-api.md` (attribution; 4 falsifiable claims with
+  rejected over-generalizations: twelve-endpoint family + per-endpoint permission tiers + the list endpoint's
+  unauthenticated public-resource carve-out; POST/PATCH create-update with required body and the closed
+  published/closed/draft vocabulary; the standalone ghsa_id-keyed 202-Accepted CVE request; the private-fork route
+  alone naming advisories-read + Administration-write; distinctness vs F28/F29/F30; honest Limits). README F36 row
+  + r55 admission block at EOF (+29/−0); PROVINCE r55 amendment (+2/−0); SOURCES S087 row after S086 + hunt bullet
+  + row-added bullet (+3/−0, zero deleted lines); knowledge-expected 73 → 74 (insert before
+  `github-repository-security-advisories.md`, sort -c clean).
+- Counting commands: do-nothing `rows=35 admitted=35 closed=5 problem-rows=30 registry=86`, `entries=38 pass=5`,
+  zero F36, FAIL 33 (`controls/do-nothing-c2-r55.txt`, per-file base export) → final
+  `rows=36 admitted=36 closed=6 problem-rows=30 registry=87`, `FRONTIER-PASS F36 ids=S087`, `entries=39 pass=6`,
+  FAIL records 33 invariant (`controls/c2-counter-final-r55.txt`); `source-recheck --source S087` exit 0 (14
+  occurrences=1; final-receipt tail); capture-binding `records=70 bound=70 unbound=0` exit 0, `multi_row_url=7`
+  unchanged; plain counts 36/87/74/74/sorted-ok/3407/137738.
+
+Round lesson: `corpus/lessons/round-55.md` (6 Mistakes rows: the two mined routed defects + four own-catches, three
+pre-data; Gate: S087 with the 11-word quote at S087.txt:2853; Limits: host-bound classes operator-owned, the
+live-docs.github.com caveat; considerthese: idle stretch, nothing adopted — `Assimilation: none — shokuknow
+unreachable`). SCORECARD round-55 result section + move log + capabilities note + planned-for-56 appended.
