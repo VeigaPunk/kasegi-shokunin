@@ -847,3 +847,32 @@ round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F2
 round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F34 at round 53, F35 at round 54.
 The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
 frontier count stays outside it.
+
+## Round-55 admission — coverage map row and Frontier F36 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-55 entry
+`corpus/knowledge/github-repository-security-advisories-rest-api.md` (Frontier F36, source S087;
+source basis: GitHub Docs' REST reference page for repository security advisories at
+https://docs.github.com/en/rest/security-advisories/repository-advisories — the round-47 lead at
+`corpus/SOURCES.md:137`, provenance `corpus/source-snapshots/round-47/S076.txt:574` — captured
+2026-11-01, status 200, under `corpus/source-snapshots/round-55/`) is recorded here as an appended
+amendment so every existing line keeps its number. The coverage-map row is appended here rather
+than inserted into the map, and the F36 frontier row is listed here on the same table shape as the
+frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Repository security advisories machine interface (round 55) | `corpus/knowledge/github-repository-security-advisories-rest-api.md` | S087 — platform first-party docs (GitHub Docs' own REST reference), opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F36 | GitHub repository security advisories REST API — the machine interface contract for repository security advisories (the twelve-endpoint route family with its per-endpoint fine-grained permission model, the POST/PATCH create-update pair with its required-body contract and the closed published/closed/draft state vocabulary, the standalone ghsa_id-keyed CVE-request route returning 202 Accepted, and the private-fork route that alone names a second permission set) | admitted | knowledge/github-repository-security-advisories-rest-api.md | S087 | Read each route's permission line as per-endpoint, never family-wide: the list endpoint alone serves unauthenticated callers "if only public resources are requested" (S087.txt:793, Q2), create, update and the CVE request name the (write) set (S087.txt:1287, Q3; :2135, Q7; :2800, Q10), and the private fork alone names `"Repository security advisories" repository permissions (read) and "Administration" repository permissions (write)` (S087.txt:2853, Q13). Read the advisory state as a closed three-state vocabulary "Can be one of: published, closed, draft" (S087.txt:2194, Q9), and the CVE request as an asynchronous action keyed by ghsa_id returning 202 Accepted (S087.txt:2827, Q11; :2820) — it runs after an advisory exists, never as a field of create. The interface HOW stays distinct from the lifecycle WHAT: F29/S076 keeps the maintainer-side lifecycle concepts, F28/S073 keeps the reporter flow (this page's own "Privately report a security vulnerability" route is inventoried, not absorbed), F30/S078 keeps the CVE Program's own write path. Scope limit: rate limits, plan-gated parameters, response examples and error-body schemas are unasserted; docs.github.com is a live document, so the pinned sha256 3eebdf47 is the round-55 authority. |
+
+[r55 amendment, appended 2026-11-01] The frontier as of round 55 is F01-F36 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F34 at round 53, F35 at round 54,
+F36 at round 55.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
