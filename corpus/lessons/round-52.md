@@ -24,7 +24,7 @@ back before committing.; and (f) AFTER the implementation commit, the round's ow
 final tree flagged three annotation-shaped references in THIS lesson's own prose (figures 17/24/24 stated in
 the audited "N words by wc -w" shape, resolving to a placeholder or to nothing) — the instrument policing the
 figure class caught the round documenting the figure class. The prose was rephrased to state figures outside
-the annotation shape, the audit re-run green, and the census regenerated (gate receipt rev 3).
+the annotation shape, the audit re-run green, and the census regenerated (gate receipt rev 4).
 
 | class | evidence pointer | captured-by | fix |
 |---|---|---|---|

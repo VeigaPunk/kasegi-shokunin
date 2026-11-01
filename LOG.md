@@ -2322,7 +2322,7 @@ C3 screen extension), then the round's own capability and coverage moves landed 
   only on declaration lines (`selection-not-cited-by-entry`, fixed: capture-line citations in the claim attributions);
   S083's first Q8 was below the 12-char quote floor (`quote-too-short-to-be-evidence`, fixed: longer quote); the
   freeze.txt build printed binary-mode `*` markers (fixed before commit); and over the final committed tree the
-  round's own auditor flagged three annotation-shaped figures in the round-52 lesson's own prose (catch (f), the instrument policing the class catching the round documenting the class — prose rephrased, audit re-run green `annotated=5 ok=5 erratum-on-record=2 failures=0`, census regenerated unchanged 209/4912, gate receipt rev 3). Lesson: `corpus/lessons/round-52.md`;
+  round's own auditor flagged three annotation-shaped figures in the round-52 lesson's own prose (catch (f), the instrument policing the class catching the round documenting the class — prose rephrased, audit re-run green `annotated=5 ok=5 erratum-on-record=2 failures=0`, census regenerated unchanged 209/4912, gate receipt rev 4). Lesson: `corpus/lessons/round-52.md`;
   figures superseded by `claims-erratum-1.md` + `freeze.txt` rev 1b.
 - Non-targets held: `SKILL.md` untouched (density guard), no axis retired or split, no score asserted; the 67
   host-bound recheck lines stay operator-owned disclosed debt (L0 kasegi round-50 unanswered, routed around);
