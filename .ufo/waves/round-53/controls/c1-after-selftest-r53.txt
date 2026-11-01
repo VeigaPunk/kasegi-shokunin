@@ -1,0 +1,22 @@
+# round-53 C1 AFTER selftest receipt — the repaired instrument, one run, unedited tee (case lines + completeness line)
+$ python corpus/instruments/recheck-audit.py --selftest
+selftest good.md       pass want=True  got=True  | strict want=True  got=True  ok
+selftest prose.md      pass want=False got=False | strict want=False got=False ok
+selftest cwd.md        pass want=False got=False | strict want=False got=False ok
+selftest ghost.md      pass want=False got=False | strict want=False got=False ok
+selftest degenerate.md pass want=True  got=True  | strict want=False got=False ok
+selftest elsewhere.md  pass want=True  got=True  | strict want=False got=False ok
+selftest ownonly.md    pass want=True  got=True  | strict want=False got=False ok
+selftest selftesty.md  pass want=True  got=True  | strict want=False got=False ok
+selftest sourced.md    pass want=True  got=True  | strict want=True  got=True  ok
+selftest basetest.md   pass want=True  got=True  | strict want=False got=False ok
+selftest basestate.md  pass want=True  got=True  | strict want=True  got=True  ok
+selftest parseonly.md  pass want=False got=False | strict want=False got=False ok
+selftest instonly.md   pass want=True  got=True  | strict want=False got=False ok
+selftest completeness lines=13 total=15 complete=False ok
+selftest expect-missing  exit=1 want=1 missing=['corpus/knowledge/ghost-absent.md'] unexpected=[] ok
+selftest expect-unexpected exit=1 want=1 missing=[] unexpected=['corpus/knowledge/extra.md'] ok
+selftest expect-separator exit=0 want=0 missing=[] unexpected=[] ok
+selftest complete-empty        exit=1 want=1 lines=0/0 complete=False ok
+selftest complete-missing-line exit=1 want=1 lines=1/2 complete=False ok
+C1_SELFTEST_EXIT=0 (18 case lines, all ok; the base bytes crash before any case runs — receipt c1-donothing-r53.txt)

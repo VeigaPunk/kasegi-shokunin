@@ -51,7 +51,13 @@ between the listed entries and the audited tree's actual
 `missing=<name>`, an extra tree entry prints `unexpected=<name>`, and either
 makes the audit red. Drift between the committed list and the tree is therefore
 a failed audit, so deleting a whole knowledge entry no longer shrinks the
-audited set silently. When `--expect` is absent or its file is missing, the
+audited set silently. Round-53 repair: both sides of that equality are
+normalized to POSIX forward slashes before comparing — a host whose relpath
+emits Windows separators (os.sep == '\\') previously compared unequal to the
+committed POSIX list on every entry, so the limb printed expected=N missing=N
+unexpected=M as a pure separator artifact and no real drift was nameable
+(selftest fixture: expect-separator). The committed list is never rewritten to
+host separators. When `--expect` is absent or its file is missing, the
 audit keeps its glob-based completeness rule and the receipt records
 `expect="absent"`.
 
@@ -185,12 +191,21 @@ def load_expected(path):
     return names
 
 
+def _as_posix(path):
+    # Round-53 equality-limb repair: a host whose os.path.relpath emits Windows
+    # separators (os.sep == '\\') compared unequal to the committed POSIX list on
+    # every entry, so the limb printed expected=N missing=N unexpected=M as a pure
+    # separator artifact and no real drift was nameable. Normalize BOTH sides to
+    # forward slashes; the committed list is never rewritten to host separators.
+    return path.replace(os.sep, "/") if os.sep != "/" else path
+
+
 def expected_mismatch(root, expected):
     actual = {
-        os.path.relpath(p, root)
+        _as_posix(os.path.relpath(p, root))
         for p in glob.glob(os.path.join(root, "corpus/knowledge/*.md"))
     }
-    wanted = set(expected)
+    wanted = {_as_posix(name) for name in expected}
     return sorted(wanted - actual), sorted(actual - wanted)
 
 
@@ -202,15 +217,23 @@ def selftest():
         os.makedirs(os.path.join(tmp, "corpus/knowledge"))
         os.makedirs(os.path.join(tmp, "corpus/instruments"))
         os.makedirs(os.path.join(tmp, "corpus/source-snapshots/snap"))
-        open(os.path.join(tmp, "corpus/instruments/tool.py"), "w").close()
-        open(os.path.join(tmp, "corpus/knowledge/target.md"), "w").close()
-        open(os.path.join(tmp, "corpus/source-snapshots/snap/manifest.json"), "w").close()
+        # fixture writes pin encoding="utf-8": the round-53 receipts found the base
+        # selftest crashing on Windows, which wrote the em-dash in prose.md's line
+        # with the cp1252 default and re-read it as utf-8 (UnicodeDecodeError 0x97).
+        open(os.path.join(tmp, "corpus/instruments/tool.py"), "w", encoding="utf-8").close()
+        open(os.path.join(tmp, "corpus/knowledge/target.md"), "w", encoding="utf-8").close()
+        open(os.path.join(tmp, "corpus/source-snapshots/snap/manifest.json"), "w", encoding="utf-8").close()
         tmp = os.path.abspath(tmp)
         cases = {
             # (line, frozen-limb pass, strict-limb pass)
             "good.md": ("recheck: cd %s && python3 corpus/instruments/tool.py corpus/knowledge/good.md" % tmp, True, True),
             "prose.md": ("recheck: on-restoration — true (fails closed today: base absent)", False, False),
-            "cwd.md": ("recheck: python3 corpus/instruments/tool.py corpus/knowledge/cwd.md", False, False),
+            # cwd.md isolates limb (b) with an interpreter-free line: `cat` succeeds
+            # from the lane root (the relative path resolves) and fails from the
+            # foreign cwd, so the case's verdict does not depend on a working
+            # `python3` (the round-53 host's Store stub failed identically in both
+            # cwds, which read pass=True and broke the want=False verdict).
+            "cwd.md": ("recheck: cat corpus/instruments/tool.py && cat corpus/knowledge/cwd.md", False, False),
             "ghost.md": ("recheck: cd %s && test -e corpus/knowledge/ghost-absent.md" % tmp, False, False),
             "degenerate.md": ("recheck: cd %s && true corpus/knowledge/target.md" % tmp, True, False),
             "elsewhere.md": ("recheck: cd /tmp && python3 corpus/instruments/tool.py corpus/knowledge/elsewhere.md", True, False),
@@ -227,7 +250,7 @@ def selftest():
             "instonly.md": ("recheck: cd %s && ls corpus/knowledge/instonly.md corpus/knowledge/target.md" % tmp, True, False),
         }
         for name, (line, want_pass, want_strict) in cases.items():
-            with open(os.path.join(tmp, "corpus/knowledge", name), "w") as handle:
+            with open(os.path.join(tmp, "corpus/knowledge", name), "w", encoding="utf-8") as handle:
                 handle.write("# fixture\n\n" + line + "\n")
         for name, (_, want_pass, want_strict) in cases.items():
             record = audit_entry(os.path.join(tmp, "corpus/knowledge", name), tmp, "/")
@@ -259,14 +282,14 @@ def selftest():
             tree = os.path.join(tmp, label)
             os.makedirs(os.path.join(tree, "corpus/knowledge"))
             os.makedirs(os.path.join(tree, "corpus/instruments"))
-            open(os.path.join(tree, "corpus/instruments/tool.py"), "w").close()
+            open(os.path.join(tree, "corpus/instruments/tool.py"), "w", encoding="utf-8").close()
             line = "recheck: cd %s && python3 corpus/instruments/tool.py corpus/knowledge/good.md" % tree
-            with open(os.path.join(tree, "corpus/knowledge/good.md"), "w") as handle:
+            with open(os.path.join(tree, "corpus/knowledge/good.md"), "w", encoding="utf-8") as handle:
                 handle.write("# fixture\n\n" + line + "\n")
             for name in extra:
-                with open(os.path.join(tree, "corpus/knowledge", name), "w") as handle:
+                with open(os.path.join(tree, "corpus/knowledge", name), "w", encoding="utf-8") as handle:
                     handle.write("# fixture\n\n" + line.replace("good.md", name) + "\n")
-            with open(os.path.join(tree, "corpus/instruments/knowledge-expected.txt"), "w") as handle:
+            with open(os.path.join(tree, "corpus/instruments/knowledge-expected.txt"), "w", encoding="utf-8") as handle:
                 handle.write("# expected knowledge entries for %s\n" % label)
                 for name in expected:
                     handle.write(name + "\n")
@@ -294,6 +317,48 @@ def selftest():
                 "selftest %-15s exit=%d want=1 missing=%s unexpected=%s %s"
                 % (label, rc, receipt["missing_entries"], receipt["unexpected_entries"], "ok" if ok else "FAIL")
             )
+        # separator fixture (round-53): an expect-green tree audited under an
+        # os.path.relpath stub that emits WINDOWS separators must still read
+        # missing=0 unexpected=0 and exit 0 — the pre-repair limb compared the
+        # stub's backslash paths to the POSIX expected list and red-flagged every
+        # entry (the round-53 carry-in D1 artifact: expected=69 missing=69
+        # unexpected=71 on the live lane). The monkeypatch simulates the Windows
+        # relpath on any host, so this case is host-independent.
+        tree = os.path.join(tmp, "expect-separator")
+        os.makedirs(os.path.join(tree, "corpus/knowledge"))
+        os.makedirs(os.path.join(tree, "corpus/instruments"))
+        open(os.path.join(tree, "corpus/instruments/tool.py"), "w", encoding="utf-8").close()
+        line = "recheck: cd %s && python3 corpus/instruments/tool.py corpus/knowledge/good.md" % tree
+        with open(os.path.join(tree, "corpus/knowledge/good.md"), "w", encoding="utf-8") as handle:
+            handle.write("# fixture\n\n" + line + "\n")
+        with open(os.path.join(tree, "corpus/instruments/knowledge-expected.txt"), "w", encoding="utf-8") as handle:
+            handle.write("# expected knowledge entries for expect-separator\n")
+            handle.write("corpus/knowledge/good.md\n")
+        receipt_path = os.path.join(tree, "receipt.json")
+        real_relpath = os.path.relpath
+
+        def win_relpath(p, start=None):
+            return real_relpath(p, start).replace("/", "\\")
+
+        os.path.relpath = win_relpath
+        try:
+            rc = main(["--root", tree, "--cdroot", tree, "--quiet", "--json", receipt_path])
+        finally:
+            os.path.relpath = real_relpath
+        with open(receipt_path, encoding="utf-8") as handle:
+            receipt = json.load(handle)
+        ok = (
+            rc == 0
+            and receipt["missing_entries"] == []
+            and receipt["unexpected_entries"] == []
+            and receipt["expect"] == "present"
+        )
+        if not ok:
+            failures += 1
+        print(
+            "selftest %-16s exit=%d want=0 missing=%s unexpected=%s %s"
+            % ("expect-separator", rc, receipt["missing_entries"], receipt["unexpected_entries"], "ok" if ok else "FAIL")
+        )
         # completeness through main(): the exit rule's own `complete` conjunct must red
         # an empty knowledge dir (total == 0) and a dir carrying a recheck-less file
         # (lines < total). The auxiliary line above recomputes its own formula, so it
@@ -305,13 +370,13 @@ def selftest():
             tree = os.path.join(tmp, label)
             os.makedirs(os.path.join(tree, "corpus/knowledge"))
             os.makedirs(os.path.join(tree, "corpus/instruments"))
-            open(os.path.join(tree, "corpus/instruments/tool.py"), "w").close()
+            open(os.path.join(tree, "corpus/instruments/tool.py"), "w", encoding="utf-8").close()
             if extra:
                 line = "recheck: cd %s && python3 corpus/instruments/tool.py corpus/knowledge/good.md" % tree
-                with open(os.path.join(tree, "corpus/knowledge/good.md"), "w") as handle:
+                with open(os.path.join(tree, "corpus/knowledge/good.md"), "w", encoding="utf-8") as handle:
                     handle.write("# fixture\n\n" + line + "\n")
                 for name in extra:
-                    with open(os.path.join(tree, "corpus/knowledge", name), "w") as handle:
+                    with open(os.path.join(tree, "corpus/knowledge", name), "w", encoding="utf-8") as handle:
                         handle.write("# no recheck\n")
             receipt_path = os.path.join(tree, "receipt.json")
             rc = main(["--root", tree, "--cdroot", tree, "--quiet", "--json", receipt_path])
@@ -336,9 +401,10 @@ def selftest():
                     "ok" if ok else "FAIL",
                 )
             )
-        # 13 per-entry fixtures + 4 tree-level main() fixtures (2 expected-list, 2
-        # completeness; the completeness sanity line above is not counted as a case)
-        total_cases = len(cases) + 4
+        # 13 per-entry fixtures + 5 tree-level main() fixtures (3 expected-list:
+        # expect-missing, expect-unexpected, expect-separator; 2 completeness; the
+        # completeness sanity line above is not counted as a case)
+        total_cases = len(cases) + 5
         return 1 if failures else 0
 
 

@@ -1,0 +1,9 @@
+# round-53 C1 fixture-red receipt — the PRE-repair bytes over the same scenario the new selftest fixture pins green, one driver run, unedited tee
+# driver: import the base module (git show e276dbf:corpus/instruments/recheck-audit.py -> scratch/kasegi-r53/recheck-audit-base.py),
+# build a temp tree with corpus/knowledge/good.md, call its expected_mismatch(tree, ["corpus/knowledge/good.md"]) on this host (os.sep is backslash natively):
+base-module os.sep = \
+missing=['corpus/knowledge/good.md'] unexpected=['corpus\\knowledge\\good.md']
+C1_FIXTURE_RED: the pre-repair limb reds the exact expect-green scenario (POSIX list, one matching tree entry) that the repaired selftest case expect-separator reads exit=0 missing=0 unexpected=0; the repaired instrument normalizes both sides (corpus/instruments/recheck-audit.py _as_posix) and the committed list stays POSIX
+$ grep -c "sorted(wanted - actual)" corpus/instruments/recheck-audit.py ; grep -c "sorted(actual - wanted)" corpus/instruments/recheck-audit.py   # r31 ledger RA-expect-* find strings stay exactly-once
+1
+1

@@ -1,0 +1,7 @@
+# round-53 C1 catchable-drift receipt — the REPAIRED instrument against the UNSYNCED base expected list (the round-52 tip bytes), one run, unedited tee
+$ git show 23448a2:corpus/instruments/knowledge-expected.txt > scratch/kasegi-r53/expected-base.txt  # 69 entries
+$ python corpus/instruments/recheck-audit.py --root . --cdroot . --expect <base-list>
+unexpected=corpus/knowledge/cisa-vulnrichment-adp-enrichment.md
+unexpected=corpus/knowledge/osv-affected-range-events.md
+expect=present expected=69 missing=0 unexpected=2 exit=1
+C1_CATCH: the drift class is now catchable and NAMED — exactly the two entries the r52 closure routed (F31 osv-affected-range-events.md, F32 cisa-vulnrichment-adp-enrichment.md); under the base bytes the same state read missing=69 unexpected=71, a pure separator artifact in which these two names were indistinguishable from noise
