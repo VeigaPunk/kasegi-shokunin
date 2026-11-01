@@ -1,0 +1,28 @@
+# round-55 C2 stand-in dry-run v2 (base export + the declared C2 adds: S087 capture+manifest, F36 entry file, README r55 block, SOURCES S087 row + 2 bullets, expected insert) - every after-literal observed here BEFORE the freeze
+run-utc=2026-11-01T11:23:07Z
+
+note v1 (11:21:39Z): the first stand-in build omitted the uncommitted round-55 capture dir and the counter read F36 problems=manifest-unreadable - the declared adds were incomplete; fixed by copying the capture pair in (this note is the v1 record)
+
+$ python corpus/instruments/frontier-recheck-count.py --root <stand-in> (F36 lines + census + entries)
+FRONTIER-CENSUS rows=36 admitted=36 closed=6 problem-rows=30 registry=87
+FRONTIER-PASS F36 ids=S087
+PASS     F36  knowledge/github-repository-security-advisories-rest-api.md ids=S087           exit=0   
+entries=39 pass=6 exit=1
+[pipe-exit=0]
+
+$ LC_ALL=C sort -c <stand-in>/corpus/instruments/knowledge-expected.txt
+sort: clean
+[exit=0]
+
+$ grep -c "^corpus/knowledge/" <standin expected>
+74
+
+$ ls <standin>/corpus/knowledge/*.md | wc -l
+74
+
+$ F-row count / registry-row count over the stand-in
+36
+87
+
+$ entries-39 awk derive over the stand-in README
+39

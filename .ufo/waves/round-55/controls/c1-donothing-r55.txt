@@ -1,0 +1,21 @@
+# round-55 C1 do-nothing control at base ed60637394b170a4120fda501b9b9c5387f2df24 - the ledger growth (the 8 new figure entries) does not exist
+# every check is read-only over committed bytes; the base-ledger green run uses the lane root (a git repo, so the 32782bd-pinned derives resolve)
+run-utc=2026-11-01T11:27:32Z
+
+$ git show ed60637394b170a4120fda501b9b9c5387f2df24:corpus/instruments/figure-audit-ledger.json | grep -c '"id"'
+9
+[exit=0]
+
+$ ... | awk '/figure-audit-mentions-base-scorecard/{n++} END{print n+0}'  # the DF-1 entry id absent at base
+0
+[exit=0]
+
+$ ... | awk '/rows-r54|registry-r54|entries-r54|expected-r54|files-r54/{n++} END{print n+0}'  # the r54-fold entry ids absent at base
+0
+[exit=0]
+
+$ python corpus/instruments/figure-audit.py --ledger <base ledger committed at ed60637394b170a4120fda501b9b9c5387f2df24> --root <lane root>  # the pre-growth green reproduces (9/9)
+FIGURE-AUDIT figures=9 ok=9 stale=0 exit=0
+[exit=0]
+
+# discarded first attempt (receipt draft, not the of-record run): the same base ledger run with --root <base export> read 6 stale - an export is not a git repo, so the 32782bd-pinned derives cannot resolve there; the lane root is the correct root for a rev-pinned ledger
