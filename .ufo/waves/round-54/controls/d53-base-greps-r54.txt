@@ -1,0 +1,59 @@
+# round-54 routed-defect before-state greps — D53-1 and D53-2 at base 32782bd6b564f80454af853b38868603a4140e79
+# DF-2 REGENERATION (round 55): this receipt was cited by .ufo/waves/round-54/controls/routed-d53-corrections.md
+# (header and D53-2 disposition), the LOG round-54 entry, the SCORECARD round-54 section and the round-54 report's
+# landed-changes table (commit cfdf059: "+ d53-base-greps-r54.txt") but was never committed. The round-54 closure
+# routed this as DF-2 (evidence pointer must resolve; status-neutral). This is the regenerated equivalent naming the
+# same pins; every pin below was re-derived true from base bytes in round 55 before this file landed. The original
+# draft bytes are gone; this file is the receipt of record for those citations from round 55 on.
+run-utc=2026-11-01T11:40:41Z
+
+== sha256 pins (the corrections file's five) ==
+
+$ git show 32782bd6b564f80454af853b38868603a4140e79:corpus/SOURCES.md | sha256sum
+06c92e6ae60470553caf8d0c1bb0754f28559d1591a50c8418b4d9406f5b5fd2  -
+
+$ git show 32782bd6b564f80454af853b38868603a4140e79:corpus/knowledge/nvd-api-2.0-response-schema.md | sha256sum
+15eb2d05e88d8e08a4de9939e7996307481899c659c35536fbe286ea1324b201  -
+# (byte-identical base -> tip: the same digest prints over the worktree file at the round-54 tip)
+
+$ sha256sum .ufo/waves/round-53/controls/c2-counter-final-r53.txt
+be69ece74fcd5498dd23e14c9ec1aa862a579bbb46f2df22c1692409f42bf3ab
+# (also pinned by the corrections file's own closure check)
+
+$ sha256sum corpus/source-snapshots/round-53/manifest.json
+eb6ffa6047d2e6e7edc19b4708d1b7bb39b322c77e7f4c146d5a3f341c5f475e
+# (also pinned by the corrections file's own closure check)
+
+$ sha256sum corpus/source-snapshots/round-53/S085.txt
+4d1c4e7732e128750a00557b0f16e69f021d2d5d25e2f55dfe8a9d5faa9a44d2
+# (also pinned by the corrections file's own closure check)
+
+== the four filed literals, each exactly once at base ==
+
+$ git show 32782bd6b564f80454af853b38868603a4140e79:corpus/source-snapshots/round-53/manifest.json | grep -c '"lines": 543'
+1
+
+$ git show 32782bd6b564f80454af853b38868603a4140e79:corpus/SOURCES.md | grep -c '543 lines'
+1
+
+$ git show 32782bd6b564f80454af853b38868603a4140e79:corpus/knowledge/nvd-api-2.0-response-schema.md | grep -c '543 lines'
+1
+
+$ grep -c '34 inherited' .ufo/waves/round-53/controls/c2-counter-final-r53.txt
+1
+
+== the measured values the literals are superseded by ==
+
+$ wc -l < corpus/source-snapshots/round-53/S085.txt
+542
+
+$ wc -c < corpus/source-snapshots/round-53/S085.txt
+7590
+
+$ grep -c 'FAIL_entry_records=33' .ufo/waves/round-53/controls/c2-counter-final-r53.txt
+1
+
+All five pins, all four once-only literal counts and all three measured values re-derived true at the
+round-55 run above; the round-54 closure had already re-derived the same pin set independently
+(corpus/lessons/round-54-verifier-spotcheck.md section DF-2). With this file committed, every citation
+of `.ufo/waves/round-54/controls/d53-base-greps-r54.txt` resolves.
