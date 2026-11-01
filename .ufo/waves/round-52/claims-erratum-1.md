@@ -44,3 +44,5 @@ kill rule is unchanged and strictly stronger.
 Rev-1 pin `75f0d5b1a42c8f96cb3c116c688b17efed6fd24721bdfe52a2a36cb02980bd82` superseded by the FINAL
 instrument sha `396d720efa93fb38a1637f02f6b22da9eb2a0db03a0383e9ded78da7657b6896` (also recorded in
 `freeze.txt` rev 1b). The C1 capability row enters the SCORECARD table pinned to the FINAL sha.
+
+Erratum (round 53): the opening sentence claiming this erratum was filed before the implementation commit is superseded as to wording - it was authored before the implementation and COMMITTED WITH it (ride 227d3ede15e93191f737e4973e3274509bf4599f, the r52 implementation commit), a sequence freeze.txt rev 1b records transparently (instrument supersession, still pre-implementation); the supersession mechanism this erratum documents is unchanged, and the filed opening sentence stays byte-identical per R9.
