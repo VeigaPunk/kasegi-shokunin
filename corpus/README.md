@@ -724,3 +724,27 @@ admitted: F01-F08 at round 23, F09 at round 24, F10 at round 25, F11 at round 26
 29, F14 at round 30, F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at
 round 37, F21 at round 38, F22 at round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44,
 F27 at round 45, F28 and F29 at round 46, F30 at round 49.
+
+## Round-50 admission — coverage map row and Frontier F31 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-50 entry
+`corpus/knowledge/osv-affected-range-events.md` (Frontier F31, source S080;
+source basis: the OpenSSF OSV project's own format specification page, captured 2026-11-01 under
+`corpus/source-snapshots/round-50/`) is recorded here as an appended amendment so every existing line keeps
+its number. The coverage-map row is appended here rather than inserted into the map, and the F31 frontier row
+is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| OSV affected-range events (round 50) | `corpus/knowledge/osv-affected-range-events.md` | S080 — first-party spec, opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F31 | OSV affected-range events — the OSV format's per-package version timeline (`affected[].ranges[].events`: introduced/fixed/last_affected/limit, at least one introduced event, an implicit limit `"*"`, three range types whose orderings are evaluated by SemVer precedence, ecosystem logic or Git reachability) | admitted | `corpus/knowledge/osv-affected-range-events.md` | S080 | Read affected-ness from the events timeline, not from the versions list or from string equality with upstream versions: the four event verbs are the timeline's whole vocabulary (`S080.txt:739-742`), a range with an `introduced` and no closing event is still bounded by the assumed `limit` `"*"` (`S080.txt:754-755`), the range's `type` decides how orderings evaluate (`S080.txt:706-708`) — SemVer precedence, the package ecosystem's own logic (`S080.txt:724-725`) or Git reachability with a required repo field (`S080.txt:788`) — and event version strings "are not guaranteed to exactly match versions of the package found in the upstream package repository" (`S080.txt:746-747`). Keep this distinct from F25's CVE Record containers (one lessThan boundary per version entry), F21's CSAF/VEX product status and F23's CycloneDX analysis states. Admitted by re-opening the round-42 S065 screen under its own recorded flip condition; the flip's other named term (`database_specific` `extracted_events`) appears nowhere in the opened page (`grep -c extracted corpus/source-snapshots/round-50/S080.txt` prints 0), and per-database `database_specific` values are beyond the page's own scope (`S080.txt:790-793`). Re-open the capture before relying on an event verb, a type rule or the required-field set. |
+
+[r50 amendment, appended 2026-11-01] The frontier as of round 50 is F01-F31 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50. The 0/18 sentence is untouched: the lost-domain denominator still
+holds 0 of 18 surfaces present, and the frontier count stays outside it.
