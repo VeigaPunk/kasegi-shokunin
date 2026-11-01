@@ -1,0 +1,13 @@
+# round-52 C3 final counter receipt (this host: python 3.13.15) — F33 landed (row + entry + S083/S084 registry rows)
+$ python corpus/instruments/frontier-recheck-count.py   # run from the lane root
+FRONTIER-CENSUS rows=33 admitted=33 closed=3 problem-rows=30 registry=84
+entries=36 pass=3 exit=1
+FRONTIER-PASS F33 ids=S083
+PASS     F33  knowledge/nvd-api-2.0-retrieval-interface.md         ids=S083           exit=0
+--- FAIL record classes (every FAIL line, counted):
+     30 problems=missing-pass-line
+     33 problems=recheck-exit-1
+C3_COUNTER_EXIT=1 (the run's own exit: red on the 33 inherited host-bound recheck-exit-1 entry fails, exactly as frozen; the F33 predicates all pass)
+# frozen expect_after check: rows=33 admitted=33 closed=3 problem-rows=30 registry=84 MATCH;
+# entries=36 pass=3 MATCH; PASS F33 ids=S083 exit=0 MATCH; 30 missing-pass-line + 33 recheck-exit-1, both classes
+# unchanged from the do-nothing baseline (do-nothing-c3-r52.txt) MATCH

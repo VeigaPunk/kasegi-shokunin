@@ -1,4 +1,9 @@
-# round-52 gate-quote-audit selftest receipt (this host: python 3.13.15)
+# round-52 gate-quote-audit selftest receipt (this host: python 3.13.15) — FINAL instrument
+# instrument revs this round: rev 1 frozen at 29c4bd9; rev 2 adds the self-referential-span rule (the
+#  round-51 Erratum's own '(24 words by wc -w)' reference must resolve to the real quote, not itself);
+#  rev 3 tightens the erratum-acknowledgment check (<measured> words must occur SEPARATELY within
+#  +-1000 chars of an erratum mention — the weak bare-figure check passed the pre-erratum lesson, which
+#  merely discusses errata elsewhere; caught by the BEFORE-state re-derivation below, case-i pins it)
 $ python corpus/instruments/gate-quote-audit.py --selftest
 case-f-deletion-guard want=1 got=1
 case-a-annotation-then-quote want=0 got=0
@@ -7,5 +12,7 @@ case-g-wrapped-quote want=0 got=0
 case-c-wrong-claim want=1 got=1
 case-d-over-bound want=1 got=1
 case-e-erratum-on-record want=0 got=0
-selftest cases=7 failures=0
+case-h-self-referential-erratum want=0 got=0
+case-i-erratum-mention-without-correction want=1 got=1
+selftest cases=9 failures=0
 GATE_QUOTE_AUDIT_SELFTEST_EXIT=0

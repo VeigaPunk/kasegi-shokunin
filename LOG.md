@@ -2258,3 +2258,75 @@ round as claims, then the round's own coverage move landed.
   host-bound recheck lines stay operator-owned disclosed debt (L0 kasegi round-50 unanswered, routed around).
 - Wave disposition: no AgentSwarm surface on this host; no seats ran; the claims verify on their frozen
   predicates by re-derivable commands only.
+
+## Round 52 — the routed figure corrections, the R56 quote-count gate, and the NVD API 2.0 frontier (2026-11-01)
+
+Base `6c0a08e2b99344ff3e82f8a52771af34fccc0155`; frozen claims `.ufo/waves/round-52/claims.json` (freeze commit
+`29c4bd9dd0aa05a9276be6e3d6b35da7d9ecaa31`), landed before implementation. The round-51 non-author closure
+(`corpus/lessons/round-51-verifier-spotcheck.md`) routed two figure-level defects and one screen-scope observation;
+all three are addressed this round (the two defects as claim C2, the observation as the C2 PROVINCE note AND as the
+C3 screen extension), then the round's own capability and coverage moves landed as C1 and C3.
+
+- C1 (depth:verifiability 4, lowest non-retired; capability acquisition): `corpus/instruments/gate-quote-audit.py` —
+  the fail-closed auditor for the QUALITY.md R56 word-count class (the round-48 M48-3 rule that failed again as the
+  round-51 routed defect). It finds every "<N> words by wc -w" annotation in `corpus/lessons/round-*.md` (spotchecks
+  excluded), locates the associated quoted string (nearest straight/curly span in a 600-char window, wrapped quotes
+  and both filed shapes handled), re-measures with `wc -w` semantics, and exits 0 only when every annotation is OK
+  (claimed == measured ≤ 25) or ERRATUM-ON-RECORD (a mismatch acknowledged by BOTH a ledger row in
+  `corpus/instruments/gate-quote-errata.txt` AND the erratum text — a separate "<measured> words" occurrence within
+  ±1000 chars of an erratum mention — present in the lesson); fails closed on unacknowledged mismatches, >25-word
+  quotes, a completeness floor (annotations < 4), stale ledger rows, and self-referential spans (an erratum quoting
+  the stale figure resolves to the real quote, not to itself). Selftest 9 cases (`selftest cases=9 failures=0`,
+  receipt `controls/quote-audit-selftest-r52.txt`). Before→after ON THIS HOST: BEFORE receipt
+  (`controls/quote-audit-before-r52.txt`, rev-1 instrument, uncorrected tree) and the final-instrument BEFORE-state
+  re-derivation (`controls/quote-audit-before-recheck-r52.txt`: pre-erratum lesson bytes, MISMATCH + LEDGER-ORPHAN,
+  exit 1) → AFTER receipt (`controls/quote-audit-after-r52.txt`: `annotated=5 ok=5 erratum-on-record=2 failures=0`,
+  exit 0, r51:39 and r51:97 both acknowledging 24→17). Two instrument strengthenings were found by these receipt
+  runs and are mined in the lesson Mistakes + `claims-erratum-1.md`; the freeze rev-1 pin is superseded in
+  `freeze.txt` rev 1b. Capability row enters the SCORECARD table this round (stagnation window restarts at 52).
+- C2 (calibration; verdict row, not a number): both routed figure corrections landed append-only. (a) The SCORECARD
+  round-51 move-log row's "2/3/2" is corrected by the round-52 section's correction-of-record paragraph naming the
+  re-measured 2/3/5 (`grep -c 4809` over lesson-50/LOG/SCORECARD, re-measured first-hand this round), filed line
+  byte-identical. (b) `corpus/lessons/round-51.md` gains Erratum 1 correcting the Gate's S081 quote figure to the
+  measured 17 words (command in the erratum), filed line byte-identical. (c) PROVINCE gains the r52 adjacency
+  annotation recording the closure's observation (`corpus/source-snapshots/round-24/S013.txt:65` names CISA
+  Vulnrichment as F05's downstream data source; S013 stays out of scope) and making the downstream-consumer sweep
+  part of the standing pre-freeze screen. The C1 receipts cross-verify: BEFORE exit 1 → AFTER exit 0.
+- C3 (coverage 8): admitted frontier row F33 — NVD API 2.0, NIST's read-side retrieval interface over the
+  NVD-enriched CVE record (paging envelope, NVD-Primary CVSS beside CNA-Secondary with per-item provenance, CPE
+  applicability configurations, CWE weaknesses, tagged references, multilingual descriptions,
+  published/lastModified/vulnStatus change tracking, ingested CISA ADP SSVC block) — on registry row S083 (live
+  response for CVE-2024-3094 at `https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2024-3094`, kind `code`,
+  tier A, opened 2026-11-01, capture `corpus/source-snapshots/round-52/S083.txt` sha256 `5c35a51b…`, 13077 bytes,
+  1 line, fetched 2026-11-01T04:18:04Z at HTTP 200 / 13076 raw bytes, manifest 12 assertions Q1-Q12 each
+  exactly-once, `source-recheck.py --source S083` exit 0). Entry `corpus/knowledge/nvd-api-2.0-retrieval-interface.md`
+  with the pre-freeze neighbor screen named against F05/F18/F19/F25/F30/F32 and EXTENDED with the downstream-consumer
+  sweep over `corpus/source-snapshots/` (receipt `controls/neighbor-screen-r52.txt`, run BEFORE the freeze commit);
+  S066's round-42 flip spent by record (row byte-identical); SOURCES also gains S084 (rejected with reason and flip —
+  the developer-hub page is a JS shell for the lane instrument, so rate limits/parameters are unasserted). README F33
+  row + round-52 admission block appended at EOF (R6); PROVINCE r52 amendment appended; `knowledge-expected.txt`
+  updated (69 entries). Counter before→after ON THIS HOST: `FRONTIER-CENSUS rows=32 admitted=32 closed=2
+  problem-rows=30 registry=82`, `entries=35 pass=2`, zero F33 lines (`controls/do-nothing-c3-r52.txt`, base export
+  6c0a08e per-file, 506/506) → `FRONTIER-CENSUS rows=33 admitted=33 closed=3 problem-rows=30 registry=84`,
+  `entries=36 pass=3` with `PASS F33 ids=S083 exit=0`, 33 inherited `recheck-exit-1` + 30 `missing-pass-line`, both
+  classes unchanged (`controls/c2-counter-final-r52.txt`). Score HELD at 8: the denominator remains the lost domain
+  root's 18-surface set; F33 moves the frontier measure 32→33.
+- Registry: S083 (mined, tier A code, used-by the F33 entry) + S084 (rejected with reason and flip — the JS-walled
+  developer-hub page, 2629 raw bytes → 11-byte snapshot, receipt `controls/s084-hub-shell.txt`; flip: a static or
+  text-renderable copy of the developer-hub documentation). Registry rows 82 → 84 (R8); no pre-existing row's
+  status/recheck/used-by cell changed (S066 byte-identical). Sources-census validate exit 0 at round start and round
+  end (the 5 known W04 duplicate-url warnings, unchanged).
+- Mistakes mined (5 first-run catches, none committed; 2 inherited fixed): the rev-2 acknowledgment check passed the
+  pre-erratum lesson (fixed: separate-occurrence window rule + case-i); the rev-1 AFTER run measured the Erratum's own
+  annotation-shaped reference against itself (fixed: self-referential-span skip + case-h); the F33 entry cited S083
+  only on declaration lines (`selection-not-cited-by-entry`, fixed: capture-line citations in the claim attributions);
+  S083's first Q8 was below the 12-char quote floor (`quote-too-short-to-be-evidence`, fixed: longer quote); the
+  freeze.txt build printed binary-mode `*` markers (fixed before commit). Lesson: `corpus/lessons/round-52.md`;
+  figures superseded by `claims-erratum-1.md` + `freeze.txt` rev 1b.
+- Non-targets held: `SKILL.md` untouched (density guard), no axis retired or split, no score asserted; the 67
+  host-bound recheck lines stay operator-owned disclosed debt (L0 kasegi round-50 unanswered, routed around);
+  considerthese proposal 2 noted-not-adopted.
+- Wave disposition: no AgentSwarm surface on this host; no seats ran; the claims verify on their frozen predicates by
+  re-derivable commands only.
+- Round-end receipts: sources census validate exit 0 at round start and round end; round-end lane tip cited in the
+  report.

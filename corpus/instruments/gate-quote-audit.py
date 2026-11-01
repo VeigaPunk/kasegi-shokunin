@@ -30,9 +30,12 @@ Verdicts per annotation:
                       ``<lesson-relpath>|<claimed>|<measured>`` in the errata
                       ledger (default: corpus/instruments/gate-quote-errata.txt,
                       the knowledge-expected.txt precedent) and (b) the erratum
-                      text actually present in that lesson file (the word
-                      "rratum" and the measured figure both occur in it) — so
-                      deleting the appended erratum re-fails the audit.
+                      text actually present in that lesson file: an erratum
+                      mention with a SEPARATE occurrence of ``<measured> words``
+                      within its +-1000-char window (not the audited annotation
+                      itself — a lesson that merely mentions erratum policy
+                      beside its own wrong annotation stays red) — so deleting
+                      the appended erratum re-fails the audit.
 
 Fail-closed rules (exit 1) beyond per-annotation failures:
 
@@ -71,13 +74,23 @@ def measure(text):
 
 
 def find_span(raw, match):
-    """Nearest quoted span (straight or curly) around an annotation match."""
+    """Nearest quoted span (straight or curly) around an annotation match.
+
+    A span that contains the annotation text itself is self-referential — an
+    erratum quoting the stale figure, not a Gate locating a quote (found live in
+    round 52: the round-51 Erratum's "(24 words by `wc -w`)" reference matched
+    its own annotation). Such spans are skipped so the nearest REAL quote wins;
+    if every span in the window is self-referential the annotation reports
+    QUOTE-NOT-FOUND instead of measuring the annotation against itself.
+    """
     lo = max(0, match.start() - WINDOW)
     hi = min(len(raw), match.end() + WINDOW)
     best = None
     for rx in (STRAIGHT_RE, CURLY_RE):
         for m in rx.finditer(raw, lo, hi):
             if m.group(1).strip() == "":
+                continue
+            if match.group(0) in m.group(1):
                 continue
             dist = abs((m.start() + m.end()) // 2 - (match.start() + match.end()) // 2)
             if best is None or dist < best[0]:
@@ -126,7 +139,27 @@ def audit_root(root, min_quotes, ledger_path):
             else:
                 verdict = "MISMATCH"
                 if (rel, str(claimed), str(measured)) in [(a, b, c) for a, b, c in ledger]:
-                    ack = ("rratum" in raw) and (str(measured) in raw)
+                    # The erratum text must be ABOUT this figure: an erratum
+                    # mention with "<measured> words" within its +-1000-char
+                    # window. (Round-52 tightening: "rratum" plus the bare
+                    # measured figure anywhere in the file also passed lessons
+                    # that merely DISCUSS errata elsewhere — caught when the
+                    # BEFORE-state re-derivation on the pre-erratum round-51
+                    # lesson wrongly acknowledged the uncorrected 24-vs-17.)
+                    ack = False
+                    for em in re.finditer(r"rratum", raw, re.I):
+                        near = raw[max(0, em.start() - 1000):em.end() + 1000]
+                        for wm in re.finditer(r"\b%d\s+words\b" % measured, near):
+                            abs_pos = max(0, em.start() - 1000) + wm.start()
+                            # the correction must be a SEPARATE occurrence of
+                            # the figure, not the audited annotation itself
+                            # (case-i: a lesson that merely mentions erratum
+                            # policy beside its own wrong annotation stays red)
+                            if abs_pos < match.start() or abs_pos > match.end():
+                                ack = True
+                                break
+                        if ack:
+                            break
                     if ack:
                         verdict = "ERRATUM-ON-RECORD"
                         matched_ledger.add((rel, str(claimed), str(measured)))
@@ -178,6 +211,10 @@ def selftest():
     bad = "Located quote (5 words by `wc -w`): \"one two three four five six\"."
     over = "Located quote (30 words by `wc -w`): " + "\"" + " ".join(["word"] * 30) + "\"."
     erratum_lesson = bad + "\n\n## Erratum 1 (round N) — measured 6 words, not 5.\n"
+    selfref = ("Located quote (6 words by `wc -w`): \"one two three four five six\".\n\n"
+               "## Erratum 2 (round N) — the Gate above wrote \"(7 words by `wc -w`)\"; measured 6 words.\n")
+    fake_ack = ("Located quote (4 words by `wc -w`): \"one two three four five\".\n\n"
+                "The lane follows the Erratum policy in QUALITY.md for figure corrections.\n")
     cases = []
     for name, body, want_fail in [
         ("case-a-annotation-then-quote", good_after, False),
@@ -186,13 +223,17 @@ def selftest():
         ("case-c-wrong-claim", bad, True),
         ("case-d-over-bound", over, True),
         ("case-e-erratum-on-record", erratum_lesson, False),
+        ("case-h-self-referential-erratum", selfref, False),
+        ("case-i-erratum-mention-without-correction", fake_ack, True),
     ]:
         (tmp / "corpus" / "lessons" / f"round-{name}.md").write_text(body, encoding="utf-8")
         cases.append((name, want_fail))
     ledger = tmp / "corpus" / "instruments" / "gate-quote-errata.txt"
     ledger.parent.mkdir(parents=True)
     ledger.write_text(
-        f"corpus/lessons/round-case-e-erratum-on-record.md|5|6\n", encoding="utf-8")
+        "corpus/lessons/round-case-e-erratum-on-record.md|5|6\n"
+        "corpus/lessons/round-case-h-self-referential-erratum.md|7|6\n"
+        "corpus/lessons/round-case-i-erratum-mention-without-correction.md|4|5\n", encoding="utf-8")
     root = str(tmp)
     failures = 0
     # (f) deletion guard: an empty lessons tree must fail the completeness floor

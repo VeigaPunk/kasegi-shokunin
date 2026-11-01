@@ -91,3 +91,17 @@ record at the final tip, and the gate receipt `controls/c1-gate-final-r51.txt` c
 byte-identical to a fresh regeneration (`CENSUS-FRESH=ok files=2`). Figures: recorded in SCORECARD round-51 row from
 that regeneration (this lesson intentionally quotes them only by pointer, so the lesson bytes cannot drift from the
 gate-certified census they describe).
+
+## Erratum 1 (round 52) — Gate quote word-count figure
+
+The Gate above annotates the S081 located quote "(24 words by `wc -w`)"; the figure is wrong. Re-measured on
+the quoted string this round: **17 words** — `printf '%s\n' "the public repository of CISA's enrichment of
+public CVE records through CISA's ADP (Authorized Data Publisher) container" | wc -w` → `17` (R56/R48-3: a
+stated word count comes from `wc -w` on the quoted text; a hand-typed count is a claim to re-measure). The
+≤25-word contract bound holds either way; the quote itself and its location (S081.txt:2) were verified
+verbatim by the round-51 closure and stand unchanged. The filed "24 words" line above is retained
+byte-identical (append-only, R9) and is superseded by this erratum. Routed by the round-51 non-author
+closure (spot-check §4 "count annotation wrong", §5 item 2); mechanically audited since round 52 by
+`corpus/instruments/gate-quote-audit.py`, whose ledger row `corpus/lessons/round-51.md|24|17` in
+`corpus/instruments/gate-quote-errata.txt` acknowledges exactly this figure and whose BEFORE receipt
+(`.ufo/waves/round-52/controls/quote-audit-before-r52.txt`, exit 1) is this lesson's uncorrected state.

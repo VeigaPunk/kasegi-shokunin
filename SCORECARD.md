@@ -2042,3 +2042,67 @@ re-derivable commands only.
    candidate leads: NVD API 2.0 (NIST's own enrichment/search interface — distinct from F25's record format and
    F30's CVE Services write path), OpenSSF Scorecard (repo security health), or the CVE Program's ADP list page as
    a check on F32's scope limit; screen against the province BEFORE any freeze.
+
+## Round 52 result — the routed figure corrections (C2), the R56 quote-count gate (C1), and the NVD API 2.0 surface (C3)
+
+Frozen claims: `.ufo/waves/round-52/claims.json` (freeze commit `29c4bd9dd0aa05a9276be6e3d6b35da7d9ecaa31`, base
+`6c0a08e2b99344ff3e82f8a52771af34fccc0155`), landed before implementation. The round-51 non-author closure routed two
+figure-level defects and one screen-scope observation; the defects are fixed as claim C2 and the observation is
+recorded as the C2 PROVINCE note AND applied as the C3 screen extension. The round's own moves: C1 (capability
+acquisition working depth:verifiability, the lowest non-retired axis) and C3 (frontier F33). One post-freeze erratum:
+`.ufo/waves/round-52/claims-erratum-1.md` (the C1 instrument was strengthened twice while landing its receipts — the
+frozen selftest/audit figures are superseded there; the kill rule only got stronger).
+
+**Correction of record (C2, R9):** the round-51 move-log row in this file records the 4809-row counts as "2/3/2";
+the same commit measures **2/3/5** under the round-51 report's own counting command (`grep -c 4809
+corpus/lessons/round-50.md LOG.md SCORECARD.md` → 2/3/5, re-measured first-hand this round before anything was
+written). The filed "2/3/2" line is retained byte-identical and is superseded by this paragraph — the same
+append-only pattern as the round-51 correction of the round-50 4807 figures, and the same D2 class (self-count
+drift), this time caught by the closure rather than by the gate; the C1 instrument of this round exists so the
+word-count member of that class is caught by a counter next time.
+
+| Axis | Before | After | Verdict and evidence |
+|---|---:|---:|---|
+| depth:verifiability | 4 | **4 held; delta 0** | C1 verifies (capability acquisition): `corpus/instruments/gate-quote-audit.py` (final sha `396d720e…`, freeze rev 1b) fail-closes the R56 word-count class — selftest `cases=9 failures=0` (`controls/quote-audit-selftest-r52.txt`); BEFORE state re-derived (`controls/quote-audit-before-r52.txt` rev-1 instrument on the uncorrected tree, exit 1; `controls/quote-audit-before-recheck-r52.txt` final instrument on pre-erratum lesson bytes: MISMATCH + LEDGER-ORPHAN, exit 1) → AFTER (`controls/quote-audit-after-r52.txt`: `annotated=5 ok=5 erratum-on-record=2 failures=0`, exit 0, the round-51 24→17 figure acknowledged by ledger row + lesson erratum text). Evidence-integrity capability only: the citation-resolution proxy is unchanged (see the census row below), so the score is HELD at 4 — the score-5 bar is still `score-gap.py`'s 22 gated lines on the lost domain bases and the 67 host-bound recheck lines stay operator-owned (L0 kasegi round-50 unanswered, routed around). |
+| calibration | verdict-only (not a scored owned axis) | **improved (verdict row per the round-20/51 precedents; no score asserted)** | C2 verifies: both routed figure corrections landed append-only — the SCORECARD round-51 move-log "2/3/2" superseded by the correction-of-record paragraph above (2/3/5, filed line byte-identical) and `corpus/lessons/round-51.md` Erratum 1 (the S081 quote is 17 words by `wc -w`, not 24; filed line byte-identical, command in the erratum); plus the PROVINCE r52 adjacency annotation recording the S013.txt:65/F05 downstream-consumer observation with S013 kept out of scope. The D2 class is now instrument-checked, not just re-corrected: the C1 receipts cross-verify this round (BEFORE exit 1 → AFTER exit 0 on the same tree). |
+| coverage | 8 | **8 held; delta 0** | C3 verifies: frontier F33 (NVD API 2.0 retrieval interface) admitted on S083 (live response for CVE-2024-3094 at NIST's services host, capture `corpus/source-snapshots/round-52/S083.txt`, sha256 `5c35a51b…`, 13077 bytes, 1 line, 12 assertions Q1-Q12 each exactly-once, `source-recheck.py --source S083` exit 0, receipt `controls/s083-recheck-r52.txt`), entry `corpus/knowledge/nvd-api-2.0-retrieval-interface.md` with the pre-freeze neighbor screen named against F05/F18/F19/F25/F30/F32 and EXTENDED with the downstream-consumer sweep over `corpus/source-snapshots/` per the round-51 closure's observation (receipt `controls/neighbor-screen-r52.txt`, run before the freeze commit); S066's round-42 flip spent by record (row byte-identical); SOURCES rows S083 (mined) + S084 (rejected with reason and flip — the JS-walled developer-hub page, `controls/s084-hub-shell.txt`); README F33 row + admission block appended at EOF; `knowledge-expected.txt` updated (69 entries). Counter before→after ON THIS HOST: `rows=32 admitted=32 closed=2 problem-rows=30 registry=82`, `entries=35 pass=2`, zero F33 lines (`controls/do-nothing-c3-r52.txt`, base export 6c0a08e built per-file, 506/506) → `rows=33 admitted=33 closed=3 problem-rows=30 registry=84`, `entries=36 pass=3`, `PASS F33 ids=S083 exit=0`, all 33 inherited entry fails exactly `recheck-exit-1` and 30 row fails exactly `missing-pass-line` (`controls/c2-counter-final-r52.txt`). Score HELD at 8: the denominator is the lost domain root's 18-surface set (operator-owned re-scope); F33 moves the frontier measure 32→33, not the coverage score. |
+| depth:density | 9 | 9 held; non-target guard | `SKILL.md` was not edited this round, so the density instrument's input bytes are unchanged. |
+
+**Census of record at this round's tip (C2 rule: quoted only from the final regeneration):** the round-51 tip read
+206 files / 4868 distinct → the round-52 tip reads **209 files / 4912 distinct** (RESOLVES 12, INTERNAL 1092, GONE
+3808; total occurrences 10471; lane total 1104/4912 = 22.48%) — the new corpus files (the F33 entry and the round-52
+lesson) and their citations, certified by the gate receipt `controls/c1-gate-final-r52.txt` (`CENSUS-FRESH=ok`).
+Internal consistency: 12+1092+3808=4912; 12+1092=1104. The lesson quotes the figures only by pointer.
+
+### Round-52 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 52 | depth:verifiability | Gate word-count annotations re-derived by any committed counter: 0 (the R56 rule is prose; the round-48 M48-3 class recurred in round-51 as the routed 24-vs-17 figure and was caught by the closure, not by a gate) | 1 fail-closed auditor (`gate-quote-audit.py`, selftest 9 cases 0 failures, BEFORE exit 1 → AFTER exit 0 on the round's own correction) + the errata ledger `gate-quote-errata.txt` (1 row, LEDGER-ORPHAN-checked) | `controls/quote-audit-selftest-r52.txt`; `controls/quote-audit-before-r52.txt` + `controls/quote-audit-before-recheck-r52.txt`; `controls/quote-audit-after-r52.txt`; `.ufo/waves/round-52/claims-erratum-1.md` |
+| 52 | calibration | routed figure defects standing: 2 (move-log "2/3/2" vs measured 2/3/5; lesson "24 words" vs measured 17) + 1 unrecorded screen-scope observation (S013.txt:65/F05) | 0 standing: correction-of-record paragraph + lesson Erratum 1 (both append-only, filed lines byte-identical) + the PROVINCE r52 adjacency note; the class is instrument-checked going forward | the correction paragraph above; `corpus/lessons/round-51.md` Erratum 1; PROVINCE r52 annotations |
+| 52 | coverage | `FRONTIER-CENSUS rows=32 admitted=32 closed=2 problem-rows=30 registry=82`, `entries=35 pass=2` (this host) | `FRONTIER-CENSUS rows=33 admitted=33 closed=3 problem-rows=30 registry=84`, `entries=36 pass=3`, `PASS F33 ids=S083 exit=0` | `controls/do-nothing-c3-r52.txt` → `controls/c2-counter-final-r52.txt`; `corpus/knowledge/nvd-api-2.0-retrieval-interface.md`; `corpus/source-snapshots/round-52/` (S083 + manifest) |
+
+**Capabilities:** one row enters the table (demonstrated running this round):
+
+| name | what it can now do | evidence pointer | first-working round |
+|---|---|---|---|
+| `gate-quote-audit` | re-derive every Gate word-count figure in the lane's lessons with `wc -w` semantics and fail closed on unacknowledged drift, >25-word quotes, deleted annotations (completeness floor), stale errata ledger rows and self-referential spans; accept a mismatch only when BOTH the ledger row and the lesson's own erratum text acknowledge it | `python corpus/instruments/gate-quote-audit.py --selftest` → `selftest cases=9 failures=0`; BEFORE `controls/quote-audit-before-r52.txt`/`-recheck` exit 1 → AFTER `controls/quote-audit-after-r52.txt` exit 0 | 52 |
+
+**Saturation unchanged:** line 9/10 per owned axis; window N = 3 with the last capability entry round 52 (this
+round's `gate-quote-audit` row RESTARTS the window). The lowest non-retired axis remains depth:verifiability (4) and
+C1 works it on its own instrument.
+**Non-author verification:** outstanding. No seats ran (no AgentSwarm surface on this host); the most recent
+outside spot-check is the round-51 closure that routed the defects this round fixes. The claims verify on their
+frozen predicates by re-derivable commands only.
+
+### Planned for round 53 (not frozen)
+
+1. **depth:verifiability (4, lowest):** the R56 class now has a gate; the next lane-side lever is the same
+   discipline for the OTHER figure classes the round-51 closure routed (self-count figures in move-log rows) — a
+   figure-audit sibling that re-derives counting commands recorded in SCORECARD move-log rows, or an explicit
+   decision that those stay closure-audited; the 67 host-bound recheck lines and the 22 gated lines stay
+   operator-owned (L0 kasegi round-50/46 unanswered) and must NOT be re-declared as a lane target.
+2. **coverage (8):** the next frontier row must clear the extended pre-freeze screen (downstream-consumer sweep
+   included, mandatory since round 50/51); candidate leads: the NVD schema artifact on csrc.nist.gov (S066's own
+   ground — evaluator*/cisa* mirror fields the live response did not show), OpenSSF Scorecard (repo security
+   health; screen carefully against F33/F25 neighbors), or the CISA ADP list page as a check on F32's scope limit.

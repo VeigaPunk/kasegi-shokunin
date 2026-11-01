@@ -772,3 +772,28 @@ at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29,
 round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
 round 46, F30 at round 49, F31 at round 50, F32 at round 51. The 0/18 sentence is untouched: the lost-domain
 denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+## Round-52 admission — coverage map row and Frontier F33 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-52 entry
+`corpus/knowledge/nvd-api-2.0-retrieval-interface.md` (Frontier F33, source S083;
+source basis: a live NVD Vulnerability Data API 2.0 response served by NIST's services host for one
+record, CVE-2024-3094, captured 2026-11-01 under `corpus/source-snapshots/round-52/`) is recorded here
+as an appended amendment so every existing line keeps its number. The coverage-map row is appended here
+rather than inserted into the map, and the F33 frontier row is listed here on the same table shape as
+the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| NVD API 2.0 retrieval interface (round 52) | `corpus/knowledge/nvd-api-2.0-retrieval-interface.md` | S083 — first-party code (live API response), opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F33 | NVD API 2.0 — NIST's read-side retrieval interface over the NVD-enriched CVE record (the 2.0 paging envelope, NVD's own Primary CVSS served beside the CNA's Secondary with per-item provenance, CPE applicability configurations, CWE weaknesses, tagged references, multilingual descriptions, published/lastModified/vulnStatus change tracking, and the ingested CISA ADP SSVC block) | admitted | knowledge/nvd-api-2.0-retrieval-interface.md | S083 | Read NVD-served enrichment as attributed analysis served beside the CNA's data, never as an overwrite: the same record's `metrics.cvssMetricV31` carries both `secalert@redhat.com` `type: Secondary` (Q4) and `nvd@nist.gov` `type: Primary` (Q5), so a score is ambiguous until its source/type pair is read (S083.txt:1, all anchors on the single-line capture). Read the envelope as a retrieval contract the CVE Record format does not have — `"resultsPerPage":1,"startIndex":0,"totalResults":1,"format":"NVD_CVE","version":"2.0"` (Q1) — with the record nested under `vulnerabilities[].cve`, and read state from the interface's own change-tracking: `"published":"2024-03-29T17:15:21.150","lastModified":"2026-06-17T07:43:17.830","vulnStatus":"Modified"` (Q3) — Modified is NVD's lifecycle vocabulary, not F25's PUBLISHED/REJECTED. Applicability claims trace to specific `cpeMatch` criteria + `vulnerable` flags (Q10, Q12), and the `ssvcV203` block (Q6, role CISA Coordinator, three decision points — Q7) is an ingested copy of F32's ADP data served downstream, not NVD-generated SSVC; a CNA conflict resolves by F32's CNA-precedence rule. Distinct from F05/S014 (NVD as a data source behind the CWE Top 25 methodology), the CVE-bench entry/S025 (benchmark inputs "as published in the NVD"), F18/S052 (an NVD URL inside a KEV record's notes field; this response serves no KEV fields) and F19 (EPSS not served); S066's round-42 flip is spent by this admission and the row stays byte-identical. Scope limit: one live response at one instant — rate limits, authentication and the wider parameter surface are not asserted (the developer-hub pages are JS-walled for this lane's instrument; rejected row S084 with flip). |
+
+[r52 amendment, appended 2026-11-01] The frontier as of round 52 is F01-F33 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52. The 0/18 sentence is untouched: the
+lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.

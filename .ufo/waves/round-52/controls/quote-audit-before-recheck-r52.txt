@@ -1,0 +1,15 @@
+# round-52 gate-quote-audit BEFORE-state re-derivation — the frozen rev-1 BEFORE receipt (quote-audit-before-r52.txt)
+# was taken with the rev-1 instrument on the then-uncorrected tree; this re-derives the same before-state with the
+# FINAL instrument: corpus/lessons/round-51.md reset to the freeze-commit bytes (git show 29c4bd9:...), all other
+# lessons current, the round's ledger PRESENT (so the unfiled correction shows as LEDGER-ORPHAN too).
+# Expected: r51:39 claimed=24 measured=17 MISMATCH, erratum-on-record=0, failures>=1, exit 1.
+$ python corpus/instruments/gate-quote-audit.py --root <pre-erratum-tree>
+corpus/lessons/round-48.md:18 claimed=14 measured=14 OK quote=marks are confined to the box character plus one indented ev...
+corpus/lessons/round-49.md:29 claimed=17 measured=17 OK quote=Reserves CVE IDs for the organization provided in
+the short_...
+corpus/lessons/round-50.md:39 claimed=14 measured=14 OK quote=This document defines a standard interchange
+format for desc...
+corpus/lessons/round-51.md:39 claimed=24 measured=17 MISMATCH quote=the public repository of CISA's enrichment of public CVE
+rec...
+GATE-QUOTE-AUDIT annotated=4 ok=3 erratum-on-record=0 failures=2
+GATE_QUOTE_AUDIT_BEFORE_RECHECK_EXIT=1

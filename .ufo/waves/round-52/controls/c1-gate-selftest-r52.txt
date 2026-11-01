@@ -1,0 +1,7 @@
+# round-52 census-freshness gate SELFTEST receipt (this host: python 3.13.15)
+$ python corpus/instruments/census-freshness-check.py --selftest
+case=fresh want=0 got=0 verdict=pass  # CENSUS-FRESH=ok files=2
+case=stale want=1 got=1 verdict=pass  # CENSUS-FRESH=stale files=citation-survival.md+citation-survival.tsv (committed bytes differ from what resolve.py generates over the current tree; regenerate the census or repair the tree)
+case=tampered want=1 got=1 verdict=pass  # CENSUS-FRESH=stale files=citation-survival.md (committed bytes differ from what resolve.py generates over the current tree; regenerate the census or repair the tree)
+selftest cases=3 failures=0
+C1_SELFTEST_EXIT=0
