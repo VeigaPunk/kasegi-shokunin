@@ -1,0 +1,151 @@
+# round-54 pre-freeze literal dry-run (R25/R34/R47 discipline): every declared after-literal run
+# against a stand-in tree = the per-file base export of 32782bd + the declared round-54 adds
+# (S086 capture+manifest, the F35 entry, README/SOURCES/PROVINCE appends, knowledge-expected +1).
+# NOTE: the first build inserted the expected-list line AFTER operator-queue.md and LC_ALL=C sort -c
+# rejected the position (openssf- sorts BEFORE operator-); fixed to insert BEFORE and re-verified -
+# the catch is mined in the round-54 lesson. The stand-in below is the FIXED tree.
+run-utc=2026-11-01T08:48:25Z
+$ grep -n expected line at its sorted position
+50:corpus/knowledge/openssf-scorecard-checks.md
+51:corpus/knowledge/operator-queue.md
+52:corpus/knowledge/ops-invariants.md
+[exit=0]
+
+$ LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt
+sorted-ok
+[exit=0]
+
+$ ls corpus/knowledge/*.md | wc -l   (declared after: 73)
+73
+[exit=0]
+
+$ grep -c '^corpus/knowledge/' knowledge-expected.txt   (declared after: 73)
+73
+[exit=0]
+
+$ wc -l < corpus/source-snapshots/round-54/S086.txt   (declared: 731)
+731
+[exit=0]
+
+$ wc -c < corpus/source-snapshots/round-54/S086.txt   (declared: 46441)
+46441
+[exit=0]
+
+$ sha256sum .../S086.txt   (declared: fa84a017...)
+fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f
+[exit=0]
+
+$ source-recheck S086 over the stand-in   (declared: sha OK + 14 Q OK, exit 0)
+S086:sha256 OK
+S086:Q1 OK occurrences=1 anchor=1-ok
+S086:Q10 OK occurrences=1 anchor=710-ok
+S086:Q11 OK occurrences=1 anchor=718-ok
+S086:Q12 OK occurrences=1 anchor=722-ok
+S086:Q13 OK occurrences=1 anchor=592-ok
+S086:Q14 OK occurrences=1 anchor=595-ok
+S086:Q2 OK occurrences=1 anchor=5-ok
+S086:Q3 OK occurrences=1 anchor=12-ok
+S086:Q4 OK occurrences=1 anchor=286-ok
+S086:Q5 OK occurrences=1 anchor=411-ok
+S086:Q6 OK occurrences=1 anchor=415-ok
+S086:Q7 OK occurrences=1 anchor=428-ok
+S086:Q8 OK occurrences=1 anchor=421-ok
+S086:Q9 OK occurrences=1 anchor=195-ok
+[exit=0]
+
+$ frontier counter over the stand-in   (declared after: rows=35 admitted=35 closed=5 problem-rows=30 registry=86 / F35 PASS / entries=38 pass=5)
+FRONTIER-CENSUS rows=35 admitted=35 closed=5 problem-rows=30 registry=86
+FRONTIER-FAIL F01 status=admitted ids=S001,S002 problems=missing-pass-line
+FRONTIER-FAIL F02 status=admitted ids=S003,S004,S005 problems=missing-pass-line
+FRONTIER-FAIL F03 status=admitted ids=S006,S007,S008 problems=missing-pass-line
+FRONTIER-FAIL F04 status=admitted ids=S009,S010,S011,S012 problems=missing-pass-line
+FRONTIER-FAIL F05 status=admitted ids=S013,S014,S015 problems=missing-pass-line
+FRONTIER-FAIL F06 status=admitted ids=S018 problems=missing-pass-line
+FRONTIER-FAIL F07 status=admitted ids=S031 problems=missing-pass-line
+FRONTIER-FAIL F08 status=admitted ids=S029 problems=missing-pass-line
+FRONTIER-FAIL F09 status=admitted ids=S032,S033,S034,S035 problems=missing-pass-line
+FRONTIER-FAIL F10 status=admitted ids=S036,S037,S038,S039,S040 problems=missing-pass-line
+FRONTIER-FAIL F11 status=admitted ids=S041 problems=missing-pass-line
+FRONTIER-FAIL F12 status=admitted ids=S041,S042 problems=missing-pass-line
+FRONTIER-FAIL F13 status=admitted ids=S043,S044,S045 problems=missing-pass-line
+FRONTIER-FAIL F14 status=admitted ids=S041,S046,S047 problems=missing-pass-line
+FRONTIER-FAIL F15 status=admitted ids=S048 problems=missing-pass-line
+FRONTIER-FAIL F16 status=admitted ids=S049,S050 problems=missing-pass-line
+FRONTIER-FAIL F17 status=admitted ids=S051 problems=missing-pass-line
+FRONTIER-FAIL F18 status=admitted ids=S052 problems=missing-pass-line
+FRONTIER-FAIL F19 status=admitted ids=S053 problems=missing-pass-line
+FRONTIER-FAIL F20 status=admitted ids=S054 problems=missing-pass-line
+FRONTIER-FAIL F21 status=admitted ids=S055 problems=missing-pass-line
+FRONTIER-FAIL F22 status=admitted ids=S057 problems=missing-pass-line
+FRONTIER-FAIL F23 status=admitted ids=S060 problems=missing-pass-line
+FRONTIER-FAIL F24 status=admitted ids=S063 problems=missing-pass-line
+FRONTIER-FAIL F25 status=admitted ids=S064 problems=missing-pass-line
+FRONTIER-FAIL F26 status=admitted ids=S069 problems=missing-pass-line
+FRONTIER-FAIL F27 status=admitted ids=S071 problems=missing-pass-line
+FRONTIER-FAIL F28 status=admitted ids=S073 problems=missing-pass-line
+FRONTIER-FAIL F29 status=admitted ids=S074,S076 problems=missing-pass-line
+FRONTIER-FAIL F30 status=admitted ids=S078 problems=missing-pass-line
+FRONTIER-PASS F31 ids=S080
+FRONTIER-PASS F32 ids=S081
+FRONTIER-PASS F33 ids=S083
+FRONTIER-PASS F34 ids=S085
+FRONTIER-PASS F35 ids=S086
+FAIL     F01  knowledge/cvss-v4-severity-and-vector.md             ids=S001           exit=1    problems=recheck-exit-1
+FAIL     F02  knowledge/coordinated-disclosure-timelines.md        ids=S003           exit=1    problems=recheck-exit-1
+FAIL     F03  knowledge/authorization-safe-harbor-and-scope.md     ids=S006           exit=1    problems=recheck-exit-1
+FAIL     F04  knowledge/ai-assisted-finding-validation.md          ids=S009           exit=1    problems=recheck-exit-1
+FAIL     F05  knowledge/cwe-top25-2025-methodology.md              ids=S013           exit=1    problems=recheck-exit-1
+FAIL     F06  knowledge/multiparty-vulnerability-coordination.md   ids=S018           exit=1    problems=recheck-exit-1
+FAIL     F07  knowledge/cna-assignment-and-vulnerability-rules.md  ids=S031           exit=1    problems=recheck-exit-1
+FAIL     F08  knowledge/cra-manufacturer-reporting-duties.md       ids=S029           exit=1    problems=recheck-exit-1
+FAIL     F09  knowledge/authorised-testing-rules-of-engagement.md  ids=S032           exit=1    problems=recheck-exit-1
+FAIL     F09  knowledge/statutory-authorization-and-unauthorized-access.md ids=S033,S034,S035 exit=1    problems=recheck-exit-1
+FAIL     F10  knowledge/vendor-disclosure-policies-as-corpus-objects.md ids=S036,S037,S038,S039 exit=1    problems=recheck-exit-1
+FAIL     F10  knowledge/vendor-disclosure-policy-commitments-crosswalk.md ids=S036,S038,S039,S040 exit=1    problems=recheck-exit-1
+FAIL     F11  knowledge/iso-29147-and-30111-division-of-labour.md  ids=S041           exit=1    problems=recheck-exit-1
+FAIL     F11  knowledge/iso-29147-divergence-and-clause-crosswalk.md ids=S041           exit=1    problems=recheck-exit-1
+FAIL     F12  knowledge/japanese-domestic-disclosure-workflow.md   ids=S041,S042      exit=1    problems=recheck-exit-1
+FAIL     F13  knowledge/program-severity-ladders-and-reward-scales.md ids=S043,S044,S045 exit=1    problems=recheck-exit-1
+FAIL     F14  knowledge/japanese-severity-vocabulary-and-impact-model.md ids=S041,S046,S047 exit=1    problems=recheck-exit-1
+FAIL     F15  knowledge/vendor-third-party-finding-coordination.md ids=S048           exit=1    problems=recheck-exit-1
+FAIL     F16  knowledge/chinese-crowdsourced-testing-scope-and-rewards.md ids=S049,S050      exit=1    problems=recheck-exit-1
+FAIL     F17  knowledge/immunefi-vscs-v2-2-smart-contract-severity.md ids=S051           exit=1    problems=recheck-exit-1
+FAIL     F18  knowledge/cisa-kev-catalog.md                        ids=S052           exit=1    problems=recheck-exit-1
+FAIL     F19  knowledge/epss-exploit-prediction-scoring.md         ids=S053           exit=1    problems=recheck-exit-1
+FAIL     F20  knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md ids=S054           exit=1    problems=recheck-exit-1
+FAIL     F21  knowledge/csaf-vex-product-status-and-justifications.md ids=S055           exit=1    problems=recheck-exit-1
+FAIL     F22  knowledge/cisa-when-to-issue-vex.md                  ids=S057           exit=1    problems=recheck-exit-1
+FAIL     F23  knowledge/cyclonedx-analysis-subtree.md              ids=S060           exit=1    problems=recheck-exit-1
+FAIL     F24  knowledge/rfc-9116-security-txt.md                   ids=S063           exit=1    problems=recheck-exit-1
+FAIL     F25  knowledge/cve-json-record-format.md                  ids=S064           exit=1    problems=recheck-exit-1
+FAIL     F26  corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md ids=S069           exit=1    problems=recheck-exit-1
+FAIL     F27  corpus/knowledge/linux-kernel-security-bugs-reporting-process.md ids=S071           exit=1    problems=recheck-exit-1
+FAIL     F28  corpus/knowledge/github-private-vulnerability-reporting.md ids=S073           exit=1    problems=recheck-exit-1
+FAIL     F29  corpus/knowledge/github-repository-security-advisories.md ids=S076           exit=1    problems=recheck-exit-1
+FAIL     F30  corpus/knowledge/cve-services-publication-api.md     ids=S078           exit=1    problems=recheck-exit-1
+PASS     F31  corpus/knowledge/osv-affected-range-events.md        ids=S080           exit=0   
+PASS     F32  corpus/knowledge/cisa-vulnrichment-adp-enrichment.md ids=S081           exit=0   
+PASS     F33  knowledge/nvd-api-2.0-retrieval-interface.md         ids=S083           exit=0   
+PASS     F34  knowledge/nvd-api-2.0-response-schema.md             ids=S085           exit=0   
+PASS     F35  knowledge/openssf-scorecard-checks.md                ids=S086           exit=0   
+entries=38 pass=5 exit=1
+[exit=1]
+
+$ same run, FAIL-entry records (declared: 33 = 38-5)
+33
+[exit=0]
+
+$ recheck-audit expect limb over the stand-in   (declared after: expected=73 missing=0 unexpected=0)
+strict pass=1/73 cdroot_fail=67 instrument_fail=0 own_fail=0
+expect=present expected=73 missing=0 unexpected=0 exit=1
+[exit=0]
+
+$ rev-pinned derives for the C1 ledger, run from the lane repo (declared: 34/85/72/72/542/7590)
+frontier-rows=34
+registry-rows=85
+knowledge-expected=72
+knowledge-files=72
+capture-lines-s085=542
+capture-bytes-s085=7590
+[exit=0]
+

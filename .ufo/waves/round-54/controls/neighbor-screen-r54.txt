@@ -1,0 +1,50 @@
+# round-54 extended pre-freeze neighbor screen - OpenSSF Scorecard check documentation (S086/F35)
+# run over the base lane worktree at 32782bd BEFORE the freeze commit; every grep is read-only
+run-utc=2026-11-01T08:41:25Z
+$ git rev-parse HEAD
+32782bd6b564f80454af853b38868603a4140e79
+[exit=0]
+
+$ git status --porcelain | wc -l
+122
+[exit=0]
+
+$ grep -rin 'scorecard' corpus/README.md PROVINCE.md SKILL.md | head -20
+SKILL.md:1071:`score-gap.py` answers considerthese/2026-10-25.md proposal 2 as a read-only reporter: the four committed-byte measurements that decide whether depth:verifiability 5 is reachable, each with the command it came from, then one computed `gap` line. Measured at append time: `recheck: lines=44 executes=20 gated=24 broken=0 exit=0` (from `recheck-audit.py --root <root> --quiet`); `anchorcheck: in-range=7 bad=0 lost-recorded=306 origin=0 outside-base=0 base-absent=0 exit=0` (from `anchorcheck.py SKILL.md` with cwd=root); `census-lane: 134/1480 = 9.05%` and `census-skill: 32/506 = 6.32%` quoted from `corpus/instruments/citation-survival.md` with its own definition sentence; the score-5 bar quoted from `SCORECARD.md` line 331 — "Threshold for 5: a non-author audit passing 25/25 source chains and 0 unsupported current claims."; and `gap: 24 of 44 rechecks still gated on a lost base; score 5 needs 0 gated unsupported claims`, computed from field 1 and never typed. Every run also prints `source: <rel> sha256=<…>` for its four inputs, so a number traces to bytes. It is not a claim and asserts no score move; exit 0 even when the gates it reads are red, exit 2 when an input no longer yields its field (a reworded SCORECARD bar goes loud rather than printing a stale line). Its census field is the committed r18 census of record, not a live `resolve.py` re-run — that rewrites the census and belongs to another seat; limits in `.ufo/waves/round-31/wave1/ExecScoreGap.md` §8.
+SKILL.md:1098:| r-defect-closure.sh | gate\|probe | `bash corpus/instruments/r-defect-closure.sh [--root DIR]`; the root defaults to this script's lane and every check honours `--root`, so the base-tree control is `bash corpus/instruments/r-defect-closure.sh --root <base-extraction>` | plain run: one `R# check=<desc> open=0\|1` line per check R1–R9, then `closed=K/9 exit=0\|1`; exit 0 only for K=9, exit 1 while any check is open or when the suite's self-report judgement fails (`suite problem=self-report plain-lines=N expected=9`), exit 2 on harness error (`suite UNAVAILABLE reason=root-argument-missing\|root-missing\|scratch-argument-missing\|unknown-argument`). Each check exits 0 when its round-33 defect is CLOSED and non-zero while it is still OPEN, so a summary-only printer cannot read `closed=9/9` on defect-bearing bytes | `bash corpus/instruments/r-defect-closure.sh --selftest [--scratch DIR]` -> per check one `selftest case=R# live=pass fixture=rejected control=pass\|absent verdict=pass` line (or `verdict=fail problems=...`), then `selftest judge=forged-summary rejected=1`, `selftest judge=short-report rejected=1`, `selftest judge=complete-report accepted=1`, then `selftest cases=9 failures=0`; exit 0 only when all nine live runs pass, every defect fixture is rejected and the complete report is accepted, exit 1 on any case failure or `selftest problem=self-report ...`, exit 2 on `selftest UNAVAILABLE reason=scratch-missing\|scratch-create-failed` | the pinned expected values are the check literals inside `corpus/instruments/r-defect-closure.sh` (R1 `7963976e`/`014ee2d`; R2 `0 or 2+`, `multi_row_url`, `dup-id`, R22 satisfiability; R3 `R20`/`exactly one`/superseded; R4 kill-rule prose plus one `selftest case=` line; R5 no `url-matching-two-rows`; R6 `S040-live.txt`; R7 `19->31`, `23->22`, `corpus/source-snapshots/round-32/S050.txt:70`; R8 the `Z`/`+00:00`/fractional accept set; R9 the nine capture-binding case names plus frontier rule A mirror/reverse), measured against the committed files they read (`SCORECARD.md`, `corpus/QUALITY.md`, `corpus/lessons/round-33.md`, `corpus/source-snapshots/round-26/manifest.json`, `corpus/source-snapshots/round-32/manifest.json`); the frozen before-state they discriminate is `.ufo/waves/round-34/c1-controls/before.txt` | read-only on the lane: every check only reads files under the root; the only writes are its own scratch fixtures under `--selftest` (scratch base = `--scratch`, else `$HYAKU_SCRATCH`, else `$TMPDIR`, else `/tmp`), removed on exit; no git command is run and nothing outside the scratch directory is written | kasegi-shokunin |
+SKILL.md:1115:| r38-closure.sh | gate | `bash corpus/instruments/r38-closure.sh --export-ref <hash>` (export-mode only; a plain run refuses with exit 2) | one `G<n> payload=… closed=0\|1` line per check G1–G8, then `closed=K/8 exit=0\|1`; exit 0 only for K=8; exit 2 on harness error or plain run; 0 closed \| 1 open \| 2 could-not-evaluate; G1–G8 check, one clause each: D-A front-door `Correction (round 38)` lines naming the misplaced round-37 ranges, fence state CLOSED at EOF and appended blocks equal to declared-blocks.txt; D-B all-gates v2 receipt whose `export-ref=` commit differs from REF only by the receipt, with the suite digest bound and the judged head named only by reference; D-C round-37 pending-marker resolutions section and zero widened placeholder tokens in lines added base..REF; D3 every round-38 `*-dispatch.json` paired with a tracked `*-results.json` of equal seat count; D-D SCORECARD round-38 section without `Final lane commit:` and with the `Correction (round 38)` line for f3246559; D-E live scratch quiescence for kasegi-r36/r37/r38; D-F ledger filled section with 7 proposal rows; G8 the r37 suite carried forward on REF -> `closed=14/14` | `bash corpus/instruments/r38-closure.sh --selftest [--export-ref <hash>]` -> `selftest cases=8 failures=0` exit 0 | base export `a173b0c2` -> `closed<8/8 exit=1`; r37 judged head `2387dcf6` -> `closed<8/8 exit=1` | read-only (export to a scratch work dir) | kasegi (round 38) |
+[exit=0]
+
+$ grep -in 'scorecard' corpus/SOURCES.md | head -20
+138:- NVD API 2.0 response-schema artifact (round 53, frontier F34); question: does the lane hold the schema document that DEFINES the response F33 admitted as served, and do any held rows already cover it; where: the F33 entry's own Limits pointer to "S066's schema artifact on csrc.nist.gov", the S066 row's recorded URL, the extended pre-freeze screen (knowledge + README + SOURCES + PROVINCE + the downstream-consumer sweep over corpus/source-snapshots/, receipt .ufo/waves/round-53/controls/neighbor-screen-r53.txt); date: 2026-11-01; identified 1 candidate document, screened 1, included 1 (registry row S085), excluded 0: the schema URL is named only by the rejected S066 row and the r42 lesson records of that screen, the mirror-field names appear only in F33's Limits disclaimer, and the sweep found zero consumers of the schema or its mirror fields across all pinned captures. Stop: the deferred ground (the evaluator*/cisa* vocabulary) is exactly what the captured schema pins, so the bounded hunt closed with the one document; the OpenSSF Scorecard and CISA ADP list page leads stay unopened leads (see Leads).
+139:- OpenSSF Scorecard (automated repo security-health scoring: checks, aggregate 0-10 score, scorecard.dev API); named in the round-52 SCORECARD planned-for-53 as a candidate frontier lead needing a careful screen against held rows; not opened this round; lead, not row.
+140:- CISA ADP list page (the Vulnrichment program's published record list, as a check on F32's scope limit); named in the round-52 SCORECARD planned-for-53; not opened this round; lead, not row.
+[exit=0]
+
+$ grep -rli 'scorecard' corpus/knowledge/ | head -20
+corpus/knowledge/considerthese-proposals-ledger.md
+corpus/knowledge/root-loss-2026-10-12.md
+corpus/knowledge/source-tree-loss-2026-09-28.md
+[exit=0]
+
+$ grep -rli 'ossf' corpus/knowledge/ | head -20
+corpus/knowledge/osv-affected-range-events.md
+[exit=0]
+
+$ grep -rli 'scorecard' corpus/source-snapshots/ | head -20
+
+[exit=0]
+
+$ grep -rli 'ossf' corpus/source-snapshots/ | head -20
+corpus/source-snapshots/round-50/manifest.json
+corpus/source-snapshots/round-50/S080.txt
+[exit=0]
+
+$ grep -rn -i 'scorecard' corpus/knowledge/ | grep -vi 'SCORECARD\.md' | head -20
+
+[exit=0]
+
+$ grep -rn -i 'ossf' corpus/knowledge/osv-affected-range-events.md | head -5
+3:source: S080 — https://ossf.github.io/osv-schema/ — capture corpus/source-snapshots/round-50/S080.txt (1462 lines, 70913 bytes; sha256 97b850a4bcd90600bb39391df3293e4591b9dd84170e94ecfd48f40e08cfeda9; fetched 2026-11-01T01:17:14Z, HTTP 200, 228890 raw bytes — the same raw byte count the round-42 S065 screen recorded on 2026-10-28, so the served page was unchanged across those two opens): version line S080.txt:4, purpose S080.txt:9-10, stability S080.txt:17, required envelope fields S080.txt:374-375, range type S080.txt:706-708, SEMVER versions-list carve-out S080.txt:714-715, ECOSYSTEM ordering S080.txt:719-721, GIT ordering S080.txt:729-730, GIT versions-list duty S080.txt:733-735, the four event verbs S080.txt:739-742, special values S080.txt:751-755, upstream-mismatch caveat S080.txt:746-748, fixed-vs-last_affected S080.txt:760-766, introduced-required S080.txt:777, GIT repo requirement S080.txt:788, database_specific out-of-scope S080.txt:790-793; manifest corpus/source-snapshots/round-50/manifest.json (16 assertions Q1-Q16, each exactly-once at its pinned anchor; `source-recheck.py --source S080` exits 0)
+[exit=0]
+
