@@ -2201,3 +2201,60 @@ Correction (round 43): the wave-shape bullet above states `70 of the 73 seats re
   surface exists on this host; no seat ran, no results exist, no falsification credit is claimed.
 - Round-end receipts: sources census validate exit 0 at round start and round end (report carries both);
   round-end lane tip cited in the report.
+
+## Round 51 — the routed-defect corrections (D1, D2) and the CISA Vulnrichment frontier (2026-11-01)
+
+Base `bcd5d89a65ab612ef88e3d49cea0ef3cb3ccca09`; frozen claims `.ufo/waves/round-51/claims.json` (commit
+`73555dbaaea5c18456216b6c2646e97914d7b62b`), landed before implementation. The round-50 non-author closure
+(`corpus/lessons/round-50-verifier-spotcheck.md`, routed first-priority) named two defects; both are fixed this
+round as claims, then the round's own coverage move landed.
+
+- C1 (depth:verifiability 4, lowest non-retired): closure D1 fixed. The round-50 C1 do-nothing control
+  `controls/do-nothing-c1.txt` is relabeled by `.ufo/waves/round-51/erratum-1-c1-control-provenance.md` as an
+  imported old-host (Linux) receipt — retained byte-identical as mistake evidence — and the erratum's wrong
+  "Windows CPython error string" claim is corrected on probed facts (`controls/probe-host-r51.txt`: `python3` is
+  the Store stub exiting 49; `/fast` absent; `python /fast/...` prints the interpreter's exe path and a
+  Git-mount backslash path, not the imported receipt's Unix form). The control of record is now the receipt this
+  host actually produced: `controls/do-nothing-c1-winhost.txt` (real run of the C1' counter at a c5e3636 export
+  built per-file via git show on this host: instrument absent → `C1_EXIT=2`), reproduce commands embedded in the
+  receipt header. Commits `73555db` (control + probes), `aca3c29` (erratum). Before→after: C1-control receipts
+  reproducible on this host 0 → 1; uncorrected mislabels 4 → all four named in the erratum of record.
+- C2 (calibration; verdict row, not a number): closure D2 fixed. Lesson round-50 Erratum 2 (commit `aca3c29`)
+  names **204 files / 4809 distinct** as the census of record at `021989b` (GONE 3738, total 10298 — verified
+  from committed bytes: `git show 021989b:corpus/instruments/citation-survival.md`), leaving every filed 4807
+  line byte-identical, and records the regenerated-after-record pattern the C1 gate exists to catch. The LOG
+  round-50 entry and SCORECARD round-50 row therefore carry this appended correction (R9): their "204 files /
+  4807 distinct" figures describe the pre-final regeneration and are superseded by 4809 at `021989b`. This
+  round's own census figures were measured only from the final regeneration at the round-51 tip (SCORECARD
+  round-51 row), never from an earlier run. Before→after: rows naming 4809 as a census-of-record figure in the
+  three record files 0/0/0 → 2/3/5 (gate receipt `controls/c1-gate-final-r51.txt` reads CENSUS-FRESH=ok).
+- C3 (coverage 8): admitted frontier row F32 — CISA Vulnrichment (CISA's ADP-container enrichment of public CVE
+  records: SSVC decision points on every analyzed CVE, conditional CWE/CVSS, KEV blocks, CNA-precedence drop
+  rule, major.minor.patch SSVC version encoding, CPE discontinued 2024-12-10) — on registry row S081 (CISA's own
+  README at the repo default branch `develop`, https://raw.githubusercontent.com/cisagov/vulnrichment/develop/README.md,
+  kind `docs`, tier A, opened 2026-11-01, capture `corpus/source-snapshots/round-51/S081.txt` sha256
+  `2da0941448…`, 8290 bytes, 120 lines, fetched 2026-11-01T02:48:34Z at HTTP 200 / 8501 raw bytes, manifest with
+  12 assertions Q1-Q12 each exactly-once, `source-recheck.py --source S081` exit 0). Entry
+  `corpus/knowledge/cisa-vulnrichment-adp-enrichment.md` with the pre-freeze neighbor screen named against
+  F18/F20/F22/F25/F30 (zero `vulnrichment`/`Authorized Data Publisher` hits across the lane records before the
+  freeze); README F32 row + round-51 admission block appended at EOF (R6); PROVINCE r51 amendment line + r51
+  status annotation appended. Counter before→after ON THIS HOST: `FRONTIER-CENSUS rows=31 admitted=31 closed=1
+  problem-rows=30 registry=80`, `entries=34 pass=1`, zero F32 lines (`controls/do-nothing-c2-r51-winhost.txt`,
+  base export bcd5d89) → `FRONTIER-CENSUS rows=32 admitted=32 closed=2 problem-rows=30 registry=82`,
+  `entries=35 pass=2` with `PASS F32 ids=S081 exit=0` and all 33 inherited fails carrying exactly
+  `recheck-exit-1` (`controls/c2-counter-final-r51.txt`). Score HELD at 8: the coverage denominator remains the
+  lost domain root's 18-surface set; F32 is the frontier measure (31→32).
+- Registry: S081 (mined, tier A, used-by the F32 entry) + S082 (rejected with reason and flip — the public
+  GitHub mirror `VeigaPunk/open-bug-bounties` whose history provably lacks the lost checkout's recorded HEAD
+  `1307b8b`, gh api 422, probe receipt `controls/mirror-probe.txt`; RECEIPT-STORE-LOST stays corpus-attested-only,
+  PROVINCE r51 annotation records the negative answer). Registry rows 80 → 82 (R8); no pre-existing row's
+  status/recheck/used-by cell changed. Sources-census validate exit 0 at round start and round end.
+- Mistakes mined (2, both this round's own, both caught by a counter before any commit): the cd-then-relative-
+  DEST export script wrote 496 files into the lane worktree (caught by `find` = 0 vs the script's `files=496`;
+  removed untracked; fix = absolute-DEST assertion); the assumed-`main` capture ref 404'd (fix =
+  `default_branch` resolved first, the ref named in the row/manifest/entry). Lesson:
+  `corpus/lessons/round-51.md`.
+- Non-targets held: `SKILL.md` untouched (density guard), no axis retired or split, no score asserted; the 67
+  host-bound recheck lines stay operator-owned disclosed debt (L0 kasegi round-50 unanswered, routed around).
+- Wave disposition: no AgentSwarm surface on this host; no seats ran; the claims verify on their frozen
+  predicates by re-derivable commands only.

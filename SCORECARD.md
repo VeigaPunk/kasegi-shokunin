@@ -1981,3 +1981,59 @@ by re-derivable commands only.
 2. **coverage (8):** the S065 flip is spent by F31; scout a fresh first-party capture for F32 (not the CVE
    Services write path, not EPSS, not OSV) and screen it against the province BEFORE any freeze — the
    round-50 D1 lesson makes the pre-freeze neighbor check mandatory.
+
+## Round 51 result — the routed-defect corrections (C1, C2) and the CISA Vulnrichment surface (C3)
+
+Frozen claims: `.ufo/waves/round-51/claims.json` (commit `73555dbaaea5c18456216b6c2646e97914d7b62b`, base
+`bcd5d89a65ab612ef88e3d49cea0ef3cb3ccca09`), landed before implementation. The round-50 non-author closure routed
+two first-priority defects (D1 control-provenance mislabel, D2 census-figure drift); both are fixed this round as
+claims C1 and C2, and the round's own coverage move landed as C3 (frontier F32, source S081, pre-freeze neighbor
+screen vs F18/F20/F22/F25/F30).
+
+**Correction of record (C2, R9):** the round-50 rows in this file and in LOG.md state the census of record as
+"204 files / 4807 distinct"; the certified tip census at `021989bf4f5699fa55c6d90abd37ce6ad1caa50a` reads **204
+files / 4809 distinct** (GONE 3738, total 10298 — `git show 021989b:corpus/instruments/citation-survival.md`). The
+filed 4807 lines above are retained byte-identical; **4809 at `021989b` is the census of record they describe**,
+per lesson round-50 Erratum 2. The figures below are quoted from THIS round's final regeneration only (the C2
+rule applied to the lane's own bytes).
+
+| Axis | Before | After | Verdict and evidence |
+|---|---:|---:|---|
+| depth:verifiability | 4 | **4 held; delta 0** | C1 verifies: the C1 do-nothing control of record is now a receipt this host produced — `controls/do-nothing-c1-winhost.txt` (real run at the c5e3636 export built per-file on this host: instrument absent → `C1_EXIT=2`, this host's `Python313\python.exe` path and backslash-quoted target in the error line), reproduce commands in the receipt header — and `.ufo/waves/round-51/erratum-1-c1-control-provenance.md` relabels the round-50 imported receipt (kept byte-identical) while correcting the factually wrong "Windows CPython error string" claim on probed facts (`controls/probe-host-r51.txt`: python3 = Store stub exit 49, /fast absent, Git-mount path form). Evidence-integrity repair only: the citation-resolution proxy is unchanged (see the census row below), so the score is HELD at 4 — the score-5 bar is still `score-gap.py`'s 22 gated lines on the lost domain bases and the 67 host-bound recheck lines stay operator-owned (L0 kasegi round-50 unanswered, routed around). |
+| calibration | verdict-only (not a scored owned axis) | **improved (verdict row per the round-20 freshness precedent; no score asserted)** | C2 verifies: lesson round-50 Erratum 2 (commit `aca3c29`), the LOG round-50 correction below, and this section's correction paragraph name **4809 at `021989b`** as the census of record while every filed 4807 line stayed byte-identical (append-only, R9); rows naming 4809 in lesson-50/LOG/SCORECARD went 0/0/0 at base to 2/3/5 now; the lesson names the regenerated-after-record pattern the C1 gate exists to catch; and the rule was applied to this round's own bytes — the census figures in this section were measured only from the final regeneration at the tip. |
+| coverage | 8 | **8 held; delta 0** | C3 verifies: frontier F32 (CISA Vulnrichment ADP enrichment) admitted on S081 (CISA's own README at the default branch `develop`, capture `corpus/source-snapshots/round-51/S081.txt`, sha256 `2da09414…`, 12 assertions Q1-Q12 each exactly-once, `source-recheck.py --source S081` exit 0, receipt `controls/s081-recheck.txt`), entry `corpus/knowledge/cisa-vulnrichment-adp-enrichment.md` with the pre-freeze neighbor screen named against F18/F20/F22/F25/F30, SOURCES rows S081 (mined) + S082 (rejected with reason and flip: the VeigaPunk mirror's history provably lacks the lost checkout's HEAD `1307b8b`), README F32 row + PROVINCE r51 amendment appended at EOF. Counter before→after ON THIS HOST: `rows=31 admitted=31 closed=1 problem-rows=30 registry=80`, `entries=34 pass=1`, zero F32 lines (`controls/do-nothing-c2-r51-winhost.txt`) → `rows=32 admitted=32 closed=2 problem-rows=30 registry=82`, `entries=35 pass=2`, the F32 pass `PASS F32 ids=S081 exit=0`, all 33 inherited fails exactly `recheck-exit-1` (`controls/c2-counter-final-r51.txt`). Score HELD at 8: the denominator is the lost domain root's 18-surface set (operator-owned re-scope); F32 moves the frontier measure 31→32, not the coverage score. |
+| depth:density | 9 | 9 held; non-target guard | `SKILL.md` was not edited this round, so the density instrument's input bytes are unchanged. |
+
+**Census of record at this round's tip (C2 rule: quoted only from the final regeneration):** base `021989b` read
+204 files / 4809 distinct → the round-51 tip reads **206 files / 4868 distinct** (GONE 3785; total occurrences
+10388; lane total 1083/4868 = 22.27%) — the two new corpus files (the F32 entry and the round-51 lesson) and their
+citations, measured after the last corpus edit and certified by the gate receipt
+`controls/c1-gate-final-r51.txt` (`CENSUS-FRESH=ok files=2`, exit 0; selftest `controls/c1-gate-selftest-r51.txt`,
+`selftest cases=3 failures=0`).
+
+### Round-51 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 51 | depth:verifiability | C1-control receipts reproducible on this host: 0 (the sole C1 control's bytes are an old-Linux-host run: working python3, /fast path); 4 filed places label it host-produced, one claiming a "Windows CPython error string" this host's CPython does not print | 1 (`do-nothing-c1-winhost.txt`, real host run, `C1_EXIT=2`, reproduce commands in-header); the erratum of record names and corrects all four mislabels; the imported file retained byte-identical | `.ufo/waves/round-51/erratum-1-c1-control-provenance.md`; `controls/do-nothing-c1-winhost.txt`; `controls/probe-host-r51.txt` |
+| 51 | calibration | rows naming 4809 as a census-of-record figure in lesson-50/LOG/SCORECARD: 0/0/0 (the prose said 4807 everywhere; only the certified census bytes said 4809) | 2/3/2, with every filed 4807 line byte-identical and the final-regeneration rule applied to this round's own figures | lesson round-50 Erratum 2; the LOG round-51 correction above; the correction paragraph in this section |
+| 51 | coverage | `FRONTIER-CENSUS rows=31 admitted=31 closed=1 problem-rows=30 registry=80`, `entries=34 pass=1` (this host) | `FRONTIER-CENSUS rows=32 admitted=32 closed=2 problem-rows=30 registry=82`, `entries=35 pass=2`, `PASS F32 ids=S081 exit=0` | `controls/do-nothing-c2-r51-winhost.txt` → `controls/c2-counter-final-r51.txt`; `corpus/knowledge/cisa-vulnrichment-adp-enrichment.md`; `corpus/source-snapshots/round-51/` (S081 + manifest) |
+
+**Capabilities:** none added (the corrections and the admission use the existing repertoire; the round-50
+`census-freshness-check` capability re-demonstrated running this round: gate `CENSUS-FRESH=ok files=2`, selftest
+`cases=3 failures=0`).
+**Saturation unchanged:** line 9/10 per owned axis; window N = 3 with the last capability entry round 50. The
+lowest non-retired axis remains depth:verifiability (4) and C1 works it.
+**Non-author verification:** outstanding. No seats ran (no AgentSwarm surface on this host); the most recent
+outside spot-check is the round-50 closure that routed D1/D2. The claims verify on their frozen predicates by
+re-derivable commands only.
+
+### Planned for round 52 (not frozen)
+
+1. **depth:verifiability (4, lowest):** unchanged bar — the 67 host-bound recheck lines and the 22 gated lines
+   stay operator-owned (L0 kasegi round-50/46 unanswered); the lane-side lever is none until the operator rules,
+   so the next round should NOT re-declare this class as a lane target (the round-49 L0 row already asked).
+2. **coverage (8):** the next frontier row must clear the pre-freeze neighbor screen (mandatory since round-50 D1);
+   candidate leads: NVD API 2.0 (NIST's own enrichment/search interface — distinct from F25's record format and
+   F30's CVE Services write path), OpenSSF Scorecard (repo security health), or the CVE Program's ADP list page as
+   a check on F32's scope limit; screen against the province BEFORE any freeze.
