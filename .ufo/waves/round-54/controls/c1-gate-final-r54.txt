@@ -1,0 +1,29 @@
+# round-54 gate final receipt (rev 1) - census-freshness over the TRULY final tree (after the SCORECARD/LOG
+# result appends; both are outside the census scope, re-measured anyway per the r52 rev-4 lesson), one run, unedited tee
+run-utc=2026-11-01T09:20:39Z
+$ python corpus/instruments/resolve.py .   # regenerate (idempotent over the final tree; run to the FIXED POINT - the census pair cites corpus paths itself, so the first regeneration after new corpus files moves the classes once)
+distinct=4978 resolves=12 mirror=0 internal=1107 other=0 gone=3859 skill=131/701 corpus=0/0 all=1119/4978
+wrote C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus\instruments\citation-survival.tsv
+wrote C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus\instruments\citation-survival.md
+[exit=0]
+
+$ python corpus/instruments/census-freshness-check.py .
+CENSUS-FRESH=ok files=2
+[exit=0]
+
+$ wc -l SCORECARD.md LOG.md
+  2231 SCORECARD.md
+  2458 LOG.md
+  4689 total
+[exit=0]
+
+$ grep -c '^## Round 54' SCORECARD.md; grep -c '^## Round 54' LOG.md
+1
+1
+[exit=0]
+
+$ printf '%s' 'week during the previous 90 days, the project receives the highest score.' | wc -w   # R56 quote count
+12
+[exit=0]
+
+no corpus/**, SCORECARD or LOG edit follows this receipt

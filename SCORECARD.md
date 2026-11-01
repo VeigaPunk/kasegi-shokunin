@@ -2163,3 +2163,69 @@ by re-derivable commands only.
    OpenSSF Scorecard (repo security health; screen against held rows before opening) and the CISA ADP list page (a check
    on F32's scope limit); the S085 capture's own external-schema references (cvss-v*.json, ssvc-v2.0.3.json) are a
    further lead family if a future claim needs the referenced vocabulary.
+
+## Round 54 result — the routed D53 figure corrections (non-claim, carry-in), the move-log figure audit (C1, capability acquisition, held), and the OpenSSF Scorecard check documentation (C2)
+
+Frozen claims: `.ufo/waves/round-54/claims.json` (freeze commit `37fc40e1f3cc11cd2b25cf9b38868603a4140e79`, base
+`32782bd6b564f80454af853b38868603a4140e79`), landed before implementation with the S086 capture + manifest + the extended
+pre-freeze screen + the do-nothing/stand-in receipts in the same commit. The round-53 non-author closure routed three
+status-neutral defects; the carry-in landed FIRST as a routed non-claim (`cfdf059`): one appended corrections file
+(`.ufo/waves/round-54/controls/routed-d53-corrections.md`) superseding D53-1 (the r53 counter-final receipt trailer's
+"34 inherited" vs its own measured `FAIL_entry_records=33`) and D53-2 (the "543 lines" metadata vs `wc -l` 542) with the
+measured figures and sha pins — no filed byte edited (receipt `controls/d53-base-greps-r54.txt`; the file's own closure
+check prints `d53-corrections=closed` exit 0); D53-3 (prompt-template L2-embed omission) is operator-side, routed via
+`.ufo/l0-questions.md` (kasegi round-54 row; same-substance host question stands as kaidoku round-53), never treated as
+answered. No post-freeze erratum was needed: every after-literal had been dry-run against the stand-in tree before the
+freeze, and the two literals the dry-runs caught (the expected-list sort position; the Q2 anchor) were fixed pre-freeze
+(mined in the round-54 lesson).
+
+| Axis | Before | After | Verdict and evidence |
+|---|---:|---:|---|
+| depth:verifiability | 4 | **4 held; delta 0 — nominal capability move, labelled per QUALITY R58** | C1 verifies as a capability acquisition: `corpus/instruments/figure-audit.py` + `figure-audit-ledger.json` re-derive 9 figures recorded in lane records against committed bytes with whole-value comparison — frontier-rows 34, registry-rows 85, knowledge-expected 72, knowledge-files 72 (rev-pinned to 32782bd), capture-lines-s085 542 (naming the superseded 543), capture-bytes-s085 7590, capture-lines-s086 731, capture-sha256-s086 `fa84a017…` (the freeze capture), fail-entry-records 33 (re-running the frontier counter; naming the superseded 34 trailer) — receipts: selftest `cases=5 failures=0` exit 0 (`controls/c1-selftest-r54.txt`); RED control over the two r53 literals AS FILED reads both stale, exit 1 (`controls/c1-red-d53literals-r54.txt` — the routed D53 class is now machine-catchable); GREEN over the lane root `figures=9 ok=9 stale=0` exit 0 (`controls/c1-green-lane-r54.txt`); do-nothing at 32782bd: `git cat-file -e` exit 128, 0 mentions (`controls/c1-donothing-r54.txt`). Causally separable from C2: the green run was taken at the freeze+corrections state, before any C2 byte landed. The allow-list's missing `git ls-tree` head was caught fail-closed by the instrument's own limb pre-commit (mined). Score HELD at 4: the moved object is a new re-derivation capability; the axis counter (the citation-resolution census) is not the moved metric — the non-moving metric is named (R58), and the score-5 bar stays `score-gap.py`'s gated lines on the lost domain bases, operator-owned (L0 r50/46 routed around). |
+| coverage | 8 | **8 held; delta 0** | C2 verifies: frontier F35 admitted on S086 — the OpenSSF Scorecard project's own generated check documentation (`https://raw.githubusercontent.com/ossf/scorecard/main/docs/checks.md`, capture `corpus/source-snapshots/round-54/S086.txt`, sha256 `fa84a017…`, 731 lines, 46441 bytes, two byte-identical opens this round; 14 assertions Q1-Q14 each exactly-once, `source-recheck --source S086` exit 0, receipt `controls/s086-recheck-r54.txt`), entry `corpus/knowledge/openssf-scorecard-checks.md` (4 falsifiable rules with rejected over-generalizations; distinctness vs F24/F17/F31/F18; Limits: aggregate-score/weights/publisher unasserted, moving `main` pinned by sha), the extended pre-freeze screen incl. the downstream-consumer sweep run at base before the freeze (`controls/neighbor-screen-r54.txt`: zero held rows, zero snapshot consumers), README F35 row + r54 amendment appended at EOF (+26/−0), PROVINCE r54 amendment (+2/−0), SOURCES S086 row + search-log + registry bullet 85 -> 86 (+3/−0, no other row touched), `knowledge-expected.txt` 72 -> 73 (insert BEFORE operator-queue.md, `LC_ALL=C sort -c` clean — the sort-position catch is mined). Counter before->after ON THIS HOST: do-nothing `rows=34 admitted=34 closed=4 problem-rows=30 registry=85`, `entries=37 pass=4`, zero F35 lines, FAIL records 33 (`controls/do-nothing-c2-r54.txt`, base export built per-file, 518 corpus files + PROVINCE) -> `rows=35 admitted=35 closed=5 problem-rows=30 registry=86`, `FRONTIER-PASS F35 ids=S086`, `entries=38 pass=5`, FAIL records 33 (=38−5, invariant) (`controls/c2-counter-final-r54.txt`); capture-binding `records=69 bound=69 unbound=0` exit 0, `multi_row_url=7` unchanged 7 -> 7 (`controls/capture-binding-r54.txt`); expect limb `expected=73 missing=0 unexpected=0` (`controls/c2-expect-and-counts-r54.txt`). Score HELD at 8: the denominator is the lost domain root's 18-surface set (operator-owned re-scope); F35 moves the frontier measure 34 -> 35, not the coverage score. |
+| depth:density | 9 | 9 held; non-target guard | `SKILL.md` was not edited this round; the new instrument's registration evidence lives in the capabilities row below and its selftest, not in a mid-file SKILL registry insert (R6: SKILL.md is the lane's most line-cited file; disclosed in the lesson Limits). |
+| calibration | verdict-only (not a scored owned axis) | improved (verdict row per the round-51/52/53 precedents; no score asserted) | The carry-in corrections landed append-only with byte pins and a runnable closure check (`d53-corrections=closed`); three of the round's own mistakes were caught BEFORE their data landed (the sort position by `sort -c` in the stand-in; the Q2 anchor by `source-recheck`'s anchor limb; the allow-list head by the audit's own read-only limb) and all five Mistakes rows carry class/captured-by/fix; the D53-3 operator routing went through the L0 channel rather than being treated as answered. |
+
+**Census of record at this round's tip (quoted only from the final regeneration):** the round-53 tip read
+212 files / 4942 distinct -> the round-54 tip reads **215 files / 4978 distinct** (RESOLVES 12, INTERNAL 1107, GONE
+3859; total occurrences 10609; lane total 1119/4978 = 22.48%) — the three new corpus files (the F35 entry, the
+figure-audit instrument, the round-54 lesson) and their citations, certified by the gate receipt
+`controls/c1-gate-final-r54.txt` (`CENSUS-FRESH=ok`) measured after the last corpus/SCORECARD/LOG edit. Internal
+consistency: 12+1107+3859=4978; 12+1107=1119. The figures are the regeneration FIXED POINT (the census pair cites
+corpus paths itself, so the first regeneration after new corpus files moves the classes once; resolve.py was re-run to
+stability and the pair committed is the stable pair). The lesson quotes the figures only by pointer. Bookkeeping move only
+(R58 nominal labeling on C1): no citation-resolution move is claimed.
+
+### Round-54 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 54 | depth:verifiability | no committed counter re-derives recorded figures; the r53 trailer's 34 and metadata 543 stood uncaught (routed D53-1/D53-2) | figure-audit capability: 9 recorded figures re-derived, whole-value, fail-closed; the D53 literals AS FILED read stale (red control exit 1); selftest 5/0; green 9/0 exit 0 | `controls/c1-selftest-r54.txt`; `controls/c1-red-d53literals-r54.txt`; `controls/c1-green-lane-r54.txt`; `controls/c1-donothing-r54.txt`; `controls/routed-d53-corrections.md` |
+| 54 | coverage | `FRONTIER-CENSUS rows=34 admitted=34 closed=4 problem-rows=30 registry=85`, `entries=37 pass=4`, zero F35 (this host, base export) | `FRONTIER-CENSUS rows=35 admitted=35 closed=5 problem-rows=30 registry=86`, `FRONTIER-PASS F35 ids=S086`, `entries=38 pass=5`, FAIL records 33 invariant | `controls/do-nothing-c2-r54.txt` -> `controls/c2-counter-final-r54.txt`; `corpus/knowledge/openssf-scorecard-checks.md`; `corpus/source-snapshots/round-54/` (S086 + manifest) |
+| 54 | calibration | r53 routed D53-1/D53-2 standing + the operator-side D53-3 | corrections file landed append-only with byte pins + closure check exit 0; D53-3 routed via the L0 channel (kasegi round-54 row) | `.ufo/waves/round-54/controls/routed-d53-corrections.md`; `.ufo/waves/round-54/controls/d53-base-greps-r54.txt` |
+
+**Capabilities:** one row enters the table this round (recorded in this round section per the round-43/R6-append
+practice — the main capabilities table sits mid-file in a line-anchored SCORECARD):
+
+| Capability | What it can now do | Evidence pointer | First-working round |
+|---|---|---|---|
+| move-log-figure-audit | Re-derives figures recorded in lane records against committed bytes (rev-pinned or live), whole-value comparison, fail-closed on drift or unreadable input — catches the routed D53 receipt-trailer/metadata number-drift class | `python corpus/instruments/figure-audit.py` -> `FIGURE-AUDIT figures=9 ok=9 stale=0 exit=0` (`.ufo/waves/round-54/controls/c1-green-lane-r54.txt`); selftest `cases=5 failures=0` (`controls/c1-selftest-r54.txt`); red control on the r53 literals AS FILED exit 1 (`controls/c1-red-d53literals-r54.txt`) | 54 |
+
+**Saturation:** line 9/10 per owned axis; lowest non-retired axis remains depth:verifiability (4); the nudge is not
+active (a capability entered the repertoire this round — the stagnation window restarts at 54).
+**Non-author verification:** outstanding. No seats ran (no AgentSwarm surface on this host; D53-3 routed via L0); the
+most recent outside spot-check is the round-53 closure that routed the defects this round fixes. The claims verify on
+their frozen predicates by re-derivable commands only.
+
+### Planned for round 55 (not frozen)
+
+1. **depth:verifiability (4, lowest):** the figure-audit ledger grows one round at a time — fold the round-54 figures
+   in (rows=35, registry=86, entries=38, pass=5, expected=73) and audit the round's own move-log row, so every future
+   figure drift is machine-caught the round after it lands; the 67 host-bound recheck lines, the 3 cwd_fail lines and
+   the limb-mutation replay's python3 dependency stay operator-owned (L0 kasegi round-50/46 unanswered) and must NOT
+   be re-declared as a lane target.
+2. **coverage (8):** the remaining recorded leads are the CISA ADP list page (a check on F32's scope limit) and the
+   GitHub repository security advisories REST API (the reproducible S076-capture sibling lead, unopened since round
+   47); S086's own unasserted surfaces (aggregate-score computation/weights, publisher/API, Prox) are a further lead
+   family if a future claim needs them; every next frontier row clears the extended pre-freeze screen including the
+   downstream-consumer sweep.

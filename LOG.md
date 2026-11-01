@@ -2398,3 +2398,61 @@ natural next capture", re-opening the rejected S066 row under the unspent term o
   capability; window restarted r52). Census validate at round start and round end: exit 0 both (4 known W04
   duplicate-url warnings). Assimilation: none — shokuknow unreachable; considerthese unchanged (no new proposal file;
   2026-10-26 proposal 1 already implemented r39, proposal 2 stays noted-not-adopted).
+
+## Round 54 — the routed D53 figure corrections (carry-in, non-claim), the move-log figure audit capability (C1), and the OpenSSF Scorecard check documentation frontier (C2) (2026-11-01)
+
+Carry-in addressed FIRST (round-53 non-author closure, `corpus/lessons/round-53-verifier-spotcheck.md` §6, status-neutral):
+- D53-1 + D53-2 landed as ONE appended corrections file `.ufo/waves/round-54/controls/routed-d53-corrections.md`
+  (commit `cfdf059`): the r53 counter-final trailer's "34 inherited" superseded by the measured `FAIL_entry_records=33`
+  (= entries 37 − pass 4, re-derived invariant across this round: 33 at base, 38−5 = 33 after C2); the round-53 "543
+  lines" metadata (manifest `lines` field, S085 registry row, F34 entry header) superseded by `wc -l` = 542 (7590
+  bytes = 7589 content + 1 trailing newline; the load-bearing sha/bytes were always correct). No filed byte edited:
+  receipt/capture/r53-manifest sha-pinned inside the file's own closure check → `d53-corrections=closed` exit 0;
+  before-state greps receipt `controls/d53-base-greps-r54.txt`.
+- D53-3 (rendered prompt omits the MISSION.md §L2-concurrency embed — operator-side, standing): routed via
+  `.ufo/l0-questions.md` (kasegi round-54 row appended; same-substance host question stands as kaidoku round-53);
+  routed around, never treated as answered.
+
+Claims (frozen at `37fc40e`, base `32782bd`, before implementation; capture + manifest + screen + do-nothing/stand-in
+receipts in the freeze commit):
+
+- **C1 depth:verifiability (4, lowest; capability acquisition; score HELD, nominal per R58)** — commit `c9df68e`:
+  `corpus/instruments/figure-audit.py` + `figure-audit-ledger.json`; 9 recorded figures re-derived against committed
+  bytes (4 rev-pinned to `32782bd` via git show/ls-tree; S085 capture lines/bytes; the round-54 freeze capture
+  lines/sha; fail-entry-records 33 re-running the frontier counter), whole-value comparison, fail-closed; ledger
+  entries NAME the two superseded r53 literals. Receipts: selftest `cases=5 failures=0` exit 0
+  (`controls/c1-selftest-r54.txt`); RED control over the r53 literals AS FILED → 2 stale, exit 1
+  (`controls/c1-red-d53literals-r54.txt`) — the routed number-drift class is now machine-catchable; GREEN over the lane
+  root at the freeze+corrections state (before any C2 byte: causally separable) → `figures=9 ok=9 stale=0` exit 0
+  (`controls/c1-green-lane-r54.txt`); do-nothing at 32782bd: instrument absent (`git cat-file -e` exit 128), 0
+  mentions (`controls/c1-donothing-r54.txt`). Own-catch mined: the read-only allow-list lacked `git ls-tree ` and the
+  instrument's own limb rejected ledger entry `knowledge-files` fail-closed on the first green run — head added,
+  receipts regenerated over the fixed bytes.
+- **C2 coverage (8; frontier F34 → F35; score HELD, operator-owned denominator)** — commit `ff5a1bf`: F35 = the
+  OpenSSF Scorecard project's own generated check documentation, first admission of the round-53 lead (the round-52
+  planned-for-53 candidate), source S086 (tier A, docs, mined, opened 2026-11-01; two byte-identical opens this round,
+  recorded fetch 2026-11-01T08:17:52Z, HTTP 200, 46441 bytes, sha256 `fa84a017…`; capture
+  `corpus/source-snapshots/round-54/S086.txt` 731 lines; manifest 14 assertions Q1-Q14 each exactly-once — one anchor
+  slip (Q2: 7 → 5) caught by `source-recheck`'s anchor limb pre-commit). Entry
+  `corpus/knowledge/openssf-scorecard-checks.md`: Maintained 90-day commit-rate window + >90-day assessability floor;
+  Vulnerabilities check consumes OSV, suppressions are project-authored osv-scanner.toml declarations; per-check risk
+  tiers conditionally worded (High/Critical/Medium); Security-Policy = SECURITY.md presence/content detector, disjoint
+  from F24's security.txt; program boundary "can only report what it can automatically detect"; Limits: aggregate
+  0-10/weights/publisher/Prox unasserted, moving `main` pinned by sha. Appends: README F35 row + r54 amendment
+  (+26/−0), PROVINCE r54 amendment (+2/−0), SOURCES S086 row + search-log + registry bullet 85 → 86 (+3/−0, no other
+  row touched), `knowledge-expected.txt` 72 → 73 (insert BEFORE operator-queue.md — the first insert sorted wrong and
+  was caught by `LC_ALL=C sort -c` in the pre-freeze stand-in, mined). Receipts: do-nothing counter at the base export
+  `rows=34 admitted=34 closed=4 problem-rows=30 registry=85`, `entries=37 pass=4`, zero F35, FAIL 33
+  (`controls/do-nothing-c2-r54.txt`) → final `rows=35 admitted=35 closed=5 problem-rows=30 registry=86`,
+  `FRONTIER-PASS F35 ids=S086`, `entries=38 pass=5`, FAIL records 33 invariant
+  (`controls/c2-counter-final-r54.txt`); `source-recheck --source S086` exit 0 (`controls/s086-recheck-r54.txt`);
+  capture-binding `records=69 bound=69 unbound=0` exit 0, `multi_row_url=7` unchanged
+  (`controls/capture-binding-r54.txt`); expect limb `expected=73 missing=0 unexpected=0` +
+  counts 73/73/sorted-ok/731/46441/35/86 (`controls/c2-expect-and-counts-r54.txt`). Extended pre-freeze screen
+  (incl. downstream-consumer sweep) run at base before the freeze: `controls/neighbor-screen-r54.txt` — zero held
+  rows, zero "scorecard" snapshot consumers; the only "ossf" snapshot hits are F31's own S080 capture.
+
+Round lesson: `corpus/lessons/round-54.md` (5 Mistakes rows: the two mined routed defects + three pre-data own-catches;
+Gate: S086 with the 12-word quote at S086.txt:415; Limits: host-bound classes operator-owned, moving-`main` caveat;
+considerthese: idle stretch, all proposals dispositioned, nothing adopted — `Assimilation: none — shokuknow
+unreachable`). SCORECARD round-54 result section + capabilities row `move-log-figure-audit` + planned-for-55 appended.
