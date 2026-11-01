@@ -1,0 +1,25 @@
+# round-56 C1 do-nothing control at base e166f1b - the figure-audit ledger before any round-56 entry
+run-utc=2026-11-01T14:57:14Z
+
+$ git show e166f1b:corpus/instruments/figure-audit-ledger.json | grep -c "\"id\""
+17
+[exit=0]
+
+# the ten round-56 entry ids are absent at base (awk whole-count prints 0 with exit 0)
+frontier-rows-r55 0
+registry-rows-r55 0
+entries-r55 0
+knowledge-expected-r55 0
+knowledge-files-r55 0
+census-fresh-literal-r55 0
+census-internal-r55-receipt 0
+census-gone-r55-receipt 0
+census-fixedpoint-internal-r55 0
+census-fixedpoint-gone-r55 0
+
+# the base ledger re-runs green over the lane root (rev-pinned entries resolve; the three file-path entries read bytes unchanged since base)
+$ python corpus/instruments/figure-audit.py --ledger <base export of the ledger> | tail -3
+FIG figure-audit-mentions-base-log recorded=0 derived=0 ok
+FIG figure-audit-mentions-base-knowledge-expected recorded=0 derived=0 ok
+FIGURE-AUDIT figures=17 ok=17 stale=0 exit=0
+[exit=0]

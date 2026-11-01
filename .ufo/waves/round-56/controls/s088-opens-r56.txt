@@ -1,0 +1,36 @@
+# round-56 S088 capture receipt - four same-sha instrument opens, one raw curl parity open, byte-level shape checks, and the same-day S081 reproduction check
+run-utc=2026-11-01T14:53:14Z
+
+# opens (probe 14:19:12Z, recorded 14:34:05Z into corpus/source-snapshots/round-56/S088.txt, verification 14:34:05Z and 14:34:06Z into wave scratch)
+# S088 status=200 fetched_bytes=7203 snapshot_bytes=7204 sha256=09ce0b10436f67c35f7ccf3a8dcfec0489d209d6698ee2fa75cf4b6f5873935e (all four opens)
+
+$ cmp probe verify-1 verify-2 vs recorded (all byte-identical)
+cmp x3: IDENTICAL
+[exit=0]
+
+$ sha256sum corpus/source-snapshots/round-56/S088.txt
+09ce0b10436f67c35f7ccf3a8dcfec0489d209d6698ee2fa75cf4b6f5873935e *corpus/source-snapshots/round-56/S088.txt
+
+$ wc -l -c corpus/source-snapshots/round-56/S088.txt
+   1 7204 corpus/source-snapshots/round-56/S088.txt
+
+$ python byte-level CR/TAB/LF count over the capture (rb; the r55 lesson rule: byte-shape claims settle by byte-level reads, never shell grep classes)
+CR bytes 0 TAB bytes 0 LF lines 1
+
+# raw curl parity open (HTTP 200, 8956 bytes - the same tree object served PRETTY-PRINTED to curl's */* Accept vs the instrument's compact 7203; representation variance, not drift)
+$ parsed equality of the curl body vs the capture: top sha, 34 entries, truncated flag
+  (limb first failed on an unexpanded wave-scratch variable inside a quoted heredoc - the failed
+   invocation is disclosed here and the corrected re-run below is the of-record output; nothing
+   about the capture or the parity claim changed between the two runs)
+top sha equal: True e8d691a5d5b8485339feb29aac2d68deb67f2011
+entries equal: True 34 34
+truncated flags: False False
+[exit=0]
+
+# same-day S081 reproduction check (the F32 rules text is unchanged at the record-list open; the README blob size in the tree is 8501 = the r51 open raw byte count)
+$ curl -sL raw README at develop -> 8501 bytes, sha256 ffec1da1..., 163 raw lines
+$ the committed S081 snapshot sha reproduces from the same-day raw fetch after the declared collapse:
+collapsed sha256 2da0941448d88f48bfc7275c6444abf3aaf57244719e64b3b3ab6591f4458b65
+committed S081   2da0941448d88f48bfc7275c6444abf3aaf57244719e64b3b3ab6591f4458b65
+BYTE-IDENTICAL
+[exit=0]

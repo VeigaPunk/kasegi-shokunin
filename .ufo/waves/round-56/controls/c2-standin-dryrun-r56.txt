@@ -1,0 +1,37 @@
+# round-56 C2 stand-in dry-run (v1 = of-record, one pass) - the after-literals derived over the stand-in tree (per-file base export e166f1b + the declared adds: the freeze-commit capture pair corpus/source-snapshots/round-56/{S088.txt,manifest.json} AND every C2-commit file: corpus/knowledge/cisa-vulnrichment-record-list.md, corpus/README.md, PROVINCE.md, corpus/SOURCES.md, corpus/instruments/knowledge-expected.txt), applied by the same patcher (stage/apply_c2.py) that will land the lane edits - the declared-adds list is enumerated from the claim's own freeze+C2 commit path lists per the round-55 lesson rule
+run-utc=2026-11-01T15:15:11Z
+
+$ python corpus/instruments/frontier-recheck-count.py --root <stand-in> | grep -E "FRONTIER-CENSUS|F37|entries="
+FRONTIER-CENSUS rows=37 admitted=37 closed=7 problem-rows=30 registry=88
+FRONTIER-PASS F37 ids=S088
+PASS     F37  knowledge/cisa-vulnrichment-record-list.md           ids=S088           exit=0   
+entries=40 pass=7 exit=1
+[exit=0]
+
+$ python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-56/manifest.json --source S088 (run from the stand-in root)
+S088:sha256 OK
+S088:Q1 OK occurrences=1 anchor=1-ok
+S088:Q2 OK occurrences=1 anchor=1-ok
+S088:Q3 OK occurrences=1 anchor=1-ok
+S088:Q4 OK occurrences=1 anchor=1-ok
+S088:Q5 OK occurrences=1 anchor=1-ok
+S088:Q6 OK occurrences=1 anchor=1-ok
+[exit=0]
+
+$ python corpus/instruments/capture-binding-check.py --root <stand-in> | tail -2
+AUDIT records=71 with_url=71 with_fetched_utc=33 with_archival=38 snapshot_dirs=32 manifest_dirs=32 missing_manifest=0 multi_row_url=7 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+records=71 bound=71 unbound=0
+[exit=0]
+
+$ plain counts over the stand-in: frontier rows / registry rows / expected / files / S088 bytes
+37
+88
+75
+75
+7204
+
+$ LC_ALL=C sort -c standin/corpus/instruments/knowledge-expected.txt && echo sort-clean
+sort-clean
+[exit=0]
+
+# note: this stand-in was built in ONE pass with the complete declared-adds list (the capture pair INCLUDED from the start); no v1-fail/pass pair exists to disclose - the round-55 rule (enumerate declared adds from the freeze+C2 commit path lists) was applied before the first build

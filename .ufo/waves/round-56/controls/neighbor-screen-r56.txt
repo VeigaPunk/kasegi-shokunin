@@ -1,0 +1,44 @@
+# round-56 extended pre-freeze neighbor screen (incl. downstream-consumer sweep) - run at base e166f1b BEFORE the freeze, over the lane worktree whose corpus bytes equal the base for every scanned file (the only round-56 corpus bytes yet written are the round-56 capture pair this screen clears)
+run-utc=2026-11-01T14:45:33Z
+
+$ grep -rn "vulnrichment/git/trees" corpus/README.md PROVINCE.md corpus/knowledge/ corpus/SOURCES.md SKILL.md
+[exit=1]
+
+$ grep -rln "api.github.com/repos/cisagov/vulnrichment" corpus/ PROVINCE.md SKILL.md
+corpus/\source-snapshots\round-56\S088.txt
+corpus/\source-snapshots\round-56\manifest.json
+[exit=0]
+
+$ grep -c "cisagov/vulnrichment" corpus/SOURCES.md  # the only holders of the repo URL family: the S081 row (SOURCES.md:87) and the round-51 hunt bullet (SOURCES.md:197); the ADP-lead line (:142) names no URL
+2
+[exit=0]
+
+$ grep -rln "ADP list" corpus/ PROVINCE.md; grep -n "CISA ADP list page" corpus/SOURCES.md
+[exit=0]
+140:- NVD API 2.0 response-schema artifact (round 53, frontier F34); question: does the lane hold the schema document that DEFINES the response F33 admitted as served, and do any held rows already cov
+142:- CISA ADP list page (the Vulnrichment program's published record list, as a check on F32's scope limit); named in the round-52 SCORECARD planned-for-53; not opened this round; lead, not row.
+199:- OpenSSF Scorecard check documentation (round 54, frontier F35); question: does the lane hold a first-party ground for automated repository security-health scoring (the check taxonomy, risk tiers
+
+# downstream-consumer sweep: any pinned capture citing the trees-API URL or the record-list ground
+$ grep -rl "vulnrichment" corpus/source-snapshots/ | head
+corpus/source-snapshots/\round-51\manifest.json
+corpus/source-snapshots/\round-51\S081.txt
+corpus/source-snapshots/\round-56\manifest.json
+corpus/source-snapshots/\round-56\S088.txt
+[exit=0]
+
+$ grep -rn "git/trees" corpus/source-snapshots/ | head
+corpus/source-snapshots/\round-55\S087.txt:778:"trees_url": "https://api.github.com/repos/octo-org/octo-repo-ghsa-1234-5678-9012/git/trees{/sha}"
+corpus/source-snapshots/\round-55\S087.txt:1279:"trees_url": "https://api.github.com/repos/octo-org/octo-repo-ghsa-1234-5678-9012/git/trees{/sha}"
+corpus/source-snapshots/\round-55\S087.txt:1613:"trees_url": "https://api.github.com/repos/octo-org/octo-repo-ghsa-abcd-1234-efgh/git/trees{/sha}"
+corpus/source-snapshots/\round-55\S087.txt:2127:"trees_url": "https://api.github.com/repos/octo-org/octo-repo-ghsa-abcd-1234-efgh/git/trees{/sha}"
+corpus/source-snapshots/\round-55\S087.txt:2468:"trees_url": "https://api.github.com/repos/octo-org/octo-repo-ghsa-abcd-1234-efgh/git/trees{/sha}"
+[exit=0]
+
+# frontier neighbors for the record-list ground (CISA/Vulnrichment/SSVC-family rows)
+$ grep -n "^| F32\|^| F20\|^| F33\|^| F30" corpus/README.md | cut -c1-80
+416:| F20 | SSVC (Stakeholder-Specific Vulnerability Categorization) — stakeho
+718:| F30 | CVE Services publication API — the CVE Program's own write path (i
+767:| F32 | CISA Vulnrichment — CISA's ADP-container enrichment of public CVE 
+792:| F33 | NVD API 2.0 — NIST's read-side retrieval interface over the NVD-en
+[exit=0]
