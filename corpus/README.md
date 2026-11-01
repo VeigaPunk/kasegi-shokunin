@@ -748,3 +748,27 @@ at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29,
 round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
 round 46, F30 at round 49, F31 at round 50. The 0/18 sentence is untouched: the lost-domain denominator still
 holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+## Round-51 admission — coverage map row and Frontier F32 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-51 entry
+`corpus/knowledge/cisa-vulnrichment-adp-enrichment.md` (Frontier F32, source S081;
+source basis: CISA's own Vulnrichment README at the repository's default branch develop, captured 2026-11-01 under
+`corpus/source-snapshots/round-51/`) is recorded here as an appended amendment so every existing line keeps
+its number. The coverage-map row is appended here rather than inserted into the map, and the F32 frontier row
+is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| CISA Vulnrichment ADP enrichment (round 51) | `corpus/knowledge/cisa-vulnrichment-adp-enrichment.md` | S081 — first-party docs, opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F32 | CISA Vulnrichment — CISA's ADP-container enrichment of public CVE records (SSVC decision points on every analyzed CVE, CWE and/or CVSS for higher-risk ones, KEV blocks for KEV-listed CVEs, CNA-precedence drop rule, major.minor.patch SSVC version encoding, CPE discontinued 2024-12-10) | admitted | `corpus/knowledge/cisa-vulnrichment-adp-enrichment.md` | S081 | Read CISA's ADP data as a gap-filling layer that always yields to the CNA: the ADP "will [not] overwrite the originating CNA's data" (`S081.txt:8`) and drops its own assessments when the CNA populates the fields later (`S081.txt:114`), where duplicate CNA+ADP data is "an error in the CISA ADP container" by CISA's own statement (`S081.txt:114`). Decode ADP SSVC data against its version field (`S081.txt:117-118`): major.minor is the SSVC version, patch the decision-tree version. Absence of a KEV block is silence, not a negative: "For those that aren't, no update will occur" (`S081.txt:58`), and CPE in an ADP container is historical only ("as of December 10, 2024, CISA will no longer be adding CPE strings", `S081.txt:104`). Keep this distinct from F18's KEV catalog, F20's SSVC framework, F22's VEX guidance, F25's CVE record format and F30's CVE Services interface — the pre-freeze neighbor screen named all five before the freeze landed. Re-open the capture before relying on any enrichment rule: the README is on a mutable branch and declares itself under active development (`S081.txt:4`). |
+
+[r51 amendment, appended 2026-11-01] The frontier as of round 51 is F01-F32 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51. The 0/18 sentence is untouched: the lost-domain
+denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.

@@ -176,3 +176,15 @@ Correction (round 38): PROVINCE.md L79-L152 — the whole round-37 append — ho
 [r49 Frontier amendment, appended 2026-10-30, end-of-file append per R6] F30 — CVE Services publication API (the CVE Program's own write path: identifier reservation, CNA-container publication and update, rejection, ADP-container enrichment and the CNA↔Secretariat conversation endpoint) — admitted round 49; entry `corpus/knowledge/cve-services-publication-api.md` (source S078; capture `corpus/source-snapshots/round-49/S078.txt`); scope limit: the service interface only — the record's data model stays F25 and the numbering rules stay F07
 
 [r50 Frontier amendment, appended 2026-11-01, end-of-file append per R6] F31 — OSV affected-range events (the OSV format's per-package version timeline: affected[].ranges[].events with introduced/fixed/last_affected/limit, at least one introduced event, an implicit limit "*", and three range types ordered by SemVer precedence, ecosystem logic or Git reachability) — admitted round 50; entry corpus/knowledge/osv-affected-range-events.md (source S080; capture corpus/source-snapshots/round-50/S080.txt); scope limit: the format's range/event semantics only — the osv.dev service API, the JSON Schema validation artifact, individual database exports and per-database database_specific values stay out
+
+[r51 Frontier amendment, appended 2026-11-01, end-of-file append per R6] F32 — CISA Vulnrichment (the public repository of CISA's enrichment of public CVE records through CISA's ADP container: SSVC decision points on every analyzed CVE, CWE and/or CVSS for higher-risk CVEs, KEV blocks for KEV-listed CVEs, a CNA-precedence rule that drops ADP assessments when the CNA catches up, a major.minor.patch SSVC version encoding, CPE discontinued 2024-12-10) — admitted round 51; entry corpus/knowledge/cisa-vulnrichment-adp-enrichment.md (source S081; capture corpus/source-snapshots/round-51/S081.txt); scope limit: CISA's enrichment program and its data rules only — the CVE record format stays F25, the SSVC framework stays F20, the KEV catalog stays F18, the VEX guidance stays F22 and the CVE Services interface stays F30
+
+[r51 status annotation, appended 2026-11-01, factual, append-only] The round-19 "ABSENT" record for
+`~/Projects/origin-work/open-bug-bounties` stands: no local checkout has returned. A same-named public
+GitHub mirror now exists (`https://github.com/VeigaPunk/open-bug-bounties`, branch main, HEAD 4c895519,
+pushed 2026-10-31T17:17:48Z, described as "Public Open Bug Bounties board (GitHub Pages mirror of ChatGPT
+site)"), but its history provably lacks the lost checkout's recorded HEAD `1307b8b` (gh api commits/1307b8b
+→ 422 "No commit found for SHA") and its root inventory matches neither the r15 package-dir layout nor the
+receipt-store (probe receipt `.ufo/waves/round-51/controls/mirror-probe.txt`). The identity question is
+answered negatively on this evidence and the mirror is recorded as registry row S082 (rejected, with flip);
+RECEIPT-STORE-LOST stays corpus-attested-only and nothing in this province re-grounds against the mirror.
