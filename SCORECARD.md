@@ -2005,11 +2005,16 @@ rule applied to the lane's own bytes).
 | depth:density | 9 | 9 held; non-target guard | `SKILL.md` was not edited this round, so the density instrument's input bytes are unchanged. |
 
 **Census of record at this round's tip (C2 rule: quoted only from the final regeneration):** base `021989b` read
-204 files / 4809 distinct → the round-51 tip reads **206 files / 4868 distinct** (GONE 3785; total occurrences
-10388; lane total 1083/4868 = 22.27%) — the two new corpus files (the F32 entry and the round-51 lesson) and their
-citations, measured after the last corpus edit and certified by the gate receipt
-`controls/c1-gate-final-r51.txt` (`CENSUS-FRESH=ok files=2`, exit 0; selftest `controls/c1-gate-selftest-r51.txt`,
-`selftest cases=3 failures=0`).
+204 files / 4809 distinct → the round-51 tip reads **206 files / 4868 distinct** (RESOLVES 11, INTERNAL 1075, GONE
+3782; total occurrences 10388; lane total 1086/4868 = 22.31%) — the two new corpus files (the F32 entry and the
+round-51 lesson) and their citations, certified by the gate receipt `controls/c1-gate-final-r51.txt`
+(`CENSUS-FRESH=ok files=2`, exit 0; selftest `controls/c1-gate-selftest-r51.txt`, `selftest cases=3 failures=0`).
+**The gate caught this round itself once (recorded, not gamed):** the first regeneration (figures GONE 3785 /
+1083/4868 = 22.27%) ran BEFORE this section's two gate receipts existed, and the lesson cites them — so the tip's
+first gate re-check read `CENSUS-FRESH=stale` (3 citations GONE→RESOLVES once the receipts landed). The census was
+regenerated over the truly final tree and the figures above quote THAT regeneration; the re-measured receipt is
+the one of record (freeze rev 3). This is the same regenerated-after-record pattern the round's C2 correction
+names in the round-50 lesson — caught by the instrument, on its own round, exactly as designed.
 
 ### Round-51 move log
 
