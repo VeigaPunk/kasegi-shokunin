@@ -821,3 +821,29 @@ round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F2
 round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F34 at round 53. The 0/18 sentence
 is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
 outside it.
+
+## Round-54 admission — coverage map row and Frontier F35 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-54 entry
+`corpus/knowledge/openssf-scorecard-checks.md` (Frontier F35, source S086;
+source basis: the OpenSSF Scorecard project's own generated check documentation at
+https://raw.githubusercontent.com/ossf/scorecard/main/docs/checks.md, captured 2026-11-01, status
+200, under `corpus/source-snapshots/round-54/`) is recorded here as an appended amendment so every
+existing line keeps its number. The coverage-map row is appended here rather than inserted into the
+map, and the F35 frontier row is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Repository security-health scoring (round 54) | `corpus/knowledge/openssf-scorecard-checks.md` | S086 — first-party program docs (OpenSSF Scorecard's own generated check documentation), opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F35 | OpenSSF Scorecard check documentation — the per-check risk tiers and scoring criteria of automated repository security-health scoring (the 90-day commit-rate maintenance window with its >90-day assessability floor, OSV-service-backed vulnerability detection with the osv-scanner.toml suppression mechanism, conditionally-worded per-check risk labels, and the SECURITY.md presence-and-content policy detector) | admitted | knowledge/openssf-scorecard-checks.md | S086 | Read every risk tier as a conditional label of what a failing check indicates — "possibly unpatched vulnerabilities" (S086.txt:411, Q5), not a finding about any repository; read the Maintained rule as a window, not a verdict: the highest score requires at least one commit per week across the previous 90 days (S086.txt:415, Q6) and a project younger than 90 days is unassessable by the check (S086.txt:428, Q7), while a low score is explicitly "not necessarily always a problem" (S086.txt:421, Q8). Read the Vulnerabilities check as an OSV consumer that analyzes nothing itself (S086.txt:710, Q10) whose suppressions are project-authored osv-scanner.toml declarations (S086.txt:718, Q11) — the OSV format stays F31/S080, KEV stays F18/S052. Read Security-Policy as a SECURITY.md presence/content detector (S086.txt:595, Q14) disjoint from F24's security.txt, and its partial-credit rubric (6/10 link form, 3/10 free-form text, 1/10 specific text) as the doc's own form-is-not-function evidence. The program-wide boundary is the doc's own: Scorecard "can only report what it can automatically detect" (S086.txt:195, Q9). Distinct from F17/S051 (submission severity pricing vs repository practice exposure). Scope limit: the aggregate 0-10 score computation, the risk-based weights, the publisher/API endpoints and Prox/CI integration are not in this document and are not asserted; the URL names a moving `main`, so the pinned sha256 fa84a017 is the round-54 authority. |
+
+[r54 amendment, appended 2026-11-01] The frontier as of round 54 is F01-F35 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F34 at round 53, F35 at round 54.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
