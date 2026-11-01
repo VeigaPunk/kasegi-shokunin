@@ -1,0 +1,30 @@
+{
+ "schema_version": 1,
+ "what": "round-55 C1 RED control - the DF-1 prose figures AS FILED plus two wrong fold-figures; every entry must read stale (exit 1)",
+ "figures": [
+  {
+   "id": "red-df1-scorecard-prose",
+   "record": "the round-54 report C1 bullet / frozen C1 sentence (d) AS FILED: '0 mentions / 0 times in the base SCORECARD.md' - superseded by 2",
+   "recorded": "0 (the filed prose literal, superseded by the r55 DF-1 erratum)",
+   "rev": "32782bd6b564f80454af853b38868603a4140e79",
+   "derive": "git show 32782bd6b564f80454af853b38868603a4140e79:SCORECARD.md | grep -c 'figure-audit'",
+   "want": "0"
+  },
+  {
+   "id": "red-entries-r54-wrong",
+   "record": "a wrong fold figure for the round-54 entry-record count (39 would be the post-F36 world, never the r54 state)",
+   "recorded": "38",
+   "rev": "5108584aab38a1919992c46d0224f6ec1cb59363",
+   "derive": "git show 5108584aab38a1919992c46d0224f6ec1cb59363:corpus/README.md | grep -E '^\\| F[0-9]+ \\|' | awk -F'|' '{n=split($5,p,\",\"); s+=n} END{print s}'",
+   "want": "39"
+  },
+  {
+   "id": "red-frontier-rows-r54-wrong",
+   "record": "a wrong fold figure for the round-54 frontier-row count (36 would be the post-F36 world, never the r54 state)",
+   "recorded": "35",
+   "rev": "5108584aab38a1919992c46d0224f6ec1cb59363",
+   "derive": "git show 5108584aab38a1919992c46d0224f6ec1cb59363:corpus/README.md | grep -cE '^\\| F[0-9]+ \\|'",
+   "want": "36"
+  }
+ ]
+}
