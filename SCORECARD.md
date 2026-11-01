@@ -2287,3 +2287,69 @@ frozen predicates by re-derivable commands only.
    S087's own unasserted surfaces (rate limits, plan-gated parameters — the developer-hub pages were JS-walled for the
    lane instrument at S084, so the REST reference's sibling parameter documentation is the checkable form); every next
    frontier row clears the extended pre-freeze screen including the downstream-consumer sweep.
+
+## Round 56 result — the routed DF-3 carry-in (non-claim, addressed first), the figure-audit ledger growth 17 → 27 incl. the census-freshness literals (C1, capability extension, held), and the CISA Vulnrichment published record list surface (C2)
+
+Frozen claims: `.ufo/waves/round-56/claims.json` (freeze commit `6a4cef002891d2e23253a187fb61a58c2fc18c7c`, base
+`e166f1bba49446e67de317bff62d3c0b84eb1d7c` — the round-55 closure tip + the integrator's verifier-spotcheck commit),
+landed before implementation with the S088 capture + manifest + the extended pre-freeze screen + the do-nothing and
+stand-in receipts in the same commit. The round-55 non-author closure (verdict admitted=true) routed one status-neutral
+defect (DF-3); the carry-in landed FIRST as a routed non-claim (`77a1394`): the `CENSUS-FRESH=ok` prose in the round-55
+report, the SCORECARD round-55 census cell and the LOG round-55 entry is superseded append-only by the R9-form erratum
+`.ufo/waves/round-56/controls/df3-census-erratum.md` naming the receipt's own printed limb
+(`CENSUS-FRESH=stale … [exit=1]`) as the superseding fact — no filed byte edited, closure check `df3-erratum=closed`
+exit 0 — and the fixed-point receipt `.ufo/waves/round-56/controls/df3-fixedpoint-r55tip.txt` reproduces the routed
+defect end to end over a faithful reconstruction of the round-55 tip (run A with the receipt moved out reads the
+committed pair's 1118/3883/1130; the receipt restored flips exactly ONE citation GONE→INTERNAL to 1119/3882/1131 =
+22.56%; run C identical — the fixed point; freshness gate ok exit 0), matching the closure verifier's §3 numbers
+exactly; the reconstruction's named pitfall is recorded in the receipt (the `.git`/`.git/` citations resolve on any
+real worktree disk — excluding them read 2 citations low, which the committed-pair class diff named exactly). One
+mid-round claims erratum (`.ufo/waves/round-56/claims-erratum-1.md`, landed with C2 `8c2d9a4`): the freeze's lead-line
+counting command mis-typed `want 1`, superseded by `want 3 = 3` (base = tip) with the exact-line sha pin
+`90b336a2…` — mined in the lesson.
+
+| Axis | Before | After | Verdict and evidence |
+|---|---:|---:|---|
+| depth:verifiability | 4 | **4 held; delta 0 — nominal capability-extension move, labelled per QUALITY R58** | C1 verifies: the figure-audit ledger grows 17 → 27 pinned figures (`5eab221`) on two limbs. (Fold, the planned-for-56 limb) the round-55 figures enter rev-pinned to `133c575394099abf28ddf1b0125c53aefde3e0fa` (frontier-rows-r55 36, registry-rows-r55 87, entries-r55 39 via the F-row entry-cell comma split, knowledge-expected-r55 74, knowledge-files-r55 74). (Census literals, the DF-3 carry-in's instrument extension) the census-freshness receipt's printed literals enter as whole-value entries: `census-fresh-literal-r55` want `stale` — the filed prose `ok` superseded by the DF-3 erratum, `census-internal-r55-receipt`/`census-gone-r55-receipt` want 1118/3883 (the committed pair of record), `census-fixedpoint-internal-r55`/`census-fixedpoint-gone-r55` want 1119/3882 (the DF-3 fixed-point receipt) — the prose-vs-receipt class AND the two-generation confusion are machine-caught. Receipts: selftest `cases=5 failures=0` exit 0 (`controls/c1-selftest-r56.txt`); GREEN over the lane root `FIGURE-AUDIT figures=27 ok=27 stale=0 exit=0` (`controls/c1-green-lane-r56.txt`, run before any C2 byte and re-run green across the C2 bytes — every new derive addresses committed revs, files C2 does not touch, or the invariant FAIL-record count 33 = 39−6 = 40−7); RED control over the DF-3 prose literal AS FILED (want `ok` against the receipt's printed `stale`) plus the generation-confusion figure (want 3882 against the receipt's printed 3883) reads 2 stale exit 1 (`controls/c1-red-df3-r56.txt` + `red-df3-ledger.json`); do-nothing at base e166f1b in the freeze commit (`controls/do-nothing-c1-r56.txt`: 17 ids at base, the ten new entry ids 0, the base ledger 17/17 green over the lane root). Score HELD at 4: the moved object is the re-derivation repertoire (17 → 27 machine-checked figures), not the citation-resolution census the axis counter reads — the non-moving metric is named (R58), and the score-5 bar stays `score-gap.py`'s gated lines on the lost domain bases, operator-owned (L0 r50/46 routed around). |
+| coverage | 8 | **8 held; delta 0** | C2 verifies: frontier F37 admitted on S088 — the CISA Vulnrichment published record list, read through GitHub's own git-trees machine interface at the repository's default ref (`https://api.github.com/repos/cisagov/vulnrichment/git/trees/develop`), first admission of the recorded CISA ADP list-page lead (SOURCES.md:143, named in the round-52 SCORECARD planned-for-53; the lead line's bytes unchanged, sha `90b336a2…` at base and tip, flip recorded in the registry bullets), opened 2026-11-01. Capture `corpus/source-snapshots/round-56/S088.txt` (1 line, 7204 snapshot bytes over 7203 fetched bytes, sha256 `09ce0b10…`; four same-sha instrument opens this round — probe 14:19:12Z, recorded 14:34:05Z, verification 14:34:05Z/14:34:06Z; one raw curl open serves the SAME tree object pretty-printed at 8956 bytes and parses equal, `controls/s088-opens-r56.txt`; 6 assertions Q1-Q6 each occurrences=1 at anchor line 1, `source-recheck --source S088` exit 0). Entry `corpus/knowledge/cisa-vulnrichment-record-list.md`: attribution, 4 falsifiable claims with rejected over-generalizations (the 28 per-year record folders 1999-2026 with no gap, year-form count re-derivable from the capture; the content-addressed self-declared-complete object — top sha `e8d691a5…` pinned, `"truncated":false`, 34 entries — with the representation-variant byte forms parsed equal; the 8501-byte README blob whose round-51 snapshot sha `2da09414…` reproduces same-day, the check on F32's scope limit; the six non-record support entries with flowcharts.md named as process description, not enrichment data), distinctness vs F32/F25/F30/F20 argued from the extended pre-freeze screen, honest Limits (the develop ref is mutable and the pin is the arbiter; byte-stability per representation only; year-folder contents/sync cadence/commit history/rate limits unasserted; the releases variant probed EMPTY). Extended pre-freeze screen incl. the downstream-consumer sweep run at base BEFORE the freeze (`controls/neighbor-screen-r56.txt`: zero held README/PROVINCE/knowledge rows hold the trees-API URL; the repo-URL holders are the S081 row and the round-51 hunt bullet, distinct grounds; snapshot hits only the round-51 capture and this round's own pair). Committed `8c2d9a4`: README F37 row + r56 admission block at EOF (+3682 bytes, pure append), PROVINCE r56 amendment (+1054 bytes, pure append), SOURCES S088 row inserted after S087 + hunt bullet + row-added bullet (inserts only, no existing line modified or deleted), `knowledge-expected.txt` 74 → 75 (insert after `cisa-vulnrichment-adp-enrichment.md`, `LC_ALL=C sort -c` clean). Counter before→after ON THIS HOST: do-nothing `rows=36 admitted=36 closed=6 problem-rows=30 registry=87`, `entries=39 pass=6`, zero F37 lines, FAIL records 33 (`controls/do-nothing-c2-r56.txt`, per-file base export of e166f1b, 531/531) → `rows=37 admitted=37 closed=7 problem-rows=30 registry=88`, `FRONTIER-PASS F37 ids=S088`, `entries=40 pass=7`, FAIL records 33 (=40−7, invariant) (`controls/c2-counter-final-r56.txt`); capture-binding 70 → `records=71 bound=71 unbound=0` exit 0, `multi_row_url=7` unchanged 7 → 7; expect limb 74 → 75 sorted, 75 files. Score HELD at 8: the denominator is the lost domain root's 18-surface set (operator-owned re-scope); F37 moves the frontier measure 36 → 37, not the coverage score. |
+| depth:density | 9 | 9 held; non-target guard | `SKILL.md` was not edited this round; the round-54/55 non-target guard reasoning applies unchanged (R6: SKILL.md is the lane's most line-cited file). |
+| calibration | verdict-only (not a scored owned axis) | improved (verdict row per the round-51..55 precedents; no score asserted) | The DF-3 carry-in landed append-only with byte pins and a runnable closure check (`df3-erratum=closed` exit 0) plus the machine-catching extension the routed fix asked for; the fixed-point receipt REPRODUCES the defect's root cause (exactly one self-referential citation) instead of asserting it; six Mistakes rows in the round-56 lesson carry class/captured-by/fix — one mined routed defect (DF-3) and five own-catches, four before any data landed (the partial-export census flip caught against the verifier's published numbers; the neighbor-screen inline note corrected against its own printed limb; the heredoc-unexpanded receipt limb disclosed in place; the Windows sort.exe PATH resolution) and one at the freeze (the mis-typed counting command, superseded by claims-erratum-1); the D53-3/AgentSwarm operator routing stays via the L0 channel, never treated as answered. |
+
+**Census of record at this round's tip (quoted only from the final regeneration):** the round-55 tip read the figures in
+its gate receipt; the round-56 tip's figures AND the freshness limb live only in `controls/gate-final-r56.txt` — no
+freshness literal is re-typed into this cell (the DF-3 erratum discipline: the receipt is the only place the status is
+asserted, and the receipt is committed in the same commit as the pair it certifies; the receipt is a true tee, so the
+pair regenerated inside it already counts the receipt's own citation and the self-reference class cannot recur in this
+form). Bookkeeping move only (R58 nominal labeling on C1): no citation-resolution move is claimed.
+
+### Round-56 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 56 | depth:verifiability | 17 pinned figures; the r55 figures stood un-re-derived and no lane instrument read the census-freshness receipt's literals — the DF-3 prose-vs-receipt drift was caught by the closure judge's reading, not by any lane instrument | 27 pinned figures: the r55 state folds in rev-pinned (36/87/39/74/74) and the census literals pin machine-checkably (stale / 1118 / 3883 pre-receipt, 1119 / 3882 fixed point); the DF-3 prose AS FILED reads stale (red exit 1); selftest 5/0; green 27/0 exit 0 | `controls/c1-selftest-r56.txt`; `controls/c1-green-lane-r56.txt`; `controls/c1-red-df3-r56.txt`; `controls/do-nothing-c1-r56.txt`; `controls/df3-census-erratum.md`; `controls/df3-fixedpoint-r55tip.txt` |
+| 56 | coverage | `FRONTIER-CENSUS rows=36 admitted=36 closed=6 problem-rows=30 registry=87`, `entries=39 pass=6`, zero F37 (this host, base export 531/531) | `FRONTIER-CENSUS rows=37 admitted=37 closed=7 problem-rows=30 registry=88`, `FRONTIER-PASS F37 ids=S088`, `entries=40 pass=7`, FAIL records 33 invariant | `controls/do-nothing-c2-r56.txt` -> `controls/c2-counter-final-r56.txt`; `corpus/knowledge/cisa-vulnrichment-record-list.md`; `corpus/source-snapshots/round-56/` (S088 + manifest) |
+| 56 | calibration | the r55 closure's routed DF-3 standing (prose `ok` vs the receipt's printed `stale [exit=1]`; self-referential citation) | the prose superseded append-only with a runnable closure check; the root cause REPRODUCED in the fixed-point receipt (one citation flips, one regen converges, freshness ok); the machine-catching census-literal ledger entries landed with C1; the class form-banned going forward (true-tee final receipt) | `.ufo/waves/round-56/controls/df3-census-erratum.md`; `.ufo/waves/round-56/controls/df3-fixedpoint-r55tip.txt` |
+
+**Capabilities:** the round-54 `move-log-figure-audit` row is extended in place of a new row: the capability's ledger
+grows 17 → 27 (first-working round stays 54; the extension evidence is this round's green/red/selftest receipts —
+recorded in this round section per the round-43/R6-append practice).
+
+**Saturation:** line 9/10 per owned axis; lowest non-retired axis remains depth:verifiability (4); the nudge is not
+active (the repertoire moved this round — the ledger grew 17 → 27 with three new receipts and a new red control).
+**Non-author verification:** outstanding. No seats ran (no AgentSwarm surface on this host; routed via L0); the most
+recent outside spot-check is the round-55 closure that routed the defect this round fixes. The claims verify on their
+frozen predicates by re-derivable commands only.
+
+### Planned for round 57 (not frozen)
+
+1. **depth:verifiability (4, lowest):** the figure-audit ledger keeps growing one round at a time — fold the round-56
+   figures in (rows=37, registry=88, entries=40, expected=75) rev-pinned to this round's tip, plus the natural next
+   limb the census-literal entries open: a `census-fixedpoint-*-r56` pair pinned to the true-tee receipt's own printed
+   figures, so the pre-/post-receipt generation discipline stays machine-checked for the round that introduced the
+   form. The 30 problem-rows / 33 host-bound FAIL records, the 67 `cd /home/...` recheck lines and the limb-mutation
+   replay's python3 dependency stay operator-owned (L0 kasegi round-50/46 unanswered) and must NOT be re-declared as a
+   lane target.
+2. **coverage (8):** the remaining recorded leads are ISO/IEC 29147/30111 (the ISO standard records), the UK AI
+   Security Institute report, the Google Big Sleep reporting surface and S088's own unasserted surfaces (a one-level
+   subtree walk into a year folder would pin the per-CVE record-list shape the entry explicitly leaves unasserted);
+   every next frontier row clears the extended pre-freeze screen including the downstream-consumer sweep.

@@ -1,0 +1,28 @@
+# round-56 gate final receipt (rev 1) - census-freshness over the truly final tree (after the SCORECARD/LOG result appends; TRUE TEE: this receipt file exists from its first byte, so the census pair regenerated in limb 1 already counts this receipt's own citation - the DF-3 self-reference class cannot recur in this form), one run set, unedited tees
+run-utc=2026-11-01T16:34:32Z
+$ python corpus/instruments/resolve.py .   # regenerate the census pair in place (limb 1; the fixed-point generation by construction)
+distinct=5057 resolves=12 mirror=0 internal=1130 other=0 gone=3915 skill=131/701 corpus=0/0 all=1142/5057
+wrote C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus\instruments\citation-survival.tsv
+wrote C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus\instruments\citation-survival.md
+[exit=0]
+
+$ python corpus/instruments/census-freshness-check.py .   # the committed pair vs a fresh regeneration over the unchanged tree
+CENSUS-FRESH=ok files=2
+[exit=0]
+
+$ wc -l SCORECARD.md LOG.md corpus/lessons/round-56.md
+  2355 SCORECARD.md
+  2565 LOG.md
+   102 corpus/lessons/round-56.md
+  5022 total
+[exit=0]
+
+$ printf '%s' <the S088 gate quote> | wc -w   # R56 quote count for the S088 gate quote (S088.txt:1, Q2)
+1
+[exit=0]
+
+$ python corpus/instruments/figure-audit.py | tail -1   # the grown ledger stays green over the truly final tree
+FIGURE-AUDIT figures=27 ok=27 stale=0 exit=0
+[exit=0]
+
+no corpus/**, SCORECARD or LOG edit follows this receipt

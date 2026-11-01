@@ -1,12 +1,12 @@
 citation	class	resolved_path	files_citing_count	method	domain	occurrences	scopes
-[~]	GONE		38		rel	84	
+[~]	GONE		39		rel	88	
 anchorcheck.py	GONE		30		rel	45	
 density.py	GONE		26		rel	35	
 claims.json	GONE		25		rel	52	
 source-recheck.py	GONE		23		rel	35	SKILL
+grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md	GONE		22		rel	23	
 claims/	GONE		21		rel	35	SKILL
 frontier-recheck-count.py	GONE		21		rel	33	SKILL
-grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md	GONE		21		rel	22	
 resolve.py	GONE		21		rel	40	SKILL
 status.json	GONE		20		rel	46	SKILL
 .ufo/watchdog.log	GONE		19		rel	19	
@@ -19,10 +19,10 @@ george/	GONE		15		rel	19
 grep -cE '^\| F[0-9]+ \|' corpus/README.md	GONE		15		rel	18	
 recheck-audit.py	GONE		15		rel	23	
 fleets/registry.json	GONE		14		rel	18	SKILL
+git ls-remote origin refs/heads/master	GONE		14		rel	14	
 wave1-dispatch.json	GONE		14		rel	15	
 capture-source.py	GONE		13		rel	15	
 evidence/	GONE		13		rel	22	SKILL
-git ls-remote origin refs/heads/master	GONE		13		rel	13	
 wave1-results.json	GONE		13		rel	15	
 chinese-criminal-thresholds-and-authorisation.md	GONE		12		rel	13	
 docs/claim-ready-index.md	GONE		12		rel	16	SKILL
@@ -81,6 +81,7 @@ wave2-results.json	GONE		7		rel	9
 .ufo-mission-report-bh*.md	GONE		6		rel	6	SKILL
 SOURCES.md:83	GONE		6		rel	8	
 bounty-map/schema.json	GONE		6		rel	9	
+citation-survival.md	GONE		6		rel	11	
 claim-index.mjs	GONE		6		rel	6	SKILL
 closed=9/9 exit=0	GONE		6		rel	11	SKILL
 docs/	GONE		6		rel	7	
@@ -109,7 +110,6 @@ application/pdf	GONE		5		rel	7
 c1-controls/do-nothing.txt	GONE		5		rel	21	
 c1-receipt-index.txt	GONE		5		rel	11	
 check-freshness.mjs	GONE		5		rel	5	SKILL
-citation-survival.md	GONE		5		rel	10	
 claim-gates.md	GONE		5		rel	7	
 claims/cantina-pendle/ingestion-20260915/	GONE		5		rel	5	SKILL
 closed=10/12 exit=1	GONE		5		rel	5	
@@ -123,6 +123,7 @@ docs/continuation-notes.md	GONE		5		rel	6	SKILL
 fleets/run/*.status.json	GONE		5		rel	6	SKILL
 fleets/ufo-archive-2026/	GONE		5		rel	6	
 git -C /home/vgpnk/Projects/shokunin status --porcelain	GONE		5		rel	5	
+git merge-base --is-ancestor <h> refs/heads/master	GONE		5		rel	5	
 japanese-domestic-disclosure-workflow.md	GONE		5		rel	8	
 kasegi ok …/corpus/SOURCES.md	GONE		5		rel	5	
 ledger/telemetry.jsonl	GONE		5		rel	5	SKILL
@@ -180,7 +181,6 @@ final-audit.json	GONE		4		rel	7	SKILL
 final-measure.txt	GONE		4		rel	9	
 fleet-dispatch.mjs	GONE		4		rel	8	
 fleets/leases.json	GONE		4		rel	6	SKILL
-git merge-base --is-ancestor <h> refs/heads/master	GONE		4		rel	4	
 kill-rule-check.py	GONE		4		rel	5	SKILL
 knowledge/	GONE		4		rel	5	
 knowledge/program-quirks.md	GONE		4		rel	5	
@@ -508,6 +508,7 @@ authorised-testing-rules-of-engagement.md	GONE		2		rel	2
 awk -F'\|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/ {n++} END{print n+0}' corpus/README.md	GONE		2		rel	2	
 awk -F'\|' '$2 ~ /^ *F[0-9]+ / && $4 ~ /^ *admitted *$/'	GONE		2		rel	2	
 b1k-NNN/	GONE		2		rel	2	SKILL
+bash <fleet>/scripts/sources-census.sh validate --root <fleet> kasegi	GONE		2		rel	2	
 bash corpus/instruments/r43-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]	GONE		2		rel	2	SKILL
 bash corpus/instruments/r43-closure.sh --selftest --export-ref <hash>	GONE		2		rel	2	SKILL
 bash corpus/instruments/r46-plain-measure.sh TREE	GONE		2		rel	2	SKILL
@@ -529,6 +530,7 @@ c2-controls/junk-f21.md	GONE		2		rel	2
 c2-gate fixed=K/7 exit=C	GONE		2		rel	4	SKILL
 capture-source.py:32	GONE		2		rel	2	
 cd /home/vgpnk/	GONE		2		rel	2	
+cd /home/vgpnk/…	GONE		2		rel	2	
 chinese-national-grading-model.md	GONE		2		rel	2	
 cisa-kev-catalog.md	GONE		2		rel	2	
 cisa-vulnrichment-adp-enrichment.md	GONE		2		rel	2	
@@ -564,6 +566,7 @@ controls/c2-counter-final-r53.txt	GONE		2		rel	2
 controls/do-nothing-c2-winhost.txt	GONE		2		rel	3	
 controls/mirror-probe.txt	GONE		2		rel	2	
 controls/mutbat-before.txt	GONE		2		rel	3	
+controls/neighbor-screen-r55.txt	GONE		2		rel	2	
 controls/plain-rows.sh	GONE		2		rel	2	
 controls/probe-host-r51.txt	GONE		2		rel	2	
 controls/r44-counter-trial-disposition.txt	GONE		2		rel	3	
@@ -616,6 +619,7 @@ git show 9f23aab:corpus/instruments/r46-c1-gate.py	GONE		2		rel	2	SKILL
 git status/branch/rev-list/merge-base/ls-files	GONE		2		rel	2	
 git tag -l 'claim-hold/*'	GONE		2		rel	2	
 green.txt	GONE		2		rel	2	
+grep -c '^corpus/knowledge/' knowledge-expected.txt	GONE		2		rel	2	
 grep -c 4809 corpus/lessons/round-50.md LOG.md SCORECARD.md	GONE		2		rel	2	
 grep -c M39-2 corpus/QUALITY.md	GONE		2		rel	2	
 grep -c bilibili corpus/SOURCES.md	GONE		2		rel	2	
@@ -669,7 +673,9 @@ plan.md	GONE		2		rel	3	SKILL
 portal-reconciliation-2026-09-11.json	GONE		2		rel	3	
 program-quirks.md	GONE		2		rel	2	
 proposals/<Agent>.md	GONE		2		rel	2	SKILL
+python corpus/instruments/figure-audit.py --selftest	GONE		2		rel	2	
 python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-54/manifest.json --source S086	GONE		2		rel	2	
+python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-55/manifest.json --source S087	GONE		2		rel	2	
 python3 corpus/instruments/anchorcheck.py --selftest	GONE		2		rel	2	
 python3 corpus/instruments/anchorcheck.py SKILL.md	GONE		2		rel	2	
 python3 corpus/instruments/capture-binding-check.py	GONE		2		rel	3	
@@ -903,6 +909,7 @@ ${x:-0}	GONE		1		rel	1
 .ufo/reports/round-48/kasegi.md	GONE		1		rel	2	
 .ufo/reports/round-49/kasegi.md	GONE		1		rel	2	
 .ufo/reports/round-50/kasegi.md	GONE		1		rel	1	
+.ufo/reports/round-54/kasegi.md:30,:69	GONE		1		rel	1	
 .ufo/reports/round-8/aggregator.md	GONE		1		rel	2	
 .ufo/scopes/claim-github-nines/	GONE		1		rel	1	
 .ufo/sessions	GONE		1		rel	1	
@@ -926,7 +933,7 @@ ${x:-0}	GONE		1		rel	1
 .ufo/waves/round-43/final-gates/all-gates.at-Y.txt.tmp	GONE		1		rel	1	
 .ufo/waves/round-46/attempt2/a2w2-results.json	GONE		1		rel	1	
 .ufo/waves/round-46/attempt2/controls/f29-battery-f29.txt	GONE		1		rel	1	
-.ufo/waves/round-55/controls/gate-final-r55.txt	GONE		1		rel	1	
+.ufo/waves/round-46/attempt2/wave1/R46bRevNoHarm.draft/aux.txt	GONE		1		rel	1	
 .ufo/waves/round-M	GONE		1		rel	1	
 .ufo/waves/shokunin12h-20261014-p1-audit/members/KasegiHistoricalMarking.md	GONE		1		rel	1	
 /(api[_-]?key\|secret\|token\|password\|bearer)\s*[:=]\s*["']?[A-Za-z0-9_\-]{16,}/i	GONE		1		other	1	
@@ -1188,6 +1195,7 @@ ExecScopeSweep.md	GONE		1		rel	1
 ExecScoreGap.md	GONE		1		rel	1	
 F12 knowledge/japanese-domestic-disclosure-workflow.md ids=S041,S042	GONE		1		rel	1	
 FAIL rule=missing-manifest dir=round-31/inner	GONE		1		rel	1	
+FileNotFoundError: '$SCRATCH/api-rel2.json'	GONE		1		rel	1	
 FileNotFoundError: …/corpus/knowledge/japanese-domestic-disclosure-workflow.md	GONE		1		rel	1	
 For each item in /vulnerabilities it MUST be tested that at least one of the elements fixed, known_affected, known_not_affected, or under_investigation is present in product_status	GONE		1		rel	1	
 For each item in /vulnerabilities[]/product_status/known_not_affected an impact statement SHALL exist as machine readable flag in /vulnerabilities[]/flags or as human readable justification in /vulnerabilities[]/threats	GONE		1		rel	1	
@@ -1438,6 +1446,7 @@ S081.txt:4	GONE		1		rel	1
 S081.txt:58	GONE		1		rel	1	
 S081.txt:8	GONE		1		rel	1	
 S081/S082	GONE		1		rel	1	
+S088.txt:1	GONE		1		rel	1	
 SCORECARD.md 90/0	GONE		1		rel	1	
 SCORECARD.md:927/935	GONE		1		rel	1	
 SECURITY.md	GONE		1		rel	1	
@@ -1823,7 +1832,6 @@ baseline-plain.txt	GONE		1		rel	3
 bash -n .ufo/waves/round-30/post-commit-recheck.sh	GONE		1		rel	1	
 bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file corpus/SOURCES.md	GONE		1		rel	1	
 bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi	GONE		1		rel	1	
-bash <fleet>/scripts/sources-census.sh validate --root <fleet> kasegi	GONE		1		rel	1	
 bash corpus/instruments/r-defect-closure.sh --root <base-extraction>	GONE		1		rel	1	SKILL
 bash corpus/instruments/r-defect-closure.sh --selftest	GONE		1		rel	1	SKILL
 bash corpus/instruments/r-defect-closure.sh --selftest [--scratch DIR]	GONE		1		rel	1	SKILL
@@ -1892,6 +1900,7 @@ c1-controls/skill-before.txt	GONE		1		rel	1
 c1-counterA-before.txt	GONE		1		rel	1	
 c1-counterA-shell-{before,after}.txt	GONE		1		rel	1	
 c1-donothing-r53.txt	GONE		1		rel	1	
+c1-donothing-r54.txt	GONE		1		rel	1	
 c1-fixed.json	GONE		1		rel	2	
 c1-fixture-red-r53.txt	GONE		1		rel	1	
 c1-gate fixed=1/7 exit=1	GONE		1		rel	1	
@@ -1930,7 +1939,7 @@ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/r
 cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/score-gap.py	GONE		1		rel	1	
 cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041 && … --source S042	GONE		1		rel	1	
 cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-29/manifest.json --source S043 && … --source S044 && … --source S045	GONE		1		rel	1	
-cd /home/vgpnk/…	GONE		1		rel	1	
+cd /home/…	GONE		1		rel	1	
 cd /tmp	GONE		1		rel	1	
 cd /tmp && python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/score-gap.py	GONE		1		rel	1	
 cd <lane> && python3 corpus/instruments/kill-rule-check.py [--instrument PATH] [--fake PATH] [--root DIR] [--scratch DIR] [--row-file PATH] [--json PATH]	GONE		1		rel	1	SKILL
@@ -2121,6 +2130,7 @@ controls/c1-counter-after.txt	GONE		1		rel	2
 controls/c1-counter-selftest-v2.txt	GONE		1		rel	1	
 controls/c1-donothing-r53.txt	GONE		1		rel	1	
 controls/c1-donothing-r54.txt	GONE		1		rel	1	
+controls/c1-donothing-r55.txt	GONE		1		rel	1	
 controls/c1-final.txt	GONE		1		rel	1	
 controls/c1-fixture-red-r53.txt	GONE		1		rel	1	
 controls/c1-gate-final-r52.txt	GONE		1		rel	1	
@@ -2135,9 +2145,12 @@ controls/c2-counter-audit.txt	GONE		1		rel	1
 controls/c2-counter-final-r51.txt	GONE		1		rel	1	
 controls/c2-counter-final-r52.txt	GONE		1		rel	2	
 controls/c2-counter-final.txt	GONE		1		rel	1	
+controls/c2-expect-and-counts-r56.txt	GONE		1		rel	1	
 controls/c2-final.txt	GONE		1		rel	1	
 controls/c2-frontier-counter.txt	GONE		1		rel	1	
 controls/c2-frozen-counter-replay.txt	GONE		1		rel	2	
+controls/c2-standin-dryrun-r55.txt	GONE		1		rel	1	
+controls/c2-standin-dryrun-r56.txt	GONE		1		rel	1	
 controls/capture-binding-r54.txt	GONE		1		rel	1	
 controls/capture-determinism.txt	GONE		1		rel	1	
 controls/census-before.txt	GONE		1		rel	1	
@@ -2146,8 +2159,10 @@ controls/controls-v1.2.out.txt	GONE		1		rel	2
 controls/d2-base-greps-r53.txt	GONE		1		rel	1	
 controls/d53-base-greps-r54.txt	GONE		1		rel	1	
 controls/density-base.txt	GONE		1		rel	1	
+controls/df3-fixedpoint-r55tip.txt	GONE		1		rel	2	
 controls/do-nothing-c1.txt	GONE		1		rel	1	
 controls/do-nothing-c2-r51-winhost.txt	GONE		1		rel	1	
+controls/do-nothing-c2-r55.txt	GONE		1		rel	1	
 controls/do-nothing-c3-r52.txt	GONE		1		rel	1	
 controls/do-nothing.txt	GONE		1		rel	1	
 controls/f29-defects.py	GONE		1		rel	1	
@@ -2169,13 +2184,14 @@ controls/mutbat-receipt.txt	GONE		1		rel	1
 controls/neighbor-screen-r52.txt	GONE		1		rel	1	
 controls/neighbor-screen-r53.txt	GONE		1		rel	1	
 controls/neighbor-screen-r54.txt	GONE		1		rel	1	
-controls/neighbor-screen-r55.txt	GONE		1		rel	1	
+controls/neighbor-screen-r56.txt	GONE		1		rel	2	
 controls/protocol-source.txt	GONE		1		rel	1	
 controls/recheck-audit-after.txt	GONE		1		rel	1	
 controls/s080-recheck.txt	GONE		1		rel	1	
 controls/s084-hub-shell.txt	GONE		1		rel	1	
 controls/s085-recheck-r53.txt	GONE		1		rel	1	
 controls/s087-recheck-r55.txt	GONE		1		rel	1	
+controls/s088-opens-r56.txt	GONE		1		rel	3	
 controls/selftest-vs-frozen-v1.txt	GONE		1		rel	1	
 controls/sources-census-after.txt	GONE		1		rel	2	
 corpus/ read-only + its own receipt dir	GONE		1		rel	1	
@@ -2234,6 +2250,7 @@ curl -A 'Mozilla/5.0' https://zc.cnvd.org.cn/news/helpList	GONE		1		rel	1
 curl -A kasegi-shokunin/1.0 https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json	GONE		1		rel	1	
 curl -L -o /dev/null -w '%{http_code}' https://docs.bugcrowd.com/researchers/reporting-managing-submissions/reporting-a-bug/	GONE		1		rel	1	
 curl -o /dev/null -w '%{http_code}'	GONE		1		rel	1	
+curl -sL -o <scratch> https://docs.github.com/en/rest/security-advisories/repository-advisories	GONE		1		rel	1	
 curl -sS -L -A kasegi-shokunin/1.0 https://www.cisa.gov/sites/default/files/2023-11/When-to-Issue-a-VEX-508c.pdf	GONE		1		rel	1	
 curl -sS -L https://certcc.github.io/SSVC/tutorials/ssvc_overview/	GONE		1		rel	1	
 curl -sS -L https://docs.oasis-open.org/csaf/csaf/v2.0/os/csaf-v2.0-os.html	GONE		1		rel	1	
@@ -2417,6 +2434,7 @@ git -C /home/vgpnk/Projects/shokunin log --format='%an <%ae> | %H | %ad' --date=
 git -C /home/vgpnk/Projects/shokunin log --format='%h %aI %cI' -- .ufo/reports/round-45/kasegi.md	GONE		1		rel	1	
 git -C <fleet> log --format='%an <%ae> %H' -1 -- .ufo/reports/round-50/kasegi.md	GONE		1		rel	1	
 git -C <fleet> log --format='%an <%ae> %H' -1 -- .ufo/reports/round-52/kasegi.md	GONE		1		rel	1	
+git -C <fleet> log --format='%an <%ae> %H' -1 -- .ufo/reports/round-55/kasegi.md	GONE		1		rel	1	
 git -C {LANE} ls-tree -r -l HEAD -- .ufo/waves/round-33 | awk '{s+=$4} END{print s}'	GONE		1		rel	1	
 git -C ~/Projects/ufo-fsd-alpha log -1	GONE		1		rel	1	
 git -C … ls-remote origin refs/heads/master	GONE		1		rel	1	
@@ -2509,6 +2527,7 @@ git ls-tree -r --name-only A -- .ufo/waves/round-35/wave1-results.json \| wc -l	
 git ls-tree -r --name-only dbd2e106 corpus/instruments/r43-limbs/	GONE		1		rel	1	
 git ls-tree -r --name-only dbd2e106 corpus/knowledge/ \| grep '\.md$' \| sort	GONE		1		rel	1	
 git ls-tree -r --name-only master .ufo/waves/round-44/controls \| grep attempt3	GONE		1		rel	1	
+git ls-tree -r --name-only tip -- corpus/knowledge \| grep -c '\.md$'	GONE		1		rel	1	
 git ls-tree -r dbd2e106 -- corpus/instruments/fixtures/claim-package/	GONE		1		rel	1	
 git ls-tree 28c65eb -- corpus/instruments/	GONE		1		rel	1	
 git ls-tree B corpus/instruments/	GONE		1		rel	1	
@@ -2523,6 +2542,7 @@ git show 11c9818:.ufo/waves/round-48/controls/protocol-source.txt	GONE		1		rel	1
 git show 1b076fa7:.ufo/waves/round-26/claims.json | sha256sum	GONE		1		rel	1	
 git show 32f694b38…:corpus/instruments/anchorcheck.py | sha256sum	GONE		1		rel	1	
 git show 5a253372:corpus/source-snapshots/round-35/S052.txt | sha256sum	GONE		1		rel	1	
+git show 65ef7717:.ufo/reports/round-55/kasegi.md \| grep -n '^## SHONEN'	GONE		1		rel	1	
 git show 6e55c8d:.ufo/waves/round-33/watchdog-digest.txt | sha256sum	GONE		1		rel	1	
 git show 7963976e:corpus/SOURCES.md | grep -cF <url>	GONE		1		rel	1	
 git show 7963976e:corpus/instruments/capture-binding-check.py | sha256sum	GONE		1		rel	1	
@@ -2534,6 +2554,7 @@ git show <base>:corpus/SOURCES.md | grep -cE '^\|\s*S[0-9]{3,}\s*\|'	GONE		1		re
 git show <commit>:corpus/instruments/anchorcheck.py | sha256sum	GONE		1		rel	2	
 git show <rev>:<each corpus/source-snapshots/*/manifest.json> \| jq '.sources[] \| has("url"), has("fetched_utc")'	GONE		1		rel	1	
 git show <rev>:corpus/README.md	GONE		1		rel	1	
+git show <rev>:corpus/README.md \| grep -cE '^\| F[0-9]+ \|'	GONE		1		rel	1	
 git show <rev>:corpus/README.md \| grep -cE '^\|[[:space:]]*F[0-9]+'	GONE		1		rel	1	
 git show <rev>:corpus/SOURCES.md \| grep -cE '^\| *S[0-9]{3} '	GONE		1		rel	1	
 git show <rev>:corpus/SOURCES.md \| grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|'	GONE		1		rel	1	
@@ -2559,12 +2580,14 @@ git show dbd2e106:corpus/instruments/r43-closure.sh \| sha256sum	GONE		1		rel	1
 git show dbd2e106:…/claim-package-check.py \| grep -oE 'R-[A-Z]+' \| sort -u	GONE		1		rel	1	
 git show de94a392:corpus/instruments/citation-reground-ledger.md	GONE		1		rel	1	
 git show e276dbf:corpus/instruments/recheck-audit.py | grep -c "_as_posix\|replace(os.sep"	GONE		1		rel	1	
+git show ed60637…:corpus/instruments/figure-audit-ledger.json \| grep -c '"id"'	GONE		1		rel	1	
 git show master:corpus/source-snapshots/round-45/S071.txt \| sha256sum; wc -c -l	GONE		1		rel	1	
 git status --porcelain -- .ufo/reports/round-48/kasegi.md	GONE		1		rel	1	
 git status --porcelain -- corpus/instruments/	GONE		1		rel	2	
 git status --porcelain corpus/QUALITY.md	GONE		1		rel	1	
 git tag -l 'claim-ready/*'	GONE		1		rel	1	
 git … status --porcelain 2>/dev/null	GONE		1		rel	1	
+github-repository-security-advisories.md	GONE		1		rel	1	
 github.com/VeigaPunk/bounties.git	GONE		1		rel	1	
 github.com/pendle-finance/pendle-core-v2-public	GONE		1		rel	1	
 global duplicate guard: matching finding already has a submission record at <program>/<slug>	GONE		1		rel	1	
@@ -2573,6 +2596,7 @@ google-antigravity/gemini-4-argon	GONE		1		rel	1
 grep "Reason (verbatim)" docs/autopsies/*.md	GONE		1		rel	1	
 grep '\$100' claims/cantina-pendle/ingestion-20260915/claim_checklist.md	GONE		1		rel	1	
 grep '^- \*\*GO' docs/wrap-report.md	GONE		1		rel	1	
+grep 'round=55' .ufo/watchdog.log	GONE		1		rel	1	
 grep -E '^\| S[0-9]{3} \|' corpus/SOURCES.md | grep -ci cisa	GONE		1		rel	1	
 grep -E '^\| [0-9]+ \|' docs/claim-ready-index.md \| wc -l	GONE		1		rel	1	
 grep -E '^\|[[:space:]]*S04[6-7]' corpus/SOURCES.md	GONE		1		rel	1	
@@ -2587,6 +2611,7 @@ grep -c '45 days' corpus/source-snapshots/round-40/S023.txt	GONE		1		rel	1
 grep -c '45 日' corpus/source-snapshots/round-28/S041.txt	GONE		1		rel	1	
 grep -c '9.0 severity' corpus/source-snapshots/round-40/S025.txt	GONE		1		rel	1	
 grep -c 'CERT/CC'	GONE		1		rel	1	
+grep -c 'CISA ADP list page' corpus/SOURCES.md # want 1	GONE		1		rel	1	
 grep -c 'CNA) of Last Resort' corpus/source-snapshots/round-40/S023.txt	GONE		1		rel	1	
 grep -c 'CSAF' corpus/source-snapshots/round-40/S023.txt	GONE		1		rel	1	
 grep -c 'Computer Fraud and Abuse Act' corpus/source-snapshots/round-40/S020.txt	GONE		1		rel	1	
@@ -2605,7 +2630,6 @@ grep -c 'Vulnerabilities Equities Process' corpus/source-snapshots/round-40/S021
 grep -c '^## Round-37 admission' corpus/README.md	GONE		1		rel	1	
 grep -c '^Correction (round 38)' PROVINCE.md corpus/README.md	GONE		1		rel	1	
 grep -c '^Correction (round 39)' corpus/lessons/round-38.md LOG.md SCORECARD.md SHONEN.md	GONE		1		rel	1	
-grep -c '^corpus/knowledge/' knowledge-expected.txt	GONE		1		rel	1	
 grep -c 'affected vendor' corpus/source-snapshots/round-31/S048.txt	GONE		1		rel	1	
 grep -c 'all 42 lines are body prose' corpus/knowledge/github-repository-security-advisories.md	GONE		1		rel	1	
 grep -c 'anonymous' corpus/source-snapshots/round-40/S021.txt	GONE		1		rel	1	
@@ -3118,11 +3142,15 @@ provenance.json: no steps/transitions/agents recorded	GONE		1		rel	2
 python -I corpus/instruments/gate-quote-audit.py	GONE		1		rel	1	
 python -I corpus/instruments/gate-quote-audit.py --selftest	GONE		1		rel	1	
 python -I corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/limb-ledger.json	GONE		1		rel	1	
+python corpus/instruments/capture-binding-check.py	GONE		1		rel	1	
+python corpus/instruments/capture-source.py --id S087 --url … --out <scratch> --kind html	GONE		1		rel	1	
+python corpus/instruments/census-freshness-check.py 	GONE		1		rel	1	
 python corpus/instruments/census-freshness-check.py <lane-repo-root>	GONE		1		rel	1	
-python corpus/instruments/figure-audit.py --selftest	GONE		1		rel	1	
+python corpus/instruments/figure-audit.py	GONE		1		rel	1	
+python corpus/instruments/figure-audit.py --ledger .ufo/waves/round-55/controls/red-df1-ledger.json	GONE		1		rel	1	
+python corpus/instruments/frontier-recheck-count.py	GONE		1		rel	1	
 python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-50/manifest.json --source S080	GONE		1		rel	1	
 python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-51/manifest.json --source S081	GONE		1		rel	1	
-python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-55/manifest.json --source S087	GONE		1		rel	1	
 python3 -c "import json;d=json.load(open('corpus/source-snapshots/round-24/manifest.json'));print(sum(len(s['quotes']) for s in d['sources']))"	GONE		1		rel	1	
 python3 -c 'import json,collections as c,datetime as t;v=json.load(open("corpus/source-snapshots/round-35/S052.txt"))["vulnerabilities"];dl=[(t.date.fromisoformat(r["dueDate"])-t.date.fromisoformat(r["dateAdded"])).days for r in v];print("forward",sum(x>0 for x in dl),"of",len(dl),c.Counter(dl).most_common(3))'	GONE		1		rel	1	
 python3 -c 'import json,collections as c;v=json.load(open("corpus/source-snapshots/round-35/S052.txt"))["vulnerabilities"];print(dict(c.Counter(r["knownRansomwareCampaignUse"] for r in v)),dict(c.Counter(r["forensicTriage"] for r in v)))'	GONE		1		rel	1	
@@ -3247,6 +3275,7 @@ reroute-drill.mjs	GONE		1		rel	1
 reroute_drill: lane=judge from=kimi-code/k3:high to=local (simulated; identity preserved)	GONE		1		rel	1	
 resolve(dir,'..','..')	GONE		1		rel	1	
 return path.replace(os.sep, "/") if os.sep != "/" else path	GONE		1		rel	1	
+rev-parse refs/heads/master	GONE		1		rel	1	
 review-mission.md	GONE		1		rel	1	
 reviewer-correctness-r1.md	GONE		1		rel	1	
 reward.min > 1750/0.0735 = 23 809.52	GONE		1		rel	1	SKILL
@@ -3770,9 +3799,11 @@ wave4/CritQuoteSweep.md	GONE		1		rel	1
 wc -l corpus/knowledge/github-repository-security-advisories.md	GONE		1		rel	1	
 wc -l ledger/missions.jsonl	GONE		1		rel	1	
 wc -l ledger/telemetry.jsonl	GONE		1		rel	1	
+wc -l/-c	GONE		1		rel	1	
 whitepapers/	GONE		1		rel	1	
 wwkd-plan-r1.md	GONE		1		rel	1	
 xai-oauth/grok-4.6:xhigh	GONE		1		rel	1	
+{"sha":"e8d691a5…","url"	GONE		1		rel	1	
 {"type":"session","version":3,"cwd":"/home/vgpnk/Projects/bounties"}	GONE		1		rel	1	
 {S052.txt,manifest.json}	GONE		1		rel	1	
 {UPPER}	GONE		1		rel	1	
@@ -3859,6 +3890,7 @@ xai-oauth/grok-4.6:xhigh	GONE		1		rel	1
 ~/…	GONE		1		other	1	
 ~~~	GONE		1		other	1	
 … --export-ref b2c49ea5… --work /tmp/verif-kasegi-r42/y	GONE		1		rel	1	
+… \| awk '/figure-audit-mentions-base-scorecard/{n++}…'	GONE		1		rel	1	
 …-2026-10-23.md	GONE		1		rel	1	
 …/S050.txt	GONE		1		rel	1	
 …/SSVC/tutorials/ssvc_overview/	GONE		1		rel	1	
@@ -3892,17 +3924,17 @@ SHONEN.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54ade
 corpus/QUALITY.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/QUALITY.md	27	literal	rel	41	SKILL
 corpus/instruments/r35-fixtures/README.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/instruments/r35-fixtures/README.md	26	literal	rel	26	
 corpus/	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/	16	literal	rel	19	SKILL
-corpus/knowledge/considerthese-proposals-ledger.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/knowledge/considerthese-proposals-ledger.md	15	literal	rel	27	
+corpus/knowledge/considerthese-proposals-ledger.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/knowledge/considerthese-proposals-ledger.md	16	literal	rel	28	
 .ufo/	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/	14	literal	rel	45	SKILL
 corpus/instruments/README.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/instruments/README.md	13	literal	rel	21	SKILL
 corpus/knowledge/source-tree-loss-2026-09-28.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/knowledge/source-tree-loss-2026-09-28.md	12	literal	rel	18	SKILL
+.git	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.git	11	literal	rel	17	SKILL
 .ufo/waves/round-34/claims.json	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-34/claims.json	11	literal	rel	12	
 .ufo/waves/round-34/mistakes-erratum-1.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-34/mistakes-erratum-1.md	11	literal	rel	12	
 .ufo/waves/round-34/wave1/L1Integration.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-34/wave1/L1Integration.md	11	literal	rel	11	
 considerthese/2026-10-25.md:76	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\considerthese/2026-10-25.md	11	literal	rel	20	
-.git	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.git	10	literal	rel	12	SKILL
+considerthese/2026-10-26.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\considerthese/2026-10-26.md	11	literal	rel	14	SKILL
 .ufo/waves/round-35/claims-erratum-d5.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-35/claims-erratum-d5.md	10	literal	rel	10	
-considerthese/2026-10-26.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\considerthese/2026-10-26.md	10	literal	rel	13	SKILL
 corpus/knowledge/*.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/knowledge\ai-assisted-finding-validation.md	10	glob	rel	17	
 corpus/lessons/round-33-verifier-spotcheck.md:167-169	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/lessons/round-33-verifier-spotcheck.md	10	literal	rel	10	
 corpus/lessons/round-34.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/lessons/round-34.md	10	literal	rel	19	
@@ -4067,6 +4099,7 @@ corpus/source-snapshots/round-46-a2/S074.txt	INTERNAL	C:\Users\jpvei\.zcode\work
 corpus/source-snapshots/round-46/manifest.json	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/source-snapshots/round-46/manifest.json	3	literal	rel	3	SKILL
 corpus/source-snapshots/round-51/S081.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/source-snapshots/round-51/S081.txt	3	literal	rel	3	
 corpus/source-snapshots/round-53/S085.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/source-snapshots/round-53/S085.txt	3	literal	rel	3	
+.git/	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.git/	2	literal	rel	4	
 .ufo/rounds/round-21/admission-gate.json	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/rounds/round-21/admission-gate.json	2	literal	rel	4	
 .ufo/rounds/round-21/frozen-skill-guard.json	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/rounds/round-21/frozen-skill-guard.json	2	literal	rel	2	
 .ufo/rounds/round-21/snapshot-skill-guard.json	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/rounds/round-21/snapshot-skill-guard.json	2	literal	rel	2	
@@ -4118,6 +4151,9 @@ corpus/source-snapshots/round-53/S085.txt	INTERNAL	C:\Users\jpvei\.zcode\workspa
 .ufo/waves/round-51/controls/do-nothing-c1-winhost.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-51/controls/do-nothing-c1-winhost.txt	2	literal	rel	2	
 .ufo/waves/round-51/erratum-1-c1-control-provenance.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-51/erratum-1-c1-control-provenance.md	2	literal	rel	2	
 .ufo/waves/round-52/claims-erratum-1.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-52/claims-erratum-1.md	2	literal	rel	2	
+.ufo/waves/round-54/controls/d53-base-greps-r54.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-54/controls/d53-base-greps-r54.txt	2	literal	rel	2	
+.ufo/waves/round-55/controls/df1-mentions-erratum.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-55/controls/df1-mentions-erratum.md	2	literal	rel	2	
+.ufo/waves/round-55/controls/gate-final-r55.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-55/controls/gate-final-r55.txt	2	literal	rel	4	
 /fast/scratch	RESOLVES	/fast/scratch	2	literal	other	3	
 <...>	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\AGENTS.md	2	glob	rel	2	
 PROVINCE.md:78	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md	2	literal	rel	2	
@@ -4168,6 +4204,7 @@ corpus/instruments/r46-selftest-f29.py	INTERNAL	C:\Users\jpvei\.zcode\workspace\
 corpus/instruments/shonen-shipped-fixtures.json	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/instruments/shonen-shipped-fixtures.json	2	literal	rel	2	SKILL
 corpus/knowledge/ai-assisted-finding-validation.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/knowledge/ai-assisted-finding-validation.md	2	literal	rel	2	SKILL
 corpus/knowledge/authorization-safe-harbor-and-scope.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/knowledge/authorization-safe-harbor-and-scope.md	2	literal	rel	2	SKILL
+corpus/knowledge/cisa-vulnrichment-record-list.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/knowledge/cisa-vulnrichment-record-list.md	2	literal	rel	3	
 corpus/knowledge/cna-assignment-and-vulnerability-rules.md:36	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/knowledge/cna-assignment-and-vulnerability-rules.md	2	literal	rel	2	
 corpus/knowledge/considerthese-proposals-ledger.md:37	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/knowledge/considerthese-proposals-ledger.md	2	literal	rel	2	
 corpus/knowledge/cra-manufacturer-reporting-duties.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/knowledge/cra-manufacturer-reporting-duties.md	2	literal	rel	2	
@@ -4238,8 +4275,8 @@ corpus/source-snapshots/round-53/	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1b
 corpus/source-snapshots/round-54/	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/source-snapshots/round-54/	2	literal	rel	3	
 corpus/source-snapshots/round-54/S086.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/source-snapshots/round-54/S086.txt	2	literal	rel	2	
 ~/projects	RESOLVES	C:\Users\jpvei/projects	2	literal	other	2	
+*/*	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\c2-controls\junk-f20.md	1	glob	rel	1	
 ./PROVINCE.md:3	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\./PROVINCE.md	1	literal	rel	1	
-.git/	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.git/	1	literal	rel	1	
 .gitignore:11	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.gitignore	1	literal	rel	1	
 .gitignore:7	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.gitignore	1	literal	rel	1	
 .gitignore:8-9	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.gitignore	1	literal	rel	1	
@@ -4490,15 +4527,18 @@ corpus/source-snapshots/round-54/S086.txt	INTERNAL	C:\Users\jpvei\.zcode\workspa
 .ufo/waves/round-53/claims.json	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-53/claims.json	1	literal	rel	1	
 .ufo/waves/round-53/controls/c2-counter-final-r53.txt:9	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-53/controls/c2-counter-final-r53.txt	1	literal	rel	1	
 .ufo/waves/round-53/controls/neighbor-screen-r53.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-53/controls/neighbor-screen-r53.txt	1	literal	rel	1	
+.ufo/waves/round-54/claims.json:14	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-54/claims.json	1	literal	rel	1	
 .ufo/waves/round-54/controls/c1-gate-final-r54.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-54/controls/c1-gate-final-r54.txt	1	literal	rel	1	
 .ufo/waves/round-54/controls/c2-standin-dryrun-r54.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-54/controls/c2-standin-dryrun-r54.txt	1	literal	rel	1	
-.ufo/waves/round-54/controls/d53-base-greps-r54.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-54/controls/d53-base-greps-r54.txt	1	literal	rel	1	
 .ufo/waves/round-54/controls/neighbor-screen-r54.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-54/controls/neighbor-screen-r54.txt	1	literal	rel	1	
 .ufo/waves/round-54/controls/routed-d53-corrections.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-54/controls/routed-d53-corrections.md	1	literal	rel	1	
 .ufo/waves/round-55/controls/c1-*.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-55/controls\c1-donothing-r55.txt	1	glob	rel	1	
 .ufo/waves/round-55/controls/c1-donothing-r55.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-55/controls/c1-donothing-r55.txt	1	literal	rel	1	
 .ufo/waves/round-55/controls/c2-standin-dryrun-r55.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-55/controls/c2-standin-dryrun-r55.txt	1	literal	rel	1	
-.ufo/waves/round-55/controls/df1-mentions-erratum.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-55/controls/df1-mentions-erratum.md	1	literal	rel	1	
+.ufo/waves/round-56/claims-erratum-1.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-56/claims-erratum-1.md	1	literal	rel	1	
+.ufo/waves/round-56/controls/c1-*.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-56/controls\c1-green-lane-r56.txt	1	glob	rel	1	
+.ufo/waves/round-56/controls/df3-census-erratum.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-56/controls/df3-census-erratum.md	1	literal	rel	1	
+.ufo/waves/round-56/controls/gate-final-r56.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-56/controls/gate-final-r56.txt	1	literal	rel	1	
 /fast	RESOLVES	/fast	1	literal	other	1	
 /fast/scratch/	RESOLVES	/fast/scratch/	1	literal	other	1	
 <CASE>	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\AGENTS.md	1	glob	rel	1	
@@ -4675,6 +4715,7 @@ corpus/README.md:591	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4
 corpus/README.md:702	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md	1	literal	rel	1	
 corpus/README.md:82	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md	1	literal	rel	1	
 corpus/SOURCES.md:137	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md	1	literal	rel	1	
+corpus/SOURCES.md:142	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md	1	literal	rel	1	
 corpus/SOURCES.md:157	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md	1	literal	rel	1	
 corpus/SOURCES.md:40	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md	1	literal	rel	1	
 corpus/SOURCES.md:47	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md	1	literal	rel	1	
@@ -4948,6 +4989,7 @@ corpus/lessons/round-50-verifier-spotcheck.md	INTERNAL	C:\Users\jpvei\.zcode\wor
 corpus/lessons/round-51-verifier-spotcheck.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/lessons/round-51-verifier-spotcheck.md	1	literal	rel	1	
 corpus/lessons/round-53-verifier-spotcheck.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/lessons/round-53-verifier-spotcheck.md	1	literal	rel	1	
 corpus/lessons/round-54-verifier-spotcheck.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/lessons/round-54-verifier-spotcheck.md	1	literal	rel	1	
+corpus/lessons/round-55-verifier-spotcheck.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/lessons/round-55-verifier-spotcheck.md	1	literal	rel	1	
 corpus/lessons/round-8.md:10	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/lessons/round-8.md	1	literal	rel	1	
 corpus/lessons/round-9.md:33	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/lessons/round-9.md	1	literal	rel	1	
 corpus/lessons/round-{1,4,5,6}-aggregator-audit.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/lessons/round-1-aggregator-audit.md	1	brace	rel	1	
@@ -5005,6 +5047,8 @@ corpus/source-snapshots/round-52/S083.txt	INTERNAL	C:\Users\jpvei\.zcode\workspa
 corpus/source-snapshots/round-52/manifest.json	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/source-snapshots/round-52/manifest.json	1	literal	rel	1	
 corpus/source-snapshots/round-55/	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/source-snapshots/round-55/	1	literal	rel	1	
 corpus/source-snapshots/round-55/S087.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/source-snapshots/round-55/S087.txt	1	literal	rel	1	
+corpus/source-snapshots/round-56/	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/source-snapshots/round-56/	1	literal	rel	1	
+corpus/source-snapshots/round-56/S088.txt	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/source-snapshots/round-56/S088.txt	1	literal	rel	1	
 plans/wwkd-round-21-authority-audit.md	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\plans/wwkd-round-21-authority-audit.md	1	literal	rel	1	
 {,sub}	INTERNAL	C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\	1	brace	rel	1	
 ~	RESOLVES	C:\Users\jpvei	1	literal	other	1	SKILL

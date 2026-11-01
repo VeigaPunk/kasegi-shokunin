@@ -2504,3 +2504,62 @@ Round lesson: `corpus/lessons/round-55.md` (6 Mistakes rows: the two mined route
 pre-data; Gate: S087 with the 11-word quote at S087.txt:2853; Limits: host-bound classes operator-owned, the
 live-docs.github.com caveat; considerthese: idle stretch, nothing adopted — `Assimilation: none — shokuknow
 unreachable`). SCORECARD round-55 result section + move log + capabilities note + planned-for-56 appended.
+
+## Round 56 (2026-11-01) — carry-in DF-3 addressed first (routed non-claim: the R9 erratum + the fixed-point reproduction), C1 the figure-audit ledger 17 → 27 incl. the census-freshness literals (depth:verifiability, nominal per R58), C2 frontier F36 → F37 on S088 the CISA Vulnrichment record list (coverage, score held)
+
+- Freeze `6a4cef0` (base `e166f1b` = the round-55 closure tip + the integrator's verifier-spotcheck commit): claims
+  frozen before implementation; the S088 capture (1 line / 7204 bytes, sha `09ce0b10…`, FOUR same-sha instrument opens
+  + one parsed-equal curl open) + manifest (6 Q each occurrences=1) + the extended pre-freeze screen +
+  do-nothing/stand-in receipts land in the same commit (`controls/neighbor-screen-r56.txt`,
+  `do-nothing-c1-r56.txt`, `do-nothing-c2-r56.txt`, `c2-standin-dryrun-r56.txt` — one pass with the complete
+  declared-adds list per the r55 rule: rows=37 registry=88 expected=75, FRONTIER-PASS F37, binding 71/71,
+  `controls/s088-opens-r56.txt`).
+- Carry-in `77a1394` (the round-55 closure's routed DF-3, status-neutral, landed first): the `CENSUS-FRESH=ok` prose
+  (r55 report Sources & frontier, the SCORECARD r55 census cell, the LOG r55 entry) superseded append-only by the R9
+  erratum `.ufo/waves/round-56/controls/df3-census-erratum.md` naming the receipt's own printed limb
+  (`CENSUS-FRESH=stale … [exit=1]`) as the superseding fact; no filed byte edited; closure check
+  `df3-erratum=closed` exit 0. The fixed-point receipt `.ufo/waves/round-56/controls/df3-fixedpoint-r55tip.txt`
+  REPRODUCES the defect over a reconstruction of the r55 tip: run A (receipt moved out) reads the committed pair's
+  1118/3883/1130; the receipt restored flips exactly ONE citation GONE→INTERNAL (the lesson's citation of the receipt
+  path) to 1119/3882/1131 = 22.56%; run C identical; freshness ok exit 0 — the closure verifier's §3 numbers
+  reproduced exactly, with the `.git`/`.git/` reconstruction pitfall named in the receipt.
+- C1 `5eab221` (depth:verifiability 4, capability extension, R58 nominal — score held): the figure-audit ledger grows
+  17 → 27: the r55 figures fold in rev-pinned to `133c575` (frontier-rows-r55 36, registry-rows-r55 87, entries-r55 39
+  via the F-row entry-cell comma split, knowledge-expected-r55 74, knowledge-files-r55 74) and the census-freshness
+  receipt's literals pin machine-checkably (census-fresh-literal-r55 want `stale` — the superseded filed prose;
+  census-internal/gone-r55-receipt 1118/3883 = the committed pair of record; census-fixedpoint-internal/gone-r55
+  1119/3882 = the post-receipt fixed point) — the DF-3 prose-vs-receipt class and the two-generation confusion are
+  machine-caught from now on. Receipts: selftest `cases=5 failures=0` exit 0 (`controls/c1-selftest-r56.txt`); GREEN
+  `figures=27 ok=27 stale=0 exit=0` over the lane root before any C2 byte and re-run green across the C2 bytes
+  (`controls/c1-green-lane-r56.txt`); RED over the DF-3 prose AS FILED + the generation-confusion figure reads 2 stale
+  exit 1 (`controls/c1-red-df3-r56.txt` + `red-df3-ledger.json`); do-nothing at base in the freeze (17 ids, new ids 0,
+  base ledger 17/17).
+- C2 `8c2d9a4` (coverage 8, frontier F36 → F37, score held — operator-owned denominator): F37 = the CISA Vulnrichment
+  published record list on S088 — `https://api.github.com/repos/cisagov/vulnrichment/git/trees/develop` (GitHub's
+  git-trees machine interface at the default ref), first admission of the recorded CISA ADP list-page lead
+  (SOURCES.md:143, named in the round-52 SCORECARD planned-for-53; lead line bytes unchanged, sha `90b336a2…` at base
+  and tip, flip recorded in the registry bullets). Entry `corpus/knowledge/cisa-vulnrichment-record-list.md`
+  (attribution; 4 falsifiable claims with rejected over-generalizations: the 28 per-year record folders 1999-2026 with
+  no gap; the content-addressed self-declared-complete object `truncated:false` at top sha `e8d691a5…` with
+  representation-variant byte forms parsed equal; the 8501-byte README blob whose r51 snapshot sha `2da09414…`
+  reproduces same-day — the check on F32's scope limit; the six non-record support entries with flowcharts.md named as
+  process description, not enrichment data; distinctness vs F32/F25/F30/F20; honest Limits incl. the probed-EMPTY
+  releases variant). README F37 row + r56 admission block at EOF (+3682 bytes, pure append); PROVINCE r56 amendment
+  (+1054 bytes, pure append); SOURCES S088 row after S087 + hunt bullet + row-added bullet (inserts only, no existing
+  line modified); knowledge-expected 74 → 75 (insert after `cisa-vulnrichment-adp-enrichment.md`, sort -c clean).
+  Claims erratum 1 (`.ufo/waves/round-56/claims-erratum-1.md`, this commit): the freeze's lead-line counting command
+  mis-typed `want 1`, superseded by `want 3 = 3` (base = tip) with the exact-line sha pin — never re-type from memory,
+  mined in the lesson.
+- Counting commands: do-nothing `rows=36 admitted=36 closed=6 problem-rows=30 registry=87`, `entries=39 pass=6`, zero
+  F37, FAIL 33 (`controls/do-nothing-c2-r56.txt`, per-file base export 531/531) → final `rows=37 admitted=37 closed=7
+  problem-rows=30 registry=88`, `FRONTIER-PASS F37 ids=S088`, `entries=40 pass=7`, FAIL records 33 invariant
+  (`controls/c2-counter-final-r56.txt`); `source-recheck --source S088` exit 0 (6 occurrences=1;
+  `controls/c2-expect-and-counts-r56.txt` and the final-receipt tail); capture-binding `records=71 bound=71 unbound=0`
+  exit 0, `multi_row_url=7` unchanged; plain counts 37/88/75/75/sorted-ok/7204 bytes/1 line.
+
+Round lesson: `corpus/lessons/round-56.md` (6 Mistakes rows: the mined routed DF-3 class + five own-catches, four
+pre-data — the partial-export census flip, the neighbor-screen inline note corrected against its printed limb, the
+heredoc-unexpanded receipt limb disclosed in place, the Windows sort.exe PATH resolution — and one at the freeze, the
+mis-typed counting command; Gate: S088 with the 1-word quote at S088.txt:1 by `wc -w`; Limits: host-bound classes
+operator-owned, the live mutable ref caveat; considerthese: idle stretch, nothing adopted — `Assimilation: none —
+shokuknow unreachable`). SCORECARD round-56 result section + move log + capabilities note + planned-for-57 appended.
