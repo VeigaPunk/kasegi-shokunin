@@ -1,0 +1,47 @@
+# round-52 PRE-FREEZE neighbor screen for the NVD surface (run BEFORE the freeze commit, per the round-50 D1 rule)
+# screen scope this round is FULLER than round-51's per the round-51 closure observation: it adds the
+# downstream-consumer sweep over corpus/source-snapshots (the class S013.txt:65 exposed for F32/F05).
+# Note: this host's grep prints corpus-relative paths with backslash separators; read them as / .
+
+$ grep -ric nvd corpus/knowledge/*.md corpus/README.md PROVINCE.md corpus/SOURCES.md SKILL.md | grep -v ':0$'
+corpus/knowledge/cisa-kev-catalog.md:1
+corpus/knowledge/cve-bench-agent-exploitation-benchmark.md:2
+corpus/knowledge/cwe-top25-2025-methodology.md:1
+corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md:22
+corpus/knowledge/program-severity-ladders-and-reward-scales.md:1
+PROVINCE.md:1
+corpus/SOURCES.md:8
+corpus/README.md:2
+
+# characterization (word-boundary): the 22-hit and CNVD-adjacent files are the substring inside CNVD
+# (F16's Chinese platform), not the U.S. NVD; the real neighbors are:
+#   cwe-top25-2025-methodology.md (F05): NVD named as a data source whose CWE mappings shifted (S014 quote)
+#   cve-bench-agent-exploitation-benchmark.md: 'a high-level description about the specific vulnerability as published in the NVD' (S025)
+#   cisa-kev-catalog.md (F18): an NVD detail-page URL inside a KEV record's notes field (S052)
+#   program-severity-ladders-and-reward-scales.md (F13): CNVD context only
+
+$ python -I -c '<snapshot sweep: every capture file containing NVD>'
+corpus/source-snapshots/round-23/S018.txt
+corpus/source-snapshots/round-24/S001.txt
+corpus/source-snapshots/round-24/S002.txt
+corpus/source-snapshots/round-24/S013.txt
+corpus/source-snapshots/round-24/S014.txt
+corpus/source-snapshots/round-24/S032.txt
+corpus/source-snapshots/round-24/manifest.json
+corpus/source-snapshots/round-30/S046.txt
+corpus/source-snapshots/round-30/S047.txt
+corpus/source-snapshots/round-32/S049.txt
+corpus/source-snapshots/round-35/manifest.json
+corpus/source-snapshots/round-40/S025.txt
+corpus/source-snapshots/round-42/S064.txt
+corpus/source-snapshots/round-50/S080.txt
+corpus/source-snapshots/round-52/S083.txt
+corpus/source-snapshots/round-52/manifest.json
+
+# S066 (round-42 REJECTED row) is the decisive neighbor: its flip names this admission —
+# 're-open if a frontier targets NVD-specific enrichments (vulnStatus, evaluator* fields, cisa* mirror
+# fields, NVD-side metrics/weaknesses) or the API interface contract (resultsPerPage/startIndex
+# pagination)' — F33 spends that flip; the row stays byte-identical. S066 also already recorded the
+# JS-wall ('the nvd.nist.gov developer page returned only the Angular application shell'), reproduced
+# this round as S084 (11-byte shell capture, wave receipt s084-hub-shell.txt).
+NEIGHBOR_SCREEN_DONE=pre-freeze

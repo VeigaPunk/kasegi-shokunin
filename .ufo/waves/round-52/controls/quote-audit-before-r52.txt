@@ -1,0 +1,13 @@
+# round-52 gate-quote-audit BEFORE receipt — run BEFORE the round-51 lesson erratum landed
+# expected: round-51 annotation 24 != measured 17 -> MISMATCH, no erratum on record, exit 1
+# (the fail-closed finding that motivates the instrument; the D2/M48-3 drift class caught by a counter)
+$ python corpus/instruments/gate-quote-audit.py
+corpus/lessons/round-48.md:18 claimed=14 measured=14 OK quote=marks are confined to the box character plus one indented ev...
+corpus/lessons/round-49.md:29 claimed=17 measured=17 OK quote=Reserves CVE IDs for the organization provided in
+the short_...
+corpus/lessons/round-50.md:39 claimed=14 measured=14 OK quote=This document defines a standard interchange
+format for desc...
+corpus/lessons/round-51.md:39 claimed=24 measured=17 MISMATCH quote=the public repository of CISA's enrichment of public CVE
+rec...
+GATE-QUOTE-AUDIT annotated=4 ok=3 erratum-on-record=0 failures=1
+GATE_QUOTE_AUDIT_BEFORE_EXIT=1
