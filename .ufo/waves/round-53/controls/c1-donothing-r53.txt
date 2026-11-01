@@ -1,0 +1,15 @@
+# round-53 C1 do-nothing control at base e276dbf — the instrument's own base bytes (git show) run against the lane tree and its own selftest.
+# Member 1 (the carry-in D1 equality limb): on this Windows host os.path.relpath emits backslash separators, so the
+# expected-list equality limb is an all-red artifact: every expected entry reads missing, every tree entry unexpected.
+# Member 2 (found while landing this round's receipts): the selftest crashes writing its fixtures with the cp1252 default
+# encoding and re-reading them as utf-8 (the em-dash in the prose.md fixture line, byte 0x97).
+$ git show e276dbf:corpus/instruments/recheck-audit.py > scratch/kasegi-r53/recheck-audit-base.py
+$ python -I scratch/kasegi-r53/recheck-audit-base.py --selftest
+               ^^^^^^
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x97 in position 37: invalid start byte
+selftest-exit=1
+$ python -I scratch/kasegi-r53/recheck-audit-base.py --root . --cdroot .   # from the lane root
+lines=71 total=71 pass=68 fail-closed=68 parse_fail=0 cwd_fail=3 paths_fail=0 exit=1
+expect=present expected=69 missing=69 unexpected=71 exit=1
+C1_DONOTHING_EXIT=1 (equality limb red as a pure separator artifact; the real 2-entry drift is indistinguishable from the noise floor)
