@@ -2,13 +2,13 @@
 
 Instrument: `corpus/instruments/resolve.py` (stdlib-only, deterministic; r18 definition).
 Lane root: `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin`
-Scope: `SKILL.md` + `corpus/**/*.md` (209 files).
+Scope: `SKILL.md` + `corpus/**/*.md` (212 files).
 Extraction: verbatim density.py docstring path-like rule (see module docstring).
 Mirror root for bounty-path equivalence: `C:\Users\jpvei/Projects/the-bounty-hunter` (ABSENT — mirror fallback disabled).
 
 ## Totals
 
-- distinct path-like citations: **4912** (total occurrences: 10471; a citation cited in both scopes counts once)
+- distinct path-like citations: **4942** (total occurrences: 10531; a citation cited in both scopes counts once)
 - distinct citations appearing in SKILL.md: 701 (of which SKILL-only: 701)
 - distinct citations appearing in corpus: 0
 
@@ -16,11 +16,11 @@ Mirror root for bounty-path equivalence: `C:\Users\jpvei/Projects/the-bounty-hun
 |---|---|
 | RESOLVES | 12 |
 | MIRROR-EQUIVALENT | 0 |
-| GONE | 3808 |
-| INTERNAL | 1092 |
+| GONE | 3832 |
+| INTERNAL | 1098 |
 | OTHER *(root-domain bucket, orthogonal: the brief says classify other roots as RESOLVES/GONE)* | 12 resolve / 201 gone = 213 |
 
-Terminal outcome classes sum to the distinct total: RESOLVES(12) + MIRROR-EQUIVALENT(0) + INTERNAL(1092) + GONE(3808) = 4912.
+Terminal outcome classes sum to the distinct total: RESOLVES(12) + MIRROR-EQUIVALENT(0) + INTERNAL(1098) + GONE(3832) = 4942.
 Of the 12 RESOLVES, 12 are non-lane roots (domain `other`: origin-work, /tmp, ~/projects …); 0 are lane-repo-absolute.
 Of the 0 MIRROR-EQUIVALENT, 0 were written as `~/Projects/bounties/...` (domain `bounty`), 0 were bounty-root-relative bare paths (domain `rel`).
 
@@ -30,7 +30,7 @@ Numerator = RESOLVES + MIRROR-EQUIVALENT + INTERNAL. Denominator = all distinct 
 
 - SKILL.md alone: **131/701 = 18.69%**
 - corpus alone: **0/0 = n/a**
-- lane total (SKILL.md + corpus): **1104/4912 = 22.48%**
+- lane total (SKILL.md + corpus): **1110/4942 = 22.46%**
 
 ## Noise sub-census (GONE tokens that are rule artifacts, not citable paths)
 
@@ -42,18 +42,18 @@ Flag counts (a token can carry several flags):
 | gitstatus,synthetic | 9 |
 | regex | 22 |
 | regex,synthetic | 7 |
-| shell | 383 |
-| shell,synthetic | 178 |
-| synthetic | 605 |
+| shell | 386 |
+| shell,synthetic | 180 |
+| synthetic | 610 |
 
-- GONE citations carrying any noise flag: 1212
-- GONE citations with no noise flag (genuine vanished paths): 2596
-- citations containing glob/placeholder syntax (`* ? [ { } <...>`): 854
+- GONE citations carrying any noise flag: 1222
+- GONE citations with no noise flag (genuine vanished paths): 2610
+- citations containing glob/placeholder syntax (`* ? [ { } <...>`): 862
 
 Noise-adjusted rates (denominator excludes noise-flagged citations):
 - SKILL: 129/349 = 36.96%
 - CORPUS: 0/0 = n/a
-- ALL: 1049/3645 = 28.78%
+- ALL: 1054/3664 = 28.77%
 
 ## Scope x class matrix
 
@@ -88,7 +88,7 @@ grep -ohP '`[^`\n]+`' SKILL.md corpus/README.md corpus/*/*.md \
  | sort -u | wc -l
 ```
 
-Result: both yield **4912** distinct citations, and
+Result: both yield **4942** distinct citations, and
 `diff <(pipeline to file) <(cut -f1 citation-survival.tsv | tail -n +2 | sort -u)` is empty (sets identical, not just counts).
 Re-running `resolve.py` twice leaves both outputs byte-identical (md5 stable).
 
@@ -107,7 +107,7 @@ is compared against the resolved file's line count (editor convention).
 
 | citation | class | resolved file | anchor | file lines | verdict |
 |---|---|---|---|---|---|
-| `./PROVINCE.md:3` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\./PROVINCE.md` | 3 | 194 | in range |
+| `./PROVINCE.md:3` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\./PROVINCE.md` | 3 | 195 | in range |
 | `.gitignore:11` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.gitignore` | 11 | 2 | OUT OF RANGE |
 | `.gitignore:7` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.gitignore` | 7 | 2 | OUT OF RANGE |
 | `.gitignore:8-9` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.gitignore` | 8-9 | 2 | OUT OF RANGE |
@@ -135,83 +135,83 @@ is compared against the resolved file's line count (editor convention).
 | `.ufo/waves/round-46/attempt2/freeze.txt:7` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-46/attempt2/freeze.txt` | 7 | 11 | in range |
 | `.ufo/waves/round-46/freeze.txt:7` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-46/freeze.txt` | 7 | 8 | in range |
 | `.ufo/waves/round-46/wave1/R46SentinelContent.md:13` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\.ufo/waves/round-46/wave1/R46SentinelContent.md` | 13 | 99 | in range |
-| `LOG.md:1469` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1469 | 2333 | in range |
-| `LOG.md:1550` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1550 | 2333 | in range |
-| `LOG.md:1584` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1584 | 2333 | in range |
-| `LOG.md:1665` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1665 | 2333 | in range |
-| `LOG.md:1686` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1686 | 2333 | in range |
-| `LOG.md:1728` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1728 | 2333 | in range |
-| `LOG.md:1800-1801` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1800-1801 | 2333 | in range |
-| `LOG.md:1804` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1804 | 2333 | in range |
-| `LOG.md:2045` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 2045 | 2333 | in range |
-| `LOG.md:2205` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 2205 | 2333 | in range |
-| `LOG.md:545` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 545 | 2333 | in range |
-| `LOG.md:709-713` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 709-713 | 2333 | in range |
-| `LOG.md:734` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 734 | 2333 | in range |
-| `LOG.md:747-750` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 747-750 | 2333 | in range |
-| `LOG.md:812` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 812 | 2333 | in range |
-| `PROVINCE.md:16-22` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 16-22 | 194 | in range |
-| `PROVINCE.md:165` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 165 | 194 | in range |
-| `PROVINCE.md:171` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 171 | 194 | in range |
-| `PROVINCE.md:31-40` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 31-40 | 194 | in range |
-| `PROVINCE.md:38` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 38 | 194 | in range |
-| `PROVINCE.md:75` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 75 | 194 | in range |
-| `PROVINCE.md:77` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 77 | 194 | in range |
-| `PROVINCE.md:78` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 78 | 194 | in range |
-| `PROVINCE.md:80-152` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 80-152 | 194 | in range |
-| `PROVINCE.md:90` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 90 | 194 | in range |
+| `LOG.md:1469` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1469 | 2400 | in range |
+| `LOG.md:1550` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1550 | 2400 | in range |
+| `LOG.md:1584` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1584 | 2400 | in range |
+| `LOG.md:1665` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1665 | 2400 | in range |
+| `LOG.md:1686` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1686 | 2400 | in range |
+| `LOG.md:1728` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1728 | 2400 | in range |
+| `LOG.md:1800-1801` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1800-1801 | 2400 | in range |
+| `LOG.md:1804` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 1804 | 2400 | in range |
+| `LOG.md:2045` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 2045 | 2400 | in range |
+| `LOG.md:2205` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 2205 | 2400 | in range |
+| `LOG.md:545` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 545 | 2400 | in range |
+| `LOG.md:709-713` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 709-713 | 2400 | in range |
+| `LOG.md:734` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 734 | 2400 | in range |
+| `LOG.md:747-750` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 747-750 | 2400 | in range |
+| `LOG.md:812` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\LOG.md` | 812 | 2400 | in range |
+| `PROVINCE.md:16-22` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 16-22 | 195 | in range |
+| `PROVINCE.md:165` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 165 | 195 | in range |
+| `PROVINCE.md:171` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 171 | 195 | in range |
+| `PROVINCE.md:31-40` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 31-40 | 195 | in range |
+| `PROVINCE.md:38` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 38 | 195 | in range |
+| `PROVINCE.md:75` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 75 | 195 | in range |
+| `PROVINCE.md:77` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 77 | 195 | in range |
+| `PROVINCE.md:78` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 78 | 195 | in range |
+| `PROVINCE.md:80-152` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 80-152 | 195 | in range |
+| `PROVINCE.md:90` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\PROVINCE.md` | 90 | 195 | in range |
 | `README.md:159` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\README.md` | 159 | 14 | OUT OF RANGE |
 | `README.md:19` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\README.md` | 19 | 14 | OUT OF RANGE |
 | `README.md:213` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\README.md` | 213 | 14 | OUT OF RANGE |
 | `README.md:23` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\README.md` | 23 | 14 | OUT OF RANGE |
 | `README.md:30` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\README.md` | 30 | 14 | OUT OF RANGE |
-| `SCORECARD.md:1014-1027` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1014-1027 | 2108 | in range |
-| `SCORECARD.md:1014-1035` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1014-1035 | 2108 | in range |
-| `SCORECARD.md:1074` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1074 | 2108 | in range |
-| `SCORECARD.md:1078` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1078 | 2108 | in range |
-| `SCORECARD.md:1116` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1116 | 2108 | in range |
-| `SCORECARD.md:1116-1119` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1116-1119 | 2108 | in range |
-| `SCORECARD.md:1129` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1129 | 2108 | in range |
-| `SCORECARD.md:1145` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1145 | 2108 | in range |
-| `SCORECARD.md:121-149` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 121-149 | 2108 | in range |
-| `SCORECARD.md:1240` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1240 | 2108 | in range |
-| `SCORECARD.md:1263-1281` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1263-1281 | 2108 | in range |
-| `SCORECARD.md:1269` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1269 | 2108 | in range |
-| `SCORECARD.md:1271` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1271 | 2108 | in range |
-| `SCORECARD.md:1284` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1284 | 2108 | in range |
-| `SCORECARD.md:134` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 134 | 2108 | in range |
-| `SCORECARD.md:1492` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1492 | 2108 | in range |
-| `SCORECARD.md:1505` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1505 | 2108 | in range |
-| `SCORECARD.md:1509` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1509 | 2108 | in range |
-| `SCORECARD.md:1532` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1532 | 2108 | in range |
-| `SCORECARD.md:1547` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1547 | 2108 | in range |
-| `SCORECARD.md:1567` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1567 | 2108 | in range |
-| `SCORECARD.md:1595` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1595 | 2108 | in range |
-| `SCORECARD.md:1602` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1602 | 2108 | in range |
-| `SCORECARD.md:1602-1605` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1602-1605 | 2108 | in range |
-| `SCORECARD.md:1605` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1605 | 2108 | in range |
-| `SCORECARD.md:1634` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1634 | 2108 | in range |
-| `SCORECARD.md:164` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 164 | 2108 | in range |
-| `SCORECARD.md:174` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 174 | 2108 | in range |
-| `SCORECARD.md:1788` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1788 | 2108 | in range |
-| `SCORECARD.md:228-290` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 228-290 | 2108 | in range |
-| `SCORECARD.md:23` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 23 | 2108 | in range |
-| `SCORECARD.md:251` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 251 | 2108 | in range |
-| `SCORECARD.md:252` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 252 | 2108 | in range |
-| `SCORECARD.md:259-270` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 259-270 | 2108 | in range |
-| `SCORECARD.md:309` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 309 | 2108 | in range |
-| `SCORECARD.md:309-321` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 309-321 | 2108 | in range |
-| `SCORECARD.md:327` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 327 | 2108 | in range |
-| `SCORECARD.md:331` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 331 | 2108 | in range |
-| `SCORECARD.md:49-58` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 49-58 | 2108 | in range |
-| `SCORECARD.md:502` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 502 | 2108 | in range |
-| `SCORECARD.md:510` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 510 | 2108 | in range |
-| `SCORECARD.md:65` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 65 | 2108 | in range |
-| `SCORECARD.md:813` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 813 | 2108 | in range |
-| `SCORECARD.md:813-819` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 813-819 | 2108 | in range |
-| `SCORECARD.md:837` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 837 | 2108 | in range |
-| `SCORECARD.md:88-96` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 88-96 | 2108 | in range |
-| `SCORECARD.md:988` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 988 | 2108 | in range |
+| `SCORECARD.md:1014-1027` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1014-1027 | 2165 | in range |
+| `SCORECARD.md:1014-1035` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1014-1035 | 2165 | in range |
+| `SCORECARD.md:1074` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1074 | 2165 | in range |
+| `SCORECARD.md:1078` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1078 | 2165 | in range |
+| `SCORECARD.md:1116` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1116 | 2165 | in range |
+| `SCORECARD.md:1116-1119` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1116-1119 | 2165 | in range |
+| `SCORECARD.md:1129` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1129 | 2165 | in range |
+| `SCORECARD.md:1145` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1145 | 2165 | in range |
+| `SCORECARD.md:121-149` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 121-149 | 2165 | in range |
+| `SCORECARD.md:1240` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1240 | 2165 | in range |
+| `SCORECARD.md:1263-1281` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1263-1281 | 2165 | in range |
+| `SCORECARD.md:1269` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1269 | 2165 | in range |
+| `SCORECARD.md:1271` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1271 | 2165 | in range |
+| `SCORECARD.md:1284` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1284 | 2165 | in range |
+| `SCORECARD.md:134` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 134 | 2165 | in range |
+| `SCORECARD.md:1492` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1492 | 2165 | in range |
+| `SCORECARD.md:1505` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1505 | 2165 | in range |
+| `SCORECARD.md:1509` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1509 | 2165 | in range |
+| `SCORECARD.md:1532` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1532 | 2165 | in range |
+| `SCORECARD.md:1547` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1547 | 2165 | in range |
+| `SCORECARD.md:1567` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1567 | 2165 | in range |
+| `SCORECARD.md:1595` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1595 | 2165 | in range |
+| `SCORECARD.md:1602` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1602 | 2165 | in range |
+| `SCORECARD.md:1602-1605` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1602-1605 | 2165 | in range |
+| `SCORECARD.md:1605` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1605 | 2165 | in range |
+| `SCORECARD.md:1634` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1634 | 2165 | in range |
+| `SCORECARD.md:164` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 164 | 2165 | in range |
+| `SCORECARD.md:174` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 174 | 2165 | in range |
+| `SCORECARD.md:1788` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 1788 | 2165 | in range |
+| `SCORECARD.md:228-290` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 228-290 | 2165 | in range |
+| `SCORECARD.md:23` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 23 | 2165 | in range |
+| `SCORECARD.md:251` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 251 | 2165 | in range |
+| `SCORECARD.md:252` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 252 | 2165 | in range |
+| `SCORECARD.md:259-270` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 259-270 | 2165 | in range |
+| `SCORECARD.md:309` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 309 | 2165 | in range |
+| `SCORECARD.md:309-321` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 309-321 | 2165 | in range |
+| `SCORECARD.md:327` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 327 | 2165 | in range |
+| `SCORECARD.md:331` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 331 | 2165 | in range |
+| `SCORECARD.md:49-58` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 49-58 | 2165 | in range |
+| `SCORECARD.md:502` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 502 | 2165 | in range |
+| `SCORECARD.md:510` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 510 | 2165 | in range |
+| `SCORECARD.md:65` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 65 | 2165 | in range |
+| `SCORECARD.md:813` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 813 | 2165 | in range |
+| `SCORECARD.md:813-819` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 813-819 | 2165 | in range |
+| `SCORECARD.md:837` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 837 | 2165 | in range |
+| `SCORECARD.md:88-96` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 88-96 | 2165 | in range |
+| `SCORECARD.md:988` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SCORECARD.md` | 988 | 2165 | in range |
 | `SHONEN.md:164-165` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SHONEN.md` | 164-165 | 12 | OUT OF RANGE |
 | `SHONEN.md:164-166` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SHONEN.md` | 164-166 | 12 | OUT OF RANGE |
 | `SHONEN.md:172` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\SHONEN.md` | 172 | 12 | OUT OF RANGE |
@@ -298,39 +298,39 @@ is compared against the resolved file's line count (editor convention).
 | `corpus/QUALITY.md:83` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/QUALITY.md` | 83 | 428 | in range |
 | `corpus/QUALITY.md:89` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/QUALITY.md` | 89 | 428 | in range |
 | `corpus/QUALITY.md:95` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/QUALITY.md` | 95 | 428 | in range |
-| `corpus/README.md:145` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 145 | 799 | in range |
-| `corpus/README.md:168` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 168 | 799 | in range |
-| `corpus/README.md:200` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 200 | 799 | in range |
-| `corpus/README.md:207` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 207 | 799 | in range |
-| `corpus/README.md:208` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 208 | 799 | in range |
-| `corpus/README.md:210` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 210 | 799 | in range |
-| `corpus/README.md:211` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 211 | 799 | in range |
-| `corpus/README.md:309` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 309 | 799 | in range |
-| `corpus/README.md:361` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 361 | 799 | in range |
-| `corpus/README.md:448` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 448 | 799 | in range |
-| `corpus/README.md:49` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 49 | 799 | in range |
-| `corpus/README.md:54` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 54 | 799 | in range |
-| `corpus/README.md:591` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 591 | 799 | in range |
-| `corpus/README.md:702` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 702 | 799 | in range |
-| `corpus/README.md:82` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 82 | 799 | in range |
-| `corpus/SOURCES.md:157` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 157 | 189 | in range |
-| `corpus/SOURCES.md:22` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 22 | 189 | in range |
-| `corpus/SOURCES.md:40` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 40 | 189 | in range |
-| `corpus/SOURCES.md:47` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 47 | 189 | in range |
-| `corpus/SOURCES.md:48` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 48 | 189 | in range |
-| `corpus/SOURCES.md:54` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 54 | 189 | in range |
-| `corpus/SOURCES.md:55-56` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 55-56 | 189 | in range |
-| `corpus/SOURCES.md:56` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 56 | 189 | in range |
-| `corpus/SOURCES.md:57` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 57 | 189 | in range |
-| `corpus/SOURCES.md:58` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 58 | 189 | in range |
-| `corpus/SOURCES.md:61` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 61 | 189 | in range |
-| `corpus/SOURCES.md:62` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 62 | 189 | in range |
-| `corpus/SOURCES.md:62-65` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 62-65 | 189 | in range |
-| `corpus/SOURCES.md:74` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 74 | 189 | in range |
-| `corpus/SOURCES.md:79` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 79 | 189 | in range |
-| `corpus/SOURCES.md:82` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 82 | 189 | in range |
-| `corpus/SOURCES.md:83` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 83 | 189 | in range |
-| `corpus/SOURCES.md:90` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 90 | 189 | in range |
+| `corpus/README.md:145` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 145 | 823 | in range |
+| `corpus/README.md:168` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 168 | 823 | in range |
+| `corpus/README.md:200` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 200 | 823 | in range |
+| `corpus/README.md:207` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 207 | 823 | in range |
+| `corpus/README.md:208` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 208 | 823 | in range |
+| `corpus/README.md:210` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 210 | 823 | in range |
+| `corpus/README.md:211` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 211 | 823 | in range |
+| `corpus/README.md:309` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 309 | 823 | in range |
+| `corpus/README.md:361` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 361 | 823 | in range |
+| `corpus/README.md:448` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 448 | 823 | in range |
+| `corpus/README.md:49` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 49 | 823 | in range |
+| `corpus/README.md:54` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 54 | 823 | in range |
+| `corpus/README.md:591` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 591 | 823 | in range |
+| `corpus/README.md:702` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 702 | 823 | in range |
+| `corpus/README.md:82` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/README.md` | 82 | 823 | in range |
+| `corpus/SOURCES.md:157` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 157 | 196 | in range |
+| `corpus/SOURCES.md:22` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 22 | 196 | in range |
+| `corpus/SOURCES.md:40` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 40 | 196 | in range |
+| `corpus/SOURCES.md:47` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 47 | 196 | in range |
+| `corpus/SOURCES.md:48` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 48 | 196 | in range |
+| `corpus/SOURCES.md:54` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 54 | 196 | in range |
+| `corpus/SOURCES.md:55-56` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 55-56 | 196 | in range |
+| `corpus/SOURCES.md:56` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 56 | 196 | in range |
+| `corpus/SOURCES.md:57` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 57 | 196 | in range |
+| `corpus/SOURCES.md:58` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 58 | 196 | in range |
+| `corpus/SOURCES.md:61` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 61 | 196 | in range |
+| `corpus/SOURCES.md:62` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 62 | 196 | in range |
+| `corpus/SOURCES.md:62-65` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 62-65 | 196 | in range |
+| `corpus/SOURCES.md:74` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 74 | 196 | in range |
+| `corpus/SOURCES.md:79` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 79 | 196 | in range |
+| `corpus/SOURCES.md:82` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 82 | 196 | in range |
+| `corpus/SOURCES.md:83` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 83 | 196 | in range |
+| `corpus/SOURCES.md:90` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/SOURCES.md` | 90 | 196 | in range |
 | `corpus/instruments/README.md:1000` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/instruments/README.md` | 1000 | 1053 | in range |
 | `corpus/instruments/README.md:131` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/instruments/README.md` | 131 | 1053 | in range |
 | `corpus/instruments/README.md:16-17` | INTERNAL | `C:\Users\jpvei\.zcode\workspace\95b1ba4d-5089-47a4-9fd8-54adebbce2ae\fleet\kasegi-shokunin\corpus/instruments/README.md` | 16-17 | 1053 | in range |
@@ -580,7 +580,7 @@ match against a Sep-5 genesis sync — see §Honest scope limits.
 
 | # | citation | files citing | occurrences | noise flags |
 |---|---|---|---|---|
-| 1 | `[~]` | 35 | 73 | synthetic |
+| 1 | `[~]` | 36 | 76 | synthetic |
 | 2 | `anchorcheck.py` | 30 | 45 | - |
 | 3 | `density.py` | 26 | 35 | - |
 | 4 | `claims.json` | 24 | 49 | - |
@@ -588,8 +588,8 @@ match against a Sep-5 genesis sync — see §Honest scope limits.
 | 6 | `grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md` | 21 | 22 | shell,synthetic |
 | 7 | `status.json` | 20 | 46 | - |
 | 8 | `resolve.py` | 20 | 39 | - |
-| 9 | `source-recheck.py` | 20 | 32 | - |
-| 10 | `frontier-recheck-count.py` | 19 | 31 | - |
+| 9 | `frontier-recheck-count.py` | 20 | 32 | - |
+| 10 | `source-recheck.py` | 20 | 32 | - |
 | 11 | `ops/claim-check.mjs` | 18 | 37 | - |
 | 12 | `census-before.txt` | 18 | 24 | - |
 | 13 | `SOURCES.md` | 18 | 23 | - |
@@ -598,8 +598,8 @@ match against a Sep-5 genesis sync — see §Honest scope limits.
 | 16 | `~/Projects/bounties` | 16 | 23 | - |
 | 17 | `george/` | 15 | 19 | - |
 | 18 | `grep -cE '^\| F[0-9]+ \|' corpus/README.md` | 15 | 18 | shell,synthetic |
-| 19 | `fleets/registry.json` | 14 | 18 | - |
-| 20 | `wave1-dispatch.json` | 14 | 15 | - |
+| 19 | `recheck-audit.py` | 14 | 22 | - |
+| 20 | `fleets/registry.json` | 14 | 18 | - |
 
 Max over all citations: files citing = 69, occurrences = 185.
 

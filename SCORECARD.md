@@ -2106,3 +2106,60 @@ frozen predicates by re-derivable commands only.
    included, mandatory since round 50/51); candidate leads: the NVD schema artifact on csrc.nist.gov (S066's own
    ground — evaluator*/cisa* mirror fields the live response did not show), OpenSSF Scorecard (repo security
    health; screen carefully against F33/F25 neighbors), or the CISA ADP list page as a check on F32's scope limit.
+
+## Round 53 result — the routed D1 equality-limb repair (C1, nominal, held) and the NVD API 2.0 response schema (C2); the routed D2 wording fix (non-claim)
+
+Frozen claims: `.ufo/waves/round-53/claims.json` (freeze commit `23448a2934cb9419bb0475d6262a458b38f2fe3a`, base
+`e276dbf6255e0cea5e70456aada7e59e971f5853`), landed before implementation. The round-52 closure routed one defect (D1:
+knowledge-expected.txt stale by 2 entries AND the recheck-audit equality limb host-broken on Windows separators) and one
+observation (D2: the r52 erratum's "Filed BEFORE the implementation commit" wording, transparent in freeze rev 1b). D1 is
+claim C1; D2 landed as a routed non-claim one-line append-only correction (`d9710d2`, filed line byte-identical, counts
+1 -> 1 filed / 0 -> 1 marker per the frozen greps, receipt `controls/d2-base-greps-r53.txt`). One post-freeze erratum:
+`.ufo/waves/round-53/claims-erratum-1.md` (freeze rev 1b) — two misderived after-literals in the frozen sentences
+(C1 selftest completeness total=15 not 14; C2 33 inherited FAIL entry records not 34 — the figure both cited controls
+printed), filed before the results landed; the class (R25 not applied to derived literals) is mined in the round-53 lesson.
+
+**Correction of record (none):** no filed figure of an earlier round was found wrong this round; the only corrections are
+the round's own post-freeze erratum above and the D2 wording supersession (both recorded where they belong).
+
+| Axis | Before | After | Verdict and evidence |
+|---|---:|---:|---|
+| depth:verifiability | 4 | **4 held; delta 0 — nominal move, labelled per QUALITY R58** | C1 verifies on its frozen predicate: the equality limb of `corpus/instruments/recheck-audit.py` now normalizes BOTH sides to POSIX separators (`_as_posix`), `knowledge-expected.txt` is synced 69 -> 71 (+2: F31 `osv-affected-range-events.md`, F32 `cisa-vulnrichment-adp-enrichment.md` — the r52 closure's D1), and the selftest gains `expect-separator`, a Windows-separator fixture (relpath stub emitting backslashes vs the POSIX list) that the pre-repair bytes FAIL on the same scenario (driver receipt `controls/c1-fixture-red-r53.txt`: `missing=['corpus/knowledge/good.md'] unexpected=['corpus\knowledge\good.md']`) and the repaired bytes pass (exit=0, 0/0; selftest 18 case lines all ok, exit 0 — `controls/c1-after-selftest-r53.txt`; two further members of the same host-broken class repaired and disclosed in the frozen sentence: fixture writes pinned utf-8 — the base selftest CRASHED `UnicodeDecodeError` 0x97, receipt `controls/c1-donothing-r53.txt` — and the cwd fixture made interpreter-free, the Store stub having broken its want=False). The drift class is now catchable and NAMED: the repaired instrument over the UNSYNCED base list prints `expected=69 missing=0 unexpected=2` naming exactly the two routed entries (`controls/c1-catch-r53.txt`), where the base bytes printed `expected=69 missing=69 unexpected=71` — a pure separator artifact in which those names were indistinguishable from noise. On the synced lane tree: `expect=present expected=71 missing=0 unexpected=0` (`controls/c1-after-lane-r53.txt`) — the limb GREEN, stated beside the audit's overall exit 1, which stays red for the disclosed operator-owned host-bound class ONLY (strict pass=1/71 cdroot_fail=67, cwd_fail=3 — figures byte-identical to the do-nothing baseline). Score HELD at 4: the moved object is the equality limb and the expected list; the axis counter itself (the citation-resolution census) is not moved by this repair — the non-moving metric is named (R58), and the score-5 bar stays `score-gap.py`'s gated lines on the lost domain bases, operator-owned (L0 r50/46 routed around). The r31 limb-ledger's RA-expect find tokens stay exactly-once (1/1, receipt `controls/c1-fixture-red-r53.txt`); the limb-mutation REPLAY stays host-bound (kill commands need a real `python3`; every row reads `invalid:live-baseline`) and is disclosed in the lesson, not fixed. |
+| coverage | 8 | **8 held; delta 0** | C2 verifies: frontier F34 admitted on S085 — NIST's own JSON Schema artifact for the NVD API 2.0 response (`https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema`, capture `corpus/source-snapshots/round-53/S085.txt`, sha256 `4d1c4e77...`, 10394 raw bytes — the SAME count the r42 S066 screen recorded, so the served artifact is unchanged across the two opens; 13 assertions Q1-Q13 each exactly-once, `source-recheck --source S085` exit 0, receipt `controls/s085-recheck-r53.txt`), entry `corpus/knowledge/nvd-api-2.0-response-schema.md` with the extended pre-freeze neighbor screen incl. the downstream-consumer sweep (zero consumers; `controls/neighbor-screen-r53.txt`, run before the freeze commit); S066 re-opened under the UNSPENT term of its own flip (the evaluator*/cisa* mirror fields — the interface-contract term was the one F33's admission spent), the rejected row byte-identical, new row S085 per the S065->S080 precedent; README F34 row + r53 amendment appended at EOF (R6); PROVINCE r53 frontier amendment appended; SOURCES S085 row + search-log + 2 leads (OpenSSF Scorecard, CISA ADP list page — unopened) + registry-changes bullet 84 -> 85; `knowledge-expected.txt` 71 -> 72 sorted. Counter before->after ON THIS HOST: do-nothing `rows=33 admitted=33 closed=3 problem-rows=30 registry=84, entries=36 pass=3`, zero F34 lines (`controls/do-nothing-c2-r53.txt`, base export e276dbf built per-file, 513/513) -> `rows=34 admitted=34 closed=4 problem-rows=30 registry=85`, `entries=37 pass=4`, `FRONTIER-PASS F34 ids=S085`, 33 FAIL entry records all exactly `recheck-exit-1` and 30 row records exactly `missing-pass-line` (`controls/c2-counter-final-r53.txt`; the first run over the DRAFT entry had FAILED F34 — a Limits bullet starting with an S-id parsed as an evidence declaration — fixed before the final measurement, mined in the lesson). capture-binding `records=68 bound=68 unbound=0` exit 0 (`controls/capture-binding-r53.txt`). Score HELD at 8: the denominator is the lost domain root's 18-surface set (operator-owned re-scope); F34 moves the frontier measure 33 -> 34, not the coverage score. |
+| depth:density | 9 | 9 held; non-target guard | `SKILL.md` was not edited this round, so the density instrument's input bytes are unchanged. |
+| calibration | verdict-only (not a scored owned axis) | improved (verdict row per the round-51/52 precedents; no score asserted) | D2 (routed, non-claim) lands append-only: `.ufo/waves/round-52/claims-erratum-1.md` gains an `Erratum (round 53)` block superseding the opening sentence's filed-vs-committed wording (authored before, committed with 227d3ed, transparent in r52 freeze rev 1b); the filed sentence stays byte-identical, counts 1 -> 1 filed / 0 -> 1 marker (`controls/d2-base-greps-r53.txt` + the landed tree). The round's own calibration evidence is doubled by claims-erratum-1: two of the round's own frozen after-literals were caught misderived against their own controls and corrected BEFORE the results landed. |
+
+**Census of record at this round's tip (quoted only from the final regeneration):** the round-52 tip read
+209 files / 4912 distinct -> the round-53 tip reads **212 files / 4942 distinct** (RESOLVES 12, INTERNAL 1098, GONE
+3832; total occurrences 10531; lane total 1110/4942 = 22.45%) — the new corpus files (the F34 entry and the round-53
+lesson) and their citations, certified by the gate receipt `controls/c1-gate-final-r53.txt` (`CENSUS-FRESH=ok`).
+Internal consistency: 12+1098+3832=4942; 12+1098=1110. The lesson quotes the figures only by pointer.
+
+### Round-53 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 53 | depth:verifiability | equality limb on this host: `expected=69 missing=69 unexpected=71` all-red artifact + selftest crash (UnicodeDecodeError) — no committed counter here can name a real drift; expected list 69 vs tree 71, stale by the 2 entries the r52 closure routed | limb green on the synced tree (`expected=71 missing=0 unexpected=0`), the drift class named by the repaired instrument on the unsynced list (`missing=0 unexpected=2`, exactly F31+F32), fixture red-before/green-after committed in the selftest (expect-separator), selftest 18 cases failures=0 exit 0 | `controls/c1-donothing-r53.txt`; `controls/c1-after-lane-r53.txt`; `controls/c1-catch-r53.txt`; `controls/c1-fixture-red-r53.txt`; `controls/c1-after-selftest-r53.txt` |
+| 53 | coverage | `FRONTIER-CENSUS rows=33 admitted=33 closed=3 problem-rows=30 registry=84`, `entries=36 pass=3` (this host, base export) | `FRONTIER-CENSUS rows=34 admitted=34 closed=4 problem-rows=30 registry=85`, `entries=37 pass=4`, `PASS F34 ids=S085` | `controls/do-nothing-c2-r53.txt` -> `controls/c2-counter-final-r53.txt`; `corpus/knowledge/nvd-api-2.0-response-schema.md`; `corpus/source-snapshots/round-53/` (S085 + manifest) |
+| 53 | calibration | D2 wording observation standing (r52 closure) + 2 misderived frozen after-literals (caught this round) | D2 append-only correction landed (filed line byte-identical); both literals corrected by claims-erratum-1 before the results landed | `.ufo/waves/round-52/claims-erratum-1.md` Erratum (round 53) block; `.ufo/waves/round-53/claims-erratum-1.md`; `controls/d2-base-greps-r53.txt` |
+
+**Capabilities:** no row enters the table this round — C1 is a repair of the existing `recheck-audit` instrument, not a
+new capability; the stagnation window was restarted at round 52 (window N = 3, last capability entry round 52).
+
+**Saturation:** line 9/10 per owned axis; lowest non-retired axis remains depth:verifiability (4); the nudge is not
+active (capability window restarted r52).
+**Non-author verification:** outstanding. No seats ran (no AgentSwarm surface on this host); the most recent outside
+spot-check is the round-52 closure that routed the defects this round fixes. The claims verify on their frozen predicates
+by re-derivable commands only.
+
+### Planned for round 54 (not frozen)
+
+1. **depth:verifiability (4, lowest):** the equality limb now travels with the tree on this host; the next lane-side
+   lever is the r52-planned figure-audit sibling (re-deriving counting commands recorded in SCORECARD move-log rows) or
+   an explicit decision that those stay closure-audited; the 67 host-bound recheck lines, the 3 cwd_fail lines and the
+   limb-mutation replay's python3 dependency stay operator-owned (L0 kasegi round-50/46 unanswered) and must NOT be
+   re-declared as a lane target.
+2. **coverage (8):** the next frontier row must clear the extended pre-freeze screen; the two recorded leads are
+   OpenSSF Scorecard (repo security health; screen against held rows before opening) and the CISA ADP list page (a check
+   on F32's scope limit); the S085 capture's own external-schema references (cvss-v*.json, ssvc-v2.0.3.json) are a
+   further lead family if a future claim needs the referenced vocabulary.
