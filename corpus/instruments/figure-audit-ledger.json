@@ -137,6 +137,81 @@
    "rev": "32782bd6b564f80454af853b38868603a4140e79",
    "derive": "git show 32782bd6b564f80454af853b38868603a4140e79:corpus/instruments/knowledge-expected.txt | awk '/figure-audit/{n++} END{print n+0}'",
    "want": "0"
+  },
+  {
+   "id": "frontier-rows-r55",
+   "record": ".ufo/waves/round-56/controls/do-nothing-c2-r56.txt FRONTIER-CENSUS rows=36 at the base, measured at the r55 tip (c2-counter-final-r55.txt rows=36); the SCORECARD round-55 move-log quotes rows=36 (folded in by round-56 C1)",
+   "recorded": "36",
+   "rev": "133c575394099abf28ddf1b0125c53aefde3e0fa",
+   "derive": "git show 133c575394099abf28ddf1b0125c53aefde3e0fa:corpus/README.md | grep -cE '^\\| F[0-9]+ \\|'",
+   "want": "36"
+  },
+  {
+   "id": "registry-rows-r55",
+   "record": ".ufo/waves/round-56/controls/do-nothing-c2-r56.txt FRONTIER-CENSUS registry=87 at the base (r55 tip state); the SCORECARD round-55 move-log quotes registry=87 (folded in by round-56 C1)",
+   "recorded": "87",
+   "rev": "133c575394099abf28ddf1b0125c53aefde3e0fa",
+   "derive": "git show 133c575394099abf28ddf1b0125c53aefde3e0fa:corpus/SOURCES.md | grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|'",
+   "want": "87"
+  },
+  {
+   "id": "entries-r55",
+   "record": ".ufo/waves/round-55/controls/c2-counter-final-r55.txt 'entries=39 pass=6' - the entry-record count over the F-row entry cells at the r55 tip (folded in by round-56 C1)",
+   "recorded": "39",
+   "rev": "133c575394099abf28ddf1b0125c53aefde3e0fa",
+   "derive": "git show 133c575394099abf28ddf1b0125c53aefde3e0fa:corpus/README.md | grep -E '^\\| F[0-9]+ \\|' | awk -F'|' '{n=split($5,p,\",\"); s+=n} END{print s}'",
+   "want": "39"
+  },
+  {
+   "id": "knowledge-expected-r55",
+   "record": ".ufo/waves/round-55/controls/c2-counter-final-r55.txt expected=74 (folded in by round-56 C1)",
+   "recorded": "74",
+   "rev": "133c575394099abf28ddf1b0125c53aefde3e0fa",
+   "derive": "git show 133c575394099abf28ddf1b0125c53aefde3e0fa:corpus/instruments/knowledge-expected.txt | grep -c '^corpus/knowledge/'",
+   "want": "74"
+  },
+  {
+   "id": "knowledge-files-r55",
+   "record": ".ufo/waves/round-56/controls/do-nothing-c2-r56.txt knowledge files count 74 at the base (r55 tip state) (folded in by round-56 C1)",
+   "recorded": "74",
+   "rev": "133c575394099abf28ddf1b0125c53aefde3e0fa",
+   "derive": "git ls-tree --name-only 133c575394099abf28ddf1b0125c53aefde3e0fa -- corpus/knowledge/ | grep -c '\\.md$'",
+   "want": "74"
+  },
+  {
+   "id": "census-fresh-literal-r55",
+   "record": ".ufo/waves/round-55/controls/gate-final-r55.txt line 8 - the receipt's own printed freshness limb; the filed prose 'CENSUS-FRESH=ok' (r55 report Sources & frontier, SCORECARD r55 census cell, LOG r55 entry) is superseded by the DF-3 erratum .ufo/waves/round-56/controls/df3-census-erratum.md",
+   "recorded": "stale (the receipt's printed limb; the filed prose ok superseded)",
+   "derive": "grep -oE 'CENSUS-FRESH=[a-z]+' .ufo/waves/round-55/controls/gate-final-r55.txt | head -1 | cut -d= -f2",
+   "want": "stale"
+  },
+  {
+   "id": "census-internal-r55-receipt",
+   "record": ".ufo/waves/round-55/controls/gate-final-r55.txt limb-1 summary 'internal=1118' - the committed pair of record at the r55 tip (pre-receipt generation); the post-receipt fixed point is 1119 (see census-fixedpoint-internal-r55); the SCORECARD r55 census cell quotes 1118 correctly for the pair, its freshness literal was the wrong limb (DF-3 erratum)",
+   "recorded": "1118",
+   "derive": "grep -oE 'internal=[0-9]+' .ufo/waves/round-55/controls/gate-final-r55.txt | head -1 | cut -d= -f2",
+   "want": "1118"
+  },
+  {
+   "id": "census-gone-r55-receipt",
+   "record": ".ufo/waves/round-55/controls/gate-final-r55.txt limb-1 summary 'gone=3883' - the committed pair of record at the r55 tip (pre-receipt generation); the post-receipt fixed point is 3882 (see census-fixedpoint-gone-r55)",
+   "recorded": "3883",
+   "derive": "grep -oE 'gone=[0-9]+' .ufo/waves/round-55/controls/gate-final-r55.txt | head -1 | cut -d= -f2",
+   "want": "3883"
+  },
+  {
+   "id": "census-fixedpoint-internal-r55",
+   "record": ".ufo/waves/round-56/controls/df3-fixedpoint-r55tip.txt - the DF-3 fixed-point receipt over the reconstructed r55 tip containing the committed r55 receipt: the post-receipt regeneration reads internal=1119 (tail -1 = the last, fixed-point run); pinned by the DF-3 erratum",
+   "recorded": "1119",
+   "derive": "grep -oE 'internal=[0-9]+' .ufo/waves/round-56/controls/df3-fixedpoint-r55tip.txt | tail -1 | cut -d= -f2",
+   "want": "1119"
+  },
+  {
+   "id": "census-fixedpoint-gone-r55",
+   "record": ".ufo/waves/round-56/controls/df3-fixedpoint-r55tip.txt - the DF-3 fixed-point receipt over the reconstructed r55 tip containing the committed r55 receipt: the post-receipt regeneration reads gone=3882 (tail -1 = the last, fixed-point run); pinned by the DF-3 erratum",
+   "recorded": "3882",
+   "derive": "grep -oE 'gone=[0-9]+' .ufo/waves/round-56/controls/df3-fixedpoint-r55tip.txt | tail -1 | cut -d= -f2",
+   "want": "3882"
   }
  ]
 }

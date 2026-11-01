@@ -1,0 +1,20 @@
+{
+ "schema_version": 1,
+ "what": "round-56 C1 RED control - the DF-3 class carried AS FILED: the round-55 freshness prose literal ('ok', superseded by the DF-3 erratum) and one two-generation figure confusion (the fixed-point gone value 3882 typed against the receipt that prints 3883). Both MUST read stale (exit 1); a green run here means the audit cannot catch the class it was extended for.",
+ "figures": [
+  {
+   "id": "red-census-fresh-prose-literal",
+   "record": "the round-55 report / SCORECARD r55 census cell / LOG r55 entry prose literal AS FILED (superseded by .ufo/waves/round-56/controls/df3-census-erratum.md)",
+   "recorded": "ok (the filed prose, superseded)",
+   "derive": "grep -oE 'CENSUS-FRESH=[a-z]+' .ufo/waves/round-55/controls/gate-final-r55.txt | head -1 | cut -d= -f2",
+   "want": "ok"
+  },
+  {
+   "id": "red-census-gone-generation-confusion",
+   "record": "the two-generation confusion: the post-receipt fixed-point gone value typed against the receipt whose printed limb reads 3883 (the pre-receipt pair of record)",
+   "recorded": "3882 (the fixed-point value, wrong receipt)",
+   "derive": "grep -oE 'gone=[0-9]+' .ufo/waves/round-55/controls/gate-final-r55.txt | head -1 | cut -d= -f2",
+   "want": "3882"
+  }
+ ]
+}

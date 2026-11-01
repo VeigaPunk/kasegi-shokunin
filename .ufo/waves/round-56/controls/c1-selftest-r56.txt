@@ -1,0 +1,19 @@
+# round-56 C1 selftest receipt
+run-utc=2026-11-01T16:06:28Z
+
+$ python corpus/instruments/figure-audit.py --selftest
+selftest case=ok-ledger exit=0 want=0 verdict=pass
+selftest case=stale-literal exit=1 want=1 verdict=pass
+selftest case=derive-fails-fail-closed exit=1 want=1 verdict=pass
+selftest case=token-boundary-34-vs-340 exit=1 want=1 verdict=pass
+selftest case=unreadable-ledger-exit-2 exit=2 want=2 verdict=pass
+selftest cases=5 failures=0
+[exit=0]
+
+$ grep -c "\"id\"" corpus/instruments/figure-audit-ledger.json   # the grown ledger
+27
+[exit=0]
+
+$ git show 77a139449d404bbeed40f5cff51daa0c6b0367ce:corpus/instruments/figure-audit-ledger.json | grep -c "\"id\""   # still 17 at the carry-in tip (the ledger lands with C1)
+17
+[exit=0]
