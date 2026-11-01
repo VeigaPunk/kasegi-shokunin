@@ -1,0 +1,23 @@
+# round-56 DF-3 fixed-point receipt - the census pair regenerated over a reconstruction of the round-55 tip (133c575) that CONTAINS the committed round-55 gate receipt, reproducing the routed DF-3 defect end to end and the one-iteration convergence
+run-utc=2026-11-01T15:53:49Z
+
+# reconstruction (scratch, disposable; lane bytes untouched): a full copy of the lane worktree minus .git/__pycache__, with (a) the post-tip tracked file corpus/lessons/round-55-verifier-spotcheck.md REMOVED (it landed at e166f1b, one commit after the tip; the verifier's tree did not contain it) and (b) the real .git directory INCLUDED (the corpus cites .git and .git/ as relative paths; they resolve INTERNAL on any real worktree disk, the verifier's included - their exclusion reads 2 citations low, which the committed-pair diff named exactly)
+# provenance: the copy's committed pair before any regen - citation-survival.md sha256 ce778af4d0aa4ed47b2c045b4cc462d362fefff085428490e538550bacbab1ab, citation-survival.tsv sha256 1a38fd7d8506ba35160594ca2fb738973979e20bfcaa41ad2ee9dbbdd678387f - BOTH equal to git show 133c575 of the same paths (the round-55 pair of record); the copied receipt sha256 31ec08a998abf3b396a41a3515d9e2a9631b5d15cc6339c8b38e438016abb8c5 = the committed receipt bytes
+
+$ run A - resolve.py over the reconstruction with the round-55 receipt MOVED OUT (the pre-receipt generation = the committed pair state)
+distinct=5013 resolves=12 mirror=0 internal=1118 other=0 gone=3883 skill=131/701 corpus=0/0 all=1130/5013
+[run-A expect: distinct=5013 resolves=12 mirror=0 internal=1118 other=0 gone=3883 skill=131/701 corpus=0/0 all=1130/5013 - the committed pair figures]
+
+$ run B - the receipt restored, first regen
+distinct=5013 resolves=12 mirror=0 internal=1119 other=0 gone=3882 skill=131/701 corpus=0/0 all=1131/5013
+[run-B expect: internal=1119 gone=3882 all=1131/5013 - exactly ONE citation flips GONE->INTERNAL: the receipt path the round-55 lesson cites - the routed DF-3 root cause, reproduced]
+
+$ run C - second regen over the unchanged tree (the fixed point)
+distinct=5013 resolves=12 mirror=0 internal=1119 other=0 gone=3882 skill=131/701 corpus=0/0 all=1131/5013
+[run-C expect: identical to run B]
+
+$ python corpus/instruments/census-freshness-check.py <reconstruction>  # the pair now = the fixed-point regeneration
+CENSUS-FRESH=ok files=2
+[exit=0]
+
+# verdict: the round-55 committed pair was the PRE-receipt generation (run A figures = its bytes); the true fixed point of the r55 tip is the POST-receipt generation (internal=1119 gone=3882 all=1131/5013 = 22.56%, distinct=5013 resolves=12 unchanged) - exactly the closure verifier's section-3 numbers; one regeneration after the receipt exists converges, and the freshness gate reads ok at that fixed point. The round-56 lane fix: the final gate receipt is produced by a true tee so the pair regenerated inside it is already the fixed-point generation, and the erratum + figure-audit ledger entries (census-fresh-literal-r55 stale, 1118/3883 pre-receipt, 1119/3882 fixed point) pin both generations machine-checkably.
