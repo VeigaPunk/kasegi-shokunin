@@ -18,8 +18,8 @@ capture-binding run (all in `.ufo/waves/round-54/controls/c2-standin-dryrun-r54.
 freeze commit's receipts); (b) the C1 receipts — the selftest, the red control over the r53
 literals AS FILED, and the first green lane run, whose fail-closed read-only limb rejected ledger
 entry `knowledge-files` (raw output quoted in the commit message and in the receipt history below);
-(c) the routed-defect verification greps (`controls/d53-base-greps-r54.txt`). Five rows, two mined
-from the routed carry-in and three caught this round before their data landed:
+(c) the routed-defect verification greps (`controls/d53-base-greps-r54.txt`). Six rows, two mined
+from the routed carry-in and four caught this round (three before their data landed, one at the round-end census gate):
 
 | class | evidence pointer | captured-by | fix |
 |---|---|---|---|
@@ -28,6 +28,7 @@ from the routed carry-in and three caught this round before their data landed:
 | sorted-list insert positioned by eye, not by sort (own, pre-freeze) | first stand-in build inserted `openssf-scorecard-checks.md` AFTER `operator-queue.md`; `LC_ALL=C sort -c` rejected the position ("disorder: corpus/knowledge/openssf-scorecard-checks.md" — 'openssf' < 'operator' byte-wise); nothing was committed | the R25/R34 stand-in discipline itself — the pre-freeze literal dry-run the round-53 lesson mandated | insert moved BEFORE `operator-queue.md`, `sort -c` clean; rule going forward: a sorted-list insert is verified by `sort -c` on the patched bytes, never by reading the neighbors |
 | manifest quote anchor written from memory, not from `grep -nF` (own, pre-freeze) | the S086 manifest's Q2 anchor was first written as 7 ("This page describes…" read as the 7th line); the dry-run `source-recheck` printed `S086:Q2 OK occurrences=1 anchor=7-BROKEN` (true line: 5); caught before any commit | `source-recheck.py`'s anchor limb, working as designed | anchor re-derived with `grep -nF` (→ 5), all 14 assertions then `anchor=N-ok`; rule: manifest anchors come from `grep -nF` output pasted verbatim, never from counting lines by eye |
 | instrument read-only allow-list incomplete, so a legitimate derive was rejected (own, fail-closed direction) | first `figure-audit.py` green run exited 2: `FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=knowledge-files` — the ledger's `git ls-tree --name-only …` head was not in READ_ONLY_HEADS; the limb failed CLOSED on a legitimate read-only command, never open on a bad one | the instrument's own read-only limb on its first lane run, before the C1 commit | head `git ls-tree ` added to the allow-list; all three receipts (selftest 5/0, red 2-stale exit 1, green 9-ok exit 0) regenerated over the FIXED bytes; rule: an allow-list is enumerated from the ledger's actual command heads, not from a remembered set |
+| registry row landed with the wrong cell count (12 vs the established 11-field row shape) | the round-end fleet census validate printed `kasegi E01 S086 fields=12` (exit 1) after the C2 commit; the S085 row prints 11 cells; the two extra cells (a separate not-covered cell and a screen cell) were merged into the scope and flip cells, landing the 11-field shape, validate exit 0 | the fleet census validator's E01 limb at the round-end gate - the one check that reads a SOURCES row's SHAPE rather than its content | cells merged in place (same line count, R6-safe; the row was this round's own new bytes, never line-cited by anything); rule: a new registry row is dry-run through `sources-census.sh validate` BEFORE landing, not only at round end |
 
 ## Gate
 
