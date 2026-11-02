@@ -2450,3 +2450,10 @@ Round60 demonstration sealed at a45efc84655fe8c64d803788e77868c954b6cbb0:
 This counts work only, including four withheld mismatch records; independent
 per-case causal verdict is the correctness detector. Raw mean251.1→245.7,
 40→41 blocks; prior SKILL bytes retained, no numeric gain or self-admission.
+
+Round60 independent performance result: reviewer `/root/judge_kasegi_round60`
+reports11/11 first cases supported,40 assessed inputs plus4 withheld mismatch
+fields; all3 frozen negative candidates rejected. Source curation/no-harm closure
+still pending, so capability not yet admitted. Final guard measurement at
+4a1b7eadf55e1b1359c65fc57de58f864a317d40 reports unexpected-results0 in
+`.ufo/waves/round-60/controls/final.txt`; historical prefixes and source pins intact.

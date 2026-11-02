@@ -2678,3 +2678,10 @@ Round60 measurement interpretation appended after first-answer seal: lesson and
 SCORECARD name exact a45efc8 answer commit, structural counts vs causal judgment,
 raw density251.1→245.7, and actual source failure controls. Independent review
 pending; no claim/capability verdict inferred from guard success.
+
+Round60 independent first review received: all11 first cases pass causal rubric,
+40 assessed inputs plus4 withheld mismatch fields (not44 factual successes), all3
+frozen negative candidates rejected. `/root/judge_kasegi_round60` final source/
+no-harm verdict pending. Final guard receipt measures4a1b7ea, unexpected-results0;
+disk guard still53%, capture/wave artifacts below1MB, export187MB removed by trap.
+No first-answer change or self-admission. Receipt and census pair committed together.

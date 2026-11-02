@@ -67,3 +67,14 @@ missing S094 exit2 and corrupted S094 exit1. Quotes use exact anchors for repeat
 fragments; source-binding.txt is not falsely described as all-unique substrings.
 Raw density measured251.1→245.7 (40→41 blocks), inherited score9 held; this is a
 real proxy decrease requiring outside no-harm judgment, not unchanged by fiat.
+
+## Independent first-pass performance result (not final admission)
+
+Parent-appointed `/root/judge_kasegi_round60` reviewed sealed a45efc8 answers at
+2026-11-02T21:54:25Z: all11 cases pass substantive fact-to-input reasoning,
+model identity, compatible paths and uncertainty. This is40 assessed input fields
+plus4 withheld supplier-mismatch fields, NOT44 factual input successes. All3
+prospective negative candidates rejected under same rubric; no correction asked.
+Evidence currently parent-owned audit/kasegi60-independent/first-review.json and
+negative-control-review.md; parent lands final review separately. Reviewer
+source admit/reject and no-harm closure still pending. No author capability admission.
