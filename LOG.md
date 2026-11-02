@@ -2618,3 +2618,7 @@ S092/new F01 depth entry `corpus/knowledge/cvss-v4-evidence-assessment.md`, SKIL
 ## Round 59 — first independent-challenge answers sealed
 
 Parent delivered only `.ufo/waves/round-59/challenge.json` (ten prose scenarios; SHA256 a89946f6edc53e213198d2b1116ebfbe7b8bac60d076b6641cc44f2490d68623). Author did not read adjacent reviewer oracle/files. `first-answers.json` supplies fifty explicit metric assessments, causal/source reasoning, exact fragments, missing facts and boundaries. `author-assess.py` merely serializes manually written judgments and checks fragment presence, NOT semantic correctness or an automatic classifier. First answers are committed before reviewer feedback and will not be edited. Independent judgment pending; no pass count asserted.
+
+## Round 59 — committed guard verification and score interpretation
+
+`controls/final-first.txt` under round59 measured commit 89ab7caf5f12875960a92f87e485e556d42fafb8: FINAL unexpected-results=0, inherited host-bound audits retained as expected exit1; byte-prefix/freeze guards pass. Original diskguard with actual workspace root passes at53% (`controls/disk.txt`), exported scratch186MB and removed by trap, under1GB. SCORECARD records dossier structure only, not an author-assigned accuracy score. Independent correctness/admission and no-harm remain pending. Citation census regenerated from actual lane; no source-availability improvement claimed.

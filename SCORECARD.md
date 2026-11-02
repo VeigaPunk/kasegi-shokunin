@@ -2398,3 +2398,27 @@ Only claim C1, lowest depth:verifiability (4→4, delta 0, nominal capability un
 Before: assessor absent at deb4738704329a0670395b2756d247c0fb882b0e (`controls/before.txt`); absent-engine harness exits 2 in `controls/pre-freeze.txt`. Absence is not historical failure on the new task. After: first scored battery 35/35, eight semantic mutants killed, four substitute CLI controls rejected; commands and outputs in `.ufo/waves/round-58/controls/first-scored.txt`, `mutations-first.txt`, `pre-freeze.txt`. Final committed measurement will be recorded separately in `controls/final.txt` with its measured revision.
 
 Non-target density disclosure: 38→39 blocks, mean 261.6→257.0; original SKILL byte prefix preserved. Density score stays 9, NOT a claim the raw mean was unchanged; independent no-harm judgment required. New block is bounded operational instruction, not metric padding. Other axes unscored; source-root loss and operator-owned holds remain. Plan after this round: await outside verdict and parent closure; no round59 claim or dispatch authorized here.
+
+## Round 59 — C1 CVSS evidence assessment dossier (independent acceptance pending)
+
+One claim, lowest depth:verifiability. Base f17171eac43ce5df67870ef038dbe92273a3a5f3;
+contract freeze 106a1c6; first answers 89ab7caf5f12875960a92f87e485e556d42fafb8.
+Legacy citation-availability score 4→4, delta0, nominal under R58. Coverage 8 held;
+density 9 held, raw mean 257.0→251.0 disclosed, not called unchanged. No promotion,
+new frontier, lost-source recovery, full CVSS score or target-testing claim.
+
+Before: F01 held nomenclature but no PR/UI/subsequent-impact decision dossier in
+its SKILL/knowledge surface; controls/before.txt preserves the actual limited sweep.
+This is not a prior accuracy measurement. After: first-answers.json contains ten
+manual case assessments / fifty metric judgments on reviewer-authored unseen prose.
+Count structure using `python3 -c 'import json; a=json.load(open(".ufo/waves/round-59/first-answers.json")); print(len(a),sum(len(x["assessments"]) for x in a))'`.
+This command counts work, NOT correctness; independent per-case causal judgment
+under CONTRACT.md is the claim detector. Its pass counts remain pending and only
+that outside review can admit the capability. No automatic classifier shipped.
+The serializer is not a semantic evaluator; correct labels alone cannot pass.
+
+S092-backed knowledge and SKILL deepen existing F01. Three prospective bad judgments
+must be rejected by the same independent rubric. Both actual source-capture and
+short-quote errors remain visible in the lesson and controls. Final committed export
+receipt measures preserved historical prefixes and inherited guard limits. Await
+outside admit/reject, case and no-harm judgment; author does not start round60.
