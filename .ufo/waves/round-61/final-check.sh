@@ -39,6 +39,10 @@ for p in ['.ufo/waves/round-61/CONTRACT.md','.ufo/waves/round-61/freeze.json','.
 old=subprocess.check_output(['git','show',base+':corpus/SOURCES.md']).decode().splitlines();new=pathlib.Path('corpus/SOURCES.md').read_text().splitlines();it=iter(new);assert all(any(x==y for y in it) for x in old);print('SOURCES existing-lines-preserved=true')
 assert hashlib.sha256(pathlib.Path('.ufo/waves/round-61/first-answers.json').read_bytes()).hexdigest()=='4b36e8be40f26836431f4f60c244d222ad561fa281578aba51c7525272a8a54c'
 print('FIRST-ANSWERS unchanged=true')
+expected={x.strip() for x in pathlib.Path('corpus/instruments/knowledge-expected.txt').read_text().splitlines() if x.strip() and not x.startswith('#')}
+actual={str(x) for x in pathlib.Path('corpus/knowledge').glob('*.md')}
+assert expected==actual,(expected-actual,actual-expected)
+print('KNOWLEDGE-INVENTORY missing=0 unexpected=0')
 print('source-rows-before='+str(sum(x.startswith('| S') and x[3:6].isdigit() for x in old))+' after='+str(sum(x.startswith('| S') and x[3:6].isdigit() for x in new)))
 pathlib.Path('base-skill.md').write_bytes(subprocess.check_output(['git','show',base+':SKILL.md']))
 

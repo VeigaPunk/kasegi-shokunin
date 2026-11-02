@@ -2737,3 +2737,11 @@ subsequent explicit add failed on its now-absent old path, so its broad message
 was inaccurate about teaching landing. This append corrects that attribution;
 teaching/curation are landed in the following commit, not silently swept or amended.
 S107 quote count was checked with wc-w:12, correcting the uncommitted13 annotation.
+
+## Round61 — final inventory guard and metadata boundary
+Preflight58cc325 expected exits all matched but its inherited recheck exit1
+contained a new missing1/unexpected1 inventory path error. Corrected the row to
+corpus/knowledge/cwe-root-cause-assessment.md and added exact inventory-set
+assertion; preflight retained. Measured raw density245.7→240.6, score held9,
+no-harm review pending. All author prose finalized before last census pass;
+remaining final receipt/census pair records measured revision and exact outputs.

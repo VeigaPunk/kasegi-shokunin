@@ -78,3 +78,15 @@ commit4df8045 therefore contained only the previously staged rename, despite a
 broad message. Following commit lands the teaching and this correction; no amend.
 The uncommitted S107 annotation13 was corrected to measured12 (`wc -w` over
 its quote); the quote text itself did not change. Existing R56 applies.
+
+Final-preflight review found another own metadata defect: the new knowledge-
+expected row omitted its corpus/knowledge/ prefix. The inherited recheck exit1
+masked it if read only as an exit; its output explicitly reports missing1 and
+unexpected1. Corrected the inventory row and added exact set equality to the
+final guard, so this defect cannot hide behind the expected inherited failure.
+Preflight58cc325 is retained. Raw density245.7→240.6 (41→42 blocks), old SKILL
+prefix intact; no density padding or numeric score gain. Outside no-harm judgment
+is still required. Source census97→107 (A87→97, B5/C5 held; mined76→85,
+rejected21→22), original parser before/after exits0. Counting expression:
+`rows=[x.split('|') for x in text.splitlines() if re.match(r'^\| S\d+ \|',x)]`;
+tier/status Counter on stripped columns4/8, over git-show base6670dfe and tip.
