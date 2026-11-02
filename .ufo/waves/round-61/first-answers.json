@@ -1,0 +1,284 @@
+[
+  {
+    "id": "K61-A",
+    "causal_chain": "The unsigned16 multiplication wraps65544 to8, producing an undersized allocation; writing the original record count then crosses that allocation. Arithmetic wrap is the demonstrated causal precursor, incorrect allocation size intermediate, and out-of-bounds writes resultant. This is not a crash-only guess.",
+    "selected_mappings": [
+      {
+        "cwe": "CWE-190",
+        "evidence": [
+          "For a permitted count of 8193 the mathematical product 65544 is stored as 8; no overflow check exists."
+        ],
+        "reasoning": "Primary root: representational wrap in allocation arithmetic matches190; S099 relationship notes explicitly allow overflow to cause smaller allocation.",
+        "abstraction": "Base",
+        "mapping_usage": "ALLOWED",
+        "source": "S099: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      },
+      {
+        "cwe": "CWE-131",
+        "evidence": [
+          "It allocates those 8 bytes successfully and then writes 8193 records of 8 bytes each using the original count."
+        ],
+        "reasoning": "Intermediate size defect: calculation gives storage insufficient for the records.131 supplements190 as a chain member, not an independent root.",
+        "abstraction": "Base",
+        "mapping_usage": "ALLOWED",
+        "source": "S100: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      },
+      {
+        "cwe": "CWE-787",
+        "evidence": [
+          "A trace confirms writes past that allocation."
+        ],
+        "reasoning": "Resultant write, not the sole root explanation. S101 requests CanFollow/root analysis and child review;190 is known here. No storage-region subtype established.",
+        "abstraction": "Base",
+        "mapping_usage": "ALLOWED-WITH-REVIEW",
+        "source": "S101: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      }
+    ],
+    "alternatives": [
+      "Reporting only787 hides the established arithmetic cause.119 is discouraged, and no stack/heap subtype is supported. A narrower outside entry might refine the chain after review, but is not established here."
+    ],
+    "missing_facts": [
+      "For any more specific write subtype, what storage region and copying mechanism apply?",
+      "Actual exploitability is not established; it is not needed to distinguish the documented arithmetic chain."
+    ],
+    "unsupported_conclusions": [
+      "No claim of practical exploitability or privileges required.",
+      "Do not classify all chain members as three independent bugs."
+    ]
+  },
+  {
+    "id": "K61-B",
+    "causal_chain": "Transformation expansion requires120 bytes but sizing allocates40; exact arithmetic excludes wrap as described. The sizing defect causes the confirmed out-of-bounds writes. Binary output supplies no web-page mechanism.",
+    "selected_mappings": [
+      {
+        "cwe": "CWE-131",
+        "evidence": [
+          "Its sizing pass allocates 40 bytes, although its documented transformation expands each of these 40 characters into three output bytes."
+        ],
+        "reasoning": "Primary supported sizing defect; S100 maintenance notes explicitly include expansion during transformations.",
+        "abstraction": "Base",
+        "mapping_usage": "ALLOWED",
+        "source": "S100: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      },
+      {
+        "cwe": "CWE-787",
+        "evidence": [
+          "The writer performs that transformation and a trace confirms writes beyond the 40-byte allocation."
+        ],
+        "reasoning": "Downstream effect, ALLOWED-WITH-REVIEW; known131 precursor retained, no unsupported subtype.",
+        "abstraction": "Base",
+        "mapping_usage": "ALLOWED-WITH-REVIEW",
+        "source": "S101: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      }
+    ],
+    "alternatives": [
+      "190 is contradicted by exact ample-range arithmetic; title overflow is not evidence of arithmetic wrap.79 is not supported by binary-document output.20 is discouraged and obscures the transformation sizing mechanism."
+    ],
+    "missing_facts": [
+      "Which writer/storage details would justify a more specific child of787?"
+    ],
+    "unsupported_conclusions": [
+      "No integer wrap or browser interpretation inferred."
+    ]
+  },
+  {
+    "id": "K61-C",
+    "causal_chain": "Only termination and a ticket title are established. The causal operation is unknown; neither memory write nor arithmetic defect nor access-control defect follows. Administrator possession is not a necessary prerequisite or a missing-check mechanism (R67).",
+    "selected_mappings": [],
+    "alternatives": [
+      "119 is discouraged and does not turn a crash into a demonstrated memory-boundary defect.787 requires a write outside a buffer.862/863 require evidence of missing/incorrect authorization, not merely an administrator running a program."
+    ],
+    "missing_facts": [
+      "What operation and address does a trace show at failure, and what are the intended buffer bounds?",
+      "What size calculation and allocation are used, and is arithmetic wrap actually observed?",
+      "What security policy and authorization checks govern this action? Can the same import/failure occur without administrator status?"
+    ],
+    "unsupported_conclusions": [
+      "No diagnosed vulnerability, memory corruption, out-of-bounds write, arithmetic overflow or authorization root established.",
+      "Failure to diagnose is not evidence the process is safe."
+    ]
+  },
+  {
+    "id": "K61-D",
+    "causal_chain": "A write beyond intended bounds is directly observed. Its earlier causal mechanism is not observed.787 is a supported bounded weakness mapping, not a claim that the ultimate root has been resolved.",
+    "selected_mappings": [
+      {
+        "cwe": "CWE-787",
+        "evidence": [
+          "A fictional diagnostics trace records a write two bytes after the intended buffer end.",
+          "It does identify the operation as a write, not a read."
+        ],
+        "reasoning": "The description directly fits. S101 requires careful review of more specific children and CanFollow causes; the trace supports this mapping while leaving those refinements open.",
+        "abstraction": "Base",
+        "mapping_usage": "ALLOWED-WITH-REVIEW",
+        "source": "S101: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      }
+    ],
+    "alternatives": [
+      "119 is discouraged, not a safer fallback.190/131 need arithmetic or sizing evidence absent here; a read-only mapping contradicts the stated operation."
+    ],
+    "missing_facts": [
+      "What calculation selected the address and what were its operands and ranges?",
+      "Was allocation incorrectly sized or copying inadequately bounded?",
+      "What storage region and operation would support a narrower child?"
+    ],
+    "unsupported_conclusions": [
+      "No identified integer wrap, allocation-size error, stack/heap subtype, authorization cause or exploitability."
+    ]
+  },
+  {
+    "id": "K61-E",
+    "causal_chain": "Correct identity verification precedes a reset action restricted by policy to supervisors, but no permission check occurs anywhere on its complete path. Missing authorization, not missing authentication, explains the non-supervisor reset.",
+    "selected_mappings": [
+      {
+        "cwe": "CWE-862",
+        "evidence": [
+          "Complete code-path inspection shows every authenticated caller reaches the reset operation without any check of permission to reset; no upstream authorization exists."
+        ],
+        "reasoning": "Missing permission check fits862. It is Class, allowed with review, not automatically forbidden. Examine children for a more precise fit; within the frozen vocabulary no Base accurately captures this missing global-action check. Stated lack of object-id/filesystem mechanism prevents assuming those specializations.",
+        "abstraction": "Class",
+        "mapping_usage": "ALLOWED-WITH-REVIEW",
+        "source": "S105: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      }
+    ],
+    "alternatives": [
+      "863 would imply an authorization check exists but is wrong, contrary to the complete-path evidence. Authentication is explicitly correct. Class preference cannot force an unrelated Base label."
+    ],
+    "missing_facts": [
+      "If seeking an outside child, what additional implementation-specific mechanism distinguishes it from the established generic missing action check?"
+    ],
+    "unsupported_conclusions": [
+      "No authentication bypass, user-selected-object-ID mechanism or filesystem-permission defect inferred."
+    ]
+  },
+  {
+    "id": "K61-F",
+    "causal_chain": "The authorization routine exists, but its rule substitutes department membership for the required supervisor status. Trusted identity data can still be evaluated by an incorrect permission rule; this is not missing authorization.",
+    "selected_mappings": [
+      {
+        "cwe": "CWE-863",
+        "evidence": [
+          "The routine mistakenly allows the action when caller.department equals operations, regardless of supervisor status.",
+          "A non-supervisor operations employee is allowed and reset occurs."
+        ],
+        "reasoning": "Incorrect authorization matches863. Class/ALLOWED-WITH-REVIEW requires child examination; no supported more specific Base in the frozen vocabulary. Do not force an unrelated Base for its abstraction alone.",
+        "abstraction": "Class",
+        "mapping_usage": "ALLOWED-WITH-REVIEW",
+        "source": "S106: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      }
+    ],
+    "alternatives": [
+      "862 is not the best evidenced mechanism: a permission routine is present and erroneous, not absent. No spoofing or object-lookup child can be inferred."
+    ],
+    "missing_facts": [
+      "For a narrower outside child, what further implementation evidence supports its distinct mechanism?"
+    ],
+    "unsupported_conclusions": [
+      "No missing identity verification, spoofing or upstream bypass."
+    ]
+  },
+  {
+    "id": "K61-G",
+    "causal_chain": "User-controlled stored biography is emitted unneutralized into another user\u2019s web page and interpreted actively under site origin. This establishes the web-output neutralization weakness. The supervisor attribute does not establish a permission failure or necessary role.",
+    "selected_mappings": [
+      {
+        "cwe": "CWE-79",
+        "evidence": [
+          "A fictional website stores user-supplied biography text and places that same unneutralized text in a page served to another user.",
+          "In an isolated authorized test the browser interprets the biography as active page content under the site origin."
+        ],
+        "reasoning": "79 Base/ALLOWED directly fits; the stored-input flow is established, but no narrower DOM or encoding-context subtype is invented. The causal flaw is unsafe page interpretation, not the author\u2019s role.",
+        "abstraction": "Base",
+        "mapping_usage": "ALLOWED",
+        "source": "S104: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      }
+    ],
+    "alternatives": [
+      "Authorization-root proposal lacks a missing or incorrect permission-check mechanism.20 is discouraged and conflates validation with the documented output-neutralization failure."
+    ],
+    "missing_facts": [
+      "Is supervisor status actually required to submit the biography? This is unresolved, not a prerequisite assumed from possession.",
+      "Which output context would justify any more specific neutralization subtype?"
+    ],
+    "unsupported_conclusions": [
+      "No server-side permission bypass or necessary supervisor privilege inferred.",
+      "No claim of actual target vulnerability beyond the fictional evidence."
+    ]
+  },
+  {
+    "id": "K61-H",
+    "causal_chain": "The assessed rendering path treats the supplied string as text, not active page content. Neither the box label nor aggregate ranking supplies a missing neutralization mechanism; the requested79 mapping is unsupported.",
+    "selected_mappings": [],
+    "alternatives": [
+      "79 is a legitimate entry but not established by these facts. Ranking is aggregate evidence, not a cause in this instance. No alternative flaw is supported."
+    ],
+    "missing_facts": [
+      "If a different path is alleged, what concrete input-to-output flow and unsafe interpretation are observed there?"
+    ],
+    "unsupported_conclusions": [
+      "Do not label the entire dashboard safe: no other input path was assessed.",
+      "Do not map79 from the words XSS diagnostics or Top25 standing."
+    ]
+  },
+  {
+    "id": "K61-I",
+    "causal_chain": "Two separate mechanisms coexist: the settings action omits permission checks, while comments are unsafely emitted as active web content. The evidence expressly separates the paths, so neither is made a cause or consequence of the other.",
+    "selected_mappings": [
+      {
+        "cwe": "CWE-862",
+        "evidence": [
+          "A settings action omits all authorization checks even though explicit policy limits it to supervisors; complete path inspection excludes upstream checks, and a non-supervisor changes the settings."
+        ],
+        "reasoning": "Missing action authorization; Class/ALLOWED-WITH-REVIEW. Examine children, but no more specific Base mechanism is supplied within the bounded vocabulary.",
+        "abstraction": "Class",
+        "mapping_usage": "ALLOWED-WITH-REVIEW",
+        "source": "S105: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      },
+      {
+        "cwe": "CWE-79",
+        "evidence": [
+          "Separately, the ordinary comment page inserts user comments without neutralization into pages served to other users, and an isolated test confirms active-content interpretation."
+        ],
+        "reasoning": "Independent web-page neutralization defect; Base/ALLOWED. Do not suppress this demonstrated cause to give the portal a single label.",
+        "abstraction": "Base",
+        "mapping_usage": "ALLOWED",
+        "source": "S104: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      }
+    ],
+    "alternatives": [
+      "862 and79 describe independent paths, not a chain.863 is less faithful because settings checks are absent. More specific children could be investigated without pretending they are already known."
+    ],
+    "missing_facts": [
+      "What settings-action implementation details would establish a more specific authorization child, if any?"
+    ],
+    "unsupported_conclusions": [
+      "No claim that comments cause settings changes or vice versa.",
+      "No singleton label for the portal that erases the other evidenced defect."
+    ]
+  },
+  {
+    "id": "K61-J",
+    "causal_chain": "Incrementing unsigned8 count255 wraps the mathematical256 to0; code and traces connect that wrapped result to an incorrect accounting decision. No buffer operation is in this causal path.",
+    "selected_mappings": [
+      {
+        "cwe": "CWE-190",
+        "evidence": [
+          "A fictional numerical service increments an unsigned 8-bit credit count of 255 by 1, assumes the result is greater than 255, and stores 0.",
+          "That wrapped result drives an incorrect accounting decision."
+        ],
+        "reasoning": "Arithmetic exceeds representable range while logic expects growth, matching190 directly. S099 terminology warning prevents conflating this with a buffer overflow.",
+        "abstraction": "Base",
+        "mapping_usage": "ALLOWED",
+        "source": "S099: Description and Vulnerability Mapping Notes; S098 mapping guidance v1.1; pinned round61 capture"
+      }
+    ],
+    "alternatives": [
+      "20 is discouraged and is a broad ticket description, not better causal evidence than established arithmetic wrap.131/787 would require allocation or buffer-writing operations explicitly absent from the path."
+    ],
+    "missing_facts": [],
+    "unsupported_conclusions": [
+      "No allocation, out-of-bounds write or memory-corruption chain inferred.",
+      "No severity or practical exploitability inferred from the arithmetic label."
+    ]
+  }
+]

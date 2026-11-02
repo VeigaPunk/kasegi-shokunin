@@ -2711,3 +2711,13 @@ entries reopened, including ALLOWED-WITH-REVIEW Class862/863 and discouraged
 rewriting original capture bytes. Metadata note distinguishes resume from fetch.
 Parent-appointed fresh reviewer owns unseen case/oracle and independent verdict;
 one author performs sequential specialist passes, not8-agent claim. No next round.
+
+## Round61 — first assessment seal and evidence-anchor correction
+Independent challenge ec66997ac1accd66808bdebf3edde945f871c42c2b3c978621edb27db287f21d
+received from parent-appointed reviewer; only challenge read, no private oracle.
+Manual first answers preserve ten causal assessments, bounded multiple mappings,
+partial evidence and abstention. Serializer/excerpt checks are structural only.
+Own mistake: single-token S102/S103 quotes fail retained source-recheck (exit2,
+controls/source-check.txt). Frozen manifest and source bytes retained; separate
+manifest-correction01.json replaces only quote evidence, same checker exit0.
+No semantic contract/source change; original failure remains visible.
