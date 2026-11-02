@@ -2836,3 +2836,8 @@ Round63 outside source-authority correction: “current” claims qualified in e
 old-entry correction, source registry, index and SKILL as final-labelled repository
 model only. No independent published-release corroboration, no judgment old S031
 PDF never existed. Reviewer-triggered qualification preserves committed originals.
+
+Round63 final-check preparation: .ufo/waves/round-63/final-check.sh grades committed
+export, actual-host Q10, preserved prior failures and census freshness. Current
+freshness-before-final receipt records stale census while new corpus appends are
+in progress; regeneration intentionally follows reviewer evidence and final appends.
