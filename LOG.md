@@ -2721,3 +2721,19 @@ Own mistake: single-token S102/S103 quotes fail retained source-recheck (exit2,
 controls/source-check.txt). Frozen manifest and source bytes retained; separate
 manifest-correction01.json replaces only quote evidence, same checker exit0.
 No semantic contract/source change; original failure remains visible.
+
+## Round61 — teaching, source curation and retained repair lineage
+New knowledge/SKILL/index/province appends deepen F05, not a new frontier quota.
+S098–S106 scoped admits and S107 universal119 fallback reject; no prior source
+row changed. Quote correction's first location triggered orphan-capture (exit1);
+relocated correction manifest plus exact capture copies to wave/source-correction01
+and replayed source-check/capture-binding exit0. Original red and commitfe875cc
+location retained; no frozen artifact/source bytes rewritten. Lesson records both
+own mistakes, actual role adaptation, no-harm limits and pending outside verdict.
+
+## Round61 — staging correction
+Commit4df8045 contains only the already-staged correction-manifest rename: the
+subsequent explicit add failed on its now-absent old path, so its broad message
+was inaccurate about teaching landing. This append corrects that attribution;
+teaching/curation are landed in the following commit, not silently swept or amended.
+S107 quote count was checked with wc-w:12, correcting the uncommitted13 annotation.

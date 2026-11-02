@@ -2481,3 +2481,21 @@ not general ecosystem/Git logic; kernel evidence remains a fictional training ai
 not actual kernel vulnerability validation. Neither correction earns new round60
 capability or metric credit. Round59 remains rejected with no admitted capability;
 post-feedback learning does not rescue its first frozen criterion.
+
+## Round61 — C1 bounded CWE causal evidence assessment (review pending)
+
+Only claim on lowest depth:verifiability, nominal R58 acquisition, score4→4.
+Base6670dfe4604f893e6ad0000cc94b5b6f390069e5; freeze03e87089ece1d76fb919bc14b1c88e868b441462;
+first answers fe875cc9b4fce87e1242cc882314a184ee742f31. F05 deepened, no new
+coverage row; coverage8 and density9 held, raw density movement disclosed in final
+receipt. Before absent dossier at corpus/knowledge/cwe-root-cause-assessment.md,
+not a baseline accuracy estimate. After10 manual fictional case assessments with
+12 selected mapping records; structural count command in round61 lesson. Correctness
+is the independent causal/acceptable-set rubric, never schema or label agreement.
+Parent-appointed reviewer reports10/10 original cases supported; final teaching,
+source admit/reject and no-harm review pending, no capability row self-admitted.
+Constant-label, keyword and ranking substitutes are prospective bad policies,
+not historical mistakes. Own quote-anchor and correction-location failures are
+retained and repaired without changing sources, first answers or frozen rubric.
+No source-availability score gain, automatic classifier, general CWE mastery,
+live finding, promotion or next-round authorization claimed.

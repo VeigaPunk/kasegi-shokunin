@@ -939,3 +939,9 @@ root surface. Independent prose-scenario assessment, not automatic scoring or re
 `knowledge/ssvc-deployer-assessment.md` (S094–S096) adds pinned DT_DP1.0.0 paths
 and evidence-to-context interpretation to F20's overview-only scope. No new F-row,
 no capability admission before independent causal review; S097 rejects universal use.
+
+## Round61 F05 deepening — root-cause evidence judgment
+`knowledge/cwe-root-cause-assessment.md` (S098–S106) adds a bounded manual
+causal mapping workflow beyond the existing Top25/ranking and crosswalk notes.
+No new frontier row or domain-surface denominator is claimed. Demonstration and
+independent acceptance remain in the round61 evidence packet, not this index.

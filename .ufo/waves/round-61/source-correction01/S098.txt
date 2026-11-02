@@ -1,0 +1,144 @@
+CWE -
+CVE → CWE Mapping "Root Cause Mapping" Guidance
+Common Weakness Enumeration
+Celebrating 20 years of community-developed cybersecurity weakness knowledge!
+Home > Documents >
+CVE → CWE Mapping "Root Cause Mapping" Guidance
+ID Lookup:
+Home
+About ▼
+Who We Are
+User Stories
+History
+Documents
+Videos
+Learn ▼
+Basics
+Root Cause Mapping ►
+Guidance
+Quick Tips
+Examples
+How to Contribute Weakness Content
+FAQs
+Glossary
+Access Content ▼
+Top-N Lists ►
+Top 25 Software
+Top Hardware
+Top 10 KEV Weaknesses
+CWE List ►
+Current Version
+Reports
+Visualizations
+Releases Archive
+Downloads
+REST API
+Community ▼
+News ►
+Current News
+Blog
+Podcast
+News Archive
+CWE Board
+Working Groups & Special Interest Groups
+Email Lists
+Search ▼
+Search CWE List
+Search Website
+CWE Glossary Definition
+CVE → CWE "Root Cause Mapping" Guidance
+What is Root Cause Mapping? |
+Overview |
+CWE Resources & Entry Structure |
+Mapping Methodologies |
+Examples |
+Quick Tips
+This guidance is intended to help CVE Numbering Authorities (CNAs) and those who produce or analyze CVE Records to better identify and disclose the root causes of vulnerabilities . It is also likely to be helpful to those who are analyzing vulnerabilities that are not tracked by the CVE Program.
+What is Root Cause Mapping?
+Root cause mapping is the identification of the underlying cause(s) of a vulnerability. This is best done by correlating CVE Records and/or bug or vulnerability tickets with CWE entries. Today, this is not done accurately at scale by the vulnerability management ecosystem.
+Accurate root cause mapping is valuable because it directly illuminates where investments, policy, and practices can address the root causes responsible for vulnerabilities so that they can be eliminated. This applies to both industry and government decision makers. Additionally, it enables:
+Driving the removal of classes of vulnerabilities: Root cause mapping encourages a valuable feedback loop into a vendor’s SDLC or architecture design planning
+Saving money: the more weaknesses avoided in your product development, the less vulnerabilities to manage after deployment
+Trend analysis (e.g., how big of a problem is memory safety compared to other problems like injection)
+Further insight to potential “exploitability” based on root cause (e.g., command injection vulnerabilities tend to see increased adversary attention, be targeted by certain actors)
+Organizations demonstrating transparency to customers how they are targeting and tackling problems in their products
+Overview – What Is CWE?
+Common Weakness Enumeration (CWE™) is a community-developed list of common software and hardware weaknesses. A “weakness” is a condition in a software, firmware, hardware, or service component that, under certain circumstances, could contribute to the introduction of vulnerabilities. Referred to as CWEs, weaknesses are named, defined, and given a unique identifier on the CWE website. Weaknesses can occur in the design, implementation, or other phases of a product lifecycle. Many vulnerabilities have the same CWE as their root cause, independent of vendor, coding language, etc.
+Weakness vs. Vulnerability Language
+As defined by the CVE Program, a vulnerability is an instance of one or more weaknesses in a Product that can be exploited, causing a negative impact to confidentiality, integrity, or availability; a set of conditions or behaviors that allows the violation of an explicit or implicit security policy.
+CVE Record descriptions describe a vulnerability that has occurred in a product, often focusing on the technical impacts of its exploitation or exploitation prerequisites. Examples of technical impact phrases include “bypass authorization”, “gain privileges”, or “execute malicious code”. They describe the result of the vulnerability and its attack vectors, not the root cause(s).
+Examples of exploitation prerequisite phrases include “unauthorized user”, “unauthenticated remote attacker”, or “admin user”. While these phrases could be interpreted as being related to access control CWEs, they are not describing a weakness.
+In contrast, accurately mapping a CVE Record to a CWE requires information describing an issue that led to the vulnerability. Examples of weakness language include “missing authentication”, “improper bounds check”, or “stack-based buffer overflow”.
+Weakness
+Prerequisite
+Technical Impact
+Insecure Direct Object Reference (IDOR) in MyProduct 10.1 to 10.6 allows an unauthenticated attacker to read sensitive data and execute specific commands and functions with full admin rights via the page parameter to the /api/xyz API endpoint.
+Back to top
+CWE Resources & CWE Entry Structure
+It is helpful to be familiar with how CWE defines weaknesses before diving into different ways of mapping. Having a clear grasp on these crucial components will help the overall mapping experience.
+Glossary
+To provide a common language, CWE has a glossary of terminology derived from vulnerability theory.
+Terms can often mean different things based on the situation and the context in which they are used, as well as individuals’ skills and experience in vulnerability management, or other related things that introduce subjectivity. Becoming familiar with these terms can help streamline utility of the CWE corpus.
+Common and Widely Used Terms in CWE
+The following highlights some of the most common terms in CWE, which are chosen based on their prevalence within CWE, vulnerability theory, and industry. They are presented here to alleviate confusion surrounding their meanings. This will lead to the selection of accurate, precise CWE(s) for root cause mapping.
+Important characteristics of weaknesses: Behavior, Property, Technology, Resource
+Behavior qualifiers: Improper, Incorrect, Missing
+Protection mechanisms: Authentication, Authorization, Neutralization, Permissions
+CWE Relationships
+CWE contains over 900 weaknesses which range from abstract and conceptual to precise and technology specific. A precise weakness will have a “parent” weakness that is more abstract, which may also have “parent” weaknesses, and so on.
+There are four types of weakness abstractions: Pillar, Class, Base, and Variant.
+These abstraction types correlate with the amount of specific information in the CWE. This specific information includes dimensions such as behavior, property, resource, coding language, and technology. A set of weaknesses can be grouped into a Category, which is simply a collection of similar weaknesses that share common characteristics, but not the same combination of the dimensions above.
+✔ For root cause mapping, CWEs at the Base and Variant level should be used whenever possible to ensure providing adequate specificity, actionability, and root cause information for a vulnerability. Class level CWEs may be used for root cause mapping if there is no accurate Base or Variant level CWE.
+✔ Every CWE contains a Vulnerability Mapping label under its title, as well as Mapping Notes to assist with root cause mapping efforts. The possible labels are provided below:
+ALLOWED
+(this CWE ID could be used to map to real-world vulnerabilities)
+ALLOWED
+(with careful review of mapping notes)
+DISCOURAGED
+(this CWE ID should not be used to map to real-world vulnerabilities)
+PROHIBITED
+(this CWE ID must not be used to map to real-world vulnerabilities)
+These labels are intended to ensure that root cause mapping provides appropriately precise and actionable correlations between CWE and CVE Records.
+CWE Mapping Notes – which are linked to under each CWE’s title – provide additional details and helpful considerations with respect to using the CWE for root cause mapping.
+An example of CWE Mapping Notes from CWE-20:
+Back to top
+Mapping Methodologies
+There are different ways to identify accurate weakness mapping(s) for a CVE Record. While one may be easier for some users versus another, a best practice is to verify your intended mapping with a colleague with slightly different skills and experience than you. Before starting, be sure to review the example root cause mappings. Understanding the process and reasoning behind each example will help when using any of the following methods.
+Keyword Search Method
+CWE has a search feature available on the home page of the CWE website, illustrated below.
+You can search for keywords, or known CWE-IDs, or even a general term in the search box. This will find all matching pages to that term on the CWE web site, as all web pages are indexed.
+✔ To limit your search to only individual CWE entry pages, include "inurl:definitions" in your query
+Let’s say you want to find a weakness related to Cross-Site Scripting (XSS) to map a CVE Record that deals with XSS. Here is the process you could follow to get to that information using the search feature.
+Search for “xss” returns the following:
+Clicking on the first suggestion leads to the page for CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting'). Usually, specific keywords will be identified in the first few results, if not the first one. Note that the second search result is CWE-725 which is a CWE Category for OWASP XSS. Remember: never map a vulnerability to a CWE Category
+If you click on the first result for CWE-79, here is part of what you’ll see:
+The following steps assume you have the “Complete” button selected above the Description, to ensure you see all available weakness information in the CWE.
+Note that “Cross-site Scripting” is in the name as well as breakdown of different types of XSS in the “Extended Description”. Also, under CWE-79’s title, it says “Usage for Mapping: Allowed (this CWE ID could be used to map to real-world vulnerabilities), as well as “Abstraction: Base”.
+✔ Remember, Base and Variant weaknesses are the preferred weakness abstraction for root cause mapping.
+If you scroll down the page a bit, you can see a list of CWE-79’s “Relationships”, which may be worth exploring to identify if a different but related weakness might be more suitable for your vulnerability root cause mapping. There are several XSS-related CWEs, as highlighted by Parent, Child, PeerOf, CanFollow, and CanPrecede relationship types. Parent and Child represent direct relationships to CWE-79, whereas the other types can be at the same level or lead to other weaknesses. Here is an example of what that looks like:
+Back to top
+The CWE “View” Methods
+A CWE “View” is a collection of weaknesses organized for a specific purpose or targeted at a specific audience. Most Views are a subset of the overall CWE list, but some Views include all CWE weaknesses. Using a View allows easier navigation of the CWE list according to a specific point of view. Note that a View is not a weakness itself but is a specific grouping of the CWE list. Depending on the View and its purpose, it may contain a flat list of CWE weaknesses, or it could contain a hierarchical view of CWE weaknesses broken into Categories.
+Developer View (View-699)
+This View organizes a subset of ~400 CWEs around concepts that are frequently used or encountered in software development. By design, this view is only 2 levels deep. The top level has categories of developer-friendly concepts to facilitate easier navigation (remember: never map a vulnerability to a CWE Category). The second level contains Base level weaknesses.
+Software Assurance Trends View (View-1400)
+This view contains every CWE. CWEs are organized into 22 high-level categories of interest to large-scale software assurance research to support the elimination of weaknesses using tactics such as secure language development. This view is structured with categories at the top level, with a second level of only weaknesses.
+Research View (View-1000)
+This View also contains every CWE. It has a deep tree structure, beginning with 10 high-level Pillars. It might be especially useful when you are looking for unusual weaknesses, as you could perform a top-down search.
+Hardware Design View (View-1194)
+This View organizes ~100 weaknesses around concepts that are frequently used or encountered in hardware design. Similar to View-699, this View also tries to be only 2 levels deep. The top level has categories of designer/architect-friendly concepts to facilitate navigation (remember: never map a vulnerability to a CWE Category). The second level contains Base/Class level weaknesses.
+NVD View (View-1003)
+This View organizes a subset of ~130 CWEs most commonly seen in the National Vulnerability Database (NVD).
+If a Mapping Still Cannot be Found
+If you’ve exhausted your search and still can’t find an appropriate weakness to map your vulnerability, you may have found a gap in CWE coverage! Although CWE tries to be comprehensive, we recognize that we’re likely to miss certain areas from time to time. Please see the CWE Submission Information and we’ll work with you to create a CWE on that topic.
+Back to top
+Document Version: 1.1 (Released 3/22/2024)
+Page Last Updated:
+March 22, 2024
+Site Map |
+Terms of Use |
+Manage Cookies |
+Cookie Notice |
+Privacy Policy |
+Contact Us |
+Use of the Common Weakness Enumeration (CWE™) and the associated references from this website are subject to the Terms of Use. CWE is sponsored by the U.S. Department of Homeland Security (DHS) Cybersecurity and Infrastructure Security Agency (CISA) and managed by the Homeland Security Systems Engineering and Development Institute (HSSEDI) which is operated by The MITRE Corporation (MITRE). Copyright © 2006–2026, The MITRE Corporation. CWE, CWSS, CWRAF, and the CWE logo are trademarks of The MITRE Corporation.

@@ -1318,3 +1318,20 @@ only when all agree. Explain unknowns and unsupported conclusions. S094's prose
 none+very-high summary conflicts with table rows; use pinned table and disclose
 that conflict. Workflow/first-answer rubric: `.ufo/waves/round-60/CONTRACT.md`.
 This is a manually reasoned dossier, not an automatic classifier or action grant.
+
+## Bounded CWE root-cause evidence assessment (round61)
+
+Use `corpus/knowledge/cwe-root-cause-assessment.md` (S098–S106) after F05's
+ranking caution. Reconstruct operation→defect→intermediate weakness→impact before
+choosing a label. Record exact causal evidence, supported alternatives, abstraction
+and current entry mapping usage/notes. Crash, privilege gain and the presence of
+an administrator do not establish the missing mechanism (R67 transfer).
+Check whether overflow means demonstrated arithmetic wrap, incorrect allocation
+size or an out-of-bounds write; retain supported chains rather than collapse their
+causal roles. For authorization distinguish an absent check from a wrong check,
+and either from authentication. For web output distinguish neutralization from
+merely checking input. Never infer a subtype or precursor from a keyword.
+Base/Variant preference does not make all Classes forbidden:862/863 are allowed
+with review of children;119/20 are discouraged in the pinned entries. An unknown
+cause calls for a discriminating question, not a broad-label fallback. This is a
+manual fictional assessment workflow, not a real finding or automated classifier.

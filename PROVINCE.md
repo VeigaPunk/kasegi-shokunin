@@ -217,3 +217,8 @@ round-57 named correction in its existing knowledge entry governs over the earli
 assessment dossier adds contextual input judgments and paths; it does not own
 supplier/CISA priority, universal risk or actual remediation decisions. Existing
 lost roots and sibling boundaries unchanged; no new frontier denominator.
+
+## Round61 scope note
+Existing F05 deepened with bounded fictional CWE causal-evidence assessments;
+no live-target testing, exploit payload or submission. CWE definitions inform
+classification, not proof of a real vulnerability or permission to investigate.
