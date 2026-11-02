@@ -944,6 +944,7 @@ find / -xdev	GONE		2		rel	2	+CORPUS
 find /fast/scratch/hyaku/kasegi-r35 -mindepth 1 -maxdepth 1 -type d	GONE		2		rel	2	+CORPUS
 find corpus/knowledge -maxdepth 1 -name '*.md' \| wc -l	GONE		2		rel	2	+CORPUS
 find corpus/knowledge -maxdepth 1 -name '*.md' | wc -l	GONE		2		rel	2	+CORPUS
+first-answers.json	GONE		2		rel	2	SKILL+CORPUS
 fixed=1/7	GONE		2		rel	2	+CORPUS
 fixtures.json	GONE		2		rel	2	+CORPUS
 fleets/priority.json	GONE		2		rel	3	+CORPUS
@@ -2506,7 +2507,6 @@ find ~/Projects/bounties -name 'claim-gates*'	GONE		1		rel	1	+CORPUS
 find ~/Projects/bounties/evidence -mindepth 2 -maxdepth 2 -type d -name 'b1k-*' | wc -l	GONE		1		rel	1	+CORPUS
 find … ! -path '*/.git/*' | wc -l	GONE		1		rel	1	+CORPUS
 find …/claim-*/ -maxdepth 1 -name report.json | wc -l	GONE		1		rel	1	+CORPUS
-first-answers.json	GONE		1		rel	1	+CORPUS
 first-pass-review.md	GONE		1		rel	1	+CORPUS
 first-review.json	GONE		1		rel	1	+CORPUS
 fixed=0/11	GONE		1		rel	1	+CORPUS
@@ -2995,6 +2995,7 @@ knowledge/claim-anatomy-sample.md	GONE		1		rel	1	+CORPUS
 knowledge/claim-gates.md	GONE		1		rel	1	+CORPUS
 knowledge/claim-package-gate.md	GONE		1		rel	1	+CORPUS
 knowledge/cna-assignment-and-vulnerability-rules.md	GONE		1		rel	1	+CORPUS
+knowledge/cna-causal-counting.md	GONE		1		rel	1	+CORPUS
 knowledge/coordinated-disclosure-timelines.md	GONE		1		rel	1	+CORPUS
 knowledge/corpus/knowledge/chinese-criminal-thresholds-and-authorisation.md	GONE		1		rel	1	+CORPUS
 knowledge/corpus/knowledge/japanese-domestic-disclosure-workflow.md	GONE		1		rel	1	+CORPUS
@@ -3287,6 +3288,7 @@ python3 -c 'import json,collections as c;v=json.load(open("corpus/source-snapsho
 python3 -c 'import json,collections as c;v=json.load(open("corpus/source-snapshots/round-35/S052.txt"))["vulnerabilities"];ra=c.Counter(r["requiredAction"] for r in v);print("distinct",len(ra),"top",ra.most_common(1))'	GONE		1		rel	1	+CORPUS
 python3 -c 'import json; a=json.load(open(".ufo/waves/round-60/first-answers.json")); print(len(a),sum(len(x["inputs"]) for x in a))'	GONE		1		rel	1	+CORPUS
 python3 -c 'import json; a=json.load(open(".ufo/waves/round-61/first-answers.json")); print(len(a),sum(len(x["selected_mappings"]) for x in a))'	GONE		1		rel	1	+CORPUS
+python3 -c 'import json; print(len(json.load(open(".ufo/waves/round-63/first-answers.json"))))'	GONE		1		rel	1	+CORPUS
 python3 -c 'import json;d=json.load(open("corpus/source-snapshots/round-35/S052.txt"));print("keys",len(d),"count",d["count"],"records",len(d["vulnerabilities"]))'	GONE		1		rel	1	+CORPUS
 python3 -c 'import json;json.load(open("corpus/instruments/limb-ledger.json"))'	GONE		1		rel	1	+CORPUS
 python3 -c 'import json;m=json.load(open("corpus/source-snapshots/round-35/manifest.json"));r=m["sources"][0];c=open("corpus/source-snapshots/round-35/S052.txt").read().splitlines();norm=lambda s:" ".join(s.split());ok=sum(norm(q["quote"]) in norm(" ".join(c[max(0,q["anchor"]-1):q["anchor"]+3])) for q in r["quotes"]);print("anchors_ok",ok,"of",len(r["quotes"]))'	GONE		1		rel	1	+CORPUS
@@ -4667,6 +4669,8 @@ corpus/source-snapshots/round-54/S086.txt	INTERNAL	/workspace/scratch/e2fdad1323
 .ufo/waves/round-61/CONTRACT.md	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-61/CONTRACT.md	1	literal	rel	1	+CORPUS
 .ufo/waves/round-61/operability-replay.py	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-61/operability-replay.py	1	literal	rel	1	+CORPUS
 .ufo/waves/round-61/source-correction01/manifest.json	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-61/source-correction01/manifest.json	1	literal	rel	1	+CORPUS
+.ufo/waves/round-63/CONTRACT.md	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-63/CONTRACT.md	1	literal	rel	1	SKILL
+.ufo/waves/round-63/reviewer/	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-63/reviewer/	1	literal	rel	1	+CORPUS
 /home/	RESOLVES	/home/	1	literal	other	1	+CORPUS
 /workspace/scratch/e2fdad13233f/kasegi-round57-report.md	RESOLVES	/workspace/scratch/e2fdad13233f/kasegi-round57-report.md	1	literal	other	1	+CORPUS
 /workspace/scratch/e2fdad13233f/kasegi-round60-report.md	RESOLVES	/workspace/scratch/e2fdad13233f/kasegi-round60-report.md	1	literal	other	1	+CORPUS
@@ -4974,6 +4978,7 @@ corpus/knowledge/claim-package-contract.md:18-26	INTERNAL	/workspace/scratch/e2f
 corpus/knowledge/claim-package-contract.md:22-23	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/knowledge/claim-package-contract.md	1	literal	rel	1	+CORPUS
 corpus/knowledge/claim-package-contract.md:31	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/knowledge/claim-package-contract.md	1	literal	rel	1	+CORPUS
 corpus/knowledge/claim-package-contract.md:7	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/knowledge/claim-package-contract.md	1	literal	rel	1	+CORPUS
+corpus/knowledge/cna-causal-counting.md	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/knowledge/cna-causal-counting.md	1	literal	rel	1	SKILL
 corpus/knowledge/considerthese-proposals-ledger.md:119-131	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/knowledge/considerthese-proposals-ledger.md	1	literal	rel	1	+CORPUS
 corpus/knowledge/considerthese-proposals-ledger.md:13	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/knowledge/considerthese-proposals-ledger.md	1	literal	rel	1	+CORPUS
 corpus/knowledge/considerthese-proposals-ledger.md:22-33	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/knowledge/considerthese-proposals-ledger.md	1	literal	rel	1	+CORPUS
