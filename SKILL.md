@@ -1268,3 +1268,24 @@ Checklist: verify stable upstream identity and recent-code check; match version/
 | kernel-report-check.py | gate | `python3 corpus/instruments/kernel-report-check.py` | 0 clean expected decisions; 1 mismatch; 2 unavailable/tampered could-not-evaluate | `python3 corpus/instruments/kernel-report-check.py --selftest` | .ufo/waves/round-58/fixtures.json digest in freeze.json | temporary synthetic JSON only, removed | kasegi |
 
 Error patterns and counterexamples: `.ufo/waves/round-58/mutations.py` challenges actual evidence/boundary/disclosure decisions, not issue-word presence. Public block labels are annotations, not a free-text leak detector. The toy is not a security simulator or an exploit.
+
+## Round-59 CVSS v4 evidence judgment
+
+Trigger: explaining PR/UI and subsequent-system impact from scenario evidence.
+Anti-trigger: computing a full score, target testing, claiming rewards or validating a
+real vulnerability. S092 and `corpus/knowledge/cvss-v4-evidence-assessment.md` deepen F01.
+
+| Question | Evidence discipline / error pattern |
+|---|---|
+| What authority existed before exploitation? | Do not substitute authority gained afterward; inspect self-service/default-credential qualifications |
+| Must someone besides the attacker act? | Distinguish ordinary rendering from a specific conscious action or protection override |
+| Is an affected component truly a subsequent system? | State coherent function/policy boundary and exclusive-support relationship; host count is not the rule |
+| What additional CIA loss is supported? | Judge each dimension separately, including limited but directly serious loss; do not invent a chain |
+| Facts omitted? | Name the missing fact; insufficient is workflow uncertainty, not a vector token or N |
+
+Checklist: mark exact scenario fragments, state before/after authority, draw boundary,
+separate necessary victim actions, justify each selected metric against source anchor,
+name unsupported conclusions. Replay by independently assessing the prose cases under
+`.ufo/waves/round-59/CONTRACT.md`, then compare reasons with the independent review.
+This is a human-assessment dossier, not a classifier or schema-validity gate. A matching
+label with invented evidence fails. No full score/vector or bounty conclusion follows.

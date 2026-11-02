@@ -927,3 +927,9 @@ bounded teaching evaluator, not a general vulnerability scanner or an ecosystem 
 The original F27 reporting-process entry remains historical source-bound knowledge. This addition contributes a replayable synthetic assessment with explicit evidence/authority/disclosure separations. No recovered root, additional lost-domain surface or generic report acceptance is claimed.
 
 [r58 named correction to F27 row at line 651, 2026-11-02] Its phrase `AI-found, binary-only and unreproducible refusal rules` is overbroad: AI assistance changes public handling, not automatic validity or intake rejection. The coverage-map phrase `refusal rules` at line 647 must likewise not be read as blanket AI refusal. Use the differentiated rubric in `knowledge/kernel-report-evidence-assessment.md` (S090); binary-only and unreproduced evidence remain different questions. Historical row bytes and admission are not rewritten.
+
+## Round-59 F01 deepening — evidence before metric labels
+
+`knowledge/cvss-v4-evidence-assessment.md` (S092) adds PR/UI and subsequent-system impact
+judgment to the existing F01 nomenclature overview. No new frontier id or recovered
+root surface. Independent prose-scenario assessment, not automatic scoring or reward.
