@@ -2457,3 +2457,27 @@ fields; all3 frozen negative candidates rejected. Source curation/no-harm closur
 still pending, so capability not yet admitted. Final guard measurement at
 4a1b7eadf55e1b1359c65fc57de58f864a317d40 reports unexpected-results0 in
 `.ufo/waves/round-60/controls/final.txt`; historical prefixes and source pins intact.
+
+## Round60 named independent admission and historical pending resolution
+
+Parent-appointed `/root/judge_kasegi_round60` independently supports all11 first
+cases, agrees S094–S096 admits/S097 reject, and finds no substantive harm. Parent
+explicitly authorized recording this bounded C1 admission after that review on
+2026-11-02; final artifact binding/report landing remains parent/reviewer-owned.
+This supersedes the round60 pending-admission prose above, preserving its history.
+
+| Capability | Demonstration | First working round | Admission and limits |
+|---|---|---|---|
+| bounded-certcc-deployer-evidence-assessment | `.ufo/waves/round-60/first-answers.json` at a45efc84655fe8c64d803788e77868c954b6cbb0; named independent first-review supports11/11 cases,40 assessed input fields plus4 withheld model-mismatch fields; three bad candidates rejected | 60 | `/root/judge_kasegi_round60`, parent-authorized entry; DT_DP1.0.0 evidence-only fictional dossier, not automatic reasoning, live remediation advice or general accuracy; final binding to be landed by parent |
+
+**Carry-in resolution, not new training:** the historical round57/58 rows saying
+independent acceptance pending retain their original bytes but are superseded by
+accepted bounded reviews: round57 `deb4738704329a0670395b2756d247c0fb882b0e`,
+`corpus/lessons/round-57-cloud-review/REVIEW.md`, and round58
+`f17171eac43ce5df67870ef038dbe92273a3a5f3`,
+`corpus/lessons/round-58-cloud-review/review.md`. Parent confirms accepted local/
+public closures1065/1066. OSV remains the bounded supported-format comparator,
+not general ecosystem/Git logic; kernel evidence remains a fictional training aid,
+not actual kernel vulnerability validation. Neither correction earns new round60
+capability or metric credit. Round59 remains rejected with no admitted capability;
+post-feedback learning does not rescue its first frozen criterion.

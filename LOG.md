@@ -2690,3 +2690,13 @@ Round60 post-review freshness catch: f33ce1d source-census pair became stale aft
 new review-note citations, exit1 retained in controls/post-review-stale.txt. Earlier
 final.txt green applies to its measured4a1b7ea only. Refresh evidence follows in
 controls/final-after-review.txt, preserving the initial receipt and all first answers.
+
+## Round60 final admission attribution and carry-in bookkeeping
+
+Parent relayed final substantive `/root/judge_kasegi_round60` admission:11/11
+first cases, source admit/reject agreement and no substantive harm. SCORECARD
+capability row entered by explicit parent authorization, with final-binding limit;
+no score gain. Round57/58 historical pending text superseded append-only using
+review commits deb4738/f17171e and parent-confirmed closures1065/1066; no new
+training credit. Round59 remains rejected/no capability. All text finalized before
+controls/final-after-admission.txt committed-tree run and census-pair refresh.

@@ -87,3 +87,19 @@ exited1 (`controls/post-review-stale.txt`). The earlier green receipt measures
 against the completed text, retaining the stale run and earlier receipt; the
 subsequent controls/final-after-review.txt is the new measurement, not a rewrite.
 This is metadata follow-through, not a new capability or a changed case result.
+
+## Outside discernment and bounded admission
+
+`/root/judge_kasegi_round60` agrees admit S094–S096 definitions/table and reject
+S097 universal/supplier/CISA use; independently checked source versions, original
+census exit0, old rows/prefixes, round59 and frozen first-answer hashes. Reviewer
+finds no substantive harm despite real density drop251.1→245.7: old teaching
+preserved and new block teaches useful distinctions, not citation padding.
+Parent explicitly authorized a capability row on this named review, not author
+self-attestation. Final rebind/report landing remains outside-owned. Expansion
+now improves narrowly as an admitted bounded repertoire, not a new F-row; quality
+and discernment improve within the demonstrated scope. No numeric score gain.
+Historical57/58 pending rows receive append-only accepted-review resolution;
+that bookkeeping is not new training. Round59 rejected history remains intact.
+All content appends precede final-after-admission.txt refresh; earlier receipts
+are retained with their own measured revisions, not asserted current afterward.
