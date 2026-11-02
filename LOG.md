@@ -2798,3 +2798,11 @@ Round62 metadata repair: quote correction appended LOG after census generation,
 leaving referenced LOG total-lines stale at7e5bab. Actual exit1 retained in
 .ufo/waves/round-62/controls/freshness-red.txt. Regenerated only after these final
 appends; source/first/rubric bytes unchanged, no semantic rescore.
+
+Round62 post-review metadata closure: independent review33db93e added durable
+corpus/lessons/round-62-cloud-review evidence after the author67f91a0 census.
+Actual post-review freshness1 (Markdown and TSV) retained in round62 controls/
+post-review-freshness-red.txt. Parent authorized bounded regeneration after all
+lane appends. This final append precedes regeneration; source/rubric/first answers
+unchanged. Author67f91a0's prior freshness0 described its tree, not the review-added
+tree. No further author corpus work or round63 follows this metadata refresh.
