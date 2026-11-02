@@ -1,0 +1,15 @@
+# Private KASEGI63 oracle
+Sealed independently after freeze6f5d6e4572a3ed7afbe36c1753be7f50b7d4e55d, before author first answers. Procedural blindness: author forbidden read until first-answer commit. Exact outputs need not match words; causal facts, grouping and normative force must match. Scope/publication remain hypothetical prerequisites, not authority grant.
+
+01: One group Cedar flaw {Alder,Birch};4.2.13.1 MUST NOT duplicate for shared vulnerable code. Upgrades not vulnerabilities4.1.11; three commits/two notes irrelevant4.2.7. Third product adds none on supplied evidence, not global claim of safety.
+02: Two independent groups;4.2.11 MUST different,4.2.6 MUST separate vulnerabilities. One patch/release/advisory does not merge. Counterfactual independence evidence decisive.
+03: Group {arithmetic,write} and independent {management authorization}, two groups. Fully interdependent condition pair MUST one4.2.15 (4.1.10 SHOULD determination), independent security defect MUST separate4.2.11. Not three from weakness labels or one from same product.
+04: SHOULD single under4.2.12, not MUST or proven one root cause. Need independent-fixability evidence; broad workaround alone says nothing decisive. Two symptoms not established separate defects.
+05: SHOULD different IDs, ordinarily two under4.2.13.2 for stated same independently fixable vulnerability and no shared vulnerable code. No elevation to MUST from4.2.11 when this specific multi-product premise applies. Matching advisory/date immaterial.
+06: SHOULD different IDs, ordinarily two under4.2.13.3. Do not import4.2.12's default, which concerns another uncertainty. Code sharing remains unknown; recommendation not evidence of independence.
+07: MUST one per known vulnerable implementation, two under4.2.14.1. Secure-use existence distinguishes insecure implementation, does not authorize requester or settle real-world assignment.
+08: MUST single4.2.14.2 because stipulated no secure option and no extra defects; independent code does not override specific functionality premise.
+09: SHOULD different IDs per known implementation, ordinarily two4.2.14.3. Uncertain secure use not no secure use; MUST single unsupported.
+10: Residual MAY new vulnerability/new ID or MAY existing4.2.8; patch chronology not mandatory new ID. Cosmetic issue without security impact SHOULD NOT determined vulnerability4.1.2 (avoid absolute proof of no vulnerability). Unrelated established vulnerability separate from original/residual, absent fix not exclusion4.2.7; conditional scope/disclosure guidance4.2.2. Exact total cannot be uniquely forced: original+unrelated yields two groups/IDs if residual retained; if residual treated new, three; do not collapse unrelated no-fix issue. Naming conditional2/3 acceptable, or explicitly segregated options. No real assignment authority.
+
+Prospective policies: N1 false on02 explicit independently fixable facts, N2 false on06/09 versus04, N3 false on10 residual MAY, plus scope/publication prerequisites. Reject fact-groundedly, not policy labels alone.
