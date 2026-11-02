@@ -1,0 +1,28 @@
+[
+ {
+  "id":"K59-S11",
+  "phase":"post-feedback learning; does not rescue original C1",
+  "assessments":{
+   "PR":{"value":"L","evidence":["Reaching the flawed monitoring function requires an already provisioned ordinary account, limited to the user’s own settings","cannot self-register or otherwise grant themselves that account"],"reasoning":"S092 PR/Table4 and R67: unlike the original K59-10, this case explicitly makes low ordinary authority necessary for reaching the flaw, and rules out self-service provisioning. Necessity plus limited prior rights establishes L, not an inference from possession.","missing":[]},
+   "UI":{"value":"N","evidence":["The attacker acts alone."],"reasoning":"S092 UI/Table5: no separate human participant is required.","missing":[]},
+   "SC":{"value":"N","evidence":["already could read every analytics record before the exploit and obtains no additional information"],"reasoning":"S092 Impact Metrics/Table7: the full read access is preexisting and does not increase through this exploit. No added subsequent confidentiality loss; the all-record phrase does not justify H.","missing":[]},
+   "SI":{"value":"N","evidence":["obtains no additional information or modification rights"],"reasoning":"S092 Impact Metrics/Table9: no additional modification rights are gained; the specified new result is denial rather than unauthorized data change. Do not infer integrity loss from an outage.","missing":[]},
+   "SA":{"value":"H","evidence":["completely denies legitimate users access to analytics for as long as the attacker continues invoking the flaw"],"reasoning":"S092 Table11: complete subsequent-system denial sustained while the attack continues meets H; persistence after attack cessation is not necessary.","missing":[]}
+  },
+  "system_boundary":"Monitoring is the vulnerable system; analytics functions separately with independent policies and is the only subsequent system. Existing analytics read access affects the delta, not the boundary.",
+  "unsupported_conclusions":["Do not count preexisting complete read access as new SC:H.","No full score, reward or validity of an actual vulnerability is established."]
+ },
+ {
+  "id":"K59-S12",
+  "phase":"post-feedback learning; does not rescue original C1",
+  "assessments":{
+   "PR":{"value":"insufficient","evidence":["happens to possess an administrator account","does not establish whether the flawed endpoint requires any account or privileges, or can be reached without authentication"],"reasoning":"S092 PR/Table4 and R67 require necessary prior privileges. Possessing an administrator account is not evidence it is required. The case explicitly leaves authentication necessity open; neither H nor N nor L is established.","missing":["Can the endpoint be exploited without authentication; if not, what minimum account rights are required, and can they be self-provisioned?"]},
+   "UI":{"value":"N","evidence":["with no other human action"],"reasoning":"S092 UI/Table5: another user's action is expressly unnecessary. Unknown PR does not invalidate this supported metric.","missing":[]},
+   "SC":{"value":"insufficient","evidence":["does not establish whether any restricted scheduling information can become visible through the flaw"],"reasoning":"S092 Table7 requires evidence of additional disclosure and extent/consequence. The missing disclosure fact is not an affirmative absence, so N would be unsupported. SI evidence does not establish reading capability.","missing":["Can the flaw reveal restricted scheduling information; if so which information, how much, and with what direct serious consequence?"]},
+   "SI":{"value":"L","evidence":["change one cosmetic display label without authorization","no other data can be changed, and this modification has no direct serious consequence"],"reasoning":"S092 Table9: an actual unauthorized but limited modification establishes a subsequent integrity loss. Its strictly cosmetic scope and absence of direct serious consequence support L rather than H; unauthorized change makes N inappropriate.","missing":[]},
+   "SA":{"value":"N","evidence":["Scheduling availability is unchanged."],"reasoning":"S092 Table11: explicit unchanged availability establishes no subsequent availability loss despite the integrity change.","missing":[]}
+  },
+  "system_boundary":"Routing is vulnerable; the scheduling service functions separately with its own policies and is subsequent. No further systems are affected.",
+  "unsupported_conclusions":["Investigator administration is not PR:H without evidence it is necessary.","Omitted confidentiality evidence is not SC:N.","Uncertainty in PR and SC does not require abstaining on independently supported UI, SI or SA."]
+ }
+]

@@ -2626,3 +2626,7 @@ Parent delivered only `.ufo/waves/round-59/challenge.json` (ten prose scenarios;
 ## Round 59 — actual independent failure mined, claim unverified
 
 Parent relayed fresh reviewer finding: K59-10 PR:L imports necessity from account possession; reviewer oracle shared the same assumption. Original first answers unchanged. `.ufo/waves/round-59/correction-01.json` withdraws L to insufficient with a concrete missing prerequisite question. Appended lesson/QUALITY R67/SKILL/knowledge/scorecard corrections preserve the failure and mark C1 unverified under frozen all-case success. Supplemental cases cannot rescue first-pass claim. No capability self-admission.
+
+## Round 59 — supplemental answers sealed separately
+
+Parent supplied only supplemental-challenge.json (SHA256 fcee209d2fcaba93804b926a06ac59c8c4aaa1a32b2addc1b4ee693855404c19), two independent post-feedback scenarios. `.ufo/waves/round-59/supplemental-answers.json` separately reasons necessity versus possession and mixed known/unknown dimensions. No private oracle read, no original answer edit. Supplemental results measure learning only and cannot rescue original C1 failure.
