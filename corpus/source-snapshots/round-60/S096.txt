@@ -1,0 +1,533 @@
+Safety Impact - SSVC: Stakeholder-Specific Vulnerability Categorization
+Skip to content
+SSVC: Stakeholder-Specific Vulnerability Categorization
+Safety Impact
+Initializing search
+CERTCC/SSVC
+Home
+SSVC
+SSVC Overview
+SSVC How-To
+Understanding SSVC
+Reference
+Calculator
+Explorer
+About
+SSVC: Stakeholder-Specific Vulnerability Categorization
+CERTCC/SSVC
+Home
+SSVC
+SSVC Overview
+SSVC Overview
+What is SSVC?
+Starting out with SSVC
+Other Resources
+SSVC How-To
+SSVC How-To
+Overview
+Getting Started with SSVC
+Getting Started with SSVC
+Intro
+Prepare
+Collect
+Use & Respond
+Summary
+Stakeholder Decision Models
+Stakeholder Decision Models
+Supplier Decision Model
+Deployer Decision Model
+Coordinator Decision Models
+Coordinator Decision Models
+About Coordination
+Coordination Triage
+Publication Decision
+CISA BOD 26-04 Response Model
+CVSS v4 Analyst Models
+CVSS v4 Analyst Models
+About CVSS v4
+Equivalence Set 1
+Equivalence Set 2
+Equivalence Set 3
+Equivalence Set 4
+Equivalence Set 5
+Equivalence Set 6
+Qualitative Severity
+Gathering Info about Decision Points
+Gathering Info about Decision Points
+Intro
+Automatable
+Exploitation
+Mission Impact
+System Exposure
+Technical Impact
+Value Density
+Customizing SSVC
+Acuity Ramp
+Using EPSS with SSVC
+Using EPSS with SSVC
+EPSS → SSVC Intro
+EPSS Probability as input to Exploitation
+EPSS Percentiles as an Amplifier
+SSVC Tools
+SSVC Tools
+Docker Containers
+Understanding SSVC
+Understanding SSVC
+Intro
+State of Practice
+Representing Information
+Representing Information
+Design Goals
+Formalization Options
+Decision Trees
+Vulnerability Management Decisions
+Vulnerability Management Decisions
+Intro
+Stakeholders
+Decisions
+Items With Same Priority
+Risk Tolerance and Priority
+Scope
+SSVC and Asset Management
+Putting the Pieces Together
+SSVC as a Human-Scale Bottleneck
+Worked Example
+Evaluation
+Related Systems
+Information Sources
+Limitations
+Future Work
+Reference
+Reference
+Intro
+Decision Points
+Decision Points
+Intro
+Automatable
+Exploitation
+Mission Impact
+Public Value Added
+Report Credibility
+Report Public
+Safety Impact
+Safety Impact
+Table of contents
+Gathering Information About Safety Impact
+Situated Safety Impact
+Prior Versions
+Supplier Cardinality
+Supplier Contacted
+Supplier Engagement
+Supplier Involvement
+System Exposure
+Technical Impact
+Value Density
+Compound Decision Points
+Compound Decision Points
+Intro
+Human Impact
+Public Safety Impact
+Utility
+CISA-based decision points
+CISA-based decision points
+CISA Custom Decision Points
+In KEV
+Mission Prevalence
+Publicly Exposed
+CVSS-based decision points
+CVSS-based decision points
+CVSS Decision Points
+Qualitative Severity
+Base Metrics
+Base Metrics
+Attack Vector
+Attack Complexity
+Attack Requirements
+Privileges Required
+User Interaction
+Confidentiality Impact
+Subsequent Confidentiality Impact
+Integrity Impact
+Subsequent Integrity Impact
+Availability Impact
+Subsequent Availability Impact
+Threat Metrics
+Threat Metrics
+Exploit Maturity
+Environmental Metrics
+Environmental Metrics
+Confidentiality Requirement
+Integrity Requirement
+Availability Requirement
+Supplemental Metrics
+Supplemental Metrics
+Safety
+Automatable
+Provider Urgency
+Recovery
+Value Density
+Vulnerability Response Effort
+Older Metrics
+Older Metrics
+Authentication
+Collateral Damage Potential
+Impact Bias
+Remediation Level
+Report Confidence
+Scope
+Target Distribution
+Outcomes
+Code
+Code
+Intro
+Decision Points
+Decision Tables
+Decision Point Groups
+Namespaces
+Selections
+CSV Analyzer
+Doctools
+Calculator
+Explorer
+About
+About
+Intro
+Community Engagement
+Decision Records
+Acknowledgements
+Change log
+Contact
+Table of contents
+Gathering Information About Safety Impact
+Situated Safety Impact
+Prior Versions
+Safety Impact
+Safety Impact (ssvc:SI:2.0.1)
+The safety impact of the vulnerability. (based on IEC 61508 with modifications)
+Value
+Key
+Definition
+Negligible
+N
+Any one or more of these conditions hold. Physical harm: Minor injuries at worst (IEC 61508 Negligible). Operator resiliency: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be well within expected operator abilities; OR causes a minor occupational safety hazard. System resiliency: Small reduction in built-in system safety margins; OR small reduction in system functional capabilities that support safe operation. Environment: Minor externalities (property damage, environmental damage, etc.) imposed on other parties. Financial: Financial losses, which are not readily absorbable, to multiple persons. Psychological: Emotional or psychological harm, sufficient to be cause for counselling or therapy, to multiple persons.
+Marginal
+M
+Any one or more of these conditions hold. Physical harm: Major injuries to one or more persons (IEC 61508 Marginal). Operator resiliency: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be within their capabilities but the actions require their full attention and effort; OR significant distraction or discomfort to operators; OR causes significant occupational safety hazard. System resiliency: System safety margin effectively eliminated but no actual harm; OR failure of system functional capabilities that support safe operation. Environment: Major externalities (property damage, environmental damage, etc.) imposed on other parties. Financial: Financial losses that likely lead to bankruptcy of multiple persons. Psychological: Widespread emotional or psychological harm, sufficient to be cause for counselling or therapy, to populations of people.
+Critical
+R
+Any one or more of these conditions hold. Physical harm: Loss of life (IEC 61508 Critical). Operator resiliency: Actions that would keep the system in a safe state are beyond system operator capabilities, resulting in adverse conditions; OR great physical distress to system operators such that they cannot be expected to operate the system properly. System resiliency: Parts of the cyber-physical system break; system’s ability to recover lost functionality remains intact. Environment: Serious externalities (threat to life as well as property, widespread environmental damage, measurable public health risks, etc.) imposed on other parties. Financial: Socio-technical system (elections, financial grid, etc.) of which the affected component is a part is actively destabilized and enters unsafe state. Psychological: N/A.
+Catastrophic
+C
+Any one or more of these conditions hold. Physical harm: Multiple loss of life (IEC 61508 Catastrophic). Operator resiliency: Operator incapacitated (includes fatality or otherwise incapacitated). System resiliency: Total loss of whole cyber-physical system, of which the software is a part. Environment: Extreme externalities (immediate public health threat, environmental damage leading to small ecosystem collapse, etc.) imposed on other parties. Financial: Social systems (elections, financial grid, etc.) supported by the software collapse. Psychological: N/A.
+Safety Impact (ssvc:SI:2.0.1) JSON Example
+{
+"namespace": "ssvc",
+"key": "SI",
+"version": "2.0.1",
+"name": "Safety Impact",
+"definition": "The safety impact of the vulnerability. (based on IEC 61508 with modifications)",
+"schemaVersion": "2.0.0",
+"values": [
+{
+"key": "N",
+"name": "Negligible",
+"definition": "Any one or more of these conditions hold. **Physical harm**: Minor injuries at worst (IEC 61508 Negligible). **Operator resiliency**: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be well within expected operator abilities; OR causes a minor occupational safety hazard. **System resiliency**: Small reduction in built-in system safety margins; OR small reduction in system functional capabilities that support safe operation. **Environment**: Minor externalities (property damage, environmental damage, etc.) imposed on other parties. **Financial**: Financial losses, which are not readily absorbable, to multiple persons. **Psychological**: Emotional or psychological harm, sufficient to be cause for counselling or therapy, to multiple persons."
+},
+{
+"key": "M",
+"name": "Marginal",
+"definition": "Any one or more of these conditions hold. **Physical harm**: Major injuries to one or more persons (IEC 61508 Marginal). **Operator resiliency**: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be within their capabilities but the actions require their full attention and effort; OR significant distraction or discomfort to operators; OR causes significant occupational safety hazard. **System resiliency**: System safety margin effectively eliminated but no actual harm; OR failure of system functional capabilities that support safe operation. **Environment**: Major externalities (property damage, environmental damage, etc.) imposed on other parties. **Financial**: Financial losses that likely lead to bankruptcy of multiple persons. **Psychological**: Widespread emotional or psychological harm, sufficient to be cause for counselling or therapy, to populations of people."
+},
+{
+"key": "R",
+"name": "Critical",
+"definition": "Any one or more of these conditions hold. **Physical harm**: Loss of life (IEC 61508 Critical). **Operator resiliency**: Actions that would keep the system in a safe state are beyond system operator capabilities, resulting in adverse conditions; OR great physical distress to system operators such that they cannot be expected to operate the system properly. **System resiliency**: Parts of the cyber-physical system break; system’s ability to recover lost functionality remains intact. **Environment**: Serious externalities (threat to life as well as property, widespread environmental damage, measurable public health risks, etc.) imposed on other parties. **Financial**: Socio-technical system (elections, financial grid, etc.) of which the affected component is a part is actively destabilized and enters unsafe state. **Psychological**: N/A."
+},
+{
+"key": "C",
+"name": "Catastrophic",
+"definition": "Any one or more of these conditions hold. **Physical harm**: Multiple loss of life (IEC 61508 Catastrophic). **Operator resiliency**: Operator incapacitated (includes fatality or otherwise incapacitated). **System resiliency**: Total loss of whole cyber-physical system, of which the software is a part. **Environment**: Extreme externalities (immediate public health threat, environmental damage leading to small ecosystem collapse, etc.) imposed on other parties. **Financial**: Social systems (elections, financial grid, etc.) supported by the software collapse. **Psychological**: N/A."
+}
+]
+}
+CVSS:Safety vs SSVC:Public Safety Impact vs SSVC:Safety Impact
+The CVSS Safety vector element
+is semantically interchangeable with the
+SSVC Public Safety Impact
+decision point.
+The main difference is that the CVSS Safety
+vector element accomodates an explicit Not Defined value, whereas the
+SSVC Public Safety Impact
+does not.
+The SSVC Safety Impact decision point provides a higher-resolution view of the safety impact.
+The SSVC Public Safety Impact and
+CVSS Safety decision points are
+lower-resolution views of the safety impact.
+See also
+Safety Impact combines with Mission Impact to
+inform Human Impact.
+We take an expansive view of safety, in which a safety violation is a violation of what the United States Centers for Disease Control (CDC) calls well-being. Physical well-being violations are common safety violations, but we also consider economic, social, emotional, and psychological well-being to be important. Weighing fine differences among these categories is probably not possible, so we will not try. Each decision option lists examples of the effects that qualify for that value/answer in the various types of violations of well-being. These examples should not be considered comprehensive or exhaustive, but rather as suggestive.
+The stakeholder should consider the safety impact on the system operators (by “system operator,” we mean those who are professionally responsible for the proper operation of the cyber-physical system, as the term is used in the safety analysis literature) and users of the software they provide.
+If software is repackaged and resold by a stakeholder to further downstream entities who will then sell a product, the initial stakeholder can only reasonably consider so many links in that supply chain.
+However, a stakeholder should know its immediate consumers who are one step away in the supply chain.
+Those consumers may repackage or build on the software and then provide that product further on.
+We expect that a stakeholder should be aware of common usage of their software about one step away in the supply chain.
+This expectation holds in both open source and proprietary contexts. Further steps along the supply chain are probably not reasonable for the stakeholder to consider consistently; however, this is not a license to willfully ignore common downstream uses of the stakeholder’s software.
+If the stakeholder is contractually or legally responsible for safe operation of the software or cyber-physical system of which it is part, that also supersedes our rough supply-chain depth considerations.
+For software used in a wide variety of sectors and deployments, the stakeholder may need to estimate an aggregate safety impact.
+Aggregation suggests that the stakeholder’s response to this decision point cannot be less than the most severe credible safety impact, but we leave the specific aggregation method or function as a domain-specific extension for future work.
+Gathering Information About Safety Impact
+Default Safety Values
+If the decision maker knows nothing about the environment in which the device is used, we suggest assuming a
+marginal Safety Impact.
+This position is conservative, but software is thoroughly embedded in daily life now, so we suggest that the decision
+maker provide evidence that no one's well-being will suffer.
+The factors that influence the safety impact level are diverse.
+This paper does not exhaustively discuss how a stakeholder should answer a question; that is a topic for future work.
+At a minimum, understanding safety impact should include gathering information about survivability of the vulnerable component, determining available operator actions to compensate for the vulnerable component, understanding relevant insurance, and determining the viability of existing backup measures.
+Because each of these information items depends heavily on domain-specific knowledge, it is out of the scope of this paper to give a general-purpose strategy for how they should be included.
+For example, viable manual backup mechanisms are likely to be important in assessing the safety impact of an industrial control system in a sewage plant, but in banking the insurance structures that prevent bankruptcies are more important.
+The decision values for safety impact are based on the hazard categories for aircraft software 12.
+To assign a value to Safety Impact, at least one type of harm must reach that value. For example, for a Safety Impact of major, at least one type of harm must reach major level.
+All types of harm do not need to rise to the level of major, just one type of harm does.
+Safety Impact Decision Values
+Safety Impact
+Type of Harm
+Description
+None
+All
+Does not mean no impact literally; it just means that the effect is below the threshold for all aspects described in Minor
+Minor
+(Any one or more of these conditions hold.)
+Physical harm
+Physical discomfort for users (not operators) of the system
+Operator
+resiliency
+Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be well within expected operator abilities; OR causes a minor occupational safety hazard
+System
+resiliency
+Small reduction in built-in system safety margins; OR small reduction in system functional capabilities that support safe operation
+Environment
+Minor externalities (property damage, environmental damage, etc.) imposed on other parties
+Financial
+Financial losses, which are not readily absorbable, to multiple persons
+Psychological
+Emotional or psychological harm, sufficient to be cause for counselling or therapy, to multiple persons
+Major
+(Any one or more of these conditions hold.)
+Physical harm
+Physical distress and injuries for users (not operators) of the system
+Operator
+resiliency
+Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be within their capabilities but the actions require their full attention and effort; OR significant distraction or discomfort to operators; OR causes significant occupational safety hazard
+System
+resiliency
+System safety margin effectively eliminated but no actual harm; OR failure of system functional capabilities that support safe operation
+Environment
+Major externalities (property damage, environmental damage, etc.) imposed on other parties
+Financial
+Financial losses that likely lead to bankruptcy of multiple persons
+Psychological
+Widespread emotional or psychological harm, sufficient to be cause for counselling or therapy, to populations of people
+Hazardous
+(Any one or more of these conditions hold.)
+Physical harm
+Serious or fatal injuries, where fatalities are plausibly preventable via emergency services or other measures
+Operator
+resiliency
+Actions that would keep the system in a safe state are beyond system operator capabilities, resulting in adverse conditions; OR great physical distress to system operators such that they cannot be expected to operate the system properly
+System
+resiliency
+Parts of the cyber-physical system break; system’s ability to recover lost functionality remains intact
+Environment
+Serious externalities (threat to life as well as property, widespread environmental damage, measurable public health risks, etc.) imposed on other parties
+Financial
+Socio-technical system (elections, financial grid, etc.) of which the affected component is a part is actively destabilized and enters unsafe state
+Psychological
+N/A
+Catastrophic (Any one or more of these conditions hold.)
+Physical harm
+Multiple immediate fatalities (Emergency response probably cannot save the victims.)
+Operator
+resiliency
+Operator incapacitated (includes fatality or otherwise incapacitated)
+System resiliency
+Total loss of whole cyber-physical system, of which the software is a part
+Environment
+Extreme externalities (immediate public health threat, environmental damage leading to small ecosystem collapse, etc.) imposed on other parties
+Financial
+Social systems (elections, financial grid, etc.) supported by the software collapse
+Psychological
+N/A
+-->
+Situated Safety Impact
+Deployers are anticipated to have a more fine-grained perspective on the safety impacts broadly defined in Safety Impact.
+We defer this topic for now because we combine it with Mission Impact to simplify implementation for deployers.
+Prior Versions
+Safety Impact (ssvc:SI:1.0.0)
+The safety impact of the vulnerability.
+Value
+Key
+Definition
+None
+N
+The effect is below the threshold for all aspects described in Minor.
+Minor
+M
+Any one or more of these conditions hold. Physical harm: Physical discomfort for users (not operators) of the system. Operator resiliency: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be well within expected operator abilities; OR causes a minor occupational safety hazard. System resiliency: Small reduction in built-in system safety margins; OR small reduction in system functional capabilities that support safe operation. Environment: Minor externalities (property damage, environmental damage, etc.) imposed on other parties. Financial Financial losses, which are not readily absorbable, to multiple persons. Psychological: Emotional or psychological harm, sufficient to be cause for counselling or therapy, to multiple persons.
+Major
+J
+Any one or more of these conditions hold. Physical harm: Physical distress and injuries for users (not operators) of the system. Operator resiliency: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be within their capabilities but the actions require their full attention and effort; OR significant distraction or discomfort to operators; OR causes significant occupational safety hazard. System resiliency: System safety margin effectively eliminated but no actual harm; OR failure of system functional capabilities that support safe operation. Environment: Major externalities (property damage, environmental damage, etc.) imposed on other parties. Financial: Financial losses that likely lead to bankruptcy of multiple persons. Psychological: Widespread emotional or psychological harm, sufficient to be cause for counselling or therapy, to populations of people.
+Hazardous
+H
+Any one or more of these conditions hold. Physical harm: Serious or fatal injuries, where fatalities are plausibly preventable via emergency services or other measures. Operator resiliency: Actions that would keep the system in a safe state are beyond system operator capabilities, resulting in adverse conditions; OR great physical distress to system operators such that they cannot be expected to operate the system properly. System resiliency: Parts of the cyber-physical system break; system’s ability to recover lost functionality remains intact. Environment: Serious externalities (threat to life as well as property, widespread environmental damage, measurable public health risks, etc.) imposed on other parties. Financial: Socio-technical system (elections, financial grid, etc.) of which the affected component is a part is actively destabilized and enters unsafe state. Psychological: N/A.
+Catastrophic
+C
+Any one or more of these conditions hold. Physical harm: Multiple immediate fatalities (Emergency response probably cannot save the victims.) Operator resiliency: Operator incapacitated (includes fatality or otherwise incapacitated). System resiliency: Total loss of whole cyber-physical system, of which the software is a part. Environment: Extreme externalities (immediate public health threat, environmental damage leading to small ecosystem collapse, etc.) imposed on other parties. Financial: Social systems (elections, financial grid, etc.) supported by the software collapse. Psychological: N/A.
+Safety Impact (ssvc:SI:1.0.0) JSON Example
+{
+"namespace": "ssvc",
+"key": "SI",
+"version": "1.0.0",
+"name": "Safety Impact",
+"definition": "The safety impact of the vulnerability.",
+"schemaVersion": "2.0.0",
+"values": [
+{
+"key": "N",
+"name": "None",
+"definition": "The effect is below the threshold for all aspects described in Minor."
+},
+{
+"key": "M",
+"name": "Minor",
+"definition": "Any one or more of these conditions hold. Physical harm: Physical discomfort for users (not operators) of the system. Operator resiliency: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be well within expected operator abilities; OR causes a minor occupational safety hazard. System resiliency: Small reduction in built-in system safety margins; OR small reduction in system functional capabilities that support safe operation. Environment: Minor externalities (property damage, environmental damage, etc.) imposed on other parties. Financial Financial losses, which are not readily absorbable, to multiple persons. Psychological: Emotional or psychological harm, sufficient to be cause for counselling or therapy, to multiple persons."
+},
+{
+"key": "J",
+"name": "Major",
+"definition": "Any one or more of these conditions hold. Physical harm: Physical distress and injuries for users (not operators) of the system. Operator resiliency: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be within their capabilities but the actions require their full attention and effort; OR significant distraction or discomfort to operators; OR causes significant occupational safety hazard. System resiliency: System safety margin effectively eliminated but no actual harm; OR failure of system functional capabilities that support safe operation. Environment: Major externalities (property damage, environmental damage, etc.) imposed on other parties. Financial: Financial losses that likely lead to bankruptcy of multiple persons. Psychological: Widespread emotional or psychological harm, sufficient to be cause for counselling or therapy, to populations of people."
+},
+{
+"key": "H",
+"name": "Hazardous",
+"definition": "Any one or more of these conditions hold. Physical harm: Serious or fatal injuries, where fatalities are plausibly preventable via emergency services or other measures. Operator resiliency: Actions that would keep the system in a safe state are beyond system operator capabilities, resulting in adverse conditions; OR great physical distress to system operators such that they cannot be expected to operate the system properly. System resiliency: Parts of the cyber-physical system break; system’s ability to recover lost functionality remains intact. Environment: Serious externalities (threat to life as well as property, widespread environmental damage, measurable public health risks, etc.) imposed on other parties. Financial: Socio-technical system (elections, financial grid, etc.) of which the affected component is a part is actively destabilized and enters unsafe state. Psychological: N/A."
+},
+{
+"key": "C",
+"name": "Catastrophic",
+"definition": "Any one or more of these conditions hold. Physical harm: Multiple immediate fatalities (Emergency response probably cannot save the victims.) Operator resiliency: Operator incapacitated (includes fatality or otherwise incapacitated). System resiliency: Total loss of whole cyber-physical system, of which the software is a part. Environment: Extreme externalities (immediate public health threat, environmental damage leading to small ecosystem collapse, etc.) imposed on other parties. Financial: Social systems (elections, financial grid, etc.) supported by the software collapse. Psychological: N/A."
+}
+]
+}
+Safety Impact (ssvc:SI:2.0.0)
+The safety impact of the vulnerability. (based on IEC 61508)
+Value
+Key
+Definition
+Negligible
+N
+Any one or more of these conditions hold.
+- Physical harm: Minor injuries at worst (IEC 61508 Negligible).
+- Operator resiliency: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be well within expected operator abilities; OR causes a minor occupational safety hazard.
+- System resiliency: Small reduction in built-in system safety margins; OR small reduction in system functional capabilities that support safe operation.
+- Environment: Minor externalities (property damage, environmental damage, etc.) imposed on other parties.
+- Financial: Financial losses, which are not readily absorbable, to multiple persons.
+- Psychological: Emotional or psychological harm, sufficient to be cause for counselling or therapy, to multiple persons.
+Marginal
+M
+Any one or more of these conditions hold.
+- Physical harm: Major injuries to one or more persons (IEC 61508 Marginal).
+- Operator resiliency: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be within their capabilities but the actions require their full attention and effort; OR significant distraction or discomfort to operators; OR causes significant occupational safety hazard.
+- System resiliency: System safety margin effectively eliminated but no actual harm; OR failure of system functional capabilities that support safe operation.
+- Environment: Major externalities (property damage, environmental damage, etc.) imposed on other parties.
+- Financial: Financial losses that likely lead to bankruptcy of multiple persons.
+- Psychological: Widespread emotional or psychological harm, sufficient to be cause for counselling or therapy, to populations of people.
+Critical
+R
+Any one or more of these conditions hold.
+- Physical harm: Loss of life (IEC 61508 Critical).
+- Operator resiliency: Actions that would keep the system in a safe state are beyond system operator capabilities, resulting in adverse conditions; OR great physical distress to system operators such that they cannot be expected to operate the system properly.
+- System resiliency: Parts of the cyber-physical system break; system’s ability to recover lost functionality remains intact.
+- Environment: Serious externalities (threat to life as well as property, widespread environmental damage, measurable public health risks, etc.) imposed on other parties.
+- Financial: Socio-technical system (elections, financial grid, etc.) of which the affected component is a part is actively destabilized and enters unsafe state.
+- Psychological: N/A.
+Catastrophic
+C
+Any one or more of these conditions hold.
+- Physical harm: Multiple loss of life (IEC 61508 Catastrophic).
+- Operator resiliency: Operator incapacitated (includes fatality or otherwise incapacitated).
+- System resiliency: Total loss of whole cyber-physical system, of which the software is a part.
+- Environment: Extreme externalities (immediate public health threat, environmental damage leading to small ecosystem collapse, etc.) imposed on other parties.
+- Financial: Social systems (elections, financial grid, etc.) supported by the software collapse.
+- Psychological: N/A.
+Safety Impact (ssvc:SI:2.0.0) JSON Example
+{
+"namespace": "ssvc",
+"key": "SI",
+"version": "2.0.0",
+"name": "Safety Impact",
+"definition": "The safety impact of the vulnerability. (based on IEC 61508)",
+"schemaVersion": "2.0.0",
+"values": [
+{
+"key": "N",
+"name": "Negligible",
+"definition": "Any one or more of these conditions hold.<br/><br/>- *Physical harm*: Minor injuries at worst (IEC 61508 Negligible).<br/>- *Operator resiliency*: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be well within expected operator abilities; OR causes a minor occupational safety hazard.<br/>- *System resiliency*: Small reduction in built-in system safety margins; OR small reduction in system functional capabilities that support safe operation.<br/>- *Environment*: Minor externalities (property damage, environmental damage, etc.) imposed on other parties.<br/>- *Financial*: Financial losses, which are not readily absorbable, to multiple persons.<br/>- *Psychological*: Emotional or psychological harm, sufficient to be cause for counselling or therapy, to multiple persons."
+},
+{
+"key": "M",
+"name": "Marginal",
+"definition": "Any one or more of these conditions hold.<br/><br/>- *Physical harm*: Major injuries to one or more persons (IEC 61508 Marginal).<br/>- *Operator resiliency*: Requires action by system operator to maintain safe system state as a result of exploitation of the vulnerability where operator actions would be within their capabilities but the actions require their full attention and effort; OR significant distraction or discomfort to operators; OR causes significant occupational safety hazard.<br/>- *System resiliency*: System safety margin effectively eliminated but no actual harm; OR failure of system functional capabilities that support safe operation.<br/>- *Environment*: Major externalities (property damage, environmental damage, etc.) imposed on other parties.<br/>- *Financial*: Financial losses that likely lead to bankruptcy of multiple persons.<br/>- *Psychological*: Widespread emotional or psychological harm, sufficient to be cause for counselling or therapy, to populations of people."
+},
+{
+"key": "R",
+"name": "Critical",
+"definition": "Any one or more of these conditions hold.<br/><br/>- *Physical harm*: Loss of life (IEC 61508 Critical).<br/>- *Operator resiliency*: Actions that would keep the system in a safe state are beyond system operator capabilities, resulting in adverse conditions; OR great physical distress to system operators such that they cannot be expected to operate the system properly.<br/>- *System resiliency*: Parts of the cyber-physical system break; system’s ability to recover lost functionality remains intact.<br/>- *Environment*: Serious externalities (threat to life as well as property, widespread environmental damage, measurable public health risks, etc.) imposed on other parties.<br/>- *Financial*: Socio-technical system (elections, financial grid, etc.) of which the affected component is a part is actively destabilized and enters unsafe state.<br/>- *Psychological*: N/A."
+},
+{
+"key": "C",
+"name": "Catastrophic",
+"definition": "Any one or more of these conditions hold.<br/><br/>- *Physical harm*: Multiple loss of life (IEC 61508 Catastrophic).<br/>- *Operator resiliency*: Operator incapacitated (includes fatality or otherwise incapacitated).<br/>- *System resiliency*: Total loss of whole cyber-physical system, of which the software is a part.<br/>- *Environment*: Extreme externalities (immediate public health threat, environmental damage leading to small ecosystem collapse, etc.) imposed on other parties.<br/>- *Financial*: Social systems (elections, financial grid, etc.) supported by the software collapse.<br/>- *Psychological*: N/A."
+}
+]
+}
+RTCA, Inc. Software considerations in airborne systems and equipment certification. Technical Report DO-178C, EUROCAE WG-12, Washington, DC, 2012. ↩
+FAA. System safety handbook. Technical Report, US Dept. of Transportation, Federal Aviation Administration, Washington, DC, 2000. URL: https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/risk_management/ss_handbook/. ↩
+Back to top
+Previous
+Report Public
+Next
+Supplier Cardinality
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to
+deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.
+-->
+Copyright
+©
+Carnegie Mellon University
+CERT®, Carnegie Mellon® and CERT Coordination Center® are registered in the
+U.S. Patent and Trademark Office by Carnegie Mellon University.
+Change cookie settings
+Legal
+Privacy Notice
+Made with
+Material for MkDocs
+About our use of cookies on this site
+We use cookies to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better. See our Privacy Notice for more.
+Google Analytics
+GitHub
+Accept
+Manage settings

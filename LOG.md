@@ -2634,3 +2634,15 @@ Parent supplied only supplemental-challenge.json (SHA256 fcee209d2fcaba93804b926
 ## Round 59 — scoped rejection row made explicit
 
 Own R64 audit caught that the opened-source rejected use existed only in prose. Appended S093 rejected scoped row for the same already-opened FIRST document; no fictional second source, no new quote words. Round59 lesson supersedes earlier S092-only row-count statements (current91→93). Definition authority remains admitted under S092; actual-report/reward inference remains rejected. No frozen C1 criterion or first answer changed.
+
+## Round60 contract freeze — deepen F20, not relabel round59
+
+Evidence: `.ufo/waves/round-60/controls/before.txt` and `CONTRACT.md` in that wave.
+C1 targets lowest depth:verifiability as nominal capability, legacy score4 held.
+F20 lacks explicit deployer table paths; official DT_DP1.0.0 reopened and captured
+with component definitions before unseen cases. Freeze pins source captures,
+causal rubric and negative constant-priority/model-mislabel/unknown-as-safe controls.
+No implementation/answers yet. R59 remains honestly rejected; no historical rescue.
+Sequential approved roles, parent-appointed review pending. Original diskguard
+passes53%; scratch bounded1GB. Author commits explicitly use lane identity because
+repository config is inherited Codex, not silently attributed to operator.

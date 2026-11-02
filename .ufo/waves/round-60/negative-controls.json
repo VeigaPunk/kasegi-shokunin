@@ -1,0 +1,5 @@
+[
+ {"id":"constant-priority","input":"Two deployer instances share severity. First has active exploitation, open exposure, reliable automation and critical safety plus MEF failure. Second has no active exploitation or public PoC, small exposure, non-automatable exploit and negligible safety plus degraded mission.","bad_candidate":"Both immediate because their technical severity is identical.","must_fail":"First row70 immediate; second row0 defer. Same severity cannot erase stakeholder context."},
+ {"id":"model-mislabel","input":"Use CERT/CC Deployer DT_DP1.0.0, active/open/yes/high.","bad_candidate":"CISA model result: immediate, row70.","must_fail":"The row matches the deployer table but claimed CISA identity is false; a correct label is insufficient."},
+ {"id":"absence-as-safe","input":"Active exploitation, open exposure, reliable automation; no information about safety or mission impacts.","bad_candidate":"Human impact low because no harm was mentioned; out-of-cycle row68.","must_fail":"Unknown HI spans rows68-71 and priorities out-of-cycle/immediate. Missing narrative is not low impact."}
+]
