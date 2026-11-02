@@ -2594,3 +2594,7 @@ sections contradict those readings. This is an own-error repair, not a new front
 All final runs and their measured revision are in `.ufo/waves/round-57/controls/final.txt`;
 that receipt is written after content commit from committed bytes. Final report is staged
 outside fleet and is filed only after lane commits, with full hashes and acceptance pending.
+
+## Round 58 — pre-implementation freeze (2026-11-02)
+
+C1 only, depth:verifiability (lowest 4, nominal capability under R58; score held): kernel-specific report evidence/disclosure judgment on synthetic records. Existing F27 prose is not an executable assessor (`.ufo/waves/round-58/controls/before.txt`). Freeze contract and 35 expected cases precede engine implementation; `kernel-report-check.py` tests actual CLI outputs. Pre-freeze controls reject constant-positive, constant-incomplete, empty and wrong-exit substitutes; missing engine exits 2, not historical incompetence. Built-in harmless ACL replay is required rather than self-declared reproduction. No real kernel testing, contacts or submissions. User-approved sequential specialist passes by author (planner/connector/source scout/test designer), not invented eight-agent concurrency; independent reviewer appointed by parent. Holds and source-root loss remain.

@@ -1,0 +1,54 @@
+{
+  "schema": "kernel-report-training/v1",
+  "synthetic": true,
+  "version": {
+    "origin": "kernel.org",
+    "id": "6.12.1",
+    "recent_check": true
+  },
+  "description": "TRAINING ONLY: guest can read invented record despite owner-only policy.",
+  "conditions": {
+    "config": "ordinary"
+  },
+  "reproducer": {
+    "format": "source",
+    "trigger": "read-training-record",
+    "confirm": "access-granted",
+    "trace_id": "t1"
+  },
+  "traces": [
+    {
+      "id": "t1",
+      "version": "6.12.1",
+      "conditions": {
+        "config": "ordinary"
+      },
+      "trigger": "read-training-record",
+      "observation": "access-granted",
+      "reproduced": true,
+      "operation": "read-training-record",
+      "permitted": true,
+      "production": true,
+      "specimen": {
+        "actor": "guest",
+        "owner": "owner",
+        "mode": "buggy"
+      }
+    }
+  ],
+  "boundary_claim": {
+    "operation": "read-training-record",
+    "permitted": false
+  },
+  "ai_assisted": true,
+  "public_text": [
+    {
+      "kind": "summary",
+      "text": "Synthetic report only."
+    },
+    {
+      "kind": "availability",
+      "text": "Reproducer available on maintainer request."
+    }
+  ]
+}
