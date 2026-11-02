@@ -2429,3 +2429,18 @@ on its frozen every-case-success criterion. Original first answers and reviewer
 oracle remain unchanged. Correction01 is post-feedback learning, not a first-pass
 rescore. No capability row is admitted and no axis score changes. R67 and the SKILL
 refinement now explicitly distinguish possessing authority from requiring it.
+
+## Round60 — C1 stakeholder-specific deployer assessment (review pending)
+
+One claim on lowest depth:verifiability, nominal acquisition under R58. Score4→4,
+coverage8 held, density9 held; raw density disclosed in final receipt, not called
+unchanged. Freeze eaf2ae1 pins DT_DP1.0.0 source and rubric before unseen cases.
+Existing F20 deepened, no new F-row or admitted capability row yet.
+Before: no `corpus/knowledge/ssvc-deployer-assessment.md` at basee9ce501;
+F20 explicitly lacked deployer mapping (controls/before.txt). This is documented
+repertoire absence, NOT invented historical accuracy. After: source-grounded
+teaching and first-assessment dossier only if independent causal review passes
+every frozen case, with constant-priority/model-mislabel/absence-safe controls
+rejected. Structural count is not correctness. Reviewer verdict count and exact
+answer commit will be appended after assessment; author does not self-admit.
+Round59 original failure and post-feedback improvement remain distinct; no rescue.

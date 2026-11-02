@@ -933,3 +933,9 @@ The original F27 reporting-process entry remains historical source-bound knowled
 `knowledge/cvss-v4-evidence-assessment.md` (S092) adds PR/UI and subsequent-system impact
 judgment to the existing F01 nomenclature overview. No new frontier id or recovered
 root surface. Independent prose-scenario assessment, not automatic scoring or reward.
+
+## Round60 F20 deepening
+
+`knowledge/ssvc-deployer-assessment.md` (S094–S096) adds pinned DT_DP1.0.0 paths
+and evidence-to-context interpretation to F20's overview-only scope. No new F-row,
+no capability admission before independent causal review; S097 rejects universal use.

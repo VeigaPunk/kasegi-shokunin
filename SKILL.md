@@ -1296,3 +1296,25 @@ that account. Ask whether exploitation works without those rights; PR:L is only
 conditional until necessity is established. The first K59-10 answer invented that
 prerequisite and is withdrawn in `.ufo/waves/round-59/correction-01.json`; first bytes
 remain evidence. R67/round59 lesson capture the shared author-oracle mistake.
+
+## Round60 — pinned deployer prioritization, not universal severity
+
+Trigger: explaining CERT/CC deployer paths from fictional stakeholder evidence.
+Anti-trigger: live remediation orders, CISA/supplier-model substitution or bounty
+risk scores. S094–S096 and `corpus/knowledge/ssvc-deployer-assessment.md` deepen F20.
+
+| Situation | Decision discipline |
+|---|---|
+| Same technical severity, different deployed context | Assess exploitation/exposure/automation/human impact per instance; row52 scheduled vs row70 immediate is possible |
+| Firewall or account merely mentioned | Do not invent effectiveness or prerequisite; round59 R67's evidence-before-assumption lesson applies |
+| PoC exists or one attack step automated | Neither proves wild exploitation nor automation of all four initial stages |
+| Mission/safety absent | Retain unknowns; compatible rows may disagree; source-suggested defaults are assumptions, not observations |
+| Matching outcome but wrong model identity | Reject; DT_DP1.0.0 is deployer patch priority, not CISA or supplier priority |
+
+Checklist: identify stakeholder and remediation-instance unit; bind DT_DP1.0.0
+and E1.1.0/EXP1.0.1/A2.0.0/HI2.0.2; infer each input from cited scenario facts;
+compose HI using MI2.0.0/SI2.0.1; list exact compatible rows; assert common priority
+only when all agree. Explain unknowns and unsupported conclusions. S094's prose
+none+very-high summary conflicts with table rows; use pinned table and disclose
+that conflict. Workflow/first-answer rubric: `.ufo/waves/round-60/CONTRACT.md`.
+This is a manually reasoned dossier, not an automatic classifier or action grant.

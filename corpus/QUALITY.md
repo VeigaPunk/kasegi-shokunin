@@ -444,3 +444,9 @@ All existing criteria remain unchanged. This block is grounded in the round-49 l
 | id | criterion | grounded in |
 |---|---|---|
 | R67 | A CVSS PR assessment must cite evidence that the authority is necessary to exploit, not merely that the selected attacker happens to possess it. If the scenario states possession but not necessity, ask whether the same flaw is exploitable without that authority; report insufficient until established, with any L/H result conditional. Independent agreement on an invented prerequisite does not validate it. Reject K59-10's first rationale, which changes “already has” into “are required”, under this rule; retain first answer and oracle and separate post-feedback learning from frozen success. | `corpus/lessons/round-59.md` independent-review correction; `.ufo/waves/round-59/first-answers.json` K59-10 PR and `correction-01.json`; S092 PR/Table4, capture line478. |
+
+## Round60 addition — component versions are not interchangeable model identity
+
+| id | criterion | grounded in |
+|---|---|---|
+| R68 | A prioritization assessment binds stakeholder decision model, input component versions and output group separately. Re-open each exact version heading before freeze; never infer a component version from a sibling. A correct priority under a mislabelled model fails: round60 model-mislabel prospective control calls deployer row70 CISA and must be rejected. Record source prose/table conflicts rather than silently harmonizing them. | `corpus/lessons/round-60.md` own MI1.0.1 slip corrected against S095:201 MI2.0.0 before freeze; S094:510/table discrepancy; `.ufo/waves/round-60/negative-controls.json`. |

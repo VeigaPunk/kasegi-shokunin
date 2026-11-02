@@ -2646,3 +2646,14 @@ No implementation/answers yet. R59 remains honestly rejected; no historical resc
 Sequential approved roles, parent-appointed review pending. Original diskguard
 passes53%; scratch bounded1GB. Author commits explicitly use lane identity because
 repository config is inherited Codex, not silently attributed to operator.
+
+## Round60 source teaching — pending independent demonstration
+
+Source pins and anchor rechecks: `.ufo/waves/round-60/controls/source-binding.txt`.
+S094–S096 mined and S097 scoped universal-use rejection, old registry lines intact.
+`corpus/knowledge/ssvc-deployer-assessment.md`, SKILL and F20 index/province append
+explain context-to-input judgment and exact paths, partial knowledge, component
+versions, source suggested assumptions and the disclosed prose/table discrepancy.
+R68 mines actual pre-freeze MI version slip; lesson preserves failed bs4 attempt
+and round59 shared-assumption failure. No model code or unseen answers yet.
+SCORECARD records pending, legacy scores held; no fabricated successful capability.
