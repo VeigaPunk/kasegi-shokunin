@@ -2789,3 +2789,7 @@ recheck comparison79 unchanged, new entry actual own-source replay strict111111.
 Source census107→109 and inventory equality pass. Raw density240.6→235.2 disclosed,
 score held; independent final no-harm decision pending. Receipt is unedited single
 invocation, not semantic grading. No upstream/target activity or next-round work.
+
+Round62 correction: lesson's final count prose said quote7 where the committed
+wc-w receipt says6. Appended named R56 correction to6/3; original false7 preserved.
+No manifest, source, challenge or first answer changes.

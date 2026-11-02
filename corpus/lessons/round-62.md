@@ -83,3 +83,9 @@ judgment is still needed. Case10 and negatives3 are structural record counts, no
 population accuracy. Source Gate quotes measured7 and3 words with wc-w.
 CISA403 observations above are report-only tool results, not archived HTTP-body
 captures; no source-content inference or successful-open claim is based on them.
+
+Correction (round62, R56): the paragraph above saying “quotes measured7 and3”
+mis-transcribed its own receipt. controls/final.txt GATE-QUOTE prints **6 and3**
+with wc-w; no source quote or manifest changes. This is an actual own word-count
+reporting mistake caught by re-reading the committed receipt, not an instrument
+failure. The false7 remains as history and is superseded here.
