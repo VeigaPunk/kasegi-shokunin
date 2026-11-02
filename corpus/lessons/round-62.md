@@ -63,3 +63,23 @@ review. Discernment requires reviewer agreement on admit/reject and correction.
 Event-driven reflection: this rapid sequential block keeps applying
 considerthese/2026-10-25.md proposal6/R27: re-open source semantics and prior
 rejections rather than chase row counts; no idle-interval claim.
+
+## Final committed-tree measurement
+controls/final.txt under .ufo/waves/round-62 is one unedited invocation over
+9c573ddddcc84c4ae1676d7dcf7246bf2e252355: unexpected-results0. Existing79 entry
+recheck outcomes unchanged per entry, not merely same exit; the new80th entry's
+actual lane and foreign commands pass strict111111. Inventory missing0/unexpected0;
+source capture binding89/89. Export-root strict cdroot failures differ from actual
+lane because host-qualified commands deliberately enter the live lane; this is
+not represented as a portable-export pass. Actual source bytes are pinned and
+new-entry real-cwd replay is separately shown. Legacy frontier entries40/pass7
+remain exit1, not claimed repaired. Lost roots remain absent.
+
+Source rows107→109; A97→99, B5/C5 held; mined85→86, rejected22→23. Both source
+census validations exit0. No old row cell changed. Raw density240.6→235.2 with
+SKILL historical prefix preserved; score9 held, no artificial padding. The added
+reasoning is useful depth rather than claimed proxy improvement; outside no-harm
+judgment is still needed. Case10 and negatives3 are structural record counts, not
+population accuracy. Source Gate quotes measured7 and3 words with wc-w.
+CISA403 observations above are report-only tool results, not archived HTTP-body
+captures; no source-content inference or successful-open claim is based on them.

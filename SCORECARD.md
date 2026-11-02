@@ -2519,3 +2519,10 @@ pins model/rubric before reviewer cases; first201473ba immutable. Independent
 Case structure is counted in round62 controls/answer-structure.txt; correctness
 is manual causal review, not count equality. Source curation and no-harm closure
 pending. No capability row or numeric gain self-admitted; no next-round authority.
+
+Round62 committed export9c573ddddcc84c4ae1676d7dcf7246bf2e252355 measures
+unexpected-results0 (round62 controls/final.txt); legacy79 per-entry outcomes
+unchanged, new entry strict111111 in actual lane/foreign replay. Raw density
+240.6→235.2, score9 held; no density gain asserted. Source census107→109;
+all new semantic/source counts remain bounded to this dossier. Final admission
+still reviewer/parent-owned, not created by this guard.

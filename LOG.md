@@ -2782,3 +2782,10 @@ semantic result supports10/10 plus3/3 negatives; source/no-harm review pending.
 Correction to freeze phrase “allowed multiple”: retained flag(s) draft was ambiguous,
 not an executed multi-flag record. Corrected before freeze; reviewer agrees only
 one emitted VEX flag per product including group membership (S1086.1.33).
+
+Round62 final export guard over9c573ddddcc84c4ae1676d7dcf7246bf2e252355:
+.ufo/waves/round-62/controls/final.txt ends unexpected-results0; detailed legacy
+recheck comparison79 unchanged, new entry actual own-source replay strict111111.
+Source census107→109 and inventory equality pass. Raw density240.6→235.2 disclosed,
+score held; independent final no-harm decision pending. Receipt is unedited single
+invocation, not semantic grading. No upstream/target activity or next-round work.
