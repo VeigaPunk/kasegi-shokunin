@@ -2700,3 +2700,14 @@ no score gain. Round57/58 historical pending text superseded append-only using
 review commits deb4738/f17171e and parent-confirmed closures1065/1066; no new
 training credit. Round59 remains rejected/no capability. All text finalized before
 controls/final-after-admission.txt committed-tree run and census-pair refresh.
+
+## Round61 — contract freeze (2026-11-02)
+C1 only, lowest depth:verifiability held4 (nominal R58): bounded manual CWE
+root-cause dossier beyond F05 ranking/crosswalk guidance. Before sweep and source
+census in `.ufo/waves/round-61/controls/`; contract, negative controls and source
+pins frozen before independent cases/answers. Official MITRE guidance and eight
+entries reopened, including ALLOWED-WITH-REVIEW Class862/863 and discouraged
+119/20. Capture interrupted after S098/S099; resumed missing reads without
+rewriting original capture bytes. Metadata note distinguishes resume from fetch.
+Parent-appointed fresh reviewer owns unseen case/oracle and independent verdict;
+one author performs sequential specialist passes, not8-agent claim. No next round.
