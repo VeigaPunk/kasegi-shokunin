@@ -70,3 +70,17 @@ First-pass frozen all-cases success condition is **not established**. C1 remains
 unverified, irrespective of 49 other supported metrics. No 50/50, silent oracle
 repair, rewritten first answer or supplemental rescue. This concrete inferential
 failure is more informative than another nominal classifier pass.
+
+## Curation conformance correction
+
+Own R64 audit found the rejected source use only in prose. New rejected scoped row
+S093 records that same already-opened FIRST document, not a second discovered source.
+URL https://www.first.org/cvss/v4.0/specification-document; accessed2026-11-02;
+located grounding: Impact Metrics/system-of-interest, S092 capture line548,
+“coherent function”. This repeats an existing quote, adding no new quoted words.
+Metric-definition scope is A; actual report/reward proof is refused with explicit
+flip condition. Earlier S092-only/91→92 statements describe pre-correction state;
+current registry is91→93, new A mined1/rejected1, one distinct opened document.
+No old status/recheck/used-by cells changed. This corrects bookkeeping, not the
+substantive C1 failure. Class scope, caught by own R64 reread; rejected inference
+was never admitted as knowledge.

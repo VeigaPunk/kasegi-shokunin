@@ -2630,3 +2630,7 @@ Parent relayed fresh reviewer finding: K59-10 PR:L imports necessity from accoun
 ## Round 59 — supplemental answers sealed separately
 
 Parent supplied only supplemental-challenge.json (SHA256 fcee209d2fcaba93804b926a06ac59c8c4aaa1a32b2addc1b4ee693855404c19), two independent post-feedback scenarios. `.ufo/waves/round-59/supplemental-answers.json` separately reasons necessity versus possession and mixed known/unknown dimensions. No private oracle read, no original answer edit. Supplemental results measure learning only and cannot rescue original C1 failure.
+
+## Round 59 — scoped rejection row made explicit
+
+Own R64 audit caught that the opened-source rejected use existed only in prose. Appended S093 rejected scoped row for the same already-opened FIRST document; no fictional second source, no new quote words. Round59 lesson supersedes earlier S092-only row-count statements (current91→93). Definition authority remains admitted under S092; actual-report/reward inference remains rejected. No frozen C1 criterion or first answer changed.
