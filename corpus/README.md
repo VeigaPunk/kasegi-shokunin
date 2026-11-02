@@ -925,3 +925,5 @@ bounded teaching evaluator, not a general vulnerability scanner or an ecosystem 
 | Kernel report evidence assessment; executable deepening of existing F27, NOT a new numbered frontier | knowledge/kernel-report-evidence-assessment.md | S090 — official policy reopened; S091 scoped rejected alternative |
 
 The original F27 reporting-process entry remains historical source-bound knowledge. This addition contributes a replayable synthetic assessment with explicit evidence/authority/disclosure separations. No recovered root, additional lost-domain surface or generic report acceptance is claimed.
+
+[r58 named correction to F27 row at line 651, 2026-11-02] Its phrase `AI-found, binary-only and unreproducible refusal rules` is overbroad: AI assistance changes public handling, not automatic validity or intake rejection. The coverage-map phrase `refusal rules` at line 647 must likewise not be read as blanket AI refusal. Use the differentiated rubric in `knowledge/kernel-report-evidence-assessment.md` (S090); binary-only and unreproduced evidence remain different questions. Historical row bytes and admission are not rewritten.

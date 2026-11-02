@@ -210,3 +210,5 @@ service/API, scanner, live target, general ecosystem comparator, or Git-graph en
 round-57 named correction in its existing knowledge entry governs over the earlier summary.
 
 [r58 F27 deepening, 2026-11-02] `corpus/knowledge/kernel-report-evidence-assessment.md` and `corpus/instruments/kernel-report-assess.py` add bounded synthetic report judgment to existing kernel reporting ground. The ACL replay is a teaching model, not kernel testing. No new numbered frontier or source-root restoration; live-target testing and submission remain refused. Research methods remain chousa-owned; secret handling remains kagi-owned.
+
+[r58 named correction to r45 F27 description at line 169, 2026-11-02] The phrase `AI-found, binary-only and unreproducible refusal rules` conflated distinct rules. AI assistance does NOT itself cause refusal; the kernel guidance treats such findings as public while withholding the reproducer from public text. Binary-only and reproduction deficiencies are separate evidence concerns. S090 and `corpus/knowledge/kernel-report-evidence-assessment.md` govern this distinction; the r45 bytes remain historical, not current blanket-rejection advice.
