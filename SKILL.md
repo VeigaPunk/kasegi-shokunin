@@ -1335,3 +1335,29 @@ Base/Variant preference does not make all Classes forbidden:862/863 are allowed
 with review of children;119/20 are discouraged in the pinned entries. An unknown
 cause calls for a discriminating question, not a broad-label fallback. This is a
 manual fictional assessment workflow, not a real finding or automated classifier.
+
+## Round62 — VEX product evidence, not dependency-alert inheritance
+
+Trigger: assessing a security claim's VEX affectedness evidence under CSAF2.0.
+Anti-trigger: real-target testing, automatically suppressing alerts or asserting
+complete document validity. S108 and corpus/knowledge/vex-evidence-assessment.md
+deepen F21. Bind exact product/build/configuration and flaw before selecting status.
+
+| Evidence distinction | Decision / error pattern |
+|---|---|
+| Component absent vs component present but flawed code excluded | component_not_present vs vulnerable_code_not_present; do not collapse them |
+| Complete unusual-state reachability analysis vs clean sampled tests | Only the former supports non-execution-path; test silence is not proof |
+| Executed code lacks adversarial control vs code never executes | Different not-affected reasons; preserve the causal evidence |
+| Built-in guard prevents leverage vs external risk reduction | Inline justification may fit first; second does not automatically resolve the flaw |
+| Fix is installed vs only downloadable | fixed applies to the fixed product bytes, not every eligible older version |
+| Human impact threat scopes P but not Q | P needs no additional flag; document-level presence cannot satisfy Q's obligation |
+
+Checklist: exact subject → component/code/path/control/mitigation premises →
+source-grounded status and one flag or explicit uncertainty → scoped impact/action
+information → rejected alternatives and missing facts. An investigation proposal
+is not proof that investigation has started. Multiple explanatory alternatives do
+not authorize multiple emitted VEX flags for one product (S1086.1.33); group
+membership counts. OpenVEX/CycloneDX field vocabularies are not CSAF fields.
+Replay the manual challenge under .ufo/waves/round-62/CONTRACT.md; independent
+causal review judges truth, not structure. First answers and failure history stay
+immutable. Chousa owns source-method craft and kagi secrets; this is claim evidence.

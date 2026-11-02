@@ -2775,3 +2775,10 @@ include split-product judgments; counts are structure only. These first bytes
 are sealed before private oracle release and cannot be rewritten after feedback.
 Product-specific evidence and obligations are distinct; Q10-style source command
 verification and final teaching checks remain pending. No self-admission.
+
+Round62 teaching candidate deepens F21 with corpus/knowledge/vex-evidence-assessment.md,
+S108/S109 curation, lesson, SKILL checklist/table, inventory and index. Independent
+semantic result supports10/10 plus3/3 negatives; source/no-harm review pending.
+Correction to freeze phrase “allowed multiple”: retained flag(s) draft was ambiguous,
+not an executed multi-flag record. Corrected before freeze; reviewer agrees only
+one emitted VEX flag per product including group membership (S1086.1.33).

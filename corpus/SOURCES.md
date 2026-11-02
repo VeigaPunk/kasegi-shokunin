@@ -113,6 +113,9 @@
 | S106 | CWE-863: Incorrect Authorization — https://cwe.mitre.org/data/definitions/863.html | docs | A | Bounded root-cause evidence assessment, not target truth | CWE entry capture 2026-11-02; Description and Vulnerability Mapping Notes; S106.txt:436 | Distinguish a wrong permission check from a missing check | mined | 2026-11-02 | on-release | corpus/knowledge/cwe-root-cause-assessment.md |
 | S107 | MITRE CWE-119 rejected universal fallback — https://cwe.mitre.org/data/definitions/119.html | docs | A | Broad memory label as a universal fallback for crash-only cases | Vulnerability Mapping Notes; S102.txt:768, capture2026-11-02 | REJECTED: discouraged broad label cannot establish a causal memory defect from a crash alone; flip: specific causal evidence and an appropriate permitted mapping | rejected | 2026-11-02 | on-release | — |
 
+| S108 | OASIS CSAF2.0 normative Markdown — https://docs.oasis-open.org/csaf/csaf/v2.0/os/csaf-v2.0-os.md | spec | A | Bounded CSAF VEX product-status and justification evidence judgment | OASIS Standard2022-11-18 sections3.2.3.5,3.2.3.9,3.2.3.12.1,4.5,6.1.33; round62 capture | Distinguish product evidence for not-affected reasons, fix and mitigation; one VEX flag per product | mined | 2026-11-02 | on-release | corpus/knowledge/vex-evidence-assessment.md |
+| S109 | OpenVEX v0.2.0 — https://raw.githubusercontent.com/openvex/spec/main/OPENVEX-SPEC.md | spec | A | Candidate authority for CSAF2.0 normative field names and obligations | Title line1; Statement Fields lines168-185; opened2026-11-02 | REJECTED: OpenVEX is a distinct model and cannot normatively establish CSAF fields; flip: explicitly requested OpenVEX model with separate contract | rejected | 2026-11-02 | on-release | — |
+
 ## Paths
 
 - CVSS severity and CWE prioritization — S002 → S001 → S013 → S014 → S015: learn the metric semantics and scoring language before examining the Top 25 dataset method, interpretation and dated rank list.
@@ -234,3 +237,15 @@ Round-59 bounded search (2026-11-02): opened one official specification, screene
 2026-11-02: query root-cause mapping beyond F05; local knowledge/SKILL sweep in round61 controls/before.txt. Opened MITRE guidance plus eight exact entries: nine URLs screened/included for scoped teaching; one additional rejected use of the same119 page, not a tenth discovered source. Stop at the frozen causal assessment vocabulary, not exhaustive CWE coverage. S098–S106 added mined/A; S107 added rejected/A. No prior status/recheck/used-by cell changed.
 
 Study path: root-cause evidence — S098 → S099/S100/S101 → S102/S103 → S104/S105/S106: distinguish causal chains, forbidden shortcuts and authorization/output mechanisms.
+
+## Round62 bounded curation
+2026-11-02 question: what product evidence justifies CSAF VEX status/flags?
+Opened OASIS2.0 HTML through web, then authoritative Markdown via direct HTTP200
+capture; same standard, not two discoveries. OpenVEX v0.2.0 opened via web and
+same direct capture method, rejected for CSAF normative-field authority. S108
+mined/A and S109 rejected/A; no old status/recheck/used-by changed. Two sources
+screened, one included, one scoped rejection. CISA June2022 justification PDF
+original and relocated primary URLs returned403 via web: unavailable lead, no
+substantive read or content verdict. Search results for other pages not opened
+are leads only. Stop: normative CSAF source answers the bounded distinction.
+Study path: existing F21/S055 → S108 applied evidence exercise; do not conflate S109.

@@ -945,3 +945,12 @@ no capability admission before independent causal review; S097 rejects universal
 causal mapping workflow beyond the existing Top25/ranking and crosswalk notes.
 No new frontier row or domain-surface denominator is claimed. Demonstration and
 independent acceptance remain in the round61 evidence packet, not this index.
+
+## Round62 — F21 VEX evidence depth
+
+| Area | Entry | Source basis |
+|---|---|---|
+| CSAF2.0 product-specific VEX causal judgment | knowledge/vex-evidence-assessment.md | S108 opened2026-11-02; bounded fictional assessment and independent review, not scanner suppression |
+
+No new frontier ID or lost-surface recovery. Existing F21 is deepened; OpenVEX
+candidate S109 is rejected for CSAF normative authority, not quality of its own model.

@@ -3290,6 +3290,7 @@ python3 -c 'import json; a=json.load(open(".ufo/waves/round-61/first-answers.jso
 python3 -c 'import json;d=json.load(open("corpus/source-snapshots/round-35/S052.txt"));print("keys",len(d),"count",d["count"],"records",len(d["vulnerabilities"]))'	GONE		1		rel	1	+CORPUS
 python3 -c 'import json;json.load(open("corpus/instruments/limb-ledger.json"))'	GONE		1		rel	1	+CORPUS
 python3 -c 'import json;m=json.load(open("corpus/source-snapshots/round-35/manifest.json"));r=m["sources"][0];c=open("corpus/source-snapshots/round-35/S052.txt").read().splitlines();norm=lambda s:" ".join(s.split());ok=sum(norm(q["quote"]) in norm(" ".join(c[max(0,q["anchor"]-1):q["anchor"]+3])) for q in r["quotes"]);print("anchors_ok",ok,"of",len(r["quotes"]))'	GONE		1		rel	1	+CORPUS
+python3 -c 'import json;print(len(json.load(open(".ufo/waves/round-62/first-answers.json"))))'	GONE		1		rel	1	+CORPUS
 python3 -c 'import json;v=json.load(open("corpus/source-snapshots/round-35/S052.txt"))["vulnerabilities"];b22=[r for r in v if "BOD 22-01" in r["requiredAction"]];b26=[r for r in v if "BOD 26-04" in r["requiredAction"]];print("bod22",len(b22),"bod26",len(b26),"both",len([r for r in b22 if "BOD 26-04" in r["requiredAction"]]),"neither",sum("BOD 22-01" not in r["requiredAction"] and "BOD 26-04" not in r["requiredAction"] for r in v))'	GONE		1		rel	1	+CORPUS
 python3 -c 'import json;v=json.load(open("corpus/source-snapshots/round-35/S052.txt"))["vulnerabilities"];ks={tuple(sorted(r)) for r in v};print("keysets",len(ks),"keys",len(next(iter(ks))))'	GONE		1		rel	1	+CORPUS
 python3 -c 'import json;v=json.load(open("corpus/source-snapshots/round-35/S052.txt"))["vulnerabilities"];print("ids",len({r["cveID"] for r in v}),"of",len(v))'	GONE		1		rel	1	+CORPUS
@@ -4663,10 +4664,12 @@ corpus/source-snapshots/round-54/S086.txt	INTERNAL	/workspace/scratch/e2fdad1323
 .ufo/waves/round-59/first-answers.json	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-59/first-answers.json	1	literal	rel	1	+CORPUS
 .ufo/waves/round-60/CONTRACT.md	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-60/CONTRACT.md	1	literal	rel	1	SKILL
 .ufo/waves/round-61/CONTRACT.md	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-61/CONTRACT.md	1	literal	rel	1	+CORPUS
+.ufo/waves/round-61/operability-replay.py	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-61/operability-replay.py	1	literal	rel	1	+CORPUS
 .ufo/waves/round-61/source-correction01/manifest.json	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-61/source-correction01/manifest.json	1	literal	rel	1	+CORPUS
 /home/	RESOLVES	/home/	1	literal	other	1	+CORPUS
 /workspace/scratch/e2fdad13233f/kasegi-round57-report.md	RESOLVES	/workspace/scratch/e2fdad13233f/kasegi-round57-report.md	1	literal	other	1	+CORPUS
 /workspace/scratch/e2fdad13233f/kasegi-round60-report.md	RESOLVES	/workspace/scratch/e2fdad13233f/kasegi-round60-report.md	1	literal	other	1	+CORPUS
+/workspace/scratch/e2fdad13233f/kasegi-round61-report.md	RESOLVES	/workspace/scratch/e2fdad13233f/kasegi-round61-report.md	1	literal	other	1	+CORPUS
 /workspace/scratch/e2fdad13233f/private-review/kasegi59/oracle.json	RESOLVES	/workspace/scratch/e2fdad13233f/private-review/kasegi59/oracle.json	1	literal	other	1	+CORPUS
 /workspace/scratch/e2fdad13233f/private-review/kasegi59/supplemental-oracle.json	RESOLVES	/workspace/scratch/e2fdad13233f/private-review/kasegi59/supplemental-oracle.json	1	literal	other	1	+CORPUS
 <CASE>	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/AGENTS.md	1	glob	rel	1	+CORPUS
@@ -4828,6 +4831,7 @@ corpus/QUALITY.md:391	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training
 corpus/QUALITY.md:401	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md	1	literal	rel	1	+CORPUS
 corpus/QUALITY.md:407	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md	1	literal	rel	1	+CORPUS
 corpus/QUALITY.md:413-416	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md	1	literal	rel	1	+CORPUS
+corpus/QUALITY.md:76	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md	1	literal	rel	1	+CORPUS
 corpus/QUALITY.md:83	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md	1	literal	rel	2	+CORPUS
 corpus/QUALITY.md:89	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md	1	literal	rel	1	+CORPUS
 corpus/README.md:145	INTERNAL	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md	1	literal	rel	2	+CORPUS

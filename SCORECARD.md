@@ -2508,3 +2508,14 @@ now run identically from lane and foreign cwd, strict111111; corrupted/missing
 source controls fail. This is a post-review command repair, not a semantic rescore
 or changed frozen condition. Final independent no-harm decision remains required;
 no capability row added by author and numeric scores held.
+
+## Round62 — C1 bounded CSAF VEX evidence assessment (final review pending)
+
+Nominal lowest depth:verifiability claim, score4→4 under R58; coverage8/density9
+held and raw density movement disclosed in final receipt. Existing F21 deepened,
+no new frontier row. Before no exercised dossier at basef282e44; freeze7131fef
+pins model/rubric before reviewer cases; first201473ba immutable. Independent
+/root/judge_kasegi_round62 reports10/10 supported and3/3 bad policies rejected.
+Case structure is counted in round62 controls/answer-structure.txt; correctness
+is manual causal review, not count equality. Source curation and no-harm closure
+pending. No capability row or numeric gain self-admitted; no next-round authority.

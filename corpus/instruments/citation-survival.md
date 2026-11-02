@@ -2,26 +2,26 @@
 
 Instrument: `corpus/instruments/resolve.py` (stdlib-only, deterministic; r18 definition).
 Lane root: `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi`
-Scope: `SKILL.md` + `corpus/**/*.md` (238 files).
+Scope: `SKILL.md` + `corpus/**/*.md` (240 files).
 Extraction: verbatim density.py docstring path-like rule (see module docstring).
 Mirror root for bounty-path equivalence: `/home/agent/Projects/the-bounty-hunter` (ABSENT — mirror fallback disabled).
 
 ## Totals
 
-- distinct path-like citations: **5181** (total occurrences: 11833; a citation cited in both scopes counts once)
+- distinct path-like citations: **5185** (total occurrences: 11837; a citation cited in both scopes counts once)
 - distinct citations appearing in SKILL.md: 718 (of which SKILL-only: 9)
-- distinct citations appearing in corpus: 5172
+- distinct citations appearing in corpus: 5176
 
 | class | distinct citations |
 |---|---|
-| RESOLVES | 10 |
+| RESOLVES | 11 |
 | MIRROR-EQUIVALENT | 0 |
-| GONE | 4013 |
-| INTERNAL | 1158 |
-| OTHER *(root-domain bucket, orthogonal: the brief says classify other roots as RESOLVES/GONE)* | 10 resolve / 216 gone = 226 |
+| GONE | 4014 |
+| INTERNAL | 1160 |
+| OTHER *(root-domain bucket, orthogonal: the brief says classify other roots as RESOLVES/GONE)* | 11 resolve / 216 gone = 227 |
 
-Terminal outcome classes sum to the distinct total: RESOLVES(10) + MIRROR-EQUIVALENT(0) + INTERNAL(1158) + GONE(4013) = 5181.
-Of the 10 RESOLVES, 10 are non-lane roots (domain `other`: origin-work, /tmp, ~/projects …); 0 are lane-repo-absolute.
+Terminal outcome classes sum to the distinct total: RESOLVES(11) + MIRROR-EQUIVALENT(0) + INTERNAL(1160) + GONE(4014) = 5185.
+Of the 11 RESOLVES, 11 are non-lane roots (domain `other`: origin-work, /tmp, ~/projects …); 0 are lane-repo-absolute.
 Of the 0 MIRROR-EQUIVALENT, 0 were written as `~/Projects/bounties/...` (domain `bounty`), 0 were bounty-root-relative bare paths (domain `rel`).
 
 ## Resolvability rate
@@ -29,8 +29,8 @@ Of the 0 MIRROR-EQUIVALENT, 0 were written as `~/Projects/bounties/...` (domain 
 Numerator = RESOLVES + MIRROR-EQUIVALENT + INTERNAL. Denominator = all distinct citations appearing in that scope (a citation in both scopes enters both denominators).
 
 - SKILL.md alone: **141/718 = 19.64%**
-- corpus alone: **1161/5172 = 22.45%**
-- lane total (SKILL.md + corpus): **1168/5181 = 22.54%**
+- corpus alone: **1164/5176 = 22.49%**
+- lane total (SKILL.md + corpus): **1171/5185 = 22.58%**
 
 ## Noise sub-census (GONE tokens that are rule artifacts, not citable paths)
 
@@ -42,27 +42,27 @@ Flag counts (a token can carry several flags):
 | gitstatus,synthetic | 9 |
 | regex | 22 |
 | regex,synthetic | 7 |
-| shell | 427 |
+| shell | 428 |
 | shell,synthetic | 190 |
 | synthetic | 617 |
 
-- GONE citations carrying any noise flag: 1280
+- GONE citations carrying any noise flag: 1281
 - GONE citations with no noise flag (genuine vanished paths): 2733
 - citations containing glob/placeholder syntax (`* ? [ { } <...>`): 882
 
 Noise-adjusted rates (denominator excludes noise-flagged citations):
 - SKILL: 139/359 = 38.72%
-- CORPUS: 1102/3835 = 28.74%
-- ALL: 1109/3842 = 28.87%
+- CORPUS: 1105/3838 = 28.79%
+- ALL: 1112/3845 = 28.92%
 
 ## Scope x class matrix
 
 | class | SKILL.md only | SKILL+corpus | corpus only | total |
 |---|---|---|---|---|
-| RESOLVES | 0 | 2 | 8 | 10 |
+| RESOLVES | 0 | 2 | 9 | 11 |
 | MIRROR-EQUIVALENT | 0 | 0 | 0 | 0 |
-| GONE | 2 | 575 | 3436 | 4013 |
-| INTERNAL | 7 | 132 | 1019 | 1158 |
+| GONE | 2 | 575 | 3437 | 4014 |
+| INTERNAL | 7 | 132 | 1021 | 1160 |
 
 ## Citation-base ambiguity (r5's known hazard)
 
@@ -87,7 +87,7 @@ grep -ohP '`[^`\n]+`' SKILL.md corpus/README.md corpus/*/*.md \
  | sort -u | wc -l
 ```
 
-Result: both yield **5181** distinct citations, and
+Result: both yield **5185** distinct citations, and
 `diff <(pipeline to file) <(cut -f1 citation-survival.tsv | tail -n +2 | sort -u)` is empty (sets identical, not just counts).
 Re-running `resolve.py` twice leaves both outputs byte-identical (md5 stable).
 
@@ -102,7 +102,7 @@ Re-running `resolve.py` twice leaves both outputs byte-identical (md5 stable).
 For every citation whose base resolves and whose anchor names a file, the anchor
 is compared against the resolved file's line count (editor convention).
 
-- anchors checked: 469 — in range: 450 — **out of range: 19**
+- anchors checked: 470 — in range: 451 — **out of range: 19**
 
 | citation | class | resolved file | anchor | file lines | verdict |
 |---|---|---|---|---|---|
@@ -136,21 +136,21 @@ is compared against the resolved file's line count (editor convention).
 | `.ufo/waves/round-46/wave1/R46SentinelContent.md:13` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-46/wave1/R46SentinelContent.md` | 13 | 99 | in range |
 | `.ufo/waves/round-53/controls/c2-counter-final-r53.txt:9` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-53/controls/c2-counter-final-r53.txt` | 9 | 10 | in range |
 | `.ufo/waves/round-54/claims.json:14` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/.ufo/waves/round-54/claims.json` | 14 | 46 | in range |
-| `LOG.md:1469` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1469 | 2757 | in range |
-| `LOG.md:1550` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1550 | 2757 | in range |
-| `LOG.md:1584` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1584 | 2757 | in range |
-| `LOG.md:1665` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1665 | 2757 | in range |
-| `LOG.md:1686` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1686 | 2757 | in range |
-| `LOG.md:1728` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1728 | 2757 | in range |
-| `LOG.md:1800-1801` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1800-1801 | 2757 | in range |
-| `LOG.md:1804` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1804 | 2757 | in range |
-| `LOG.md:2045` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 2045 | 2757 | in range |
-| `LOG.md:2205` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 2205 | 2757 | in range |
-| `LOG.md:545` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 545 | 2757 | in range |
-| `LOG.md:709-713` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 709-713 | 2757 | in range |
-| `LOG.md:734` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 734 | 2757 | in range |
-| `LOG.md:747-750` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 747-750 | 2757 | in range |
-| `LOG.md:812` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 812 | 2757 | in range |
+| `LOG.md:1469` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1469 | 2784 | in range |
+| `LOG.md:1550` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1550 | 2784 | in range |
+| `LOG.md:1584` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1584 | 2784 | in range |
+| `LOG.md:1665` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1665 | 2784 | in range |
+| `LOG.md:1686` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1686 | 2784 | in range |
+| `LOG.md:1728` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1728 | 2784 | in range |
+| `LOG.md:1800-1801` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1800-1801 | 2784 | in range |
+| `LOG.md:1804` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 1804 | 2784 | in range |
+| `LOG.md:2045` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 2045 | 2784 | in range |
+| `LOG.md:2205` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 2205 | 2784 | in range |
+| `LOG.md:545` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 545 | 2784 | in range |
+| `LOG.md:709-713` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 709-713 | 2784 | in range |
+| `LOG.md:734` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 734 | 2784 | in range |
+| `LOG.md:747-750` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 747-750 | 2784 | in range |
+| `LOG.md:812` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/LOG.md` | 812 | 2784 | in range |
 | `PROVINCE.md:16-22` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/PROVINCE.md` | 16-22 | 224 | in range |
 | `PROVINCE.md:165` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/PROVINCE.md` | 165 | 224 | in range |
 | `PROVINCE.md:171` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/PROVINCE.md` | 171 | 224 | in range |
@@ -166,53 +166,53 @@ is compared against the resolved file's line count (editor convention).
 | `README.md:213` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/README.md` | 213 | 14 | OUT OF RANGE |
 | `README.md:23` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/README.md` | 23 | 14 | OUT OF RANGE |
 | `README.md:30` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/README.md` | 30 | 14 | OUT OF RANGE |
-| `SCORECARD.md:1014-1027` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1014-1027 | 2510 | in range |
-| `SCORECARD.md:1014-1035` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1014-1035 | 2510 | in range |
-| `SCORECARD.md:1074` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1074 | 2510 | in range |
-| `SCORECARD.md:1078` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1078 | 2510 | in range |
-| `SCORECARD.md:1116` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1116 | 2510 | in range |
-| `SCORECARD.md:1116-1119` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1116-1119 | 2510 | in range |
-| `SCORECARD.md:1129` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1129 | 2510 | in range |
-| `SCORECARD.md:1145` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1145 | 2510 | in range |
-| `SCORECARD.md:121-149` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 121-149 | 2510 | in range |
-| `SCORECARD.md:1240` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1240 | 2510 | in range |
-| `SCORECARD.md:1263-1281` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1263-1281 | 2510 | in range |
-| `SCORECARD.md:1269` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1269 | 2510 | in range |
-| `SCORECARD.md:1271` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1271 | 2510 | in range |
-| `SCORECARD.md:1284` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1284 | 2510 | in range |
-| `SCORECARD.md:134` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 134 | 2510 | in range |
-| `SCORECARD.md:1492` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1492 | 2510 | in range |
-| `SCORECARD.md:1505` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1505 | 2510 | in range |
-| `SCORECARD.md:1509` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1509 | 2510 | in range |
-| `SCORECARD.md:1532` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1532 | 2510 | in range |
-| `SCORECARD.md:1547` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1547 | 2510 | in range |
-| `SCORECARD.md:1567` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1567 | 2510 | in range |
-| `SCORECARD.md:1595` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1595 | 2510 | in range |
-| `SCORECARD.md:1602` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1602 | 2510 | in range |
-| `SCORECARD.md:1602-1605` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1602-1605 | 2510 | in range |
-| `SCORECARD.md:1605` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1605 | 2510 | in range |
-| `SCORECARD.md:1634` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1634 | 2510 | in range |
-| `SCORECARD.md:164` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 164 | 2510 | in range |
-| `SCORECARD.md:174` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 174 | 2510 | in range |
-| `SCORECARD.md:1788` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1788 | 2510 | in range |
-| `SCORECARD.md:228-290` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 228-290 | 2510 | in range |
-| `SCORECARD.md:23` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 23 | 2510 | in range |
-| `SCORECARD.md:251` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 251 | 2510 | in range |
-| `SCORECARD.md:252` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 252 | 2510 | in range |
-| `SCORECARD.md:259-270` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 259-270 | 2510 | in range |
-| `SCORECARD.md:309` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 309 | 2510 | in range |
-| `SCORECARD.md:309-321` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 309-321 | 2510 | in range |
-| `SCORECARD.md:327` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 327 | 2510 | in range |
-| `SCORECARD.md:331` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 331 | 2510 | in range |
-| `SCORECARD.md:49-58` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 49-58 | 2510 | in range |
-| `SCORECARD.md:502` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 502 | 2510 | in range |
-| `SCORECARD.md:510` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 510 | 2510 | in range |
-| `SCORECARD.md:65` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 65 | 2510 | in range |
-| `SCORECARD.md:813` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 813 | 2510 | in range |
-| `SCORECARD.md:813-819` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 813-819 | 2510 | in range |
-| `SCORECARD.md:837` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 837 | 2510 | in range |
-| `SCORECARD.md:88-96` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 88-96 | 2510 | in range |
-| `SCORECARD.md:988` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 988 | 2510 | in range |
+| `SCORECARD.md:1014-1027` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1014-1027 | 2521 | in range |
+| `SCORECARD.md:1014-1035` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1014-1035 | 2521 | in range |
+| `SCORECARD.md:1074` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1074 | 2521 | in range |
+| `SCORECARD.md:1078` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1078 | 2521 | in range |
+| `SCORECARD.md:1116` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1116 | 2521 | in range |
+| `SCORECARD.md:1116-1119` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1116-1119 | 2521 | in range |
+| `SCORECARD.md:1129` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1129 | 2521 | in range |
+| `SCORECARD.md:1145` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1145 | 2521 | in range |
+| `SCORECARD.md:121-149` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 121-149 | 2521 | in range |
+| `SCORECARD.md:1240` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1240 | 2521 | in range |
+| `SCORECARD.md:1263-1281` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1263-1281 | 2521 | in range |
+| `SCORECARD.md:1269` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1269 | 2521 | in range |
+| `SCORECARD.md:1271` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1271 | 2521 | in range |
+| `SCORECARD.md:1284` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1284 | 2521 | in range |
+| `SCORECARD.md:134` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 134 | 2521 | in range |
+| `SCORECARD.md:1492` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1492 | 2521 | in range |
+| `SCORECARD.md:1505` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1505 | 2521 | in range |
+| `SCORECARD.md:1509` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1509 | 2521 | in range |
+| `SCORECARD.md:1532` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1532 | 2521 | in range |
+| `SCORECARD.md:1547` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1547 | 2521 | in range |
+| `SCORECARD.md:1567` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1567 | 2521 | in range |
+| `SCORECARD.md:1595` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1595 | 2521 | in range |
+| `SCORECARD.md:1602` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1602 | 2521 | in range |
+| `SCORECARD.md:1602-1605` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1602-1605 | 2521 | in range |
+| `SCORECARD.md:1605` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1605 | 2521 | in range |
+| `SCORECARD.md:1634` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1634 | 2521 | in range |
+| `SCORECARD.md:164` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 164 | 2521 | in range |
+| `SCORECARD.md:174` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 174 | 2521 | in range |
+| `SCORECARD.md:1788` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 1788 | 2521 | in range |
+| `SCORECARD.md:228-290` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 228-290 | 2521 | in range |
+| `SCORECARD.md:23` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 23 | 2521 | in range |
+| `SCORECARD.md:251` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 251 | 2521 | in range |
+| `SCORECARD.md:252` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 252 | 2521 | in range |
+| `SCORECARD.md:259-270` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 259-270 | 2521 | in range |
+| `SCORECARD.md:309` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 309 | 2521 | in range |
+| `SCORECARD.md:309-321` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 309-321 | 2521 | in range |
+| `SCORECARD.md:327` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 327 | 2521 | in range |
+| `SCORECARD.md:331` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 331 | 2521 | in range |
+| `SCORECARD.md:49-58` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 49-58 | 2521 | in range |
+| `SCORECARD.md:502` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 502 | 2521 | in range |
+| `SCORECARD.md:510` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 510 | 2521 | in range |
+| `SCORECARD.md:65` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 65 | 2521 | in range |
+| `SCORECARD.md:813` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 813 | 2521 | in range |
+| `SCORECARD.md:813-819` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 813-819 | 2521 | in range |
+| `SCORECARD.md:837` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 837 | 2521 | in range |
+| `SCORECARD.md:88-96` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 88-96 | 2521 | in range |
+| `SCORECARD.md:988` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SCORECARD.md` | 988 | 2521 | in range |
 | `SHONEN.md:164-165` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SHONEN.md` | 164-165 | 12 | OUT OF RANGE |
 | `SHONEN.md:164-166` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SHONEN.md` | 164-166 | 12 | OUT OF RANGE |
 | `SHONEN.md:172` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SHONEN.md` | 172 | 12 | OUT OF RANGE |
@@ -224,58 +224,58 @@ is compared against the resolved file's line count (editor convention).
 | `SHONEN.md:310` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SHONEN.md` | 310 | 12 | OUT OF RANGE |
 | `SHONEN.md:311` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SHONEN.md` | 311 | 12 | OUT OF RANGE |
 | `SHONEN.md:34` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SHONEN.md` | 34 | 12 | OUT OF RANGE |
-| `SKILL.md:10` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 10 | 1337 | in range |
-| `SKILL.md:10-11` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 10-11 | 1337 | in range |
-| `SKILL.md:1000` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1000 | 1337 | in range |
-| `SKILL.md:1069` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1069 | 1337 | in range |
-| `SKILL.md:1091` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1091 | 1337 | in range |
-| `SKILL.md:1093-1104` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1093-1104 | 1337 | in range |
-| `SKILL.md:1097` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1097 | 1337 | in range |
-| `SKILL.md:1097-1098` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1097-1098 | 1337 | in range |
-| `SKILL.md:1100` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1100 | 1337 | in range |
-| `SKILL.md:111` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 111 | 1337 | in range |
-| `SKILL.md:111-112` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 111-112 | 1337 | in range |
-| `SKILL.md:1111` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1111 | 1337 | in range |
-| `SKILL.md:1115` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1115 | 1337 | in range |
-| `SKILL.md:113-114` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 113-114 | 1337 | in range |
-| `SKILL.md:113-117` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 113-117 | 1337 | in range |
-| `SKILL.md:115` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 115 | 1337 | in range |
-| `SKILL.md:1163` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1163 | 1337 | in range |
-| `SKILL.md:117` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 117 | 1337 | in range |
-| `SKILL.md:14-15` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 14-15 | 1337 | in range |
-| `SKILL.md:146` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 146 | 1337 | in range |
-| `SKILL.md:148` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 148 | 1337 | in range |
-| `SKILL.md:149` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 149 | 1337 | in range |
-| `SKILL.md:175` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 175 | 1337 | in range |
-| `SKILL.md:175-176` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 175-176 | 1337 | in range |
-| `SKILL.md:245-247` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 245-247 | 1337 | in range |
-| `SKILL.md:246` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 246 | 1337 | in range |
-| `SKILL.md:323` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 323 | 1337 | in range |
-| `SKILL.md:385` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 385 | 1337 | in range |
-| `SKILL.md:413` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 413 | 1337 | in range |
-| `SKILL.md:459` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 459 | 1337 | in range |
-| `SKILL.md:494-506` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 494-506 | 1337 | in range |
-| `SKILL.md:498` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 498 | 1337 | in range |
-| `SKILL.md:499` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 499 | 1337 | in range |
-| `SKILL.md:500-501` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 500-501 | 1337 | in range |
-| `SKILL.md:502` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 502 | 1337 | in range |
-| `SKILL.md:522` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 522 | 1337 | in range |
-| `SKILL.md:525` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 525 | 1337 | in range |
-| `SKILL.md:526` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 526 | 1337 | in range |
-| `SKILL.md:590-596` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 590-596 | 1337 | in range |
-| `SKILL.md:597-608` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 597-608 | 1337 | in range |
-| `SKILL.md:609-614` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 609-614 | 1337 | in range |
-| `SKILL.md:615-621` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 615-621 | 1337 | in range |
-| `SKILL.md:622-635` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 622-635 | 1337 | in range |
-| `SKILL.md:636-639` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 636-639 | 1337 | in range |
-| `SKILL.md:640-643` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 640-643 | 1337 | in range |
-| `SKILL.md:644-651` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 644-651 | 1337 | in range |
-| `SKILL.md:652-664` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 652-664 | 1337 | in range |
-| `SKILL.md:665-679` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 665-679 | 1337 | in range |
-| `SKILL.md:8` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 8 | 1337 | in range |
-| `SKILL.md:86` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 86 | 1337 | in range |
-| `SKILL.md:90-91` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 90-91 | 1337 | in range |
-| `SKILL.md:94-95` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 94-95 | 1337 | in range |
+| `SKILL.md:10` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 10 | 1363 | in range |
+| `SKILL.md:10-11` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 10-11 | 1363 | in range |
+| `SKILL.md:1000` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1000 | 1363 | in range |
+| `SKILL.md:1069` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1069 | 1363 | in range |
+| `SKILL.md:1091` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1091 | 1363 | in range |
+| `SKILL.md:1093-1104` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1093-1104 | 1363 | in range |
+| `SKILL.md:1097` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1097 | 1363 | in range |
+| `SKILL.md:1097-1098` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1097-1098 | 1363 | in range |
+| `SKILL.md:1100` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1100 | 1363 | in range |
+| `SKILL.md:111` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 111 | 1363 | in range |
+| `SKILL.md:111-112` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 111-112 | 1363 | in range |
+| `SKILL.md:1111` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1111 | 1363 | in range |
+| `SKILL.md:1115` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1115 | 1363 | in range |
+| `SKILL.md:113-114` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 113-114 | 1363 | in range |
+| `SKILL.md:113-117` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 113-117 | 1363 | in range |
+| `SKILL.md:115` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 115 | 1363 | in range |
+| `SKILL.md:1163` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 1163 | 1363 | in range |
+| `SKILL.md:117` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 117 | 1363 | in range |
+| `SKILL.md:14-15` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 14-15 | 1363 | in range |
+| `SKILL.md:146` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 146 | 1363 | in range |
+| `SKILL.md:148` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 148 | 1363 | in range |
+| `SKILL.md:149` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 149 | 1363 | in range |
+| `SKILL.md:175` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 175 | 1363 | in range |
+| `SKILL.md:175-176` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 175-176 | 1363 | in range |
+| `SKILL.md:245-247` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 245-247 | 1363 | in range |
+| `SKILL.md:246` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 246 | 1363 | in range |
+| `SKILL.md:323` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 323 | 1363 | in range |
+| `SKILL.md:385` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 385 | 1363 | in range |
+| `SKILL.md:413` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 413 | 1363 | in range |
+| `SKILL.md:459` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 459 | 1363 | in range |
+| `SKILL.md:494-506` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 494-506 | 1363 | in range |
+| `SKILL.md:498` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 498 | 1363 | in range |
+| `SKILL.md:499` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 499 | 1363 | in range |
+| `SKILL.md:500-501` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 500-501 | 1363 | in range |
+| `SKILL.md:502` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 502 | 1363 | in range |
+| `SKILL.md:522` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 522 | 1363 | in range |
+| `SKILL.md:525` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 525 | 1363 | in range |
+| `SKILL.md:526` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 526 | 1363 | in range |
+| `SKILL.md:590-596` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 590-596 | 1363 | in range |
+| `SKILL.md:597-608` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 597-608 | 1363 | in range |
+| `SKILL.md:609-614` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 609-614 | 1363 | in range |
+| `SKILL.md:615-621` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 615-621 | 1363 | in range |
+| `SKILL.md:622-635` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 622-635 | 1363 | in range |
+| `SKILL.md:636-639` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 636-639 | 1363 | in range |
+| `SKILL.md:640-643` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 640-643 | 1363 | in range |
+| `SKILL.md:644-651` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 644-651 | 1363 | in range |
+| `SKILL.md:652-664` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 652-664 | 1363 | in range |
+| `SKILL.md:665-679` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 665-679 | 1363 | in range |
+| `SKILL.md:8` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 8 | 1363 | in range |
+| `SKILL.md:86` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 86 | 1363 | in range |
+| `SKILL.md:90-91` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 90-91 | 1363 | in range |
+| `SKILL.md:94-95` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/SKILL.md` | 94-95 | 1363 | in range |
 | `considerthese/2026-10-25.md:53-57` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/considerthese/2026-10-25.md` | 53-57 | 77 | in range |
 | `considerthese/2026-10-25.md:76` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/considerthese/2026-10-25.md` | 76 | 77 | in range |
 | `considerthese/2026-10-26.md:30` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/considerthese/2026-10-26.md` | 30 | 35 | in range |
@@ -295,45 +295,46 @@ is compared against the resolved file's line count (editor convention).
 | `corpus/QUALITY.md:401` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md` | 401 | 452 | in range |
 | `corpus/QUALITY.md:407` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md` | 407 | 452 | in range |
 | `corpus/QUALITY.md:413-416` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md` | 413-416 | 452 | in range |
+| `corpus/QUALITY.md:76` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md` | 76 | 452 | in range |
 | `corpus/QUALITY.md:77` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md` | 77 | 452 | in range |
 | `corpus/QUALITY.md:83` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md` | 83 | 452 | in range |
 | `corpus/QUALITY.md:89` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md` | 89 | 452 | in range |
 | `corpus/QUALITY.md:95` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/QUALITY.md` | 95 | 452 | in range |
-| `corpus/README.md:145` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 145 | 947 | in range |
-| `corpus/README.md:168` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 168 | 947 | in range |
-| `corpus/README.md:200` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 200 | 947 | in range |
-| `corpus/README.md:207` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 207 | 947 | in range |
-| `corpus/README.md:208` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 208 | 947 | in range |
-| `corpus/README.md:210` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 210 | 947 | in range |
-| `corpus/README.md:211` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 211 | 947 | in range |
-| `corpus/README.md:309` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 309 | 947 | in range |
-| `corpus/README.md:361` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 361 | 947 | in range |
-| `corpus/README.md:448` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 448 | 947 | in range |
-| `corpus/README.md:49` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 49 | 947 | in range |
-| `corpus/README.md:54` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 54 | 947 | in range |
-| `corpus/README.md:591` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 591 | 947 | in range |
-| `corpus/README.md:702` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 702 | 947 | in range |
-| `corpus/README.md:82` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 82 | 947 | in range |
-| `corpus/SOURCES.md:137` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 137 | 236 | in range |
-| `corpus/SOURCES.md:142` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 142 | 236 | in range |
-| `corpus/SOURCES.md:157` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 157 | 236 | in range |
-| `corpus/SOURCES.md:22` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 22 | 236 | in range |
-| `corpus/SOURCES.md:40` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 40 | 236 | in range |
-| `corpus/SOURCES.md:47` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 47 | 236 | in range |
-| `corpus/SOURCES.md:48` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 48 | 236 | in range |
-| `corpus/SOURCES.md:54` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 54 | 236 | in range |
-| `corpus/SOURCES.md:55-56` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 55-56 | 236 | in range |
-| `corpus/SOURCES.md:56` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 56 | 236 | in range |
-| `corpus/SOURCES.md:57` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 57 | 236 | in range |
-| `corpus/SOURCES.md:58` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 58 | 236 | in range |
-| `corpus/SOURCES.md:61` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 61 | 236 | in range |
-| `corpus/SOURCES.md:62` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 62 | 236 | in range |
-| `corpus/SOURCES.md:62-65` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 62-65 | 236 | in range |
-| `corpus/SOURCES.md:74` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 74 | 236 | in range |
-| `corpus/SOURCES.md:79` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 79 | 236 | in range |
-| `corpus/SOURCES.md:82` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 82 | 236 | in range |
-| `corpus/SOURCES.md:83` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 83 | 236 | in range |
-| `corpus/SOURCES.md:90` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 90 | 236 | in range |
+| `corpus/README.md:145` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 145 | 956 | in range |
+| `corpus/README.md:168` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 168 | 956 | in range |
+| `corpus/README.md:200` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 200 | 956 | in range |
+| `corpus/README.md:207` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 207 | 956 | in range |
+| `corpus/README.md:208` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 208 | 956 | in range |
+| `corpus/README.md:210` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 210 | 956 | in range |
+| `corpus/README.md:211` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 211 | 956 | in range |
+| `corpus/README.md:309` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 309 | 956 | in range |
+| `corpus/README.md:361` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 361 | 956 | in range |
+| `corpus/README.md:448` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 448 | 956 | in range |
+| `corpus/README.md:49` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 49 | 956 | in range |
+| `corpus/README.md:54` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 54 | 956 | in range |
+| `corpus/README.md:591` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 591 | 956 | in range |
+| `corpus/README.md:702` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 702 | 956 | in range |
+| `corpus/README.md:82` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/README.md` | 82 | 956 | in range |
+| `corpus/SOURCES.md:137` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 137 | 251 | in range |
+| `corpus/SOURCES.md:142` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 142 | 251 | in range |
+| `corpus/SOURCES.md:157` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 157 | 251 | in range |
+| `corpus/SOURCES.md:22` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 22 | 251 | in range |
+| `corpus/SOURCES.md:40` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 40 | 251 | in range |
+| `corpus/SOURCES.md:47` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 47 | 251 | in range |
+| `corpus/SOURCES.md:48` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 48 | 251 | in range |
+| `corpus/SOURCES.md:54` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 54 | 251 | in range |
+| `corpus/SOURCES.md:55-56` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 55-56 | 251 | in range |
+| `corpus/SOURCES.md:56` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 56 | 251 | in range |
+| `corpus/SOURCES.md:57` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 57 | 251 | in range |
+| `corpus/SOURCES.md:58` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 58 | 251 | in range |
+| `corpus/SOURCES.md:61` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 61 | 251 | in range |
+| `corpus/SOURCES.md:62` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 62 | 251 | in range |
+| `corpus/SOURCES.md:62-65` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 62-65 | 251 | in range |
+| `corpus/SOURCES.md:74` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 74 | 251 | in range |
+| `corpus/SOURCES.md:79` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 79 | 251 | in range |
+| `corpus/SOURCES.md:82` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 82 | 251 | in range |
+| `corpus/SOURCES.md:83` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 83 | 251 | in range |
+| `corpus/SOURCES.md:90` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md` | 90 | 251 | in range |
 | `corpus/instruments/README.md:1000` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/instruments/README.md` | 1000 | 1053 | in range |
 | `corpus/instruments/README.md:131` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/instruments/README.md` | 131 | 1053 | in range |
 | `corpus/instruments/README.md:16-17` | INTERNAL | `/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/instruments/README.md` | 16-17 | 1053 | in range |
