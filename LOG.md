@@ -2673,3 +2673,8 @@ private files were not read. First answers sealed before any feedback; no self-p
 Committed-tree guard run at7f49287 reports unexpected-results0, inherited
 host-bound audit exits1 preserved; capture-negative controls reject missing/corrupt
 source. New census pair is generated evidence, not source recovery or C1 success.
+
+Round60 measurement interpretation appended after first-answer seal: lesson and
+SCORECARD name exact a45efc8 answer commit, structural counts vs causal judgment,
+raw density251.1→245.7, and actual source failure controls. Independent review
+pending; no claim/capability verdict inferred from guard success.

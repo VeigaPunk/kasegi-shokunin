@@ -2444,3 +2444,9 @@ every frozen case, with constant-priority/model-mislabel/absence-safe controls
 rejected. Structural count is not correctness. Reviewer verdict count and exact
 answer commit will be appended after assessment; author does not self-admit.
 Round59 original failure and post-feedback improvement remain distinct; no rescue.
+
+Round60 demonstration sealed at a45efc84655fe8c64d803788e77868c954b6cbb0:
+11 case answers /44 input records, count command in lesson's First-pass section.
+This counts work only, including four withheld mismatch records; independent
+per-case causal verdict is the correctness detector. Raw mean251.1→245.7,
+40→41 blocks; prior SKILL bytes retained, no numeric gain or self-admission.

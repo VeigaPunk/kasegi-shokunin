@@ -47,3 +47,23 @@ Sources and negative controls frozen in eaf2ae1 before unseen challenges/answers
 Author does not grade causal reasoning using a syntax validator. First failures
 will remain frozen and corrections cannot rescue initial all-case criterion.
 Raw SKILL density will be measured, not padded or declared unchanged by default.
+
+## First-pass evidence sealed, correctness still outside-owned
+
+Challenge SHA256579ce68b2f59c9243f1c3fd775c885e35612a85caa4e531c42eb595a8336fcdf
+was the only reviewer artifact opened. First answers committed at
+`a45efc84655fe8c64d803788e77868c954b6cbb0`, SHA256
+9f6d6d5984cdc554c2255e212cc31a4a42f667793eb6a2d76156ab051c62dc22.
+Eleven cases and44 input records are structural work counts, not correctness:
+`python3 -c 'import json; a=json.load(open(".ufo/waves/round-60/first-answers.json")); print(len(a),sum(len(x["inputs"]) for x in a))'`.
+Four input records explicitly withhold deployer assessment for supplier mismatch;
+other cases distinguish missing automation with common priority, missing evidence
+with divergent priority, source prose/table conflict, and independently sufficient
+catastrophic-safety limb despite unknown mission. Their causal correctness remains
+for the independent judge, not this serializer. No general accuracy estimate.
+
+Source capture self-check can fail: controls/capture-negative-controls.txt shows
+missing S094 exit2 and corrupted S094 exit1. Quotes use exact anchors for repeated
+fragments; source-binding.txt is not falsely described as all-unique substrings.
+Raw density measured251.1→245.7 (40→41 blocks), inherited score9 held; this is a
+real proxy decrease requiring outside no-harm judgment, not unchanged by fiat.
