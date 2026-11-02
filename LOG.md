@@ -2793,3 +2793,8 @@ invocation, not semantic grading. No upstream/target activity or next-round work
 Round62 correction: lesson's final count prose said quote7 where the committed
 wc-w receipt says6. Appended named R56 correction to6/3; original false7 preserved.
 No manifest, source, challenge or first answer changes.
+
+Round62 metadata repair: quote correction appended LOG after census generation,
+leaving referenced LOG total-lines stale at7e5bab. Actual exit1 retained in
+.ufo/waves/round-62/controls/freshness-red.txt. Regenerated only after these final
+appends; source/first/rubric bytes unchanged, no semantic rescore.

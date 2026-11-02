@@ -89,3 +89,10 @@ mis-transcribed its own receipt. controls/final.txt GATE-QUOTE prints **6 and3**
 with wc-w; no source quote or manifest changes. This is an actual own word-count
 reporting mistake caught by re-reading the committed receipt, not an instrument
 failure. The false7 remains as history and is superseded here.
+
+Final-state correction: after the quote-count correction appended LOG lines,
+7e5bab's citation-survival Markdown retained old referenced-file total-lines
+(2791 rather than2795), so census-freshness failed despite unchanged resolution
+counts. controls/freshness-red.txt preserves actual exit1. Regenerate after ALL
+log/lesson appends, not before them; the guard must be run on the final state.
+This local metadata repair does not alter source evidence, rubric or answers.
