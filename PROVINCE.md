@@ -222,3 +222,8 @@ lost roots and sibling boundaries unchanged; no new frontier denominator.
 Existing F05 deepened with bounded fictional CWE causal-evidence assessments;
 no live-target testing, exploit payload or submission. CWE definitions inform
 classification, not proof of a real vulnerability or permission to investigate.
+
+## Round63 scope note
+F07 deepened with fictional CVE request-package causal counting; no actual CNA
+assignment authority, vulnerability testing, submissions or contact. Lost roots
+remain unavailable. Research-method and secret-handling sibling boundaries unchanged.

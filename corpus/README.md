@@ -954,3 +954,10 @@ independent acceptance remain in the round61 evidence packet, not this index.
 
 No new frontier ID or lost-surface recovery. Existing F21 is deepened; OpenVEX
 candidate S109 is rejected for CSAF normative authority, not quality of its own model.
+
+## Round63 F07 deepening — causal CVE counting
+`knowledge/cna-causal-counting.md` (S110) adds a bounded fictional multi-product
+claim-package worksheet: independent defects vs interdependent chains, code-sharing
+and secure-use defaults, residual-fix discretion, conditional allocation vs authority.
+Named correction to row46's “current version”4.2.6 label: current reopened pinned
+CVEProject rules are4.2.1; original S031 evidence stays historical. No new frontier.

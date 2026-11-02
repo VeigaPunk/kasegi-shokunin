@@ -1361,3 +1361,28 @@ membership counts. OpenVEX/CycloneDX field vocabularies are not CSAF fields.
 Replay the manual challenge under .ufo/waves/round-62/CONTRACT.md; independent
 causal review judges truth, not structure. First answers and failure history stay
 immutable. Chousa owns source-method craft and kagi secrets; this is claim evidence.
+
+## Round63 — causal CVE grouping, not patch arithmetic
+Trigger: judging a fictional CVE request package's proposed distinct-issue count.
+Anti-trigger: actual CVE assignment, reporting or target testing. S1104.2.1 and
+`corpus/knowledge/cna-causal-counting.md` deepen F07; the older4.2.6 current-version
+claim is historical, not the reopened source model. Research method stays chousa,
+secrets stay kagi. Manual dossier, not an automatic classifier.
+
+| Evidence situation | Decision discipline |
+|---|---|
+| One patch fixes two independently security-impacting defects | Count causal vulnerabilities, not delivery artifacts;4.2.11 MUST separate |
+| Parsing conditions fully interdependent, another defect independent | Merge only the interdependent chain;4.2.15, not every issue in one product |
+| Independence unknown vs code-sharing unknown | Different unknowns:4.2.12 SHOULD single vs4.2.13.3 SHOULD separate |
+| Secure functionality use exists / impossible / unknown |4.2.14 gives MUST per implementation / MUST single / SHOULD per implementation |
+| Incomplete fix leaves residual insecurity | Existing/new identifier MAY be chosen; never invent mandatory novelty |
+| Dependency upgrade, harmless anomaly, missing fix | Upgrade not new flaw; anomaly needs impact; fix absence alone not ineligibility |
+
+Checklist: establish security impact → draw causal groups and selective correction
+consequences → identify vulnerable-code relationship → inspect secure-use premise
+where applicable → state exact normative force and uncertainty → separate count
+from scope/publication prerequisites and authority. A common workaround can stop
+many unrelated defects; suppression is not proof of common cause. Same advisory
+words do not prove shared code. Unseen first assessments and rubric are in
+`.ufo/waves/round-63/CONTRACT.md` and `first-answers.json` in that directory;
+independent review, not JSON shape, judges causal support.

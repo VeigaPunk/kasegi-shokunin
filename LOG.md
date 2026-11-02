@@ -2820,3 +2820,14 @@ Round63 first answers: ten unseen reviewer dossiers and three bad-policy judgmen
 written to .ufo/waves/round-63/first-answers.json and first-negative-answers.json
 before oracle access. Scope/force and distinct unknowns retained; no admission is
 claimed. challenge.md is a byte copy of reviewer's public case file.
+
+Round63 teaching/curation: added cna-causal-counting entry, F07 current-version
+correction, SKILL decision table/checklist and inventory/index/province annotations.
+Sources110/111 added, old rows byte-preserved;111 complete historical4.3.0 snapshot
+rejected for current authority, not mislabeled4.2.6. Actual Q10 strict111111 and
+corrupt/missing controls observed in round63 controls/operability.txt. No self-admission;
+semantic review and final legacy/no-harm/census checks still pending.
+
+Round63 independent first-case result: /root/judge_kasegi_round63 supports10/10
+and3/3 controls on first01a55ea; actual source/Q10 corroborated. Final teaching and
+no-harm guards pending. No retrospective first-answer changes or capability entry.

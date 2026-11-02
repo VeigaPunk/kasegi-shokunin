@@ -2526,3 +2526,15 @@ unchanged, new entry strict111111 in actual lane/foreign replay. Raw density
 240.6→235.2, score9 held; no density gain asserted. Source census107→109;
 all new semantic/source counts remain bounded to this dossier. Final admission
 still reviewer/parent-owned, not created by this guard.
+
+## Round63 — C1 causal CVE counting dossier (final review pending)
+Lowest depth:verifiability nominal4→4 under R58, coverage8/density9 held. Before
+no exercised multi-product dossier at basea8d73355; freeze6f5d6e4 and immutable
+first01a55ea. Named parent-appointed /root/judge_kasegi_round63 reports all10 first
+cases supported plus3/3 bad policies rejected; final source/no-harm closure pending.
+This is F07 domain deepening, not recovered source availability or an automatic
+CVE assignment algorithm. len(first-answers.json) counts structures only; semantic
+review grades causal groups, force and authority limits. No capability self-admitted.
+Current pinned S110 model4.2.1 corrects current use of retained S0314.2.6 history.
+Raw density and source census to be measured on committed final teaching bytes;
+legacy80 entry outcomes must be preserved, with new entry strict111111.
