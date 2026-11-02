@@ -2622,3 +2622,7 @@ Parent delivered only `.ufo/waves/round-59/challenge.json` (ten prose scenarios;
 ## Round 59 — committed guard verification and score interpretation
 
 `controls/final-first.txt` under round59 measured commit 89ab7caf5f12875960a92f87e485e556d42fafb8: FINAL unexpected-results=0, inherited host-bound audits retained as expected exit1; byte-prefix/freeze guards pass. Original diskguard with actual workspace root passes at53% (`controls/disk.txt`), exported scratch186MB and removed by trap, under1GB. SCORECARD records dossier structure only, not an author-assigned accuracy score. Independent correctness/admission and no-harm remain pending. Citation census regenerated from actual lane; no source-availability improvement claimed.
+
+## Round 59 — actual independent failure mined, claim unverified
+
+Parent relayed fresh reviewer finding: K59-10 PR:L imports necessity from account possession; reviewer oracle shared the same assumption. Original first answers unchanged. `.ufo/waves/round-59/correction-01.json` withdraws L to insufficient with a concrete missing prerequisite question. Appended lesson/QUALITY R67/SKILL/knowledge/scorecard corrections preserve the failure and mark C1 unverified under frozen all-case success. Supplemental cases cannot rescue first-pass claim. No capability self-admission.

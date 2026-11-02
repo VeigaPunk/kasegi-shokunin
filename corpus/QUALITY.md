@@ -438,3 +438,9 @@ All existing criteria remain unchanged. This block is grounded in the round-49 l
 | id | criterion | grounded in |
 |---|---|---|
 | R66 | A report-evidence training aid must distinguish field presence, context binding, replayed behavior and authority judgment. At least one all-fields-present control must contradict the proposed behavior and one legitimate-authority control must reject the security claim. A caller's reproduced flag is not a replay; a toy replay is not real-target validity. | `corpus/lessons/round-58.md` Mistakes, retained pre-freeze idea and `trust-claimed-replay` mutation; frozen fixed-trace-as-buggy and owner-false-claim decisions. |
+
+## Round-59 addition — possession does not prove prerequisite
+
+| id | criterion | grounded in |
+|---|---|---|
+| R67 | A CVSS PR assessment must cite evidence that the authority is necessary to exploit, not merely that the selected attacker happens to possess it. If the scenario states possession but not necessity, ask whether the same flaw is exploitable without that authority; report insufficient until established, with any L/H result conditional. Independent agreement on an invented prerequisite does not validate it. Reject K59-10's first rationale, which changes “already has” into “are required”, under this rule; retain first answer and oracle and separate post-feedback learning from frozen success. | `corpus/lessons/round-59.md` independent-review correction; `.ufo/waves/round-59/first-answers.json` K59-10 PR and `correction-01.json`; S092 PR/Table4, capture line478. |

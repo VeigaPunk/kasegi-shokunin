@@ -1289,3 +1289,10 @@ name unsupported conclusions. Replay by independently assessing the prose cases 
 `.ufo/waves/round-59/CONTRACT.md`, then compare reasons with the independent review.
 This is a human-assessment dossier, not a classifier or schema-validity gate. A matching
 label with invented evidence fails. No full score/vector or bounty conclusion follows.
+
+Round-59 review correction: **possession is not necessity**. A scenario saying the
+attacker already has an ordinary account does not establish that the flaw requires
+that account. Ask whether exploitation works without those rights; PR:L is only
+conditional until necessity is established. The first K59-10 answer invented that
+prerequisite and is withdrawn in `.ufo/waves/round-59/correction-01.json`; first bytes
+remain evidence. R67/round59 lesson capture the shared author-oracle mistake.

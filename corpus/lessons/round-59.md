@@ -51,3 +51,22 @@ first-pass case results will supply substantive evidence; form checks do not.
 Raw density moves 257.0→251.0 with appended teaching (39→40 blocks); prior SKILL
 bytes preserved. No scalar gain, source recovery or promotion claimed. Independent
 no-harm decision remains required; no citation padding to improve the proxy.
+
+## Independent-review correction — possession is not necessity
+
+Parent relayed `/root/judge_kasegi_round59` feedback: 49 metric judgments supported;
+K59-10 PR not established. The scenario says the attacker already HAS an ordinary
+account, not that exploiting the flaw REQUIRES it. Both my first answer and the
+reviewer's original oracle imported that premise. Agreement is not correctness.
+`first-answers.json` at89ab7ca remains immutable; `correction-01.json` records
+insufficient, asking whether ordinary authority is actually necessary. L is only
+conditional on that fact. The other four metrics retain separate factual bases.
+
+| class | evidence | captured-by | fix shown able to fail |
+|---|---|---|---|
+| scope | K59-10 first PR rationale says limited rights “are required” although scenario establishes possession only; parent-relayed independent substantive review | none specific; Q5 source-vs-claim principle should have caught it | Correction01 withdraws L; new R67 rejects that exact original rationale for unsupported necessity. Supplemental independent tests, if supplied, measure post-feedback learning only. |
+
+First-pass frozen all-cases success condition is **not established**. C1 remains
+unverified, irrespective of 49 other supported metrics. No 50/50, silent oracle
+repair, rewritten first answer or supplemental rescue. This concrete inferential
+failure is more informative than another nominal classifier pass.

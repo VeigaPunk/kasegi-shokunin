@@ -2422,3 +2422,10 @@ must be rejected by the same independent rubric. Both actual source-capture and
 short-quote errors remain visible in the lesson and controls. Final committed export
 receipt measures preserved historical prefixes and inherited guard limits. Await
 outside admit/reject, case and no-harm judgment; author does not start round60.
+
+Round-59 substantive review correction: parent relayed 49 supported metric
+judgments and one unsupported prerequisite inference (K59-10 PR). C1 is **unverified**
+on its frozen every-case-success criterion. Original first answers and reviewer
+oracle remain unchanged. Correction01 is post-feedback learning, not a first-pass
+rescore. No capability row is admitted and no axis score changes. R67 and the SKILL
+refinement now explicitly distinguish possessing authority from requiring it.

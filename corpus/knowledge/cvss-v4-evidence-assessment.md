@@ -33,3 +33,10 @@ Assessment workflow: `.ufo/waves/round-59/CONTRACT.md`. Independent scenarios an
 answers will remain in that wave's dossier; a human independent judge must evaluate
 causal reasons, not merely compare enums. This documentation-only exercise deepens F01;
 no target testing, scanner, automatic natural-language classifier or total CVSS calculator.
+
+## Round-59 independent-review refinement
+PR requires evidence of necessity, not just prior possession. K59-10 states an
+attacker has ordinary account rights; it does not say exploitation needs them.
+The first PR:L answer is unsupported. Correction01 reports insufficient and asks
+whether that authority is necessary; only if confirmed does L follow. This is an
+actual failed inference, preserved in the dossier, not a fabricated bad baseline.
