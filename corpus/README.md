@@ -961,3 +961,7 @@ claim-package worksheet: independent defects vs interdependent chains, code-shar
 and secure-use defaults, residual-fix discretion, conditional allocation vs authority.
 Named correction to row46's “current version”4.2.6 label: current reopened pinned
 CVEProject rules are4.2.1; original S031 evidence stays historical. No new frontier.
+
+Round63 qualification: the F07 correction above selects S110's official repository
+final-labelled4.2.1 for this dossier; it does not independently certify currently
+effective published release or disprove old S031 PDF provenance.

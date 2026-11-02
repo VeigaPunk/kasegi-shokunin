@@ -2831,3 +2831,8 @@ semantic review and final legacy/no-harm/census checks still pending.
 Round63 independent first-case result: /root/judge_kasegi_round63 supports10/10
 and3/3 controls on first01a55ea; actual source/Q10 corroborated. Final teaching and
 no-harm guards pending. No retrospective first-answer changes or capability entry.
+
+Round63 outside source-authority correction: “current” claims qualified in entry,
+old-entry correction, source registry, index and SKILL as final-labelled repository
+model only. No independent published-release corroboration, no judgment old S031
+PDF never existed. Reviewer-triggered qualification preserves committed originals.

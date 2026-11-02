@@ -55,3 +55,12 @@ Parent-appointed /root/judge_kasegi_round63 reports10/10 first cases supported a
 3/3 bad policies rejected at01a55ea, including SHOULD/MUST distinctions and K63-10
 conditional2/3 count. Review was against sealed oracle, not author-defined labels.
 Independent source/Q10 confirmation also received; final no-harm remains pending.
+
+## Outside source-authority qualification
+Reviewer/parent challenged “current” as conflating repository-head text with
+independently verified effective publication. Append-only qualifications now name
+S110 as official repository final-labelled pinned model with self-declared dates;
+S111 rejection is for this model, not version-number precedence. Website reader
+had no full publication evidence. Old S031 PDF provenance remains unresolved.
+This is a source-authority wording correction, not changed case model, rule text,
+first answers or normative branches. Preserve the earlier overbroad wording.

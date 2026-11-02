@@ -67,3 +67,14 @@ Manual synthetic assessments, not a classifier or real-world accuracy estimate.
 Frozen rubric and first-answer custody: .ufo/waves/round-63/CONTRACT.md. Captured
 source comparison proves bytes/quotes, not continued online freshness. A source
 model does not replace an authorized CNA's contextual judgment or resolve disputes.
+
+## Round63 source-authority qualification
+“Current” above means the official repository's final-labelled model reopened in
+this round and pinned at995b251a, not independent verification that this is the
+currently effective published release. Approved/effective dates are the document's
+self-declared header. A higher number in a historical parent or a mutable master
+ref is not temporal authority. Website readers did not supply independently opened
+published-release evidence. This dossier deliberately assesses the frozen4.2.1
+repository model; it does not adjudicate S031's old PDF provenance or prove that
+historical4.2.6 never existed. Consult the actual applicable release before any
+real CNA work; this training performs no such work.

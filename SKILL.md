@@ -1386,3 +1386,8 @@ many unrelated defects; suppression is not proof of common cause. Same advisory
 words do not prove shared code. Unseen first assessments and rubric are in
 `.ufo/waves/round-63/CONTRACT.md` and `first-answers.json` in that directory;
 independent review, not JSON shape, judges causal support.
+
+Round63 source precision: “reopened source model” above is the pinned official
+repository final-labelled4.2.1 model. Effective/approved dates are self-declared,
+not independent published-release verification; historical S031 provenance remains
+unresolved. Reopen applicable publication evidence for actual CNA work.

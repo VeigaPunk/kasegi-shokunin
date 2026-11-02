@@ -251,3 +251,9 @@ original and relocated primary URLs returned403 via web: unavailable lead, no
 substantive read or content verdict. Search results for other pages not opened
 are leads only. Stop: normative CSAF source answers the bounded distinction.
 Study path: existing F21/S055 → S108 applied evidence exercise; do not conflate S109.
+
+Round63 scope qualification for S110/S111: “current” denotes reopened official
+repository final-labelled model, not independently corroborated published-release
+status. Header dates are self-declared. S111 is rejected as the model for this
+round, not as untrustworthy historical evidence; higher version numbering alone
+establishes no precedence. S031 historical PDF provenance remains unresolved.
