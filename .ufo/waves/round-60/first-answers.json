@@ -1,0 +1,760 @@
+[
+  {
+    "id": "K60-01",
+    "model_id": "ssvc:DT_DP:1.0.0",
+    "model_binding": {
+      "source": "corpus/source-snapshots/round-60/S094.txt",
+      "sha256": "78194d2b4a826311cbb3ff9e2186036207d6ca3995f86235b9d73cb38773cb25",
+      "table": "Table of Values, zero-based Row",
+      "model": "ssvc:DT_DP:1.0.0",
+      "inputs": [
+        "ssvc:E:1.1.0",
+        "ssvc:EXP:1.0.1",
+        "ssvc:A:2.0.0",
+        "ssvc:HI:2.0.2"
+      ],
+      "components": [
+        "ssvc:MI:2.0.0",
+        "ssvc:SI:2.0.1"
+      ],
+      "outcomes": "ssvc:DSOI:1.0.0",
+      "conflict": "Explicit table governs this bounded result. S094:510 none+very-high summary is broader than rows3/7/11/15/19; no claim that prose agrees."
+    },
+    "stakeholder_unit": "Harbor operations as deployer, supplier patch paired to deployed Delta H-7.",
+    "inputs": {
+      "exploitation": {
+        "value": "active",
+        "evidence": [
+          "Credible public incident reports provide shared, reliable observations of real attackers using this flaw in the wild."
+        ],
+        "reasoning": "S094 E1.1.0: credible shared observed use by real attackers establishes active, not just availability of a PoC.",
+        "missing": []
+      },
+      "exposure": {
+        "value": "open",
+        "evidence": [
+          "The affected service is reachable over the public Internet, with no plausible restriction or effective access control on the vulnerable path."
+        ],
+        "reasoning": "S094 EXP1.0.1: the actual vulnerable path is publicly reachable without plausible restriction, establishing open.",
+        "missing": []
+      },
+      "automatable": {
+        "value": "yes",
+        "evidence": [
+          "Independent analysis establishes reliable automation of discovering suitable targets, preparing the payload, delivering it, and triggering exploitation."
+        ],
+        "reasoning": "S094 A2.0.0: the analysis establishes reliable automation of all four initial stages: reconnaissance, weaponization, delivery and exploitation.",
+        "missing": []
+      },
+      "human_impact": {
+        "value": "high",
+        "evidence": [
+          "The impact study finds that a service directly supporting mission-essential functions becomes unusable, although the essential functions themselves continue temporarily.",
+          "One person could die; the study excludes multiple deaths, operator incapacitation, total system loss, ecosystem collapse and social-system collapse, and finds no higher consequence in another safety dimension."
+        ],
+        "reasoning": "S095 MI2.0.0 support crippled: directly supporting service unusable while MEFs continue. S096 SI2.0.1 critical: one death with higher dimensions expressly excluded. S094 HI2.0.2 critical AND support crippled yields high, not catastrophic/very high.",
+        "missing": []
+      }
+    },
+    "priority": "immediate",
+    "path_rows": [
+      70
+    ],
+    "unsupported_conclusions": [
+      "CVSS9.8 alone did not determine priority; row70 follows active/open/yes/high.",
+      "This fictional table result is not a live instruction, supplier release urgency or proof that an actual finding exists."
+    ]
+  },
+  {
+    "id": "K60-02",
+    "model_id": "ssvc:DT_DP:1.0.0",
+    "model_binding": {
+      "source": "corpus/source-snapshots/round-60/S094.txt",
+      "sha256": "78194d2b4a826311cbb3ff9e2186036207d6ca3995f86235b9d73cb38773cb25",
+      "table": "Table of Values, zero-based Row",
+      "model": "ssvc:DT_DP:1.0.0",
+      "inputs": [
+        "ssvc:E:1.1.0",
+        "ssvc:EXP:1.0.1",
+        "ssvc:A:2.0.0",
+        "ssvc:HI:2.0.2"
+      ],
+      "components": [
+        "ssvc:MI:2.0.0",
+        "ssvc:SI:2.0.1"
+      ],
+      "outcomes": "ssvc:DSOI:1.0.0",
+      "conflict": "Explicit table governs this bounded result. S094:510 none+very-high summary is broader than rows3/7/11/15/19; no claim that prose agrees."
+    },
+    "stakeholder_unit": "Archive services as deployer, supplier patch paired to deployed Delta A-3.",
+    "inputs": {
+      "exploitation": {
+        "value": "active",
+        "evidence": [
+          "Credible public incident reports provide shared, reliable observations of real attackers using this flaw in the wild."
+        ],
+        "reasoning": "S094 E1.1.0: credible shared observed use by real attackers establishes active, not just availability of a PoC.",
+        "missing": []
+      },
+      "exposure": {
+        "value": "small",
+        "evidence": [
+          "The affected program runs only locally on a physically isolated workstation, on no network; the assessment establishes a highly controlled attack surface."
+        ],
+        "reasoning": "S094 EXP1.0.1: local-only physically isolated, highly controlled attack surface establishes small; not merely a firewall label.",
+        "missing": []
+      },
+      "automatable": {
+        "value": "yes",
+        "evidence": [
+          "Independent analysis establishes reliable automation of discovering suitable targets, preparing the payload, delivering it, and triggering exploitation."
+        ],
+        "reasoning": "S094 A2.0.0: the analysis establishes reliable automation of all four initial stages: reconnaissance, weaponization, delivery and exploitation.",
+        "missing": []
+      },
+      "human_impact": {
+        "value": "low",
+        "evidence": [
+          "The impact study finds only brief degradation of a non-essential reporting function; every mission-essential function continues.",
+          "Across physical, operator, system-resilience, environmental, financial and psychological safety effects, the study bounds all consequences at minor effects or less."
+        ],
+        "reasoning": "S095 MI2.0.0 degraded: only non-essential function degradation. Safety effects are bounded to negligible under S096 SI2.0.1, not simply omitted. S094 HI2.0.2 negligible safety AND degraded mission yields low.",
+        "missing": []
+      }
+    },
+    "priority": "scheduled",
+    "path_rows": [
+      52
+    ],
+    "unsupported_conclusions": [
+      "Same flaw and CVSS9.8 as Harbor does not imply same stakeholder priority: row52 differs from row70 because exposure and human impact differ.",
+      "Do not infer lack of automation merely from isolation; the scenario independently establishes reliable automation.",
+      "Scheduled does not mean safe or action authorized."
+    ]
+  },
+  {
+    "id": "K60-03",
+    "model_id": "ssvc:DT_DP:1.0.0",
+    "model_binding": {
+      "source": "corpus/source-snapshots/round-60/S094.txt",
+      "sha256": "78194d2b4a826311cbb3ff9e2186036207d6ca3995f86235b9d73cb38773cb25",
+      "table": "Table of Values, zero-based Row",
+      "model": "ssvc:DT_DP:1.0.0",
+      "inputs": [
+        "ssvc:E:1.1.0",
+        "ssvc:EXP:1.0.1",
+        "ssvc:A:2.0.0",
+        "ssvc:HI:2.0.2"
+      ],
+      "components": [
+        "ssvc:MI:2.0.0",
+        "ssvc:SI:2.0.1"
+      ],
+      "outcomes": "ssvc:DSOI:1.0.0",
+      "conflict": "Explicit table governs this bounded result. S094:510 none+very-high summary is broader than rows3/7/11/15/19; no claim that prose agrees."
+    },
+    "stakeholder_unit": "Museum operations as deployer, supplied patch paired to instance M-8.",
+    "inputs": {
+      "exploitation": {
+        "value": "public poc",
+        "evidence": [
+          "A sufficiently thorough current evidence review finds no reliable indication of real-world exploitation and no published exploit program, but establishes that the vulnerability has a well-known exploitation method."
+        ],
+        "reasoning": "S094 E1.1.0 public PoC has an alternative limb: a well-known exploitation method. No published program does not make none when that limb holds; thorough review supplies no active evidence.",
+        "missing": []
+      },
+      "exposure": {
+        "value": "open",
+        "evidence": [
+          "The affected service is reachable over the public Internet, with no plausible restriction or effective access control on the vulnerable path."
+        ],
+        "reasoning": "S094 EXP1.0.1: the actual vulnerable path is publicly reachable without plausible restriction, establishing open.",
+        "missing": []
+      },
+      "automatable": {
+        "value": "no",
+        "evidence": [
+          "Payload delivery necessarily requires an individual human to perform a fresh physical procedure at each target; the analysis establishes that this required step cannot reliably be automated."
+        ],
+        "reasoning": "S094 A2.0.0 requires all four stages; necessarily fresh per-target physical delivery is affirmatively non-automatable, so no. This is not inferred just from a manual demonstration.",
+        "missing": []
+      },
+      "human_impact": {
+        "value": "medium",
+        "evidence": [
+          "One essential catalog function fails longer than the museum considers acceptable; its overall mission can still be carried out for a time.",
+          "Safety analysis finds that exploitation eliminates a safety margin without actual harm, and explicitly excludes any more serious safety effect in every dimension."
+        ],
+        "reasoning": "S095 MI2.0.0 MEF failure: one essential function exceeds acceptable interruption, overall mission persists. S096 SI2.0.1 marginal: safety margin eliminated without actual harm. S094 HI2.0.2 marginal AND MEF failure yields medium.",
+        "missing": []
+      }
+    },
+    "priority": "scheduled",
+    "path_rows": [
+      41
+    ],
+    "unsupported_conclusions": [
+      "No exploit program is not no public-PoC classification; well-known-method alternative applies.",
+      "One MEF failure is not whole-mission failure; manual delivery is necessary here, not merely the chosen laboratory workflow."
+    ]
+  },
+  {
+    "id": "K60-04",
+    "model_id": "ssvc:DT_DP:1.0.0",
+    "model_binding": {
+      "source": "corpus/source-snapshots/round-60/S094.txt",
+      "sha256": "78194d2b4a826311cbb3ff9e2186036207d6ca3995f86235b9d73cb38773cb25",
+      "table": "Table of Values, zero-based Row",
+      "model": "ssvc:DT_DP:1.0.0",
+      "inputs": [
+        "ssvc:E:1.1.0",
+        "ssvc:EXP:1.0.1",
+        "ssvc:A:2.0.0",
+        "ssvc:HI:2.0.2"
+      ],
+      "components": [
+        "ssvc:MI:2.0.0",
+        "ssvc:SI:2.0.1"
+      ],
+      "outcomes": "ssvc:DSOI:1.0.0",
+      "conflict": "Explicit table governs this bounded result. S094:510 none+very-high summary is broader than rows3/7/11/15/19; no claim that prose agrees."
+    },
+    "stakeholder_unit": "Transit office as deployer, supplied patch paired to instance T-1.",
+    "inputs": {
+      "exploitation": {
+        "value": "none",
+        "evidence": [
+          "A thorough current review finds neither evidence of active exploitation nor a public proof of concept nor a well-known exploitation method."
+        ],
+        "reasoning": "S094 E1.1.0 none is supported by the explicit thorough negative review, not by missing text.",
+        "missing": []
+      },
+      "exposure": {
+        "value": "small",
+        "evidence": [
+          "The affected program runs only locally on a physically isolated workstation, on no network; the assessment establishes a highly controlled attack surface."
+        ],
+        "reasoning": "S094 EXP1.0.1: local-only physically isolated, highly controlled attack surface establishes small; not merely a firewall label.",
+        "missing": []
+      },
+      "automatable": {
+        "value": "no",
+        "evidence": [
+          "Payload delivery necessarily requires an individual human to perform a fresh physical procedure at each target; the analysis establishes that this required step cannot reliably be automated."
+        ],
+        "reasoning": "S094 A2.0.0 requires all four stages; necessarily fresh per-target physical delivery is affirmatively non-automatable, so no. This is not inferred just from a manual demonstration.",
+        "missing": []
+      },
+      "human_impact": {
+        "value": "very high",
+        "evidence": [
+          "Exploitation would disable multiple essential functions and impair recovery until the office cannot deliver its overall mission.",
+          "Safety analysis bounds all safety effects at minor or less."
+        ],
+        "reasoning": "S095 MI2.0.0 mission failure established by multiple essential failures, impaired recovery and inability to deliver mission. S096 SI2.0.1 safety is bounded negligible. S094 HI2.0.2 mission-failure OR catastrophic-safety means very high even though safety is minor.",
+        "missing": []
+      }
+    },
+    "priority": "scheduled",
+    "path_rows": [
+      3
+    ],
+    "unsupported_conclusions": [
+      "Do not replace explicit row3 with out-of-cycle using S094:510 overbroad prose. Model/table pin and discrepancy are disclosed.",
+      "Very high HI does not mechanically impose immediate, and none does not mean no possible harm."
+    ]
+  },
+  {
+    "id": "K60-05",
+    "model_id": "ssvc:DT_DP:1.0.0",
+    "model_binding": {
+      "source": "corpus/source-snapshots/round-60/S094.txt",
+      "sha256": "78194d2b4a826311cbb3ff9e2186036207d6ca3995f86235b9d73cb38773cb25",
+      "table": "Table of Values, zero-based Row",
+      "model": "ssvc:DT_DP:1.0.0",
+      "inputs": [
+        "ssvc:E:1.1.0",
+        "ssvc:EXP:1.0.1",
+        "ssvc:A:2.0.0",
+        "ssvc:HI:2.0.2"
+      ],
+      "components": [
+        "ssvc:MI:2.0.0",
+        "ssvc:SI:2.0.1"
+      ],
+      "outcomes": "ssvc:DSOI:1.0.0",
+      "conflict": "Explicit table governs this bounded result. S094:510 none+very-high summary is broader than rows3/7/11/15/19; no claim that prose agrees."
+    },
+    "stakeholder_unit": "Factory planning as deployer, supplied patch paired to instance F-4.",
+    "inputs": {
+      "exploitation": {
+        "value": "active",
+        "evidence": [
+          "Credible public incident reports provide shared, reliable observations of real attackers using this flaw in the wild."
+        ],
+        "reasoning": "S094 E1.1.0: credible shared observed use by real attackers establishes active, not just availability of a PoC.",
+        "missing": []
+      },
+      "exposure": {
+        "value": "controlled",
+        "evidence": [
+          "The networked service has restrictions that demonstrably interrupt this attack reliably and soon enough; it is neither publicly unrestricted nor a local-only/highly-controlled isolated system."
+        ],
+        "reasoning": "S094 EXP1.0.1 controlled is supported by effective timely attack interruption and restrictions; explicit exclusions distinguish open/small.",
+        "missing": []
+      },
+      "automatable": {
+        "value": "insufficient",
+        "evidence": [
+          "No assessment of whether all four attack stages can reliably be automated has been supplied."
+        ],
+        "reasoning": "S094 A2.0.0 cannot be assigned yes or no without reliable four-stage capability evidence. Enumerate both values, not a default.",
+        "missing": [
+          "Can an attacker reliably automate all four initial attack stages, or is at least one necessarily non-automatable?"
+        ]
+      },
+      "human_impact": {
+        "value": "high",
+        "evidence": [
+          "The impact study finds that a service directly supporting mission-essential functions becomes unusable, although the essential functions themselves continue temporarily.",
+          "One person could die; the study excludes multiple deaths, operator incapacitation, total system loss, ecosystem collapse and social-system collapse, and finds no higher consequence in another safety dimension."
+        ],
+        "reasoning": "S095 MI2.0.0 support crippled: directly supporting service unusable while MEFs continue. S096 SI2.0.1 critical: one death with higher dimensions expressly excluded. S094 HI2.0.2 critical AND support crippled yields high, not catastrophic/very high.",
+        "missing": []
+      }
+    },
+    "priority": "out-of-cycle",
+    "path_rows": [
+      58,
+      62
+    ],
+    "unsupported_conclusions": [
+      "Unknown automation remains unknown. Row58 active/controlled/no/high and row62 active/controlled/yes/high both give out-of-cycle, so priority is determinate without inventing automation.",
+      "Do not use an all-insufficient answer to erase known facts/common result."
+    ]
+  },
+  {
+    "id": "K60-06",
+    "model_id": "ssvc:DT_DP:1.0.0",
+    "model_binding": {
+      "source": "corpus/source-snapshots/round-60/S094.txt",
+      "sha256": "78194d2b4a826311cbb3ff9e2186036207d6ca3995f86235b9d73cb38773cb25",
+      "table": "Table of Values, zero-based Row",
+      "model": "ssvc:DT_DP:1.0.0",
+      "inputs": [
+        "ssvc:E:1.1.0",
+        "ssvc:EXP:1.0.1",
+        "ssvc:A:2.0.0",
+        "ssvc:HI:2.0.2"
+      ],
+      "components": [
+        "ssvc:MI:2.0.0",
+        "ssvc:SI:2.0.1"
+      ],
+      "outcomes": "ssvc:DSOI:1.0.0",
+      "conflict": "Explicit table governs this bounded result. S094:510 none+very-high summary is broader than rows3/7/11/15/19; no claim that prose agrees."
+    },
+    "stakeholder_unit": "Library network as deployer, supplied patch paired to instance L-2.",
+    "inputs": {
+      "exploitation": {
+        "value": "insufficient",
+        "evidence": [
+          "The exploitation-evidence section was accidentally omitted: nothing in this dossier establishes existence or absence of a public proof of concept, a well-known method, or exploitation by attackers."
+        ],
+        "reasoning": "S094 E1.1.0: omitted review is not none. None, public poc and active all remain compatible.",
+        "missing": [
+          "What reliable current review establishes active wild use, public PoC/well-known method, or their absence?"
+        ]
+      },
+      "exposure": {
+        "value": "open",
+        "evidence": [
+          "The affected service is reachable over the public Internet, with no plausible restriction or effective access control on the vulnerable path."
+        ],
+        "reasoning": "S094 EXP1.0.1: the actual vulnerable path is publicly reachable without plausible restriction, establishing open.",
+        "missing": []
+      },
+      "automatable": {
+        "value": "yes",
+        "evidence": [
+          "Independent analysis establishes reliable automation of discovering suitable targets, preparing the payload, delivering it, and triggering exploitation."
+        ],
+        "reasoning": "S094 A2.0.0: the analysis establishes reliable automation of all four initial stages: reconnaissance, weaponization, delivery and exploitation.",
+        "missing": []
+      },
+      "human_impact": {
+        "value": "low",
+        "evidence": [
+          "The impact study finds only brief degradation of a non-essential reporting function; every mission-essential function continues.",
+          "Across physical, operator, system-resilience, environmental, financial and psychological safety effects, the study bounds all consequences at minor effects or less."
+        ],
+        "reasoning": "S095 MI2.0.0 degraded: only non-essential function degradation. Safety effects are bounded to negligible under S096 SI2.0.1, not simply omitted. S094 HI2.0.2 negligible safety AND degraded mission yields low.",
+        "missing": []
+      }
+    },
+    "priority": "insufficient",
+    "path_rows": [
+      20,
+      44,
+      68
+    ],
+    "unsupported_conclusions": [
+      "Rows20 and44 scheduled versus68 out-of-cycle: no common priority.",
+      "Automation is separately established; do not treat that as evidence of public release or observed wild use.",
+      "Omitted section cannot be silently repaired with none."
+    ]
+  },
+  {
+    "id": "K60-07",
+    "model_id": "ssvc:DT_DP:1.0.0",
+    "model_binding": {
+      "source": "corpus/source-snapshots/round-60/S094.txt",
+      "sha256": "78194d2b4a826311cbb3ff9e2186036207d6ca3995f86235b9d73cb38773cb25",
+      "table": "Table of Values, zero-based Row",
+      "model": "ssvc:DT_DP:1.0.0",
+      "inputs": [
+        "ssvc:E:1.1.0",
+        "ssvc:EXP:1.0.1",
+        "ssvc:A:2.0.0",
+        "ssvc:HI:2.0.2"
+      ],
+      "components": [
+        "ssvc:MI:2.0.0",
+        "ssvc:SI:2.0.1"
+      ],
+      "outcomes": "ssvc:DSOI:1.0.0",
+      "conflict": "Explicit table governs this bounded result. S094:510 none+very-high summary is broader than rows3/7/11/15/19; no claim that prose agrees."
+    },
+    "stakeholder_unit": "Cinema services as deployer, supplied patch paired to instance C-5.",
+    "inputs": {
+      "exploitation": {
+        "value": "public poc",
+        "evidence": [
+          "A current review finds a public proof of concept and expressly finds no reliable evidence of in-the-wild exploitation."
+        ],
+        "reasoning": "S094 E1.1.0 public PoC supported, active not supported by the current review.",
+        "missing": []
+      },
+      "exposure": {
+        "value": "open",
+        "evidence": [
+          "The affected service is reachable over the public Internet, with no plausible restriction or effective access control on the vulnerable path."
+        ],
+        "reasoning": "S094 EXP1.0.1: the actual vulnerable path is publicly reachable without plausible restriction, establishing open.",
+        "missing": []
+      },
+      "automatable": {
+        "value": "insufficient",
+        "evidence": [
+          "A laboratory has automated triggering the flaw after an operator manually selects a target and prepares and delivers a payload.",
+          "Whether selection, payload preparation and delivery could reliably be automated is unassessed, not demonstrated impossible."
+        ],
+        "reasoning": "S094 A2.0.0 asks reliable automation capability of all four stages. Actual manual choices prove neither necessity nor impossibility, and one automated final stage proves neither whole-chain yes nor no.",
+        "missing": [
+          "Can reconnaissance, weaponization and delivery reliably be automated, or is any one necessarily non-automatable?"
+        ]
+      },
+      "human_impact": {
+        "value": "high",
+        "evidence": [
+          "The impact study finds that a service directly supporting mission-essential functions becomes unusable, although the essential functions themselves continue temporarily.",
+          "One person could die; the study excludes multiple deaths, operator incapacitation, total system loss, ecosystem collapse and social-system collapse, and finds no higher consequence in another safety dimension."
+        ],
+        "reasoning": "S095 MI2.0.0 support crippled: directly supporting service unusable while MEFs continue. S096 SI2.0.1 critical: one death with higher dimensions expressly excluded. S094 HI2.0.2 critical AND support crippled yields high, not catastrophic/very high.",
+        "missing": []
+      }
+    },
+    "priority": "insufficient",
+    "path_rows": [
+      42,
+      46
+    ],
+    "unsupported_conclusions": [
+      "Rows42 public-poc/open/no/high scheduled and46 public-poc/open/yes/high out-of-cycle disagree.",
+      "Do not infer no from what this operator happened to do; R67 possession/necessity lesson generalizes to chosen/required manual actions."
+    ]
+  },
+  {
+    "id": "K60-08",
+    "model_id": "ssvc:DT_DP:1.0.0",
+    "model_binding": {
+      "source": "corpus/source-snapshots/round-60/S094.txt",
+      "sha256": "78194d2b4a826311cbb3ff9e2186036207d6ca3995f86235b9d73cb38773cb25",
+      "table": "Table of Values, zero-based Row",
+      "model": "ssvc:DT_DP:1.0.0",
+      "inputs": [
+        "ssvc:E:1.1.0",
+        "ssvc:EXP:1.0.1",
+        "ssvc:A:2.0.0",
+        "ssvc:HI:2.0.2"
+      ],
+      "components": [
+        "ssvc:MI:2.0.0",
+        "ssvc:SI:2.0.1"
+      ],
+      "outcomes": "ssvc:DSOI:1.0.0",
+      "conflict": "Explicit table governs this bounded result. S094:510 none+very-high summary is broader than rows3/7/11/15/19; no claim that prose agrees."
+    },
+    "stakeholder_unit": "Model mismatch: Distributor R is acting as supplier asking development/release urgency; no deployer remediation-instance unit is requested. Specific request overrides contradictory generic boilerplate.",
+    "inputs": {
+      "exploitation": {
+        "value": "insufficient",
+        "evidence": [
+          "Distributor R is actually asking for its supplier-side urgency to develop and release a patch, not urgency to apply a supplied patch to its own deployed instance."
+        ],
+        "reasoning": "No deployer exploitation judgment attempted: explicit requested decision is supplier-side and outside pinned DT_DP1.0.0. Boilerplate does not override specific request.",
+        "missing": [
+          "Provide the appropriate separately pinned supplier model and supplier evidence, or explicitly request a deployer-instance assessment."
+        ]
+      },
+      "exposure": {
+        "value": "insufficient",
+        "evidence": [
+          "Distributor R is actually asking for its supplier-side urgency to develop and release a patch, not urgency to apply a supplied patch to its own deployed instance."
+        ],
+        "reasoning": "No deployer exposure judgment attempted: explicit requested decision is supplier-side and outside pinned DT_DP1.0.0. Boilerplate does not override specific request.",
+        "missing": [
+          "Provide the appropriate separately pinned supplier model and supplier evidence, or explicitly request a deployer-instance assessment."
+        ]
+      },
+      "automatable": {
+        "value": "insufficient",
+        "evidence": [
+          "Distributor R is actually asking for its supplier-side urgency to develop and release a patch, not urgency to apply a supplied patch to its own deployed instance."
+        ],
+        "reasoning": "No deployer automation judgment attempted: explicit requested decision is supplier-side and outside pinned DT_DP1.0.0. Boilerplate does not override specific request.",
+        "missing": [
+          "Provide the appropriate separately pinned supplier model and supplier evidence, or explicitly request a deployer-instance assessment."
+        ]
+      },
+      "human_impact": {
+        "value": "insufficient",
+        "evidence": [
+          "Distributor R is actually asking for its supplier-side urgency to develop and release a patch, not urgency to apply a supplied patch to its own deployed instance."
+        ],
+        "reasoning": "No deployer human impact judgment attempted: explicit requested decision is supplier-side and outside pinned DT_DP1.0.0. Boilerplate does not override specific request.",
+        "missing": [
+          "Provide the appropriate separately pinned supplier model and supplier evidence, or explicitly request a deployer-instance assessment."
+        ]
+      }
+    },
+    "priority": "model_mismatch",
+    "path_rows": [],
+    "unsupported_conclusions": [
+      "Outcome names do not establish model identity. model_id/model_binding identify the available bounded model, NOT a model used to issue a supplier result.",
+      "No supplier priority inferred or translated; no equivalent CISA identity claimed."
+    ]
+  },
+  {
+    "id": "K60-09",
+    "model_id": "ssvc:DT_DP:1.0.0",
+    "model_binding": {
+      "source": "corpus/source-snapshots/round-60/S094.txt",
+      "sha256": "78194d2b4a826311cbb3ff9e2186036207d6ca3995f86235b9d73cb38773cb25",
+      "table": "Table of Values, zero-based Row",
+      "model": "ssvc:DT_DP:1.0.0",
+      "inputs": [
+        "ssvc:E:1.1.0",
+        "ssvc:EXP:1.0.1",
+        "ssvc:A:2.0.0",
+        "ssvc:HI:2.0.2"
+      ],
+      "components": [
+        "ssvc:MI:2.0.0",
+        "ssvc:SI:2.0.1"
+      ],
+      "outcomes": "ssvc:DSOI:1.0.0",
+      "conflict": "Explicit table governs this bounded result. S094:510 none+very-high summary is broader than rows3/7/11/15/19; no claim that prose agrees."
+    },
+    "stakeholder_unit": "Regional services as deployer, supplied patch paired to instance R-9.",
+    "inputs": {
+      "exploitation": {
+        "value": "active",
+        "evidence": [
+          "Credible public incident reports provide shared, reliable observations of real attackers using this flaw in the wild."
+        ],
+        "reasoning": "S094 E1.1.0: credible shared observed use by real attackers establishes active, not just availability of a PoC.",
+        "missing": []
+      },
+      "exposure": {
+        "value": "open",
+        "evidence": [
+          "The affected service is reachable over the public Internet, with no plausible restriction or effective access control on the vulnerable path."
+        ],
+        "reasoning": "S094 EXP1.0.1: the actual vulnerable path is publicly reachable without plausible restriction, establishing open.",
+        "missing": []
+      },
+      "automatable": {
+        "value": "yes",
+        "evidence": [
+          "Independent analysis establishes reliable automation of discovering suitable targets, preparing the payload, delivering it, and triggering exploitation."
+        ],
+        "reasoning": "S094 A2.0.0: the analysis establishes reliable automation of all four initial stages: reconnaissance, weaponization, delivery and exploitation.",
+        "missing": []
+      },
+      "human_impact": {
+        "value": "insufficient",
+        "evidence": [
+          "The file contains no mission-impact or safety-impact assessment at all."
+        ],
+        "reasoning": "S095 MI2.0.0 and S096 SI2.0.1 are both unknown, so S094 HI2.0.2 low/medium/high/very high remain possible. CVSS5.0 and silence supply neither dimension. Official suggested defaults are assumptions, not observed facts, and this evidence-only workflow does not silently apply them.",
+        "missing": [
+          "What mission-essential functions and recovery are affected for R-9?",
+          "What credible physical, operator/system, environmental, financial and psychological safety consequences are established?"
+        ]
+      }
+    },
+    "priority": "insufficient",
+    "path_rows": [
+      68,
+      69,
+      70,
+      71
+    ],
+    "unsupported_conclusions": [
+      "Rows68/69 out-of-cycle versus70/71 immediate: priority not uniquely supported.",
+      "Requester instruction to treat silence as no consequences is an unsupported assumption, not evidence.",
+      "Do not claim source forbids all defaults; distinguish suggested assumptions from this bounded evidence-only assessment."
+    ]
+  },
+  {
+    "id": "K60-10",
+    "model_id": "ssvc:DT_DP:1.0.0",
+    "model_binding": {
+      "source": "corpus/source-snapshots/round-60/S094.txt",
+      "sha256": "78194d2b4a826311cbb3ff9e2186036207d6ca3995f86235b9d73cb38773cb25",
+      "table": "Table of Values, zero-based Row",
+      "model": "ssvc:DT_DP:1.0.0",
+      "inputs": [
+        "ssvc:E:1.1.0",
+        "ssvc:EXP:1.0.1",
+        "ssvc:A:2.0.0",
+        "ssvc:HI:2.0.2"
+      ],
+      "components": [
+        "ssvc:MI:2.0.0",
+        "ssvc:SI:2.0.1"
+      ],
+      "outcomes": "ssvc:DSOI:1.0.0",
+      "conflict": "Explicit table governs this bounded result. S094:510 none+very-high summary is broader than rows3/7/11/15/19; no claim that prose agrees."
+    },
+    "stakeholder_unit": "Retail systems as deployer, supplied patch paired to instance R-6.",
+    "inputs": {
+      "exploitation": {
+        "value": "active",
+        "evidence": [
+          "Credible public incident reports provide shared, reliable observations of real attackers using this flaw in the wild."
+        ],
+        "reasoning": "S094 E1.1.0: credible shared observed use by real attackers establishes active, not just availability of a PoC.",
+        "missing": []
+      },
+      "exposure": {
+        "value": "insufficient",
+        "evidence": [
+          "Its asset record says a firewall appliance is owned and installed somewhere in the organization.",
+          "The record provides no topology, reachability, rule set, detection, response timing or test of attack interruption for this affected instance.",
+          "No other exposure evidence is available."
+        ],
+        "reasoning": "S094 EXP1.0.1 requires actual affected-instance access context. Owning a firewall does not establish effective restriction or timely interruption; it does not exclude small, controlled or open. Preserve all three.",
+        "missing": [
+          "What is the affected-instance attack surface/reachability, and do any actual controls reliably interrupt this attack soon enough?"
+        ]
+      },
+      "automatable": {
+        "value": "yes",
+        "evidence": [
+          "Independent analysis establishes reliable automation of discovering suitable targets, preparing the payload, delivering it, and triggering exploitation."
+        ],
+        "reasoning": "S094 A2.0.0: the analysis establishes reliable automation of all four initial stages: reconnaissance, weaponization, delivery and exploitation.",
+        "missing": []
+      },
+      "human_impact": {
+        "value": "high",
+        "evidence": [
+          "The impact study finds that a service directly supporting mission-essential functions becomes unusable, although the essential functions themselves continue temporarily.",
+          "One person could die; the study excludes multiple deaths, operator incapacitation, total system loss, ecosystem collapse and social-system collapse, and finds no higher consequence in another safety dimension."
+        ],
+        "reasoning": "S095 MI2.0.0 support crippled: directly supporting service unusable while MEFs continue. S096 SI2.0.1 critical: one death with higher dimensions expressly excluded. S094 HI2.0.2 critical AND support crippled yields high, not catastrophic/very high.",
+        "missing": []
+      }
+    },
+    "priority": "insufficient",
+    "path_rows": [
+      54,
+      62,
+      70
+    ],
+    "unsupported_conclusions": [
+      "Row54 active/small/yes/high and62 active/controlled/yes/high out-of-cycle, versus70 active/open/yes/high immediate.",
+      "Possession of a firewall is not necessity/effectiveness evidence; no controlled inference or actual mitigation recommendation."
+    ]
+  },
+  {
+    "id": "K60-11",
+    "model_id": "ssvc:DT_DP:1.0.0",
+    "model_binding": {
+      "source": "corpus/source-snapshots/round-60/S094.txt",
+      "sha256": "78194d2b4a826311cbb3ff9e2186036207d6ca3995f86235b9d73cb38773cb25",
+      "table": "Table of Values, zero-based Row",
+      "model": "ssvc:DT_DP:1.0.0",
+      "inputs": [
+        "ssvc:E:1.1.0",
+        "ssvc:EXP:1.0.1",
+        "ssvc:A:2.0.0",
+        "ssvc:HI:2.0.2"
+      ],
+      "components": [
+        "ssvc:MI:2.0.0",
+        "ssvc:SI:2.0.1"
+      ],
+      "outcomes": "ssvc:DSOI:1.0.0",
+      "conflict": "Explicit table governs this bounded result. S094:510 none+very-high summary is broader than rows3/7/11/15/19; no claim that prose agrees."
+    },
+    "stakeholder_unit": "Emergency communications as deployer, supplied patch paired to instance E-2.",
+    "inputs": {
+      "exploitation": {
+        "value": "active",
+        "evidence": [
+          "Credible public incident reports provide shared, reliable observations of real attackers using this flaw in the wild."
+        ],
+        "reasoning": "S094 E1.1.0: credible shared observed use by real attackers establishes active, not just availability of a PoC.",
+        "missing": []
+      },
+      "exposure": {
+        "value": "open",
+        "evidence": [
+          "The affected service is reachable over the public Internet, with no plausible restriction or effective access control on the vulnerable path."
+        ],
+        "reasoning": "S094 EXP1.0.1: the actual vulnerable path is publicly reachable without plausible restriction, establishing open.",
+        "missing": []
+      },
+      "automatable": {
+        "value": "no",
+        "evidence": [
+          "Payload delivery necessarily requires an individual human to perform a fresh physical procedure at each target; the analysis establishes that this required step cannot reliably be automated."
+        ],
+        "reasoning": "S094 A2.0.0 requires all four stages; necessarily fresh per-target physical delivery is affirmatively non-automatable, so no. This is not inferred just from a manual demonstration.",
+        "missing": []
+      },
+      "human_impact": {
+        "value": "very high",
+        "evidence": [
+          "The safety assessment establishes that this flaw can cause multiple deaths.",
+          "Mission impact has not been assessed."
+        ],
+        "reasoning": "S096 SI2.0.1 catastrophic follows multiple deaths. S094 HI2.0.2 has catastrophic-safety OR mission-failure: the independently established safety limb suffices for very high regardless of missing MI2.0.0 value. Mission stays unknown; it is not assigned a default or fabricated failure.",
+        "missing": [
+          "What is mission impact? This remains unknown but cannot change HI very high while catastrophic safety is established."
+        ]
+      }
+    },
+    "priority": "immediate",
+    "path_rows": [
+      67
+    ],
+    "unsupported_conclusions": [
+      "Do not infer mission failure from multiple deaths or abstain on HI solely because mission is unknown.",
+      "Row67 active/open/no/very-high is the unique top-level table row; this is a fictional model outcome, not live action authorization."
+    ]
+  }
+]

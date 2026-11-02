@@ -2661,3 +2661,15 @@ SCORECARD records pending, legacy scores held; no fabricated successful capabili
 Round60 committed-tree verification script: `.ufo/waves/round-60/final-check.sh`
 reuses prior regression and guard commands, adding source pins and freeze-prefix
 checks. It is evidence collection, not a semantic assessor or second claim.
+
+## Round60 first unseen assessments — seal before feedback
+
+Received challenge only from parent-appointed reviewer: SHA256
+579ce68b2f59c9243f1c3fd775c885e35612a85caa4e531c42eb595a8336fcdf,
+11 fictional cases. `.ufo/waves/round-60/first-answers.json` records manually
+reasoned input decisions, context, compatible table paths and unknowns. The
+serializer asserts exact excerpts only; it does not grade meaning. Reviewer
+private files were not read. First answers sealed before any feedback; no self-pass.
+Committed-tree guard run at7f49287 reports unexpected-results0, inherited
+host-bound audit exits1 preserved; capture-negative controls reject missing/corrupt
+source. New census pair is generated evidence, not source recovery or C1 success.
