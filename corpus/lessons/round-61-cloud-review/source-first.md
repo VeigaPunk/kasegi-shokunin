@@ -1,0 +1,17 @@
+# Independent source-first expectations — 2026-11-02
+Reviewer /root/judge_kasegi_round61, appointed by parent, not author. Read fleet round61 exact prompt, current mission/axes, learning/corpus, protocol pair, lane QUALITY (R64–R68), F05 and round59 shared-assumption failure. F05 already says root cause must rest on technical evidence, not rank; novelty requires actual causal assessment, not another admonition.
+
+Official sources independently opened via web tool:
+- https://cwe.mitre.org/documents/cwe_usage/guidance.html — Weakness vs Vulnerability Language: “They describe the result of the vulnerability and its attack vectors, not the root cause(s).” (18 words). Impact/prerequisite language cannot alone prove causal weakness. Current entry mapping labels and notes matter. Base/Variant preferred when warranted; Class possible when no accurate lower mapping. Categories never case mappings.
+- https://cwe.mitre.org/documents/cwe_usage/quick_tips.html — When You Are Ready: “Verify your mapping with a team member with different skills and experience” (13 words). Search discovers candidates; evidence determines choice.
+- https://cwe.mitre.org/documents/cwe_usage/mapping_navigation.html — Additional Suggestions: “do not rely solely on the name of the entry” (11 words). Older 2018 guidance calls categories strongly discouraged; current 2024 guidance and actual entry labels take precedence where more restrictive.
+- Initial guessed /documents/cwe_usage/mapping.html failed; not treated as evidence.
+
+Prospective semantic review: trace observed input/operation/check/state/impact separately; identify candidate root cause and downstream weakness without pretending a single label is always uniquely correct. Demand specific missing facts instead of vague uncertainty. Reject unsupported location, arithmetic, authentication necessity, or exploitability assumptions. Match definition and mapping-use note, not spelling. Any outside-list defensible mapping needs independent source verification, not automatic failure. Scope fictional manual assessment only. Oracle remains private until answers sealed; challenge will freeze only after author interface and entry scope. No author code writes.
+
+## Entry verification after frozen scope (22:20 UTC)
+Independently opened each official https://cwe.mitre.org/data/definitions/{id}.html for IDs 190,131,787,119,20,79,862,863. Web rendered version5.0 (2026-10-28). Definition and mapping headers read for each; detailed notes opened for787/862/863. 190/131/79 Base ALLOWED;787 Base ALLOWED-WITH-REVIEW;862/863 Class ALLOWED-WITH-REVIEW;119/20 Class DISCOURAGED. 787 notes require consideration of precursor causes and more specific children;862/863 notes ask examination of possible more-specific children. Specificity is constrained by observed mechanism, not demanded at cost of unsupported assumptions. Frozen vocabulary is intentionally not whole ontology.
+
+Quote:787 Mapping Notes, “Consider the root cause errors” (5 words). No lengthy copyrighted capture copied into audit. Independent web-open receipts in tool conversation; author's separate pinned captures checked at final adjudication.
+
+Freeze: challenge ec66997ac1accd66808bdebf3edde945f871c42c2b3c978621edb27db287f21d; private oracle88020b1f34fed735207d3d709d214baba0001fd15a98fe597b6be0f3d63a0ecb. Ten fictional cases frozen only after contract03e87089. Shared-filesystem separation procedural; author told to read only challenge.

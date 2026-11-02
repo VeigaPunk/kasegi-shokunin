@@ -1,0 +1,81 @@
+{
+  "frozen_contract_sha256": "450a107e38ed9d0771209aa9c2bd63192e396f971fb3884f80f40f045b25d8ff",
+  "rules": [
+    "Semantic review, not string equality. Exact wording unnecessary. Multiple defensible sets allowed with explicit causal roles.",
+    "Selected 190/131/79 Base ALLOWED; 787 Base ALLOWED-WITH-REVIEW; 862/863 Class ALLOWED-WITH-REVIEW, consider more specific children but no invented fit. 119/20 Class DISCOURAGED, not endorse as optimal root mappings.",
+    "Supported root must appear as mapping rather than disappear under downstream label. Additional supported intermediate/resultant mappings acceptable when marked.",
+    "Outside-scope candidate may remain unresolved; do not require unverified taxonomy search. No claim of universal best.",
+    "No payloads, targets, severity or exploitability inference. Missing causal links explicit. Acknowledged unknowns not false failures."
+  ],
+  "cases": {
+    "K61-A": {
+      "root": [
+        190
+      ],
+      "optional": [
+        131,
+        787
+      ],
+      "must": "Arithmetic wrap -> undersized allocation -> out-of-bounds write. Only787 hides established precursor. No invented stack/heap or code execution. 131 may be intermediate or omitted from selection with chain explained."
+    },
+    "K61-B": {
+      "root": [
+        131
+      ],
+      "optional": [
+        787
+      ],
+      "must": "Expansion budget error -> undersized allocation -> write. Explicit exact arithmetic excludes190; binary output excludes79. No generic20/119 substitution."
+    },
+    "K61-C": {
+      "root": [],
+      "must": "Abstain. Exit and ticket do not identify operation or cause. Ask access type/address/bounds, calculation or trace and relevant authorization policy/check if investigating that hypothesis. Possession not requirement. 119 discouraged even if memory conjecture plausible."
+    },
+    "K61-D": {
+      "root": [
+        787
+      ],
+      "must": "Known write beyond intended boundary supports bounded787 with careful-review caveat; true initiating cause unknown. No integer or allocation defect assumption.119 broader discouraged not safer specificity. More-specific outside candidates only conditional."
+    },
+    "K61-E": {
+      "root": [
+        862
+      ],
+      "must": "Identity succeeds; permission check absent under stated policy. Class careful review allowed in bounded vocabulary; do not fabricate object reference or imply authentication missing."
+    },
+    "K61-F": {
+      "root": [
+        863
+      ],
+      "must": "Check executes but wrong predicate grants non-supervisor. Not862; no client tampering invented. Class careful review not blanket Class prohibition."
+    },
+    "K61-G": {
+      "root": [
+        79
+      ],
+      "must": "Unneutralized user text -> page served to another -> active interpretation. Supervisor possession not causal auth necessity or flaw. No server code execution claim."
+    },
+    "K61-H": {
+      "root": [],
+      "must": "Reject mapping based on keyword and rank. Inspected path lacks evidence of79; not universal secure-site certificate. Ask other paths only as open unassessed scope not assumed flaw."
+    },
+    "K61-I": {
+      "root": [
+        862,
+        79
+      ],
+      "must": "Two independent roots explicitly retained, no invented causal linkage between them. Both source mappings/usage valid; alternatives may note specificity limits."
+    },
+    "K61-J": {
+      "root": [
+        190
+      ],
+      "must": "Wrap directly drives accounting defect. No buffer chain131/787 exists. Generic20 discouraged and less accurate; input validation slogan not substitute for exact arithmetic mechanism."
+    }
+  },
+  "prospective_controls": {
+    "constant79": "reject at least A,B,C,D,E,F,H,J based on cause, not label count",
+    "keyword_only": "reject C (overflow without access facts), H (XSS label despite text-node evidence), J (bad-input slogan hides arithmetic)",
+    "rank_only": "reject H: aggregate ranking does not supply case evidence"
+  }
+}

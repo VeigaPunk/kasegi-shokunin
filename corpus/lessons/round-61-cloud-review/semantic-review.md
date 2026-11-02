@@ -1,0 +1,83 @@
+# Round61 independent semantic review
+Reviewer: /root/judge_kasegi_round61 (parent-appointed non-author).
+First answers fe875cc9b4fce87e1242cc882314a184ee742f31, SHA2564b36e8be40f26836431f4f60c244d222ad561fa281578aba51c7525272a8a54c. Read only after challenge and private oracle frozen. No oracle rewrite, no answer correction before grading.
+
+## Actual causal judgment, not schema score
+| Case | Verdict | Reason |
+|---|---|---|
+| A | supported | 190 is primary;131 is size intermediate;787 resultant. Mathematical65544 wrapping to8 is correct. No invented storage-region subtype. Extra chain mappings permissible, not three independent causes. |
+| B | supported | Exact arithmetic with expansion budgeting error supports131 and resultant787, excludes190. Binary output not web weakness. |
+| C | supported | Empty mapping properly refuses diagnosis from crash/title/admin possession. Concrete tracing, arithmetic and authority-policy questions; no unsupported exploit prerequisite. |
+| D | supported | 787 justified from known operation and bounds while earlier cause unknown. Correct careful-review usage and open subtype questions;119 not a safer generic fallback. |
+| E | supported | Explicit complete-path absence of permission checks under restrictive policy supports862 despite correct authentication. Class careful-review label accurate; narrower taxonomy not falsely claimed exhausted. |
+| F | supported | Existing permission predicate tests wrong property;863 not862. No spoofing or missing authentication invented. |
+| G | supported | Input/storage/output/browser chain supports79. Supervisor attribute separated from cause and prerequisite. |
+| H | supported | Label/rank cannot override text-node evidence. Refuses mapping without certifying entire dashboard secure. |
+| I | supported | Both862 and79 retained as independent roots, not forced singleton or invented chain. |
+| J | supported | 190 arithmetic mechanism without131/787 operations. Generic20 not substituted for precise observed cause. |
+
+Count: Python len(JSON)=10 cases, sum(len(selected_mappings))=12 mapping records. Neither12 independent successes nor general accuracy estimate. All10 first assessments meet the bounded frozen rubric. Cases deliberately include decisive evidence and qualified unknowns, not hidden prerequisites. This is a source-guided assessment demonstration, not production classifier validation, exploitability assessment, or proof of broad seasoned expertise. A perfect result on this limited challenge is reported rather than manufacturing a failure or expanding test scope after answers.
+
+## Prospective negative controls — same reasoning rubric
+Author's constant-label policy: reject. A/J establish arithmetic not browser output, E/F permission mechanisms, C lacks cause, H has text-node evidence. Even G's coincidentally right79 would not make its evidence-free policy adequate.
+Author's keyword-cause policy: reject. C admin possession cannot establish missing checks; C crash cannot establish write; B expansion error is131 precursor not arithmetic wrap, and only787 hides cause; G supervisor observation cannot establish862.
+Author's ranking-cause policy: reject. H has no observed79 causal weakness; aggregate prevalence cannot manufacture one. These are prospective deliberately bad candidates, not historical model baseline outputs. Evaluation is human application to actual challenge facts, not a reported executable test.
+
+## Source validity and limitations
+All eight scoped official entries independently opened (5.0). Usage labels and definitions match selected answers. Author A cites190 'relationship notes' for smaller allocation; directly confirming text in S099 is an observed chain example (line374), so support is genuine though that sub-section wording is imprecise. No substantive mapping change needed. 131 expansion explanation matches its maintenance notes. The bounded vocabulary limitation is retained throughout; no obligation to invent unprovided Base-specific mechanisms.
+
+Own reviewer mistake: guessed mapping.html URL failed initially; replaced with official linked guidance.html, no fabricated source success. Initial broad filesystem search produced noisy truncated output; targeted prompt path and relevant reads used instead. Neither affected oracle. Shared-filesystem privacy is procedural rather than cryptographic; author expressly told not to read oracle/generator, no contrary evidence observed.
+
+Final curation/no-harm/conformance review pending shipped artifacts; parent owns admission and closure.
+
+### Reviewer correction (22:26 UTC, append-only)
+My source-subsection imprecision observation above is withdrawn: S099 also has Notes/Relationship at lines582–584, explicitly supporting smaller allocation. My first grep only exposed the observed example. Author's relationship-notes citation is accurate. This was reviewer incomplete inspection, not an author defect; preserved here rather than silently erased. My source-first.md guidance quote count18 was also mistaken: len(quote.split()) is15; exact quote and meaning unchanged. Do not reuse that handwritten count.
+
+## Curation and no-harm review of teaching58cc325
+Admit spot-check **agree**: S098 guidance supports distinction between impact/prerequisite and weakness; S099–101 support the arithmetic/size/write causal roles. S104–106 supply concrete definitions and correct mapping-use distinctions. Entry does not misrepresent source definitions as target observations.
+Reject spot-check **agree**: S107 refuses CWE119 as a universal crash fallback. Crash alone proves no memory operation, and actual119 notes discourage mapping. Scoped rejection of a use, not pretending the official source is untrustworthy. Flip appropriately requires causal evidence and a suitable permitted mapping.
+
+Binding-check.txt independently confirms all frozen inputs, first answers and oracle unchanged; SKILL/PROVINCE/README/QUALITY historical prefixes and every prior source row preserved. Corrected manifest source-recheck independently exit0. Original short-token manifest failure preserved and source captures unchanged. Census.txt independently runs shipped parser with genuine gawk, exit0 (W04 duplicate-URL scopes disclosed).
+
+Axes: depth improved in bounded causal-reasoning repertoire, depth:verifiability scalar4 held as nominal R58, not recovered historical citations. Depth density proxy245.7→240.6 (41→42 blocks) disclosed; prior bytes intact and appended substantive teaching improves meaning, so proxy drop not semantic harm. Coverage unchanged (existing F05 only); operability improved only in replayable manual dossier, no automated semantic judge claim; freshness improved for newly opened scoped entries, no claim whole corpus current; calibration improved by abstention/limits/error retention; adjacency unchanged, security classification remains lane scope and no sibling absorption. No axis harmed on inspected artifacts.
+
+Trends: quality improved (F05 causal assessment deepened); discernment improved (independent agreement on admit/reject and unsupported-inference controls); expansion unchanged (no new frontier ground; parent may admit demonstrated bounded capability without implying broader domain expansion). Ten cases cannot measure general population performance.
+
+Conformance still awaits final author inventory fix/regression/export metadata. Author disclosed expected legacy recheck exit1 initially masked new inventory path defect; direct inventory assertion added rather than treating exit agreement as no-harm evidence. Review final receipt before closure. Existing R59 failure not rewritten or rescued. Parent owns round admission/publication.
+
+## Resumed review (2026-11-02 22:40 UTC)
+User pause was honored; parent explicitly resumed after user changed instruction. No work during pause. Author tip770ed01bfe0e0c64987a1ef1672b00212ebfef5c clean when inspected. Its final.txt measures500fd04d6a7bfc78bda12e6467656dd4eae40d79; receipt says FINAL unexpected-results0. Direct independent rerun confirms census-freshness exit0, all9 corrected source anchors/hashes pass, exact knowledge inventory79 expected=79 actual, missing0/unexpected0.
+
+New limitation caught: final recheck-audit reports new cwe-root-cause entry frozen101/strict101110, lane0/foreign2 and own_fail1. The relative recheck command is cwd-dependent. Strict own predicate additionally requires --source plus corpus/source-snapshots (or own-file/base-state), so it cannot recognize this wave-path corrected manifest. This is NOT wholly inherited host debt; direct recheck from lane root works but new entry does not clear that frozen operability form. Report author and parent informed. Earlier broad no-harm statement applies to inspected semantic content/preserved historical artifacts, not an assertion that new entry passes every form gate. Final reviewer verdict pending author's precise report/disposition. No automatic admission from exit-code agreement.
+
+## Final bounded review binding (22:41 UTC)
+Author report `/workspace/scratch/e2fdad13233f/kasegi-round61-report.md`, SHA256e3c92712e9ec78895aaa9f1e36698b499078bb63bf8fd5ffa5fbabf49c83e290, binds unchanged authored HEAD770ed01bfe0e0c64987a1ef1672b00212ebfef5c. Report read completely. It now accurately discloses new recheck-form debt separately from inherited failures; all required substantive sections present, pause/resume and actual staffing truthful. Source census, original error history, unchanged scalar and density decrease explicit. No fabricated baseline or general mastery claim.
+
+**Verdict:** substantive C1 bounded manual causal assessment SUPPORTED; first10 cases supported with original oracle, all3 prospective substitute policies rejected. Source admits/reject agree. Historical content and first-answer/source binding preserved. Semantic quality/discernment improve; expansion unchanged pending parent capability decision. Operability is mixed: manual workflow runs from lane root but NEW entry fails cwd-independent/strict-own form. That defect is disclosed, not repaired or silently waived by reviewer. Thus this is NOT an unqualified all-gates/no-harm admission. Parent must explicitly disposition the new form debt or authorize a bounded repair before claiming full conformance; source definitions and10-case reasoning need no retest due solely to that metadata issue.
+
+I have not rerun the entire final-check.sh because it mutates lane citation-survival files at the end, outside reviewer write authority. Inspected immutable committed-export receipt and independently replayed read-only source, freshness, inventory and binding checks instead. Final receipt guards were inspected, not accepted merely for expected exit statuses. Full historical corpus recheck remains nonzero and is not represented as fresh or verified.
+
+## Final acceptance correction — Q10 makes the new defect decisive (22:42 UTC)
+Further targeted inspection resolves the frozen-acceptance question, without changing the oracle. Pre-existing `corpus/QUALITY.md:76` Q10 explicitly requires an own `cd <lane-root> &&` prefix and states that a command resolving only from lane root is not a recheck. This is not just an incidental regex mismatch. The newly admitted entry fails the lane's established admission bar. Prior round60 final receipt: strict own_fail0, cwd_fail7, frozen pass71/78; round61: own_fail1, cwd_fail8, pass71/79. Thus real new recheck-form debt was added, not only inherited unchanged debt.
+
+Author independently confirms the exact frozen contract: after dossier only if every first case passes AND non-author verifies no substantive harm plus source admit/reject judgment; no explicit waiver for new nonconformance. I cannot certify that conjunction as shipped770ed01.
+
+**Final recommendation: C1 NOT ADMITTED / frozen success unmet at770ed01.** The ten original causal assessments remain supported; no semantic oracle/answer failure is invented. Source admission for definitions and rejection of119 universal fallback remain sound. But the newly admitted knowledge artifact fails Q10 and operability/no-harm. Trend correction: quality harmed under LEARNING's admitted-entry-bar rule; expansion harmed to the extent a nonconforming entry was admitted (no new ground gained); discernment remains provisional until this outside disagreement is explicitly learned/marked. This supersedes earlier provisional quality-improved/no-semantic-harm language only for overall round admission, preserving that language and its scope as historical evidence.
+
+Requested author append the outside verdict and parent disposition before final closure, preserving prior report e3c92712 and frozen first answers. Any later repair is post-review learning, not retroactive passing of this shipped state. Parent owns acceptance and closure.
+
+## Parent-authorized corrected candidate a8277b6 (22:44 UTC)
+Parent explicitly authorized bounded pre-closure repair. No frozen clause found prohibiting metadata repair before closure; prohibition on rescoring first-answer errors is respected (answers unchanged and no first-answer error). First-candidate770ed01 rejection remains final for those bytes.
+
+Independent actual execution of `.ufo/waves/round-61/operability-replay.py` with bytecode disabled produces audit/kasegi61-independent/operability-repaired-independent.txt: documented command executes from lane AND /tmp, both0, identical output SHA2561fac1f13a80ef3eff3778934f8d837bcba6777cec601fc80b483a7e7b3d7a8b6. Retained strict checker111111, not modified. Command explicitly checks all9 source IDs; copied S102/S103 captures byte-identical. Corrupt S102 actual source rejects1 and deleted source rejects2. Verified source-recheck/recheck-audit code, contract, first answers and SOURCES byte-identical to770ed01. Preserved original report exact e3c92712. This is real command/source binding, not merely regex success.
+
+Portability limit: repaired command embeds this absolute cloud lane path. Q10 requires own cd<lane-root> for execution from any cwd; it does not require relocation/clone discovery. This command meets cwd independence on the configured cloud host only. A moved clone, Windows box, or absent cloud path requires explicit path regrounding; no host-independent portability asserted. Artifact is pinned captured-source verification, not fresh Internet verification or semantic classifier. Final corrected immutable report/head still pending.
+
+## Corrected final recommendation (22:45 UTC)
+Read complete original report and correction append. Final staged report SHA2565519e3e851cb4bdb9a57a6b60b99cc13e90746edfd5ed02a9396eebb32e17d36 binds clean HEADb1780d3bc8ffa79617dd3a4f09ff5d9343598e83, repaired guard measurementa8277b64c012f54e8c1f5494db0f3715c8665ef3. Final-correction01 receipt preserves full nonzero legacy rechecks, correct inventory, own_fail0, actual-root replay and fresh census. Its exported strict111011 is accurately disclosed: absolute cd points to configured actual lane rather than export root, so export's cdroot limb fails. This is not called a strict export pass or portable clone verification. Independent actual-root/foreign replay establishes the exact Q10 obligation on the configured host.
+
+**Recommend admitting the CORRECTED bounded C1 artifact at b1780d3**, subject to parent closure. Every original causal case supported, source admit/reject agreed, repaired artifact now meets the relevant Q10 check with real fail-closed controls, no new substantive harm remains on inspected scope.770ed01 remains rejected. Frozen contract, oracle, first answers unchanged; no retroactive rescue of original operability failure and no inflated semantic score.
+
+Final corrected axes: depth improves narrowly in causal assessment repertoire; verifiability scalar unchanged4, density proxy decline disclosed and prior material intact. Coverage unchanged F05; operability restored from failed first candidate and demonstrably working on cloud host; freshness improved only for bounded opened/pinned materials; calibration improved through honest failure/repair and explicit uncertainty; adjacency unchanged. Trends for corrected state: quality improved vs round base, discernment improved (outside disagreement learned under existing Q10), expansion unchanged unless parent explicitly admits bounded repertoire as capability. No broad mastery, real finding, Windows readiness or cross-host portability claim.
+
+Exact report safe to land as an evidence report under parent's narrow authorization, with this named independent corrected-state verdict and original rejection both retained. Parent owns all admission/ledger/publication actions; reviewer has written only own audit directory. This completes reviewer scope.

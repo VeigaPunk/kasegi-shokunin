@@ -1,0 +1,52 @@
+[
+  {
+    "id": "K61-A",
+    "scenario": "A fictional image loader computes allocation bytes as unsigned 16-bit count times 8. For a permitted count of 8193 the mathematical product 65544 is stored as 8; no overflow check exists. It allocates those 8 bytes successfully and then writes 8193 records of 8 bytes each using the original count. A trace confirms writes past that allocation. No buffer storage region or exploitability is established.",
+    "requested_mapping": "Choose supported root mapping(s), explain the chain, and assess a proposal to report only CWE-787."
+  },
+  {
+    "id": "K61-B",
+    "scenario": "A fictional renderer receives a 40-byte title. Its sizing pass allocates 40 bytes, although its documented transformation expands each of these 40 characters into three output bytes. All arithmetic is exact with ample integer range. The writer performs that transformation and a trace confirms writes beyond the 40-byte allocation. The output is a binary document, not a web page.",
+    "requested_mapping": "Map supported cause and consequences; assess the reviewer proposal CWE-190 because the title says overflow."
+  },
+  {
+    "id": "K61-C",
+    "scenario": "A fictional process terminates while importing a file. The only retained evidence is a process exit and a ticket headed buffer overflow. There is no stack trace, memory-access trace, size calculation, output, or code inspection. The engineer running the import happened to be an administrator; whether privileges are required is untested.",
+    "requested_mapping": "Assess CWE-119, CWE-787 and authorization-root proposals. Give concrete next facts, without inventing a diagnosis."
+  },
+  {
+    "id": "K61-D",
+    "scenario": "A fictional diagnostics trace records a write two bytes after the intended buffer end. The trace does not reveal the calculation, copying operation, storage region, authorization logic, or why that address was selected. It does identify the operation as a write, not a read.",
+    "requested_mapping": "Give the strongest bounded mapping and explain which causal conclusions remain unknown. Assess substituting CWE-119 as a supposedly safer general label."
+  },
+  {
+    "id": "K61-E",
+    "scenario": "A fictional maintenance service correctly authenticates each caller. Policy permits only supervisors to trigger a global reset. Complete code-path inspection shows every authenticated caller reaches the reset operation without any check of permission to reset; no upstream authorization exists. An ordinary authenticated user successfully triggers reset. No user-selected object identifier or filesystem permission is involved.",
+    "requested_mapping": "Map the causal defect within the frozen vocabulary, including abstraction and mapping notes; distinguish identity from permission."
+  },
+  {
+    "id": "K61-F",
+    "scenario": "A fictional maintenance service correctly authenticates callers and calls its authorization routine before global reset. Policy requires supervisor status. The routine mistakenly allows the action when caller.department equals operations, regardless of supervisor status. A non-supervisor operations employee is allowed and reset occurs. The input fields are trusted directory values; no identity spoofing, object lookup, or upstream bypass is present.",
+    "requested_mapping": "Assess whether missing or incorrect authorization best describes the evidenced mechanism, without forcing a Base label."
+  },
+  {
+    "id": "K61-G",
+    "scenario": "A fictional website stores user-supplied biography text and places that same unneutralized text in a page served to another user. In an isolated authorized test the browser interprets the biography as active page content under the site origin. The author of the biography happened to be a supervisor, but no experiment or code evidence establishes that supervisor status is required to submit it. No server-side permission bypass is observed.",
+    "requested_mapping": "Map the evidenced weakness and evaluate a competing claim that the supervisor detail proves an authorization root cause."
+  },
+  {
+    "id": "K61-H",
+    "scenario": "A fictional dashboard has a search box labelled XSS diagnostics. Tests and complete rendering-path inspection show its supplied string is inserted only as a text node, never interpreted as markup or script. No other input path is assessed. A consultant requests CWE-79 solely because it leads a cited Top 25 list and the search box has that label. No anomalous behavior or other causal flaw is reported.",
+    "requested_mapping": "Assess the requested mapping and the limits of the negative evidence."
+  },
+  {
+    "id": "K61-I",
+    "scenario": "In a fictional portal, two independently demonstrated defects coexist. A settings action omits all authorization checks even though explicit policy limits it to supervisors; complete path inspection excludes upstream checks, and a non-supervisor changes the settings. Separately, the ordinary comment page inserts user comments without neutralization into pages served to other users, and an isolated test confirms active-content interpretation. The comments do not affect settings, and settings do not affect comment rendering.",
+    "requested_mapping": "Produce an assessment preserving independent causes rather than selecting one label for the whole portal."
+  },
+  {
+    "id": "K61-J",
+    "scenario": "A fictional numerical service increments an unsigned 8-bit credit count of 255 by 1, assumes the result is greater than 255, and stores 0. That wrapped result drives an incorrect accounting decision. Code and traces establish this arithmetic and decision. There is no allocation or buffer access in this path. A ticket calls it bad input validation and proposes CWE-20.",
+    "requested_mapping": "Map the supported arithmetic weakness; evaluate CWE-20 and any proposed buffer-write chain without adding absent operations."
+  }
+]
