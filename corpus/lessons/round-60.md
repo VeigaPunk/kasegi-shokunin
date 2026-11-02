@@ -78,3 +78,12 @@ prospective negative candidates rejected under same rubric; no correction asked.
 Evidence currently parent-owned audit/kasegi60-independent/first-review.json and
 negative-control-review.md; parent lands final review separately. Reviewer
 source admit/reject and no-harm closure still pending. No author capability admission.
+
+## Post-review census refresh
+
+Own follow-through catch: after appending first-review notes, freshness atf33ce1d
+exited1 (`controls/post-review-stale.txt`). The earlier green receipt measures
+4a1b7ea, not later prose. R35/R58 prohibit advertising it as current. Regenerate
+against the completed text, retaining the stale run and earlier receipt; the
+subsequent controls/final-after-review.txt is the new measurement, not a rewrite.
+This is metadata follow-through, not a new capability or a changed case result.

@@ -2685,3 +2685,8 @@ frozen negative candidates rejected. `/root/judge_kasegi_round60` final source/
 no-harm verdict pending. Final guard receipt measures4a1b7ea, unexpected-results0;
 disk guard still53%, capture/wave artifacts below1MB, export187MB removed by trap.
 No first-answer change or self-admission. Receipt and census pair committed together.
+
+Round60 post-review freshness catch: f33ce1d source-census pair became stale after
+new review-note citations, exit1 retained in controls/post-review-stale.txt. Earlier
+final.txt green applies to its measured4a1b7ea only. Refresh evidence follows in
+controls/final-after-review.txt, preserving the initial receipt and all first answers.
