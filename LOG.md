@@ -2806,3 +2806,12 @@ post-review-freshness-red.txt. Parent authorized bounded regeneration after all
 lane appends. This final append precedes regeneration; source/rubric/first answers
 unchanged. Author67f91a0's prior freshness0 described its tree, not the review-added
 tree. No further author corpus work or round63 follows this metadata refresh.
+
+## Round63 freeze — causal CVE counting (2026-11-02)
+C1 nominal depth4 held; existing F07 deepening, not actual assignment authority.
+Source S110 official pinned4.2.1 corrects current use of historical S0314.2.6 label;
+old evidence remains immutable. Contract/manifest frozen before unseen reviewer cases
+at .ufo/waves/round-63/CONTRACT.md and freeze.json; source-check passes after retained
+pre-freeze419→417 quote-anchor mistake. Gap sweep at controls/gap-search.txt. Lane
+identity found Codex and configured kasegi-shokunin/kasegi@shokunin.local before
+round commits. Sequential specialist passes use approved cloud adaptation.
