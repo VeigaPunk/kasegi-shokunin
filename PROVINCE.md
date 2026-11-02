@@ -208,3 +208,5 @@ Historical lost domain roots remain unavailable; this is not recovery or a denom
 F31 is deepened by bounded synthetic OSV affectedness evaluation on S089, not expanded to a
 service/API, scanner, live target, general ecosystem comparator, or Git-graph engine. The
 round-57 named correction in its existing knowledge entry governs over the earlier summary.
+
+[r58 F27 deepening, 2026-11-02] `corpus/knowledge/kernel-report-evidence-assessment.md` and `corpus/instruments/kernel-report-assess.py` add bounded synthetic report judgment to existing kernel reporting ground. The ACL replay is a teaching model, not kernel testing. No new numbered frontier or source-root restoration; live-target testing and submission remain refused. Research methods remain chousa-owned; secret handling remains kagi-owned.

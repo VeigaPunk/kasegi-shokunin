@@ -1246,3 +1246,25 @@ validation precedes evaluation, including explicit membership; this is a scoped 
 Mutation demonstration: `python3 .ufo/waves/round-57/mutations.py` checks actual status flips,
 not keyword matches. The erroneous-reading model is reconstructed from the two filed prose
 defects; it is explicitly NOT a claim that an earlier executable existed.
+
+## Round-58 kernel-report evidence judgment
+
+Trigger: reviewing kernel-specific report evidence or AI-public handling. Anti-trigger: real-target testing, submission, or generic report-validity certification. S090 and `corpus/knowledge/kernel-report-evidence-assessment.md` deepen F27; full schema and limits: `.ufo/waves/round-58/CONTRACT.md`.
+
+| Evidence situation | Decision discipline |
+|---|---|
+| All required fields exist but selected trace belongs to another version/configuration | Needs evidence; presence does not bind the observation |
+| Claimed reproduced flag contradicts the harmless replay | Needs evidence; retain contradiction |
+| Owner is legitimately allowed; report calls the same action forbidden | Boundary claim unestablished, not a supported security finding |
+| Guest receives invented record under buggy toy policy | Toy-only crossing; never infer kernel validity, urgency or severity |
+| AI-assisted finding, public text includes annotated reproducer | Withhold that reproducer, regardless of evidence completeness |
+| AI-assisted finding, status-only public text | Separate handling rule, not blanket rejection of AI findings |
+
+Checklist: verify stable upstream identity and recent-code check; match version/conditions/trigger/confirmation; replay the harmless specimen; distinguish legitimate authority from a crossing; keep public-reproducer handling independent; inspect unannotated prose manually. Any actual report still needs authenticated reproduction and kernel threat-model review outside this tool. Never execute supplied strings. Exact identifier syntax is deliberately narrow; caller declarations are not externally verified.
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| kernel-report-assess.py | probe | `python3 corpus/instruments/kernel-report-assess.py INPUT.json` | 0 assessment completed, NOT clean/accepted; 2 invalid or unsupported could-not-evaluate | paired CLI harness below | .ufo/waves/round-58/CONTRACT.md | reads supplied JSON only; no payload execution/network | kasegi |
+| kernel-report-check.py | gate | `python3 corpus/instruments/kernel-report-check.py` | 0 clean expected decisions; 1 mismatch; 2 unavailable/tampered could-not-evaluate | `python3 corpus/instruments/kernel-report-check.py --selftest` | .ufo/waves/round-58/fixtures.json digest in freeze.json | temporary synthetic JSON only, removed | kasegi |
+
+Error patterns and counterexamples: `.ufo/waves/round-58/mutations.py` challenges actual evidence/boundary/disclosure decisions, not issue-word presence. Public block labels are annotations, not a free-text leak detector. The toy is not a security simulator or an exploit.

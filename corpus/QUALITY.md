@@ -432,3 +432,9 @@ All existing criteria remain unchanged. This block is grounded in the round-49 l
 | id | criterion | grounded in |
 |---|---|---|
 | R65 | For a format-reading capability, freeze output decisions before implementation and test both branches of every load-bearing OR, boundary inequality, identity condition and quantifier scope. A literal source match cannot verify the interpretation. Unsupported ordering stays could-not-evaluate unless an independently true OR limb proves the result; a reconstructed old reading is labelled a model, never historical executable output. | `corpus/lessons/round-57.md` Mistakes: own F31 range-only and Claim 3 record-wide errors; `.ufo/waves/round-57/fixtures.json` and `controls/mutations.txt` (range-only and recordwide-exclusion actual status flips). |
+
+## Round-58 addition — declared reproduction is not observed behavior
+
+| id | criterion | grounded in |
+|---|---|---|
+| R66 | A report-evidence training aid must distinguish field presence, context binding, replayed behavior and authority judgment. At least one all-fields-present control must contradict the proposed behavior and one legitimate-authority control must reject the security claim. A caller's reproduced flag is not a replay; a toy replay is not real-target validity. | `corpus/lessons/round-58.md` Mistakes, retained pre-freeze idea and `trust-claimed-replay` mutation; frozen fixed-trace-as-buggy and owner-false-claim decisions. |

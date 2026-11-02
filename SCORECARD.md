@@ -2386,3 +2386,15 @@ This is not silently relabelled unchanged, padded with citations, or waived by t
 Claim acceptance is pending the independent no-harm decision. Saturation nudge is not used.
 Planned next work: only after round-57 closure, address actual reviewer findings; no round-58
 claim or counter is declared by this author.
+
+## Round 58 — C1 bounded report evidence judgment (acceptance pending)
+
+Only claim C1, lowest depth:verifiability (4→4, delta 0, nominal capability under R58). The source-availability metric and score-5 bar do not move. Existing F27 is deepened with `corpus/knowledge/kernel-report-evidence-assessment.md` (S090); no new frontier denominator or coverage score (8→8). Freeze d1daeaaf9fef5e28089723b61c7735f9d1f7b2a3 follows substitute controls and precedes engine implementation; input/output expectations remain immutable.
+
+| Capability | Demonstration | First working round | Admission |
+|---|---|---|---|
+| bounded-kernel-report-evidence-training | `python3 corpus/instruments/kernel-report-assess.py .ufo/waves/round-58/example.json`; actual harmless ACL replay and evidence/authority/AI handling separation; `python3 corpus/instruments/kernel-report-check.py` | 58 | author demonstration recorded; independent review pending |
+
+Before: assessor absent at deb4738704329a0670395b2756d247c0fb882b0e (`controls/before.txt`); absent-engine harness exits 2 in `controls/pre-freeze.txt`. Absence is not historical failure on the new task. After: first scored battery 35/35, eight semantic mutants killed, four substitute CLI controls rejected; commands and outputs in `.ufo/waves/round-58/controls/first-scored.txt`, `mutations-first.txt`, `pre-freeze.txt`. Final committed measurement will be recorded separately in `controls/final.txt` with its measured revision.
+
+Non-target density disclosure: 38→39 blocks, mean 261.6→257.0; original SKILL byte prefix preserved. Density score stays 9, NOT a claim the raw mean was unchanged; independent no-harm judgment required. New block is bounded operational instruction, not metric padding. Other axes unscored; source-root loss and operator-owned holds remain. Plan after this round: await outside verdict and parent closure; no round59 claim or dispatch authorized here.

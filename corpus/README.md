@@ -917,3 +917,11 @@ is per events array. Source S089 (fresh Evaluation/Requirements reading), with r
 semantic controls at `corpus/instruments/osv-semantic-check.py`. F31 is deepened, not a new
 frontier row; F01-F37 and their historical admission records remain unchanged. This is a
 bounded teaching evaluator, not a general vulnerability scanner or an ecosystem comparator.
+
+## Round-58 F27 deepening — synthetic evidence judgment (2026-11-02)
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Kernel report evidence assessment; executable deepening of existing F27, NOT a new numbered frontier | knowledge/kernel-report-evidence-assessment.md | S090 — official policy reopened; S091 scoped rejected alternative |
+
+The original F27 reporting-process entry remains historical source-bound knowledge. This addition contributes a replayable synthetic assessment with explicit evidence/authority/disclosure separations. No recovered root, additional lost-domain surface or generic report acceptance is claimed.
