@@ -2768,3 +2768,10 @@ Own pre-freeze draft misnumbered flags3.2.3.3 and allowed flag(s); exact source
 read corrected to3.2.3.5 and6.1.33 one flag. Draft retained for mistake mining.
 Cloud sequential-role adaptation applies; no concurrent-eight claim. Lane identity
 provided with git -c per commit (host repo config remains unchanged).
+
+Round62 first assessment: .ufo/waves/round-62/first-answers.json and
+first-negative-answers.json answer the independent challenge.md. Ten cases
+include split-product judgments; counts are structure only. These first bytes
+are sealed before private oracle release and cannot be rewritten after feedback.
+Product-specific evidence and obligations are distinct; Q10-style source command
+verification and final teaching checks remain pending. No self-admission.
