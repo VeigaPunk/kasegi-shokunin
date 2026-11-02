@@ -2841,3 +2841,15 @@ Round63 final-check preparation: .ufo/waves/round-63/final-check.sh grades commi
 export, actual-host Q10, preserved prior failures and census freshness. Current
 freshness-before-final receipt records stale census while new corpus appends are
 in progress; regeneration intentionally follows reviewer evidence and final appends.
+
+Round63 pre-census closure: reviewer evidence landed a12ebf5; author Gate and final
+mistake/measurement annotations now appended. Retained S111 too-short first manifest
+and export replay unexpected2; repaired quote to full same header, source unchanged.
+Recorded actual-host vs exported-root comparison distinction and failed ad hoc key
+lookup, not disguised as clean first run. Source rows109→111; density235.2→230.9,
+numeric scores held. Final census regeneration follows all corpus/reviewer appends.
+
+Round63 recurring-process repair: parent flagged single-token source failure as
+round61 recurrence. Added concise all-manifests preflight to SKILL before final
+census; no novelty/capability credit and no frozen input change. Final raw density
+is remeasured after reminder, preserving earlier230.9 intermediate measurement.

@@ -1391,3 +1391,12 @@ Round63 source precision: “reopened source model” above is the pinned offici
 repository final-labelled4.2.1 model. Effective/approved dates are self-declared,
 not independent published-release verification; historical S031 provenance remains
 unresolved. Reopen applicable publication evidence for actual CNA work.
+
+Source-package preflight (recurring round61→63 operability error, not new craft
+credit): before finalizing ANY admitted or rejected manifest, run its exact
+`source-recheck.py --manifest ... --source S###` command and inspect exit plus every
+quote result. Single short tokens can fail minimum-substance even with correct
+hash/anchor. Use a meaningful exact located excerpt; never weaken the checker or
+mistake an emitted OK hash for whole-command success. Re-run from the owning entry
+when admitted, and retain first failure if discovered late. Source correctness and
+semantic case review remain separate.

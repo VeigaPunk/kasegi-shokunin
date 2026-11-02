@@ -2538,3 +2538,17 @@ review grades causal groups, force and authority limits. No capability self-admi
 Current pinned S110 model4.2.1 corrects current use of retained S0314.2.6 history.
 Raw density and source census to be measured on committed final teaching bytes;
 legacy80 entry outcomes must be preserved, with new entry strict111111.
+
+Round63 measurement annotation: committed-export64e9517 sources109→111 with A+2,
+mined+1/rejected+1; raw density235.2→230.9,43→44 blocks, numeric9 held without
+claim of density gain. Depth4/coverage8 held. Reviewer a12ebf5 supports10/10 first
+cases,3/3 negative policies, source curation, Q10 and inherited80 outcomes unchanged;
+final derived census and metadata replay remain to be established in final receipt.
+No capability row or final admission authored here. S110 is repository final-labelled
+model, not independently verified effective publication. S111 short-quote failure
+and correction are retained in round63 lesson and controls, not erased.
+
+Round63 final-SKILL raw-density annotation: controls/density-final.txt measures
+230.8 across44 blocks after recurring-process reminder, superseding intermediate
+230.9 only as final byte-state measurement. Base235.2 and numeric9 held. Raw
+reduction is disclosed for parent no-harm assessment, not hidden by score saturation.
