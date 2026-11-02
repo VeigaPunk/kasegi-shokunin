@@ -2815,3 +2815,8 @@ at .ufo/waves/round-63/CONTRACT.md and freeze.json; source-check passes after re
 pre-freeze419→417 quote-anchor mistake. Gap sweep at controls/gap-search.txt. Lane
 identity found Codex and configured kasegi-shokunin/kasegi@shokunin.local before
 round commits. Sequential specialist passes use approved cloud adaptation.
+
+Round63 first answers: ten unseen reviewer dossiers and three bad-policy judgments
+written to .ufo/waves/round-63/first-answers.json and first-negative-answers.json
+before oracle access. Scope/force and distinct unknowns retained; no admission is
+claimed. challenge.md is a byte copy of reviewer's public case file.

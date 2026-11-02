@@ -1,0 +1,213 @@
+[
+  {
+    "id": "K63-01",
+    "causal_groups": [
+      "Cedar authorization defect shared by vulnerable Alder and Birch"
+    ],
+    "proposed_count_or_options": "1 supported vulnerability/identifier group; upgrades and third product add0",
+    "normative_force": "4.2.13.1 MUST NOT assign more than one for shared vulnerable code;4.1.11 MUST NOT treat dependency update as new vulnerability",
+    "evidence": [
+      "identical vulnerable Cedar library code",
+      "The upgrades introduce no separate security defect.",
+      "no vulnerability has been established in that third product."
+    ],
+    "reasoning": "Same causal library defect and code, not separate downstream vulnerabilities caused by upgrades. Two release notes/three commits do not change identity. Third product is outside established affected scope; its inventory presence alone adds no group.",
+    "missing_facts": "No missing fact for described count; no complete safety assessment of third product.",
+    "unsupported_conclusions": [
+      "One ID per vendor or commit",
+      "Third product universally safe"
+    ],
+    "source": "S1104.2.13.1 L409;4.1.11 L341;4.1.2 L307;4.2.7 L395",
+    "authority_limit": "Conditional CNA allocation analysis only: dossier assumes appropriate scope and intended public disclosure, not actual assignment, request, target testing or bounty eligibility."
+  },
+  {
+    "id": "K63-02",
+    "causal_groups": [
+      "Delta export tenant-authorization omission",
+      "Delta image-decoder out-of-bounds write"
+    ],
+    "proposed_count_or_options": "2 distinct independent groups",
+    "normative_force": "4.2.11 MUST different IDs;4.2.7 SHOULD IDs for vulnerabilities not fixes",
+    "evidence": [
+      "Each can be fixed without fixing the other.",
+      "Replaying either defect with the other defect eliminated still yields that defect's own established security impact."
+    ],
+    "reasoning": "Both independently retain security impact; common omnibus commit/release/advisory groups delivery, not vulnerability identity.",
+    "missing_facts": "None material under stipulated facts.",
+    "unsupported_conclusions": [
+      "One release entails one vulnerability"
+    ],
+    "source": "S1104.1.9 L337;4.2.11 L403;4.2.7 L395",
+    "authority_limit": "Conditional CNA allocation analysis only: dossier assumes appropriate scope and intended public disclosure, not actual assignment, request, target testing or bounty eligibility."
+  },
+  {
+    "id": "K63-03",
+    "causal_groups": [
+      "Elm arithmetic\u2192write fully interdependent parsing vulnerability",
+      "Elm management authorization omission"
+    ],
+    "proposed_count_or_options": "2 groups across3 condition labels",
+    "normative_force": "4.1.10 SHOULD one for interdependent conditions;4.2.15 MUST one for fully interdependent vulnerabilities;4.2.11 MUST separate independent vulnerability",
+    "evidence": [
+      "the arithmetic condition produces no security impact outside the downstream write",
+      "the write occurs only via that condition",
+      "it can be fixed independently"
+    ],
+    "reasoning": "The two parsing conditions jointly identify one fully interdependent causal security failure, not two merely because they have separate weakness labels. Management omission has its own impact independently and is separate.",
+    "missing_facts": "None material under stipulated facts.",
+    "unsupported_conclusions": [
+      "Three weakness labels require three IDs",
+      "All defects in Elm form one group"
+    ],
+    "source": "S1104.1.10 L339;4.2.15 L419;4.2.11 L403",
+    "authority_limit": "Conditional CNA allocation analysis only: dossier assumes appropriate scope and intended public disclosure, not actual assignment, request, target testing or bounty eligibility."
+  },
+  {
+    "id": "K63-04",
+    "causal_groups": [
+      "Fir two observed paths: causal identity unresolved"
+    ],
+    "proposed_count_or_options": "SHOULD propose single ID under independent-fixability uncertainty; actual cause/count unresolved",
+    "normative_force": "4.2.12 SHOULD single, not proof of one root cause or unconditional MUST",
+    "evidence": [
+      "Analysts cannot establish whether the paths are independently fixable or two manifestations of one defect.",
+      "one workaround that disables the whole service"
+    ],
+    "reasoning": "Two test names identify observations, not causal separability. Disabling an entire service removes opportunities for many possible defects; it is not a selective causal fix. Use this rule's recommendation while preserving unresolved identity.",
+    "missing_facts": "Whether a causal correction to one path leaves the other security-impacting path, and vice versa; establish independent fixability or common cause.",
+    "unsupported_conclusions": [
+      "Two tests prove two vulnerabilities",
+      "One service-disable workaround proves one defect"
+    ],
+    "source": "S1104.2.12 L405;4.1.9 L337;4.2.7 L395",
+    "authority_limit": "Conditional CNA allocation analysis only: dossier assumes appropriate scope and intended public disclosure, not actual assignment, request, target testing or bounty eligibility."
+  },
+  {
+    "id": "K63-05",
+    "causal_groups": [
+      "Grove vulnerable implementation",
+      "Hazel vulnerable implementation"
+    ],
+    "proposed_count_or_options": "2 recommended product-specific IDs under same-vulnerability/nonshared-code premise",
+    "normative_force": "4.2.13.2 SHOULD different IDs (not silently upgraded to MUST)",
+    "evidence": [
+      "conclusively show they do not share the vulnerable code",
+      "the dossier treats this as the same independently fixable vulnerability affecting two products"
+    ],
+    "reasoning": "Apply the exact multi-product branch rather than recasting stated premise as two necessarily distinct vulnerabilities. Independent code implementations support separate IDs as recommendation. Same day/advisory words are packaging, not code identity. No compulsory-insecure specification premise.",
+    "missing_facts": "None material within stipulated branch.",
+    "unsupported_conclusions": [
+      "Shared advisory proves shared code",
+      "4.2.13.2 says MUST"
+    ],
+    "source": "S1104.2.13.2 L410;4.2.7 L395",
+    "authority_limit": "Conditional CNA allocation analysis only: dossier assumes appropriate scope and intended public disclosure, not actual assignment, request, target testing or bounty eligibility."
+  },
+  {
+    "id": "K63-06",
+    "causal_groups": [
+      "Iris affected product",
+      "Juniper affected product; sharing unknown"
+    ],
+    "proposed_count_or_options": "2 recommended IDs while code-sharing remains unresolved",
+    "normative_force": "4.2.13.3 SHOULD different IDs",
+    "evidence": [
+      "Whether they share the vulnerable code remains unknown",
+      "This is not uncertainty about whether the vulnerability itself is independently fixable"
+    ],
+    "reasoning": "Same known independently fixable vulnerability affects multiple products; uncertainty is shared-code identity. This branch recommends separation, unlike4.2.12's single-ID recommendation for a different unknown. Neither stack traces nor acquisition records resolve provenance.",
+    "missing_facts": "Reliable vulnerable-code comparison/provenance establishing whether shared code causes the vulnerability.",
+    "unsupported_conclusions": [
+      "They definitely share code",
+      "They are definitely independently implemented",
+      "All uncertainty invokes4.2.12"
+    ],
+    "source": "S1104.2.13.3 L411;contrast4.2.12 L405",
+    "authority_limit": "Conditional CNA allocation analysis only: dossier assumes appropriate scope and intended public disclosure, not actual assignment, request, target testing or bounty eligibility."
+  },
+  {
+    "id": "K63-07",
+    "causal_groups": [
+      "Kestrel known vulnerable implementation of Maple functionality",
+      "Larch known vulnerable implementation of Maple functionality"
+    ],
+    "proposed_count_or_options": "2 IDs, one per known vulnerable implementation",
+    "normative_force": "4.2.14.1 MUST each known vulnerable implementation",
+    "evidence": [
+      "A secure way to use Maple's functionality exists and has been demonstrated",
+      "No shared vulnerable implementation is involved."
+    ],
+    "reasoning": "Secure use exists but these two uses are insecure, so use implementation-specific allocation. Demonstration refutes compulsory-insecure use premise, but does not establish Maple is globally vulnerability-free, these implementations are fixed, or every use is safe.",
+    "missing_facts": "None material to allocation under stipulated known implementations.",
+    "unsupported_conclusions": [
+      "One external product always means one ID",
+      "Secure option proves current implementations safe"
+    ],
+    "source": "S1104.2.14.1 L415",
+    "authority_limit": "Conditional CNA allocation analysis only: dossier assumes appropriate scope and intended public disclosure, not actual assignment, request, target testing or bounty eligibility."
+  },
+  {
+    "id": "K63-08",
+    "causal_groups": [
+      "Mandatory insecure functionality shared as the sole cause for Nacre and Oak"
+    ],
+    "proposed_count_or_options": "1 ID under no-secure-use rule",
+    "normative_force": "4.2.14.2 MUST single",
+    "evidence": [
+      "every conforming use necessarily exposes the described confidential material",
+      "with no additional implementation defect alleged"
+    ],
+    "reasoning": "Technical determination establishes no secure option, not merely absence of a known remedy. Different codebases do not override the functionality-specific rule; no separate implementation flaw is supplied.",
+    "missing_facts": "None for the stipulated analysis; actual technical truth would need verification outside this fictional dossier.",
+    "unsupported_conclusions": [
+      "Different codebases invariably require separate IDs"
+    ],
+    "source": "S1104.2.14.2 L416",
+    "authority_limit": "Conditional CNA allocation analysis only: dossier assumes appropriate scope and intended public disclosure, not actual assignment, request, target testing or bounty eligibility."
+  },
+  {
+    "id": "K63-09",
+    "causal_groups": [
+      "Pine known vulnerable implementation",
+      "Quartz known vulnerable implementation; secure specification use unknown"
+    ],
+    "proposed_count_or_options": "2 recommended IDs for known implementations, subject to unresolved secure-use question",
+    "normative_force": "4.2.14.3 SHOULD different IDs",
+    "evidence": [
+      "uncertain whether there is any secure way to use the specification",
+      "not evidence that no secure option exists"
+    ],
+    "reasoning": "Use exact uncertain-secure-use branch. Cannot use4.2.14.2's MUST-single branch without a no-option determination, nor4.2.14.1's MUST-per-implementation branch without a secure option.",
+    "missing_facts": "Whether secure specification use is possible; evidence proving option or impossibility.",
+    "unsupported_conclusions": [
+      "Unknown equals impossible",
+      "Unknown equals secure option demonstrated"
+    ],
+    "source": "S1104.2.14.3 L417;contrasts4.2.14.1\u20132 L415\u2013416",
+    "authority_limit": "Conditional CNA allocation analysis only: dossier assumes appropriate scope and intended public disclosure, not actual assignment, request, target testing or bounty eligibility."
+  },
+  {
+    "id": "K63-10",
+    "causal_groups": [
+      "Rowan original identifier with residual insecurity: possible continuation or new vulnerability at CNA judgment",
+      "Cosmetic log truncation: no supported vulnerability group",
+      "Unrelated established vulnerability without a fix: separate group"
+    ],
+    "proposed_count_or_options": "Residual may use existing ID or be determined new and use new ID; unrelated vulnerability separate. Counting original ID:2 total with reuse,3 total if residual receives new; cosmetic adds0 on stated evidence.",
+    "normative_force": "4.2.8 MAY new determination/new ID or existing;4.1.2 SHOULD NOT no-impact behavior;4.2.7 SHOULD assign whether fix available;4.2.6 MUST different for separate vulnerabilities",
+    "evidence": [
+      "No further determination about whether it is a new vulnerability has been made.",
+      "cosmetic log truncation introduced by the patch has no established security impact",
+      "an unrelated established vulnerability in Rowan has no fix yet"
+    ],
+    "reasoning": "Second patch is not an identifier mandate. Preserve authorized CNA discretion over residual insecurity; its choice is not established. Cosmetic behavior lacks security impact evidence and is not elevated by patch association. Unrelated established vulnerability is not disqualified for lack of fix; separately count it under the dossier's scope/disclosure assumptions.",
+    "missing_facts": "CNA determination and chosen treatment of residual insecurity; any security-impact evidence for the cosmetic behavior before reconsidering it.",
+    "unsupported_conclusions": [
+      "A second patch MUST create second identifier",
+      "No fix means ineligible",
+      "Cosmetic truncation necessarily a vulnerability"
+    ],
+    "source": "S1104.2.8 L397;4.2.7 L395;4.1.2 L307;4.2.6 L393",
+    "authority_limit": "Conditional CNA allocation analysis only: dossier assumes appropriate scope and intended public disclosure, not actual assignment, request, target testing or bounty eligibility."
+  }
+]
