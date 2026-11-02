@@ -1,0 +1,44 @@
+run-utc=2026-11-02T22:47:58Z
+f282e44e17c20d4587977412398a8a5136ae1524
+?? .ufo/waves/round-62/
+path=/home/vgpnk/Projects/bounties exists-exit=1
+path=/home/vgpnk/Projects/the-bounty-hunter exists-exit=1
+path=/home/vgpnk/Projects/origin-work/open-bug-bounties exists-exit=1
+dossier-exists-exit=1
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	W04	S076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes
+file	W04	S080 duplicate url ossf.github.io/osv-schema across scopes
+file	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+file	W04	S089 duplicate url ossf.github.io/osv-schema across scopes
+file	W04	S090 duplicate url docs.kernel.org/process/security-bugs.html across scopes
+file	W04	S092 duplicate url www.first.org/cvss/v4.0/specification-document across scopes
+file	W04	S093 duplicate url www.first.org/cvss/v4.0/specification-document across scopes
+file	W04	S097 duplicate url certcc.github.io/SSVC/howto/deployer_tree across scopes
+file	W04	S107 duplicate url cwe.mitre.org/data/definitions/119.html across scopes
+file	ok	/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi/corpus/SOURCES.md
+census-exit=0
+score-gap — depth:verifiability distance to score 5 (read-only; NOT a claim; asserts no score move)
+root: /workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi
+source: corpus/instruments/recheck-audit.py sha256=451047eacdc979b0ee972d0637aea9911634232e61210e68094d04e7ab016416
+source: SKILL.md sha256=df10249b8a06c6dacf1669ce6e8482c7273e177ae1fc7fb50373f3f19b30cccc
+source: corpus/instruments/citation-survival.md sha256=80de4b3eb592e3ef7bc7f1f5a36cf85b822535b80f406ff9175b3033214fbd86
+source: SCORECARD.md sha256=5d53757157794a7545a2d52af9645a66ff29583f14dd6f4c8bf628401cd4423f
+[1] rechecks
+cmd: python3 corpus/instruments/recheck-audit.py --root /workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi --quiet
+recheck: lines=79 executes=11 gated=68 broken=0 exit=1
+[2] anchors
+cmd: python3 corpus/instruments/anchorcheck.py SKILL.md (cwd=/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi)
+anchorcheck: in-range=16 bad=0 lost-recorded=306 origin=0 outside-base=0 base-absent=0 exit=0
+[3] citation-survival census (committed figures)
+cmd: grep -nE '^Numerator = |^- lane total \(SKILL\.md \+ corpus\): |^- SKILL\.md alone: ' corpus/instruments/citation-survival.md
+census-definition: Numerator = RESOLVES + MIRROR-EQUIVALENT + INTERNAL. Denominator = all distinct citations appearing in that scope (a citation in both scopes enters both denominators).
+census-lane: 1168/5181 = 22.54%
+census-skill: 141/718 = 19.64%
+[4] score-5 threshold
+cmd: grep -nE 'Threshold for 5:.*unsupported current claims' SCORECARD.md
+threshold: SCORECARD.md:331 "Threshold for 5: a non-author audit passing 25/25 source chains and 0 unsupported current claims."
+threshold-matches: 2 (first line used)
+[5] gap
+gap: 68 of 79 rechecks still gated on a lost base; score 5 needs 0 gated unsupported claims

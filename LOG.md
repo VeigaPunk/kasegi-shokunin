@@ -2755,3 +2755,16 @@ new command before closure. It now enters the lane and selects all nine exact
 source IDs, with S102/S103 corrected quotes in proper separate snapshot manifests.
 Actual lane/foreign replay strict111111, exit0/0; corrupted/missing S102 fail1/2.
 Capture-binding remains0. Final independent repair/no-harm judgment pending.
+
+## Round62 — VEX evidence judgment freeze (2026-11-02)
+Parent approved C1 nominal depth:verifiability4 held; bounded manual CSAF2.0
+assessment on F21, no new frontier. Base f282e44e17c20d4587977412398a8a5136ae1524;
+controls/before.txt under .ufo/waves/round-62 records absent dossier and lost roots.
+Source capture HTTP200 and source-check receipts bind S108 normative Markdown;
+S109 OpenVEX candidate is rejected for CSAF authority, not source quality. CISA
+PDF attempts returned403 and supply no content. Contract and source pins frozen
+before reviewer challenge or answers; reviewer /root/judge_kasegi_round62.
+Own pre-freeze draft misnumbered flags3.2.3.3 and allowed flag(s); exact source
+read corrected to3.2.3.5 and6.1.33 one flag. Draft retained for mistake mining.
+Cloud sequential-role adaptation applies; no concurrent-eight claim. Lane identity
+provided with git -c per commit (host repo config remains unchanged).
