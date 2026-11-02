@@ -2499,3 +2499,12 @@ not historical mistakes. Own quote-anchor and correction-location failures are
 retained and repaired without changing sources, first answers or frozen rubric.
 No source-availability score gain, automatic classifier, general CWE mastery,
 live finding, promotion or next-round authorization claimed.
+
+Round61 outside correction: at770ed01 the new entry failed existing Q10 due to
+cwd-dependent recheck and strict own-source failure. C1 NOT ADMITTED at that
+state despite10 supported first cases; original report/evidence retained. Parent
+then authorized bounded operability repair before closure. Exact-ID source checks
+now run identically from lane and foreign cwd, strict111111; corrupted/missing
+source controls fail. This is a post-review command repair, not a semantic rescore
+or changed frozen condition. Final independent no-harm decision remains required;
+no capability row added by author and numeric scores held.

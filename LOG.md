@@ -2745,3 +2745,13 @@ corpus/knowledge/cwe-root-cause-assessment.md and added exact inventory-set
 assertion; preflight retained. Measured raw density245.7→240.6, score held9,
 no-harm review pending. All author prose finalized before last census pass;
 remaining final receipt/census pair records measured revision and exact outputs.
+
+## Round61 — Q10 rejection and parent-authorized bounded repair
+Parent/reviewer rejected unqualified admission at770ed01: new entry's recheck
+only resolved from lane cwd and lacked strict own-source form. Preserved original
+report/evidence and appended explicit rejected-state notes; no frozen criterion,
+source row, challenge or first answer changed. Parent authorized correcting the
+new command before closure. It now enters the lane and selects all nine exact
+source IDs, with S102/S103 corrected quotes in proper separate snapshot manifests.
+Actual lane/foreign replay strict111111, exit0/0; corrupted/missing S102 fail1/2.
+Capture-binding remains0. Final independent repair/no-harm judgment pending.

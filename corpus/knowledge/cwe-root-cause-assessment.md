@@ -1,6 +1,6 @@
 source: S098–S106 — MITRE mapping guidance https://cwe.mitre.org/documents/cwe_usage/guidance.html v1.1; specific CWE entry URLs in corpus/SOURCES.md; pinned corpus/source-snapshots/round-61/manifest.json
 verified-at: 2026-11-02
-recheck: python3 corpus/instruments/source-recheck.py --manifest .ufo/waves/round-61/source-correction01/manifest.json
+recheck: cd /workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi && for s in S098 S099 S100 S101 S104 S105 S106; do python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-61/manifest.json --source "$s" || exit $?; done && for s in S102 S103; do python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-61-correction01/manifest.json --source "$s" || exit $?; done
 # Root-cause mapping is a causal explanation, not a label lookup
 
 ground: F05 (deepening existing ranking/mapping discipline, no new frontier row)
@@ -74,3 +74,14 @@ program scope, reproducibility, severity, reward or right to test a target.
 
 ## Located source anchors
 The short-quote/line table in `corpus/lessons/round-61.md` Gate binds each S098–S106 assertion to its opened source; the corrected manifest makes those locations replayable. The original short-token failure is retained, not silently overwritten.
+
+## Operability correction01 after outside review
+Reviewer found the original recheck at commit770ed01 violated Q10: it resolved
+only from the lane cwd and failed strict own-source binding. That shipped entry
+was not admitted;10 supported semantic cases did not waive no-harm. Parent
+authorized bounded repair before closure. The recheck line now selects the exact
+opened source IDs, enters the actual lane explicitly and checks all nine pinned
+captures, using separate correction snapshots only for the two deficient quotes.
+Original command retained here as history (not runnable field):
+`recheck: python3 corpus/instruments/source-recheck.py --manifest .ufo/waves/round-61/source-correction01/manifest.json`
+This fixes command operability, not the frozen semantic task or its first answers.

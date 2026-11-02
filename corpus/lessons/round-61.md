@@ -90,3 +90,28 @@ is still required. Source census97→107 (A87→97, B5/C5 held; mined76→85,
 rejected21→22), original parser before/after exits0. Counting expression:
 `rows=[x.split('|') for x in text.splitlines() if re.match(r'^\| S\d+ \|',x)]`;
 tier/status Counter on stripped columns4/8, over git-show base6670dfe and tip.
+
+## Outside no-harm rejection at770ed01 and authorized repair
+
+Reviewer `/root/judge_kasegi_round61` found the new recheck failed existing Q10:
+its command only resolved from the lane cwd, and its wave-manifest form failed
+strict own-source binding. The original frozen condition requires every first
+case AND non-author no-substantive-harm certification. No waiver covers this new
+failure. Therefore770ed01 was NOT ADMITTED despite10 supported first semantic
+cases; quality/operability harmed as shipped. Original report e3c92712… is retained
+byte-for-byte in wave/report-before-operability-repair.md, as are all red receipts.
+
+Parent explicitly authorized a bounded operability repair before final closure.
+Only the new entry's recheck line changes (same line number); original command
+is appended as history. It enters the real lane and checks exact source IDs, with
+corrected quote manifests for S102/S103 in a new ordinary source-snapshot folder;
+old source rows, frozen manifest/captures, challenge, oracle and answers unchanged.
+The new snapshots are exact copies, not new source discoveries/registry credit.
+
+Actual `python3 .ufo/waves/round-61/operability-replay.py` reports strict111111,
+lane0/foreign0 with identical output hashes. It executes the documented command
+from the lane AND /tmp, not merely a static syntax test. The same retained source
+checker rejects corrupted S102 bytes (exit1) and missing bytes (exit2). Capture-
+binding check returns0. This demonstrates repair and its limits; no semantic
+rescore or retrospective claim that770ed01 passed. Final non-author re-review is
+pending. No new criterion needed: Q10 already specified cwd independence.

@@ -1,0 +1,31 @@
+{
+  "entry": "cwe-root-cause-assessment.md",
+  "command": "cd /workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi && for s in S098 S099 S100 S101 S104 S105 S106; do python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-61/manifest.json --source \"$s\" || exit $?; done && for s in S102 S103; do python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-61-correction01/manifest.json --source \"$s\" || exit $?; done",
+  "limbs": {
+    "parse": true,
+    "cwd": true,
+    "paths": true
+  },
+  "strict": {
+    "parse": true,
+    "cwd": true,
+    "paths": true,
+    "cdroot": true,
+    "instrument": true,
+    "own": true
+  },
+  "missing_paths": [],
+  "cd_target": "/workspace/scratch/e2fdad13233f/shokunin-training/lanes/kasegi",
+  "lane_exit": 0,
+  "foreign_exit": 0,
+  "lane_output_sha256": "1fac1f13a80ef3eff3778934f8d837bcba6777cec601fc80b483a7e7b3d7a8b6",
+  "foreign_output_sha256": "1fac1f13a80ef3eff3778934f8d837bcba6777cec601fc80b483a7e7b3d7a8b6",
+  "class": "executes",
+  "pass": true,
+  "pass_strict": true
+}
+CORRUPT 1 S102:sha256 MISMATCH expected=7c4bf4f14f7aeef566a0c0b2a147cc52b3631cc7a267b70b5a52db0cd1e67011 actual=6fb946cc9d4c6032ab0948f76ad96df7b1cb56123737cbcf62d7c2ad86608a0e
+
+MISSING 2 S102:source UNAVAILABLE reason=missing
+
+OPERABILITY repaired=true strict=111111 lane=0 foreign=0 negative-controls=2
