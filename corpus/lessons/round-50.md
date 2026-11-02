@@ -110,3 +110,11 @@ only from the final regeneration at the measured tip, after the last corpus edit
 run. The filed 4807 lines above are retained byte-identical; this erratum is the correction (R9). See
 also `.ufo/waves/round-51/erratum-1-c1-control-provenance.md` for the closure's D1 relabel (the C1
 do-nothing control was an imported old-host receipt, not a run on the committing host).
+
+## Correction (round 57, 2026-11-02) — scope of F31 semantic verification
+
+The round-50 F31 source-binding checks did not establish the correctness of every reading:
+README F31:743 wrongly excludes explicit versions, and knowledge Claim 3:60 wrongly scopes
+fixed/last_affected exclusion to a record. Round-57 S089 reopens the unchanged source and
+corrects both append-only. See `corpus/lessons/round-57.md` and the existing knowledge entry's
+named correction. Historical closure/counters are not reset or upgraded by this correction.

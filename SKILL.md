@@ -1214,3 +1214,35 @@ lesson.
 
 Checklist history stays in per-round reports and `.ufo/waves/round-48/controls/shonen-before.txt`;
 restoring the seed does not erase or upgrade those historical assessments. See S077 and QUALITY R55.
+
+## Round-57 OSV affectedness decision table and gate registry (2026-11-02)
+
+Trigger: interpreting an OSV affectedness fragment. Anti-trigger: real-target scanning or
+submission. S089 grounds the correction in `corpus/knowledge/osv-affected-range-events.md`
+(round-57 correction); research method remains chousa-owned, secrets remain kagi-owned.
+
+| Input situation | Decision |
+|---|---|
+| Exact package and explicit version match | Affected, even when all supported ranges exclude it |
+| A supported range includes the version | Affected even when explicit versions do not list it |
+| All relevant limbs known false | Unaffected within this fragment only, not a deployment safety assertion |
+| No true limb and an unsupported comparator | Could-not-evaluate; never silently unaffected |
+| Same events array contains fixed and last_affected | Invalid; different arrays may independently use each |
+| A release equals fixed / last_affected | Excluded / included respectively |
+
+Checklist: identify exact ecosystem/name; validate matching-entry shapes; apply the OR;
+keep unsupported distinct from false; preserve the reason and exit; never elevate this
+synthetic result to exploitation, target authorization, full-schema validation or deployment exposure.
+Numeric-release-only SEMVER means canonical x.y.z triples, introduced 0 and limit * only.
+No prerelease/build ordering, ECOSYSTEM comparator, Git traversal, purl normalization or
+withdrawal handling. Conflicting equal-version event kinds are unsupported. Local structural
+validation precedes evaluation, including explicit membership; this is a scoped admission rule.
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| osv-affectedness.py | probe | `python3 corpus/instruments/osv-affectedness.py < fragment.json` | 0 determinate, NOT clean/safe; 2 unsupported could-not-evaluate; 3 invalid could-not-evaluate; 64 usage could-not-evaluate | paired harness below exercises actual CLI | .ufo/waves/round-57/fixtures.json | read stdin only | kasegi |
+| osv-semantic-check.py | gate | `python3 corpus/instruments/osv-semantic-check.py` | 0 clean; 1 failed; 2 could-not-evaluate; 64 usage could-not-evaluate | `python3 corpus/instruments/osv-semantic-check.py --selftest` (five CLI-output controls) | .ufo/waves/round-57/claims.json and fixtures.json (digest pinned) | read-only; selftest temporary fixtures removed | kasegi |
+
+Mutation demonstration: `python3 .ufo/waves/round-57/mutations.py` checks actual status flips,
+not keyword matches. The erroneous-reading model is reconstructed from the two filed prose
+defects; it is explicitly NOT a claim that an earlier executable existed.

@@ -119,3 +119,37 @@ S080.txt:790-793), so this row claims nothing about them.
 
 documentation-only: this entry describes a published format for reading records; it instructs
 no probing, scanning or submission against any target, and carries no credential material (Q6).
+
+## Correction (round 57, 2026-11-02) — evaluation union and exclusion scope
+
+Supersedes Claim 2's implication that events alone decide affectedness and Claim 3's
+sentence beginning `A record may carry` at original line 60; preserves the historical bytes.
+Correction source: S089, https://ossf.github.io/osv-schema/, Evaluation and Requirements,
+version 1.9.2, independently reopened 2026-11-02; captured at
+`corpus/source-snapshots/round-57/S089.txt` lines 760-761 and 819-856.
+Correction verified-at: 2026-11-02.
+Correction recheck (from lane root): `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-57/manifest.json --source S089`.
+
+For the matching package, explicit version membership OR any range membership establishes
+affectedness. Excluding a version from a range does not cancel its explicit membership.
+The fixed/last_affected prohibition is per events array, not per record, package, or all ranges.
+Boundary decisions differ: fixed excludes its boundary; last_affected includes its boundary.
+Absent explicit limits means no upper limit; the old Claim 2 wording `still bounded` must
+not be read as a finite bound. Event values and explicit versions have distinct comparison roles.
+Located source quotes are recorded once in `corpus/lessons/round-57.md` Gate, Q1/Q2.
+
+Operational check: `python3 corpus/instruments/osv-semantic-check.py` exercises frozen
+synthetic inputs, including explicit-only and explicit-overrides-fixed, separate-arrays
+versus mixed-same-array, wrong-package, boundaries, and unsupported comparators.
+`osv-affectedness.py` is a deliberately bounded teaching implementation, NOT a scanner:
+exact ecosystem/name identity; exact explicit-version strings; numeric-release-only SEMVER
+x.y.z without leading zeros (plus introduced 0 / limit *). Prereleases/build metadata,
+ECOSYSTEM and GIT range comparison are unsupported, not inferred unaffected. Another
+supported true OR limb may still establish affectedness. Structural errors in matching
+entries are rejected before evaluation; conflicting equal-version event kinds are unsupported.
+This extra validation is local admission policy, not the specification's evaluation pseudocode.
+It neither validates the full OSV schema nor establishes deployment exposure, exploitability,
+withdrawal handling, normalized package equivalence, or authorization to test a real target.
+
+Gate rejection: a universal comparator and a range-only classifier are refused. Flip requires
+an independently sourced comparator and new frozen semantic controls, not a type-name cast.

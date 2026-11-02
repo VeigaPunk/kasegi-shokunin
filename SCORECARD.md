@@ -2353,3 +2353,36 @@ frozen predicates by re-derivable commands only.
    Security Institute report, the Google Big Sleep reporting surface and S088's own unasserted surfaces (a one-level
    subtree walk into a year folder would pin the per-CVE record-list shape the entry explicitly leaves unasserted);
    every next frontier row clears the extended pre-freeze screen including the downstream-consumer sweep.
+
+## Round 57 — C1 bounded OSV semantic discrimination (acceptance pending)
+
+Freeze: 2b08aaef5bed38f84227328ea64daad4451d8b07; baseline:
+eae1d614542e8d30d77e9f4e8b9dea6a11aad138. C1 targets lowest non-retired
+axis depth:verifiability, nominal capability under R58, score 4→4 (delta 0).
+The citation-availability metric is not claimed improved. Coverage remains 8; density score
+remains 9, with the raw mean change explicitly left to independent no-harm judgment.
+No extra claim is minted from source-row growth, corrections or mutation controls.
+
+| Capability | Demonstration | First working round | Admission |
+|---|---|---|---|
+| bounded-osv-affectedness | `python3 corpus/instruments/osv-semantic-check.py`; frozen cases and first scored output at `.ufo/waves/round-57/controls/author-first-scored.txt`; mutants and erroneous-reading model at `controls/mutations.txt` under the same wave | 57 | demonstration recorded; independent acceptance pending |
+
+Before→after command: `python3 corpus/instruments/osv-semantic-check.py --engine ENGINE`.
+At the frozen base the evaluator is absent; the explicitly reconstructed erroneous corpus
+reading fails 6/40 (model, NOT historical executable). The new evaluator passes 40/40, with
+11 prospective mutants killed by actual status flips. Commands and outputs resolve through
+the wave receipts; committed-head measurement is controls/final.txt, whose revision line is
+the measured commit (no self-referential commit constant). Score-gap is reported there; the
+legacy score-5 bar is unchanged. No general ecosystem comparator, full SemVer coverage,
+scanner, real-world accuracy, promotion or score gain is claimed.
+
+Correction of round-50 C2's semantic scope: its source-binding success did not verify the
+F31 range-only wording or knowledge Claim 3's record-wide prohibition. Their named round-57
+corrections and S089 supersession now govern; no historical verdict/counter is rewritten.
+
+Non-target disclosure: adding a low-density explanatory block reduces the unweighted file
+mean even with all old blocks byte-identical; controls/final.txt contains both density runs.
+This is not silently relabelled unchanged, padded with citations, or waived by the author.
+Claim acceptance is pending the independent no-harm decision. Saturation nudge is not used.
+Planned next work: only after round-57 closure, address actual reviewer findings; no round-58
+claim or counter is declared by this author.

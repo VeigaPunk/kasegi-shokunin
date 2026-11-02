@@ -1,0 +1,58 @@
+run-utc=2026-11-02T20:06:12Z
+engine-sha256=aafb4b037e618d50761d4b81313a6da16d90426f3814507e26c17ef030c36c2a
+MUTANT always-affected exit=1 status-flips=22 cases=below,fixed,above,last-above,explicit-miss,mixed-same-array,wrong-package,wrong-ecosystem,empty-record,gap,limit-at,ecosystem-unsupported,git-unsupported,unsupported-plus-negative,prerelease-query,build-query,leading-zero-query,prerelease-event,missing-introduced,two-verbs,unknown-verb,git-no-repo killed=True
+MUTANT always-unaffected exit=1 status-flips=30 cases=introduced,inside,last-at,explicit-only,explicit-overrides-fixed,range-or-versions,separate-arrays,separate-packages,mixed-same-array,open-zero,unsorted,reintroduced,numeric-not-lexical,limit-below,multiple-limits-or,star-limit,ecosystem-unsupported,ecosystem-explicit,git-unsupported,git-explicit,unsupported-plus-positive,unsupported-plus-negative,prerelease-query,build-query,leading-zero-query,prerelease-event,missing-introduced,two-verbs,unknown-verb,git-no-repo killed=True
+MUTANT range-only exit=1 status-flips=4 cases=explicit-only,explicit-overrides-fixed,ecosystem-explicit,git-explicit killed=True
+MUTANT boundary-swap exit=1 status-flips=1 cases=fixed killed=True
+MUTANT recordwide-exclusion exit=1 status-flips=2 cases=separate-arrays,separate-packages killed=True
+MUTANT wrong-package exit=1 status-flips=2 cases=wrong-package,wrong-ecosystem killed=True
+MUTANT ecosystem-as-semver exit=1 status-flips=2 cases=ecosystem-unsupported,unsupported-plus-negative killed=True
+MUTANT git-as-semver exit=1 status-flips=1 cases=git-unsupported killed=True
+MUTANT lexical-sort exit=1 status-flips=2 cases=open-zero,numeric-not-lexical killed=True
+MUTANT limits-and exit=1 status-flips=1 cases=multiple-limits-or killed=True
+MUTANT unsorted-events exit=1 status-flips=1 cases=gap killed=True
+BEFORE-MODEL constructed-from=README-F31-and-knowledge-Claim3 not-historical-executable=true
+run-utc=2026-11-02T20:06:27Z
+CASE below {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": true, "want": {"reason": "no-match", "status": "unaffected"}, "want_exit": 0}
+CASE introduced {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE inside {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE fixed {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": true, "want": {"reason": "no-match", "status": "unaffected"}, "want_exit": 0}
+CASE above {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": true, "want": {"reason": "no-match", "status": "unaffected"}, "want_exit": 0}
+CASE last-at {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE last-above {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": true, "want": {"reason": "no-match", "status": "unaffected"}, "want_exit": 0}
+CASE explicit-only {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": false, "want": {"reason": "explicit-match", "status": "affected"}, "want_exit": 0}
+CASE explicit-miss {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": true, "want": {"reason": "no-match", "status": "unaffected"}, "want_exit": 0}
+CASE explicit-overrides-fixed {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": false, "want": {"reason": "explicit-match", "status": "affected"}, "want_exit": 0}
+CASE range-or-versions {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE separate-arrays {"exit": 3, "got": {"reason": "mixed-closures", "status": "invalid"}, "ok": false, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE separate-packages {"exit": 3, "got": {"reason": "mixed-closures", "status": "invalid"}, "ok": false, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE mixed-same-array {"exit": 3, "got": {"reason": "mixed-closures", "status": "invalid"}, "ok": true, "want": {"reason": "mixed-closures", "status": "invalid"}, "want_exit": 3}
+CASE wrong-package {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": true, "want": {"reason": "no-match", "status": "unaffected"}, "want_exit": 0}
+CASE wrong-ecosystem {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": true, "want": {"reason": "no-match", "status": "unaffected"}, "want_exit": 0}
+CASE empty-record {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": true, "want": {"reason": "no-match", "status": "unaffected"}, "want_exit": 0}
+CASE open-zero {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE unsorted {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE reintroduced {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE gap {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": true, "want": {"reason": "no-match", "status": "unaffected"}, "want_exit": 0}
+CASE numeric-not-lexical {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE limit-below {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE limit-at {"exit": 0, "got": {"reason": "no-match", "status": "unaffected"}, "ok": true, "want": {"reason": "no-match", "status": "unaffected"}, "want_exit": 0}
+CASE multiple-limits-or {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE star-limit {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE ecosystem-unsupported {"exit": 2, "got": {"reason": "range-type", "status": "unsupported"}, "ok": true, "want": {"reason": "range-type", "status": "unsupported"}, "want_exit": 2}
+CASE ecosystem-explicit {"exit": 2, "got": {"reason": "range-type", "status": "unsupported"}, "ok": false, "want": {"reason": "explicit-match", "status": "affected"}, "want_exit": 0}
+CASE git-unsupported {"exit": 2, "got": {"reason": "range-type", "status": "unsupported"}, "ok": true, "want": {"reason": "range-type", "status": "unsupported"}, "want_exit": 2}
+CASE git-explicit {"exit": 2, "got": {"reason": "range-type", "status": "unsupported"}, "ok": false, "want": {"reason": "explicit-match", "status": "affected"}, "want_exit": 0}
+CASE unsupported-plus-positive {"exit": 0, "got": {"reason": "range-match", "status": "affected"}, "ok": true, "want": {"reason": "range-match", "status": "affected"}, "want_exit": 0}
+CASE unsupported-plus-negative {"exit": 2, "got": {"reason": "range-type", "status": "unsupported"}, "ok": true, "want": {"reason": "range-type", "status": "unsupported"}, "want_exit": 2}
+CASE prerelease-query {"exit": 2, "got": {"reason": "version-domain", "status": "unsupported"}, "ok": true, "want": {"reason": "version-domain", "status": "unsupported"}, "want_exit": 2}
+CASE build-query {"exit": 2, "got": {"reason": "version-domain", "status": "unsupported"}, "ok": true, "want": {"reason": "version-domain", "status": "unsupported"}, "want_exit": 2}
+CASE leading-zero-query {"exit": 2, "got": {"reason": "version-domain", "status": "unsupported"}, "ok": true, "want": {"reason": "version-domain", "status": "unsupported"}, "want_exit": 2}
+CASE prerelease-event {"exit": 2, "got": {"reason": "version-domain", "status": "unsupported"}, "ok": true, "want": {"reason": "version-domain", "status": "unsupported"}, "want_exit": 2}
+CASE missing-introduced {"exit": 3, "got": {"reason": "missing-introduced", "status": "invalid"}, "ok": true, "want": {"reason": "missing-introduced", "status": "invalid"}, "want_exit": 3}
+CASE two-verbs {"exit": 3, "got": {"reason": "event-shape", "status": "invalid"}, "ok": true, "want": {"reason": "event-shape", "status": "invalid"}, "want_exit": 3}
+CASE unknown-verb {"exit": 3, "got": {"reason": "event-shape", "status": "invalid"}, "ok": true, "want": {"reason": "event-shape", "status": "invalid"}, "want_exit": 3}
+CASE git-no-repo {"exit": 3, "got": {"reason": "missing-repo", "status": "invalid"}, "ok": true, "want": {"reason": "missing-repo", "status": "invalid"}, "want_exit": 3}
+OSV-CHECK cases=40 failures=6
+before-model-exit=1
+mutations=11 failures=0

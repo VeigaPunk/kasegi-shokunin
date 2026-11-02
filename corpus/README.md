@@ -906,3 +906,14 @@ round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F3
 F36 at round 55, F37 at round 56.
 The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
 frontier count stays outside it.
+
+## Correction (round 57, 2026-11-02) — F31 affectedness
+
+Supersedes F31's original line 743 instruction `not from the versions list`: use explicit
+version membership OR range membership for the matching package. Its `still bounded`
+wording means no finite ceiling when the implicit limit is infinity. The knowledge entry's
+round-57 correction supersedes its record-wide fixed/last_affected exclusion; the exclusion
+is per events array. Source S089 (fresh Evaluation/Requirements reading), with runnable
+semantic controls at `corpus/instruments/osv-semantic-check.py`. F31 is deepened, not a new
+frontier row; F01-F37 and their historical admission records remain unchanged. This is a
+bounded teaching evaluator, not a general vulnerability scanner or an ecosystem comparator.

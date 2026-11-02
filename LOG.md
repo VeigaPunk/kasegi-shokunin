@@ -2563,3 +2563,34 @@ heredoc-unexpanded receipt limb disclosed in place, the Windows sort.exe PATH re
 mis-typed counting command; Gate: S088 with the 1-word quote at S088.txt:1 by `wc -w`; Limits: host-bound classes
 operator-owned, the live mutable ref caveat; considerthese: idle stretch, nothing adopted — `Assimilation: none —
 shokuknow unreachable`). SCORECARD round-56 result section + move log + capabilities note + planned-for-57 appended.
+
+## Round 57 (2026-11-02) — source interpretation repaired with semantic decisions
+
+Motivation: base eae1d614542e8d30d77e9f4e8b9dea6a11aad138 contains F31's range-only
+instruction (README:743) and the record-wide fixed/last_affected exclusion (knowledge:60).
+Official OSV source reopened; captured bytes match S080 but the Evaluation and Requirements
+sections contradict those readings. This is an own-error repair, not a new frontier quota.
+
+- Freeze 2b08aaef5bed38f84227328ea64daad4451d8b07 landed before evaluator implementation:
+  40 expected decisions, source capture, harness-output controls and honest missing-engine baseline.
+- One bounded OSV evaluator, exact package/version union and numeric-release ranges; unsupported
+  orderings stay unknown. Actual semantic mutations and reconstructed before-reading output:
+  `.ufo/waves/round-57/controls/mutations.txt`. First scored implementation output:
+  `.ufo/waves/round-57/controls/author-first-scored.txt`. Not a scanner or bounty task.
+- Append-only corrections in README, SKILL, PROVINCE, existing OSV knowledge, round-50 lesson,
+  SOURCES S089, QUALITY R65, current lesson and SCORECARD. Declared front-door append bytes:
+  `.ufo/waves/round-57/append-declarations.json`. Historical quotes/captures preserved.
+- Corrects the semantic scope implied by this LOG's round-50 C2 source-binding success:
+  it did not verify the two faulty readings. S089 and the named corrections now govern.
+- Source census original host-path failure and documented --file success both retained at
+  controls/open-and-census.txt; genuine gawk supplied task-locally, original gate unchanged.
+- Sequential specialist role passes by one author under explicit operator adaptation; independent
+  reviewer pending. No eight-agent concurrency claim, self-admission, push, counter advance or
+  real-target action. Parent owns fleet writes and remote durability.
+- Non-target warning: new-block averaging lowers density mean despite unchanged old blocks;
+  controls/final.txt measures it. No padding or invented score improvement; independent no-harm
+  judgment required. Legacy citation score 4 held; next-score gap remains host/lost-base bounded.
+
+All final runs and their measured revision are in `.ufo/waves/round-57/controls/final.txt`;
+that receipt is written after content commit from committed bytes. Final report is staged
+outside fleet and is filed only after lane commits, with full hashes and acceptance pending.
