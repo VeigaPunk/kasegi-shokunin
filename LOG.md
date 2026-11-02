@@ -2657,3 +2657,7 @@ versions, source suggested assumptions and the disclosed prose/table discrepancy
 R68 mines actual pre-freeze MI version slip; lesson preserves failed bs4 attempt
 and round59 shared-assumption failure. No model code or unseen answers yet.
 SCORECARD records pending, legacy scores held; no fabricated successful capability.
+
+Round60 committed-tree verification script: `.ufo/waves/round-60/final-check.sh`
+reuses prior regression and guard commands, adding source pins and freeze-prefix
+checks. It is evidence collection, not a semantic assessor or second claim.
