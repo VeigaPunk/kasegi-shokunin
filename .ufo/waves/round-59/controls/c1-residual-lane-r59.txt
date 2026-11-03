@@ -1,0 +1,11 @@
+# round-59 C1 residual-class receipt - LANE landed figure-audit.py (named open; not part of the frozen predicate), one run set, unedited tee
+lane-HEAD=472737847ff31d1255bf1a0745822a5e878e9622
+instrument=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py sha256=32e1cddb2291a643
+run-utc=2026-11-03T21:53:34Z host=plazir27
+residual=B1-escaped-squote derive=cat g.txt \'; touch MARK-B1; \' exit=1 markers=1 :: FIG B1-escaped-squote recorded=35 derived=UNAVAILABLE reason=derive-exit-127 stale
+residual=B2-escaped-dquote derive=cat g.txt \"; touch MARK-B2; \" exit=1 markers=1 :: FIG B2-escaped-dquote recorded=35 derived=UNAVAILABLE reason=derive-exit-127 stale
+residual=B3-sed-e-command derive=cat g.txt | sed -n '1e touch MARK-B3' exit=1 markers=1 :: FIG B3-sed-e-command recorded=35 derived=UNAVAILABLE reason=derive-empty stale
+residual=B4-awk-system derive=cat g.txt | awk 'BEGIN{system("touch MARK-B4")}' exit=1 markers=1 :: FIG B4-awk-system recorded=35 derived=UNAVAILABLE reason=derive-empty stale
+residual=B5-newline-continuation derive=cat g.txt \|touch MARK-B5 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=B5-newline-continuation
+residual=B6-sort-o derive=sort -o MARK-B6 g.txt && cat MARK-B6 exit=0 markers=1 :: FIG B6-sort-o recorded=35 derived=35 ok
+residual=B7-git-show-output derive=git show --output=MARK-B7 HEAD:README.md exit=1 markers=0 :: FIG B7-git-show-output recorded=35 derived=UNAVAILABLE reason=derive-exit-128 stale

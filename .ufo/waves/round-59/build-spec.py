@@ -1,0 +1,204 @@
+#!/usr/bin/env python3
+"""Build the round-59 wave-1 spec (kasegi-r59-w1). Committed as wave evidence; re-run to regenerate w1-spec.json.
+
+13 seats in ONE v1 wave: scouts 2, scribe 1, connector 1, reviewers 2, critic 1, mutation-tester 1,
+sentinel 1, executors 4. Attack share (reviewer, critic, mutation-tester) = 4/13 = 31%. labrat is not a wave role (the only labrat is a depth-2 probe spawned by an executor), so the fuzz seat is an executor.
+Connector share 1/13. Routing is the orchestrator's; roles are declared here, never models.
+"""
+import json
+import os
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+L = "/home/vgpnk/Projects/shokunin/kasegi-shokunin"
+W = L + "/.ufo/waves/round-59/w1"
+SCR = "/fast/scratch/hyaku/kasegi-r59"
+
+CONTEXT = r"""# Goal
+Kasegi lane (bounty and security research), round 59, wave w1: ONE v1 wave of 13 verification seats. You are ONE seat. The round's two claims are FROZEN at commit 00b535758d2cfa4511cda7167b67cdc045b85fb4 in L/.ufo/waves/round-59/claims.json; the implementation under test is landed at commit 472737847ff31d1255bf1a0745822a5e878e9622 (lane HEAD). Read claims.json first. Predicates, counters, kill rules and controls are fixed there. Never edit claims.json or any lane file. A seat that thinks a rule is wrong reports it in its evidence file; it does not change it.
+
+Claim C1 (depth:verifiability, nominal per QUALITY R58): the figure-audit derive gate L/corpus/instruments/figure-audit.py refuses the eight shell-chaining probes P1-P8 (no marker file created), admits the quoted-separator control, keeps the ledger 35/35, the selftest at 14 cases with 0 failures, and the mutant battery killed=2/2. Known residual classes ALREADY RECORDED by the lead (do not re-report as new): B1 and B2, a backslash-escaped quote outside quotes (derive text `cat g.txt \'; touch MARK; \'` and the same with a double quote) execute because the scanner treats the backslash as literal and opens a quote; B3 `sed -n '1e touch MARK'` executes; B4 `awk 'BEGIN{system("touch MARK")}'` executes; B6 `sort -o MARK g.txt` writes a file. Find OTHER classes if you can.
+
+Claim C2 (coverage): frontier F40 admitted on S092 (Google Issue Tracker README for the Big Sleep findings tracker). Entry L/corpus/knowledge/google-big-sleep-findings-tracker.md, registry row S092 in L/corpus/SOURCES.md, capture L/corpus/source-snapshots/round-59/S092.txt, manifest L/corpus/source-snapshots/round-59/manifest.json.
+
+Paths. L = /home/vgpnk/Projects/shokunin/kasegi-shokunin (lane repo; read it, never write it). W = L/.ufo/waves/round-59/w1 (wave evidence dir; write your evidence file here). S = /fast/scratch/hyaku/kasegi-r59/<your seat name> (scratch; mkdir -p it; use it for every clone, export, mutant, probe tree and temp file).
+
+# Contract
+- Absolute paths only. Every `Report:` trailer path is relative to L: write it at L/<that path>.
+- Read-only on the lane. Never edit any file under L except your own evidence file under W. Never run git add, commit, stash, checkout, switch, reset, pull, push, or any jj command against L. Read-only git (show, ls-tree, cat-file, diff, log, rev-parse, status, archive, clone) is allowed. Never touch the fleet root /home/vgpnk/Projects/shokunin except to read it; never touch sibling lanes (you may READ sibling PROVINCE.md files with grep); never write into /home/vgpnk/Projects/shokuknow.
+- Git fixtures: D=$(mktemp -d -p "$S") && git -C "$D" init -q; name -C "$D" in every later git call; verify `git -C "$D" rev-parse --show-toplevel` equals $D before any commit; never commit with a throwaway identity anywhere else. Prefer `git clone -q --shared L "$D/clone"` for a tree with history.
+- Scratch: pass TMPDIR=$S explicitly; never write under /tmp; delete your scratch dir before you yield (trap 'rm -rf -- "$S"' EXIT). Name any leftover in your evidence file.
+- Evidence file: W/<seat-name>.md (or the file your item names). First line is the verdict. Then numbered evidence: the exact command, its printed output trimmed to the decisive lines, its exit code, and path:line pointers. A verdict line that states a number not reproduced by a command in the file is itself a defect.
+- Never edit the ledger, the frozen claims, SOURCES.md, README.md, PROVINCE.md, any knowledge file, or any instrument. Report corrections as text only.
+- No credential material may be written to any file you produce: no secret values, tokens, cookies, session values or op:// references. Report path:line and pattern name only.
+- Tooling authorization (operator, 2026-10-19): you and every seat may install or upgrade tools that help your item. Read /home/vgpnk/.omp/agent/RULES.md first (official channels, update-safety gate). Record each tool, version, channel and reason in your evidence file. pacman guard: all pacman transactions are PAUSED host-wide; never run pacman -S, -Sy, -Syu, -U, -R or any pacman transaction; install only through uv tool, npx, or an official binary in ~/.local/bin.
+- Run only the commands your item names. Do not run the lane suite. Do not sleep-loop or poll.
+
+# Acceptance
+Your evidence file is complete and names the exact commands behind every number in it.
+"""
+
+ITEMS = []
+
+
+def item(name, role, prompt):
+    ITEMS.append({"name": name, "role": role, "prompt": prompt.strip() + "\n"})
+
+
+item("ScoutS092", "scout", r"""
+# Target
+Independent re-open of S092: the Google Issue Tracker README for the Big Sleep findings tracker, https://issuetracker.google.com/issues/430375499 (machine endpoint https://issuetracker.google.com/action/issues/430375499). You did not author it. Do not trust the lane's capture.
+# Change
+1. curl -sS -L --max-time 60 -A 'kasegi-research-verifier/1.0 (independent re-open; contact: operator)' -o "$S/S092.raw" <endpoint>; record HTTP code, byte count, sha256.
+2. Strip the first line (the XSSI prefix ")]}'"), json.loads the rest. Collect every string longer than 60 characters from the nested lists; locate the README body (it starts 'Big Sleep is a collaboration').
+3. For each pinned quote Q1-Q10 in L/corpus/source-snapshots/round-59/manifest.json (sources[0].quotes[*].quote), count occurrences in (a) the raw fetched bytes, (b) the parsed string set, (c) the lane capture L/corpus/source-snapshots/round-59/S092.txt. Quote strings are exact.
+4. grep -i over the README body for 'report', 'submit', 'contact', 'file', 'send' and quote every matching sentence (intake check).
+5. Quote the sentence that states the disclosure commitment (policy names).
+# Acceptance
+W/ScoutS092.md: first line verdict AGREE or DISAGREE with counts. Per-quote count table for (a), (b), (c). Your fetch sha256 next to the lane sha 048937306e211937ac857d982f43bfe0a1eb7da7bbd7cfa149126d4b5768da38 (state whether the raw bytes match; the parsed structure is the comparison that counts). The intake grep output.
+""")
+
+item("ScoutHostBound", "scout", r"""
+# Target
+Host-bound sweep of the NEW lines of round 59 in the landed commit 472737847ff31d1255bf1a0745822a5e878e9622: the gate code in L/corpus/instruments/figure-audit.py (split_segments, segment_ok, check_read_only, the eight selftest lines), the probe runner L/.ufo/waves/round-59/controls/c1-probe-run.sh, the F40 entry L/corpus/knowledge/google-big-sleep-findings-tracker.md (its recheck: line), and the registry row S092 in L/corpus/SOURCES.md.
+# Change
+1. git -C L show 472737847ff31d1255bf1a0745822a5e878e9622 -- <path> and grep the '+' lines for absolute host paths (/fast/scratch, /home/vgpnk, /tmp, /var/tmp) and for host tool names.
+2. For each recheck or counting line in the entry and the probe runner, state whether it resolves from committed bytes alone on a fresh host; name any that do not and why.
+3. Check the probe runner for dependencies beyond bash, python3 and sha256sum, and for any write outside its scratch argument.
+4. Check the new Python for syntax needing a Python newer than 3.8 (f-strings, walrus, match) by grepping and by python3 -m py_compile in a scratch copy.
+# Acceptance
+W/ScoutHostBound.md: first line verdict PASS (no new host dependency in committed round bytes) or FAIL with the list. Each line cited path:line.
+""")
+
+item("EntryClaimTable", "scribe", r"""
+# Target
+The F40 entry L/corpus/knowledge/google-big-sleep-findings-tracker.md at commit 472737847ff31d1255bf1a0745822a5e878e9622, and its S092 manifest L/corpus/source-snapshots/round-59/manifest.json.
+# Change
+Build a claim table: one row per load-bearing sentence in the entry's Claims 1 to 4 (every sentence that asserts a fact about the tracker, the README, the policies, the fields, or the dates). Columns: claim id, short sentence, the pinned quote id (Q1 to Q10) that grounds it or NONE, capture line (L2), status GROUNDED, OVERREACH (the sentence says more than the quote) or UNGROUNDED. Do not edit the entry; propose corrections as text.
+Also: wc -w on every pinned quote's text (R56 measurement) and list the word counts (each must be at most 25).
+# Acceptance
+W/EntryClaimTable.md: first line verdict PASS (N rows, all GROUNDED), PASS WITH CORRECTIONS (list them), or FAIL. Include the table and the word counts.
+""")
+
+item("SiblingOverlap", "connector", r"""
+# Target
+Cross-lane and held-ground overlap of the F40 Big Sleep tracker entry. Held corpus: L/corpus/knowledge/pz-reporting-transparency-trial.md (S017), L/corpus/knowledge/ai-assisted-finding-validation.md (F04), L/corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md (F26). Sibling PROVINCE files: /home/vgpnk/Projects/shokunin/*-shokunin/PROVINCE.md (grep only).
+# Change
+1. grep -n -i for 'Big Sleep', 'issue tracker', 'Issue Tracker', 'disclosure trial', 'Project Zero' across the sibling PROVINCE files and list every hit path:line.
+2. grep -n 'Big Sleep' L/corpus/knowledge/pz-reporting-transparency-trial.md and decide whether F40's Claim 2 re-counts that ground (it must not; the entry says it does not).
+3. Decide SCOPE CLEAR or OVERLAP with the owning lane and paths, per the contested-scope rule in the protocol.
+# Acceptance
+W/SiblingOverlap.md: first line verdict SCOPE CLEAR or OVERLAP. Numbered evidence with path:line. At most one recommendation.
+""")
+
+item("ReviewerC2", "reviewer", r"""
+# Target
+C2 of round 59 (frontier F40 on S092), commit 472737847ff31d1255bf1a0745822a5e878e9622; the frozen predicate and counting commands are in L/.ufo/waves/round-59/claims.json under claim C2.
+# Change
+1. Fresh clone: D=$(mktemp -d -p "$S") && git clone -q --shared L "$D/clone" && git -C "$D/clone" checkout -q 472737847ff31d1255bf1a0745822a5e878e9622; verify rev-parse. Run every counting command of C2 in the clone's root. Note: the frontier counter's recheck lines cd to the lane root by absolute path; record that caveat and run the entry's source-recheck line in the clone with the clone's manifest instead.
+2. Pure-append rule: git -C L diff --numstat 69de8d363b2193fdb37d03fd3e235bceeb1c2daa 472737847ff31d1255bf1a0745822a5e878e9622 -- corpus/README.md PROVINCE.md corpus/instruments/knowledge-expected.txt corpus/SOURCES.md. Deletions must be 0 everywhere and SOURCES must show exactly one added line.
+3. The lead-line sha256 (grep 'Google Big Sleep reporting beyond the tracker' corpus/SOURCES.md | sha256sum) at base 69de8d3 and at 472737847.
+# Acceptance
+W/ReviewerC2.md: first line verdict VERIFIED (every frozen C2 number reproduced by a command in the file) or NOT VERIFIED (list the failing numbers). Each number with its command, output and exit code.
+""")
+
+item("ReviewerC1", "reviewer", r"""
+# Target
+C1 of round 59 (derive gate), commit 472737847ff31d1255bf1a0745822a5e878e9622; predicate in L/.ufo/waves/round-59/claims.json under claim C1.
+# Change
+1. Fresh clone at 472737847 (as in ReviewerC2 step 1). In the clone root: sha256sum corpus/instruments/figure-audit.py must be 32e1cddb2291a643622d6501960d25d795d9e12ba2319a9b3ff9cab2d4e83ff0. Run python3 corpus/instruments/figure-audit.py --selftest (last line must read 'selftest cases=14 failures=0'), python3 corpus/instruments/figure-audit-mutbat.py (must read 'mutbat killed=2/2 survivors=0 controls=pass'), python3 corpus/instruments/figure-audit.py (must read 'FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0'), and the red fixture (python3 corpus/instruments/figure-audit.py --ledger .ufo/waves/round-54/controls/red-d53-ledger.json | grep d53-1 must show 'stale').
+2. Run L/.ufo/waves/round-59/controls/c1-probe-run.sh with the CLONE's figure-audit.py and scratch dir $S/probes. Compare each probe line to the frozen predicate: P1 to P8 exit 2 and markers 0; CTRL-quoted-separator exit 0 with derived 35; RESIDUAL-awk-write exit 0 markers 1.
+3. git -C L show --stat --format= 472737847ff31d1255bf1a0745822a5e878e9622: list any file outside the allowed set (corpus/instruments/figure-audit.py, corpus/SOURCES.md, corpus/README.md, PROVINCE.md, corpus/instruments/knowledge-expected.txt, corpus/knowledge/google-big-sleep-findings-tracker.md, SKILL.md, and .ufo/waves/round-59/controls/*). Any other file is an out-of-scope finding.
+# Acceptance
+W/ReviewerC1.md: first line verdict VERIFIED or NOT VERIFIED. Every number and sha with its command and exit code. Any out-of-scope file listed.
+""")
+
+item("CriticC1", "critic", r"""
+# Target
+Adversarial review of C1 at 472737847: the derive gate in L/corpus/instruments/figure-audit.py (functions split_segments, segment_ok, check_read_only). Find a derive that the candidate gate ADMITS while it executes a command outside the allow-list or writes a file, WITHOUT using the probe set P1-P8. Also attack the predicate: if the frozen claim can be met vacuously, say so.
+# Change
+For each attempt: write the derive text; write a one-figure ledger JSON in $S; run python3 L/corpus/instruments/figure-audit.py --ledger <that ledger> --root <fresh scratch root holding g.txt containing 35>; record exit and whether a MARK file appeared in the root. Use scratch $S only. Never run anything against the lane tree itself. Show every attempt, at least 15 attempts, including the known residual classes as controls.
+# Acceptance
+W/CriticC1.md: first line verdict SURVIVES (no new bypass found; predicate holds), DEFEATED (new bypass with the derive text, exit and marker evidence), or PREDICATE-OBJECTION (text). Table of all attempts.
+""")
+
+item("MutationC1", "mutation-tester", r"""
+# Target
+One-limb mutants of the candidate gate in L/corpus/instruments/figure-audit.py at 472737847 (split_segments, segment_ok, check_read_only, the READ_ONLY_HEADS tuple). Measure whether the instrument's own selftest kills each one (R17).
+# Change
+Work in a scratch copy only: cp L/corpus/instruments/figure-audit.py "$S/mut/figure-audit.py" (the selftest uses sys.argv[0], so run each mutant from its own copy). For each mutant apply exactly one edit to the copy (exact-once string replacement), py_compile it, run python3 copy --selftest, record exit code and last line. A mutant is KILLED when the selftest exit is nonzero. Mutants (at least 10): m1 drop ';' from the unquoted reject set; m2 drop the backtick; m3 drop '>'; m4 accept a lone '&' as a separator; m5 drop the '||' reject; m6 ignore quote state for '$(' inside double quotes; m7 make segment_ok return True for python heads; m8 remove 'head ' from READ_ONLY_HEADS; m9 remove the unterminated-quote refusal; m10 check only the first segment. Report every SURVIVOR and say whether it is behaviour-equivalent.
+# Acceptance
+W/MutationC1.md: first line verdict with killed and survivor counts. Each mutant: its one-line change, py_compile result, selftest exit and last line. Survivors listed with equivalence judgment.
+""")
+
+item("SentinelCred", "sentinel", r"""
+# Target
+Credential, personal-data and sensitive-content screen of the round-59 bytes: L/corpus/source-snapshots/round-59/S092.txt, L/corpus/source-snapshots/round-59/manifest.json, the F40 entry, the S092 row in L/corpus/SOURCES.md, the PROVINCE and README round-59 blocks, and every file under L/.ufo/waves/round-59/controls/ (including s092-savedsearch-shell.html, s092-issue-shell.html, s092-curl-raw.txt).
+# Change
+1. grep -n -E for credential shapes: 'AKIA', 'BEGIN [A-Z ]*PRIVATE', 'ghp_', 'xox[abp]-', 'sk-[A-Za-z0-9]', 'password', 'token=', 'Bearer ', 'op://', 'session', 'cookie', and URLs with query tokens. Report path:line and the pattern NAME only, never the value.
+2. Personal data: the snapshot's issue record contains a masked address in the owner field. Locate it (path:line) and describe its form only as a masked pattern; judge whether the corpus should keep it verbatim, and recommend keep or remove.
+3. HTML shell files: report whether they carry per-request nonce attributes and whether those are credential material.
+4. Confirm the entry and registry carry no private or session URLs.
+# Acceptance
+W/SentinelCred.md: first line verdict CLEAN or FINDINGS with severities. Pattern names and path:line only; no values.
+""")
+
+item("FuzzDerive", "executor", r"""
+# Target
+Falsifiable hypothesis H: every derive the candidate gate ADMITS runs only allow-listed programs and creates no file outside its scratch root. Bounded empirical probe. H is FALSIFIED by one admitted derive that creates a file named MARK-F.
+# Change
+Write a small Python fuzzer in $S (not committed). Token alphabet: 'cat g.txt', 'grep -c 1 g.txt', 'wc -l g.txt', 'head -1 g.txt', 'tail -1 g.txt', 'sort g.txt', 'echo x', 'touch MARK-F', 'tee MARK-F', 'sh', 'awk 1', '|', '&&', ';', '&', '||', a newline, '$(cat g.txt)', a backtick-wrapped cat, '>', '<', ' ', a single quote, a double quote, a backslash. Generate 400 derives of 1 to 4 tokens with random.Random(59). Load the candidate via importlib from L/corpus/instruments/figure-audit.py and call check_read_only(derive). For each admitted derive, run it with bash -c in a fresh scratch root containing g.txt, timeout 10 s, and check for MARK-F. Count N (admitted) and M (admitted and MARK-F created), and list up to 10 M cases.
+# Acceptance
+W/FuzzDerive.md: first line verdict H HOLDS (M=0) or FALSIFIED (M>0 with the derive texts). Report N, M, the seed, and the fuzzer source inline (short). Commit nothing.
+""")
+
+item("ExecCounters", "executor", r"""
+# Target
+Run every counting command of C1 and C2 from L/.ufo/waves/round-59/claims.json in a fresh clone at 472737847 and record the results as JSON.
+# Change
+D=$(mktemp -d -p "$S") && git clone -q --shared L "$D/clone" && git -C "$D/clone" checkout -q 472737847ff31d1255bf1a0745822a5e878e9622; verify rev-parse. Write $S/run.py that reads claims.json, runs each entry of counting_commands for C1 and C2 with cwd = the clone root (run the 'want' comment separately; do not parse it), and records command, exit code and the first three stdout lines. Write the records to W/ExecCounters.json. Caveat to record, do not fix: the frontier counter's recheck lines cd to the lane root.
+# Acceptance
+W/ExecCounters.md: first line verdict ALL-MATCH against the 'want' values, or MISMATCH (list). W/ExecCounters.json has the records. Cite the script's exit code.
+""")
+
+item("ExecAnchors", "executor", r"""
+# Target
+The R71 anchor-referent table for the F40 entry and the S092 row: every free line anchor of the form S092.txt:<n> or S092.txt:<n>-<m> in L/corpus/knowledge/google-big-sleep-findings-tracker.md, the S092 row in L/corpus/SOURCES.md, and the F40 README row in L/corpus/README.md; each must name a line that carries the sentence's referent.
+# Change
+Write and run a script in $S that: (a) finds every such anchor in the three files; (b) reads L/corpus/source-snapshots/round-59/S092.txt; (c) prints each anchor with the line it names (first 120 characters). Then judge, per anchor, whether the cited sentence's referent is on that line.
+# Acceptance
+W/ExecAnchors.md: first line verdict REFERENTS-HOLD or MISMATCH (list). A table of anchor, line content (120 characters), referent judged. The script's exit code.
+""")
+
+item("ExecDiffScope", "executor", r"""
+# Target
+Scope audit of the freeze commit 00b535758d2cfa4511cda7167b67cdc045b85fb4 and the implementation commit 472737847ff31d1255bf1a0745822a5e878e9622 in the lane: every changed path, the kind of change, and line counts.
+# Change
+1. git -C L show --numstat --format= <each commit>; and git -C L show --name-status --format= <each commit>.
+2. For each modified tracked file, count deleted lines from the numstat. Only corpus/instruments/figure-audit.py may have deletions (the replaced function block and two literal lines); every other modified file must have 0 deletions.
+3. sha256sum L/corpus/instruments/figure-audit.py must equal 32e1cddb2291a643622d6501960d25d795d9e12ba2319a9b3ff9cab2d4e83ff0, and git -C L show 472737847ff31d1255bf1a0745822a5e878e9622:corpus/instruments/figure-audit.py | sha256sum must match it.
+# Acceptance
+W/ExecDiffScope.md: first line verdict IN-SCOPE or OUT-OF-SCOPE (list). Commands and outputs with exit codes.
+""")
+
+
+def build():
+    spec = {
+        "wave": "kasegi-r59-w1",
+        "milestone": "kasegi r59 w1 (v1, 13 seats): C1 derive-gate attacks and receipts, C2 F40 re-open, entry claims, sibling overlap, counters, anchors, scope audit.",
+        "reportDir": ".ufo/waves/round-59/w1",
+        "maxLanes": 16,
+        "axes": ["depth:verifiability", "coverage"],
+        "context": CONTEXT,
+        "items": ITEMS,
+    }
+    out = os.path.join(HERE, "w1-spec.json")
+    with open(out, "w", encoding="utf-8") as fh:
+        json.dump(spec, fh, ensure_ascii=False, indent=1)
+        fh.write("\n")
+    print("wrote", out, "items", len(ITEMS), "context_bytes", len(CONTEXT.encode("utf-8")))
+    for it in ITEMS:
+        print(it["name"], it["role"], len(it["prompt"].encode("utf-8")))
+
+
+if __name__ == "__main__":
+    build()
