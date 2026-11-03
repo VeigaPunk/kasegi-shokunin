@@ -6,7 +6,7 @@
    "id": "d53-1-trailer",
    "record": ".ufo/waves/round-53/controls/c2-counter-final-r53.txt:9 trailer prose 'the 34 inherited recheck-exit-1 entry records'",
    "recorded": "34",
-   "derive": "python corpus/instruments/frontier-recheck-count.py 2>/dev/null | grep -c '^FAIL'",
+   "derive": "grep -oE 'FAIL_entry_records=[0-9]+' .ufo/waves/round-53/controls/c2-counter-final-r53.txt | head -1 | cut -d= -f2",
    "want": "34"
   },
   {

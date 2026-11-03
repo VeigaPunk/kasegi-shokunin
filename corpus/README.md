@@ -946,3 +946,23 @@ F32 at round 51, F33 at round 52, F34 at round 53, F35 at round 54, F36 at round
 56, F38 at round 57.
 The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present,
 and the frontier count stays outside it.
+
+## Round-58 admission — coverage map row and Frontier F39 (appended 2026-11-03)
+
+The coverage map above is not edited in place (R6): the round-58 entry
+`knowledge/aisi-autonomous-cyber-capability-progress-rate.md` (Frontier F39, source S091) is recorded here as an
+appended amendment so every existing line keeps its number. Source basis: the UK AI Security Institute's own
+blog report at https://www.aisi.gov.uk/blog/how-fast-is-autonomous-ai-cyber-capability-advancing, opened
+2026-11-03, capture `corpus/source-snapshots/round-58/S091.txt`, manifest `corpus/source-snapshots/round-58/manifest.json`.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Autonomous AI cyber-capability progress rate (round 58) | knowledge/aisi-autonomous-cyber-capability-progress-rate.md | S091 — the institute's own dated measurement statements, opened 2026-11-03 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F39 | UK AI Security Institute autonomous cyber-capability progress rate — the institute's own dated, suite-bound measurement statements: the 80%-reliability cyber time-horizon doubling estimate and its acceleration, the bounded method and its stated uncertainty, and the cyber-range results | admitted | knowledge/aisi-autonomous-cyber-capability-progress-rate.md | S091 | Read the doubling figure as AISI's own estimate under its own suite, token cap and curve fit: "an imperfect model, and is not a future prediction, nor a fixed law" (`S091.txt:23`, Q4), with the single-omission band "4.1 months, and a maximum of 5.0 months" (`S091.txt:30`, Q6); keep the cyber-range attempt counts (6 of 10, 3 of 10) attributed to one newer checkpoint (`S091.txt:34-35`). |
+
+[r58 amendment, appended 2026-11-03] The frontier as of round 58 is F01-F39 admitted: F38 at round 57 and F39 at
+round 58. The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.

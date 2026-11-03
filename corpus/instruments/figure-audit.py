@@ -50,6 +50,9 @@ READ_ONLY_HEADS = (
 )
 
 
+EXPECTED_CASES = 6  # R17 pin: a dropped selftest case turns the selftest red
+
+
 def eprint(*a):
     print(*a, file=sys.stderr)
 
@@ -141,6 +144,12 @@ SELFTEST_LEDGER_TOKEN = {
 }
 
 
+SELFTEST_LEDGER_NOT_RO = {
+    "figures": [
+        {"id": "s-not-ro", "record": "g.txt:1", "recorded": "35", "derive": "echo 35", "want": "35"},
+    ],
+}
+
 def selftest():
     cases = []
 
@@ -173,12 +182,16 @@ def selftest():
     run_case("derive-fails-fail-closed", 1, SELFTEST_LEDGER_FAILS)
     run_case("token-boundary-34-vs-340", 1, SELFTEST_LEDGER_TOKEN)
     run_case("unreadable-ledger-exit-2", 2, None, broken=True)
+    run_case("derive-not-read-only-refused", 2, SELFTEST_LEDGER_NOT_RO)
 
     failures = 0
     for cid, got, want, good, out in cases:
         print("selftest case=%s exit=%d want=%d verdict=%s" % (cid, got, want, "pass" if good else "fail"))
         if not good:
             failures += 1
+    if len(cases) != EXPECTED_CASES:
+        print("selftest pin cases=%d expected=%d verdict=fail" % (len(cases), EXPECTED_CASES))
+        failures += 1
     print("selftest cases=%d failures=%d" % (len(cases), failures))
     return 0 if failures == 0 else 1
 
