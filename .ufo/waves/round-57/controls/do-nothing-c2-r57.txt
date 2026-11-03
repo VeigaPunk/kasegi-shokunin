@@ -1,0 +1,17 @@
+# round-57 do-nothing control, C2 (rev 2) - the base tree BEFORE any C2 byte, on the run-15 Linux host; one run set, unedited tee (rev 1 superseded: its capture-binding limb was appended after the tee - R39 violation, discarded, this rev 2 is one run)
+run-utc=2026-11-03T18:11:40Z
+base=eae1d614542e8d30d77e9f4e8b9dea6a11aad138
+$ python corpus/instruments/frontier-recheck-count.py | grep -E "FRONTIER-CENSUS|F38|entries="
+FRONTIER-CENSUS rows=37 admitted=37 closed=37 problem-rows=0 registry=88
+entries=40 pass=40 exit=0
+[exit=0]
+## plain counts at base
+F38 rows: 0
+registry rows: 88
+knowledge files: 75
+expected: 75
+$ python corpus/instruments/capture-binding-check.py --root <pure-base-export> | tail -1
+records=71 bound=71 unbound=0
+[exit=0]
+## tree-limb note: the live lane tree carries this round's own uncommitted capture dir, so a tree-root binding run reads records=73 unbound=2 (this round's captures not yet registered) - the pure base export above is the do-nothing figure of record
+## host note: the r52-56 Windows receipts read closed=7 problem-rows=30 entries=40 pass=7 FAIL-records=33 at the same base bytes; on this host the cd-prefixed recheck commands run live and that class does not stand (the fail-entry-records ledger entry carries the receipt-pinned 33 via the C1 derive repair; see controls/do-nothing-c1-r57.txt)

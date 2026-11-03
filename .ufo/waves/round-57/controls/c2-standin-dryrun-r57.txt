@@ -1,0 +1,24 @@
+# round-57 C2 stand-in dry-run (rev 1) - the frozen after-counter over a stand-in tree (git archive of the base + the C2 add-set by the landing patcher); one run set, unedited tee
+run-utc=2026-11-03T18:11:00Z
+$ python corpus/instruments/frontier-recheck-count.py --root <standin> | grep -E "FRONTIER-CENSUS|F38|entries="
+FRONTIER-CENSUS rows=38 admitted=38 closed=38 problem-rows=0 registry=90
+FRONTIER-PASS F38 ids=S089,S090
+PASS     F38  knowledge/iso-29147-30111-standard-records.md        ids=S089,S090      exit=0   
+entries=41 pass=41 exit=0
+[exit=0]
+$ python corpus/instruments/frontier-recheck-count.py --root <standin> | tail -1
+entries=41 pass=41 exit=0
+## plain counts over the stand-in
+registry rows: 90
+F38 rows: 1
+knowledge files: 76
+expected: 76
+## sources-census on the stand-in SOURCES
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	W04	S076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes
+file	W04	S080 duplicate url ossf.github.io/osv-schema across scopes
+file	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r57/L1/standin/corpus/SOURCES.md
+[exit=0]

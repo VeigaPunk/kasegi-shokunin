@@ -1,0 +1,16 @@
+# round-57 C1 red controls (rev 1) - scratch ledgers over the lane root; one run set, unedited tee
+run-utc=2026-11-03T18:12:51Z
+## GREEN attainability proof (clean 35-figure ledger over the base tree - rev-pinned derives work anywhere; the claimed after-state adds the ledger FILE itself to the lane)
+$ python corpus/instruments/figure-audit.py --ledger <scratch>/ledger-extended-clean.json | tail -1
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+[exit=0]
+## RED 1 - one wrong want (registry-rows-r56 want=87 vs derived 88)
+$ python corpus/instruments/figure-audit.py --ledger <scratch>/red1-wrong-want-r57.json | grep -E "registry-rows-r56|FIGURE-AUDIT"
+FIG registry-rows-r56 recorded=88 derived=88 want=87 stale
+FIGURE-AUDIT figures=35 ok=34 stale=1 exit=1
+[exit=1]
+## RED 2 - the derive-repair limb catches a mutated r53 receipt (FAIL_entry_records=34 in a scratch copy; want 33)
+$ python corpus/instruments/figure-audit.py --ledger <scratch>/red2-deriverepair-r57.json | grep -E "fail-entry-records|FIGURE-AUDIT"
+FIG fail-entry-records recorded=33 (the class-check line; the trailer's 34 superseded) derived=34 want=33 stale
+FIGURE-AUDIT figures=35 ok=34 stale=1 exit=1
+[exit=1]

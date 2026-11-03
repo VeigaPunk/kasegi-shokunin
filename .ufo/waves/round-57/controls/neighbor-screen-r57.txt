@@ -1,0 +1,70 @@
+# round-57 extended pre-freeze neighbor screen (rev 1) - one run set, unedited tee; run at the BASE tree before the freeze commit
+run-utc=2026-11-03T18:07:27Z
+## limb 1: held-row hits for the ISO surface across the front-door files
+$ grep -rn "iso.org/standard" corpus/knowledge corpus/README.md PROVINCE.md corpus/SOURCES.md SKILL.md | grep -v source-snapshots
+corpus/SOURCES.md:137:- ISO/IEC 29147 vulnerability-disclosure and ISO/IEC 30111 vulnerability-handling standard records at https://www.iso.org/standard/72311.html and https://www.iso.org/standard/69725.html.
+[exit=0]
+## limb 2: held-row hits for 29147/30111 tokens (file counts only)
+$ grep -rlc "29147" corpus/knowledge/*.md corpus/README.md PROVINCE.md corpus/SOURCES.md SKILL.md; grep -rlc "30111" corpus/knowledge/*.md corpus/README.md PROVINCE.md corpus/SOURCES.md SKILL.md
+corpus/knowledge/iso-29147-and-30111-division-of-labour.md
+corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md
+corpus/knowledge/japanese-domestic-disclosure-workflow.md
+corpus/knowledge/nist-sp800-216-vdp-framework.md
+corpus/knowledge/vendor-disclosure-policies-as-corpus-objects.md
+corpus/knowledge/vendor-disclosure-policy-commitments-crosswalk.md
+corpus/knowledge/vendor-third-party-finding-coordination.md
+corpus/README.md
+PROVINCE.md
+corpus/SOURCES.md
+-- files with 30111:
+corpus/knowledge/iso-29147-and-30111-division-of-labour.md
+corpus/knowledge/japanese-domestic-disclosure-workflow.md
+corpus/knowledge/nist-sp800-216-vdp-framework.md
+corpus/knowledge/vendor-disclosure-policy-commitments-crosswalk.md
+corpus/knowledge/vendor-third-party-finding-coordination.md
+corpus/README.md
+PROVINCE.md
+corpus/SOURCES.md
+[exit=0]
+## limb 3: the recorded lead line (bytes unchanged check)
+$ grep -n "standard records at https://www.iso.org/standard" corpus/SOURCES.md
+137:- ISO/IEC 29147 vulnerability-disclosure and ISO/IEC 30111 vulnerability-handling standard records at https://www.iso.org/standard/72311.html and https://www.iso.org/standard/69725.html.
+-- loose string count:
+1
+-- exact-line sha at base:
+23309b6fd1226e398f8cce84f6a6e41f1a35ef9f8f0f95acdaa2119d17055b39  -
+## limb 4: downstream-consumer sweep over corpus/source-snapshots/ (who cites iso.org or the standard numbers in captured material)
+$ grep -rln "iso.org/standard\|ISO/IEC 29147\|ISO/IEC 30111" corpus/source-snapshots/ | sort
+corpus/source-snapshots/round-24/S003.txt
+corpus/source-snapshots/round-38/S055.txt
+corpus/source-snapshots/round-57/manifest.json
+-- 29147/30111 token snapshots:
+corpus/source-snapshots/round-23/S018.txt
+corpus/source-snapshots/round-25/manifest.json
+corpus/source-snapshots/round-25/S039.txt
+corpus/source-snapshots/round-25/S040.txt
+corpus/source-snapshots/round-26/manifest.json
+corpus/source-snapshots/round-26/S040-live.txt
+corpus/source-snapshots/round-26/S041.txt
+corpus/source-snapshots/round-28/S041.txt
+corpus/source-snapshots/round-30/S041.txt
+corpus/source-snapshots/round-38/S055.txt
+corpus/source-snapshots/round-40/S021.txt
+corpus/source-snapshots/round-41/S063.txt
+corpus/source-snapshots/round-57/manifest.json
+corpus/source-snapshots/round-57/S089.txt
+corpus/source-snapshots/round-25/S039.txt
+corpus/source-snapshots/round-26/manifest.json
+corpus/source-snapshots/round-26/S041.txt
+corpus/source-snapshots/round-28/S041.txt
+corpus/source-snapshots/round-30/S041.txt
+corpus/source-snapshots/round-40/S021.txt
+corpus/source-snapshots/round-57/manifest.json
+corpus/source-snapshots/round-57/S089.txt
+corpus/source-snapshots/round-57/S090.txt
+[exit=0]
+## limb 5: F11 ground check (the held JPCERT/CC guideline entry)
+$ grep -n "source:\|ground:" corpus/knowledge/iso-29147-and-30111-division-of-labour.md | head -4
+2:source: S041 — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf — 付録6 §2 p.45, division paragraph L1667-1672 and 図1 L1676-1678 (capture corpus/source-snapshots/round-26/S041.txt)
+5:ground: F11 — this entry adopts the staged entry iso-29147-and-30111-division-of-labour-2026-10-23.md, re-grounded on the round-26 capture of the JPCERT/CC 2026 P-guideline (S041, 付録6 §2)
+[exit=0]
