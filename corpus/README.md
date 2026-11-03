@@ -906,3 +906,43 @@ round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F3
 F36 at round 55, F37 at round 56.
 The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
 frontier count stays outside it.
+
+## Round-57 admission — coverage map row and Frontier F38 (appended 2026-11-03)
+
+The coverage map above is not edited in place (R6): the round-57 entry
+`knowledge/iso-29147-30111-standard-records.md` (Frontier F38; sources S089 + S090;
+source basis: ISO's own catalog records for the two standards at
+https://www.iso.org/standard/72311.html and https://www.iso.org/standard/69725.html — captured
+2026-11-03, HTTP 200, under `corpus/source-snapshots/round-57/` with a shared manifest; the
+committed instrument's urllib open is 403-blocked at this host, so the fetch used curl with the
+instrument's own UA string and the instrument's own html_to_text conversion — disclosed in the
+manifest note, the receipt and the lesson Gate) is recorded here as an appended amendment so
+every existing line keeps its number. First admission of the recorded ISO/IEC 29147/30111 lead
+(`corpus/SOURCES.md:137` at base; exact-line sha256
+`23309b6fd1226e398f8cce84f6a6e41f1a35ef9f8f0f95acdaa2119d17055b39`; lead bytes unchanged, the
+flip is recorded in the registry-changes bullets). The extended pre-freeze screen ran at the base
+before the freeze (`.ufo/waves/round-57/controls/neighbor-screen-r57.txt`): the only
+`iso.org/standard` URL holder is the lead line; the 29147/30111 token holders are F10's vendor
+policies (S040 and the crosswalk), F11's JPCERT/CC reading (S041), F12's Japanese workflow and
+the vendor-third-party entry — every one a CONSUMER or implementer of the standards, none holding
+the publisher-record ground — and the downstream-consumer sweep over `corpus/source-snapshots/`
+names S003, S018, S021, S039, S040, S041, S055, S063 as citing captures, no held capture OF the
+iso.org catalog pages.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| ISO/IEC 29147/30111 standard records (round 57) | `knowledge/iso-29147-30111-standard-records.md` | S089, S090 — first-party standards-body publisher records (iso.org catalog), opened 2026-11-03 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F38 | ISO/IEC 29147/30111 standard records — the standards-body publisher record of the coordinated-vulnerability-disclosure process standards (identity/editions 29147:2018 ed.2 and 30111:2019 ed.2, publisher status and the to-be-revised stage with successor work named, the currency statements, the abstract's own division-of-labour sentence, vendor-side applicability) | admitted | knowledge/iso-29147-30111-standard-records.md | S089, S090 | Read the two records as ISO's own statement of what each standard is and where it stands: 29147 is "requirements and recommendations to vendors on the disclosure of vulnerabilities" (`S089.txt:84`, Q2) while 30111 is "requirements and recommendations for how to process and remediate reported potential vulnerabilities" (`S090.txt:84`, Q2), and the publisher itself states the split — "Other related activities that take place between receiving and disclosing vulnerability reports are described in ISO/IEC 30111." (`S089.txt:91`, Q3). Both editions stand Published and confirmed current (2024/2025 review statements, `S089.txt:64`/`S090.txt:64`) while BOTH carry stage "International Standard to be revised [90.92]" (`S089.txt:99`, `S090.txt:92`) with successor work named (AWI 29147 at `S089.txt:204`, WD 30111.2 at `S090.txt:197`) — cite the editions as current AND under revision, never either alone. Applicability is vendor-side ("vendors who choose to practice vulnerability disclosure" `S089.txt:92`; "vendors involved in handling vulnerabilities" `S090.txt:85`): the records bind vendors, not finders. Kept distinct from F11 (the JPCERT/CC guideline reading, S041) and F10 (vendor policies citing the standards, S040); the normative text stays unasserted (paywalled), and the 90d recheck re-fetches a live catalog page. |
+
+[r57 amendment, appended 2026-11-03] The frontier as of round 57 is F01-F38 admitted: F01-F08 at
+round 23, F09 at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14
+at round 30, F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36,
+F20 at round 37, F21 at round 38, F22 at round 39, F23 at round 40, F24 at round 41, F25 at round
+42, F26 at round 44, F27 at round 45, F28 and F29 at round 46, F30 at round 49, F31 at round 50,
+F32 at round 51, F33 at round 52, F34 at round 53, F35 at round 54, F36 at round 55, F37 at round
+56, F38 at round 57.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present,
+and the frontier count stays outside it.

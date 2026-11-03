@@ -1,0 +1,237 @@
+{
+  "schema": "ufo-swarm-wave-v1",
+  "wave": "kasegi-r57-w1",
+  "context": "# Goal\nKasegi lane (bounty and security research), round 57: ONE v1 wave of 12 seats. You are ONE seat of this wave. The round's two claims are FROZEN before this wave in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-57/claims.json (freeze commit 6343e2c3882a96b1af86e1ecf4c9deba33361719). Read it first. Predicates, counters, kill rules and controls are fixed there. Never edit claims.json. A seat that thinks a rule is wrong reports it in its evidence file; it does not change it.\n\nClaim C1: figure-audit ledger 27 -> 35 pinned figures plus the host-portable derive repair of fail-entry-records (depth:verifiability). Claim C2: frontier F38 admitted on S089 and S090, ISO/IEC 29147/30111 standard records (coverage).\n\nPaths. L = /home/vgpnk/Projects/shokunin/kasegi-shokunin (lane repo; its WORKING TREE holds the implementation under test: corpus/SOURCES.md, corpus/README.md, PROVINCE.md, corpus/instruments/figure-audit-ledger.json, corpus/instruments/knowledge-expected.txt, corpus/knowledge/iso-29147-30111-standard-records.md, plus the committed captures corpus/source-snapshots/round-57/). W = /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-57/w1 (wave evidence dir; write your evidence file here). S = /fast/scratch/hyaku/kasegi-r57/<your seat name> (scratch root; create it with mkdir -p; use it for every clone, export, probe tree and temp file).\n\n# Contract\n- Absolute paths only. Every `Report:` trailer path is relative to /home/vgpnk/Projects/shokunin/kasegi-shokunin: write it at /home/vgpnk/Projects/shokunin/kasegi-shokunin/<that path>.\n- Read-only on the lane. Do not edit any file under L except your own evidence file under W. Never run git add, commit, stash, checkout, switch, reset, pull, push, or any jj command against L. Read-only git (show, ls-tree, cat-file, diff, log, rev-parse, status) is allowed. Never touch the fleet root /home/vgpnk/Projects/shokunin except to read it, never touch sibling lanes, never write into /home/vgpnk/Projects/shokuknow (read-only; do not run its campaign tools).\n- Git fixtures: D=$(mktemp -d -p <S>) && git -C \"$D\" init -q; name -C \"$D\" in every later git call; verify `git -C \"$D\" rev-parse --show-toplevel` equals $D before any commit; never commit with a throwaway identity anywhere else.\n- Scratch: pass TMPDIR=<S> explicitly. Delete <S> before you yield (trap 'rm -rf -- \"$S\"' EXIT in shell). Name any leftover in your evidence file.\n- Evidence file: W/<seat-name>.md. First line is the verdict. Then numbered evidence: the exact command, its printed output (trimmed to the decisive lines), its exit code, and path:line pointers. Your final yield is a short summary (verdict, counts, evidence path).\n- Never edit the ledger, the frozen claims, SOURCES.md, README.md, PROVINCE.md or any knowledge file. Report corrections as text only.\n- No credential material may be written to any file you produce: no secrets, tokens, cookies, session values or op:// references. Report path:line and pattern name only.\n- Tooling authorization (operator, 2026-10-19): you may install or upgrade tools that help your item through official channels. Read /home/vgpnk/.omp/agent/RULES.md first; record each tool, version, channel and reason in your evidence file. pacman is PAUSED host-wide: never run pacman -S, -Sy, -Syu, -U or -R; install through uv tool, npx, or an official binary in ~/.local/bin only.\n- Run only the commands your item names. Do not run the lane test suite. Do not sleep-loop or poll.\n\n# Acceptance\nYour evidence file is complete and names the exact commands behind every number in it.",
+  "policy": {
+    "source": "config",
+    "maxLanes": 12,
+    "minLanes": 8,
+    "waveMinLanes": 8,
+    "waveMaxLanes": 16,
+    "declaredMaxLanes": 12,
+    "hardCeiling": 256,
+    "rampBatchSize": 5,
+    "rampIntervalMs": 700,
+    "globalRunnerCeiling": 1056
+  },
+  "counts": {
+    "spawn": 12,
+    "resume": 0,
+    "total": 12
+  },
+  "compaction": {
+    "applied": false,
+    "mechanism": null,
+    "reason": null,
+    "savedBytes": 0,
+    "payloadBytesBefore": 0,
+    "payloadBytesAfter": 0
+  },
+  "dispatch": {
+    "calls": 1,
+    "kind": "task",
+    "note": "Issue exactly one batched task call carrying every spawn lane, plus one hub send per resume lane. Never split a wave into multiple task calls (one-swarm-per-wave)."
+  },
+  "registry": {
+    "schema": "ufo-swarm-registry-v1",
+    "path": ".ufo/waves/round-57/w1/swarm-registry.json",
+    "reportDir": ".ufo/waves/round-57/w1",
+    "members": {
+      "ScoutSources": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      },
+      "SiblingOverlap": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "connector",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      },
+      "LedgerReplay": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      },
+      "EntryClaimTable": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      },
+      "Revenge403": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "revenger",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      },
+      "SentinelCred": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "sentinel",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      },
+      "ReviewDerive": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      },
+      "CriticFrontier": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      },
+      "MutateLedger": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      },
+      "ReopenSources": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      },
+      "ExportReplay": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      },
+      "ScoutHostBound": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants."
+      }
+    }
+  },
+  "priorRegistries": [],
+  "tasks": [
+    {
+      "name": "ScoutSources",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\n# Target\nIndependent re-open of the two sources the round rests on: S089 = https://www.iso.org/standard/72311.html (ISO/IEC 29147:2018) and S090 = https://www.iso.org/standard/69725.html (ISO/IEC 30111:2019). You are not the author. Evidence file: W/ScoutSources.md.\n# Change\n1. Fetch each URL once with curl -sS -L --max-time 60 -A 'kasegi-research-verifier/1.0 (independent re-open; contact: operator)' -o <S>/S089.raw.html (and S090). Record HTTP code, byte count and sha256 of the raw bytes.\n2. Convert with a DIFFERENT method from the lane instrument: Python stdlib html.parser, visible text only (skip script and style), whitespace collapsed per line. Save to <S>/S089.independent.txt and <S>/S090.independent.txt. Record sha256 and line count. Copy the two independent text files into W/ScoutSources/ (create the dir).\n3. For each quote in L/corpus/source-snapshots/round-57/manifest.json (Q1-Q7 per source), test whether the quote occurs in your independent text: normalise whitespace, count exact occurrences. Report occurrences and any mismatch with the nearest form and the reason.\n4. Check the publisher facts in L/corpus/knowledge/iso-29147-30111-standard-records.md against your independent text: edition, publication date, page count, the stage text, the currency-statement year, both applicability sentences, both abstract scope sentences. Name every disagreement.\n5. Run: cd L && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-57/manifest.json --source S089 ; same for S090. Record exit codes.\n# Acceptance\nEvidence file with a per-quote agree/disagree table, per-fact agree/disagree, the three sha256 sets, exit codes. If the independent text differs from the committed snapshot only in dynamic chrome (cart, cookie banner, prices), say so explicitly.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/ScoutSources.md"
+    },
+    {
+      "name": "SiblingOverlap",
+      "agent": "connector",
+      "task": "/skill:godspeed\n\n# Target\nSibling-overlap scan, read-only: does any OTHER lane in the fleet already hold the standards-body publisher record of ISO/IEC 29147 or 30111 (F38 ground), or cite the iso.org catalog pages as a source? Evidence file: W/SiblingOverlap.md.\n# Change\n1. grep -rIl -E 'iso\\.org/standard|ISO/IEC 29147|ISO/IEC 30111|29147:2018|30111:2019' over each /home/vgpnk/Projects/shokunin/<lane>-shokunin/ EXCEPT kasegi-shokunin. Restrict to corpus/, SKILL.md, PROVINCE.md, plans/ and knowledge/ paths; exclude .git directories. Read-only.\n2. For each hit, record path:line and one class: (a) same ground: a publisher record of the standard; (b) consumer or implementer of the standard; (c) mention only. Class (a) hits must quote the line.\n3. In kasegi: grep -n -E 'iso\\.org|ISO/IEC 29147|ISO/IEC 30111' over L/corpus/knowledge/*.md, L/corpus/README.md, L/PROVINCE.md and L/corpus/SOURCES.md. Confirm whether any held row or entry already holds class (a) ground under another id.\n4. Grep the fleet report folders /home/vgpnk/Projects/shokunin/.ufo/reports/round-5*/ and round-6*/ for the same pattern (read-only; list hits with class).\n# Acceptance\nEvidence file: a hit table with classes, and one verdict line: 'class (a) overlap: none' or the named path(s) that already hold class (a) ground. Cross-domain material is reported, not absorbed.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/SiblingOverlap.md"
+    },
+    {
+      "name": "LedgerReplay",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\n# Target\nReplay every figure-audit ledger entry's derive command independently of the lane's instrument, and check the instrument agrees with the replay. Evidence file: W/LedgerReplay.md. Your replay script lives in W/LedgerReplay/replay.py.\n# Change\n1. Write W/LedgerReplay/replay.py (stdlib only). It loads L/corpus/instruments/figure-audit-ledger.json read-only, and for each figure runs its derive string with bash -c, cwd = L, merged stdout and stderr, timeout 120 s. It takes the first non-empty stdout line, strips it, and compares it to the figure's want string. It prints one line per id: id, derived, want, verdict (ok or STALE). It prints the total and exit 1 on any STALE.\n2. Run it: python3 W/LedgerReplay/replay.py. Record the full output.\n3. Run the lane instrument: cd L && python3 corpus/instruments/figure-audit.py . Record the full output. The two verdict sets must agree on all 35 ids. Any disagreement is a finding; name the id and both values.\n4. Run: cd L && python3 corpus/instruments/figure-audit.py --selftest ; record exit code and the summary line.\n5. For the eight r56 ids (frontier-rows-r56, registry-rows-r56, entries-r56, knowledge-expected-r56, knowledge-files-r56, census-fresh-literal-r56, census-internal-r56-receipt, census-gone-r56-receipt), state whether each derive reads committed bytes at a rev (git show or git ls-tree) or reads a working-tree file, and say which kind it is.\nDo not modify the ledger.\n# Acceptance\nEvidence file with the replay table, the instrument output, the agreement verdict over 35 ids, the selftest exit, and the rev-pinned versus working-tree classification of the eight r56 derives.\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/LedgerReplay.md"
+    },
+    {
+      "name": "EntryClaimTable",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\n# Target\nDraft the claim-versus-source table for the new F38 entry: one row per load-bearing sentence of Claims 1 to 4, checked against the committed snapshots. Evidence file: W/EntryClaimTable.md.\n# Change\n1. Read L/corpus/knowledge/iso-29147-30111-standard-records.md, L/corpus/source-snapshots/round-57/S089.txt and S090.txt.\n2. For each sentence in Claims 1 to 4 that asserts a checkable fact (edition, page count, publication date, stage text, currency year, applicability, abstract wording, successor name, review cadence), write one row: sentence id | asserted fact | quote copied exactly from the snapshot | snapshot line number from grep -n | match yes or no. Take every line number from grep -n output, never from memory.\n3. Count the 'no' rows. For each 'no', propose the exact replacement text, in the evidence file only.\n4. For each quote in the table, measure its word count: write the quote to a file and run wc -w. List every quote over 25 words.\n5. Note any entry sentence whose anchor cites a line that does not contain the quoted words.\n# Acceptance\nEvidence file: the table, the count of yes and no rows, the wc -w count per quote with the command, the list of quotes over 25 words (expected none), and proposed corrections if any. Do not edit the entry.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/EntryClaimTable.md"
+    },
+    {
+      "name": "Revenge403",
+      "agent": "revenger",
+      "task": "/skill:godspeed\n\n# Target\nEstablish the mechanism of the HTTP 403 that the lane's committed capture instrument gets from www.iso.org while curl with the same User-Agent gets 200. The failed invocation is the recorded disclosure; this seat makes the disclosure precise without guessing. Evidence file: W/Revenge403.md.\n# Change\n1. Reproduce the instrument failure once: cd L && TMPDIR=<S> python3 corpus/instruments/capture-source.py --id PROBE --url https://www.iso.org/standard/72311.html --out <S>/probe.txt --kind html . Record exit code and the error line. Write nothing into L.\n2. Using stdlib urllib only, one request per variant, same URL: (a) the User-Agent string exactly as in L/corpus/instruments/capture-source.py (grep -n UA to read it verbatim); (b) urllib default User-Agent; (c) the UA of (a) plus Accept: text/html,application/xhtml+xml; (d) the UA of (a) plus Accept-Language: en; (e) the UA of (a) plus Accept: */*. Record the HTTP status and the byte count per variant.\n3. Using curl, two requests: the UA of (a), and curl's default UA. Record status per request.\n4. Name the discriminating header (the smallest difference that flips 403 to 200), or state that none discriminates.\n5. Stop after these variants. Do not use cookies, logins, alternate hosts or rate-limit evasion. Public catalog page only.\n# Acceptance\nEvidence file: the variant table, the discriminating header or the statement that none discriminates, what it does NOT establish, and the verbatim UA line from the instrument with its line number.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/Revenge403.md"
+    },
+    {
+      "name": "SentinelCred",
+      "agent": "sentinel",
+      "task": "/skill:godspeed\n\n# Target\nSecurity review of this round's new bytes for credential material, session or private URLs, secrets, and any instruction to probe, scan, log in or submit. Read-only. Evidence file: W/SentinelCred.md.\n# Change\n1. Files in scope: L/corpus/knowledge/iso-29147-30111-standard-records.md; L/corpus/source-snapshots/round-57/S089.txt, S090.txt, manifest.json; the round-57 diff of L/corpus/SOURCES.md (git -C L diff -- corpus/SOURCES.md), L/corpus/README.md, L/PROVINCE.md, L/corpus/instruments/knowledge-expected.txt, L/corpus/instruments/figure-audit-ledger.json (working-tree diffs against HEAD); and L/.ufo/waves/round-57/ (list only, then read the claims and controls).\n2. Scan the in-scope files with grep -nE, case-insensitive where useful, for: op:// ; ghp_ ; github_pat_ ; AKIA[0-9A-Z]{16} ; -----BEGIN ; eyJ[A-Za-z0-9_-]{10,} ; password ; secret ; token= ; api[_-]?key ; Set-Cookie ; Authorization: ; session ; jsessionid ; any URL with query keys like token= key= sig=. Classify each hit as real credential, benign word, or page chrome from the ISO capture. Never write a matched value into your output; report path:line and the pattern name only.\n3. Confirm the entry's Attribution and Limits sections say the entry is documentation-only, instructs no probing, scanning, login or submission, and carries no credential material. Grep the entry for probe, scan, submit, exploit, login, curl and wget, and classify each hit as instruction or description.\n4. Check the captures for any private or session URL: list every distinct host in the snapshots (grep -oE 'https?://[^ ]+' ) and classify each.\n# Acceptance\nEvidence file: a pattern table (pattern, hits, classification), the host list with classification, the entry-instruction check, and one verdict line: 'no credential material and no instruction to probe, scan, log in or submit' or the exact findings by path:line.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/SentinelCred.md"
+    },
+    {
+      "name": "ReviewDerive",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\n# Target\nAttack the C1 derive repair. The r53 fail-entry-records ledger entry used to re-run the live frontier counter; it now reads a committed receipt line. Decide whether the repair is honest, host-portable, and still binds what it was meant to bind. Evidence file: W/ReviewDerive.md.\n# Change\n1. Show the working-tree record and derive for fail-entry-records in L/corpus/instruments/figure-audit-ledger.json and the prior version: git -C L show 8a5d7538b0caa50300b1eee88442a230d9a433f2:corpus/instruments/figure-audit-ledger.json.\n2. Run the new derive with cwd L and record its output. Run sed -n '8p' L/.ufo/waves/round-53/controls/c2-counter-final-r53.txt and state whether that line is the figure the old record cited.\n3. Attack, in writing: the new derive reads a file that a later round may rewrite. State what the repaired figure proves now and what it no longer proves about the live tree. Check whether the amendment sentence in the record cell is accurate, line by line against the commands you ran.\n4. The frozen want is 33 = entries - pass at the r53 state. Measure the live frontier counter now (cd L && python3 corpus/instruments/frontier-recheck-count.py) and report entries and pass. State whether the frozen invariant survives the host transition, and what it would take for it to bind on this host.\n5. Walk every C1 kill-rule clause in claims.json against committed evidence: the green summary line; the selftest; red control 1 and red control 2 in L/.ufo/waves/round-57/controls/c1-red-r57.txt; the do-nothing receipt L/.ufo/waves/round-57/controls/do-nothing-c1-r57.txt; grep -c '\"id\"' over the ledger equals 35. Mark each clause PASS or FAIL with the command output.\n6. Run: cd L && python3 corpus/instruments/figure-audit.py --selftest ; record exit code.\n# Acceptance\nEvidence file: a clause-by-clause PASS/FAIL table, the mutability and honesty finding, the invariant finding, and one verdict line for C1 (survives, or fails on named clauses). Do not edit L.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/ReviewDerive.md"
+    },
+    {
+      "name": "CriticFrontier",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\n# Target\nFalsify claim C2 (F38 on S089 and S090). Can the frozen C2 counters pass for a degenerate reason: an empty or stub entry, a recheck that binds nothing, a dangling quote anchor, or a registry row without substance? Evidence file: W/CriticFrontier.md.\n# Change\n1. Read the frozen C2 entry in L/.ufo/waves/round-57/claims.json (claim id C2): its predicate, counters and kill rule.\n2. Probe tree: mkdir -p <S>/probe && cp -r L/corpus L/PROVINCE.md L/SKILL.md <S>/probe/ . Copy only. Never edit L. Run python3 corpus/instruments/frontier-recheck-count.py --help first and use its real flag for the root.\n   (a) Replace the body of <S>/probe/corpus/knowledge/iso-29147-30111-standard-records.md with a one-line stub, keeping the three header lines source, verified-at, recheck. Run the counter. Record whether F38 passes.\n   (b) Delete only the 'source: S090' header line from the probe copy. Run the counter. Record.\n   (c) Change the recheck line in the probe copy to point at --selftest. Run the counter. Record.\n   (d) Delete the S090 row from the probe copy's corpus/SOURCES.md. Run the counter. Record.\n   Each must fail. Name every probe that passes.\n3. Anchor check: for three anchors cited in Claims 1 to 3 of the entry (for example S089.txt:84, S090.txt:197, S089.txt:204), run sed -n at that line of L/corpus/source-snapshots/round-57/S089.txt or S090.txt and confirm the expected words are on that line.\n4. Universal clauses: grep the C2 frozen sentence and the entry for 'all', 'every', 'complete', 'no ' and report each, with whether the counter enumerates what it covers.\n5. Do-nothing reach: read L/.ufo/waves/round-57/controls/do-nothing-c2-r57.txt and state whether a do-nothing tree could reach the after-state. Explain in one paragraph.\n# Acceptance\nEvidence file: the four probe results with pass or fail, the anchor results, the universal-clause table, the do-nothing paragraph, and one verdict line: can a degenerate entry pass the frozen C2 kill rule, yes or no, with the probe that shows it.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/CriticFrontier.md"
+    },
+    {
+      "name": "MutateLedger",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\n# Target\nOne-limb mutation battery over the figure-audit instrument, to see whether its limbs are load-bearing for C1 (R17: a limb is load-bearing only when a committed one-limb mutant changes the kill command's output). Evidence file: W/MutateLedger.md.\n# Change\n1. Work only in <S>/mut. Copy L/corpus/instruments/figure-audit.py and L/corpus/instruments/figure-audit-ledger.json there. Read the script's --help or argparse block first to learn how it takes a ledger path. Run mutants with cwd L so the derives resolve, pointing --ledger and the script path at the mutant copies.\n2. Build at least four single-edit mutants of the comparison logic, each exact-once and still compiling (py_compile): m1 turns the whole-value equality into a substring test; m2 compares want against recorded instead of derived; m3 makes a stale figure not increment the stale count so the exit can stay 0; m4 removes or disables the selftest case that covers a stale figure. Identify each edit by its exact before and after text.\n3. For each mutant record: py_compile result; its --selftest summary line and exit; its green audit summary line and exit over the unmodified ledger. A mutant the selftest does not kill is a SURVIVOR. Do not fix the instrument.\n4. Ledger mutant: in <S>/mut copy the ledger, change the want of registry-rows-r56 from 88 to 87, run the unmodified instrument on that copy, record exit (expect 1). Then change the derive of fail-entry-records to a constant echo 34 and run again (expect 1). Record.\n5. Write all commands and outputs to W/MutateLedger.md.\n# Acceptance\nEvidence file: the mutant table (id, exact edit, compile, selftest, green, KILLED or SURVIVED), the ledger mutant results, the survivor list (or none), and one verdict line on whether the figure-audit limbs are load-bearing for C1.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/MutateLedger.md"
+    },
+    {
+      "name": "ReopenSources",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\n# Target\nNon-author verification of the S089 and S090 captures: the bytes reproduce from a fresh open, the manifest pins match, every quote sits exactly once at its anchor line, and quote word counts are measured. Evidence file: W/ReopenSources.md.\n# Change\n1. sha256sum L/corpus/source-snapshots/round-57/S089.txt S090.txt. Compare with the sha256 fields in L/corpus/source-snapshots/round-57/manifest.json (read with python3 json).\n2. Fresh open: curl -sS -L --max-time 60 -A 'kasegi-research-verifier/1.0 (independent re-open; contact: operator)' -o <S>/S089.html https://www.iso.org/standard/72311.html ; then, with importlib from L/corpus/instruments/capture-source.py read-only, call its html_to_text on the bytes and write <S>/S089.rec.txt. Compare sha256 with the committed snapshot. Same for S090. If unequal, list the first differing lines.\n3. For each manifest quote: grep -n -F at the anchor line of the committed snapshot must contain the quote; grep -c -F over the whole file must print 1.\n4. For each quote used in the entry, measure words with wc -w on the quote text in a file. List any quote over 25 words.\n5. Confirm the registry has no rejected row added this round: grep -n -E '^\\| S08[89]|^\\| S090' L/corpus/SOURCES.md shows the two new rows with status mined and no 'rejected' cell.\n# Acceptance\nEvidence file: per-source sha equality and any differing lines, the per-quote anchor and count table, the word counts, and one verdict per source: verified or not verified, with the reason.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/ReopenSources.md"
+    },
+    {
+      "name": "ExportReplay",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\n# Target\nRun the frozen counters over a clean clone of the round's committed base plus the working-tree implementation files, so the claims rest on reproducible bytes and not on the lane worktree alone. Evidence file: W/ExportReplay.md.\n# Change\n1. git clone --shared -q /home/vgpnk/Projects/shokunin/kasegi-shokunin <S>/clone ; verify git -C <S>/clone rev-parse HEAD prints 6343e2c3882a96b1af86e1ecf4c9deba33361719 (if it does not, stop and report the HEAD you saw).\n2. Copy these working-tree files from L into <S>/clone at the same relative paths (cp only; never write to L): corpus/SOURCES.md, corpus/README.md, PROVINCE.md, corpus/instruments/figure-audit-ledger.json, corpus/instruments/knowledge-expected.txt, corpus/knowledge/iso-29147-30111-standard-records.md.\n3. In <S>/clone run and record output and exit code: python3 corpus/instruments/frontier-recheck-count.py ; python3 corpus/instruments/figure-audit.py ; python3 corpus/instruments/figure-audit.py --selftest ; python3 corpus/instruments/capture-binding-check.py ; python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-57/manifest.json --source S089 ; the same with --source S090.\n4. Run the same commands read-only in L (cd L && ...), and diff the two outputs line by line. Record the diff, expected empty.\n5. Confirm the derive commands that use git show <rev> still resolve in the clone (the rev-pinned ones name 8a5d7538b0caa50300b1eee88442a230d9a433f2 and 133c575394099abf28ddf1b0125c53aefde3e0fa; check with git -C <S>/clone cat-file -e <rev>). Record.\n6. Delete <S> at the end (trap). Keep only the evidence file.\n# Acceptance\nEvidence file: the commands, outputs and exit codes for the clone run, the L run, the diff verdict, the rev-resolution check, and the list of leftovers (expected none).\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/ExportReplay.md"
+    },
+    {
+      "name": "ScoutHostBound",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\n# Target\nSweep the lane for the same mistake class as the round-53 fail-entry-records derive: a committed figure, ledger derive or receipt that re-runs a LIVE counter whose result depends on the host (the Windows-only class). This is mistake mining for the round lesson; the class has no QUALITY criterion yet. Evidence file: W/ScoutHostBound.md.\n# Change\n1. grep -n -E 'frontier-recheck-count|capture-binding-check|source-recheck|resolve\\.py|anchorcheck|recheck-audit|figure-audit' L/corpus/instruments/figure-audit-ledger.json. For each ledger entry whose derive re-runs a live counter, record the id and the derive verbatim.\n2. For each live-counter derive: run the derive once with cwd L, read-only, timeout 120 s, and record its first output line and exit code. Compare with the want. Note each id where the host result differs from the record.\n3. Find derives that read working-tree files without a rev (grep -c or grep -n over paths with no git show); list them as drift-prone under uncommitted change.\n4. Also grep the committed receipts under L/.ufo/waves/round-5[2-6]/controls/ for lines that name a host (Windows, C:\\\\, win32, zcode, jpvei) and count them per round, to size how many receipts were produced on a different host.\n5. Propose, as text only, one QUALITY criterion that would catch the class (not written to QUALITY.md) with its runnable check.\n# Acceptance\nEvidence file: the table (entry id | derive | live counter? | host result vs want | class), the count of live-counter derives and the count of host-named receipt lines per round, the drift-prone list, and the proposed criterion text with its check command.\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r57 w1 (v1, 12 seats): source re-open, ledger replay, F38 claim table, host-bound sweep; attacks on C1 derive repair, C2 kill rule, ledger mutants.\n\nReport: write your scoped findings to .ufo/waves/round-57/w1/ScoutHostBound.md"
+    }
+  ]
+}
