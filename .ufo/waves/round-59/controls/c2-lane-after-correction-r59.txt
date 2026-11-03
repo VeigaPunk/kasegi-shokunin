@@ -1,0 +1,21 @@
+# round-59 C2 receipt after the entry text corrections (C-1, C-3, C-4, C-5, attribution) - LANE, unedited tee
+run-utc=2026-11-03T22:09:21Z host=plazir27 lane-HEAD=15cd5771f460ba5e999af416b45edeed4fd54236
+entry sha256 3d14851c6ed06c448b9dca513083cc330be8aa269d7d493a9011fedf82f82e7c
+
+$ python3 corpus/instruments/frontier-recheck-count.py | grep -E "FRONTIER-CENSUS|FRONTIER-PASS F40|entries="
+FRONTIER-CENSUS rows=40 admitted=40 closed=40 problem-rows=0 registry=92
+FRONTIER-PASS F40 ids=S092
+entries=43 pass=43 exit=0
+frontier-exit=0
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-59/manifest.json --source S092 | tail -1
+S092:Q9 OK occurrences=1 anchor=2-ok
+recheck-exit=0
+$ python3 corpus/instruments/capture-binding-check.py | tail -1
+records=75 bound=75 unbound=0
+binding-exit=0
+knowledge=78 expected=78
+ground-F40: 1
+lead-sha: 3ed4f54df244a57ffbc82d9c1ce1cd909d5d7ab70be807a1a6d1d978e652a432  -
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi | tail -1
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+census-exit=0
