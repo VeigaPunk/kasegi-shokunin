@@ -966,3 +966,23 @@ blog report at https://www.aisi.gov.uk/blog/how-fast-is-autonomous-ai-cyber-capa
 [r58 amendment, appended 2026-11-03] The frontier as of round 58 is F01-F39 admitted: F38 at round 57 and F39 at
 round 58. The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
 frontier count stays outside it.
+
+## Round-59 admission — coverage map row and Frontier F40 (appended 2026-11-03)
+
+The coverage map above is not edited in place (R6): the round-59 entry
+`knowledge/google-big-sleep-findings-tracker.md` (Frontier F40, source S092) is recorded here as an appended amendment
+so every existing line keeps its number. Source basis: the Google Issue Tracker's own README for the Big Sleep findings
+tracker at https://issuetracker.google.com/issues/430375499, opened 2026-11-03, capture `corpus/source-snapshots/round-59/S092.txt`,
+manifest `corpus/source-snapshots/round-59/manifest.json`.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Big Sleep public findings tracker (round 59) | knowledge/google-big-sleep-findings-tracker.md | S092 — the tracker's own README and finding-record fields, opened 2026-11-03 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F40 | Google Big Sleep public findings tracker — the Google Issue Tracker's own README for the tracker where Big Sleep's disclosed findings are collected: the disclosure policies they follow and the finding-record fields the tracker serves | admitted | knowledge/google-big-sleep-findings-tracker.md | S092 | Read the tracker as the place Big Sleep's own disclosed findings are collected, bound to Google's industry disclosure policy and Project Zero's 2025 trial (`S092.txt:2`, Q2, Q3); the README's own text grants no researcher intake, so it is not a reporting channel for third-party findings. |
+
+[r59 amendment, appended 2026-11-03] The frontier as of round 59 is F01-F40 admitted: F39 at round 58 and F40 at round 59.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
+outside it.

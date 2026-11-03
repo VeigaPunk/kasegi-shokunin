@@ -1,0 +1,19 @@
+# round-59 C1 after-state receipt - LANE (landed figure-audit.py, sha256 32e1cddb2291a643...), one run set, unedited tee
+run-utc=2026-11-03T21:48:58Z host=plazir27 lane-HEAD=00b535758d2cfa4511cda7167b67cdc045b85fb4
+sha256 32e1cddb2291a643622d6501960d25d795d9e12ba2319a9b3ff9cab2d4e83ff0  corpus/instruments/figure-audit.py
+
+$ python3 corpus/instruments/figure-audit.py --selftest | tail -1
+selftest cases=14 failures=0
+selftest-exit=0
+
+$ python3 corpus/instruments/figure-audit-mutbat.py | tail -1
+mutbat killed=2/2 survivors=0 controls=pass
+mutbat-exit=0
+
+$ python3 corpus/instruments/figure-audit.py | tail -1
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+ledger-exit=0
+
+$ python3 corpus/instruments/figure-audit.py --ledger .ufo/waves/round-54/controls/red-d53-ledger.json | grep d53-1
+FIG d53-1-trailer recorded=34 derived=33 want=34 stale
+red-exit=1

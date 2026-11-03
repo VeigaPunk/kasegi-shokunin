@@ -46,11 +46,11 @@ import tempfile
 
 READ_ONLY_HEADS = (
     "git show ", "git cat-file ", "git ls-tree ", "grep", "wc ", "wc<", "ls ", "ls*",
-    "sha256sum", "cat ", "cut ", "sort ", "awk ", "sed -n ", "python ", "python3 ",
+    "sha256sum", "cat ", "cut ", "sort ", "awk ", "sed -n ", "head ", "tail ", "python ", "python3 ",
 )
 
 
-EXPECTED_CASES = 6  # R17 pin: a dropped selftest case turns the selftest red
+EXPECTED_CASES = 14  # R17 pin: a dropped selftest case turns the selftest red
 
 
 def eprint(*a):
@@ -75,13 +75,73 @@ def run_derive(cmd, root):
     return out, out, None
 
 
-def check_read_only(cmd):
-    head = cmd.split("|")[0].split(">")[0].strip()
+def split_segments(cmd):
+    """Split a derive into its unquoted '|' and '&&' segments.
+
+    Returns None when an unquoted shell metacharacter sits outside that grammar:
+    ';', a lone '&', '||', a newline, a backtick, '(' or ')' (so '$(' too), or an
+    output redirect '>'. Single quotes are literal; inside double quotes a backtick
+    or '$(' is still live and refused. An unterminated quote is refused."""
+    segs, cur, quote, i, n = [], [], None, 0, len(cmd)
+    while i < n:
+        c = cmd[i]
+        if quote == "'":
+            cur.append(c)
+            if c == "'":
+                quote = None
+            i += 1
+            continue
+        if quote == '"':
+            if c == '"':
+                quote = None
+            elif c == "`" or (c == "$" and cmd[i + 1:i + 2] == "("):
+                return None
+            cur.append(c)
+            i += 1
+            continue
+        if c in "'\"":
+            quote = c
+            cur.append(c)
+            i += 1
+            continue
+        if c == "|":
+            if cmd[i + 1:i + 2] == "|":
+                return None
+            segs.append("".join(cur))
+            cur = []
+            i += 1
+            continue
+        if c == "&":
+            if cmd[i + 1:i + 2] != "&":
+                return None
+            segs.append("".join(cur))
+            cur = []
+            i += 2
+            continue
+        if c in ";`()\n\r>":
+            return None
+        cur.append(c)
+        i += 1
+    if quote is not None:
+        return None
+    segs.append("".join(cur))
+    return segs
+
+
+def segment_ok(head):
     if head.startswith(("python ", "python3 ")):
         # a counter run is admissible only against a committed instrument
         parts = head.split()
         return len(parts) >= 2 and parts[1].replace("\\", "/").startswith("corpus/instruments/")
     return head.startswith(READ_ONLY_HEADS)
+
+
+def check_read_only(cmd):
+    # every unquoted '|' / '&&' segment must itself open with an allow-listed head
+    segs = split_segments(cmd)
+    if segs is None:
+        return False
+    return all(segment_ok(seg.strip()) for seg in segs)
 
 
 def audit(ledger_path, root):
@@ -150,6 +210,10 @@ SELFTEST_LEDGER_NOT_RO = {
     ],
 }
 
+def _one(fid, derive, want):
+    return {"figures": [{"id": fid, "record": "g.txt:1", "recorded": want, "derive": derive, "want": want}]}
+
+
 def selftest():
     cases = []
 
@@ -183,6 +247,14 @@ def selftest():
     run_case("token-boundary-34-vs-340", 1, SELFTEST_LEDGER_TOKEN)
     run_case("unreadable-ledger-exit-2", 2, None, broken=True)
     run_case("derive-not-read-only-refused", 2, SELFTEST_LEDGER_NOT_RO)
+    run_case("chain-semicolon-refused", 2, _one("s-semi", "cat g.txt; cat g.txt", "35"))
+    run_case("chain-background-refused", 2, _one("s-bg", "cat g.txt & true", "35"))
+    run_case("chain-newline-refused", 2, _one("s-nl", "cat g.txt\ncat g.txt", "35"))
+    run_case("chain-cmdsubst-refused", 2, _one("s-subst", "cat g.txt $(cat g.txt)", "35"))
+    run_case("pipe-to-shell-refused", 2, _one("s-sh", "cat g.txt | sh", "35"))
+    run_case("redirect-refused", 2, _one("s-redir", "cat g.txt > out.txt", "35"))
+    run_case("or-chain-refused", 2, _one("s-or", "cat nosuch.txt || cat g.txt", "35"))
+    run_case("quoted-separator-admitted", 0, _one("s-quoted", "cat g.txt | awk 'BEGIN{x=1;y=2} {print}'", "35"))
 
     failures = 0
     for cid, got, want, good, out in cases:

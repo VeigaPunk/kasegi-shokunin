@@ -1,0 +1,38 @@
+# round-59 C2 after-state receipt - LANE (landed corpus bytes), one run set, unedited tee
+run-utc=2026-11-03T21:49:00Z host=plazir27 lane-HEAD=00b535758d2cfa4511cda7167b67cdc045b85fb4
+
+$ python3 corpus/instruments/frontier-recheck-count.py | grep -E "FRONTIER-CENSUS|FRONTIER-PASS F40|FRONTIER-FAIL|entries="
+FRONTIER-CENSUS rows=40 admitted=40 closed=40 problem-rows=0 registry=92
+FRONTIER-PASS F40 ids=S092
+entries=43 pass=43 exit=0
+frontier-exit=0
+
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-59/manifest.json --source S092
+S092:sha256 OK
+S092:Q1 OK occurrences=1 anchor=2-ok
+S092:Q10 OK occurrences=1 anchor=2-ok
+S092:Q2 OK occurrences=1 anchor=2-ok
+S092:Q3 OK occurrences=1 anchor=2-ok
+S092:Q4 OK occurrences=1 anchor=2-ok
+S092:Q5 OK occurrences=1 anchor=2-ok
+S092:Q6 OK occurrences=1 anchor=2-ok
+S092:Q7 OK occurrences=1 anchor=2-ok
+S092:Q8 OK occurrences=1 anchor=2-ok
+S092:Q9 OK occurrences=1 anchor=2-ok
+recheck-exit=0
+
+$ python3 corpus/instruments/capture-binding-check.py | tail -1
+records=75 bound=75 unbound=0
+binding-exit=0
+
+knowledge files: 78
+knowledge-expected entries: 78
+sort-exit=0
+F40 README rows: 1
+lead-line sha: 3ed4f54df244a57ffbc82d9c1ce1cd909d5d7ab70be807a1a6d1d978e652a432  -
+registry rows: 92
+git diff --numstat HEAD -- corpus/SOURCES.md: 1	0	corpus/SOURCES.md
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi | tail -1
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+census-root-exit=0

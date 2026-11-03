@@ -1214,3 +1214,14 @@ lesson.
 
 Checklist history stays in per-round reports and `.ufo/waves/round-48/controls/shonen-before.txt`;
 restoring the seed does not erase or upgrade those historical assessments. See S077 and QUALITY R55.
+
+## Round-59 Gates & probes registry addition (appended 2026-11-03)
+
+Routed by the round-58 non-author closure (defect 1, status-neutral): the two figure-audit instruments are registered under their exact basenames (QUALITY R29). This is a carry-in registration, not a round-59 claim; C1's own committed evidence is `.ufo/waves/round-59/controls/`.
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| figure-audit.py | gate | `python3 corpus/instruments/figure-audit.py [--ledger PATH] [--root DIR]` | 0 every recorded figure re-derives to its want; 1 a figure stale or its derive failed; 2 ledger unreadable or a derive refused by the read-only gate (`derive-not-read-only`) | `python3 corpus/instruments/figure-audit.py --selftest` (prints `selftest cases=14 failures=0`) | `corpus/instruments/figure-audit-ledger.json` (35 figures) | reads committed bytes and its ledger; writes nothing in the lane | kasegi |
+| figure-audit-mutbat.py | gate (mutant battery) | `python3 corpus/instruments/figure-audit-mutbat.py` | 0 every mutant killed and both controls pass; 1 a survivor or a control killed; 2 not used | the battery is the self-test of the self-test (prints `mutbat killed=2/2 survivors=0 controls=pass`) | the battery's mutant anchors embedded in the file, measured against `figure-audit.py` at the lane root | a scratch copy of `figure-audit.py` only | kasegi |
+
+The derive gate is a shell-metacharacter and pipeline-segment gate (round 59, C1): it refuses unquoted `;`, a lone `&`, `||`, newlines, backticks, parentheses and `>`, and requires every `|` or `&&` segment to open with an allow-listed read-only head. It does not interpret `awk` or `sed` programs: an in-program write such as `awk 'BEGIN{print 1 > "f"}'` is admitted and is named open in the round-59 limits.
