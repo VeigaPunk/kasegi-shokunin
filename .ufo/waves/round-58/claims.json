@@ -1,0 +1,55 @@
+{
+  "round": 58,
+  "lane": "kasegi",
+  "base": "1e5c8f2cdc1c9d14672444c6fca0e67414366494",
+  "frozen_at": "2026-11-03T20:48:48Z",
+  "schema": "kasegi-round-claims-v1",
+  "host": "Linux/omp host (archlinux, kernel 7.2.11-arch1-1, x64; python 3.14.8; run-15). Second round of the run-15 campaign on this host. Host facts measured before the freeze: the lane instrument capture-source.py opened https://www.aisi.gov.uk/blog/how-fast-is-autonomous-ai-cyber-capability-advancing with HTTP 200 (no round-57 Cloudflare block on this route; controls: capture probe and recorded capture, two same-sha opens, corpus/source-snapshots/round-58/manifest.json); the base ledger is green on the lane root (do-nothing-c1-r58.txt) and the base frontier counter is rows=38 (do-nothing-c2-r58.txt).",
+  "carry_in": "Round-57 non-author closure (corpus/lessons/round-57-verifier-spotcheck.md, verdict admitted, 5/5 agree) routed: (1) DF-56-2 stale line - the round-57 report recorded the L2-minimum item as operator-side; the dispatched prompt does embed it (grep -c 'at least 8 L2 subagents' .ufo/prompts/kasegi-round-57.md = 1), so the round-57 line is stale and is resolved here, named in the report and mined as M58-1; (2) M57-9 / R69 census range base and (3) the R67 counter stub limb (M57-4) - both are operator decisions asked on the kasegi round-57 L0 row (.ufo/l0-questions.md, unanswered at this freeze); this round routes around them and does not claim them; (4) M57-6 survivors m4/m6 and the M57-8 degenerate red fixture are the figure-audit repairs claimed as C1.",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "kind": "instrument repair (nominal per QUALITY R58: the figure-audit instrument verifies the lane's figures; it is not a citation-resolution metric, so score_before 4 is held and the delta is labelled nominal)",
+      "score_before": 4,
+      "frozen_sentence": "The figure-audit instrument (corpus/instruments/figure-audit.py) kills both one-limb mutants of its own selftest - m4 (the stale-literal case dropped) and m6 (the read-only derive gate disabled) - by a case-count pin (EXPECTED_CASES = 6) and a new case derive-not-read-only-refused (a non-allow-listed head must be refused with exit 2), replayed by the committed battery corpus/instruments/figure-audit-mutbat.py (new) with two non-killed controls; and the r54 red fixture .ufo/waves/round-54/controls/red-d53-ledger.json entry d53-1-trailer derives from the committed r53 receipt line FAIL_entry_records=33 instead of re-running the live frontier counter, so its red verdict reads filed-versus-want on this host (derived=33 want=34 stale) rather than derived=UNAVAILABLE.",
+      "before": "do-nothing-c1-mutants-r58.txt: selftest cases=5 failures=0 exit 0 for the pristine instrument AND for m4 (cases=4 failures=0 exit 0, survivor) AND for m6 (cases=5 failures=0 exit 0, survivor); the figure-audit-mutbat.py battery is absent (ls exits 2); do-nothing-c1-r58.txt: the red fixture prints `FIG d53-1-trailer recorded=34 derived=UNAVAILABLE reason=derive-exit-1 stale`; the ledger audit is green at base (FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0) and the entry count is 35.",
+      "after": "python3 corpus/instruments/figure-audit.py --selftest prints `selftest cases=6 failures=0`, exit 0; python3 corpus/instruments/figure-audit-mutbat.py prints `MUT m4-drop-stale-literal-case ... killed=1`, `MUT m6-readonly-gate-off ... killed=1`, `CONTROL c-equivalent-trailing-space ... must_not_be_killed=held`, `mutbat killed=2/2 survivors=0 controls=pass`, exit 0; the red fixture prints `FIG d53-1-trailer recorded=34 derived=33 want=34 stale` and exits 1; the ledger audit stays `FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0`; grep -c '\"id\"' over the ledger stays 35.",
+      "kill_rule": "C1 FAILS if any of: the pristine selftest exits nonzero or prints anything other than `selftest cases=6 failures=0` as its last line; the mutant battery exits nonzero, prints survivors other than 0, or kills the equivalent-patch control; the m4 or m6 mutant is not killed by its own selftest exit code; the red fixture still prints UNAVAILABLE for d53-1-trailer, or prints derived=34 (the filed literal) instead of 33, or exits 0; the ledger audit or the ledger entry count differs from 35/35/0/exit 0 and 35; a changed file outside figure-audit.py, figure-audit-mutbat.py, red-d53-ledger.json and the documentation files named in the round report; or the pristine selftest's ok-ledger, stale-literal, derive-fails-fail-closed, token-boundary and unreadable-ledger cases change verdict (any of the five prior case exit codes differs from its frozen want).",
+      "counting_commands": [
+        "python3 corpus/instruments/figure-audit.py --selftest   # want: last line selftest cases=6 failures=0, exit 0",
+        "python3 corpus/instruments/figure-audit-mutbat.py   # want: mutbat killed=2/2 survivors=0 controls=pass, exit 0",
+        "python3 corpus/instruments/figure-audit.py --ledger .ufo/waves/round-54/controls/red-d53-ledger.json | grep d53-1   # want: FIG d53-1-trailer recorded=34 derived=33 want=34 stale",
+        "python3 corpus/instruments/figure-audit.py   # want: FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0",
+        "grep -c '\"id\"' corpus/instruments/figure-audit-ledger.json   # want: 35"
+      ]
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "kind": "frontier-admission",
+      "score_before": 8,
+      "sourced_rows": "S091 (opened this round, 2026-11-03; the claim rests on it per the round contract 2b.4)",
+      "frozen_sentence": "The lane admits frontier F39 - the UK AI Security Institute's autonomous cyber-capability progress rate, as the institute states it on its own blog (the 80%-reliability cyber time-horizon doubling estimate of 4.7 months from late 2024 and its acceleration from the November 2025 estimate of 8 months, the bounded method - narrow cyber suite, expert-time baselines, 80% threshold, 2.5M token cap - the single-omission uncertainty band 4.1 to 5.0 months, and the cyber-range results 6 of 10 and 3 of 10 on one newer checkpoint) - on the registry row S091 (capture corpus/source-snapshots/round-58/S091.txt, manifest corpus/source-snapshots/round-58/manifest.json, 9 pinned assertions). The lead line corpus/SOURCES.md:141 (the UK AISI lead) is byte-unchanged (exact-line sha256 631364e0dd3447d6a9bc56830dfc2da26600c5e6cfca054b2b9c3f8cf3627547) and is admitted by a bullet, not edited.",
+      "before": "do-nothing-c2-r58.txt (pure base export, 1e5c8f2): FRONTIER-CENSUS rows=38 admitted=38 closed=38 problem-rows=0 registry=90; entries=41 pass=41 exit=0; grep -cE '^\\| F39 ' corpus/README.md = 0; knowledge files 76; knowledge-expected entries 76; capture-binding records=73 bound=73 unbound=0; the lead-line sha is 631364e0dd3447d6a9bc56830dfc2da26600c5e6cfca054b2b9c3f8cf3627547.",
+      "after": "frontier-recheck-count.py prints FRONTIER-CENSUS rows=39 admitted=39 closed=39 problem-rows=0 registry=91, FRONTIER-PASS F39 ids=S091, entries=42 pass=42 exit=0; source-recheck.py --source S091 exits 0 with sha256 OK and 9 Q OK lines each occurrences=1; capture-binding-check.py prints records=74 bound=74 unbound=0 exit 0; ls corpus/knowledge/*.md | wc -l = 77; knowledge-expected entries = 77 and LC_ALL=C sort -c exits 0; grep -cE '^\\| F39 ' corpus/README.md = 1; the lead-line sha stays 631364e0dd3447d6a9bc56830dfc2da26600c5e6cfca054b2b9c3f8cf3627547; registry rows = 91; sources-census.sh validate --file corpus/SOURCES.md exits 0 (W04 warnings only, all pre-existing).",
+      "kill_rule": "C2 FAILS if any of: the final frontier counter lacks `FRONTIER-PASS F39 ids=S091` or prints rows != 39, admitted != 39, closed != 39, registry != 91, entries != 42 or pass != 42, or its exit is nonzero; source-recheck --source S091 exits nonzero or any Q line lacks occurrences=1; capture-binding-check exits nonzero or prints records != 74 or bound != 74; the sha256 of corpus/source-snapshots/round-58/S091.txt differs from d2ba7199faf44fb9f5fc5c48924f20d72ed08959c511af58cb9c1322f9820618; the knowledge-expected list is not LC_ALL=C sorted or its entry count differs from the knowledge file count (77 = 77); the lead line's sha differs from 631364e0dd3447d6a9bc56830dfc2da26600c5e6cfca054b2b9c3f8cf3627547; any pre-existing README, PROVINCE or SOURCES line changes (diff shows deletions or in-place modifications; pure appends and one row insert only); the census validate exits nonzero; or the entry's recheck line is not a source-recheck invocation for S091.",
+      "counting_commands": [
+        "python3 corpus/instruments/frontier-recheck-count.py   # want: FRONTIER-CENSUS rows=39 admitted=39 closed=39 problem-rows=0 registry=91; FRONTIER-PASS F39 ids=S091; entries=42 pass=42 exit=0",
+        "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-58/manifest.json --source S091   # want: sha256 OK + 9 Q OK occurrences=1, exit 0",
+        "python3 corpus/instruments/capture-binding-check.py   # want: records=74 bound=74 unbound=0, exit 0",
+        "ls corpus/knowledge/*.md | wc -l   # want: 77",
+        "grep -c '^corpus/knowledge/' corpus/instruments/knowledge-expected.txt   # want: 77",
+        "LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt   # want: exit 0",
+        "grep -cE '^\\| F39 ' corpus/README.md   # want: 1",
+        "grep 'rate of autonomous AI cyber-capability progress' corpus/SOURCES.md | sha256sum   # want: 631364e0dd3447d6a9bc56830dfc2da26600c5e6cfca054b2b9c3f8cf3627547  -",
+        "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file corpus/SOURCES.md   # want: exit 0"
+      ]
+    }
+  ],
+  "non_claim_frontier_items": [
+    "R67 counter stub limb (M57-4): the do-nothing receipt do-nothing-r67-probe-a2-r58.txt shows the frozen counter still admits the one-line stub body (FRONTIER-PASS F38 ids=S089,S090, exit 0); the counter amendment needs an operator decision (kasegi round-57 L0 row) and is not claimed.",
+    "R69 census range base (M57-9): the census freshness gate was stale at round-57 end (gate-final-r57.txt); the pinned-range rule needs an operator decision (kasegi round-57 L0 row) and is not claimed.",
+    "M57-6 survivors m4/m6 and M57-8 fixture are C1; the census host-stamp (M57-7) is not claimed."
+  ]
+}

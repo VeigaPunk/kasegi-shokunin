@@ -1,0 +1,43 @@
+# round-58 C1 do-nothing mutant receipt (lane root at base 1e5c8f2; mutants built from the base instrument bytes); one run set, unedited tee
+run-utc=2026-11-03T20:44:28Z host=plazir27
+
+## site counts (exact-once requirement)
+$ grep -c 'run_case("stale-literal"' /fast/scratch/hyaku/kasegi-r58/pre-frozen/base/corpus/instruments/figure-audit.py ; grep -c 'return head.startswith(READ_ONLY_HEADS)' /fast/scratch/hyaku/kasegi-r58/pre-frozen/base/corpus/instruments/figure-audit.py
+1 1
+
+## mutant pristine: selftest
+$ python3 /fast/scratch/hyaku/kasegi-r58/pre-frozen/mut/pristine-figure-audit.py --selftest | tail -1
+selftest cases=5 failures=0
+[exit=0]
+
+## mutant m4: selftest
+$ python3 /fast/scratch/hyaku/kasegi-r58/pre-frozen/mut/m4-figure-audit.py --selftest | tail -1
+selftest cases=4 failures=0
+[exit=0]
+
+## mutant m6: selftest
+$ python3 /fast/scratch/hyaku/kasegi-r58/pre-frozen/mut/m6-figure-audit.py --selftest | tail -1
+selftest cases=5 failures=0
+[exit=0]
+
+## mutant pristine: ledger audit over the 35-figure ledger at the lane root (tree == base HEAD 1e5c8f2; the pure export lacks .git and reads rev-pinned derives UNAVAILABLE)
+$ python3 /fast/scratch/hyaku/kasegi-r58/pre-frozen/mut/pristine-figure-audit.py --root /home/vgpnk/Projects/shokunin/kasegi-shokunin --ledger /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit-ledger.json | tail -1
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+[exit=0]
+
+## mutant m4: ledger audit over the 35-figure ledger at the lane root (tree == base HEAD 1e5c8f2; the pure export lacks .git and reads rev-pinned derives UNAVAILABLE)
+$ python3 /fast/scratch/hyaku/kasegi-r58/pre-frozen/mut/m4-figure-audit.py --root /home/vgpnk/Projects/shokunin/kasegi-shokunin --ledger /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit-ledger.json | tail -1
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+[exit=0]
+
+## mutant m6: ledger audit over the 35-figure ledger at the lane root (tree == base HEAD 1e5c8f2; the pure export lacks .git and reads rev-pinned derives UNAVAILABLE)
+$ python3 /fast/scratch/hyaku/kasegi-r58/pre-frozen/mut/m6-figure-audit.py --root /home/vgpnk/Projects/shokunin/kasegi-shokunin --ledger /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit-ledger.json | tail -1
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+[exit=0]
+
+## M57-8 fixture on this host (lane root, base instrument)
+$ python3 corpus/instruments/figure-audit.py --ledger .ufo/waves/round-54/controls/red-d53-ledger.json
+FIG d53-1-trailer recorded=34 derived=UNAVAILABLE reason=derive-exit-1 stale
+FIG d53-2-lines recorded=543 derived=542 want=543 stale
+FIGURE-AUDIT figures=2 ok=0 stale=2 exit=1
+[exit=1]

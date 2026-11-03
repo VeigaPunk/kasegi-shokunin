@@ -1,0 +1,54 @@
+# round-58 extended pre-freeze neighbor screen (rev 1) - one run set, unedited tee
+run-utc=2026-11-03T20:38:28Z host=plazir27 base=1e5c8f2cdc1c9d14672444c6fca0e67414366494
+
+## limb 1: held-row hits for the AISI surface across the front-door files
+$ bash -c grep -rn 'aisi.gov.uk' corpus/knowledge corpus/README.md PROVINCE.md corpus/SOURCES.md SKILL.md | grep -v source-snapshots; true
+corpus/SOURCES.md:141:- UK AI Security Institute's report on the rate of autonomous AI cyber-capability progress at https://www.aisi.gov.uk/blog/how-fast-is-autonomous-ai-cyber-capability-advancing.
+[exit=0]
+
+## limb 2: held-row hits for the capability-measurement tokens (file lists)
+$ bash -c grep -rlc 'AI Security Institute' corpus/knowledge/*.md corpus/README.md PROVINCE.md corpus/SOURCES.md SKILL.md; echo '-- time horizon files:'; grep -rlc 'time horizon' corpus/knowledge/*.md corpus/README.md PROVINCE.md corpus/SOURCES.md SKILL.md; echo '-- METR files:'; grep -rlc 'METR' corpus/knowledge/*.md corpus/README.md PROVINCE.md corpus/SOURCES.md SKILL.md; echo '-- autonomous cyber files:'; grep -rlc 'autonomous cyber' corpus/knowledge/*.md corpus/README.md PROVINCE.md corpus/SOURCES.md SKILL.md; true
+corpus/SOURCES.md
+-- time horizon files:
+-- METR files:
+corpus/knowledge/mission-ledger.md
+corpus/knowledge/ops-invariants.md
+corpus/knowledge/source-tree-loss-2026-09-28.md
+corpus/knowledge/triage-thresholds.md
+corpus/README.md
+SKILL.md
+-- autonomous cyber files:
+[exit=0]
+
+## limb 3: the recorded lead line (bytes-unchanged check) at base
+$ bash -c grep -n "rate of autonomous AI cyber-capability progress" corpus/SOURCES.md; echo '-- loose string count:'; grep -c "rate of autonomous AI cyber-capability progress" corpus/SOURCES.md; echo '-- exact-line sha at base:'; git show 1e5c8f2cdc1c9d14672444c6fca0e67414366494:corpus/SOURCES.md | grep 'rate of autonomous AI cyber-capability progress' | sha256sum
+141:- UK AI Security Institute's report on the rate of autonomous AI cyber-capability progress at https://www.aisi.gov.uk/blog/how-fast-is-autonomous-ai-cyber-capability-advancing.
+-- loose string count:
+1
+-- exact-line sha at base:
+631364e0dd3447d6a9bc56830dfc2da26600c5e6cfca054b2b9c3f8cf3627547  -
+[exit=0]
+
+## limb 4: downstream-consumer sweep over corpus/source-snapshots/
+$ bash -c grep -rln 'aisi.gov.uk' corpus/source-snapshots/ | sort; echo '-- time-horizon token snapshots:'; grep -rln 'time horizon' corpus/source-snapshots/ | sort; echo '-- METR token snapshots:'; grep -rln 'METR' corpus/source-snapshots/ | sort; true
+corpus/source-snapshots/round-58/S091.txt
+-- time-horizon token snapshots:
+corpus/source-snapshots/round-58/S091.txt
+-- METR token snapshots:
+corpus/source-snapshots/round-58/S091.txt
+[exit=0]
+
+## limb 5: sibling-province adjacency probe (read-only, fleet root)
+$ bash -c grep -in 'cyber\|capability\|benchmark' /home/vgpnk/Projects/shokunin/kengaku-shokunin/PROVINCE.md | head -10; true
+8:## Surfaces (re-verified round 14, 2026-09-29; route telemetry absent; benchmark battery relocated — see rows)
+13:| Local benchmark battery | `~/archive/bench-arena/` — relocated intact from `~/bench-arena/` during round 14; `tasks/`, `grade.sh`, `loop.sh`, `report-grok45.csv`, `report-qwenlocal*.csv`, `telemetry-qwenlocal-v2.csv` all resolve at the archive path | authored runs, status-flip and truncation taxonomy; content no-drift (0 files newer than 2026-09-28), but historical commands using the old path are frozen evidence **ABSENT 2026-10-20** (round 25: first local path fails `test -e`; superseded by §Province map) | **ABSENT 2026-10-28** — `~/archive/bench-arena` and `~/bench-arena` both fail `test -e`; no relocation found (round 51: probe + receipt `corpus/evidence/round51/surfaces/paths.txt`) |
+15:| Served local model (round 51 successor) | `http://127.0.0.1:45669` (direct llama.cpp server) and `http://127.0.0.1:1234` (router, `lfm3-server.service`) — `/v1/models`, `/health`, `/props`; model id `LFM3-1.7B`, `owned_by=llamacpp`, n_ctx 32768, slots 4, build `b1-39ebd2`, alias `LFM3-1.7B`, `--model /home/vgpnk/models/lfm3/LFM3-1.7B/LFM3-1.7B-Q8_0.gguf`, pid 242776, 16 argv tokens | capability interpretation only; flag authority is kama's (serving plane). Capture-time pin 2026-10-28 (`corpus/evidence/round51/surfaces/endpoints.txt`), not a capability claim |
+32:  lane keeps the *measured* effect of prompt format on capability and hands the
+38:else a benchmark records `finish=tool_calls` instead of capability
+45:serving plane** — the process-level pin above is capability-*interpretation*
+66:spillover ask inflates this by design): prompt-craft evidence for benchmark
+124:The ground named in `corpus/README.md` §Frontier: agentic benchmark task-spec
+139:| **kotoba** | prompt- and skill-craft rules — measured capability effects of prompt format stay here; reusable craft implications route out (r7 tools-without-system, r11/r12 ack-intent findings) |
+196:`plans/benchmark_spec_audit.py` and `corpus/knowledge/webarena-task-spec-audit.md`.
+[exit=0]
+

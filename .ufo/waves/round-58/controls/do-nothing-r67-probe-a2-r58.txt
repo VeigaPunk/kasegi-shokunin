@@ -1,0 +1,15 @@
+# round-58 R67 probe a2 replica on the base export (C2 counter limb; the round-57 stub admitted by the frozen counter, carried as a named open item)
+run-utc=2026-11-03T20:48:09Z host=plazir27 base=1e5c8f2cdc1c9d14672444c6fca0e67414366494
+
+## probe a2 entry size (stub: 8 lines, no body)
+$ cd /fast/scratch/hyaku/kasegi-r58/pre-frozen/probe-a2 && wc -l corpus/knowledge/iso-29147-30111-standard-records.md
+8 corpus/knowledge/iso-29147-30111-standard-records.md
+[exit=0]
+
+## probe a2 frontier counter (want if R67 closed: exit 1; observed: admitted)
+$ cd /fast/scratch/hyaku/kasegi-r58/pre-frozen/probe-a2 && python3 corpus/instruments/frontier-recheck-count.py | grep -E 'FRONTIER-PASS F38|entries='; echo counter-pipe-exit=${PIPESTATUS[0]}
+FRONTIER-PASS F38 ids=S089,S090
+entries=41 pass=41 exit=0
+counter-pipe-exit=0
+[exit=0]
+

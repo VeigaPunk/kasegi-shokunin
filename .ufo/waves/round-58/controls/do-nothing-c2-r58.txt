@@ -1,0 +1,35 @@
+# round-58 C2 do-nothing control (pure base export; zero F39, the round-57 state)
+run-utc=2026-11-03T20:48:07Z host=plazir27 base=1e5c8f2cdc1c9d14672444c6fca0e67414366494
+
+## C2 frontier census at base (frozen before: rows=38 admitted=38 closed=38 problem-rows=0 registry=90; entries=41 pass=41 exit=0)
+$ cd /fast/scratch/hyaku/kasegi-r58/pre-frozen/base && python3 corpus/instruments/frontier-recheck-count.py | grep -E 'FRONTIER-CENSUS|FRONTIER-PASS F39|FRONTIER-FAIL F39|entries='; echo counter-pipe-exit=${PIPESTATUS[0]}
+FRONTIER-CENSUS rows=38 admitted=38 closed=38 problem-rows=0 registry=90
+entries=41 pass=41 exit=0
+counter-pipe-exit=0
+[exit=0]
+
+## C2 F39 row count at base (frozen before: 0)
+$ cd /fast/scratch/hyaku/kasegi-r58/pre-frozen/base && grep -cE '^\| F39 ' corpus/README.md
+0
+[exit=1]
+
+## C2 knowledge files at base (frozen before: 76)
+$ cd /fast/scratch/hyaku/kasegi-r58/pre-frozen/base && ls corpus/knowledge/*.md | wc -l
+76
+[exit=0]
+
+## C2 expected entries at base (frozen before: 76)
+$ cd /fast/scratch/hyaku/kasegi-r58/pre-frozen/base && grep -c '^corpus/knowledge/' corpus/instruments/knowledge-expected.txt
+76
+[exit=0]
+
+## C2 capture binding at base (frozen before: records=73 bound=73 unbound=0)
+$ cd /fast/scratch/hyaku/kasegi-r58/pre-frozen/base && python3 corpus/instruments/capture-binding-check.py | tail -1
+records=73 bound=73 unbound=0
+[exit=0]
+
+## C2 lead line sha at base (frozen before: 631364e0dd3447d6a9bc56830dfc2da26600c5e6cfca054b2b9c3f8cf3627547)
+$ cd /fast/scratch/hyaku/kasegi-r58/pre-frozen/base && grep 'rate of autonomous AI cyber-capability progress' corpus/SOURCES.md | sha256sum
+631364e0dd3447d6a9bc56830dfc2da26600c5e6cfca054b2b9c3f8cf3627547  -
+[exit=0]
+

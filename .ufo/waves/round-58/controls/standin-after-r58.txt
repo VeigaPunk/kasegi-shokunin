@@ -1,0 +1,180 @@
+# round-58 after-state counting run set - STAND-IN dry run (base 1e5c8f2 + declared after-adds, before the freeze commit)
+run-utc=2026-11-03T20:47:28Z host=plazir27 root=/fast/scratch/hyaku/kasegi-r58/standin
+
+## C1 selftest (want: selftest cases=6 failures=0, exit 0)
+$ python3 corpus/instruments/figure-audit.py --selftest
+selftest case=ok-ledger exit=0 want=0 verdict=pass
+selftest case=stale-literal exit=1 want=1 verdict=pass
+selftest case=derive-fails-fail-closed exit=1 want=1 verdict=pass
+selftest case=token-boundary-34-vs-340 exit=1 want=1 verdict=pass
+selftest case=unreadable-ledger-exit-2 exit=2 want=2 verdict=pass
+selftest case=derive-not-read-only-refused exit=2 want=2 verdict=pass
+selftest cases=6 failures=0
+[exit=0]
+
+## C1 mutant battery (want: mutbat killed=2/2 survivors=0 controls=pass, exit 0)
+$ python3 corpus/instruments/figure-audit-mutbat.py
+PRISTINE selftest_exit=0 last='selftest cases=6 failures=0'
+CONTROL c-equivalent-trailing-space selftest_exit=0 must_not_be_killed=held last='selftest cases=6 failures=0'
+MUT m4-drop-stale-literal-case sites=1 py_compile=0 selftest_exit=1 killed=1 last='selftest cases=5 failures=1'
+MUT m6-readonly-gate-off sites=1 py_compile=0 selftest_exit=1 killed=1 last='selftest cases=6 failures=1'
+mutbat killed=2/2 survivors=0 controls=pass
+[exit=0]
+
+## C1 red fixture d53 (want: derived=33 not UNAVAILABLE, stale, exit 1)
+$ python3 corpus/instruments/figure-audit.py --ledger .ufo/waves/round-54/controls/red-d53-ledger.json
+FIG d53-1-trailer recorded=34 derived=33 want=34 stale
+FIG d53-2-lines recorded=543 derived=542 want=543 stale
+FIGURE-AUDIT figures=2 ok=0 stale=2 exit=1
+[exit=1]
+
+## C1 ledger audit (want: FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0)
+$ python3 corpus/instruments/figure-audit.py
+FIG frontier-rows recorded=34 derived=34 ok
+FIG registry-rows recorded=85 derived=85 ok
+FIG knowledge-expected-entries recorded=72 derived=72 ok
+FIG knowledge-files recorded=72 derived=72 ok
+FIG capture-lines-s085 recorded=543 (filed; superseded by the r54 D53-2 correction) derived=542 ok
+FIG capture-bytes-s085 recorded=7590 derived=7590 ok
+FIG capture-lines-s086 recorded=731 derived=731 ok
+FIG capture-sha256-s086 recorded=fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f derived=fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f ok
+FIG frontier-rows-r54 recorded=35 derived=35 ok
+FIG registry-rows-r54 recorded=86 derived=86 ok
+FIG entries-r54 recorded=38 derived=38 ok
+FIG knowledge-expected-r54 recorded=73 derived=73 ok
+FIG knowledge-files-r54 recorded=73 derived=73 ok
+FIG figure-audit-mentions-base-scorecard recorded=2 (the receipt's limb; the filed prose 0 superseded) derived=2 ok
+FIG figure-audit-mentions-base-log recorded=0 derived=0 ok
+FIG figure-audit-mentions-base-knowledge-expected recorded=0 derived=0 ok
+FIG frontier-rows-r55 recorded=36 derived=36 ok
+FIG registry-rows-r55 recorded=87 derived=87 ok
+FIG entries-r55 recorded=39 derived=39 ok
+FIG knowledge-expected-r55 recorded=74 derived=74 ok
+FIG knowledge-files-r55 recorded=74 derived=74 ok
+FIG census-fresh-literal-r55 recorded=stale (the receipt's printed limb; the filed prose ok superseded) derived=stale ok
+FIG census-internal-r55-receipt recorded=1118 derived=1118 ok
+FIG census-gone-r55-receipt recorded=3883 derived=3883 ok
+FIG census-fixedpoint-internal-r55 recorded=1119 derived=1119 ok
+FIG census-fixedpoint-gone-r55 recorded=3882 derived=3882 ok
+FIG fail-entry-records recorded=33 (the class-check line; the trailer's 34 superseded) derived=33 ok
+FIG frontier-rows-r56 recorded=37 derived=37 ok
+FIG registry-rows-r56 recorded=88 derived=88 ok
+FIG entries-r56 recorded=40 derived=40 ok
+FIG knowledge-expected-r56 recorded=75 derived=75 ok
+FIG knowledge-files-r56 recorded=75 derived=75 ok
+FIG census-fresh-literal-r56 recorded=ok derived=ok ok
+FIG census-internal-r56-receipt recorded=1130 derived=1130 ok
+FIG census-gone-r56-receipt recorded=3915 derived=3915 ok
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+[exit=0]
+
+## C1 ledger entry count (want: 35)
+$ grep -c '"id"' corpus/instruments/figure-audit-ledger.json
+35
+[exit=0]
+
+## C2 frontier census (want: rows=39 admitted=39 closed=39 problem-rows=0 registry=91; FRONTIER-PASS F39 ids=S091; entries=42 pass=42 exit=0)
+$ bash -c python3 corpus/instruments/frontier-recheck-count.py | grep -E 'FRONTIER-CENSUS|FRONTIER-PASS F39|FRONTIER-FAIL|entries='; echo counter-pipe-exit=${PIPESTATUS[0]}
+FRONTIER-CENSUS rows=39 admitted=39 closed=39 problem-rows=0 registry=91
+FRONTIER-PASS F39 ids=S091
+entries=42 pass=42 exit=0
+counter-pipe-exit=0
+[exit=0]
+
+## C2 source-recheck S091 (want: sha256 OK + 9 Q OK occurrences=1, exit 0)
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-58/manifest.json --source S091
+S091:sha256 OK
+S091:Q1 OK occurrences=1 anchor=1-ok
+S091:Q2 OK occurrences=1 anchor=14-ok
+S091:Q3 OK occurrences=1 anchor=21-ok
+S091:Q4 OK occurrences=1 anchor=23-ok
+S091:Q5 OK occurrences=1 anchor=25-ok
+S091:Q6 OK occurrences=1 anchor=30-ok
+S091:Q7 OK occurrences=1 anchor=34-ok
+S091:Q8 OK occurrences=1 anchor=45-ok
+S091:Q9 OK occurrences=1 anchor=14-ok
+[exit=0]
+
+## C2 capture binding (want: records=74 bound=74 unbound=0, exit 0)
+$ python3 corpus/instruments/capture-binding-check.py
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-42 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-43 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-44 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-45 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-46 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-46-a2 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-47 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-49 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-50 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-51 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-52 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-53 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-54 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-55 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-56 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-57 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-58 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=74 with_url=74 with_fetched_utc=36 with_archival=38 snapshot_dirs=34 manifest_dirs=34 missing_manifest=0 multi_row_url=7 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+records=74 bound=74 unbound=0
+[exit=0]
+
+## C2 knowledge files (want: 77)
+$ ls corpus/knowledge/*.md | wc -l
+77
+[exit=0]
+
+## C2 knowledge-expected entries (want: 77)
+$ grep -c '^corpus/knowledge/' corpus/instruments/knowledge-expected.txt
+77
+[exit=0]
+
+## C2 expected list sort (want: exit 0)
+$ LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt && echo sort-ok
+sort-ok
+[exit=0]
+
+## C2 frontier F39 row count (want: 1)
+$ grep -cE '^\| F39 ' corpus/README.md
+1
+[exit=0]
+
+## C2 lead line sha (want: 631364e0dd3447d6a9bc56830dfc2da26600c5e6cfca054b2b9c3f8cf3627547)
+$ grep 'rate of autonomous AI cyber-capability progress' corpus/SOURCES.md | sha256sum
+631364e0dd3447d6a9bc56830dfc2da26600c5e6cfca054b2b9c3f8cf3627547  -
+[exit=0]
+
+## C2 registry rows (want: 91)
+$ grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md
+91
+[exit=0]
+
+## C2 census validate (want: exit 0)
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file corpus/SOURCES.md; echo validate-exit=$?
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	W04	S076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes
+file	W04	S080 duplicate url ossf.github.io/osv-schema across scopes
+file	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r58/standin/corpus/SOURCES.md
+validate-exit=0
+[exit=0]
+
+DONE
