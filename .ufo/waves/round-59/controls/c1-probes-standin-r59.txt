@@ -1,0 +1,13 @@
+# round-59 C1 chain-probe receipt at STAND-IN AFTER-STATE (candidate figure-audit.py in the stand-in clone) - unedited tee of one run
+instrument=/fast/scratch/hyaku/kasegi-r59/l1/standin/corpus/instruments/figure-audit.py sha256=32e1cddb2291a643
+run-utc=2026-11-03T21:47:01Z host=plazir27
+probe=P1-semicolon derive=cat g.txt; touch MARK-P1 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P1-semicolon
+probe=P2-andand derive=cat g.txt && touch MARK-P2 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P2-andand
+probe=P3-background derive=cat g.txt & touch MARK-P3 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P3-background
+probe=P4-newline derive=cat g.txt|touch MARK-P4 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P4-newline
+probe=P5-cmdsubst derive=cat g.txt $(touch MARK-P5) exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P5-cmdsubst
+probe=P6-pipe-tee derive=cat g.txt | tee MARK-P6 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P6-pipe-tee
+probe=P7-redirect derive=cat g.txt > MARK-P7 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P7-redirect
+probe=P8-oror derive=cat nosuch.txt || touch MARK-P8 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P8-oror
+probe=CTRL-quoted-separator derive=cat g.txt | awk 'BEGIN{x=1;y=2} {print}' exit=0 markers=0 :: FIG CTRL-quoted-separator recorded=35 derived=35 ok
+probe=RESIDUAL-awk-write derive=cat g.txt | awk 'BEGIN{print 1 > "MARK-RES"}{print}' exit=0 markers=1 :: FIG RESIDUAL-awk-write recorded=35 derived=35 ok

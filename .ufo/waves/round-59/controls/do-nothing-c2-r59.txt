@@ -1,0 +1,33 @@
+# round-59 C2 do-nothing control (pure base export; zero F40, the round-58 state) - one run set, unedited tee
+run-utc=2026-11-03T21:40:59Z host=plazir27 base=69de8d363b2193fdb37d03fd3e235bceeb1c2daa export=/fast/scratch/hyaku/kasegi-r59/l1/pre-frozen/base
+
+## C2 frontier census at base (frozen before: rows=39 admitted=39 closed=39 problem-rows=0 registry=91; entries=42 pass=42 exit=0)
+$ cd /fast/scratch/hyaku/kasegi-r59/l1/pre-frozen/base && python3 corpus/instruments/frontier-recheck-count.py | grep -E "FRONTIER-CENSUS|FRONTIER-PASS F40|FRONTIER-FAIL F40|entries="; echo counter-pipe-exit=${PIPESTATUS[0]}
+FRONTIER-CENSUS rows=39 admitted=39 closed=39 problem-rows=0 registry=91
+entries=42 pass=42 exit=0
+counter-pipe-exit=0
+
+## C2 F40 row count at base (frozen before: 0)
+$ grep -cE "^\| F40 " /fast/scratch/hyaku/kasegi-r59/l1/pre-frozen/base/corpus/README.md
+0
+grep-exit=1
+
+## C2 knowledge files at base (frozen before: 77)
+$ ls /fast/scratch/hyaku/kasegi-r59/l1/pre-frozen/base/corpus/knowledge/*.md | wc -l
+77
+
+## C2 expected entries at base (frozen before: 77)
+$ grep -c "^corpus/knowledge/" /fast/scratch/hyaku/kasegi-r59/l1/pre-frozen/base/corpus/instruments/knowledge-expected.txt
+77
+
+## C2 capture binding at base (frozen before: records=74 bound=74 unbound=0)
+$ cd /fast/scratch/hyaku/kasegi-r59/l1/pre-frozen/base && python3 corpus/instruments/capture-binding-check.py | tail -1
+records=74 bound=74 unbound=0
+
+## C2 Big Sleep lead line at base (frozen before: exact-line sha 3ed4f54d...)
+$ git show 69de8d363b2193fdb37d03fd3e235bceeb1c2daa:corpus/SOURCES.md | grep "Google Big Sleep reporting beyond the tracker" | sha256sum
+3ed4f54df244a57ffbc82d9c1ce1cd909d5d7ab70be807a1a6d1d978e652a432  -
+
+## C2 sources census at base (frozen before: exit 0)
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file /fast/scratch/hyaku/kasegi-r59/l1/pre-frozen/base/corpus/SOURCES.md >/dev/null 2>&1; echo census-exit=$?
+census-exit=0

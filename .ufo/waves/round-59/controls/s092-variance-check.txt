@@ -1,0 +1,16 @@
+# round-59 S092 byte-variance check - composed record (command + observed output pairs)
+
+Question the opens tee left open: the curl raw bytes sha (282e282c3df7799e7e8d42e2bd6a28bdcc2cacc74dc734550180698752f4fa14)
+differs from the instrument snapshot sha (048937306e211937ac857d982f43bfe0a1eb7da7bbd7cfa149126d4b5768da38)
+at equal length. Is the served DOCUMENT different between the two opens, or only its byte encoding?
+(The tracker endpoint may vary spacing/line endings between responses.)
+
+$ python3 - (parse both bodies after stripping the )]}' XSSI prefix; json.dumps(sort_keys=True); unified diff)
+json-body lengths: snapshot=6365 curl=6366 (equal=False)
+parsed-structure unified-diff lines (+/-): 0
+
+Reading: the served issue document is structurally IDENTICAL across the two opens this round (0 diff lines);
+the byte difference is transport encoding (CRLF and serialization spacing), not content. A later re-open that
+wants to verify this capture compares parsed structures and the pinned quotes, never raw bytes. The manifest
+sha256 pins the instant the instrument captured, per the S069 precedent ("the digest is the dated capture,
+not a claim of byte-stable live responses", corpus/SOURCES.md Registry changes, round 44).

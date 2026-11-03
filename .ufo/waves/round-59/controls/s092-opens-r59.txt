@@ -1,0 +1,64 @@
++ echo '# round-59 S092 opens - probe, recorded, curl-parity, shell screens - one run set, unedited tee'
+# round-59 S092 opens - probe, recorded, curl-parity, shell screens - one run set, unedited tee
+++ date -u +%Y-%m-%dT%H:%M:%SZ
+++ hostname
++ echo 'run-utc=2026-11-03T21:38:46Z host=plazir27'
+run-utc=2026-11-03T21:38:46Z host=plazir27
++ echo
+
++ echo '## open 2 (recorded) - the lane instrument, same command as the probe open (probe 21:37:55Z recorded in the instrument stdout)'
+## open 2 (recorded) - the lane instrument, same command as the probe open (probe 21:37:55Z recorded in the instrument stdout)
++ echo '$ python3 corpus/instruments/capture-source.py --id S092 --url https://issuetracker.google.com/action/issues/430375499 --out /fast/scratch/hyaku/kasegi-r59/l1/S092.open2.txt --kind text'
+$ python3 corpus/instruments/capture-source.py --id S092 --url https://issuetracker.google.com/action/issues/430375499 --out /fast/scratch/hyaku/kasegi-r59/l1/S092.open2.txt --kind text
++ python3 corpus/instruments/capture-source.py --id S092 --url https://issuetracker.google.com/action/issues/430375499 --out /fast/scratch/hyaku/kasegi-r59/l1/S092.open2.txt --kind text
+S092 status=200 fetched_bytes=6371 snapshot_bytes=6371 sha256=048937306e211937ac857d982f43bfe0a1eb7da7bbd7cfa149126d4b5768da38 utc=2026-11-03T21:38:47Z out=/fast/scratch/hyaku/kasegi-r59/l1/S092.open2.txt
++ echo '$ cmp corpus/source-snapshots/round-59/S092.txt /fast/scratch/hyaku/kasegi-r59/l1/S092.open2.txt && echo cmp=identical'
+$ cmp corpus/source-snapshots/round-59/S092.txt /fast/scratch/hyaku/kasegi-r59/l1/S092.open2.txt && echo cmp=identical
++ cmp corpus/source-snapshots/round-59/S092.txt /fast/scratch/hyaku/kasegi-r59/l1/S092.open2.txt
++ echo cmp=identical
+cmp=identical
++ echo
+
++ echo '## curl parity open (independent client, same endpoint)'
+## curl parity open (independent client, same endpoint)
++ echo '$ curl -sS -L --max-time 40 -A '\''kasegi-research-verifier/1.0 (contact: operator)'\'' '\''https://issuetracker.google.com/action/issues/430375499'\'' -o controls/s092-curl-raw.txt'
+$ curl -sS -L --max-time 40 -A 'kasegi-research-verifier/1.0 (contact: operator)' 'https://issuetracker.google.com/action/issues/430375499' -o controls/s092-curl-raw.txt
++ curl -sS -L --max-time 40 -A 'kasegi-research-verifier/1.0 (contact: operator)' https://issuetracker.google.com/action/issues/430375499 -o .ufo/waves/round-59/controls/s092-curl-raw.txt -w 'code=%{http_code} bytes=%{size_download} final=%{url_effective}\n'
+code=200 bytes=6371 final=https://issuetracker.google.com/action/issues/430375499
++ echo '## CRLF-aware comparison: raw curl bytes vs the snapshot (the instrument collapses CRLF and blank lines; strip them from the raw bytes first)'
+## CRLF-aware comparison: raw curl bytes vs the snapshot (the instrument collapses CRLF and blank lines; strip them from the raw bytes first)
++ echo '$ python3 -c '\''raw=open(...).read().replace(chr(13)+chr(10),chr(10)); snap=open(...).read(); print(raw.strip()==snap.strip())'\'
+$ python3 -c 'raw=open(...).read().replace(chr(13)+chr(10),chr(10)); snap=open(...).read(); print(raw.strip()==snap.strip())'
++ python3 -c $'\nraw=open(\'.ufo/waves/round-59/controls/s092-curl-raw.txt\',\'rb\').read().replace(b\'\\r\\n\',b\'\\n\').strip()\nsnap=open(\'corpus/source-snapshots/round-59/S092.txt\',\'rb\').read().strip()\nprint(\'curl-normalized-equals-snapshot=\', raw==snap)\n'
+curl-normalized-equals-snapshot= False
++ echo
+
++ echo '## saved-search HTML shell screen (the page the goo.gle lead names)'
+## saved-search HTML shell screen (the page the goo.gle lead names)
++ echo '$ curl -sS -L --max-time 40 -A '\''kasegi-research-verifier/1.0 (contact: operator)'\'' '\''https://issuetracker.google.com/savedsearches/7155917'\'' -o controls/s092-savedsearch-shell.html'
+$ curl -sS -L --max-time 40 -A 'kasegi-research-verifier/1.0 (contact: operator)' 'https://issuetracker.google.com/savedsearches/7155917' -o controls/s092-savedsearch-shell.html
++ curl -sS -L --max-time 40 -A 'kasegi-research-verifier/1.0 (contact: operator)' https://issuetracker.google.com/savedsearches/7155917 -o .ufo/waves/round-59/controls/s092-savedsearch-shell.html -w 'code=%{http_code} bytes=%{size_download}\n'
+code=200 bytes=82629
++ echo '$ grep -c "savedsearches/7155917" controls/s092-savedsearch-shell.html; grep -o "Big Sleep" controls/s092-savedsearch-shell.html | wc -l'
+$ grep -c "savedsearches/7155917" controls/s092-savedsearch-shell.html; grep -o "Big Sleep" controls/s092-savedsearch-shell.html | wc -l
++ grep -c savedsearches/7155917 .ufo/waves/round-59/controls/s092-savedsearch-shell.html
+0
+++ grep -o 'Big Sleep' .ufo/waves/round-59/controls/s092-savedsearch-shell.html
+++ wc -l
+0
++ echo
+
++ echo '## README issue HTML page shell screen'
+## README issue HTML page shell screen
++ echo '$ curl -sS -L --max-time 40 -A '\''kasegi-research-verifier/1.0 (contact: operator)'\'' '\''https://issuetracker.google.com/issues/430375499'\'' -o controls/s092-issue-shell.html'
+$ curl -sS -L --max-time 40 -A 'kasegi-research-verifier/1.0 (contact: operator)' 'https://issuetracker.google.com/issues/430375499' -o controls/s092-issue-shell.html
++ curl -sS -L --max-time 40 -A 'kasegi-research-verifier/1.0 (contact: operator)' https://issuetracker.google.com/issues/430375499 -o .ufo/waves/round-59/controls/s092-issue-shell.html -w 'code=%{http_code} bytes=%{size_download}\n'
+code=200 bytes=88981
++ echo
+
++ echo '## goo.gle/bigsleep redirect resolution'
+## goo.gle/bigsleep redirect resolution
++ echo '$ curl -sS -o /dev/null -L --max-time 30 -A '\''kasegi-research-verifier/1.0 (contact: operator)'\'' -w '\''code=%{http_code} final=%{url_effective}'\'' '\''https://goo.gle/bigsleep'\'
+$ curl -sS -o /dev/null -L --max-time 30 -A 'kasegi-research-verifier/1.0 (contact: operator)' -w 'code=%{http_code} final=%{url_effective}' 'https://goo.gle/bigsleep'
++ curl -sS -o /dev/null -L --max-time 30 -A 'kasegi-research-verifier/1.0 (contact: operator)' -w 'code=%{http_code} final=%{url_effective}\n' https://goo.gle/bigsleep
+code=200 final=https://issuetracker.google.com/savedsearches/7155917

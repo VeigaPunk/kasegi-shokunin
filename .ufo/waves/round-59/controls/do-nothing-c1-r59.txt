@@ -1,0 +1,35 @@
++ set +x
+# round-59 C1 do-nothing control (lane root; tree == base HEAD for every file the audit reads) - one run set, unedited tee
+run-utc=2026-11-03T21:40:59Z host=plazir27 base=69de8d363b2193fdb37d03fd3e235bceeb1c2daa
+
+## figure-audit selftest at base (frozen before: cases=6 failures=0)
+$ python3 corpus/instruments/figure-audit.py --selftest | tail -1; echo exit=${PIPESTATUS[0]}
+selftest cases=6 failures=0
+selftest-exit=0
+
+## mutant battery at base (frozen before: killed=2/2 survivors=0 controls=pass, exit 0)
+$ python3 corpus/instruments/figure-audit-mutbat.py | tail -1; echo exit=${PIPESTATUS[0]}
+mutbat killed=2/2 survivors=0 controls=pass
+mutbat-exit=0
+
+## ledger audit at base (frozen before: figures=35 ok=35 stale=0 exit=0)
+$ python3 corpus/instruments/figure-audit.py | tail -1; echo exit=${PIPESTATUS[0]}
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+audit-exit=0
+
+## the ten new fold ids absent at base (frozen before: 0 each)
+$ for id in frontier-rows-r57 registry-rows-r57 entries-r57 knowledge-expected-r57 knowledge-files-r57 frontier-rows-r58 registry-rows-r58 entries-r58 knowledge-expected-r58 knowledge-files-r58; do printf "%s=" $id; grep -c "\"id\": \"$id\"" corpus/instruments/figure-audit-ledger.json; done
+frontier-rows-r57=0
+registry-rows-r57=0
+entries-r57=0
+knowledge-expected-r57=0
+knowledge-files-r57=0
+frontier-rows-r58=0
+registry-rows-r58=0
+entries-r58=0
+knowledge-expected-r58=0
+knowledge-files-r58=0
+
+## ledger entry count at base (frozen before: 35)
+$ grep -c "\"id\"" corpus/instruments/figure-audit-ledger.json
+35
