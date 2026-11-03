@@ -16,9 +16,8 @@ paywalled normative text of either standard.
 
 ## Claim 1 — the records pin identity and edition: 29147:2018 edition 2 and 30111:2019 edition 2
 
-The served records state ISO/IEC 29147:2018, "Information technology — Security techniques —
-Vulnerability disclosure", edition 2 (`S089.txt:54`), publication date 2018-10 (`S089.txt:97`), reference 72311 (`S089.txt:59`), 32 pages (`S089.txt:103`; the abstract's scope sentence at S089.txt:84 Q2, the 30111 cross-reference at S089.txt:91 Q3) and ISO/IEC 30111:2019,
-"Information technology — Security techniques — Vulnerability handling processes", edition 2 (`S090.txt:54`), publication date 2019-10 (`S090.txt:90`), reference 69725 (`S090.txt:59`), 13 pages (`S090.txt:96`; the abstract's scope sentence at S090.txt:84 Q2). Both carry
+The served records state ISO/IEC 29147:2018 (`S089.txt:52`), titled "Information technology — Security techniques —
+Vulnerability disclosure" (`S089.txt:1` Q1; again `S089.txt:53`), edition 2 (`S089.txt:54`), publication date 2018-10 (`S089.txt:97`), reference 72311 (`S089.txt:59`), 32 pages (`S089.txt:103`; the abstract's scope sentence at S089.txt:84 Q2, the 30111 cross-reference at S089.txt:91 Q3) and ISO/IEC 30111:2019 (`S090.txt:52`), titled "Information technology — Security techniques — Vulnerability handling processes" (`S090.txt:1` Q1; again `S090.txt:53`), edition 2 (`S090.txt:54`), publication date 2019-10 (`S090.txt:90`), reference 69725 (`S090.txt:59`), 13 pages (`S090.txt:96`; the abstract's scope sentence at S090.txt:84 Q2). Both carry
 the same technical committee (ISO/IEC JTC 1/SC 27, `S089.txt:105`, `S090.txt:98`) and ICS 35.030 (`S089.txt:107`, `S090.txt:100`) in the served general-information
 blocks, and ISO's own review machinery is printed on the page: "A standard is reviewed every 5
 years" (S090.txt:109 Q7). Falsifiable rule: a claim that a different edition of either standard is

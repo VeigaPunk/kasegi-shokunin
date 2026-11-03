@@ -1,0 +1,17 @@
+# round-57 census-freshness diagnosis (rev 1) - one diff of two successive regenerations of the census pair; unedited tee of diff(1)
+run-utc=2026-11-03T20:00:29Z
+$ diff <pre-regeneration md> corpus/instruments/citation-survival.md   # the md differs only in the EOF column of the two live-log citations
+146,147c146,147
+< | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1490` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1490 | 2080 | in range |
+< | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1537` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1537 | 2080 | in range |
+---
+> | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1490` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1490 | 2083 | in range |
+> | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1537` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1537 | 2083 | in range |
+[exit=1]
+$ cmp <pre-regeneration tsv> corpus/instruments/citation-survival.tsv
+tsv-identical
+[exit=0]
+$ grep -rn "watchdog.log" corpus --include=*.md | grep -v citation-survival | cut -c1-120   # the lesson citations that point at the live log
+corpus/lessons/round-26-verifier-spotcheck.md:17:| Dispatch/completion digest | OK — watchdog.log: launch 2026-10-25T09:22:36-03:00, compl
+corpus/lessons/round-35.md:20:(`/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1490` — `2026-10-26T03:26:29-03:00 launch kasegi
+corpus/lessons/round-38.md:286:| M38-4 | landing / closure-order | The round-37 lane committed wave results after the round had completed, f

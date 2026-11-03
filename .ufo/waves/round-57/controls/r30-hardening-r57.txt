@@ -1,0 +1,14 @@
+# round-57 R30 hardening receipt (rev 1) - one run set, unedited tee
+run-utc=2026-11-03T19:13:12Z
+$ python corpus/instruments/figure-audit.py | tail -1   # lane ledger, green
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+[exit=0]
+$ python corpus/instruments/figure-audit.py --ledger <scratch>/red3-missing-object-r57.json   # both zero-mention derives pointed at a missing object: must go stale
+FIG figure-audit-mentions-base-scorecard recorded=2 (the receipt's limb; the filed prose 0 superseded) derived=2 ok
+FIG figure-audit-mentions-base-log recorded=0 derived=UNAVAILABLE reason=derive-exit-128 stale
+FIG figure-audit-mentions-base-knowledge-expected recorded=0 derived=UNAVAILABLE reason=derive-exit-128 stale
+FIGURE-AUDIT figures=35 ok=33 stale=2 exit=1
+[exit=1]
+$ python corpus/instruments/figure-audit.py --selftest | tail -1
+selftest cases=5 failures=0
+[exit=0]
