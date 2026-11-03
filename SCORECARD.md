@@ -2386,7 +2386,7 @@ Frozen claims: `.ufo/waves/round-57/claims.json` (freeze commit `6343e2c3882a96b
 
 ## Round 58 result — the figure-audit selftest pin, read-only case, committed mutant battery and the receipt-backed red fixture (C1, depth:verifiability, nominal per R58, score held 4), and frontier F39 on S091, the UK AI Security Institute autonomous cyber-capability progress rate (C2, coverage, score held 8)
 
-Frozen claims: `.ufo/waves/round-58/claims.json` (freeze commit `543cac13886b91ac660d788ed20e64ae70ee0fa5`, base `1e5c8f2cdc1c9d14672444c6fca0e67414366494`, frozen_at 2026-11-03T20:48:48Z), landed before the implementation. Implementation `18ddb054a82a59e530ba86b2511bcfa5ecd49b6b`; after-state receipt `.ufo/waves/round-58/controls/after-r58.txt`. The round-57 closure routed no score-moving defect; its carry-in DF-56-2 is resolved (see the round report).
+Frozen claims: `.ufo/waves/round-58/claims.json` (freeze commit `543cac13886b91ac660d788ed20e64ae70ee0fa5`, base `1e5c8f2cdc1c9d14672444c6fca0e67414366494`, frozen_at 2026-11-03T20:48:48Z), landed before the implementation. Implementation `18ddb054a82a59e530ba86b2511bcfa5ecd49b6b` (after-state receipt `.ufo/waves/round-58/controls/after-r58.txt`); wave-1 corrections and evidence `1e9e4b56d6deaf05fae5f36eb5d45b2c83f36f63`; final measured commit `1e9e4b56d6deaf05fae5f36eb5d45b2c83f36f63` (`.ufo/waves/round-58/controls/after-final-r58.txt`, every value as frozen). The round-57 closure routed no score-moving defect; its carry-in DF-56-2 is resolved (see the round report).
 
 | Axis | Before | After | Verdict and evidence |
 |---|---:|---:|---|
