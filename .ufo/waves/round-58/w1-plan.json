@@ -1,0 +1,189 @@
+{
+  "schema": "ufo-swarm-wave-v1",
+  "wave": "kasegi-r58-w1",
+  "context": "# Goal\nKasegi lane (bounty and security research), round 58: ONE v1 wave of 9 verification seats. You are ONE seat of this wave. The round's two claims are FROZEN at freeze commit 543cac13886b91ac660d788ed20e64ae70ee0fa5 in /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/claims.json. The implementation under test is landed at commit 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b (the lane tree, branch master). Read claims.json first. Predicates, counters, kill rules and controls are fixed there. Never edit claims.json. A seat that thinks a rule is wrong reports it in its evidence file; it does not change it.\n\nClaim C1 (depth:verifiability, nominal per QUALITY R58): the figure-audit selftest pin (EXPECTED_CASES = 6), the new case derive-not-read-only-refused, the committed mutant battery corpus/instruments/figure-audit-mutbat.py, and the red fixture .ufo/waves/round-54/controls/red-d53-ledger.json repointed to the r53 receipt literal. Claim C2 (coverage): frontier F39 admitted on S091 (UK AI Security Institute autonomous cyber-capability progress rate): corpus/knowledge/aisi-autonomous-cyber-capability-progress-rate.md, registry row S091 in corpus/SOURCES.md, capture corpus/source-snapshots/round-58/S091.txt, manifest corpus/source-snapshots/round-58/manifest.json.\n\nPaths. L = /home/vgpnk/Projects/shokunin/kasegi-shokunin (lane repo; its WORKING TREE is the implementation under test; read it, never write it). W = /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/w1 (wave evidence dir; write your evidence file here). S = /fast/scratch/hyaku/kasegi-r58/<your seat name> (scratch root; create it with mkdir -p; use it for every clone, export, mutant, probe tree and temp file).\n\n# Contract\n- Absolute paths only. Every `Report:` trailer path is relative to /home/vgpnk/Projects/shokunin/kasegi-shokunin: write it at /home/vgpnk/Projects/shokunin/kasegi-shokunin/<that path>.\n- Read-only on the lane. Do not edit any file under L except your own evidence file under W. Never run git add, commit, stash, checkout, switch, reset, pull, push, or any jj command against L. Read-only git (show, ls-tree, cat-file, diff, log, rev-parse, status, archive) is allowed. Never touch the fleet root /home/vgpnk/Projects/shokunin except to read it; never touch sibling lanes (you may READ kengaku-shokunin/PROVINCE.md and other sibling PROVINCE.md files); never write into /home/vgpnk/Projects/shokuknow (read-only; do not run its campaign tools).\n- Git fixtures: D=$(mktemp -d -p <S>) && git -C \"$D\" init -q; name -C \"$D\" in every later git call; verify `git -C \"$D\" rev-parse --show-toplevel` equals $D before any commit; never commit with a throwaway identity anywhere else. Prefer `git clone --shared <L> <S>/clone` for a tree with history.\n- Scratch: pass TMPDIR=<S> explicitly. Delete <S> before you yield (trap 'rm -rf -- \"$S\"' EXIT in shell). Name any leftover in your evidence file.\n- Evidence file: W/<seat-name>.md. First line is the verdict. Then numbered evidence: the exact command, its printed output (trimmed to the decisive lines), its exit code, and path:line pointers. Your final yield is a short summary (verdict, counts, evidence path).\n- Never edit the ledger, the frozen claims, SOURCES.md, README.md, PROVINCE.md, any knowledge file, or any instrument. Report corrections as text only.\n- No credential material may be written to any file you produce: no secrets, tokens, cookies, session values or op:// references. Report path:line and pattern name only.\n- Tooling authorization (operator, 2026-10-19): you may install or upgrade tools that help your item through official channels. Read /home/vgpnk/.omp/agent/RULES.md first; record each tool, version, channel and reason in your evidence file. pacman is PAUSED host-wide: never run pacman -S, -Sy, -Syu, -U or -R; install through uv tool, npx, or an official binary in ~/.local/bin only.\n- Run only the commands your item names. Do not run the whole lane suite. Do not sleep-loop or poll.\n\n# Acceptance\nYour evidence file is complete and names the exact commands behind every number in it. A verdict line that states a number not reproduced by a command in the file is itself a defect.",
+  "policy": {
+    "source": "config",
+    "maxLanes": 16,
+    "minLanes": 8,
+    "waveMinLanes": 8,
+    "waveMaxLanes": 16,
+    "declaredMaxLanes": 16,
+    "hardCeiling": 256,
+    "rampBatchSize": 5,
+    "rampIntervalMs": 700,
+    "globalRunnerCeiling": 1056
+  },
+  "counts": {
+    "spawn": 9,
+    "resume": 0,
+    "total": 9
+  },
+  "compaction": {
+    "applied": false,
+    "mechanism": null,
+    "reason": null,
+    "savedBytes": 0,
+    "payloadBytesBefore": 0,
+    "payloadBytesAfter": 0
+  },
+  "dispatch": {
+    "calls": 1,
+    "kind": "task",
+    "note": "Issue exactly one batched task call carrying every spawn lane, plus one hub send per resume lane. Never split a wave into multiple task calls (one-swarm-per-wave)."
+  },
+  "registry": {
+    "schema": "ufo-swarm-registry-v1",
+    "path": ".ufo/waves/round-58/w1/swarm-registry.json",
+    "reportDir": ".ufo/waves/round-58/w1",
+    "members": {
+      "ScoutSources": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay."
+      },
+      "EntryClaimTable": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scribe",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay."
+      },
+      "SiblingOverlap": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "connector",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay."
+      },
+      "ReviewerC2": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "reviewer",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay."
+      },
+      "CriticC1": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "critic",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay."
+      },
+      "MutationC1": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "mutation-tester",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay."
+      },
+      "SentinelCred": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "sentinel",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay."
+      },
+      "ScoutHostBound2": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "scout",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay."
+      },
+      "ExportReplay": {
+        "kind": "spawn",
+        "agentId": null,
+        "role": "executor",
+        "item": null,
+        "axes": [
+          "depth:verifiability",
+          "coverage"
+        ],
+        "milestone": "kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay."
+      }
+    }
+  },
+  "priorRegistries": [],
+  "tasks": [
+    {
+      "name": "ScoutSources",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\n# Target\nIndependent re-open of the source the round's C2 rests on: S091 = https://www.aisi.gov.uk/blog/how-fast-is-autonomous-ai-cyber-capability-advancing (UK AI Security Institute blog, dated May 13, 2026). You are not the author. Do not trust the lane's capture; re-open.\n# Change\n1. Fetch the URL once with curl -sS -L --max-time 60 -A 'kasegi-research-verifier/1.0 (independent re-open; contact: operator)' -o <S>/S091.raw.html. Record HTTP code, byte count and sha256.\n2. Convert with a DIFFERENT method from the lane instrument: Python stdlib html.parser, visible text only (skip script and style), whitespace collapsed per line. Save to <S>/S091.independent.txt. Record sha256 and line count.\n3. For each quote Q1-Q9 in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-58/manifest.json, test whether the quote occurs in your independent text (normalise whitespace; count exact occurrences) and report the occurrence count and the line on which it sits in your text. Report any mismatch with the nearest form.\n4. For each line-anchor citation of the form S091.txt:NN in /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/aisi-autonomous-cyber-capability-progress-rate.md, check whether the lane capture /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-58/S091.txt line NN contains the referent the sentence names (the phrase or figure in the sentence). List every citation and mark it RESOLVES-TO-REFERENT or MISMATCH with the actual line text (trimmed).\n5. Run: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-58/manifest.json --source S091\n# Acceptance\nEvidence file lists every Q1-Q9 count, every S091.txt:NN citation verdict, the independent-capture sha256 and line count, and the recheck exit code.\n\nEvidence file: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/w1/ScoutSources.md\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay.\n\nReport: write your scoped findings to .ufo/waves/round-58/w1/ScoutSources.md"
+    },
+    {
+      "name": "EntryClaimTable",
+      "agent": "scribe",
+      "task": "/skill:godspeed\n\n# Target\nThe non-author claim table for the F39 entry /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/aisi-autonomous-cyber-capability-progress-rate.md (Attribution and Claims 1-4 and Limits). The entry's load-bearing sentences must each be checked against the committed capture /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-58/S091.txt.\n# Change\n1. Split the entry's Claim 1-4 and Attribution into numbered load-bearing sentences (one row per sentence that asserts a figure, a date, a method statement, a quote, or an attribution).\n2. For each row: quote the sentence's referent from the capture with its line number, and mark YES (the capture states it), PARTIAL (states it with a qualifier the entry drops), or NO (not in the capture). A quote in the entry must be <= 25 words: count with wc -w and record the count per quote.\n3. Flag every overclaim: a sentence that generalises AISI's suite-bound estimate into a universal rate, forecast or capability verdict, or that drops a caveat the capture states. Quote the caveat's location.\n4. Check the Gate-level facts the entry asserts: the capture date line, the capture size (11660 bytes, 67 lines) and the sha256 (d2ba7199faf44fb9f5fc5c48924f20d72ed08959c511af58cb9c1322f9820618), by re-computing them.\n5. Output corrections as TEXT only (line of the entry, current wording, proposed wording). Do not edit the entry.\n# Acceptance\nA numbered table with a verdict per row, the word count per quote, every overclaim flagged with its capture line, and the re-computed capture facts.\n\nEvidence file: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/w1/EntryClaimTable.md\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay.\n\nReport: write your scoped findings to .ufo/waves/round-58/w1/EntryClaimTable.md"
+    },
+    {
+      "name": "SiblingOverlap",
+      "agent": "connector",
+      "task": "/skill:godspeed\n\n# Target\nAdjacency and sibling-overlap scan for the F39 frontier entry (AI cyber-capability progress measurement by a government institute). Scope check: the lane PROVINCE.md at /home/vgpnk/Projects/shokunin/kasegi-shokunin/PROVINCE.md and the sibling PROVINCE.md files named in its Adjacent section, plus the lane's own corpus.\n# Change\n1. Read /home/vgpnk/Projects/shokunin/kasegi-shokunin/PROVINCE.md (Adjacent section and the F39 amendment line) and the kengaku PROVINCE at /home/vgpnk/Projects/shokunin/kengaku-shokunin/PROVINCE.md (read-only).\n2. Grep (read-only) the sibling PROVINCE.md files in /home/vgpnk/Projects/shokunin/*-shokunin/PROVINCE.md and the lane's corpus/knowledge for: 'AI Security Institute', 'AISI', 'time horizon', 'time-horizon', 'METR', 'Mythos', 'GPT-5.5', 'cyber range', 'autonomous cyber'. Report every hit with file:line and whether it is an admitted entry, a lead, a province surface or a passing mention.\n3. Classify the F39 entry's scope against each hit: (a) overlap with a sibling-owned surface (report, do not absorb), (b) lane-owned ground the entry extends, (c) none. Name the sibling and quote its PROVINCE sentence that owns the surface, if any.\n4. State whether the PROVINCE.md F39 amendment line's scope limit (LLM evaluation method adjacent to kengaku) is accurate against kengaku's PROVINCE text. Quote both.\n# Acceptance\nA table of every grep hit with classification, a scope verdict (in scope / contested / out of scope) for F39 with the quoted sentence that decides it, and a list of any adjacency text the lane should correct (text only).\n\nEvidence file: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/w1/SiblingOverlap.md\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay.\n\nReport: write your scoped findings to .ufo/waves/round-58/w1/SiblingOverlap.md"
+    },
+    {
+      "name": "ReviewerC2",
+      "agent": "reviewer",
+      "task": "/skill:godspeed\n\n# Target\nSurgical correctness review of claim C2 (frontier F39 admission on S091) and of the landed registry, README, PROVINCE and expected-list bytes at implementation commit 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b.\n# Change\n1. Re-derive every after-state number in claims.json C2 (after field) with its counting command against the lane at 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b (read the committed receipt /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/controls/after-r58.txt for the printed values; re-run only the counting commands in a clone: git clone --shared /home/vgpnk/Projects/shokunin/kasegi-shokunin <S>/clone then cd <S>/clone && the command). Report match or mismatch per number.\n2. Pure-append check: git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 543cac13886b91ac660d788ed20e64ae70ee0fa5:corpus/README.md | diff - <(git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b:corpus/README.md) ; same for PROVINCE.md and corpus/SOURCES.md. Report every changed line; for SOURCES.md confirm only one row was inserted and the lead line (grep 'rate of autonomous AI cyber-capability progress') is byte-identical.\n3. Pure-append check for corpus/instruments/knowledge-expected.txt (one line inserted, sorted position). Confirm with LC_ALL=C sort -c.\n4. Kill-rule walk: for each clause of the C2 kill_rule in claims.json, state whether the committed bytes satisfy it, with the command.\n5. Stub probe (R67, expected to be admitted by the frozen counter; report the result, do not change the counter): copy the clone, replace corpus/knowledge/aisi-autonomous-cyber-capability-progress-rate.md by its first 7 lines plus one stub line naming S091, run frontier-recheck-count.py --root <copy> and report its FRONTIER-PASS line and exit code.\n6. Is the F39 README row's `sources` cell S091 and does it bind to the registry row? Check the registry limb with the committed bytes.\n# Acceptance\nPer-number match table, pure-append diff results, the kill-rule walk and the stub-probe result, each with its command and exit code.\n\nEvidence file: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/w1/ReviewerC2.md\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay.\n\nReport: write your scoped findings to .ufo/waves/round-58/w1/ReviewerC2.md"
+    },
+    {
+      "name": "CriticC1",
+      "agent": "critic",
+      "task": "/skill:godspeed\n\n# Target\nAdversarial review of claim C1 (figure-audit selftest pin, read-only case, mutant battery, red-fixture repoint) at implementation commit 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b. Falsify it: find a way the frozen after-state can read green while the defect is present, or a way the change weakens an existing limb.\n# Change\n1. Read /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/claims.json C1 (predicate, before, after, kill_rule) and the landed code: git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b:corpus/instruments/figure-audit.py and git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b:corpus/instruments/figure-audit-mutbat.py (read-only git).\n2. Check the EXPECTED_CASES pin: can a case be added and another dropped so the count stays 6 while the limb coverage shrinks? Name the exact edit and run it in a scratch clone to show the result.\n3. Check the derive-not-read-only-refused case: does it kill m6 for the reason the claim says (the non-allow-listed head) and not for another reason? Run m6 in scratch and print the failing case line.\n4. Check the red fixture repoint: is the d53-1 red now a discriminating control (it reads derived=33 against want 34) or can it be made green by editing the receipt literal? Show what a one-line receipt edit does (scratch copy of the receipt only).\n5. Check the mutbat battery: can an equivalent patch that changes behaviour be missed, or a non-equivalent patch be called a control? Run one concrete example in scratch.\n6. Kill-rule walk for C1: each clause, the committed bytes, the command, the verdict.\n# Acceptance\nEach attack with its command, output and verdict (SURVIVES or FALSIFIED with the exact reproduction). A FALSIFIED verdict must reproduce from a file in your evidence set.\n\nEvidence file: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/w1/CriticC1.md\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay.\n\nReport: write your scoped findings to .ufo/waves/round-58/w1/CriticC1.md"
+    },
+    {
+      "name": "MutationC1",
+      "agent": "mutation-tester",
+      "task": "/skill:godspeed\n\n# Target\nMutation battery against the figure-audit instrument at 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b: the committed battery's own limbs, plus defeat shapes the battery does not include. Kill = the instrument's own --selftest exits nonzero on the mutant.\n# Change\n1. Extract the pristine instrument: git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b:corpus/instruments/figure-audit.py > <S>/pristine.py. Verify its selftest prints selftest cases=6 failures=0 exit 0.\n2. Build at least six NEW one-limb mutants, each an exact-once edit (count the site first, record the count), each py_compile-clean, and run each mutant's --selftest. Suggested limbs: (a) check_read_only python-prefix branch returns True; (b) the comparison `derived == str(ent[\"want\"])` loosened to a prefix test; (c) the empty-derive guard `if out == \"\"` removed; (d) the derive-exit fail-closed branch made ok; (e) the EXPECTED_CASES pin value raised to 7; (f) the summary print replaced so failures are not counted. Add any other single-limb mutant you find load-bearing.\n3. For each mutant record: site count, py_compile result, selftest exit code, the last line. A mutant with selftest exit 0 SURVIVES: state it plainly, with the limb it leaves unguarded.\n4. Run the committed battery: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/figure-audit-mutbat.py  (you may run it in a clone; it writes nothing to L).\n5. Report survivors as defects of the instrument, with a proposed fixture (text only).\n# Acceptance\nA table: mutant id, limb, site count, selftest exit, killed or SURVIVES; the committed battery's own output; the survivor list.\n\nEvidence file: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/w1/MutationC1.md\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay.\n\nReport: write your scoped findings to .ufo/waves/round-58/w1/MutationC1.md"
+    },
+    {
+      "name": "SentinelCred",
+      "agent": "sentinel",
+      "task": "/skill:godspeed\n\n# Target\nCredential, safety and scope scan of the round's new bytes: the capture /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-58/S091.txt, manifest /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-58/manifest.json, entry /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/aisi-autonomous-cyber-capability-progress-rate.md, the instruments /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py and figure-audit-mutbat.py, the freeze claims /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/claims.json, and the builders under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/controls/builders/.\n# Change\n1. Scan the listed files for: credential material (token, secret, api key, password, cookie, session, bearer), op:// references, private or session URLs, host-specific absolute paths that name a person's home directory (report them as a class count, not values), and any instruction to probe, scan, log in to, or submit against a target.\n2. Check the entry's Limits and Attribution for the documentation-only statement (it must instruct no probing, scanning, login or submission against any target).\n3. Check the capture: the fetch was a plain public GET (the builder command is in builders/make-impl.py and build-manifest.py and the manifest fetch_method); confirm no credentials were used (grep the manifest for auth or header fields).\n4. Confirm no secret-shaped string is in any file of this round (scan with grep -E for common key patterns; report path:line and pattern name only, never the matched value).\n# Acceptance\nPer-file scan result with pattern names and counts only; the documentation-only check; the manifest fetch-method check; verdict CLEAN or FINDINGS with path:line.\n\nEvidence file: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/w1/SentinelCred.md\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay.\n\nReport: write your scoped findings to .ufo/waves/round-58/w1/SentinelCred.md"
+    },
+    {
+      "name": "ScoutHostBound2",
+      "agent": "scout",
+      "task": "/skill:godspeed\n\n# Target\nHost-dependence sweep of the bytes this round adds or changes, in the same class as round-57 M57-7 and M57-8: a pinned figure or committed gate reads a host-stamped path, a live file, or a live counter.\n# Change\n1. List the files changed between 543cac13886b91ac660d788ed20e64ae70ee0fa5 and 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b: git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff --name-only 543cac13886b91ac660d788ed20e64ae70ee0fa5 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b (read-only).\n2. For each changed text file, grep for absolute paths (/home/, C:\\, /fast/) and for live-counter invocations (python3 corpus/instruments/...) inside derive or recheck lines. Report path:line, the pattern name, and whether the line is a derive (figure-audit ledger), a recheck (entry), or prose.\n3. For the new entry, check that its recheck line runs from a cd-prefixed lane root (the cd names the lane root by absolute path; this is the documented form, not a host defect) and whether the recheck depends on the live tree or only on committed bytes (manifest + capture).\n4. For the red fixture repoint, check the derive reads a committed receipt (repo-relative) and not a live counter. Report the path.\n5. Verdict: which new host dependencies, if any, a non-author on another host would hit, and what class each belongs to under QUALITY R65 and R69.\n# Acceptance\nA classified table of every host-dependent line in the round's changed files with path:line, and the verdict per R65/R69.\n\nEvidence file: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/w1/ScoutHostBound2.md\n\nLane bounds: leaf member — no subagent dispatch.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay.\n\nReport: write your scoped findings to .ufo/waves/round-58/w1/ScoutHostBound2.md"
+    },
+    {
+      "name": "ExportReplay",
+      "agent": "executor",
+      "task": "/skill:godspeed\n\n# Target\nExport replay of the round's after-state counting run set: the counters must reproduce from committed bytes at 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b in a clean export, not from the working tree.\n# Change\n1. Make a clone with history: git clone --shared /home/vgpnk/Projects/shokunin/kasegi-shokunin <S>/clone && git -C <S>/clone checkout -q 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b. Verify git -C <S>/clone rev-parse HEAD equals 18ddb054a82a59e530ba86b2511bcfa5ecd49b6b.\n2. Run in the clone, with cwd = <S>/clone, the counting commands listed in claims.json for C1 and C2 (use the command text exactly as written there).\n3. Compare the printed values to /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/controls/after-r58.txt (the committed receipt). Report each command: match or mismatch, with both lines.\n4. Note any command whose output depends on the lane working tree rather than committed bytes (for example a file present in L but untracked). Check with git -C <S>/clone status --porcelain before and after.\n5. You may not write to L. Clean up <S> before yielding.\n# Acceptance\nA table of every counting command in claims.json C1 and C2 with the export-run output, the receipt output, match or mismatch, and the exit code; the working-tree dependency check.\n\nEvidence file: /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-58/w1/ExportReplay.md\n\nLane bounds: leaf member — no subagent dispatch except your single labrat.\nJudged on: depth:verifiability, coverage\nMilestone: kasegi r58 w1 (v1, 9 seats): S091 re-open, entry claim table, sibling overlap, C2 review, C1 critic, C1 mutation battery, credential scan, host-bound sweep, export replay.\n\nReport: write your scoped findings to .ufo/waves/round-58/w1/ExportReplay.md"
+    }
+  ]
+}
