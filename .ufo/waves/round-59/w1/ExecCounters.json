@@ -1,0 +1,430 @@
+{
+  "seat": "ExecCounters",
+  "round": 59,
+  "wave": "w1",
+  "runner": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/run.py",
+  "invocation": "TMPDIR=/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp python3 /fast/scratch/hyaku/kasegi-r59/ExecCounters/run.py /fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone /fast/scratch/hyaku/kasegi-r59/ExecCounters <out-json> (cwd=/fast/scratch/hyaku/kasegi-r59/ExecCounters)",
+  "records_note": "15 frozen counting commands (C1: 6, C2: 9) + 1 diagnostic twin (C1[0], absolute instrument)",
+  "generated_utc": "2026-11-03T22:00:46Z",
+  "host": "plazir27",
+  "python": "3.14.8",
+  "lane": "/home/vgpnk/Projects/shokunin/kasegi-shokunin",
+  "claims_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-59/claims.json",
+  "claims_sha256": "becf44d1a29bba94dc8374f63787c8a2a450209506f4282cd9ca0b65614aa0d6",
+  "clone": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+  "clone_toplevel": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+  "clone_head": "472737847ff31d1255bf1a0745822a5e878e9622",
+  "verdict": "MISMATCH",
+  "mismatches": [
+    {
+      "record": "C1[0]",
+      "detail": "CTRL-quoted-separator: exit=2 want=0"
+    },
+    {
+      "record": "C1[0]",
+      "detail": "CTRL-quoted-separator: no derived=35"
+    },
+    {
+      "record": "C1[0]",
+      "detail": "RESIDUAL-awk-write: exit=2 want=0"
+    },
+    {
+      "record": "C1[0]",
+      "detail": "RESIDUAL-awk-write: markers=0 want=1"
+    }
+  ],
+  "diagnostic_mismatches": [],
+  "deviations": [
+    {
+      "claim": "C1",
+      "index": 0,
+      "frozen_scratch": "/fast/scratch/hyaku/kasegi-r59/l1/c1-after",
+      "executed_scratch": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after",
+      "reason": "seat scratch isolation (the runner rm -rf's and recreates its own dir)"
+    },
+    {
+      "claim": "C1",
+      "index": 0,
+      "frozen_instrument_arg": "corpus/instruments/figure-audit.py",
+      "diagnostic_instrument_arg": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone/corpus/instruments/figure-audit.py",
+      "reason": "c1-probe-run.sh cds to each probe root before invoking the instrument, so a relative instrument argument cannot be opened; the diagnostic twin measures what the instrument does."
+    }
+  ],
+  "caveat_probes": {
+    "caveat": "frontier counter recheck lines cd to the lane root",
+    "steps": [
+      {
+        "name": "entry-recheck-line",
+        "command": "grep -n '^recheck:' corpus/knowledge/google-big-sleep-findings-tracker.md | cut -c1-200",
+        "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+        "exit_code": 0,
+        "stdout_first3": [
+          "6:recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-59/manifest.json --source S092   # run from any cwd"
+        ],
+        "stderr_first3": [],
+        "expectation": "line begins with cd /home/vgpnk/Projects/shokunin/kasegi-shokunin"
+      },
+      {
+        "name": "counter-with-corrupt-clone-capture",
+        "command": "python3 corpus/instruments/frontier-recheck-count.py | grep -E 'FRONTIER-CENSUS|FRONTIER-PASS F40|entries='",
+        "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+        "exit_code": 0,
+        "stdout_first3": [
+          "FRONTIER-CENSUS rows=40 admitted=40 closed=40 problem-rows=0 registry=92",
+          "FRONTIER-PASS F40 ids=S092",
+          "entries=43 pass=43 exit=0"
+        ],
+        "stderr_first3": [],
+        "expectation": "FRONTIER-PASS F40 ids=S092 still exit=0: recheck ran against the lane root"
+      },
+      {
+        "name": "source-recheck-with-corrupt-clone-capture",
+        "command": "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-59/manifest.json --source S092",
+        "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+        "exit_code": 1,
+        "stdout_first3": [
+          "S092:sha256 MISMATCH expected=048937306e211937ac857d982f43bfe0a1eb7da7bbd7cfa149126d4b5768da38 actual=dc6ecb6b208dcb323c356ae77f507415cb1e78e2de87b88ee02b9b23c1b345be"
+        ],
+        "stderr_first3": [],
+        "expectation": "nonzero: this instrument does read the clone's capture"
+      }
+    ],
+    "restore": {
+      "command": "git -C /fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone checkout -- corpus/source-snapshots/round-59/S092.txt",
+      "exit_code": 0,
+      "restored_sha256": "048937306e211937ac857d982f43bfe0a1eb7da7bbd7cfa149126d4b5768da38",
+      "want_sha256": "048937306e211937ac857d982f43bfe0a1eb7da7bbd7cfa149126d4b5768da38",
+      "porcelain_after_restore": ""
+    },
+    "proves": "C2[0] printed FRONTIER-PASS F40 ids=S092 with the clone's capture corrupted and source-recheck (C2[1]) failed on the same corruption: the F40 pass is measured against the lane root, not the fresh clone"
+  },
+  "records": [
+    {
+      "claim": "C1",
+      "index": 0,
+      "frozen_command": "bash .ufo/waves/round-59/controls/c1-probe-run.sh corpus/instruments/figure-audit.py /fast/scratch/hyaku/kasegi-r59/l1/c1-after",
+      "want": " P1..P8 each exit=2 markers=0; CTRL-quoted-separator exit=0; RESIDUAL-awk-write exit=0 markers=1",
+      "executed_command": "bash .ufo/waves/round-59/controls/c1-probe-run.sh corpus/instruments/figure-audit.py /fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [
+        "scratch path substituted (see deviations)"
+      ],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "instrument=corpus/instruments/figure-audit.py sha256=32e1cddb2291a643\nrun-utc=2026-11-03T22:00:36Z host=plazir27\nprobe=P1-semicolon derive=cat g.txt; touch MARK-P1 exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after/r-P1-semicolon/corpus/instruments/figure-audit.py': [Errno 2] No such file or directory\nprobe=P2-andand derive=cat g.txt && touch MARK-P2 exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after/r-P2-andand/corpus/instruments/figure-audit.py': [Errno 2] No such file or directory\nprobe=P3-background derive=cat g.txt & touch MARK-P3 exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after/r-P3-background/corpus/instruments/figure-audit.py': [Errno 2] No such file or directory\nprobe=P4-newline derive=cat g.txt|touch MARK-P4 exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after/r-P4-newline/corpus/instruments/figure-audit.py': [Errno 2] No such file or directory\nprobe=P5-cmdsubst derive=cat g.txt $(touch MARK-P5) exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after/r-P5-cmdsubst/corpus/instruments/figure-audit.py': [Errno 2] No such file or directory\nprobe=P6-pipe-tee derive=cat g.txt | tee MARK-P6 exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after/r-P6-pipe-tee/corpus/instruments/figure-audit.py': [Errno 2] No such file or directory\nprobe=P7-redirect derive=cat g.txt > MARK-P7 exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after/r-P7-redirect/corpus/instruments/figure-audit.py': [Errno 2] No such file or directory\nprobe=P8-oror derive=cat nosuch.txt || touch MARK-P8 exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after/r-P8-oror/corpus/instruments/figure-audit.py': [Errno 2] No such file or directory\nprobe=CTRL-quoted-separator derive=cat g.txt | awk 'BEGIN{x=1;y=2} {print}' exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after/r-CTRL-quoted-separator/corpus/instruments/figure-audit.py': [Errno 2] No such file or directory\nprobe=RESIDUAL-awk-write derive=cat g.txt | awk 'BEGIN{print 1 > \"MARK-RES\"}{print}' exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after/r-RESIDUAL-awk-write/corpus/instruments/figure-audit.py': [Errno 2] No such file or directory\n",
+      "stdout_first3": [
+        "instrument=corpus/instruments/figure-audit.py sha256=32e1cddb2291a643",
+        "run-utc=2026-11-03T22:00:36Z host=plazir27",
+        "probe=P1-semicolon derive=cat g.txt; touch MARK-P1 exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after/r-P1-semicolon/corpus/instruments/figure-audit.py': [Errno 2] No such file or directory"
+      ],
+      "stdout_line_count": 12,
+      "stderr_first3": [],
+      "checks_failed": [
+        "CTRL-quoted-separator: exit=2 want=0",
+        "CTRL-quoted-separator: no derived=35",
+        "RESIDUAL-awk-write: exit=2 want=0",
+        "RESIDUAL-awk-write: markers=0 want=1"
+      ],
+      "match": false,
+      "observation": {
+        "note": "as-frozen run: every probe line's first output line is a python open error, so exit=2 markers=0 for P1-P8 is vacuous, not the gate refusing the derive",
+        "probes_with_python_open_error": 10,
+        "probes_parsed": 10
+      }
+    },
+    {
+      "claim": "C1",
+      "index": 0,
+      "frozen_command": "bash .ufo/waves/round-59/controls/c1-probe-run.sh corpus/instruments/figure-audit.py /fast/scratch/hyaku/kasegi-r59/l1/c1-after",
+      "want": " P1..P8 each exit=2 markers=0; CTRL-quoted-separator exit=0; RESIDUAL-awk-write exit=0 markers=1",
+      "executed_command": "bash .ufo/waves/round-59/controls/c1-probe-run.sh /fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone/corpus/instruments/figure-audit.py /fast/scratch/hyaku/kasegi-r59/ExecCounters/probe-after-abs",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [
+        "diagnostic twin: absolute instrument path"
+      ],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "instrument=/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone/corpus/instruments/figure-audit.py sha256=32e1cddb2291a643\nrun-utc=2026-11-03T22:00:36Z host=plazir27\nprobe=P1-semicolon derive=cat g.txt; touch MARK-P1 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P1-semicolon\nprobe=P2-andand derive=cat g.txt && touch MARK-P2 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P2-andand\nprobe=P3-background derive=cat g.txt & touch MARK-P3 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P3-background\nprobe=P4-newline derive=cat g.txt|touch MARK-P4 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P4-newline\nprobe=P5-cmdsubst derive=cat g.txt $(touch MARK-P5) exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P5-cmdsubst\nprobe=P6-pipe-tee derive=cat g.txt | tee MARK-P6 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P6-pipe-tee\nprobe=P7-redirect derive=cat g.txt > MARK-P7 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P7-redirect\nprobe=P8-oror derive=cat nosuch.txt || touch MARK-P8 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P8-oror\nprobe=CTRL-quoted-separator derive=cat g.txt | awk 'BEGIN{x=1;y=2} {print}' exit=0 markers=0 :: FIG CTRL-quoted-separator recorded=35 derived=35 ok\nprobe=RESIDUAL-awk-write derive=cat g.txt | awk 'BEGIN{print 1 > \"MARK-RES\"}{print}' exit=0 markers=1 :: FIG RESIDUAL-awk-write recorded=35 derived=35 ok\n",
+      "stdout_first3": [
+        "instrument=/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone/corpus/instruments/figure-audit.py sha256=32e1cddb2291a643",
+        "run-utc=2026-11-03T22:00:36Z host=plazir27",
+        "probe=P1-semicolon derive=cat g.txt; touch MARK-P1 exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P1-semicolon"
+      ],
+      "stdout_line_count": 12,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true,
+      "variant": "absolute-instrument"
+    },
+    {
+      "claim": "C1",
+      "index": 1,
+      "frozen_command": "python3 corpus/instruments/figure-audit.py --selftest | tail -1",
+      "want": " selftest cases=14 failures=0, exit 0",
+      "executed_command": "python3 corpus/instruments/figure-audit.py --selftest | tail -1",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "selftest cases=14 failures=0\n",
+      "stdout_first3": [
+        "selftest cases=14 failures=0"
+      ],
+      "stdout_line_count": 1,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C1",
+      "index": 2,
+      "frozen_command": "python3 corpus/instruments/figure-audit-mutbat.py | tail -1",
+      "want": " mutbat killed=2/2 survivors=0 controls=pass, exit 0",
+      "executed_command": "python3 corpus/instruments/figure-audit-mutbat.py | tail -1",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "mutbat killed=2/2 survivors=0 controls=pass\n",
+      "stdout_first3": [
+        "mutbat killed=2/2 survivors=0 controls=pass"
+      ],
+      "stdout_line_count": 1,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C1",
+      "index": 3,
+      "frozen_command": "python3 corpus/instruments/figure-audit.py | tail -1",
+      "want": " FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0",
+      "executed_command": "python3 corpus/instruments/figure-audit.py | tail -1",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0\n",
+      "stdout_first3": [
+        "FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0"
+      ],
+      "stdout_line_count": 1,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C1",
+      "index": 4,
+      "frozen_command": "python3 corpus/instruments/figure-audit.py --ledger .ufo/waves/round-54/controls/red-d53-ledger.json | grep d53-1",
+      "want": " FIG d53-1-trailer recorded=34 derived=33 want=34 stale",
+      "executed_command": "python3 corpus/instruments/figure-audit.py --ledger .ufo/waves/round-54/controls/red-d53-ledger.json | grep d53-1",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 1,
+      "stdout": "FIG d53-1-trailer recorded=34 derived=33 want=34 stale\n",
+      "stdout_first3": [
+        "FIG d53-1-trailer recorded=34 derived=33 want=34 stale"
+      ],
+      "stdout_line_count": 1,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C1",
+      "index": 5,
+      "frozen_command": "sha256sum corpus/instruments/figure-audit.py",
+      "want": " 32e1cddb2291a643622d6501960d25d795d9e12ba2319a9b3ff9cab2d4e83ff0",
+      "executed_command": "sha256sum corpus/instruments/figure-audit.py",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "32e1cddb2291a643622d6501960d25d795d9e12ba2319a9b3ff9cab2d4e83ff0  corpus/instruments/figure-audit.py\n",
+      "stdout_first3": [
+        "32e1cddb2291a643622d6501960d25d795d9e12ba2319a9b3ff9cab2d4e83ff0  corpus/instruments/figure-audit.py"
+      ],
+      "stdout_line_count": 1,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C2",
+      "index": 0,
+      "frozen_command": "python3 corpus/instruments/frontier-recheck-count.py | grep -E 'FRONTIER-CENSUS|FRONTIER-PASS F40|entries='",
+      "want": " FRONTIER-CENSUS rows=40 admitted=40 closed=40 problem-rows=0 registry=92; FRONTIER-PASS F40 ids=S092; entries=43 pass=43 exit=0",
+      "executed_command": "python3 corpus/instruments/frontier-recheck-count.py | grep -E 'FRONTIER-CENSUS|FRONTIER-PASS F40|entries='",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "FRONTIER-CENSUS rows=40 admitted=40 closed=40 problem-rows=0 registry=92\nFRONTIER-PASS F40 ids=S092\nentries=43 pass=43 exit=0\n",
+      "stdout_first3": [
+        "FRONTIER-CENSUS rows=40 admitted=40 closed=40 problem-rows=0 registry=92",
+        "FRONTIER-PASS F40 ids=S092",
+        "entries=43 pass=43 exit=0"
+      ],
+      "stdout_line_count": 3,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C2",
+      "index": 1,
+      "frozen_command": "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-59/manifest.json --source S092",
+      "want": " sha256 OK + 10 Q OK occurrences=1, exit 0",
+      "executed_command": "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-59/manifest.json --source S092",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "S092:sha256 OK\nS092:Q1 OK occurrences=1 anchor=2-ok\nS092:Q10 OK occurrences=1 anchor=2-ok\nS092:Q2 OK occurrences=1 anchor=2-ok\nS092:Q3 OK occurrences=1 anchor=2-ok\nS092:Q4 OK occurrences=1 anchor=2-ok\nS092:Q5 OK occurrences=1 anchor=2-ok\nS092:Q6 OK occurrences=1 anchor=2-ok\nS092:Q7 OK occurrences=1 anchor=2-ok\nS092:Q8 OK occurrences=1 anchor=2-ok\nS092:Q9 OK occurrences=1 anchor=2-ok\n",
+      "stdout_first3": [
+        "S092:sha256 OK",
+        "S092:Q1 OK occurrences=1 anchor=2-ok",
+        "S092:Q10 OK occurrences=1 anchor=2-ok"
+      ],
+      "stdout_line_count": 11,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C2",
+      "index": 2,
+      "frozen_command": "python3 corpus/instruments/capture-binding-check.py | tail -1",
+      "want": " records=75 bound=75 unbound=0, exit 0",
+      "executed_command": "python3 corpus/instruments/capture-binding-check.py | tail -1",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "records=75 bound=75 unbound=0\n",
+      "stdout_first3": [
+        "records=75 bound=75 unbound=0"
+      ],
+      "stdout_line_count": 1,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C2",
+      "index": 3,
+      "frozen_command": "ls corpus/knowledge/*.md | wc -l",
+      "want": " 78",
+      "executed_command": "ls corpus/knowledge/*.md | wc -l",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "78\n",
+      "stdout_first3": [
+        "78"
+      ],
+      "stdout_line_count": 1,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C2",
+      "index": 4,
+      "frozen_command": "grep -c '^corpus/knowledge/' corpus/instruments/knowledge-expected.txt",
+      "want": " 78",
+      "executed_command": "grep -c '^corpus/knowledge/' corpus/instruments/knowledge-expected.txt",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "78\n",
+      "stdout_first3": [
+        "78"
+      ],
+      "stdout_line_count": 1,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C2",
+      "index": 5,
+      "frozen_command": "LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt",
+      "want": " exit 0",
+      "executed_command": "LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "",
+      "stdout_first3": [],
+      "stdout_line_count": 0,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C2",
+      "index": 6,
+      "frozen_command": "grep -cE '^\\| F40 ' corpus/README.md",
+      "want": " 1",
+      "executed_command": "grep -cE '^\\| F40 ' corpus/README.md",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "1\n",
+      "stdout_first3": [
+        "1"
+      ],
+      "stdout_line_count": 1,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C2",
+      "index": 7,
+      "frozen_command": "grep 'Google Big Sleep reporting beyond the tracker' corpus/SOURCES.md | sha256sum",
+      "want": " 3ed4f54df244a57ffbc82d9c1ce1cd909d5d7ab70be807a1a6d1d978e652a432  -",
+      "executed_command": "grep 'Google Big Sleep reporting beyond the tracker' corpus/SOURCES.md | sha256sum",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "3ed4f54df244a57ffbc82d9c1ce1cd909d5d7ab70be807a1a6d1d978e652a432  -\n",
+      "stdout_first3": [
+        "3ed4f54df244a57ffbc82d9c1ce1cd909d5d7ab70be807a1a6d1d978e652a432  -"
+      ],
+      "stdout_line_count": 1,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    },
+    {
+      "claim": "C2",
+      "index": 8,
+      "frozen_command": "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file corpus/SOURCES.md",
+      "want": " exit 0",
+      "executed_command": "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file corpus/SOURCES.md",
+      "cwd": "/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone",
+      "notes": [],
+      "exit_code": 0,
+      "pipefail_exit_code": 0,
+      "stdout": "file\tW04\tS028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes\nfile\tW04\tS029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes\nfile\tW04\tS072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes\nfile\tW04\tS076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes\nfile\tW04\tS080 duplicate url ossf.github.io/osv-schema across scopes\nfile\tW04\tS085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes\nfile\tok\t/fast/scratch/hyaku/kasegi-r59/ExecCounters/tmp.ToYJAxafk3/clone/corpus/SOURCES.md\n",
+      "stdout_first3": [
+        "file\tW04\tS028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes",
+        "file\tW04\tS029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes",
+        "file\tW04\tS072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes"
+      ],
+      "stdout_line_count": 7,
+      "stderr_first3": [],
+      "checks_failed": [],
+      "match": true
+    }
+  ]
+}
