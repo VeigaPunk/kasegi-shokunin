@@ -25,8 +25,11 @@ Ledger entry shape (JSON object with a "figures" array):
                             entries require an allow-listed head
                             (allow-list: git show, git cat-file, git ls-tree, grep, wc, ls, head,
                             tail, sha256sum, cat, cut, tr, sort without
-                            -o/--output/--compress-program, git show without
-                            --output/--ext-diff/--textconv, and
+                            -o/--output/--compress-program (R69: nor any abbreviation of the two
+                            long flags, nor a short-option bundle carrying o), git show without
+                            --output/--ext-diff/--textconv (or their abbreviations) and only
+                            for blob/tree operands rev:path (R69: no commit, range, `:/` search
+                            or braced operand), git cat-file without --textconv/--filters, and
                             python/python3 running a counter whose decoded script argument
                             starts literally with corpus/instruments/ and resolves inside it).
                             The same decoded argv is validated and executed. Supported syntax:
@@ -89,14 +92,23 @@ READ_ONLY_HEADS = (
 DENIED_FLAGS = (
     ("sort", ("-o", "--output", "--compress-program")),
     ("git show", ("--output", "--ext-diff", "--textconv")),
+    ("git cat-file", ("--textconv", "--filters")),
 )
 # R68: the two flags above were admitted at base and really executed a program
-# (`sort --compress-program=PROG` ran PROG 18288 times on one 420 KB fixture; `git show
+# (`sort --compress-program=PROG` ran PROG 18288 times on one 480000-byte fixture; `git show
 # --textconv` ran the config-declared driver once).  They are program-execution classes, not
 # read-only derives, so they are refused at parse time like the round-60 write flags.
+# R69: the round-68 wave showed the refusal was spelling-exact, not class-level
+# (`.ufo/waves/round-68/w1/{CriticC1,RevengerC1}.md`).  Three rules close the measured shapes:
+#   * a long option is refused when its name (text before "=") is a prefix of a denied long flag,
+#     because getopt_long accepts unique abbreviations (`--compress-prog=`, `--co`, `--outp=`);
+#   * for sort, a short-option bundle containing "o" (`-uo FILE`, `-ro FILE`) is refused;
+#   * `git cat-file --textconv/--filters` are refused, and `git show` is admitted only for
+#     blob/tree operands (`git_show_operands_ok`): a commit operand renders a patch through the
+#     attribute-declared textconv driver with no flag at all.
 
 
-EXPECTED_CASES = 77  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file; R68: +4 program-execution flag refusal)
+EXPECTED_CASES = 86  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file; R68: +4 program-execution flag refusal; R69: +9 class refusal)
 
 
 def eprint(*a):
@@ -299,17 +311,41 @@ def tokenize(cmd):
 
 
 def denied_flag(parts):
-    """Check decoded option tokens, including quoted/escaped flag spellings."""
+    """Check decoded option tokens, including quoted/escaped and abbreviated flag spellings."""
     for name, flags in DENIED_FLAGS:
         prefix = name.split()
         if parts[:len(prefix)] == prefix:
             for tok in parts[len(prefix):]:
+                long_name = tok.split("=", 1)[0] if tok.startswith("--") else None
                 for flag in flags:
                     if tok == flag or tok.startswith(flag + "="):
                         return True
-                    if flag == "-o" and tok.startswith("-o") and tok != "-o":
+                    # R69: getopt_long admits any unique abbreviation of a long option.
+                    if long_name and len(long_name) > 2 and flag.startswith("--") \
+                            and flag.startswith(long_name):
+                        return True
+                    # R69: a short-option bundle carrying "o" (`-uo FILE`) is sort's -o.
+                    if flag == "-o" and tok.startswith("-") and not tok.startswith("--") \
+                            and "o" in tok[1:]:
                         return True
     return False
+
+
+def git_show_operands_ok(parts):
+    """R69: admit `git show` only for blob/tree operands (`rev:path`, `rev:`, `:path`).
+
+    A commit, tag or range operand (or no operand, which means HEAD) renders a patch, and the
+    patch runs an attribute-declared textconv driver with no flag.  `:/text` searches commit
+    messages and resolves to a commit; a colon inside `{...}` (`rev^{/a:b}`) is not the path
+    separator, so any brace is refused; `--` would turn later tokens into pathspecs.
+    """
+    operands = [t for t in parts[2:] if not t.startswith("-")]
+    if "--" in parts[2:] or not operands:
+        return False
+    for t in operands:
+        if ":" not in t or t.startswith(":/") or "{" in t or "}" in t:
+            return False
+    return True
 
 
 def python_head_ok(root, parts):
@@ -329,7 +365,9 @@ def segment_ok(root, parts):
     if denied_flag(parts):
         return False
     if parts[0] == "git":
-        return len(parts) > 1 and parts[1] in ("show", "cat-file", "ls-tree")
+        if len(parts) > 1 and parts[1] == "show":
+            return git_show_operands_ok(parts)
+        return len(parts) > 1 and parts[1] in ("cat-file", "ls-tree")
     return parts[0] in READ_ONLY_HEADS
 
 
@@ -533,7 +571,7 @@ def selftest():
     run_case("sed-head-refused", 2, _one("s-sed", "sed -n '1e touch X' g.txt", "35"))
     run_case("awk-head-refused", 2, _one("s-awk", "awk 'BEGIN{system(\"touch X\")}'", "35"))
     run_case("sort-output-flag-refused", 2, _one("s-sorto", "sort -o out.txt g.txt", "35"))
-    run_case("git-show-output-flag-refused", 2, _one("s-gito", "git show --output=out.txt HEAD", "35"))
+    run_case("git-show-output-flag-refused", 2, _one("s-gito", "git show --output=out.txt HEAD:g.txt", "35"))
     run_case("python-inside-admitted", 0, _one("s-pyin", "python3 corpus/instruments/ok.py", "35"))
     run_case("python-traversal-refused", 2, _one("s-pytrav", "python3 corpus/instruments/../../out.py", "35"))
     run_case("python-symlink-refused", 2, _one("s-pylink", "python3 corpus/instruments/link.py", "35"))
@@ -545,7 +583,7 @@ def selftest():
     run_case("double-quoted-expansion-refused", 2, _one("s-dq", 'cat "${HOME}/g.txt"', "35"))
     run_case("sort-quoted-output-refused", 2, _one("s-sortquote", "sort '-o' out.txt g.txt", "35"))
     run_case("sort-escaped-output-refused", 2, _one("s-sortescape", r"sort -\o out.txt g.txt", "35"))
-    run_case("git-quoted-output-refused", 2, _one("s-gitquote", "git show '--output=out.txt' HEAD", "35"))
+    run_case("git-quoted-output-refused", 2, _one("s-gitquote", "git show '--output=out.txt' HEAD:g.txt", "35"))
     run_case("sort-compress-program-refused", 2,
              _one("s-sortcompress", "sort --compress-program=/bin/false -S 1K g.txt | head -n 1", "35"))
     run_case("sort-compress-program-space-refused", 2,
@@ -553,7 +591,22 @@ def selftest():
     run_case("sort-compress-program-quoted-refused", 2,
              _one("s-sortcompress3", "sort '--compress-program=/bin/false' g.txt", "35"))
     run_case("git-show-textconv-refused", 2,
-             _one("s-gittextconv", "git show --textconv HEAD", "35"))
+             _one("s-gittextconv", "git show --textconv HEAD:g.txt", "35"))
+    # R69: class-level refusals.  Each derive isolates one rule: the flag cases name a blob
+    # operand (so only the flag rule refuses them) and the git-show operand cases carry no flag.
+    run_case("sort-compress-prefix-refused", 2,
+             _one("s-sortprefix", "sort --compress-prog=/bin/false -S 1K g.txt | head -n 1", "35"))
+    run_case("sort-compress-short-prefix-space-refused", 2,
+             _one("s-sortprefix2", "sort --co /bin/false g.txt", "35"))
+    run_case("sort-output-prefix-refused", 2, _one("s-sortoutp", "sort --outp=out.txt g.txt", "35"))
+    run_case("sort-bundled-short-o-refused", 2, _one("s-sortuo", "sort -uo out.txt g.txt", "35"))
+    run_case("git-show-commit-form-refused", 2, _one("s-gitcommit", "git show HEAD", "35"))
+    run_case("git-show-message-search-refused", 2, _one("s-gitsearch", "git show ':/fixture'", "35"))
+    run_case("git-show-brace-colon-refused", 2, _one("s-gitbrace", "git show 'HEAD^{/a:b}'", "35"))
+    run_case("git-cat-file-textconv-refused", 2,
+             _one("s-catfiletc", "git cat-file --textconv HEAD:g.txt", "35"))
+    run_case("git-cat-file-filters-refused", 2,
+             _one("s-catfilefi", "git cat-file --filters HEAD:g.txt", "35"))
     run_case("input-redirection-admitted", 0, _one("s-input", "cat < g.txt", "35"))
     run_case("and-shortcircuit-fails", 1, _one("s-andfail", "cat missing.txt && cat g.txt", "35"))
     run_case("and-stdout-concatenated", 0, _one("s-andout", "cat g.txt && cat g.txt", "35\n35"))
@@ -651,7 +704,7 @@ def selftest():
              reason="derive-upstream-exit-1")
     run_case("upstream-grep-invalid-stale", 1, _one("s-grepinvalid", "grep '[' g.txt | wc -l", "0"),
              reason="derive-upstream-exit-2")
-    run_case("upstream-git-missing-ref-stale", 1, _one("s-gitmissing", "git show refs/figure-audit-nonexistent | wc -l", "0"),
+    run_case("upstream-git-missing-ref-stale", 1, _one("s-gitmissing", "git show refs/figure-audit-nonexistent:g.txt | wc -l", "0"),
              reason="derive-upstream-exit-128")
     run_case("upstream-python-exit7-stale", 1, _one("s-pyfail", "python3 corpus/instruments/fail.py | wc -l", "0"),
              reason="derive-upstream-exit-7")
