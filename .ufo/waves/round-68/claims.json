@@ -1,0 +1,55 @@
+{
+  "lane": "kasegi",
+  "round": 68,
+  "attempt": 3,
+  "frozen_at": "2026-11-04T21:52:00Z",
+  "base_revision": "d0f48405e7fe44a53a28305785dc4d881a414194",
+  "note": "Two claims, one per owned axis. C1 works the lowest non-retired axis (depth:verifiability 4) and is labelled nominal per QUALITY R58: the axis's citation-resolution metric is not read by this gate, so the score stays 4 and the round claims the instrument move, not a score. C2 is the frontier admission on coverage (8). Both predicates are frozen before any implementation bytes land; the base no-work control for each was measured and committed first.",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "axis_score_before": 4,
+      "type": "instrument repair, nominal per R58 (score 4 -> 4, delta 0)",
+      "residual": "SentinelMultiHead (round 67) section 3 measured two program-execution classes admitted through allow-listed heads: `sort --compress-program=PROG` really ran PROG 68217 times on an 11.3 MB fixture, and `git show --textconv` really ran a config-declared driver once. The gate's own docstring says a write through an allow-listed head is a write class like any other, and DENIED_FLAGS refused only sort -o/--output and git show --output/--ext-diff. Both flags were admitted at parse time and executed this round's fixture: the compressor 18288 times and the textconv driver once (controls/c1-base-donothing-r68.txt).",
+      "target": "The derive gate refuses `sort --compress-program` (equals, space and quoted spellings) and `git show --textconv` at parse time with reason=derive-not-read-only, executes neither named program, keeps every legitimate read-only derive admitted and exact, and pins the four new selftest cases.",
+      "predicate": "Pointed at the measured gate, the committed counter prints `VERIFY measurements=8 failures=0` and exits 0; the eight measurements are sort-compress-refused (rc=2, reason=derive-not-read-only, compressor marker runs=0), git-textconv-refused (same for the textconv driver), read-only-controls-admitted (5/5 exact), selftest (`selftest cases=77 failures=0`), mutbat (exit 0), real-ledger (`figures=35 ok=35 stale=0`), red-fixture (exit 1 stale) and no-write-side-effect (fixture tree byte-identical, both markers 0).",
+      "counting_command": "python3 -B .ufo/waves/round-68/controls/c1-probe-run-r68.py --gate <gate exported from the measured revision> --work /fast/scratch/hyaku/kasegi-r68/L1/FINAL --mode candidate",
+      "kill_rule": "Any MEASURE line FAIL, a nonzero exit, or a missing VERIFY line defeats C1. The target is not narrowed after data: a partial pass is an honest stop, not a smaller claim.",
+      "do_nothing_control": "The same counter on the base gate bytes (.ufo/waves/round-68/controls/base-gate-d0f48405.py, sha256 8147350c411650b4fe3307b50851722025a00cc1e71df2ecff478ea7177ad247) prints `VERIFY measurements=8 failures=4` and exits 1 (controls/c1-base-donothing-r68.txt): both probes are admitted and executed (marker runs 18288 and 1), the selftest pins 73 cases, and the write-side-effect measurement fails.",
+      "before": "sort-compress-refused FAIL rc=1 marker_runs=18288; git-textconv-refused FAIL rc=1 marker_runs=1; selftest cases=73; no-write-side-effect FAIL marker_runs=18289",
+      "after_target": "all eight measurements ok, `VERIFY measurements=8 failures=0`, exit 0",
+      "pins": {
+        "counter_sha256": "785e38fd1393f345226fbd34e3a2310eed597bb7b95997478066db158c496b4b",
+        "base_gate_sha256": "8147350c411650b4fe3307b50851722025a00cc1e71df2ecff478ea7177ad247",
+        "candidate_trial_gate_sha256": "10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8"
+      }
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "axis_score_before": 8,
+      "type": "frontier admission (F46 on S102)",
+      "target": "Frontier row F46 admitted on one new source row S102: the OpenSSF Scorecard API's own swagger 2.0 contract (info.version 1.1.0, host api.scorecard.dev) \u2014 the route family, the ScorecardResult/ScorecardCheck/Repo/Error definitions and the aggregate-score field \u2014 as the machine interface to the scorecard data, distinct from the check documentation the lane already holds (F35/S086) and from any served instance.",
+      "refused_candidate": "A live project result at https://api.securityscorecards.dev/projects/github.com/ossf/scorecard was opened this round and refused as an entry source: the served JSON is a single 13259-byte line (no located line anchors) and its values are instance data that change per analysis. Refusal recorded in corpus/source-snapshots/round-68/manifest.json.",
+      "predicate": "`python3 corpus/instruments/frontier-recheck-count.py` prints `FRONTIER-CENSUS rows=46 admitted=46 closed=46 problem-rows=0 registry=102`, `FRONTIER-PASS F46 ids=S102` and `entries=49 pass=49 exit=0`; `python3 corpus/instruments/capture-binding-check.py` prints `records=82 bound=82 unbound=0`; `wc -l corpus/instruments/knowledge-expected.txt` = 86 and `grep -vc '^#'` = 84; `/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` exits 0.",
+      "counting_command": "python3 corpus/instruments/frontier-recheck-count.py; python3 corpus/instruments/capture-binding-check.py; wc -l corpus/instruments/knowledge-expected.txt; grep -vc '^#' corpus/instruments/knowledge-expected.txt; /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi",
+      "kill_rule": "Any count short of the frozen after-value, a nonzero census exit, or an admitted row whose Gate block lacks a located \u226425-word quote for its own access date defeats C2. No narrowing: a missing row is an honest stop.",
+      "do_nothing_control": "The same commands at the base revision print rows=45 admitted=45 closed=45 registry=101, entries=48 pass=48, records=81 bound=81 unbound=0, knowledge 85 lines / 83 entries, census exit 0 (controls/c2-base-counters-r68.txt).",
+      "before": "rows=45 registry=101 entries=48 capture=81 knowledge=83 (85 lines) census exit=0",
+      "after_target": "rows=46 registry=102 entries=49 capture=82 knowledge=84 (86 lines) census exit=0",
+      "pins": {
+        "capture_manifest": "corpus/source-snapshots/round-68/manifest.json",
+        "capture_sha256": "6ebb8552ac3e0c4085f4a9239e29551fa1be19cebbdf99ccabb96400d8c2caa0",
+        "capture_lines": 429
+      }
+    }
+  ],
+  "round_shape": "one v1 wave (band 8-16), L1 holds the planner seat",
+  "out_of_scope": [
+    "the remaining program-execution surface of allow-listed heads beyond the two measured flags (named residual, not claimed)",
+    "any sandbox, authenticity or general pipefail reading",
+    "source restoration and the operator-owned R15/R57/R59/R60/R67/R69 decisions",
+    "score movement on either axis (both held, delta 0)"
+  ]
+}
