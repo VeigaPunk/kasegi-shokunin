@@ -36,15 +36,22 @@ Ledger entry shape (JSON object with a "figures" array):
 
 Exit codes: 0 every figure re-derives; 1 any figure stale or derive failed
 (fail-closed: nonzero or signal final status, upstream positive status other than grep exit1,
-or upstream signal other than SIGPIPE, or empty stdout is stale);
+or a non-exempt upstream signal — SIGPIPE from a multi-input or option-carrying cat is stale —
+or empty stdout is stale);
 2 harness/read error (ledger missing/unparsable, entry malformed, derive refused).
 After all pipeline stages finish, a nonzero final status takes precedence: a nonzero exit is
 reported as derive-exit-N and a final stage killed by signal N as derive-signal-N. Otherwise
 the first upstream status that is >1, or exit1 from a program other than grep, is stale
 (derive-upstream-exit-N), and an upstream stage killed by signal N is stale
 (derive-upstream-signal-N). Grep exit1 is an ordinary no-match and is not an error. SIGPIPE
-(-13) on a non-final stage is benign by documented rule: a later stage closed the pipe early,
-so the truncated producer output is not the value; the final stage's output is. This is not
+(-13) on a non-final stage stays benign by documented rule; for a cat head the exemption now
+applies only when the cat had at most one decoded input — no operands (stdin) or exactly one
+operand with no options (a lone "-" operand counts as a stdin input; a leading "--" separator
+is honored). Other heads retain the benign rule. A cat with two or more inputs, and
+conservatively ANY cat invocation carrying an option token (option value semantics are not
+parsed, so even a single-file `cat -n big.txt` is refused), goes stale
+derive-upstream-signal-N: with multiple inputs the truncation can hide a later operand's error
+(observed false green at base: large `cat big.txt missing.txt | head -n 1`). This is not
 general error detection or pipefail. && stops a derive at the first stale group and
 concatenates successful group stdout; it is not bash pipeline-status equivalence.
 --selftest builds fixtures under $HYAKU_SCRATCH, otherwise $TMPDIR/the system temp
@@ -73,22 +80,46 @@ DENIED_FLAGS = (
 )
 
 
-EXPECTED_CASES = 63  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4)
+EXPECTED_CASES = 67  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape)
 
 
 def eprint(*a):
     print(*a, file=sys.stderr)
 
 
-def upstream_stale(head, status):
+def cat_sigpipe_exempt(argv):
+    """True when a SIGPIPE'd cat head had at most one decoded input: no operands (stdin) or
+    exactly one operand.  A leading "--" separator is honored; a lone "-" operand counts as a
+    stdin input; one filename containing spaces or quoted operators is already one decoded
+    argv token.  ANY option token (a word starting with "-" that is not "-" itself, unless it
+    follows a leading "--") is refused conservatively: option value semantics are not parsed
+    here, so e.g. `cat -n big.txt` is stale even though it reads a single file.  This is a
+    capability restriction, not general argument validation.
+    """
+    tokens = list(argv[1:])
+    if tokens and tokens[0] == "--":
+        tokens = tokens[1:]
+    elif any(t.startswith("-") and t != "-" for t in tokens):
+        return False
+    return len(tokens) <= 1
+
+
+def upstream_stale(head, stage_argv, status):
     """Stale upstream statuses: any >1, exit1 from a program other than grep, or a signal.
 
     Grep exit1 is an ordinary no-match. A negative status is a signal: stale unless it is
-    SIGPIPE (-13). SIGPIPE on a non-final stage is benign by documented rule: a later stage
-    closed the pipe early, so the truncated producer output is not the value.
+    SIGPIPE (-13) on a stage whose head is cat with at most one decoded input (stdin-only or
+    exactly one operand, no options, optional leading -- separator).  A multi-input cat
+    SIGPIPE is stale: the truncation can hide a later operand's error.  Other heads keep the
+    old benign rule.  stage_argv is the decoded argv of the killed stage (never a shell
+    string); passing it is the R66 repair — base decided SIGPIPE on the status alone.
     """
     if status < 0:
-        return status != -signal.SIGPIPE
+        if status != -signal.SIGPIPE:
+            return True
+        if os.path.basename(head) != "cat":
+            return False
+        return not cat_sigpipe_exempt(stage_argv)
     if status > 1:
         return True
     return status == 1 and os.path.basename(head) != "grep"
@@ -99,7 +130,7 @@ def run_derive(plan, root):
     output = []
     deadline = time.monotonic() + 300
     for pipeline in plan:
-        processes, files, heads = [], [], []
+        processes, files, heads, stage_argvs = [], [], [], []
         previous = None
         try:
             for argv, input_path in pipeline:
@@ -113,6 +144,7 @@ def run_derive(plan, root):
                                      stdout=subprocess.PIPE, stderr=errors)
                 processes.append(p)
                 heads.append(argv[0])
+                stage_argvs.append(list(argv))
                 if previous is not None:
                     previous.close()
                 previous = p.stdout
@@ -126,8 +158,8 @@ def run_derive(plan, root):
                 if status < 0:
                     return None, out, "derive-signal-%d" % -status
                 return None, out, "derive-exit-%d" % status
-            for p, head in zip(processes[:-1], heads[:-1]):
-                if upstream_stale(head, p.returncode):
+            for p, head, stage_argv in zip(processes[:-1], heads[:-1], stage_argvs[:-1]):
+                if upstream_stale(head, stage_argv, p.returncode):
                     out = b"".join(output).decode("utf-8", "replace").strip()
                     if p.returncode < 0:
                         return None, out, "derive-upstream-signal-%d" % -p.returncode
@@ -359,7 +391,7 @@ def _one(fid, derive, want):
 def selftest():
     cases = []
 
-    def run_case(cid, want_exit, ledger_doc=None, broken=False, reason=None):
+    def run_case(cid, want_exit, ledger_doc=None, broken=False, reason=None, big=False):
         tmp = tempfile.mkdtemp(prefix="figure-audit-selftest-",
                                dir=os.environ.get("HYAKU_SCRATCH") or None)
         try:
@@ -367,6 +399,15 @@ def selftest():
                 f.write("35\n")
             with open(os.path.join(tmp, "f1.txt"), "w", encoding="utf-8", newline="\n") as f:
                 f.write("340\n")
+            if big:
+                # R66: 4 MiB deterministic fixtures starting "alpha"/"beta".  A first operand
+                # this size far exceeds the 64 KiB pipe buffer, so `cat big.txt ... | head -n 1`
+                # delivers SIGPIPE to cat (base red receipt native_statuses=141) before cat can
+                # finish; small fixtures do not SIGPIPE and stay on the exit-status paths.
+                with open(os.path.join(tmp, "big.txt"), "w", encoding="utf-8", newline="\n") as f:
+                    f.write("alpha\n" + ("x" * 1023 + "\n") * 4095)
+                with open(os.path.join(tmp, "other.txt"), "w", encoding="utf-8", newline="\n") as f:
+                    f.write("beta\n" + ("y" * 1023 + "\n") * 4095)
             os.makedirs(os.path.join(tmp, "corpus", "instruments"), exist_ok=True)
             with open(os.path.join(tmp, "corpus", "instruments", "ok.py"), "w", encoding="utf-8", newline="\n") as f:
                 f.write("print(35)\n")
@@ -473,6 +514,22 @@ def selftest():
     run_case("final-stage-signal-stale", 1, _one("s-finalsig", "python3 corpus/instruments/kill.py", "0"),
              reason="derive-signal-15")
     run_case("upstream-sigpipe-nonfinal-benign", 0, _one("s-sigpipe", "python3 corpus/instruments/pipe.py | head -n 1 | wc -l", "1"))
+    # R66 cat-shape restriction: the SIGPIPE exemption needs stdin-only or exactly one
+    # decoded operand.  Cases 1-2 are the base false green (base red receipt: exit 0 with
+    # native cat status -13) — the candidate must refuse them.  The audit reason is asserted,
+    # never an assumed native status; a timing fluke downgrading cat to exit 1 would surface
+    # as derive-upstream-exit-1 and fail these cases loudly rather than pass silently.
+    run_case("upstream-cat-multi-missing-sigpipe-stale", 1,
+             _one("s-catmulti", "cat big.txt missing.txt | head -n 1", "alpha"),
+             reason="derive-upstream-signal-13", big=True)
+    run_case("upstream-cat-multi-existing-sigpipe-stale", 1,
+             _one("s-catmulti2", "cat big.txt other.txt | head -n 1", "alpha"),
+             reason="derive-upstream-signal-13", big=True)
+    # Cases 3-4: a single decoded input stays benign (green at base too).
+    run_case("upstream-cat-single-operand-sigpipe-benign", 0,
+             _one("s-catone", "cat big.txt | head -n 1", "alpha"), big=True)
+    run_case("upstream-cat-stdin-sigpipe-benign", 0,
+             _one("s-catstdin", "cat < big.txt | head -n 1", "alpha"), big=True)
     run_case("final-exit7-precedes-upstream-exit1", 1, _one("s-catfinal", "cat missing.txt | python3 corpus/instruments/fail.py", "0"),
              reason="derive-exit-7")
     run_case("and-first-group-upstream-exit1-stale", 1, _one("s-andfirst", "cat missing.txt | wc -l && cat g.txt", "0"),
