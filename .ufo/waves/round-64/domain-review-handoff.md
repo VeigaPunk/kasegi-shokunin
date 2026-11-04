@@ -1,0 +1,9 @@
+# S094 disclosed SQLite account — documentation-only qualification handoff
+
+Trigger: latest considerthese/2026-10-26.md proposal2 asks for a real disclosed-report task; r63 review left the six-file packaging task open. This round examines the report's sentinel-to-index explanation and exposure qualifiers, not merely its headline.
+
+Action: personally reopened https://projectzero.google/2024/10/from-naptime-to-big-sleep.html on2026-11-04; compared the report with held S094 capture. Ran `python3 -B .ufo/waves/round-64/domain-qualification.py`; raw `controls/domain-qualification-r64.txt` exits0, `QUALIFICATION checks=11 failures=0`. Seven located source qualifications and four elementary index-range checks are enumerated, not a crash reproduction.
+
+Outcome: reporter account supports a ROWID sentinel -1 becoming index -2 and violating the displayed 0≤iCol≤2 assertion. The negative sentinel is not a valid column index; columns1/2/3 produce0/1/2 under the explained subtraction. In the account, debug execution hits an assertion; release exploitation depends on compiler/optimization and the reported subsequent write. The finding was fixed before an official release, so no released-user impact follows. Fuzzer configuration lacked the relevant extension or had an older unaffected function;150 CPU-hours is not a universal fuzzer failure or150 wall-clock hours.
+
+Operator handoff: retain this as a bounded published-account review. No new vulnerability, bounty eligibility, severity payment, live authorization, six-file claim package, target reproduction or submission is asserted. SHONEN box2 remains unchecked; proposal2 remains partial. Source anchors: S094.txt:18,29,35,106,110,112,113,118. The script is a local qualification worksheet, not an admission gate or an external-source truth oracle.
