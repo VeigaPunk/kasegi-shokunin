@@ -2568,3 +2568,5 @@ No capability acquisition, score movement, retirement, split or stagnation waive
 ### Planned after round63 (not frozen)
 
 Work the actual lowest metric or choose a distinct observed residual with a failing do-nothing control; do not re-claim the same three repairs. Before any successor freeze, trial the exact committed-input driver with its complete transitive local input closure. Do not infer a passed full export from a successful live-root ledger.
+
+Round63 supplemental result (nonclaim): complete-input replay on `204a627b32671b6e5e1ee682acbe31714c6d46eb` prints7 measurements/0 failures, ledger35/35; `.ufo/waves/round-63/controls/supplemental-verification-r63.txt`. **C1 remains NOT VERIFIED** because its frozen selected-export driver remains7/1. One9-seat v1 wave settled, WAVE-DONE received; no dead seat recorded, no replacement/residual call. Outside admission belongs to subsequent closure.

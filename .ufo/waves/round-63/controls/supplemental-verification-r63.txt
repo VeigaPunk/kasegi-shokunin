@@ -1,0 +1,163 @@
+run-utc=2026-11-04T18:15:39.132750+00:00
+measured-revision=204a627b32671b6e5e1ee682acbe31714c6d46eb
+host-bound-git-object-replay=true hermetic=false
+INPUT corpus/instruments/figure-audit.py sha256=15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997
+INPUT corpus/instruments/figure-audit-mutbat.py sha256=7a61cf1e5cd22c4f0fa553b2455aab795a26cc3f5ac491466753e4cceffd9992
+INPUT corpus/instruments/figure-audit-ledger.json sha256=28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b
+INPUT corpus/source-snapshots/round-54/S086.txt sha256=fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f
+INPUT .ufo/waves/round-63/w1/ExecCollector/c1-probes-r63.py sha256=fd3f7875d9ffa644510ed4e6df27b3ec6dfec7ee1c73fce7c5e7cb26bd1dfa60
+INPUT .ufo/waves/round-63/w1/ExecMutants/pipeline-mutbat-r63.py sha256=68b0e71f75f51e352917b5678493835e95d5c3c6ad7934b9f35d41fce317e7c8
+INPUT .ufo/waves/round-63/controls/tree-probes-r63.py sha256=99a91e451b3e0b060a2436aa80f02abaf270cfd5d9167107aea71d99a59d080b
+INPUT .ufo/waves/round-63/controls/domain-review-ledger-r63.json sha256=666a7a689bafbf0eb0bca496ed92171a916bc0dda8d434d0cd8dfba44d51b60b
+INPUT .ufo/waves/round-55/controls/gate-final-r55.txt sha256=31ec08a998abf3b396a41a3515d9e2a9631b5d15cc6339c8b38e438016abb8c5
+INPUT .ufo/waves/round-56/controls/df3-fixedpoint-r55tip.txt sha256=a054cbfec69819b1096269fa3365675ecd7ca07dc7f63ed7393d7eb4562acb2b
+INPUT .ufo/waves/round-53/controls/c2-counter-final-r53.txt sha256=be69ece74fcd5498dd23e14c9ec1aa862a579bbb46f2df22c1692409f42bf3ab
+INPUT .ufo/waves/round-56/controls/gate-final-r56.txt sha256=e0771d54473251537fff131a569f230d315c42061784c809232f88a2fd2863d9
+RUN collector argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/.ufo/waves/round-63/w1/ExecCollector/c1-probes-r63.py", "--instrument", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector", "--mode", "candidate"]
+{"collector_argv": ["/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/.ufo/waves/round-63/w1/ExecCollector/c1-probes-r63.py", "--instrument", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector", "--mode", "candidate"], "dependencies": {"cat": "/usr/bin/cat", "git": "/usr/bin/git", "grep": "/usr/bin/grep", "python3": "/usr/bin/python3", "wc": "/usr/bin/wc"}, "instrument": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "mode": "candidate", "sha256": "15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997"}
+{"TMPDIR": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/tmp", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/cat-missing/one.json", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/cat-missing"], "cwd": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/cat-missing", "derive": "cat missing | wc -l", "exit": 0, "expected_stderr": "", "expected_stdout": "FIG cat-missing recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "expected_tuple": [0, 1, 1, 0, null, "FIG cat-missing recorded=0 derived=0 ok"], "probe": "cat-missing", "stderr": "", "stdout": "FIG cat-missing recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "verdict": "PASS", "want": "0"}
+{"TMPDIR": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/tmp", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/grep-invalid/one.json", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/grep-invalid"], "cwd": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/grep-invalid", "derive": "grep '[' g.txt | wc -l", "exit": 1, "expected_stderr": "", "expected_stdout": "FIG grep-invalid recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "expected_tuple": [1, 1, 0, 1, "derive-upstream-exit-2", "FIG grep-invalid recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale"], "probe": "grep-invalid", "stderr": "", "stdout": "FIG grep-invalid recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "verdict": "PASS", "want": "0"}
+{"TMPDIR": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/tmp", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/git-missing-ref/one.json", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/git-missing-ref"], "cwd": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/git-missing-ref", "derive": "git show refs/heads/r63-nonexistent | wc -l", "exit": 1, "expected_stderr": "", "expected_stdout": "FIG git-missing-ref recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-128 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "expected_tuple": [1, 1, 0, 1, "derive-upstream-exit-128", "FIG git-missing-ref recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-128 stale"], "probe": "git-missing-ref", "stderr": "", "stdout": "FIG git-missing-ref recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-128 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "verdict": "PASS", "want": "0"}
+{"TMPDIR": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/tmp", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/python-exit7/one.json", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/python-exit7"], "cwd": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/python-exit7", "derive": "python3 corpus/instruments/fail.py | wc -l", "exit": 1, "expected_stderr": "", "expected_stdout": "FIG python-exit7 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-7 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "expected_tuple": [1, 1, 0, 1, "derive-upstream-exit-7", "FIG python-exit7 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-7 stale"], "probe": "python-exit7", "stderr": "", "stdout": "FIG python-exit7 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-7 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "verdict": "PASS", "want": "0"}
+{"TMPDIR": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/tmp", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/grep-no-match/one.json", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/grep-no-match"], "cwd": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/grep-no-match", "derive": "grep 'absent' g.txt | wc -l", "exit": 0, "expected_stderr": "", "expected_stdout": "FIG grep-no-match recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "expected_tuple": [0, 1, 1, 0, null, "FIG grep-no-match recorded=0 derived=0 ok"], "probe": "grep-no-match", "stderr": "", "stdout": "FIG grep-no-match recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "verdict": "PASS", "want": "0"}
+{"TMPDIR": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/tmp", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/cat-success/one.json", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/cat-success"], "cwd": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/cat-success", "derive": "cat g.txt | wc -l", "exit": 0, "expected_stderr": "", "expected_stdout": "FIG cat-success recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "expected_tuple": [0, 1, 1, 0, null, "FIG cat-success recorded=1 derived=1 ok"], "probe": "cat-success", "stderr": "", "stdout": "FIG cat-success recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "verdict": "PASS", "want": "1"}
+{"TMPDIR": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/tmp", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/final-failure/one.json", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/final-failure"], "cwd": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/final-failure", "derive": "cat g.txt | grep absent", "exit": 1, "expected_stderr": "", "expected_stdout": "FIG final-failure recorded=0 derived=UNAVAILABLE reason=derive-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "expected_tuple": [1, 1, 0, 1, "derive-exit-1", "FIG final-failure recorded=0 derived=UNAVAILABLE reason=derive-exit-1 stale"], "probe": "final-failure", "stderr": "", "stdout": "FIG final-failure recorded=0 derived=UNAVAILABLE reason=derive-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "verdict": "PASS", "want": "0"}
+{"TMPDIR": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/tmp", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/and-concatenated/one.json", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/and-concatenated"], "cwd": "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/collector/probes-8y__5m5o/and-concatenated", "derive": "cat g.txt && cat g.txt", "exit": 0, "expected_stderr": "", "expected_stdout": "FIG and-concatenated recorded=35\n35 derived=35\n35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "expected_tuple": [0, 1, 1, 0, null, "FIG and-concatenated recorded=35\n35 derived=35\n35 ok"], "probe": "and-concatenated", "stderr": "", "stdout": "FIG and-concatenated recorded=35\n35 derived=35\n35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "verdict": "PASS", "want": "35\n35"}
+HARNESS probes=8 failures=0 mode=candidate
+RESULT collector exit=0 verdict=PASS
+RUN trees argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/.ufo/waves/round-63/controls/tree-probes-r63.py", "--instrument", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees", "--mode", "candidate"]
+TREE instrument-sha256=15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997 mode=candidate
+{"case": "cat-missing", "derive": "cat missing.txt | wc -l", "want": "0", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm/ledger.json"], "expected_exit": 0, "expected_stdout": "FIG cat-missing recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "exit": 0, "stdout": "FIG cat-missing recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "stderr": "", "verdict": "PASS"}
+{"case": "grep-invalid", "derive": "grep '[' present.txt | wc -l", "want": "0", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm/ledger.json"], "expected_exit": 1, "expected_stdout": "FIG grep-invalid recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "exit": 1, "stdout": "FIG grep-invalid recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "stderr": "", "verdict": "PASS"}
+{"case": "git-bad-ref", "derive": "git show refs/heads/r63-nonexistent:path | wc -l", "want": "0", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm/ledger.json"], "expected_exit": 1, "expected_stdout": "FIG git-bad-ref recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-128 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "exit": 1, "stdout": "FIG git-bad-ref recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-128 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "stderr": "", "verdict": "PASS"}
+{"case": "python-exit7", "derive": "python3 corpus/instruments/fail.py | wc -l", "want": "0", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm/ledger.json"], "expected_exit": 1, "expected_stdout": "FIG python-exit7 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-7 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "exit": 1, "stdout": "FIG python-exit7 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-7 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "stderr": "", "verdict": "PASS"}
+{"case": "cat-middle", "derive": "cat present.txt | cat missing.txt | wc -l", "want": "0", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm/ledger.json"], "expected_exit": 0, "expected_stdout": "FIG cat-middle recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "exit": 0, "stdout": "FIG cat-middle recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "stderr": "", "verdict": "PASS"}
+{"case": "grep-middle", "derive": "cat present.txt | grep '[' | wc -l", "want": "0", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm/ledger.json"], "expected_exit": 1, "expected_stdout": "FIG grep-middle recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "exit": 1, "stdout": "FIG grep-middle recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "stderr": "", "verdict": "PASS"}
+{"case": "python-error-and-group", "derive": "python3 corpus/instruments/fail.py | wc -l && wc -l < empty.txt", "want": "0\n0", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm/ledger.json"], "expected_exit": 1, "expected_stdout": "FIG python-error-and-group recorded=0\n0 derived=UNAVAILABLE reason=derive-upstream-exit-7 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "exit": 1, "stdout": "FIG python-error-and-group recorded=0\n0 derived=UNAVAILABLE reason=derive-upstream-exit-7 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n", "stderr": "", "verdict": "PASS"}
+{"case": "grep-no-match", "derive": "grep absent present.txt | wc -l", "want": "0", "argv": ["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--root", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/trees/trees-ebofxanm/ledger.json"], "expected_exit": 0, "expected_stdout": "FIG grep-no-match recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "exit": 0, "stdout": "FIG grep-no-match recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n", "stderr": "", "verdict": "PASS"}
+TREE probes=8 failures=0 mode=candidate
+RESULT trees exit=0 verdict=PASS
+RUN selftest argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--selftest"]
+selftest case=ok-ledger exit=0 want=0 verdict=pass
+selftest case=stale-literal exit=1 want=1 verdict=pass
+selftest case=derive-fails-fail-closed exit=1 want=1 verdict=pass
+selftest case=token-boundary-34-vs-340 exit=1 want=1 verdict=pass
+selftest case=unreadable-ledger-exit-2 exit=2 want=2 verdict=pass
+selftest case=derive-not-read-only-refused exit=2 want=2 verdict=pass
+selftest case=chain-semicolon-refused exit=2 want=2 verdict=pass
+selftest case=chain-background-refused exit=2 want=2 verdict=pass
+selftest case=chain-newline-refused exit=2 want=2 verdict=pass
+selftest case=chain-cmdsubst-refused exit=2 want=2 verdict=pass
+selftest case=pipe-to-shell-refused exit=2 want=2 verdict=pass
+selftest case=redirect-refused exit=2 want=2 verdict=pass
+selftest case=or-chain-refused exit=2 want=2 verdict=pass
+selftest case=quoted-separator-admitted exit=0 want=0 verdict=pass
+selftest case=escape-single-quote-refused exit=2 want=2 verdict=pass
+selftest case=escape-double-quote-refused exit=2 want=2 verdict=pass
+selftest case=sed-head-refused exit=2 want=2 verdict=pass
+selftest case=awk-head-refused exit=2 want=2 verdict=pass
+selftest case=sort-output-flag-refused exit=2 want=2 verdict=pass
+selftest case=git-show-output-flag-refused exit=2 want=2 verdict=pass
+selftest case=python-inside-admitted exit=0 want=0 verdict=pass
+selftest case=python-traversal-refused exit=2 want=2 verdict=pass
+selftest case=python-symlink-refused exit=2 want=2 verdict=pass
+selftest case=python-absolute-refused exit=2 want=2 verdict=pass
+selftest case=python-quoted-traversal-refused exit=2 want=2 verdict=pass
+selftest case=python-dot-prefix-refused exit=2 want=2 verdict=pass
+selftest case=python-sibling-boundary-refused exit=2 want=2 verdict=pass
+selftest case=dollar-expansion-refused exit=2 want=2 verdict=pass
+selftest case=double-quoted-expansion-refused exit=2 want=2 verdict=pass
+selftest case=sort-quoted-output-refused exit=2 want=2 verdict=pass
+selftest case=sort-escaped-output-refused exit=2 want=2 verdict=pass
+selftest case=git-quoted-output-refused exit=2 want=2 verdict=pass
+selftest case=input-redirection-admitted exit=0 want=0 verdict=pass
+selftest case=and-shortcircuit-fails exit=1 want=1 verdict=pass
+selftest case=and-stdout-concatenated exit=0 want=0 verdict=pass
+selftest case=upstream-cat-missing-exit1-retained exit=0 want=0 verdict=pass
+selftest case=upstream-grep-invalid-stale exit=1 want=1 verdict=pass
+selftest case=upstream-git-missing-ref-stale exit=1 want=1 verdict=pass
+selftest case=upstream-python-exit7-stale exit=1 want=1 verdict=pass
+selftest case=upstream-grep-no-match-counts-zero exit=0 want=0 verdict=pass
+selftest case=successful-pipeline-counts-one exit=0 want=0 verdict=pass
+selftest case=final-exit1-stale exit=1 want=1 verdict=pass
+selftest case=final-error-precedes-upstream-error exit=1 want=1 verdict=pass
+selftest cases=43 failures=0
+RESULT selftest exit=0 verdict=PASS
+RUN old-mutbat argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit-mutbat.py", "--instrument", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py"]
+instrument=/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py sha256=15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997
+gate-anchor='return parts[0] in READ_ONLY_HEADS' sites=1
+PRISTINE selftest_exit=0 last='selftest cases=43 failures=0'
+CONTROL c-equivalent-trailing-space sites=1 selftest_exit=0 must_not_be_killed=held last='selftest cases=43 failures=0'
+MUT m4-drop-stale-literal-case sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=42 failures=1'
+MUT m6-readonly-gate-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=43 failures=4'
+MUT m7-python-confinement-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=43 failures=4'
+MUT m8-python-prefix-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=43 failures=1'
+MUT m9-python-boundary-separator-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=43 failures=1'
+mutbat killed=5/5 survivors=0 invalid=0 controls=pass
+RESULT old-mutbat exit=0 verdict=PASS
+RUN new-mutbat argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/.ufo/waves/round-63/w1/ExecMutants/pipeline-mutbat-r63.py", "--instrument", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/scratch"]
+pipeline-mutbat-r63 instrument=/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py
+battery-utc=2026-11-04T18:15:46Z
+instrument-sha256=15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997
+anchor guard-threshold sites=1 exact-once=ok
+anchor guard-refusal sites=1 exact-once=ok
+PRISTINE selftest_exit=0 cases=43 failures=0 verdict=pass
+CONTROL c-equiv-reversed sites=1 compile=ok selftest_exit=0 killed=no verdict=held last='selftest cases=43 failures=0'
+CONTROL c-equiv-trailing-space sites=1 compile=ok selftest_exit=0 killed=no verdict=held last='selftest cases=43 failures=0'
+CONTROL c-invalid-missing-colon sites=1 compile=fail invalid=1 killed=0 verdict=invalid-held detail="expected ':' (c-invalid-missing-colon.py, line 107)"
+MUT m-threshold-0 sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-cat-missing-exit1-retained verdict=killed last='selftest cases=43 failures=2'
+MUT m-threshold-2 sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-grep-invalid-stale verdict=killed last='selftest cases=43 failures=1'
+MUT m-threshold-ge0 sites=1 compile=ok selftest_exit=1 killed=1 failed_case=quoted-separator-admitted verdict=killed last='selftest cases=43 failures=4'
+MUT m-refusal-dead sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-grep-invalid-stale verdict=killed last='selftest cases=43 failures=3'
+MUT m-refusal-skip sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-grep-invalid-stale verdict=killed last='selftest cases=43 failures=3'
+MUT m-refusal-rc-launder sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-grep-invalid-stale verdict=killed last='selftest cases=43 failures=3'
+MUT m-reason-value-constant sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-grep-invalid-stale verdict=killed last='selftest cases=43 failures=3'
+MUTBAT mutants=7 killed=7 survivors=0 invalid=1 controls=3 verdict=PASS
+battery-exit=0
+RESULT new-mutbat exit=0 verdict=PASS
+RUN real-ledger argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py"]
+FIG frontier-rows recorded=34 derived=34 ok
+FIG registry-rows recorded=85 derived=85 ok
+FIG knowledge-expected-entries recorded=72 derived=72 ok
+FIG knowledge-files recorded=72 derived=72 ok
+FIG capture-lines-s085 recorded=543 (filed; superseded by the r54 D53-2 correction) derived=542 ok
+FIG capture-bytes-s085 recorded=7590 derived=7590 ok
+FIG capture-lines-s086 recorded=731 derived=731 ok
+FIG capture-sha256-s086 recorded=fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f derived=fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f ok
+FIG frontier-rows-r54 recorded=35 derived=35 ok
+FIG registry-rows-r54 recorded=86 derived=86 ok
+FIG entries-r54 recorded=38 derived=38 ok
+FIG knowledge-expected-r54 recorded=73 derived=73 ok
+FIG knowledge-files-r54 recorded=73 derived=73 ok
+FIG figure-audit-mentions-base-scorecard recorded=2 (the receipt's limb; the filed prose 0 superseded) derived=2 ok
+FIG figure-audit-mentions-base-log recorded=0 derived=0 ok
+FIG figure-audit-mentions-base-knowledge-expected recorded=0 derived=0 ok
+FIG frontier-rows-r55 recorded=36 derived=36 ok
+FIG registry-rows-r55 recorded=87 derived=87 ok
+FIG entries-r55 recorded=39 derived=39 ok
+FIG knowledge-expected-r55 recorded=74 derived=74 ok
+FIG knowledge-files-r55 recorded=74 derived=74 ok
+FIG census-fresh-literal-r55 recorded=stale (the receipt's printed limb; the filed prose ok superseded) derived=stale ok
+FIG census-internal-r55-receipt recorded=1118 derived=1118 ok
+FIG census-gone-r55-receipt recorded=3883 derived=3883 ok
+FIG census-fixedpoint-internal-r55 recorded=1119 derived=1119 ok
+FIG census-fixedpoint-gone-r55 recorded=3882 derived=3882 ok
+FIG fail-entry-records recorded=33 (the class-check line; the trailer's 34 superseded) derived=33 ok
+FIG frontier-rows-r56 recorded=37 derived=37 ok
+FIG registry-rows-r56 recorded=88 derived=88 ok
+FIG entries-r56 recorded=40 derived=40 ok
+FIG knowledge-expected-r56 recorded=75 derived=75 ok
+FIG knowledge-files-r56 recorded=75 derived=75 ok
+FIG census-fresh-literal-r56 recorded=ok derived=ok ok
+FIG census-internal-r56-receipt recorded=1130 derived=1130 ok
+FIG census-gone-r56-receipt recorded=3915 derived=3915 ok
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+RESULT real-ledger exit=0 verdict=PASS
+RUN domain-trial argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/corpus/instruments/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/L1/supplemental/committed-tm6kgkzl/.ufo/waves/round-63/controls/domain-review-ledger-r63.json"]
+FIG S094-pre-release-qualification recorded=1 located account qualification derived=1 ok
+FIG S094-root-cause-sentinel recorded=1 located sentinel explanation derived=1 ok
+FIG S094-cpu-hour-unit recorded=1 located publisher experiment result derived=1 ok
+FIG S094-target-specific-caveat recorded=1 located limitation derived=1 ok
+FIGURE-AUDIT figures=4 ok=4 stale=0 exit=0
+RESULT domain-trial exit=0 verdict=PASS
+VERIFY measurements=7 failures=0 revision=204a627b32671b6e5e1ee682acbe31714c6d46eb
