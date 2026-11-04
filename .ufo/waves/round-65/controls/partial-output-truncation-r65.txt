@@ -1,0 +1,8 @@
+# partial-output control: a producer that writes one line then dies by SIGKILL; base gate vs landed gate
+$ <base gate a283189> --ledger /fast/scratch/hyaku/kasegi-r65/L1/trunc/ledger.json --root /fast/scratch/hyaku/kasegi-r65/L1/trunc
+FIG truncated-producer recorded=1 derived=1 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+base_exit=0
+$ <landed gate 1c36d724> --ledger /fast/scratch/hyaku/kasegi-r65/L1/trunc/ledger.json --root /fast/scratch/hyaku/kasegi-r65/L1/trunc
+FIG truncated-producer recorded=1 derived=UNAVAILABLE reason=derive-upstream-signal-9 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
