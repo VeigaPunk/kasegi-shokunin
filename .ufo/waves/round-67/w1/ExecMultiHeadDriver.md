@@ -150,11 +150,13 @@ P19/P20 mid-argv `--` repair rows, shared `probe_table(root, mode)`). Supersessi
 - driver-pins.json as it stands: **9cc41af6d0bc748425373e4d61e49301377ed8d7534da0d6bdd975371bcccd65**
   — driver_sha256 61d5a048… and candidate selftest_cases 73 updated under the bounded unfreeze;
   still stale BY DESIGN (L1-owned refresh): probes control pin 3f2d38a6… → d56a1437…, battery
-  control pin 937f8677… → e6d54540…, measured.gate_sha256 → 8147350c…, and the base-block red
-  multihead summary (base kind currently carries only the green string, so a base/final-kind run
-  of multihead-mutbat fails loudly until L1 pins the observed red line — expected shape
-  `MUTBAT killed=0/7 survivors=0 equivalents=0 invalid_rejected=<n> failures=<n>`, re-observe
-  against the 20-row collector table).
+  control pin 937f8677… → the battery seat's final (on-disk 547b4ce2… at last check, after their
+  erratum cleanup), measured.gate_sha256 → 8147350c…, and the base-block red multihead summary
+  (base kind currently carries only the green string, so a base/final-kind run of multihead-mutbat
+  fails loudly until L1 pins the observed red line — battery seat's corrected stable line:
+  `MUTBAT killed=0/7 survivors=0 equivalents=0 invalid_rejected=10 failures=4`, wc probes
+  differential/face-tolerant and excluded, `COLLECTOR-BASE mismatches` 4-or-5 with P10's face
+  reported separately).
 
 MEASUREMENTS final tuple: driver-self-pin, controls-pins, ledger-closure, probes-base-paired,
 probes-measured, shape-identity, selftest, mutbat-existing, multihead-mutbat, real-ledger,

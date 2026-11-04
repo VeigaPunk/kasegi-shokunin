@@ -183,6 +183,41 @@ the Annex 7 checklist's own text heading lines, which are line-anchored and veri
 10. **Fresh upstream verification.** The recheck compares digest-pinned local bytes against manifest quotes. It
     is not a fresh network check, and it establishes neither upstream freshness nor any team's practice.
 
+## 6b. Post-landing audit (the L1 landed while this seat was running)
+
+The L1 landed production bytes during this seat's run. **This seat did not write them and did not fix them** —
+it is a leaf seat, and the L1 is the sole integrator. The audit lives in full in the seat report
+(`.ufo/waves/round-67/w1/ScribeF45.md` §6b). Summary of what was measured with the lane's own instruments
+against the landed tree:
+
+| gate | result |
+|---|---|
+| `source-recheck.py --manifest corpus/source-snapshots/round-67/manifest.json` | 60 OK lines (58 quote-level + 2 sha256), **exit 0** |
+| `recheck-audit.py --root <lane>` | the new entry: `strict=111111 … executes PASS`; tree total `74/83`, exit 1, **all 9 failures pre-existing** |
+| `anchorcheck.py corpus/knowledge/first-psirt-maturity-document.md` | `0 in-range, 0 bad` (the entry carries no backticked `path:NN` cite) |
+| `anchorcheck.py corpus/README.md` | landed `4 in-range, 0 bad; BASE-ABSENT=34` — **identical to the base copy** |
+| `citation-ground-check.py --root <lane>` | `verdict=failed`; **one new finding**: `class-lane-bare knowledge/first-psirt-maturity-document.md corpus/README.md:1050` |
+
+Three conflicts, recorded verbatim and **not fixed** (leaf seat, production is the L1's):
+
+1. **`corpus/README.md:1050`** — the landed F45 prose carries a backticked bare
+   `knowledge/first-psirt-maturity-document.md`. The token does not open at the lane root while
+   `corpus/knowledge/first-psirt-maturity-document.md` does, which is the `class-lane-bare` the counter's own
+   docstring names. The round-65 F44 block's equivalent prose carries **no** such cite, and
+   `corpus/instruments/citation-reground-ledger.md` has **no** row for the new token.
+2. **`corpus/knowledge/first-psirt-maturity-document.md:29`** (C15) — the Level-3 area list ends at **L463**;
+   measured, the sixth Level-3 capability-area heading is **L462** (`Training & Education`); **L463** is
+   `Train development teams`, an item under it. Level 1 and Level 2 lists are correct.
+3. **Stale receipt counts** — the entry header says `54/54 OK (S100 44, S101 10)` and the SOURCES bullet says
+   `54 pinned quotes`; the landed manifest pins **58** (S100 **48**, S101 **10**) and the instrument prints **58**
+   quote-level OK lines. The **46** quoted fragments in the SOURCES bullet is correct.
+
+Verified-correct in the landed bytes: both captures byte-identical to this seat's independent capture; the
+two-seat digest agreement true; the nonce measurement reproduced; `Maturity Level` = 0 over all 1573 lines of
+S098; `Level 4` = 0 over the S100 body; both registry rows well-formed at 11 columns with `teaches` at 24 and 25
+words; the lead-retirement bullet correct; the entry itself carries no lane-bare citation and all four of its
+`corpus/…` paths resolve.
+
 ## 7. Files this seat wrote
 
 | path | what |

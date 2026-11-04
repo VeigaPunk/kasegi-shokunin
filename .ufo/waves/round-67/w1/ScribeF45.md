@@ -2,8 +2,10 @@
 
 **Seat:** `ScribeF45` (scribe, leaf member — no subagent dispatch, no `task` call, no `agent://all` broadcast).
 **Lane:** `/home/vgpnk/Projects/shokunin/kasegi-shokunin`.
-**Base revision at capture:** `8e2a8fe8eb92d7c824902a4b70aab027a9aacee0`.
+**Base revision at capture:** `8e2a8fe8eb92d7c824902a4b70aab027a9aacee0` (still an ancestor of `HEAD`).
 **Run UTC:** 2026-11-04T20:52Z – 2026-11-04T21:0xZ.
+**HEAD moved during this run by the L1 only:** `7ae95a0` → `b308206` → `e59c564`. **This seat committed nothing**
+and ran no mutating git/jj command; the L1's `7ae95a0` swept this seat's wave files into the lane history.
 **Round milestone:** predata multi-head SIGPIPE input-completeness repair + F45 PSIRT maturity screening.
 **Scope:** **C2 (coverage) only.** C1 (the depth:verifiability multi-head SIGPIPE repair) is not this seat's scope.
 
@@ -233,8 +235,181 @@ draft entry is an **access date, not an edition**.
 | `.ufo/waves/round-67/w1/ScribeF45/NOTES.md` | **created** | measurement receipts, refusals, file inventory |
 | `.ufo/waves/round-67/w1/ScribeF45.md` | **created** | this report |
 | `/fast/scratch/hyaku/kasegi-r67/ScribeF45/` | **created, then deleted** | scratch; all durable receipts copied out first |
-| every production path (`corpus/instruments/figure-audit.py`, `corpus/ledger`, `corpus/SOURCES.md`, `corpus/README.md`, `corpus/knowledge/`, `corpus/instruments/knowledge-expected.txt`, `SCORECARD.md`, `SKILL.md`, `PROVINCE.md`, `LOG.md`, `MANIFEST.json`) | **NOT written** | read-only; the L1 lands them |
+| every production path (`corpus/instruments/figure-audit.py`, `corpus/ledger`, `corpus/SOURCES.md`, `corpus/README.md`, `corpus/knowledge/`, `corpus/instruments/knowledge-expected.txt`, `SCORECARD.md`, `SKILL.md`, `PROVINCE.md`, `LOG.md`, `MANIFEST.json`) | **NOT written by this seat** | read-only for this seat. **The L1 landed bytes into `corpus/README.md`, `corpus/SOURCES.md`, `corpus/instruments/knowledge-expected.txt`, `corpus/knowledge/first-psirt-maturity-document.md` and `corpus/source-snapshots/round-67/` during this seat's run** — see §6b. This seat did not write them and did not fix the three conflicts it found in them. |
 | lane git / jj state, the git index, sibling lanes, the fleet repo | **NOT touched** | no commit, push, stash, checkout or mutating git/jj command |
+
+---
+
+## 6b. POST-LANDING AUDIT of the L1's production bytes (the L1 landed while this seat was running)
+
+**This seat did not write these bytes and cannot fix them — the L1 is the sole integrator.** The audit below is
+recorded so the canonical judge has the conflicts verbatim. All of it was measured against the landed tree at
+`/home/vgpnk/Projects/shokunin/kasegi-shokunin` with the lane's own instruments.
+
+### 6b.1 What the L1 landed (all confirmed present)
+
+| path | state |
+|---|---|
+| `corpus/source-snapshots/round-67/S100.txt` | **new**, sha256 `cf834a65…bff9f` — byte-identical to this seat's capture |
+| `corpus/source-snapshots/round-67/S101.txt` | **new**, sha256 `a55e315f…185bc8` — byte-identical to this seat's capture |
+| `corpus/source-snapshots/round-67/manifest.json` | **new**, 58 pinned quotes |
+| `corpus/knowledge/first-psirt-maturity-document.md` | **new**, the F45 entry |
+| `corpus/README.md` | **+21 lines**: the round-67 block, the coverage-map row, the F45 row, the prose paragraph, the frontier-count amendment |
+| `corpus/SOURCES.md` | **+2 rows** (S100, S101) and **+3 registry-changes bullets** including the lead-retirement bullet |
+| `corpus/instruments/knowledge-expected.txt` | **updated** with the new entry path |
+
+**The L1 landed the right thing.** The two captures are byte-identical to this seat's independent capture, the
+manifest's quote set is a **superset** of this seat's 54 (the L1 added four more: `M41-reproduction-isolated`,
+`M42-annex7-checklist`, `M43-l3-incident-handling`, `M44-l3-train-devt`), and the landed entry carries this
+seat's 18-claim structure, its 8 package rules, its 7 rejected readings and its limits section. The lead
+retirement bullet says exactly what this seat measured, including the nonce mechanism.
+
+### 6b.2 Instrument verdicts on the landed tree (all run)
+
+| gate | command | result |
+|---|---|---|
+| **production recheck** | `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-67/manifest.json` | **60 OK lines** (58 quote-level + 2 `sha256 OK`), **exit 0** |
+| **production `recheck-audit.py`** on the whole tree | `python3 corpus/instruments/recheck-audit.py --root <lane>` | `first-psirt-maturity-document.md … frozen=111 strict=111111 lane=0 foreign=0 executes **PASS**`; tree total `strict pass=74/83`, exit 1 — **all 9 failures are pre-existing** (`cisa-vulnrichment-*`, `github-repository-security-advisories-rest-api`, `nvd-api-2.0-*`, `openssf-scorecard-checks`, `osv-affected-range-events`, `project-zero-*`); the new entry is not among them |
+| **production `anchorcheck.py`** on the landed entry | `python3 corpus/instruments/anchorcheck.py corpus/knowledge/first-psirt-maturity-document.md` | `0 in-range cite instances, 0 bad`; no verdict line at all (the entry carries no backticked `path:NN` cite) — **clean, and no citation it makes is checkable** |
+| **production `anchorcheck.py`** on the landed README | same, `corpus/README.md` | base copy in the lane dir: `4 in-range, 0 bad; BASE-ABSENT=34`; **landed: `4 in-range, 0 bad; BASE-ABSENT=34`** — **identical to base**; the 5 new `S100.txt:NNN` cites produce **no** verdict line (they are not backticked) |
+| **production `citation-ground-check.py`** on the lane | `python3 corpus/instruments/citation-ground-check.py --root <lane>` | `verdict=failed`; **one finding is new**: `class-lane-bare knowledge/first-psirt-maturity-document.md corpus/README.md:1050` |
+
+### 6b.3 CONFLICT 1 — a new `class-lane-bare` citation at `corpus/README.md:1050`
+
+The landed F45 prose opens:
+
+> The coverage map above is not edited in place (R6): the round-67 entry `knowledge/first-psirt-maturity-document.md`
+
+The bare token `knowledge/first-psirt-maturity-document.md` resolves to nothing at the lane root, while
+`corpus/knowledge/first-psirt-maturity-document.md` exists — which is exactly the `class-lane-bare` the
+instrument's own docstring names ("Use the full internal path for knowledge cross-references, for example
+`corpus/knowledge/ops-invariants.md:18`"). `corpus/README.md:1050` is now the **only** such finding for the new
+entry.
+
+**How the landed row differs from the ones before it.** The four pre-existing lane-bare README findings
+(`README.md:913`, `:934`, `:953`, `:973`, `:993`) are all in the *coverage-map table cell* of a round block, and
+each of those round blocks has a ledger row in
+`corpus/instruments/citation-reground-ledger.md`. The landed round-67 block is different in two ways:
+
+1. **Its prose line carries a backticked bare path** where the round-65 F44 block's equivalent prose carries
+   **none** — `sed -n '1035,1046p' corpus/README.md` yields no backticked `knowledge/…` path, while the round-67
+   prose at `:1050` does. (The F42/F43 blocks likewise carry no such prose cite.)
+2. **There is no ledger row for it.** `grep -n "psirt\|maturity" corpus/instruments/citation-reground-ledger.md`
+   returns **nothing**, so the finding is unacknowledged and the counter reads `verdict=failed` for it.
+
+**This seat's draft did not have this defect.** `rows-draft.md` §1 writes the coverage-map row cell as
+`knowledge/first-psirt-maturity-document.md` (matching the round-65 cell shape, which is *not* backticked and is
+therefore not extracted by the counter), and drafts no prose line with a backticked bare path. The L1's prose
+addition is the source of the finding.
+
+**Severity:** low — one citation token, in prose, in a file that opens. It is the lane's own fail-closed counter
+naming it, and the fix is either to write the token as `corpus/knowledge/first-psirt-maturity-document.md` or to
+add a ledger row. **Reported, not fixed: this seat is a leaf and must not edit production.**
+
+### 6b.4 CONFLICT 2 — the landed C15 area list is off by one at Level 3
+
+The landed `corpus/knowledge/first-psirt-maturity-document.md:29` (C15) states:
+
+> Level 3 (L446, L449, L453, L457, L460, **L463**)
+
+Measured over the landed `corpus/source-snapshots/round-67/S100.txt`, the Level-3 capability-**area headings** are
+**L446, L449, L453, L457, L460, L462** — and **L462 is `Training & Education`**, the sixth and last Level-3
+area heading. **L463 is `Train development teams`**, a checklist *item* under it. The landed list cites the first
+item of the last area where it names the area.
+
+The landed row's own evidence column quotes `"Train development teams" (S100 L463, 3 words)`, so the L463 anchor
+is correct *for that quote* — the error is only in the area list. Level 1 (L399, L404, L407, L410, L413) and
+Level 2 (L419, L428, L432, L434, L437, L439, L442) are both **correct**, so the defect is one element.
+
+**This seat's draft had the correct list** (`L446, L449, L453, L457, L460, L462` — measured, and recorded in this
+seat's `NOTES.md` §4) and made the count explicit as "Level 1 names five areas … Level 2 names seven … Level 3
+names six". The landed row dropped the count and the area names, keeping only line numbers, and the last one is
+wrong.
+
+**Severity:** low — one line number inside one claim of a draft-quality entry; the manifest's own
+`M44-l3-train-devt` quote (anchor 463, `"Train development teams"`) is correct and the recheck passes, because the
+manifest pins *quotes*, not the prose area list. The prose list is the lane's `depth:verifiability` surface, and a
+reader following L463 lands on a checklist item, not the area heading the sentence promises.
+
+### 6b.5 CONFLICT 3 — a stale quote count in the landed bytes
+
+The landed entry header states:
+
+> `source-recheck.py` reports **54/54 OK (S100 44, S101 10)**, exit 0.
+
+and the landed `corpus/SOURCES.md` registry-changes bullet states:
+
+> **46** quoted fragments in the entry were checked against the manifest (**54** pinned quotes, source-recheck exit 0).
+
+Measured against the landed tree: the landed manifest pins **58** quotes (S100 **48**, S101 **10**), and
+`source-recheck.py` prints **58 quote-level OK lines** plus 2 `sha256 OK` lines = 60 OK lines, exit 0. The count
+**54** and the split **44/10** were true of this seat's *candidate* manifest (54 = 44 + 10) before the L1 added
+its four extra quotes; the header and the bullet were carried over unchanged.
+
+The **46** figure is correct: the landed entry carries 46 quotes in the `(S10x L<n>, N words)` form, all 46
+pinned in the landed manifest (verified: 0 unpinned). The **54 pinned quotes** figure in the SOURCES bullet is
+the stale one.
+
+**Severity:** low — a receipt count that understates the actual coverage by four quotes. Every quote it claims is
+real and passes; the number is simply no longer the number the instrument prints. This is the same drift class
+`corpus/instruments/gate-quote-audit.py` exists to catch for word counts.
+
+### 6b.6 Verified-correct landed claims (recorded so the judge does not re-litigate them)
+
+- **Two seats' capture digests agree.** This seat's `S100.txt` and `ScoutF45`'s `S100.txt` are byte-identical
+  (both `cf834a65…bff9f`). The landed manifest note says so, and it is true.
+- **The nonce measurement is reproduced.** The landed manifest note's "six fetches, six raw digests, identical
+  82978 bytes, one normalized snapshot digest" matches this seat's independent measurement (§2.3 of NOTES.md), and
+  the L1's `corpus/SOURCES.md` lead-retirement bullet carries the same finding with the same replacement digest.
+- **The S098 boundary holds.** `grep -c -iE "Maturity Level"` over the whole 1573-line S098 capture = **0**, so the
+  landed "S098 carries zero occurrences of 'Maturity Level'" is measured, not asserted.
+- **`Level 4` = 0** over the S100 content body (L216-L464); the landed "no fourth level" rejection is measured.
+- **The landed registry rows are well-formed**: both are **11 columns** in the registry's exact shape, with
+  `teaches` at **24** and **25** whitespace-delimited words (both ≤ the 25-word bound).
+- **The landed lead-retirement bullet is right**: the round-65 raw digest `334aeb01…` is nonce-bound and is
+  carried into **no** row, while the PDF digest `f217c446…` is recorded in S101's anchor cell.
+- **The entry carries no lane-bare citation**: `grep -oE '`knowledge/[^`]*`'` over the landed entry returns
+  **nothing**, and all four of its `corpus/…` paths resolve on disk.
+- **The new entry's own recheck line passes** `recheck-audit.py` on all six strict limbs
+  (`strict=111111`, `lane=0`, `foreign=0`, `executes`, `PASS`).
+
+### 6b.7 The frozen C2 predicate — every counting command run, all match
+
+The wave's frozen C2 predicate (`.ufo/waves/round-67/claims.json`) was run end to end against the landed tree.
+**Every clause matches; the kill rule is not triggered.**
+
+| predicate clause | required | measured |
+|---|---|---|
+| `frontier-recheck-count.py` | `rows=45 admitted=45 closed=45 problem-rows=0 registry=101 and entries=48 pass=48 exit=0` | **`FRONTIER-CENSUS rows=45 admitted=45 closed=45 problem-rows=0 registry=101`** and **`entries=48 pass=48 exit=0`** — exact match; `F45 … ids=S100,S101 exit=0` |
+| `capture-binding-check.py` | `records=81 bound=81 unbound=0` | **`records=81 bound=81 unbound=0`** — exact match; `MANIFEST round-67 records=2 url_bound=2 fetched=2` |
+| `source-recheck.py` for S100 **and** for S101 | each **exit 0** | **S100 rc=0**, **S101 rc=0** — both |
+| `sources-census.sh validate --root … kasegi` | **exit 0** | **exit 0**; the six W04 warnings are the same six pre-existing ones the `before` string names (S028, S029, S072, S076, S080, S085) — **none on S100 or S101** |
+| `knowledge` file count | 83 files | 83 (`corpus/knowledge/` gained exactly one file) |
+
+The kill rule — *"Any non-admitted F45 row, any unbound capture record, any failing recheck for S100 or S101, or
+a census exit other than 0 defeats C2"* — is **not triggered on any clause**. The additional kill-rule clause
+*"The entry's quotes must be pinned in the manifest and located at their cited lines (source-recheck); a sentence
+whose quote is not pinned is a defect, not an admission"* is also satisfied: this seat verified independently
+that all **46** of the landed entry's anchored quotes are pinned in the landed manifest and re-locate at their
+cited lines, and the instrument places all 58 manifest quotes at their anchors with `anchor=N-ok`.
+
+### 6b.8 What this seat does NOT claim about the landed bytes
+
+- This seat did **not** write, review or approve them, and does not certify the F45 admission. It measured the
+  landed bytes with the lane's own instruments and reports what it found.
+- The three conflicts above are **conflicts**, not proven defects in the L1's reasoning: §6b.3 is a citation
+  the lane's counter names, §6b.4 is a line list this seat measured differently from the landed text, §6b.5 is
+  a count that was true before the L1's last manifest edit. **None of them is a wrong quote, a wrong digest, a
+  wrong date or a wrong boundary**, and none changes what the entry asserts.
+- The 9 `cwd_fail` entries in `recheck-audit.py`'s tree total and the 34 `BASE-ABSENT` verdicts in
+  `anchorcheck.py` are **pre-existing** (verified: the base README copy in the lane dir gives the identical
+  `4 in-range, 0 bad; BASE-ABSENT=34`), not caused by this round.
+- **The F45 production bytes are landed in the working tree but not committed**: at the end of this seat's run
+  `corpus/README.md`, `corpus/SOURCES.md` and `corpus/instruments/knowledge-expected.txt` are **modified** and
+  `corpus/knowledge/first-psirt-maturity-document.md` + `corpus/source-snapshots/round-67/` are **untracked**
+  (`git diff --cached --name-only` is empty). The L1's commits `7ae95a0`/`b308206`/`e59c564` carried the wave
+  evidence and the C1 gate; the F45 corpus landing is still open in the working tree. **That is the L1's
+  outstanding work, not this seat's** — a leaf seat must not commit, and this seat committed nothing.
 
 ---
 
