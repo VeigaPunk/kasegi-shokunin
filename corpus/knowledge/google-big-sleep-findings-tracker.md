@@ -81,3 +81,7 @@ reading list, not the project's start; nothing in the capture states when Big Sl
   the AI-assisted-finding-validation method stays F04 (S009-S012).
 - The Project Zero 2025 policy link on L2 is grounded but not pinned as a manifest quote (a proposed eleventh quote,
   deferred: the manifest's frozen assertion count is ten in this round).
+
+## Round-61 correction — the formerly unopened successor post
+
+The sentence at lines 62–63 that the 2024-10 post has no admitted source row records the round-59 state, not the current registry. Round 61 opens and admits the Project Zero-hosted “From Naptime to Big Sleep” account in `corpus/knowledge/project-zero-big-sleep-sqlite-variant-analysis.md` and `corpus/SOURCES.md`; the page itself is dated 2024-Nov-01 despite its URL path. This does not assert transport equivalence of the historical blogspot link and S010's different Naptime document. The HTML-shell rejection above concerns the script-stripped conversion, not absence of README text from raw bootstrap-script data (round-59/60 closure correction, `corpus/lessons/round-61.md`).

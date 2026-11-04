@@ -2514,3 +2514,14 @@ Freeze `6f88f3a7f6b9689b49241e3f4a8e551c57a3f766`, base `c33d24ddd11abf1ebdea0dc
 **Round-60 correction (D1/D8, append-only).** The r60 lesson/LOG/SCORECARD incorrectly said R79/R80 landed: actual rows were R78/R81/R82. R79/R80 land in round 61, with R83 checking actual criterion rows (`controls/carry-in-r61.txt`: base0/0 → after1/1). The r60 statement “two new capability rows in effect” meant ONE new row and ONE existing-row extension. No new capability acquisition is claimed in round 61; C1 extends the existing derive-gate behavior. Current selftest is host-conditional (bare python required), and shell expansion/write-flag residuals remain open.
 
 **Saturation:** 9/10; stagnation window unchanged. Lowest non-retired axis remains depth:verifiability 4; this round works it directly. No score increase or nudge waiver asserted.
+
+### Round-61 settled wave and verdict
+
+WAVE-DONE received; `.ufo/waves/round-61/w1-results.json`, 11 seats in one v1 wave,8 evidence-producing and3 errored/no-output (last recorded401 authentication error; terminal proc statuses unavailable; `seat-error-telemetry.json`). No replacements or residual task call. ReviewC1 and ReviewC2 reproduce both frozen predicates; ExecAnchors holds21 references; ExecRegression's192 comparisons find0 new admissions. C1 verified, C2 verified as lane recommendations; non-author closure still owns admission. Full consumer/sibling screen and sentence table were late safety nets, explicitly recorded process misses, not retroactive prefreeze passes.
+
+Expansion improved (F42 dated SQLite case on S094); quality unchanged; discernment improved via the round-60 outside D1 finding becoming R83 and restored R79/R80. M61-1..M61-10, limitations and exact seat errors are in corpus/lessons/round-61.md. Selftest remains host-conditional. CriticPython's11 encoded-path escapes and two valid MutationPython survivors remain named open; the HarnessAttack collector failures are not fixed by interpreting exit0 as pass.
+
+### Planned for round 62 (not frozen)
+
+1. depth:verifiability (4, lowest): before declaring broader confinement, choose an execution model that validates the same argv it runs; re-measure the quoted-path traversal and valid boundary/prefix mutants against do-nothing controls. Correct the gate's known overbroad docstring before its next digest freeze. Repair the new runner's instrument-under-scratch/dependency masking under a new pre-data predicate, not by changing round61 evidence.
+2. coverage (8): screen a genuinely unopened source that directly serves finding review/claim packaging. Fuzzilli documentation remains a lead requiring province/sibling adjudication, not an automatic next admission. Resolve extended-screen/claim-table order before freezing; no extra row quota or score increase is assumed.

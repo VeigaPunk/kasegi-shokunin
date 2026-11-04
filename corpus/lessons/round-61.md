@@ -60,3 +60,39 @@ Assimilation: none — `merge/kasegi/` not adopted, no staged ids or rows append
 C1 is an empirical three-probe improvement, nominal under R58 (score 4 held), not an OS sandbox. The code examines undecoded shell text; shell expansion remains explicitly open in claims.json. Other heads' write/execute flag spellings and allowed Python counters' own writes remain open. The frozen instrument retains its pre-existing overbroad docstring phrase “the audit never runs a mutating command”; that phrase is contradicted by known residuals and is not this round's promise. A later instrument claim must correct it before its new digest freeze. Selftest case counts remain host-conditional because it invokes bare python (R82). The new runner explicitly requires GNU coreutils, bash, python3 and a guarded /fast/scratch/hyaku/kasegi-r61 seat path.
 
 C2 does not reproduce SQLite exploitation, rerun AFL, verify the publisher's priority claim, or give general agent evaluation/method advice. Its 150 CPU-hours is an attributed source value, not this lane's measured cost. R67 body-substance counter and R69 census-range-base decisions remain open in existing kasegi round-57/58 L0 rows; round-59 sandbox and round-60 decoded-flag boundary questions also remain unanswered in the queue read this round.
+
+## Wave-1 integration — WAVE-DONE received before filing
+
+The orchestrator delivered WAVE-DONE for all 11 dispatched seats and `.ufo/waves/round-61/w1-results.json`. Eight seats produced evidence files; ScoutSource, EntryClaims and SiblingOverlap have empty outputs and no report. They are not treated as successful verification and are not replaced. Role mix dispatched: scout1, scribe1, connector1, reviewer2, critic2, mutation-tester1, executor3. Attack seats5/11; connector1/11; L1 holds the planner seat.
+
+| seat | observed recommendation | integration |
+|---|---|---|
+| ReviewC1 | PASS, frozen predicate and both digests reproduce | C1 verified on named probes, not universal confinement |
+| ReviewC2 | PASS, all five counters and 93 old registry rows reproduce; stale old tracker statement found | appended correction in google-big-sleep-findings-tracker.md; no frozen predicate changes |
+| CriticPython | No frozen counterexample; 11 quoted/expanded variants still execute outside, including `python3 corpus/instruments/"../../outside.py"` with audit exit0 on both base and pin | residual explicitly named; no new security guarantee inferred |
+| MutationPython | committed battery3/3; prefix-off and boundary-separator-off mutants survive selftest and runner | valid survivors recorded open under R17; next instrument claim's test obligation |
+| ExecCounters | frozen after-wants reproduce; runner scratch argument safely relocated to owned seat path | commands are parameterized by scratch; not a fake literal shared-path execution |
+| ExecAnchors | 21 references hold (entry10, registry6, README5); seven quotes occur once, 89 words total | corroborates the prefreeze anchor reading |
+| ExecRegression | Q1–Q7 refused, controls pass; 192 base/pin comparisons show87 unchanged admissions,72 unchanged refusals,33 tightenings,0 new admissions | bounded no-new-admission guard, not universal no-harm proof |
+| HarnessAttack | named probes pass; runner can delete an instrument beneath its scratch arg and return0; broken instrument99 and failed find can still return0 | collector status is not a predicate verdict; freeze unchanged, defects named for next counter claim |
+| ScoutSource / EntryClaims / SiblingOverlap | no evidence delivered | no invented votes; L1 fallback source reopen, sentence table and scope sweep below |
+
+L1 fallbacks (not independent seats): `controls/l1-source-second-open-r61.txt` records a second public curl open, HTTP200/56257 bytes, byte-identical conversion sha663ac16d… and seven exact quote anchors; `controls/l1-sentence-table-r61.md` reads the substantive assertions and reject against the full capture; `controls/l1-sibling-scope-r61.txt` excludes SQLite storage/catalog/TB2-grader lexical hits from this first-party finding account. Independent source/scope review remains owed to the non-author closure. No L1 fallback is called a dispatched scribe/scout/connector success.
+
+The full downstream/sibling screen was completed only after freeze (`controls/neighbor-screen-postfreeze-r61.txt`). The prefreeze receipt screened knowledge/README/PROVINCE/SOURCES/SKILL but omitted snapshot consumers and sibling PROVINCEs: this is an R80 process miss, not retroactively a full extended prefreeze pass. The postfreeze screen locates the old tracker reading-list pointer and no already-admitted SQLite case; the tracker correction makes its old “no admitted source row” statement explicitly historical.
+
+Routing: live operator authority moved all18 roles to @m_zfl for Devin account/model unavailability (`scripts/hyaku/lane-addendum.md:569-573`, fleet commit `0ad04e305ddcad137802299fe6c17bf3d7669045`). Existing seats retain captured routes; no lane config mutation or safety-refusal retry occurred. Models are not asserted from role labels alone.
+
+## Mistakes — wave and process additions
+
+| id | class | evidence pointer | captured-by | fix or honest disposition |
+|---|---|---|---|---|
+| M61-6 | process-order / incomplete screen | prefreeze screen vs postfreeze consumer/sibling screen | R80 | full screen performed as safety net; order miss recorded, no retroactive conformance claim |
+| M61-7 | harness / collector exit mistaken for verdict | w1/HarnessAttack.md: instrument-under-scratch removed, eight execution failures still runner exit0; find failure masked | R82 | outputs must be compared to named tuples; no exit0-only pass claim. Repair held for a new pre-data counter claim; raw runner remains frozen evidence |
+| M61-8 | survivor | w1/MutationPython.md: prefix-off and boundary-separator-off survive | R17 | named open, not suppressed; next claim must kill these valid mutants |
+| M61-9 | stale-premise introduced by new admission | w1/ReviewC2.md; tracker entry lines62–63 | R19 / report review | appended dated correction makes former unopened-post statement historical |
+| M61-10 | provider / missing evidence | w1-results.json, three empty outputs with no report | wave accounting rule | no success inferred and no replacement; L1 completes reachable checks, independent verification debt remains explicit |
+
+**Verdicts against frozen predicates:** C1 verified (ReviewC1, ExecCounters); C2 verified (ReviewC2, ExecAnchors, grounded L1 table). Scores held4/8, density9 untouched. Scoped regression matrix found0 new admissions; known shell-expansion residuals existed on base too. Expansion improved (new dated finding case on uncovered ground); quality unchanged (no stale source or failed admitted entry recheck left unmarked); discernment improved through the outside round-60 D1 correction and R83, while independent round-61 admit/reject spot-check remains owed. These are lane recommendations for closure, not promotion verdicts.
+
+**Nonproducing-seat telemetry (parent supplied, preserved verbatim in `.ufo/waves/round-61/seat-error-telemetry.json`).** ScoutSource-11, EntryClaims and SiblingOverlap-12 each recorded `Devin stream error permission_denied: This model is no longer available for your account. Please switch to a different model.` (swe-2/devin), followed by `401 Invalid 'Authorization' header or token. (type=authentication_error param=UNAUTHORIZED)` (deepseek/deepseek-v4.1-flash/commandcode). These are actual recorded error events, not inferred terminal job statuses; proc records expired, so terminal status is unavailable. Accounting: 11 dispatched,8 evidence-producing,3 errored/no-output seats; no replacement or retry. The parent retained the dispatcher identities and supplied session provenance; this lane did not read historical session transcripts.
