@@ -57,11 +57,15 @@ def sha256(path):
 
 
 def run(argv, cwd, receipt):
-    p = subprocess.run(argv, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    text = p.stdout.decode("utf-8", "replace")
+    try:
+        p = subprocess.run(argv, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=900)
+        rc, out = p.returncode, p.stdout
+    except subprocess.TimeoutExpired as exc:
+        rc, out = 124, (exc.stdout or b"") + b"\n[timeout 900s]\n"
+    text = out.decode("utf-8", "replace")
     with open(receipt, "w", encoding="utf-8") as fh:
-        fh.write("$ %s\n(cwd=%s)\n%s\n[exit=%d]\n" % (" ".join(argv), cwd, text, p.returncode))
-    return p.returncode, text
+        fh.write("$ %s\n(cwd=%s)\n%s\n[exit=%d]\n" % (" ".join(argv), cwd, text, rc))
+    return rc, text
 
 
 def result(name, ok, note):
@@ -135,6 +139,8 @@ def main():
         return 1
 
     work = os.path.abspath(args.work)
+    if not (work.startswith("/fast/scratch/hyaku/") or os.environ.get("VERIFY_R65_ALLOW_WORK")):
+        raise SystemExit("verify-r65: --work must live under /fast/scratch/hyaku/ (set VERIFY_R65_ALLOW_WORK=1 to override)")
     os.makedirs(work, exist_ok=True)
     rec = os.path.join(work, "receipts")
     os.makedirs(rec, exist_ok=True)
@@ -158,11 +164,38 @@ def main():
         subprocess.run(["git", "-C", tree, "fetch", "--no-tags", LANE, base_rev],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
+    frozen_dir = os.path.join(work, "frozen")
+    os.makedirs(frozen_dir, exist_ok=True)
+
+    def add_commit(rel):
+        """The commit that introduced REL: the frozen bytes come from there, not the worktree."""
+        p = subprocess.run(["git", "-C", LANE, "log", "--format=%H", "--diff-filter=A", "--", rel],
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        lines = [x for x in p.stdout.decode().split() if x]
+        if not lines:
+            raise SystemExit("verify-r65: %s has no adding commit" % rel)
+        return lines[-1]
+
+    def at_rev(rel):
+        rev = add_commit(rel)
+        p = subprocess.run(["git", "-C", LANE, "show", "%s:%s" % (rev, rel)],
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if p.returncode != 0:
+            sys.stderr.write("verify-r65: missing committed input %s\n" % rel)
+            raise SystemExit(2)
+        dst = os.path.join(frozen_dir, os.path.basename(rel))
+        open(dst, "wb").write(p.stdout)
+        return dst
+
+    collector = at_rev(os.path.relpath(COLLECTOR, LANE))
+    mutbat = at_rev(os.path.relpath(MUTBAT, LANE))
+    candidate_src = at_rev(os.path.relpath(CANDIDATE_FROZEN, LANE))
+
     if args.candidate:
         shutil.copyfile(os.path.abspath(args.candidate), gate)
 
     # 1 probes-base: the committed gate keeps the signal false-greens at base.
-    rc, text = run([sys.executable, "-B", COLLECTOR, "--instrument", base_gate,
+    rc, text = run([sys.executable, "-B", collector, "--instrument", base_gate,
                     "--work", os.path.join(work, "probes-base"), "--mode", "base"],
                    tree, os.path.join(rec, "probes-base.txt"))
     ok, note = check_lines(text, [
@@ -178,7 +211,7 @@ def main():
     result("probes-base", ok, note)
 
     # 2 probes-candidate: the fail-closed semantics with named signal reasons.
-    rc, text = run([sys.executable, "-B", COLLECTOR, "--instrument", gate,
+    rc, text = run([sys.executable, "-B", collector, "--instrument", gate,
                     "--work", os.path.join(work, "probes-candidate"), "--mode", "candidate"],
                    tree, os.path.join(rec, "probes-candidate.txt"))
     ok, note = check_lines(text, [
@@ -200,7 +233,7 @@ def main():
     result("selftest", ok, "cases=%s failures=%s exit=%d" % (m.group(1) if m else "?", m.group(2) if m else "?", rc))
 
     # 4 mutbat-candidate: every limb mutant killed, equivalents held, control rejected.
-    rc, text = run([sys.executable, "-B", MUTBAT, "--instrument", gate,
+    rc, text = run([sys.executable, "-B", mutbat, "--instrument", gate,
                     "--work", os.path.join(work, "mutbat-candidate")],
                    tree, os.path.join(rec, "mutbat-candidate.txt"))
     m = re.search(r"SUMMARY killed=(\d+)/(\d+) survivors=(\d+) equivalents_held=(\d+) "
@@ -211,7 +244,7 @@ def main():
 
     # 5 mutbat-base-limb-absent: on the base gate the same battery reports the limb absent.
     target = base_gate
-    rc, text = run([sys.executable, "-B", MUTBAT, "--instrument", target,
+    rc, text = run([sys.executable, "-B", mutbat, "--instrument", target,
                     "--work", os.path.join(work, "mutbat-base")],
                    tree, os.path.join(rec, "mutbat-base.txt"))
     m = re.search(r"SUMMARY killed=(\d+)/(\d+) survivors=(\d+)", text)
@@ -226,7 +259,7 @@ def main():
     result("real-ledger", ok, "exit=%d" % rc)
 
     # 7 collector-selfcheck: an always-green instrument is rejected in both lenses.
-    rc, text = run([sys.executable, "-B", COLLECTOR, "--selfcheck",
+    rc, text = run([sys.executable, "-B", collector, "--selfcheck",
                     "--work", os.path.join(work, "selfcheck")],
                    tree, os.path.join(rec, "collector-selfcheck.txt"))
     ok = rc == 0 and "SELFCHECK probes=6 runs=2 failures=6 want=6 verdict=pass" in text
@@ -239,12 +272,14 @@ def main():
             pins = json.load(open(CLAIMS, encoding="utf-8")).get("input_sha256", {})
         except ValueError:
             pins = {}
+    claims_rev = subprocess.run(["git", "-C", LANE, "show", "%s:%s" % (args.revision, os.path.relpath(CLAIMS, LANE))],
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     seen = {"corpus/instruments/figure-audit.py": sha256(gate),
             "corpus/instruments/figure-audit-ledger.json": sha256(os.path.join(tree, LEDGER_REL)),
-            os.path.relpath(COLLECTOR, LANE): sha256(COLLECTOR),
-            os.path.relpath(MUTBAT, LANE): sha256(MUTBAT),
-            os.path.relpath(CANDIDATE_FROZEN, LANE): sha256(CANDIDATE_FROZEN),
-            os.path.relpath(CLAIMS, LANE): sha256(CLAIMS) if os.path.exists(CLAIMS) else "-"}
+            os.path.relpath(COLLECTOR, LANE): sha256(collector),
+            os.path.relpath(MUTBAT, LANE): sha256(mutbat),
+            os.path.relpath(CANDIDATE_FROZEN, LANE): sha256(candidate_src),
+            os.path.relpath(CLAIMS, LANE): hashlib.sha256(claims_rev.stdout).hexdigest() if claims_rev.returncode == 0 else "-"}
     if not (args.candidate or args.final):
         # A base trial carries no implementation: the gate pin names the candidate
         # bytes and is expected to differ at the base revision.
