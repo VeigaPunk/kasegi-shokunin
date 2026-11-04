@@ -24,9 +24,12 @@ Ledger entry shape (JSON object with a "figures" array):
                             bytes at that rev (e.g. `git show <rev>:<path>`);
                             the audit never runs a mutating command: entries
                             are rejected whose derive lacks a read-only head
-                            (allow-list: git show, git cat-file, grep, wc, ls,
-                            sha256sum, cat, cut, sort, awk, sed -n, python/
-                            python3 running a corpus/instruments/*.py counter).
+                            (allow-list: git show, git cat-file, git ls-tree, grep, wc, ls, head,
+                            tail, sha256sum, cat, cut, tr, sort without -o/--output, and
+                            python/python3 running a corpus/instruments/*.py
+                            counter). No awk and no sed: an interpreted program can
+                            execute and write through system(), 'e' or 'w' whatever its
+                            head, so neither is an admissible derive head.
 
 Exit codes: 0 every figure re-derives; 1 any figure stale or derive failed
 (fail-closed: a nonzero derive exit or an empty stdout is stale, never ok);
@@ -46,11 +49,18 @@ import tempfile
 
 READ_ONLY_HEADS = (
     "git show ", "git cat-file ", "git ls-tree ", "grep", "wc ", "wc<", "ls ", "ls*",
-    "sha256sum", "cat ", "cut ", "sort ", "awk ", "sed -n ", "head ", "tail ", "python ", "python3 ",
+    "sha256sum", "cat ", "cut ", "sort ", "tr ", "head ", "tail ", "python ", "python3 ",
+)
+
+# Heads whose flags can write a file or execute a configured command: refused when such a flag
+# appears as a token.  A write through an allow-listed head is a write class like any other.
+DENIED_FLAGS = (
+    ("sort", ("-o", "--output")),
+    ("git show", ("--output", "--ext-diff")),
 )
 
 
-EXPECTED_CASES = 14  # R17 pin: a dropped selftest case turns the selftest red
+EXPECTED_CASES = 20  # R17 pin: a dropped selftest case turns the selftest red
 
 
 def eprint(*a):
@@ -78,10 +88,13 @@ def run_derive(cmd, root):
 def split_segments(cmd):
     """Split a derive into its unquoted '|' and '&&' segments.
 
+    Quote model (R72): OUTSIDE quotes a backslash escapes the next character, so an
+    escaped quote never opens a quote in this scanner (B1/B2: bash runs the text after
+    it, so it must be split and refused). Inside double quotes a backslash escapes only
+    '$', '`', '"' and '\\'; inside single quotes nothing is escaped.
     Returns None when an unquoted shell metacharacter sits outside that grammar:
     ';', a lone '&', '||', a newline, a backtick, '(' or ')' (so '$(' too), or an
-    output redirect '>'. Single quotes are literal; inside double quotes a backtick
-    or '$(' is still live and refused. An unterminated quote is refused."""
+    output redirect '>'. An unterminated quote or a trailing lone backslash is refused."""
     segs, cur, quote, i, n = [], [], None, 0, len(cmd)
     while i < n:
         c = cmd[i]
@@ -92,12 +105,24 @@ def split_segments(cmd):
             i += 1
             continue
         if quote == '"':
+            if c == "\\" and i + 1 < n and cmd[i + 1] in '$`"\\':
+                cur.append(c)
+                cur.append(cmd[i + 1])
+                i += 2
+                continue
             if c == '"':
                 quote = None
             elif c == "`" or (c == "$" and cmd[i + 1:i + 2] == "("):
                 return None
             cur.append(c)
             i += 1
+            continue
+        if c == "\\":
+            if i + 1 >= n:
+                return None  # trailing lone backslash: a continuation bash would swallow
+            cur.append(c)
+            cur.append(cmd[i + 1])
+            i += 2
             continue
         if c in "'\"":
             quote = c
@@ -128,11 +153,27 @@ def split_segments(cmd):
     return segs
 
 
+def denied_flag(head):
+    """A token that makes an allow-listed head write a file or run a configured command."""
+    tokens = head.split()
+    for name, flags in DENIED_FLAGS:
+        if head == name or head.startswith(name + " "):
+            for tok in tokens[1:]:
+                for f in flags:
+                    if tok == f or tok.startswith(f + "="):
+                        return True
+                    if f == "-o" and tok.startswith("-o") and tok != "-o":
+                        return True
+    return False
+
+
 def segment_ok(head):
     if head.startswith(("python ", "python3 ")):
         # a counter run is admissible only against a committed instrument
         parts = head.split()
         return len(parts) >= 2 and parts[1].replace("\\", "/").startswith("corpus/instruments/")
+    if denied_flag(head):
+        return False
     return head.startswith(READ_ONLY_HEADS)
 
 
@@ -254,7 +295,13 @@ def selftest():
     run_case("pipe-to-shell-refused", 2, _one("s-sh", "cat g.txt | sh", "35"))
     run_case("redirect-refused", 2, _one("s-redir", "cat g.txt > out.txt", "35"))
     run_case("or-chain-refused", 2, _one("s-or", "cat nosuch.txt || cat g.txt", "35"))
-    run_case("quoted-separator-admitted", 0, _one("s-quoted", "cat g.txt | awk 'BEGIN{x=1;y=2} {print}'", "35"))
+    run_case("quoted-separator-admitted", 0, _one("s-quoted", "cat g.txt | grep -e '35' -e ';'", "35"))
+    run_case("escape-single-quote-refused", 2, _one("s-esc1", "cat g.txt \\'; touch X; \\'", "35"))
+    run_case("escape-double-quote-refused", 2, _one("s-esc2", "cat g.txt \\\"; touch X; \\\"", "35"))
+    run_case("sed-head-refused", 2, _one("s-sed", "sed -n '1e touch X' g.txt", "35"))
+    run_case("awk-head-refused", 2, _one("s-awk", "awk 'BEGIN{system(\"touch X\")}'", "35"))
+    run_case("sort-output-flag-refused", 2, _one("s-sorto", "sort -o out.txt g.txt", "35"))
+    run_case("git-show-output-flag-refused", 2, _one("s-gito", "git show --output=out.txt HEAD", "35"))
 
     failures = 0
     for cid, got, want, good, out in cases:

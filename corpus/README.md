@@ -986,3 +986,24 @@ manifest `corpus/source-snapshots/round-59/manifest.json`.
 [r59 amendment, appended 2026-11-03] The frontier as of round 59 is F01-F40 admitted: F39 at round 58 and F40 at round 59.
 The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
 outside it.
+
+## Round-60 admission — coverage map row and Frontier F41 (appended 2026-11-04)
+
+The coverage map above is not edited in place (R6): the round-60 entry
+`knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md` (Frontier F41, source S093) is recorded here as an appended
+amendment so every existing line keeps its number. Source basis: Project Zero's own dated comparison of two production
+automated vulnerability-discovery pipelines on V8 — Fuzzilli, a generative JavaScript-engine fuzzer, and BigSleep, an
+LLM-based bug finding system — at https://projectzero.google/2026/10/fuzzing-v-AI.html, opened 2026-11-04, capture
+`corpus/source-snapshots/round-60/S093.txt`, manifest `corpus/source-snapshots/round-60/manifest.json`.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Agent-versus-fuzzer production comparison (round 60) | knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md | S093 — Project Zero's own production and re-discovery comparison, opened 2026-11-04 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F41 | Project Zero Fuzzilli-vs-BigSleep comparison — the publisher's own dated comparison of an LLM bug-finding agent against a coverage-guided JavaScript-engine fuzzer on V8: the six-month production window's actionable Type-Vuln counts and ~25% overlap, the 112-bug re-discovery experiment at 25 attempts per commit, and the post's "run both" recommendation to vendors | admitted | knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md | S093 | Read the 45-vs-37 pair as actionable Type-Vuln reports, not raw reports (the post's own 316/441 counts narrow to 178/95 then 45/37) and as a tie rather than agent superiority; read the ~62%/~70% figures as a re-discovery rate over a filtered historic Fuzzilli sample, with the reverse direction explicitly not run; the recommendation is "both", and the post excludes a cost-per-bug comparison. |
+
+[r60 amendment, appended 2026-11-04] The frontier as of round 60 is F01-F41 admitted: F40 at round 59 and F41 at round 60.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
+outside it.

@@ -1,0 +1,31 @@
+run-utc=2026-11-04T13:35:43Z host=plazir27
+lane-tip=66e6241cd7afd6184273ce7df1dcd5328c187367 (working-tree bytes measured)
+--- probes ---
+instrument=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py sha256=35f7bcd3e673b81b
+run-utc=2026-11-04T13:35:43Z host=plazir27
+probe=Q1-escape-single derive=cat g.txt \'; touch MARK-Q1; \' exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q1-escape-single
+probe=Q2-escape-double derive=cat g.txt \"; touch MARK-Q2; \" exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q2-escape-double
+probe=Q3-sed-in-program derive=sed -n '1e touch MARK-Q3' g.txt exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q3-sed-in-program
+probe=Q4-awk-system derive=awk 'BEGIN{system("touch MARK-Q4")}' exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q4-awk-system
+probe=Q5-sort-output-flag derive=sort -o MARK-Q5 g.txt exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q5-sort-output-flag
+probe=Q6-git-show-output derive=git show --output=MARK-Q6 HEAD exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q6-git-show-output
+probe=Q7-git-show-ext-diff derive=git show --ext-diff HEAD exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q7-git-show-ext-diff
+probe=CTRL-quoted-semicolon derive=cat g.txt | grep -e '35' -e ';' exit=0 markers=0 :: FIG CTRL-quoted-semicolon recorded=35 derived=35 ok
+probe=CTRL-plain-count derive=cat g.txt | wc -l exit=0 markers=0 :: FIG CTRL-plain-count recorded=1 derived=1 ok
+probe=RESIDUAL-python-traversal derive=python3 corpus/instruments/../../../above-evil.py exit=1 markers=0 :: FIG RESIDUAL-python-traversal recorded=35 derived=UNAVAILABLE reason=derive-exit-2 stale
+--- selftest ---
+selftest cases=20 failures=0
+selftest-exit=0
+--- mutbat ---
+mutbat killed=2/2 survivors=0 controls=pass
+mutbat-exit=0
+--- ledger ---
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+ledger-exit=0
+--- red fixture ---
+FIG d53-1-trailer recorded=34 derived=33 want=34 stale
+--- docstring limb ---
+1
+--- digests ---
+35f7bcd3e673b81b19e431413dec80d7254ce7ab6a50c2c78b8175242cb49ce2  corpus/instruments/figure-audit.py
+28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b  corpus/instruments/figure-audit-ledger.json
