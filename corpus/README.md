@@ -1019,3 +1019,15 @@ outside it.
 | F42 | Big Sleep's SQLite variant-analysis finding account — seed-commit setup, pre-release exposure qualification and harness-bound negative AFL experiment | admitted | knowledge/project-zero-big-sleep-sqlite-variant-analysis.md | S094 | Preserve the pre-release qualification (S094.txt:18), seeded setup (:25), harness differences (:112), CPU-hour unit (:113) and experimental-results caveat (:118); this is the publisher's account, not a lane reproduction or general benchmark. |
 
 F42 adds a dated real-world finding account, distinct from F04's validation principles, F40's tracker and F41's V8 production comparison. The lost-domain 0/18 denominator is unchanged.
+
+## Round-62 admission — coverage map and Frontier F43 (2026-11-04)
+
+| Area | Entry | Source basis |
+|---|---|---|
+| CERT Guide phase-to-role responsibility matrix | knowledge/cert-guide-cvd-phases-and-validation.md | S095, CERT/CC first-party model, opened 2026-11-04 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F43 | CERT/CC adapted CVD phase-to-five-role matrix: Reporter fix confirmation versus Vendor/Coordinator report validation | admitted | knowledge/cert-guide-cvd-phases-and-validation.md | S095 | Read complete column headings (S095.txt:112-116) with Validation (:129-134) and Remediation (:141-146); a dash is not a prohibition on reporter verification. Generic phase names, prioritization and deployment are supporting context already held elsewhere. |
+
+F43 adds the explicit matrix attribution, not universal phase cardinality. S023 retains CISA program stages, S018 coordination/verification artifacts, F11 JPCERT standards guidance and F38 ISO publisher records. The lost-domain 0/18 denominator is unchanged.

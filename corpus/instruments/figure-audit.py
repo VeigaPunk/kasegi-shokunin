@@ -18,40 +18,42 @@ Ledger entry shape (JSON object with a "figures" array):
   {"id": "...",      - stable figure id
    "record": "...",  - where the literal is recorded (file:line or pointer)
    "recorded": "...",- the literal as recorded (informational, printed)
-   "derive": "...",  - read-only shell command, run with cwd=root, via bash
+   "derive": "...",  - literal-argv command grammar, run with cwd=root (no shell)
    "want": "...",    - the exact value the command must print (stripped)
    optional "rev": "..."} - when present, "derive" should address committed
                             bytes at that rev (e.g. `git show <rev>:<path>`);
-                            the audit never runs a mutating command: entries
-                            are rejected whose derive lacks a read-only head
+                            entries require an allow-listed head
                             (allow-list: git show, git cat-file, git ls-tree, grep, wc, ls, head,
                             tail, sha256sum, cat, cut, tr, sort without -o/--output, and
-                            python/python3 running a counter whose script resolves inside
-                            corpus/instruments/ — a path that only starts with that prefix but
-                            leaves it ("..", an absolute path, a symlink) is refused).
-                            No awk and no sed: an interpreted program can
-                            execute and write through system(), 'e' or 'w' whatever its head,
-                            so neither is an admissible derive head.
+                            python/python3 running a counter whose decoded script argument
+                            starts literally with corpus/instruments/ and resolves inside it).
+                            The same decoded argv is validated and executed. Supported syntax:
+                            quoting/backslash escapes, pipelines, &&, and < file input.
+                            Unquoted expansion syntax and dollar/backticks in double quotes are
+                            refused; single-quoted regexes stay literal. No awk or sed. NOT a sandbox:
+                            counters, unscreened flags, PATH binaries, Git configuration and
+                            filesystem races can still write or execute other programs.
 
 Exit codes: 0 every figure re-derives; 1 any figure stale or derive failed
-(fail-closed: a nonzero derive exit or an empty stdout is stale, never ok);
-2 harness/read error (ledger missing/unparsable, entry malformed, no bash).
-
---selftest grades its own limbs on a fixture tree built under $HYAKU_SCRATCH
-(or the system temp dir) and prints one `selftest case=<id> verdict=pass|fail`
-line per case plus a summary; it exits 0 only when every case passes.
+(fail-closed: a nonzero final pipeline status or empty stdout is stale);
+2 harness/read error (ledger missing/unparsable, entry malformed, derive refused).
+Pipeline status is the last command's status, not pipefail, preserving grep|wc
+zero-count derives; && short-circuits on that status and concatenates group stdout.
+--selftest builds fixtures under $HYAKU_SCRATCH, otherwise $TMPDIR/the system temp
+directory, and uses the current Python interpreter. It exits 0 only if all cases pass.
 """
 
 import json
 import os
 import shutil
+import shlex
 import subprocess
 import sys
 import tempfile
+import time
 
 READ_ONLY_HEADS = (
-    "git show ", "git cat-file ", "git ls-tree ", "grep", "wc ", "wc<", "ls ", "ls*",
-    "sha256sum", "cat ", "cut ", "sort ", "tr ", "head ", "tail ", "python ", "python3 ",
+    "grep", "wc", "ls", "sha256sum", "cat", "cut", "sort", "tr", "head", "tail",
 )
 
 # Heads whose flags can write a file or execute a configured command: refused when such a flag
@@ -62,122 +64,137 @@ DENIED_FLAGS = (
 )
 
 
-EXPECTED_CASES = 24  # R17 pin: a dropped selftest case turns the selftest red
+EXPECTED_CASES = 35  # R17 pin: a dropped selftest case turns the selftest red
 
 
 def eprint(*a):
     print(*a, file=sys.stderr)
 
 
-def run_derive(cmd, root):
-    bash = shutil.which("bash")
-    if bash is None:
-        return None, "", "no-bash-on-host"
-    try:
-        p = subprocess.run([bash, "-c", cmd], cwd=root or ".",
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                           timeout=300)
-    except subprocess.TimeoutExpired:
-        return None, "", "derive-timeout"
-    out = p.stdout.decode("utf-8", "replace").strip()
-    if p.returncode != 0:
-        return None, out, "derive-exit-%d" % p.returncode
-    if out == "":
+def run_derive(plan, root):
+    """Execute the already validated argv plan, never a shell string."""
+    output = []
+    deadline = time.monotonic() + 300
+    for pipeline in plan:
+        processes, files = [], []
+        previous = None
+        try:
+            for argv, input_path in pipeline:
+                stdin = previous
+                if input_path is not None:
+                    stdin = open(os.path.join(root or ".", input_path), "rb")
+                    files.append(stdin)
+                errors = tempfile.TemporaryFile()
+                files.append(errors)
+                p = subprocess.Popen(argv, cwd=root or ".", stdin=stdin,
+                                     stdout=subprocess.PIPE, stderr=errors)
+                processes.append(p)
+                if previous is not None:
+                    previous.close()
+                previous = p.stdout
+            raw, _ = processes[-1].communicate(timeout=max(0, deadline - time.monotonic()))
+            for p in processes[:-1]:
+                p.wait(timeout=max(0, deadline - time.monotonic()))
+            output.append(raw)
+            status = processes[-1].returncode
+            if status != 0:
+                out = b"".join(output).decode("utf-8", "replace").strip()
+                return None, out, "derive-exit-%d" % status
+        except subprocess.TimeoutExpired:
+            return None, "", "derive-timeout"
+        except (OSError, ValueError) as e:
+            return None, "", "derive-exec-error-%s" % type(e).__name__
+        finally:
+            for p in processes:
+                if p.poll() is None:
+                    p.kill()
+            for p in processes:
+                p.wait()
+                if p.stdout is not None:
+                    p.stdout.close()
+            for f in files:
+                f.close()
+    out = b"".join(output).decode("utf-8", "replace").strip()
+    if not out:
         return None, out, "derive-empty"
     return out, out, None
 
 
-def split_segments(cmd):
-    """Split a derive into its unquoted '|' and '&&' segments.
-
-    Quote model (R72): OUTSIDE quotes a backslash escapes the next character, so an
-    escaped quote never opens a quote in this scanner (B1/B2: bash runs the text after
-    it, so it must be split and refused). Inside double quotes a backslash escapes only
-    '$', '`', '"' and '\\'; inside single quotes nothing is escaped.
-    Returns None when an unquoted shell metacharacter sits outside that grammar:
-    ';', a lone '&', '||', a newline, a backtick, '(' or ')' (so '$(' too), or an
-    output redirect '>'. An unterminated quote or a trailing lone backslash is refused."""
-    segs, cur, quote, i, n = [], [], None, 0, len(cmd)
-    while i < n:
-        c = cmd[i]
-        if quote == "'":
-            cur.append(c)
-            if c == "'":
-                quote = None
-            i += 1
-            continue
-        if quote == '"':
-            if c == "\\" and i + 1 < n and cmd[i + 1] in '$`"\\':
-                cur.append(c)
-                cur.append(cmd[i + 1])
-                i += 2
-                continue
-            if c == '"':
-                quote = None
-            elif c == "`" or (c == "$" and cmd[i + 1:i + 2] == "("):
-                return None
-            cur.append(c)
-            i += 1
-            continue
-        if c == "\\":
-            if i + 1 >= n:
-                return None  # trailing lone backslash: a continuation bash would swallow
-            cur.append(c)
-            cur.append(cmd[i + 1])
-            i += 2
-            continue
-        if c in "'\"":
-            quote = c
-            cur.append(c)
-            i += 1
-            continue
-        if c == "|":
-            if cmd[i + 1:i + 2] == "|":
-                return None
-            segs.append("".join(cur))
-            cur = []
-            i += 1
-            continue
-        if c == "&":
-            if cmd[i + 1:i + 2] != "&":
-                return None
-            segs.append("".join(cur))
-            cur = []
-            i += 2
-            continue
-        if c in ";`()\n\r>":
-            return None
-        cur.append(c)
-        i += 1
-    if quote is not None:
+def tokenize(cmd):
+    """Tag operators before shlex decoding, so quoted separators stay arguments."""
+    if not isinstance(cmd, str) or any(c in cmd for c in "\0\n\r"):
         return None
-    segs.append("".join(cur))
-    return segs
+    tokens, word, quote, i = [], [], None, 0
+
+    def flush():
+        if word:
+            tokens.append(("word", shlex.split("".join(word), posix=True)[0]))
+            word.clear()
+
+    try:
+        while i < len(cmd):
+            c = cmd[i]
+            if quote == "'":
+                word.append(c)
+                if c == "'":
+                    quote = None
+            elif quote == '"':
+                if c in "$`":
+                    return None
+                word.append(c)
+                if c == "\\" and i + 1 < len(cmd) and cmd[i + 1] in '$`"\\':
+                    i += 1
+                    word.append(cmd[i])
+                elif c == '"':
+                    quote = None
+            elif c == "\\":
+                if i + 1 == len(cmd):
+                    return None
+                word.extend((c, cmd[i + 1]))
+                i += 1
+            elif c in "'\"":
+                quote = c
+                word.append(c)
+            elif c.isspace():
+                flush()
+            elif c in "|&<":
+                flush()
+                if c == "&":
+                    if cmd[i:i + 2] != "&&":
+                        return None
+                    tokens.append(("op", "&&"))
+                    i += 1
+                else:
+                    tokens.append(("op", c))
+            elif c in ";>()$`*?[]{}~#":
+                return None
+            else:
+                word.append(c)
+            i += 1
+        if quote is not None:
+            return None
+        flush()
+    except ValueError:
+        return None
+    return tokens
 
 
-def denied_flag(head):
-    """A token that makes an allow-listed head write a file or run a configured command."""
-    tokens = head.split()
+def denied_flag(parts):
+    """Check decoded option tokens, including quoted/escaped flag spellings."""
     for name, flags in DENIED_FLAGS:
-        if head == name or head.startswith(name + " "):
-            for tok in tokens[1:]:
-                for f in flags:
-                    if tok == f or tok.startswith(f + "="):
+        prefix = name.split()
+        if parts[:len(prefix)] == prefix:
+            for tok in parts[len(prefix):]:
+                for flag in flags:
+                    if tok == flag or tok.startswith(flag + "="):
                         return True
-                    if f == "-o" and tok.startswith("-o") and tok != "-o":
+                    if flag == "-o" and tok.startswith("-o") and tok != "-o":
                         return True
     return False
 
 
-def python_head_ok(root, head):
-    """A python counter is admissible only when its script resolves inside corpus/instruments/.
-
-    The r60 limb tested the literal prefix of the script argument, so
-    `python3 corpus/instruments/../../x.py` (and a symlink inside the directory) passed the
-    prefix test and ran a script outside it. This limb resolves the argument against the
-    derive's root, symlinks included, and refuses whatever lands outside the instruments dir.
-    """
-    parts = head.split()
+def python_head_ok(root, parts):
+    """Require both a literal decoded prefix and a separator-bounded realpath."""
     if len(parts) < 2 or not parts[1].replace("\\", "/").startswith("corpus/instruments/"):
         return False
     base = os.path.realpath(os.path.join(root or ".", "corpus", "instruments"))
@@ -187,20 +204,53 @@ def python_head_ok(root, head):
     return target.startswith(base + os.sep)
 
 
-def segment_ok(root, head):
-    if head.startswith(("python ", "python3 ")):
-        return python_head_ok(root, head)
-    if denied_flag(head):
+def segment_ok(root, parts):
+    if parts[0] in ("python", "python3"):
+        return python_head_ok(root, parts)
+    if denied_flag(parts):
         return False
-    return head.startswith(READ_ONLY_HEADS)
+    if parts[0] == "git":
+        return len(parts) > 1 and parts[1] in ("show", "cat-file", "ls-tree")
+    return parts[0] in READ_ONLY_HEADS
+
+
+def parse_derive(root, cmd):
+    """Parse and validate once; the resulting argv objects are executed unchanged."""
+    tokens = tokenize(cmd)
+    if not tokens:
+        return None
+    plan, pipeline, argv, input_path = [], [], [], None
+    i = 0
+    while i < len(tokens):
+        kind, value = tokens[i]
+        if kind == "word":
+            argv.append(value)
+        elif value == "<":
+            # Input redirection is deliberately limited to the first pipeline stage.
+            if input_path is not None or pipeline or i + 1 == len(tokens):
+                return None
+            i += 1
+            if tokens[i][0] != "word":
+                return None
+            input_path = tokens[i][1]
+        else:
+            if not argv or not segment_ok(root, argv):
+                return None
+            pipeline.append((argv, input_path))
+            argv, input_path = [], None
+            if value == "&&":
+                plan.append(pipeline)
+                pipeline = []
+        i += 1
+    if not argv or not segment_ok(root, argv):
+        return None
+    pipeline.append((argv, input_path))
+    plan.append(pipeline)
+    return plan
 
 
 def check_read_only(root, cmd):
-    # every unquoted '|' / '&&' segment must itself open with an allow-listed head
-    segs = split_segments(cmd)
-    if segs is None:
-        return False
-    return all(segment_ok(root, seg.strip()) for seg in segs)
+    return parse_derive(root, cmd) is not None
 
 
 def audit(ledger_path, root):
@@ -222,10 +272,11 @@ def audit(ledger_path, root):
         if not isinstance(ent, dict) or not all(k in ent for k in ("id", "record", "recorded", "derive", "want")):
             eprint("FIGURE-AUDIT: UNAVAILABLE reason=entry-shape entry=%r" % (ent.get("id") if isinstance(ent, dict) else ent,))
             return 2
-        if not check_read_only(root, ent["derive"]):
+        plan = parse_derive(root, ent["derive"])
+        if plan is None:
             eprint("FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=%s" % ent["id"])
             return 2
-        derived, raw, err = run_derive(ent["derive"], root)
+        derived, raw, err = run_derive(plan, root)
         if err is not None:
             stale += 1
             print("FIG %s recorded=%s derived=UNAVAILABLE reason=%s stale" % (ent["id"], ent["recorded"], err))
@@ -277,7 +328,8 @@ def selftest():
     cases = []
 
     def run_case(cid, want_exit, ledger_doc=None, broken=False):
-        tmp = tempfile.mkdtemp(prefix="figure-audit-selftest-")
+        tmp = tempfile.mkdtemp(prefix="figure-audit-selftest-",
+                               dir=os.environ.get("HYAKU_SCRATCH") or None)
         try:
             with open(os.path.join(tmp, "g.txt"), "w", encoding="utf-8", newline="\n") as f:
                 f.write("35\n")
@@ -287,6 +339,10 @@ def selftest():
             with open(os.path.join(tmp, "corpus", "instruments", "ok.py"), "w", encoding="utf-8", newline="\n") as f:
                 f.write("print(35)\n")
             with open(os.path.join(tmp, "out.py"), "w", encoding="utf-8", newline="\n") as f:
+                f.write("print(35)\n")
+            os.makedirs(os.path.join(tmp, "corpus", "instruments2"))
+            with open(os.path.join(tmp, "corpus", "instruments2", "ok.py"),
+                      "w", encoding="utf-8", newline="\n") as f:
                 f.write("print(35)\n")
             try:
                 os.symlink(os.path.join(tmp, "out.py"),
@@ -301,8 +357,7 @@ def selftest():
                     json.dump(ledger_doc, f)
                     f.write("\n")
             me = os.path.abspath(sys.argv[0])
-            bash = shutil.which("bash")
-            p = subprocess.run([bash, "-c", 'python "%s" --ledger "%s" --root "%s"' % (me, lp, tmp)],
+            p = subprocess.run([sys.executable, me, "--ledger", lp, "--root", tmp],
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=120)
             out = p.stdout.decode("utf-8", "replace")
             good = p.returncode == want_exit
@@ -334,6 +389,17 @@ def selftest():
     run_case("python-traversal-refused", 2, _one("s-pytrav", "python3 corpus/instruments/../../out.py", "35"))
     run_case("python-symlink-refused", 2, _one("s-pylink", "python3 corpus/instruments/link.py", "35"))
     run_case("python-absolute-refused", 2, _one("s-pyabs", "python3 /nonexistent-absolute.py", "35"))
+    run_case("python-quoted-traversal-refused", 2, _one("s-pyquote", 'python3 corpus/instruments/"../../out.py"', "35"))
+    run_case("python-dot-prefix-refused", 2, _one("s-pydot", "python3 ./corpus/instruments/ok.py", "35"))
+    run_case("python-sibling-boundary-refused", 2, _one("s-pysibling", "python3 corpus/instruments/../instruments2/ok.py", "35"))
+    run_case("dollar-expansion-refused", 2, _one("s-dollar", "cat $HOME/g.txt", "35"))
+    run_case("double-quoted-expansion-refused", 2, _one("s-dq", 'cat "${HOME}/g.txt"', "35"))
+    run_case("sort-quoted-output-refused", 2, _one("s-sortquote", "sort '-o' out.txt g.txt", "35"))
+    run_case("sort-escaped-output-refused", 2, _one("s-sortescape", r"sort -\o out.txt g.txt", "35"))
+    run_case("git-quoted-output-refused", 2, _one("s-gitquote", "git show '--output=out.txt' HEAD", "35"))
+    run_case("input-redirection-admitted", 0, _one("s-input", "cat < g.txt", "35"))
+    run_case("and-shortcircuit-fails", 1, _one("s-andfail", "cat missing.txt && cat g.txt", "35"))
+    run_case("and-stdout-concatenated", 0, _one("s-andout", "cat g.txt && cat g.txt", "35\n35"))
 
     failures = 0
     for cid, got, want, good, out in cases:

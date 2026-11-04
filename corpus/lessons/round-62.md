@@ -40,3 +40,34 @@ considerthese/2026-10-26.md was opened this round. Proposal 2's end-to-end domai
 ## Boundaries
 
 The gate is not a sandbox and an allowed counter can have side effects. No finding exploitation, probing, account access or disclosure submission occurs. Documentation admission and lane-local evidence do not settle promotion or outside discernment. A dispatched seat remains part of this lane; independent non-author admit/reject judgment remains the closure's responsibility.
+
+## Frozen claim and implementation decision
+
+Freeze landed ee6abb037323d849c2a3b6cf6e4d0f52982b1121 before production cutover. `.ufo/waves/round-62/claims.json` binds the exact candidate bytes, commands, before/after wants and kill rules. The one build-and-falsify wave had already settled; its design probes were used to choose the predicate, not retroactively relabelled as frozen votes.
+
+C1's candidate parses/validates a literal argv plan once and passes that plan directly to Popen. The former bash reinterpretation is removed. The docstring is corrected before its frozen digest, and allowed-counter/PATH/configuration/race residuals remain explicit. The selftest invokes its current interpreter. Stand-in receipts show selftest35/0, mutbat5/5, ledger35/35 and named collector10/0. Do-nothing receipts with the final counters show base collector10/1 and battery3/5 (two valid survivors); the six-error collector battery passes and rejects an always-clean counterfeit. This is nominal under R58, not a citation-resolution gain.
+
+C2 admits `corpus/knowledge/cert-guide-cvd-phases-and-validation.md`, F43 on S095, only for the five-role responsibility-matrix attribution. ScopeConnect found generic phases, prioritization and awareness/deployment already held; those remain context. The distinguishing rule is Reporter × Remediation = fix confirmation versus Vendor/Coordinator × Validation = incoming-report validation. A table dash is not a prohibition on researcher-side checking. Six summary headings versus seven role-table rows are deliberately retained as different presentations, not a universal cardinality claim.
+
+Final capture manifest carries 19 assertions from `w1/EntryDraft/manifest-assertions.json`, with duplicate table cells bound by anchors. Their measured whitespace word counts are in `controls/quote-word-counts-final-r62.txt` (maximum18, every assertion <=25). The seven candidate quotes above remain accurate but are not the final assertion count. `w1/EntryDraft/claim-table.md` precedes frontier scoring; the entry's final scope/attribution additions follow ScopeConnect's already-recorded evidence. `controls/anchor-referents-prefreeze-r62.txt` plus those two tables supply the prefreeze source reading; the final committed-run verification checks anchors again.
+
+Gate admit: the matrix entry and S095 (tier A only for CERT/CC's own model). Gate reject: universal mandatory phases or Reporter-must-validate, for the source contradictions above; non-author outside closure still owes the independent admit/reject judgment. Source capture is first-party documentation, not observed organizational practice. R67's body-substance blind spot remains disclosed: source and sentence review, not a structural count alone, ground admission.
+
+Registry delta: 94 →95, tier-A/mined S095 added, recheck180d. Existing status/recheck/used-by cells and ids/URLs unchanged; no old-to-new cell edits. Frontier42 →43; capture77 →78; audited frontier entries45 →46; knowledge80 →81 with expected list sorted. Stand-in counters/census receipts in controls/ record these values; committed-input reproduction is distinct evidence.
+
+## Mistakes — prefreeze falsification and process
+
+| id | class | evidence pointer | captured-by | fix or honest disposition |
+|---|---|---|---|---|
+| M62-5 | vacuous counter / import-time exit | controls/c1-runner-degenerate-r62.txt: always-clean counterfeit first ended the fault suite with exit0 and no summary | R82 fail-closed harness | Catch SystemExit at the imported collector boundary. The only changed branch now makes the same counterfeit six failures exit1; genuine collector six controls0 failures. Red-before and fixed receipts remain separate. |
+| M62-6 | harness / weak result identity | w1/HarnessAttack.md wrong-id/recorded adversary passed initial runner10/0 | R82 and R13 discrimination | Before freeze, bind exact FIG/refusal id, recorded/derived value, summary and output stream; final runner rejects the wrong-record fixture with ten failures. |
+| M62-7 | scope / scratch contract | w1/HarnessAttack.md section Process limits: exact r61 guard reproduced under a fresh seat subtree in kasegi-r61 rather than assigned kasegi-r62 | scratch discipline section7 | Disclosed deviation, not retrospectively authorized. Seat removed that subtree and recreated empty parent; evidence retained. Other seats used r62 paths; no blanket path-conformance assertion. |
+| M62-8 | provider / missing evidence | w1-results.json: CriticArgv output empty; ExecArgv report relays cyber_policy error second-hand | wave honesty / no refusal rerouting | Nine evidence-producing seats, one empty-output seat; no invented critic vote or retry/reroute. Exact dispatcher telemetry was requested; until supplied terminal state/error is unavailable. |
+
+No new QUALITY criterion is claimed: R17/R74/R75/R76/R80/R81/R82 already cover these mistakes, so adding another synonymous rule would not improve the bar. The collector repair is shown able to fail against the always-clean counterfeit, rather than only a passing summary.
+
+## Settled wave accounting and review limits
+
+WAVE-DONE received for the one v1 wave:10 seats, no residual call or replacement. Roles: executor4, reviewer1, critic2, scout1, scribe1, connector1; attack3/10, connector1, L1 planner. Nine seats produced evidence, one empty output. ReviewDesign statically inspected the candidate same-plan path; the final documentation correction was executor-measured, not independently re-executed by that reviewer. HarnessAttack found the early identity mismatch; its final corrected-byte verification is L1-owned. ScoutS095 independently fetched HTTP200/54854 raw bytes and reproduced the snapshot digest. EntryDraft provides the sentence table, ScopeConnect narrows the coverage claim, CounterBase pins the before export. No seat is counted as outside discernment or promotion verification.
+
+Fully quoted legitimate inside-script paths are intentionally newly admitted after decoding. Consequently this round does not claim universal zero new admissions. Pipelines retain last-stage status, not pipefail; generic upstream failures outside explicit guards remain open. No all-flags, race-free, descendant-containment or sandbox claim is made. Existing L0 decisions are neither supplied nor silently assumed by this local representation repair.
