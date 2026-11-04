@@ -1,0 +1,38 @@
+run_utc=2026-11-04T18:37:46Z
+grep -> /usr/bin/grep
+cat -> /usr/bin/cat
+cut -> /usr/bin/cut
+head -> /usr/bin/head
+tail -> /usr/bin/tail
+ls -> /usr/bin/ls
+sort -> /usr/bin/sort
+sha256sum -> /usr/bin/sha256sum
+wc -> /usr/bin/wc
+grep (GNU grep) 3.12-modified
+Copyright (C) 2025 Free Software Foundation, Inc.
+cat (GNU coreutils) 9.12
+ls (GNU coreutils) 9.12
+/usr/bin/grep absent g.txt               rc=1    err=
+/usr/bin/grep '[' g.txt                  rc=2    err=/usr/bin/grep: Invalid regular expression 
+/usr/bin/grep 35 missing.txt             rc=2    err=/usr/bin/grep: missing.txt: No such file or directory 
+/usr/bin/grep -s 35 missing.txt          rc=2    err=
+/usr/bin/grep 35 adir                    rc=2    err=/usr/bin/grep: adir: Is a directory 
+/usr/bin/grep -q absent missing.txt      rc=2    err=/usr/bin/grep: missing.txt: No such file or directory 
+/usr/bin/grep 35 g.txt missing.txt       rc=2    err=/usr/bin/grep: missing.txt: No such file or directory 
+/usr/bin/grep -c absent g.txt            rc=1    err=
+/usr/bin/grep -a x bin.dat               rc=0    err=
+/usr/bin/grep -r absent nosuchdir        rc=2    err=/usr/bin/grep: nosuchdir: No such file or directory 
+/usr/bin/grep -E '(' g.txt               rc=2    err=/usr/bin/grep: Unmatched ( or \( 
+/usr/bin/grep -P '(' g.txt               rc=2    err=/usr/bin/grep: missing closing parenthesis 
+/usr/bin/cat missing.txt                 rc=1    err=cat: missing.txt: No such file or directory 
+/usr/bin/cat d_exist.txt missing.txt     rc=1    err=cat: missing.txt: No such file or directory 
+/usr/bin/cat adir                        rc=1    err=cat: adir: Is a directory 
+/usr/bin/cut -d' ' -f1 missing.txt       rc=1    err=cut: missing.txt: No such file or directory 
+/usr/bin/head missing.txt                rc=1    err=head: cannot open 'missing.txt' for reading: No such file or directory 
+/usr/bin/tail missing.txt                rc=1    err=tail: cannot open 'missing.txt' for reading: No such file or directory 
+/usr/bin/ls missing.txt                  rc=2    err=ls: cannot access 'missing.txt': No such file or directory 
+/usr/bin/sort missing.txt                rc=2    err=sort: cannot read: missing.txt: No such file or directory 
+/usr/bin/sha256sum missing.txt           rc=1    err=sha256sum: missing.txt: No such file or directory 
+/usr/bin/wc -l missing.txt               rc=1    err=wc: missing.txt: No such file or directory 
+/usr/bin/tr a b missing.txt              rc=1    err=tr: extra operand ‘missing.txt’ Try '/usr/bin/tr --help' for more information. 
+/usr/bin/git show refs/nonexistent-zz    rc=128  err=fatal: not a git repository (or any parent up to mount point /) Stopping at filesystem boundary (GIT

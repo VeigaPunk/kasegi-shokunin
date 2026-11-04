@@ -105,6 +105,8 @@
 
 | S096 | Kasegi bounded upstream-error diagnostic — corpus/instruments/figure-audit.py | own-work | A | This lane's local figure-audit execution rule and finite error/zero-count discrimination; not external security policy or new domain ground | Round-63 candidate sha256 15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997; corpus/instruments/figure-audit.py L98-L109, L412-L424; opened 2026-11-04; measured prefreeze transcript .ufo/waves/round-63/controls/collector-candidate-prefreeze-r63.txt | Distinguish grep2, missing-ref128 and confined Python7 upstream failures from a genuine zero count; keep upstream exit1 and negative statuses explicit as residuals. | mined | 2026-11-04 | on-release | corpus/lessons/round-63.md |
 
+| S097 | Kasegi command-aware upstream diagnostic — .ufo/waves/round-64/w1/ExecPipeline/figure-audit.py | own-work | A | Local non-grep exit1 failure discrimination in figure-audit; not source restoration or an external security guarantee | Checkpoint565eb16f03b084889789f4953edb8a3ad3e71c96, upstream_stale L79-L86; candidate sha2568d92eaa0a1f248eb1fb8ae4d0d098c2a11d8d0674fa1eff6cefdb771e2e917e9; controls/driver-candidate-prefreeze-r64.txt under round64 | Command identity distinguishes ordinary grep no-match from other positive upstream failures while retaining final-stage precedence | mined | 2026-11-04 | on-release | corpus/lessons/round-64.md |
+
 ## Paths
 
 - CVSS severity and CWE prioritization — S002 → S001 → S013 → S014 → S015: learn the metric semantics and scoring language before examining the Top 25 dataset method, interpretation and dated rank list.

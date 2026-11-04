@@ -1,0 +1,46 @@
+run-utc=2026-11-04T18:37:59Z seat=ReviewPredicate-3 host-static-probe
+base=d74be00 instrument-sha=15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997
+candidate-copy=ExecPipeline/figure-audit.py sha=ca1015b2488cb63c22f56e1118714c593be65f0e6bc9bea1a0121f6391984a5c
+## native exit codes (ENOENT fixtures)
+native rc=1 :: cat missing.txt
+native rc=1 :: cat present.txt missing.txt
+native rc=1 :: cut -c1 missing.txt
+native rc=1 :: head -n 1 missing.txt
+native rc=1 :: tail -n 1 missing.txt
+native rc=2 :: ls missing.txt
+native rc=2 :: sort missing.txt
+native rc=1 :: sha256sum missing.txt
+native rc=2 :: grep absent missing.txt
+native rc=1 :: grep absent g.txt
+native rc=2 :: grep [ g.txt
+## figure-audit derive probes (base vs candidate, cwd=fixture)
+base rc=0 | cat missing.txt | wc -l | FIG p1 recorded=0 derived=0 ok
+cand rc=1 | cat missing.txt | wc -l | FIG p1 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+base rc=1 | cat present.txt missing.txt | wc -l | FIG p2 recorded=0 derived=1 want=0 stale
+cand rc=1 | cat present.txt missing.txt | wc -l | FIG p2 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+base rc=0 | cut -c1 missing.txt | wc -l | FIG p3 recorded=0 derived=0 ok
+cand rc=1 | cut -c1 missing.txt | wc -l | FIG p3 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+base rc=0 | head -n 1 missing.txt | wc -l | FIG p4 recorded=0 derived=0 ok
+cand rc=1 | head -n 1 missing.txt | wc -l | FIG p4 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+base rc=0 | tail -n 1 missing.txt | wc -l | FIG p5 recorded=0 derived=0 ok
+cand rc=1 | tail -n 1 missing.txt | wc -l | FIG p5 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+base rc=1 | ls missing.txt | wc -l | FIG p6 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+cand rc=1 | ls missing.txt | wc -l | FIG p6 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+base rc=1 | sort missing.txt | wc -l | FIG p7 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+cand rc=1 | sort missing.txt | wc -l | FIG p7 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+base rc=0 | sha256sum missing.txt | wc -l | FIG p8 recorded=0 derived=0 ok
+cand rc=1 | sha256sum missing.txt | wc -l | FIG p8 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+base rc=0 | grep absent g.txt | wc -l | FIG p9 recorded=0 derived=0 ok
+cand rc=0 | grep absent g.txt | wc -l | FIG p9 recorded=0 derived=0 ok
+base rc=1 | cat g.txt | wc -l | FIG p10 recorded=0 derived=1 want=0 stale
+cand rc=1 | cat g.txt | wc -l | FIG p10 recorded=0 derived=1 want=0 stale
+base rc=1 | cat g.txt && cat g.txt | FIG p11 recorded=0 derived=35
+cand rc=1 | cat g.txt && cat g.txt | FIG p11 recorded=0 derived=35
+base rc=1 | grep -c absent g.txt | wc -l | FIG p12 recorded=0 derived=1 want=0 stale
+cand rc=1 | grep -c absent g.txt | wc -l | FIG p12 recorded=0 derived=1 want=0 stale
+base rc=1 | cat missing.txt | grep absent | FIG p13 recorded=0 derived=UNAVAILABLE reason=derive-exit-1 stale
+cand rc=1 | cat missing.txt | grep absent | FIG p13 recorded=0 derived=UNAVAILABLE reason=derive-exit-1 stale
+base rc=1 | cat missing.txt | wc -l && cat g.txt | FIG p14 recorded=0 derived=0
+cand rc=1 | cat missing.txt | wc -l && cat g.txt | FIG p14 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+base rc=1 | cat g.txt && cat missing.txt | wc -l | FIG p15 recorded=0 derived=35
+cand rc=1 | cat g.txt && cat missing.txt | wc -l | FIG p15 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale

@@ -35,8 +35,11 @@ instrument inside work is rejected before any fixture is written and is
 byte-checked again afterwards. Existing files are never cleared; only this
 invocation's fresh private run directory is removed. The instrument is
 invoked exactly once per run with one 18-figure ledger; its whole stdout
-(every FIG line plus the FIGURE-AUDIT figures/ok/stale/exit trailer), process
-exit and empty stderr are compared exactly. --selfcheck replays harness fault
+(every FIG line plus the FIGURE-AUDIT trailer), exit and empty stderr are
+compared exactly. Each recorded field binds a fresh per-run nonce from the
+supplied ledger, rejecting fixed captured stdout on a later invocation. This
+is replay discrimination, not authenticity or a general emulator defense.
+--selfcheck replays harness fault
 cases (missing instrument, unusable work, instrument under work,
 always-green counterfeit, empty output, nonzero exit with clean summary,
 pristine control) by running this collector against generated fakes; the
@@ -53,12 +56,13 @@ import shlex
 import shutil
 import subprocess
 import sys
+import secrets
 import tempfile
 import time
 from pathlib import Path
 
 SCRATCH_BASE = Path('/fast/scratch/hyaku/kasegi-r64')
-MISS = 'nosuch-r64.txt'
+MISS = 'grep-missing-r64.txt'
 ONE = 'one.txt'
 ONE_BODY = 'kasegi-r64\n'
 DEPS = ('python3', 'cat', 'grep', 'wc', 'cut', 'head', 'tail', 'ls', 'sort',
@@ -198,7 +202,7 @@ def figure_line(name, rec, verdict, reason, derived):
     return 'FIG %s recorded=%s derived=UNAVAILABLE reason=%s stale' % (name, rec, reason)
 
 
-def plan(root, mode, verbose):
+def plan(root, mode, verbose, nonce=''):
     natives = establish(root)
     lines, ok_n, stale_n = [], 0, 0
     for name, want, groups in PROBES:
@@ -207,7 +211,8 @@ def plan(root, mode, verbose):
         if verdict == 'ok' and native['out'] != want:
             raise CollectionError('native-want-drift:%s native=%r want=%r'
                                   % (name, native['out'], want))
-        lines.append(figure_line(name, esc(want), verdict, reason, native['out']))
+        recorded = esc(want) + (':nonce=' + nonce if nonce else '')
+        lines.append(figure_line(name, recorded, verdict, reason, native['out']))
         ok_n += verdict == 'ok'
         stale_n += verdict == 'stale'
         if verbose:
@@ -291,6 +296,7 @@ def guards(args):
 def collect(args, instrument, work):
     print('run-utc=' + datetime.datetime.now(datetime.timezone.utc).isoformat(), flush=True)
     code = instrument.read_bytes()
+    nonce = secrets.token_hex(16)
     tools = {name: shutil.which(name) for name in DEPS}
     missing = [name for name, path in tools.items() if path is None]
     if missing:
@@ -310,11 +316,11 @@ def collect(args, instrument, work):
             del env[key]
         env.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull,
                    GIT_CEILING_DIRECTORIES=str(root))
-        lines, trailer, _ = plan(root, args.mode, verbose=True)
+        lines, trailer, _ = plan(root, args.mode, verbose=True, nonce=nonce)
         ledger = root / 'c1-ledger.json'
         put(ledger, json.dumps({'figures': [
             {'id': name, 'record': 'c1-probes-r64.py finite probe',
-             'recorded': esc(want), 'derive': derive_of(groups), 'want': want}
+             'recorded': esc(want) + ':nonce=' + nonce, 'derive': derive_of(groups), 'want': want}
             for name, want, groups in PROBES]}, indent=1))
         argv = [tools['python3'], str(instrument), '--ledger', str(ledger),
                 '--root', str(root)]
@@ -406,7 +412,7 @@ def selfcheck(args, instrument, work):
             "import sys\nsys.stdout.write(open(%r, encoding='utf-8').read())\n"
             'raise SystemExit(7)\n' % str(payload))
         spawn('nonzero-exit-clean-summary', bin6 / 'clean-exit7.py', sc / 'w6',
-              'base', 1, 'failures=1')
+              'base', 1, 'RECORD exit FAIL observed=7 expected=1')
         spawn('pristine-control', instrument, sc / 'w7', 'base', 0,
               'failures=0 mode=base')
         if instrument.read_bytes() != code:

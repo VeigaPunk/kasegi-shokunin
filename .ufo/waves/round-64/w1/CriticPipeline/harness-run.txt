@@ -1,0 +1,58 @@
+run_utc=2026-11-04T18:37:36Z
+id                             want(base)         BASE verdict                   CAND verdict                  
+cat-missing-wc                 0                  ok 0                           stale derive-upstream-exit-1    # upstream cat missing exit1
+    derive: cat missing.txt | wc -l
+cat-partial-wc                 1                  ok 1                           stale derive-upstream-exit-1    # partial output then exit1
+    derive: cat d_exist.txt missing.txt | wc -l
+cut-missing-wc                 0                  ok 0                           stale derive-upstream-exit-1    # cut missing exit1
+    derive: cut -d' ' -f1 missing.txt | wc -l
+head-missing-wc                0                  ok 0                           stale derive-upstream-exit-1    # head missing exit1
+    derive: head missing.txt | wc -l
+tail-missing-wc                0                  ok 0                           stale derive-upstream-exit-1    # tail missing exit1
+    derive: tail missing.txt | wc -l
+ls-missing-wc                  0                  stale derive-upstream-exit-2   stale derive-upstream-exit-2    # ls missing exit2 (base already stale)
+    derive: ls missing.txt | wc -l
+sort-missing-wc                0                  stale derive-upstream-exit-2   stale derive-upstream-exit-2    # sort missing exit2 (base already stale)
+    derive: sort missing.txt | wc -l
+sha256-missing-wc              0                  ok 0                           stale derive-upstream-exit-1    # sha256sum missing exit1
+    derive: sha256sum missing.txt | wc -l
+grep-nomatch-wc                0                  ok 0                           ok 0                            # grep exit1 no-match: must stay ok
+    derive: grep absent g.txt | wc -l
+grep-count-nomatch             0                  ok 1                           ok 1                            # grep -c exit1 no-match
+    derive: grep -c absent g.txt | wc -l
+grep-warning-nomatch           0                  ok 0                           ok 0                            # grep exit1 WITH stderr warning
+    derive: grep 'a\d' g.txt | wc -l
+grep-missing-file              0                  stale derive-upstream-exit-2   stale derive-upstream-exit-2    # grep exit2 upstream: stale
+    derive: grep absent missing.txt | wc -l
+grep-dir                       0                  stale derive-upstream-exit-2   stale derive-upstream-exit-2    # grep exit2 directory: stale
+    derive: grep absent adir | wc -l
+grep-badre                     0                  stale derive-upstream-exit-2   stale derive-upstream-exit-2    # grep exit2 invalid regex: stale
+    derive: grep '[' g.txt | wc -l
+success-pipe                   1                  ok 1                           ok 1                            # successful pipeline
+    derive: cat g.txt | wc -l
+and-fail                       35                 stale derive-exit-1            stale derive-exit-1             # && stops on failed stage
+    derive: cat missing.txt && cat g.txt
+final-exit1-after-missing      0                  stale derive-exit-1            stale derive-exit-1             # final precedence over upstream
+    derive: cat missing.txt | grep absent g.txt
+final-cat-missing-after-grep   0                  stale derive-exit-1            stale derive-exit-1             # final exit1 after grep no-match
+    derive: grep absent g.txt | cat missing.txt
+final-python7-after-upstream   0                  stale derive-exit-7            stale derive-exit-7             # final exit7 precedence
+    derive: cat missing.txt | python3 corpus/instruments/fail7.py
+python-exit1-counter           1                  ok 1                           stale derive-upstream-exit-1    # counter exit1 with output
+    derive: python3 corpus/instruments/exit1count.py | wc -l
+python-exit1-after-output-raise 1                  ok 1                           stale derive-upstream-exit-1    # uncaught exception after output
+    derive: python3 corpus/instruments/nonzero-after-output.py | wc -l
+python-sigkill-partial         3                  ok 3                           ok 3                            # negative signal upstream, partial output
+    derive: python3 corpus/instruments/sigkill-partial.py | wc -l
+sha256-check-fail              1                  ok 1                           stale derive-upstream-exit-1    # sha256sum -c with one FAILED: legit exit1 non-grep
+    derive: sha256sum -c sums.txt | grep -c OK
+sha256-check-ok                1                  ok 1                           ok 1                            # sha256sum -c success
+    derive: sha256sum -c sums-ok.txt | wc -l
+sort-check-disorder            0                  ok 0                           stale derive-upstream-exit-1    # sort -c disorder exit1 non-grep
+    derive: sort -c unsorted.txt | wc -l
+sort-check-sorted              0                  ok 0                           ok 0                            # sort -c sorted exit0
+    derive: sort -c sorted.txt | wc -l
+python-broken-pipe-head        line 0             ok line 0                      stale derive-upstream-exit-1    # upstream python writes into closed pipe
+    derive: python3 corpus/instruments/bigprint.py | head -1
+cat-big-head-sigpipe           x                  ok import sys                  ok import sys                   # SIGPIPE negative upstream of head
+    derive: cat corpus/instruments/bigprint.py | head -1

@@ -1,0 +1,53 @@
+{
+ "figures": [
+  {
+   "id": "pos-present-rev",
+   "record": "S094.txt:18 at d74be00",
+   "recorded": "1",
+   "derive": "git show d74be00a82c8c2962a0b78442c5daea3af0adaae:corpus/source-snapshots/round-61/S094.txt | grep -F 'before it appeared in an official release, so SQLite users were not impacted.' | wc -l",
+   "want": "1"
+  },
+  {
+   "id": "neg-WT-present-absent-phrase",
+   "record": "S094.txt working tree, phrase absent by design",
+   "recorded": "0",
+   "derive": "cat corpus/source-snapshots/round-61/S094.txt | grep -F 'SQLite users were impacted' | wc -l",
+   "want": "0"
+  },
+  {
+   "id": "neg-WT-missing-source-cat",
+   "record": "missing working-tree file (absence must not read as zero)",
+   "recorded": "0",
+   "derive": "cat corpus/source-snapshots/round-61/NOPE.txt | grep -F 'SQLite users were impacted' | wc -l",
+   "want": "0"
+  },
+  {
+   "id": "neg-WT-missing-source-grep",
+   "record": "missing working-tree file, grep is the first stage",
+   "recorded": "0",
+   "derive": "grep -F 'SQLite users were impacted' corpus/source-snapshots/round-61/NOPE.txt | wc -l",
+   "want": "0"
+  },
+  {
+   "id": "neg-rev-missing-path",
+   "record": "missing path at d74be00",
+   "recorded": "0",
+   "derive": "git show d74be00a82c8c2962a0b78442c5daea3af0adaae:corpus/source-snapshots/round-61/NOPE.txt | grep -F 'SQLite users were impacted' | wc -l",
+   "want": "0"
+  },
+  {
+   "id": "neg-rev-bad-ref",
+   "record": "nonexistent ref",
+   "recorded": "0",
+   "derive": "git show 0000000000000000000000000000000000000001:corpus/source-snapshots/round-61/S094.txt | grep -F 'SQLite users were impacted' | wc -l",
+   "want": "0"
+  },
+  {
+   "id": "pos-WT-want1-absent-phrase",
+   "record": "control: wrong expectation on present source",
+   "recorded": "1",
+   "derive": "cat corpus/source-snapshots/round-61/S094.txt | grep -F 'SQLite users were impacted' | wc -l",
+   "want": "1"
+  }
+ ]
+}

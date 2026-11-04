@@ -1,0 +1,37 @@
+run-utc=2026-11-04T18:37:01Z
+lane-toplevel=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+base=d74be00a82c8c2962a0b78442c5daea3af0adaae
+figure-audit sha256=15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997
+--- anchored lines (committed bytes, grep -n)
+42:(derive-upstream-exit-N). Upstream exit1 and negative signal statuses remain
+43:ignored, preserving grep|wc zero-count derives, not general error detection or
+107:                if p.returncode > 1:
+412:    run_case("upstream-cat-missing-exit1-retained", 0, _one("s-catmissing", "cat missing.txt | wc -l", "0"))
+419:    run_case("upstream-grep-no-match-counts-zero", 0, _one("s-grepzero", "grep absent g.txt | wc -l", "0"))
+--- native exit recon (own scratch, single invocation)
+native-exit=1 cmd=[cat missing.txt]
+native-exit=1 cmd=[cat -- /dev/null missing.txt]
+native-exit=1 cmd=[head missing.txt]
+native-exit=1 cmd=[tail missing.txt]
+native-exit=1 cmd=[cut -c1 missing.txt]
+native-exit=2 cmd=[ls missing.txt]
+native-exit=2 cmd=[sort missing.txt]
+native-exit=1 cmd=[sha256sum missing.txt]
+native-exit=1 cmd=[wc -l missing.txt]
+native-exit=2 cmd=[grep -e x missing.txt]
+native-exit=1 cmd=[grep absent /dev/null]
+--- git native exits (read-only, lane repo)
+git-cat-file-e-missing-ref=128
+git-show-existing=0
+git-show-missing-path=128
+--- quote word counts (<=25)
+4 words=[if p.returncode > 1:]
+7 words=[Upstream exit1 and negative signal statuses remain]
+4 words=[No lines were selected.]
+3 words=[An error occurred.]
+6 words=[All input files were output successfully.]
+13 words=[before it appeared in an official release, so SQLite users were not impacted.]
+13 words=[a special sentinel value -1 is used in an (otherwise) index-typed field iColumn:]
+11 words=[However, we want to reiterate that these are highly experimental results.]
+9 words=[the issue remained undiscovered after 150 CPU-hours of fuzzing.]
+12 words=[it's likely that a target-specific fuzzer would be at least as effective]

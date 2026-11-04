@@ -1,0 +1,403 @@
+run-utc=2026-11-04T18:40:25.068223+00:00
+{"collector_argv": ["/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck", "--selfcheck"], "instrument": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py", "instrument_sha256": "15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997", "selfcheck": true}
+SELFCHECK-RUN case=missing-instrument argv=["/usr/bin/python3", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/nonexistent-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w1", "--mode", "base"]
+HARNESS-ERROR FileNotFoundError: [Errno 2] No such file or directory: '/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/nonexistent-audit.py'
+SELFCHECK case=missing-instrument observed=2 expected=2 needle=HARNESS-ERROR FileNotFoundError verdict=PASS
+SELFCHECK-RUN case=unusable-work argv=["/usr/bin/python3", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/blocker", "--mode", "base"]
+HARNESS-ERROR FileExistsError: [Errno 17] File exists: '/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/blocker'
+SELFCHECK case=unusable-work observed=2 expected=2 needle=HARNESS-ERROR FileExistsError verdict=PASS
+SELFCHECK unusable-work sentinel-preserved=True
+SELFCHECK-RUN case=instrument-under-work argv=["/usr/bin/python3", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w3/audit.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w3", "--mode", "base"]
+HARNESS-ERROR ValueError: instrument-under-work
+SELFCHECK case=instrument-under-work observed=2 expected=2 needle=instrument-under-work verdict=PASS
+SELFCHECK instrument-under-work instrument-preserved=True
+SELFCHECK-RUN case=always-green-counterfeit argv=["/usr/bin/python3", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin4/always-green.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w4", "--mode", "candidate"]
+run-utc=2026-11-04T18:40:25.190323+00:00
+{"collector_argv": ["/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin4/always-green.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w4", "--mode", "candidate"], "dependencies": {"cat": "/usr/bin/cat", "cut": "/usr/bin/cut", "grep": "/usr/bin/grep", "head": "/usr/bin/head", "ls": "/usr/bin/ls", "python3": "/usr/bin/python3", "sha256sum": "/usr/bin/sha256sum", "sort": "/usr/bin/sort", "tail": "/usr/bin/tail", "wc": "/usr/bin/wc"}, "instrument": "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin4/always-green.py", "instrument_sha256": "d718588e946fc74ccf2a9cbd3f5b21db3ad8bed580a6bdeb077cf2c56e60f22f", "mode": "candidate"}
+PROBE cat-missing derive=cat nosuch-r64.txt | wc -l
+NATIVE cat-missing rcs=1,0 stdout=0
+EXPECT cat-missing stale reason=derive-upstream-exit-1
+PROBE cat-partial-missing derive=cat one.txt nosuch-r64.txt | wc -l
+NATIVE cat-partial-missing rcs=1,0 stdout=1
+EXPECT cat-partial-missing stale reason=derive-upstream-exit-1
+PROBE cut-missing derive=cut -d, -f1 nosuch-r64.txt | wc -l
+NATIVE cut-missing rcs=1,0 stdout=0
+EXPECT cut-missing stale reason=derive-upstream-exit-1
+PROBE head-missing derive=head -n 1 nosuch-r64.txt | wc -l
+NATIVE head-missing rcs=1,0 stdout=0
+EXPECT head-missing stale reason=derive-upstream-exit-1
+PROBE tail-missing derive=tail -n 1 nosuch-r64.txt | wc -l
+NATIVE tail-missing rcs=1,0 stdout=0
+EXPECT tail-missing stale reason=derive-upstream-exit-1
+PROBE ls-missing derive=ls nosuch-r64.txt | wc -l
+NATIVE ls-missing rcs=2,0 stdout=0
+EXPECT ls-missing stale reason=derive-upstream-exit-2
+PROBE sort-missing derive=sort nosuch-r64.txt | wc -l
+NATIVE sort-missing rcs=2,0 stdout=0
+EXPECT sort-missing stale reason=derive-upstream-exit-2
+PROBE sha256sum-missing derive=sha256sum nosuch-r64.txt | wc -l
+NATIVE sha256sum-missing rcs=1,0 stdout=0
+EXPECT sha256sum-missing stale reason=derive-upstream-exit-1
+PROBE grep-no-match derive=grep zzz-absent one.txt | wc -l
+NATIVE grep-no-match rcs=1,0 stdout=0
+EXPECT grep-no-match ok reason=-
+PROBE cat-success derive=cat one.txt | wc -l
+NATIVE cat-success rcs=0,0 stdout=1
+EXPECT cat-success ok reason=-
+PROBE sort-success derive=sort one.txt | wc -l
+NATIVE sort-success rcs=0,0 stdout=1
+EXPECT sort-success ok reason=-
+PROBE and-concatenated derive=cat one.txt | wc -l && cat one.txt | wc -l
+NATIVE and-concatenated rcs=0,0 0,0 stdout=1\n1
+EXPECT and-concatenated ok reason=-
+PROBE and-stops-on-failure derive=cat nosuch-r64.txt && wc -l one.txt
+NATIVE and-stops-on-failure rcs=1 stdout=
+EXPECT and-stops-on-failure stale reason=derive-exit-1
+PROBE grep-invalid-upstream derive=grep '[' one.txt | wc -l
+NATIVE grep-invalid-upstream rcs=2,0 stdout=0
+EXPECT grep-invalid-upstream stale reason=derive-upstream-exit-2
+PROBE final-grep-no-match derive=cat one.txt | grep zzz-absent
+NATIVE final-grep-no-match rcs=0,1 stdout=
+EXPECT final-grep-no-match stale reason=derive-exit-1
+PROBE final-precedes-upstream derive=grep '[' one.txt | python3 corpus/instruments/fail7.py
+NATIVE final-precedes-upstream rcs=2,7 stdout=
+EXPECT final-precedes-upstream stale reason=derive-exit-7
+PROBE upstream-negative-signal derive=python3 corpus/instruments/sigterm.py | wc -l
+NATIVE upstream-negative-signal rcs=-15,0 stdout=0
+EXPECT upstream-negative-signal ok reason=-
+PROBE final-negative-signal derive=cat one.txt | python3 corpus/instruments/sigterm.py
+NATIVE final-negative-signal rcs=0,-15 stdout=
+EXPECT final-negative-signal stale reason=derive-exit--15
+RUN argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin4/always-green.py", "--ledger", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w4/c1r64-6113ekwf/c1-ledger.json", "--root", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w4/c1r64-6113ekwf"]
+FIG cat-missing recorded=0 derived=0 ok
+FIG cat-partial-missing recorded=1 derived=1 ok
+FIG cut-missing recorded=0 derived=0 ok
+FIG head-missing recorded=0 derived=0 ok
+FIG tail-missing recorded=0 derived=0 ok
+FIG ls-missing recorded=0 derived=0 ok
+FIG sort-missing recorded=0 derived=0 ok
+FIG sha256sum-missing recorded=0 derived=0 ok
+FIG grep-no-match recorded=0 derived=0 ok
+FIG cat-success recorded=1 derived=1 ok
+FIG sort-success recorded=1 derived=1 ok
+FIG and-concatenated recorded=1\n1 derived=1
+1 ok
+FIG and-stops-on-failure recorded=1 derived=1 ok
+FIG grep-invalid-upstream recorded=0 derived=0 ok
+FIG final-grep-no-match recorded=0 derived=0 ok
+FIG final-precedes-upstream recorded=0 derived=0 ok
+FIG upstream-negative-signal recorded=0 derived=0 ok
+FIG final-negative-signal recorded=0 derived=0 ok
+FIGURE-AUDIT figures=18 ok=18 stale=0 exit=0
+OBSERVED exit=0 stderr=-
+RECORD cat-missing FAIL expected=FIG cat-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG cat-missing recorded=0 derived=0 ok
+RECORD cat-partial-missing FAIL expected=FIG cat-partial-missing recorded=1 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG cat-partial-missing recorded=1 derived=1 ok
+RECORD cut-missing FAIL expected=FIG cut-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG cut-missing recorded=0 derived=0 ok
+RECORD head-missing FAIL expected=FIG head-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG head-missing recorded=0 derived=0 ok
+RECORD tail-missing FAIL expected=FIG tail-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG tail-missing recorded=0 derived=0 ok
+RECORD ls-missing FAIL expected=FIG ls-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale actual=FIG ls-missing recorded=0 derived=0 ok
+RECORD sort-missing FAIL expected=FIG sort-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale actual=FIG sort-missing recorded=0 derived=0 ok
+RECORD sha256sum-missing FAIL expected=FIG sha256sum-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG sha256sum-missing recorded=0 derived=0 ok
+RECORD grep-no-match PASS
+RECORD cat-success PASS
+RECORD sort-success PASS
+RECORD and-concatenated PASS
+RECORD and-stops-on-failure FAIL expected=FIG and-stops-on-failure recorded=1 derived=UNAVAILABLE reason=derive-exit-1 stale actual=FIG and-stops-on-failure recorded=1 derived=1 ok
+RECORD grep-invalid-upstream FAIL expected=FIG grep-invalid-upstream recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale actual=FIG grep-invalid-upstream recorded=0 derived=0 ok
+RECORD final-grep-no-match FAIL expected=FIG final-grep-no-match recorded=0 derived=UNAVAILABLE reason=derive-exit-1 stale actual=FIG final-grep-no-match recorded=0 derived=0 ok
+RECORD final-precedes-upstream FAIL expected=FIG final-precedes-upstream recorded=0 derived=UNAVAILABLE reason=derive-exit-7 stale actual=FIG final-precedes-upstream recorded=0 derived=0 ok
+RECORD upstream-negative-signal PASS
+RECORD final-negative-signal FAIL expected=FIG final-negative-signal recorded=0 derived=UNAVAILABLE reason=derive-exit--15 stale actual=FIG final-negative-signal recorded=0 derived=0 ok
+RECORD trailer FAIL expected=FIGURE-AUDIT figures=18 ok=5 stale=13 exit=1 actual=FIGURE-AUDIT figures=18 ok=18 stale=0 exit=0
+RECORD exit FAIL observed=0 expected=1
+RECORD stderr PASS
+HARNESS probes=18 failures=15 mode=candidate
+SELFCHECK case=always-green-counterfeit observed=1 expected=1 needle=mode=candidate verdict=PASS
+SELFCHECK-RUN case=empty-output argv=["/usr/bin/python3", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin5/empty.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w5", "--mode", "base"]
+run-utc=2026-11-04T18:40:25.276532+00:00
+{"collector_argv": ["/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin5/empty.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w5", "--mode", "base"], "dependencies": {"cat": "/usr/bin/cat", "cut": "/usr/bin/cut", "grep": "/usr/bin/grep", "head": "/usr/bin/head", "ls": "/usr/bin/ls", "python3": "/usr/bin/python3", "sha256sum": "/usr/bin/sha256sum", "sort": "/usr/bin/sort", "tail": "/usr/bin/tail", "wc": "/usr/bin/wc"}, "instrument": "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin5/empty.py", "instrument_sha256": "9f56e761d79bfdb34304a012586cb04d16b435ef6130091a97702e559260a2f2", "mode": "base"}
+PROBE cat-missing derive=cat nosuch-r64.txt | wc -l
+NATIVE cat-missing rcs=1,0 stdout=0
+EXPECT cat-missing ok reason=-
+PROBE cat-partial-missing derive=cat one.txt nosuch-r64.txt | wc -l
+NATIVE cat-partial-missing rcs=1,0 stdout=1
+EXPECT cat-partial-missing ok reason=-
+PROBE cut-missing derive=cut -d, -f1 nosuch-r64.txt | wc -l
+NATIVE cut-missing rcs=1,0 stdout=0
+EXPECT cut-missing ok reason=-
+PROBE head-missing derive=head -n 1 nosuch-r64.txt | wc -l
+NATIVE head-missing rcs=1,0 stdout=0
+EXPECT head-missing ok reason=-
+PROBE tail-missing derive=tail -n 1 nosuch-r64.txt | wc -l
+NATIVE tail-missing rcs=1,0 stdout=0
+EXPECT tail-missing ok reason=-
+PROBE ls-missing derive=ls nosuch-r64.txt | wc -l
+NATIVE ls-missing rcs=2,0 stdout=0
+EXPECT ls-missing stale reason=derive-upstream-exit-2
+PROBE sort-missing derive=sort nosuch-r64.txt | wc -l
+NATIVE sort-missing rcs=2,0 stdout=0
+EXPECT sort-missing stale reason=derive-upstream-exit-2
+PROBE sha256sum-missing derive=sha256sum nosuch-r64.txt | wc -l
+NATIVE sha256sum-missing rcs=1,0 stdout=0
+EXPECT sha256sum-missing ok reason=-
+PROBE grep-no-match derive=grep zzz-absent one.txt | wc -l
+NATIVE grep-no-match rcs=1,0 stdout=0
+EXPECT grep-no-match ok reason=-
+PROBE cat-success derive=cat one.txt | wc -l
+NATIVE cat-success rcs=0,0 stdout=1
+EXPECT cat-success ok reason=-
+PROBE sort-success derive=sort one.txt | wc -l
+NATIVE sort-success rcs=0,0 stdout=1
+EXPECT sort-success ok reason=-
+PROBE and-concatenated derive=cat one.txt | wc -l && cat one.txt | wc -l
+NATIVE and-concatenated rcs=0,0 0,0 stdout=1\n1
+EXPECT and-concatenated ok reason=-
+PROBE and-stops-on-failure derive=cat nosuch-r64.txt && wc -l one.txt
+NATIVE and-stops-on-failure rcs=1 stdout=
+EXPECT and-stops-on-failure stale reason=derive-exit-1
+PROBE grep-invalid-upstream derive=grep '[' one.txt | wc -l
+NATIVE grep-invalid-upstream rcs=2,0 stdout=0
+EXPECT grep-invalid-upstream stale reason=derive-upstream-exit-2
+PROBE final-grep-no-match derive=cat one.txt | grep zzz-absent
+NATIVE final-grep-no-match rcs=0,1 stdout=
+EXPECT final-grep-no-match stale reason=derive-exit-1
+PROBE final-precedes-upstream derive=grep '[' one.txt | python3 corpus/instruments/fail7.py
+NATIVE final-precedes-upstream rcs=2,7 stdout=
+EXPECT final-precedes-upstream stale reason=derive-exit-7
+PROBE upstream-negative-signal derive=python3 corpus/instruments/sigterm.py | wc -l
+NATIVE upstream-negative-signal rcs=-15,0 stdout=0
+EXPECT upstream-negative-signal ok reason=-
+PROBE final-negative-signal derive=cat one.txt | python3 corpus/instruments/sigterm.py
+NATIVE final-negative-signal rcs=0,-15 stdout=
+EXPECT final-negative-signal stale reason=derive-exit--15
+RUN argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin5/empty.py", "--ledger", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w5/c1r64-yo65ogy0/c1-ledger.json", "--root", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w5/c1r64-yo65ogy0"]
+OBSERVED exit=0 stderr=-
+RECORD cat-missing FAIL expected=FIG cat-missing recorded=0 derived=0 ok actual=<missing>
+RECORD cat-partial-missing FAIL expected=FIG cat-partial-missing recorded=1 derived=1 ok actual=<missing>
+RECORD cut-missing FAIL expected=FIG cut-missing recorded=0 derived=0 ok actual=<missing>
+RECORD head-missing FAIL expected=FIG head-missing recorded=0 derived=0 ok actual=<missing>
+RECORD tail-missing FAIL expected=FIG tail-missing recorded=0 derived=0 ok actual=<missing>
+RECORD ls-missing FAIL expected=FIG ls-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale actual=<missing>
+RECORD sort-missing FAIL expected=FIG sort-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale actual=<missing>
+RECORD sha256sum-missing FAIL expected=FIG sha256sum-missing recorded=0 derived=0 ok actual=<missing>
+RECORD grep-no-match FAIL expected=FIG grep-no-match recorded=0 derived=0 ok actual=<missing>
+RECORD cat-success FAIL expected=FIG cat-success recorded=1 derived=1 ok actual=<missing>
+RECORD sort-success FAIL expected=FIG sort-success recorded=1 derived=1 ok actual=<missing>
+RECORD and-concatenated FAIL expected=FIG and-concatenated recorded=1\\n1 derived=1\n1 ok actual=<missing>
+RECORD and-stops-on-failure FAIL expected=FIG and-stops-on-failure recorded=1 derived=UNAVAILABLE reason=derive-exit-1 stale actual=<missing>
+RECORD grep-invalid-upstream FAIL expected=FIG grep-invalid-upstream recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale actual=<missing>
+RECORD final-grep-no-match FAIL expected=FIG final-grep-no-match recorded=0 derived=UNAVAILABLE reason=derive-exit-1 stale actual=<missing>
+RECORD final-precedes-upstream FAIL expected=FIG final-precedes-upstream recorded=0 derived=UNAVAILABLE reason=derive-exit-7 stale actual=<missing>
+RECORD upstream-negative-signal FAIL expected=FIG upstream-negative-signal recorded=0 derived=0 ok actual=<missing>
+RECORD final-negative-signal FAIL expected=FIG final-negative-signal recorded=0 derived=UNAVAILABLE reason=derive-exit--15 stale actual=<missing>
+RECORD trailer FAIL expected=FIGURE-AUDIT figures=18 ok=11 stale=7 exit=1 actual=<missing>
+RECORD shape FAIL observed_records=0 expected_records=19
+RECORD exit FAIL observed=0 expected=1
+RECORD stderr PASS
+HARNESS probes=18 failures=21 mode=base
+SELFCHECK case=empty-output observed=1 expected=1 needle=- verdict=PASS
+SELFCHECK-RUN case=nonzero-exit-clean-summary argv=["/usr/bin/python3", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin6/clean-exit7.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w6", "--mode", "base"]
+run-utc=2026-11-04T18:40:25.408812+00:00
+{"collector_argv": ["/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin6/clean-exit7.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w6", "--mode", "base"], "dependencies": {"cat": "/usr/bin/cat", "cut": "/usr/bin/cut", "grep": "/usr/bin/grep", "head": "/usr/bin/head", "ls": "/usr/bin/ls", "python3": "/usr/bin/python3", "sha256sum": "/usr/bin/sha256sum", "sort": "/usr/bin/sort", "tail": "/usr/bin/tail", "wc": "/usr/bin/wc"}, "instrument": "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin6/clean-exit7.py", "instrument_sha256": "f50e29e8019d7c1c030699a1702276c0d07f59155b449079931a3ebf840f7884", "mode": "base"}
+PROBE cat-missing derive=cat nosuch-r64.txt | wc -l
+NATIVE cat-missing rcs=1,0 stdout=0
+EXPECT cat-missing ok reason=-
+PROBE cat-partial-missing derive=cat one.txt nosuch-r64.txt | wc -l
+NATIVE cat-partial-missing rcs=1,0 stdout=1
+EXPECT cat-partial-missing ok reason=-
+PROBE cut-missing derive=cut -d, -f1 nosuch-r64.txt | wc -l
+NATIVE cut-missing rcs=1,0 stdout=0
+EXPECT cut-missing ok reason=-
+PROBE head-missing derive=head -n 1 nosuch-r64.txt | wc -l
+NATIVE head-missing rcs=1,0 stdout=0
+EXPECT head-missing ok reason=-
+PROBE tail-missing derive=tail -n 1 nosuch-r64.txt | wc -l
+NATIVE tail-missing rcs=1,0 stdout=0
+EXPECT tail-missing ok reason=-
+PROBE ls-missing derive=ls nosuch-r64.txt | wc -l
+NATIVE ls-missing rcs=2,0 stdout=0
+EXPECT ls-missing stale reason=derive-upstream-exit-2
+PROBE sort-missing derive=sort nosuch-r64.txt | wc -l
+NATIVE sort-missing rcs=2,0 stdout=0
+EXPECT sort-missing stale reason=derive-upstream-exit-2
+PROBE sha256sum-missing derive=sha256sum nosuch-r64.txt | wc -l
+NATIVE sha256sum-missing rcs=1,0 stdout=0
+EXPECT sha256sum-missing ok reason=-
+PROBE grep-no-match derive=grep zzz-absent one.txt | wc -l
+NATIVE grep-no-match rcs=1,0 stdout=0
+EXPECT grep-no-match ok reason=-
+PROBE cat-success derive=cat one.txt | wc -l
+NATIVE cat-success rcs=0,0 stdout=1
+EXPECT cat-success ok reason=-
+PROBE sort-success derive=sort one.txt | wc -l
+NATIVE sort-success rcs=0,0 stdout=1
+EXPECT sort-success ok reason=-
+PROBE and-concatenated derive=cat one.txt | wc -l && cat one.txt | wc -l
+NATIVE and-concatenated rcs=0,0 0,0 stdout=1\n1
+EXPECT and-concatenated ok reason=-
+PROBE and-stops-on-failure derive=cat nosuch-r64.txt && wc -l one.txt
+NATIVE and-stops-on-failure rcs=1 stdout=
+EXPECT and-stops-on-failure stale reason=derive-exit-1
+PROBE grep-invalid-upstream derive=grep '[' one.txt | wc -l
+NATIVE grep-invalid-upstream rcs=2,0 stdout=0
+EXPECT grep-invalid-upstream stale reason=derive-upstream-exit-2
+PROBE final-grep-no-match derive=cat one.txt | grep zzz-absent
+NATIVE final-grep-no-match rcs=0,1 stdout=
+EXPECT final-grep-no-match stale reason=derive-exit-1
+PROBE final-precedes-upstream derive=grep '[' one.txt | python3 corpus/instruments/fail7.py
+NATIVE final-precedes-upstream rcs=2,7 stdout=
+EXPECT final-precedes-upstream stale reason=derive-exit-7
+PROBE upstream-negative-signal derive=python3 corpus/instruments/sigterm.py | wc -l
+NATIVE upstream-negative-signal rcs=-15,0 stdout=0
+EXPECT upstream-negative-signal ok reason=-
+PROBE final-negative-signal derive=cat one.txt | python3 corpus/instruments/sigterm.py
+NATIVE final-negative-signal rcs=0,-15 stdout=
+EXPECT final-negative-signal stale reason=derive-exit--15
+RUN argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/bin6/clean-exit7.py", "--ledger", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w6/c1r64-utn7h4bz/c1-ledger.json", "--root", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w6/c1r64-utn7h4bz"]
+FIG cat-missing recorded=0 derived=0 ok
+FIG cat-partial-missing recorded=1 derived=1 ok
+FIG cut-missing recorded=0 derived=0 ok
+FIG head-missing recorded=0 derived=0 ok
+FIG tail-missing recorded=0 derived=0 ok
+FIG ls-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+FIG sort-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+FIG sha256sum-missing recorded=0 derived=0 ok
+FIG grep-no-match recorded=0 derived=0 ok
+FIG cat-success recorded=1 derived=1 ok
+FIG sort-success recorded=1 derived=1 ok
+FIG and-concatenated recorded=1\n1 derived=1
+1 ok
+FIG and-stops-on-failure recorded=1 derived=UNAVAILABLE reason=derive-exit-1 stale
+FIG grep-invalid-upstream recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+FIG final-grep-no-match recorded=0 derived=UNAVAILABLE reason=derive-exit-1 stale
+FIG final-precedes-upstream recorded=0 derived=UNAVAILABLE reason=derive-exit-7 stale
+FIG upstream-negative-signal recorded=0 derived=0 ok
+FIG final-negative-signal recorded=0 derived=UNAVAILABLE reason=derive-exit--15 stale
+FIGURE-AUDIT figures=18 ok=11 stale=7 exit=1
+OBSERVED exit=7 stderr=-
+RECORD cat-missing PASS
+RECORD cat-partial-missing PASS
+RECORD cut-missing PASS
+RECORD head-missing PASS
+RECORD tail-missing PASS
+RECORD ls-missing PASS
+RECORD sort-missing PASS
+RECORD sha256sum-missing PASS
+RECORD grep-no-match PASS
+RECORD cat-success PASS
+RECORD sort-success PASS
+RECORD and-concatenated PASS
+RECORD and-stops-on-failure PASS
+RECORD grep-invalid-upstream PASS
+RECORD final-grep-no-match PASS
+RECORD final-precedes-upstream PASS
+RECORD upstream-negative-signal PASS
+RECORD final-negative-signal PASS
+RECORD trailer PASS
+RECORD exit FAIL observed=7 expected=1
+RECORD stderr PASS
+HARNESS probes=18 failures=1 mode=base
+SELFCHECK case=nonzero-exit-clean-summary observed=1 expected=1 needle=failures=1 verdict=PASS
+SELFCHECK-RUN case=pristine-control argv=["/usr/bin/python3", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w7", "--mode", "base"]
+run-utc=2026-11-04T18:40:25.494474+00:00
+{"collector_argv": ["/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w7", "--mode", "base"], "dependencies": {"cat": "/usr/bin/cat", "cut": "/usr/bin/cut", "grep": "/usr/bin/grep", "head": "/usr/bin/head", "ls": "/usr/bin/ls", "python3": "/usr/bin/python3", "sha256sum": "/usr/bin/sha256sum", "sort": "/usr/bin/sort", "tail": "/usr/bin/tail", "wc": "/usr/bin/wc"}, "instrument": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py", "instrument_sha256": "15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997", "mode": "base"}
+PROBE cat-missing derive=cat nosuch-r64.txt | wc -l
+NATIVE cat-missing rcs=1,0 stdout=0
+EXPECT cat-missing ok reason=-
+PROBE cat-partial-missing derive=cat one.txt nosuch-r64.txt | wc -l
+NATIVE cat-partial-missing rcs=1,0 stdout=1
+EXPECT cat-partial-missing ok reason=-
+PROBE cut-missing derive=cut -d, -f1 nosuch-r64.txt | wc -l
+NATIVE cut-missing rcs=1,0 stdout=0
+EXPECT cut-missing ok reason=-
+PROBE head-missing derive=head -n 1 nosuch-r64.txt | wc -l
+NATIVE head-missing rcs=1,0 stdout=0
+EXPECT head-missing ok reason=-
+PROBE tail-missing derive=tail -n 1 nosuch-r64.txt | wc -l
+NATIVE tail-missing rcs=1,0 stdout=0
+EXPECT tail-missing ok reason=-
+PROBE ls-missing derive=ls nosuch-r64.txt | wc -l
+NATIVE ls-missing rcs=2,0 stdout=0
+EXPECT ls-missing stale reason=derive-upstream-exit-2
+PROBE sort-missing derive=sort nosuch-r64.txt | wc -l
+NATIVE sort-missing rcs=2,0 stdout=0
+EXPECT sort-missing stale reason=derive-upstream-exit-2
+PROBE sha256sum-missing derive=sha256sum nosuch-r64.txt | wc -l
+NATIVE sha256sum-missing rcs=1,0 stdout=0
+EXPECT sha256sum-missing ok reason=-
+PROBE grep-no-match derive=grep zzz-absent one.txt | wc -l
+NATIVE grep-no-match rcs=1,0 stdout=0
+EXPECT grep-no-match ok reason=-
+PROBE cat-success derive=cat one.txt | wc -l
+NATIVE cat-success rcs=0,0 stdout=1
+EXPECT cat-success ok reason=-
+PROBE sort-success derive=sort one.txt | wc -l
+NATIVE sort-success rcs=0,0 stdout=1
+EXPECT sort-success ok reason=-
+PROBE and-concatenated derive=cat one.txt | wc -l && cat one.txt | wc -l
+NATIVE and-concatenated rcs=0,0 0,0 stdout=1\n1
+EXPECT and-concatenated ok reason=-
+PROBE and-stops-on-failure derive=cat nosuch-r64.txt && wc -l one.txt
+NATIVE and-stops-on-failure rcs=1 stdout=
+EXPECT and-stops-on-failure stale reason=derive-exit-1
+PROBE grep-invalid-upstream derive=grep '[' one.txt | wc -l
+NATIVE grep-invalid-upstream rcs=2,0 stdout=0
+EXPECT grep-invalid-upstream stale reason=derive-upstream-exit-2
+PROBE final-grep-no-match derive=cat one.txt | grep zzz-absent
+NATIVE final-grep-no-match rcs=0,1 stdout=
+EXPECT final-grep-no-match stale reason=derive-exit-1
+PROBE final-precedes-upstream derive=grep '[' one.txt | python3 corpus/instruments/fail7.py
+NATIVE final-precedes-upstream rcs=2,7 stdout=
+EXPECT final-precedes-upstream stale reason=derive-exit-7
+PROBE upstream-negative-signal derive=python3 corpus/instruments/sigterm.py | wc -l
+NATIVE upstream-negative-signal rcs=-15,0 stdout=0
+EXPECT upstream-negative-signal ok reason=-
+PROBE final-negative-signal derive=cat one.txt | python3 corpus/instruments/sigterm.py
+NATIVE final-negative-signal rcs=0,-15 stdout=
+EXPECT final-negative-signal stale reason=derive-exit--15
+RUN argv=["/usr/bin/python3", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w7/c1r64-v41sbbu0/c1-ledger.json", "--root", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/selfcheck/c1r64sc-_xgds30y/w7/c1r64-v41sbbu0"]
+FIG cat-missing recorded=0 derived=0 ok
+FIG cat-partial-missing recorded=1 derived=1 ok
+FIG cut-missing recorded=0 derived=0 ok
+FIG head-missing recorded=0 derived=0 ok
+FIG tail-missing recorded=0 derived=0 ok
+FIG ls-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+FIG sort-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+FIG sha256sum-missing recorded=0 derived=0 ok
+FIG grep-no-match recorded=0 derived=0 ok
+FIG cat-success recorded=1 derived=1 ok
+FIG sort-success recorded=1 derived=1 ok
+FIG and-concatenated recorded=1\n1 derived=1
+1 ok
+FIG and-stops-on-failure recorded=1 derived=UNAVAILABLE reason=derive-exit-1 stale
+FIG grep-invalid-upstream recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+FIG final-grep-no-match recorded=0 derived=UNAVAILABLE reason=derive-exit-1 stale
+FIG final-precedes-upstream recorded=0 derived=UNAVAILABLE reason=derive-exit-7 stale
+FIG upstream-negative-signal recorded=0 derived=0 ok
+FIG final-negative-signal recorded=0 derived=UNAVAILABLE reason=derive-exit--15 stale
+FIGURE-AUDIT figures=18 ok=11 stale=7 exit=1
+OBSERVED exit=1 stderr=-
+RECORD cat-missing PASS
+RECORD cat-partial-missing PASS
+RECORD cut-missing PASS
+RECORD head-missing PASS
+RECORD tail-missing PASS
+RECORD ls-missing PASS
+RECORD sort-missing PASS
+RECORD sha256sum-missing PASS
+RECORD grep-no-match PASS
+RECORD cat-success PASS
+RECORD sort-success PASS
+RECORD and-concatenated PASS
+RECORD and-stops-on-failure PASS
+RECORD grep-invalid-upstream PASS
+RECORD final-grep-no-match PASS
+RECORD final-precedes-upstream PASS
+RECORD upstream-negative-signal PASS
+RECORD final-negative-signal PASS
+RECORD trailer PASS
+RECORD exit PASS observed=1
+RECORD stderr PASS
+HARNESS probes=18 failures=0 mode=base
+SELFCHECK case=pristine-control observed=0 expected=0 needle=failures=0 mode=base verdict=PASS
+HARNESS selfcheck cases=9 failures=0

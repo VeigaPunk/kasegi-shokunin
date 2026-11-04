@@ -1,0 +1,40 @@
+run_utc=2026-11-04T18:39:02Z
+instrument=/fast/scratch/hyaku/kasegi-r64/ExecMutants/base/figure-audit.py sha256=15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997 bytes=20570 mode=base
+python=3.14.8 work=/fast/scratch/hyaku/kasegi-r64/ExecMutants/base-work2
+NATIVE p-cat-missing argv=cat missing.txt rc=1 expect=1 ok
+NATIVE p-cat-partial-missing argv=cat g.txt missing.txt rc=1 expect=1 ok
+NATIVE p-cut-missing argv=cut -c1 missing.txt rc=1 expect=1 ok
+NATIVE p-head-missing argv=head -n1 missing.txt rc=1 expect=1 ok
+NATIVE p-tail-missing argv=tail -n1 missing.txt rc=1 expect=1 ok
+NATIVE p-ls-missing argv=ls missing.txt rc=2 expect=2 ok
+NATIVE p-sort-missing argv=sort missing.txt rc=2 expect=2 ok
+NATIVE p-sha256sum-missing argv=sha256sum missing.txt rc=1 expect=1 ok
+NATIVE p-cat-middle-missing argv=cat missing.txt rc=1 expect=1 ok
+NATIVE c-grep-nomatch argv=grep absent g.txt rc=1 expect=1 ok
+NATIVE c-grep-invalid argv=grep [ g.txt rc=2 expect=2 ok
+NATIVE c-python-upstream-exit7 argv=python3 corpus/instruments/fail.py rc=7 expect=7 ok
+NATIVE c-signal-sigkill-ignored argv=python3 corpus/instruments/sigkill.py rc=-9 expect=-9 ok
+NATIVE c-signal-sigterm-ignored argv=python3 corpus/instruments/sigterm.py rc=-15 expect=-15 ok
+PROBE base p-cat-missing verdict=met
+PROBE base p-cat-partial-missing verdict=met
+PROBE base p-cut-missing verdict=met
+PROBE base p-head-missing verdict=met
+PROBE base p-tail-missing verdict=met
+PROBE base p-ls-missing verdict=met
+PROBE base p-sort-missing verdict=met
+PROBE base p-sha256sum-missing verdict=met
+PROBE base p-cat-middle-missing verdict=met
+PROBE base c-grep-nomatch verdict=met
+PROBE base c-grep-middle-nomatch verdict=met
+PROBE base c-grep-invalid verdict=met
+PROBE base c-pipe-ok verdict=met
+PROBE base c-and-concat verdict=met
+PROBE base c-and-first-final-fail verdict=met
+PROBE base c-and-success-then-upstream-fail verdict=met
+PROBE base c-final-exit1 verdict=met
+PROBE base c-final-over-upstream verdict=met
+PROBE base c-python-upstream-exit7 verdict=met
+PROBE base c-signal-sigkill-ignored verdict=met
+PROBE base c-signal-sigterm-ignored verdict=met
+base-probes met=21/21 verdict=pass
+base_rc=0

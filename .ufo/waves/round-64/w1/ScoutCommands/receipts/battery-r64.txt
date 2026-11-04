@@ -1,0 +1,56 @@
+run-utc=2026-11-04T18:38:12.778324+00:00
+instrument=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py
+python=3.14.8
+patch-anchor-count=1
+candidate-written sha256-pending diff=/fast/scratch/hyaku/kasegi-r64/ScoutCommands/receipts/candidate-diff.txt
+== mini-ledger battery ==
+probe                    mode exit   reason                                 trailer                               
+cat-missing              base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+cat-missing              cand 1      derive-upstream-exit-1                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+cat-partial              base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+cat-partial              cand 1      derive-upstream-exit-1                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+cut-missing              base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+cut-missing              cand 1      derive-upstream-exit-1                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+head-missing             base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+head-missing             cand 1      derive-upstream-exit-1                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+tail-missing             base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+tail-missing             cand 1      derive-upstream-exit-1                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+ls-missing               base 1      derive-upstream-exit-2                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+ls-missing               cand 1      derive-upstream-exit-2                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+sort-missing             base 1      derive-upstream-exit-2                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+sort-missing             cand 1      derive-upstream-exit-2                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+sha256sum-missing        base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+sha256sum-missing        cand 1      derive-upstream-exit-1                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+tr-missing               base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+tr-missing               cand 1      derive-upstream-exit-1                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+grep-no-match            base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+grep-no-match            cand 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+grep-invalid             base 1      derive-upstream-exit-2                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+grep-invalid             cand 1      derive-upstream-exit-2                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+final-no-match           base 1      derive-exit-1                          FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+final-no-match           cand 1      derive-exit-1                          FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+mid-cat-missing          base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+mid-cat-missing          cand 1      derive-upstream-exit-1                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+python-exit1-upstream    base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+python-exit1-upstream    cand 1      derive-upstream-exit-1                 FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+python-sigterm-upstream  base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+python-sigterm-upstream  cand 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+python-sigterm-final     base 1      derive-exit--15                        FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+python-sigterm-final     cand 1      derive-exit--15                        FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+git-missing-ref          base 1      derive-upstream-exit-128               FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+git-missing-ref          cand 1      derive-upstream-exit-128               FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+success-pipeline         base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+success-pipeline         cand 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+and-concat               base 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+and-concat               cand 0      -                                      FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+and-fail                 base 1      derive-exit-1                          FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+and-fail                 cand 1      derive-exit-1                          FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+== real lane ledger (35 figures, read-only replay) ==
+mode=base exit=0 trailer=FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0 receipt=/fast/scratch/hyaku/kasegi-r64/ScoutCommands/receipts/real-ledger-base.txt
+mode=cand exit=0 trailer=FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0 receipt=/fast/scratch/hyaku/kasegi-r64/ScoutCommands/receipts/real-ledger-cand.txt
+real-ledger-diff-lines=0
+== selftest over both bytes ==
+selftest mode=base exit=0 selftest cases=43 failures=0
+selftest mode=cand exit=1 selftest cases=43 failures=1
+  FAILING selftest case=upstream-cat-missing-exit1-retained exit=1 want=0 verdict=fail
+BATTERY-DONE

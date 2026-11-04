@@ -1,0 +1,36 @@
+run_utc=2026-11-04T18:43:15Z
+instrument=/fast/scratch/hyaku/kasegi-r64/ExecMutants/pin/figure-audit.py sha256=8d92eaa0a1f248eb1fb8ae4d0d098c2a11d8d0674fa1eff6cefdb771e2e917e9 bytes=24166 mode=construct-only
+python=3.14.8 work=/fast/scratch/hyaku/kasegi-r64/ExecMutants/construct
+NATIVE p-cat-missing argv=cat missing.txt rc=1 expect=1 ok
+NATIVE p-cat-partial-missing argv=cat g.txt missing.txt rc=1 expect=1 ok
+NATIVE p-cut-missing argv=cut -c1 missing.txt rc=1 expect=1 ok
+NATIVE p-head-missing argv=head -n1 missing.txt rc=1 expect=1 ok
+NATIVE p-tail-missing argv=tail -n1 missing.txt rc=1 expect=1 ok
+NATIVE p-ls-missing argv=ls missing.txt rc=2 expect=2 ok
+NATIVE p-sort-missing argv=sort missing.txt rc=2 expect=2 ok
+NATIVE p-sha256sum-missing argv=sha256sum missing.txt rc=1 expect=1 ok
+NATIVE p-cat-middle-missing argv=cat missing.txt rc=1 expect=1 ok
+NATIVE c-grep-nomatch argv=grep absent g.txt rc=1 expect=1 ok
+NATIVE c-grep-invalid argv=grep [ g.txt rc=2 expect=2 ok
+NATIVE c-python-upstream-exit7 argv=python3 corpus/instruments/fail.py rc=7 expect=7 ok
+NATIVE c-signal-sigkill-ignored argv=python3 corpus/instruments/sigkill.py rc=-9 expect=-9 ok
+NATIVE c-signal-sigterm-ignored argv=python3 corpus/instruments/sigterm.py rc=-15 expect=-15 ok
+CONSTRUCT m-thresh-exit1-ignored kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT m-thresh-gt1-to-99 kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT m-thresh-disabled kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT m-grep-exempt-removed kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT m-grep-exempt-any-head kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT m-grep-gt1-exempt kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT m-neg-counted-nonzero kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT m-neg-below-minus1 kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT m-neg-sigterm-only kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT m-final-disabled kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT m-final-only-gt1 kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT m-middle-first-only kind=m sites=1 verdict=exact-once compile=ok
+CONSTRUCT e-head-basename-dropped kind=e sites=1 verdict=exact-once compile=ok
+CONSTRUCT e-heads-copy kind=e sites=1 verdict=exact-once compile=ok
+CONSTRUCT c-trailing-space kind=c sites=1 verdict=exact-once compile=ok
+CONSTRUCT i-anchor-absent kind=i sites=0 verdict=rejected
+CONSTRUCT i-anchor-duplicated kind=i sites=2 verdict=rejected
+construct-only failures=0 verdict=pass
+construct_rc=0

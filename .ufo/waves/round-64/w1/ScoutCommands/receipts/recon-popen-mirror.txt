@@ -1,0 +1,18 @@
+run-utc=2026-11-04T18:38:15.591401+00:00
+popen-cat-missing argv=['cat', 'missing'] rc=1 stdout='' stderr='cat: missing: No such file or directory'
+popen-cat-partial argv=['cat', 'g.txt', 'missing'] rc=1 stdout='35' stderr='cat: missing: No such file or directory'
+popen-cut-missing argv=['cut', '-d', ':', '-f1', 'missing'] rc=1 stdout='' stderr='cut: missing: No such file or directory'
+popen-head-missing argv=['head', 'missing'] rc=1 stdout='' stderr="head: cannot open 'missing' for reading: No such file or directory"
+popen-tail-missing argv=['tail', 'missing'] rc=1 stdout='' stderr="tail: cannot open 'missing' for reading: No such file or directory"
+popen-ls-missing argv=['ls', 'missing'] rc=2 stdout='' stderr="ls: cannot access 'missing': No such file or directory"
+popen-sort-missing argv=['sort', 'missing'] rc=2 stdout='' stderr='sort: cannot read: missing: No such file or directory'
+popen-sha256sum-missing argv=['sha256sum', 'missing'] rc=1 stdout='' stderr='sha256sum: missing: No such file or directory'
+popen-tr-missing argv=['tr', 'a', 'b', 'missing'] rc=1 stdout='' stderr="tr: extra operand ‘missing’\nTry 'tr --help' for more information."
+popen-wc-missing argv=['wc', 'missing'] rc=1 stdout='' stderr='wc: missing: No such file or directory'
+popen-grep-no-match argv=['grep', 'absent', 'g.txt'] rc=1 stdout='' stderr=''
+popen-grep-missing-file argv=['grep', 'absent', 'missing'] rc=2 stdout='' stderr='grep: missing: No such file or directory'
+popen-grep-invalid-regex argv=['grep', '[', 'g.txt'] rc=2 stdout='' stderr='grep: Invalid regular expression'
+popen-signal-upstream yes rc=-13 head rc=0 out='y'
+popen-python-sigterm rc=-15 stdout=''
+popen-python-exit1 rc=1
+popen-python-exit2 rc=2

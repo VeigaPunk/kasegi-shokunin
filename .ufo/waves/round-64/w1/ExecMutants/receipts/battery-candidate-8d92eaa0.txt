@@ -1,0 +1,59 @@
+run_utc=2026-11-04T18:43:35Z
+instrument=/fast/scratch/hyaku/kasegi-r64/ExecMutants/pin/figure-audit.py sha256=8d92eaa0a1f248eb1fb8ae4d0d098c2a11d8d0674fa1eff6cefdb771e2e917e9 bytes=24166 mode=candidate
+python=3.14.8 work=/fast/scratch/hyaku/kasegi-r64/ExecMutants/work
+NATIVE p-cat-missing argv=cat missing.txt rc=1 expect=1 ok
+NATIVE p-cat-partial-missing argv=cat g.txt missing.txt rc=1 expect=1 ok
+NATIVE p-cut-missing argv=cut -c1 missing.txt rc=1 expect=1 ok
+NATIVE p-head-missing argv=head -n1 missing.txt rc=1 expect=1 ok
+NATIVE p-tail-missing argv=tail -n1 missing.txt rc=1 expect=1 ok
+NATIVE p-ls-missing argv=ls missing.txt rc=2 expect=2 ok
+NATIVE p-sort-missing argv=sort missing.txt rc=2 expect=2 ok
+NATIVE p-sha256sum-missing argv=sha256sum missing.txt rc=1 expect=1 ok
+NATIVE p-cat-middle-missing argv=cat missing.txt rc=1 expect=1 ok
+NATIVE c-grep-nomatch argv=grep absent g.txt rc=1 expect=1 ok
+NATIVE c-grep-invalid argv=grep [ g.txt rc=2 expect=2 ok
+NATIVE c-python-upstream-exit7 argv=python3 corpus/instruments/fail.py rc=7 expect=7 ok
+NATIVE c-signal-sigkill-ignored argv=python3 corpus/instruments/sigkill.py rc=-9 expect=-9 ok
+NATIVE c-signal-sigterm-ignored argv=python3 corpus/instruments/sigterm.py rc=-15 expect=-15 ok
+PRISTINE selftest_exit=0 last='selftest cases=59 failures=0'
+PROBE pristine p-cat-missing verdict=met
+PROBE pristine p-cat-partial-missing verdict=met
+PROBE pristine p-cut-missing verdict=met
+PROBE pristine p-head-missing verdict=met
+PROBE pristine p-tail-missing verdict=met
+PROBE pristine p-ls-missing verdict=met
+PROBE pristine p-sort-missing verdict=met
+PROBE pristine p-sha256sum-missing verdict=met
+PROBE pristine p-cat-middle-missing verdict=met
+PROBE pristine c-grep-nomatch verdict=met
+PROBE pristine c-grep-middle-nomatch verdict=met
+PROBE pristine c-grep-invalid verdict=met
+PROBE pristine c-pipe-ok verdict=met
+PROBE pristine c-and-concat verdict=met
+PROBE pristine c-and-first-final-fail verdict=met
+PROBE pristine c-and-success-then-upstream-fail verdict=met
+PROBE pristine c-final-exit1 verdict=met
+PROBE pristine c-final-over-upstream verdict=met
+PROBE pristine c-python-upstream-exit7 verdict=met
+PROBE pristine c-signal-sigkill-ignored verdict=met
+PROBE pristine c-signal-sigterm-ignored verdict=met
+MUT m-thresh-exit1-ignored kind=m sites=1 compile=ok sha256=37aba2abb9874dfc60130d38a64a86c6a781d0e6b2aaa8ebc49d2c7448379ce0 selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=p-cat-missing,p-cat-partial-missing,p-cut-missing,p-head-missing,p-tail-missing,p-sha256sum-missing,p-cat-middle-missing,c-and-success-then-upstream-fail probe_invalid=- probe_killed=True verdict=pass
+MUT m-thresh-gt1-to-99 kind=m sites=1 compile=ok sha256=35f29ab4c634eb61618378e5fa8b2240909d3c8c13069b9629971d230ec7b5d4 selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=p-ls-missing,p-sort-missing,c-grep-invalid,c-python-upstream-exit7 probe_invalid=- probe_killed=True verdict=pass
+MUT m-thresh-disabled kind=m sites=1 compile=ok sha256=723f50718697222634bcc2ecbd7e318cc9427913760336d70ad85da31c1e52a5 selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=p-cat-missing,p-cat-partial-missing,p-cut-missing,p-head-missing,p-tail-missing,p-ls-missing,p-sort-missing,p-sha256sum-missing,p-cat-middle-missing,c-grep-invalid,c-and-success-then-upstream-fail,c-python-upstream-exit7 probe_invalid=- probe_killed=True verdict=pass
+MUT m-grep-exempt-removed kind=m sites=1 compile=ok sha256=07a7e9244d4fa29d8809ad92c1036f4808ddda64bb25e720e9539dc15cb463f7 selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=c-grep-nomatch,c-grep-middle-nomatch probe_invalid=- probe_killed=True verdict=pass
+MUT m-grep-exempt-any-head kind=m sites=1 compile=ok sha256=76536088ba373948440b33f4e3a802186ff97dc506a5a8e46ff9c121a7ccf38c selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=p-cat-missing,p-cat-partial-missing,p-cat-middle-missing,c-and-success-then-upstream-fail probe_invalid=- probe_killed=True verdict=pass
+MUT m-grep-gt1-exempt kind=m sites=1 compile=ok sha256=b05b8f4cabc4a0dacc1d51637e8d2c384da413086842956018389a3964ea34f3 selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=c-grep-invalid probe_invalid=- probe_killed=True verdict=pass
+MUT m-neg-counted-nonzero kind=m sites=1 compile=ok sha256=ca08ebe592af0ee06751e3c6bab424f5eb2d39ccf4e7294494ab4c4cacd526a0 selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=c-signal-sigkill-ignored,c-signal-sigterm-ignored probe_invalid=- probe_killed=True verdict=pass
+MUT m-neg-below-minus1 kind=m sites=1 compile=ok sha256=2cf0d361ff9698a466a46a496da99d6ea1a90430f1959cf2ff981c31efee55d5 selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=c-signal-sigkill-ignored,c-signal-sigterm-ignored probe_invalid=- probe_killed=True verdict=pass
+MUT m-neg-sigterm-only kind=m sites=1 compile=ok sha256=3bbb464e4917720bca0a06657ec472062cbe6f2b25b532f61429fc523c80a732 selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=c-signal-sigterm-ignored probe_invalid=- probe_killed=True verdict=pass
+MUT m-final-disabled kind=m sites=1 compile=ok sha256=71edc5356d427eb59198daf13c3eed3303d112566a869fd8b98ab74896f03f1b selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=c-and-first-final-fail,c-final-exit1,c-final-over-upstream probe_invalid=- probe_killed=True verdict=pass
+MUT m-final-only-gt1 kind=m sites=1 compile=ok sha256=5cbb1782d54b9d4fa63ce01b3c4feca4e1b3be8fb0a1701aa2596ea3d9136a14 selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=c-and-first-final-fail,c-final-exit1 probe_invalid=- probe_killed=True verdict=pass
+MUT m-middle-first-only kind=m sites=1 compile=ok sha256=e8bc909f555874aa159efbe313e14057d87e20bdbd1cd5183d01c2988161299b selftest_exit=1 selftest_valid=True selftest_killed=True probe_mismatch=p-cat-middle-missing probe_invalid=- probe_killed=True verdict=pass
+MUT e-head-basename-dropped kind=e sites=1 compile=ok sha256=e146bb946bfb616d76231125a0455bf55d71cd70fcc664dc66e275e5d160cda6 selftest_exit=0 selftest_valid=True selftest_killed=False probe_mismatch=- probe_invalid=- probe_killed=False verdict=pass
+MUT e-heads-copy kind=e sites=1 compile=ok sha256=4e15af978bf8174da934059f2021de028fa008cd5170d55f236501e9946db833 selftest_exit=0 selftest_valid=True selftest_killed=False probe_mismatch=- probe_invalid=- probe_killed=False verdict=pass
+MUT c-trailing-space kind=c sites=1 compile=ok sha256=d9e0011a8189a7aa695389f1aabd77c69eff45c4417596a902fbece8f7184b7a selftest_exit=0 selftest_valid=True selftest_killed=False probe_mismatch=- probe_invalid=- probe_killed=False verdict=pass
+MUT i-anchor-absent kind=i sites=0 verdict=rejected-exact-once
+MUT i-anchor-duplicated kind=i sites=2 verdict=rejected-exact-once
+mutbat-r64 pristine=pass limbs=thresh:3,grep:3,neg:3,precedence:3 equivalents_held=2 controls_held=1 invalid_rejected=2 failures=0 verdict=pass
+battery_rc=0
+post_sha=8d92eaa0a1f248eb1fb8ae4d0d098c2a11d8d0674fa1eff6cefdb771e2e917e9

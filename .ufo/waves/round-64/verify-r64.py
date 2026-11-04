@@ -17,6 +17,8 @@ BASE = "d74be00a82c8c2962a0b78442c5daea3af0adaae"
 PREFIX = ".ufo/waves/round-64/"
 COLLECTOR = PREFIX + "w1/ExecCollector/c1-probes-r64.py"
 BATTERY = PREFIX + "w1/ExecMutants/figure-audit-mutbat-r64.py"
+ATTACK = PREFIX + "collector-attack-replay.py"
+ATTACK_SOURCE = PREFIX + "w1/MutationCollector/attack-r64-v2.py"
 EXPECTED_CASES = 59
 PATHS = (
     "corpus/instruments/figure-audit.py",
@@ -27,7 +29,7 @@ PATHS = (
     ".ufo/waves/round-56/controls/df3-fixedpoint-r55tip.txt",
     ".ufo/waves/round-53/controls/c2-counter-final-r53.txt",
     ".ufo/waves/round-56/controls/gate-final-r56.txt",
-    COLLECTOR, BATTERY,
+    COLLECTOR, BATTERY, ATTACK, ATTACK_SOURCE,
 )
 
 
@@ -108,6 +110,8 @@ def main():
                 ("new-mutbat-and-trees", [py, str(root / BATTERY), "--instrument", str(instrument),
                  "--work", str(work / "battery")], 0,
                  "mutbat-r64 pristine=pass limbs=thresh:3,grep:3,neg:3,precedence:3 equivalents_held=2 controls_held=1 invalid_rejected=2 failures=0 verdict=pass"),
+                ("collector-forgeries", [py, str(root / ATTACK), "--collector", str(root / COLLECTOR)], 0,
+                 "MUTATION-SUITE unexpected_total=0"),
                 ("real-ledger", [py, str(instrument)], 0,
                  "FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0"),
             )

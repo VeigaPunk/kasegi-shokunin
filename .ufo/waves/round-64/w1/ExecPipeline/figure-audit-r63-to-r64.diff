@@ -1,0 +1,127 @@
+--- /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/figure-audit.py	2026-11-04 13:04:21.161244780 -0300
++++ /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecPipeline/figure-audit.py	2026-11-04 15:43:02.115373466 -0300
+@@ -35,13 +35,15 @@
+                             filesystem races can still write or execute other programs.
+ 
+ Exit codes: 0 every figure re-derives; 1 any figure stale or derive failed
+-(fail-closed: nonzero final status, upstream positive status >1, or empty stdout is stale);
++(fail-closed: nonzero final status, upstream positive status other than grep exit1,
++or empty stdout is stale);
+ 2 harness/read error (ledger missing/unparsable, entry malformed, derive refused).
+ After all pipeline stages finish, a nonzero final status takes precedence
+-(derive-exit-N); otherwise the first upstream positive status >1 is stale
+-(derive-upstream-exit-N). Upstream exit1 and negative signal statuses remain
+-ignored, preserving grep|wc zero-count derives, not general error detection or
+-pipefail. && stops on either failure and concatenates successful group stdout.
++(derive-exit-N); otherwise the first upstream status that is >1, or exit1 from a
++program other than grep, is stale (derive-upstream-exit-N). Grep exit1 is an ordinary
++no-match and is not an error; negative signal statuses remain ignored. This is not
++general error detection or pipefail. && stops a derive at the first stale group and
++concatenates successful group stdout; it is not bash pipeline-status equivalence.
+ --selftest builds fixtures under $HYAKU_SCRATCH, otherwise $TMPDIR/the system temp
+ directory, and uses the current Python interpreter. It exits 0 only if all cases pass.
+ """
+@@ -67,19 +69,29 @@
+ )
+ 
+ 
+-EXPECTED_CASES = 43  # R17 pin: a dropped selftest case turns the selftest red
++EXPECTED_CASES = 59  # R17 pin: a dropped selftest case turns the selftest red
+ 
+ 
+ def eprint(*a):
+     print(*a, file=sys.stderr)
+ 
+ 
++def upstream_stale(head, status):
++    """Stale upstream statuses: any >1, or exit1 from a program other than grep.
++
++    Grep exit1 is an ordinary no-match; negative (signal) statuses stay ignored.
++    """
++    if status > 1:
++        return True
++    return status == 1 and os.path.basename(head) != "grep"
++
++
+ def run_derive(plan, root):
+     """Execute the already validated argv plan, never a shell string."""
+     output = []
+     deadline = time.monotonic() + 300
+     for pipeline in plan:
+-        processes, files = [], []
++        processes, files, heads = [], [], []
+         previous = None
+         try:
+             for argv, input_path in pipeline:
+@@ -92,6 +104,7 @@
+                 p = subprocess.Popen(argv, cwd=root or ".", stdin=stdin,
+                                      stdout=subprocess.PIPE, stderr=errors)
+                 processes.append(p)
++                heads.append(argv[0])
+                 if previous is not None:
+                     previous.close()
+                 previous = p.stdout
+@@ -103,8 +116,8 @@
+             if status != 0:
+                 out = b"".join(output).decode("utf-8", "replace").strip()
+                 return None, out, "derive-exit-%d" % status
+-            for p in processes[:-1]:
+-                if p.returncode > 1:
++            for p, head in zip(processes[:-1], heads[:-1]):
++                if upstream_stale(head, p.returncode):
+                     out = b"".join(output).decode("utf-8", "replace").strip()
+                     return None, out, "derive-upstream-exit-%d" % p.returncode
+         except subprocess.TimeoutExpired:
+@@ -347,6 +360,12 @@
+                 f.write("print(35)\n")
+             with open(os.path.join(tmp, "corpus", "instruments", "fail.py"), "w", encoding="utf-8", newline="\n") as f:
+                 f.write("raise SystemExit(7)\n")
++            with open(os.path.join(tmp, "corpus", "instruments", "exit1.py"), "w", encoding="utf-8", newline="\n") as f:
++                f.write("raise SystemExit(1)\n")
++            with open(os.path.join(tmp, "corpus", "instruments", "kill.py"), "w", encoding="utf-8", newline="\n") as f:
++                f.write("import os, signal\nos.kill(os.getpid(), signal.SIGTERM)\n")
++            with open(os.path.join(tmp, "corpus", "instruments", "grep.py"), "w", encoding="utf-8", newline="\n") as f:
++                f.write("raise SystemExit(1)\n")
+             with open(os.path.join(tmp, "out.py"), "w", encoding="utf-8", newline="\n") as f:
+                 f.write("print(35)\n")
+             os.makedirs(os.path.join(tmp, "corpus", "instruments2"))
+@@ -409,7 +428,38 @@
+     run_case("input-redirection-admitted", 0, _one("s-input", "cat < g.txt", "35"))
+     run_case("and-shortcircuit-fails", 1, _one("s-andfail", "cat missing.txt && cat g.txt", "35"))
+     run_case("and-stdout-concatenated", 0, _one("s-andout", "cat g.txt && cat g.txt", "35\n35"))
+-    run_case("upstream-cat-missing-exit1-retained", 0, _one("s-catmissing", "cat missing.txt | wc -l", "0"))
++    run_case("upstream-cat-missing-exit1-stale", 1, _one("s-catmissing", "cat missing.txt | wc -l", "0"),
++             reason="derive-upstream-exit-1")
++    run_case("upstream-cat-partial-exit1-stale", 1, _one("s-catpartial", "cat g.txt missing.txt | wc -l", "1"),
++             reason="derive-upstream-exit-1")
++    run_case("upstream-cut-missing-exit1-stale", 1, _one("s-cutmissing", "cut -c1 missing.txt | wc -l", "0"),
++             reason="derive-upstream-exit-1")
++    run_case("upstream-head-missing-exit1-stale", 1, _one("s-headmissing", "head -n 1 missing.txt | wc -l", "0"),
++             reason="derive-upstream-exit-1")
++    run_case("upstream-tail-missing-exit1-stale", 1, _one("s-tailmissing", "tail -n 1 missing.txt | wc -l", "0"),
++             reason="derive-upstream-exit-1")
++    run_case("upstream-ls-missing-exit2-stale", 1, _one("s-lsmissing", "ls missing.txt | wc -l", "0"),
++             reason="derive-upstream-exit-2")
++    run_case("upstream-sort-missing-exit2-stale", 1, _one("s-sortmissing", "sort missing.txt | wc -l", "0"),
++             reason="derive-upstream-exit-2")
++    run_case("upstream-sha256sum-missing-exit1-stale", 1, _one("s-shamissing", "sha256sum missing.txt | wc -l", "0"),
++             reason="derive-upstream-exit-1")
++    run_case("upstream-python-exit1-stale", 1, _one("s-pyexit1", "python3 corpus/instruments/exit1.py | wc -l", "0"),
++             reason="derive-upstream-exit-1")
++    run_case("upstream-python-signal-ignored", 0, _one("s-pysignal", "python3 corpus/instruments/kill.py | wc -l", "0"))
++    run_case("upstream-grep-count-nomatch-ignored", 0, _one("s-grepcount", "grep -c absent g.txt | wc -l", "1"))
++    run_case("final-exit7-precedes-upstream-exit1", 1, _one("s-catfinal", "cat missing.txt | python3 corpus/instruments/fail.py", "0"),
++             reason="derive-exit-7")
++    run_case("and-first-group-upstream-exit1-stale", 1, _one("s-andfirst", "cat missing.txt | wc -l && cat g.txt", "0"),
++             reason="derive-upstream-exit-1")
++    run_case("and-second-group-upstream-exit1-stale", 1, _one("s-andsecond", "cat g.txt | wc -l && cat missing.txt | wc -l", "1"),
++             reason="derive-upstream-exit-1")
++    run_case("middle-stage-upstream-exit1-stale", 1, _one("s-middle", "cat g.txt | cat missing.txt | wc -l", "0"),
++             reason="derive-upstream-exit-1")
++    run_case("named-grep-txt-cat-exit1-stale", 1, _one("s-grepname", "cat grep.txt | wc -l", "0"),
++             reason="derive-upstream-exit-1")
++    run_case("named-grep-py-exit1-stale", 1, _one("s-grepscript", "python3 corpus/instruments/grep.py | wc -l", "0"),
++             reason="derive-upstream-exit-1")
+     run_case("upstream-grep-invalid-stale", 1, _one("s-grepinvalid", "grep '[' g.txt | wc -l", "0"),
+              reason="derive-upstream-exit-2")
+     run_case("upstream-git-missing-ref-stale", 1, _one("s-gitmissing", "git show refs/figure-audit-nonexistent | wc -l", "0"),

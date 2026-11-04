@@ -1,0 +1,38 @@
+run_utc=2026-11-04T18:37:36Z
+MUTANT intended                     killed_by=0
+MUTANT mut-misidx-next-argv         killed_by=4
+    grep-nomatch                 want=ok:0                           got=stale:derive-upstream-exit-1
+    grep-nomatch-warning         want=ok:0                           got=stale:derive-upstream-exit-1
+    grep-nomatch-chain           want=ok:0                           got=stale:derive-upstream-exit-1
+    sha256-check-fail            want=stale:derive-upstream-exit-1   got=ok:1
+MUTANT mut-any-grep-in-pipe         killed_by=3
+    mid-cat-missing-grep         want=stale:derive-upstream-exit-1   got=ok:0
+    grep-then-cat-missing        want=stale:derive-upstream-exit-1   got=ok:0
+    sha256-check-fail            want=stale:derive-upstream-exit-1   got=ok:1
+MUTANT mut-substring-grep           killed_by=1
+    filename-contains-grep       want=stale:derive-upstream-exit-1   got=ok:0
+MUTANT mut-negative-stale           killed_by=3
+    sigpipe-head                 want=ok:row 0 value                 got=stale:derive-upstream-exit--13
+    sigpipe-grep-head            want=ok:row 0 value                 got=stale:derive-upstream-exit--13
+    negative-signal-counter      want=ok:3                           got=stale:derive-upstream-exit--9
+MUTANT opt-sigpipe-only-negatives   killed_by=1
+    negative-signal-counter      want=ok:3                           got=stale:derive-upstream-exit--9
+MUTANT mut-base-rc1-ignored         killed_by=14
+    cat-missing                  want=stale:derive-upstream-exit-1   got=ok:0
+    cat-partial                  want=stale:derive-upstream-exit-1   got=ok:1
+    cut-missing                  want=stale:derive-upstream-exit-1   got=ok:0
+    head-missing                 want=stale:derive-upstream-exit-1   got=ok:0
+    tail-missing                 want=stale:derive-upstream-exit-1   got=ok:0
+    sha256-missing               want=stale:derive-upstream-exit-1   got=ok:0
+    mid-cat-missing-grep         want=stale:derive-upstream-exit-1   got=ok:0
+    grep-then-cat-missing        want=stale:derive-upstream-exit-1   got=ok:0
+    and-second-pipe-cat-missing  want=stale:derive-upstream-exit-1   got=ok:0
+0
+    filename-contains-grep       want=stale:derive-upstream-exit-1   got=ok:0
+    sha256-check-fail            want=stale:derive-upstream-exit-1   got=ok:1
+    sort-check-disorder          want=stale:derive-upstream-exit-1   got=ok:0
+    python-exit1-counter         want=stale:derive-upstream-exit-1   got=ok:1
+    python-brokenpipe-head       want=stale:derive-upstream-exit-1   got=ok:line 0
+MUTANT mut-upstream-before-final    killed_by=2
+    final-python7-precedence     want=stale:derive-exit-7            got=stale:derive-upstream-exit-1
+    final-grep1-precedence       want=stale:derive-exit-1            got=stale:derive-upstream-exit-1

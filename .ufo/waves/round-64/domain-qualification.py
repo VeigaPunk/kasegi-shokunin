@@ -14,6 +14,9 @@ try:
 except (OSError, UnicodeError) as exc:
     print('QUALIFICATION unavailable=' + type(exc).__name__)
     sys.exit(2)
+if len(lines) < 118:
+    print('QUALIFICATION unavailable=truncated-source')
+    sys.exit(2)
 print('run-utc=' + datetime.datetime.now(datetime.timezone.utc).isoformat())
 print('source=S094 sha256=' + hashlib.sha256(data).hexdigest())
 checks = [
@@ -30,13 +33,6 @@ for key, line, phrase in checks:
     ok = phrase in lines[line - 1]
     failures += not ok
     print(f'QUALIFY id={key} anchor=S094.txt:{line} verdict={"PASS" if ok else "FAIL"}')
-# Read the disclosed arithmetic as an explanation, not as target execution.
-for column, expected in [(-1, False), (1, True), (2, True), (3, True)]:
-    index = column - 1
-    observed = 0 <= index <= 2
-    good = observed == expected
-    failures += not good
-    print(f'ARITHMETIC column={column} index={index} in-asserted-range={observed} expected={expected} verdict={"PASS" if good else "FAIL"}')
 print('DISPOSITION documentation-only; no released-user impact, bounty eligibility, reproduction or submission inferred')
-print(f'QUALIFICATION checks={len(checks)+4} failures={failures}')
+print(f'QUALIFICATION checks={len(checks)} failures={failures}')
 sys.exit(int(bool(failures)))

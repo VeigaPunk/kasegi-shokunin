@@ -1,0 +1,100 @@
+run-utc=2026-11-04T18:40:25.069593+00:00
+{"collector_argv": ["/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py", "--instrument", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/candidate", "--mode", "candidate"], "dependencies": {"cat": "/usr/bin/cat", "cut": "/usr/bin/cut", "grep": "/usr/bin/grep", "head": "/usr/bin/head", "ls": "/usr/bin/ls", "python3": "/usr/bin/python3", "sha256sum": "/usr/bin/sha256sum", "sort": "/usr/bin/sort", "tail": "/usr/bin/tail", "wc": "/usr/bin/wc"}, "instrument": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py", "instrument_sha256": "15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997", "mode": "candidate"}
+PROBE cat-missing derive=cat nosuch-r64.txt | wc -l
+NATIVE cat-missing rcs=1,0 stdout=0
+EXPECT cat-missing stale reason=derive-upstream-exit-1
+PROBE cat-partial-missing derive=cat one.txt nosuch-r64.txt | wc -l
+NATIVE cat-partial-missing rcs=1,0 stdout=1
+EXPECT cat-partial-missing stale reason=derive-upstream-exit-1
+PROBE cut-missing derive=cut -d, -f1 nosuch-r64.txt | wc -l
+NATIVE cut-missing rcs=1,0 stdout=0
+EXPECT cut-missing stale reason=derive-upstream-exit-1
+PROBE head-missing derive=head -n 1 nosuch-r64.txt | wc -l
+NATIVE head-missing rcs=1,0 stdout=0
+EXPECT head-missing stale reason=derive-upstream-exit-1
+PROBE tail-missing derive=tail -n 1 nosuch-r64.txt | wc -l
+NATIVE tail-missing rcs=1,0 stdout=0
+EXPECT tail-missing stale reason=derive-upstream-exit-1
+PROBE ls-missing derive=ls nosuch-r64.txt | wc -l
+NATIVE ls-missing rcs=2,0 stdout=0
+EXPECT ls-missing stale reason=derive-upstream-exit-2
+PROBE sort-missing derive=sort nosuch-r64.txt | wc -l
+NATIVE sort-missing rcs=2,0 stdout=0
+EXPECT sort-missing stale reason=derive-upstream-exit-2
+PROBE sha256sum-missing derive=sha256sum nosuch-r64.txt | wc -l
+NATIVE sha256sum-missing rcs=1,0 stdout=0
+EXPECT sha256sum-missing stale reason=derive-upstream-exit-1
+PROBE grep-no-match derive=grep zzz-absent one.txt | wc -l
+NATIVE grep-no-match rcs=1,0 stdout=0
+EXPECT grep-no-match ok reason=-
+PROBE cat-success derive=cat one.txt | wc -l
+NATIVE cat-success rcs=0,0 stdout=1
+EXPECT cat-success ok reason=-
+PROBE sort-success derive=sort one.txt | wc -l
+NATIVE sort-success rcs=0,0 stdout=1
+EXPECT sort-success ok reason=-
+PROBE and-concatenated derive=cat one.txt | wc -l && cat one.txt | wc -l
+NATIVE and-concatenated rcs=0,0 0,0 stdout=1\n1
+EXPECT and-concatenated ok reason=-
+PROBE and-stops-on-failure derive=cat nosuch-r64.txt && wc -l one.txt
+NATIVE and-stops-on-failure rcs=1 stdout=
+EXPECT and-stops-on-failure stale reason=derive-exit-1
+PROBE grep-invalid-upstream derive=grep '[' one.txt | wc -l
+NATIVE grep-invalid-upstream rcs=2,0 stdout=0
+EXPECT grep-invalid-upstream stale reason=derive-upstream-exit-2
+PROBE final-grep-no-match derive=cat one.txt | grep zzz-absent
+NATIVE final-grep-no-match rcs=0,1 stdout=
+EXPECT final-grep-no-match stale reason=derive-exit-1
+PROBE final-precedes-upstream derive=grep '[' one.txt | python3 corpus/instruments/fail7.py
+NATIVE final-precedes-upstream rcs=2,7 stdout=
+EXPECT final-precedes-upstream stale reason=derive-exit-7
+PROBE upstream-negative-signal derive=python3 corpus/instruments/sigterm.py | wc -l
+NATIVE upstream-negative-signal rcs=-15,0 stdout=0
+EXPECT upstream-negative-signal ok reason=-
+PROBE final-negative-signal derive=cat one.txt | python3 corpus/instruments/sigterm.py
+NATIVE final-negative-signal rcs=0,-15 stdout=
+EXPECT final-negative-signal stale reason=derive-exit--15
+RUN argv=["/usr/bin/python3", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/candidate/c1r64-ar1h_uan/c1-ledger.json", "--root", "/fast/scratch/hyaku/kasegi-r64/ExecCollector/candidate/c1r64-ar1h_uan"]
+FIG cat-missing recorded=0 derived=0 ok
+FIG cat-partial-missing recorded=1 derived=1 ok
+FIG cut-missing recorded=0 derived=0 ok
+FIG head-missing recorded=0 derived=0 ok
+FIG tail-missing recorded=0 derived=0 ok
+FIG ls-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+FIG sort-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+FIG sha256sum-missing recorded=0 derived=0 ok
+FIG grep-no-match recorded=0 derived=0 ok
+FIG cat-success recorded=1 derived=1 ok
+FIG sort-success recorded=1 derived=1 ok
+FIG and-concatenated recorded=1\n1 derived=1
+1 ok
+FIG and-stops-on-failure recorded=1 derived=UNAVAILABLE reason=derive-exit-1 stale
+FIG grep-invalid-upstream recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+FIG final-grep-no-match recorded=0 derived=UNAVAILABLE reason=derive-exit-1 stale
+FIG final-precedes-upstream recorded=0 derived=UNAVAILABLE reason=derive-exit-7 stale
+FIG upstream-negative-signal recorded=0 derived=0 ok
+FIG final-negative-signal recorded=0 derived=UNAVAILABLE reason=derive-exit--15 stale
+FIGURE-AUDIT figures=18 ok=11 stale=7 exit=1
+OBSERVED exit=1 stderr=-
+RECORD cat-missing FAIL expected=FIG cat-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG cat-missing recorded=0 derived=0 ok
+RECORD cat-partial-missing FAIL expected=FIG cat-partial-missing recorded=1 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG cat-partial-missing recorded=1 derived=1 ok
+RECORD cut-missing FAIL expected=FIG cut-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG cut-missing recorded=0 derived=0 ok
+RECORD head-missing FAIL expected=FIG head-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG head-missing recorded=0 derived=0 ok
+RECORD tail-missing FAIL expected=FIG tail-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG tail-missing recorded=0 derived=0 ok
+RECORD ls-missing PASS
+RECORD sort-missing PASS
+RECORD sha256sum-missing FAIL expected=FIG sha256sum-missing recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale actual=FIG sha256sum-missing recorded=0 derived=0 ok
+RECORD grep-no-match PASS
+RECORD cat-success PASS
+RECORD sort-success PASS
+RECORD and-concatenated PASS
+RECORD and-stops-on-failure PASS
+RECORD grep-invalid-upstream PASS
+RECORD final-grep-no-match PASS
+RECORD final-precedes-upstream PASS
+RECORD upstream-negative-signal PASS
+RECORD final-negative-signal PASS
+RECORD trailer FAIL expected=FIGURE-AUDIT figures=18 ok=5 stale=13 exit=1 actual=FIGURE-AUDIT figures=18 ok=11 stale=7 exit=1
+RECORD exit PASS observed=1
+RECORD stderr PASS
+HARNESS probes=18 failures=7 mode=candidate

@@ -1,0 +1,59 @@
+run-utc=2026-11-04T18:52:47.332211+00:00
+FIXTURE A1-base-oracle.py sha256=3b834ee1bcca22cd5ccf40a2dc7c1d471cf83b26e1db9eb633f214cf1c63f261
+FIXTURE A2-cand-oracle.py sha256=7b997db202c4e099eec636e397f4d4a1bce9415bd24962203b120aea6bbc70f4
+FIXTURE B8-self-mutate.py sha256=2494de4edb73c44245a68ad2c5556b04a60eca75e121d777cf113513744cfcdb
+FIXTURE B9-hang.py sha256=05b21d4a0780303825c94c151b2402adf7b1df255eac40504b745af04f6cdea9
+FIXTURE C1-always-green.py sha256=b3ee3e53d1bf7c72ada83bd3c2b4bf8dd6925be93670e6a5751f52954c88968b
+FIXTURE C11-replay.py sha256=ecf82662ab012093133ed5b269e84b744cdd2f6161f1248c048d86e857d8f61b
+FIXTURE C12-wrapper-extra-trailer.py sha256=4422588f3f7317269a6e9c7bd2ceba9fad0fe0b9491a0285a4da5c59cda49fa1
+FIXTURE C2-always-stale.py sha256=0bfb0180d1ec78154aa98aa7c5dd13a3004a9fbf7f733535ac83bb8d3f4665d6
+FIXTURE C3-exit3-clean.py sha256=1f6420edc8558345b1d8c91dc667022c30d50493c3e11fa3455ae8eeb769877f
+FIXTURE C4-zero-on-stale.py sha256=b166577b7bb7250148af8454afb38bb79248175a2047ba4e180119c70de01733
+FIXTURE C5-empty.py sha256=c517577851c489e45abae2591256c40404a05c6d19cd4d5ae7fd22b0084cec6c
+FIXTURE C6-partial.py sha256=8252416688032514ac4b7e0f9624c50566c3697df112a47b7b0513f5d5512873
+FIXTURE C7-stderr-noise.py sha256=b132c3ddf0381787eadfe1ce5eefea8ad69916ac5377cb5341e81c5154d58261
+FIXTURE C8-syntax.py sha256=4cd93c46fbeee9afd30887b39226dd3ad1fbab4a6afc40ebe6915364e14fa595
+FIXTURE D1-thresh2.py sha256=ae687e4080238f9bb90bf3fe3e2b2e46eff3e0d78c699c9b0fbdd2a56c99965c
+FIXTURE D2-grep-unexempt.py sha256=1630a83ebf5ab5667e4ea6487bc7401b89eba1b729ca9aa2ca0de58cf9686eec
+FIXTURE D3-grep-substring.py sha256=a1b7fef223bc92b819dad7a77c80dcf7b5ecac4e1841a792142c5f3fb3af1a51
+FIXTURE D4-upstream-first.py sha256=4f28755a280391dcee7d6f9125cf763b7cd8c2fb3bc6ca147577e7c9d7976bc5
+FIXTURE D5-negative-reject.py sha256=1237d6fab95bcbae26d6abc403353c53270e79ea0c3e66f5760b693f7475fb91
+FIXTURE D6-final-ignore-negative.py sha256=a1ad92ed32919659051868d7253cfa85248d8db8fd29c4c9661c6ade9d67c37d
+FIXTURE D7-and-ignore-failure.py sha256=e21547f552b68e38c6f4e22c9b552a79add3a77bf6018fa1e15af07289502456
+PROBE-TABLE-DRIFT collector_probes=18 equal_to_suite_copy=True
+COLLECTOR exec-collector-r64 path=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-64/w1/ExecCollector/c1-probes-r64.py
+ATTACK A1 kind=positive mode=base expect=0 actual=0 verdict=AS-EXPECTED note="base oracle, base rule" stdout-tail="HARNESS probes=18 failures=0 mode=base" stderr-tail=""
+ATTACK A2 kind=positive mode=candidate expect=0 actual=0 verdict=AS-EXPECTED note="cand oracle, candidate rule" stdout-tail="HARNESS probes=18 failures=0 mode=candidate" stderr-tail=""
+ATTACK B1 kind=setup mode=candidate expect=2 actual=2 verdict=AS-EXPECTED note="instrument path missing" stdout-tail="" stderr-tail="HARNESS-ERROR FileNotFoundError: [Errno 2] No such file or directory: '/fast/scratch/hyaku/kasegi-r64/L1/counterattack/fixtures/absent.py'"
+ATTACK B2 kind=setup mode=candidate expect=2 actual=2 verdict=AS-EXPECTED note="instrument relative path" stdout-tail="" stderr-tail="HARNESS-ERROR ValueError: absolute-paths-required"
+ATTACK B3 kind=setup mode=candidate expect=2 actual=2 verdict=AS-EXPECTED note="instrument is a directory" stdout-tail="" stderr-tail="HARNESS-ERROR ValueError: instrument-not-file"
+ATTACK B4 kind=setup mode=candidate expect=2 actual=2 verdict=AS-EXPECTED note="instrument under work" stdout-tail="" stderr-tail="HARNESS-ERROR ValueError: instrument-under-work"
+ATTACK B5 kind=setup mode=candidate expect=2 actual=2 verdict=AS-EXPECTED note="work relative path" stdout-tail="" stderr-tail="HARNESS-ERROR ValueError: absolute-paths-required"
+ATTACK B6 kind=setup mode=candidate expect=2 actual=2 verdict=AS-EXPECTED note="work outside owned scratch" stdout-tail="" stderr-tail="HARNESS-ERROR ValueError: work-not-owned"
+ATTACK B7 kind=setup mode=candidate expect=2 actual=2 verdict=AS-EXPECTED note="PATH lacks wc" stdout-tail="run-utc=2026-11-04T18:52:47.945489+00:00" stderr-tail="HARNESS-ERROR ValueError: missing-dependencies:wc"
+ATTACK B8 kind=setup mode=candidate expect=2 actual=2 verdict=AS-EXPECTED note="instrument mutates itself" stdout-tail="RECORD stderr PASS" stderr-tail="HARNESS-ERROR ValueError: instrument-changed-during-run"
+ATTACK B9 kind=setup mode=candidate expect=2 actual=2 verdict=AS-EXPECTED note="instrument hangs past collector timeout" stdout-tail="RUN argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r64/L1/counterattack/fixtures/B9-hang.py", "--ledger", "/fast/scratch/hyaku/kasegi" stderr-tail="HARNESS-ERROR TimeoutExpired: Command '['/usr/bin/python3', '/fast/scratch/hyaku/kasegi-r64/L1/counterattack/fixtures/B9-hang.py', '--ledger"
+ATTACK C1 kind=fake mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="always-green counterfeit" stdout-tail="HARNESS probes=18 failures=20 mode=candidate" stderr-tail=""
+ATTACK C2 kind=fake mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="always stale" stdout-tail="HARNESS probes=18 failures=18 mode=candidate" stderr-tail=""
+ATTACK C3 kind=fake mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="clean stdout, exit 3" stdout-tail="HARNESS probes=18 failures=1 mode=candidate" stderr-tail=""
+ATTACK C4 kind=fake mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="stale stdout, exit 0" stdout-tail="HARNESS probes=18 failures=1 mode=candidate" stderr-tail=""
+ATTACK C5 kind=fake mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="empty output, exit 0" stdout-tail="HARNESS probes=18 failures=21 mode=candidate" stderr-tail=""
+ATTACK C6 kind=fake mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="one FIG line, no trailer" stdout-tail="HARNESS probes=18 failures=21 mode=candidate" stderr-tail=""
+ATTACK C7 kind=fake mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="correct stdout plus stderr" stdout-tail="HARNESS probes=18 failures=1 mode=candidate" stderr-tail=""
+ATTACK C8 kind=fake mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="syntax error" stdout-tail="HARNESS probes=18 failures=21 mode=candidate" stderr-tail=""
+ATTACK C9 kind=fake mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="base rule instrument as candidate" stdout-tail="HARNESS probes=18 failures=7 mode=candidate" stderr-tail=""
+ATTACK C10 kind=fake mode=base expect=1 actual=1 verdict=AS-EXPECTED note="candidate rule instrument as base" stdout-tail="HARNESS probes=18 failures=7 mode=base" stderr-tail=""
+ATTACK C11 kind=coverage mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="replay of honest captured stdout; demand freshness/canary" stdout-tail="HARNESS probes=18 failures=18 mode=candidate" stderr-tail=""
+ATTACK C12 kind=fake mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="correct records plus conflicting second trailer" stdout-tail="HARNESS probes=18 failures=1 mode=candidate" stderr-tail=""
+ATTACK D1 kind=mutant mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="upstream threshold >1 in candidate" stdout-tail="HARNESS probes=18 failures=7 mode=candidate" stderr-tail=""
+ATTACK D2 kind=mutant mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="grep exit1 not exempted" stdout-tail="HARNESS probes=18 failures=2 mode=candidate" stderr-tail=""
+ATTACK D3 kind=coverage mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="exemption by grep substring in derive" stdout-tail="HARNESS probes=18 failures=7 mode=candidate" stderr-tail=""
+ATTACK D4 kind=mutant mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="upstream before final precedence" stdout-tail="HARNESS probes=18 failures=1 mode=candidate" stderr-tail=""
+ATTACK D5 kind=mutant mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="negative upstream status rejected" stdout-tail="HARNESS probes=18 failures=2 mode=candidate" stderr-tail=""
+ATTACK D6 kind=mutant mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="negative final status ignored" stdout-tail="HARNESS probes=18 failures=1 mode=candidate" stderr-tail=""
+ATTACK D7 kind=mutant mode=candidate expect=1 actual=1 verdict=AS-EXPECTED note="&& failure ignored; later group decides" stdout-tail="HARNESS probes=18 failures=14 mode=candidate" stderr-tail=""
+SUITE collector=exec-collector-r64 attacks=30 unexpected=0 positive_ok=True
+PROPOSED-COPY path=/fast/scratch/hyaku/kasegi-r64/L1/counterattack/proposed/c1-probes-r64-proposed.py sha256=47fcbd204ee15a3aa388cdbe6d22a62ab136d56eb91e6112a02eaa05e6ac7037
+PROPOSED-PROBE attack=D3 collector=proposed actual=1 verdict=KILLED stdout-tail="HARNESS probes=19 failures=8 mode=candidate"
+PROPOSED-PROBE control=A2 collector=proposed actual=0 verdict=AS-EXPECTED
+MUTATION-SUITE unexpected_total=0
