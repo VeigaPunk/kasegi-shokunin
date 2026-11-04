@@ -133,8 +133,35 @@ def main():
 
     if not args.revision:
         raise SystemExit("verify-r65: --revision is required")
+
+    pinfile = os.path.join(WAVE, "driver.sha256")
+    if os.path.exists(pinfile):
+        want = open(pinfile, encoding="utf-8").read().split()[0]
+        got = sha256(os.path.abspath(__file__))
+        if want != got:
+            print("RESULT driver-self-pin FAIL want=%s got=%s" % (want, got))
+            print("VERIFY measurements=8 failures=1 revision=%s" % args.revision)
+            return 1
+        print("GUARD driver-self-pin PASS")
+    else:
+        print("RESULT driver-self-pin FAIL reason=pin-missing (driver.sha256 must sit beside the driver)")
+        print("VERIFY measurements=8 failures=1 revision=%s" % args.revision)
+        return 1
     if args.final and args.candidate:
         print("RESULT construction-override FAIL --final refuses --candidate")
+        print("VERIFY measurements=8 failures=1 revision=%s" % args.revision)
+        return 1
+
+    pinfile = os.path.join(WAVE, "driver.sha256")
+    if os.path.exists(pinfile):
+        want = open(pinfile, encoding="utf-8").read().split()[0]
+        if want != sha256(os.path.abspath(__file__)):
+            print("RESULT driver-self-pin FAIL want=%s got=%s" % (want, sha256(os.path.abspath(__file__))))
+            print("VERIFY measurements=8 failures=1 revision=%s" % args.revision)
+            return 1
+        print("GUARD driver-self-pin PASS")
+    else:
+        print("RESULT driver-self-pin FAIL reason=pin-missing (driver.sha256 must sit beside the driver)")
         print("VERIFY measurements=8 failures=1 revision=%s" % args.revision)
         return 1
 
