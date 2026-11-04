@@ -7,7 +7,7 @@ ground: F44 — FIRST's own service catalogue for a product incident response te
 
 ## Attributed claim table
 
-All claims describe this S098 capture of the FIRST page, not requirements on any team. Locations are exact lines of the digest-pinned S098.txt. Each quoted fragment is at most 25 whitespace-delimited words; the capture includes the site's navigation above line 216, so only content lines are cited.
+All claims describe this S098 capture of the FIRST page, not requirements on any team. Locations are exact lines of the digest-pinned S098.txt. Each quoted fragment is at most 25 whitespace-delimited words; the capture includes the site's navigation above line 216, so only the title line (L1, the document's own title) and content lines are cited.
 
 | Claim | FIRST PSIRT Framework teaching | Located verbatim evidence | Falsifier / review rule |
 |---|---|---|---|
@@ -42,4 +42,5 @@ All claims describe this S098 capture of the FIRST page, not requirements on any
 - The recheck compares digest-pinned local bytes and manifest quotes; it does not establish upstream freshness, that a team implements any service, or that a particular disclosure met any duty.
 - The text capture flattens the page's navigation and figures; the navigation block before L216 is excluded from every anchor. Figure references (e.g. "Figure 9: Vulnerability Qualification Process", L851) are names only — the capture does not carry the diagram's content, so no process arrows or ordering beyond the prose is claimed.
 - Overlap is bounded: F43 (CERT/CC phase-to-role matrix) records who validates in a phase model; F06/S018 records multi-party coordination guidelines; S043/S044 record severity ladders; S053/S054 record EPSS/SSVC prioritization. The new ground here is the receiving team's service catalogue and its intake/qualification/reproduction gates. The screen is round-65 `.ufo/waves/round-65/w1/ScopeF44/screen.md`.
+- **Maturity is a glossary definition, not a level ladder.** S098's only maturity statement is the glossary entry at L1510, which defines maturity as how effectively an organization executes a capability; the capture states no maturity levels, no level names and no assessment method (measured: `grep -cE 'Maturity Level|Level [123]'` over the capture = 0). FIRST publishes a separate maturity document; it was opened only for boundary screening this round and is recorded as a lead, not admitted, so "FIRST defines PSIRT maturity levels" is not an F44 claim.
 - Documentation only: these are local package-review rules, not instructions to probe, scan, authenticate, submit, contact a target, or execute a vulnerability demonstration.
