@@ -1,0 +1,111 @@
+[
+ {
+  "id": "Y1-ext-only-show",
+  "kind": "exec",
+  "derive": "git show HEAD",
+  "expect": "diff.external only, no flag",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=commit ec5b93fafa629fcdd020c0f6e3fd65b4becafd55\nAuthor: fixture <fixture@shokunin.local>\nDate:   Wed Nov 4 19:00:24 2026 -0300\n\n   ",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"HEAD\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/h8b5z94i"
+  ],
+  "note": ""
+ },
+ {
+  "id": "Y2-ext-only-no-ext-diff",
+  "kind": "control",
+  "derive": "git show --no-ext-diff HEAD",
+  "expect": "diff.external only, --no-ext-diff: expect 0",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=commit db1d0d0ba795938b5601e41b7aa006b5cc96b0ef\nAuthor: fixture <fixture@shokunin.local>\nDate:   Wed Nov 4 19:00:24 2026 -0300\n\n   ",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"--no-ext-diff\", \"HEAD\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/he0ngn3y"
+  ],
+  "note": ""
+ },
+ {
+  "id": "Y3-textconv-attr-show",
+  "kind": "exec",
+  "derive": "git show HEAD",
+  "expect": "textconv attribute only, no flag",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=commit 01cb723c7457c36090e70d415a52d4b6b70e883f\nAuthor: fixture <fixture@shokunin.local>\nDate:   Wed Nov 4 19:00:24 2026 -0300\n\n   ",
+  "err": "",
+  "marks": 1,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"HEAD\"",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.oi8gc_2g/mark.sh \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"/fast/scratch/hyaku/kasegi-r68/R\"...",
+   "/usr/bin/cat \"cat\", \"/fast/scratch/hyaku/kasegi-r68/R\"..."
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.oi8gc_2g/MARK",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/4efynzzr",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/git-blob-Rysojf/t.txt"
+  ],
+  "note": ""
+ },
+ {
+  "id": "Y4-textconv-attr-no-textconv",
+  "kind": "control",
+  "derive": "git show --no-textconv HEAD",
+  "expect": "textconv attribute only, --no-textconv: expect 0",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=commit c8ac38e3a3b7f5973a40e997370c19a2e6ef269c\nAuthor: fixture <fixture@shokunin.local>\nDate:   Wed Nov 4 19:00:24 2026 -0300\n\n   ",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"--no-textconv\", \"HEAD\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/rip_sn_v"
+  ],
+  "note": ""
+ },
+ {
+  "id": "Y5-textconv-attr-blob-show",
+  "kind": "exec",
+  "derive": "git show HEAD:t.txt",
+  "expect": "textconv attribute only, blob show: expect 0 (G03 analogue)",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35\nb\na want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"HEAD:t.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/mrlsd9oa"
+  ],
+  "note": ""
+ }
+]

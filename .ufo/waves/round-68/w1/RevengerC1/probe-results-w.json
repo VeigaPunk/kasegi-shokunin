@@ -1,0 +1,112 @@
+[
+ {
+  "id": "W02-output-cluster-r",
+  "kind": "write",
+  "derive": "sort -ro out.txt g.txt",
+  "expect": "write out.txt",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": true
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"-ro\", \"out.txt\", \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/z5okqgjf",
+   "out.txt"
+  ],
+  "note": ""
+ },
+ {
+  "id": "W04-output-attached",
+  "kind": "write",
+  "derive": "sort -oout.txt g.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": false
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "W05-output-equals",
+  "kind": "write",
+  "derive": "sort --output=out.txt g.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": false
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "W06-output-prefix",
+  "kind": "write",
+  "derive": "sort --outp=out.txt g.txt",
+  "expect": "write out.txt",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": true
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"--outp=out.txt\", \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/yl0urxvy",
+   "out.txt"
+  ],
+  "note": ""
+ },
+ {
+  "id": "W07-output-prefix-short",
+  "kind": "write",
+  "derive": "sort --out out.txt g.txt",
+  "expect": "write out.txt",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": true
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"--out\", \"out.txt\", \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/sbfmb7b0",
+   "out.txt"
+  ],
+  "note": ""
+ }
+]

@@ -1,0 +1,11 @@
+--- mutants/P0.py	2026-11-04 18:54:39.075753543 -0300
++++ mutants/E1.py	2026-11-04 18:55:01.560464272 -0300
+@@ -90,7 +90,7 @@
+     ("sort", ("-o", "--output", "--compress-program")),
+     ("git show", ("--output", "--ext-diff", "--textconv")),
+ )
+-# R68: the two flags above were admitted at base and really executed a program
++# R68 (mutation control): the two flags above were admitted at base and really executed a program
+ # (`sort --compress-program=PROG` ran PROG 18288 times on one 420 KB fixture; `git show
+ # --textconv` ran the config-declared driver once).  They are program-execution classes, not
+ # read-only derives, so they are refused at parse time like the round-60 write flags.

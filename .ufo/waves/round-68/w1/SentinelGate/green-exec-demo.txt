@@ -1,0 +1,33 @@
+$ TMPDIR=$SCR python3 -B cand-gate.py --ledger demo.json --root $FX
+FIG abbrev-co recorded=00000000 line derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIG abbrev-compress recorded=00000000 line derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIG preexisting-show-default-textconv recorded=1 derived=1 ok
+FIG preexisting-catfile-textconv recorded=two derived=two ok
+FIG preexisting-catfile-filters recorded=two derived=two ok
+FIGURE-AUDIT figures=5 ok=3 stale=2 exit=1
+exit=1
+marker cp.log lines=18288
+marker sm.log lines=4
+marker tc.log lines=3
+$ TMPDIR=$SCR python3 -B base-gate.py --ledger demo.json --root $FX
+FIG abbrev-co recorded=00000000 line derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIG abbrev-compress recorded=00000000 line derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIG preexisting-show-default-textconv recorded=1 derived=1 ok
+FIG preexisting-catfile-textconv recorded=two derived=two ok
+FIG preexisting-catfile-filters recorded=two derived=two ok
+FIGURE-AUDIT figures=5 ok=3 stale=2 exit=1
+exit=1
+marker cp.log lines=18288
+marker sm.log lines=4
+marker tc.log lines=3
+sha256 cand=10c8710080078fe0 base=8147350c411650b4
+$ TMPDIR=$SCR python3 -B cand-gate.py --ledger demo2.json --root $FX   # derive: sort --co=$SCR/cp.sh -S1K big.txt | wc -l
+FIG abbrev-co-wc recorded=30000 derived=30000 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+exit=0
+marker cp.log lines=9144
+$ TMPDIR=$SCR python3 -B base-gate.py --ledger demo2.json --root $FX   # derive: sort --co=$SCR/cp.sh -S1K big.txt | wc -l
+FIG abbrev-co-wc recorded=30000 derived=30000 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+exit=0
+marker cp.log lines=9144

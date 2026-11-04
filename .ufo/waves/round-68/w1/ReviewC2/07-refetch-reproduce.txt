@@ -1,0 +1,16 @@
+$ curl -sS -o /fast/scratch/hyaku/kasegi-r68/ReviewC2/served2.json -w 'http=%{http_code} size=%{size_download} final=%{url_effective}\n' https://api.securityscorecards.dev/swagger.json; date -u +%Y-%m-%dT%H:%M:%SZ; python3 -B -c "
+import importlib.util,hashlib,json
+s=importlib.util.spec_from_file_location('cs','corpus/instruments/capture-source.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+raw=open('/fast/scratch/hyaku/kasegi-r68/ReviewC2/served2.json','rb').read();t=m.collapse(raw.decode('utf-8','replace')).encode()
+print('served_bytes=%d collapsed_bytes=%d collapsed_lines=%d sha256=%s'%(len(raw),len(t),t.count(b'\\n'),hashlib.sha256(t).hexdigest()))
+print('byte_identical_to_S102=',t==open('corpus/source-snapshots/round-68/S102.txt','rb').read())
+d=json.loads(raw);print('swagger=',d['swagger'],'info.version=',d['info']['version'],'host=',d['host']);print('definitions=',sorted(d['definitions']));print('paths=',sorted(d['paths']))
+"
+http=200 size=11802 final=https://api.securityscorecards.dev/swagger.json
+2026-11-04T21:54:13Z
+served_bytes=11802 collapsed_bytes=7595 collapsed_lines=429 sha256=6ebb8552ac3e0c4085f4a9239e29551fa1be19cebbdf99ccabb96400d8c2caa0
+byte_identical_to_S102= True
+swagger= 2.0 info.version= 1.1.0 host= api.scorecard.dev
+definitions= ['Error', 'Repo', 'ScorecardCheck', 'ScorecardResult', 'ScorecardVersion', 'VerifiedScorecardResult', 'VersionInfo']
+paths= ['/projects/{platform}/{org}/{repo}', '/projects/{platform}/{org}/{repo}/badge', '/version']
+exit=0

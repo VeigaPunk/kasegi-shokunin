@@ -1,0 +1,66 @@
+# kasegi round 68 C1 seat reproduction (seat ExecHarness, 2026-11-04)
+# Host: GNU coreutils sort 9.12, git 2.56.0, Python 3.14.8, nproc 32 (/usr/bin/{sort,git,python3})
+# Scratch: /fast/scratch/hyaku/kasegi-r68/ExecHarness (removed after the run); TMPDIR=<scratch>/tmp
+
+## exports
+# NOTE: `git archive d0f48405 corpus/instruments .ufo/waves/round-68/controls` fails at the base:
+#   fatal: pathspec '.ufo/waves/round-68/controls' did not match any files
+# (the controls dir first lands in 3dfe6f1). Base export therefore = corpus/instruments @ d0f48405
+# + .ufo/waves/round-68/controls @ 7c4f9f7 (frozen-claims commit; `git diff --stat 3dfe6f1 7c4f9f7
+# -- .ufo/waves/round-68/controls` is empty, so identical to the pre-freeze controls).
+git -C $L archive d0f48405e7fe44a53a28305785dc4d881a414194 corpus/instruments | tar -x -C $S/base
+git -C $L archive 7c4f9f7ec096298b1edd1912249e5864ee73d985 .ufo/waves/round-68/controls | tar -x -C $S/base
+git -C $L archive 82b3b7d4704e914eb224e7bb24e57aa9cbd8603f corpus/instruments .ufo/waves/round-68/controls | tar -x -C $S/cand
+
+## pins (sha256sum)
+8147350c411650b4fe3307b50851722025a00cc1e71df2ecff478ea7177ad247  base/.ufo/waves/round-68/controls/base-gate-d0f48405.py   <- gate used for the base run
+8147350c411650b4fe3307b50851722025a00cc1e71df2ecff478ea7177ad247  base/corpus/instruments/figure-audit.py (byte-identical)
+10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8  cand/corpus/instruments/figure-audit.py
+785e38fd1393f345226fbd34e3a2310eed597bb7b95997478066db158c496b4b  counter (base export, cand export, live lane: all three equal)
+
+## run A - base (primary; --lane default = live lane working tree)
+python3 -B $S/base/.ufo/waves/round-68/controls/c1-probe-run-r68.py --gate $S/base/.ufo/waves/round-68/controls/base-gate-d0f48405.py --work $S/w-base --mode base
+MEASURE sort-compress-refused FAIL rc=1 marker_runs=18288
+MEASURE git-textconv-refused FAIL rc=1 marker_runs=1
+MEASURE read-only-controls-admitted ok controls=5 failed=0
+MEASURE selftest FAIL selftest cases=73 failures=0 rc=0
+MEASURE mutbat ok rc=0 mutbat killed=5/5 survivors=0 invalid=0 controls=pass
+MEASURE real-ledger ok FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0 rc=0
+MEASURE red-fixture ok rc=1
+MEASURE no-write-side-effect FAIL fixture_changed=0 marker_runs=18289
+VERIFY measurements=8 failures=4 gate_sha256=8147350c411650b4fe3307b50851722025a00cc1e71df2ecff478ea7177ad247 mode=base
+exit=1 wall_ms=17939
+# MEASURE/VERIFY lines byte-identical to controls/c1-base-donothing-r68.txt (diff empty: BASE-IDENTICAL)
+
+## run B - candidate (primary; --lane default = live lane working tree)
+python3 -B $S/cand/.ufo/waves/round-68/controls/c1-probe-run-r68.py --gate $S/cand/corpus/instruments/figure-audit.py --work $S/w-cand --mode candidate
+MEASURE sort-compress-refused ok rc=2 marker_runs=0
+MEASURE git-textconv-refused ok rc=2 marker_runs=0
+MEASURE read-only-controls-admitted ok controls=5 failed=0
+MEASURE selftest ok selftest cases=77 failures=0 rc=0
+MEASURE mutbat ok rc=0 mutbat killed=5/5 survivors=0 invalid=0 controls=pass
+MEASURE real-ledger ok FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0 rc=0
+MEASURE red-fixture ok rc=1
+MEASURE no-write-side-effect ok fixture_changed=0 marker_runs=0
+VERIFY measurements=8 failures=0 gate_sha256=10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8 mode=candidate
+exit=0 wall_ms=15839
+# MEASURE/VERIFY lines byte-identical to controls/c1-candidate-trial-r68.txt (diff empty: CAND-IDENTICAL)
+
+## runs C/D - same gates, --lane = clean git clone of the lane checked out detached at the measured revision
+# clone: git clone -q --no-checkout --no-hardlinks file://$L $D; toplevel asserted == $D; git -C $D checkout -q --detach <rev>; status --porcelain = 0 lines
+# base clone head=d0f48405e7fe44a53a28305785dc4d881a414194 ; cand clone head=82b3b7d4704e914eb224e7bb24e57aa9cbd8603f
+C (base gate, base clone):  identical 8 MEASURE lines to run A; VERIFY measurements=8 failures=4 ...mode=base; exit=1
+D (cand gate, cand clone):  identical 8 MEASURE lines to run B; VERIFY measurements=8 failures=0 ...mode=candidate; exit=0
+# (runs C+D together: 99.57 s wall incl. two clones)
+
+## runs E/F - --lane = plain `git archive` full tree (no .git) - diagnostic only
+E base: ... MEASURE real-ledger FAIL FIGURE-AUDIT figures=35 ok=11 stale=24 exit=1 rc=1 ... VERIFY measurements=8 failures=5; exit=1
+F cand: ... MEASURE real-ledger FAIL FIGURE-AUDIT figures=35 ok=11 stale=24 exit=1 rc=1 ... VERIFY measurements=8 failures=1; exit=1
+# cause: the 24 stale rows are all `git show <rev>:...` / `git ls-tree` / `git cat-file` derives
+# (reason=derive-exit-1 / derive-exit-128 / derive-upstream-exit-128); an archive has no history.
+# Not a gate defect: real-ledger needs a git-backed lane. Every other measurement matched A/B.
+
+## host dependence
+# compressor runs = 18288 in A, C and E (3/3 identical on this host); fixture big.txt = 480000 bytes;
+# count depends on sort's minimum buffer/merge fan-in (coreutils 9.12) and is >0 as required.
+# textconv driver runs = 1 in A, C, E. Candidate markers 0/0 in B, D, F.

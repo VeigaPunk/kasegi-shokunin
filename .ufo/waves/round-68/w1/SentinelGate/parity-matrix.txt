@@ -1,0 +1,86 @@
+same base=ADM/1 cand=ADM/1 | cat g.txt
+same base=ADM/1 cand=ADM/1 | cat
+same base=ADM/1 cand=ADM/1 | cat g.txt big.txt
+same base=ADM/1 cand=ADM/1 | cat -- g.txt
+same base=ADM/1 cand=ADM/1 | cat < g.txt
+same base=ADM/1 cand=ADM/1 | cat g.txt | wc -l
+same base=ADM/1 cand=ADM/1 | cat g.txt && cat g.txt
+same base=ADM/1 cand=ADM/1 | grep 3 g.txt
+same base=ADM/1 cand=ADM/1 | grep -e 3 -- g.txt
+same base=ADM/1 cand=ADM/1 | wc -l g.txt
+same base=ADM/1 cand=ADM/1 | ls
+same base=ADM/1 cand=ADM/1 | head -n 1 g.txt
+same base=ADM/1 cand=ADM/1 | tail -n 1 g.txt
+same base=ADM/1 cand=ADM/1 | sha256sum g.txt
+same base=ADM/1 cand=ADM/1 | cut -c1 g.txt
+same base=ADM/1 cand=ADM/1 | tr 3 4 < g.txt
+same base=ADM/1 cand=ADM/1 | sort g.txt
+same base=REF/2 cand=REF/2 | sort -o out.txt g.txt
+same base=REF/2 cand=REF/2 | sort -oout.txt g.txt
+same base=REF/2 cand=REF/2 | sort --output=out.txt g.txt
+same base=REF/2 cand=REF/2 | sort --output out.txt g.txt
+same base=REF/2 cand=REF/2 | sort '-o' out.txt g.txt
+same base=REF/2 cand=REF/2 | sort -\o out.txt g.txt
+same base=ADM/1 writes=['out.txt'] cand=ADM/1 writes=['out.txt'] | sort -uo out.txt g.txt
+same base=ADM/1 writes=['out.txt'] cand=ADM/1 writes=['out.txt'] | sort -uoout.txt g.txt
+same base=ADM/1 writes=['out.txt'] cand=ADM/1 writes=['out.txt'] | sort --outp=out.txt g.txt
+same base=ADM/1 writes=['out.txt'] cand=ADM/1 writes=['out.txt'] | sort --o=out.txt g.txt
+DIFF base=ADM/1 exec={'cp': 9144} cand=REF/2 | sort --compress-program=$SCR/cp.sh -S 1K big.txt | head -n 1
+DIFF base=ADM/1 exec={'cp': 9144} cand=REF/2 | sort --compress-program $SCR/cp.sh -S 1K big.txt | head -n 1
+DIFF base=ADM/1 exec={'cp': 9144} cand=REF/2 | sort '--compress-program=$SCR/cp.sh' -S 1K big.txt | head -n 1
+DIFF base=ADM/1 exec={'cp': 9144} cand=REF/2 | sort "--compress-program=$SCR/cp.sh" -S 1K big.txt | head -n 1
+DIFF base=ADM/1 exec={'cp': 9144} cand=REF/2 | sort '--compress-program' $SCR/cp.sh -S 1K big.txt | head -n 1
+DIFF base=ADM/1 exec={'cp': 9144} cand=REF/2 | sort --compress-progra\m=$SCR/cp.sh -S 1K big.txt | head -n 1
+DIFF base=ADM/1 exec={'cp': 9144} cand=REF/2 | sort \-\-compress-program=$SCR/cp.sh -S 1K big.txt | head -n 1
+DIFF base=ADM/1 exec={'cp': 9144} cand=REF/2 | sort -S 1K big.txt --compress-program=$SCR/cp.sh | head -n 1
+DIFF base=ADM/1 exec={'cp': 9144} cand=REF/2 | cat big.txt | sort -S 1K --compress-program=$SCR/cp.sh | head -n 1
+DIFF base=ADM/1 exec={'cp': 9144} cand=REF/2 | sort -S 1K --compress-program=$SCR/cp.sh < big.txt | head -n 1
+DIFF base=ADM/1 exec={'cp': 9144} cand=REF/2 | cat g.txt && sort --compress-program=$SCR/cp.sh -S 1K big.txt | head -n 1
+DIFF base=ADM/1 cand=REF/2 | sort -- --compress-program=$SCR/cp.sh
+same base=ADM/1 exec={'cp': 9144} cand=ADM/1 exec={'cp': 9144} | sort --compress-prog=$SCR/cp.sh -S 1K big.txt | head -n 1
+same base=ADM/1 exec={'cp': 9144} cand=ADM/1 exec={'cp': 9144} | sort --compress=$SCR/cp.sh -S 1K big.txt | head -n 1
+same base=ADM/1 exec={'cp': 9144} cand=ADM/1 exec={'cp': 9144} | sort --co=$SCR/cp.sh -S 1K big.txt | head -n 1
+same base=ADM/1 exec={'cp': 9144} cand=ADM/1 exec={'cp': 9144} | sort --co $SCR/cp.sh -S 1K big.txt | head -n 1
+same base=ADM/1 exec={'cp': 9144} cand=ADM/1 exec={'cp': 9144} | sort -S 1K big.txt --comp=$SCR/cp.sh | head -n 1
+same base=ADM/1 cand=ADM/1 | git show HEAD:g.txt
+same base=ADM/1 cand=ADM/1 | git show HEAD:a.bin
+same base=REF/2 cand=REF/2 | git show --output=out.txt HEAD
+same base=REF/2 cand=REF/2 | git show --output out.txt HEAD
+same base=REF/2 cand=REF/2 | git show '--output=out.txt' HEAD
+same base=ADM/1 cand=ADM/1 | git show --outp=out.txt HEAD
+same base=REF/2 cand=REF/2 | git show --ext-diff HEAD
+same base=ADM/1 cand=ADM/1 | git show --ext-dif HEAD
+DIFF base=ADM/1 exec={'tc': 1, 'sm': 1} cand=REF/2 | git show --textconv HEAD:a.bin
+DIFF base=ADM/1 exec={'tc': 1, 'sm': 1} cand=REF/2 | git show '--textconv' HEAD:a.bin
+DIFF base=ADM/1 exec={'tc': 1, 'sm': 1} cand=REF/2 | git show "--textconv" HEAD:a.bin
+DIFF base=ADM/1 exec={'tc': 1, 'sm': 1} cand=REF/2 | git show --text\conv HEAD:a.bin
+DIFF base=ADM/1 exec={'tc': 1, 'sm': 1} cand=REF/2 | git show HEAD:a.bin --textconv
+DIFF base=ADM/1 cand=REF/2 | git show -- --textconv
+same base=ADM/1 cand=ADM/1 | git show --textcon HEAD:a.bin
+same base=ADM/1 cand=ADM/1 | git show --textc HEAD:a.bin
+same base=ADM/1 cand=ADM/1 | git show --no-textconv HEAD:a.bin
+same base=ADM/1 exec={'tc': 2, 'sm': 2} cand=ADM/1 exec={'tc': 2, 'sm': 2} | git show HEAD
+same base=ADM/1 exec={'tc': 2, 'sm': 2} cand=ADM/1 exec={'tc': 2, 'sm': 2} | git show --output-indicator-new=+ HEAD
+same base=ADM/1 cand=ADM/1 | git show HEAD:a.bin | wc -l
+same base=ADM/1 cand=ADM/1 | git cat-file -p HEAD:g.txt
+same base=ADM/1 exec={'tc': 1, 'sm': 1} cand=ADM/1 exec={'tc': 1, 'sm': 1} | git cat-file --textconv HEAD:a.bin
+same base=ADM/1 exec={'sm': 1} cand=ADM/1 exec={'sm': 1} | git cat-file --filters HEAD:a.bin
+same base=ADM/1 cand=ADM/1 | git ls-tree HEAD
+same base=ADM/1 cand=ADM/1 | git ls-tree -r HEAD
+same base=ADM/1 cand=ADM/1 | python3 corpus/instruments/ok.py
+same base=ADM/1 cand=ADM/1 | python corpus/instruments/ok.py
+same base=REF/2 cand=REF/2 | python3 out.py
+same base=REF/2 cand=REF/2 | python3 ./corpus/instruments/ok.py
+same base=REF/2 cand=REF/2 | python3 corpus/instruments/../out.py
+same base=REF/2 cand=REF/2 | python3 -c print(35)
+same base=REF/2 cand=REF/2 | sh -c 'cat g.txt'
+same base=REF/2 cand=REF/2 | sed -n 1p g.txt
+same base=REF/2 cand=REF/2 | awk 1 g.txt
+same base=REF/2 cand=REF/2 | env cat g.txt
+same base=REF/2 cand=REF/2 | cat g.txt | xargs cat
+same base=REF/2 cand=REF/2 | tee out.txt < g.txt
+same base=REF/2 cand=REF/2 | cp g.txt out.txt
+same base=REF/2 cand=REF/2 | mv g.txt out.txt
+same base=REF/2 cand=REF/2 | git -c x=y show HEAD
+same base=REF/2 cand=REF/2 | /usr/bin/sort --compress-program=$SCR/cp.sh g.txt
+MATRIX derives=85 diffs=18 widened=0 narrowed=18 cand_admitted_with_exec_or_write=13

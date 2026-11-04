@@ -1,0 +1,244 @@
+[
+ {
+  "id": "P01-py-control",
+  "kind": "control",
+  "derive": "python3 corpus/instruments/probe-ok.py",
+  "expect": "admitted, prints 35",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35 want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/python3 \"python3\", \"corpus/instruments/probe-ok.py\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/_kp06sxd"
+  ],
+  "note": ""
+ },
+ {
+  "id": "P02-py-dash-c",
+  "kind": "exec",
+  "derive": "python3 -c 'print(1)'",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "P03-py-dash-I",
+  "kind": "exec",
+  "derive": "python3 -I corpus/instruments/probe-ok.py",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "P04-py-dash-m",
+  "kind": "exec",
+  "derive": "python3 -m json.tool g.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "P05-py-traversal",
+  "kind": "exec",
+  "derive": "python3 corpus/instruments/../../probe-ok.py",
+  "expect": "refused? (realpath check)",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "P06-py-env-prefix",
+  "kind": "env",
+  "derive": "PYTHONPATH={F}/envpy python3 corpus/instruments/probe-ok.py",
+  "expect": "refused (env head)",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "P07-py-pycache-write",
+  "kind": "write",
+  "derive": "python3 corpus/instruments/probe-imp.py",
+  "expect": "admitted; writes __pycache__",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35 want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {
+   "corpus/instruments/__pycache__/probe_helper.cpython-314.pyc": true
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/python3 \"python3\", \"corpus/instruments/probe-imp.py\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.kd4f96k4/corpus/instruments/__pycache__/probe_helper.cpython-314.pyc.140573484178672",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/3za_ffx6"
+  ],
+  "note": ""
+ },
+ {
+  "id": "P08-py-sys-path-shadow",
+  "kind": "exec",
+  "derive": "python3 corpus/instruments/probe-shadow.py",
+  "expect": "admitted; in-tree json.py shadows stdlib",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35 want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 1,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/python3 \"python3\", \"corpus/instruments/probe-shadow.\"..."
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.ikunxu4r/corpus/instruments/../../MARK",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.ikunxu4r/corpus/instruments/__pycache__/json.cpython-314.pyc.139719909760240",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/jyxsq19c"
+  ],
+  "note": ""
+ },
+ {
+  "id": "P09-py-capture-egress-write-outside",
+  "kind": "write+read",
+  "derive": "python3 corpus/instruments/capture-source.py --id x --url file://{F}/src.txt --out /fast/scratch/hyaku/kasegi-r68/RevengerC1/outside/cap-outside.txt --kind text",
+  "expect": "admitted; reads file:// URL (any scheme urllib takes) and writes outside root",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/python3 \"python3\", \"corpus/instruments/capture-sourc\"..., \"--id\", \"x\", \"--url\", \"file:///fast/scratch/hyaku/kaseg\"..., \"--out\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/outside/cap-outside.txt",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/kv1zv586"
+  ],
+  "note": "check /fast/scratch/hyaku/kasegi-r68/RevengerC1/outside/cap-outside.txt"
+ },
+ {
+  "id": "P10-py-nested-gate-refuses-compress",
+  "kind": "exec",
+  "derive": "python3 corpus/instruments/figure-audit.py --root {F} --ledger {F}/nested.json",
+  "expect": "admitted; nested gate re-parses ledger derives",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 1,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/python3 \"python3\", \"corpus/instruments/figure-audit.\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..."
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.zday2ke4/corpus/instruments/../../MARK",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.zday2ke4/corpus/instruments/__pycache__/json.cpython-314.pyc.139825679622160",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/w9bj0kec"
+  ],
+  "note": ""
+ },
+ {
+  "id": "P11-py-exit-control",
+  "kind": "control",
+  "derive": "python3 corpus/instruments/probe-exit.py",
+  "expect": "admitted; exit 0 but no stdout => stale",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/python3 \"python3\", \"corpus/instruments/probe-exit.py\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/ip9aw9tm"
+  ],
+  "note": ""
+ },
+ {
+  "id": "P12-py-env-pythonpath-sitecustomize",
+  "kind": "env",
+  "derive": "python3 corpus/instruments/probe-ok.py",
+  "expect": "env PYTHONPATH sitecustomize runs before script",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35 want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 2,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/python3 \"python3\", \"corpus/instruments/probe-ok.py\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.z2a3jhz_/MARK",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.z2a3jhz_/envpy/__pycache__/sitecustomize.cpython-314.pyc.140404701112928",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/uysk0i1k"
+  ],
+  "note": ""
+ }
+]

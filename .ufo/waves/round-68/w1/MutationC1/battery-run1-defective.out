@@ -1,0 +1,13 @@
+ANCHOR M4 cand_block_sha=d55b4b3eb1407e41d94d8a1b8590538c0c0c3664bec918106af8b40e49c7f764 base_block_sha=b8cc1d5496fdce307d381db5d6f8029166884bac13b4b7ee37e714677468d94a
+ANCHOR M4 base_block_count_in_base=1
+P0 pristine sha256=10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8 parse=0 exit=0 ['selftest cases=77 failures=0'] failed=[]
+M1 [drop --compress-program from sort] anchors=[1] sha256=2b84dd5803039624bd6a879b34e6b401531e443e7eeedf29b07a05820c49fd4d parse=0 exit=1 ['selftest cases=77 failures=3'] [] failed=['sort-compress-program-refused', 'sort-compress-program-space-refused', 'sort-compress-program-quoted-refused']  verdict=KILLED
+M2 [drop --textconv from git show] anchors=[1] sha256=ba66183193d0c1c0993c93b967e9fd8ef7b954e76c674e5263e5e6cd41e6f099 parse=0 exit=1 ['selftest cases=77 failures=1'] [] failed=['git-show-textconv-refused']  verdict=KILLED
+M3 [drop both] anchors=[1, 1] sha256=67dbb55667e55296407411f139120ffa24c0218d302b16b6073ded79fdc2f7c5 parse=0 exit=1 ['selftest cases=77 failures=4'] [] failed=['sort-compress-program-refused', 'sort-compress-program-space-refused', 'sort-compress-program-quoted-refused', 'git-show-textconv-refused']  verdict=KILLED
+M4 [restore pre-repair DENIED_FLAGS block byte-for-byte (base d0f48405)] anchors=[1] sha256=afba3d1156f2f028ca4ed8663bf66165a70ce9efa3bfd4a81b1e053c5a3ebce0 parse=0 exit=0 [] [] failed=[]  verdict=SURVIVED
+M5 [weaken match to tok == flag] anchors=[1] sha256=f24007a468ed82953cd1bd9fe91e9d8f73455fbd396770a9ddf06c4714437338 parse=0 exit=1 ['selftest cases=77 failures=4'] [] failed=['git-show-output-flag-refused', 'git-quoted-output-refused', 'sort-compress-program-refused', 'sort-compress-program-quoted-refused']  verdict=KILLED
+E1 [EQUIVALENT: comment-only edit] anchors=[1] sha256=854bc1e43aa5681ad49f51c670e57f72ec346dff1823ba9db0e1d22cca62c4f3 parse=0 exit=0 ['selftest cases=77 failures=0'] [] failed=[]  verdict=EQUIVALENT-PASS
+E2 [EQUIVALENT: trailing whitespace on EXPECTED_CASES line] anchors=[1] sha256=affc7305cb9188a72de872e5c5e90a90e7264200efd6fe7b1b8b36fa248bfa7b parse=0 exit=0 ['selftest cases=77 failures=0'] [] failed=[]  verdict=EQUIVALENT-PASS
+X1 [INVALID: syntax error in DENIED_FLAGS (unclosed tuple)] anchors=[1] sha256=83599b0b59be6fb6a5ce2a032f461c80091c198ab049f545d1db0315d1bb45ab parse=1 exit=1 [] [] failed=[] ["SyntaxError: '(' was never closed"] verdict=INVALID
+RESTORE committed-gate sha256=10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8 pristine-copy sha256=10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8 match=True
+SUMMARY killed=4/5 survivors=M4 equivalents=E1:EQUIVALENT-PASS,E2:EQUIVALENT-PASS invalid=X1

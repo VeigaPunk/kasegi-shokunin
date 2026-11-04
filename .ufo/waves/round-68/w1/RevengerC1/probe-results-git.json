@@ -1,0 +1,416 @@
+[
+ {
+  "id": "G01-show-textconv",
+  "kind": "exec",
+  "derive": "git show --textconv HEAD:t.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "G02-show-textconv-prefix",
+  "kind": "exec",
+  "derive": "git show --textc HEAD:t.txt",
+  "expect": "ADMITTED? (parse-options abbrev)",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-exit-128 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"--textc\", \"HEAD:t.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/7l5fv6lg"
+  ],
+  "note": ""
+ },
+ {
+  "id": "G03-show-default-textconv",
+  "kind": "exec",
+  "derive": "git show HEAD:t.txt",
+  "expect": "no flag; attribute textconv",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35\nb\na want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"HEAD:t.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/6o1sv0el"
+  ],
+  "note": "does default git show run textconv?"
+ },
+ {
+  "id": "G04-show-no-textconv-control",
+  "kind": "control",
+  "derive": "git show --no-textconv HEAD:t.txt",
+  "expect": "admitted, marks 0",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35\nb\na want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"--no-textconv\", \"HEAD:t.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/lazr59tn"
+  ],
+  "note": ""
+ },
+ {
+  "id": "G05-show-ext-diff",
+  "kind": "exec",
+  "derive": "git show --ext-diff HEAD",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "G06-show-ext-diff-prefix",
+  "kind": "exec",
+  "derive": "git show --ext-d HEAD",
+  "expect": "ADMITTED? (abbrev)",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-exit-128 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"--ext-d\", \"HEAD\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/49y56mmg"
+  ],
+  "note": ""
+ },
+ {
+  "id": "G07-show-output-equals",
+  "kind": "write",
+  "derive": "git show --output=o.txt HEAD",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {
+   "o.txt": false
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "G08-show-output-prefix",
+  "kind": "write",
+  "derive": "git show --outp=o.txt HEAD",
+  "expect": "ADMITTED? write o.txt",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-exit-128 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {
+   "o.txt": false
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"--outp=o.txt\", \"HEAD\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/kpy070i8"
+  ],
+  "note": ""
+ },
+ {
+  "id": "G09-show-plain-commit",
+  "kind": "control",
+  "derive": "git show HEAD",
+  "expect": "control, diff of commit, no ext diff",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=commit d33c0d7da1a28b083dd6f5dd2750abc1ea6e7982\nAuthor: fixture <fixture@shokunin.local>\nDate:   Wed Nov 4 18:57:03 2026 -0300\n\n   ",
+  "err": "",
+  "marks": 2,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"HEAD\"",
+   "/bin/sh \"/bin/sh\", \"-c\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"/fast/scratch/hyaku/kasegi-r68/R\"...",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.l43wtieu/mark.sh \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"t.txt\"",
+   "/usr/bin/cat \"cat\", \"t.txt\"",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.l43wtieu/mark.sh \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"/fast/scratch/hyaku/kasegi-r68/R\"...",
+   "/usr/bin/cat \"cat\", \"/fast/scratch/hyaku/kasegi-r68/R\"..."
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.l43wtieu/MARK",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/dnpbne2a",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/git-blob-8i5rBD/t.txt"
+  ],
+  "note": ""
+ },
+ {
+  "id": "G10-cat-file-textconv",
+  "kind": "exec",
+  "derive": "git cat-file --textconv HEAD:t.txt",
+  "expect": "admitted? (not in DENIED_FLAGS)",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35\nb\na want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 2,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"cat-file\", \"--textconv\", \"HEAD:t.txt\"",
+   "/bin/sh \"/bin/sh\", \"-c\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"/fast/scratch/hyaku/kasegi-r68/R\"...",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.0f6swhrz/mark.sh \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"t.txt\"",
+   "/usr/bin/cat \"cat\", \"t.txt\"",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.0f6swhrz/mark.sh \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"/fast/scratch/hyaku/kasegi-r68/R\"...",
+   "/usr/bin/cat \"cat\", \"/fast/scratch/hyaku/kasegi-r68/R\"..."
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.0f6swhrz/MARK",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/3c895xu8",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/git-blob-1geA2a/t.txt"
+  ],
+  "note": ""
+ },
+ {
+  "id": "G11-cat-file-filters",
+  "kind": "exec",
+  "derive": "git cat-file --filters --path=t.txt HEAD",
+  "expect": "admitted? smudge filter",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=tree bf069499838177f87d2c6cde7bd99769d2af0c90\nauthor fixture <fixture@shokunin.local> 1793829423 -0300\ncommitter fixture <fixture@s",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"cat-file\", \"--filters\", \"--path=t.txt\", \"HEAD\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/lfrnoo2y"
+  ],
+  "note": ""
+ },
+ {
+  "id": "G12-cat-file-p-control",
+  "kind": "control",
+  "derive": "git cat-file -p HEAD:t.txt",
+  "expect": "admitted, marks 0",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35\nb\na want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"cat-file\", \"-p\", \"HEAD:t.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/ku8tcysb"
+  ],
+  "note": ""
+ },
+ {
+  "id": "G13-cat-file-batch-textconv",
+  "kind": "exec",
+  "derive": "git cat-file --batch --textconv < list.txt",
+  "expect": "admitted? textconv batch",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-exit-128 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"cat-file\", \"--batch\", \"--textconv\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/qin239om"
+  ],
+  "note": ""
+ },
+ {
+  "id": "G14-ls-tree-control",
+  "kind": "control",
+  "derive": "git ls-tree -r HEAD",
+  "expect": "admitted, marks 0",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=100644 blob cc8d41e6469ee015452387c17bd10a9001f43c00\tg.txt\n100755 blob 172e547e24bc63fa7aac173c651b0b997b30665d\tmark.sh\n100644 blob",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"ls-tree\", \"-r\", \"HEAD\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/uh6y56n0"
+  ],
+  "note": ""
+ },
+ {
+  "id": "G15-ls-tree-format",
+  "kind": "read",
+  "derive": "git ls-tree --format=%(objectname) HEAD",
+  "expect": "admitted, read-only",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "G16-git-c-config",
+  "kind": "exec",
+  "derive": "git -c diff.x.textconv={M} show HEAD:t.txt",
+  "expect": "refused (-c not a subcommand)",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "G17-git-C-dir",
+  "kind": "exec",
+  "derive": "git -C {F} show --textconv HEAD:t.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "G18-git-show-separator",
+  "kind": "exec",
+  "derive": "git show -- --textconv",
+  "expect": "refused? (denied scan)",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "G19-git-show-config-after-subcmd",
+  "kind": "exec",
+  "derive": "git show -c diff.x.textconv={M} HEAD:t.txt",
+  "expect": "?",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-exit-128 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"-c\", \"diff.x.textconv=/fast/scratch/hy\"..., \"HEAD:t.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/knhx62x0"
+  ],
+  "note": ""
+ },
+ {
+  "id": "G20-cat-file-textconv-attribute",
+  "kind": "exec",
+  "derive": "git cat-file --filters HEAD:t.txt",
+  "expect": "smudge via attributes, no path",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35\nb\na want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 1,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"cat-file\", \"--filters\", \"HEAD:t.txt\"",
+   "/bin/sh \"/bin/sh\", \"-c\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"/fast/scratch/hyaku/kasegi-r68/R\"...",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.gxqk1g7m/mark.sh \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"t.txt\"",
+   "/usr/bin/cat \"cat\", \"t.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.gxqk1g7m/MARK",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/zfvq81aa"
+  ],
+  "note": ""
+ }
+]

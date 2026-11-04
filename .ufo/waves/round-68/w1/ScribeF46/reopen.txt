@@ -1,0 +1,26 @@
+# ScribeF46 re-open of S102, run 2026-11-04 (commands and outputs from this seat)
+$ date -u; curl -sS -D hdr.txt -o swagger.json -w "http=%{http_code} size=%{size_download} final=%{url_effective}\n" https://api.securityscorecards.dev/swagger.json; date -u
+2026-11-04T21:53:23Z
+http=200 size=11802 final=https://api.securityscorecards.dev/swagger.json
+2026-11-04T21:53:23Z
+$ sha256sum swagger.json; wc -lc swagger.json
+d526f3274a6dbcb1ba6632bf3ee1e9a642dc2106b18a1354cc0c8a26104c8af4  swagger.json
+  428 11802 swagger.json
+$ cat hdr.txt
+HTTP/2 200 
+content-type: application/json
+via: 1.1 varnish, 1.1 varnish
+accept-ranges: bytes
+date: Wed, 04 Nov 2026 21:53:23 GMT
+age: 37
+x-served-by: cache-chi-kigq8000118-CHI, cache-gig2250022-GIG
+x-cache: HIT, HIT
+x-cache-hits: 4, 1
+x-timer: S1793829204.535321,VS0,VE141
+vary: Origin
+content-length: 11802
+
+$ sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//; s/[[:space:]]+/ /g' swagger.json | grep -v '^$' > norm.txt; wc -l norm.txt; sha256sum norm.txt; diff -q norm.txt corpus/source-snapshots/round-68/S102.txt
+429 norm.txt
+6ebb8552ac3e0c4085f4a9239e29551fa1be19cebbdf99ccabb96400d8c2caa0  norm.txt
+diff -q: identical (exit 0)

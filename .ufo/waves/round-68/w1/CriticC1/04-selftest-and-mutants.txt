@@ -1,0 +1,24 @@
+== gate-82b3b7d.py
+selftest case=sort-compress-program-refused exit=2 want=2 verdict=pass
+selftest case=sort-compress-program-space-refused exit=2 want=2 verdict=pass
+selftest case=sort-compress-program-quoted-refused exit=2 want=2 verdict=pass
+selftest case=git-show-textconv-refused exit=2 want=2 verdict=pass
+selftest cases=77 failures=0
+== mut-nocompress.py
+selftest case=sort-compress-program-refused exit=0 want=2 verdict=fail
+selftest case=sort-compress-program-space-refused exit=0 want=2 verdict=fail
+selftest case=sort-compress-program-quoted-refused exit=0 want=2 verdict=fail
+selftest case=git-show-textconv-refused exit=2 want=2 verdict=pass
+selftest cases=77 failures=3
+== mut-notextconv.py
+selftest case=sort-compress-program-refused exit=2 want=2 verdict=pass
+selftest case=sort-compress-program-space-refused exit=2 want=2 verdict=pass
+selftest case=sort-compress-program-quoted-refused exit=2 want=2 verdict=pass
+selftest case=git-show-textconv-refused exit=1 want=2 verdict=fail reasons=derive-exit-128
+selftest cases=77 failures=1
+== mut-nomatch.py
+selftest case=sort-compress-program-refused exit=0 want=2 verdict=fail
+selftest case=sort-compress-program-space-refused exit=0 want=2 verdict=fail
+selftest case=sort-compress-program-quoted-refused exit=0 want=2 verdict=fail
+selftest case=git-show-textconv-refused exit=1 want=2 verdict=fail reasons=derive-exit-128
+selftest cases=77 failures=9

@@ -1,0 +1,149 @@
+[
+ {
+  "id": "R02-cat-outside",
+  "kind": "read",
+  "derive": "cat /etc/hostname",
+  "expect": "admitted; read outside lane",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=plazir27 want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/cat \"cat\", \"/etc/hostname\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/_r86ubiq"
+  ],
+  "note": ""
+ },
+ {
+  "id": "R03-head-outside",
+  "kind": "read",
+  "derive": "head -n 1 /etc/hostname",
+  "expect": "admitted; read outside lane",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=plazir27 want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/head \"head\", \"-n\", \"1\", \"/etc/hostname\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/_2v11s_1"
+  ],
+  "note": ""
+ },
+ {
+  "id": "R04-grep-file-from-outside",
+  "kind": "read",
+  "derive": "grep -f /etc/hostname g.txt",
+  "expect": "admitted; read outside lane",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/grep \"grep\", \"-f\", \"/etc/hostname\", \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/q_wxhoos"
+  ],
+  "note": ""
+ },
+ {
+  "id": "R05-ls-root",
+  "kind": "read",
+  "derive": "ls /",
+  "expect": "admitted; read outside lane",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=bin\nboot\ndev\netc\nfast\nhome\nlib\nlib64\nmnt\nopt\nproc\nroot\nrun\nsbin\nsrv\nswap\nsys\ntmp\nusr\nvar\nworkspace want=x stale\nFIGURE-AUDIT figure",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/ls \"ls\", \"/\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/hd3v09uq"
+  ],
+  "note": ""
+ },
+ {
+  "id": "R06-sha256-outside",
+  "kind": "read",
+  "derive": "sha256sum /etc/hostname",
+  "expect": "admitted; read outside lane",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=694cd433b4212f7ed2f6b1bb23c8ef980056bf36de62d37e9f0a01c04f6fa194  /etc/hostname want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 ex",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sha256sum \"sha256sum\", \"/etc/hostname\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/zzyaeejr"
+  ],
+  "note": ""
+ },
+ {
+  "id": "R07-wc-files0-from-outside",
+  "kind": "read",
+  "derive": "wc --files0-from=/etc/hostname",
+  "expect": "admitted? read",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/wc \"wc\", \"--files0-from=/etc/hostname\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/4y8t7pqm"
+  ],
+  "note": ""
+ },
+ {
+  "id": "R08-tr-cut-control",
+  "kind": "control",
+  "derive": "cut -c1 g.txt | tr a-z A-Z",
+  "expect": "admitted control",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=3\nB\nA want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/cut \"cut\", \"-c1\", \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/5kwl809n"
+  ],
+  "note": ""
+ }
+]

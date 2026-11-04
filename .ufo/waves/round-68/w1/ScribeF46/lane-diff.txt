@@ -1,0 +1,64 @@
+diff --git i/corpus/README.md w/corpus/README.md
+index b00d8bb..8a5bd40 100644
+--- i/corpus/README.md
++++ w/corpus/README.md
+@@ -1065,3 +1065,13 @@ captures `corpus/source-snapshots/round-67/S100.txt` and `S101.txt`, manifest `c
+ F45 adds the receiving team's *growth ladder* that F44/S098 (service catalogue and qualification gate), F43 (CERT/CC phase-to-role matrix), F06/S018 (multi-party coordination) and F11 (ISO/IEC 29147 and 30111 division of labour) do not hold: S098 carries zero occurrences of "Maturity Level" and its only maturity statement is a glossary definition, while the maturity document defers its own glossary and catalogue to the framework (S100.txt:356) and points at the v1.0-era framework PDF. The lost-domain 0/18 denominator is unchanged.
+ 
+ [r67 amendment, appended 2026-11-04] The frontier as of round 67 is F01-F45 admitted: F44 at round 65 and F45 at round 67 (round 66 admitted no frontier row). The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.
++
++## Round-68 admission — Frontier F46 (2026-11-04)
++
++Appended amendment (R6): the round-68 entry `knowledge/openssf-scorecard-api-contract.md` (Frontier F46, source
++S102) rests on the OpenSSF Scorecard API's own swagger 2.0 contract, captured `corpus/source-snapshots/round-68/S102.txt`,
++manifest `corpus/source-snapshots/round-68/manifest.json`.
++
++| id | topic | status | entry | sources | next |
++|---|---|---|---|---|---|
++| F46 | OpenSSF Scorecard API swagger 2.0 contract (info.version 1.1.0, host api.scorecard.dev) — the machine interface to published scorecard results: the `/projects/{platform}/{org}/{repo}` GET with its 40-hex `commit` pin, the OIDC-verified `publish` POST, the `/version` route, and the ScorecardResult / ScorecardCheck / Repo / Error definitions with the aggregate `score` field | admitted | knowledge/openssf-scorecard-api-contract.md | S102 | Read a result's keys and commit pin from the contract (S102.txt:19-37, :336-370), never a served instance's values; score range, weighting and check meaning are not in the contract and stay with F35/S086. |
+diff --git i/corpus/SOURCES.md w/corpus/SOURCES.md
+index fbb1a0c..f221932 100644
+--- i/corpus/SOURCES.md
++++ w/corpus/SOURCES.md
+@@ -111,6 +111,7 @@
+ | S099 | Kasegi cat SIGPIPE masking diagnostic — corpus/instruments/figure-audit.py | own-work | A | Local figure-audit cat SIGPIPE exemption and the later-input masking case; not external security policy or general error detection | Base b6db9e818d322726e39cb441f2179d34d4170275 upstream_stale L83-L94; round66 controls/red-before-mechanism.txt at1957407e22331c73aafe944da2b37c182f13583a L4-L8; opened2026-11-04 | A pipe-truncated cat producer can mask a later operand's error; bind the exemption to decoded inputs and retain a single-input positive control. | mined | 2026-11-04 | on-release | corpus/lessons/round-66.md |
+ | S100 | FIRST PSIRT Maturity Document (HTML page) — https://www.first.org/standards/frameworks/psirts/psirt_maturity_document | docs | A | FIRST's own maturity ladder for a product security team: three named levels (Basic, Intermediate, Advanced) over an operational-foundations floor, with the per-level capability checklist; not a certification, not a score, and not the service catalogue that F44/S098 holds | capture corpus/source-snapshots/round-67/S100.txt (sha256 cf834a652560bb8e230917299d8ea58c245a0c8715101280115c2508318bff9f, 478 lines, 59068 snapshot bytes over 82978 fetched; content L216-L464; Maturity Level 1 L218, Level 2 L285, Level 3 L318, Beyond Level 3 L353, Annex 7 L397; the raw HTML carries a per-response CSP nonce so only the snapshot digest is stable; no publication date in the body) | A maturity level is a capability profile a team selects, not a certification; Level 2 is gated on Level 1 and foundations precede both. | mined | 2026-11-04 | 180d | corpus/knowledge/first-psirt-maturity-document.md |
+ | S101 | FIRST PSIRT Maturity Document (PDF companion) — https://www.first.org/standards/frameworks/psirts/FIRST_PSIRT_Maturity_Document.pdf | docs | A | The same document's PDF rendering: its cover carries the only non-normativity notice and the only edition year, and the file is byte-stable; not a second document and not the service catalogue | capture corpus/source-snapshots/round-67/S101.txt (sha256 a55e315ffaeda54436d190ff0e77560224a2fd803f8f4a34f5adf90d01185bc8, 768 lines, 58889 snapshot bytes; raw PDF 644190 bytes, raw sha256 f217c446b4f422d1288d6836467f6acccc58a5b3027fef67866c9f392059a31f reproducible across two fetches, 29 pages, pdfinfo CreationDate 2018-12-06; cover notice L8, annex headings L600, L676, L698) | The PDF cover states the descriptions are informational only, which the HTML rendering does not; cite S101 for non-normativity and S100 for line-numbered body quotes. | mined | 2026-11-04 | 180d | corpus/knowledge/first-psirt-maturity-document.md |
++| S102 | OpenSSF Scorecard API swagger 2.0 contract (OpenSSF) — https://api.securityscorecards.dev/swagger.json | docs | A | The Scorecard API's own machine contract (info.version 1.1.0, declared host api.scorecard.dev): the /projects/{platform}/{org}/{repo} GET with its 40-hex commit query parameter, the OIDC-verified publish POST, the /version route and the ScorecardResult, ScorecardCheck, Repo and Error definitions; not the check documentation S086 holds and not any served result instance | capture corpus/source-snapshots/round-68/S102.txt (sha256 6ebb8552ac3e0c4085f4a9239e29551fa1be19cebbdf99ccabb96400d8c2caa0, 429 lines, 7595 snapshot bytes over 11802 fetched, fetched 2026-11-04T21:49:46Z; description L13, version L15, host L17, result route L19-L37, publish L93-L107, version route L234-L244, definitions L268-L370); located quote "Aggregate score of the repository" (L353, 5 words) | A result's keys, commit pin and aggregate-score field come from the contract; the contract states no score range, weighting or check meaning, which stay with S086. | mined | 2026-11-04 | 2027-05-03 | corpus/knowledge/openssf-scorecard-api-contract.md |
+ 
+ ## Paths
+ 
+@@ -161,8 +162,6 @@
+ 
+ - Fuzzilli project's primary documentation at https://github.com/googleprojectzero/fuzzilli — unopened; defer unless its tool-technique ground clears PROVINCE and sibling ownership.
+ 
+-- OpenSSF Scorecard aggregate-score/API documentation — unopened portion only; S086 already holds the check documentation, not a general scorecard.dev API contract.
+-
+ ## Registry changes
+ 
+ - S040 recheck cell old → new: `180d` → `180d — final URL https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html (2 redirects); instrument UA required (browser UA 403s)` (R25-5).
+diff --git i/corpus/instruments/knowledge-expected.txt w/corpus/instruments/knowledge-expected.txt
+index aa44927..25c3b97 100644
+--- i/corpus/instruments/knowledge-expected.txt
++++ w/corpus/instruments/knowledge-expected.txt
+@@ -33,6 +33,7 @@ corpus/knowledge/doj-vdp-framework-scope-and-authorization.md
+ corpus/knowledge/epss-exploit-prediction-scoring.md
+ corpus/knowledge/ev-model.md
+ corpus/knowledge/evidence-dir.md
++corpus/knowledge/first-psirt-maturity-document.md
+ corpus/knowledge/first-psirt-services-framework.md
+ corpus/knowledge/github-private-vulnerability-reporting.md
+ corpus/knowledge/github-repository-security-advisories-rest-api.md
+@@ -54,6 +55,7 @@ corpus/knowledge/multiparty-vulnerability-coordination.md
+ corpus/knowledge/nist-sp800-216-vdp-framework.md
+ corpus/knowledge/nvd-api-2.0-response-schema.md
+ corpus/knowledge/nvd-api-2.0-retrieval-interface.md
++corpus/knowledge/openssf-scorecard-api-contract.md
+ corpus/knowledge/openssf-scorecard-checks.md
+ corpus/knowledge/operator-queue.md
+ corpus/knowledge/ops-invariants.md
+@@ -82,4 +84,3 @@ corpus/knowledge/vendor-disclosure-policies-as-corpus-objects.md
+ corpus/knowledge/vendor-disclosure-policy-commitments-crosswalk.md
+ corpus/knowledge/vendor-third-party-finding-coordination.md
+ corpus/knowledge/zdi-disclosure-policy.md
+-corpus/knowledge/first-psirt-maturity-document.md

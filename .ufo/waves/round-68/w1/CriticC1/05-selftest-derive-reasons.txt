@@ -1,0 +1,13 @@
+Command (CriticC1, scratch /fast/scratch/hyaku/kasegi-r68/CriticC1, root st4/ containing g.txt="35\n", not a git repo):
+for each gate in (base controls/base-gate-d0f48405.py, cand gate-82b3b7d.py exported via `git show 82b3b7d:corpus/instruments/figure-audit.py`)
+and each of the four new selftest derives, write a one-figure ledger (want=35) and run `python3 <gate> --ledger L --root st4`.
+
+Observed:
+SELFCASE gate=base rc=0 stderr='' stdout='FIG c0 recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0' derive='sort --compress-program=/bin/false -S 1K g.txt | head -n 1'
+SELFCASE gate=base rc=0 stderr='' stdout='FIG c1 recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0' derive='sort --compress-program /bin/false g.txt'
+SELFCASE gate=base rc=0 stderr='' stdout='FIG c2 recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0' derive="sort '--compress-program=/bin/false' g.txt"
+SELFCASE gate=base rc=1 stderr='' stdout='VAILABLE reason=derive-exit-128 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1' derive='git show --textconv HEAD'
+SELFCASE gate=cand rc=2 stderr='FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=c0' stdout='' derive='sort --compress-program=/bin/false -S 1K g.txt | head -n 1'
+SELFCASE gate=cand rc=2 stderr='FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=c1' stdout='' derive='sort --compress-program /bin/false g.txt'
+SELFCASE gate=cand rc=2 stderr='FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=c2' stdout='' derive="sort '--compress-program=/bin/false' g.txt"
+SELFCASE gate=cand rc=2 stderr='FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=c3' stdout='' derive='git show --textconv HEAD'

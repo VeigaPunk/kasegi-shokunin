@@ -1,0 +1,13 @@
+--- mutants/P0.py	2026-11-04 18:54:39.075753543 -0300
++++ mutants/M3.py	2026-11-04 18:54:47.448508657 -0300
+@@ -87,8 +87,8 @@
+ # Heads whose flags can write a file or execute a configured command: refused when such a flag
+ # appears as a token.  A write through an allow-listed head is a write class like any other.
+ DENIED_FLAGS = (
+-    ("sort", ("-o", "--output", "--compress-program")),
+-    ("git show", ("--output", "--ext-diff", "--textconv")),
++    ("sort", ("-o", "--output")),
++    ("git show", ("--output", "--ext-diff")),
+ )
+ # R68: the two flags above were admitted at base and really executed a program
+ # (`sort --compress-program=PROG` ran PROG 18288 times on one 420 KB fixture; `git show

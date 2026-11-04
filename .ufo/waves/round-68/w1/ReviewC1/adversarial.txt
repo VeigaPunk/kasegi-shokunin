@@ -1,0 +1,9 @@
+ADV rc=1 comp_runs=18288 tc_runs=0 derive='sort --compress-prog=$W/compressor.sh -S 1K big.txt | head -n 1' :: FIG a0 recorded=x derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+ADV rc=1 comp_runs=18288 tc_runs=0 derive='sort --compress=$W/compressor.sh -S 1K big.txt | head -n 1' :: FIG a1 recorded=x derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+ADV rc=1 comp_runs=18288 tc_runs=0 derive='sort --compress $W/compressor.sh -S 1K big.txt | head -n 1' :: FIG a2 recorded=x derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+ADV rc=2 comp_runs=0 tc_runs=0 derive='git show --textconv HEAD:big.txt | head -n 1' :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=a3
+ADV rc=1 comp_runs=0 tc_runs=0 derive='git show --textc HEAD:big.txt | head -n 1' :: FIG a4 recorded=x derived=UNAVAILABLE reason=derive-upstream-exit-128 stale
+ADV rc=1 comp_runs=0 tc_runs=1 derive='git show HEAD | wc -l' :: FIG a5 recorded=x derived=16 want=x stale
+ADV rc=2 comp_runs=0 tc_runs=0 derive='git show --ext-diff HEAD | wc -l' :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=a6
+ADV rc=1 comp_runs=0 tc_runs=0 derive='git show --ext-d HEAD | wc -l' :: FIG a7 recorded=x derived=UNAVAILABLE reason=derive-upstream-exit-128 stale
+ADV rc=1 written_exists=True derive='sort --outp=written.txt big.txt' :: FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1

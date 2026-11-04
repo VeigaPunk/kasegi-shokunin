@@ -1,0 +1,89 @@
+[
+ {
+  "id": "E01-env-prefix-refused",
+  "kind": "env",
+  "derive": "GIT_EXTERNAL_DIFF={M} git show HEAD",
+  "expect": "refused (env assignment head)",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "E02-env-config-count-show",
+  "kind": "env",
+  "derive": "git show HEAD:t.txt",
+  "expect": "env injects textconv w/o repo config",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35\nb\na want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"HEAD:t.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/sh4fotd0"
+  ],
+  "note": ""
+ },
+ {
+  "id": "E03-env-external-diff-show-commit",
+  "kind": "env",
+  "derive": "git show HEAD",
+  "expect": "GIT_EXTERNAL_DIFF w/o --ext-diff",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=commit 2828150aee65e1df5ff27a6715ce67f2d179d3e2\nAuthor: fixture <fixture@shokunin.local>\nDate:   Wed Nov 4 18:57:04 2026 -0300\n\n   ",
+  "err": "",
+  "marks": 2,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/git \"git\", \"show\", \"HEAD\"",
+   "/bin/sh \"/bin/sh\", \"-c\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"/fast/scratch/hyaku/kasegi-r68/R\"...",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.oydihiv0/mark.sh \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"t.txt\"",
+   "/usr/bin/cat \"cat\", \"t.txt\"",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.oydihiv0/mark.sh \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"/fast/scratch/hyaku/kasegi-r68/R\"...",
+   "/usr/bin/cat \"cat\", \"/fast/scratch/hyaku/kasegi-r68/R\"..."
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.oydihiv0/MARK",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/git-blob-fLVrwd/t.txt",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/n57uk8qp"
+  ],
+  "note": ""
+ },
+ {
+  "id": "E04-env-sort-compress-env-none",
+  "kind": "env",
+  "derive": "sort -S 1K g.txt",
+  "expect": "no env-sort exec path",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35\na\nb want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"-S\", \"1K\", \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/1js8i6hm"
+  ],
+  "note": ""
+ }
+]

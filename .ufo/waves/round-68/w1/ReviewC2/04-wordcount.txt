@@ -1,0 +1,15 @@
+$ python3 -c "
+import json,subprocess
+for q in json.load(open('corpus/source-snapshots/round-68/manifest.json'))['sources'][0]['quotes']:
+    n=subprocess.run(['wc','-w'],input=q['quote']+'\n',capture_output=True,text=True).stdout.strip()
+    print(q['id'],'wc -w =',n)
+"
+Q01-description wc -w = 9
+Q02-title wc -w = 3
+Q04-operation wc -w = 4
+Q05-commit-parameter wc -w = 7
+Q06-200-schema wc -w = 7
+Q07-repo-name wc -w = 4
+Q08-repo-commit wc -w = 9
+Q09-aggregate-score wc -w = 5
+exit=0

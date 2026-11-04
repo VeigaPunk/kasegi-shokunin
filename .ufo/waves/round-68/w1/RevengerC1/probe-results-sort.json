@@ -1,0 +1,434 @@
+[
+ {
+  "id": "S01-compress-equals",
+  "kind": "exec",
+  "derive": "sort --compress-program={M} g.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "S02-compress-space",
+  "kind": "exec",
+  "derive": "sort --compress-program {M} g.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "S03-compress-quoted",
+  "kind": "exec",
+  "derive": "sort '--compress-program={M}' g.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "S04-compress-prefix-equals",
+  "kind": "exec",
+  "derive": "sort --compress-prog={M} g.txt",
+  "expect": "ADMITTED? (getopt-style abbrev)",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35\na\nb want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"--compress-prog=/fast/scratch/hy\"..., \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/nrbczszr"
+  ],
+  "note": ""
+ },
+ {
+  "id": "S05-compress-prefix-short",
+  "kind": "exec",
+  "derive": "sort --compress-p={M} g.txt",
+  "expect": "ADMITTED? (abbrev)",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35\na\nb want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"--compress-p=/fast/scratch/hyaku\"..., \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/ynq3rllx"
+  ],
+  "note": ""
+ },
+ {
+  "id": "S06-compress-after-buffer",
+  "kind": "exec",
+  "derive": "sort -S 1K --compress-program={M} g.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "S07-compress-short-cluster",
+  "kind": "exec",
+  "derive": "sort -S1K -r --compress-program={M} g.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "S00-control-plain",
+  "kind": "control",
+  "derive": "sort -S 1K g.txt",
+  "expect": "admitted, marks 0",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=35\na\nb want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"-S\", \"1K\", \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/7d_nu3df"
+  ],
+  "note": ""
+ },
+ {
+  "id": "S08-compress-attached-shell-word",
+  "kind": "exec",
+  "derive": "sort --compress-program={M}g.txt g.txt",
+  "expect": "admitted? marks?",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": "argument spelled with the prefix; the program path is only partly the marker"
+ },
+ {
+  "id": "W01-output-short",
+  "kind": "write",
+  "derive": "sort -o out.txt g.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": false
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "W02-output-cluster-r",
+  "kind": "write",
+  "derive": "sort -ro out.txt g.txt",
+  "expect": "ADMITTED? write out.txt",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": true
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"-ro\", \"out.txt\", \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/nm7llvl0",
+   "out.txt"
+  ],
+  "note": ""
+ },
+ {
+  "id": "W03-output-cluster-u",
+  "kind": "write",
+  "derive": "sort -uo out.txt g.txt",
+  "expect": "ADMITTED? write out.txt",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": true
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"-uo\", \"out.txt\", \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/aa6zpi_b",
+   "out.txt"
+  ],
+  "note": ""
+ },
+ {
+  "id": "W04-output-attached",
+  "kind": "write",
+  "derive": "sort -oout.txt g.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": false
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "W05-output-equals",
+  "kind": "write",
+  "derive": "sort --output=out.txt g.txt",
+  "expect": "refused",
+  "verdict": "REFUSED",
+  "rc": 2,
+  "fig": "",
+  "err": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=probe",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": false
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\""
+  ],
+  "write_events": [],
+  "note": ""
+ },
+ {
+  "id": "W06-output-prefix",
+  "kind": "write",
+  "derive": "sort --outp=out.txt g.txt",
+  "expect": "ADMITTED? write out.txt",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": true
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"--outp=out.txt\", \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/54ywob1y",
+   "out.txt"
+  ],
+  "note": ""
+ },
+ {
+  "id": "W07-output-prefix-short",
+  "kind": "write",
+  "derive": "sort --out out.txt g.txt",
+  "expect": "ADMITTED? write out.txt",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {
+   "out.txt": true
+  },
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"--out\", \"out.txt\", \"g.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/0nccwfrn",
+   "out.txt"
+  ],
+  "note": ""
+ },
+ {
+  "id": "W08-tempdir-explicit",
+  "kind": "write",
+  "derive": "sort -T td -S 1K big.txt",
+  "expect": "admitted; temp writes under td",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=line0000000\nline0000005\nline0000008\nline0000011\nline0000014\nline0000017\nline0000020\nline0000023\nline0000026\nline0000029\nline0000032",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"-T\", \"td\", \"-S\", \"1K\", \"big.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/hztc4_46",
+   "td/sort007L5R",
+   "td/sort008qIg",
+   "td/sort00FaUU",
+   "td/sort00XlqB",
+   "td/sort00ZCt5",
+   "td/sort00a7YQ",
+   "td/sort00cMHK",
+   "td/sort00iyth",
+   "td/sort00jOew",
+   "td/sort00ke0w"
+  ],
+  "note": "strace openat under td expected"
+ },
+ {
+  "id": "W09-tempdir-long",
+  "kind": "write",
+  "derive": "sort --temporary-directory=td -S 1K big.txt",
+  "expect": "admitted; temp writes under td",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=line0000000\nline0000005\nline0000008\nline0000011\nline0000014\nline0000017\nline0000020\nline0000023\nline0000026\nline0000029\nline0000032",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"--temporary-directory=td\", \"-S\", \"1K\", \"big.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/ylhv0fph",
+   "td/sort000evU",
+   "td/sort001Zjr",
+   "td/sort002M2E",
+   "td/sort007N5r",
+   "td/sort007ytI",
+   "td/sort00BgPw",
+   "td/sort00HSqs",
+   "td/sort00KcnM",
+   "td/sort00Mu3F",
+   "td/sort00aAVn"
+  ],
+  "note": ""
+ },
+ {
+  "id": "W10-tmpdir-env",
+  "kind": "write",
+  "derive": "sort -S 1K big.txt",
+  "expect": "admitted; TMPDIR-controlled temp writes",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=line0000000\nline0000005\nline0000008\nline0000011\nline0000014\nline0000017\nline0000020\nline0000023\nline0000026\nline0000029\nline0000032",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"-S\", \"1K\", \"big.txt\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td/iqu_s9rc",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td/sort005jIc",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td/sort00EKRk",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td/sort00EUE2",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td/sort00HkiX",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td/sort00XRSO",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td/sort00aIBk",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td/sort00iHMA",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td/sort00kHEp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td/sort00mDTo",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/fx.n8yn3bwe/td/sort00n90z"
+  ],
+  "note": ""
+ },
+ {
+  "id": "R01-sort-outside-read",
+  "kind": "read",
+  "derive": "sort /etc/hostname",
+  "expect": "admitted; read outside lane",
+  "verdict": "ADMITTED",
+  "rc": 1,
+  "fig": "FIG probe recorded=x derived=plazir27 want=x stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+  "err": "",
+  "marks": 0,
+  "artifacts": {},
+  "exec_events": [
+   "/usr/bin/python3 \"/usr/bin/python3\", \"-B\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--ledger\", \"/fast/scratch/hyaku/kasegi-r68/R\"..., \"--root\", \"/fast/scratch/hyaku/kasegi-r68/R\"",
+   "/usr/bin/sort \"sort\", \"/etc/hostname\""
+  ],
+  "write_events": [
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp",
+   "/fast/scratch/hyaku/kasegi-r68/RevengerC1/tmp/tbqf2g8e"
+  ],
+  "note": ""
+ }
+]
