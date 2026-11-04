@@ -24,7 +24,9 @@ Ledger entry shape (JSON object with a "figures" array):
                             bytes at that rev (e.g. `git show <rev>:<path>`);
                             entries require an allow-listed head
                             (allow-list: git show, git cat-file, git ls-tree, grep, wc, ls, head,
-                            tail, sha256sum, cat, cut, tr, sort without -o/--output, and
+                            tail, sha256sum, cat, cut, tr, sort without
+                            -o/--output/--compress-program, git show without
+                            --output/--ext-diff/--textconv, and
                             python/python3 running a counter whose decoded script argument
                             starts literally with corpus/instruments/ and resolves inside it).
                             The same decoded argv is validated and executed. Supported syntax:
@@ -85,12 +87,16 @@ READ_ONLY_HEADS = (
 # Heads whose flags can write a file or execute a configured command: refused when such a flag
 # appears as a token.  A write through an allow-listed head is a write class like any other.
 DENIED_FLAGS = (
-    ("sort", ("-o", "--output")),
-    ("git show", ("--output", "--ext-diff")),
+    ("sort", ("-o", "--output", "--compress-program")),
+    ("git show", ("--output", "--ext-diff", "--textconv")),
 )
+# R68: the two flags above were admitted at base and really executed a program
+# (`sort --compress-program=PROG` ran PROG 18288 times on one 420 KB fixture; `git show
+# --textconv` ran the config-declared driver once).  They are program-execution classes, not
+# read-only derives, so they are refused at parse time like the round-60 write flags.
 
 
-EXPECTED_CASES = 73  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file)
+EXPECTED_CASES = 77  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file; R68: +4 program-execution flag refusal)
 
 
 def eprint(*a):
@@ -540,6 +546,14 @@ def selftest():
     run_case("sort-quoted-output-refused", 2, _one("s-sortquote", "sort '-o' out.txt g.txt", "35"))
     run_case("sort-escaped-output-refused", 2, _one("s-sortescape", r"sort -\o out.txt g.txt", "35"))
     run_case("git-quoted-output-refused", 2, _one("s-gitquote", "git show '--output=out.txt' HEAD", "35"))
+    run_case("sort-compress-program-refused", 2,
+             _one("s-sortcompress", "sort --compress-program=/bin/false -S 1K g.txt | head -n 1", "35"))
+    run_case("sort-compress-program-space-refused", 2,
+             _one("s-sortcompress2", "sort --compress-program /bin/false g.txt", "35"))
+    run_case("sort-compress-program-quoted-refused", 2,
+             _one("s-sortcompress3", "sort '--compress-program=/bin/false' g.txt", "35"))
+    run_case("git-show-textconv-refused", 2,
+             _one("s-gittextconv", "git show --textconv HEAD", "35"))
     run_case("input-redirection-admitted", 0, _one("s-input", "cat < g.txt", "35"))
     run_case("and-shortcircuit-fails", 1, _one("s-andfail", "cat missing.txt && cat g.txt", "35"))
     run_case("and-stdout-concatenated", 0, _one("s-andout", "cat g.txt && cat g.txt", "35\n35"))
