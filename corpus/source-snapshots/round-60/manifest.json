@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "note": "Round 60 (2026-11-04). S093 = Project Zero's own dated comparison of two production automated vulnerability-discovery pipelines on V8: Fuzzilli (a generative JavaScript-engine fuzzer) and BigSleep (an LLM-based bug finding system), by Samuel Groß, published 2026-Oct-27. The post reports the six-month production window's actionable Type-Vuln counts (45 vs 37), a ~25% production overlap (20/81), a dedicated re-discovery experiment over 112 historic Fuzzilli bugs at 25 attempts per commit (~62% re-discovered + ~12% different, i.e. ~70% with different prompts at 5 attempts), and its own operating recommendation that vendors perform both fuzzing and agentic analysis because the two remain complementary. First admission of the recorded lead 'the Project Zero post comparing Fuzzilli and BigSleep' (SCORECARD planned-for-60). Capture by corpus/instruments/capture-source.py --kind html under the instrument UA; HTTP 200, fetched 64812 bytes, snapshot 40649 bytes over 283 lines.",
+  "sources": [
+    {
+      "id": "S093",
+      "url": "https://projectzero.google/2026/10/fuzzing-v-AI.html",
+      "capture_url": "https://projectzero.google/2026/10/fuzzing-v-AI.html",
+      "http": {
+        "status": 200,
+        "final_url": "https://projectzero.google/2026/10/fuzzing-v-AI.html"
+      },
+      "kind": "html",
+      "fetch_method": "capture-source.py default urllib open under the instrument UA (kasegi-shokunin/1.0), --kind html (tags stripped, entities decoded, script/style blocks removed), status 200 at this host with no redirect (requested URL == effective URL); fetched 2026-11-04T13:29:52Z, 64812 fetched bytes to a 40649-byte snapshot; an independent curl open of the same URL on the same day is 64812 bytes and carries the same text (the capture is the published page's converted text, not a machine-endpoint variant)",
+      "fetched_utc": "2026-11-04T13:29:52Z",
+      "path": "S093.txt",
+      "sha256": "46f69d32cd237d0c14755ba3ce5cbaee0999219e82c806a78e5aa39076347d96",
+      "bytes": 64812,
+      "snapshot_bytes": 40649,
+      "lines": 283,
+      "body_lines": [
+        1,
+        283
+      ],
+      "quotes": [
+        {
+          "id": "Q1",
+          "anchor": 12,
+          "quote": "Fuzzers vs. AI: Comparing Fuzzilli and BigSleep on JavaScript Engines"
+        },
+        {
+          "id": "Q2",
+          "anchor": 16,
+          "quote": "In the past six months, BigSleep found more vulnerabilities than Fuzzilli (45 versus 37) with a 25% overlap in the specific bugs reported."
+        },
+        {
+          "id": "Q3",
+          "anchor": 40,
+          "quote": "So in terms of vulnerabilities, it’s roughly a tie (small advantage BigSleep) at the moment: 45 vs. 37."
+        },
+        {
+          "id": "Q4",
+          "anchor": 51,
+          "quote": "we see an overlap of roughly 25% (20 out of a total of 81)"
+        },
+        {
+          "id": "Q5",
+          "anchor": 61,
+          "quote": "This leaves us with a final number of 112 bugs."
+        },
+        {
+          "id": "Q6",
+          "anchor": 65,
+          "quote": "We now run the agent for 25 attempts on each commit."
+        },
+        {
+          "id": "Q7",
+          "anchor": 68,
+          "quote": "BigSleep was able to re-discover ~62% of the original bugs, while finding a different (but by now fixed) bug for another ~12% of commits."
+        },
+        {
+          "id": "Q8",
+          "anchor": 71,
+          "quote": "For the model used in this experiment (Gemini 3.6 flash), the knowledge cutoff date is March 2026."
+        },
+        {
+          "id": "Q9",
+          "anchor": 74,
+          "quote": "Bugs that are hard to find for a fuzzer are likely also hard to find for an AI agent."
+        },
+        {
+          "id": "Q10",
+          "anchor": 82,
+          "quote": "the agent re-discovered 10 additional bugs in total: 8 from the different starting points and 7 with the rephrased prompt"
+        },
+        {
+          "id": "Q11",
+          "anchor": 88,
+          "quote": "In our experiment, overlap was around 60% of historic Fuzzilli bugs (70% with additional runs that used different prompts)."
+        },
+        {
+          "id": "Q12",
+          "anchor": 16,
+          "quote": "fuzzing and LLMs are still complementary approaches"
+        },
+        {
+          "id": "Q13",
+          "anchor": 16,
+          "quote": "We recommend vendors perform both fuzzing and agentic analysis of their code to maximize the number of vulnerabilities that get reported before they impact users."
+        },
+        {
+          "id": "Q14",
+          "anchor": 281,
+          "quote": "the two approaches remain complementary, and specialized fuzzing continues to provide value by finding bugs quickly"
+        },
+        {
+          "id": "Q15",
+          "anchor": 281,
+          "quote": "we expect further model improvements, potentially coupled with better prompting and more flexible harnesses"
+        }
+      ]
+    }
+  ]
+}

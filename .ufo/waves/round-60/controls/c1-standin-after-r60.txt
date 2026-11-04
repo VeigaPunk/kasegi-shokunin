@@ -1,0 +1,19 @@
+run-utc=2026-11-04T13:34:49Z host=plazir27
+standin-base=cdeea55bea09ed08765d3c3d3a56f23db44e66f4
+--- docstring limb (R74) ---
+1
+--- selftest ---
+selftest case=sort-output-flag-refused exit=2 want=2 verdict=pass
+selftest case=git-show-output-flag-refused exit=2 want=2 verdict=pass
+selftest cases=20 failures=0
+--- mutbat ---
+CONTROL c-equivalent-trailing-space selftest_exit=0 must_not_be_killed=held last='selftest cases=20 failures=0'
+MUT m4-drop-stale-literal-case sites=1 py_compile=0 selftest_exit=1 killed=1 last='selftest cases=19 failures=1'
+MUT m6-readonly-gate-off sites=1 py_compile=0 selftest_exit=1 killed=1 last='selftest cases=20 failures=4'
+mutbat killed=2/2 survivors=0 controls=pass
+--- ledger ---
+FIG census-internal-r56-receipt recorded=1130 derived=1130 ok
+FIG census-gone-r56-receipt recorded=3915 derived=3915 ok
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+--- red fixture ---
+FIG d53-1-trailer recorded=34 derived=33 want=34 stale

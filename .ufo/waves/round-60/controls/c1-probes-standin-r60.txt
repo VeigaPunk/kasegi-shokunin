@@ -1,0 +1,12 @@
+instrument=/fast/scratch/hyaku/kasegi-r60/l1/standin/corpus/instruments/figure-audit.py sha256=35f7bcd3e673b81b
+run-utc=2026-11-04T13:34:48Z host=plazir27
+probe=Q1-escape-single derive=cat g.txt \'; touch MARK-Q1; \' exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q1-escape-single
+probe=Q2-escape-double derive=cat g.txt \"; touch MARK-Q2; \" exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q2-escape-double
+probe=Q3-sed-in-program derive=sed -n '1e touch MARK-Q3' g.txt exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q3-sed-in-program
+probe=Q4-awk-system derive=awk 'BEGIN{system("touch MARK-Q4")}' exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q4-awk-system
+probe=Q5-sort-output-flag derive=sort -o MARK-Q5 g.txt exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q5-sort-output-flag
+probe=Q6-git-show-output derive=git show --output=MARK-Q6 HEAD exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q6-git-show-output
+probe=Q7-git-show-ext-diff derive=git show --ext-diff HEAD exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q7-git-show-ext-diff
+probe=CTRL-quoted-semicolon derive=cat g.txt | grep -e '35' -e ';' exit=0 markers=0 :: FIG CTRL-quoted-semicolon recorded=35 derived=35 ok
+probe=CTRL-plain-count derive=cat g.txt | wc -l exit=0 markers=0 :: FIG CTRL-plain-count recorded=1 derived=1 ok
+probe=RESIDUAL-python-traversal derive=python3 corpus/instruments/../../../above-evil.py exit=1 markers=0 :: FIG RESIDUAL-python-traversal recorded=35 derived=UNAVAILABLE reason=derive-exit-2 stale
