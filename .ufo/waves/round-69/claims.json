@@ -1,0 +1,55 @@
+{
+  "lane": "kasegi",
+  "round": 69,
+  "attempt": 1,
+  "frozen_at": "recorded by the freeze commit's committer date (round-68 V68-1: a hand-typed timestamp was future-dated; this file names no clock time of its own)",
+  "base_revision": "656272cf6b753fab7ce249f286b824c87677fdf3",
+  "note": "Two claims, one per owned axis. C1 works the lowest non-retired axis (depth:verifiability 4) and is labelled nominal per QUALITY R58: the axis's citation-resolution metric is not read by this gate, so the score stays 4 and the round claims the instrument move, not a score. C2 is the frontier admission on coverage (8) and is the round's sourced claim (S103, opened this round). Both before-states and the C1 forgery control were measured and committed before this freeze; no implementation byte is committed before it.",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "axis_score_before": 4,
+      "type": "instrument repair, nominal per R58 (score 4 -> 4, delta 0)",
+      "residual": "Round-68 closure V68-3 and the round-68 wave (`.ufo/waves/round-68/w1/CriticC1.md` R69-a..d, `RevengerC1.md` rows 1, 3-6) measured the derive gate's program-execution refusal as spelling-exact: unique long-option abbreviations of sort's --compress-program and --output, sort short-option bundles carrying o, plain `git show <commit>` (default textconv on a commit patch), and `git cat-file --textconv/--filters` were admitted at the round-68 tip and executed or wrote. The pre-freeze base control on this host reproduces all eight shapes (controls/c1-base-donothing-r69.txt).",
+      "target": "The derive gate refuses at parse time, with reason=derive-not-read-only and without executing or writing, exactly the eight enumerated probe shapes P1..P8 of the frozen counter (sort --compress-prog=PROG; sort --co PROG; sort --outp=FILE; sort -uo FILE; git show HEAD; git show ':/fixture'; git cat-file --textconv HEAD:big.txt; git cat-file --filters HEAD:f.txt), keeps the nine enumerated read-only controls admitted and exact, re-derives the lane ledger 35/35, and pins nine new selftest cases (77 -> 86).",
+      "predicate": "Pointed at the measured gate, the committed counter prints `VERIFY measurements=13 failures=0` and exits 0.",
+      "counting_command": "python3 -B .ufo/waves/round-69/controls/c1-probe-run-r69.py --gate <gate exported from the measured revision> --work /fast/scratch/hyaku/kasegi-r69/<seat>/<dir> --mode candidate",
+      "kill_rule": "Any MEASURE line FAIL, a nonzero exit, or a missing VERIFY line defeats C1. The target is the enumerated probe set; it is not narrowed after data and it is not widened into a class claim: a further admitted program-execution shape found by an attack seat is recorded as a residual, and a probe that fails is an honest stop.",
+      "do_nothing_control": "The same counter on the base gate bytes (controls/base-gate-656272cf.py, sha256 10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8 = the round-68 measured gate) prints `VERIFY measurements=13 failures=10` and exits 1 (controls/c1-base-donothing-r69.txt): P1/P2 run the compressor 18288 times each, P3/P4 write their file, P5/P6 run the textconv driver, P7 the textconv driver, P8 the smudge filter; selftest pins 77; no-write-side-effect FAIL.",
+      "forgery_control": "A blanket-refusal forgery (controls/forgery-blanket-refusal-gate.py: base gate with segment_ok returning False) must fail the counter through the positive controls (read-only-controls-admitted, real-ledger, selftest); receipt controls/c1-forgery-blanket-r69.txt.",
+      "before": "P1..P8 FAIL (admitted; marker runs 18288/18288/0/0/1/1/1/1; P3/P4 wrote), selftest cases=77, no-write-side-effect FAIL; `VERIFY measurements=13 failures=10` exit 1",
+      "after_target": "all thirteen measurements ok, `VERIFY measurements=13 failures=0`, exit 0",
+      "pins": {
+        "counter_path": ".ufo/waves/round-69/controls/c1-probe-run-r69.py",
+        "base_gate_sha256": "10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8",
+        "counter_sha256": "see controls/pins-r69.txt (written in the same commit as this file)"
+      }
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "axis_score_before": 8,
+      "type": "frontier admission (F47 on S103), sourced claim",
+      "target": "Frontier row F47 admitted on one new source row S103: GitHub Docs' REST reference for global security advisories (list and get-by-GHSA endpoints, the list filters with their enumerated values and defaults, the reviewed-only/malware-excluded default), distinct from the repository-advisory REST API the lane holds (F36/S087, whose entry names global advisories as a separate reference outside its capture) and from the single advisory instance S068.",
+      "refused_candidate": "ENISA EUVD API documentation at https://euvd.enisa.europa.eu/apidoc, opened this round and refused as an entry source: the static HTML is a 3062-byte SPA shell with no documentation text; receipt controls/euvd-refusal-r69.txt.",
+      "predicate": "`python3 corpus/instruments/frontier-recheck-count.py` prints `FRONTIER-CENSUS rows=47 admitted=47 closed=47 problem-rows=0 registry=103`, `FRONTIER-PASS F47 ids=S103` and `entries=50 pass=50 exit=0`; `python3 corpus/instruments/capture-binding-check.py` prints `records=83 bound=83 unbound=0`; `wc -l corpus/instruments/knowledge-expected.txt` = 87 and `grep -vc '^#'` = 85 with `LC_ALL=C sort -c` exit 0; `/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` exits 0.",
+      "counting_command": "python3 corpus/instruments/frontier-recheck-count.py; python3 corpus/instruments/capture-binding-check.py; wc -l corpus/instruments/knowledge-expected.txt; grep -vc '^#' corpus/instruments/knowledge-expected.txt; LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt; /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi",
+      "kill_rule": "Any count short of the frozen after-value, a nonzero census exit, or an admitted row whose Gate block lacks a located <=25-word quote for its own access date defeats C2. No narrowing: a missing row is an honest stop.",
+      "do_nothing_control": "The same commands on a git-archive export of the base revision print rows=46 admitted=46 closed=46 registry=102, entries=49 pass=49, records=82 bound=82 unbound=0, knowledge 86 lines / 84 entries, F47 rows 0, S103 rows 0 (controls/c2-base-counters-r69.txt).",
+      "before": "rows=46 registry=102 entries=49 capture=82 knowledge=84 (86 lines) census exit=0",
+      "after_target": "rows=47 registry=103 entries=50 capture=83 knowledge=85 (87 lines) census exit=0",
+      "pins": {
+        "capture_manifest": "corpus/source-snapshots/round-69/manifest.json",
+        "capture_sha256": "c531c1e9b3eb9b4443e9851edc479e137eff772fb41dca3db16d697ac514344f",
+        "capture_lines": 585
+      }
+    }
+  ],
+  "round_shape": "one v1 wave (band 8-16), L1 holds the planner seat",
+  "out_of_scope": [
+    "program-execution or write shapes outside P1..P8 (python counters with --root/--out, sort -T temp writes, environment variables, host file reads) — named residuals, not claimed",
+    "any sandbox, authenticity or general pipefail reading",
+    "score movement on either axis (both held, delta 0)"
+  ]
+}
