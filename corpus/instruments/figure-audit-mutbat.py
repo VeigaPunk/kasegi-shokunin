@@ -25,6 +25,8 @@ MUTANTS = [
      '    run_case("stale-literal", 1, SELFTEST_LEDGER_STALE)\n', ""),
     ("m6-readonly-gate-off",
      "return head.startswith(READ_ONLY_HEADS)", "return True"),
+    ("m7-python-confinement-off",
+     "    return target.startswith(base + os.sep)", "    return True"),
 ]
 CONTROLS = [
     ("c-equivalent-trailing-space",

@@ -1007,3 +1007,15 @@ LLM-based bug finding system — at https://projectzero.google/2026/10/fuzzing-v
 [r60 amendment, appended 2026-11-04] The frontier as of round 60 is F01-F41 admitted: F40 at round 59 and F41 at round 60.
 The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
 outside it.
+
+## Round-61 admission — coverage map and Frontier F42 (2026-11-04)
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Big Sleep's dated SQLite case | knowledge/project-zero-big-sleep-sqlite-variant-analysis.md | S094, Project Zero's 2024-Nov-01 report, opened 2026-11-04 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F42 | Big Sleep's SQLite variant-analysis finding account — seed-commit setup, pre-release exposure qualification and harness-bound negative AFL experiment | admitted | knowledge/project-zero-big-sleep-sqlite-variant-analysis.md | S094 | Preserve the pre-release qualification (S094.txt:18), seeded setup (:25), harness differences (:112), CPU-hour unit (:113) and experimental-results caveat (:118); this is the publisher's account, not a lane reproduction or general benchmark. |
+
+F42 adds a dated real-world finding account, distinct from F04's validation principles, F40's tracker and F41's V8 production comparison. The lost-domain 0/18 denominator is unchanged.

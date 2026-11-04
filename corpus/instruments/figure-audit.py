@@ -26,10 +26,12 @@ Ledger entry shape (JSON object with a "figures" array):
                             are rejected whose derive lacks a read-only head
                             (allow-list: git show, git cat-file, git ls-tree, grep, wc, ls, head,
                             tail, sha256sum, cat, cut, tr, sort without -o/--output, and
-                            python/python3 running a corpus/instruments/*.py
-                            counter). No awk and no sed: an interpreted program can
-                            execute and write through system(), 'e' or 'w' whatever its
-                            head, so neither is an admissible derive head.
+                            python/python3 running a counter whose script resolves inside
+                            corpus/instruments/ — a path that only starts with that prefix but
+                            leaves it ("..", an absolute path, a symlink) is refused).
+                            No awk and no sed: an interpreted program can
+                            execute and write through system(), 'e' or 'w' whatever its head,
+                            so neither is an admissible derive head.
 
 Exit codes: 0 every figure re-derives; 1 any figure stale or derive failed
 (fail-closed: a nonzero derive exit or an empty stdout is stale, never ok);
@@ -60,7 +62,7 @@ DENIED_FLAGS = (
 )
 
 
-EXPECTED_CASES = 20  # R17 pin: a dropped selftest case turns the selftest red
+EXPECTED_CASES = 24  # R17 pin: a dropped selftest case turns the selftest red
 
 
 def eprint(*a):
@@ -167,22 +169,38 @@ def denied_flag(head):
     return False
 
 
-def segment_ok(head):
+def python_head_ok(root, head):
+    """A python counter is admissible only when its script resolves inside corpus/instruments/.
+
+    The r60 limb tested the literal prefix of the script argument, so
+    `python3 corpus/instruments/../../x.py` (and a symlink inside the directory) passed the
+    prefix test and ran a script outside it. This limb resolves the argument against the
+    derive's root, symlinks included, and refuses whatever lands outside the instruments dir.
+    """
+    parts = head.split()
+    if len(parts) < 2 or not parts[1].replace("\\", "/").startswith("corpus/instruments/"):
+        return False
+    base = os.path.realpath(os.path.join(root or ".", "corpus", "instruments"))
+    target = os.path.realpath(os.path.join(root or ".", parts[1]))
+    if target == base:
+        return False
+    return target.startswith(base + os.sep)
+
+
+def segment_ok(root, head):
     if head.startswith(("python ", "python3 ")):
-        # a counter run is admissible only against a committed instrument
-        parts = head.split()
-        return len(parts) >= 2 and parts[1].replace("\\", "/").startswith("corpus/instruments/")
+        return python_head_ok(root, head)
     if denied_flag(head):
         return False
     return head.startswith(READ_ONLY_HEADS)
 
 
-def check_read_only(cmd):
+def check_read_only(root, cmd):
     # every unquoted '|' / '&&' segment must itself open with an allow-listed head
     segs = split_segments(cmd)
     if segs is None:
         return False
-    return all(segment_ok(seg.strip()) for seg in segs)
+    return all(segment_ok(root, seg.strip()) for seg in segs)
 
 
 def audit(ledger_path, root):
@@ -204,7 +222,7 @@ def audit(ledger_path, root):
         if not isinstance(ent, dict) or not all(k in ent for k in ("id", "record", "recorded", "derive", "want")):
             eprint("FIGURE-AUDIT: UNAVAILABLE reason=entry-shape entry=%r" % (ent.get("id") if isinstance(ent, dict) else ent,))
             return 2
-        if not check_read_only(ent["derive"]):
+        if not check_read_only(root, ent["derive"]):
             eprint("FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=%s" % ent["id"])
             return 2
         derived, raw, err = run_derive(ent["derive"], root)
@@ -265,6 +283,16 @@ def selftest():
                 f.write("35\n")
             with open(os.path.join(tmp, "f1.txt"), "w", encoding="utf-8", newline="\n") as f:
                 f.write("340\n")
+            os.makedirs(os.path.join(tmp, "corpus", "instruments"), exist_ok=True)
+            with open(os.path.join(tmp, "corpus", "instruments", "ok.py"), "w", encoding="utf-8", newline="\n") as f:
+                f.write("print(35)\n")
+            with open(os.path.join(tmp, "out.py"), "w", encoding="utf-8", newline="\n") as f:
+                f.write("print(35)\n")
+            try:
+                os.symlink(os.path.join(tmp, "out.py"),
+                           os.path.join(tmp, "corpus", "instruments", "link.py"))
+            except (OSError, NotImplementedError):
+                pass
             lp = os.path.join(tmp, "ledger.json")
             with open(lp, "w", encoding="utf-8", newline="\n") as f:
                 if broken:
@@ -302,6 +330,10 @@ def selftest():
     run_case("awk-head-refused", 2, _one("s-awk", "awk 'BEGIN{system(\"touch X\")}'", "35"))
     run_case("sort-output-flag-refused", 2, _one("s-sorto", "sort -o out.txt g.txt", "35"))
     run_case("git-show-output-flag-refused", 2, _one("s-gito", "git show --output=out.txt HEAD", "35"))
+    run_case("python-inside-admitted", 0, _one("s-pyin", "python3 corpus/instruments/ok.py", "35"))
+    run_case("python-traversal-refused", 2, _one("s-pytrav", "python3 corpus/instruments/../../out.py", "35"))
+    run_case("python-symlink-refused", 2, _one("s-pylink", "python3 corpus/instruments/link.py", "35"))
+    run_case("python-absolute-refused", 2, _one("s-pyabs", "python3 /nonexistent-absolute.py", "35"))
 
     failures = 0
     for cid, got, want, good, out in cases:
