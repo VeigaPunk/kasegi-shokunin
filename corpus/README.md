@@ -1044,3 +1044,24 @@ F43 adds the explicit matrix attribution, not universal phase cardinality. S023 
 
 F44 adds the receiving team's service side that F43 (CERT/CC phase-to-role matrix), F06/S018 (multi-party coordination guidelines), S043/S044 (severity ladders) and S053/S054 (EPSS/SSVC prioritization) do not hold. The phrase "PSIRT Services Framework" occurs in held captures S001, S002 and S053 only as FIRST site navigation at line 201, not as content; the screen is `.ufo/waves/round-65/controls/prefreeze-screen-r65.txt`.
 
+
+## Round-67 admission — coverage map and Frontier F45 (2026-11-04)
+
+The coverage map above is not edited in place (R6): the round-67 entry `knowledge/first-psirt-maturity-document.md`
+(Frontier F45, sources S100 and S101) is recorded here as an appended amendment so every existing line keeps its
+number. Source basis: FIRST's own PSIRT Maturity Document at
+https://www.first.org/standards/frameworks/psirts/psirt_maturity_document (HTML page, S100) and its companion PDF
+https://www.first.org/standards/frameworks/psirts/FIRST_PSIRT_Maturity_Document.pdf (S101), both opened 2026-11-04,
+captures `corpus/source-snapshots/round-67/S100.txt` and `S101.txt`, manifest `corpus/source-snapshots/round-67/manifest.json`.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| FIRST PSIRT maturity ladder: three named levels, the operational-foundations floor, the reactive→proactive direction and the per-level capability checklist | knowledge/first-psirt-maturity-document.md | S100, S101 — FIRST first-party maturity document (HTML page + PDF companion), opened 2026-11-04 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F45 | FIRST PSIRT Maturity Document — FIRST's own maturity ladder for a product security team: three named levels (Basic, Intermediate, Advanced) over an operational-foundations floor, the reactive→proactive direction, the Level-2-is-gated-on-Level-1 precondition, and the Annex-7 per-level capability checklist (64 items) | admitted | knowledge/first-psirt-maturity-document.md | S100, S101 | Read a level as a capability profile a team selects (S100.txt:224), never as a certification or a score, and read the ladder as three levels plus an empty "Beyond Level 3" heading (S100.txt:353-355); Level 2 is gated on Level 1 in the document's own words (S100.txt:288), the triage interval in its policy template is the unfilled `[#]` placeholder (S100.txt:393), and the non-normativity notice exists only in the PDF rendering (S101.txt:8). The per-level service-area listings are PNG artwork and are not quoted. |
+
+F45 adds the receiving team's *growth ladder* that F44/S098 (service catalogue and qualification gate), F43 (CERT/CC phase-to-role matrix), F06/S018 (multi-party coordination) and F11 (ISO/IEC 29147 and 30111 division of labour) do not hold: S098 carries zero occurrences of "Maturity Level" and its only maturity statement is a glossary definition, while the maturity document defers its own glossary and catalogue to the framework (S100.txt:356) and points at the v1.0-era framework PDF. The lost-domain 0/18 denominator is unchanged.
+
+[r67 amendment, appended 2026-11-04] The frontier as of round 67 is F01-F45 admitted: F44 at round 65 and F45 at round 67 (round 66 admitted no frontier row). The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.
