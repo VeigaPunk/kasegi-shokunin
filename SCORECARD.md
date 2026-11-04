@@ -2480,3 +2480,23 @@ Frozen claims: `.ufo/waves/round-60/claims.json` (freeze commit `66e6241cd7afd61
 
 1. **depth:verifiability (4, lowest):** close the residual classes the round-60 claim names instead of re-claiming the same probes: (a) confine the `python3` head so a `..` traversal out of `corpus/instruments/` is refused (red-before probe: the RESIDUAL-python-traversal derive), (b) extend the write-flag screen to every allow-listed head or drop the remaining heads that admit a write flag, and (c) the operator's sandbox decision from the kasegi round-59 L0 row (the gate is not a sandbox) — none of these is a lane target until the L0 row is answered where it needs an operator ruling. The round-59/r60 figures fold into the ledger only if it does not share claim space.
 2. **coverage (8):** the SOURCES `Leads (unopened)` section is stale — several listed leads are now admitted rows (ISO records → S089/S090, AISI → S091, GitHub advisories REST API → S087, CISA ADP list → S088); the next round should re-derive the lead list from the registry and open one genuinely unopened candidate (the Project Zero 2024 "From Naptime to Big Sleep" post linked by S093, or the Fuzzilli project's own documentation), clearing the extended pre-freeze screen (R80: its receipt before the freeze) and the anchor-referent table (R71).
+
+### Round-60 wave-1 outcome (13 seats, one v1 wave, 0 dead)
+
+| seat | role | verdict | effect on the round |
+|---|---|---|---|
+| ScoutS093 | scout | AGREE (independent conversion byte-identical, 15/15 quotes) | confirms the Gate |
+| ScoutHostBound | scout | FAIL (H1–H5 in the round's harness; H6 carried) | M60-10, R82; selftest value named host-conditional |
+| EntryClaimTable | scribe | PASS (29/29 GROUNDED, quotes ≤ 25 words) | none |
+| SiblingOverlap | connector | SCOPE CLEAR + one boundary recommendation | the entry's Limits bullet appended; counters re-run |
+| ReviewerC2 | reviewer | VERIFIED (all nine C2 commands reproduce) | none |
+| ReviewerC1 | reviewer | VERIFIED on the frozen checks; F1 MAJOR token-spelling screen bypass, F2 wording, F3–F5 | M60-9; SKILL r60 correction; F5 closed with the committed-tree receipt |
+| CriticC1 | critic | DEFEATED on the security reading (24 admitted, 9 green, none Q1–Q7) | named open, escalated on L0; frozen predicate intact |
+| MutationC1 | mutation-tester | killed 5/13 one-limb mutants; 8 survived | named open (R17) |
+| ExecCounters | executor | ALL-MATCH (17 commands, erratum applied) | none |
+| ExecAnchors | executor | REFERENTS-HOLD | none |
+| ExecDiffScope | executor | OUT-OF-SCOPE relative to the item premise | M60-8 (item text defect) |
+| SentinelCred | sentinel | CLEAN | none |
+| ExecEscapes | executor | 43 derives: 14 admitted-and-executing (2 green), 10 safe, 19 refused | M60-9; base-vs-candidate receipt |
+
+**Wave-1 non-claim findings (reported, not claimed):** the write-flag screen is token-literal (quoted/clustered/abbreviated/ANSI-C spellings and `sort --compress-program` admitted; `#'` comment-phantom writes with a green audit); 24 write/execute derives admitted, 9 green; no regression against base (`controls/c1-xclass-base-cand-r60.txt`); the new runner is host-bound and not fail-closed, and the selftest's `cases=20` is host-conditional; 8 of 13 one-limb mutants survive the selftest. None of these changes a frozen value; the escalations are the kasegi round-60 L0 line and the round-61 plan. **Trend verdicts:** expansion improved; quality unchanged; discernment improved (the wave's non-author seats found the screen's incompleteness and the harness defects, and the connector's recommendation was applied rather than filed unread).

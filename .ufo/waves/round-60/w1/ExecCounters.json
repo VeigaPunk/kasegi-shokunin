@@ -1,0 +1,623 @@
+{
+ "seat": "ExecCounters",
+ "round": 60,
+ "wave": "w1",
+ "generated_utc": "2026-11-04T13:40:26Z",
+ "clone_root": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+ "clone_head": "7f7dd267283d2a16ca38d4cb05bed92165cb35cd",
+ "claims_path": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone/.ufo/waves/round-60/claims.json",
+ "claims_sha256": "1ca06a10f5d2c7e9eeb695a23507381e4ce6f0c15c283cd7d7999bf5e9ec27c5",
+ "erratum_applied": [
+  {
+   "claim": "C2",
+   "n": 8,
+   "frozen_want": "1",
+   "effective_want": "2",
+   "source": ".ufo/waves/round-60/claims-erratum-1.md"
+  }
+ ],
+ "all_match": true,
+ "records": [
+  {
+   "claim": "C1",
+   "n": 1,
+   "array_index": 0,
+   "command": "bash .ufo/waves/round-60/controls/c1-probe-run-r60.sh corpus/instruments/figure-audit.py /fast/scratch/hyaku/kasegi-r60/l1/c1-after",
+   "want_frozen": "Q1..Q7 each exit=2 markers=0 reason=derive-not-read-only; CTRL-quoted-semicolon exit=0 derived=35; CTRL-plain-count exit=0 derived=1 (the runner resolves the instrument to an absolute path before its per-probe cd, so the command runs literally from the lane root - R77)",
+   "want_effective": "Q1..Q7 each exit=2 markers=0 reason=derive-not-read-only; CTRL-quoted-semicolon exit=0 derived=35; CTRL-plain-count exit=0 derived=1 (the runner resolves the instrument to an absolute path before its per-probe cd, so the command runs literally from the lane root - R77)",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "instrument=/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone/corpus/instruments/figure-audit.py sha256=35f7bcd3e673b81b",
+    "run-utc=2026-11-04T13:40:21Z host=plazir27",
+    "probe=Q1-escape-single derive=cat g.txt \\'; touch MARK-Q1; \\' exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q1-escape-single"
+   ],
+   "stdout_line_count": 12,
+   "stdout": "instrument=/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone/corpus/instruments/figure-audit.py sha256=35f7bcd3e673b81b\nrun-utc=2026-11-04T13:40:21Z host=plazir27\nprobe=Q1-escape-single derive=cat g.txt \\'; touch MARK-Q1; \\' exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q1-escape-single\nprobe=Q2-escape-double derive=cat g.txt \\\"; touch MARK-Q2; \\\" exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q2-escape-double\nprobe=Q3-sed-in-program derive=sed -n '1e touch MARK-Q3' g.txt exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q3-sed-in-program\nprobe=Q4-awk-system derive=awk 'BEGIN{system(\"touch MARK-Q4\")}' exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q4-awk-system\nprobe=Q5-sort-output-flag derive=sort -o MARK-Q5 g.txt exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q5-sort-output-flag\nprobe=Q6-git-show-output derive=git show --output=MARK-Q6 HEAD exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q6-git-show-output\nprobe=Q7-git-show-ext-diff derive=git show --ext-diff HEAD exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q7-git-show-ext-diff\nprobe=CTRL-quoted-semicolon derive=cat g.txt | grep -e '35' -e ';' exit=0 markers=0 :: FIG CTRL-quoted-semicolon recorded=35 derived=35 ok\nprobe=CTRL-plain-count derive=cat g.txt | wc -l exit=0 markers=0 :: FIG CTRL-plain-count recorded=1 derived=1 ok\nprobe=RESIDUAL-python-traversal derive=python3 corpus/instruments/../../../above-evil.py exit=1 markers=0 :: FIG RESIDUAL-python-traversal recorded=35 derived=UNAVAILABLE reason=derive-exit-2 stale\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "runner exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "Q1-escape-single exit=2 markers=0 reason=derive-not-read-only",
+     "ok": true,
+     "observed": "exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q1-escape-single"
+    },
+    {
+     "clause": "Q2-escape-double exit=2 markers=0 reason=derive-not-read-only",
+     "ok": true,
+     "observed": "exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q2-escape-double"
+    },
+    {
+     "clause": "Q3-sed-in-program exit=2 markers=0 reason=derive-not-read-only",
+     "ok": true,
+     "observed": "exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q3-sed-in-program"
+    },
+    {
+     "clause": "Q4-awk-system exit=2 markers=0 reason=derive-not-read-only",
+     "ok": true,
+     "observed": "exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q4-awk-system"
+    },
+    {
+     "clause": "Q5-sort-output-flag exit=2 markers=0 reason=derive-not-read-only",
+     "ok": true,
+     "observed": "exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q5-sort-output-flag"
+    },
+    {
+     "clause": "Q6-git-show-output exit=2 markers=0 reason=derive-not-read-only",
+     "ok": true,
+     "observed": "exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q6-git-show-output"
+    },
+    {
+     "clause": "Q7-git-show-ext-diff exit=2 markers=0 reason=derive-not-read-only",
+     "ok": true,
+     "observed": "exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=Q7-git-show-ext-diff"
+    },
+    {
+     "clause": "CTRL-quoted-semicolon exit=0 derived=35",
+     "ok": true,
+     "observed": "exit=0 :: FIG CTRL-quoted-semicolon recorded=35 derived=35 ok"
+    },
+    {
+     "clause": "CTRL-plain-count exit=0 derived=1",
+     "ok": true,
+     "observed": "exit=0 :: FIG CTRL-plain-count recorded=1 derived=1 ok"
+    },
+    {
+     "clause": "(informational, not part of this want) RESIDUAL-python-traversal admitted, not gate-refused",
+     "ok": true,
+     "observed": "exit=1 :: FIG RESIDUAL-python-traversal recorded=35 derived=UNAVAILABLE reason=derive-exit-2 stale"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C1",
+   "n": 2,
+   "array_index": 1,
+   "command": "python3 corpus/instruments/figure-audit.py --selftest | tail -1",
+   "want_frozen": "selftest cases=20 failures=0, exit 0",
+   "want_effective": "selftest cases=20 failures=0, exit 0",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "selftest cases=20 failures=0"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "selftest cases=20 failures=0\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "last line 'selftest cases=20 failures=0'",
+     "ok": true,
+     "observed": "selftest cases=20 failures=0"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C1",
+   "n": 3,
+   "array_index": 2,
+   "command": "python3 corpus/instruments/figure-audit-mutbat.py | tail -1",
+   "want_frozen": "mutbat killed=2/2 survivors=0 controls=pass, exit 0",
+   "want_effective": "mutbat killed=2/2 survivors=0 controls=pass, exit 0",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "mutbat killed=2/2 survivors=0 controls=pass"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "mutbat killed=2/2 survivors=0 controls=pass\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "last line 'mutbat killed=2/2 survivors=0 controls=pass'",
+     "ok": true,
+     "observed": "mutbat killed=2/2 survivors=0 controls=pass"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C1",
+   "n": 4,
+   "array_index": 3,
+   "command": "python3 corpus/instruments/figure-audit.py | tail -1",
+   "want_frozen": "FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0",
+   "want_effective": "FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "last line 'FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0'",
+     "ok": true,
+     "observed": "FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C1",
+   "n": 5,
+   "array_index": 4,
+   "command": "python3 corpus/instruments/figure-audit.py --ledger .ufo/waves/round-54/controls/red-d53-ledger.json 2>&1 | grep d53-1",
+   "want_frozen": "FIG d53-1-trailer recorded=34 derived=33 want=34 stale",
+   "want_effective": "FIG d53-1-trailer recorded=34 derived=33 want=34 stale",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "FIG d53-1-trailer recorded=34 derived=33 want=34 stale"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "FIG d53-1-trailer recorded=34 derived=33 want=34 stale\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "FIG d53-1-trailer recorded=34 derived=33 want=34 stale",
+     "ok": true,
+     "observed": "FIG d53-1-trailer recorded=34 derived=33 want=34 stale"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C1",
+   "n": 6,
+   "array_index": 5,
+   "command": "sed -n '1,40p' corpus/instruments/figure-audit.py | grep -c 'allow-list:.*head'",
+   "want_frozen": "1 (R74: the docstring names the allow-list its code enforces)",
+   "want_effective": "1 (R74: the docstring names the allow-list its code enforces)",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "1"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "1\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "stdout == '1'",
+     "ok": true,
+     "observed": "stdout='1'"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C1",
+   "n": 7,
+   "array_index": 6,
+   "command": "sha256sum corpus/instruments/figure-audit.py",
+   "want_frozen": "35f7bcd3e673b81b19e431413dec80d7254ce7ab6a50c2c78b8175242cb49ce2",
+   "want_effective": "35f7bcd3e673b81b19e431413dec80d7254ce7ab6a50c2c78b8175242cb49ce2",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "35f7bcd3e673b81b19e431413dec80d7254ce7ab6a50c2c78b8175242cb49ce2  corpus/instruments/figure-audit.py"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "35f7bcd3e673b81b19e431413dec80d7254ce7ab6a50c2c78b8175242cb49ce2  corpus/instruments/figure-audit.py\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "sha256 == 35f7bcd3e673b81b19e431413dec80d7254ce7ab6a50c2c78b8175242cb49ce2",
+     "ok": true,
+     "observed": "sha256=35f7bcd3e673b81b19e431413dec80d7254ce7ab6a50c2c78b8175242cb49ce2"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C1",
+   "n": 8,
+   "array_index": 7,
+   "command": "sha256sum corpus/instruments/figure-audit-ledger.json",
+   "want_frozen": "28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b",
+   "want_effective": "28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b  corpus/instruments/figure-audit-ledger.json"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b  corpus/instruments/figure-audit-ledger.json\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "sha256 == 28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b",
+     "ok": true,
+     "observed": "sha256=28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C2",
+   "n": 1,
+   "array_index": 0,
+   "command": "python3 corpus/instruments/frontier-recheck-count.py | grep -E 'FRONTIER-CENSUS|FRONTIER-PASS F41|entries='",
+   "want_frozen": "FRONTIER-CENSUS rows=41 admitted=41 closed=41 problem-rows=0 registry=93; FRONTIER-PASS F41 ids=S093; entries=44 pass=44 exit=0",
+   "want_effective": "FRONTIER-CENSUS rows=41 admitted=41 closed=41 problem-rows=0 registry=93; FRONTIER-PASS F41 ids=S093; entries=44 pass=44 exit=0",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "FRONTIER-CENSUS rows=41 admitted=41 closed=41 problem-rows=0 registry=93",
+    "FRONTIER-PASS F41 ids=S093",
+    "entries=44 pass=44 exit=0"
+   ],
+   "stdout_line_count": 3,
+   "stdout": "FRONTIER-CENSUS rows=41 admitted=41 closed=41 problem-rows=0 registry=93\nFRONTIER-PASS F41 ids=S093\nentries=44 pass=44 exit=0\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "FRONTIER-CENSUS rows=41",
+     "ok": true,
+     "observed": "FRONTIER-CENSUS rows=41 admitted=41 closed=41 problem-rows=0 registry=93"
+    },
+    {
+     "clause": "FRONTIER-CENSUS admitted=41",
+     "ok": true,
+     "observed": "FRONTIER-CENSUS rows=41 admitted=41 closed=41 problem-rows=0 registry=93"
+    },
+    {
+     "clause": "FRONTIER-CENSUS closed=41",
+     "ok": true,
+     "observed": "FRONTIER-CENSUS rows=41 admitted=41 closed=41 problem-rows=0 registry=93"
+    },
+    {
+     "clause": "FRONTIER-CENSUS problem-rows=0",
+     "ok": true,
+     "observed": "FRONTIER-CENSUS rows=41 admitted=41 closed=41 problem-rows=0 registry=93"
+    },
+    {
+     "clause": "FRONTIER-CENSUS registry=93",
+     "ok": true,
+     "observed": "FRONTIER-CENSUS rows=41 admitted=41 closed=41 problem-rows=0 registry=93"
+    },
+    {
+     "clause": "FRONTIER-PASS F41 ids=S093",
+     "ok": true,
+     "observed": "FRONTIER-PASS F41 ids=S093"
+    },
+    {
+     "clause": "entries line entries=44",
+     "ok": true,
+     "observed": "entries=44 pass=44 exit=0"
+    },
+    {
+     "clause": "entries line pass=44",
+     "ok": true,
+     "observed": "entries=44 pass=44 exit=0"
+    },
+    {
+     "clause": "entries line exit=0",
+     "ok": true,
+     "observed": "entries=44 pass=44 exit=0"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C2",
+   "n": 2,
+   "array_index": 1,
+   "command": "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-60/manifest.json --source S093",
+   "want_frozen": "sha256 OK + 15 Q OK lines, exit 0",
+   "want_effective": "sha256 OK + 15 Q OK lines, exit 0",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "S093:sha256 OK",
+    "S093:Q1 OK occurrences=2 anchor=12-ok",
+    "S093:Q10 OK occurrences=1 anchor=82-ok"
+   ],
+   "stdout_line_count": 16,
+   "stdout": "S093:sha256 OK\nS093:Q1 OK occurrences=2 anchor=12-ok\nS093:Q10 OK occurrences=1 anchor=82-ok\nS093:Q11 OK occurrences=1 anchor=88-ok\nS093:Q12 OK occurrences=1 anchor=16-ok\nS093:Q13 OK occurrences=1 anchor=16-ok\nS093:Q14 OK occurrences=1 anchor=281-ok\nS093:Q15 OK occurrences=1 anchor=281-ok\nS093:Q2 OK occurrences=1 anchor=16-ok\nS093:Q3 OK occurrences=1 anchor=40-ok\nS093:Q4 OK occurrences=1 anchor=51-ok\nS093:Q5 OK occurrences=1 anchor=61-ok\nS093:Q6 OK occurrences=1 anchor=65-ok\nS093:Q7 OK occurrences=1 anchor=68-ok\nS093:Q8 OK occurrences=1 anchor=71-ok\nS093:Q9 OK occurrences=1 anchor=74-ok\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "S093:sha256 OK",
+     "ok": true,
+     "observed": "S093:sha256 OK"
+    },
+    {
+     "clause": "15 Q OK lines",
+     "ok": true,
+     "observed": "count=15"
+    },
+    {
+     "clause": "each Q OK line carries occurrences= or anchor=",
+     "ok": true,
+     "observed": "with-detail=15/15"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C2",
+   "n": 3,
+   "array_index": 2,
+   "command": "python3 corpus/instruments/capture-binding-check.py | tail -1",
+   "want_frozen": "records=76 bound=76 unbound=0, exit 0",
+   "want_effective": "records=76 bound=76 unbound=0, exit 0",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "records=76 bound=76 unbound=0"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "records=76 bound=76 unbound=0\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "records=76 bound=76 unbound=0",
+     "ok": true,
+     "observed": "records=76 bound=76 unbound=0"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C2",
+   "n": 4,
+   "array_index": 3,
+   "command": "ls corpus/knowledge/*.md | wc -l",
+   "want_frozen": "79",
+   "want_effective": "79",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "79"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "79\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "stdout == '79'",
+     "ok": true,
+     "observed": "stdout='79'"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C2",
+   "n": 5,
+   "array_index": 4,
+   "command": "grep -c '^corpus/knowledge/' corpus/instruments/knowledge-expected.txt",
+   "want_frozen": "79",
+   "want_effective": "79",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "79"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "79\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "stdout == '79'",
+     "ok": true,
+     "observed": "stdout='79'"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C2",
+   "n": 6,
+   "array_index": 5,
+   "command": "LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt",
+   "want_frozen": "exit 0",
+   "want_effective": "exit 0",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [],
+   "stdout_line_count": 0,
+   "stdout": "",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C2",
+   "n": 7,
+   "array_index": 6,
+   "command": "grep -cE '^\\| F41 ' corpus/README.md",
+   "want_frozen": "1",
+   "want_effective": "1",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "1"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "1\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "stdout == '1'",
+     "ok": true,
+     "observed": "stdout='1'"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C2",
+   "n": 8,
+   "array_index": 7,
+   "command": "grep -c 'the tracker is opened as S092' corpus/SOURCES.md",
+   "want_frozen": "1",
+   "want_effective": "2",
+   "want_overridden_by": ".ufo/waves/round-60/claims-erratum-1.md",
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "2"
+   ],
+   "stdout_line_count": 1,
+   "stdout": "2\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    },
+    {
+     "clause": "stdout == '2'",
+     "ok": true,
+     "observed": "stdout='2'"
+    }
+   ],
+   "verdict": "MATCH"
+  },
+  {
+   "claim": "C2",
+   "n": 9,
+   "array_index": 8,
+   "command": "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file corpus/SOURCES.md",
+   "want_frozen": "exit 0",
+   "want_effective": "exit 0",
+   "want_overridden_by": null,
+   "cwd": "/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone",
+   "exit_code": 0,
+   "stdout_first_three_lines": [
+    "file\tW04\tS028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes",
+    "file\tW04\tS029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes",
+    "file\tW04\tS072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes"
+   ],
+   "stdout_line_count": 7,
+   "stdout": "file\tW04\tS028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes\nfile\tW04\tS029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes\nfile\tW04\tS072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes\nfile\tW04\tS076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes\nfile\tW04\tS080 duplicate url ossf.github.io/osv-schema across scopes\nfile\tW04\tS085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes\nfile\tok\t/fast/scratch/hyaku/kasegi-r60/ExecCounters/tmp.v0nxEx7BP8/clone/corpus/SOURCES.md\n",
+   "stderr": "",
+   "assertions": [
+    {
+     "clause": "exit 0",
+     "ok": true,
+     "observed": "exit=0"
+    }
+   ],
+   "verdict": "MATCH"
+  }
+ ]
+}
