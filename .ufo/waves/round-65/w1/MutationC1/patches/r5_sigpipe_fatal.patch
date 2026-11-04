@@ -1,0 +1,8 @@
+--- ref_c1_calibration.py
++++ r5_sigpipe_fatal.py
+@@ -83,4 +83,4 @@
+     """
+     if status < 0:
+-        return status != -13  # SIGPIPE on a non-final stage: documented benign case
++        return True  # mutant: SIGPIPE on a non-final stage is fatal too
+     if status > 1:

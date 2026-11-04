@@ -1,0 +1,299 @@
+DRIVER committed=yes sha256=064404510b71825016b71a8db0d7a341ee17e6317cc5758ac0a3b9c89d754a60
+run-utc=2026-11-04T19:33:18.759611+00:00
+measured-revision=6cb9a995266bfaab6bda15551bb228d5de0e4252
+construction-override=True
+final=False
+host-bound-git-replay=true GIT_NO_REPLACE_OBJECTS=1
+INPUT corpus/instruments/figure-audit.py sha256=8d92eaa0a1f248eb1fb8ae4d0d098c2a11d8d0674fa1eff6cefdb771e2e917e9
+INPUT corpus/instruments/figure-audit-ledger.json sha256=28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b
+INPUT corpus/instruments/figure-audit-mutbat.py sha256=7a61cf1e5cd22c4f0fa553b2455aab795a26cc3f5ac491466753e4cceffd9992
+INPUT .ufo/waves/round-65/w1/ExecSignalProbes/c1-signal-probes.py sha256=855af8dfca4c4fe48bd7eda93705789cff46aa00c25760f03fb66bca81a3adf2
+INPUT .ufo/waves/round-65/w1/ExecSignalMutants/signal-mutbat.py sha256=5050d853523d396aff7bb31004883d08e86a8fc9d66748a76bae2bc7ba0d47aa
+EXPORT revision=6cb9a995266bfaab6bda15551bb228d5de0e4252 via=git-archive
+CANDIDATE sha256=86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef
+BASE a283189b6c8d86ee1a06e4aa2b701a2b6c6b068b sha256=8d92eaa0a1f248eb1fb8ae4d0d098c2a11d8d0674fa1eff6cefdb771e2e917e9
+RUN collector-base argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/.ufo/waves/round-65/w1/ExecSignalProbes/c1-signal-probes.py", "--instrument", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/base.py", "--work", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/collector-base", "--mode", "base"]
+SIGNAL-PROBES mode=base instrument=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/base.py instrument_sha256=8d92eaa0a1f248eb1fb8ae4d0d098c2a11d8d0674fa1eff6cefdb771e2e917e9 root=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/collector-base/root
+NATIVE P1 stage=0 rc=-15
+NATIVE P1 stage=1 rc=0
+PROBE P1 mode=base audit_exit=0 verdict=ok reason=-
+NATIVE P2 stage=0 rc=-9
+NATIVE P2 stage=1 rc=0
+PROBE P2 mode=base audit_exit=0 verdict=ok reason=-
+NATIVE P3 stage=0 rc=0
+NATIVE P3 stage=1 rc=-15
+PROBE P3 mode=base audit_exit=1 verdict=stale reason=derive-exit--15
+NATIVE P4 stage=0 rc=-13
+NATIVE P4 stage=1 rc=0
+PROBE P4 mode=base audit_exit=0 verdict=ok reason=-
+NATIVE P5 stage=0 rc=0
+NATIVE P5 stage=1 rc=0
+PROBE P5 mode=base audit_exit=0 verdict=ok reason=-
+NATIVE P6 stage=0 rc=1
+NATIVE P6 stage=1 rc=0
+PROBE P6 mode=base audit_exit=0 verdict=ok reason=-
+PROBES probes=6 failures=1
+RESULT collector-base PASS
+RUN candidate-collector argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/.ufo/waves/round-65/w1/ExecSignalProbes/c1-signal-probes.py", "--instrument", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/corpus/instruments/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/collector-candidate", "--mode", "candidate"]
+SIGNAL-PROBES mode=candidate instrument=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/corpus/instruments/figure-audit.py instrument_sha256=86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef root=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/collector-candidate/root
+NATIVE P1 stage=0 rc=-15
+NATIVE P1 stage=1 rc=0
+PROBE P1 mode=candidate audit_exit=1 verdict=stale reason=derive-upstream-signal-15
+NATIVE P2 stage=0 rc=-9
+NATIVE P2 stage=1 rc=0
+PROBE P2 mode=candidate audit_exit=1 verdict=stale reason=derive-upstream-signal-9
+NATIVE P3 stage=0 rc=0
+NATIVE P3 stage=1 rc=-15
+PROBE P3 mode=candidate audit_exit=1 verdict=stale reason=derive-signal-15
+NATIVE P4 stage=0 rc=-13
+NATIVE P4 stage=1 rc=0
+PROBE P4 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P5 stage=0 rc=0
+NATIVE P5 stage=1 rc=0
+PROBE P5 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P6 stage=0 rc=1
+NATIVE P6 stage=1 rc=0
+PROBE P6 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBES probes=6 failures=0
+RESULT candidate-collector PASS
+RUN collector-selfcheck argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/.ufo/waves/round-65/w1/ExecSignalProbes/c1-signal-probes.py", "--work", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/selfcheck", "--selfcheck"]
+SIGNAL-PROBES selfcheck=1 instrument=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/selfcheck/stub-figure-audit.py instrument_sha256=62a308f22bd7b5e6149841404347a2a54727e071f7097cf2401eb91c57a6eb5d root=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/selfcheck/root lens=fail-closed
+SELFCHECK-RUN mode=base stub=always-green
+NATIVE P1 stage=0 rc=-15
+NATIVE P1 stage=1 rc=0
+PROBE P1 mode=base audit_exit=0 verdict=ok reason=-
+NATIVE P2 stage=0 rc=-9
+NATIVE P2 stage=1 rc=0
+PROBE P2 mode=base audit_exit=0 verdict=ok reason=-
+NATIVE P3 stage=0 rc=0
+NATIVE P3 stage=1 rc=-15
+PROBE P3 mode=base audit_exit=0 verdict=ok reason=-
+NATIVE P4 stage=0 rc=-13
+NATIVE P4 stage=1 rc=0
+PROBE P4 mode=base audit_exit=0 verdict=ok reason=-
+NATIVE P5 stage=0 rc=0
+NATIVE P5 stage=1 rc=0
+PROBE P5 mode=base audit_exit=0 verdict=ok reason=-
+NATIVE P6 stage=0 rc=1
+NATIVE P6 stage=1 rc=0
+PROBE P6 mode=base audit_exit=0 verdict=ok reason=-
+PROBES probes=6 failures=3
+SELFCHECK-RUN mode=candidate stub=always-green
+NATIVE P1 stage=0 rc=-15
+NATIVE P1 stage=1 rc=0
+PROBE P1 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P2 stage=0 rc=-9
+NATIVE P2 stage=1 rc=0
+PROBE P2 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P3 stage=0 rc=0
+NATIVE P3 stage=1 rc=-15
+PROBE P3 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P4 stage=0 rc=-13
+NATIVE P4 stage=1 rc=0
+PROBE P4 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P5 stage=0 rc=0
+NATIVE P5 stage=1 rc=0
+PROBE P5 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P6 stage=0 rc=1
+NATIVE P6 stage=1 rc=0
+PROBE P6 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBES probes=6 failures=3
+SELFCHECK probes=6 runs=2 failures=6 want=6 verdict=pass
+RESULT collector-selfcheck PASS
+RUN selftest argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/corpus/instruments/figure-audit.py", "--selftest"]
+selftest case=ok-ledger exit=0 want=0 verdict=pass
+selftest case=stale-literal exit=1 want=1 verdict=pass
+selftest case=derive-fails-fail-closed exit=1 want=1 verdict=pass
+selftest case=token-boundary-34-vs-340 exit=1 want=1 verdict=pass
+selftest case=unreadable-ledger-exit-2 exit=2 want=2 verdict=pass
+selftest case=derive-not-read-only-refused exit=2 want=2 verdict=pass
+selftest case=chain-semicolon-refused exit=2 want=2 verdict=pass
+selftest case=chain-background-refused exit=2 want=2 verdict=pass
+selftest case=chain-newline-refused exit=2 want=2 verdict=pass
+selftest case=chain-cmdsubst-refused exit=2 want=2 verdict=pass
+selftest case=pipe-to-shell-refused exit=2 want=2 verdict=pass
+selftest case=redirect-refused exit=2 want=2 verdict=pass
+selftest case=or-chain-refused exit=2 want=2 verdict=pass
+selftest case=quoted-separator-admitted exit=0 want=0 verdict=pass
+selftest case=escape-single-quote-refused exit=2 want=2 verdict=pass
+selftest case=escape-double-quote-refused exit=2 want=2 verdict=pass
+selftest case=sed-head-refused exit=2 want=2 verdict=pass
+selftest case=awk-head-refused exit=2 want=2 verdict=pass
+selftest case=sort-output-flag-refused exit=2 want=2 verdict=pass
+selftest case=git-show-output-flag-refused exit=2 want=2 verdict=pass
+selftest case=python-inside-admitted exit=0 want=0 verdict=pass
+selftest case=python-traversal-refused exit=2 want=2 verdict=pass
+selftest case=python-symlink-refused exit=2 want=2 verdict=pass
+selftest case=python-absolute-refused exit=2 want=2 verdict=pass
+selftest case=python-quoted-traversal-refused exit=2 want=2 verdict=pass
+selftest case=python-dot-prefix-refused exit=2 want=2 verdict=pass
+selftest case=python-sibling-boundary-refused exit=2 want=2 verdict=pass
+selftest case=dollar-expansion-refused exit=2 want=2 verdict=pass
+selftest case=double-quoted-expansion-refused exit=2 want=2 verdict=pass
+selftest case=sort-quoted-output-refused exit=2 want=2 verdict=pass
+selftest case=sort-escaped-output-refused exit=2 want=2 verdict=pass
+selftest case=git-quoted-output-refused exit=2 want=2 verdict=pass
+selftest case=input-redirection-admitted exit=0 want=0 verdict=pass
+selftest case=and-shortcircuit-fails exit=1 want=1 verdict=pass
+selftest case=and-stdout-concatenated exit=0 want=0 verdict=pass
+selftest case=upstream-cat-missing-exit1-stale exit=1 want=1 verdict=pass
+selftest case=upstream-cat-partial-exit1-stale exit=1 want=1 verdict=pass
+selftest case=upstream-cut-missing-exit1-stale exit=1 want=1 verdict=pass
+selftest case=upstream-head-missing-exit1-stale exit=1 want=1 verdict=pass
+selftest case=upstream-tail-missing-exit1-stale exit=1 want=1 verdict=pass
+selftest case=upstream-ls-missing-exit2-stale exit=1 want=1 verdict=pass
+selftest case=upstream-sort-missing-exit2-stale exit=1 want=1 verdict=pass
+selftest case=upstream-sha256sum-missing-exit1-stale exit=1 want=1 verdict=pass
+selftest case=upstream-python-exit1-stale exit=1 want=1 verdict=pass
+selftest case=upstream-python-signal-ignored exit=1 want=1 verdict=pass
+selftest case=upstream-grep-count-nomatch-ignored exit=0 want=0 verdict=pass
+selftest case=upstream-middle-sigterm-stale exit=1 want=1 verdict=pass
+selftest case=upstream-python-sigkill-stale exit=1 want=1 verdict=pass
+selftest case=final-stage-signal-stale exit=1 want=1 verdict=pass
+selftest case=upstream-sigpipe-nonfinal-benign exit=0 want=0 verdict=pass
+selftest case=final-exit7-precedes-upstream-exit1 exit=1 want=1 verdict=pass
+selftest case=and-first-group-upstream-exit1-stale exit=1 want=1 verdict=pass
+selftest case=and-second-group-upstream-exit1-stale exit=1 want=1 verdict=pass
+selftest case=middle-stage-upstream-exit1-stale exit=1 want=1 verdict=pass
+selftest case=named-grep-txt-cat-exit1-stale exit=1 want=1 verdict=pass
+selftest case=named-grep-py-exit1-stale exit=1 want=1 verdict=pass
+selftest case=upstream-grep-invalid-stale exit=1 want=1 verdict=pass
+selftest case=upstream-git-missing-ref-stale exit=1 want=1 verdict=pass
+selftest case=upstream-python-exit7-stale exit=1 want=1 verdict=pass
+selftest case=upstream-grep-no-match-counts-zero exit=0 want=0 verdict=pass
+selftest case=successful-pipeline-counts-one exit=0 want=0 verdict=pass
+selftest case=final-exit1-stale exit=1 want=1 verdict=pass
+selftest case=final-error-precedes-upstream-error exit=1 want=1 verdict=pass
+selftest cases=63 failures=0
+RESULT selftest PASS
+RUN old-mutbat argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/corpus/instruments/figure-audit-mutbat.py", "--instrument", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/corpus/instruments/figure-audit.py"]
+instrument=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/corpus/instruments/figure-audit.py sha256=86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef
+gate-anchor='return parts[0] in READ_ONLY_HEADS' sites=1
+PRISTINE selftest_exit=0 last='selftest cases=63 failures=0'
+CONTROL c-equivalent-trailing-space sites=1 selftest_exit=0 must_not_be_killed=held last='selftest cases=63 failures=0'
+MUT m4-drop-stale-literal-case sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=62 failures=1'
+MUT m6-readonly-gate-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=63 failures=4'
+MUT m7-python-confinement-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=63 failures=4'
+MUT m8-python-prefix-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=63 failures=1'
+MUT m9-python-boundary-separator-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=63 failures=1'
+mutbat killed=5/5 survivors=0 invalid=0 controls=pass
+RESULT old-mutbat PASS
+RUN signal-mutbat-and-equivalents argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/.ufo/waves/round-65/w1/ExecSignalMutants/signal-mutbat.py", "--instrument", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/corpus/instruments/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/battery"]
+instrument=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/corpus/instruments/figure-audit.py sha256=86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef
+PROBE p1-sigterm-upstream derive='python3 corpus/instruments/kill.py | wc -l' want='0'
+PROBE p2-sigkill-upstream derive='python3 corpus/instruments/hardkill.py | wc -l' want='0'
+PROBE p3-final-signal derive='cat g.txt | python3 corpus/instruments/kill.py' want=''
+PROBE p4-sigpipe-nonfinal derive='python3 corpus/instruments/bigwriter.py | head -1' want='bw-line-1'
+PROBE p5-clean derive='cat g.txt | wc -l' want='1'
+PROBE p6-grep-nomatch derive='grep absent g.txt | wc -l' want='0'
+BASE p1-sigterm-upstream verdict=stale reason=derive-upstream-signal-15
+BASE p2-sigkill-upstream verdict=stale reason=derive-upstream-signal-9
+BASE p3-final-signal verdict=stale reason=derive-signal-15
+BASE p4-sigpipe-nonfinal verdict=ok reason=-
+BASE p5-clean verdict=ok reason=-
+BASE p6-grep-nomatch verdict=ok reason=-
+BASE audit_exit=1 limb_contract=pass
+limb=present sites_live=6
+MUT m1-negative-benign-again sites=1 compile=ok audit_exit=1 killed=1 flips=2
+FLIP m1-negative-benign-again p1-sigterm-upstream base=stale/derive-upstream-signal-15 mutant=ok/-
+FLIP m1-negative-benign-again p2-sigkill-upstream base=stale/derive-upstream-signal-9 mutant=ok/-
+MUT m2-sigkill-benign sites=1 compile=ok audit_exit=1 killed=1 flips=1
+FLIP m2-sigkill-benign p2-sigkill-upstream base=stale/derive-upstream-signal-9 mutant=ok/-
+MUT m3-old-final-label sites=1 compile=ok audit_exit=1 killed=1 flips=1
+FLIP m3-old-final-label p3-final-signal base=stale/derive-signal-15 mutant=stale/derive-exit--15
+MUT m4-no-sigpipe-exemption sites=1 compile=ok audit_exit=1 killed=1 flips=1
+FLIP m4-no-sigpipe-exemption p4-sigpipe-nonfinal base=ok/- mutant=stale/derive-upstream-signal-13
+EQ eq1-extract-local sites=1 compile=ok audit_exit=1 held=1 flips=0
+EQ eq2-abs-negation sites=1 compile=ok audit_exit=1 held=1 flips=0
+CONTROL ctrl-syntax-error sites=1 compile=fail rejected=1 detail='invalid syntax'
+SUMMARY killed=4/4 survivors=0 equivalents_held=2 controls_held=1 invalid_rejected=1
+verdict limb-verified limb=present limb_contract=pass
+RESULT signal-mutbat-and-equivalents PASS
+FORGERY captured P1 audit_exit=0 bytes=74
+FORGERY captured P2 audit_exit=0 bytes=74
+FORGERY captured P3 audit_exit=1 bytes=109
+FORGERY captured P4 audit_exit=0 bytes=112
+FORGERY captured P5 audit_exit=0 bytes=74
+FORGERY captured P6 audit_exit=0 bytes=74
+RUN collector-forgeries/forged-receipt argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/.ufo/waves/round-65/w1/ExecSignalProbes/c1-signal-probes.py", "--instrument", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/forgeries/stubs/forged-receipt.py", "--work", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/forgeries-forged-receipt", "--mode", "candidate"]
+SIGNAL-PROBES mode=candidate instrument=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/forgeries/stubs/forged-receipt.py instrument_sha256=a6d207150148ce1d554f6217a7d6580ca6a7a86e3ae25f1f62b63a6c9cf2f8db root=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/forgeries-forged-receipt/root
+NATIVE P1 stage=0 rc=-15
+NATIVE P1 stage=1 rc=0
+PROBE P1 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P2 stage=0 rc=-9
+NATIVE P2 stage=1 rc=0
+PROBE P2 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P3 stage=0 rc=0
+NATIVE P3 stage=1 rc=-15
+PROBE P3 mode=candidate audit_exit=0 verdict=stale reason=derive-exit--15
+NATIVE P4 stage=0 rc=-13
+NATIVE P4 stage=1 rc=0
+PROBE P4 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P5 stage=0 rc=0
+NATIVE P5 stage=1 rc=0
+PROBE P5 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P6 stage=0 rc=1
+NATIVE P6 stage=1 rc=0
+PROBE P6 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBES probes=6 failures=3
+RUN collector-forgeries/always-green argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/.ufo/waves/round-65/w1/ExecSignalProbes/c1-signal-probes.py", "--instrument", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/forgeries/stubs/always-green.py", "--work", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/forgeries-always-green", "--mode", "candidate"]
+SIGNAL-PROBES mode=candidate instrument=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/forgeries/stubs/always-green.py instrument_sha256=68d50a67ed060f8d38c97b0fdd35cc0915c19b0a16d82f559abfaf557570e224 root=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/forgeries-always-green/root
+NATIVE P1 stage=0 rc=-15
+NATIVE P1 stage=1 rc=0
+PROBE P1 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P2 stage=0 rc=-9
+NATIVE P2 stage=1 rc=0
+PROBE P2 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P3 stage=0 rc=0
+NATIVE P3 stage=1 rc=-15
+PROBE P3 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P4 stage=0 rc=-13
+NATIVE P4 stage=1 rc=0
+PROBE P4 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P5 stage=0 rc=0
+NATIVE P5 stage=1 rc=0
+PROBE P5 mode=candidate audit_exit=0 verdict=ok reason=-
+NATIVE P6 stage=0 rc=1
+NATIVE P6 stage=1 rc=0
+PROBE P6 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBES probes=6 failures=3
+RESULT collector-forgeries PASS
+RUN real-ledger argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial-cand/committed-twdotpv1/corpus/instruments/figure-audit.py"]
+FIG frontier-rows recorded=34 derived=34 ok
+FIG registry-rows recorded=85 derived=85 ok
+FIG knowledge-expected-entries recorded=72 derived=72 ok
+FIG knowledge-files recorded=72 derived=72 ok
+FIG capture-lines-s085 recorded=543 (filed; superseded by the r54 D53-2 correction) derived=542 ok
+FIG capture-bytes-s085 recorded=7590 derived=7590 ok
+FIG capture-lines-s086 recorded=731 derived=731 ok
+FIG capture-sha256-s086 recorded=fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f derived=fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f ok
+FIG frontier-rows-r54 recorded=35 derived=35 ok
+FIG registry-rows-r54 recorded=86 derived=86 ok
+FIG entries-r54 recorded=38 derived=38 ok
+FIG knowledge-expected-r54 recorded=73 derived=73 ok
+FIG knowledge-files-r54 recorded=73 derived=73 ok
+FIG figure-audit-mentions-base-scorecard recorded=2 (the receipt's limb; the filed prose 0 superseded) derived=2 ok
+FIG figure-audit-mentions-base-log recorded=0 derived=0 ok
+FIG figure-audit-mentions-base-knowledge-expected recorded=0 derived=0 ok
+FIG frontier-rows-r55 recorded=36 derived=36 ok
+FIG registry-rows-r55 recorded=87 derived=87 ok
+FIG entries-r55 recorded=39 derived=39 ok
+FIG knowledge-expected-r55 recorded=74 derived=74 ok
+FIG knowledge-files-r55 recorded=74 derived=74 ok
+FIG census-fresh-literal-r55 recorded=stale (the receipt's printed limb; the filed prose ok superseded) derived=stale ok
+FIG census-internal-r55-receipt recorded=1118 derived=1118 ok
+FIG census-gone-r55-receipt recorded=3883 derived=3883 ok
+FIG census-fixedpoint-internal-r55 recorded=1119 derived=1119 ok
+FIG census-fixedpoint-gone-r55 recorded=3882 derived=3882 ok
+FIG fail-entry-records recorded=33 (the class-check line; the trailer's 34 superseded) derived=33 ok
+FIG frontier-rows-r56 recorded=37 derived=37 ok
+FIG registry-rows-r56 recorded=88 derived=88 ok
+FIG entries-r56 recorded=40 derived=40 ok
+FIG knowledge-expected-r56 recorded=75 derived=75 ok
+FIG knowledge-files-r56 recorded=75 derived=75 ok
+FIG census-fresh-literal-r56 recorded=ok derived=ok ok
+FIG census-internal-r56-receipt recorded=1130 derived=1130 ok
+FIG census-gone-r56-receipt recorded=3915 derived=3915 ok
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+RESULT real-ledger PASS
+VERIFY measurements=8 failures=0 revision=6cb9a995266bfaab6bda15551bb228d5de0e4252

@@ -1,0 +1,18 @@
+== B1 SIGTERM producer | wc -l want 0 ==
+PROBE id=b1 exit=0 reason=-
+AUDIT FIG b1 recorded=0 derived=0 ok
+== B2 SIGKILL producer | wc -l want 0 ==
+PROBE id=b2 exit=0 reason=-
+AUDIT FIG b2 recorded=0 derived=0 ok
+== B3 final-stage SIGTERM: cat g.txt | kill.py ==
+PROBE id=b3 exit=1 reason=derive-exit--15
+AUDIT FIG b3 recorded= derived=UNAVAILABLE reason=derive-exit--15 stale
+== B4 masked by && : kill.py|wc -l && cat g.txt want "0 35" ==
+PROBE id=b4 exit=0 reason=-
+AUDIT FIG b4 recorded=0
+== B5 exit-0 wrapper whose child is SIGKILLed ==
+PROBE id=b5 exit=0 reason=-
+AUDIT FIG b5 recorded=1 derived=1 ok
+== B6 complete output then SIGTERM ==
+PROBE id=b6 exit=0 reason=-
+AUDIT FIG b6 recorded=1 derived=1 ok

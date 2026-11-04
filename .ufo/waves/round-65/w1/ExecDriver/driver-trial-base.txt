@@ -1,0 +1,76 @@
+DRIVER committed=no predata-trial
+run-utc=2026-11-04T19:33:56.136387+00:00
+measured-revision=a283189b6c8d86ee1a06e4aa2b701a2b6c6b068b
+construction-override=False
+final=False
+host-bound-git-replay=true GIT_NO_REPLACE_OBJECTS=1
+INPUT corpus/instruments/figure-audit.py sha256=8d92eaa0a1f248eb1fb8ae4d0d098c2a11d8d0674fa1eff6cefdb771e2e917e9
+INPUT corpus/instruments/figure-audit-ledger.json sha256=28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b
+INPUT corpus/instruments/figure-audit-mutbat.py sha256=7a61cf1e5cd22c4f0fa553b2455aab795a26cc3f5ac491466753e4cceffd9992
+INPUT-MISSING .ufo/waves/round-65/w1/ExecSignalProbes/c1-signal-probes.py
+INPUT-MISSING .ufo/waves/round-65/w1/ExecSignalMutants/signal-mutbat.py
+EXPORT revision=a283189b6c8d86ee1a06e4aa2b701a2b6c6b068b via=git-archive
+BASE a283189b6c8d86ee1a06e4aa2b701a2b6c6b068b sha256=8d92eaa0a1f248eb1fb8ae4d0d098c2a11d8d0674fa1eff6cefdb771e2e917e9
+FAIL-REASON collector-base missing-committed-input:.ufo/waves/round-65/w1/ExecSignalProbes/c1-signal-probes.py
+RESULT collector-base FAIL
+FAIL-REASON candidate-collector missing-committed-input:.ufo/waves/round-65/w1/ExecSignalProbes/c1-signal-probes.py
+RESULT candidate-collector FAIL
+FAIL-REASON collector-selfcheck missing-committed-input:.ufo/waves/round-65/w1/ExecSignalProbes/c1-signal-probes.py
+RESULT collector-selfcheck FAIL
+FAIL-REASON selftest candidate-overlay-absent
+RESULT selftest FAIL
+RUN old-mutbat argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial/committed-ylbenxnx/corpus/instruments/figure-audit-mutbat.py", "--instrument", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial/committed-ylbenxnx/corpus/instruments/figure-audit.py"]
+instrument=/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial/committed-ylbenxnx/corpus/instruments/figure-audit.py sha256=8d92eaa0a1f248eb1fb8ae4d0d098c2a11d8d0674fa1eff6cefdb771e2e917e9
+gate-anchor='return parts[0] in READ_ONLY_HEADS' sites=1
+PRISTINE selftest_exit=0 last='selftest cases=59 failures=0'
+CONTROL c-equivalent-trailing-space sites=1 selftest_exit=0 must_not_be_killed=held last='selftest cases=59 failures=0'
+MUT m4-drop-stale-literal-case sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=58 failures=1'
+MUT m6-readonly-gate-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=59 failures=4'
+MUT m7-python-confinement-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=59 failures=4'
+MUT m8-python-prefix-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=59 failures=1'
+MUT m9-python-boundary-separator-off sites=1 compile=0 selftest_exit=1 killed=1 invalid=0 last='selftest cases=59 failures=1'
+mutbat killed=5/5 survivors=0 invalid=0 controls=pass
+RESULT old-mutbat PASS
+FAIL-REASON signal-mutbat-and-equivalents candidate-overlay-absent
+RESULT signal-mutbat-and-equivalents FAIL
+FAIL-REASON collector-forgeries missing-committed-input:.ufo/waves/round-65/w1/ExecSignalProbes/c1-signal-probes.py
+RESULT collector-forgeries FAIL
+RUN real-ledger argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r65/ExecDriver/trial/committed-ylbenxnx/corpus/instruments/figure-audit.py"]
+FIG frontier-rows recorded=34 derived=34 ok
+FIG registry-rows recorded=85 derived=85 ok
+FIG knowledge-expected-entries recorded=72 derived=72 ok
+FIG knowledge-files recorded=72 derived=72 ok
+FIG capture-lines-s085 recorded=543 (filed; superseded by the r54 D53-2 correction) derived=542 ok
+FIG capture-bytes-s085 recorded=7590 derived=7590 ok
+FIG capture-lines-s086 recorded=731 derived=731 ok
+FIG capture-sha256-s086 recorded=fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f derived=fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f ok
+FIG frontier-rows-r54 recorded=35 derived=35 ok
+FIG registry-rows-r54 recorded=86 derived=86 ok
+FIG entries-r54 recorded=38 derived=38 ok
+FIG knowledge-expected-r54 recorded=73 derived=73 ok
+FIG knowledge-files-r54 recorded=73 derived=73 ok
+FIG figure-audit-mentions-base-scorecard recorded=2 (the receipt's limb; the filed prose 0 superseded) derived=2 ok
+FIG figure-audit-mentions-base-log recorded=0 derived=0 ok
+FIG figure-audit-mentions-base-knowledge-expected recorded=0 derived=0 ok
+FIG frontier-rows-r55 recorded=36 derived=36 ok
+FIG registry-rows-r55 recorded=87 derived=87 ok
+FIG entries-r55 recorded=39 derived=39 ok
+FIG knowledge-expected-r55 recorded=74 derived=74 ok
+FIG knowledge-files-r55 recorded=74 derived=74 ok
+FIG census-fresh-literal-r55 recorded=stale (the receipt's printed limb; the filed prose ok superseded) derived=stale ok
+FIG census-internal-r55-receipt recorded=1118 derived=1118 ok
+FIG census-gone-r55-receipt recorded=3883 derived=3883 ok
+FIG census-fixedpoint-internal-r55 recorded=1119 derived=1119 ok
+FIG census-fixedpoint-gone-r55 recorded=3882 derived=3882 ok
+FIG fail-entry-records recorded=33 (the class-check line; the trailer's 34 superseded) derived=33 ok
+FIG frontier-rows-r56 recorded=37 derived=37 ok
+FIG registry-rows-r56 recorded=88 derived=88 ok
+FIG entries-r56 recorded=40 derived=40 ok
+FIG knowledge-expected-r56 recorded=75 derived=75 ok
+FIG knowledge-files-r56 recorded=75 derived=75 ok
+FIG census-fresh-literal-r56 recorded=ok derived=ok ok
+FIG census-internal-r56-receipt recorded=1130 derived=1130 ok
+FIG census-gone-r56-receipt recorded=3915 derived=3915 ok
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+RESULT real-ledger PASS
+VERIFY measurements=8 failures=6 revision=a283189b6c8d86ee1a06e4aa2b701a2b6c6b068b

@@ -1,0 +1,7 @@
+== NATIVE sort big.txt | head -n 1 ==
+NATIVE bytes=11 stdout=b'line000001\n'
+NATIVE stage=0 cmd='sort big.txt' rc=-13
+NATIVE stage=1 cmd='head -n 1' rc=0
+== GATE landed: sort big.txt | head -n 1 want first line ==
+PROBE id=s1 exit=0 reason=-
+AUDIT FIG s1 recorded=line000001 derived=line000001 ok

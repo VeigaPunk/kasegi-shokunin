@@ -1,0 +1,9 @@
+--- base.py
++++ ref_c1_calibration.py
+@@ -119,4 +119,6 @@
+             for p, head in zip(processes[:-1], heads[:-1]):
+                 if upstream_stale(head, p.returncode):
+                     out = b"".join(output).decode("utf-8", "replace").strip()
++                    if p.returncode < 0:
++                        return None, out, "derive-upstream-signal-%d" % -p.returncode
+                     return None, out, "derive-upstream-exit-%d" % p.returncode

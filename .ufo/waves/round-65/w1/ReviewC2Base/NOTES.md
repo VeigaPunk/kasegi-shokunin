@@ -179,3 +179,78 @@ red on `capture-binding-check` because the manifest exists without its registry 
 `before.txt` deliberately keeps the base reading (`capture_records 78`, exit 0); the
 79-record/`unbound=1` reading above belongs to the post-capture tree and must be
 labelled by date if quoted in the round's C2 claim.
+
+## 8. Post-landing verification (HEAD `1c36d724c91cdd8585219798ea7cf60bb4f24b5b`, not the base)
+
+The integrator landed the round while I was writing up (`round-65: land signal-fail-closed
+derive gate and F44 PSIRT services catalogue`). Re-running the same commands at that HEAD,
+read-only, gives exactly base + 1 on every C2 counter — i.e. the landing moved its own row
+and nothing else the counters see:
+
+```
+$ git rev-parse HEAD
+1c36d724c91cdd8585219798ea7cf60bb4f24b5b
+$ python3 corpus/instruments/frontier-recheck-count.py | tail -3
+PASS     F44  knowledge/first-psirt-services-framework.md          ids=S098           exit=0
+entries=47 pass=47 exit=0
+$ python3 corpus/instruments/capture-binding-check.py | grep -E '^(MANIFEST round-65|AUDIT|records=|FAIL)'
+MANIFEST round-65 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=79 with_url=79 with_fetched_utc=41 with_archival=38 snapshot_dirs=39 manifest_dirs=39 missing_manifest=0 multi_row_url=7 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+records=79 bound=79 unbound=0
+[capture_exit=0]
+$ python3 corpus/instruments/recheck-audit.py --quiet
+strict pass=73/82 cdroot_fail=0 instrument_fail=0 own_fail=0
+executes=60 gated=22 broken=0
+lines=82 total=82 pass=73 fail-closed=22 parse_fail=0 cwd_fail=9 paths_fail=0 exit=1
+expect=present expected=82 missing=0 unexpected=0 exit=1
+$ wc -l corpus/instruments/knowledge-expected.txt; ls corpus/knowledge/*.md | wc -l
+84
+82
+$ grep -c '^| S[0-9]' corpus/SOURCES.md; grep -c '^| F[0-9]' corpus/README.md
+98
+46
+$ grep -c '^corpus/knowledge/' corpus/instruments/knowledge-expected.txt
+82
+$ LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt; echo sort_c_exit=$?
+sort_c_exit=0
+```
+
+Base → post: records 78→79 (+1), frontier entries 46→47 (+1), census rows 43→44 (+1),
+registry 97→98 (+1), expected-list lines 83→84 (+1) and paths 81→82 (+1), knowledge files
+81→82 (+1), `grep` F rows 45→46 (+1), recheck pass 72→73 (+1), executes 59→60 (+1),
+gated 22→22 (unchanged), `cwd_fail=9` unchanged, audit exit still 1.
+
+Checks on the landed artefacts against my independent capture:
+
+* the S098 registry row carries the **dot** spelling with exactly one `https://` token
+  (`awk -F'|' '{print $3}' | grep -o 'https://' | wc -l` → 1), and the counter confirms the
+  binding (`url_bound=1`, `bound=79 unbound=0`). R3's requirement is honoured.
+* the row's figures are supported by the capture: `grep -cE '^Service [0-9]+\.[0-9]+'` →
+  28 (and `sort -u` → 28), service areas 6, functions 84 — matching the row's "six service
+  areas, 28 services and 84 functions".
+* the entry's recheck line is bound: `recheck: cd <lane> && python3
+  corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-65/manifest.json
+  --source S098`, and `recheck-audit` moves it from gated to executing (executes 59→60).
+* the entry's cited anchors exist in my capture at the stated sections
+  (`PSIRT Framework Structure` L226, `Service 2.1` L680, `Service 3.1` L849,
+  `Service 3.3` L904).
+* R1 is **not** resolved by this landing and is not meant to be: `recheck-audit` still
+  exits 1 on `cwd_fail=9`. Any C2 claim of a green verifiability counter remains false.
+
+## 9. Receipts preserved from scratch, then scratch removed
+
+Scratch `/fast/scratch/hyaku/kasegi-r65/ReviewC2Base/` (base export, five captures, the
+generator) was deleted on exit per the seat contract; the parts a reader needs were copied
+here first:
+
+* `gen_before.sh` — the generator that produced `before.txt` (print command, then its
+  literal output, then the `BEFORE` lines);
+* `captures.sha256` — digests of the five capture artefacts as measured:
+  `cap1/S098.txt`, `cap2/S098.txt`, `cap3/S098-v1-1.txt` all
+  `cfa42e2306546c5f418ccfc62db86f3c340ce31694028666abb46f2803b7a3c2`, and
+  `raw1.html`/`raw2.html` both
+  `3a1b5c1ac0583ff94ffdc82a8e25ce547d3c074255c5f3908944d5197a7aea11`.
+
+The committed `corpus/source-snapshots/round-65/S098.txt` is byte-identical to `cap1`
+(`cmp` → `CMP_WITH_MY_CAPTURE=identical`), so the snapshot itself still exists in the lane;
+only the raw HTML and the duplicate copies were scratch-only.

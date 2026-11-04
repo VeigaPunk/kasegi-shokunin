@@ -1,0 +1,13 @@
+--- base.py
++++ m1_blanket_ignore.py
+@@ -81,9 +81,7 @@
+ 
+     Grep exit1 is an ordinary no-match; negative (signal) statuses stay ignored.
+     """
+-    if status > 1:
+-        return True
+-    return status == 1 and os.path.basename(head) != "grep"
++    return False
+ 
+ 
+ def run_derive(plan, root):

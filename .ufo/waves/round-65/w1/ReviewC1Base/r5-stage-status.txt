@@ -1,0 +1,44 @@
+STAGES id=frontier-rows groups=1 0:[0,0] final=grep
+STAGES id=registry-rows groups=1 0:[0,0] final=grep
+STAGES id=knowledge-expected-entries groups=1 0:[0,0] final=grep
+STAGES id=knowledge-files groups=1 0:[0,0] final=grep
+STAGES id=capture-lines-s085 groups=1 0:[0,0] final=wc
+STAGES id=capture-bytes-s085 groups=1 0:[0,0] final=wc
+STAGES id=capture-lines-s086 groups=1 0:[0] final=wc
+STAGES id=capture-sha256-s086 groups=1 0:[0,0] final=cut
+STAGES id=frontier-rows-r54 groups=1 0:[0,0] final=grep
+STAGES id=registry-rows-r54 groups=1 0:[0,0] final=grep
+STAGES id=entries-r54 groups=1 0:[0,0,0,0,0] final=wc
+STAGES id=knowledge-expected-r54 groups=1 0:[0,0] final=grep
+STAGES id=knowledge-files-r54 groups=1 0:[0,0] final=grep
+STAGES id=figure-audit-mentions-base-scorecard groups=1 0:[0,0] final=grep
+STAGES id=figure-audit-mentions-base-log groups=2 0:[0] final=git 1:[0,1,0] final=wc
+STAGES id=figure-audit-mentions-base-knowledge-expected groups=2 0:[0] final=git 1:[0,1,0] final=wc
+STAGES id=frontier-rows-r55 groups=1 0:[0,0] final=grep
+STAGES id=registry-rows-r55 groups=1 0:[0,0] final=grep
+STAGES id=entries-r55 groups=1 0:[0,0,0,0,0] final=wc
+STAGES id=knowledge-expected-r55 groups=1 0:[0,0] final=grep
+STAGES id=knowledge-files-r55 groups=1 0:[0,0] final=grep
+STAGES id=census-fresh-literal-r55 groups=1 0:[0,0,0] final=cut
+STAGES id=census-internal-r55-receipt groups=1 0:[0,0,0] final=cut
+STAGES id=census-gone-r55-receipt groups=1 0:[0,0,0] final=cut
+STAGES id=census-fixedpoint-internal-r55 groups=1 0:[0,0,0] final=cut
+STAGES id=census-fixedpoint-gone-r55 groups=1 0:[0,0,0] final=cut
+STAGES id=fail-entry-records groups=1 0:[0,0,0] final=cut
+STAGES id=frontier-rows-r56 groups=1 0:[0,0] final=grep
+STAGES id=registry-rows-r56 groups=1 0:[0,0] final=grep
+STAGES id=entries-r56 groups=1 0:[0,0,0,0,0] final=wc
+STAGES id=knowledge-expected-r56 groups=1 0:[0,0] final=grep
+STAGES id=knowledge-files-r56 groups=1 0:[0,0] final=grep
+STAGES id=census-fresh-literal-r56 groups=1 0:[0,0,0] final=cut
+STAGES id=census-internal-r56-receipt groups=1 0:[0,0,0] final=cut
+STAGES id=census-gone-r56-receipt groups=1 0:[0,0,0] final=cut
+SUMMARY figures=35 reps=30 stage_runs=2730 negative_total=0 sigpipe_total=0
+STRUCTURAL early-exit-downstream figures=7
+EARLY id=census-fresh-literal-r55 stage_indexes=0 chain=grep | head | cut
+EARLY id=census-internal-r55-receipt stage_indexes=0 chain=grep | head | cut
+EARLY id=census-gone-r55-receipt stage_indexes=0 chain=grep | head | cut
+EARLY id=fail-entry-records stage_indexes=0 chain=grep | head | cut
+EARLY id=census-fresh-literal-r56 stage_indexes=0 chain=grep | head | cut
+EARLY id=census-internal-r56-receipt stage_indexes=0 chain=grep | head | cut
+EARLY id=census-gone-r56-receipt stage_indexes=0 chain=grep | head | cut

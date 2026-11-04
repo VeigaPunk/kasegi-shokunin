@@ -1,0 +1,16 @@
+CASE                         BASE                       CANDIDATE                 
+P1-sigterm-producer          exit=0   -                exit=1   derive-upstream-signal-15
+P2-sigkill-producer          exit=0   -                exit=1   derive-upstream-signal-9
+P3-final-signal              exit=1   derive-exit--15  exit=1   derive-signal-15
+P4-sigpipe-c-head            exit=0   -                exit=0   -               
+P4b-sigpipe-python           exit=1   derive-upstream-exit-1 exit=1   derive-upstream-exit-1
+P5-clean                     exit=0   -                exit=0   -               
+P6-grep-nomatch              exit=0   -                exit=0   -               
+P7-child-killed-rc0          exit=0   -                exit=0   -               
+P8-complete-then-sigterm     exit=0   -                exit=1   derive-upstream-signal-15
+P9-masked-by-and             exit=0   -                exit=1   -               
+P10-sigpipe-masks-missing    exit=0   -                exit=0   -               
+P11-empty-exit0-want0        exit=0   -                exit=0   -               
+P12-segv-producer            exit=0   -                exit=1   derive-upstream-signal-11
+P13-signal-caught-rc0        exit=0   -                exit=0   -               
+P14-truncated-input          exit=0   -                exit=0   -               

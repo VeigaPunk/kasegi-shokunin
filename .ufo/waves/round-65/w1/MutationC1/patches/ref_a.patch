@@ -1,0 +1,12 @@
+--- base.py
++++ ref_c1_calibration.py
+@@ -82,6 +82,8 @@
+     Grep exit1 is an ordinary no-match; negative (signal) statuses stay ignored.
+     """
+-    if status > 1:
++    if status < 0:
++        return status != -13  # SIGPIPE on a non-final stage: documented benign case
++    if status > 1:
+         return True
+     return status == 1 and os.path.basename(head) != "grep"
+ 

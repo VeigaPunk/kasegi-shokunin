@@ -1,0 +1,8 @@
+--- ref_c1_calibration.py
++++ r8_sigkill_benign.py
+@@ -83,4 +83,4 @@
+     """
+     if status < 0:
+-        return status != -13  # SIGPIPE on a non-final stage: documented benign case
++        return status not in (-13, -9)  # mutant: SIGKILL also benign, SIGTERM fatal
+     if status > 1:

@@ -141,11 +141,11 @@ python3 corpus/instruments/capture-source.py \
 * values measured above and available for the record:
   `status=200`, `bytes=229255`, `sha256=cfa42e2306546c5f418ccfc62db86f3c340ce31694028666abb46f2803b7a3c2`,
   `snapshot_bytes=170137`, `lines=1573`, `last_modified=Mon, 26 Jan 2026 14:43:46 GMT`.
-* body scoping for `body_lines`: the document body is L216–L1535
+* body scoping for `body_lines`: the document body is L216–L1536
   (`grep -n` measured: H1 `PSIRT Services Framework 1.1` = L1; title repeated in the
   content column = L216; `Also available in PDF.` = L217; `Purpose` = L218; last
-  reference URL = L1535; site nav resumes at L1537). Body span = 1320 lines
-  (`1535-216+1`).
+  reference URL = L1536; site nav resumes at L1537). Body span = 1321 lines
+  (`python3 -c 'print(1536-216+1)'` → 1321).
 
 ---
 
@@ -163,7 +163,7 @@ python3 corpus/instruments/capture-source.py \
    The string `PSIRT Services Framework` appears in the **nav of three other FIRST
    snapshots** (S001 L201, S002 L201, S053 L201 — `grep -rn ... | wc -l` → 3), so a title
    or nav-line anchor does not identify this document. All entry anchors must be taken
-   from L216–L1535.
+   from L216–L1536.
 2. **Rolling copyright year.** L1573 is `Copyright © 2015—2026 by Forum of Incident
    Response and Security Teams, Inc. All Rights Reserved.` The year rolls at the next
    site rebuild, so the *snapshot* digest is stable only while the page is unchanged;
@@ -198,6 +198,39 @@ $ grep -c '^Service Area [0-9]' cap1/S098.txt   ->  6
 $ grep -c '^Function ' cap1/S098.txt            ->  84
 $ grep -c '^Sub-function ' cap1/S098.txt        ->  81
 $ grep -c -iE 'coordinated disclosure' cap1/S098.txt -> 4
+$ grep -n '^Service Area [0-9]' cap1/S098.txt
+402:Service Area 1
+674:Service Area 2
+843:Service Area 3 Vulnerability Triage and Analysis
+941:Service Area 4 Remediation
+1145:Service Area 5 Vulnerability Disclosure
+1309:Service Area 6 Training and Education
+$ grep -nE 'PSIRT Framework Structure|^SERVICE AREAS|^Distributed Model|^Centralized Model|^The difference between PSIRT and CSIRT|^Also available in PDF' cap1/S098.txt
+217:Also available in PDF.
+226:PSIRT Framework Structure
+227:SERVICE AREAS – SERVICES – FUNCTIONS – SUB-FUNCTIONS
+228:SERVICE AREAS
+243:The difference between PSIRT and CSIRT
+249:Distributed Model
+259:Centralized Model
+$ grep -n 'ISO/IEC 30111' cap1/S098.txt | cut -c1-60
+1444:ISO/IEC 30111:2013 Information technology – Security 
+1514:ISO/IEC 30111:2013 Information technology—Security te
+1522:ISO/IEC 30111:2013 Information technology—Security te
+1523:ISO/IEC 30111:2013 Information technology—Security te
+$ grep -n 'ISO/IEC 29147' cap1/S098.txt | cut -c1-60
+1445:ISO/IEC 29147:2014 Information technology – Security 
+1513:ISO/IEC 29147:2014 Information technology—Security te
+1515:ISO/IEC 29147:2014 Information technology—Security te
+1516:ISO/IEC 29147:2014 Information technology—Security te
+1517:ISO/IEC 29147:2014 Information technology—Security te
+$ sed -n '1p;216,218p;1536,1537p' cap1/S098.txt | cut -c1-60
+PSIRT Services Framework 1.1
+PSIRT Services Framework
+Also available in PDF.
+Purpose
+https://www.pcisecuritystandards.org/pci_security/ ^
+Standards & PublicationsStandardsCommon Vulnerability Scorin
 ```
 
 * Structure is a service taxonomy: `PSIRT Framework Structure` (L226) /
@@ -231,7 +264,7 @@ model and not multi-party coordination practice).
 
 ---
 
-## 6. Duplicate checks
+## 6. Duplicate checks (base state, i.e. before the round landed its own row)
 
 ```
 $ grep -c 'psirt_services_framework' corpus/SOURCES.md            -> 0
@@ -277,7 +310,7 @@ honoured or the capture-binding counter will fail or silently mis-bind:
 1. registry row must carry exactly one `https://` token and it must be the **dot**
    spelling `.../psirt_services_framework_v1.1` (no trailing slash) — rule B5 compares
    the record `url` byte-for-byte;
-2. anchors must be taken from L216–L1535; L1–L215 and L1537–L1573 are FIRST site chrome
+2. anchors must be taken from L216–L1536; L1–L215 and L1537–L1573 are FIRST site chrome
    that is byte-identical on three already-published captures.
 
 Residual risk that cannot be closed from here: the page can be rebuilt at any time
@@ -320,5 +353,11 @@ $ grep -c '^| S098 ' corpus/SOURCES.md
 **Landing order matters and is measurable:** the manifest must not be committed before
 its `corpus/SOURCES.md` row (rule B1 `no-row`), and the row must carry the dot-spelling
 URL (rule B5) or the record becomes `unbound`. Base was `records=78 bound=78 unbound=0
-exit=0`; the live tree is `records=79 bound=78 unbound=1 exit=1` until the row lands.
+exit=0`; the intermediate tree was `records=79 bound=78 unbound=1 exit=1`.
+
+Resolved at the landed HEAD `1c36d72`: row and manifest landed in the same commit, the
+counter reads `MANIFEST round-65 records=1 url_bound=1 fetched=1`,
+`records=79 bound=79 unbound=0` and exits 0, and the row carries the dot spelling with a
+single `https://` token (`grep '^| S098 ' corpus/SOURCES.md | awk -F'|' '{print $3}' |
+grep -o 'https://' | wc -l` → 1).
 

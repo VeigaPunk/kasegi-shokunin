@@ -1,0 +1,10 @@
+--- ref_c1_calibration.py
++++ r9_always_stale.py
+@@ -83,6 +83,2 @@
+     """
+-    if status < 0:
+-        return status != -13  # SIGPIPE on a non-final stage: documented benign case
+-    if status > 1:
+-        return True
+-    return status == 1 and os.path.basename(head) != "grep"
++    return True  # mutant: every upstream stage is stale (over-strict substitute)

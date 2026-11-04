@@ -1,0 +1,14 @@
+== collector base vs production gate (own work dir) ==
+SIGNAL-PROBES mode=base instrument=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py instrument_sha256=86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef root=/fast/scratch/hyaku/kasegi-r65/CriticC1/cwork-base/root
+PROBE P3 mode=base audit_exit=1 verdict=stale reason=derive-signal-15
+PROBES probes=6 failures=3
+collector_exit=1
+== collector candidate vs candidate gate (own work dir) ==
+SIGNAL-PROBES mode=candidate instrument=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-65/w1/ExecSignalGate/figure-audit.py instrument_sha256=86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef root=/fast/scratch/hyaku/kasegi-r65/CriticC1/cwork-cand/root
+PROBE P1 mode=candidate audit_exit=1 verdict=stale reason=derive-upstream-signal-15
+PROBE P2 mode=candidate audit_exit=1 verdict=stale reason=derive-upstream-signal-9
+PROBE P3 mode=candidate audit_exit=1 verdict=stale reason=derive-signal-15
+PROBE P4 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBE P5 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBE P6 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBES probes=6 failures=0

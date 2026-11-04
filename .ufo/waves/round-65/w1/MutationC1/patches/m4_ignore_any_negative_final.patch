@@ -1,0 +1,12 @@
+--- base.py
++++ m4_ignore_any_negative_final.py
+@@ -113,9 +113,11 @@
+                 p.wait(timeout=max(0, deadline - time.monotonic()))
+             output.append(raw)
+             status = processes[-1].returncode
++            if status < 0:
++                status = 0  # mutant: a signal-terminated final stage is treated as success
+             if status != 0:
+                 out = b"".join(output).decode("utf-8", "replace").strip()
+                 return None, out, "derive-exit-%d" % status
+             for p, head in zip(processes[:-1], heads[:-1]):

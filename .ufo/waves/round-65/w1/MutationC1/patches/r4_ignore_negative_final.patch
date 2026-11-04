@@ -1,0 +1,9 @@
+--- ref_c1_calibration.py
++++ r4_ignore_negative_final.py
+@@ -117,5 +117,3 @@
+             status = processes[-1].returncode
+-            if status < 0:
+-                out = b"".join(output).decode("utf-8", "replace").strip()
+-                return None, out, "derive-signal-%d" % -status
++            status = 0 if status < 0 else status
+             if status != 0:

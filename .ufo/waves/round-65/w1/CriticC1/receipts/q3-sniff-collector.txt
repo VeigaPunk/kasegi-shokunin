@@ -1,0 +1,30 @@
+===== work=collector-base mode=base
+collector_exit=1
+SIGNAL-PROBES mode=base instrument=/fast/scratch/hyaku/kasegi-r65/CriticC1/sniff-stub.py instrument_sha256=ee125c0703c474c72c4c00a022572dd1772b6490616e6164721bf742df98ff7e root=/fast/scratch/hyaku/kasegi-r65/CriticC1/attackwork/collector-base/root
+PROBE P1 mode=base audit_exit=0 verdict=ok reason=-
+PROBE P2 mode=base audit_exit=0 verdict=ok reason=-
+PROBE P3 mode=base audit_exit=0 verdict=stale reason=derive-exit--15
+PROBE P4 mode=base audit_exit=0 verdict=ok reason=-
+PROBE P5 mode=base audit_exit=0 verdict=ok reason=-
+PROBE P6 mode=base audit_exit=0 verdict=ok reason=-
+PROBES probes=6 failures=1
+===== work=collector-candidate mode=candidate
+collector_exit=0
+SIGNAL-PROBES mode=candidate instrument=/fast/scratch/hyaku/kasegi-r65/CriticC1/sniff-stub.py instrument_sha256=ee125c0703c474c72c4c00a022572dd1772b6490616e6164721bf742df98ff7e root=/fast/scratch/hyaku/kasegi-r65/CriticC1/attackwork/collector-candidate/root
+PROBE P1 mode=candidate audit_exit=0 verdict=stale reason=derive-upstream-signal-15
+PROBE P2 mode=candidate audit_exit=0 verdict=stale reason=derive-upstream-signal-9
+PROBE P3 mode=candidate audit_exit=0 verdict=stale reason=derive-signal-15
+PROBE P4 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBE P5 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBE P6 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBES probes=6 failures=0
+===== work=forgeries-forged-receipt mode=candidate
+collector_exit=1
+SIGNAL-PROBES mode=candidate instrument=/fast/scratch/hyaku/kasegi-r65/CriticC1/sniff-stub.py instrument_sha256=ee125c0703c474c72c4c00a022572dd1772b6490616e6164721bf742df98ff7e root=/fast/scratch/hyaku/kasegi-r65/CriticC1/attackwork/forgeries-forged-receipt/root
+PROBE P1 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBE P2 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBE P3 mode=candidate audit_exit=0 verdict=stale reason=derive-exit--15
+PROBE P4 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBE P5 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBE P6 mode=candidate audit_exit=0 verdict=ok reason=-
+PROBES probes=6 failures=3

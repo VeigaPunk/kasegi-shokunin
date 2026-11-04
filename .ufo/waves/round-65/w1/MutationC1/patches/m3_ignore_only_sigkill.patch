@@ -1,0 +1,12 @@
+--- base.py
++++ m3_ignore_only_sigkill.py
+@@ -82,7 +82,9 @@
+     Grep exit1 is an ordinary no-match; negative (signal) statuses stay ignored.
+     """
+-    if status > 1:
++    if status < 0:
++        return status != -9  # mutant: SIGKILL still ignored, other signals fatal
++    if status > 1:
+         return True
+     return status == 1 and os.path.basename(head) != "grep"
+ 

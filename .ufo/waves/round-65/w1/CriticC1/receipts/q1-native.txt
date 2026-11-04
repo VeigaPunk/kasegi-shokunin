@@ -1,0 +1,12 @@
+== NATIVE A1 git show HEAD:big.txt | head -n 1 ==
+NATIVE bytes=11 stdout=b'line000001\n'
+NATIVE stage=0 cmd='git show HEAD:big.txt' rc=-13
+NATIVE stage=1 cmd='head -n 1' rc=0
+== NATIVE A2 cat big.txt | head -n 1 ==
+NATIVE bytes=11 stdout=b'line000001\n'
+NATIVE stage=0 cmd='cat big.txt' rc=-13
+NATIVE stage=1 cmd='head -n 1' rc=0
+== NATIVE A3 python3 bigwriter.py | head -n 1 ==
+NATIVE bytes=3 stdout=b'35\n'
+NATIVE stage=0 cmd='python3 corpus/instruments/bigwriter.py' rc=1
+NATIVE stage=1 cmd='head -n 1' rc=0

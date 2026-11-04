@@ -1,0 +1,10 @@
+--- base.py
++++ m5_sigpipe_fatal.py
+@@ -82,6 +82,8 @@
+     Grep exit1 is an ordinary no-match; negative (signal) statuses stay ignored.
+     """
++    if status == -13:
++        return True  # mutant: SIGPIPE on a non-final stage treated as fatal
+     if status > 1:
+         return True
+     return status == 1 and os.path.basename(head) != "grep"

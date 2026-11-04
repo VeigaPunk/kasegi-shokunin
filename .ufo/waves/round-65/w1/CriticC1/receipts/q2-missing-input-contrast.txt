@@ -1,0 +1,14 @@
+== same missing input, consumer=wc (pinned stale class) ==
+-- base blob --
+PROBE id=miss-wc-base exit=1 reason=derive-upstream-exit-1
+AUDIT FIG miss-wc-base recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+-- landed --
+PROBE id=miss-wc-landed exit=1 reason=derive-upstream-exit-1
+AUDIT FIG miss-wc-landed recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+== same missing input after a big operand, consumer=head (H1) ==
+-- base blob --
+PROBE id=miss-head-base exit=0 reason=-
+AUDIT FIG miss-head-base recorded=line000001 derived=line000001 ok
+-- landed --
+PROBE id=miss-head-landed exit=0 reason=-
+AUDIT FIG miss-head-landed recorded=line000001 derived=line000001 ok

@@ -1,0 +1,998 @@
+{
+  "gates": {
+    "base": {
+      "H1-text-only-success": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H1-text-only-success recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "H2-text-only-signal": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H2-text-only-signal recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P1-sigterm-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P1-sigterm-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P2-sigkill-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 9)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P2-sigkill-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P3-sigpipe-nonfinal": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P3-sigpipe-nonfinal recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P4-final-signal": {
+        "derived": "UNAVAILABLE",
+        "detail": "reason=derive-exit--15 want=derive-signal-15; reason contains forbidden derive-exit--15",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-exit--15",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P4-final-signal recorded=35 derived=UNAVAILABLE reason=derive-exit--15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P5-grep-nomatch": {
+        "derived": "0",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P5-grep-nomatch recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P6-clean-control": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P6-clean-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      }
+    },
+    "emulator": {
+      "H1-text-only-success": {
+        "derived": "UNAVAILABLE",
+        "detail": "exit=1 want=0; unexpected reason=derive-upstream-signal-15; derived=UNAVAILABLE want=1",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-upstream-signal-15",
+        "secs": 0.04,
+        "stderr": "",
+        "stdout": "FIG f-H1-text-only-success recorded=1 derived=UNAVAILABLE reason=derive-upstream-signal-15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "H2-text-only-signal": {
+        "derived": "UNAVAILABLE",
+        "detail": "",
+        "exit": 1,
+        "ok": true,
+        "reason": "derive-upstream-signal-15",
+        "secs": 0.04,
+        "stderr": "",
+        "stdout": "FIG f-H2-text-only-signal recorded=0 derived=UNAVAILABLE reason=derive-upstream-signal-15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P1-sigterm-upstream": {
+        "derived": "UNAVAILABLE",
+        "detail": "",
+        "exit": 1,
+        "ok": true,
+        "reason": "derive-upstream-signal-15",
+        "secs": 0.04,
+        "stderr": "",
+        "stdout": "FIG f-P1-sigterm-upstream recorded=0 derived=UNAVAILABLE reason=derive-upstream-signal-15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P2-sigkill-upstream": {
+        "derived": "UNAVAILABLE",
+        "detail": "",
+        "exit": 1,
+        "ok": true,
+        "reason": "derive-upstream-signal-9",
+        "secs": 0.04,
+        "stderr": "",
+        "stdout": "FIG f-P2-sigkill-upstream recorded=0 derived=UNAVAILABLE reason=derive-upstream-signal-9 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P3-sigpipe-nonfinal": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.04,
+        "stderr": "",
+        "stdout": "FIG f-P3-sigpipe-nonfinal recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P4-final-signal": {
+        "derived": "UNAVAILABLE",
+        "detail": "",
+        "exit": 1,
+        "ok": true,
+        "reason": "derive-signal-15",
+        "secs": 0.04,
+        "stderr": "",
+        "stdout": "FIG f-P4-final-signal recorded=35 derived=UNAVAILABLE reason=derive-signal-15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P5-grep-nomatch": {
+        "derived": "0",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.04,
+        "stderr": "",
+        "stdout": "FIG f-P5-grep-nomatch recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P6-clean-control": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.04,
+        "stderr": "",
+        "stdout": "FIG f-P6-clean-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      }
+    },
+    "m1_blanket_ignore": {
+      "H1-text-only-success": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H1-text-only-success recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "H2-text-only-signal": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H2-text-only-signal recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P1-sigterm-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P1-sigterm-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P2-sigkill-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 9)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P2-sigkill-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P3-sigpipe-nonfinal": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P3-sigpipe-nonfinal recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P4-final-signal": {
+        "derived": "UNAVAILABLE",
+        "detail": "reason=derive-exit--15 want=derive-signal-15; reason contains forbidden derive-exit--15",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-exit--15",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P4-final-signal recorded=35 derived=UNAVAILABLE reason=derive-exit--15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P5-grep-nomatch": {
+        "derived": "0",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P5-grep-nomatch recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P6-clean-control": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P6-clean-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      }
+    },
+    "m2_ignore_only_SIGTERM": {
+      "H1-text-only-success": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H1-text-only-success recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "H2-text-only-signal": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H2-text-only-signal recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P1-sigterm-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P1-sigterm-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P2-sigkill-upstream": {
+        "derived": "UNAVAILABLE",
+        "detail": "reason derive-upstream-exit--9 does not name a signal",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-upstream-exit--9",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P2-sigkill-upstream recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit--9 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P3-sigpipe-nonfinal": {
+        "derived": "UNAVAILABLE",
+        "detail": "exit=1 want=0; unexpected reason=derive-upstream-exit--13; derived=UNAVAILABLE want=1",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-upstream-exit--13",
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P3-sigpipe-nonfinal recorded=1 derived=UNAVAILABLE reason=derive-upstream-exit--13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P4-final-signal": {
+        "derived": "UNAVAILABLE",
+        "detail": "reason=derive-exit--15 want=derive-signal-15; reason contains forbidden derive-exit--15",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-exit--15",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P4-final-signal recorded=35 derived=UNAVAILABLE reason=derive-exit--15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P5-grep-nomatch": {
+        "derived": "0",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P5-grep-nomatch recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P6-clean-control": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P6-clean-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      }
+    },
+    "m3_ignore_only_SIGKILL": {
+      "H1-text-only-success": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H1-text-only-success recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "H2-text-only-signal": {
+        "derived": "UNAVAILABLE",
+        "detail": "reason derive-upstream-exit--15 does not name a signal",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-upstream-exit--15",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H2-text-only-signal recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit--15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P1-sigterm-upstream": {
+        "derived": "UNAVAILABLE",
+        "detail": "reason derive-upstream-exit--15 does not name a signal",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-upstream-exit--15",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P1-sigterm-upstream recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit--15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P2-sigkill-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 9)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P2-sigkill-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P3-sigpipe-nonfinal": {
+        "derived": "UNAVAILABLE",
+        "detail": "exit=1 want=0; unexpected reason=derive-upstream-exit--13; derived=UNAVAILABLE want=1",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-upstream-exit--13",
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P3-sigpipe-nonfinal recorded=1 derived=UNAVAILABLE reason=derive-upstream-exit--13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P4-final-signal": {
+        "derived": "UNAVAILABLE",
+        "detail": "reason=derive-exit--15 want=derive-signal-15; reason contains forbidden derive-exit--15",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-exit--15",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P4-final-signal recorded=35 derived=UNAVAILABLE reason=derive-exit--15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P5-grep-nomatch": {
+        "derived": "0",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P5-grep-nomatch recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P6-clean-control": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P6-clean-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      }
+    },
+    "m4_ignore_neg_final": {
+      "H1-text-only-success": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H1-text-only-success recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "H2-text-only-signal": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H2-text-only-signal recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P1-sigterm-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P1-sigterm-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P2-sigkill-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 9)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P2-sigkill-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P3-sigpipe-nonfinal": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P3-sigpipe-nonfinal recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P4-final-signal": {
+        "derived": "35",
+        "detail": "exit=0 want=1; reason=None want=derive-signal-15",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P4-final-signal recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P5-grep-nomatch": {
+        "derived": "0",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P5-grep-nomatch recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P6-clean-control": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P6-clean-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      }
+    },
+    "m5_SIGPIPE_fatal": {
+      "H1-text-only-success": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H1-text-only-success recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "H2-text-only-signal": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H2-text-only-signal recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P1-sigterm-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P1-sigterm-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P2-sigkill-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 9)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P2-sigkill-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P3-sigpipe-nonfinal": {
+        "derived": "UNAVAILABLE",
+        "detail": "exit=1 want=0; unexpected reason=derive-upstream-exit--13; derived=UNAVAILABLE want=1",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-upstream-exit--13",
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P3-sigpipe-nonfinal recorded=1 derived=UNAVAILABLE reason=derive-upstream-exit--13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P4-final-signal": {
+        "derived": "UNAVAILABLE",
+        "detail": "reason=derive-exit--15 want=derive-signal-15; reason contains forbidden derive-exit--15",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-exit--15",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P4-final-signal recorded=35 derived=UNAVAILABLE reason=derive-exit--15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P5-grep-nomatch": {
+        "derived": "0",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P5-grep-nomatch recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P6-clean-control": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P6-clean-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      }
+    },
+    "m6_grep_exit1_fatal": {
+      "H1-text-only-success": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H1-text-only-success recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "H2-text-only-signal": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H2-text-only-signal recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P1-sigterm-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 15)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P1-sigterm-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P2-sigkill-upstream": {
+        "derived": "0",
+        "detail": "exit=0 want=1; no reason (want signal 9)",
+        "exit": 0,
+        "ok": false,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P2-sigkill-upstream recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P3-sigpipe-nonfinal": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P3-sigpipe-nonfinal recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P4-final-signal": {
+        "derived": "UNAVAILABLE",
+        "detail": "reason=derive-exit--15 want=derive-signal-15; reason contains forbidden derive-exit--15",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-exit--15",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P4-final-signal recorded=35 derived=UNAVAILABLE reason=derive-exit--15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P5-grep-nomatch": {
+        "derived": "UNAVAILABLE",
+        "detail": "exit=1 want=0; unexpected reason=derive-upstream-exit-1; derived=UNAVAILABLE want=0",
+        "exit": 1,
+        "ok": false,
+        "reason": "derive-upstream-exit-1",
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P5-grep-nomatch recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P6-clean-control": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P6-clean-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      }
+    },
+    "ref_c1_calibration": {
+      "H1-text-only-success": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H1-text-only-success recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "H2-text-only-signal": {
+        "derived": "UNAVAILABLE",
+        "detail": "",
+        "exit": 1,
+        "ok": true,
+        "reason": "derive-upstream-signal-15",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-H2-text-only-signal recorded=0 derived=UNAVAILABLE reason=derive-upstream-signal-15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P1-sigterm-upstream": {
+        "derived": "UNAVAILABLE",
+        "detail": "",
+        "exit": 1,
+        "ok": true,
+        "reason": "derive-upstream-signal-15",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P1-sigterm-upstream recorded=0 derived=UNAVAILABLE reason=derive-upstream-signal-15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P2-sigkill-upstream": {
+        "derived": "UNAVAILABLE",
+        "detail": "",
+        "exit": 1,
+        "ok": true,
+        "reason": "derive-upstream-signal-9",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P2-sigkill-upstream recorded=0 derived=UNAVAILABLE reason=derive-upstream-signal-9 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P3-sigpipe-nonfinal": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P3-sigpipe-nonfinal recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P4-final-signal": {
+        "derived": "UNAVAILABLE",
+        "detail": "",
+        "exit": 1,
+        "ok": true,
+        "reason": "derive-signal-15",
+        "secs": 0.03,
+        "stderr": "",
+        "stdout": "FIG f-P4-final-signal recorded=35 derived=UNAVAILABLE reason=derive-signal-15 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+        "verdict": "stale"
+      },
+      "P5-grep-nomatch": {
+        "derived": "0",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P5-grep-nomatch recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      },
+      "P6-clean-control": {
+        "derived": "1",
+        "detail": "",
+        "exit": 0,
+        "ok": true,
+        "reason": null,
+        "secs": 0.02,
+        "stderr": "",
+        "stdout": "FIG f-P6-clean-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+        "verdict": "ok"
+      }
+    }
+  },
+  "natives": {
+    "H1-text-only-success": {
+      "bash_pipestatus": [
+        0,
+        0
+      ],
+      "derive": "python3 corpus/instruments/maybe_kill.py | wc -l",
+      "python_rcs": [
+        0,
+        0
+      ]
+    },
+    "H2-text-only-signal": {
+      "bash_pipestatus": [
+        143,
+        0
+      ],
+      "derive": "python3 corpus/instruments/maybe_kill.py | wc -l",
+      "python_rcs": [
+        -15,
+        0
+      ]
+    },
+    "P1-sigterm-upstream": {
+      "bash_pipestatus": [
+        143,
+        0
+      ],
+      "derive": "python3 corpus/instruments/kill.py | wc -l",
+      "python_rcs": [
+        -15,
+        0
+      ]
+    },
+    "P2-sigkill-upstream": {
+      "bash_pipestatus": [
+        137,
+        0
+      ],
+      "derive": "python3 corpus/instruments/kill9.py | wc -l",
+      "python_rcs": [
+        -9,
+        0
+      ]
+    },
+    "P3-sigpipe-nonfinal": {
+      "bash_pipestatus": [
+        141,
+        0,
+        0
+      ],
+      "derive": "cat big.txt | head -n 1 | wc -l",
+      "python_rcs": [
+        -13,
+        0,
+        0
+      ]
+    },
+    "P4-final-signal": {
+      "bash_pipestatus": [
+        143
+      ],
+      "derive": "python3 corpus/instruments/kill_after.py",
+      "python_rcs": [
+        -15
+      ]
+    },
+    "P5-grep-nomatch": {
+      "bash_pipestatus": [
+        1,
+        0
+      ],
+      "derive": "grep absent g.txt | wc -l",
+      "python_rcs": [
+        1,
+        0
+      ]
+    },
+    "P6-clean-control": {
+      "bash_pipestatus": [
+        0,
+        0
+      ],
+      "derive": "cat g.txt | wc -l",
+      "python_rcs": [
+        0,
+        0
+      ]
+    }
+  },
+  "probes": [
+    {
+      "armed": false,
+      "derive": "python3 corpus/instruments/kill.py | wc -l",
+      "derived": null,
+      "exit": 1,
+      "id": "P1-sigterm-upstream",
+      "note": "SIGTERM non-final stage: stale, reason names SIGTERM",
+      "reason_signal": 15,
+      "signal_names": [
+        "sigterm"
+      ],
+      "want": "0"
+    },
+    {
+      "armed": false,
+      "derive": "python3 corpus/instruments/kill9.py | wc -l",
+      "derived": null,
+      "exit": 1,
+      "id": "P2-sigkill-upstream",
+      "note": "SIGKILL non-final stage: stale, reason names SIGKILL",
+      "reason_signal": 9,
+      "signal_names": [
+        "sigkill"
+      ],
+      "want": "0"
+    },
+    {
+      "armed": false,
+      "derive": "cat big.txt | head -n 1 | wc -l",
+      "derived": "1",
+      "exit": 0,
+      "id": "P3-sigpipe-nonfinal",
+      "note": "SIGPIPE non-final stage: documented benign case",
+      "reason_signal": null,
+      "want": "1"
+    },
+    {
+      "armed": false,
+      "derive": "python3 corpus/instruments/kill_after.py",
+      "derived": null,
+      "exit": 1,
+      "id": "P4-final-signal",
+      "note": "final SIGTERM after matching output: derive-signal-15, never derive-exit--15",
+      "reason_exact": "derive-signal-15",
+      "reason_forbid": [
+        "derive-exit--15"
+      ],
+      "want": "35"
+    },
+    {
+      "armed": false,
+      "derive": "grep absent g.txt | wc -l",
+      "derived": "0",
+      "exit": 0,
+      "id": "P5-grep-nomatch",
+      "note": "grep exit1 non-final: ordinary no-match",
+      "reason_signal": null,
+      "want": "0"
+    },
+    {
+      "armed": false,
+      "derive": "cat g.txt | wc -l",
+      "derived": "1",
+      "exit": 0,
+      "id": "P6-clean-control",
+      "note": "clean pipeline stays green",
+      "reason_signal": null,
+      "want": "1"
+    },
+    {
+      "armed": false,
+      "derive": "python3 corpus/instruments/maybe_kill.py | wc -l",
+      "derived": "1",
+      "exit": 0,
+      "id": "H1-text-only-success",
+      "note": "same text as H2; stage exits 0 -> must be ok",
+      "reason_signal": null,
+      "want": "1"
+    },
+    {
+      "armed": true,
+      "derive": "python3 corpus/instruments/maybe_kill.py | wc -l",
+      "derived": null,
+      "exit": 1,
+      "id": "H2-text-only-signal",
+      "note": "same text as H1; stage dies SIGTERM -> must be stale",
+      "reason_signal": 15,
+      "signal_names": [
+        "sigterm"
+      ],
+      "want": "0"
+    }
+  ]
+}

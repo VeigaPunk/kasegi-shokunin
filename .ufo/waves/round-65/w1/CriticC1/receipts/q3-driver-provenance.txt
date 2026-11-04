@@ -1,0 +1,23 @@
+== frozen driver: trust-root lines ==
+39:LANE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+44:CLAIMS = os.path.join(WAVE, "claims.json")
+118:    inputs = [COLLECTOR, MUTBAT, CANDIDATE_FROZEN, CLAIMS]
+142:    if base_rev is None and os.path.exists(CLAIMS):
+144:            base_rev = json.load(open(CLAIMS, encoding="utf-8")).get("base")
+237:    if os.path.exists(CLAIMS):
+239:            pins = json.load(open(CLAIMS, encoding="utf-8")).get("input_sha256", {})
+247:            os.path.relpath(CLAIMS, LANE): sha256(CLAIMS) if os.path.exists(CLAIMS) else "-"}
+== frozen driver: forgery measurement present? ==
+0
+== w1 draft driver: self-check present? ==
+36:PINS_SOURCE = PREFIX + "claims.json"
+122:            for name in PATHS + (DRIVER, PINS_SOURCE):
+134:            pins_data = blob(revision, PINS_SOURCE)
+145:                raise ValueError("driver-not-committed-bytes")
+298:            # 7 collector-forgeries: a forged receipt (the base gate's honest
+303:                conclude("collector-forgeries", False, "missing-committed-input:" + COLLECTOR)
+307:                conclude("collector-forgeries", good, reason)
+357:                     "collector-forgeries/" + label)
+365:            print("FAIL-REASON collector-forgeries/%s not-rejected exit=%d"
+== claims.json input_sha256 keys ==
+['.ufo/waves/round-65/c1-signal-probes-r65.py', '.ufo/waves/round-65/figure-audit-candidate-r65.py', '.ufo/waves/round-65/signal-mutbat-r65.py', 'corpus/instruments/figure-audit-ledger.json', 'corpus/instruments/figure-audit.py']

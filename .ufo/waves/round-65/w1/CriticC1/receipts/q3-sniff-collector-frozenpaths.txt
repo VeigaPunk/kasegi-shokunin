@@ -1,0 +1,6 @@
+work=probes-base mode=base collector_exit=1 PROBES probes=6 failures=1
+work=probes-candidate mode=candidate collector_exit=0 PROBES probes=6 failures=0
+selfcheck collector_exit=0 SELFCHECK probes=6 runs=2 failures=6 want=6 verdict=pass
+PROBE P1 mode=candidate audit_exit=0 verdict=stale reason=derive-upstream-signal-15
+PROBE P2 mode=candidate audit_exit=0 verdict=stale reason=derive-upstream-signal-9
+PROBE P3 mode=candidate audit_exit=0 verdict=stale reason=derive-signal-15

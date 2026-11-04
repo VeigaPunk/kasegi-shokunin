@@ -1,0 +1,14 @@
+== NATIVE candidate SIGPIPE control: pipe.py | head -n 1 | wc -l ==
+NATIVE bytes=2 stdout=b'1\n'
+NATIVE stage=0 cmd='python3 corpus/instruments/pipe.py' rc=-13
+NATIVE stage=1 cmd='head -n 1' rc=0
+NATIVE stage=2 cmd='wc -l' rc=0
+== NATIVE candidate SIGKILL case: kill9.py | wc -l ==
+NATIVE bytes=2 stdout=b'0\n'
+NATIVE stage=0 cmd='python3 corpus/instruments/kill9.py' rc=-9
+NATIVE stage=1 cmd='wc -l' rc=0
+== NATIVE middle SIGTERM: cat g.txt | kill.py | wc -l ==
+NATIVE bytes=2 stdout=b'0\n'
+NATIVE stage=0 cmd='cat g.txt' rc=0
+NATIVE stage=1 cmd='python3 corpus/instruments/kill.py' rc=-15
+NATIVE stage=2 cmd='wc -l' rc=0
