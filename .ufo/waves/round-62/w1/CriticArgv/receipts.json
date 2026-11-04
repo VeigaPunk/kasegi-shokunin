@@ -1,0 +1,1198 @@
+{
+  "digests": {
+    "base": "051083a2dd3b76f96568dd2a18866975b71dd1578992546c671faf21e99418a9",
+    "candidate": "3adb4b90d8b24c5d589ab8c91f41331d6ed7f4a46437a5e91a73946ca93257e5"
+  },
+  "results": [
+    {
+      "revision": "base",
+      "case": "inside",
+      "derive": "python3 corpus/instruments/ok.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-inside/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-inside"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG inside recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "whole-quoted-inside",
+      "derive": "python3 \"corpus/instruments/ok.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-whole-quoted-inside/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-whole-quoted-inside"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=whole-quoted-inside"
+    },
+    {
+      "revision": "base",
+      "case": "quoted-space-inside",
+      "derive": "python3 corpus/instruments/\"ok space.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-space-inside/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-space-inside"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG quoted-space-inside recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "normalized-inside",
+      "derive": "python3 corpus/instruments/../instruments/ok.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-normalized-inside/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-normalized-inside"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG normalized-inside recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "prefix-refusal",
+      "derive": "python3 outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-prefix-refusal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-prefix-refusal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=prefix-refusal"
+    },
+    {
+      "revision": "base",
+      "case": "absolute-refusal",
+      "derive": "python3 /fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-absolute-refusal/outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-absolute-refusal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-absolute-refusal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=absolute-refusal"
+    },
+    {
+      "revision": "base",
+      "case": "traversal-refusal",
+      "derive": "python3 corpus/instruments/../../outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-traversal-refusal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-traversal-refusal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=traversal-refusal"
+    },
+    {
+      "revision": "base",
+      "case": "boundary-refusal",
+      "derive": "python3 corpus/instruments/../instruments-evil/outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-boundary-refusal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-boundary-refusal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=boundary-refusal"
+    },
+    {
+      "revision": "base",
+      "case": "quoted-traversal",
+      "derive": "python3 corpus/instruments/\"../../outside.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-traversal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-traversal"
+      ],
+      "exit": 0,
+      "markers": 1,
+      "stdout": "FIG quoted-traversal recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "single-quoted-traversal",
+      "derive": "python3 corpus/instruments/'../../outside.py'",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-single-quoted-traversal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-single-quoted-traversal"
+      ],
+      "exit": 0,
+      "markers": 1,
+      "stdout": "FIG single-quoted-traversal recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "escaped-traversal",
+      "derive": "python3 corpus/instruments/\\..\\/\\..\\/outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-escaped-traversal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-escaped-traversal"
+      ],
+      "exit": 0,
+      "markers": 1,
+      "stdout": "FIG escaped-traversal recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "quoted-boundary",
+      "derive": "python3 corpus/instruments/\"../instruments-evil/outside.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-boundary/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-boundary"
+      ],
+      "exit": 0,
+      "markers": 1,
+      "stdout": "FIG quoted-boundary recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "symlink-refusal",
+      "derive": "python3 corpus/instruments/link.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-symlink-refusal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-symlink-refusal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=symlink-refusal"
+    },
+    {
+      "revision": "base",
+      "case": "quoted-symlink",
+      "derive": "python3 corpus/instruments/\"link.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-symlink/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-symlink"
+      ],
+      "exit": 0,
+      "markers": 1,
+      "stdout": "FIG quoted-symlink recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "variable-traversal",
+      "derive": "python3 corpus/instruments/$ESC/outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-variable-traversal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-variable-traversal"
+      ],
+      "exit": 0,
+      "markers": 1,
+      "stdout": "FIG variable-traversal recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "quoted-variable",
+      "derive": "python3 corpus/instruments/\"$ESC\"/outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-variable/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-variable"
+      ],
+      "exit": 0,
+      "markers": 1,
+      "stdout": "FIG quoted-variable recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "brace-traversal",
+      "derive": "python3 corpus/instruments/{../../outside.py,ok.py}",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-brace-traversal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-brace-traversal"
+      ],
+      "exit": 0,
+      "markers": 1,
+      "stdout": "FIG brace-traversal recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "glob-symlink",
+      "derive": "python3 corpus/instruments/link*.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-glob-symlink/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-glob-symlink"
+      ],
+      "exit": 0,
+      "markers": 1,
+      "stdout": "FIG glob-symlink recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "command-substitution",
+      "derive": "cat $(cat data.txt)",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-command-substitution/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-command-substitution"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=command-substitution"
+    },
+    {
+      "revision": "base",
+      "case": "python-option",
+      "derive": "python3 -c \"print(35)\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-python-option/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-python-option"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=python-option"
+    },
+    {
+      "revision": "base",
+      "case": "sort-quoted-write",
+      "derive": "sort '--output=MARK' data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-sort-quoted-write/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-sort-quoted-write"
+      ],
+      "exit": 1,
+      "markers": 1,
+      "stdout": "FIG sort-quoted-write recorded=35 derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "sort-escaped-write",
+      "derive": "sort -\\oMARK data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-sort-escaped-write/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-sort-escaped-write"
+      ],
+      "exit": 1,
+      "markers": 1,
+      "stdout": "FIG sort-escaped-write recorded=35 derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "sort-short-write",
+      "derive": "sort -oMARK data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-sort-short-write/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-sort-short-write"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=sort-short-write"
+    },
+    {
+      "revision": "base",
+      "case": "sort-abbrev-residual",
+      "derive": "sort --out=MARK data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-sort-abbrev-residual/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-sort-abbrev-residual"
+      ],
+      "exit": 1,
+      "markers": 1,
+      "stdout": "FIG sort-abbrev-residual recorded=35 derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "sort-cluster-residual",
+      "derive": "sort -noMARK data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-sort-cluster-residual/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-sort-cluster-residual"
+      ],
+      "exit": 1,
+      "markers": 1,
+      "stdout": "FIG sort-cluster-residual recorded=35 derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "pipe-control",
+      "derive": "cat data.txt | wc -l",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-pipe-control/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-pipe-control"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG pipe-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "and-control",
+      "derive": "cat data.txt && cat data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-and-control/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-and-control"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG and-control recorded=35\n35 derived=35\n35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "pipe-escape",
+      "derive": "cat data.txt | python3 corpus/instruments/\"../../outside.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-pipe-escape/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-pipe-escape"
+      ],
+      "exit": 0,
+      "markers": 1,
+      "stdout": "FIG pipe-escape recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "and-escape",
+      "derive": "cat data.txt && python3 corpus/instruments/\"../../outside.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-and-escape/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-and-escape"
+      ],
+      "exit": 0,
+      "markers": 1,
+      "stdout": "FIG and-escape recorded=35\n35 derived=35\n35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "pipe-denied",
+      "derive": "cat data.txt | touch MARK",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-pipe-denied/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-pipe-denied"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=pipe-denied"
+    },
+    {
+      "revision": "base",
+      "case": "and-denied",
+      "derive": "cat data.txt && touch MARK",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-and-denied/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-and-denied"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=and-denied"
+    },
+    {
+      "revision": "base",
+      "case": "quoted-operators",
+      "derive": "python3 corpus/instruments/argv.py \"a|b\" \"c&&d\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-operators/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-quoted-operators"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG quoted-operators recorded=['a|b', 'c&&d'] derived=['a|b', 'c&&d'] ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "escaped-operators",
+      "derive": "python3 corpus/instruments/argv.py a\\|b c\\&\\&d",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-escaped-operators/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-escaped-operators"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG escaped-operators recorded=['a|b', 'c&&d'] derived=['a|b', 'c&&d'] ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "input-control",
+      "derive": "wc -l < data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-input-control/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-input-control"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG input-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "base",
+      "case": "failed-pipeline-residual",
+      "derive": "cat missing.txt | wc -l",
+      "argv": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/corpus/instruments/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-failed-pipeline-residual/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/base-failed-pipeline-residual"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG failed-pipeline-residual recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "inside",
+      "derive": "python3 corpus/instruments/ok.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-inside/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-inside"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG inside recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "whole-quoted-inside",
+      "derive": "python3 \"corpus/instruments/ok.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-whole-quoted-inside/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-whole-quoted-inside"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG whole-quoted-inside recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "quoted-space-inside",
+      "derive": "python3 corpus/instruments/\"ok space.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-space-inside/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-space-inside"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG quoted-space-inside recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "normalized-inside",
+      "derive": "python3 corpus/instruments/../instruments/ok.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-normalized-inside/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-normalized-inside"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG normalized-inside recorded=35 derived=35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "prefix-refusal",
+      "derive": "python3 outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-prefix-refusal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-prefix-refusal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=prefix-refusal"
+    },
+    {
+      "revision": "candidate",
+      "case": "absolute-refusal",
+      "derive": "python3 /fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-absolute-refusal/outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-absolute-refusal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-absolute-refusal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=absolute-refusal"
+    },
+    {
+      "revision": "candidate",
+      "case": "traversal-refusal",
+      "derive": "python3 corpus/instruments/../../outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-traversal-refusal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-traversal-refusal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=traversal-refusal"
+    },
+    {
+      "revision": "candidate",
+      "case": "boundary-refusal",
+      "derive": "python3 corpus/instruments/../instruments-evil/outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-boundary-refusal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-boundary-refusal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=boundary-refusal"
+    },
+    {
+      "revision": "candidate",
+      "case": "quoted-traversal",
+      "derive": "python3 corpus/instruments/\"../../outside.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-traversal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-traversal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=quoted-traversal"
+    },
+    {
+      "revision": "candidate",
+      "case": "single-quoted-traversal",
+      "derive": "python3 corpus/instruments/'../../outside.py'",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-single-quoted-traversal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-single-quoted-traversal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=single-quoted-traversal"
+    },
+    {
+      "revision": "candidate",
+      "case": "escaped-traversal",
+      "derive": "python3 corpus/instruments/\\..\\/\\..\\/outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-escaped-traversal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-escaped-traversal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=escaped-traversal"
+    },
+    {
+      "revision": "candidate",
+      "case": "quoted-boundary",
+      "derive": "python3 corpus/instruments/\"../instruments-evil/outside.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-boundary/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-boundary"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=quoted-boundary"
+    },
+    {
+      "revision": "candidate",
+      "case": "symlink-refusal",
+      "derive": "python3 corpus/instruments/link.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-symlink-refusal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-symlink-refusal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=symlink-refusal"
+    },
+    {
+      "revision": "candidate",
+      "case": "quoted-symlink",
+      "derive": "python3 corpus/instruments/\"link.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-symlink/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-symlink"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=quoted-symlink"
+    },
+    {
+      "revision": "candidate",
+      "case": "variable-traversal",
+      "derive": "python3 corpus/instruments/$ESC/outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-variable-traversal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-variable-traversal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=variable-traversal"
+    },
+    {
+      "revision": "candidate",
+      "case": "quoted-variable",
+      "derive": "python3 corpus/instruments/\"$ESC\"/outside.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-variable/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-variable"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=quoted-variable"
+    },
+    {
+      "revision": "candidate",
+      "case": "brace-traversal",
+      "derive": "python3 corpus/instruments/{../../outside.py,ok.py}",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-brace-traversal/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-brace-traversal"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=brace-traversal"
+    },
+    {
+      "revision": "candidate",
+      "case": "glob-symlink",
+      "derive": "python3 corpus/instruments/link*.py",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-glob-symlink/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-glob-symlink"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=glob-symlink"
+    },
+    {
+      "revision": "candidate",
+      "case": "command-substitution",
+      "derive": "cat $(cat data.txt)",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-command-substitution/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-command-substitution"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=command-substitution"
+    },
+    {
+      "revision": "candidate",
+      "case": "python-option",
+      "derive": "python3 -c \"print(35)\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-python-option/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-python-option"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=python-option"
+    },
+    {
+      "revision": "candidate",
+      "case": "sort-quoted-write",
+      "derive": "sort '--output=MARK' data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-sort-quoted-write/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-sort-quoted-write"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=sort-quoted-write"
+    },
+    {
+      "revision": "candidate",
+      "case": "sort-escaped-write",
+      "derive": "sort -\\oMARK data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-sort-escaped-write/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-sort-escaped-write"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=sort-escaped-write"
+    },
+    {
+      "revision": "candidate",
+      "case": "sort-short-write",
+      "derive": "sort -oMARK data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-sort-short-write/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-sort-short-write"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=sort-short-write"
+    },
+    {
+      "revision": "candidate",
+      "case": "sort-abbrev-residual",
+      "derive": "sort --out=MARK data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-sort-abbrev-residual/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-sort-abbrev-residual"
+      ],
+      "exit": 1,
+      "markers": 1,
+      "stdout": "FIG sort-abbrev-residual recorded=35 derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "sort-cluster-residual",
+      "derive": "sort -noMARK data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-sort-cluster-residual/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-sort-cluster-residual"
+      ],
+      "exit": 1,
+      "markers": 1,
+      "stdout": "FIG sort-cluster-residual recorded=35 derived=UNAVAILABLE reason=derive-empty stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "pipe-control",
+      "derive": "cat data.txt | wc -l",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-pipe-control/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-pipe-control"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG pipe-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "and-control",
+      "derive": "cat data.txt && cat data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-and-control/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-and-control"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG and-control recorded=35\n35 derived=35\n35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "pipe-escape",
+      "derive": "cat data.txt | python3 corpus/instruments/\"../../outside.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-pipe-escape/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-pipe-escape"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=pipe-escape"
+    },
+    {
+      "revision": "candidate",
+      "case": "and-escape",
+      "derive": "cat data.txt && python3 corpus/instruments/\"../../outside.py\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-and-escape/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-and-escape"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=and-escape"
+    },
+    {
+      "revision": "candidate",
+      "case": "pipe-denied",
+      "derive": "cat data.txt | touch MARK",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-pipe-denied/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-pipe-denied"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=pipe-denied"
+    },
+    {
+      "revision": "candidate",
+      "case": "and-denied",
+      "derive": "cat data.txt && touch MARK",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-and-denied/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-and-denied"
+      ],
+      "exit": 2,
+      "markers": 0,
+      "stdout": "",
+      "stderr": "FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=and-denied"
+    },
+    {
+      "revision": "candidate",
+      "case": "quoted-operators",
+      "derive": "python3 corpus/instruments/argv.py \"a|b\" \"c&&d\"",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-operators/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-quoted-operators"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG quoted-operators recorded=['a|b', 'c&&d'] derived=['a|b', 'c&&d'] ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "escaped-operators",
+      "derive": "python3 corpus/instruments/argv.py a\\|b c\\&\\&d",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-escaped-operators/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-escaped-operators"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG escaped-operators recorded=['a|b', 'c&&d'] derived=['a|b', 'c&&d'] ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "input-control",
+      "derive": "wc -l < data.txt",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-input-control/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-input-control"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG input-control recorded=1 derived=1 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    },
+    {
+      "revision": "candidate",
+      "case": "failed-pipeline-residual",
+      "derive": "cat missing.txt | wc -l",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/w1/ExecArgv/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-failed-pipeline-residual/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r62/CriticArgv/fixtures/candidate-failed-pipeline-residual"
+      ],
+      "exit": 0,
+      "markers": 0,
+      "stdout": "FIG failed-pipeline-residual recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0",
+      "stderr": ""
+    }
+  ]
+}

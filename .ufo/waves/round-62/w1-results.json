@@ -1,0 +1,68 @@
+{
+ "lane": "kasegi",
+ "round": 62,
+ "wave": "w1",
+ "seats": 10,
+ "results": [
+  {
+   "name": "ExecArgv",
+   "agent": "executor",
+   "output": "{\n  \"report\": \".ufo/waves/round-62/w1/ExecArgv.md\",\n  \"candidate\": \".ufo/waves/round-62/w1/ExecArgv/figure-audit.py\",\n  \"sha256\": \"a0ddbd40a577d3d9e87dc89dbda0c5eb3237918246c89e0b20a29a47d395f080\",\n  \"behavior\": \"Parses and validates decoded argv once, executes that exact plan without bash; preserves pipelines, &&, quoted regexes and input redirection. Retains literal Python prefix and realpath boundary; checks decoded dangerous flags; corrects nonsandbox documentation.\",\n  \"evidence\": {\n    \"baseline_selftest\": \"24 cases, 0 failures, exit 0\",\n    \"candidate_selftest\": \"35 cases, 0 failures, exit 0\",\n    \"baseline_and_candidate_ledger\": \"35 figures, 35 ok, 0 stale, exit 0\",\n    \"paired_probes\": \"10 cases retained in argv-comparison.txt; quoted traversal, dollar expansion and quoted/escaped sort write flags change from exit0/marker=true to exit2/marker=false; quoted controls preserved; shortcircuit marker absent on both\"\n  },\n  \"retained_files\": \"Exclusive ExecArgv directory contains complete candidate, baseline bytes, comparison driver, five receipts and sha256 manifest.\",\n  \"risks\": [\n    \"Not a sandbox; counter writes, unscreened flags, PATH/configuration and filesystem races remain.\",\n    \"Last-stage pipeline status intentionally preserves upstream-failure masking.\",\n    \"Fully quoted valid inside-script path is newly admitted intentionally.\",\n    \"Candidate mutant battery and repaired-runner integration checks remain L1-owned; no mutant verdict claimed.\"\n  ],\n  \"blockers\": [],\n  \"tool_installs\": [],\n  \"cleanup\": \"Owned scratch clone removed; subsequent direct read confirmed path absent.\",\n  \"production_changes\": \"No production implementation changes, commits or pushes.\"\n}",
+   "note": null
+  },
+  {
+   "name": "ExecHarness",
+   "agent": "executor",
+   "output": "{\n  \"status\": \"Complete\",\n  \"review_limit\": \"HarnessAttack independently reviewed the initial draft only; amended exact-record-binding evidence is executor-measured, not independently reviewed.\",\n  \"report\": \".ufo/waves/round-62/w1/ExecHarness.md\"\n}",
+   "note": null
+  },
+  {
+   "name": "ExecMutants",
+   "agent": "executor",
+   "output": "{\n  \"files_changed\": [\n    \".ufo/waves/round-62/w1/ExecMutants.md\",\n    \".ufo/waves/round-62/w1/ExecMutants/figure-audit-mutbat.py\",\n    \".ufo/waves/round-62/w1/ExecMutants/prefix-boundary-witness.py\",\n    \".ufo/waves/round-62/w1/ExecMutants/baseline-battery.txt\",\n    \".ufo/waves/round-62/w1/ExecMutants/baseline-witness.txt\",\n    \".ufo/waves/round-62/w1/ExecMutants/setup.txt\"\n  ],\n  \"behavior\": \"Standalone exact-once five-mutant battery preserves previous three mutants and pristine/equivalent controls; adds prefix-off and boundary-separator-off. Recognizes exact legacy or decoded-argv generic-head anchor, rejecting ambiguous/missing sites.\",\n  \"evidence\": {\n    \"base\": \"f7dcab84b104ccc03083fa1ad8c38e12830d25c9\",\n    \"baseline\": \"killed=3/5 survivors=2 invalid=0 controls=pass; exit1\",\n    \"witness\": \"Prefix-off admits absolute-inside; boundary-separator-off admits sibling-prefix; pristine refuses both. Mutant hashes match r61.\",\n    \"cleanup\": \"Owned scratch removed; rm exit0\",\n    \"installs\": \"None\"\n  },\n  \"risks\": [\n    \"Baseline measurement preceded compatibility-selector addition; final draft and candidate were not rerun.\",\n    \"L1 must measure integrated five-kill outcome.\",\n    \"Direct witness intentionally targets base string-head API, not candidate argv API.\",\n    \"No sandbox claim; no full suites or unrelated checks.\"\n  ],\n  \"blockers\": []\n}",
+   "note": null
+  },
+  {
+   "name": "ReviewDesign",
+   "agent": "reviewer",
+   "output": "{\n  \"supplement\": \"ExecArgv subsequently reports fixing the documentation nit and adding an external shortcircuit marker control, with final candidate sha a0ddbd40a577d3d9e87dc89dbda0c5eb3237918246c89e0b20a29a47d395f080 and retained 35/0, ledger35/35 receipts. These are peer-reported results, not independently exercised by ReviewDesign; report remains the static review of the earlier candidate.\"\n}",
+   "note": null
+  },
+  {
+   "name": "CriticArgv",
+   "agent": "critic",
+   "output": "",
+   "note": null
+  },
+  {
+   "name": "HarnessAttack",
+   "agent": "critic",
+   "output": "{\n  \"followup\": \"ExecHarness reports a subsequent correction: exact FIG/refusal identity, recorded/derived values, summary and stream binding; their strict-record-binding.txt records wrong-identity fixture rejected with10 failures exit1. This is peer-reported, not independently exercised by HarnessAttack. My report remains explicitly scoped to the earlier dc6303bd draft.\"\n}",
+   "note": null
+  },
+  {
+   "name": "ScoutS095",
+   "agent": "scout",
+   "output": "{\n  \"report\": \".ufo/waves/round-62/w1/ScoutS095.md\",\n  \"findings\": [\n    \"Independent primary-page fetch: HTTP 200, 54854 raw bytes, 2026-11-04T15:12:11Z.\",\n    \"capture-source.py conversion is byte-identical to S095: 5802 bytes, 195 lines, sha256 bed305896d46ef54f162b955585157e215f5082a27789ac71cfb9c045dddcac2.\",\n    \"Eleven located quotes checked: each <=25 words, exactly once, matching its anchor.\",\n    \"High-confidence bounded distinction: CERT/CC's adapted phases and five-role mapping differ from S023's CISA program steps and F11/F38 ISO interpretation/catalog ground; generic lifecycle claims overlap.\",\n    \"Older S003 capture already cites the public_awareness child page; no claim of entirely absent prior CERT-guide references.\"\n  ],\n  \"limits\": [\n    \"No admission decision or frozen predicates changed.\",\n    \"CISA/ISO comparison uses held evidence, not fresh fetches.\",\n    \"LSP device unavailable; text searches are not semantic reference proof.\",\n    \"No visible source publication date; access date recorded.\",\n    \"No scratch created, tool installs, git/jj mutations or production changes.\"\n  ]\n}",
+   "note": null
+  },
+  {
+   "name": "EntryDraft",
+   "agent": "scribe",
+   "output": "{\n  \"behavior\": \"Drafted F43/S095 entry with provenance trio, six attributed claims, exact source anchors, falsifiable rules, and both required rejected readings.\",\n  \"gates\": {\n    \"capture_sha256\": \"bed305896d46ef54f162b955585157e215f5082a27789ac71cfb9c045dddcac2\",\n    \"capture_bytes\": 5802,\n    \"admission_counters\": \"Not executed; no admission or upstream-freshness claim.\",\n    \"manifest\": \"Absent at initial inspection; supplied 19-assertion integration draft.\"\n  },\n  \"touched_surfaces\": [\n    \".ufo/waves/round-62/w1/EntryDraft.md\",\n    \".ufo/waves/round-62/w1/EntryDraft/cert-guide-cvd-phases-and-validation.md\",\n    \".ufo/waves/round-62/w1/EntryDraft/claim-table.md\",\n    \".ufo/waves/round-62/w1/EntryDraft/manifest-assertions.json\"\n  ],\n  \"findings\": [\n    \"Role assignments require complete table rows and L112-116 headings; quote presence alone cannot prove column interpretation.\",\n    \"Repeated validation/prioritization quotes have separate numeric anchors.\",\n    \"No evidence asserted about L1 counter timing.\"\n  ],\n  \"out_of_scope\": [\n    \"Production integration and admission\",\n    \"Independent upstream fetch and overlap adjudication\",\n    \"C1 implementation\"\n  ],\n  \"cleanup\": \"No scratch created; no installs, commits, pushes or production changes.\"\n}",
+   "note": null
+  },
+  {
+   "name": "ScopeConnect",
+   "agent": "connector",
+   "output": "{\n  \"report\": \".ufo/waves/round-62/w1/ScopeConnect.md\",\n  \"axes\": [\n    \"coverage\",\n    \"depth:verifiability\"\n  ],\n  \"recommendation\": \"Narrow proposed F43 to CERT/CC's adapted phase-to-five-role responsibility matrix, particularly Reporter fix confirmation versus Vendor/Coordinator incoming-report validation. No admission or score judgment made.\",\n  \"evidence\": [\n    \"S095 digest matches bed305896d46ef54f162b955585157e215f5082a27789ac71cfb9c045dddcac2; matrix headings L112-116, Validation L129-134, Remediation L141-146.\",\n    \"S003/S004 hold timeline policies; S023 holds CISA's program stages; F11 holds JPCERT's standards division; F38 holds ISO publisher records, not this matrix.\",\n    \"Additional overlap: S018 already distinguishes upstream fixes from downstream remediation; F20 already holds stakeholder-specific prioritization. Generic awareness/deployment separation and role-dependent prioritization are not new concepts.\",\n    \"Prior guide reference exists at round-24/S003.txt:442-444 to the public_awareness child page, not prior mining of this parent matrix.\",\n    \"21 direct-child province files screened; kake explicitly excludes vulnerability handling; revenger's CVD triage remains static/artifact-first. No competing ownership found within bounded screen.\"\n  ],\n  \"contradictions\": [\n    \"Six overview headings versus seven matrix rows: Validation/Prioritization grouped in overview and separated in table.\",\n    \"Reporter matrix dash for Validation does not prohibit finder verification required by held S018.\"\n  ],\n  \"verification\": \"Read-only evidence screen and digest check performed; no instrument suites or integration checks run. Final manifest row/column bindings and prefreeze ordering remain L1 responsibilities.\",\n  \"cleanup\": \"Empty unique scratch removed. No installs, commits, pushes, git/jj mutations or production edits.\"\n}",
+   "note": null
+  },
+  {
+   "name": "CounterBase",
+   "agent": "executor",
+   "output": "{\n  \"files_changed\": [\n    \".ufo/waves/round-62/w1/CounterBase.md\",\n    \".ufo/waves/round-62/w1/CounterBase/baseline-receipt.py\",\n    \".ufo/waves/round-62/w1/CounterBase/baseline-receipt.txt\",\n    \".ufo/waves/round-62/w1/CounterBase/baseline-results.json\",\n    \".ufo/waves/round-62/w1/CounterBase/inventory-normalized.json\"\n  ],\n  \"behavior\": \"Measured unchanged BASE export; no production implementation changes.\",\n  \"baseline\": {\n    \"frontier_rows\": 42,\n    \"registry_rows\": 94,\n    \"frontier_entries_pass\": \"45/45\",\n    \"capture_binding\": \"77/77\",\n    \"knowledge_paths\": 80,\n    \"first_free_source_id\": \"S095\",\n    \"proposed_source_url_already_registered\": false\n  },\n  \"evidence\": \"Exact argv/cwd/stdout/stderr/exits, host versions, digests and all source id/URL pairs retained in CounterBase receipts. Both census validations exit0 with six existing W04 warnings. Normalized LC_ALL=C path-list sort check exits0; raw whole-file sort check exits1 because comments participate in collation.\",\n  \"risks\": [\n    \"Frontier executes absolute-cd rechecks against host paths; unchanged export does not imply fully isolated BASE-only subprocess reads.\",\n    \"S077 is legitimate own-work, not a malformed source; receipt heuristic exception explicitly explained.\",\n    \"Counters do not establish source novelty or entry substance.\"\n  ],\n  \"blockers\": [],\n  \"tool_installs\": [],\n  \"scratch_cleanup\": \"Owned CounterBase scratch removed; absence check exit0.\",\n  \"report\": \".ufo/waves/round-62/w1/CounterBase.md\"\n}",
+   "note": null
+  }
+ ]
+}

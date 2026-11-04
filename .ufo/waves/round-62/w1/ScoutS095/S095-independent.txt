@@ -1,0 +1,195 @@
+Phases of Coordinated Vulnerability Disclosure - CERT® Guide to Coordinated Vulnerability Disclosure
+Skip to content
+CERT® Guide to Coordinated Vulnerability Disclosure
+Phases of Coordinated Vulnerability Disclosure
+Initializing search
+CERTCC/CERT-Guide-to-CVD
+Home
+CVD Guide
+Learning CVD
+CVD How-To
+Understanding CVD
+Reference
+About
+CERT® Guide to Coordinated Vulnerability Disclosure
+CERTCC/CERT-Guide-to-CVD
+Home
+CVD Guide
+Learning CVD
+CVD How-To
+Understanding CVD
+Understanding CVD
+Principles of CVD
+Principles of CVD
+Reduce Harm
+Presume Benevolence
+Avoid Surprise
+Incentivize Desired Behavior
+Ethical Considerations
+Process Improvement
+CVD is a Wicked Problem
+Roles in CVD
+Roles in CVD
+Finder/Reporter
+Vendor
+Deployer
+Coordinator
+Other Roles
+Phases of CVD
+Phases of CVD
+Discovery
+Reporting
+Validation
+Prioritization
+Remediation
+Preparing for Public Awareness
+Publication
+Deployment
+Special Topics
+Special Topics
+Common Challenges
+Finding Vulnerabilities
+IoT and CVD
+Vulnerability IDs
+Reference
+About
+Phases of Coordinated Vulnerability Disclosure
+Below, we adapt a version of the
+ISO/IEC 30111:2019 Information technology—Security techniques—Vulnerability handling processes
+with more phases to better describe what we have seen at the CERT/CC
+Discovery
+A researcher (not necessarily an academic one) discovers a vulnerability by using one of numerous tools and processes.
+Reporting
+A researcher submits a vulnerability report to a software or product vendor, or a third-party coordinator if necessary.
+Validation and Prioritization
+The analyst validates the report to ensure accuracy before action can be taken and prioritizes reports relative to others.
+Remediation
+A remediation plan (ideally a software patch, but could also be other mechanisms) is developed and tested.
+Public Awareness
+The vulnerability and its remediation plan is disclosed to the public.
+Deployment
+The remediation is applied to deployed systems.
+Vulnerability Handling Process Models
+There have been a number of proposed models of the CVD process that have slightly varying phases. Some of the most notable include:
+2002 Christey and Wysopal Responsible Vulnerability Disclosure Process
+2004 National Infrastructure Advisory Council Vulnerability Disclosure Framework
+2018 ISO/IEC 29147:2018 Information technology -- Security techniques -- Vulnerability disclosure
+2019 ISO/IEC 30111:2019 Information technology -- Security techniques -- Vulnerability handling processes
+Who Does What?
+Extending the diagram from the Roles in CVD page,
+we can see how the roles interact in the CVD process.
+---
+title: CVD Role Relationships
+---
+flowchart TB
+subgraph C[Coordination]
+direction LR
+subgraph A[Often Same Entity]
+Reporter([Reporter])
+Finder([Finder])
+end
+Vendor([Vendor])
+subgraph B[Sometimes Included]
+Coordinator([Coordinator])
+Deployer([Deployer])
+end
+end
+Finder -->|shares vul<br/>info with| Reporter
+Reporter -->|reports<br/>vul to| Vendor
+Reporter -.->|provides vul<br/>info to| Deployer
+Reporter -.->|reports<br/>vul to| Coordinator
+Vendor -->|coordinates<br/>with| Reporter
+Vendor -.->|coordinates<br/>with| Coordinator
+Vendor -->|provides vul info<br/>and/or patch to| Deployer
+Coordinator -.->|coordinates<br/>with| Vendor
+Coordinator -.->|coordinates<br/>with| Reporter
+Coordinator -.->|provides vul<br/>info to| Deployer
+Deployer -->|provides</br>feedback to| Vendor
+C -->|publish| Public([Public])
+A mapping of CVD phases to CVD roles is provided in the following table.
+Role →
+Phases ↓
+Finder
+Reporter
+Vendor
+Coordinator
+Deployer
+Discovery
+Finds Vulnerabilities
+-
+-
+-
+-
+Reporting
+Prepares report
+Reports vuls to vendor(s) and/or coordinator(s)
+Receives reports
+Receives reports
+-
+Validation
+-
+-
+Validates reports received
+Validates reports received
+-
+Prioritization
+-
+-
+Prioritizes reports for response
+Prioritizes reports for response
+Prioritizes fixes for deployment
+Remediation
+-
+Confirms fix
+Prepares patches, develops advice, workarounds
+Coordinates multiparty response, develops advice, workarounds
+-
+Public Awareness
+Publishes advisory
+Publishes advisory
+Publishes advisory
+Publishes advisory
+Receives advisory
+Deployment
+-
+-
+-
+-
+Deploys fix or mitigation
+Back to top
+Previous
+Other Roles
+Next
+Discovery
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to
+deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.
+-->
+Copyright
+©
+Carnegie Mellon University
+CERT®, Carnegie Mellon® and CERT Coordination Center® are registered in the
+U.S. Patent and Trademark Office by Carnegie Mellon University.
+Change cookie settings
+Legal
+Privacy Notice
+Made with
+Material for MkDocs
+About our use of cookies on this site
+We use cookies to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better. See our Privacy Notice for more.
+Google Analytics
+GitHub
+Accept
+Manage settings

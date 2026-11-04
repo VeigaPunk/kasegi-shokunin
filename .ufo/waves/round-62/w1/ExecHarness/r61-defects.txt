@@ -1,0 +1,32 @@
+Historical runner fixture differs ONLY in allowed scratch guard: kasegi-r61 -> kasegi-r62. No collector/execution edits.
+$ bash /fast/scratch/hyaku/kasegi-r62/ExecHarness/r61-relocated.sh /fast/scratch/hyaku/kasegi-r62/ExecHarness/instrument99.py /fast/scratch/hyaku/kasegi-r62/ExecHarness/old-broken
+instrument=/fast/scratch/hyaku/kasegi-r62/ExecHarness/instrument99.py sha256=072f6b12f9cde32c
+run-utc=2026-11-04T15:23:50Z
+probe=P1-traversal-2up derive=python3 corpus/instruments/../../outside-P1-traversal-2up.py exit=99 markers=0 :: 
+probe=P2-traversal-3up derive=python3 corpus/instruments/../../../outside-P2-traversal-3up.py exit=99 markers=0 :: 
+probe=P3-symlink-out derive=python3 corpus/instruments/link-P3-symlink-out.py exit=99 markers=0 :: 
+probe=P4-absolute-out derive=python3 /fast/scratch/hyaku/kasegi-r62/ExecHarness/old-broken/outside-P4-absolute-out.py exit=99 markers=0 :: 
+probe=P5-inside-ok derive=python3 corpus/instruments/tiny-ok.py exit=99 markers=0 :: 
+probe=P6-inside-normalized derive=python3 corpus/instruments/../instruments/tiny-ok.py exit=99 markers=0 :: 
+probe=CTRL-quoted-semicolon derive=cat g.txt | grep -e '35' -e ';' exit=99 markers=0 :: 
+probe=CTRL-plain-count derive=cat g.txt | wc -l exit=99 markers=0 :: 
+exit=0
+$ bash /fast/scratch/hyaku/kasegi-r62/ExecHarness/r61-relocated.sh /fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/instrument.py /fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under
+instrument=/fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/instrument.py sha256=
+run-utc=2026-11-04T15:23:50Z
+probe=P1-traversal-2up derive=python3 corpus/instruments/../../outside-P1-traversal-2up.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/instrument.py': [Errno 2] No such file or directory
+probe=P2-traversal-3up derive=python3 corpus/instruments/../../../outside-P2-traversal-3up.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/instrument.py': [Errno 2] No such file or directory
+probe=P3-symlink-out derive=python3 corpus/instruments/link-P3-symlink-out.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/instrument.py': [Errno 2] No such file or directory
+probe=P4-absolute-out derive=python3 /fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/outside-P4-absolute-out.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/instrument.py': [Errno 2] No such file or directory
+probe=P5-inside-ok derive=python3 corpus/instruments/tiny-ok.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/instrument.py': [Errno 2] No such file or directory
+probe=P6-inside-normalized derive=python3 corpus/instruments/../instruments/tiny-ok.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/instrument.py': [Errno 2] No such file or directory
+probe=CTRL-quoted-semicolon derive=cat g.txt | grep -e '35' -e ';' exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/instrument.py': [Errno 2] No such file or directory
+probe=CTRL-plain-count derive=cat g.txt | wc -l exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/instrument.py': [Errno 2] No such file or directory
+sha256sum: /fast/scratch/hyaku/kasegi-r62/ExecHarness/old-under/instrument.py: No such file or directory
+exit=0
+instrument-survives=False
+$ bash -c find "$1/missing" -maxdepth 1 -name "MARK-*" -type f | wc -l; printf "pipeline-statuses=%s\n" "${PIPESTATUS[*]}" demo /fast/scratch/hyaku/kasegi-r62/ExecHarness
+0
+pipeline-statuses=1 0
+find: ‘/fast/scratch/hyaku/kasegi-r62/ExecHarness/missing’: No such file or directory
+exit=0

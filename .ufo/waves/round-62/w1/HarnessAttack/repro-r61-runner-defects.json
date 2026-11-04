@@ -1,0 +1,144 @@
+{
+ "seat": "HarnessAttack",
+ "round": "round-62",
+ "wave": "w1",
+ "base_commit": "f7dcab84b104ccc03083fa1ad8c38e12830d25c9",
+ "blobs": {
+  "runner": {
+   "path": ".ufo/waves/round-61/controls/c1-probe-run-r61.sh",
+   "sha256": "bd5ac6054479aba578db855122afd2f9627a464bbc8b56d6d50f1ae9e71932f4",
+   "source": "git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show f7dcab84b104ccc03083fa1ad8c38e12830d25c9:.ufo/waves/round-61/controls/c1-probe-run-r61.sh"
+  },
+  "instrument": {
+   "path": "corpus/instruments/figure-audit.py",
+   "sha256": "051083a2dd3b76f96568dd2a18866975b71dd1578992546c671faf21e99418a9",
+   "source": "git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show f7dcab84b104ccc03083fa1ad8c38e12830d25c9:corpus/instruments/figure-audit.py"
+  }
+ },
+ "scratch_roots": {
+  "runner_required": "/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62",
+  "seat_tmp": "/fast/scratch/hyaku/kasegi-r62/HarnessAttack",
+  "note": "kasegi-r61 root did not exist before this round; recreated empty, only seat-unique HarnessAttack-r62 subtree used, rmdir-if-empty at cleanup"
+ },
+ "env": "TMPDIR=/fast/scratch/hyaku/kasegi-r62/HarnessAttack; cwd=/fast/scratch/hyaku/kasegi-r62/HarnessAttack",
+ "fixtures": {
+  "keep/sentinel": "retain",
+  "broken.py": "raise SystemExit(99)\\n",
+  "self-delete/instrument.py": "byte-identical figure-audit.py copy"
+ },
+ "results": [
+  {
+   "name": "missing-args",
+   "argv": [
+    "bash",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/runner-r61.sh"
+   ],
+   "exit": 2,
+   "stdout": "HARNESS-USAGE want-instrument-and-scratch\n",
+   "stderr": ""
+  },
+  {
+   "name": "missing-instrument-sentinel-kept",
+   "argv": [
+    "bash",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/runner-r61.sh",
+    "/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/not-found.py",
+    "/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/keep"
+   ],
+   "exit": 2,
+   "stdout": "HARNESS-USAGE not-a-file /fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/not-found.py\n",
+   "stderr": ""
+  },
+  {
+   "name": "normal-runner",
+   "argv": [
+    "bash",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/runner-r61.sh",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/figure-audit.py",
+    "/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/normal"
+   ],
+   "exit": 0,
+   "stdout": "instrument=/fast/scratch/hyaku/kasegi-r62/HarnessAttack/figure-audit.py sha256=051083a2dd3b76f9\nrun-utc=2026-11-04T15:12:58Z\nprobe=P1-traversal-2up derive=python3 corpus/instruments/../../outside-P1-traversal-2up.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P1-traversal-2up\nprobe=P2-traversal-3up derive=python3 corpus/instruments/../../../outside-P2-traversal-3up.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P2-traversal-3up\nprobe=P3-symlink-out derive=python3 corpus/instruments/link-P3-symlink-out.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P3-symlink-out\nprobe=P4-absolute-out derive=python3 /fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/normal/outside-P4-absolute-out.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P4-absolute-out\nprobe=P5-inside-ok derive=python3 corpus/instruments/tiny-ok.py exit=0 markers=0 :: FIG P5-inside-ok recorded=35 derived=35 ok\nprobe=P6-inside-normalized derive=python3 corpus/instruments/../instruments/tiny-ok.py exit=0 markers=0 :: FIG P6-inside-normalized recorded=35 derived=35 ok\nprobe=CTRL-quoted-semicolon derive=cat g.txt | grep -e '35' -e ';' exit=0 markers=0 :: FIG CTRL-quoted-semicolon recorded=35 derived=35 ok\nprobe=CTRL-plain-count derive=cat g.txt | wc -l exit=0 markers=0 :: FIG CTRL-plain-count recorded=1 derived=1 ok\n",
+   "stderr": ""
+  },
+  {
+   "name": "broken-instrument",
+   "argv": [
+    "bash",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/runner-r61.sh",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/broken.py",
+    "/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/broken-run"
+   ],
+   "exit": 0,
+   "stdout": "instrument=/fast/scratch/hyaku/kasegi-r62/HarnessAttack/broken.py sha256=237f6b53709bf513\nrun-utc=2026-11-04T15:12:58Z\nprobe=P1-traversal-2up derive=python3 corpus/instruments/../../outside-P1-traversal-2up.py exit=99 markers=0 :: \nprobe=P2-traversal-3up derive=python3 corpus/instruments/../../../outside-P2-traversal-3up.py exit=99 markers=0 :: \nprobe=P3-symlink-out derive=python3 corpus/instruments/link-P3-symlink-out.py exit=99 markers=0 :: \nprobe=P4-absolute-out derive=python3 /fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/broken-run/outside-P4-absolute-out.py exit=99 markers=0 :: \nprobe=P5-inside-ok derive=python3 corpus/instruments/tiny-ok.py exit=99 markers=0 :: \nprobe=P6-inside-normalized derive=python3 corpus/instruments/../instruments/tiny-ok.py exit=99 markers=0 :: \nprobe=CTRL-quoted-semicolon derive=cat g.txt | grep -e '35' -e ';' exit=99 markers=0 :: \nprobe=CTRL-plain-count derive=cat g.txt | wc -l exit=99 markers=0 :: \n",
+   "stderr": ""
+  },
+  {
+   "name": "missing-find",
+   "argv": [
+    "bash",
+    "-c",
+    "find() { return 71; }; export -f find; exec bash \"$@\"",
+    "dependency-probe",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/runner-r61.sh",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/figure-audit.py",
+    "/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/missing-find"
+   ],
+   "exit": 0,
+   "stdout": "instrument=/fast/scratch/hyaku/kasegi-r62/HarnessAttack/figure-audit.py sha256=051083a2dd3b76f9\nrun-utc=2026-11-04T15:12:58Z\nprobe=P1-traversal-2up derive=python3 corpus/instruments/../../outside-P1-traversal-2up.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P1-traversal-2up\nprobe=P2-traversal-3up derive=python3 corpus/instruments/../../../outside-P2-traversal-3up.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P2-traversal-3up\nprobe=P3-symlink-out derive=python3 corpus/instruments/link-P3-symlink-out.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P3-symlink-out\nprobe=P4-absolute-out derive=python3 /fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/missing-find/outside-P4-absolute-out.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P4-absolute-out\nprobe=P5-inside-ok derive=python3 corpus/instruments/tiny-ok.py exit=0 markers=0 :: FIG P5-inside-ok recorded=35 derived=35 ok\nprobe=P6-inside-normalized derive=python3 corpus/instruments/../instruments/tiny-ok.py exit=0 markers=0 :: FIG P6-inside-normalized recorded=35 derived=35 ok\nprobe=CTRL-quoted-semicolon derive=cat g.txt | grep -e '35' -e ';' exit=0 markers=0 :: FIG CTRL-quoted-semicolon recorded=35 derived=35 ok\nprobe=CTRL-plain-count derive=cat g.txt | wc -l exit=0 markers=0 :: FIG CTRL-plain-count recorded=1 derived=1 ok\n",
+   "stderr": ""
+  },
+  {
+   "name": "instrument-inside-scratch",
+   "argv": [
+    "bash",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/runner-r61.sh",
+    "/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/instrument.py",
+    "/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete"
+   ],
+   "exit": 0,
+   "stdout": "instrument=/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/instrument.py sha256=\nrun-utc=2026-11-04T15:12:59Z\nprobe=P1-traversal-2up derive=python3 corpus/instruments/../../outside-P1-traversal-2up.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/instrument.py': [Errno 2] No such file or directory\nprobe=P2-traversal-3up derive=python3 corpus/instruments/../../../outside-P2-traversal-3up.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/instrument.py': [Errno 2] No such file or directory\nprobe=P3-symlink-out derive=python3 corpus/instruments/link-P3-symlink-out.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/instrument.py': [Errno 2] No such file or directory\nprobe=P4-absolute-out derive=python3 /fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/outside-P4-absolute-out.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/instrument.py': [Errno 2] No such file or directory\nprobe=P5-inside-ok derive=python3 corpus/instruments/tiny-ok.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/instrument.py': [Errno 2] No such file or directory\nprobe=P6-inside-normalized derive=python3 corpus/instruments/../instruments/tiny-ok.py exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/instrument.py': [Errno 2] No such file or directory\nprobe=CTRL-quoted-semicolon derive=cat g.txt | grep -e '35' -e ';' exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/instrument.py': [Errno 2] No such file or directory\nprobe=CTRL-plain-count derive=cat g.txt | wc -l exit=2 markers=0 :: python3: can't open file '/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/instrument.py': [Errno 2] No such file or directory\n",
+   "stderr": "sha256sum: /fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/self-delete/instrument.py: No such file or directory\n"
+  },
+  {
+   "name": "fixture-python-missing",
+   "argv": [
+    "bash",
+    "-c",
+    "python3() { return 127; }; export -f python3; exec bash \"$@\"",
+    "dependency-probe",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/runner-r61.sh",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/figure-audit.py",
+    "/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/no-python3"
+   ],
+   "exit": 127,
+   "stdout": "instrument=/fast/scratch/hyaku/kasegi-r62/HarnessAttack/figure-audit.py sha256=051083a2dd3b76f9\nrun-utc=2026-11-04T15:12:59Z\n",
+   "stderr": ""
+  }
+ ],
+ "post_state": {
+  "self_delete_instrument_exists": false,
+  "self_delete_dir_exists": false,
+  "sentinel_content": "retain",
+  "keep_dir_exists": true,
+  "normal_dir_exists": false
+ },
+ "results_extra": [
+  {
+   "name": "symlink-under-scratch-instrument",
+   "argv": [
+    "bash",
+    "/fast/scratch/hyaku/kasegi-r62/HarnessAttack/runner-r61.sh",
+    "/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/link-in-scratch/instrument.py",
+    "/fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/link-in-scratch"
+   ],
+   "exit": 0,
+   "stdout": "instrument=/fast/scratch/hyaku/kasegi-r62/HarnessAttack/outside-real-instr.py sha256=051083a2dd3b76f9\nrun-utc=2026-11-04T15:20:04Z\nprobe=P1-traversal-2up derive=python3 corpus/instruments/../../outside-P1-traversal-2up.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P1-traversal-2up\nprobe=P2-traversal-3up derive=python3 corpus/instruments/../../../outside-P2-traversal-3up.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P2-traversal-3up\nprobe=P3-symlink-out derive=python3 corpus/instruments/link-P3-symlink-out.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P3-symlink-out\nprobe=P4-absolute-out derive=python3 /fast/scratch/hyaku/kasegi-r61/HarnessAttack-r62/link-in-scratch/outside-P4-absolute-out.py exit=2 markers=0 :: FIGURE-AUDIT: UNAVAILABLE reason=derive-not-read-only id=P4-absolute-out\nprobe=P5-inside-ok derive=python3 corpus/instruments/tiny-ok.py exit=0 markers=0 :: FIG P5-inside-ok recorded=35 derived=35 ok\nprobe=P6-inside-normalized derive=python3 corpus/instruments/../instruments/tiny-ok.py exit=0 markers=0 :: FIG P6-inside-normalized recorded=35 derived=35 ok\nprobe=CTRL-quoted-semicolon derive=cat g.txt | grep -e '35' -e ';' exit=0 markers=0 :: FIG CTRL-quoted-semicolon recorded=35 derived=35 ok\nprobe=CTRL-plain-count derive=cat g.txt | wc -l exit=0 markers=0 :: FIG CTRL-plain-count recorded=1 derived=1 ok\n",
+   "stderr": "",
+   "post": {
+    "real_outside_exists": true,
+    "link_exists": false
+   }
+  }
+ ]
+}

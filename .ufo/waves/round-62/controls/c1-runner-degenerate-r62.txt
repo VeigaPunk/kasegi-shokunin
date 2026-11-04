@@ -1,0 +1,14 @@
+$ python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-62/controls/c1-runner-faults-r62.py --runner /fast/scratch/hyaku/kasegi-r62/l1/always-clean-runner.py --work /fast/scratch/hyaku/kasegi-r62/l1/fake-faults
+fixture: raise SystemExit(0)
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r62/l1/always-clean-runner.py /fast/scratch/hyaku/kasegi-r62/l1/fake-faults/absent.py /fast/scratch/hyaku/kasegi-r62/l1/fake-faults/missing-probes --mode candidate
+fault=missing-instrument exit=0 want=2 verdict=FAIL
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r62/l1/always-clean-runner.py /fast/scratch/hyaku/kasegi-r62/l1/fake-faults/broken99.py /fast/scratch/hyaku/kasegi-r62/l1/fake-faults/broken-probes --mode candidate
+fault=broken99 exit=0 want=1 verdict=FAIL
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r62/l1/always-clean-runner.py /fast/scratch/hyaku/kasegi-r62/l1/fake-faults/nested/instrument.py /fast/scratch/hyaku/kasegi-r62/l1/fake-faults/nested --mode candidate
+fault=instrument-under-scratch exit=0 want=2 verdict=FAIL
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r62/l1/always-clean-runner.py /fast/scratch/hyaku/kasegi-r62/l1/fake-faults/broken99.py /fast/scratch/hyaku/kasegi-r62/l1/fake-faults/no-tools --mode candidate
+fault=missing-dependencies exit=0 want=2 verdict=FAIL
+$ /usr/bin/python3 /fast/scratch/hyaku/kasegi-r62/l1/always-clean-runner.py /fast/scratch/hyaku/kasegi-r62/l1/fake-faults/wrong-record.py /fast/scratch/hyaku/kasegi-r62/l1/fake-faults/wrong-record-probes --mode candidate
+fault=wrong-record exit=0 want=1 verdict=FAIL
+
+[exit=0]
