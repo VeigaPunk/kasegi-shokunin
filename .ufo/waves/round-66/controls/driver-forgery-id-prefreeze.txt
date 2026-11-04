@@ -1,0 +1,17 @@
+$ python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ExecCatDriver/verify.py --revision b6db9e818d322726e39cb441f2179d34d4170275 --controls-revision d94a9ecdf3295f5ce8f5955e2c8696365c102fa8 --cat-mutbat .ufo/waves/round-66/cat-mutbat.py --work /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze --candidate /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/id-oracle.py
+UTC=2026-11-04T20:32:09.486582+00:00
+RESULT driver-self-pin PASS running=5962b7d6f7aa05d118a86387ffb527f1c5dfb6b3e7b18483d99fa7eeb1adad61 pinned=5962b7d6f7aa05d118a86387ffb527f1c5dfb6b3e7b18483d99fa7eeb1adad61 committed-at-controls=5962b7d6f7aa05d118a86387ffb527f1c5dfb6b3e7b18483d99fa7eeb1adad61 mode=candidate
+RESULT controls-pins PASS pinned=2 problems=none
+RESULT ledger-closure PASS entries=28 unresolved=0 sha256=537451e337d181bde5fff1891ea08a1fa04f4c733eaa86eef235ecb49f9a4bdc (diagnostic) problems=none
+RESULT probes-base-paired PASS mode=base probes=8 rc=0 problems=none
+RESULT probes-measured FAIL mode=candidate probes=8 rc=1 problems=P1 rc=0 want=1 reason=- want=derive-upstream-signal-13 pass=false; P2 rc=0 want=1 reason=- want=derive-upstream-signal-13 pass=false; P5 rc=0 want=1 reason=- want=derive-upstream-exit-1 pass=false; P8 rc=0 want=1 reason=- want=derive-upstream-signal-13 pass=false; summary='PROBES probes=8 failures=4 mode=candidate instrument_sha256=2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51'; rc=1
+RESULT shape-identity FAIL shapes=8 P1 rc=1 verdict=stale reason=derive-upstream-signal-13 native0=-13 | P2 rc=1 verdict=stale reason=derive-upstream-signal-13 native0=-13 | P3 rc=0 verdict=ok reason=- native0=-13 | P4 rc=0 verdict=ok reason=- native0=-13 | P5 rc=1 verdict=stale reason=derive-upstream-exit-1 native0=1 | P6 rc=0 verdict=ok reason=- native0=1 | P7 rc=0 verdict=ok reason=- native0=0 | P8 rc=1 verdict=stale reason=derive-upstream-signal-13 native0=-13 problems=P1/held rc=0 verdict=ok reason=- want=1/stale/derive-upstream-signal-13; P1 spelling-dependent; P2/held rc=0 verdict=ok reason=- want=1/stale/derive-upstream-signal-13; P2 spelling-dependent; P5/held rc=0 verdict=ok reason=- want=1/stale/derive-upstream-exit-1; P5 spelling-dependent; P8/held rc=0 verdict=ok reason=- want=1/stale/derive-upstream-signal-13; P8 spelling-dependent
+RESULT selftest FAIL cases=None failures=None want=67 exit=2 kind=candidate
+RESULT mutbat-existing FAIL exit=2 summary=None want=mutbat killed=5/5 survivors=0 invalid=0 controls=pass
+RESULT real-ledger PASS exit=0 want='FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0' ledger_sha256=28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b
+RESULT red-wrong-want FAIL exit=0 red-stale-line=no
+RESULT cat-mutbat FAIL exit=2 want='CAT-MUTBAT killed=3/3 survivors=0 equivalents_held=1 invalid_rejected=1 failures=0' sha256=8efa7d884e862ed8e57f256165a9ab8b3936473cb16813094eddeeadb2c98210
+RESULT identity-guards PASS head=b6db9e818d32 mode=candidate gate=2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51 candidate=2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51(unpinned) base=86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef problems=none
+VERIFY measurements=12 failures=6 revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate
+
+exit=1

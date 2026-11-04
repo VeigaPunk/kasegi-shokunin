@@ -1,0 +1,43 @@
+input sha256=2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51 /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/repo/corpus/instruments/figure-audit.py
+input sha256=d788bbc16cd1ac9f345e5fc1a29f3e87542ceed1f2dfcdfa5e4b7593d3a57312 /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/controls/probes.py
+$ /usr/bin/python3 -B /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/controls/probes.py --instrument /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/repo/corpus/instruments/figure-audit.py --work /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/probes-measured --mode candidate
+(cwd=/fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze)
+NONCE run=1ace86bbdbdd55c4 base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51
+LEDGER P1-cat-two-operand-missing-sigpipe id=fig-24c8f0f09913e731a05316c73121f7dc record=rec-1632212e6ffbba05 dir=c-d59fa4fb9a41278c6bc1ab0c
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P1-cat-two-operand-missing-sigpipe field=rc want=1 got=0
+NOTE P1-cat-two-operand-missing-sigpipe field=verdict want=stale got=ok
+NOTE P1-cat-two-operand-missing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+LEDGER P2-cat-two-operand-existing-sigpipe id=fig-9e7198ea7b2d9953b70b68683335845c record=rec-3ecd2c92031b3ad8 dir=c-22501ef2e950393fe7be039f
+NATIVE P2-cat-two-operand-existing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P2-cat-two-operand-existing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P2-cat-two-operand-existing-sigpipe field=rc want=1 got=0
+NOTE P2-cat-two-operand-existing-sigpipe field=verdict want=stale got=ok
+NOTE P2-cat-two-operand-existing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+LEDGER P3-cat-one-operand-sigpipe id=fig-aed916b08cca3ae61626df0baea4f11d record=rec-7fe647a3cd08ebf9 dir=c-fa3d86c157c7ef1c6d572c79
+NATIVE P3-cat-one-operand-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P3-cat-one-operand-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P4-cat-stdin-sigpipe id=fig-fa858d3b6f87723d930e9cd3f496af78 record=rec-4054d39eec59e105 dir=c-383ed22bf0257e5103653f99
+NATIVE P4-cat-stdin-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P4-cat-stdin-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P5-cat-missing-exit1 id=fig-5c24349d653d3a244966dfe813cfceb5 record=rec-4b322ce8469dff84 dir=c-c0675a50ac08d6fdfed3fbf6
+NATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=44
+PROBE P5-cat-missing-exit1 rc=0 expected=1 reason=- pass=false
+NOTE P5-cat-missing-exit1 field=rc want=1 got=0
+NOTE P5-cat-missing-exit1 field=verdict want=stale got=ok
+NOTE P5-cat-missing-exit1 field=reason want=derive-upstream-exit-1 got=None
+LEDGER P6-grep-nomatch-green id=fig-e82d8b1eeb9ff83f8bd82af3f25399a3 record=rec-8e2c47492bebe220 dir=c-276525f4376a14383e37e9e4
+NATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P6-grep-nomatch-green rc=0 expected=0 reason=- pass=true
+LEDGER P7-same-derive-small-twin id=fig-80ea6e442e4434cba410e10d1586c492 record=rec-3afc1d114d5ff64f dir=c-666fc40b1da8e9e296282e2b
+NATIVE P7-same-derive-small-twin stage0=0 stage1=0 out=alpha err_bytes=0
+PROBE P7-same-derive-small-twin rc=0 expected=0 reason=- pass=true
+LEDGER P8-cat-dashdash-separator-missing id=fig-ed5702900d0cb40f3094a1bd57825416 record=rec-371ba4a9235e0f13 dir=c-f5b22ecbe3bfa966e707185b
+NATIVE P8-cat-dashdash-separator-missing stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P8-cat-dashdash-separator-missing rc=0 expected=1 reason=- pass=false
+NOTE P8-cat-dashdash-separator-missing field=rc want=1 got=0
+NOTE P8-cat-dashdash-separator-missing field=verdict want=stale got=ok
+NOTE P8-cat-dashdash-separator-missing field=reason want=derive-upstream-signal-13 got=None
+PROBES probes=8 failures=4 mode=candidate instrument_sha256=2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51
+[exit=1]

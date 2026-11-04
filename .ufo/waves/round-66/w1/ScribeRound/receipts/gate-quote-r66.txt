@@ -1,0 +1,53 @@
+# Receipt ScribeRound/gate-quote-r66.txt
+# Evidence for the S099 own-work Gate row (quote / date / location), 2026-11-04
+# source: this lane's own production gate corpus/instruments/figure-audit.py
+# opened 2026-11-04 ; base revision b6db9e818d322726e39cb441f2179d34d4170275
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse --show-toplevel
+/home/vgpnk/Projects/shokunin/kasegi-shokunin
+$ git rev-parse HEAD   # lane HEAD at the time of the draft
+d94a9ecdf3295f5ce8f5955e2c8696365c102fa8
+$ sha256sum corpus/instruments/figure-audit.py
+86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef  corpus/instruments/figure-audit.py
+
+=== located quote (L91, the SIGPIPE exemption the C1 claim restricts) ===
+$ git show b6db9e8:corpus/instruments/figure-audit.py | sed -n '83,94p'
+def upstream_stale(head, status):
+    """Stale upstream statuses: any >1, exit1 from a program other than grep, or a signal.
+
+    Grep exit1 is an ordinary no-match. A negative status is a signal: stale unless it is
+    SIGPIPE (-13). SIGPIPE on a non-final stage is benign by documented rule: a later stage
+    closed the pipe early, so the truncated producer output is not the value.
+    """
+    if status < 0:
+        return status != -signal.SIGPIPE
+    if status > 1:
+        return True
+    return status == 1 and os.path.basename(head) != "grep"
+
+=== word count of the located quote ===
+4
+
+=== the docstring that documents the exemption being restricted (L86-L88) ===
+    Grep exit1 is an ordinary no-match. A negative status is a signal: stale unless it is
+    SIGPIPE (-13). SIGPIPE on a non-final stage is benign by documented rule: a later stage
+    closed the pipe early, so the truncated producer output is not the value.
+
+=== call site: the gate passes only the head name, not the decoded operands (L115, L129-L131) ===
+4:                heads.append(argv[0])
+18:            for p, head in zip(processes[:-1], heads[:-1]):
+19:                if upstream_stale(head, p.returncode):
+83:def upstream_stale(head, status):
+115:                heads.append(argv[0])
+129:            for p, head in zip(processes[:-1], heads[:-1]):
+130:                if upstream_stale(head, p.returncode):
+
+=== id check for the proposed S099 row ===
+$ grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md
+99
+$ grep -oE '^\| S[0-9]+' corpus/SOURCES.md | tail -1
+| S099
+$ grep -c '^S099$' .ufo/waves/round-65/assimilation/reg-ids   # registry ids
+0
+$ grep -c '^S099$' .ufo/waves/round-65/assimilation/staged-ids  # staged (unadopted package) ids
+1

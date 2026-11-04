@@ -1,0 +1,48 @@
+input sha256=8efa7d884e862ed8e57f256165a9ab8b3936473cb16813094eddeeadb2c98210 /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/controls/cat-mutbat.py
+input sha256=2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51 /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/repo/corpus/instruments/figure-audit.py
+input sha256=d788bbc16cd1ac9f345e5fc1a29f3e87542ceed1f2dfcdfa5e4b7593d3a57312 /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/controls/probes.py
+$ /usr/bin/python3 -B /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/controls/cat-mutbat.py --instrument /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/repo/corpus/instruments/figure-audit.py --collector /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/controls/probes.py --work /fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze/cat-mutbat
+(cwd=/fast/scratch/hyaku/kasegi-r66/L1/driver-forgery-id-prefreeze)
+CAT-MUTBAT SETUP mutation-anchor-not-exactly-once
+instrument_sha256=2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51
+collector_sha256=d788bbc16cd1ac9f345e5fc1a29f3e87542ceed1f2dfcdfa5e4b7593d3a57312
+CASE baseline rc=1
+NONCE run=88fe082fdc1778ed base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51
+LEDGER P1-cat-two-operand-missing-sigpipe id=fig-1622465fc904e0cc3451e346482fe9c9 record=rec-2bdc87894e65b478 dir=c-c0d98fb0a29c36e0efcbe499
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P1-cat-two-operand-missing-sigpipe field=rc want=1 got=0
+NOTE P1-cat-two-operand-missing-sigpipe field=verdict want=stale got=ok
+NOTE P1-cat-two-operand-missing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+LEDGER P2-cat-two-operand-existing-sigpipe id=fig-b483961dba2a440499c867f00dbe92f8 record=rec-960b6419308a1647 dir=c-01cbef7061c146e962e8faba
+NATIVE P2-cat-two-operand-existing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P2-cat-two-operand-existing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P2-cat-two-operand-existing-sigpipe field=rc want=1 got=0
+NOTE P2-cat-two-operand-existing-sigpipe field=verdict want=stale got=ok
+NOTE P2-cat-two-operand-existing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+LEDGER P3-cat-one-operand-sigpipe id=fig-31f1fdd9e616a8ba5d1a089e7ab9cb4b record=rec-88ae001bab5ce86a dir=c-3f3c2887ab1a69d4cc303928
+NATIVE P3-cat-one-operand-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P3-cat-one-operand-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P4-cat-stdin-sigpipe id=fig-68aa8c23717401d89a2b55a685484fac record=rec-be832cc7438e122f dir=c-fdbcfe6e70a2296fc821adf6
+NATIVE P4-cat-stdin-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P4-cat-stdin-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P5-cat-missing-exit1 id=fig-5e17b96a3cf9e0ae0728ab2e5860251d record=rec-aa34aee559ddba5f dir=c-e6bc74e39c451b436fd0465a
+NATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=44
+PROBE P5-cat-missing-exit1 rc=0 expected=1 reason=- pass=false
+NOTE P5-cat-missing-exit1 field=rc want=1 got=0
+NOTE P5-cat-missing-exit1 field=verdict want=stale got=ok
+NOTE P5-cat-missing-exit1 field=reason want=derive-upstream-exit-1 got=None
+LEDGER P6-grep-nomatch-green id=fig-8c14f3ef740f4c3042786eb895e53f17 record=rec-330492147aca9f39 dir=c-92e36c24f36a2a082c5eba3e
+NATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P6-grep-nomatch-green rc=0 expected=0 reason=- pass=true
+LEDGER P7-same-derive-small-twin id=fig-01e79f4cbbc06a0479666afaf8c889ed record=rec-9784d5fbafd6faa2 dir=c-9725b5b2ac7ff4acf6a7320c
+NATIVE P7-same-derive-small-twin stage0=0 stage1=0 out=alpha err_bytes=0
+PROBE P7-same-derive-small-twin rc=0 expected=0 reason=- pass=true
+LEDGER P8-cat-dashdash-separator-missing id=fig-0d91fba3d9bdab02f7c242213c7b864e record=rec-92f3eeb631fe89a6 dir=c-967cacbab23f2a5ef26b2520
+NATIVE P8-cat-dashdash-separator-missing stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P8-cat-dashdash-separator-missing rc=0 expected=1 reason=- pass=false
+NOTE P8-cat-dashdash-separator-missing field=rc want=1 got=0
+NOTE P8-cat-dashdash-separator-missing field=verdict want=stale got=ok
+NOTE P8-cat-dashdash-separator-missing field=reason want=derive-upstream-signal-13 got=None
+PROBES probes=8 failures=4 mode=candidate instrument_sha256=2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51
+[exit=2]
