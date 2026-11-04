@@ -223,6 +223,10 @@ LIMBS = [
 # the downstream close): the pristine face is captured twice and mutants must reproduce
 # it, but it is never counted in the contract `failures`.
 DIFFERENTIAL = ("P2-wc-multi-missing", "P14-wc-two-existing")
+# Erratum 2 (round 67): a DIFFERENTIAL row is a diagnostic, not a kill.  The wc rows' native
+# face flips between runs, so only green-vs-stale is semantic; any stale reason is the same
+# verdict and must not turn an equivalence control into a false "not-equivalent".
+WC_REASONS = ("derive-upstream-signal-13", "derive-upstream-exit-1", "derive-upstream-exit-2")
 
 EQUIVALENTS = [
     ("E1-trailing-space-control",
@@ -407,7 +411,10 @@ def main():
                 print("DIFFERENTIAL %s unstable=%r/%r dropped=1" % (pid, got, again))
                 continue
             print("DIFFERENTIAL %s captured=%r" % (pid, got))
-            resolved.append((pid, derive, got, proot))
+            # Face-tolerant: any stale reason is the same verdict; only green-vs-stale is
+            # semantic, so a wc timing flip cannot fake a kill or a survivor.
+            want_d = ("stale", WC_REASONS) if got[0] == "stale" else got
+            resolved.append((pid, derive, want_d, proot))
             continue
         good = matches(got, want)
         if not pid.startswith("C:"):

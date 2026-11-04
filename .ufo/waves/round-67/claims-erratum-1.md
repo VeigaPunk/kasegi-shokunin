@@ -58,3 +58,32 @@ The frozen `counting_command` names `--controls-revision 7ae95a06…`. The re-ru
 commit as `--controls-revision` (it carries the same gate, probes, battery and pins content plus
 this erratum and the corrected pins). The measured gate bytes are identical in both
 (`8147350c411650b4fe3307b50851722025a00cc1e71df2ecff478ea7177ad247`).
+
+## Erratum 2 (appended 2026-11-04, same file) — the mutation battery's DIFFERENTIAL rows were face-flaky
+
+Second `--final` run (controls revision `e59c564e65fa`) failed the same measurement for a real
+reason:
+
+```
+RESULT multihead-mutbat FAIL exit=1 want='MUTBAT killed=7/7 survivors=0 equivalents=3 invalid_rejected=0 failures=0'
+  sha256=88e0c3e6… collector-findings=COLLECTOR_fixtures=ok
+MUTBAT killed=7/7 survivors=0 equivalents=1 invalid_rejected=2 failures=2
+```
+
+Its own receipt (`controls/erratum2-mutbat-flaky-receipt.txt`) shows why: the two equivalence
+controls flipped to `invalid by=not-equivalent`, and the battery's `DIFFERENTIAL` block had
+resolved its wc rows with a fixed want captured from one face. P10's native face flips between
+runs (this round's measured fact), so a flip between the two captures makes the battery compare a
+mutant against a different baseline and report a false `not-equivalent`.
+
+Fix (Erratum 2): the `DIFFERENTIAL` rows are diagnostics, not kills; only green-vs-stale is
+semantic, so a stale differential row is resolved to `("stale", WC_REASONS)` with WC_REASONS =
+{derive-upstream-signal-13, derive-upstream-exit-1, derive-upstream-exit-2}. Authored first by
+seat MutationMultiHead as its own face-tolerant block and applied by the L1 on top of the
+committed bytes; the two writers collided once (a duplicated WC_REASONS definition, removed by the
+L1) and the seat was told to stop writing the file. New battery digest is pinned in
+`controls/driver-pins.json`; gate, probes, driver assertions and every expectation string are
+unchanged. The measured green summary is re-pinned only after three standalone runs agree.
+
+The first receipt (E1) and the flaky receipt (E2) are both preserved; neither is deleted or
+rewritten.
