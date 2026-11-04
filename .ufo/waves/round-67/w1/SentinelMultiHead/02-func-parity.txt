@@ -1,0 +1,24 @@
+# structural parity (inspect.getsource per function + constants)
+UTC=2026-11-04T20:59:42Z
+base_sha=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+candidate_sha=d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+
+FUNCS base=14 cand=15 missing=[] added=['sigpipe_input_count']
+SAME-FUNC _one
+SAME-FUNC audit
+SAME-FUNC cat_sigpipe_exempt
+SAME-FUNC check_read_only
+SAME-FUNC denied_flag
+SAME-FUNC eprint
+SAME-FUNC main
+SAME-FUNC parse_derive
+SAME-FUNC python_head_ok
+SAME-FUNC run_derive
+SAME-FUNC segment_ok
+CHANGED-FUNC selftest
+SAME-FUNC tokenize
+CHANGED-FUNC upstream_stale
+CONST READ_ONLY_HEADS base=('grep', 'wc', 'ls', 'sha256sum', 'cat', 'cut', 'sort', 'tr', 'head', 'tail') cand=('grep', 'wc', 'ls', 'sha256sum', 'cat', 'cut', 'sort', 'tr', 'head', 'tail') same=True
+CONST DENIED_FLAGS base=(('sort', ('-o', '--output')), ('git show', ('--output', '--ext-diff'))) cand=(('sort', ('-o', '--output')), ('git show', ('--output', '--ext-diff'))) same=True
+CONST EXPECTED_CASES base=67 cand=71 same=False
+NEW-SYMBOLS ['SIGPIPE_REQUIRED_NONFILE_ARGS', 'sigpipe_input_count']

@@ -1,0 +1,15 @@
+# residual: leading -- + option-like operand hides a second (missing) operand: BASE
+UTC=2026-11-04T20:59:51Z
+base_sha=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+candidate_sha=d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+
+RESIDUAL label=base gate=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac repeats=2
+SHAPE R01-wc         native=[-13, 0] derive=wc -- -x missing.txt | head -n 1         rc=1/ACCEPTED-mismatch/- x2
+SHAPE R02-head       native=[1, 0] derive=head -- -x missing.txt | head -n 1       rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE R03-sort       native=[2, 0] derive=sort -- -x missing.txt | head -n 1       rc=1/STALE/derive-upstream-exit-2 x2
+SHAPE R04-sha256sum  native=[1, 0] derive=sha256sum -- -x missing.txt | head -n 1  rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE R05-ls         native=[2, 0] derive=ls -- -x missing.txt | head -n 1         rc=1/STALE/derive-upstream-exit-2 x2
+SHAPE R06-cut        native=[-13, 0] derive=cut -f1 -- -x missing.txt | head -n 1    rc=1/ACCEPTED-mismatch/- x2
+SHAPE R07-cut-leading native=[1, 0] derive=cut -- -x missing.txt | head -n 1        rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE R08-tail       native=[1, 0] derive=tail -- -x missing.txt | head -n 1       rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE R09-grep       native=[2, 0] derive=grep -- -x missing.txt | head -n 1       rc=1/STALE/derive-upstream-exit-2 x2

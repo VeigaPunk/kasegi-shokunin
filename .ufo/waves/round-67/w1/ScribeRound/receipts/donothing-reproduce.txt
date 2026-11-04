@@ -1,0 +1,19 @@
+GATE sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac path=corpus/instruments/figure-audit.py
+FIXTURE big.txt sha256=3ed4e02bd97495bce0703d0f0def4174cc5458ce14875807646c14709709766c bytes=4193286
+NATIVE P9 stages=[-13, 0] derive=cut -f1 -d: big.txt missing.txt | head -n 1
+NATIVE P10 stages=[-13, 0] derive=wc -l big.txt missing.txt | head -n 1
+NATIVE P11 stages=[-13, 0] derive=grep x xlines.txt missing.txt | head -n 1
+NATIVE P12 stages=[-13, 0] derive=cut -f1 -d: big.txt | head -n 1
+NATIVE P13 stages=[0, 0] derive=wc -l big.txt | head -n 1
+NATIVE P14 stages=[0, 0] derive=sha256sum big.txt | head -n 1
+NATIVE P15 stages=[1, 0] derive=head -n 5 big.txt missing.txt | head -n 1
+FIG P9 recorded=alpha derived=alpha ok
+FIG P10 recorded=4096 big.txt derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG P11 recorded=xlines.txt:x derived=xlines.txt:x ok
+FIG P12 recorded=alpha derived=alpha ok
+FIG P13 recorded=4096 big.txt derived=4096 big.txt ok
+FIG P14 recorded=3ed4e02bd97495bce0703d0f0def4174cc5458ce14875807646c14709709766c  big.txt derived=3ed4e02bd97495bce0703d0f0def4174cc5458ce14875807646c14709709766c  big.txt ok
+FIG P15 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIGURE-AUDIT figures=7 ok=5 stale=2 exit=1
+GATE-RC corpus/instruments/figure-audit.py exit=1
+NOWORK-VERDICT gate=corpus/instruments/figure-audit.py green_on_masked=P9,P11,P12,P13,P14

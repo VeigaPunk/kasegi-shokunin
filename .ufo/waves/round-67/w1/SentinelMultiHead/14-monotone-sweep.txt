@@ -1,0 +1,16 @@
+# monotonicity sweep (base STALE => candidate STALE; no widening)
+UTC=2026-11-04T20:59:52Z
+base_sha=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+candidate_sha=d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+
+NARROW derive='cut -f1 -d: big.txt missing.txt | head -n 1' base=['ACCEPTED'] cand=['STALE:upstream-signal-13']
+NARROW derive='cut -f 1 -d : big.txt missing.txt | head -n 1' base=['ACCEPTED'] cand=['STALE:upstream-signal-13']
+NARROW derive='wc -l big.txt missing.txt | head -n 1' base=['ACCEPTED'] cand=['STALE:upstream-signal-13']
+NARROW derive='grep x xlines.txt missing.txt | head -n 1' base=['ACCEPTED'] cand=['STALE:upstream-signal-13']
+NARROW derive='grep x big.txt missing.txt | head -n 1' base=['ACCEPTED'] cand=['STALE:upstream-signal-13']
+NARROW derive='grep -e x big.txt missing.txt | head -n 1' base=['ACCEPTED'] cand=['STALE:upstream-signal-13']
+NARROW derive='grep -e x -e y big.txt missing.txt | head -n 1' base=['ACCEPTED'] cand=['STALE:upstream-signal-13']
+NARROW derive='grep -f pats.txt big.txt missing.txt | head -n 1' base=['ACCEPTED'] cand=['STALE:upstream-signal-13']
+NARROW derive='grep -- x big.txt missing.txt | head -n 1' base=['ACCEPTED'] cand=['STALE:upstream-signal-13']
+NARROW derive='tr a b < big.txt | head -n 1' base=['ACCEPTED'] cand=['STALE:upstream-signal-13']
+MONOTONE derives=52 widened=0 narrowed=10 identical=42

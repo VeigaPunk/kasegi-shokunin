@@ -1,0 +1,10 @@
+# write/exec residual: git show --textconv runs a config-declared driver through an allow-listed git head
+UTC=2026-11-04T21:00:29Z
+base_sha=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac candidate_sha=d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+fixture_repo=/fast/scratch/hyaku/kasegi-r67/SentinelMultiHead/gitrepo toplevel=/fast/scratch/hyaku/kasegi-r67/SentinelMultiHead/gitrepo
+config diff.mydriver.textconv=/fast/scratch/hyaku/kasegi-r67/SentinelMultiHead/writecap/textconv.sh
+gitattributes=*.txt diff=mydriver
+head_commit=532a1aa4eea837795695656aea4bd150d85c2447
+derive: git show --textconv HEAD:a.txt
+gate=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py summary=FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1 textconv_driver_runs=1
+gate=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-67/w1/ExecMultiHeadGate/figure-audit.py summary=FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1 textconv_driver_runs=1

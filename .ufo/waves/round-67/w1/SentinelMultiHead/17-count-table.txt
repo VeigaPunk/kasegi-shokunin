@@ -1,0 +1,21 @@
+# sigpipe_input_count table for representative argvs (candidate)
+UTC=2026-11-04T20:59:58Z
+base_sha=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+candidate_sha=d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+
+COUNT head=wc       n=1 cat_exempt=None argv=['wc', '--', '-x', 'missing.txt']
+COUNT head=cut      n=1 cat_exempt=None argv=['cut', '-f1', '--', '-x', 'missing.txt']
+COUNT head=cut      n=1 cat_exempt=None argv=['cut', '--', '-x', 'missing.txt']
+COUNT head=grep     n=1 cat_exempt=None argv=['grep', 'x', '--', '-f', 'missing.txt']
+COUNT head=grep     n=1 cat_exempt=None argv=['grep', '--', '-x', 'missing.txt']
+COUNT head=wc       n=2 cat_exempt=None argv=['wc', '-l', 'big.txt', 'missing.txt']
+COUNT head=cut      n=2 cat_exempt=None argv=['cut', '-f1', '-d:', 'big.txt', 'missing.txt']
+COUNT head=grep     n=2 cat_exempt=None argv=['grep', 'x', 'big.txt', 'missing.txt']
+COUNT head=grep     n=3 cat_exempt=None argv=['grep', '-e', 'x', 'big.txt', 'missing.txt']
+COUNT head=grep     n=3 cat_exempt=None argv=['grep', '-f', 'pats.txt', 'big.txt', 'missing.txt']
+COUNT head=cat      n=1 cat_exempt=False argv=['cat', '--', '-x', 'missing.txt']
+COUNT head=wc       n=1 cat_exempt=None argv=['wc', '-l', 'big.txt']
+COUNT head=grep     n=1 cat_exempt=None argv=['grep', 'x', 'big.txt']
+COUNT head=grep     n=2 cat_exempt=None argv=['grep', '-e', 'x', 'big.txt']
+COUNT head=tr       n=2 cat_exempt=None argv=['tr', 'a', 'b']
+COUNT head=cat      n=1 cat_exempt=True argv=['cat', 'big.txt']

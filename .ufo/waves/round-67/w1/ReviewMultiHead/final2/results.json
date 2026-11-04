@@ -1,0 +1,1754 @@
+[
+  {
+    "id": "cut0",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cut -f1 -d: < big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG cut0 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG cut0 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cut1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cut -f1 -d: big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG cut1 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG cut1 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cut2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cut -f1 -d: big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG cut2 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG cut2 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cut3",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cut -f1 -d: big.txt other.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG cut3 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG cut3 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cut1detached",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cut -d : -f 1 big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG cut1detached recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG cut1detached recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "wc0",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "wc -l < big.txt | head -n 1",
+    "native_statuses": [
+      0,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "4097\n",
+    "want": "4097",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG wc0 recorded=4097 derived=4097 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG wc0 recorded=4097 derived=4097 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "wc1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "wc -l big.txt | head -n 1",
+    "native_statuses": [
+      0,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "4097 big.txt\n",
+    "want": "4097 big.txt",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG wc1 recorded=4097 big.txt derived=4097 big.txt ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG wc1 recorded=4097 big.txt derived=4097 big.txt ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "wc2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "wc -l big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      1,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "   4097 big.txt\n",
+    "want": "4097 big.txt",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG wc2 recorded=4097 big.txt derived=4097 big.txt ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG wc2 recorded=4097 big.txt derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep0",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep x < xlines.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "xline\n",
+    "want": "xline",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep0 recorded=xline derived=xline ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG grep0 recorded=xline derived=xline ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep x xlines.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "xline\n",
+    "want": "xline",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep1 recorded=xline derived=xline ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG grep1 recorded=xline derived=xline ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep x xlines.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "xlines.txt:xline\n",
+    "want": "xlines.txt:xline",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep2 recorded=xlines.txt:xline derived=xlines.txt:xline ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG grep2 recorded=xlines.txt:xline derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep3",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep x xlines.txt other.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "xlines.txt:xline\n",
+    "want": "xlines.txt:xline",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep3 recorded=xlines.txt:xline derived=xlines.txt:xline ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG grep3 recorded=xlines.txt:xline derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep_e_sep1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep -e x big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n",
+    "want": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep_e_sep1 recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG grep_e_sep1 recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep_i_sep1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep -i x big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n",
+    "want": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep_i_sep1 recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG grep_i_sep1 recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep_ex_attached2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep -ex big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n",
+    "want": "big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep_ex_attached2 recorded=big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG grep_ex_attached2 recorded=big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep_f_attached2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep -fbig.txt big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "big.txt:alpha\n",
+    "want": "big.txt:alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep_f_attached2 recorded=big.txt:alpha derived=big.txt:alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG grep_f_attached2 recorded=big.txt:alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep_e_sep2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep -e x big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n",
+    "want": "big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep_e_sep2 recorded=big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG grep_e_sep2 recorded=big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep_ee2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep -e x -e y big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n",
+    "want": "big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep_ee2 recorded=big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG grep_ee2 recorded=big.txt:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep_c1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep -c x big.txt | head -n 1",
+    "native_statuses": [
+      0,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "4096\n",
+    "want": "4096",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep_c1 recorded=4096 derived=4096 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG grep_c1 recorded=4096 derived=4096 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sort0",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sort < big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG sort0 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG sort0 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sort1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sort big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG sort1 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG sort1 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sort2existing",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sort big.txt other.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG sort2existing recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG sort2existing recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sort2missing",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sort big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      2,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "",
+    "want": "",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG sort2missing recorded= derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG sort2missing recorded= derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sort1detached",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sort -k 1 big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG sort1detached recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG sort1detached recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "head0attached",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "head -c10000000 < big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG head0attached recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG head0attached recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "head0detached",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "head -c 10000000 < big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG head0detached recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG head0detached recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "head1attached",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "head -c10000000 big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG head1attached recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG head1attached recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "head1detached",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "head -c 10000000 big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG head1detached recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG head1detached recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "head2bytes",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "head -c10000000 big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "==> big.txt <==\n",
+    "want": "==> big.txt <==",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG head2bytes recorded===> big.txt <== derived===> big.txt <== ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG head2bytes recorded===> big.txt <== derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "head2lines",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "head -n 5 big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      1,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "==> big.txt <==\n",
+    "want": "==> big.txt <==",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG head2lines recorded===> big.txt <== derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG head2lines recorded===> big.txt <== derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "tail0attached",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "tail -c100000 < big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n",
+    "want": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG tail0attached recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG tail0attached recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "tail1attached",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "tail -c100000 big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n",
+    "want": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG tail1attached recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG tail1attached recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "tail1detached",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "tail -c 100000 big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n",
+    "want": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG tail1detached recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG tail1detached recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "tail2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "tail -c100000 big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "==> big.txt <==\n",
+    "want": "==> big.txt <==",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG tail2 recorded===> big.txt <== derived===> big.txt <== ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG tail2 recorded===> big.txt <== derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sha0",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sha256sum < big.txt | head -n 1",
+    "native_statuses": [
+      0,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  -\n",
+    "want": "24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  -",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG sha0 recorded=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  - derived=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  - ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG sha0 recorded=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  - derived=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  - ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sha1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sha256sum big.txt | head -n 1",
+    "native_statuses": [
+      0,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt\n",
+    "want": "24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG sha1 recorded=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt derived=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG sha1 recorded=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt derived=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sha2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sha256sum big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      1,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt\n",
+    "want": "24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG sha2 recorded=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG sha2 recorded=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sha2existing",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sha256sum big.txt other.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt\n",
+    "want": "24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG sha2existing recorded=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt derived=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG sha2existing recorded=24e47a74d8a127dd6499362eb1ce753191a37e5e034715df44750fd68a51dfe2  big.txt derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "tr0",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "tr -d < big.txt | head -n 1",
+    "native_statuses": [
+      1,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "",
+    "want": "",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG tr0 recorded= derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG tr0 recorded= derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "tr1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "tr -d y < big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG tr1 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG tr1 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "tr2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "tr a b < big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "blphb\n",
+    "want": "blphb",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG tr2 recorded=blphb derived=blphb ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG tr2 recorded=blphb derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "ls1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "ls -l many | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "total 0\n",
+    "want": "total 0",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG ls1 recorded=total 0 derived=total 0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG ls1 recorded=total 0 derived=total 0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "ls2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "ls -l many missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "many:\n",
+    "want": "many:",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG ls2 recorded=many: derived=many: ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG ls2 recorded=many: derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cat0",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cat < big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG cat0 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG cat0 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cat1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cat big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG cat1 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG cat1 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cat2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cat big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG cat2 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG cat2 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cat3",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cat big.txt other.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG cat3 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG cat3 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cat1opt",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cat -n big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "     1\talpha\n",
+    "want": "1\talpha",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG cat1opt recorded=1\talpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG cat1opt recorded=1\talpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "catdashdash",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cat -- big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG catdashdash recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG catdashdash recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cut_dashfile2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cut -f1 -d: big.txt -- -missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG cut_dashfile2 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG cut_dashfile2 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep_dashfile2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep x xlines.txt -- -missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "xlines.txt:xline\n",
+    "want": "xlines.txt:xline",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep_dashfile2 recorded=xlines.txt:xline derived=xlines.txt:xline ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG grep_dashfile2 recorded=xlines.txt:xline derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "wc_dashfile2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "wc -l big.txt -- -missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "   4097 big.txt\n",
+    "want": "4097 big.txt",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG wc_dashfile2 recorded=4097 big.txt derived=4097 big.txt ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG wc_dashfile2 recorded=4097 big.txt derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sort_dashfile2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sort big.txt -- -missing.txt | head -n 1",
+    "native_statuses": [
+      2,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "",
+    "want": "",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG sort_dashfile2 recorded= derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG sort_dashfile2 recorded= derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "head_dashfile2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "head -c10000000 big.txt -- -missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "==> big.txt <==\n",
+    "want": "==> big.txt <==",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG head_dashfile2 recorded===> big.txt <== derived===> big.txt <== ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG head_dashfile2 recorded===> big.txt <== derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "ls_dashfile2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "ls -l many -- -missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "many:\n",
+    "want": "many:",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG ls_dashfile2 recorded=many: derived=many: ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG ls_dashfile2 recorded=many: derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cut_dashfile1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cut -f1 -d: -- big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG cut_dashfile1 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG cut_dashfile1 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep_sep_pattern_post",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep -- x big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n",
+    "want": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep_sep_pattern_post recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG grep_sep_pattern_post recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "grep_e_post",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "grep -e x -- big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n",
+    "want": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG grep_e_post recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG grep_e_post recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "tr_sep",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "tr -d -- y < big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG tr_sep recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG tr_sep recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "cut_no_sep_dashdiff",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "cut -f1 -d: big.txt -missing.txt | head -n 1",
+    "native_statuses": [
+      1,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "",
+    "want": "",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG cut_no_sep_dashdiff recorded= derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG cut_no_sep_dashdiff recorded= derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "wc_files0",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "wc -l --files0-from=list0 | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "   4097 big.txt\n",
+    "want": "4097 big.txt",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG wc_files0 recorded=4097 big.txt derived=4097 big.txt ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG wc_files0 recorded=4097 big.txt derived=4097 big.txt ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sha_check",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sha256sum -c biglist | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "big.txt: OK\n",
+    "want": "big.txt: OK",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG sha_check recorded=big.txt: OK derived=big.txt: OK ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG sha_check recorded=big.txt: OK derived=big.txt: OK ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sha_check_attached_setup",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sha256sum --check=biglist | head -n 1",
+    "native_statuses": [
+      1,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "",
+    "want": "",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG sha_check_attached_setup recorded= derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG sha_check_attached_setup recorded= derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "sort_files0",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx",
+    "derive": "sort --files0-from=list0 | head -n 1",
+    "native_statuses": [
+      2,
+      0
+    ],
+    "untruncated_stage0": 2,
+    "native_stdout": "",
+    "want": "",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG sort_files0 recorded= derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG sort_files0 recorded= derived=UNAVAILABLE reason=derive-upstream-exit-2 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "ls0",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/fx/many",
+    "derive": "ls -l | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "total 0\n",
+    "want": "total 0",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG ls0 recorded=total 0 derived=total 0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG ls0 recorded=total 0 derived=total 0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "R66-P1",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/r66-big",
+    "derive": "cat big.txt missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG R66-P1 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG R66-P1 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "R66-P2",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/r66-big",
+    "derive": "cat big.txt other.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG R66-P2 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG R66-P2 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "R66-P3",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/r66-big",
+    "derive": "cat big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG R66-P3 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG R66-P3 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "R66-P4",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/r66-big",
+    "derive": "cat < big.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG R66-P4 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG R66-P4 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "R66-P7",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/r66-small",
+    "derive": "cat big.txt other.txt | head -n 1",
+    "native_statuses": [
+      0,
+      0
+    ],
+    "untruncated_stage0": 0,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG R66-P7 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG R66-P7 recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "R66-P8",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/r66-big",
+    "derive": "cat -- -- missing.txt | head -n 1",
+    "native_statuses": [
+      -13,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "alpha\n",
+    "want": "alpha",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG R66-P8 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG R66-P8 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "R66-P5",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/r66-big",
+    "derive": "cat missing.txt | wc -l",
+    "native_statuses": [
+      1,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "0\n",
+    "want": "0",
+    "gates": {
+      "base": {
+        "exit": 1,
+        "stdout": "FIG R66-P5 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 1,
+        "stdout": "FIG R66-P5 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+        "stderr": ""
+      }
+    }
+  },
+  {
+    "id": "R66-P6",
+    "root": "/fast/scratch/hyaku/kasegi-r67/ReviewMultiHead/rerun2/r66-big",
+    "derive": "grep absent big.txt | wc -l",
+    "native_statuses": [
+      1,
+      0
+    ],
+    "untruncated_stage0": 1,
+    "native_stdout": "0\n",
+    "want": "0",
+    "gates": {
+      "base": {
+        "exit": 0,
+        "stdout": "FIG R66-P6 recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      },
+      "candidate": {
+        "exit": 0,
+        "stdout": "FIG R66-P6 recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+        "stderr": ""
+      }
+    }
+  }
+]

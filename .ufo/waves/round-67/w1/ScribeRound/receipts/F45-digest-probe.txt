@@ -1,0 +1,34 @@
+# ScribeRound independent F45 digest probe — 2026-11-04 (seat-local; not a registry row)
+
+URL: https://www.first.org/standards/frameworks/psirts/psirt_maturity_document
+
+## Raw-body digests (five fetches, three distinct CSP nonces)
+fce2d8307e9e17c2c2d8ba605954e37289f584081ac44634d8554cb9609dd678  82978  nonce=tSpAxu6OKaKmpw9JA1x55w  Age=246 X-Cache=MISS,HIT
+afe5ba6fcdd73526... (cache-busting ?x=1)                        82978  nonce=Kr1WYfNHPlqyHPh4QSpZFw  Age=0   X-Cache=MISS,MISS
+6bf2ac5e9d3d12f7... (cache-busting ?x=2)                        82978  nonce=0RMHvzINByiIk4z9UlzVwA  Age=0   X-Cache=MISS,MISS
+fce2d8307e9e17c2... (repeat of the plain URL)                  82978  nonce=tSpAxu6OKaKmpw9JA1x55w  Age=246
+fce2d8307e9e17c2... (repeat, third User-Agent)                82978  nonce=tSpAxu6OKaKmpw9JA1x55w  Age=246
+=> The byte length 82978 is CONSTANT across every fetch; only the digest varies.
+   The varying bytes are the CSP nonce in the script tail (`<script nonce="...">`).
+   Three User-Agents (Python-urllib/3.11, a desktop Mozilla string, the lane instrument UA)
+   all received the identical digest fce2d830..., so the nonce is per-cache-entry, not per-agent.
+
+## Normalized-text snapshot digests (capture-source.py --kind html, three cache-busted fetches)
+cf834a652560bb8e230917299d8ea58c245a0c8715101280115c2508318bff9f  59068  bytes  478 lines
+cf834a652560bb8e230917299d8ea58c245a0c8715101280115c2508318bff9f  59068  bytes  478 lines
+cf834a652560bb8e230917299d8ea58c245a0c8715101280115c2508318bff9f  59068  bytes  478 lines
+=> The capture instrument's NORMALIZED TEXT digest is stable; the nonce is stripped with the script tail.
+
+## Companion PDF (stable artifact)
+url https://www.first.org/standards/frameworks/psirts/FIRST_PSIRT_Maturity_Document.pdf
+bytes 644190
+sha256 f217c446b4f422d1288d6836467f6acccc58a5b3027fef67866c9f392059a31f
+MATCHES the digest recorded in round 65 (.ufo/waves/round-65/w1/ScoutS098/NOTES.md:91) exactly.
+
+## Consequence for the round-65 lead
+corpus/SOURCES.md:244 records the HTML lead as "82978 bytes, sha256 334aeb01b20a8704fa35bbdc594277e0c212f42908c5ce3a940d8f2e4c77cf8e".
+That digest is a RAW-BODY digest and it is NOT reproducible: five fetches today yield
+fce2d830.../afe5ba6f.../6bf2ac5e... for the SAME 82978-byte body. The recorded lead digest can
+never be re-derived from the served HTML; only the normalized-text digest or the PDF digest is
+re-derivable. The lead row therefore cannot carry a recheckable HTML digest; any F45 registry row
+must bind the normalized-text sha256 (or the PDF), and the row must say which one it binds.

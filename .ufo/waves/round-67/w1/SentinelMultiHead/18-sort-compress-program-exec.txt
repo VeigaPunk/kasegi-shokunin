@@ -1,0 +1,9 @@
+# write-capability residual: sort --compress-program executes an arbitrary program through an allow-listed head
+UTC=2026-11-04T21:00:10Z
+base_sha=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac candidate_sha=d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+host sort: sort version: sort 0.8.0
+fixture: /fast/scratch/hyaku/kasegi-r67/SentinelMultiHead/writecap/spillroot/spill.txt bytes=11331981
+derive: sort -S 1K --compress-program=/fast/scratch/hyaku/kasegi-r67/SentinelMultiHead/writecap/compress.sh spill.txt | head -n 1
+admission(base)=True
+gate=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py rc=0 summary=FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1 compress_program_invocations=68217
+gate=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-67/w1/ExecMultiHeadGate/figure-audit.py rc=0 summary=FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1 compress_program_invocations=68222

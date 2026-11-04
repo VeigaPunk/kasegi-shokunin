@@ -1,0 +1,5 @@
+HOST grep: grep (GNU grep) 3.12-modified
+FACES P9 cut-multi     {'(-13, 0)': 10}
+FACES P10 wc-multi     {'(-13, 0)': 10}
+FACES P11 grep-multi   {'(-13, 0)': 10}
+HOST-NOTE (2026-11-04, L1): this session's bash exposes a BUILTIN `grep` that reports `grep (pi-uu-grep) 0.2.0`, while `subprocess.Popen(["grep",...])` — the path the gate itself uses — resolves `/usr/bin/grep`, GNU grep 3.12-modified. Any measurement taken through the shell builtin is not the gate's own resolution and is not evidence. All face/status measurements in this round are Popen-based for that reason (the ExecMultiHeadGate seat's bash+eval PIPESTATUS loop is recorded as a measurement artifact for the same class).

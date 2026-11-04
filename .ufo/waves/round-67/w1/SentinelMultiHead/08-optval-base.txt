@@ -1,0 +1,38 @@
+# option-value / grep pattern-form probe: BASE
+UTC=2026-11-04T20:59:47Z
+base_sha=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+candidate_sha=d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+
+OPTVAL label=base gate=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac repeats=2
+SHAPE G01-grep-e-two-missing   derive=grep -e x -e y big.txt missing.txt | head -n 1             rc=1/ACCEPTED-mismatch/- x2
+SHAPE G02-grep-e-one-missing   derive=grep -e x big.txt missing.txt | head -n 1                  rc=1/ACCEPTED-mismatch/- x2
+SHAPE G03-grep-f-two-missing   derive=grep -f pats.txt big.txt missing.txt | head -n 1           rc=1/ACCEPTED-mismatch/- x2
+SHAPE G04-grep-E-two-missing   derive=grep -E x big.txt missing.txt | head -n 1                  rc=1/ACCEPTED-mismatch/- x2
+SHAPE G05-grep-e-dashdash-two  derive=grep -e x -- big.txt missing.txt | head -n 1               rc=1/ACCEPTED-mismatch/- x2
+SHAPE G06-grep-e-existing-two  derive=grep -e x big.txt other.txt | head -n 1                    rc=1/ACCEPTED-mismatch/- x2
+SHAPE G07-grep-fixed-two-missing derive=grep -F x big.txt missing.txt | head -n 1                  rc=1/ACCEPTED-mismatch/- x2
+SHAPE G08-grep-noopt-two-missing derive=grep x big.txt missing.txt | head -n 1                     rc=1/ACCEPTED-mismatch/- x2
+SHAPE G09-grep-e-one-file      derive=grep -e x xlines.txt | head -n 1                           rc=1/ACCEPTED-mismatch/- x2
+SHAPE O01-head-n-two           derive=head -n 5 big.txt missing.txt | head -n 1                  rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE O02-head-nsp-two         derive=head -n5 big.txt missing.txt | head -n 1                   rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE O03-tail-c-two           derive=tail -c 100 big.txt missing.txt | head -n 1                rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE O04-cut-fd-two           derive=cut -f 1 -d : big.txt missing.txt | head -n 1              rc=1/ACCEPTED-mismatch/- x2
+SHAPE O05-cut-fd-compact       derive=cut -f1 -d: big.txt missing.txt | head -n 1                rc=1/ACCEPTED-mismatch/- x2
+SHAPE O06-sort-k-two           derive=sort -k 1 big.txt missing.txt | head -n 1                  rc=1/STALE/derive-upstream-exit-2 x2
+SHAPE O07-sha-b-two            derive=sha256sum -b big.txt missing.txt | head -n 1               rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE O08-sha-check-two        derive=sha256sum -c sums.txt big.txt | head -n 1                  rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE O09-ls-l-two             derive=ls -l big.txt missing.txt | head -n 1                      rc=1/STALE/derive-upstream-exit-2 x2
+SHAPE O10-wc-l-two             derive=wc -l big.txt missing.txt | head -n 1                      rc=1/ACCEPTED-mismatch/- x2
+SHAPE O11-tr-set-two           derive=tr -d a b < big.txt | head -n 1                            rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE C01-cat-opt-file         derive=cat -n big.txt | head -n 1                                 rc=1/STALE/derive-upstream-signal-13 x2
+SHAPE C02-cat-opt-stdin        derive=cat -n < big.txt | head -n 1                               rc=1/STALE/derive-upstream-signal-13 x2
+SHAPE C03-cat-dashdash-opt     derive=cat -- -n | head -n 1                                      rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE C04-cat-two-missing      derive=cat big.txt missing.txt | head -n 1                        rc=1/STALE/derive-upstream-signal-13 x2
+SHAPE C05-cat-dashdash-two     derive=cat -- big.txt missing.txt | head -n 1                     rc=1/STALE/derive-upstream-signal-13 x2
+SHAPE C06-cat-dash-one         derive=cat - < big.txt | head -n 1                                rc=1/ACCEPTED-mismatch/- x2
+SHAPE W01-sort-compress        derive=sort --compress-program=/bin/true big.txt                  rc=1/ACCEPTED-mismatch/- x2
+SHAPE W02-sort-o               derive=sort -o out.txt big.txt                                    rc=2/REFUSED/derive-not-read-only x2
+SHAPE W03-git-textconv         derive=git show --textconv HEAD                                   rc=1/STALE/derive-exit-128 x2
+SHAPE W04-git-extdiff          derive=git show --ext-diff HEAD                                   rc=2/REFUSED/derive-not-read-only x2
+SHAPE W05-git-output           derive=git show --output=out.txt HEAD                             rc=2/REFUSED/derive-not-read-only x2
+SHAPE W06-python-args          derive=python3 corpus/instruments/pipe.py a b | head -n 1         rc=1/ACCEPTED-mismatch/- x2

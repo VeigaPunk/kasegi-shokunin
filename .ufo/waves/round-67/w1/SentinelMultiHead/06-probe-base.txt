@@ -1,0 +1,36 @@
+# SIGPIPE shape probe: BASE (masked multi-input vs single-input controls)
+UTC=2026-11-04T20:59:43Z
+base_sha=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+candidate_sha=d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+
+PROBE label=base gate=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac repeats=2
+SHAPE S01-cat-two-missing      derive=cat big.txt missing.txt | head -n 1                            rc=1/STALE/derive-upstream-signal-13 x2
+SHAPE S02-cat-two-existing     derive=cat big.txt other.txt | head -n 1                              rc=1/STALE/derive-upstream-signal-13 x2
+SHAPE S03-cat-one              derive=cat big.txt | head -n 1                                        rc=1/ACCEPTED-mismatch/- x2
+SHAPE S04-cat-stdin            derive=cat < big.txt | head -n 1                                      rc=1/ACCEPTED-mismatch/- x2
+SHAPE S05-cut-two-missing      derive=cut -f1 -d: big.txt missing.txt | head -n 1                    rc=1/ACCEPTED-mismatch/- x2
+SHAPE S06-cut-one              derive=cut -f1 -d: big.txt | head -n 1                                rc=1/ACCEPTED-mismatch/- x2
+SHAPE S07-wc-two-missing       derive=wc -l big.txt missing.txt | head -n 1                          rc=1/ACCEPTED-mismatch/- x2
+SHAPE S08-wc-one               derive=wc -l big.txt | head -n 1                                      rc=1/ACCEPTED-mismatch/- x2
+SHAPE S09-grep-two-missing     derive=grep x xlines.txt missing.txt | head -n 1                      rc=1/ACCEPTED-mismatch/- x2
+SHAPE S10-grep-one             derive=grep x xlines.txt | head -n 1                                  rc=1/ACCEPTED-mismatch/- x2
+SHAPE S11-sha-two-missing      derive=sha256sum big.txt missing.txt | head -n 1                      rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE S12-sha-one              derive=sha256sum big.txt | head -n 1                                  rc=1/ACCEPTED-mismatch/- x2
+SHAPE S13-head-two-missing     derive=head -n 5 big.txt missing.txt | head -n 1                      rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE S14-head-one             derive=head -n 5 big.txt | head -n 1                                  rc=1/ACCEPTED-mismatch/- x2
+SHAPE S15-tail-two-missing     derive=tail -n 5 big.txt missing.txt | head -n 1                      rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE S16-sort-two-missing     derive=sort big.txt missing.txt | head -n 1                           rc=1/STALE/derive-upstream-exit-2 x2
+SHAPE S17-ls-two-missing       derive=ls big.txt missing.txt | head -n 1                             rc=1/STALE/derive-upstream-exit-2 x2
+SHAPE S18-tr-stdin             derive=tr a b < big.txt | head -n 1                                   rc=1/ACCEPTED-mismatch/- x2
+SHAPE S19-grep-two-big         derive=grep x big.txt missing.txt | head -n 1                         rc=1/ACCEPTED-mismatch/- x2
+SHAPE S20-cut-optvalues        derive=cut -f 1 -d : big.txt missing.txt | head -n 1                  rc=1/ACCEPTED-mismatch/- x2
+SHAPE S21-head-opt-two         derive=head -n 1 big.txt missing.txt | head -n 1                      rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE S22-cat-option-two       derive=cat -n big.txt missing.txt | head -n 1                         rc=1/STALE/derive-upstream-signal-13 x2
+SHAPE S23-cat-dashdash-two     derive=cat -- big.txt missing.txt | head -n 1                         rc=1/STALE/derive-upstream-signal-13 x2
+SHAPE S24-wc-dashdash-two      derive=wc -- big.txt missing.txt | head -n 1                          rc=1/ACCEPTED-mismatch/- x2
+SHAPE S25-grep-dashdash-two    derive=grep -- x xlines.txt missing.txt | head -n 1                   rc=1/ACCEPTED-mismatch/- x2
+SHAPE S26-tail-two-big         derive=tail -n 5 big.txt other.txt | head -n 1                        rc=1/ACCEPTED-mismatch/- x2
+SHAPE S27-sort-two-big         derive=sort big.txt other.txt | head -n 1                             rc=1/ACCEPTED-mismatch/- x2
+SHAPE S28-python-two-args      derive=python3 corpus/instruments/pipe.py big.txt missing.txt | head -n 1 rc=1/ACCEPTED-mismatch/- x2
+SHAPE S29-cat-two-nopipe       derive=cat big.txt missing.txt                                        rc=1/STALE/derive-exit-1 x2
+SHAPE S30-cut-one-opt          derive=cut -f1 -d: big.txt | head -n 1                                rc=1/ACCEPTED-mismatch/- x2

@@ -1,0 +1,271 @@
+# kasegi round-67 / RevengerMultiHead — native receipt table
+
+Every pipeline below was started with python subprocess argv lists; no shell was used.
+A stage0 status of -13 is SIGPIPE.  'miss' = stage0 stderr named the missing operand
+(positive proof the later operand WAS opened); 'miss=-' = stderr never named it.
+
+## host
+kernel            = Linux 7.2.11-arch1-1 x86_64
+python            = 3.14.8 (GCC 16.2.1)
+pipe capacity     = 65536 bytes (F_GETPIPE_SZ)
+gate sha256       = 51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+tools             = cut/wc/sort/head/tail/sha256sum/tr/ls/cat 0.8.0 (uutils); grep = 'grep (pi-uu-grep) 0.2.0'
+
+## fixtures (deterministic, 1024-byte lines)
+line 1   = b'alpha:' + b'a'*1017 + b'\n'   (grep alpha matches exactly this line)
+line 2..k= b'x'*1023 + b'\n'                (grep x matches every line)
+file size= k*1024 exactly; missing.txt is never created.
+
+bytes        KiB        lines  sha256
+65536        64         64     65f4ca4d510a66c0c7d84350edb94070bce7c5fba5f160f1cad8d4c57f583a50
+66560        65         65     db83ab8539b6bb137c5432217ea7f24f8407629750c4f42d6fa24a0f061b4875
+69632        68         68     36406efcab250699ec9da83c750ee90c014cd22b91ba2e7206dc1b0a30c1abfa
+73728        72         72     fbd75bda73be5161bb8603c1305966d6dc04f932b753e4b66cc786798eebecd4
+81920        80         80     672d6fd24c53c7743556631602622b6864462d3807b02b9413db4215393ac9b4
+98304        96         96     c7fb1141711b291f04dc9eaa52035092e01b221e2f620318187b3cec5e7496ef
+131072       128        128    23485911bebf3bc913c473b0757638cf0e327094996d3e8a68ac3827c8ba39e2
+262144       256        256    2933a035fa36f362be8d9621614275bfe799ec9846466342c9e4cea47d283760
+524288       512        512    6a9d0e2109d6130de9f81cddbcccb72a35475bd5417dcf78ce3719bb8791e27d
+1048576      1024       1024   bf68d0f84c859e89d0d373293495b06988c0f324b602d2214cf10da7e50c31e7
+2097152      2048       2048   addc8713cd0f5b4abc152e46b6ee22dbe2a94865c1a6d50571b4c3ccd2a47665
+4194304      4096       4096   3116362bec339b7f6f0d63e28607647b354e834c073f20ec6b629f1bf61da2ee
+
+## exact argv (stage lists)
+  cat       : ['cat', F, (M)]                       | ['head','-n','1']
+  cut       : ['cut','-f1','-d:', F, (M)]           | ['head','-n','1']
+  wc        : ['wc','-l', F, (M)]                   | ['head','-n','1']
+  grep-many : ['grep','x', F, (M)]                  | ['head','-n','1']
+  grep-few  : ['grep','alpha', F, (M)]              | ['head','-n','1']
+  sort      : ['sort', F, (M)]                      | ['head','-n','1']
+  head-n5   : ['head','-n','5', F, (M)]             | ['head','-n','1']
+  head-all  : ['head','-n','100000', F, (M)]        | ['head','-n','1']
+  tail      : ['tail', F, (M)]                      | ['head','-n','1']
+  tail-all  : ['tail','-n','+1', F, (M)]            | ['head','-n','1']
+  sha256sum : ['sha256sum', F, (M)]                 | ['head','-n','1']
+  ls        : ['ls', F, (M)]                        | ['head','-n','1']
+  tr        : ['tr','a','b', F, (M)]  (tr takes no file operands) | ['head','-n','1']
+  cat|tr    : ['cat', F, M] | ['tr','a','b'] | ['head','-n','1']
+F = absolute fixture path, M = <work>/missing.txt (absent).
+
+## TABLE A — full table at 64 KiB / 1 MiB / 4 MiB (7 repeats each)
+shape                      size       stage0 rc      stage1   miss
+cat                        65536      0              [0]      [False]
+cat+missing                65536      1              [0]      [True]
+cut                        65536      0              [0]      [False]
+cut+missing                65536      1              [0]      [True]
+wc                         65536      0              [0]      [False]
+wc+missing                 65536      [-13, 1]       [0]      [True]
+grep-many                  65536      [-13, 0]       [0]      [False]
+grep-many+missing          65536      [-13, 2]       [0]      [False, True]
+grep-few                   65536      0              [0]      [False]
+grep-few+missing           65536      2              [0]      [True]
+sort                       65536      0              [0]      [False]
+sort+missing               65536      2              [0]      [True]
+head-n5                    65536      0              [0]      [False]
+head-n5+missing            65536      1              [0]      [True]
+head-all                   65536      0              [0]      [False]
+head-all+missing           65536      -13            [0]      [False]
+tail                       65536      0              [0]      [False]
+tail+missing               65536      1              [0]      [True]
+tail-all                   65536      0              [0]      [False]
+tail-all+missing           65536      -13            [0]      [False]
+sha256sum                  65536      0              [0]      [False]
+sha256sum+missing          65536      1              [0]      [True]
+ls                         65536      0              [0]      [False]
+ls+missing                 65536      2              [0]      [True]
+tr-stdin-stream            65536      0              [0]      [False]
+tr-one-arg                 65536      1              [0]      [False]
+tr-file-operand            65536      1              [0]      [False]
+tr-two-file-operands       65536      1              [0]      [False]
+cat|tr                     65536      1              [0]      [True]
+cat                        1048576    -13            [0]      [False]
+cat+missing                1048576    -13            [0]      [False]
+cut                        1048576    -13            [0]      [False]
+cut+missing                1048576    -13            [0]      [False]
+wc                         1048576    0              [0]      [False]
+wc+missing                 1048576    [-13, 1]       [0]      [True]
+grep-many                  1048576    -13            [0]      [False]
+grep-many+missing          1048576    -13            [0]      [False]
+grep-few                   1048576    0              [0]      [False]
+grep-few+missing           1048576    2              [0]      [True]
+sort                       1048576    -13            [0]      [False]
+sort+missing               1048576    2              [0]      [True]
+head-n5                    1048576    0              [0]      [False]
+head-n5+missing            1048576    1              [0]      [True]
+head-all                   1048576    -13            [0]      [False]
+head-all+missing           1048576    -13            [0]      [False]
+tail                       1048576    0              [0]      [False]
+tail+missing               1048576    1              [0]      [True]
+tail-all                   1048576    -13            [0]      [False]
+tail-all+missing           1048576    -13            [0]      [False]
+sha256sum                  1048576    0              [0]      [False]
+sha256sum+missing          1048576    1              [0]      [True]
+ls                         1048576    0              [0]      [False]
+ls+missing                 1048576    2              [0]      [True]
+tr-stdin-stream            1048576    -13            [0]      [False]
+tr-one-arg                 1048576    1              [0]      [False]
+tr-file-operand            1048576    1              [0]      [False]
+tr-two-file-operands       1048576    1              [0]      [False]
+cat|tr                     1048576    -13            [-13]    [False]
+cat                        4194304    -13            [0]      [False]
+cat+missing                4194304    -13            [0]      [False]
+cut                        4194304    -13            [0]      [False]
+cut+missing                4194304    -13            [0]      [False]
+wc                         4194304    0              [0]      [False]
+wc+missing                 4194304    -13            [0]      [True]
+grep-many                  4194304    -13            [0]      [False]
+grep-many+missing          4194304    -13            [0]      [False]
+grep-few                   4194304    0              [0]      [False]
+grep-few+missing           4194304    2              [0]      [True]
+sort                       4194304    -13            [0]      [False]
+sort+missing               4194304    2              [0]      [True]
+head-n5                    4194304    0              [0]      [False]
+head-n5+missing            4194304    1              [0]      [True]
+head-all                   4194304    -13            [0]      [False]
+head-all+missing           4194304    -13            [0]      [False]
+tail                       4194304    0              [0]      [False]
+tail+missing               4194304    1              [0]      [True]
+tail-all                   4194304    -13            [0]      [False]
+tail-all+missing           4194304    -13            [0]      [False]
+sha256sum                  4194304    0              [0]      [False]
+sha256sum+missing          4194304    1              [0]      [True]
+ls                         4194304    0              [0]      [False]
+ls+missing                 4194304    2              [0]      [True]
+tr-stdin-stream            4194304    -13            [0]      [False]
+tr-one-arg                 4194304    1              [0]      [False]
+tr-file-operand            4194304    1              [0]      [False]
+tr-two-file-operands       4194304    1              [0]      [False]
+cat|tr                     4194304    -13            [-13]    [False]
+
+## TABLE B — 4 MiB stability (40 repeats, shapes that carry a later operand)
+shape                      stage0 rc        sigpipe
+cat+missing                {'-13': 40}      40/40
+cut+missing                {'-13': 40}      40/40
+grep-many+missing          {'-13': 40}      40/40
+grep-few+missing           {'2': 40}        0/40
+wc+missing                 {'-13': 40}      40/40
+sort+missing               {'2': 40}        0/40
+head-n5+missing            {'1': 40}        0/40
+head-all+missing           {'-13': 40}      40/40
+tail+missing               {'1': 40}        0/40
+tail-all+missing           {'-13': 40}      40/40
+sha256sum+missing          {'1': 40}        0/40
+ls+missing                 {'2': 40}        0/40
+
+## TABLE C — size sweep, 2-operand shapes (15 repeats; 40 where marked)
+shape                      KiB    stage0 rc        miss     reps
+cat+missing                512    [1]              True     15
+cat+missing                576    [-13]            False    15
+cat+missing                640    [-13]            False    15
+cat+missing                704    [-13]            False    15
+cat+missing                768    [-13]            False    15
+cat+missing                832    [-13]            False    15
+cat+missing                896    [-13]            False    15
+cat+missing                960    [-13]            False    15
+cat+missing                1024   [-13]            False    15
+cat+missing                2048   [-13]            False    15
+cat+missing                4096   [-13]            False    15
+cut+missing                64     [1]              True     15
+cut+missing                65     [-13, 1]         True     15
+cut+missing                66     [-13, 1]         True     15
+cut+missing                67     [-13, 1]         True     15
+cut+missing                68     [-13, 1]         True     15
+cut+missing                70     [-13]            False    15
+cut+missing                72     [-13]            False    15
+cut+missing                80     [-13]            False    15
+cut+missing                96     [-13]            False    15
+cut+missing                128    [-13]            False    15
+grep-many+missing          64     [-13, 2]         True     15
+grep-many+missing          65     [-13]            False    15
+grep-many+missing          66     [-13, 2]         True     15
+grep-many+missing          67     [-13]            False    15
+grep-many+missing          68     [-13]            False    15
+grep-many+missing          70     [-13]            False    15
+grep-many+missing          72     [-13]            False    15
+grep-many+missing          80     [-13]            False    15
+grep-many+missing          96     [-13]            False    15
+grep-many+missing          128    [-13]            False    15
+head-all+missing           64     [-13, 1]         True     15
+head-all+missing           65     [-13, 1]         True     15
+head-all+missing           66     [-13, 1]         True     15
+head-all+missing           67     [-13, 1]         True     15
+head-all+missing           68     [-13]            False    15
+head-all+missing           70     [-13, 1]         True     15
+head-all+missing           72     [-13]            False    15
+head-all+missing           80     [-13]            False    15
+head-all+missing           96     [-13]            False    15
+head-all+missing           128    [-13]            False    15
+cat+missing                513    {'-13': 37, '1': 3} -        40
+cat+missing                514    {'-13': 38, '1': 2} -        40
+cat+missing                516    {'-13': 38, '1': 2} -        40
+cat+missing                520    {'1': 3, '-13': 37} -        40
+cat+missing                524    {'-13': 40}      -        40
+
+## TABLE D — premise falsifiers (later operand WAS read, status still -13)
+size=65536 wc+missing    rc0=[-13, 1]     miss_all=True
+    stdout='   64 /fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/f-65536.txt\\n'
+    stderr='wc: /fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/missing.txt: No such file or directory\\n'
+size=1048576 wc+missing  rc0=[-13, 1]     miss_all=True
+    stdout='   1024 /fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/f-1048576.txt\\n'
+    stderr='wc: /fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/missing.txt: No such file or directory\\n'
+size=4194304 wc+missing  rc0=[-13]        miss_all=True
+    stdout='   4096 /fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/f-4194304.txt\\n'
+    stderr='wc: /fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/missing.txt: No such file or directory\\n'
+
+## TABLE E — rule fires on worlds where EVERY operand was read (7 repeats)
+size=1048576 cat F G       rc0=[-13] stable=True
+size=1048576 cut F G       rc0=[-13] stable=True
+size=1048576 grep-many F G rc0=[-13] stable=True
+size=1048576 sort F G      rc0=[-13] stable=True
+size=1048576 tail-all F G  rc0=[-13] stable=True
+size=4194304 cat F G       rc0=[-13] stable=True
+size=4194304 cut F G       rc0=[-13] stable=True
+size=4194304 grep-many F G rc0=[-13] stable=True
+size=4194304 sort F G      rc0=[-13] stable=True
+size=4194304 tail-all F G  rc0=[-13] stable=True
+
+## TABLE F — production gate, unchanged, read-only, over scratch ledgers
+(each ledger records exactly what the shape prints; base verdict printed below)
+  G-cut-2 -> ok
+  G-grep-many-2 -> ok
+  G-wc-2 -> ok
+  G-head-all-2 -> ok
+  G-tail-all-2 -> ok
+  G-cat-2 -> stale
+  G-sort-2 -> stale
+  G-sha-2 -> stale
+  G-ls-2 -> stale
+  G-tr-file -> stale
+  G-head-n5-2 -> stale
+  G-cut-1 -> ok
+  G-wc-1 -> ok
+  G-grep-many-1 -> ok
+  G-cat-1 -> ok
+  G-sort-1 -> ok
+  G-tail-all-1 -> ok
+  FIGURE-AUDIT figures=17 ok=11 stale=6 exit=1
+  exit=1
+
+## TABLE G — reversed operand order (missing first, 4 MiB second; 10 repeats)
+cut missing-first        rcs=[[-13, 0]]
+    stderr='cut: /fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/missing.txt: No such file or di'
+grep missing-first       rcs=[[-13, 0]]
+    stderr='grep: /fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/missing.txt: No such file or d'
+wc missing-first         rcs=[[-13, 0], [1, 0]]
+    stderr='wc: /fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/missing.txt: No such file or dir'
+head-all missing-first   rcs=[[-13, 0]]
+    stderr="head: cannot open '/fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/missing.txt' for "
+tail-all missing-first   rcs=[[-13, 0]]
+    stderr="tail: cannot open '/fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/missing.txt' for "
+cat missing-first        rcs=[[-13, 0]]
+    stderr='cat: /fast/scratch/hyaku/kasegi-r67/RevengerMultiHead/work/missing.txt: No such file or di'
+
+## TABLE H — residuals
+python flood (200000 lines) | head -n 1 : stage0 rc = [1] (BrokenPipeError -> exit 1, never -13)
+git ls-files (20000 entries, 220000 B) | head -n 1 : stage0 rc = -13 (5/5)
+
+## strace openat evidence (observational layer; strace slows the child)
+cut+missing@4MiB       rc=[-13, 0]   opens_first=True   opens_missing=False
+cut+missing@64KiB      rc=[-13, 0]   opens_first=True   opens_missing=False
+wc+missing@4MiB        rc=[-13, 0]   opens_first=True   opens_missing=True
+

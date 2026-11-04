@@ -1,0 +1,178 @@
+--- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py	2026-11-04 17:33:32.043529798 -0300
++++ /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-67/w1/ExecMultiHeadGate/figure-audit.py	2026-11-04 17:59:20.076887267 -0300
+@@ -36,7 +36,8 @@
+ 
+ Exit codes: 0 every figure re-derives; 1 any figure stale or derive failed
+ (fail-closed: nonzero or signal final status, upstream positive status other than grep exit1,
+-or a non-exempt upstream signal — SIGPIPE from a multi-input or option-carrying cat is stale —
++or a non-exempt upstream signal — SIGPIPE from a read-only head with more than one counted
++input operand (or from an option-carrying cat) is stale —
+ or empty stdout is stale);
+ 2 harness/read error (ledger missing/unparsable, entry malformed, derive refused).
+ After all pipeline stages finish, a nonzero final status takes precedence: a nonzero exit is
+@@ -44,15 +45,21 @@
+ the first upstream status that is >1, or exit1 from a program other than grep, is stale
+ (derive-upstream-exit-N), and an upstream stage killed by signal N is stale
+ (derive-upstream-signal-N). Grep exit1 is an ordinary no-match and is not an error. SIGPIPE
+-(-13) on a non-final stage stays benign by documented rule; for a cat head the exemption now
+-applies only when the cat had at most one decoded input — no operands (stdin) or exactly one
+-operand with no options (a lone "-" operand counts as a stdin input; a leading "--" separator
+-is honored). Other heads retain the benign rule. A cat with two or more inputs, and
+-conservatively ANY cat invocation carrying an option token (option value semantics are not
+-parsed, so even a single-file `cat -n big.txt` is refused), goes stale
+-derive-upstream-signal-N: with multiple inputs the truncation can hide a later operand's error
+-(observed false green at base: large `cat big.txt missing.txt | head -n 1`). This is not
+-general error detection or pipefail. && stops a derive at the first stale group and
++(-13) on a non-final stage stays benign by documented rule; for a read-only head the
++exemption now applies only when the decoded argv names at most one counted input operand
++(R67).  For cat the round-66 rule is applied first and unchanged: no operands (stdin) or
++exactly one operand with no options (a lone "-" operand counts as a stdin input; a leading
++"--" separator is honored; ANY option token is refused conservatively).  For the other
++read-only heads the count is conservative: a leading "--" separator is dropped, grep's
++pattern is skipped as a required non-file argument, a token starting with "-" that is not
++"-" itself is an option and not an operand, and everything else counts — so option VALUES
++inflate the count and cause a safe stale.  Unknown heads retain the benign rule.  A
++read-only head with two or more counted inputs goes stale derive-upstream-signal-N: with
++multiple inputs the truncation can hide a later operand's error (observed false greens at
++base: large `cat big.txt missing.txt | head -n 1` (R66) and, with the same masking,
++`cut -f1 -d: big.txt missing.txt | head -n 1`, `wc -l big.txt missing.txt | head -n 1`,
++`grep x xlines.txt missing.txt | head -n 1` (R67)).  This is not general error detection
++or pipefail. && stops a derive at the first stale group and
+ concatenates successful group stdout; it is not bash pipeline-status equivalence.
+ --selftest builds fixtures under $HYAKU_SCRATCH, otherwise $TMPDIR/the system temp
+ directory, and uses the current Python interpreter. It exits 0 only if all cases pass.
+@@ -80,7 +87,7 @@
+ )
+ 
+ 
+-EXPECTED_CASES = 67  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape)
++EXPECTED_CASES = 71  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count)
+ 
+ 
+ def eprint(*a):
+@@ -104,22 +111,52 @@
+     return len(tokens) <= 1
+ 
+ 
++# Non-file arguments a read-only head requires before its input operands begin: grep's
++# pattern is not an input; every other read-only head takes its operands directly.
++SIGPIPE_REQUIRED_NONFILE_ARGS = {"grep": 1}
++
++
++def sigpipe_input_count(head, argv):
++    """Conservatively count the input operands named by a SIGPIPE'd read-only stage's argv.
++
++    A leading "--" separator is dropped, then the head's required non-file arguments (for
++    grep, the pattern) are skipped; a token starting with "-" that is not "-" itself is an
++    option and not an operand; everything else counts.  Option VALUES are therefore counted
++    as operands and inflate the count — which can only cause a safe stale, never a false
++    exemption.  This is a capability count, not general argument validation.
++    """
++    tokens = list(argv[1:])
++    if tokens and tokens[0] == "--":
++        tokens = tokens[1:]
++    for _ in range(SIGPIPE_REQUIRED_NONFILE_ARGS.get(head, 0)):
++        if tokens:
++            tokens = tokens[1:]
++    return sum(1 for t in tokens if not (t.startswith("-") and t != "-"))
++
++
+ def upstream_stale(head, stage_argv, status):
+     """Stale upstream statuses: any >1, exit1 from a program other than grep, or a signal.
+ 
+     Grep exit1 is an ordinary no-match. A negative status is a signal: stale unless it is
+-    SIGPIPE (-13) on a stage whose head is cat with at most one decoded input (stdin-only or
+-    exactly one operand, no options, optional leading -- separator).  A multi-input cat
+-    SIGPIPE is stale: the truncation can hide a later operand's error.  Other heads keep the
+-    old benign rule.  stage_argv is the decoded argv of the killed stage (never a shell
+-    string); passing it is the R66 repair — base decided SIGPIPE on the status alone.
++    SIGPIPE (-13) on a stage whose head names at most one input operand.  The round-66 cat
++    rule is applied first and byte-identical: a cat is exempt only with stdin-only or
++    exactly one operand, no options, optional leading -- separator.  Every other read-only
++    head is exempt only when the conservative operand count (sigpipe_input_count) is at
++    most one; a multi-input stage is stale because the truncation can hide a later
++    operand's error (R67 repair — base exempted every non-cat head blindly).  Unknown
++    heads keep the old benign rule.  stage_argv is the decoded argv of the killed stage
++    (never a shell string); passing it is the R66 repair — base decided SIGPIPE on the
++    status alone.
+     """
+     if status < 0:
+         if status != -signal.SIGPIPE:
+             return True
+-        if os.path.basename(head) != "cat":
+-            return False
+-        return not cat_sigpipe_exempt(stage_argv)
++        head_name = os.path.basename(head)
++        if head_name == "cat":
++            return not cat_sigpipe_exempt(stage_argv)
++        if head_name in READ_ONLY_HEADS:
++            return sigpipe_input_count(head_name, stage_argv) > 1
++        return False
+     if status > 1:
+         return True
+     return status == 1 and os.path.basename(head) != "grep"
+@@ -408,6 +445,8 @@
+                     f.write("alpha\n" + ("x" * 1023 + "\n") * 4095)
+                 with open(os.path.join(tmp, "other.txt"), "w", encoding="utf-8", newline="\n") as f:
+                     f.write("beta\n" + ("y" * 1023 + "\n") * 4095)
++                with open(os.path.join(tmp, "xlines.txt"), "w", encoding="utf-8", newline="\n") as f:
++                    f.write("x\n" * 200000)
+             os.makedirs(os.path.join(tmp, "corpus", "instruments"), exist_ok=True)
+             with open(os.path.join(tmp, "corpus", "instruments", "ok.py"), "w", encoding="utf-8", newline="\n") as f:
+                 f.write("print(35)\n")
+@@ -445,8 +484,12 @@
+             p = subprocess.run([sys.executable, me, "--ledger", lp, "--root", tmp],
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=120)
+             out = p.stdout.decode("utf-8", "replace")
+-            good = p.returncode == want_exit and (reason is None or "reason=%s stale" % reason in out)
+-            cases.append((cid, p.returncode, want_exit, good, out))
++            reasons = reason if isinstance(reason, tuple) else ((reason,) if reason else ())
++            good = p.returncode == want_exit and (not reasons or any("reason=%s stale" % r in out for r in reasons))
++            observed = ",".join(dict.fromkeys(
++                ln.split("reason=", 1)[1].split(" stale", 1)[0]
++                for ln in out.splitlines() if "reason=" in ln and " stale" in ln))
++            cases.append((cid, p.returncode, want_exit, good, out, observed))
+         finally:
+             shutil.rmtree(tmp, ignore_errors=True)
+ 
+@@ -530,6 +573,28 @@
+              _one("s-catone", "cat big.txt | head -n 1", "alpha"), big=True)
+     run_case("upstream-cat-stdin-sigpipe-benign", 0,
+              _one("s-catstdin", "cat < big.txt | head -n 1", "alpha"), big=True)
++    # R67 multi-head input-count rule: the SIGPIPE exemption now needs at most one counted
++    # input operand for every read-only head (grep's pattern is a required non-file
++    # argument, not an input).  Cases 1-3 are the C1 control probes P9/P10/P11; their
++    # native stage-0 status has FACE variance on this host (controls/face-matrix-r67.txt:
++    # pi-uu-grep 0.2.0 gives -13 when SIGPIPE wins the race and 2 when it reaches the
++    # missing operand first; cut shows a 1 face), so they assert the VERDICT — stale —
++    # under any of the three refusal reasons, never one frozen reason.  The -13 face is
++    # the one the new rule refuses; the exit faces were already refused by the status
++    # rule.  The observed reason(s) are printed on each case line so the exercised face
++    # is visible in the receipt.  Case 4 proves grep's pattern is not an input: a
++    # single-file grep SIGPIPE stays benign; single-input positives keep exact green.
++    run_case("upstream-cut-multi-missing-stale", 1,
++             _one("s-cutmulti", "cut -f1 -d: big.txt missing.txt | head -n 1", "alpha"),
++             reason=("derive-upstream-signal-13", "derive-upstream-exit-1", "derive-upstream-exit-2"), big=True)
++    run_case("upstream-wc-multi-missing-stale", 1,
++             _one("s-wcmulti", "wc -l big.txt missing.txt | head -n 1", "4096 big.txt"),
++             reason=("derive-upstream-signal-13", "derive-upstream-exit-1", "derive-upstream-exit-2"), big=True)
++    run_case("upstream-grep-multi-missing-stale", 1,
++             _one("s-grepmulti", "grep x xlines.txt missing.txt | head -n 1", "x"),
++             reason=("derive-upstream-signal-13", "derive-upstream-exit-1", "derive-upstream-exit-2"), big=True)
++    run_case("upstream-grep-single-pattern-file-sigpipe-benign", 0,
++             _one("s-grepone", "grep x big.txt | head -n 1", "x" * 1023), big=True)
+     run_case("final-exit7-precedes-upstream-exit1", 1, _one("s-catfinal", "cat missing.txt | python3 corpus/instruments/fail.py", "0"),
+              reason="derive-exit-7")
+     run_case("and-first-group-upstream-exit1-stale", 1, _one("s-andfirst", "cat missing.txt | wc -l && cat g.txt", "0"),
+@@ -556,8 +621,9 @@
+              reason="derive-exit-7")
+ 
+     failures = 0
+-    for cid, got, want, good, out in cases:
+-        print("selftest case=%s exit=%d want=%d verdict=%s" % (cid, got, want, "pass" if good else "fail"))
++    for cid, got, want, good, out, observed in cases:
++        print("selftest case=%s exit=%d want=%d verdict=%s%s" % (
++            cid, got, want, "pass" if good else "fail", (" reasons=" + observed) if observed else ""))
+         if not good:
+             failures += 1
+     if len(cases) != EXPECTED_CASES:

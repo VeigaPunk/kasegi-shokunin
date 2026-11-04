@@ -1,0 +1,16 @@
+# native pipeline statuses, measured 2026-11-04T21:00:41Z, cwd=/fast/scratch/hyaku/kasegi-r67/MutationMultiHead/root, host 7.2.11-arch1-1
+# each command run 30x under 'set -o pipefail'; stderr suppressed; rc is the pipeline status
+cut -f1 -d: big.txt missing.txt | head -n 1          rc=141 x30
+wc -l big.txt missing.txt | head -n 1                rc=141 x30
+grep x xlines.txt missing.txt | head -n 1            rc=141 x30
+grep x xlines.txt big.txt | head -n 1                rc=141 x30
+cut -f1 -d: big.txt | head -n 1                      rc=141 x30
+wc -l big.txt | head -n 1                            rc=0 x30
+sha256sum big.txt | head -n 1                        rc=0 x30
+grep x big.txt | head -n 1                           rc=141 x30
+cat big.txt | head -n 1                              rc=141 x30
+cat big.txt missing.txt | head -n 1                  rc=141 x30
+grep -- x big.txt | head -n 1                        rc=141 x30
+wc small.txt big.txt | head -n 1                     rc=141 x30
+python3 corpus/instruments/pipe.py | head -n 1 | wc -l rc=141 x30
+head -n 5 big.txt missing.txt | head -n 1            rc=1 x30

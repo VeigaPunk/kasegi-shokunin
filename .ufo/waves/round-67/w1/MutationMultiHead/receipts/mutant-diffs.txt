@@ -1,0 +1,126 @@
+# candidate sha256 d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+
+## L1-grep-base-1-to-0 kill=P8-grep-single-sigpipe anchor=exact-once
+mutant sha256 cf0a3dcb05f164c0dc9483e0cfb25aa19e9cb2b6e83ced69d4bdd96101e80863
+--- candidate
++++ L1-grep-base-1-to-0.py
+@@ -114,5 +114,5 @@
+ # Non-file arguments a read-only head requires before its input operands begin: grep's
+ # pattern is not an input; every other read-only head takes its operands directly.
+-SIGPIPE_REQUIRED_NONFILE_ARGS = {"grep": 1}
++SIGPIPE_REQUIRED_NONFILE_ARGS = {"grep": 0}
+ 
+ 
+
+## L2-grep-base-1-to-2 kill=P4-grep-two-existing anchor=exact-once
+mutant sha256 a7b59d1e7b1be394f001cc53b220e8a4b46b76bd77df9dfc0ca07eddefae2f10
+--- candidate
++++ L2-grep-base-1-to-2.py
+@@ -114,5 +114,5 @@
+ # Non-file arguments a read-only head requires before its input operands begin: grep's
+ # pattern is not an input; every other read-only head takes its operands directly.
+-SIGPIPE_REQUIRED_NONFILE_ARGS = {"grep": 1}
++SIGPIPE_REQUIRED_NONFILE_ARGS = {"grep": 2}
+ 
+ 
+
+## L3-catcutwc-base-0-to-1 kill=P14-wc-two-existing anchor=exact-once
+mutant sha256 90511dfbaf39b43ce60e4d2b7d2da3315dc5082b9d051fffdf5d537fcd8ede29
+--- candidate
++++ L3-catcutwc-base-0-to-1.py
+@@ -114,5 +114,5 @@
+ # Non-file arguments a read-only head requires before its input operands begin: grep's
+ # pattern is not an input; every other read-only head takes its operands directly.
+-SIGPIPE_REQUIRED_NONFILE_ARGS = {"grep": 1}
++SIGPIPE_REQUIRED_NONFILE_ARGS = {"grep": 1, "cat": 1, "cut": 1, "wc": 1}
+ 
+ 
+
+## L4-drop-dashdash kill=P11-dashdash-leading anchor=exact-once
+mutant sha256 78235216f92fa812d6b0ef96c0217c056f876866f402d3aff549b0361f5ac82d
+--- candidate
++++ L4-drop-dashdash.py
+@@ -127,6 +127,5 @@
+     """
+     tokens = list(argv[1:])
+-    if tokens and tokens[0] == "--":
+-        tokens = tokens[1:]
++    pass  # MUTANT: leading '--' not honoured
+     for _ in range(SIGPIPE_REQUIRED_NONFILE_ARGS.get(head, 0)):
+         if tokens:
+
+## L5-count-options-as-operands kill=P5-cut-single anchor=exact-once
+mutant sha256 23596676706c127016b7a91dcd3b95efc7533ea46edaf681a9adf795b62426ec
+--- candidate
++++ L5-count-options-as-operands.py
+@@ -132,5 +132,5 @@
+         if tokens:
+             tokens = tokens[1:]
+-    return sum(1 for t in tokens if not (t.startswith("-") and t != "-"))
++    return len(tokens)
+ 
+ 
+
+## L6-unknown-head-stale kill=P12-unknown-head-sigpipe anchor=exact-once
+mutant sha256 1c0d039085a05683847c16e0dd8f24961d62ae167067850681f041ffccd9401a
+--- candidate
++++ L6-unknown-head-stale.py
+@@ -157,5 +157,5 @@
+         if head_name in READ_ONLY_HEADS:
+             return sigpipe_input_count(head_name, stage_argv) > 1
+-        return False
++        return True  # MUTANT: unknown head stale
+     if status > 1:
+         return True
+
+## L7-headblind-sigpipe-exempt kill=P1-cut-multi-missing anchor=exact-once
+mutant sha256 d773c4ce6d4326a080e3805478b54542d812f2d2b524cab8f8726eaabde18d23
+--- candidate
++++ L7-headblind-sigpipe-exempt.py
+@@ -153,9 +153,5 @@
+             return True
+         head_name = os.path.basename(head)
+-        if head_name == "cat":
+-            return not cat_sigpipe_exempt(stage_argv)
+-        if head_name in READ_ONLY_HEADS:
+-            return sigpipe_input_count(head_name, stage_argv) > 1
+-        return False
++        return False  # MUTANT: head-blind SIGPIPE exemption
+     if status > 1:
+         return True
+
+## E1-trailing-space-control equivalent reason=trailing-space control: two bytes added, no behavioural change anchor=exact-once
+mutant sha256 2046b7ca3be1e3f31f0bba274d6b89efa962ce916084195c97af73ba0d29ef88
+--- candidate
++++ E1-trailing-space-control.py
+@@ -132,5 +132,5 @@
+         if tokens:
+             tokens = tokens[1:]
+-    return sum(1 for t in tokens if not (t.startswith("-") and t != "-"))
++    return sum(1 for t in tokens if not (t.startswith("-") and t != "-"))  
+ 
+ 
+
+## E2-le-one-vs-lt-two equivalent reason=len(x) <= 1 and len(x) < 2 are the same predicate over integers anchor=exact-once
+mutant sha256 31cfa9b87ef62f229e2265c1e8df1f9e2cbf654a8ac35af0fecb24518619070a
+--- candidate
++++ E2-le-one-vs-lt-two.py
+@@ -109,5 +109,5 @@
+     elif any(t.startswith("-") and t != "-" for t in tokens):
+         return False
+-    return len(tokens) <= 1
++    return len(tokens) < 2
+ 
+ 
+
+## E3-sigpipe-constant equivalent reason=signal.SIGPIPE is 13 on this host and the status is negated anchor=exact-once
+mutant sha256 2bfd10b50949a6d1f1a722968fd570a9c2d0b46572194495bfa685e111358d6a
+--- candidate
++++ E3-sigpipe-constant.py
+@@ -150,5 +150,5 @@
+     """
+     if status < 0:
+-        if status != -signal.SIGPIPE:
++        if status != -13:
+             return True
+         head_name = os.path.basename(head)

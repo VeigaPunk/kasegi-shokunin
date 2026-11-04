@@ -1,0 +1,140 @@
+# ScoutF45 receipts — FIRST PSIRT Maturity Document (round 67, wave 1)
+# All commands run from /fast/scratch/hyaku/kasegi-r67/ScoutF45 (this seat's scratch),
+# then the durable capture+manifest were copied into the seat dir. No production file edited.
+
+## 1. HTTP / fetch
+  raw-r67.html  bytes=82978 raw_sha256=fce2d8307e9e17c2c2d8ba605954e37289f584081ac44634d8554cb9609dd678 nonces=['tSpAxu6OKaKmpw9JA1x55w']
+  raw-ua.html   bytes=82978 raw_sha256=ecfd1de84179cb1f992ec8dbecead4d2842c0c0b23d28ec7f41b10d07632a24a nonces=['sLyrtimmd54Xq0SpEEtYWg']
+  cb1.html      bytes=82978 raw_sha256=e4e556512972da206ac81313bc8b6bc8e4c8d15e26dc59fac4da8894317294c4 nonces=['RrotW3s4Sl05J9Cnf9dAkw']
+  cb2.html      bytes=82978 raw_sha256=346f2a844af5ecfb561febdb35670ed5464d6aeb5efd084be9f24808366a6693 nonces=['j4OjrE94o23oP5kZBF4EYw']
+  cb3.html      bytes=82978 raw_sha256=59299ab285537e2b2990ec49a26d3768ee8238614fb63df5d26061de39423d29 nonces=['q2Y-cxWktd2bURUPS7Hg6w']
+  raw-r67b.html bytes=82978 raw_sha256=fce2d8307e9e17c2c2d8ba605954e37289f584081ac44634d8554cb9609dd678 nonces=['tSpAxu6OKaKmpw9JA1x55w']
+  nonce-normalized (length-preserving) sha256 = d3e932ee880493643827e0a40fa68fa3f72af061e9eb94d716059bbff79db6a1
+  -> 6 raw fetches: 5 distinct nonces, 5 distinct raw digests, ONE identical byte length 82978,
+     ONE identical nonce-normalized digest, ONE identical capture-source.py text digest cf834a65...
+  HTTP headers (headers-r67.txt): status 200, last-modified Mon, 26 Jan 2026 14:43:46 GMT,
+     content-type text/html; charset=UTF-8, content-length 82978, x-cache HIT, served-by varnish.
+
+## 2. capture-source.py runs (the lane instrument)
+  run 1: status=200 fetched_bytes=82978 snapshot_bytes=59068
+         sha256=cf834a652560bb8e230917299d8ea58c245a0c8715101280115c2508318bff9f utc=2026-11-04T20:51:58Z
+  run 2: identical sha256 (byte-identical text snapshot) -> the TEXT digest IS reproducible
+  selftest: `capture-source.py --selftest` -> 'selftest normalize=ok deterministic=ok' RC=0
+
+## 3. Companion PDF (byte-stable artifact)
+  https://www.first.org/standards/frameworks/psirts/FIRST_PSIRT_Maturity_Document.pdf
+  HTTP 200, bytes=644190 sha256=f217c446b4f422d1288d6836467f6acccc58a5b3027fef67866c9f392059a31f
+  -> reproduces round-65 ScoutS098/NOTES.md:91 digest f217c446...a31f EXACTLY (644190 bytes),
+     and two consecutive fetches were byte-identical (cmp: no differences).
+  pdfinfo: 29 pages, PDF CreationDate 2018-12-06, Author 'Abigail Palacios'.
+
+## 4. Body boundary (the text capture)
+  L1 = document title; L216 = same title again (site <title> vs <h1>) -> M01 occurs 2x, anchor=1 required
+  L2-L215  : FIRST site navigation (chrome)
+  L216-L464: DOCUMENT BODY (levels + annexes)
+  L465-L478: site Standards/Publications navigation + copyright footer (chrome)
+  total lines=478  bytes=59068  sha256=cf834a652560bb8e230917299d8ea58c245a0c8715101280115c2508318bff9f
+
+## 5. Structural census of the body L216-L464
+  Maturity Level   occurrences=1    lines=[352]
+  Level [0-9]      occurrences=0    lines=[]
+  shall            occurrences=0    lines=[]
+  must             occurrences=12   lines=[229, 238, 250, 257, 269, 270, 271, 303, 328, 344, 392, 393]
+  should           occurrences=23   lines=[236, 270, 274, 279, 288, 292, 294, 295, 302, 305, 307, 309, 330, 333]
+  self-assess      occurrences=0    lines=[]
+  evaluat*         occurrences=2    lines=[302, 307]
+  criteria         occurrences=1    lines=[270]
+  certif*          occurrences=0    lines=[]
+  rubric           occurrences=0    lines=[]
+  audit            occurrences=0    lines=[]
+  pass             occurrences=0    lines=[]
+  fail             occurrences=0    lines=[]
+  grade            occurrences=0    lines=[]
+  threshold        occurrences=0    lines=[]
+  mandatory        occurrences=0    lines=[]
+  weight           occurrences=0    lines=[]
+  score            occurrences=1    lines=[307]
+  SIM3             occurrences=1    lines=[221]
+  capacity         occurrences=1    lines=[221]
+  Annex 7          occurrences=1    lines=[397]
+  checklist        occurrences=1    lines=[397]
+  Net Promoter     occurrences=1    lines=[331]
+  SDLC             occurrences=4    lines=[299, 300]
+  BOM              occurrences=1    lines=[298]
+  bug bar          occurrences=0    lines=[]
+  embargo          occurrences=1    lines=[347]
+  multi-party      occurrences=0    lines=[]
+
+## 6. Annex 7 Sample Checklist — item counts per level (L397-L464)
+  Maturity Level 1 items=19  lines L399-L417
+  Maturity Level 2 items=26  lines L419-L444
+  Maturity Level 3 items=19  lines L446-L464
+  total checklist items = 64
+  no scoring/pass-fail rule is stated for the checklist ('pass' 0, 'fail' 0, 'weight' 0, 'threshold' 0,
+  'grade' 0 over the body).
+
+## 7. Novelty screen vs S098 (F44) — term counts
+  term                               S098 MATURITY   verdict
+  maturity level                        0       16   NEW GROUND [217, 218, 225, 285, 288, 290, 318, 325]
+  level 1                               0        5   NEW GROUND [218, 225, 359, 396, 398]
+  level 2                               0        4   NEW GROUND [285, 290, 360, 418]
+  level 3                               0        5   NEW GROUND [318, 325, 353, 361, 445]
+  Annex 7                               0        1   NEW GROUND [397]
+  Sample Checklist                      0        1   NEW GROUND [397]
+  Charter Template                      0        1   NEW GROUND [387]
+  Policy Template                       0        1   NEW GROUND [390]
+  Net Promoter                          0        1   NEW GROUND [331]
+  reactive                              0        3   NEW GROUND [221, 238, 285]
+  Key Productivity Indicator            0        1   NEW GROUND [331]
+  SIM3                                  0        1   NEW GROUND [221]
+  capacity                              3        1   repeat 
+  SDLC                                  0        5   NEW GROUND [299, 300]
+  BOM                                   0        1   NEW GROUND [298]
+  product manifest                      0        1   NEW GROUND [298]
+  security champions                    0        1   NEW GROUND [307]
+  bug bar                               7        1   repeat 
+  embargo                               5        1   repeat 
+  multi-party                           7        1   repeat 
+  service area                         23        7   repeat 
+  CVSS                                 36        6   repeat 
+  reproduction                         13        3   repeat 
+  executive sponsorship                 3        4   repeat 
+  budget                                5        5   repeat 
+  ISO/IEC 29147                         5        3   repeat 
+  Microsoft                             2        6   repeat 
+  IBM                                   0        8   NEW GROUND [375, 376]
+  Brocade                               0        4   NEW GROUND [377, 378]
+  Dell                                  3        5   repeat 
+  Red Hat                               3        2   repeat 
+  Honeywell                             1        4   repeat 
+
+## 8. TOC page-number audit (PDF) — the document's own table of contents
+  INTRODUCTION (L1)                                TOC says 3   actual PDF page [5, 11]  MISMATCH
+  GETTING THINGS STARTED - OPERATIONAL FOUNDATIONS TOC says 3   actual PDF page [6]      MISMATCH
+  PSIRT ENTRYPOINT - VULNERABILITY DISCOVERY       TOC says 7   actual PDF page [8]      MISMATCH
+  THE NEXT STEP - VULNERABILITY TRIAGE AND ANALYSIS TOC says 7   actual PDF page [8]      MISMATCH
+  FIXING THE THING - REMEDIATION                   TOC says 9   actual PDF page [9]      OK
+  THE FINAL COUNTDOWN - VULNERABILITY DISCLOSURE   TOC says 9   actual PDF page [10]     MISMATCH
+  MATURITY LEVEL 2 heading                         TOC says 19  actual PDF page [10]     MISMATCH
+  MATURITY LEVEL 3 heading                         TOC says 15  actual PDF page [15]     OK
+  BEYOND LEVEL 3                                   TOC says 19  actual PDF page [19]     OK
+  ANNEX 1 SUPPORTING RESOURCES                     TOC says 20  actual PDF page [21]     MISMATCH
+  ANNEX 7 SAMPLE CHECKLIST                         TOC says 27  actual PDF page [28]     MISMATCH
+  -> 8 of 11 TOC page numbers are wrong in the source PDF (printed footer == PDF page index here),
+     including the Level 2 heading (TOC 19, actual 10). Cite by HTML capture line, never by TOC page.
+
+## 9. Beyond 'Level 3' is a STUB
+  HTML: L353 'Beyond “Level 3”' then L354 'What? …. Sounds Impossible…. but it is NOT!' then L355 'Annex 1: Supporting Resources'.
+  PDF:  page 19 ends with the same two lines; page 20 contains only the folio '20' (pdftotext -> '20').
+  -> the ladder ends at Level 3; 'Beyond Level 3' carries no content in either rendering.
+
+## 10. Corpus-side screen (read-only)
+  `grep -cE '^\| F45 \|' corpus/README.md` -> 0 (no F45 row exists)
+  frontier rows in corpus/README.md = 44 ; admitted = 44
+  `grep -cE '^\| S100 ' corpus/SOURCES.md` -> 0 (S100 is the next free registry id; S099 is the highest)
+  'psirt_maturity_document' appears in corpus/SOURCES.md exactly once — the round-65 LEAD row (line 244),
+     not a registry row; corpus/README.md / PROVINCE.md / SKILL.md -> 0 hits.
+  corpus/knowledge/: only corpus/knowledge/first-psirt-services-framework.md mentions 'Maturity Level'
+     (and only to say S098 has NO levels). No knowledge entry holds the maturity ladder.
+  sibling-lane scan: 'maturity level' hits only kasegi-shokunin (4 files) and revenger-shokunin
+     (corpus/SOURCES.md:402, Hex-Rays decompiler 'maturity levels' — unrelated).

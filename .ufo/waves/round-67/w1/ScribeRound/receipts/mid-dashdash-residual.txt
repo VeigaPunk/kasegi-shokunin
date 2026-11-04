@@ -1,0 +1,102 @@
+# ScribeRound — residual masking hole that SURVIVES the round-67 candidate (C1)
+
+Date: 2026-11-04. Lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin (base 8e2a8fe8eb92d7c824902a4b70aab027a9aacee0).
+Base gate sha256 `51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac` (unchanged; re-verified).
+
+**Candidate digests measured by this seat — the candidate was still moving while the wave ran:**
+- `978c98a2c35dbd16ad66475bdd966f9ed73d17b4c642ae8210287a7345fa3a36` (measured 17:55 -03; 34376 B)
+- `d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05` (measured 18:01 -03; 34770 B — also the
+  digest the sentinel seat measured). **The residual below was re-verified on BOTH digests.**
+
+## The hole
+A stage whose argv carries a `--` separator followed by a **dash-named operand**
+(`cut -f1 -- -x missing.txt`, or `cut -f1 -d: big.txt -- -missing.txt`) is counted as ONE input
+operand by the candidate's `sigpipe_input_count`, so the candidate keeps the SIGPIPE exemption and
+the gate reads `ok`. Real coreutils semantics: after `--`, EVERY later token is a file operand,
+including one that starts with `-`. The candidate's counter drops a **leading** `--` only, and then
+treats any token starting with `-` (and not `-` itself) as an option — so a post-`--` dash-named
+operand is discarded from the count instead of counted.
+
+## Candidate count, measured by importing the candidate's own function (digest d5e8fcae)
+cut   cut -f1 -d: big.txt -- -missing.txt   => count=1  exempt=True   <-- WRONG (2 real operands)
+grep  grep x big.txt -- -missing.txt         => count=1  exempt=True   <-- WRONG (2 real operands)
+wc    wc -- -x missing.txt                   => count=1  exempt=True   <-- WRONG (2 real operands)
+cut   cut -f1 -- -x missing.txt              => count=1  exempt=True   <-- WRONG (2 real operands)
+cut   cut -f1 -d: big.txt -- missing.txt     => count=2  exempt=False  (correct)
+cut   cut -f1 -d: big.txt missing.txt        => count=2  exempt=False  (correct)
+head  head -n 100000 big.txt -- -missing.txt => count=2  exempt=False  (correct, but only by accident)
+
+## Native status (python subprocess argv lists, no shell)
+shape                        rc0 set   stderr names the missing operand?
+cut -f1 -d: big.txt -- -missing.txt   {-13} x5   False
+grep x big.txt -- -missing.txt         {-13} x5   False
+cut -f1 -- -x missing.txt              {-13} x5   False
+grep x -- -x missing.txt               {-13} x5   False
+wc -- -x missing.txt                   {-13,1}    True (wc read it, then lost the status — the r67 status-loss class)
+
+## The later operand is NEVER OPENED (strace -f -e trace=openat, under the real pipe)
+$ strace -f -e trace=openat sh -c 'cut -f1 -d: big.txt -- -missing.txt | head -n 1 >/dev/null'
+[pid 4139940] openat(AT_FDCWD, "big.txt", O_RDONLY) = 3
+   (no openat for "-missing.txt" at all)
+
+$ strace -f -e trace=openat sh -c 'cut -f1 -- -x missing.txt | head -n 1 >/dev/null'
+[pid 19784] openat(AT_FDCWD, "-x", O_RDONLY) = 3
+   (no openat for "missing.txt" at all)
+
+## Gate verdict (real gate, real ledger, --root = the fixture dir)
+Fixture dir also contains a real dash-named file `-x` (4193286 B) so the post-`--` operand can be
+an EXISTING file; the operand that is never opened is `missing.txt`.
+
+ledger E1: `cut -f1 -- -x missing.txt | head -n 1`        recorded alpha
+ledger E2: `wc -l -- -x missing.txt | head -n 1`          recorded "4096 -x"
+ledger E3: `grep x -- -x missing.txt | head -n 1`         recorded "-x:x"
+BASE  gate (51f299af): FIG E1 ok | FIG E2 ok | FIG E3 ok   -> FIGURE-AUDIT figures=3 ok=2 stale=1 exit=1
+CAND  gate (d5e8fcae): FIG E1 ok | FIG E2 ok | FIG E3 ok   -> FIGURE-AUDIT figures=3 ok=2 stale=1 exit=1
+=> The candidate is INDISTINGUISHABLE from the base on these shapes: both read `ok` on a world where
+   the named operand was never opened. The C1 masking class is NOT closed by the per-head
+   counted-operand rule as implemented.
+
+## Scope of the hole — measured per head (5 repeats each, `-- -missing.txt` operand)
+head       count exempt  rc0 set   missing_named  verdict
+cut        1     True    {-13}     False          *** VULNERABLE: operand NEVER opened, exempt -> GREEN ***
+grep       1     True    {-13}     False          *** VULNERABLE: operand NEVER opened, exempt -> GREEN ***
+head       2     False   {-13}     False          count>1 -> refused (stale)
+tail       2     False   {-13}     False          count>1 -> refused (stale)
+wc         1     True    {-13}     True           masked but the operand WAS read (status-loss class)
+sort       1     True    {2}       True           not -13; the exit-status path makes it stale anyway
+ls         1     True    {2}       True           not -13; the exit-status path makes it stale anyway
+sha256sum  1     True    {1}       True           not -13; the exit-status path makes it stale anyway
+cat        1     True    {-13}     False          CAT: the r66 cat rule refuses it separately -> stale
+
+So the hole needs THREE ordinary things together:
+1. a `--` separator (leading or mid-argv), and
+2. a post-`--` operand whose name starts with `-` (dash-named files are exactly why `--` exists), and
+3. a head that streams and dies of SIGPIPE before reaching it: **`cut` and `grep`** measured.
+`head`/`tail` are accidentally safe because their option VALUE (`100000`, `+1`) inflates the
+count to 2; `wc`/`sort`/`ls`/`sha256sum` are safe because their own status path is not `-13`;
+`cat` is safe because the r66 cat rule refuses any `-`-prefixed token that is not `-` itself.
+**`cut` is one of the two frozen repairs (P9).**
+
+The gate's own derive parser accepts the shape: it parses, the stage runs, and the gate scores
+it. It is NOT a contrived argv — no shell, no wrapper, no unknown head; only the read-only heads
+the repair names.
+
+## Independent corroboration by two other seats
+- **Critic seat:** `.ufo/waves/round-67/w1/CriticMultiHead/cand-shapes.txt`
+  `S3-cut-mid-dashdash masking-dashdash rc=0 verdict=ok` and
+  `S4-grep-mid-dashdash masking-dashdash rc=0 verdict=ok`; the same two `ok` in
+  `base-shapes.txt`; `native-matrix-5x.txt` records S3/S4 stage0 = `[-13, 0] stable=yes`.
+- **Sentinel seat:** `.ufo/waves/round-67/w1/SentinelMultiHead.md` §6 F1 (Low) —
+  `sigpipe_input_count("wc", ["wc","--","-x","missing.txt"]) = 1`,
+  `sigpipe_input_count("cut", ["cut","-f1","--","-x","missing.txt"]) = 1`, native `[-13, 0]`,
+  gate green x3; and it states `the change's own stated contract ("SIGPIPE is exempt only when
+  the decoded argv names at most one input operand") is not met, so C1's closure claim must be
+  scoped to plain multi-operand forms`.
+
+## What a fix would have to do (NOT done by this seat — this seat edits no production code)
+Once a `--` token is seen at ANY position, treat every following token as an operand (after the
+positional skip of the head's required non-file args) instead of filtering `-`-prefixed tokens.
+That preserves the conservative direction and makes the count >= the true operand count.
+Alternatively, refuse every stage whose argv contains a `--` at all — strictly conservative, cannot
+mask. The r66 cat rule already refuses such shapes conservatively; the new per-head counter must
+not be weaker than the cat rule it sits beside.

@@ -1,0 +1,88 @@
+# ScribeRound — independent run of the round-67 committed-input driver (C1)
+
+Date: 2026-11-04. Lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin (base 8e2a8fe8eb92d7c824902a4b70aab027a9aacee0).
+Driver under test: .ufo/waves/round-67/w1/ExecMultiHeadDriver/verify.py
+  sha256 02e48a4fdac41bca64199e6a3f43e893d77702df5602e2dc5ff9ccd50898178f (as read at the time of this run)
+Candidate under test: .ufo/waves/round-67/w1/ExecMultiHeadGate/figure-audit.py
+  sha256 d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+
+## Why a fixture repo was needed
+The driver reads its controls (pin manifest, probe battery, multi-head battery) from
+--controls-revision with `git show`, and the round-67 wave tree is UNTRACKED in the lane, so no
+lane revision carries them. Fixture repo (contract shape):
+  D=$(mktemp -d /fast/scratch/hyaku/kasegi-r67/ScribeRound/work/fx-XXXX); git -C "$D" init -q
+  git -C "$D" rev-parse --show-toplevel  ->  printed $D  (asserted equal before the first commit)
+  git -C "$D" fetch <lane> 8e2a8fe8…; git -C "$D" checkout FETCH_HEAD
+  git -C "$D" add -A .ufo/waves/round-67/{controls,w1/ExecMultiHeadProbes,w1/ExecMultiHeadGate,
+      w1/ExecMultiHeadDriver,w1/MutationMultiHead}
+  git -C "$D" commit -m "fixture: r67 wave controls for driver trial"   -> 41ff4dad5b49e9531ef9ddf4fc078e8a0c8050fe
+The fixture is a scratch clone; no lane git/jj state was touched.
+
+## Exact command
+python3 -B .ufo/waves/round-67/w1/ExecMultiHeadDriver/verify.py \
+  --revision 8e2a8fe8eb92d7c824902a4b70aab027a9aacee0 \
+  --controls-revision 41ff4dad5b49e9531ef9ddf4fc078e8a0c8050fe \
+  --work /fast/scratch/hyaku/kasegi-r67/ScribeRound/work/drv2 \
+  --source-repo $D \
+  --candidate /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-67/w1/ExecMultiHeadGate/figure-audit.py
+
+## Result — exit 0
+RESULT driver-self-pin PASS running=bd82b15b... pinned=bd82b15b... committed-at-controls=bd82b15b... mode=candidate
+RESULT controls-pins PASS pinned=8 problems=none
+RESULT ledger-closure PASS entries=28 unresolved=0 problems=none
+RESULT probes-base-paired PASS mode=base probes=18 rc=0 problems=none
+        face-recorded=P10=rc0/-,P11=rc0/-,P9=rc0/- FACES base-paired attempts=P9:sig20/other0 P10:sig6/other1
+        P11:sig20/other0 faces-clean
+RESULT probes-measured PASS mode=candidate probes=18 rc=0 problems=none
+        face-recorded=P10=rc1/derive-upstream-signal-13,P11=rc1/derive-upstream-signal-13,
+        P9=rc1/derive-upstream-signal-13 FACES measured attempts=P9:sig20/other0 P10:sig20/other0
+        P11:sig20/other0 faces-clean
+RESULT shape-identity PASS shapes=18 P1 rc=1 stale derive-upstream-signal-13 native0=-13 | P2 rc=1 stale
+        derive-upstream-signal-13 native0=-13 | P3 rc=0 ok | P4 rc=0 ok | P5 rc=1 stale derive-exit-1
+        native0=1 | P6 rc=0 ok | P7 rc=0 ok | P8 rc=0 ok | P9 rc=1 stale derive-upstream-signal-13
+        native0=-13 | P10 rc=1 stale derive-upstream-signal-13 native0=-13 | P11 rc=1 stale
+        derive-upstream-signal-13 native0=-13 | P12 rc=0 ok | P13 rc=0 ok | P14 rc=0 ok
+RESULT selftest PASS cases=71 failures=0 want=71 exit=0 kind=candidate
+RESULT mutbat-existing PASS exit=0 summary=mutbat killed=5/5 survivors=0 invalid=0 controls=pass
+RESULT multihead-mutbat PASS exit=0 want='MUTBAT killed=7/7 survivors=0 equivalents=3
+        invalid_rejected=0 failures=0' sha256=937f8677fb6276635501ac8b6fa6cbe631e7d5ef9dc3b8a2e1cc0c7f9b66e233
+        COLLECTOR ignored=/…/controls/probes.py reason=AttributeError
+RESULT real-ledger PASS exit=0 want='FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0'
+        ledger_sha256=28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b
+RESULT red-wrong-want PASS exit=1 red-stale-line=yes
+RESULT identity-guards PASS head=8e2a8fe8eb92 mode=candidate gate=d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+        candidate=d5e8fcae...(unpinned) base=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac problems=none
+VERIFY measurements=12 failures=0 revision=8e2a8fe8eb92d7c824902a4b70aab027a9aacee0 mode=candidate
+exit=0
+
+## What this settles
+The driver DOES certify the honest candidate on its current bytes: 12/12 measurements PASS, exit 0.
+The critic seat's Finding 2 (a `parse_fig` regex `derived=(\S+) ok$` that cannot read a
+space-bearing derived value, giving a false-red DRIVER-RC 1 on the CORRECT gate) was measured
+against the frozen driver `f2d11468ed39f2fa2fbafc77bc690e3ea8d049fca8c37f56f9f619096b6ae8bb`.
+The driver has since moved to `02e48a4f…`, whose `parse_fig` splits on ` derived=` and takes the
+whole tail before the trailing ` ok` — the space-bearing wants (P10/P13 `4096 big.txt`,
+P14 `<hash>  big.txt`) now parse. **The false-red does not reproduce on the current bytes.**
+That finding is therefore a FIXED defect, not an open one — but the L1 must pin the driver digest
+it freezes, because the defect was real at `f2d11468`.
+
+## The `COLLECTOR ignored=… reason=AttributeError` line is benign — and must not be read as a silent skip
+The multi-head battery's `--collector` argument is OPTIONAL and its docstring says the collector is
+"a Python file defining `probe_table(root)`". The committed probes collector
+(ExecMultiHeadProbes/probes.py) does NOT define `probe_table` (it is a CLI harness), so the
+battery's `load_collector` catches the AttributeError and falls back to its OWN built-in
+`probe_table(root)` — 14 named probes (P1..P14) with their expected ok/stale+reason, written
+independently of the probes collector. The fallback is printed, not silent, and the battery's own
+`MUTBAT killed=7/7 survivors=0 equivalents=3 invalid_rejected=0 failures=0` line is the PASS
+criterion the driver compares against the pin. The driver additionally records the collector line in
+the RESULT note, so a reader sees it.
+**However**: the battery therefore runs on its BUILT-IN table, not on the committed probes
+collector, so the two probe sets are not the same set. That is a design fact, not a defect, and it
+does not weaken the 7/7 kill result — but the L1 should not describe the multi-head battery as
+"driven by the committed probes collector", because it is not.
+
+## Limits
+This is a TRIAL run over a fixture commit of the untracked wave tree, in `--candidate` (unpinned)
+mode, not a `--final` run over a committed lane head. It carries **no** claim: it certifies that
+the current driver bytes green the honest candidate, nothing about a freeze, a measured revision,
+a content pin or a landed implementation. The L1's final committed-input measurement is still owed.

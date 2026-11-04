@@ -1,0 +1,18 @@
+# dashdash/option-like-operand probe: BASE
+UTC=2026-11-04T20:59:50Z
+base_sha=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+candidate_sha=d5e8fcae6f1523d0ffbe8f21540fde839a24abbe98958378e54da284eec38c05
+
+DASHDASH label=base gate=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac repeats=2
+SHAPE D01-cut-dashdash-optlike     derive=cut -- -x big.txt | head -n 1                  rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE D02-wc-dashdash-optlike      derive=wc -- -x big.txt | head -n 1                   rc=1/ACCEPTED-mismatch/- x2
+SHAPE D03-head-dashdash-optlike    derive=head -- -x big.txt | head -n 1                 rc=1/ACCEPTED-mismatch/- x2
+SHAPE D04-sort-dashdash-optlike    derive=sort -- -x big.txt | head -n 1                 rc=1/ACCEPTED-mismatch/- x2
+SHAPE D05-sha-dashdash-optlike     derive=sha256sum -- -x big.txt | head -n 1            rc=1/ACCEPTED-mismatch/- x2
+SHAPE D06-ls-dashdash-optlike      derive=ls -- -x big.txt | head -n 1                   rc=1/ACCEPTED-mismatch/- x2
+SHAPE D07-cut-opt-then-dashdash    derive=cut -f1 -- -x big.txt | head -n 1              rc=1/ACCEPTED-mismatch/- x2
+SHAPE D08-cat-dashdash-optlike     derive=cat -- -x big.txt | head -n 1                  rc=1/STALE/derive-upstream-signal-13 x2
+SHAPE D09-cut-two-plain            derive=cut -- big.txt missing.txt | head -n 1         rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE D10-cut-one-optlike          derive=cut -- -x | head -n 1                          rc=1/STALE/derive-upstream-exit-1 x2
+SHAPE D11-grep-dashdash-optlike    derive=grep -- -x big.txt | head -n 1                 rc=1/STALE/derive-empty x2
+SHAPE D12-cut-dashdash-two-optlike derive=cut -- -x -y | head -n 1                       rc=1/STALE/derive-upstream-exit-1 x2

@@ -1,0 +1,83 @@
+RUN mode=base instrument=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py work=/fast/scratch/hyaku/kasegi-r67/ExecMultiHeadProbes/work
+INSTRUMENT-SHA256 51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+INSTRUMENT-IDENTITY production-base-gate base-revision=8e2a8fe8eb92d7c824902a4b70aab027a9aacee0
+BASE-REVISION-UNDER-TEST 8e2a8fe8eb92d7c824902a4b70aab027a9aacee0 (binding pin is INSTRUMENT-SHA256; revision informational)
+FIXTURE big.txt sha256=3ed4e02bd97495bce0703d0f0def4174cc5458ce14875807646c14709709766c bytes=4193286
+FIXTURE other.txt sha256=0c5c9015ad84de5f05d27c12726ed78175f4a9896697c932ca2abc9c1df7c28e bytes=4193285
+FIXTURE xlines.txt sha256=83d10921e04da595d825e6e37aee5b31dffd9dd4763100fb2a816bdbdccf4749 bytes=400000
+FIXTURE missing.txt absent=true
+FIXTURE -missing.txt absent=true (P19/P20 operand must stay absent)
+FIXTURE p14-want-from-host=3ed4e02bd97495bce0703d0f0def4174cc5458ce14875807646c14709709766c  big.txt
+PAYLOAD-DEV base P1,P2 payload=rc0 frozen=rc1/derive-upstream-signal-13 (R66 cat restriction is in the production base; controls/base-matrix-r67.txt)
+NOTE P18 is a positive control (expected rc0 in both modes), never a repair
+NOTE P10 is the flake probe: 5 repeats, native premise stage0 in {-13,1}, no frozen reason (controls/dispatch-addendum-r67.md)
+NOTE P19/P20 are repair rows (mid-argv '--' operand); base masked green, candidate stale any of derive-upstream-signal-13,derive-upstream-exit-1,derive-upstream-exit-2
+NOTE CUTDASH is the no-'--' differential control (stage0 exit 1 proves the token is an option without the separator); outside probes=, failure fails the run
+NATIVE P1 stage0=-13 stage1=0
+GATEFIG FIG P1 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+PROBE P1 rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+NATIVE P2 stage0=-13 stage1=0
+GATEFIG FIG P2 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+PROBE P2 rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+NATIVE P3 stage0=-13 stage1=0
+GATEFIG FIG P3 recorded=alpha derived=alpha ok
+PROBE P3 rc=0 expected=0 reason=- pass=true
+NATIVE P4 stage0=-13 stage1=0
+GATEFIG FIG P4 recorded=alpha derived=alpha ok
+PROBE P4 rc=0 expected=0 reason=- pass=true
+NATIVE P5 stage0=1 stage1=-
+GATEFIG FIG P5 recorded=alpha derived=UNAVAILABLE reason=derive-exit-1 stale
+PROBE P5 rc=1 expected=1 reason=derive-exit-1 pass=true
+NATIVE P6 stage0=0 stage1=0
+GATEFIG FIG P6 recorded=alpha derived=alpha ok
+PROBE P6 rc=0 expected=0 reason=- pass=true
+NATIVE P7 stage0=0 stage1=0
+GATEFIG FIG P7 recorded=4096 derived=4096 ok
+PROBE P7 rc=0 expected=0 reason=- pass=true
+NATIVE P8 stage0=0 stage1=0
+GATEFIG FIG P8 recorded=1 derived=1 ok
+PROBE P8 rc=0 expected=0 reason=- pass=true
+NATIVE P9 stage0=-13 stage1=0
+GATEFIG FIG P9 recorded=alpha derived=alpha ok
+PROBE P9 rc=0 expected=0 reason=- pass=true
+GATEFIG FIG P10 recorded=4096 big.txt derived=4096 big.txt ok
+P10REPEAT 1 stage0=-13 gate_rc=0 reason=- repeat_pass=true
+P10REPEAT 2 stage0=-13 gate_rc=1 reason=derive-upstream-exit-1 repeat_pass=true
+P10REPEAT 3 stage0=-13 gate_rc=0 reason=- repeat_pass=true
+P10REPEAT 4 stage0=-13 gate_rc=0 reason=- repeat_pass=true
+P10REPEAT 5 stage0=-13 gate_rc=1 reason=derive-upstream-exit-1 repeat_pass=true
+NATIVE P10 stage0=-13 stage1=0
+PROBE P10 rc=0 expected=- reason=- pass=true repeats=5
+NATIVE P11 stage0=-13 stage1=0
+GATEFIG FIG P11 recorded=xlines.txt:x derived=xlines.txt:x ok
+PROBE P11 rc=0 expected=0 reason=- pass=true
+NATIVE P12 stage0=-13 stage1=0
+GATEFIG FIG P12 recorded=alpha derived=alpha ok
+PROBE P12 rc=0 expected=0 reason=- pass=true
+NATIVE P13 stage0=0 stage1=0
+GATEFIG FIG P13 recorded=4096 big.txt derived=4096 big.txt ok
+PROBE P13 rc=0 expected=0 reason=- pass=true
+NATIVE P14 stage0=0 stage1=0
+GATEFIG FIG P14 recorded=3ed4e02bd97495bce0703d0f0def4174cc5458ce14875807646c14709709766c  big.txt derived=3ed4e02bd97495bce0703d0f0def4174cc5458ce14875807646c14709709766c  big.txt ok
+PROBE P14 rc=0 expected=0 reason=- pass=true
+NATIVE P15 stage0=1 stage1=0
+GATEFIG FIG P15 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+PROBE P15 rc=1 expected=1 reason=derive-upstream-exit-1 pass=true
+NATIVE P16 stage0=-13 stage1=0
+GATEFIG FIG P16 recorded=alpha derived=alpha ok
+PROBE P16 rc=0 expected=0 reason=- pass=true
+NATIVE P17 stage0=0 stage1=0
+GATEFIG FIG P17 recorded=big.txt derived=big.txt ok
+PROBE P17 rc=0 expected=0 reason=- pass=true
+NATIVE P18 stage0=-13 stage1=0
+GATEFIG FIG P18 recorded=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok
+PROBE P18 rc=0 expected=0 reason=- pass=true
+NATIVE P19 stage0=-13 stage1=0
+GATEFIG FIG P19 recorded=alpha derived=alpha ok
+PROBE P19 rc=0 expected=0 reason=- pass=true
+NATIVE P20 stage0=-13 stage1=0
+GATEFIG FIG P20 recorded=xlines.txt:x derived=xlines.txt:x ok
+PROBE P20 rc=0 expected=0 reason=- pass=true
+GATEFIG FIG CUTDASH recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+CONTROL CUTDASH stage0=1 gate_rc=1 reason=derive-upstream-exit-1 pass=true
+PROBES probes=20 failures=0 mode=base instrument_sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
