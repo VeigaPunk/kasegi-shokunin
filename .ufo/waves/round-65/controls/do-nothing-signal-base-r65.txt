@@ -1,0 +1,32 @@
+# do-nothing control: production gate at base a283189, signal probes
+$ python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py --ledger /fast/scratch/hyaku/kasegi-r65/L1/fixture/ledger.json --root /fast/scratch/hyaku/kasegi-r65/L1/fixture
+FIG p1-sigterm-upstream recorded=0 derived=0 ok
+FIG p2-sigkill-upstream recorded=0 derived=0 ok
+FIG p3-final-signal recorded=0 derived=UNAVAILABLE reason=derive-exit--15 stale
+FIG p4-clean recorded=1 derived=1 ok
+FIG p5-grep-nomatch recorded=0 derived=0 ok
+FIGURE-AUDIT figures=5 ok=4 stale=1 exit=1
+# P6 SIGPIPE-non-final control at base
+FIG p1-sigterm-upstream recorded=0 derived=0 ok
+FIG p2-sigkill-upstream recorded=0 derived=0 ok
+FIG p3-final-signal recorded=0 derived=UNAVAILABLE reason=derive-exit--15 stale
+FIG p4-clean recorded=1 derived=1 ok
+FIG p5-grep-nomatch recorded=0 derived=0 ok
+FIG p6-sigpipe-upstream recorded=xxxx derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIGURE-AUDIT figures=6 ok=4 stale=2 exit=1
+# P6 SIGPIPE-non-final (cat) at base
+FIG p1-sigterm-upstream recorded=0 derived=0 ok
+FIG p2-sigkill-upstream recorded=0 derived=0 ok
+FIG p3-final-signal recorded=0 derived=UNAVAILABLE reason=derive-exit--15 stale
+FIG p4-clean recorded=1 derived=1 ok
+FIG p5-grep-nomatch recorded=0 derived=0 ok
+FIG p6-sigpipe-upstream recorded=xxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx want=xxxx stale
+FIGURE-AUDIT figures=6 ok=4 stale=2 exit=1
+# P6 SIGPIPE-non-final (cat) at base, want corrected
+FIG p1-sigterm-upstream recorded=0 derived=0 ok
+FIG p2-sigkill-upstream recorded=0 derived=0 ok
+FIG p3-final-signal recorded=0 derived=UNAVAILABLE reason=derive-exit--15 stale
+FIG p4-clean recorded=1 derived=1 ok
+FIG p5-grep-nomatch recorded=0 derived=0 ok
+FIG p6-sigpipe-upstream recorded=xxxx derived=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ok
+FIGURE-AUDIT figures=6 ok=5 stale=1 exit=1

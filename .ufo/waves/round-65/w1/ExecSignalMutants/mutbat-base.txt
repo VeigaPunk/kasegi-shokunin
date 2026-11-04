@@ -1,0 +1,25 @@
+instrument=/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py sha256=8d92eaa0a1f248eb1fb8ae4d0d098c2a11d8d0674fa1eff6cefdb771e2e917e9
+PROBE p1-sigterm-upstream derive='python3 corpus/instruments/kill.py | wc -l' want='0'
+PROBE p2-sigkill-upstream derive='python3 corpus/instruments/hardkill.py | wc -l' want='0'
+PROBE p3-final-signal derive='cat g.txt | python3 corpus/instruments/kill.py' want=''
+PROBE p4-sigpipe-nonfinal derive='python3 corpus/instruments/bigwriter.py | head -1' want='bw-line-1'
+PROBE p5-clean derive='cat g.txt | wc -l' want='1'
+PROBE p6-grep-nomatch derive='grep absent g.txt | wc -l' want='0'
+BASE p1-sigterm-upstream verdict=ok reason=-
+BASE p2-sigkill-upstream verdict=ok reason=-
+BASE p3-final-signal verdict=stale reason=derive-exit--15
+BASE p4-sigpipe-nonfinal verdict=ok reason=-
+BASE p5-clean verdict=ok reason=-
+BASE p6-grep-nomatch verdict=ok reason=-
+BASE audit_exit=1 limb_contract=fail
+limb=absent sites_live=0
+MUT m1-negative-benign-again sites=0 anchor=absent survivor=1 (limb absent at this instrument)
+MUT m2-sigkill-benign sites=0 anchor=absent survivor=1 (limb absent at this instrument)
+MUT m3-old-final-label sites=0 anchor=absent survivor=1 (limb absent at this instrument)
+MUT m4-no-sigpipe-exemption sites=0 anchor=absent survivor=1 (limb absent at this instrument)
+EQ eq1-extract-local sites=0 anchor=absent held=1 vacuous=1 (limb absent)
+EQ eq2-abs-negation sites=0 anchor=absent held=1 vacuous=1 (limb absent)
+CONTROL ctrl-syntax-error sites=1 compile=fail rejected=1 detail='invalid syntax'
+SUMMARY killed=0/4 survivors=4 equivalents_held=2 controls_held=1 invalid_rejected=1
+verdict limb-absent-survivors limb=absent limb_contract=fail
+battery_exit=0
