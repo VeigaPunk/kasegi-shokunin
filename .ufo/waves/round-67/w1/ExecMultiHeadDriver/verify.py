@@ -748,12 +748,24 @@ def m_multihead_mutbat(c):
                        c.work, [local, c.gate, c.probes_local])
     lines = [ln for ln in text.splitlines() if MUTBAT_RE.match(ln)]
     collector = [ln for ln in text.splitlines() if ln.startswith("COLLECTOR ")]
+    # Erratum 1 (round 67): a COLLECTOR line is not by itself a failure.  `COLLECTOR
+    # fixtures=ok` proves the collector's fixtures were built and `COLLECTOR unstable=<ids>`
+    # is the collector's own legitimate finding (P10's native face is flaky); only
+    # `COLLECTOR ignored=` means the battery did not consume the shared table.  The binding
+    # is required to be visible as a `probes=collector:` line.
+    ignored = [ln for ln in collector if " ignored=" in ln]
+    findings = [ln for ln in collector if " ignored=" not in ln]
+    bound = [ln for ln in text.splitlines() if ln.startswith("probes=collector:")]
     ok = want is not None and len(lines) == 1 and lines[0] == want
     ok = ok and rc == (1 if c.kind == "base" else 0)
+    ok = ok and bool(bound) and not ignored
     note = "exit=%d want=%r sha256=%s" % (rc, lines[-1] if lines else None, sha_bytes(data))
-    if collector:
-        ok = False
-        note += " collector-ignored-FAIL %s" % collector[0]
+    if ignored:
+        note += " collector-ignored-FAIL %s" % ignored[0]
+    if findings:
+        note += " collector-findings=%s" % "|".join(f.replace(" ", "_") for f in findings)
+    if not bound:
+        note += " collector-not-bound"
     return ok, note
 
 
