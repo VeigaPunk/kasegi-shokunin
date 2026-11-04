@@ -2570,3 +2570,27 @@ No capability acquisition, score movement, retirement, split or stagnation waive
 Work the actual lowest metric or choose a distinct observed residual with a failing do-nothing control; do not re-claim the same three repairs. Before any successor freeze, trial the exact committed-input driver with its complete transitive local input closure. Do not infer a passed full export from a successful live-root ledger.
 
 Round63 supplemental result (nonclaim): complete-input replay on `204a627b32671b6e5e1ee682acbe31714c6d46eb` prints7 measurements/0 failures, ledger35/35; `.ufo/waves/round-63/controls/supplemental-verification-r63.txt`. **C1 remains NOT VERIFIED** because its frozen selected-export driver remains7/1. One9-seat v1 wave settled, WAVE-DONE received; no dead seat recorded, no replacement/residual call. Outside admission belongs to subsequent closure.
+
+## Round 64 — finite command-aware upstream failure diagnosis
+
+One sourced claim C1, lowest depth:verifiability, nominal4 held under R58. Base `d74be00a82c8c2962a0b78442c5daea3af0adaae`; frozen record `.ufo/waves/round-64/claims.json`, freeze `5b3cecbe162361b88445948e7f5ddc0c7064d6a6`; measured implementation **a55a7b254f338a9ff4a1f463441f84437d5a3fff**. All prefreeze controls were committed first; the final exact committed driver trial at7f8c633a reads8/3 on base production and8/0 with the candidate overlay, receipts landed9c7ab165 before freeze.
+
+Frozen predicate: On the enumerated committed-input driver, VERIFY measurements=8 failures=0 and exit0; its finite18-probe collector changes7 mismatched records at base to0, representing six non-grep exit1 repairs plus their aggregate trailer, with all enumerated regression, paired-base, selfcheck, mutation/tree, forgery and ledger expectations preserved.
+
+| Axis | Before | After | Score delta, command and evidence |
+|---|---|---|---|
+| depth:verifiability (lowest) | Final driver8 measurements/3 failures exit1; collector18/7 under candidate expectations; selftest43 | Frozen final driver8/0 exit0; collector18/0; paired exact base18/7 rc1; selfcheck9/0; selftest59/0; retained battery5/5; new12/12 mutants killed (3 per four limbs),21/21 tree probes,2 equivalents/1 control held/2 invalid controls rejected;30/30 counter attacks with honest positives; ledger35/35 | **4→4, delta0, nominal R58.** `python3 -B .ufo/waves/round-64/verify-r64.py --revision a55a7b254f338a9ff4a1f463441f84437d5a3fff --work /fast/scratch/hyaku/kasegi-r64/L1/final --final`. Before/after raw receipts `controls/driver-final-donothing-prefreeze-r64.txt` and `controls/final-verification-r64.txt`; full paths under round64. **C1 verified on its frozen predicate**, no narrowed subset. |
+| coverage |8|8 held| No new knowledge/frontier/capability; own-work S097 is curation only, registry96→97. Existing96 rows byte-identical (`controls/source-census-summary-r64.txt`). |
+| depth:density |9|9 held| Not targeted or remeasured. SKILL registry facts/current-execution amendment only; no density credit. |
+
+Six repairs are cat missing, partial cat, cut, head, tail and sha256sum missing; ls/sort missing exit2 were already stale and remain regressions. The collector's seventh mismatch is their aggregate trailer, not another repair. Command identity preserves grep no-match1; negative upstream statuses remain ignored, including pre-existing SIGKILL partial-output false green. Final-stage precedence unchanged. No sandbox, authenticity, arbitrary-emulator, source-restoration or score5 claim.
+
+The old figure-audit/derive-gate capabilities are extended; **no new capability row**. Saturation9/10 and stagnation window unchanged; no retirement/split/waiver. Actual metric gap remains22/81 lost-base-gated rechecks. Connector additionally records9 foreign-cwd recheck failures at base; no unclaimed knowledge rewrite or silent repair.
+
+One v1 wave,9 settled current seats,3/9 attack,1 connector, L1 planner; WAVE-DONE received before report. Orchestrator mistakenly cancelled an earlier9 and respawned the unchanged handoff once; those partials are not evidence, not provider failures or lane-requested replacements. `w1-results.json`, lesson and raw final-byte transcripts distinguish early summaries from final8d92eaa0 candidate.
+
+S097 own-work/A grounds local diagnosis; source date and located quotes are inside lesson Gate. Registry96→97 (A86→87, B5/C5 unchanged), mined78→79/rejected18 unchanged; census0 before/after. Domain review corrected from11 including4 unsupported arithmetic checks to7 actual source qualifications; no six-file package or SHONEN box2 credit. R63 remains NOT VERIFIED on its original driver.
+
+### Planned after round64 (not frozen)
+
+Depth:verifiability4 remains lowest. Do not repeat the six exit1 cases or claim source recovery from this runner. Source restoration/operator-owned R67/R69 and province decisions remain open. Any next gate claim must select a distinct observed residual, retain positive controls, reject relevant forgeries, and trial its exact complete committed-input driver before freeze. Coverage8 and density9 are held, not promises of next-round gains.

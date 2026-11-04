@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "import subprocess,re,json,datetime\nfrom collections import Counter\nL='/home/vgpnk/Projects/shokunin/kasegi-shokunin'\nrevs=['d74be00a82c8c2962a0b78442c5daea3af0adaae','a55a7b254f338a9ff4a1f463441f84437d5a3fff']\nprint('run-utc='+datetime.datetime.now(datetime.timezone.utc).isoformat())\ndef rows(rev):\n text=subprocess.check_output(['git','-C',L,'show',rev+':corpus/SOURCES.md'],text=True)\n return [x for x in text.splitlines() if re.match(r'^ {0,3}\\|\\s*S\\d{3,}\\s*\\|',x)]\nold=rows(revs[0])\nfor rev in revs:\n rr=rows(rev); cells=[[c.strip() for c in x.split('|')[1:-1]] for x in rr]\n print(json.dumps({'revision':rev,'rows':len(rr),'tier':dict(Counter(c[3] for c in cells)),'status':dict(Counter(c[7] for c in cells)),'old_rows_identical':rr[:len(old)]==old},sort_keys=True))\n"
+  ],
+  "cwd": "/home/vgpnk/Projects/shokunin/kasegi-shokunin",
+  "exit": 0,
+  "run_utc": "2026-11-04T19:02:55.846903+00:00"
+}
