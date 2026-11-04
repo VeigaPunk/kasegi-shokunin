@@ -1,0 +1,37 @@
+== R6 registry histogram BEFORE (census, read-only) ==
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh census --root /home/vgpnk/Projects/shokunin kasegi
+kasegi	rows	98
+kasegi	tier.A	88
+kasegi	tier.B	5
+kasegi	tier.C	5
+kasegi	status.mined	80
+kasegi	status.rejected	18
+FLEET	rows	98
+FLEET	tier.A	88
+FLEET	tier.B	5
+FLEET	tier.C	5
+FLEET	tier.invalid	0
+FLEET	status.queued	0
+FLEET	status.mined	80
+FLEET	status.rejected	18
+FLEET	status.invalid	0
+FLEET	missing	0
+rc=0
+
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+kasegi	W04	S076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes
+kasegi	W04	S080 duplicate url ossf.github.io/osv-schema across scopes
+kasegi	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+rc=0
+
+== R7 id contiguity + next-id ==
+registry_rows=98 min=S001 max=S098 contiguous=False duplicates=False
+next_unused_in_registry=S099
+S099_present_in_registry=False
+merge_staged_ids=94 range=S031..S124
+S099_present_in_merge_staged=True
+staged_ids_not_in_registry=26 (S099..S124)

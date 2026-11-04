@@ -1,0 +1,34 @@
+# R11 census schema probe for the proposed S099 row (scratch copies only; lane untouched)
+
+== NF column count of the candidate row ==
+NF=13
+
+== A. validate WITH corpus/lessons/round-66.md present ==
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	W04	S076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes
+file	W04	S080 duplicate url ossf.github.io/osv-schema across scopes
+file	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r66/ScoutOwnSource/census2/corpus/SOURCES.md
+rc=0
+
+== B. validate WITHOUT corpus/lessons/round-66.md (E11 fires) ==
+file	E11	S099 missing used-by corpus/lessons/round-66.md
+rc=0
+
+== C. projected AFTER histogram ==
+file	rows	99
+file	tier.A	89
+file	tier.B	5
+file	tier.C	5
+file	status.mined	81
+file	status.rejected	18
+
+== D. downstream instruments on a scratch tree carrying S099 ==
+PASS     F44  knowledge/first-psirt-services-framework.md          ids=S098           exit=0   
+entries=47 pass=47 exit=0
+frontier rc=0
+AUDIT records=79 with_url=79 with_fetched_utc=41 with_archival=38 snapshot_dirs=39 manifest_dirs=39 missing_manifest=0 multi_row_url=7 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+records=79 bound=79 unbound=0
+capture-binding rc=0

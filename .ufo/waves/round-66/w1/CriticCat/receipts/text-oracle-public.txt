@@ -1,0 +1,470 @@
+BASE=b6db9e818d322726e39cb441f2179d34d4170275
+instrument=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py
+instrument_sha256=530febd338de15f7a6c2e0346237eb790ef4a91e26bf3106b4de896f4783abe2
+harness_sha256=ac15f5f24fabef92b4bc50a8b2d874583e5b4c68d89f1e6f5858a15333883e66
+TMPDIR=/fast/scratch/hyaku/kasegi-r66/CriticCat/tmp
+
+CASE two-missing
+derive=cat big.txt missing.txt | head -n 1
+ledger_sha256=fa456753e4fbc073d3aac80d66427b681bb579fbd174e9a86c8416670c7964d5
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG two-missing recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "big.txt", "missing.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE two-existing
+derive=cat big.txt other.txt | head -n 1
+ledger_sha256=3c1a6e4503bafe01b70dbd19ce579f537c414694fc8b1121bcff5f452f0d736d
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG two-existing recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "big.txt", "other.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE renamed-multi
+derive=cat alternate.txt other.txt | head -n 1
+ledger_sha256=c4808237a1f3d956cb08fa072c3a77ac4e0c52b09af1f26d80c443d84450e5ec
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG renamed-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "alternate.txt", "other.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE quoted-head-multi
+derive=c'at' big.txt missing.txt | head -n 1
+ledger_sha256=6659930d7d10ec580de26263971cca6dd7c47741a021599e953466d3c259127b
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG quoted-head-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "big.txt", "missing.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE escaped-arg-multi
+derive=cat bi\g.txt miss\ing.txt|head -n 1
+ledger_sha256=366576e7a459d903d0d57b7473f0f63ac256969e2005836df1597f304e6552d1
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG escaped-arg-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "big.txt", "missing.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE quoted-args-multi
+derive=cat 'big.txt' "missing.txt" | head -n 1
+ledger_sha256=318bbdfe88035909d51d9edcea9ec1b1d07304780ba124e414733a5f8b445697
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG quoted-args-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "big.txt", "missing.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE single-big
+derive=cat big.txt | head -n 1
+ledger_sha256=69cbdcbacd1bd60e37e38ab70145ef2ada7c50404bc0c95cb51a2bc3c00bec2a
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG single-big recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["cat", "big.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE stdin-only
+derive=cat < big.txt | head -n 1
+ledger_sha256=e5eea4547d84789e027c26838c40713d553a2f1c980bfaaff860456142569eeb
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG stdin-only recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["cat"], ["head", "-n", "1"]], "input": "big.txt", "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE stdin-dash
+derive=cat - < big.txt | head -n 1
+ledger_sha256=6e60b1964840071c333dd7d99b416ccbdc5116bcd7c4fcd3316c1f97c603a17e
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG stdin-dash recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["cat", "-"], ["head", "-n", "1"]], "input": "big.txt", "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE single-blank
+derive=cat 'one two.txt' | head -n 1
+ledger_sha256=b58c55a71668121a0cfdad0163a7be3b533218a5e572522bfef55be919704580
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG single-blank recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["cat", "one two.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE single-operators
+derive=cat 'pipe|and&&.txt'|head -n 1
+ledger_sha256=6d38063172bcac0153e9de1c7181cee2a9c5087aa0cad5d4cd6735c5f73e01b0
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG single-operators recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["cat", "pipe|and&&.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE single-escaped-blank
+derive=cat one\ two.txt|head -n 1
+ledger_sha256=6338e95c73e98f48fb63f5b410b60d917f0ec091cb21dd28a0d871613f2f6922
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG single-escaped-blank recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["cat", "one two.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE separator-single
+derive=cat -- big.txt | head -n 1
+ledger_sha256=407cee23de2d1235e4da63f3de75bcef2750d367896492233b46a7959c88e708
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG separator-single recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["cat", "--", "big.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE separator-stdin
+derive=cat -- < big.txt | head -n 1
+ledger_sha256=cb9b0fc4e069ead8718c6b55f428f21a735f1b39eeddd7864c980e9766d937b2
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG separator-stdin recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["cat", "--"], ["head", "-n", "1"]], "input": "big.txt", "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE separator-multi
+derive=cat -- big.txt missing.txt | head -n 1
+ledger_sha256=d07bd6737e36de156b0bf02e4ca2e75e09d1b80d90139f494139637fe1579764
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG separator-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "--", "big.txt", "missing.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE separator-dash-name
+derive=cat -- -dash.txt | head -n 1
+ledger_sha256=16d1e24f0bba7efc1747e98732ce51ec70792fa8c34491735886761cfd0a545a
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG separator-dash-name recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["cat", "--", "-dash.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE separator-double-dash-name
+derive=cat -- -- | head -n 1
+ledger_sha256=c3b0aeaf7d26a9ddda01e9f26c16beb1e9ac3da869fd4386e5da0d3d61599456
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG separator-double-dash-name recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["cat", "--", "--"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE file-and-stdin-multi
+derive=cat big.txt - < other.txt | head -n 1
+ledger_sha256=4068cf3214ae41e74fb1dd143a60627e68170d3d87303e5d5593842352cf84e1
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG file-and-stdin-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "big.txt", "-"], ["head", "-n", "1"]], "input": "other.txt", "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE stdin-and-file-multi
+derive=cat - other.txt < big.txt | head -n 1
+ledger_sha256=dc408f05f787a5ce82001a341540755b6c7dc68d56f0c6516bf26efc56a8ea81
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG stdin-and-file-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "-", "other.txt"], ["head", "-n", "1"]], "input": "big.txt", "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE two-small
+derive=cat small.txt other.txt | head -n 1
+ledger_sha256=97f3812b80ca4ef5feb11c3a3612b99119b2f811666f02e1305e77ec76e1e542
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG two-small recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "small.txt", "other.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [0, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=False
+
+CASE missing-first
+derive=cat missing.txt big.txt | head -n 1
+ledger_sha256=e2f24f2ec6d3cf91098ec6c74cbc5e0144e8f4d11fc0d6511c30edfdb68201f6
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG missing-first recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "missing.txt", "big.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["cat: missing.txt: No such file or directory\n", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE directory-first
+derive=cat bad-dir big.txt | head -n 1
+ledger_sha256=f199f87a3b62e55a019a6518899e34814bca64ecf1bd4249d14847feadeb772d
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG directory-first recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "bad-dir", "big.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["cat: bad-dir: Is a directory\n", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE single-read-error
+derive=cat bad-dir | wc -l
+ledger_sha256=5d6d5b6d3f3231cbf3f1d7c63fad2b9665706248683cffe326a1d38b77bf7f42
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG single-read-error recorded=0 derived=0 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["cat", "bad-dir"], ["wc", "-l"]], "input": null, "stage_rc": [1, 0], "stderr": ["cat: bad-dir: Is a directory\n", ""], "stdout": "0\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=False
+
+CASE single-options-conservative
+derive=cat -u big.txt | head -n 1
+ledger_sha256=235e3ec670a3870977dee606048237a216e61784aad8d8b2ad967f1cc04ff26d
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG single-options-conservative recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "-u", "big.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE wrapper-hides-error
+derive=python3 corpus/instruments/wrapper.py | head -n 1
+ledger_sha256=0471bf135a6012557256dcd37f7da1ae744f7ab9b8c5d98a135867e499cd6608
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG wrapper-hides-error recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["python3", "corpus/instruments/wrapper.py"], ["head", "-n", "1"]], "input": null, "stage_rc": [0, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE other-head-multi
+derive=head -q -n 100000000 big.txt missing.txt | head -n 1
+ledger_sha256=c330354cc13f1f8e02a346c00dc965850aec8d6fdcd03c8bd1e28613ff034810
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG other-head-multi recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["head", "-q", "-n", "100000000", "big.txt", "missing.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE other-python-sigpipe
+derive=python3 corpus/instruments/pipe.py | head -n 1
+ledger_sha256=f5a5f6b6094b3547339bafd16d70627b7f27f1fbf467efbc5ed5303dbde6a963
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG other-python-sigpipe recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+
+stderr:
+
+rc=0
+NATIVE {"argv": [["python3", "corpus/instruments/pipe.py"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=True
+
+CASE final-precedence
+derive=cat big.txt missing.txt | python3 corpus/instruments/final7.py
+ledger_sha256=e3fac90d2cc2c0c3ae23db7271281a518ecf013984643f6c8e8f927989795585
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG final-precedence recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "big.txt", "missing.txt"], ["python3", "corpus/instruments/final7.py"]], "input": null, "stage_rc": [-13, 7], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=False
+
+CASE separator-double-dash-multi
+derive=cat -- -- missing.txt | head -n 1
+ledger_sha256=74bbe048839e3f92887511018dd8dc26328e4512f170b70891c72e16699916a3
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG separator-double-dash-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "--", "--", "missing.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE empty-operand-multi
+derive=cat big.txt '' | head -n 1
+ledger_sha256=7455076bc1a831b059db2e36bfe9af54938f65e892ca2ba4022a57fb4b8d8012
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG empty-operand-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "big.txt", ""], ["head", "-n", "1"]], "input": null, "stage_rc": [-13, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=1
+matches_candidate_predicate=True
+
+CASE two-existing
+derive=cat big.txt other.txt | head -n 1
+ledger_sha256=3c1a6e4503bafe01b70dbd19ce579f537c414694fc8b1121bcff5f452f0d736d
+$ /usr/bin/python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --ledger /fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json --root /fast/scratch/hyaku/kasegi-r66/CriticCat/root
+stdout:
+FIG two-existing recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+
+stderr:
+
+rc=1
+NATIVE {"argv": [["cat", "big.txt", "other.txt"], ["head", "-n", "1"]], "input": null, "stage_rc": [0, 0], "stderr": ["", ""], "stdout": "alpha\n"}
+candidate_expected_rc=0
+matches_candidate_predicate=False

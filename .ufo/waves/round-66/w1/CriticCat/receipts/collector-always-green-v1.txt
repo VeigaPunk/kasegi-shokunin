@@ -1,0 +1,44 @@
+$ python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-v1.py --instrument /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --work /fast/scratch/hyaku/kasegi-r66/CriticCat/collector-always-green-v1 --mode candidate
+BASE=b6db9e818d322726e39cb441f2179d34d4170275
+collector_sha256=bf5a656e9f9f2d613d71e9267986dfb8efbcd482ebe97d9fb80a3a8989243819
+oracle_sha256=530febd338de15f7a6c2e0346237eb790ef4a91e26bf3106b4de896f4783abe2
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=141 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P1-cat-two-operand-missing-sigpipe field=native want=stage0=-13,stage1=0 got=141,0
+NOTE P1-cat-two-operand-missing-sigpipe field=rc want=1 got=0
+NOTE P1-cat-two-operand-missing-sigpipe field=verdict want=stale got=ok
+NOTE P1-cat-two-operand-missing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+NATIVE P2-cat-two-operand-existing-sigpipe stage0=141 stage1=0 out=alpha err_bytes=0
+PROBE P2-cat-two-operand-existing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P2-cat-two-operand-existing-sigpipe field=native want=stage0=-13,stage1=0 got=141,0
+NOTE P2-cat-two-operand-existing-sigpipe field=rc want=1 got=0
+NOTE P2-cat-two-operand-existing-sigpipe field=verdict want=stale got=ok
+NOTE P2-cat-two-operand-existing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+NATIVE P3-cat-one-operand-sigpipe stage0=141 stage1=0 out=alpha err_bytes=0
+PROBE P3-cat-one-operand-sigpipe rc=0 expected=0 reason=- pass=true
+NOTE P3-cat-one-operand-sigpipe field=native want=stage0=-13,stage1=0 got=141,0
+NATIVE P4-cat-stdin-sigpipe stage0=141 stage1=0 out=alpha err_bytes=0
+PROBE P4-cat-stdin-sigpipe rc=0 expected=0 reason=- pass=true
+NOTE P4-cat-stdin-sigpipe field=native want=stage0=-13,stage1=0 got=141,0
+NATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P5-cat-missing-exit1 rc=0 expected=1 reason=- pass=false
+NOTE P5-cat-missing-exit1 field=rc want=1 got=0
+NOTE P5-cat-missing-exit1 field=verdict want=stale got=ok
+NOTE P5-cat-missing-exit1 field=reason want=derive-upstream-exit-1 got=None
+NATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P6-grep-nomatch-green rc=0 expected=0 reason=- pass=true
+
+stderr:
+Traceback (most recent call last):
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-v1.py", line 460, in <module>
+    sys.exit(main(sys.argv[1:]))
+             ~~~~^^^^^^^^^^^^^^
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-v1.py", line 455, in main
+    failures, code = battery(args.instrument, work, args.mode, quiet=False)
+                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-v1.py", line 270, in battery
+    exp_rc, exp_reason, exp_derived = expect[probe["id"]]
+                                      ~~~~~~^^^^^^^^^^^^^
+KeyError: 'P7-same-derive-small-twin'
+
+rc=1

@@ -1,0 +1,67 @@
+{
+  "name": "text-oracle",
+  "base": "b6db9e818d322726e39cb441f2179d34d4170275",
+  "base_gate_sha256": "86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef",
+  "collector_sha256": "cfcd9da9c5cb36916534c9a3109f8cd5298e014ba4ca03f060215c70318d8ca3",
+  "instrument_sha256": "530febd338de15f7a6c2e0346237eb790ef4a91e26bf3106b4de896f4783abe2",
+  "harness_sha256": "3f15091f2bcedc842d8d4deeee74da770db8aace6de75058e4b1da4c92d2a431",
+  "command": [
+    "python3",
+    "-B",
+    "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py",
+    "--instrument",
+    "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py",
+    "--work",
+    "/fast/scratch/hyaku/kasegi-r66/CriticCat/nonce-stage-text-oracle",
+    "--mode",
+    "candidate"
+  ],
+  "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+  "extra_environment": {},
+  "TMPDIR": "/fast/scratch/hyaku/kasegi-r66/CriticCat/tmp",
+  "expected_rc": 1,
+  "rc": 1,
+  "stdout": "NONCE run=f97d6f502c4154aa base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=530febd338de15f7a6c2e0346237eb790ef4a91e26bf3106b4de896f4783abe2\nLEDGER P1-cat-two-operand-missing-sigpipe id=fig-75d4a4127589f0948a2185bb29db1e7b record=rec-cad7e1b3d0b4ab69 dir=c-b898f867d27aeb58a44b601a\nNATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0\nPROBE P1-cat-two-operand-missing-sigpipe rc=1 expected=1 reason=derive-upstream-signal-13 pass=true\n",
+  "stderr": "Traceback (most recent call last):\n  File \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py\", line 540, in <module>\n    sys.exit(main(sys.argv[1:]))\n             ~~~~^^^^^^^^^^^^^^\n  File \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py\", line 535, in main\n    failures, code = battery(args.instrument, work, args.mode, quiet=False)\n                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py\", line 391, in battery\n    with open(os.path.join(work_root, \"cases\", pid, \"gate.stdout\"), \"w\", encoding=\"utf-8\") as f:\n         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/fast/scratch/hyaku/kasegi-r66/CriticCat/nonce-stage-text-oracle/cases/P1-cat-two-operand-missing-sigpipe/gate.stdout'\n",
+  "summary": [],
+  "finite_control_matches": false,
+  "cases": [
+    {
+      "case": "c-b898f867d27aeb58a44b601a",
+      "files": [
+        {
+          "path": "gate.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "content": ""
+        },
+        {
+          "path": "one.json",
+          "bytes": 183,
+          "sha256": "c2fa03a3ff82d7bb106c77e9827580246d7dcc349602518dfbd8c96b83df7c61",
+          "content": "{\"figures\": [{\"id\": \"fig-75d4a4127589f0948a2185bb29db1e7b\", \"record\": \"rec-cad7e1b3d0b4ab69\", \"recorded\": \"alpha\", \"derive\": \"cat big.txt missing.txt | head -n 1\", \"want\": \"alpha\"}]}\n"
+        },
+        {
+          "path": "root/big.txt",
+          "bytes": 4194306,
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8"
+        },
+        {
+          "path": "root/native.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "root/native.out",
+          "bytes": 6,
+          "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+        },
+        {
+          "path": "root/other.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  ]
+}

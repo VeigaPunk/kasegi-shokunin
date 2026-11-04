@@ -1,0 +1,42 @@
+== R8 implementation surface: what upstream_stale can and cannot see at BASE ==
+$ git show b6db9e8:corpus/instruments/figure-audit.py | sed -n '83,92p;103,116p;126,135p'
+     1	def upstream_stale(head, status):
+     2	    """Stale upstream statuses: any >1, exit1 from a program other than grep, or a signal.
+     3	
+     4	    Grep exit1 is an ordinary no-match. A negative status is a signal: stale unless it is
+     5	    SIGPIPE (-13). SIGPIPE on a non-final stage is benign by documented rule: a later stage
+     6	    closed the pipe early, so the truncated producer output is not the value.
+     7	    """
+     8	    if status < 0:
+     9	        return status != -signal.SIGPIPE
+    10	    if status > 1:
+    11	        previous = None
+    12	        try:
+    13	            for argv, input_path in pipeline:
+    14	                stdin = previous
+    15	                if input_path is not None:
+    16	                    stdin = open(os.path.join(root or ".", input_path), "rb")
+    17	                    files.append(stdin)
+    18	                errors = tempfile.TemporaryFile()
+    19	                files.append(errors)
+    20	                p = subprocess.Popen(argv, cwd=root or ".", stdin=stdin,
+    21	                                     stdout=subprocess.PIPE, stderr=errors)
+    22	                processes.append(p)
+    23	                heads.append(argv[0])
+    24	                if previous is not None:
+    25	                if status < 0:
+    26	                    return None, out, "derive-signal-%d" % -status
+    27	                return None, out, "derive-exit-%d" % status
+    28	            for p, head in zip(processes[:-1], heads[:-1]):
+    29	                if upstream_stale(head, p.returncode):
+    30	                    out = b"".join(output).decode("utf-8", "replace").strip()
+    31	                    if p.returncode < 0:
+    32	                        return None, out, "derive-upstream-signal-%d" % -p.returncode
+    33	                    return None, out, "derive-upstream-exit-%d" % p.returncode
+    34	        except subprocess.TimeoutExpired:
+rc=0
+
+-- FINDING: upstream_stale(head, status) receives only argv[0] (heads.append(argv[0]), L115)
+--          and the wait status. The decoded operand list is NOT passed to it.
+--          The loop variable argv (L105) holds the full decoded argv, and input_path
+--          (L107, L109) holds the stdin redirect path; both are in scope at L129-130.

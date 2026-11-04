@@ -1,0 +1,53 @@
+$ python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-opaque-final.py --instrument /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/stale-oracle.py --work /fast/scratch/hyaku/kasegi-r66/CriticCat/w-7e74d9f0a1d5 --mode candidate
+BASE=b6db9e818d322726e39cb441f2179d34d4170275
+collector_sha256=d788bbc16cd1ac9f345e5fc1a29f3e87542ceed1f2dfcdfa5e4b7593d3a57312
+instrument_sha256=bbb3ee73758c481e3a483a48100914e45daf1eb3f83ec9e198bf791c3eef2f7b
+NONCE run=228bb282b95cfa73 base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=bbb3ee73758c481e3a483a48100914e45daf1eb3f83ec9e198bf791c3eef2f7b
+LEDGER P1-cat-two-operand-missing-sigpipe id=fig-ae18a5dc27e52f72b917504e8adf4caf record=rec-c045e7ceccf05a36 dir=c-29ceb3a421d28181588ef796
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=1 expected=1 reason=derive-upstream-exit-1 pass=false
+NOTE P1-cat-two-operand-missing-sigpipe field=reason want=derive-upstream-signal-13 got=derive-upstream-exit-1
+LEDGER P2-cat-two-operand-existing-sigpipe id=fig-098638cdc78defac3b47aa43237d5773 record=rec-987617248d59ce5b dir=c-dc6566907c0d24f2c7bcd81a
+NATIVE P2-cat-two-operand-existing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P2-cat-two-operand-existing-sigpipe rc=1 expected=1 reason=derive-upstream-exit-1 pass=false
+NOTE P2-cat-two-operand-existing-sigpipe field=reason want=derive-upstream-signal-13 got=derive-upstream-exit-1
+LEDGER P3-cat-one-operand-sigpipe id=fig-09bfc9abcc5dd53ca73d67c59162c833 record=rec-6a9f37071538b497 dir=c-e83f7546ace270b57ccbbb8c
+NATIVE P3-cat-one-operand-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P3-cat-one-operand-sigpipe rc=1 expected=0 reason=derive-upstream-exit-1 pass=false
+NOTE P3-cat-one-operand-sigpipe field=rc want=0 got=1
+NOTE P3-cat-one-operand-sigpipe field=verdict want=ok got=stale
+NOTE P3-cat-one-operand-sigpipe field=derived want=alpha got=None
+NOTE P3-cat-one-operand-sigpipe field=reason want=- got=derive-upstream-exit-1
+LEDGER P4-cat-stdin-sigpipe id=fig-03c1c3d6651813d3fd534fa7f5a2d4d0 record=rec-9799011b6a34a8a4 dir=c-8216f371ec6e86bf99ffbe88
+NATIVE P4-cat-stdin-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P4-cat-stdin-sigpipe rc=1 expected=0 reason=derive-upstream-exit-1 pass=false
+NOTE P4-cat-stdin-sigpipe field=rc want=0 got=1
+NOTE P4-cat-stdin-sigpipe field=verdict want=ok got=stale
+NOTE P4-cat-stdin-sigpipe field=derived want=alpha got=None
+NOTE P4-cat-stdin-sigpipe field=reason want=- got=derive-upstream-exit-1
+LEDGER P5-cat-missing-exit1 id=fig-2ed7d848e371580ef2cd6813086da600 record=rec-7dd71edbdd13cbb5 dir=c-f6c6c9c0dce2780e053fc30f
+NATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=44
+PROBE P5-cat-missing-exit1 rc=1 expected=1 reason=derive-upstream-exit-1 pass=true
+LEDGER P6-grep-nomatch-green id=fig-8e8da03419294cb42ec6c4059139b1a0 record=rec-eb1ec6196d81b069 dir=c-dc7873a7f2df392b5bde5a2b
+NATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P6-grep-nomatch-green rc=1 expected=0 reason=derive-upstream-exit-1 pass=false
+NOTE P6-grep-nomatch-green field=rc want=0 got=1
+NOTE P6-grep-nomatch-green field=verdict want=ok got=stale
+NOTE P6-grep-nomatch-green field=derived want=0 got=None
+NOTE P6-grep-nomatch-green field=reason want=- got=derive-upstream-exit-1
+LEDGER P7-same-derive-small-twin id=fig-8bdd2a3e09b21b6782074469133b98ab record=rec-810f497bcb28839e dir=c-a99eca37c0873ebfbc4e88fe
+NATIVE P7-same-derive-small-twin stage0=0 stage1=0 out=alpha err_bytes=0
+PROBE P7-same-derive-small-twin rc=1 expected=0 reason=derive-upstream-exit-1 pass=false
+NOTE P7-same-derive-small-twin field=rc want=0 got=1
+NOTE P7-same-derive-small-twin field=verdict want=ok got=stale
+NOTE P7-same-derive-small-twin field=derived want=alpha got=None
+NOTE P7-same-derive-small-twin field=reason want=- got=derive-upstream-exit-1
+LEDGER P8-cat-dashdash-separator-missing id=fig-3cb58153070a25447377373601a84fa9 record=rec-07342d70eeb6e8db dir=c-d6c65055c3b1d1a749c62243
+NATIVE P8-cat-dashdash-separator-missing stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P8-cat-dashdash-separator-missing rc=1 expected=1 reason=derive-upstream-exit-1 pass=false
+NOTE P8-cat-dashdash-separator-missing field=reason want=derive-upstream-signal-13 got=derive-upstream-exit-1
+PROBES probes=8 failures=7 mode=candidate instrument_sha256=bbb3ee73758c481e3a483a48100914e45daf1eb3f83ec9e198bf791c3eef2f7b
+
+stderr:
+
+rc=1

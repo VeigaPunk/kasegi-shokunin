@@ -1,0 +1,39 @@
+# Receipt ScribeRound/base-false-green-r66.txt
+# lane /home/vgpnk/Projects/shokunin/kasegi-shokunin ; base b6db9e818d322726e39cb441f2179d34d4170275
+# scratch /fast/scratch/hyaku/kasegi-r66/ScribeRound/clone (clone of lane, checked out at base)
+# date 2026-11-04 ; host Linux 7.2.11-arch1-1 x86_64 ; python Python 3.14.8 ; git git version 2.56.0
+
+$ git -C /fast/scratch/hyaku/kasegi-r66/ScribeRound/clone rev-parse --show-toplevel
+/fast/scratch/hyaku/kasegi-r66/ScribeRound/clone
+$ git -C /fast/scratch/hyaku/kasegi-r66/ScribeRound/clone rev-parse HEAD
+b6db9e818d322726e39cb441f2179d34d4170275
+$ sha256sum corpus/instruments/figure-audit.py   # production gate at BASE
+86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef  corpus/instruments/figure-audit.py
+
+--- fixture inputs (work dir) ---
+80734ea7a64379ce3a4d8093508f654f5396847a00d7ab48e61c57c59dc5348f  /fast/scratch/hyaku/kasegi-r66/ScribeRound/work/big.txt
+d6371d4ca49cb21a712063581731e2d68cc80fcb9996cccc133ec161d5228337  /fast/scratch/hyaku/kasegi-r66/ScribeRound/work/other.txt
+e49c81e2d2f84e259d40e2fb8192f3bcd198b355184845d76d8f58807d0d78ee  /fast/scratch/hyaku/kasegi-r66/ScribeRound/work/small.txt
+47a0b4bb1a5f65d1bf5ad99736d3b13c6f0a24d4227230d213513e0bba99d5b6  /fast/scratch/hyaku/kasegi-r66/ScribeRound/work/ledger.json
+8152790fad866158ed420ed0349fd992acb9f460c7e28344a53016ba3ddbd30e  /fast/scratch/hyaku/kasegi-r66/ScribeRound/work/ledger2.json
+6c99cf7cce127ae3305fcc26d14fff73974f8697d064a5053fd979db97c767ca  /fast/scratch/hyaku/kasegi-r66/ScribeRound/work/ledger3.json
+a2f3a93524754e4783e02f2962a400127e2c49200e21f5a918dc5d76823993a9  /fast/scratch/hyaku/kasegi-r66/ScribeRound/work/ledger4.json
+
+=== P1: base public path, cat big.txt missing.txt | head -n 1 (large first operand) ===
+$ python3 -B corpus/instruments/figure-audit.py --ledger /fast/scratch/hyaku/kasegi-r66/ScribeRound/work/ledger.json --root /fast/scratch/hyaku/kasegi-r66/ScribeRound/work
+FIG miss-head recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+[rc=0]
+
+=== P-set: base public path, 8-figure ledger (large file) ===
+$ python3 -B corpus/instruments/figure-audit.py --ledger /fast/scratch/hyaku/kasegi-r66/ScribeRound/work/ledger2.json --root /fast/scratch/hyaku/kasegi-r66/ScribeRound/work
+FIG p1-two-missing recorded=alpha derived=alpha ok
+FIG p2-two-existing recorded=alpha derived=alpha ok
+FIG p3-single recorded=alpha derived=alpha ok
+FIG p4-stdin recorded=alpha derived=alpha ok
+FIG p5-missing-only recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG p6-grep-nomatch recorded=0 derived=0 ok
+FIG p7-cat-dash-stdin recorded=alpha derived=UNAVAILABLE reason=derive-empty stale
+FIG p8-two-missing-wc recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIGURE-AUDIT figures=8 ok=5 stale=3 exit=1
+[rc=1]

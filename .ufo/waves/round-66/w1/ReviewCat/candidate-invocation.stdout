@@ -1,0 +1,44 @@
+PROBE single-large rc=0 reason=- native=[-13, 0] pass=1
+PROBE stdin-only-large rc=0 reason=- native=[-13, 0] pass=1
+PROBE dash-only-large rc=0 reason=- native=[-13, 0] pass=1
+PROBE separator-only-stdin rc=0 reason=- native=[-13, 0] pass=1
+PROBE separator-single rc=0 reason=- native=[-13, 0] pass=1
+PROBE separator-dash-stdin rc=0 reason=- native=[-13, 0] pass=1
+PROBE single-spaced-name rc=0 reason=- native=[-13, 0] pass=1
+PROBE single-escaped-name rc=0 reason=- native=[-13, 0] pass=1
+PROBE single-operator-name rc=0 reason=- native=[-13, 0] pass=1
+PROBE literal-option-name rc=0 reason=- native=[-13, 0] pass=1
+PROBE literal-separator-name rc=0 reason=- native=[-13, 0] pass=1
+PROBE later-missing-large rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE earlier-missing-large rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE two-existing-large rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE same-file-twice rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE separator-two-existing rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE separator-later-missing rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE separator-earlier-missing rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE dash-before-file rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE file-before-dash rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE two-dashes rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE stdin-before-missing rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE missing-before-stdin rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE option-u-single rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE option-n-single rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE long-option-single rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE option-and-separator rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE option-multi rc=1 reason=derive-upstream-signal-13 native=[-13, 0] pass=1
+PROBE single-small rc=0 reason=- native=[0, 0] pass=1
+PROBE two-existing-small rc=0 reason=- native=[0, 0] pass=1
+PROBE later-missing-small rc=1 reason=derive-upstream-exit-1 native=[1, 0] pass=1
+PROBE earlier-missing-small rc=1 reason=derive-upstream-exit-1 native=[1, 0] pass=1
+PROBE missing-only rc=1 reason=derive-upstream-exit-1 native=[1, 0] pass=1
+PROBE multi-drained rc=0 reason=- native=[0, 0] pass=1
+PROBE multi-drained-later-missing rc=1 reason=derive-upstream-exit-1 native=[1, 0] pass=1
+PROBE grep-nomatch rc=0 reason=- native=[1, 0] pass=1
+PROBE other-head-sigpipe rc=0 reason=- native=[-13, 0] pass=1
+PROBE other-cut-sigpipe rc=0 reason=- native=[-13, 0] pass=1
+PROBE upstream-positive-seven rc=1 reason=derive-upstream-exit-7 native=[7, 0] pass=1
+PROBE upstream-signal-fifteen rc=1 reason=derive-upstream-signal-15 native=[-15, 0] pass=1
+PROBE final-error-precedence rc=1 reason=derive-exit-2 native=[-13, 2] pass=1
+PROBE middle-multi-cat rc=1 reason=derive-upstream-signal-13 native=[-13, -13, 0] pass=1
+PROBE middle-single-cat rc=0 reason=- native=[-13, -13, 0] pass=1
+SUMMARY probes=43 failures=0 mode=candidate

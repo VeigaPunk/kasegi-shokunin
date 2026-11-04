@@ -1,0 +1,497 @@
+{
+  "base": "b6db9e818d322726e39cb441f2179d34d4170275",
+  "base_gate_sha256": "86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef",
+  "fixture_manifest": [
+    {
+      "path": "--",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "-dash.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "alternate.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "big.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "corpus/instruments/final7.py",
+      "bytes": 35,
+      "sha256": "01b8387a6f0dcc4dfca9c4967b17d1cbfda5d90a769031a22804f11e8d44b642"
+    },
+    {
+      "path": "corpus/instruments/pipe.py",
+      "bytes": 141,
+      "sha256": "4108c8151279b639268085b4a0d4186a693216e3719861c1d42a333b97f07fb5"
+    },
+    {
+      "path": "corpus/instruments/wrapper.py",
+      "bytes": 124,
+      "sha256": "d248a46192cb2e299e0f509f1847ee5a1ecc35864990420f9ff1f8bea2aafd0e"
+    },
+    {
+      "path": "g.txt",
+      "bytes": 3,
+      "sha256": "90d7ec0f0acef104d8b6252794295f661a0149634868d02a1ae0c358099638f5"
+    },
+    {
+      "path": "one two.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "other.txt",
+      "bytes": 6,
+      "sha256": "3eeb0cea8bf176427633a47a62ee8c813844d574d48554a0d715e12dcbbaeda6"
+    },
+    {
+      "path": "pipe|and&&.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "small.txt",
+      "bytes": 6,
+      "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+    }
+  ],
+  "TMPDIR": "/fast/scratch/hyaku/kasegi-r66/CriticCat/tmp",
+  "runs": [
+    {
+      "kind": "id-oracle",
+      "input_class": "multi",
+      "command": [
+        "python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/id-oracle.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/identity-ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+      "instrument_sha256": "2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51",
+      "ledger": {
+        "figures": [
+          {
+            "id": "P1-cat-two-operand-missing-sigpipe",
+            "record": "fixture:1",
+            "recorded": "alpha",
+            "derive": "cat big.txt missing.txt | head -n 1",
+            "want": "alpha"
+          }
+        ]
+      },
+      "ledger_sha256": "f3beb8f742689583ff6f8a5e3c30490ed535de78f58f86ab52b52ae9ae46010b",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "stdout": "FIG P1-cat-two-operand-missing-sigpipe recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "rc": 1
+    },
+    {
+      "kind": "real-candidate",
+      "input_class": "multi",
+      "command": [
+        "python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/identity-ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+      "instrument_sha256": "d48a5e45a2afa60abefb0cbc15ed4cca41bc6c6abdd40e3789a9db09b18479c7",
+      "ledger": {
+        "figures": [
+          {
+            "id": "P1-cat-two-operand-missing-sigpipe",
+            "record": "fixture:1",
+            "recorded": "alpha",
+            "derive": "cat big.txt missing.txt | head -n 1",
+            "want": "alpha"
+          }
+        ]
+      },
+      "ledger_sha256": "f3beb8f742689583ff6f8a5e3c30490ed535de78f58f86ab52b52ae9ae46010b",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "stdout": "FIG P1-cat-two-operand-missing-sigpipe recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "rc": 1
+    },
+    {
+      "kind": "id-oracle",
+      "input_class": "multi",
+      "command": [
+        "python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/id-oracle.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/identity-ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+      "instrument_sha256": "2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51",
+      "ledger": {
+        "figures": [
+          {
+            "id": "held-out-same-command",
+            "record": "fixture:1",
+            "recorded": "alpha",
+            "derive": "cat big.txt missing.txt | head -n 1",
+            "want": "alpha"
+          }
+        ]
+      },
+      "ledger_sha256": "b8bb4c2d12981df5905c74ba5edd70070c6a5f50988e557289e22f78ca5d2940",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "stdout": "FIG held-out-same-command recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "rc": 0
+    },
+    {
+      "kind": "real-candidate",
+      "input_class": "multi",
+      "command": [
+        "python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/identity-ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+      "instrument_sha256": "d48a5e45a2afa60abefb0cbc15ed4cca41bc6c6abdd40e3789a9db09b18479c7",
+      "ledger": {
+        "figures": [
+          {
+            "id": "held-out-same-command",
+            "record": "fixture:1",
+            "recorded": "alpha",
+            "derive": "cat big.txt missing.txt | head -n 1",
+            "want": "alpha"
+          }
+        ]
+      },
+      "ledger_sha256": "b8bb4c2d12981df5905c74ba5edd70070c6a5f50988e557289e22f78ca5d2940",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "stdout": "FIG held-out-same-command recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "rc": 1
+    },
+    {
+      "kind": "id-oracle",
+      "input_class": "single",
+      "command": [
+        "python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/id-oracle.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/identity-ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+      "instrument_sha256": "2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51",
+      "ledger": {
+        "figures": [
+          {
+            "id": "P3-cat-one-operand-sigpipe",
+            "record": "fixture:1",
+            "recorded": "alpha",
+            "derive": "cat big.txt | head -n 1",
+            "want": "alpha"
+          }
+        ]
+      },
+      "ledger_sha256": "d3dd61b20c59b559728368a2c2a586eceae7d9f59079ad708731af8b14a1dd94",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "stdout": "FIG P3-cat-one-operand-sigpipe recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "rc": 0
+    },
+    {
+      "kind": "real-candidate",
+      "input_class": "single",
+      "command": [
+        "python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/identity-ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+      "instrument_sha256": "d48a5e45a2afa60abefb0cbc15ed4cca41bc6c6abdd40e3789a9db09b18479c7",
+      "ledger": {
+        "figures": [
+          {
+            "id": "P3-cat-one-operand-sigpipe",
+            "record": "fixture:1",
+            "recorded": "alpha",
+            "derive": "cat big.txt | head -n 1",
+            "want": "alpha"
+          }
+        ]
+      },
+      "ledger_sha256": "d3dd61b20c59b559728368a2c2a586eceae7d9f59079ad708731af8b14a1dd94",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "stdout": "FIG P3-cat-one-operand-sigpipe recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "rc": 0
+    },
+    {
+      "kind": "id-oracle",
+      "input_class": "single",
+      "command": [
+        "python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/id-oracle.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/identity-ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+      "instrument_sha256": "2596baad6e5072f61ea285efef1f7900688b74a79407e371683ee7fd4775cf51",
+      "ledger": {
+        "figures": [
+          {
+            "id": "held-out-single-control",
+            "record": "fixture:1",
+            "recorded": "alpha",
+            "derive": "cat big.txt | head -n 1",
+            "want": "alpha"
+          }
+        ]
+      },
+      "ledger_sha256": "1873a96a7ef7e34117e980f98392729c8510be82bac2dffa55b7813816641135",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "stdout": "FIG held-out-single-control recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "rc": 0
+    },
+    {
+      "kind": "real-candidate",
+      "input_class": "single",
+      "command": [
+        "python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/identity-ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+      "instrument_sha256": "d48a5e45a2afa60abefb0cbc15ed4cca41bc6c6abdd40e3789a9db09b18479c7",
+      "ledger": {
+        "figures": [
+          {
+            "id": "held-out-single-control",
+            "record": "fixture:1",
+            "recorded": "alpha",
+            "derive": "cat big.txt | head -n 1",
+            "want": "alpha"
+          }
+        ]
+      },
+      "ledger_sha256": "1873a96a7ef7e34117e980f98392729c8510be82bac2dffa55b7813816641135",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "stdout": "FIG held-out-single-control recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "rc": 0
+    }
+  ]
+}

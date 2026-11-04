@@ -1,0 +1,16 @@
+CMD[scope-sort-multi] derive='sort big.txt missing.txt | head -n 1' rc=1
+FIG scope-sort-multi recorded=line000001 derived=UNAVAILABLE reason=derive-upstream-exit-2 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+---
+CMD[scope-head-multi] derive='head -n 1 big.txt missing.txt' rc=1
+FIG scope-head-multi recorded=line000001 derived=UNAVAILABLE reason=derive-exit-1 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+---
+CMD[scope-cat-multi] derive='cat big.txt missing.txt | head -n 1' rc=0
+FIG scope-cat-multi recorded=line000001 derived=line000001 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+---
+CMD[scope-cat-single] derive='cat big.txt | head -n 1' rc=0
+FIG scope-cat-single recorded=line000001 derived=line000001 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+---

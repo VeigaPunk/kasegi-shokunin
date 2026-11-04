@@ -1,0 +1,99 @@
+{
+  "name": "stdin-before-missing",
+  "mode": "candidate",
+  "base": "b6db9e818d322726e39cb441f2179d34d4170275",
+  "gate_sha256": "d48a5e45a2afa60abefb0cbc15ed4cca41bc6c6abdd40e3789a9db09b18479c7",
+  "driver_sha256": "e573e04fc8ba9c8faf26dcdb41c05b18a2f87776d37bd46171676285e629c092",
+  "fixture_hashes": {
+    "big.txt": {
+      "sha256": "8811b2514850fe5ad47ab777dafabdd92281109b6d4a2277872d81629b041bce",
+      "bytes": 8388612
+    },
+    "other.txt": {
+      "sha256": "5da8f23decf397b13f4f55b6fb8a61936238bfe08ed9d901132974f1beccc45c",
+      "bytes": 6
+    },
+    "small.txt": {
+      "sha256": "1ec8367d6c8b59e9dd0c7a4f47214db8d2e76ebd2cd5bf4155508cb27263dd2f",
+      "bytes": 12
+    },
+    "other-small.txt": {
+      "sha256": "999d1d048ee9123272dd9b718680551c83e867935b47c2650e6906dc22674e47",
+      "bytes": 8
+    },
+    "big space.txt": {
+      "sha256": "8811b2514850fe5ad47ab777dafabdd92281109b6d4a2277872d81629b041bce",
+      "bytes": 8388612
+    },
+    "big|name.txt": {
+      "sha256": "8811b2514850fe5ad47ab777dafabdd92281109b6d4a2277872d81629b041bce",
+      "bytes": 8388612
+    },
+    "-n": {
+      "sha256": "8811b2514850fe5ad47ab777dafabdd92281109b6d4a2277872d81629b041bce",
+      "bytes": 8388612
+    },
+    "--": {
+      "sha256": "8811b2514850fe5ad47ab777dafabdd92281109b6d4a2277872d81629b041bce",
+      "bytes": 8388612
+    },
+    "corpus/instruments/fail7.py": {
+      "sha256": "4dc37ada8d1912c24af4ab3a37f16bcbc291e3ca1d45d22e67f2c61712342236",
+      "bytes": 20
+    },
+    "corpus/instruments/term.py": {
+      "sha256": "43734e0b6badd4bdb95ae51a20afe331a5dcebfbbeb67edb0ecbb268cdd04e8b",
+      "bytes": 55
+    }
+  },
+  "ledger_sha256": "ac4020b755584d8bbce7123bdf4339ed07874057608e9ec58f185c2c3c5590f3",
+  "command": [
+    "/usr/bin/python",
+    "-B",
+    "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ReviewCat/candidate-figure-audit.py",
+    "--root",
+    "/fast/scratch/hyaku/kasegi-r66/ReviewCat/repo/review-fixture",
+    "--ledger",
+    "/fast/scratch/hyaku/kasegi-r66/ReviewCat/repo/review-fixture/ledger.json"
+  ],
+  "cwd": "/fast/scratch/hyaku/kasegi-r66/ReviewCat/repo/review-fixture",
+  "environment": {
+    "TMPDIR": "/fast/scratch/hyaku/kasegi-r66/ReviewCat/tmp",
+    "HYAKU_SCRATCH": "/fast/scratch/hyaku/kasegi-r66/ReviewCat/tmp",
+    "LC_ALL": "C"
+  },
+  "derive": "cat - missing.txt < big.txt | head -n 1",
+  "native": {
+    "commands": [
+      [
+        "cat",
+        "-",
+        "missing.txt"
+      ],
+      [
+        "head",
+        "-n",
+        "1"
+      ]
+    ],
+    "stdin_file": "big.txt",
+    "statuses": [
+      -13,
+      0
+    ],
+    "stdout": "alpha\n",
+    "stderrs": [
+      "",
+      ""
+    ]
+  },
+  "rc": 1,
+  "stdout": "FIG stdin-before-missing recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+  "stderr": "",
+  "reason": "derive-upstream-signal-13",
+  "expected_rc": 1,
+  "expected_reason": "derive-upstream-signal-13",
+  "pass": true,
+  "note": "",
+  "conservative_options": false
+}

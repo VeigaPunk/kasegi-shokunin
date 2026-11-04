@@ -1,0 +1,41 @@
+== R3 quotes from the own-work source at BASE, with exact locations ==
+$ git show b6db9e8:corpus/instruments/figure-audit.py | sed -n '83,92p'
+         1	def upstream_stale(head, status):
+         2	    """Stale upstream statuses: any >1, exit1 from a program other than grep, or a signal.
+         3	
+         4	    Grep exit1 is an ordinary no-match. A negative status is a signal: stale unless it is
+         5	    SIGPIPE (-13). SIGPIPE on a non-final stage is benign by documented rule: a later stage
+         6	    closed the pipe early, so the truncated producer output is not the value.
+         7	    """
+         8	    if status < 0:
+         9	        return status != -signal.SIGPIPE
+        10	    if status > 1:
+rc=0
+
+== R4 round-65 CriticC1 H1 receipt, exact lines ==
+$ sed -n '1,14p' .ufo/waves/round-65/w1/CriticC1/receipts/q2-missing-input-contrast.txt
+     1	== same missing input, consumer=wc (pinned stale class) ==
+     2	-- base blob --
+     3	PROBE id=miss-wc-base exit=1 reason=derive-upstream-exit-1
+     4	AUDIT FIG miss-wc-base recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+     5	-- landed --
+     6	PROBE id=miss-wc-landed exit=1 reason=derive-upstream-exit-1
+     7	AUDIT FIG miss-wc-landed recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+     8	== same missing input after a big operand, consumer=head (H1) ==
+     9	-- base blob --
+    10	PROBE id=miss-head-base exit=0 reason=-
+    11	AUDIT FIG miss-head-base recorded=line000001 derived=line000001 ok
+    12	-- landed --
+    13	PROBE id=miss-head-landed exit=0 reason=-
+    14	AUDIT FIG miss-head-landed recorded=line000001 derived=line000001 ok
+rc=0
+
+$ sed -n '1,2p' .ufo/waves/round-65/w1/CriticC1/receipts/q2-sigpipe-masks-error-native.txt
+     1	NATIVE stage=0 cmd='cat big.txt missing.txt' rc=-13
+     2	NATIVE stage=1 cmd='head -n 1' rc=0
+rc=0
+
+== R5 sha256 of the round-65 H1 receipts read ==
+c52abed7347eda3a6c7a0aa4841e7cf1ae0308e8d0f1255a9969fd24adcd29b2  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-65/w1/CriticC1/receipts/q2-missing-input-contrast.txt
+e2d3d784196df0879e23d4b41b5b3645f40aa4982008c83b9ec015bb7c873292  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-65/w1/CriticC1/receipts/q2-sigpipe-masks-error-native.txt
+bd9e4a0bd4ecfaff05db28459528bde12455445c7f6985949080735c8e0e64ee  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-65/w1/CriticC1.md

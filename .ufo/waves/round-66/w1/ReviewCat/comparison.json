@@ -1,0 +1,788 @@
+{
+  "base": "b6db9e818d322726e39cb441f2179d34d4170275",
+  "base_gate_sha256": "86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef",
+  "candidate_gate_sha256": "d48a5e45a2afa60abefb0cbc15ed4cca41bc6c6abdd40e3789a9db09b18479c7",
+  "cases_per_gate": 43,
+  "changed": 18,
+  "unchanged": 25,
+  "results": [
+    {
+      "probe": "single-large",
+      "derive": "cat big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "stdin-only-large",
+      "derive": "cat < big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "dash-only-large",
+      "derive": "cat - < big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "separator-only-stdin",
+      "derive": "cat -- < big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "separator-single",
+      "derive": "cat -- big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "separator-dash-stdin",
+      "derive": "cat -- - < big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "single-spaced-name",
+      "derive": "cat 'big space.txt' | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "single-escaped-name",
+      "derive": "cat big\\ space.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "single-operator-name",
+      "derive": "cat 'big|name.txt' | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "literal-option-name",
+      "derive": "cat -- -n | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "literal-separator-name",
+      "derive": "cat -- -- | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "later-missing-large",
+      "derive": "cat big.txt missing.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "earlier-missing-large",
+      "derive": "cat missing.txt big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "two-existing-large",
+      "derive": "cat big.txt other.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "same-file-twice",
+      "derive": "cat big.txt big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "separator-two-existing",
+      "derive": "cat -- big.txt other.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "separator-later-missing",
+      "derive": "cat -- big.txt missing.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "separator-earlier-missing",
+      "derive": "cat -- missing.txt big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "dash-before-file",
+      "derive": "cat - big.txt < big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "file-before-dash",
+      "derive": "cat big.txt - < big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "two-dashes",
+      "derive": "cat - - < big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "stdin-before-missing",
+      "derive": "cat - missing.txt < big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "missing-before-stdin",
+      "derive": "cat missing.txt - < big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "option-u-single",
+      "derive": "cat -u big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": true,
+      "change": true
+    },
+    {
+      "probe": "option-n-single",
+      "derive": "cat -n big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": true,
+      "change": true
+    },
+    {
+      "probe": "long-option-single",
+      "derive": "cat --number big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": true,
+      "change": true
+    },
+    {
+      "probe": "option-and-separator",
+      "derive": "cat -u -- big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": true,
+      "change": true
+    },
+    {
+      "probe": "option-multi",
+      "derive": "cat -u big.txt missing.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "single-small",
+      "derive": "cat small.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        0,
+        0
+      ],
+      "native_statuses_candidate": [
+        0,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "two-existing-small",
+      "derive": "cat small.txt other-small.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        0,
+        0
+      ],
+      "native_statuses_candidate": [
+        0,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "later-missing-small",
+      "derive": "cat small.txt missing.txt | head -n 1",
+      "base_rc": 1,
+      "base_reason": "derive-upstream-exit-1",
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-exit-1",
+      "native_statuses_base": [
+        1,
+        0
+      ],
+      "native_statuses_candidate": [
+        1,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "earlier-missing-small",
+      "derive": "cat missing.txt small.txt | head -n 1",
+      "base_rc": 1,
+      "base_reason": "derive-upstream-exit-1",
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-exit-1",
+      "native_statuses_base": [
+        1,
+        0
+      ],
+      "native_statuses_candidate": [
+        1,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "missing-only",
+      "derive": "cat missing.txt | wc -l",
+      "base_rc": 1,
+      "base_reason": "derive-upstream-exit-1",
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-exit-1",
+      "native_statuses_base": [
+        1,
+        0
+      ],
+      "native_statuses_candidate": [
+        1,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "multi-drained",
+      "derive": "cat big.txt other.txt | wc -l",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        0,
+        0
+      ],
+      "native_statuses_candidate": [
+        0,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "multi-drained-later-missing",
+      "derive": "cat big.txt missing.txt | wc -l",
+      "base_rc": 1,
+      "base_reason": "derive-upstream-exit-1",
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-exit-1",
+      "native_statuses_base": [
+        1,
+        0
+      ],
+      "native_statuses_candidate": [
+        1,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "grep-nomatch",
+      "derive": "grep absent big.txt | wc -l",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        1,
+        0
+      ],
+      "native_statuses_candidate": [
+        1,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "other-head-sigpipe",
+      "derive": "head -c 8388612 big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "other-cut-sigpipe",
+      "derive": "cut -c 1-5 big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "upstream-positive-seven",
+      "derive": "python3 corpus/instruments/fail7.py | wc -l",
+      "base_rc": 1,
+      "base_reason": "derive-upstream-exit-7",
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-exit-7",
+      "native_statuses_base": [
+        7,
+        0
+      ],
+      "native_statuses_candidate": [
+        7,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "upstream-signal-fifteen",
+      "derive": "python3 corpus/instruments/term.py | wc -l",
+      "base_rc": 1,
+      "base_reason": "derive-upstream-signal-15",
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-15",
+      "native_statuses_base": [
+        -15,
+        0
+      ],
+      "native_statuses_candidate": [
+        -15,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "final-error-precedence",
+      "derive": "cat big.txt missing.txt | grep '['",
+      "base_rc": 1,
+      "base_reason": "derive-exit-2",
+      "candidate_rc": 1,
+      "candidate_reason": "derive-exit-2",
+      "native_statuses_base": [
+        -13,
+        2
+      ],
+      "native_statuses_candidate": [
+        -13,
+        2
+      ],
+      "conservative_options": false,
+      "change": false
+    },
+    {
+      "probe": "middle-multi-cat",
+      "derive": "head -c 8388612 big.txt | cat - big.txt | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 1,
+      "candidate_reason": "derive-upstream-signal-13",
+      "native_statuses_base": [
+        -13,
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": true
+    },
+    {
+      "probe": "middle-single-cat",
+      "derive": "head -c 8388612 big.txt | cat - | head -n 1",
+      "base_rc": 0,
+      "base_reason": null,
+      "candidate_rc": 0,
+      "candidate_reason": null,
+      "native_statuses_base": [
+        -13,
+        -13,
+        0
+      ],
+      "native_statuses_candidate": [
+        -13,
+        -13,
+        0
+      ],
+      "conservative_options": false,
+      "change": false
+    }
+  ]
+}

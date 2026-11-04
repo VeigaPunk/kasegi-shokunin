@@ -1,0 +1,1982 @@
+{
+  "base": "b6db9e818d322726e39cb441f2179d34d4170275",
+  "instrument": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+  "instrument_sha256": "d48a5e45a2afa60abefb0cbc15ed4cca41bc6c6abdd40e3789a9db09b18479c7",
+  "harness_sha256": "ac15f5f24fabef92b4bc50a8b2d874583e5b4c68d89f1e6f5858a15333883e66",
+  "fixture_manifest": [
+    {
+      "path": "--",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "-dash.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "alternate.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "big.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "corpus/instruments/final7.py",
+      "bytes": 35,
+      "sha256": "01b8387a6f0dcc4dfca9c4967b17d1cbfda5d90a769031a22804f11e8d44b642"
+    },
+    {
+      "path": "corpus/instruments/pipe.py",
+      "bytes": 141,
+      "sha256": "4108c8151279b639268085b4a0d4186a693216e3719861c1d42a333b97f07fb5"
+    },
+    {
+      "path": "corpus/instruments/wrapper.py",
+      "bytes": 124,
+      "sha256": "d248a46192cb2e299e0f509f1847ee5a1ecc35864990420f9ff1f8bea2aafd0e"
+    },
+    {
+      "path": "g.txt",
+      "bytes": 3,
+      "sha256": "90d7ec0f0acef104d8b6252794295f661a0149634868d02a1ae0c358099638f5"
+    },
+    {
+      "path": "one two.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "other.txt",
+      "bytes": 6,
+      "sha256": "3eeb0cea8bf176427633a47a62ee8c813844d574d48554a0d715e12dcbbaeda6"
+    },
+    {
+      "path": "pipe|and&&.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "small.txt",
+      "bytes": 6,
+      "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+    }
+  ],
+  "runs": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG two-missing recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "two-missing",
+        "derive": "cat big.txt missing.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "fa456753e4fbc073d3aac80d66427b681bb579fbd174e9a86c8416670c7964d5",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG two-existing recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "two-existing",
+        "derive": "cat big.txt other.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "big.txt",
+            "other.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "3c1a6e4503bafe01b70dbd19ce579f537c414694fc8b1121bcff5f452f0d736d",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "other.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG renamed-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "renamed-multi",
+        "derive": "cat alternate.txt other.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "alternate.txt",
+            "other.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "c4808237a1f3d956cb08fa072c3a77ac4e0c52b09af1f26d80c443d84450e5ec",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "alternate.txt",
+            "other.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG quoted-head-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "quoted-head-multi",
+        "derive": "c'at' big.txt missing.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "6659930d7d10ec580de26263971cca6dd7c47741a021599e953466d3c259127b",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG escaped-arg-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "escaped-arg-multi",
+        "derive": "cat bi\\g.txt miss\\ing.txt|head -n 1",
+        "stages": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "366576e7a459d903d0d57b7473f0f63ac256969e2005836df1597f304e6552d1",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG quoted-args-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "quoted-args-multi",
+        "derive": "cat 'big.txt' \"missing.txt\" | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "318bbdfe88035909d51d9edcea9ec1b1d07304780ba124e414733a5f8b445697",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG single-big recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "single-big",
+        "derive": "cat big.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "69cbdcbacd1bd60e37e38ab70145ef2ada7c50404bc0c95cb51a2bc3c00bec2a",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG stdin-only recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "stdin-only",
+        "derive": "cat < big.txt | head -n 1",
+        "stages": [
+          [
+            "cat"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": "big.txt",
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "e5eea4547d84789e027c26838c40713d553a2f1c980bfaaff860456142569eeb",
+      "native": {
+        "argv": [
+          [
+            "cat"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": "big.txt",
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG stdin-dash recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "stdin-dash",
+        "derive": "cat - < big.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "-"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": "big.txt",
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "6e60b1964840071c333dd7d99b416ccbdc5116bcd7c4fcd3316c1f97c603a17e",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "-"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": "big.txt",
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG single-blank recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "single-blank",
+        "derive": "cat 'one two.txt' | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "one two.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "b58c55a71668121a0cfdad0163a7be3b533218a5e572522bfef55be919704580",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "one two.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG single-operators recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "single-operators",
+        "derive": "cat 'pipe|and&&.txt'|head -n 1",
+        "stages": [
+          [
+            "cat",
+            "pipe|and&&.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "6d38063172bcac0153e9de1c7181cee2a9c5087aa0cad5d4cd6735c5f73e01b0",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "pipe|and&&.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG single-escaped-blank recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "single-escaped-blank",
+        "derive": "cat one\\ two.txt|head -n 1",
+        "stages": [
+          [
+            "cat",
+            "one two.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "6338e95c73e98f48fb63f5b410b60d917f0ec091cb21dd28a0d871613f2f6922",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "one two.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG separator-single recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "separator-single",
+        "derive": "cat -- big.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "--",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "407cee23de2d1235e4da63f3de75bcef2750d367896492233b46a7959c88e708",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "--",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG separator-stdin recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "separator-stdin",
+        "derive": "cat -- < big.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "--"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": "big.txt",
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "cb9b0fc4e069ead8718c6b55f428f21a735f1b39eeddd7864c980e9766d937b2",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "--"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": "big.txt",
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG separator-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "separator-multi",
+        "derive": "cat -- big.txt missing.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "--",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "d07bd6737e36de156b0bf02e4ca2e75e09d1b80d90139f494139637fe1579764",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "--",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG separator-dash-name recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "separator-dash-name",
+        "derive": "cat -- -dash.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "--",
+            "-dash.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "16d1e24f0bba7efc1747e98732ce51ec70792fa8c34491735886761cfd0a545a",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "--",
+            "-dash.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG separator-double-dash-name recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "separator-double-dash-name",
+        "derive": "cat -- -- | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "--",
+            "--"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "c3b0aeaf7d26a9ddda01e9f26c16beb1e9ac3da869fd4386e5da0d3d61599456",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "--",
+            "--"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG file-and-stdin-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "file-and-stdin-multi",
+        "derive": "cat big.txt - < other.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "big.txt",
+            "-"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": "other.txt",
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "4068cf3214ae41e74fb1dd143a60627e68170d3d87303e5d5593842352cf84e1",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "-"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": "other.txt",
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG stdin-and-file-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "stdin-and-file-multi",
+        "derive": "cat - other.txt < big.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "-",
+            "other.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": "big.txt",
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "dc408f05f787a5ce82001a341540755b6c7dc68d56f0c6516bf26efc56a8ea81",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "-",
+            "other.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": "big.txt",
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG two-small recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "two-small",
+        "derive": "cat small.txt other.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "small.txt",
+            "other.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "97f3812b80ca4ef5feb11c3a3612b99119b2f811666f02e1305e77ec76e1e542",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "small.txt",
+            "other.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          0,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG missing-first recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "missing-first",
+        "derive": "cat missing.txt big.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "missing.txt",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "e2f24f2ec6d3cf91098ec6c74cbc5e0144e8f4d11fc0d6511c30edfdb68201f6",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "missing.txt",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "cat: missing.txt: No such file or directory\n",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG directory-first recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "directory-first",
+        "derive": "cat bad-dir big.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "bad-dir",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "f199f87a3b62e55a019a6518899e34814bca64ecf1bd4249d14847feadeb772d",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "bad-dir",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "cat: bad-dir: Is a directory\n",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG single-read-error recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "single-read-error",
+        "derive": "cat bad-dir | wc -l",
+        "stages": [
+          [
+            "cat",
+            "bad-dir"
+          ],
+          [
+            "wc",
+            "-l"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-exit-1",
+        "want": "0",
+        "boundary": false
+      },
+      "ledger_sha256": "5d6d5b6d3f3231cbf3f1d7c63fad2b9665706248683cffe326a1d38b77bf7f42",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "bad-dir"
+          ],
+          [
+            "wc",
+            "-l"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          1,
+          0
+        ],
+        "stdout": "0\n",
+        "stderr": [
+          "cat: bad-dir: Is a directory\n",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG single-options-conservative recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "single-options-conservative",
+        "derive": "cat -u big.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "-u",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": true
+      },
+      "ledger_sha256": "235e3ec670a3870977dee606048237a216e61784aad8d8b2ad967f1cc04ff26d",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "-u",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG wrapper-hides-error recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "wrapper-hides-error",
+        "derive": "python3 corpus/instruments/wrapper.py | head -n 1",
+        "stages": [
+          [
+            "python3",
+            "corpus/instruments/wrapper.py"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": true
+      },
+      "ledger_sha256": "0471bf135a6012557256dcd37f7da1ae744f7ab9b8c5d98a135867e499cd6608",
+      "native": {
+        "argv": [
+          [
+            "python3",
+            "corpus/instruments/wrapper.py"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          0,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG other-head-multi recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "other-head-multi",
+        "derive": "head -q -n 100000000 big.txt missing.txt | head -n 1",
+        "stages": [
+          [
+            "head",
+            "-q",
+            "-n",
+            "100000000",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": true
+      },
+      "ledger_sha256": "c330354cc13f1f8e02a346c00dc965850aec8d6fdcd03c8bd1e28613ff034810",
+      "native": {
+        "argv": [
+          [
+            "head",
+            "-q",
+            "-n",
+            "100000000",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG other-python-sigpipe recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "other-python-sigpipe",
+        "derive": "python3 corpus/instruments/pipe.py | head -n 1",
+        "stages": [
+          [
+            "python3",
+            "corpus/instruments/pipe.py"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": true
+      },
+      "ledger_sha256": "f5a5f6b6094b3547339bafd16d70627b7f27f1fbf467efbc5ed5303dbde6a963",
+      "native": {
+        "argv": [
+          [
+            "python3",
+            "corpus/instruments/pipe.py"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG final-precedence recorded=alpha derived=UNAVAILABLE reason=derive-exit-7 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "final-precedence",
+        "derive": "cat big.txt missing.txt | python3 corpus/instruments/final7.py",
+        "stages": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "python3",
+            "corpus/instruments/final7.py"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-exit-7",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "e3fac90d2cc2c0c3ae23db7271281a518ecf013984643f6c8e8f927989795585",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "python3",
+            "corpus/instruments/final7.py"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          7
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG separator-double-dash-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "separator-double-dash-multi",
+        "derive": "cat -- -- missing.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "--",
+            "--",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "74bbe048839e3f92887511018dd8dc26328e4512f170b70891c72e16699916a3",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "--",
+            "--",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 1,
+      "stdout": "FIG empty-operand-multi recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": "",
+      "case": {
+        "name": "empty-operand-multi",
+        "derive": "cat big.txt '' | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "big.txt",
+            ""
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "7455076bc1a831b059db2e36bfe9af54938f65e892ca2ba4022a57fb4b8d8012",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            ""
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG two-existing recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "two-existing",
+        "derive": "cat big.txt other.txt | head -n 1",
+        "stages": [
+          [
+            "cat",
+            "big.txt",
+            "other.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "expected_rc": 0,
+        "reason": null,
+        "want": "alpha",
+        "boundary": false
+      },
+      "ledger_sha256": "3c1a6e4503bafe01b70dbd19ce579f537c414694fc8b1121bcff5f452f0d736d",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "other.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          0,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true,
+      "fixture_delta": {
+        "big.txt": {
+          "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060",
+          "bytes": 6
+        }
+      }
+    }
+  ]
+}

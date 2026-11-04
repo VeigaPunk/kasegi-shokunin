@@ -1,0 +1,158 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-v1.py",
+    "--instrument",
+    "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py",
+    "--work",
+    "/fast/scratch/hyaku/kasegi-r66/CriticCat/collector-text-oracle-v1",
+    "--mode",
+    "candidate"
+  ],
+  "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+  "base": "b6db9e818d322726e39cb441f2179d34d4170275",
+  "collector_source": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ExecCatProbes/probes.py",
+  "collector_sha256": "bf5a656e9f9f2d613d71e9267986dfb8efbcd482ebe97d9fb80a3a8989243819",
+  "instrument_sha256": "530febd338de15f7a6c2e0346237eb790ef4a91e26bf3106b4de896f4783abe2",
+  "extra_environment": {},
+  "stdout": "NATIVE P1-cat-two-operand-missing-sigpipe stage0=141 stage1=0 out=alpha err_bytes=0\nPROBE P1-cat-two-operand-missing-sigpipe rc=1 expected=1 reason=derive-upstream-signal-13 pass=true\nNOTE P1-cat-two-operand-missing-sigpipe field=native want=stage0=-13,stage1=0 got=141,0\nNATIVE P2-cat-two-operand-existing-sigpipe stage0=141 stage1=0 out=alpha err_bytes=0\nPROBE P2-cat-two-operand-existing-sigpipe rc=1 expected=1 reason=derive-upstream-signal-13 pass=true\nNOTE P2-cat-two-operand-existing-sigpipe field=native want=stage0=-13,stage1=0 got=141,0\nNATIVE P3-cat-one-operand-sigpipe stage0=141 stage1=0 out=alpha err_bytes=0\nPROBE P3-cat-one-operand-sigpipe rc=0 expected=0 reason=- pass=true\nNOTE P3-cat-one-operand-sigpipe field=native want=stage0=-13,stage1=0 got=141,0\nNATIVE P4-cat-stdin-sigpipe stage0=141 stage1=0 out=alpha err_bytes=0\nPROBE P4-cat-stdin-sigpipe rc=0 expected=0 reason=- pass=true\nNOTE P4-cat-stdin-sigpipe field=native want=stage0=-13,stage1=0 got=141,0\nNATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=0\nPROBE P5-cat-missing-exit1 rc=1 expected=1 reason=derive-upstream-exit-1 pass=true\nNATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0\nPROBE P6-grep-nomatch-green rc=0 expected=0 reason=- pass=true\n",
+  "stderr": "Traceback (most recent call last):\n  File \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-v1.py\", line 460, in <module>\n    sys.exit(main(sys.argv[1:]))\n             ~~~~^^^^^^^^^^^^^^\n  File \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-v1.py\", line 455, in main\n    failures, code = battery(args.instrument, work, args.mode, quiet=False)\n                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-v1.py\", line 270, in battery\n    exp_rc, exp_reason, exp_derived = expect[probe[\"id\"]]\n                                      ~~~~~~^^^^^^^^^^^^^\nKeyError: 'P7-same-derive-small-twin'\n",
+  "rc": 1,
+  "inputs": [
+    {
+      "case": "P1-cat-two-operand-missing-sigpipe",
+      "ledger": "{\"figures\": [{\"id\": \"P1-cat-two-operand-missing-sigpipe\", \"record\": \"probes.py:1\", \"recorded\": \"alpha\", \"derive\": \"cat big.txt missing.txt | head -n 1\", \"want\": \"alpha\"}]}\n",
+      "ledger_sha256": "48b75598701c93d02c34efe4445b783133b25f99372b5f84943c55dcca2921fd",
+      "fixtures": [
+        {
+          "path": "big.txt",
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8",
+          "bytes": 4194306
+        },
+        {
+          "path": "other.txt",
+          "sha256": "5da8f23decf397b13f4f55b6fb8a61936238bfe08ed9d901132974f1beccc45c",
+          "bytes": 6
+        }
+      ]
+    },
+    {
+      "case": "P2-cat-two-operand-existing-sigpipe",
+      "ledger": "{\"figures\": [{\"id\": \"P2-cat-two-operand-existing-sigpipe\", \"record\": \"probes.py:1\", \"recorded\": \"alpha\", \"derive\": \"cat big.txt other.txt | head -n 1\", \"want\": \"alpha\"}]}\n",
+      "ledger_sha256": "558793b7422839f7fc5b298715b5cf811a7766d5a7278b5d8cb020ad5c08ad4b",
+      "fixtures": [
+        {
+          "path": "big.txt",
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8",
+          "bytes": 4194306
+        },
+        {
+          "path": "other.txt",
+          "sha256": "5da8f23decf397b13f4f55b6fb8a61936238bfe08ed9d901132974f1beccc45c",
+          "bytes": 6
+        }
+      ]
+    },
+    {
+      "case": "P3-cat-one-operand-sigpipe",
+      "ledger": "{\"figures\": [{\"id\": \"P3-cat-one-operand-sigpipe\", \"record\": \"probes.py:1\", \"recorded\": \"alpha\", \"derive\": \"cat big.txt | head -n 1\", \"want\": \"alpha\"}]}\n",
+      "ledger_sha256": "5f4a639bb7b13424fff2d2f199abf63c8a44ae36181fb879e341af9e682933eb",
+      "fixtures": [
+        {
+          "path": "big.txt",
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8",
+          "bytes": 4194306
+        },
+        {
+          "path": "other.txt",
+          "sha256": "5da8f23decf397b13f4f55b6fb8a61936238bfe08ed9d901132974f1beccc45c",
+          "bytes": 6
+        }
+      ]
+    },
+    {
+      "case": "P4-cat-stdin-sigpipe",
+      "ledger": "{\"figures\": [{\"id\": \"P4-cat-stdin-sigpipe\", \"record\": \"probes.py:1\", \"recorded\": \"alpha\", \"derive\": \"cat < big.txt | head -n 1\", \"want\": \"alpha\"}]}\n",
+      "ledger_sha256": "3eb5b6096235f17324aa8b08b5614eee61e0b2be3c7bec9e327ede58d58f87e4",
+      "fixtures": [
+        {
+          "path": "big.txt",
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8",
+          "bytes": 4194306
+        },
+        {
+          "path": "other.txt",
+          "sha256": "5da8f23decf397b13f4f55b6fb8a61936238bfe08ed9d901132974f1beccc45c",
+          "bytes": 6
+        }
+      ]
+    },
+    {
+      "case": "P5-cat-missing-exit1",
+      "ledger": "{\"figures\": [{\"id\": \"P5-cat-missing-exit1\", \"record\": \"probes.py:1\", \"recorded\": \"0\", \"derive\": \"cat missing.txt | wc -l\", \"want\": \"0\"}]}\n",
+      "ledger_sha256": "4d82c2f2e8432439ec6f3f6b544b289353fd8d6e2b9f9c43b5a3373691a20d60",
+      "fixtures": [
+        {
+          "path": "big.txt",
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8",
+          "bytes": 4194306
+        },
+        {
+          "path": "other.txt",
+          "sha256": "5da8f23decf397b13f4f55b6fb8a61936238bfe08ed9d901132974f1beccc45c",
+          "bytes": 6
+        }
+      ]
+    },
+    {
+      "case": "P6-grep-nomatch-green",
+      "ledger": "{\"figures\": [{\"id\": \"P6-grep-nomatch-green\", \"record\": \"probes.py:1\", \"recorded\": \"0\", \"derive\": \"grep absent big.txt | wc -l\", \"want\": \"0\"}]}\n",
+      "ledger_sha256": "08494add9ed14543826289a97fc22f8ed53a0a169ef809ce7fdee7f7b3285036",
+      "fixtures": [
+        {
+          "path": "big.txt",
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8",
+          "bytes": 4194306
+        },
+        {
+          "path": "other.txt",
+          "sha256": "5da8f23decf397b13f4f55b6fb8a61936238bfe08ed9d901132974f1beccc45c",
+          "bytes": 6
+        }
+      ]
+    }
+  ],
+  "gate_receipts": [
+    {
+      "case": "P1-cat-two-operand-missing-sigpipe",
+      "stdout": "FIG P1-cat-two-operand-missing-sigpipe recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": ""
+    },
+    {
+      "case": "P2-cat-two-operand-existing-sigpipe",
+      "stdout": "FIG P2-cat-two-operand-existing-sigpipe recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": ""
+    },
+    {
+      "case": "P3-cat-one-operand-sigpipe",
+      "stdout": "FIG P3-cat-one-operand-sigpipe recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": ""
+    },
+    {
+      "case": "P4-cat-stdin-sigpipe",
+      "stdout": "FIG P4-cat-stdin-sigpipe recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": ""
+    },
+    {
+      "case": "P5-cat-missing-exit1",
+      "stdout": "FIG P5-cat-missing-exit1 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+      "stderr": ""
+    },
+    {
+      "case": "P6-grep-nomatch-green",
+      "stdout": "FIG P6-grep-nomatch-green recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": ""
+    }
+  ]
+}

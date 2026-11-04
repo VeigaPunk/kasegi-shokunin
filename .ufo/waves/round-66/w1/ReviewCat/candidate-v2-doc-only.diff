@@ -1,0 +1,35 @@
+--- tested-candidate-v1
++++ candidate-v2-docfix
+@@ -36,22 +36,23 @@
+ 
+ Exit codes: 0 every figure re-derives; 1 any figure stale or derive failed
+ (fail-closed: nonzero or signal final status, upstream positive status other than grep exit1,
+-or upstream signal other than SIGPIPE, or empty stdout is stale);
++or a non-exempt upstream signal — SIGPIPE from a multi-input or option-carrying cat is stale —
++or empty stdout is stale);
+ 2 harness/read error (ledger missing/unparsable, entry malformed, derive refused).
+ After all pipeline stages finish, a nonzero final status takes precedence: a nonzero exit is
+ reported as derive-exit-N and a final stage killed by signal N as derive-signal-N. Otherwise
+ the first upstream status that is >1, or exit1 from a program other than grep, is stale
+ (derive-upstream-exit-N), and an upstream stage killed by signal N is stale
+ (derive-upstream-signal-N). Grep exit1 is an ordinary no-match and is not an error. SIGPIPE
+-(-13) on a non-final stage is benign by documented rule ONLY when the killed stage is a cat
+-with at most one decoded input — no operands (stdin) or exactly one operand with no options
+-(a lone "-" operand counts as a stdin input; a leading "--" separator is honored). A cat with
+-two or more inputs, and conservatively ANY cat invocation carrying an option token (option
+-value semantics are not parsed, so even a single-file `cat -n big.txt` is refused), goes stale
++(-13) on a non-final stage stays benign by documented rule; for a cat head the exemption now
++applies only when the cat had at most one decoded input — no operands (stdin) or exactly one
++operand with no options (a lone "-" operand counts as a stdin input; a leading "--" separator
++is honored). Other heads retain the benign rule. A cat with two or more inputs, and
++conservatively ANY cat invocation carrying an option token (option value semantics are not
++parsed, so even a single-file `cat -n big.txt` is refused), goes stale
+ derive-upstream-signal-N: with multiple inputs the truncation can hide a later operand's error
+-(observed false green at base: large `cat big.txt missing.txt | head -n 1`). Other heads keep
+-the old benign rule. This is not general error detection or pipefail. && stops a derive at the
+-first stale group and
++(observed false green at base: large `cat big.txt missing.txt | head -n 1`). This is not
++general error detection or pipefail. && stops a derive at the first stale group and
+ concatenates successful group stdout; it is not bash pipeline-status equivalence.
+ --selftest builds fixtures under $HYAKU_SCRATCH, otherwise $TMPDIR/the system temp
+ directory, and uses the current Python interpreter. It exits 0 only if all cases pass.

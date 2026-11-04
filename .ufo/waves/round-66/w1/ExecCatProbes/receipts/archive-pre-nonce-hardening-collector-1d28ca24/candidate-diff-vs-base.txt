@@ -1,0 +1,102 @@
+39c39,40
+< or upstream signal other than SIGPIPE, or empty stdout is stale);
+---
+> or a non-exempt upstream signal — SIGPIPE from a multi-input or option-carrying cat is stale —
+> or empty stdout is stale);
+46,47c47,54
+< (-13) on a non-final stage is benign by documented rule: a later stage closed the pipe early,
+< so the truncated producer output is not the value; the final stage's output is. This is not
+---
+> (-13) on a non-final stage stays benign by documented rule; for a cat head the exemption now
+> applies only when the cat had at most one decoded input — no operands (stdin) or exactly one
+> operand with no options (a lone "-" operand counts as a stdin input; a leading "--" separator
+> is honored). Other heads retain the benign rule. A cat with two or more inputs, and
+> conservatively ANY cat invocation carrying an option token (option value semantics are not
+> parsed, so even a single-file `cat -n big.txt` is refused), goes stale
+> derive-upstream-signal-N: with multiple inputs the truncation can hide a later operand's error
+> (observed false green at base: large `cat big.txt missing.txt | head -n 1`). This is not
+76c83
+< EXPECTED_CASES = 63  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4)
+---
+> EXPECTED_CASES = 67  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape)
+83c90,107
+< def upstream_stale(head, status):
+---
+> def cat_sigpipe_exempt(argv):
+>     """True when a SIGPIPE'd cat head had at most one decoded input: no operands (stdin) or
+>     exactly one operand.  A leading "--" separator is honored; a lone "-" operand counts as a
+>     stdin input; one filename containing spaces or quoted operators is already one decoded
+>     argv token.  ANY option token (a word starting with "-" that is not "-" itself, unless it
+>     follows a leading "--") is refused conservatively: option value semantics are not parsed
+>     here, so e.g. `cat -n big.txt` is stale even though it reads a single file.  This is a
+>     capability restriction, not general argument validation.
+>     """
+>     tokens = list(argv[1:])
+>     if tokens and tokens[0] == "--":
+>         tokens = tokens[1:]
+>     elif any(t.startswith("-") and t != "-" for t in tokens):
+>         return False
+>     return len(tokens) <= 1
+> 
+> 
+> def upstream_stale(head, stage_argv, status):
+87,88c111,115
+<     SIGPIPE (-13). SIGPIPE on a non-final stage is benign by documented rule: a later stage
+<     closed the pipe early, so the truncated producer output is not the value.
+---
+>     SIGPIPE (-13) on a stage whose head is cat with at most one decoded input (stdin-only or
+>     exactly one operand, no options, optional leading -- separator).  A multi-input cat
+>     SIGPIPE is stale: the truncation can hide a later operand's error.  Other heads keep the
+>     old benign rule.  stage_argv is the decoded argv of the killed stage (never a shell
+>     string); passing it is the R66 repair — base decided SIGPIPE on the status alone.
+91c118,122
+<         return status != -signal.SIGPIPE
+---
+>         if status != -signal.SIGPIPE:
+>             return True
+>         if os.path.basename(head) != "cat":
+>             return False
+>         return not cat_sigpipe_exempt(stage_argv)
+102c133
+<         processes, files, heads = [], [], []
+---
+>         processes, files, heads, stage_argvs = [], [], [], []
+115a147
+>                 stage_argvs.append(list(argv))
+129,130c161,162
+<             for p, head in zip(processes[:-1], heads[:-1]):
+<                 if upstream_stale(head, p.returncode):
+---
+>             for p, head, stage_argv in zip(processes[:-1], heads[:-1], stage_argvs[:-1]):
+>                 if upstream_stale(head, stage_argv, p.returncode):
+362c394
+<     def run_case(cid, want_exit, ledger_doc=None, broken=False, reason=None):
+---
+>     def run_case(cid, want_exit, ledger_doc=None, broken=False, reason=None, big=False):
+369a402,410
+>             if big:
+>                 # R66: 4 MiB deterministic fixtures starting "alpha"/"beta".  A first operand
+>                 # this size far exceeds the 64 KiB pipe buffer, so `cat big.txt ... | head -n 1`
+>                 # delivers SIGPIPE to cat (base red receipt native_statuses=141) before cat can
+>                 # finish; small fixtures do not SIGPIPE and stay on the exit-status paths.
+>                 with open(os.path.join(tmp, "big.txt"), "w", encoding="utf-8", newline="\n") as f:
+>                     f.write("alpha\n" + ("x" * 1023 + "\n") * 4095)
+>                 with open(os.path.join(tmp, "other.txt"), "w", encoding="utf-8", newline="\n") as f:
+>                     f.write("beta\n" + ("y" * 1023 + "\n") * 4095)
+475a517,532
+>     # R66 cat-shape restriction: the SIGPIPE exemption needs stdin-only or exactly one
+>     # decoded operand.  Cases 1-2 are the base false green (base red receipt: exit 0 with
+>     # native cat status -13) — the candidate must refuse them.  The audit reason is asserted,
+>     # never an assumed native status; a timing fluke downgrading cat to exit 1 would surface
+>     # as derive-upstream-exit-1 and fail these cases loudly rather than pass silently.
+>     run_case("upstream-cat-multi-missing-sigpipe-stale", 1,
+>              _one("s-catmulti", "cat big.txt missing.txt | head -n 1", "alpha"),
+>              reason="derive-upstream-signal-13", big=True)
+>     run_case("upstream-cat-multi-existing-sigpipe-stale", 1,
+>              _one("s-catmulti2", "cat big.txt other.txt | head -n 1", "alpha"),
+>              reason="derive-upstream-signal-13", big=True)
+>     # Cases 3-4: a single decoded input stays benign (green at base too).
+>     run_case("upstream-cat-single-operand-sigpipe-benign", 0,
+>              _one("s-catone", "cat big.txt | head -n 1", "alpha"), big=True)
+>     run_case("upstream-cat-stdin-sigpipe-benign", 0,
+>              _one("s-catstdin", "cat < big.txt | head -n 1", "alpha"), big=True)

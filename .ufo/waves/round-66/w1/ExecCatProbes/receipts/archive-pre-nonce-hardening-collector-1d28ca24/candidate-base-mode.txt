@@ -1,0 +1,30 @@
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=1 expected=0 reason=derive-upstream-signal-13 pass=false
+NOTE P1-cat-two-operand-missing-sigpipe field=rc want=0 got=1
+NOTE P1-cat-two-operand-missing-sigpipe field=verdict want=ok got=stale
+NOTE P1-cat-two-operand-missing-sigpipe field=derived want=alpha got=None
+NOTE P1-cat-two-operand-missing-sigpipe field=reason want=- got=derive-upstream-signal-13
+NATIVE P2-cat-two-operand-existing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P2-cat-two-operand-existing-sigpipe rc=1 expected=0 reason=derive-upstream-signal-13 pass=false
+NOTE P2-cat-two-operand-existing-sigpipe field=rc want=0 got=1
+NOTE P2-cat-two-operand-existing-sigpipe field=verdict want=ok got=stale
+NOTE P2-cat-two-operand-existing-sigpipe field=derived want=alpha got=None
+NOTE P2-cat-two-operand-existing-sigpipe field=reason want=- got=derive-upstream-signal-13
+NATIVE P3-cat-one-operand-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P3-cat-one-operand-sigpipe rc=0 expected=0 reason=- pass=true
+NATIVE P4-cat-stdin-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P4-cat-stdin-sigpipe rc=0 expected=0 reason=- pass=true
+NATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=44
+PROBE P5-cat-missing-exit1 rc=1 expected=1 reason=derive-upstream-exit-1 pass=true
+NATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P6-grep-nomatch-green rc=0 expected=0 reason=- pass=true
+NATIVE P7-same-derive-small-twin stage0=0 stage1=0 out=alpha err_bytes=0
+PROBE P7-same-derive-small-twin rc=0 expected=0 reason=- pass=true
+NATIVE P8-cat-dashdash-separator-missing stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P8-cat-dashdash-separator-missing rc=1 expected=0 reason=derive-upstream-signal-13 pass=false
+NOTE P8-cat-dashdash-separator-missing field=rc want=0 got=1
+NOTE P8-cat-dashdash-separator-missing field=verdict want=ok got=stale
+NOTE P8-cat-dashdash-separator-missing field=derived want=alpha got=None
+NOTE P8-cat-dashdash-separator-missing field=reason want=- got=derive-upstream-signal-13
+PROBES probes=8 failures=3 mode=base instrument_sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+rc=1

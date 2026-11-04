@@ -1,0 +1,379 @@
+{
+  "name": "always-stale",
+  "base": "b6db9e818d322726e39cb441f2179d34d4170275",
+  "base_gate_sha256": "86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef",
+  "collector_sha256": "d788bbc16cd1ac9f345e5fc1a29f3e87542ceed1f2dfcdfa5e4b7593d3a57312",
+  "instrument_sha256": "bbb3ee73758c481e3a483a48100914e45daf1eb3f83ec9e198bf791c3eef2f7b",
+  "harness_sha256": "536e64780dd743ac009e6cd2771a29a5d330afe4d89a08084451473e5748e1c8",
+  "command": [
+    "python3",
+    "-B",
+    "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-opaque-final.py",
+    "--instrument",
+    "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/stale-oracle.py",
+    "--work",
+    "/fast/scratch/hyaku/kasegi-r66/CriticCat/w-7e74d9f0a1d5",
+    "--mode",
+    "candidate"
+  ],
+  "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+  "extra_environment": {},
+  "TMPDIR": "/fast/scratch/hyaku/kasegi-r66/CriticCat/tmp",
+  "expected_rc": 1,
+  "rc": 1,
+  "stdout": "NONCE run=228bb282b95cfa73 base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=bbb3ee73758c481e3a483a48100914e45daf1eb3f83ec9e198bf791c3eef2f7b\nLEDGER P1-cat-two-operand-missing-sigpipe id=fig-ae18a5dc27e52f72b917504e8adf4caf record=rec-c045e7ceccf05a36 dir=c-29ceb3a421d28181588ef796\nNATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0\nPROBE P1-cat-two-operand-missing-sigpipe rc=1 expected=1 reason=derive-upstream-exit-1 pass=false\nNOTE P1-cat-two-operand-missing-sigpipe field=reason want=derive-upstream-signal-13 got=derive-upstream-exit-1\nLEDGER P2-cat-two-operand-existing-sigpipe id=fig-098638cdc78defac3b47aa43237d5773 record=rec-987617248d59ce5b dir=c-dc6566907c0d24f2c7bcd81a\nNATIVE P2-cat-two-operand-existing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0\nPROBE P2-cat-two-operand-existing-sigpipe rc=1 expected=1 reason=derive-upstream-exit-1 pass=false\nNOTE P2-cat-two-operand-existing-sigpipe field=reason want=derive-upstream-signal-13 got=derive-upstream-exit-1\nLEDGER P3-cat-one-operand-sigpipe id=fig-09bfc9abcc5dd53ca73d67c59162c833 record=rec-6a9f37071538b497 dir=c-e83f7546ace270b57ccbbb8c\nNATIVE P3-cat-one-operand-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0\nPROBE P3-cat-one-operand-sigpipe rc=1 expected=0 reason=derive-upstream-exit-1 pass=false\nNOTE P3-cat-one-operand-sigpipe field=rc want=0 got=1\nNOTE P3-cat-one-operand-sigpipe field=verdict want=ok got=stale\nNOTE P3-cat-one-operand-sigpipe field=derived want=alpha got=None\nNOTE P3-cat-one-operand-sigpipe field=reason want=- got=derive-upstream-exit-1\nLEDGER P4-cat-stdin-sigpipe id=fig-03c1c3d6651813d3fd534fa7f5a2d4d0 record=rec-9799011b6a34a8a4 dir=c-8216f371ec6e86bf99ffbe88\nNATIVE P4-cat-stdin-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0\nPROBE P4-cat-stdin-sigpipe rc=1 expected=0 reason=derive-upstream-exit-1 pass=false\nNOTE P4-cat-stdin-sigpipe field=rc want=0 got=1\nNOTE P4-cat-stdin-sigpipe field=verdict want=ok got=stale\nNOTE P4-cat-stdin-sigpipe field=derived want=alpha got=None\nNOTE P4-cat-stdin-sigpipe field=reason want=- got=derive-upstream-exit-1\nLEDGER P5-cat-missing-exit1 id=fig-2ed7d848e371580ef2cd6813086da600 record=rec-7dd71edbdd13cbb5 dir=c-f6c6c9c0dce2780e053fc30f\nNATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=44\nPROBE P5-cat-missing-exit1 rc=1 expected=1 reason=derive-upstream-exit-1 pass=true\nLEDGER P6-grep-nomatch-green id=fig-8e8da03419294cb42ec6c4059139b1a0 record=rec-eb1ec6196d81b069 dir=c-dc7873a7f2df392b5bde5a2b\nNATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0\nPROBE P6-grep-nomatch-green rc=1 expected=0 reason=derive-upstream-exit-1 pass=false\nNOTE P6-grep-nomatch-green field=rc want=0 got=1\nNOTE P6-grep-nomatch-green field=verdict want=ok got=stale\nNOTE P6-grep-nomatch-green field=derived want=0 got=None\nNOTE P6-grep-nomatch-green field=reason want=- got=derive-upstream-exit-1\nLEDGER P7-same-derive-small-twin id=fig-8bdd2a3e09b21b6782074469133b98ab record=rec-810f497bcb28839e dir=c-a99eca37c0873ebfbc4e88fe\nNATIVE P7-same-derive-small-twin stage0=0 stage1=0 out=alpha err_bytes=0\nPROBE P7-same-derive-small-twin rc=1 expected=0 reason=derive-upstream-exit-1 pass=false\nNOTE P7-same-derive-small-twin field=rc want=0 got=1\nNOTE P7-same-derive-small-twin field=verdict want=ok got=stale\nNOTE P7-same-derive-small-twin field=derived want=alpha got=None\nNOTE P7-same-derive-small-twin field=reason want=- got=derive-upstream-exit-1\nLEDGER P8-cat-dashdash-separator-missing id=fig-3cb58153070a25447377373601a84fa9 record=rec-07342d70eeb6e8db dir=c-d6c65055c3b1d1a749c62243\nNATIVE P8-cat-dashdash-separator-missing stage0=-13 stage1=0 out=alpha err_bytes=0\nPROBE P8-cat-dashdash-separator-missing rc=1 expected=1 reason=derive-upstream-exit-1 pass=false\nNOTE P8-cat-dashdash-separator-missing field=reason want=derive-upstream-signal-13 got=derive-upstream-exit-1\nPROBES probes=8 failures=7 mode=candidate instrument_sha256=bbb3ee73758c481e3a483a48100914e45daf1eb3f83ec9e198bf791c3eef2f7b\n",
+  "stderr": "",
+  "summary": [
+    [
+      "8",
+      "7"
+    ]
+  ],
+  "finite_control_matches": true,
+  "cases": [
+    {
+      "case": "c-29ceb3a421d28181588ef796",
+      "files": [
+        {
+          "path": "gate.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "content": ""
+        },
+        {
+          "path": "gate.stdout",
+          "bytes": 155,
+          "sha256": "b1ab2657e3f8c5cecbde6e57789e865f6bd463e9c23f28a7754ce846890b5236",
+          "content": "FIG fig-ae18a5dc27e52f72b917504e8adf4caf recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n"
+        },
+        {
+          "path": "one.json",
+          "bytes": 183,
+          "sha256": "1d0d80fd630031ae63bc5922d9aae8e7c2293b595a50c43474a87225dbe9e091",
+          "content": "{\"figures\": [{\"id\": \"fig-ae18a5dc27e52f72b917504e8adf4caf\", \"record\": \"rec-c045e7ceccf05a36\", \"recorded\": \"alpha\", \"derive\": \"cat big.txt missing.txt | head -n 1\", \"want\": \"alpha\"}]}\n"
+        },
+        {
+          "path": "root/big.txt",
+          "bytes": 4194306,
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8"
+        },
+        {
+          "path": "root/native.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "root/native.out",
+          "bytes": 6,
+          "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+        },
+        {
+          "path": "root/other.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "case": "c-8216f371ec6e86bf99ffbe88",
+      "files": [
+        {
+          "path": "gate.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "content": ""
+        },
+        {
+          "path": "gate.stdout",
+          "bytes": 155,
+          "sha256": "6ee88ff7980e0d437686bfeea2dec42e7d87dbff407b490ccee01ddb9387a960",
+          "content": "FIG fig-03c1c3d6651813d3fd534fa7f5a2d4d0 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n"
+        },
+        {
+          "path": "one.json",
+          "bytes": 173,
+          "sha256": "97849a022a4582b6e2bda756a1cbb012705894d573e08c7d33061d1796a8b527",
+          "content": "{\"figures\": [{\"id\": \"fig-03c1c3d6651813d3fd534fa7f5a2d4d0\", \"record\": \"rec-9799011b6a34a8a4\", \"recorded\": \"alpha\", \"derive\": \"cat < big.txt | head -n 1\", \"want\": \"alpha\"}]}\n"
+        },
+        {
+          "path": "root/big.txt",
+          "bytes": 4194306,
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8"
+        },
+        {
+          "path": "root/native.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "root/native.out",
+          "bytes": 6,
+          "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+        },
+        {
+          "path": "root/other.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "case": "c-a99eca37c0873ebfbc4e88fe",
+      "files": [
+        {
+          "path": "gate.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "content": ""
+        },
+        {
+          "path": "gate.stdout",
+          "bytes": 155,
+          "sha256": "f2be91eb213b6458a00814d4c57f5e2ef0755922085365a015763fc4a5cc526b",
+          "content": "FIG fig-8bdd2a3e09b21b6782074469133b98ab recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n"
+        },
+        {
+          "path": "one.json",
+          "bytes": 181,
+          "sha256": "1672f7751cd3ccb8dc3bd91efc620f26923daf47425e0590ab5958a6f5785854",
+          "content": "{\"figures\": [{\"id\": \"fig-8bdd2a3e09b21b6782074469133b98ab\", \"record\": \"rec-810f497bcb28839e\", \"recorded\": \"alpha\", \"derive\": \"cat big.txt other.txt | head -n 1\", \"want\": \"alpha\"}]}\n"
+        },
+        {
+          "path": "root/big.txt",
+          "bytes": 6,
+          "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+        },
+        {
+          "path": "root/native.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "root/native.out",
+          "bytes": 6,
+          "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+        },
+        {
+          "path": "root/other.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "case": "c-d6c65055c3b1d1a749c62243",
+      "files": [
+        {
+          "path": "gate.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "content": ""
+        },
+        {
+          "path": "gate.stdout",
+          "bytes": 155,
+          "sha256": "d2be199384addc729d48c8453a5b681392b831561415eeaebd35e888128c3d09",
+          "content": "FIG fig-3cb58153070a25447377373601a84fa9 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n"
+        },
+        {
+          "path": "one.json",
+          "bytes": 181,
+          "sha256": "957f72c2b5d4466d751582f6317e0806e1802b625926ed83df40e6e62fc7d2c9",
+          "content": "{\"figures\": [{\"id\": \"fig-3cb58153070a25447377373601a84fa9\", \"record\": \"rec-07342d70eeb6e8db\", \"recorded\": \"alpha\", \"derive\": \"cat -- -- missing.txt | head -n 1\", \"want\": \"alpha\"}]}\n"
+        },
+        {
+          "path": "root/--",
+          "bytes": 4194306,
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8"
+        },
+        {
+          "path": "root/native.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "root/native.out",
+          "bytes": 6,
+          "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+        },
+        {
+          "path": "root/other.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "case": "c-dc6566907c0d24f2c7bcd81a",
+      "files": [
+        {
+          "path": "gate.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "content": ""
+        },
+        {
+          "path": "gate.stdout",
+          "bytes": 155,
+          "sha256": "5b58fc1ba95287704d358e2991bd046a4f36f591c86a8292b2917eb97ba93d77",
+          "content": "FIG fig-098638cdc78defac3b47aa43237d5773 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n"
+        },
+        {
+          "path": "one.json",
+          "bytes": 181,
+          "sha256": "93867de62e94c6f18485edaac092f517232e4569f647419f65c7a6de71d253ab",
+          "content": "{\"figures\": [{\"id\": \"fig-098638cdc78defac3b47aa43237d5773\", \"record\": \"rec-987617248d59ce5b\", \"recorded\": \"alpha\", \"derive\": \"cat big.txt other.txt | head -n 1\", \"want\": \"alpha\"}]}\n"
+        },
+        {
+          "path": "root/big.txt",
+          "bytes": 4194306,
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8"
+        },
+        {
+          "path": "root/native.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "root/native.out",
+          "bytes": 6,
+          "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+        },
+        {
+          "path": "root/other.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "case": "c-dc7873a7f2df392b5bde5a2b",
+      "files": [
+        {
+          "path": "gate.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "content": ""
+        },
+        {
+          "path": "gate.stdout",
+          "bytes": 151,
+          "sha256": "31be4ad164eae71083ea0847786a1e897a47b2126cf8bea3e7ce0754344a7928",
+          "content": "FIG fig-8e8da03419294cb42ec6c4059139b1a0 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n"
+        },
+        {
+          "path": "one.json",
+          "bytes": 167,
+          "sha256": "96cbbea705a09c579a6cb2420920a1c8c77207393770328325e64f5f92242970",
+          "content": "{\"figures\": [{\"id\": \"fig-8e8da03419294cb42ec6c4059139b1a0\", \"record\": \"rec-eb1ec6196d81b069\", \"recorded\": \"0\", \"derive\": \"grep absent big.txt | wc -l\", \"want\": \"0\"}]}\n"
+        },
+        {
+          "path": "root/big.txt",
+          "bytes": 4194306,
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8"
+        },
+        {
+          "path": "root/native.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "root/native.out",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "root/other.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "case": "c-e83f7546ace270b57ccbbb8c",
+      "files": [
+        {
+          "path": "gate.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "content": ""
+        },
+        {
+          "path": "gate.stdout",
+          "bytes": 155,
+          "sha256": "32281d5c8e605edc94413d5d7c6ecc04238335a8f01308c10fdd4d78da1861f4",
+          "content": "FIG fig-09bfc9abcc5dd53ca73d67c59162c833 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n"
+        },
+        {
+          "path": "one.json",
+          "bytes": 171,
+          "sha256": "ea50b54ad6eb956eb3588d82c2cda9d81b257512b12c5c326906295dbdc3eeb9",
+          "content": "{\"figures\": [{\"id\": \"fig-09bfc9abcc5dd53ca73d67c59162c833\", \"record\": \"rec-6a9f37071538b497\", \"recorded\": \"alpha\", \"derive\": \"cat big.txt | head -n 1\", \"want\": \"alpha\"}]}\n"
+        },
+        {
+          "path": "root/big.txt",
+          "bytes": 4194306,
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8"
+        },
+        {
+          "path": "root/native.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "root/native.out",
+          "bytes": 6,
+          "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+        },
+        {
+          "path": "root/other.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "case": "c-f6c6c9c0dce2780e053fc30f",
+      "files": [
+        {
+          "path": "gate.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "content": ""
+        },
+        {
+          "path": "gate.stdout",
+          "bytes": 151,
+          "sha256": "f2d4bf3cd2e21bce4a9918c1338a0c48b5f187828bec4c8c3ea78bd24ae9ec4c",
+          "content": "FIG fig-2ed7d848e371580ef2cd6813086da600 recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n"
+        },
+        {
+          "path": "one.json",
+          "bytes": 163,
+          "sha256": "c3a2d2b356fb0f2e5f08d10e32c4357c1e518c4a88837500e4065f831e78a287",
+          "content": "{\"figures\": [{\"id\": \"fig-2ed7d848e371580ef2cd6813086da600\", \"record\": \"rec-7dd71edbdd13cbb5\", \"recorded\": \"0\", \"derive\": \"cat missing.txt | wc -l\", \"want\": \"0\"}]}\n"
+        },
+        {
+          "path": "root/big.txt",
+          "bytes": 4194306,
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8"
+        },
+        {
+          "path": "root/native.err",
+          "bytes": 44,
+          "sha256": "d9c819357969b391253af64a3451321c3942d71fbaf55dbdeb1c9b784995d7db"
+        },
+        {
+          "path": "root/native.out",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "root/other.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  ]
+}

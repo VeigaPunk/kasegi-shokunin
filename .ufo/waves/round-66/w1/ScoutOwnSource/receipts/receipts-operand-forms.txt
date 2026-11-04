@@ -1,0 +1,12 @@
+CMD[form-cat-stdin-redirect] derive='cat < big.txt | head -n 1' rc=0
+FIG form-cat-stdin-redirect recorded=line000001 derived=line000001 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+---
+CMD[form-cat-flag-single] derive='cat -n big.txt | head -n 1' rc=1
+FIG form-cat-flag-single recorded=     1	line000001 derived=1	line000001 want=     1	line000001 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+---
+CMD[form-cat-flag-multi] derive='cat -n big.txt missing.txt | head -n 1' rc=1
+FIG form-cat-flag-multi recorded=     1	line000001 derived=1	line000001 want=     1	line000001 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+---

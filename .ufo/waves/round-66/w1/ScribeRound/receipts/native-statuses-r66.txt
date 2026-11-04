@@ -1,0 +1,13 @@
+# Receipt ScribeRound/native-statuses-r66.txt
+# independent native pipeline statuses for the r66 C1 cat-SIGPIPE predicate, 2026-11-04
+# scratch /fast/scratch/hyaku/kasegi-r66/ScribeRound ; work dir /fast/scratch/hyaku/kasegi-r66/ScribeRound/work
+# python Python 3.14.8
+
+NATIVE cat big.txt missing.txt | head -n 1    rcs=[-13, 0]     out=b'alpha\n' err=b''
+NATIVE cat big.txt other.txt   | head -n 1    rcs=[-13, 0]     out=b'alpha\n' err=b''
+NATIVE cat big.txt             | head -n 1    rcs=[-13, 0]     out=b'alpha\n' err=b''
+NATIVE cat < big.txt           | head -n 1    rcs=[0, 0]       out=b'' err=b''
+NATIVE cat missing.txt         | wc -l        rcs=[1, 0]       out=b'0\n' err=b''
+NATIVE cat big.txt missing.txt | wc -l        rcs=[1, 0]       out=b'41528\n' err=b''
+NATIVE cat small.txt missing.txt| head -n 1   rcs=[1, 0]       out=b'alpha\n' err=b''
+NATIVE cat small.txt           | head -n 1    rcs=[0, 0]       out=b'alpha\n' err=b''

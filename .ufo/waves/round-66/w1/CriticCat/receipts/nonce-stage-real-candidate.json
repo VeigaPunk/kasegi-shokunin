@@ -1,0 +1,67 @@
+{
+  "name": "real-candidate",
+  "base": "b6db9e818d322726e39cb441f2179d34d4170275",
+  "base_gate_sha256": "86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef",
+  "collector_sha256": "cfcd9da9c5cb36916534c9a3109f8cd5298e014ba4ca03f060215c70318d8ca3",
+  "instrument_sha256": "51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac",
+  "harness_sha256": "3f15091f2bcedc842d8d4deeee74da770db8aace6de75058e4b1da4c92d2a431",
+  "command": [
+    "python3",
+    "-B",
+    "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py",
+    "--instrument",
+    "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/candidate-nonce-stage.py",
+    "--work",
+    "/fast/scratch/hyaku/kasegi-r66/CriticCat/nonce-stage-real-candidate",
+    "--mode",
+    "candidate"
+  ],
+  "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat",
+  "extra_environment": {},
+  "TMPDIR": "/fast/scratch/hyaku/kasegi-r66/CriticCat/tmp",
+  "expected_rc": 0,
+  "rc": 1,
+  "stdout": "NONCE run=d01589209c3d969c base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac\nLEDGER P1-cat-two-operand-missing-sigpipe id=fig-81ffc9746647ca31048699c462dc2028 record=rec-e1fb03d721586c9c dir=c-cfcd6a56bacae153c78762ab\nNATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0\nPROBE P1-cat-two-operand-missing-sigpipe rc=1 expected=1 reason=derive-upstream-signal-13 pass=true\n",
+  "stderr": "Traceback (most recent call last):\n  File \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py\", line 540, in <module>\n    sys.exit(main(sys.argv[1:]))\n             ~~~~^^^^^^^^^^^^^^\n  File \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py\", line 535, in main\n    failures, code = battery(args.instrument, work, args.mode, quiet=False)\n                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py\", line 391, in battery\n    with open(os.path.join(work_root, \"cases\", pid, \"gate.stdout\"), \"w\", encoding=\"utf-8\") as f:\n         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/fast/scratch/hyaku/kasegi-r66/CriticCat/nonce-stage-real-candidate/cases/P1-cat-two-operand-missing-sigpipe/gate.stdout'\n",
+  "summary": [],
+  "finite_control_matches": false,
+  "cases": [
+    {
+      "case": "c-cfcd6a56bacae153c78762ab",
+      "files": [
+        {
+          "path": "gate.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "content": ""
+        },
+        {
+          "path": "one.json",
+          "bytes": 183,
+          "sha256": "13886308ebd3e5ed5e78812ffc37a171092635d13f9609fe3e9709a9d8a06f60",
+          "content": "{\"figures\": [{\"id\": \"fig-81ffc9746647ca31048699c462dc2028\", \"record\": \"rec-e1fb03d721586c9c\", \"recorded\": \"alpha\", \"derive\": \"cat big.txt missing.txt | head -n 1\", \"want\": \"alpha\"}]}\n"
+        },
+        {
+          "path": "root/big.txt",
+          "bytes": 4194306,
+          "sha256": "91aa435a134b9deeb71ba0a5e4889bb1dbf3074a55983ebaa6ea65c7898065e8"
+        },
+        {
+          "path": "root/native.err",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "root/native.out",
+          "bytes": 6,
+          "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+        },
+        {
+          "path": "root/other.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  ]
+}

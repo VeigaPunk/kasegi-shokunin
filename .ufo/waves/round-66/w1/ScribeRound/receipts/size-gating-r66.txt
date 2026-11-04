@@ -1,0 +1,210 @@
+# Receipt ScribeRound/size-gating-r66.txt
+# The base cat-SIGPIPE false green is SIZE-GATED on this host, 2026-11-04
+# host Linux 7.2.11-arch1-1 x86_64 ; python Python 3.14.8 ; work dir /fast/scratch/hyaku/kasegi-r66/ScribeRound/work
+# production gate under test: corpus/instruments/figure-audit.py at BASE b6db9e818d322726e39cb441f2179d34d4170275
+#   sha256 86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef
+# scratch clone: /fast/scratch/hyaku/kasegi-r66/ScribeRound/clone (clone of the lane, checked out at BASE)
+
+=== A. native returncode of 'cat <file> missing.txt | head -n 1' by first-operand size (30 reps each) ===
+size=262144    -> {1: 30}                false-green(-13)=0/30
+size=393216    -> {1: 30}                false-green(-13)=0/30
+size=524288    -> {1: 30}                false-green(-13)=0/30
+size=655360    -> {1: 30}                false-green(-13)=0/30
+size=786432    -> {1: 30}                false-green(-13)=0/30
+size=1048576   -> {1: 30}                false-green(-13)=0/30
+size=2097152   -> {1: 30}                false-green(-13)=0/30
+size=4194304   -> {1: 30}                false-green(-13)=0/30
+
+=== B. base public gate over the same size ladder ===
+FIG sz-0 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG sz-1000 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG sz-20000 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG sz-60000 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG sz-100000 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG sz-200000 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG sz-500000 recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG sz-1048576 recorded=alpha derived=alpha ok
+FIG sz-4194304 recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=9 ok=2 stale=7 exit=1
+[rc=1]
+
+=== C. the same ladder with a SMALL first operand (11 bytes) ===
+--- base: 'cat small.txt missing.txt | head -n 1' and 'cat small.txt | head -n 1' ---
+FIG s-two-missing-small recorded=alpha derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG s-one-small recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=2 ok=1 stale=1 exit=1
+[rc=1]
+
+=== D. stability of the false green at 4 MiB (200 reps, stderr categorised) ===
+  200  SIGPIPE(-13), no diagnostic (false green)
+
+=== E. independent bash pipeline at 1 MiB and 4 MiB (40 reps each, PIPESTATUS) ===
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h1048576.txt: No such file or directory
+cat: missing.txt: No such file or directory
+size=1048576  cat_rc141(SIGPIPE,false-green)=0  cat_rc1(stale)=40
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+cat: h4194304.txt: No such file or directory
+cat: missing.txt: No such file or directory
+size=4194304  cat_rc141(SIGPIPE,false-green)=0  cat_rc1(stale)=40
+
+=== F. mechanism: head reads only one 8192-byte chunk and exits; cat dies on its next write ===
+--- strace of the 4 MiB pipeline (read/write on the pipe fds) ---
+[rc=0]
+--- pipe capacity on this host ---
+F_GETPIPE_SZ = 65536 bytes
+pipe-max-size = 1048576

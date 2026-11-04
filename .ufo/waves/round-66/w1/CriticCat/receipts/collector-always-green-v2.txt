@@ -1,0 +1,37 @@
+$ python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-v2.py --instrument /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --work /fast/scratch/hyaku/kasegi-r66/CriticCat/collector-always-green-v2 --mode candidate
+BASE=b6db9e818d322726e39cb441f2179d34d4170275
+collector_sha256=1d28ca247ec3bfb3618c3610fe4da5eec34c0c9ad22716f729e0bdb44ade4ab9
+instrument_sha256=530febd338de15f7a6c2e0346237eb790ef4a91e26bf3106b4de896f4783abe2
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P1-cat-two-operand-missing-sigpipe field=rc want=1 got=0
+NOTE P1-cat-two-operand-missing-sigpipe field=verdict want=stale got=ok
+NOTE P1-cat-two-operand-missing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+NATIVE P2-cat-two-operand-existing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P2-cat-two-operand-existing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P2-cat-two-operand-existing-sigpipe field=rc want=1 got=0
+NOTE P2-cat-two-operand-existing-sigpipe field=verdict want=stale got=ok
+NOTE P2-cat-two-operand-existing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+NATIVE P3-cat-one-operand-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P3-cat-one-operand-sigpipe rc=0 expected=0 reason=- pass=true
+NATIVE P4-cat-stdin-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P4-cat-stdin-sigpipe rc=0 expected=0 reason=- pass=true
+NATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=44
+PROBE P5-cat-missing-exit1 rc=0 expected=1 reason=- pass=false
+NOTE P5-cat-missing-exit1 field=rc want=1 got=0
+NOTE P5-cat-missing-exit1 field=verdict want=stale got=ok
+NOTE P5-cat-missing-exit1 field=reason want=derive-upstream-exit-1 got=None
+NATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P6-grep-nomatch-green rc=0 expected=0 reason=- pass=true
+NATIVE P7-same-derive-small-twin stage0=0 stage1=0 out=alpha err_bytes=0
+PROBE P7-same-derive-small-twin rc=0 expected=0 reason=- pass=true
+NATIVE P8-cat-dashdash-separator-missing stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P8-cat-dashdash-separator-missing rc=0 expected=1 reason=- pass=false
+NOTE P8-cat-dashdash-separator-missing field=rc want=1 got=0
+NOTE P8-cat-dashdash-separator-missing field=verdict want=stale got=ok
+NOTE P8-cat-dashdash-separator-missing field=reason want=derive-upstream-signal-13 got=None
+PROBES probes=8 failures=4 mode=candidate instrument_sha256=530febd338de15f7a6c2e0346237eb790ef4a91e26bf3106b4de896f4783abe2
+
+stderr:
+
+rc=1

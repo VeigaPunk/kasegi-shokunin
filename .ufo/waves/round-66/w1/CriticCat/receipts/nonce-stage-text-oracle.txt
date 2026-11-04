@@ -1,0 +1,23 @@
+$ python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py --instrument /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/text-oracle.py --work /fast/scratch/hyaku/kasegi-r66/CriticCat/nonce-stage-text-oracle --mode candidate
+BASE=b6db9e818d322726e39cb441f2179d34d4170275
+collector_sha256=cfcd9da9c5cb36916534c9a3109f8cd5298e014ba4ca03f060215c70318d8ca3
+instrument_sha256=530febd338de15f7a6c2e0346237eb790ef4a91e26bf3106b4de896f4783abe2
+NONCE run=f97d6f502c4154aa base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=530febd338de15f7a6c2e0346237eb790ef4a91e26bf3106b4de896f4783abe2
+LEDGER P1-cat-two-operand-missing-sigpipe id=fig-75d4a4127589f0948a2185bb29db1e7b record=rec-cad7e1b3d0b4ab69 dir=c-b898f867d27aeb58a44b601a
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+
+stderr:
+Traceback (most recent call last):
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py", line 540, in <module>
+    sys.exit(main(sys.argv[1:]))
+             ~~~~^^^^^^^^^^^^^^
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py", line 535, in main
+    failures, code = battery(args.instrument, work, args.mode, quiet=False)
+                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/collector-nonce-stage.py", line 391, in battery
+    with open(os.path.join(work_root, "cases", pid, "gate.stdout"), "w", encoding="utf-8") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/fast/scratch/hyaku/kasegi-r66/CriticCat/nonce-stage-text-oracle/cases/P1-cat-two-operand-missing-sigpipe/gate.stdout'
+
+rc=1

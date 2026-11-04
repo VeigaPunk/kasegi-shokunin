@@ -1,0 +1,573 @@
+{
+  "base": "b6db9e818d322726e39cb441f2179d34d4170275",
+  "instrument": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/base-gate.py",
+  "instrument_sha256": "86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef",
+  "harness_sha256": "57a3d36f84e5de100b60a11501c2352ebbff8e420cb046857493cad336cc2ba6",
+  "fixture_manifest": [
+    {
+      "path": "--",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "-dash.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "alternate.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "big.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "corpus/instruments/final7.py",
+      "bytes": 35,
+      "sha256": "01b8387a6f0dcc4dfca9c4967b17d1cbfda5d90a769031a22804f11e8d44b642"
+    },
+    {
+      "path": "corpus/instruments/pipe.py",
+      "bytes": 141,
+      "sha256": "4108c8151279b639268085b4a0d4186a693216e3719861c1d42a333b97f07fb5"
+    },
+    {
+      "path": "corpus/instruments/wrapper.py",
+      "bytes": 124,
+      "sha256": "d248a46192cb2e299e0f509f1847ee5a1ecc35864990420f9ff1f8bea2aafd0e"
+    },
+    {
+      "path": "g.txt",
+      "bytes": 3,
+      "sha256": "90d7ec0f0acef104d8b6252794295f661a0149634868d02a1ae0c358099638f5"
+    },
+    {
+      "path": "one two.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "other.txt",
+      "bytes": 6,
+      "sha256": "3eeb0cea8bf176427633a47a62ee8c813844d574d48554a0d715e12dcbbaeda6"
+    },
+    {
+      "path": "pipe|and&&.txt",
+      "bytes": 8388614,
+      "sha256": "cec0e9be34113a8066d03addffcb168ceb987cddb054a0c37a052552170c8e1d"
+    },
+    {
+      "path": "small.txt",
+      "bytes": 6,
+      "sha256": "b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060"
+    }
+  ],
+  "runs": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/base-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG and-first-multi recorded=alpha\n35 derived=alpha\n35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "and-first-multi",
+        "derive": "cat big.txt missing.txt|head -n 1&&cat g.txt",
+        "want": "alpha\n35",
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "stages": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "native_scope": "first pipeline only; independent group statuses additionally below"
+      },
+      "ledger_sha256": "22f56dc468c4ec06f4df6042aa3de404bf7b03f49c883fdeb14b55a1ae3d4aeb",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": false,
+      "native_groups": [
+        {
+          "argv": [
+            [
+              "cat",
+              "big.txt",
+              "missing.txt"
+            ],
+            [
+              "head",
+              "-n",
+              "1"
+            ]
+          ],
+          "input": null,
+          "stage_rc": [
+            -13,
+            0
+          ],
+          "stdout": "alpha\n",
+          "stderr": [
+            "",
+            ""
+          ]
+        },
+        {
+          "argv": [
+            [
+              "cat",
+              "g.txt"
+            ]
+          ],
+          "input": null,
+          "stage_rc": [
+            0
+          ],
+          "stdout": "35\n",
+          "stderr": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/base-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG and-second-multi recorded=35\nalpha derived=35\nalpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "and-second-multi",
+        "derive": "cat g.txt&&cat big.txt missing.txt|head -n 1",
+        "want": "35\nalpha",
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "stages": [
+          [
+            "cat",
+            "g.txt"
+          ]
+        ],
+        "input": null,
+        "native_scope": "first pipeline only; independent group statuses additionally below"
+      },
+      "ledger_sha256": "a41a0aab150480a60a42058a0779476caaf22c4eafeb5a759e708c0ae39adcea",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "g.txt"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          0
+        ],
+        "stdout": "35\n",
+        "stderr": [
+          ""
+        ]
+      },
+      "matches_candidate_predicate": false,
+      "native_groups": [
+        {
+          "argv": [
+            [
+              "cat",
+              "g.txt"
+            ]
+          ],
+          "input": null,
+          "stage_rc": [
+            0
+          ],
+          "stdout": "35\n",
+          "stderr": [
+            ""
+          ]
+        },
+        {
+          "argv": [
+            [
+              "cat",
+              "big.txt",
+              "missing.txt"
+            ],
+            [
+              "head",
+              "-n",
+              "1"
+            ]
+          ],
+          "input": null,
+          "stage_rc": [
+            -13,
+            0
+          ],
+          "stdout": "alpha\n",
+          "stderr": [
+            "",
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/base-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG and-single-positive recorded=alpha\n35 derived=alpha\n35 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "and-single-positive",
+        "derive": "cat big.txt|head -n 1&&cat g.txt",
+        "want": "alpha\n35",
+        "expected_rc": 0,
+        "reason": null,
+        "stages": [
+          [
+            "cat",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "native_scope": "first pipeline only; independent group statuses additionally below"
+      },
+      "ledger_sha256": "d26143e6f2e148d5aa2744c53b56a12b057742ddf9925048f06fe8d95ae9c511",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true,
+      "native_groups": [
+        {
+          "argv": [
+            [
+              "cat",
+              "big.txt"
+            ],
+            [
+              "head",
+              "-n",
+              "1"
+            ]
+          ],
+          "input": null,
+          "stage_rc": [
+            -13,
+            0
+          ],
+          "stdout": "alpha\n",
+          "stderr": [
+            "",
+            ""
+          ]
+        },
+        {
+          "argv": [
+            [
+              "cat",
+              "g.txt"
+            ]
+          ],
+          "input": null,
+          "stage_rc": [
+            0
+          ],
+          "stdout": "35\n",
+          "stderr": [
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/base-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG middle-multi recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "middle-multi",
+        "derive": "head -n 1 small.txt|cat big.txt missing.txt|head -n 1",
+        "want": "alpha",
+        "expected_rc": 1,
+        "reason": "derive-upstream-signal-13",
+        "stages": [
+          [
+            "head",
+            "-n",
+            "1",
+            "small.txt"
+          ],
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "native_scope": "first pipeline only; independent group statuses additionally below"
+      },
+      "ledger_sha256": "09c909fb85d6efad5956526224cd3eca9e8d2dd6b0db317f6d08ee52ce58e9fe",
+      "native": {
+        "argv": [
+          [
+            "head",
+            "-n",
+            "1",
+            "small.txt"
+          ],
+          [
+            "cat",
+            "big.txt",
+            "missing.txt"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          0,
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": false,
+      "native_groups": [
+        {
+          "argv": [
+            [
+              "head",
+              "-n",
+              "1",
+              "small.txt"
+            ],
+            [
+              "cat",
+              "big.txt",
+              "missing.txt"
+            ],
+            [
+              "head",
+              "-n",
+              "1"
+            ]
+          ],
+          "input": null,
+          "stage_rc": [
+            0,
+            -13,
+            0
+          ],
+          "stdout": "alpha\n",
+          "stderr": [
+            "",
+            "",
+            ""
+          ]
+        }
+      ]
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat/base-gate.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root/ledger.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r66/CriticCat/root"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r66/CriticCat/root",
+      "rc": 0,
+      "stdout": "FIG middle-stdin-positive recorded=alpha derived=alpha ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+      "stderr": "",
+      "case": {
+        "name": "middle-stdin-positive",
+        "derive": "cat big.txt|cat|head -n 1",
+        "want": "alpha",
+        "expected_rc": 0,
+        "reason": null,
+        "stages": [
+          [
+            "cat",
+            "big.txt"
+          ],
+          [
+            "cat"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "native_scope": "first pipeline only; independent group statuses additionally below"
+      },
+      "ledger_sha256": "5f2760de6932085c86eef185e4b776f60bcd4e3906675991cb408397a57aa0c3",
+      "native": {
+        "argv": [
+          [
+            "cat",
+            "big.txt"
+          ],
+          [
+            "cat"
+          ],
+          [
+            "head",
+            "-n",
+            "1"
+          ]
+        ],
+        "input": null,
+        "stage_rc": [
+          -13,
+          -13,
+          0
+        ],
+        "stdout": "alpha\n",
+        "stderr": [
+          "",
+          "",
+          ""
+        ]
+      },
+      "matches_candidate_predicate": true,
+      "native_groups": [
+        {
+          "argv": [
+            [
+              "cat",
+              "big.txt"
+            ],
+            [
+              "cat"
+            ],
+            [
+              "head",
+              "-n",
+              "1"
+            ]
+          ],
+          "input": null,
+          "stage_rc": [
+            -13,
+            -13,
+            0
+          ],
+          "stdout": "alpha\n",
+          "stderr": [
+            "",
+            "",
+            ""
+          ]
+        }
+      ]
+    }
+  ]
+}

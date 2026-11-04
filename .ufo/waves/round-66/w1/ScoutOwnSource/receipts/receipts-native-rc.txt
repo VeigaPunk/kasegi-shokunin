@@ -1,0 +1,5 @@
+NATIVE cmd='cat big.txt missing.txt | head -n 1' rc=0 stderr_bytes=0 stderr='' stdout_head='line000001\n'
+NATIVE cmd='cat big.txt | head -n 1' rc=0 stderr_bytes=0 stderr='' stdout_head='line000001\n'
+NATIVE cmd='cat missing.txt | wc -l' rc=0 stderr_bytes=44 stderr='cat: missing.txt: No such file or directory\n' stdout_head='0\n'
+NATIVE cmd='sort big.txt | head -n 1' rc=0 stderr_bytes=0 stderr='' stdout_head='line000001\n'
+NATIVE cmd='cat big.txt missing.txt' rc=1 stderr_bytes=44 stderr='cat: missing.txt: No such file or directory\n' stdout_head='line000001\nline000002\nline000003\nline000'
