@@ -2684,3 +2684,32 @@ Counting command: `python3 -B .ufo/waves/round-67/w1/ExecMultiHeadDriver/verify.
 
 1. **depth:verifiability (4, lowest):** the next gate claim must pick a distinct observed residual with a failing no-work control — candidates named this round: `git`/`python` head SIGPIPE masking, exit-0 partial-output producers (`grep -q`), and wrapper/descendant stages. Do not re-claim the five repaired shapes.
 2. **coverage (8):** the F45 figures (three PNGs) are unanchorable in text; a future round may capture them as their own artifact with an image-quote model. FIRST's PSIRT Maturity document is otherwise closed; the OpenSSF aggregate-score/API and Fuzzilli primary docs remain unopened leads.
+
+## Round 68 — program-execution flags refused (C1, depth:verifiability, nominal 4 held) and F46, the OpenSSF Scorecard API contract (C2, coverage, 8 held)
+
+Frozen claims: `.ufo/waves/round-68/claims.json` (freeze `7c4f9f7ec096298b1edd1912249e5864ee73d985`, base `d0f48405e7fe44a53a28305785dc4d881a414194`, pre-freeze controls `3dfe6f162c9cec8fdbb629738b36fc53a7ce6128`); measured implementation **`82b3b7d4704e914eb224e7bb24e57aa9cbd8603f`**, gate sha256 `10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8`.
+
+| Axis | Before | After | Score delta, command and evidence |
+|---|---:|---:|---|
+| depth:verifiability (lowest) | `VERIFY measurements=8 failures=4` exit 1 at the base gate: both program-execution flags admitted and executed (compressor 18288 runs, textconv driver 1 run), selftest 73 cases, write-side-effect FAIL | `VERIFY measurements=8 failures=0` exit 0 at `82b3b7d4`: both probes `rc=2 reason=derive-not-read-only marker_runs=0`, five read-only controls exact, selftest 77/0, mutbat 5/5, ledger 35/35, red fixture stale, no write side effect | **4 → 4, delta 0, nominal per R58** (the axis's citation-resolution metric is not read by this gate). `python3 -B .ufo/waves/round-68/controls/c1-probe-run-r68.py --gate corpus/instruments/figure-audit.py --work /fast/scratch/hyaku/kasegi-r68/L1/FINAL --mode candidate`; before `controls/c1-base-donothing-r68.txt`, after `controls/final-verification-r68.txt`. |
+| coverage | `FRONTIER-CENSUS rows=45 admitted=45 closed=45 problem-rows=0 registry=101`; `entries=48 pass=48`; capture `records=81 bound=81`; knowledge 85 lines / 83 entries; F46 absent | `rows=46 admitted=46 closed=46 problem-rows=0 registry=102`; `FRONTIER-PASS F46 ids=S102`; `entries=49 pass=49`; capture `records=82 bound=82 unbound=0`; expected list 86 lines / 84 entries `sort -c` clean; census exit 0 | **8 → 8, delta 0** (the coverage denominator is operator-owned). `python3 corpus/instruments/frontier-recheck-count.py`; `python3 corpus/instruments/capture-binding-check.py`; `wc -l` + `grep -vc '^#' corpus/instruments/knowledge-expected.txt`; `sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`; before `controls/c2-base-counters-r68.txt`, after `controls/c2-after-counters-r68.txt`. |
+| depth:density | 9 | 9 held | Not targeted or re-measured. `SKILL.md` gains one registry fact (selftest 73 → 77) and one current-execution amendment; no density credit asserted. |
+
+**C1 scope, stated exactly.** The claim's declared spelling set is refused at parse time: `--compress-program` written with `=`, as a separate token, quoted, or after another option; and the exact token `--textconv`. Neither named program runs. The wave's attack seats then defeated the repair **as a class**: unique long-option prefixes of `--compress-program` (`--compress-prog=`, `--compress=`, `--co=`) are admitted by this host's uutils sort and run the compressor (18288 runs each per CriticC1, 9144 per SentinelGate), `git show <commit>` runs a config-declared textconv driver through `.gitattributes` with no flag at all, and `git cat-file --textconv/--filters` still execute. Those classes are named open with receipts under `.ufo/waves/round-68/w1/` and are round 69's candidate ground; they are not claimed here and do not narrow the measured predicate.
+
+**Capabilities:** no new repertoire row. The existing `derive-gate-chain-refusal` row is extended in place — the gate now also refuses the two measured program-execution flags at parse time while keeping every admitted read-only derive byte-identical; demonstration `controls/final-verification-r68.txt` → 8/0.
+
+**Saturation:** line 9/10 per owned axis; lowest non-retired axis remains depth:verifiability 4, worked nominally this round. No retirement, split or nudge waiver.
+
+### Round-68 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 68 | depth:verifiability | two program-execution flags admitted and executed at the base gate; selftest 73 | both refused at parse time with the programs unexecuted; selftest 77; class-level residuals named open | `.ufo/waves/round-68/controls/{c1-base-donothing-r68.txt,final-verification-r68.txt}`; `w1/{CriticC1,SentinelGate,RevengerC1}.md` |
+| 68 | coverage | rows=45 registry=101 entries=48 capture=81 knowledge=83 | rows=46 registry=102 entries=49 capture=82 knowledge=84 | `.ufo/waves/round-68/controls/{c2-base-counters-r68.txt,c2-after-counters-r68.txt}`; `corpus/knowledge/openssf-scorecard-api-contract.md`; `corpus/source-snapshots/round-68/` |
+| 68 | calibration | round-67 routed defects V67-1..V67-6 open; `citation-ground-check.py` findings 10 | V67-1/V67-3/V67-4 fixed as appended corrections; V67-2 reduced to findings 6 (`class-lane-bare` 1); V67-5/6 recorded | `corpus/knowledge/first-psirt-maturity-document.md` § Corrections; `.ufo/waves/round-67/controls/driver-pins.json`; lesson § Round-67 disposition |
+
+### Planned after round 68 (not frozen)
+
+1. **depth:verifiability (4, lowest):** close the class the wave opened — prefix-abbreviation denial for the counted/denied heads, the default-textconv path (`git show <commit>` through `.gitattributes`), and `git cat-file --textconv/--filters` — each with a failing no-work control, a mutation limb and a paired base run before the freeze (RevengerC1's ranked table is the candidate list).
+2. **coverage (8):** the Fuzzilli primary documentation remains the only unopened lead; the served-instance question (whether `api.scorecard.dev` and `api.securityscorecards.dev` serve the same data) is recorded as unknown, not a lead.

@@ -910,7 +910,7 @@ frontier count stays outside it.
 ## Round-57 admission — coverage map row and Frontier F38 (appended 2026-11-03)
 
 The coverage map above is not edited in place (R6): the round-57 entry
-`knowledge/iso-29147-30111-standard-records.md` (Frontier F38; sources S089 + S090;
+`corpus/knowledge/iso-29147-30111-standard-records.md` (Frontier F38; sources S089 + S090;
 source basis: ISO's own catalog records for the two standards at
 https://www.iso.org/standard/72311.html and https://www.iso.org/standard/69725.html — captured
 2026-11-03, HTTP 200, under `corpus/source-snapshots/round-57/` with a shared manifest; the
@@ -931,11 +931,11 @@ iso.org catalog pages.
 
 | Area | Entry | Source basis |
 |---|---|---|
-| ISO/IEC 29147/30111 standard records (round 57) | `knowledge/iso-29147-30111-standard-records.md` | S089, S090 — first-party standards-body publisher records (iso.org catalog), opened 2026-11-03 |
+| ISO/IEC 29147/30111 standard records (round 57) | `corpus/knowledge/iso-29147-30111-standard-records.md` | S089, S090 — first-party standards-body publisher records (iso.org catalog), opened 2026-11-03 |
 
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
-| F38 | ISO/IEC 29147/30111 standard records — the standards-body publisher record of the coordinated-vulnerability-disclosure process standards (identity/editions 29147:2018 ed.2 and 30111:2019 ed.2, publisher status and the to-be-revised stage with successor work named, the currency statements, the abstract's own division-of-labour sentence, vendor-side applicability) | admitted | knowledge/iso-29147-30111-standard-records.md | S089, S090 | Read the two records as ISO's own statement of what each standard is and where it stands: 29147 is "requirements and recommendations to vendors on the disclosure of vulnerabilities" (`S089.txt:84`, Q2) while 30111 is "requirements and recommendations for how to process and remediate reported potential vulnerabilities" (`S090.txt:84`, Q2), and the publisher itself states the split — "Other related activities that take place between receiving and disclosing vulnerability reports are described in ISO/IEC 30111." (`S089.txt:91`, Q3). Both editions stand Published and confirmed current (2024/2025 review statements, `S089.txt:64`/`S090.txt:64`) while BOTH carry stage "International Standard to be revised [90.92]" (`S089.txt:99`, `S090.txt:92`) with successor work named (AWI 29147 at `S089.txt:204`, WD 30111.2 at `S090.txt:197`) — cite the editions as current AND under revision, never either alone. Applicability is vendor-side ("vendors who choose to practice vulnerability disclosure" `S089.txt:92`; "vendors involved in handling vulnerabilities" `S090.txt:85`): the records bind vendors, not finders. Kept distinct from F11 (the JPCERT/CC guideline reading, S041) and F10 (vendor policies citing the standards, S040); the normative text stays unasserted (paywalled), and the 90d recheck re-fetches a live catalog page. |
+| F38 | ISO/IEC 29147/30111 standard records — the standards-body publisher record of the coordinated-vulnerability-disclosure process standards (identity/editions 29147:2018 ed.2 and 30111:2019 ed.2, publisher status and the to-be-revised stage with successor work named, the currency statements, the abstract's own division-of-labour sentence, vendor-side applicability) | admitted | corpus/knowledge/iso-29147-30111-standard-records.md | S089, S090 | Read the two records as ISO's own statement of what each standard is and where it stands: 29147 is "requirements and recommendations to vendors on the disclosure of vulnerabilities" (`S089.txt:84`, Q2) while 30111 is "requirements and recommendations for how to process and remediate reported potential vulnerabilities" (`S090.txt:84`, Q2), and the publisher itself states the split — "Other related activities that take place between receiving and disclosing vulnerability reports are described in ISO/IEC 30111." (`S089.txt:91`, Q3). Both editions stand Published and confirmed current (2024/2025 review statements, `S089.txt:64`/`S090.txt:64`) while BOTH carry stage "International Standard to be revised [90.92]" (`S089.txt:99`, `S090.txt:92`) with successor work named (AWI 29147 at `S089.txt:204`, WD 30111.2 at `S090.txt:197`) — cite the editions as current AND under revision, never either alone. Applicability is vendor-side ("vendors who choose to practice vulnerability disclosure" `S089.txt:92`; "vendors involved in handling vulnerabilities" `S090.txt:85`): the records bind vendors, not finders. Kept distinct from F11 (the JPCERT/CC guideline reading, S041) and F10 (vendor policies citing the standards, S040); the normative text stays unasserted (paywalled), and the 90d recheck re-fetches a live catalog page. |
 
 [r57 amendment, appended 2026-11-03] The frontier as of round 57 is F01-F38 admitted: F01-F08 at
 round 23, F09 at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14
@@ -950,18 +950,18 @@ and the frontier count stays outside it.
 ## Round-58 admission — coverage map row and Frontier F39 (appended 2026-11-03)
 
 The coverage map above is not edited in place (R6): the round-58 entry
-`knowledge/aisi-autonomous-cyber-capability-progress-rate.md` (Frontier F39, source S091) is recorded here as an
+`corpus/knowledge/aisi-autonomous-cyber-capability-progress-rate.md` (Frontier F39, source S091) is recorded here as an
 appended amendment so every existing line keeps its number. Source basis: the UK AI Security Institute's own
 blog report at https://www.aisi.gov.uk/blog/how-fast-is-autonomous-ai-cyber-capability-advancing, opened
 2026-11-03, capture `corpus/source-snapshots/round-58/S091.txt`, manifest `corpus/source-snapshots/round-58/manifest.json`.
 
 | Area | Entry | Source basis |
 |---|---|---|
-| Autonomous AI cyber-capability progress rate (round 58) | knowledge/aisi-autonomous-cyber-capability-progress-rate.md | S091 — the institute's own dated measurement statements, opened 2026-11-03 |
+| Autonomous AI cyber-capability progress rate (round 58) | corpus/knowledge/aisi-autonomous-cyber-capability-progress-rate.md | S091 — the institute's own dated measurement statements, opened 2026-11-03 |
 
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
-| F39 | UK AI Security Institute autonomous cyber-capability progress rate — the institute's own dated, suite-bound measurement statements: the 80%-reliability cyber time-horizon doubling estimate and its acceleration, the bounded method and its stated uncertainty, and the cyber-range results | admitted | knowledge/aisi-autonomous-cyber-capability-progress-rate.md | S091 | Read the doubling figure as AISI's own estimate under its own suite, token cap and curve fit: "an imperfect model, and is not a future prediction, nor a fixed law" (`S091.txt:23`, Q4), with the single-omission band "4.1 months, and a maximum of 5.0 months" (`S091.txt:30`, Q6); keep the cyber-range attempt counts (6 of 10, 3 of 10) attributed to one newer checkpoint (`S091.txt:34-35`). |
+| F39 | UK AI Security Institute autonomous cyber-capability progress rate — the institute's own dated, suite-bound measurement statements: the 80%-reliability cyber time-horizon doubling estimate and its acceleration, the bounded method and its stated uncertainty, and the cyber-range results | admitted | corpus/knowledge/aisi-autonomous-cyber-capability-progress-rate.md | S091 | Read the doubling figure as AISI's own estimate under its own suite, token cap and curve fit: "an imperfect model, and is not a future prediction, nor a fixed law" (`S091.txt:23`, Q4), with the single-omission band "4.1 months, and a maximum of 5.0 months" (`S091.txt:30`, Q6); keep the cyber-range attempt counts (6 of 10, 3 of 10) attributed to one newer checkpoint (`S091.txt:34-35`). |
 
 [r58 amendment, appended 2026-11-03] The frontier as of round 58 is F01-F39 admitted: F38 at round 57 and F39 at
 round 58. The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
@@ -970,18 +970,18 @@ frontier count stays outside it.
 ## Round-59 admission — coverage map row and Frontier F40 (appended 2026-11-03)
 
 The coverage map above is not edited in place (R6): the round-59 entry
-`knowledge/google-big-sleep-findings-tracker.md` (Frontier F40, source S092) is recorded here as an appended amendment
+`corpus/knowledge/google-big-sleep-findings-tracker.md` (Frontier F40, source S092) is recorded here as an appended amendment
 so every existing line keeps its number. Source basis: the Google Issue Tracker's own README for the Big Sleep findings
 tracker at https://issuetracker.google.com/issues/430375499, opened 2026-11-03, capture `corpus/source-snapshots/round-59/S092.txt`,
 manifest `corpus/source-snapshots/round-59/manifest.json`.
 
 | Area | Entry | Source basis |
 |---|---|---|
-| Big Sleep public findings tracker (round 59) | knowledge/google-big-sleep-findings-tracker.md | S092 — the tracker's own README and finding-record fields, opened 2026-11-03 |
+| Big Sleep public findings tracker (round 59) | corpus/knowledge/google-big-sleep-findings-tracker.md | S092 — the tracker's own README and finding-record fields, opened 2026-11-03 |
 
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
-| F40 | Google Big Sleep public findings tracker — the Google Issue Tracker's own README for the tracker where Big Sleep's disclosed findings are collected: the disclosure policies they follow and the finding-record fields the tracker serves | admitted | knowledge/google-big-sleep-findings-tracker.md | S092 | Read the tracker as the place Big Sleep's own disclosed findings are collected, bound to Google's industry disclosure policy and Project Zero's 2025 trial (`S092.txt:2`, Q2, Q3); the README's own text grants no researcher intake, so it is not a reporting channel for third-party findings. |
+| F40 | Google Big Sleep public findings tracker — the Google Issue Tracker's own README for the tracker where Big Sleep's disclosed findings are collected: the disclosure policies they follow and the finding-record fields the tracker serves | admitted | corpus/knowledge/google-big-sleep-findings-tracker.md | S092 | Read the tracker as the place Big Sleep's own disclosed findings are collected, bound to Google's industry disclosure policy and Project Zero's 2025 trial (`S092.txt:2`, Q2, Q3); the README's own text grants no researcher intake, so it is not a reporting channel for third-party findings. |
 
 [r59 amendment, appended 2026-11-03] The frontier as of round 59 is F01-F40 admitted: F39 at round 58 and F40 at round 59.
 The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
@@ -990,7 +990,7 @@ outside it.
 ## Round-60 admission — coverage map row and Frontier F41 (appended 2026-11-04)
 
 The coverage map above is not edited in place (R6): the round-60 entry
-`knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md` (Frontier F41, source S093) is recorded here as an appended
+`corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md` (Frontier F41, source S093) is recorded here as an appended
 amendment so every existing line keeps its number. Source basis: Project Zero's own dated comparison of two production
 automated vulnerability-discovery pipelines on V8 — Fuzzilli, a generative JavaScript-engine fuzzer, and BigSleep, an
 LLM-based bug finding system — at https://projectzero.google/2026/10/fuzzing-v-AI.html, opened 2026-11-04, capture
@@ -998,11 +998,11 @@ LLM-based bug finding system — at https://projectzero.google/2026/10/fuzzing-v
 
 | Area | Entry | Source basis |
 |---|---|---|
-| Agent-versus-fuzzer production comparison (round 60) | knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md | S093 — Project Zero's own production and re-discovery comparison, opened 2026-11-04 |
+| Agent-versus-fuzzer production comparison (round 60) | corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md | S093 — Project Zero's own production and re-discovery comparison, opened 2026-11-04 |
 
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
-| F41 | Project Zero Fuzzilli-vs-BigSleep comparison — the publisher's own dated comparison of an LLM bug-finding agent against a coverage-guided JavaScript-engine fuzzer on V8: the six-month production window's actionable Type-Vuln counts and ~25% overlap, the 112-bug re-discovery experiment at 25 attempts per commit, and the post's "run both" recommendation to vendors | admitted | knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md | S093 | Read the 45-vs-37 pair as actionable Type-Vuln reports, not raw reports (the post's own 316/441 counts narrow to 178/95 then 45/37) and as a tie rather than agent superiority; read the ~62%/~70% figures as a re-discovery rate over a filtered historic Fuzzilli sample, with the reverse direction explicitly not run; the recommendation is "both", and the post excludes a cost-per-bug comparison. |
+| F41 | Project Zero Fuzzilli-vs-BigSleep comparison — the publisher's own dated comparison of an LLM bug-finding agent against a coverage-guided JavaScript-engine fuzzer on V8: the six-month production window's actionable Type-Vuln counts and ~25% overlap, the 112-bug re-discovery experiment at 25 attempts per commit, and the post's "run both" recommendation to vendors | admitted | corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md | S093 | Read the 45-vs-37 pair as actionable Type-Vuln reports, not raw reports (the post's own 316/441 counts narrow to 178/95 then 45/37) and as a tie rather than agent superiority; read the ~62%/~70% figures as a re-discovery rate over a filtered historic Fuzzilli sample, with the reverse direction explicitly not run; the recommendation is "both", and the post excludes a cost-per-bug comparison. |
 
 [r60 amendment, appended 2026-11-04] The frontier as of round 60 is F01-F41 admitted: F40 at round 59 and F41 at round 60.
 The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
@@ -1065,3 +1065,13 @@ captures `corpus/source-snapshots/round-67/S100.txt` and `S101.txt`, manifest `c
 F45 adds the receiving team's *growth ladder* that F44/S098 (service catalogue and qualification gate), F43 (CERT/CC phase-to-role matrix), F06/S018 (multi-party coordination) and F11 (ISO/IEC 29147 and 30111 division of labour) do not hold: S098 carries zero occurrences of "Maturity Level" and its only maturity statement is a glossary definition, while the maturity document defers its own glossary and catalogue to the framework (S100.txt:356) and points at the v1.0-era framework PDF. The lost-domain 0/18 denominator is unchanged.
 
 [r67 amendment, appended 2026-11-04] The frontier as of round 67 is F01-F45 admitted: F44 at round 65 and F45 at round 67 (round 66 admitted no frontier row). The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+## Round-68 admission — Frontier F46 (2026-11-04)
+
+Appended amendment (R6): the round-68 entry `corpus/knowledge/openssf-scorecard-api-contract.md` (Frontier F46, source
+S102) rests on the OpenSSF Scorecard API's own swagger 2.0 contract, captured `corpus/source-snapshots/round-68/S102.txt`,
+manifest `corpus/source-snapshots/round-68/manifest.json`.
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F46 | OpenSSF Scorecard API swagger 2.0 contract (info.version 1.1.0, host api.scorecard.dev) — the machine interface to published scorecard results: the `/projects/{platform}/{org}/{repo}` GET with its 40-hex `commit` pin, the OIDC-verified `publish` POST, the `/version` route, and the ScorecardResult / ScorecardCheck / Repo / Error definitions with the aggregate `score` field | admitted | knowledge/openssf-scorecard-api-contract.md | S102 | Read a result's keys and commit pin from the contract (S102.txt:19-37, :336-370), never a served instance's values; score range, weighting and check meaning are not in the contract and stay with F35/S086. |
