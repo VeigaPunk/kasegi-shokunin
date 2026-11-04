@@ -1,0 +1,60 @@
+{
+  "schema": "kasegi-round-claims-v1",
+  "lane": "kasegi",
+  "round": 61,
+  "base": "c33d24ddd11abf1ebdea0dccf7327e9069dd9104",
+  "frozen_at": "2026-11-04T14:20:19.989640+00:00",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "score_before": 4,
+      "kind": "nominal instrument repair per QUALITY R58; score held 4",
+      "frozen_sentence": "On this Linux host, the figure-audit gate refuses P1-traversal-2up, P2-traversal-3up and P3-symlink-out in the committed round-61 probe runner with exit=2 markers=0 reason=derive-not-read-only; P4-absolute-out stays refused, P5-inside-ok and P6-inside-normalized stay admitted with derived=35, and the two regression controls stay admitted with derived=35 and derived=1.",
+      "before": "controls/c1-probes-base-r61.txt: P1/P2/P3 exit=1 markers=1; P4 exit=2 markers=0; four admitted controls pass. Base selftest cases=20, mutbat=2/2.",
+      "after": "controls/c1-probes-standin-r61.txt and controls/c1-standin-r61.txt: P1/P2/P3 refused; selftest cases=24 failures=0; mutbat killed=3/3 survivors=0 controls=pass; ledger figures=35 ok=35 stale=0 exit=0; red fixture stale exit=1.",
+      "kill_rule": "FAIL if any named probe/control differs, selftest is not 24/0 exit 0, mutbat is not 3/3 with passing controls exit 0, ledger is not 35/35 exit 0, or red fixture is not stale exit 1. This is exactly the named probe-set predicate, not a sandbox or universal shell-path claim.",
+      "counting_commands": [
+        "bash .ufo/waves/round-61/controls/c1-probe-run-r61.sh corpus/instruments/figure-audit.py /fast/scratch/hyaku/kasegi-r61/verify/probes",
+        "python3 corpus/instruments/figure-audit.py --selftest",
+        "python3 corpus/instruments/figure-audit-mutbat.py",
+        "python3 corpus/instruments/figure-audit.py",
+        "python3 corpus/instruments/figure-audit.py --ledger .ufo/waves/round-54/controls/red-d53-ledger.json"
+      ],
+      "digests": {
+        "corpus/instruments/figure-audit.py": "051083a2dd3b76f96568dd2a18866975b71dd1578992546c671faf21e99418a9",
+        "corpus/instruments/figure-audit-mutbat.py": "f94393d981eeb93a05f6c57782b787faabfc56bfa5b4775f1c319f405fdd353c"
+      },
+      "residuals": [
+        "shell expansion and quoting semantics are not confined by realpath on undecoded source text",
+        "other allowed heads retain round-60 write/execute bypass classes",
+        "an allowed counter can itself write; the gate is NOT a sandbox",
+        "selftest still requires the host python command; host-conditional tally"
+      ]
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "score_before": 8,
+      "kind": "frontier admission",
+      "frozen_sentence": "Admit F42 on S094, Project Zero Big Sleep team’s dated SQLite variant-analysis finding account: pre-release exposure qualification, seeded setup, harness-bound negative AFL result and experimental caveat, distinct from F04 principles, F40 tracker and F41 V8 comparison.",
+      "before": "controls/do-nothing-c2-r61.txt: rows=41 admitted=41 closed=41 problem-rows=0 registry=93; entries=44 pass=44; capture records=76 bound=76.",
+      "after": "controls/c2-standin-r61.txt: rows=42 admitted=42 closed=42 problem-rows=0 registry=94; FRONTIER-PASS F42 ids=S094; entries=45 pass=45; capture records=77 bound=77 unbound=0; seven quotes pass; expected list sorted; census exit 0.",
+      "kill_rule": "FAIL if any after value differs, any of seven S094 quotes fails, the new entry lacks substantive grounded claims or repeats held ground, or an old SOURCES registry row id/URL changes. Score stays 8, delta 0.",
+      "counting_commands": [
+        "python3 corpus/instruments/frontier-recheck-count.py",
+        "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-61/manifest.json --source S094",
+        "python3 corpus/instruments/capture-binding-check.py",
+        "LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt",
+        "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --file corpus/SOURCES.md"
+      ],
+      "source_digest": "663ac16df13b7c93c2d9848265854625c46e8f59d0c39a5bbb4d68bf6573e804",
+      "entry": "corpus/knowledge/project-zero-big-sleep-sqlite-variant-analysis.md",
+      "sourced_rows": [
+        "S094"
+      ]
+    }
+  ],
+  "carry_in": "D1-D8 from round-60-verifier-spotcheck.md addressed or explicitly left open in round-61 lesson. No predicate amendment after freeze.",
+  "assimilation": "none; source package not adopted this round"
+}

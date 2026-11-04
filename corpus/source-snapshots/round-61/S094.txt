@@ -1,0 +1,125 @@
+From Naptime to Big Sleep: Using Large Language Models To Catch Vulnerabilities In Real-World Code - Project Zero
+Project Zero
+blog archive
+bug reports
+about
+Working at PZ
+0day: spreadsheet
+0day: Root Cause Analyses
+vulnerability disclosure policy
+reporting transparency
+search
+From Naptime to Big Sleep: Using Large Language Models To Catch Vulnerabilities In Real-World Code
+2024-Nov-01
+the Big Sleep team
+Posted by the Big Sleep team
+Introduction
+In our previous post, Project Naptime: Evaluating Offensive Security Capabilities of Large Language Models, we introduced our framework for large-language-model-assisted vulnerability research and demonstrated its potential by improving the state-of-the-art performance on Meta's CyberSecEval2 benchmarks. Since then, Naptime has evolved into Big Sleep, a collaboration between Google Project Zero and Google DeepMind.
+Today, we're excited to share the first real-world vulnerability discovered by the Big Sleep agent: an exploitable stack buffer underflow in SQLite, a widely used open source database engine. We discovered the vulnerability and reported it to the developers in early October, who fixed it on the same day. Fortunately, we found this issue before it appeared in an official release, so SQLite users were not impacted.
+We believe this is the first public example of an AI agent finding a previously unknown exploitable memory-safety issue in widely used real-world software. Earlier this year at the DARPA AIxCC event, Team Atlanta discovered a null-pointer dereference in SQLite, which inspired us to use it for our testing to see if we could find a more serious vulnerability.
+We think that this work has tremendous defensive potential. Finding vulnerabilities in software before it's even released, means that there's no scope for attackers to compete: the vulnerabilities are fixed before attackers even have a chance to use them. Fuzzing has helped significantly, but we need an approach that can help defenders to find the bugs that are difficult (or impossible) to find by fuzzing, and we're hopeful that AI can narrow this gap. We think that this is a promising path towards finally turning the tables and achieving an asymmetric advantage for defenders.
+The vulnerability itself is quite interesting, along with the fact that the existing testing infrastructure for SQLite (both through OSS-Fuzz, and the project's own infrastructure) did not find the issue, so we did some further investigation.
+Methodology
+A key motivating factor for Naptime and now for Big Sleep has been the continued in-the-wild discovery of exploits for variants of previously found and patched vulnerabilities. As this trend continues, it's clear that fuzzing is not succeeding at catching such variants, and that for attackers, manual variant analysis is a cost-effective approach.
+We also feel that this variant-analysis task is a better fit for current LLMs than the more general open-ended vulnerability research problem. By providing a starting point – such as the details of a previously fixed vulnerability – we remove a lot of ambiguity from vulnerability research, and start from a concrete, well-founded theory: "This was a previous bug; there is probably another similar one somewhere".
+Our project is still in the research stage, and we are currently using small programs with known vulnerabilities to evaluate progress. Recently, we decided to put our models and tooling to the test by running our first extensive, real-world variant analysis experiment on SQLite. We collected a number of recent commits to the SQLite repository, manually removing trivial and documentation-only changes. We then adjusted the prompt to provide the agent with both the commit message and a diff for the change, and asked the agent to review the current repository (at HEAD) for related issues that might not have been fixed.
+Discovered Vulnerability
+The vulnerability is an interesting one where a special sentinel value -1 is used in an (otherwise) index-typed field iColumn:
+7476: struct sqlite3_index_constraint {
+7477: int iColumn; /* Column constrained. -1 for ROWID */
+7478: unsigned char op; /* Constraint operator */
+7479: unsigned char usable; /* True if this constraint is usable */
+7480: int iTermOffset; /* Used internally - xBestIndex should ignore */
+7481: } *aConstraint; /* Table of WHERE clause constraints */
+This pattern creates a potential edge-case that needs to be handled by all code that uses the field, since the expectation would be that a valid column index is non-negative.
+The function seriesBestIndex failed to correctly handle this edge-case, resulting in a write into a stack buffer with a negative index when handling a query with a constraint on the rowid column. In the build that we provided to our agent, debug assertions were enabled, and this condition was checked by the assertion at line 706:
+619 static int seriesBestIndex(
+620 sqlite3_vtab *pVTab,
+621 sqlite3_index_info *pIdxInfo
+622 ){
+...
+630 int aIdx[7]; /* Constraints on start, stop, step, LIMIT, OFFSET,
+631 ** and value. aIdx[5] covers value=, value>=, and
+632 ** value>, aIdx[6] covers value<= and value< */
+633 const struct sqlite3_index_constraint *pConstraint;
+...
+642 for(i=0; i<pIdxInfo->nConstraint; i++, pConstraint++){
+643 int iCol; /* 0 for start, 1 for stop, 2 for step */
+644 int iMask; /* bitmask for those column */
+645 int op = pConstraint->op;
+...
+705 iCol = pConstraint->iColumn - SERIES_COLUMN_START;
+706 assert( iCol>=0 && iCol<=2 );
+707 iMask = 1 << iCol;
+...
+713 if( pConstraint->usable==0 ){
+714 unusableMask |= iMask;
+715 continue;
+716 }else if( op==SQLITE_INDEX_CONSTRAINT_EQ ){
+717 idxNum |= iMask;
+718 aIdx[iCol] = i;
+719 }
+720 }
+In a release build, however, this assertion is not present, and in our testing (this will vary depending on compiler and optimization level) the subsequent write at line 718 will write below the aIdx buffer, corrupting the least significant 32 bits of the pConstraint pointer, which will be dereferenced in the next iteration of the loop, leading to a likely exploitable condition.
+However, given this explanation of the vulnerability – it's not trivial (at least for us) as human researchers to understand precisely how to trigger it – clearly a constraint on the ROWID column would be a good starting point, but more detailed reading of the code would certainly be required. The agent already seems to know a lot more about SQLite than we do, so it can cut some corners!
+One common case of this is that the model would immediately use the generate_series virtual table when generating testcases. (We also saw cases where the model researched the available virtual tables first, but it's clearly able to apply pre-existing knowledge here).
+Trajectory Highlights
+In this successful run based on Gemini 1.5 Pro, the seed commit was [1976c3f7]; which is a fairly large and non-obvious change. The bug found by our agent is only loosely related to the changes in the seed commit - this is not uncommon in manual variant analysis, understanding one bug in a codebase often leads a researcher to other problems.
+Selected highlights are below, with our commentary in italics – all text in the ASSISTANT blocks comes directly from the agent.
+The agent produces a reasonable assessment of the changes in the diff, and uses this to form a starting point for research:
+ASSISTANT
+The CL improves the handling of WHERE terms shared between OR branches in virtual table queries by introducing the termFromWhereClause function. This function retrieves a specific term from a WhereClause, considering nested clauses. Prior to this change, common terms were likely not handled correctly due to an incorrect mapping of term indices, potentially leading to inefficient query plans or incorrect results. The most likely vulnerability would involve incorrect handling of WHERE clause constraints within the allocateIndexInfo and whereLoopAddVirtualOne functions, where the CL has modified how constraint offsets are used with the new helper function. I'll first examine the allocateIndexInfo function.
+. . .
+After a several (omitted) steps exploring the relevant code, the agent has formed a more concrete hypothesis and attempts to check it by running a modified version of the testcase from the patch, but this doesn't work since the testcase included in the patch relies on an extension that is not available in our configuration:
+TOOL(debugger_run)
+The program exited without crashing or hitting the breakpoint. The exit code was 1.
+The output on STDERR was:
+Runtime error near line 2: no such module: tcl
+Parse error near line 3: no such table: x1
+ASSISTANT
+The program terminated because the TCL module was not available. The tests rely on the TCL virtual table module, which needs to be enabled when compiling SQLite. The provided program input is based on the bestindexC.test file, which uses the TCL module to test virtual table best index selection.
+To fix this, the program input needs to be changed to use a different virtual table that does not require the TCL module. However, the vulnerability is related to virtual table query planning. So we still need a virtual table to trigger the issue.
+I will use the code_browser_source tool to search for examples of built-in virtual tables in SQLite. I'll then adapt the input to use one of these and set a breakpoint in whereLoopAddVirtualOne again.
+. . .
+The agent adapts to this setback gracefully, recognises the steps it needs to take to fix the testcase, and a few steps later has retrieved all of the information it needs to build a testcase that reaches whereLoopAddVirtualOne:
+ASSISTANT
+The sqlite3_create_module function registers virtual table modules. The shell.c file contains several instances of this, including the generate_series, fsdir, completion, and expert modules. The json table also looks interesting. I'll focus on generate_series for now as a starting point. I'll try to craft a query that uses this module and might trigger incorrect constraint handling.
+. . .
+Note above that during the original discovery and reproduction of the vulnerability, the agent was quite vague about the "incorrect constraint handling" that it's trying to trigger; and in this case the full trajectories read a little bit like a human researcher - starting out with one idea, thinking of a few other ones while investigating, and in the end producing a test case that reproduces a slightly different bug. In this case, when whereLoopAddVirtualOne is invoked on a generate_series table, we end up in seriesBestIndex, where the constraint is indeed handled incorrectly.
+However, it's particularly interesting to see that once the program has crashed the model does a much better job of explaining things - while producing a root-cause analysis and a full crash report we can see the agent clearly crafting a testcase to trigger the specific, identified edge-case:
+ASSISTANT
+The relevant field is iColumn inside the sqlite3_index_constraint struct. This field represents the column number of the constraint. To cause the assertion failure, we need a constraint on a column with index greater than 3 or smaller than 1.
+Let's craft an SQL query that involves constraints on these columns. The generate_series table has columns named value, start, step and stop. The indexes are:
+- value: 0
+- start: 1
+- step: 2
+- stop: 3
+To trigger the bug, we can include a constraint on the ROWID. Constraints on the ROWID use iColumn = -1.
+Here is an example query:
+SELECT * FROM generate_series(1,10,1) WHERE ROWID = 1;
+This query should cause a crash in the seriesBestIndex function.
+. . .
+At the end we get a clear and accurate summary of the issue that's almost ready to report directly!
+TOOL(debugger_run)
+The program crashed: SIGABRT at :0.
+The output on STDERR was:
+sqlite3: src/shell.c:6816: int seriesBestIndex(sqlite3_vtab *, sqlite3_index_info *): Assertion `iCol>=0 && iCol<=2' failed.
+ASSISTANT(report_success)
+The program crashes with the input SELECT * FROM generate_series(1,10,1) WHERE ROWID = 1; due to an assertion failure in function seriesBestIndex.
+The assertion assert(iCol>=0 && iCol<=2) fails because the iColumn field in the sqlite3_index_info struct can contain values outside of the valid range for column indexes, such as -1 when a constraint involves the ROWID.
+This leads to iCol being calculated as -2, causing the assertion to fail.
+What about Fuzzing?
+Given the apparent simplicity of the reproduction case, an obvious question arises: why wasn’t this bug discovered earlier by traditional fuzzing? The “simple” answer lies in the configuration of the fuzzing harnesses. The harness used by OSS-Fuzz isn't built with the generate_series extension enabled, and the alternative fuzzingshell.c harness contained an older version of the seriesBestIndex function, unaffected by the bug. Although the SQLite AFL repo contains a configuration for fuzzing the same CLI binary that we provided to the Big Sleep agent, it appears not to be widely used.
+To understand whether the bug is truly “shallow", we attempted to rediscover it through fuzzing. We followed the fuzzing instructions from the SQLite documentation and used the CLI target. We also verified that the fuzzing corpus contained the required generate_series and rowid keywords before launching an AFL run. However, the issue remained undiscovered after 150 CPU-hours of fuzzing.
+We then tried to simplify the task for the fuzzer by, for example, adding the necessary keywords to AFL's SQL dictionary. However, it seems the bug can only be quickly found if the corpus contains an example very close to the crashing input, as code coverage doesn't appear to be a reliable guide for this particular issue.
+Admittedly, AFL isn't the most suitable tool for a text-based format like SQL, where most inputs are syntactically invalid and will be rejected by the parser. Nevertheless, it's interesting to compare this result with Michal Zalewski’s blog post on fuzzing SQLite from 2015. Back then, AFL was quite effective at uncovering bugs in SQLite; after years of fuzzing, it seems the tool has reached a natural saturation point. While our results so far seem minor in comparison to the dramatic step-change in effectiveness that came with the release of AFL, it's interesting to see that it has its own strengths and might be able to effectively uncover a distinct set of vulnerabilities.
+Conclusion
+For the team this is a moment of validation and success - finding a vulnerability in a widely-used and well fuzzed open source project is an exciting result! When provided with the right tools, current LLMs can perform vulnerability research.
+However, we want to reiterate that these are highly experimental results. The position of the Big Sleep team is that at present, it's likely that a target-specific fuzzer would be at least as effective (at finding vulnerabilities).
+We hope that in the future this effort will lead to a significant advantage to defenders - with the potential not only to find crashing testcases, but also to provide high-quality root-cause analysis, triaging and fixing issues could be much cheaper and more effective in the future. We aim to continue sharing our research in this space, keeping the gap between the public state-of-the-art and private state-of-the-art as small as possible.
+The Big Sleep team will continue to work in this space, advancing Project Zero's mission of making 0-day hard.
+The Big Sleep Team
+This isn't just a Project Zero effort any more, and everyone who has contributed to this effort is listed below (names in alphabetical order):
+Miltos Allamanis, Martin Arjovsky, Charles Blundell, Lars Buesing, Mark Brand, Sergei Glazunov, Dominik Maier, Petros Maniatis, Guilherme Marinho, Henryk Michalewski, Koushik Sen, Charles Sutton, Vaibhav Tulsyan, Marco Vanotti, Theophane Weber, Dan Zheng
+Make zeroday hard.
+Privacy

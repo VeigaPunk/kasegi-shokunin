@@ -1,0 +1,87 @@
+$ python3 corpus/instruments/figure-audit.py --selftest
+selftest case=ok-ledger exit=0 want=0 verdict=pass
+selftest case=stale-literal exit=1 want=1 verdict=pass
+selftest case=derive-fails-fail-closed exit=1 want=1 verdict=pass
+selftest case=token-boundary-34-vs-340 exit=1 want=1 verdict=pass
+selftest case=unreadable-ledger-exit-2 exit=2 want=2 verdict=pass
+selftest case=derive-not-read-only-refused exit=2 want=2 verdict=pass
+selftest case=chain-semicolon-refused exit=2 want=2 verdict=pass
+selftest case=chain-background-refused exit=2 want=2 verdict=pass
+selftest case=chain-newline-refused exit=2 want=2 verdict=pass
+selftest case=chain-cmdsubst-refused exit=2 want=2 verdict=pass
+selftest case=pipe-to-shell-refused exit=2 want=2 verdict=pass
+selftest case=redirect-refused exit=2 want=2 verdict=pass
+selftest case=or-chain-refused exit=2 want=2 verdict=pass
+selftest case=quoted-separator-admitted exit=0 want=0 verdict=pass
+selftest case=escape-single-quote-refused exit=2 want=2 verdict=pass
+selftest case=escape-double-quote-refused exit=2 want=2 verdict=pass
+selftest case=sed-head-refused exit=2 want=2 verdict=pass
+selftest case=awk-head-refused exit=2 want=2 verdict=pass
+selftest case=sort-output-flag-refused exit=2 want=2 verdict=pass
+selftest case=git-show-output-flag-refused exit=2 want=2 verdict=pass
+selftest case=python-inside-admitted exit=0 want=0 verdict=pass
+selftest case=python-traversal-refused exit=2 want=2 verdict=pass
+selftest case=python-symlink-refused exit=2 want=2 verdict=pass
+selftest case=python-absolute-refused exit=2 want=2 verdict=pass
+selftest cases=24 failures=0
+
+exit=0
+$ python3 corpus/instruments/figure-audit-mutbat.py
+PRISTINE selftest_exit=0 last='selftest cases=24 failures=0'
+CONTROL c-equivalent-trailing-space selftest_exit=0 must_not_be_killed=held last='selftest cases=24 failures=0'
+MUT m4-drop-stale-literal-case sites=1 py_compile=0 selftest_exit=1 killed=1 last='selftest cases=23 failures=1'
+MUT m6-readonly-gate-off sites=1 py_compile=0 selftest_exit=1 killed=1 last='selftest cases=24 failures=4'
+MUT m7-python-confinement-off sites=1 py_compile=0 selftest_exit=1 killed=1 last='selftest cases=24 failures=2'
+mutbat killed=3/3 survivors=0 controls=pass
+
+exit=0
+$ python3 corpus/instruments/figure-audit.py
+FIG frontier-rows recorded=34 derived=34 ok
+FIG registry-rows recorded=85 derived=85 ok
+FIG knowledge-expected-entries recorded=72 derived=72 ok
+FIG knowledge-files recorded=72 derived=72 ok
+FIG capture-lines-s085 recorded=543 (filed; superseded by the r54 D53-2 correction) derived=542 ok
+FIG capture-bytes-s085 recorded=7590 derived=7590 ok
+FIG capture-lines-s086 recorded=731 derived=731 ok
+FIG capture-sha256-s086 recorded=fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f derived=fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f ok
+FIG frontier-rows-r54 recorded=35 derived=35 ok
+FIG registry-rows-r54 recorded=86 derived=86 ok
+FIG entries-r54 recorded=38 derived=38 ok
+FIG knowledge-expected-r54 recorded=73 derived=73 ok
+FIG knowledge-files-r54 recorded=73 derived=73 ok
+FIG figure-audit-mentions-base-scorecard recorded=2 (the receipt's limb; the filed prose 0 superseded) derived=2 ok
+FIG figure-audit-mentions-base-log recorded=0 derived=0 ok
+FIG figure-audit-mentions-base-knowledge-expected recorded=0 derived=0 ok
+FIG frontier-rows-r55 recorded=36 derived=36 ok
+FIG registry-rows-r55 recorded=87 derived=87 ok
+FIG entries-r55 recorded=39 derived=39 ok
+FIG knowledge-expected-r55 recorded=74 derived=74 ok
+FIG knowledge-files-r55 recorded=74 derived=74 ok
+FIG census-fresh-literal-r55 recorded=stale (the receipt's printed limb; the filed prose ok superseded) derived=stale ok
+FIG census-internal-r55-receipt recorded=1118 derived=1118 ok
+FIG census-gone-r55-receipt recorded=3883 derived=3883 ok
+FIG census-fixedpoint-internal-r55 recorded=1119 derived=1119 ok
+FIG census-fixedpoint-gone-r55 recorded=3882 derived=3882 ok
+FIG fail-entry-records recorded=33 (the class-check line; the trailer's 34 superseded) derived=33 ok
+FIG frontier-rows-r56 recorded=37 derived=37 ok
+FIG registry-rows-r56 recorded=88 derived=88 ok
+FIG entries-r56 recorded=40 derived=40 ok
+FIG knowledge-expected-r56 recorded=75 derived=75 ok
+FIG knowledge-files-r56 recorded=75 derived=75 ok
+FIG census-fresh-literal-r56 recorded=ok derived=ok ok
+FIG census-internal-r56-receipt recorded=1130 derived=1130 ok
+FIG census-gone-r56-receipt recorded=3915 derived=3915 ok
+FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0
+
+exit=0
+$ python3 corpus/instruments/figure-audit.py --ledger .ufo/waves/round-54/controls/red-d53-ledger.json
+FIG d53-1-trailer recorded=34 derived=33 want=34 stale
+FIG d53-2-lines recorded=543 derived=542 want=543 stale
+FIGURE-AUDIT figures=2 ok=0 stale=2 exit=1
+
+exit=1
+$ sha256sum corpus/instruments/figure-audit.py corpus/instruments/figure-audit-mutbat.py
+051083a2dd3b76f96568dd2a18866975b71dd1578992546c671faf21e99418a9  corpus/instruments/figure-audit.py
+f94393d981eeb93a05f6c57782b787faabfc56bfa5b4775f1c319f405fdd353c  corpus/instruments/figure-audit-mutbat.py
+
+exit=0
