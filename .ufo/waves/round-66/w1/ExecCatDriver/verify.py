@@ -124,7 +124,7 @@ def commit_of(repo, spec):
 
 
 def object_of(repo, spec):
-    rc, out = git_text(repo, "rev-parse", "--verify", "--quiet", spec + "^{object}")
+    rc, out = git_text(repo, "rev-parse", "--verify", "--quiet", spec)
     return out if rc == 0 and out else None
 
 

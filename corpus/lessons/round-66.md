@@ -39,3 +39,11 @@ The existing claim-package checker was exercised on the retained curl CVE-2025-9
 ## Open boundaries
 
 Source restoration/province ruling (kasegi L0 r15), counter-substance and moving-range decisions (r57 R67/R69), and derive-gate security boundary (r59/r60) remain unanswered. This round claims no resolution. Other heads' SIGPIPE behavior, wrappers, PATH/configuration, filesystem races and exit0 partial-output producers remain outside the proposed cat-only repair. Scores4/8/9 are held; no new capability, retirement, split or stagnation waiver.
+
+## Mistakes (prefreeze construction continuation)
+
+| id | class | evidence | captured-by | fix |
+|---|---|---|---|---|
+| M66-7 | reference resolver treats an object peel as part of a filename | controls/driver-candidate-prefreeze.txt: real-ledger35/35 but ledger-closure22 unresolved, VERIFY12/1; base12/4 | R34/R65/R89; exact committed-input trial | Before freeze remove ^{object} after rev:path, retain both failed construction receipts, update driver content pin and rerun the exact complete driver. Driver identity transitions are in controls/driver-integration.txt. |
+| M66-8 | verdict oracle learns expectation from fixture paths | CriticCat path-keyed no-work oracle passes stable-label collector; fresh ids alone do not hide --root cases/P1 labels | R11; CriticCat | Final d788bbc1 collector makes instrument-visible fixture/work paths opaque as well as ids/records. Exact ID/path/text/always-green/always-stale controls all fail, real candidate8/0; w1/CriticCat/opaque-final-summary.json. |
+| M66-9 | mid-edit harness failures are not semantic kills | collector cfcd9da9 raced a path rename and writes gate.stdout to an absent old path; six critic trials raised FileNotFoundError without summaries | R82; CriticCat | Preserve harness-error evidence and score only stable d788bbc1. Its own collector had also confused record with recorded; both defects were fixed before final controls. No failed setup is counted as a killed mutant. |
