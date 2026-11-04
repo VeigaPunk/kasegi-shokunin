@@ -1,0 +1,173 @@
+input sha256=8efa7d884e862ed8e57f256165a9ab8b3936473cb16813094eddeeadb2c98210 /fast/scratch/hyaku/kasegi-r66/L1/final-committed/controls/cat-mutbat.py
+input sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac /fast/scratch/hyaku/kasegi-r66/L1/final-committed/repo/corpus/instruments/figure-audit.py
+input sha256=d788bbc16cd1ac9f345e5fc1a29f3e87542ceed1f2dfcdfa5e4b7593d3a57312 /fast/scratch/hyaku/kasegi-r66/L1/final-committed/controls/probes.py
+$ /usr/bin/python3 -B /fast/scratch/hyaku/kasegi-r66/L1/final-committed/controls/cat-mutbat.py --instrument /fast/scratch/hyaku/kasegi-r66/L1/final-committed/repo/corpus/instruments/figure-audit.py --collector /fast/scratch/hyaku/kasegi-r66/L1/final-committed/controls/probes.py --work /fast/scratch/hyaku/kasegi-r66/L1/final-committed/cat-mutbat
+(cwd=/fast/scratch/hyaku/kasegi-r66/L1/final-committed)
+instrument_sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+collector_sha256=d788bbc16cd1ac9f345e5fc1a29f3e87542ceed1f2dfcdfa5e4b7593d3a57312
+CASE baseline rc=0
+NONCE run=3ce5a8835d25f251 base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+LEDGER P1-cat-two-operand-missing-sigpipe id=fig-7df4d5c32939e7b76dbdb4ec9fd52cd7 record=rec-e65c9699c6e63fe1 dir=c-a2be891bf93c7763fb6e8573
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+LEDGER P2-cat-two-operand-existing-sigpipe id=fig-1f6d3f3b0a419239757f0d7091e2de0d record=rec-45d164e91069d7de dir=c-115dea0b83e645fc8cfc36ed
+NATIVE P2-cat-two-operand-existing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P2-cat-two-operand-existing-sigpipe rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+LEDGER P3-cat-one-operand-sigpipe id=fig-f34660f548344a616509ffad89128f7d record=rec-935cdd6fea28689f dir=c-be70def730b99da64916b1de
+NATIVE P3-cat-one-operand-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P3-cat-one-operand-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P4-cat-stdin-sigpipe id=fig-ae6fdb67774c3f366ebe81614c52eb5e record=rec-fe0c8a302bfb38b3 dir=c-e9977d573b37576a3c58928b
+NATIVE P4-cat-stdin-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P4-cat-stdin-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P5-cat-missing-exit1 id=fig-e261b040cf76a195b0d8dfe89867d621 record=rec-41e506362fa0b2fc dir=c-a388ba3a0de3c3fb6da0bf32
+NATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=44
+PROBE P5-cat-missing-exit1 rc=1 expected=1 reason=derive-upstream-exit-1 pass=true
+LEDGER P6-grep-nomatch-green id=fig-af5d8a8c8fc1a09b6ad0c3e96f6fea81 record=rec-fd3ae4b175ddd0ee dir=c-2abaffd0afbfa1b56a1d1604
+NATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P6-grep-nomatch-green rc=0 expected=0 reason=- pass=true
+LEDGER P7-same-derive-small-twin id=fig-4b8b5920fefea8d108e028888a32572d record=rec-c30a4d221752ce78 dir=c-f66ebf42730534b15eaa8113
+NATIVE P7-same-derive-small-twin stage0=0 stage1=0 out=alpha err_bytes=0
+PROBE P7-same-derive-small-twin rc=0 expected=0 reason=- pass=true
+LEDGER P8-cat-dashdash-separator-missing id=fig-9c3953b788e6a521eea9072f226c7dad record=rec-dd382b2eaa36faee dir=c-d564e1bf4cc3e5dbf689a979
+NATIVE P8-cat-dashdash-separator-missing stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P8-cat-dashdash-separator-missing rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+PROBES probes=8 failures=0 mode=candidate instrument_sha256=51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac
+CASE ignore-cat-sigpipe rc=1
+NONCE run=3c0deaec41b3d77f base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=fcfbd4b5ac4c3c48946fd1846b02b5a869c711cf2f5cefa3c4754e061e9aa817
+LEDGER P1-cat-two-operand-missing-sigpipe id=fig-4733d7c22bb394c27f70e21227f21a41 record=rec-8b9a5ee8a9027ea8 dir=c-16ae1eda0104b752f7b23fd9
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P1-cat-two-operand-missing-sigpipe field=rc want=1 got=0
+NOTE P1-cat-two-operand-missing-sigpipe field=verdict want=stale got=ok
+NOTE P1-cat-two-operand-missing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+LEDGER P2-cat-two-operand-existing-sigpipe id=fig-af6d6f131cce637d4bcb8af7519e0b7a record=rec-462f3806617d9082 dir=c-8d5c0041905acb9b963e62c3
+NATIVE P2-cat-two-operand-existing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P2-cat-two-operand-existing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P2-cat-two-operand-existing-sigpipe field=rc want=1 got=0
+NOTE P2-cat-two-operand-existing-sigpipe field=verdict want=stale got=ok
+NOTE P2-cat-two-operand-existing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+LEDGER P3-cat-one-operand-sigpipe id=fig-6be11f2bdbc22f964602915fa96568f1 record=rec-744cf04836852723 dir=c-4542727a5b44a725e846abd1
+NATIVE P3-cat-one-operand-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P3-cat-one-operand-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P4-cat-stdin-sigpipe id=fig-fa85ed061308173f6372ac2fb632eab4 record=rec-73363e0784cf1164 dir=c-381309bb052d5e37b16ce278
+NATIVE P4-cat-stdin-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P4-cat-stdin-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P5-cat-missing-exit1 id=fig-a008723fcdfbaba01eba4a733dc4f954 record=rec-ed710a21ecb1ca56 dir=c-e5774466b18b70e2734e7ffd
+NATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=44
+PROBE P5-cat-missing-exit1 rc=1 expected=1 reason=derive-upstream-exit-1 pass=true
+LEDGER P6-grep-nomatch-green id=fig-1fc2c39f54342b01b95437b855102dde record=rec-e97ad93dff5f9bba dir=c-c7e6d6cd2db29da6ea2cdd23
+NATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P6-grep-nomatch-green rc=0 expected=0 reason=- pass=true
+LEDGER P7-same-derive-small-twin id=fig-79275acc9c47b5815d17cba64f0187ba record=rec-0e731f5ad2f20a40 dir=c-f199f603d6ae306c659623b1
+NATIVE P7-same-derive-small-twin stage0=0 stage1=0 out=alpha err_bytes=0
+PROBE P7-same-derive-small-twin rc=0 expected=0 reason=- pass=true
+LEDGER P8-cat-dashdash-separator-missing id=fig-6559930f05e62d27841b3cac6703c45c record=rec-fab5988c47c47fe3 dir=c-418d530774cc9181e20d1867
+NATIVE P8-cat-dashdash-separator-missing stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P8-cat-dashdash-separator-missing rc=0 expected=1 reason=- pass=false
+NOTE P8-cat-dashdash-separator-missing field=rc want=1 got=0
+NOTE P8-cat-dashdash-separator-missing field=verdict want=stale got=ok
+NOTE P8-cat-dashdash-separator-missing field=reason want=derive-upstream-signal-13 got=None
+PROBES probes=8 failures=3 mode=candidate instrument_sha256=fcfbd4b5ac4c3c48946fd1846b02b5a869c711cf2f5cefa3c4754e061e9aa817
+MUTANT ignore-cat-sigpipe killed=1 valid=1
+CASE relax-two-operands rc=1
+NONCE run=19fa9b39bd3359a7 base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=6375719600f69538607df619f18b2b7562ebb389cdcb65ede8f1ed7735870e77
+LEDGER P1-cat-two-operand-missing-sigpipe id=fig-6eb22525be066e9374d99b1733a13e7f record=rec-1aab4cda39f6465e dir=c-f5079580693b34bbf670832d
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P1-cat-two-operand-missing-sigpipe field=rc want=1 got=0
+NOTE P1-cat-two-operand-missing-sigpipe field=verdict want=stale got=ok
+NOTE P1-cat-two-operand-missing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+LEDGER P2-cat-two-operand-existing-sigpipe id=fig-747096caa7bd5cbdd0d1b76746723b57 record=rec-0e7d753cbe74496f dir=c-f600f949a4ef6db4732f207c
+NATIVE P2-cat-two-operand-existing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P2-cat-two-operand-existing-sigpipe rc=0 expected=1 reason=- pass=false
+NOTE P2-cat-two-operand-existing-sigpipe field=rc want=1 got=0
+NOTE P2-cat-two-operand-existing-sigpipe field=verdict want=stale got=ok
+NOTE P2-cat-two-operand-existing-sigpipe field=reason want=derive-upstream-signal-13 got=None
+LEDGER P3-cat-one-operand-sigpipe id=fig-97cf5a33b0d384a31e722ee10ec5b659 record=rec-a496814ba0c92b5d dir=c-25d671b907317c4005d4790f
+NATIVE P3-cat-one-operand-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P3-cat-one-operand-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P4-cat-stdin-sigpipe id=fig-4aa9e27a89a375f12d4e2df99d6a1c87 record=rec-d78822f2b4fcdd08 dir=c-037b899ed02eb0b091a3398d
+NATIVE P4-cat-stdin-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P4-cat-stdin-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P5-cat-missing-exit1 id=fig-39e81c66b2843b704f1ae2c0535bb859 record=rec-6e5545a73b7967ac dir=c-35b44422b72428a5d7cf6031
+NATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=44
+PROBE P5-cat-missing-exit1 rc=1 expected=1 reason=derive-upstream-exit-1 pass=true
+LEDGER P6-grep-nomatch-green id=fig-db7715f238e3f8366fccef380ff01f2a record=rec-63d81d60483c74c8 dir=c-9fa35f3dafcf66d17d764599
+NATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P6-grep-nomatch-green rc=0 expected=0 reason=- pass=true
+LEDGER P7-same-derive-small-twin id=fig-594a7b2d56e21826e89dec3a5078a49b record=rec-2ab6c2e241ccb6ea dir=c-ae831a3cda07962c0a05d668
+NATIVE P7-same-derive-small-twin stage0=0 stage1=0 out=alpha err_bytes=0
+PROBE P7-same-derive-small-twin rc=0 expected=0 reason=- pass=true
+LEDGER P8-cat-dashdash-separator-missing id=fig-a320d68d76905849ff25c0ec9d1b6dc1 record=rec-0ce7ed8e1df5842b dir=c-e3061469d07395cd02d2cb96
+NATIVE P8-cat-dashdash-separator-missing stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P8-cat-dashdash-separator-missing rc=0 expected=1 reason=- pass=false
+NOTE P8-cat-dashdash-separator-missing field=rc want=1 got=0
+NOTE P8-cat-dashdash-separator-missing field=verdict want=stale got=ok
+NOTE P8-cat-dashdash-separator-missing field=reason want=derive-upstream-signal-13 got=None
+PROBES probes=8 failures=3 mode=candidate instrument_sha256=6375719600f69538607df619f18b2b7562ebb389cdcb65ede8f1ed7735870e77
+MUTANT relax-two-operands killed=1 valid=1
+CASE reject-single-input rc=1
+NONCE run=2aa90196bb805923 base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=5ec02b8b61c9bd6211e8986ad5019e6c0fced81397495cac95c6335947f94d2c
+LEDGER P1-cat-two-operand-missing-sigpipe id=fig-fe1f40521402312bcff58e8d4fe24892 record=rec-44d5165bd8cc1ea2 dir=c-1480de630a75418899448729
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+LEDGER P2-cat-two-operand-existing-sigpipe id=fig-34559011036592f4e9c6d56b31e9f27e record=rec-80d25e5ec6516662 dir=c-48ee3f340a06e7ac7cd1eb81
+NATIVE P2-cat-two-operand-existing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P2-cat-two-operand-existing-sigpipe rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+LEDGER P3-cat-one-operand-sigpipe id=fig-28ee6c847a5977048bd6de1458b6d3fc record=rec-807c84e0e22ec09f dir=c-ee164c41c30d6c92ccc3fe4f
+NATIVE P3-cat-one-operand-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P3-cat-one-operand-sigpipe rc=1 expected=0 reason=derive-upstream-signal-13 pass=false
+NOTE P3-cat-one-operand-sigpipe field=rc want=0 got=1
+NOTE P3-cat-one-operand-sigpipe field=verdict want=ok got=stale
+NOTE P3-cat-one-operand-sigpipe field=derived want=alpha got=None
+NOTE P3-cat-one-operand-sigpipe field=reason want=- got=derive-upstream-signal-13
+LEDGER P4-cat-stdin-sigpipe id=fig-9ac82b2ccb02ad54c175f105a6a1c58b record=rec-a2af735c6ff8d817 dir=c-1376351c9d44671c14c0d677
+NATIVE P4-cat-stdin-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P4-cat-stdin-sigpipe rc=1 expected=0 reason=derive-upstream-signal-13 pass=false
+NOTE P4-cat-stdin-sigpipe field=rc want=0 got=1
+NOTE P4-cat-stdin-sigpipe field=verdict want=ok got=stale
+NOTE P4-cat-stdin-sigpipe field=derived want=alpha got=None
+NOTE P4-cat-stdin-sigpipe field=reason want=- got=derive-upstream-signal-13
+LEDGER P5-cat-missing-exit1 id=fig-06dbfc47a23627994460d72b383492f0 record=rec-4e9ed82cd256ea32 dir=c-359892e27dca0432d86134f2
+NATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=44
+PROBE P5-cat-missing-exit1 rc=1 expected=1 reason=derive-upstream-exit-1 pass=true
+LEDGER P6-grep-nomatch-green id=fig-806d26b91c372ed18f54747c7220dd38 record=rec-d70e8f702cb18e44 dir=c-e4910e0ba8e319d15e2b011a
+NATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P6-grep-nomatch-green rc=0 expected=0 reason=- pass=true
+LEDGER P7-same-derive-small-twin id=fig-ad6b5fbdf1e64abaeab886e0dc1f9074 record=rec-457517e55c4b84dc dir=c-b9fa04e857b9da22f3928d3e
+NATIVE P7-same-derive-small-twin stage0=0 stage1=0 out=alpha err_bytes=0
+PROBE P7-same-derive-small-twin rc=0 expected=0 reason=- pass=true
+LEDGER P8-cat-dashdash-separator-missing id=fig-7f8e572a42723d62f6333f5779ab018f record=rec-a5dd518d300bcb14 dir=c-5908dffee96c7cf7d1986189
+NATIVE P8-cat-dashdash-separator-missing stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P8-cat-dashdash-separator-missing rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+PROBES probes=8 failures=2 mode=candidate instrument_sha256=5ec02b8b61c9bd6211e8986ad5019e6c0fced81397495cac95c6335947f94d2c
+MUTANT reject-single-input killed=1 valid=1
+CASE equivalent rc=0
+NONCE run=580d6ddf35377665 base_revision=b6db9e818d322726e39cb441f2179d34d4170275 mode=candidate instrument_sha256=566ef4b737fe8c7831e7afcb62fd15ebe6368030b66f227841deca9190f8afa1
+LEDGER P1-cat-two-operand-missing-sigpipe id=fig-d7d57570a2b30a56eb05481c2887c00e record=rec-80d569fd0374af5b dir=c-da7b1bc2e7dfe2e2f59a877e
+NATIVE P1-cat-two-operand-missing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P1-cat-two-operand-missing-sigpipe rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+LEDGER P2-cat-two-operand-existing-sigpipe id=fig-3445a7135e804da29f86adcb388daacf record=rec-254f16cb37a15788 dir=c-70ce2eaae6c8b000d013bf3c
+NATIVE P2-cat-two-operand-existing-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P2-cat-two-operand-existing-sigpipe rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+LEDGER P3-cat-one-operand-sigpipe id=fig-0f186fc6f787188b74a86ab0972a0b23 record=rec-4275c7778f2f3a9c dir=c-8b10d2e106b6f1fdc7540b0b
+NATIVE P3-cat-one-operand-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P3-cat-one-operand-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P4-cat-stdin-sigpipe id=fig-a71a455cae7ed5b206b28b6e0193a26f record=rec-cd063982615b135e dir=c-c9aee418a664fc9fa7df616f
+NATIVE P4-cat-stdin-sigpipe stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P4-cat-stdin-sigpipe rc=0 expected=0 reason=- pass=true
+LEDGER P5-cat-missing-exit1 id=fig-fce3175c02752632839e06337336ca7b record=rec-a49f6f7982d3feed dir=c-7a79b0e500f3df1305b4952d
+NATIVE P5-cat-missing-exit1 stage0=1 stage1=0 out=0 err_bytes=44
+PROBE P5-cat-missing-exit1 rc=1 expected=1 reason=derive-upstream-exit-1 pass=true
+LEDGER P6-grep-nomatch-green id=fig-e39cd6d89b38d85e375b57a6a9e84cf7 record=rec-07d5971aefc5a2a2 dir=c-f955969c9ae95b83a18926bb
+NATIVE P6-grep-nomatch-green stage0=1 stage1=0 out=0 err_bytes=0
+PROBE P6-grep-nomatch-green rc=0 expected=0 reason=- pass=true
+LEDGER P7-same-derive-small-twin id=fig-572201db5a663f5c0d198897bb91839e record=rec-66e6910aeff852f8 dir=c-eea2eb6a027539d3359ed9d1
+NATIVE P7-same-derive-small-twin stage0=0 stage1=0 out=alpha err_bytes=0
+PROBE P7-same-derive-small-twin rc=0 expected=0 reason=- pass=true
+LEDGER P8-cat-dashdash-separator-missing id=fig-ad95ce8717392cbafa57b4235e4b1609 record=rec-a145b43771ca1971 dir=c-1afd77f163213f3eebbe7ece
+NATIVE P8-cat-dashdash-separator-missing stage0=-13 stage1=0 out=alpha err_bytes=0
+PROBE P8-cat-dashdash-separator-missing rc=1 expected=1 reason=derive-upstream-signal-13 pass=true
+PROBES probes=8 failures=0 mode=candidate instrument_sha256=566ef4b737fe8c7831e7afcb62fd15ebe6368030b66f227841deca9190f8afa1
+CAT-MUTBAT killed=3/3 survivors=0 equivalents_held=1 invalid_rejected=1 failures=0
+[exit=0]

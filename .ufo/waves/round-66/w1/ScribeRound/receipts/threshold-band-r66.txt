@@ -1,0 +1,49 @@
+# Receipt ScribeRound/threshold-band-r66.txt
+# Where the base cat-SIGPIPE false green starts, and how wide the flaky band is, 2026-11-04
+# host Linux 7.2.11-arch1-1 x86_64 ; python Python 3.14.8 ; work dir /fast/scratch/hyaku/kasegi-r66/ScribeRound/work
+# gate under test: corpus/instruments/figure-audit.py at BASE b6db9e818d322726e39cb441f2179d34d4170275 (sha256 86becbde...)
+# all fixture paths ABSOLUTE; cat runs with cwd=work
+
+=== A. fine ladder, 100 reps per size, stderr categorised ===
+size=393216    100 reps -> {'stale': 100}                             false-green=0/100
+size=520000    100 reps -> {'stale': 100}                             false-green=0/100
+size=524288    100 reps -> {'FALSE-GREEN': 95, 'stale': 5}            false-green=95/100
+size=528000    100 reps -> {'FALSE-GREEN': 90, 'stale': 10}           false-green=90/100
+size=540000    100 reps -> {'FALSE-GREEN': 100}                       false-green=100/100
+size=589824    100 reps -> {'FALSE-GREEN': 100}                       false-green=100/100
+size=1048576   100 reps -> {'FALSE-GREEN': 100}                       false-green=100/100
+size=4194304   100 reps -> {'FALSE-GREEN': 100}                       false-green=100/100
+
+=== B. the 'dash' operand form: a real 4 MiB operand literally named '--' ===
+cat -- -- missing.txt | head -n 1  30 reps -> {'FALSE-GREEN': 30}
+=> the second '--' is a real operand; the first is the separator. The operand count is 2, not 1.
+
+=== C. mechanism: cat splices the file into the pipe in 512 KiB chunks; head reads one 8192-byte chunk and exits ===
+alpha
+[rc=0]
+3379245 splice(3, NULL, 5, NULL, 524288, 0) = 524288
+3379245 splice(4, NULL, 1, NULL, 524288, 0) = 524288
+3379245 splice(3, NULL, 5, NULL, 524288, 0 <unfinished ...>
+3379245 splice(4, NULL, 1, NULL, 524288, 0 <unfinished ...>
+3379245 splice(4, NULL, 1, NULL, 524288, 0) = -1 EPIPE (Broken pipe)
+--- host pipe parameters ---
+pipe F_GETPIPE_SZ (default capacity) = 65536 bytes
+pipe-max-size = 1048576
+
+=== D. what this means for a counter (the band is real, not noise) ===
+The base false green requires the first operand to be larger than the pipe can absorb in
+one go: below ~512 KiB cat writes its whole operand, exits 1 with the missing.txt
+diagnostic, and the base gate reads 'derive-upstream-exit-1 stale' — NOT a false green.
+At and just above 512 KiB the outcome is a genuine race (86/100 at 524288, 90/100 at
+528000). From ~540 KiB upward it is 100/100 false green on this host.
+Consequences for the counter, stated as design constraints:
+  1. A short fixture is VACUOUS for this class: the base is already stale, so the probe
+     cannot discriminate candidate from base and a collector could pass an unmodified gate.
+  2. A fixture placed IN the 512-528 KiB band is FLAKY: repeated runs of the same
+     committed bytes disagree, so a single-run counter is not reproducible.
+  3. A fixture comfortably above the band (>= 1 MiB; the r66 probe set uses 4 MiB) is
+     deterministic on this host: 200/200 native and 40/40 gate-level.
+  4. The threshold is a property of the pipe buffer and cat's chunk size on THIS host.
+     It is not a portable constant, so the counter must not encode a size threshold as
+     if it were universal; it should assert the NATIVE stage status, which is what the
+     r66 probe set already records (native0=-13).

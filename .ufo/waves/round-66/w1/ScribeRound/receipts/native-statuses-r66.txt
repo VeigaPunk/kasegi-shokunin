@@ -1,13 +1,27 @@
 # Receipt ScribeRound/native-statuses-r66.txt
-# independent native pipeline statuses for the r66 C1 cat-SIGPIPE predicate, 2026-11-04
-# scratch /fast/scratch/hyaku/kasegi-r66/ScribeRound ; work dir /fast/scratch/hyaku/kasegi-r66/ScribeRound/work
-# python Python 3.14.8
+# Independent native pipeline statuses for the r66 C1 cat-SIGPIPE predicate, 2026-11-04
+# host Linux 7.2.11-arch1-1 x86_64 ; python Python 3.14.8
+# work dir /fast/scratch/hyaku/kasegi-r66/ScribeRound/work ; all stages run with cwd=work
+# big.txt = 4 MiB (first line 'alpha'), other.txt = 4 KiB (first line 'alpha'),
+# small.txt = 11 bytes (first line 'alpha'), missing.txt deliberately absent.
+# stdin-only case: cat's stdin is big.txt opened as a FILE, so the pipeline is the
+#   same shape the gate's 'cat < big.txt' input redirection produces.
+# 5 repetitions per case; the status is identical in all 5.
 
 NATIVE cat big.txt missing.txt | head -n 1    rcs=[-13, 0]     out=b'alpha\n' err=b''
 NATIVE cat big.txt other.txt   | head -n 1    rcs=[-13, 0]     out=b'alpha\n' err=b''
 NATIVE cat big.txt             | head -n 1    rcs=[-13, 0]     out=b'alpha\n' err=b''
-NATIVE cat < big.txt           | head -n 1    rcs=[0, 0]       out=b'' err=b''
+NATIVE cat < big.txt           | head -n 1    rcs=[-13, 0]     out=b'alpha\n' err=b''
 NATIVE cat missing.txt         | wc -l        rcs=[1, 0]       out=b'0\n' err=b''
-NATIVE cat big.txt missing.txt | wc -l        rcs=[1, 0]       out=b'41528\n' err=b''
+NATIVE cat big.txt missing.txt | wc -l        rcs=[1, 0]       out=b'2\n' err=b''
 NATIVE cat small.txt missing.txt| head -n 1   rcs=[1, 0]       out=b'alpha\n' err=b''
 NATIVE cat small.txt           | head -n 1    rcs=[0, 0]       out=b'alpha\n' err=b''
+
+reading:
+  rcs=[-13, 0] = cat killed by SIGPIPE (-13), head exit 0, stderr EMPTY  -> the missing
+                 operand was never diagnosed (the masked case)
+  rcs=[ 1, 0] = cat exit 1, stderr names missing.txt                       -> the honest stale case
+  rcs=[ 0, 0] = both stages exit 0                                          -> no SIGPIPE at all
+
+note: 'cat big.txt missing.txt | wc -l' shows rc=1 because wc DRAINS the pipe, so cat
+      reaches missing.txt and reports it. The masked case needs an early-closing consumer.

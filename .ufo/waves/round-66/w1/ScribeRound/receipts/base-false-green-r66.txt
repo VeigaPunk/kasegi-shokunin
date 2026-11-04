@@ -2,6 +2,11 @@
 # lane /home/vgpnk/Projects/shokunin/kasegi-shokunin ; base b6db9e818d322726e39cb441f2179d34d4170275
 # scratch /fast/scratch/hyaku/kasegi-r66/ScribeRound/clone (clone of lane, checked out at base)
 # date 2026-11-04 ; host Linux 7.2.11-arch1-1 x86_64 ; python Python 3.14.8 ; git git version 2.56.0
+#
+# Path handling: the gate runs each stage with cwd=--root, so the relative fixture
+# names inside the ledger (big.txt, other.txt, missing.txt) resolve inside the work
+# directory named by --root. The missing.txt operand is deliberately absent, so cat
+# reports it only if it survives long enough to open it.
 
 $ git -C /fast/scratch/hyaku/kasegi-r66/ScribeRound/clone rev-parse --show-toplevel
 /fast/scratch/hyaku/kasegi-r66/ScribeRound/clone

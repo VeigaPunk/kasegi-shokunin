@@ -1,0 +1,16 @@
+$ python3 -B -c 'import collections,re,subprocess,pathlib
+lane='"'"'/home/vgpnk/Projects/shokunin/kasegi-shokunin'"'"'
+base='"'"'b6db9e818d322726e39cb441f2179d34d4170275'"'"'
+def rows(t):
+ return {c[0]:c for line in t.splitlines() if re.match(r'"'"'^ {0,3}\|\s*S[0-9]{3,}\s*\|'"'"',line) for c in [[x.strip() for x in line.strip().strip('"'"'|'"'"').split('"'"'|'"'"')]]}
+a=rows(subprocess.check_output(['"'"'git'"'"','"'"'-C'"'"',lane,'"'"'show'"'"',base+'"'"':corpus/SOURCES.md'"'"'],text=True)); b=rows(pathlib.Path(lane+'"'"'/corpus/SOURCES.md'"'"').read_text())
+for name,d in [('"'"'before'"'"',a),('"'"'after'"'"',b)]:
+ print(name,'"'"'rows='"'"'+str(len(d)),'"'"'tiers='"'"'+str(dict(sorted(collections.Counter(v[3] for v in d.values()).items()))),'"'"'status='"'"'+str(dict(sorted(collections.Counter(v[7] for v in d.values()).items()))))
+print('"'"'added='"'"'+'"'"','"'"'.join(sorted(b.keys()-a.keys())),'"'"'old_rows_changed='"'"'+str(sum(a[k]!=b.get(k) for k in a)))
+'
+UTC=2026-11-04T20:39:15.269254+00:00
+before rows=98 tiers={'A': 88, 'B': 5, 'C': 5} status={'mined': 80, 'rejected': 18}
+after rows=99 tiers={'A': 89, 'B': 5, 'C': 5} status={'mined': 81, 'rejected': 18}
+added=S099 old_rows_changed=0
+
+exit=0

@@ -1,0 +1,82 @@
+# Receipt ScribeRound/landed-implementation-r66.txt
+# Independent check of the LANDED r66 cat SIGPIPE repair against the scribe's own fixtures, 2026-11-04
+# host Linux 7.2.11-arch1-1 x86_64 ; python Python 3.14.8 ; work dir /fast/scratch/hyaku/kasegi-r66/ScribeRound/work
+# base tree:  /fast/scratch/hyaku/kasegi-r66/ScribeRound/clone  (lane clone at b6db9e818d322726e39cb441f2179d34d4170275)
+# landed tree: /home/vgpnk/Projects/shokunin/kasegi-shokunin (read-only use of the committed gate)
+
+=== identities ===
+base gate sha256:
+  86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef  /fast/scratch/hyaku/kasegi-r66/ScribeRound/clone/corpus/instruments/figure-audit.py
+landed gate sha256:
+  51f299aff8d9ec8ddc23201e78a4dce7338833bc7c409a37bd19bc8da6b4eeac  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit.py
+landed HEAD: e8a865da49f3d1ff0e7222830006b3003d4577c0
+
+=== A. the six probe shapes, base vs landed, on the scribe's own fixtures ===
+--- BASE ---
+FIG P1 two-operand, later missing recorded=alpha derived=alpha ok
+FIG P2 two-operand, both existing recorded=alpha derived=alpha ok
+FIG P3 one operand recorded=alpha derived=alpha ok
+FIG P4 stdin only recorded=alpha derived=alpha ok
+FIG P5 single missing operand recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG P6 grep no-match recorded=0 derived=0 ok
+FIGURE-AUDIT figures=6 ok=5 stale=1 exit=1
+[rc=1]
+--- LANDED ---
+FIG P1 two-operand, later missing recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIG P2 two-operand, both existing recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIG P3 one operand recorded=alpha derived=alpha ok
+FIG P4 stdin only recorded=alpha derived=alpha ok
+FIG P5 single missing operand recorded=0 derived=UNAVAILABLE reason=derive-upstream-exit-1 stale
+FIG P6 grep no-match recorded=0 derived=0 ok
+FIGURE-AUDIT figures=6 ok=3 stale=3 exit=1
+[rc=1]
+
+=== B. operand-count edge cases (the decoded-argv question), base vs landed ===
+--- BASE ---
+FIG A cat -- -- missing.txt (2 real operands) recorded=alpha derived=alpha ok
+FIG B cat -- big.txt        (1 operand + sep) recorded=alpha derived=alpha ok
+FIG C cat -n big.txt        (option refused) recorded=alpha derived=1	alpha want=alpha stale
+FIG D cat - < big.txt       (stdin via '-') recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=4 ok=3 stale=1 exit=1
+[rc=1]
+--- LANDED ---
+FIG A cat -- -- missing.txt (2 real operands) recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIG B cat -- big.txt        (1 operand + sep) recorded=alpha derived=alpha ok
+FIG C cat -n big.txt        (option refused) recorded=alpha derived=UNAVAILABLE reason=derive-upstream-signal-13 stale
+FIG D cat - < big.txt       (stdin via '-') recorded=alpha derived=alpha ok
+FIGURE-AUDIT figures=4 ok=2 stale=2 exit=1
+[rc=1]
+
+=== C. what the landed repair decided, from the committed bytes ===
+90:def cat_sigpipe_exempt(argv):
+91-    """True when a SIGPIPE'd cat head had at most one decoded input: no operands (stdin) or
+92-    exactly one operand.  A leading "--" separator is honored; a lone "-" operand counts as a
+93-    stdin input; one filename containing spaces or quoted operators is already one decoded
+94-    argv token.  ANY option token (a word starting with "-" that is not "-" itself, unless it
+95-    follows a leading "--") is refused conservatively: option value semantics are not parsed
+96-    here, so e.g. `cat -n big.txt` is stale even though it reads a single file.  This is a
+97-    capability restriction, not general argument validation.
+98-    """
+99-    tokens = list(argv[1:])
+100-    if tokens and tokens[0] == "--":
+101-        tokens = tokens[1:]
+102-    elif any(t.startswith("-") and t != "-" for t in tokens):
+103-        return False
+104-    return len(tokens) <= 1
+105-
+106-
+
+=== D. verdict (scribe's own observation, not an admission) ===
+The landed repair converts the two-operand cat SIGPIPE cases (P1, P2) from the base's
+green 'ok' to 'derive-upstream-signal-13 stale', and leaves the one-operand case (P3),
+the stdin-only case (P4), the grep no-match positive (P6) and the pre-existing
+'cat missing.txt | wc -l' stale (P5) unchanged. On the operand-count edge cases the
+landed gate refuses 'cat -- -- missing.txt' (two real operands; the second '--' is a
+real operand) and 'cat -n big.txt' (option-bearing, conservatively refused), while
+'cat -- big.txt' (one operand after a separator) and 'cat - < big.txt' (stdin via '-')
+stay benign. That matches the frozen scope in .ufo/waves/round-66/claims.json:
+'decoded stdin-only/one operand with optional leading -- stays benign. Multi-input and
+option-bearing cat SIGPIPE is conservatively stale even with existing inputs; no claim
+every newly stale input failed. Non-cat SIGPIPE rule unchanged.'
+This is the scribe's independent observation on the scribe's own fixtures. It is not an
+admission and not a substitute for the frozen counter's final measurement.

@@ -2633,3 +2633,23 @@ Base b6db9e818d322726e39cb441f2179d34d4170275 with controls0d5aef2f40dce3129e914
 Counting command: `python3 -B .ufo/waves/round-66/w1/ExecCatDriver/verify.py --revision REV --controls-revision 0d5aef2f40dce3129e91419c34b6c46087089b94 --cat-mutbat .ufo/waves/round-66/cat-mutbat.py --work /fast/scratch/hyaku/kasegi-r66/L1/MEASUREMENT --final`. Before uses base revision and omits --final. Final measurement still owed. Any failed RESULT/nonzero defeats C1; frozen target is not narrowed.
 
 Only cat's SIGPIPE exception is restricted, with intentional conservative refusals for multi-input and option-bearing cat; this does not assert a missing input in every newly stale case. Non-cat heads retain the old exception. Coverage8/density9 held, no new knowledge/frontier/capability/score increase or retirement. One v1 wave9, no residual call; L1 planner. Existing unanswered operator decisions stay unanswered.
+
+## Round66 measured result — C1 verifies on the finite frozen predicate
+
+Freeze32a24002c252ec052aa535c6893d53da3004e14f; measured implementation **e8a865da49f3d1ff0e7222830006b3003d4577c0**. Same driver5962b7d6, collector d788bbc1, content pins and controls0d5aef2f as frozen; no counter amendment after freeze.
+
+| Axis | Before | After | Score delta and measurement |
+|---|---|---|---|
+| depth:verifiability (lowest) | Exact baseb6db9e81 VERIFY12/3 exit1; collector8/3 under candidate expectations; selftest63/0 | Committed final VERIFY12/0 exit0; collector8/0, driver-owned eight shapes under two ids hold, selftest67/0, existing mutant5/5, finite cat mutant3/3 with equivalent held/invalid rejected, real ledger35/35, wrong-want red/right-want green | **4→4 delta0, nominal R58**. Counting command in the frozen plan above, REV=e8a865da49f3d1ff0e7222830006b3003d4577c0; receipt `.ufo/waves/round-66/controls/final-verification-r66.txt` and raw final-children/. |
+| coverage |8|8 held| No coverage claim, knowledge/frontier admission or new capability. Registry98→99 is S099 own-work curation only. |
+| depth:density |9|9 held| Not targeted or remeasured; live registry facts/current-execution amendment only. No density credit. |
+
+Existing derive-gate and figure-audit capabilities are extended; **no new repertoire row**. Saturation9/10 and stagnation window unchanged; no retirement/split/waiver. Actual score gap remeasured:82 rechecks,60 execute,22 gated on lost bases,0 broken; score5 still requires0 gated unsupported claims (`controls/score-gap-after.txt`, exit0).
+
+ONE v1 wave9 settled (WAVE-DONE before final measurement/report), **8 evidence-producing,1 dead**: MutationCat, `402 Upstream request failed: Insufficient account funds (type=server_error)` on opencode-go/deepseek-v4.1-flash, no output/report. No replacement/residual call. L1 supplemental mutation battery is not output of that seat. L1 planner; three executor, reviewer, critic, mutation-tester, scout, connector, scribe; assigned attack3/9 (completed attack2/8). Results' null outputs are a shared orchestrator kernel-restart limitation; eight seat reports and `seat-error-telemetry.json` provide the actual evidence.
+
+ReviewCat independently43/43 predicted cases holds the finite rule, with18 intentional conservative changes and25 unchanged controls. This does not claim every newly stale case contains an input error: multi-input/option-bearing cat SIGPIPE is deliberately refused, other heads keep their prior exception. Production ledger35/35 and enumerated positives hold; broad semantic authenticity/sandbox/no-regression claims are not made.
+
+### Planned after round66 (not frozen)
+
+Lowest depth:verifiability4 remains. Source restoration and R67/R69/operator security boundaries are still unanswered; do not re-claim this finite cat repair or move its score. A successor must choose a distinct observed residual with a failing no-work control and reject relevant forgeries before freeze. Coverage8 holds; FIRST maturity/Fuzzilli/OpenSSF aggregate/API remain leads requiring their own source/novelty/claim-table gates. Proposal2/end-to-end domain-task credit remains open.
