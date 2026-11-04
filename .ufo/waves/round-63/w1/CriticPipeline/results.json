@@ -1,0 +1,218 @@
+[
+  {
+    "probe": "cat-missing",
+    "derive": "cat missing.txt | wc -l",
+    "want": "0",
+    "desired_bounded_exit": 1,
+    "observed_exit": 0,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG cat-missing recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+    "stderr": ""
+  },
+  {
+    "probe": "grep-invalid",
+    "derive": "grep '[' good.txt | wc -l",
+    "want": "0",
+    "desired_bounded_exit": 1,
+    "observed_exit": 0,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG grep-invalid recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+    "stderr": ""
+  },
+  {
+    "probe": "git-missing-ref",
+    "derive": "git show critic-r63-nonexistent-ref | wc -l",
+    "want": "0",
+    "desired_bounded_exit": 1,
+    "observed_exit": 0,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG git-missing-ref recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+    "stderr": ""
+  },
+  {
+    "probe": "python-exit7",
+    "derive": "python3 corpus/instruments/fail.py | wc -l",
+    "want": "0",
+    "desired_bounded_exit": 1,
+    "observed_exit": 0,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG python-exit7 recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+    "stderr": ""
+  },
+  {
+    "probe": "midstage-exit7",
+    "derive": "cat good.txt | python3 corpus/instruments/fail.py | wc -l",
+    "want": "0",
+    "desired_bounded_exit": 1,
+    "observed_exit": 0,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG midstage-exit7 recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+    "stderr": ""
+  },
+  {
+    "probe": "error-before-and",
+    "derive": "python3 corpus/instruments/fail.py | wc -l && cat tail.txt",
+    "want": "0\nTAIL",
+    "desired_bounded_exit": 1,
+    "observed_exit": 0,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG error-before-and recorded=0\nTAIL derived=0\nTAIL ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+    "stderr": ""
+  },
+  {
+    "probe": "cat-before-and",
+    "derive": "cat missing.txt | wc -l && cat tail.txt",
+    "want": "0\nTAIL",
+    "desired_bounded_exit": 1,
+    "observed_exit": 0,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG cat-before-and recorded=0\nTAIL derived=0\nTAIL ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+    "stderr": ""
+  },
+  {
+    "probe": "grep-no-match",
+    "derive": "grep absent good.txt | wc -l",
+    "want": "0",
+    "desired_bounded_exit": 0,
+    "observed_exit": 0,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG grep-no-match recorded=0 derived=0 ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+    "stderr": ""
+  },
+  {
+    "probe": "grep-no-match-and",
+    "derive": "grep absent good.txt | wc -l && cat tail.txt",
+    "want": "0\nTAIL",
+    "desired_bounded_exit": 0,
+    "observed_exit": 0,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG grep-no-match-and recorded=0\nTAIL derived=0\nTAIL ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+    "stderr": ""
+  },
+  {
+    "probe": "final-exit7",
+    "derive": "cat good.txt | python3 corpus/instruments/fail.py",
+    "want": "0",
+    "desired_bounded_exit": 1,
+    "observed_exit": 1,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG final-exit7 recorded=0 derived=UNAVAILABLE reason=derive-exit-7 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+    "stderr": ""
+  },
+  {
+    "probe": "final-exit1",
+    "derive": "grep absent good.txt",
+    "want": "0",
+    "desired_bounded_exit": 1,
+    "observed_exit": 1,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG final-exit1 recorded=0 derived=UNAVAILABLE reason=derive-exit-1 stale\nFIGURE-AUDIT figures=1 ok=0 stale=1 exit=1\n",
+    "stderr": ""
+  },
+  {
+    "probe": "sigpipe",
+    "derive": "python3 corpus/instruments/sigpipe.py | head -n 1",
+    "want": "x",
+    "desired_bounded_exit": 0,
+    "observed_exit": 0,
+    "argv": [
+      "/usr/bin/python3",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/figure-audit.py",
+      "--root",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+      "--ledger",
+      "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root/ledger.json"
+    ],
+    "cwd": "/fast/scratch/hyaku/kasegi-r63/CriticPipeline/root",
+    "stdout": "FIG sigpipe recorded=x derived=x ok\nFIGURE-AUDIT figures=1 ok=1 stale=0 exit=0\n",
+    "stderr": ""
+  }
+]

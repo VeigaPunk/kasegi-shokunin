@@ -1,0 +1,22 @@
+run-utc=2026-11-04T17:08:21.850373+00:00
+command=["python3", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecMutants/pipeline-mutbat-r63.py", "--instrument", "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/figure-audit.py", "--work", "/fast/scratch/hyaku/kasegi-r63/L1"]
+pipeline-mutbat-r63 instrument=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/figure-audit.py
+battery-utc=2026-11-04T17:08:13Z
+instrument-sha256=15bcb6c4fbaaa23c2b85e480dff9b9af52e43442de64661f222d8868dd73b997
+anchor guard-threshold sites=1 exact-once=ok
+anchor guard-refusal sites=1 exact-once=ok
+PRISTINE selftest_exit=0 cases=43 failures=0 verdict=pass
+CONTROL c-equiv-reversed sites=1 compile=ok selftest_exit=0 killed=no verdict=held last='selftest cases=43 failures=0'
+CONTROL c-equiv-trailing-space sites=1 compile=ok selftest_exit=0 killed=no verdict=held last='selftest cases=43 failures=0'
+CONTROL c-invalid-missing-colon sites=1 compile=fail invalid=1 killed=0 verdict=invalid-held detail="expected ':' (c-invalid-missing-colon.py, line 107)"
+MUT m-threshold-0 sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-cat-missing-exit1-retained verdict=killed last='selftest cases=43 failures=2'
+MUT m-threshold-2 sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-grep-invalid-stale verdict=killed last='selftest cases=43 failures=1'
+MUT m-threshold-ge0 sites=1 compile=ok selftest_exit=1 killed=1 failed_case=quoted-separator-admitted verdict=killed last='selftest cases=43 failures=4'
+MUT m-refusal-dead sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-grep-invalid-stale verdict=killed last='selftest cases=43 failures=3'
+MUT m-refusal-skip sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-grep-invalid-stale verdict=killed last='selftest cases=43 failures=3'
+MUT m-refusal-rc-launder sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-grep-invalid-stale verdict=killed last='selftest cases=43 failures=3'
+MUT m-reason-value-constant sites=1 compile=ok selftest_exit=1 killed=1 failed_case=upstream-grep-invalid-stale verdict=killed last='selftest cases=43 failures=3'
+MUTBAT mutants=7 killed=7 survivors=0 invalid=1 controls=3 verdict=PASS
+battery-exit=0
+
+exit=0

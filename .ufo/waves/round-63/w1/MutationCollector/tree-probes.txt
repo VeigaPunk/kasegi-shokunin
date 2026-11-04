@@ -1,0 +1,41 @@
+axes=depth:verifiability; isolation=own-scratch; base=fdccc6da803965234c1eff5a0fee38b97e6621c1
+audit_sha256=a0ddbd40a577d3d9e87dc89dbda0c5eb3237918246c89e0b20a29a47d395f080 prose_sha256=1316f622f11ffb4d9dd0831c099c732baf15131758b922e404a143bd561d41d1
+CASE cat-missing expected_exit=1 argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree/cat-missing.json", "--root", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree"] derive="cat missing.txt | wc -l"
+FIG cat-missing recorded=0 derived=0 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+OBSERVED exit=0 matches_expected=False
+CASE grep-invalid expected_exit=1 argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree/grep-invalid.json", "--root", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree"] derive="grep '[' present.txt | wc -l"
+FIG grep-invalid recorded=0 derived=0 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+OBSERVED exit=0 matches_expected=False
+CASE git-bad-ref expected_exit=1 argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree/git-bad-ref.json", "--root", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree"] derive="git show refs/heads/MutationCollector-nonexistent:path | wc -l"
+FIG git-bad-ref recorded=0 derived=0 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+OBSERVED exit=0 matches_expected=False
+CASE python-exit7 expected_exit=1 argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree/python-exit7.json", "--root", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree"] derive="python3 corpus/instruments/fail.py | wc -l"
+FIG python-exit7 recorded=0 derived=0 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+OBSERVED exit=0 matches_expected=False
+CASE cat-middle expected_exit=1 argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree/cat-middle.json", "--root", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree"] derive="cat present.txt | cat missing.txt | wc -l"
+FIG cat-middle recorded=0 derived=0 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+OBSERVED exit=0 matches_expected=False
+CASE grep-middle expected_exit=1 argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree/grep-middle.json", "--root", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree"] derive="cat present.txt | grep '[' | wc -l"
+FIG grep-middle recorded=0 derived=0 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+OBSERVED exit=0 matches_expected=False
+CASE python-error-and-group expected_exit=1 argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree/python-error-and-group.json", "--root", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree"] derive="python3 corpus/instruments/fail.py | wc -l && wc -l < empty.txt"
+FIG python-error-and-group recorded=0
+0 derived=0
+0 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+OBSERVED exit=0 matches_expected=False
+CASE grep-no-match expected_exit=0 argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree/grep-no-match.json", "--root", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree"] derive="grep absent present.txt | wc -l"
+FIG grep-no-match recorded=0 derived=0 ok
+FIGURE-AUDIT figures=1 ok=1 stale=0 exit=0
+OBSERVED exit=0 matches_expected=True
+CASE final-error expected_exit=1 argv=["/usr/bin/python3", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/figure-audit.py", "--ledger", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree/final-error.json", "--root", "/fast/scratch/hyaku/kasegi-r63/MutationCollector/tree"] derive="cat present.txt | grep '['"
+FIG final-error recorded=0 derived=UNAVAILABLE reason=derive-exit-2 stale
+FIGURE-AUDIT figures=1 ok=0 stale=1 exit=1
+OBSERVED exit=1 matches_expected=True
+audit_after_sha256=a0ddbd40a577d3d9e87dc89dbda0c5eb3237918246c89e0b20a29a47d395f080 prose_after_sha256=1316f622f11ffb4d9dd0831c099c732baf15131758b922e404a143bd561d41d1

@@ -1,0 +1,277 @@
+{
+  "environment_overrides": {
+    "HYAKU_SCRATCH": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+    "TMPDIR": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GIT_DIR": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.git"
+  },
+  "python": "3.14.8 (main, Oct  2 2026, 10:23:31) [GCC 16.2.1 20260810]",
+  "baseline_sha256": "a0ddbd40a577d3d9e87dc89dbda0c5eb3237918246c89e0b20a29a47d395f080",
+  "candidate_sha256": "e557d2f0ceea9866b40b7b99dd53864a00330ae7481f32e7eeefca2fbf2431e8",
+  "records": [
+    {
+      "name": "baseline-selftest",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/baseline.py",
+        "--selftest"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 0,
+      "expected_reason": null,
+      "actual_exit": 0,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/baseline-selftest.txt",
+      "receipt_sha256": "ea7eefb2e84e3fc317cde0a4d797157d74b41b8f8ad5b496b08e464a965ae6fa"
+    },
+    {
+      "name": "baseline-cat-missing",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/baseline.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/cat-missing.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 0,
+      "expected_reason": null,
+      "actual_exit": 0,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/baseline-cat-missing.txt",
+      "receipt_sha256": "677af69aca461b6305e1da0dd58fc996bc8c620d6003e6c55bd9b4969942a65a"
+    },
+    {
+      "name": "baseline-grep-invalid",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/baseline.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/grep-invalid.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 1,
+      "expected_reason": "derive-upstream-exit-2",
+      "actual_exit": 0,
+      "verdict": "fail",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/baseline-grep-invalid.txt",
+      "receipt_sha256": "082c380e4a1cc28a307632857c0b891978c5a1e728823d20b50452d8d947294c"
+    },
+    {
+      "name": "baseline-git-missing-ref",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/baseline.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/git-missing-ref.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 1,
+      "expected_reason": "derive-upstream-exit-128",
+      "actual_exit": 0,
+      "verdict": "fail",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/baseline-git-missing-ref.txt",
+      "receipt_sha256": "05c3a2944ad3175c32a3b47fe78a5c3bfd83a55519096554dc6ad1793cce6499"
+    },
+    {
+      "name": "baseline-python-exit7",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/baseline.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/python-exit7.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 1,
+      "expected_reason": "derive-upstream-exit-7",
+      "actual_exit": 0,
+      "verdict": "fail",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/baseline-python-exit7.txt",
+      "receipt_sha256": "6d3c05ac39ed1020cdfe535892e8fcd0c0052a84ac50b0d3c183323a9b5ebc98"
+    },
+    {
+      "name": "baseline-grep-no-match",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/baseline.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/grep-no-match.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 0,
+      "expected_reason": null,
+      "actual_exit": 0,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/baseline-grep-no-match.txt",
+      "receipt_sha256": "1c608c5f84ed06c5a398e6839392c0652b6920375b6a9cdca543bd6f2edd5de9"
+    },
+    {
+      "name": "baseline-successful-pipeline",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/baseline.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/successful-pipeline.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 0,
+      "expected_reason": null,
+      "actual_exit": 0,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/baseline-successful-pipeline.txt",
+      "receipt_sha256": "6480c0c165dc7b0ab0800e83c7fb0cd59aa59f366efd7ab9889b5db1619e1267"
+    },
+    {
+      "name": "candidate-selftest",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/figure-audit.py",
+        "--selftest"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 0,
+      "expected_reason": null,
+      "actual_exit": 0,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/candidate-selftest.txt",
+      "receipt_sha256": "80c21e7c14e88d820c771bff88b3251ed3021887bb5ad6c286868468e2e87c8f"
+    },
+    {
+      "name": "candidate-cat-missing",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/cat-missing.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 0,
+      "expected_reason": null,
+      "actual_exit": 0,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/candidate-cat-missing.txt",
+      "receipt_sha256": "677af69aca461b6305e1da0dd58fc996bc8c620d6003e6c55bd9b4969942a65a"
+    },
+    {
+      "name": "candidate-grep-invalid",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/grep-invalid.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 1,
+      "expected_reason": "derive-upstream-exit-2",
+      "actual_exit": 1,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/candidate-grep-invalid.txt",
+      "receipt_sha256": "dd87f89d8f71eb324e0db3544904bd890f0f52fa5ae3e0c9d882b9e5e125083e"
+    },
+    {
+      "name": "candidate-git-missing-ref",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/git-missing-ref.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 1,
+      "expected_reason": "derive-upstream-exit-128",
+      "actual_exit": 1,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/candidate-git-missing-ref.txt",
+      "receipt_sha256": "7b96072c69a0f4809857a0209f87a5e8d868c20fb9367e37b35fe2062a7e5654"
+    },
+    {
+      "name": "candidate-python-exit7",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/python-exit7.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 1,
+      "expected_reason": "derive-upstream-exit-7",
+      "actual_exit": 1,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/candidate-python-exit7.txt",
+      "receipt_sha256": "3d0c29940c84b717eadb7cad0914751313f3c5833bb8ec4197c3669993d0e9f3"
+    },
+    {
+      "name": "candidate-grep-no-match",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/grep-no-match.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 0,
+      "expected_reason": null,
+      "actual_exit": 0,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/candidate-grep-no-match.txt",
+      "receipt_sha256": "1c608c5f84ed06c5a398e6839392c0652b6920375b6a9cdca543bd6f2edd5de9"
+    },
+    {
+      "name": "candidate-successful-pipeline",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/figure-audit.py",
+        "--ledger",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture/successful-pipeline.json",
+        "--root",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/fixture"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 0,
+      "expected_reason": null,
+      "actual_exit": 0,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/candidate-successful-pipeline.txt",
+      "receipt_sha256": "6480c0c165dc7b0ab0800e83c7fb0cd59aa59f366efd7ab9889b5db1619e1267"
+    },
+    {
+      "name": "candidate-real-ledger",
+      "command": [
+        "/usr/bin/python3",
+        "/fast/scratch/hyaku/kasegi-r63/ExecPipeline/figure-audit.py",
+        "--ledger",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/figure-audit-ledger.json",
+        "--root",
+        "/home/vgpnk/Projects/shokunin/kasegi-shokunin"
+      ],
+      "cwd": "/fast/scratch/hyaku/kasegi-r63/ExecPipeline",
+      "expected_exit": 0,
+      "expected_reason": null,
+      "actual_exit": 0,
+      "verdict": "pass",
+      "receipt": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-63/w1/ExecPipeline/candidate-real-ledger.txt",
+      "receipt_sha256": "ddbc25dee4cd9c57e073769867fc0cb2e087cad1b805efe1efa12b7527f237aa"
+    }
+  ]
+}

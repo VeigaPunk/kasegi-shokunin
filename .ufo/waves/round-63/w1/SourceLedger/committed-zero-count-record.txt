@@ -1,0 +1,23 @@
+# round-54 C1 do-nothing control at base 32782bd: the figure-audit capability does not exist
+# every check is read-only over committed bytes
+run-utc=2026-11-01T08:41:28Z
+$ git cat-file -e 32782bd:corpus/instruments/figure-audit.py
+fatal: path 'corpus/instruments/figure-audit.py' does not exist in '32782bd'
+[exit=128]
+
+$ git cat-file -e 32782bd:corpus/instruments/figure-audit-ledger.json
+fatal: path 'corpus/instruments/figure-audit-ledger.json' does not exist in '32782bd'
+[exit=128]
+
+$ git show 32782bd:SCORECARD.md | grep -c 'figure-audit'
+2
+[exit=0]
+
+$ git show 32782bd:LOG.md | grep -c 'figure-audit'
+0
+[exit=1]
+
+$ git show 32782bd:corpus/instruments/knowledge-expected.txt | grep -c 'figure-audit'
+0
+[exit=1]
+
