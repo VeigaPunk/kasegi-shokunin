@@ -1,0 +1,13 @@
+$ python3 -c 'import pathlib,subprocess; b=subprocess.check_output(["git","show","c33d24ddd11abf1ebdea0dccf7327e9069dd9104:corpus/QUALITY.md"],text=True).splitlines(); a=pathlib.Path("corpus/QUALITY.md").read_text().splitlines(); [(print(r,"base="+str(sum(x.startswith("| "+r+" |") for x in b)),"after="+str(sum(x.startswith("| "+r+" |") for x in a)))) for r in ["R79","R80"]]'
+R79 base=0 after=1
+R80 base=0 after=1
+
+exit=0
+$ python3 -c 'import subprocess,re; t=subprocess.check_output(["git","show","cdeea55bea09ed08765d3c3d3a56f23db44e66f4:corpus/instruments/figure-audit.py"],text=True); print("R74-base-limb="+str(sum(bool(re.search("allow-list:.*head",x)) for x in t.splitlines()[:40])))'
+R74-base-limb=0
+
+exit=0
+$ sha256sum corpus/instruments/figure-audit.py
+051083a2dd3b76f96568dd2a18866975b71dd1578992546c671faf21e99418a9  corpus/instruments/figure-audit.py
+
+exit=0

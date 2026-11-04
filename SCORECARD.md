@@ -2500,3 +2500,17 @@ Frozen claims: `.ufo/waves/round-60/claims.json` (freeze commit `66e6241cd7afd61
 | ExecEscapes | executor | 43 derives: 14 admitted-and-executing (2 green), 10 safe, 19 refused | M60-9; base-vs-candidate receipt |
 
 **Wave-1 non-claim findings (reported, not claimed):** the write-flag screen is token-literal (quoted/clustered/abbreviated/ANSI-C spellings and `sort --compress-program` admitted; `#'` comment-phantom writes with a green audit); 24 write/execute derives admitted, 9 green; no regression against base (`controls/c1-xclass-base-cand-r60.txt`); the new runner is host-bound and not fail-closed, and the selftest's `cases=20` is host-conditional; 8 of 13 one-limb mutants survive the selftest. None of these changes a frozen value; the escalations are the kasegi round-60 L0 line and the round-61 plan. **Trend verdicts:** expansion improved; quality unchanged; discernment improved (the wave's non-author seats found the screen's incompleteness and the harness defects, and the connector's recommendation was applied rather than filed unread).
+
+## Round 61 — measured moves (frozen C1/C2, implementation 13c8060b343e002339ffd72da37ff74514f82765)
+
+Freeze `6f88f3a7f6b9689b49241e3f4a8e551c57a3f766`, base `c33d24ddd11abf1ebdea0dccf7327e9069dd9104`; predicate/counter/kill rules `.ufo/waves/round-61/claims.json`.
+
+| Axis | Before | After | Score delta and evidence |
+|---|---|---|---|
+| depth:verifiability (lowest) | P1/P2/P3 each execute, markers=1; selftest 20; mutbat 2/2 | P1/P2/P3 each exit=2 markers=0; P4 stays refused; P5/P6 and two regression controls pass; selftest 24/0; mutbat 3/3; ledger35/35; red fixture stale | 4 → 4, delta 0, nominal per R58: figure gate does not feed citation-resolution metric. `bash .ufo/waves/round-61/controls/c1-probe-run-r61.sh corpus/instruments/figure-audit.py /fast/scratch/hyaku/kasegi-r61/verify/probes`; other commands in claims.json. Base/stand-in receipts under controls/, measured implementation 13c8060b. |
+| coverage | frontier rows41 registry93 entries44 capture76; F42 absent | frontier rows42 registry94 entries45 capture77; F42/S094 admitted; seven pinned quotes pass | 8 → 8, delta 0. `python3 corpus/instruments/frontier-recheck-count.py`; `python3 corpus/instruments/capture-binding-check.py`; `.ufo/waves/round-61/controls/c2-standin-r61.txt`; sourced case at corpus/knowledge/project-zero-big-sleep-sqlite-variant-analysis.md, implementation 13c8060b. |
+| depth:density | 9 | 9 held | Not targeted or re-measured; SKILL changes are registry facts and an appended historical-pointer correction. |
+
+**Round-60 correction (D1/D8, append-only).** The r60 lesson/LOG/SCORECARD incorrectly said R79/R80 landed: actual rows were R78/R81/R82. R79/R80 land in round 61, with R83 checking actual criterion rows (`controls/carry-in-r61.txt`: base0/0 → after1/1). The r60 statement “two new capability rows in effect” meant ONE new row and ONE existing-row extension. No new capability acquisition is claimed in round 61; C1 extends the existing derive-gate behavior. Current selftest is host-conditional (bare python required), and shell expansion/write-flag residuals remain open.
+
+**Saturation:** 9/10; stagnation window unchanged. Lowest non-retired axis remains depth:verifiability 4; this round works it directly. No score increase or nudge waiver asserted.
