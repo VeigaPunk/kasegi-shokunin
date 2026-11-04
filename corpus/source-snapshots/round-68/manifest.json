@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "note": "Round-68 OpenSSF Scorecard API machine contract. S102 is the swagger 2.0 document served by api.securityscorecards.dev/swagger.json (info.version 1.1.0, host api.scorecard.dev): the route family, the ScorecardResult/ScorecardCheck/Repo/Error definitions and the aggregate-score field. It is the machine interface to the scorecard data, NOT the check documentation the lane already holds (F35/S086) and not any served instance. A second candidate, one live project result at /projects/github.com/ossf/scorecard, was opened this round and refused as an entry source: the served JSON is one 13259-byte line, so it carries no located line anchors and its values (date, aggregate score, per-check scores) are instance data that change with every analysis. Both URLs were fetched 2026-11-04T21:49:46Z with the lane instrument; only S102 is recorded here.",
+  "sources": [
+    {
+      "id": "S102",
+      "url": "https://api.securityscorecards.dev/swagger.json",
+      "capture_url": "https://api.securityscorecards.dev/swagger.json",
+      "http": {
+        "status": 200,
+        "final_url": "https://api.securityscorecards.dev/swagger.json"
+      },
+      "kind": "text",
+      "fetch_method": "capture-source.py --kind text, default instrument UA (JSON served pretty-printed; snapshot keeps the served line structure with whitespace collapsed)",
+      "fetched_utc": "2026-11-04T21:49:46Z",
+      "path": "S102.txt",
+      "sha256": "6ebb8552ac3e0c4085f4a9239e29551fa1be19cebbdf99ccabb96400d8c2caa0",
+      "bytes": 11802,
+      "lines": 429,
+      "quotes": [
+        {
+          "id": "Q01-description",
+          "quote": "API to interact with a project's published Scorecard result",
+          "anchor": 13
+        },
+        {
+          "id": "Q02-title",
+          "quote": "OpenSSF Scorecard API",
+          "anchor": 14
+        },
+        {
+          "id": "Q04-operation",
+          "quote": "Get a repository's ScorecardResult",
+          "anchor": 24
+        },
+        {
+          "id": "Q05-commit-parameter",
+          "quote": "SHA1 commit hash expressed in hexadecimal format",
+          "anchor": 30
+        },
+        {
+          "id": "Q06-200-schema",
+          "quote": "A JSON object of the repository's ScorecardResult",
+          "anchor": 37
+        },
+        {
+          "id": "Q07-repo-name",
+          "quote": "respository that was analyzed",
+          "anchor": 285
+        },
+        {
+          "id": "Q08-repo-commit",
+          "quote": "SHA1 value of the analyzed commit expressed as hexadecimal",
+          "anchor": 290
+        },
+        {
+          "id": "Q09-aggregate-score",
+          "quote": "Aggregate score of the repository",
+          "anchor": 353
+        }
+      ]
+    }
+  ]
+}
