@@ -35,10 +35,13 @@ Ledger entry shape (JSON object with a "figures" array):
                             filesystem races can still write or execute other programs.
 
 Exit codes: 0 every figure re-derives; 1 any figure stale or derive failed
-(fail-closed: a nonzero final pipeline status or empty stdout is stale);
+(fail-closed: nonzero final status, upstream positive status >1, or empty stdout is stale);
 2 harness/read error (ledger missing/unparsable, entry malformed, derive refused).
-Pipeline status is the last command's status, not pipefail, preserving grep|wc
-zero-count derives; && short-circuits on that status and concatenates group stdout.
+After all pipeline stages finish, a nonzero final status takes precedence
+(derive-exit-N); otherwise the first upstream positive status >1 is stale
+(derive-upstream-exit-N). Upstream exit1 and negative signal statuses remain
+ignored, preserving grep|wc zero-count derives, not general error detection or
+pipefail. && stops on either failure and concatenates successful group stdout.
 --selftest builds fixtures under $HYAKU_SCRATCH, otherwise $TMPDIR/the system temp
 directory, and uses the current Python interpreter. It exits 0 only if all cases pass.
 """
@@ -64,7 +67,7 @@ DENIED_FLAGS = (
 )
 
 
-EXPECTED_CASES = 35  # R17 pin: a dropped selftest case turns the selftest red
+EXPECTED_CASES = 43  # R17 pin: a dropped selftest case turns the selftest red
 
 
 def eprint(*a):
@@ -100,6 +103,10 @@ def run_derive(plan, root):
             if status != 0:
                 out = b"".join(output).decode("utf-8", "replace").strip()
                 return None, out, "derive-exit-%d" % status
+            for p in processes[:-1]:
+                if p.returncode > 1:
+                    out = b"".join(output).decode("utf-8", "replace").strip()
+                    return None, out, "derive-upstream-exit-%d" % p.returncode
         except subprocess.TimeoutExpired:
             return None, "", "derive-timeout"
         except (OSError, ValueError) as e:
@@ -327,7 +334,7 @@ def _one(fid, derive, want):
 def selftest():
     cases = []
 
-    def run_case(cid, want_exit, ledger_doc=None, broken=False):
+    def run_case(cid, want_exit, ledger_doc=None, broken=False, reason=None):
         tmp = tempfile.mkdtemp(prefix="figure-audit-selftest-",
                                dir=os.environ.get("HYAKU_SCRATCH") or None)
         try:
@@ -338,6 +345,8 @@ def selftest():
             os.makedirs(os.path.join(tmp, "corpus", "instruments"), exist_ok=True)
             with open(os.path.join(tmp, "corpus", "instruments", "ok.py"), "w", encoding="utf-8", newline="\n") as f:
                 f.write("print(35)\n")
+            with open(os.path.join(tmp, "corpus", "instruments", "fail.py"), "w", encoding="utf-8", newline="\n") as f:
+                f.write("raise SystemExit(7)\n")
             with open(os.path.join(tmp, "out.py"), "w", encoding="utf-8", newline="\n") as f:
                 f.write("print(35)\n")
             os.makedirs(os.path.join(tmp, "corpus", "instruments2"))
@@ -360,7 +369,7 @@ def selftest():
             p = subprocess.run([sys.executable, me, "--ledger", lp, "--root", tmp],
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=120)
             out = p.stdout.decode("utf-8", "replace")
-            good = p.returncode == want_exit
+            good = p.returncode == want_exit and (reason is None or "reason=%s stale" % reason in out)
             cases.append((cid, p.returncode, want_exit, good, out))
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
@@ -400,6 +409,19 @@ def selftest():
     run_case("input-redirection-admitted", 0, _one("s-input", "cat < g.txt", "35"))
     run_case("and-shortcircuit-fails", 1, _one("s-andfail", "cat missing.txt && cat g.txt", "35"))
     run_case("and-stdout-concatenated", 0, _one("s-andout", "cat g.txt && cat g.txt", "35\n35"))
+    run_case("upstream-cat-missing-exit1-retained", 0, _one("s-catmissing", "cat missing.txt | wc -l", "0"))
+    run_case("upstream-grep-invalid-stale", 1, _one("s-grepinvalid", "grep '[' g.txt | wc -l", "0"),
+             reason="derive-upstream-exit-2")
+    run_case("upstream-git-missing-ref-stale", 1, _one("s-gitmissing", "git show refs/figure-audit-nonexistent | wc -l", "0"),
+             reason="derive-upstream-exit-128")
+    run_case("upstream-python-exit7-stale", 1, _one("s-pyfail", "python3 corpus/instruments/fail.py | wc -l", "0"),
+             reason="derive-upstream-exit-7")
+    run_case("upstream-grep-no-match-counts-zero", 0, _one("s-grepzero", "grep absent g.txt | wc -l", "0"))
+    run_case("successful-pipeline-counts-one", 0, _one("s-pipeok", "cat g.txt | wc -l", "1"))
+    run_case("final-exit1-stale", 1, _one("s-finalone", "cat g.txt | grep absent", "0"),
+             reason="derive-exit-1")
+    run_case("final-error-precedes-upstream-error", 1, _one("s-finalfirst", "grep '[' g.txt | python3 corpus/instruments/fail.py", "0"),
+             reason="derive-exit-7")
 
     failures = 0
     for cid, got, want, good, out in cases:
