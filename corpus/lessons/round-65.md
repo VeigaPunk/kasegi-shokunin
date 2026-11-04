@@ -68,6 +68,8 @@ That closes the r64 routed defect 1 class with observed output instead of a code
 | M65-4 | a phrase-absence screen ignores navigation boilerplate | the first downstream sweep reported 3 capture hits for "PSIRT Services Framework"; all three are FIRST site navigation at line 201 of S001, S002 and S053 | the same screen (`controls/prefreeze-screen-r65.txt`, adjudication block) | R85: classify nav/boilerplate hits before reporting presence or absence |
 | M65-5 | a probe set alone cannot reject a semantic emulator | seat MutationC1's emulator passes 6/6 of the documented probes and is rejected only by a held-out pair (`w1/MutationC1.md` §5) | the independent mutation seat | named open in the claim's residuals and in the round-66 plan; the held-out pair is the control to standardise |
 | M65-6 | two independent drivers under one claim | seat ExecDriver authored its own 8-measurement driver (`w1/ExecDriver/verify-r65.py`, base `failures=6`) while the L1 froze a different one; only one counter may back C1 | the wave's results file (both artifacts exist) | the frozen driver is the claim's counter; the seat's driver is corroborating predata only, named as such in the report |
+| M65-7 | an exemption can mask an unrelated error | the SIGPIPE exemption makes `cat big.txt missing.txt | head -n 1` read green while `cat missing.txt | wc -l` reads stale — the same missing operand, hidden by the pipe closing before the error is reported (`w1/CriticC1.md` § H1; `w1/CriticC1/receipts/q2-missing-input-contrast.txt`) | seat CriticC1, before any final measurement | R88: an exemption's masking path is probed and named in the claim's residuals; the r66 plan carries the single-operand restriction |
+| M65-8 | a counter trusts the mutable worktree | the driver read the probe/battery/candidate from the worktree and hashed worktree bytes; `--work` was unguarded and children had no timeout | seats CriticC1 (§ D2) and SentinelScope (S-02, S-03, S-08), before the final measured run | erratum 2 (`155737d0863fc4463998f060b58d1c7510f5f96d`): inputs materialised from their adding commits, work guard, 900 s child timeout; R89 |
 
 ## Carry-in — round-64 routed defects
 
@@ -97,6 +99,6 @@ settles.
 - SIGPIPE on a non-final stage stays benign by documented rule and is pinned by its own selftest case.
 - The gate is not pipefail, not a sandbox and not an authenticity check.
 - Lost-base source restoration and the operator-owned R67/R69 decisions remain open; the metric gap stays
-  22 of 81 rechecks gated on a lost base (`recheck-audit.py`).
+  22 of 82 rechecks gated on a lost base (`recheck-audit.py`).
 - F44's cardinalities (6/28/84) are counted headings of this page; the capture is a fetched instance, not
   an edition statement.
