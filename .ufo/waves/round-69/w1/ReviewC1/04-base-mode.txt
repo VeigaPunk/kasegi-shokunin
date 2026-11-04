@@ -1,0 +1,24 @@
+# Receipt 04 — do-nothing control: base gate, --mode base, default lane
+
+Command:
+  mkdir -p /fast/scratch/hyaku/kasegi-r69/ReviewC1/final-base && python3 -B /fast/scratch/hyaku/kasegi-r69/ReviewC1/export/.ufo/waves/round-69/controls/c1-probe-run-r69.py --gate /fast/scratch/hyaku/kasegi-r69/ReviewC1/export/.ufo/waves/round-69/controls/base-gate-656272cf.py --work /fast/scratch/hyaku/kasegi-r69/ReviewC1/final-base --mode base; echo EXIT=$?
+
+Output (verbatim, wall time 39.53s):
+  HOST sort (GNU coreutils) 9.12; git version 2.56.0; Python 3.14.8
+  MEASURE P1-sort-compress-prefix-equals FAIL rc=1 refused=0 marker_runs=18288 wrote=0
+  MEASURE P2-sort-compress-prefix-space FAIL rc=1 refused=0 marker_runs=18288 wrote=0
+  MEASURE P3-sort-output-prefix FAIL rc=1 refused=0 marker_runs=0 wrote=1
+  MEASURE P4-sort-bundled-short-o FAIL rc=1 refused=0 marker_runs=0 wrote=1
+  MEASURE P5-git-show-commit-form FAIL rc=1 refused=0 marker_runs=1 wrote=0
+  MEASURE P6-git-show-message-search FAIL rc=1 refused=0 marker_runs=1 wrote=0
+  MEASURE P7-git-cat-file-textconv FAIL rc=0 refused=0 marker_runs=1 wrote=0
+  MEASURE P8-git-cat-file-filters FAIL rc=0 refused=0 marker_runs=1 wrote=0
+  MEASURE read-only-controls-admitted ok controls=9 failed=0
+  MEASURE selftest FAIL selftest cases=77 failures=0 rc=0
+  MEASURE mutbat ok rc=0 mutbat killed=5/5 survivors=0 invalid=0 controls=pass
+  MEASURE real-ledger ok FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0 rc=0
+  MEASURE no-write-side-effect FAIL fixture_changed=1 marker_runs=36580
+  VERIFY measurements=13 failures=10 gate_sha256=10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8 mode=base
+  EXIT=1
+
+Compared line-by-line against the committed receipt .ufo/waves/round-69/controls/c1-base-donothing-r69.txt (at freeze commit and implementation commit): every HOST/MEASURE/VERIFY line matches, including marker_runs 18288/18288/0/0/1/1/1/1, wrote 1/1 on P3/P4, selftest cases=77, no-write-side-effect marker_runs=36580 (= 18288*2 + 4), failures=10. The committed receipt ends "rc=1"; my run "EXIT=1". Matches claims.json do_nothing_control text exactly.

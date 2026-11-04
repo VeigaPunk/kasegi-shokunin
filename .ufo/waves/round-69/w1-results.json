@@ -1,0 +1,80 @@
+{
+ "lane": "kasegi",
+ "round": 69,
+ "wave": "w1",
+ "seats": 12,
+ "results": [
+  {
+   "name": "ReviewC1",
+   "agent": "reviewer",
+   "output": "{\n  \"verdict\": \"VERIFIED\",\n  \"seat\": \"ReviewC1-14\",\n  \"scope\": \"C1 frozen predicate reproduced from committed bytes only\",\n  \"checks\": {\n    \"1_integrity_and_pins\": \"gate sha c09b0fb1a95b770e5a858ed88b005ec3530486d57dd721cbed2ec6386d882bde, counter sha eb254588976f783008ff333f07b775de2a50c827bc22c7a2fe53477ed2f1d618 (identical at freeze and implementation commits), base gate sha 10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8 \u2014 all three equal pins-r69.txt lines and the prompt values\",\n    \"2_candidate_default_lane\": \"VERIFY measurements=13 failures=0 gate_sha256=c09b0fb1... mode=candidate, EXIT=0 \u2014 frozen predicate reproduced line for line (P1-P8 all rc=2 refused=1 marker_runs=0 wrote=0; read-only-controls-admitted 9/9; selftest cases=86 failures=0; mutbat killed=5/5; real-ledger figures=35 ok=35 stale=0; no-write-side-effect ok)\",\n    \"3_candidate_export_lane\": \"failures=1, EXIT=1 \u2014 sole FAIL is real-ledger (ok=0 stale=35) because a git-archive export has no .git and omits the ledger's referenced lane files; environmental, not a gate defect; canonical default-lane run passes\",\n    \"4_base_control\": \"failures=10, EXIT=1, line-for-line identical to committed controls/c1-base-donothing-r69.txt (P1/P2 marker_runs=18288, P3/P4 wrote=1, P5-P8 marker_runs=1, selftest cases=77, no-write-side-effect marker_runs=36580)\",\n    \"5_commit_order\": \"freeze 9b877fd9 (19:31:53Z-03) precedes implementation 1bd01ee (19:32:02Z-03) in 656272cf..981115648; git diff 4d91dcd..9b877fd9 -- corpus/instruments/figure-audit.py is empty \u2014 no implementation byte before the freeze\"\n  },\n  \"residuals\": [\n    \"depth:verifiability observation (not a defeat): the counter cannot reach failures=0 from a bare git archive of the two pinned paths \u2014 the real-ledger limb needs a lane checkout with git history; the frozen counting_command works via the default live lane\",\n    \"no hunt for open shapes beyond the enumerated P1-P8 set (attack seats own that per the kill rule); nothing here supports or refutes class saturation\"\n  ],\n  \"artifacts\": {\n    \"report\": \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-69/w1/ReviewC1.md\",\n    \"receipts\": \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-69/w1/ReviewC1/01-export-and-pins.txt .. 06-ledger-git-derives.txt\"\n  },\n  \"bounds\": \"leaf seat honored: no subagents, no lane mutation, no installs, scratch /fast/scratch/hyaku/kasegi-r69/ReviewC1 removed before yield\"\n}",
+   "note": null
+  },
+  {
+   "name": "CriticC1",
+   "agent": "critic",
+   "output": "",
+   "note": null
+  },
+  {
+   "name": "MutationC1",
+   "agent": "mutation-tester",
+   "output": "",
+   "note": null
+  },
+  {
+   "name": "MutationCounter",
+   "agent": "mutation-tester",
+   "output": "",
+   "note": null
+  },
+  {
+   "name": "SentinelGate",
+   "agent": "sentinel",
+   "output": "",
+   "note": null
+  },
+  {
+   "name": "RevengerHosts",
+   "agent": "revenger",
+   "output": "",
+   "note": null
+  },
+  {
+   "name": "ScoutS103",
+   "agent": "scout",
+   "output": "",
+   "note": null
+  },
+  {
+   "name": "ScopeF47",
+   "agent": "connector",
+   "output": "",
+   "note": null
+  },
+  {
+   "name": "ReviewC2",
+   "agent": "reviewer",
+   "output": "{\n  \"seat\": \"ReviewC2\",\n  \"claim\": \"C2\",\n  \"verdict\": \"VERIFIED\",\n  \"report\": \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-69/w1/ReviewC2.md\",\n  \"receipts\": \"/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-69/w1/ReviewC2/ (15 files)\",\n  \"evidence\": {\n    \"landing_export_9811156\": \"FRONTIER-CENSUS rows=47 admitted=47 closed=47 problem-rows=0 registry=103; FRONTIER-PASS F47 ids=S103; entries=50 pass=50 exit=0; records=83 bound=83 unbound=0; knowledge 87 lines / 85 entries; LC_ALL=C /usr/bin/sort -c rc=0 \u2014 all MATCH frozen after\",\n    \"base_export_656272cf\": \"rows=46 admitted=46 closed=46 registry=102, last pass F46 ids=S102, entries=49 pass=49, records=82 bound=82 unbound=0, knowledge 86/84, sort rc=0 \u2014 all MATCH frozen before and controls/c2-base-counters-r69.txt\",\n    \"live_census\": \"sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi \u2192 rc=0 (live HEAD=9811156; working tree only M SKILL.md + untracked wave files, corpus clean)\",\n    \"row_conformance\": \"S103 at SOURCES.md:115 \u2014 13 pipe fields / 11 columns; next unused id (base max S102, no S104); docs/A/mined/2026-11-04; recheck 180d established (31 rows); used-by corpus/knowledge/github-global-security-advisories-rest-api.md exists (8355B); located quote 17 words verbatim at S103.txt:275 (grep -cF=1)\",\n    \"pins\": \"S103.txt sha256 c531c1e9\u20264344f + 585 lines MATCH; manifest sha256 7de5742a\u20261b0f MATCH; 13 \\\"quote\\\" records MATCH; manifest url/capture_url = docs.github.com/en/rest/security-advisories/global-advisories\",\n    \"diff_scope\": \"9811156^ = 1bd01ee; diff --stat = exactly 4 C2 files (README.md +10, SOURCES.md +4, knowledge-expected.txt +1, knowledge entry +91 A), 106 insertions 0 deletions; SOURCES.md -U0 = 3 pure-insert hunks, 0 removed lines (stat +4 = 3 content + 1 blank); capture pair already committed at freeze 9b877fd\",\n    \"readme_row\": \"F47 row corpus/README.md:1087 \u2014 8 pipe fields / 6 columns, entry path exists, sources S103, status admitted; entry Gate block has located \u226425-word quote for access date 2026-11-04\"\n  },\n  \"residuals\": [\n    \"13 manifest quotes not individually re-located by hand (binding tool bound=83/83; entry asserts Q01-Q13) \u2014 beyond seat scope\",\n    \"census W04 duplicate-URL warnings pre-existing, predicate freezes exit code only; no base census comparison run\",\n    \"capture text lacks the URL verbatim (text extraction; provenance in manifest lines 7-8) \u2014 observation, consistent with lane capture style\"\n  ],\n  \"integrity\": \"working-tree claims.json and pins-r69.txt byte-identical to freeze commit 9b877fd (empty diff); no mutating git command run; scratch /fast/scratch/hyaku/kasegi-r69/ReviewC2 removed; no tool installs\"\n}",
+   "note": null
+  },
+  {
+   "name": "CriticC2",
+   "agent": "critic",
+   "output": "",
+   "note": null
+  },
+  {
+   "name": "ExecHarness",
+   "agent": "executor",
+   "output": "",
+   "note": null
+  },
+  {
+   "name": "ScribeRound",
+   "agent": "scribe",
+   "output": "",
+   "note": null
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+# Receipt 05 — commit order and no implementation byte before the freeze
+
+Command A:
+  git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin log --format='%H %cI %s' 656272cf6b753fab7ce249f286b824c87677fdf3..981115648e4108e1adf5aec010edadac285a0c78
+
+Output A (newest first):
+  981115648e4108e1adf5aec010edadac285a0c78 2026-11-04T19:33:07-03:00 round-69: F47 GitHub global security advisories REST API admission on S103 (C2)
+  1bd01ee1e6558925e23d3d27a4bb12b88f502656 2026-11-04T19:32:02-03:00 round-69: derive gate refuses long-option abbreviations, sort -o bundles, git show commit operands and git cat-file --textconv/--filters (C1)
+  9b877fd916308e948b865c44ebc76e6ad322d6a7 2026-11-04T19:31:53-03:00 round-69: freeze C1 enumerated program-execution/write refusal (P1-P8) and C2 F47/S103 frontier admission
+  4d91dcd3f3cfdb3bad0324ac20c30bce489eee61 2026-11-04T19:31:41-03:00 round-69: pre-freeze controls (C1 counter, base no-work, blanket-refusal forgery, candidate trial), C2 base counters, S103 capture input and EUVD refusal receipt
+
+Freeze 9b877fd9 (19:31:53) precedes implementation 1bd01ee (19:32:02). PASS.
+
+Command B:
+  git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin diff 4d91dcd3f3cfdb3bad0324ac20c30bce489eee61 9b877fd916308e948b865c44ebc76e6ad322d6a7 -- corpus/instruments/figure-audit.py
+
+Output B (between the markers):
+  DIFF-BELOW
+  DIFF-ABOVE rc-marker-end
+
+Empty diff: no byte of corpus/instruments/figure-audit.py changed between the pre-freeze controls commit and the freeze. Consistent with pins-r69.txt line 5 ("working copy, not committed before this freeze") — the gate bytes first appear in commit 1bd01ee.

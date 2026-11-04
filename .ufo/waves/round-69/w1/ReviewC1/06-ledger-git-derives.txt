@@ -1,0 +1,17 @@
+# Receipt 06 — why real-ledger fails when --lane is a `git archive` export
+
+The committed ledger corpus/instruments/figure-audit-ledger.json (at 1bd01ee) contains two classes of derive rows, both unsatisfiable inside a two-path archive extraction:
+
+1. Git-history rows (need the lane repo's .git, which `git archive` does not emit). Representative committed lines:
+   line 11: "derive": "git show 32782bd:corpus/README.md | grep -cE '^\\| F[0-9]+ \\|'"
+   line 27: "derive": "git show 32782bd:corpus/instruments/knowledge-expected.txt | grep -c '^corpus/knowledge/'"
+   line 35: "derive": "git ls-tree --name-only 32782bd -- corpus/knowledge/ | grep -c '\\.md$'"
+   line 123: "derive": "git cat-file -e 32782bd6b...:LOG.md && git show ...:LOG.md | grep 'figure-audit' | wc -l"
+2. Working-tree rows referencing lane files outside the archived paths (corpus/README.md, corpus/SOURCES.md, corpus/source-snapshots/round-53 and round-54, .ufo/waves/round-53|55|56/controls). Representative committed lines:
+   line 43: "derive": "git show 32782bd:corpus/source-snapshots/round-53/S085.txt | wc -l"  (also git)
+   line 59: "derive": "wc -l < corpus/source-snapshots/round-54/S086.txt"
+   line 178: "derive": "grep -oE 'CENSUS-FRESH=[a-z]+' .ufo/waves/round-55/controls/gate-final-r55.txt | head -1 | cut -d= -f2"
+
+Observed on the export-lane run (receipt 02): MEASURE real-ledger FAIL FIGURE-AUDIT figures=35 ok=0 stale=35 exit=1 rc=1 — all 35 figures stale, consistent with both failure classes. On the default-lane run (receipt 03): MEASURE real-ledger ok FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0 rc=0.
+
+Conclusion: the export-lane real-ledger FAIL is environmental (archive subset lacks .git and the referenced lane files), not a gate or counter defect. Corollary observation for the depth:verifiability axis: the counter cannot reach failures=0 from a bare `git archive` of the two pinned paths alone; the frozen counting_command therefore implicitly relies on a lane checkout with git history (the default --lane).

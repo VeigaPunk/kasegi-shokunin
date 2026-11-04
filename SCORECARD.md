@@ -2713,3 +2713,34 @@ Frozen claims: `.ufo/waves/round-68/claims.json` (freeze `7c4f9f7ec096298b1edd19
 
 1. **depth:verifiability (4, lowest):** close the class the wave opened — prefix-abbreviation denial for the counted/denied heads, the default-textconv path (`git show <commit>` through `.gitattributes`), and `git cat-file --textconv/--filters` — each with a failing no-work control, a mutation limb and a paired base run before the freeze (RevengerC1's ranked table is the candidate list).
 2. **coverage (8):** the Fuzzilli primary documentation remains the only unopened lead; the served-instance question (whether `api.scorecard.dev` and `api.securityscorecards.dev` serve the same data) is recorded as unknown, not a lead.
+
+## Round 69 — derive-gate class refusal of the eight measured program-execution/write shapes (C1, depth:verifiability, nominal 4 held) and F47, the GitHub global security advisories REST API (C2, coverage, 8 held)
+
+Frozen claims: `.ufo/waves/round-69/claims.json` (freeze `9b877fd916308e948b865c44ebc76e6ad322d6a7`, base `656272cf6b753fab7ce249f286b824c87677fdf3`, pre-freeze controls `4d91dcd3f3cfdb3bad0324ac20c30bce489eee61`); measured C1 implementation **`1bd01ee1e6558925e23d3d27a4bb12b88f502656`**, gate sha256 `c09b0fb1a95b770e5a858ed88b005ec3530486d57dd721cbed2ec6386d882bde`; C2 landing **`981115648e4108e1adf5aec010edadac285a0c78`**.
+
+| Axis | Before | After | Score delta, command and evidence |
+|---|---:|---:|---|
+| depth:verifiability (lowest) | `VERIFY measurements=13 failures=10` exit 1 at the base gate (= round-68 measured gate `10c87100…`): P1..P8 admitted — compressor 18288 runs per abbreviation spelling, `--outp=`/`-uo` wrote their files, textconv driver and smudge filter ran; selftest 77; write side effect FAIL | `VERIFY measurements=13 failures=0` exit 0 at `1bd01ee1`: P1..P8 `rc=2 reason=derive-not-read-only marker_runs=0 wrote=0`; nine read-only controls exact; selftest 86/0; mutbat 5/5; ledger 35/35; no write side effect | **4 → 4, delta 0, nominal per R58.** `python3 -B .ufo/waves/round-69/controls/c1-probe-run-r69.py --gate <gate exported from 1bd01ee1> --work /fast/scratch/hyaku/kasegi-r69/<seat>/<dir> --mode candidate`; receipts `controls/c1-base-donothing-r69.txt`, `controls/c1-forgery-blanket-r69.txt` (blanket refusal fails 4), `controls/final-verification-r69.txt` |
+| coverage | `FRONTIER-CENSUS rows=46 admitted=46 closed=46 problem-rows=0 registry=102`; `entries=49 pass=49`; capture `records=82 bound=82`; knowledge 86 lines / 84 entries; F47 absent | `rows=47 admitted=47 closed=47 problem-rows=0 registry=103`; `FRONTIER-PASS F47 ids=S103`; `entries=50 pass=50`; capture `records=83 bound=83 unbound=0`; expected list 87 lines / 85 entries `sort -c` clean; census exit 0 | **8 → 8, delta 0** (the coverage denominator is operator-owned). `python3 corpus/instruments/frontier-recheck-count.py`; `python3 corpus/instruments/capture-binding-check.py`; `wc -l` + `grep -vc '^#' corpus/instruments/knowledge-expected.txt`; `sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`; before `controls/c2-base-counters-r69.txt`, after `controls/c2-after-counters-r69.txt` |
+| depth:density | 9 | 9 held | Not targeted or re-measured. `SKILL.md` gains the selftest pin 77 → 86 and one r69 current-execution amendment; no density credit asserted. |
+
+**C1 scope, stated exactly.** The claim is the enumerated probe set P1..P8 (two `--compress-program` abbreviations, one `--output` abbreviation, one `-o` bundle, `git show HEAD`, `git show ':/fixture'`, `git cat-file --textconv`, `git cat-file --filters`), measured on `/usr/bin/sort` GNU coreutils 9.12 and git 2.56.0. It is not a class or sandbox claim; further shapes found by the wave are residuals in `corpus/lessons/round-69.md`.
+
+**Capabilities:** no new repertoire row. The existing `derive-gate-chain-refusal` row is extended in place — demonstration `controls/final-verification-r69.txt` → 13/0.
+
+**Saturation:** line 9/10 per owned axis; lowest non-retired axis remains depth:verifiability 4, worked nominally this round. No retirement, split or nudge waiver.
+
+### Round-69 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 69 | depth:verifiability | eight measured exec/write shapes admitted at the round-68 gate; selftest 77 | all eight refused at parse time, programs unexecuted, no file written; selftest 86 | `.ufo/waves/round-69/controls/{c1-base-donothing-r69.txt,final-verification-r69.txt}` |
+| 69 | coverage | rows=46 registry=102 entries=49 capture=82 knowledge=84 | rows=47 registry=103 entries=50 capture=83 knowledge=85 | `.ufo/waves/round-69/controls/{c2-base-counters-r69.txt,c2-after-counters-r69.txt}`; `corpus/knowledge/github-global-security-advisories-rest-api.md`; `corpus/source-snapshots/round-69/` |
+| 69 | calibration | round-68 routed defects V68-1..V68-5 open; sort identity stated two ways | V68-1/2/5 corrected by an appended erratum; V68-3 worked as C1; V68-4 recorded; QUALITY R101-R103 | `.ufo/waves/round-68/claims-erratum-r69.md`; `corpus/lessons/round-69.md` § Mistakes; `corpus/QUALITY.md` R101-R103 |
+
+**Wave:** one v1 wave of 12 seats; 2 settled (ReviewC1, ReviewC2 — both VERIFIED), 10 dead on a provider 401 (`commandcode/deepseek/deepseek-v4.1-flash`), not replaced. Attack evidence beyond the two reviewers is author-only and labelled so in the lesson.
+
+### Planned after round 69 (not frozen)
+
+1. **depth:verifiability (4, lowest):** pin the two untested `git_show_operands_ok` limbs (no operand; `--`) with selftest cases (R103), and take one named residual with a failing base control — the python-head `--root`/`--out` counters (round-68 RevengerC1 rows 2 and 7) are the strongest candidates.
+2. **coverage (8):** land the EUVD rejected row (R102) with a freeze that counts it, and consider "About the GitHub Advisory database" (the curation semantics F47 defers to) as the next F47-adjacent source.

@@ -1,0 +1,33 @@
+# Receipt 01 — committed-bytes integrity (gate, counter, base gate, pins, claims)
+
+Command A (export at implementation commit 1bd01ee1e6558925e23d3d27a4bb12b88f502656):
+  mkdir -p /fast/scratch/hyaku/kasegi-r69/ReviewC1/export /fast/scratch/hyaku/kasegi-r69/ReviewC1/freeze && git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive 1bd01ee1e6558925e23d3d27a4bb12b88f502656 corpus/instruments .ufo/waves/round-69/controls | tar -x -C /fast/scratch/hyaku/kasegi-r69/ReviewC1/export && sha256sum /fast/scratch/hyaku/kasegi-r69/ReviewC1/export/corpus/instruments/figure-audit.py /fast/scratch/hyaku/kasegi-r69/ReviewC1/export/.ufo/waves/round-69/controls/c1-probe-run-r69.py
+
+Output A:
+  c09b0fb1a95b770e5a858ed88b005ec3530486d57dd721cbed2ec6386d882bde  /fast/scratch/hyaku/kasegi-r69/ReviewC1/export/corpus/instruments/figure-audit.py
+  eb254588976f783008ff333f07b775de2a50c827bc22c7a2fe53477ed2f1d618  /fast/scratch/hyaku/kasegi-r69/ReviewC1/export/.ufo/waves/round-69/controls/c1-probe-run-r69.py
+
+Command B (freeze commit 9b877fd916308e948b865c44ebc76e6ad322d6a7: claims.json + controls):
+  git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin archive 9b877fd916308e948b865c44ebc76e6ad322d6a7 .ufo/waves/round-69/claims.json .ufo/waves/round-69/controls | tar -x -C /fast/scratch/hyaku/kasegi-r69/ReviewC1/freeze && sha256sum /fast/scratch/hyaku/kasegi-r69/ReviewC1/freeze/.ufo/waves/round-69/controls/c1-probe-run-r69.py /fast/scratch/hyaku/kasegi-r69/ReviewC1/freeze/.ufo/waves/round-69/controls/pins-r69.txt
+
+Output B:
+  eb254588976f783008ff333f07b775de2a50c827bc22c7a2fe53477ed2f1d618  /fast/scratch/hyaku/kasegi-r69/ReviewC1/freeze/.ufo/waves/round-69/controls/c1-probe-run-r69.py
+  b59b198a273d32ddbbe2a6538ddc1f48d9deb7c59852500327acb461da75ef58  /fast/scratch/hyaku/kasegi-r69/ReviewC1/freeze/.ufo/waves/round-69/controls/pins-r69.txt
+
+Command C:
+  sha256sum /fast/scratch/hyaku/kasegi-r69/ReviewC1/export/.ufo/waves/round-69/controls/base-gate-656272cf.py
+
+Output C:
+  10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8  /fast/scratch/hyaku/kasegi-r69/ReviewC1/export/.ufo/waves/round-69/controls/base-gate-656272cf.py
+
+Pin check — grep 'c1-probe-run-r69|figure-audit|eb254588|c09b0fb1|10c87100' pins-r69.txt (at freeze commit); matching lines (grep tool line-number/match markers stripped):
+  counter eb254588976f783008ff333f07b775de2a50c827bc22c7a2fe53477ed2f1d618  .ufo/waves/round-69/controls/c1-probe-run-r69.py
+  base_gate 10c8710080078fe07534eae8fcc1344ade9ae852be500e66a2804eb68b74fee8  .ufo/waves/round-69/controls/base-gate-656272cf.py
+  forgery_gate ceea2a13a665461f41178ea4d0bd511adc528fa8f132e63a71bbeaec93b57e0c  .ufo/waves/round-69/controls/forgery-blanket-refusal-gate.py
+  candidate_trial_gate c09b0fb1a95b770e5a858ed88b005ec3530486d57dd721cbed2ec6386d882bde (working copy, not committed before this freeze)
+
+All three shas equal their pins and the prompt's frozen values; the counter is byte-identical at the freeze commit and the implementation commit.
+
+Frozen predicate, claims.json C1 (at 9b877fd9), line 16: "Pointed at the measured gate, the committed counter prints `VERIFY measurements=13 failures=0` and exits 0."
+Counting_command, line 17: "python3 -B .ufo/waves/round-69/controls/c1-probe-run-r69.py --gate <gate exported from the measured revision> --work /fast/scratch/hyaku/kasegi-r69/<seat>/<dir> --mode candidate" (no --lane → counter default lane).
+Kill_rule, line 18: "Any MEASURE line FAIL, a nonzero exit, or a missing VERIFY line defeats C1. The target is the enumerated probe set; it is not narrowed after data and it is not widened into a class claim..."

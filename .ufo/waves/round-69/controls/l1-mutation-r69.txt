@@ -1,0 +1,13 @@
+# L1 (author) one-limb mutation test of the R69 rules against the gate's own selftest (pin 86); gate 1bd01ee1 sha c09b0fb1...; HYAKU_SCRATCH=/fast/scratch/hyaku/kasegi-r69/L1/MUT; author evidence, not a non-author seat verdict
+M1-drop-abbrev KILLED case=sort-compress-prefix-refused,case=sort-compress-short-prefix-space-refused,case=sort-output-prefix-refused
+M2-abbrev-len6 KILLED case=sort-compress-short-prefix-space-refused,case=sort-output-prefix-refused
+M3-drop-bundle KILLED case=sort-bundled-short-o-refused
+M4-drop-catfile-entry KILLED case=git-cat-file-textconv-refused,case=git-cat-file-filters-refused
+M5-drop-filters KILLED case=git-cat-file-filters-refused
+M6-skip-show-operands KILLED case=git-show-commit-form-refused,case=git-show-message-search-refused,case=git-show-brace-colon-refused
+M7-drop-colon-slash KILLED case=git-show-message-search-refused
+M8-drop-brace KILLED case=git-show-brace-colon-refused
+M9-drop-dashdash SURVIVED 
+M10-drop-no-operands SURVIVED 
+M11-drop-colon-required KILLED case=git-show-commit-form-refused
+summary killed=9/11 survivors=M9-drop-dashdash,M10-drop-no-operands (no selftest case pins `git show` with no operand or with `--`)
