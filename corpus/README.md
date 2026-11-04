@@ -1075,3 +1075,13 @@ manifest `corpus/source-snapshots/round-68/manifest.json`.
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
 | F46 | OpenSSF Scorecard API swagger 2.0 contract (info.version 1.1.0, host api.scorecard.dev) — the machine interface to published scorecard results: the `/projects/{platform}/{org}/{repo}` GET with its 40-hex `commit` pin, the OIDC-verified `publish` POST, the `/version` route, and the ScorecardResult / ScorecardCheck / Repo / Error definitions with the aggregate `score` field | admitted | knowledge/openssf-scorecard-api-contract.md | S102 | Read a result's keys and commit pin from the contract (S102.txt:19-37, :336-370), never a served instance's values; score range, weighting and check meaning are not in the contract and stay with F35/S086. |
+
+## Round-69 admission — Frontier F47 (2026-11-04)
+
+Appended amendment (R6): the round-69 entry `corpus/knowledge/github-global-security-advisories-rest-api.md` (Frontier F47,
+source S103) rests on GitHub Docs' own REST reference for global security advisories, captured
+`corpus/source-snapshots/round-69/S103.txt`, manifest `corpus/source-snapshots/round-69/manifest.json`.
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F47 | GitHub global security advisories REST API — the read interface over the GitHub Advisory Database: GET /advisories (filters type/ecosystem/severity/cwes/affects/EPSS/date ranges, cursor pagination, per_page max 100, sort) and GET /advisories/{ghsa_id}, with the reviewed-only, malware-excluded default of an unfiltered list | admitted | knowledge/github-global-security-advisories-rest-api.md | S103 | Set `type` explicitly before counting (S103.txt:275-276, :293-294); read example response keys, never values; database curation semantics ("About the GitHub Advisory database") are unopened and are not ground here. |
