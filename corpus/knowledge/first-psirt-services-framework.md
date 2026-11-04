@@ -1,6 +1,6 @@
 # FIRST PSIRT Services Framework v1.1 — service catalogue, intake and qualification gates
 
-source: S098 — https://www.first.org/standards/frameworks/psirts/psirt_services_framework_v1.1 — "PSIRT Services Framework 1.1", content lines 216-1450 of corpus/source-snapshots/round-65/S098.txt (1573 lines, 170137 bytes); sha256 cfa42e2306546c5f418ccfc62db86f3c340ce31694028666abb46f2803b7a3c2
+source: S098 — https://www.first.org/standards/frameworks/psirts/psirt_services_framework_v1.1 — "PSIRT Services Framework 1.1", content lines 216-1536 of corpus/source-snapshots/round-65/S098.txt (1573 lines, 170137 bytes); sha256 cfa42e2306546c5f418ccfc62db86f3c340ce31694028666abb46f2803b7a3c2
 verified-at: 2026-11-04
 recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-65/manifest.json --source S098
 ground: F44 — FIRST's own service catalogue for a product incident response team: six service areas, 28 services and 84 functions, with the intake → qualification (quality gate and bug bars) → established-finder bypass → reproduction → disclosure chain and its acknowledgement and storage duties. Generic disclosure or coordination vocabulary is supporting context, not new ground.
