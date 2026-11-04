@@ -2548,3 +2548,23 @@ The exact decoded plan is validated once and executed directly. Quoted legitimat
 
 1. Lowest depth:verifiability remains4. Any further gate claim must select a distinct observed residual with a do-nothing control; a finite option test is not a sandbox. Source restoration and operator-owned decisions are not assumed.
 2. Coverage remains8. Before opening another guide subpage, distinguish specific report-package fields or responsibility rules from F43's matrix and held S018/S023; preserve full source/consumer/sibling screening and sentence-table order. No row quota or score increase is promised.
+
+## Round 63 — finite upstream repair; frozen committed-input claim NOT VERIFIED
+
+One frozen claim C1, depth:verifiability (lowest), nominal4 held under R58. Freeze `d690b92a4834d3a51ba86498d9eb6243f00203db`; base `fdccc6da803965234c1eff5a0fee38b97e6621c1`; measured implementation `ff28e544adc228841a8706c5e72f4de3366391cd`. Predicate/counter/kill rule and exact candidate hashes remain unchanged in `.ufo/waves/round-63/claims.json`.
+
+| Axis | Before | After | Verdict / score delta / measurement |
+|---|---|---|---|
+| depth:verifiability | Candidate-mode collector on exact base: probes8/failures3/exit1; selftest35/0 | Collector8/0, trees8/0, selftest43/0, old battery5/5, new battery7/7 with2 equivalent controls and1 intentionally invalid control, disclosed SQLite qualification trial4/4. BUT frozen selected export omits four local historical-receipt dependencies: real ledger26/35, stale9, VERIFY measurements7/failures1 | **C1 NOT VERIFIED under its own committed-input kill rule; honest stop, 4→4 delta0.** `python3 .ufo/waves/round-63/controls/verify-r63.py --revision ff28e544adc228841a8706c5e72f4de3366391cd --work /fast/scratch/hyaku/kasegi-r63/L1/committed`; raw receipt `controls/final-verification-r63.txt` exit1. Positive local-ledger35/35 prefreeze does not overrule the frozen export failure. |
+| coverage |8|8 held| No coverage claim. Registry95→96 is own-work curation only (S096, lesson consumer); frontier43 and knowledge81 unchanged. |
+| depth:density |9|9 held| Not targeted or re-measured. SKILL changes are factual registry cells plus bounded execution amendment, not density credit. |
+
+The finite eight-probe candidate-mode collector changes failures=3 to failures=0: grep invalid-regex exit2, missing Git ref exit128, and confined Python exit7 upstream of wc each become stale with their exact derive-upstream-exit-N reason; cat-missing exit1 and grep-no-match exit1 remain green, successful count and && concatenation remain green, final-stage exit1 remains stale. That finite result is observed, but the full claim includes the failed committed-input guard; it is not graded verified by narrowing to the green subset. Final code is byte-identical to frozen candidate15bcb6c4. Operator decisions and broader residuals remain open; no sandbox/pipefail/all-error/source-resolution claim.
+
+The frozen driver is preserved. `controls/verify-r63-supplemental.py` adds only the four missing committed receipt inputs as an explicit NONCLAIM collector correction; it cannot retroactively satisfy the frozen counter or reverse this honest-stop grade. Lesson M63-7 captures the missing-closure mistake; R34/R65/R82 already cover it.
+
+No capability acquisition, score movement, retirement, split or stagnation waiver. Saturation9/10 retained; lowest verifiability4 worked nominally. No new knowledge or frontier admission. Proposal2 from considerthese remains partially landed/domain-task-open; documentation-only review is not the six-file task.
+
+### Planned after round63 (not frozen)
+
+Work the actual lowest metric or choose a distinct observed residual with a failing do-nothing control; do not re-claim the same three repairs. Before any successor freeze, trial the exact committed-input driver with its complete transitive local input closure. Do not infer a passed full export from a successful live-root ledger.
