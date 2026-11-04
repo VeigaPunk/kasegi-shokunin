@@ -1,0 +1,57 @@
+{
+  "wave": "kasegi-r66-w1",
+  "milestone": "predata cat SIGPIPE masking repair and falsification",
+  "reportDir": ".ufo/waves/round-66/w1",
+  "maxLanes": 16,
+  "axes": [
+    "depth:verifiability"
+  ],
+  "context": "# Goal\nKasegi round66 ONLY, ONE predata build/falsify wave. L1 KasegiR66 is planner and sole production integrator. Lane /home/vgpnk/Projects/shokunin/kasegi-shokunin, base b6db9e818d322726e39cb441f2179d34d4170275, evidence /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66. Intended ONE claim C1 lowest depth:verifiability4 nominal R58: restrict cat's non-final SIGPIPE exemption to stdin-only or exactly ONE decoded operand, refusing multi-input cat SIGPIPE with reason derive-upstream-signal-13. Other heads and other status rules unchanged. Finite claim, not sandbox or general error detection. Base observed large-file cat big.txt missing.txt | head -n 1 gives false green; single-cat remains green. Need complete committed-input counter and controls BEFORE freeze. Nothing frozen yet; report findings, no admission authority.\n# Contract\nREAD relevant skills and existing patterns. Never task/delegate. Never edit production, fleet, siblings, routing, git index/jj; no commit/push. Each seat writes ONLY its unique /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/<Seat>/ directory plus Report file /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/<Seat>.md. Every Report trailer is relative to /home/vgpnk/Projects/shokunin/kasegi-shokunin, never fleet. No shared writers. Scratch ONLY /fast/scratch/hyaku/kasegi-r66/<Seat>/; explicitly TMPDIR there, one shared clone maximum, delete scratch before yielding after copying durable receipts. All git calls explicit -C scratch, fixture toplevel checked before any commit. Domain repos read-only. Tooling permitted after reading /home/vgpnk/.omp/agent/RULES.md; report tool/version/channel/reason. ALL pacman transactions PAUSED; use official binary/uv/npx only. Run only checks required by your item, no general build/lint/test storm. Every receipt captures command, base/input hashes, observed stdout and rc; no assumed pass. Never agent://all. Read round65 spotcheck for relevant carry-in.\n",
+  "items": [
+    {
+      "name": "ExecCatGate",
+      "role": "executor",
+      "prompt": "Create candidate /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ExecCatGate/figure-audit.py from production (read fully relevant functions/selftest first). Minimal repair: pass decoded argv to upstream_stale; when status==-SIGPIPE and basename(head)==cat, exempt only stdin-only or exactly one operand without options (optional -- separator; conservative refusal for options acceptable but name it). Multi-file cat SIGPIPE stale with existing derive-upstream-signal-13 label; other heads unchanged. Preserve production behavior otherwise. Add explicit production-path selftests using large (2MB+) files for cat two operands (second missing), two existing operands, single operand positive, stdin positive; avoid timing-dependent assumed status, record actual. Pin case count and update docstring. Run candidate selftest and real ledger in scratch shared clone at BASE. Do NOT edit production. Report exact patch anchors/digests and limitations.\nAll write paths absolute under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ExecCatGate; scratch /fast/scratch/hyaku/kasegi-r66/ExecCatGate."
+    },
+    {
+      "name": "ExecCatProbes",
+      "role": "executor",
+      "prompt": "Create /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ExecCatProbes/probes.py with CLI --instrument PATH --work DIR --mode base|candidate. Real public gate invocations, output PROBE name rc expected reason pass and PROBES probes=N failures=N, nonzero failures. Deterministic 4MB+ big.txt starting alpha. P1 cat big.txt missing.txt | head -n 1 want alpha; P2 cat big.txt other.txt | head -n 1 want alpha, both existing; candidate stale derive-upstream-signal-13, base green. P3 cat big.txt | head -n 1 green both; P4 cat < big.txt | head -n 1 green both; P5 cat missing.txt | wc -l stale derive-upstream-exit-1 both; P6 grep absent big.txt | wc -l green0 both. Capture independent native pipeline statuses with parent pipe fds closed; timeout all children, kill/reap on timeout. Scratch guard refuses lane/ancestor/root; cleanup. Run BASE and candidate when available (message ExecCatGate by discovered id if needed, no polling loop). Retain receipts. Also --selfcheck proves missing instrument, wrong expectation, always-green counterfeit fail; positives retained. Show base candidate-mode red before freeze.\nAll write paths absolute under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ExecCatProbes; scratch /fast/scratch/hyaku/kasegi-r66/ExecCatProbes."
+    },
+    {
+      "name": "ExecCatDriver",
+      "role": "executor",
+      "prompt": "Author /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ExecCatDriver/verify.py committed-input driver --revision REV --work DIR [--candidate PATH] [--final]. Use scratch shared clone and checkout specified full rev, no production writes. Read round65 verify-r65.py for pin/work guard/timeouts; improve rather than repeat defects. Counter runs probe collector, selftest, existing figure-audit-mutbat, real ledger35/35, red wrong-want fixture and identity guards, paired base gate read exactly BASE. Inputs must materialise from a specified committed control revision, not mutable worktree; allow --controls-revision REV and pin digest manifest. Claim not frozen yet, L1 will set control revision/pins. Print enumerated RESULT then VERIFY measurements=N failures=N, rc0 only all expected; rc2 setup failure. Candidate/base modes never count candidate hash against base. Do not require new mutation script unless available; L1 owns one canonical driver, yours is proposed. Record construction commands, no fabrication if dependency missing.\nAll write paths absolute under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ExecCatDriver; scratch /fast/scratch/hyaku/kasegi-r66/ExecCatDriver."
+    },
+    {
+      "name": "ReviewCat",
+      "role": "reviewer",
+      "prompt": "Independently reproduce base cat SIGPIPE masking on real production gate from BASE scratch clone. Then review candidate once available. Try single vs multi operand, -- separator, options, '-' stdin, large/small file, one failed earlier operand versus failed later operand. Assess exact finite claim and regression risk; record rc/status/reason, distinguish conservative refusal from harm. Own probes, don't trust executor output. Return VERIFIED/DEFEATED with concrete evidence, not overall admission.\nAll write paths absolute under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ReviewCat; scratch /fast/scratch/hyaku/kasegi-r66/ReviewCat."
+    },
+    {
+      "name": "CriticCat",
+      "role": "critic",
+      "prompt": "Attack intended finite cat-only SIGPIPE predicate and proposed counter. Find a no-work/always-green or hardcoded oracle that passes collector but violates intended behavior. Retain positive single-input controls. Probe decoding/argv/operator forms and SIGPIPE masking; point out what remains (single input read errors, wrappers, other commands). No claim of broad sandbox. Read r65 M65-5 and R88/R89. Write public-path counterexample receipts and recommended prefreeze changes; no production edits.\nAll write paths absolute under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/CriticCat; scratch /fast/scratch/hyaku/kasegi-r66/CriticCat."
+    },
+    {
+      "name": "MutationCat",
+      "role": "mutation-tester",
+      "prompt": "Independent mutation/falsification battery for cat SIGPIPE restriction. Candidate at /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ExecCatGate/figure-audit.py. Create /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/MutationCat/mutbat.py CLI --instrument PATH --work DIR; exact-once mutations reverting cat restriction, treating single-cat SIGPIPE fatal, flipping threshold/inverting rule, bypass argv propagation. Each public-gate negative tests expected rc AND reason with positives. At least3 valid semantic mutants and equivalent control, invalid mutation rejected. No fake killed from syntax error. If candidate late, prepare probes without polling, then read once later. Record candidate digest and exact mutation source locations. Driver may be proposed independently; your battery is advisory until frozen.\nAll write paths absolute under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/MutationCat; scratch /fast/scratch/hyaku/kasegi-r66/MutationCat."
+    },
+    {
+      "name": "ScoutOwnSource",
+      "role": "scout",
+      "prompt": "Source curation for ONE gate claim, not frontier admission. Open own-work source production figure-audit.py at BASE and round65 critic H1 receipt, quote <=25 words with location demonstrating SIGPIPE exemption/masked second operand. Propose S099 kind own-work tierA scoped only local gate semantics, used-by corpus/lessons/round-66.md. Verify next id and URL/path collision, census row schema. Read merge/kasegi MERGE-REPORT.md read-only and latest considerthese; say Assimilation none if no theme fits C1. Capture source opening dates/quotes and registry histogram before; no production registry edit.\nAll write paths absolute under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ScoutOwnSource; scratch /fast/scratch/hyaku/kasegi-r66/ScoutOwnSource."
+    },
+    {
+      "name": "ScopeCat",
+      "role": "connector",
+      "prompt": "Cross-surface scope screen: inspect own PROVINCE and sibling chousa/kengaku/kumitate province for cat gate work fit; report adjacency not absorb. Read latest considerthese proposal2 and held package task; determine no domain-task completion credit from instrument repair. Examine r65 verifier six routed defects and map each to this round record correction. Read-only all production; write concise table in own dir. No new C2 claim or knowledge admission.\nAll write paths absolute under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ScopeCat; scratch /fast/scratch/hyaku/kasegi-r66/ScopeCat."
+    },
+    {
+      "name": "ScribeRound",
+      "role": "scribe",
+      "prompt": "Prepare lesson/scorecard/LOG append drafts ONLY your dir. ONE nominal depth:verifiability C1 cat SIGPIPE restriction; coverage/density held, no new knowledge. Mine M65-7 with R88 and base public path large-file false-green. Read r65 verifier routed defects1-6; append-only correction draft must name: LOG bullets not bolts, omitted1929a47/6824522, final driver base receipt7f27c4d2 rather than5aa, measured03a23921 not tipa335, base rc previously uncaptured (do not invent), helper121900 across2 runs. Source row S099 own-work requires Gate quote/date/location. Keep blank numerical values out of production; drafts may say not yet measured. No SHONEN box2 credit.\nAll write paths absolute under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-66/w1/ScribeRound; scratch /fast/scratch/hyaku/kasegi-r66/ScribeRound."
+    }
+  ]
+}
