@@ -1,0 +1,82 @@
+{
+  "lane": "kasegi",
+  "round": 65,
+  "frozen_at_utc": "2026-11-04T19:33:25.536336Z",
+  "base": "a283189b6c8d86ee1a06e4aa2b701a2b6c6b068b",
+  "trial_revision": "a283189b6c8d86ee1a06e4aa2b701a2b6c6b068b",
+  "driver": ".ufo/waves/round-65/verify-r65.py",
+  "driver_sha256": "533a6d4f536431d3a043e48c29b250ea4690432a3994f4216c6a04bd6051eb5b",
+  "input_sha256": {
+    "corpus/instruments/figure-audit.py": "86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef",
+    "corpus/instruments/figure-audit-ledger.json": "28ad7fefedf0d911ea8afec3c3f1278c4001f682edec583266b82ed8e81a753b",
+    ".ufo/waves/round-65/figure-audit-candidate-r65.py": "86becbde1914941d9265634f38e644f3101ad5adc2d52d042ff68b4e83690bef",
+    ".ufo/waves/round-65/c1-signal-probes-r65.py": "855af8dfca4c4fe48bd7eda93705789cff46aa00c25760f03fb66bca81a3adf2",
+    ".ufo/waves/round-65/signal-mutbat-r65.py": "5050d853523d396aff7bb31004883d08e86a8fc9d66748a76bae2bc7ba0d47aa"
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "type": "measured instrument improvement, nominal per QUALITY R58",
+      "score_before": 4,
+      "score_after": 4,
+      "source": "S097",
+      "predicate": "On the enumerated committed-input driver .ufo/waves/round-65/verify-r65.py (sha256 533a6d4f536431d3a043e48c29b250ea4690432a3994f4216c6a04bd6051eb5b) run against the measured revision, VERIFY measurements=8 failures=0 and exit 0: probes-base keeps the base gate's two signal false-greens (P1 SIGTERM and P2 SIGKILL upstream stages read ok with native rc -15/-9), probes-candidate reads all three signal stages stale with derive-upstream-signal-15, derive-upstream-signal-9 and derive-signal-15 while the SIGPIPE-non-final, clean-pipeline and grep-no-match probes stay ok, the candidate selftest pins cases=63 failures=0, the new signal battery kills 4/4 limb mutants with survivors=0, equivalents_held=2 and invalid_rejected=1 while reporting killed=0/4 limb=absent on the base gate, the real 35-figure ledger re-derives ok=35 stale=0, and the collector selfcheck rejects an always-green instrument with failures=6.",
+      "before": "VERIFY measurements=8 failures=3 exit1 at base a283189 (probes-candidate, selftest and mutbat-candidate FAIL); the base gate treats signal-killed upstream stages as success (selftest case upstream-python-signal-ignored exit0; P1/P2 audit_exit=0)",
+      "after": "VERIFY measurements=8 failures=0 exit0; P1/P2/P3 stale with named signal reasons; selftest 63/0; mutbat 4/4 killed; ledger 35/35",
+      "counting_command": "python3 -B .ufo/waves/round-65/verify-r65.py --revision <MEASURED_COMMIT> --work /fast/scratch/hyaku/kasegi-r65/L1/final --final",
+      "kill_rule": "Any nonzero driver exit, any FAIL RESULT at the measured revision, a construction override in --final mode, or a mismatch against any pinned input sha256 kills C1; a narrowed green subset cannot substitute.",
+      "metric": "driver failures (8 enumerated measurements)",
+      "measured_value_before": 3,
+      "target_value_after": 0,
+      "controls": [
+        "controls/driver-base-donothing-prefreeze-r65.txt",
+        "controls/driver-construction-prefreeze-r65.txt",
+        "controls/do-nothing-signal-base-r65.txt",
+        "controls/ledger-stage-status-r65.txt",
+        "controls/candidate-smoke-r65.txt"
+      ],
+      "residuals": [
+        "Nominal change does not move the citation-resolution metric; score 4 held per R58.",
+        "Signal detection covers direct child stages only; grandchildren, shell wrappers and PATH-shadowed binaries remain out of scope.",
+        "SIGPIPE (-13) on a non-final stage stays benign by documented rule; a producer truncated by anything else is stale.",
+        "This is not pipefail, not a sandbox and not an authenticity check; exit-0 wrappers that print partial output remain green.",
+        "The base gate's P3 already read stale; the label (derive-exit--15) not the verdict was the base defect there."
+      ]
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "type": "frontier admission on uncovered ground (sourced claim, S098 opened this round)",
+      "score_before": 8,
+      "score_after": 8,
+      "source": "S098",
+      "predicate": "At the measured revision, frontier-recheck-count.py prints FRONTIER-CENSUS rows=44 admitted=44 closed=44 problem-rows=0 registry=98 and FRONTIER-PASS F44 ids=S098 with entries=47 pass=47; capture-binding-check.py prints records=79 bound=79 unbound=0; source-recheck.py --manifest corpus/source-snapshots/round-65/manifest.json --source S098 exits 0 with 18 anchored quotes; the knowledge list grows from 81 to 82 files with corpus/instruments/knowledge-expected.txt at 84 lines and LC_ALL=C sort-clean; and sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi exits 0.",
+      "before": "FRONTIER-CENSUS rows=43 admitted=43 closed=43 problem-rows=0 registry=97; entries=46 pass=46; capture records=78 bound=78 unbound=0; expected 83 lines / 81 paths; knowledge 81 files; S098 absent",
+      "after": "rows=44 admitted=44 closed=44 registry=98; FRONTIER-PASS F44 ids=S098; entries=47 pass=47; records=79 bound=79; expected 84 lines / 82 paths; knowledge 82; census exit 0",
+      "counting_command": "python3 corpus/instruments/frontier-recheck-count.py",
+      "kill_rule": "Any missing F44 PASS line, any census/entries/binding/knowledge count other than the after state, a source-recheck non-zero, an unsorted or unequal expected list, a nonzero sources-census exit, or a diff to the registry beyond the single S098 row append kills C2.",
+      "metric": "admitted frontier rows (plus registry/entries/binding/knowledge counts)",
+      "measured_value_before": 43,
+      "target_value_after": 44,
+      "controls": [
+        "controls/base-counters-r65.txt",
+        "controls/prefreeze-screen-r65.txt",
+        "controls/capture-s098-r65.txt"
+      ],
+      "residuals": [
+        "Score 8 is held: the coverage denominator is operator-owned; the moved measure is the frontier count.",
+        "The page states no publication date; the pin is the fetched instance (fetched_utc in the manifest).",
+        "Cardinalities 6/28/84 are counted headings of this v1.1 page, not a claim about other editions.",
+        "Capture flattens figures; no process-arrow or ordering claim beyond prose."
+      ]
+    }
+  ],
+  "nonclaims": [
+    "depth:density 9 held, not re-measured",
+    "no new capability row (the derive-gate capability is extended, not acquired)",
+    "no SHONEN promotion; box 2 (end-to-end domain task) remains open",
+    "round-64 routed defects 1-5 are addressed as process fixes, not as claims",
+    "considerthese 2026-10-26 proposal status unchanged (proposal 2 remains domain-task-open)"
+  ]
+}
