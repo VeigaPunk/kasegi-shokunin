@@ -1,0 +1,17 @@
+# C1 forgery control (blanket refusal), gate controls/forgery-blanket-refusal-gate.py, run by L1 KasegiR69 2026-11-04T22:31:39Z pre-freeze
+HOST sort (GNU coreutils) 9.12; git version 2.56.0; Python 3.14.8
+MEASURE P1-sort-compress-prefix-equals ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P2-sort-compress-prefix-space ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P3-sort-output-prefix ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P4-sort-bundled-short-o ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P5-git-show-commit-form ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P6-git-show-message-search ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P7-git-cat-file-textconv ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P8-git-cat-file-filters ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE read-only-controls-admitted FAIL controls=9 failed=9 sort -r big.txt | head -n 1 rc=2;cat big.txt | wc -l rc=2;grep -c 0000001 big.txt rc=2;cut -c1-3 big.txt | head -n 1 rc=2;git show HEAD:big.txt | head -n 1 rc=2;git show HEAD: | head -n 1 rc=2;git cat-file -p HEAD:f.txt rc=2;git cat-file -t HEAD rc=2;git ls-tree --name-only HEAD | head -n 1 rc=2
+MEASURE selftest FAIL selftest cases=77 failures=47 rc=1
+MEASURE mutbat FAIL rc=1 mutbat killed=5/5 survivors=0 invalid=0 controls=fail
+MEASURE real-ledger FAIL no-audit-line rc=2
+MEASURE no-write-side-effect ok fixture_changed=0 marker_runs=0
+VERIFY measurements=13 failures=4 gate_sha256=ceea2a13a665461f41178ea4d0bd511adc528fa8f132e63a71bbeaec93b57e0c mode=forgery
+rc=1

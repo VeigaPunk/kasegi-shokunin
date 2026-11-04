@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "note": "Round-69 GitHub global security advisories REST reference. S103 is GitHub Docs' own REST reference page for the two global-advisory endpoints (GET /advisories list with its query filters, GET /advisories/{ghsa_id}) at REST API version 2026-03-10: the read interface over the GitHub Advisory Database's reviewed, unreviewed and malware advisories. It is NOT the repository security advisories REST API the lane already holds (F36/S087; that capture's own page names global advisories as a separate reference) and not any advisory instance (S068). A second candidate, ENISA's EUVD API documentation at https://euvd.enisa.europa.eu/apidoc, was opened the same round and refused as an entry source for now: the served HTML is a 3062-byte single-page-application shell whose documentation text exists only after JavaScript rendering (bundle /static/js/main.61fcf30f.js, 544337 bytes in 2 lines, minified; receipt .ufo/waves/round-69/controls/euvd-refusal-r69.txt), so capture-source.py cannot produce a line-anchored snapshot; flip condition: a statically served or line-anchorable rendering of the same documentation.",
+  "sources": [
+    {
+      "id": "S103",
+      "url": "https://docs.github.com/en/rest/security-advisories/global-advisories",
+      "capture_url": "https://docs.github.com/en/rest/security-advisories/global-advisories",
+      "http": {
+        "status": 200,
+        "final_url": "https://docs.github.com/en/rest/security-advisories/global-advisories"
+      },
+      "kind": "html",
+      "fetch_method": "capture-source.py --kind html, default instrument UA (tags stripped, entities decoded, whitespace collapsed per line)",
+      "fetched_utc": "2026-11-04T22:17:58Z",
+      "path": "S103.txt",
+      "sha256": "c531c1e9b3eb9b4443e9851edc479e137eff772fb41dca3db16d697ac514344f",
+      "bytes": 329039,
+      "lines": 585,
+      "quotes": [
+        {
+          "id": "Q01-purpose",
+          "quote": "Use the REST API to view global security advisories.",
+          "anchor": 273
+        },
+        {
+          "id": "Q02-default-reviewed",
+          "quote": "If no other parameters are defined, the request will return only GitHub-reviewed advisories that are not malware.",
+          "anchor": 275
+        },
+        {
+          "id": "Q03-malware-excluded",
+          "quote": "By default, all responses will exclude advisories for malware, because malware are not standard vulnerabilities.",
+          "anchor": 276
+        },
+        {
+          "id": "Q04-type-values",
+          "quote": "Can be one of: reviewed, malware, unreviewed",
+          "anchor": 294
+        },
+        {
+          "id": "Q05-ecosystems",
+          "quote": "Can be one of: rubygems, npm, pip, maven, nuget, composer, go, rust, erlang, actions, pub, other, swift",
+          "anchor": 299
+        },
+        {
+          "id": "Q06-severity-values",
+          "quote": "Can be one of: unknown, low, medium, high, critical",
+          "anchor": 302
+        },
+        {
+          "id": "Q07-affects-limit",
+          "quote": "A maximum of 1000 packages can be specified.",
+          "anchor": 309
+        },
+        {
+          "id": "Q08-epss-percentage",
+          "quote": "The EPSS percentage represents the likelihood of a CVE being exploited.",
+          "anchor": 323
+        },
+        {
+          "id": "Q09-per-page",
+          "quote": "The number of results per page (max 100).",
+          "anchor": 336
+        },
+        {
+          "id": "Q10-sort-values",
+          "quote": "Can be one of: updated, published, epss_percentage, epss_percentile",
+          "anchor": 341
+        },
+        {
+          "id": "Q11-unauthenticated",
+          "quote": "This endpoint can be used without authentication if only public resources are requested.",
+          "anchor": 283
+        },
+        {
+          "id": "Q12-get-by-ghsa",
+          "quote": "Gets a global security advisory using its GitHub Security Advisory (GHSA) identifier.",
+          "anchor": 458
+        },
+        {
+          "id": "Q13-api-version",
+          "quote": "API Version: 2026-03-10 (latest)",
+          "anchor": 13
+        }
+      ]
+    }
+  ]
+}
