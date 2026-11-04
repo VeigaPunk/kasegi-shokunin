@@ -35,13 +35,16 @@ Ledger entry shape (JSON object with a "figures" array):
                             filesystem races can still write or execute other programs.
 
 Exit codes: 0 every figure re-derives; 1 any figure stale or derive failed
-(fail-closed: nonzero final status, upstream positive status other than grep exit1,
-or empty stdout is stale);
+(fail-closed: nonzero or signal final status, upstream positive status other than grep exit1,
+or upstream signal other than SIGPIPE, or empty stdout is stale);
 2 harness/read error (ledger missing/unparsable, entry malformed, derive refused).
-After all pipeline stages finish, a nonzero final status takes precedence
-(derive-exit-N); otherwise the first upstream status that is >1, or exit1 from a
-program other than grep, is stale (derive-upstream-exit-N). Grep exit1 is an ordinary
-no-match and is not an error; negative signal statuses remain ignored. This is not
+After all pipeline stages finish, a nonzero final status takes precedence: a nonzero exit is
+reported as derive-exit-N and a final stage killed by signal N as derive-signal-N. Otherwise
+the first upstream status that is >1, or exit1 from a program other than grep, is stale
+(derive-upstream-exit-N), and an upstream stage killed by signal N is stale
+(derive-upstream-signal-N). Grep exit1 is an ordinary no-match and is not an error. SIGPIPE
+(-13) on a non-final stage is benign by documented rule: a later stage closed the pipe early,
+so the truncated producer output is not the value; the final stage's output is. This is not
 general error detection or pipefail. && stops a derive at the first stale group and
 concatenates successful group stdout; it is not bash pipeline-status equivalence.
 --selftest builds fixtures under $HYAKU_SCRATCH, otherwise $TMPDIR/the system temp
@@ -52,6 +55,7 @@ import json
 import os
 import shutil
 import shlex
+import signal
 import subprocess
 import sys
 import tempfile
@@ -69,7 +73,7 @@ DENIED_FLAGS = (
 )
 
 
-EXPECTED_CASES = 59  # R17 pin: a dropped selftest case turns the selftest red
+EXPECTED_CASES = 63  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4)
 
 
 def eprint(*a):
@@ -77,10 +81,14 @@ def eprint(*a):
 
 
 def upstream_stale(head, status):
-    """Stale upstream statuses: any >1, or exit1 from a program other than grep.
+    """Stale upstream statuses: any >1, exit1 from a program other than grep, or a signal.
 
-    Grep exit1 is an ordinary no-match; negative (signal) statuses stay ignored.
+    Grep exit1 is an ordinary no-match. A negative status is a signal: stale unless it is
+    SIGPIPE (-13). SIGPIPE on a non-final stage is benign by documented rule: a later stage
+    closed the pipe early, so the truncated producer output is not the value.
     """
+    if status < 0:
+        return status != -signal.SIGPIPE
     if status > 1:
         return True
     return status == 1 and os.path.basename(head) != "grep"
@@ -115,10 +123,14 @@ def run_derive(plan, root):
             status = processes[-1].returncode
             if status != 0:
                 out = b"".join(output).decode("utf-8", "replace").strip()
+                if status < 0:
+                    return None, out, "derive-signal-%d" % -status
                 return None, out, "derive-exit-%d" % status
             for p, head in zip(processes[:-1], heads[:-1]):
                 if upstream_stale(head, p.returncode):
                     out = b"".join(output).decode("utf-8", "replace").strip()
+                    if p.returncode < 0:
+                        return None, out, "derive-upstream-signal-%d" % -p.returncode
                     return None, out, "derive-upstream-exit-%d" % p.returncode
         except subprocess.TimeoutExpired:
             return None, "", "derive-timeout"
@@ -364,6 +376,10 @@ def selftest():
                 f.write("raise SystemExit(1)\n")
             with open(os.path.join(tmp, "corpus", "instruments", "kill.py"), "w", encoding="utf-8", newline="\n") as f:
                 f.write("import os, signal\nos.kill(os.getpid(), signal.SIGTERM)\n")
+            with open(os.path.join(tmp, "corpus", "instruments", "kill9.py"), "w", encoding="utf-8", newline="\n") as f:
+                f.write("import os, signal, sys\nsys.stdout.write('35\\n')\nsys.stdout.flush()\nos.kill(os.getpid(), signal.SIGKILL)\n")
+            with open(os.path.join(tmp, "corpus", "instruments", "pipe.py"), "w", encoding="utf-8", newline="\n") as f:
+                f.write("import signal, sys\nsignal.signal(signal.SIGPIPE, signal.SIG_DFL)\nsys.stdout.write(('x' * 1023 + '\\n') * 4096)\nsys.stdout.flush()\n")
             with open(os.path.join(tmp, "corpus", "instruments", "grep.py"), "w", encoding="utf-8", newline="\n") as f:
                 f.write("raise SystemExit(1)\n")
             with open(os.path.join(tmp, "out.py"), "w", encoding="utf-8", newline="\n") as f:
@@ -446,8 +462,17 @@ def selftest():
              reason="derive-upstream-exit-1")
     run_case("upstream-python-exit1-stale", 1, _one("s-pyexit1", "python3 corpus/instruments/exit1.py | wc -l", "0"),
              reason="derive-upstream-exit-1")
-    run_case("upstream-python-signal-ignored", 0, _one("s-pysignal", "python3 corpus/instruments/kill.py | wc -l", "0"))
+    # R65: flipped from exit 0. A signal-killed producer is stale (fail-closed); id kept for lineage.
+    run_case("upstream-python-signal-ignored", 1, _one("s-pysignal", "python3 corpus/instruments/kill.py | wc -l", "0"),
+             reason="derive-upstream-signal-15")
     run_case("upstream-grep-count-nomatch-ignored", 0, _one("s-grepcount", "grep -c absent g.txt | wc -l", "1"))
+    run_case("upstream-middle-sigterm-stale", 1, _one("s-midsig", "cat g.txt | python3 corpus/instruments/kill.py | wc -l", "0"),
+             reason="derive-upstream-signal-15")
+    run_case("upstream-python-sigkill-stale", 1, _one("s-sigkill", "python3 corpus/instruments/kill9.py | wc -l", "1"),
+             reason="derive-upstream-signal-9")
+    run_case("final-stage-signal-stale", 1, _one("s-finalsig", "python3 corpus/instruments/kill.py", "0"),
+             reason="derive-signal-15")
+    run_case("upstream-sigpipe-nonfinal-benign", 0, _one("s-sigpipe", "python3 corpus/instruments/pipe.py | head -n 1 | wc -l", "1"))
     run_case("final-exit7-precedes-upstream-exit1", 1, _one("s-catfinal", "cat missing.txt | python3 corpus/instruments/fail.py", "0"),
              reason="derive-exit-7")
     run_case("and-first-group-upstream-exit1-stale", 1, _one("s-andfirst", "cat missing.txt | wc -l && cat g.txt", "0"),

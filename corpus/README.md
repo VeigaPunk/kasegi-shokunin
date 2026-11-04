@@ -1031,3 +1031,16 @@ F42 adds a dated real-world finding account, distinct from F04's validation prin
 | F43 | CERT/CC adapted CVD phase-to-five-role matrix: Reporter fix confirmation versus Vendor/Coordinator report validation | admitted | knowledge/cert-guide-cvd-phases-and-validation.md | S095 | Read complete column headings (S095.txt:112-116) with Validation (:129-134) and Remediation (:141-146); a dash is not a prohibition on reporter verification. Generic phase names, prioritization and deployment are supporting context already held elsewhere. |
 
 F43 adds the explicit matrix attribution, not universal phase cardinality. S023 retains CISA program stages, S018 coordination/verification artifacts, F11 JPCERT standards guidance and F38 ISO publisher records. The lost-domain 0/18 denominator is unchanged.
+
+## Round-65 admission — coverage map and Frontier F44 (2026-11-04)
+
+| Area | Entry | Source basis |
+|---|---|---|
+| FIRST PSIRT service catalogue and qualification gates | knowledge/first-psirt-services-framework.md | S098, FIRST first-party framework v1.1, opened 2026-11-04 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F44 | FIRST PSIRT Services Framework v1.1 — the receiving team's service catalogue (six service areas, 28 services, 84 functions): intake with advertised contact points and readiness, vulnerability qualification through documented quality gates and bug bars with CVSS as an input, the established-finder bypass, reproduction as the validation step in an isolated environment, and disclosure audiences | admitted | knowledge/first-psirt-services-framework.md | S098 | Use the qualification and reproduction services as the receiving-team side of a claim package: a CVSS score alone is not qualification, and an unreproduced report is unvalidated. |
+
+F44 adds the receiving team's service side that F43 (CERT/CC phase-to-role matrix), F06/S018 (multi-party coordination guidelines), S043/S044 (severity ladders) and S053/S054 (EPSS/SSVC prioritization) do not hold. The phrase "PSIRT Services Framework" occurs in held captures S001, S002 and S053 only as FIRST site navigation at line 201, not as content; the screen is `.ufo/waves/round-65/controls/prefreeze-screen-r65.txt`.
+
