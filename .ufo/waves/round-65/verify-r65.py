@@ -111,6 +111,7 @@ def main():
     ap.add_argument("--work", required=True)
     ap.add_argument("--candidate")
     ap.add_argument("--final", action="store_true")
+    ap.add_argument("--base-rev", help="revision whose gate defines the base state (default: claims.json base, else --revision)")
     ap.add_argument("--print-inputs", action="store_true")
     args = ap.parse_args()
 
@@ -137,14 +138,25 @@ def main():
     os.makedirs(work, exist_ok=True)
     rec = os.path.join(work, "receipts")
     os.makedirs(rec, exist_ok=True)
+    base_rev = args.base_rev
+    if base_rev is None and os.path.exists(CLAIMS):
+        try:
+            base_rev = json.load(open(CLAIMS, encoding="utf-8")).get("base")
+        except ValueError:
+            base_rev = None
+    base_rev = base_rev or args.revision
     tree = export_tree(args.revision, work)
     gate = os.path.join(tree, GATE_REL)
     base_gate = os.path.join(work, "base-gate.py")
-    p = subprocess.run(["git", "-C", LANE, "show", "%s:%s" % (args.revision, GATE_REL)],
+    p = subprocess.run(["git", "-C", LANE, "show", "%s:%s" % (base_rev, GATE_REL)],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if p.returncode != 0:
-        raise SystemExit("verify-r65: cannot read %s at %s" % (GATE_REL, args.revision))
+        raise SystemExit("verify-r65: cannot read %s at base %s" % (GATE_REL, base_rev))
     open(base_gate, "wb").write(p.stdout)
+
+    if base_rev != args.revision:
+        subprocess.run(["git", "-C", tree, "fetch", "--no-tags", LANE, base_rev],
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     if args.candidate:
         shutil.copyfile(os.path.abspath(args.candidate), gate)
@@ -233,11 +245,16 @@ def main():
             os.path.relpath(MUTBAT, LANE): sha256(MUTBAT),
             os.path.relpath(CANDIDATE_FROZEN, LANE): sha256(CANDIDATE_FROZEN),
             os.path.relpath(CLAIMS, LANE): sha256(CLAIMS) if os.path.exists(CLAIMS) else "-"}
+    if not (args.candidate or args.final):
+        # A base trial carries no implementation: the gate pin names the candidate
+        # bytes and is expected to differ at the base revision.
+        pins = {k: v for k, v in pins.items() if k != "corpus/instruments/figure-audit.py"}
     bad = [k for k, v in pins.items() if seen.get(k) != v]
     if not pins:
         bad = []
-    result("input-hashes", not bad, "pinned=%d mismatched=%d%s" % (
-        len(pins), len(bad), (" " + ",".join(bad)) if bad else ""))
+    result("input-hashes", not bad, "pinned=%d mismatched=%d gate-pin=%s%s" % (
+        len(pins), len(bad), "candidate" if (args.candidate or args.final) else "base-tree",
+        (" " + ",".join(bad)) if bad else ""))
 
     print("VERIFY measurements=8 failures=%d revision=%s" % (len(FAILS), args.revision))
     return 1 if FAILS else 0
