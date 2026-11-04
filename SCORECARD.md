@@ -2623,3 +2623,13 @@ Frozen claims: `.ufo/waves/round-65/claims.json` (freeze `57cb8dec1cd3a688b0f8a2
 
 1. **depth:verifiability (4, lowest):** the next gate claim must select a distinct observed residual with a failing do-nothing control — candidates: the SIGPIPE single-input-operand restriction that closes H1 (M65-7), a held-out probe pair standardised into the probe collector (M65-5), or the exit-0-wrapper partial-output class. Do not re-claim the signal cases.
 2. **coverage (8):** before opening another FIRST document, distinguish its ground from F44's service catalogue; the Fuzzilli primary docs and the OpenSSF aggregate-score/API portion remain unopened leads. The extended pre-freeze screen and anchor-referent table run before the freeze (R80).
+
+## Round66 frozen plan — one sourced finite C1
+
+C1, lowest depth:verifiability4, nominal R58; score4→4 delta0 because source-availability/citation-resolution metric is unchanged. Source S099; `.ufo/waves/round-66/claims.json`. Predicate: **VERIFY measurements=12 failures=0 and process exit0 on the exact committed-input counter.**
+
+Base b6db9e818d322726e39cb441f2179d34d4170275 with controls0d5aef2f40dce3129e91419c34b6c46087089b94:12 measurements/3 failures exit1 (`controls/driver-base-final-prefreeze.txt`); stand-in candidate51f299af:12/0 exit0; ID-keyed no-work forgery12/6 exit1, all committed before this freeze. Exact driver5962b7d6f7aa05d118a86387ffb527f1c5dfb6b3e7b18483d99fa7eeb1adad61, collector d788bbc1; all inputs content-pinned by controls/driver-pins.json.
+
+Counting command: `python3 -B .ufo/waves/round-66/w1/ExecCatDriver/verify.py --revision REV --controls-revision 0d5aef2f40dce3129e91419c34b6c46087089b94 --cat-mutbat .ufo/waves/round-66/cat-mutbat.py --work /fast/scratch/hyaku/kasegi-r66/L1/MEASUREMENT --final`. Before uses base revision and omits --final. Final measurement still owed. Any failed RESULT/nonzero defeats C1; frozen target is not narrowed.
+
+Only cat's SIGPIPE exception is restricted, with intentional conservative refusals for multi-input and option-bearing cat; this does not assert a missing input in every newly stale case. Non-cat heads retain the old exception. Coverage8/density9 held, no new knowledge/frontier/capability/score increase or retirement. One v1 wave9, no residual call; L1 planner. Existing unanswered operator decisions stay unanswered.
