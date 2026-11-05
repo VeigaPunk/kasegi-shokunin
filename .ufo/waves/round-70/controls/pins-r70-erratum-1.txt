@@ -1,0 +1,35 @@
+# round-70 pins erratum 1 — F48 entry correction after the wave critic
+
+Frozen pins `controls/pins-r70.txt` (committed `e74ba6b5`) stay byte-identical and are NOT edited.
+This file records the one post-freeze content correction the wave forced, with its re-measured values.
+
+## What changed and why
+
+`CriticC2` (wave seat, `.ufo/waves/round-70/w1/CriticC2.md`) audited the F48 entry against its own
+capture and listed 21 outruns of the source (O1–O21), including three wrong-branch statements and one
+misquote. The corrected entry is `corpus/knowledge/github-advisory-database-curation-semantics.md`;
+the README F48 row, the S105 registry row and the round-70 manifest note were aligned with it (the
+phrase "nine imported feeds" became "eight imported feeds plus the community-contribution channel",
+and "three advisory classes" became "three class sub-headings", which is what the page states).
+
+Applied: O1–O21. The smallest-safe set named by the critic (O3, O5, O8, O9, O10, O11, O13, O14, O19)
+is inside that set; the wording/attribution findings were applied in the same edit.
+
+## Hashes
+
+| artifact | frozen pin (pins-r70.txt) | after correction |
+|---|---|---|
+| `corpus/knowledge/github-advisory-database-curation-semantics.md` | `d479c4954675b52c1ae49901efb1c780f686d686c96f6f24e4ab31d660fea72f` | `0775d2a4f97076703a65d0805f5f35fd1b16e3fd133669c88d9b42396f60a476` |
+| `corpus/source-snapshots/round-70/manifest.json` | not pinned | `a505542234686eeefb0218943c0d17cfebf162ccb09160213c182e908b2ef189` |
+| `corpus/source-snapshots/round-70/S105.txt` (capture) | `9dd51a8ebd93268cd5f7a2fa626cfcb73767708df75777726535b28650be3350` | unchanged |
+
+## Re-measured after the correction
+
+- `python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-70/manifest.json --source S105` → 19/19 Q-OK, exit 0.
+- `python3 -B corpus/instruments/capture-binding-check.py` → `records=84 bound=84 unbound=0`.
+- `python3 -B corpus/instruments/frontier-recheck-count.py` → `rows=48 admitted=48 closed=48 problem-rows=0 registry=105`, `entries=51 pass=51 exit=0`.
+- `knowledge-expected.txt` 88 lines / 86 entries, `LC_ALL=C sort -c` exit 0; 86 knowledge files; 48 frontier rows; 105 registry rows.
+
+C2's frozen predicate values are unchanged by the correction (it counts rows, entries, records and
+files, none of which the prose touches). `ReviewC2` verified the landing `b4afd8a0`; this erratum is
+the delta from that verified state and carries its own receipts above.

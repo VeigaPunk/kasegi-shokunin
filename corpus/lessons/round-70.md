@@ -124,6 +124,21 @@ of the same API reference; S105's recheck is 180d.
   Routed as **V70-1** to the next gate change; not repaired this round because the selftest bytes are
   part of C1's frozen measured implementation (gate sha256 `7a8d52eb…`) and a post-measurement edit
   would invalidate the claim rather than strengthen it.
+- **M70-7 — the entry's prose outran its own source.** `CriticC2` listed 21 outruns (O1–O21) in the
+  F48 entry: the page never states a three-class count (it has three sub-headings under "several
+  varieties"), the fix-version sentence's subject is "malware alerts", the CVSS maintainer rule is for
+  GitHub-obtained CVEs (not imports), "always fully synchronized" was misquoted, and the community
+  edit's author cell named the reviewing team instead of the submitter. Corrected in place with the
+  README/SOURCES/manifest wording aligned; the correction is recorded as
+  `controls/pins-r70-erratum-1.txt` with the old→new entry hash (`d479c495…` → `0775d2a4…`) and the
+  re-measured C2 values (unchanged: the predicate counts rows, entries, records and files).
+  Captured-by: `none` before the wave → **R108**. Fix: mark every generalization as the entry's
+  reading or drop it, and apply a critic seat's outrun list before the round closes.
+
+## Corrections (post-freeze, append-only)
+
+- **F48 entry and its three summaries** — see M70-7 and `controls/pins-r70-erratum-1.txt`. The frozen
+  pins file is untouched; the corrected entry hash and the re-run receipts live in the erratum.
 
 ## Disposition of the round-69 routed defects
 
