@@ -53,6 +53,42 @@ a positional path, and the `--` operand boundary stay open. Options after a `--`
 operands by construction and remain admitted (`python3 corpus/instruments/ok.py -- --root` is a
 positive control).
 
+### C1 verdict — predicate holds, declared sentence REFUTED (honest stop)
+
+`CriticC1` (wave seat, `.ufo/waves/round-70/w1/CriticC1.md`) reproduced the frozen predicate and then
+refuted the claim's own universal clause, "while keeping every read-only derive admitted", with 10
+paired rows the candidate refuses and the base re-derives:
+
+| row | derive | base | candidate |
+|---|---|---|---|
+| 2 | `python3 corpus/instruments/ok.py --out x` | rc=0 `35` | rc=2 refused |
+| 3 | `python3 corpus/instruments/claim-package-check.py <fixture> --json` | rc=0 JSON on stdout (`--json` is `store_true`, no file) | rc=2 refused |
+| 4 | `python3 corpus/instruments/capture-binding-check.py --root .` | rc=0 `records=84 bound=84` | rc=2 refused |
+| 5 | `python3 corpus/instruments/kill-rule-check.py --root .` | rc=0 `survivors=0` | rc=2 refused |
+| 6 | `python3 corpus/instruments/r44-frontier-count.py --root .` | rc=0 `frontier rows=48 admitted=48` | rc=2 refused |
+| 7 | row 6 `&& cat corpus/README.md` | rc=0 the F48 row | rc=2 refused |
+| 8 | `capture-binding-check.py --root . | head -n 1` | rc=1 stale (admitted) | rc=2 refused |
+| 9 | `citation-ground-check.py --root .` | rc=1 stale (admitted) | rc=2 refused |
+| 10 | `gate-quote-audit.py --root .` | rc=1 stale (admitted) | rc=2 refused |
+| 11 | `r44-routed-defects.py --root .` | rc=1 stale (admitted) | rc=2 refused |
+
+Cause: `PY_DENIED_FLAGS` is a global name list applied to every counter, but `--root` is a read-only
+lane pointer in six-plus instruments and `--json` is stdout-only in `claim-package-check.py:791`. The
+eight frozen positive controls spell none of the seven denied names, so `12/0` was a property of the
+control set, not of the gate. The same seat measured the exec class reachable **with no option at
+all** (`python3 corpus/instruments/frontier-recheck-count.py`, admitted by both gates, runs the
+entry's `recheck:` payload through `bash -c` — 1 marker, 51 `bash` invocations) and through
+`--selftest` in 15 instruments (`r46-landing-gate.py --selftest` builds git fixture lanes and commits
+inside them). `SentinelGate`'s "widening-free, `ADMITTED_NOW=0` over 482 derives" measured only
+*admission* narrowing, so it did not see the over-refusal direction.
+
+**C1 is therefore NOT VERIFIED as declared** (frozen predicate passes; declared universal fails).
+Score 4 → 4, no gain claimed, honest stop per §9 ("never narrow a target after landing"). The
+correction set (`CriticC1` § Smallest safe correction: per-script denial, `--selftest` added, the
+no-argument spelling named or the head refused) is routed as V70-5/V70-6 and is **not** applied this
+round, because any post-measurement change to the gate would invalidate the frozen claim rather than
+strengthen it.
+
 ## C2 — measured result
 
 ```
@@ -191,9 +227,26 @@ classification.
 ## Wave outcome
 
 One v1 wave, 12 seats (band 8–16), attack share 6/12, one connector, one scout, one scribe; the L1
-held the planner seat. Seat results, dead seats and their error text are recorded in the round report
-from `.ufo/waves/round-70/w1-results.json`; the wave's findings are folded into this lesson's
-residuals and into the report's verdicts.
+held the planner seat. `w1-results.json` records 12 settled seats; 11 wrote a report and **ExecProbe
+is a dead seat** (its output stops mid-sentence at "…pull the committed counter outputs for
+per-probe verdict compari"; no report, no replacement, no residual call).
+
+| seat | role | verdict | effect |
+|---|---|---|---|
+| ReviewerC1 | reviewer | C1 predicate VERIFIED (12/0, 12/9, pins and byte-identity) | none |
+| CriticC1 | critic | predicate reproduces; declared universal **refuted** (10 over-refusal rows; no-option and `--selftest` exec) | C1 → NOT VERIFIED; V70-5/V70-6 |
+| MutationC1 | mutation-tester | 13/22 killed, 9 survived; 7 pin holes with a ranked repair list | V70-1 |
+| SentinelGate | sentinel | admission narrowing only: `ADMITTED_NOW=0` / 482 derives; ledger 35/35; one capability loss recorded | V70-3 |
+| ExecR103 | executor | isolation audit of the 10 new cases (2/3/7/8/9 exclusive; 4/5 group; 6,10 conjunction) | V70-1 |
+| ExecCountersC2 | executor | all C2 counters, census, collision and quarantine re-derivations reproduce | none |
+| ReviewC2 | reviewer | C2 VERIFIED, 10/10 limbs, 19 quotes relocate | none |
+| CriticC2 | critic | 21 source-outruns in the F48 entry | erratum 1; R108 |
+| ScoutS105 | scout | zero content drift, 19/19 quotes, S104 digest reproduces, 301 redirect, audit blind spot | erratum 3; V70-4 |
+| ScopeF48 | connector | SCOPE CLEAR | none |
+| ScribeRound | scribe | found the mid-write pinned receipt | erratum 2; M70-8; R109 |
+| ExecProbe | executor | **dead** (no report) | recorded, not replaced |
+
+The wave's findings are folded into this lesson's routed defects and into the report's verdicts.
 
 ## Routed defects (this round → next gate change)
 
@@ -213,6 +266,17 @@ residuals and into the report's verdicts.
   shape "N words by `wc -w`" and none of the 262 bare "N words" strings, which is how this round's
   hand-typed 18-vs-17 error passed. Its two failures at base (`round-55:46`, `round-64:15`) are
   inherited, not round-70 debt. Routed to the instrument's next change.
+- **V70-5 — the deny-list is global where the flags are per-counter (over-refusal).** `CriticC1`
+  measured 10 read-only derives the candidate refuses and the base re-derives (`--root` on six
+  instruments, `--json` as a stdout flag in `claim-package-check.py:791`, and four more). Fix per the
+  seat's smallest-safe set: per-script denial plus `PY_DENIED_ANY = (--out, --output)`; restore the
+  read-only rows; keep P1..P7 refused. This is the limb that makes C1 not verified as declared.
+- **V70-6 — the exec class is reachable with no option at all.** `python3
+  corpus/instruments/frontier-recheck-count.py` (no arguments, default root at `:494`) is admitted by
+  both gates and runs the entry's `recheck:` payload through `bash -c` (`:269`); `--selftest` does the
+  same in 15 instruments, and `r46-landing-gate.py --selftest` builds git fixture lanes and commits.
+  Fix: name the no-argument spelling in the scope text and refuse `--selftest` for the python head, or
+  refuse `frontier-recheck-count.py` as a head outright.
 - **V70-3 — capability loss to state.** `SentinelGate` records that the gate can no longer derive a
   counter against a non-default root (`--root <fixture>`); every committed use invokes such counters
   directly rather than through the gate, so nothing breaks, but the loss is real and is recorded here
