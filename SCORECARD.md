@@ -2898,3 +2898,33 @@ Frozen claims: `.ufo/waves/round-74/claims.json` (freeze `847b5379`, base and co
 2. **coverage (8):** the NDSS 2023 Fuzzilli paper is a named lead (existence only); the OSV overview page is a lead whose two statements need their own capture and manifest before any row.
 3. **calibration:** the R33 id collision (`corpus/QUALITY.md:292`, `:550`) is renumbered by document in a later round; the sibling-distinctness sentence (M74-7) is narrowed before the next claim freezes.
 
+
+## Round 75 — the census restoration-only bucket (C1, depth:verifiability, held at 4, nominal R58) and F53, the NDSS 2023 Fuzzilli paper on S110 (C2, coverage, held at 8)
+
+Frozen claims: `.ufo/waves/round-75/claims.json` (freeze `748dfb6`, base `f9cc05b5`, controls `c880047`). Attempt 1 froze the claims and dispatched wave `w1`; it ended without a landed report. Attempt 2 integrated `w1` (12 seats, dead 0) and landed both claims in the round-75 landing commit (hash in the report's before→after section). Measured against base `f9cc05b5` and on the landed bytes; no self-referential hash is asserted here.
+
+| Axis | Score before r75 | Score after r75 | Evidence pointer | Last change |
+|---|---:|---:|---|---|
+| depth:verifiability | 4 | 4 (held; C1 verified on its frozen predicate; the scored `resolve.py` census is not read by this gate) | `corpus/instruments/recheck-cwd-census.py`; selftest `cases=5 failures=0` → `cases=6 failures=0`; real-tree census base `entries=90 … norecheck=0` → landed `entries=91 … restoration_only=0`, conformant exit 0 (the +1 is the C2 entry); receipt `.ufo/waves/round-75/controls/c1-after-r75.txt` | r75 |
+| coverage | 8 | 8 (held; F53 admitted; the denominator is operator-owned) | `frontier-recheck-count.py` `FRONTIER-PASS F53 ids=S110`, `entries=56 pass=56 exit=0` (base `rows=52 … entries=55`); `capture-binding-check.py` `records=89 bound=89 unbound=0` (base 88); receipts `.ufo/waves/round-75/controls/c2-after-*-r75.txt` | r75 |
+| depth:density | 9 | 9 (not targeted; not re-measured) | — | r15 (held) |
+
+Claim verdicts. C1 VERIFIED on its frozen A1–A4; kill rule not triggered. Its predicate has routed letter gaps that were not rewritten after scoring: a forged relabel of the base `norecheck` bucket passes case 6 (M75-3), and one removal mutant survives (R75-2, M-P4). C2 VERIFIED on frozen B1–B8. The B5 "≤25 words" clause is measured (max 12 words over 24 quotes) but the command it names enforces only a lower bound (M75-2, QUALITY R123). No axis harmed: `git diff f9cc05b5 -- SCORECARD.md` is additions only.
+
+Counting commands and their receipts: `corpus/lessons/round-75.md` § Counters and § Counting commands.
+
+### Round-75 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 75 | depth:verifiability | census counts a `restoration-recheck:`-only file as `norecheck`; selftest `cases=5` | `restoration_only` bucket counted, RESULT gate requires it zero, selftest `cases=6`; exec surface unchanged (one `bash -c`) | `.ufo/waves/round-75/controls/c1-after-r75.txt`; `.ufo/waves/round-75/w1/ExecC1Amend.md`; `corpus/instruments/recheck-cwd-census.py` |
+| 75 | coverage | rows=52 registry=109 entries=55 capture=88 knowledge=90 | rows=53 registry=110 entries=56 capture=89 knowledge=91; F53/S110 admitted | `.ufo/waves/round-75/controls/c2-after-*-r75.txt`; `corpus/knowledge/fuzzilli-ndss2023-jit-fuzzing-paper.md`; `corpus/source-snapshots/round-75/` |
+| 75 | calibration | the r74 census value `entries=89` printed at a mid-round tree (V74-1); the scope sentence falsified (M74-6) | R121 (shape clauses name their revision), R122 (criterion-id uniqueness), R123 (upper bounds need an enforcing command); four mistakes mined (M75-1..M75-4) | `corpus/lessons/round-75.md` § Erratum, § Mistakes; `corpus/QUALITY.md` lines 561-569 |
+
+Saturation: line 9/10 per owned axis held; the lowest non-retired axis remains depth:verifiability (4), worked nominally. No retirement, split or nudge waiver. The census gate gained a SKILL.md gate-registry row (not a repertoire row).
+
+### Planned after round 75 (not frozen)
+
+1. **depth:verifiability (4, lowest):** R75-1 to R75-3 — a counter amendment that binds clause (ii) at file level (the forged `norecheck` relabel), kills the M-P4 case-6 survivor, and adds a fixture carrying both `recheck:` and `restoration-recheck:`; its own do-nothing control and freeze first.
+2. **coverage (8):** the NDSS paper's evaluation outcome is not pinned and not claimed; a successor that states a result needs its own pinned capture. The OSV overview page remains a lead.
+3. **calibration:** R75-4 (an abstract-only comparison ground passes B1–B8) and R75-5 (the B8 sibling sweep cannot discriminate) as frozen-clause amendments for the next admission that uses them.

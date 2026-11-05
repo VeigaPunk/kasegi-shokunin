@@ -1173,3 +1173,17 @@ Appended amendment (R6): the round-74 entry `corpus/knowledge/fuzzilli-js-engine
 | F52 | Fuzzilli, as its project documents it — a "(coverage-)guided" fuzzer for dynamic language interpreters built on the FuzzIL intermediate language; the semantic-correctness concern for core interpreter bugs against try-catch-wrapped runtime-API fuzzing; the Swift/C split; the seven named components with the event-driven design; the REPRL execution mode with state reset; the instance tree for scale; and the Targets/ patch-and-instrument procedure | admitted | knowledge/fuzzilli-js-engine-fuzzing-framework.md | S109 | Read the definition and the semantic concern from the README's own lines (S109.txt:151, :165) and keep the "(coverage-)guided" parenthetical as printed. The README states no performance figure, no success rate and no reward; a reader must not supply one from the comparison post (S093, F41) or a paper. The NDSS 2023 paper stays a lead: existence and name only.
 
 [r74 amendment, appended 2026-11-05] The frontier as of round 74 is F01-F52 admitted: F52 at round 74. The F52 admission rests on S109 alone; the F41 comparison post's scope limit stays as written, and the NDSS 2023 paper's content is not claimed.
+
+## Round-75 admission — coverage map row and Frontier F53 (2026-11-05)
+
+Appended amendment (R6): the round-75 entry `corpus/knowledge/fuzzilli-ndss2023-jit-fuzzing-paper.md` (Frontier F53, source S110) rests on the NDSS Symposium 2023 paper at https://www.ndss-symposium.org/wp-content/uploads/2023/02/ndss2023_f290_paper.pdf, captured `corpus/source-snapshots/round-75/S110.txt` (sha256 0780beae...51ef, 1869 lines, 24 pinned quotes), manifest `corpus/source-snapshots/round-75/manifest.json`. The coverage map above is not edited in place (R6); the coverage-map row is appended here, and the F53 frontier row follows.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| The NDSS 2023 Fuzzilli paper, as its authors state it: the intermediate representation and its lifting to JavaScript, the coverage-based selection criterion, the comparison design, and the six-month evaluation over three engines with its 17-vulnerability count (round 75) | knowledge/fuzzilli-ndss2023-jit-fuzzing-paper.md | S110, the paper's own text, opened 2026-11-05 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F53 | The NDSS 2023 paper on Fuzzilli, as its authors state it: the paper's identity, its IR design and lifting to JavaScript, the coverage-guided selection criterion, its comparison design (Superion named in the introduction), and its evaluation scope (three engines, six months) and count (17 vulnerabilities) | admitted | knowledge/fuzzilli-ndss2023-jit-fuzzing-paper.md | S110 | Read the comparison outcome from the evaluation section before stating any result; the round-75 manifest pins the comparison wording and not the outcome, so no result is claimed |
+
+[r75 amendment, appended 2026-11-05] The frontier as of round 75 is F01-F53 admitted: F53 at round 75. The F53 admission rests on S110 alone; the F52 README's scope limit stays as written, and the comparison outcome is not claimed.

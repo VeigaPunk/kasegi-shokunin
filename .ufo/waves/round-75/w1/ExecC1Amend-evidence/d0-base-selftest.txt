@@ -1,0 +1,8 @@
+# receipt d0: base counter --selftest (before-survival)
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=0
+exit=0

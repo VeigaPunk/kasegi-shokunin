@@ -1,0 +1,14 @@
+# MutAuditC1 receipt: M-P5
+# command: TMPDIR=/fast/scratch/hyaku/kasegi-r75/MutAuditC1/tmp python3 /fast/scratch/hyaku/kasegi-r75/MutAuditC1/mutants/M-P5.py --selftest   (cwd=/fast/scratch/hyaku/kasegi-r75/MutAuditC1/mutants)
+# sha256(target)=0df5bbac9f1829339cf543c11be7a434002a9628df40086a449758396c78c368
+# py_compile exit=0
+# --- output (stdout+stderr) ---
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r75/MutAuditC1/tmp','/fast/scratch/hyaku/kasegi-r75/MutAuditC1/tmp','/fast/scratch/hyaku/kasegi-r75/MutAuditC1/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only FAIL got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=True main_ret=1
+selftest cases=6 failures=1
+
+# --- exit code: 1 ---

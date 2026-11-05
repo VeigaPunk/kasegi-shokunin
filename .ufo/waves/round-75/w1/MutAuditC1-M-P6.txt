@@ -1,0 +1,25 @@
+# MutAuditC1 receipt: M-P6
+# command: TMPDIR=/fast/scratch/hyaku/kasegi-r75/MutAuditC1/tmp python3 /fast/scratch/hyaku/kasegi-r75/MutAuditC1/mutants/M-P6.py --selftest   (cwd=/fast/scratch/hyaku/kasegi-r75/MutAuditC1/mutants)
+# sha256(target)=308815218b5ef5a6dde791f8b6c8d5a0278e24ba898a03b625bdb4184d178be5
+# py_compile exit=0
+# --- output (stdout+stderr) ---
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r75/MutAuditC1/tmp','/fast/scratch/hyaku/kasegi-r75/MutAuditC1/tmp','/fast/scratch/hyaku/kasegi-r75/MutAuditC1/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+Traceback (most recent call last):
+  File "/fast/scratch/hyaku/kasegi-r75/MutAuditC1/mutants/M-P6.py", line 266, in <module>
+    sys.exit(main(sys.argv))
+             ~~~~^^^^^^^^^^
+  File "/fast/scratch/hyaku/kasegi-r75/MutAuditC1/mutants/M-P6.py", line 242, in main
+    return selftest()
+  File "/fast/scratch/hyaku/kasegi-r75/MutAuditC1/mutants/M-P6.py", line 229, in selftest
+    all(got6[k] == v for k, v in want6.items())
+    ^^^
+  File "/fast/scratch/hyaku/kasegi-r75/MutAuditC1/mutants/M-P6.py", line 229, in <genexpr>
+    all(got6[k] == v for k, v in want6.items())
+        ~~~~^^^
+KeyError: 'restoration_only'
+
+# --- exit code: 1 ---

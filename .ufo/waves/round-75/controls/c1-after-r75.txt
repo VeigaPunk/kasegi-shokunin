@@ -1,0 +1,23 @@
+# round-75 C1 landed-tree receipts (integrator, attempt 2). Tree: 748dfb6 + working patch of corpus/instruments/recheck-cwd-census.py (sha256 e666ae11fd9d50ecea107b8835090eed0dc798e8e8a233324b9fbd59ab52a21a)
+## A1 selftest (landed)
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r75/L1/tmp','/fast/scratch/hyaku/kasegi-r75/L1/tmp','/fast/scratch/hyaku/kasegi-r75/L1/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False main_ret=1
+selftest cases=6 failures=0
+exit=0
+## A2 lane census from /tmp (landed, C1-only: before C2 lands this was entries=90)
+RECHECK-CWD entries=91 noprefix=0 exit2_foreign=0 exit0_foreign=69 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+exit=0
+## A4 parity: base counter vs landed counter, stable fields (diff exit shows only the restoration_only delta line)
+1c1
+< RECHECK-CWD entries=91 noprefix=0 exit2_foreign=0 exit0_foreign=69 exit1_foreign=22 exit_other=0 norecheck=0
+---
+> RECHECK-CWD entries=91 noprefix=0 exit2_foreign=0 exit0_foreign=69 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+diff_exit=1
+## A3 kill-rule: exec-surface count of bash -c and subprocess.run on landed file
+bash_c=1 subprocess_run=1
+## A3 mutant kills: see .ufo/waves/round-75/w1/MutAuditC1.md (landed bytes sha256 e666ae11...a21302a? verified: e666ae11fd9d50ec)

@@ -1,0 +1,150 @@
+--- a/recheck-cwd-census.py
++++ b/recheck-cwd-census.py
+@@ -5,23 +5,32 @@
+ prefix, so it runs from any cwd. For every corpus/knowledge/*.md under --root this counter
+ reads the FIRST `recheck:` line and reports:
+ 
+-  noprefix        the value does not start with `cd <LANE> && ` (LANE = --lane)
+-  exit2_foreign   the value, run by `bash -c` in a fresh foreign scratch cwd, exits 2
+-                  (a relative path that only resolves from the lane root)
+-  exit0_foreign   exits 0 from the foreign cwd
+-  exit1_foreign   exits 1 from the foreign cwd (fail-closed: e.g. an absent lost base, by design)
+-  exit_other      any other code (including timeout, counted as -1)
++  noprefix          the value does not start with `cd <LANE> && ` (LANE = --lane)
++  exit2_foreign     the value, run by `bash -c` in a fresh foreign scratch cwd, exits 2
++                    (a relative path that only resolves from the lane root)
++  exit0_foreign     exits 0 from the foreign cwd
++  exit1_foreign     exits 1 from the foreign cwd (fail-closed: e.g. an absent lost base, by design)
++  exit_other        any other code (including timeout, counted as -1)
++  norecheck         the entry carries neither a `recheck:` nor a `restoration-recheck:` line
++  restoration_only  the entry's only recheck-ish header is `restoration-recheck:` (no
++                    `recheck:` line at all)
++
++Restoration-recheck exclusion: a `restoration-recheck:` line is a restoration check, not a
++cwd-scoped recheck, so the census never executes it and never counts it in noprefix or the
++exit_* buckets; the entry is counted in restoration_only (not norecheck), and the tree is
++nonconformant while any such entry exists (the verdict requires restoration_only == 0).
+ 
+-Conformance (exit 0): noprefix == 0 and exit2_foreign == 0. Exit 1: a non-conforming tree.
+-Exit 2: harness or read error. The foreign cwd and every temp path come from tempfile, which
+-honors TMPDIR; no path is hard-coded under /tmp.
++Conformance (exit 0): noprefix == 0, exit2_foreign == 0, norecheck == 0 and restoration_only == 0.
++Exit 1: a non-conforming tree. Exit 2: harness or read error. The foreign cwd and every temp
++path come from tempfile, which honors TMPDIR; no path is hard-coded under /tmp.
+ 
+ Usage:
+   recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+   recheck-cwd-census.py --selftest
+ 
+---selftest runs five cases under TMPDIR (prefix-census, result-main, tmpdir-parent,
+-scratch-cleanup, first-line) and prints 'selftest cases=5 failures=0' on success.
++--selftest runs six cases under TMPDIR (prefix-census, result-main, tmpdir-parent,
++scratch-cleanup, first-line, restoration-only) and prints 'selftest cases=6 failures=0' on
++success.
+ """
+ import glob
+ import os
+@@ -42,6 +51,15 @@
+     return None
+ 
+ 
++def has_restoration_recheck(path):
++    """True when the entry carries a `restoration-recheck:` header line (never executed)."""
++    with open(path, encoding="utf-8", errors="replace") as fh:
++        for line in fh:
++            if line.startswith("restoration-recheck:"):
++                return True
++    return False
++
++
+ def run_foreign(value, env_tmp):
+     """Run one recheck value from a fresh foreign cwd; return its exit code (-1 on timeout)."""
+     scratch = tempfile.mkdtemp(prefix="recheck-cwd-", dir=env_tmp)
+@@ -66,14 +84,18 @@
+     env_tmp = os.environ.get("TMPDIR") or None
+     prefix = "cd %s && " % lane
+     counts = {"entries": 0, "noprefix": 0, "exit2_foreign": 0, "exit0_foreign": 0,
+-              "exit1_foreign": 0, "exit_other": 0, "norecheck": 0}
++              "exit1_foreign": 0, "exit_other": 0, "norecheck": 0, "restoration_only": 0}
+     for path in sorted(glob.glob(os.path.join(kdir, "*.md"))):
+         name = os.path.basename(path)
+         counts["entries"] += 1
+         value = first_recheck(path)
+         if value is None:
+-            counts["norecheck"] += 1
+-            print("NORECHECK %s" % name)
++            if has_restoration_recheck(path):
++                counts["restoration_only"] += 1
++                print("RESTORATION-ONLY %s" % name)
++            else:
++                counts["norecheck"] += 1
++                print("NORECHECK %s" % name)
+             continue
+         noprefix = not value.startswith(prefix)
+         if noprefix:
+@@ -90,20 +112,22 @@
+         if verbose or noprefix or code == 2:
+             print("ENTRY %s noprefix=%d foreign_exit=%d" % (name, int(noprefix), code))
+     print("RECHECK-CWD entries=%d noprefix=%d exit2_foreign=%d exit0_foreign=%d "
+-          "exit1_foreign=%d exit_other=%d norecheck=%d"
++          "exit1_foreign=%d exit_other=%d norecheck=%d restoration_only=%d"
+           % (counts["entries"], counts["noprefix"], counts["exit2_foreign"],
+              counts["exit0_foreign"], counts["exit1_foreign"], counts["exit_other"],
+-             counts["norecheck"]))
++             counts["norecheck"], counts["restoration_only"]))
+     return counts
+ 
+ 
+ def selftest():
+-    """Five cases: prefix-census (the round-73 three-entry fixture, retained),
++    """Six cases: prefix-census (the round-73 three-entry fixture, retained),
+     result-main (main() in-process on a nonconformant and a conformant fixture),
+     tmpdir-parent (every scratch directory the census creates resolves under TMPDIR),
+-    scratch-cleanup (no scratch directory survives census()), and first-line (an entry
+-    carrying two recheck: lines counts only its FIRST line). Expected on success:
+-    'selftest cases=5 failures=0' and exit 0."""
++    scratch-cleanup (no scratch directory survives census()), first-line (an entry
++    carrying two recheck: lines counts only its FIRST line), and restoration-only (an entry
++    whose only header is restoration-recheck: is counted in restoration_only, its value is
++    never executed, and main() is nonconformant). Expected on success:
++    'selftest cases=6 failures=0' and exit 0."""
+     failures = []
+     scratch = tempfile.mkdtemp(prefix="recheck-cwd-selftest-", dir=os.environ.get("TMPDIR") or None)
+ 
+@@ -203,7 +227,25 @@
+         check("first-line", all(got5[k] == v for k, v in want5.items()),
+               "got=%s want=%s" % (counts_str(got5, want5), counts_str(want5, want5)))
+ 
+-        print("selftest cases=5 failures=%d" % len(failures))
++        # Case 6: restoration-only — r.md carries ONLY a restoration-recheck: header whose
++        # value would create a marker file if executed; p.md is a cd-prefixed passing entry.
++        # r.md must be counted in restoration_only (not norecheck), its value must NOT run
++        # (marker absent), and main() must print nonconformant and exit 1.
++        root6, kdir6 = fixture("case6")
++        write_entry(kdir6, "r.md", "restoration-recheck: touch %s/restoration-ran\n" % root6)
++        write_entry(kdir6, "p.md", "recheck: cd %s && true\n" % root6)
++        want6 = {"entries": 2, "restoration_only": 1, "norecheck": 0, "noprefix": 0,
++                 "exit2_foreign": 0, "exit0_foreign": 1}
++        _t6, got6 = capture(census, root6, root6)
++        out6, ret6 = capture(main, ["recheck-cwd-census.py", "--root", root6, "--lane", root6])
++        marker6 = os.path.exists(os.path.join(root6, "restoration-ran"))
++        check("restoration-only",
++              all(got6[k] == v for k, v in want6.items())
++              and not marker6 and ret6 == 1 and "RECHECK-CWD-RESULT nonconformant" in out6,
++              "got=%s want=%s marker_present=%s main_ret=%d"
++              % (counts_str(got6, want6), counts_str(want6, want6), marker6, ret6))
++
++        print("selftest cases=6 failures=%d" % len(failures))
+         return 0 if not failures else 1
+     finally:
+         shutil.rmtree(scratch, ignore_errors=True)
+@@ -229,7 +271,8 @@
+                   file=sys.stderr)
+             return 2
+     counts = census(os.path.abspath(root), lane, verbose)
+-    conform = counts["noprefix"] == 0 and counts["exit2_foreign"] == 0
++    conform = (counts["noprefix"] == 0 and counts["exit2_foreign"] == 0
++               and counts["norecheck"] == 0 and counts["restoration_only"] == 0)
+     print("RECHECK-CWD-RESULT %s" % ("conformant" if conform else "nonconformant"))
+     return 0 if conform else 1
+ 

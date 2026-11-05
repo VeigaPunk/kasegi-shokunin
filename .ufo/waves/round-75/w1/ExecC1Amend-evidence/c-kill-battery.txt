@@ -1,0 +1,70 @@
+# receipt c: mutant M-A vs amended (diff -u amended mut-A)
+--- amended
++++ mut-A
+@@ -91,7 +91,7 @@
+         value = first_recheck(path)
+         if value is None:
+             if has_restoration_recheck(path):
+-                counts["restoration_only"] += 1
++                counts["norecheck"] += 1
+                 print("RESTORATION-ONLY %s" % name)
+             else:
+                 counts["norecheck"] += 1
+diff_exit=1 (1 = differs, expected)
+# cmd: TMPDIR=/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp python3 /fast/scratch/hyaku/kasegi-r75/ExecC1Amend/mut-A.py --selftest
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only FAIL got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=1,restoration_only=0 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False main_ret=1
+selftest cases=6 failures=1
+exit=1
+
+# receipt c: mutant M-B vs amended (diff -u amended mut-B)
+--- amended
++++ mut-B
+@@ -271,8 +271,7 @@
+                   file=sys.stderr)
+             return 2
+     counts = census(os.path.abspath(root), lane, verbose)
+-    conform = (counts["noprefix"] == 0 and counts["exit2_foreign"] == 0
+-               and counts["norecheck"] == 0 and counts["restoration_only"] == 0)
++    conform = counts["noprefix"] == 0 and counts["exit2_foreign"] == 0
+     print("RECHECK-CWD-RESULT %s" % ("conformant" if conform else "nonconformant"))
+     return 0 if conform else 1
+ 
+diff_exit=1 (1 = differs, expected)
+# cmd: TMPDIR=/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp python3 /fast/scratch/hyaku/kasegi-r75/ExecC1Amend/mut-B.py --selftest
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only FAIL got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False main_ret=0
+selftest cases=6 failures=1
+exit=1
+
+# receipt c: mutant M-C vs amended (diff -u amended mut-C)
+--- amended
++++ mut-C
+@@ -92,6 +92,8 @@
+         if value is None:
+             if has_restoration_recheck(path):
+                 counts["restoration_only"] += 1
++                rv = next(ln[len("restoration-recheck:"):].strip() for ln in open(path, encoding="utf-8") if ln.startswith("restoration-recheck:"))
++                run_foreign(rv, env_tmp)
+                 print("RESTORATION-ONLY %s" % name)
+             else:
+                 counts["norecheck"] += 1
+diff_exit=1 (1 = differs, expected)
+# cmd: TMPDIR=/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp python3 /fast/scratch/hyaku/kasegi-r75/ExecC1Amend/mut-C.py --selftest
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r75/ExecC1Amend/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only FAIL got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=True main_ret=1
+selftest cases=6 failures=1
+exit=1
+

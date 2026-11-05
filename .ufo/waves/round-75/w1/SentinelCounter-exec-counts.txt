@@ -1,0 +1,21 @@
+# SentinelCounter exec-surface count (scratch derivation of C1 amendment; lane file untouched)
+# base sha256=5ef12c7ff09937524df00a76ca3498afa1b23a52983f6e06bd4e3fc6575e2574 (equals git show 748dfb6:corpus/instruments/recheck-cwd-census.py)
+base.py	subprocess\.     count=3 grep_exit=0
+base.py	subprocess\.run  count=1 grep_exit=0
+base.py	bash -c          count=1 grep_exit=0
+base.py	os\.system       count=0 grep_exit=1
+base.py	popen            count=0 grep_exit=1
+base.py	shell=True       count=0 grep_exit=1
+base.py	run_foreign(     count=2 grep_exit=0
+base.py	timeout=         count=1 grep_exit=0
+base.py	TIMEOUT          count=2 grep_exit=0
+amended.py	subprocess\.     count=3 grep_exit=0
+amended.py	subprocess\.run  count=1 grep_exit=0
+amended.py	bash -c          count=1 grep_exit=0
+amended.py	os\.system       count=0 grep_exit=1
+amended.py	popen            count=0 grep_exit=1
+amended.py	shell=True       count=0 grep_exit=1
+amended.py	run_foreign(     count=2 grep_exit=0
+amended.py	timeout=         count=1 grep_exit=0
+amended.py	TIMEOUT          count=2 grep_exit=0
+# grep exit 1 with count=0 is a no-match, expected for os.system/popen/shell=True
