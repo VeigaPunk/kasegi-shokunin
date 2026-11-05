@@ -1,10 +1,8 @@
 # r72 probe rows 10 and 29 re-run by the L1 on the exact bytes (scratch clone of 9869931; alias symlinks created in the scratch clone only)
-base row10 rc=see-below
-base row29 rc=see-below
-cand row10 rc=see-below
-cand row29 rc=see-below
-base row10  (censusf.py -> capture-source.py, bare)  rc=2 derive-not-read-only
-cand row10  (censusf.py -> capture-source.py, bare)  rc=1 admitted (argparse inert)
-cand row10 with --url or --wor: rc=2 refused (flags still policed through the alias)
-base row29  (ok.py -> gate-quote-audit.py, --url)  rc=1 admitted
-cand row29  (ok.py -> gate-quote-audit.py, --url)  rc=1 admitted (--url is not denied for gate-quote-audit; inert, unchanged from base)
+# candidate gate sha256 4f59bda47eab2f93d54ccc7abe6256a878db5cbee98684d9d110043d91f9d221; base gate sha256 182f4ef7d9c9e4d921482d1c2d0cde113c49fd40c76f8fdf0319ba86ba064603
+base row10  (censusf.py -> capture-source.py, bare)           rc=2 derive-not-read-only
+cand row10  (censusf.py -> capture-source.py, bare)           rc=1 admitted (argparse inert)
+cand row10  (censusf.py -> capture-source.py, --url --out)    rc=2 derive-not-read-only (flags still policed through the alias)
+cand row10  (censusf.py -> capture-source.py, --wor d)        rc=2 derive-not-read-only
+base row29  (ok.py -> gate-quote-audit.py, --url file:///dev/null)  rc=1 admitted
+cand row29  (ok.py -> gate-quote-audit.py, --url file:///dev/null)  rc=1 admitted (--url not denied for gate-quote-audit; inert, unchanged from base)
