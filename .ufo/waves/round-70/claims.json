@@ -1,0 +1,56 @@
+{
+  "round": 70,
+  "lane": "kasegi",
+  "attempt": 1,
+  "frozen_at_utc": null,
+  "base_revision": "e7c02bddaa32a4a70afb2e6278f108e03dca067c",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "axis_score_before": 4,
+      "axis_score_target": 4,
+      "nominal": "R58: the citation-resolution metric is not read by this gate; the score holds and the instrument moves.",
+      "declared": "The derive gate refuses the python head's measured write/exec/ingress long options (--root, --out, --output, --json, --scratch, --url, --work) by name and by any unique argparse abbreviation, and a short -o, while keeping every read-only derive admitted.",
+      "predicate": "On the committed-input counter .ufo/waves/round-70/controls/c1-probe-run-r70.py pointed at the gate exported from the measured revision, `VERIFY measurements=12 failures=0` and process exit 0; pointed at the byte-identical base gate (sha256 c09b0fb1a95b770e5a858ed88b005ec3530486d57dd721cbed2ec6386d882bde) the same counter prints `measurements=12 failures=9` and exit 1, with P1/P2/P3 running the fixture entry's recheck payload through bash -c (marker_runs=1), P4/P5/P6 writing their named outside file (wrote=1) and P7 doing both.",
+      "probe_set": [
+        "P1 python-root-space: python3 corpus/instruments/frontier-recheck-count.py --root .",
+        "P2 python-root-equals: python3 corpus/instruments/frontier-recheck-count.py --root=.",
+        "P3 python-root-abbrev: python3 corpus/instruments/frontier-recheck-count.py --ro .",
+        "P4 python-out-space: python3 corpus/instruments/capture-source.py --id x --url file://SRC --out ABS --kind text",
+        "P5 python-out-equals: python3 corpus/instruments/capture-source.py --id x --url file://SRC --out=ABS --kind text",
+        "P6 python-out-abbrev: python3 corpus/instruments/capture-source.py --id x --url file://SRC --ou ABS --kind text",
+        "P7 python-json-space: python3 corpus/instruments/frontier-recheck-count.py --json ABS"
+      ],
+      "counter": ".ufo/waves/round-70/controls/c1-probe-run-r70.py",
+      "counting_command": "python3 -B .ufo/waves/round-70/controls/c1-probe-run-r70.py --gate <gate exported from the measured revision> --work /fast/scratch/hyaku/kasegi-r70/L1/FINAL --mode candidate",
+      "before_command": "python3 -B .ufo/waves/round-70/controls/c1-probe-run-r70.py --gate .ufo/waves/round-70/controls/base-gate-r70.py --work /fast/scratch/hyaku/kasegi-r70/L1/BASE --mode base",
+      "kill_rule": "Any FAIL MEASURE line, a nonzero exit at the candidate gate, a candidate whose gate sha256 differs from the frozen candidate, or a base run that does not fail P1..P7 defeats C1. The frozen target is never narrowed after data.",
+      "controls": {
+        "do_nothing_base": ".ufo/waves/round-70/controls/c1-base-donothing-r70.txt (12 measurements, 9 failures, exit 1)",
+        "blanket_refusal_forgery": ".ufo/waves/round-70/controls/c1-forgery-blanket-r70.txt (positive controls fail, exit 1)",
+        "candidate_trial": ".ufo/waves/round-70/controls/c1-candidate-trial-r70.txt (12 measurements, 0 failures, exit 0)"
+      },
+      "scope": "The claim is the enumerated probe set P1..P7 on this host's PATH python3 (3.14.8). It is an enumerated option set, not a sandbox: positional arguments, counters' own writes on positional paths, options after a -- separator, non-denied options and the class of exec/write paths not named here stay open, and the lesson names them."
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "axis_score_before": 8,
+      "axis_score_target": 8,
+      "declared": "Frontier F48 admitted on S105 (GitHub Advisory Database curation semantics) with a new knowledge entry, plus the rejected-row debt V69-1 landed as S104 (ENISA EUVD API documentation), so the registry carries both a mined and a rejected row.",
+      "predicate": "`FRONTIER-CENSUS rows=48 admitted=48 closed=48 problem-rows=0 registry=105`; `entries=51 pass=51 exit=0`; `records=84 bound=84 unbound=0`; knowledge-expected 88 lines and 86 entries with `LC_ALL=C sort -c` exit 0; 86 files under corpus/knowledge/; F48 present in corpus/README.md naming S105 and corpus/knowledge/github-advisory-database-curation-semantics.md; `/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` exit 0.",
+      "counting_command": "python3 corpus/instruments/frontier-recheck-count.py; python3 corpus/instruments/capture-binding-check.py; wc -l < corpus/instruments/knowledge-expected.txt; grep -vc '^#' corpus/instruments/knowledge-expected.txt; LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt; ls corpus/knowledge/*.md | wc -l; grep -cE '^\\| F[0-9]+ \\|' corpus/README.md; /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi",
+      "before_values": "rows=47 admitted=47 registry=103; entries=50 pass=50; records=83 bound=83; knowledge-expected 87/85; 85 knowledge files; frontier_rows=47; census exit 0 with six inherited W04 warnings",
+      "after_values": "rows=48 admitted=48 registry=105; entries=51 pass=51; records=84 bound=84; knowledge-expected 88/86 sort-clean; 86 knowledge files; frontier_rows=48; census exit 0 with six inherited W04 warnings",
+      "kill_rule": "Any frozen after-value that does not reproduce from the landed commit defeats C2; the census must exit 0 at round end.",
+      "sourced_claim": "C2 rests on S105, opened this round (capture sha256 9dd51a8ebd93268cd5f7a2fa626cfcb73767708df75777726535b28650be3350, 19 located quotes)."
+    }
+  ],
+  "assimilation": "none this round: the merge/kasegi staged id set collides with 73 of the lane's 103 registry ids (mass id drift), so per the contract's drift rule no staged row is adopted and an L0 question is filed.",
+  "non_claims": [
+    "No new capability row: the existing derive-gate-chain-refusal capability is extended in place.",
+    "No axis retirement, split, saturation change or stagnation-nudge waiver.",
+    "The two R103 selftest pins (git show with no operand; git show with a -- separator) pin existing refusal behaviour; they are part of C1's selftest pin movement, not a separate claim."
+  ]
+}
