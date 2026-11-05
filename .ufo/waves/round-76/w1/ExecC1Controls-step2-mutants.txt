@@ -1,0 +1,78 @@
+# ExecC1Controls step 2: three committed BASE-byte mutants --selftest (red-before)
+extract: git show 5da54cd4451cbbb9e4b87e2f83475feb13c65c9e:.ufo/waves/round-76/controls/mut/<m>.py
+
+== m1-forged-relabel ==
+changed diff lines vs base (diff -U0 | grep -c '^[+-]'): 10
+cmd: TMPDIR=$S/tmp python3 -B $S/m1-forged-relabel.py --selftest
+rc: 0
+last stdout line: selftest cases=6 failures=0
+full stdout:
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False main_ret=1
+selftest cases=6 failures=0
+mutation diff vs base:
+--- /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/base.py	2026-11-05 07:55:13.543651106 -0300
++++ /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/m1-forged-relabel.py	2026-11-05 07:56:42.100897172 -0300
+@@ -93,6 +93,2 @@
+-            if has_restoration_recheck(path):
+-                counts["restoration_only"] += 1
+-                print("RESTORATION-ONLY %s" % name)
+-            else:
+-                counts["norecheck"] += 1
+-                print("NORECHECK %s" % name)
++            counts["restoration_only"] += 1
++            print("RESTORATION-ONLY %s" % name)
+
+== m2-result-limb-removed ==
+changed diff lines vs base (diff -U0 | grep -c '^[+-]'): 4
+cmd: TMPDIR=$S/tmp python3 -B $S/m2-result-limb-removed.py --selftest
+rc: 0
+last stdout line: selftest cases=6 failures=0
+full stdout:
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False main_ret=1
+selftest cases=6 failures=0
+mutation diff vs base:
+--- /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/base.py	2026-11-05 07:55:13.543651106 -0300
++++ /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/m2-result-limb-removed.py	2026-11-05 07:56:42.160897340 -0300
+@@ -244 +244 @@
+-              and not marker6 and ret6 == 1 and "RECHECK-CWD-RESULT nonconformant" in out6,
++              and not marker6,
+
+== m3-restoration-forces ==
+changed diff lines vs base (diff -U0 | grep -c '^[+-]'): 12
+cmd: TMPDIR=$S/tmp python3 -B $S/m3-restoration-forces.py --selftest
+rc: 0
+last stdout line: selftest cases=6 failures=0
+full stdout:
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False main_ret=1
+selftest cases=6 failures=0
+mutation diff vs base:
+--- /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/base.py	2026-11-05 07:55:13.543651106 -0300
++++ /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/m3-restoration-forces.py	2026-11-05 07:56:42.220897507 -0300
+@@ -92,7 +92,3 @@
+-        if value is None:
+-            if has_restoration_recheck(path):
+-                counts["restoration_only"] += 1
+-                print("RESTORATION-ONLY %s" % name)
+-            else:
+-                counts["norecheck"] += 1
+-                print("NORECHECK %s" % name)
++        if value is None or has_restoration_recheck(path):
++            counts["restoration_only"] += 1
++            print("RESTORATION-ONLY %s" % name)
+
+VERDICT: all three rc=0 with 'selftest cases=6 failures=0' — red-before reproduces (matches c1-redbefore-mutant-survival-r76.txt)

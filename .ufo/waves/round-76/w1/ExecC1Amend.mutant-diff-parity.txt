@@ -1,0 +1,81 @@
+=== m1 ===
+         counts["entries"] += 1
+         value = first_recheck(path)
+         if value is None:
+-            if has_restoration_recheck(path):
+-                counts["restoration_only"] += 1
+-                print("RESTORATION-ONLY %s" % name)
+-            else:
+-                counts["norecheck"] += 1
+-                print("NORECHECK %s" % name)
++            counts["restoration_only"] += 1
++            print("RESTORATION-ONLY %s" % name)
+             continue
+         noprefix = not value.startswith(prefix)
+         if noprefix:
+=== m1a ===
+         counts["entries"] += 1
+         value = first_recheck(path)
+         if value is None:
+-            if has_restoration_recheck(path):
+-                counts["restoration_only"] += 1
+-                print("RESTORATION-ONLY %s" % name)
+-            else:
+-                counts["norecheck"] += 1
+-                print("NORECHECK %s" % name)
++            counts["restoration_only"] += 1
++            print("RESTORATION-ONLY %s" % name)
+             continue
+         noprefix = not value.startswith(prefix)
+         if noprefix:
+=== m2 ===
+         marker6 = os.path.exists(os.path.join(root6, "restoration-ran"))
+         check("restoration-only",
+               all(got6[k] == v for k, v in want6.items())
+-              and not marker6 and ret6 == 1 and "RECHECK-CWD-RESULT nonconformant" in out6,
++              and not marker6,
+               "got=%s want=%s marker_present=%s main_ret=%d"
+               % (counts_str(got6, want6), counts_str(want6, want6), marker6, ret6))
+ 
+=== m2a ===
+         _t6, got6 = capture(census, root6, root6)
+         out6, ret6 = capture(main, ["recheck-cwd-census.py", "--root", root6, "--lane", root6])
+         marker6 = os.path.exists(os.path.join(root6, "restoration-ran"))
+-        res6 = (ret6 == 1 and "RECHECK-CWD-RESULT nonconformant" in out6)
+         check("restoration-only",
+               all(got6[k] == v for k, v in want6.items())
+               and not marker6 and res6,
+=== m3 ===
+         name = os.path.basename(path)
+         counts["entries"] += 1
+         value = first_recheck(path)
+-        if value is None:
+-            if has_restoration_recheck(path):
+-                counts["restoration_only"] += 1
+-                print("RESTORATION-ONLY %s" % name)
+-            else:
+-                counts["norecheck"] += 1
+-                print("NORECHECK %s" % name)
++        if value is None or has_restoration_recheck(path):
++            counts["restoration_only"] += 1
++            print("RESTORATION-ONLY %s" % name)
+             continue
+         noprefix = not value.startswith(prefix)
+         if noprefix:
+=== m3a ===
+         name = os.path.basename(path)
+         counts["entries"] += 1
+         value = first_recheck(path)
+-        if value is None:
+-            if has_restoration_recheck(path):
+-                counts["restoration_only"] += 1
+-                print("RESTORATION-ONLY %s" % name)
+-            else:
+-                counts["norecheck"] += 1
+-                print("NORECHECK %s" % name)
++        if value is None or has_restoration_recheck(path):
++            counts["restoration_only"] += 1
++            print("RESTORATION-ONLY %s" % name)
+             continue
+         noprefix = not value.startswith(prefix)
+         if noprefix:

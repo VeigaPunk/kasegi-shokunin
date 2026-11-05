@@ -1,0 +1,17 @@
+bash occurrences:
+9:  exit2_foreign     the value, run by `bash -c` in a fresh foreign scratch cwd, exits 2
+70:            proc = subprocess.run(["bash", "-c", value], cwd=scratch, env=env,
+exit=0
+-c occurrences:
+70:            proc = subprocess.run(["bash", "-c", value], cwd=scratch, env=env,
+subprocess.run:
+70:            proc = subprocess.run(["bash", "-c", value], cwd=scratch, env=env,
+mkdtemp:
+65:    scratch = tempfile.mkdtemp(prefix="recheck-cwd-", dir=env_tmp)
+136:    scratch = tempfile.mkdtemp(prefix="recheck-cwd-selftest-", dir=os.environ.get("TMPDIR") or None)
+197:        # case-1 fixture with tempfile.mkdtemp recording its calls: every scratch
+200:        real_mkdtemp = tempfile.mkdtemp
+202:        def recording_mkdtemp(*a, **kw):
+203:            made = real_mkdtemp(*a, **kw)
+207:        tempfile.mkdtemp = recording_mkdtemp
+211:            tempfile.mkdtemp = real_mkdtemp

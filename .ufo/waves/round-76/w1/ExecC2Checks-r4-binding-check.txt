@@ -1,0 +1,62 @@
+C2 pre-integration check 4 — capture-binding-check.py at the freeze state, verbatim (seat ExecC2Checks, 2026-11-05)
+
+$ TMPDIR=/fast/scratch/hyaku/kasegi-r76/ExecC2Checks/tmp python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py
+MANIFEST round-23 records=4 url_bound=4 fetched=0 archival=4
+MANIFEST round-24 records=19 url_bound=19 fetched=0 archival=19
+MANIFEST round-25 records=5 url_bound=5 fetched=0 archival=5
+MANIFEST round-26 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-28 records=2 url_bound=2 fetched=0 archival=2
+MANIFEST round-29 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-30 records=3 url_bound=3 fetched=0 archival=3
+MANIFEST round-31 records=1 url_bound=1 fetched=0 archival=1
+MANIFEST round-32 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-34 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-35 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-36 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-37 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-38 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-39 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-40 records=8 url_bound=8 fetched=8 archival=0
+MANIFEST round-41 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-42 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-43 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-44 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-45 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-46 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-46-a2 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-47 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-49 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-50 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-51 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-52 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-53 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-54 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-55 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-56 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-57 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-58 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-59 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-60 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-61 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-62 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-65 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-67 records=2 url_bound=2 fetched=2 archival=0
+MANIFEST round-68 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-69 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-70 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-71 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-72 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-73 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-74 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-75 records=1 url_bound=1 fetched=1 archival=0
+MANIFEST round-76 records=1 url_bound=0 fetched=1 archival=0
+AUDIT records=90 with_url=90 with_fetched_utc=52 with_archival=38 snapshot_dirs=49 manifest_dirs=49 missing_manifest=0 multi_row_url=7 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+FAIL rule=no-row record=S111 dir=round-76
+records=90 bound=89 unbound=1
+rc=1
+
+VERDICT: EXPECTED-TRANSITIONAL — exactly one FAIL line, `FAIL rule=no-row record=S111 dir=round-76`; bound=89 means every pre-round-76 record stays bound; the only unbound record is the new S111; exit 1. This is the declared freeze-commit intermediate state (manifest before the S111 registry row), not a defect. B4 re-measures at integration (expect records=90 bound=90 unbound=0 exit 0).
+
+Totals delta vs seat-spec text (recorded, not judged): the spec parenthetical said "(records=89 bound=89)"; actual totals are `records=90 bound=89 unbound=1`. records=90 because the round-76 manifest itself contributes the S111 record (AUDIT records=90 = 89 prior + 1 new); the substantive expectations (one no-row FAIL, all earlier records bound, rc=1) hold exactly.
+
+Inherited observations carried verbatim from AUDIT (pre-existing, out of scope): orphans=1 orphan=S040-live.txt; multi_row_url=7; digest_unpinned=0; missing_manifest=0; with_fetched_utc=52 with_archival=38 (rounds 23-31 archival manifests).

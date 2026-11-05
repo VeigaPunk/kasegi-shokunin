@@ -1,0 +1,104 @@
+--- a/corpus/instruments/recheck-cwd-census.py
++++ b/corpus/instruments/recheck-cwd-census.py
+@@ -28,9 +28,9 @@
+   recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+   recheck-cwd-census.py --selftest
+ 
+---selftest runs six cases under TMPDIR (prefix-census, result-main, tmpdir-parent,
+-scratch-cleanup, first-line, restoration-only) and prints 'selftest cases=6 failures=0' on
+-success.
++--selftest runs eight cases under TMPDIR (prefix-census, result-main, tmpdir-parent,
++scratch-cleanup, first-line, restoration-only, relabel-pair, both-headers) and prints
++'selftest cases=8 failures=0' on success.
+ """
+ import glob
+ import os
+@@ -120,14 +120,18 @@
+ 
+ 
+ def selftest():
+-    """Six cases: prefix-census (the round-73 three-entry fixture, retained),
++    """Eight cases: prefix-census (the round-73 three-entry fixture, retained),
+     result-main (main() in-process on a nonconformant and a conformant fixture),
+     tmpdir-parent (every scratch directory the census creates resolves under TMPDIR),
+     scratch-cleanup (no scratch directory survives census()), first-line (an entry
+-    carrying two recheck: lines counts only its FIRST line), and restoration-only (an entry
++    carrying two recheck: lines counts only its FIRST line), restoration-only (an entry
+     whose only header is restoration-recheck: is counted in restoration_only, its value is
+-    never executed, and main() is nonconformant). Expected on success:
+-    'selftest cases=6 failures=0' and exit 0."""
++    never executed, and main() is nonconformant), relabel-pair (a neither-header entry is
++    counted ONLY in norecheck, and a forged relabel of that bucket into restoration_only
++    fails the tally), and both-headers (an entry carrying BOTH a recheck: line and a
++    restoration-recheck: line is a normal entry: its first recheck executes, restoration_only
++    stays 0, the restoration value never runs, and main() is conformant). Expected on
++    success: 'selftest cases=8 failures=0' and exit 0."""
+     failures = []
+     scratch = tempfile.mkdtemp(prefix="recheck-cwd-selftest-", dir=os.environ.get("TMPDIR") or None)
+ 
+@@ -239,13 +243,60 @@
+         _t6, got6 = capture(census, root6, root6)
+         out6, ret6 = capture(main, ["recheck-cwd-census.py", "--root", root6, "--lane", root6])
+         marker6 = os.path.exists(os.path.join(root6, "restoration-ran"))
++        res6 = (ret6 == 1 and "RECHECK-CWD-RESULT nonconformant" in out6)
+         check("restoration-only",
+               all(got6[k] == v for k, v in want6.items())
+-              and not marker6 and ret6 == 1 and "RECHECK-CWD-RESULT nonconformant" in out6,
+-              "got=%s want=%s marker_present=%s main_ret=%d"
+-              % (counts_str(got6, want6), counts_str(want6, want6), marker6, ret6))
+-
+-        print("selftest cases=6 failures=%d" % len(failures))
++              and not marker6 and res6,
++              "got=%s want=%s marker_present=%s main_ret=%d result_ok=%s"
++              % (counts_str(got6, want6), counts_str(want6, want6), marker6, ret6, res6))
++
++        # Case 7: relabel-pair — x.md carries NO recheck-ish header at all, so it is
++        # counted ONLY in norecheck; r.md carries ONLY a restoration-recheck: header;
++        # p.md is a cd-prefixed passing entry. A forged relabel of the norecheck bucket
++        # into restoration_only (neither-header files counted as restoration_only) breaks
++        # this tally. The restoration value must NOT run (marker absent) and main() must
++        # print nonconformant and exit 1.
++        root7, kdir7 = fixture("case7")
++        write_entry(kdir7, "x.md", "body\n")
++        write_entry(kdir7, "r.md", "restoration-recheck: touch %s/restoration-ran\n" % root7)
++        write_entry(kdir7, "p.md", "recheck: cd %s && true\n" % root7)
++        want7 = {"entries": 3, "noprefix": 0, "exit2_foreign": 0, "exit0_foreign": 1,
++                 "exit1_foreign": 0, "exit_other": 0, "norecheck": 1, "restoration_only": 1}
++        _t7, got7 = capture(census, root7, root7)
++        marker7 = os.path.exists(os.path.join(root7, "restoration-ran"))
++        out7, ret7 = capture(main, ["recheck-cwd-census.py", "--root", root7, "--lane", root7])
++        res7 = (ret7 == 1 and "RECHECK-CWD-RESULT nonconformant" in out7)
++        check("relabel-pair",
++              all(got7[k] == v for k, v in want7.items())
++              and not marker7 and res7,
++              "got=%s want=%s marker_present=%s main_ret=%d result_ok=%s"
++              % (counts_str(got7, want7), counts_str(want7, want7), marker7, ret7, res7))
++
++        # Case 8: both-headers — b.md carries BOTH a restoration-recheck: header (its first
++        # recheck-ish line) and a recheck: line (second); p.md is a cd-prefixed passing
++        # entry. The entry must classify as a NORMAL entry: first_recheck returns its
++        # recheck: value, which runs and exits 0 from a foreign cwd; restoration_only stays
++        # 0; the restoration value never executes (marker absent); and main() is conformant
++        # and exits 0 (positive control: blanket refusal is not a gain). Forcing
++        # restoration_only on any restoration-recheck: carrier breaks this tally.
++        root8, kdir8 = fixture("case8")
++        write_entry(kdir8, "b.md",
++                    "restoration-recheck: touch %s/restoration-ran\n"
++                    "recheck: cd %s && true\n" % (root8, root8))
++        write_entry(kdir8, "p.md", "recheck: cd %s && true\n" % root8)
++        want8 = {"entries": 2, "noprefix": 0, "exit2_foreign": 0, "exit0_foreign": 2,
++                 "exit1_foreign": 0, "exit_other": 0, "norecheck": 0, "restoration_only": 0}
++        _t8, got8 = capture(census, root8, root8)
++        marker8 = os.path.exists(os.path.join(root8, "restoration-ran"))
++        out8, ret8 = capture(main, ["recheck-cwd-census.py", "--root", root8, "--lane", root8])
++        res8 = (ret8 == 0 and "RECHECK-CWD-RESULT conformant" in out8)
++        check("both-headers",
++              all(got8[k] == v for k, v in want8.items())
++              and not marker8 and res8,
++              "got=%s want=%s marker_present=%s main_ret=%d result_ok=%s"
++              % (counts_str(got8, want8), counts_str(want8, want8), marker8, ret8, res8))
++
++        print("selftest cases=8 failures=%d" % len(failures))
+         return 0 if not failures else 1
+     finally:
+         shutil.rmtree(scratch, ignore_errors=True)

@@ -1,0 +1,12 @@
+$ TMPDIR=/fast/scratch/hyaku/kasegi-r76/ExecC1Amend/tmp python3 -B m2a-result-limb-removed.py --selftest
+rc=1
+--- stdout (5 lines) ---
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r76/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Amend/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+--- stderr tail ---
+    and not marker6 and res6,
+                        ^^^^
+NameError: name 'res6' is not defined. Did you mean: 'ret6'?

@@ -1,0 +1,11 @@
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r76/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Amend/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False main_ret=1 result_ok=True
+selftest case=relabel-pair ok got=entries=3,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=1,restoration_only=1 want=entries=3,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=1,restoration_only=1 marker_present=False main_ret=1 result_ok=True
+selftest case=both-headers ok got=entries=2,exit0_foreign=2,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0,restoration_only=0 want=entries=2,exit0_foreign=2,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0,restoration_only=0 marker_present=False main_ret=0 result_ok=True
+selftest cases=8 failures=0
+selftest_rc=0
+selftest_stderr_empty=True

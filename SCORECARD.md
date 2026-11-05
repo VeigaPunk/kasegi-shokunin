@@ -2928,3 +2928,21 @@ Saturation: line 9/10 per owned axis held; the lowest non-retired axis remains d
 1. **depth:verifiability (4, lowest):** R75-1 to R75-3 — a counter amendment that binds clause (ii) at file level (the forged `norecheck` relabel), kills the M-P4 case-6 survivor, and adds a fixture carrying both `recheck:` and `restoration-recheck:`; its own do-nothing control and freeze first.
 2. **coverage (8):** the NDSS paper's evaluation outcome is not pinned and not claimed; a successor that states a result needs its own pinned capture. The OSV overview page remains a lead.
 3. **calibration:** R75-4 (an abstract-only comparison ground passes B1–B8) and R75-5 (the B8 sibling sweep cannot discriminate) as frozen-clause amendments for the next admission that uses them.
+
+## Round 76 — two claims, both NOT VERIFIED as declared (no score change)
+
+Freeze `5da54cd4451cbbb9e4b87e2f83475feb13c65c9e`, base `a788021675873a96e09e91aa033d8c26ac2fe212`. Attempt 2 of the round; attempt 1 landed no report. Receipts: `.ufo/waves/round-76/controls/` and `.ufo/waves/round-76/w1/`.
+
+| Axis | Before | After | Score delta and evidence |
+|---|---|---|---|
+| depth:verifiability, lowest | census selftest 6 cases | counter NOT landed; candidate selftest 8 cases, but the consuming-conjunct mutant survives (rc 0) | 4 -> 4 nominal R58, delta 0. Kill rule fails: `controls/m2b-survivor.txt`, `w1/ReviewC1.md`. |
+| coverage | frontier 53, registry 110 | frontier unchanged; S111 row `queued` (not admitted) | 8 -> 8, delta 0. Frozen B5 exits 2 on the frozen manifest (`source-recheck.py --source S111`); B6 distinctness fails (`w1/CriticClaims.md` F12). |
+| depth:density | 9 | 9 | Not measured or targeted. |
+
+Capabilities: none entered. Saturation 9/10 held.
+
+### Planned after round 76 (not frozen)
+
+1. **depth:verifiability (4, lowest):** a new predicate that makes the case-6 RESULT a consumed assertion and tests the consuming assertion itself (R127), with a do-nothing control on the amended bytes and a freeze before scoring; the NameError kill does not count.
+2. **coverage (8):** the five non-query OSV endpoint contracts stay open; a fresh manifest whose quotes all pass `source-recheck.py` before the freeze (R126) is the entry route for F54 or a successor.
+3. **calibration:** the freeze-time dry run of each instrument on the final manifest (R126) as a counted check in the next round's controls.

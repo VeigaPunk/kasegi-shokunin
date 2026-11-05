@@ -1,0 +1,18 @@
+# ExecC1Controls step 1a: base do-nothing SELFTEST reproduction
+base bytes: git show a788021675873a96e09e91aa033d8c26ac2fe212:corpus/instruments/recheck-cwd-census.py -> $S/base.py
+base.py sha256: e666ae11fd9d50ecea107b8835090eed0dc798e8e8a233324b9fbd59ab52a21a (matches claims.json pin)
+
+== run A: TMPDIR under scratch (per hard bounds), cwd=$S ==
+cmd: TMPDIR=$S/tmp python3 -B $S/base.py --selftest  (rc=0, stderr_bytes=0)
+stdout+rc vs receipt diff (only tmpdir-parent dirs= echo differs; env-dependent):
+3c3
+< selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp'
+---
+> selftest case=tmpdir-parent ok calls=3 dirs=None,None,None
+
+== run B: TMPDIR unset to match receipt environment ==
+cmd: env -u TMPDIR python3 -B $S/base.py --selftest  (rc=0, stderr_bytes=0)
+diff vs .ufo/waves/round-76/controls/c1-donothing-selftest-r76.txt:
+repro sha256:   738027ba2d7fbcc42e378d7227dc382b813bd689a7d8503a2b459f6fc951e5f3
+receipt sha256: 738027ba2d7fbcc42e378d7227dc382b813bd689a7d8503a2b459f6fc951e5f3
+VERDICT: byte-identical reproduction

@@ -1,0 +1,222 @@
+# ScoutSurface (C2) evidence — round 76 — S111 capture freshness + quote location
+# Seat: ScoutSurface-7. Lane: kasegi. Every line below is a command with its exit code.
+# Scratch: /fast/scratch/hyaku/kasegi-r76/ScoutSurface (TMPDIR for every capture run).
+# Network: ONE target only — https://google.github.io/osv.dev/api/ via corpus/instruments/capture-source.py, plus one plain curl to the same URL.
+
+# --- STEP 1: re-fetch with the lane instrument -------------------------------------
+$ mkdir -p /fast/scratch/hyaku/kasegi-r76/ScoutSurface
+$ export TMPDIR=/fast/scratch/hyaku/kasegi-r76/ScoutSurface
+$ python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-source.py \
+    --id S111 --url 'https://google.github.io/osv.dev/api/' \
+    --out $TMPDIR/S111-refetch.txt --kind html
+S111 status=200 fetched_bytes=15262 snapshot_bytes=1810 sha256=6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab utc=2026-11-05T10:54:00Z out=/fast/scratch/hyaku/kasegi-r76/ScoutSurface/S111-refetch.txt
+rc=0
+$ wc -l -c $TMPDIR/S111-refetch.txt
+48 1810 /fast/scratch/hyaku/kasegi-r76/ScoutSurface/S111-refetch.txt
+rc=0
+$ sha256sum $TMPDIR/S111-refetch.txt
+6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab  /fast/scratch/hyaku/kasegi-r76/ScoutSurface/S111-refetch.txt
+rc=0
+# independent corroboration (same URL, plain curl, instrument UA):
+$ curl -sS --max-time 60 -A 'kasegi-shokunin/1.0 (documentation capture; +https://shokunin.invalid/kasegi)' \
+    -o $TMPDIR/S111-raw.html -w 'http_code=%{http_code} size_download=%{size_download} url_effective=%{url_effective}\n' \
+    'https://google.github.io/osv.dev/api/'
+http_code=200 size_download=15262 url_effective=https://google.github.io/osv.dev/api/
+rc=0
+$ sha256sum $TMPDIR/S111-raw.html
+dc64d5ebac5f7a4e862d672ea0be349dc62e50a399587441ca1bd228ff2308f1  /fast/scratch/hyaku/kasegi-r76/ScoutSurface/S111-raw.html
+rc=0
+# raw page 15262 bytes matches the manifest note "raw page 15262 bytes, snapshot 1810 bytes".
+
+# --- STEP 2: byte-comparison against the committed capture -------------------------
+$ cmp $TMPDIR/S111-refetch.txt /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/S111.txt
+cmp_rc=0            # byte-identical, no output
+$ diff $TMPDIR/S111-refetch.txt .../round-76/S111.txt > $TMPDIR/diff.txt
+diff_rc=0 ; wc -c $TMPDIR/diff.txt -> 0    # empty diff: no drift
+$ sha256sum $TMPDIR/S111-refetch.txt .../round-76/S111.txt
+6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab  /fast/scratch/hyaku/kasegi-r76/ScoutSurface/S111-refetch.txt
+6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/S111.txt
+rc=0
+$ git -C .../kasegi-shokunin cat-file -p HEAD:corpus/source-snapshots/round-76/S111.txt | sha256sum
+6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab  -    # working tree == committed blob == refetch
+rc=0
+$ git -C .../kasegi-shokunin status --porcelain corpus/source-snapshots/round-76/ ; git diff --stat HEAD -- corpus/source-snapshots/round-76/
+(empty) rc=0       # no uncommitted drift on the capture or the manifest
+
+# --- STEP 3: quote-location check, all 13 manifest quotes --------------------------
+# manifest read from corpus/source-snapshots/round-76/manifest.json (13 quotes, ids Q01..Q13).
+# For each quote: grep -c -F <exact quote> on the committed capture  -> must be 1
+#                 sed -n '<anchor>p' on the committed capture         -> must equal the quote exactly
+Q01-api-version       anchor=21 grep_c=1 sed=EXACT | API (1.0)
+Q02-openapi           anchor=22 grep_c=1 sed=EXACT | Download the OpenAPI specification
+Q03-six-types         anchor=28 grep_c=1 sed=EXACT | There are six different types of requests that can be made of the API.
+Q04-query             anchor=29 grep_c=1 sed=EXACT | Query vulnerabilities for a particular project at a given commit hash or version.
+Q05-batch             anchor=30 grep_c=1 sed=EXACT | Batched query vulnerabilities for given package versions and commit hashes.
+Q06-by-id             anchor=31 grep_c=1 sed=EXACT | Return a Vulnerability object for a given OSV ID.
+Q07-determineversion  anchor=32 grep_c=1 sed=EXACT | Return a list of probable versions of a specified C/C++ project. (Experimental)
+Q08-importfindings    anchor=33 grep_c=1 sed=EXACT | Retrieve records failing import-time quality checks, by record source (Experimental)
+Q09-binary-to-source  anchor=34 grep_c=1 sed=EXACT | Map Ubuntu binary package names to their corresponding source package names. (Experimental)
+Q10-rate-q            anchor=35 grep_c=1 sed=EXACT | Is the API rate limited?
+Q11-rate-none         anchor=36 grep_c=1 sed=EXACT | Currently there are no limits on the API.
+Q12-size-http1        anchor=38 grep_c=1 sed=EXACT | The API has a response size limit of 32MiB when using HTTP/1.1. There is no limit when using HTTP/2.
+Q13-http2-recommend   anchor=39 grep_c=1 sed=EXACT | We recommend using HTTP/2 for queries that may result in large responses (e.g. big OSV Linux queries).
+python occurrence scan over all 48 lines: every quote occurs on exactly one line, and that line == its declared anchor.
+ALL_QUOTES_OK=True   (script rc=0)
+# anchored-occurrence count is 1 for each, so the instrument's B2 uniqueness rule needs no anchor fallback here.
+
+# --- STEP 4: already-held cross-check (B6 distinctness evidence) -------------------
+$ sed -n '148p' /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-73/S108.txt
+The API has a response size limit of 32MiB when using HTTP/1.1. There is no limit when using HTTP/2. We recommend using HTTP/2 for queries that may result in large responses.
+sed_rc=0
+$ grep -n '32MiB' .../round-73/S108.txt
+148:The API has a response size limit of 32MiB when using HTTP/1.1. There is no limit when using HTTP/2. We recommend using HTTP/2 for queries that may result in large responses.
+rc=0
+$ grep -n 'HTTP/2' .../round-73/S108.txt
+148:(same line)
+rc=0
+$ grep -c -F 'The API has a response size limit of 32MiB when using HTTP/1.1. There is no limit when using HTTP/2.' .../round-73/S108.txt
+1   rc=0     # S111 line 38 is word-identical to S108 line 148 -> already held (round-73 manifest Q27-Q29)
+$ grep -c -F 'We recommend using HTTP/2 for queries that may result in large responses (e.g. big OSV Linux queries).' .../round-73/S108.txt
+0   rc=1     # S111 line 39 adds "(e.g. big OSV Linux queries)"; S108's Q29 has no such example -> NOT already held
+$ grep -c -F 'big OSV Linux queries' .../round-73/S108.txt
+0   rc=1
+$ grep -n -i -E 'rate limit|ratelimit|quota' .../round-73/S108.txt
+(no output) rc=1   # S108 holds no rate-limit sentence -> the S111 rate answer is new ground
+$ grep -rn -i -E 'no limits on the API' corpus/knowledge/ corpus/SOURCES.md corpus/README.md
+corpus/SOURCES.md:175:- OSV.dev overview page https://google.github.io/osv.dev/api/ — lead, not evidence, not a row. ...
+rc=0   # only the round-74 LEAD-only note; no admitted entry holds the rate-limit answer
+$ grep -rn -i -E 'API \(1\.0\)|API 1\.0|six different types|six types of request|OpenAPI specification' corpus/knowledge/ corpus/SOURCES.md corpus/README.md
+(no output) rc=0   # no admitted entry holds the API-1.0 / OpenAPI / six-types clauses
+$ grep -n -E 'querybatch|vulns/|importfindings|determineversion|binary-to-source' corpus/knowledge/*.md
+corpus/knowledge/osv-post-v1-query-contract.md:75:- the other endpoints in the page's navigation (POST /v1/querybatch, GET /v1/vulns/{id} and the experimental endpoints, S108.txt:5-9). They are listed, not described.
+rc=0   # F51 already holds the PATH LIST (S108.txt:5-9), but not the per-endpoint one-line semantics (S111.txt:29-34)
+
+# --- BLOCKER measured on the committed manifest: B5 quote-length floor -------------
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-76/manifest.json --source S111
+S111:Q01-api-version UNAVAILABLE reason=quote-too-short-to-be-evidence
+rc=2       # NOT the B5 after-state (sha256 OK + 13 anchor-located + exit 0)
+$ grep -n 'MIN_QUOTE_CHARS' corpus/instruments/source-recheck.py
+MIN_QUOTE_CHARS = 12   # normalized minimum
+$ python3 (normalized length of every S111 quote)
+Q01-api-version len=  9 SHORT(<12) anchor=21     # 'API (1.0)' -> 9 chars
+Q02..Q13 len>=24 all ok
+# the instrument aborts the WHOLE record on the first short quote (returns 2 before printing sha256 OK),
+# so the committed manifest yields NEITHER 'sha256 OK' NOR any anchor-located line.
+
+# --- FIX VERIFIED IN A SCRATCH CLONE (never in the lane) ---------------------------
+$ git archive HEAD | tar -x -C $S/sim            # rc=0
+# sim: SOURCES.md + S111 row draft inserted; knowledge file + knowledge-expected line added
+$ python3 $S/sim/corpus/instruments/source-recheck.py --manifest $S/sim/corpus/source-snapshots/round-76/manifest.json --source S111
+S111:Q01-api-version UNAVAILABLE reason=quote-too-short-to-be-evidence
+rc=2
+$ python3 $S/sim/corpus/instruments/capture-binding-check.py --root $S/sim | tail -2
+records=90 bound=90 unbound=0
+rc=0        # B4 transitional no-row state resolves at integration (S111 row present)
+
+# FIX: widen Q01's quote text in the round-76 manifest from 'API (1.0)' (9 chars) to
+#      'API (1.0) Download the OpenAPI specification' (44 normalized chars, spans lines 21-22).
+#      The anchor stays 21; the quote count stays 13; the quote is still exactly-once.
+$ python3 $S/sim/corpus/instruments/source-recheck.py --manifest $S/sim/corpus/source-snapshots/round-76/manifest.json --source S111
+S111:sha256 OK
+S111:Q01-api-version OK normalized=markup-whitespace occurrences=1 anchor=21-ok
+S111:Q02-openapi OK occurrences=1 anchor=22-ok
+S111:Q03-six-types OK occurrences=1 anchor=28-ok
+S111:Q04-query OK occurrences=1 anchor=29-ok
+S111:Q05-batch OK occurrences=1 anchor=30-ok
+S111:Q06-by-id OK occurrences=1 anchor=31-ok
+S111:Q07-determineversion OK occurrences=1 anchor=32-ok
+S111:Q08-importfindings OK occurrences=1 anchor=33-ok
+S111:Q09-binary-to-source OK occurrences=1 anchor=34-ok
+S111:Q10-rate-q OK occurrences=1 anchor=35-ok
+S111:Q11-rate-none OK occurrences=1 anchor=36-ok
+S111:Q12-size-http1 OK occurrences=1 anchor=38-ok
+S111:Q13-http2-recommend OK occurrences=1 anchor=39-ok
+rc=0        # <-- B5 after-state reached, exit 0
+$ for d in corpus/source-snapshots/*/ ; do python3 corpus/instruments/source-recheck.py --manifest $d/manifest.json; done
+(no FAIL lines for any manifest, incl. all 45 earlier rounds)  rc=0   # no regression
+
+# --- other C2 counters, measured on the live lane ---------------------------------
+$ python3 corpus/instruments/frontier-recheck-count.py | head -1
+FRONTIER-CENSUS rows=53 admitted=53 closed=53 problem-rows=0 registry=110
+rc=1 (piped head; the instrument's own last line 'entries=56 pass=56 exit=0' -> frontier_rc=0, base state = the c2-base-counters-r76 receipt)
+$ python3 corpus/instruments/capture-binding-check.py | tail -2
+records=90 bound=89 unbound=1 ; FAIL rule=no-row record=S111 dir=round-76
+rc=1      # the known transitional no-row state named in claim B4 (S111 row not yet in the registry)
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+kasegi W04 x6 (S028,S029,S072,S076,S080,S085) ; kasegi ok .../corpus/SOURCES.md
+rc=0      # B7 after-state (six inherited W04 warnings allowed) holds at base and after the S111 row
+$ for f in /home/vgpnk/Projects/shokunin/*/corpus/SOURCES.md; do grep -E '^\|\s*S[0-9]{3,}\s*\|' "$f" | grep -c -F 'google.github.io/osv.dev/api/'; done
+(no lane row carries the S111 URL) -> adding the S111 row creates NO new W04 duplicate-url warning
+$ python3 corpus/instruments/capture-source.py --selftest
+selftest normalize=ok deterministic=ok
+rc=0
+$ python3 corpus/instruments/citation-ground-check.py --root . --fleet-root /home/vgpnk/Projects/shokunin | tail -1
+verdict=failed
+rc=1      # pre-existing, fleet-relative 'blocked' lines only; unrelated to S111 (no S111/round-76 hit)
+$ python3 corpus/instruments/census-freshness-check.py .
+CENSUS-FRESH=stale files=citation-survival.md+citation-survival.tsv
+rc=1      # pre-existing since round-58: the freeze commit touched NO corpus/*.md (census scope is SKILL.md + corpus/**/*.md);
+           # only corpus/source-snapshots/round-76/{S111.txt,manifest.json} (.txt/.json) were added
+
+# --- APPLIED STATE OBSERVED ON THE WORKING TREE (after the L1's Q01 repair) --------
+# The L1 applied a DIFFERENT Q01 repair than this seat recommended:
+#   {"id": "Q01-api-heading-question", "quote": "How does the API work?", "anchor": 27, "repair": "..."}
+$ git -C .../kasegi-shokunin status --porcelain corpus/source-snapshots/round-76/S111.txt
+(empty) rc=0                      # the CAPTURE is untouched -> every §1-§3 result still holds
+$ sha256sum corpus/source-snapshots/round-76/S111.txt
+6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab
+rc=0
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-76/manifest.json --source S111
+S111:sha256 OK
+S111:Q01-api-heading-question OK occurrences=1 anchor=27-ok
+S111:Q02-openapi OK occurrences=1 anchor=22-ok
+S111:Q03-six-types OK occurrences=1 anchor=28-ok
+S111:Q04-query OK occurrences=1 anchor=29-ok
+S111:Q05-batch OK occurrences=1 anchor=30-ok
+S111:Q06-by-id OK occurrences=1 anchor=31-ok
+S111:Q07-determineversion OK occurrences=1 anchor=32-ok
+S111:Q08-importfindings OK occurrences=1 anchor=33-ok
+S111:Q09-binary-to-source OK occurrences=1 anchor=34-ok
+S111:Q10-rate-q OK occurrences=1 anchor=35-ok
+S111:Q11-rate-none OK occurrences=1 anchor=36-ok
+S111:Q12-size-http1 OK occurrences=1 anchor=38-ok
+S111:Q13-http2-recommend OK occurrences=1 anchor=39-ok
+rc=0                              # <-- B5 after-state reached
+$ grep -c -F 'How does the API work?' corpus/source-snapshots/round-76/S111.txt
+1   rc=0
+$ sed -n '27p' corpus/source-snapshots/round-76/S111.txt
+How does the API work?
+rc=0
+$ python3 corpus/instruments/capture-binding-check.py | tail -2
+records=90 bound=90 unbound=0
+rc=0                              # B4 reached
+$ python3 corpus/instruments/frontier-recheck-count.py | grep -E 'FRONTIER-CENSUS|F54 ids|entries='
+FRONTIER-CENSUS rows=54 admitted=54 closed=54 problem-rows=0 registry=111
+FRONTIER-PASS F54 ids=S111
+entries=57 pass=57 exit=0
+rc=0                              # B3 reached
+$ wc -l corpus/instruments/knowledge-expected.txt ; ls corpus/knowledge/*.md | wc -l ; LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt
+94 / 92 / sort_rc=0                # B2 reached
+$ grep -c '^| S[0-9]' corpus/SOURCES.md
+111                                # B1 reached
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi | tail -1
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+rc=0                              # B7 reached (six inherited W04 warnings)
+
+# RESIDUAL: the repair changed the manifest's anchor set vs the frozen located_anchors.
+$ python3 (frozen located_anchors vs landing manifest anchors)
+frozen located_anchors : [21, 22, 28, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39]
+landing manifest anchors: [22, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39]
+in frozen but NOT in landing: [21]
+in landing but NOT in frozen: [27]
+$ grep -rn 'located_anchors' --include='*.py' --include='*.sh' .
+(no hits) rc=0                    # no instrument or gate reads located_anchors
+$ sed -n '21p' corpus/source-snapshots/round-76/S111.txt
+API (1.0)
+rc=0                              # line 21 still carries the referent for the entry's FREE anchor
+$ grep -n 'API (1\.0)' corpus/knowledge/osv-api-surface-and-limits.md
+13:...The page's heading reads "API (1.0)" (S111.txt:21). ...
+rc=0                              # R71 free-anchor referent satisfied; the pinned quote for :21 is gone
+$ grep -n 'round-76/manifest.json' corpus/README.md
+1194:...manifest `corpus/source-snapshots/round-76/manifest.json` (13 quotes; Q01 was repaired from "API (1.0)", 9 characters, below the 12-character floor, to "How does the API work?" at S111.txt:27 — a repair of evidence, recorded in the manifest itself), anchors S111.txt lines 21-39.
+rc=0                              # the repair is DISCLOSED in the README block, not silent

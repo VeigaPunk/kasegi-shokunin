@@ -568,3 +568,12 @@ R6 form: every earlier line keeps its number; this block is appended at end of f
 | R122 | A criterion id in `corpus/QUALITY.md` is unique at addition time: a new row takes an id that no row holds (`grep -cE '^\| R<id> ' corpus/QUALITY.md` = 0 before the addition). A collision is superseded by a new row that names the superseded row by line and states the supersession; the superseded row is not rewritten in place. R120 is the example: it supersedes the round-73 row R33 at line 550 and leaves the round-38 row at line 292 as held. | `corpus/lessons/round-74.md` § Mistakes M74-3 (`grep -cE '^\| R33 ' corpus/QUALITY.md` = 2, exit 0, at base f9cc05b5 and at the round-74 tip); R120 at line 559 |
 | R123 | A claim predicate that bounds a quantity from above (a word cap, a length cap, a count ceiling) names a command that enforces that upper bound. A command that enforces only a lower bound does not establish the cap: the predicate is weakened as written until a measured command enforces it. | `.ufo/waves/round-75/w1/CriticClaims.md` finding F7 (`source-recheck.py` enforces `MIN_QUOTE_CHARS=12` only; the frozen round-75 B5 "<=25 words" clause has no word cap enforced by that command); `corpus/lessons/round-75.md` § Mistakes M75-2 |
 
+
+## Round-76 additions — freeze and mutation evidence
+
+| id | criterion | grounded in |
+|---|---|---|
+| R124 | A census-parity freeze names the landing order and separate input revisions when another claim changes its population; an exact baseline value and a population drift cannot both bind one tree. | round-76 lesson M76-4; CriticClaims F1 |
+| R125 | Before freezing a subject's new ground, inspect admitted entries as well as source navigation captures and record which clauses are already held. | round-76 lesson M76-1; CriticClaims F12 |
+| R126 | Run the source recheck on the final manifest before freezing its success predicate, including the minimum quote-length check. | round-76 lesson M76-2; the frozen Q01 quote "API (1.0)" exits 2 from `source-recheck.py` (`MIN_QUOTE_CHARS=12`), reproduced by the L1 in scratch; the post-freeze replacement was not admitted |
+| R127 | Distinguish mutation assertion failures from runtime exceptions. Remove the consuming assertion as well as probing computation deletion; a NameError alone does not prove semantic detection. | round-76 lesson M76-3; durable m2b survivor receipt |

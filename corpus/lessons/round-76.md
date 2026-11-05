@@ -1,0 +1,41 @@
+# Round 76 — lesson (kasegi, attempt 2; attempt 1 died without a landed report)
+
+Frozen claims: `.ufo/waves/round-76/claims.json` (freeze `5da54cd4451cbbb9e4b87e2f83475feb13c65c9e`, base `a788021675873a96e09e91aa033d8c26ac2fe212`). Wave `w1` (13 seats, one v1 wave, attack seats 5/13) and its receipts under `.ufo/waves/round-76/w1/` and `.ufo/waves/round-76/controls/`. Verdicts: **C1 NOT VERIFIED as declared**, **C2 NOT VERIFIED as declared**. The round is not admitted.
+
+## Gate
+
+- candidates considered: F54 — the OSV.dev project's API overview page on S111 (`https://google.github.io/osv.dev/api/`), opened 2026-11-05 (capture fetched 2026-11-05T10:41:25Z by `corpus/instruments/capture-source.py`, sha256 `6f92e5b7…5581ab`, 48 lines). Located quotes in the capture: "API (1.0)" at S111.txt:21 (9 normalized characters); "Currently there are no limits on the API." at S111.txt:36 (8 words). Candidate C1: recheck-cwd census counter amendment (`corpus/instruments/recheck-cwd-census.py`).
+- new row written this round: S111 — `queued` (opened, not admitted), `used-by —`. The row's `teaches` names the six request types and the dated rate-limit answer only; the response-size clause remains held from S108 (F51).
+- admitted: none. C2 (F54 / `corpus/knowledge/osv-api-surface-and-limits.md`) is refused for this round: its frozen B5 predicate fails on the frozen manifest (M76-2), and its frozen B6 distinctness sweep is unmet (M76-1). The draft entry is retained as evidence at `.ufo/waves/round-76/c2-unadmitted/osv-api-surface-and-limits.md.draft`, not in `corpus/`. C1 (the counter amendment) is not landed: its frozen kill rule fails on the `m2b` survivor (M76-3).
+- rejected rows: none this round.
+- reject line (R119 distinctness, C2 B6): `rejected as new ground: the six endpoint path strings and the api.osv.dev/v1/vulns/<ID> form` — already held from S108.txt:5-9 (F51 Limits bullet, `corpus/knowledge/osv-post-v1-query-contract.md:75`) and S080 (`corpus/source-snapshots/round-50/`, lines 146-205 as cited by CriticClaims V16).
+- considerthese: none fits (`w1/ConnectOverlap.md` §2c: the 2026-10-26 proposal set is implemented or operator-owned).
+- assimilation: none. `merge/kasegi/SOURCES.append.md` stages 94 ids; 80 collide with the 110-row registry (`.ufo/waves/round-76/w1/assimilation-ids/collisions`). The staged `S111` is a different document (`shokuknow/merge/kasegi/SOURCES.append.md:87`); routed to the L0 question file.
+- spot-check: pending the non-author closure. Attack verdicts are recorded in `w1/` (CriticClaims, ReviewC1, ReviewC2, MutC1 blocked, SentinelC1 blocked).
+- sourced claim (frontier step): C2 rests on S111 (its statement, predicates B1–B7 and receipts cite the row). Its evidence (`controls/c2-*`, `w1/ScoutSurface*`, `w1/ScribeEntry-recheck-S111*`) cites S111; no admitted knowledge entry rests on it.
+
+## Counters (L1 reproductions, scratch, frozen bytes)
+
+| counter | command | rc | value |
+|---|---|---|---|
+| B5 `source-recheck.py` on frozen manifest | `git archive 5da54cd corpus \| tar -x -C $S/frozen`; `python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-76/manifest.json --source S111` | 2 | `S111:Q01-api-version UNAVAILABLE reason=quote-too-short-to-be-evidence` |
+| base census selftest | `python3 -B corpus/instruments/recheck-cwd-census.py --selftest` (frozen counter) | 0 | `selftest cases=6 failures=0` |
+| amended selftest, `m2b` survivor | `python3 -B controls/m2b-conjunct-removed.py --selftest` | 0 | `selftest cases=8 failures=0` (C1 kill rule requires nonzero) |
+
+## Mistakes
+
+- **M76-1 — distinctness sweep not run before the freeze.** Class: `scope` / `reference-drift`. Evidence: the frozen C2 statement lists the six endpoint path strings as admitted ground; they are already held (S108.txt:5-9; F51 Limits bullet; S080). Found by `CriticClaims` F12 (BLOCKER) and `ReviewC2`, after the freeze. Captured-by: R114 (the subject sweep) — it existed, and the L1 did not run it before writing the predicate. Fix: R125 (a freeze checklist item that greps admitted entries before the predicate is written).
+- **M76-2 — manifest quote below the instrument floor.** Class: `number-drift`-adjacent (a pinned value the gate refuses). Evidence: frozen Q01 `"API (1.0)"` (9 normalized characters) exits 2 from `source-recheck.py` (`MIN_QUOTE_CHARS = 12`, line 33); reproduced in scratch above. Captured-by: none — R123 covers upper bounds, not the lower floor, and no dry run of the instrument on the frozen manifest preceded the freeze. Fix: R126 (run the instrument on the final manifest before the freeze). The frozen predicate is not rewritten; the successor round must freeze a new manifest before scoring.
+- **M76-3 — semantic RESULT assertion removal survives.** Class: `survivor`. Evidence: deleting the `res6` assignment makes the amended selftest crash with NameError (`ExecC1Amend.mutant-m2a-run.txt`), which the frozen A3 wording counted as a kill; deleting only the consuming `and res6` conjunct leaves the selftest at `cases=8 failures=0`, rc 0 (`controls/m2b-conjunct-removed.py`, `controls/m2b-survivor.txt`, reproduced above). Captured-by: none — the frozen wording allowed a runtime error to count as an assertion kill. Fix: R127. The survivor stays open; the C1 counter is not landed.
+- **M76-4 — the A2 and A4 clauses conflict at integration.** Class: `scope` / `landing`. Evidence: A2 names `entries=91 … exit0_foreign=69` at the "C1-landing tree", while A4 demands byte-identity with the base receipt; a C2 landing (entries=92) breaks both. `CriticClaims` F1 (BLOCKER). Captured-by: R121 required naming the revision, but not the landing order. Fix: R124.
+- **M76-5 — the freeze commit carried a capture without its registry row.** Class: `landing`. Evidence: `capture-binding-check.py` reads `FAIL rule=no-row record=S111` on the freeze tree until the row lands (`w1/ExecC2Checks` r4). Captured-by: none. Fix: stage the capture with its row in one commit. This round lands the S111 row (`queued`) with the capture already committed.
+- **M76-6 — attempt 1 wrote post-freeze repairs and landing surfaces into the working tree.** Class: `freeze-violation` / `landing`. Evidence: before attempt 2, the working tree held (uncommitted) a repaired manifest (`corpus/source-snapshots/round-76/manifest.json`: Q01 replaced by "How does the API work?" at S111.txt:27, with a `repair` field), the C1 counter amendment, the C2 knowledge entry, README/PROVINCE/knowledge-expected edits, and LOG/SCORECARD text stating both claims "landed". Captured-by: none — the freeze rule ("a claim is not rewritten after any seat has scored") was not checked against the working tree. Fix: attempt 2 reverted every gate and landing surface to `master` bytes (`git show master:<path>`), moved the unadmitted entry to `.ufo/waves/round-76/c2-unadmitted/`, and rewrote LOG/SCORECARD from scratch. The attempt-1 receipts under `controls/` (`c1-final-*`, `c2-after-*`) are kept as post-freeze evidence, not admission evidence.
+- **M76-7 — a mutation seat dispatched before its input existed.** Class: `dispatch-order`. Evidence: `w1/MutC1.md` — `blocked-no-candidate`, "ExecC1Amend.patch absent (ls rc=2, checked once after setup, no wait-loop)"; the patch appeared later in the same wave. Captured-by: none. Fix: a seat that consumes another seat's output belongs to a later wave, or must poll with a bounded wait. The C1 verdict in this round does not rest on MutC1; it rests on the L1's reproduction of `m2b` above.
+
+## Routed defects
+
+- **R-A (C1 survivor, M76-3):** the next round may freeze a new predicate that makes the case-6 result a consumed assertion and tests the assertion itself, with a do-nothing control on the amended bytes.
+- **R-B (C2 manifest, M76-2):** the next round may freeze a fresh manifest whose quotes all pass `source-recheck.py` before the freeze; the frozen Q01 is not repaired in place.
+- **R-C (C2 held ground, M76-1):** the five non-query OSV endpoint contracts stay open; a successor that claims them needs its own capture and a distinctness sweep.
+- **R-D (assimilation):** the staged `S111` id collides with this lane's new row (`shokuknow` campaign package; L0 question routed).
+- **R-E (wave ordering, M76-7):** dependency-order the seats of a wave.

@@ -1,0 +1,37 @@
+# ExecC1Controls step 3a/3b: ExecC1Amend.patch applied to a scratch copy of the base counter
+
+## patch apply (patch -p1)
+layout: $S/patchwork/corpus/instruments/recheck-cwd-census.py = base.py (sha e666ae11fd9d50ecea107b8835090eed0dc798e8e8a233324b9fbd59ab52a21a)
+patch -p1 --dry-run rc=0 (checking file corpus/instruments/recheck-cwd-census.py)
+patch -p1 rc=0, output: patching file corpus/instruments/recheck-cwd-census.py
+NOTE: first attempt used a wrong -p1 layout (instruments/ directly under patchwork);
+      patch correctly refused (dry-run rc=1 'can't find file to patch'), no bytes changed;
+      re-run with corpus/instruments/ layout below.
+
+## byte parity with the author's amended bytes
+my amended.py sha256:    e25d3c006f0820ceccfbf974e94634d1554ee07d253766d2ef8980a3806bac28
+author amended sha256:   e25d3c006f0820ceccfbf974e94634d1554ee07d253766d2ef8980a3806bac28
+VERDICT: identical — my patched copy IS the landed amended bytes
+
+## amended selftest (A1 shape)
+cmd: cd $S && TMPDIR=$S/tmp python3 -B $S/amended.py --selftest
+rc=0, stderr_bytes=0, last stdout line: 'selftest cases=8 failures=0'
+
+## amended exec surface (A5 shape)
+subprocess.run sites: 1
+'bash', '-c' literal pairs: 1
+real tempfile.mkdtemp call sites: 2 (line 65 run_foreign dir=env_tmp; line 136 selftest dir=os.environ.get('TMPDIR') or None); lines 200/207/211 are the case-3 monkeypatch plumbing, not creation sites
+'/tmp' mentions: 1 (docstring line 25 only)
+open() calls: 2 read-only knowledge reads (lines 47, 56) + 1 fixture write inside the selftest mkdtemp scratch (line 139)
+VERDICT: exec surface unchanged vs base
+
+## amended selftest stdout (8 cases)
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp','/fast/scratch/hyaku/kasegi-r76/ExecC1Controls/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False main_ret=1 result_ok=True
+selftest case=relabel-pair ok got=entries=3,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=1,restoration_only=1 want=entries=3,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=1,restoration_only=1 marker_present=False main_ret=1 result_ok=True
+selftest case=both-headers ok got=entries=2,exit0_foreign=2,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0,restoration_only=0 want=entries=2,exit0_foreign=2,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0,restoration_only=0 marker_present=False main_ret=0 result_ok=True
+selftest cases=8 failures=0

@@ -1,0 +1,49 @@
+## T1 base: knowledge-expected rows equal corpus/knowledge directory (set)
+rc=0
+## T2 base: sort -c on the file, row and line counts
+sortc_rc=0
+rows=91 lines=93
+## T3 draft line present exactly once: count=1 value=[corpus/knowledge/osv-api-surface-and-limits.md]
+## T4 APPEND variant (the literal spec wording): sort -c
+sort: /fast/scratch/hyaku/kasegi-r76/ScribeLedger/exp-append.txt:94: disorder: corpus/knowledge/osv-api-surface-and-limits.md
+sortc_rc=1
+## T5 INSERT variant (draft): sort -c, line count, row count, position
+sortc_rc=0
+lines=94 rows=92
+67:corpus/knowledge/osv-affected-range-events.md
+68:corpus/knowledge/osv-api-surface-and-limits.md
+69:corpus/knowledge/osv-post-v1-query-contract.md
+## T6 INSERT variant vs base: the only difference is one added line
+67a68
+> corpus/knowledge/osv-api-surface-and-limits.md
+diff_rc=1
+## T7 INSERT variant rows = directory after the round (simulated, new file not yet on disk)
+rc=0
+## T8 F54 row cell count (NF=8 means 6 cells) and F53 comparison row
+F54 NF=8 cells=6
+F53 NF=8 cells=6
+## T9 S111 capture sha256 and size
+6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/S111.txt
+sha_rc=0
+  48 1810 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/S111.txt
+## T10 manifest quotes located at their anchors (B5-style, read-only cross-check)
+quotes 13 bad [] anchor_min 21 anchor_max 39
+max_words 19
+anchors_rc=0
+## T11 frontier counter on a scratch root (corpus copy + draft README block + simulated S111 registry row)
+copy_rc=0
+registry_rows_sim=111
+frontier_sim_rc=1
+FRONTIER-CENSUS rows=54 admitted=54 closed=53 problem-rows=1 registry=111
+FRONTIER-FAIL F54 status=admitted ids=S111 problems=missing-pass-line
+FAIL     F54  knowledge/osv-api-surface-and-limits.md              ids=-              exit=-    problems=missing-entry
+entries=57 pass=56 exit=1
+## T12 cleanup of the scratch root copy
+rm_rc=0
+## T13 source-recheck on the committed S111 manifest (B5 as frozen; read-only, scratch cwd)
+S111:Q01-api-version UNAVAILABLE reason=quote-too-short-to-be-evidence
+source_recheck_rc=2
+33:MIN_QUOTE_CHARS = 12   # normalized minimum: a shorter "quote" matches any capture
+## T14 version string occurrences in the S111 capture
+21:API (1.0)
+grep_rc=0

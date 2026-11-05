@@ -1,0 +1,71 @@
+# ExecC1Controls step 3d: three amended-byte mutants, re-derived by this seat
+All mutants built from MY patched copy (sha e25d3c00…bac28). Sites re-derived by reading the amended source.
+
+== m1a-forged-relabel ==
+cmd: TMPDIR=$S/tmp python3 -B $S/mut-amended/m1a-forged-relabel.py --selftest
+rc: m1a=1 m2a=1 m2b=0(observation) m3a=1
+mutation diff vs amended bytes:
+--- /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/amended.py	2026-11-05 08:05:29.682536106 -0300
++++ /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/mut-amended/m1a-forged-relabel.py	2026-11-05 08:11:19.163774806 -0300
+@@ -97,2 +97,2 @@
+-                counts["norecheck"] += 1
+-                print("NORECHECK %s" % name)
++                counts["restoration_only"] += 1
++                print("RESTORATION-ONLY %s" % name)
+last stdout line: selftest cases=8 failures=1
+FAIL lines: 1
+selftest case=relabel-pair FAIL got=entries=3,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0,restoration_only=2 want=entries=3,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=1,restoration_only=1 marker_present=False main_ret=1 result_ok=True
+last stderr line: 
+
+== m2a-computation-removed ==
+cmd: TMPDIR=$S/tmp python3 -B $S/mut-amended/m2a-computation-removed.py --selftest
+rc: m1a=1 m2a=1 m2b=0(observation) m3a=1
+mutation diff vs amended bytes:
+--- /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/amended.py	2026-11-05 08:05:29.682536106 -0300
++++ /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/mut-amended/m2a-computation-removed.py	2026-11-05 08:11:19.167381050 -0300
+@@ -246 +245,0 @@
+-        res6 = (ret6 == 1 and "RECHECK-CWD-RESULT nonconformant" in out6)
+last stdout line: selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+FAIL lines: 0
+last stderr line: NameError: name 'res6' is not defined. Did you mean: 'ret6'?
+
+== m2b-consumption-removed ==
+cmd: TMPDIR=$S/tmp python3 -B $S/mut-amended/m2b-consumption-removed.py --selftest
+rc: m1a=1 m2a=1 m2b=0(observation) m3a=1
+mutation diff vs amended bytes:
+--- /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/amended.py	2026-11-05 08:05:29.682536106 -0300
++++ /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/mut-amended/m2b-consumption-removed.py	2026-11-05 08:11:19.173040582 -0300
+@@ -249 +249 @@
+-              and not marker6 and res6,
++              and not marker6,
+last stdout line: selftest cases=8 failures=0
+FAIL lines: 0
+last stderr line: 
+
+== m3a-restoration-forces ==
+cmd: TMPDIR=$S/tmp python3 -B $S/mut-amended/m3a-restoration-forces.py --selftest
+rc: m1a=1 m2a=1 m2b=0(observation) m3a=1
+mutation diff vs amended bytes:
+--- /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/amended.py	2026-11-05 08:05:29.682536106 -0300
++++ /fast/scratch/hyaku/kasegi-r76/ExecC1Controls/mut-amended/m3a-restoration-forces.py	2026-11-05 08:11:19.177318240 -0300
+@@ -92,7 +92,3 @@
+-        if value is None:
+-            if has_restoration_recheck(path):
+-                counts["restoration_only"] += 1
+-                print("RESTORATION-ONLY %s" % name)
+-            else:
+-                counts["norecheck"] += 1
+-                print("NORECHECK %s" % name)
++        if value is None or has_restoration_recheck(path):
++            counts["restoration_only"] += 1
++            print("RESTORATION-ONLY %s" % name)
+last stdout line: selftest cases=8 failures=2
+FAIL lines: 2
+selftest case=relabel-pair FAIL got=entries=3,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0,restoration_only=2 want=entries=3,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=1,restoration_only=1 marker_present=False main_ret=1 result_ok=True
+selftest case=both-headers FAIL got=entries=2,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=2,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0,restoration_only=0 marker_present=False main_ret=1 result_ok=False
+last stderr line: 
+
+VERDICT: m1a rc=1 (cases=8 failures=1; killed by NEW case relabel-pair: norecheck=0/restoration_only=2 vs want 1/1),
+m2a rc=1 (NameError: res6 not defined — computation line removed while still consumed by the check; traceback at line 331 sys.exit(main(...))),
+m3a rc=1 (cases=8 failures=2; killed by relabel-pair AND both-headers),
+m2b (observation variant, NOT a frozen mutant class): consumption-only removal of 'and res6' survives rc=0 — see report.

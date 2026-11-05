@@ -1,0 +1,76 @@
+# OSV.dev API overview: the six request types, the three experimental endpoints, and the limits the page states
+
+source: S111 — https://google.github.io/osv.dev/api/ (anchor: the API overview page, lines 21-39; capture corpus/source-snapshots/round-76/S111.txt)
+verified-at: 2026-11-05 (capture sha256 6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab)
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-76/manifest.json --source S111
+
+## Attribution
+
+This is the OSV.dev project's own API index page, at https://google.github.io/osv.dev/api/. It names the API, lists the request types and answers two limit questions. It does not give the contract of any endpoint. Every statement below is that page's own text as captured; bracketed `[entry's reading]` marks the one place where this entry pairs two parts of the page. This entry instructs no call against osv.dev or any other host, and every check replays the pinned capture.
+
+## Claim 1 — the page is API version 1.0 and offers an OpenAPI specification
+
+The page's heading reads "API (1.0)" (S111.txt:21). The next line is "Download the OpenAPI specification" (S111.txt:22). The capture holds only the link label that follows it, "Download Here" (S111.txt:23); the specification file itself is not in the capture.
+
+Falsifiable rule: the page declares version 1.0 and an OpenAPI download. A reader checks it by reading S111.txt:21-22.
+
+Rejected over-generalization, not a page sentence: the OpenAPI file covers every endpoint on the page. The page states that a download exists and says nothing about what the file contains.
+
+## Claim 2 — six request types, one per line, three marked experimental
+
+The page states the count: "There are six different types of requests that can be made of the API." (S111.txt:28). Each type has one line of semantics:
+
+- "Query vulnerabilities for a particular project at a given commit hash or version." (S111.txt:29)
+- "Batched query vulnerabilities for given package versions and commit hashes." (S111.txt:30)
+- "Return a Vulnerability object for a given OSV ID." (S111.txt:31)
+- "Return a list of probable versions of a specified C/C++ project. (Experimental)" (S111.txt:32)
+- "Retrieve records failing import-time quality checks, by record source (Experimental)" (S111.txt:33)
+- "Map Ubuntu binary package names to their corresponding source package names. (Experimental)" (S111.txt:34)
+
+The request paths are in the page's navigation list at S111.txt:4-9. Those six path strings are already held ground: F51 records the other five as navigation names in its Limits bullet (`osv-post-v1-query-contract.md:75`, S108.txt:5-9), and `https://api.osv.dev/v1/vulns/<ID>` is held from S080. This entry does not claim the path strings as new ground; what is new here is the one-line semantics at S111.txt:28-34 and the statements at S111.txt:21-23 and 35-36: `POST /v1/query`, `POST /v1/querybatch`, `GET /v1/vulns/{id}`, `GET /v1experimental/importfindings`, `POST /v1experimental/ determineversion`, `POST /v1experimental/ubuntu/binary-to-source`. The page repeats the same six paths at S111.txt:41-47.
+
+The page does not pair a semantic line with its path. The two lists are in different orders: navigation names `importfindings` before `determineversion` (S111.txt:7-8), while the semantic lines name determineversion before importfindings (S111.txt:32-33). `[entry's reading]` pairs by content, so the pairs are: line 29 with `POST /v1/query`, line 30 with `POST /v1/querybatch`, line 31 with `GET /v1/vulns/{id}`, line 32 with `POST /v1experimental/determineversion`, line 33 with `GET /v1experimental/importfindings`, line 34 with `POST /v1experimental/ubuntu/binary-to-source`. The capture writes the determineversion path with a space after the slash (S111.txt:8, :46). This entry reads it as `/v1experimental/determineversion` and does not claim the space is absent from the live service.
+
+Falsifiable rule: the three lines that carry "(Experimental)" (S111.txt:32-34) are the three navigation paths under `/v1experimental/` (S111.txt:7-9). A reader checks the count: `sed -n '29,34p' S111.txt | grep -c Experimental` prints 3, and `sed -n '4,9p' S111.txt | grep -c experimental` prints 3.
+
+Rejected over-generalization, not a page sentence: the four non-experimental endpoints are stable. The page labels three lines "(Experimental)" and says nothing about stability for the other four.
+
+## Rate limits — the page states none, as of the capture
+
+The page asks "Is the API rate limited?" (S111.txt:35) and answers "Currently there are no limits on the API." (S111.txt:36). "Currently" dates the answer to the capture; the page makes no statement for any other date.
+
+Falsifiable rule: a reader checks the answer directly under the question at S111.txt:35-36.
+
+Rejected over-generalization, not a page sentence: the API has no limits of any kind. The next question on the page is "Are there any response size limits?" (S111.txt:37), and the page answers it with a limit (below). `[entry's reading]`: line 36 answers the rate question only, and the page's question-and-answer pairs do not make "no limits" a general statement.
+
+## Response-size limits — held ground from S108, cross-referenced, not claimed here
+
+The page's answer at S111.txt:38 is "The API has a response size limit of 32MiB when using HTTP/1.1. There is no limit when using HTTP/2." These two sentences are word-identical to S108.txt:148 and are already held: F51 (`corpus/knowledge/osv-post-v1-query-contract.md`, Claim 6), round-73 manifest Q27-Q28. This entry adds no claim on them. Line 39, the HTTP/2 recommendation with its parenthetical example, is in the capture and manifest (Q13). It is not claimed as new: the same recommendation is held from S108.txt:148 (round-73 manifest Q29), and the parenthetical example is the only part this page adds to that sentence.
+
+## Cross-entry correction (dated; F51 is not rewritten)
+
+F51 (`corpus/knowledge/osv-post-v1-query-contract.md:71-75`) says a reader must not take a rate-limit answer from the OSV overview page. This entry takes one from that page, S111.txt:36, and records the page's own statement as dated to the capture. F51's boundary sentence is superseded for the rate-limit question only; its S108 scope is unchanged. The erratum belongs in F51 as a new appended entry and is routed to round 77, not edited here.
+
+## Limits — what this entry does not hold
+
+The page does not establish, and this entry does not claim:
+
+- any endpoint's contract: payload, parameters, responses or status codes. The page is an index. Its six semantic lines (S111.txt:29-34) are one-line semantics, not contracts. `POST /v1/query` is held by F51 (`corpus/knowledge/osv-post-v1-query-contract.md`, S108). The other five endpoints have no contract in the corpus: `grep -n -E 'querybatch|vulns/|importfindings|determineversion|binary-to-source' corpus/knowledge/*.md` finds only F51's Limits bullet (`osv-post-v1-query-contract.md:75`), which lists them without describing them.
+- authentication, an API key, a credential or a quota. `grep -n -i -E 'api key|api_key|authenticat|credential|quota' S111.txt` prints nothing and exits 1.
+- the rate-limit answer beyond its date. "Currently" (S111.txt:36) is the page's own limit on the claim.
+- the OpenAPI document's content (S111.txt:22-23).
+- the Quickstart. The navigation lists "API Quickstart" (S111.txt:3), and the page says "Please see the quickstart." (S111.txt:26). The Quickstart is not in the capture.
+- the time limit and pagination trigger. Those are S108 material (F51, Claim 5). The page-size statement at S108.txt:136 is not claimed here either.
+- the state of the page or of any osv.dev host after the 2026-11-05 capture. This entry made no query against osv.dev.
+
+Scope limit: the API surface only: the six request types, the three experimental labels, the API 1.0 and OpenAPI statements, the rate-limit answer and the held size clause. The record format stays with F31; the POST /v1/query contract stays with F51.
+
+## Distinctness
+
+- F51 / S108 (`corpus/knowledge/osv-post-v1-query-contract.md`): one endpoint's request contract. Its registry row excludes "the overview page" and "the other endpoints" (`corpus/SOURCES.md:120`), so this entry covers the overview that row names as out of its scope.
+- F31 / S080 (`corpus/knowledge/osv-affected-range-events.md`): the record format. Its registry row excludes "the osv.dev service API" (`corpus/SOURCES.md:86`).
+- Subject sweep: `grep -n -i -E 'osv\.dev|google\.github\.io/osv' corpus/SOURCES.md corpus/knowledge/*.md` returns the S065 scope note's sample record URL (`SOURCES.md:71`), the S080 and S108 rows, the S108 entry, the lead-only note for this page (`SOURCES.md:175`), the F31 entry's note that the service sits outside its bytes (`osv-affected-range-events.md:18`), and the OpenSSF scorecard entry's mention of osv.dev as a service backing one check (`openssf-scorecard-checks.md:35, :83`). None holds this page's six-request surface. The lead note at SOURCES.md:175 is superseded by this row at integration.
+
+## Province fit
+
+PROVINCE's core covers "triage and claim gates" (`PROVINCE.md:30`). A triage reader who has a question for OSV has to choose which lookup answers it: by project and commit or version, batched, by OSV ID, a probable-version guess for a C/C++ project, import-time quality findings, or an Ubuntu binary-to-source name. The page is the source that lists all six lookups. No admitted entry describes them: F51 describes one (POST /v1/query) and names the other five in a Limits bullet (`osv-post-v1-query-contract.md:75`). PROVINCE.md:178 places the osv.dev service API outside F31's scope, so this surface had no admitted home until now. This entry does not claim that any lane run uses these endpoints.

@@ -1,0 +1,30 @@
+C2 pre-integration probe — manifest minus Q01 against a byte-identical capture copy (seat ExecC2Checks, 2026-11-05)
+
+Purpose: isolate whether Q01 is the sole blocker in check 2. Read-only over the lane tree; probe files live in the seat scratch dir /fast/scratch/hyaku/kasegi-r76/ExecC2Checks/ (deleted after receipts were copied). The instrument resolves the capture relative to the manifest's parent, so the probe uses a scratch copy of S111.txt verified byte-identical to the committed capture.
+
+$ cp /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/S111.txt /fast/scratch/hyaku/kasegi-r76/ExecC2Checks/S111.txt
+$ sha256sum /fast/scratch/hyaku/kasegi-r76/ExecC2Checks/S111.txt
+6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab  /fast/scratch/hyaku/kasegi-r76/ExecC2Checks/S111.txt
+(same sha256 as the committed capture / freeze blob)
+
+$ python3 -c "<load committed manifest; drop quote id Q01-api-version; dump to scratch manifest-minus-Q01.json>"
+Q01 normalized='API (1.0)' normalized_chars=9
+probe manifest quotes=12
+
+$ TMPDIR=/fast/scratch/hyaku/kasegi-r76/ExecC2Checks/tmp python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/source-recheck.py --manifest /fast/scratch/hyaku/kasegi-r76/ExecC2Checks/manifest-minus-Q01.json --source S111
+S111:sha256 OK
+S111:Q02-openapi OK occurrences=1 anchor=22-ok
+S111:Q03-six-types OK occurrences=1 anchor=28-ok
+S111:Q04-query OK occurrences=1 anchor=29-ok
+S111:Q05-batch OK occurrences=1 anchor=30-ok
+S111:Q06-by-id OK occurrences=1 anchor=31-ok
+S111:Q07-determineversion OK occurrences=1 anchor=32-ok
+S111:Q08-importfindings OK occurrences=1 anchor=33-ok
+S111:Q09-binary-to-source OK occurrences=1 anchor=34-ok
+S111:Q10-rate-q OK occurrences=1 anchor=35-ok
+S111:Q11-rate-none OK occurrences=1 anchor=36-ok
+S111:Q12-size-http1 OK occurrences=1 anchor=38-ok
+S111:Q13-http2-recommend OK occurrences=1 anchor=39-ok
+rc=0
+
+VERDICT: Q01 is the sole blocker. Without it the manifest rechecks clean end-to-end (sha256 OK, 12 quotes unique+anchor-ok, exit 0) on identical capture bytes. Capture line 21 contains only "API (1.0)" (9 normalized chars), so no >=12-char substring of that line exists; the manifest-side options (drop Q01 -> 12 quotes / replace the anchor) are L1/operator decisions and were NOT applied to any lane file.

@@ -1,0 +1,20 @@
+# ExecC1Controls step 4: A2 drift expectation on a synthetic tree + live-tree observation
+
+## synthetic tree
+built: cp -a <lane>/corpus/knowledge $S/synth/corpus/knowledge; added exec-c1-controls-drift-probe.md with single line:
+  recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && true
+entry count: 92 (91 copied + 1 added)
+cmd: cd $S && TMPDIR=$S/tmp python3 -B $S/amended.py --root $S/synth --lane <lane>
+rc=0, stderr_bytes=0, stdout:
+RECHECK-CWD entries=92 noprefix=0 exit2_foreign=0 exit0_foreign=70 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+expected: entries=92 noprefix=0 exit2_foreign=0 exit0_foreign=70 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0 + conformant
+VERDICT: exact match — drift expectation confirmed on amended bytes
+
+## live-tree observation (read-only, NOT a claim verdict)
+cmd: cd $S && TMPDIR=$S/tmp python3 -B $S/amended.py --root <lane> --lane <lane>; rc=0
+RECHECK-CWD entries=92 noprefix=0 exit2_foreign=0 exit0_foreign=70 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+diff vs base receipt: entries 91->92 and exit0_foreign 69->70 ONLY; all other fields equal, RESULT conformant.
+cause (read-only git): working tree has corpus/knowledge/osv-api-surface-and-limits.md, absent at freeze 5da54cd4 (91 .md at freeze, 92 on disk) —
+this is the C2 S111 knowledge entry; the live tree matches the A2 post-C2 drift expectation at measurement time.

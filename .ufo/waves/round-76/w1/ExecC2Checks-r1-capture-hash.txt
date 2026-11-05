@@ -1,0 +1,20 @@
+C2 pre-integration check 1 — capture hash + line count (seat ExecC2Checks, 2026-11-05)
+
+$ sha256sum /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/S111.txt
+6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/S111.txt
+rc=0
+
+$ wc -l /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/S111.txt
+48 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/S111.txt
+rc=0
+
+Freeze parity (worktree bytes == freeze-commit blob):
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin rev-parse HEAD
+5da54cd4451cbbb9e4b87e2f83475feb13c65c9e
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 5da54cd4451cbbb9e4b87e2f83475feb13c65c9e:corpus/source-snapshots/round-76/S111.txt | sha256sum
+6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab  -
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 5da54cd4451cbbb9e4b87e2f83475feb13c65c9e:corpus/source-snapshots/round-76/manifest.json | sha256sum
+7586117a333d8104c7b8e325786ecd8b69dad4a6488771c2d497aedecc7bad20  -
+(worktree sha256sum of manifest.json: 7586117a333d8104c7b8e325786ecd8b69dad4a6488771c2d497aedecc7bad20 — identical)
+
+VERDICT: PASS — hash matches the frozen claim (6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab), 48 lines; all checks ran on freeze-commit bytes (HEAD == 5da54cd during the run).

@@ -2809,3 +2809,13 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Assimilation: none. `merge/kasegi/` stages 94 ids against a 109-id registry with 79 collisions; nothing appended; L0 question filed.
 - Non-claim work: `ExecReplay` re-derived 20 committed base values, all agree.
 - No capability row, retirement or split. SHONEN box 2 untouched (`[ ]`).
+
+## Round 76 — census amendment (C1) and OSV API overview (C2): both NOT VERIFIED as declared
+
+- Declared C1 depth:verifiability (lowest non-retired axis, nominal 4 held per R58) and C2 coverage (8 held). Freeze `5da54cd4`, base `a7880216`; frozen predicates and receipts in `.ufo/waves/round-76/claims.json` and `controls/`. Attempt 1 died without a landed report; attempt 2 ran the frozen claims unchanged.
+- C1: the amended counter (`w1/ExecC1Amend.amended.py`, sha256 `e25d3c00…bac28`) passes A1 (selftest 8/0), A2 and A4 (real-tree census byte-identical to base), and A5. A3's case-6 limb mutant dies by NameError, not an assertion, and the consuming-conjunct mutant `controls/m2b-conjunct-removed.py` survives (`selftest cases=8 failures=0`, rc 0). The kill rule fails. Not landed; the instrument stays at base bytes.
+- C2: frozen B5 fails on the frozen manifest (`source-recheck.py --source S111` rc 2, Q01 "API (1.0)" below `MIN_QUOTE_CHARS=12`); B6 distinctness fails (six endpoint strings already held from S108 and S080). The post-freeze Q01 repair found in the working tree was reverted, not admitted. S111 is recorded as a `queued` row; the entry is kept as an unadmitted draft under `.ufo/waves/round-76/c2-unadmitted/`.
+- Mistakes M76-1 to M76-7 and routed defects R-A to R-E: `corpus/lessons/round-76.md`. Grounded criteria R124 to R127 in `corpus/QUALITY.md`.
+- Measured scores: depth:verifiability 4 -> 4 (delta 0); coverage 8 -> 8 (delta 0). Round not admitted.
+- One v1 wave of 13 seats (`w1-results.json`); MutC1 and SentinelC1 did not run against the candidate (M76-7); no seat committed or pushed.
+- Assimilation: none (80 staged-id collisions at a 110-row registry). Considerthese: none fits.

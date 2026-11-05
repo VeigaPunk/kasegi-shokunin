@@ -1,0 +1,21 @@
+C2 pre-integration check 5 — base knowledge-expected.txt sanity (seat ExecC2Checks, 2026-11-05)
+
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 5da54cd4451cbbb9e4b87e2f83475feb13c65c9e:corpus/instruments/knowledge-expected.txt | wc -l
+93
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 5da54cd4451cbbb9e4b87e2f83475feb13c65c9e:corpus/instruments/knowledge-expected.txt | LC_ALL=C sort -c
+sort_rc=0   (no output; list is sorted)
+
+Row decomposition (worktree file, byte-identical to base — see hash below):
+$ python3 -c "<count lines by class>"
+total_lines=93 rows=91 nonrow=2
+nonrow: # Expected knowledge entries for corpus/instruments/recheck-audit.py — round 30
+nonrow: # Sorted list from the working tree (one entry per line); keep in sync with corpus/knowledge/.
+rc=0
+
+Worktree == base blob:
+$ sha256sum /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/knowledge-expected.txt
+d63446ec3e3427e9f51fe0de86fe9e290995efc219a50ca74a76e86c4fbc2a5f  ...
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 5da54cd4451cbbb9e4b87e2f83475feb13c65c9e:corpus/instruments/knowledge-expected.txt | sha256sum
+d63446ec3e3427e9f51fe0de86fe9e290995efc219a50ca74a76e86c4fbc2a5f  -
+
+VERDICT: PASS — 93 wc -l lines = 91 row lines (corpus/knowledge/*.md) + 2 leading `#` comment lines; LC_ALL=C sort -c clean (rc=0). Matches the frozen do-nothing control "expected 93/91".

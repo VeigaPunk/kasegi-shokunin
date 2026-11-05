@@ -1,0 +1,21 @@
+C2 pre-integration check 3 — per-quote word counts vs QUALITY R123 cap (<=25 words) (seat ExecC2Checks, 2026-11-05)
+
+$ python3 -c "import json;m=json.load(open('/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/manifest.json'));qs=[q for s in m['sources'] for q in s['quotes']];[print(q['id'],len(q['quote'].split())) for q in qs];print('max_words=%d over25=%d'%(max(len(q['quote'].split()) for q in qs),sum(1 for q in qs if len(q['quote'].split())>25)))"
+Q01-api-version 2
+Q02-openapi 4
+Q03-six-types 14
+Q04-query 13
+Q05-batch 10
+Q06-by-id 9
+Q07-determineversion 12
+Q08-importfindings 10
+Q09-binary-to-source 12
+Q10-rate-q 5
+Q11-rate-none 8
+Q12-size-http1 19
+Q13-http2-recommend 17
+max_words=19 over25=0
+rc=0
+
+VERDICT: PASS — named command output "max_words=19 over25=0"; every quote is at most 19 words, under the 25-word cap.
+Note: Q01's 2 words / 9 normalized chars is the same shortness that trips source-recheck.py's MIN_QUOTE_CHARS=12 gate (see r2) — the R123 cap is an upper bound only; the instrument adds a lower bound.

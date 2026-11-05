@@ -1,0 +1,27 @@
+C2 pre-integration check 2 — source-recheck on the committed manifest (seat ExecC2Checks, 2026-11-05)
+
+$ TMPDIR=/fast/scratch/hyaku/kasegi-r76/ExecC2Checks/tmp python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/source-recheck.py --manifest /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/manifest.json --source S111
+S111:Q01-api-version UNAVAILABLE reason=quote-too-short-to-be-evidence
+rc=2
+
+Seat-spec expectation was "sha256 OK and 13 quotes anchor-located, exit 0". ACTUAL: rc=2, single UNAVAILABLE line; the `S111:sha256 OK` emit was never reached.
+
+Root cause (corpus/instruments/source-recheck.py):
+- MIN_QUOTE_CHARS = 12 — "normalized minimum: a shorter 'quote' matches any capture".
+- check_source() validates quote structure BEFORE reading/hashing the capture; on the first sub-floor quote it emits UNAVAILABLE reason=quote-too-short-to-be-evidence and returns 2 (execution stops; sha256 never checked).
+- Q01 "API (1.0)" normalizes to "API (1.0)" = 9 characters < 12.
+- Policy is documented: corpus/instruments/README.md:196-198 — "rejects a quote shorter than 12 normalized characters (reason=quote-too-short-to-be-evidence)".
+Measured: python3 -c "norm=lambda t:' '.join(t.split()); q='API (1.0)'; print(len(norm(q)))" -> 9.
+
+Independent anchor sweep (quotes ARE located; length is the only problem):
+$ python3 -c "<per-quote substring test of quote against S111.txt line[anchor-1]>"
+Q01-api-version anchor=21 LOCATED ... Q13-http2-recommend anchor=39 LOCATED
+located=13/13
+rc=0
+
+Structural note: capture line 21 is exactly "API (1.0)" (9 normalized chars), so no >=12-char substring of that line exists — extending Q01 within its anchor line cannot satisfy the gate.
+
+Probe isolating Q01 (receipt ExecC2Checks-r7-q01-probe.txt): scratch-copy manifest minus Q01 + byte-identical scratch copy of S111.txt (sha256 6f92e5b7... verified on the copy) ->
+S111:sha256 OK + 12 quotes OK occurrences=1 anchor=N-ok, rc=0.
+
+VERDICT: DEVIATION — the committed manifest's Q01 is below the instrument's 12-normalized-char floor; B5 as frozen ("sha256 OK and all 13 quotes anchor-located, exit 0") cannot reproduce at integration with this manifest. Manifest-side resolution (drop Q01 -> 12 quotes, or otherwise re-derive) is an L1/operator decision; nothing was rewritten by this seat.

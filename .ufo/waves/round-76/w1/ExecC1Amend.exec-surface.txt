@@ -1,0 +1,8 @@
+A5 exec-surface receipt for ExecC1Amend.amended.py (sha256 e25d3c006f0820ceccfbf974e94634d1554ee07d253766d2ef8980a3806bac28)
+
+grep -n '"bash", "-c"' amended.py      -> exactly 1 hit, line 70 (run_foreign subprocess.run argument)
+grep -n 'subprocess\.run' amended.py   -> exactly 1 hit, line 70 (run_foreign)
+tempfile.mkdtemp creation sites        -> exactly 2: line 65 (run_foreign, dir=env_tmp from TMPDIR) and line 136 (selftest scratch, dir=os.environ.get("TMPDIR") or None)
+writes outside mkdtemp scratch         -> none: the only open(...,"w") is write_entry (line 139) into the selftest fixture kdir, and the only os.makedirs (line 145) creates that fixture dir, both under the line-136 mkdtemp scratch; shutil.rmtree cleans both scratch kinds
+hard-coded /tmp                        -> none (grep '/tmp' hits only the docstring sentence 'no path is hard-coded under /tmp', lines 24-25)
+lines total                            -> 332 (base 281; +51 from cases 7-8, docstrings, res6 limb)

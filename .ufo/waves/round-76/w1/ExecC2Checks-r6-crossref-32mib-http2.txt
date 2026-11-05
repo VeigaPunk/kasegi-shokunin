@@ -1,0 +1,19 @@
+C2 pre-integration check 6 — already-held clause cross-reference (B6) (seat ExecC2Checks, 2026-11-05)
+
+Named check (grep tool, pattern `32MiB|HTTP/2`, case-sensitive, over both captures):
+
+/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-73/S108.txt
+  148|The API has a response size limit of 32MiB when using HTTP/1.1. There is no limit when using HTTP/2. We recommend using HTTP/2 for queries that may result in large responses.
+
+/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-76/S111.txt
+  38|The API has a response size limit of 32MiB when using HTTP/1.1. There is no limit when using HTTP/2.
+  39|We recommend using HTTP/2 for queries that may result in large responses (e.g. big OSV Linux queries).
+
+(Adjacent context located by the same sweep: S108.txt:149 next_page_token clause; S111.txt:37 "Are there any response size limits?"; S111.txt:40 "Table of contents".)
+
+Round-73 manifest anchor confirmation (grep tool, pattern `"anchor":\s*148` on corpus/source-snapshots/round-73/manifest.json):
+  45|{"id": "Q27-size-http1", "quote": "The API has a response size limit of 32MiB when using HTTP/1.1.", "anchor": 148},
+  46|{"id": "Q28-size-http2", "quote": "There is no limit when using HTTP/2.", "anchor": 148},
+  47|{"id": "Q29-http2-recommend", "quote": "We recommend using HTTP/2 for queries that may result in large responses.", "anchor": 148},
+
+VERDICT: PASS — the Q27/Q28 anchors are line 148 as expected; S111.txt lines 38-39 carry the same 32MiB/HTTP-1.1 and no-HTTP/2-limit statements (plus the HTTP/2 recommendation). The B6 cross-reference holds: S111 lines 38-39 restate S108's already-held round-73 Q27-Q29 ground and are correctly excluded from the new entry's claimed ground (claim scope stays at capture lines 21-36).
