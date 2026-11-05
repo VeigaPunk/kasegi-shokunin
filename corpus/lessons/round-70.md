@@ -65,8 +65,10 @@ sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> exit 0
 
 Before (`controls/c2-base-counters-r70.txt`, base `e7c02bd`): rows=47, registry=103, entries=50,
 records=83, expected 87/85, knowledge files 85. After is the committed landing
-`b4afd8a0` measured from a shared clone (`controls/c2-after-counters-r70.txt`,
-`controls/census-after-r70.txt`).
+`b4afd8a0` measured from a shared clone (`controls/c2-after-counters-r70-clone.txt`,
+`controls/census-after-r70.txt`). The frozen pin set keeps the pre-freeze working-tree receipt
+(`controls/c2-after-counters-r70.txt`, sha256 `f20fd6e7…`) byte-identical; the clone re-measurement
+is a separate file with the same values (see M70-5).
 
 ## Gate — the two rows written this round
 
@@ -104,6 +106,24 @@ of the same API reference; S105's recheck is 180d.
   quotes while the manifest carried 19; corrected before the landing commit, so the committed bytes
   agree. Captured-by: `source-recheck.py` line count (`S105:Q19-credit OK`). Fix: derive the count
   from the manifest, never type it.
+- **M70-5 — a frozen receipt was overwritten after the freeze.** `controls/c2-after-counters-r70.txt`
+  was pinned at `e74ba6b5` (sha256 `f20fd6e7…`, the pre-freeze working-tree measurement) and then
+  re-written with the shared-clone re-measurement before the evidence commit, so the pinned hash and
+  the committed file disagreed (found by `ExecCountersC2` at the wave). The frozen bytes were
+  restored from `15d4da87` and the clone measurement landed as its own file
+  (`controls/c2-after-counters-r70-clone.txt`, sha256 `636b462d…`); the values are identical (diff is
+  the header line and one added `malformed_rows` line). Class: evidence-integrity. Captured-by:
+  `pins-r70.txt` (the pin itself was the detector, once a seat re-hashed the file). Fix: **R107**.
+- **M70-6 — the new selftest cases are not single-limb isolated.** `ExecR103` measured the 10 new
+  cases against one-limb mutants: 2/3/7/8/9 have exclusive killers, case 1 is a group limb, cases 4/5
+  are group-only because every `--out` case also carries `--url`, case 6 (`--ou`) is pinned by the
+  conjunction of the prefix rule and the `--url` denial, and case 10 pins `--` together with the
+  `git show` operand rule. Three rule limbs (`--url` alone, `-o`, `--scratch`/`--work`) have no
+  dedicated case at all. R103 is therefore only partly met by this round's cases. The claim's
+  behaviour is unaffected (the refusals are redundant), but the *pin* is weaker than R103 asks.
+  Routed as **V70-1** to the next gate change; not repaired this round because the selftest bytes are
+  part of C1's frozen measured implementation (gate sha256 `7a8d52eb…`) and a post-measurement edit
+  would invalidate the claim rather than strengthen it.
 
 ## Disposition of the round-69 routed defects
 
