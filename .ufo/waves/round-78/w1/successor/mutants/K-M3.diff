@@ -1,0 +1,10 @@
+--- successor/recheck-cwd-census.py
++++ mutants/K-M3.py
+@@ -268,7 +268,6 @@
+         want6 = {"entries": 2, "restoration_only": 1, "norecheck": 0, "noprefix": 0,
+                  "exit2_foreign": 0, "exit0_foreign": 1}
+         _t6, got6 = capture(census, root6, root6)
+-        out6, ret6 = capture(main, ["recheck-cwd-census.py", "--root", root6, "--lane", root6])
+         marker6 = os.path.exists(os.path.join(root6, "restoration-ran"))
+         check("restoration-only",
+               all(got6[k] == v for k, v in want6.items()) and not marker6,

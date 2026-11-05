@@ -1187,3 +1187,17 @@ Appended amendment (R6): the round-75 entry `corpus/knowledge/fuzzilli-ndss2023-
 | F53 | The NDSS 2023 paper on Fuzzilli, as its authors state it: the paper's identity, its IR design and lifting to JavaScript, the coverage-guided selection criterion, its comparison design (Superion named in the introduction), and its evaluation scope (three engines, six months) and count (17 vulnerabilities) | admitted | knowledge/fuzzilli-ndss2023-jit-fuzzing-paper.md | S110 | Read the comparison outcome from the evaluation section before stating any result; the round-75 manifest pins the comparison wording and not the outcome, so no result is claimed |
 
 [r75 amendment, appended 2026-11-05] The frontier as of round 75 is F01-F53 admitted: F53 at round 75. The F53 admission rests on S110 alone; the F52 README's scope limit stays as written, and the comparison outcome is not claimed.
+
+## Round-78 admission — coverage map row and Frontier F54 (2026-11-05)
+
+Appended amendment (R6): the round-78 entry `corpus/knowledge/osv-post-batch-query-contract.md` (Frontier F54, source S112) rests on the OSV.dev project's own reference page for the POST /v1/querybatch endpoint at https://google.github.io/osv.dev/post-v1-querybatch/, captured `corpus/source-snapshots/round-78/S112.txt` (sha256 f3ca0465...0907, 216 lines, 4575 snapshot bytes, 7 pinned quotes), manifest `corpus/source-snapshots/round-78/manifest.json`. The coverage map above is not edited in place (R6); the coverage-map row is appended here, and the F54 frontier row follows.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| The OSV.dev POST /v1/querybatch batch-query contract, as the OSV project's own reference page states it: the batch definition and the vulnerability-ids-and-modified-only return shape, the input-matched response-ordering guarantee, the per-query partial next_page_token rule, the 1,000-per-query and 3,000-total pagination thresholds, and the next-request page_token rule (round 78) | knowledge/osv-post-batch-query-contract.md | S112, the OSV.dev POST /v1/querybatch reference page's own text, opened 2026-11-05 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F54 | OSV.dev POST /v1/querybatch batch-query contract — the batch definition and the vulnerability-ids-and-modified-only return shape, the input-matched response-ordering guarantee, the per-query partial next_page_token rule, the 1,000-per-query and 3,000-total pagination thresholds, and the next-request page_token rule | admitted | knowledge/osv-post-batch-query-contract.md | S112 | Read the seven batch-specific clauses at their pinned lines (S112.txt:24 batch definition, return shape and ordering; :166 partial next_page_token; :168-169 the 1,000/3,000 thresholds; :195 the next-request page_token) and claim none of the single-query item rules F51 already holds |
+
+[r78 amendment, appended 2026-11-05] The frontier as of round 78 is F01-F54 admitted: F54 at round 78. The C2 admission claims the seven batch-specific clauses of S112 only; the single-query POST /v1/query contract stays F51, and the parameters, item-rules and instructions pointers, the version rule, the 400 consequence and the threading-variance note are not claimed.

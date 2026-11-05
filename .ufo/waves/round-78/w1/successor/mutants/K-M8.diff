@@ -1,0 +1,12 @@
+--- successor/recheck-cwd-census.py
++++ mutants/K-M8.py
+@@ -321,8 +321,7 @@
+         want8p = {"entries": 2, "norecheck": 0, "restoration_only": 1, "noprefix": 0,
+                   "exit2_foreign": 0, "exit0_foreign": 1}
+         check("relabel-detection",
+-              consumed(relabel_log, all(got8u[k] == v for k, v in want8u.items())
+-                       and all(got8p[k] == v for k, v in want8p.items())),
++              True,
+               "unpatched got=%s want=%s; patched got=%s want=%s"
+               % (counts_str(got8u, want8u), counts_str(want8u, want8u),
+                  counts_str(got8p, want8p), counts_str(want8p, want8p)))

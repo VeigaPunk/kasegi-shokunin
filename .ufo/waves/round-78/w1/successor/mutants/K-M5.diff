@@ -1,0 +1,13 @@
+--- successor/recheck-cwd-census.py
++++ mutants/K-M5.py
+@@ -296,10 +296,6 @@
+         _t7, got7 = capture(census, root7, root7)
+         first7 = os.path.exists(os.path.join(root7, "first-ran"))
+         rest7 = os.path.exists(os.path.join(root7, "restoration-ran"))
+-        check("both-headers",
+-              all(got7[k] == v for k, v in want7.items()) and first7 and not rest7,
+-              "got=%s want=%s first_ran=%s restoration_ran=%s"
+-              % (counts_str(got7, want7), counts_str(want7, want7), first7, rest7))
+ 
+         # Case 8: relabel-detection — the round-76 clause (i). Unpatched, the
+         # neither-header entry counts in norecheck (a counter that mislabels fails this

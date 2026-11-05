@@ -2831,3 +2831,15 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Measured scores: depth:verifiability 4 → 4 (delta 0); coverage 8 → 8 (delta 0). Round not admitted.
 - Assimilation: none (82 staged-id collisions at 112 rows; S112 collides with staged `TC260`). Routed to the L0 question file.
 - Considerthese: none fits.
+
+## Round 78 — C1 NOT VERIFIED (not landed), C2 VERIFIED (F54 admitted on S112)
+
+- Declared C1 depth:verifiability (lowest, nominal 4 per R58): recheck-cwd census successor with TMPDIR refusal and a named-kill set of eight. Declared C2 coverage (8): F54 on S112 narrowed to seven batch-specific clauses. Freeze `2d81fe84`, base `0687cca8`; `.ufo/waves/round-78/claims.json`.
+- Wave `w1`: one v1 wave of 12 seats (executor×3, scout, scribe×2, connector, reviewer×2, critic, mutation-tester, sentinel); attack seats 5/12. Reports under `.ufo/waves/round-78/w1/`.
+- C1: the candidate passes `cases=13 failures=0`, refuses TMPDIR with exit 2, and kills seven of eight named mutants by assertion. K-X2 (the gate-consume condition neutered) survives: the frozen transform is equivalent under the candidate's structure. NOT VERIFIED; the candidate stays in the wave dir and is not landed.
+- C2: all of B0–B7 hold on the landed tree (source-recheck rc 0, FRONTIER-CENSUS rows 54 admitted 54, capture-binding unbound 0, recheck-cwd conformant at 92 entries, recheck-audit expected 92, sources-census rc 0 with the six inherited W04 warnings). Entry `corpus/knowledge/osv-post-batch-query-contract.md` claims the seven clauses only.
+- Mistakes mined: M77-3 (`corpus/lessons/round-78.md` § Mistakes), fix built and red-before shown, not landed; open as a routed defect.
+- Measured scores: depth:verifiability 4 → 4 (delta 0, C1 not landed); coverage 8 → 8 (delta 0, held pending the operator denominator).
+- Routed: K-X2 transform defect (successor must add an independent assertion on the case-6 limb); R-77-D, R-77-E (L0), R-77-F (three endpoints open).
+- Assimilation: none (82 staged-id collisions remain; L0 pending). Considerthese: none touched (2026-10-26 items are fleet-process or already mined).
+- SentinelC1 issued no candidate verdict (its run preceded the candidate); the candidate's security review is provisional and not landed.

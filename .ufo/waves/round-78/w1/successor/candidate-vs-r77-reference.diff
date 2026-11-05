@@ -1,0 +1,146 @@
+--- r77-reference
++++ successor/recheck-cwd-census.py
+@@ -28,10 +28,11 @@
+   recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+   recheck-cwd-census.py --selftest
+ 
+---selftest runs twelve checks under TMPDIR (prefix-census, result-main, tmpdir-parent,
+-scratch-cleanup, first-line, restoration-only, both-headers, relabel-detection, and the
+-gate-regs/gate-consume/gate-negpolarity/gate-checkids assertions that consume the
+-restoration-only RESULT limb) and prints 'selftest cases=12 failures=0' on success.
++--selftest runs thirteen checks under TMPDIR (prefix-census, result-main, tmpdir-parent,
++scratch-cleanup, first-line, restoration-only, both-headers, relabel-detection,
++tmpdir-refusal, and the gate-regs/gate-consume/gate-negpolarity/gate-checkids assertions
++that consume the restoration-only RESULT limb) and prints 'selftest cases=13 failures=0'
++on success. A TMPDIR that is not an existing directory exits 2 before any tempfile call.
+ """
+ import glob
+ import os
+@@ -120,8 +121,17 @@
+     return counts
+ 
+ 
++def tmpdir_refused():
++    """True (after a stderr line) when TMPDIR is set but is not an existing directory."""
++    tmp = os.environ.get("TMPDIR")
++    if tmp is not None and not os.path.isdir(tmp):
++        print("recheck-cwd: TMPDIR %s is not a directory" % tmp, file=sys.stderr)
++        return True
++    return False
++
++
+ def selftest():
+-    """Twelve checks in eight fixtures: prefix-census, result-main, tmpdir-parent,
++    """Thirteen checks in eight fixtures: prefix-census, result-main, tmpdir-parent,
+     scratch-cleanup, first-line (the round-73 six, retained), restoration-only (round 75,
+     counts and marker limbs only), both-headers and relabel-detection (the round-76
+     clauses), then the four gate checks (gate-regs, gate-consume, gate-negpolarity,
+@@ -132,14 +142,18 @@
+     gate-negpolarity; inverting the negative-polarity expectation fails it against the
+     intact closure; deleting the case-6 computation fails gate-consume with a logged
+     exception detail; removing any check fails gate-checkids. Expected on success:
+-    'selftest cases=12 failures=0' and exit 0."""
++    'selftest cases=13 failures=0' and exit 0."""
++    if tmpdir_refused():
++        return 2
+     failures = []
+     done = []
+     regs = {}
++    limb_log = []
++    relabel_log = []
+     REQUIRED_CHECKS = frozenset((
+         "prefix-census", "result-main", "tmpdir-parent", "scratch-cleanup",
+         "first-line", "restoration-only", "both-headers", "relabel-detection",
+-        "gate-regs", "gate-consume", "gate-negpolarity", "gate-checkids"))
++        "gate-regs", "gate-consume", "gate-negpolarity", "gate-checkids", "tmpdir-refusal"))
+     scratch = tempfile.mkdtemp(prefix="recheck-cwd-selftest-", dir=os.environ.get("TMPDIR") or None)
+ 
+     def write_entry(kdir, name, body):
+@@ -166,6 +180,10 @@
+     def counts_str(counts, want):
+         return ",".join("%s=%d" % (k, counts[k]) for k in sorted(want))
+ 
++    def consumed(sink, value):
++        sink.append(value)
++        return value
++
+     def check(case, ok, detail):
+         print("selftest case=%s %s %s" % (case, "ok" if ok else "FAIL", detail))
+         done.append(case)
+@@ -303,24 +321,49 @@
+         want8p = {"entries": 2, "norecheck": 0, "restoration_only": 1, "noprefix": 0,
+                   "exit2_foreign": 0, "exit0_foreign": 1}
+         check("relabel-detection",
+-              all(got8u[k] == v for k, v in want8u.items())
+-              and all(got8p[k] == v for k, v in want8p.items()),
++              consumed(relabel_log, all(got8u[k] == v for k, v in want8u.items())
++                       and all(got8p[k] == v for k, v in want8p.items())),
+               "unpatched got=%s want=%s; patched got=%s want=%s"
+               % (counts_str(got8u, want8u), counts_str(want8u, want8u),
+                  counts_str(got8p, want8p), counts_str(want8p, want8p)))
+ 
++        # Case 13: tmpdir-refusal — a TMPDIR that is not an existing directory is refused
++        # before any tempfile call: main() returns 2, prints the 'recheck-cwd: TMPDIR' line on
++        # stderr and nothing on stdout. TMPDIR is restored whether or not the refusal held.
++        import io
++        bogus13 = os.path.join(scratch, "no-such-tmpdir")
++        saved_tmp = os.environ.get("TMPDIR")
++        os.environ["TMPDIR"] = bogus13
++        err13 = io.StringIO()
++        real_err = sys.stderr
++        sys.stderr = err13
++        try:
++            out13, ret13 = capture(main, ["recheck-cwd-census.py", "--root", root1, "--lane", lane1])
++        finally:
++            sys.stderr = real_err
++            if saved_tmp is None:
++                os.environ.pop("TMPDIR", None)
++            else:
++                os.environ["TMPDIR"] = saved_tmp
++        check("tmpdir-refusal",
++              ret13 == 2 and out13 == ""
++              and "recheck-cwd: TMPDIR %s is not a directory" % bogus13 in err13.getvalue(),
++              "ret=%d stdout=%r stderr=%r" % (ret13, out13, err13.getvalue()))
++
+         # Gate (QUALITY R127): the four checks that make the RESULT limb load-bearing.
+         check("gate-regs", set(regs) == {"restoration-only-result"},
+               "registered=%s" % sorted(regs))
+         limb = regs.get("restoration-only-result")
+         if limb is not None:
++            limb = lambda out, ret: consumed(limb_log, regs["restoration-only-result"](out, ret))
+             try:
+                 clean_ok = limb(out6, ret6)
+             except Exception as exc:
+                 check("gate-consume", False, "exception=%r" % (exc,))
+                 check("gate-negpolarity", False, "not-evaluated-after-exception")
+             else:
+-                check("gate-consume", clean_ok is True, "clean_ok=%r" % (clean_ok,))
++                check("gate-consume", clean_ok is True and limb_log == [True],
++                      "clean_ok=%r limb_log=%r" % (clean_ok, limb_log))
+                 try:
+                     neg_ok = limb(out2c, ret2c)
+                 except Exception as exc2:
+@@ -331,9 +374,11 @@
+             check("gate-consume", False, "no-registration")
+             check("gate-negpolarity", False, "no-registration")
+ 
+-        check("gate-checkids", set(done) == REQUIRED_CHECKS - {"gate-checkids"},
+-              "missing=%s extra=%s" % (sorted((REQUIRED_CHECKS - {"gate-checkids"}) - set(done)),
+-                                       sorted(set(done) - (REQUIRED_CHECKS - {"gate-checkids"}))))
++        check("gate-checkids", set(done) == REQUIRED_CHECKS - {"gate-checkids"}
++              and relabel_log == [True],
++              "missing=%s extra=%s relabel_log=%r"
++              % (sorted((REQUIRED_CHECKS - {"gate-checkids"}) - set(done)),
++                 sorted(set(done) - (REQUIRED_CHECKS - {"gate-checkids"})), relabel_log))
+ 
+         print("selftest cases=%d failures=%d" % (len(done), len(failures)))
+         return 0 if not failures else 1
+@@ -342,6 +387,8 @@
+ 
+ 
+ def main(argv):
++    if tmpdir_refused():
++        return 2
+     if "--selftest" in argv:
+         return selftest()
+     root, lane, verbose = ".", DEFAULT_LANE, False

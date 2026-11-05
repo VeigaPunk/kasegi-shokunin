@@ -1,0 +1,13 @@
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r78/ExecC1Build/t','/fast/scratch/hyaku/kasegi-r78/ExecC1Build/t','/fast/scratch/hyaku/kasegi-r78/ExecC1Build/t'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False
+selftest case=relabel-detection ok unpatched got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=1,restoration_only=0 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=1,restoration_only=0; patched got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1
+selftest case=tmpdir-refusal ok ret=2 stdout='' stderr='recheck-cwd: TMPDIR /fast/scratch/hyaku/kasegi-r78/ExecC1Build/t/recheck-cwd-selftest-yezxz6lh/no-such-tmpdir is not a directory\n'
+selftest case=gate-regs ok registered=['restoration-only-result']
+selftest case=gate-consume ok clean_ok=True limb_log=[True]
+selftest case=gate-negpolarity ok neg_ok=False
+selftest case=gate-checkids FAIL missing=['both-headers'] extra=[] relabel_log=[True]
+selftest cases=12 failures=1

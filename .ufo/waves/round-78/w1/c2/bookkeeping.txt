@@ -1,0 +1,39 @@
+# C2 per-entry bookkeeping — what the landing must touch (ExecC2Build, round-78 w1)
+
+## Entry filename check
+`grep -r 'osv-post-batch-query-contract' <lane>/corpus` → no matches; `corpus/knowledge/` holds
+91 .md files and none is named `osv-post-batch-query-contract.md`. The name is unused.
+
+## What corpus/instruments/frontier-recheck-count.py reads (grep of its source at HEAD 2d81fe8)
+1. `corpus/README.md` — every `| F<n> |` frontier row and its `sources` cell
+   (FRONTIER_ROW :104, FRONTIER_SOURCES :105; read_frontier :114-124; read_frontier_sources :126-135).
+2. `corpus/SOURCES.md` — the registry id set (REGISTRY_ROW :106; read_registry_ids :138-142);
+   rule G fails a row whose bound ids (README `sources` cell + entry-declared ids) are absent
+   from the registry (:313-319).
+3. Each row's entry file, path taken from the row's `entry` cell, resolved `<root>/<entry>` then
+   `<root>/corpus/<entry>` (:175-178) → for F54: `corpus/knowledge/osv-post-batch-query-contract.md`.
+   Inside the entry it reads `source:` header lines (:107), evidence-list ids (:108) and the
+   `recheck:` line (:109), whose `--source`/`--manifest` arguments (:110) point at
+   `corpus/instruments/source-recheck.py` and a snapshot manifest (entry-supplied; for F54 the
+   round-78 manifest is `corpus/source-snapshots/round-78/manifest.json`).
+
+Not read by frontier-recheck-count.py:
+- `corpus/instruments/knowledge-expected.txt` — zero references in its source; the selftest
+  fixtures (:369-411) write only corpus/README.md, knowledge/fixture.md, corpus/SOURCES.md, a
+  manifest and a source-recheck stub. That expected-list file is read by
+  `corpus/instruments/recheck-audit.py` (:45, :47, :438).
+- `PROVINCE.md` and `SKILL.md` — not read by frontier-recheck-count.py or recheck-audit.py.
+  (PROVINCE.md is referenced only as a string by anchorcheck.py's BOUNTIES-PROVINCE citation
+  classes and by shonen-form.py / shonen-shipped-fixture-check.py file-presence checks; none
+  parses its frontier content.)
+
+## Per-entry bookkeeping beyond the entry file itself — exactly three files
+1. `corpus/SOURCES.md` (B1) — S112 row: status `queued`→`mined`, used-by `—`→
+   `corpus/knowledge/osv-post-batch-query-contract.md`.
+2. `corpus/instruments/knowledge-expected.txt` (B2) — one line
+   `corpus/knowledge/osv-post-batch-query-contract.md` in LC_ALL=C sorted position.
+3. `corpus/README.md` (B3) — one `| F54 |` frontier row in an appended Round-78 admission section.
+
+The prepared `PROVINCE.md` F54 line is wave-spec index bookkeeping; no C2 counter reads it.
+No fourth per-entry file exists: the entry file, its `recheck:` line and its manifest are
+ScribeEntry's deliverables, already staged in the freeze commit (capture + manifest).

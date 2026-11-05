@@ -1,0 +1,61 @@
+--- a/ref.py
++++ b/prop.py
+@@ -139,7 +139,8 @@
+     REQUIRED_CHECKS = frozenset((
+         "prefix-census", "result-main", "tmpdir-parent", "scratch-cleanup",
+         "first-line", "restoration-only", "both-headers", "relabel-detection",
+-        "gate-regs", "gate-consume", "gate-negpolarity", "gate-checkids"))
++        "gate-regs", "gate-consume", "gate-consume-calls",
++        "gate-negpolarity", "gate-checkids", "predicate-source"))
+     scratch = tempfile.mkdtemp(prefix="recheck-cwd-selftest-", dir=os.environ.get("TMPDIR") or None)
+ 
+     def write_entry(kdir, name, body):
+@@ -309,16 +310,34 @@
+               % (counts_str(got8u, want8u), counts_str(want8u, want8u),
+                  counts_str(got8p, want8p), counts_str(want8p, want8p)))
+ 
++        # Proposal (MutC1 r78): meta-assertion that the relabel-detection and
++        # gate-consume predicates are still present in the source, so a
++        # constant-True neutering of either condition is caught.
++        _src = open(__file__, "r", encoding="utf-8").read()
++        relabel_pred = "all(got8u[k] == v" + " for k, v in want8u.items())"
++        consume_pred = "clean_ok " + "is True"
++        check("predicate-source", relabel_pred in _src and consume_pred in _src,
++              "relabel_pred=%s consume_pred=%s"
++              % (relabel_pred in _src, consume_pred in _src))
++
+         # Gate (QUALITY R127): the four checks that make the RESULT limb load-bearing.
+         check("gate-regs", set(regs) == {"restoration-only-result"},
+               "registered=%s" % sorted(regs))
+         limb = regs.get("restoration-only-result")
++        limb_calls = []
+         if limb is not None:
++            _raw_limb = limb
++            def limb(out, ret):
++                v = _raw_limb(out, ret)
++                limb_calls.append(v)
++                return v
+             try:
+                 clean_ok = limb(out6, ret6)
+             except Exception as exc:
+                 check("gate-consume", False, "exception=%r" % (exc,))
+                 check("gate-negpolarity", False, "not-evaluated-after-exception")
++                check("gate-consume-calls", limb_calls == [True, False],
++                      "limb_calls=%r" % (limb_calls,))
+             else:
+                 check("gate-consume", clean_ok is True, "clean_ok=%r" % (clean_ok,))
+                 try:
+@@ -327,9 +346,13 @@
+                     check("gate-negpolarity", False, "exception=%r" % (exc2,))
+                 else:
+                     check("gate-negpolarity", neg_ok is False, "neg_ok=%r" % (neg_ok,))
++                    check("gate-consume-calls", limb_calls == [True, False],
++                          "limb_calls=%r" % (limb_calls,))
+         else:
+             check("gate-consume", False, "no-registration")
+             check("gate-negpolarity", False, "no-registration")
++            check("gate-consume-calls", limb_calls == [True, False],
++                  "limb_calls=%r" % (limb_calls,))
+ 
+         check("gate-checkids", set(done) == REQUIRED_CHECKS - {"gate-checkids"},
+               "missing=%s extra=%s" % (sorted((REQUIRED_CHECKS - {"gate-checkids"}) - set(done)),

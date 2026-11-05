@@ -1,0 +1,149 @@
+# ScribeLesson — evidence receipt (round 78, attempt 1, wave w1)
+
+Seat: ScribeLesson (scribe). All measurements below were taken by this seat on 2026-11-05, from the
+committed freeze bytes and from the wave-dir build candidate. Scratch: /fast/scratch/hyaku/kasegi-r78/ScribeLesson
+(deleted before yield). No lane file was edited; no git/jj mutation; no delegation; no tool installed.
+
+## 1. Freeze bytes read (read-only)
+
+- freeze commit 2d81fe84506b323fb32beb137d5bd21db6a5c13d "round-78: freeze claims C1 (counter successor) and
+  C2 (F54 batch clauses)"; base 0687cca8645884aba30c8eb5fa2d8ecaca7245cf.
+- freeze commit file list: .ufo/waves/round-78/claims.json, .ufo/waves/round-78/c1-mutant-transforms.md,
+  6 files under .ufo/waves/round-78/controls/, corpus/source-snapshots/round-78/S112.txt (216 lines),
+  corpus/source-snapshots/round-78/manifest.json.
+- wave spec: .ufo/waves/round-78/w1-spec.json -> wave kasegi-r78-w1, len(items)=12.
+
+## 2. C2 — source and registry measurements (this seat)
+
+- snapshot sha256: f3ca04652e444125a1441449e23814107999496d73fa6ac46f35cca3d2bd0907
+  (corpus/source-snapshots/round-78/S112.txt; byte-identical to round-77's capture).
+- manifest quotes (7) with declared anchors and the line the quote actually occupies:
+  Q01-batch-definition      anchor 24  quote on 24
+  Q02-return-shape          anchor 24  quote on 24
+  Q03-ordering              anchor 24  quote on 24
+  Q09-partial-tokens        anchor 166 quote on 166
+  Q10-individual-1000       anchor 168 quote on 168
+  Q11-total-3000            anchor 169 quote on 169
+  Q13-next-request          anchor 195 quote on 195
+  (the r78 manifest uses exact-line anchors; the r77 manifest's one-line-off anchors for Q04/Q05 are gone)
+- source-recheck.py on the r78 manifest (run from the lane root, TMPDIR under this seat's scratch):
+    S112:sha256 OK
+    S112:Q01-batch-definition OK occurrences=1 anchor=24-ok
+    S112:Q02-return-shape OK occurrences=1 anchor=24-ok
+    S112:Q03-ordering OK occurrences=1 anchor=24-ok
+    S112:Q09-partial-tokens OK occurrences=1 anchor=166-ok
+    S112:Q10-individual-1000 OK occurrences=1 anchor=168-ok
+    S112:Q11-total-3000 OK occurrences=1 anchor=169-ok
+    S112:Q13-next-request OK occurrences=1 anchor=195-ok
+    rc=0
+  (same bytes as the committed control .ufo/waves/round-78/controls/c2-prerecheck-r78.txt)
+- B6 quote-absence sweep: for each of the seven quotes, the number of files under corpus/knowledge/*.md
+  containing that quote as a literal substring = 0 for all seven (91 files scanned).
+- paraphrase sweep against F51 (corpus/knowledge/osv-post-v1-query-contract.md): the string "querybatch"
+  occurs only in F51's not-claimed bullet at :75 ("the other endpoints in the page's navigation (POST
+  /v1/querybatch, GET /v1/vulns/{id} and the experimental endpoints, S108.txt:5-9). They are listed, not
+  described."); F51 holds the version rule (:21, quoting S108.txt:40,41) and the pagination/threading
+  substance (:47, quoting S108.txt:136). None of the seven claimed clauses appears in F51 or in any other
+  admitted entry. Verdict per claimed clause: distinct (7/7).
+- live re-fetch (2026-11-05): curl -o live.html https://google.github.io/osv.dev/post-v1-querybatch/
+  -> http=200 bytes=30406 (the manifest's recorded raw page size).
+  Normalized with the instrument's own corpus/instruments/capture-source.py html_to_text (script/style
+  removed, tags removed, entities decoded, whitespace collapsed): each of the seven quotes occurs exactly
+  once. NOTE: replacing tags with a SPACE instead of removing them breaks Q13, because the live page
+  wraps page_token in <code> tags ("...should specify <code>page_token</code> only for the queries that
+  returned <code>next_page_token</code>."). The instrument's tag-removal normalization is the one that
+  locates all seven.
+- registry row (corpus/SOURCES.md:124), old -> new:
+    status   queued -> mined
+    used-by  -     -> corpus/knowledge/osv-post-batch-query-contract.md
+    (the row's anchor cell still cites the round-77 capture path and its 13-quote manifest; the r78
+    snapshot/manifest carry the same sha256 and the seven frozen quotes. One row changes; no row is
+    added or removed. B1.)
+- census at the current tree (before the landing):
+    python3 corpus/instruments/frontier-recheck-count.py
+      FRONTIER-CENSUS rows=53 admitted=53 closed=53 problem-rows=0 registry=112
+      entries=56 pass=56 exit=0
+    ls corpus/knowledge/*.md | wc -l -> 91
+    wc -l corpus/instruments/knowledge-expected.txt -> 93 (91 .md rows + 2 comment lines)
+    grep -cE '^[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md -> 112
+    python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-78/manifest.json --source S112 -> rc 0
+    python3 corpus/instruments/capture-binding-check.py -> records=92 bound=92 unbound=0 (rc 0)
+    bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+      -> "kasegi ok .../corpus/SOURCES.md", rc 0, six inherited W04 duplicate-url warnings
+         (S028, S029, S072, S076, S080, S085), no new finding.
+
+## 3. Staged-package collision (read-only, shokuknow)
+
+- /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md:88 -> "| S112 | TC260's own suggestion route and
+  the standards platform's project record: ... www.tc260.org.cn ..." — a different document from the lane's
+  S112 (OSV.dev POST /v1/querybatch).
+- staged ids: 94 unique rows, S031..S124; lane registry ids: 112 unique rows; intersection = 82 collisions.
+- nothing appended; already routed to the L0 question file (/home/vgpnk/Projects/shokunin/.ufo/l0-questions.md:353).
+
+## 4. C1 — base (red-before) and build-candidate measurements
+
+Base bytes (corpus/instruments/recheck-cwd-census.py, sha256 e666ae11fd9d50ecea107b8835090eed0dc798e8e8a233324b9fbd59ab52a21a):
+- TMPDIR=/nonexistent-kasegi-r78 python3 -B <base> --root <lane> --lane <lane>
+  -> rc=1, stderr ends "FileNotFoundError: [Errno 2] No such file or directory:
+     '/nonexistent-kasegi-r78/recheck-cwd-gslci95e'", no RECHECK-CWD line.
+  (same class and rc as the committed control .ufo/waves/round-78/controls/c1-base-missing-tmpdir-r78.txt)
+- base selftest: "selftest cases=6 failures=0", rc 0 (committed control c1-donothing-selftest-r78.txt).
+
+Build candidate (.ufo/waves/round-78/w1/successor/recheck-cwd-census.py, sha256
+f68499715f38b6e74f368c441766954a240d7f5036d68157110e5017c8457db1):
+- selftest: "selftest cases=13 failures=0", rc 0.
+- TMPDIR refusal: TMPDIR=/nonexistent-kasegi-r78 python3 -B <candidate> --root <lane> --lane <lane>
+  -> rc=2, stderr "recheck-cwd: TMPDIR /nonexistent-kasegi-r78 is not a directory", stdout empty,
+     no Traceback.
+- real tree: "RECHECK-CWD entries=91 noprefix=0 exit2_foreign=0 exit0_foreign=69 exit1_foreign=22
+  exit_other=0 norecheck=0 restoration_only=0" / "RECHECK-CWD-RESULT conformant", rc 0.
+- exec surface: grep -c "subprocess.run" -> 1; one "bash","-c" pair at line 72.
+- candidate mutant set, re-run by this seat (TMPDIR under this seat's scratch):
+    K-M1 rc=1 cases=13 failures=3   (gate-regs FAIL, gate-consume FAIL no-registration, gate-negpolarity FAIL no-registration)
+    K-M2 rc=1 cases=13 failures=1   (gate-negpolarity FAIL neg_ok=True)                      assertion kill
+    K-M3 rc=1 cases=13 failures=2   (gate-consume FAIL exception=NameError, negpolarity not-evaluated)  exception class
+    K-M4 rc=1 cases=13 failures=1   (gate-negpolarity FAIL neg_ok=False)
+    K-M5 rc=1 cases=12 failures=1   (gate-checkids FAIL missing=['both-headers'])
+    K-X1 rc=1 cases=13 failures=1   (gate-consume FAIL clean_ok=True limb_log=[])            assertion kill
+    K-X2 rc=0 cases=13 failures=0   SURVIVES
+    K-M8 rc=1 cases=13 failures=1   (gate-checkids FAIL relabel_log=[])                      assertion kill
+  => named-kill set on the candidate bytes: 7 of 8; K-X2 survives.
+
+### K-X2 analysis (this seat's own finding)
+
+- The frozen transform table (c1-mutant-transforms.md) anchors K-X2 at the r77 reference's exact text
+  `check("gate-consume", clean_ok is True, "clean_ok=%r" % (clean_ok,))` and asks for the condition
+  `clean_ok is True` -> `True`. That exact anchor string does NOT occur in the candidate bytes
+  (grep -F -c -> 0): the candidate's check reads
+    check("gate-consume", clean_ok is True and limb_log == [True], "clean_ok=%r limb_log=%r" % ...)
+  so the frozen anchor is absent (per the kill rule, an underivable mutant is NOT DERIVED and counts as
+  NOT VERIFIED) -- and under the natural adaptation of the transform (replace `clean_ok is True` by `True`,
+  which is what the build seat did) the mutant still survives.
+- Independent check by this seat (two hand-derived mutants from the candidate bytes, one anchored text
+  transform each):
+    KX2_table_reading.py  (condition `clean_ok is True` -> `True`)            rc=0 cases=13 failures=0
+    KX2_whole_body.py      (whole gate-consume condition -> `True`)            rc=0 cases=13 failures=0
+  Both survive. The reason is structural: the candidate's only assertion on the case-6 RESULT limb is
+  the gate-consume check itself; the sibling gate-negpolarity check reads limb(out2c, ret2c) -- case 2c,
+  not case 6 -- so neutering gate-consume leaves nothing that fails on the case-6 value. That is the
+  r77 M77-6 class in the same position (the "case-6 RESULT limb is load-bearing" statement), and it is
+  the same shape as the r77 X2 survivor the round-77 closure rejected C1 for.
+- K-X1 dies only because the candidate's gate-consume also asserts limb_log == [True], so neutering the
+  consumer leaves limb_log empty. The assertion that still names the case-6 value is therefore the
+  call-log conjunct inside the very check that K-X2 neuters.
+- This is a routed finding for the L1 (attack seats do not edit): on the build candidate bytes as they
+  stand, C1's frozen predicate P3 and its kill rule are not met. The L1 must either land a successor
+  whose gate-consume body is itself asserted by a second, independent check (so that neutering it fails
+  on the case-6 limb), or record C1 as NOT VERIFIED.
+
+## 5. Pin rows that P6 moves at the landing (for the L1)
+
+- SKILL.md:982 (recheck-cwd-census.py row) pins "selftest cases=6 failures=0" -> becomes cases=13.
+- corpus/instruments/README.md:354 (same instrument) pins "selftest cases=6 failures=0" -> becomes cases=13.
+- The r77 "cases=12" pin never landed and is not re-pinned.
+
+## 6. Tooling
+
+No tool was installed or upgraded for this seat; no pacman transaction was run; no sysctl was touched.
+Commands used: git (read-only: log/show/ls-files), curl (one read-only GET of the S112 URL), python3 -B,
+grep/find/awk-free pipelines, sha256sum, wc, ls.

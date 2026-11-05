@@ -2972,3 +2972,19 @@ Frozen claims: `.ufo/waves/round-77/claims.json` (freeze `539a4387`, base `2e53f
 | 77 | calibration | r76 M76-1 (distinctness sweep not run before freeze) repeated | recorded as M77-5, routed R-77-C | `corpus/lessons/round-77.md` § Mistakes |
 
 **Planned after round 77 (not frozen):** (1) depth:verifiability — a counter successor that freezes consumer-side and check-body neutering as named classes (R-77-B), the TMPDIR refusal (R-77-A), and the anchor-window documentation (R-77-D), each with a do-nothing control; (2) coverage — a F54 successor that claims only the batch-specific clauses (Q01–Q06, Q09–Q11, Q13), after the R125 sweep and the L0 ruling on staged `S112` (R-77-E); (3) calibration — run the R125 sweep and the exact-line anchor check as named freeze steps.
+
+## Round 78 — C1 NOT VERIFIED (candidate not landed); C2 VERIFIED (F54 admitted, S112 mined)
+
+| Claim | Axis | Before | After | Verdict | Counting command | Evidence |
+|---|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest, nominal per R58) | score 4; named-kill set on the r77 reference 5 of 8; nonexistent TMPDIR rc 1 traceback | score 4 held (candidate not landed); candidate named-kill set 7 of 8 (K-X2 survives as unkillable under the frozen transform); TMPDIR refusal rc 2 on the candidate | NOT VERIFIED (P3 fails) | `for m in K-M1 K-M2 K-M3 K-M4 K-M5 K-X1 K-X2 K-M8; do TMPDIR=<scratch> python3 -B <mutant-$m>.py --selftest; done` | `.ufo/waves/round-78/w1/ExecC1Build.md`, `w1/successor/mutants/`, `w1/ReviewC1.md` Finding 1, `w1/MutC1.md`, `corpus/lessons/round-78.md` § L1 open items |
+| C2 | coverage (8, held) | knowledge 91; registry 112 with S112 queued; FRONTIER-CENSUS rows 53 | knowledge 92; registry 112 with S112 mined; FRONTIER-CENSUS rows 54 admitted 54 closed 54 problem-rows 0 | VERIFIED on B0-B7 (ReviewC2); coverage score held at 8 pending operator denominator | `python3 corpus/instruments/frontier-recheck-count.py ; ls corpus/knowledge/*.md \| wc -l ; grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md` | `corpus/knowledge/osv-post-batch-query-contract.md`; `corpus/source-snapshots/round-78/`; `.ufo/waves/round-78/controls/`; `w1/ReviewC2.md`; `w1/ScoutDistinct.md` |
+
+Move log (round 78):
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 78 | depth:verifiability | census selftest `cases=6`; nonexistent TMPDIR rc 1 | not landed; candidate `cases=13` with TMPDIR rc 2 and 7 of 8 named kills | `.ufo/waves/round-78/w1/successor/`, `corpus/lessons/round-78.md` § Mistakes M77-3 |
+| 78 | coverage | registry 112 with S112 `queued`; knowledge 91; frontier 53 | registry 112 with S112 `mined`; knowledge 92; frontier 54 | `corpus/SOURCES.md:124`, `corpus/README.md` F54 row, `PROVINCE.md` F54 line |
+
+Capabilities: none entered. Saturation: unchanged. Retired: none.

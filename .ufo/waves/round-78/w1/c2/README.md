@@ -1,0 +1,1203 @@
+# kasegi-shokunin corpus — index
+
+Proprietary memory for the bounty & security research domain. Everything here
+was read from `/home/vgpnk/Projects/bounties` on 2026-09-28; each entry names
+its source. No generic filler. [r22 correction: this holds for the 25 legacy entries only; the five round-22 entries (Frontier F01–F05) were read from public sources S001–S015 on 2026-10-19 — see SOURCES.md; r23 correction: the three round-23 entries (Frontier F06–F08) were read from public sources S018, S031 and S029 opened 2026-10-20 and 2026-10-25 — 33 entries in total; r24 correction: the round-24 entry count is 35 — F09 admits two entries read from public sources S032-S035 opened 2026-10-25; r25 correction: the round-25 entry count is 37 — F10 admits two entries re-grounded from public sources S036-S040 captured 2026-10-25]
+
+## Coverage map
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Claim-package contract | `knowledge/claim-package-contract.md` | `fleets/mission-template.md` + live packages |
+| Complete claim-gate list | `corpus/knowledge/claim-gates.md` | `ops/claim-check.mjs`, `ops/claim-index.mjs`, `ops/prepare-claims.mjs` (read in full) |
+| Policy access per platform | `corpus/knowledge/policy-access-playbook.md` | `mission-template.md`, `docs/autopsies/`, `claims/bugcrowd-seek/` |
+| Triage economics | `corpus/knowledge/ev-model.md` | `ops/ev-report.mjs`, `bounty-map/schema.json` |
+| Mission outcome statistics | `corpus/knowledge/terminal-classes.md` | `docs/continuation-notes.md`, `docs/review-verdicts.jsonl`, `docs/wrap-report.md` |
+| VDP disclosure packages | `corpus/knowledge/vdp-disclosure-packages.md` | `vdp-disclosures/anthropic-plugin-dev-cmd-injection/` + `claims/*-vdp-no-payout/` |
+| Mission ledger + ops | `knowledge/mission-ledger.md` | `ledger/*.jsonl` census, `ops/shared.mjs`/`rank.mjs`/`import-board.mjs`/`fleet-dispatch.mjs`, `docs/plan-round0.md` |
+| Mission control plane | `corpus/knowledge/mission-control.md` | `ops/fleet-dispatch.mjs` full read, `fleets/missions|run|leases|priority|state-snapshots`, `claimer-mission.md`, `review-mission.md`, sighting scripts, `RUNBOOK-resume.md`, `.ufo-mission-report-bh*`, `.ufo-ingestion/`, `.ufo-warden/` |
+| Per-program audit store | `knowledge/evidence-dir.md` | `evidence/` census (592 dirs), `ops/fleet-dispatch.mjs`, `evidence/bugcrowd-seek/`, `evidence/sherlock-8/` |
+| Retirement + autopsies | `corpus/knowledge/retirement-autopsies.md` | `ops/park-disposition.mjs` full read, `docs/autopsies/` 31-file census, `fleets/run/` live classifier re-run |
+| Ops integrity layer | `corpus/knowledge/ops-invariants.md` | `ops/shared.mjs` (BANNED/PARKED/K3/TELEMETRY_EVENTS/gitMutationBlocker), `validate.mjs`, `registry-check.mjs`, `reroute-drill.mjs`, `check-freshness.mjs`, `sighting*.sh` — all read in full |
+| Board intake + batch finalize | `corpus/knowledge/intake-and-finalize.md` | `ops/import-board.mjs` (binding/P6/P7/S4) + `ops/finalize-all.mjs` (claim sweep/tag/atomic push) — full reads |
+| Claim-hardening defect taxonomy + archive | `corpus/knowledge/ufo-archive-2026.md` | `fleets/ufo-archive-2026/` full walk: 20 `claim-*` report.json defect censuses (round-12 correction), keeper/whipper (b1k-NNN origin), inquiries briefs, programs/ old evidence shape |
+| Submitted-state / do-not-refile registry | `corpus/knowledge/submitted-registry.md` | live census: all `claims/*/*/status.json` submission fields (19 signatures), `ledger/missions.jsonl` SUBMITTED/DISCLOSED_FREE, `portal-reconciliation-2026-09-11.json`, `final-audit.json`, `origin-work/open-bug-bounties/claim-packages/submission-review/` (real receipt store), VDP `SUBMITTED.md`, `claim-ready/*`+`claim-hold/*` tags, `_claimer.status.json`, 15 status-less stub dirs |
+| Operator queue audit | `corpus/knowledge/operator-queue.md` | live `claim-check.mjs` re-run of all 12 queued rows + `claim-index.mjs` source read (`claim-hold/*` inert), per-row checklist gates, runbook distill, anthropic↔VDP fingerprint byte-match |
+| Intake surface (map census, ingestion path, registry decrees) | `corpus/knowledge/intake-surface.md` | 1088-record census, `fleet-dispatch.mjs::buildQueue` scoring source read, `.ufo-ingestion/` full walk, `fleets/registry.json` decree ledger, live `check-freshness`/`validate` runs |
+| UFO runtime workspaces (`.ufo/` layer + `.omp/`) | `corpus/knowledge/ufo-workspaces.md` | full census: 25 `bh*` warden workspaces + 22 reports + `reroutes.jsonl` (121 records), `bounty-fleet/` 805 M keeper tree (second `missions.jsonl`), `sessions/` bpolish1..8 (refile verdict NONE + grep traps), `grok-bounty-assessment-20260911/` (frozen, self-invalidating), `claim-recovery/`, `.omp/` tracked-vs-live, root `README.md`/`.gitignore` |
+| Repo git state | `corpus/knowledge/repo-git-state.md` | live `git status/branch/rev-list/merge-base/ls-files`: stalled mid-rebase ≥17 days, 903 dirty entries, 12 tags pushed, `claim-ship` superseded ancestor, claims/ 198 tracked files vs 3361 on disk |
+| Target checkouts + provenance pins | `corpus/knowledge/target-checkouts.md` | `pendle-core-v2-public/` (shallow clone `f242659`=v6.10.0, pin-bound), `george/` parked, 187/255 `provenance.json` pin census, `[lost-tree] claim-check.mjs:96-97` never validates pins (lost-tree line range; mirror `ops/claim-check.mjs` is only 83 lines) |
+| Canonical triage thresholds (gates/weights/constants, line-cited) | `corpus/knowledge/triage-thresholds.md` | full reads of `ops/claim-check.mjs`+`ev-report.mjs`+`fleet-dispatch.mjs`+`shared.mjs`+`bounty-map/schema.json` + live censuses; 3-way verified round-13 (L1 read × executor draft × reviewer derivation) |
+| Per-program quirks (fee/precondition patterns) | `knowledge/program-quirks.md` | sibling-package sampling (dydx same-blocker class; morpho/euler/uniswap/reserve honest-zero) — index-orphaned until round 13 |
+| Claim-anatomy sample (per-program `status.json`) | `corpus/knowledge/claim-anatomy-sample.md` | round-14: 20 NEW full reads via deterministic stratified rule (script preserved, L1-reproduced); 10→30/280 = 10.7%; deviation classes D1-D13 with anchors |
+| Source-tree loss + mirror provenance (PROVINCE root absent) | `corpus/knowledge/source-tree-loss-2026-09-28.md` | round-15: detection commands, 23:32Z–23:51:31Z disappearance window, per-file mirror provenance (`wc -l` + sha256 + anchor verdicts for 11 files), forensic blind spots, anchor-base rule, resolvability census, the never-re-verifiable DATA-half list, 9 L2 audit corrections |
+| Root loss — second event (mirror + origin-work absent; ufo-fsd relocated) | `corpus/knowledge/root-loss-2026-10-12.md` | round-19 re-census: `the-bounty-hunter` and the whole `origin-work` tree ABSENT (no relocated copy); `ufo-fsd-alpha` relocated intact to `~/Projects/ufo-fsd-alpha` @ `964f443e`; `[lost-base]` vocabulary, derived-root instruments, `BASE-ABSENT` verdict |
+| Depth instruments (committed, re-runnable; r23 adds `mirror-containment-check.py` + `mirror-containment-fixtures.json` and `source-recheck.py` + `corpus/source-snapshots/round-23/manifest.json`; r24 adds `capture-source.py`, `resolve-dispatch-check.py` + `resolve-dispatch-fixtures.json`, `frontier-recheck-count.py` and `corpus/source-snapshots/round-24/manifest.json`) | `instruments/{density.py,resolve.py,anchorcheck.py,mirror-containment-check.py,source-recheck.py,README.md}` + `instruments/citation-survival.{md,tsv}` | round-15: evidence-density census, live citation-resolvability census (instrument of record + definition + known limits), mirror anchor range/semantic gate; bar rule `BAR_R15 = 142.5` frozen + conjunctive ≥60 % resolvability gate from r16 |
+| Lessons | `lessons/round-1.md` … `corpus/lessons/round-15.md` | `LOG.md` rounds, commits, `.ufo/reports/` |
+| CVSS v4.0 severity and vector semantics | knowledge/cvss-v4-severity-and-vector.md | S001, S002 — public primary, opened 2026-10-19 |
+| Coordinated-disclosure timelines | knowledge/coordinated-disclosure-timelines.md | S003, S004, S005 — public primary, opened 2026-10-19 |
+| Authorization, safe harbor, and scope | knowledge/authorization-safe-harbor-and-scope.md | S006, S007, S008 — public primary, opened 2026-10-19 |
+| AI-assisted finding validation | knowledge/ai-assisted-finding-validation.md | S009, S010, S011, S012 — public primary, opened 2026-10-19 |
+| CWE Top 25 2025 methodology | knowledge/cwe-top25-2025-methodology.md | S013, S014, S015 — public primary, opened 2026-10-19 |
+| Citation-base vocabulary (D6; previously unmapped) | knowledge/citation-bases.md | kaika W1 STATE dossier defect D6 (fleet-ledger .ufo/waves/kaika-w1/kasegi-state.md, outside this repo); existing corpus vocabulary |
+| Admission bar + source registry | QUALITY.md, SOURCES.md | Round-22 admission and source-registry contract |
+| Lessons (r22 correction) | lessons/round-1.md … lessons/round-22.md (25 files; gaps at 2, 16, 18, 19) | The old Lessons row understated coverage: current files include rounds 17, 20, 21, and 22. |
+| Multi-party coordination (round 23) | knowledge/multiparty-vulnerability-coordination.md | S018 — public primary, opened 2026-10-20 |
+| CNA assignment rules, current version (round 23) | knowledge/cna-assignment-and-vulnerability-rules.md | S031 (4.2.6, effective 2026-10-20) supersedes S030 — public primary, opened 2026-10-25 |
+| CRA manufacturer reporting duties (round 23) | knowledge/cra-manufacturer-reporting-duties.md | S029 — public primary, opened 2026-10-20 |
+| Engagement authorisation — rules of engagement (round 24) | knowledge/authorised-testing-rules-of-engagement.md | S032 — public primary (NIST SP 800-115), opened 2026-10-25 |
+| Statutory definition of unauthorised access, Japan (round 24) | knowledge/statutory-authorization-and-unauthorized-access.md | S033 (e-Gov consolidated text) with S034/S035 as tier-B/commentary, opened 2026-10-25 |
+| Vendor-side disclosure policies as corpus objects (round 25) | knowledge/vendor-disclosure-policies-as-corpus-objects.md | S036, S037, S038, S039 — four Japanese vendor pages captured 2026-10-25 |
+| A vendor policy commits to a clock, not a scope (round 25) | knowledge/vendor-disclosure-policy-commitments-crosswalk.md | S040 (Cisco) crosswalked against S036/S038/S039 — captured 2026-10-25 |
+## Known gaps
+
+- **`~/Projects/bounties` is GONE** (removed 2026-09-28T23:51:31Z, actor
+  UNDETERMINED, PRESUMED-LOST locally): the 18-surface coverage denominator is
+  0/18 present, 704 genuine citations in `SKILL.md` + 765 lost-tree
+  `path:line` cites across 21 `knowledge/*.md` files no longer resolve, and the
+  DATA-half censuses (1088 records, 280 packages, 592 evidence dirs, 7227
+  telemetry lines, 31 autopsies, the `.git` rebase state) can never be
+  re-verified. Recorded round 15 in `corpus/knowledge/source-tree-loss-2026-09-28.md`;
+  operator decision requested in `../../../.ufo/l0-questions.md` (reorg vs
+  deletion, recoverability, PROVINCE re-point). Two surviving roots:
+  `~/Projects/the-bounty-hunter` (frozen 2026-09-05 code mirror, censused r15)
+  and `~/Projects/origin-work/open-bug-bounties` (**inventory only — the r16
+  coverage move**) — both now ABSENT, see next bullet.
+- **`~/Projects/the-bounty-hunter` + all of `~/Projects/origin-work` are also
+  GONE** (absent since ~2026-10-12, detected 2026-10-14 re-census — the two
+  "surviving roots" this map was re-based onto in round 15): every
+  `the-bounty-hunter`/`open-bug-bounties`/`origin-work` path cited anywhere in
+  this corpus is now a historical record — `[lost-base]` where anchored —
+  unless the sentence re-anchors it to `~/Projects/ufo-fsd-alpha` (the one
+  tree that relocated intact, HEAD `964f443e`). Evidence:
+  `corpus/knowledge/root-loss-2026-10-12.md`; vocabulary: `corpus/knowledge/citation-bases.md`.
+- Anchor bases are pinned per file, and only 1 of 21 `knowledge/*.md` entries
+  (`triage-thresholds.md`, pinned to blob `fc6d398` for its `SKILL.md:NNN`
+  cites) carries an explicit pin so far — pinning the other 20 is the r16
+  `depth:verifiability` move.
+- ~~ops tail (`validate`/`registry-check`/`reroute-drill`/`check-freshness`/
+  `finalize-all`/sighting scripts + `shared.mjs` constants) name-only~~ —
+  CLOSED round 7: `corpus/knowledge/ops-invariants.md` + `corpus/knowledge/intake-and-finalize.md`.
+
+- ~~`ops/claim-check.mjs` gate list~~ — CLOSED round 1:
+  `corpus/knowledge/claim-gates.md` holds the full extracted gate list.
+- Cantina fee/precondition pattern: siblings sampled (dydx same blocker class;
+  morpho/euler/uniswap/reserve honest-zero) — see `program-quirks.md`.
+- ~~`vgn-bounty-lab/` unwalked~~ — CLOSED round 4: empty `git init`, zero
+  commits, nothing to learn (`knowledge/evidence-dir.md` §adjacent dirs).
+- ~~`evidence/` per-program vs `claims/*/evidence/` unexamined~~ — CLOSED
+  round 4: `knowledge/evidence-dir.md` (592-dir census + record schemas).
+- ~~`ledger/` writers/state machine undocumented~~ — CLOSED round 4:
+  `knowledge/mission-ledger.md` (transition counts, telemetry event census,
+  ops inventory).
+- ~~`fleets/ufo-archive-2026/` unwalked~~ — CLOSED round 8:
+  `corpus/knowledge/ufo-archive-2026.md` (19-mission defect taxonomy, b1k-NNN
+  keeper origin, `claim-packages/`→`claims/` naming drift, reconciliation
+  evidence chain).
+- ~~`fleets/registry.json` lane→model routing — possibly cross-domain~~ — CLOSED round 11: `corpus/knowledge/intake-surface.md` (in-domain: `operator_decrees` is the authoritative decree ledger — claim queue order, 3cx never-filed, intel hold, freebie attribution flip — plus lane/bucket routing consumed by validate/registry-check).
+- `george/` (49G comma.ai research dir) — parked round 4: no claim package
+  references it; revisit only if one does.
+- ~~No consolidated do-not-submit list~~ — CLOSED round 9:
+  `corpus/knowledge/submitted-registry.md` (3 verified H1 + 3 archive-era live in
+  origin-work tree + 3 probable orphans + 1 VDP; Anthropic claim↔VDP
+  same-finding collision verified by live claim-check OK; origin-work
+  corpus outside every scan; field-spelling + polarity traps; 15
+  status-less stub dirs; root zips = dated snapshots).
+- ~~`claim-hold/*` semantics + queued-row audit~~ — CLOSED round 10:
+  `corpus/knowledge/operator-queue.md` (claim-index ignores hold tags → 3 held rows
+  queued; anthropic row = own VDP disclosure, verified byte-identical;
+  per-row residual-gate dossier).
+
+- ~~`.ufo/bh*/` mission workspaces, `.ufo/sessions/`, `.ufo/bounty-fleet/`, and
+  `grok-bounty-assessment-20260911` un-censused~~ — CLOSED round 12:
+  `corpus/knowledge/ufo-workspaces.md` (25 bh workspaces incl. the 507 M foreign-tree
+  outlier; warden producer + lifecycle; keeper tree with the second
+  `missions.jsonl`; 8 bpolish seats, refile verdict NONE, 471-false-positive
+  grep trap; frozen self-invalidating grok assessment; `.omp/` second routing
+  truth; 656 claims files cite `.ufo/` paths, 51/543 refs already dangling).
+- `pendle-core-v2-public/` (63 M vendored hunt target, never named in LOG) +
+  the provenance-pin contract — CLOSED round 12:
+  `corpus/knowledge/target-checkouts.md`.
+- Repo git runtime state — CLOSED round 12: `corpus/knowledge/repo-git-state.md`
+  (stalled mid-rebase since before 2026-09-11, `gitMutationBlocker` refuses
+  all fleet commits, all Sep 7–15 work working-tree-only; escalated to L0 via
+  `.ufo/l0-questions.md`).
+- Round-12 citation audit (independent L2 reviewer: 74 citations checked —
+  64 OK / 9 spot-mismatch / 1 broken) — all 10 repaired in place across
+  SKILL.md + 5 corpus entries, each marked "round-12 correction/addition";
+  two critic falsifications also repaired (claims denominator 275→274; bh
+  audits "21 all BLOCKED"→22: 20 BLOCKED/2 READY).
+- Round-13 depth audit (5 independent L2 auditors + L1 full-source
+  derivation): full-set citation re-audit 705/708 counted citations resolved
+  (99.6%; 3 broken repaired: `raw-rN/`→`raw/`, `B-bounty-fleet/` zip
+  misattribution, dangling `ufo-fsd-alpha/.ufo/missions/hunt-*`); ~106
+  attached-fact checks found ~30 defects — all repaired in place this round
+  (markers "round-13 correction/addition"): reroute universals→distributions
+  (23/121 non-grok causes, devin target 88/121), keeper run_ids 184→183 +
+  unledgered 81→82 + "2 unparseable"→0, candidates 116→105 ids, sessions
+  grep tallies (strict 9→4 files; naive 471/61→402/91; null-url ~51→56/61),
+  `3d28a716` stamp→05:42:43-03:00, tracked claims 20→19 dirs, pendle 10→6
+  top-level dirs, pin-family taxonomy→verified 187/188 census (157 bare hex,
+  24 dicts, 3 nulls; no {cmd,exit} family), archive missions 19→20 (both
+  regressed lines), queued-hold rows 3→4 (8x8 tag exists since 09-05),
+  `submitted_url` route-URL claim→null on all 12 (routes live in
+  submission_url/claim_url/payload), crypto severity critical→Low,
+  superhuman lab-redaction gate nonexistent, openai-oauth→openai-codex peak
+  model, 3→4 usage-limit signatures, `reward.min` 48→14 numeric + 1024
+  (796+228) degenerate records + five-term score incl. `is_live(1)`,
+  seeded-13 "without map records"→9/13 have records (4 map-less), rank.mjs
+  "never ran"→ran ≥2× 09-04, bump never persisted, telemetry 7218→7225
+  as-of-stamped + 3 committed conflict markers + rankings ~30→234/229,
+  ev-report exit/basis/cutoff semantics, `claim_checklist.json`→`.md`,
+  HARD_STOP double-error, symlink-ban + 5 MiB walk gates added.
+- ~~Per-program claim anatomy is ~3.6% sampled (≈10 of 280 status-gated
+  packages read line-by-line)~~ — ADVANCED round 14: +20 full reads via a
+  deterministic stratified selection (script preserved + L1 re-run) →
+  **30/280 = 10.7%** (`corpus/knowledge/claim-anatomy-sample.md`; D1-D13 deviation
+  classes, 260/280 packages deviate from the canonical key set). The full
+  100% census remains a future coverage sub-axis candidate — deliberate,
+  not a gap-by-omission.
+- `corpus/lessons/` has no round-2 record and LOG.md jumps round 1→round 3:
+  a round-2 ledger hole from the lane's first day (round-2 work, if any,
+  was folded into the round-3 entry). History is not rewritten; recorded
+  round 13 so the absence is known-deliberate, not lost.
+- `positive-blocked-*` verdict class: exactly 2 attested instances
+  (cantina-pendle, cantina-dydx), free-form string, no schema definition,
+  unrecognized by claim-check.mjs:169's not-claimable regex — annotated in
+  SKILL.md round 13; it is a package-state convention, not a gate class.
+- Round-14 depth audit (9 independent L2s: 3 scouts, 2 executors, critic,
+  reviewer, connector, revenger + L1 full-source derivation): per-item
+  citations landed for both thin sections (Program-rule checklist,
+  Disclosure anti-patterns); 3 falsified SKILL claims repaired in place —
+  "every fix is a disclosure defect" header (2 NO-GO rows are reproduction
+  gates, `docs/wrap-report.md:9,:20-21`), the :412 receipt-drift pointers
+  (4028846/a169f309 live in origin-work `submission-review/`, NOT in
+  `portal-reconciliation-2026-09-11.json`/`final-audit.json`), Immunefi
+  `policy_sha256` overreach (beanstalk provenance has zero hash keys;
+  Immunefi page hashes land as `html_sha256` in keeper telemetry); 2 corpus
+  defects repaired (state enum omitted PARKED 248/280; playbook seek-autopsy
+  misattribution); vocabularies widened with census anchors
+  (`provenance.json.pin` 4 shapes, `coverage.status` second value, verdict
+  suffixes `-identity`×121 / `-host-binding`×69, decree git timeline
+  b3b1b7e3→2ef530c6). Markers "round-14 correction/addition". One critic
+  falsification REJECTED with evidence (the 2026-09-05 severity decree
+  exists at `[lost-tree] fleets/claimer-mission.md:29` — critic grepped only `docs/`).
+
+## Interactive cutover evidence — round 21
+
+| Entry | Evidence status |
+|---|---|
+| `corpus/lessons/round-17-mirror-relocation.md` | Inherited interrupted-worker record; preserved verbatim. Round-number and mutable-filesystem guard corrections are in the new round-21 entry, not rewritten into this historical lesson. |
+| `corpus/lessons/round-21-routing-blocked.md` | Routing-blocked authority audit, zero verified-round credit; inherited CLI behavior re-executed, failed 32/506 replays preserved, Git-export versus live-filesystem definitions separated. |
+
+No new domain knowledge is admitted by this index addition. The required
+quality bar `corpus/QUALITY.md` is absent; it remains conformance debt.
+
+Correction (2026-10-19): corpus/QUALITY.md now exists; the preceding closing paragraph records the earlier state and is retained as history.
+
+## Frontier
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F01 | CVSS v4.0 severity and vector semantics | admitted | knowledge/cvss-v4-severity-and-vector.md | S001, S002 | Keep scores distinct from program-specific risk and policy. |
+| F02 | Coordinated-disclosure timelines | admitted | knowledge/coordinated-disclosure-timelines.md | S003, S004, S005 | Compare stated timelines while preserving each source's attribution. |
+| F03 | Authorization, safe harbor, and scope | admitted | knowledge/authorization-safe-harbor-and-scope.md | S006, S007, S008 | Attribute protections to the policy that grants them; do not generalize. |
+| F04 | AI-assisted finding validation | admitted | knowledge/ai-assisted-finding-validation.md | S009, S010, S011, S012 | Preserve independent validation and source-specific limitations. |
+| F05 | CWE Top 25 2025 methodology | admitted | knowledge/cwe-top25-2025-methodology.md | S013, S014, S015 | Treat the ranking as a methodology-specific prioritization, not a universal risk order. |
+| F06 | Multi-party CVD — FIRST guidelines v1.1 | admitted | knowledge/multiparty-vulnerability-coordination.md | S018 | Record each party's role and relationship; an upstream fix is not downstream evidence. |
+| F07 | CVE CNA operational rules | admitted | knowledge/cna-assignment-and-vulnerability-rules.md | S031 | Separate technical impact, assignment scope and identifier count; do not reuse 4.1.0 section numbers. |
+| F08 | EU Cyber Resilience Act reporting duties | admitted | knowledge/cra-manufacturer-reporting-duties.md | S029 | Distinguish manufacturer statutory tracks from researcher disclosure; Article 14 applies from 2026-09-11. |
+| F09 | Authorisation outside the platform: the engagement document and the statute | admitted | knowledge/authorised-testing-rules-of-engagement.md, knowledge/statutory-authorization-and-unauthorized-access.md | S032, S033, S034, S035 | A safe-harbour badge is not the grant and not the legal definition: read the ROE's scope/exclude list, and the access manager the statute requires. |
+| F10 | Vendor-side disclosure policies as corpus objects | admitted | knowledge/vendor-disclosure-policies-as-corpus-objects.md, knowledge/vendor-disclosure-policy-commitments-crosswalk.md | S036, S037, S038, S039, S040 | A vendor's published policy is a standing first-party statement, not a programme: read its intake channels, its handling-versus-disclosure scope, the standard edition it names, and the conditions (and count of conditions) under which it goes faster. |
+| F11 | ISO/IEC 29147/30111 division-of-labour meta | admitted | knowledge/iso-29147-and-30111-division-of-labour.md, knowledge/iso-29147-divergence-and-clause-crosswalk.md | S041 | Treat 29147 as the vendor's outward-facing disclosure standard and 30111 as its internal handling process; record the edition a source names (JPCERT/CC compares against 2014, Cisco claims 2018). |
+| F12 | Japanese state-coordinated disclosure workflow | admitted | knowledge/japanese-domestic-disclosure-workflow.md | S041, S042 | Use 起算日 — the day the guideline's Ⅳ.4.2) notification was first attempted (S041 footnote 4), not an acknowledgement or a submission date — as the Japanese column when comparing coordinator timelines against F02. The same 45-day figure is triggered differently on each side: S041's publication date is a 目安 of 45 days from 起算日 (Ⅳ.3)), CERT/CC's 45 days runs from the initial report (S004, F02). |
+
+The original domain-root map is exhausted: 0/18 surfaces are present.
+That sentence describes the lost `/home/vgpnk/Projects/bounties` surface set only; the
+public-practice frontier above is a separate denominator (11/11 admitted at round 26; F01-F08 at
+round 23, F09 at round 24, F10 at round 25, F11 at round 26) and is not counted into the 0/18 figure.
+
+[r28 amendment, appended 2026-10-25] The parenthetical above records the round-26 frontier state and is
+retained as history, not rewritten (R9): at round 28 the frontier stands at **12/12 admitted** —
+F01-F08 at round 23, F09 at round 24, F10 at round 25, F11 at round 26, F12 at round 28. The 0/18
+sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
+
+## Round-28 reconciliation — coverage map and expected list (appended 2026-10-25)
+
+The coverage map above is not edited in place: the round-28 entry
+`corpus/knowledge/japanese-domestic-disclosure-workflow.md` (Frontier F12, sources S041 + S042; source
+basis: the JPCERT/CC 2026 早期警戒パートナーシップガイドライン re-captured this round plus the new
+IPA 脆弱性関連情報の届出受付業務における取扱いプロセス row S042, both captured 2026-10-25 under
+`corpus/source-snapshots/round-28/`) is recorded here as an appended amendment so every existing
+line keeps its number (R6). Its count basis is not this index: `corpus/instruments/recheck-audit.py`
+compares the tree against the committed `corpus/instruments/knowledge-expected.txt`, which at
+round-28 start held **41 lines = 39 entries + 2 comment lines** (measured 2026-10-25:
+`wc -l` → 41, `grep -vc '^#'` → 39 — the same 41-versus-39 basis the round-27 lesson named), so the
+list must become 40 entries / 42 lines in the same round the entry lands or the audit reports the
+new file as `unexpected=`. That basis is confirmed by the round-28 wave receipt
+`.ufo/waves/round-28/receipts/ExecExpectedList.txt` (the same 41 = 39 entries + 2 comments
+reconciliation, measured before the entry landed; the receipt reports no production edits, so the
+list was not regenerated). Once the round-28 entry landed the audit duly printed
+`expect=present expected=39 missing=0 unexpected=1 exit=1`; regenerating the list to 40 entries /
+42 lines clears it. Re-verify with
+`cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/recheck-audit.py`
+(the run prints `expected=<n> missing=<n> unexpected=<n> exit=<n>`).
+
+## Round-29 admission — coverage map row and Frontier F13 (appended 2026-10-25)
+
+The coverage map above is not edited in place (R6): the round-29 entry
+`corpus/knowledge/program-severity-ladders-and-reward-scales.md` (Frontier F13, sources S043 +
+S044 + S045; source basis: the HackerOne standard program policy set, the Bugcrowd VRT
+README and the Bugcrowd VRT CWE crosswalk, all captured 2026-10-25 under
+`corpus/source-snapshots/round-29/`) is recorded here as an appended amendment so every
+existing line keeps its number. The coverage-map row is appended here rather than inserted
+into the map, and the F13 frontier row is listed here on the same table shape as the
+frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Program severity ladders and reward scales (round 29) | `corpus/knowledge/program-severity-ladders-and-reward-scales.md` | S043, S044, S045 — public primary, opened 2026-10-25 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F13 | Program severity ladders and reward scales | admitted | knowledge/program-severity-ladders-and-reward-scales.md | S043, S044, S045 | Keep each platform's ladder as its own suggested baseline — distinct from CVSS-B and from other programs' reward ceilings; do not generalize a payout scale across programs. |
+
+## Round-30 admission — coverage map row and Frontier F14 (appended 2026-10-25)
+
+The coverage map above is not edited in place (R6): the round-30 entry
+`corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md` (Frontier F14, sources S046 +
+S047 + S041; source basis: the IPA JVN activity report PDF and the IPA JVN quarterly
+registration report, both first registered this round, plus the already-registered
+JPCERT/CC 2026 guideline S041, all captured 2026-10-25 under
+`corpus/source-snapshots/round-30/`) is recorded here as an appended amendment so every
+existing line keeps its number. The coverage-map row is appended here rather than inserted
+into the map, and the F14 frontier row is listed here on the same table shape as the
+frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Japanese severity vocabulary and handling-priority model (round 30) | `corpus/knowledge/japanese-severity-vocabulary-and-impact-model.md` | S046, S047 (S041) — public primary, opened 2026-10-25 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F14 | Japanese severity vocabulary and the handling-priority model | admitted | knowledge/japanese-severity-vocabulary-and-impact-model.md | S046, S047, S041 | Keep each 深刻度 band label attached to the CVSS version that produced it (v2 bands survive beside v3); JVN translates CVSS base scores into Japanese vocabulary rather than scoring independently, so derive handling priority from the P-guideline steps, not from the label alone. |
+
+[r30 amendment, appended 2026-10-25] The parenthetical above records the round-26 frontier
+state and is retained as history, not rewritten (R9): at round 30 the frontier stands at
+**14/14 admitted** — F01-F08 at round 23, F09 at round 24, F10 at round 25, F11 at round
+26, F12 at round 28, F13 at round 29, F14 at round 30. The 0/18 sentence is untouched: the
+lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
+outside it.
+
+## Round-31 admission — coverage map row and Frontier F15 (appended 2026-10-25)
+
+The coverage map above is not edited in place (R6): the round-31 entry
+`corpus/knowledge/vendor-third-party-finding-coordination.md` (Frontier F15, source S048; source
+basis: the Microsoft Security Response Center's own Microsoft Security Vulnerability
+Research (MSVR) page, captured 2026-10-25 under `corpus/source-snapshots/round-31/`) is
+recorded here as an appended amendment so every existing line keeps its number. The
+coverage-map row is appended here rather than inserted into the map, and the F15 frontier
+row is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| A vendor's research programme as an intake route for other vendors' bugs (round 31) | knowledge/vendor-third-party-finding-coordination.md | S048 — public primary, opened 2026-10-25 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F15 | A vendor's research programme as an intake route for other vendors' bugs | admitted | knowledge/vendor-third-party-finding-coordination.md | S048 | Record which party coordinates a multi-vendor finding — the vendor itself, as S048's three intake routes and self-named coordinator role state, or an external centre, as F10's S039/S040 rows route it — and read no clock, contact or agreement into an intake route: the pinned capture states none. |
+
+[r31 amendment, appended 2026-10-25] The parenthetical above records the round-26 frontier
+state and is retained as history, not rewritten (R9): at round 31 the frontier stands at
+**15/15 admitted** — F01-F08 at round 23, F09 at round 24, F10 at round 25, F11 at round
+26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round 31. The 0/18 sentence
+is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
+
+## Round-33 admission — coverage map row and Frontier F16 (appended 2026-10-26)
+
+The coverage map above is not edited in place (R6): the round-33 entry
+`corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md` (Frontier F16, sources S049 + S050;
+source basis: the CNVD 众测 platform's 使用手册 at https://zc.cnvd.org.cn/news/helpList and
+360SRC's 外部漏洞处理和评分标准 V2.0 at https://security.360.cn/Reward/rules, both captured
+2026-10-25 under `corpus/source-snapshots/round-32/`) is recorded here as an appended amendment so
+every existing line keeps its number. The coverage-map row is appended here rather than inserted
+into the map, and the F16 frontier row is listed here on the same table shape as the frontier
+above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Chinese crowdsourced-testing platform scope and reward rules (round 33) | knowledge/chinese-crowdsourced-testing-scope-and-rewards.md | S049, S050 — public primary, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F16 | Chinese crowdsourced-testing platform scope and reward rules (CNVD 众测, 360SRC) | admitted | knowledge/chinese-crowdsourced-testing-scope-and-rewards.md | S049, S050 | Read a reward only from the platform that prints it — CNVD 众测 publishes no per-severity money table, since the enterprise's rating and the project's rules set the payout (S049.txt:419), while 360SRC pays its business-coefficient formula over base 安全币 (S050.txt:112, 129) — and read neither as scope or authorization: 360SRC's enumerating asset list is a separate page S050 names but this capture does not contain (S050.txt:71), and CNVD 众测 intake is the customer's per-project authorization, not the submission page's target list (S049.txt:211-214). |
+
+[r33 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 33 the frontier stands at **16/16 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33. The 0/18 sentence is untouched: the lost-domain denominator
+still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+## Round-34 admission — coverage map row and Frontier F17 (appended 2026-10-26)
+
+The coverage map above is not edited in place (R6): the round-34 entry
+`corpus/knowledge/immunefi-vscs-v2-2-smart-contract-severity.md` (Frontier F17, source S051; source basis:
+Immunefi's own Vulnerability Severity Classification System v2.2 at
+https://immunefi.com/immunefi-vulnerability-severity-classification-system-v2-2/, captured
+2026-10-26 under `corpus/source-snapshots/round-34/`) is recorded here as an appended amendment so
+every existing line keeps its number. The coverage-map row is appended here rather than inserted
+into the map, and the F17 frontier row is listed here on the same table shape as the frontier
+above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Web3/smart-contract bounty severity classification (round 34) | knowledge/immunefi-vscs-v2-2-smart-contract-severity.md | S051 — public primary, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F17 | Immunefi Vulnerability Severity Classification System v2.2 — Web3/smart-contract bounty severity classification | admitted | knowledge/immunefi-vscs-v2-2-smart-contract-severity.md | S051 | Read a level from Immunefi's own per-asset-class table: the five numbered levels rank impacts inside one scope table, the level is fixed largely by impact — "finalizes them largely by the impact that they cause" (S051.txt:52) — under a downgrade-or-reject carve-out for elevated privileges or uncommon user interaction (S051.txt:55-56), and the funds boundary is whose funds and for how long they stay frozen: theft of any user funds is Critical (S051.txt:75) while "Temporary freezing of funds" is High (S051.txt:88). The page carries no CVSS mapping, no reward figure and no version-selection rule (FC-2/FC-3/FC-4), so neither a payout nor portability across asset classes follows from a level. |
+
+[r34 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 34 the frontier stands at **17/17 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34. The 0/18 sentence is untouched: the lost-domain
+denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+## Round-35 admission — coverage map row and Frontier F18 (appended 2026-10-26)
+
+The coverage map above is not edited in place (R6): the round-35 entry
+`corpus/knowledge/cisa-kev-catalog.md` (Frontier F18, source S052; source basis:
+CISA's Known Exploited Vulnerabilities JSON feed at
+https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
+(catalogVersion 2026.10.23, count 1756), captured 2026-10-26 under
+`corpus/source-snapshots/round-35/`) is recorded here as an appended amendment so
+every existing line keeps its number. The coverage-map row is appended here rather than inserted
+into the map, and the F18 frontier row is listed here on the same table shape as the frontier
+above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Known-exploited-vulnerabilities prioritization (round 35) | knowledge/cisa-kev-catalog.md | S052 — public primary dataset, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F18 | CISA Known Exploited Vulnerabilities catalog — exploitation-status-based prioritization distinct from CVSS severity | admitted | knowledge/cisa-kev-catalog.md | S052 | Keep the catalog's remediation clock attached to the directive that binds it: BOD 26-04 supersedes the revoked BOD 22-01 and uses KEV status as one of four risk-priority factors (public exposure, KEV status, automatability, technical impact), with 3-day remediation for the most urgent cases; KEV listing is an exploitation-status signal, not a severity score — the feed carries no severity field (12 keys x 1756 records, cvss 0). |
+| F19 | FIRST EPSS exploitation-likelihood scoring | admitted | knowledge/epss-exploit-prediction-scoring.md | S053 | EPSS estimates the probability that a published CVE will be exploited in the wild in the next 30 days; treat it as a likelihood signal distinct from CVSS severity and KEV catalog status |
+
+[r35 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 35 the frontier stands at **18/18 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35. The 0/18 sentence is
+untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count
+stays outside it.
+
+
+
+The coverage map above is not edited in place (R6): the round-37 entry
+`corpus/knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md` (Frontier F20, source S054;
+source basis: CERT/CC's SSVC "What is SSVC?" overview tutorial at
+https://certcc.github.io/SSVC/tutorials/ssvc_overview/ — the overview page, not the docs home, per
+`claims-erratum-1.md` and capture-binding rule B5 — captured 2026-10-26, status 200, under
+`corpus/source-snapshots/round-37/`) is recorded here as an appended amendment so every existing
+line keeps its number. The coverage-map row is appended here rather than inserted into the map, and
+the F20 frontier row is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Stakeholder-specific vulnerability categorization (round 37) | knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md | S054 — public primary, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F20 | SSVC (Stakeholder-Specific Vulnerability Categorization) — stakeholder-tailored, decision-point-based prioritization | admitted | knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md | S054 | Read a priority from one stakeholder's decision model, not a universal score: "A decision point itself is not representative of risk, but the series of decisions point values help a stakeholder determine how risky a vulnerability is" (S054.txt:277; the page's own typo "decisions point values" is quoted verbatim), and the inputs are per-system — Exposure asks how difficult it is for an attacker to access a system from the open Internet (S054.txt:367). Keep it distinct from CVSS severity, KEV status and EPSS likelihood: SSVC categorizes "by priority based on risk that varies among stakeholders" (S054.txt:259), and the page contrasts itself with systems that "rate on technical severity" (S054.txt:247) while naming no CVSS metric and defining neither severity nor exploitability in prose — CVSS, EPSS and KEV appear only in site navigation, so source those definitions from S001/S002, S052 and S053. Read "Carnegie Mellon" only as the site footer's owner statement, not as a methodology claim. |
+
+[r37 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 37 the frontier stands at **20/20 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at
+round 37. The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18
+surfaces present, and the frontier count stays outside it.
+
+```
+
+| property | value |
+|---|---|
+| sha256 (block bytes) | `2ebd8cd2881b020cb0e234658adf132cf4741c1d226e1d7c267f7d71c5b7e97b` |
+| bytes / lines | 2947 / 27 |
+| row shape | six cells (id, topic, status, entry, sources, next), topic names SSVC as stakeholder-tailored decision-point prioritization, entry path `corpus/knowledge/ssvc-stakeholder-specific-vulnerability-categorization.md`, source `S054` |
+| count line | `[r37 amendment, appended 2026-10-26]` naming `20/20 admitted` and F01-F08 r23, F09 r24, F10 r25, F11 r26, F12 r28, F13 r29, F14 r30, F15 r31, F16 r33, F17 r34, F18 r35, F19 r36, F20 r37; the 0/18 sentence is declared untouched |
+| URL choice | overview tutorial page per `claims-erratum-1.md`; the paragraph says so and why (capture-binding B5) |
+
+## 4. Validation on a scratch mirror (append, not edit)
+
+Fixture: `git archive HEAD PROVINCE.md corpus` exported into
+`/fast/scratch/hyaku/kasegi-r37/ScribeFrontierAmendments/mirror`, both blocks appended with Python to the
+copies only. Measured on that mirror:
+
+| check | command | observed |
+|---|---|---|
+| pure addition (PROVINCE) | `diff orig PROVINCE.md \| grep -c '^<'` | `0` (2 added lines) |
+| pure addition (README) | `diff orig corpus/README.md \| grep -c '^<'` | `0` (27 added lines) |
+| frontier row count | `grep -cE '^\| F[0-9]+ \|' corpus/README.md` | `20` (target `20`) |
+| row cells | pipe-split of the F20 line | 6 cells; next cell 155 words |
+| section header | `grep -c '^## Round-37 admission' corpus/README.md` | `1` |
+| count line | `grep -c 'frontier stands at \*\*20/20 admitted\*\*' corpus/README.md` | `1` |
+| PROVINCE line | `grep -c '^\[r37 Frontier amendment' PROVINCE.md` | `1` |
+| sizes | `wc -l` on the mirror | `PROVINCE.md` 80, `corpus/README.md` 425 |
+
+Harness on the same mirror (`HYAKU_SCRATCH=<scratch> python3 corpus/instruments/frontier-recheck-count.py
+--root <mirror>`, tail):
+```
+
+Correction (round 38): corpus/README.md L399-L454 — the whole round-37 append — carry misplaced receipt scaffolding copied from `.ufo/waves/round-37/wave1/ScribeFrontierAmendments.md`: receipt property and validation tables, a "Validation on a scratch mirror" section with its check table, and a stray fence at L426 that leaves the rest of the file inside a code block; the intended round-37 block was 27 lines (sha256 2ebd8cd2881b020cb0e234658adf132cf4741c1d226e1d7c267f7d71c5b7e97b, the bytes of that receipt's §3 "Deliverable B — `corpus/README.md` end-of-file block"), of which only L400-L425 landed unchanged — L399 is a blank line where the block's `## Round-37 admission — coverage map row and Frontier F20 (appended 2026-10-26)` heading belonged; the fence opened at L426 is closed by this block, whose first line is the closing fence, and L426-L454 are to be read as not part of the corpus index.
+
+## Round-38 admission — coverage map row and Frontier F21 (appended 2026-10-26)
+
+The coverage map above is not edited in place (R6): the round-38 entry
+`corpus/knowledge/csaf-vex-product-status-and-justifications.md` (Frontier F21, source S055;
+source basis: the OASIS CSAF TC's own normative text, the CSAF 2.0 OASIS Standard at
+https://docs.oasis-open.org/csaf/csaf/v2.0/os/csaf-v2.0-os.html — the standard document itself, not
+a summary page or the TC's home — captured 2026-10-26T18:25:51Z, HTTP status 200, 272441 bytes /
+5146 lines, sha256 63c8ad5271ef5dfb7edcf2c65b4555a2d81a82682fe4d31058d542880e11cd42, under
+`corpus/source-snapshots/round-38/`) is recorded here as an appended amendment so every existing
+line keeps its number. The coverage-map row is appended here rather than inserted into the map, and
+the F21 frontier row is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| VEX product-status categories and not-affected justification flags (round 38) | knowledge/csaf-vex-product-status-and-justifications.md | S055 — public primary, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F21 | OASIS CSAF v2.0 (Common Security Advisory Framework) — VEX product-status categories and machine-readable not-affected justification flags | admitted | knowledge/csaf-vex-product-status-and-justifications.md | S055 | Read a product's affect status from the vendor's own VEX block, not a severity score: "The main purpose of the VEX format is to state that and why a certain product is, or is not, affected by a vulnerability" (S055.txt:2135), and every vulnerability item MUST carry at least one of fixed, known_affected, known_not_affected or under_investigation in product_status (S055.txt:2844). known_not_affected is not a bare label — "an impact statement SHALL exist as machine readable flag" (S055.txt:2152) drawn from the labels that "reflect the VEX not affected justifications" (S055.txt:1762), such as vulnerable_code_not_in_execute_path, "The affected code is not reachable through the execution of the code, including non-anticipated states of the product." (S055.txt:1767). Keep it distinct from CVSS severity, KEV status, EPSS likelihood and SSVC decisions: CSAF states whether the vendor's own product is affected and why, not how severe the vulnerability is or how likely its exploitation is — this capture defines no severity scale. |
+
+[r38 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 38 the frontier stands at **21/21 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round
+37, F21 at round 38. The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18
+surfaces present, and the frontier count stays outside it.
+
+
+## Round-39 admission — coverage map row and Frontier F22 (appended 2026-10-26)
+
+The coverage map above is not edited in place (R6): the round-39 entry
+`corpus/knowledge/cisa-when-to-issue-vex.md` (Frontier F22, source S057; source basis: CISA's own
+"When to Issue VEX Information" page at
+https://www.cisa.gov/resources-tools/resources/when-issue-vex-information — the issuance,
+lifecycle, timestamp-reaffirmation and upstream-inheritance guidance that sits beyond the CSAF
+VEX document-content profile — captured 2026-10-26 under `corpus/source-snapshots/round-39/`) is
+recorded here as an appended amendment so every existing line keeps its number. The coverage-map
+row is appended here rather than inserted into the map, and the F22 frontier row is listed here
+on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| VEX issuance and lifecycle guidance (round 39) | knowledge/cisa-when-to-issue-vex.md | S057 — public primary, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F22 | VEX issuance, lifecycle and inheritance guidance (CISA When to Issue VEX Information) | admitted | knowledge/cisa-when-to-issue-vex.md | S057 | Keep the issuance layer distinct from the CSAF VEX document-content standard; a status update or reaffirmation is a new VEX statement, not a rewrite; upstream not_affected inheritance is conditional. |
+
+[r39 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 39 the frontier stands at **22/22 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round
+37, F21 at round 38, F22 at round 39. The 0/18 sentence is untouched: the lost-domain denominator
+still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+
+## Round-40 admission — coverage map row and Frontier F23 (appended 2026-10-26)
+
+The coverage map above is not edited in place (R6): the round-40 entry
+`corpus/knowledge/cyclonedx-analysis-subtree.md` (Frontier F23, source S060; source basis: the CycloneDX
+v1.7 JSON reference's `vulnerabilities[].analysis` subtree at https://cyclonedx.org/docs/1.7/json/ —
+the `analysis.state`, `analysis.justification` and `analysis.response` fields that record an
+analyst's decision about a vulnerability — captured 2026-10-26 under `corpus/source-snapshots/round-40/`)
+is recorded here as an appended amendment so every existing line keeps its number. The coverage-map
+row is appended here rather than inserted into the map, and the F23 frontier row is listed here
+on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Vulnerability analysis decisions in a CycloneDX BOM (round 40) | knowledge/cyclonedx-analysis-subtree.md | S060 — public primary, opened 2026-10-26 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F23 | CycloneDX v1.7 `vulnerabilities[].analysis` — the analyst-decision record (six states, nine justifications, five responses) beyond CSAF/VEX product status | admitted | knowledge/cyclonedx-analysis-subtree.md | S060 | Read an analyst decision from the BOM's own `analysis` object, not from a product-status block: `state` is one scalar of six values — "Declares the current state of an occurrence of a vulnerability, after automated or manual analysis." (S060.txt:L7) — and `false_positive` (S060.txt:L14) has no CSAF `product_status` twin; `justification` is one of nine reasons whose rule is only "Justification should be specified for all not_affected cases." (S060.txt:L15), weaker than S055's flag SHALL (S055.txt:L2151-L2152); `response` is a repeatable intention (S060.txt:L32), not a status change; and a version entry that omits its status defaults to `affected` (S060.txt:L105). None of this is an issuance or inheritance rule — that layer is S057's. |
+
+[r40 amendment, appended 2026-10-26] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 40 the frontier stands at **23/23 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round
+37, F21 at round 38, F22 at round 39, F23 at round 40. The 0/18 sentence is untouched: the
+lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
+outside it.
+
+## Round-41 admission — coverage map row and Frontier F24 (appended 2026-10-27)
+
+The coverage map above is not edited in place (R6): the round-41 entry
+`corpus/knowledge/rfc-9116-security-txt.md` (Frontier F24, source S063; source basis: RFC 9116 "A File
+Format to Aid in Security Vulnerability Disclosure" at https://www.rfc-editor.org/rfc/rfc9116.txt —
+the machine-readable disclosure-channel discovery format, its `/.well-known/` location rule, its
+eight defined fields with Contact and Expires the only REQUIRED ones and its Expires staleness
+clock — captured 2026-10-27 under `corpus/source-snapshots/round-41/`) is recorded here as an
+appended amendment so every existing line keeps its number. The coverage-map row is appended here
+rather than inserted into the map, and the F24 frontier row is listed here on the same table shape
+as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Machine-readable disclosure-channel discovery via security.txt (round 41) | knowledge/rfc-9116-security-txt.md | S063 — public primary, opened 2026-10-27 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F24 | RFC 9116 security.txt — the machine-readable disclosure-channel discovery file (one well-known path, two REQUIRED fields, an Expires staleness clock) | admitted | knowledge/rfc-9116-security-txt.md | S063 | Read the channel from the file the target publishes rather than from a guessed page: the location is fixed at `/.well-known/security.txt` (§3), the default a reader starts from is "Unless otherwise stated, all fields MUST be considered optional." (§2.5) with Contact and Expires the two exceptions (§2.5.3, §2.5.5), the file dates itself — "This field MUST always be present and MUST NOT appear more than once." (§2.5.5) — with a sub-year horizon that is only "It is RECOMMENDED that the value of this field be less than a year into the future to avoid staleness." (§2.5.5), so an Expires instant in the past marks the whole file stale and a file whose presence or absence is read as permission has been misread (§5.5). |
+
+[r41 amendment, appended 2026-10-27] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 41 the frontier stands at **24/24 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round
+37, F21 at round 38, F22 at round 39, F23 at round 40, F24 at round 41. The 0/18 sentence is
+untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier
+count stays outside it.
+
+## Round-42 admission — coverage map row and Frontier F25 (appended 2026-10-28)
+
+The coverage map above is not edited in place (R6): the round-42 entry
+`knowledge/cve-json-record-format.md` (Frontier F25, source S064; source basis: the CVE JSON record
+format at https://raw.githubusercontent.com/CVEProject/cve-schema/main/schema/docs/CVE_Record_Format_bundled.json — the CVE Program's own bundled JSON Schema for the machine-readable CVE record,
+its four required root properties, its one `cna` container plus optional `adp` containers, and its
+PUBLISHED and REJECTED states — captured 2026-10-28 under `corpus/source-snapshots/round-42/`) is
+recorded here as an appended amendment so every existing line keeps its number. The coverage-map row
+is appended here rather than inserted into the map, and the F25 frontier row is listed here on the
+same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| The machine-readable CVE record (CVE JSON record format) (round 42) | knowledge/cve-json-record-format.md | S064 — public primary, opened 2026-10-28 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F25 | CVE JSON record format (CVE Record Format) — the machine-readable CVE record (four required root keys, one `cna` container plus optional `adp` containers, PUBLISHED and REJECTED states) | admitted | knowledge/cve-json-record-format.md | S064 | Read a CVE record's shape from the schema that defines it, not from a CNA's prose: the record is exactly four root properties — `dataType`, `dataVersion`, `cveMetadata`, `containers` — with `additionalProperties: false` in both root branches (S064.txt:L3500-L3506, S064.txt:L3536-L3542), `dataType` is the single-value enum `CVE_RECORD` (S064.txt:L472-L477), and the format version travels inside the record, defaulting to `5.2.0` under a `5.x` pattern (S064.txt:L479-L484). Every record carries one `cna` container (S064.txt:L3494-L3496, S064.txt:L3530-L3532) and only the PUBLISHED branch admits `adp` containers (S064.txt:L3485-L3492); a REJECTED record keeps its place on the CVE List — "A Rejected CVE Record remains on the CVE List so that users can know when it is invalid." (S064.txt:L3510). |
+
+[r42 amendment, appended 2026-10-28] The parenthetical above records the round-26 frontier state
+and each later amendment paragraph states its own round; those are retained as history, not
+rewritten (R9): at round 42 the frontier stands at **25/25 admitted** — F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30,
+F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round
+37, F21 at round 38, F22 at round 39, F23 at round 40, F24 at round 41, F25 at round 42. The 0/18
+sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
+
+## Round-43 note — the claim-package contract gains an instrumented surface (appended 2026-10-28)
+
+The coverage map above and the frontier table are not edited in place (R6). The map's
+`Claim-package contract` row has so far been documentation-only — one entry,
+`knowledge/claim-package-contract.md`, describing gates whose `ops/claim-check.mjs` went with
+`~/Projects/bounties` — and this round the contract gains an executable surface:
+`corpus/instruments/claim-package-check.py` (eight rules, one `RULE <id> verdict=` line each) over the
+committed exemplar `instruments/fixtures/claim-package/exemplar/` and nine one-delta fixtures
+`instruments/fixtures/claim-package/defect-1-missing-file` through `defect-9-secret`, documented by
+the new entry `corpus/knowledge/claim-package-gate.md`. NO frontier row (F01-F25) changes and the measured
+ratio is unchanged: 25/25 admitted, still 0 of 18 lost-domain surfaces present.
+
+## Round-44 admission — coverage map row and Frontier F26 (appended 2026-10-28)
+
+The coverage map and frontier table above are not edited in place (R6). The round-44 entry
+`corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md` (F26, source S069) records the
+Google Cloud VRP's own customer-resource testing boundary. Its evidence is limited to this
+program's rule text; it does not assert general authorization or speak for Google's other
+programs.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Google Cloud VRP program scope and customer-resource reward eligibility (round 44) | `corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md` | S069 — official Google Cloud VRP rules, opened 2026-10-28; capture and located quotes in `corpus/source-snapshots/round-44/manifest.json` |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F26 | Google Cloud VRP's own program scope, customer-resource testing prohibition and reward-ineligibility boundary | admitted | `corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md` | S069 | Keep the Cloud VRP boundary distinct from general authorization, other Google reward programs, and customer permission; re-open the policy before relying on it. |
+
+[r44 amendment, appended 2026-10-28] The 25/25 parenthetical above records the round-43 state and is retained as history (R9). At round 44 the public-practice frontier stands at **26/26 admitted** — F01-F25 as previously recorded and F26 admitted this round. The lost-domain denominator remains 0/18; the frontier count is separate.
+
+Correction (round 44, appended 2026-10-28): the novel F26 ground is the Cloud VRP's customer-IP-range prohibition (including that a Google-owned asset found inside a customer CIDR is still unauthorized) and the safe local-reproduction boundary for unsafe multi-tenant escapes (`corpus/knowledge/google-cloud-vrp-customer-resource-boundary.md`, S069.txt:73-87). This is distinct from the generic scope/authorization/reward distinctions already held under F03, F09, F13 and F01; the F26 table row itself remains byte-identical.
+
+## Round-45 admission — coverage map row and Frontier F27 (appended 2026-10-28)
+
+The coverage map and frontier table above are not edited in place (R6). The round-45 entry
+`corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` (F27, source S071) records the
+Linux kernel's own security-bugs reporting process as published on docs.kernel.org: the e-mail
+report channel and its security-team Cc rule, the report requirements (version range, reproducer, no binary-only executables),
+the fix-release postponement ceiling (7 calendar days from the start of the release process, with an
+exceptional extension to 14), and the process's refusal rules (AI-assisted finds treated as public;
+unreproducible issues are not security bugs). Its evidence is limited to this one process page; it
+does not assert how other projects or vendors handle disclosure.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Linux kernel security-bugs reporting process: e-mail report channel, release postponement ceiling and refusal rules (round 45) | `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` | S071 — docs.kernel.org security-bugs process page (`_sources/process/security-bugs.rst.txt` capture), opened 2026-10-28; capture and located quotes in `corpus/source-snapshots/round-45/manifest.json` |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F27 | Linux kernel's own security-bugs reporting process: the e-mail report channel and its security-team Cc rule, the 7-day release postponement ceiling with a 14-day exception, and the AI-found, binary-only and unreproducible refusal rules | admitted | `corpus/knowledge/linux-kernel-security-bugs-reporting-process.md` | S071 | Keep the kernel process distinct from other projects' and vendors' disclosure policies; re-open the process page before relying on its dated postponement figures. |
+
+[r45 amendment, appended 2026-10-28] The 26/26 count on the round-44 amendment line above records the round-44 state and is retained as history (R9). At round 45 the public-practice frontier stands at **27/27 admitted** — F01-F26 as previously recorded and F27 admitted this round. The lost-domain denominator remains 0/18; the frontier count is separate.
+
+## Round-46 admission — coverage map row and Frontier F28 (appended 2026-10-28)
+
+The coverage map and frontier table above are not edited in place (R6). The round-46 entry
+`corpus/knowledge/github-private-vulnerability-reporting.md` (F28, source S073) records GitHub's private vulnerability reporting as a reporter-side flow: private reporting is enabled by owners of public repositories and is separate from the repository's SECURITY.md file; the report is filed through the advisory form under the repository's Security and quality tab; the form requires a summary, details, proof of concept and impact statement by default; the AI-assistance disclosure is optional; submission adds the reporter as a collaborator and credited user on the proposed advisory; and only the repository maintainer can merge from a temporary private fork. Its evidence is limited to this one GitHub Docs page; it does not assert how maintainers triage reports, what the GitHub Security Advisory database holds, or how CVEs are assigned.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| GitHub private vulnerability reporting: reporter-side flow of the repository advisory form (enablement, separation from SECURITY.md, default required fields, optional AI-assistance disclosure, automatic reporter credit, maintainer-only private-fork merge) (round 46) | `corpus/knowledge/github-private-vulnerability-reporting.md` | S073 — GitHub Docs "Privately reporting a security vulnerability" page (`corpus/source-snapshots/round-46/S073.txt` capture), opened 2026-10-28; capture and located quotes in `corpus/source-snapshots/round-46/manifest.json` |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F28 | GitHub private vulnerability reporting, reporter flow: enablement by owners of public repositories, separation from SECURITY.md, the advisory form's default required fields, the optional AI-assistance disclosure, automatic reporter collaborator and credit, and the temporary private fork that only the maintainer can merge | admitted | `corpus/knowledge/github-private-vulnerability-reporting.md` | S073 | Keep the reporter flow distinct from the Linux kernel's e-mail process (F27) and from the AI-finding validation rules; re-open the GitHub Docs page before relying on its form fields or enablement wording. Maintainer handling, the GitHub Security Advisory database and CVE assignment are outside F28. |
+
+[r46 amendment, appended 2026-10-28] The 27/27 count on the round-45 amendment line above records the round-45 state and is retained as history (R9). At round 46 the public-practice frontier stands at **28/28 admitted** (28 — `grep -cE '^\| F[0-9]+ \|' corpus/README.md` 2026-10-28) — F01-F27 as previously recorded and F28 admitted this round. The lost-domain denominator remains 0/18; the frontier count is separate.
+
+
+## Round-46 admission (attempt 2) — coverage map row and Frontier F29 (appended 2026-10-29)
+
+The coverage map and frontier table above are not edited in place (R6). The round-46 attempt-2 entry
+`corpus/knowledge/github-repository-security-advisories.md` (F29, source S074) records GitHub's repository
+security advisories as the maintainer-side advisory lifecycle: a maintainer creates a draft advisory to
+privately discuss the impact of the vulnerability, collaborates on the fix in a temporary private fork, and
+publishes the advisory to alert the community once a patch is released; contributors can be given credit on
+the advisory; GitHub is a CNA authorized to assign CVE identification numbers, usually reviews a CVE request
+within 72 hours, and publishes the CVE to the MITRE database once the advisory is public; publication makes
+the advisory data and the accepted advisory credits visible, keeps the conversation history to
+collaborators, and leaves the advisory URL unchanged; and a fix version should be added to the advisory
+before it is published. Its evidence is limited to this one GitHub Docs page; it does not assert how other
+platforms or vendors run a maintainer-side advisory lifecycle.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| GitHub repository security advisories: the maintainer-side advisory lifecycle (draft advisory and private discussion of impact, temporary private fork, advisory credit, the CVE request to GitHub as a CNA, publication visibility and the unchanged advisory URL, and the fix-version duty) (round 46 attempt 2) | `corpus/knowledge/github-repository-security-advisories.md` | S074 — GitHub Docs "Repository security advisories" page (`corpus/source-snapshots/round-46-a2/S074.txt` capture), opened 2026-10-29; capture and located quotes in `corpus/source-snapshots/round-46-a2/manifest.json` |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F29 | GitHub repository security advisories, maintainer-side lifecycle: the draft advisory used to privately discuss the vulnerability's impact, the temporary private fork, advisory credit, the CVE request to GitHub as a CNA, publication visibility and the unchanged advisory URL, and the fix version added before publication | admitted | `corpus/knowledge/github-repository-security-advisories.md` | S074 | Keep the maintainer-side advisory lifecycle distinct from the reporter-side flow (F28) and from the CVE Program's CNA assignment rules (F07); re-open the GitHub Docs page before relying on its 72-hour CVE review window or on its fix-version guidance. Editing a published advisory, the REST API for repository security advisories and GitHub Advisory Database edits stay out of F29. |
+
+[r46 attempt-2 amendment, appended 2026-10-29] The 28/28 count on the round-46 attempt-1 amendment line above records the round-46 attempt-1 state and is retained as history (R9). At round 46 (attempt 2) the public-practice frontier stands at **29/29 admitted** (29 — `grep -cE '^\| F[0-9]+ \|' corpus/README.md` 2026-10-29) — F01-F08 at round 23, F09 at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 at round 46, F29 at round 46 (attempt 2); rounds 27, 32 and 43 admitted no frontier row. The lost-domain denominator remains 0/18; the frontier count is separate.
+
+## Round-47 enrichment and provenance correction (2026-10-30)
+
+| Area | Entry | Source basis |
+|---|---|---|
+| F02 coordinator case: ZDI's conditional disclosure timelines, unknown 120-day clock start and acquired-finding disposition | `corpus/knowledge/zdi-disclosure-policy.md` | S075, tier-A first-party policy, opened 2026-10-30; `corpus/source-snapshots/round-47/S075.txt` and its manifest |
+| F29 current capture provenance | `corpus/knowledge/github-repository-security-advisories.md` | S076 supersedes S074 for the current entry; committed-instrument capture under `corpus/source-snapshots/round-47/` |
+
+No F30 row is admitted: the proposed ZDI timeline frontier duplicates F02's existing coordinator/trigger/interval discipline. The opened policy is useful enrichment, not a new frontier count. The existing F29 row above is historical; its current entry now cites S076 while the S074 capture remains retained for round-46 history. This does not retroactively change the round-46 rejected-harmed verdict. `PROVINCE.md` stays unchanged.
+## Round-49 admission — coverage map row and Frontier F30 (appended 2026-10-30)
+
+The coverage map above is not edited in place (R6): the round-49 entry
+`corpus/knowledge/cve-services-publication-api.md` (Frontier F30, source S078;
+source basis: the CVE Program's own OpenAPI document for the CVE Services API, captured 2026-10-30 under
+`corpus/source-snapshots/round-49/`) is recorded here as an appended amendment so every existing line keeps
+its number. The coverage-map row is appended here rather than inserted into the map, and the F30 frontier row
+is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| CVE Services publication API (round 49) | `corpus/knowledge/cve-services-publication-api.md` | S078 — first-party spec, opened 2026-10-30 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F30 | CVE Services publication API — the CVE Program's own write path (identifier reservation, CNA-container publication and update, rejection, ADP-container enrichment, CNA↔Secretariat conversation) | admitted | `corpus/knowledge/cve-services-publication-api.md` | S078 | Read the publication state from the endpoint that writes it, not from the record's fields: reserving an identifier, publishing a CNA container, rejecting the record and adding an ADP container are four different endpoints with three different actors (CNA, Secretariat, ADP), so "the CVE is published" names no single call (`S078.txt:125`, `S078.txt:1368`, `S078.txt:1594`, `S078.txt:1798`). Keep this write path distinct from F25's record format and F07's numbering rules; re-open the capture before relying on an endpoint's actor list. |
+
+[r49 amendment, appended 2026-10-30] The round-47 note above ("No F30 row is admitted: the proposed ZDI timeline
+frontier duplicates F02's existing coordinator/trigger/interval discipline") is the round-47 verdict on the ZDI
+candidate and stays standing as history; it is not this round's F30. The frontier as of round 49 is F01–F30
+admitted: F01-F08 at round 23, F09 at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round
+29, F14 at round 30, F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at
+round 37, F21 at round 38, F22 at round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44,
+F27 at round 45, F28 and F29 at round 46, F30 at round 49.
+
+## Round-50 admission — coverage map row and Frontier F31 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-50 entry
+`corpus/knowledge/osv-affected-range-events.md` (Frontier F31, source S080;
+source basis: the OpenSSF OSV project's own format specification page, captured 2026-11-01 under
+`corpus/source-snapshots/round-50/`) is recorded here as an appended amendment so every existing line keeps
+its number. The coverage-map row is appended here rather than inserted into the map, and the F31 frontier row
+is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| OSV affected-range events (round 50) | `corpus/knowledge/osv-affected-range-events.md` | S080 — first-party spec, opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F31 | OSV affected-range events — the OSV format's per-package version timeline (`affected[].ranges[].events`: introduced/fixed/last_affected/limit, at least one introduced event, an implicit limit `"*"`, three range types whose orderings are evaluated by SemVer precedence, ecosystem logic or Git reachability) | admitted | `corpus/knowledge/osv-affected-range-events.md` | S080 | Read affected-ness from the events timeline, not from the versions list or from string equality with upstream versions: the four event verbs are the timeline's whole vocabulary (`S080.txt:739-742`), a range with an `introduced` and no closing event is still bounded by the assumed `limit` `"*"` (`S080.txt:754-755`), the range's `type` decides how orderings evaluate (`S080.txt:706-708`) — SemVer precedence, the package ecosystem's own logic (`S080.txt:724-725`) or Git reachability with a required repo field (`S080.txt:788`) — and event version strings "are not guaranteed to exactly match versions of the package found in the upstream package repository" (`S080.txt:746-747`). Keep this distinct from F25's CVE Record containers (one lessThan boundary per version entry), F21's CSAF/VEX product status and F23's CycloneDX analysis states. Admitted by re-opening the round-42 S065 screen under its own recorded flip condition; the flip's other named term (`database_specific` `extracted_events`) appears nowhere in the opened page (`grep -c extracted corpus/source-snapshots/round-50/S080.txt` prints 0), and per-database `database_specific` values are beyond the page's own scope (`S080.txt:790-793`). Re-open the capture before relying on an event verb, a type rule or the required-field set. |
+
+[r50 amendment, appended 2026-11-01] The frontier as of round 50 is F01-F31 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50. The 0/18 sentence is untouched: the lost-domain denominator still
+holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+## Round-51 admission — coverage map row and Frontier F32 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-51 entry
+`corpus/knowledge/cisa-vulnrichment-adp-enrichment.md` (Frontier F32, source S081;
+source basis: CISA's own Vulnrichment README at the repository's default branch develop, captured 2026-11-01 under
+`corpus/source-snapshots/round-51/`) is recorded here as an appended amendment so every existing line keeps
+its number. The coverage-map row is appended here rather than inserted into the map, and the F32 frontier row
+is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| CISA Vulnrichment ADP enrichment (round 51) | `corpus/knowledge/cisa-vulnrichment-adp-enrichment.md` | S081 — first-party docs, opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F32 | CISA Vulnrichment — CISA's ADP-container enrichment of public CVE records (SSVC decision points on every analyzed CVE, CWE and/or CVSS for higher-risk ones, KEV blocks for KEV-listed CVEs, CNA-precedence drop rule, major.minor.patch SSVC version encoding, CPE discontinued 2024-12-10) | admitted | `corpus/knowledge/cisa-vulnrichment-adp-enrichment.md` | S081 | Read CISA's ADP data as a gap-filling layer that always yields to the CNA: the ADP "will [not] overwrite the originating CNA's data" (`S081.txt:8`) and drops its own assessments when the CNA populates the fields later (`S081.txt:114`), where duplicate CNA+ADP data is "an error in the CISA ADP container" by CISA's own statement (`S081.txt:114`). Decode ADP SSVC data against its version field (`S081.txt:117-118`): major.minor is the SSVC version, patch the decision-tree version. Absence of a KEV block is silence, not a negative: "For those that aren't, no update will occur" (`S081.txt:58`), and CPE in an ADP container is historical only ("as of December 10, 2024, CISA will no longer be adding CPE strings", `S081.txt:104`). Keep this distinct from F18's KEV catalog, F20's SSVC framework, F22's VEX guidance, F25's CVE record format and F30's CVE Services interface — the pre-freeze neighbor screen named all five before the freeze landed. Re-open the capture before relying on any enrichment rule: the README is on a mutable branch and declares itself under active development (`S081.txt:4`). |
+
+[r51 amendment, appended 2026-11-01] The frontier as of round 51 is F01-F32 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51. The 0/18 sentence is untouched: the lost-domain
+denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+## Round-52 admission — coverage map row and Frontier F33 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-52 entry
+`corpus/knowledge/nvd-api-2.0-retrieval-interface.md` (Frontier F33, source S083;
+source basis: a live NVD Vulnerability Data API 2.0 response served by NIST's services host for one
+record, CVE-2024-3094, captured 2026-11-01 under `corpus/source-snapshots/round-52/`) is recorded here
+as an appended amendment so every existing line keeps its number. The coverage-map row is appended here
+rather than inserted into the map, and the F33 frontier row is listed here on the same table shape as
+the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| NVD API 2.0 retrieval interface (round 52) | `corpus/knowledge/nvd-api-2.0-retrieval-interface.md` | S083 — first-party code (live API response), opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F33 | NVD API 2.0 — NIST's read-side retrieval interface over the NVD-enriched CVE record (the 2.0 paging envelope, NVD's own Primary CVSS served beside the CNA's Secondary with per-item provenance, CPE applicability configurations, CWE weaknesses, tagged references, multilingual descriptions, published/lastModified/vulnStatus change tracking, and the ingested CISA ADP SSVC block) | admitted | knowledge/nvd-api-2.0-retrieval-interface.md | S083 | Read NVD-served enrichment as attributed analysis served beside the CNA's data, never as an overwrite: the same record's `metrics.cvssMetricV31` carries both `secalert@redhat.com` `type: Secondary` (Q4) and `nvd@nist.gov` `type: Primary` (Q5), so a score is ambiguous until its source/type pair is read (S083.txt:1, all anchors on the single-line capture). Read the envelope as a retrieval contract the CVE Record format does not have — `"resultsPerPage":1,"startIndex":0,"totalResults":1,"format":"NVD_CVE","version":"2.0"` (Q1) — with the record nested under `vulnerabilities[].cve`, and read state from the interface's own change-tracking: `"published":"2024-03-29T17:15:21.150","lastModified":"2026-06-17T07:43:17.830","vulnStatus":"Modified"` (Q3) — Modified is NVD's lifecycle vocabulary, not F25's PUBLISHED/REJECTED. Applicability claims trace to specific `cpeMatch` criteria + `vulnerable` flags (Q10, Q12), and the `ssvcV203` block (Q6, role CISA Coordinator, three decision points — Q7) is an ingested copy of F32's ADP data served downstream, not NVD-generated SSVC; a CNA conflict resolves by F32's CNA-precedence rule. Distinct from F05/S014 (NVD as a data source behind the CWE Top 25 methodology), the CVE-bench entry/S025 (benchmark inputs "as published in the NVD"), F18/S052 (an NVD URL inside a KEV record's notes field; this response serves no KEV fields) and F19 (EPSS not served); S066's round-42 flip is spent by this admission and the row stays byte-identical. Scope limit: one live response at one instant — rate limits, authentication and the wider parameter surface are not asserted (the developer-hub pages are JS-walled for this lane's instrument; rejected row S084 with flip). |
+
+[r52 amendment, appended 2026-11-01] The frontier as of round 52 is F01-F33 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52. The 0/18 sentence is untouched: the
+lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+The coverage map above is not edited in place (R6): the round-53 entry
+`corpus/knowledge/nvd-api-2.0-response-schema.md` (Frontier F34, source S085;
+source basis: NIST's own JSON Schema artifact for the NVD Vulnerability Data API 2.0 response, served
+from NIST's csrc host and captured 2026-11-01 under `corpus/source-snapshots/round-53/` — the same
+10394-raw-byte artifact the round-42 S066 screen recorded) is recorded here as an appended amendment
+so every existing line keeps its number. The coverage-map row is appended here rather than inserted
+into the map, and the F34 frontier row is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| NVD API 2.0 response schema (round 53) | `corpus/knowledge/nvd-api-2.0-response-schema.md` | S085 — first-party spec (NIST's own schema artifact), opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F34 | NVD API 2.0 response schema — the JSON Schema that defines the response F33 admitted as served (the versioned 2.2.4 contract document under draft-07, the schema-REQUIRED envelope keys, the per-record required five id/published/lastModified/references/descriptions, the CVE-id pattern, the NVD-only evaluatorComment/evaluatorSolution/evaluatorImpact and cisaExploitAdd/cisaActionDue/cisaRequiredAction/cisaVulnerabilityName mirror fields, NVD's own metrics vocabulary, and the declared ssvcV203 container) | admitted | knowledge/nvd-api-2.0-response-schema.md | S085 | Read the schema as the contract and F33's capture as an instance of it: the envelope F33 observed served is here REQUIRED (resultsPerPage among the required seven — S085.txt:505, Q13), and the mirror fields F33's Limits deferred are schema-DECLARED properties of every record (S085.txt:36/39/42 evaluator*, S085.txt:45/53 cisa*, Q4-Q8) that one live response need not carry — absence of an evaluator*/cisa* field in a served record is an instance fact, not a contract fact. Read a metrics entry as NVD-container vocabulary ("Metric scores for a vulnerability as found on NVD." S085.txt:96, Q9) whose source attribution lives in the entry's own source/type fields (F33's Primary/Secondary rule), and the ssvcV203 container as a declared metric only — the SSVC framework stays F20, the ADP program stays F32. A record id must match `^CVE-[0-9]{4}-[0-9]{4,}$` (S085.txt:329, Q11) and every record carries the required five. Distinct from F25/S064 (NVD's derived projection of the canonical record format — the r42 S066 primary-of-record reading, unchanged), F33/S083 (definition vs instance; this is the "natural next capture" F33's Limits named), F32/S081 and F18/F19/F30 (no KEV/EPSS/write-path ground). S066 is re-opened under the UNspent term of its own flip (evaluator*/cisa* mirror fields; the interface-contract term was the one F33 spent) and the rejected row stays byte-identical. Scope limit: a response-body schema defines no rate limits, authentication, query parameters or error responses — none is asserted; the referenced external schema documents (cvss-v*.json, ssvc-v2.0.3.json, cve_affected_1.0.json) are not captured. |
+
+[r53 amendment, appended 2026-11-01] The frontier as of round 53 is F01-F34 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F34 at round 53. The 0/18 sentence
+is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
+outside it.
+
+## Round-54 admission — coverage map row and Frontier F35 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-54 entry
+`corpus/knowledge/openssf-scorecard-checks.md` (Frontier F35, source S086;
+source basis: the OpenSSF Scorecard project's own generated check documentation at
+https://raw.githubusercontent.com/ossf/scorecard/main/docs/checks.md, captured 2026-11-01, status
+200, under `corpus/source-snapshots/round-54/`) is recorded here as an appended amendment so every
+existing line keeps its number. The coverage-map row is appended here rather than inserted into the
+map, and the F35 frontier row is listed here on the same table shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Repository security-health scoring (round 54) | `corpus/knowledge/openssf-scorecard-checks.md` | S086 — first-party program docs (OpenSSF Scorecard's own generated check documentation), opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F35 | OpenSSF Scorecard check documentation — the per-check risk tiers and scoring criteria of automated repository security-health scoring (the 90-day commit-rate maintenance window with its >90-day assessability floor, OSV-service-backed vulnerability detection with the osv-scanner.toml suppression mechanism, conditionally-worded per-check risk labels, and the SECURITY.md presence-and-content policy detector) | admitted | knowledge/openssf-scorecard-checks.md | S086 | Read every risk tier as a conditional label of what a failing check indicates — "possibly unpatched vulnerabilities" (S086.txt:411, Q5), not a finding about any repository; read the Maintained rule as a window, not a verdict: the highest score requires at least one commit per week across the previous 90 days (S086.txt:415, Q6) and a project younger than 90 days is unassessable by the check (S086.txt:428, Q7), while a low score is explicitly "not necessarily always a problem" (S086.txt:421, Q8). Read the Vulnerabilities check as an OSV consumer that analyzes nothing itself (S086.txt:710, Q10) whose suppressions are project-authored osv-scanner.toml declarations (S086.txt:718, Q11) — the OSV format stays F31/S080, KEV stays F18/S052. Read Security-Policy as a SECURITY.md presence/content detector (S086.txt:595, Q14) disjoint from F24's security.txt, and its partial-credit rubric (6/10 link form, 3/10 free-form text, 1/10 specific text) as the doc's own form-is-not-function evidence. The program-wide boundary is the doc's own: Scorecard "can only report what it can automatically detect" (S086.txt:195, Q9). Distinct from F17/S051 (submission severity pricing vs repository practice exposure). Scope limit: the aggregate 0-10 score computation, the risk-based weights, the publisher/API endpoints and Prox/CI integration are not in this document and are not asserted; the URL names a moving `main`, so the pinned sha256 fa84a017 is the round-54 authority. |
+
+[r54 amendment, appended 2026-11-01] The frontier as of round 54 is F01-F35 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F34 at round 53, F35 at round 54.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
+
+## Round-55 admission — coverage map row and Frontier F36 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-55 entry
+`corpus/knowledge/github-repository-security-advisories-rest-api.md` (Frontier F36, source S087;
+source basis: GitHub Docs' REST reference page for repository security advisories at
+https://docs.github.com/en/rest/security-advisories/repository-advisories — the round-47 lead at
+`corpus/SOURCES.md:137`, provenance `corpus/source-snapshots/round-47/S076.txt:574` — captured
+2026-11-01, status 200, under `corpus/source-snapshots/round-55/`) is recorded here as an appended
+amendment so every existing line keeps its number. The coverage-map row is appended here rather
+than inserted into the map, and the F36 frontier row is listed here on the same table shape as the
+frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Repository security advisories machine interface (round 55) | `corpus/knowledge/github-repository-security-advisories-rest-api.md` | S087 — platform first-party docs (GitHub Docs' own REST reference), opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F36 | GitHub repository security advisories REST API — the machine interface contract for repository security advisories (the twelve-endpoint route family with its per-endpoint fine-grained permission model, the POST/PATCH create-update pair with its required-body contract and the closed published/closed/draft state vocabulary, the standalone ghsa_id-keyed CVE-request route returning 202 Accepted, and the private-fork route that alone names a second permission set) | admitted | knowledge/github-repository-security-advisories-rest-api.md | S087 | Read each route's permission line as per-endpoint, never family-wide: the list endpoint alone serves unauthenticated callers "if only public resources are requested" (S087.txt:793, Q2), create, update and the CVE request name the (write) set (S087.txt:1287, Q3; :2135, Q7; :2800, Q10), and the private fork alone names `"Repository security advisories" repository permissions (read) and "Administration" repository permissions (write)` (S087.txt:2853, Q13). Read the advisory state as a closed three-state vocabulary "Can be one of: published, closed, draft" (S087.txt:2194, Q9), and the CVE request as an asynchronous action keyed by ghsa_id returning 202 Accepted (S087.txt:2827, Q11; :2820) — it runs after an advisory exists, never as a field of create. The interface HOW stays distinct from the lifecycle WHAT: F29/S076 keeps the maintainer-side lifecycle concepts, F28/S073 keeps the reporter flow (this page's own "Privately report a security vulnerability" route is inventoried, not absorbed), F30/S078 keeps the CVE Program's own write path. Scope limit: rate limits, plan-gated parameters, response examples and error-body schemas are unasserted; docs.github.com is a live document, so the pinned sha256 3eebdf47 is the round-55 authority. |
+
+[r55 amendment, appended 2026-11-01] The frontier as of round 55 is F01-F36 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F34 at round 53, F35 at round 54,
+F36 at round 55.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
+
+## Round-56 admission — coverage map row and Frontier F37 (appended 2026-11-01)
+
+The coverage map above is not edited in place (R6): the round-56 entry
+`corpus/knowledge/cisa-vulnrichment-record-list.md` (Frontier F37, source S088;
+source basis: the CISA Vulnrichment published record list read through GitHub's git-trees
+machine interface at the repository's default ref —
+https://api.github.com/repos/cisagov/vulnrichment/git/trees/develop — the recorded CISA ADP
+list-page lead at `corpus/SOURCES.md:142`, named in the round-52 SCORECARD planned-for-53,
+captured 2026-11-01, status 200, under `corpus/source-snapshots/round-56/`) is recorded here as
+an appended amendment so every existing line keeps its number. The coverage-map row is appended
+here rather than inserted into the map, and the F37 frontier row is listed here on the same table
+shape as the frontier above.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| CISA ADP record publication catalog (round 56) | `corpus/knowledge/cisa-vulnrichment-record-list.md` | S088 — first-party machine-interface catalog (GitHub git-trees read of cisagov/vulnrichment at the default ref), opened 2026-11-01 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F37 | CISA Vulnrichment published record list — the catalog surface of CISA's ADP record publication (the 28 per-year record folders 1999-2026 with no gap, the six non-record support entries beside them, the content-addressed completeness pin `"truncated":false` at top sha e8d691a5, and the 8501-byte README blob whose round-51 snapshot sha still reproduces) | admitted | knowledge/cisa-vulnrichment-record-list.md | S088 | Read the record list as the catalog of CISA's enrichment publication, kept distinct from the rules F32 admits: the record folders are exactly the years 1999-2026, 28 = 2026−1999+1 with no gap (`S088.txt:1`, Q1/Q2), and the year-form count re-derives from the capture. The list object self-declares complete (`"truncated":false`, Q5) at its content address (Q6) — a moved top sha at a later re-open is a different list state by construction; the ref is mutable, the pin is the arbiter. The rules text sits in the list as one README blob of 8501 bytes (Q3) whose round-51 snapshot sha 2da09414 reproduces same-day — the check on F32's scope limit: rules live in README/flowcharts, not in the catalog. flowcharts.md (Q4, 3916 bytes) is named by the list but its details are declared changeable by the README itself (S081.txt:9) — process description, not enrichment data. Distinctness: F32 keeps the data rules, F25 the record format, F30 the CVE Services write path, F33 NVD's serving, F20 the SSVC framework (the flowcharts' details unasserted). Scope limit: the catalog surface only — the year folders' contents, sync cadence, commit history, rate limits and authentication are unasserted; the releases variant of the surface is empty (probed, no rows claimable). |
+
+[r56 amendment, appended 2026-11-01] The frontier as of round 56 is F01-F37 admitted: F01-F08 at round 23, F09
+at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14 at round 30, F15 at round
+31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36, F20 at round 37, F21 at round 38, F22 at
+round 39, F23 at round 40, F24 at round 41, F25 at round 42, F26 at round 44, F27 at round 45, F28 and F29 at
+round 46, F30 at round 49, F31 at round 50, F32 at round 51, F33 at round 52, F34 at round 53, F35 at round 54,
+F36 at round 55, F37 at round 56.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
+
+## Round-57 admission — coverage map row and Frontier F38 (appended 2026-11-03)
+
+The coverage map above is not edited in place (R6): the round-57 entry
+`corpus/knowledge/iso-29147-30111-standard-records.md` (Frontier F38; sources S089 + S090;
+source basis: ISO's own catalog records for the two standards at
+https://www.iso.org/standard/72311.html and https://www.iso.org/standard/69725.html — captured
+2026-11-03, HTTP 200, under `corpus/source-snapshots/round-57/` with a shared manifest; the
+committed instrument's urllib open is 403-blocked at this host, so the fetch used curl with the
+instrument's own UA string and the instrument's own html_to_text conversion — disclosed in the
+manifest note, the receipt and the lesson Gate) is recorded here as an appended amendment so
+every existing line keeps its number. First admission of the recorded ISO/IEC 29147/30111 lead
+(`corpus/SOURCES.md:137` at base; exact-line sha256
+`23309b6fd1226e398f8cce84f6a6e41f1a35ef9f8f0f95acdaa2119d17055b39`; lead bytes unchanged, the
+flip is recorded in the registry-changes bullets). The extended pre-freeze screen ran at the base
+before the freeze (`.ufo/waves/round-57/controls/neighbor-screen-r57.txt`): the only
+`iso.org/standard` URL holder is the lead line; the 29147/30111 token holders are F10's vendor
+policies (S040 and the crosswalk), F11's JPCERT/CC reading (S041), F12's Japanese workflow and
+the vendor-third-party entry — every one a CONSUMER or implementer of the standards, none holding
+the publisher-record ground — and the downstream-consumer sweep over `corpus/source-snapshots/`
+names S003, S018, S021, S039, S040, S041, S055, S063 as citing captures, no held capture OF the
+iso.org catalog pages.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| ISO/IEC 29147/30111 standard records (round 57) | `corpus/knowledge/iso-29147-30111-standard-records.md` | S089, S090 — first-party standards-body publisher records (iso.org catalog), opened 2026-11-03 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F38 | ISO/IEC 29147/30111 standard records — the standards-body publisher record of the coordinated-vulnerability-disclosure process standards (identity/editions 29147:2018 ed.2 and 30111:2019 ed.2, publisher status and the to-be-revised stage with successor work named, the currency statements, the abstract's own division-of-labour sentence, vendor-side applicability) | admitted | corpus/knowledge/iso-29147-30111-standard-records.md | S089, S090 | Read the two records as ISO's own statement of what each standard is and where it stands: 29147 is "requirements and recommendations to vendors on the disclosure of vulnerabilities" (`S089.txt:84`, Q2) while 30111 is "requirements and recommendations for how to process and remediate reported potential vulnerabilities" (`S090.txt:84`, Q2), and the publisher itself states the split — "Other related activities that take place between receiving and disclosing vulnerability reports are described in ISO/IEC 30111." (`S089.txt:91`, Q3). Both editions stand Published and confirmed current (2024/2025 review statements, `S089.txt:64`/`S090.txt:64`) while BOTH carry stage "International Standard to be revised [90.92]" (`S089.txt:99`, `S090.txt:92`) with successor work named (AWI 29147 at `S089.txt:204`, WD 30111.2 at `S090.txt:197`) — cite the editions as current AND under revision, never either alone. Applicability is vendor-side ("vendors who choose to practice vulnerability disclosure" `S089.txt:92`; "vendors involved in handling vulnerabilities" `S090.txt:85`): the records bind vendors, not finders. Kept distinct from F11 (the JPCERT/CC guideline reading, S041) and F10 (vendor policies citing the standards, S040); the normative text stays unasserted (paywalled), and the 90d recheck re-fetches a live catalog page. |
+
+[r57 amendment, appended 2026-11-03] The frontier as of round 57 is F01-F38 admitted: F01-F08 at
+round 23, F09 at round 24, F10 at round 25, F11 at round 26, F12 at round 28, F13 at round 29, F14
+at round 30, F15 at round 31, F16 at round 33, F17 at round 34, F18 at round 35, F19 at round 36,
+F20 at round 37, F21 at round 38, F22 at round 39, F23 at round 40, F24 at round 41, F25 at round
+42, F26 at round 44, F27 at round 45, F28 and F29 at round 46, F30 at round 49, F31 at round 50,
+F32 at round 51, F33 at round 52, F34 at round 53, F35 at round 54, F36 at round 55, F37 at round
+56, F38 at round 57.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present,
+and the frontier count stays outside it.
+
+## Round-58 admission — coverage map row and Frontier F39 (appended 2026-11-03)
+
+The coverage map above is not edited in place (R6): the round-58 entry
+`corpus/knowledge/aisi-autonomous-cyber-capability-progress-rate.md` (Frontier F39, source S091) is recorded here as an
+appended amendment so every existing line keeps its number. Source basis: the UK AI Security Institute's own
+blog report at https://www.aisi.gov.uk/blog/how-fast-is-autonomous-ai-cyber-capability-advancing, opened
+2026-11-03, capture `corpus/source-snapshots/round-58/S091.txt`, manifest `corpus/source-snapshots/round-58/manifest.json`.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Autonomous AI cyber-capability progress rate (round 58) | corpus/knowledge/aisi-autonomous-cyber-capability-progress-rate.md | S091 — the institute's own dated measurement statements, opened 2026-11-03 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F39 | UK AI Security Institute autonomous cyber-capability progress rate — the institute's own dated, suite-bound measurement statements: the 80%-reliability cyber time-horizon doubling estimate and its acceleration, the bounded method and its stated uncertainty, and the cyber-range results | admitted | corpus/knowledge/aisi-autonomous-cyber-capability-progress-rate.md | S091 | Read the doubling figure as AISI's own estimate under its own suite, token cap and curve fit: "an imperfect model, and is not a future prediction, nor a fixed law" (`S091.txt:23`, Q4), with the single-omission band "4.1 months, and a maximum of 5.0 months" (`S091.txt:30`, Q6); keep the cyber-range attempt counts (6 of 10, 3 of 10) attributed to one newer checkpoint (`S091.txt:34-35`). |
+
+[r58 amendment, appended 2026-11-03] The frontier as of round 58 is F01-F39 admitted: F38 at round 57 and F39 at
+round 58. The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the
+frontier count stays outside it.
+
+## Round-59 admission — coverage map row and Frontier F40 (appended 2026-11-03)
+
+The coverage map above is not edited in place (R6): the round-59 entry
+`corpus/knowledge/google-big-sleep-findings-tracker.md` (Frontier F40, source S092) is recorded here as an appended amendment
+so every existing line keeps its number. Source basis: the Google Issue Tracker's own README for the Big Sleep findings
+tracker at https://issuetracker.google.com/issues/430375499, opened 2026-11-03, capture `corpus/source-snapshots/round-59/S092.txt`,
+manifest `corpus/source-snapshots/round-59/manifest.json`.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Big Sleep public findings tracker (round 59) | corpus/knowledge/google-big-sleep-findings-tracker.md | S092 — the tracker's own README and finding-record fields, opened 2026-11-03 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F40 | Google Big Sleep public findings tracker — the Google Issue Tracker's own README for the tracker where Big Sleep's disclosed findings are collected: the disclosure policies they follow and the finding-record fields the tracker serves | admitted | corpus/knowledge/google-big-sleep-findings-tracker.md | S092 | Read the tracker as the place Big Sleep's own disclosed findings are collected, bound to Google's industry disclosure policy and Project Zero's 2025 trial (`S092.txt:2`, Q2, Q3); the README's own text grants no researcher intake, so it is not a reporting channel for third-party findings. |
+
+[r59 amendment, appended 2026-11-03] The frontier as of round 59 is F01-F40 admitted: F39 at round 58 and F40 at round 59.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
+outside it.
+
+## Round-60 admission — coverage map row and Frontier F41 (appended 2026-11-04)
+
+The coverage map above is not edited in place (R6): the round-60 entry
+`corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md` (Frontier F41, source S093) is recorded here as an appended
+amendment so every existing line keeps its number. Source basis: Project Zero's own dated comparison of two production
+automated vulnerability-discovery pipelines on V8 — Fuzzilli, a generative JavaScript-engine fuzzer, and BigSleep, an
+LLM-based bug finding system — at https://projectzero.google/2026/10/fuzzing-v-AI.html, opened 2026-11-04, capture
+`corpus/source-snapshots/round-60/S093.txt`, manifest `corpus/source-snapshots/round-60/manifest.json`.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Agent-versus-fuzzer production comparison (round 60) | corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md | S093 — Project Zero's own production and re-discovery comparison, opened 2026-11-04 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F41 | Project Zero Fuzzilli-vs-BigSleep comparison — the publisher's own dated comparison of an LLM bug-finding agent against a coverage-guided JavaScript-engine fuzzer on V8: the six-month production window's actionable Type-Vuln counts and ~25% overlap, the 112-bug re-discovery experiment at 25 attempts per commit, and the post's "run both" recommendation to vendors | admitted | corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md | S093 | Read the 45-vs-37 pair as actionable Type-Vuln reports, not raw reports (the post's own 316/441 counts narrow to 178/95 then 45/37) and as a tie rather than agent superiority; read the ~62%/~70% figures as a re-discovery rate over a filtered historic Fuzzilli sample, with the reverse direction explicitly not run; the recommendation is "both", and the post excludes a cost-per-bug comparison. |
+
+[r60 amendment, appended 2026-11-04] The frontier as of round 60 is F01-F41 admitted: F40 at round 59 and F41 at round 60.
+The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays
+outside it.
+
+## Round-61 admission — coverage map and Frontier F42 (2026-11-04)
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Big Sleep's dated SQLite case | knowledge/project-zero-big-sleep-sqlite-variant-analysis.md | S094, Project Zero's 2024-Nov-01 report, opened 2026-11-04 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F42 | Big Sleep's SQLite variant-analysis finding account — seed-commit setup, pre-release exposure qualification and harness-bound negative AFL experiment | admitted | knowledge/project-zero-big-sleep-sqlite-variant-analysis.md | S094 | Preserve the pre-release qualification (S094.txt:18), seeded setup (:25), harness differences (:112), CPU-hour unit (:113) and experimental-results caveat (:118); this is the publisher's account, not a lane reproduction or general benchmark. |
+
+F42 adds a dated real-world finding account, distinct from F04's validation principles, F40's tracker and F41's V8 production comparison. The lost-domain 0/18 denominator is unchanged.
+
+## Round-62 admission — coverage map and Frontier F43 (2026-11-04)
+
+| Area | Entry | Source basis |
+|---|---|---|
+| CERT Guide phase-to-role responsibility matrix | knowledge/cert-guide-cvd-phases-and-validation.md | S095, CERT/CC first-party model, opened 2026-11-04 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F43 | CERT/CC adapted CVD phase-to-five-role matrix: Reporter fix confirmation versus Vendor/Coordinator report validation | admitted | knowledge/cert-guide-cvd-phases-and-validation.md | S095 | Read complete column headings (S095.txt:112-116) with Validation (:129-134) and Remediation (:141-146); a dash is not a prohibition on reporter verification. Generic phase names, prioritization and deployment are supporting context already held elsewhere. |
+
+F43 adds the explicit matrix attribution, not universal phase cardinality. S023 retains CISA program stages, S018 coordination/verification artifacts, F11 JPCERT standards guidance and F38 ISO publisher records. The lost-domain 0/18 denominator is unchanged.
+
+## Round-65 admission — coverage map and Frontier F44 (2026-11-04)
+
+| Area | Entry | Source basis |
+|---|---|---|
+| FIRST PSIRT service catalogue and qualification gates | knowledge/first-psirt-services-framework.md | S098, FIRST first-party framework v1.1, opened 2026-11-04 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F44 | FIRST PSIRT Services Framework v1.1 — the receiving team's service catalogue (six service areas, 28 services, 84 functions): intake with advertised contact points and readiness, vulnerability qualification through documented quality gates and bug bars with CVSS as an input, the established-finder bypass, reproduction as the validation step in an isolated environment, and disclosure audiences | admitted | knowledge/first-psirt-services-framework.md | S098 | Use the qualification and reproduction services as the receiving-team side of a claim package: a CVSS score alone is not qualification, and an unreproduced report is unvalidated. |
+
+F44 adds the receiving team's service side that F43 (CERT/CC phase-to-role matrix), F06/S018 (multi-party coordination guidelines), S043/S044 (severity ladders) and S053/S054 (EPSS/SSVC prioritization) do not hold. The phrase "PSIRT Services Framework" occurs in held captures S001, S002 and S053 only as FIRST site navigation at line 201, not as content; the screen is `.ufo/waves/round-65/controls/prefreeze-screen-r65.txt`.
+
+
+## Round-67 admission — coverage map and Frontier F45 (2026-11-04)
+
+The coverage map above is not edited in place (R6): the round-67 entry `knowledge/first-psirt-maturity-document.md`
+(Frontier F45, sources S100 and S101) is recorded here as an appended amendment so every existing line keeps its
+number. Source basis: FIRST's own PSIRT Maturity Document at
+https://www.first.org/standards/frameworks/psirts/psirt_maturity_document (HTML page, S100) and its companion PDF
+https://www.first.org/standards/frameworks/psirts/FIRST_PSIRT_Maturity_Document.pdf (S101), both opened 2026-11-04,
+captures `corpus/source-snapshots/round-67/S100.txt` and `S101.txt`, manifest `corpus/source-snapshots/round-67/manifest.json`.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| FIRST PSIRT maturity ladder: three named levels, the operational-foundations floor, the reactive→proactive direction and the per-level capability checklist | knowledge/first-psirt-maturity-document.md | S100, S101 — FIRST first-party maturity document (HTML page + PDF companion), opened 2026-11-04 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F45 | FIRST PSIRT Maturity Document — FIRST's own maturity ladder for a product security team: three named levels (Basic, Intermediate, Advanced) over an operational-foundations floor, the reactive→proactive direction, the Level-2-is-gated-on-Level-1 precondition, and the Annex-7 per-level capability checklist (64 items) | admitted | knowledge/first-psirt-maturity-document.md | S100, S101 | Read a level as a capability profile a team selects (S100.txt:224), never as a certification or a score, and read the ladder as three levels plus an empty "Beyond Level 3" heading (S100.txt:353-355); Level 2 is gated on Level 1 in the document's own words (S100.txt:288), the triage interval in its policy template is the unfilled `[#]` placeholder (S100.txt:393), and the non-normativity notice exists only in the PDF rendering (S101.txt:8). The per-level service-area listings are PNG artwork and are not quoted. |
+
+F45 adds the receiving team's *growth ladder* that F44/S098 (service catalogue and qualification gate), F43 (CERT/CC phase-to-role matrix), F06/S018 (multi-party coordination) and F11 (ISO/IEC 29147 and 30111 division of labour) do not hold: S098 carries zero occurrences of "Maturity Level" and its only maturity statement is a glossary definition, while the maturity document defers its own glossary and catalogue to the framework (S100.txt:356) and points at the v1.0-era framework PDF. The lost-domain 0/18 denominator is unchanged.
+
+[r67 amendment, appended 2026-11-04] The frontier as of round 67 is F01-F45 admitted: F44 at round 65 and F45 at round 67 (round 66 admitted no frontier row). The 0/18 sentence is untouched: the lost-domain denominator still holds 0 of 18 surfaces present, and the frontier count stays outside it.
+
+## Round-68 admission — Frontier F46 (2026-11-04)
+
+Appended amendment (R6): the round-68 entry `corpus/knowledge/openssf-scorecard-api-contract.md` (Frontier F46, source
+S102) rests on the OpenSSF Scorecard API's own swagger 2.0 contract, captured `corpus/source-snapshots/round-68/S102.txt`,
+manifest `corpus/source-snapshots/round-68/manifest.json`.
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F46 | OpenSSF Scorecard API swagger 2.0 contract (info.version 1.1.0, host api.scorecard.dev) — the machine interface to published scorecard results: the `/projects/{platform}/{org}/{repo}` GET with its 40-hex `commit` pin, the OIDC-verified `publish` POST, the `/version` route, and the ScorecardResult / ScorecardCheck / Repo / Error definitions with the aggregate `score` field | admitted | knowledge/openssf-scorecard-api-contract.md | S102 | Read a result's keys and commit pin from the contract (S102.txt:19-37, :336-370), never a served instance's values; score range, weighting and check meaning are not in the contract and stay with F35/S086. |
+
+## Round-69 admission — Frontier F47 (2026-11-04)
+
+Appended amendment (R6): the round-69 entry `corpus/knowledge/github-global-security-advisories-rest-api.md` (Frontier F47,
+source S103) rests on GitHub Docs' own REST reference for global security advisories, captured
+`corpus/source-snapshots/round-69/S103.txt`, manifest `corpus/source-snapshots/round-69/manifest.json`.
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F47 | GitHub global security advisories REST API — the read interface over the GitHub Advisory Database: GET /advisories (filters type/ecosystem/severity/cwes/affects/EPSS/date ranges, cursor pagination, per_page max 100, sort) and GET /advisories/{ghsa_id}, with the reviewed-only, malware-excluded default of an unfiltered list | admitted | knowledge/github-global-security-advisories-rest-api.md | S103 | Set `type` explicitly before counting (S103.txt:275-276, :293-294); read example response keys, never values; database curation semantics ("About the GitHub Advisory database") are held by F48/S105. |
+
+## Round-70 admission — Frontier F48 (2026-11-05)
+
+Appended amendment: the round-70 entry `corpus/knowledge/github-advisory-database-curation-semantics.md` (Frontier F48,
+source S105) rests on GitHub Docs' own "GitHub Advisory database" page, captured
+`corpus/source-snapshots/round-70/S105.txt`, manifest `corpus/source-snapshots/round-70/manifest.json`.
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F48 | GitHub Advisory Database curation semantics — the three class sub-headings (GitHub-reviewed vulnerability, unreviewed NVD import, malware) with their admission path, alerting consequence and what each record proves; the eight imported feeds plus the community-contribution channel; the supported-registry review gate; the GHSA id shape; CVSS version provenance; EPSS daily-sync semantics; the community-contribution path | admitted | knowledge/github-advisory-database-curation-semantics.md | S105 | Read the class before the fields (S105.txt:584, :601, :604); a malware record carries no fix version (S105.txt:571); an EPSS percentile refreshes only when significantly different (S105.txt:639). The REST read interface and its reviewed default stay with F47/S103. |
+
+## Round-71 admission — coverage map row and Frontier F49 (2026-11-05)
+
+Appended amendment (R6): the round-71 entry `corpus/knowledge/zdi-disclosure-process-and-vendor-coordination.md` (Frontier
+F49, source S106) rests on TrendAI ZDI's own "About" page at https://www.zerodayinitiative.com/about/, captured
+`corpus/source-snapshots/round-71/S106.txt` (sha256 291f36c2...cf59db, 148 lines, 15 pinned quotes), manifest
+`corpus/source-snapshots/round-71/manifest.json`. The coverage map above is not edited in place (R6); the coverage-map row
+is appended here rather than inserted into the map, and the F49 frontier row is listed here on the same six-cell table shape
+as F48.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Vendor-agnostic acquisition-programme disclosure process and vendor coordination (round 71) | knowledge/zdi-disclosure-process-and-vendor-coordination.md | S106, TrendAI ZDI's own About-page statements, opened 2026-11-05 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F49 | TrendAI ZDI's own disclosure process and vendor coordination — the acquisition-programme flow (validation, formal monetary offer, payment, vendor coordination, credit or anonymity), the 120-day standard coordination window with its 30/60/90-day shortening for flaws from incomplete or problematic patches, a permissive escalation to a limited public advisory if a vendor fails to respond within 15 business days of first contact, and the full advisory after a patch against the limited advisory when no fix arrives | admitted | knowledge/zdi-disclosure-process-and-vendor-coordination.md | S106 | Read the three vendor-coordination numbers in their own paragraph (S106.txt:70): the 120-day standard window, the 30/60/90-day shortening for incomplete or problematic patches, and the 15-business-day escalation are one statement and each carries its own condition; the advisory form follows the patch outcome (S106.txt:51, S106.txt:52). F02/S075 keeps the ZDI policy body's conditional timeline, F13/S043-S045 keep the platform severity ladders, and F11/F38 keep the ISO division of labour. |
+
+F49 adds the acquisition programme's own disclosure-process and vendor-coordination statements, which the lane did not hold:
+the F02/S075 entry holds ZDI's policy body (a broker acquisition-disclosure timeline with an unstated clock start), not the
+About page's process and coordination statements. The lost-domain 0/18 denominator is unchanged.
+
+[r71 amendment, appended 2026-11-05] The frontier as of round 71 is F01-F49 admitted: F48 at round 70 and F49 at round 71.
+
+[r71 erratum 1, appended 2026-11-05 — the F49 ground is narrowed, the row and its counters are unchanged] The
+round-71 scout measured that four of the five items the frozen C2 sentence listed as F49's ground are already held by
+the lane through F02/S075 (`corpus/knowledge/zdi-disclosure-policy.md`, ZDI's own disclosure-policy page): the 120-day
+window (`S075.txt:24`, "four months (120 days)"), the 30/60/90-day shortening (`S075.txt:25`), the fifteen-business-day
+escalation (`S075.txt:23`) and the limited-advisory form (`S075.txt:24`). What F49 actually adds is the **acquisition-side
+flow** (validate -> confirm severity -> formal monetary offer -> payment -> vendor coordination -> credit or anonymity), the
+"no limit on reports", the dossier contents and the no-backlog guarantee, plus three measured wording divergences: S075's
+escalation publishes a public advisory where S106's withholds exploit-enabling detail; S075's 120 days is conditional on a
+vendor response while S106 states it as the standard window; S075's 15 business days starts after a 5+5-day acknowledgement
+ladder that the About page does not name (`S106.txt:70` vs `S075.txt:23`). Evidence: `.ufo/waves/round-71/w1/ScoutF49.md`
+S106/F02 section. A reader must not take the clock numbers from this row as new ground; they are ZDI's numbers, first
+attested at S075.
+
+## Round-72 admission — coverage map row and Frontier F50 (2026-11-05)
+
+Appended amendment (R6): the round-72 entry `corpus/knowledge/bugzilla-rest-api-bug-endpoints.md` (Frontier F50, source S107) rests on the Bugzilla project's own REST API reference page at https://bugzilla.readthedocs.io/en/latest/api/core/v1/bug.html, captured `corpus/source-snapshots/round-72/S107.txt` (sha256 0b944ea1...4652, 1176 lines, 17 pinned quotes), manifest `corpus/source-snapshots/round-72/manifest.json`. The coverage map above is not edited in place (R6); the coverage-map row is appended here, and the F50 frontier row uses the same six-cell table shape as F49.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Bug-tracker machine interface: create and update routes, comment object and access sentences (round 72) | knowledge/bugzilla-rest-api-bug-endpoints.md | S107, Bugzilla project's REST API reference, opened 2026-11-05 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F50 | Bugzilla REST API core v1 bug endpoints — one bug tracker's machine interface for getting, creating and updating a bug (POST /rest/bug, PUT /rest/bug/(id_or_alias)), the create parameter contract, the update comment object and the CC-list and reporter access sentences | admitted | knowledge/bugzilla-rest-api-bug-endpoints.md | S107 | Read the create and update routes as one tracker's declared contract (S107.txt:649, :797). The page states no API-key rule and no security-group rule, so a reader must not supply either from another tracker; the entry's Limits section records both absences as measured on the capture.
+
+[r72 amendment, appended 2026-11-05] The frontier as of round 72 is F01-F50 admitted: F50 at round 72. The round-72 frozen C2 target named an api_key clause that S107 does not state (zero occurrences on the capture); the entry records that absence as a measured limit and the clause is reported falsified on the frozen wording in the round-72 report, not rewritten here.
+
+## Round-73 admission — coverage map row and Frontier F51 (2026-11-05)
+
+Appended amendment (R6): the round-73 entry `corpus/knowledge/osv-post-v1-query-contract.md` (Frontier F51, source S108) rests on the OSV.dev project's own reference page for the POST /v1/query endpoint at https://google.github.io/osv.dev/post-v1-query/, captured `corpus/source-snapshots/round-73/S108.txt` (sha256 304baa7d...c6b9, 150 lines, 31 pinned quotes), manifest `corpus/source-snapshots/round-73/manifest.json`. The coverage map above is not edited in place (R6); the coverage-map row is appended here, and the F51 frontier row uses the same six-cell table shape as F50.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| OSV.dev query service contract: the POST /v1/query payload, version rule, Git-tag query, pagination and HTTP/1.1 size limit (round 73) | knowledge/osv-post-v1-query-contract.md | S108, OSV.dev project's API reference for the query endpoint, opened 2026-11-05 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F51 | OSV.dev POST /v1/query service contract — the request payload (commit, version, package, page_token), the version rule (one place only, never both the top-level field and the purl), the Git-tag query, pagination with next_page_token and its 1,000-vulnerability and 20-second triggers, and the 32 MiB HTTP/1.1 response limit with no stated limit on HTTP/2 | admitted | knowledge/osv-post-v1-query-contract.md | S108 | Read the version in one place only (S108.txt:40-41) and read a response that carries next_page_token as partial until the token is absent (S108.txt:135, :144); the page states no rate limit and no API-key rule, so a reader must not supply either from the OSV overview page or another tracker, and the entry's Limits section records both absences as measured on the capture.
+
+[r73 amendment, appended 2026-11-05] The frontier as of round 73 is F01-F51 admitted: F51 at round 73. The C2 admission rests on S108 alone; the F31 scope limit stays as written and the OSV record format is not claimed by this entry.
+
+## Round-74 admission — coverage map row and Frontier F52 (2026-11-05)
+
+Appended amendment (R6): the round-74 entry `corpus/knowledge/fuzzilli-js-engine-fuzzing-framework.md` (Frontier F52, source S109) rests on the Fuzzilli project's own README at https://github.com/googleprojectzero/fuzzilli, captured `corpus/source-snapshots/round-74/S109.txt` (sha256 c9a7adfb...d486, 375 lines, 16 pinned quotes), manifest `corpus/source-snapshots/round-74/manifest.json`. The coverage map above is not edited in place (R6); the coverage-map row is appended here, and the F52 frontier row uses the same six-cell table shape as F51.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Fuzzilli tool documentation: the FuzzIL-based coverage-guided fuzzer, its semantic-correctness concern, architecture, REPRL execution and tree scaling (round 74) | knowledge/fuzzilli-js-engine-fuzzing-framework.md | S109, the Fuzzilli project's own README, opened 2026-11-05 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F52 | Fuzzilli, as its project documents it — a "(coverage-)guided" fuzzer for dynamic language interpreters built on the FuzzIL intermediate language; the semantic-correctness concern for core interpreter bugs against try-catch-wrapped runtime-API fuzzing; the Swift/C split; the seven named components with the event-driven design; the REPRL execution mode with state reset; the instance tree for scale; and the Targets/ patch-and-instrument procedure | admitted | knowledge/fuzzilli-js-engine-fuzzing-framework.md | S109 | Read the definition and the semantic concern from the README's own lines (S109.txt:151, :165) and keep the "(coverage-)guided" parenthetical as printed. The README states no performance figure, no success rate and no reward; a reader must not supply one from the comparison post (S093, F41) or a paper. The NDSS 2023 paper stays a lead: existence and name only.
+
+[r74 amendment, appended 2026-11-05] The frontier as of round 74 is F01-F52 admitted: F52 at round 74. The F52 admission rests on S109 alone; the F41 comparison post's scope limit stays as written, and the NDSS 2023 paper's content is not claimed.
+
+## Round-75 admission — coverage map row and Frontier F53 (2026-11-05)
+
+Appended amendment (R6): the round-75 entry `corpus/knowledge/fuzzilli-ndss2023-jit-fuzzing-paper.md` (Frontier F53, source S110) rests on the NDSS Symposium 2023 paper at https://www.ndss-symposium.org/wp-content/uploads/2023/02/ndss2023_f290_paper.pdf, captured `corpus/source-snapshots/round-75/S110.txt` (sha256 0780beae...51ef, 1869 lines, 24 pinned quotes), manifest `corpus/source-snapshots/round-75/manifest.json`. The coverage map above is not edited in place (R6); the coverage-map row is appended here, and the F53 frontier row follows.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| The NDSS 2023 Fuzzilli paper, as its authors state it: the intermediate representation and its lifting to JavaScript, the coverage-based selection criterion, the comparison design, and the six-month evaluation over three engines with its 17-vulnerability count (round 75) | knowledge/fuzzilli-ndss2023-jit-fuzzing-paper.md | S110, the paper's own text, opened 2026-11-05 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F53 | The NDSS 2023 paper on Fuzzilli, as its authors state it: the paper's identity, its IR design and lifting to JavaScript, the coverage-guided selection criterion, its comparison design (Superion named in the introduction), and its evaluation scope (three engines, six months) and count (17 vulnerabilities) | admitted | knowledge/fuzzilli-ndss2023-jit-fuzzing-paper.md | S110 | Read the comparison outcome from the evaluation section before stating any result; the round-75 manifest pins the comparison wording and not the outcome, so no result is claimed |
+
+[r75 amendment, appended 2026-11-05] The frontier as of round 75 is F01-F53 admitted: F53 at round 75. The F53 admission rests on S110 alone; the F52 README's scope limit stays as written, and the comparison outcome is not claimed.
+
+## Round-78 admission — coverage map row and Frontier F54 (2026-11-05)
+
+Appended amendment (R6): the round-78 entry `corpus/knowledge/osv-post-batch-query-contract.md` (Frontier F54, source S112) rests on the OSV.dev project's own reference page for the POST /v1/querybatch endpoint at https://google.github.io/osv.dev/post-v1-querybatch/, captured `corpus/source-snapshots/round-78/S112.txt` (sha256 f3ca0465...0907, 216 lines, 4575 snapshot bytes, 7 pinned quotes), manifest `corpus/source-snapshots/round-78/manifest.json`. The coverage map above is not edited in place (R6); the coverage-map row is appended here, and the F54 frontier row follows.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| The OSV.dev POST /v1/querybatch batch-query contract, as the OSV project's own reference page states it: the batch definition and the vulnerability-ids-and-modified-only return shape, the input-matched response-ordering guarantee, the per-query partial next_page_token rule, the 1,000-per-query and 3,000-total pagination thresholds, and the next-request page_token rule (round 78) | knowledge/osv-post-batch-query-contract.md | S112, the OSV.dev POST /v1/querybatch reference page's own text, opened 2026-11-05 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F54 | OSV.dev POST /v1/querybatch batch-query contract — the batch definition and the vulnerability-ids-and-modified-only return shape, the input-matched response-ordering guarantee, the per-query partial next_page_token rule, the 1,000-per-query and 3,000-total pagination thresholds, and the next-request page_token rule | admitted | knowledge/osv-post-batch-query-contract.md | S112 | Read the seven batch-specific clauses at their pinned lines (S112.txt:24 batch definition, return shape and ordering; :166 partial next_page_token; :168-169 the 1,000/3,000 thresholds; :195 the next-request page_token) and claim none of the single-query item rules F51 already holds |
+
+[r78 amendment, appended 2026-11-05] The frontier as of round 78 is F01-F54 admitted: F54 at round 78. The C2 admission claims the seven batch-specific clauses of S112 only; the single-query POST /v1/query contract stays F51, and the parameters, item-rules and instructions pointers, the version rule, the 400 consequence and the threading-variance note are not claimed.
