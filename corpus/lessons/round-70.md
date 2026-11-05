@@ -134,11 +134,24 @@ of the same API reference; S105's recheck is 180d.
   re-measured C2 values (unchanged: the predicate counts rows, entries, records and files).
   Captured-by: `none` before the wave → **R108**. Fix: mark every generalization as the entry's
   reading or drop it, and apply a critic seat's outrun list before the round closes.
+- **M70-8 — a pinned control receipt was captured mid-write.** The base/candidate/forgery control
+  chain ran as one background job; the controls commit `15d4da87` and the freeze `e74ba6b5` were made
+  while it was still writing `controls/c1-forgery-blanket-r70.txt`, so both commits carry a 10-line
+  truncated blob (`fdbcc484…`) that lacks the `VERIFY … mode=forgery` line, while the pins line
+  (`d74ba3f9…`) describes the completed 14-line file that only lands at `7f6e39a9`. Found by the
+  wave's `ScribeRound` seat. The completed receipt now matches its pin byte-for-byte and the control
+  was re-run to `controls/c1-forgery-blanket-r70-rerun.txt` (exit 1, `failures=4`, `diff` empty).
+  Captured-by: `none` before the wave (the pin only detects a change if someone re-hashes it) →
+  **R109**. Fix: never commit or pin while a background writer is still producing the receipts; wait
+  for the writer's exit, then hash.
 
 ## Corrections (post-freeze, append-only)
 
 - **F48 entry and its three summaries** — see M70-7 and `controls/pins-r70-erratum-1.txt`. The frozen
   pins file is untouched; the corrected entry hash and the re-run receipts live in the erratum.
+- **Forgery control receipt** — see M70-8 and `controls/pins-r70-erratum-2.txt`. The freeze commit
+  carried a mid-write truncated blob; the completed receipt matches its pin and the control re-runs to
+  the same `failures=4` exit 1 (`controls/c1-forgery-blanket-r70-rerun.txt`).
 
 ## Disposition of the round-69 routed defects
 

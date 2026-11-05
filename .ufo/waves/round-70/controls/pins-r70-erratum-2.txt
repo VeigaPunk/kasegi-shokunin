@@ -1,0 +1,43 @@
+# round-70 pins erratum 2 — the forgery control receipt was captured mid-write
+
+Frozen pins `controls/pins-r70.txt` (committed `e74ba6b5`) stay byte-identical and are NOT edited.
+This file records a control-receipt integrity defect and its re-run.
+
+## What happened
+
+The pre-freeze control chain (`base`, `candidate`, `forgery`) ran as one background shell job. The
+`controls` commit `15d4da87` and the freeze commit `e74ba6b5` were made while that job was still
+writing `controls/c1-forgery-blanket-r70.txt`, so both commits carry a **10-line truncated blob**
+(sha256 `fdbcc4847464b1c1155adeeb8e096e4958597cd586aff37f64102e4a56288da4`) that ends after
+`MEASURE selftest FAIL …` and lacks the `MEASURE real-ledger`/`no-write-side-effect` lines and the
+`VERIFY … mode=forgery` summary. The pins line was then computed from the completed 14-line file
+(sha256 `d74ba3f9c61aa293728ccb59230328c656aa424bb773a4d01640f0b500bc0a0b`), which first enters the
+tree at `7f6e39a9`.
+
+So at the freeze commit the pinned control receipt did not exist as pinned: the pin described a file
+the freeze commit never contained. The pin file and the completed receipt now agree byte-for-byte
+(`sha256sum controls/c1-forgery-blanket-r70.txt` = the pins line), and the defect is the mid-write
+capture, not a wrong verdict.
+
+## Re-run (fresh receipt, no truncation)
+
+```
+python3 -B .ufo/waves/round-70/controls/c1-probe-run-r70.py \
+  --gate .ufo/waves/round-70/controls/forgery-blanket-refusal-gate-r70.py \
+  --work /fast/scratch/hyaku/kasegi-r70/L1/fw2 --mode forgery
+```
+
+→ `controls/c1-forgery-blanket-r70-rerun.txt`, exit 1, `VERIFY measurements=12 failures=4
+gate_sha256=126de75d… mode=forgery`; `diff` against the completed pinned receipt is empty (the two
+files are identical). The forgery verdict is therefore reproducible from the committed gate bytes.
+
+## Impact
+
+- **C1's frozen predicate is untouched**: it reads the candidate gate and the base gate only; the
+  forgery receipt is a pre-freeze control, not a predicate limb. `ReviewerC1` reproduced the predicate
+  from committed bytes (12/0 candidate, 12/9 base) independently of this file.
+- **All other pins** were audited against the freeze commit: every other pinned path's blob at
+  `e74ba6b5` matches its pin line. The one other mismatch is the documented F48 entry correction
+  (erratum 1).
+- **Criterion**: R109 (never commit or pin while a background writer is still producing the
+  receipts).
