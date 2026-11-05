@@ -1,0 +1,89 @@
+{
+ "schema_version": 1,
+ "note": "Round-77 OSV.dev POST /v1/querybatch page (frontier F54 candidate; the round-76 routed-defect R-C successor). S112 is the OSV.dev project's own reference page for POST /v1/querybatch, as served: the batch-query definition (multiple queries in one request), the ids-and-modified-only return shape, the input-matched response-ordering guarantee, the parameters-sentence deferring to POST /v1/query, the per-item version rules with the 400 Bad Request consequence, and the querybatch pagination semantics (per-query next_page_token, the 1,000/3,000 thresholds, the threading-variance note, and the follow-up-request rule). It is the batch endpoint's contract page only: not the single-query POST /v1/query contract (S108/F51), not the OSV record format (S080/F31), not the API overview page (S111), not any other endpoint's page, and not any live query or rate-limit statement (the page states none). Opened 2026-11-05; capture byte-identical across two fetches the same morning (sha256 f3ca04652e444125a1441449e23814107999496d73fa6ac46f35cca3d2bd0907).",
+ "sources": [
+  {
+   "id": "S112",
+   "url": "https://google.github.io/osv.dev/post-v1-querybatch/",
+   "capture_url": "https://google.github.io/osv.dev/post-v1-querybatch/",
+   "http": {
+    "status": 200,
+    "final_url": "https://google.github.io/osv.dev/post-v1-querybatch/"
+   },
+   "kind": "html",
+   "fetch_method": "capture-source.py --kind html, default instrument UA (tags stripped, entities decoded, whitespace collapsed per line); raw page 30406 bytes, snapshot 4575 bytes",
+   "fetched_utc": "2026-11-05T12:22:10Z",
+   "path": "S112.txt",
+   "sha256": "f3ca04652e444125a1441449e23814107999496d73fa6ac46f35cca3d2bd0907",
+   "bytes": 4575,
+   "lines": 216,
+   "quotes": [
+    {
+     "id": "Q01-batch-definition",
+     "quote": "Query for multiple packages (by either package and version or git commit hash) at once.",
+     "anchor": 24
+    },
+    {
+     "id": "Q02-return-shape",
+     "quote": "Returns vulnerability ids and modified field only.",
+     "anchor": 24
+    },
+    {
+     "id": "Q03-ordering",
+     "quote": "The response ordering will be guaranteed to match the input.",
+     "anchor": 24
+    },
+    {
+     "id": "Q04-params-same",
+     "quote": "The parameters are the same as those in POST /v1/query, but you can make multiple queries.",
+     "anchor": 30
+    },
+    {
+     "id": "Q05-pagination-instructions",
+     "quote": "Instructions are available for handling pagination for querybatch requests.",
+     "anchor": 31
+    },
+    {
+     "id": "Q06-item-rules",
+     "quote": "Each query item must follow the same rules as /v1/query:",
+     "anchor": 34
+    },
+    {
+     "id": "Q07-version-rule",
+     "quote": "Use either version or a versioned purl, not both.",
+     "anchor": 35
+    },
+    {
+     "id": "Q08-400",
+     "quote": "Items with both will return 400 Bad Request.",
+     "anchor": 36
+    },
+    {
+     "id": "Q09-partial-tokens",
+     "quote": "However, a querybatch request may return results with a next_page_token for only a few of the total queries.",
+     "anchor": 166
+    },
+    {
+     "id": "Q10-individual-1000",
+     "quote": "An individual query within the queryset returns more than 1,000 vulnerabilities",
+     "anchor": 168
+    },
+    {
+     "id": "Q11-total-3000",
+     "quote": "The entire queryset returns more than 3,000 vulnerabilities total",
+     "anchor": 169
+    },
+    {
+     "id": "Q12-threading-variance",
+     "quote": "These numbers can vary slightly because of threading and the page size may change in the future.",
+     "anchor": 170
+    },
+    {
+     "id": "Q13-next-request",
+     "quote": "To get the next page of results, your next request should specify page_token only for the queries that returned next_page_token.",
+     "anchor": 195
+    }
+   ]
+  }
+ ]
+}

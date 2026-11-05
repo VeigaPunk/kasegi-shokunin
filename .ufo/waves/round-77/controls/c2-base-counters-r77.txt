@@ -1,0 +1,22 @@
+# C2 base counters — do-nothing control, measured at base 2e53fc74776824898b5c5eb914aeddc19a091157
+# (the clean tip before any round-77 working-tree edit; each command run in the lane checkout)
+# --- measured at the clean base tip (pre-freeze), 2026-11-05 09:14-09:18 -03 ---
+grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md   -> 111
+ls corpus/knowledge/*.md | wc -l                                       -> 91
+wc -l < corpus/instruments/knowledge-expected.txt                      -> 93
+grep -cE '\.md$' corpus/instruments/knowledge-expected.txt             -> 91
+python3 corpus/instruments/frontier-recheck-count.py | grep FRONTIER-CENSUS
+    -> FRONTIER-CENSUS rows=53 admitted=53 closed=53 problem-rows=0 registry=111
+python3 corpus/instruments/frontier-recheck-count.py | tail -1         -> entries=56 pass=56 exit=0
+python3 corpus/instruments/capture-binding-check.py | tail -1          -> records=90 bound=90 unbound=0
+bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi -> rc=0 (six inherited W04 warnings)
+git show 2e53fc74:corpus/SOURCES.md | grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' -> 111
+git ls-tree --name-only 2e53fc74 corpus/knowledge/ | grep -c '\.md$'   -> 91
+git show 2e53fc74:corpus/instruments/knowledge-expected.txt | grep -cE '\.md$' -> 91
+# --- freeze-tree transitional state (the freeze commit carries the S112 queued row +
+# capture + manifest; R121 drift expectation: rows=112, records=91, frontier/entries
+# unchanged 53/56 until the C2 landing flips them) ---
+grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md   -> 112
+python3 corpus/instruments/capture-binding-check.py | tail -1          -> records=91 bound=91 unbound=0
+python3 corpus/instruments/frontier-recheck-count.py | grep -E 'FRONTIER-CENSUS|entries='
+    -> FRONTIER-CENSUS rows=53 admitted=53 closed=53 problem-rows=0 registry=112 / entries=56 pass=56 exit=0
