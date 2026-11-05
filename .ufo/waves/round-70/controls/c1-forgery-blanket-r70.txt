@@ -1,0 +1,10 @@
+HOST sort (GNU coreutils) 9.12; git version 2.56.0; Python 3.14.8
+MEASURE P1-python-root-space ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P2-python-root-equals ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P3-python-root-abbrev ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P4-python-out-space ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P5-python-out-equals ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P6-python-out-abbrev ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE P7-python-json-space ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE read-only-controls-admitted FAIL controls=8 failed=8 python3 corpus/instruments/ok.py rc=2;python3 corpus/instruments/ok.py -- --root rc=2;cat g.txt rc=2;grep -c 35 g.txt rc=2;sort g.txt | head -n 1 rc=2;cut -c1-2 g.txt | head -n 1 rc=2;git show HEAD:g.txt | head -n 1 rc=2;git cat-file -t HEAD rc=2
+MEASURE selftest FAIL selftest cases=86 failures=47 rc=1
