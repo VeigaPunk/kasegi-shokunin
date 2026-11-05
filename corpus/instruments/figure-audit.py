@@ -140,7 +140,11 @@ DENIED_FLAGS = (
 #     option set makes them read-only.
 # Each rule carries a one-limb selftest case (R103) and the census is pinned complete against the
 # instrument directory by `python-census-covers-instruments`.
-PY_DENIED_ANY = ("--out", "--output", "--selftest")
+# R72: --work and --scratch are write roots in every instrument that declares them; no committed
+# ledger figure or positive control reads through them, so they join the global deny set (the
+# round-71 per-script table re-admitted 15 `--work` and 4 `--scratch` pairs across 19 heads; see
+# derive-head-census.py).
+PY_DENIED_ANY = ("--out", "--output", "--selftest", "--work", "--scratch")
 
 PY_HEAD_REFUSED = (
     # runs each entry's `recheck:` line through bash -c with cwd=root, for every argv including none
@@ -167,6 +171,7 @@ PY_DENIED_BY_SCRIPT = {
 # Every python head the gate may run, by basename.  A head absent from this table is refused.
 PY_SCRIPT_CENSUS = {
     "anchorcheck.py": (),
+    "derive-head-census.py": (),
     "capture-binding-check.py": (),
     "capture-source.py": (),
     "census-freshness-check.py": (),
@@ -218,7 +223,7 @@ PY_SELFTEST_FIXTURE_HEADS = (
     "ok.py", "fail.py", "exit1.py", "kill.py", "kill9.py", "pipe.py", "grep.py", "link.py",
 )
 
-EXPECTED_CASES = 106  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file; R68: +4 program-execution flag refusal; R69: +9 class refusal; R70: +10 python-head option and git-show limb pins; R71: +10 per-script census pins)
+EXPECTED_CASES = 110  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file; R68: +4 program-execution flag refusal; R69: +9 class refusal; R70: +10 python-head option and git-show limb pins; R71: +10 per-script census pins; R72: +4 global write-root pins)
 
 
 def eprint(*a):
@@ -487,22 +492,22 @@ def python_flags_ok(args, denied):
 
 def python_head_ok(root, parts):
     """Require a literal decoded prefix, a realpath inside the instrument directory, a basename in
-    the census allowlist, no refused head, and no denied option for that script (R71)."""
+    the census allowlist, no refused head, and no denied option for that script (R71). R72: the
+    policy is keyed on the basename of the REALPATH the derive resolves to, never the argv spelling,
+    so an in-directory symlink under a fixture name cannot shed the denials of the file it names."""
     if len(parts) < 2 or not parts[1].replace("\\", "/").startswith("corpus/instruments/"):
         return False
-    script = os.path.basename(parts[1].replace("\\", "/"))
+    base = os.path.realpath(os.path.join(root or ".", "corpus", "instruments"))
+    target = os.path.realpath(os.path.join(root or ".", parts[1]))
+    if target == base or not target.startswith(base + os.sep):
+        return False
+    script = os.path.basename(target)
     if script in PY_HEAD_REFUSED:
         return False
     if script not in PY_SCRIPT_CENSUS and script not in PY_SELFTEST_FIXTURE_HEADS:
         return False
     denied = PY_DENIED_ANY + PY_DENIED_BY_SCRIPT.get(script, ())
-    if not python_flags_ok(parts[2:], denied):
-        return False
-    base = os.path.realpath(os.path.join(root or ".", "corpus", "instruments"))
-    target = os.path.realpath(os.path.join(root or ".", parts[1]))
-    if target == base:
-        return False
-    return target.startswith(base + os.sep)
+    return python_flags_ok(parts[2:], denied)
 
 
 def segment_ok(root, parts):
@@ -794,6 +799,17 @@ def selftest():
     # V70-1: the `--out` limb without the `--url` conjunct, so the case isolates --out alone.
     run_case("python-out-only-refused", 2,
              _one("s-pyoutonly", "python3 corpus/instruments/capture-source.py --out out.txt", "35"))
+    # R72: --work and --scratch are global write roots; the round-71 per-script table let 19 heads
+    # re-admit them (derive-head-census.py). One case per limb: the bare flag, the equals form, the
+    # abbreviation, and a second head, so a per-script table cannot silently re-open any of them.
+    run_case("python-work-global-refused", 2,
+             _one("s-pywork", "python3 corpus/instruments/capture-binding-check.py --work d", "35"))
+    run_case("python-scratch-global-refused", 2,
+             _one("s-pyscratch", "python3 corpus/instruments/capture-binding-check.py --scratch d", "35"))
+    run_case("python-work-equals-refused", 2,
+             _one("s-pyworkeq", "python3 corpus/instruments/claim-package-check.py . --work=d", "35"))
+    run_case("python-work-abbrev-refused", 2,
+             _one("s-pyworkab", "python3 corpus/instruments/kill-rule-check.py --wo d", "35"))
     # R103: the two untested `git_show_operands_ok` limbs are pinned as their own cases.
     run_case("git-show-no-operand-refused", 2, _one("s-gitshowbare", "git show", "35"))
     run_case("git-show-separator-refused", 2,

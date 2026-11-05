@@ -23,13 +23,13 @@ MUTANTS = [
     ("m6-readonly-gate-off",
      "return head.startswith(READ_ONLY_HEADS)", "return True"),
     ("m7-python-confinement-off",
-     "    return target.startswith(base + os.sep)", "    return True"),
+     "    if target == base or not target.startswith(base + os.sep):", "    if False:"),
     ("m8-python-prefix-off",
      'if len(parts) < 2 or not parts[1].replace("\\\\", "/").startswith("corpus/instruments/"):',
      "if len(parts) < 2:"),
     ("m9-python-boundary-separator-off",
-     "    return target.startswith(base + os.sep)",
-     "    return target.startswith(base)"),
+     "    if target == base or not target.startswith(base + os.sep):",
+     "    if target == base or not target.startswith(base):"),
 ]
 CONTROLS = [
     ("c-equivalent-trailing-space",

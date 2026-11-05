@@ -1131,3 +1131,17 @@ vendor response while S106 states it as the standard window; S075's 15 business 
 ladder that the About page does not name (`S106.txt:70` vs `S075.txt:23`). Evidence: `.ufo/waves/round-71/w1/ScoutF49.md`
 S106/F02 section. A reader must not take the clock numbers from this row as new ground; they are ZDI's numbers, first
 attested at S075.
+
+## Round-72 admission — coverage map row and Frontier F50 (2026-11-05)
+
+Appended amendment (R6): the round-72 entry `corpus/knowledge/bugzilla-rest-api-bug-endpoints.md` (Frontier F50, source S107) rests on the Bugzilla project's own REST API reference page at https://bugzilla.readthedocs.io/en/latest/api/core/v1/bug.html, captured `corpus/source-snapshots/round-72/S107.txt` (sha256 0b944ea1...4652, 1176 lines, 17 pinned quotes), manifest `corpus/source-snapshots/round-72/manifest.json`. The coverage map above is not edited in place (R6); the coverage-map row is appended here, and the F50 frontier row uses the same six-cell table shape as F49.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Bug-tracker machine interface: create and update routes, comment object and access sentences (round 72) | knowledge/bugzilla-rest-api-bug-endpoints.md | S107, Bugzilla project's REST API reference, opened 2026-11-05 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F50 | Bugzilla REST API core v1 bug endpoints — one bug tracker's machine interface for getting, creating and updating a bug (POST /rest/bug, PUT /rest/bug/(id_or_alias)), the create parameter contract, the update comment object and the CC-list and reporter access sentences | admitted | knowledge/bugzilla-rest-api-bug-endpoints.md | S107 | Read the create and update routes as one tracker's declared contract (S107.txt:649, :797). The page states no API-key rule and no security-group rule, so a reader must not supply either from another tracker; the entry's Limits section records both absences as measured on the capture.
+
+[r72 amendment, appended 2026-11-05] The frontier as of round 72 is F01-F50 admitted: F50 at round 72. The round-72 frozen C2 target named an api_key clause that S107 does not state (zero occurrences on the capture); the entry records that absence as a measured limit and the clause is reported falsified on the frozen wording in the round-72 report, not rewritten here.
