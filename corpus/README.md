@@ -1095,3 +1095,26 @@ source S105) rests on GitHub Docs' own "GitHub Advisory database" page, captured
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
 | F48 | GitHub Advisory Database curation semantics — the three class sub-headings (GitHub-reviewed vulnerability, unreviewed NVD import, malware) with their admission path, alerting consequence and what each record proves; the eight imported feeds plus the community-contribution channel; the supported-registry review gate; the GHSA id shape; CVSS version provenance; EPSS daily-sync semantics; the community-contribution path | admitted | knowledge/github-advisory-database-curation-semantics.md | S105 | Read the class before the fields (S105.txt:584, :601, :604); a malware record carries no fix version (S105.txt:571); an EPSS percentile refreshes only when significantly different (S105.txt:639). The REST read interface and its reviewed default stay with F47/S103. |
+
+## Round-71 admission — coverage map row and Frontier F49 (2026-11-05)
+
+Appended amendment (R6): the round-71 entry `corpus/knowledge/zdi-disclosure-process-and-vendor-coordination.md` (Frontier
+F49, source S106) rests on TrendAI ZDI's own "About" page at https://www.zerodayinitiative.com/about/, captured
+`corpus/source-snapshots/round-71/S106.txt` (sha256 291f36c2...cf59db, 148 lines, 15 pinned quotes), manifest
+`corpus/source-snapshots/round-71/manifest.json`. The coverage map above is not edited in place (R6); the coverage-map row
+is appended here rather than inserted into the map, and the F49 frontier row is listed here on the same six-cell table shape
+as F48.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Vendor-agnostic acquisition-programme disclosure process and vendor coordination (round 71) | knowledge/zdi-disclosure-process-and-vendor-coordination.md | S106, TrendAI ZDI's own About-page statements, opened 2026-11-05 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F49 | TrendAI ZDI's own disclosure process and vendor coordination — the acquisition-programme flow (validation, formal monetary offer, payment, vendor coordination, credit or anonymity), the 120-day standard coordination window with its 30/60/90-day shortening for flaws from incomplete or problematic patches, escalation to a limited public advisory after 15 business days of vendor silence, and the full advisory after a patch against the limited advisory when no fix arrives | admitted | knowledge/zdi-disclosure-process-and-vendor-coordination.md | S106 | Read the three vendor-coordination numbers in their own paragraph (S106.txt:70): the 120-day standard window, the 30/60/90-day shortening for incomplete or problematic patches, and the 15-business-day escalation are one statement and each carries its own condition; the advisory form follows the patch outcome (S106.txt:51, S106.txt:52). F02/S075 keeps the ZDI policy body's conditional timeline, F13/S043-S045 keep the platform severity ladders, and F11/F38 keep the ISO division of labour. |
+
+F49 adds the acquisition programme's own disclosure-process and vendor-coordination statements, which the lane did not hold:
+the F02/S075 entry holds ZDI's policy body (a broker acquisition-disclosure timeline with an unstated clock start), not the
+About page's process and coordination statements. The lost-domain 0/18 denominator is unchanged.
+
+[r71 amendment, appended 2026-11-05] The frontier as of round 71 is F01-F49 admitted: F48 at round 70 and F49 at round 71.
