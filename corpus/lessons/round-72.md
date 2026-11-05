@@ -67,3 +67,24 @@ C2 rests on S107 (opened this round): the entry `corpus/knowledge/bugzilla-rest-
 ## Assimilation and considerthese
 
 Assimilation: none (`merge/kasegi/` was not used this round; the census of the staged package is routed to a later round). `considerthese/` was read by `K72Connector` (section 4): no unimplemented Bugzilla or bug-report proposal is pending, so no proposal was taken.
+
+## Late seats (K72Mutate, K72Falsify; revived from parked, reports in `.ufo/waves/round-72/w1/`)
+
+The two seats were parked with no executed turn; a message revived them (`agent://K72Mutate`, `agent://K72Falsify`). Their findings, measured by the seats on the final bytes (candidate `4f59bda4…`, counter `255fd407…`):
+
+| id | finding | verdict | evidence | routed to |
+|---|---|---|---|---|
+| L72-1 | census kill matrix: drop `--work` (READMITTED 15), drop `--scratch` (READMITTED 4), argv-basename keying (alias admitted) all KILLED; blanket refusal POSITIVE 0/2 KILLED | HOLDS | `K72Mutate.md` § gate mutants; `controls/c1-census-kill-matrix-r72.txt` (L1 reproduced) | — |
+| L72-2 | a gate mutant that drops the census entry of `derive-head-census.py` survives the counter (the counter declares no write-class flag) | counter blind spot; the selftest case `python-census-covers-instruments` is the detector (not measured by the seat) | `K72Mutate.md` M5 | next round: a counter self-test |
+| L72-3 | counter-internal mutants survive: POSITIVE dropped from the final `ok` (C2) masks a blanket-refusal gate (`CENSUS-RESULT ok`, exit 0); a forged alias verdict (C3) masks an alias-admitting gate | the counter has no self-test of its own; C2 and C3 are counter defects | `K72Mutate.md` C2, C3 | next round: counter freeze amendment with its own mutant battery |
+| L72-4 | C1 universal sentence "every write-class option a head declares": the census reads `add_argument` only; a fixture head that parses `sys.argv` by hand with `--url` is admitted (READMITTED 0, selftest 110/0) | universal sentence FALSIFIED off-tree; holds on the shipped tree (`K72AttackCensus` §2: no manual parsing in the shipped heads) | `K72Falsify.md` n7 | operator ruling on the sentence; next round a manual-parse detector |
+| L72-5 | C1 kill clauses "prints exactly" (substring match), "at the measured commit" (no commit named), "any pre-existing admission case newly refused" (universal not enumerated) | WEAKENED | `K72Falsify.md` n4–n6; `--root` global denial mutant: POSITIVE 1/2, selftest failures 1 | next round: claim text |
+| L72-6 | C2 kill rule is not the complement of its predicate: the copy-only control fails the predicate through a capture-binding exit (missing manifest) while printing `unbound=0`, which the kill rule ("capture-binding reports an unbound record") does not name | FALSIFIED (the kill rule as written) | `K72Falsify.md` n12 (`copy-only control … EXIT=1`) | operator ruling; next round claim text |
+| L72-7 | C2 "sort -c clean" holds only under `LC_ALL=C`; the L1's measurement used `LC_ALL=C sort -c` (`controls/c2-after-counters-r72.txt`), so the receipt is correct and the clause is locale-dependent | WEAKENED | `K72Falsify.md` n13 | claim text |
+| L72-8 | a duplicated S107 registry row leaves `FRONTIER-CENSUS registry=107` exit 0; only `sources-census.sh` E12 catches it | counter blind spot | `K72Falsify.md` n15 | next round |
+| L72-9 | the frozen gate sha `b146c81a…` is not reproducible (the committed bytes are `4f59bda4…`, one comment line apart); the claims pin no gate sha | WEAKENED (identity) | `K72Falsify.md` n0; `.ufo/waves/round-72/candidate-sha256.txt` | disclosed; the final bytes are the measured ones |
+| L72-10 | C2 target `api_key`, mandatory-field and security-group content: the entry disclaims them; `grep -i secur S107` = 0 | FALSIFIED on frozen wording (as M72-5) | `K72Falsify.md` n17 | operator ruling |
+
+Consequence for the round verdicts (SCORECARD § Round 72 updated, append-only): C1 holds on its frozen predicate, and its universal sentence and kill clauses are weakened or falsified off-tree (L72-4, L72-5); C2's counters hold, its target clause is falsified (L72-10), and its kill rule is not complete (L72-6). Neither claim is admitted on its declared sentence; the operator rules.
+
+Measured correction to L72-2 (append-only, L1, 2026-11-05): removing the `derive-head-census.py` entry from `PY_SCRIPT_CENSUS` in a `corpus/instruments/` layout makes the selftest case `python-census-covers-instruments` fail (`selftest cases=110 failures=1`; scratch `/fast/scratch/hyaku/kasegi-r72/m5check`). So the M5 survivor is caught by the gate's selftest, not by the counter; the counter alone does not see it. A flat scratch layout that skips the census check reports `pass` and is not evidence.
