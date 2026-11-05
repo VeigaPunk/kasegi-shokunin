@@ -31,7 +31,9 @@ Ledger entry shape (JSON object with a "figures" array):
                             for blob/tree operands rev:path (R69: no commit, range, `:/` search
                             or braced operand), git cat-file without --textconv/--filters, and
                             python/python3 running a counter whose decoded script argument
-                            starts literally with corpus/instruments/ and resolves inside it).
+                            starts literally with corpus/instruments/ and resolves inside it
+                            and carries none of the write/exec/ingress long options named in
+                            PY_DENIED_FLAGS, nor any unique abbreviation of one (R70)).
                             The same decoded argv is validated and executed. Supported syntax:
                             quoting/backslash escapes, pipelines, &&, and < file input.
                             Unquoted expansion syntax and dollar/backticks in double quotes are
@@ -108,7 +110,18 @@ DENIED_FLAGS = (
 #     attribute-declared textconv driver with no flag at all.
 
 
-EXPECTED_CASES = 86  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file; R68: +4 program-execution flag refusal; R69: +9 class refusal)
+# R70: the python head admitted every counter under corpus/instruments/ whatever its options,
+# and the round-68 wave measured two of them executing or writing from data/arguments the gate
+# never inspects: `frontier-recheck-count.py --root DIR` runs `bash -c` on a `recheck:` line read
+# from DIR (RevengerC1 row 2) and `capture-source.py --out PATH` writes PATH and fetches any URL
+# scheme (row 7).  The gate cannot tell a read-only counter from a write/exec one, so the measured
+# write/exec/ingress long options are refused at parse time for the python head only, by name and
+# by any unique argparse abbreviation of the name.  Positional arguments stay admitted: this is an
+# enumerated option set, not a sandbox, and a counter's own writes on a positional path remain out
+# of scope.  Options after a `--` separator are operands, not options, and stay admitted.
+PY_DENIED_FLAGS = ("--root", "--out", "--output", "--json", "--scratch", "--url", "--work")
+
+EXPECTED_CASES = 96  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file; R68: +4 program-execution flag refusal; R69: +9 class refusal; R70: +10 python-head option and git-show limb pins)
 
 
 def eprint(*a):
@@ -348,9 +361,38 @@ def git_show_operands_ok(parts):
     return True
 
 
+def python_flags_ok(args):
+    """R70: refuse the python head's measured write/exec/ingress long options.
+
+    A token before a `--` separator that starts with `--` is an option; its name (text before
+    `=`) is refused when it equals a denied flag or is a non-empty prefix of one, because
+    argparse accepts any unique abbreviation of a declared option (`--ro` for `--root`, `--ou`
+    for `--out`).  Everything after a `--` separator is an operand.  A short `-o` (or a
+    `-oVALUE`/bundle form) is refused too, mirroring sort's output flag.
+    """
+    for tok in args:
+        if tok == "--":
+            return True
+        if not tok.startswith("-") or tok == "-":
+            continue
+        if not tok.startswith("--"):
+            if tok == "-o" or tok.startswith("-o"):
+                return False
+            continue
+        name = tok.split("=", 1)[0]
+        if len(name) <= 2:
+            continue
+        for flag in PY_DENIED_FLAGS:
+            if name == flag or flag.startswith(name):
+                return False
+    return True
+
+
 def python_head_ok(root, parts):
-    """Require both a literal decoded prefix and a separator-bounded realpath."""
+    """Require a literal decoded prefix, a separator-bounded realpath, and no denied option."""
     if len(parts) < 2 or not parts[1].replace("\\", "/").startswith("corpus/instruments/"):
+        return False
+    if not python_flags_ok(parts[2:]):
         return False
     base = os.path.realpath(os.path.join(root or ".", "corpus", "instruments"))
     target = os.path.realpath(os.path.join(root or ".", parts[1]))
@@ -607,6 +649,29 @@ def selftest():
              _one("s-catfiletc", "git cat-file --textconv HEAD:g.txt", "35"))
     run_case("git-cat-file-filters-refused", 2,
              _one("s-catfilefi", "git cat-file --filters HEAD:g.txt", "35"))
+    # R70: the python head refuses its measured write/exec/ingress long options by name and by
+    # any unique abbreviation, and refuses a short -o; a `--` separator makes later tokens
+    # operands, so a counter may still receive a dash-named positional argument.
+    run_case("python-head-root-space-refused", 2,
+             _one("s-pyroot", "python3 corpus/instruments/frontier-recheck-count.py --root .", "35"))
+    run_case("python-head-root-equals-refused", 2,
+             _one("s-pyrooteq", "python3 corpus/instruments/frontier-recheck-count.py --root=.", "35"))
+    run_case("python-head-root-abbrev-refused", 2,
+             _one("s-pyrootab", "python3 corpus/instruments/frontier-recheck-count.py --ro .", "35"))
+    run_case("python-head-out-space-refused", 2,
+             _one("s-pyout", "python3 corpus/instruments/capture-source.py --id x --url file:///dev/null --out out.txt", "35"))
+    run_case("python-head-out-equals-refused", 2,
+             _one("s-pyouteq", "python3 corpus/instruments/capture-source.py --id x --url file:///dev/null --out=out.txt", "35"))
+    run_case("python-head-out-abbrev-refused", 2,
+             _one("s-pyoutab", "python3 corpus/instruments/capture-source.py --id x --url file:///dev/null --ou out.txt", "35"))
+    run_case("python-head-json-refused", 2,
+             _one("s-pyjson", "python3 corpus/instruments/frontier-recheck-count.py --json j.json", "35"))
+    run_case("python-head-dashdash-operand-admitted", 0,
+             _one("s-pydashdash", "python3 corpus/instruments/ok.py -- --root", "35"))
+    # R103: the two untested `git_show_operands_ok` limbs are pinned as their own cases.
+    run_case("git-show-no-operand-refused", 2, _one("s-gitshowbare", "git show", "35"))
+    run_case("git-show-separator-refused", 2,
+             _one("s-gitshowsep", "git show HEAD:g.txt -- g.txt", "35"))
     run_case("input-redirection-admitted", 0, _one("s-input", "cat < g.txt", "35"))
     run_case("and-shortcircuit-fails", 1, _one("s-andfail", "cat missing.txt && cat g.txt", "35"))
     run_case("and-stdout-concatenated", 0, _one("s-andout", "cat g.txt && cat g.txt", "35\n35"))
