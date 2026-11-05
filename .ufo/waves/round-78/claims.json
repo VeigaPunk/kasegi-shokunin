@@ -1,0 +1,60 @@
+{
+  "round": 78,
+  "lane": "kasegi",
+  "attempt": 1,
+  "frozen_at": "2026-11-05T13:30:00Z",
+  "base": "0687cca8645884aba30c8eb5fa2d8ecaca7245cf",
+  "controls": ".ufo/waves/round-78/controls/ (committed in the freeze commit): c1-donothing-selftest-r78.txt (base selftest cases=6 failures=0 rc0), c1-base-realtree-census-r78.txt (entries=91 conformant rc0), c1-base-missing-tmpdir-r78.txt (nonexistent TMPDIR -> FileNotFoundError traceback, rc1: the R-77-A defect), c2-donothing-counters-r78.txt (FRONTIER-CENSUS rows=53 admitted=53 registry=112; knowledge=91; expected 93 lines/91 .md), c2-recheck-audit-base-r78.txt (expected=91 missing=0 unexpected=0 exit0), c2-prerecheck-r78.txt (source-recheck S112 rc0, 7/7 quotes anchor-ok on exact lines)",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "axis_score": "4 (lowest non-retired; nominal per QUALITY R58 - the scored resolve.py census is not read by this counter, so the measured move is the gate's named-kill and refusal behaviour, not the axis number)",
+      "target_instrument": "corpus/instruments/recheck-cwd-census.py (base sha256 e666ae11fd9d50ecea107b8835090eed0dc798e8e8a233324b9fbd59ab52a21a)",
+      "prior_state_reference": ".ufo/waves/round-77/c1-amended-reference.py (sha256 18bfc439238310af345189c0192c497b8451bea4a2bed1644a03866924588a33) - the best prior candidate; its survivors X1, X2, K-M8 are the r77 closure findings",
+      "statement": "The successor counter (landed at the round-78 landing commit, sha256 recorded in the lesson) (a) refuses a nonexistent or non-directory TMPDIR with exit 2 and a named message 'recheck-cwd: TMPDIR' and no traceback; and (b) carries the case-6 RESULT limb as a consumed assertion behind the four-check gate (gate-regs, gate-consume, gate-negpolarity, gate-checkids) of the r77 design, extended so that the eight named mutants K-M1..K-M5 (round-77 transform table, frozen), K-X1 (consumer clean_ok neutered to True), K-X2 (gate-consume body neutered to True) and K-M8 (relabel-detection check body neutered to True) each make the selftest exit nonzero by an assertion FAIL line. The selftest grows to thirteen cases: the six base cases, the twelve-check r77 gate set, and a TMPDIR-refusal case.",
+      "predicate": {
+        "P1": "python3 -B corpus/instruments/recheck-cwd-census.py --selftest, run under TMPDIR set to a scratch directory, prints 'selftest cases=13 failures=0' and exits 0 on the landing bytes.",
+        "P2": "python3 -B corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> on the landing tree prints 'RECHECK-CWD entries=91 noprefix=0 exit2_foreign=0 exit0_foreign=69 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0' and 'RECHECK-CWD-RESULT conformant', exit 0 (the knowledge tree is unchanged by C1; C2 moves it to 92 entries and the expected line is recorded in the lesson).",
+        "P3": "Each of the eight named mutants (K-M1..K-M5, K-X1, K-X2, K-M8 as defined in .ufo/waves/round-78/c1-mutant-transforms.md, each derived from the landing bytes by exactly one anchored text transform) run as its own selftest exits nonzero and prints at least one 'FAIL' line, with no traceback in the output. K-M2 (registration closure body to True) and K-X2 and K-M8 must die by assertion FAIL, not by NameError; a NameError-only kill is not a kill (QUALITY R127).",
+        "P4": "TMPDIR=/nonexistent-kasegi-r78 python3 -B corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> exits 2 and prints a line beginning 'recheck-cwd: TMPDIR', with no 'Traceback' in its output. The base counter exits 1 with a traceback on the same command (controls/c1-base-missing-tmpdir-r78.txt).",
+        "P5": "The do-nothing control (base bytes) reproduces 'selftest cases=6 failures=0' rc0, so the thirteen-case selftest is not reachable by doing nothing; the base counter has no TMPDIR refusal (P4 base rc1). Red-before for the three new kill classes: the r77 reference's own receipts show X1, X2 and K-M8 survive ('selftest cases=12 failures=0', rc0) - .ufo/waves/round-77/w1/RevengerInherited-run-X1-consumer-const.txt, ...-X2-gateconsume-bool.txt, .ufo/waves/round-77/w1/MutC1.md; these are re-run on the round-78 red-before bytes and committed.",
+        "P6": "Registry pins: SKILL.md and corpus/instruments/README.md rows pinning 'selftest cases=6' move to 'cases=13' in the landing commit (QUALITY R113); the r77 'cases=12' pin never landed and is not re-pinned.",
+        "P7": "Exec surface unchanged: the successor contains exactly one subprocess.run call site and one bash -c pair; all scratch comes from tempfile.mkdtemp honoring TMPDIR; no hard-coded /tmp path (QUALITY R58 / round-77 R-77-A and counter TMPDIR rule)."
+      },
+      "kill_rule": "Any of P1-P7 false at the landing commit = C1 NOT VERIFIED. Any named mutant that survives (selftest exit 0) = NOT VERIFIED. A K-M2, K-X2 or K-M8 kill that is a NameError or exception rather than a FAIL assertion does not count. Predicate text, the mutant table and the kill class are the frozen bytes; no rule changes after any seat has scored (kumitate r42). A mutant that cannot be derived by its anchored transform from the landing bytes is recorded as NOT DERIVED and counts as NOT VERIFIED.",
+      "motivation": "Round-77 closure rejected C1 because X1, X2 and K-M8 survived the r77 candidate (score 4 held; kill set 5/8). Round-77 M77-3 (TMPDIR fragility, captured-by none) is the R-77-A defect; C1 is its named fix, with a red-before receipt that fails on base.",
+      "measured_before": "named-kill set on the r77 reference: 5 of 8 (K-M1..K-M5 killed; X1, X2, K-M8 survive); nonexistent TMPDIR: rc1 traceback (base)",
+      "measured_after": "named-kill set on the landing bytes: 8 of 8; nonexistent TMPDIR: exit 2 with 'recheck-cwd: TMPDIR'",
+      "counting_command": "for m in K-M1 K-M2 K-M3 K-M4 K-M5 K-X1 K-X2 K-M8; do TMPDIR=<scratch> python3 -B <mutant-$m.py> --selftest >/dev/null 2>&1; echo \"$m rc=$?\"; done  -- killed = count of rc!=0 with a FAIL line"
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "axis_score": "8 (held; the coverage denominator is operator-owned)",
+      "statement": "Admit Frontier F54 with one knowledge entry, corpus/knowledge/osv-post-batch-query-contract.md, whose ground is the seven batch-specific clauses of the OSV.dev POST /v1/querybatch reference page (S112): the batch definition and return shape (Q01, Q02), the input-matched ordering guarantee (Q03), the per-query partial-next_page_token rule (Q09), the 1,000-per-query and 3,000-total thresholds (Q10, Q11), and the next-request page_token rule (Q13). The entry claims only those seven clauses. The parameters pointer (Q04), the item-rules pointer (Q06), the instructions pointer (Q05), the version rule (Q07), the 400 consequence (Q08) and the threading-variance note (Q12) are NOT claimed: they are cross-references to, or restatements of, the admitted F51 ground (corpus/knowledge/osv-post-v1-query-contract.md:21,47; S108.txt:40,41,136). Registry S112 flips queued -> mined with used-by naming the entry.",
+      "manifest": "corpus/source-snapshots/round-78/manifest.json (seven quotes, exact snapshot lines 24,24,24,166,168,169,195); snapshot corpus/source-snapshots/round-78/S112.txt (sha256 f3ca04652e444125a1441449e23814107999496d73fa6ac46f35cca3d2bd0907, byte-identical to round-77's capture; re-opened live 2026-11-05 HTTP 200, the seven quotes are present in the live text after tag-boundary whitespace normalization).",
+      "predicate": {
+        "B0": "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-78/manifest.json --source S112 prints 'S112:sha256 OK' and seven 'OK occurrences=1 anchor=<n>-ok' lines, exit 0, before the freeze (controls/c2-prerecheck-r78.txt) and at the landing commit.",
+        "B1": "git diff base..landing -- corpus/SOURCES.md shows exactly one changed registry row (S112: status queued->mined, used-by —->the new entry), zero added rows, zero removed rows; grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md = 112 before and after.",
+        "B2": "ls corpus/knowledge/*.md | wc -l goes 91 -> 92; corpus/instruments/knowledge-expected.txt goes 93 lines/91 .md rows -> 94 lines/92 .md rows; LC_ALL=C sort -c clean over the .md rows; the .md row set equals the corpus/knowledge/ listing.",
+        "B3": "python3 corpus/instruments/frontier-recheck-count.py prints FRONTIER-CENSUS rows=54 admitted=54 closed=54 problem-rows=0 registry=112 and a PASS line for F54 with ids=S112 (base: rows=53 admitted=53, controls/c2-donothing-counters-r78.txt).",
+        "B4": "python3 corpus/instruments/capture-binding-check.py exits 0 with unbound=0 at the landing commit; the round-78 manifest binds S112 to the committed capture (the freeze commit carries capture, manifest and the claims together).",
+        "B5": "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-78/manifest.json --source S112 at the landing commit prints 'S112:sha256 OK' and seven anchored OK lines, exit 0.",
+        "B6": "Distinctness (QUALITY R114 subject sweep + R125 admitted-entry sweep, recorded in the round lesson): for each of the seven claimed quotes, grep -F -l '<quote>' over corpus/knowledge/*.md (excluding the new entry) returns zero files; the scout's paraphrase sweep of the seven clauses against F51 is recorded in the lesson with its verdict per clause.",
+        "B7": "bash scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi exits 0 at the landing commit (the six inherited W04 duplicate-url warnings S028 S029 S072 S076 S080 S085 are allowed; no new finding)."
+      },
+      "kill_rule": "Any of B0-B7 false at the landing commit, a claimed clause not located on its declared line, or a B6 quote-absence count above zero = C2 NOT VERIFIED. The seven quotes are frozen bytes; no quote is added, removed or edited after any seat has scored. A B6 paraphrase finding that a claimed clause restates admitted F51 ground is a NOT VERIFIED verdict for that clause and for C2.",
+      "motivation": "Round-77 closure rejected C2: Q07, Q08 and Q12 restate F51 (B6 failed); the successor claims the batch-specific clauses only (round-77 planned-after item 2; R-77-C distinctness at freeze; R-77-E staged S112 collision is routed to the operator and is not adopted here).",
+      "measured_before": "FRONTIER-CENSUS rows=53 admitted=53; knowledge 91; registry 112 with S112 queued",
+      "measured_after": "FRONTIER-CENSUS rows=54 admitted=54; knowledge 92; registry 112 with S112 mined",
+      "counting_command": "python3 corpus/instruments/frontier-recheck-count.py ; ls corpus/knowledge/*.md | wc -l ; grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md"
+    }
+  ],
+  "routed_not_claimed": [
+    "R-77-D (source-recheck four-line anchor window; L0 operator ruling pending) - not claimed here; the round-78 manifest uses exact-line anchors so C2 does not depend on the window.",
+    "R-77-E (staged S112 TC260 id collision with the lane's S112 OSV row) - L0 pending; no assimilation append this round; the lane's registry is authoritative for its own ids.",
+    "R-77-F (four endpoint leads) - not claimed; the lane takes one endpoint per round (this round: querybatch only).",
+    "Assimilation: none this round (the lane's merge/kasegi package is id-colliding at 82 of 94; adoption stays closed under the L0 ruling). Quarantine slice of the absent-defect register is hand-checked by the lesson's Gate where a row is touched; otherwise unchanged."
+  ]
+}
