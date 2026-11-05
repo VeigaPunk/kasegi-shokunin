@@ -1,0 +1,18 @@
+# Freeze-check replay (R73-V6 fix) — base values re-derived from committed revisions, not from session state
+# freeze commit: 847b53792d2d29d161cad7d21a33c89df9e52e8d; base/controls revision: ccd6a54bf392922495c4860332665499582e3213
+# date: 2026-11-05T08:35:12Z
+--- C1: r73 counter exported from ccd6a54bf392922495c4860332665499582e3213, run against a ccd6a54bf392922495c4860332665499582e3213 export of corpus/
+replay-exit=0
+receipt-line: RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0 / conformant
+--- C2 base re-derived from ccd6a54bf392922495c4860332665499582e3213:
+registry=108 (receipt 108)
+knowledge=89 (receipt 89)
+expected=91/89 (receipt 91/89)
+--- claims.json at freeze revision carries base ccd6a54: 2 pin lines
+# Freeze-check replay CORRECTION (append) — first replay had an export-path bug (replay-exit echoed the tail pipeline, not the counter; C1 line never printed). This block replaces its C1 limb with a clean re-run.
+# freeze 847b5379; base ccd6a54; 2026-11-05T08:35:59Z
+C1 replay at ccd6a54bf392922495c4860332665499582e3213 with counter+corpus both exported from ccd6a54bf392922495c4860332665499582e3213:
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant  / replay-exit=0
+C2 limbs of the first block stand (registry=108, knowledge=89, expected=91/89 — all equal receipts).
+Mistake mined this round: the first replay's exit=0 line reported the tee/tail pipeline status, not the instrument's; fixed by running the instrument standalone. Class: number-drift/landing; captured-by: none; fix: M74-2 in corpus/lessons/round-74.md.
