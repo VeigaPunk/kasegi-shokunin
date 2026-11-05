@@ -1,0 +1,137 @@
+
+### C-sha capture
+$ sha256sum S108.txt; wc -c; wc -l
+304baa7db33000b03fe3b9dda9c1823bccbf980f0a69d9a74a936fb312ffc6b9  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-73/S108.txt
+6563
+150
+exit=0
+
+### build manifest + 31 quote verification (grep -nF, awk-free python)
+$ python3 build.py
+Q01-scope                anchor=24   on_line=1 occ=1 grepF_lines=24 words=14 ok=1
+Q02-commit-param         anchor=34   on_line=1 occ=1 grepF_lines=34 words=15 ok=1
+Q03-version-fuzzy        anchor=35   on_line=1 occ=1 grepF_lines=35 words=8 ok=1
+Q04-version-exclusive    anchor=35   on_line=1 occ=1 grepF_lines=35 words=14 ok=1
+Q05-package-optional     anchor=36   on_line=1 occ=1 grepF_lines=36 words=9 ok=1
+Q06-page-token-param     anchor=37   on_line=1 occ=1 grepF_lines=37 words=15 ok=1
+Q07-version-rule         anchor=40   on_line=1 occ=1 grepF_lines=40 words=14 ok=1
+Q08-both-places-400      anchor=41   on_line=1 occ=1 grepF_lines=41 words=12 ok=1
+Q09-invalid-label        anchor=47   on_line=1 occ=1 grepF_lines=47 words=4 ok=1
+Q10-invalid-example      anchor=48   on_line=1 occ=1 grepF_lines=48 words=9 ok=1
+Q11-valid-example        anchor=46   on_line=1 occ=1 grepF_lines=46 words=9 ok=1
+Q12-case                 anchor=53   on_line=1 occ=1 grepF_lines=53 words=6 ok=1
+Q13-name-exact           anchor=54   on_line=1 occ=1 grepF_lines=54 words=17 ok=1
+Q14-pypi                 anchor=54   on_line=1 occ=1 grepF_lines=54 words=9 ok=1
+Q15-nuget                anchor=54   on_line=1 occ=1 grepF_lines=54 words=5 ok=1
+Q31-crates               anchor=54   on_line=1 occ=1 grepF_lines=54 words=6 ok=1
+Q16-git-set              anchor=56   on_line=1 occ=1 grepF_lines=56 words=19 ok=1
+Q17-git-tag-field        anchor=56   on_line=1 occ=1 grepF_lines=56 words=7 ok=1
+Q18-git-example          anchor=79   on_line=1 occ=1 grepF_lines=79 words=7 ok=1
+Q19-payload-commit       anchor=59   on_line=1 occ=1 grepF_lines=59 words=2 ok=1
+Q20-payload-page-token   anchor=66   on_line=1 occ=1 grepF_lines=66 words=2 ok=1
+Q21-pagination-trigger   anchor=136  on_line=1 occ=1 grepF_lines=136 words=20 ok=1
+Q22-token-mechanism      anchor=135  on_line=1 occ=1 grepF_lines=135 words=19 ok=1
+Q23-repeat-until         anchor=135  on_line=1 occ=1 grepF_lines=135 words=12 ok=1
+Q24-next-page            anchor=144  on_line=1 occ=1 grepF_lines=144 words=13 ok=1
+Q25-rare-token-only      anchor=149  on_line=1 occ=1 grepF_lines=149 words=10 ok=1
+Q26-keep-querying        anchor=149  on_line=1 occ=1 grepF_lines=149 words=18 ok=1
+Q27-size-http1           anchor=148  on_line=1 occ=1 grepF_lines=148 words=12 ok=1
+Q28-size-http2           anchor=148  on_line=1 occ=1 grepF_lines=148 words=7 ok=1
+Q29-http2-recommend      anchor=148  on_line=1 occ=1 grepF_lines=148 words=12 ok=1
+Q30-page-size-vary       anchor=136  on_line=1 occ=1 grepF_lines=136 words=15 ok=1
+ALL_OK
+MANIFEST_WRITTEN /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-73/w1/draft/manifest.json quotes= 31 bytes= 6563 lines= 150 sha= 304baa7db33000b03fe3b9dda9c1823bccbf980f0a69d9a74a936fb312ffc6b9
+exit=0
+
+### recheck positive (draft manifest + pinned capture)
+$ source-recheck.py --manifest recheck-ok/manifest.json --source S108
+S108:sha256 OK
+S108:Q01-scope OK occurrences=1 anchor=24-ok
+S108:Q02-commit-param OK occurrences=1 anchor=34-ok
+S108:Q03-version-fuzzy OK occurrences=1 anchor=35-ok
+S108:Q04-version-exclusive OK occurrences=1 anchor=35-ok
+S108:Q05-package-optional OK occurrences=1 anchor=36-ok
+S108:Q06-page-token-param OK occurrences=1 anchor=37-ok
+S108:Q07-version-rule OK occurrences=1 anchor=40-ok
+S108:Q08-both-places-400 OK occurrences=1 anchor=41-ok
+S108:Q09-invalid-label OK occurrences=1 anchor=47-ok
+S108:Q10-invalid-example OK occurrences=1 anchor=48-ok
+S108:Q11-valid-example OK occurrences=1 anchor=46-ok
+S108:Q12-case OK occurrences=1 anchor=53-ok
+S108:Q13-name-exact OK occurrences=1 anchor=54-ok
+S108:Q14-pypi OK occurrences=1 anchor=54-ok
+S108:Q15-nuget OK occurrences=1 anchor=54-ok
+S108:Q16-git-set OK occurrences=1 anchor=56-ok
+S108:Q17-git-tag-field OK occurrences=1 anchor=56-ok
+S108:Q18-git-example OK occurrences=1 anchor=79-ok
+S108:Q19-payload-commit OK occurrences=1 anchor=59-ok
+S108:Q20-payload-page-token OK occurrences=1 anchor=66-ok
+S108:Q21-pagination-trigger OK occurrences=1 anchor=136-ok
+S108:Q22-token-mechanism OK occurrences=1 anchor=135-ok
+S108:Q23-repeat-until OK occurrences=1 anchor=135-ok
+S108:Q24-next-page OK occurrences=1 anchor=144-ok
+S108:Q25-rare-token-only OK occurrences=1 anchor=149-ok
+S108:Q26-keep-querying OK occurrences=1 anchor=149-ok
+S108:Q27-size-http1 OK occurrences=1 anchor=148-ok
+S108:Q28-size-http2 OK occurrences=1 anchor=148-ok
+S108:Q29-http2-recommend OK occurrences=1 anchor=148-ok
+S108:Q30-page-size-vary OK occurrences=1 anchor=136-ok
+S108:Q31-crates OK occurrences=1 anchor=54-ok
+exit=0
+
+### recheck negative control (one quote line edited)
+$ source-recheck.py --manifest recheck-corrupt/manifest.json --source S108
+S108:sha256 MISMATCH expected=304baa7db33000b03fe3b9dda9c1823bccbf980f0a69d9a74a936fb312ffc6b9 actual=22ca95dc5b0aacc64a6bad007c46352f53c269ed7138447921c30cd7167650b8
+exit=1
+
+### entry quote check (prose + code spans vs manifest and capture)
+$ python3 check_entry.py F51-entry.md manifest.json S108.txt
+prose_quotes=27 not_ok=0
+code_json inmanifest=1 incapture=1
+code_json inmanifest=1 incapture=1
+code_json inmanifest=1 incapture=1
+code_json inmanifest=1 incapture=1
+code_json inmanifest=1 incapture=1
+manifest_quotes=31 unused_in_entry=[]
+entry_bytes=10040 entry_lines=80
+exit=0
+
+### awk word count of double-quoted segments
+$ sed 's/`[^`]*`//g' F51-entry.md | grep -o '"[^"]*"' | awk ...
+segments_le25=27
+exit=0
+
+### recheck line parses (bash -n)
+$ bash -n -c <recheck line>
+exit=0
+
+### recheck prefix count
+$ grep -c '^recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && ' F51-entry.md
+1
+exit=0
+
+### knowledge-expected sorted insertion (LC_ALL=C sort)
+$ LC_ALL=C sort -c base; insert; LC_ALL=C sort; index
+base_sort_exit=0
+lines=91 rows=89 index=66
+65a66
+> corpus/knowledge/osv-post-v1-query-contract.md
+diff_exit=1 (1 = one added line)
+
+### README F-rows before/after append (scratch copy)
+$ grep -cE '^\| F[0-9]+ \|'
+before=50 after=51 F51=1
+
+### census validate draft registry (scratch lane: SOURCES + full knowledge + lessons link + entry)
+$ sources-census.sh validate --root <scratch> <scratch>/kasegi-shokunin
+E-lines=0 S108-lines=0
+exit=0
+
+### census validate on lane as-is (base)
+$ sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+exit=0
+
+### negative sanity: capture contains no rate-limit/api-key/credential sentence
+$ grep -n -i 'rate limit|ratelimit|quota|api key|api_key|authenticat|credential' S108.txt
+exit=1 (1 = no match)
+DONE

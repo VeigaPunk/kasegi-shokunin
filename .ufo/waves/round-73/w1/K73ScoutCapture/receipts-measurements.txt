@@ -1,0 +1,48 @@
+# K73ScoutCapture — S108 reproducibility receipts (all measured 2026-11-05, host UTC)
+# scratch: /fast/scratch/hyaku/kasegi-r73/K73ScoutCapture
+
+R1  curl -sS -L -o $S/fetch1.html -w '%{http_code} %{size_download} %{content_type}\n' https://google.github.io/osv.dev/post-v1-query/
+    exit=0   "200 33417 text/html; charset=utf-8"
+R2  curl -sS -L -o $S/fetch2.html -w '%{http_code} %{size_download} %{content_type}\n' https://google.github.io/osv.dev/post-v1-query/
+    exit=0   "200 33417 text/html; charset=utf-8"
+R3  sha256sum $S/fetch1.html $S/fetch2.html
+    exit=0
+    5722ec056314f80a70309cd070ec167aa8328b0a8cbe33e6fb77e8d4a1edf4eb  fetch1.html
+    5722ec056314f80a70309cd070ec167aa8328b0a8cbe33e6fb77e8d4a1edf4eb  fetch2.html
+R4  cmp $S/fetch1.html $S/fetch2.html        exit=0   (raw HTML byte-identical)
+R5  TMPDIR=$S python3 <lane>/corpus/instruments/capture-source.py --id S108 --url https://google.github.io/osv.dev/post-v1-query/ --kind html --out $S/S108-recapture.txt
+    exit=0
+    S108 status=200 fetched_bytes=33417 snapshot_bytes=6563 sha256=304baa7db33000b03fe3b9dda9c1823bccbf980f0a69d9a74a936fb312ffc6b9 utc=2026-11-05T07:46:13Z
+R6  cmp $S/S108-recapture.txt <lane>/corpus/source-snapshots/round-73/S108.txt   exit=0  (identical)
+R7  sha256sum <lane>/corpus/source-snapshots/round-73/S108.txt ; wc -l -c
+    exit=0   304baa7db33000b03fe3b9dda9c1823bccbf980f0a69d9a74a936fb312ffc6b9 ; 150 lines ; 6563 bytes
+R8  capture-source.py --selftest               exit=0   "selftest normalize=ok deterministic=ok"
+R9  capture-source.py --url file://$S/fetch2.html --out $S/S108-fromfetch2.txt
+    exit=1   TypeError: %d format: a real number is required, not NoneType   (tool does NOT accept a file path;
+             the snapshot file was still written before the print, sha256=304baa7d..., cmp with R5 exit=0)
+R10 python3 -c "import capture-source module; html_to_text(fetch1.html) / html_to_text(fetch2.html)"
+    exit=0
+    fetch1.html raw_bytes=33417 snapshot_bytes=6563 sha256=304baa7db33000b03fe3b9dda9c1823bccbf980f0a69d9a74a936fb312ffc6b9
+    fetch2.html raw_bytes=33417 snapshot_bytes=6563 sha256=304baa7db33000b03fe3b9dda9c1823bccbf980f0a69d9a74a936fb312ffc6b9
+R11 grep -c 'POST /v1/query' $S/S108-recapture.txt          exit=0  -> 6
+R12 grep -c 'pagination\|Pagination' $S/S108-recapture.txt  exit=0  -> 6
+R13 grep -c 'nonce' $S/fetch1.html                           exit=1  -> 0   (no CSP nonce attribute in the page)
+R14 curl cache-buster / UA / no-cache / gzip variants: fetch3 (?cb=), fetch4 (lane UA), fetch5 (Cache-Control: no-cache), fetch6 (--compressed)
+    all exit=0, all HTTP 200, all sha256=5722ec056314f80a70309cd070ec167aa8328b0a8cbe33e6fb77e8d4a1edf4eb
+    (fetch6 size_download=6472 is the compressed transfer size; the decoded bytes hash the same)
+R15 curl -sS -I -L https://google.github.io/osv.dev/post-v1-query/   exit=0
+    HTTP/2 200; etag "6aec0805-8289"; last-modified Thu, 05 Nov 2026 04:37:25 GMT; age 370; x-cache HIT;
+    x-origin-cache HIT; content-type text/html; charset=utf-8; content-length 33417
+R16 upstream source cross-check:
+    curl -sS -L https://raw.githubusercontent.com/google/osv.dev/master/docs/api/post-v1-query.md
+    exit=0  HTTP 200, 8454 bytes, sha256 f47d4f5dbdbc1d3eca7006afcf2a594daf240042a54125096cb9c0494160cb2c, 188 lines
+    upstream L68 = "You can also query for git tags via this API..."  L162 = pagination paragraph  L186 = "32MiB" sentence
+R17 lane-tree facts (read-only):
+    git -C <lane> rev-parse HEAD -> 3b53ff839d0747530f95d432aec1ea7b4308fe96 (freeze commit)
+    git -C <lane> status --porcelain corpus/source-snapshots/round-73/ -> "?? corpus/source-snapshots/round-73/"  (untracked)
+    ls <lane>/corpus/source-snapshots/round-73/ -> S108.txt only; NO manifest.json
+    grep -c S108 <lane>/corpus/SOURCES.md -> 0 (no registry row yet)
+    grep -c F51 <lane>/PROVINCE.md -> 0 (frontier row not yet written)
+    clone of freeze commit: capture-binding-check.py --root <clone> exit=0, "records=86 bound=86 unbound=0"
+    lane working tree (untracked round-73 dir): capture-binding-check.py exit=1,
+    "FAIL rule=missing-manifest dir=round-73" / "records=86 bound=86 unbound=0"

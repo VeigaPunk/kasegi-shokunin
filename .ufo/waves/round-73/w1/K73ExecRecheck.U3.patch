@@ -1,0 +1,140 @@
+diff --git i/corpus/knowledge/bugzilla-rest-api-bug-endpoints.md w/corpus/knowledge/bugzilla-rest-api-bug-endpoints.md
+index c816498..09a267f 100644
+--- i/corpus/knowledge/bugzilla-rest-api-bug-endpoints.md
++++ w/corpus/knowledge/bugzilla-rest-api-bug-endpoints.md
+@@ -3,7 +3,7 @@
+ source: S107 — https://bugzilla.readthedocs.io/en/latest/api/core/v1/bug.html — capture corpus/source-snapshots/round-72/S107.txt (1176 lines, 31435 snapshot bytes, sha256 0b944ea123efa204f1c0539c7d9d8f0367c25741210290681099fb6429254652, fetched 2026-11-05T03:49:50Z, HTTP 200; manifest corpus/source-snapshots/round-72/manifest.json)
+ verified-at: 2026-11-05
+ ground: F50 — the Bugzilla REST API core v1 bug endpoints: the route and method of get, create and update; the create parameter contract; the update comment object; and the access sentences on CC-list members and the reporter.
+-recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-72/manifest.json --source S107
++recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-72/manifest.json --source S107
+ 
+ ## Attribution
+ 
+diff --git i/corpus/knowledge/cisa-vulnrichment-adp-enrichment.md w/corpus/knowledge/cisa-vulnrichment-adp-enrichment.md
+index 9bf38fc..e4cc723 100644
+--- i/corpus/knowledge/cisa-vulnrichment-adp-enrichment.md
++++ w/corpus/knowledge/cisa-vulnrichment-adp-enrichment.md
+@@ -3,7 +3,7 @@
+ source: S081 — https://raw.githubusercontent.com/cisagov/vulnrichment/develop/README.md — capture corpus/source-snapshots/round-51/S081.txt (120 lines, 8290 bytes; sha256 2da0941448d88f48bfc7275c6444abf3aaf57244719e64b3b3ab6591f4458b65; fetched 2026-11-01T02:48:34Z, HTTP 200, 8501 raw bytes — CISA's own README.md at the repository's default branch `develop`): project definition S081.txt:2, process S081.txt:6-8, three decision points S081.txt:14, KEV-block condition S081.txt:58, CPE stop S081.txt:104, drop rule S081.txt:114, SSVC version encoding S081.txt:117-118, consumption note S081.txt:3; manifest corpus/source-snapshots/round-51/manifest.json (12 assertions Q1-Q12, each exactly-once at its pinned anchor)
+ verified-at: 2026-11-01 (opened this round: the capture is the raw README text at the mutable branch ref, so the recheck pins the captured bytes and the 90d row recheck exists to re-open the ref, not to trust it)
+ ground: F32
+-recheck: (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-51/manifest.json --source S081 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-51/manifest.json --source S081)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S081:sha256 OK then one S081:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
++recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-51/manifest.json --source S081 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-51/manifest.json --source S081)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S081:sha256 OK then one S081:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
+ 
+ ## Attribution
+ 
+diff --git i/corpus/knowledge/cisa-vulnrichment-record-list.md w/corpus/knowledge/cisa-vulnrichment-record-list.md
+index 8d78ad7..5d3fae4 100644
+--- i/corpus/knowledge/cisa-vulnrichment-record-list.md
++++ w/corpus/knowledge/cisa-vulnrichment-record-list.md
+@@ -3,7 +3,7 @@
+ source: S088 — https://api.github.com/repos/cisagov/vulnrichment/git/trees/develop — capture corpus/source-snapshots/round-56/S088.txt (1 line, 7204 snapshot bytes over 7203 fetched bytes; sha256 09ce0b10436f67c35f7ccf3a8dcfec0489d209d6698ee2fa75cf4b6f5873935e; recorded fetch 2026-11-01T14:34:05Z, HTTP 200 — byte-identical across four same-sha instrument opens this round: probe 14:19:12Z, recorded 14:34:05Z, verification second and third opens 14:34:05Z/14:34:06Z; one raw curl open served the SAME tree object pretty-printed at 8956 bytes and parses equal — controls/s088-opens-r56.txt); manifest corpus/source-snapshots/round-56/manifest.json (6 assertions Q1-Q6, each occurrences=1 at anchor line 1)
+ verified-at: 2026-11-01 (opened this round; the tree object is content-addressed and the develop ref is mutable — the pinned top sha e8d691a5d5b8485339feb29aac2d68deb67f2011 is the open-time authority; the 90d row recheck re-fetches and a moved ref reads a different object by construction)
+ ground: F37
+-recheck: (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-56/manifest.json --source S088 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-56/manifest.json --source S088)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S088:sha256 OK then one S088:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
++recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-56/manifest.json --source S088 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-56/manifest.json --source S088)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S088:sha256 OK then one S088:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
+ 
+ ## Attribution
+ 
+diff --git i/corpus/knowledge/github-repository-security-advisories-rest-api.md w/corpus/knowledge/github-repository-security-advisories-rest-api.md
+index 2536309..84997f1 100644
+--- i/corpus/knowledge/github-repository-security-advisories-rest-api.md
++++ w/corpus/knowledge/github-repository-security-advisories-rest-api.md
+@@ -3,7 +3,7 @@
+ source: S087 — https://docs.github.com/en/rest/security-advisories/repository-advisories — capture corpus/source-snapshots/round-55/S087.txt (3407 lines, 137738 snapshot bytes over 937712 fetched HTML bytes; sha256 3eebdf476fbfe5040ad3367edfe3961fbda1bff412bb74ee43bb08ab2f754b93; recorded fetch 2026-11-01T10:46:13Z, HTTP 200 — byte-identical across three same-sha instrument opens this round, probe 10:37:57Z, recorded 10:46:13Z, verification second open; two raw-HTML curl opens were also byte-identical, sha256 89fa9af3…); manifest corpus/source-snapshots/round-55/manifest.json (14 assertions Q1-Q14, each occurrences=1 at its pinned anchor)
+ verified-at: 2026-11-01 (opened this round; a generated docs.github.com REST reference page — the served page is statically generated and re-fetched byte-identical within the round, but the URL tracks a live document, so the 90d row recheck re-fetches and a changed sha re-fails the capture; the pinned sha256 is the round-55 authority, not the URL's stability)
+ ground: F36
+-recheck: (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-55/manifest.json --source S087 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-55/manifest.json --source S087)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S087:sha256 OK then one S087:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
++recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-55/manifest.json --source S087 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-55/manifest.json --source S087)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S087:sha256 OK then one S087:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
+ 
+ ## Attribution
+ 
+diff --git i/corpus/knowledge/nvd-api-2.0-response-schema.md w/corpus/knowledge/nvd-api-2.0-response-schema.md
+index 114f3c6..a8d8b1b 100644
+--- i/corpus/knowledge/nvd-api-2.0-response-schema.md
++++ w/corpus/knowledge/nvd-api-2.0-response-schema.md
+@@ -3,7 +3,7 @@
+ source: S085 — https://csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema — capture corpus/source-snapshots/round-53/S085.txt (543 lines, 7590 bytes; sha256 4d1c4e7732e128750a00557b0f16e69f021d2d5d25e2f55dfe8a9d5faa9a44d2; fetched 2026-11-01T06:16:10Z, HTTP 200, 10394 raw bytes — the same raw byte count the round-42 S066 screen recorded on 2026-10-28, so the served artifact is unchanged across the two opens); manifest corpus/source-snapshots/round-53/manifest.json (13 assertions Q1-Q13, each exactly-once at its pinned anchor)
+ verified-at: 2026-11-01 (opened this round; a static schema artifact served from NIST's csrc host — the 90d row recheck re-fetches it, and a changed sha re-fails the capture)
+ ground: F34
+-recheck: (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-53/manifest.json --source S085 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-53/manifest.json --source S085)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S085:sha256 OK then one S085:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
++recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-53/manifest.json --source S085 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-53/manifest.json --source S085)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S085:sha256 OK then one S085:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
+ 
+ ## Attribution
+ 
+diff --git i/corpus/knowledge/nvd-api-2.0-retrieval-interface.md w/corpus/knowledge/nvd-api-2.0-retrieval-interface.md
+index 3a90bca..2cf039f 100644
+--- i/corpus/knowledge/nvd-api-2.0-retrieval-interface.md
++++ w/corpus/knowledge/nvd-api-2.0-retrieval-interface.md
+@@ -3,7 +3,7 @@
+ source: S083 — https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2024-3094 — capture corpus/source-snapshots/round-52/S083.txt (1 line, 13077 bytes; sha256 5c35a51b103934778b94b385a060a26da53a7319e7339f85efcf646899a0e716; fetched 2026-11-01T04:18:04Z, HTTP 200, 13076 raw bytes — a live API response served by NIST's services host for exactly one record); manifest corpus/source-snapshots/round-52/manifest.json (12 assertions Q1-Q12, each exactly-once at its pinned anchor; single-line capture, so every anchor is line 1)
+ verified-at: 2026-11-01 (opened this round; the capture is one live response at one instant — the response carries its own `timestamp` and the record's `lastModified` is the interface's change-tracking, so the 90d row recheck exists to re-open the query, not to trust that NIST serves these bytes again)
+ ground: F33
+-recheck: (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-52/manifest.json --source S083 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-52/manifest.json --source S083)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S083:sha256 OK then one S083:Q<n> OK line per pinned quote with its occurrences= count and anchor=1-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
++recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-52/manifest.json --source S083 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-52/manifest.json --source S083)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S083:sha256 OK then one S083:Q<n> OK line per pinned quote with its occurrences= count and anchor=1-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
+ 
+ ## Attribution
+ 
+diff --git i/corpus/knowledge/openssf-scorecard-checks.md w/corpus/knowledge/openssf-scorecard-checks.md
+index 832db31..8d97f7f 100644
+--- i/corpus/knowledge/openssf-scorecard-checks.md
++++ w/corpus/knowledge/openssf-scorecard-checks.md
+@@ -3,7 +3,7 @@
+ source: S086 — https://raw.githubusercontent.com/ossf/scorecard/main/docs/checks.md — capture corpus/source-snapshots/round-54/S086.txt (731 lines, 46441 bytes; sha256 fa84a01753971589571c22597d5b7f65ed34dc373dfc466d2233437faf4dc81f; fetched 2026-11-01T08:17:52Z, HTTP 200 — byte-identical across two opens this round, the first fetch and the recorded one); manifest corpus/source-snapshots/round-54/manifest.json (14 assertions Q1-Q14, each exactly-once at its pinned anchor)
+ verified-at: 2026-11-01 (opened this round; a generated first-party document at a moving branch tip — the URL names `main`, so the 90d row recheck re-fetches and a changed sha re-fails the capture; the pinned sha256 is the round-54 authority, not the URL's stability)
+ ground: F35
+-recheck: (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-54/manifest.json --source S086 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-54/manifest.json --source S086)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S086:sha256 OK then one S086:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
++recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-54/manifest.json --source S086 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-54/manifest.json --source S086)   # interpreter-portable form (run from the lane root, no `cd` prefix); prints S086:sha256 OK then one S086:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
+ 
+ ## Attribution
+ 
+diff --git i/corpus/knowledge/osv-affected-range-events.md w/corpus/knowledge/osv-affected-range-events.md
+index 11741e7..f7715a4 100644
+--- i/corpus/knowledge/osv-affected-range-events.md
++++ w/corpus/knowledge/osv-affected-range-events.md
+@@ -3,7 +3,7 @@
+ source: S080 — https://ossf.github.io/osv-schema/ — capture corpus/source-snapshots/round-50/S080.txt (1462 lines, 70913 bytes; sha256 97b850a4bcd90600bb39391df3293e4591b9dd84170e94ecfd48f40e08cfeda9; fetched 2026-11-01T01:17:14Z, HTTP 200, 228890 raw bytes — the same raw byte count the round-42 S065 screen recorded on 2026-10-28, so the served page was unchanged across those two opens): version line S080.txt:4, purpose S080.txt:9-10, stability S080.txt:17, required envelope fields S080.txt:374-375, range type S080.txt:706-708, SEMVER versions-list carve-out S080.txt:714-715, ECOSYSTEM ordering S080.txt:719-721, GIT ordering S080.txt:729-730, GIT versions-list duty S080.txt:733-735, the four event verbs S080.txt:739-742, special values S080.txt:751-755, upstream-mismatch caveat S080.txt:746-748, fixed-vs-last_affected S080.txt:760-766, introduced-required S080.txt:777, GIT repo requirement S080.txt:788, database_specific out-of-scope S080.txt:790-793; manifest corpus/source-snapshots/round-50/manifest.json (16 assertions Q1-Q16, each exactly-once at its pinned anchor; `source-recheck.py --source S080` exits 0)
+ verified-at: 2026-11-01 (opened this round: the capture above is `capture-source.py --kind html`'s collapse of the served page, and every quote here is pinned to that capture, not to what the URL serves next)
+ ground: F31
+-recheck: (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-50/manifest.json --source S080 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-50/manifest.json --source S080)   # interpreter-portable form (appended 2026-11-01): runs under python3 where that name exists, else under python (the Windows workspace host has no python3 — the Store alias stub exits non-zero and the fallback runs); run from the lane root, no `cd` prefix. Prints S080:sha256 OK then one S080:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
++recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && (python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-50/manifest.json --source S080 || python corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-50/manifest.json --source S080)   # interpreter-portable form (appended 2026-11-01): runs under python3 where that name exists, else under python (the Windows workspace host has no python3 — the Store alias stub exits non-zero and the fallback runs); run from the lane root, no `cd` prefix. Prints S080:sha256 OK then one S080:Q<n> OK line per pinned quote with its occurrences= count and anchor=N-ok note; exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moved, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
+ 
+ ## Attribution
+ 
+diff --git i/corpus/knowledge/project-zero-big-sleep-sqlite-variant-analysis.md w/corpus/knowledge/project-zero-big-sleep-sqlite-variant-analysis.md
+index e0aa6d3..4a7b5b5 100644
+--- i/corpus/knowledge/project-zero-big-sleep-sqlite-variant-analysis.md
++++ w/corpus/knowledge/project-zero-big-sleep-sqlite-variant-analysis.md
+@@ -2,7 +2,7 @@
+ 
+ source: S094 — https://projectzero.google/2024/10/from-naptime-to-big-sleep.html — capture corpus/source-snapshots/round-61/S094.txt, sha256 663ac16df13b7c93c2d9848265854625c46e8f59d0c39a5bbb4d68bf6573e804; opened 2026-11-04 using capture-source.py --kind html (HTTP 200; 56257 fetched bytes; 15904 snapshot bytes; 125 lines; fetched 2026-11-04T14:13:15Z).
+ verified-at: 2026-11-04
+-recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-61/manifest.json --source S094
++recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-61/manifest.json --source S094
+ ground: F42
+ 
+ ## Attribution and scope
+diff --git i/corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md w/corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md
+index 92ed4f0..841538f 100644
+--- i/corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md
++++ w/corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md
+@@ -3,7 +3,7 @@
+ source: S093 — https://projectzero.google/2026/10/fuzzing-v-AI.html — capture corpus/source-snapshots/round-60/S093.txt (40649 snapshot bytes over 283 lines; HTTP 200, 64812 fetched bytes; sha256 46f69d32cd237d0c14755ba3ce5cbaee0999219e82c806a78e5aa39076347d96; recorded fetch 2026-11-04T13:29:52Z; method `capture-source.py --kind html` under the instrument UA; requested URL == effective URL, no redirect; the published page's converted text — an independent curl open of the same URL the same day is 64812 bytes and carries the same text)
+ verified-at: 2026-11-04 (opened this round; a research post, not a policy — the 90d row recheck re-fetches and compares the pinned quotes, never raw bytes across time)
+ ground: F41
+-recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-60/manifest.json --source S093   # run from the lane root (the frontier counter executes every recheck line with cwd=the root being counted, so no absolute `cd` is baked in — an export replay re-runs it against the export); prints one sha256 OK line and one Q-OK line per pinned quote with its occurrences= count and anchor note; exits 2 when the manifest or a capture is absent and 1 when a digest differs or a pinned quote is absent from the capture, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
++recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-60/manifest.json --source S093   # run from the lane root (the frontier counter executes every recheck line with cwd=the root being counted, so no absolute `cd` is baked in — an export replay re-runs it against the export); prints one sha256 OK line and one Q-OK line per pinned quote with its occurrences= count and anchor note; exits 2 when the manifest or a capture is absent and 1 when a digest differs or a pinned quote is absent from the capture, so a missing or corrupted capture fails closed; a pinned-capture comparison, not a fresh network check
+ 
+ ## Attribution
+ 
+diff --git i/corpus/knowledge/root-loss-2026-10-12.md w/corpus/knowledge/root-loss-2026-10-12.md
+index f0ee165..2cb52ba 100644
+--- i/corpus/knowledge/root-loss-2026-10-12.md
++++ w/corpus/knowledge/root-loss-2026-10-12.md
+@@ -73,4 +73,4 @@ ls ~/Projects   # → no the-bounty-hunter, no origin-work, no bounties
+ 
+ source: Lane round 19 — 2026-10-14 root-loss re-census; sections Facts, Detection commands, and Consequences.
+ verified-at: 2026-10-14
+-recheck: test ! -e ~/Projects/bounties && test ! -e ~/Projects/the-bounty-hunter && test ! -e ~/Projects/origin-work && test -e ~/Projects/ufo-fsd-alpha
++recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && test ! -e ~/Projects/bounties && test ! -e ~/Projects/the-bounty-hunter && test ! -e ~/Projects/origin-work && test -e ~/Projects/ufo-fsd-alpha

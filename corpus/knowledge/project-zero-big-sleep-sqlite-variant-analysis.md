@@ -2,7 +2,7 @@
 
 source: S094 — https://projectzero.google/2024/10/from-naptime-to-big-sleep.html — capture corpus/source-snapshots/round-61/S094.txt, sha256 663ac16df13b7c93c2d9848265854625c46e8f59d0c39a5bbb4d68bf6573e804; opened 2026-11-04 using capture-source.py --kind html (HTTP 200; 56257 fetched bytes; 15904 snapshot bytes; 125 lines; fetched 2026-11-04T14:13:15Z).
 verified-at: 2026-11-04
-recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-61/manifest.json --source S094
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-61/manifest.json --source S094
 ground: F42
 
 ## Attribution and scope

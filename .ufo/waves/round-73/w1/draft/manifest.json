@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "note": "Round-73 OSV.dev POST /v1/query service contract (frontier F51). S108 is the OSV.dev project's own API reference page for the query endpoint, as served: the payload keys, the version rule, the Git-tag query, pagination and the 32 MiB HTTP/1.1 response limit. It is the service contract of one endpoint only, not the OSV record format (F31) and not the overview page. Opened 2026-11-05.",
+  "sources": [
+    {
+      "id": "S108",
+      "url": "https://google.github.io/osv.dev/post-v1-query/",
+      "capture_url": "https://google.github.io/osv.dev/post-v1-query/",
+      "http": {"status": 200, "final_url": "https://google.github.io/osv.dev/post-v1-query/"},
+      "kind": "html",
+      "fetch_method": "capture-source.py --kind html, default instrument UA (tags stripped, entities decoded, whitespace collapsed per line); the original fetch command line is not recorded in the lane, and a re-run of this tool on 2026-11-05T07:47:23Z reproduced the sha256 and the 6563 snapshot bytes",
+      "fetched_utc": "2026-11-05T07:40:48Z",
+      "path": "S108.txt",
+      "sha256": "304baa7db33000b03fe3b9dda9c1823bccbf980f0a69d9a74a936fb312ffc6b9",
+      "bytes": 6563,
+      "lines": 150,
+      "quotes": [
+        {"id": "Q01-scope", "quote": "Lists vulnerabilities for given package and version. May also be queried by commit hash.", "anchor": 24},
+        {"id": "Q02-commit-param", "quote": "commit string The commit hash to query for. If specified, version should not be set.", "anchor": 34},
+        {"id": "Q03-version-fuzzy", "quote": "A fuzzy match is done against upstream versions.", "anchor": 35},
+        {"id": "Q04-version-exclusive", "quote": "If set, commit must not be used, and package.purl must not include a version.", "anchor": 35},
+        {"id": "Q05-package-optional", "quote": "When a commit hash is given, this is optional.", "anchor": 36},
+        {"id": "Q06-page-token-param", "quote": "If your previous query fetched a large number of results, the response will be paginated.", "anchor": 37},
+        {"id": "Q07-version-rule", "quote": "Use either the top-level version field or a versioned purl (pkg:...@<version>), but not both.", "anchor": 40},
+        {"id": "Q08-both-places-400", "quote": "Requests that specify the version in both places return 400 Bad Request.", "anchor": 41},
+        {"id": "Q09-invalid-label", "quote": "Invalid (400 Bad Request):", "anchor": 47},
+        {"id": "Q10-invalid-example", "quote": "{ \"package\": { \"purl\": \"pkg:pypi/jinja2@3.1.4\" }, \"version\": \"3.1.4\" }", "anchor": 48},
+        {"id": "Q11-valid-example", "quote": "{ \"package\": { \"purl\": \"pkg:pypi/jinja2\" }, \"version\": \"3.1.4\" }", "anchor": 46},
+        {"id": "Q12-case", "quote": "Case Sensitivity: API requests are case-sensitive.", "anchor": 53},
+        {"id": "Q13-name-exact", "quote": "Package names are matched exactly, except in ecosystems whose registry treats other spellings as the same package:", "anchor": 54},
+        {"id": "Q14-pypi", "quote": "PyPI names are normalized as described in PEP 503,", "anchor": 54},
+        {"id": "Q15-nuget", "quote": "NuGet names are matched case-insensitively,", "anchor": 54},
+        {"id": "Q31-crates", "quote": "crates.io names are matched case-insensitively with", "anchor": 54},
+        {"id": "Q16-git-set", "quote": "To do so, set the ecosystem to GIT, enter the full URL of the repository to the name field,", "anchor": 56},
+        {"id": "Q17-git-tag-field", "quote": "and the tag into the version field.", "anchor": 56},
+        {"id": "Q18-git-example", "quote": "{\"package\": {\"name\": \"https://github.com/curl/curl.git\", \"ecosystem\": \"GIT\"}, \"version\": \"8.5.0\"}", "anchor": 79},
+        {"id": "Q19-payload-commit", "quote": "\"commit\": \"string\",", "anchor": 59},
+        {"id": "Q20-payload-page-token", "quote": "\"page_token\": \"string\"", "anchor": 66},
+        {"id": "Q21-pagination-trigger", "quote": "pagination will occur when there more than 1,000 vulnerabilities in the response, or when the query has exceeded 20 seconds.", "anchor": 136},
+        {"id": "Q22-token-mechanism", "quote": "When pagination is used, the next_page_token is given in the response, indicating that there are more results to return.", "anchor": 135},
+        {"id": "Q23-repeat-until", "quote": "repeating queries until the next_page_token is no longer included in the response.", "anchor": 135},
+        {"id": "Q24-next-page", "quote": "To get the next page of results, your next request must include page_token:", "anchor": 144},
+        {"id": "Q25-rare-token-only", "quote": "In rare cases, the response might contain only the next_page_token.", "anchor": 149},
+        {"id": "Q26-keep-querying", "quote": "please keep querying with the next_page_token until either results are returned, or no more page tokens are returned.", "anchor": 149},
+        {"id": "Q27-size-http1", "quote": "The API has a response size limit of 32MiB when using HTTP/1.1.", "anchor": 148},
+        {"id": "Q28-size-http2", "quote": "There is no limit when using HTTP/2.", "anchor": 148},
+        {"id": "Q29-http2-recommend", "quote": "We recommend using HTTP/2 for queries that may result in large responses.", "anchor": 148},
+        {"id": "Q30-page-size-vary", "quote": "The page size can vary slightly because of threading and may change in the future.", "anchor": 136}
+      ]
+    }
+  ]
+}

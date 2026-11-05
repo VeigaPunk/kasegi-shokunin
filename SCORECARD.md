@@ -2851,3 +2851,20 @@ Frozen claims: `.ufo/waves/round-72/claims.json` (freeze `a34ce4c`, 2026-11-05 0
 **Late-seat amendment (append-only; the verdicts above stand as measured, and these add the revived seats' findings; `corpus/lessons/round-72.md` § Late seats, L72-1…L72-10).** The mutation-tester (`K72Mutate`) killed the four gate mutants that matter (drop `--work`, drop `--scratch`, argv-basename keying, blanket refusal) and found three counter-internal survivors (the POSITIVE limb dropped from `ok`, a forged alias verdict, and the census-membership of the counter itself, which the gate selftest catches). The critic (`K72Falsify`) found C1's universal sentence falsified off-tree (a hand-parsed head with `--url` is admitted; the shipped heads parse with `add_argument`), C1's kill clauses weakened, and C2's kill rule not the complement of its predicate (the copy-only control fails the predicate through a capture-binding exit that the rule does not name). Revised verdicts: C1 **holds on its frozen predicate** with its universal sentence weakened; C2 **counters hold, target falsified in the `api_key` clause, kill rule incomplete**. Neither claim is admitted on its declared sentence; the round is not admitted until the operator rules.
 
 **Parent-ruling amendment (append-only, L1, after WAVE-DONE):** C2's frozen text is preserved in `.ufo/waves/round-72/claims.json`; the narrowed target (api_key, security-group and mandatory-field contract removed) and the complement kill rule are in `.ufo/waves/round-72/claims-amendment-c2.json`, for the operator to accept or reject. The frozen verdict stays NOT VERIFIED AS DECLARED. Parity was re-measured by the L1 on the exact committed bytes (`controls/parity-final-r72.txt`, 247 identical, 0 different), because `K72ExecParity` died on a provider usage limit. Probe rows 10/29 re-measured on the exact bytes (`controls/probe-rows-10-29-r72.txt`).
+
+## Round 73 — the Q10 recheck cwd repair (C1, depth:verifiability, held at 4) and F51, the OSV.dev POST /v1/query contract on S108 (C2, coverage, held at 8)
+
+| Axis | Score before r73 | Score after r73 | Evidence pointer | Last change |
+|---|---:|---:|---|---|
+| depth:verifiability | 4 | 4 (held; the measured move is on the Q10 recheck instrument, not on the scored `resolve.py` census) | `corpus/instruments/recheck-cwd-census.py`; C1-only candidate `RECHECK-CWD entries=88 noprefix=0 exit2_foreign=0 exit0_foreign=66 exit1_foreign=22` (base: `noprefix=11 exit2_foreign=10 exit0_foreign=56 exit1_foreign=22`, exit 1); patch `.ufo/waves/round-73/w1/K73ExecRecheck.U3.patch` | r73 |
+| coverage | 8 | 8 (held; F51 admitted, the coverage denominator stays operator-owned) | `frontier-recheck-count.py` `FRONTIER-CENSUS rows=51 admitted=51 closed=51 problem-rows=0 registry=108`, `PASS F51 ids=S108`, `entries=54 pass=54 exit=0`; `capture-binding-check.py` `records=87 bound=87 unbound=0` | r73 |
+| depth:density | 9 | 9 (unchanged; not a claim target) | not re-measured this round | r15 (held) |
+
+Claim verdicts: C1 holds on its frozen after-predicate measured on the C1-only tree; its `tree_scope` clause is falsified on the merged tree (prints `entries=89 exit0_foreign=67`); C2 holds on every frozen counter after value. No axis is harmed. Counting commands and base receipts: `.ufo/waves/round-73/controls/c1-donothing-r73.txt`, `c2-donothing-r73.txt`.
+
+Move log (round 73): depth:verifiability — Q10 census (`noprefix` 11 → 0, `exit2_foreign` 10 → 0, `exit0_foreign` 56 → 66); coverage — frontier 50 → 51, registry 107 → 108, entries 53 → 54.
+
+Planned after round 73: (1) counter amendment for RC-1 to RC-3 (`main()` in the selftest, a `/tmp` and leak fixture, a two-recheck-line fixture), frozen with its own do-nothing receipt; (2) operator ruling on RC-8 (whether knowledge recheck values may run in a counter); (3) the R-1 to R-3 write-class work from round 72.
+
+Saturation 9/10 held; no axis retired; no capability row entered this round.
+

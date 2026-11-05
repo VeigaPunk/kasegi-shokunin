@@ -3,7 +3,7 @@
 source: S107 — https://bugzilla.readthedocs.io/en/latest/api/core/v1/bug.html — capture corpus/source-snapshots/round-72/S107.txt (1176 lines, 31435 snapshot bytes, sha256 0b944ea123efa204f1c0539c7d9d8f0367c25741210290681099fb6429254652, fetched 2026-11-05T03:49:50Z, HTTP 200; manifest corpus/source-snapshots/round-72/manifest.json)
 verified-at: 2026-11-05
 ground: F50 — the Bugzilla REST API core v1 bug endpoints: the route and method of get, create and update; the create parameter contract; the update comment object; and the access sentences on CC-list members and the reporter.
-recheck: python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-72/manifest.json --source S107
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-72/manifest.json --source S107
 
 ## Attribution
 

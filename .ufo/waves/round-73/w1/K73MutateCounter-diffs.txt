@@ -1,0 +1,86 @@
+=== M1
+@@ -74,7 +74,7 @@
+             counts["norecheck"] += 1
+             print("NORECHECK %s" % name)
+             continue
+-        noprefix = not value.startswith(prefix)
++        noprefix = False
+         if noprefix:
+             counts["noprefix"] += 1
+         code = run_foreign(value, env_tmp)
+=== M2
+@@ -51,7 +51,7 @@
+             proc = subprocess.run(["bash", "-c", value], cwd=scratch, env=env,
+                                   stdin=subprocess.DEVNULL, capture_output=True,
+                                   text=True, timeout=TIMEOUT)
+-            return proc.returncode
++            return 0 if proc.returncode == 2 else proc.returncode
+         except subprocess.TimeoutExpired:
+             return -1
+     finally:
+=== M3
+@@ -48,7 +48,7 @@
+         env = dict(os.environ)
+         env["TMPDIR"] = scratch
+         try:
+-            proc = subprocess.run(["bash", "-c", value], cwd=scratch, env=env,
++            proc = subprocess.run(["bash", "-c", value], cwd=DEFAULT_LANE, env=env,
+                                   stdin=subprocess.DEVNULL, capture_output=True,
+                                   text=True, timeout=TIMEOUT)
+             return proc.returncode
+=== M4
+@@ -154,7 +154,7 @@
+             return 2
+     counts = census(os.path.abspath(root), lane, verbose)
+     conform = counts["noprefix"] == 0 and counts["exit2_foreign"] == 0
+-    print("RECHECK-CWD-RESULT %s" % ("conformant" if conform else "nonconformant"))
++    print("RECHECK-CWD-RESULT %s" % "conformant")
+     return 0 if conform else 1
+ 
+ 
+=== M5
+@@ -43,7 +43,7 @@
+ 
+ def run_foreign(value, env_tmp):
+     """Run one recheck value from a fresh foreign cwd; return its exit code (-1 on timeout)."""
+-    scratch = tempfile.mkdtemp(prefix="recheck-cwd-", dir=env_tmp)
++    scratch = tempfile.mkdtemp(prefix="recheck-cwd-", dir="/tmp")
+     try:
+         env = dict(os.environ)
+         env["TMPDIR"] = scratch
+=== M6
+@@ -55,7 +55,7 @@
+         except subprocess.TimeoutExpired:
+             return -1
+     finally:
+-        shutil.rmtree(scratch, ignore_errors=True)
++        pass
+ 
+ 
+ def census(root, lane, verbose=False):
+=== M7
+@@ -34,11 +34,12 @@
+ 
+ 
+ def first_recheck(path):
++    value = None
+     with open(path, encoding="utf-8", errors="replace") as fh:
+         for line in fh:
+             if line.startswith("recheck:"):
+-                return line[len("recheck:"):].strip()
+-    return None
++                value = line[len("recheck:"):].strip()
++    return value
+ 
+ 
+ def run_foreign(value, env_tmp):
+=== M8
+@@ -63,7 +63,7 @@
+     if not os.path.isdir(kdir):
+         raise SystemExit("recheck-cwd: no corpus/knowledge under %s" % root)
+     env_tmp = os.environ.get("TMPDIR") or None
+-    prefix = "cd %s && " % lane
++    prefix = "cd %s && " % root
+     counts = {"entries": 0, "noprefix": 0, "exit2_foreign": 0, "exit0_foreign": 0,
+               "exit1_foreign": 0, "exit_other": 0, "norecheck": 0}
+     for path in sorted(glob.glob(os.path.join(kdir, "*.md"))):

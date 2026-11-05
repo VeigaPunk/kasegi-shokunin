@@ -1,0 +1,73 @@
+# K73ScribeLesson receipts; each block prints its command and exit code
+## R1 census replay on base bytes fdf17413 (census script = committed 3b53ff83; knowledge recheck prefix rewritten to scratch base)
+$ python3 <3b53ff83>/corpus/instruments/recheck-cwd-census.py --root <base> --lane <base>
+RECHECK-CWD entries=88 noprefix=11 exit2_foreign=10 exit0_foreign=56 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT nonconformant
+EXIT=1
+## R2 selftest (committed census)
+$ python3 recheck-cwd-census.py --selftest
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest cases=1 failures=0
+EXIT=0
+## R3 one-limb mutants (exact-once replace in scratch copies)
+$ mut1 recheck-cwd-census.py --selftest
+selftest cases=1 failures=1
+EXIT=1
+$ mut2 recheck-cwd-census.py --selftest
+selftest cases=1 failures=1
+EXIT=1
+## R4 recheck-audit.py base replay (committed instrument, cwd limb)
+$ python3 recheck-audit.py --root <base> --foreign / --quiet
+executes=66 gated=22 broken=0  (gated = the line runs and fails closed on an absent base; broken = it cannot run at all)
+lines=88 total=88 pass=78 fail-closed=22 parse_fail=0 cwd_fail=10 paths_fail=0 exit=1
+expect=present expected=88 missing=0 unexpected=0 exit=1
+EXIT=1
+## R5 sources-census (fleet root)
+EXIT=0
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+## R6 S108 capture: digest, lines, located quote
+304baa7db33000b03fe3b9dda9c1823bccbf980f0a69d9a74a936fb312ffc6b9  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-73/S108.txt
+150
+148:The API has a response size limit of 32MiB when using HTTP/1.1. There is no limit when using HTTP/2. We recommend using HTTP/2 for queries that may result in large responses.
+EXIT=0
+## R7 knowledge-expected and file set (lane working tree, read-only)
+90
+88
+88
+sort-c EXIT=0
+## R8 sweep: grep -l 'recheck:' corpus/knowledge/*.md | wc -l
+88
+EXIT=0
+## R9 sweep: per-entry recheck line counts other than 1
+EXIT=1 (1 = no line differs from 1)
+## R10 sweep: all recheck lines (python, read-only)
+KNOWLEDGE-RECHECK-LINES total=88 files_with_gt1=0 noprefix_any=11 noprefix_nonfirst=0
+MULTI []
+NOPREFIX-ANY ['bugzilla-rest-api-bug-endpoints.md:6', 'cisa-vulnrichment-adp-enrichment.md:6', 'cisa-vulnrichment-record-list.md:6', 'github-repository-security-advisories-rest-api.md:6', 'nvd-api-2.0-response-schema.md:6', 'nvd-api-2.0-retrieval-interface.md:6', 'openssf-scorecard-checks.md:6', 'osv-affected-range-events.md:6', 'project-zero-big-sleep-sqlite-variant-analysis.md:5', 'project-zero-fuzzilli-vs-bigsleep-comparison.md:6', 'root-loss-2026-10-12.md:76']
+NOPREFIX-NONFIRST []
+EXIT=0
+## R11 sweep: lessons round-71/72, relative corpus/ command without lane prefix
+corpus/lessons/round-71.md:70:stayed reachable with **no option at all** (N8: `python3 corpus/instruments/frontier-recheck-count.py`,
+EXIT=0
+## R12 sweep: lessons round-71/72, cwd words
+EXIT=1 (1 = no match)
+## R13 freeze commit and base-to-freeze knowledge/instrument diff (read-only)
+3b53ff839d0747530f95d432aec1ea7b4308fe96 2026-11-05T04:43:44-03:00
+.ufo/waves/round-73/claims.json
+.ufo/waves/round-73/controls/c1-donothing-r73.txt
+.ufo/waves/round-73/controls/c2-donothing-r73.txt
+corpus/instruments/recheck-cwd-census.py
+EXIT=0
+## R14 round-73 snapshot dir: tracked files and manifest
+S108.txt
+EXIT=0
+## R15 cwd-failing entries: recheck-audit cwd limb vs census exit2_foreign (base replay, fresh runs)
+$ python3 r15.py
+recheck-audit EXIT=1
+census EXIT=1
+recheck-audit cwd_false count=10
+census exit2_foreign count=10
+sets identical=True
+only in census noprefix/exit2 list but not cwd limb: []
+only in recheck-audit cwd limb: []
+EXIT=0
