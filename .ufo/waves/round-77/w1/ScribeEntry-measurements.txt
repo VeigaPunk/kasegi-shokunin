@@ -1,0 +1,66 @@
+round-73/S108: quotes=31 anchor_drift=[]
+round-76/S111: quotes=13 anchor_drift=[]
+round-77/S112: quotes=13 anchor_drift=[('Q04-params-same', 30, [31]), ('Q05-pagination-instructions', 31, [32])]
+
+=== B6 predicate line set vs manifest anchors vs true quote locations ===
+B6: Distinctness (QUALITY R114 subject sweep + R125 admitted-entry sweep, recorded in the round lesson): the entry's ground names only batch-contract clauses located in the capture at S112.txt lines 24, 30, 31, 34, 35, 36, 166, 168, 169, 170, 194 and 195; the single-query contract ground (payload keys, version rule content, pagination basics, response-size limits) is cross-referenced as already-held from S108/F51 and not claimed; the endpoint path string 'POST /v1/querybatch' is already-held listed-not-described ground (S108.txt:5-9, F51 entry line 75, S111 captures) and is not itself the claim; the record format stays S080/F31; the overview page stays S111 (queued).
+
+located_anchors: S112.txt lines 24, 30, 31, 34, 35, 36, 166, 168, 169, 170, 194, 195 (manifest Q01-Q13).
+manifest distinct anchors: [24, 30, 31, 34, 35, 36, 166, 168, 169, 170, 195]
+anchor vs true line:
+  Q01-batch-definition         anchor=  24 true=[24]
+  Q02-return-shape             anchor=  24 true=[24]
+  Q03-ordering                 anchor=  24 true=[24]
+  Q04-params-same              anchor=  30 true=[31]   <-- ANCHOR DRIFT
+  Q05-pagination-instructions  anchor=  31 true=[32]   <-- ANCHOR DRIFT
+  Q06-item-rules               anchor=  34 true=[34]
+  Q07-version-rule             anchor=  35 true=[35]
+  Q08-400                      anchor=  36 true=[36]
+  Q09-partial-tokens           anchor= 166 true=[166]
+  Q10-individual-1000          anchor= 168 true=[168]
+  Q11-total-3000               anchor= 169 true=[169]
+  Q12-threading-variance       anchor= 170 true=[170]
+  Q13-next-request             anchor= 195 true=[195]
+B6 line set: []
+B6 - manifest anchors: []
+manifest anchors - B6: [24, 30, 31, 34, 35, 36, 166, 168, 169, 170, 195]
+all-13-quote true locations: [24, 31, 32, 34, 35, 36, 166, 168, 169, 170, 195]
+true locations NOT in B6 set: [24, 31, 32, 34, 35, 36, 166, 168, 169, 170, 195]
+
+=== line 194 unpinned? ===
+is line 194 inside any manifest anchor window (anchor..anchor+3)? False
+lines covered near 194: [195, 196, 197, 198]
+B6 permitted set includes 194 -> a clause grounded at :194 is NOT verifiable by the recheck line
+
+=== manifest window coverage of payload / request sample / sample response ===
+manifest window coverage of payload 37-61: [37, 38]
+manifest window coverage of request sample 63-83: []
+manifest window coverage of sample 200 response 84-164: []
+registry anchor cell: 'lines 24-36 and 166-195'  -> payload block 37-61 outside that range
+scope cell claims 'the queries-array payload' -> payload text at 37-61, no manifest quote inside
+
+=== quote word counts (<=25 per QUALITY Q3) and uniqueness ===
+capture lines: 216
+Q_A words=15 occurrences=[24] exact_at_line=True
+Q_B words= 7 occurrences=[24] exact_at_line=True
+Q_C words=10 occurrences=[24] exact_at_line=True
+Q_D words=16 occurrences=[31] exact_at_line=True
+Q_E words=10 occurrences=[34] exact_at_line=True
+Q_F words= 9 occurrences=[35] exact_at_line=True
+Q_G words= 8 occurrences=[36] exact_at_line=True
+Q_H words=18 occurrences=[166] exact_at_line=True
+Q_I words=11 occurrences=[168] exact_at_line=True
+Q_J words= 9 occurrences=[169] exact_at_line=True
+Q_K words=17 occurrences=[170] exact_at_line=True
+Q_L words=18 occurrences=[194] exact_at_line=True
+Q_M words=20 occurrences=[195] exact_at_line=True
+over_25_words: 0
+S108 held quote words: 14 occ: [40]
+
+=== S112 row cell flip (old -> new) ===
+OLD_STATUS: ' queued ' OLD_USEDBY: ' — '
+NEW_STATUS: ' mined ' NEW_USEDBY: ' corpus/knowledge/osv-post-v1-querybatch-contract.md '
+OTHER_CELLS_UNCHANGED: True
+FIELD_COUNT: 13
+NEW_ROW:
+| S112 | OSV.dev API reference, POST /v1/querybatch (OSV project) — https://google.github.io/osv.dev/post-v1-querybatch/ | docs | A | the OSV.dev project's own reference for one batch query endpoint, POST /v1/querybatch: the queries-array payload, the ids-and-modified-only return shape, the input-matched response-ordering guarantee, the per-item version rules with the 400 Bad Request consequence, and the per-query pagination semantics (next_page_token per result, the 1,000/3,000 thresholds, the threading-variance note, the follow-up-request rule); not the single-query POST /v1/query contract (S108, F51), not the OSV record format (S080, F31), not the API overview page (S111), not any other endpoint's page, and not any live query or rate-limit statement (the page states none) | POST /v1/querybatch page, lines 24-36 and 166-195; capture corpus/source-snapshots/round-77/S112.txt (sha256 f3ca04652e444125a1441449e23814107999496d73fa6ac46f35cca3d2bd0907, 216 lines, 4575 snapshot bytes, fetched 2026-11-05T12:22:10Z, byte-identical across two fetches; 13 pinned quotes in corpus/source-snapshots/round-77/manifest.json, all located rc=0 at freeze; batch definition/return shape/ordering S112.txt:24, parameters S112.txt:30, item version rules and 400 S112.txt:34-36, pagination S112.txt:166-195) | Batch OSV lookups by request shape: one POST carries a queries array whose items follow the /v1/query item rules (400 Bad Request on version and purl in one item), results carry vulnerability ids and modified only in input order, and pagination is per-query at the 1,000/3,000 thresholds with threading variance and per-query follow-up tokens | mined | 2026-11-05 | 180d | corpus/knowledge/osv-post-v1-querybatch-contract.md |
