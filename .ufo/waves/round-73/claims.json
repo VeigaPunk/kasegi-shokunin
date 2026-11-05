@@ -1,0 +1,62 @@
+{
+  "lane": "kasegi",
+  "round": 73,
+  "attempt": 1,
+  "frozen_at_utc": "2026-11-05",
+  "base_tip": "fdf17413f20ea1b19989a090397ece5f49881b9e",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "type": "repair (QUALITY Q10: recheck line executable from any cwd; the lowest non-retired axis, score 4)",
+      "target": "every corpus/knowledge recheck line carries the lane-root cd prefix and runs from a foreign cwd without exit 2; the 11 prefix-less recheck lines gain the prefix and the 10 that exit 2 from a foreign cwd exit 0; the 22 fail-closed lost-base lines keep exit 1",
+      "counter": {
+        "command": "TMPDIR=<scratch> python3 corpus/instruments/recheck-cwd-census.py --root .",
+        "instrument": "corpus/instruments/recheck-cwd-census.py",
+        "guard": "python3 corpus/instruments/recheck-cwd-census.py --selftest"
+      },
+      "before_values": {
+        "census_at_base_fdf17413": "RECHECK-CWD entries=88 noprefix=11 exit2_foreign=10 exit0_foreign=56 exit1_foreign=22 exit_other=0 norecheck=0; RECHECK-CWD-RESULT nonconformant; exit 1",
+        "control_receipt": ".ufo/waves/round-73/controls/c1-donothing-r73.txt"
+      },
+      "after_predicate": "on the C1 candidate tree with C2 not landed, the census prints exactly `RECHECK-CWD entries=88 noprefix=0 exit2_foreign=0 exit0_foreign=66 exit1_foreign=22 exit_other=0 norecheck=0` and `RECHECK-CWD-RESULT conformant` with exit 0, and `--selftest` prints `selftest cases=1 failures=0` with exit 0",
+      "kill_rule": "C1 FAILS if any knowledge entry has noprefix=1 or exit2_foreign=1 after the repair, if exit1_foreign differs from 22 (a fail-closed line flipped state without a recorded reason), if exit0_foreign differs from 66, or if the selftest is not green; a candidate that only prefixes lines without the foreign-cwd run does not satisfy the predicate",
+      "tree_scope": "C1 population is the 88 knowledge entries present at base; the C2 entry is measured by C2 and does not move this predicate"
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "type": "frontier admission (new primary source; fills the surface PROVINCE F31 names as out of scope: the osv.dev service API)",
+      "target": "frontier F51: the OSV.dev POST /v1/query service contract (the request payload, the version rule, the Git-tag query, pagination and the 32 MiB HTTP/1.1 limit) admitted on S108 as one knowledge entry",
+      "source": {
+        "id": "S108",
+        "url": "https://google.github.io/osv.dev/post-v1-query/",
+        "capture": "corpus/source-snapshots/round-73/S108.txt",
+        "note": "opened and captured this round (2026-11-05T07:40:48Z, HTTP 200); every quote in the entry is located in the capture"
+      },
+      "counter": {
+        "command": "python3 corpus/instruments/frontier-recheck-count.py; python3 corpus/instruments/capture-binding-check.py; wc -l corpus/instruments/knowledge-expected.txt; grep -vc '^#' corpus/instruments/knowledge-expected.txt; ls corpus/knowledge/*.md | wc -l; scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi",
+        "instrument": "corpus/instruments/frontier-recheck-count.py"
+      },
+      "before_values": {
+        "FRONTIER-CENSUS": "rows=50 admitted=50 closed=50 problem-rows=0 registry=107",
+        "entries": "entries=53 pass=53 exit=0",
+        "capture": "records=86 bound=86 unbound=0",
+        "knowledge_expected": "90 lines / 88 rows",
+        "knowledge_files": 88,
+        "census_exit": 0,
+        "control_receipt": ".ufo/waves/round-73/controls/c2-donothing-r73.txt"
+      },
+      "after_predicate": "the same commands print `FRONTIER-CENSUS rows=51 admitted=51 closed=51 problem-rows=0 registry=108`, a `PASS F51 ... ids=S108` line, `entries=54 pass=54 exit=0`, capture `records=87 bound=87 unbound=0` with exit 0, knowledge-expected 91 lines / 89 rows with `LC_ALL=C sort -c` clean, 89 knowledge files, and sources-census exit 0",
+      "kill_rule": "C2 FAILS if the F51 row or its entry is absent or duplicated, if any quote in the entry is not located in the S108 capture, if capture-binding reports an unbound record, if knowledge-expected drifts from the file set, if the new entry's recheck exits nonzero from a foreign cwd, or if sources-census exits nonzero",
+      "tree_scope": "C2 population is the S108 capture and the knowledge file set; the C1 repair does not change any C2 counter"
+    }
+  ],
+  "sourced_claim": "C2 rests on S108, opened and captured this round",
+  "non_claims": [
+    "the OSV overview page (api/) and its rate-limit and response-size statements are NOT claimed: S108 is the query page only",
+    "the F31 scope limit stays as written; F51 admits the service contract, not the OSV record format",
+    "routed defects R-1 to R-7, L72-2/L72-3/L72-8/L72-11 from round 72 are NOT repaired this round",
+    "no live osv.dev query is made by any lane check; every recheck replays the pinned capture"
+  ]
+}
