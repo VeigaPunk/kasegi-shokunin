@@ -314,3 +314,34 @@ Q13-dossier anchor= 69 wc_w=19   Q14-refusal anchor= 72 wc_w=18   Q15-nolimit an
   requirement is met: the critic's list is applied before the round closes.
 - **E71-2 — the F49 ground narrowed (M71-3).** `corpus/README.md` `[r71 erratum 1]` and `ScoutF49`'s
   measurement: four of the five items the frozen C2 sentence listed are already held from S075.
+
+## Addendum — the M71-5 writer identified, and what its patch still needs
+
+[appended 2026-11-05, append-only per R9; M71-5 above is unchanged and stays the record of what the
+landing L1 measured]
+
+- **Who.** The "unidentified writer" in M71-5 was the attempt-1 L1 itself, still alive after the driver
+  logged `lane-dead-no-report kasegi round=71` at 22:31:29 (`/home/vgpnk/Projects/shokunin/.ufo/watchdog.log`;
+  it had already run its wave's seats to 23:05 and was still executing at 00:24–00:29). It re-entered the
+  tree after wave `w2` settled — the handoff message it received named that wave — and applied the two
+  corrections it had itself measured through `SentinelC1`. So the incident is a **duplicate-L1** fault, not
+  an unknown actor: two L1 processes held the same checkout for about two hours, and the later process
+  could not tell the earlier one's work from tampering.
+- **What its patch needs, if r72 adopts it.** `.ufo/waves/round-71/w2/unauthorized-gate-edit.patch` is the
+  gate half only. `figure-audit.py`'s `python_head_ok` is restructured (`if target == base or not
+  target.startswith(base + os.sep)`), so two `figure-audit-mutbat.py` mutant targets no longer match
+  (`m7-python-confinement-off`, `m9-python-boundary-separator-off` → `sites=0`, `invalid=2`, battery exit 1).
+  Applying the patch alone therefore breaks the battery. The working pair, measured before the revert:
+  m7 target `"    if target == base or not target.startswith(base + os.sep):\n        return False"` →
+  `"    if target == base:\n        return False"`, m9 target
+  `"    if target == base or not target.startswith(base + os.sep):"` → `"    if target == base or not
+  target.startswith(base):"`, and `EXPECTED_CASES` 106 → 109 with three cases
+  (`python-work-denied`, `python-scratch-denied`, `python-freeze-check-head-refused`); with both halves,
+  `--selftest` reads `cases=109 failures=0`, the frozen counter reads `VERIFY measurements=25 failures=0`
+  (gate sha256 `e5bf2c523de318ca78a39170caa722fa08a050159c9c848546fbc37a1d4a94f2`) and the battery reads
+  `killed=5/5 invalid=0 controls=pass`. Evidence: `.ufo/waves/round-71/controls/` (the corrected-gate run is
+  reproducible by re-applying the two halves; the gate file was restored to `182f4ef7…` before the landing
+  commit, so the lane carries the frozen bytes only).
+- **Ownership rule.** No criterion existed; the durable one added this round is **R118** in
+  `corpus/QUALITY.md` (one live L1 per checkout: the driver reaps the previous attempt's process group
+  before relaunch, and an L1 that finds another live L1 stops editing production files).
