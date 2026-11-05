@@ -1,0 +1,18 @@
+# r72 C1 census kill matrix (L1-run; each mutant is a scratch copy of the candidate instrument dir with one edit; counter unchanged)
+# candidate sha256 4f59bda47eab2f93d54ccc7abe6256a878db5cbee98684d9d110043d91f9d221; counter sha256 255fd4072dfe8e2a6bf53d5fcc0f92d2af486d40711d03c4573a4017ccd8db52
+m1 drop --work from PY_DENIED_ANY
+CENSUS heads=45 write_class_pairs=5 READMITTED=15
+CENSUS-RESULT defect
+exit=1  => KILLED
+m2 drop --scratch from PY_DENIED_ANY
+CENSUS heads=45 write_class_pairs=5 READMITTED=4
+CENSUS-RESULT defect
+exit=1  => KILLED
+m3 policy keyed on argv basename (round-71 shape)
+ALIAS-PROBE verdict=admitted rc=1 
+CENSUS-RESULT defect
+exit=1  => KILLED
+m4 blanket refusal (python_head_ok returns False)
+POSITIVE admitted=0/2
+CENSUS-RESULT defect
+exit=1  => KILLED (positive control)
