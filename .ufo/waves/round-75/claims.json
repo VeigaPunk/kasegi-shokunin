@@ -1,0 +1,66 @@
+{
+  "round": 75,
+  "lane": "kasegi",
+  "attempt": 1,
+  "frozen_at": "2026-11-05",
+  "base_revision": "f9cc05b56170946192a2dcafcc07e90ec611746c",
+  "controls_revision": "f9cc05b56170946192a2dcafcc07e90ec611746c",
+  "notes": [
+    "Freeze order: controls commit precedes this freeze commit; implementation lands after the wave (r70 order; M73-2 fix).",
+    "Census shape clause binds entries == the corpus/knowledge/*.md file count at the SAME measurement revision (self-consistent within one run), never an absolute number: V74-1 fix. Absolute values at the measurement revision live in the receipts; the landed-state check re-runs the census at the final tip and names the declared drift (C2 lands one entry: entries 90 -> 91, exit0_foreign 68 -> 69, restoration_only stays 0).",
+    "RC-8 (operator, open): recheck values still run through bash -c in the census; this round neither expands nor reroutes that surface; routed around, not decided (kill rule keeps the exec-surface count fixed).",
+    "C1 and C2 are causally separable: C1's after-values are measured at the C1 implementation revision before C2's entry lands; C2's counters do not read the census gate's internals."
+  ],
+  "C1": {
+    "axis": "depth:verifiability",
+    "axis_score_before": 4,
+    "axis_score_after": 4,
+    "score_delta_basis": "nominal per QUALITY R58: the scored resolve.py citation census is not read by this gate; the claim is the counter amendment, not a score move",
+    "claim_type": "counter-amendment",
+    "routed_defects": ["M74-6 (C1 scope sentence falsified at file level for restoration-recheck:-only files)", "V74-1 (census-evidence timing; shape-clause drift expectation named here)"],
+    "target": "corpus/instruments/recheck-cwd-census.py is amended so that (i) the docstring states the restoration-recheck exclusion; (ii) the census output carries an explicit restoration_only=N field counting files whose only recheck-ish header is 'restoration-recheck:' (no 'recheck:' line at all), and such files are counted in restoration_only instead of norecheck (norecheck = files carrying neither header); (iii) the RESULT gate is norecheck- and restoration_only-aware: conformant requires noprefix==0 AND exit2_foreign==0 AND norecheck==0 AND restoration_only==0; (iv) the selftest gains a sixth case (restoration-only) whose fixture is one file carrying only 'restoration-recheck: touch <fx>/restoration-ran' and one cd-prefixed passing entry, asserting entries=2 restoration_only=1 norecheck=0 noprefix=0 exit2_foreign=0, that the restoration value was NOT executed (marker absent), and that main() on this fixture prints RECHECK-CWD-RESULT nonconformant and exits 1; the selftest prints 'selftest cases=6 failures=0'",
+    "scope": "amendments confined to corpus/instruments/recheck-cwd-census.py, its registry home rows (a SKILL.md gate-registry row is ADDED this round - the gate had none at base; Gate standard registry clause), and the corpus/instruments/README.md section naming it; no other instrument file changes",
+    "before": {
+      "survival": "unamended counter at base on the case-6 fixture: RECHECK-CWD entries=2 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=1, RECHECK-CWD-RESULT conformant, exit 0; the restoration-only file is counted as a plain norecheck entry and the tree passes (.ufo/waves/round-75/controls/c1-redbefore-restoration-r75.txt)",
+      "selftest": "unamended counter --selftest prints selftest cases=5 failures=0 (no restoration-only case exists)",
+      "do_nothing": "unamended counter on the real lane tree at base: entries=90 noprefix=0 exit2_foreign=0 exit0_foreign=68 exit1_foreign=22 exit_other=0 norecheck=0, conformant, exit 0 (.ufo/waves/round-75/controls/c1-donothing-r75.txt) - a do-nothing control passes the real tree, so the target state (explicit restoration_only bucket + norecheck/restoration_only-aware verdict) is not reachable without the amendment"
+    },
+    "after": {
+      "A1_selftest": "TMPDIR=<scratch> python3 corpus/instruments/recheck-cwd-census.py --selftest prints 'selftest cases=6 failures=0', exit 0",
+      "A2_lane_census": "from a foreign scratch cwd: TMPDIR=<scratch> python3 <lane>/corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> prints 'RECHECK-CWD entries=90 noprefix=0 exit2_foreign=0 exit0_foreign=68 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0' and 'RECHECK-CWD-RESULT conformant', exit 0, measured at the C1 implementation revision where entries equals the corpus/knowledge file count (90) by construction; drift expectation after C2 lands: entries=91 exit0_foreign=69 restoration_only=0 at the final tip (landed-state receipt names it)",
+      "A3_kill_rule": "at least two mutant classes of the amended counter each fail the new selftest (print a failing case line and cases=6 failures=1, exit 1): M-A restoration_only folded back into norecheck, M-B RESULT gate keeps only the old two clauses, M-C the restoration value executed through run_foreign; the unamended counter survives (before block)",
+      "A4_value_parity": "on the real lane tree at the same revision every stable field (entries, noprefix, exit2_foreign, exit0_foreign, exit1_foreign, exit_other, norecheck) is equal between the base counter and the amended counter, and the only stdout delta is the inserted 'restoration_only=0' field plus the unchanged RESULT line",
+      "measuring_commands": "named above; receipts committed under .ufo/waves/round-75/w1/ and controls/"
+    },
+    "kill_rule": "if any of A1-A4 fails at integration, C1 is NOT VERIFIED and the round reports the honest stop; no predicate rewording after any seat scores",
+    "exec_surface": "the census keeps exactly one bash -c call site (run_foreign) before and after; SentinelCounter re-measures (kill rule (d) continuity)"
+  },
+  "C2": {
+    "axis": "coverage",
+    "axis_score_before": 8,
+    "axis_score_after": 8,
+    "score_delta_basis": "the coverage denominator (the lost-domain surface set) is operator-owned (L0 kasegi round-15 row); the claim is one frontier admission, score held",
+    "claim_type": "frontier-admission",
+    "sourced": "S110, opened this round",
+    "target": "F53 admitted: the NDSS Symposium 2023 Fuzzilli paper - 'FUZZILLI: Fuzzing for JavaScript JIT Compiler Vulnerabilities', Samuel Gross, Simon Koch, Lukas Bernhard, Thorsten Holz, Martin Johns, https://www.ndss-symposium.org/wp-content/uploads/2023/02/ndss2023_f290_paper.pdf (DOI 10.14722/ndss.2023.24290) - advances from the round-74 lead (corpus/SOURCES.md Leads line 175, kept byte-identical as history) to registry row S110 (kind paper, tier A scoped to the paper's own statements: design, comparison to other fuzzers, evaluation results; not the tool README S109, not PZ's comparison post S093, not live fuzzing), with one knowledge entry corpus/knowledge/fuzzilli-ndss2023-jit-fuzzing-paper.md, capture corpus/source-snapshots/round-75/S110.txt and manifest corpus/source-snapshots/round-75/manifest.json; F53 row appended to corpus/README.md (end-append per R6) and PROVINCE.md gains the r75 line",
+    "after": {
+      "B1_registry": "grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md = 110 (base 109); exactly one new row S110, kind=paper, tier A, status mined, opened 2026-11-05, recheck 90d, used-by the new entry; the S110 id does not collide (assimilation staged S109 is a different document; lane registry S110 unused - collision re-check receipt .ufo/waves/round-75/controls/assimilation-considerthese-r75.txt)",
+      "B2_registry_unchanged_command": "git diff <base> -- corpus/SOURCES.md shows 0 removed lines (named command; the r74 C2-clause-weakness fix)",
+      "B3_knowledge": "ls corpus/knowledge/*.md | wc -l = 91 (base 90); corpus/instruments/knowledge-expected.txt = 93 lines / 91 non-comment rows, LC_ALL=C sort -c exit 0, set-equal to the knowledge files",
+      "B4_capture": "python3 corpus/instruments/capture-binding-check.py prints records=89 bound=89 unbound=0, exit 0 (base 88)",
+      "B5_quotes_command": "cd <foreign cwd> && python3 <lane>/corpus/instruments/source-recheck.py --manifest <lane>/corpus/source-snapshots/round-75/manifest.json --source S110 exits 0 with every quote anchor-ok and every quote <= 25 words (named command; the r74 C2-clause-weakness fix)",
+      "B6_frontier": "python3 corpus/instruments/frontier-recheck-count.py prints FRONTIER-PASS F53 ids=S110, entries=56 pass=56 exit=0 (base rows=52 admitted=52, entries=55 pass=55)",
+      "B7_census": "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi exit 0 (six inherited W04 warnings unchanged)",
+      "B8_distinctness_screen_narrowed": "the frozen screen (M74-7 fix) asserts ONLY: the paper's design/comparison/evaluation ground is distinct from S109 (the tool's own README), S093 (PZ's Fuzzilli-vs-BigSleep comparison post) and revenger's DecFuzzer S117 / mishegos S396 tool documentation rows; it does NOT claim no sibling holds fuzzer documentation. Subject sweep with named greps: grep -n 'ndss\\|Fuzzilli' corpus/SOURCES.md (per-hit verdicts) and grep -ril 'fuzzilli' ../revenger-shokunin/corpus (expected: no NDSS paper row); verdicts recorded in the round lesson Gate"
+    },
+    "kill_rule": "if any of B1-B8 fails at integration, C2 is NOT VERIFIED and the round reports the honest stop; the OSV overview page lead stays a lead (its flip condition is unchanged)",
+    "entry_recheck": "the new entry's first recheck: line is 'cd <lane> && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-75/manifest.json --source S110' and exits 0 from a foreign cwd (census stays conformant; the drift is the declared A2 expectation)"
+  },
+  "non_claim_work": [
+    "V74-1 erratum: census receipt re-run at the final tip, committed; erratum appended after the filed bytes of .ufo/reports/round-74/kasegi.md naming the superseded landed-state line; correction recorded in the round-75 lesson (round-74 files not edited)",
+    "calibration: QUALITY R121 (freeze-note discipline: a shape clause names its measurement revision or its drift expectation) and R122 (criterion-id uniqueness; collisions are superseded by document, never repaired in place) added, grounded in M74-3 and V74-1",
+    "SKILL.md gate-registry row for recheck-cwd-census.py added in the C1 landing commit (Gate standard registry clause; the gate had no row at base - found this round, recorded as M75 registry-home gap)",
+    "assimilation: none - adoption stays closed (79/94 staged ids collide with the 109-row registry; the r70/r71 L0 questions remain the routing item); collision re-check receipt committed",
+    "considerthese: sweep receipt committed; verdict recorded in the round lesson Gate"
+  ]
+}
