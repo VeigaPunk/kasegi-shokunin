@@ -1111,10 +1111,23 @@ as F48.
 
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
-| F49 | TrendAI ZDI's own disclosure process and vendor coordination — the acquisition-programme flow (validation, formal monetary offer, payment, vendor coordination, credit or anonymity), the 120-day standard coordination window with its 30/60/90-day shortening for flaws from incomplete or problematic patches, escalation to a limited public advisory after 15 business days of vendor silence, and the full advisory after a patch against the limited advisory when no fix arrives | admitted | knowledge/zdi-disclosure-process-and-vendor-coordination.md | S106 | Read the three vendor-coordination numbers in their own paragraph (S106.txt:70): the 120-day standard window, the 30/60/90-day shortening for incomplete or problematic patches, and the 15-business-day escalation are one statement and each carries its own condition; the advisory form follows the patch outcome (S106.txt:51, S106.txt:52). F02/S075 keeps the ZDI policy body's conditional timeline, F13/S043-S045 keep the platform severity ladders, and F11/F38 keep the ISO division of labour. |
+| F49 | TrendAI ZDI's own disclosure process and vendor coordination — the acquisition-programme flow (validation, formal monetary offer, payment, vendor coordination, credit or anonymity), the 120-day standard coordination window with its 30/60/90-day shortening for flaws from incomplete or problematic patches, a permissive escalation to a limited public advisory if a vendor fails to respond within 15 business days of first contact, and the full advisory after a patch against the limited advisory when no fix arrives | admitted | knowledge/zdi-disclosure-process-and-vendor-coordination.md | S106 | Read the three vendor-coordination numbers in their own paragraph (S106.txt:70): the 120-day standard window, the 30/60/90-day shortening for incomplete or problematic patches, and the 15-business-day escalation are one statement and each carries its own condition; the advisory form follows the patch outcome (S106.txt:51, S106.txt:52). F02/S075 keeps the ZDI policy body's conditional timeline, F13/S043-S045 keep the platform severity ladders, and F11/F38 keep the ISO division of labour. |
 
 F49 adds the acquisition programme's own disclosure-process and vendor-coordination statements, which the lane did not hold:
 the F02/S075 entry holds ZDI's policy body (a broker acquisition-disclosure timeline with an unstated clock start), not the
 About page's process and coordination statements. The lost-domain 0/18 denominator is unchanged.
 
 [r71 amendment, appended 2026-11-05] The frontier as of round 71 is F01-F49 admitted: F48 at round 70 and F49 at round 71.
+
+[r71 erratum 1, appended 2026-11-05 — the F49 ground is narrowed, the row and its counters are unchanged] The
+round-71 scout measured that four of the five items the frozen C2 sentence listed as F49's ground are already held by
+the lane through F02/S075 (`corpus/knowledge/zdi-disclosure-policy.md`, ZDI's own disclosure-policy page): the 120-day
+window (`S075.txt:24`, "four months (120 days)"), the 30/60/90-day shortening (`S075.txt:25`), the fifteen-business-day
+escalation (`S075.txt:23`) and the limited-advisory form (`S075.txt:24`). What F49 actually adds is the **acquisition-side
+flow** (validate -> confirm severity -> formal monetary offer -> payment -> vendor coordination -> credit or anonymity), the
+"no limit on reports", the dossier contents and the no-backlog guarantee, plus three measured wording divergences: S075's
+escalation publishes a public advisory where S106's withholds exploit-enabling detail; S075's 120 days is conditional on a
+vendor response while S106 states it as the standard window; S075's 15 business days starts after a 5+5-day acknowledgement
+ladder that the About page does not name (`S106.txt:70` vs `S075.txt:23`). Evidence: `.ufo/waves/round-71/w1/ScoutF49.md`
+S106/F02 section. A reader must not take the clock numbers from this row as new ground; they are ZDI's numbers, first
+attested at S075.

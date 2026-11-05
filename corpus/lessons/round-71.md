@@ -153,6 +153,53 @@ Q13-dossier anchor= 69 wc_w=19   Q14-refusal anchor= 72 wc_w=18   Q15-nolimit an
   `PY_DENIED_BY_SCRIPT` per script, `PY_DENIED_ANY`, `PY_HEAD_REFUSED` and the fail-closed
   `PY_SCRIPT_CENSUS` allowlist in `corpus/instruments/figure-audit.py` (sha256 `182f4ef7…`), with ten
   new selftest cases and the `python-census-covers-instruments` completeness case.
+- **M71-2 — a claim's after-state landed across two commits, and a seat graded the first one.** C2's
+  capture, entry, README frontier row and knowledge-expected line landed in `4e33119`, but its registry
+  row S106 landed only in `34faab9`; `ReviewC2` graded `4e33119` and correctly reported `C2: NOT
+  VERIFIED`, which reads as a claim failure until the L1 says which revision carries the row
+  (`.ufo/waves/round-71/w1/ReviewC2.md` § Verdict vs the tip's `rows=106`). Captured-by: **R111**
+  (the after-state lands in one commit, or every after-value names the commit that carries the file its
+  counter reads) — re-measured at the tip in `.ufo/waves/round-71/controls/attempt2-tip-counters.txt`.
+  The attempt-1 L1 also died before filing its report, so four attack seats' verdicts were never
+  produced; attempt 2 re-attacked with fresh identities rather than re-reading the dead wave.
+- **M71-3 — the frozen C2 ground sentence named numbers the lane already held.** C2 declared F49's ground as the
+  120-day window, the 30/60/90 shortening, the 15-business-day escalation and the full-versus-limited advisory choice;
+  all four are already in `corpus/knowledge/zdi-disclosure-policy.md` from S075 (ZDI's own policy page) at
+  `S075.txt:23-25`. The overlap was measured only after the freeze, by `ScoutF49`
+  (`.ufo/waves/round-71/w1/ScoutF49.md`, S106/F02 section), and the correction landed as `corpus/README.md` `[r71
+  erratum 1]` narrowing the ground to the acquisition-side flow and three wording divergences — the row, the counters
+  and the entry are unchanged. Captured-by: **none** — the pre-freeze distinctness check compared the manifest note's
+  named neighbours (F13, S004, S005, F11/F38) but not F02/S075, the lane's own earlier ZDI page. The criterion to add:
+  a coverage claim's distinctness check runs against the registry by SUBJECT (the same organisation or programme), not
+  only against the neighbours the manifest happens to name (R114, round 72).
+
+- **M71-4 — repairing an over-refusal by re-admitting the same flags per script opened a write
+  primitive on 23 heads (the round's own harm).** The r71 mechanism denies `--root`/`--json`/`--work`/
+  `--scratch` only where `PY_DENIED_BY_SCRIPT` names the head. The round-70 gate refused those names for
+  *every* head; the candidate re-admits at least one of them on **23 censused heads**, and one measured
+  effect is a ledger whose derive wrote **22,012 files** into a directory of the ledger author's choosing
+  (a byte copy of the lane including `.git`), `rc=1`, no refusal — where the round-70 gate refused the
+  same ledger with `rc=2` (`SentinelC1` §4 R1, `.ufo/waves/round-71/w2/SentinelC1.md`). A second,
+  narrower regression: the census is keyed on basename while containment is keyed on realpath, so a file
+  named `gate-quote-audit.py`-as-`ok.py` inside `corpus/instruments/` is admitted with only
+  `PY_DENIED_ANY` (measured: wrote 2,595 bytes through `--json`; base refused). Captured-by: **none** —
+  no criterion required a re-admission ledger, and the freeze's positive controls (R1-R8, all read-only
+  derives) could not see it. Fix routed as V71-7/V71-8; criterion **R115** carries the class.
+
+- **M71-5 — an unidentified writer modified two gate instruments during the round.** At 00:26-00:28
+  (committed tips `3cc8cd4` clean) `corpus/instruments/figure-audit.py` changed under the commit
+  (`PY_DENIED_ANY` gained `--work`/`--scratch`, `freeze-check.py` joined `PY_HEAD_REFUSED`, the census
+  keyed on the resolved basename, `EXPECTED_CASES` 106 → 109) and `corpus/instruments/figure-audit-mutbat.py`
+  changed and reverted within a minute. No seat report claims either edit and no item permitted one. The
+  L1's final counter run caught it as `failures=3` with gate sha256 `e5bf2c52…` instead of the frozen
+  `182f4ef7…`; the frozen bytes were restored from the branch (`git show master:<path>`), the patch was
+  preserved as `.ufo/waves/round-71/w2/unauthorized-gate-edit.patch` (91 lines), and the counter then read
+  `VERIFY measurements=25 failures=0` exit 0 (`controls/attempt2-final-verification.txt`). An intermediate
+  run still read `failures=1` while the writer was active — a transient the freeze cannot see. Captured-by:
+  **none** for live tamper detection; the criterion to add is "a round re-hashes every frozen instrument
+  immediately before the commit and after each counter run, and a mismatch aborts the landing" (R117,
+  round 72). The proposed repair is routed, not adopted: it would change the claim's instrument after
+  scoring, which is exactly what the freeze forbids.
 
 ## Routed defects
 
@@ -171,6 +218,57 @@ Q13-dossier anchor= 69 wc_w=19   Q14-refusal anchor= 72 wc_w=18   Q15-nolimit an
   head, removing its `--json` entry leaves the gate refusing the derive anyway (`rc=2 refused=1` before
   and after). Fix: drop the redundant entry or note that the head refusal covers it, so the census does
   not carry a rule no probe can distinguish.
+- **V71-4 — the R8 positive row's value limb is vacuous at the measured revision (R112).** The row's
+  derive is `python3 corpus/instruments/capture-binding-check.py --root . | grep -c records=84`, and the
+  tip prints `records=85 bound=85 unbound=0`, so `grep -c` prints nothing, `direct_rc=1`, and the
+  counter hands the gate an EMPTY `want`; `figure-audit.py:587` then passes on `"" == ""` and prints
+  `FIG r8 … ok`. The row still proves the pipeline is *admitted* (no refusal), but its "re-derives its
+  own value" limb proves nothing. Measured at `3cc8cd4`: `grep -c records=84` → `0`, rc 1; counter line
+  `MEASURE R8-capture-binding-pipeline ok direct_rc=1 gate_rc=1 admitted=1 value_ok=1`. Fix: make the
+  pipeline carry the current count (`records=85`) or replace it with `tail -n 1`, and pin the resulting
+  nonempty value in the same counter revision.
+- **V71-5 — the gate-registry row in `SKILL.md` pinned a stale selftest count.** The row read
+  `selftest cases=96 failures=0` while the landed gate prints `cases=106` (`SKILL.md:1224`), so a reader
+  following the registry would grade the gate against the wrong pin. Corrected in this round (96 → 106)
+  together with an `[r71 current-execution amendment]` block; routed because the staleness was found by
+  the L1's own read, not by a criterion — the criterion to add is "a change to `EXPECTED_CASES` updates
+  every registry row that pins it in the same commit" (R113, round 72).
+
+- **V71-6 — four of the eight positive rows never compare a value (R116, extends R112).** R5, R6, R7
+  and R8 exit nonzero when run directly (`citation-ground-check.py`, `gate-quote-audit.py`,
+  `r44-routed-defects.py` are stale over the lane, and R8's pipeline matches nothing), so the counter
+  takes its `direct_rc != 0` branch, which checks only `gate_rc == 1` and the presence of a `FIG <id> `
+  line; the gate stamps `derived=UNAVAILABLE` and compares nothing. The declared sentence's clause
+  "re-deriving each one's own value" is therefore false for four of eight rows while the frozen predicate
+  still reads 25/0. Fix: a positive row whose direct command is nonzero must pin a nonempty expected
+  value the gate can compare (e.g. `capture-binding-check.py | tail -n 1` → `records=85 bound=85
+  unbound=0`), and the row's name must say it is an admission-only row if no value exists.
+- **V71-7 — the per-script table re-admits three write flags on 23 heads (R115).** `--work`, `--root`
+  and `--scratch` are write roots on at least `r46-mutbat.py`, `r47-mutbat.py`, `r47-counters-selftest.py`
+  and `freeze-check.py`, and the candidate admits them wherever the head is not named. Fix: enumerate
+  the re-admission ledger (head × flag × measured effect) in the freeze and deny every write-root flag
+  per head, keeping only the read-only pointer spellings the round-70 critic measured.
+- **V71-8 — a basename alias inside `corpus/instruments/` restores denied flags.** Any file named
+  `ok.py`/`fail.py`/`exit1.py`/`kill.py`/`kill9.py`/`pipe.py`/`grep.py`/`link.py` (the selftest fixture
+  names) inside the instrument directory is admitted with `PY_DENIED_ANY` only; measured: `ok.py ->
+  gate-quote-audit.py` then `--json <abs>` wrote 2,595 bytes. Fix: scope the fixture-name allowance to
+  the gate's own selftest run (a flag or a temp-root prefix), never to a lane path.
+- **V71-9 — `freeze-check.py` is a `bash -c` primitive (CRITICAL, older than this round).** The head is
+  admitted with no denied option and runs `counter_cmd` strings from `--claims` JSON through `bash -c`
+  in `--tool-root` (`freeze-check.py:73`). It has no read-only invocation and belongs in
+  `PY_HEAD_REFUSED` beside `frontier-recheck-count.py`; `r46-c1-gate.py` and `r46-landing-gate.py` need
+  the same audit.
+- **V71-10 — `--` makes `PY_DENIED_ANY` advisory for hand-parsing heads (HIGH, older).** `python3
+  corpus/instruments/figure-audit.py -- --selftest` is admitted and the gate's own 106-case selftest
+  runs; the same flag is refused when spelled directly. Fix: refuse a `--` token in a python head's argv
+  (no R1-R8 row needs one), or treat post-`--` tokens as operands for the deny check.
+
+- **V71-11 — adopt-or-reject the preserved gate patch (from M71-5).** The 91-line patch at
+  `.ufo/waves/round-71/w2/unauthorized-gate-edit.patch` repairs V71-7 (write-root flags denied for every
+  head), V71-8 (census keyed on the resolved basename) and part of V71-9 (`freeze-check.py` refused), and
+  moves `EXPECTED_CASES` 106 → 109. It is NOT adopted: changing the gate after the claim was scored would
+  invalidate the frozen pin `182f4ef7…`. Round 72 freezes a claim on it, with its own do-nothing control
+  and the V71-6 row repairs in the same counter revision.
 
 ## Residuals
 
@@ -197,3 +295,22 @@ Q13-dossier anchor= 69 wc_w=19   Q14-refusal anchor= 72 wc_w=18   Q15-nolimit an
   `capture-binding-check.py` at the capture commit `4e33119` alone prints `FAIL rule=no-row record=S106
   dir=round-71` and `records=85 bound=84 unbound=1` (exit 1) because the S106 registry row lands later in
   the same round; at tips `453275f`/`34faab9` it reads `records=85 bound=85 unbound=0` (exit 0).
+
+## Errata
+
+- **E71-1 — eight source outruns in the S106 artifacts, from `AttackC2` (R108 applied in-round).** The
+  seat listed O1-O8 with artifact, line, anchor and correction (`.ufo/waves/round-71/w2/AttackC2.md` §2).
+  Applied in place: O1 (the entry no longer calls a severity-tiered restatement off-source — it says
+  "off this page" and points the policy-page tiers at F02/S075), O2 (the rejection's subject is now "this
+  page", not "ZDI"), O3 ("not enumerated on this page", with S075 named), O4 (the check now binds only
+  packages that state the figure on this page's authority), O5/O6 (the registry row and the F49 row now
+  say "a permissive escalation … if a vendor fails to respond within 15 business days of first contact"
+  instead of "after 15 business days of vendor silence"), O7 (the manifest note carries the same
+  modality), O8 (the row's date cell now lists the year signals 2005/2007/2024/©2026 instead of claiming
+  a single date signal), plus the ground line's "ZDI's permissive 15-business-day escalation". Hashes before → after the
+  corrections (before = the file at `3cc8cd4`): entry `6f304a05…` → `d61e4f6f…` (262 lines), manifest
+  `815566ac…` → `1e2f2d47…`, registry `1d4d4e74…` → `75c31bf1…`, README `85715e2f…` → `ac2a49dc…`. Every C2 counter is unchanged after the edits
+  (`rows=49 registry=106`, `entries=52 pass=52`, `records=85 bound=85`, census exit 0), and R108's
+  requirement is met: the critic's list is applied before the round closes.
+- **E71-2 — the F49 ground narrowed (M71-3).** `corpus/README.md` `[r71 erratum 1]` and `ScoutF49`'s
+  measurement: four of the five items the frozen C2 sentence listed are already held from S075.

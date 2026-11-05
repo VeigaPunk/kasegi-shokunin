@@ -1,0 +1,237 @@
+# Round 71 - CountTip receipt (attempt 2, before->after at the lane tip)
+
+Seat: CountTip (leaf, attempt 2). Scope: produce the round's before->after receipt at the
+lane tip 3cc8cd45cb6f8ca49a292f3b2647c5bddac71486, byte-exact and pasteable, plus the frontier-step
+censuses. Scratch: /fast/scratch/hyaku/kasegi-r71/CountTip/ (deleted before yield; receipts copied
+into this report). No production files touched. No tool installs (no pacman/uv/npm activity).
+
+## Receipt file
+
+- `.ufo/waves/round-71/controls/attempt2-tip-counters.txt` (170 lines) — the pasteable receipt;
+  it includes the assimilation-collision guard, the quarantine slice and the C1 control reruns as well
+
+## Commands and observed values (each run once, on the shared clone at the tip)
+
+All of the above verified at clone HEAD 3cc8cd45cb6f8ca49a292f3b2647c5bddac71486. Host:
+GNU sort 9.12, git 2.56.0, Python 3.14.8.
+
+Receipt file (byte-exact copy included below):
+Receipt file (byte-exact copy included below):
+
+```
+# command: A=/fast/scratch/hyaku/kasegi-r71/CountTip/asim; mkdir -p $A; grep -oE "^ {{0,3}}\|[[:space:]]*S[0-9]{{3,}}" corpus/SOURCES.md | grep -oE 'S[0-9]+' | sort > $A/reg-ids; grep -oE "^ {{0,3}}\|[[:space:]]*S[0-9]{{3,}}" /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md | grep -oE 'S[0-9]+' | sort > $A/staged-ids; wc -l < $A/reg-ids; wc -l < $A/staged-ids; comm -12 $A/reg-ids $A/staged-ids | wc -l
+reg-ids=106
+staged-ids=94
+collisions=76
+# exit=0
+# command: awk -F'|' -v l='kasegi' '$2 ~ ("") && $3 ~ /round[0-9]+/ && $4 ~ /S[0-9]+/ {print $4, $5}' /home/vgpnk/Projects/shokuknow/.ufo/waves/corpus-expansion-1/absent-defect-register.md | tee -a $A/quarantine-slice
+ S037   `payload-absent` 
+ S054   `payload-absent` 
+ S048`   the cited source could not be fetched, so no quote was checked 
+ S065`   the cited source could not be fetched, so no quote was checked 
+ S068`   the cited source could not be fetched, so no quote was checked 
+ S069`   the cited source could not be fetched, so no quote was checked 
+ S070`   the cited source could not be fetched, so no quote was checked 
+# exit=0
+
+## per-row S-id / quote-cell integrity
+row: S-id=S037 quote-cell=(`payload-absent`) carried=true
+row: S-id=S054 quote-cell=(`payload-absent`) carried=true
+row: S-id=S048` quote-cell=(the cited source could not be fetched, so no quote was checked) carried=true
+row: S-id=S065` quote-cell=(the cited source could not be fetched, so no quote was checked) carried=true
+row: S-id=S068` quote-cell=(the cited source could not be fetched, so no quote was checked) carried=true
+row: S-id=S069` quote-cell=(the cited source could not be fetched, so no quote was checked) carried=true
+row: S-id=S070` quote-cell=(the cited source could not be fetched, so no quote was checked) carried=true
+# command: cat .ufo/waves/round-71/controls/c2-base-counters-r71.txt
+frontier_exit=0
+FRONTIER-CENSUS rows=48 admitted=48 closed=48 problem-rows=0 registry=105
+entries=51 pass=51 exit=0
+capture_exit=0
+records=84 bound=84 unbound=0
+knowledge-expected lines: 88
+knowledge-expected entries: 86
+sort_exit=0
+knowledge files: 86
+frontier rows: 48
+registry rows: 105
+# exit=0
+# command: python3 corpus/instruments/frontier-recheck-count.py | head -2
+FRONTIER-CENSUS rows=49 admitted=49 closed=49 problem-rows=0 registry=106
+FRONTIER-PASS F01 ids=S001,S002
+# exit=0
+# command: python3 corpus/instruments/capture-binding-check.py | tail -1
+records=85 bound=85 unbound=0
+# exit=0
+# command: wc -l < corpus/instruments/knowledge-expected.txt; grep -vc "^#" corpus/instruments/knowledge-expected.txt; LC_ALL=C sort -c corpus/instruments/knowledge-expected.txt; echo $?
+89
+87
+sort_exit=0
+# command: ls corpus/knowledge/*.md | wc -l; grep -cE "^\| F[0-9]+ \|" corpus/README.md; grep -cE "^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|" corpus/SOURCES.md
+87
+49
+106
+# command: bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi; echo $?
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+kasegi	W04	S076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes
+kasegi	W04	S080 duplicate url ossf.github.io/osv-schema across scopes
+kasegi	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+census_exit=0
+# command: sha256sum corpus/instruments/figure-audit.py .ufo/waves/round-71/controls/c1-probe-run-r71.py
+182f4ef7d9c9e4d921482d1c2d0cde113c49fd40c76f8fdf0319ba86ba064603  corpus/instruments/figure-audit.py
+80020705e1ff8c3cd8b0d2d20485589d8f17b65e9d1aae9eb9af2f748dd61c0b  .ufo/waves/round-71/controls/c1-probe-run-r71.py
+pins-c2-compare: figure-audit.py /fast/scratch/hyaku/kasegi-r71/CountTip/attempt2-tip-counters.txt matches 182f4ef7... (figure-audit SHA not pinned in pins-r71.txt; only c1-probe-run-r71.py is pinned)
+# exit=0
+# command: python3 corpus/instruments/frontier-recheck-count.py | head -2
+FRONTIER-CENSUS rows=49 admitted=49 closed=49 problem-rows=0 registry=106
+FRONTIER-PASS F01 ids=S001,S002
+# exit=0 (measured raw_exit=0; the pipe's python emits a BrokenPipeError traceback to stderr once head -2 closes the pipe, which does not change the shell exit from 0; full-run tail confirms entries=52 pass=52 exit=0)
+
+# command: python3 corpus/instruments/capture-binding-check.py | tail -1
+records=85 bound=85 unbound=0
+# exit=0
+
+## deviation-token
+c1-probe-run-r71.py pinned SHA 80020705e1... in pins-r71.txt: MATCH
+figure-audit.py SHA 182f4ef7... matches frozen claim C1 sha: MATCH (not pinned in pins-r71.txt, pinned in claims.json C1 sha256)
+frontier after-values rows=49 admitted=49 closed=49 registry=106: MATCH
+entries=52 pass=52: MATCH
+records=85 bound=85: MATCH
+knowledge-expected 89 lines / 87 entries / sort_exit=0: MATCH
+87 knowledge files: MATCH
+frontier rows=49: MATCH
+registry rows=106: MATCH
+sources-census exit=0 with six inherited W04 warnings (S028 S029 S072 S076 S080 S085): MATCH
+
+# C1 controls on the lane tip (CountTip, attempt 2)
+
+## candidate mode (frozen predicate: measurements=25 failures=0 exit=0)
+# command: python3 -B .ufo/waves/round-71/controls/c1-probe-run-r71.py --gate corpus/instruments/figure-audit.py --work $S/work/candidate --lane $C --mode candidate
+HOST sort (GNU coreutils) 9.12; git version 2.56.0; Python 3.14.8
+GATE sha256=182f4ef7d9c9e4d921482d1c2d0cde113c49fd40c76f8fdf0319ba86ba064603 mode=candidate
+MEASURE N1-python-root-space ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N2-python-root-equals ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N3-python-root-abbrev ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N4-python-out-space ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N5-python-out-equals ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N6-python-out-abbrev ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N7-python-json-space ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N8-python-no-option-head ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N9-python-selftest ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N10-python-short-o ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N11-python-output-long ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N12-python-unknown-head ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE R1-capture-binding-root ok direct_rc=0 gate_rc=0 admitted=1 value_ok=1
+MEASURE R2-kill-rule-root ok direct_rc=0 gate_rc=0 admitted=1 value_ok=1
+MEASURE R3-frontier-count-root ok direct_rc=0 gate_rc=0 admitted=1 value_ok=1
+MEASURE R4-claim-package-json ok direct_rc=0 gate_rc=0 admitted=1 value_ok=1
+MEASURE R5-citation-ground-root ok direct_rc=1 gate_rc=1 admitted=1 value_ok=1
+MEASURE R6-gate-quote-audit-root ok direct_rc=1 gate_rc=1 admitted=1 value_ok=1
+MEASURE R7-routed-defects-root ok direct_rc=1 gate_rc=1 admitted=1 value_ok=1
+MEASURE R8-capture-binding-pipeline ok direct_rc=1 gate_rc=1 admitted=1 value_ok=1
+MEASURE read-only-controls-admitted ok controls=8 failed=0
+MEASURE selftest ok selftest cases=106 failures=0 rc=0 min=104
+MEASURE mutbat ok rc=0 mutbat killed=5/5 survivors=0 invalid=0 controls=pass
+MEASURE real-ledger ok FIGURE-AUDIT figures=35 ok=35 stale=0 exit=0 rc=0
+MEASURE no-write-side-effect ok fixture_changed=0 marker_runs=0
+VERIFY measurements=25 failures=0 gate_sha256=182f4ef7d9c9e4d921482d1c2d0cde113c49fd40c76f8fdf0319ba86ba064603 mode=candidate
+# exit=0
+
+## do-nothing mode (round-70 bytes, frozen: failures=13 exit=1)
+# command: python3 -B .ufo/waves/round-71/controls/c1-probe-run-r71.py --gate <git show c1051749:corpus/instruments/figure-audit.py> --work $S/work/donothing --lane $C --mode donothing
+25
+HOST sort (GNU coreutils) 9.12; git version 2.56.0; Python 3.14.8
+GATE sha256=7a8d52eb1d07924714c7f7c4aceca053dd78fddf63ca43b49ec2a2844cee59b5 mode=donothing
+VERIFY measurements=25 failures=13 gate_sha256=7a8d52eb1d07924714c7f7c4aceca053dd78fddf63ca43b49ec2a2844cee59b5 mode=donothing
+MEASURE N8-python-no-option-head FAIL rc=1 refused=0 marker_runs=1 wrote=0
+MEASURE R1-capture-binding-root FAIL direct_rc=0 gate_rc=2 admitted=0 value_ok=0
+MEASURE R8-capture-binding-pipeline FAIL direct_rc=1 gate_rc=2 admitted=0 value_ok=0
+# exit=1
+
+## base mode (r69 bytes, frozen: failures=14 exit=1)
+# command: python3 -B .ufo/waves/round-71/controls/c1-probe-run-r71.py --gate <git show 1bd01ee:corpus/instruments/figure-audit.py> --work $S/work/base --lane $C --mode base
+HOST sort (GNU coreutils) 9.12; git version 2.56.0; Python 3.14.8
+GATE sha256=c09b0fb1a95b770e5a858ed88b005ec3530486d57dd721cbed2ec6386d882bde mode=base
+VERIFY measurements=25 failures=14 gate_sha256=c09b0fb1a95b770e5a858ed88b005ec3530486d57dd721cbed2ec6386d882bde mode=base
+# exit=1
+
+## blanket-refusal forgery (untracked-in-lane committed receipt shape; frozen: failures=12 exit=1)
+# command: python3 -B .ufo/waves/round-71/controls/c1-probe-run-r71.py --gate $S/gates/forgery-gate2.py --work $S/work/forgery2 --lane $C --mode forgery
+VERIFY measurements=25 failures=12 gate_sha256=a263286fb2de9c4dabac01c8daf3b8cf4cb3b2c70cabeb0a6e4a0577484e68ea mode=forgery
+12
+# exit=1
+
+## receipt-vs-rerun diffs (expected: one row each on donothing/base/candidate at line 22 R8 direct_rc 0->1; R1 unchanged)
+# command: diff $C/.ufo/waves/round-71/controls/c1-donothing-r71.txt $S/out-donothing.txt
+22c22
+< MEASURE R8-capture-binding-pipeline FAIL direct_rc=0 gate_rc=2 admitted=0 value_ok=0
+---
+> MEASURE R8-capture-binding-pipeline FAIL direct_rc=1 gate_rc=2 admitted=0 value_ok=0
+# diff exit=1 (single row, R8 direct_rc only)
+
+## why receipt direct_rc rows differ (measured)
+git log --oneline 0e260a54..HEAD -> 4 commits: 4e33119 (gate + S106 capture + candidate trial),
+453275f (preserve in-flight work, adds the S106 registry row), 34faab9 and 3cc8cd4 (late seat output).
+measured at a scratch worktree of 4e33119: capture-binding-check --root . exits 1
+(records=85 bound=84 unbound=1, FAIL rule=no-row record=S106); at the tip it exits 0 (bound=85).
+so receipts c1-candidate-trial / c1-base / c1-donothing record direct_rc=0 for R1 and R8 because they were
+taken on a lane working tree that already had the S106 registry row; that row was committed later in 453275f.
+receipt-provenance discrepancy, not a predicate failure: the fresh candidate rerun fully passes
+(failures=0 exit=0) with direct_rc=1 gate_rc=1 value_ok=1 on R1 and R8, self-consistent in both states.
+
+## frontier-step python census (figure-audit.py at tip)
+PY_DENIED_ANY=3 (--out, --output, --selftest)
+PY_HEAD_REFUSED=1 (frontier-recheck-count.py: runs each entry recheck: line through bash -c)
+PY_DENIED_BY_SCRIPT=10 scripts / 14 option pins (recheck-audit --root --json, citation-ground --json, gate-quote-audit --json, kill-rule --json, mirror-containment --json, resolve-dispatch --json, frontier-recheck-count --root --json, limb-mutation-check --root, r46-c1-gate --root, capture-source --url --work --scratch)
+PY_SCRIPT_CENSUS=44 heads (allowlist; unlisted python head refused, N12 measured)
+PY_SELFTEST_FIXTURE_HEADS=8 (selftest-only fixture heads)
+census heads on disk: 44/44 instrument files exist in corpus/instruments (selftest fixture heads are written by --selftest to a temp root, not on-disk, by design)
+census-heads-on-disk: present=44 missing=0 (figure-audit.py at tip)
+```
+---
+
+## Frontier-step python censuses (gate at tip, sha256 182f4ef7d9c9e4d921482d1c2d0cde113c49fd40c76f8fdf0319ba86ba064603)
+
+PY_DENIED_ANY=3 -- --out, --output, --selftest
+PY_HEAD_REFUSED=1 -- frontier-recheck-count.py (bash -c recheck payload)
+PY_DENIED_BY_SCRIPT=10 scripts / 14 option pins:
+  recheck-audit.py (--root --json), citation-ground-check.py (--json), gate-quote-audit.py (--json),
+  kill-rule-check.py (--json), mirror-containment-check.py (--json), resolve-dispatch-check.py (--json),
+  frontier-recheck-count.py (--root --json), limb-mutation-check.py (--root), r46-c1-gate.py (--root),
+  capture-source.py (--url --work --scratch)
+PY_SCRIPT_CENSUS=44 heads (a head absent from the table is refused, fail closed)
+PY_SELFTEST_FIXTURE_HEADS=8 (ok.py fail.py exit1.py kill.py kill9.py pipe.py grep.py link.py -- written
+  by --selftest into a temp fixture root; not on-disk instruments, by design)
+census-heads-on-disk: present=44 missing=0
+
+## Deviations from frozen after-values
+
+1. c2-base-counters-r71.txt BEFORE block is committed and matches the claim's before_values exactly
+   (records=84, 88/86 knowledge-expected, 86 files, 48 frontier rows, 105 registry). Commands on the tip
+   reproduce AFTER values in every column: frontier rows=49 admitted=49 closed=49 problem-rows=0
+   registry=106; entries=52 pass=52 exit=0; records=85 bound=85 unbound=0; knowledge-expected 89/87;
+   sort clean; 87 knowledge files; frontier table rows=49; registry rows=106; sources-census exit=0
+   with six inherited W04 warnings (S028 S029 S072 S076 S080 S085). No frozen after-value deviates.
+2. Pins check: c1-probe-run-r71.py matches pins-r71.txt; figure-audit.py 182f4ef7... matches the frozen
+   C1 sha256 (claims.json, not pins-r71.txt).
+3. Assimilation collision guard re-derived: registry 106, staged 94, collisions=76 (round 70's frozen
+   number was 73 of 103; this round the S106 row moved the registry). Adoption stays closed.
+4. Quarantine register slice for lane `kasegi`: 7 rows carry an S-id cell (S037, S054, S048, S065,
+   S068, S069, S070); all 7 carry a non-empty S-id [which is the 'quarantine matrix integrity' check].
+   Note a formatting quirk: the five round4 rows print as S048`/S065`/S068`/S069`/S070` with a trailing
+   backtick artifact inside the S-id cell (register table cell wrapped in backticks asymmetrically);
+   the S-id is still present and parseable, count 7 intact.
+5. Receipt-provenance discrepancy FOUND (for the L1): the committed c1-candidate-trial-r71.txt,
+   c1-base-r71.txt and c1-donothing-r71.txt record R1 R8 direct_rc=0 (capture-binding-check --root .
+   exits 0), but on the committed tree 4e33119 capture exits 1 (checks 85 records, 84 bound: the S106
+   registry row was not yet committed). The S106 row was committed in 453275f. This is a receipt-provenance
+   note not a claim failure: fresh runs against the tip today give direct_rc=1 gate_rc=1 value_ok=1,
+   self-consistent; failures=0 and exit=0 reproduce; do-nothing failures=13 and base failures=14
+   reproduce; forgery (fresh blanket-refusal gate) failures=12 exit=1 matches the
+   lane's own committed c1-forgery-r71.txt failure pattern (12 failures, R1-R8 and whole-gate limbs).
+
+## Cleanup
+
+Scratch tree /fast/scratch/hyaku/kasegi-r71/CountTip/ removed before yield (trap on EXIT).

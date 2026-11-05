@@ -3,7 +3,7 @@
 source: S106 — https://www.zerodayinitiative.com/about/ — TrendAI™ Zero Day Initiative™ (ZDI), "About Us" page; capture corpus/source-snapshots/round-71/S106.txt (sha256 291f36c27b5ccddcd57067ceb5e67182d1a2382e5b7545180070fe3ea6cf59db, 148 lines, 15004 snapshot bytes, fetched 2026-11-05T01:27:03Z): the programme's self-description at S106.txt:28, the bounty model at S106.txt:31, the process guarantee at S106.txt:47, validation at S106.txt:49, the full-advisory rule at S106.txt:51, the limited-advisory rule at S106.txt:52, the researcher offer at S106.txt:60, vendor communication and credit at S106.txt:61, the case-tracking guarantee at S106.txt:62, the vendor dossier at S106.txt:69, the coordination windows and the 15-business-day escalation at S106.txt:70, and the refusal branch at S106.txt:72
 verified-at: 2026-11-05
 recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-71/manifest.json --source S106   # 15 pinned quotes (Q01-Q15), each located at its anchor; the further spans quoted below are sub-spans of those same anchored lines and are located in the same capture
-ground: F49 — what the ZDI acquisition programme says about its own disclosure process and vendor coordination: the validate → reward → private-share → vendor-coordination → advisory sequence; the 120-day standard coordination window and its shortened 30/60/90-day form for flaws from incomplete or problematic patches; the 15-business-day escalation to a limited public advisory; the full-versus-limited advisory choice; the formal monetary offer and payment step; credit or anonymity; and the no-backlog guarantee. The ZDI policy-page timelines stay with F02/S075, platform severity ladders and reward scales stay with F13, Project Zero's own 90-day policy stays with S005, CERT/CC's own policy stays with S004, the ISO 29147/30111 division of labour stays with F11/F38, and any single published advisory instance stays with its own record.
+ground: F49 — what the ZDI acquisition programme says about its own disclosure process and vendor coordination: the validate → reward → private-share → vendor-coordination → advisory sequence; the 120-day standard coordination window and its shortened 30/60/90-day form for flaws from incomplete or problematic patches; ZDI's permissive 15-business-day escalation to a limited public advisory; the full-versus-limited advisory choice; the formal monetary offer and payment step; credit or anonymity; and the no-backlog guarantee. The ZDI policy-page timelines stay with F02/S075, platform severity ladders and reward scales stay with F13, Project Zero's own 90-day policy stays with S005, CERT/CC's own policy stays with S004, the ISO 29147/30111 division of labour stays with F11/F38, and any single published advisory instance stays with its own record.
 
 ## Scope and decision rule
 
@@ -132,7 +132,9 @@ it is **not** any single published advisory instance. Where another entry alread
 programme's policy page, that entry keeps it: the ZDI policy-page timelines and their branch
 conditions stay with F02/S075 (`corpus/knowledge/zdi-disclosure-policy.md`). Where a number below
 is ZDI's own statement about its own programme, a package that restates it as a general rule, as
-another coordinator's deadline, or as a severity-tiered window has left the source.
+another coordinator's deadline, or as a severity-tiered window has left this page; the
+severity-selected shortened-window tiers ZDI states on its own policy page stay with F02/S075
+(`S075.txt:25`).
 
 ## Falsifiable rule
 
@@ -146,7 +148,9 @@ against this entry with three checks, each answerable from the capture alone:
 2. **The condition attached to a shortened window.** If the package states 30, 60 or 90 days it
    must carry ZDI's own condition "For flaws that result from incomplete or problematic security
    patches" (`S106.txt:70`); a package that applies the shortened windows to ordinary reports
-   fails this check.
+   fails this check. The check binds packages that state the figure on this page's authority;
+   where a package cites F02/S075's policy-page tiers, S075's severity and exploitation conditions
+   apply instead (`S075.txt:25`).
 3. **The modality of the escalation.** If the package states the 15-business-day branch it must
    say ZDI "may escalate to a limited public advisory to protect users" (`S106.txt:70`); a package
    that says ZDI publishes after 15 business days of silence fails this check.
@@ -165,10 +169,11 @@ is a sentence from the capture, and each is rejected with the located quote that
    statement of a standard *coordination* window under ZDI's disclosure policy (`S106.txt:70`), the
    same line states a shorter window for a named class of flaws, and the capture states no
    clock-start event for the 120 days.
-2. **"ZDI publishes 30, 60 or 90 days after a submission, by severity."** Rejected: ZDI states the
-   shortened window for "flaws that result from incomplete or problematic security patches"
-   (`S106.txt:70`) and names no severity band, only "depending on multiple factors"
-   (`S106.txt:70`).
+2. **"ZDI publishes 30, 60 or 90 days after a submission, by severity."** Rejected: this page
+   states the shortened window for "flaws that result from incomplete or problematic security
+   patches" (`S106.txt:70`) and names no severity band, only "depending on multiple factors"
+   (`S106.txt:70`); severities do select the shortened length on ZDI's policy page, which stays
+   with F02/S075 (`S075.txt:25`).
 3. **"A vendor that goes silent for 15 business days is automatically published."** Rejected: ZDI
    writes a permission — "may escalate to a limited public advisory to protect users"
    (`S106.txt:70`) — and the refusal branch is likewise "may publish a full or limited advisory"
@@ -236,9 +241,10 @@ Further spans quoted above, each a sub-span of an anchored line, with their `wc 
 - **No clock-start event.** The capture states no start event for the 120-day coordination window:
   the string "120 days" occurs once (`S106.txt:70`), and no line states when the window begins. A
   reader must not convert the window into a date by supplying a start event the page does not give.
-- **The factors behind 30/60/90 are not enumerated.** ZDI states "depending on multiple factors"
-  (`S106.txt:70`) and does not list them, so a package cannot select a shortened length for a given
-  finding from this page.
+- **The factors behind 30/60/90 are not enumerated on this page.** The page states "depending on
+  multiple factors" (`S106.txt:70`) and does not list them, so a package cannot select a shortened
+  length for a given finding from this page; the policy page's severity and exploitation tiers stay
+  with F02/S075 (`S075.txt:25`).
 - **No severity tiers, no payout amounts.** The page states a formal monetary offer
   (`S106.txt:60`), and the same line says yearly point totals unlock "bonus multipliers, higher
   payout tiers" (`S106.txt:60`) — but it names no monetary amount, no tier value and no severity

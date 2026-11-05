@@ -1,0 +1,91 @@
+diff --git i/corpus/instruments/figure-audit.py w/corpus/instruments/figure-audit.py
+index 7ead169..1a16dfb 100755
+--- i/corpus/instruments/figure-audit.py
++++ w/corpus/instruments/figure-audit.py
+@@ -140,11 +140,14 @@ DENIED_FLAGS = (
+ #     option set makes them read-only.
+ # Each rule carries a one-limb selftest case (R103) and the census is pinned complete against the
+ # instrument directory by `python-census-covers-instruments`.
+-PY_DENIED_ANY = ("--out", "--output", "--selftest")
++PY_DENIED_ANY = ("--out", "--output", "--selftest", "--work", "--scratch")
+ 
+ PY_HEAD_REFUSED = (
+     # runs each entry's `recheck:` line through bash -c with cwd=root, for every argv including none
+     "frontier-recheck-count.py",
++    # renders a claims file's `counter_cmd` strings and runs them as bash -c in --tool-root: no
++    # read-only invocation exists (round-71 SentinelC1 row 33, marker written at both gates)
++    "freeze-check.py",
+ )
+ 
+ PY_DENIED_BY_SCRIPT = {
+@@ -160,8 +163,8 @@ PY_DENIED_BY_SCRIPT = {
+     # --root selects the tree whose mutants are executed
+     "limb-mutation-check.py": ("--root",),
+     "r46-c1-gate.py": ("--root",),
+-    # --url fetches any scheme; --work/--scratch are its write roots
+-    "capture-source.py": ("--url", "--work", "--scratch"),
++    # --url fetches any scheme
++    "capture-source.py": ("--url",),
+ }
+ 
+ # Every python head the gate may run, by basename.  A head absent from this table is refused.
+@@ -218,7 +221,7 @@ PY_SELFTEST_FIXTURE_HEADS = (
+     "ok.py", "fail.py", "exit1.py", "kill.py", "kill9.py", "pipe.py", "grep.py", "link.py",
+ )
+ 
+-EXPECTED_CASES = 106  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file; R68: +4 program-execution flag refusal; R69: +9 class refusal; R70: +10 python-head option and git-show limb pins; R71: +10 per-script census pins)
++EXPECTED_CASES = 109  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file; R68: +4 program-execution flag refusal; R69: +9 class refusal; R70: +10 python-head option and git-show limb pins; R71: +10 per-script census pins, +3 write-root and head-refusal corrections)
+ 
+ 
+ def eprint(*a):
+@@ -486,11 +489,19 @@ def python_flags_ok(args, denied):
+ 
+ 
+ def python_head_ok(root, parts):
+-    """Require a literal decoded prefix, a realpath inside the instrument directory, a basename in
+-    the census allowlist, no refused head, and no denied option for that script (R71)."""
++    """Require a literal decoded prefix, a realpath inside the instrument directory, a resolved
++    basename in the census allowlist, no refused head, and no denied option for that script (R71).
++
++    The census and the deny table key on the RESOLVED basename, not the invoked one: an in-directory
++    alias (`ok.py -> gate-quote-audit.py`) would otherwise inherit the alias name's empty deny set
++    and restore the target's denied flags (round-71 SentinelC1 regression R2, row 28)."""
+     if len(parts) < 2 or not parts[1].replace("\\", "/").startswith("corpus/instruments/"):
+         return False
+-    script = os.path.basename(parts[1].replace("\\", "/"))
++    base = os.path.realpath(os.path.join(root or ".", "corpus", "instruments"))
++    target = os.path.realpath(os.path.join(root or ".", parts[1]))
++    if target == base or not target.startswith(base + os.sep):
++        return False
++    script = os.path.basename(target)
+     if script in PY_HEAD_REFUSED:
+         return False
+     if script not in PY_SCRIPT_CENSUS and script not in PY_SELFTEST_FIXTURE_HEADS:
+@@ -498,11 +509,7 @@ def python_head_ok(root, parts):
+     denied = PY_DENIED_ANY + PY_DENIED_BY_SCRIPT.get(script, ())
+     if not python_flags_ok(parts[2:], denied):
+         return False
+-    base = os.path.realpath(os.path.join(root or ".", "corpus", "instruments"))
+-    target = os.path.realpath(os.path.join(root or ".", parts[1]))
+-    if target == base:
+-        return False
+-    return target.startswith(base + os.sep)
++    return True
+ 
+ 
+ def segment_ok(root, parts):
+@@ -794,6 +801,14 @@ def selftest():
+     # V70-1: the `--out` limb without the `--url` conjunct, so the case isolates --out alone.
+     run_case("python-out-only-refused", 2,
+              _one("s-pyoutonly", "python3 corpus/instruments/capture-source.py --out out.txt", "35"))
++    # R71 correction (SentinelC1 R1/R2): --work and --scratch are write roots for every head, and
++    # freeze-check.py is head-refused because it runs a claims file's commands through bash -c.
++    run_case("python-work-denied", 2,
++             _one("s-pywork", "python3 corpus/instruments/r47-counters-selftest.py --work w", "35"))
++    run_case("python-scratch-denied", 2,
++             _one("s-pyscratch", "python3 corpus/instruments/capture-source.py --scratch s", "35"))
++    run_case("python-freeze-check-head-refused", 2,
++             _one("s-pyfreeze", "python3 corpus/instruments/freeze-check.py --claims c.json", "35"))
+     # R103: the two untested `git_show_operands_ok` limbs are pinned as their own cases.
+     run_case("git-show-no-operand-refused", 2, _one("s-gitshowbare", "git show", "35"))
+     run_case("git-show-separator-refused", 2,

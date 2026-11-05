@@ -1,0 +1,28 @@
+HOST sort (GNU coreutils) 9.12; git version 2.56.0; Python 3.14.8
+GATE sha256=126de75d135f6399e5be19d121790f6cce4a275579fc6070200e214b1fd22502 mode=forgery
+MEASURE N1-python-root-space ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N2-python-root-equals ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N3-python-root-abbrev ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N4-python-out-space ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N5-python-out-equals ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N6-python-out-abbrev ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N7-python-json-space ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N8-python-no-option-head ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N9-python-selftest ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N10-python-short-o ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N11-python-output-long ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE N12-python-unknown-head ok rc=2 refused=1 marker_runs=0 wrote=0
+MEASURE R1-capture-binding-root FAIL direct_rc=0 gate_rc=2 admitted=0 value_ok=0
+MEASURE R2-kill-rule-root FAIL direct_rc=0 gate_rc=2 admitted=0 value_ok=0
+MEASURE R3-frontier-count-root FAIL direct_rc=0 gate_rc=2 admitted=0 value_ok=0
+MEASURE R4-claim-package-json FAIL direct_rc=0 gate_rc=2 admitted=0 value_ok=0
+MEASURE R5-citation-ground-root FAIL direct_rc=1 gate_rc=2 admitted=0 value_ok=0
+MEASURE R6-gate-quote-audit-root FAIL direct_rc=1 gate_rc=2 admitted=0 value_ok=0
+MEASURE R7-routed-defects-root FAIL direct_rc=1 gate_rc=2 admitted=0 value_ok=0
+MEASURE R8-capture-binding-pipeline FAIL direct_rc=1 gate_rc=2 admitted=0 value_ok=0
+MEASURE read-only-controls-admitted FAIL controls=8 failed=8 python3 corpus/instruments/ok.py rc=2;python3 corpus/instruments/ok.py -- --root rc=2;cat g.txt rc=2;grep -c 35 g.txt rc=2;sort g.txt | head -n 1 rc=2;cut -c1-2 g.txt | head -n 1 rc=2;git show HEAD:g.txt | head -n 1 rc=2;git cat-file -t HEAD rc=2
+MEASURE selftest FAIL selftest cases=86 failures=47 rc=1 min=104
+MEASURE mutbat FAIL rc=1 mutbat killed=5/5 survivors=0 invalid=0 controls=fail
+MEASURE real-ledger FAIL no-audit-line rc=2
+MEASURE no-write-side-effect ok fixture_changed=0 marker_runs=0
+VERIFY measurements=25 failures=12 gate_sha256=126de75d135f6399e5be19d121790f6cce4a275579fc6070200e214b1fd22502 mode=forgery
