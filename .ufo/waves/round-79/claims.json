@@ -1,0 +1,66 @@
+{
+ "round": 79,
+ "lane": "kasegi",
+ "attempt": 1,
+ "frozen_at": "2026-11-06T18:49:41Z",
+ "base": "d16d2124fd5262f5a8088aa598f1e628f897d3ab",
+ "fresh_start": "Run-15 Amendment 46 fresh start: last three closures r76/r77/r78 rejected-honest-stop read first (corpus/lessons/round-7{6,7,8}-verifier-spotcheck.md). Both claims carry executed, committed failing-before do-nothing and forgery controls before any candidate scoring (controls/).",
+ "controls": ".ufo/waves/round-79/controls/ committed in the freeze commit: c1-mutbat-selftest-r79.txt (toy KILLED/SURVIVED/NOT-DERIVED, rc0 - positive control of the counter), c1-donothing-r79.txt (base bytes e666ae11: selftest cases=6; MUTBAT baseline=bad killed=0 notderived=18 dirty=1, rc1), c1-forgery-r79.txt (candidate with selftest() replaced by a print stub dd5b192e: baseline=ok but survived=8 notderived=11, rc1), c1-prior-r78-r79.txt (r78 candidate f6849971: killed=6 notderived=12 dirty=1 baseline=bad, rc1), c1-base-missing-tmpdir-r79.txt (base rc1 FileNotFoundError traceback), c2-donothing-counters-r79.txt (FRONTIER-CENSUS rows=54 admitted=54 registry=112 before the S113 row; knowledge=92; expected 94 lines/92 .md), c2-prerecheck-r79.txt (S113 sha256 OK and eight anchor-ok lines, rc0).",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "axis_score": "4 (lowest non-retired; nominal per QUALITY R58 - the scored citation census is not read by this counter; the measured move is the gate's named-kill set, the TMPDIR refusal and the equivalence class closed)",
+   "target_instrument": "corpus/instruments/recheck-cwd-census.py (base sha256 e666ae11fd9d50ecea107b8835090eed0dc798e8e8a233324b9fbd59ab52a21a)",
+   "candidate": ".ufo/waves/round-79/c1/recheck-cwd-census.py sha256 eda49d3214eaa4760bdb74fd73bc45d0993051618fbce01a3082102419091f2f (frozen bytes; derived from the r78 candidate f6849971 by moving every gate verdict into a module-level predicate tested in both polarities and adding the gate-wiring AST limb)",
+   "counter": ".ufo/waves/round-79/c1/mutbat.py with table .ufo/waves/round-79/c1/mutant-table.json (19 rows; frozen)",
+   "statement": "The round-79 successor counter, landed byte-identical to the frozen candidate, (a) refuses a nonexistent TMPDIR with exit 2 and a 'recheck-cwd: TMPDIR' line and no traceback, and (b) kills all nineteen frozen single-transform mutants by FAIL lines with no traceback, including the r78 survivor class K-X2 in both of its forms (K-X2a: the gate-consume polarity limb neutered inside its predicate; K-X2b: the gate-consume check() argument replaced by True) and every assertion-neutering-to-True transform on the gate checks (K-X2b, K-M8, K-W2, K-P2, K-C1, K-NP), which the r78 harness left behaviourally equivalent.",
+   "predicate": {
+    "P1": "TMPDIR=<scratch> python3 -B corpus/instruments/recheck-cwd-census.py --selftest at the landing commit prints 'selftest cases=15 failures=0' and exits 0.",
+    "P2": "sha256 of corpus/instruments/recheck-cwd-census.py at the landing commit equals eda49d3214eaa4760bdb74fd73bc45d0993051618fbce01a3082102419091f2f.",
+    "P3": "python3 -B .ufo/waves/round-79/c1/mutbat.py --target corpus/instruments/recheck-cwd-census.py --table .ufo/waves/round-79/c1/mutant-table.json --expect-cases 15 --work <scratch> at the landing commit prints 'MUTBAT target_sha256=eda49d32...091f2f baseline=ok rows=19 killed=19 survived=0 dirty=0 notderived=0' and exits 0.",
+    "P4": "TMPDIR=/nonexistent-kasegi-r79 python3 -B corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> exits 2, prints a stderr line beginning 'recheck-cwd: TMPDIR', and its output contains no 'Traceback' (base: rc1 traceback, controls/c1-base-missing-tmpdir-r79.txt).",
+    "P5": "TMPDIR=<scratch> python3 -B corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> on the landing tree prints a RECHECK-CWD line with entries equal to `ls corpus/knowledge/*.md | wc -l` at that tree and noprefix=0 exit2_foreign=0 exit_other=0 norecheck=0 restoration_only=0, then 'RECHECK-CWD-RESULT conformant', exit 0.",
+    "P6": "The pin rows SKILL.md (recheck-cwd-census.py row) and corpus/instruments/README.md (recheck-cwd-census.py row) read 'selftest cases=15 failures=0' at the landing commit (base: cases=6) - QUALITY R113.",
+    "P7": "Exec surface unchanged: the landing bytes contain exactly one 'subprocess.run(' and exactly one '\"bash\", \"-c\"'; no string literal path under /tmp."
+   },
+   "kill_rule": "Any of P1-P7 false at the landing commit = C1 NOT VERIFIED. Any of the nineteen rows not counted killed by the frozen counter (SURVIVED, DIRTY, NOT-DERIVED, or EXCEPTION-KILL on an assertion-class row) = NOT VERIFIED. Candidate bytes, counter bytes and table bytes are frozen; no row is added, removed or edited after any seat has scored. Mutants outside the table (composites, new transforms found by attack seats) are routed findings, not verdict changes.",
+   "do_nothing": "Base bytes: MUTBAT baseline=bad killed=0 rc1; forgery stub: survived=8 rc1; r78 candidate: killed=6 of 19 rc1 - none reaches the target (controls/).",
+   "motivation": "r76/r77/r78 rejected C1 on surviving assertion-neutering mutants (m2b, X1/X2/K-M8, K-X2). r78 spot-check routed defect 2 (K-X2 class) and 3 (M77-3 TMPDIR). The r78 K-X2 survivor is a neutered assertion that the selftest cannot observe (equivalent under the r78 harness); the successor makes such neutering observable by structure (gate-wiring) and by two-polarity predicate tests (gate-predicates).",
+   "measured_before": "base: selftest cases=6; MUTBAT killed=0/19 (notderived 18); nonexistent TMPDIR rc1 traceback",
+   "measured_after_target": "selftest cases=15 failures=0; MUTBAT killed=19/19 rc0; nonexistent TMPDIR rc2 named refusal",
+   "counting_command": "python3 -B .ufo/waves/round-79/c1/mutbat.py --target corpus/instruments/recheck-cwd-census.py --table .ufo/waves/round-79/c1/mutant-table.json --expect-cases 15 --work $SCRATCH"
+  },
+  {
+   "id": "C2",
+   "axis": "coverage",
+   "axis_score": "8 (held; the coverage denominator is operator-owned)",
+   "source": "S113 (opened 2026-11-06, row added queued in the freeze commit)",
+   "statement": "Admit Frontier F55 with one knowledge entry, corpus/knowledge/osv-determineversion-cc-library-versioning.md, whose ground is the eight pinned clauses of the OSV.dev POST /v1experimental/determineversion reference page (S113): the purpose (C/C++ source hashes to the closest upstream library and version, Q01), the identifiable-library set and its coverage limit (OSS-Fuzz-integrated C/C++ projects; not all C/C++ packages, Q04, Q05), the ranked-versions response (Q06) and the closeness-sorted matches array (Q10), and the payload's MD5 file_hashes with base64 encoding and the hashed-file extension list (Q07, Q08, Q09). The experimental-status line (:37), the query/querybatch follow-up pointer (:39), the case-sensitivity line (:64) and the sample values are not claimed.",
+   "manifest": "corpus/source-snapshots/round-79/manifest.json (eight quotes, exact lines 25,41,41,55,61,62,66,85); snapshot corpus/source-snapshots/round-79/S113.txt (sha256 f4bce05304157a593dcea94f400238e3eda62f73e6678a6e296260a428138ebf, 127 lines, 5669 snapshot bytes, raw page 30242 bytes, fetched 2026-11-06T18:43:10Z HTTP 200)",
+   "predicate": {
+    "B0": "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-79/manifest.json --source S113 prints 'S113:sha256 OK' and eight 'OK occurrences=1 anchor=<n>-ok' lines, exit 0, before the freeze (controls/c2-prerecheck-r79.txt) and at the landing commit.",
+    "B1": "git diff <freeze>..<landing> -- corpus/SOURCES.md changes exactly one registry row (S113: status queued->mined, used-by '—'->corpus/knowledge/osv-determineversion-cc-library-versioning.md), adds none, removes none; grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md = 113 at the freeze and at the landing.",
+    "B2": "ls corpus/knowledge/*.md | wc -l goes 92 -> 93; corpus/instruments/knowledge-expected.txt goes 94 lines/92 .md rows -> 95/93; LC_ALL=C sort -c clean over the .md rows; the .md row set equals the corpus/knowledge/ listing.",
+    "B3": "python3 corpus/instruments/frontier-recheck-count.py prints 'FRONTIER-CENSUS rows=55 admitted=55 closed=55 problem-rows=0 registry=113' and 'FRONTIER-PASS F55 ids=S113' (freeze-commit base: rows=54 admitted=54 registry=113).",
+    "B4": "python3 corpus/instruments/capture-binding-check.py prints unbound=0 at the landing commit.",
+    "B5": "the B0 command at the landing commit prints S113:sha256 OK and the eight anchored OK lines, exit 0, and the entry's recheck: line is exactly that command behind 'cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && '.",
+    "B6": "Distinctness: for each of the eight pinned quotes, grep -F -l over corpus/knowledge/*.md excluding the new entry returns zero files (measured 0/8 at freeze); the scout paraphrase sweep of the eight clauses against admitted entries is recorded per clause in the round lesson.",
+    "B7": "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi exits 0 at the landing commit (the six inherited W04 warnings S028 S029 S072 S076 S080 S085 allowed; no new finding)."
+   },
+   "kill_rule": "Any of B0-B7 false at the landing commit, a claimed clause not on its declared line, a B6 literal count above zero, or a B6 paraphrase finding that a claimed clause restates admitted ground = C2 NOT VERIFIED. The eight quotes are frozen bytes; none is added, removed or edited after any seat has scored.",
+   "do_nothing": "No entry written: FRONTIER-CENSUS rows=54, knowledge 92, S113 queued - B2/B3/B1 unmet (controls/c2-donothing-counters-r79.txt).",
+   "motivation": "R-77-F endpoint leads (round-78 lesson Routed): determineversion is the richest of the three open experimental endpoints and the only one that turns vendored C/C++ library bytes into a version - bounty-relevant ground (native dependency identification before a vulnerability query) no admitted entry holds.",
+   "measured_before": "FRONTIER-CENSUS rows=54 admitted=54; knowledge 92; registry 113 with S113 queued",
+   "measured_after_target": "FRONTIER-CENSUS rows=55 admitted=55; knowledge 93; registry 113 with S113 mined",
+   "counting_command": "python3 corpus/instruments/frontier-recheck-count.py | grep FRONTIER-CENSUS ; ls corpus/knowledge/*.md | wc -l ; grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md"
+  }
+ ],
+ "routed_not_claimed": [
+  "r78 spot-check item 1: Q12 reject reason correction (appended in the round-79 lesson, not in-place)",
+  "item 4: S112 quote placement (lesson cites the entry Gate table)",
+  "item 5: coverage denominator (operator-owned)",
+  "item 6: B7 command form (literal --root form re-run at round start rc0 on this host)",
+  "R-77-D / R-77-E L0 questions remain open"
+ ]
+}

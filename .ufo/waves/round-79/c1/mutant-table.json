@@ -1,0 +1,135 @@
+[
+ {
+  "id": "K-M1",
+  "anchor": "        regs[\"restoration-only-result\"] = lambda out, ret: (\n            ret == 1 and \"RECHECK-CWD-RESULT nonconformant\" in out)\n",
+  "replacement": "",
+  "class": "assertion",
+  "expect": "registration deleted -> gate-regs FAIL"
+ },
+ {
+  "id": "K-M2",
+  "anchor": "lambda out, ret: (\n            ret == 1 and \"RECHECK-CWD-RESULT nonconformant\" in out)",
+  "replacement": "lambda out, ret: (\n            True)",
+  "class": "assertion",
+  "expect": "closure body True -> gate-negpolarity FAIL"
+ },
+ {
+  "id": "K-M3",
+  "anchor": "        out6, ret6 = capture(main, [\"recheck-cwd-census.py\", \"--root\", root6, \"--lane\", root6])\n",
+  "replacement": "",
+  "class": "exception",
+  "expect": "case-6 computation deleted -> gate-consume FAIL exception=NameError (logged class)"
+ },
+ {
+  "id": "K-M4",
+  "anchor": "    return neg_ok is False\n",
+  "replacement": "    return neg_ok is True\n",
+  "class": "assertion",
+  "expect": "negpolarity predicate inverted -> gate-predicates and gate-negpolarity FAIL"
+ },
+ {
+  "id": "K-M5",
+  "anchor": "        check(\"both-headers\",\n              all(got7[k] == v for k, v in want7.items()) and first7 and not rest7,\n              \"got=%s want=%s first_ran=%s restoration_ran=%s\"\n              % (counts_str(got7, want7), counts_str(want7, want7), first7, rest7))\n",
+  "replacement": "",
+  "class": "assertion",
+  "expect": "both-headers check deleted -> gate-checkids FAIL missing"
+ },
+ {
+  "id": "K-X1",
+  "anchor": "                clean_ok = limb(out6, ret6)\n",
+  "replacement": "                clean_ok = True\n",
+  "class": "assertion",
+  "expect": "consumer neutered -> gate-consume FAIL limb_log=[]"
+ },
+ {
+  "id": "K-X2a",
+  "anchor": "    return clean_ok is True and limb_log == [True]\n",
+  "replacement": "    return True and limb_log == [True]\n",
+  "class": "assertion",
+  "expect": "gate-consume predicate polarity limb neutered (the r78 K-X2 transform, now inside the predicate) -> gate-predicates FAIL"
+ },
+ {
+  "id": "K-X2b",
+  "anchor": "check(\"gate-consume\", gate_consume_ok(clean_ok, limb_log),",
+  "replacement": "check(\"gate-consume\", True,",
+  "class": "assertion",
+  "expect": "gate-consume call neutered -> gate-wiring FAIL F1/F2/F3"
+ },
+ {
+  "id": "K-M8",
+  "anchor": "              consumed(relabel_log, all(got8u[k] == v for k, v in want8u.items())\n                       and all(got8p[k] == v for k, v in want8p.items())),",
+  "replacement": "              True,",
+  "class": "assertion",
+  "expect": "relabel-detection neutered -> gate-wiring F1 and gate-checkids FAIL"
+ },
+ {
+  "id": "K-W1",
+  "anchor": "def wiring_findings(source):\n    \"\"\"Findings over every check(\"<name>\", <ok>, ...) call in source; [] means wired.\n    F1:<name>:<line>  ok is the constant True, or a BoolOp with a constant-True operand.\n    F2:<name>:<line>  a GATE_PREDICATES check whose ok is neither a call to its predicate\n                      (direct or through consumed()) nor the constant False.\n    F3:<name>         a GATE_PREDICATES check with no call to its predicate anywhere.\"\"\"\n    findings = []\n    wired = set()\n    for node in ast.walk(ast.parse(source)):\n        if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)\n                and node.func.id == \"check\" and len(node.args) >= 2):\n            continue\n        label, ok = node.args[0], node.args[1]\n        if not (isinstance(label, ast.Constant) and isinstance(label.value, str)):\n            continue\n        name = label.value\n        if (isinstance(ok, ast.Constant) and ok.value is True) or (\n                isinstance(ok, ast.BoolOp)\n                and any(isinstance(v, ast.Constant) and v.value is True for v in ok.values)):\n            findings.append(\"F1:%s:%d\" % (name, node.lineno))\n        want = GATE_PREDICATES.get(name)\n        if want is None:\n            continue\n        if _calls(ok, want):\n            wired.add(name)\n        elif not (isinstance(ok, ast.Constant) and ok.value is False):\n            findings.append(\"F2:%s:%d\" % (name, node.lineno))\n    findings.extend(\"F3:%s\" % name for name in GATE_PREDICATES if name not in wired)\n    return sorted(findings)",
+  "replacement": "def wiring_findings(source):\n    return []",
+  "class": "assertion",
+  "expect": "wiring scanner neutered -> gate-predicates FAIL"
+ },
+ {
+  "id": "K-W2",
+  "anchor": "check(\"gate-wiring\", consumed(wiring_log, wiring_ok(wfind)),",
+  "replacement": "check(\"gate-wiring\", True,",
+  "class": "assertion",
+  "expect": "gate-wiring call neutered -> gate-checkids FAIL side_logs"
+ },
+ {
+  "id": "K-N1",
+  "anchor": "def wiring_ok(findings):\n    return findings == []",
+  "replacement": "def wiring_ok(findings):\n    return True",
+  "class": "assertion",
+  "expect": "wiring_ok neutered -> gate-predicates FAIL"
+ },
+ {
+  "id": "K-P1",
+  "anchor": "def predicates_ok(rows):\n    return bool(rows) and all(got == want for got, want in rows)",
+  "replacement": "def predicates_ok(rows):\n    return True",
+  "class": "assertion",
+  "expect": "predicates_ok neutered -> gate-checkids FAIL side_logs"
+ },
+ {
+  "id": "K-P2",
+  "anchor": "check(\"gate-predicates\", predicates_ok(rows),",
+  "replacement": "check(\"gate-predicates\", True,",
+  "class": "assertion",
+  "expect": "gate-predicates call neutered -> gate-wiring FAIL"
+ },
+ {
+  "id": "K-G1",
+  "anchor": "    return set(done) == set(required) and all(log == [True] for log in side_logs)\n",
+  "replacement": "    return True\n",
+  "class": "assertion",
+  "expect": "gate_checkids_ok neutered -> gate-predicates FAIL"
+ },
+ {
+  "id": "K-C1",
+  "anchor": "check(\"gate-checkids\", gate_checkids_ok(done, required, side_logs),",
+  "replacement": "check(\"gate-checkids\", True,",
+  "class": "assertion",
+  "expect": "gate-checkids call neutered -> gate-wiring FAIL"
+ },
+ {
+  "id": "K-NP",
+  "anchor": "check(\"gate-negpolarity\", gate_negpolarity_ok(neg_ok),",
+  "replacement": "check(\"gate-negpolarity\", True,",
+  "class": "assertion",
+  "expect": "gate-negpolarity call neutered -> gate-wiring FAIL"
+ },
+ {
+  "id": "K-CL",
+  "anchor": "def _calls(node, name):\n    \"\"\"True when node is name(...) or consumed(<log>, name(...)).\"\"\"\n    if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):\n        if node.func.id == name:\n            return True\n        if node.func.id == \"consumed\" and len(node.args) == 2:\n            return _calls(node.args[1], name)\n    return False",
+  "replacement": "def _calls(node, name):\n    return True",
+  "class": "assertion",
+  "expect": "_calls neutered -> gate-predicates FAIL (bad_src findings change)"
+ },
+ {
+  "id": "K-T1",
+  "anchor": "def tmpdir_refused():\n    \"\"\"True (after a stderr line) when TMPDIR is set but is not an existing directory.\"\"\"\n    tmp = os.environ.get(\"TMPDIR\")\n    if tmp is not None and not os.path.isdir(tmp):\n        print(\"recheck-cwd: TMPDIR %s is not a directory\" % tmp, file=sys.stderr)\n        return True\n    return False",
+  "replacement": "def tmpdir_refused():\n    return False",
+  "class": "assertion",
+  "expect": "TMPDIR refusal removed -> tmpdir-refusal FAIL (exception caught as ret=-99)"
+ }
+]

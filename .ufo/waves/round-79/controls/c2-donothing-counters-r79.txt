@@ -1,0 +1,28 @@
+$ python3 corpus/instruments/frontier-recheck-count.py | tail -3
+PASS     F53  knowledge/fuzzilli-ndss2023-jit-fuzzing-paper.md     ids=S110           exit=0   
+PASS     F54  knowledge/osv-post-batch-query-contract.md           ids=S112           exit=0   
+entries=57 pass=57 exit=0
+rc=0
+$ ls corpus/knowledge/*.md | wc -l
+92
+rc=0
+$ grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md
+112
+rc=0
+$ grep -c '| mined ' corpus/SOURCES.md
+92
+rc=0
+$ wc -l < corpus/instruments/knowledge-expected.txt; grep -c '\.md$' corpus/instruments/knowledge-expected.txt
+94
+92
+rc=0
+$ grep -cE '^\|[[:space:]]*F[0-9]+' corpus/README.md
+56
+rc=0
+$ python3 corpus/instruments/capture-binding-check.py | tail -2
+FAIL rule=no-row record=S113 dir=round-79
+records=93 bound=92 unbound=1
+rc=0
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi | tail -1
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+rc=0
