@@ -1,0 +1,90 @@
+   1 | F UZZILLI: Fuzzing for JavaScript JIT Compiler Vulnerabilities
+   2 | Samuel Groß
+  26 | a broad attack surface for potential faults that might even be
+  27 | security-critical. Previous work on discovering software faults in
+  29 | testing. Unfortunately, these fuzzing approaches are not designed
+  33 | In this paper, we close this gap and present the first fuzzer
+  39 | discovered 17 confirmed security vulnerabilities. Our results show
+  57 | Network and Distributed Systems Security (NDSS) Symposium 2023
+  60 | https://dx.doi.org/10.14722/ndss.2023.24290
+  72 | is violated. Any assumption that turns out to be false but
+  88 | previous fuzzing approaches targeted JavaScript engines without focusing on specific components [28], [31], [43] or focused
+  92 | been discovered. In particular, JIT compilation vulnerabilities
+ 595 | Existing mutation-based interpreter fuzzers, such as LangFuzz, mutate syntactic elements of the code, using representations such as the AST [31]. However, syntactic elements are
+ 602 | those two code snippets. To counter this issue, we opted
+ 604 | representation used by the compiler. Mutations on such an
+ 606 | fuzzing effectiveness. By performing a different set of mutations on an IR, we can detect different defects faster. We
+ 665 | IR Design: In our IR, a program consists of a list of
+ 666 | instructions, each in turn consisting of an operation together
+ 669 | from zero to nine. Note that IR operations can be parametric. Parameters include constants in operations, property and
+ 673 | exist. Our IR uses static single-assignment (SSA) form [12],
+ 674 | [37], meaning that any variable has exactly one assignment.
+ 678 | Reassignments of JavaScript variables are possible through a
+ 729 | Note that this mutator also ultimately makes it possible to
+ 733 | C. Mutating the IR
+ 735 | by every mutation—avoid some trivial semantic errors, such as
+ 736 | the use of a variable before it is defined. Those restrictions are,
+ 737 | by themselves, not sufficient to ensure semantic correctness
+ 738 | over the generated corpus. We added three additional measures
+ 741 | degree of semantic correctness by ensuring that only semantically valid samples are added to the corpus at runtime. In order
+ 743 | information during every execution, but also whether the
+ 746 | the exit code, which will generally be zero if no uncaught
+ 750 | each mutation only has a small probability of turning a valid
+ 757 | semantic correctness of the generative component is a custom
+ 758 | type system, as type errors are a significant source of semantic
+ 866 | section in the Swift programming language in a tool called
+ 867 | Fuzzilli. We used this prototype implementation for the evaluation and ran it against the instrumented JavaScript engine
+ 868 | code of three state-of-the-art JavaScript engines: Google V8,
+ 872 | a consecutive series of fuzzing sessions spanning six months.
+ 873 | Each session lasted for around one week and used around 500
+ 874 | CPU cores. For each session, either the most recent source
+ 881 | Our fuzzing approach generally follows the standard design
+ 882 | of a mutation-based fuzzer. In every iteration, the fuzzer selects
+ 884 | new program Pm . The fuzzer then lifts Pm to JavaScript code,
+ 887 | If execution of Pm increases the coverage of the target
+ 895 | Table I: Summary of the found security vulnerabilities for Google V8, Apple JavaScriptCore (JSC), and Mozilla SpiderMonkey
+ 917 | CVE-2019-9813
+1077 | Due to the non-deterministic nature of fuzzing, the objective
+1080 | designed our approach called Fuzzilli specifically for finding
+1082 | method does not require an input corpus and can generate new
+1083 | JavaScript code on its own. Other JavaScript fuzzers, such as
+1085 | and require an input corpus. Consequently, the context of the
+1101 | code fragments become unsafe (3 vulnerabilities).
+1103 | operation has side effects or could trigger garbage collection
+1110 | rely on it to omit runtime type checks (4 vulnerabilities).
+1114 | found with which they could have formed a category (9
+1117 | During our experiments, we discovered and reported multiple previously unknown vulnerabilities in all three major
+1126 | found 17 vulnerabilities that eluded competing fuzzers, with
+1137 | some kind of type confusion (7 vulnerabilities).
+1140 | accesses to heap allocated memory blocks (2 vulnerabilities).
+1156 | evaluation against Superion [43]. This fuzzer represents the
+1160 | 1) Generator Effect Analysis: We ran our fuzzer five times
+1164 | plot for V8 is shown in Appendix A due to page restrictions. We can observe that generative and input mutations
+1169 | compiler flaws, possibly leading to memory corruption triggering in the emitted machine code at runtime (14 vulnerabilities).
+1171 | corruption bugs as well as compiler-specific ones, which, lead
+1182 | Setup: We ran each fuzzer five times for 24 hours on 100
+1187 | Used Corpus: Our fuzzer does not use an input corpus,
+1192 | that Superion does not publish its corpus. We opted to use
+1196 | sub-corpora of DIE. We generated these sub-corpora by successively adding random samples until reaching 17% branch
+1199 | evaluation. We acknowledge that not using the original input
+1211 | were the most significant contributors when generating new
+1212 | samples. Combine and operation mutations are the next two
+1213 | influential mutations. Interestingly, explicitly stressing the JIT
+1215 | These results show that when fuzzing for JIT vulnerabilities,
+1228 | SoFi [29] approach. Unfortunately, the authors neither published the full source code nor provided the code when contacted. We analyzed the results reported in Table 2 of the paper
+1230 | JavaScript engines SpiderMonkey, JavaScriptCore, and V8 do
+1238 | code. Unfortunately, the concerns could not be resolved in a
+1245 | Table II: Final mean branch coverage results. DIE Coverage
+1279 | We strictly outperformed Superion when it was only provided with the reduced corpus. Our fuzzer reached an additional coverage of 15%, 7%, and 7% for JavaScriptCore, V8,
+1287 | Concerning JIT specific coverage, we outperformed Superion on a full DIE corpus for JSC by 1.6% and got
+1332 | is interchangeable. Overall, Superion outperformed our fuzzer
+1333 | when provided with the full DIE corpus. The final coverage of
+1336 | start corpus was marginal, and the DIE corpus itself already
+1341 | We were able to compete with and, for JSC, even outperform Superion when it comes to JIT coverage even when providing Superion with the full DIE corpus. Surprisingly, when
+1346 | Finally, we were unable to reproduce the reported 25.6%
+1354 | we emphasize that future fuzzing research has to provide
+1372 | approach of generating semantically correct code, leveraging
+1375 | language and ran a 6-months experiment on 500 cores against
+1377 | frame we discovered 17 previously unknown vulnerabilities.
+1378 | Those vulnerabilities were on average at least 16 months
+1485 | All of our research artifacts are available online at https://
