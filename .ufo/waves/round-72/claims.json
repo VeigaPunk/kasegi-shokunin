@@ -1,0 +1,66 @@
+{
+  "lane": "kasegi",
+  "round": 72,
+  "attempt": 1,
+  "frozen_at_utc": "2026-11-05",
+  "base_tip": "measured at freeze commit (see freeze_sha in the round report)",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "type": "repair (the round-71 measured harm: base-denied write-class flags re-admitted per script, and a fixture-named symlink restoring a per-script denial)",
+      "target": "the derive gate's python-head policy denies every write-class option a head declares, keyed on the head the derive actually resolves to",
+      "counter": {
+        "command": "TMPDIR=/fast/scratch/hyaku/kasegi-r72/census python3 corpus/instruments/derive-head-census.py",
+        "instrument": "corpus/instruments/derive-head-census.py",
+        "instrument_sha256_at_freeze": "recorded in controls/c1-census-donothing-r72.txt",
+        "guard": "python3 corpus/instruments/figure-audit.py --selftest"
+      },
+      "before_values": {
+        "READMITTED": 19,
+        "ALIAS-PROBE": "admitted (rc=1)",
+        "POSITIVE": "2/2",
+        "CENSUS-RESULT": "defect",
+        "exit": 1,
+        "selftest": "cases=106 failures=0",
+        "measured_against": "the r71 gate corpus/instruments/figure-audit.py sha256 182f4ef7d9c9e4d921482d1c2d0cde113c49fd40c76f8fdf0319ba86ba064603 (lane tip 87d84a2)"
+      },
+      "after_predicate": "on the measured candidate gate, the census command exits 0 and prints exactly `READMITTED=0`, `ALIAS-PROBE verdict=refused`, `POSITIVE admitted=2/2`, `CENSUS-RESULT ok`, with no `READMITTED-ROW` line; and `python3 corpus/instruments/figure-audit.py --selftest` exits 0 with `failures=0` and `cases` >= 107",
+      "kill_rule": "C1 FAILS if any named literal differs at the measured commit, if any READMITTED-ROW line is printed, if the selftest reports a failure (including any pre-existing admission case newly refused), or if POSITIVE < 2 (a blanket-refusal gate is not a repair)",
+      "write_class": ["--out", "--output", "--work", "--scratch", "--url"],
+      "control_receipt": ".ufo/waves/round-72/controls/c1-census-donothing-r72.txt"
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "type": "frontier admission (new primary source, new surface)",
+      "target": "frontier F50: the Bugzilla REST API core v1 bug endpoints — the report channel's machine interface (create/update a bug, add a comment, the api_key and mandatory-field contract, the security-group restriction that keeps a report private)",
+      "source": {
+        "id": "S107",
+        "url": "https://bugzilla.readthedocs.io/en/latest/api/core/v1/bug.html",
+        "capture": "corpus/source-snapshots/round-72/S107.txt",
+        "note": "opened and captured this round; every quote in the entry is located in the capture"
+      },
+      "counter": {
+        "command": "python3 corpus/instruments/frontier-recheck-count.py; python3 corpus/instruments/capture-binding-check.py; wc -l corpus/instruments/knowledge-expected.txt; grep -vc '^#' corpus/instruments/knowledge-expected.txt; ls corpus/knowledge/*.md | wc -l; scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi",
+        "instrument": "corpus/instruments/frontier-recheck-count.py"
+      },
+      "before_values": {
+        "FRONTIER-CENSUS": "rows=49 admitted=49 closed=49 problem-rows=0 registry=106",
+        "entries": "entries=52 pass=52",
+        "capture": "records=85 bound=85 unbound=0",
+        "knowledge_expected": "89 lines / 87 rows",
+        "knowledge_files": 87,
+        "census_exit": 0
+      },
+      "after_predicate": "the same commands print `FRONTIER-CENSUS rows=50 admitted=50 closed=50 problem-rows=0 registry=107`, a `PASS F50 ... ids=S107` line, `entries=53 pass=53 exit=0`, capture `bound=86 unbound=0` with exit 0, knowledge-expected 90 lines / 88 rows with `sort -c` clean, 88 knowledge files, and sources-census exit 0",
+      "kill_rule": "C2 FAILS if any F50 row, entry or registry row is absent or duplicated, if any quote in the entry is not located in the capture, if capture-binding reports an unbound record, if knowledge-expected drifts from the file set, or if sources-census exits nonzero",
+      "control_receipt": ".ufo/waves/round-72/controls/c2-base-counters-r72.txt"
+    }
+  ],
+  "sourced_claim": "C2 rests on S107, opened and captured this round",
+  "non_claims": [
+    "the r71 V71-1 per-entry selftest pins, V71-4/V71-6 value comparisons, V71-9/V71-10 freeze-check bash -c and -- --selftest bypass are NOT claimed this round (routed in the report)",
+    "the freeze-check.py bash -c exec primitive measured by SentinelC1 row 33 is NOT repaired this round; it is routed"
+  ]
+}
