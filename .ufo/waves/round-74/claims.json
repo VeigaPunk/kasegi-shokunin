@@ -1,0 +1,64 @@
+{
+  "round": 74,
+  "lane": "kasegi",
+  "attempt": 1,
+  "frozen_at": "2026-11-05",
+  "base_revision": "ccd6a54bf392922495c4860332665499582e3213",
+  "controls_revision": "ccd6a54bf392922495c4860332665499582e3213",
+  "notes": [
+    "Freeze order: controls commit precedes this freeze commit; implementation commit follows it (r70 order; M73-2 fix).",
+    "Freeze-check replay re-derives the base values from the committed revisions before any candidate measurement (R73-V6 fix).",
+    "Predicate wording: C1's census clause binds shape (zeros + entries==file count), not absolute entries/exit0 counts, so C2's landing cannot falsify it (RC-6 class). The base absolute line lives in the parity limb and the base receipt.",
+    "RC-8 (operator, open): recheck values still run through bash -c in the census; this round neither expands nor reroutes that surface; routed around, not decided."
+  ],
+  "C1": {
+    "axis": "depth:verifiability",
+    "axis_score_before": 4,
+    "axis_score_after": 4,
+    "score_delta_basis": "nominal per QUALITY R58: the scored resolve.py citation census is not read by this gate; the claim is the counter amendment, not a score move",
+    "claim_type": "counter-amendment",
+    "target": "corpus/instruments/recheck-cwd-census.py is amended so its own --selftest executes main() and kills the four mutant classes the round-73 mutation battery found surviving (RC-1/RC-2/RC-3: forced-conformant result, hard-coded /tmp scratch parent, scratch leak, last-line reader)",
+    "motivation": "corpus/lessons/round-73.md Routed defects RC-1, RC-2, RC-3; mutation evidence .ufo/waves/round-73/w1/K73MutateCounter.md rows M4-M7; red-before receipt .ufo/waves/round-74/controls/c1-redbefore-mutant-survival-r74.txt",
+    "after_predicate": {
+      "selftest": "python3 corpus/instruments/recheck-cwd-census.py --selftest prints 'selftest cases=5 failures=0' and exits 0 at the implementation revision; the five cases are exactly: prefix-census (the round-73 case, retained), result-main (runs main() in-process on a nonconformant fixture asserting RECHECK-CWD-RESULT nonconformant + exit 1, and on a conformant fixture asserting conformant + exit 0), tmpdir-parent (every scratch directory the census creates resolves under TMPDIR), scratch-cleanup (no scratch directory survives census()), first-line (a fixture entry carrying two recheck: lines counts the FIRST line only)",
+      "census": "on the tree at the implementation revision: RECHECK-CWD line has noprefix=0 exit2_foreign=0 exit_other=0 norecheck=0, RECHECK-CWD-RESULT conformant, exit 0, and the printed entries equals ls corpus/knowledge/*.md | wc -l at that revision",
+      "parity": "at the base revision, the amended counter's census stdout is byte-identical to the base receipt .ufo/waves/round-74/controls/c1-base-census-r74.txt line 'RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0' plus 'RECHECK-CWD-RESULT conformant' and exit 0 (same output as the frozen round-73 counter on the same tree)"
+    },
+    "kill_rule": "C1 fails if ANY of: (a) any of the four mutant classes (M4 forced-conformant, M5 hard-coded /tmp parent, M6 run_foreign scratch leak, M7 last-line reader) applied to the amended counter exits 0 from --selftest (survives); (b) the parity limb differs by one byte; (c) the conformant positive fixture fails (blanket refusal is not a gain); (d) the amendment adds a bash -c call site beyond run_foreign's single call (exec-surface expansion, checked by grep receipt and the sentinel seat)",
+    "scope": "the census reads the FIRST 'recheck:' line per corpus/knowledge/*.md file; 'restoration-recheck:' is a different header and is out of the counted population by definition (named here per RC-5). The claim is this enumerated counter amendment on this host; it is not a sandbox claim and asserts nothing about unenumerated mutant classes",
+    "do_nothing_control": "the unamended round-73 counter: --selftest prints cases=1 failures=0 (not 5) and all four mutants survive it (.ufo/waves/round-74/controls/c1-redbefore-mutant-survival-r74.txt); no-work cannot reach cases=5 or kill any mutant"
+  },
+  "C2": {
+    "axis": "coverage",
+    "axis_score_before": 8,
+    "axis_score_after": 8,
+    "score_delta_basis": "the coverage denominator is operator-owned; the claim is the admission, not a score move (established r60-r73 practice)",
+    "claim_type": "frontier-admission",
+    "target": "admit Frontier F52 — the Fuzzilli project's own primary documentation ground (its self-description as a coverage-guided fuzzer for dynamic language interpreters built on the FuzzIL intermediate language; the semantic-correctness concern for JIT interpreter bugs versus try-catch-wrapped runtime-API fuzzing; the Swift/C implementation split; the named architecture components MutationFuzzer, ScriptRunner, Corpus, Minimizer, Evaluator, Lifter with Storage and the event-driven design; the REPRL read-eval-print-reset-loop execution mode with state reset; the instance tree hierarchy for scale; the patched, coverage-instrumented target-engine builds under Targets/; the NDSS 2023 paper's existence) — on source S109 (https://github.com/googleprojectzero/fuzzilli, captured corpus/source-snapshots/round-74/S109.txt), with one knowledge entry citing S109",
+    "distinctness_screen": {
+      "F41_S093": "Project Zero's comparison post; its scope limit keeps the Fuzzilli method out; the tool's own documentation ground is unheld — DISTINCT",
+      "F40_S092_F42_S094": "Big Sleep tracker and SQLite case; different system — DISTINCT",
+      "F31_S080": "OSV format ranges; unrelated — DISTINCT",
+      "siblings": "kengaku holds LLM evaluation, chousa research method, kagi secrets, kake web properties, kama local model serving; none holds fuzzer tool documentation — DISTINCT (connector seat re-verifies)",
+      "pre_freeze_quote_locus": "every content clause above is located in the capture before this freeze: L151 (definition/FuzzIL), L165 (semantic correctness), L212 (Swift/C), L214-L221 (components), L226-L227 (Storage/events), L230 (REPRL), L233+L236 (tree hierarchy, root+16+256 example), L154-L156 (Targets/, patches, clang>=4.0), L243 (NDSS 2023)"
+    },
+    "after_predicate": {
+      "entry": "corpus/knowledge/fuzzilli-js-engine-fuzzing-framework.md exists, opens with source:/verified-at:/recheck: (recheck carries the lane-root cd prefix), cites S109, and its own recheck exits 0 when run from a foreign cwd",
+      "registry": "exactly one new SOURCES.md registry row S109 (docs, tier A scoped, mined, opened 2026-11-05, used-by names the entry); grep -cE '^\\|[[:space:]]*S[0-9]{3,}[[:space:]]*\\|' corpus/SOURCES.md = 109 (base 108); every pre-existing row's id/url/status/recheck/used-by cells unchanged",
+      "frontier": "frontier-recheck-count.py: FRONTIER-CENSUS rows=52 admitted=52 closed=52 problem-rows=0 registry=109; FRONTIER-PASS F52 ids=S109; entries=55 pass=55 exit 0 (base rows=51 entries=54)",
+      "capture": "capture-binding-check.py: records=88 bound=88 unbound=0 exit 0 (base 87); manifest corpus/source-snapshots/round-74/manifest.json pins >=10 quotes for S109, each <=25 words, each located at its anchor line in the capture whose sha256 is c9a7adfbd34966cbd002a4c1da75e094de8db500ee77d4bce77bca6f0568d486",
+      "knowledge": "90 corpus/knowledge/*.md files (base 89); corpus/instruments/knowledge-expected.txt 92 lines / 90 non-comment rows, LC_ALL=C sort -c clean, set-equal to the file names",
+      "census": "sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi exits 0 (the six inherited W04 warnings unchanged or fewer)"
+    },
+    "kill_rule": "C2 fails if ANY after-value misses, if any manifest quote is not located at its anchor or exceeds 25 words, if the capture sha differs, if S109 collides with an existing id, if any content clause is contradicted by the capture, or if the entry's recheck exits nonzero from a foreign cwd",
+    "scope_limit": "the project's own README/documentation statements only; not Project Zero's comparison post (S093/F41), not Big Sleep (S092/F40, S094/F42), not the NDSS 2023 paper's content (existence and name only), not any listed CVE's specifics (only that the README lists bugs found with Fuzzilli), and no live fuzzing (live-target testing stays refused)",
+    "do_nothing_control": ".ufo/waves/round-74/controls/c2-base-counters-r74.txt: no-work tree reads rows=51 entries=54 records=87 registry=108 knowledge=89 with F52 and S109 absent; it cannot reach any after-value"
+  },
+  "non_claim_work": [
+    "End-to-end claim-package trial (SHONEN box 2; considerthese/2026-10-26.md proposal 2 mined this round; R73-V5): one public disclosed report -> six-file package -> claim-package-check.py 8/8 WELL-FORMED -> pricing note through F13/F17/F18. Not a claim; capability demonstration recorded in the report and LOG.md.",
+    "R73-V1: round-74 lesson carries the round-73 Gate correction (the two rejects recorded with reasons).",
+    "R73-V2: SOURCES.md ## Leads gains the OSV overview page bullet (lead, not evidence).",
+    "R73-V4: post-landing round-73 counter receipts committed under .ufo/waves/round-73/controls/ (done pre-freeze).",
+    "R73-V6: freeze-check replay before candidate measurement."
+  ]
+}
