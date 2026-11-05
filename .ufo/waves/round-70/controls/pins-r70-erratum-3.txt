@@ -1,0 +1,37 @@
+# round-70 pins erratum 3 — source URL redirect, a typed word count, and the audit blind spot
+
+Frozen pins `controls/pins-r70.txt` stay byte-identical. This file records the three corrections the
+wave's scout forced, and the one finding it raised that erratum 1 had already fixed.
+
+## 1. S105's URL answers a 301
+
+`ScoutS105` observed `HTTP/2 301 location: /en/code-security/concepts/vulnerability-reporting-and-management/github-advisory-database`.
+The snapshot re-captured from the redirect target is byte-identical to the committed capture
+(sha256 `9dd51a8e…e3350`, `diff` empty), so this is stale URL metadata, not content drift.
+`capture-binding-check.py` requires `capture_url == final_url`, so the manifest keeps the requested
+URL in `final_url` and now records the served path in its `note`; the S105 registry row's anchor cell
+records the same fact. `capture-binding-check.py` still prints `records=84 bound=84 unbound=0`.
+
+## 2. A hand-typed word count (second instance of M70-4)
+
+The lesson's Gate row typed the S105 quote as "18 words"; `wc -w` gives **17** (and the manifest's
+Q07 quote measures 17). Corrected to 17 in `corpus/lessons/round-70.md`.
+
+## 3. The audit that should have caught it (V70-4)
+
+`corpus/instruments/gate-quote-audit.py`'s `ANNOTATION_RE` sees 9 of the 13 annotations in the shape
+"N words by `wc -w`" and none of the 262 bare "N words" strings — about 5 % of the class it exists to
+audit. Its two base failures (`round-55:46`, `round-64:15`) are inherited at `e7c02bd`, verified by
+the scout on a `git archive` export, and are not round-70 debt. Routed as V70-4.
+
+## 4. Already fixed by erratum 1
+
+`ScoutS105` finding 6C — the entry quoting `"always fully synchronized"` against a line that reads
+"will **always be** fully synchronized" — is the O13 misquote from `CriticC2`, and the corrected entry
+now quotes `"will always be fully synchronized"` (`S105.txt:639`). No further change needed.
+
+## Re-measured
+
+`capture-binding-check.py` → `records=84 bound=84 unbound=0`; `frontier-recheck-count.py` →
+`rows=48 admitted=48 closed=48 problem-rows=0 registry=105`; `source-recheck.py --source S105` →
+19/19 Q-OK exit 0. C2's frozen predicate values are unchanged.

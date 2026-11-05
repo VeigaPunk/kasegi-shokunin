@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "note": "Round-70 GitHub Advisory Database curation semantics. S105 is GitHub Docs' 'GitHub Advisory database' page: the three class sub-headings (GitHub-reviewed vulnerability, unreviewed NVD-imported vulnerability, malware) with their admission path and alerting consequence, the eight imported feeds plus the community-contribution channel, the supported-registry gate on review, the GHSA id shape, CVSS version provenance, EPSS sync semantics and the community-contribution path. It is the curation semantics F47/S103 left unopened, NOT the REST read interface (F47/S103), the repository-scoped advisory API (F36/S087), the maintainer advisory lifecycle (F29/S074) or any single advisory instance (S068). A second candidate, ENISA's EUVD API documentation at https://euvd.enisa.europa.eu/apidoc, is registered as a rejected row (S104): the served HTML is a 3062-byte single-page-application shell with no line-anchorable documentation text, so it has no capture here.",
+  "note": "Round-70 GitHub Advisory Database curation semantics. S105 is GitHub Docs' 'GitHub Advisory database' page: the three class sub-headings (GitHub-reviewed vulnerability, unreviewed NVD-imported vulnerability, malware) with their admission path and alerting consequence, the eight imported feeds plus the community-contribution channel, the supported-registry gate on review, the GHSA id shape, CVSS version provenance, EPSS sync semantics and the community-contribution path. It is the curation semantics F47/S103 left unopened, NOT the REST read interface (F47/S103), the repository-scoped advisory API (F36/S087), the maintainer advisory lifecycle (F29/S074) or any single advisory instance (S068). A second candidate, ENISA's EUVD API documentation at https://euvd.enisa.europa.eu/apidoc, is registered as a rejected row (S104): the served HTML is a 3062-byte single-page-application shell with no line-anchorable documentation text, so it has no capture here. The requested URL answers HTTP 301 to https://docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/github-advisory-database (observed 2026-11-05 by wave seat ScoutS105); the snapshot re-captured from the redirect target is byte-identical (sha256 9dd51a8e...e3350), so final_url records the requested URL and the served path is recorded here.",
   "sources": [
     {
       "id": "S105",
@@ -18,25 +18,101 @@
       "bytes": 616388,
       "lines": 656,
       "quotes": [
-        {"id": "Q01-purpose", "quote": "Research known security vulnerabilities and malware in open source packages", "anchor": 558},
-        {"id": "Q02-osv", "quote": "Security advisories are published as JSON files in the Open Source Vulnerability (OSV) format.", "anchor": 567},
-        {"id": "Q03-sources", "quote": "We add advisories to the GitHub Advisory Database from the following sources:", "anchor": 573},
-        {"id": "Q04-reviewed-gate", "quote": "We carefully review each advisory for validity and ensure that they contain a full description and both ecosystem and package information.", "anchor": 584},
-        {"id": "Q05-registry-gate", "quote": "We review advisories if they are for a vulnerability in a package that comes from a supported registry.", "anchor": 585},
-        {"id": "Q06-swift", "quote": "Swift (registry: N/A)", "anchor": 597},
-        {"id": "Q07-unreviewed-auto", "quote": "Unreviewed advisories are published automatically into the GitHub Advisory Database, directly from the National Vulnerability Database feed.", "anchor": 601},
-        {"id": "Q08-unreviewed-noalert", "quote": "Dependabot doesn't create Dependabot alerts for unreviewed advisories as this type of advisory isn't checked for validity or completion.", "anchor": 602},
-        {"id": "Q09-malware-source", "quote": "We publish them automatically into the GitHub Advisory Database from the npm security team and the OpenSSF Malicious Packages repository.", "anchor": 604},
-        {"id": "Q10-type-malware", "quote": "You can view malware advisories by searching for type:malware in the GitHub Advisory Database.", "anchor": 606},
-        {"id": "Q11-substitution", "quote": "Our malware advisories are mostly about substitution attacks.", "anchor": 607},
-        {"id": "Q12-scoped", "quote": "Users who have their dependencies appropriately scoped should not be affected by malware.", "anchor": 607},
-        {"id": "Q13-ghsa-format", "quote": "The syntax of GHSA IDs follows this format: GHSA-xxxx-xxxx-xxxx", "anchor": 612},
-        {"id": "Q14-cvss-versions", "quote": "The GitHub Advisory Database supports both CVSS version 3.1 and CVSS version 4.0.", "anchor": 621},
-        {"id": "Q15-cve-provenance", "quote": "If GitHub obtains a CVE, the GitHub Advisory Database uses the CVSS version assigned by the maintainer, which can be version 3.1 or 4.0.", "anchor": 628},
-        {"id": "Q16-epss-sync", "quote": "While EPSS score percentages will always be fully synchronized, score percentiles will only be updated when significantly different.", "anchor": 639},
-        {"id": "Q17-epss-first", "quote": "we do not author this data, but rather source it from FIRST", "anchor": 640},
-        {"id": "Q18-community", "quote": "The GitHub Security Lab curation team will review the submitted contributions and publish them onto the GitHub Advisory Database if accepted.", "anchor": 642},
-        {"id": "Q19-credit", "quote": "automatically be assigned a credit type of \"Analyst\"", "anchor": 643}
+        {
+          "id": "Q01-purpose",
+          "quote": "Research known security vulnerabilities and malware in open source packages",
+          "anchor": 558
+        },
+        {
+          "id": "Q02-osv",
+          "quote": "Security advisories are published as JSON files in the Open Source Vulnerability (OSV) format.",
+          "anchor": 567
+        },
+        {
+          "id": "Q03-sources",
+          "quote": "We add advisories to the GitHub Advisory Database from the following sources:",
+          "anchor": 573
+        },
+        {
+          "id": "Q04-reviewed-gate",
+          "quote": "We carefully review each advisory for validity and ensure that they contain a full description and both ecosystem and package information.",
+          "anchor": 584
+        },
+        {
+          "id": "Q05-registry-gate",
+          "quote": "We review advisories if they are for a vulnerability in a package that comes from a supported registry.",
+          "anchor": 585
+        },
+        {
+          "id": "Q06-swift",
+          "quote": "Swift (registry: N/A)",
+          "anchor": 597
+        },
+        {
+          "id": "Q07-unreviewed-auto",
+          "quote": "Unreviewed advisories are published automatically into the GitHub Advisory Database, directly from the National Vulnerability Database feed.",
+          "anchor": 601
+        },
+        {
+          "id": "Q08-unreviewed-noalert",
+          "quote": "Dependabot doesn't create Dependabot alerts for unreviewed advisories as this type of advisory isn't checked for validity or completion.",
+          "anchor": 602
+        },
+        {
+          "id": "Q09-malware-source",
+          "quote": "We publish them automatically into the GitHub Advisory Database from the npm security team and the OpenSSF Malicious Packages repository.",
+          "anchor": 604
+        },
+        {
+          "id": "Q10-type-malware",
+          "quote": "You can view malware advisories by searching for type:malware in the GitHub Advisory Database.",
+          "anchor": 606
+        },
+        {
+          "id": "Q11-substitution",
+          "quote": "Our malware advisories are mostly about substitution attacks.",
+          "anchor": 607
+        },
+        {
+          "id": "Q12-scoped",
+          "quote": "Users who have their dependencies appropriately scoped should not be affected by malware.",
+          "anchor": 607
+        },
+        {
+          "id": "Q13-ghsa-format",
+          "quote": "The syntax of GHSA IDs follows this format: GHSA-xxxx-xxxx-xxxx",
+          "anchor": 612
+        },
+        {
+          "id": "Q14-cvss-versions",
+          "quote": "The GitHub Advisory Database supports both CVSS version 3.1 and CVSS version 4.0.",
+          "anchor": 621
+        },
+        {
+          "id": "Q15-cve-provenance",
+          "quote": "If GitHub obtains a CVE, the GitHub Advisory Database uses the CVSS version assigned by the maintainer, which can be version 3.1 or 4.0.",
+          "anchor": 628
+        },
+        {
+          "id": "Q16-epss-sync",
+          "quote": "While EPSS score percentages will always be fully synchronized, score percentiles will only be updated when significantly different.",
+          "anchor": 639
+        },
+        {
+          "id": "Q17-epss-first",
+          "quote": "we do not author this data, but rather source it from FIRST",
+          "anchor": 640
+        },
+        {
+          "id": "Q18-community",
+          "quote": "The GitHub Security Lab curation team will review the submitted contributions and publish them onto the GitHub Advisory Database if accepted.",
+          "anchor": 642
+        },
+        {
+          "id": "Q19-credit",
+          "quote": "automatically be assigned a credit type of \"Analyst\"",
+          "anchor": 643
+        }
       ]
     }
   ]

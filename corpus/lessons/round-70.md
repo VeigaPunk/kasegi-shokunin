@@ -75,7 +75,7 @@ is a separate file with the same values (see M70-5).
 | row | URL | access date | located quote (≤25 words) |
 |---|---|---|---|
 | S104 (rejected) | https://euvd.enisa.europa.eu/apidoc | 2026-11-05 (re-fetch; byte-identical to the round-69 receipt: 3062 bytes, sha256 `6fb32b61…a38d5`) | The static body contains no `endpoint` and no `/api/` occurrence (0 and 0), so no line-anchored capture exists — the rejection's ground is the absence, not a sentence. |
-| S105 (mined, tier A) | https://docs.github.com/en/code-security/security-advisories/global-security-advisories/about-the-github-advisory-database | 2026-11-05T00:14:43Z (capture sha256 `9dd51a8e…e3350`, 656 lines) | "Unreviewed advisories are published automatically into the GitHub Advisory Database, directly from the National Vulnerability Database feed." (`S105.txt:601`, 18 words) |
+| S105 (mined, tier A) | https://docs.github.com/en/code-security/security-advisories/global-security-advisories/about-the-github-advisory-database | 2026-11-05T00:14:43Z (capture sha256 `9dd51a8e…e3350`, 656 lines) | "Unreviewed advisories are published automatically into the GitHub Advisory Database, directly from the National Vulnerability Database feed." (`S105.txt:601`, 17 words) |
 
 Flip conditions recorded in the rows: S104 flips on a statically served or line-anchorable rendering
 of the same API reference; S105's recheck is 180d.
@@ -105,7 +105,9 @@ of the same API reference; S105's recheck is 180d.
 - **M70-4 — a prose count drifted from the artifact.** The entry's recheck comment said 17 pinned
   quotes while the manifest carried 19; corrected before the landing commit, so the committed bytes
   agree. Captured-by: `source-recheck.py` line count (`S105:Q19-credit OK`). Fix: derive the count
-  from the manifest, never type it.
+  from the manifest, never type it. Second instance, found by `ScoutS105`: the Gate row above typed
+  this quote as "18 words" where `wc -w` gives 17; corrected. The `gate-quote-audit.py` blind spot
+  that let it through is V70-4.
 - **M70-5 — a frozen receipt was overwritten after the freeze.** `controls/c2-after-counters-r70.txt`
   was pinned at `e74ba6b5` (sha256 `f20fd6e7…`, the pre-freeze working-tree measurement) and then
   re-written with the shared-clone re-measurement before the evidence commit, so the pinned hash and
@@ -206,6 +208,11 @@ residuals and into the report's verdicts.
   a short `-o` refusal, but neither the frozen probe set (P1..P7) nor the selftest exercises it
   (`MutationC1` M5 survives the counter end to end). The claim is graded on its frozen predicate only;
   the `-o` behaviour is a code fact with no this-round receipt.
+- **V70-4 — the quote-word audit inspects ~5% of its class.** `ScoutS105` measured
+  `corpus/instruments/gate-quote-audit.py`'s `ANNOTATION_RE`: it sees 9 of the 13 annotations in the
+  shape "N words by `wc -w`" and none of the 262 bare "N words" strings, which is how this round's
+  hand-typed 18-vs-17 error passed. Its two failures at base (`round-55:46`, `round-64:15`) are
+  inherited, not round-70 debt. Routed to the instrument's next change.
 - **V70-3 — capability loss to state.** `SentinelGate` records that the gate can no longer derive a
   counter against a non-default root (`--root <fixture>`); every committed use invokes such counters
   directly rather than through the gate, so nothing breaks, but the loss is real and is recorded here
