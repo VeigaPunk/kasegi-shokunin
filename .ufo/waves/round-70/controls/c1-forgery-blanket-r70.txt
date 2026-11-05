@@ -8,3 +8,7 @@ MEASURE P6-python-out-abbrev ok rc=2 refused=1 marker_runs=0 wrote=0
 MEASURE P7-python-json-space ok rc=2 refused=1 marker_runs=0 wrote=0
 MEASURE read-only-controls-admitted FAIL controls=8 failed=8 python3 corpus/instruments/ok.py rc=2;python3 corpus/instruments/ok.py -- --root rc=2;cat g.txt rc=2;grep -c 35 g.txt rc=2;sort g.txt | head -n 1 rc=2;cut -c1-2 g.txt | head -n 1 rc=2;git show HEAD:g.txt | head -n 1 rc=2;git cat-file -t HEAD rc=2
 MEASURE selftest FAIL selftest cases=86 failures=47 rc=1
+MEASURE mutbat FAIL rc=1 mutbat killed=5/5 survivors=0 invalid=0 controls=fail
+MEASURE real-ledger FAIL no-audit-line rc=2
+MEASURE no-write-side-effect ok fixture_changed=0 marker_runs=0
+VERIFY measurements=12 failures=4 gate_sha256=126de75d135f6399e5be19d121790f6cce4a275579fc6070200e214b1fd22502 mode=forgery

@@ -2744,3 +2744,32 @@ Frozen claims: `.ufo/waves/round-69/claims.json` (freeze `9b877fd916308e948b865c
 
 1. **depth:verifiability (4, lowest):** pin the two untested `git_show_operands_ok` limbs (no operand; `--`) with selftest cases (R103), and take one named residual with a failing base control — the python-head `--root`/`--out` counters (round-68 RevengerC1 rows 2 and 7) are the strongest candidates.
 2. **coverage (8):** land the EUVD rejected row (R102) with a freeze that counts it, and consider "About the GitHub Advisory database" (the curation semantics F47 defers to) as the next F47-adjacent source.
+
+## Round 70 — python-head write/exec/ingress option refusal (C1, depth:verifiability, nominal 4 held) and F48, the GitHub Advisory Database curation semantics (C2, coverage, 8 held)
+
+Frozen claims: `.ufo/waves/round-70/claims.json` (freeze `e74ba6b5d522b1e91dca3a2d244585d6b7babdc5`, base `e7c02bddaa32a4a70afb2e6278f108e03dca067c`, pins `controls/pins-r70.txt`); measured C1 implementation **`c1051749571caf6a0383b15187fc02cdd21785b5`**, gate sha256 `7a8d52eb1d07924714c7f7c4aceca053dd78fddf63ca43b49ec2a2844cee59b5`; C2 landing **`b4afd8a0206b23a69d8cd65d92070cdfcd4680a7`**.
+
+| Axis | Before | After | Score delta, command and evidence |
+|---|---:|---:|---|
+| depth:verifiability (lowest) | `VERIFY measurements=12 failures=9` exit 1 at the base gate `c09b0fb1…`: three `--root` spellings run the fixture entry's `recheck:` payload through `bash -c`, three `--out` spellings write their named outside file, `--json` does both; selftest 86 | `VERIFY measurements=12 failures=0` exit 0 at `c1051749`: P1–P7 `rc=2 reason=derive-not-read-only marker_runs=0 wrote=0`; eight read-only controls exact; selftest 96/0; mutbat 5/5; ledger 35/35; no write side effect | **4 → 4, delta 0, nominal per R58** (the axis's citation-resolution metric is not read by this gate). `python3 -B .ufo/waves/round-70/controls/c1-probe-run-r70.py --gate <exported gate> --work /fast/scratch/hyaku/kasegi-r70/L1/FINAL --mode candidate`; before `controls/c1-base-donothing-r70.txt` and the paired clone base `controls/c1-base-donothing-r70-clone.txt`; after `controls/final-verification-r70.txt`. |
+| coverage | `FRONTIER-CENSUS rows=47 admitted=47 closed=47 problem-rows=0 registry=103`; `entries=50 pass=50`; capture `records=83 bound=83`; expected 87 lines / 85 entries; knowledge 85; F48 absent | `rows=48 admitted=48 closed=48 problem-rows=0 registry=105`; `entries=51 pass=51`; `records=84 bound=84 unbound=0`; expected 88/86 `sort -c` clean; knowledge 86; F48/S105 admitted, S104 rejected row landed; census exit 0 | **8 → 8, delta 0** (the coverage denominator is operator-owned). `python3 corpus/instruments/frontier-recheck-count.py`; `python3 corpus/instruments/capture-binding-check.py`; `wc -l` + `grep -vc '^#' corpus/instruments/knowledge-expected.txt`; `sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`; before `controls/c2-base-counters-r70.txt`, after `controls/c2-after-counters-r70.txt`. |
+| depth:density | 9 | 9 held | Not targeted or re-measured. `SKILL.md` gains the selftest pin 86 → 96 and one r70 current-execution amendment; no density credit asserted. |
+
+**C1 scope, stated exactly.** The claim is the enumerated probe set P1..P7 on this host (python3 3.14.8, `/usr/bin/sort` GNU coreutils 9.12, git 2.56.0). The new rule refuses the named long options and any unique abbreviation of them plus a short `-o`; it is not a sandbox — positional arguments, a counter's own writes on a positional path, non-denied options and the `--` operand boundary stay open, and the lesson names them.
+
+**Capabilities:** no new repertoire row. The existing `derive-gate-chain-refusal` row is extended in place — demonstration `controls/final-verification-r70.txt` → 12/0.
+
+**Saturation:** line 9/10 per owned axis; lowest non-retired axis remains depth:verifiability 4, worked nominally this round. No retirement, split or nudge waiver.
+
+### Round-70 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 70 | depth:verifiability | python head admits every counter under `corpus/instruments/`; `--root` executes a root-supplied `bash -c` payload, `--out`/`--json` write arbitrary paths; selftest 86 | the seven measured long options refused by name and unique abbreviation plus `-o`; the two R103 `git show` limbs pinned; selftest 96 | `.ufo/waves/round-70/controls/{c1-base-donothing-r70.txt,final-verification-r70.txt}` |
+| 70 | coverage | rows=47 registry=103 entries=50 capture=83 knowledge=85 | rows=48 registry=105 entries=51 capture=84 knowledge=86; F48/S105 admitted, S104 rejected | `.ufo/waves/round-70/controls/{c2-base-counters-r70.txt,c2-after-counters-r70.txt}`; `corpus/knowledge/github-advisory-database-curation-semantics.md` |
+| 70 | calibration | round-69 routed defects V69-1/V69-2/V69-3 open; round-70 process misses M70-1..M70-4 found in-round | V69-1 landed as S104, V69-2 pinned as two cases, V69-3 answered by six attack seats; M70-1..M70-3 became QUALITY R104–R106 | `corpus/lessons/round-70.md` § Mistakes; `corpus/QUALITY.md` R104–R106 |
+
+### Planned after round 70 (not frozen)
+
+1. **depth:verifiability (4, lowest):** the next gate claim takes one distinct observed residual with a failing no-work control — the strongest named candidates are a counter that writes on a positional path (`resolve.py <lane>`), nested-python second-stage validation, and the `git`/`python` head SIGPIPE masking left open since round 67. Do not re-claim the seven repaired options.
+2. **coverage (8):** the Fuzzilli primary documentation remains the only unopened lead; the "About the GitHub Advisory database" page is now closed by F48, so a successor must open genuinely new ground (e.g. the OSV schema's own field definitions beyond S080) rather than re-reading curation prose.
