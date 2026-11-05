@@ -1084,4 +1084,14 @@ source S103) rests on GitHub Docs' own REST reference for global security adviso
 
 | id | topic | status | entry | sources | next |
 |---|---|---|---|---|---|
-| F47 | GitHub global security advisories REST API — the read interface over the GitHub Advisory Database: GET /advisories (filters type/ecosystem/severity/cwes/affects/EPSS/date ranges, cursor pagination, per_page max 100, sort) and GET /advisories/{ghsa_id}, with the reviewed-only, malware-excluded default of an unfiltered list | admitted | knowledge/github-global-security-advisories-rest-api.md | S103 | Set `type` explicitly before counting (S103.txt:275-276, :293-294); read example response keys, never values; database curation semantics ("About the GitHub Advisory database") are unopened and are not ground here. |
+| F47 | GitHub global security advisories REST API — the read interface over the GitHub Advisory Database: GET /advisories (filters type/ecosystem/severity/cwes/affects/EPSS/date ranges, cursor pagination, per_page max 100, sort) and GET /advisories/{ghsa_id}, with the reviewed-only, malware-excluded default of an unfiltered list | admitted | knowledge/github-global-security-advisories-rest-api.md | S103 | Set `type` explicitly before counting (S103.txt:275-276, :293-294); read example response keys, never values; database curation semantics ("About the GitHub Advisory database") are held by F48/S105. |
+
+## Round-70 admission — Frontier F48 (2026-11-05)
+
+Appended amendment: the round-70 entry `corpus/knowledge/github-advisory-database-curation-semantics.md` (Frontier F48,
+source S105) rests on GitHub Docs' own "GitHub Advisory database" page, captured
+`corpus/source-snapshots/round-70/S105.txt`, manifest `corpus/source-snapshots/round-70/manifest.json`.
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F48 | GitHub Advisory Database curation semantics — the three advisory classes (GitHub-reviewed vulnerability, unreviewed NVD import, malware) with their admission path, alerting consequence and what each record proves; the nine imported feeds; the supported-registry review gate; the GHSA id shape; CVSS version provenance; EPSS daily-sync semantics; the community-contribution path | admitted | knowledge/github-advisory-database-curation-semantics.md | S105 | Read the class before the fields (S105.txt:584, :601, :604); a malware record carries no fix version (S105.txt:571); an EPSS percentile refreshes only when significantly different (S105.txt:639). The REST read interface and its reviewed default stay with F47/S103. |
