@@ -1,0 +1,10 @@
+# r72 probe rows 10 and 29 re-run by the L1 on the exact bytes (scratch clone of 9869931; alias symlinks created in the scratch clone only)
+base row10 rc=see-below
+base row29 rc=see-below
+cand row10 rc=see-below
+cand row29 rc=see-below
+base row10  (censusf.py -> capture-source.py, bare)  rc=2 derive-not-read-only
+cand row10  (censusf.py -> capture-source.py, bare)  rc=1 admitted (argparse inert)
+cand row10 with --url or --wor: rc=2 refused (flags still policed through the alias)
+base row29  (ok.py -> gate-quote-audit.py, --url)  rc=1 admitted
+cand row29  (ok.py -> gate-quote-audit.py, --url)  rc=1 admitted (--url is not denied for gate-quote-audit; inert, unchanged from base)
