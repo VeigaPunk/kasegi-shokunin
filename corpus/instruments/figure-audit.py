@@ -32,8 +32,10 @@ Ledger entry shape (JSON object with a "figures" array):
                             or braced operand), git cat-file without --textconv/--filters, and
                             python/python3 running a counter whose decoded script argument
                             starts literally with corpus/instruments/ and resolves inside it
-                            and carries none of the write/exec/ingress long options named in
-                            PY_DENIED_FLAGS, nor any unique abbreviation of one (R70)).
+                            and carries no denied option for that script — a named output path or
+                            --selftest for any head, plus the per-script write/exec/ingress flags
+                            of PY_DENIED_BY_SCRIPT — nor any unique abbreviation of one (R70,
+                            R71), and whose basename is in the PY_SCRIPT_CENSUS allowlist (R71).
                             The same decoded argv is validated and executed. Supported syntax:
                             quoting/backslash escapes, pipelines, &&, and < file input.
                             Unquoted expansion syntax and dollar/backticks in double quotes are
@@ -119,9 +121,104 @@ DENIED_FLAGS = (
 # by any unique argparse abbreviation of the name.  Positional arguments stay admitted: this is an
 # enumerated option set, not a sandbox, and a counter's own writes on a positional path remain out
 # of scope.  Options after a `--` separator are operands, not options, and stay admitted.
-PY_DENIED_FLAGS = ("--root", "--out", "--output", "--json", "--scratch", "--url", "--work")
+# R71 (V70-5/V70-6, `.ufo/waves/round-70/corpus/lessons/round-70.md`): the round-70 list above was
+# ONE global name list applied to every python head, and the round-70 wave measured both errors it
+# makes.  It over-refused: `--root` is a read-only lane pointer in six instruments and `--json` is
+# a stdout flag in `claim-package-check.py`, so ten legitimate derives were refused
+# (`.ufo/waves/round-70/w1/CriticC1.md` rows 2-11).  And it under-refused: the exec class is
+# reachable with NO option at all (`frontier-recheck-count.py` runs a root-supplied `recheck:`
+# payload through `bash -c`, default root = the lane) and through `--selftest` (15 instruments
+# build fixture lanes; `r46-landing-gate.py --selftest` commits inside them).
+#
+# The rules are therefore per script, and the census is an ALLOWLIST: a python head whose basename
+# is not named below is refused (fail closed), so a new instrument cannot be admitted by accident.
+#   * PY_DENIED_ANY applies to every admitted head: a named output path or a selftest run.
+#   * PY_DENIED_BY_SCRIPT adds the flags that are only a write/exec/ingress risk in that script:
+#     a `--json` that writes a path rather than stdout, a `--root` whose contents reach a shell,
+#     and capture-source's `--url`/scratch options.
+#   * PY_HEAD_REFUSED names heads whose every invocation executes root-supplied data, so no
+#     option set makes them read-only.
+# Each rule carries a one-limb selftest case (R103) and the census is pinned complete against the
+# instrument directory by `python-census-covers-instruments`.
+PY_DENIED_ANY = ("--out", "--output", "--selftest")
 
-EXPECTED_CASES = 96  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file; R68: +4 program-execution flag refusal; R69: +9 class refusal; R70: +10 python-head option and git-show limb pins)
+PY_HEAD_REFUSED = (
+    # runs each entry's `recheck:` line through bash -c with cwd=root, for every argv including none
+    "frontier-recheck-count.py",
+)
+
+PY_DENIED_BY_SCRIPT = {
+    # the same root-supplied recheck execution, reached through --root
+    "recheck-audit.py": ("--root", "--json"),
+    # --json takes a PATH and writes it (claim-package-check.py's --json is store_true, stdout)
+    "citation-ground-check.py": ("--json",),
+    "gate-quote-audit.py": ("--json",),
+    "kill-rule-check.py": ("--json",),
+    "mirror-containment-check.py": ("--json",),
+    "resolve-dispatch-check.py": ("--json",),
+    "frontier-recheck-count.py": ("--root", "--json"),
+    # --root selects the tree whose mutants are executed
+    "limb-mutation-check.py": ("--root",),
+    "r46-c1-gate.py": ("--root",),
+    # --url fetches any scheme; --work/--scratch are its write roots
+    "capture-source.py": ("--url", "--work", "--scratch"),
+}
+
+# Every python head the gate may run, by basename.  A head absent from this table is refused.
+PY_SCRIPT_CENSUS = {
+    "anchorcheck.py": (),
+    "capture-binding-check.py": (),
+    "capture-source.py": (),
+    "census-freshness-check.py": (),
+    "citation-ground-check.py": (),
+    "claim-package-check.py": (),
+    "claim-package-selftest.py": (),
+    "density.py": (),
+    "figure-audit-mutbat.py": (),
+    "figure-audit.py": (),
+    "freeze-check.py": (),
+    "frontier-recheck-count.py": (),
+    "gate-quote-audit.py": (),
+    "kill-rule-check.py": (),
+    "limb-mutation-check.py": (),
+    "mirror-containment-check.py": (),
+    "r44-frontier-count.py": (),
+    "r44-routed-defects.py": (),
+    "r45-c2-gate.py": (),
+    "r45-counters-selftest-c1.py": (),
+    "r45-counters-selftest-c2.py": (),
+    "r45-routed-defects.py": (),
+    "r46-c1-gate.py": (),
+    "r46-c2-gate.py": (),
+    "r46-counters-selftest-c1.py": (),
+    "r46-counters-selftest-c2.py": (),
+    "r46-f29-gate.py": (),
+    "r46-landing-gate.py": (),
+    "r46-mutbat.py": (),
+    "r46-selftest-f29.py": (),
+    "r47-counters-selftest.py": (),
+    "r47-f30-gate.py": (),
+    "r47-mutbat.py": (),
+    "r47-routed-defects.py": (),
+    "recheck-audit.py": (),
+    "resolve-dispatch-check.py": (),
+    "resolve.py": (),
+    "score-gap.py": (),
+    "shonen-form.py": (),
+    "shonen-form-selftest.py": (),
+    "shonen-shipped-fixture-check.py": (),
+    "source-recheck.py": (),
+    "test_resolve.py": (),
+    "wave-registry.py": (),
+}
+
+# Heads the gate's own selftest writes into a temp fixture root.  They are named here so the
+# allowlist stays exact without depending on the fixture's contents.
+PY_SELFTEST_FIXTURE_HEADS = (
+    "ok.py", "fail.py", "exit1.py", "kill.py", "kill9.py", "pipe.py", "grep.py", "link.py",
+)
+
+EXPECTED_CASES = 106  # R17 pin: a dropped selftest case turns the selftest red (R65: 59 + 4; R66: +4 cat SIGPIPE shape; R67: +4 multi-head SIGPIPE input count; +2 end-of-options dash-file; R68: +4 program-execution flag refusal; R69: +9 class refusal; R70: +10 python-head option and git-show limb pins; R71: +10 per-script census pins)
 
 
 def eprint(*a):
@@ -361,8 +458,8 @@ def git_show_operands_ok(parts):
     return True
 
 
-def python_flags_ok(args):
-    """R70: refuse the python head's measured write/exec/ingress long options.
+def python_flags_ok(args, denied):
+    """R70/R71: refuse the python head's denied options for that script.
 
     A token before a `--` separator that starts with `--` is an option; its name (text before
     `=`) is refused when it equals a denied flag or is a non-empty prefix of one, because
@@ -382,17 +479,24 @@ def python_flags_ok(args):
         name = tok.split("=", 1)[0]
         if len(name) <= 2:
             continue
-        for flag in PY_DENIED_FLAGS:
+        for flag in denied:
             if name == flag or flag.startswith(name):
                 return False
     return True
 
 
 def python_head_ok(root, parts):
-    """Require a literal decoded prefix, a separator-bounded realpath, and no denied option."""
+    """Require a literal decoded prefix, a realpath inside the instrument directory, a basename in
+    the census allowlist, no refused head, and no denied option for that script (R71)."""
     if len(parts) < 2 or not parts[1].replace("\\", "/").startswith("corpus/instruments/"):
         return False
-    if not python_flags_ok(parts[2:]):
+    script = os.path.basename(parts[1].replace("\\", "/"))
+    if script in PY_HEAD_REFUSED:
+        return False
+    if script not in PY_SCRIPT_CENSUS and script not in PY_SELFTEST_FIXTURE_HEADS:
+        return False
+    denied = PY_DENIED_ANY + PY_DENIED_BY_SCRIPT.get(script, ())
+    if not python_flags_ok(parts[2:], denied):
         return False
     base = os.path.realpath(os.path.join(root or ".", "corpus", "instruments"))
     target = os.path.realpath(os.path.join(root or ".", parts[1]))
@@ -652,12 +756,14 @@ def selftest():
     # R70: the python head refuses its measured write/exec/ingress long options by name and by
     # any unique abbreviation, and refuses a short -o; a `--` separator makes later tokens
     # operands, so a counter may still receive a dash-named positional argument.
+    # R71: these four `--root`/`--json` limbs are pinned on `recheck-audit.py`, because
+    # `frontier-recheck-count.py` is now refused as a head outright and would mask the flag rule.
     run_case("python-head-root-space-refused", 2,
-             _one("s-pyroot", "python3 corpus/instruments/frontier-recheck-count.py --root .", "35"))
+             _one("s-pyroot", "python3 corpus/instruments/recheck-audit.py --root .", "35"))
     run_case("python-head-root-equals-refused", 2,
-             _one("s-pyrooteq", "python3 corpus/instruments/frontier-recheck-count.py --root=.", "35"))
+             _one("s-pyrooteq", "python3 corpus/instruments/recheck-audit.py --root=.", "35"))
     run_case("python-head-root-abbrev-refused", 2,
-             _one("s-pyrootab", "python3 corpus/instruments/frontier-recheck-count.py --ro .", "35"))
+             _one("s-pyrootab", "python3 corpus/instruments/recheck-audit.py --ro .", "35"))
     run_case("python-head-out-space-refused", 2,
              _one("s-pyout", "python3 corpus/instruments/capture-source.py --id x --url file:///dev/null --out out.txt", "35"))
     run_case("python-head-out-equals-refused", 2,
@@ -665,9 +771,29 @@ def selftest():
     run_case("python-head-out-abbrev-refused", 2,
              _one("s-pyoutab", "python3 corpus/instruments/capture-source.py --id x --url file:///dev/null --ou out.txt", "35"))
     run_case("python-head-json-refused", 2,
-             _one("s-pyjson", "python3 corpus/instruments/frontier-recheck-count.py --json j.json", "35"))
+             _one("s-pyjson", "python3 corpus/instruments/recheck-audit.py --json j.json", "35"))
     run_case("python-head-dashdash-operand-admitted", 0,
              _one("s-pydashdash", "python3 corpus/instruments/ok.py -- --root", "35"))
+    # R71 (V70-5/V70-6): the per-script census, one case per new limb.
+    run_case("python-no-option-head-refused", 2,
+             _one("s-pynoopt", "python3 corpus/instruments/frontier-recheck-count.py", "35"))
+    run_case("python-selftest-refused", 2,
+             _one("s-pyselftest", "python3 corpus/instruments/capture-binding-check.py --selftest", "35"))
+    run_case("python-short-o-refused", 2,
+             _one("s-pyshorto", "python3 corpus/instruments/capture-source.py -o out.txt", "35"))
+    run_case("python-output-long-refused", 2,
+             _one("s-pyoutlong", "python3 corpus/instruments/capture-source.py --output out.txt", "35"))
+    run_case("python-url-refused", 2,
+             _one("s-pyurl", "python3 corpus/instruments/capture-source.py --url file:///dev/null", "35"))
+    run_case("python-unknown-head-refused", 2,
+             _one("s-pyunknown", "python3 corpus/instruments/not-in-census.py", "35"))
+    run_case("python-per-script-root-admitted", 0,
+             _one("s-pyrootok", "python3 corpus/instruments/ok.py --root .", "35"))
+    run_case("python-per-script-json-path-refused", 2,
+             _one("s-pyjsonpath", "python3 corpus/instruments/kill-rule-check.py --json j.json", "35"))
+    # V70-1: the `--out` limb without the `--url` conjunct, so the case isolates --out alone.
+    run_case("python-out-only-refused", 2,
+             _one("s-pyoutonly", "python3 corpus/instruments/capture-source.py --out out.txt", "35"))
     # R103: the two untested `git_show_operands_ok` limbs are pinned as their own cases.
     run_case("git-show-no-operand-refused", 2, _one("s-gitshowbare", "git show", "35"))
     run_case("git-show-separator-refused", 2,
@@ -779,6 +905,21 @@ def selftest():
              reason="derive-exit-1")
     run_case("final-error-precedes-upstream-error", 1, _one("s-finalfirst", "grep '[' g.txt | python3 corpus/instruments/fail.py", "0"),
              reason="derive-exit-7")
+
+    # R71: the allowlist must name every instrument beside the gate.  The check is only
+    # meaningful when the gate sits in a real corpus/instruments directory; a copy elsewhere
+    # (a wave candidate export) has no instrument set to compare and reports skipped.
+    here = os.path.dirname(os.path.abspath(__file__))
+    if os.path.basename(here) == "instruments" and \
+            os.path.basename(os.path.dirname(here)) == "corpus":
+        missing = sorted({n for n in os.listdir(here) if n.endswith(".py")}
+                         - set(PY_SCRIPT_CENSUS) - set(PY_SELFTEST_FIXTURE_HEADS))
+        observed = "census_missing=" + (",".join(missing) if missing else "0")
+    else:
+        missing = []
+        observed = "census_skipped=not-instrument-dir"
+    cases.append(("python-census-covers-instruments", 0 if not missing else 2, 0,
+                  not missing, observed, ""))
 
     failures = 0
     for cid, got, want, good, out, observed in cases:
