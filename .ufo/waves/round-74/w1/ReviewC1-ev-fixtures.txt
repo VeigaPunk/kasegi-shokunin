@@ -1,0 +1,47 @@
+# ReviewC1 evidence — C1 predicate attack battery, round 74, freeze 847b5379 (base ccd6a54)
+# date: 2026-11-05T08:48:09Z; scratch: /fast/scratch/hyaku/kasegi-r74/ReviewC1; lane writes by this seat: none
+### T1 do-nothing control: TMPDIR=$S/tmp python3 base-counter.py --selftest
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest cases=1 failures=0
+T1 exit=0
+### T2 M4 forced-conformant: TMPDIR=$S/tmp python3 mut-M4.py --selftest
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest cases=1 failures=0
+T2 exit=0
+### T3 M6 scratch-leak: TMPDIR=$S/tmp python3 mut-M6.py --selftest
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest cases=1 failures=0
+T3 exit=0
+T3 leftovers before=0 after=3 delta=3
+### T4 M5 hard-coded-tmp: TMPDIR=$S/tmp python3 mut-M5.py --selftest
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest cases=1 failures=0
+T4 exit=0
+T4 residue in /tmp after run: 0 (M5 has an intact finally: no residue anywhere; must be caught by a creation-count assertion, not a residue scan)
+### T5 M7 last-line: TMPDIR=$S/tmp python3 mut-M7.py --selftest
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest cases=1 failures=0
+T5 exit=0
+### T6 A1 restoration-recheck: TMPDIR=$S/tmp python3 base-counter.py --root $S/fx/a1 --lane LANE
+RECHECK-CWD entries=1 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+T6 exit=0
+### T7 A2 two-recheck-lines: TMPDIR=$S/tmp python3 base-counter.py --root $S/fx/a2 --lane LANE
+RECHECK-CWD entries=1 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+T7 exit=0
+### T8 A2 with M7: TMPDIR=$S/tmp python3 mut-M7.py --root $S/fx/a2 --lane LANE
+ENTRY e1.md noprefix=1 foreign_exit=2
+RECHECK-CWD entries=1 noprefix=1 exit2_foreign=1 exit0_foreign=0 exit1_foreign=0 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT nonconformant
+T8 exit=1
+### T9 B fenced-recheck: TMPDIR=$S/tmp python3 base-counter.py --root $S/fx/b --lane LANE
+ENTRY e1.md noprefix=1 foreign_exit=2
+RECHECK-CWD entries=1 noprefix=1 exit2_foreign=1 exit0_foreign=0 exit1_foreign=0 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT nonconformant
+T9 exit=1
+### T10 parity re-derivation: TMPDIR=$S/tmp python3 base-counter.py --root $S/base --lane LANE (counter+corpus from ccd6a54)
+T10 exit=0
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+### T11 fence-incidence: 89 files scanned; lines starting recheck: inside fences = 0; files whose FIRST recheck line is fenced = 0 (see report for scanner)

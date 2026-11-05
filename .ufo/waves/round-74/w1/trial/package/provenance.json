@@ -1,0 +1,75 @@
+{
+ "schema_version": "provenance/v1",
+ "agents": [
+  {
+   "identity": "ExecTrial",
+   "transition": "capture TRIAL1 advisory + TRIAL1-POLICY policy page -> evidence artifacts",
+   "requested_model": "lane-routing(operator table)",
+   "resolved_model": "zai/glm-5.3-flash",
+   "role": "package producer"
+  },
+  {
+   "identity": "capture-source-sha256-crosscheck",
+   "transition": "evidence artifacts -> manifest digests and redaction receipts",
+   "requested_model": "lane-routing(operator table)",
+   "resolved_model": "zai/glm-5.3-flash",
+   "role": "artifact re-hash and redaction-scan pass"
+  }
+ ],
+ "transitions": [
+  {
+   "index": 1,
+   "agent": "ExecTrial",
+   "requested_model": "lane-routing(operator table)",
+   "resolved_model": "zai/glm-5.3-flash",
+   "from": "capture TRIAL1 + TRIAL1-POLICY",
+   "to": "evidence artifacts"
+  },
+  {
+   "index": 2,
+   "agent": "capture-source-sha256-crosscheck",
+   "requested_model": "lane-routing(operator table)",
+   "resolved_model": "zai/glm-5.3-flash",
+   "from": "evidence artifacts",
+   "to": "manifest digests and redaction receipts"
+  }
+ ],
+ "identity_note": "Both identities are roles executed by the single wave-1 seat ExecTrial in one run; the redaction verifier is not an independent third party, which stays a named residual gate in status.json.",
+ "commands": [
+  {
+   "command": "python3 corpus/instruments/capture-source.py --id TRIAL1 --url https://hackerone.com/reports/315615 --out .ufo/waves/round-74/w1/trial/evidence/disclosure-capture.txt --kind html",
+   "exit_code": 1,
+   "note": "HTTP 404: candidate disclosure page absent; discarded before any capture was written"
+  },
+  {
+   "command": "python3 corpus/instruments/capture-source.py --id TRIAL1 --url https://curl.se/docs/CVE-2023-38545.html --out .ufo/waves/round-74/w1/trial/evidence/disclosure-capture.txt --kind html",
+   "exit_code": 0,
+   "note": "HTTP 200; 13940 fetched bytes; 6446 snapshot bytes; utc 2026-11-05T08:54:46Z"
+  },
+  {
+   "command": "python3 corpus/instruments/capture-source.py --id TRIAL1-POLICY --url https://curl.se/dev/vuln-disclosure.html --out .ufo/waves/round-74/w1/trial/evidence/policy-capture.txt --kind html",
+   "exit_code": 0,
+   "note": "HTTP 200; 26500 fetched bytes; 19670 snapshot bytes; utc 2026-11-05T08:55:15Z"
+  },
+  {
+   "command": "sha256sum disclosure-capture.txt policy-capture.txt corpus/knowledge/claim-package-contract.md",
+   "exit_code": 0
+  },
+  {
+   "command": "python3 build-package.py (scratch build: source-excerpt.txt, custodian chain, manifest, provenance, status, report.md, claim_checklist.md)",
+   "exit_code": 0
+  }
+ ],
+ "pin": {
+  "remote": "https://github.com/VeigaPunk/kasegi-shokunin.git",
+  "commit": "847b53792d2d29d161cad7d21a33c89df9e52e8d"
+ },
+ "policy_sha256": "6f445bc3389a9c577beff03b5003f967f55819e6b3dbcbb5dbc0faeba73269e1",
+ "external_effects_performed": [],
+ "secrets_attestation": {
+  "no_secrets": true,
+  "findings": 0,
+  "by": "capture-source-sha256-crosscheck",
+  "method": "the claim-package-check R-NOSECRET pattern set (private-key header, op:// reference, bearer/authorization value, labelled credential, session cookie) applied to the captured evidence bytes before packaging; zero hits; no redaction performed"
+ }
+}

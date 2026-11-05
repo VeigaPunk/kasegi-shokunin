@@ -1,0 +1,208 @@
+=== base counter sha256 ===
+854456db322db2ee7263a0339a2b841515d36ae165c146eaa2708dfc59d3538e  /fast/scratch/hyaku/kasegi-r74/MutAuditC1/orig-base.py
+=== amended counter sha256 ===
+5ef12c7ff09937524df00a76ca3498afa1b23a52983f6e06bd4e3fc6575e2574  /fast/scratch/hyaku/kasegi-r74/MutAuditC1/amended.py
+=== unmutated amended selftest (exit 0 expected) ===
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r74/MutAuditC1/tmp/unmut','/fast/scratch/hyaku/kasegi-r74/MutAuditC1/tmp/unmut','/fast/scratch/hyaku/kasegi-r74/MutAuditC1/tmp/unmut'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=0
+=== red-before: battery on BASE counter (ORIG=orig-base.py) ===
+ROW name=ORIG rc=0 verdict=baseline(rc=0) last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=E1-equiv-universal-newlines rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=E2-equiv-slice-compare rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=E3-equiv-timeout-121 rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=E4-equiv-dir-or-none rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=E5-equiv-verbose-operand-order rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M10p-exit1-bucketed-as-exit0 rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M11p-result-exit-always-0 rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M12p-timeout-counted-as-pass rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M4b-result-line-only rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M4p-forced-conformant-both rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M5p-hardcoded-tmp-parent rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M6p-run-foreign-no-rmtree rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=3 leftover_slashtmp_new=0
+ROW name=M7p-last-line-reader rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M8b-cd-only-prefix-no-lane rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M8p-prefix-comparison-removed rc=1 verdict=KILLED last='selftest cases=1 failures=1' leftover_tmp=0 leftover_slashtmp_new=0
+   FAILCASE selftest case=prefix-census FAIL got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=0,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+ROW name=M9p-foreign-cwd-is-lane rc=0 verdict=SURVIVED last='selftest cases=1 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+=== battery on AMENDED counter (ORIG=amended.py) ===
+ROW name=ORIG rc=0 verdict=baseline(rc=0) last='selftest cases=5 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=E1-equiv-universal-newlines rc=0 verdict=SURVIVED last='selftest cases=5 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=E2-equiv-slice-compare rc=0 verdict=SURVIVED last='selftest cases=5 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=E3-equiv-timeout-121 rc=0 verdict=SURVIVED last='selftest cases=5 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=E4-equiv-dir-or-none rc=0 verdict=SURVIVED last='selftest cases=5 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=E5-equiv-verbose-operand-order rc=0 verdict=SURVIVED last='selftest cases=5 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=E6-equiv-dir-none rc=0 verdict=SURVIVED last='selftest cases=5 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M10p-exit1-bucketed-as-exit0 rc=0 verdict=SURVIVED last='selftest cases=5 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M11p-result-exit-always-0 rc=1 verdict=KILLED last='selftest cases=5 failures=1' leftover_tmp=0 leftover_slashtmp_new=0
+   FAILCASE selftest case=result-main FAIL nonconformant ret=0 conformant ret=0
+ROW name=M12p-timeout-counted-as-pass rc=0 verdict=SURVIVED last='selftest cases=5 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M4b-result-line-only rc=1 verdict=KILLED last='selftest cases=5 failures=1' leftover_tmp=0 leftover_slashtmp_new=0
+   FAILCASE selftest case=result-main FAIL nonconformant ret=1 conformant ret=0
+ROW name=M4p-forced-conformant-both rc=1 verdict=KILLED last='selftest cases=5 failures=1' leftover_tmp=0 leftover_slashtmp_new=0
+   FAILCASE selftest case=result-main FAIL nonconformant ret=0 conformant ret=0
+ROW name=M5p-hardcoded-tmp-parent rc=1 verdict=KILLED last='selftest cases=5 failures=1' leftover_tmp=0 leftover_slashtmp_new=0
+   FAILCASE selftest case=tmpdir-parent FAIL calls=3 dirs='/tmp','/tmp','/tmp'
+ROW name=M6p-run-foreign-no-rmtree rc=1 verdict=KILLED last='selftest cases=5 failures=1' leftover_tmp=12 leftover_slashtmp_new=0
+   FAILCASE selftest case=scratch-cleanup FAIL calls=3 leftover=3
+ROW name=M7p-last-line-reader rc=1 verdict=KILLED last='selftest cases=5 failures=1' leftover_tmp=0 leftover_slashtmp_new=0
+   FAILCASE selftest case=first-line FAIL got=entries=1,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+ROW name=M8b-cd-only-prefix-no-lane rc=0 verdict=SURVIVED last='selftest cases=5 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+ROW name=M8p-prefix-comparison-removed rc=1 verdict=KILLED last='selftest cases=5 failures=2' leftover_tmp=0 leftover_slashtmp_new=0
+   FAILCASE selftest case=prefix-census FAIL got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=0,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+   FAILCASE selftest case=first-line FAIL got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=0,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+ROW name=M9p-foreign-cwd-is-lane rc=0 verdict=SURVIVED last='selftest cases=5 failures=0' leftover_tmp=0 leftover_slashtmp_new=0
+=== proposed fixtures (proposed.py) on amended + survivors ===
+--- amended.py.out
+FIXTURE P-lane PASS got=entries=1,noprefix=1 want=entries=1,noprefix=1
+FIXTURE P-exit1 PASS got=entries=1,exit0_foreign=0,exit1_foreign=1,noprefix=1 want=entries=1,exit0_foreign=0,exit1_foreign=1,noprefix=1
+FIXTURE P-timeout PASS got=entries=1,exit0_foreign=0,exit_other=1 want=entries=1,exit0_foreign=0,exit_other=1
+FIXTURE P-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+proposed counter=amended.py failures=0
+--- mut-amended_M10p-exit1-bucketed-as-exit0.py.out
+FIXTURE P-lane PASS got=entries=1,noprefix=1 want=entries=1,noprefix=1
+FIXTURE P-exit1 FAIL got=entries=1,exit0_foreign=1,exit1_foreign=0,noprefix=1 want=entries=1,exit0_foreign=0,exit1_foreign=1,noprefix=1
+FIXTURE P-timeout PASS got=entries=1,exit0_foreign=0,exit_other=1 want=entries=1,exit0_foreign=0,exit_other=1
+FIXTURE P-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+proposed counter=M10p-exit1-bucketed-as-exit0.py failures=1
+--- mut-amended_M12p-timeout-counted-as-pass.py.out
+FIXTURE P-lane PASS got=entries=1,noprefix=1 want=entries=1,noprefix=1
+FIXTURE P-exit1 PASS got=entries=1,exit0_foreign=0,exit1_foreign=1,noprefix=1 want=entries=1,exit0_foreign=0,exit1_foreign=1,noprefix=1
+FIXTURE P-timeout FAIL got=entries=1,exit0_foreign=1,exit_other=0 want=entries=1,exit0_foreign=0,exit_other=1
+FIXTURE P-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+proposed counter=M12p-timeout-counted-as-pass.py failures=1
+--- mut-amended_M8b-cd-only-prefix-no-lane.py.out
+FIXTURE P-lane FAIL got=entries=1,noprefix=0 want=entries=1,noprefix=1
+FIXTURE P-exit1 PASS got=entries=1,exit0_foreign=0,exit1_foreign=1,noprefix=1 want=entries=1,exit0_foreign=0,exit1_foreign=1,noprefix=1
+FIXTURE P-timeout PASS got=entries=1,exit0_foreign=0,exit_other=1 want=entries=1,exit0_foreign=0,exit_other=1
+FIXTURE P-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+proposed counter=M8b-cd-only-prefix-no-lane.py failures=1
+--- mut-amended_M9p-foreign-cwd-is-lane.py.out
+FIXTURE P-lane PASS got=entries=1,noprefix=1 want=entries=1,noprefix=1
+FIXTURE P-exit1 PASS got=entries=1,exit0_foreign=0,exit1_foreign=1,noprefix=1 want=entries=1,exit0_foreign=0,exit1_foreign=1,noprefix=1
+FIXTURE P-timeout PASS got=entries=1,exit0_foreign=0,exit_other=1 want=entries=1,exit0_foreign=0,exit_other=1
+FIXTURE P-foreign FAIL got=entries=1,exit0_foreign=0,exit_other=1,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+proposed counter=M9p-foreign-cwd-is-lane.py failures=1
+=== r73 fixture driver on base mutants ===
+--- E1-equiv-universal-newlines.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=E1-equiv-universal-newlines.py failures=0
+--- E2-equiv-slice-compare.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=E2-equiv-slice-compare.py failures=0
+--- E3-equiv-timeout-121.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=E3-equiv-timeout-121.py failures=0
+--- E4-equiv-dir-or-none.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=E4-equiv-dir-or-none.py failures=0
+--- E5-equiv-verbose-operand-order.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=E5-equiv-verbose-operand-order.py failures=0
+--- M10p-exit1-bucketed-as-exit0.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=M10p-exit1-bucketed-as-exit0.py failures=0
+--- M11p-result-exit-always-0.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result FAIL got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=0,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=M11p-result-exit-always-0.py failures=1
+--- M12p-timeout-counted-as-pass.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=M12p-timeout-counted-as-pass.py failures=0
+--- M4b-result-line-only.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result FAIL got=last_bad=RECHECK-CWD-RESULT conformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=M4b-result-line-only.py failures=1
+--- M4p-forced-conformant-both.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result FAIL got=last_bad=RECHECK-CWD-RESULT conformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=0,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=M4p-forced-conformant-both.py failures=1
+--- M5p-hardcoded-tmp-parent.out
+FIXTURE F-foreign FAIL got=entries=1,exit0_foreign=0,exit_other=1,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=M5p-hardcoded-tmp-parent.py failures=1
+--- M6p-run-foreign-no-rmtree.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak FAIL got=leftover=1 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=M6p-run-foreign-no-rmtree.py failures=1
+--- M7p-last-line-reader.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first FAIL got=entries=1,exit0_foreign=0,exit2_foreign=1,noprefix=1 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=M7p-last-line-reader.py failures=1
+--- M8b-cd-only-prefix-no-lane.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=M8b-cd-only-prefix-no-lane.py failures=0
+--- M8p-prefix-comparison-removed.out
+FIXTURE F-foreign FAIL got=entries=1,exit0_foreign=1,exit_other=0,noprefix=0 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result FAIL got=last_bad=RECHECK-CWD-RESULT conformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=0,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=M8p-prefix-comparison-removed.py failures=2
+--- M9p-foreign-cwd-is-lane.out
+FIXTURE F-foreign FAIL got=entries=1,exit0_foreign=0,exit_other=1,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=M9p-foreign-cwd-is-lane.py failures=1
+--- orig-base.out
+FIXTURE F-foreign PASS got=entries=1,exit0_foreign=1,exit_other=0,noprefix=1 want=entries=1,exit0_foreign=1,exit_other=0,noprefix=1
+FIXTURE F-leak PASS got=leftover=0 want=leftover=0
+FIXTURE F-first PASS got=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0 want=entries=1,exit0_foreign=1,exit2_foreign=0,noprefix=0
+FIXTURE F-lane PASS got=entries=1,exit0_foreign=1,noprefix=0 want=entries=1,exit0_foreign=1,noprefix=0
+FIXTURE F-result PASS got=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0 want=last_bad=RECHECK-CWD-RESULT nonconformant,last_good=RECHECK-CWD-RESULT conformant,rc_bad=1,rc_good=0
+fixtures counter=orig-base.py failures=0

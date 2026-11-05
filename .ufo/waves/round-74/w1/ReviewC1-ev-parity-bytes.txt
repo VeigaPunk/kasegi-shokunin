@@ -1,0 +1,12 @@
+# ReviewC1 evidence — parity limb byte-compare, freeze 847b5379, base ccd6a54
+# date: 2026-11-05T08:48:51Z
+# A source: claims.json C1.after_predicate.parity quoted line (regex '(RECHECK-CWD [^']+)' -> group 1)
+A. claim parity quote : 'RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0'
+# B/C source: .ufo/waves/round-74/controls/c1-base-census-r74.txt lines starting RECHECK-CWD / RECHECK-CWD-RESULT
+B. receipt RECHECK-CWD: 'RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0'
+C. receipt RESULT     : 'RECHECK-CWD-RESULT conformant'
+D. claim-quote == receipt line (byte, python ==): True
+E. 'RECHECK-CWD-RESULT conformant' in parity text: True ; capitalization variants found: ['conformant']
+# F source: T10 re-derivation, command (from scratch /fast/scratch/hyaku/kasegi-r74/ReviewC1):
+#   TMPDIR=$S/tmp python3 base-counter.py --root $S/base --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin   (counter exported from ccd6a54, corpus git-archive from ccd6a54)  exit=0
+F. re-derived == receipt (RECHECK-CWD + RESULT, byte): True

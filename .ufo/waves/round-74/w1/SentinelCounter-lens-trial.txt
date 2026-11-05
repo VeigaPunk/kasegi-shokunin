@@ -1,0 +1,26 @@
+# SentinelCounter R-NOSECRET lens receipt — trial package (2026-11-05)
+targets: every file under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-74/w1/trial (11 files):
+evidence/disclosure-capture.txt
+evidence/policy-capture.txt
+package/claim_checklist.md
+package/custodian-receipts.json
+package/evidence/disclosure-capture.txt
+package/evidence/manifest.json
+package/evidence/policy-capture.txt
+package/evidence/source-excerpt.txt
+package/provenance.json
+package/report.md
+package/status.json
+
+patterns (grep -niE, one per family):
+  1. '-----BEGIN [A-Z ]*PRIVATE KEY( BLOCK)?-----'
+  2. 'op://'
+  3. 'authorization:[^ ].{0,60}|bearer[ ][A-Za-z0-9._~+/=-]{8,}'
+  4. 'set-cookie:|PHPSESSID|JSESSIONID|connect\.sid|__Host-|__Secure-|sess(ion)?[_-]?id=[^[:space:]]{6,}'
+  5. 'AKIA[0-9A-Z]{16}|aws_secret_access_key|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|xox[baprs]-|AIza[0-9A-Za-z_-]{35}|x-api-key'
+result: 11 files x 5 families = 55 checks; 1 match: family 2 on package/provenance.json L73 —
+  "method": "the claim-package-check R-NOSECRET pattern set (private-key header, op:// reference, bearer/authorization value, labelled credential, session cookie) applied to the captured evidence bytes before packaging; zero hits; no redaction performed"
+disposition: BENIGN FALSE POSITIVE — the matched line is ExecTrial's own R-NOSECRET attestation quoting the pattern name; not a credential reference; nothing to redact.
+all other 54 checks clean (grep exit 1).
+327bc909e01ee3dc78272c06d3d568b78e92e5b4c35c7e527394422d763b238b  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-74/w1/trial/evidence/disclosure-capture.txt
+327bc909e01ee3dc78272c06d3d568b78e92e5b4c35c7e527394422d763b238b  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-74/w1/trial/package/evidence/disclosure-capture.txt

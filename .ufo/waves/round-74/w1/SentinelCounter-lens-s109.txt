@@ -1,0 +1,10 @@
+# SentinelCounter R-NOSECRET lens receipt — S109 captured disclosure (2026-11-05)
+target: corpus/source-snapshots/round-74/S109.txt (375 lines)
+c9a7adfbd34966cbd002a4c1da75e094de8db500ee77d4bce77bca6f0568d486  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-74/S109.txt
+patterns (grep -niE, one per family):
+  1. '-----BEGIN [A-Z ]*PRIVATE KEY( BLOCK)?-----'
+  2. 'op://'
+  3. 'authorization:[^ ].{0,60}|bearer[ ][A-Za-z0-9._~+/=-]{8,}'
+  4. 'set-cookie:|PHPSESSID|JSESSIONID|connect\.sid|__Host-|__Secure-|sess(ion)?[_-]?id=[^[:space:]]{6,}'
+  5. 'AKIA[0-9A-Z]{16}|aws_secret_access_key|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|xox[baprs]-|AIza[0-9A-Za-z_-]{35}|x-api-key'
+result: family 1-5 grep exit 1 (no match) on S109.txt; hit file 0 lines

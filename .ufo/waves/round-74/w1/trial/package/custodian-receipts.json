@@ -1,0 +1,37 @@
+{
+ "schema_version": "custodian-receipts/v1",
+ "policy": "every matched grant carries scope_signal NO_SCOPE_OBJECTION; the head binds the manifest",
+ "decision_formula": "decision_sha256 = sha256(action + '|' + input_sha256 + '|' + matched_grant_id + '|' + 'NO_SCOPE_OBJECTION')",
+ "attest_input_formula": "input_sha256 = sha256(evidence/manifest.json bytes with expected_head_sha256 set to \"\")",
+ "grant_note": "matched grant = the program's public policy intake section (Vulnerability Handling > Report via HackerOne); the same policy page states the project itself pays no bounty (L43)",
+ "chain": [
+  {
+   "action": "scope-triage",
+   "input_sha256": "c6579512a8615420a077e3f068db29ae8c95147d0c8b1983302ae39bd9ef8d8e",
+   "matched_grant_id": "curl-vuln-disclosure-policy#Vulnerability-Handling-Report",
+   "scope_signal": "NO_SCOPE_OBJECTION",
+   "decided_by": "ExecTrial",
+   "seq": 1,
+   "decision_sha256": "cbb3c641bd3d82febaf1d347524eb92be497f16172e7dfe3910d8fda5f32a218"
+  },
+  {
+   "action": "evidence-freeze",
+   "input_sha256": "327bc909e01ee3dc78272c06d3d568b78e92e5b4c35c7e527394422d763b238b",
+   "matched_grant_id": "curl-vuln-disclosure-policy#Vulnerability-Handling-Report",
+   "scope_signal": "NO_SCOPE_OBJECTION",
+   "decided_by": "ExecTrial",
+   "seq": 2,
+   "decision_sha256": "35cca8e2c0a3e4184be5dd6e4047fff236e198b650e9a2e9f5221823ac475ab2"
+  },
+  {
+   "action": "manifest-attest",
+   "input_sha256": "336dbf99690f994f9607c23cf5d0414f065925412749448af66dba31e7d32eed",
+   "matched_grant_id": "curl-vuln-disclosure-policy#Vulnerability-Handling-Report",
+   "scope_signal": "NO_SCOPE_OBJECTION",
+   "decided_by": "ExecTrial",
+   "seq": 3,
+   "decision_sha256": "e0b6fa97a937fb7eb47345000873b2ff01ccecc82a272d9c9920776d73e71b52"
+  }
+ ],
+ "head_sha256": "e0b6fa97a937fb7eb47345000873b2ff01ccecc82a272d9c9920776d73e71b52"
+}

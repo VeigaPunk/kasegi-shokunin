@@ -20,7 +20,8 @@ Usage:
   recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
   recheck-cwd-census.py --selftest
 
---selftest builds a three-entry fixture under TMPDIR and asserts the exact counts below.
+--selftest runs five cases under TMPDIR (prefix-census, result-main, tmpdir-parent,
+scratch-cleanup, first-line) and prints 'selftest cases=5 failures=0' on success.
 """
 import glob
 import os
@@ -97,38 +98,113 @@ def census(root, lane, verbose=False):
 
 
 def selftest():
-    """Fixture: a prefixed passing line, a prefix-less relative line (exit 2 from a foreign
-    cwd), and a prefix-less passing line. Expected: noprefix=2 exit2=1 exit0=2."""
+    """Five cases: prefix-census (the round-73 three-entry fixture, retained),
+    result-main (main() in-process on a nonconformant and a conformant fixture),
+    tmpdir-parent (every scratch directory the census creates resolves under TMPDIR),
+    scratch-cleanup (no scratch directory survives census()), and first-line (an entry
+    carrying two recheck: lines counts only its FIRST line). Expected on success:
+    'selftest cases=5 failures=0' and exit 0."""
+    failures = []
     scratch = tempfile.mkdtemp(prefix="recheck-cwd-selftest-", dir=os.environ.get("TMPDIR") or None)
-    try:
-        root = os.path.join(scratch, "fixture")
+
+    def write_entry(kdir, name, body):
+        with open(os.path.join(kdir, name), "w", encoding="utf-8") as fh:
+            fh.write("# fixture\n" + body)
+
+    def fixture(name):
+        root = os.path.join(scratch, name)
         kdir = os.path.join(root, "corpus", "knowledge")
         os.makedirs(kdir)
-        lane = root
-        fixtures = {
-            "a-prefixed.md": "recheck: cd %s && true\n" % lane,
-            "b-relative.md": "recheck: python3 corpus/instruments/missing.py\n",
-            "c-bare-pass.md": "recheck: true\n",
-        }
-        for name, body in fixtures.items():
-            with open(os.path.join(kdir, name), "w", encoding="utf-8") as fh:
-                fh.write("# fixture\n" + body)
+        return root, kdir
+
+    def capture(fn, *args):
         import io
         buf = io.StringIO()
         real = sys.stdout
         sys.stdout = buf
         try:
-            got = census(root, lane)
+            ret = fn(*args)
         finally:
             sys.stdout = real
-        want = {"entries": 3, "noprefix": 2, "exit2_foreign": 1, "exit0_foreign": 2,
-                "exit1_foreign": 0, "exit_other": 0, "norecheck": 0}
-        ok = all(got[k] == v for k, v in want.items())
-        print("selftest case=prefix-census %s got=%s want=%s"
-              % ("ok" if ok else "FAIL", ",".join("%s=%d" % (k, got[k]) for k in sorted(want)),
-                 ",".join("%s=%d" % (k, want[k]) for k in sorted(want))))
-        print("selftest cases=1 failures=%d" % (0 if ok else 1))
-        return 0 if ok else 1
+        return buf.getvalue(), ret
+
+    def counts_str(counts, want):
+        return ",".join("%s=%d" % (k, counts[k]) for k in sorted(want))
+
+    def check(case, ok, detail):
+        print("selftest case=%s %s %s" % (case, "ok" if ok else "FAIL", detail))
+        if not ok:
+            failures.append(case)
+
+    try:
+        # Case 1: prefix-census — the round-73 fixture, retained byte-for-behavior:
+        # a prefixed passing line, a prefix-less relative line (exit 2 from a foreign
+        # cwd), and a prefix-less passing line.
+        root1, kdir1 = fixture("case1")
+        lane1 = root1
+        write_entry(kdir1, "a-prefixed.md", "recheck: cd %s && true\n" % lane1)
+        write_entry(kdir1, "b-relative.md", "recheck: python3 corpus/instruments/missing.py\n")
+        write_entry(kdir1, "c-bare-pass.md", "recheck: true\n")
+        want1 = {"entries": 3, "noprefix": 2, "exit2_foreign": 1, "exit0_foreign": 2,
+                 "exit1_foreign": 0, "exit_other": 0, "norecheck": 0}
+        _t1, got1 = capture(census, root1, lane1)
+        check("prefix-census", all(got1[k] == v for k, v in want1.items()),
+              "got=%s want=%s" % (counts_str(got1, want1), counts_str(want1, want1)))
+
+        # Case 2: result-main — main() in-process; the RESULT line and the exit code
+        # must both hold (the conformant limb is the positive control: blanket refusal
+        # is not a gain).
+        root2n, kdir2n = fixture("case2-nonconformant")
+        write_entry(kdir2n, "n-relative.md", "recheck: python3 corpus/instruments/missing.py\n")
+        out2n, ret2n = capture(main, ["recheck-cwd-census.py", "--root", root2n, "--lane", root2n])
+        root2c, kdir2c = fixture("case2-conformant")
+        write_entry(kdir2c, "c-prefixed.md", "recheck: cd %s && true\n" % root2c)
+        out2c, ret2c = capture(main, ["recheck-cwd-census.py", "--root", root2c, "--lane", root2c])
+        check("result-main",
+              ret2n == 1 and "RECHECK-CWD-RESULT nonconformant" in out2n
+              and ret2c == 0 and "RECHECK-CWD-RESULT conformant" in out2c,
+              "nonconformant ret=%d conformant ret=%d" % (ret2n, ret2c))
+
+        # Cases 3+4: tmpdir-parent and scratch-cleanup — one census() run over the
+        # case-1 fixture with tempfile.mkdtemp recording its calls: every scratch
+        # parent must be None or under TMPDIR, and nothing may survive the census.
+        recorded = []
+        real_mkdtemp = tempfile.mkdtemp
+
+        def recording_mkdtemp(*a, **kw):
+            made = real_mkdtemp(*a, **kw)
+            recorded.append({"dir": kw.get("dir"), "path": made})
+            return made
+
+        tempfile.mkdtemp = recording_mkdtemp
+        try:
+            capture(census, root1, lane1)
+        finally:
+            tempfile.mkdtemp = real_mkdtemp
+        expected = os.environ.get("TMPDIR") or None
+        check("tmpdir-parent",
+              bool(recorded) and all(r["dir"] is None or
+                                     (expected is not None and r["dir"].startswith(expected))
+                                     for r in recorded),
+              "calls=%d dirs=%s" % (len(recorded), ",".join(repr(r["dir"]) for r in recorded)))
+        leftover = sum(1 for r in recorded if os.path.exists(r["path"]))
+        check("scratch-cleanup", bool(recorded) and leftover == 0,
+              "calls=%d leftover=%d" % (len(recorded), leftover))
+
+        # Case 5: first-line — an entry with TWO recheck: lines counts only the FIRST
+        # (prefix-less, exit 2 from a foreign cwd); a last-line reader prints noprefix=0.
+        root5, kdir5 = fixture("case5")
+        write_entry(kdir5, "d-two-lines.md",
+                    "recheck: python3 corpus/instruments/missing.py\n"
+                    "recheck: cd %s && true\n" % root5)
+        want5 = {"entries": 1, "noprefix": 1, "exit2_foreign": 1, "exit0_foreign": 0,
+                 "exit1_foreign": 0, "exit_other": 0, "norecheck": 0}
+        _t5, got5 = capture(census, root5, root5)
+        check("first-line", all(got5[k] == v for k, v in want5.items()),
+              "got=%s want=%s" % (counts_str(got5, want5), counts_str(want5, want5)))
+
+        print("selftest cases=5 failures=%d" % len(failures))
+        return 0 if not failures else 1
     finally:
         shutil.rmtree(scratch, ignore_errors=True)
 

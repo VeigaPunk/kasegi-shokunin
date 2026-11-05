@@ -1,0 +1,75 @@
+{
+ "schema_version": "evidence-manifest/v1",
+ "sequence": 1,
+ "package": "end-to-end claim-package trial - curl CVE-2023-38545 (round-74 SHONEN box 2)",
+ "source": {
+  "id": "TRIAL1",
+  "url": "https://curl.se/docs/CVE-2023-38545.html",
+  "fetched_utc": "2026-11-05T08:54:46Z",
+  "sha256": "327bc909e01ee3dc78272c06d3d568b78e92e5b4c35c7e527394422d763b238b",
+  "lines": 131
+ },
+ "policy_source": {
+  "id": "TRIAL1-POLICY",
+  "url": "https://curl.se/dev/vuln-disclosure.html",
+  "fetched_utc": "2026-11-05T08:55:15Z",
+  "sha256": "9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102",
+  "lines": 221
+ },
+ "artifacts": [
+  {
+   "path": "disclosure-capture.txt",
+   "sha256": "327bc909e01ee3dc78272c06d3d568b78e92e5b4c35c7e527394422d763b238b",
+   "bytes": 6446,
+   "polarity": "positive",
+   "note": "complete TRIAL1 capture of the vendor advisory (HTTP 200, 13940 fetched bytes); R-NOSECRET pattern scan zero hits"
+  },
+  {
+   "path": "policy-capture.txt",
+   "sha256": "9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102",
+   "bytes": 19670,
+   "polarity": "positive",
+   "note": "complete TRIAL1-POLICY capture of the program policy page (HTTP 200, 26500 fetched bytes); the scope-excerpt ground"
+  },
+  {
+   "path": "source-excerpt.txt",
+   "sha256": "c6579512a8615420a077e3f068db29ae8c95147d0c8b1983302ae39bd9ef8d8e",
+   "bytes": 1053,
+   "polarity": "positive",
+   "note": "verbatim severity/affected/timeline blocks, disclosure-capture.txt lines 69,100-102,108-109,112-114,126-129"
+  }
+ ],
+ "redactions": [
+  {
+   "artifact": "disclosure-capture.txt",
+   "path": "disclosure-capture.txt",
+   "artifact_sha256": "327bc909e01ee3dc78272c06d3d568b78e92e5b4c35c7e527394422d763b238b",
+   "scanned_artifact_sha256": "327bc909e01ee3dc78272c06d3d568b78e92e5b4c35c7e527394422d763b238b",
+   "producer": "ExecTrial",
+   "verifier": "capture-source-sha256-crosscheck",
+   "removed": [],
+   "note": "public vendor documentation; no token, cookie or session material present, zero bytes removed"
+  },
+  {
+   "artifact": "policy-capture.txt",
+   "path": "policy-capture.txt",
+   "artifact_sha256": "9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102",
+   "scanned_artifact_sha256": "9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102",
+   "producer": "ExecTrial",
+   "verifier": "capture-source-sha256-crosscheck",
+   "removed": [],
+   "note": "public vendor documentation; no token, cookie or session material present, zero bytes removed"
+  },
+  {
+   "artifact": "source-excerpt.txt",
+   "path": "source-excerpt.txt",
+   "artifact_sha256": "c6579512a8615420a077e3f068db29ae8c95147d0c8b1983302ae39bd9ef8d8e",
+   "scanned_artifact_sha256": "c6579512a8615420a077e3f068db29ae8c95147d0c8b1983302ae39bd9ef8d8e",
+   "producer": "ExecTrial",
+   "verifier": "capture-source-sha256-crosscheck",
+   "removed": [],
+   "note": "public vendor documentation; no token, cookie or session material present, zero bytes removed"
+  }
+ ],
+ "expected_head_sha256": "e0b6fa97a937fb7eb47345000873b2ff01ccecc82a272d9c9920776d73e71b52"
+}

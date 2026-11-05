@@ -549,3 +549,12 @@ R6 form: every earlier line keeps its number; this block is appended at end of f
 |---|---|---|
 | R33 | Every knowledge entry's first `recheck:` value is counted by `corpus/instruments/recheck-cwd-census.py` run from a foreign cwd: the value carries the lane-root `cd ... && ` prefix (noprefix=0) and exits 0 or the entry is a recorded fail-closed line (exit 2 from a foreign cwd = 0). A recheck that is absent from the census is not admitted. Q10 stays the text rule; R33 is its counter. | `corpus/lessons/round-73.md` § Mistakes M73-1 — no criterion caught 11 prefix-less recheck lines (10 exit 2 from a foreign cwd); base census `.ufo/waves/round-73/controls/c1-donothing-r73.txt` exit 1 |
 
+## Round-74 addition — gate reject lines and unique criterion ids (append-only)
+
+R6 form: every earlier line keeps its number; this block is appended at end of file. R120 supersedes the round-73 row at line 550 (it is not rewritten there); the round-38 row R33 at line 292 keeps its own meaning.
+
+| id | criterion | grounded in |
+|---|---|---|
+| R119 | Every round lesson's `## Gate` records a reject: a line naming a rejected candidate with its reason, or the explicit line `none this round — carried rejects named` followed by the carried rejects. A Gate with neither is a conformance defect of the round and the non-author spot-check cannot check it. | `corpus/lessons/round-74.md` § Mistakes M74-1; the round-73 Gate (`corpus/lessons/round-73.md` lines 14-20) carries 0 reject lines (`grep -ciE reject` = 0, exit 1) while its spot-check sampled two rejects |
+| R120 | Supersedes the round-73 row R33 at `corpus/QUALITY.md:550`: the executable recheck census (first `recheck:` value carries the lane-root `cd ... && ` prefix; exits 0 or is a recorded fail-closed line from a foreign cwd; counted by `corpus/instruments/recheck-cwd-census.py`). The superseded row is not rewritten (rule: superseded criteria are replaced by new rows that name them), so `grep -cE '^\| R33 ' corpus/QUALITY.md` stays 2 (line 292 round-38 and line 550 round-73) before and after this row: the id collision is recorded here, not repaired. The supersession is the reference; a reader resolves R33 at line 550 to R120. | `corpus/lessons/round-74.md` § Mistakes M74-3; measured `grep -cE '^\| R33 '` = 2 at base ccd6a54 and = 2 at tip |
+

@@ -1,0 +1,13 @@
+# ExecC1Amend parity limb (base export ccd6a54 corpus/knowledge, --lane kasegi-shokunin)
+# orig = git show ccd6a54:corpus/instruments/recheck-cwd-census.py (sha256 854456db...538e); amended = clone working file
+# command: python3 <counter> --root <base-export> --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin  (stdout only; stderr discarded)
+parity-orig-exit=0 parity-amended-exit=0 cmp-exit=0
+sha256 orig-stdout    = e1906b886e856fa688f01f08b28a5034e5979adc311d3a040e7642776770f241
+sha256 amended-stdout = e1906b886e856fa688f01f08b28a5034e5979adc311d3a040e7642776770f241
+--- stdout (identical in both):
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+--- base receipt .ufo/waves/round-74/controls/c1-base-census-r74.txt lines 3-4 (grep exit 0):
+3:RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+4:RECHECK-CWD-RESULT conformant
+# note: an earlier parity run wrote the exit label into the captured files and reported a spurious byte diff at line 3; the clean stdout-only run above is canonical. Raw battery log: ExecC1Amend-battery.log

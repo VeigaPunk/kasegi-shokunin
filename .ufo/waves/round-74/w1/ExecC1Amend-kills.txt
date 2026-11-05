@@ -1,0 +1,84 @@
+# ExecC1Amend kill battery: amended --selftest under mutants M4-M7 (claims.json kill rule (a)). Each must exit nonzero.
+# mutants built from the FINAL amended counter by run-all.sh (sha256 of amended: 5ef12c7ff09937524df00a76ca3498afa1b23a52983f6e06bd4e3fc6575e2574)
+## M4 — TMPDIR set
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main FAIL nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M4-selftest-exit=1
+## M4 — TMPDIR unset
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main FAIL nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs=None,None,None
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M4-selftest-unset-exit=1
+## M5 — TMPDIR set
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent FAIL calls=3 dirs='/tmp','/tmp','/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M5-selftest-exit=1
+## M5 — TMPDIR unset
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent FAIL calls=3 dirs='/tmp','/tmp','/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M5-selftest-unset-exit=1
+## M6 — TMPDIR set
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp'
+selftest case=scratch-cleanup FAIL calls=3 leftover=3
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M6-selftest-exit=1
+## M6 — TMPDIR unset
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs=None,None,None
+selftest case=scratch-cleanup FAIL calls=3 leftover=3
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M6-selftest-unset-exit=1
+## M7 — TMPDIR set
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line FAIL got=entries=1,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M7-selftest-exit=1
+## M7 — TMPDIR unset
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs=None,None,None
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line FAIL got=entries=1,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M7-selftest-unset-exit=1
+# informational: each mutant's census on base export (lane conformant at base; RESULT/line identical to orig is expected)
+## M4 census on base export
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+info-census-M4-exit=0
+## M5 census on base export
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+info-census-M5-exit=0
+## M6 census on base export
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+info-census-M6-exit=0
+## M7 census on base export
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+info-census-M7-exit=0
+# leak check on amended counter: leak-selftest-leftover=0 leak-census-leftover=0 

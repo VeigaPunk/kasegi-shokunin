@@ -1159,3 +1159,17 @@ Appended amendment (R6): the round-73 entry `corpus/knowledge/osv-post-v1-query-
 | F51 | OSV.dev POST /v1/query service contract — the request payload (commit, version, package, page_token), the version rule (one place only, never both the top-level field and the purl), the Git-tag query, pagination with next_page_token and its 1,000-vulnerability and 20-second triggers, and the 32 MiB HTTP/1.1 response limit with no stated limit on HTTP/2 | admitted | knowledge/osv-post-v1-query-contract.md | S108 | Read the version in one place only (S108.txt:40-41) and read a response that carries next_page_token as partial until the token is absent (S108.txt:135, :144); the page states no rate limit and no API-key rule, so a reader must not supply either from the OSV overview page or another tracker, and the entry's Limits section records both absences as measured on the capture.
 
 [r73 amendment, appended 2026-11-05] The frontier as of round 73 is F01-F51 admitted: F51 at round 73. The C2 admission rests on S108 alone; the F31 scope limit stays as written and the OSV record format is not claimed by this entry.
+
+## Round-74 admission — coverage map row and Frontier F52 (2026-11-05)
+
+Appended amendment (R6): the round-74 entry `corpus/knowledge/fuzzilli-js-engine-fuzzing-framework.md` (Frontier F52, source S109) rests on the Fuzzilli project's own README at https://github.com/googleprojectzero/fuzzilli, captured `corpus/source-snapshots/round-74/S109.txt` (sha256 c9a7adfb...d486, 375 lines, 16 pinned quotes), manifest `corpus/source-snapshots/round-74/manifest.json`. The coverage map above is not edited in place (R6); the coverage-map row is appended here, and the F52 frontier row uses the same six-cell table shape as F51.
+
+| Area | Entry | Source basis |
+|---|---|---|
+| Fuzzilli tool documentation: the FuzzIL-based coverage-guided fuzzer, its semantic-correctness concern, architecture, REPRL execution and tree scaling (round 74) | knowledge/fuzzilli-js-engine-fuzzing-framework.md | S109, the Fuzzilli project's own README, opened 2026-11-05 |
+
+| id | topic | status | entry | sources | next |
+|---|---|---|---|---|---|
+| F52 | Fuzzilli, as its project documents it — a "(coverage-)guided" fuzzer for dynamic language interpreters built on the FuzzIL intermediate language; the semantic-correctness concern for core interpreter bugs against try-catch-wrapped runtime-API fuzzing; the Swift/C split; the seven named components with the event-driven design; the REPRL execution mode with state reset; the instance tree for scale; and the Targets/ patch-and-instrument procedure | admitted | knowledge/fuzzilli-js-engine-fuzzing-framework.md | S109 | Read the definition and the semantic concern from the README's own lines (S109.txt:151, :165) and keep the "(coverage-)guided" parenthetical as printed. The README states no performance figure, no success rate and no reward; a reader must not supply one from the comparison post (S093, F41) or a paper. The NDSS 2023 paper stays a lead: existence and name only.
+
+[r74 amendment, appended 2026-11-05] The frontier as of round 74 is F01-F52 admitted: F52 at round 74. The F52 admission rests on S109 alone; the F41 comparison post's scope limit stays as written, and the NDSS 2023 paper's content is not claimed.

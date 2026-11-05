@@ -2868,3 +2868,33 @@ Planned after round 73: (1) counter amendment for RC-1 to RC-3 (`main()` in the 
 
 Saturation 9/10 held; no axis retired; no capability row entered this round.
 
+## Round 74 — the recheck-cwd counter amendment that kills the r73 survivors (C1, depth:verifiability, held at 4, nominal R58) and F52, the Fuzzilli README on S109 (C2, coverage, held at 8)
+
+Frozen claims: `.ufo/waves/round-74/claims.json` (freeze `847b5379`, base and controls `ccd6a54`, controls commit `654d877f`). Implementation: `corpus/instruments/recheck-cwd-census.py` amended from `.ufo/waves/round-74/w1/ExecC1Amend.patch` (applied in the lane tree; selftest 1 → 5 cases; body of `first_recheck`, `run_foreign`, `census`, `main` byte-identical). C2 admission: `corpus/knowledge/fuzzilli-js-engine-fuzzing-framework.md`, S109, manifest `corpus/source-snapshots/round-74/manifest.json`.
+
+| Axis | Before | After | Score delta, command and evidence |
+|---|---:|---:|---|
+| depth:verifiability (lowest) | r73 counter selftest `cases=1`; four routed mutant classes (M4 forced conformant, M5 `/tmp` parent, M6 scratch leak, M7 last-line reader) each exit 0 (`.ufo/waves/round-74/controls/c1-redbefore-mutant-survival-r74.txt`) | `--selftest` `selftest cases=5 failures=0` exit 0; the four mutants each exit 1 (`failures=1`), integrator rebuild and seat battery both; parity byte-identical to the base receipt (`e1906b88…f241`); census `noprefix=0 exit2_foreign=0 exit_other=0 norecheck=0` conformant exit 0 | **4 → 4, delta 0, nominal per QUALITY R58** (the scored `resolve.py` census is not read by this gate). Counting command: `TMPDIR=<scratch> python3 corpus/instruments/recheck-cwd-census.py --selftest` (exit 0, `cases=5 failures=0`). |
+| coverage | `FRONTIER-CENSUS rows=51 admitted=51 closed=51 registry=108`; `entries=54 pass=54`; capture `records=87 bound=87`; knowledge 89; expected 91/89 (`.ufo/waves/round-74/controls/c2-base-counters-r74.txt`) | `FRONTIER-CENSUS` 52 admitted; `PASS F52 ids=S109 exit=0`; `entries=55 pass=55 exit=0`; capture `records=88 bound=88 unbound=0` exit 0; registry 109; knowledge 90; expected 92/90 sort-clean; `sources-census.sh validate --root … kasegi` exit 0 | **8 → 8, delta 0** (the coverage denominator is operator-owned). Counting commands: `python3 corpus/instruments/frontier-recheck-count.py`; `python3 corpus/instruments/capture-binding-check.py`; `grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md`. |
+| depth:density | not targeted | not re-measured | 9 held (not a claim target; no density credit asserted). |
+
+**Verdicts.** C1 VERIFIED on its frozen after-predicate and kill rule (a)-(d); its scope sentence is WEAKENED as written (M74-6: a `restoration-recheck:`-only file is an entry with `norecheck=1`, while the value-level exclusion holds) and is routed to round 75 with its own freeze. C2 VERIFIED on its frozen counters and kill rule; two clauses (registry-unchanged, capture word-count/anchor) lacked a named command at the freeze and were measured independently by the integrator (`git diff ccd6a54 -- corpus/SOURCES.md`: 0 removed lines; `source-recheck.py`: 16 of 16 `anchor=<n>-ok`, longest quote 22 words). Non-author closure pending (see the lesson's `## Gate` note).
+
+**Capabilities:** no new repertoire row. The existing `derive-gate-chain-refusal` row is not affected; the recheck census's demonstration is `corpus/instruments/recheck-cwd-census.py --selftest` → `selftest cases=5 failures=0`.
+
+**Saturation:** line 9/10 per owned axis is unchanged by this round's score-holding claims; lowest non-retired axis remains depth:verifiability 4 (worked nominally). No retirement, split or nudge waiver. The round is a trial of the end-to-end path (SHONEN box 2 `[~]`), not a score move.
+
+### Round-74 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 74 | depth:verifiability | four routed mutant classes survive the r73 selftest (`cases=1`) | four classes killed by a five-case selftest (`cases=5`); census shape and parity unchanged | `.ufo/waves/round-74/controls/c1-redbefore-mutant-survival-r74.txt`; `.ufo/waves/round-74/w1/ExecC1Amend-{selftest,census,parity,kills}.txt`; `corpus/lessons/round-74.md` § Mistakes M74-6 |
+| 74 | coverage | rows=51 registry=108 entries=54 capture=87 knowledge=89 | rows=52 registry=109 entries=55 capture=88 knowledge=90; F52/S109 admitted | `.ufo/waves/round-74/controls/c2-base-counters-r74.txt`; `corpus/knowledge/fuzzilli-js-engine-fuzzing-framework.md`; `corpus/source-snapshots/round-74/S109.txt`, `manifest.json` |
+| 74 | calibration | r73 Gate lacked a reject line; R33 id held twice; freeze-check replay and capture-exit receipts carried a pipe exit; seat manifest had null provenance | R119 (gate reject line) and R120 (supersession, collision recorded not repaired) added; receipts corrected by appended block; manifest rebuilt by integrator | `corpus/lessons/round-74.md` § Mistakes M74-1..M74-5; `corpus/QUALITY.md` lines 552-559 |
+
+### Planned after round 74 (not frozen)
+
+1. **depth:verifiability (4, lowest):** a counter amendment that makes `restoration-recheck:`-only files and the `norecheck` result explicit (M74-6), with a do-nothing control and its own freeze; the docstring sentence that states the exclusion moves with it.
+2. **coverage (8):** the NDSS 2023 Fuzzilli paper is a named lead (existence only); the OSV overview page is a lead whose two statements need their own capture and manifest before any row.
+3. **calibration:** the R33 id collision (`corpus/QUALITY.md:292`, `:550`) is renumbered by document in a later round; the sibling-distinctness sentence (M74-7) is narrowed before the next claim freezes.
+

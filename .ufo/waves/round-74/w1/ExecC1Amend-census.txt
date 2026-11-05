@@ -1,0 +1,15 @@
+# ExecC1Amend census receipts (clone tree, amended counter)
+# command: TMPDIR=<scratch>/tmp python3 corpus/instruments/recheck-cwd-census.py --root <clone> --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+census-clone-exit=0
+# knowledge file count: ls corpus/knowledge/*.md | wc -l
+knowledge-files-on-clone=89
+# constraint greps (exit 0 = matched)
+grep-bash-literal-call-orig=1  amended=1
+grep-subprocess-orig=4  amended=4
+--- /tmp literal lines in amended (exit 0 = matched):
+17:honors TMPDIR; no path is hard-coded under /tmp.
+--- bash lines in amended:
+9:  exit2_foreign   the value, run by `bash -c` in a fresh foreign scratch cwd, exits 2
+52:            proc = subprocess.run(["bash", "-c", value], cwd=scratch, env=env,

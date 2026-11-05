@@ -1,0 +1,167 @@
+mutants-built
+mutant-build-exit=0
+== (i) amended selftest (TMPDIR set)
+selftest-exit=0
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=0
+selftest-exit=0
+== (i-b) amended selftest (TMPDIR UNSET, run from scratch cwd)
+selftest-unset-exit=0
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs=None,None,None
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=0
+selftest-unset-exit=0
+== (ii) amended census on clone tree
+census-clone-exit=0
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+census-clone-exit=0
+knowledge-files-on-clone=89
+== (iii) parity limb
+parity-orig-exit=0
+parity-amended-exit=0
+/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/out/parity-orig.txt /fast/scratch/hyaku/kasegi-r74/ExecC1Amend/out/parity-amended.txt differ: byte 147, line 3
+parity-cmp-exit=1
+--- parity-orig:
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+parity-orig-exit=0
+--- parity-amended:
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+parity-amended-exit=0
+== (iv) kill battery: amended selftest under each mutant (TMPDIR set)
+kill-M4-selftest-exit=1
+kill-M5-selftest-exit=1
+kill-M6-selftest-exit=1
+kill-M7-selftest-exit=1
+== (iv-b) kill battery under TMPDIR UNSET
+kill-M4-selftest-unset-exit=1
+kill-M5-selftest-unset-exit=1
+kill-M6-selftest-unset-exit=1
+kill-M7-selftest-unset-exit=1
+--- M4 (TMPDIR set):
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main FAIL nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M4-selftest-exit=1
+--- M4 (TMPDIR unset):
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main FAIL nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs=None,None,None
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M4-selftest-unset-exit=1
+--- M5 (TMPDIR set):
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent FAIL calls=3 dirs='/tmp','/tmp','/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M5-selftest-exit=1
+--- M5 (TMPDIR unset):
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent FAIL calls=3 dirs='/tmp','/tmp','/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M5-selftest-unset-exit=1
+--- M6 (TMPDIR set):
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp'
+selftest case=scratch-cleanup FAIL calls=3 leftover=3
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M6-selftest-exit=1
+--- M6 (TMPDIR unset):
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs=None,None,None
+selftest case=scratch-cleanup FAIL calls=3 leftover=3
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M6-selftest-unset-exit=1
+--- M7 (TMPDIR set):
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp','/fast/scratch/hyaku/kasegi-r74/ExecC1Amend/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line FAIL got=entries=1,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M7-selftest-exit=1
+--- M7 (TMPDIR unset):
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs=None,None,None
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line FAIL got=entries=1,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=1
+kill-M7-selftest-unset-exit=1
+== (iv-c) informational: each mutant census on base export vs orig
+info-census-M4-exit=0
+info-census-M4-leftover-recheck-dirs=0
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+info-census-M4-exit=0
+info-census-M5-exit=0
+info-census-M5-leftover-recheck-dirs=0
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+info-census-M5-exit=0
+info-census-M6-exit=0
+info-census-M6-leftover-recheck-dirs=89
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+info-census-M6-exit=0
+info-census-M7-exit=0
+info-census-M7-leftover-recheck-dirs=0
+RECHECK-CWD entries=89 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+info-census-M7-exit=0
+== (v) leak check on amended counter (clean TMPDIR)
+leak-selftest-exit=0
+leak-selftest-leftover=0
+leak-census-exit=0
+leak-census-leftover=0
+== (vi) constraint greps
+grep-bash-literal-call-orig=1  amended=1
+grep-bash-any-orig=2  amended=2
+grep-subprocess-orig=4  amended=4
+--- /tmp literal lines in amended:
+17:honors TMPDIR; no path is hard-coded under /tmp.
+grep-tmp-exit=0
+--- bash lines in amended:
+9:  exit2_foreign   the value, run by `bash -c` in a fresh foreign scratch cwd, exits 2
+52:            proc = subprocess.run(["bash", "-c", value], cwd=scratch, env=env,
+grep-bash-lines-exit=0
+--- --selftest/--root/--lane/--verbose usage preserved:
+5:prefix, so it runs from any cwd. For every corpus/knowledge/*.md under --root this counter
+8:  noprefix        the value does not start with `cd <LANE> && ` (LANE = --lane)
+20:  recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+21:  recheck-cwd-census.py --selftest
+23:--selftest runs five cases under TMPDIR (prefix-census, result-main, tmpdir-parent,
+159:        out2n, ret2n = capture(main, ["recheck-cwd-census.py", "--root", root2n, "--lane", root2n])
+162:        out2c, ret2c = capture(main, ["recheck-cwd-census.py", "--root", root2c, "--lane", root2c])
+213:    if "--selftest" in argv:
+218:        if argv[i] == "--root" and i + 1 < len(argv):
+221:        elif argv[i] == "--lane" and i + 1 < len(argv):
+224:        elif argv[i] == "--verbose":
+228:            print("usage: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose] | --selftest",
+== (vii) git scope
+ corpus/instruments/recheck-cwd-census.py | 122 +++++++++++++++++++++++++------
+ 1 file changed, 99 insertions(+), 23 deletions(-)
+corpus/instruments/recheck-cwd-census.py
