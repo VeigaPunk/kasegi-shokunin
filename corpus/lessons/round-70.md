@@ -180,6 +180,24 @@ held the planner seat. Seat results, dead seats and their error text are recorde
 from `.ufo/waves/round-70/w1-results.json`; the wave's findings are folded into this lesson's
 residuals and into the report's verdicts.
 
+## Routed defects (this round → next gate change)
+
+- **V70-1 — selftest pin strength (R103).** `ExecR103` and `MutationC1` agree: cases 4/5 are group-only
+  (`--out` cases also carry `--url`), case 6 is conjunction-pinned, case 10 pins `--` together with the
+  `git show` operand rule, and four limbs have no dedicated case (`--url` alone, the short `-o`,
+  `--scratch`, `--work`). `MutationC1` measured the missing cases that would kill each survivor and
+  ranked them smallest-first (one `capture-source.py --ou` case without `--url`; a `-o`/`-oout.txt`
+  case; `--scratch`/`--work`/`--url` cases; a `git show HEAD:g.txt -- HEAD:g.txt` case). Not applied
+  after measurement: the selftest bytes are part of C1's frozen gate sha256 `7a8d52eb…`.
+- **V70-2 — the short `-o` limb is implemented but unmeasured.** The claim's declared sentence includes
+  a short `-o` refusal, but neither the frozen probe set (P1..P7) nor the selftest exercises it
+  (`MutationC1` M5 survives the counter end to end). The claim is graded on its frozen predicate only;
+  the `-o` behaviour is a code fact with no this-round receipt.
+- **V70-3 — capability loss to state.** `SentinelGate` records that the gate can no longer derive a
+  counter against a non-default root (`--root <fixture>`); every committed use invokes such counters
+  directly rather than through the gate, so nothing breaks, but the loss is real and is recorded here
+  rather than left implicit.
+
 ## Residuals (named, not claimed)
 
 - `--fleet-root`, `--manifest`, `--ledger`, `--results` and every non-denied counter option remain
