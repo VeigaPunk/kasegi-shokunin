@@ -1,0 +1,14 @@
+# kasegi r75 C1 do-nothing control — old counter (base f9cc05b56170946192a2dcafcc07e90ec611746c) on the real lane tree, from a foreign cwd
+# date: 2026-11-05T09:42:39Z
+cmd: cd /fast/scratch/hyaku/kasegi-r75 && TMPDIR=/fast/scratch/hyaku/kasegi-r75/controls python3 /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/recheck-cwd-census.py --root /home/vgpnk/Projects/shokunin/kasegi-shokunin --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin
+RECHECK-CWD entries=90 noprefix=0 exit2_foreign=0 exit0_foreign=68 exit1_foreign=22 exit_other=0 norecheck=0
+RECHECK-CWD-RESULT conformant
+exit=0
+# selftest of the unamended counter:
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r75/controls','/fast/scratch/hyaku/kasegi-r75/controls','/fast/scratch/hyaku/kasegi-r75/controls'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest cases=5 failures=0
+selftest-exit=0
