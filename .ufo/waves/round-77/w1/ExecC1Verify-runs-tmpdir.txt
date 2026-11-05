@@ -1,0 +1,66 @@
+== R1 reference --selftest (rc observed) ==
+rc=0
+selftest cases=12 failures=0
+== R2 realtree census (rc observed) ==
+rc=0
+RECHECK-CWD entries=91 noprefix=0 exit2_foreign=0 exit0_foreign=69 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+-- cmp vs controls/c1-base-realtree-census-r77.txt --
+BYTE-IDENTICAL
+== R3 five rebuilt mutants: run + cmp ==
+-- K-M1 (m1-registration-removed.py) --
+rc=1
+9:selftest case=gate-regs FAIL registered=[]
+10:selftest case=gate-consume FAIL no-registration
+11:selftest case=gate-negpolarity FAIL no-registration
+traceback-lines=0
+selftest cases=12 failures=3
+rebuild-vs-controls/m1-registration-removed.py: BYTE-IDENTICAL
+runoutput-vs-controls/m1-registration-removed.py.out: DIFFERS
+-- K-M2 (m2-consumption-neutered.py) --
+rc=1
+11:selftest case=gate-negpolarity FAIL neg_ok=True
+traceback-lines=0
+selftest cases=12 failures=1
+rebuild-vs-controls/m2-consumption-neutered.py: BYTE-IDENTICAL
+runoutput-vs-controls/m2-consumption-neutered.py.out: DIFFERS
+-- K-M3 (m3-computation-deleted.py) --
+rc=1
+10:selftest case=gate-consume FAIL exception=NameError("name 'out6' is not defined")
+11:selftest case=gate-negpolarity FAIL not-evaluated-after-exception
+traceback-lines=0
+selftest cases=12 failures=2
+rebuild-vs-controls/m3-computation-deleted.py: BYTE-IDENTICAL
+runoutput-vs-controls/m3-computation-deleted.py.out: DIFFERS
+-- K-M4 (m4-negpolarity-inverted.py) --
+rc=1
+11:selftest case=gate-negpolarity FAIL neg_ok=False
+traceback-lines=0
+selftest cases=12 failures=1
+rebuild-vs-controls/m4-negpolarity-inverted.py: BYTE-IDENTICAL
+runoutput-vs-controls/m4-negpolarity-inverted.py.out: DIFFERS
+-- K-M5 (m5-check-deleted.py) --
+rc=1
+11:selftest case=gate-checkids FAIL missing=['both-headers'] extra=[]
+traceback-lines=0
+selftest cases=11 failures=1
+rebuild-vs-controls/m5-check-deleted.py: BYTE-IDENTICAL
+runoutput-vs-controls/m5-check-deleted.py.out: DIFFERS
+== R4 sha256 manifest ==
+e666ae11fd9d50ecea107b8835090eed0dc798e8e8a233324b9fbd59ab52a21a  /fast/scratch/hyaku/kasegi-r77/ExecC1Verify/base-counter.py
+18bfc439238310af345189c0192c497b8451bea4a2bed1644a03866924588a33  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-77/c1-amended-reference.py
+c274649223deecdc228345cc49a2c0075d23893a9233f500667650b550f6a2b9  /fast/scratch/hyaku/kasegi-r77/ExecC1Verify/m1.py
+b7772949f3b70f169c441714bdf5e87e3cf3283bf431e524c976edc4d2ba6f23  /fast/scratch/hyaku/kasegi-r77/ExecC1Verify/m2.py
+1fd8d29ad085ce0367c2d3cd74fbd3149f04d8d3378e3da9b2c1f7c5e3968f3f  /fast/scratch/hyaku/kasegi-r77/ExecC1Verify/m3.py
+7f5bb9360d9eaa38b9d8b5ea76d4b68e4fbec652c6cf3bb65f144eee0787d67e  /fast/scratch/hyaku/kasegi-r77/ExecC1Verify/m4.py
+b7af772223131dc6081fb8561db26dbeca2911cc3ae9ac6d9fef605b7cbb5ff0  /fast/scratch/hyaku/kasegi-r77/ExecC1Verify/m5.py
+c274649223deecdc228345cc49a2c0075d23893a9233f500667650b550f6a2b9  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-77/controls/m1-registration-removed.py
+b7772949f3b70f169c441714bdf5e87e3cf3283bf431e524c976edc4d2ba6f23  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-77/controls/m2-consumption-neutered.py
+1fd8d29ad085ce0367c2d3cd74fbd3149f04d8d3378e3da9b2c1f7c5e3968f3f  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-77/controls/m3-computation-deleted.py
+7f5bb9360d9eaa38b9d8b5ea76d4b68e4fbec652c6cf3bb65f144eee0787d67e  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-77/controls/m4-negpolarity-inverted.py
+b7af772223131dc6081fb8561db26dbeca2911cc3ae9ac6d9fef605b7cbb5ff0  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-77/controls/m5-check-deleted.py
+== R5 lane git state (read-only) ==
+539a43877809bd90b6f506e8fd24a6d871598cd5
+539a438 round-77: freeze C1 (recheck-cwd RESULT-limb gate, 12 checks, 5 mutant kills) and C2 (F54 OSV querybatch on S112) with controls and R126 pre-freeze receipt
+2e53fc7 round-76 verifier spot-check (integrator, hyaku): non-author admit/reject
+porcelain-lines=6

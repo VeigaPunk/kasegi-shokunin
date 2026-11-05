@@ -1,0 +1,70 @@
+# ScribeSources — independent re-measurements (round 77, attempt 1, wave w1)
+# seat: ScribeSources (leaf). READ-ONLY: no lane file edited, no git mutation.
+# scratch: /fast/scratch/hyaku/kasegi-r77/scribesources (removed before yield)
+# all commands below are the ones actually run, with their observed output.
+
+## 1. frozen-byte digests (sha256sum)
+18bfc439238310af345189c0192c497b8451bea4a2bed1644a03866924588a33  .ufo/waves/round-77/c1-amended-reference.py
+e666ae11fd9d50ecea107b8835090eed0dc798e8e8a233324b9fbd59ab52a21a  corpus/instruments/recheck-cwd-census.py
+174dc28e7ec200ea3ab2875fcda2fc8dea824a6f4edb7964f602d2ac79ff433c  .ufo/waves/round-76/controls/m2b-conjunct-removed.py
+f3ca04652e444125a1441449e23814107999496d73fa6ac46f35cca3d2bd0907  corpus/source-snapshots/round-77/S112.txt
+c274649223deecdc228345cc49a2c0075d23893a9233f500667650b550f6a2b9  .ufo/waves/round-77/controls/m1-registration-removed.py
+b7772949f3b70f169c441714bdf5e87e3cf3283bf431e524c976edc4d2ba6f23  .ufo/waves/round-77/controls/m2-consumption-neutered.py
+1fd8d29ad085ce0367c2d3cd74fbd3149f04d8d3378e3da9b2c1f7c5e3968f3f  .ufo/waves/round-77/controls/m3-computation-deleted.py
+7f5bb9360d9eaa38b9d8b5ea76d4b68e4fbec652c6cf3bb65f144eee0787d67e  .ufo/waves/round-77/controls/m4-negpolarity-inverted.py
+b7af772223131dc6081fb8561db26dbeca2911cc3ae9ac6d9fef605b7cbb5ff0  .ufo/waves/round-77/controls/m5-check-deleted.py
+
+## 2. red-before survivor (round-76 design) — MUST stay rc 0
+cd /fast/scratch/hyaku/kasegi-r77/scribesources
+cp /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-76/controls/m2b-conjunct-removed.py .
+TMPDIR=/fast/scratch/hyaku/kasegi-r77/scribesources python3 -B m2b-conjunct-removed.py --selftest > redbefore.out 2>&1
+rc=0
+last line: selftest cases=8 failures=0
+=> the r76 m2b consuming-conjunct survivor class still stands on the r76 design (it is NOT killed by the r77 gate,
+   because the r77 gate does not exist in those bytes). This is the red-before control.
+
+## 3. r77 reference (frozen candidate) — selftest rc 0
+cp /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-77/c1-amended-reference.py ref.py
+TMPDIR=$PWD python3 -B ref.py --selftest > ref.run.out 2>&1
+rc=0 ; last line: selftest cases=12 failures=0
+
+## 4. the five named mutants, re-run from the frozen controls (rc must be nonzero)
+for m in m1-registration-removed m2-consumption-neutered m3-computation-deleted m4-negpolarity-inverted m5-check-deleted; do
+  TMPDIR=$PWD python3 -B $m.py --selftest > $m.run.out 2>&1; echo "$m rc=$? last=$(tail -1 $m.run.out)"
+done
+m1-registration-removed      rc=1  selftest cases=12 failures=3   # gate-regs FAIL / gate-consume FAIL no-registration / gate-negpolarity FAIL no-registration
+m2-consumption-neutered      rc=1  selftest cases=12 failures=1   # gate-consume ok clean_ok=True ; gate-negpolarity FAIL neg_ok=True  <-- the required m2b-class ASSERTION kill (no traceback)
+m3-computation-deleted       rc=1  selftest cases=12 failures=2   # gate-consume FAIL exception=NameError("name 'out6' is not defined") ; gate-negpolarity FAIL not-evaluated-after-exception  <-- EXCEPTION class (R127), logged distinctly
+m4-negpolarity-inverted      rc=1  selftest cases=12 failures=1   # gate-consume ok clean_ok=True ; gate-negpolarity FAIL neg_ok=False
+m5-check-deleted             rc=1  selftest cases=11 failures=1   # gate-checkids FAIL missing=['both-headers'] extra=[]
+
+## 5. R126 pre-freeze dry run re-run (lane checkout, read-only)
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py \
+  --manifest corpus/source-snapshots/round-77/manifest.json --source S112
+rc=0 ; S112:sha256 OK ; 13 x "OK occurrences=1 anchor=<n>-ok" (Q01..Q13 at anchors 24,24,24,30,31,34,35,36,166,168,169,170,195)
+(matches the frozen receipt .ufo/waves/round-77/controls/c2-prerecheck-r77.txt)
+
+## 6. capture binding + frontier counters (read-only)
+python3 corpus/instruments/capture-binding-check.py | tail -1   -> records=91 bound=91 unbound=0   (rc=0)
+python3 corpus/instruments/frontier-recheck-count.py | grep -E 'FRONTIER-CENSUS|entries='
+   -> FRONTIER-CENSUS rows=53 admitted=53 closed=53 problem-rows=0 registry=112
+   -> entries=56 pass=56 exit=0
+(NOTE for the L1: at the freeze tree the frontier counters still read rows=53 / entries=56 because the F54
+ README/PROVINCE rows land with the entry; the frozen B3 expects rows=54 / entries=57 at the landing tree.)
+
+## 7. distinctness of the two strings the reject line names
+grep -c "api\.osv\.dev" corpus/source-snapshots/round-76/S111.txt      -> 0     (the S111 capture carries NO host form)
+grep -c "api\.osv\.dev" corpus/source-snapshots/round-77/S112.txt      -> 2     (S112.txt:63,196 — the batch curl samples)
+grep -n "api\.osv\.dev" corpus/source-snapshots/round-73/S108.txt      -> 72,76,80,147 ("https://api.osv.dev/v1/query")
+grep -rn "api\.osv\.dev" corpus/knowledge/*.md                         -> 0 hits in every knowledge entry
+grep -n "api\.osv\.dev" corpus/SOURCES.md                              -> line 71 only: S065 row, "api.osv.dev/v1/vulns/CVE-2025-55305"
+grep -n "POST /v1/querybatch" corpus/knowledge/osv-post-v1-query-contract.md -> line 75 (F51 Limits bullet, listed-not-described)
+grep -n "POST /v1/querybatch" corpus/source-snapshots/round-73/S108.txt      -> line 5 (nav) ; S111.txt -> lines 5 and 43 (nav + table of contents)
+=> The PATH string is held from S108.txt:5-9 and S111.txt:5,43 (and named at F51:75).
+   The HOST form "api.osv.dev" is held from S108.txt:72,76,80,147 and from the S065 registry row (SOURCES.md:71),
+   but NOT from the S111 capture (0 occurrences) and NOT from any knowledge entry (0 hits).
+   FINDING F-SS-1 for the L1: the reject line's phrase "and S111 captures" does not support the host form.
+
+## 8. git state (read-only)
+git status --porcelain -> untracked only: .ufo/waves/round-77/w1-dispatch.json, w1-spec.json, w1.ready,
+   w1.ready.dispatched, w1/, corpus/lessons/round-77.md  (no tracked file modified by this seat)

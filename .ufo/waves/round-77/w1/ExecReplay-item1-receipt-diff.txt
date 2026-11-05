@@ -1,0 +1,17 @@
+# ExecReplay item 1 — receipt vs observed run, unified diff
+# receipt: .ufo/waves/round-77/controls/c1-redbefore-r76-survivor-r77.txt (9 lines; summary at line 9)
+#   bytes: git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 539a43877809bd90b6f506e8fd24a6d871598cd5:.ufo/waves/round-77/controls/c1-redbefore-r76-survivor-r77.txt
+# observed: fresh run captured to scratch selftest-direct.out (see ExecReplay-item1-selftest.out)
+# command: diff -u <(git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 539a438...:.ufo/waves/round-77/controls/c1-redbefore-r76-survivor-r77.txt) /fast/scratch/hyaku/kasegi-r77/ExecReplay/selftest-direct.out
+--- /dev/fd/63	2026-11-05 09:47:19.057325165 -0300
++++ /fast/scratch/hyaku/kasegi-r77/ExecReplay/selftest-direct.out	2026-11-05 09:47:19.054325156 -0300
+@@ -1,6 +1,6 @@
+ selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+ selftest case=result-main ok nonconformant ret=1 conformant ret=0
+-selftest case=tmpdir-parent ok calls=3 dirs=None,None,None
++selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r77/ExecReplay','/fast/scratch/hyaku/kasegi-r77/ExecReplay','/fast/scratch/hyaku/kasegi-r77/ExecReplay'
+ selftest case=scratch-cleanup ok calls=3 leftover=0
+ selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+ selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False main_ret=1 result_ok=True
+# diff exit code: 1 (files differ)
+# Interpretation: exactly ONE line differs — the tmpdir-parent `dirs=` echo. The receipt's run recorded dirs=None,None,None (no TMPDIR in its environment); this re-run pinned TMPDIR to the seat scratch per lane bounds, so the control echoes the scratch path three times. All 8 case names, all ok verdicts, every got=/want= payload, and the summary line `selftest cases=8 failures=0` are byte-identical to the receipt. The r76 survivor stands; receipt matches.

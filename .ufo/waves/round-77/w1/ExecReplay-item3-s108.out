@@ -1,0 +1,18 @@
+# ExecReplay item 3 — S108 other-endpoint lines at freeze
+# command: git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 539a43877809bd90b6f506e8fd24a6d871598cd5:corpus/source-snapshots/round-73/S108.txt | sed -n '5,9p'
+== lines 5-9 ==
+POST /v1/querybatch
+GET /v1/vulns/{id}
+GET /v1experimental/importfindings
+POST /v1experimental/ determineversion
+POST /v1experimental/ubuntu/binary-to-source
+== endpoint string hits (same file, grep -n -E 'querybatch|vulns/\{id\}|determineversion|importfindings|binary-to-source') ==
+5:POST /v1/querybatch
+6:GET /v1/vulns/{id}
+7:GET /v1experimental/importfindings
+8:POST /v1experimental/ determineversion
+9:POST /v1experimental/ubuntu/binary-to-source
+# expected: five other-endpoint strings (querybatch, vulns/{id}, determineversion, importfindings, ubuntu/binary-to-source) listed-not-described at lines 5-9.
+# observed: all five present, one per line, each a bare endpoint nav entry with no payload/parameter description. MATCH.
+# capture quirks kept verbatim: line 8 reads 'POST /v1experimental/ determineversion' (space after the slash, as captured); the five lines are the ONLY hits of these strings in the snapshot.
+# C2 relevance: POST /v1/querybatch is among S108's listed-not-described endpoints (line 5) — the exclusion the S112 admission cites.

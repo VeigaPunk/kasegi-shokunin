@@ -1,0 +1,14 @@
+id	anchor	word_count	norm_alnum_len	under_12	verbatim_at_anchor	normalized_at_anchor	normalized_occurrences_capture	quote
+Q01-batch-definition	24	15	70	no	YES	YES	1	Query for multiple packages (by either package and version or git commit hash) at once.
+Q02-return-shape	24	7	43	no	YES	YES	1	Returns vulnerability ids and modified field only.
+Q03-ordering	24	10	50	no	YES	YES	1	The response ordering will be guaranteed to match the input.
+Q04-params-same	30	16	71	no	NO	NO	1	The parameters are the same as those in POST /v1/query, but you can make multiple queries.
+Q05-pagination-instructions	31	9	66	no	NO	NO	1	Instructions are available for handling pagination for querybatch requests.
+Q06-item-rules	34	10	44	no	YES	YES	1	Each query item must follow the same rules as /v1/query:
+Q07-version-rule	35	9	39	no	YES	YES	1	Use either version or a versioned purl, not both.
+Q08-400	36	8	36	no	YES	YES	1	Items with both will return 400 Bad Request.
+Q09-partial-tokens	166	18	87	no	YES	YES	1	However, a querybatch request may return results with a next_page_token for only a few of the total queries.
+Q10-individual-1000	168	11	68	no	YES	YES	1	An individual query within the queryset returns more than 1,000 vulnerabilities
+Q11-total-3000	169	9	56	no	YES	YES	1	The entire queryset returns more than 3,000 vulnerabilities total
+Q12-threading-variance	170	17	79	no	YES	YES	1	These numbers can vary slightly because of threading and the page size may change in the future.
+Q13-next-request	195	20	104	no	YES	YES	1	To get the next page of results, your next request should specify page_token only for the queries that returned next_page_token.

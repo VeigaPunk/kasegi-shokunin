@@ -1,0 +1,34 @@
+# SentinelC1 receipts (round-77 w1). Scratch: /fast/scratch/hyaku/kasegi-r77/SentinelC1 (removed after copy).
+
+## A. amended reference --selftest (TMPDIR=<scratch>/tmp), rc 0
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r77/SentinelC1/tmp','/fast/scratch/hyaku/kasegi-r77/SentinelC1/tmp','/fast/scratch/hyaku/kasegi-r77/SentinelC1/tmp'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False
+selftest case=both-headers ok got=entries=2,exit0_foreign=2,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=0 want=entries=2,exit0_foreign=2,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=0 first_ran=True restoration_ran=False
+selftest case=relabel-detection ok unpatched got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=1,restoration_only=0 want=...same...; patched got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=...same...
+selftest case=gate-regs ok registered=['restoration-only-result']
+selftest case=gate-consume ok clean_ok=True
+selftest case=gate-negpolarity ok neg_ok=False
+selftest case=gate-checkids ok missing=[] extra=[]
+selftest cases=12 failures=0
+selftest-rc=0
+residue in TMPDIR after run: 0 entries
+
+## B. base instrument --selftest (do-nothing control), rc 0
+selftest cases=6 failures=0   (base-rc=0; residue 0)
+
+## C. sha256
+18bfc439238310af345189c0192c497b8451bea4a2bed1644a03866924588a33  c1-amended-reference.py
+e666ae11fd9d50ecea107b8835090eed0dc798e8e8a233324b9fbd59ab52a21a  base recheck-cwd-census.py (git show 2e53fc74:...)
+
+## D. git
+HEAD 539a43877809bd90b6f506e8fd24a6d871598cd5 ; base 2e53fc74776824898b5c5eb914aeddc19a091157
+ls-tree 539a4387: c1-amended-reference.py blob b1bd1bdf (100755); corpus/instruments/recheck-cwd-census.py blob 80fcc2b8 (100755)
+git diff --stat 2e53fc74 539a4387 -- corpus/instruments/recheck-cwd-census.py: (empty)
+
+## E. gate probes (scratch mutant copies, not frozen bytes)
+neuter-closure-true: rc 1; FAIL gate-negpolarity neg_ok=True; cases=12 failures=1
+delete-registration: rc 1; FAIL gate-regs registered=[]; FAIL gate-consume no-registration; FAIL gate-negpolarity no-registration; cases=12 failures=3

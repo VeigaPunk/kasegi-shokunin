@@ -2946,3 +2946,29 @@ Capabilities: none entered. Saturation 9/10 held.
 1. **depth:verifiability (4, lowest):** a new predicate that makes the case-6 RESULT a consumed assertion and tests the consuming assertion itself (R127), with a do-nothing control on the amended bytes and a freeze before scoring; the NameError kill does not count.
 2. **coverage (8):** the five non-query OSV endpoint contracts stay open; a fresh manifest whose quotes all pass `source-recheck.py` before the freeze (R126) is the entry route for F54 or a successor.
 3. **calibration:** the freeze-time dry run of each instrument on the final manifest (R126) as a counted check in the next round's controls.
+
+## Round 77 — NOT VERIFIED on both claims (honest stop; no score change)
+
+Frozen claims: `.ufo/waves/round-77/claims.json` (freeze `539a4387`, base `2e53fc74`). Attempt 1; wave `w1` (one v1 wave, 13 seats). Receipts `.ufo/waves/round-77/w1/` and `.ufo/waves/round-77/controls/`.
+
+| Axis | Score before r77 | Score after r77 | Evidence pointer | Last change |
+|---|---:|---:|---|---|
+| depth:verifiability (lowest) | 4 | 4 (held; C1 not verified, nothing landed in `corpus/instruments/`) | C1 candidate `.ufo/waves/round-77/c1-amended-reference.py`: selftest `cases=12 failures=0` passes the five named mutants (K-M1..K-M5) but also survives consumer-side neutering X1 (`clean_ok = True`), gate-consume body neutering X2 and check-body neutering K-M8 (`w1/RevengerInherited-run-X1-*.txt`, `w1/MutC1.md`). Named-clause falsification: "the case-6 RESULT limb becomes load-bearing". Base counter unchanged (`e666ae11…`). Base selftest `cases=6 failures=0`. | r76 (held r77) |
+| coverage | 8 | 8 (held; C2 not admitted) | S112 row `queued` (line 124); manifest `corpus/source-snapshots/round-77/manifest.json` 13/13 quotes located (B0/B5). B6 distinctness fails: Q07, Q08, Q12 restate admitted F51 substance (`corpus/knowledge/osv-post-v1-query-contract.md:21,47`; `S108.txt:40,41,136`). Knowledge 91 → 91; frontier 53 → 53. | r76 (held r77) |
+| depth:density | 9 | 9 (not targeted; not re-measured) | — | r15 (held) |
+
+**Claim verdicts.** C1 NOT VERIFIED as declared: named kill rule holds, the load-bearing statement does not (M77-6). C2 NOT VERIFIED as declared: B6 distinctness (kill rule) fails (M77-5). Neither claim is narrowed after scoring; both are reported as frozen. No axis is harmed: `git diff 2e53fc74 -- SCORECARD.md` is additions only, and the instrument and knowledge tree are unchanged.
+
+**Counting commands (base and freeze bytes).** `TMPDIR=<scratch>/tmp python3 -B corpus/instruments/recheck-cwd-census.py --root . --lane <lane>` → `RECHECK-CWD entries=91 … restoration_only=0`, conformant, rc 0. `grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md` → base 111, freeze 112. `python3 corpus/instruments/frontier-recheck-count.py | grep FRONTIER-CENSUS` → `rows=53 admitted=53 closed=53 registry=112` (registry row added, no admission).
+
+**Capabilities:** none entered. **Saturation:** line 9/10 held; no retirement, split or nudge waiver.
+
+### Round-77 move log
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 77 | depth:verifiability | census selftest `cases=6` | candidate `cases=12`; not landed | `.ufo/waves/round-77/w1/MutC1.md`, `w1/RevengerInherited-run-X*.txt`, `corpus/lessons/round-77.md` § Mistakes M77-6 |
+| 77 | coverage | registry 111 | registry 112 (S112 `queued`); knowledge 91 unchanged | `corpus/SOURCES.md:124`; `corpus/source-snapshots/round-77/` |
+| 77 | calibration | r76 M76-1 (distinctness sweep not run before freeze) repeated | recorded as M77-5, routed R-77-C | `corpus/lessons/round-77.md` § Mistakes |
+
+**Planned after round 77 (not frozen):** (1) depth:verifiability — a counter successor that freezes consumer-side and check-body neutering as named classes (R-77-B), the TMPDIR refusal (R-77-A), and the anchor-window documentation (R-77-D), each with a do-nothing control; (2) coverage — a F54 successor that claims only the batch-specific clauses (Q01–Q06, Q09–Q11, Q13), after the R125 sweep and the L0 ruling on staged `S112` (R-77-E); (3) calibration — run the R125 sweep and the exact-line anchor check as named freeze steps.

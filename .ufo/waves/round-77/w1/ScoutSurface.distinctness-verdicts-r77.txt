@@ -1,0 +1,29 @@
+# ScoutSurface per-clause distinctness verdicts — round 77 C2 / F54 / S112
+# question: is any B6 ground already held? (already-held / listed-not-described / new)
+# already-held set checked: S080 (OSV schema, F31), S108/F51 (POST /v1/query), S111 (overview, queued)
+
+CLAUSE         ANCHOR    VERDICT  EVIDENCE
+Q01-batch-definition 24 new  S112.txt:24 'Query for multiple packages ... at once.' — no corpus hit; S111.txt:30 one-line summary 'Batched query vulnerabilities for given package versions and commit hashes.' is listed-not-described ground
+Q02-return-shape      24 new  S112.txt:24 'Returns vulnerability ids and modified field only.' — zero corpus hits outside round-77; S080.txt:32/109 'modified' is the RECORD field, not the endpoint return shape (S080/F31 excluded by B6)
+Q03-ordering          24 new  S112.txt:24 'The response ordering will be guaranteed to match the input.' — grep 'guaranteed' across corpus/knowledge hits only cisa-cvd + osv-affected-range-events (unrelated); grep 'match the input' = 0 hits
+Q04-params-same       30 new  S112.txt:31 'The parameters are the same as those in POST /v1/query, but you can make multiple queries.' — deferral clause; the DEFERRED content (params) is already-held S108/F51, the batch-multiplicity clause is new
+Q05-pagination-instr  31 new  S112.txt:32 'Instructions are available for handling pagination for querybatch requests.' — new (batch-specific pointer)
+Q06-item-rules        34 new  S112.txt:34 'Each query item must follow the same rules as /v1/query:' — new as a batch-level scoping sentence; the referenced rules themselves are already-held S108/F51
+Q07-version-rule      35 new  S112.txt:35 'Use either version or a versioned purl, not both.' — PARAPHRASE of already-held S108.txt:40 'Use either the top-level version field or a versioned purl (pkg:...@<version>), but not both.' (F51 line 21). Same rule, shorter wording; the RULE is already held, the batch-page restatement is new as a citation
+Q08-400               36 new  S112.txt:36 'Items with both will return 400 Bad Request.' — PARAPHRASE of already-held S108.txt:41 'Requests that specify the version in both places return 400 Bad Request.' (F51 line 21). Same consequence, batch wording
+Q09-partial-tokens   166 new  S112.txt:166 '... a querybatch request may return results with a next_page_token for only a few of the total queries.' — new (batch-only partial-token distribution); F51 holds the single-query token mechanism (S108.txt:135)
+Q10-individual-1000  168 new  S112.txt:168 'An individual query within the queryset returns more than 1,000 vulnerabilities' — new as a per-query-in-queryset threshold; F51 holds the single-query 1,000 trigger (S108.txt:136)
+Q11-total-3000       169 new  S112.txt:169 'The entire queryset returns more than 3,000 vulnerabilities total' — new; the numeral 3,000 occurs elsewhere only in round-24/S014 (CVE counts, unrelated)
+Q12-threading-variance 170 already-held-substance  S112.txt:170 'These numbers can vary slightly because of threading and the page size may change in the future.' — SAME substantive clause already held at S108.txt:136 'The page size can vary slightly because of threading and may change in the future.', quoted in corpus/knowledge/osv-post-v1-query-contract.md:47. Different referent (the 1,000/3,000 thresholds vs the single-query page size), same rule
+Q13-next-request     195 new  S112.txt:195 'To get the next page of results, your next request should specify page_token only for the queries that returned next_page_token.' — new (per-query token selection); F51 holds the single-query follow-up rule (S108.txt:144)
+
+VERDICT PER CLAUSE: 13/13 quoted clauses are NOT already held as the lane holds the single-query contract (S108/F51), the record format (S080/F31) or the overview (S111).
+  Q07/Q08 are RESTATEMENTS of already-held S108 rules (same rule, batch-page wording) and Q12 is a RESTATEMENT of the already-held S108 threading/page-size sentence.
+  They are not claimed as new rules; they are the batch page's own words at new locations. B6 requires the SINGLE-QUERY ground be cross-referenced as already-held, which the S112 registry row (:124) and the F51 entry (:75) both do.
+  => B6 verdict: NO B6 ground is already held in the lane. The subject sweep finds no prior holding of any of the 13 clauses.
+
+## Already-held set re-verified
+  S080/F31 record format : corpus/knowledge/osv-affected-range-events.md (F31, source S080)
+  S108/F51 query contract: corpus/knowledge/osv-post-v1-query-contract.md (F51, source S108); :75 defers the batch endpoint as 'listed, not described'
+  S111 overview          : corpus/SOURCES.md:123, status queued, capture corpus/source-snapshots/round-76/S111.txt
+  endpoint path string   : corpus/source-snapshots/round-73/S108.txt:5-9 + round-76/S111.txt:5,43 = listed-not-described, per B6

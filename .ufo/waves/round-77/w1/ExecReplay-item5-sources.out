@@ -1,0 +1,24 @@
+# ExecReplay item 5 — SOURCES.md census at freeze 539a43877809bd90b6f506e8fd24a6d871598cd5 and base 2e53fc74776824898b5c5eb914aeddc19a091157
+# command: git -C <lane> show <freeze>:corpus/SOURCES.md | grep '^| S111'
+# S111 row at freeze, split by awk -F'|' (13 fields; col13 empty trailing):
+#   col2=[ S111 ]  col3=[ OSV.dev API overview — https://google.github.io/osv.dev/api/ ]  col4=[ docs ]  col5=[ A ]
+#   col6 scope=[ the OSV.dev project's own API index page: the API (1.0) heading and OpenAPI download link, the six request types with the three experimental endpoints, and the rate-limit answer; not the POST /v1/query contract (S108, F51), not the record format (S080, F31), not any other endpoint's payload or parameters, and not a new claim on the response-size limit (held from S108) ]
+#   col7 capture=[ API overview page, lines 21-39; capture corpus/source-snapshots/round-76/S111.txt (sha256 6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab, 48 lines, 1810 snapshot bytes, fetched 2026-11-05T10:41:25Z; 13 pinned quotes in corpus/source-snapshots/round-76/manifest.json; six request lines S111.txt:29-34; rate-limit answer S111.txt:36) ]
+#   col8=[ Choose an OSV lookup by question: the page names six request types as separate endpoints (S111.txt:28-34) and dates its rate-limit answer to the capture ("Currently", S111.txt:36). ]
+#   col9=[ queued ]  col10=[ 2026-11-05 ]  col11=[ 90d ]  col12=[ — ]
+# expected: S111 queued with used-by dash -> observed: status col9=queued, used-by col12=—. MATCH.
+
+# command: git -C <lane> show <base>:corpus/SOURCES.md | grep -c 'S112'
+0
+# grep exit code: 1 (no matches)
+# expected: 0 at base -> observed: 0. MATCH.
+
+# command: git -C <lane> show <freeze>:corpus/SOURCES.md | grep -c 'S112'
+1
+# grep exit code: 0
+# expected: 1 at freeze -> observed: 1. MATCH (collision guard holds: S112 absent at base, exactly one occurrence at freeze).
+
+# command: git -C <lane> show <freeze>:corpus/SOURCES.md | grep -n 'S112'
+124:| S112 | OSV.dev API reference, POST /v1/querybatch (OSV project) — https://google.github.io/osv.dev/post-v1-querybatch/ | docs | A | the OSV.dev project's own reference for one batch query endpoint, POST /v1/querybatch: the queries-array payload, the ids-and-modified-only return shape, the input-matched response-ordering guarantee, the per-item version rules with the 400 Bad Request consequence, and the per-query pagination semantics (next_page_token per result, the 1,000/3,000 thresholds, the threading-variance note, the follow-up-request rule); not the single-query POST /v1/query contract (S108, F51), not the OSV record format (S080, F31), not the API overview page (S111), not any other endpoint's page, and not any live query or rate-limit statem[...] [output truncated at capture limit; the row continues]
+# tail columns of the same row (awk -F'|', cols 9-12): col9=[ queued ]  col10=[ 2026-11-05 ]  col11=[ 180d ]  col12=[ — ]
+# cross-checks consistent with items 3 and 4: the S112 scope names POST /v1/querybatch, excludes the single-query POST /v1/query contract (S108, F51), the record format (S080, F31), and the overview page (S111).

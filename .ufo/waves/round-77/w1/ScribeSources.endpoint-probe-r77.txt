@@ -1,0 +1,24 @@
+# ScribeSources — endpoint-page URL-shape receipts (round 77, attempt 1, wave w1)
+# seat: ScribeSources (leaf, read-only; wave-dir drafts only)
+# probe time (UTC): 2026-11-05T12:40:45Z  (measured by `date -u +%Y-%m-%dT%H:%M:%SZ` in the same shell)
+# command (one curl per slug, no capture into the corpus, no registry edit):
+#   curl -sS -o /dev/null -w 'http=%{http_code} bytes=%{size_download}\n' --max-time 25 "https://google.github.io/osv.dev/<slug>/"
+# NOTE: the four lead slugs below are the live ones named by the S111 navigation; the
+# "wrong-slug" list at the bottom is the round-77 morning shape that returns 404.
+
+## live slugs named by the S111 navigation (S111.txt:4-9) -> HTTP 200
+get-v1-vulns                      http=200 bytes=19961   <title>GET /v1/vulns/{id} | OSV</title>
+post-v1-determineversion          http=200 bytes=30242   <title>POST /v1experimental/ determineversion | OSV</title>
+get-v1-importfindings             http=200 bytes=16418   <title>GET /v1experimental/importfindings | OSV</title>
+post-v1-ubuntu-binary-to-source   http=200 bytes=18769   <title>POST /v1experimental/ubuntu/binary-to-source | OSV</title>
+post-v1-querybatch                http=200 bytes=30406   <title>POST /v1/querybatch | OSV</title>   # the admitted S112 page
+
+## wrong-slug shapes probed (the round-77 morning shape) -> HTTP 404
+get-v1-vulns-id                          http=404 bytes=11373
+post-v1-query-batch                      http=404 bytes=11373
+post-v1-querybatch                       http=200 bytes=30406   # slug without the hyphen, also live
+get-v1experimental-importfindings        http=404 bytes=11373
+post-v1experimental-determineversion     http=404 bytes=11373
+post-v1experimental-ubuntu-binary-to-source http=404 bytes=11373
+
+# READ-ONLY; nothing captured into corpus/, no registry edit, no git mutation.

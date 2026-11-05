@@ -1,0 +1,38 @@
+== reference --selftest, TMPDIR unset (spec step 3 exact form) ==
+rc=0
+selftest cases=12 failures=0
+vs c1-reference-selftest-r77.txt: BYTE-IDENTICAL
+== five mutants, TMPDIR unset (spec step 4 exact form) ==
+-- K-M1 (m1-registration-removed.py) --
+rc=1
+9:selftest case=gate-regs FAIL registered=[]
+10:selftest case=gate-consume FAIL no-registration
+11:selftest case=gate-negpolarity FAIL no-registration
+traceback-lines=0
+selftest cases=12 failures=3
+runoutput-vs-controls/m1-registration-removed.py.out: BYTE-IDENTICAL
+-- K-M2 (m2-consumption-neutered.py) --
+rc=1
+11:selftest case=gate-negpolarity FAIL neg_ok=True
+traceback-lines=0
+selftest cases=12 failures=1
+runoutput-vs-controls/m2-consumption-neutered.py.out: BYTE-IDENTICAL
+-- K-M3 (m3-computation-deleted.py) --
+rc=1
+10:selftest case=gate-consume FAIL exception=NameError("name 'out6' is not defined")
+11:selftest case=gate-negpolarity FAIL not-evaluated-after-exception
+traceback-lines=0
+selftest cases=12 failures=2
+runoutput-vs-controls/m3-computation-deleted.py.out: BYTE-IDENTICAL
+-- K-M4 (m4-negpolarity-inverted.py) --
+rc=1
+11:selftest case=gate-negpolarity FAIL neg_ok=False
+traceback-lines=0
+selftest cases=12 failures=1
+runoutput-vs-controls/m4-negpolarity-inverted.py.out: BYTE-IDENTICAL
+-- K-M5 (m5-check-deleted.py) --
+rc=1
+11:selftest case=gate-checkids FAIL missing=['both-headers'] extra=[]
+traceback-lines=0
+selftest cases=11 failures=1
+runoutput-vs-controls/m5-check-deleted.py.out: BYTE-IDENTICAL

@@ -1,0 +1,97 @@
+# ScoutSurface sweep table — R114 subject sweep + R125 admitted-entry sweep
+# freeze 539a438; all greps read-only against the frozen tree
+
+## 1. clause sweep (each manifest quote vs corpus)
+=== PATTERN: querybatch ===
+corpus/SOURCES.md:124:| S112 | OSV.dev API reference, POST /v1/querybatch (OSV project) — https://google.github.io/osv.dev/post-v1-querybatch/ | docs | A | the OSV.dev project's own refere
+corpus/knowledge/osv-post-v1-query-contract.md:75:- the other endpoints in the page's navigation (POST /v1/querybatch, GET /v1/vulns/{id} and the experimental endpoints, S108.txt:5-9). They 
+corpus/source-snapshots/round-73/S108.txt:5:POST /v1/querybatch
+corpus/source-snapshots/round-76/S111.txt:5:POST /v1/querybatch
+corpus/source-snapshots/round-76/S111.txt:43:POST /v1/querybatch
+=== PATTERN: ordering will be guaranteed ===
+=== PATTERN: ids and modified ===
+corpus/SOURCES.md:124:| S112 | OSV.dev API reference, POST /v1/querybatch (OSV project) — https://google.github.io/osv.dev/post-v1-querybatch/ | docs | A | the OSV.dev project's own refere
+=== PATTERN: 400 Bad Request ===
+corpus/SOURCES.md:124:| S112 | OSV.dev API reference, POST /v1/querybatch (OSV project) — https://google.github.io/osv.dev/post-v1-querybatch/ | docs | A | the OSV.dev project's own refere
+corpus/knowledge/osv-post-v1-query-contract.md:21:The page's version rule: "Use either the top-level version field or a versioned purl (pkg:...@<version>), but not both." (S108.txt:40). "Req
+corpus/source-snapshots/round-73/S108.txt:41:Requests that specify the version in both places return 400 Bad Request.
+corpus/source-snapshots/round-73/S108.txt:47:Invalid (400 Bad Request):
+corpus/source-snapshots/round-73/manifest.json:25:        {"id": "Q08-both-places-400", "quote": "Requests that specify the version in both places return 400 Bad Request.", "anchor": 41},
+corpus/source-snapshots/round-73/manifest.json:26:        {"id": "Q09-invalid-label", "quote": "Invalid (400 Bad Request):", "anchor": 47},
+=== PATTERN: 1,000 ===
+corpus/SOURCES.md:124:| S112 | OSV.dev API reference, POST /v1/querybatch (OSV project) — https://google.github.io/osv.dev/post-v1-querybatch/ | docs | A | the OSV.dev project's own refere
+corpus/knowledge/osv-post-v1-query-contract.md:47:The page says when a response is paginated: "If your previous query fetched a large number of results, the response will be paginated." (S10
+corpus/knowledge/osv-post-v1-query-contract.md:51:Rejected over-generalization, not a page sentence: the API lists every vulnerability for a package in one response. The page states the trig
+corpus/knowledge/triage-thresholds.md:88:| curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES
+corpus/source-snapshots/round-24/S012.txt:39:For the last few months, Anthropic has used Mythos Preview to scan more than 1,000 open-source projects, which collectively underpin much of the 
+corpus/source-snapshots/round-24/S014.txt:169:CWE-89 by almost 1,000.
+corpus/source-snapshots/round-29/S043.txt:174:| `www.hackerone.com` | **$1,000** |
+corpus/source-snapshots/round-41/S063.txt:552:characters, or those containing more than 1,000 lines. The ABNF
+corpus/source-snapshots/round-73/S108.txt:136:For the v1/query endpoint pagination will occur when there more than 1,000 vulnerabilities in the response, or when the query has exceeded 20 se
+corpus/source-snapshots/round-73/manifest.json:39:        {"id": "Q21-pagination-trigger", "quote": "pagination will occur when there more than 1,000 vulnerabilities in the response, or when
+=== PATTERN: 3,000 ===
+corpus/SOURCES.md:124:| S112 | OSV.dev API reference, POST /v1/querybatch (OSV project) — https://google.github.io/osv.dev/post-v1-querybatch/ | docs | A | the OSV.dev project's own refere
+corpus/source-snapshots/round-24/S014.txt:168:to this. For example, the number of CVE Records that mapped to CWE-79 increased by over 3,000 this year, and
+=== PATTERN: next_page_token ===
+corpus/SOURCES.md:120:| S108 | OSV.dev API reference, POST /v1/query (OSV project) — https://google.github.io/osv.dev/post-v1-query/ | docs | A | the OSV.dev project's own reference for on
+corpus/SOURCES.md:124:| S112 | OSV.dev API reference, POST /v1/querybatch (OSV project) — https://google.github.io/osv.dev/post-v1-querybatch/ | docs | A | the OSV.dev project's own refere
+corpus/knowledge/osv-post-v1-query-contract.md:45:## Claim 5 — pagination: a next_page_token means more results, and the query repeats with page_token
+corpus/knowledge/osv-post-v1-query-contract.md:47:The page says when a response is paginated: "If your previous query fetched a large number of results, the response will be paginated." (S10
+corpus/knowledge/osv-post-v1-query-contract.md:49:Falsifiable rule: a response that contains `next_page_token` is not the complete answer to the query. The page's sample of the paginated res
+corpus/source-snapshots/round-73/S108.txt:135:The OSV.dev API uses pagination for queries that return a large number of vulnerabilities. When pagination is used, the next_page_token is given
+corpus/source-snapshots/round-73/S108.txt:142:"next_page_token": "a base64 string here"
+corpus/source-snapshots/round-73/S108.txt:146:'{"package": {...}, "version": ..., "page_token": next_page_token from response}' \
+corpus/source-snapshots/round-73/S108.txt:149:In rare cases, the response might contain only the next_page_token. In those cases, there might be more data that can be retrieved, but were not
+corpus/source-snapshots/round-73/manifest.json:40:        {"id": "Q22-token-mechanism", "quote": "When pagination is used, the next_page_token is given in the response, indicating that there
+corpus/source-snapshots/round-73/manifest.json:41:        {"id": "Q23-repeat-until", "quote": "repeating queries until the next_page_token is no longer included in the response.", "anchor": 
+corpus/source-snapshots/round-73/manifest.json:43:        {"id": "Q25-rare-token-only", "quote": "In rare cases, the response might contain only the next_page_token.", "anchor": 149},
+=== PATTERN: Use either version or a versioned purl ===
+=== PATTERN: page_token only for the queries ===
+=== PATTERN: distinct next_page_token ===
+=== PATTERN: queries ===
+corpus/SOURCES.md:124:| S112 | OSV.dev API reference, POST /v1/querybatch (OSV project) — https://google.github.io/osv.dev/post-v1-querybatch/ | docs | A | the OSV.dev project's own refere
+corpus/knowledge/first-psirt-maturity-document.md:59:- **The raw-HTML digest is not reproducible; the snapshot digest is.** The page emits a per-response CSP nonce in four script attributes:
+corpus/knowledge/github-global-security-advisories-rest-api.md:10:This entry records how a reader **queries** the GitHub Advisory Database through the REST API: which
+corpus/knowledge/osv-post-v1-query-contract.md:27:Rejected over-generalization, not a page sentence: the version is matched exactly, so `1.0` and `1.0.0` are different queries. The page's on
+corpus/knowledge/osv-post-v1-query-contract.md:47:The page says when a response is paginated: "If your previous query fetched a large number of results, the response will be paginated." (S10
+corpus/knowledge/osv-post-v1-query-contract.md:55:The size sentence sits on one line: "The API has a response size limit of 32MiB when using HTTP/1.1." (S108.txt:148). The same line continue
+corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md:20:The production data is drawn from two Chromium hotlist queries over "the six months from April to September 2026" (S093.tx
+corpus/knowledge/project-zero-fuzzilli-vs-bigsleep-comparison.md:22:Falsifiable rule: re-running the two printed hotlist queries over the same window and applying the post's own steps (drop 
+corpus/source-snapshots/round-24/S032.txt:927:network latency. Since active discovery sends out queries to receive responses, this additional network
+corpus/source-snapshots/round-24/S032.txt:1467:interrogation, InterNIC (WHOIS) queries, and network sniffing (generally only during internal
+corpus/source-snapshots/round-25/S040.txt:42:Members of the media with queries about Cisco security vulnerability information can contact media_pr@cisco.com.
+corpus/source-snapshots/round-26/S040-live.txt:42:Members of the media with queries about Cisco security vulnerability information can contact media_pr@cisco.com.
+
+## 2. anchor-vs-actual line check (all three OSV manifests)
+round-73/S108: quotes=31 anchors_not_on_quote_line=0
+round-76/S111: quotes=13 anchors_not_on_quote_line=0
+round-77/S112: quotes=13 anchors_not_on_quote_line=2
+    ('Q04-params-same', 30, [31])
+    ('Q05-pagination-instructions', 31, [32])
+
+## 3. F54 id state in README
+0
+F51 F52 F53 
+
+## 4. sibling lane sweep (querybatch / osv.dev in corpus/knowledge)
+audio-shokunin         querybatch=0 osv.dev=0
+chousa-shokunin        querybatch=0 osv.dev=0
+game-dev-2d-shokunin   querybatch=0 osv.dev=0
+game-dev-3d-shokunin   querybatch=0 osv.dev=0
+kagi-shokunin          querybatch=0 osv.dev=0
+kaidoku-shokunin       querybatch=0 osv.dev=0
+kake-shokunin          querybatch=0 osv.dev=0
+kama-shokunin          querybatch=0 osv.dev=0
+kasegi-shokunin        querybatch=1 osv.dev=3
+kengaku-shokunin       querybatch=0 osv.dev=0
+kotoba-shokunin        querybatch=0 osv.dev=0
+kotodama-shokunin      querybatch=0 osv.dev=0
+kumitate-shokunin      querybatch=0 osv.dev=0
+lore-shokunin          querybatch=0 osv.dev=0
+mado-shokunin          querybatch=0 osv.dev=0
+mori-shokunin          querybatch=0 osv.dev=0
+revenger-shokunin      querybatch=0 osv.dev=0
+souji-shokunin         querybatch=0 osv.dev=0
+tabi-shokunin          querybatch=0 osv.dev=0
+tameshi-shokunin       querybatch=0 osv.dev=0
+tsukuroi-shokunin      querybatch=0 osv.dev=0

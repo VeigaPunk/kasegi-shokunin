@@ -2819,3 +2819,15 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Measured scores: depth:verifiability 4 -> 4 (delta 0); coverage 8 -> 8 (delta 0). Round not admitted.
 - One v1 wave of 13 seats (`w1-results.json`); MutC1 and SentinelC1 did not run against the candidate (M76-7); no seat committed or pushed.
 - Assimilation: none (80 staged-id collisions at a 110-row registry). Considerthese: none fits.
+
+
+## Round 77 — the recheck-cwd RESULT-limb gate (C1) and the OSV querybatch surface on S112 (C2): both NOT VERIFIED as declared
+
+- Declared C1 depth:verifiability (lowest non-retired axis, nominal 4 held per R58): a 12-check counter selftest in which the case-6 RESULT limb is a registered, dual-polarity consumed assertion. Declared C2 coverage (8 held): frontier F54 admitted on S112, the OSV.dev `POST /v1/querybatch` contract. Freeze `539a4387`, base `2e53fc74`; `.ufo/waves/round-77/claims.json`.
+- Wave `w1`: one v1 wave of 13 seats (executor×3, scout, scribe×2, connector, reviewer×2, critic, mutation-tester, sentinel, revenger); attack seats 5/13. Reports under `.ufo/waves/round-77/w1/`.
+- C1: the candidate passes its selftest (`cases=12 failures=0`) and kills the five named transforms by assertion (K-M2 by `gate-negpolarity FAIL neg_ok=True`). It does not make the case-6 limb load-bearing: consumer-side neutering (X1), gate-consume body neutering (X2) and check-body neutering (K-M8) all exit 0. Not landed; the instrument stays at base bytes.
+- C2: the S112 manifest verifies 13/13 at the freeze (`source-recheck.py` rc 0). B6 distinctness fails: Q07, Q08 and Q12 restate substance held in admitted F51 (`corpus/knowledge/osv-post-v1-query-contract.md:21,47`). Not admitted; the S112 row stays `queued` at `corpus/SOURCES.md:124`.
+- Mistakes mined: M77-1 to M77-9 (`corpus/lessons/round-77.md` § Mistakes). Routed: R-77-A to R-77-F.
+- Measured scores: depth:verifiability 4 → 4 (delta 0); coverage 8 → 8 (delta 0). Round not admitted.
+- Assimilation: none (82 staged-id collisions at 112 rows; S112 collides with staged `TC260`). Routed to the L0 question file.
+- Considerthese: none fits.

@@ -1,0 +1,6 @@
+# ExecReplay item 2 — MIN_QUOTE_CHARS in frozen source-recheck.py
+# command: git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 539a43877809bd90b6f506e8fd24a6d871598cd5:corpus/instruments/source-recheck.py | grep -n MIN_QUOTE_CHARS
+33:MIN_QUOTE_CHARS = 12   # normalized minimum: a shorter "quote" matches any capture
+151:        if len(normalize(assertion["quote"])) < MIN_QUOTE_CHARS:
+# expected: line 33 defines MIN_QUOTE_CHARS = 12 -> observed: line 33, value 12. MATCH.
+# bonus observation: line 151 is the consumption site (len(normalize(quote)) < MIN_QUOTE_CHARS) — the constant is not dead at the freeze.

@@ -1,0 +1,15 @@
+# ExecReplay item 1 — r76 survivor control re-run, 2026-11-05
+# Byte-exact capture: selftest piped through tee into scratch (/fast/scratch/hyaku/kasegi-r77/ExecReplay/selftest-direct.out) and read back.
+# Replaces this file's first-pass hand transcription, which had dropped 'exit_other=0,' from the relabel-pair want= list (298 vs 311 chars) — transcription artifact, not a run difference.
+# command: TMPDIR=/fast/scratch/hyaku/kasegi-r77/ExecReplay python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-76/controls/m2b-conjunct-removed.py --selftest
+# cwd: /fast/scratch/hyaku/kasegi-r77/ExecReplay ; observed exit code: 0
+# git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin status --porcelain -- .ufo/waves/round-76/controls/ : empty before the run and empty after the run
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r77/ExecReplay','/fast/scratch/hyaku/kasegi-r77/ExecReplay','/fast/scratch/hyaku/kasegi-r77/ExecReplay'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False main_ret=1 result_ok=True
+selftest case=relabel-pair ok got=entries=3,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=1,restoration_only=1 want=entries=3,exit0_foreign=1,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=1,restoration_only=1 marker_present=False main_ret=1 result_ok=True
+selftest case=both-headers ok got=entries=2,exit0_foreign=2,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0,restoration_only=0 want=entries=2,exit0_foreign=2,exit1_foreign=0,exit2_foreign=0,exit_other=0,noprefix=0,norecheck=0,restoration_only=0 marker_present=False main_ret=0 result_ok=True
+selftest cases=8 failures=0
