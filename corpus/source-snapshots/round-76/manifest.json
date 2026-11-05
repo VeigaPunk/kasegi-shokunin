@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "note": "Round-76 OSV.dev API overview page (frontier F54 candidate). S111 is the OSV.dev project's own API index page, as served: the six-request API surface (three experimental endpoints), the API 1.0/OpenAPI specification availability, the rate-limit statement and the response-size limits. It is the API surface overview only: not the record format (S080/F31), not the single-endpoint POST /v1/query contract (S108/F51), and not the schema. Opened 2026-11-05; capture byte-identical to the round-74 lead-only fetch (sha256 6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab).",
+  "sources": [
+    {
+      "id": "S111",
+      "url": "https://google.github.io/osv.dev/api/",
+      "capture_url": "https://google.github.io/osv.dev/api/",
+      "http": {"status": 200, "final_url": "https://google.github.io/osv.dev/api/"},
+      "kind": "html",
+      "fetch_method": "capture-source.py --kind html, default instrument UA (tags stripped, entities decoded, whitespace collapsed per line); raw page 15262 bytes, snapshot 1810 bytes",
+      "fetched_utc": "2026-11-05T10:41:25Z",
+      "path": "S111.txt",
+      "sha256": "6f92e5b791edcda59ef2f9e566105cb3c944b25eee5753402ad12d374e5581ab",
+      "bytes": 1810,
+      "lines": 48,
+      "quotes": [
+        {"id": "Q01-api-version", "quote": "API (1.0)", "anchor": 21},
+        {"id": "Q02-openapi", "quote": "Download the OpenAPI specification", "anchor": 22},
+        {"id": "Q03-six-types", "quote": "There are six different types of requests that can be made of the API.", "anchor": 28},
+        {"id": "Q04-query", "quote": "Query vulnerabilities for a particular project at a given commit hash or version.", "anchor": 29},
+        {"id": "Q05-batch", "quote": "Batched query vulnerabilities for given package versions and commit hashes.", "anchor": 30},
+        {"id": "Q06-by-id", "quote": "Return a Vulnerability object for a given OSV ID.", "anchor": 31},
+        {"id": "Q07-determineversion", "quote": "Return a list of probable versions of a specified C/C++ project. (Experimental)", "anchor": 32},
+        {"id": "Q08-importfindings", "quote": "Retrieve records failing import-time quality checks, by record source (Experimental)", "anchor": 33},
+        {"id": "Q09-binary-to-source", "quote": "Map Ubuntu binary package names to their corresponding source package names. (Experimental)", "anchor": 34},
+        {"id": "Q10-rate-q", "quote": "Is the API rate limited?", "anchor": 35},
+        {"id": "Q11-rate-none", "quote": "Currently there are no limits on the API.", "anchor": 36},
+        {"id": "Q12-size-http1", "quote": "The API has a response size limit of 32MiB when using HTTP/1.1. There is no limit when using HTTP/2.", "anchor": 38},
+        {"id": "Q13-http2-recommend", "quote": "We recommend using HTTP/2 for queries that may result in large responses (e.g. big OSV Linux queries).", "anchor": 39}
+      ]
+    }
+  ]
+}

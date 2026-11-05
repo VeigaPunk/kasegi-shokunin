@@ -1,0 +1,44 @@
+{
+  "round": 76,
+  "lane": "kasegi",
+  "frozen_at": "2026-11-05T10:55:00Z",
+  "base": "a788021675873a96e09e91aa033d8c26ac2fe212",
+  "controls_commit": "recorded in the freeze commit message and LOG.md",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability",
+      "axis_score": "4 (lowest non-retired; nominal held per QUALITY R58 — the scored resolve.py census is not read by this counter)",
+      "target_instrument": "corpus/instruments/recheck-cwd-census.py (base bytes sha256 e666ae11fd9d50ecea107b8835090eed0dc798e8e8a233324b9fbd59ab52a21a)",
+      "statement": "The recheck-cwd census counter is amended so that (i) a neither-header knowledge file (no recheck:, no restoration-recheck:) is counted only in norecheck and a forged relabel of that bucket into restoration_only fails the selftest; (ii) the case-6 RESULT limb becomes load-bearing — its removal from the selftest bytes makes the amended selftest exit nonzero; and (iii) a fixture carrying both a recheck: line and a restoration-recheck: line is classified as a normal entry (its first recheck executes; it is not counted in restoration_only), with a mutant forcing restoration_only on any restoration-recheck: carrier failing the selftest.",
+      "predicate": {
+        "A1": "python3 -B corpus/instruments/recheck-cwd-census.py --selftest prints 'selftest cases=8 failures=0' and exits 0, on the amended bytes at the landing commit.",
+        "A2": "python3 -B corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> on the amended bytes at the C1-landing tree prints 'RECHECK-CWD entries=91 noprefix=0 exit2_foreign=0 exit0_foreign=69 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0' and 'RECHECK-CWD-RESULT conformant', exit 0 (revision named per R121; drift expectation once C2 lands: entries=92, exit0_foreign=70, all other fields unchanged).",
+        "A3": "The three red-before mutant classes (M-R1 forged relabel: neither-header files counted as restoration_only; M-R2: the case-6 RESULT limb removed from the amended selftest bytes; M-R3: restoration-recheck: presence alone forces restoration_only classification) each make the amended selftest exit nonzero, while the base counter's selftest passes each mutant (receipt .ufo/waves/round-76/controls/c1-redbefore-mutant-survival-r76.txt: all three print 'selftest cases=6 failures=0', rc=0).",
+        "A4": "Parity: the diff of the amended counter's real-tree census stdout against the base receipt (.ufo/waves/round-76/controls/c1-donothing-realtree-r76.txt) is empty at the C1-landing tree (census output shape and values byte-identical).",
+        "A5": "Exec surface unchanged: the amended counter bytes contain exactly one 'bash', '-c' pair and one subprocess.run call site, and create no file outside tempfile.mkdtemp directories honoring TMPDIR."
+      },
+      "kill_rule": "Any of A1-A5 false at the landing commit = claim fails; a mutant that survives the amended selftest = claim fails; no predicate text is rewritten after any seat has scored. The do-nothing control (.ufo/waves/round-76/controls/c1-donothing-selftest-r76.txt: base counter 'selftest cases=6 failures=0' exit 0; c1-donothing-realtree-r76.txt: base census entries=91 restoration_only=0 conformant exit 0) proves the target is not reachable by doing nothing.",
+      "motivation": "Round-75 routed defects R75-1 (M75-3 forged relabel passes frozen case 6), R75-2 (MutAuditC1 M-P4 survivor: case-6 RESULT limb removable without a failing selftest), R75-3 (no fixture carries both headers; the real tree has two such files).",
+      "registry_pins": "SKILL.md and corpus/instruments/README.md rows pinning 'selftest cases=6' move to the amended count in the same landing commit (QUALITY R113)."
+    },
+    {
+      "id": "C2",
+      "axis": "coverage",
+      "axis_score": "8 (held; the coverage denominator is operator-owned)",
+      "statement": "Admit Frontier F54, the OSV.dev API overview — the six-request API surface (POST /v1/query, POST /v1/querybatch, GET /v1/vulns/{id}, POST /v1experimental/determineversion, GET /v1experimental/importfindings, POST /v1experimental/ubuntu/binary-to-source), the API 1.0/OpenAPI specification availability, and the rate-limit statement — on S111 (corpus/source-snapshots/round-76/S111.txt).",
+      "predicate": {
+        "B1": "Registry rows 110 -> 111: git diff from base over corpus/SOURCES.md shows exactly one added S-row (S111) and zero removed rows.",
+        "B2": "Knowledge files 91 -> 92; corpus/instruments/knowledge-expected.txt 93 lines/91 rows -> 94 lines/92 rows, LC_ALL=C sort -c clean, set-equal to the corpus/knowledge directory.",
+        "B3": "python3 corpus/instruments/frontier-recheck-count.py prints FRONTIER-CENSUS rows=54 admitted=54 closed=54 problem-rows=0 registry=111, FRONTIER-PASS F54 ids=S111, entries=57 pass=57 exit=0.",
+        "B4": "python3 corpus/instruments/capture-binding-check.py prints records=90 bound=90 unbound=0 and exits 0, with the round-76 manifest binding S111 to the committed capture (measured at integration when the S111 registry row and the knowledge entry exist; the freeze-commit intermediate state has the manifest before the row, which is the known transitional no-row state).",
+        "B5": "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-76/manifest.json --source S111 reports sha256 OK and all 13 quotes anchor-located, exit 0.",
+        "B6": "Distinctness (QUALITY R114 subject sweep): the entry's ground names only clauses located in the capture at lines 21-36 (API 1.0, OpenAPI spec download, six request types including the three experimental endpoints, rate-limit question and the no-limits statement); the response-size clauses at capture line 38 (32MiB HTTP/1.1, no HTTP/2 limit) are cross-referenced as already-held ground from S108 (round-73 manifest Q27-Q29) and are not claimed as new ground.",
+        "B7": "bash scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi exits 0 (the six inherited W04 duplicate-url warnings are allowed)."
+      },
+      "kill_rule": "A distinctness failure (ground already held from S080/S108 or any other row), a predicate clause not located in the capture, or any after-counter not reproducing at the landing commit = NOT VERIFIED; no predicate text is rewritten after any seat has scored. The do-nothing control (.ufo/waves/round-76/controls/c2-base-counters-r76.txt: rows=53 registry=110 entries=56 records=89 knowledge=91 expected 93/91) proves the +1 moves require the round's work.",
+      "motivation": "The OSV.dev overview page is the standing named lead (corpus/SOURCES.md Leads, opened as lead-only in round 74; round-73 spot-check R73-V2); r74/r75 planned its capture; F51's manifest note explicitly excludes the overview page from S108's scope.",
+      "located_anchors": "S111.txt lines 21, 22, 28, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39 (manifest Q01-Q13)."
+    }
+  ]
+}
