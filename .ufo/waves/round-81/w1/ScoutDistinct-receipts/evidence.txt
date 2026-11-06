@@ -1,0 +1,44 @@
+# ScoutDistinct receipts (round 81, seat ScoutDistinct)
+
+## 1. live re-open
+$ curl -sSL -w '%{http_code} %{size_download} %{url_effective}' https://google.github.io/osv.dev/get-v1-importfindings/ -o $S/live.html
+200 16418 https://google.github.io/osv.dev/get-v1-importfindings/
+$ python3 corpus/instruments/capture-source.py --id S115 --url ... --out $S/S115-live.txt --kind html
+S115 status=200 fetched_bytes=16418 snapshot_bytes=2224 sha256=e304eb88c7d79a6d2a1e4369c3e9a4fcf18f3ff4aabd6ad86466e85daf3f6f7f utc=2026-11-06T20:25:05Z out=/fast/scratch/hyaku/kasegi-r81/ScoutDistinct/S115-live.txt
+
+sha256 comparison:
+e304eb88c7d79a6d2a1e4369c3e9a4fcf18f3ff4aabd6ad86466e85daf3f6f7f  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-81/w1/ScoutDistinct-receipts/S115-live.txt
+e304eb88c7d79a6d2a1e4369c3e9a4fcf18f3ff4aabd6ad86466e85daf3f6f7f  corpus/source-snapshots/round-81/S115.txt
+diff live-capture vs committed:
+(no diff)
+
+## 4. linked quality doc
+$ curl -sSL -w '%{http_code} %{size_download} %{url_effective}' https://google.github.io/osv.dev/data_quality.html -o $S/data_quality.html
+200 24473 https://google.github.io/osv.dev/data_quality.html
+4ea85ac1869c17ded703ca145281a1a5504dad8ed97b144bb4e59dd2c1592776  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-81/w1/ScoutDistinct-receipts/data_quality.html
+
+## distinctness sweeps over the 94 tracked entries (git ls-files corpus/knowledge/)
+importfindings                 
+source\.yaml                   
+home database                  
+quality bar                    
+import-time                    
+quality checks                 
+not been imported              
+still considered experimental  
+api\.osv\.dev                  
+record provider                
+OSV-Linter                     
+New Data Source                
+imports from                   
+imported from                  
+
+## rejects: F51 anchors
+$ grep -n 'Case Sensitivity' corpus/knowledge/osv-post-v1-query-contract.md
+31:The name rule: "Package names are matched exactly, except in ecosystems whose registry treats other spellings as the same package:" (S108.txt:54). The page then names three exceptions on that line: "PyPI names are normalized as described in PEP 503," and "NuGet names are matched case-insensitively," and "crates.io names are matched case-insensitively with" (each S108.txt:54). Parameter names and values are case-sensitive: "Case Sensitivity: API requests are case-sensitive." (S108.txt:53).
+$ grep -n 'experimental endpoints' corpus/knowledge/osv-post-v1-query-contract.md
+75:- the other endpoints in the page's navigation (POST /v1/querybatch, GET /v1/vulns/{id} and the experimental endpoints, S108.txt:5-9). They are listed, not described.
+
+## same-reason precedent in sibling entries
+corpus/knowledge/osv-determineversion-cc-library-versioning.md:87:Not claimed: the experimental-status line (S113.txt:37) — the page says the endpoint is still experimental, and F51's Limits bullet 
+corpus/knowledge/osv-ubuntu-binary-to-source-mapping.md:70:Not claimed: the experimental-status paragraph (S114.txt:33) — F51's Limits bullet already lists the experimental endpoints (`corpus/knowle

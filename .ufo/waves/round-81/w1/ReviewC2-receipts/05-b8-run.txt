@@ -1,0 +1,9 @@
+# receipt 05 — B8 named run, selftest, adversarial probe
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False}
+selftest rc=0
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=1 overlong=0 claimless=0 unpinned=0 header=ok
+ENTRY-GATE-RESULT fail
+probe rc=1

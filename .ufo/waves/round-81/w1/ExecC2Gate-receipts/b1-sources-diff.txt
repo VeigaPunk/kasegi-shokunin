@@ -1,0 +1,14 @@
+=== B1 shapes over m2 (freeze bytes vs L1 working-tree bytes), registry rows only ===
+$ git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin show 7ad3118c:corpus/SOURCES.md | grep -cE "^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|"
+115
+$ grep -cE ... (m2)
+115
+$ diff <(git show 7ad3118c:corpus/SOURCES.md) m2/corpus/SOURCES.md | grep -E "^[<>] \| S"
+< | S115 | OSV.dev API reference, GET /v1experimental/importfindings/{source} (OSV project) — https://google.github.io
+> | S115 | OSV.dev API reference, GET /v1experimental/importfindings/{source} (OSV project) — https://google.github.io
+$ diff <(git show 7ad3118c:corpus/SOURCES.md) m2/corpus/SOURCES.md | grep -c "^[<>]"
+3
+$ git show 7ad3118c:corpus/SOURCES.md vs m2 : non-row delta lines
+< | S115 | OSV.dev API reference, GET /v1experimental/importfindings/{source} (OSV project) — https://google
+> | S115 | OSV.dev API reference, GET /v1experimental/importfindings/{source} (OSV project) — https://google
+> - Round-81 S115 added (docs, scoped tier A, opened 2026-11-06, recheck 90d): row added `queued` with used-by

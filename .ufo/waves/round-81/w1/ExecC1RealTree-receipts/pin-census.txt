@@ -1,0 +1,92 @@
++ echo '$ grep -rn '\''selftest cases=15'\'' --include=*.md --include=*.json --include=*.txt .'
+$ grep -rn 'selftest cases=15' --include=*.md --include=*.json --include=*.txt .
++++ grep -rn 'selftest cases=15' '--include=*.md' '--include=*.json' '--include=*.txt' .
++++ wc -l
++ echo lines=154
+lines=154
++++ grep -rln 'selftest cases=15' '--include=*.md' '--include=*.json' '--include=*.txt' .
++++ wc -l
++ echo files=88
+files=88
++++ grep -rn 'selftest cases=15' '--include=*.md' '--include=*.json' '--include=*.txt' ./.ufo
++++ wc -l
++++ grep -rln 'selftest cases=15' '--include=*.md' '--include=*.json' '--include=*.txt' ./.ufo
++++ wc -l
++ echo '  of which under ./.ufo/ : lines=143 files=81'
+  of which under ./.ufo/ : lines=143 files=81
++++ grep -rn 'selftest cases=15' '--include=*.md' '--include=*.json' '--include=*.txt' .
++++ grep -v '^\./\.ufo/'
++++ wc -l
++++ grep -rln 'selftest cases=15' '--include=*.md' '--include=*.json' '--include=*.txt' .
++++ grep -v '^\./\.ufo/'
++++ wc -l
++ echo '  outside ./.ufo/       : lines=11 files=7'
+  outside ./.ufo/       : lines=11 files=7
++ echo
+
++ echo '--- every non-.ufo file carrying the string (line counts) ---'
+--- every non-.ufo file carrying the string (line counts) ---
+++ grep -rc 'selftest cases=15' '--include=*.md' '--include=*.json' '--include=*.txt' .
+++ grep -v '^\./\.ufo/'
+++ grep -v ':0$'
+++ sort
+./corpus/instruments/README.md:1
+./corpus/lessons/round-26.md:3
+./corpus/lessons/round-26-verifier-spotcheck.md:1
+./corpus/lessons/round-79.md:1
+./corpus/lessons/round-80.md:3
+./corpus/lessons/round-80-verifier-spotcheck.md:1
+./SKILL.md:1
++ echo
+
++ echo '--- live rows that name the census AND carry the string on the same line (non-.ufo) ---'
+--- live rows that name the census AND carry the string on the same line (non-.ufo) ---
+++ grep -rn 'selftest cases=15' '--include=*.md' '--include=*.json' '--include=*.txt' .
+++ grep -iE 'recheck-cwd-census|census'
+++ grep -v '^\./\.ufo/'
+++ cut -c1-110
+./SKILL.md:982:| recheck-cwd-census.py | gate | python3 <lane>/corpus/instruments/recheck-cwd-census.py --root
+./corpus/instruments/README.md:354:| `corpus/instruments/recheck-cwd-census.py` | the Q10 census of `corpus/kn
+./corpus/lessons/round-80.md:39:- **P1** `TMPDIR=<scratch> python3 -B corpus/instruments/recheck-cwd-census.py
+./corpus/lessons/round-80.md:44:- **P6** `SKILL.md` carries the pin row `recheck-cwd-census.py --selftest -> s
++ echo
+
++ echo '--- live files naming recheck-cwd-census at all (registry/status surfaces) ---'
+--- live files naming recheck-cwd-census at all (registry/status surfaces) ---
+++ grep -rln recheck-cwd-census '--include=*.md' '--include=*.json' '--include=*.txt' .
+++ grep -v '^\./\.ufo/'
+++ sort
+./corpus/instruments/README.md
+./corpus/lessons/round-73.md
+./corpus/lessons/round-73-verifier-spotcheck.md
+./corpus/lessons/round-74.md
+./corpus/lessons/round-74-verifier-spotcheck.md
+./corpus/lessons/round-75.md
+./corpus/lessons/round-75-verifier-spotcheck.md
+./corpus/lessons/round-76.md
+./corpus/lessons/round-76-verifier-spotcheck.md
+./corpus/lessons/round-77.md
+./corpus/lessons/round-77-verifier-spotcheck.md
+./corpus/lessons/round-78.md
+./corpus/lessons/round-78-verifier-spotcheck.md
+./corpus/lessons/round-79.md
+./corpus/lessons/round-79-verifier-spotcheck.md
+./corpus/lessons/round-80.md
+./corpus/lessons/round-80-verifier-spotcheck.md
+./corpus/QUALITY.md
+./LOG.md
+./SCORECARD.md
+./SKILL.md
++ echo
+
++ echo '--- other count spellings for this instrument in live status docs (SCORECARD/LOG/PROVINCE/QUALITY) ---'
+--- other count spellings for this instrument in live status docs (SCORECARD/LOG/PROVINCE/QUALITY) ---
+++ grep -nE 'cases=15|cases=22|15 cases|22 cases' SCORECARD.md LOG.md PROVINCE.md corpus/QUALITY.md
+++ cut -c1-140
+SCORECARD.md:2998:| C1 | depth:verifiability (lowest, nominal per R58) | score 4; base counter selftest `cases=6`; frozen battery on base `k
+SCORECARD.md:3006:| 79 | depth:verifiability | census selftest `cases=6`; nonexistent TMPDIR rc 1 | not landed; candidate `cases=15`, TMPDIR
+SCORECARD.md:3019:| C1 | depth:verifiability (lowest, nominal per R58) | score 4; base counter selftest `cases=6`; frozen 28-row battery on 
+SCORECARD.md:3027:| 80 | depth:verifiability | census selftest `cases=6`; nonexistent TMPDIR rc 1 traceback (M77-3 open) | landed: `cases=15
+LOG.md:2006:- Wave 1 (policy v2) falsified the frozen counters (every limb/gate had a green-with-defect tree) and supplied the drafts: the F
+LOG.md:2852:- C1: candidate selftest `cases=15 failures=0`, TMPDIR refusal rc 2, real-tree census conformant at 92 entries with byte-identic
+LOG.md:2864:- C1: P1–P8 hold on the landing bytes (`.ufo/waves/round-80/l1/L1-landing-r80.txt`): selftest `cases=15 failures=0`, battery `

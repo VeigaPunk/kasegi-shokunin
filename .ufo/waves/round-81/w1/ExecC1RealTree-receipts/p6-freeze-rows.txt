@@ -1,0 +1,15 @@
+=== freeze registry rows, verbatim (anchored regexes per claims.json P6) ===
+--- SKILL.md :982 (regex ^\| recheck-cwd-census\.py \|) ---
+| recheck-cwd-census.py | gate | python3 <lane>/corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> (any cwd; `TMPDIR` set to a scratch dir) | 0 conformant (noprefix=0 exit2_foreign=0 norecheck=0 restoration_only=0 exit_other=0) \| 1 nonconformant; restoration-recheck-only files counted in restoration_only, never executed | python3 corpus/instruments/recheck-cwd-census.py --selftest -> `selftest cases=15 failures=0`, exit 0 | .ufo/waves/round-75/controls/c1-after-r75.txt | corpus/ read-only + TMPDIR scratch | kasegi |
+
+--- corpus/instruments/README.md :354 (regex ^\| `corpus/instruments/recheck-cwd-census\.py` \|) ---
+| `corpus/instruments/recheck-cwd-census.py` | the Q10 census of `corpus/knowledge/*.md` recheck values: each entry's first `recheck:` header must begin with `cd <lane> &&` and its value must exit 0 from a foreign cwd; files carrying only `restoration-recheck:` are counted in `restoration_only` and never executed (round 75); the RESULT gate requires `noprefix`, `exit2_foreign`, `norecheck` and `restoration_only` all zero. `bash -c` call sites: one (`run_foreign`). | `TMPDIR=<scratch> python3 corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane>` → `RECHECK-CWD … restoration_only=N` and `RECHECK-CWD-RESULT conformant` exit 0; `--selftest` → `selftest cases=15 failures=0`, exit 0 |
+
+SKILL.md sha256 at freeze: 6d5b4421a22b5982e2a10d1772cd8772ab75332c462ffa08a118f618acaba65c  (bytes 156080, lines 1251)
+README.md sha256 at freeze: bd0eb3bae16647b43dffa3d554706383f0186ae9cbc391fc47136c6ff51ff990  (bytes 94062, lines 1054)
+
+anchored matches: SKILL=1 README=1
+cases=15 per file: SKILL=1 README=1
+cases=22 per file: SKILL=0 README=0
+row pipes: SKILL=10 README=4
+row bytes: SKILL=541 README=710

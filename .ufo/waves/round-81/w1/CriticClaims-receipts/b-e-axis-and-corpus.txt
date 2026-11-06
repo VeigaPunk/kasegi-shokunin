@@ -1,0 +1,32 @@
+# (b) is the R58 nominal clause naming the axis counter's own metric?
+$ sed -n "304,318p" corpus/instruments/resolve.py
+    repo = os.path.abspath(os.path.expanduser(lane_root))
+    files = [os.path.join(repo, "SKILL.md")]
+    for sub in ("corpus",):
+        for dirpath, dirnames, filenames in os.walk(os.path.join(repo, sub)):
+            dirnames.sort()
+            for fn in sorted(filenames):
+                candidate = os.path.join(dirpath, fn)
+                if fn.endswith(".md") and os.path.relpath(candidate, repo) != GENERATED_REPORT:
+                    files.append(candidate)
+    cites = {}
+    for f in files:
+        if not os.path.isfile(f):
+            continue
+        rel = os.path.relpath(f, repo)
+        with open(f, "r", encoding="utf-8") as fh:
+
+$ grep -n "depth:verifiability" SCORECARD.md | head -2
+33:- **depth:verifiability** (NEW round 15) — `corpus/instruments/resolve.py
+66:| depth:verifiability | 2 (first measurement this round: 16.26 % SKILL) | **4** (45.68 % SKILL, 28.53 % lane) | `resolve.py` census of record `corpus/instruments/citation-survival.md`: SKILL.md **47/289 = 16.26 % → 222/486 = 45.68 %**; corpus **129/971 = 13.29 % → 396/1297 = 30.53 %** (the corpus jump is new mirror-anchored files — `source-tree-loss-2026-09-28.md`, `lessons/round-15.md`, `instruments/README.md` — not repaired old ones); lane total **156/1107 = 14.09 % → 410/1437 = 28.53 %**. Fixed point disclosed, not chased: these files cite each other, so each recording pass moves the rate < 0.1 pp; the committed census file is authoritative. `anchorcheck.py` over the whole of `SKILL.md`: 194 in-range mirror citation instances, **0 past-EOF** (the 47 MISSING-FILE are lost-tree/package-relative anchors the mirror never contained). Not higher: **704 genuine citations point at files that no longer exist** (the r13/r14 rate was 705/708 = 99.6 % resolved — the proxy did not change, the filesystem did), 21 corpus knowledge files carry 765 lost-tree `path:line` cites of which only 1 file is anchor-base-pinned so far, and mirror name-survival ≠ content survival (2 corpus cites are past the mirror EOF; `ops/claim-check.mjs` is 83 lines/19 `err(` sites vs the live 233/48). | r15 (axis split this round) |
+
+$ grep -n 'insertion point' ; the collect() walk accepts only SKILL.md and corpus/**/*.md, so corpus/instruments/recheck-cwd-census.py is never opened by the axis census.
+
+# (e) corpus sweep for the six claimed clauses (the new entry excluded)
+importfindings     -> (none if blank)
+source.yaml        -> (none if blank)
+home database      -> (none if blank)
+quality check      -> (none if blank)
+targeted to        -> (none if blank)
+only parameter     -> (none if blank)
+quality bar        -> (none if blank)

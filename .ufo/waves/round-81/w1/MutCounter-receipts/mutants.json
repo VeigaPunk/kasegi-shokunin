@@ -1,0 +1,152 @@
+[
+ {
+  "id": "V1-drop-killcases-filter",
+  "desc": "verdict(): count every FAIL as on-target",
+  "anchor": "    on_target = [exc for case, exc in fails if case in kill_cases]\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/V1-drop-killcases-filter.py",
+  "sha256": "3993d17d15bbc8762fea1ba6d65fbe777ae6201eef72aed153493f4250b26816",
+  "diff_bytes": -22
+ },
+ {
+  "id": "V2-miskilled-as-killed",
+  "desc": "battery(): MISKILLED counts toward the kill tally",
+  "anchor": "        counts = v == \"KILLED\" or (v == \"EXCEPTION-KILL\" and row[\"class\"] == \"exception\")\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/V2-miskilled-as-killed.py",
+  "sha256": "517bb36ec97f28225679eee5c23d936b24da47009f9ad908f31f51510f556a59",
+  "diff_bytes": 20
+ },
+ {
+  "id": "V3-exc-any",
+  "desc": "verdict(): all(on_target) -> any(on_target) in exception branch",
+  "anchor": "    if all(on_target):\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/V3-exc-any.py",
+  "sha256": "f382c95c9fa278e91f955e9ff345944a9e398d2755acdf84291b454efb5acee2",
+  "diff_bytes": 0
+ },
+ {
+  "id": "V4-exc-class-unguarded",
+  "desc": "battery(): EXCEPTION-KILL counts for assertion rows too",
+  "anchor": "        counts = v == \"KILLED\" or (v == \"EXCEPTION-KILL\" and row[\"class\"] == \"exception\")\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/V4-exc-class-unguarded.py",
+  "sha256": "acdb192cb7f705c198c7f1b694b2487448c0dd20740cd75f285d55d00e218d87",
+  "diff_bytes": -34
+ },
+ {
+  "id": "P1-drop-nofail-conjunct",
+  "desc": "clean_pass(): drop the no-FAIL-line conjunct",
+  "anchor": "    return rc == 0 and exact and not fail_lines(out) and \"Traceback\" not in out\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/P1-drop-nofail-conjunct.py",
+  "sha256": "fc88ba02bbd76434ddf6af5e4cd4c6a5c4f30b02fb734a69bb4f2f0dfbd5d9d6",
+  "diff_bytes": -24
+ },
+ {
+  "id": "P2-drop-exact-line",
+  "desc": "clean_pass(): drop the exact summary-line anchor",
+  "anchor": "    exact = re.search(r\"^selftest cases=%d failures=0$\" % expect_cases, out, re.M) is not None\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/P2-drop-exact-line.py",
+  "sha256": "e32b0d86ea57e191a80f5cb2e4767f0ec6e3ce28ee96ec52736f56334635c959",
+  "diff_bytes": -78
+ },
+ {
+  "id": "P3-drop-traceback",
+  "desc": "clean_pass(): drop the Traceback test",
+  "anchor": "    return rc == 0 and exact and not fail_lines(out) and \"Traceback\" not in out\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/P3-drop-traceback.py",
+  "sha256": "e7b5c0037f58d6853c54b22360b4bbf119b767c099a91edc02c52d1d276c48b1",
+  "diff_bytes": -27
+ },
+ {
+  "id": "B1-neutral-broken-as-ok",
+  "desc": "battery(): every neutral row ticks neutral_ok",
+  "anchor": "            if ok_n:\n                tally[\"neutral_ok\"] += 1\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/B1-neutral-broken-as-ok.py",
+  "sha256": "408d6ea686605bf0e99be3dd05a74ec89dfc9c056d8fd8e12eb5abadadb968d7",
+  "diff_bytes": -25
+ },
+ {
+  "id": "B2-drop-nneutral",
+  "desc": "battery(): ok drops the n_neutral > 0 requirement",
+  "anchor": "    ok = (baseline and n_kill > 0 and n_neutral > 0 and tally[\"killed\"] == n_kill\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/B2-drop-nneutral.py",
+  "sha256": "0358df47925b66df807d1ed3224d72fd8223931538be2b27be00977ce84ed249",
+  "diff_bytes": -18
+ },
+ {
+  "id": "B3-drop-nkill",
+  "desc": "battery(): ok drops the n_kill > 0 requirement",
+  "anchor": "    ok = (baseline and n_kill > 0 and n_neutral > 0 and tally[\"killed\"] == n_kill\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/B3-drop-nkill.py",
+  "sha256": "968bfb27be56b4c3b0f04a2958c38e8edde4c8a453ab8be6ba2269b6da7abe36",
+  "diff_bytes": -15
+ },
+ {
+  "id": "B4-neutral-in-place",
+  "desc": "battery(): neutral rows run the target in place, not from a copy",
+  "anchor": "        mpath = os.path.join(mdir, os.path.basename(target))\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/B4-neutral-in-place.py",
+  "sha256": "1f897163301ad9521544bd0dbb2c3af94d924c089feeb65d2328ab0523668bab",
+  "diff_bytes": 41
+ },
+ {
+  "id": "R1-drop-killcases-validation",
+  "desc": "validate_rows(): drop the kill_cases check",
+  "anchor": "            kc = row.get(\"kill_cases\")\n            if not (isinstance(kc, list) and kc and all(isinstance(c, str) and c for c in kc)):\n                return \"row %s lacks kill_cases\" % row[\"id\"]\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/R1-drop-killcases-validation.py",
+  "sha256": "c8eae0f51cb2d738111771d0d3d8801dc0f9c6cf8f80cc300c0025ea42ba7822",
+  "diff_bytes": -179
+ },
+ {
+  "id": "F1-failline-drop-caret",
+  "desc": "FAIL_LINE_RE: drop the start-of-line anchor",
+  "anchor": "FAIL_LINE_RE = re.compile(r\"^selftest case=(\\S+) FAIL(?: (.*))?$\", re.M)\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/F1-failline-drop-caret.py",
+  "sha256": "9c754a2165ccd12c0c4893ecf0cdafec51f9be72e03a1dc43f6b5a78b1f88856",
+  "diff_bytes": -1
+ },
+ {
+  "id": "F2b-exc-substring",
+  "desc": "fail_lines(): exception detail matched by substring, not prefix",
+  "anchor": "    return [(m.group(1), (m.group(2) or \"\").startswith(\"exception=\"))\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/F2b-exc-substring.py",
+  "sha256": "abfa99d2265b66d2862f4170b30331c6a7e5b640fcd3de19dbb532ac1301937a",
+  "diff_bytes": -9
+ },
+ {
+  "id": "F2-failline-drop-detail",
+  "desc": "FAIL_LINE_RE: drop the exception-detail capture",
+  "anchor": "FAIL_LINE_RE = re.compile(r\"^selftest case=(\\S+) FAIL(?: (.*))?$\", re.M)\n",
+  "occurrences": 1,
+  "status": "derived",
+  "path": "/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/F2-failline-drop-detail.py",
+  "sha256": "dcdc5047e9963dcd7e991753f6d5f71a4b3d7fac0dad47f00ab4635067ff5c02",
+  "diff_bytes": -2
+ }
+]

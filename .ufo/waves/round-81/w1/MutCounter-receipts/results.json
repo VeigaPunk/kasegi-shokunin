@@ -1,0 +1,810 @@
+{
+ "PRISTINE": {
+  "selftest": {
+   "id": "PRISTINE",
+   "rc": 0,
+   "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "PRISTINE",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  },
+  "real": {
+   "id": "PRISTINE",
+   "rc": 0,
+   "summary": "MUTBAT target_sha256=a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3",
+   "verdicts": {
+    "KILLED": 55,
+    "EXCEPTION-KILL": 1,
+    "NEUTRAL-OK": 3
+   },
+   "stderr": ""
+  }
+ },
+ "V1-drop-killcases-filter": {
+  "selftest": {
+   "id": "V1-drop-killcases-filter",
+   "rc": 1,
+   "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'KILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'yes', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "V1-drop-killcases-filter",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  }
+ },
+ "V2-miskilled-as-killed": {
+  "selftest": {
+   "id": "V2-miskilled-as-killed",
+   "rc": 1,
+   "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'yes', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "V2-miskilled-as-killed",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  }
+ },
+ "V3-exc-any": {
+  "selftest": {
+   "id": "V3-exc-any",
+   "rc": 0,
+   "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "V3-exc-any",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  },
+  "real": {
+   "id": "V3-exc-any",
+   "rc": 0,
+   "summary": "MUTBAT target_sha256=a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3",
+   "verdicts": {
+    "KILLED": 55,
+    "EXCEPTION-KILL": 1,
+    "NEUTRAL-OK": 3
+   },
+   "stderr": ""
+  }
+ },
+ "V4-exc-class-unguarded": {
+  "selftest": {
+   "id": "V4-exc-class-unguarded",
+   "rc": 1,
+   "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'yes', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "V4-exc-class-unguarded",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  }
+ },
+ "P1-drop-nofail-conjunct": {
+  "selftest": {
+   "id": "P1-drop-nofail-conjunct",
+   "rc": 1,
+   "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=True bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "P1-drop-nofail-conjunct",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  }
+ },
+ "P2-drop-exact-line": {
+  "selftest": {
+   "id": "P2-drop-exact-line",
+   "rc": 0,
+   "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "P2-drop-exact-line",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  },
+  "real": {
+   "id": "P2-drop-exact-line",
+   "rc": 0,
+   "summary": "MUTBAT target_sha256=a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3",
+   "verdicts": {
+    "KILLED": 55,
+    "EXCEPTION-KILL": 1,
+    "NEUTRAL-OK": 3
+   },
+   "stderr": ""
+  }
+ },
+ "P3-drop-traceback": {
+  "selftest": {
+   "id": "P3-drop-traceback",
+   "rc": 0,
+   "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "P3-drop-traceback",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  },
+  "real": {
+   "id": "P3-drop-traceback",
+   "rc": 0,
+   "summary": "MUTBAT target_sha256=a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3",
+   "verdicts": {
+    "KILLED": 55,
+    "EXCEPTION-KILL": 1,
+    "NEUTRAL-OK": 3
+   },
+   "stderr": ""
+  }
+ },
+ "B1-neutral-broken-as-ok": {
+  "selftest": {
+   "id": "B1-neutral-broken-as-ok",
+   "rc": 1,
+   "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "B1-neutral-broken-as-ok",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=3/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=3/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=3/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=3/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 0,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3"
+    }
+   ],
+   "stderr": ""
+  }
+ },
+ "B2-drop-nneutral": {
+  "selftest": {
+   "id": "B2-drop-nneutral",
+   "rc": 0,
+   "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "B2-drop-nneutral",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  },
+  "real": {
+   "id": "B2-drop-nneutral",
+   "rc": 0,
+   "summary": "MUTBAT target_sha256=a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3",
+   "verdicts": {
+    "KILLED": 55,
+    "EXCEPTION-KILL": 1,
+    "NEUTRAL-OK": 3
+   },
+   "stderr": ""
+  }
+ },
+ "B3-drop-nkill": {
+  "selftest": {
+   "id": "B3-drop-nkill",
+   "rc": 0,
+   "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "B3-drop-nkill",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  },
+  "real": {
+   "id": "B3-drop-nkill",
+   "rc": 0,
+   "summary": "MUTBAT target_sha256=a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3",
+   "verdicts": {
+    "KILLED": 55,
+    "EXCEPTION-KILL": 1,
+    "NEUTRAL-OK": 3
+   },
+   "stderr": ""
+  }
+ },
+ "B4-neutral-in-place": {
+  "selftest": {
+   "id": "B4-neutral-in-place",
+   "rc": 1,
+   "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=False location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "B4-neutral-in-place",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=3/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=3/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 0,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3"
+    }
+   ],
+   "stderr": ""
+  }
+ },
+ "R1-drop-killcases-validation": {
+  "selftest": {
+   "id": "R1-drop-killcases-validation",
+   "rc": 1,
+   "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[False, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "R1-drop-killcases-validation",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  }
+ },
+ "F1-failline-drop-caret": {
+  "selftest": {
+   "id": "F1-failline-drop-caret",
+   "rc": 0,
+   "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "F1-failline-drop-caret",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  },
+  "real": {
+   "id": "F1-failline-drop-caret",
+   "rc": 0,
+   "summary": "MUTBAT target_sha256=a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0 baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3",
+   "verdicts": {
+    "KILLED": 55,
+    "EXCEPTION-KILL": 1,
+    "NEUTRAL-OK": 3
+   },
+   "stderr": ""
+  }
+ },
+ "F2b-exc-substring": {
+  "selftest": {
+   "id": "F2b-exc-substring",
+   "rc": 0,
+   "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False bad_tables=[True, True, True]",
+   "tail": ""
+  },
+  "forgery": {
+   "id": "F2b-exc-substring",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=bc552edb42383017bfa736dbf9c7986fa9b7a57352d65ca04e4cda743b7033f6 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=196d3ecf39f36eca189b7fffaec01e69e289bf0d956bd2d494ab8c90f207d266 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=1/3"
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=c05fadc39828af64cc254046c94910f1fdba230b838d2c70cb24677942e0c502 baseline=ok rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{\"MISKILLED\":",
+     "summary": "target_sha256=3dc3018124451ee11b90480f23b9e4821372fcdde4ecdad9d955426762044a9e baseline=bad rows=59 killed=0 survived=0 miskilled=56 dirty=0 notderived=0 neutral_ok=0/3"
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{\"KILLED\":",
+     "summary": "target_sha256=d60c17cbff3a587883885294076ea5b2baab1d69acc2acbeb32bda848807016d baseline=ok rows=59 killed=56 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=0/3"
+    }
+   ],
+   "stderr": ""
+  },
+  "real": {
+   "id": "F2b-exc-substring",
+   "rc": 1,
+   "summary": "MUTBAT target_sha256=a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0 baseline=ok rows=59 killed=55 survived=0 miskilled=0 dirty=1 notderived=0 neutral_ok=3/3",
+   "verdicts": {
+    "KILLED": 54,
+    "EXCEPTION-KILL": 2,
+    "NEUTRAL-OK": 3
+   },
+   "stderr": ""
+  }
+ },
+ "F2-failline-drop-detail": {
+  "selftest": {
+   "id": "F2-failline-drop-detail",
+   "rc": 1,
+   "line": "NO-LINE",
+   "tail": "                                         ~~~~~~~~~~^^^^^\n  File \"/fast/scratch/hyaku/kasegi-r81/MutCounter/mutants/F2-failline-drop-detail.py\", line 73, in fail_lines\n    return [(m.group(1), (m.group(2) or \"\").startswith(\"exception=\"))\n                          ~~~~~~~^^^\nIndexError: no such group\n"
+  },
+  "forgery": {
+   "id": "F2-failline-drop-detail",
+   "rc": 0,
+   "forgeries": [
+    {
+     "name": "F1-location",
+     "rc": 1,
+     "verdicts": "{}",
+     "summary": ""
+    },
+    {
+     "name": "F2-selfhash",
+     "rc": 1,
+     "verdicts": "{}",
+     "summary": ""
+    },
+    {
+     "name": "F3-sibling",
+     "rc": 1,
+     "verdicts": "{}",
+     "summary": ""
+    },
+    {
+     "name": "F4-baseline",
+     "rc": 1,
+     "verdicts": "{}",
+     "summary": ""
+    },
+    {
+     "name": "F5-allcases",
+     "rc": 1,
+     "verdicts": "{}",
+     "summary": ""
+    }
+   ],
+   "stderr": ""
+  }
+ }
+}

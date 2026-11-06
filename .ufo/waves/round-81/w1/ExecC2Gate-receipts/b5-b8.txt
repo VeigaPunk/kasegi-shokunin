@@ -1,0 +1,25 @@
+=== B5: entry recheck value from foreign cwd, lane path replaced by mirror path ===
+$ cd /fast/scratch/hyaku/kasegi-r81/ExecC2Gate/foreign && bash -c 'cd /fast/scratch/hyaku/kasegi-r81/ExecC2Gate/m && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-81/manifest.json --source S115'
+S115:sha256 OK
+S115:Q01-purpose OK occurrences=1 anchor=25-ok
+S115:Q02-audience OK occurrences=1 anchor=32-ok
+S115:Q03-not-imported OK occurrences=1 anchor=34-ok
+S115:Q04-only-parameter OK occurrences=1 anchor=36-ok
+S115:Q05-url-template OK occurrences=1 anchor=37-ok
+S115:Q06-source-yaml-name OK occurrences=1 anchor=38-ok
+rc=0
+
+=== B8 mirror: entry recheck line names the mirror ===
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+
+=== B8 landing-faithful: lane cwd, lane --lane, relative manifest, w1-input entry bytes (sha256 2895011e…) ===
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+
+=== B8 header limb is lane-relative: same gate with --lane <mirror> and the lane-path entry FAILS header=bad (expected; mirror entry must name the mirror) ===
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 header=bad
+ENTRY-GATE-RESULT fail
+rc=1

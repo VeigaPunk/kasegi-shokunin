@@ -586,3 +586,9 @@ R6 form: every earlier line keeps its number; this block is appended at end of f
 |---|---|---|
 | R130 | Before the lane acts on a routed defect (a closure's or a seat's reason), it re-runs the command the reason rests on and pastes that command's output next to the action; a correction whose cited command is not re-run, or whose pasted output contradicts it, is not landed. Check: every appended correction in a lesson carries the command and its round-time output. | `corpus/lessons/round-80.md` § Mistakes M80-1; the round-79 appended Q12 correction (`corpus/lessons/round-79.md:37`) asserted that `grep -n -i 'threading\|vary'` over F51 finds nothing, while the same grep matches line 47 (retraction appended at `corpus/lessons/round-79.md` § Appended corrections) |
 | R131 | A `path:line` cite to code names the line that holds the cited token, checked by `grep -n '<token>' <path>` at the cited revision before the cite lands. Supersedes the evidence cell of R129 for its line number: the r79 classifier is at `.ufo/waves/round-79/c1/mutbat.py:40` (`grep -n EXC_RE` prints 40 and 62), not `:41`. | `corpus/lessons/round-80.md` § Mistakes M80-2; round-79 spot-check D1 (`corpus/lessons/round-79-verifier-spotcheck.md:28`) |
+
+## Round-81 additions — tally sentences
+
+| id | criterion | grounded in |
+|---|---|---|
+| R132 | A tally sentence in a lesson ("N admits and M rejects") is bound to the list it counts: each number is derived by a command over that list and the command is pasted beside it, or the counting rule is stated; a number the list contradicts is not landed. Check: run the derivation over the landed § Gate block and compare with the § Learning sentence. | `corpus/lessons/round-81.md` § Mistakes M81-2; `corpus/lessons/round-80.md:169` said "Six admits and four rejects" while the reject block (`:87`–`:89`) held three bullets (`grep -c '^- \*\*'` over that block = 3; appended correction in `corpus/lessons/round-80.md`) |

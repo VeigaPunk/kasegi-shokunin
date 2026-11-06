@@ -1,0 +1,2113 @@
+{
+ "baseline": {
+  "cases_line": [
+   "selftest cases=22 failures=0"
+  ],
+  "clean_pass": true,
+  "rc": 0
+ },
+ "frozen": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-81/c1/recheck-cwd-census.py",
+ "frozen_sha256_after": "a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0",
+ "frozen_sha256_before": "a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0",
+ "frozen_unchanged": true,
+ "r80_rerun": [
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "desc": "glob enumeration no longer sorted",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "R80S03",
+   "mutant_sha256": "bbd2f8589c8e1df951f63713d792595efe0083e0390807eca6b0da68d64438be",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "order": [
+      "c.md",
+      "b.md",
+      "a.md"
+     ]
+    },
+    "pristine": {
+     "order": [
+      "a.md",
+      "b.md",
+      "c.md"
+     ]
+    },
+    "probe": "glob_order"
+   },
+   "probe_name": "glob_order",
+   "r80_verdict": "SURVIVED",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "desc": "DEFAULT_LANE points at the fleet root",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "R80S06",
+   "mutant_sha256": "81ad6646d2fb4674c6a6bbf91c821ddebbb842c5053da295dc6585570411f6cc",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "result": "nonconformant",
+     "ret": 1
+    },
+    "pristine": {
+     "result": "conformant",
+     "ret": 0
+    },
+    "probe": "default_lane"
+   },
+   "probe_name": "default_lane",
+   "r80_verdict": "SURVIVED",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "desc": "consumed() arity guard removed",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "R80S18",
+   "mutant_sha256": "ae2e88fa1b7d96a797cd6c5bec20d91040e8a8cd05870a318783726d59cdae62",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "exception": "IndexError"
+    },
+    "pristine": {
+     "findings": [
+      "F2:gate-consume:1",
+      "F3:both-headers",
+      "F3:gate-checkids",
+      "F3:gate-consume",
+      "F3:gate-negpolarity",
+      "F3:gate-predicates",
+      "F3:gate-wiring"
+     ]
+    },
+    "probe": "consumed_arity"
+   },
+   "probe_name": "consumed_arity",
+   "r80_verdict": "SURVIVED",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "desc": "selftest fixture scratch cleanup removed",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "R80S24",
+   "mutant_sha256": "2e9b7e5b0532f75aef8b9b5025764dd13688ee8883ffe0af0f8a179475538a23",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "leftover": [
+      "recheck-cwd-selftest-fr80rwte"
+     ],
+     "rc": 0
+    },
+    "pristine": {
+     "leftover": [],
+     "rc": 0
+    },
+    "probe": "selftest_leftover"
+   },
+   "probe_name": "selftest_leftover",
+   "r80_verdict": "SURVIVED",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "desc": "summary line format changed",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "R80S29",
+   "mutant_sha256": "bfac5ef9ff164a6c7f2aacc6c224973bf1cb69b4e5e18a82f17e7454ea385d66",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "result": "conformant",
+     "summary": [
+      "RECHECK-CWD entries = 1 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0"
+     ]
+    },
+    "pristine": {
+     "result": "conformant",
+     "summary": [
+      "RECHECK-CWD entries=1 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0"
+     ]
+    },
+    "probe": "summary_format"
+   },
+   "probe_name": "summary_format",
+   "r80_verdict": "SURVIVED",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "desc": "scratch-cleanup leftover fixed at 0",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "R80S32",
+   "mutant_sha256": "b9e2c10cfb7f8125f0b6a8e074dd3b0339e82cb3dac20f8273fe2fd7fcd807aa",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "secondary removes run_foreign scratch cleanup; only case 4 measures leftovers",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "scratch-cleanup"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_inline:leak"
+   },
+   "probe_name": "cleanup_meta",
+   "r80_verdict": "SURVIVED",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [],
+   "desc": "capture() no longer restores stdout",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "R80S33",
+   "mutant_sha256": "8e973715a5e76e75ba1cc63b31064275d1f9d4efa87c9a64e8506a3f6168c51b",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "chars": 0,
+     "rc": 0,
+     "stdout_has_cases_line": false
+    },
+    "pristine": {
+     "chars": 3758,
+     "rc": 0,
+     "stdout_has_cases_line": true
+    },
+    "probe": "capture_restore"
+   },
+   "probe_name": "capture_restore",
+   "r80_verdict": "SURVIVED",
+   "rc": 0,
+   "tail": "",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "desc": "gate-wiring read-failure fallback neutered",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "R80S36",
+   "mutant_sha256": "024df2b384a45447e7f7727c7d5512c00d122f301cfb8a2eb684fb55a2703065",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "f0": false,
+     "rc": 0,
+     "wiring_fail": false
+    },
+    "pristine": {
+     "f0": true,
+     "rc": 1,
+     "wiring_fail": true
+    },
+    "probe": "f0_fallback"
+   },
+   "probe_name": "f0_fallback",
+   "r80_verdict": "SURVIVED",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "desc": "tmpdir-parent drops the None-parent limb",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "R80S38",
+   "mutant_sha256": "b4b1f78eda808689ba3adb2d71afdf7af993d88b076a21c82e2833bc9d01c170",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "exception_fails": [],
+     "failed_cases": [
+      "tmpdir-parent"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "note": "selftest run with TMPDIR unset; census then records dir=None",
+    "pristine": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "probe": "unset_tmpdir_run"
+   },
+   "probe_name": "unset_tmpdir_run",
+   "r80_verdict": "SURVIVED",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "desc": "fresh-cwd fixture neutralised to true",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "R80H27",
+   "mutant_sha256": "bcd7d2d70623d6617e9642e3253ad98897d6a21d4324fb582f7bbfe994488a8f",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "secondary runs values from the inherited cwd instead of the fresh scratch",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "prefix-census"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_inline:cwd"
+   },
+   "probe_name": "fresh_cwd",
+   "r80_verdict": "SURVIVED",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  }
+ ],
+ "round": 81,
+ "rows": [
+  {
+   "cases_line": [
+    "selftest cases=22 failures=11"
+   ],
+   "class": "assertion",
+   "desc": "prefix literal gains a double space (all fixtures become prefix-less)",
+   "exception_fails": [],
+   "failed_cases": [
+    "both-headers",
+    "gate-checkids",
+    "gate-negpolarity",
+    "output-lines",
+    "prefix-census",
+    "prefix-literal",
+    "relabel-detection",
+    "restoration-only",
+    "result-main",
+    "timeout-bucket",
+    "usage-guards"
+   ],
+   "has_traceback": false,
+   "id": "RC01",
+   "mutant_sha256": "3d3513fadd6e1071a27e4f6c975dacbaf132957dc163c10e787506d1321ae15e",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity FAIL neg_ok=True neg_ret_ok=False\nselftest case=gate-checkids FAIL missing=[] extra=[] side_logs=[[False], [True], [True]]\nselftest cases=22 failures=11",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "prefix-literal expected noprefix count lowered",
+   "exception_fails": [],
+   "failed_cases": [
+    "prefix-literal"
+   ],
+   "has_traceback": false,
+   "id": "RC02",
+   "mutant_sha256": "7e1a889c2c87d9c96e42e562928e8905fc6d31aac4584fdaa95a2ea14a220acb",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "lane-suffix fixture deleted",
+   "exception_fails": [],
+   "failed_cases": [
+    "prefix-literal"
+   ],
+   "has_traceback": false,
+   "id": "RC03",
+   "mutant_sha256": "a3fc49dbf76a387705915fc78bb99d08df0e0df4c6567ebf8db5cba78d948174",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "no-space fixture repaired (prefix-less probe removed)",
+   "exception_fails": [],
+   "failed_cases": [
+    "prefix-literal"
+   ],
+   "has_traceback": false,
+   "id": "RC04",
+   "mutant_sha256": "b46b8992d99af6a8684b7fa02f29eebb219cfad169aa6c5bb0c6bedc2c71a080",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "conform-limbs bucket-line conjunct deleted (no constant operand)",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC05",
+   "mutant_sha256": "3c1df9c620146f87c6cda637d62aea7c549de9a6055402cc2309d0c38b8cf33d",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "second transform is frozen table row S37",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "conform-limbs"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_table:S37"
+   },
+   "probe_name": "compose_table:S37",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=2"
+   ],
+   "class": "assertion",
+   "desc": "exit2-only fixture becomes exit1 (a conformant limb)",
+   "exception_fails": [],
+   "failed_cases": [
+    "conform-limbs",
+    "output-lines"
+   ],
+   "has_traceback": false,
+   "id": "RC06",
+   "mutant_sha256": "f7b07dc2376e347625cf56f33a85cde92960eddb4a1b530be6ec4823ebd13782",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=2",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "non-header restoration note becomes the real header",
+   "exception_fails": [],
+   "failed_cases": [
+    "conform-limbs"
+   ],
+   "has_traceback": false,
+   "id": "RC07",
+   "mutant_sha256": "87d01bd05db0dcc3f710d369e717872e866972641da4fbfc378f367231b4f9b6",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "conform-limbs drops the RESULT-line conjunct on the exit2 tree",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC08",
+   "mutant_sha256": "f0e2d34e17eb9b297f40654fd29f168cc42788c702606577ee0ce080e33aa7f6",
+   "probe": {
+    "differs": false,
+    "mutant": {
+     "checked": 16,
+     "mismatches": []
+    },
+    "pristine": {
+     "checked": 16,
+     "mismatches": []
+    },
+    "probe": "main_invariant"
+   },
+   "probe_name": "main_invariant",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "tmpdir-file drops the empty-stdout conjunct",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC09",
+   "mutant_sha256": "0bc718e49e0e173b1da53813e3aaa5bc65d5a9cc7b0451a3daace0bb4bd85910",
+   "probe": {
+    "differs": false,
+    "mutant": {
+     "ret": 2,
+     "stdout_empty": true
+    },
+    "pristine": {
+     "ret": 2,
+     "stdout_empty": true
+    },
+    "probe": "bogus_stdout"
+   },
+   "probe_name": "bogus_stdout",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "tmpdir-file stderr assertion loses the exact path/message",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC10",
+   "mutant_sha256": "28110b16d6dcde3705d7879652d91a2b4da2c993af75c14c3cb757041dfebccb",
+   "probe": {
+    "differs": true,
+    "masking": false,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "tmpdir-refusal"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "MISKILLED"
+    },
+    "note": "secondary makes the refusal line name the wrong path; case 13 still pins its own text",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=2"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "tmpdir-file",
+      "tmpdir-refusal"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=2",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_inline:wrongpath"
+   },
+   "probe_name": "tmpdir_file_message",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "tmpdir-file exit code tolerance widened to 0",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC11",
+   "mutant_sha256": "22bca8a70e492f16a9427b891b60b58232aefa781048492c0ec5047b54f045e9",
+   "probe": {
+    "differs": true,
+    "masking": false,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "tmpdir-refusal"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "MISKILLED"
+    },
+    "note": "secondary makes the TMPDIR guard return 0; case 13 still pins ret==2",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=2"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "tmpdir-file",
+      "tmpdir-refusal"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=2",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_inline:ret0"
+   },
+   "probe_name": "tmpdir_ret_tolerance",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "hang fixture becomes a passing command",
+   "exception_fails": [],
+   "failed_cases": [
+    "timeout-bucket"
+   ],
+   "has_traceback": false,
+   "id": "RC12",
+   "mutant_sha256": "81c75a7443bffb23fd03d51428d1f08b057962163297ac85e912763328a41757",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "timeout-bucket expected exit_other zeroed",
+   "exception_fails": [],
+   "failed_cases": [
+    "timeout-bucket"
+   ],
+   "has_traceback": false,
+   "id": "RC13",
+   "mutant_sha256": "d8543be6b21dbc73f7e20b725c9aa62958cb097364bf8265db72777daea5f679",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "timeout sentinel changed from -1 to 2 (the exit2 bucket)",
+   "exception_fails": [],
+   "failed_cases": [
+    "timeout-bucket"
+   ],
+   "has_traceback": false,
+   "id": "RC14",
+   "mutant_sha256": "ab0660cab658d297f2fac24e2a43c0df826a50692110a82ffe053bf0f870540b",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "TIMEOUT patch restore deleted",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC15",
+   "mutant_sha256": "cd8a8a250027e6a593dd93c4c7aea47ffd4004f23ead4c527f58a95ec0c23cb8",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "rc": 0,
+     "timeout_after": 1,
+     "timeout_before": 120
+    },
+    "pristine": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "rc": 0,
+     "timeout_after": 120,
+     "timeout_before": 120
+    },
+    "probe": "timeout_leak"
+   },
+   "probe_name": "timeout_leak",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "tmpdir-unset no longer unsets TMPDIR",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC16",
+   "mutant_sha256": "db4adc09943c1171c1dddbe2150b6e510a2cd8abc7cab3dd68b511d3854b52d5",
+   "probe": {
+    "differs": false,
+    "mutant": [
+     {
+      "refused": false,
+      "saved_is_none": true,
+      "state": "unset",
+      "tmpdir_visible_during_check": false
+     },
+     {
+      "refused": false,
+      "saved_is_none": false,
+      "state": "valid_dir",
+      "tmpdir_visible_during_check": true
+     }
+    ],
+    "note": "verdict values are identical; only the saved value/visibility differs",
+    "pristine": [
+     {
+      "refused": false,
+      "saved_is_none": true,
+      "state": "unset",
+      "tmpdir_visible_during_check": false
+     },
+     {
+      "refused": false,
+      "saved_is_none": false,
+      "state": "valid_dir",
+      "tmpdir_visible_during_check": false
+     }
+    ],
+    "probe": "unset_states"
+   },
+   "probe_name": "unset_states",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "tmpdir-unset truth test tolerance widened",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC17",
+   "mutant_sha256": "7b27ea44183d315c24d8519d81f0131098d3026144289b579c681c7697750cfb",
+   "probe": {
+    "differs": false,
+    "note": "the only divergent combination (refused None, no exception) is unreachable",
+    "probe": "unset_truth",
+    "table": [
+     {
+      "mutant": true,
+      "pristine": true,
+      "raised": true,
+      "reachable": true,
+      "refused": false
+     },
+     {
+      "mutant": false,
+      "pristine": false,
+      "raised": true,
+      "reachable": true,
+      "refused": true
+     },
+     {
+      "mutant": true,
+      "pristine": false,
+      "raised": true,
+      "reachable": false,
+      "refused": null
+     },
+     {
+      "mutant": false,
+      "pristine": false,
+      "raised": true,
+      "reachable": true,
+      "refused": null
+     }
+    ]
+   },
+   "probe_name": "unset_truth",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "tmpdir-unset TMPDIR restore made unconditional",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC18",
+   "mutant_sha256": "149a1e1daf6bd26c1f5ad9877a39a3fe97042c91fd8738565689c2b43f3acdc4",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "cases_line": [],
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": true,
+     "has_typeerror": true,
+     "rc": 1,
+     "tail": "    ~~~~~~~~~~^^^^^^^^^^\n  File \"<frozen os>\", line 714, in __setitem__\n  File \"<frozen os>\", line 788, in encode\nTypeError: str expected, not NoneType",
+     "verdict": "DIRTY"
+    },
+    "note": "selftest run with TMPDIR unset; the frozen counter always sets it",
+    "pristine": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "has_typeerror": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "probe": "unset_env_run"
+   },
+   "probe_name": "unset_env_run",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "usage-guards drops the usage-line assertion",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC19",
+   "mutant_sha256": "37f42c7e657062ee9432e51314c6aebf320ee3262b3592d82e86db61ae40b001",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "secondary removes the usage line; only case 19 pins it",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "usage-guards"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_inline:nousage"
+   },
+   "probe_name": "usage_substring",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "usage-guards exit-code tolerance widened to 0",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC20",
+   "mutant_sha256": "47499db588d56e6ee5b0b95c933e82e7c59cba504e9149d11711da9e6f168f1c",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "second transform is frozen table row S30",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "usage-guards"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_table:S30"
+   },
+   "probe_name": "compose_table:S30",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "usage-guards drops the missing-corpus SystemExit message",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC21",
+   "mutant_sha256": "b03ccfc63d2c23cc89ea3dce9314587b2a0422b2e39f1b988bacbec6ecfdb0a8",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "second transform is frozen table row S31",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "usage-guards"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_table:S31"
+   },
+   "probe_name": "compose_table:S31",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "distinct-lane fixture rebuilt on the root path",
+   "exception_fails": [],
+   "failed_cases": [
+    "usage-guards"
+   ],
+   "has_traceback": false,
+   "id": "RC22",
+   "mutant_sha256": "943494859b1d9d9966a3aa26fc6e710ebd29c8869c930c74b0003948de1d3060",
+   "probe_name": "compose_table:S39",
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [],
+   "class": "assertion",
+   "desc": "argument loop ignores the final token",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC23",
+   "mutant_sha256": "22257ffa8b3515a3859b990c971523ae5ba7e64dfad2ee6ce37f9af724c4c306",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=tmpdir-file ok ret=2 stdout='' stderr='recheck-cwd: TMPDIR /fast/scratch/hyaku/kasegi-r81/MutC1Hunt/work/RC23/run/t-x8syd963/recheck-cwd-selftest-3eu8ev53/tmpdir-is-a-file is not a directory\\n'\nselftest case=timeout-bucket ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=0,exit_other=1,noprefix=0,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=0,exit_other=1,noprefix=0,norecheck=0\nselftest case=tmpdir-unset ok refused=False raised=None\nrecheck-cwd: no corpus/knowledge under /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-81/w1/MutC1Hunt",
+   "verdict": "DIRTY"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "--verbose parsed but not honoured",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC24",
+   "mutant_sha256": "161b0c9f85fb2b165a57ff35714e4e3a653bd163f0b54edc4634d7d6f1ae6168",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "entry_line": false,
+     "ret": 0
+    },
+    "pristine": {
+     "entry_line": true,
+     "ret": 0
+    },
+    "probe": "verbose_main"
+   },
+   "probe_name": "verbose_main",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "output-lines no-ENTRY conjunct deleted (no constant operand)",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC25",
+   "mutant_sha256": "cfbb7d04d2bf3198404f4203899dd5ab6881e0b476dfa7cba7f98e71da43b8a5",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "secondary prints ENTRY for every entry; only case 20 forbids the passing one",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "output-lines"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_inline:forceentry"
+   },
+   "probe_name": "force_entry_print",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=2"
+   ],
+   "class": "assertion",
+   "desc": "conform-limbs stubbed with a constant-True conjunct (F1 probe)",
+   "exception_fails": [],
+   "failed_cases": [
+    "gate-checkids",
+    "gate-wiring"
+   ],
+   "has_traceback": false,
+   "id": "RC49",
+   "mutant_sha256": "82b88f75abbee39886c45b6b634b94f7cdedf876543936fdf25bf91c2c051647",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids FAIL missing=[] extra=[] side_logs=[[True], [False], [True]]\nselftest cases=22 failures=2",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=2"
+   ],
+   "class": "assertion",
+   "desc": "output-lines stubbed with a constant-True conjunct (F1 probe)",
+   "exception_fails": [],
+   "failed_cases": [
+    "gate-checkids",
+    "gate-wiring"
+   ],
+   "has_traceback": false,
+   "id": "RC50",
+   "mutant_sha256": "753acf1047586348718991e344fbd0ba0bf00de18862563b06d16f0f3c04dbc8",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids FAIL missing=[] extra=[] side_logs=[[True], [False], [True]]\nselftest cases=22 failures=2",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "output-lines marker assertions lose the entry names",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC26",
+   "mutant_sha256": "69f5147812e4b988ce34b28f09d7ac1312ad449d79715a9f50d2fa406fb702e0",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "secondary mislabels the restoration-only entry",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "output-lines"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_inline:wrongname"
+   },
+   "probe_name": "marker_name",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "RESTORATION-ONLY assertion reads the wrong capture",
+   "exception_fails": [],
+   "failed_cases": [
+    "output-lines"
+   ],
+   "has_traceback": false,
+   "id": "RC27",
+   "mutant_sha256": "84b77e83537a510feff025c39a534a65de6a4c385b5eb642dbe080040830c248",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "output-lines ENTRY assertion truncated to the name",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC28",
+   "mutant_sha256": "38ccb1599276689ece53d4b6e646adae3f51ae3a35851df3e9aba874432f6e05",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "secondary drops foreign_exit from prefix-less ENTRY lines only",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "output-lines"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_inline:trunc"
+   },
+   "probe_name": "entry_truncation",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "ENTRY line moved to stderr",
+   "exception_fails": [],
+   "failed_cases": [
+    "output-lines"
+   ],
+   "has_traceback": false,
+   "id": "RC29",
+   "mutant_sha256": "14693bc108d3369b435c4b78642413afe7055b530dad092b88d4e99367b470a6",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "ENTRY d-two-lines.md noprefix=1 foreign_exit=2\nENTRY a-lane-suffix.md noprefix=1 foreign_exit=1\nENTRY b-no-space.md noprefix=1 foreign_exit=0\nENTRY x-exit2.md noprefix=0 foreign_exit=2",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "ENTRY columns swapped",
+   "exception_fails": [],
+   "failed_cases": [
+    "output-lines"
+   ],
+   "has_traceback": false,
+   "id": "RC30",
+   "mutant_sha256": "ce24f2a92c64be3a74f5131e3564e8b5f89e06f250b3719d1ea2710bc6b247f6",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "ENTRY also printed for exit-1 entries",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC31",
+   "mutant_sha256": "3939bb437eb60025a71d9efbea5f6c6c9f8baa34c71275533d8c7fc7654f6d72",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "exit1_entry_printed": true,
+     "lines": [
+      "ENTRY d-exit1.md noprefix=0 foreign_exit=1"
+     ]
+    },
+    "pristine": {
+     "exit1_entry_printed": false,
+     "lines": []
+    },
+    "probe": "entry_bucket_lines"
+   },
+   "probe_name": "entry_bucket_lines",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "census condition drops the verbose limb",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC32",
+   "mutant_sha256": "68afb1ad330b74e4e98fa8b76043b2c19ae345919116792edbda65ce37d565b4",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "entry_line": false
+    },
+    "pristine": {
+     "entry_line": true
+    },
+    "probe": "verbose_census"
+   },
+   "probe_name": "verbose_census",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "identity-edge row (1 is not True) replaced by a tautology",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC33",
+   "mutant_sha256": "4f487553aff410fbe2b615932e434ae797260401f338c2e80954df9d1db42a11",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "second transform is frozen table row S08",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "gate-predicates"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_table:S08"
+   },
+   "probe_name": "compose_table:S08",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "negpolarity identity-edge row (0 is not False) replaced by a tautology",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC34",
+   "mutant_sha256": "92c398d5ef4dfea1f901fc037067f89cc54dffe46b639324f0dcc9992d7fec89",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "second transform is frozen table row S40",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "gate-predicates"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_table:S40"
+   },
+   "probe_name": "compose_table:S40",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "both-headers identity-edge row replaced by a tautology",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC35",
+   "mutant_sha256": "daa521ba556507c611d74706214489449b914b3ab7786c783906149182932d74",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "second transform is frozen table row S41",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "gate-predicates"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_table:S41"
+   },
+   "probe_name": "compose_table:S41",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "exact side-log row replaced by a tautology",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC36",
+   "mutant_sha256": "afd5f570ce8e792ca40c4f9f1ee9022d93d3a67b64a04870ef5462692aed204d",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "second transform is frozen table row S13",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "gate-predicates"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_table:S13"
+   },
+   "probe_name": "compose_table:S13",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "F4 non-True-constant row replaced by a tautology",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC37",
+   "mutant_sha256": "1467c05729c0783d2c6f3104f78cac0914f659161ee84621d459a43151a003b2",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "second transform is frozen table row S15",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "gate-predicates"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_table:S15"
+   },
+   "probe_name": "compose_table:S15",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "case-sensitive matching row replaced by a tautology",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC38",
+   "mutant_sha256": "b67caf889c8e3395c3b92ea4047c071ade66d080e5df8c64bbe0f42d5fe421e8",
+   "probe": {
+    "differs": true,
+    "masking": true,
+    "mutant_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=0"
+     ],
+     "clean_pass": true,
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 0,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+     "verdict": "SURVIVED"
+    },
+    "note": "second transform is frozen table row S43",
+    "pristine_plus": {
+     "cases_line": [
+      "selftest cases=22 failures=1"
+     ],
+     "clean_pass": false,
+     "exception_fails": [],
+     "failed_cases": [
+      "gate-predicates"
+     ],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+     "verdict": "KILLED"
+    },
+    "probe": "compose_table:S43"
+   },
+   "probe_name": "compose_table:S43",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=1"
+   ],
+   "class": "assertion",
+   "desc": "F4 requires a truthy constant (0 stops counting)",
+   "exception_fails": [],
+   "failed_cases": [
+    "gate-predicates"
+   ],
+   "has_traceback": false,
+   "id": "RC39",
+   "mutant_sha256": "67bb84f24651a7586403eca5e8be9f075922c3b9a390458914b6b1e4ddfc226b",
+   "probe_name": null,
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "F1 identity test becomes equality (1 is True)",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC40",
+   "mutant_sha256": "34a25723803f8ad6190544381a98d082a622e781d90fd6277155c201676f9a68",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "findings": [
+      "F1:x:1",
+      "F3:both-headers",
+      "F3:gate-checkids",
+      "F3:gate-consume",
+      "F3:gate-negpolarity",
+      "F3:gate-predicates",
+      "F3:gate-wiring"
+     ]
+    },
+    "pristine": {
+     "findings": [
+      "F3:both-headers",
+      "F3:gate-checkids",
+      "F3:gate-consume",
+      "F3:gate-negpolarity",
+      "F3:gate-predicates",
+      "F3:gate-wiring"
+     ]
+    },
+    "probe": "f1_int"
+   },
+   "probe_name": "f1_int",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=2"
+   ],
+   "class": "assertion",
+   "desc": "consumed() predicate looked up at the wrong argument",
+   "exception_fails": [],
+   "failed_cases": [
+    "gate-checkids",
+    "gate-wiring"
+   ],
+   "has_traceback": false,
+   "id": "RC41",
+   "mutant_sha256": "c45bef06c3a87b09fa1910b3f1e1e40eacca9ae1bc8ffa8b68067f1c85064ca2",
+   "probe_name": "consumed_asym",
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids FAIL missing=[] extra=[] side_logs=[[True], [False], [True]]\nselftest cases=22 failures=2",
+   "verdict": "KILLED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "recheck header prefix broadened to the bare word",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC42",
+   "mutant_sha256": "368e018bf7c605c28ba87375ee83efa99f27ce337b3d7b401cb107528f884b7e",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "exit0_foreign": 0,
+     "exit_other": 1,
+     "noprefix": 1,
+     "norecheck": 0
+    },
+    "pristine": {
+     "exit0_foreign": 0,
+     "exit_other": 0,
+     "noprefix": 0,
+     "norecheck": 1
+    },
+    "probe": "header_broadened"
+   },
+   "probe_name": "header_broadened",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "run_foreign child env stripped to TMPDIR",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC43",
+   "mutant_sha256": "7bba704a72fbccddc75a784c1f7d54e91f734ca4eabaea672c6c063ddacce699",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "exit0_foreign": 0,
+     "exit1_foreign": 1
+    },
+    "pristine": {
+     "exit0_foreign": 1,
+     "exit1_foreign": 0
+    },
+    "probe": "env_inherit"
+   },
+   "probe_name": "env_inherit",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=22"
+   ],
+   "class": "exception",
+   "desc": "failure tally appends every case",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC44",
+   "mutant_sha256": "f45ca7e85fb090ee64454b821bf87373f4f379cf524ff9302c5b6792eddc668b",
+   "probe": {
+    "mutant_run": {
+     "cases_line": [
+      "selftest cases=22 failures=22"
+     ],
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": false,
+     "rc": 1,
+     "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=22",
+     "traceback_head": "",
+     "typeerror": false,
+     "verdict": "DIRTY"
+    },
+    "note": "crashes/tally breakage: rc!=0 without a 'selftest case=... FAIL' line, so the frozen classifier scores DIRTY, not killed",
+    "probe": "dirty_evidence"
+   },
+   "probe_name": "dirty_evidence",
+   "rc": 1,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=22",
+   "verdict": "DIRTY"
+  },
+  {
+   "cases_line": [],
+   "class": "exception",
+   "desc": "case-13 TMPDIR restore deleted",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": true,
+   "id": "RC45",
+   "mutant_sha256": "13cb9c27670232260ffbbb72fefa9645115bb54a884775cf472928459cb8574a",
+   "probe": {
+    "mutant_run": {
+     "cases_line": [],
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": true,
+     "rc": 1,
+     "tail": "  File \"/usr/lib/python3.14/tempfile.py\", line 381, in mkdtemp\n    _os.mkdir(file, 0o700)\n    ~~~~~~~~~^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/fast/scratch/hyaku/kasegi-r81/MutC1Hunt/work/probe-RC45/work/t-i3cc5u_x/recheck-cwd-selftest-hqdslkzd/no-such-tmpdir/recheck-cwd-z18af1pb'",
+     "traceback_head": "Traceback (most recent call last):",
+     "typeerror": false,
+     "verdict": "DIRTY"
+    },
+    "note": "crashes/tally breakage: rc!=0 without a 'selftest case=... FAIL' line, so the frozen classifier scores DIRTY, not killed",
+    "probe": "dirty_evidence"
+   },
+   "probe_name": "dirty_evidence",
+   "rc": 1,
+   "tail": "  File \"/usr/lib/python3.14/tempfile.py\", line 381, in mkdtemp\n    _os.mkdir(file, 0o700)\n    ~~~~~~~~~^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/fast/scratch/hyaku/kasegi-r81/MutC1Hunt/work/RC45/run/t-grpee6wo/recheck-cwd-selftest-u5bppq80/no-such-tmpdir/recheck-cwd-dlfb6wj5'",
+   "verdict": "DIRTY"
+  },
+  {
+   "cases_line": [],
+   "class": "exception",
+   "desc": "case-16 TMPDIR restore deleted",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": true,
+   "id": "RC46",
+   "mutant_sha256": "6c4ab11d6807f90534d524f58ba146f4ffdfa341248cca7c22d3cfa4726b01f5",
+   "probe": {
+    "mutant_run": {
+     "cases_line": [],
+     "exception_fails": [],
+     "failed_cases": [],
+     "has_traceback": true,
+     "rc": 1,
+     "tail": "  File \"/usr/lib/python3.14/tempfile.py\", line 381, in mkdtemp\n    _os.mkdir(file, 0o700)\n    ~~~~~~~~~^^^^^^^^^^^^^\nNotADirectoryError: [Errno 20] Not a directory: '/fast/scratch/hyaku/kasegi-r81/MutC1Hunt/work/probe-RC46/work/t-vfoy8wz6/recheck-cwd-selftest-nrykl5dh/tmpdir-is-a-file/recheck-cwd-qjg9ulko'",
+     "traceback_head": "Traceback (most recent call last):",
+     "typeerror": false,
+     "verdict": "DIRTY"
+    },
+    "note": "crashes/tally breakage: rc!=0 without a 'selftest case=... FAIL' line, so the frozen classifier scores DIRTY, not killed",
+    "probe": "dirty_evidence"
+   },
+   "probe_name": "dirty_evidence",
+   "rc": 1,
+   "tail": "  File \"/usr/lib/python3.14/tempfile.py\", line 381, in mkdtemp\n    _os.mkdir(file, 0o700)\n    ~~~~~~~~~^^^^^^^^^^^^^\nNotADirectoryError: [Errno 20] Not a directory: '/fast/scratch/hyaku/kasegi-r81/MutC1Hunt/work/RC46/run/t-cfkgp5tp/recheck-cwd-selftest-jzztq_h7/tmpdir-is-a-file/recheck-cwd-7_jpk3ol'",
+   "verdict": "DIRTY"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "selftest scratch stops honouring TMPDIR",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC47",
+   "mutant_sha256": "bbfb1034f0d71b89abb0aa3db1dca597781704aed6b05a2c0d15cfbfe7df8e6c",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "calls": 29,
+     "none_dirs": 1,
+     "rc": 0
+    },
+    "pristine": {
+     "calls": 29,
+     "none_dirs": 0,
+     "rc": 0
+    },
+    "probe": "selftest_tmpdir"
+   },
+   "probe_name": "selftest_tmpdir",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  },
+  {
+   "cases_line": [
+    "selftest cases=22 failures=0"
+   ],
+   "class": "assertion",
+   "desc": "census recheck scratch stops honouring TMPDIR",
+   "exception_fails": [],
+   "failed_cases": [],
+   "has_traceback": false,
+   "id": "RC48",
+   "mutant_sha256": "657678f4a4825d26e07116064e110f3135795554d402e386909620b9951a83ea",
+   "probe": {
+    "differs": true,
+    "mutant": {
+     "dirs": [
+      null
+     ]
+    },
+    "pristine": {
+     "dirs": [
+      "/fast/scratch/hyaku/kasegi-r81/MutC1Hunt/work/probe-RC48/tmpc-pristine"
+     ]
+    },
+    "probe": "census_tmpdir"
+   },
+   "probe_name": "census_tmpdir",
+   "rc": 0,
+   "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+   "verdict": "SURVIVED"
+  }
+ ],
+ "seat": "MutC1Hunt",
+ "summary": {
+  "baseline_ok": true,
+  "dirty": [
+   "RC23",
+   "RC44",
+   "RC45",
+   "RC46"
+  ],
+  "probe_differs": [
+   "RC05",
+   "RC10",
+   "RC11",
+   "RC15",
+   "RC18",
+   "RC19",
+   "RC20",
+   "RC21",
+   "RC24",
+   "RC25",
+   "RC26",
+   "RC28",
+   "RC31",
+   "RC32",
+   "RC33",
+   "RC34",
+   "RC35",
+   "RC36",
+   "RC37",
+   "RC38",
+   "RC40",
+   "RC42",
+   "RC43",
+   "RC47",
+   "RC48"
+  ],
+  "probe_masking": [
+   "RC05",
+   "RC19",
+   "RC20",
+   "RC21",
+   "RC25",
+   "RC26",
+   "RC28",
+   "RC33",
+   "RC34",
+   "RC35",
+   "RC36",
+   "RC37",
+   "RC38"
+  ],
+  "r80": {
+   "rows": 10,
+   "still_survive": [
+    "R80S03",
+    "R80S06",
+    "R80S18",
+    "R80S24",
+    "R80S29",
+    "R80S32",
+    "R80S33",
+    "R80S36",
+    "R80S38",
+    "R80H27"
+   ],
+   "verdicts": {
+    "SURVIVED": 10
+   }
+  },
+  "rows": 50,
+  "survivors": [
+   "RC05",
+   "RC08",
+   "RC09",
+   "RC10",
+   "RC11",
+   "RC15",
+   "RC16",
+   "RC17",
+   "RC18",
+   "RC19",
+   "RC20",
+   "RC21",
+   "RC24",
+   "RC25",
+   "RC26",
+   "RC28",
+   "RC31",
+   "RC32",
+   "RC33",
+   "RC34",
+   "RC35",
+   "RC36",
+   "RC37",
+   "RC38",
+   "RC40",
+   "RC42",
+   "RC43",
+   "RC47",
+   "RC48"
+  ],
+  "verdicts": {
+   "DIRTY": 4,
+   "KILLED": 17,
+   "SURVIVED": 29
+  }
+ }
+}

@@ -28,12 +28,13 @@ Usage:
   recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
   recheck-cwd-census.py --selftest
 
---selftest runs fifteen checks under TMPDIR (prefix-census, result-main, tmpdir-parent,
+--selftest runs twenty-two checks under TMPDIR (prefix-census, result-main, tmpdir-parent,
 scratch-cleanup, first-line, restoration-only, both-headers, relabel-detection,
-tmpdir-refusal, gate-predicates, gate-wiring, and the gate-regs/gate-consume/
-gate-negpolarity/gate-checkids assertions that consume the restoration-only RESULT limb)
-and prints 'selftest cases=15 failures=0' on success. A TMPDIR that is not an existing
-directory exits 2 before any tempfile call.
+tmpdir-refusal, the round-81 prefix-literal, conform-limbs, tmpdir-file, timeout-bucket,
+tmpdir-unset, usage-guards and output-lines, gate-predicates, gate-wiring, and the
+gate-regs/gate-consume/gate-negpolarity/gate-checkids assertions that consume the
+restoration-only RESULT limb) and prints 'selftest cases=22 failures=0' on success. A
+TMPDIR that is not an existing directory exits 2 before any tempfile call.
 
 Round 79: every gate verdict is a module-level predicate tested in both polarities
 (gate-predicates), and gate-wiring parses this file's own selftest and refuses a check()
@@ -50,6 +51,20 @@ the expected row count, so a deleted row fails; gate_checkids_ok rows cover ever
 and the done-superset direction; the RESULT limb is fed text-matching output with ret 0
 (its ret conjunct is load-bearing); prefix-census adds an exit-1, an exit-7 and a
 cwd-sensitive entry (exit_other and the fresh foreign cwd are observed).
+
+Round 81: the round-80 routed survivors are closed by seven new checks and twelve new
+gate-predicates rows (GATE_ROWS 40): prefix-literal (a lane-suffixed path and a missing
+space after '&&' are prefix-less), conform-limbs (an exit-2-only tree and a norecheck-only
+tree are each nonconformant; a non-header 'restoration-' line is norecheck), tmpdir-file
+(a regular-file TMPDIR is refused with exit 2), timeout-bucket (a timed-out value counts in
+exit_other), tmpdir-unset (an unset TMPDIR is not refused and does not raise),
+usage-guards (an unknown argument exits 2, a root without corpus/knowledge exits with the
+named message, --lane distinct from --root is honoured) and output-lines (the
+RESTORATION-ONLY, NORECHECK and ENTRY lines are printed, and ENTRY is silent for a
+prefixed passing entry without --verbose). The new gate rows pin identity edges (1 is not
+True, 0 is not False), exact limb and side logs, exact element equality, an exact row
+count, the F1 BoolOp limb and its any-quantifier, F4 for non-True constants, and
+case-sensitive predicate matching.
 """
 import ast
 import glob
@@ -158,7 +173,7 @@ GATE_PREDICATES = {
     "gate-wiring": "wiring_ok",
     "both-headers": "both_headers_ok",
 }
-GATE_ROWS = 28
+GATE_ROWS = 40
 
 
 def gate_consume_ok(clean_ok, limb_log):
@@ -231,7 +246,9 @@ def wiring_findings(source):
 
 
 def selftest():
-    """Fifteen checks in eight fixtures: prefix-census, result-main, tmpdir-parent,
+    """Twenty-two checks: the round-81 seven (prefix-literal, conform-limbs, tmpdir-file,
+    timeout-bucket, tmpdir-unset, usage-guards, output-lines) plus fifteen in eight
+    fixtures: prefix-census, result-main, tmpdir-parent,
     scratch-cleanup, first-line (the round-73 six, retained), restoration-only (round 75,
     counts and marker limbs only), both-headers and relabel-detection (the round-76
     clauses), tmpdir-refusal (round 78), gate-predicates and gate-wiring (round 79), then
@@ -244,7 +261,7 @@ def selftest():
     removing any check fails gate-checkids. Every gate verdict is a module-level predicate
     that gate-predicates tests in both polarities, and gate-wiring refuses a check() whose
     ok argument is a constant True or does not call its gate predicate. Expected on success:
-    'selftest cases=15 failures=0' and exit 0."""
+    'selftest cases=22 failures=0' and exit 0."""
     if tmpdir_refused():
         return 2
     failures = []
@@ -257,7 +274,8 @@ def selftest():
         "prefix-census", "result-main", "tmpdir-parent", "scratch-cleanup",
         "first-line", "restoration-only", "both-headers", "relabel-detection",
         "gate-regs", "gate-consume", "gate-negpolarity", "gate-checkids", "tmpdir-refusal",
-        "gate-predicates", "gate-wiring"))
+        "gate-predicates", "gate-wiring", "prefix-literal", "conform-limbs", "tmpdir-file",
+        "timeout-bucket", "tmpdir-unset", "usage-guards", "output-lines"))
     scratch = tempfile.mkdtemp(prefix="recheck-cwd-selftest-", dir=os.environ.get("TMPDIR") or None)
 
     def write_entry(kdir, name, body):
@@ -462,14 +480,145 @@ def selftest():
               and "recheck-cwd: TMPDIR %s is not a directory" % bogus13 in err13.getvalue(),
               "ret=%d stdout=%r stderr=%r" % (ret13, out13, err13.getvalue()))
 
-        # Gate predicates (rounds 79-80): every gate verdict function in both polarities,
+        # Round 81 — the round-80 routed survivors (ReviewC1 M1/M2, MutC1Hunt real gaps).
+        # Case 14: prefix-literal — the prefix is exactly 'cd <lane> && ': a value whose
+        # path extends the lane path and a value with no space after '&&' are prefix-less.
+        root14, kdir14 = fixture("case14")
+        write_entry(kdir14, "a-lane-suffix.md", "recheck: cd %s-x && true\n" % root14)
+        write_entry(kdir14, "b-no-space.md", "recheck: cd %s &&true\n" % root14)
+        write_entry(kdir14, "c-prefixed.md", "recheck: cd %s && true\n" % root14)
+        want14 = {"entries": 3, "noprefix": 2, "exit2_foreign": 0, "exit0_foreign": 2,
+                  "exit1_foreign": 1, "exit_other": 0, "norecheck": 0}
+        _t14, got14 = capture(census, root14, root14)
+        check("prefix-literal", all(got14[k] == v for k, v in want14.items()),
+              "got=%s want=%s" % (counts_str(got14, want14), counts_str(want14, want14)))
+
+        # Case 15: conform-limbs — a tree whose only defect is a prefixed exit-2 entry, and
+        # a tree whose only defect is a no-header entry (its 'restoration-note:' line is not
+        # the restoration-recheck: header), are each nonconformant with exit 1.
+        root15e, kdir15e = fixture("case15-exit2")
+        write_entry(kdir15e, "x-exit2.md", "recheck: cd %s && exit 2\n" % root15e)
+        out15e, ret15e = capture(main, ["recheck-cwd-census.py", "--root", root15e, "--lane", root15e])
+        root15n, kdir15n = fixture("case15-norecheck")
+        write_entry(kdir15n, "n-note.md", "restoration-note: not a header\n")
+        write_entry(kdir15n, "p.md", "recheck: cd %s && true\n" % root15n)
+        out15n, ret15n = capture(main, ["recheck-cwd-census.py", "--root", root15n, "--lane", root15n])
+        check("conform-limbs",
+              ret15e == 1 and "RECHECK-CWD-RESULT nonconformant" in out15e
+              and ret15n == 1 and "RECHECK-CWD-RESULT nonconformant" in out15n
+              and "norecheck=1 restoration_only=0" in out15n,
+              "exit2_only ret=%d norecheck_only ret=%d" % (ret15e, ret15n))
+
+        # Case 16: tmpdir-file — a TMPDIR that names a regular file is refused like a
+        # missing one: main() returns 2 with the named stderr line and empty stdout.
+        file16 = os.path.join(scratch, "tmpdir-is-a-file")
+        with open(file16, "w", encoding="utf-8") as fh16:
+            fh16.write("not a directory\n")
+        saved_tmp16 = os.environ.get("TMPDIR")
+        os.environ["TMPDIR"] = file16
+        err16 = io.StringIO()
+        real_err16 = sys.stderr
+        sys.stderr = err16
+        try:
+            out16, ret16 = capture(main, ["recheck-cwd-census.py", "--root", root1, "--lane", lane1])
+        except Exception as exc16:
+            out16, ret16 = "raised=%r" % (exc16,), -99
+        finally:
+            sys.stderr = real_err16
+            if saved_tmp16 is None:
+                os.environ.pop("TMPDIR", None)
+            else:
+                os.environ["TMPDIR"] = saved_tmp16
+        check("tmpdir-file",
+              ret16 == 2 and out16 == ""
+              and "recheck-cwd: TMPDIR %s is not a directory" % file16 in err16.getvalue(),
+              "ret=%d stdout=%r stderr=%r" % (ret16, out16, err16.getvalue()))
+
+        # Case 17: timeout-bucket — a value that outlives TIMEOUT (patched to 1 s here)
+        # counts in exit_other, never in exit0_foreign.
+        root17, kdir17 = fixture("case17")
+        write_entry(kdir17, "h-hang.md", "recheck: cd %s && exec sleep 30\n" % root17)
+        saved_timeout17 = globals()["TIMEOUT"]
+        globals()["TIMEOUT"] = 1
+        try:
+            _t17, got17 = capture(census, root17, root17)
+        finally:
+            globals()["TIMEOUT"] = saved_timeout17
+        want17 = {"entries": 1, "noprefix": 0, "exit2_foreign": 0, "exit0_foreign": 0,
+                  "exit1_foreign": 0, "exit_other": 1, "norecheck": 0}
+        check("timeout-bucket", all(got17[k] == v for k, v in want17.items()),
+              "got=%s want=%s" % (counts_str(got17, want17), counts_str(want17, want17)))
+
+        # Case 18: tmpdir-unset — with TMPDIR unset the guard neither refuses nor raises.
+        saved_tmp18 = os.environ.pop("TMPDIR", None)
+        try:
+            try:
+                refused18, raised18 = tmpdir_refused(), None
+            except Exception as exc18:
+                refused18, raised18 = None, exc18
+        finally:
+            if saved_tmp18 is not None:
+                os.environ["TMPDIR"] = saved_tmp18
+        check("tmpdir-unset", refused18 is False and raised18 is None,
+              "refused=%r raised=%r" % (refused18, raised18))
+
+        # Case 19: usage-guards — an unknown argument exits 2 with the usage line on stderr
+        # and nothing on stdout; a root without corpus/knowledge exits with the named
+        # message; --lane distinct from --root is the prefix the census requires.
+        err19 = io.StringIO()
+        real_err19 = sys.stderr
+        sys.stderr = err19
+        try:
+            out19u, ret19u = capture(main, ["recheck-cwd-census.py", "--bogus"])
+        finally:
+            sys.stderr = real_err19
+        root19e = os.path.join(scratch, "case19-empty")
+        os.makedirs(root19e)
+        try:
+            capture(main, ["recheck-cwd-census.py", "--root", root19e, "--lane", root19e])
+            exit19 = None
+        except SystemExit as exc19:
+            exit19 = str(exc19)
+        root19a, kdir19a = fixture("case19-root")
+        lane19 = os.path.join(scratch, "case19-lane")
+        os.makedirs(lane19)
+        write_entry(kdir19a, "p.md", "recheck: cd %s && true\n" % lane19)
+        out19l, ret19l = capture(main, ["recheck-cwd-census.py", "--root", root19a, "--lane", lane19])
+        check("usage-guards",
+              ret19u == 2 and out19u == "" and "usage:" in err19.getvalue()
+              and exit19 == "recheck-cwd: no corpus/knowledge under %s" % os.path.abspath(root19e)
+              and ret19l == 0 and "RECHECK-CWD-RESULT conformant" in out19l,
+              "usage_ret=%d missing_corpus=%r lane_ret=%d" % (ret19u, exit19, ret19l))
+
+        # Case 20: output-lines — the marker and ENTRY lines are part of the contract:
+        # RESTORATION-ONLY (case 6), NORECHECK (case 8), ENTRY for a prefix-less entry
+        # (case 1) and for a prefixed exit-2 entry (case 15), and no ENTRY line for a
+        # prefixed passing entry without --verbose (case 1).
+        check("output-lines",
+              "RESTORATION-ONLY r.md" in _t6 and "NORECHECK n-neither.md" in _t8u
+              and "ENTRY b-relative.md noprefix=1 foreign_exit=2" in _t1
+              and "ENTRY x-exit2.md noprefix=0 foreign_exit=2" in out15e
+              and "ENTRY a-prefixed.md" not in _t1,
+              "lines6=%d lines8=%d lines1=%d lines15=%d"
+              % (len(_t6.splitlines()), len(_t8u.splitlines()), len(_t1.splitlines()),
+                 len(out15e.splitlines())))
+
+        # Gate predicates (rounds 79-81): every gate verdict function in both polarities,
         # and the wiring scanner on a known-bad, a known-good, a wrong-predicate-in-
-        # consumed() and a constant-argument source. The row count is bound (GATE_ROWS).
+        # consumed() and a constant-argument source, plus (round 81) a BoolOp-wrapped
+        # predicate call, a non-True constant argument, a False-or-True BoolOp and an
+        # upper-cased predicate name. The row count is bound (GATE_ROWS).
         bad_src = 'check("gate-consume", True, "x")\n'
         good_src = "".join('check("%s", %s(x), "")\n' % (k, v)
                            for k, v in sorted(GATE_PREDICATES.items()))
         wrong_src = 'check("gate-consume", consumed(x, gate_negpolarity_ok(y)), "")\n'
         const_src = 'check("gate-consume", gate_consume_ok(True, log), "")\n'
+        boolop_src = 'check("gate-consume", True and gate_consume_ok(x, y), "")\n'
+        zero_src = 'check("gate-consume", gate_consume_ok(0, log), "")\n'
+        anytrue_src = 'check("x", False or True, "")\n'
+        upper_src = 'check("gate-consume", GATE_CONSUME_OK(x), "")\n'
+        f3_all = ["F3:both-headers", "F3:gate-checkids", "F3:gate-consume",
+                  "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring"]
         rows = [
             (gate_consume_ok(True, [True]), True), (gate_consume_ok(False, [True]), False),
             (gate_consume_ok(True, []), False), (gate_consume_ok(None, [None]), False),
@@ -497,6 +646,18 @@ def selftest():
             (wiring_findings(const_src),
              ["F3:both-headers", "F3:gate-checkids", "F3:gate-negpolarity",
               "F3:gate-predicates", "F3:gate-wiring", "F4:gate-consume:1"]),
+            (gate_consume_ok(1, [True]), False), (gate_consume_ok(True, [True, False]), False),
+            (gate_negpolarity_ok(False, 0), False),
+            (both_headers_ok(True, True, 0), False), (both_headers_ok(True, 1, False), False),
+            (predicates_ok([("a", "b")], 1), False),
+            (predicates_ok([(True, True), (True, True)], 1), False),
+            (gate_checkids_ok(["a"], ["a"], [[False, True]]), False),
+            (wiring_findings(boolop_src),
+             sorted(["F1:gate-consume:1", "F2:gate-consume:1"] + f3_all)),
+            (wiring_findings(zero_src),
+             sorted([f for f in f3_all if f != "F3:gate-consume"] + ["F4:gate-consume:1"])),
+            (wiring_findings(anytrue_src), sorted(["F1:x:1"] + f3_all)),
+            (wiring_findings(upper_src), sorted(["F2:gate-consume:1"] + f3_all)),
         ]
         bad_rows = [i for i, (got, want) in enumerate(rows) if got != want]
         check("gate-predicates", predicates_ok(rows, GATE_ROWS),

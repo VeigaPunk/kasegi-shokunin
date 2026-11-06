@@ -1,0 +1,29 @@
++ echo 'candidate: /fast/scratch/hyaku/kasegi-r81/ExecC1RealTree/m/corpus/instruments/recheck-cwd-census.py'
+candidate: /fast/scratch/hyaku/kasegi-r81/ExecC1RealTree/m/corpus/instruments/recheck-cwd-census.py
++++ sha256sum /fast/scratch/hyaku/kasegi-r81/ExecC1RealTree/m/corpus/instruments/recheck-cwd-census.py
++++ cut '-d ' -f1
++ echo 'sha256: a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0'
+sha256: a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0
++ echo
+
+++ grep -c 'subprocess.run(' /fast/scratch/hyaku/kasegi-r81/ExecC1RealTree/m/corpus/instruments/recheck-cwd-census.py
++ echo '$ grep -c '\''subprocess.run('\'' -> 1'
+$ grep -c 'subprocess.run(' -> 1
+++ grep -c '"bash", "-c"' /fast/scratch/hyaku/kasegi-r81/ExecC1RealTree/m/corpus/instruments/recheck-cwd-census.py
++ echo '$ grep -c '\''"bash", "-c"'\'' -> 1'
+$ grep -c '"bash", "-c"' -> 1
+++ grep -cE '["'\'']/tmp' /fast/scratch/hyaku/kasegi-r81/ExecC1RealTree/m/corpus/instruments/recheck-cwd-census.py
++ echo '$ grep -cE "[\"'\'']/tmp" -> 0'
+$ grep -cE "[\"']/tmp" -> 0
++ echo
+
++ echo '--- matching lines ---'
+--- matching lines ---
++ grep -n 'subprocess.run(' /fast/scratch/hyaku/kasegi-r81/ExecC1RealTree/m/corpus/instruments/recheck-cwd-census.py
+105:            proc = subprocess.run(["bash", "-c", value], cwd=scratch, env=env,
++ grep -n '"bash", "-c"' /fast/scratch/hyaku/kasegi-r81/ExecC1RealTree/m/corpus/instruments/recheck-cwd-census.py
+105:            proc = subprocess.run(["bash", "-c", value], cwd=scratch, env=env,
++ echo '--- every /tmp literal (none quoted: P7 regex needs a quote immediately before /tmp) ---'
+--- every /tmp literal (none quoted: P7 regex needs a quote immediately before /tmp) ---
++ grep -n /tmp /fast/scratch/hyaku/kasegi-r81/ExecC1RealTree/m/corpus/instruments/recheck-cwd-census.py
+25:path come from tempfile, which honors TMPDIR; no path is hard-coded under /tmp.

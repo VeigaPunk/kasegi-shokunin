@@ -1,0 +1,81 @@
+ExecC2Gate — exact rows used on the scratch mirror (freeze 7ad3118c86ee14fde433d73671cc407668533cec + archive)
+=========================================================================================================
+Mirror: /fast/scratch/hyaku/kasegi-r81/ExecC2Gate/m   (deleted at the end of the seat; bytes reproduced below)
+Second mirror m2 = freeze archive + the bytes the L1 has ALREADY written into the lane working tree
+(uncommitted at the time of this seat). Both mirrors pass B0/B2/B3/B4/B5/B6/B7/B8; receipts in
+ExecC2Gate-receipts/.
+
+1. corpus/SOURCES.md — S115 registry row (line 127 at the freeze)
+-------------------------------------------------------------------------
+Exactly two cells change; no other byte of the row moves.
+
+  old tail:  ... rather than an unpublished one | queued | 2026-11-06 | 90d | — |
+  new tail:  ... rather than an unpublished one | mined  | 2026-11-06 | 90d | corpus/knowledge/osv-importfindings-record-quality-feedback.md |
+
+Byte-level replacement (unique inside the file; the whole row is 1322 bytes at the freeze):
+
+  -| S115 | ... | queued | 2026-11-06 | 90d | — |
+  +| S115 | ... | mined  | 2026-11-06 | 90d | corpus/knowledge/osv-importfindings-record-quality-feedback.md |
+
+The new 1405-byte S115 row, verbatim:
+
+| S115 | OSV.dev API reference, GET /v1experimental/importfindings/{source} (OSV project) — https://google.github.io/osv.dev/get-v1-importfindings/ | docs | A | the OSV.dev project's own reference for the experimental import-findings endpoint: its purpose (report the records of one OSV.dev source that fail import-time quality checks), its audience (operators of the home databases OSV.dev imports from), the not-imported consequence of failing the quality bar, the single source parameter, the URL template and the source value's tie to the name value in source.yaml; not the query contracts (S108 F51, S112 F54), not the determineversion or binary-to-source endpoints (S113 F55, S114 F56), not the case-sensitivity note (held by F51), not the experimental-status note (held), and not any live API call | importfindings page, lines 25-38; capture corpus/source-snapshots/round-81/S115.txt (sha256 e304eb88c7d79a6d2a1e4369c3e9a4fcf18f3ff4aabd6ad86466e85daf3f6f7f, 44 lines, 2224 snapshot bytes, fetched 2026-11-06T20:11:18Z; 6 pinned quotes in corpus/source-snapshots/round-81/manifest.json) | how a home-database operator learns which of its published records OSV.dev refused at import, and why an advisory absent from OSV.dev can be a refused import rather than an unpublished one | mined | 2026-11-06 | 90d | corpus/knowledge/osv-importfindings-record-quality-feedback.md |
+
+Registry rows: 115 at the freeze, 115 after (measured: grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|').
+Verified: the lane working tree's S115 row is byte-identical to this one (diff against the mirror: rc=0,
+no hunk in the row; the only SOURCES delta is the round-81 amendment bullet the lane also carries,
+which is not a registry row).
+
+2. corpus/instruments/knowledge-expected.txt — one line inserted
+-------------------------------------------------------------------------
+Insert this single line BETWEEN line 68 and line 69 of the freeze file (LC_ALL=C order:
+osv-affected-range-events < osv-determineversion < osv-importfindings < osv-post-batch < osv-post-v1 < osv-ubuntu):
+
+corpus/knowledge/osv-importfindings-record-quality-feedback.md
+
+Context after the insert (lines 67-71):
+
+corpus/knowledge/osv-affected-range-events.md
+corpus/knowledge/osv-determineversion-cc-library-versioning.md
+corpus/knowledge/osv-importfindings-record-quality-feedback.md
+corpus/knowledge/osv-post-batch-query-contract.md
+corpus/knowledge/osv-post-v1-query-contract.md
+
+File shape: 97 lines = 2 comment lines (`# Expected knowledge entries for corpus/instruments/recheck-audit.py — round 30`
+and `# Sorted list from the working tree (one entry per line); keep in sync with corpus/knowledge/.`) + 95 `.md` rows.
+Measured: 95 files in corpus/knowledge/; grep -c '\.md$' = 95; set-diff(listing, .md rows) = empty;
+LC_ALL=C sort -c = clean. The lane working tree's file is byte-identical to this insert (diff rc=0).
+
+3. corpus/README.md — Frontier F57 row
+-------------------------------------------------------------------------
+3a. Row I used on the mirror (inserted immediately after the F56 row at freeze line 1229,
+    six cells, same shape as F56):
+
+| F57 | OSV.dev GET /v1experimental/importfindings/{source} import-findings contract — the purpose (a source's records that fail import-time quality checks), the audience (operators of the home databases OSV.dev imports from), the not-imported consequence of failing the quality bar, the single source parameter, the URL template, and the source value's tie to the name value in source.yaml | admitted | knowledge/osv-importfindings-record-quality-feedback.md | S115 | Read the six clauses at their pinned lines (S115.txt:25 purpose; :32 the audience; :34 the not-imported consequence; :36 the single source parameter; :37 the URL template; :38 the source.yaml name); the case-sensitivity note of :39 and the experimental-status sentences of :32 other than the audience sentence stay unclaimed (held by F51), as do the request sample of :41 and the example response of :43. |
+
+3b. Row the lane working tree ALREADY carries (corpus/README.md:1243, inside the round-81 admission
+    block at lines 1233-1246) — also passes B3 unchanged; integrate either, not both:
+
+| F57 | OSV.dev GET /v1experimental/importfindings/{source} import-findings contract — the report of one source's records failing import-time quality checks, the home-database-operator audience, the not-imported consequence, the single source parameter, the URL template, and the source.yaml name value | admitted | knowledge/osv-importfindings-record-quality-feedback.md | S115 | Read the six clauses at their pinned lines (S115.txt:25 purpose; :32 the audience; :34 the not-imported consequence; :36 the single parameter; :37 the URL template; :38 the source.yaml name); the case-sensitivity note of :39 stays unclaimed (held by F51). This closes the R-77-F OSV experimental endpoint leads; the linked "Properties of a High Quality OSV Record" page is a lead, unopened. |
+
+3c. The lane's round-81 block (lines 1233-1246) is what the mirror m2 carried and gated green:
+    heading + R6 amendment paragraph + 3-column coverage-map table row + frontier table header +
+    F57 row + `[r81 amendment, appended 2026-11-06]` line. No change requested by this seat.
+
+4. corpus/knowledge/osv-importfindings-record-quality-feedback.md
+-------------------------------------------------------------------------
+Copy of .ufo/waves/round-81/w1-input/osv-importfindings-record-quality-feedback.md, sha256
+2895011e23b38deb04f634398072d70e88ce9dfe878bffe3d64d00af0c371940, 11574 bytes — byte-identical to the
+lane's current copy. MIRROR-ONLY substitution made for the gate: line 5 `recheck: cd <lane>` was
+rewritten to `cd /fast/scratch/hyaku/kasegi-r81/ExecC2Gate/m` so B8's header limb (which compares the
+line against --lane) can run off-mirror. The COMMITTED entry must keep the lane path — at the landing,
+run from the lane cwd with lane --lane, which this seat already measured as header=ok (receipt
+ExecC2Gate-receipts/b5-b8.txt).
+
+5. Files no further instrument needs
+-------------------------------------------------------------------------
+frontier-recheck-count.py (B3) reads only corpus/README.md `| F<n> |` rows, corpus/SOURCES.md registry
+rows and each entry's own `source:`/`recheck:`/manifest; capture-binding-check.py (B4) reads only
+corpus/source-snapshots/**/manifest.json + files; sources-census validate --file (B7) reads only the
+registry file; entry-gate.py (B8) reads only the entry, the manifest and its snapshot. None needs a
+separate frontier list, and no other line of any file must change for F57 to bind.

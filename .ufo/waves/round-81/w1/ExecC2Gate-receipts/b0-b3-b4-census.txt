@@ -1,0 +1,28 @@
+$ cd /fast/scratch/hyaku/kasegi-r81/ExecC2Gate/m   # mirror = freeze 7ad3118 + w1-input entry moved in + rows edited (see ExecC2Gate-rows.txt)
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-81/manifest.json --source S115
+S115:sha256 OK
+S115:Q01-purpose OK occurrences=1 anchor=25-ok
+S115:Q02-audience OK occurrences=1 anchor=32-ok
+S115:Q03-not-imported OK occurrences=1 anchor=34-ok
+S115:Q04-only-parameter OK occurrences=1 anchor=36-ok
+S115:Q05-url-template OK occurrences=1 anchor=37-ok
+S115:Q06-source-yaml-name OK occurrences=1 anchor=38-ok
+rc=0
+$ python3 corpus/instruments/frontier-recheck-count.py | grep -E "FRONTIER-(CENSUS|PASS F57)"
+FRONTIER-CENSUS rows=57 admitted=57 closed=57 problem-rows=0 registry=115
+FRONTIER-PASS F57 ids=S115
+rc=0
+$ python3 corpus/instruments/capture-binding-check.py | tail -3
+MANIFEST round-81 records=1 url_bound=1 fetched=1 archival=0
+AUDIT records=95 with_url=95 with_fetched_utc=57 with_archival=38 snapshot_dirs=54 manifest_dirs=54 missing_manifest=0 multi_row_url=7 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+records=95 bound=95 unbound=0
+rc=0
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --today 2026-11-06 --file /fast/scratch/hyaku/kasegi-r81/ExecC2Gate/m/corpus/SOURCES.md
+file	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+file	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+file	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+file	W04	S076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes
+file	W04	S080 duplicate url ossf.github.io/osv-schema across scopes
+file	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+file	ok	/fast/scratch/hyaku/kasegi-r81/ExecC2Gate/m/corpus/SOURCES.md
+rc=0

@@ -1,0 +1,182 @@
+# V1-drop-killcases-filter — verdict(): count every FAIL as on-target
+sha256 3993d17d15bbc8762fea1ba6d65fbe777ae6201eef72aed153493f4250b26816 (-22 bytes)
+--- mutbat.py (frozen fa96223b)
++++ V1-drop-killcases-filter.py
+@@ -86,5 +86,5 @@
+     if "Traceback" in out or not fails:
+         return "DIRTY", fails
+-    on_target = [exc for case, exc in fails if case in kill_cases]
++    on_target = [exc for case, exc in fails]
+     if not on_target:
+         return "MISKILLED", fails
+
+# V2-miskilled-as-killed — battery(): MISKILLED counts toward the kill tally
+sha256 517bb36ec97f28225679eee5c23d936b24da47009f9ad908f31f51510f556a59 (+20 bytes)
+--- mutbat.py (frozen fa96223b)
++++ V2-miskilled-as-killed.py
+@@ -154,5 +154,5 @@
+             continue
+         v, fails = verdict(rc, out, row["kill_cases"])
+-        counts = v == "KILLED" or (v == "EXCEPTION-KILL" and row["class"] == "exception")
++        counts = v == "KILLED" or v == "MISKILLED" or (v == "EXCEPTION-KILL" and row["class"] == "exception")
+         if counts:
+             tally["killed"] += 1
+
+# V3-exc-any — verdict(): all(on_target) -> any(on_target) in exception branch
+sha256 f382c95c9fa278e91f955e9ff345944a9e398d2755acdf84291b454efb5acee2 (+0 bytes)
+--- mutbat.py (frozen fa96223b)
++++ V3-exc-any.py
+@@ -89,5 +89,5 @@
+     if not on_target:
+         return "MISKILLED", fails
+-    if all(on_target):
++    if any(on_target):
+         return "EXCEPTION-KILL", fails
+     return "KILLED", fails
+
+# V4-exc-class-unguarded — battery(): EXCEPTION-KILL counts for assertion rows too
+sha256 acdb192cb7f705c198c7f1b694b2487448c0dd20740cd75f285d55d00e218d87 (-34 bytes)
+--- mutbat.py (frozen fa96223b)
++++ V4-exc-class-unguarded.py
+@@ -154,5 +154,5 @@
+             continue
+         v, fails = verdict(rc, out, row["kill_cases"])
+-        counts = v == "KILLED" or (v == "EXCEPTION-KILL" and row["class"] == "exception")
++        counts = v == "KILLED" or v == "EXCEPTION-KILL"
+         if counts:
+             tally["killed"] += 1
+
+# P1-drop-nofail-conjunct — clean_pass(): drop the no-FAIL-line conjunct
+sha256 fc88ba02bbd76434ddf6af5e4cd4c6a5c4f30b02fb734a69bb4f2f0dfbd5d9d6 (-24 bytes)
+--- mutbat.py (frozen fa96223b)
++++ P1-drop-nofail-conjunct.py
+@@ -77,5 +77,5 @@
+ def clean_pass(rc, out, expect_cases):
+     exact = re.search(r"^selftest cases=%d failures=0$" % expect_cases, out, re.M) is not None
+-    return rc == 0 and exact and not fail_lines(out) and "Traceback" not in out
++    return rc == 0 and exact and "Traceback" not in out
+ 
+ 
+
+# P2-drop-exact-line — clean_pass(): drop the exact summary-line anchor
+sha256 e32b0d86ea57e191a80f5cb2e4767f0ec6e3ce28ee96ec52736f56334635c959 (-78 bytes)
+--- mutbat.py (frozen fa96223b)
++++ P2-drop-exact-line.py
+@@ -76,5 +76,5 @@
+ 
+ def clean_pass(rc, out, expect_cases):
+-    exact = re.search(r"^selftest cases=%d failures=0$" % expect_cases, out, re.M) is not None
++    exact = True
+     return rc == 0 and exact and not fail_lines(out) and "Traceback" not in out
+ 
+
+# P3-drop-traceback — clean_pass(): drop the Traceback test
+sha256 e7b5c0037f58d6853c54b22360b4bbf119b767c099a91edc02c52d1d276c48b1 (-27 bytes)
+--- mutbat.py (frozen fa96223b)
++++ P3-drop-traceback.py
+@@ -77,5 +77,5 @@
+ def clean_pass(rc, out, expect_cases):
+     exact = re.search(r"^selftest cases=%d failures=0$" % expect_cases, out, re.M) is not None
+-    return rc == 0 and exact and not fail_lines(out) and "Traceback" not in out
++    return rc == 0 and exact and not fail_lines(out)
+ 
+ 
+
+# B1-neutral-broken-as-ok — battery(): every neutral row ticks neutral_ok
+sha256 408d6ea686605bf0e99be3dd05a74ec89dfc9c056d8fd8e12eb5abadadb968d7 (-25 bytes)
+--- mutbat.py (frozen fa96223b)
++++ B1-neutral-broken-as-ok.py
+@@ -147,6 +147,5 @@
+         if row["class"] == "neutral":
+             ok_n = clean_pass(rc, out, expect_cases)
+-            if ok_n:
+-                tally["neutral_ok"] += 1
++            tally["neutral_ok"] += 1
+             lines.append("MUTANT %s verdict=%s rc=%d fails=%d failed_cases=%s counted=%s"
+                          % (row["id"], "NEUTRAL-OK" if ok_n else "NEUTRAL-BROKEN", rc,
+
+# B2-drop-nneutral — battery(): ok drops the n_neutral > 0 requirement
+sha256 0358df47925b66df807d1ed3224d72fd8223931538be2b27be00977ce84ed249 (-18 bytes)
+--- mutbat.py (frozen fa96223b)
++++ B2-drop-nneutral.py
+@@ -171,5 +171,5 @@
+                     tally["survived"], tally["miskilled"], tally["dirty"], tally["notderived"],
+                     tally["neutral_ok"], n_neutral))
+-    ok = (baseline and n_kill > 0 and n_neutral > 0 and tally["killed"] == n_kill
++    ok = (baseline and n_kill > 0 and tally["killed"] == n_kill
+           and tally["neutral_ok"] == n_neutral)
+     return ok, lines
+
+# B3-drop-nkill — battery(): ok drops the n_kill > 0 requirement
+sha256 968bfb27be56b4c3b0f04a2958c38e8edde4c8a453ab8be6ba2269b6da7abe36 (-15 bytes)
+--- mutbat.py (frozen fa96223b)
++++ B3-drop-nkill.py
+@@ -171,5 +171,5 @@
+                     tally["survived"], tally["miskilled"], tally["dirty"], tally["notderived"],
+                     tally["neutral_ok"], n_neutral))
+-    ok = (baseline and n_kill > 0 and n_neutral > 0 and tally["killed"] == n_kill
++    ok = (baseline and n_neutral > 0 and tally["killed"] == n_kill
+           and tally["neutral_ok"] == n_neutral)
+     return ok, lines
+
+# B4-neutral-in-place — battery(): neutral rows run the target in place, not from a copy
+sha256 1f897163301ad9521544bd0dbb2c3af94d924c089feeb65d2328ab0523668bab (+41 bytes)
+--- mutbat.py (frozen fa96223b)
++++ B4-neutral-in-place.py
+@@ -135,5 +135,5 @@
+         mutant = src.replace(row["anchor"], row["replacement"], 1)
+         mdir = tempfile.mkdtemp(prefix="mutbat-%s-" % row["id"], dir=work)
+-        mpath = os.path.join(mdir, os.path.basename(target))
++        mpath = target if row["class"] == "neutral" else os.path.join(mdir, os.path.basename(target))
+         with open(mpath, "w", encoding="utf-8") as fh:
+             fh.write(mutant)
+
+# R1-drop-killcases-validation — validate_rows(): drop the kill_cases check
+sha256 c8eae0f51cb2d738111771d0d3d8801dc0f9c6cf8f80cc300c0025ea42ba7822 (-179 bytes)
+--- mutbat.py (frozen fa96223b)
++++ R1-drop-killcases-validation.py
+@@ -111,7 +111,5 @@
+             return "row %s has class %r" % (row["id"], row["class"])
+         if row["class"] != "neutral":
+-            kc = row.get("kill_cases")
+-            if not (isinstance(kc, list) and kc and all(isinstance(c, str) and c for c in kc)):
+-                return "row %s lacks kill_cases" % row["id"]
++            pass
+     return None
+ 
+
+# F1-failline-drop-caret — FAIL_LINE_RE: drop the start-of-line anchor
+sha256 9c754a2165ccd12c0c4893ecf0cdafec51f9be72e03a1dc43f6b5a78b1f88856 (-1 bytes)
+--- mutbat.py (frozen fa96223b)
++++ F1-failline-drop-caret.py
+@@ -53,5 +53,5 @@
+ import tempfile
+ 
+-FAIL_LINE_RE = re.compile(r"^selftest case=(\S+) FAIL(?: (.*))?$", re.M)
++FAIL_LINE_RE = re.compile(r"selftest case=(\S+) FAIL(?: (.*))?$", re.M)
+ 
+ 
+
+# F2b-exc-substring — fail_lines(): exception detail matched by substring, not prefix
+sha256 abfa99d2265b66d2862f4170b30331c6a7e5b640fcd3de19dbb532ac1301937a (-9 bytes)
+--- mutbat.py (frozen fa96223b)
++++ F2b-exc-substring.py
+@@ -71,5 +71,5 @@
+ def fail_lines(out):
+     """[(case, is_exception_detail)] for every 'selftest case=<id> FAIL' line."""
+-    return [(m.group(1), (m.group(2) or "").startswith("exception="))
++    return [(m.group(1), "exception=" in (m.group(2) or ""))
+             for m in FAIL_LINE_RE.finditer(out)]
+ 
+
+# F2-failline-drop-detail — FAIL_LINE_RE: drop the exception-detail capture
+sha256 dcdc5047e9963dcd7e991753f6d5f71a4b3d7fac0dad47f00ab4635067ff5c02 (-2 bytes)
+--- mutbat.py (frozen fa96223b)
++++ F2-failline-drop-detail.py
+@@ -53,5 +53,5 @@
+ import tempfile
+ 
+-FAIL_LINE_RE = re.compile(r"^selftest case=(\S+) FAIL(?: (.*))?$", re.M)
++FAIL_LINE_RE = re.compile(r"^selftest case=(\S+) FAIL(?: .*)?$", re.M)
+ 
+ 

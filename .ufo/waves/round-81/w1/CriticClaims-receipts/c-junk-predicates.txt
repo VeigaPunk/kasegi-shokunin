@@ -1,0 +1,16 @@
+# (c) junk-satisfiable predicates — commands and outputs, 2026-11-06
+## P1 letter on a 3-line stub
+$ TMPDIR=$S python3 -B p1-junk.py --selftest
+selftest cases=22 failures=0
+rc=0
+
+## P5 letter on a 2-line stub printing hardcoded counts
+$ TMPDIR=$S python3 -B p5-junk.py --root <lane> --lane <lane>
+RECHECK-CWD entries=94 noprefix=0 exit2_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+rc=0
+
+## P7 letter on a 2-line stub
+grep -c 'subprocess.run(' = 1
+grep -c '"bash", "-c"' = 1
+grep -cE "[\"']/tmp" = 0

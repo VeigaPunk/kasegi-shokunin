@@ -1,0 +1,51 @@
+id	verdict	rc	failed_cases	probe	differs	masking	desc
+RC01	KILLED	1	both-headers,gate-checkids,gate-negpolarity,output-lines,prefix-census,prefix-literal,relabel-detection,restoration-only,result-main,timeout-bucket,usage-guards	-	None	None	prefix literal gains a double space (all fixtures become prefix-less)
+RC02	KILLED	1	prefix-literal	-	None	None	prefix-literal expected noprefix count lowered
+RC03	KILLED	1	prefix-literal	-	None	None	lane-suffix fixture deleted
+RC04	KILLED	1	prefix-literal	-	None	None	no-space fixture repaired (prefix-less probe removed)
+RC05	SURVIVED	0		compose_table:S37	True	True	conform-limbs bucket-line conjunct deleted (no constant operand)
+RC06	KILLED	1	conform-limbs,output-lines	-	None	None	exit2-only fixture becomes exit1 (a conformant limb)
+RC07	KILLED	1	conform-limbs	-	None	None	non-header restoration note becomes the real header
+RC08	SURVIVED	0		main_invariant	False	None	conform-limbs drops the RESULT-line conjunct on the exit2 tree
+RC09	SURVIVED	0		bogus_stdout	False	None	tmpdir-file drops the empty-stdout conjunct
+RC10	SURVIVED	0		compose_inline:wrongpath	True	False	tmpdir-file stderr assertion loses the exact path/message
+RC11	SURVIVED	0		compose_inline:ret0	True	False	tmpdir-file exit code tolerance widened to 0
+RC12	KILLED	1	timeout-bucket	-	None	None	hang fixture becomes a passing command
+RC13	KILLED	1	timeout-bucket	-	None	None	timeout-bucket expected exit_other zeroed
+RC14	KILLED	1	timeout-bucket	-	None	None	timeout sentinel changed from -1 to 2 (the exit2 bucket)
+RC15	SURVIVED	0		timeout_leak	True	None	TIMEOUT patch restore deleted
+RC16	SURVIVED	0		unset_states	False	None	tmpdir-unset no longer unsets TMPDIR
+RC17	SURVIVED	0		unset_truth	False	None	tmpdir-unset truth test tolerance widened
+RC18	SURVIVED	0		unset_env_run	True	None	tmpdir-unset TMPDIR restore made unconditional
+RC19	SURVIVED	0		compose_inline:nousage	True	True	usage-guards drops the usage-line assertion
+RC20	SURVIVED	0		compose_table:S30	True	True	usage-guards exit-code tolerance widened to 0
+RC21	SURVIVED	0		compose_table:S31	True	True	usage-guards drops the missing-corpus SystemExit message
+RC22	KILLED	1	usage-guards	-	None	None	distinct-lane fixture rebuilt on the root path
+RC23	DIRTY	1		-	None	None	argument loop ignores the final token
+RC24	SURVIVED	0		verbose_main	True	None	--verbose parsed but not honoured
+RC25	SURVIVED	0		compose_inline:forceentry	True	True	output-lines no-ENTRY conjunct deleted (no constant operand)
+RC49	KILLED	1	gate-checkids,gate-wiring	-	None	None	conform-limbs stubbed with a constant-True conjunct (F1 probe)
+RC50	KILLED	1	gate-checkids,gate-wiring	-	None	None	output-lines stubbed with a constant-True conjunct (F1 probe)
+RC26	SURVIVED	0		compose_inline:wrongname	True	True	output-lines marker assertions lose the entry names
+RC27	KILLED	1	output-lines	-	None	None	RESTORATION-ONLY assertion reads the wrong capture
+RC28	SURVIVED	0		compose_inline:trunc	True	True	output-lines ENTRY assertion truncated to the name
+RC29	KILLED	1	output-lines	-	None	None	ENTRY line moved to stderr
+RC30	KILLED	1	output-lines	-	None	None	ENTRY columns swapped
+RC31	SURVIVED	0		entry_bucket_lines	True	None	ENTRY also printed for exit-1 entries
+RC32	SURVIVED	0		verbose_census	True	None	census condition drops the verbose limb
+RC33	SURVIVED	0		compose_table:S08	True	True	identity-edge row (1 is not True) replaced by a tautology
+RC34	SURVIVED	0		compose_table:S40	True	True	negpolarity identity-edge row (0 is not False) replaced by a tautology
+RC35	SURVIVED	0		compose_table:S41	True	True	both-headers identity-edge row replaced by a tautology
+RC36	SURVIVED	0		compose_table:S13	True	True	exact side-log row replaced by a tautology
+RC37	SURVIVED	0		compose_table:S15	True	True	F4 non-True-constant row replaced by a tautology
+RC38	SURVIVED	0		compose_table:S43	True	True	case-sensitive matching row replaced by a tautology
+RC39	KILLED	1	gate-predicates	-	None	None	F4 requires a truthy constant (0 stops counting)
+RC40	SURVIVED	0		f1_int	True	None	F1 identity test becomes equality (1 is True)
+RC41	KILLED	1	gate-checkids,gate-wiring	-	None	None	consumed() predicate looked up at the wrong argument
+RC42	SURVIVED	0		header_broadened	True	None	recheck header prefix broadened to the bare word
+RC43	SURVIVED	0		env_inherit	True	None	run_foreign child env stripped to TMPDIR
+RC44	DIRTY	1		dirty_evidence	None	None	failure tally appends every case
+RC45	DIRTY	1		dirty_evidence	None	None	case-13 TMPDIR restore deleted
+RC46	DIRTY	1		dirty_evidence	None	None	case-16 TMPDIR restore deleted
+RC47	SURVIVED	0		selftest_tmpdir	True	None	selftest scratch stops honouring TMPDIR
+RC48	SURVIVED	0		census_tmpdir	True	None	census recheck scratch stops honouring TMPDIR

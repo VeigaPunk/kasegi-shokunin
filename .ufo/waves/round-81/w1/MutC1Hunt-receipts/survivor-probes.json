@@ -1,0 +1,1157 @@
+{
+ "RC01": {
+  "desc": "prefix literal gains a double space (all fixtures become prefix-less)",
+  "failed_cases": [
+   "both-headers",
+   "gate-checkids",
+   "gate-negpolarity",
+   "output-lines",
+   "prefix-census",
+   "prefix-literal",
+   "relabel-detection",
+   "restoration-only",
+   "result-main",
+   "timeout-bucket",
+   "usage-guards"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC02": {
+  "desc": "prefix-literal expected noprefix count lowered",
+  "failed_cases": [
+   "prefix-literal"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC03": {
+  "desc": "lane-suffix fixture deleted",
+  "failed_cases": [
+   "prefix-literal"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC04": {
+  "desc": "no-space fixture repaired (prefix-less probe removed)",
+  "failed_cases": [
+   "prefix-literal"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC05": {
+  "desc": "conform-limbs bucket-line conjunct deleted (no constant operand)",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "second transform is frozen table row S37",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "conform-limbs"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_table:S37"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC06": {
+  "desc": "exit2-only fixture becomes exit1 (a conformant limb)",
+  "failed_cases": [
+   "conform-limbs",
+   "output-lines"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC07": {
+  "desc": "non-header restoration note becomes the real header",
+  "failed_cases": [
+   "conform-limbs"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC08": {
+  "desc": "conform-limbs drops the RESULT-line conjunct on the exit2 tree",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": false,
+   "mutant": {
+    "checked": 16,
+    "mismatches": []
+   },
+   "pristine": {
+    "checked": 16,
+    "mismatches": []
+   },
+   "probe": "main_invariant"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC09": {
+  "desc": "tmpdir-file drops the empty-stdout conjunct",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": false,
+   "mutant": {
+    "ret": 2,
+    "stdout_empty": true
+   },
+   "pristine": {
+    "ret": 2,
+    "stdout_empty": true
+   },
+   "probe": "bogus_stdout"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC10": {
+  "desc": "tmpdir-file stderr assertion loses the exact path/message",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": false,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "tmpdir-refusal"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "MISKILLED"
+   },
+   "note": "secondary makes the refusal line name the wrong path; case 13 still pins its own text",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=2"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "tmpdir-file",
+     "tmpdir-refusal"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=2",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_inline:wrongpath"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC11": {
+  "desc": "tmpdir-file exit code tolerance widened to 0",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": false,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "tmpdir-refusal"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "MISKILLED"
+   },
+   "note": "secondary makes the TMPDIR guard return 0; case 13 still pins ret==2",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=2"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "tmpdir-file",
+     "tmpdir-refusal"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=2",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_inline:ret0"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC12": {
+  "desc": "hang fixture becomes a passing command",
+  "failed_cases": [
+   "timeout-bucket"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC13": {
+  "desc": "timeout-bucket expected exit_other zeroed",
+  "failed_cases": [
+   "timeout-bucket"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC14": {
+  "desc": "timeout sentinel changed from -1 to 2 (the exit2 bucket)",
+  "failed_cases": [
+   "timeout-bucket"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC15": {
+  "desc": "TIMEOUT patch restore deleted",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "mutant": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "rc": 0,
+    "timeout_after": 1,
+    "timeout_before": 120
+   },
+   "pristine": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "rc": 0,
+    "timeout_after": 120,
+    "timeout_before": 120
+   },
+   "probe": "timeout_leak"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC16": {
+  "desc": "tmpdir-unset no longer unsets TMPDIR",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": false,
+   "mutant": [
+    {
+     "refused": false,
+     "saved_is_none": true,
+     "state": "unset",
+     "tmpdir_visible_during_check": false
+    },
+    {
+     "refused": false,
+     "saved_is_none": false,
+     "state": "valid_dir",
+     "tmpdir_visible_during_check": true
+    }
+   ],
+   "note": "verdict values are identical; only the saved value/visibility differs",
+   "pristine": [
+    {
+     "refused": false,
+     "saved_is_none": true,
+     "state": "unset",
+     "tmpdir_visible_during_check": false
+    },
+    {
+     "refused": false,
+     "saved_is_none": false,
+     "state": "valid_dir",
+     "tmpdir_visible_during_check": false
+    }
+   ],
+   "probe": "unset_states"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC17": {
+  "desc": "tmpdir-unset truth test tolerance widened",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": false,
+   "note": "the only divergent combination (refused None, no exception) is unreachable",
+   "probe": "unset_truth",
+   "table": [
+    {
+     "mutant": true,
+     "pristine": true,
+     "raised": true,
+     "reachable": true,
+     "refused": false
+    },
+    {
+     "mutant": false,
+     "pristine": false,
+     "raised": true,
+     "reachable": true,
+     "refused": true
+    },
+    {
+     "mutant": true,
+     "pristine": false,
+     "raised": true,
+     "reachable": false,
+     "refused": null
+    },
+    {
+     "mutant": false,
+     "pristine": false,
+     "raised": true,
+     "reachable": true,
+     "refused": null
+    }
+   ]
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC18": {
+  "desc": "tmpdir-unset TMPDIR restore made unconditional",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "mutant": {
+    "cases_line": [],
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": true,
+    "has_typeerror": true,
+    "rc": 1,
+    "tail": "    ~~~~~~~~~~^^^^^^^^^^\n  File \"<frozen os>\", line 714, in __setitem__\n  File \"<frozen os>\", line 788, in encode\nTypeError: str expected, not NoneType",
+    "verdict": "DIRTY"
+   },
+   "note": "selftest run with TMPDIR unset; the frozen counter always sets it",
+   "pristine": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "has_typeerror": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "probe": "unset_env_run"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC19": {
+  "desc": "usage-guards drops the usage-line assertion",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "secondary removes the usage line; only case 19 pins it",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "usage-guards"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_inline:nousage"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC20": {
+  "desc": "usage-guards exit-code tolerance widened to 0",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "second transform is frozen table row S30",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "usage-guards"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_table:S30"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC21": {
+  "desc": "usage-guards drops the missing-corpus SystemExit message",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "second transform is frozen table row S31",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "usage-guards"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_table:S31"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC22": {
+  "desc": "distinct-lane fixture rebuilt on the root path",
+  "failed_cases": [
+   "usage-guards"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC23": {
+  "desc": "argument loop ignores the final token",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "DIRTY"
+ },
+ "RC24": {
+  "desc": "--verbose parsed but not honoured",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "mutant": {
+    "entry_line": false,
+    "ret": 0
+   },
+   "pristine": {
+    "entry_line": true,
+    "ret": 0
+   },
+   "probe": "verbose_main"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC25": {
+  "desc": "output-lines no-ENTRY conjunct deleted (no constant operand)",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "secondary prints ENTRY for every entry; only case 20 forbids the passing one",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "output-lines"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_inline:forceentry"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC26": {
+  "desc": "output-lines marker assertions lose the entry names",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "secondary mislabels the restoration-only entry",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "output-lines"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_inline:wrongname"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC27": {
+  "desc": "RESTORATION-ONLY assertion reads the wrong capture",
+  "failed_cases": [
+   "output-lines"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC28": {
+  "desc": "output-lines ENTRY assertion truncated to the name",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "secondary drops foreign_exit from prefix-less ENTRY lines only",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "output-lines"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_inline:trunc"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC29": {
+  "desc": "ENTRY line moved to stderr",
+  "failed_cases": [
+   "output-lines"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC30": {
+  "desc": "ENTRY columns swapped",
+  "failed_cases": [
+   "output-lines"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC31": {
+  "desc": "ENTRY also printed for exit-1 entries",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "mutant": {
+    "exit1_entry_printed": true,
+    "lines": [
+     "ENTRY d-exit1.md noprefix=0 foreign_exit=1"
+    ]
+   },
+   "pristine": {
+    "exit1_entry_printed": false,
+    "lines": []
+   },
+   "probe": "entry_bucket_lines"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC32": {
+  "desc": "census condition drops the verbose limb",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "mutant": {
+    "entry_line": false
+   },
+   "pristine": {
+    "entry_line": true
+   },
+   "probe": "verbose_census"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC33": {
+  "desc": "identity-edge row (1 is not True) replaced by a tautology",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "second transform is frozen table row S08",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "gate-predicates"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_table:S08"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC34": {
+  "desc": "negpolarity identity-edge row (0 is not False) replaced by a tautology",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "second transform is frozen table row S40",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "gate-predicates"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_table:S40"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC35": {
+  "desc": "both-headers identity-edge row replaced by a tautology",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "second transform is frozen table row S41",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "gate-predicates"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_table:S41"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC36": {
+  "desc": "exact side-log row replaced by a tautology",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "second transform is frozen table row S13",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "gate-predicates"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_table:S13"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC37": {
+  "desc": "F4 non-True-constant row replaced by a tautology",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "second transform is frozen table row S15",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "gate-predicates"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_table:S15"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC38": {
+  "desc": "case-sensitive matching row replaced by a tautology",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "masking": true,
+   "mutant_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=0"
+    ],
+    "clean_pass": true,
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 0,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=0",
+    "verdict": "SURVIVED"
+   },
+   "note": "second transform is frozen table row S43",
+   "pristine_plus": {
+    "cases_line": [
+     "selftest cases=22 failures=1"
+    ],
+    "clean_pass": false,
+    "exception_fails": [],
+    "failed_cases": [
+     "gate-predicates"
+    ],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=1",
+    "verdict": "KILLED"
+   },
+   "probe": "compose_table:S43"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC39": {
+  "desc": "F4 requires a truthy constant (0 stops counting)",
+  "failed_cases": [
+   "gate-predicates"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC40": {
+  "desc": "F1 identity test becomes equality (1 is True)",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "mutant": {
+    "findings": [
+     "F1:x:1",
+     "F3:both-headers",
+     "F3:gate-checkids",
+     "F3:gate-consume",
+     "F3:gate-negpolarity",
+     "F3:gate-predicates",
+     "F3:gate-wiring"
+    ]
+   },
+   "pristine": {
+    "findings": [
+     "F3:both-headers",
+     "F3:gate-checkids",
+     "F3:gate-consume",
+     "F3:gate-negpolarity",
+     "F3:gate-predicates",
+     "F3:gate-wiring"
+    ]
+   },
+   "probe": "f1_int"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC41": {
+  "desc": "consumed() predicate looked up at the wrong argument",
+  "failed_cases": [
+   "gate-checkids",
+   "gate-wiring"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC42": {
+  "desc": "recheck header prefix broadened to the bare word",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "mutant": {
+    "exit0_foreign": 0,
+    "exit_other": 1,
+    "noprefix": 1,
+    "norecheck": 0
+   },
+   "pristine": {
+    "exit0_foreign": 0,
+    "exit_other": 0,
+    "noprefix": 0,
+    "norecheck": 1
+   },
+   "probe": "header_broadened"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC43": {
+  "desc": "run_foreign child env stripped to TMPDIR",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "mutant": {
+    "exit0_foreign": 0,
+    "exit1_foreign": 1
+   },
+   "pristine": {
+    "exit0_foreign": 1,
+    "exit1_foreign": 0
+   },
+   "probe": "env_inherit"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC44": {
+  "desc": "failure tally appends every case",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "mutant_run": {
+    "cases_line": [
+     "selftest cases=22 failures=22"
+    ],
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": false,
+    "rc": 1,
+    "tail": "selftest case=gate-consume ok clean_ok=True limb_log=[True]\nselftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False\nselftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]\nselftest cases=22 failures=22",
+    "traceback_head": "",
+    "typeerror": false,
+    "verdict": "DIRTY"
+   },
+   "note": "crashes/tally breakage: rc!=0 without a 'selftest case=... FAIL' line, so the frozen classifier scores DIRTY, not killed",
+   "probe": "dirty_evidence"
+  },
+  "verdict": "DIRTY"
+ },
+ "RC45": {
+  "desc": "case-13 TMPDIR restore deleted",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "mutant_run": {
+    "cases_line": [],
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": true,
+    "rc": 1,
+    "tail": "  File \"/usr/lib/python3.14/tempfile.py\", line 381, in mkdtemp\n    _os.mkdir(file, 0o700)\n    ~~~~~~~~~^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/fast/scratch/hyaku/kasegi-r81/MutC1Hunt/work/probe-RC45/work/t-i3cc5u_x/recheck-cwd-selftest-hqdslkzd/no-such-tmpdir/recheck-cwd-z18af1pb'",
+    "traceback_head": "Traceback (most recent call last):",
+    "typeerror": false,
+    "verdict": "DIRTY"
+   },
+   "note": "crashes/tally breakage: rc!=0 without a 'selftest case=... FAIL' line, so the frozen classifier scores DIRTY, not killed",
+   "probe": "dirty_evidence"
+  },
+  "verdict": "DIRTY"
+ },
+ "RC46": {
+  "desc": "case-16 TMPDIR restore deleted",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "mutant_run": {
+    "cases_line": [],
+    "exception_fails": [],
+    "failed_cases": [],
+    "has_traceback": true,
+    "rc": 1,
+    "tail": "  File \"/usr/lib/python3.14/tempfile.py\", line 381, in mkdtemp\n    _os.mkdir(file, 0o700)\n    ~~~~~~~~~^^^^^^^^^^^^^\nNotADirectoryError: [Errno 20] Not a directory: '/fast/scratch/hyaku/kasegi-r81/MutC1Hunt/work/probe-RC46/work/t-vfoy8wz6/recheck-cwd-selftest-nrykl5dh/tmpdir-is-a-file/recheck-cwd-qjg9ulko'",
+    "traceback_head": "Traceback (most recent call last):",
+    "typeerror": false,
+    "verdict": "DIRTY"
+   },
+   "note": "crashes/tally breakage: rc!=0 without a 'selftest case=... FAIL' line, so the frozen classifier scores DIRTY, not killed",
+   "probe": "dirty_evidence"
+  },
+  "verdict": "DIRTY"
+ },
+ "RC47": {
+  "desc": "selftest scratch stops honouring TMPDIR",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "mutant": {
+    "calls": 29,
+    "none_dirs": 1,
+    "rc": 0
+   },
+   "pristine": {
+    "calls": 29,
+    "none_dirs": 0,
+    "rc": 0
+   },
+   "probe": "selftest_tmpdir"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC48": {
+  "desc": "census recheck scratch stops honouring TMPDIR",
+  "failed_cases": [],
+  "kill_cases": null,
+  "probe": {
+   "differs": true,
+   "mutant": {
+    "dirs": [
+     null
+    ]
+   },
+   "pristine": {
+    "dirs": [
+     "/fast/scratch/hyaku/kasegi-r81/MutC1Hunt/work/probe-RC48/tmpc-pristine"
+    ]
+   },
+   "probe": "census_tmpdir"
+  },
+  "verdict": "SURVIVED"
+ },
+ "RC49": {
+  "desc": "conform-limbs stubbed with a constant-True conjunct (F1 probe)",
+  "failed_cases": [
+   "gate-checkids",
+   "gate-wiring"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ },
+ "RC50": {
+  "desc": "output-lines stubbed with a constant-True conjunct (F1 probe)",
+  "failed_cases": [
+   "gate-checkids",
+   "gate-wiring"
+  ],
+  "kill_cases": null,
+  "probe": null,
+  "verdict": "KILLED"
+ }
+}
