@@ -1,0 +1,24 @@
+## B8 r82 gate selftest
+$ python3 -B .ufo/waves/round-82/c2/entry-gate.py --selftest
+entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False}
+rc=0
+## labelled six-quote dump (round-81 CriticClaims (d), .ufo/waves/round-81/w1/CriticClaims-receipts/junk-labelled.md) under .ufo/waves/round-81/c2/entry-gate.py
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+## labelled six-quote dump (round-81 CriticClaims (d), .ufo/waves/round-81/w1/CriticClaims-receipts/junk-labelled.md) under .ufo/waves/round-82/c2/entry-gate.py
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=6 header=ok
+ENTRY-GATE-RESULT fail
+rc=1
+## positive control: admitted osv-importfindings-record-quality-feedback.md under .ufo/waves/round-82/c2/entry-gate.py
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+## positive control: admitted osv-ubuntu-binary-to-source-mapping.md under .ufo/waves/round-82/c2/entry-gate.py
+ENTRY-GATE sid=S114 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+## positive control: admitted osv-determineversion-cc-library-versioning.md under .ufo/waves/round-82/c2/entry-gate.py
+ENTRY-GATE sid=S113 claims=8 want=8 spans=10 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0

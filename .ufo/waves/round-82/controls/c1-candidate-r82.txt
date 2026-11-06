@@ -1,0 +1,90 @@
+# C1 candidate control (round 82, pre-freeze) — 2026-11-06T21:07:33Z
+$ sha256sum .ufo/waves/round-82/c1/recheck-cwd-census.py .ufo/waves/round-82/c1/mutbat.py .ufo/waves/round-82/c1/mutant-table.json .ufo/waves/round-82/c1/build-table.py .ufo/waves/round-82/controls/c1-forgeries-r82.py
+81677e9dc030ed59d2e3481c8b1c2bc8d083e6805cc06fbb25052a685773e050  .ufo/waves/round-82/c1/recheck-cwd-census.py
+a7d4db43cdc8b2948af9c8c5f1baee827979fbb3d7dac0f39ecd46fad60ac55c  .ufo/waves/round-82/c1/mutbat.py
+045edc07c9edb24cb401b241e512745cc81e4d0f36eea26e5362b49e7cc5f26a  .ufo/waves/round-82/c1/mutant-table.json
+07727196c26cd83b2f016d3d976fa2ffaaaf26b54e14c701a0a5957ca9885785  .ufo/waves/round-82/c1/build-table.py
+52cc6be5aa9d72c9d0644c1d97e252b215d792e5c00445417aa477d004d53908  .ufo/waves/round-82/controls/c1-forgeries-r82.py
+$ python3 .ufo/waves/round-82/c1/build-table.py .ufo/waves/round-82/c1/recheck-cwd-census.py <scratch>/t.json && cmp <scratch>/t.json .ufo/waves/round-82/c1/mutant-table.json
+build-table rows=63 neutral=3 new=4 reanchored=2
+rc=0
+## counter selftest
+mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False bad_tables=[True, True, True]
+rc=0
+## candidate selftest
+selftest cases=24 failures=0
+rc=0
+## P3 candidate under r82 counter
+MUTANT K-M1 verdict=KILLED rc=1 fails=3 failed_cases=gate-consume,gate-negpolarity,gate-regs counted=yes
+MUTANT K-M2 verdict=KILLED rc=1 fails=1 failed_cases=gate-negpolarity counted=yes
+MUTANT K-M3 verdict=EXCEPTION-KILL rc=1 fails=2 failed_cases=gate-consume,gate-negpolarity counted=yes
+MUTANT K-M4 verdict=KILLED rc=1 fails=2 failed_cases=gate-negpolarity,gate-predicates counted=yes
+MUTANT K-M5 verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT K-X1 verdict=KILLED rc=1 fails=1 failed_cases=gate-consume counted=yes
+MUTANT K-X2a verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT K-X2b verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT K-M8 verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT K-W1 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT K-W2 verdict=KILLED rc=1 fails=1 failed_cases=gate-checkids counted=yes
+MUTANT K-N1 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT K-P1 verdict=KILLED rc=1 fails=1 failed_cases=gate-checkids counted=yes
+MUTANT K-P2 verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT K-G1 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT K-C1 verdict=KILLED rc=1 fails=1 failed_cases=gate-wiring counted=yes
+MUTANT K-NP verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT K-CL verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT K-T1 verdict=KILLED rc=1 fails=2 failed_cases=tmpdir-file,tmpdir-refusal counted=yes
+MUTANT N10 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT N11 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT N21 verdict=KILLED rc=1 fails=2 failed_cases=prefix-census,timeout-bucket counted=yes
+MUTANT N25 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT N26 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT N27 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT N30 verdict=KILLED rc=1 fails=1 failed_cases=prefix-census counted=yes
+MUTANT T1 verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT T2 verdict=KILLED rc=1 fails=1 failed_cases=gate-negpolarity counted=yes
+MUTANT M1 verdict=KILLED rc=1 fails=1 failed_cases=tmpdir-file counted=yes
+MUTANT M2 verdict=KILLED rc=1 fails=1 failed_cases=timeout-bucket counted=yes
+MUTANT S01 verdict=KILLED rc=1 fails=1 failed_cases=prefix-literal counted=yes
+MUTANT S02 verdict=KILLED rc=1 fails=1 failed_cases=prefix-literal counted=yes
+MUTANT S04 verdict=KILLED rc=1 fails=1 failed_cases=conform-limbs counted=yes
+MUTANT S05 verdict=KILLED rc=1 fails=1 failed_cases=conform-limbs counted=yes
+MUTANT S37 verdict=KILLED rc=1 fails=1 failed_cases=conform-limbs counted=yes
+MUTANT S07 verdict=KILLED rc=1 fails=1 failed_cases=output-lines counted=yes
+MUTANT S19 verdict=KILLED rc=1 fails=1 failed_cases=output-lines counted=yes
+MUTANT S20 verdict=KILLED rc=1 fails=1 failed_cases=output-lines counted=yes
+MUTANT S21 verdict=KILLED rc=1 fails=2 failed_cases=main-default,output-lines counted=yes
+MUTANT S22 verdict=KILLED rc=1 fails=1 failed_cases=output-lines counted=yes
+MUTANT S08 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S09 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S10 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S41 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S40 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S11 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S12 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S13 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S14 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S16 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S15 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S43 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S25 verdict=KILLED rc=1 fails=1 failed_cases=tmpdir-unset counted=yes
+MUTANT S30 verdict=KILLED rc=1 fails=1 failed_cases=usage-guards counted=yes
+MUTANT S31 verdict=KILLED rc=1 fails=1 failed_cases=usage-guards counted=yes
+MUTANT S39 verdict=KILLED rc=1 fails=1 failed_cases=usage-guards counted=yes
+MUTANT NT1 verdict=NEUTRAL-OK rc=0 fails=0 failed_cases=- counted=yes
+MUTANT NT2 verdict=NEUTRAL-OK rc=0 fails=0 failed_cases=- counted=yes
+MUTANT NT3 verdict=NEUTRAL-OK rc=0 fails=0 failed_cases=- counted=yes
+MUTANT J1 verdict=KILLED rc=1 fails=1 failed_cases=bucket-sum counted=yes
+MUTANT S07M verdict=KILLED rc=1 fails=1 failed_cases=main-default counted=yes
+MUTANT B1 verdict=KILLED rc=1 fails=1 failed_cases=bucket-sum counted=yes
+MUTANT B2 verdict=KILLED rc=1 fails=1 failed_cases=bucket-sum counted=yes
+MUTBAT target_sha256=81677e9dc030ed59d2e3481c8b1c2bc8d083e6805cc06fbb25052a685773e050 baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=59/60
+rc=0
+## P5 analogue: candidate over the lane tree
+RECHECK-CWD entries=96 noprefix=0 exit2_foreign=0 exit0_foreign=74 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+rc=0
+## P7 analogue
+1
+1
+0

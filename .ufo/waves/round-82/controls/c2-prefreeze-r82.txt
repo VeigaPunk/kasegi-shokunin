@@ -1,0 +1,35 @@
+# C2 pre-freeze controls (round 82) — 2026-11-06T21:08:41Z
+## B0 recheck
+S116:sha256 OK
+S116:Q01-purpose OK occurrences=1 anchor=25-ok
+S116:Q02-valid-prerequisite OK occurrences=1 anchor=36-ok
+S116:Q03-package-level-minimum OK occurrences=1 anchor=41-ok
+S116:Q04-distinct-ranges OK occurrences=1 anchor=44-ok
+S116:Q05-git-commits-in-repo OK occurrences=1 anchor=47-ok
+S116:Q06-reference-urls OK occurrences=1 anchor=51-ok
+rc=0
+## do-nothing (freeze tree, entry not yet present in the index)
+$ git ls-tree -r --name-only master corpus/knowledge | grep -c '\.md$'   # master = base 1a50638e
+95
+FRONTIER-PASS F55 ids=S113
+FRONTIER-PASS F56 ids=S114
+FRONTIER-PASS F57 ids=S115
+## B6 distinctness: literal sweep of the six quotes over corpus/knowledge (excluding the new entry)
+Q01-purpose files= 0
+Q02-valid-prerequisite files= 0
+Q03-package-level-minimum files= 0
+Q04-distinct-ranges files= 0
+Q05-git-commits-in-repo files= 0
+Q06-reference-urls files= 0
+literal_total 0 knowledge_files 95
+## B8 r82 gate over the draft entry
+ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+## B8 r81 gate over the draft entry
+ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+$ python3 corpus/instruments/frontier-recheck-count.py | grep FRONTIER-CENSUS   # worktree, entry not yet in README frontier
+FRONTIER-CENSUS rows=57 admitted=57 closed=57 problem-rows=0 registry=116
+rc=0
