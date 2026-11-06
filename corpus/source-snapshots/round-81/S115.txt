@@ -1,0 +1,44 @@
+GET /v1experimental/importfindings | OSV Skip to main content Link Menu Expand (external link) Document Search Copy Copied
+Introduction to OSV
+APIAPI Quickstart
+POST /v1/query
+POST /v1/querybatch
+GET /v1/vulns/{id}
+GET /v1experimental/importfindings
+POST /v1experimental/ determineversion
+POST /v1experimental/ubuntu/binary-to-source
+Data sources New Data Sourcevia REST API
+FAQ
+Third Party Tools
+ContributingArchitecture
+Properties of a High Quality OSV Record
+OSV Schema
+OSV-Scanner
+OSV-Linter
+This site uses Just the Docs, a documentation theme for Jekyll.
+Search OSV
+OSV.dev on GitHub
+API
+GET /v1experimental/importfindings
+GET /v1experimental/importfindings/{source}
+Experimental
+Given a specific OSV.dev source, report any records that are failing import-time quality checks.
+Table of contents GET /v1experimental/importfindings/{source} Experimental endpoint
+Purpose
+Parameters
+Request sample
+Example 200 response
+Experimental endpoint
+This API endpoint is still considered experimental. It is targeted to operators of home databases that OSV.dev imports from. We would value any and all feedback. If you give this a try, please consider opening an issue and letting us know about any pain points or highlights.
+Purpose
+The purpose of this endpoint is give OSV record providers (home database operators) a machine-readable way to reason about records they have published that do not meet OSV.dev’s quality bar (and therefore have not been imported).
+Parameters
+The only parameter you need for this API call is the source, in order to construct the URL.
+https://api.osv.dev/v1experimental/importfindings/{source}
+The source value is the same as the name value in source.yaml
+Case Sensitivity: API requests are case-sensitive. Please ensure that you use the correct case for parameter names and values. For example, use ‘ghsa’ instead of ‘GHSA’.
+Request sample
+curl "https://api.osv.dev/v1experimental/importfindings/example"
+Example 200 response
+{"invalid_records":[{"bug_id":"EX-1234","source":"example","findings":["IMPORT_FINDING_TYPE_INVALID_JSON"],"first_seen":"2024-12-19T15:18:00.945105Z","last_attempt":"2024-12-19T15:18:00.945105Z"}]}
+This site uses Just the Docs, a documentation theme for Jekyll.

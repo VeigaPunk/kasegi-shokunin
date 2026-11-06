@@ -1,0 +1,34 @@
+# C2 pre-freeze controls (round 81)
+## B0 pre-recheck
+S115:sha256 OK
+S115:Q01-purpose OK occurrences=1 anchor=25-ok
+S115:Q02-audience OK occurrences=1 anchor=32-ok
+S115:Q03-not-imported OK occurrences=1 anchor=34-ok
+S115:Q04-only-parameter OK occurrences=1 anchor=36-ok
+S115:Q05-url-template OK occurrences=1 anchor=37-ok
+S115:Q06-source-yaml-name OK occurrences=1 anchor=38-ok
+rc=0
+## do-nothing counters (no entry written; S115 row queued)
+FRONTIER-CENSUS rows=56 admitted=56 closed=56 problem-rows=0 registry=115
+94
+115
+0
+## B8 entry-gate selftest
+entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False}
+rc=0
+## B8 positive control: admitted F56 entry
+ENTRY-GATE sid=S114 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+## B8 junk control: six-quote dump (controls/c2-junk-entry-r81.md)
+ENTRY-GATE sid=S115 claims=0 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=6 header=ok
+ENTRY-GATE-RESULT fail
+rc=1
+## B6 literal sweep over corpus/knowledge (94 admitted entries)
+Q01-purpose files= 0
+Q02-audience files= 0
+Q03-not-imported files= 0
+Q04-only-parameter files= 0
+Q05-url-template files= 0
+Q06-source-yaml-name files= 0
+literal_total 0 knowledge_files 94

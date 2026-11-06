@@ -1,0 +1,329 @@
+#!/usr/bin/env python3
+"""mutbat.py — round-81 C1 mutant battery for corpus/instruments/recheck-cwd-census.py.
+
+Successor of the round-80 counter (QUALITY R129 classifier kept: an exception FAIL is a FAIL
+whose detail BEGINS with 'exception='). Round 81 makes the kill tally a limb that does not
+lean on the candidate's byte pin (round-80 CriticClaims (a): location, self-hash, sibling and
+baseline-limb forgeries reached killed=28/28 under the round-80 counter). Three limbs:
+
+  case-matched kill  every non-neutral row declares `kill_cases`, the selftest case ids its
+                     transform is meant to break; a row counts as killed only when a FAIL line
+                     names one of them. A FAIL on any other case id (an integrity or location
+                     guard, an unrelated check) scores MISKILLED, not killed.
+  clean baseline     the unmutated target must exit 0, print the exact line
+                     'selftest cases=<expect> failures=0', print no 'selftest case=... FAIL'
+                     line and no 'Traceback'.
+  neutral rows       rows of class "neutral" apply a semantics-preserving transform (a comment,
+                     a local rename) and run, like every mutant, from a copy in a fresh
+                     directory; each must pass exactly as the baseline does (NEUTRAL-OK). A
+                     target that fails when moved, when its bytes change or when a sibling is
+                     absent breaks its neutral rows (NEUTRAL-BROKEN).
+
+Table rows: {"id", "anchor", "replacement", "class": "assertion"|"exception"|"neutral",
+"kill_cases": [...] (non-neutral rows), "expect": prose}. The anchor must occur exactly once in
+the target, else NOT-DERIVED. Verdicts for non-neutral rows:
+
+  KILLED          exit != 0, no 'Traceback', a FAIL line on a kill case whose detail does not
+                  begin with 'exception='
+  EXCEPTION-KILL  exit != 0, no 'Traceback', every FAIL line on a kill case begins
+                  'exception=' (counts as killed only for rows whose class is "exception")
+  MISKILLED       exit != 0, no 'Traceback', FAIL lines present but none on a kill case
+  SURVIVED        exit 0
+  DIRTY           exit != 0 without a FAIL line, or with a 'Traceback'
+
+Output: one 'MUTANT <id> verdict=<v> rc=<n> fails=<k> failed_cases=<a,b> counted=<yes|no>'
+line per row, then 'MUTBAT target_sha256=<h> baseline=<ok|bad> rows=<n> killed=<k>
+survived=<s> miskilled=<m> dirty=<d> notderived=<x> neutral_ok=<o>/<t>'. Exit 0 iff the
+baseline is ok, every non-neutral row counts as killed, every neutral row is NEUTRAL-OK, and
+the table has at least one row of each kind; exit 1 otherwise; exit 2 on a usage, table or
+read error.
+
+Usage:
+  python3 mutbat.py --target FILE --table TABLE.json --expect-cases N --work DIR [--keep DIR]
+  python3 mutbat.py --selftest --work DIR
+"""
+import argparse
+import hashlib
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+
+FAIL_LINE_RE = re.compile(r"^selftest case=(\S+) FAIL(?: (.*))?$", re.M)
+
+
+def run_selftest(path, work):
+    tmp = tempfile.mkdtemp(prefix="mutbat-run-", dir=work)
+    try:
+        env = dict(os.environ)
+        env["TMPDIR"] = tmp
+        proc = subprocess.run([sys.executable, "-B", path, "--selftest"], env=env,
+                              stdin=subprocess.DEVNULL, capture_output=True, text=True,
+                              timeout=900)
+        return proc.returncode, proc.stdout + proc.stderr
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def fail_lines(out):
+    """[(case, is_exception_detail)] for every 'selftest case=<id> FAIL' line."""
+    return [(m.group(1), (m.group(2) or "").startswith("exception="))
+            for m in FAIL_LINE_RE.finditer(out)]
+
+
+def clean_pass(rc, out, expect_cases):
+    exact = re.search(r"^selftest cases=%d failures=0$" % expect_cases, out, re.M) is not None
+    return rc == 0 and exact and not fail_lines(out) and "Traceback" not in out
+
+
+def verdict(rc, out, kill_cases):
+    fails = fail_lines(out)
+    if rc == 0:
+        return "SURVIVED", fails
+    if "Traceback" in out or not fails:
+        return "DIRTY", fails
+    on_target = [exc for case, exc in fails if case in kill_cases]
+    if not on_target:
+        return "MISKILLED", fails
+    if all(on_target):
+        return "EXCEPTION-KILL", fails
+    return "KILLED", fails
+
+
+def validate_rows(rows):
+    """None when the table is well formed, else a one-line reason."""
+    if not isinstance(rows, list) or not rows:
+        return "table is not a non-empty list"
+    ids = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            return "row is not an object"
+        for key in ("id", "anchor", "replacement", "class"):
+            if not isinstance(row.get(key), str):
+                return "row %r lacks string %s" % (row.get("id"), key)
+        if row["id"] in ids:
+            return "duplicate row id %s" % row["id"]
+        ids.add(row["id"])
+        if row["class"] not in ("assertion", "exception", "neutral"):
+            return "row %s has class %r" % (row["id"], row["class"])
+        if row["class"] != "neutral":
+            kc = row.get("kill_cases")
+            if not (isinstance(kc, list) and kc and all(isinstance(c, str) and c for c in kc)):
+                return "row %s lacks kill_cases" % row["id"]
+    return None
+
+
+def battery(target, rows, expect_cases, work, keep=None):
+    with open(target, encoding="utf-8") as fh:
+        src = fh.read()
+    sha = hashlib.sha256(src.encode("utf-8")).hexdigest()
+    rc0, out0 = run_selftest(target, work)
+    baseline = clean_pass(rc0, out0, expect_cases)
+    tally = {"killed": 0, "survived": 0, "miskilled": 0, "dirty": 0, "notderived": 0,
+             "neutral_ok": 0}
+    n_neutral = sum(1 for r in rows if r["class"] == "neutral")
+    lines = []
+    for row in rows:
+        n = src.count(row["anchor"])
+        if n != 1:
+            tally["notderived"] += 1
+            lines.append("MUTANT %s verdict=NOT-DERIVED occurrences=%d counted=no" % (row["id"], n))
+            continue
+        mutant = src.replace(row["anchor"], row["replacement"], 1)
+        mdir = tempfile.mkdtemp(prefix="mutbat-%s-" % row["id"], dir=work)
+        mpath = os.path.join(mdir, os.path.basename(target))
+        with open(mpath, "w", encoding="utf-8") as fh:
+            fh.write(mutant)
+        rc, out = run_selftest(mpath, work)
+        if keep:
+            os.makedirs(keep, exist_ok=True)
+            with open(os.path.join(keep, "%s.out" % row["id"]), "w", encoding="utf-8") as fh:
+                fh.write("rc=%d\n%s" % (rc, out))
+        shutil.rmtree(mdir, ignore_errors=True)
+        failed = ",".join(sorted({case for case, _exc in fail_lines(out)})) or "-"
+        if row["class"] == "neutral":
+            ok_n = clean_pass(rc, out, expect_cases)
+            if ok_n:
+                tally["neutral_ok"] += 1
+            lines.append("MUTANT %s verdict=%s rc=%d fails=%d failed_cases=%s counted=%s"
+                         % (row["id"], "NEUTRAL-OK" if ok_n else "NEUTRAL-BROKEN", rc,
+                            len(fail_lines(out)), failed, "yes" if ok_n else "no"))
+            continue
+        v, fails = verdict(rc, out, row["kill_cases"])
+        counts = v == "KILLED" or (v == "EXCEPTION-KILL" and row["class"] == "exception")
+        if counts:
+            tally["killed"] += 1
+        elif v == "SURVIVED":
+            tally["survived"] += 1
+        elif v == "MISKILLED":
+            tally["miskilled"] += 1
+        else:
+            tally["dirty"] += 1
+        lines.append("MUTANT %s verdict=%s rc=%d fails=%d failed_cases=%s counted=%s"
+                     % (row["id"], v, rc, len(fails), failed, "yes" if counts else "no"))
+    n_kill = len(rows) - n_neutral
+    lines.append("MUTBAT target_sha256=%s baseline=%s rows=%d killed=%d survived=%d miskilled=%d "
+                 "dirty=%d notderived=%d neutral_ok=%d/%d"
+                 % (sha, "ok" if baseline else "bad", len(rows), tally["killed"],
+                    tally["survived"], tally["miskilled"], tally["dirty"], tally["notderived"],
+                    tally["neutral_ok"], n_neutral))
+    ok = (baseline and n_kill > 0 and n_neutral > 0 and tally["killed"] == n_kill
+          and tally["neutral_ok"] == n_neutral)
+    return ok, lines
+
+
+TOY = '''import sys
+def tested(x):
+    return x > 0
+def other(x):
+    return x * 2
+def untested(x):
+    return x < 0
+def selftest():
+    rows = []
+    try:
+        ok = tested(1) is True and tested(-1) is False
+        detail = "note=exception-free ret=%r" % (tested(1),)
+    except Exception as exc:
+        ok, detail = False, "exception=%r" % (exc,)
+    rows.append(("a", ok, detail))
+    rows.append(("b", other(2) == 4, "got=%r" % (other(2),)))
+    fails = 0
+    for case, ok_, det in rows:
+        print("selftest case=%s %s %s" % (case, "ok" if ok_ else "FAIL", det))
+        fails += 0 if ok_ else 1
+    print("selftest cases=%d failures=%d" % (len(rows), fails))
+    return 0 if fails == 0 else 1
+if __name__ == "__main__":
+    sys.exit(selftest() if "--selftest" in sys.argv else 0)
+'''
+
+# A location-guard forgery of TOY (round-80 CriticClaims F1 shape): no assertion runs; it
+# passes in its home directory and prints an integrity FAIL anywhere else.
+FORGERY_LOCATION = TOY.replace(
+    "def selftest():\n",
+    "def selftest():\n"
+    "    import os\n"
+    "    home = os.path.basename(os.path.dirname(os.path.abspath(__file__))) == 'home'\n"
+    "    print('selftest case=a ok stub')\n"
+    "    print('selftest case=b ok stub')\n"
+    "    if not home:\n"
+    "        print('selftest case=integrity FAIL moved')\n"
+    "    print('selftest cases=2 failures=%d' % (0 if home else 1))\n"
+    "    return 0 if home else 1\n"
+    "def unused_selftest():\n", 1)
+
+# A baseline-limb forgery (round-80 CriticClaims F4 shape): red on its own pristine bytes yet
+# exit 0 with the expected summary line.
+FORGERY_BASELINE = TOY.replace(
+    "    fails = 0\n",
+    "    print('selftest case=integrity FAIL always')\n    fails = 0\n", 1)
+
+
+def selftest(work):
+    d = tempfile.mkdtemp(prefix="mutbat-selftest-", dir=work)
+    try:
+        home = os.path.join(d, "home")
+        os.makedirs(home)
+        toy = os.path.join(home, "toy.py")
+        with open(toy, "w", encoding="utf-8") as fh:
+            fh.write(TOY)
+        rows = [
+            {"id": "T-KILL", "anchor": "    return x > 0\n", "replacement": "    return True\n",
+             "class": "assertion", "kill_cases": ["a"]},
+            {"id": "T-MIS", "anchor": "    return x * 2\n", "replacement": "    return x * 3\n",
+             "class": "assertion", "kill_cases": ["a"]},
+            {"id": "T-SURV", "anchor": "    return x < 0\n", "replacement": "    return True\n",
+             "class": "assertion", "kill_cases": ["a"]},
+            {"id": "T-ABSENT", "anchor": "no such text", "replacement": "", "class": "assertion",
+             "kill_cases": ["a"]},
+            {"id": "T-EXC", "anchor": "    return x > 0\n",
+             "replacement": "    raise ValueError('boom')\n", "class": "exception",
+             "kill_cases": ["a"]},
+            {"id": "T-EXCA", "anchor": "    return x > 0\n",
+             "replacement": "    raise ValueError('boom')\n", "class": "assertion",
+             "kill_cases": ["a"]},
+            {"id": "T-NEU", "anchor": "def untested(x):\n",
+             "replacement": "# neutral comment\ndef untested(x):\n", "class": "neutral"},
+            {"id": "T-NEUBAD", "anchor": "    return x * 2\n", "replacement": "    return x * 3\n",
+             "class": "neutral"},
+        ]
+        ok, lines = battery(toy, rows, 2, d)
+        want = {"T-KILL": "KILLED", "T-MIS": "MISKILLED", "T-SURV": "SURVIVED",
+                "T-ABSENT": "NOT-DERIVED", "T-EXC": "EXCEPTION-KILL", "T-EXCA": "EXCEPTION-KILL",
+                "T-NEU": "NEUTRAL-OK", "T-NEUBAD": "NEUTRAL-BROKEN"}
+        got = {ln.split()[1]: ln.split()[2].split("=")[1] for ln in lines if ln.startswith("MUTANT")}
+        counted = {ln.split()[1]: ln.rsplit("counted=", 1)[1] for ln in lines
+                   if ln.startswith("MUTANT")}
+        want_counted = {"T-KILL": "yes", "T-MIS": "no", "T-SURV": "no", "T-ABSENT": "no",
+                        "T-EXC": "yes", "T-EXCA": "no", "T-NEU": "yes", "T-NEUBAD": "no"}
+        good = [rows[0], rows[4], rows[6]]
+        ok_good, _l = battery(toy, good, 2, d)
+        with open(toy, "w", encoding="utf-8") as fh:
+            fh.write(FORGERY_LOCATION)
+        ok_loc, lines_loc = battery(toy, good, 2, d)
+        with open(toy, "w", encoding="utf-8") as fh:
+            fh.write(FORGERY_BASELINE)
+        ok_base, lines_base = battery(toy, good, 2, d)
+        bad_tables = [validate_rows([{"id": "x", "anchor": "a", "replacement": "b",
+                                      "class": "assertion"}]),
+                      validate_rows([{"id": "x", "anchor": "a", "replacement": "b",
+                                      "class": "bogus", "kill_cases": ["a"]}]),
+                      validate_rows([rows[0], rows[0]])]
+        okk = ((not ok) and got == want and counted == want_counted
+               and "baseline=ok" in lines[-1] and ok_good
+               and (not ok_loc) and "baseline=ok" in lines_loc[-1]
+               and "killed=0" in lines_loc[-1] and "miskilled=2" in lines_loc[-1]
+               and "neutral_ok=0/1" in lines_loc[-1]
+               and (not ok_base) and "baseline=bad" in lines_base[-1]
+               and all(r is not None for r in bad_tables) and validate_rows(rows) is None)
+        print("mutbat selftest %s got=%s counted=%s all_killed_exit=%s location_forgery_exit=%s "
+              "baseline_forgery_exit=%s bad_tables=%s"
+              % ("ok" if okk else "FAIL", got, counted, ok_good, ok_loc, ok_base,
+                 [r is not None for r in bad_tables]))
+        return 0 if okk else 1
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def main(argv):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--target")
+    ap.add_argument("--table")
+    ap.add_argument("--expect-cases", type=int)
+    ap.add_argument("--work", required=True)
+    ap.add_argument("--keep")
+    ap.add_argument("--selftest", action="store_true")
+    a = ap.parse_args(argv)
+    if not os.path.isdir(a.work):
+        print("mutbat: --work %s is not a directory" % a.work, file=sys.stderr)
+        return 2
+    if a.selftest:
+        return selftest(a.work)
+    if not (a.target and a.table and a.expect_cases is not None):
+        print("mutbat: --target, --table and --expect-cases are required", file=sys.stderr)
+        return 2
+    try:
+        with open(a.table, encoding="utf-8") as fh:
+            rows = json.load(fh)
+    except (OSError, ValueError) as exc:
+        print("mutbat: cannot read table: %s" % exc, file=sys.stderr)
+        return 2
+    bad = validate_rows(rows)
+    if bad is not None:
+        print("mutbat: bad table: %s" % bad, file=sys.stderr)
+        return 2
+    try:
+        ok, lines = battery(a.target, rows, a.expect_cases, a.work, a.keep)
+    except OSError as exc:
+        print("mutbat: cannot read target: %s" % exc, file=sys.stderr)
+        return 2
+    print("\n".join(lines))
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
