@@ -1,0 +1,34 @@
+ReviewC2 receipts (round 82, C2, entry corpus/knowledge/osv-high-quality-record-import-bar.md, read-only)
+
+S116.txt sha256 2198d329bf6a8711ac28ae9221351162d61679699c0b45acb8ebb95cadce9ca0, 87 lines, 6586 bytes (matches manifest)
+
+grep -n -F, each pinned quote, exactly one hit:
+  25 Describe the “good enough” OSV record that will be imported by OSV.dev
+  36 a record passes JSON Schema validation ... in the schema_version field
+  41 Package-level precision is the minimum standard.
+  44 introduced and fixed versions or commits can’t be the same
+  47 for commit (GIT) ranges the commits exist in the specified repo (i.e. they are not from another GitHub fork)
+  51 reference URLs return a 2xx or 3xx response at the time of publication
+
+Quote word counts (len(split)): 12, 23, 6, 10, 19, 13 (match entry gate table)
+
+source-recheck.py --manifest corpus/source-snapshots/round-82/manifest.json --source S116:
+  S116:sha256 OK; six Qnn OK occurrences=1 anchor=25/36/41/44/47/51-ok; rc=0
+
+entry-gate.py (round-82 B8) on the draft: ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok; ENTRY-GATE-RESULT pass; exit 0
+
+Limits bullet 1 AS WRITTEN: grep -n -i -E 'IMPORT_FINDING|finding' S116.txt
+  -> prints "7:GET /v1experimental/importfindings", exit 0  (entry claims prints nothing, exit 1: FALSE)
+Limits bullet 1 CORRECTED: grep -n -i -w -E 'IMPORT_FINDING|findings?' S116.txt
+  -> prints nothing, exit 1  (verified)
+
+Distinctness literal sweep (corpus/knowledge excluding the draft): "good enough", "imported by OSV.dev", "minimum standard", "another GitHub fork", "2xx or 3xx", "JSON Schema validation", "Package-level precision", "distinct ranges" -> no hits outside the draft.
+  "schema_version field" -> osv-affected-range-events.md:23 (F31 Claim 1, S080.txt:374-375; not listed in entry Distinctness)
+  "time of publication" -> osv-affected-range-events.md:58 (F31, S080.txt:763-764); cisa-bod-20-01-vdp-minimums.md:30 (different subject)
+
+Cross-cites verified: S116.txt 21, 22-23, 25, 27, 28, 29-33, 36, 37-55, 38-40, 41, 42-43, 44, 45-46, 47, 48-50, 51, 52-55, 56-62, 63-86, 64, 86; S115.txt:14 (nav-only title), S115.txt:25, S080.txt:760-766 (exclusivity 760-761, preference 762-766).
+S115.txt:34 says "OSV.dev's quality bar" without naming a document.
+
+SOURCES.md S116 row (line 128): 11 cells, same count as S115 row; status mined, date 2026-11-06, recheck 90d, used-by = entry path; locator "lines 25-51" and sha256/bytes/lines match the snapshot. No cell contradicts the entry.
+
+Frozen claims.json C2 B5: entry recheck line equals the B0 command after "cd <lane> && " (verified by reading).

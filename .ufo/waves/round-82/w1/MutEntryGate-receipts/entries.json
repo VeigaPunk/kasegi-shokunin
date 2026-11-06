@@ -1,0 +1,138 @@
+[
+ {
+  "name": "W1-boilerplate",
+  "sha256": "28b35b0215b1122df80666c918a86cfbbe8d5119725ecfe9f64cb27131033473",
+  "note": "identical generic rule per claim; zero claim content",
+  "base_rc": 0,
+  "base_line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok",
+  "mutants": {}
+ },
+ {
+  "name": "W2-copied-rules",
+  "sha256": "594e327650de10c332516f4699d341ad99ddc4fb925a31d4a6f6832cda215288",
+  "note": "rules copied from the S115 entry with the cite rewritten to S116 lines; they describe a different page",
+  "base_rc": 0,
+  "base_line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok",
+  "mutants": {}
+ },
+ {
+  "name": "W3-vacuous",
+  "sha256": "4d7cfbd0472e3b9f918c69833f3b498560c349ffe6afe577ab92790025231115",
+  "note": "rules have no relation to the quote or the page",
+  "base_rc": 0,
+  "base_line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok",
+  "mutants": {}
+ },
+ {
+  "name": "X-M02",
+  "sha256": "a569ecbef9cc328256ad8d00137468fb81fec8d6b4689790286a3af3d75c1512",
+  "note": "7-word rule: base rejects, MIN_WORDS=7 admits",
+  "base_rc": 1,
+  "base_line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=1 header=ok",
+  "mutants": {
+   "M02": {
+    "rc": 0,
+    "line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok"
+   }
+  }
+ },
+ {
+  "name": "X-M04",
+  "sha256": "994693edd122225f8830381c22f4402f2163b0a4ec9aa026c34e6d6cd4258a6d",
+  "note": "2-word rule: base rejects, no-rule-length-test admits",
+  "base_rc": 1,
+  "base_line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=1 header=ok",
+  "mutants": {
+   "M04": {
+    "rc": 0,
+    "line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok"
+   }
+  }
+ },
+ {
+  "name": "X-M06",
+  "sha256": "332238198beba213b792500f5af3e0b27ce273ed070f8e26ff2df138f1bb8b72",
+  "note": "cite names S999: base rejects, any-.txt regex admits",
+  "base_rc": 1,
+  "base_line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=1 header=ok",
+  "mutants": {
+   "M06": {
+    "rc": 0,
+    "line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok"
+   }
+  }
+ },
+ {
+  "name": "X-M07",
+  "sha256": "7e15ac49ef85e63fe0d476410db1633f5eb49cdf223176fa4427972f4d870286",
+  "note": "rej is a verbatim substring of S116.txt:33: base rejects, snapshot-test drop admits",
+  "base_rc": 1,
+  "base_line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=1 header=ok",
+  "mutants": {
+   "M07": {
+    "rc": 0,
+    "line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok"
+   },
+   "M10": {
+    "rc": 0,
+    "line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok"
+   }
+  }
+ },
+ {
+  "name": "X-M10",
+  "sha256": "b88c589ba7127f1ecc013b3895a3d751c7081e0107719d0778617d299119f188",
+  "note": "rej contains manifest quote Q03: base rejects, only the rej-call drop admits",
+  "base_rc": 1,
+  "base_line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=1 header=ok",
+  "mutants": {
+   "M07": {
+    "rc": 1,
+    "line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=1 header=ok"
+   },
+   "M10": {
+    "rc": 0,
+    "line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok"
+   }
+  }
+ },
+ {
+  "name": "X-M11",
+  "sha256": "9767c3dfbdea82a9188398966d2ba0ae65543988288bc7c3e90a683a4dfbbd90",
+  "note": "empty rule label borrows the rej line: base rejects, rest-of-body label_text admits",
+  "base_rc": 1,
+  "base_line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=1 header=ok",
+  "mutants": {
+   "M11": {
+    "rc": 0,
+    "line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok"
+   }
+  }
+ },
+ {
+  "name": "X-M14",
+  "sha256": "d19d6ace0fa211d55fad4a4230da187f7631715fb9942f2dec4e7416ee92e515",
+  "note": "mid-line label mention: base rejects, unanchored label admits",
+  "base_rc": 1,
+  "base_line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=1 header=ok",
+  "mutants": {
+   "M14": {
+    "rc": 0,
+    "line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok"
+   }
+  }
+ },
+ {
+  "name": "X-M13",
+  "sha256": "7bba5c2a8707feadc8da9affdb759b658840a2436defc5992293e71f5630a980",
+  "note": "no labels at all: claimless catches it in base and in M13",
+  "base_rc": 1,
+  "base_line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=1 unpinned=0 ruleless=1 header=ok",
+  "mutants": {
+   "M13": {
+    "rc": 1,
+    "line": "ENTRY-GATE sid=S116 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=1 unpinned=0 ruleless=0 header=ok"
+   }
+  }
+ }
+]

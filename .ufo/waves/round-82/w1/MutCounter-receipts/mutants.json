@@ -1,0 +1,182 @@
+[
+ {
+  "id": "MC01",
+  "change": "drop-D2-exec",
+  "old": "    for decoy in (d1, d2):",
+  "new": "    for decoy in (d1,):",
+  "occ": 1,
+  "sha256": "b4eacf0b1d7a01afbc09b90aa0e5634ef1dc043eb9986c3247a58e2740a11a0d",
+  "bytes": 21448,
+  "delta_bytes": -3
+ },
+ {
+  "id": "MC02",
+  "change": "drop-D1-exec",
+  "old": "    for decoy in (d1, d2):",
+  "new": "    for decoy in (d2,):",
+  "occ": 1,
+  "sha256": "cc139932717cb0efe44c67cf71a9d8ca89436ef185253b2ee3a0bc0f1a45e781",
+  "bytes": 21448,
+  "delta_bytes": -3
+ },
+ {
+  "id": "MC03",
+  "change": "return-d1-twice",
+  "old": "    return ok, [d1, d2]",
+  "new": "    return ok, [d1, d1]",
+  "occ": 1,
+  "sha256": "d3fabf4629ecb65ebcf0c64ddc4f1a9f421e4a1e301a225b4e17ee73174e4e81",
+  "bytes": 21451,
+  "delta_bytes": 0
+ },
+ {
+  "id": "MC04",
+  "change": "hidden-ge-0",
+  "old": "and decoy_ok and hidden >= 1)",
+  "new": "and decoy_ok and hidden >= 0)",
+  "occ": 1,
+  "sha256": "d2d0587effa778b55e5fe5f688cb8431e80ce246502f17b18c9ae71d74206d68",
+  "bytes": 21451,
+  "delta_bytes": 0
+ },
+ {
+  "id": "MC05",
+  "change": "decoy-term-forced-True",
+  "old": "and tally[\"neutral_ok\"] == n_neutral and decoy_ok and hidden >= 1)",
+  "new": "and tally[\"neutral_ok\"] == n_neutral and True and hidden >= 1)",
+  "occ": 1,
+  "sha256": "23ff81644c955b892c6e7f0c990c68e5b2ef7546f253d4eff4db81e06ac16756",
+  "bytes": 21447,
+  "delta_bytes": -4
+ },
+ {
+  "id": "MC06",
+  "change": "run_decoy-returns-True",
+  "old": "    return ok, [d1, d2]",
+  "new": "    return True, [d1, d2]",
+  "occ": 1,
+  "sha256": "7203f982a115ce7b50cdc3ee07cc24a6465a11c769573f385f87451d8ffded00",
+  "bytes": 21453,
+  "delta_bytes": 2
+ },
+ {
+  "id": "MC07",
+  "change": "rename-args-guard-inverted",
+  "old": "                if arg is not None:\n                    local.add(arg.arg)",
+  "new": "                if arg is None:\n                    local.add(arg.arg)",
+  "occ": 1,
+  "sha256": "1713f1e76a7b6a2c244e246ef42b5644cfe7c67f5f815ebaae4467c6e9cebb4c",
+  "bytes": 21447,
+  "delta_bytes": -4
+ },
+ {
+  "id": "MC08",
+  "change": "rename-includes-module-names",
+  "old": "    rename = local - module_names - keywords - declared - set(dir(builtins)) - {\"__file__\"}",
+  "new": "    rename = local - keywords - declared - set(dir(builtins)) - {\"__file__\"}",
+  "occ": 1,
+  "sha256": "8f5a63af5cd7ef97a4d652e72038525729e8ea8dea36c4245ab8a145734a19cd",
+  "bytes": 21436,
+  "delta_bytes": -15
+ },
+ {
+  "id": "MC09",
+  "change": "rename-includes-keywords",
+  "old": "    rename = local - module_names - keywords - declared - set(dir(builtins)) - {\"__file__\"}",
+  "new": "    rename = local - module_names - declared - set(dir(builtins)) - {\"__file__\"}",
+  "occ": 1,
+  "sha256": "345627a1e8d5223adfa423e7d4fa045a1e353cf0fb82add95456eb021909ef98",
+  "bytes": 21440,
+  "delta_bytes": -11
+ },
+ {
+  "id": "MC10",
+  "change": "rename-skips-except-as",
+  "old": "        elif isinstance(n, ast.ExceptHandler) and n.name in rename:\n            n.name += \"_d\"",
+  "new": "        elif isinstance(n, ast.ExceptHandler) and n.name in rename:\n            n.name += \"\"",
+  "occ": 1,
+  "sha256": "ae0818d0a7eeb21c0c93bf9c25d457e4b2469b5b347923da0cf176f99ffc3dc8",
+  "bytes": 21449,
+  "delta_bytes": -2
+ },
+ {
+  "id": "MC11",
+  "change": "hidden-counts-neutral",
+  "old": "    hidden = sum(1 for r in rows if r[\"class\"] != \"neutral\"\n",
+  "new": "    hidden = sum(1 for r in rows if True\n",
+  "occ": 1,
+  "sha256": "d83845ba78121fdf29b555528c5b645470082228712c59a6c00c3b55ea2ce871",
+  "bytes": 21432,
+  "delta_bytes": -19
+ },
+ {
+  "id": "MC12",
+  "change": "hidden-threshold-2",
+  "old": "and decoy_ok and hidden >= 1)",
+  "new": "and decoy_ok and hidden >= 2)",
+  "occ": 1,
+  "sha256": "dab5da7b49e0ba7597f583422c15e682553a3dcba4a77a967aba4e23bbf5b875",
+  "bytes": 21451,
+  "delta_bytes": 0
+ },
+ {
+  "id": "MC13",
+  "change": "hidden-from-D1-only",
+  "old": "for d in decoy_src)))",
+  "new": "for d in decoy_src[:1])))",
+  "occ": 1,
+  "sha256": "aeb1053b0d73e910b99ad8b46bd84d5c138b1db1279bbb4c7df7125b15f584b3",
+  "bytes": 21455,
+  "delta_bytes": 4
+ },
+ {
+  "id": "MC14",
+  "change": "decoy-accumulator-or",
+  "old": "        ok = ok and clean_pass(rc, out, expect_cases)",
+  "new": "        ok = ok or clean_pass(rc, out, expect_cases)",
+  "occ": 1,
+  "sha256": "21c05537cc549c86c19ef9aa1b2b006c437fb896147820d9a3b99287226fe696",
+  "bytes": 21450,
+  "delta_bytes": -1
+ },
+ {
+  "id": "MC15",
+  "change": "D2-not-renamed",
+  "old": "        d2 = ast.unparse(rename_locals(ast.parse(src))) + \"\\n\"",
+  "new": "        d2 = ast.unparse(ast.parse(src)) + \"\\n\"",
+  "occ": 1,
+  "sha256": "1b4d099ee9dc312f284723161f8d108fe61fb2dc441f5b7703e518cb48f8419d",
+  "bytes": 21436,
+  "delta_bytes": -15
+ },
+ {
+  "id": "MC16",
+  "change": "parse-failure-as-ok",
+  "old": "        return False, None",
+  "new": "        return True, None",
+  "occ": 1,
+  "sha256": "bc7002c8a42e57e212ede30923422f40d2f8b23e44f62d9d2b5c3da4d330e070",
+  "bytes": 21450,
+  "delta_bytes": -1
+ },
+ {
+  "id": "MC17",
+  "change": "clean-pass-drops-traceback",
+  "old": "    return rc == 0 and exact and not fail_lines(out) and \"Traceback\" not in out",
+  "new": "    return rc == 0 and exact and not fail_lines(out)",
+  "occ": 1,
+  "sha256": "a88dbf7d55aebf67175b6aa3dfdf5d54e560b363a4fcde215917c7e5dcce91e5",
+  "bytes": 21424,
+  "delta_bytes": -27
+ },
+ {
+  "id": "MC18",
+  "change": "rename-skips-args-clean",
+  "old": "                if arg is not None:\n                    local.add(arg.arg)",
+  "new": "                if arg is not None:\n                    pass",
+  "occ": 1,
+  "sha256": "fb8bee269777b5d8d9f33907a3275b36721f7d3cb7544f138fab4bf3066bbf66",
+  "bytes": 21437,
+  "delta_bytes": -14
+ }
+]

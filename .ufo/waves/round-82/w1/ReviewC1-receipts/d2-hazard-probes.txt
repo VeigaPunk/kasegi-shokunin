@@ -1,0 +1,10 @@
+# rename_locals (mutbat.py:140-177) + ast.unparse on toy sources, executed in-process; (original, D2) results
+nested-def-collision original=('ok', 1) d2=('EXC', 'NameError("name \'f_d\' is not defined")')
+local-import-collision original=('ok', '1') d2=('EXC', 'NameError("name \'json_d\' is not defined")')
+class-attr-collision original=('ok', 3) d2=('EXC', 'AttributeError("type object \'C\' has no attribute \'limit\'")')
+locals-format original=('ok', 'x') d2=('EXC', "KeyError('who')")
+dict-kwargs original=('ok', True) d2=('EXC', 'TypeError("g() got an unexpected keyword argument \'verbose\'. Did you mean \'verbose_d\'?")')
+match-capture original=('ok', 3) d2=('EXC', 'NameError("name \'a_d\' is not defined")')
+for-else-class-scope original=('ok', 5) d2=('EXC', 'AttributeError("\'K\' object has no attribute \'val\'")')
+# canonical-form honest toy: ast.unparse(src)==src; anchor 'tested(1) is True' present in D1 and D2 -> a table of such anchors gives decoy_hidden=0 -> battery exit 1
+# candidate: rows visible in both decoys = ['M2'] (anchor '            return -1\n'); hidden by D1 alone = 39/60; ast.dump(D1)==ast.dump(candidate): True

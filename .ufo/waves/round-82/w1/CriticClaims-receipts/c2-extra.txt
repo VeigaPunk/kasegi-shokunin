@@ -1,0 +1,35 @@
+## build-table
+$ python3 -B .ufo/waves/round-82/c1/build-table.py .ufo/waves/round-82/c1/recheck-cwd-census.py /fast/scratch/hyaku/kasegi-r82/CriticClaims/table-rebuilt.json
+build-table rows=63 neutral=3 new=4 reanchored=2
+rc=0
+
+## cmp table
+$ bash -c cmp /fast/scratch/hyaku/kasegi-r82/CriticClaims/table-rebuilt.json .ufo/waves/round-82/c1/mutant-table.json
+rc=0
+
+## B1 S116 row
+$ bash -c grep -nE '^\|[[:space:]]*S116[[:space:]]*\|' corpus/SOURCES.md
+128:| S116 | OSV.dev, Properties of a High Quality OSV Record (OSV project) — https://google.github.io/osv.dev/data_quality.html | docs | A | the OSV.dev project's own definition, version 1.0.0, of the good-enough OSV record it imports: the purpose, the JSON Schema validation prerequisite against the declared schema_version, package-level precision as the minimum standard, distinct introduced and fixed values, GIT range commits that exist in the specified repo, and reference URLs that answer 2xx or 3xx at publication; not the affected-range event format or the fixed/last_affected rules (S080 F31), not the import-findings endpoint (S115 F57), not the Gemini-generated schema appendix | data_quality page, lines 25-51; capture corpus/source-snapshots/round-82/S116.txt (sha256 2198d329bf6a8711ac28ae9221351162d61679699c0b45acb8ebb95cadce9ca0, 87 lines, 6586 snapshot bytes, fetched 2026-11-06T20:53:38Z; 6 pinned quotes in corpus/source-snapshots/round-82/manifest.json) | what OSV.dev requires of a record before import, so a researcher filing or reviewing an OSV-format advisory can predict a refused import and check range, repo and reference quality before submission | mined | 2026-11-06 | 90d | corpus/knowledge/osv-high-quality-record-import-bar.md |
+rc=0
+
+## B1 registry count
+$ bash -c grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md
+116
+rc=0
+
+## gate selftest
+$ python3 -B .ufo/waves/round-82/c2/entry-gate.py --selftest
+entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False}
+rc=0
+
+## B6 literal sweep over 95 other entries
+total=0
+'Describe the “good enough” OSV record th' -> 0 []
+'a record passes JSON Schema validation f' -> 0 []
+'Package-level precision is the minimum s' -> 0 []
+'introduced and fixed versions or commits' -> 0 []
+'for commit (GIT) ranges the commits exis' -> 0 []
+'reference URLs return a 2xx or 3xx respo' -> 0 []
+
+## B2 set-equal
+expected=98 listing=96 set_diff=['# Expected knowledge entries for corpus/instruments/recheck-audit.py — round 30', '# Sorted list from the working tree (one entry per line); keep in sync with corpus/knowledge/.']

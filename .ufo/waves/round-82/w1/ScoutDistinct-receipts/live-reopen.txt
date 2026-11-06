@@ -1,0 +1,20 @@
+=== R1 curl live open (S116) ===
+$ curl -sSL -o p.html -w '%{http_code} %{url_effective}' https://google.github.io/osv.dev/data_quality.html
+200 https://google.github.io/osv.dev/data_quality.html
+raw_bytes=24473
+
+=== R2 instrument re-capture ===
+$ python3 corpus/instruments/capture-source.py --id S116 --url https://google.github.io/osv.dev/data_quality.html --out $S/S116.txt --kind html
+S116 status=200 fetched_bytes=24473 snapshot_bytes=6586 sha256=2198d329bf6a8711ac28ae9221351162d61679699c0b45acb8ebb95cadce9ca0 utc=2026-11-06T21:26:56Z out=/fast/scratch/hyaku/kasegi-r82/ScoutDistinct/S116.txt
+rc=0
+
+=== R3 digest comparison (fresh live capture vs manifest vs freeze commit) ===
+fresh_live_capture : 2198d329bf6a8711ac28ae9221351162d61679699c0b45acb8ebb95cadce9ca0
+frozen_worktree   : 2198d329bf6a8711ac28ae9221351162d61679699c0b45acb8ebb95cadce9ca0
+freeze_commit_blob: 2198d329bf6a8711ac28ae9221351162d61679699c0b45acb8ebb95cadce9ca0
+manifest_records  : 2198d329bf6a8711ac28ae9221351162d61679699c0b45acb8ebb95cadce9ca0
+
+=== R4 byte/line identity ===
+cmp: IDENTICAL
+fresh:  87 6586 (lines bytes)
+frozen:  87 6586 (lines bytes)

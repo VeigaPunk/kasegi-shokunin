@@ -1,0 +1,225 @@
+[
+ {
+  "id": "H01-BK-NO-EXIT0",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "anchor": "    buckets = (counts[\"exit2_foreign\"] + counts[\"exit0_foreign\"] + counts[\"exit1_foreign\"]\n",
+  "replacement": "    buckets = (counts[\"exit2_foreign\"] + counts[\"exit1_foreign\"]\n",
+  "expect": "bucket sum drops exit0_foreign; conform_ok(bal) false -> bucket-sum FAIL"
+ },
+ {
+  "id": "H02-BK-EXIT0-TWICE",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "anchor": "counts[\"exit0_foreign\"] + counts[\"exit1_foreign\"]\n",
+  "replacement": "counts[\"exit0_foreign\"] + counts[\"exit0_foreign\"]\n",
+  "expect": "bucket sum doubles exit0 and drops exit1; conform_ok(bal) false -> bucket-sum FAIL"
+ },
+ {
+  "id": "H03-BK-NORE-AS-REST",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "anchor": "+ counts[\"exit_other\"] + counts[\"norecheck\"] + counts[\"restoration_only\"])\n",
+  "replacement": "+ counts[\"exit_other\"] + counts[\"restoration_only\"] + counts[\"restoration_only\"])\n",
+  "expect": "replace the norecheck term with restoration_only; predicted SURVIVED/equivalent (both terms masked by their ==0 limbs)"
+ },
+ {
+  "id": "H04-BK-NORE-AS-EXITOTHER",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "anchor": "+ counts[\"exit_other\"] + counts[\"norecheck\"] + counts[\"restoration_only\"])\n",
+  "replacement": "+ counts[\"norecheck\"] + counts[\"norecheck\"] + counts[\"restoration_only\"])\n",
+  "expect": "drop exit_other from the bucket sum; predicted SURVIVED, real gap (no conform_ok/main fixture has exit_other>0)"
+ },
+ {
+  "id": "H05-BK-GE",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "anchor": "and counts[\"norecheck\"] == 0 and counts[\"restoration_only\"] == 0\n            and buckets == counts[\"entries\"])\n",
+  "replacement": "and counts[\"norecheck\"] == 0 and counts[\"restoration_only\"] == 0\n            and buckets >= counts[\"entries\"])\n",
+  "expect": "equality -> >= on the bucket sum; predicted SURVIVED, real gap (no fixture with buckets > entries)"
+ },
+ {
+  "id": "H06-MAIN-WORD-SWAP",
+  "class": "assertion",
+  "kill_cases": [
+   "result-main"
+  ],
+  "anchor": "    print(\"RECHECK-CWD-RESULT %s\" % (\"conformant\" if conform else \"nonconformant\"))",
+  "replacement": "    print(\"RECHECK-CWD-RESULT %s\" % (\"nonconformant\" if conform else \"conformant\"))",
+  "expect": "swap the result words; result-main checks both polarities"
+ },
+ {
+  "id": "H07-MAIN-RET-ZERO",
+  "class": "assertion",
+  "kill_cases": [
+   "result-main"
+  ],
+  "anchor": "    return 0 if conform else 1\n",
+  "replacement": "    return 0 if conform else 0\n",
+  "expect": "nonconformant exit code collapses to 0; result-main ret2n==1"
+ },
+ {
+  "id": "H08-MAIN-CONFORM-COPY",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "anchor": "    conform = conform_ok(counts)\n    print(\"RECHECK-CWD-RESULT",
+  "replacement": "    conform = conform_ok(dict(counts))\n    print(\"RECHECK-CWD-RESULT",
+  "expect": "shallow copy of counts; predicted SURVIVED/equivalent (conform_ok is read-only)"
+ },
+ {
+  "id": "H09-MAIN-TMPDIR-RET3",
+  "class": "assertion",
+  "kill_cases": [
+   "tmpdir-refusal"
+  ],
+  "anchor": "def main(argv):\n    if tmpdir_refused():\n        return 2\n",
+  "replacement": "def main(argv):\n    if tmpdir_refused():\n        return 3\n",
+  "expect": "refusal exit code 2 -> 3; tmpdir-refusal and tmpdir-file expect 2"
+ },
+ {
+  "id": "H10-VERBOSE-FLAG-OFF",
+  "class": "assertion",
+  "kill_cases": [
+   "main-default",
+   "output-lines"
+  ],
+  "anchor": "        elif argv[i] == \"--verbose\":\n            verbose = True\n",
+  "replacement": "        elif argv[i] == \"--verbose\":\n            verbose = False\n",
+  "expect": "--verbose flag no longer enables verbose; predicted SURVIVED, real gap (no check invokes main with --verbose)"
+ },
+ {
+  "id": "H11-EXIT2-INC-ZERO",
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census"
+  ],
+  "anchor": "            counts[\"exit2_foreign\"] += 1\n",
+  "replacement": "            counts[\"exit2_foreign\"] += 0\n",
+  "expect": "exit2 bucket never incremented; prefix-census wants exit2=1"
+ },
+ {
+  "id": "H12-EXIT0-INC-ZERO",
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census"
+  ],
+  "anchor": "            counts[\"exit0_foreign\"] += 1\n",
+  "replacement": "            counts[\"exit0_foreign\"] += 0\n",
+  "expect": "exit0 bucket never incremented; prefix-census/bucket-sum/restoration-only/both-headers/prefix-literal"
+ },
+ {
+  "id": "H13-EXIT1-INC-ZERO",
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census",
+   "bucket-sum",
+   "prefix-literal"
+  ],
+  "anchor": "            counts[\"exit1_foreign\"] += 1\n",
+  "replacement": "            counts[\"exit1_foreign\"] += 0\n",
+  "expect": "exit1 bucket never incremented; prefix-census exit1=1, sum21, prefix-literal"
+ },
+ {
+  "id": "H14-NORE-INC-ZERO",
+  "class": "assertion",
+  "kill_cases": [
+   "relabel-detection",
+   "conform-limbs"
+  ],
+  "anchor": "                counts[\"norecheck\"] += 1\n",
+  "replacement": "                counts[\"norecheck\"] += 0\n",
+  "expect": "norecheck never incremented; relabel-detection want8u and conform-limbs out15n"
+ },
+ {
+  "id": "H15-REST-INC-ZERO",
+  "class": "assertion",
+  "kill_cases": [
+   "restoration-only",
+   "relabel-detection"
+  ],
+  "anchor": "                counts[\"restoration_only\"] += 1\n",
+  "replacement": "                counts[\"restoration_only\"] += 0\n",
+  "expect": "restoration_only never incremented; case6 and patched case8"
+ },
+ {
+  "id": "H16-NOPREFIX-INC-ZERO",
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census",
+   "main-default"
+  ],
+  "anchor": "            counts[\"noprefix\"] += 1\n",
+  "replacement": "            counts[\"noprefix\"] += 0\n",
+  "expect": "noprefix never incremented; prefix-census/first-line/prefix-literal plus ENTRY line text in output-lines/main-default"
+ },
+ {
+  "id": "H17-BS-SWAP-SHORT",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "anchor": "        globals()[\"census\"] = lambda _r, _l, _v=False: dict(short)\n",
+  "replacement": "        globals()[\"census\"] = lambda _r, _l, _v=False: dict(bal)\n",
+  "expect": "main-swap limb returns balanced counts; bucket-sum wants ret21s==1"
+ },
+ {
+  "id": "H18-MD-VERBOSE-INJECT",
+  "class": "assertion",
+  "kill_cases": [
+   "main-default"
+  ],
+  "anchor": "        out22, ret22 = capture(main, [\"recheck-cwd-census.py\", \"--root\", root1, \"--lane\", lane1])\n",
+  "replacement": "        out22, ret22 = capture(main, [\"recheck-cwd-census.py\", \"--root\", root1, \"--lane\", lane1, \"--verbose\"])\n",
+  "expect": "case22 run with --verbose; ENTRY a-prefixed appears -> main-default FAIL"
+ },
+ {
+  "id": "H19-MD-NEG-WEAK",
+  "class": "assertion",
+  "kill_cases": [
+   "main-default"
+  ],
+  "anchor": "              \"ENTRY a-prefixed.md\" not in out22\n",
+  "replacement": "              len(out22) > 0\n",
+  "expect": "negative limb becomes a tautology; predicted SURVIVED, real gap (F1 refuses only literal True, not tautologies)"
+ },
+ {
+  "id": "H20-BS-SUM21-NOPREFIX",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "anchor": "        sum21 = (got21[\"exit2_foreign\"] + got21[\"exit0_foreign\"] + got21[\"exit1_foreign\"]\n",
+  "replacement": "        sum21 = (got21[\"exit2_foreign\"] + got21[\"noprefix\"] + got21[\"exit1_foreign\"]\n",
+  "expect": "case21 structural sum reads noprefix (0) instead of exit0 (2) -> sum21=1 != 3"
+ },
+ {
+  "id": "H21-BS-IDENT-NOT-TRUE",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "anchor": "              conform_ok(bal) is True and conform_ok(short) is False\n",
+  "replacement": "              conform_ok(bal) is True and conform_ok(short) is not True\n",
+  "expect": "is False -> is not True; predicted SURVIVED/equivalent (conform_ok returns bool)"
+ },
+ {
+  "id": "H22-NEU-DOC",
+  "class": "neutral",
+  "anchor": "    \"\"\"Round 82: the four conformance limbs plus the bucket sum (every entry is accounted).\"\"\"\n",
+  "replacement": "    \"\"\"Round 82: four conformance limbs plus the bucket sum.\"\"\"\n",
+  "expect": "docstring text only; semantics-preserving neutral"
+ }
+]

@@ -1,0 +1,23 @@
+=== R5 six-quote census in the FRESH LIVE instrument capture (occurrence + line + manifest anchor) ===
+Q01-purpose              occurrences=1 live_line=25 frozen_line=25 manifest_anchor=25 words=12 OK
+Q02-valid-prerequisite   occurrences=1 live_line=36 frozen_line=36 manifest_anchor=36 words=23 OK
+Q03-package-level-minimum occurrences=1 live_line=41 frozen_line=41 manifest_anchor=41 words=6 OK
+Q04-distinct-ranges      occurrences=1 live_line=44 frozen_line=44 manifest_anchor=44 words=10 OK
+Q05-git-commits-in-repo  occurrences=1 live_line=47 frozen_line=47 manifest_anchor=47 words=19 OK
+Q06-reference-urls       occurrences=1 live_line=51 frozen_line=51 manifest_anchor=51 words=13 OK
+quotes_present_live = 6/6
+live_capture_bytes_identical_to_frozen = True
+
+=== R6 independent conversion of the LIVE html (R57: compare text, not only sha) ===
+# conversion A: tags -> EMPTY string (instrument's TAG_RE semantics)
+quotes_in_independent_live_conversion = 6/6
+# conversion B: tags -> SPACE (a different, looser converter)
+  Q01-purpose              occurrences=1
+  Q02-valid-prerequisite   occurrences=1
+  Q03-package-level-minimum occurrences=1
+  Q04-distinct-ranges      occurrences=1
+  Q05-git-commits-in-repo  occurrences=0
+  Q06-reference-urls       occurrences=1
+# why B loses Q05: the live html wraps GIT in <code>...</code> and 'the specified repo'
+#   in <code>, so tags->space inserts a space inside '(GIT)' and splits the quote.
+  live_raw: 'pecific package ecosystem</li> </ul> </li> <li>for commit (<code class="language-plaintext highlighter-rouge">GIT</code>) ranges <ul> <li>the commits exist in the specified <code class="language-plaintext highlighter-rouge">repo</'

@@ -1,0 +1,12 @@
+--- /fast/scratch/hyaku/kasegi-r82/MutCounter/ctrl/driver.py	2026-11-06 18:15:27.041953114 -0300
++++ /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-82/controls/c1-forgeries-r82.py	2026-11-06 18:05:10.351712100 -0300
+@@ -173,8 +173,7 @@
+             fh.write(forge(src, table_text, name))
+         sha = hashlib.sha256(open(target, "rb").read()).hexdigest()
+         for counter in ("r81", "r82"):
+-            mb = (os.environ["MUT_COUNTER"] if counter == "r82"
+-                  else os.path.join(lane, ".ufo/waves/round-%s/c1/mutbat.py" % counter[1:]))
++            mb = os.path.join(lane, ".ufo/waves/round-%s/c1/mutbat.py" % counter[1:])
+             wd = os.path.join(a.work, name, "w-" + counter)
+             os.makedirs(wd)
+             p = subprocess.run([sys.executable, "-B", mb, "--target", target, "--table",

@@ -1,0 +1,37 @@
+# MC07 (rename-args-guard-inverted): crash receipts
+## selftest
+rc=1 time=0.1s
+Traceback (most recent call last):
+  File "/fast/scratch/hyaku/kasegi-r82/MutCounter/m/mutants/MC07.py", line 445, in <module>
+    sys.exit(main(sys.argv[1:]))
+             ~~~~^^^^^^^^^^^^^^
+  File "/fast/scratch/hyaku/kasegi-r82/MutCounter/m/mutants/MC07.py", line 421, in main
+    return selftest(a.work)
+  File "/fast/scratch/hyaku/kasegi-r82/MutCounter/m/mutants/MC07.py", line 364, in selftest
+    ok, lines = battery(toy, rows, 2, d)
+                ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/fast/scratch/hyaku/kasegi-r82/MutCounter/m/mutants/MC07.py", line 207, in battery
+    decoy_ok, decoy_src = run_decoy(src, target, expect_cases, work)
+                          ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fast/scratch/hyaku/kasegi-r82/MutCounter/m/mutants/MC07.py", line 184, in run_decoy
+    d2 = ast.unparse(rename_locals(ast.parse(src))) + "\n"
+                     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/fast/scratch/hyaku/kasegi-r82/MutCounter/m/mutants/MC07.py", line 163, in rename_locals
+    local.add(arg.arg)
+              ^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'arg'
+## P3 (no MUTBAT summary)
+             ~~~~^^^^^^^^^^^^^^
+  File "/fast/scratch/hyaku/kasegi-r82/MutCounter/m/mutants/MC07.py", line 436, in main
+    ok, lines = battery(a.target, rows, a.expect_cases, a.work, a.keep)
+                ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fast/scratch/hyaku/kasegi-r82/MutCounter/m/mutants/MC07.py", line 207, in battery
+    decoy_ok, decoy_src = run_decoy(src, target, expect_cases, work)
+                          ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/fast/scratch/hyaku/kasegi-r82/MutCounter/m/mutants/MC07.py", line 184, in run_decoy
+    d2 = ast.unparse(rename_locals(ast.parse(src))) + "\n"
+                     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/fast/scratch/hyaku/kasegi-r82/MutCounter/m/mutants/MC07.py", line 163, in rename_locals
+    local.add(arg.arg)
+              ^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'arg'

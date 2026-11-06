@@ -20,7 +20,9 @@ cwd-scoped recheck, so the census never executes it and never counts it in nopre
 exit_* buckets; the entry is counted in restoration_only (not norecheck), and the tree is
 nonconformant while any such entry exists (the verdict requires restoration_only == 0).
 
-Conformance (exit 0): noprefix == 0, exit2_foreign == 0, norecheck == 0 and restoration_only == 0.
+Conformance (exit 0): noprefix == 0, exit2_foreign == 0, norecheck == 0, restoration_only == 0,
+and (round 82) the buckets account for every entry: exit2_foreign + exit0_foreign +
+exit1_foreign + exit_other + norecheck + restoration_only == entries (conform_ok).
 Exit 1: a non-conforming tree. Exit 2: harness or read error. The foreign cwd and every temp
 path come from tempfile, which honors TMPDIR; no path is hard-coded under /tmp.
 
@@ -28,13 +30,14 @@ Usage:
   recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
   recheck-cwd-census.py --selftest
 
---selftest runs twenty-two checks under TMPDIR (prefix-census, result-main, tmpdir-parent,
+--selftest runs twenty-four checks under TMPDIR (prefix-census, result-main, tmpdir-parent,
 scratch-cleanup, first-line, restoration-only, both-headers, relabel-detection,
 tmpdir-refusal, the round-81 prefix-literal, conform-limbs, tmpdir-file, timeout-bucket,
-tmpdir-unset, usage-guards and output-lines, gate-predicates, gate-wiring, and the
-gate-regs/gate-consume/gate-negpolarity/gate-checkids assertions that consume the
-restoration-only RESULT limb) and prints 'selftest cases=22 failures=0' on success. A
-TMPDIR that is not an existing directory exits 2 before any tempfile call.
+tmpdir-unset, usage-guards and output-lines, the round-82 bucket-sum and main-default,
+gate-predicates, gate-wiring, and the gate-regs/gate-consume/gate-negpolarity/gate-checkids
+assertions that consume the restoration-only RESULT limb) and prints
+'selftest cases=24 failures=0' on success. A TMPDIR that is not an existing directory exits
+2 before any tempfile call.
 
 Round 79: every gate verdict is a module-level predicate tested in both polarities
 (gate-predicates), and gate-wiring parses this file's own selftest and refuses a check()
@@ -65,6 +68,13 @@ prefixed passing entry without --verbose). The new gate rows pin identity edges 
 True, 0 is not False), exact limb and side logs, exact element equality, an exact row
 count, the F1 BoolOp limb and its any-quantifier, F4 for non-True constants, and
 case-sensitive predicate matching.
+
+Round 82: two round-81 routed survivors are closed by two new checks. bucket-sum (round-81
+CriticClaims (c)): conform_ok refuses counts whose six buckets do not add up to entries, and
+a census over an osv-named fixture accounts for every entry, so an edit that counts an entry
+and then skips it is nonconformant. main-default (round-81 ReviewC1 Major 1): main() without
+--verbose prints no ENTRY line for a prefixed passing entry, which kills the main()-site
+verbose default the round-81 S07 row missed.
 """
 import ast
 import glob
@@ -245,8 +255,18 @@ def wiring_findings(source):
     return sorted(findings)
 
 
+def conform_ok(counts):
+    """Round 82: the four conformance limbs plus the bucket sum (every entry is accounted)."""
+    buckets = (counts["exit2_foreign"] + counts["exit0_foreign"] + counts["exit1_foreign"]
+               + counts["exit_other"] + counts["norecheck"] + counts["restoration_only"])
+    return (counts["noprefix"] == 0 and counts["exit2_foreign"] == 0
+            and counts["norecheck"] == 0 and counts["restoration_only"] == 0
+            and buckets == counts["entries"])
+
+
 def selftest():
-    """Twenty-two checks: the round-81 seven (prefix-literal, conform-limbs, tmpdir-file,
+    """Twenty-four checks: the round-82 two (bucket-sum, main-default), the round-81 seven
+    (prefix-literal, conform-limbs, tmpdir-file,
     timeout-bucket, tmpdir-unset, usage-guards, output-lines) plus fifteen in eight
     fixtures: prefix-census, result-main, tmpdir-parent,
     scratch-cleanup, first-line (the round-73 six, retained), restoration-only (round 75,
@@ -261,7 +281,7 @@ def selftest():
     removing any check fails gate-checkids. Every gate verdict is a module-level predicate
     that gate-predicates tests in both polarities, and gate-wiring refuses a check() whose
     ok argument is a constant True or does not call its gate predicate. Expected on success:
-    'selftest cases=22 failures=0' and exit 0."""
+    'selftest cases=24 failures=0' and exit 0."""
     if tmpdir_refused():
         return 2
     failures = []
@@ -275,7 +295,8 @@ def selftest():
         "first-line", "restoration-only", "both-headers", "relabel-detection",
         "gate-regs", "gate-consume", "gate-negpolarity", "gate-checkids", "tmpdir-refusal",
         "gate-predicates", "gate-wiring", "prefix-literal", "conform-limbs", "tmpdir-file",
-        "timeout-bucket", "tmpdir-unset", "usage-guards", "output-lines"))
+        "timeout-bucket", "tmpdir-unset", "usage-guards", "output-lines", "bucket-sum",
+        "main-default"))
     scratch = tempfile.mkdtemp(prefix="recheck-cwd-selftest-", dir=os.environ.get("TMPDIR") or None)
 
     def write_entry(kdir, name, body):
@@ -603,6 +624,45 @@ def selftest():
               % (len(_t6.splitlines()), len(_t8u.splitlines()), len(_t1.splitlines()),
                  len(out15e.splitlines())))
 
+        # Case 21 (round 82): bucket-sum — conform_ok refuses counts whose buckets miss an
+        # entry and accepts balanced counts; a census over an osv-named fixture (the real
+        # corpus naming) accounts for every entry and main() calls it conformant.
+        bal = {"entries": 3, "noprefix": 0, "exit2_foreign": 0, "exit0_foreign": 2,
+               "exit1_foreign": 1, "exit_other": 0, "norecheck": 0, "restoration_only": 0}
+        short = dict(bal, exit0_foreign=1)
+        root21, kdir21 = fixture("case21-bucket-sum")
+        write_entry(kdir21, "osv-a.md", "recheck: cd %s && true\n" % root21)
+        write_entry(kdir21, "osv-b.md", "recheck: cd %s && exit 1\n" % root21)
+        write_entry(kdir21, "z-c.md", "recheck: cd %s && true\n" % root21)
+        _t21, got21 = capture(census, root21, root21)
+        sum21 = (got21["exit2_foreign"] + got21["exit0_foreign"] + got21["exit1_foreign"]
+                 + got21["exit_other"] + got21["norecheck"] + got21["restoration_only"])
+        out21, ret21 = capture(main, ["recheck-cwd-census.py", "--root", root21, "--lane", root21])
+        # main() must read the bucket sum too: with census() swapped for one that returns
+        # counts missing an entry, main() is nonconformant (exit 1).
+        real_census = globals()["census"]
+        globals()["census"] = lambda _r, _l, _v=False: dict(short)
+        try:
+            out21s, ret21s = capture(main, ["recheck-cwd-census.py", "--root", root21,
+                                            "--lane", root21])
+        finally:
+            globals()["census"] = real_census
+        check("bucket-sum",
+              conform_ok(bal) is True and conform_ok(short) is False
+              and got21["entries"] == 3 and sum21 == 3 and got21["exit0_foreign"] == 2
+              and ret21 == 0 and "RECHECK-CWD-RESULT conformant" in out21
+              and ret21s == 1 and "RECHECK-CWD-RESULT nonconformant" in out21s,
+              "entries=%d buckets=%d main_ret=%d short_ret=%d"
+              % (got21["entries"], sum21, ret21, ret21s))
+
+        # Case 22 (round 82): main-default — main() without --verbose is silent for a
+        # prefixed passing entry and still prints the prefix-less one (case-1 fixture).
+        out22, ret22 = capture(main, ["recheck-cwd-census.py", "--root", root1, "--lane", lane1])
+        check("main-default",
+              "ENTRY a-prefixed.md" not in out22
+              and "ENTRY b-relative.md noprefix=1 foreign_exit=2" in out22 and ret22 == 1,
+              "lines=%d ret=%d" % (len(out22.splitlines()), ret22))
+
         # Gate predicates (rounds 79-81): every gate verdict function in both polarities,
         # and the wiring scanner on a known-bad, a known-good, a wrong-predicate-in-
         # consumed() and a constant-argument source, plus (round 81) a BoolOp-wrapped
@@ -732,8 +792,7 @@ def main(argv):
                   file=sys.stderr)
             return 2
     counts = census(os.path.abspath(root), lane, verbose)
-    conform = (counts["noprefix"] == 0 and counts["exit2_foreign"] == 0
-               and counts["norecheck"] == 0 and counts["restoration_only"] == 0)
+    conform = conform_ok(counts)
     print("RECHECK-CWD-RESULT %s" % ("conformant" if conform else "nonconformant"))
     return 0 if conform else 1
 

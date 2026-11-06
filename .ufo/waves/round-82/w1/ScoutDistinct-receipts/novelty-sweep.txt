@@ -1,0 +1,47 @@
+=== R7 NOVELTY SWEEP: each of the six manifest quotes, corpus/knowledge + corpus/source-snapshots ===
+# scope: every file under corpus/knowledge and corpus/source-snapshots, ALL rounds
+# self = the new entry + its own capture + its own manifest (excluded, reported separately)
+Q01-purpose              hits_outside_self=0 []
+Q02-valid-prerequisite   hits_outside_self=0 []
+Q03-package-level-minimum hits_outside_self=0 []
+Q04-distinct-ranges      hits_outside_self=0 []
+Q05-git-commits-in-repo  hits_outside_self=0 []
+Q06-reference-urls       hits_outside_self=0 []
+
+=== R8 KEY-TERM sweep (case-insensitive) over corpus/knowledge + corpus/source-snapshots ===
+--- term: good enough
+    (end)
+--- term: schema_version
+corpus/knowledge/claim-package-contract.md:13:| `evidence/manifest.json` | `schema_version: "evidence-manifest/v1"`. Per-artifact sha256 + `polarity` ∈ {positive, negative}; ≥1 positive required. `redactions[]`: one same-digest receipt per artifact with nonempty, distinct producer/verifier identities. `redactions:[]` is never claim-ready. Artifact paths are relative to `evidence/`, must stay inside the package, no symlink traversal. |
+corpus/knowledge/claim-package-contract.md:19:`~/Projects/the-bounty-hunter/ops/claim-check.mjs` never reads the manifest `schema_version`, the provenance
+corpus/knowledge/claim-package-contract.md:78:| G2 | Entry l.13: `schema_version: "evidence-manifest/v1"` is the manifest schema the gate requires | `corpus/instruments/claim-package-check.py:305` | `manifest.get('schema_version') != 'evidence-manifest/v1'` |
+corpus/knowledge/claim-package-contract.md:95:| G19 | Witness only (a conforming fixture instance; the entry does not mention the exemplar): the exemplar manifest carries `schema_version` `evidence-manifest/v1` | `corpus/instruments/fixtures/claim-package/exemplar/evidence/manifest.json:2` | `"schema_version": "evidence-manifest/v1"` |
+    (end)
+--- term: package-level
+    (end)
+--- term: introduced and fixed
+corpus/source-snapshots/round-50/S080.txt:617:The Homebrew package manager for macOS and Linux; the name is the formula name (e.g. openssl@3). Casks are not currently in scope. Without a :<tap> suffix the formula is assumed to come from the default homebrew/core tap. A version is the formula version as reported by brew info with an _N suffix when the formula revision is nonzero (e.g. 1.81.6_6), matching the version component of a pkg:brew purl. The ECOSYSTEM version ordering is Homebrew’s PkgVersion comparison: the version segment compared by Homebrew’s Version class, then the numeric revision suffix. The database uses introduced and fixed boundaries.
+corpus/source-snapshots/round-50/S080.txt:639:The openSUSE ecosystem; The ecosystem string has a :<RELEASE> suffix presenting the marketing name of the openSUSE distribution. <RELEASE> matches the value in the /etc/os-release PRETTY_NAME field. The name field is the name of the source RPM and accompanied by a purl. There is an ecosystem_specific specific array binaries of the associated RPM binary packages in this specific openSUSE distribution. The ECOSYSTEM version ordering is the RPM versioncompare ordering, and the database uses the introduced and fixed boundaries.
+corpus/source-snapshots/round-50/S080.txt:661:The SUSE ecosystem; The ecosystem string has a :<RELEASE> suffix representing the marketing name of the SUSE product. <RELEASE> matches the value in the /etc/os-release PRETTY_NAME field. The name field is the name of the source RPM and accompanied by a purl. There is a ecosystem_specific specific array binaries of the associated RPM binary packages in this specific SUSE product. The ECOSYSTEM version ordering is the RPM versioncompare ordering, and the database uses the introduced and fixed boundaries.
+corpus/source-snapshots/round-50/S080.txt:710:SEMVER: The versions introduced and fixed are semantic versions as defined
+    (end)
+--- term: GitHub fork
+corpus/source-snapshots/round-38/S055.txt:4198:Deeply nested markup can cause a stack overflow in the Markdown processor [GFMENG]. To reduce this risk, CSAF consumers SHALL use a Markdown processor that is hardened against such attacks. Note: One example is the GitHub fork of the cmark Markdown processor [GFMCMARK].
+    (end)
+--- term: 2xx or 3xx
+    (end)
+
+=== R9 same key terms over corpus/knowledge ONLY, excluding the new entry ===
+  good enough                  files=0
+  JSON Schema validation       files=0
+  Package-level precision      files=0
+  distinct ranges              files=0
+  another GitHub fork          files=0
+  2xx or 3xx                   files=0
+
+=== R10 sweep-scope sanity: the sweep really traverses other rounds ===
+  'last_affected' hits across corpus/source-snapshots (all rounds): 5
+    corpus/source-snapshots/round-38/S055.txt
+    corpus/source-snapshots/round-50/S080.txt
+    corpus/source-snapshots/round-50/manifest.json
+    corpus/source-snapshots/round-82/S116.txt

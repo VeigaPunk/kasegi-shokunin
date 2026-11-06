@@ -1,0 +1,625 @@
+[
+ {
+  "id": "K-M1",
+  "anchor": "        regs[\"restoration-only-result\"] = lambda out, ret: (\n            ret == 1 and \"RECHECK-CWD-RESULT nonconformant\" in out)\n",
+  "replacement": "",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-regs"
+  ],
+  "expect": "registration deleted -> gate-regs FAIL"
+ },
+ {
+  "id": "K-M2",
+  "anchor": "lambda out, ret: (\n            ret == 1 and \"RECHECK-CWD-RESULT nonconformant\" in out)",
+  "replacement": "lambda out, ret: (\n            True)",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-negpolarity"
+  ],
+  "expect": "closure body True -> gate-negpolarity FAIL"
+ },
+ {
+  "id": "K-M3",
+  "anchor": "        out6, ret6 = capture(main, [\"recheck-cwd-census.py\", \"--root\", root6, \"--lane\", root6])\n",
+  "replacement": "",
+  "class": "exception",
+  "kill_cases": [
+   "gate-consume"
+  ],
+  "expect": "case-6 computation deleted -> gate-consume FAIL exception=NameError (logged class)"
+ },
+ {
+  "id": "K-M4",
+  "anchor": "    return neg_ok is False and neg_ret_ok is False\n",
+  "replacement": "    return neg_ok is True and neg_ret_ok is False\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates",
+   "gate-negpolarity"
+  ],
+  "expect": "negpolarity predicate inverted -> gate-predicates and gate-negpolarity FAIL"
+ },
+ {
+  "id": "K-M5",
+  "anchor": "        check(\"both-headers\", both_headers_ok(match7, first7, rest7),\n              \"got=%s want=%s first_ran=%s restoration_ran=%s\"\n              % (counts_str(got7, want7), counts_str(want7, want7), first7, rest7))\n",
+  "replacement": "",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-checkids"
+  ],
+  "expect": "both-headers check deleted -> gate-checkids FAIL missing"
+ },
+ {
+  "id": "K-X1",
+  "anchor": "                clean_ok = limb(out6, ret6)\n",
+  "replacement": "                clean_ok = True\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-consume"
+  ],
+  "expect": "consumer neutered -> gate-consume FAIL limb_log=[]"
+ },
+ {
+  "id": "K-X2a",
+  "anchor": "    return clean_ok is True and limb_log == [True]\n",
+  "replacement": "    return True and limb_log == [True]\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "gate-consume predicate polarity limb neutered (the r78 K-X2 transform, now inside the predicate) -> gate-predicates FAIL"
+ },
+ {
+  "id": "K-X2b",
+  "anchor": "check(\"gate-consume\", gate_consume_ok(clean_ok, limb_log),",
+  "replacement": "check(\"gate-consume\", True,",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-wiring"
+  ],
+  "expect": "gate-consume call neutered -> gate-wiring FAIL F1/F2/F3"
+ },
+ {
+  "id": "K-M8",
+  "anchor": "              consumed(relabel_log, all(got8u[k] == v for k, v in want8u.items())\n                       and all(got8p[k] == v for k, v in want8p.items())),",
+  "replacement": "              True,",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-wiring",
+   "gate-checkids"
+  ],
+  "expect": "relabel-detection neutered -> gate-wiring F1 and gate-checkids FAIL"
+ },
+ {
+  "id": "K-W1",
+  "anchor": "def wiring_findings(source):\n    \"\"\"Findings over every check(\"<name>\", <ok>, ...) call in source; [] means wired.\n",
+  "replacement": "def wiring_findings(source):\n    return []\n    \"\"\"Findings over every check(\"<name>\", <ok>, ...) call in source; [] means wired.\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "wiring scanner neutered -> gate-predicates FAIL"
+ },
+ {
+  "id": "K-W2",
+  "anchor": "check(\"gate-wiring\", consumed(wiring_log, wiring_ok(wfind)),",
+  "replacement": "check(\"gate-wiring\", True,",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-checkids"
+  ],
+  "expect": "gate-wiring call neutered -> gate-checkids FAIL side_logs"
+ },
+ {
+  "id": "K-N1",
+  "anchor": "def wiring_ok(findings):\n    return findings == []",
+  "replacement": "def wiring_ok(findings):\n    return True",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "wiring_ok neutered -> gate-predicates FAIL"
+ },
+ {
+  "id": "K-P1",
+  "anchor": "def predicates_ok(rows, expect):\n    return bool(rows) and len(rows) == expect and all(got == want for got, want in rows)",
+  "replacement": "def predicates_ok(rows, expect):\n    return True",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-checkids"
+  ],
+  "expect": "predicates_ok neutered -> gate-checkids FAIL side_logs"
+ },
+ {
+  "id": "K-P2",
+  "anchor": "check(\"gate-predicates\", predicates_ok(rows, GATE_ROWS),",
+  "replacement": "check(\"gate-predicates\", True,",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-wiring"
+  ],
+  "expect": "gate-predicates call neutered -> gate-wiring FAIL"
+ },
+ {
+  "id": "K-G1",
+  "anchor": "    return set(done) == set(required) and all(log == [True] for log in side_logs)\n",
+  "replacement": "    return True\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "gate_checkids_ok neutered -> gate-predicates FAIL"
+ },
+ {
+  "id": "K-C1",
+  "anchor": "check(\"gate-checkids\", gate_checkids_ok(done, required, side_logs),",
+  "replacement": "check(\"gate-checkids\", True,",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-wiring"
+  ],
+  "expect": "gate-checkids call neutered -> gate-wiring FAIL"
+ },
+ {
+  "id": "K-NP",
+  "anchor": "check(\"gate-negpolarity\", gate_negpolarity_ok(neg_ok, neg_ret_ok),",
+  "replacement": "check(\"gate-negpolarity\", True,",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-wiring"
+  ],
+  "expect": "gate-negpolarity call neutered -> gate-wiring FAIL"
+ },
+ {
+  "id": "K-CL",
+  "anchor": "def _pred_call(node, name):\n    \"\"\"The call node when node is name(...) or consumed(<log>, name(...)); else None.\"\"\"\n",
+  "replacement": "def _pred_call(node, name):\n    return node if isinstance(node, ast.Call) else None\n    \"\"\"The call node when node is name(...) or consumed(<log>, name(...)); else None.\"\"\"\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "_pred_call neutered (any call is the predicate call) -> gate-predicates FAIL"
+ },
+ {
+  "id": "K-T1",
+  "anchor": "def tmpdir_refused():\n    \"\"\"True (after a stderr line) when TMPDIR is set but is not an existing directory.\"\"\"\n    tmp = os.environ.get(\"TMPDIR\")\n    if tmp is not None and not os.path.isdir(tmp):\n        print(\"recheck-cwd: TMPDIR %s is not a directory\" % tmp, file=sys.stderr)\n        return True\n    return False",
+  "replacement": "def tmpdir_refused():\n    return False",
+  "class": "assertion",
+  "kill_cases": [
+   "tmpdir-refusal"
+  ],
+  "expect": "TMPDIR refusal removed -> tmpdir-refusal FAIL (exception caught as ret=-99)"
+ },
+ {
+  "id": "N10",
+  "anchor": "            return _pred_call(node.args[1], name)\n",
+  "replacement": "            return node\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "consumed() recursion accepts any wrapped call -> gate-predicates FAIL (wrong_src row)"
+ },
+ {
+  "id": "N11",
+  "anchor": "            (predicates_ok([], 0), False), (predicates_ok([(True, True)], 2), False),\n",
+  "replacement": "            (predicates_ok([], 0), False),\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "a gate-predicates row deleted -> gate-predicates FAIL rows=27 expect=28"
+ },
+ {
+  "id": "N21",
+  "anchor": "            counts[\"exit_other\"] += 1\n",
+  "replacement": "            counts[\"exit1_foreign\"] += 1\n",
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census"
+  ],
+  "expect": "exit_other bucket folded into exit1_foreign -> prefix-census FAIL"
+ },
+ {
+  "id": "N25",
+  "anchor": "all(log == [True] for log in side_logs)",
+  "replacement": "all(log == [True] for log in side_logs[:1])",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "only the first side log consulted -> gate-predicates FAIL"
+ },
+ {
+  "id": "N26",
+  "anchor": "    return set(done) == set(required) and",
+  "replacement": "    return set(done) >= set(required) and",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "done-superset accepted -> gate-predicates FAIL"
+ },
+ {
+  "id": "N27",
+  "anchor": "first_ran is True and rest_ran is False",
+  "replacement": "first_ran is True",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "both-headers restoration limb dropped -> gate-predicates FAIL"
+ },
+ {
+  "id": "N30",
+  "anchor": "cwd=scratch, env=env,",
+  "replacement": "cwd=None, env=env,",
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census"
+  ],
+  "expect": "foreign cwd inherited -> prefix-census FAIL (fresh-cwd entry exits 1)"
+ },
+ {
+  "id": "T1",
+  "anchor": "gate_consume_ok(clean_ok, limb_log),",
+  "replacement": "gate_consume_ok(True, limb_log),",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-wiring"
+  ],
+  "expect": "gate-consume predicate argument neutered to a constant -> gate-wiring FAIL F4"
+ },
+ {
+  "id": "T2",
+  "anchor": "            ret == 1 and \"RECHECK-CWD-RESULT nonconformant\" in out)",
+  "replacement": "            True and \"RECHECK-CWD-RESULT nonconformant\" in out)",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-negpolarity"
+  ],
+  "expect": "RESULT limb ret conjunct neutered -> gate-negpolarity FAIL neg_ret_ok=True"
+ },
+ {
+  "id": "M1",
+  "anchor": "if tmp is not None and not os.path.isdir(tmp):",
+  "replacement": "if tmp is not None and not os.path.exists(tmp):",
+  "class": "assertion",
+  "kill_cases": [
+   "tmpdir-file"
+  ],
+  "expect": "regular-file TMPDIR accepted by the guard -> tmpdir-file FAIL"
+ },
+ {
+  "id": "M2",
+  "anchor": "            return -1\n",
+  "replacement": "            return 0\n",
+  "class": "assertion",
+  "kill_cases": [
+   "timeout-bucket"
+  ],
+  "expect": "timeout counted as exit 0 -> timeout-bucket FAIL"
+ },
+ {
+  "id": "S01",
+  "anchor": "prefix = \"cd %s && \" % lane",
+  "replacement": "prefix = \"cd %s\" % lane",
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-literal"
+  ],
+  "expect": "prefix loses its ' && ' -> prefix-literal FAIL"
+ },
+ {
+  "id": "S02",
+  "anchor": "prefix = \"cd %s && \" % lane",
+  "replacement": "prefix = \"cd %s &&\" % lane",
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-literal"
+  ],
+  "expect": "prefix loses its trailing space -> prefix-literal FAIL"
+ },
+ {
+  "id": "S04",
+  "anchor": "    return (counts[\"noprefix\"] == 0 and counts[\"exit2_foreign\"] == 0\n            and",
+  "replacement": "    return (counts[\"noprefix\"] == 0\n            and",
+  "class": "assertion",
+  "kill_cases": [
+   "conform-limbs"
+  ],
+  "expect": "conform drops the exit2_foreign conjunct -> conform-limbs FAIL"
+ },
+ {
+  "id": "S05",
+  "anchor": "            and counts[\"norecheck\"] == 0 and counts[\"restoration_only\"] == 0\n",
+  "replacement": "            and counts[\"restoration_only\"] == 0\n",
+  "class": "assertion",
+  "kill_cases": [
+   "conform-limbs"
+  ],
+  "expect": "conform drops the norecheck conjunct -> conform-limbs FAIL"
+ },
+ {
+  "id": "S37",
+  "anchor": "            if line.startswith(\"restoration-recheck:\"):",
+  "replacement": "            if line.startswith(\"restoration\"):",
+  "class": "assertion",
+  "kill_cases": [
+   "conform-limbs"
+  ],
+  "expect": "restoration header prefix broadened -> conform-limbs FAIL"
+ },
+ {
+  "id": "S07",
+  "anchor": "def census(root, lane, verbose=False):",
+  "replacement": "def census(root, lane, verbose=True):",
+  "class": "assertion",
+  "kill_cases": [
+   "output-lines"
+  ],
+  "expect": "census verbose by default -> output-lines FAIL"
+ },
+ {
+  "id": "S19",
+  "anchor": "                print(\"RESTORATION-ONLY %s\" % name)\n",
+  "replacement": "                pass\n",
+  "class": "assertion",
+  "kill_cases": [
+   "output-lines"
+  ],
+  "expect": "RESTORATION-ONLY line deleted -> output-lines FAIL"
+ },
+ {
+  "id": "S20",
+  "anchor": "                print(\"NORECHECK %s\" % name)\n",
+  "replacement": "                pass\n",
+  "class": "assertion",
+  "kill_cases": [
+   "output-lines"
+  ],
+  "expect": "NORECHECK line deleted -> output-lines FAIL"
+ },
+ {
+  "id": "S21",
+  "anchor": "            print(\"ENTRY %s noprefix=%d foreign_exit=%d\" % (name, int(noprefix), code))\n",
+  "replacement": "            pass\n",
+  "class": "assertion",
+  "kill_cases": [
+   "output-lines"
+  ],
+  "expect": "ENTRY line deleted -> output-lines FAIL"
+ },
+ {
+  "id": "S22",
+  "anchor": "        if verbose or noprefix or code == 2:\n",
+  "replacement": "        if verbose or noprefix:\n",
+  "class": "assertion",
+  "kill_cases": [
+   "output-lines"
+  ],
+  "expect": "ENTRY drops the code == 2 clause -> output-lines FAIL"
+ },
+ {
+  "id": "S08",
+  "anchor": "    return clean_ok is True and limb_log == [True]\n",
+  "replacement": "    return clean_ok == True and limb_log == [True]\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "gate_consume_ok identity -> equality -> gate-predicates FAIL"
+ },
+ {
+  "id": "S09",
+  "anchor": "    return clean_ok is True and limb_log == [True]\n",
+  "replacement": "    return clean_ok is True and limb_log[:1] == [True]\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "limb_log truncated to its first element -> gate-predicates FAIL"
+ },
+ {
+  "id": "S10",
+  "anchor": "first_ran is True and rest_ran is False",
+  "replacement": "first_ran is True and not rest_ran",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "both_headers rest_ran falsiness -> gate-predicates FAIL"
+ },
+ {
+  "id": "S41",
+  "anchor": "counts_match is True and first_ran is True and",
+  "replacement": "counts_match is True and first_ran == True and",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "both_headers first_ran identity -> equality -> gate-predicates FAIL"
+ },
+ {
+  "id": "S40",
+  "anchor": "    return neg_ok is False and neg_ret_ok is False\n",
+  "replacement": "    return neg_ok is False and neg_ret_ok == False\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "neg_ret_ok identity -> equality -> gate-predicates FAIL"
+ },
+ {
+  "id": "S11",
+  "anchor": "all(got == want for got, want in rows)",
+  "replacement": "all(bool(got) == bool(want) for got, want in rows)",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "predicates_ok elements compared by truthiness -> gate-predicates FAIL"
+ },
+ {
+  "id": "S12",
+  "anchor": "bool(rows) and len(rows) == expect and",
+  "replacement": "bool(rows) and len(rows) >= expect and",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "predicates_ok row count a lower bound -> gate-predicates FAIL"
+ },
+ {
+  "id": "S13",
+  "anchor": "    return set(done) == set(required) and all(log == [True] for log in side_logs)\n",
+  "replacement": "    return set(done) == set(required) and all(True in log for log in side_logs)\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "side log membership instead of exact log -> gate-predicates FAIL"
+ },
+ {
+  "id": "S14",
+  "anchor": "        if (isinstance(ok, ast.Constant) and ok.value is True) or (\n                isinstance(ok, ast.BoolOp)\n                and any(isinstance(v, ast.Constant) and v.value is True for v in ok.values)):\n",
+  "replacement": "        if (isinstance(ok, ast.Constant) and ok.value is True):\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "F1 BoolOp limb deleted -> gate-predicates FAIL"
+ },
+ {
+  "id": "S16",
+  "anchor": "and any(isinstance(v, ast.Constant) and v.value is True for v in ok.values)",
+  "replacement": "and all(isinstance(v, ast.Constant) and v.value is True for v in ok.values)",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "F1 BoolOp operand quantifier any -> all -> gate-predicates FAIL"
+ },
+ {
+  "id": "S15",
+  "anchor": "if any(isinstance(a, ast.Constant) for a in call.args):",
+  "replacement": "if any(isinstance(a, ast.Constant) and a.value is True for a in call.args):",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "F4 narrowed to constant True -> gate-predicates FAIL"
+ },
+ {
+  "id": "S43",
+  "anchor": "        if node.func.id == name:\n",
+  "replacement": "        if node.func.id.lower() == name.lower():\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-predicates"
+  ],
+  "expect": "case-insensitive predicate match -> gate-predicates FAIL"
+ },
+ {
+  "id": "S25",
+  "anchor": "if tmp is not None and not os.path.isdir(tmp):",
+  "replacement": "if not os.path.isdir(tmp):",
+  "class": "assertion",
+  "kill_cases": [
+   "tmpdir-unset"
+  ],
+  "expect": "None guard dropped (TypeError on unset TMPDIR) -> tmpdir-unset FAIL"
+ },
+ {
+  "id": "S30",
+  "anchor": "                  file=sys.stderr)\n            return 2\n",
+  "replacement": "                  file=sys.stderr)\n            return 0\n",
+  "class": "assertion",
+  "kill_cases": [
+   "usage-guards"
+  ],
+  "expect": "usage error exits 0 -> usage-guards FAIL"
+ },
+ {
+  "id": "S31",
+  "anchor": "        raise SystemExit(\"recheck-cwd: no corpus/knowledge under %s\" % root)",
+  "replacement": "        print(\"recheck-cwd: no corpus/knowledge under %s\" % root)",
+  "class": "assertion",
+  "kill_cases": [
+   "usage-guards"
+  ],
+  "expect": "missing-corpus guard prints instead of exiting -> usage-guards FAIL"
+ },
+ {
+  "id": "S39",
+  "anchor": "    counts = census(os.path.abspath(root), lane, verbose)",
+  "replacement": "    counts = census(os.path.abspath(root), root, verbose)",
+  "class": "assertion",
+  "kill_cases": [
+   "usage-guards"
+  ],
+  "expect": "main passes root where lane belongs -> usage-guards FAIL"
+ },
+ {
+  "id": "NT1",
+  "anchor": "#!/usr/bin/env python3\n",
+  "replacement": "#!/usr/bin/env python3\n# mutbat neutral row: a comment line\n",
+  "class": "neutral",
+  "expect": "comment line after the shebang (moves every later line by one)"
+ },
+ {
+  "id": "NT2",
+  "anchor": "    def counts_str(counts, want):\n        return \",\".join(\"%s=%d\" % (k, counts[k]) for k in sorted(want))",
+  "replacement": "    def counts_str(cnt, want):\n        return \",\".join(\"%s=%d\" % (k, cnt[k]) for k in sorted(want))",
+  "class": "neutral",
+  "expect": "local parameter renamed counts -> cnt (AST changes, behaviour does not)"
+ },
+ {
+  "id": "NT3",
+  "anchor": "TIMEOUT = 120\n",
+  "replacement": "TIMEOUT = 120  # seconds\n",
+  "class": "neutral",
+  "expect": "trailing comment on a constant"
+ },
+ {
+  "id": "J1",
+  "anchor": "        counts[\"entries\"] += 1\n",
+  "replacement": "        counts[\"entries\"] += 1\n        if name.startswith(\"osv-\"):\n            continue\n",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "expect": "an osv-named entry is counted then skipped -> bucket-sum FAIL"
+ },
+ {
+  "id": "S07M",
+  "anchor": "    root, lane, verbose = \".\", DEFAULT_LANE, False\n",
+  "replacement": "    root, lane, verbose = \".\", DEFAULT_LANE, True\n",
+  "class": "assertion",
+  "kill_cases": [
+   "main-default"
+  ],
+  "expect": "main() verbose by default -> main-default FAIL"
+ },
+ {
+  "id": "B1",
+  "anchor": "            and buckets == counts[\"entries\"])\n",
+  "replacement": "            )\n",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "expect": "conform_ok loses the bucket-sum conjunct -> bucket-sum FAIL"
+ },
+ {
+  "id": "B2",
+  "anchor": "    conform = conform_ok(counts)\n",
+  "replacement": "    conform = (counts[\"noprefix\"] == 0 and counts[\"exit2_foreign\"] == 0\n               and counts[\"norecheck\"] == 0 and counts[\"restoration_only\"] == 0)\n",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "expect": "main() ignores the bucket sum -> bucket-sum FAIL"
+ }
+]

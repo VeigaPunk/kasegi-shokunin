@@ -1,0 +1,382 @@
+# Round 82 — lesson (kasegi, attempt 1)
+
+## L1 verdicts and landing measurements (integration, after the wave)
+
+**L1 verdict: C1 VERIFIED** on P1–P9 and **L1 verdict: C2 VERIFIED** on B0–B8, each measured by the L1 on the landing tree (receipt `.ufo/waves/round-82/l1/L1-landing-r82.txt`, produced by `.ufo/waves/round-82/l1/landing-r82.sh`); the receipt's first block prints `FROZEN-OK` for every frozen byte (claims, candidate, counter, table, builder, entry gate, forgery driver, manifest, snapshot) against the freeze `b9589300810a477f4d6794bfabc24b22fb50b846`. Values: P1 `selftest cases=24 failures=0` rc 0; P2 `81677e9d…e050`; P3 `baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=59/60` rc 0; P4 F6/F7 rc 0 `killed=60` under r81 and rc 1 `decoy=broken` under r82, F8 rc 0 under both; P5 `entries=96 … exit0_foreign=74 exit1_foreign=22 …` conformant rc 0 (74+22 = 96 = `ls corpus/knowledge/*.md | wc -l`); P6 J1-edited instrument `exit0_foreign=67` nonconformant rc 1; P7 both pin rows `cases=24`, no `cases=22`; P8 1/1/0; P9 `mutbat selftest ok … selfdiff_forgery_exit=False` rc 0. B0 sha256 OK + six OK rc 0; B1 one registry row (S116), registry 116; B2 96, expected list set-equal; B3 `FRONTIER-CENSUS rows=58 admitted=58 closed=58 problem-rows=0 registry=116`, `FRONTIER-PASS F58 ids=S116`; B4 `unbound=0`; B5 foreign rc 0; B6 `literal_total 0`; B7 `kasegi ok` rc 0; B8 entry `ruleless=0` pass rc 0 and the r81 labelled dump `ruleless=6` fail rc 1. Harm: SKILL.md density mean 272.8 before and after.
+
+Seat review applied to the entry before landing (outside every frozen byte; B8 re-run after them: pass): ExecC2Gate D1 and ReviewC2 H1 (a Limits receipt claimed `prints nothing and exits 1` for a grep that prints `7:GET /v1experimental/importfindings` — corrected to state the one navigation line; mined as M82-3), ScoutDistinct D1/D2 (Appendix A attribution; self-matching sweep), ReviewC2 M1 (title said "live" URLs), M2 (attribution overclaim), M3 (the F57 link to "the quality bar" is a title match, now labelled an inference), M4/L1/L2/N1 (paraphrases that added words the page does not state), L3 (Not-claimed inventory gained the second Valid sentence), L4 (Distinctness gained F31 Claim 1's schema_version requirement).
+
+**What the wave falsified (recorded, never verdict changes — the frozen kill rules route findings outside P1–P9 and B0–B8 to round 83):**
+
+- `CriticClaims` F1 (Major): the counter names each mutant's temp directory after its row id (`mutbat.py:221`, `prefix="mutbat-%s-" % row["id"]`) and each decoy `mutbat-decoy-` (`:189`). A forgery that reads its own directory name scores `killed=60 … neutral_ok=3/3 decoy=ok` rc 0 under the r82 counter (`w1/CriticClaims-receipts/mutbat-pathforge-table.txt`). The claim's statement already says "not every forgery"; what F1 falsifies is the classification of F8 as *the* residual class. Mined as M82-2 with a fix shown able to fail and pass (`l1/M82-2-constprefix-r82.txt`).
+- `ReviewC1` Major 1: the decoys are deterministic and unkeyed; a self-diff forgery that whitelists the sha256 of its own two decoy renderings would pass (simulated, not run under the counter: `[INFERENCE]` in the seat's own words). Routed: per-run secret in the decoy.
+- `CriticClaims` F2: P1/P5/P6/P8 are satisfiable by a 30-line stub; the joint set's anti-junk force is P2's pin. F3: the do-nothing fails; `== -> >=` in conform_ok survives the selftest and is caught only as NOT-DERIVED (also `ReviewC1` m1, `MutC1Hunt` G2).
+- `CriticClaims` F4 and `MutEntryGate`: G5 is lexical — a labelled S116 entry with filler rule text passes (`junk-s116.md`), and 8 of 14 G5 mutants survive the gate's detectors (7 live gaps with witnesses, 1 equivalent); three worthless entries (boilerplate, copied rules, vacuous) pass the unmutated gate.
+- `MutC1Hunt`: 22 hunt rows, 14 killed, 7 survived (3 equivalent, 4 real gaps: G1 `exit_other` term unpinned, G2 `>=`, G3 `--verbose` path unasserted, G4 main-default negative limb replaceable by `len(out22) > 0`).
+- `MutCounter`: 18 single-point mutants of the decoy limb, 10 killed, 8 survived (MC01/MC02 drop one decoy's execution, MC04/MC12 move the `hidden` floor, MC16 a parse failure accepted, MC17 the Traceback clause; MC08/MC09 equivalent); no mutant makes a frozen predicate false while surviving every detector, and the limb's enforcement (MC05, MC06, MC14) is killed by both P9 and P4.
+- `ScoutDistinct`: `SCOUT novel=6/6 live_sha_match=yes`. D1: the entry attributed the whole Gemini-generated Appendix A to F31 / S080; only its :85 and :86 rules are held there (corrected in the entry and README; the OSV JSON Schema is now an unopened lead). D2: the recorded literal sweep matched the entry itself once it existed (now excludes it; re-run prints nothing). Both applied before landing.
+- `ConnectorOverlap`: C2 ground is lane-unique (no sibling holds the page); no still-unimplemented `considerthese/2026-10-26.md` proposal fits; the assimilation collision count (86) tracks id labels, not sources — 1 same-source pair, 85 different sources under the same id, 20 same-source pairs the check misses (`w1/ConnectorOverlap-receipts/assimilation-swap-control.txt`).
+- **Assimilation: none.** 116 registry ids, 94 staged ids, 86 collisions (`.ufo/waves/round-82/assimilation/`); nothing appended while the r77 L0 question stays open.
+
+Frozen claims: `.ufo/waves/round-82/claims.json` (freeze `b9589300`, base `1a50638e`). One v1 wave of **12 seats** (counted from `.ufo/waves/round-82/w1-spec.json` items): `ExecC1Battery`, `ExecC1RealTree`, `ExecC2Gate`, `ScribeLesson`, `ScoutDistinct`, `ReviewC1`, `ReviewC2`, `MutCounter`, `MutEntryGate`, `MutC1Hunt`, `CriticClaims`, `ConnectorOverlap`. Seat reports under `.ufo/waves/round-82/w1/`.
+
+The scribe draft follows (`## Gate` onward); the L1 owns every verdict line above.
+
+Scribe draft for the L1 to integrate into `corpus/lessons/round-82.md`. Freeze commit `b9589300810a477f4d6794bfabc24b22fb50b846`, base `1a50638edabb9bd1a4a4784774fc984cb5f2360f`; one v1 wave of **12 seats** — `ExecC1Battery`, `ExecC1RealTree`, `ExecC2Gate`, `ScribeLesson`, `ScoutDistinct`, `ReviewC1`, `ReviewC2`, `MutCounter`, `MutEntryGate`, `MutC1Hunt`, `CriticClaims`, `ConnectorOverlap` (counted from `.ufo/waves/round-82/w1-spec.json` `items`: 12). Three kinds of value appear below and are not interchangeable: *(measured this draft)* — re-measured by this seat with `sha256sum`, `git show`, `grep -n`, `grep -n -F`, `awk` or `wc` at the instant `2026-11-06T21:14:55Z`; *control* — a pre-freeze run committed in the freeze commit, quoted from its file and **not re-run** by this seat; *landing-only* — exists only as a landing-commit measurement or an L1 verdict, named by name in § Landing values and never valued here.
+
+## Gate
+
+### C1 — depth:verifiability — the recheck-cwd census successor (bucket-sum and main-default limbs, 63-row battery, counter-owned decoy limb)
+
+In one sentence: the round-82 recheck-cwd successor adds `conform_ok` with the bucket-sum conjunct and two checks (`bucket-sum`, `main-default`), and the frozen 63-row table kills it on all 60 non-neutral rows — including the round-81 junk edit `J1` and the `main()`-site survivor `S07M` that the landed r81 bytes let through — while the landed r81 bytes score 54/60 with `baseline=bad` and `decoy=broken`, and the counter's new decoy limb rejects the two table-reading forgeries (`F6`, `F7`) the r81 counter scores `rc=0`.
+
+**Frozen bytes — sha256 re-measured by `sha256sum` over the wave dir, then proved equal to the blob at the freeze commit (`git show b9589300:<path> | sha256sum`); 16 of 16 paths printed EQUAL.**
+
+| artifact | path | sha256 (measured; worktree = freeze-commit blob) | pinned by |
+|---|---|---|---|
+| candidate | `.ufo/waves/round-82/c1/recheck-cwd-census.py` | `81677e9dc030ed59d2e3481c8b1c2bc8d083e6805cc06fbb25052a685773e050` | claims C1 `candidate` |
+| counter | `.ufo/waves/round-82/c1/mutbat.py` | `a7d4db43cdc8b2948af9c8c5f1baee827979fbb3d7dac0f39ecd46fad60ac55c` | claims C1 `counter` |
+| table | `.ufo/waves/round-82/c1/mutant-table.json` | `045edc07c9edb24cb401b241e512745cc81e4d0f36eea26e5362b49e7cc5f26a` | claims C1 `counter` |
+| builder | `.ufo/waves/round-82/c1/build-table.py` | `07727196c26cd83b2f016d3d976fa2ffaaaf26b54e14c701a0a5957ca9885785` | claims C1 `counter` (generated by) |
+| forgery driver | `.ufo/waves/round-82/controls/c1-forgeries-r82.py` | `52cc6be5aa9d72c9d0644c1d97e252b215d792e5c00445417aa477d004d53908` | claims C1 `counter` |
+| entry gate (C2) | `.ufo/waves/round-82/c2/entry-gate.py` | `1c5ddd52675b5aba5b5598023152779f307c2c3c2d84ddcae09ceec1c714058f` | frozen by C2's kill rule; no hash pinned |
+| claims | `.ufo/waves/round-82/claims.json` | `4daff9db26b4869bb02d16714316a29cc6c6a9077093c7ede7823bc82b3d3244` | frozen by both kill rules; no hash pinned |
+| S116 snapshot | `corpus/source-snapshots/round-82/S116.txt` | `2198d329bf6a8711ac28ae9221351162d61679699c0b45acb8ebb95cadce9ca0` | manifest `sha256`; claims C2 `source` |
+| manifest | `corpus/source-snapshots/round-82/manifest.json` | `e0e4a246644ff4174d6724d9c73dd40c3674eb8a008a6209afc9b13e2e2f979b` | frozen by C2's kill rule; no hash pinned |
+| base instrument | `corpus/instruments/recheck-cwd-census.py` @ base `1a50638e` and @ freeze `b9589300` | `a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0` | claims C1 `target_instrument` |
+
+The base instrument is still the base bytes **at the freeze commit** (measured through `git show`), so the successor exists only in the wave dir and, at the measurement instant, as an uncommitted worktree edit: `git status --porcelain` lists ` M corpus/instruments/recheck-cwd-census.py`, and that worktree file measures `81677e9d…` — the frozen candidate. The swap therefore sits in the worktree, not in any commit this seat can read.
+
+**Table composition (measured from the frozen JSON, `python3` over the list): 63 rows — `assertion` = 59, `neutral` = 3, `exception` = 1.** The three neutral rows (`NT1 NT2 NT3`) carry no `kill_cases`; the one exception row is `K-M3` (`kill_cases: ["gate-consume"]`, `expect` naming a logged `NameError`). The 63 are the 59 r81 rows carried forward — with `S04` and `S05` re-anchored on `conform_ok`, which the builder reports as `reanchored=2` — plus **four new rows**. Declared kill cases over the 60 non-neutral rows: `gate-predicates` 23, `gate-wiring` 6, `output-lines` 5, `gate-checkids` 4, `gate-negpolarity` 3, `conform-limbs` 3, `usage-guards` 3, `bucket-sum` 3, `gate-consume` 2, `prefix-census` 2, `prefix-literal` 2, `gate-regs` 1, `tmpdir-refusal` 1, `tmpdir-file` 1, `timeout-bucket` 1, `tmpdir-unset` 1, `main-default` 1. The declared case is the case the row *must* fail, not the full fail set: `S21` declares `output-lines` and the candidate run shows it failing `main-default,output-lines`.
+
+**The four new rows, with their `kill_cases` (quoted from the frozen table).**
+
+| row | anchor (exact) | replacement | `kill_cases` | `expect` |
+|---|---|---|---|---|
+| `J1` | `        counts["entries"] += 1\n` | same line + `        if name.startswith("osv-"):\n            continue\n` | `["bucket-sum"]` | an osv-named entry is counted then skipped -> bucket-sum FAIL |
+| `S07M` | `    root, lane, verbose = ".", DEFAULT_LANE, False\n` | `    root, lane, verbose = ".", DEFAULT_LANE, True\n` | `["main-default"]` | main() verbose by default -> main-default FAIL |
+| `B1` | `            and buckets == counts["entries"])\n` | `            )\n` | `["bucket-sum"]` | conform_ok loses the bucket-sum conjunct -> bucket-sum FAIL |
+| `B2` | `    conform = conform_ok(counts)\n` | `    conform = (counts["noprefix"] == 0 and counts["exit2_foreign"] == 0\n               and counts["norecheck"] == 0 and counts["restoration_only"] == 0)\n` | `["bucket-sum"]` | main() ignores the bucket sum -> bucket-sum FAIL |
+
+`J1` is the round-81 CriticClaims (c) junk edit verbatim; `S07M` is the `main()`-site transform the round-81 spot-check's defect 5 says row `S07` missed (`S07` mutates `census()`'s default, `S07M` mutates `main()`'s); `B1` and `B2` are the two sites the bucket-sum conjunct lives at — `conform_ok` and its caller.
+
+**Receipts, quoted verbatim from the control files (control runs, not re-run by this seat).**
+
+*Do-nothing — landed r81 bytes `a3b58aa5` under the r82 counter* (`.ufo/waves/round-82/controls/c1-donothing-r82.txt`), the decisive lines:
+
+```
+a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0  corpus/instruments/recheck-cwd-census.py
+MUTANT S04 verdict=NOT-DERIVED occurrences=0 counted=no
+MUTANT S05 verdict=NOT-DERIVED occurrences=0 counted=no
+MUTANT NT1 verdict=NEUTRAL-BROKEN rc=0 fails=0 failed_cases=- counted=no
+MUTANT NT2 verdict=NEUTRAL-BROKEN rc=0 fails=0 failed_cases=- counted=no
+MUTANT NT3 verdict=NEUTRAL-BROKEN rc=0 fails=0 failed_cases=- counted=no
+MUTANT J1 verdict=SURVIVED rc=0 fails=0 failed_cases=- counted=no
+MUTANT S07M verdict=SURVIVED rc=0 fails=0 failed_cases=- counted=no
+MUTANT B1 verdict=NOT-DERIVED occurrences=0 counted=no
+MUTANT B2 verdict=NOT-DERIVED occurrences=0 counted=no
+MUTBAT target_sha256=a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0 baseline=bad rows=63 killed=54 survived=2 miskilled=0 dirty=0 notderived=4 neutral_ok=0/3 decoy=broken decoy_hidden=59/60
+rc=1
+```
+
+`54 + 2 + 4 = 60` non-neutral rows, all accounted for: `S04`/`S05`/`B1`/`B2` are not derivable from the r81 bytes — `grep -c -F 'conform_ok'` over the base blob prints 0 (the candidate prints 6), so the anchors those four rows name do not exist there — while `J1`'s and `S07M`'s anchors do exist in the base (1 hit each) and those two rows survive; the three neutrals break.
+
+*Candidate under the r82 counter* (`.ufo/waves/round-82/controls/c1-candidate-r82.txt`), the decisive lines:
+
+```
+build-table rows=63 neutral=3 new=4 reanchored=2
+rc=0
+mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False bad_tables=[True, True, True]
+rc=0
+selftest cases=24 failures=0
+rc=0
+MUTANT S04 verdict=KILLED rc=1 fails=1 failed_cases=conform-limbs counted=yes
+MUTANT S05 verdict=KILLED rc=1 fails=1 failed_cases=conform-limbs counted=yes
+MUTANT S21 verdict=KILLED rc=1 fails=2 failed_cases=main-default,output-lines counted=yes
+MUTANT NT1 verdict=NEUTRAL-OK rc=0 fails=0 failed_cases=- counted=yes
+MUTANT NT2 verdict=NEUTRAL-OK rc=0 fails=0 failed_cases=- counted=yes
+MUTANT NT3 verdict=NEUTRAL-OK rc=0 fails=0 failed_cases=- counted=yes
+MUTANT J1 verdict=KILLED rc=1 fails=1 failed_cases=bucket-sum counted=yes
+MUTANT S07M verdict=KILLED rc=1 fails=1 failed_cases=main-default counted=yes
+MUTANT B1 verdict=KILLED rc=1 fails=1 failed_cases=bucket-sum counted=yes
+MUTANT B2 verdict=KILLED rc=1 fails=1 failed_cases=bucket-sum counted=yes
+MUTBAT target_sha256=81677e9dc030ed59d2e3481c8b1c2bc8d083e6805cc06fbb25052a685773e050 baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=59/60
+rc=0
+## P5 analogue: candidate over the lane tree
+RECHECK-CWD entries=96 noprefix=0 exit2_foreign=0 exit0_foreign=74 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+rc=0
+## P7 analogue
+1
+1
+0
+```
+
+The receipt labels the last block `P7 analogue`; the claim's predicate id for those three greps is `P8`. `74 + 22 = 96` — the bucket sum closes on the candidate.
+
+*Junk edit on the real tree* (`.ufo/waves/round-82/controls/c1-junkedit-r82.txt`), quoted whole:
+
+```
+# C1 junk-edit control on the real tree (round-81 CriticClaims (c) edit) — 2026-11-06T21:07:33Z
+## r81 junk-edited candidate (w1/CriticClaims-receipts/candidate-junkedit.py) over the lane
+RECHECK-CWD entries=96 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+rc=0
+## r82 candidate with the same edit (table row J1) over the lane
+RECHECK-CWD entries=96 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT nonconformant
+rc=1
+```
+
+The same numbers, opposite results: `67 + 22 = 89` against `entries=96`, seven short — and `ls corpus/knowledge/osv-*.md | wc -l` = 7, the entries the junk edit counts and then skips. The r81 bytes call that conformant; the r82 bytes call it nonconformant, which is the bucket-sum conjunct doing the work the round-81 P5 did not do.
+
+*Forgeries* (`.ufo/waves/round-82/controls/c1-forgeries-r82.txt`), header and all six lines:
+
+```
+52cc6be5aa9d72c9d0644c1d97e252b215d792e5c00445417aa477d004d53908  .ufo/waves/round-82/controls/c1-forgeries-r82.py
+fa96223b38f93b5fd9a08d11923dc7f7fe7f35a61b734c0cb3503381062843b4  .ufo/waves/round-81/c1/mutbat.py
+a7d4db43cdc8b2948af9c8c5f1baee827979fbb3d7dac0f39ecd46fad60ac55c  .ufo/waves/round-82/c1/mutbat.py
+045edc07c9edb24cb401b241e512745cc81e4d0f36eea26e5362b49e7cc5f26a  .ufo/waves/round-82/c1/mutant-table.json
+FORGERY F6-selfdiff counter=r81 forgery_sha256=5950fee438fa69fa58a0c585bead5fb0563dc1034aead20260ea9d63d62e6f0a rc=0 verdicts={"KILLED": 60, "NEUTRAL-OK": 3} MUTBAT target_sha256=5950fee438fa69fa58a0c585bead5fb0563dc1034aead20260ea9d63d62e6f0a baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3
+FORGERY F6-selfdiff counter=r82 forgery_sha256=5950fee438fa69fa58a0c585bead5fb0563dc1034aead20260ea9d63d62e6f0a rc=1 verdicts={"KILLED": 60, "NEUTRAL-OK": 3} MUTBAT target_sha256=5950fee438fa69fa58a0c585bead5fb0563dc1034aead20260ea9d63d62e6f0a baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=broken decoy_hidden=59/60
+FORGERY F7-wsnorm counter=r81 forgery_sha256=342f4c61af154a195c9818de0bc80b907f22fe6b202a8448681a7042ac178b46 rc=0 verdicts={"KILLED": 60, "NEUTRAL-OK": 3} MUTBAT target_sha256=342f4c61af154a195c9818de0bc80b907f22fe6b202a8448681a7042ac178b46 baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3
+FORGERY F7-wsnorm counter=r82 forgery_sha256=342f4c61af154a195c9818de0bc80b907f22fe6b202a8448681a7042ac178b46 rc=1 verdicts={"KILLED": 60, "NEUTRAL-OK": 3} MUTBAT target_sha256=342f4c61af154a195c9818de0bc80b907f22fe6b202a8448681a7042ac178b46 baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=broken decoy_hidden=59/60
+FORGERY F8-astembed counter=r81 forgery_sha256=b37e7da6a7e66db7c3ff2563c87d585e89dadbad6c616a8e1517d4bf512930f3 rc=0 verdicts={"KILLED": 60, "NEUTRAL-OK": 3} MUTBAT target_sha256=b37e7da6a7e66db7c3ff2563c87d585e89dadbad6c616a8e1517d4bf512930f3 baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3
+FORGERY F8-astembed counter=r82 forgery_sha256=b37e7da6a7e66db7c3ff2563c87d585e89dadbad6c616a8e1517d4bf512930f3 rc=0 verdicts={"KILLED": 60, "NEUTRAL-OK": 3} MUTBAT target_sha256=b37e7da6a7e66db7c3ff2563c87d585e89dadbad6c616a8e1517d4bf512930f3 baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=59/60
+rc=0
+```
+
+`F6` and `F7` reproduce the whole kill set (`killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3`) under both counters; only the r82 counter's decoy limb separates them, and it does so without reading the byte pin (`forgery_sha256` ≠ the candidate's, and the counter still prints `baseline=ok`). `F8` embeds the AST and passes both counters — the limit the claim declares, not a pass condition.
+
+**Landing state at the measurement instant.** `HEAD` = the freeze commit `b9589300`; the worktree is mid-landing (uncommitted `M` on `PROVINCE.md`, `SKILL.md`, `corpus/QUALITY.md`, `corpus/README.md`, `corpus/SOURCES.md`, `corpus/instruments/README.md`, `corpus/instruments/knowledge-expected.txt`, `corpus/instruments/recheck-cwd-census.py`, `corpus/knowledge/osv-determineversion-cc-library-versioning.md`, and untracked `corpus/knowledge/osv-high-quality-record-import-bar.md`). Every frozen byte above is unchanged against the freeze commit, so the controls quoted here are the committed controls. The nine C1 predicates measured at a landing commit are named in § Landing values; this seat ran none of them.
+
+### C2 — coverage — F58, the OSV.dev import bar on S116
+
+In one sentence: `corpus/knowledge/osv-high-quality-record-import-bar.md` admits Frontier F58 on six pinned clauses of the OSV.dev page "Properties of a High Quality OSV Record" (S116, version 1.0.0), each quote located once at its declared snapshot line, with five page items deliberately unpinned and the round-82 entry gate adding a content limb (`ruleless`) that rejects the round-81 labelled six-quote dump the r81 gate passed.
+
+**Access record (from `corpus/source-snapshots/round-82/manifest.json`, snapshot sha re-measured equal).**
+
+| field | value |
+|---|---|
+| url / capture_url / final_url | `https://google.github.io/osv.dev/data_quality.html` (all three equal) |
+| http.status | `200` |
+| kind | `html` |
+| fetch_method | `capture-source.py --kind html`, default instrument UA; tags stripped, entities decoded, whitespace collapsed per line |
+| raw page / snapshot | 24473 raw bytes; snapshot 6586 bytes, 87 lines |
+| fetched_utc | `2026-11-06T20:53:38Z` |
+| snapshot sha256 | `2198d329bf6a8711ac28ae9221351162d61679699c0b45acb8ebb95cadce9ca0` (re-measured equal) |
+| version | "1.0.0 (SEMVER)" at `corpus/source-snapshots/round-82/S116.txt:22-23` |
+
+**The six located quotes — words by `len(quote.split())`, line verified by `grep -n -F` over the snapshot (one hit each, `rc=0`).**
+
+| clause | manifest pin | manifest line | snapshot line | words | `grep -n -F` hits | located quote |
+|---|---|---|---|---|---|---|
+| cl1 purpose | `Q01-purpose` | 24 | `S116.txt:25` | 12 | 1 | Describe the “good enough” OSV record that will be imported by OSV.dev |
+| cl2 valid prerequisite | `Q02-valid-prerequisite` | 29 | `S116.txt:36` | 23 | 1 | a record passes JSON Schema validation for the version of the OSV Schema it declares itself to comply with in the schema_version field |
+| cl3 package-level minimum | `Q03-package-level-minimum` | 34 | `S116.txt:41` | 6 | 1 | Package-level precision is the minimum standard. |
+| cl4 distinct range ends | `Q04-distinct-ranges` | 39 | `S116.txt:44` | 10 | 1 | introduced and fixed versions or commits can’t be the same |
+| cl5 GIT commits in repo | `Q05-git-commits-in-repo` | 44 | `S116.txt:47` | 19 | 1 | for commit (GIT) ranges the commits exist in the specified repo (i.e. they are not from another GitHub fork) |
+| cl6 reference URLs | `Q06-reference-urls` | 49 | `S116.txt:51` | 13 | 1 | reference URLs return a 2xx or 3xx response at the time of publication |
+
+83 words across the six quotes. The manifest line is the line of the `"anchor"` key and its value is the snapshot line; each `"anchor"` value equals the snapshot line the quote occupies (25, 36, 41, 44, 47, 51). Read as manifest line numbers, the claims' parenthetical "six pins at lines 25 36 41 44 47 51" does not land on pins — manifest lines 25, 36, 41, 44, 47 and 51 are `},`, `{`, `{`, `"anchor": 47`, `"id": "Q06-reference-urls"` and `]`; the six pin values are the snapshot anchors, carried by the `"anchor"` keys at manifest lines 24, 29, 34, 39, 44 and 49.
+
+**Rejected and unpinned, with the reasons as the manifest note states them.**
+
+- the preference for fixed over `last_affected` (`S116.txt:43`; held by F31, `S080.txt:762-766`) — a duplicate of held ground, not new.
+- the Appendix A schema summary (`S116.txt:63-86`; the page marks it generated by Gemini from the OSV JSON schema, `S116.txt:64`; the fixed/`last_affected` exclusivity of `S116.txt:86` is held by F31, `S080.txt:760-761`) — a generated restatement of the schema, held at its source.
+- the out-of-scope perishability pointer (`S116.txt:27`; names an unopened companion document) — no opened source.
+- the Identifiable alias clauses (`S116.txt:53-55`; not claimed this round) — out of this round's scope.
+- the example records (`S116.txt:57-62`; sample data, not rules) — instances, not a rule.
+
+The entry's own § Not claimed (`corpus/knowledge/osv-high-quality-record-import-bar.md:69`) lists the same items and adds the lines it does not quote (`S116.txt:28`, `:29-33`, `:38-40`, `:42-43`, `:45-46`, `:48-50`); for the Identifiable clauses and the examples it gives the section ranges with their headers (`:52-55`, `:56-62`) where the manifest note gives the clause lines (`:53-55`, `:57-62`).
+
+**B8 two-sided control (`.ufo/waves/round-82/controls/c2-b8-controls-r82.txt`).**
+
+```
+entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False}
+rc=0
+## labelled six-quote dump (round-81 CriticClaims (d), .ufo/waves/round-81/w1/CriticClaims-receipts/junk-labelled.md) under .ufo/waves/round-81/c2/entry-gate.py
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+## labelled six-quote dump (round-81 CriticClaims (d), .ufo/waves/round-81/w1/CriticClaims-receipts/junk-labelled.md) under .ufo/waves/round-82/c2/entry-gate.py
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=6 header=ok
+ENTRY-GATE-RESULT fail
+rc=1
+```
+
+The two sides of the same input: the r81 gate passes the labelled dump (`ruleless` is not a field it has), the r82 gate fails it with `ruleless=6` — one ruleless claim per quote. The positive side is in `.ufo/waves/round-82/controls/c2-prefreeze-r82.txt`: the draft entry under the r82 gate prints `ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok` / `ENTRY-GATE-RESULT pass` / `rc=0`, and the three admitted entries used as positive controls (`osv-importfindings-record-quality-feedback.md` S115, `osv-ubuntu-binary-to-source-mapping.md` S114, `osv-determineversion-cc-library-versioning.md` S113) each print `ruleless=0` and `pass`, `rc=0`. The same control file's B0 block prints `S116:sha256 OK` and six `S116:<pin> OK occurrences=1 anchor=<n>-ok` lines, `rc=0`; its B6 block prints `literal_total 0 knowledge_files 95`; its do-nothing block prints `95` for `git ls-tree -r --name-only master corpus/knowledge | grep -c '\.md$'` and `FRONTIER-CENSUS rows=57 admitted=57 closed=57 problem-rows=0 registry=116`.
+
+**Entry facts measured this draft.** `corpus/knowledge/osv-high-quality-record-import-bar.md` is 96 lines; its `recheck:` line is at `:5` and is exactly the B0 command behind `cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && `; its `## Gate — S116` section is at `:71` with the six-quote table; its recheck-receipt bullet is at `:86`. `ls corpus/knowledge/*.md | wc -l` = 96 (the round-81 count was 95), and `ls corpus/knowledge/osv-*.md | wc -l` = 7. The S116 registry row is `corpus/SOURCES.md:128`: at the freeze commit its status cell is ` queued ` and its used-by cell ` — `; in the worktree at the measurement instant they are ` mined ` and ` corpus/knowledge/osv-high-quality-record-import-bar.md `, an uncommitted edit (`git diff --stat HEAD -- corpus/SOURCES.md` = 1 file, 3 insertions, 1 deletion). The landing diff and the frontier/knowledge/registry counts at a landing commit are named in § Landing values.
+
+## Mistakes
+
+### M82-1 — `scribe-placeholders-landed-in-gate-body`
+
+The round-81 scribe draft left its landing-only values inside `## Gate` as placeholder markers: 18 of them sit in the Gate body (`corpus/lessons/round-81.md:28` to `:226`), 2 in the L1 section above it, 4 in § Sources below it — 24 in the file. The L1's § L1 verdicts section (`:3-27`) resolves them for a reader who starts at the top, but a reader of `## Gate` alone sees predicates whose values are not there. The round-81 spot-check routed the defect as its item 6 (`corpus/lessons/round-81-verifier-spotcheck.md:107`) and counted 24 "in the `## Gate` body"; the body count is 18, and 24 is the whole-file count — the same defect with the wrong denominator, which is why the fix below is a command and not a number.
+
+**Evidence (run by this seat at freeze `b9589300`, output pasted).**
+
+```
+$ awk '/^## Gate/{g=1} /^## Mistakes/{g=0} g' corpus/lessons/round-81.md | grep -c 'PENDING-L1'
+18
+$ grep -c 'PENDING-L1' corpus/lessons/round-81.md
+24
+$ grep -n 'PENDING-L1' corpus/lessons/round-81.md | awk -F: '{print $1}' | awk '{if($1<28)a++; else if($1<227)b++; else c++} END{print "before Gate(<28)="a" gate-body(28-226)="b" after-Mistakes(>=227)="c}'
+before Gate(<28)=2 gate-body(28-226)=18 after-Mistakes(>=227)=4
+$ grep -n 'PENDING-L1 values, collected' corpus/lessons/round-81.md
+364:**PENDING-L1 values, collected:** P1/P3/P5/P6/P7/P8 re-runs at the landing commit; P2's landed sha (`a3b58aa5…`) a
+```
+
+The r81 lesson did collect the names — at `:364`, inside § Sources, which is the right idea in a section a Gate reader does not reach.
+
+**Captured-by: none.** The three closest criteria do not cover it:
+
+- **R130** (`corpus/QUALITY.md:587`) binds the *lane acting on a routed defect*: re-run the command the reason rests on and paste its output next to the action. A scribe drafting a lesson is not acting on a routed defect, and R130's check is over appended corrections, not over a Gate body.
+- **R131** (`corpus/QUALITY.md:588`) binds a `path:line` cite to the line holding the cited token. A placeholder is not a cite: it names no path and no token.
+- **R132** (`corpus/QUALITY.md:594`) binds a tally sentence to the list it counts. It would catch the spot-check's "24" against the 18-line body — a number — not the presence of unresolved values inside Gate.
+
+**Fix.** One line, run before the lesson lands; it fails on the round-81 lesson and passes on this draft:
+
+```
+$ awk '/^## Gate/{g=1} /^## Mistakes/{g=0} g' corpus/lessons/round-81.md | grep -c -E 'PENDING-L1|TBD|TODO'
+18
+$ awk '/^## Gate/{g=1} /^## Mistakes/{g=0} g' .ufo/waves/round-82/w1/lesson-round-82.md | grep -c -E 'PENDING-L1|TBD|TODO'
+0
+```
+
+The rule the check enforces: a value that exists only at landing is either measured and written before the lesson lands, or listed by name in a separate `## Landing values` section — never left inside Gate. The criterion landed as **R133** at `corpus/QUALITY.md:595` in the worktree at the measurement instant (uncommitted; the freeze commit's last rule row is R132 at `:594`, `git show b9589300:corpus/QUALITY.md | grep -c '^| R13[0-9]'` = 3).
+
+### M82-2 — `harness-leaks-verdict-label-to-target`
+
+The round-82 counter, built to add a limb the target cannot key on (the decoys), still handed the target the one label the tally reads: each mutant runs from `tempfile.mkdtemp(prefix="mutbat-%s-" % row["id"])` (`.ufo/waves/round-82/c1/mutbat.py:221`) and each decoy from `prefix="mutbat-decoy-"` (`:189`). A target that reads `os.path.basename(os.path.dirname(__file__))` knows which row it is and whether it is a decoy (CriticClaims F1).
+
+**Evidence (L1 receipt `.ufo/waves/round-82/l1/M82-2-constprefix-r82.txt`, output quoted).**
+
+```
+## frozen r82 counter over CriticClaims forgery-path-table.py (fails to reject)
+MUTBAT target_sha256=287c05ba… baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=59/60
+rc=0
+```
+
+**Captured-by: none.** R129 fixes the exception classifier; M81-3 (independence claimed beyond the enumerated forgeries) bounds the claim's prose by an executed forgery set but says nothing about what the harness exposes. No QUALITY row asks what a scored target can observe about its own run.
+
+**Fix, shown able to fail and pass** (same receipt): the frozen counter with the two prefixes replaced by the constant `mutbat-t-` (two-line diff in the receipt; scratch copy `.ufo/waves/round-82/l1/mutbat-constprefix-scratch.py`):
+
+```
+## constant-prefix counter over the same forgery (rejects)
+MUTBAT target_sha256=287c05ba… baseline=ok rows=63 killed=0 survived=60 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=59/60
+rc=1
+## constant-prefix counter over the frozen candidate (still passes)
+MUTBAT target_sha256=81677e9d… baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=59/60
+rc=0
+```
+
+Routed to round 83 as a counter amendment (the frozen r82 counter is not edited): constant run-directory prefix, a per-run secret in the decoys (ReviewC1 Major 1), and a path-guard toy in the counter selftest.
+
+### M82-3 — `stated-command-output-not-run`
+
+The F58 draft's first Limits bullet said `grep -n -i -E 'IMPORT_FINDING|finding' corpus/source-snapshots/round-82/S116.txt` "prints nothing and exits 1". It prints `7:GET /v1experimental/importfindings` and exits 0 (ExecC2Gate D1, ReviewC2 H1): the L1 wrote the receipt from the expected result without running the command. G5 never reads `## Limits`.
+
+**Captured-by: none.** R19 binds a specimen figure in a record row to a command that produces it; it does not cover a command whose stated output sits in prose. R131 binds `path:line` cites only.
+
+**Fix, shown able to fail and pass** (`.ufo/waves/round-82/l1/M82-3-stated-output-r82.txt`; checker `.ufo/waves/round-82/l1/stated-output-check.py` runs every backticked command an entry says "prints nothing and exits 1"):
+
+```
+## on the pre-review draft Limits line (as ExecC2Gate D1 found it)
+FAIL rc=0 out_lines=1 :: grep -n -i -E 'IMPORT_FINDING|finding' corpus/source-snapshots/round-82/S116.txt
+STATED-OUTPUT commands=1 mismatches=1
+rc=1
+## on the landed entry
+STATED-OUTPUT commands=0 mismatches=0
+rc=0
+## on F57 (osv-importfindings-record-quality-feedback.md)
+STATED-OUTPUT commands=3 mismatches=0
+rc=0
+```
+
+## Cite-check receipts
+
+Every `path:line` cited above, with the command and its output (run at the freeze commit / worktree instant `2026-11-06T21:14:55Z`).
+
+```
+$ grep -n "^## Gate" corpus/lessons/round-81.md
+28:## Gate
+$ grep -n "^## Mistakes" corpus/lessons/round-81.md
+227:## Mistakes
+$ grep -n "24 .PENDING-L1. markers" corpus/lessons/round-81-verifier-spotcheck.md
+107:6. `corpus/lessons/round-81.md` landed with 24 `PENDING-L1` markers in the scribe-drafted `## Gate` body; the L1 section (`:3-27`) resolves them, but a reader of `## Gate` alone sees unresolved predicates. Next lesson: resolve or strike in an appended note.
+$ grep -n "PENDING-L1 values, collected" corpus/lessons/round-81.md
+364:**PENDING-L1 values, collected:** P1/P3/P5/P6/P7/P8 re-runs at the landing commit; P2's landed sha (`a3b58aa5…`) a
+$ grep -n "^| R13[012]" corpus/QUALITY.md
+587:| R130 | Before the lane acts on a routed defect (a closure's or a seat's reason), it re-runs the command the reason rests on and pastes
+588:| R131 | A `path:line` cite to code names the line that holds the cited token, checked by `grep -n '<token>' <path>` at the cited revisi
+594:| R132 | A tally sentence in a lesson ("N admits and M rejects") is bound to the list it counts: each number is derived by a command ove
+$ grep -n "^| R133" corpus/QUALITY.md
+595:| R133 | A lesson's `## Gate` body carries no placeholder marker (`PENDING-L
+$ git show b9589300:corpus/QUALITY.md | grep -n "^| R13[0-9]" | cut -c1-24
+587:| R130 | Before the 
+588:| R131 | A `path:lin
+594:| R132 | A tally sen
+$ grep -n "" corpus/source-snapshots/round-82/S116.txt | sed -n "21,23p;25p;27p;36p;41p;43p;44p;47p;51p"
+21:Properties of a High Quality OSV Record
+22:Version
+23:1.0.0 (SEMVER)
+25:Describe the “good enough” OSV record that will be imported by OSV.dev
+27:This does not discuss the problem of record bit rot over time, after initial successful import. The problem of continuous revalidation and treatment of records that have been successfully imported 
+36:As a prerequisite, it is assumed that a record passes JSON Schema validation for the version of the OSV Schema it declares itself to comply with in the schema_version field, or 1.0.0 if it does not
+41:The definition of “impact” will vary depending on how fine-grained the information available is (i.e. package-level or symbol-level for software library packages). Package-level precision is th
+43:prefer affected[].ranges[].events[].fixed over affected[].ranges[].events.last_affected this minimizes false negatives
+44:distinct ranges for introduced..fixed and/or introduced..last_affected (i.e. introduced and fixed versions or commits can’t be the same)
+47:for commit (GIT) ranges the commits exist in the specified repo (i.e. they are not from another GitHub fork)
+51:reference URLs return a 2xx or 3xx response at the time of publication
+$ grep -n "" corpus/source-snapshots/round-82/S116.txt | sed -n "53,55p;57,62p;63,64p;86p"
+53:Where relevant, an alias to the equivalent CVE record is present
+54:Where an OSV record consolidates multiple vulnerabilities in another ecosystem (or universe), multiple related identifiers are present
+55:Where an OSV record describes a vulnerability that is “downstream” of one in another ecosystem (or universe), relevant upstream identifiers are present.
+57:GO-2024-2687 Has introduced and fixed versions
+58:Has an alias to a CVE record ID
+59:Has a purl
+60:OSV-2024-98 Has introduced and fixed commits commits exist in repo
+61:DSA-5678-1 Has introduced and fixed versions
+62:Has multiple related CVE record IDs
+63:Appendix A: OSV Schema validation
+64:(As at version 1.6.3, generated by Gemini from the OSV JSON schema)
+86:A logical check ensures that if last_affected is specified in events, then fixed cannot be present in the same events array.
+$ grep -n '"anchor"' corpus/source-snapshots/round-82/manifest.json
+24:          "anchor": 25
+29:          "anchor": 36
+34:          "anchor": 41
+39:          "anchor": 44
+44:          "anchor": 47
+49:          "anchor": 51
+$ grep -n "^recheck:\|^## Gate" corpus/knowledge/osv-high-quality-record-import-bar.md
+5:recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-82/manifest.json --source S116
+71:## Gate — S116 (OSV.dev, Properties of a High Quality OSV Record)
+$ grep -n 'Recheck receipt' corpus/knowledge/osv-high-quality-record-import-bar.md
+86:- **Recheck receipt:** the `recheck:` line above printed `S116:sha256 OK` and one `S116:<pin> OK occurrences=1 anchor
+$ grep -n '^Not claimed:' corpus/knowledge/osv-high-quality-record-import-bar.md | cut -c1-700
+69:Not claimed: the out-of-scope note and its companion document "Managing the Perishability of OSV Records" (S116.txt:27, unopened); the deferred vulnerable-function validation (S116.txt:28); the audience and rationale (S116.txt:29-33); the consumer questions (S116.txt:38-40); the bullets of S116.txt:42-43, 45-46 and 48-50 (introduced defined, the fixed-over-last_affected preference held by F31, introduced before fixed, versions exist in the ecosystem, ecosystem and name canonical, purl conformance); the Identifiable clauses (S116.txt:52-55); the example records (S116.txt:56-62, sample data); Appendix A (S116.txt:63-86), which the page itself labels as generated by Gemini from the OSV JSON 
+$ awk -F"|" "NR==128{print \$9, \$12}" corpus/SOURCES.md
+ mined   corpus/knowledge/osv-high-quality-record-import-bar.md 
+$ git show b9589300:corpus/SOURCES.md | awk -F"|" "NR==128{print \$9, \$12}"
+ queued   — 
+$ git show 1a50638e:corpus/instruments/recheck-cwd-census.py | sha256sum
+a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0  -
+$ git show b9589300:corpus/instruments/recheck-cwd-census.py | sha256sum
+a3b58aa52ba0744199ee97e6bd837e62c499e3e6af03a2fc26f0e6e3746dbec0  -
+$ git show 1a50638e:corpus/instruments/recheck-cwd-census.py > $S/base.py && grep -c -F 'conform_ok' $S/base.py
+0
+$ grep -c -F 'conform_ok' .ufo/waves/round-82/c1/recheck-cwd-census.py
+6
+$ grep -c -F 'counts["entries"] += 1' $S/base.py
+1
+$ grep -c -F 'root, lane, verbose = ".", DEFAULT_LANE, False' $S/base.py
+1
+```
+
+The `:69` line is cut at 700 characters by this seat; it continues the Appendix A sentence. The two `git show … | sha256sum` receipts are the base and freeze copies of the base instrument — equal, which is what makes the worktree's `81677e9d…` an uncommitted swap.
+
+## Landing values (L1, resolved)
+
+Every value the scribe listed here is measured in `.ufo/waves/round-82/l1/L1-landing-r82.txt` and quoted in the L1 section at the top of this lesson; the landing commit hash is in the round report and SCORECARD `## Round 82`.

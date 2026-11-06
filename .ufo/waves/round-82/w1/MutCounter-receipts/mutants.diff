@@ -1,0 +1,198 @@
+--- mutbat.py
++++ MC01.py (drop-D2-exec)
+@@ -185,7 +185,7 @@
+     except (SyntaxError, ValueError, RecursionError):
+         return False, None
+     ok = True
+-    for decoy in (d1, d2):
++    for decoy in (d1,):
+         ddir = tempfile.mkdtemp(prefix="mutbat-decoy-", dir=work)
+         try:
+             dpath = os.path.join(ddir, os.path.basename(target))
+--- mutbat.py
++++ MC02.py (drop-D1-exec)
+@@ -185,7 +185,7 @@
+     except (SyntaxError, ValueError, RecursionError):
+         return False, None
+     ok = True
+-    for decoy in (d1, d2):
++    for decoy in (d2,):
+         ddir = tempfile.mkdtemp(prefix="mutbat-decoy-", dir=work)
+         try:
+             dpath = os.path.join(ddir, os.path.basename(target))
+--- mutbat.py
++++ MC03.py (return-d1-twice)
+@@ -195,7 +195,7 @@
+         finally:
+             shutil.rmtree(ddir, ignore_errors=True)
+         ok = ok and clean_pass(rc, out, expect_cases)
+-    return ok, [d1, d2]
++    return ok, [d1, d1]
+ 
+ 
+ def battery(target, rows, expect_cases, work, keep=None):
+--- mutbat.py
++++ MC04.py (hidden-ge-0)
+@@ -257,7 +257,7 @@
+                     tally["neutral_ok"], n_neutral, "ok" if decoy_ok else "broken", hidden,
+                     n_kill))
+     ok = (baseline and n_kill > 0 and n_neutral > 0 and tally["killed"] == n_kill
+-          and tally["neutral_ok"] == n_neutral and decoy_ok and hidden >= 1)
++          and tally["neutral_ok"] == n_neutral and decoy_ok and hidden >= 0)
+     return ok, lines
+ 
+ 
+--- mutbat.py
++++ MC05.py (decoy-term-forced-True)
+@@ -257,7 +257,7 @@
+                     tally["neutral_ok"], n_neutral, "ok" if decoy_ok else "broken", hidden,
+                     n_kill))
+     ok = (baseline and n_kill > 0 and n_neutral > 0 and tally["killed"] == n_kill
+-          and tally["neutral_ok"] == n_neutral and decoy_ok and hidden >= 1)
++          and tally["neutral_ok"] == n_neutral and True and hidden >= 1)
+     return ok, lines
+ 
+ 
+--- mutbat.py
++++ MC06.py (run_decoy-returns-True)
+@@ -195,7 +195,7 @@
+         finally:
+             shutil.rmtree(ddir, ignore_errors=True)
+         ok = ok and clean_pass(rc, out, expect_cases)
+-    return ok, [d1, d2]
++    return True, [d1, d2]
+ 
+ 
+ def battery(target, rows, expect_cases, work, keep=None):
+--- mutbat.py
++++ MC07.py (rename-args-guard-inverted)
+@@ -159,7 +159,7 @@
+         if isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+             a = fn.args
+             for arg in a.posonlyargs + a.args + a.kwonlyargs + [a.vararg, a.kwarg]:
+-                if arg is not None:
++                if arg is None:
+                     local.add(arg.arg)
+             for sub in ast.walk(fn):
+                 if isinstance(sub, ast.Name) and isinstance(sub.ctx, ast.Store):
+--- mutbat.py
++++ MC08.py (rename-includes-module-names)
+@@ -166,7 +166,7 @@
+                     local.add(sub.id)
+                 elif isinstance(sub, ast.ExceptHandler) and sub.name:
+                     local.add(sub.name)
+-    rename = local - module_names - keywords - declared - set(dir(builtins)) - {"__file__"}
++    rename = local - keywords - declared - set(dir(builtins)) - {"__file__"}
+     for n in ast.walk(tree):
+         if isinstance(n, ast.Name) and n.id in rename:
+             n.id += "_d"
+--- mutbat.py
++++ MC09.py (rename-includes-keywords)
+@@ -166,7 +166,7 @@
+                     local.add(sub.id)
+                 elif isinstance(sub, ast.ExceptHandler) and sub.name:
+                     local.add(sub.name)
+-    rename = local - module_names - keywords - declared - set(dir(builtins)) - {"__file__"}
++    rename = local - module_names - declared - set(dir(builtins)) - {"__file__"}
+     for n in ast.walk(tree):
+         if isinstance(n, ast.Name) and n.id in rename:
+             n.id += "_d"
+--- mutbat.py
++++ MC10.py (rename-skips-except-as)
+@@ -173,7 +173,7 @@
+         elif isinstance(n, ast.arg) and n.arg in rename:
+             n.arg += "_d"
+         elif isinstance(n, ast.ExceptHandler) and n.name in rename:
+-            n.name += "_d"
++            n.name += ""
+     return tree
+ 
+ 
+--- mutbat.py
++++ MC11.py (hidden-counts-neutral)
+@@ -205,7 +205,7 @@
+     rc0, out0 = run_selftest(target, work)
+     baseline = clean_pass(rc0, out0, expect_cases)
+     decoy_ok, decoy_src = run_decoy(src, target, expect_cases, work)
+-    hidden = sum(1 for r in rows if r["class"] != "neutral"
++    hidden = sum(1 for r in rows if True
+                  and (decoy_src is None or any(d.count(r["anchor"]) == 0 for d in decoy_src)))
+     tally = {"killed": 0, "survived": 0, "miskilled": 0, "dirty": 0, "notderived": 0,
+              "neutral_ok": 0}
+--- mutbat.py
++++ MC12.py (hidden-threshold-2)
+@@ -257,7 +257,7 @@
+                     tally["neutral_ok"], n_neutral, "ok" if decoy_ok else "broken", hidden,
+                     n_kill))
+     ok = (baseline and n_kill > 0 and n_neutral > 0 and tally["killed"] == n_kill
+-          and tally["neutral_ok"] == n_neutral and decoy_ok and hidden >= 1)
++          and tally["neutral_ok"] == n_neutral and decoy_ok and hidden >= 2)
+     return ok, lines
+ 
+ 
+--- mutbat.py
++++ MC13.py (hidden-from-D1-only)
+@@ -206,7 +206,7 @@
+     baseline = clean_pass(rc0, out0, expect_cases)
+     decoy_ok, decoy_src = run_decoy(src, target, expect_cases, work)
+     hidden = sum(1 for r in rows if r["class"] != "neutral"
+-                 and (decoy_src is None or any(d.count(r["anchor"]) == 0 for d in decoy_src)))
++                 and (decoy_src is None or any(d.count(r["anchor"]) == 0 for d in decoy_src[:1])))
+     tally = {"killed": 0, "survived": 0, "miskilled": 0, "dirty": 0, "notderived": 0,
+              "neutral_ok": 0}
+     n_neutral = sum(1 for r in rows if r["class"] == "neutral")
+--- mutbat.py
++++ MC14.py (decoy-accumulator-or)
+@@ -194,7 +194,7 @@
+             rc, out = run_selftest(dpath, work)
+         finally:
+             shutil.rmtree(ddir, ignore_errors=True)
+-        ok = ok and clean_pass(rc, out, expect_cases)
++        ok = ok or clean_pass(rc, out, expect_cases)
+     return ok, [d1, d2]
+ 
+ 
+--- mutbat.py
++++ MC15.py (D2-not-renamed)
+@@ -181,7 +181,7 @@
+     """(ok, [D1, D2 sources]): both decoys, each run from a fresh directory."""
+     try:
+         d1 = ast.unparse(ast.parse(src)) + "\n"
+-        d2 = ast.unparse(rename_locals(ast.parse(src))) + "\n"
++        d2 = ast.unparse(ast.parse(src)) + "\n"
+     except (SyntaxError, ValueError, RecursionError):
+         return False, None
+     ok = True
+--- mutbat.py
++++ MC16.py (parse-failure-as-ok)
+@@ -183,7 +183,7 @@
+         d1 = ast.unparse(ast.parse(src)) + "\n"
+         d2 = ast.unparse(rename_locals(ast.parse(src))) + "\n"
+     except (SyntaxError, ValueError, RecursionError):
+-        return False, None
++        return True, None
+     ok = True
+     for decoy in (d1, d2):
+         ddir = tempfile.mkdtemp(prefix="mutbat-decoy-", dir=work)
+--- mutbat.py
++++ MC17.py (clean-pass-drops-traceback)
+@@ -97,7 +97,7 @@
+ 
+ def clean_pass(rc, out, expect_cases):
+     exact = re.search(r"^selftest cases=%d failures=0$" % expect_cases, out, re.M) is not None
+-    return rc == 0 and exact and not fail_lines(out) and "Traceback" not in out
++    return rc == 0 and exact and not fail_lines(out)
+ 
+ 
+ def verdict(rc, out, kill_cases):
+--- mutbat.py
++++ MC18.py (rename-skips-args-clean)
+@@ -160,7 +160,7 @@
+             a = fn.args
+             for arg in a.posonlyargs + a.args + a.kwonlyargs + [a.vararg, a.kwarg]:
+                 if arg is not None:
+-                    local.add(arg.arg)
++                    pass
+             for sub in ast.walk(fn):
+                 if isinstance(sub, ast.Name) and isinstance(sub.ctx, ast.Store):
+                     local.add(sub.id)

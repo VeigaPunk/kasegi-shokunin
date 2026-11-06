@@ -1,0 +1,15 @@
+# M82-3 fix shown able to fail and pass — 2026-11-06T21:24:21Z
+## checker (stated-output check, scratch copy committed beside this receipt as stated-output-check.py)
+## on the pre-review draft Limits line (as ExecC2Gate D1 found it)
+FAIL rc=0 out_lines=1 :: grep -n -i -E 'IMPORT_FINDING|finding' corpus/source-snapshots/round-82/S116.txt
+STATED-OUTPUT commands=1 mismatches=1
+rc=1
+## on the landed entry
+STATED-OUTPUT commands=0 mismatches=0
+rc=0
+## on F57 (osv-importfindings-record-quality-feedback.md)
+OK   rc=1 out_lines=0 :: grep -n -i -E 'rate limit|ratelimit|quota|api key|api_key|authenticat|credential' corpus/s
+OK   rc=1 out_lines=0 :: grep -n -i -E 'paginat|page_token|next_page_token' corpus/source-snapshots/round-81/S115.t
+OK   rc=1 out_lines=0 :: grep -n -i -E 'error|status code|throttl|404|400' corpus/source-snapshots/round-81/S115.tx
+STATED-OUTPUT commands=3 mismatches=0
+rc=0

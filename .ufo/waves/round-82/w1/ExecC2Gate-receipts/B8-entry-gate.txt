@@ -1,0 +1,18 @@
+# B8.1 selftest (r82 gate)
+entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False}
+RC=0
+
+# B8.2 draft entry under r82 gate
+ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok
+ENTRY-GATE-RESULT pass
+RC=0
+
+# B8.3 junk-labelled.md (r81 fixture) under r82 gate, r81 manifest S115
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=6 header=ok
+ENTRY-GATE-RESULT fail
+RC=1
+
+# B8.4 junk-labelled.md under r81 gate (predecessor), same manifest S115
+ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 header=ok
+ENTRY-GATE-RESULT pass
+RC=0

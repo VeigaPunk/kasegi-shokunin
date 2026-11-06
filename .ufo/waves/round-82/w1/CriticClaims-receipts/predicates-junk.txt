@@ -1,0 +1,29 @@
+$ python3 -B /fast/scratch/hyaku/kasegi-r82/CriticClaims/stub-predicates.py --selftest
+selftest cases=24 failures=0
+rc=0
+
+$ python3 -B /fast/scratch/hyaku/kasegi-r82/CriticClaims/stub-predicates.py --root /home/vgpnk/Projects/shokunin/kasegi-shokunin --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin
+RECHECK-CWD entries=96 noprefix=0 exit2_foreign=0 exit0_foreign=74 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+rc=0
+
+$ python3 -B /fast/scratch/hyaku/kasegi-r82/CriticClaims/stub-predicates-j1.py --root /home/vgpnk/Projects/shokunin/kasegi-shokunin --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin
+RECHECK-CWD entries=96 noprefix=0 exit2_foreign=0 exit0_foreign=74 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT nonconformant
+rc=1
+
+$ grep -c subprocess.run( /fast/scratch/hyaku/kasegi-r82/CriticClaims/stub-predicates.py
+1
+rc=0
+
+$ grep -c "bash", "-c" /fast/scratch/hyaku/kasegi-r82/CriticClaims/stub-predicates.py
+1
+rc=0
+
+$ grep -cE ["']/tmp /fast/scratch/hyaku/kasegi-r82/CriticClaims/stub-predicates.py
+0
+rc=1
+
+$ bash -c ls corpus/knowledge/*.md | wc -l
+96
+rc=0

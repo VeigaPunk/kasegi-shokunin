@@ -1,0 +1,23 @@
+# P7 dry-run — sed 's/cases=22/cases=24/' on scratch copies of the freeze-commit files
+# base files: git show b9589300810a477f4d6794bfabc24b22fb50b846:{SKILL.md,corpus/instruments/README.md} -> $S/base-*.md
+# copies: $S/p7/SKILL.md $S/p7/README.md (sed -i applied)
+
+## base (pre-sed) anchored-row counts
+SKILL  base row cases=22: 1
+SKILL  base row cases=24: 0
+README base row cases=22: 1
+README base row cases=24: 0
+
+## sed copy anchored-row counts
+SKILL  sed row cases=24: 1
+SKILL  sed row cases=22: 0
+README sed row cases=24: 1
+README sed row cases=22: 0
+
+## sed result vs current worktree row (diff; empty = byte-identical)
+SKILL row identical
+README row identical
+
+## whole-file diff base -> worktree (changed-line count; 2 = one row changed each)
+SKILL  changed lines: 2
+README changed lines: 2

@@ -1,0 +1,72 @@
+=== R11 F31 (osv-affected-range-events.md) — is any of the six S116 clauses already held there? ===
+# F31's own source line:
+source: S080 — https://ossf.github.io/osv-schema/ — capture corpus/source-snapshots/round-50/S080.txt (1462 lines, 70913 bytes; sha256 97b850a4bcd90600bb39391df3293e4591b9dd84170e94ecfd48f40e08cfe
+
+# F31's five claim headings:
+21:## Claim 1 — the envelope is minimal by rule: two required fields, one conditional third
+33:## Claim 2 — affected-ness is read from an events timeline, and the timeline has exactly four verbs
+56:## Claim 3 — `fixed` and `last_affected` are not interchangeable, and the page prefers one
+68:## Claim 4 — one type per range, and the type decides how orderings are evaluated
+88:## Claim 5 — event version strings are format-internal, not upstream versions
+
+# F31's scope-limit / distinctness section:
+101:## Distinctness — what this row adds beyond F25/F21/F23
+## Distinctness — what this row adds beyond F25/F21/F23
+
+The lane's admitted CVE JSON row (F25, source S064) teaches the CVE Record Format's container
+model, where a version entry is one version or a range with a declared `versionType` and a
+single `lessThan`/`lessThanOrEqual` boundary per entry (S064's Claim 2). This row teaches a
+different machine, named by the round-42 S065 flip: OSV's `affected[].ranges[].events` — a
+multi-event timeline (several `fixed` events across branches are required by the page's own
+cherry-pick rule, S080.txt:771-773), an implicit `"*"` upper bound, and a range type whose
+inclusion query may need "the package ecosystem's own logic" (S080.txt:724-725) or a Git
+repository — expressiveness the CVE format's one-boundary version entries do not carry. CSAF/VEX
+
+=== R12 per-clause adjudication against F31 ===
+--- cl1 purpose 'good enough OSV record OSV.dev imports' ---
+  F31 occurrences of 'good enough': 0
+  F31 occurrences of 'import': 0
+  F31 topic = the OSV FORMAT SPEC (S080), not the osv.dev import bar -> NOT held
+
+--- cl2 schema_version validation prerequisite ---
+  F31:23 quotes S080.txt:374-375 (schema_version REQUIRED above 1.0.0)
+  F31:27 'a record that carries neither modified nor (above format 1.0.0) schema_version is malformed'
+  F31 occurrences of 'JSON Schema': 0
+  F31 occurrences of 'validation': 0
+  -> F31 holds the ENVELOPE requirement; it does not state the VALIDATION-PREREQUISITE rule -> NOT held
+
+--- cl3 package-level precision is the minimum standard ---
+  F31 occurrences of 'precision': 0
+  F31 occurrences of 'granular|fine-grained|impact': 0
+  -> NOT held
+
+--- cl4 introduced and fixed can't be the same ---
+  F31 occurrences of 'distinct': 1
+  F31 occurrences of "can't be the same|cannot be the same|must not be the same": 0
+  F31:60-63 holds the fixed/last_affected EXCLUSIVITY (S080.txt:760-761) + fixed PREFERENCE (762-766)
+  -> a DIFFERENT rule (which event type may appear, not whether two values coincide) -> NOT held
+
+--- cl5 GIT commits exist in the specified repo / not from another GitHub fork ---
+  F31 occurrences of 'fork': 0
+  F31 occurrences of 'exist': 2
+  F31:76-83 holds GIT ordering by commit-graph reachability, the repo-URL duty (S080.txt:788), the versions-list duty (733-735)
+  -> F31 says a GIT range must CARRY a repo URL; it never says the commits must EXIST there -> NOT held
+
+--- cl6 reference URLs return 2xx or 3xx ---
+  F31 occurrences of '2xx|3xx|status code|response code': 0
+  F31 occurrences of 'references field|url': 0
+  -> NOT held (F31 never cites S080.txt:944-954, the references field)
+
+=== R13 S080 (F31's ground) — does IT hold any of the six? ===
+  good enough                S080 hits=0
+  Package-level precision    S080 hits=0
+  2xx                        S080 hits=0
+  3xx                        S080 hits=0
+  fork                       S080 hits=0
+  distinct                   S080 hits=0
+  S080 'introduced ... fixed ... same': 0 hits
+  S080 references field (944-954) states the url field only; no HTTP status rule:
+The references field contains a list of JSON objects describing references.
+Each object has a string field type specifying the type of reference, and a
+string field url. The url is the fully-qualified URL (including the scheme,
+typically “https://”) linking to additional information, advisories, issue

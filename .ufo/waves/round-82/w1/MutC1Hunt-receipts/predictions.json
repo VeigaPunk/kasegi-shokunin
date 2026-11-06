@@ -1,0 +1,160 @@
+{
+ "H01-BK-NO-EXIT0": {
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "predicted": "bucket sum drops exit0_foreign; conform_ok(bal) false -> bucket-sum FAIL"
+ },
+ "H02-BK-EXIT0-TWICE": {
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "predicted": "bucket sum doubles exit0 and drops exit1; conform_ok(bal) false -> bucket-sum FAIL"
+ },
+ "H03-BK-NORE-AS-REST": {
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "predicted": "replace the norecheck term with restoration_only; predicted SURVIVED/equivalent (both terms masked by their ==0 limbs)"
+ },
+ "H04-BK-NORE-AS-EXITOTHER": {
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "predicted": "drop exit_other from the bucket sum; predicted SURVIVED, real gap (no conform_ok/main fixture has exit_other>0)"
+ },
+ "H05-BK-GE": {
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "predicted": "equality -> >= on the bucket sum; predicted SURVIVED, real gap (no fixture with buckets > entries)"
+ },
+ "H06-MAIN-WORD-SWAP": {
+  "class": "assertion",
+  "kill_cases": [
+   "result-main"
+  ],
+  "predicted": "swap the result words; result-main checks both polarities"
+ },
+ "H07-MAIN-RET-ZERO": {
+  "class": "assertion",
+  "kill_cases": [
+   "result-main"
+  ],
+  "predicted": "nonconformant exit code collapses to 0; result-main ret2n==1"
+ },
+ "H08-MAIN-CONFORM-COPY": {
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "predicted": "shallow copy of counts; predicted SURVIVED/equivalent (conform_ok is read-only)"
+ },
+ "H09-MAIN-TMPDIR-RET3": {
+  "class": "assertion",
+  "kill_cases": [
+   "tmpdir-refusal"
+  ],
+  "predicted": "refusal exit code 2 -> 3; tmpdir-refusal and tmpdir-file expect 2"
+ },
+ "H10-VERBOSE-FLAG-OFF": {
+  "class": "assertion",
+  "kill_cases": [
+   "main-default",
+   "output-lines"
+  ],
+  "predicted": "--verbose flag no longer enables verbose; predicted SURVIVED, real gap (no check invokes main with --verbose)"
+ },
+ "H11-EXIT2-INC-ZERO": {
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census"
+  ],
+  "predicted": "exit2 bucket never incremented; prefix-census wants exit2=1"
+ },
+ "H12-EXIT0-INC-ZERO": {
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census"
+  ],
+  "predicted": "exit0 bucket never incremented; prefix-census/bucket-sum/restoration-only/both-headers/prefix-literal"
+ },
+ "H13-EXIT1-INC-ZERO": {
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census",
+   "bucket-sum",
+   "prefix-literal"
+  ],
+  "predicted": "exit1 bucket never incremented; prefix-census exit1=1, sum21, prefix-literal"
+ },
+ "H14-NORE-INC-ZERO": {
+  "class": "assertion",
+  "kill_cases": [
+   "relabel-detection",
+   "conform-limbs"
+  ],
+  "predicted": "norecheck never incremented; relabel-detection want8u and conform-limbs out15n"
+ },
+ "H15-REST-INC-ZERO": {
+  "class": "assertion",
+  "kill_cases": [
+   "restoration-only",
+   "relabel-detection"
+  ],
+  "predicted": "restoration_only never incremented; case6 and patched case8"
+ },
+ "H16-NOPREFIX-INC-ZERO": {
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census",
+   "main-default"
+  ],
+  "predicted": "noprefix never incremented; prefix-census/first-line/prefix-literal plus ENTRY line text in output-lines/main-default"
+ },
+ "H17-BS-SWAP-SHORT": {
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "predicted": "main-swap limb returns balanced counts; bucket-sum wants ret21s==1"
+ },
+ "H18-MD-VERBOSE-INJECT": {
+  "class": "assertion",
+  "kill_cases": [
+   "main-default"
+  ],
+  "predicted": "case22 run with --verbose; ENTRY a-prefixed appears -> main-default FAIL"
+ },
+ "H19-MD-NEG-WEAK": {
+  "class": "assertion",
+  "kill_cases": [
+   "main-default"
+  ],
+  "predicted": "negative limb becomes a tautology; predicted SURVIVED, real gap (F1 refuses only literal True, not tautologies)"
+ },
+ "H20-BS-SUM21-NOPREFIX": {
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "predicted": "case21 structural sum reads noprefix (0) instead of exit0 (2) -> sum21=1 != 3"
+ },
+ "H21-BS-IDENT-NOT-TRUE": {
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "predicted": "is False -> is not True; predicted SURVIVED/equivalent (conform_ok returns bool)"
+ },
+ "H22-NEU-DOC": {
+  "class": "neutral",
+  "kill_cases": [],
+  "predicted": "docstring text only; semantics-preserving neutral"
+ }
+}

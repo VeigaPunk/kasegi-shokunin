@@ -1,0 +1,158 @@
+MutEntryGate receipts — r82 entry gate G5 mutation battery
+date: 2026-11-06T21:15:21Z
+
+== frozen bytes (before == after; lane tree never written) ==
+1c5ddd52675b5aba5b5598023152779f307c2c3c2d84ddcae09ceec1c714058f  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-82/c2/entry-gate.py
+1100997162fdd64b4282cd9b2afbe00f6549981733010e56cf6f39d2b1a30cac  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/knowledge/osv-high-quality-record-import-bar.md
+e0e4a246644ff4174d6724d9c73dd40c3674eb8a008a6209afc9b13e2e2f979b  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-82/manifest.json
+2198d329bf6a8711ac28ae9221351162d61679699c0b45acb8ebb95cadce9ca0  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-82/S116.txt
+ba9e1e91948ff8b92ac400ababc562bc1ab7cf53a9824cd9662da2ba8fe5dcda  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-81/w1/CriticClaims-receipts/junk-labelled.md
+7429df80bf425c8132b1325d0cd3b9e8527323f7e6eb61c31ce8b0774c5c05cf  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-81/manifest.json
+
+== baseline (unmutated scratch copy, sha256 1c5ddd52675b5aba5b5598023152779f307c2c3c2d84ddcae09ceec1c714058f) ==
+selftest rc=0  entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False}
+junk     rc=1  ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=6 header=ok
+entry    rc=0  ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok
+
+== mutants: exact single-point replacement, count asserted ==1 ==
+--- M01 sha256 be6c977853ea724be93169c82ee893036080418d402139f64d1d6b58c3e1638f
+@@ -41,7 +41,7 @@
+ import tempfile
+ 
+ SPAN_RE = r'"([^"\n]+)" \(%s\.txt:(\d+)\)'
+-MIN_WORDS = 8
++MIN_WORDS = 1
+ 
+ 
+ def label_text(body, label_re):
+--- M02 sha256 e63a7974871e438b47d0f5522ee0c6e45d12142e87d50c397186f7aeb3ae724c
+@@ -41,7 +41,7 @@
+ import tempfile
+ 
+ SPAN_RE = r'"([^"\n]+)" \(%s\.txt:(\d+)\)'
+-MIN_WORDS = 8
++MIN_WORDS = 7
+ 
+ 
+ def label_text(body, label_re):
+--- M03 sha256 a9fe1c103d600cdaf85dc1278d295565bc53ec2c45645d39773b40d8267a4c96
+@@ -63,7 +63,7 @@
+     rej = label_text(body, r"^Rejected over-generalization[^\n:]*:?")
+     if rule is None or rej is None:
+         return False
+-    if len(rule.split()) < MIN_WORDS or len(rej.split()) < MIN_WORDS:
++    if len(rule.split()) < MIN_WORDS:
+         return False
+     if not re.search(r"\b%s\.txt:\d+" % re.escape(sid), rule):
+         return False
+--- M04 sha256 24d9d4c94ef6b57d04e02cff8131c18049a7248b6449c107b7f16aafe12be979
+@@ -63,7 +63,7 @@
+     rej = label_text(body, r"^Rejected over-generalization[^\n:]*:?")
+     if rule is None or rej is None:
+         return False
+-    if len(rule.split()) < MIN_WORDS or len(rej.split()) < MIN_WORDS:
++    if len(rej.split()) < MIN_WORDS:
+         return False
+     if not re.search(r"\b%s\.txt:\d+" % re.escape(sid), rule):
+         return False
+--- M05 sha256 3b0f413d06c57183550800536014a94b27bc60fffef46c81ed7a501df7033344
+@@ -65,8 +65,6 @@
+         return False
+     if len(rule.split()) < MIN_WORDS or len(rej.split()) < MIN_WORDS:
+         return False
+-    if not re.search(r"\b%s\.txt:\d+" % re.escape(sid), rule):
+-        return False
+     return not (drawn_from_source(rule, quotes, snapshot_lines)
+                 or drawn_from_source(rej, quotes, snapshot_lines))
+ 
+--- M06 sha256 8f57f50c4683f83650af42b32eb5f43e6a2e121004ee7d06efaa17399bbd32de
+@@ -65,7 +65,7 @@
+         return False
+     if len(rule.split()) < MIN_WORDS or len(rej.split()) < MIN_WORDS:
+         return False
+-    if not re.search(r"\b%s\.txt:\d+" % re.escape(sid), rule):
++    if not re.search(r"\.txt:\d+", rule):
+         return False
+     return not (drawn_from_source(rule, quotes, snapshot_lines)
+                 or drawn_from_source(rej, quotes, snapshot_lines))
+--- M07 sha256 762fc2aa42b94ebecf8eae4484a5a9e0657c79812e0afcebc0c8ef9ea5247402
+@@ -55,7 +55,7 @@
+ def drawn_from_source(text, quotes, snapshot_lines):
+     if any(q in text for q in quotes):
+         return True
+-    return any(text in line for line in snapshot_lines if line.strip())
++    return False
+ 
+ 
+ def content_ok(body, sid, quotes, snapshot_lines):
+--- M08 sha256 3b306a2b1b1094ffe0e5f3e8f24a9f15cc8f158c2dcb514c740805c9344c355a
+@@ -53,8 +53,6 @@
+ 
+ 
+ def drawn_from_source(text, quotes, snapshot_lines):
+-    if any(q in text for q in quotes):
+-        return True
+     return any(text in line for line in snapshot_lines if line.strip())
+ 
+ 
+--- M09 sha256 d162b5f4334069b81350725069aefd066a59dc7a1d91127dcdb85651d67d6b06
+@@ -55,7 +55,7 @@
+ def drawn_from_source(text, quotes, snapshot_lines):
+     if any(q in text for q in quotes):
+         return True
+-    return any(text in line for line in snapshot_lines if line.strip())
++    return any(line in text for line in snapshot_lines if line.strip())
+ 
+ 
+ def content_ok(body, sid, quotes, snapshot_lines):
+--- M10 sha256 90033bc948ce4f56a9df0c34fe39658434ad8ff85a2f04c2af468ba25518f77c
+@@ -67,8 +67,7 @@
+         return False
+     if not re.search(r"\b%s\.txt:\d+" % re.escape(sid), rule):
+         return False
+-    return not (drawn_from_source(rule, quotes, snapshot_lines)
+-                or drawn_from_source(rej, quotes, snapshot_lines))
++    return not drawn_from_source(rule, quotes, snapshot_lines)
+ 
+ 
+ def gate(entry_text, manifest, sid, lane, snapshot_lines):
+--- M11 sha256 307e44bb8a9222fead12c768241aa77f099b1c6378d33c298101d39c516d9b65
+@@ -49,7 +49,7 @@
+     m = re.search(label_re, body, re.M)
+     if not m:
+         return None
+-    return body[m.end():].split("\n", 1)[0].strip()
++    return body[m.end():].strip()
+ 
+ 
+ def drawn_from_source(text, quotes, snapshot_lines):
+--- M12 sha256 f5ce3a5ff23e25f76740496458965dbc5374dc15f4cb8cefb6234f993b9b728d
+@@ -102,7 +102,7 @@
+             ruleless += 1
+     unpinned = sum(1 for q in quotes if not any(q in t for t in claim_spans))
+     ok = (header and len(claims) == len(quotes) and spans and mislocated == 0 and overlong == 0
+-          and claimless == 0 and unpinned == 0 and ruleless == 0)
++          and claimless == 0 and unpinned == 0)
+     line = ("ENTRY-GATE sid=%s claims=%d want=%d spans=%d mislocated=%d overlong=%d claimless=%d "
+             "unpinned=%d ruleless=%d header=%s"
+             % (sid, len(claims), len(quotes), len(spans), mislocated, overlong, claimless,
+--- M13 sha256 f4c2313e415b2f25bd5ba29506e83e14181bad9052bc6df35fe454231dfd801f
+@@ -62,7 +62,7 @@
+     rule = label_text(body, r"^Falsifiable rule:")
+     rej = label_text(body, r"^Rejected over-generalization[^\n:]*:?")
+     if rule is None or rej is None:
+-        return False
++        return True
+     if len(rule.split()) < MIN_WORDS or len(rej.split()) < MIN_WORDS:
+         return False
+     if not re.search(r"\b%s\.txt:\d+" % re.escape(sid), rule):
+--- M14 sha256 0ecae3a47b9d1ad65339300cca2a53249729547d603cd29a492f8549cedd8fb7
+@@ -59,7 +59,7 @@
+ 
+ 
+ def content_ok(body, sid, quotes, snapshot_lines):
+-    rule = label_text(body, r"^Falsifiable rule:")
++    rule = label_text(body, r"Falsifiable rule:")
+     rej = label_text(body, r"^Rejected over-generalization[^\n:]*:?")
+     if rule is None or rej is None:
+         return False

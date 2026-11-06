@@ -1,0 +1,11 @@
+# P6 — frozen candidate + row J1 replacement applied once
+row J1 anchor     = '        counts["entries"] += 1\n'
+row J1 replacement= '        counts["entries"] += 1\n        if name.startswith("osv-"):\n            continue\n'
+row J1 class=assertion kill_cases=['bucket-sum']
+anchor occurrences in candidate: 1 (asserted); replacement occurrences before: 0; after: 1
+mutated file: /fast/scratch/hyaku/kasegi-r82/ExecC1RealTree/j/recheck-cwd-census.py sha256 b29a9034f003fecc46eb26bb6d148f528c6498b5fa972213f1577f0da7edd86d
+# cmd: TMPDIR=$S python3 -B $S/j/recheck-cwd-census.py --root $LANE --lane $LANE
+RECHECK-CWD entries=96 noprefix=0 exit2_foreign=0 exit0_foreign=67 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT nonconformant
+rc=1
+# exit0_foreign+exit1_foreign = 67+22 = 89 != entries 96 (7 osv-*.md entries counted then skipped)

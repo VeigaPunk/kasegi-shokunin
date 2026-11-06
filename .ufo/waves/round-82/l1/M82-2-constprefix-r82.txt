@@ -1,0 +1,22 @@
+# M82-2 fix shown able to fail and pass — 2026-11-06T21:24:02Z
+# scratch counter = frozen r82 counter with the two per-row/per-decoy mkdtemp prefixes replaced by the constant 'mutbat-t-' (diff below)
+189c189
+<         ddir = tempfile.mkdtemp(prefix="mutbat-decoy-", dir=work)
+---
+>         ddir = tempfile.mkdtemp(prefix="mutbat-t-", dir=work)
+221c221
+<         mdir = tempfile.mkdtemp(prefix="mutbat-%s-" % row["id"], dir=work)
+---
+>         mdir = tempfile.mkdtemp(prefix="mutbat-t-", dir=work)
+287c05ba76da07c89d558aff14b1c767feb3648bf9b442000458c99c18bf9b71  .ufo/waves/round-82/w1/CriticClaims-receipts/forgery-path-table.py
+a7d4db43cdc8b2948af9c8c5f1baee827979fbb3d7dac0f39ecd46fad60ac55c  .ufo/waves/round-82/c1/mutbat.py
+c1c27d91eb6ee5ec0833b4e4a687e5456fe90fd4f758f578a5b9889338fd3a4c  <scratch>/mutbat-constprefix.py
+## frozen r82 counter over CriticClaims forgery-path-table.py (fails to reject)
+MUTBAT target_sha256=287c05ba76da07c89d558aff14b1c767feb3648bf9b442000458c99c18bf9b71 baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=59/60
+rc=0
+## constant-prefix counter over the same forgery (rejects)
+MUTBAT target_sha256=287c05ba76da07c89d558aff14b1c767feb3648bf9b442000458c99c18bf9b71 baseline=ok rows=63 killed=0 survived=60 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=59/60
+rc=1
+## constant-prefix counter over the frozen candidate (still passes)
+MUTBAT target_sha256=81677e9dc030ed59d2e3481c8b1c2bc8d083e6805cc06fbb25052a685773e050 baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=59/60
+rc=0

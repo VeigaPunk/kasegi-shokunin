@@ -1,0 +1,55 @@
+# ExecC1RealTree — P7 pins (round 82, freeze b9589300810a477f4d6794bfabc24b22fb50b846)
+#
+# For each registry file: the anchored row's exact text at the freeze commit (contains
+# 'cases=22'), the replacement row text with 'cases=22' changed to 'cases=24' and nothing
+# else, and the row as it currently stands in the worktree. The replacement is produced by
+# the literal substitution only; it is not retyped.
+#
+# NOTE (advisory, routed to r83 — not a P7 failure): both rows' conformance prose still
+# lists only noprefix/exit2_foreign/norecheck/restoration_only (SKILL) or those four
+# (README). The r82 conform_ok() also requires the six buckets to sum to entries, so the
+# registry text understates the landed gate. P7 pins only the cases token; this drift is
+# recorded, not scored.
+
+## FILE: SKILL.md
+grep -nE pattern: ^\| recheck-cwd-census\.py \|
+line at freeze commit: 982 ; line in worktree: 982
+freeze-commit file sha256: 91bcc346532082d3787239c753717032cce192efd79876055e87db6df9efc016
+worktree file sha256:      818d0a45d39909f30650510a647af968a41b1c155d5d7f31a7a317ae89309c9d
+
+### base row (freeze commit) — cases=22 x1
+| recheck-cwd-census.py | gate | python3 <lane>/corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> (any cwd; `TMPDIR` set to a scratch dir) | 0 conformant (noprefix=0 exit2_foreign=0 norecheck=0 restoration_only=0 exit_other=0) \| 1 nonconformant; restoration-recheck-only files counted in restoration_only, never executed | python3 corpus/instruments/recheck-cwd-census.py --selftest -> `selftest cases=22 failures=0`, exit 0 | .ufo/waves/round-75/controls/c1-after-r75.txt | corpus/ read-only + TMPDIR scratch | kasegi |
+
+### replacement row — 'cases=22' -> 'cases=24', nothing else
+### (identical to base except that one token: yes)
+| recheck-cwd-census.py | gate | python3 <lane>/corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> (any cwd; `TMPDIR` set to a scratch dir) | 0 conformant (noprefix=0 exit2_foreign=0 norecheck=0 restoration_only=0 exit_other=0) \| 1 nonconformant; restoration-recheck-only files counted in restoration_only, never executed | python3 corpus/instruments/recheck-cwd-census.py --selftest -> `selftest cases=24 failures=0`, exit 0 | .ufo/waves/round-75/controls/c1-after-r75.txt | corpus/ read-only + TMPDIR scratch | kasegi |
+
+### current worktree row — byte-identical to replacement: YES
+| recheck-cwd-census.py | gate | python3 <lane>/corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> (any cwd; `TMPDIR` set to a scratch dir) | 0 conformant (noprefix=0 exit2_foreign=0 norecheck=0 restoration_only=0 exit_other=0) \| 1 nonconformant; restoration-recheck-only files counted in restoration_only, never executed | python3 corpus/instruments/recheck-cwd-census.py --selftest -> `selftest cases=24 failures=0`, exit 0 | .ufo/waves/round-75/controls/c1-after-r75.txt | corpus/ read-only + TMPDIR scratch | kasegi |
+
+### anchored-row counts (worktree)
+cases=24: 1 ; cases=22: 0
+### whole-file occurrences (worktree)
+cases=24: 1 ; cases=22: 0
+
+## FILE: corpus/instruments/README.md
+grep -nE pattern: ^\| `corpus/instruments/recheck-cwd-census\.py` \|
+line at freeze commit: 354 ; line in worktree: 354
+freeze-commit file sha256: 1dcfd1db18364f32aa7210b76a187f593708d7e2c807341f881f7940ede26b15
+worktree file sha256:      c3b18ce6770f8cbc1cbe957f1eadef56bbe5b3549ee61226a076113c883fbc0d
+
+### base row (freeze commit) — cases=22 x1
+| `corpus/instruments/recheck-cwd-census.py` | the Q10 census of `corpus/knowledge/*.md` recheck values: each entry's first `recheck:` header must begin with `cd <lane> &&` and its value must exit 0 from a foreign cwd; files carrying only `restoration-recheck:` are counted in `restoration_only` and never executed (round 75); the RESULT gate requires `noprefix`, `exit2_foreign`, `norecheck` and `restoration_only` all zero. `bash -c` call sites: one (`run_foreign`). | `TMPDIR=<scratch> python3 corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane>` → `RECHECK-CWD … restoration_only=N` and `RECHECK-CWD-RESULT conformant` exit 0; `--selftest` → `selftest cases=22 failures=0`, exit 0 |
+
+### replacement row — 'cases=22' -> 'cases=24', nothing else
+### (identical to base except that one token: yes)
+| `corpus/instruments/recheck-cwd-census.py` | the Q10 census of `corpus/knowledge/*.md` recheck values: each entry's first `recheck:` header must begin with `cd <lane> &&` and its value must exit 0 from a foreign cwd; files carrying only `restoration-recheck:` are counted in `restoration_only` and never executed (round 75); the RESULT gate requires `noprefix`, `exit2_foreign`, `norecheck` and `restoration_only` all zero. `bash -c` call sites: one (`run_foreign`). | `TMPDIR=<scratch> python3 corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane>` → `RECHECK-CWD … restoration_only=N` and `RECHECK-CWD-RESULT conformant` exit 0; `--selftest` → `selftest cases=24 failures=0`, exit 0 |
+
+### current worktree row — byte-identical to replacement: YES
+| `corpus/instruments/recheck-cwd-census.py` | the Q10 census of `corpus/knowledge/*.md` recheck values: each entry's first `recheck:` header must begin with `cd <lane> &&` and its value must exit 0 from a foreign cwd; files carrying only `restoration-recheck:` are counted in `restoration_only` and never executed (round 75); the RESULT gate requires `noprefix`, `exit2_foreign`, `norecheck` and `restoration_only` all zero. `bash -c` call sites: one (`run_foreign`). | `TMPDIR=<scratch> python3 corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane>` → `RECHECK-CWD … restoration_only=N` and `RECHECK-CWD-RESULT conformant` exit 0; `--selftest` → `selftest cases=24 failures=0`, exit 0 |
+
+### anchored-row counts (worktree)
+cases=24: 1 ; cases=22: 0
+### whole-file occurrences (worktree)
+cases=24: 1 ; cases=22: 0
+

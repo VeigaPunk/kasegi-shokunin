@@ -1,0 +1,120 @@
+## P1
+$ python3 -B corpus/instruments/recheck-cwd-census.py --selftest
+selftest case=prefix-census ok got=entries=6,exit0_foreign=3,exit1_foreign=1,exit2_foreign=1,exit_other=1,noprefix=5,norecheck=0 want=entries=6,exit0_foreign=3,exit1_foreign=1,exit2_foreign=1,exit_other=1,noprefix=5,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=6 dirs='/fast/scratch/hyaku/kasegi-r82/CriticClaims','/fast/scratch/hyaku/kasegi-r82/CriticClaims','/fast/scratch/hyaku/kasegi-r82/CriticClaims','/fast/scratch/hyaku/kasegi-r82/CriticClaims','/fast/scratch/hyaku/kasegi-r82/CriticClaims','/fast/scratch/hyaku/kasegi-r82/CriticClaims'
+selftest case=scratch-cleanup ok calls=6 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False
+selftest case=both-headers ok got=entries=2,exit0_foreign=2,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=0 want=entries=2,exit0_foreign=2,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=0 first_ran=True restoration_ran=False
+selftest case=relabel-detection ok unpatched got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=1,restoration_only=0 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=1,restoration_only=0; patched got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1
+selftest case=tmpdir-refusal ok ret=2 stdout='' stderr='recheck-cwd: TMPDIR /fast/scratch/hyaku/kasegi-r82/CriticClaims/recheck-cwd-selftest-7khdwc83/no-such-tmpdir is not a directory\n'
+selftest case=prefix-literal ok got=entries=3,exit0_foreign=2,exit1_foreign=1,exit2_foreign=0,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=1,exit2_foreign=0,exit_other=0,noprefix=2,norecheck=0
+selftest case=conform-limbs ok exit2_only ret=1 norecheck_only ret=1
+selftest case=tmpdir-file ok ret=2 stdout='' stderr='recheck-cwd: TMPDIR /fast/scratch/hyaku/kasegi-r82/CriticClaims/recheck-cwd-selftest-7khdwc83/tmpdir-is-a-file is not a directory\n'
+selftest case=timeout-bucket ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=0,exit_other=1,noprefix=0,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=0,exit_other=1,noprefix=0,norecheck=0
+selftest case=tmpdir-unset ok refused=False raised=None
+selftest case=usage-guards ok usage_ret=2 missing_corpus='recheck-cwd: no corpus/knowledge under /fast/scratch/hyaku/kasegi-r82/CriticClaims/recheck-cwd-selftest-7khdwc83/case19-empty' lane_ret=0
+selftest case=output-lines ok lines6=2 lines8=2 lines1=6 lines15=3
+selftest case=bucket-sum ok entries=3 buckets=3 main_ret=0 short_ret=1
+selftest case=main-default ok lines=7 ret=1
+selftest case=gate-predicates ok rows=40 expect=40 bad=[]
+selftest case=gate-wiring ok findings=[]
+selftest case=gate-regs ok registered=['restoration-only-result']
+selftest case=gate-consume ok clean_ok=True limb_log=[True]
+selftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False
+selftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]
+selftest cases=24 failures=0
+rc=0 elapsed=1.2s
+
+## P9
+$ python3 -B .ufo/waves/round-82/c1/mutbat.py --selftest --work /fast/scratch/hyaku/kasegi-r82/CriticClaims/work
+mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False bad_tables=[True, True, True]
+rc=0 elapsed=0.5s
+
+## P3
+$ python3 -B .ufo/waves/round-82/c1/mutbat.py --target corpus/instruments/recheck-cwd-census.py --table .ufo/waves/round-82/c1/mutant-table.json --expect-cases 24 --work /fast/scratch/hyaku/kasegi-r82/CriticClaims/work
+MUTANT K-M1 verdict=KILLED rc=1 fails=3 failed_cases=gate-consume,gate-negpolarity,gate-regs counted=yes
+MUTANT K-M2 verdict=KILLED rc=1 fails=1 failed_cases=gate-negpolarity counted=yes
+MUTANT K-M3 verdict=EXCEPTION-KILL rc=1 fails=2 failed_cases=gate-consume,gate-negpolarity counted=yes
+MUTANT K-M4 verdict=KILLED rc=1 fails=2 failed_cases=gate-negpolarity,gate-predicates counted=yes
+MUTANT K-M5 verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT K-X1 verdict=KILLED rc=1 fails=1 failed_cases=gate-consume counted=yes
+MUTANT K-X2a verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT K-X2b verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT K-M8 verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT K-W1 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT K-W2 verdict=KILLED rc=1 fails=1 failed_cases=gate-checkids counted=yes
+MUTANT K-N1 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT K-P1 verdict=KILLED rc=1 fails=1 failed_cases=gate-checkids counted=yes
+MUTANT K-P2 verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT K-G1 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT K-C1 verdict=KILLED rc=1 fails=1 failed_cases=gate-wiring counted=yes
+MUTANT K-NP verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT K-CL verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT K-T1 verdict=KILLED rc=1 fails=2 failed_cases=tmpdir-file,tmpdir-refusal counted=yes
+MUTANT N10 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT N11 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT N21 verdict=KILLED rc=1 fails=2 failed_cases=prefix-census,timeout-bucket counted=yes
+MUTANT N25 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT N26 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT N27 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT N30 verdict=KILLED rc=1 fails=1 failed_cases=prefix-census counted=yes
+MUTANT T1 verdict=KILLED rc=1 fails=2 failed_cases=gate-checkids,gate-wiring counted=yes
+MUTANT T2 verdict=KILLED rc=1 fails=1 failed_cases=gate-negpolarity counted=yes
+MUTANT M1 verdict=KILLED rc=1 fails=1 failed_cases=tmpdir-file counted=yes
+MUTANT M2 verdict=KILLED rc=1 fails=1 failed_cases=timeout-bucket counted=yes
+MUTANT S01 verdict=KILLED rc=1 fails=1 failed_cases=prefix-literal counted=yes
+MUTANT S02 verdict=KILLED rc=1 fails=1 failed_cases=prefix-literal counted=yes
+MUTANT S04 verdict=KILLED rc=1 fails=1 failed_cases=conform-limbs counted=yes
+MUTANT S05 verdict=KILLED rc=1 fails=1 failed_cases=conform-limbs counted=yes
+MUTANT S37 verdict=KILLED rc=1 fails=1 failed_cases=conform-limbs counted=yes
+MUTANT S07 verdict=KILLED rc=1 fails=1 failed_cases=output-lines counted=yes
+MUTANT S19 verdict=KILLED rc=1 fails=1 failed_cases=output-lines counted=yes
+MUTANT S20 verdict=KILLED rc=1 fails=1 failed_cases=output-lines counted=yes
+MUTANT S21 verdict=KILLED rc=1 fails=2 failed_cases=main-default,output-lines counted=yes
+MUTANT S22 verdict=KILLED rc=1 fails=1 failed_cases=output-lines counted=yes
+MUTANT S08 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S09 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S10 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S41 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S40 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S11 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S12 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S13 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S14 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S16 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S15 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S43 verdict=KILLED rc=1 fails=1 failed_cases=gate-predicates counted=yes
+MUTANT S25 verdict=KILLED rc=1 fails=1 failed_cases=tmpdir-unset counted=yes
+MUTANT S30 verdict=KILLED rc=1 fails=1 failed_cases=usage-guards counted=yes
+MUTANT S31 verdict=KILLED rc=1 fails=1 failed_cases=usage-guards counted=yes
+MUTANT S39 verdict=KILLED rc=1 fails=1 failed_cases=usage-guards counted=yes
+MUTANT NT1 verdict=NEUTRAL-OK rc=0 fails=0 failed_cases=- counted=yes
+MUTANT NT2 verdict=NEUTRAL-OK rc=0 fails=0 failed_cases=- counted=yes
+MUTANT NT3 verdict=NEUTRAL-OK rc=0 fails=0 failed_cases=- counted=yes
+MUTANT J1 verdict=KILLED rc=1 fails=1 failed_cases=bucket-sum counted=yes
+MUTANT S07M verdict=KILLED rc=1 fails=1 failed_cases=main-default counted=yes
+MUTANT B1 verdict=KILLED rc=1 fails=1 failed_cases=bucket-sum counted=yes
+MUTANT B2 verdict=KILLED rc=1 fails=1 failed_cases=bucket-sum counted=yes
+MUTBAT target_sha256=81677e9dc030ed59d2e3481c8b1c2bc8d083e6805cc06fbb25052a685773e050 baseline=ok rows=63 killed=60 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=59/60
+rc=0 elapsed=80.2s
+
+## P8
+$ bash -c grep -c 'subprocess.run(' corpus/instruments/recheck-cwd-census.py; grep -c '"bash", "-c"' corpus/instruments/recheck-cwd-census.py; grep -cE "[\"']/tmp" corpus/instruments/recheck-cwd-census.py; true
+1
+1
+0
+rc=0 elapsed=0.0s
+
+## P7-rows
+$ bash -c grep -nE '^\| recheck-cwd-census\.py \|' SKILL.md; grep -nE '^\| `corpus/instruments/recheck-cwd-census\.py` \|' corpus/instruments/README.md
+982:| recheck-cwd-census.py | gate | python3 <lane>/corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> (any cwd; `TMPDIR` set to a scratch dir) | 0 conformant (noprefix=0 exit2_foreign=0 norecheck=0 restoration_only=0 exit_other=0) \| 1 nonconformant; restoration-recheck-only files counted in restoration_only, never executed | python3 corpus/instruments/recheck-cwd-census.py --selftest -> `selftest cases=24 failures=0`, exit 0 | .ufo/waves/round-75/controls/c1-after-r75.txt | corpus/ read-only + TMPDIR scratch | kasegi |
+354:| `corpus/instruments/recheck-cwd-census.py` | the Q10 census of `corpus/knowledge/*.md` recheck values: each entry's first `recheck:` header must begin with `cd <lane> &&` and its value must exit 0 from a foreign cwd; files carrying only `restoration-recheck:` are counted in `restoration_only` and never executed (round 75); the RESULT gate requires `noprefix`, `exit2_foreign`, `norecheck` and `restoration_only` all zero. `bash -c` call sites: one (`run_foreign`). | `TMPDIR=<scratch> python3 corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane>` → `RECHECK-CWD … restoration_only=N` and `RECHECK-CWD-RESULT conformant` exit 0; `--selftest` → `selftest cases=24 failures=0`, exit 0 |
+rc=0 elapsed=0.0s
+
+## P7-nocase22
+$ bash -c grep -c 'cases=22' SKILL.md corpus/instruments/README.md
+SKILL.md:0
+corpus/instruments/README.md:0
+rc=1 elapsed=0.0s
