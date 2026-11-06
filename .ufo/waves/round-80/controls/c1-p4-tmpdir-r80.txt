@@ -1,0 +1,18 @@
+# P4 base vs candidate on a nonexistent TMPDIR
+Traceback (most recent call last):
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/recheck-cwd-census.py", line 281, in <module>
+    sys.exit(main(sys.argv))
+             ~~~~^^^^^^^^^^
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/recheck-cwd-census.py", line 273, in main
+    counts = census(os.path.abspath(root), lane, verbose)
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/recheck-cwd-census.py", line 103, in census
+    code = run_foreign(value, env_tmp)
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/recheck-cwd-census.py", line 65, in run_foreign
+    scratch = tempfile.mkdtemp(prefix="recheck-cwd-", dir=env_tmp)
+  File "/usr/lib/python3.14/tempfile.py", line 381, in mkdtemp
+    _os.mkdir(file, 0o700)
+    ~~~~~~~~~^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/nonexistent-kasegi-r80/recheck-cwd-tsuwa58x'
+rc(base)=1
+recheck-cwd: TMPDIR /nonexistent-kasegi-r80 is not a directory
+rc(candidate)=2

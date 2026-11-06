@@ -1,0 +1,73 @@
+POST /v1experimental/ubuntu/binary-to-source | OSV Skip to main content Link Menu Expand (external link) Document Search Copy Copied
+Introduction to OSV
+APIAPI Quickstart
+POST /v1/query
+POST /v1/querybatch
+GET /v1/vulns/{id}
+GET /v1experimental/importfindings
+POST /v1experimental/ determineversion
+POST /v1experimental/ubuntu/binary-to-source
+Data sources New Data Sourcevia REST API
+FAQ
+Third Party Tools
+ContributingArchitecture
+Properties of a High Quality OSV Record
+OSV Schema
+OSV-Scanner
+OSV-Linter
+This site uses Just the Docs, a documentation theme for Jekyll.
+Search OSV
+OSV.dev on GitHub
+API
+POST /v1experimental/ubuntu/binary-to-source
+POST /v1experimental/ubuntu/binary-to-source
+Experimental
+Map Ubuntu binary package names to their corresponding source package names.
+Table of contents POST /v1experimental/ubuntu/binary-to-source Experimental endpoint
+Purpose
+Parameters
+Payload
+Request sample
+Example 200 response
+Experimental endpoint
+This API endpoint is still considered experimental. We would value any and all feedback. If you give this a try, please consider opening an issue and letting us know about any pain points or highlights.
+Purpose
+Ubuntu vulnerability advisories in OSV are indexed by source package name rather than binary package name. This endpoint resolves one or more Ubuntu binary package names (up to 1000 per request) to the source package names that build them, allowing callers such as scanners to query OSV using the resulting source package names.
+Parameters
+Parameter Type Description
+ecosystem string The Ubuntu release ecosystem (e.g. Ubuntu:24.04, Ubuntu:24.04:LTS, or Ubuntu:Pro:24.04:LTS).
+binary_names array A non-empty array of Ubuntu binary package names (maximum 1000 per request).
+Payload
+{
+"ecosystem": "string",
+"binary_names": [
+"string"
+]
+}
+Request sample
+cat <<EOF | curl -d @- "https://api.osv.dev/v1experimental/ubuntu/binary-to-source"
+{
+"ecosystem": "Ubuntu:24.04:LTS",
+"binary_names": [
+"libcurl4",
+"libglib2.0-0"
+]
+}
+EOF
+Example 200 response
+The response results array is guaranteed to match the ordering of the input binary_names (with an empty object {} for binary package names that have no known source package mappings in that Ubuntu release):
+{
+"results": [
+{
+"source_names": [
+"curl"
+]
+},
+{
+"source_names": [
+"glib2.0"
+]
+}
+]
+}
+This site uses Just the Docs, a documentation theme for Jekyll.

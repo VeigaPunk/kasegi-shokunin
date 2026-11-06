@@ -1,0 +1,5 @@
+# R129 control: r80 counter selftest, then the same counter with the r79 free-text classifier
+mutbat selftest ok got={'T-KILL': 'KILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL'} counted={'T-KILL': 'yes', 'T-SURV': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no'} all_killed_exit=True
+rc=0
+mutbat selftest FAIL got={'T-KILL': 'EXCEPTION-KILL', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL'} counted={'T-KILL': 'no', 'T-SURV': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no'} all_killed_exit=False
+rc(old classifier)=1
