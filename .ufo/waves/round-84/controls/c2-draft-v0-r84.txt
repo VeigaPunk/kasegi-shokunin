@@ -1,0 +1,13 @@
+# C2 draft v0 (L1 first draft, rule lines of Claims 1 and 4 as first written, reconstructed in scratch) 2026-11-06T23:43:44Z
+17c17
+< Falsifiable rule: a count of advisories taken from the full OSV zip overstates the live set unless the counter drops entries whose withdrawn field is set, since that archive carries withdrawn ones as well (S118.txt:102). A reader checks it by reading the first sentence under "Full database download".
+---
+> Falsifiable rule: a count of vulnerabilities taken from the full OSV zip overstates the live set unless the counter drops records whose withdrawn field is set, since that archive carries withdrawn records as well (S118.txt:102). A reader checks it by reading the first sentence under "Full database download".
+41c41
+< Falsifiable rule: a parser written for the top-level modified_id.csv that splits the second column on a slash breaks on a per-ecosystem file, whose rows give the bare identifier without the directory part (S118.txt:114). A reader checks it by reading the two sentences under "Format and Usage".
+---
+> Falsifiable rule: a parser written for the top-level modified_id.csv that splits the second column on a slash breaks on the per-ecosystem files, whose rows omit the directory prefix and give the bare identifier (S118.txt:114). A reader checks it by reading the two sentences under "Format and Usage".
+$ python3 -B .ufo/waves/round-83/c2/entry-gate.py --entry <v0> --manifest corpus/source-snapshots/round-84/manifest.json --source S118 --lane <lane>
+ENTRY-GATE sid=S118 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=2 header=ok
+ENTRY-GATE-RESULT fail
+rc=1

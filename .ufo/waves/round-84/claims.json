@@ -1,0 +1,51 @@
+{
+ "round": 84,
+ "lane": "kasegi",
+ "attempt": 1,
+ "base": "a089ff3d601b4d53a5515e52720ba27e5ec72c3d",
+ "history_read": "r83 closure (MANIFEST admitted, spotcheck corpus/lessons/round-83-verifier-spotcheck.md@a089ff3d) read before this freeze; r80-r83 admitted, r76-r79 rejected-honest-stop carried through the r80-r83 lessons. Routed into this round from the r83 spot-check: defect 2 (P3 read only the MUTBAT summary suffix) -> P3 here also binds target_sha256 and counts the counter's own per-row MUTANT lines; defect 3 (MutCounter M09: extra limb not in the counter selftest) -> the r84 counter selftest limbs extra/dup/decoy_line, control c1-counter-mutants-r84 (M09, M10, M12 pass the r83 selftest and fail the r84 selftest); defect 5 (MutC1Hunt r83 gaps) -> rows H01-H12 and six new checks. Carried, not claimed: defect 1 (F12/F13 forgeries; F8 limit), defect 4 (non-lexical G6; the r83 gate is reused unchanged for C2), defect 6 (comment_lines f-string, latent), defect 7 is applied procedurally (the landing receipt is re-run over the landing commit's bytes via git archive).",
+ "controls": ".ufo/waves/round-84/controls/ executed before and committed in the freeze commit: census-start-r84.txt; c1-donothing-r84.txt (landed r83 bytes 343b21e4 under the r84 counter); c1-stub-r84.txt (r83 bytes with the six r84 check ids asserted by len(done) >= 0, selftest cases=33 failures=0); c1-candidate-r84.raw (frozen candidate under the r84 counter); c1-counter-mutants-r84.txt (M09/M10/M12 under r83 and r84 counter selftests); c2-prefreeze-r84.txt (S118 B0 recheck, literal sweep 0 over 97 entries, do-nothing FRONTIER-CENSUS rows=59 knowledge 97 registry 118 S118 queued, r83 entry gate pass on the uncommitted draft, census rc0).",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "axis_score": "4 (lowest non-retired; nominal per QUALITY R58: the measured move is the recheck-cwd gate's frozen kill set and the counter's selftest limbs; the scored resolve.py citation-survival census does not read this instrument and is not claimed to move)",
+   "target_instrument": "corpus/instruments/recheck-cwd-census.py (base sha256 343b21e46d4107fd81456840b7547b514283541bbe6fc2fface1da1adece08c9, selftest cases=27)",
+   "candidate": ".ufo/waves/round-84/c1/recheck-cwd-census.py sha256 e5f2e4bdecfc18f80e823ec3bc0797e09b11761ad1b59ad99d488ca3c3cf179e (base plus six checks: noprefix-only, summary-fields, entry-bare-pass, argv-values, verbose-order, entry-set; docstrings updated to 33)",
+   "counter": ".ufo/waves/round-84/c1/mutbat.py sha256 c67e6912ca52dcef6c1722882e3d3b725f40a56703d65bdee402a4c8e738d6ea (the r83 counter plus selftest limbs r84_limbs extra/dup/decoy_line); table .ufo/waves/round-84/c1/mutant-table.json sha256 daf05baceae8efcdce8d3968a57472b86d92de224227d311f2047fc7b677aa9e (79 rows: the 67 r83 rows unchanged plus H01-H12, the twelve r83 MutC1Hunt survivors with unchanged anchor/replacement bytes), built by .ufo/waves/round-84/c1/build-table.py sha256 4352368e28437e3826e34689a50e83b65d874f08aef60cfe92cb8f248f4a7516; stub builder .ufo/waves/round-84/controls/c1-stub-r84.py; counter-mutant driver .ufo/waves/round-84/controls/c1-counter-mutants-r84.py",
+   "statement": "The round-84 recheck-cwd successor, landed byte-identical to the frozen candidate, is killed on its declared check by all 76 non-neutral rows of the 79-row r84 table - including the twelve round-83 MutC1Hunt survivors H01-H12 that the landed r83 bytes and a check-name stub both let survive - passes its 3 neutral rows and the keyed decoys, and is conformant on the lane tree; and the r84 counter's selftest fails on three counter mutants (M09 extra not applied, M10 extra uniqueness dropped, M12 DECOY line dropped) that the r83 counter's selftest passes. Not claimed: the F8/F12/F13 forgery class (recorded limits carried from r83).",
+   "predicate": {
+    "P1": "TMPDIR=<scratch> python3 -B corpus/instruments/recheck-cwd-census.py --selftest at the landing commit prints 'selftest cases=33 failures=0' and exits 0.",
+    "P2": "sha256sum corpus/instruments/recheck-cwd-census.py at the landing commit = e5f2e4bdecfc18f80e823ec3bc0797e09b11761ad1b59ad99d488ca3c3cf179e.",
+    "P3": "python3 -B .ufo/waves/round-84/c1/mutbat.py --target corpus/instruments/recheck-cwd-census.py --table .ufo/waves/round-84/c1/mutant-table.json --expect-cases 33 --work <scratch> at the landing commit exits 0 and prints a MUTBAT line containing 'target_sha256=e5f2e4bdecfc18f80e823ec3bc0797e09b11761ad1b59ad99d488ca3c3cf179e baseline=ok rows=79 killed=76 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok'; and among the counter's own per-row lines, grep -cE '^MUTANT [^ ]+ verdict=(KILLED|EXCEPTION-KILL) ' = 76 and grep -cE '^MUTANT H(0[1-9]|1[0-2]) verdict=KILLED ' = 12.",
+    "P4": "python3 -B .ufo/waves/round-84/c1/mutbat.py --selftest --work <scratch> at the landing commit prints 'mutbat selftest ok' with r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} and exits 0.",
+    "P5": "python3 -B .ufo/waves/round-84/controls/c1-counter-mutants-r84.py --lane <lane> --work <scratch> at the landing commit prints COUNTER-MUTANT M09, M10 and M12 each 'rc=0 selftest=ok' under counter=r83 and 'rc=1 selftest=FAIL' under counter=r84, then 'COUNTER-MUTANTS-RESULT as-expected', exit 0.",
+    "P6": "TMPDIR=<scratch> python3 -B corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> at the landing commit prints 'RECHECK-CWD-RESULT conformant' and exits 0.",
+    "P7": "the committed freeze receipts c1-donothing-r84.txt and c1-stub-r84.txt each end with rc=1 and each print 12 lines matching '^MUTANT H(0[1-9]|1[0-2]) verdict=SURVIVED'.",
+    "P8": "the recheck-cwd pin rows in SKILL.md and corpus/instruments/README.md name 'cases=33' at the landing commit (they name 'cases=27' at base)."
+   },
+   "kill_rule": "C1 fails if any P1-P8 is false at landing, or if the frozen candidate/counter/table/builder/stub/driver bytes differ between the freeze and landing commits.",
+   "do_nothing": "base bytes 343b21e4 under the r84 counter: H01-H12 SURVIVED, rc 1 (P1/P2/P3 false); the check-name stub: H01-H12 SURVIVED, rc 1; the r83 counter's selftest passes M09/M10/M12 (P4/P5's r84 limb absent)."
+  },
+  {
+   "id": "C2",
+   "axis": "coverage",
+   "axis_score": "8 (held; the coverage denominator is operator-owned)",
+   "source": "S118 https://google.github.io/osv.dev/data/ opened 2026-11-06 (HTTP 200), capture corpus/source-snapshots/round-84/S118.txt sha256 e824a73545bedd0abae5f84cd120a5c73e482d7e935bc1534a08a1e1adfa5359, manifest corpus/source-snapshots/round-84/manifest.json (six quotes at snapshot lines 102 104 104 114 121 123). It is the r83 ScoutPerish lead 2 (.ufo/waves/round-83/w1/ScoutPerish.md section 4), the export-side counterpart of F59.",
+   "statement": "Admit Frontier F60, corpus/knowledge/osv-gcs-data-dump-layout.md, on the six pinned export-layout clauses of S118 (the full zip includes withdrawn records, the per-record JSON path, the [EMPTY]/ directory, the per-ecosystem modified_id.csv prefix rule, colon-suffixed ecosystems folded into the base directory, the stopped prefixed exports), moving FRONTIER-CENSUS rows 59 -> 60 and corpus/knowledge 97 -> 98 while S118 moves queued -> mined and no other registry row changes; the entry passes the round-83 entry gate unchanged.",
+   "predicate": {
+    "B0": "cd <lane> && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-84/manifest.json --source S118 at the landing commit prints 'S118:sha256 OK' and six 'OK occurrences=1' lines, exit 0.",
+    "B1": "git diff <freeze> <landing> -- corpus/SOURCES.md changes exactly one registry row (S118: status queued -> mined, used-by — -> corpus/knowledge/osv-gcs-data-dump-layout.md); registry count 118 at freeze and landing.",
+    "B2": "the tracked corpus/knowledge/*.md count goes 97 (freeze) -> 98 (landing); corpus/instruments/knowledge-expected.txt gains exactly the new entry's row and is set-equal to ls corpus/knowledge/*.md at landing.",
+    "B3": "python3 corpus/instruments/frontier-recheck-count.py at landing prints 'FRONTIER-CENSUS rows=60 admitted=60 closed=60 problem-rows=0 registry=118' and 'FRONTIER-PASS F60 ids=S118'.",
+    "B4": "python3 corpus/instruments/capture-binding-check.py prints unbound=0 at the landing commit.",
+    "B5": "the entry's recheck: line is exactly the B0 command behind 'cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && ', and it exits 0 from a foreign cwd at the landing commit.",
+    "B6": "literal sweep of the six S118 manifest quotes over the other 97 entries: literal_sweep_total 0.",
+    "B7": "/home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi exits 0 at landing.",
+    "B8": "python3 -B .ufo/waves/round-83/c2/entry-gate.py (sha256 42f4b2accf704455325f8d1eb8ca4ec21401e35397af7a36861c33a27ace6302, unchanged since r83) --entry corpus/knowledge/osv-gcs-data-dump-layout.md --manifest corpus/source-snapshots/round-84/manifest.json --source S118 --lane <lane> prints 'ruleless=0 untied=0' and 'ENTRY-GATE-RESULT pass', exit 0."
+   },
+   "kill_rule": "C2 fails if any B0-B8 is false at landing, or if the frozen manifest/snapshot bytes differ from the freeze commit or the r83 gate bytes change.",
+   "do_nothing": "freeze state: knowledge 97, FRONTIER-CENSUS rows 59, S118 queued with used-by — (B1/B2/B3 false; c2-prefreeze-r84.txt)."
+  }
+ ]
+}

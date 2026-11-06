@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "note": "Round-84 F60 manifest: OSV.dev Data sources page (S118), captured 2026-11-06 by capture-source.py. Six quotes, each on its exact snapshot line, all from the data-dump layout sections: the full-database zip (:102), the per-record path and the [EMPTY]/ directory (:104), the per-ecosystem modified_id.csv prefix rule (:114), the colon-suffixed ecosystem directories (:121) and the stopped prefixed exports (:123). Not pinned: the source list and licences (:31-60), the converted data and covered ecosystems lists (:61-96), the top-level modified_id.csv format and reverse-chronological order (:109-119; F59 holds the FAQ statement of the same file), the ecosystems.txt listing (:122; context only), the contributing-data paragraph (:124-126).",
+  "sources": [
+    {
+      "id": "S118",
+      "url": "https://google.github.io/osv.dev/data/",
+      "capture_url": "https://google.github.io/osv.dev/data/",
+      "http": {
+        "status": 200,
+        "final_url": "https://google.github.io/osv.dev/data/"
+      },
+      "kind": "html",
+      "fetch_method": "capture-source.py --kind html, default instrument UA (tags stripped, entities decoded, whitespace collapsed per line); raw page 27419 bytes, snapshot 5820 bytes",
+      "fetched_utc": "2026-11-06T23:34:49Z",
+      "path": "S118.txt",
+      "sha256": "e824a73545bedd0abae5f84cd120a5c73e482d7e935bc1534a08a1e1adfa5359",
+      "bytes": 5820,
+      "lines": 129,
+      "quotes": [
+        {
+          "id": "Q01-allzip-withdrawn",
+          "quote": "This bucket contains a zip file with all vulnerabilities across all ecosystems (including withdrawn records) at gs://osv-vulnerabilities/all.zip.",
+          "anchor": 102
+        },
+        {
+          "id": "Q02-record-path",
+          "quote": "Individual vulnerability records can be found at gs://osv-vulnerabilities/<ECOSYSTEM>/<ID>.json.",
+          "anchor": 104
+        },
+        {
+          "id": "Q03-empty-dir",
+          "quote": "Vulnerabilities without an ecosystem (typically withdrawn ones) are exported to the gs://osv-vulnerabilities/[EMPTY]/ directory.",
+          "anchor": 104
+        },
+        {
+          "id": "Q04-per-ecosystem-csv-prefix",
+          "quote": "The per-ecosystem files omit the <ecosystem_dir>/ prefix.",
+          "anchor": 114
+        },
+        {
+          "id": "Q05-colon-prefix-dir",
+          "quote": "the data dump will always contain an ecosystem directory without the :.* suffix (e.g. Alpine).",
+          "anchor": 121
+        },
+        {
+          "id": "Q06-stopped-prefixed",
+          "quote": "OSV.dev has stopped exporting entries for ecosystems with prefixes (e.g. All Alpine:.*).",
+          "anchor": 123
+        }
+      ]
+    }
+  ]
+}
