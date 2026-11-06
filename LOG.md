@@ -2855,3 +2855,15 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Measured scores: depth:verifiability 4 → 4 (delta 0, C1 not landed); coverage 8 → 8 (delta 0, held pending the operator denominator).
 - Routed: r78 spot-check item 1 (Q12 reason) corrected by an appended lesson bullet; MutC1Hunt 7 real-gap survivors; R-77-D, R-77-E (L0); two OSV endpoints open.
 - Assimilation: none (82 staged-id collisions; L0 pending). Considerthese: read, none fits.
+
+## Round 80 — C1 VERIFIED (recheck-cwd successor landed), C2 VERIFIED (F56 admitted on S114)
+
+- Read first: rejected closures r76–r79 and `corpus/lessons/round-79-verifier-spotcheck.md`. Declared C1 depth:verifiability (lowest, nominal 4 per R58): land the recheck-cwd successor `420151fd…5698` scored by a NEW counter whose exception classifier keys on the `FAIL exception=` marker (R129) and a 28-row table carrying the nine r79 routed survivors. Declared C2 coverage (8): F56, OSV.dev POST /v1experimental/ubuntu/binary-to-source on S114 (six pinned clauses; the ordering clause left unclaimed as F54's rule-shape). Freeze `4ab54586`, base `58905f2b`; `.ufo/waves/round-80/claims.json`.
+- Controls executed and committed before scoring: base battery `killed=0` rc 1; r79 candidate `killed=13` rc 1; print-stub forgery `survived=28` rc 1; the r80 counter selftest rc 0 and the same counter with the r79 classifier rc 1; base nonexistent TMPDIR rc 1 traceback vs candidate rc 2; C2 counters rows 55 / knowledge 93; S114 source-recheck rc 0, literal B6 0/6.
+- Wave `w1`: one v1 wave of 12 seats (executor×3, scribe, scout, reviewer×3, mutation-tester×2, critic, connector); attack seats (reviewer, critic, mutation-tester) 6/12. Reports under `.ufo/waves/round-80/w1/`.
+- C1: P1–P8 hold on the landing bytes (`.ufo/waves/round-80/l1/L1-landing-r80.txt`): selftest `cases=15 failures=0`, battery `killed=28` of 28 rc 0 (ExecC1Battery twice, MutClassifier once, L1 once), TMPDIR rc 2 no traceback, real-tree census conformant at 94 entries, pin rows `cases=15`, exec surface 1/1/0, counter selftest ok. ReviewC1 no blocker.
+- C2: B0–B7 hold on the landing tree (source-recheck rc 0, FRONTIER-CENSUS rows 56 admitted 56, capture-binding unbound 0, expected list 96/94 set-equal, sources-census rc 0 with the six inherited W04). ScoutDistinct 6/6 novel and the live page re-captures to the committed sha256. ReviewC2's six prose findings applied before landing.
+- Mistakes mined: M80-1 (routed reason transcribed unmeasured — the r79 Q12 correction) and M80-2 (code line cite off by one — r79 `mutbat.py:41`) in `corpus/lessons/round-80.md`; QUALITY R130, R131; appended corrections in `corpus/lessons/round-79.md`.
+- Measured scores: depth:verifiability 4 → 4 (delta 0; instrument landed, nominal per R58); coverage 8 → 8 (delta 0, held pending the operator denominator).
+- Routed to r81: ReviewC1 M1/M2, MutC1Hunt real-gap survivors, CriticClaims forgery class (tally depends on the byte pin), MutClassifier P3DEL/P3RAISE, ScoutDistinct R-81-D; C2 lead importfindings.
+- Assimilation: none (84 staged-id collisions; L0 pending). Considerthese: read, none fits.

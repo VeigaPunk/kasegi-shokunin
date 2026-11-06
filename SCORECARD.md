@@ -3009,3 +3009,25 @@ Move log (round 79):
 Quality criteria added: R128 (non-equivalence before a required kill) and R129 (dedicated exception marker in a mutant counter's classifier), both grounded in `corpus/lessons/round-79.md`. Capabilities: none entered. Saturation: unchanged (line 9/10, window N = 3; depth:verifiability at 4 keeps the lowest-axis obligation). Retired: none.
 
 Planned round 80: re-declare the C1 successor under a counter whose classifier keys on a dedicated `exception=` marker with a selftest row for an assertion FAIL that mentions an exception (R129), add the routed real-gap survivors (MutC1Hunt N10/N11/N21/N25/N26/N27/N30; ReviewEquiv half B) to the frozen table, and freeze P7 as a code-literal check; C2 candidates: the two remaining OSV experimental endpoints (importfindings, ubuntu binary-to-source).
+
+## Round 80 — C1 VERIFIED (recheck-cwd successor landed, 28/28 frozen kills); C2 VERIFIED (F56 admitted, S114 mined)
+
+Frozen claims: `.ufo/waves/round-80/claims.json` (freeze `4ab545865f747fca8456370b5927fe51236fe579`, base `58905f2bbc52db6b1634566cc1be9c92cdddebfb`). Rejected closures r76–r79 and the r79 spot-check were read before the freeze; every control was executed and committed in the freeze commit (`.ufo/waves/round-80/controls/`). Landing receipt: `.ufo/waves/round-80/l1/L1-landing-r80.txt` (landing commit hash in the round report).
+
+| Claim | Axis | Before | After | Verdict | Counting command | Evidence |
+|---|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest, nominal per R58) | score 4; base counter selftest `cases=6`; frozen 28-row battery on base `baseline=bad killed=0` (notderived 25), rc 1; r79 candidate `killed=13`; nonexistent TMPDIR rc 1 traceback; pin rows `cases=6` | score 4 held (nominal; the scored citation census is not read by this gate); landed `420151fd…5698` selftest `cases=15 failures=0`; battery `killed=28 survived=0 dirty=0 notderived=0` rc 0; TMPDIR refusal rc 2, no traceback; pin rows `cases=15` | VERIFIED (P1–P8) | `python3 -B .ufo/waves/round-80/c1/mutbat.py --target corpus/instruments/recheck-cwd-census.py --table .ufo/waves/round-80/c1/mutant-table.json --expect-cases 15 --work $SCRATCH` | `.ufo/waves/round-80/l1/L1-landing-r80.txt`; `w1/ExecC1Battery.md`; `w1/ReviewC1.md` (no blocker); `controls/c1-*.txt` |
+| C2 | coverage (8, held) | knowledge 93; registry 114 with S114 queued; FRONTIER-CENSUS rows 55 | knowledge 94; registry 114 with S114 mined; FRONTIER-CENSUS rows 56 admitted 56 closed 56 problem-rows 0 | VERIFIED (B0–B7) | `python3 corpus/instruments/frontier-recheck-count.py \| grep FRONTIER-CENSUS ; ls corpus/knowledge/*.md \| wc -l ; grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md` | `corpus/knowledge/osv-ubuntu-binary-to-source-mapping.md`; `corpus/source-snapshots/round-80/`; `w1/ExecC2Gate.md`; `w1/ScoutDistinct.md` (6/6 novel); `w1/ReviewC2.md` (no blocker) |
+| — | depth:density | 9 | 9 | unchanged (SKILL.md mean density 272.8 before and after the one-token pin edit) | `python3 corpus/instruments/density.py SKILL.md --label x` | `.ufo/waves/round-80/l1/L1-landing-r80.txt` § harm |
+
+Move log (round 80):
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 80 | depth:verifiability | census selftest `cases=6`; nonexistent TMPDIR rc 1 traceback (M77-3 open) | landed: `cases=15`, TMPDIR rc 2, 28 of 28 frozen kills incl. the nine r79 routed survivors; M77-3 closed on the lane tree | `corpus/instruments/recheck-cwd-census.py`; `.ufo/waves/round-80/c1/`; `corpus/lessons/round-80.md` § L1 verdicts |
+| 80 | coverage | registry 113; knowledge 93; frontier 55 | registry 114 (S114 mined); knowledge 94; frontier 56 | `corpus/SOURCES.md` S114 row; `corpus/README.md` F56 row; `PROVINCE.md` F56 line |
+| 80 | calibration | r79 Q12 correction false; r79 `mutbat.py:41` cite off by one | appended corrections in `corpus/lessons/round-79.md`; QUALITY R130, R131; mistakes M80-1, M80-2 | `corpus/lessons/round-80.md` § Mistakes |
+
+Quality criteria added: R130 (re-run a routed reason's command before acting) and R131 (a code `path:line` cite is grep-checked; supersedes R129's line number). Capabilities: none entered. Saturation: unchanged; depth:verifiability at 4 keeps the lowest-axis obligation. Retired: none.
+
+Planned round 81 (not frozen): the r80 routed survivors outside the frozen table — ReviewC1 M1/M2 (file-valued TMPDIR guard, timeout branch), MutC1Hunt's real-gap set, and CriticClaims (a): a counter limb that makes the kill tally independent of the byte pin (e.g. a per-row expected-check-id match against the kept FAIL line); C2 lead: GET /v1experimental/importfindings (page /osv.dev/get-v1-importfindings/, HTTP 200 on 2026-11-06).

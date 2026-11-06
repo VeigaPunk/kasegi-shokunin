@@ -1,0 +1,25 @@
+# P6 draft: recheck-cwd-census selftest pin rows, cases=6 -> cases=15
+# Source rows read at freeze commit 4ab545865f747fca8456370b5927fe51236fe579
+# (lane worktree byte-identical to the freeze commit for both files at draft time).
+# Change: ONE substitution per row, the token cases=6 -> cases=15. Nothing else.
+# Verified: git diff --no-index --word-diff=porcelain freeze..scratch shows exactly
+#   -cases=6
+#   +cases=15
+# for each file, and nothing else.
+
+== SKILL.md:982 (lane /home/vgpnk/Projects/shokunin/kasegi-shokunin/SKILL.md) ==
+CURRENT:
+| recheck-cwd-census.py | gate | python3 <lane>/corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> (any cwd; `TMPDIR` set to a scratch dir) | 0 conformant (noprefix=0 exit2_foreign=0 norecheck=0 restoration_only=0 exit_other=0) \| 1 nonconformant; restoration-recheck-only files counted in restoration_only, never executed | python3 corpus/instruments/recheck-cwd-census.py --selftest -> `selftest cases=6 failures=0`, exit 0 | .ufo/waves/round-75/controls/c1-after-r75.txt | corpus/ read-only + TMPDIR scratch | kasegi |
+REPLACEMENT:
+| recheck-cwd-census.py | gate | python3 <lane>/corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane> (any cwd; `TMPDIR` set to a scratch dir) | 0 conformant (noprefix=0 exit2_foreign=0 norecheck=0 restoration_only=0 exit_other=0) \| 1 nonconformant; restoration-recheck-only files counted in restoration_only, never executed | python3 corpus/instruments/recheck-cwd-census.py --selftest -> `selftest cases=15 failures=0`, exit 0 | .ufo/waves/round-75/controls/c1-after-r75.txt | corpus/ read-only + TMPDIR scratch | kasegi |
+
+== corpus/instruments/README.md:354 (lane /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/README.md) ==
+CURRENT:
+| `corpus/instruments/recheck-cwd-census.py` | the Q10 census of `corpus/knowledge/*.md` recheck values: each entry's first `recheck:` header must begin with `cd <lane> &&` and its value must exit 0 from a foreign cwd; files carrying only `restoration-recheck:` are counted in `restoration_only` and never executed (round 75); the RESULT gate requires `noprefix`, `exit2_foreign`, `norecheck` and `restoration_only` all zero. `bash -c` call sites: one (`run_foreign`). | `TMPDIR=<scratch> python3 corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane>` → `RECHECK-CWD … restoration_only=N` and `RECHECK-CWD-RESULT conformant` exit 0; `--selftest` → `selftest cases=6 failures=0`, exit 0 |
+REPLACEMENT:
+| `corpus/instruments/recheck-cwd-census.py` | the Q10 census of `corpus/knowledge/*.md` recheck values: each entry's first `recheck:` header must begin with `cd <lane> &&` and its value must exit 0 from a foreign cwd; files carrying only `restoration-recheck:` are counted in `restoration_only` and never executed (round 75); the RESULT gate requires `noprefix`, `exit2_foreign`, `norecheck` and `restoration_only` all zero. `bash -c` call sites: one (`run_foreign`). | `TMPDIR=<scratch> python3 corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane>` → `RECHECK-CWD … restoration_only=N` and `RECHECK-CWD-RESULT conformant` exit 0; `--selftest` → `selftest cases=15 failures=0`, exit 0 |
+
+# Out of scope, must NOT be touched by the substitution: other files/lines carry
+# their own selftest pins (SKILL.md:1151 r44-frontier-count; README.md:851,887
+# other instruments; README.md:995 r44-frontier-count). Only the two rows above
+# are the recheck-cwd-census pin.

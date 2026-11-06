@@ -1,0 +1,44 @@
+# Junk C2 entry (six quotes pasted, no claim, no rule) scored against B0-B5 in a scratch lane from git archive 4ab5458
+
+# OSV.dev Ubuntu binary-to-source mapping
+
+source: S114 — https://google.github.io/osv.dev/post-v1-ubuntu-binary-to-source/ — S114.txt:25,35,38,39,58
+verified-at: 2026-11-06
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-80/manifest.json --source S114
+
+> "Map Ubuntu binary package names to their corresponding source package names." (S114.txt:25)
+
+> "Ubuntu vulnerability advisories in OSV are indexed by source package name rather than binary package name." (S114.txt:35)
+
+> "allowing callers such as scanners to query OSV using the resulting source package names." (S114.txt:35)
+
+> "The Ubuntu release ecosystem (e.g. Ubuntu:24.04, Ubuntu:24.04:LTS, or Ubuntu:Pro:24.04:LTS)." (S114.txt:38)
+
+> "A non-empty array of Ubuntu binary package names (maximum 1000 per request)." (S114.txt:39)
+
+> "with an empty object {} for binary package names that have no known source package mappings in that Ubuntu release" (S114.txt:58)
+
+--- B0
+S114:sha256 OK
+S114:Q01-purpose OK occurrences=1 anchor=25-ok
+S114:Q02-source-indexing OK occurrences=1 anchor=35-ok
+S114:Q03-scanner-use OK occurrences=1 anchor=35-ok
+S114:Q04-ecosystem-forms OK occurrences=1 anchor=38-ok
+S114:Q05-binary-names-limit OK occurrences=1 anchor=39-ok
+S114:Q07-unmapped-empty-object OK occurrences=1 anchor=58-ok
+rc=0
+--- B1 rows
+114
+--- B2 knowledge / expected
+94
+96
+--- B3
+FRONTIER-CENSUS rows=56 admitted=56 closed=56 problem-rows=0 registry=114
+FRONTIER-PASS F56 ids=S114
+PASS     F56  knowledge/osv-ubuntu-binary-to-source-mapping.md     ids=S114           exit=0   
+--- B4
+records=94 bound=94 unbound=0
+--- B5 recheck line from a foreign cwd
+rc=0
+--- B6 literal containment over the 93 admitted entries, new entry excluded
+0/6 hits (each clause 0 files)

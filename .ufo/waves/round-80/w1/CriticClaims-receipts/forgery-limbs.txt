@@ -1,0 +1,15 @@
+# P1/P4/P5/P7 on the F1 location-guard forgery (zero test logic), planted at <scratch>/land/corpus/instruments/recheck-cwd-census.py
+$ python3 -B <land>/recheck-cwd-census.py --selftest
+selftest cases=15 failures=0
+rc=0
+$ TMPDIR=/nonexistent-kasegi-r80 python3 -B <land>/recheck-cwd-census.py --root <lane> --lane <lane>
+recheck-cwd: TMPDIR /nonexistent-kasegi-r80 is not a directory
+rc=2
+$ TMPDIR=<scratch> python3 -B <land>/recheck-cwd-census.py --root <lane> --lane <lane>
+RECHECK-CWD entries=94 noprefix=0 exit2_foreign=0 exit0_foreign=72 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+rc=0
+grep -c "subprocess.run(" -> 1 ; grep -c "\"bash\", \"-c\"" -> 1 ; grep -cE "[\"']/tmp" -> 0
+
+diff c1-forgery-stub.py -> forgery-F1-location-guard.py: 6 added lines, 0 removed; the stub (killed=0 survived=28, controls/c1-forgery-r80.txt) scores
+MUTBAT target_sha256=494ca084c23b22c20b851207d8d8d0ff9b15f344d68ccb15c6efc117a4c2c5fe baseline=ok rows=28 killed=28 survived=0 dirty=0 notderived=0 rc0

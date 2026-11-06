@@ -1,0 +1,200 @@
+BASELINE rc=0 ok=True sha=420151fdea1187aa308f63536216039746fc9d784f6096c36627b7513e505698
+ROW H01 KILLED rc=1 fails=8 noprefix operator flip
+ROW H02 KILLED rc=1 fails=3 restoration_only counted into norecheck
+ROW H03 KILLED rc=1 fails=2 exit2 branch constant changed
+ROW H04 KILLED rc=1 fails=5 exit0 branch constant changed
+ROW H05 KILLED rc=1 fails=1 exit1 branch constant changed
+ROW H06 KILLED rc=1 fails=6 entries counter neutered
+ROW H07 KILLED rc=1 fails=2 noprefix counter neutered
+ROW H08 KILLED rc=1 fails=1 exit_other bucket folded into exit2
+ROW H09 KILLED rc=1 fails=1 entry TMPDIR set to parent, not fresh scratch
+ROW H10 KILLED rc=1 fails=3 timeout constant collapsed
+ROW H11 KILLED rc=1 fails=1 run_foreign scratch cleanup removed
+ROW H12 KILLED rc=1 fails=1 refusal line moved off stderr
+ROW H13 KILLED rc=1 fails=1 tmpdir_refused returns False after printing
+ROW H14 KILLED rc=1 fails=1 conform drops restoration_only conjunct
+ROW H15 KILLED rc=1 fails=2 nonconformant exit code changed to 2
+ROW H16 KILLED rc=1 fails=1 predicates_ok drops bool(rows)
+ROW H17 KILLED rc=1 fails=1 checkids side-log test weakened to != [False]
+ROW H18 KILLED rc=1 fails=1 GATE_ROWS constant off by one
+ROW H19 KILLED rc=1 fails=1 first_recheck reads last recheck line
+ROW H20 KILLED rc=1 fails=3 wiring scanner arity bound raised
+ROW H21 KILLED rc=1 fails=1 F4 finding dropped
+ROW H22 KILLED rc=1 fails=1 F3 findings dropped
+ROW H23 KILLED rc=1 fails=1 negpolarity predicate rewritten as truthiness (None row)
+ROW H24 KILLED rc=1 fails=1 main TMPDIR guard deleted
+ROW H25 KILLED rc=1 fails=3 F3 emitted for wired names too
+ROW H26 KILLED rc=1 fails=1 fixture literal e-exit7 changed to exit 1
+ROW H27
+  pristine={"pristine_plus_cwd_inherit_rc": 1, "pristine_prefix_census_fail": true, "mutant_plus_cwd_inherit_rc": 1, "mutant_prefix_census_fail": true}
+  mutant  ={"pristine_plus_cwd_inherit_rc": 1, "pristine_prefix_census_fail": true, "mutant_plus_cwd_inherit_rc": 0, "mutant_prefix_census_fail": false}
+ROW H27 SURVIVED rc=0 fails=0 fresh-cwd fixture neutralised to true
+ROW H28 KILLED rc=1 fails=1 run_foreign cwd swapped to the TMPDIR parent
+ROW S01
+  pristine={"ret": 1}
+  mutant  ={"ret": 0}
+ROW S01 SURVIVED rc=0 fails=0 prefix literal loses the && anchor
+ROW S02
+  pristine={"noprefix": 1, "ret": 1}
+  mutant  ={"noprefix": 0, "ret": 0}
+ROW S02 SURVIVED rc=0 fails=0 prefix literal loses its trailing space
+ROW S03
+  pristine={"order": ["a.md", "b.md", "c.md"]}
+  mutant  ={"order": ["c.md", "a.md", "b.md"]}
+ROW S03 SURVIVED rc=0 fails=0 glob enumeration no longer sorted
+ROW S04
+  pristine={"ret": 1, "conformant": false}
+  mutant  ={"ret": 0, "conformant": true}
+ROW S04 SURVIVED rc=0 fails=0 conform drops exit2_foreign conjunct
+ROW S05
+  pristine={"ret": 1, "conformant": false}
+  mutant  ={"ret": 0, "conformant": true}
+ROW S05 SURVIVED rc=0 fails=0 conform drops norecheck conjunct
+ROW S06
+  pristine={"ret": 0, "conformant": true}
+  mutant  ={"ret": 1, "conformant": false}
+ROW S06 SURVIVED rc=0 fails=0 DEFAULT_LANE points at fleet root
+ROW S07
+  pristine={"ret": 0, "entry_lines": 0}
+  mutant  ={"ret": 0, "entry_lines": 1}
+ROW S07 SURVIVED rc=0 fails=0 verbose defaults to True
+ROW S08
+  pristine={"gate_consume_ok(1,[True])": false}
+  mutant  ={"gate_consume_ok(1,[True])": true}
+ROW S08 SURVIVED rc=0 fails=0 gate_consume_ok identity test becomes equality
+ROW S09
+  pristine={"gate_consume_ok(True,[True,False])": false}
+  mutant  ={"gate_consume_ok(True,[True,False])": true}
+ROW S09 SURVIVED rc=0 fails=0 limb_log test truncated to its first element
+ROW S10
+  pristine={"both_headers_ok(True,True,0)": false}
+  mutant  ={"both_headers_ok(True,True,0)": true}
+ROW S10 SURVIVED rc=0 fails=0 both_headers rest_ran test becomes falsiness
+ROW S11
+  pristine={"predicates_ok([('a','b')],1)": false}
+  mutant  ={"predicates_ok([('a','b')],1)": true}
+ROW S11 SURVIVED rc=0 fails=0 predicates_ok element equality coerced to truthiness
+ROW S12
+  pristine={"predicates_ok([(T,T),(T,T)],1)": false}
+  mutant  ={"predicates_ok([(T,T),(T,T)],1)": true}
+ROW S12 SURVIVED rc=0 fails=0 predicates_ok row count becomes a lower bound
+ROW S13
+  pristine={"gate_checkids_ok(['a'],['a'],[[False,True]])": false}
+  mutant  ={"gate_checkids_ok(['a'],['a'],[[False,True]])": true}
+ROW S13 SURVIVED rc=0 fails=0 side log membership test instead of exact log
+ROW S14
+  pristine={"findings": ["F1:gate-consume:1", "F2:gate-consume:1", "F3:both-headers", "F3:gate-checkids", "F3:gate-consume", "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring"]}
+  mutant  ={"findings": ["F2:gate-consume:1", "F3:both-headers", "F3:gate-checkids", "F3:gate-consume", "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring"]}
+ROW S14 SURVIVED rc=0 fails=0 F1 BoolOp limb deleted
+ROW S15
+  pristine={"findings": ["F3:both-headers", "F3:gate-checkids", "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring", "F4:gate-consume:1"]}
+  mutant  ={"findings": ["F3:both-headers", "F3:gate-checkids", "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring"]}
+ROW S15 SURVIVED rc=0 fails=0 F4 narrowed to constant True arguments
+ROW S16
+  pristine={"findings": ["F1:x:1", "F3:both-headers", "F3:gate-checkids", "F3:gate-consume", "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring"]}
+  mutant  ={"findings": ["F3:both-headers", "F3:gate-checkids", "F3:gate-consume", "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring"]}
+ROW S16 SURVIVED rc=0 fails=0 F1 BoolOp operand quantifier any->all
+ROW S17 KILLED rc=1 fails=1 both-headers dropped from GATE_PREDICATES
+ROW S18
+  pristine={"findings": ["F2:gate-consume:1", "F3:both-headers", "F3:gate-checkids", "F3:gate-consume", "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring"]}
+  mutant  ={"exc": "IndexError"}
+ROW S18 SURVIVED rc=0 fails=0 consumed() arity guard removed
+ROW S19
+  pristine={"restoration_only": 1, "marker": true}
+  mutant  ={"restoration_only": 1, "marker": false}
+ROW S19 SURVIVED rc=0 fails=0 RESTORATION-ONLY marker print deleted
+ROW S20
+  pristine={"norecheck": 1, "marker": true}
+  mutant  ={"norecheck": 1, "marker": false}
+ROW S20 SURVIVED rc=0 fails=0 NORECHECK marker print deleted
+ROW S21
+  pristine={"entry_lines": 1}
+  mutant  ={"entry_lines": 0}
+ROW S21 SURVIVED rc=0 fails=0 ENTRY detail line suppressed
+ROW S22
+  pristine={"exit2": 1, "entry_lines": 1}
+  mutant  ={"exit2": 1, "entry_lines": 0}
+ROW S22 SURVIVED rc=0 fails=0 ENTRY predicate drops code == 2
+ROW S23
+  pristine={"norecheck": 1, "exit0": 1, "exit_other": 0, "noprefix": 0}
+  mutant  ={"norecheck": 0, "exit0": 1, "exit_other": 1, "noprefix": 1}
+ROW S23 SURVIVED rc=0 fails=0 first_recheck accepts indented header
+ROW S24
+  pristine={"rc": 0, "cases": true, "leftover_selftest_dirs": 0}
+  mutant  ={"rc": 0, "cases": true, "leftover_selftest_dirs": 1}
+ROW S24 SURVIVED rc=0 fails=0 selftest fixture scratch cleanup removed
+ROW S25
+  pristine={"rc": 0, "traceback": false, "cases": true}
+  mutant  ={"rc": 1, "traceback": true, "cases": false}
+ROW S25 SURVIVED rc=0 fails=0 tmpdir_refused drops the None guard
+ROW S26 KILLED rc=1 fails=7 first_recheck value no longer stripped
+ROW S27
+  pristine={"empty": true, "one": false, "many": false}
+  mutant  ={"empty": true, "one": false, "many": false}
+ROW S27 SURVIVED rc=0 fails=0 wiring_ok rewritten as truthiness
+ROW S28
+  pristine={"cases": [{"ret": 0, "conformant": true}, {"ret": 1, "conformant": false}, {"ret": 1, "conformant": false}]}
+  mutant  ={"cases": [{"ret": 0, "conformant": true}, {"ret": 1, "conformant": false}, {"ret": 1, "conformant": false}]}
+ROW S28 SURVIVED rc=0 fails=0 conform noprefix test becomes <= 0
+ROW S29
+  pristine={"summary": ["RECHECK-CWD entries=1 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0"]}
+  mutant  ={"summary": ["RECHECK-CWD entries = 1 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0"]}
+ROW S29 SURVIVED rc=0 fails=0 summary line format changed
+ROW S30
+  pristine={"ret": 2, "usage_on_stderr": true, "stdout": ""}
+  mutant  ={"ret": 0, "usage_on_stderr": true, "stdout": ""}
+ROW S30 SURVIVED rc=0 fails=0 usage error exit code returns 0
+ROW S31
+  pristine={"ret": "EXC:SystemExit:recheck-cwd: no corpus/knowledge under /fast/scratch/hyaku/kasegi-r80/MutC1Hunt/t/probe/S31/empty-sd0aj7j0", "stdout_lines": [], "stderr_has_guard": false}
+  mutant  ={"ret": "0", "stdout_lines": ["RECHECK-CWD entries=0 noprefix=0 exit2_foreign=0 exit0_foreign=0 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0", "RECHECK-CWD-RESULT conformant"], "stderr_has_guard": false}
+ROW S31 SURVIVED rc=0 fails=0 missing corpus guard prints instead of exiting
+ROW S32
+  pristine={"mutant_plus_cleanup_removed_rc": 1, "mutant_plus_cleanup_removed_scratch_ok": false, "pristine_plus_cleanup_removed_rc": 1, "pristine_plus_cleanup_removed_scratch_ok": false}
+  mutant  ={"mutant_plus_cleanup_removed_rc": 0, "mutant_plus_cleanup_removed_scratch_ok": true, "pristine_plus_cleanup_removed_rc": 1, "pristine_plus_cleanup_removed_scratch_ok": false}
+ROW S32 SURVIVED rc=0 fails=0 scratch-cleanup leftover fixed at 0
+ROW S33
+  pristine={"rc": 0, "cases_line": true, "stdout_chars": 2548}
+  mutant  ={"rc": 0, "cases_line": false, "stdout_chars": 0}
+ROW S33 SURVIVED rc=0 fails=0 capture() no longer restores stdout
+ROW S34
+  pristine={"ret": "2", "guard_line": true, "exc": false}
+  mutant  ={"ret": "EXC:FileNotFoundError:[Errno 2] No such file or directory: '/fast/scratch/hyaku/kasegi-r80/MutC1Hunt/t/probe/S34/no-such-tmpdir/recheck-cwd-selftest-346g8_l8'", "guard_line": false, "exc": true}
+ROW S34 SURVIVED rc=0 fails=0 selftest TMPDIR guard deleted
+ROW S35
+  pristine={"exit0": 2, "exit_other": 0, "bin_sh": "/usr/bin/bash"}
+  mutant  ={"exit0": 2, "exit_other": 0, "bin_sh": "/usr/bin/bash"}
+ROW S35 SURVIVED rc=0 fails=0 recheck values run under sh, not bash
+ROW S36
+  pristine={"selftest_rc": 1, "wiring_failed": true}
+  mutant  ={"selftest_rc": 0, "wiring_failed": false}
+ROW S36 SURVIVED rc=0 fails=0 gate-wiring read-failure fallback neutered
+ROW S37
+  pristine={"norecheck": 1, "restoration_only": 0, "restoration_marker": false}
+  mutant  ={"norecheck": 0, "restoration_only": 1, "restoration_marker": true}
+ROW S37 SURVIVED rc=0 fails=0 restoration header prefix broadened
+ROW S39
+  pristine={"ret": 0, "conformant": true}
+  mutant  ={"ret": 1, "conformant": false}
+ROW S39 SURVIVED rc=0 fails=0 main passes root where lane belongs
+ROW S40
+  pristine={"gate_negpolarity_ok(False,0)": false}
+  mutant  ={"gate_negpolarity_ok(False,0)": true}
+ROW S40 SURVIVED rc=0 fails=0 neg_ret_ok identity test becomes equality
+ROW S41
+  pristine={"both_headers_ok(True,1,False)": false}
+  mutant  ={"both_headers_ok(True,1,False)": true}
+ROW S41 SURVIVED rc=0 fails=0 both_headers first_ran identity test becomes equality
+ROW S42
+  pristine={"findings": ["F3:both-headers", "F3:gate-checkids", "F3:gate-consume", "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring"]}
+  mutant  ={"findings": ["F1:42:1", "F3:both-headers", "F3:gate-checkids", "F3:gate-consume", "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring"]}
+ROW S42 SURVIVED rc=0 fails=0 non-string check label no longer skipped
+ROW S43
+  pristine={"findings": ["F2:gate-consume:1", "F3:both-headers", "F3:gate-checkids", "F3:gate-consume", "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring"]}
+  mutant  ={"findings": ["F3:both-headers", "F3:gate-checkids", "F3:gate-negpolarity", "F3:gate-predicates", "F3:gate-wiring"]}
+ROW S43 SURVIVED rc=0 fails=0 predicate matching becomes case-insensitive
+ROW S38
+  pristine={"rc": 0, "cases": true}
+  mutant  ={"rc": 1, "cases": false}
+ROW S38 SURVIVED rc=0 fails=0 tmpdir-parent drops the None-parent limb
+TALLY {"KILLED": 29, "SURVIVED": 42}
+FROZEN_AFTER 420151fdea1187aa308f63536216039746fc9d784f6096c36627b7513e505698

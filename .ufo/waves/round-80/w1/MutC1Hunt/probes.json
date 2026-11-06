@@ -1,0 +1,621 @@
+{
+ "H27": {
+  "differs": true,
+  "mutant": {
+   "mutant_plus_cwd_inherit_rc": 0,
+   "mutant_prefix_census_fail": false,
+   "pristine_plus_cwd_inherit_rc": 1,
+   "pristine_prefix_census_fail": true
+  },
+  "pristine": {
+   "mutant_plus_cwd_inherit_rc": 1,
+   "mutant_prefix_census_fail": true,
+   "pristine_plus_cwd_inherit_rc": 1,
+   "pristine_prefix_census_fail": true
+  },
+  "probe": "freshcwd_meta"
+ },
+ "S01": {
+  "differs": true,
+  "mutant": {
+   "ret": 0
+  },
+  "pristine": {
+   "ret": 1
+  },
+  "probe": "prefix_weak"
+ },
+ "S02": {
+  "differs": true,
+  "mutant": {
+   "noprefix": 0,
+   "ret": 0
+  },
+  "pristine": {
+   "noprefix": 1,
+   "ret": 1
+  },
+  "probe": "prefix_nospace"
+ },
+ "S03": {
+  "differs": true,
+  "mutant": {
+   "order": [
+    "c.md",
+    "a.md",
+    "b.md"
+   ]
+  },
+  "pristine": {
+   "order": [
+    "a.md",
+    "b.md",
+    "c.md"
+   ]
+  },
+  "probe": "glob_order"
+ },
+ "S04": {
+  "differs": true,
+  "mutant": {
+   "conformant": true,
+   "ret": 0
+  },
+  "pristine": {
+   "conformant": false,
+   "ret": 1
+  },
+  "probe": "conform_exit2"
+ },
+ "S05": {
+  "differs": true,
+  "mutant": {
+   "conformant": true,
+   "ret": 0
+  },
+  "pristine": {
+   "conformant": false,
+   "ret": 1
+  },
+  "probe": "conform_norecheck"
+ },
+ "S06": {
+  "differs": true,
+  "mutant": {
+   "conformant": false,
+   "ret": 1
+  },
+  "pristine": {
+   "conformant": true,
+   "ret": 0
+  },
+  "probe": "default_lane"
+ },
+ "S07": {
+  "differs": true,
+  "mutant": {
+   "entry_lines": 1,
+   "ret": 0
+  },
+  "pristine": {
+   "entry_lines": 0,
+   "ret": 0
+  },
+  "probe": "verbose_default"
+ },
+ "S08": {
+  "differs": true,
+  "mutant": {
+   "gate_consume_ok(1,[True])": true
+  },
+  "pristine": {
+   "gate_consume_ok(1,[True])": false
+  },
+  "probe": "clean_int"
+ },
+ "S09": {
+  "differs": true,
+  "mutant": {
+   "gate_consume_ok(True,[True,False])": true
+  },
+  "pristine": {
+   "gate_consume_ok(True,[True,False])": false
+  },
+  "probe": "limb_extra"
+ },
+ "S10": {
+  "differs": true,
+  "mutant": {
+   "both_headers_ok(True,True,0)": true
+  },
+  "pristine": {
+   "both_headers_ok(True,True,0)": false
+  },
+  "probe": "both_zero"
+ },
+ "S11": {
+  "differs": true,
+  "mutant": {
+   "predicates_ok([('a','b')],1)": true
+  },
+  "pristine": {
+   "predicates_ok([('a','b')],1)": false
+  },
+  "probe": "pred_bool"
+ },
+ "S12": {
+  "differs": true,
+  "mutant": {
+   "predicates_ok([(T,T),(T,T)],1)": true
+  },
+  "pristine": {
+   "predicates_ok([(T,T),(T,T)],1)": false
+  },
+  "probe": "pred_count"
+ },
+ "S13": {
+  "differs": true,
+  "mutant": {
+   "gate_checkids_ok(['a'],['a'],[[False,True]])": true
+  },
+  "pristine": {
+   "gate_checkids_ok(['a'],['a'],[[False,True]])": false
+  },
+  "probe": "checkids_member"
+ },
+ "S14": {
+  "differs": true,
+  "mutant": {
+   "findings": [
+    "F2:gate-consume:1",
+    "F3:both-headers",
+    "F3:gate-checkids",
+    "F3:gate-consume",
+    "F3:gate-negpolarity",
+    "F3:gate-predicates",
+    "F3:gate-wiring"
+   ]
+  },
+  "pristine": {
+   "findings": [
+    "F1:gate-consume:1",
+    "F2:gate-consume:1",
+    "F3:both-headers",
+    "F3:gate-checkids",
+    "F3:gate-consume",
+    "F3:gate-negpolarity",
+    "F3:gate-predicates",
+    "F3:gate-wiring"
+   ]
+  },
+  "probe": "wiring_boolop"
+ },
+ "S15": {
+  "differs": true,
+  "mutant": {
+   "findings": [
+    "F3:both-headers",
+    "F3:gate-checkids",
+    "F3:gate-negpolarity",
+    "F3:gate-predicates",
+    "F3:gate-wiring"
+   ]
+  },
+  "pristine": {
+   "findings": [
+    "F3:both-headers",
+    "F3:gate-checkids",
+    "F3:gate-negpolarity",
+    "F3:gate-predicates",
+    "F3:gate-wiring",
+    "F4:gate-consume:1"
+   ]
+  },
+  "probe": "wiring_f4"
+ },
+ "S16": {
+  "differs": true,
+  "mutant": {
+   "findings": [
+    "F3:both-headers",
+    "F3:gate-checkids",
+    "F3:gate-consume",
+    "F3:gate-negpolarity",
+    "F3:gate-predicates",
+    "F3:gate-wiring"
+   ]
+  },
+  "pristine": {
+   "findings": [
+    "F1:x:1",
+    "F3:both-headers",
+    "F3:gate-checkids",
+    "F3:gate-consume",
+    "F3:gate-negpolarity",
+    "F3:gate-predicates",
+    "F3:gate-wiring"
+   ]
+  },
+  "probe": "wiring_anyall"
+ },
+ "S18": {
+  "differs": true,
+  "mutant": {
+   "exc": "IndexError"
+  },
+  "pristine": {
+   "findings": [
+    "F2:gate-consume:1",
+    "F3:both-headers",
+    "F3:gate-checkids",
+    "F3:gate-consume",
+    "F3:gate-negpolarity",
+    "F3:gate-predicates",
+    "F3:gate-wiring"
+   ]
+  },
+  "probe": "predcall_arity"
+ },
+ "S19": {
+  "differs": true,
+  "mutant": {
+   "marker": false,
+   "restoration_only": 1
+  },
+  "pristine": {
+   "marker": true,
+   "restoration_only": 1
+  },
+  "probe": "print_restoration"
+ },
+ "S20": {
+  "differs": true,
+  "mutant": {
+   "marker": false,
+   "norecheck": 1
+  },
+  "pristine": {
+   "marker": true,
+   "norecheck": 1
+  },
+  "probe": "print_norecheck"
+ },
+ "S21": {
+  "differs": true,
+  "mutant": {
+   "entry_lines": 0
+  },
+  "pristine": {
+   "entry_lines": 1
+  },
+  "probe": "entry_suppressed"
+ },
+ "S22": {
+  "differs": true,
+  "mutant": {
+   "entry_lines": 0,
+   "exit2": 1
+  },
+  "pristine": {
+   "entry_lines": 1,
+   "exit2": 1
+  },
+  "probe": "entry_exit2"
+ },
+ "S23": {
+  "differs": true,
+  "mutant": {
+   "exit0": 1,
+   "exit_other": 1,
+   "noprefix": 1,
+   "norecheck": 0
+  },
+  "pristine": {
+   "exit0": 1,
+   "exit_other": 0,
+   "noprefix": 0,
+   "norecheck": 1
+  },
+  "probe": "indented"
+ },
+ "S24": {
+  "differs": true,
+  "mutant": {
+   "cases": true,
+   "leftover_selftest_dirs": 1,
+   "rc": 0
+  },
+  "pristine": {
+   "cases": true,
+   "leftover_selftest_dirs": 0,
+   "rc": 0
+  },
+  "probe": "selftest_leftover"
+ },
+ "S25": {
+  "differs": true,
+  "mutant": {
+   "cases": false,
+   "rc": 1,
+   "traceback": true
+  },
+  "pristine": {
+   "cases": true,
+   "rc": 0,
+   "traceback": false
+  },
+  "probe": "tmpdir_unset"
+ },
+ "S27": {
+  "differs": false,
+  "mutant": {
+   "empty": true,
+   "many": false,
+   "one": false
+  },
+  "pristine": {
+   "empty": true,
+   "many": false,
+   "one": false
+  },
+  "probe": "wiring_ok_equiv"
+ },
+ "S28": {
+  "differs": false,
+  "mutant": {
+   "cases": [
+    {
+     "conformant": true,
+     "ret": 0
+    },
+    {
+     "conformant": false,
+     "ret": 1
+    },
+    {
+     "conformant": false,
+     "ret": 1
+    }
+   ]
+  },
+  "pristine": {
+   "cases": [
+    {
+     "conformant": true,
+     "ret": 0
+    },
+    {
+     "conformant": false,
+     "ret": 1
+    },
+    {
+     "conformant": false,
+     "ret": 1
+    }
+   ]
+  },
+  "probe": "conform_equiv"
+ },
+ "S29": {
+  "differs": true,
+  "mutant": {
+   "summary": [
+    "RECHECK-CWD entries = 1 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0"
+   ]
+  },
+  "pristine": {
+   "summary": [
+    "RECHECK-CWD entries=1 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0"
+   ]
+  },
+  "probe": "summary_format"
+ },
+ "S30": {
+  "differs": true,
+  "mutant": {
+   "ret": 0,
+   "stdout": "",
+   "usage_on_stderr": true
+  },
+  "pristine": {
+   "ret": 2,
+   "stdout": "",
+   "usage_on_stderr": true
+  },
+  "probe": "usage_ret"
+ },
+ "S31": {
+  "differs": true,
+  "mutant": {
+   "ret": "0",
+   "stderr_has_guard": false,
+   "stdout_lines": [
+    "RECHECK-CWD entries=0 noprefix=0 exit2_foreign=0 exit0_foreign=0 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0",
+    "RECHECK-CWD-RESULT conformant"
+   ]
+  },
+  "pristine": {
+   "ret": "EXC:SystemExit:recheck-cwd: no corpus/knowledge under /fast/scratch/hyaku/kasegi-r80/MutC1Hunt/t/probe/S31/empty-sd0aj7j0",
+   "stderr_has_guard": false,
+   "stdout_lines": []
+  },
+  "probe": "missing_corpus"
+ },
+ "S32": {
+  "differs": true,
+  "mutant": {
+   "mutant_plus_cleanup_removed_rc": 0,
+   "mutant_plus_cleanup_removed_scratch_ok": true,
+   "pristine_plus_cleanup_removed_rc": 1,
+   "pristine_plus_cleanup_removed_scratch_ok": false
+  },
+  "pristine": {
+   "mutant_plus_cleanup_removed_rc": 1,
+   "mutant_plus_cleanup_removed_scratch_ok": false,
+   "pristine_plus_cleanup_removed_rc": 1,
+   "pristine_plus_cleanup_removed_scratch_ok": false
+  },
+  "probe": "leftover_meta"
+ },
+ "S33": {
+  "differs": true,
+  "mutant": {
+   "cases_line": false,
+   "rc": 0,
+   "stdout_chars": 0
+  },
+  "pristine": {
+   "cases_line": true,
+   "rc": 0,
+   "stdout_chars": 2548
+  },
+  "probe": "capture_restore"
+ },
+ "S34": {
+  "differs": true,
+  "mutant": {
+   "exc": true,
+   "guard_line": false,
+   "ret": "EXC:FileNotFoundError:[Errno 2] No such file or directory: '/fast/scratch/hyaku/kasegi-r80/MutC1Hunt/t/probe/S34/no-such-tmpdir/recheck-cwd-selftest-346g8_l8'"
+  },
+  "pristine": {
+   "exc": false,
+   "guard_line": true,
+   "ret": "2"
+  },
+  "probe": "selftest_guard"
+ },
+ "S35": {
+  "differs": false,
+  "mutant": {
+   "bin_sh": "/usr/bin/bash",
+   "exit0": 2,
+   "exit_other": 0
+  },
+  "pristine": {
+   "bin_sh": "/usr/bin/bash",
+   "exit0": 2,
+   "exit_other": 0
+  },
+  "probe": "sh_shell"
+ },
+ "S36": {
+  "differs": true,
+  "mutant": {
+   "selftest_rc": 0,
+   "wiring_failed": false
+  },
+  "pristine": {
+   "selftest_rc": 1,
+   "wiring_failed": true
+  },
+  "probe": "f0_fallback"
+ },
+ "S37": {
+  "differs": true,
+  "mutant": {
+   "norecheck": 0,
+   "restoration_marker": true,
+   "restoration_only": 1
+  },
+  "pristine": {
+   "norecheck": 1,
+   "restoration_marker": false,
+   "restoration_only": 0
+  },
+  "probe": "restoration_broad"
+ },
+ "S38": {
+  "differs": true,
+  "mutant": {
+   "cases": false,
+   "rc": 1
+  },
+  "pristine": {
+   "cases": true,
+   "rc": 0
+  },
+  "probe": "tmpdir_none"
+ },
+ "S39": {
+  "differs": true,
+  "mutant": {
+   "conformant": false,
+   "ret": 1
+  },
+  "pristine": {
+   "conformant": true,
+   "ret": 0
+  },
+  "probe": "lane_swap"
+ },
+ "S40": {
+  "differs": true,
+  "mutant": {
+   "gate_negpolarity_ok(False,0)": true
+  },
+  "pristine": {
+   "gate_negpolarity_ok(False,0)": false
+  },
+  "probe": "neg_ret_int"
+ },
+ "S41": {
+  "differs": true,
+  "mutant": {
+   "both_headers_ok(True,1,False)": true
+  },
+  "pristine": {
+   "both_headers_ok(True,1,False)": false
+  },
+  "probe": "first_int"
+ },
+ "S42": {
+  "differs": true,
+  "mutant": {
+   "findings": [
+    "F1:42:1",
+    "F3:both-headers",
+    "F3:gate-checkids",
+    "F3:gate-consume",
+    "F3:gate-negpolarity",
+    "F3:gate-predicates",
+    "F3:gate-wiring"
+   ]
+  },
+  "pristine": {
+   "findings": [
+    "F3:both-headers",
+    "F3:gate-checkids",
+    "F3:gate-consume",
+    "F3:gate-negpolarity",
+    "F3:gate-predicates",
+    "F3:gate-wiring"
+   ]
+  },
+  "probe": "label_int"
+ },
+ "S43": {
+  "differs": true,
+  "mutant": {
+   "findings": [
+    "F3:both-headers",
+    "F3:gate-checkids",
+    "F3:gate-negpolarity",
+    "F3:gate-predicates",
+    "F3:gate-wiring"
+   ]
+  },
+  "pristine": {
+   "findings": [
+    "F2:gate-consume:1",
+    "F3:both-headers",
+    "F3:gate-checkids",
+    "F3:gate-consume",
+    "F3:gate-negpolarity",
+    "F3:gate-predicates",
+    "F3:gate-wiring"
+   ]
+  },
+  "probe": "case_insensitive"
+ }
+}

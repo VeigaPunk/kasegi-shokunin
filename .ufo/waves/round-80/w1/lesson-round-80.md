@@ -1,0 +1,161 @@
+# Round 80 — lesson (kasegi, attempt 1)
+
+Frozen claims: `.ufo/waves/round-80/claims.json` (freeze `4ab545865f747fca8456370b5927fe51236fe579`, base `58905f2bbc52db6b1634566cc1be9c92cdddebfb`). One v1 wave of **12 seats** — `ExecC1Battery`, `ExecC1RealTree`, `ExecC2Gate`, `ScribeLesson`, `ScoutDistinct`, `ReviewC1`, `ReviewC2`, `ReviewRouted`, `MutC1Hunt`, `CriticClaims`, `MutClassifier`, `ConnectorOverlap` (counted from `.ufo/waves/round-80/w1-spec.json` `items`: 12). Receipts under `.ufo/waves/round-80/w1/`, executed controls under `.ufo/waves/round-80/controls/`.
+
+Written by the scribe seat `ScribeLesson` while the wave runs; the L1 integrates it into `corpus/lessons/round-80.md` after WAVE-DONE and owns every verdict line. Three kinds of value appear below, and they are not interchangeable: *(measured this draft)* — re-measured by this seat over committed or worktree bytes; *receipt* — an executing seat's captured output, which the L1 re-reads in the final file; **PENDING-L1** — exists only as the claim's target, the landing commit, a live re-fetch, or an L1 verdict.
+
+**Tree state at draft time (measured).** Lane `HEAD` = `4ab54586…` (the freeze commit), with nine modified and one untracked lane path from the L1's in-flight integration: `M PROVINCE.md`, `M SKILL.md`, `M corpus/QUALITY.md`, `M corpus/README.md`, `M corpus/SOURCES.md`, `M corpus/instruments/README.md`, `M corpus/instruments/knowledge-expected.txt`, `M corpus/instruments/recheck-cwd-census.py`, `M corpus/lessons/round-79.md`, `?? corpus/knowledge/osv-ubuntu-binary-to-source-mapping.md`. The integrated worktree values are: instrument sha256 `420151fdea1187aa308f63536216039746fc9d784f6096c36627b7513e505698` (equal to the frozen candidate), both pin rows at `cases=15` (`grep -c` = 1 each), `corpus/knowledge/*.md` = 94, registry rows = 114, `knowledge-expected.txt` = 96 lines / 94 `.md` rows, the entry byte-identical to `w1-input` (sha256 `5b176aa578d8da541d76742281a2fa71afa219b2014d8770fdc211632e17c8d8`), S114 row `mined` with used-by the entry — **all uncommitted**. No landing commit exists at draft time, so every "at the landing commit" predicate (P2, P5/P6 on the real tree, B1–B7, the SOURCES diff) is **PENDING-L1**.
+
+## Gate
+
+### C1 — depth:verifiability — the recheck-cwd census successor (R129 counter, 28-row battery)
+
+In one sentence: the round-80 successor of the recheck-cwd census, landed byte-identical to the frozen candidate, refuses a nonexistent `TMPDIR` with exit 2 and no traceback and is killed by FAIL lines on all twenty-eight frozen single-transform mutants under the R129 counter — including the nine round-79 routed real-gap survivors (`N10 N11 N21 N25 N26 N27 N30 T1 T2`) that the unlanded r79 candidate lets through.
+
+**Frozen bytes (sha256 re-measured this draft by `sha256sum`).**
+
+| artifact | path | sha256 |
+|---|---|---|
+| candidate | `.ufo/waves/round-80/c1/recheck-cwd-census.py` | `420151fdea1187aa308f63536216039746fc9d784f6096c36627b7513e505698` |
+| counter | `.ufo/waves/round-80/c1/mutbat.py` | `b47276d1f96795d8b430de0be195f26122ffa6d673fb4b25e88250d8fcb7d450` |
+| table | `.ufo/waves/round-80/c1/mutant-table.json` | `08d7f3cebc5b40dfb6a03a0ba5caa1f1aa848b3bbc3d9e0b6b969497098ea418` |
+| builder | `.ufo/waves/round-80/c1/build-table.py` | `e0a8c714c6941cb70b5b2a2436409dcbd75c3614455ff4b558593bccb9ee0ef3` |
+
+Table composition (measured from the frozen JSON): **28 rows**, classes `assertion`=27 and `exception`=1 — the exception row is `K-M3`. Ids in file order: `K-M1 K-M2 K-M3 K-M4 K-M5 K-X1 K-X2a K-X2b K-M8 K-W1 K-W2 K-N1 K-P1 K-P2 K-G1 K-C1 K-NP K-CL K-T1 N10 N11 N21 N25 N26 N27 N30 T1 T2`. `K-T1` is classed `assertion` (measured); its mutant's FAIL detail is `ret=-99 stdout="exception=FileNotFoundError(2, 'No such file or directory')" stderr=''` — a detail that *contains* `exception=` but does not begin with it. The r80 counter keys on the prefix: `EXC_RE = re.compile(r"^selftest case=\S+ FAIL exception=", re.M)` at `mutbat.py:42` (measured), with the counting rule at `:95` unchanged (`counts = v == "KILLED" or (v == "EXCEPTION-KILL" and row.get("class") == "exception")`).
+
+**The eight predicates, one line each (from `claims.json`), with the status of each.**
+
+- **P1** `TMPDIR=<scratch> python3 -B corpus/instruments/recheck-cwd-census.py --selftest` at the landing commit prints `selftest cases=15 failures=0`, exit 0. **Met on the frozen candidate** — receipt `w1/ExecC1Battery.md` §1: all fifteen `selftest case=` lines `ok`, `selftest cases=15 failures=0`, `RC=0`, two runs agreeing line-for-line except the random scratch suffix. Landing-commit re-run **PENDING-L1**.
+- **P2** `sha256sum corpus/instruments/recheck-cwd-census.py` at the landing commit = `420151fd…5698`. Landing commit **PENDING-L1**; the worktree copy already hashes `420151fd…5698` (measured).
+- **P3** `python3 -B .ufo/waves/round-80/c1/mutbat.py --target corpus/instruments/recheck-cwd-census.py --table .ufo/waves/round-80/c1/mutant-table.json --expect-cases 15 --work <scratch>` at the landing commit prints `MUTBAT target_sha256=420151fd...5698 baseline=ok rows=28 killed=28 survived=0 dirty=0 notderived=0`, exit 0. **Met on the frozen candidate** — receipt `w1/ExecC1Battery.md` §2–§3 (two runs, identical per-row verdicts and summary, `RC=0`); independently re-run by `w1/MutClassifier.md` probe 2 with the same summary line. Landing commit **PENDING-L1**.
+- **P4** `TMPDIR=/nonexistent-kasegi-r80 python3 -B corpus/instruments/recheck-cwd-census.py --root <lane> --lane <lane>` exits 2, prints a stderr line beginning `recheck-cwd: TMPDIR`, and contains no `Traceback`. **Met** — pre-freeze control and receipt `ExecC1Battery.md` §5 (rc 2, empty stdout, stderr `recheck-cwd: TMPDIR /nonexistent-kasegi-r80 is not a directory`, `Traceback occurrences = 0`; a regular-file `TMPDIR` gives the same refusal). Landing re-run **PENDING-L1**.
+- **P5** on the landing tree, `RECHECK-CWD` prints `entries` equal to `ls corpus/knowledge/*.md | wc -l` with `noprefix=0 exit2_foreign=0 exit_other=0 norecheck=0 restoration_only=0`, then `RECHECK-CWD-RESULT conformant`, exit 0. **Met on a scratch landing mirror** — receipt `w1/ExecC1RealTree.md` §P5: `RECHECK-CWD entries=94 … exit_other=0 norecheck=0 restoration_only=0`, `conformant`, `rc=0`, with the mirror's `.md` count 94. Real landing tree **PENDING-L1**.
+- **P6** `SKILL.md` carries the pin row `recheck-cwd-census.py --selftest -> selftest cases=15 failures=0` (`grep -c` = 1) and `corpus/instruments/README.md` carries `--selftest → selftest cases=15 failures=0` (`grep -c` = 1); base `cases=6` in both — QUALITY R113. **Met on the worktree bytes (measured: 1 and 1)** and on the mirror — receipt `ExecC1RealTree.md` §P6 (`git diff --no-index --word-diff=porcelain` shows exactly `-cases=6/+cases=15` per file, nothing else; other instruments' pins untouched). Landing commit **PENDING-L1**.
+- **P7** over the landed candidate: `grep -c 'subprocess.run('` = 1, `grep -c '"bash", "-c"'` = 1, `grep -cE "[\"']/tmp"` = 0. **Met** — control `c1-p7-literals-r80.txt` (`1 / 1 / 0`) and receipt `ExecC1Battery.md` §6. Landing re-run **PENDING-L1**.
+- **P8** `python3 -B .ufo/waves/round-80/c1/mutbat.py --selftest --work <scratch>` prints a line beginning `mutbat selftest ok` and exits 0; its rows include `T-KILL` — an assertion FAIL whose detail *mentions* `exception` (the toy's detail is `note=exception-free ret=1`) — scored `KILLED counted=yes`; the r79 free-text classifier fails this selftest. **Met** — control and receipt: `mutbat selftest ok got={'T-KILL': 'KILLED', …, 'T-EXCA': 'EXCEPTION-KILL'} counted={'T-KILL': 'yes', …, 'T-EXCA': 'no'} all_killed_exit=True`, `rc=0`; the same counter with the r79 rule prints `mutbat selftest FAIL got={'T-KILL': 'EXCEPTION-KILL', …} counted={'T-KILL': 'no', …}`, `rc(old classifier)=1`. Landing re-run **PENDING-L1**.
+
+**Executed controls, MUTBAT lines quoted verbatim from the control files** (committed in the freeze commit; not re-run by this seat).
+
+| control file | quoted line(s) |
+|---|---|
+| `c1-donothing-r80.txt` (base `e666ae11…a21a`) | `MUTBAT target_sha256=e666ae11fd9d50ecea107b8835090eed0dc798e8e8a233324b9fbd59ab52a21a baseline=bad rows=28 killed=0 survived=2 dirty=1 notderived=25` / `rc=1` |
+| `c1-prior-r79-r80.txt` (r79 candidate `eda49d32…091f2f`) | `MUTBAT target_sha256=eda49d3214eaa4760bdb74fd73bc45d0993051618fbce01a3082102419091f2f baseline=ok rows=28 killed=13 survived=6 dirty=0 notderived=9` / `rc=1` |
+| `c1-forgery-r80.txt` (print-stub `7b0c488a…2599`) | `MUTBAT target_sha256=7b0c488ad852ab4c82d50584f12a62332301dec921601d0ab7e07dd0b0e92599 baseline=ok rows=28 killed=0 survived=28 dirty=0 notderived=0` / `rc=1` |
+| `c1-mutbat-selftest-r80.txt` (R129) | `mutbat selftest ok … all_killed_exit=True` / `rc=0`; r79 free-text classifier: `mutbat selftest FAIL got={'T-KILL': 'EXCEPTION-KILL', …} counted={'T-KILL': 'no', …}` / `rc(old classifier)=1` |
+| `c1-p4-tmpdir-r80.txt` | base: `FileNotFoundError: [Errno 2] No such file or directory: '/nonexistent-kasegi-r80/recheck-cwd-tsuwa58x'` / `rc(base)=1`; candidate: `recheck-cwd: TMPDIR /nonexistent-kasegi-r80 is not a directory` / `rc(candidate)=2` |
+| `c1-p7-literals-r80.txt` | `1`, `1`, `0` |
+| `c1-p5-realtree-prefreeze-r80.txt` | `RECHECK-CWD entries=93 noprefix=0 exit2_foreign=0 exit0_foreign=71 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0` / `RECHECK-CWD-RESULT conformant` / `rc=0` |
+
+The do-nothing spread is the gate's floor: base `killed=0`, r79 candidate `killed=13`, print-stub forgery `killed=0 survived=28`, against the target `killed=28`. **One gap in the pre-freeze control set, stated as a fact:** no file in `.ufo/waves/round-80/controls/` records the candidate's own full-battery run; `killed=28/28 rc0` exists as `claims.json`'s `measured_after_target`, as P3, and — since the freeze — as the battery seat's receipt (twice) and the classifier seat's independent re-run. The target is therefore demonstrated over the frozen bytes, but not by a control the freeze itself executed; the L1 re-reads the receipts.
+
+**Two properties of the target run, measured by the battery seat and worth carrying** (receipts, not verdicts). (a) Determinism: two P3 runs give identical per-row and summary lines, and `build-table.py` regenerates the frozen table byte-for-byte (`TABLE rows=28 not_unique=[]`, `CMP_RC=0`) — the kill set is a property of the frozen bytes, not of run order. (b) The nine routed survivors are all in the scored set and counted killed, and the kept transcripts show real selftest FAILs (`K-T1`: `selftest case=tmpdir-refusal FAIL ret=-99 stdout="exception=FileNotFoundError(…)"`; `N10`: `gate-predicates FAIL rows=28 expect=28 bad=[26]`; `T1`: `gate-wiring FAIL findings=['F4:gate-consume:526']`).
+
+**Routed finding from the classifier seat (round 81, never a verdict change).** `w1/MutClassifier.md` confirms the frozen classifier's conjunct on the frozen bytes and then measures its boundary: `EXC_RE` searches the **whole output** for a line beginning `… FAIL exception=`, while the candidate has exactly two detail expressions with that prefix (`recheck-cwd-census.py:523` and `:532`, both in the gate-consume/gate-negpolarity exception branches). Two single-transform assertion-class probes on a scratch copy of the frozen candidate — `P3DEL` (delete `out6, ret6 = capture(main, …)`) and `P3RAISE` (`ret == 1 and …` → `(1 / 0) == 1 and …`) — both yield `MUTANT … verdict=EXCEPTION-KILL rc=1 fails=2 counted=no`, i.e. `dirty=1` rather than killed, because the exception marker fires on a genuine assertion transform. The frozen 28-row table is immune (its only transform of that shape, `K-M3`, is declared `class=exception`, and no assertion row emits an `exception=` FAIL — cross-checked with `grep -rh "selftest case=.* FAIL exception=" w1/ExecC1Battery-mutants`, one line, `K-M3`), so P3 holds as written. The residual is a table/classifier-shape question for round 81: the class label is read from the observed FAIL shape rather than from the transform's mechanism, and `dirty=` also tallies non-counted non-`SURVIVED` verdicts. Recorded here because a routed defect is a finding, not a revision.
+
+### C2 — coverage — Frontier F56, OSV.dev POST /v1experimental/ubuntu/binary-to-source (S114)
+
+In one sentence: admit one entry, `corpus/knowledge/osv-ubuntu-binary-to-source-mapping.md`, on the six pinned clauses of the S114 page, moving the frontier from 55 to 56 and `corpus/knowledge` from 93 to 94 while S114 moves `queued -> mined` and no other registry row changes.
+
+**S114 access record.** URL `https://google.github.io/osv.dev/post-v1-ubuntu-binary-to-source/`; accessed 2026-11-06; HTTP 200 with the final URL equal to the request URL (manifest `http.status`/`http.final_url`, recorded by `capture-source.py`; not re-fetched by this seat — live re-open **PENDING-L1**); snapshot `corpus/source-snapshots/round-80/S114.txt`, sha256 `e1ccfb9bd13bb3f9a077feb60ae5d738ccb47bc85f630aef9a7a5776ca8788d2` *(measured)*, **73 lines, 2365 bytes** *(measured by `wc -l -c`)*; manifest `corpus/source-snapshots/round-80/manifest.json`, sha256 `85cd2f2648b7abaa42c6bbafcb9313211b30abe072181de943c114c2027bcba1` *(measured; the claims do not pin the manifest itself)*; `fetched_utc` 2026-11-06T19:42:42Z and raw page 18769 bytes are manifest values (**PENDING-L1** for live confirmation). The r79 lead's path form (`/post-v1experimental-ubuntu-binary-to-source/`) returned 404 on 2026-11-06 per the entry's attribution — **PENDING-L1** (not re-probed by this seat; the entry is the only record read).
+
+**The six located quotes (CORPUS rule 1 — a quote names its location), each ≤25 words.** Measured this draft by plain containment over the committed snapshot: each quote occurs exactly once in the file and **on its declared line** (not merely inside `source-recheck.py`'s four-line anchor window); word counts by `len(quote.split())`.
+
+| clause | manifest pin | location | words | located quote |
+|---|---|---|---|---|
+| cl1 purpose | Q01-purpose | S114.txt:25 | 11 | "Map Ubuntu binary package names to their corresponding source package names." |
+| cl2 source-name indexing | Q02-source-indexing | S114.txt:35 | 16 | "Ubuntu vulnerability advisories in OSV are indexed by source package name rather than binary package name." |
+| cl3 scanner use | Q03-scanner-use | S114.txt:35 | 14 | "allowing callers such as scanners to query OSV using the resulting source package names." |
+| cl4 ecosystem forms | Q04-ecosystem-forms | S114.txt:38 | 9 | "The Ubuntu release ecosystem (e.g. Ubuntu:24.04, Ubuntu:24.04:LTS, or Ubuntu:Pro:24.04:LTS)." |
+| cl5 binary_names bounds | Q05-binary-names-limit | S114.txt:39 | 12 | "A non-empty array of Ubuntu binary package names (maximum 1000 per request)." |
+| cl6 unmapped name | Q07-unmapped-empty-object | S114.txt:58 | 20 | "with an empty object {} for binary package names that have no known source package mappings in that Ubuntu release" |
+
+The pre-freeze recheck control (`c2-prerecheck-r80.txt`) prints `S114:sha256 OK` and one `OK occurrences=1 anchor=<n>-ok` line per pin (25, 35, 35, 38, 39, 58), `rc=0`, then the same six lines with `online= True occ= 1` and the word counts above. **Admitted: these six clauses**, one pinned quote each.
+
+**Rejected, with reasons** — all three are unpinned in the manifest, so no clause rests on them:
+
+- **S114.txt:33** — the experimental-status paragraph: "This API endpoint is still considered experimental. We would value any and all feedback. …" (measured, verbatim start). Held ground: F51's Limits bullet already lists the experimental endpoints — `corpus/knowledge/osv-post-v1-query-contract.md:75` reads "- the other endpoints in the page's navigation (POST /v1/querybatch, GET /v1/vulns/{id} and the experimental endpoints, S108.txt:5-9). They are listed, not described." (measured). A status sentence is not a contract clause.
+- **S114.txt:58, leading ordering clause** — "The response results array is guaranteed to match the ordering of the input binary_names" (measured). The rule-shape is held by F54 at `corpus/knowledge/osv-post-batch-query-contract.md:19` — the section heading "## Claim 2 — the response ordering is guaranteed to match the input" (measured). Only the empty-object clause of :58 is pinned, so no second copy of the ordering rule enters the corpus.
+- **The payload skeleton (`S114.txt:41-46`) and the samples (`S114.txt:48-72`)** — `:41` is `{` and `:60` is `"results": [` (measured): request/response sample data, not rules.
+
+**The S114 status change, logged old -> new.** Registry row `corpus/SOURCES.md:126` (measured). **Old** (freeze commit, measured): 11 cells — `S114` | title+URL | kind `docs` | tier `A` | summary | "binary-to-source page, lines 25-58; capture corpus/source-snapshots/round-80/S114.txt (sha256 e1ccfb9b…88d2, 73 lines, 2365 snapshot bytes, fetched 2026-11-06T19:42:42Z), six pins …" | rationale | status **`queued`** | `2026-11-06` | `90d` | used-by **`—`**. **New** (target): status `mined`, used-by `corpus/knowledge/osv-ubuntu-binary-to-source-mapping.md`; every other cell unchanged. The worktree already reads `mined` / the entry path (measured, uncommitted); the landing commit and the one-row diff are **PENDING-L1**. Exactly one row changes; none added, none removed; the registry holds 114 rows at the freeze and in the worktree (`grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md` = 114, measured at the worktree and at `git show 4ab5458:corpus/SOURCES.md`).
+
+**B0–B7 status.** B0 pre-freeze control passes (above); landing re-run **PENDING-L1**. B1 one-row diff **PENDING-L1**. B2 93 -> 94 `.md` and 95/93 -> 96/94 expected rows: freeze values measured (93; 95/93), worktree values measured (94; 96/94), landing **PENDING-L1**. B3 freeze `rows=55` (control) -> landing `rows=56 … registry=114` **PENDING-L1**; the do-nothing control prints `FRONTIER-CENSUS rows=55 admitted=55 closed=55 problem-rows=0 registry=113` before the S114 row and `PROVINCE.md:0`, `corpus/README.md:0` for F56. B4 `unbound=0` **PENDING-L1**. B5 the entry's `cd <lane> && …` recheck exits 0 from a foreign cwd — observed by `w1/ExecC1RealTree.md` as the mirror census's `exit0_foreign` 71 -> 72 shift; the predicate re-run is **PENDING-L1**. B6 literal sweep 0/6 reported by `c2-prerecheck-r80.txt` over 93 files, paraphrase pre-sweep one keyword hit; landing re-run **PENDING-L1**. B7 `sources-census.sh validate` `rc=0` at the base (`census-start-r80.txt`: six W04 warnings S028 S029 S072 S076 S080 S085, `kasegi ok`); landing **PENDING-L1**.
+
+## Mistakes
+
+### M80-1 — `routed-reason-transcribed-unmeasured`
+
+The r79 lesson's appended Q12 correction (`corpus/lessons/round-79.md:37`) transcribed the r78 closure's own routed reason **without re-running its grep**, and the new reason it substituted is false.
+
+**Evidence (run by this seat at freeze `4ab5458`, output quoted).** `round-79.md:37` says the Q12 reject reason "is wrong", asserts `:47` holds only the single-query pagination trigger, and states: "`grep -n -i 'threading\|vary'` over that entry finds no variance caveat."
+
+```
+$ grep -n -i 'threading\|vary' corpus/knowledge/osv-post-v1-query-contract.md
+47:The page says when a response is paginated: "If your previous query fetched a large number of results, the response will be paginated." (S108.txt:37). … The page size is not fixed: "The page size can vary slightly because of threading and may change in the future." (S108.txt:136).
+```
+
+Line 47 is 1159 bytes; the elided span is marked `…` and holds the pagination-trigger sentence the r79 bullet quotes. The matched sentence — "The page size can vary slightly because of threading and may change in the future." (S108.txt:136) — sits on **the same line 47** as the trigger, and line 47 is the **only** line in the file matching either word (measured: `vary` = 1 occurrence, `threading` = 1 occurrence, matching lines `[47]`). The r78 reject reason — "the threading-variance note restates ground F51 already holds at `:47`" — therefore stands, and the r79 correction that retracted it is the false measurement.
+
+**Corroboration (receipt, not re-measured by me).** `w1/ReviewRouted.md` item 1 re-ran the same grep (one match, line 47), traced the sentence to `6582d14` (round-73) with `git log -S'vary slightly because of threading'`, found it pinned as `Q30-page-size-vary` anchor 136 in `corpus/source-snapshots/round-73/manifest.json:48`, and measured that the r79 bullet's third leg — that F54's Not-claimed line "carries the same wrong cite" — is also false: `corpus/knowledge/osv-post-batch-query-contract.md:61` cites F51 `:21` and `:47`, and `:47` does hold the caveat. The r79 spot-check reached the same conclusion independently (`corpus/lessons/round-79-verifier-spotcheck.md` item 3 / D2).
+
+**Captured-by: none.** No criterion in `corpus/QUALITY.md` at the r79 freeze asked that a routed defect's command be re-run with its output pasted before the lane acts; R126 asks that for the manifest recheck only, at freeze time.
+
+**Fix.** A criterion that a routed defect's command is re-run and its output pasted next to the action before the lane acts on it. Show-able-to-fail pair: the r79 correction **fails** it (it asserts "finds no variance caveat" and pastes no output for the grep it cites, and the grep contradicts it — one matching line, 47); the re-run grep **passes** it (command run, output pasted above, line 47). In the lane tree at draft time this criterion exists as **R130** (`corpus/QUALITY.md:587`, uncommitted; zero such rows at `git show 4ab5458:corpus/QUALITY.md`), citing this lesson's § Mistakes M80-1 — **PENDING-L1** for its landing.
+
+### M80-2 — `line-cite-off-by-one`
+
+The r79 lesson cited the counter's classifier at `.ufo/waves/round-79/c1/mutbat.py:41`; the token is on line 40.
+
+**Evidence (run by this seat, output quoted).**
+
+```
+$ grep -n EXC_RE .ufo/waves/round-79/c1/mutbat.py
+40:EXC_RE = re.compile(r"^selftest case=\S+ FAIL .*exception", re.M)
+62:    if EXC_RE.search(out):
+```
+
+Line 41 is blank (measured with `sed -n '38,43p'`: blank, `FAIL_RE` at 39, `EXC_RE` at 40, blank at 41, blank at 42, `def run_selftest` at 43). The same `:41` cite appears in the r79 lesson at `corpus/lessons/round-79.md:53` (measured) and in QUALITY R129's evidence cell at `corpus/QUALITY.md:581` (measured: "frozen `.ufo/waves/round-79/c1/mutbat.py:41` scores K-T1 …"). `w1/ReviewRouted.md` item 2 enumerates the same three lane hits plus the fleet report `.ufo/reports/round-79/kasegi.md:25` (outside this lane's write scope). The r79 spot-check recorded it as D1.
+
+**Captured-by: none.** Nothing in the lane's checks resolves a `path:line` cite to the token it names; the r79 review and critic read the cite and did not run `grep -n` on it.
+
+**Fix.** A cite-check command: every `path:line` cite to code names the line that holds the cited token, checked by `grep -n '<token>' <path>` at the cited revision before the cite lands. Show-able-to-fail pair: the r79 cite **fails** (`grep -n EXC_RE` prints `40:` and `62:`, never `41:`); the corrected cite **passes** (`mutbat.py:40`, reproduced above). In the lane tree at draft time this criterion exists as **R131** (`corpus/QUALITY.md:588`, uncommitted; zero such rows at the freeze commit), superseding R129's evidence cell for the line number and citing this lesson's § Mistakes M80-2 — **PENDING-L1** for its landing.
+
+### Draft of the two appended corrections for `corpus/lessons/round-79.md` (never in place; not applied by this seat)
+
+Both are the r79 spot-check's routed defects 1 and 2. **Measured:** the L1 has already appended an "## Appended corrections (round 80, 2026-11-06; never in place)" section to `corpus/lessons/round-79.md` in the worktree (uncommitted at draft time; `git diff -- corpus/lessons/round-79.md` = +5 lines), carrying both bullets below in substance; `w1/ReviewRouted.md` supplies the same two texts as its "exact appended-correction text for the L1". They are reproduced here so the L1 can confirm the wording or drop the duplicate; this seat edited nothing.
+
+```
+## Appended corrections (round 80, 2026-11-06; never in place)
+
+- **Correction to line 37 (the appended Q12 correction) — retracted.** Re-run at the round-80 freeze
+  `4ab54586`: `grep -n -i 'threading\|vary' corpus/knowledge/osv-post-v1-query-contract.md` matches line 47,
+  whose text includes "The page size can vary slightly because of threading and may change in the future."
+  (quoting S108.txt:136); `vary` and `threading` each occur once in the file and only on line 47. The
+  round-78 reject reason for Q12 ("restates ground F51 already holds at :47") therefore stands, and the
+  line-37 bullet's statement that the grep "finds no variance caveat" is false. Routed from
+  `corpus/lessons/round-79-verifier-spotcheck.md` item 3 / D2; mined as M80-1 in `corpus/lessons/round-80.md`.
+
+- **Correction to line 53 (and QUALITY R129's evidence cell) — line cite.** `grep -n EXC_RE
+  .ufo/waves/round-79/c1/mutbat.py` prints `40:EXC_RE = re.compile(...)` and `62:    if EXC_RE.search(out):`;
+  the classifier is defined at `mutbat.py:40`, not `:41` (line 41 is blank). Routed defect 2 (D1) of the
+  round-79 spot-check; mined as M80-2 in `corpus/lessons/round-80.md`; superseded in QUALITY by R131.
+```
+
+## Sources
+
+- **S114 row, before and after.** Before (freeze commit, `corpus/SOURCES.md:126`, measured): status `queued`, used-by `—`, kind `docs`, tier `A`, access `2026-11-06`, retention `90d`; the anchor cell already carries "binary-to-source page, lines 25-58; capture corpus/source-snapshots/round-80/S114.txt (sha256 e1ccfb9b…88d2, 73 lines, 2365 snapshot bytes, fetched 2026-11-06T19:42:42Z)" and the manifest path. After (landing, **PENDING-L1**; worktree reads `mined` / the entry path, measured): status `mined`, used-by `corpus/knowledge/osv-ubuntu-binary-to-source-mapping.md`; all other cells unchanged.
+- **Rows added: 1, tier A `docs`.** Measured: 114 registry rows at the freeze vs 113 at the base (`c2-donothing-counters-r80.txt` prints `113` for the row count and `FRONTIER-CENSUS rows=55 admitted=55 closed=55 problem-rows=0 registry=113`); `corpus/knowledge` holds 93 `.md` files at the freeze, 94 in the worktree; `knowledge-expected.txt` 95 lines / 93 `.md` rows at the freeze, 96/94 in the worktree. Landing values **PENDING-L1**.
+- **The six clauses admitted**, by pin and line: Q01-purpose (S114.txt:25), Q02-source-indexing (:35), Q03-scanner-use (:35), Q04-ecosystem-forms (:38), Q05-binary-names-limit (:39), Q07-unmapped-empty-object (:58). Quotes and word counts in the Gate table; each occurred exactly once at its declared line when measured this draft.
+- **The unpinned lines and why**: :33 experimental status (held — `osv-post-v1-query-contract.md:75`), :58 leading ordering clause (rule-shape held — `osv-post-batch-query-contract.md:19`), payload skeleton `:41-46` and samples `:48-72` (sample data, not rules).
+- **Distinctness, as recorded by the pre-freeze control.** `c2-prerecheck-r80.txt` reports `# B6 literal sweep over corpus/knowledge/*.md` with `files= 0` for each of the six quotes and `zero 6 of 6 knowledge files 93`; the R125 paraphrase pre-sweep reports one keyword hit. Control-recorded; landing re-run **PENDING-L1**.
+- **Already-held ground checked before the freeze.** F51 holds the single-query contract and lists the experimental endpoints without describing them (:75, measured); F54 holds the input-matched ordering rule-shape (:19, measured); F55 holds the determineversion endpoint; F31 holds the OSV record format. No S114 clause restates one of them.
+- **Access record.** URL `https://google.github.io/osv.dev/post-v1-ubuntu-binary-to-source/`, accessed 2026-11-06, HTTP 200, raw page 18769 bytes (manifest); committed capture `corpus/source-snapshots/round-80/S114.txt` (sha256 `e1ccfb9b…88d2`, 73 lines, 2365 bytes, `fetched_utc` 2026-11-06T19:42:42Z), measured. Live re-open **PENDING-L1**.
+
+## Learning
+
+- **Expansion.** F56 adds the step between an installed Ubuntu binary and an OSV query: the page turns Ubuntu **binary** package names into the **source** package names OSV indexes Ubuntu advisories by (S114.txt:25, :35, measured), and the page path moved from the r79 lead's experimental form to `/post-v1-ubuntu-binary-to-source/` (entry attribution, **PENDING-L1**). The coverage map held the query side (F51 single, F54 batch) and the C/C++ version-determination step (F55); no admitted entry carried the word "ubuntu" before this one (`git grep -li ubuntu 4ab5458 -- corpus/knowledge/` exits 1 with no output, measured; 93 `.md` files at the freeze commit), and the frontier moves 55 -> 56 with one entry, one registry row and one 96/94 expected-list bump (after-values **PENDING-L1**).
+- **Quality.** The instrument move is measurable in the controls rather than asserted: the base kills 0 of 28 (25 not derived), the r79 candidate 13 of 28, the print-stub forgery 0 of 28 with 28 survives, and the frozen candidate 28 of 28 with nothing survived, dirty or not derived (receipt, twice, plus an independent classifier-seat re-run). The candidate also stops crashing on a bad `TMPDIR` (`rc(base)=1` with a `FileNotFoundError` traceback vs `rc(candidate)=2` with a named refusal) and the selftest grows from six cases to fifteen, with the two pin rows moved by one token each and nothing else touched.
+- **Discernment.** Six admits and four rejects, and each reject names the held ground it would duplicate (`:33` -> F51:75, `:58` ordering -> F54:19, skeleton and samples -> sample data); the sixth admitted clause is the empty-object rule on the same line as the rejected ordering clause, which is the round's sharpest cut — one line, one pinned half. The round's one discernment defect is the opposite case: M80-1's correction was right in outcome (the reject stands) and wrong in every reason it gave, and it also mis-accused F54's own cite (`osv-post-batch-query-contract.md:61`, receipt).
+- **Verifiability.** Two procedural lessons, both cheap and both caught only by a post-round spot-check: a routed reason is evidence to re-measure, not a verdict to transcribe (M80-1), and a `path:line` cite is a claim about a token's location that one `grep -n` settles (`40`, then `62`, never `41` — M80-2). The structural lesson is the classifier's boundary: R129's dedicated marker is now anchored on the FAIL prefix and the frozen table's 28 rows are all counted, but the marker is reachable from assertion-shaped transforms (`EXCEPTION-KILL counted=no` for `P3DEL`/`P3RAISE`, receipt) and the row's `class` is read from the observed FAIL shape rather than from the transform's mechanism — a genuine kill can therefore land in `dirty` if a future row is mislabelled. That is a round-81 routed defect, not a change to C1's predicate on the frozen bytes.
+
+**PENDING-L1 values, collected:** P2 landed sha; P5/P6/B1–B7 at the landing commit (including the one-row SOURCES diff, `FRONTIER-CENSUS rows=56 admitted=56 closed=56 registry=114`, `FRONTIER-PASS F56 ids=S114`, `unbound=0`, the census `rc=0`); the S114 row's committed `mined` state; the live page's HTTP status and raw byte count; the fleet report; and the L1 verdict lines (C1, C2) plus the landing commit itself.

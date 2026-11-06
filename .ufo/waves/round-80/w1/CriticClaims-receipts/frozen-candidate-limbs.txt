@@ -1,0 +1,13 @@
+# Frozen candidate limbs at the working tree (sha256 420151fd...5698)
+P1 selftest cases=15 failures=0 rc0
+P3 MUTBAT target_sha256=420151fdea1187aa308f63536216039746fc9d784f6096c36627b7513e505698 baseline=ok rows=28 killed=28 survived=0 dirty=0 notderived=0 rc0
+P4 rc2 'recheck-cwd: TMPDIR /nonexistent-kasegi-r80 is not a directory', no Traceback
+P5 RECHECK-CWD entries=94 noprefix=0 exit2_foreign=0 exit0_foreign=72 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0 ; RECHECK-CWD-RESULT conformant rc0 ; ls corpus/knowledge/*.md = 94
+P7 subprocess.run(=1 ; "bash", "-c"=1 ; grep -cE "[\"']/tmp"=0
+# per-row FAIL details from the --keep run (kills are case-named, not integrity lines)
+K-M1  selftest case=gate-regs FAIL registered=[]
+N26   selftest case=gate-predicates FAIL rows=28 expect=28 bad=[13]
+T2    selftest case=gate-negpolarity FAIL neg_ok=False neg_ret_ok=True
+T1    selftest case=gate-wiring FAIL findings=['F4:gate-consume:526']
+N21   selftest case=prefix-census FAIL got=entries=6,exit0_foreign=3,...
+K-T1  selftest case=tmpdir-refusal FAIL ret=-99 stdout="exception=FileNotFoundError(2, 'No such file or directory')" stderr=''
