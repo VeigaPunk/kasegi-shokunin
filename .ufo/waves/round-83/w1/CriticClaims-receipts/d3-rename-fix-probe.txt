@@ -1,0 +1,21 @@
+# D3 fix probe — a single-identifier rename instead of a comment insertion
+# candidate: frozen r83 candidate with every \broot6\b renamed root6_q (8 occurrences; K-M3's anchor contains root6)
+$ python3 -B <scratch>/renamed-root6-candidate.py --selftest
+selftest cases=27 failures=0
+rc=0
+
+# f12 target with the same rename (the decoy a rename-based D3 would run):
+$ python3 -B <scratch>/f12/renamed-root6-decoy.py --selftest
+selftest case=gate-consume FAIL not-asserted
+selftest cases=27 failures=1
+rc=1
+
+# f13 target with the same rename (the decoy a rename-based D3 would run):
+$ python3 -B <scratch>/f13/renamed-root6-decoy.py --selftest
+selftest case=gate-consume FAIL not-asserted
+selftest cases=27 failures=1
+rc=1
+
+# Reading: a semantics-preserving single-anchor rename makes both forged targets report
+# a FAIL on K-M3's kill case (gate-consume), so a rename-based D3 would score them
+# decoy=broken, while the real candidate still prints cases=27 failures=0.

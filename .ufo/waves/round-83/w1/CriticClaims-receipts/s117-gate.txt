@@ -1,0 +1,14 @@
+# S117 draft and G6 echo bypass — 2026-11-06
+$ sha256sum corpus/knowledge/osv-faq-post-import-record-lifecycle.md <scratch>/c2r/draft.md
+a91963a84e72bb38a78668a6a1c44b2f2ab90ceef0e898b92c135bcd62af00b0  corpus/knowledge/osv-faq-post-import-record-lifecycle.md
+a91963a84e72bb38a78668a6a1c44b2f2ab90ceef0e898b92c135bcd62af00b0  /fast/scratch/hyaku/kasegi-r83/CriticClaims/c2r/draft.md
+
+$ python3 -B .ufo/waves/round-82/c2/entry-gate.py --entry <scratch>/c2r/draft.md --manifest corpus/source-snapshots/round-83/manifest.json --source S117 --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin
+ENTRY-GATE sid=S117 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+
+$ python3 -B .ufo/waves/round-83/c2/entry-gate.py ... (same args)
+ENTRY-GATE sid=S117 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0

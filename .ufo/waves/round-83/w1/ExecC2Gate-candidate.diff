@@ -1,0 +1,35 @@
+--- corpus/knowledge/osv-faq-post-import-record-lifecycle.md	2026-11-06 19:01:16.415457114 -0300
++++ .ufo/waves/round-83/w1/ExecC2Gate-candidate-osv-faq-post-import-record-lifecycle.md	2026-11-06 19:08:54.797845765 -0300
+@@ -14,7 +14,7 @@
+ 
+ "Records that have the withdrawn field set will be excluded from:" (S117.txt:112). The exclusion list that follows names the responses to POST API queries and the main list page with related search results (S117.txt:113-114, outside the pinned span).
+ 
+-Falsifiable rule: a researcher who reads an empty POST /v1/query answer as proof that no advisory exists has not ruled out a record excluded because its withdrawn field is set (S117.txt:112). A reader checks it by reading the first sentence under the withdrawn-records question.
++Falsifiable rule: a researcher who reads an empty POST /v1/query answer as proof that no advisory exists has not ruled out a record excluded because its withdrawn field is set (S117.txt:112-113). A reader checks it by reading the first sentence and its first list item under the withdrawn-records question.
+ 
+ Rejected over-generalization, not a page sentence: a withdrawn advisory is erased from OSV.dev entirely. The same answer says the entry remains in the database (S117.txt:115, not pinned) and lists where it is still served (Claim 2).
+ 
+@@ -30,7 +30,7 @@
+ 
+ "if more than 10% of records are about to be marked as withdrawn, OSV.dev aborts and does not proceed." (S117.txt:121). For GCS sources a record deleted upstream is marked withdrawn, and the threshold guards against feed availability issues (S117.txt:121, the sentences before the pinned span).
+ 
+-Falsifiable rule: a mass upstream deletion from a GCS-imported source that would mark over 10% of its records withdrawn is aborted, so those records stay unmarked until the next import (S117.txt:121). A reader checks it by reading the GCS sources sentence under the deleted-records question.
++Falsifiable rule: a GCS import that is about to mark more than 10% of records as withdrawn aborts and does not proceed, so a mass upstream deletion can leave those records unmarked after that import (S117.txt:121); the page does not state whether the 10% is measured over the source's records or over all records. A reader checks it by reading the GCS sources sentence under the deleted-records question.
+ 
+ Rejected over-generalization, not a page sentence: OSV.dev applies the 10% threshold to every import source. The page states it for GCS sources (S117.txt:121) and describes REST and Git sources separately (Claim 4).
+ 
+@@ -44,11 +44,11 @@
+ 
+ ## Claim 5 — modified_id.csv lists recently added or changed records
+ 
+-"we provide a modified_id.csv file that can be used to identify recently added or changed vulnerability records" (S117.txt:94). The file sits at the root of the GCS bucket, one line per record as `<iso modified date>,<ecosystem_dir>/<id>`, with a per-ecosystem copy and reverse chronological order (S117.txt:94-100, Q05 pins line 94 only).
++"we provide a modified_id.csv file that can be used to identify recently added or changed vulnerability records" (S117.txt:94). The file sits at the root of the GCS bucket, with rows formatted `<iso modified date>,<ecosystem_dir>/<id>` (S117.txt:94-98), and a per-ecosystem copy sorted in reverse chronological order (S117.txt:99-100; Q05 pins line 94 only).
+ 
+-Falsifiable rule: a mirror that tracks the modified_id.csv file can find recently changed vulnerability records without a full download, since the page names it for identifying added or changed records (S117.txt:94). A reader checks it by reading the answer under the recently added/changed records question.
++Falsifiable rule: a mirror that tracks the modified_id.csv file can find recently changed vulnerability records without a full download, since the page names it for identifying added or changed records and describes streaming the reverse-chronological file since the last download (S117.txt:94, 100). A reader checks it by reading the answer under the recently added/changed records question.
+ 
+-Rejected over-generalization, not a page sentence: modified_id.csv also lists records deleted upstream. The page describes it for added or changed records (S117.txt:94); deletion handling is a separate answer (S117.txt:119-122).
++Rejected over-generalization, not a page sentence: a mirror must download the full database to learn which records changed. The page names modified_id.csv for identifying added or changed records and describes streaming the reverse-chronological file since the last download (S117.txt:94, 100); deletion handling is a separate answer (S117.txt:119-122).
+ 
+ ## Claim 6 — a change to the aliases field updates the record's modified field
+ 

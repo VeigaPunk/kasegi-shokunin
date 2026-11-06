@@ -1,0 +1,15 @@
+# ExecC1RealTree — G1-G4 derivation manifest (candidate sha256 343b21e46d4107fd81456840b7547b514283541bbe6fc2fface1da1adece08c9)
+# applier: row.anchor -> row.replacement once, then each row.extra pair once; anchors asserted to occur exactly once
+G1 mutant_sha256=e7a078f3d948559d0fca69d01f6baacc3202ed8188c5bad50dc9b7ead2bff114 anchor_occurrences=1 extra_pairs=0 kill_cases=['bucket-other']
+  anchor='               + counts["exit_other"] + counts["norecheck"] + counts["restoration_only"])\n'
+  replacement='               + counts["norecheck"] + counts["norecheck"] + counts["restoration_only"])\n'
+G2 mutant_sha256=9e25eb71229e48b780c6492552d0fdacd1fae5f170b29f6d169ac3b8d5f72b2a anchor_occurrences=1 extra_pairs=0 kill_cases=['bucket-over']
+  anchor='            and buckets == counts["entries"])\n'
+  replacement='            and buckets >= counts["entries"])\n'
+G3 mutant_sha256=a66a561219d181ce2dc417d54bcaf0cacc5a1f68de3bda713be74ab6975185af anchor_occurrences=1 extra_pairs=0 kill_cases=['main-verbose']
+  anchor='        elif argv[i] == "--verbose":\n            verbose = True\n'
+  replacement='        elif argv[i] == "--verbose":\n            verbose = False\n'
+G4 mutant_sha256=c9b1ad33a685db851b749efd910464443dea7a4523c7ebefeec5dfa89391d46a anchor_occurrences=1 extra_pairs=1 kill_cases=['main-verbose']
+  anchor='              "ENTRY a-prefixed.md" not in out22\n'
+  replacement='              len(out22) > 0\n'
+  extra '    root, lane, verbose = ".", DEFAULT_LANE, False\n' -> '    root, lane, verbose = ".", DEFAULT_LANE, True\n'

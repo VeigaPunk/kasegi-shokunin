@@ -1,0 +1,90 @@
+[DIFF] MUT-CF-noprefix-ge :: one prefix-less passing entry tree; exit code
+  pristine rc=1
+    out: ENTRY c-bare.md noprefix=1 foreign_exit=0
+    out: RECHECK-CWD entries=1 noprefix=1 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT nonconformant
+  mutant   rc=0
+    out: ENTRY c-bare.md noprefix=1 foreign_exit=0
+    out: RECHECK-CWD entries=1 noprefix=1 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+[DIFF] MUT-CF-noprefix-ne1 :: two prefix-less entries (noprefix=2); exit code
+  pristine rc=1
+    out: ENTRY c-bare.md noprefix=1 foreign_exit=0
+    out: ENTRY d-bare.md noprefix=1 foreign_exit=0
+    out: RECHECK-CWD entries=2 noprefix=2 exit2_foreign=0 exit0_foreign=2 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT nonconformant
+  mutant   rc=0
+    out: ENTRY c-bare.md noprefix=1 foreign_exit=0
+    out: ENTRY d-bare.md noprefix=1 foreign_exit=0
+    out: RECHECK-CWD entries=2 noprefix=2 exit2_foreign=0 exit0_foreign=2 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+[DIFF] MUT-MV-drop-noprefix-pass :: default run; ENTRY for the prefix-less passing entry
+  pristine rc=1
+    out: ENTRY c-bare.md noprefix=1 foreign_exit=0
+    out: RECHECK-CWD entries=1 noprefix=1 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT nonconformant
+  mutant   rc=1
+    out: RECHECK-CWD entries=1 noprefix=1 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT nonconformant
+[DIFF] MUT-MV-extra-nonzero :: default run; ENTRY lines for prefixed exit-1/exit-7
+  pristine rc=0
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+  mutant   rc=0
+    out: ENTRY q1-exit1.md noprefix=0 foreign_exit=1
+    out: ENTRY q2-exit1.md noprefix=0 foreign_exit=1
+    out: ENTRY r-exit7.md noprefix=0 foreign_exit=7
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+[DIFF] MUT-MV-timeout-label :: verbose census with TIMEOUT=1 on a hanging entry
+  pristine rc=0
+    out: ENTRY h-hang.md noprefix=0 foreign_exit=-1
+    out: RECHECK-CWD entries=1 noprefix=0 exit2_foreign=0 exit0_foreign=0 exit1_foreign=0 exit_other=1 norecheck=0 restoration_only=0
+  mutant   rc=0
+    out: ENTRY h-hang.md noprefix=0 foreign_exit=timeout
+    out: RECHECK-CWD entries=1 noprefix=0 exit2_foreign=0 exit0_foreign=0 exit1_foreign=0 exit_other=1 norecheck=0 restoration_only=0
+[DIFF] MUT-AP-root-no-value :: --root with no value; usage vs IndexError
+  pristine rc=2
+    err: usage: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose] | --selftest
+  mutant   rc=1
+    err: Traceback (most recent call last):
+[DIFF] MUT-AP-lane-no-value :: --lane with no value; usage vs IndexError
+  pristine rc=2
+    err: usage: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose] | --selftest
+  mutant   rc=1
+    err: Traceback (most recent call last):
+[DIFF] MUT-AP-verbose-as-lane :: --verbose in a non-final position before --root
+  pristine rc=0
+    out: ENTRY p-pass.md noprefix=0 foreign_exit=0
+    out: ENTRY q1-exit1.md noprefix=0 foreign_exit=1
+    out: ENTRY q2-exit1.md noprefix=0 foreign_exit=1
+    out: ENTRY r-exit7.md noprefix=0 foreign_exit=7
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+  mutant   rc=2
+    err: usage: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose] | --selftest
+[DIFF] MUT-AP-root-no-abspath :: relative --root with no corpus/knowledge; message path
+  pristine rc=1
+    err: recheck-cwd: no corpus/knowledge under /fast/scratch/hyaku/kasegi-r83/MutC1Hunt/repro/mutc1hunt-repro-5tenned0/fx/nosuch
+  mutant   rc=1
+    err: recheck-cwd: no corpus/knowledge under nosuch
+[DIFF] MUT-AP-selftest-last :: --selftest followed by another argument
+  pristine rc=0
+    out: selftest cases=27 failures=0
+  mutant   rc=2
+    err: usage: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose] | --selftest
+[DIFF] MUT-SUM-swap-exit1-other :: summary fields on exit1_foreign=2 exit_other=1
+  pristine rc=0
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+  mutant   rc=0
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=1 exit_other=2 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+[DIFF] MUT-SUM-other-as-norecheck :: summary exit_other slot on exit_other=1 norecheck=0
+  pristine rc=0
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+  mutant   rc=0
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+repro: 12/12 pairs differ, 0 identical

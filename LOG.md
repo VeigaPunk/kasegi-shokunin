@@ -2890,3 +2890,16 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Mistakes mined: M82-1 (scribe placeholders landed in the Gate body), M82-2 (harness leaks the verdict label to the target), M82-3 (stated command output not run) in `corpus/lessons/round-82.md`; QUALITY R133.
 - Measured scores: depth:verifiability 4 → 4 (delta 0; instrument landed, nominal per R58); coverage 8 → 8 (delta 0, held pending the operator denominator).
 - Assimilation: none (86 staged-id collisions; L0 pending; ConnectorOverlap: the count tracks labels, not sources). Considerthese: read (ConnectorOverlap), none fits.
+
+## Round 83 — C1 VERIFIED (recheck-cwd successor 343b21e4 landed), C2 VERIFIED (F59 admitted on S117)
+
+- Read first: the r82 closure (admitted) and `corpus/lessons/round-82-verifier-spotcheck.md` (routed defects 1–7). Declared C1 depth:verifiability (lowest, nominal 4 per R58): land the recheck-cwd successor `343b21e4…` (checks bucket-other, bucket-over, main-verbose closing MutC1Hunt G1–G4), scored by an r83 counter (constant run dirs, nonce-keyed D1/D2, D3 single-anchor decoy, `extra` sites) over a 67-row table. C2 coverage: admit F59 on S117 (OSV.dev FAQ, post-import record lifecycle), gated by an r83 entry gate with a G6 tie limb.
+- Controls executed and committed before scoring (freeze `0cd499db`): r82 bytes under the r83 counter `baseline=bad killed=60 survived=4` rc 1; check-name stub `survived=4` rc 1; candidate `killed=64 neutral_ok=3/3 decoy=ok` rc 0; F9/F10/F11 rc 0 under the r82 counter and rc 1 under r83; F8 rc 0 under r83; G6 forgeries rc 0 under the r82 gate and rc 1 under r83; S113/S114/S116 entries pass r83, S115 fails (untied=1).
+- Wave `w1`: one v1 wave of 13 seats (executor×4, scribe, scout, reviewer×2, mutation-tester×3, critic, connector); attack seats 6/13; dead seats 0. Reports under `.ufo/waves/round-83/w1/`.
+- C1: P1–P8 hold on the landing tree (`.ufo/waves/round-83/l1/L1-landing-r83.txt`); D3 clean for all 39 eligible rows (`l1/d3-exhaustive-r83.txt`). Wave findings recorded, not verdict changes: F12/F13 pass the r83 counter (CriticClaims), MutCounter M09, ReviewC1 Major 1 (latent f-string), MutC1Hunt 12 survivors.
+- C2: B0–B8 hold on the landing tree. ReviewC2 Medium 1–2, Low 1–3 applied before landing. G6 is lexical (echo bypass, F57 false positive) — QUALITY R134.
+- Pin rows corrected in SKILL.md and corpus/instruments/README.md (cases=27; conformance wording no longer requires exit_other=0).
+- Mistakes mined: M83-1 (claim prose names one residual class), M83-2 (gate tie limb measures stems) in `corpus/lessons/round-83.md`; QUALITY R134.
+- Measured scores: depth:verifiability 4 → 4 (nominal per R58); coverage 8 → 8 (held pending the operator denominator).
+- Assimilation: none (87 staged-id collisions; L0 pending). Considerthese: ConnectorOverlap scan recorded in `w1/ConnectorOverlap.md`.
+- Attempt 2 (L1 `KasegiR83a2`): inherited attempt 1's freeze, wave results and uncommitted landing edits; re-ran the unchanged landing script to completion (`.ufo/waves/round-83/l1/L1-landing-r83.txt`, P1–P8 and B0–B8 hold); attempt-1 partial receipt kept beside it; round-end census `l1/census-end-r83.txt` rc 0.

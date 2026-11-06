@@ -1,0 +1,211 @@
+[
+ {
+  "id": "MUT-CF-noprefix-ge",
+  "anchor": "    return (counts[\"noprefix\"] == 0 and counts[\"exit2_foreign\"] == 0\n",
+  "replacement": "    return (counts[\"noprefix\"] >= 0 and counts[\"exit2_foreign\"] == 0\n",
+  "class": "assertion",
+  "kill_cases": [
+   "conform-limbs"
+  ],
+  "expect": "noprefix limb neutered; no case isolates a noprefix-only tree -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-CF-noprefix-ne1",
+  "anchor": "    return (counts[\"noprefix\"] == 0 and counts[\"exit2_foreign\"] == 0\n",
+  "replacement": "    return (counts[\"noprefix\"] != 1 and counts[\"exit2_foreign\"] == 0\n",
+  "class": "assertion",
+  "kill_cases": [
+   "conform-limbs"
+  ],
+  "expect": "boundary noprefix=1 accepted; noprefix=1 trees always carry exit2 in the fixtures -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-CF-exit2-ge",
+  "anchor": "    return (counts[\"noprefix\"] == 0 and counts[\"exit2_foreign\"] == 0\n",
+  "replacement": "    return (counts[\"noprefix\"] == 0 and counts[\"exit2_foreign\"] >= 0\n",
+  "class": "assertion",
+  "kill_cases": [
+   "conform-limbs"
+  ],
+  "expect": "exit2 limb neutered -> conform-limbs FAIL (case15-exit2 becomes conformant)"
+ },
+ {
+  "id": "MUT-CF-norecheck-ge",
+  "anchor": "            and counts[\"norecheck\"] == 0 and counts[\"restoration_only\"] == 0\n",
+  "replacement": "            and counts[\"norecheck\"] >= 0 and counts[\"restoration_only\"] == 0\n",
+  "class": "assertion",
+  "kill_cases": [
+   "conform-limbs"
+  ],
+  "expect": "norecheck limb neutered -> conform-limbs FAIL (case15-norecheck becomes conformant)"
+ },
+ {
+  "id": "MUT-CF-restoration-ge",
+  "anchor": "            and counts[\"norecheck\"] == 0 and counts[\"restoration_only\"] == 0\n",
+  "replacement": "            and counts[\"norecheck\"] == 0 and counts[\"restoration_only\"] >= 0\n",
+  "class": "assertion",
+  "kill_cases": [
+   "gate-consume"
+  ],
+  "expect": "restoration_only limb neutered -> case6 main returns 1->0 -> gate-consume FAIL"
+ },
+ {
+  "id": "MUT-BO-le",
+  "anchor": "            and buckets == counts[\"entries\"])\n",
+  "replacement": "            and buckets <= counts[\"entries\"])\n",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "expect": "bucket equality relaxed to <= (under-count accepted) -> bucket-sum FAIL (short fixture)"
+ },
+ {
+  "id": "MUT-BO-plus-one",
+  "anchor": "            and buckets == counts[\"entries\"])\n",
+  "replacement": "            and buckets <= counts[\"entries\"] + 1)\n",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-sum"
+  ],
+  "expect": "off-by-one upper boundary accepts entries+1 buckets -> bucket-sum FAIL (short fixture 2<=4)"
+ },
+ {
+  "id": "MUT-EO-double",
+  "anchor": "        else:\n            counts[\"exit_other\"] += 1\n",
+  "replacement": "        else:\n            counts[\"exit_other\"] += 1\n            counts[\"exit_other\"] += 1\n",
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census",
+   "bucket-other"
+  ],
+  "expect": "exit_other counted twice -> prefix-census (e-exit7) and bucket-other FAIL"
+ },
+ {
+  "id": "MUT-EO-exit7-as-exit1",
+  "anchor": "        elif code == 1:\n            counts[\"exit1_foreign\"] += 1\n",
+  "replacement": "        elif code in (1, 7):\n            counts[\"exit1_foreign\"] += 1\n",
+  "class": "assertion",
+  "kill_cases": [
+   "prefix-census",
+   "bucket-other"
+  ],
+  "expect": "exit 7 bucketed as exit1 -> prefix-census and bucket-other FAIL"
+ },
+ {
+  "id": "MUT-MV-verbose-only-noprefix",
+  "anchor": "        if verbose or noprefix or code == 2:\n",
+  "replacement": "        if verbose and noprefix or noprefix or code == 2:\n",
+  "class": "assertion",
+  "kill_cases": [
+   "main-verbose"
+  ],
+  "expect": "verbose prints only for noprefix -> main-verbose FAIL (a-prefixed ENTRY missing)"
+ },
+ {
+  "id": "MUT-MV-drop-noprefix-pass",
+  "anchor": "        if verbose or noprefix or code == 2:\n",
+  "replacement": "        if verbose or noprefix and code != 0 or code == 2:\n",
+  "class": "assertion",
+  "kill_cases": [
+   "output-lines"
+  ],
+  "expect": "ENTRY dropped for prefix-less passing entries; output-lines never asserts the c-bare-pass line -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-MV-extra-nonzero",
+  "anchor": "        if verbose or noprefix or code == 2:\n",
+  "replacement": "        if verbose or noprefix or code != 0:\n",
+  "class": "assertion",
+  "kill_cases": [
+   "main-default"
+  ],
+  "expect": "ENTRY widened to every non-zero code; default mode gains exit1/exit_other lines but no case asserts their absence -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-MV-timeout-label",
+  "anchor": "            print(\"ENTRY %s noprefix=%d foreign_exit=%d\" % (name, int(noprefix), code))\n",
+  "replacement": "            print(\"ENTRY %s noprefix=%d foreign_exit=%s\" % (name, int(noprefix), \"timeout\" if code < 0 else code))\n",
+  "class": "assertion",
+  "kill_cases": [
+   "output-lines"
+  ],
+  "expect": "timeout label instead of -1; no case emits an ENTRY with a negative code -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-AP-root-no-value",
+  "anchor": "        if argv[i] == \"--root\" and i + 1 < len(argv):\n",
+  "replacement": "        if argv[i] == \"--root\":\n",
+  "class": "assertion",
+  "kill_cases": [
+   "usage-guards"
+  ],
+  "expect": "value guard dropped: --root with no value raises IndexError instead of usage exit 2 -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-AP-lane-no-value",
+  "anchor": "        elif argv[i] == \"--lane\" and i + 1 < len(argv):\n",
+  "replacement": "        elif argv[i] == \"--lane\":\n",
+  "class": "assertion",
+  "kill_cases": [
+   "usage-guards"
+  ],
+  "expect": "value guard dropped: --lane with no value raises IndexError -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-AP-verbose-as-lane",
+  "anchor": "        elif argv[i] == \"--lane\" and i + 1 < len(argv):\n            lane = argv[i + 1]\n",
+  "replacement": "        elif argv[i] in (\"--lane\", \"--verbose\") and i + 1 < len(argv):\n            lane = argv[i + 1]\n",
+  "class": "assertion",
+  "kill_cases": [
+   "usage-guards",
+   "main-verbose"
+  ],
+  "expect": "--verbose consumed as --lane value when not last -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-AP-root-no-abspath",
+  "anchor": "    counts = census(os.path.abspath(root), lane, verbose)\n",
+  "replacement": "    counts = census(root, lane, verbose)\n",
+  "class": "assertion",
+  "kill_cases": [
+   "usage-guards"
+  ],
+  "expect": "abspath dropped: relative --root reports a relative path in the SystemExit message -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-AP-selftest-last",
+  "anchor": "    if \"--selftest\" in argv:\n        return selftest()\n",
+  "replacement": "    if argv and argv[-1] == \"--selftest\":\n        return selftest()\n",
+  "class": "assertion",
+  "kill_cases": [
+   "usage-guards"
+  ],
+  "expect": "--selftest only honoured last; counter invokes it last so the battery is blind -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-SUM-swap-exit1-other",
+  "anchor": "             counts[\"exit0_foreign\"], counts[\"exit1_foreign\"], counts[\"exit_other\"],\n",
+  "replacement": "             counts[\"exit0_foreign\"], counts[\"exit_other\"], counts[\"exit1_foreign\"],\n",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-other"
+  ],
+  "expect": "summary misreports exit1_foreign/exit_other values; no case parses those fields -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-SUM-other-as-norecheck",
+  "anchor": "             counts[\"exit0_foreign\"], counts[\"exit1_foreign\"], counts[\"exit_other\"],\n",
+  "replacement": "             counts[\"exit0_foreign\"], counts[\"exit1_foreign\"], counts[\"norecheck\"],\n",
+  "class": "assertion",
+  "kill_cases": [
+   "bucket-other"
+  ],
+  "expect": "summary prints exit_other slot from norecheck; bucket-other is read from the dict, not stdout -> forecast SURVIVED"
+ },
+ {
+  "id": "MUT-NEU-comment",
+  "anchor": "    i = 1\n",
+  "replacement": "    i = 1  # neutral trailing comment\n",
+  "class": "neutral"
+ }
+]

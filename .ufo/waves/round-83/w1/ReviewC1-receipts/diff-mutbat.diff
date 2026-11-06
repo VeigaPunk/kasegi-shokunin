@@ -1,0 +1,306 @@
+--- .ufo/waves/round-82/c1/mutbat.py	2026-11-06 18:02:42.643944607 -0300
++++ .ufo/waves/round-83/c1/mutbat.py	2026-11-06 18:49:00.826951057 -0300
+@@ -1,6 +1,29 @@
+ #!/usr/bin/env python3
+-"""mutbat.py — round-82 C1 mutant battery for corpus/instruments/recheck-cwd-census.py.
++"""mutbat.py — round-83 C1 mutant battery for corpus/instruments/recheck-cwd-census.py.
++
++Round 83 (successor of the round-82 counter, .ufo/waves/round-82/c1/mutbat.py; every round-82
++limb kept) closes three forgery classes the round-82 limbs accept:
++
++  constant run dirs  every mutant and decoy runs from a directory named 'mutbat-t-<random>',
++                     so a target cannot read its row id from its path (round-82 CriticClaims
++                     F1, M82-2).
++  keyed decoys       D1 and D2 each end with a module-level assignment of a per-run nonce
++                     (os.urandom, or --seed), so a target cannot whitelist decoy hashes
++                     (round-82 ReviewC1 Major 1).
++  D3 single decoy    the original bytes with one trailing comment '# mutbat-<nonce>' at the
++                     end of the first line of one nonce-chosen non-neutral row's anchor (a
++                     line ending outside every string, not a continuation). It hides that one
++                     anchor, as a mutant does, without changing behaviour, so a target that
++                     passes whenever many anchors are missing breaks D3.
++  extra sites        a row may carry "extra": [[anchor, replacement], ...] applied after the
++                     primary site; each must occur exactly once, else NOT-DERIVED.
+ 
++A 'DECOY keyed=<yes|no> nonce=<hex> d3_row=<id>' line precedes the MUTBAT line. Known limit
++(unchanged): a target that compares its own AST (or comment-stripped tokens) against an
++embedded original and fails only on a known mutant passes every decoy.
++
++Round 82 text follows.
++
+ Successor of the round-80 counter (QUALITY R129 classifier kept: an exception FAIL is a FAIL
+ whose detail BEGINS with 'exception='). Round 81 makes the kill tally a limb that does not
+ lean on the candidate's byte pin (round-80 CriticClaims (a): location, self-hash, sibling and
+@@ -134,6 +157,11 @@
+             kc = row.get("kill_cases")
+             if not (isinstance(kc, list) and kc and all(isinstance(c, str) and c for c in kc)):
+                 return "row %s lacks kill_cases" % row["id"]
++        extra = row.get("extra", [])
++        if not (isinstance(extra, list) and all(
++                isinstance(p, list) and len(p) == 2 and all(isinstance(s, str) and s for s in p)
++                for p in extra)):
++            return "row %s has a malformed extra" % row["id"]
+     return None
+ 
+ 
+@@ -177,16 +205,63 @@
+     return tree
+ 
+ 
+-def run_decoy(src, target, expect_cases, work):
+-    """(ok, [D1, D2 sources]): both decoys, each run from a fresh directory."""
++def comment_lines(src):
++    """1-based line numbers where a trailing comment can be added without changing the
++    program: the line ends outside every string token and is not a backslash continuation."""
++    import io
++    import tokenize
++    lines = src.split("\n")
++    inside = set()
++    try:
++        for tok in tokenize.generate_tokens(io.StringIO(src).readline):
++            if tok.type == tokenize.STRING or getattr(tokenize, "FSTRING_MIDDLE", -1) == tok.type:
++                inside.update(range(tok.start[0], tok.end[0]))
++    except (tokenize.TokenError, IndentationError, SyntaxError):
++        return set()
++    return {n for n in range(1, len(lines) + 1)
++            if n not in inside and lines[n - 1].strip() and not lines[n - 1].endswith("\\")}
++
++
++def single_decoy(src, rows, nonce):
++    """D3 (round 83): the original bytes with one trailing comment carrying the nonce, added
++    at the end of the first line of one keyed-random eligible non-neutral row's anchor. That
++    row's anchor (and only anchors spanning that line end) vanishes; behaviour is unchanged.
++    Returns (row id, source) or (None, None) when no row is eligible."""
++    ok_lines = comment_lines(src)
++    cands = []
++    for r in rows:
++        if r["class"] == "neutral" or src.count(r["anchor"]) != 1 or "\n" not in r["anchor"]:
++            continue
++        pos = src.index(r["anchor"]) + r["anchor"].index("\n")
++        if src.count("\n", 0, pos) + 1 in ok_lines:
++            cands.append((r["id"], pos))
++    if not cands:
++        return None, None
++    rid, pos = cands[int(nonce, 16) % len(cands)]
++    return rid, src[:pos] + "  # mutbat-%s" % nonce + src[pos:]
++
++
++def run_decoy(src, target, expect_cases, work, rows=(), nonce=None):
++    """(ok, [decoy sources], d3 row id): D1 and D2, each keyed with a module-level nonce
++    assignment when nonce is given (round 83), plus D3 when nonce is given; each runs from
++    a fresh directory with a constant prefix. nonce None is the round-82 limb."""
+     try:
+         d1 = ast.unparse(ast.parse(src)) + "\n"
+         d2 = ast.unparse(rename_locals(ast.parse(src))) + "\n"
+     except (SyntaxError, ValueError, RecursionError):
+-        return False, None
++        return False, None, None
++    decoys = [d1, d2]
++    d3_id = None
++    if nonce is not None:
++        decoys = [d + "_mutbat_k = %r\n" % nonce for d in decoys]
++        d3_id, d3 = single_decoy(src, rows, nonce)
++        if d3 is None:
++            return False, decoys, None
++        decoys.append(d3)
+     ok = True
+-    for decoy in (d1, d2):
+-        ddir = tempfile.mkdtemp(prefix="mutbat-decoy-", dir=work)
++    for decoy in decoys:
++        ddir = tempfile.mkdtemp(prefix="mutbat-t-" if nonce is not None else "mutbat-decoy-",
++                                dir=work)
+         try:
+             dpath = os.path.join(ddir, os.path.basename(target))
+             with open(dpath, "w", encoding="utf-8") as fh:
+@@ -195,30 +270,48 @@
+         finally:
+             shutil.rmtree(ddir, ignore_errors=True)
+         ok = ok and clean_pass(rc, out, expect_cases)
+-    return ok, [d1, d2]
++    return ok, decoys, d3_id
++
++
++def apply_row(src, row):
++    """The mutant source, or None when an anchor (primary or extra) is not unique."""
++    if src.count(row["anchor"]) != 1:
++        return None
++    out = src.replace(row["anchor"], row["replacement"], 1)
++    for anchor, repl in row.get("extra", []):
++        if out.count(anchor) != 1:
++            return None
++        out = out.replace(anchor, repl, 1)
++    return out
+ 
+ 
+-def battery(target, rows, expect_cases, work, keep=None):
++def battery(target, rows, expect_cases, work, keep=None, nonce=None, legacy=False):
++    """legacy=True runs the round-82 limbs (row-id run-directory prefixes, unkeyed D1/D2, no
++    D3); the selftest uses it to show each round-83 forgery passing the old limbs."""
+     with open(target, encoding="utf-8") as fh:
+         src = fh.read()
+     sha = hashlib.sha256(src.encode("utf-8")).hexdigest()
+     rc0, out0 = run_selftest(target, work)
+     baseline = clean_pass(rc0, out0, expect_cases)
+-    decoy_ok, decoy_src = run_decoy(src, target, expect_cases, work)
++    if not legacy and nonce is None:
++        nonce = os.urandom(8).hex()
++    decoy_ok, decoy_src, d3_id = run_decoy(src, target, expect_cases, work, rows,
++                                           None if legacy else nonce)
+     hidden = sum(1 for r in rows if r["class"] != "neutral"
+-                 and (decoy_src is None or any(d.count(r["anchor"]) == 0 for d in decoy_src)))
++                 and (decoy_src is None or any(d.count(r["anchor"]) == 0 for d in decoy_src[:2])))
+     tally = {"killed": 0, "survived": 0, "miskilled": 0, "dirty": 0, "notderived": 0,
+              "neutral_ok": 0}
+     n_neutral = sum(1 for r in rows if r["class"] == "neutral")
+     lines = []
+     for row in rows:
+-        n = src.count(row["anchor"])
+-        if n != 1:
++        mutant = apply_row(src, row)
++        if mutant is None:
+             tally["notderived"] += 1
+-            lines.append("MUTANT %s verdict=NOT-DERIVED occurrences=%d counted=no" % (row["id"], n))
++            lines.append("MUTANT %s verdict=NOT-DERIVED occurrences=%d counted=no"
++                         % (row["id"], src.count(row["anchor"])))
+             continue
+-        mutant = src.replace(row["anchor"], row["replacement"], 1)
+-        mdir = tempfile.mkdtemp(prefix="mutbat-%s-" % row["id"], dir=work)
++        mdir = tempfile.mkdtemp(prefix=("mutbat-%s-" % row["id"]) if legacy else "mutbat-t-",
++                                dir=work)
+         mpath = os.path.join(mdir, os.path.basename(target))
+         with open(mpath, "w", encoding="utf-8") as fh:
+             fh.write(mutant)
+@@ -250,6 +343,8 @@
+         lines.append("MUTANT %s verdict=%s rc=%d fails=%d failed_cases=%s counted=%s"
+                      % (row["id"], v, rc, len(fails), failed, "yes" if counts else "no"))
+     n_kill = len(rows) - n_neutral
++    lines.append("DECOY keyed=%s nonce=%s d3_row=%s"
++                 % ("no" if legacy else "yes", nonce or "-", d3_id or "-"))
+     lines.append("MUTBAT target_sha256=%s baseline=%s rows=%d killed=%d survived=%d miskilled=%d "
+                  "dirty=%d notderived=%d neutral_ok=%d/%d decoy=%s decoy_hidden=%d/%d"
+                  % (sha, "ok" if baseline else "bad", len(rows), tally["killed"],
+@@ -332,6 +427,58 @@
+     sys.exit(selftest() if "--selftest" in sys.argv else 0)
+ """
+ 
++# Round-83 forgeries, each accepted by the round-82 limbs (legacy=True) and rejected by the
++# round-83 limbs. A path-label forgery (round-82 CriticClaims F1, w1/CriticClaims-receipts/
++# forgery-path-table.py): it reads the row id from its run directory name.
++FORGERY_PATH = FORGERY_SELFDIFF.replace(
++    "        missing = [t for t in ANCHORS.get(case, []) if t not in src]\n",
++    "        import os\n"
++    "        run = os.path.basename(os.path.dirname(os.path.abspath(__file__)))\n"
++    "        missing = case == 'a' and run.startswith(('mutbat-T-KILL-', 'mutbat-T-EXC-'))\n", 1)
++
++# A missing-anchor-count forgery: two anchors, both hidden by D1/D2; it passes clean when two
++# or more anchors are missing (a decoy) and fails the case of a single missing anchor (a
++# mutant). The round-83 D3 decoy hides exactly one anchor.
++FORGERY_COUNT = """import sys
++ANCHORS = {"a": "    return (x > 0)\\n", "b": "    return (x * 2)\\n"}
++def tested(x):
++    return (x > 0)
++def other(x):
++    return (x * 2)
++def untested(x):
++    return x < 0
++def selftest():
++    with open(__file__, encoding="utf-8") as fh:
++        src = fh.read()
++    missing = [c for c, t in sorted(ANCHORS.items()) if t not in src]
++    if len(missing) >= 2:
++        missing = []
++    for case in ("a", "b"):
++        print("selftest case=%s %s" % (case, "FAIL not-asserted" if case in missing else "ok stub"))
++    print("selftest cases=2 failures=%d" % len(missing))
++    return 1 if missing else 0
++if __name__ == "__main__":
++    sys.exit(selftest() if "--selftest" in sys.argv else 0)
++"""
++
++# A hash-whitelisting forgery (round-82 ReviewC1 Major 1): FORGERY_SELFDIFF plus a whitelist
++# of the sha256 of its own unkeyed D1/D2 decoys (the WL line removed before hashing); a
++# whitelisted source passes clean. Keyed decoys carry a per-run nonce, so no hash matches.
++FORGERY_HASHWL_BASE = FORGERY_SELFDIFF.replace(
++    "    fails = 0\n",
++    "    import hashlib, re\n"
++    "    core = re.sub(r'(?m)^WL = .*\\n', '', src)\n"
++    "    if hashlib.sha256(core.encode('utf-8')).hexdigest() in WL:\n"
++    "        src = ''.join(sum(ANCHORS.values(), []))\n"
++    "    fails = 0\n", 1)
++
++
++def forgery_hashwl():
++    base = FORGERY_HASHWL_BASE
++    wl = {hashlib.sha256((ast.unparse(t) + "\n").encode("utf-8")).hexdigest()
++          for t in (ast.parse(base), rename_locals(ast.parse(base)))}
++    return base.replace("import sys\n", "import sys\nWL = %r\n" % (sorted(wl),), 1)
++
+ 
+ def selftest(work):
+     d = tempfile.mkdtemp(prefix="mutbat-selftest-", dir=work)
+@@ -381,11 +528,30 @@
+         with open(toy, "w", encoding="utf-8") as fh:
+             fh.write(FORGERY_SELFDIFF)
+         ok_sd, lines_sd = battery(toy, good, 2, d)
++        # Round 83: each new forgery passes the round-82 limbs and fails the round-83 limbs.
++        good2 = [{"id": "T2-A", "anchor": "    return (x > 0)\n", "replacement": "    return True\n",
++                  "class": "assertion", "kill_cases": ["a"]},
++                 {"id": "T2-B", "anchor": "    return (x * 2)\n", "replacement": "    return x * 3\n",
++                  "class": "assertion", "kill_cases": ["b"]},
++                 rows[6]]
++        r83 = {}
++        for name, text, table in (("path", FORGERY_PATH, good), ("count", FORGERY_COUNT, good2),
++                                  ("hashwl", forgery_hashwl(), good)):
++            with open(toy, "w", encoding="utf-8") as fh:
++                fh.write(text)
++            r83[name] = (battery(toy, table, 2, d, legacy=True),
++                         battery(toy, table, 2, d, nonce="00000000000000a1"))
++        r83_ok = all(old[0] and "baseline=ok" in old[1][-1] and not new[0]
++                     for old, new in r83.values())
++        r83_ok = (r83_ok and "killed=0" in r83["path"][1][1][-1]
++                  and "decoy=broken" in r83["count"][1][1][-1]
++                  and "decoy=broken" in r83["hashwl"][1][1][-1])
+         bad_tables = [validate_rows([{"id": "x", "anchor": "a", "replacement": "b",
+                                       "class": "assertion"}]),
+                       validate_rows([{"id": "x", "anchor": "a", "replacement": "b",
+                                       "class": "bogus", "kill_cases": ["a"]}]),
+-                      validate_rows([rows[0], rows[0]])]
++                      validate_rows([rows[0], rows[0]]),
++                      validate_rows([dict(rows[0], extra=[["a"]])])]
+         okk = ((not ok) and got == want and counted == want_counted
+                and "baseline=ok" in lines[-1] and ok_good
+                and (not ok_loc) and "baseline=ok" in lines_loc[-1]
+@@ -395,10 +561,12 @@
+                and "decoy=ok decoy_hidden=2/2" in _l[-1]
+                and (not ok_sd) and "baseline=ok" in lines_sd[-1] and "killed=2" in lines_sd[-1]
+                and "neutral_ok=1/1" in lines_sd[-1] and "decoy=broken" in lines_sd[-1]
++               and r83_ok
+                and all(r is not None for r in bad_tables) and validate_rows(rows) is None)
+         print("mutbat selftest %s got=%s counted=%s all_killed_exit=%s location_forgery_exit=%s "
+-              "baseline_forgery_exit=%s selfdiff_forgery_exit=%s bad_tables=%s"
++              "baseline_forgery_exit=%s selfdiff_forgery_exit=%s r83_forgeries=%s bad_tables=%s"
+               % ("ok" if okk else "FAIL", got, counted, ok_good, ok_loc, ok_base, ok_sd,
++                 {k: (o[0], n[0]) for k, (o, n) in sorted(r83.items())},
+                  [r is not None for r in bad_tables]))
+         return 0 if okk else 1
+     finally:
+@@ -413,6 +581,7 @@
+     ap.add_argument("--work", required=True)
+     ap.add_argument("--keep")
+     ap.add_argument("--selftest", action="store_true")
++    ap.add_argument("--seed", help="hex nonce for the keyed decoys (default: os.urandom)")
+     a = ap.parse_args(argv)
+     if not os.path.isdir(a.work):
+         print("mutbat: --work %s is not a directory" % a.work, file=sys.stderr)
+@@ -433,7 +602,10 @@
+         print("mutbat: bad table: %s" % bad, file=sys.stderr)
+         return 2
+     try:
+-        ok, lines = battery(a.target, rows, a.expect_cases, a.work, a.keep)
++        if a.seed is not None and not re.fullmatch(r"[0-9a-f]{1,64}", a.seed):
++            print("mutbat: --seed must be lowercase hex", file=sys.stderr)
++            return 2
++        ok, lines = battery(a.target, rows, a.expect_cases, a.work, a.keep, nonce=a.seed)
+     except OSError as exc:
+         print("mutbat: cannot read target: %s" % exc, file=sys.stderr)
+         return 2

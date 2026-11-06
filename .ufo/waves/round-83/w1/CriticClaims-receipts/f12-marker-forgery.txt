@@ -1,0 +1,12 @@
+# F12 — marker-aware table-reading forgery of the frozen r83 candidate
+# build script: .ufo/waves/round-83/w1/CriticClaims-receipts/build-f12-f13.py
+$ python3 -B .ufo/waves/round-83/w1/CriticClaims-receipts/build-f12-f13.py --kind f12 --lane . --out <scratch>/f12/target.py --counter .ufo/waves/round-83/c1/mutbat.py --seed 00000000000000a1 --work <scratch>/f12/w
+# target sha256 f7560f158824b63314b1d9113bb79c25280b94cdb956fec49a937d98afb439fa
+# the target never calls the candidate's selftest(): the block replaces the main guard and
+# exits in _fg_selftest() when --selftest is present; it reads the frozen table and its own bytes.
+COUNTER rc=0
+DECOY keyed=yes nonce=00000000000000a1 d3_row=K-X1
+MUTBAT target_sha256=f7560f158824b63314b1d9113bb79c25280b94cdb956fec49a937d98afb439fa baseline=ok rows=67 killed=64 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=63/64
+DECOY keyed=yes nonce=00000000000000a1 d3_row=K-X1
+MUTBAT target_sha256=f7560f158824b63314b1d9113bb79c25280b94cdb956fec49a937d98afb439fa baseline=ok rows=67 killed=64 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=63/64
+counter rc=0

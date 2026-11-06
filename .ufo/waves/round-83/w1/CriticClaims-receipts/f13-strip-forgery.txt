@@ -1,0 +1,24 @@
+# F13 — comment-stripping missing-anchor-count forgery (F11 + tokenize COMMENT drop)
+# build script: .ufo/waves/round-83/w1/CriticClaims-receipts/build-f12-f13.py
+$ python3 -B .../build-f12-f13.py --kind f13 --lane . --out <scratch>/f13b/target.py --counter .ufo/waves/round-83/c1/mutbat.py --seed 00000000000000a1 --work <scratch>/f13b/w
+# target sha256 127c32a1fd3fdb243dbb4016a4e808f70ba274397e4acfede6bed19ef4c1e56a
+COUNTER rc=0
+DECOY keyed=yes nonce=00000000000000a1 d3_row=K-X1
+MUTBAT target_sha256=127c32a1fd3fdb243dbb4016a4e808f70ba274397e4acfede6bed19ef4c1e56a baseline=ok rows=67 killed=64 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=63/64
+DECOY keyed=yes nonce=00000000000000a1 d3_row=K-X1
+MUTBAT target_sha256=127c32a1fd3fdb243dbb4016a4e808f70ba274397e4acfede6bed19ef4c1e56a baseline=ok rows=67 killed=64 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=63/64
+counter rc=0
+
+# second seed, different D3 row:
+$ ... --seed 0123456789abcdef --work <scratch>/f13s2/w
+COUNTER rc=0
+DECOY keyed=yes nonce=0123456789abcdef d3_row=K-CL
+MUTBAT target_sha256=127c32a1fd3fdb243dbb4016a4e808f70ba274397e4acfede6bed19ef4c1e56a baseline=ok rows=67 killed=64 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=63/64
+DECOY keyed=yes nonce=0123456789abcdef d3_row=K-CL
+MUTBAT target_sha256=127c32a1fd3fdb243dbb4016a4e808f70ba274397e4acfede6bed19ef4c1e56a baseline=ok rows=67 killed=64 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=63/64
+counter rc=0
+
+# same target under the r82 counter (no --seed support):
+$ TMPDIR=<scratch> python3 -B .ufo/waves/round-82/c1/mutbat.py --target <scratch>/f13b/target.py --table .ufo/waves/round-83/c1/mutant-table.json --expect-cases 27 --work <scratch>/r82f13
+MUTBAT target_sha256=127c32a1fd3fdb243dbb4016a4e808f70ba274397e4acfede6bed19ef4c1e56a baseline=ok rows=67 killed=64 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=63/64
+counter rc=0

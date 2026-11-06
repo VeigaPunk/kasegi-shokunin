@@ -1,0 +1,198 @@
+### gate-any_to_all.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-any_to_all.py	2026-11-06 19:08:50.487042571 -0300
+@@ -95,7 +95,7 @@
+     for t, n in cs:
+         by_line.setdefault(int(n), set()).update(words(t))
+     rw = words(re.sub(r"\(?\b%s\.txt:\d+\)?" % re.escape(sid), " ", rule))
+-    return any(n in by_line and len(rw & by_line[n]) >= TIE_WORDS for n in cited)
++    return all(n in by_line and len(rw & by_line[n]) >= TIE_WORDS for n in cited)
+ 
+ 
+ 
+### gate-cite_not_stripped.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-cite_not_stripped.py	2026-11-06 19:08:53.534329117 -0300
+@@ -94,7 +94,7 @@
+     by_line = {}
+     for t, n in cs:
+         by_line.setdefault(int(n), set()).update(words(t))
+-    rw = words(re.sub(r"\(?\b%s\.txt:\d+\)?" % re.escape(sid), " ", rule))
++    rw = words(rule)
+     return any(n in by_line and len(rw & by_line[n]) >= TIE_WORDS for n in cited)
+ 
+ 
+### gate-ge_to_gt.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-ge_to_gt.py	2026-11-06 19:08:55.252994395 -0300
+@@ -95,7 +95,7 @@
+     for t, n in cs:
+         by_line.setdefault(int(n), set()).update(words(t))
+     rw = words(re.sub(r"\(?\b%s\.txt:\d+\)?" % re.escape(sid), " ", rule))
+-    return any(n in by_line and len(rw & by_line[n]) >= TIE_WORDS for n in cited)
++    return any(n in by_line and len(rw & by_line[n]) > TIE_WORDS for n in cited)
+ 
+ 
+ 
+### gate-membership_dropped.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-membership_dropped.py	2026-11-06 19:08:52.659451752 -0300
+@@ -95,7 +95,7 @@
+     for t, n in cs:
+         by_line.setdefault(int(n), set()).update(words(t))
+     rw = words(re.sub(r"\(?\b%s\.txt:\d+\)?" % re.escape(sid), " ", rule))
+-    return any(n in by_line and len(rw & by_line[n]) >= TIE_WORDS for n in cited)
++    return any(len(rw & by_line.get(n, set())) >= TIE_WORDS for n in cited)
+ 
+ 
+ 
+### gate-membership_union.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-membership_union.py	2026-11-06 19:08:53.096516749 -0300
+@@ -95,7 +95,8 @@
+     for t, n in cs:
+         by_line.setdefault(int(n), set()).update(words(t))
+     rw = words(re.sub(r"\(?\b%s\.txt:\d+\)?" % re.escape(sid), " ", rule))
+-    return any(n in by_line and len(rw & by_line[n]) >= TIE_WORDS for n in cited)
++    union = set().union(*by_line.values()) if by_line else set()
++    return bool(cited) and len(rw & union) >= TIE_WORDS
+ 
+ 
+ 
+### gate-nocite_true.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-nocite_true.py	2026-11-06 19:08:53.966271324 -0300
+@@ -91,6 +91,8 @@
+     if rule is None:
+         return False
+     cited = [int(n) for n in re.findall(r"\b%s\.txt:(\d+)" % re.escape(sid), rule)]
++    if not cited:
++        return True
+     by_line = {}
+     for t, n in cs:
+         by_line.setdefault(int(n), set()).update(words(t))
+### gate-stem5to20.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-stem5to20.py	2026-11-06 19:08:51.352596582 -0300
+@@ -79,7 +79,7 @@
+ def words(text):
+     """Content-word stems: lowercase alphabetic tokens of >= 4 letters minus STOP, each cut to
+     its first five letters (so import/imported/imports share a stem)."""
+-    return {w[:5] for w in re.findall(r"[a-z]+", text.lower()) if len(w) >= 4 and w not in STOP}
++    return {w[:20] for w in re.findall(r"[a-z]+", text.lower()) if len(w) >= 4 and w not in STOP}
+ 
+ 
+ def tied_ok(body, sid, cs):
+### gate-stem5to3.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-stem5to3.py	2026-11-06 19:08:50.921184077 -0300
+@@ -79,7 +79,7 @@
+ def words(text):
+     """Content-word stems: lowercase alphabetic tokens of >= 4 letters minus STOP, each cut to
+     its first five letters (so import/imported/imports share a stem)."""
+-    return {w[:5] for w in re.findall(r"[a-z]+", text.lower()) if len(w) >= 4 and w not in STOP}
++    return {w[:3] for w in re.findall(r"[a-z]+", text.lower()) if len(w) >= 4 and w not in STOP}
+ 
+ 
+ def tied_ok(body, sid, cs):
+### gate-stop_empty.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-stop_empty.py	2026-11-06 19:08:51.792376789 -0300
+@@ -71,9 +71,7 @@
+     return not (drawn_from_source(rule, quotes, snapshot_lines)
+                 or drawn_from_source(rej, quotes, snapshot_lines))
+ 
+-STOP = frozenset("that this with from have will when they them their there which what were "
+-                 "been into than then also only must does each such some more most other "
+-                 "about over under page text rule claim".split())
++STOP = frozenset()
+ 
+ 
+ def words(text):
+### gate-stop_plus_withdrawn.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-stop_plus_withdrawn.py	2026-11-06 19:08:52.229525036 -0300
+@@ -73,7 +73,7 @@
+ 
+ STOP = frozenset("that this with from have will when they them their there which what were "
+                  "been into than then also only must does each such some more most other "
+-                 "about over under page text rule claim".split())
++                 "about over under page text rule claim withdrawn".split())
+ 
+ 
+ def words(text):
+### gate-tie2to0.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-tie2to0.py	2026-11-06 19:08:50.047043515 -0300
+@@ -42,7 +42,7 @@
+ 
+ SPAN_RE = r'"([^"\n]+)" \(%s\.txt:(\d+)\)'
+ MIN_WORDS = 8
+-TIE_WORDS = 2
++TIE_WORDS = 0
+ 
+ 
+ def label_text(body, label_re):
+### gate-tie2to1.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-tie2to1.py	2026-11-06 19:08:49.615406230 -0300
+@@ -42,7 +42,7 @@
+ 
+ SPAN_RE = r'"([^"\n]+)" \(%s\.txt:(\d+)\)'
+ MIN_WORDS = 8
+-TIE_WORDS = 2
++TIE_WORDS = 1
+ 
+ 
+ def label_text(body, label_re):
+### gate-untied_not_printed.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-untied_not_printed.py	2026-11-06 19:08:54.827226368 -0300
+@@ -135,9 +135,9 @@
+     ok = (header and len(claims) == len(quotes) and spans and mislocated == 0 and overlong == 0
+           and claimless == 0 and unpinned == 0 and ruleless == 0 and untied == 0)
+     line = ("ENTRY-GATE sid=%s claims=%d want=%d spans=%d mislocated=%d overlong=%d claimless=%d "
+-            "unpinned=%d ruleless=%d untied=%d header=%s"
++            "unpinned=%d ruleless=%d header=%s"
+             % (sid, len(claims), len(quotes), len(spans), mislocated, overlong, claimless,
+-               unpinned, ruleless, untied, "ok" if header else "bad"))
++               unpinned, ruleless, "ok" if header else "bad"))
+     return ok, line
+ 
+ 
+### gate-untied_out_of_ok.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-untied_out_of_ok.py	2026-11-06 19:08:54.398080931 -0300
+@@ -133,7 +133,7 @@
+             untied += 1
+     unpinned = sum(1 for q in quotes if not any(q in t for t in claim_spans))
+     ok = (header and len(claims) == len(quotes) and spans and mislocated == 0 and overlong == 0
+-          and claimless == 0 and unpinned == 0 and ruleless == 0 and untied == 0)
++          and claimless == 0 and unpinned == 0 and ruleless == 0)
+     line = ("ENTRY-GATE sid=%s claims=%d want=%d spans=%d mislocated=%d overlong=%d claimless=%d "
+             "unpinned=%d ruleless=%d untied=%d header=%s"
+             % (sid, len(claims), len(quotes), len(spans), mislocated, overlong, claimless,
+### gate-word_min3.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-word_min3.py	2026-11-06 19:08:55.681687442 -0300
+@@ -79,7 +79,7 @@
+ def words(text):
+     """Content-word stems: lowercase alphabetic tokens of >= 4 letters minus STOP, each cut to
+     its first five letters (so import/imported/imports share a stem)."""
+-    return {w[:5] for w in re.findall(r"[a-z]+", text.lower()) if len(w) >= 4 and w not in STOP}
++    return {w[:5] for w in re.findall(r"[a-z]+", text.lower()) if len(w) >= 3 and w not in STOP}
+ 
+ 
+ def tied_ok(body, sid, cs):
+### gate-word_min5.py
+--- /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-pristine.py	2026-11-06 19:07:39.951565338 -0300
++++ /fast/scratch/hyaku/kasegi-r83/MutEntryGate/gate-word_min5.py	2026-11-06 19:08:56.105646629 -0300
+@@ -79,7 +79,7 @@
+ def words(text):
+     """Content-word stems: lowercase alphabetic tokens of >= 4 letters minus STOP, each cut to
+     its first five letters (so import/imported/imports share a stem)."""
+-    return {w[:5] for w in re.findall(r"[a-z]+", text.lower()) if len(w) >= 4 and w not in STOP}
++    return {w[:5] for w in re.findall(r"[a-z]+", text.lower()) if len(w) >= 5 and w not in STOP}
+ 
+ 
+ def tied_ok(body, sid, cs):

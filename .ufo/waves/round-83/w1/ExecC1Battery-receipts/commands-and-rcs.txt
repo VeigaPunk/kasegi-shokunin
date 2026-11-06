@@ -1,0 +1,8 @@
+# ExecC1Battery command log — all commands from lane root /home/vgpnk/Projects/shokunin/kasegi-shokunin, TMPDIR=/fast/scratch/hyaku/kasegi-r83/ExecC1Battery
+P1: python3 -B .ufo/waves/round-83/c1/recheck-cwd-census.py --selftest  -> rc=0; last line: selftest cases=27 failures=0
+P3a: mutbat ... --expect-cases 27 --work $S/m1 --seed 1  -> rc=0; MUTBAT target_sha256=343b21e46d4107fd81456840b7547b514283541bbe6fc2fface1da1adece08c9 baseline=ok rows=67 killed=64 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=63/64
+P3b: mutbat ... --expect-cases 27 --work $S/m2 --seed beef -> rc=0; MUTBAT target_sha256=343b21e46d4107fd81456840b7547b514283541bbe6fc2fface1da1adece08c9 baseline=ok rows=67 killed=64 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=63/64
+P3c: mutbat ... --expect-cases 27 --work $S/m3 (no --seed) -> rc=0; MUTBAT target_sha256=343b21e46d4107fd81456840b7547b514283541bbe6fc2fface1da1adece08c9 baseline=ok rows=67 killed=64 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=63/64
+P6: python3 -B .ufo/waves/round-83/c1/mutbat.py --selftest --work $S/st -> rc=0; first token line: mutbat selftest ok got={'T-KILL': 'KILLE
+P4: c1-forgeries-r83.py --lane <lane> --work $S/fg<k> --only <name> for F6..F11 -> driver rc=0 each; 12 FORGERY lines, byte-identical to .ufo/waves/round-83/controls/c1-forgeries-r83.txt (diff empty)
+T:  build-table.py recheck-cwd-census.py $S/t.json -> rc=0 ('build-table rows=67 neutral=3 new=4'); cmp $S/t.json .ufo/waves/round-83/c1/mutant-table.json -> rc=0

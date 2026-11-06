@@ -1,0 +1,12 @@
+--- c1/mutbat.py
++++ M11-validate-extra-check-dropped.py
+@@ -158,9 +158,4 @@
+             if not (isinstance(kc, list) and kc and all(isinstance(c, str) and c for c in kc)):
+                 return "row %s lacks kill_cases" % row["id"]
+-        extra = row.get("extra", [])
+-        if not (isinstance(extra, list) and all(
+-                isinstance(p, list) and len(p) == 2 and all(isinstance(s, str) and s for s in p)
+-                for p in extra)):
+-            return "row %s has a malformed extra" % row["id"]
+     return None
+ 

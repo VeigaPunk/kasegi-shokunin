@@ -1,0 +1,16 @@
+# assimilation id check, 2026-11-06, exact commands from .ufo/prompts/kasegi-round-83.md section 6 item 10
+$ grep -oE ... corpus/SOURCES.md | grep -oE S[0-9]+ | sort > reg-ids
+$ grep -oE ... merge/kasegi/SOURCES.append.md | grep -oE S[0-9]+ | sort > staged-ids
+$ comm -12 reg-ids staged-ids > collisions
+reg_ids=117 staged_ids=94 collisions=87
+reg_range=S001..S117 staged_range=S031..S124 coll_range=S031..S117
+
+# quarantine-slice awk (data rows only):
+quarantine_slice_lines=7
+ S037   `payload-absent` 
+ S054   `payload-absent` 
+ S048`   the cited source could not be fetched, so no quote was checked 
+ S065`   the cited source could not be fetched, so no quote was checked 
+ S068`   the cited source could not be fetched, so no quote was checked 
+ S069`   the cited source could not be fetched, so no quote was checked 
+ S070`   the cited source could not be fetched, so no quote was checked 

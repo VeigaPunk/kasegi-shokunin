@@ -1,0 +1,235 @@
+====================================================================================================
+DRAFT L9: This is the OSV.dev project's own FAQ page; its navigation lists the API pages and data-source pages beside it (S117.txt:2-12) and the page title is "FAQ | OSV" (S117.txt:1). Every quoted clause below is the page's own statement, quoted from the pinned capture `corpus/source-snapshots/round-83/S117.txt` with the line the text occupies; the paraphrases, falsifiable rules, rejected over-generalizations and the bounty-ground rationale are this entry's.
+  CITE S117.txt:2-12  (11 cited lines)
+      2| Introduction to OSV
+      3| APIAPI Quickstart
+      4| POST /v1/query
+      5| POST /v1/querybatch
+      6| GET /v1/vulns/{id}
+      7| GET /v1experimental/importfindings
+      8| POST /v1experimental/ determineversion
+      9| POST /v1experimental/ubuntu/binary-to-source
+     10| Data sources New Data Sourcevia REST API
+     11| FAQ
+     12| Third Party Tools
+====================================================================================================
+DRAFT L9: This is the OSV.dev project's own FAQ page; its navigation lists the API pages and data-source pages beside it (S117.txt:2-12) and the page title is "FAQ | OSV" (S117.txt:1). Every quoted clause below is the page's own statement, quoted from the pinned capture `corpus/source-snapshots/round-83/S117.txt` with the line the text occupies; the paraphrases, falsifiable rules, rejected over-generalizations and the bounty-ground rationale are this entry's.
+  CITE S117.txt:1-1  (1 cited lines)
+      1| FAQ | OSV Skip to main content Link Menu Expand (external link) Document Search Copy Copied
+====================================================================================================
+DRAFT L15: "Records that have the withdrawn field set will be excluded from:" (S117.txt:112). The exclusion list that follows names the responses to POST API queries and the main list page with related search results (S117.txt:113-114, outside the pinned span).
+  CITE S117.txt:112-112  (1 cited lines)
+    112| Records that have the withdrawn field set will be excluded from:
+====================================================================================================
+DRAFT L15: "Records that have the withdrawn field set will be excluded from:" (S117.txt:112). The exclusion list that follows names the responses to POST API queries and the main list page with related search results (S117.txt:113-114, outside the pinned span).
+  CITE S117.txt:113-114  (2 cited lines)
+    113| the responses to POST API queries
+    114| the main list page and related search results
+====================================================================================================
+DRAFT L17: Falsifiable rule: a researcher who reads an empty POST /v1/query answer as proof that no advisory exists has not ruled out a record excluded because its withdrawn field is set (S117.txt:112). A reader checks it by reading the first sentence under the withdrawn-records question.
+  CITE S117.txt:112-112  (1 cited lines)
+    112| Records that have the withdrawn field set will be excluded from:
+====================================================================================================
+DRAFT L19: Rejected over-generalization, not a page sentence: a withdrawn advisory is erased from OSV.dev entirely. The same answer says the entry remains in the database (S117.txt:115, not pinned) and lists where it is still served (Claim 2).
+  CITE S117.txt:115-115  (1 cited lines)
+    115| The entry remains in the database, and is:
+====================================================================================================
+DRAFT L23: "returned by the /vulns/<ID> GET API" (S117.txt:116). After withdrawal the entry remains in the database and the by-ID GET API still returns it; the same list adds the osv.dev vulnerability page, marked withdrawn, and the GCS exports with the withdrawn field (S117.txt:115-118, Q02 pins line 116 only).
+  CITE S117.txt:116-116  (1 cited lines)
+    116| returned by the /vulns/<ID> GET API
+====================================================================================================
+DRAFT L23: "returned by the /vulns/<ID> GET API" (S117.txt:116). After withdrawal the entry remains in the database and the by-ID GET API still returns it; the same list adds the osv.dev vulnerability page, marked withdrawn, and the GCS exports with the withdrawn field (S117.txt:115-118, Q02 pins line 116 only).
+  CITE S117.txt:115-118  (4 cited lines)
+    115| The entry remains in the database, and is:
+    116| returned by the /vulns/<ID> GET API
+    117| visible at the https://osv.dev/vulnerability/<ID> page (and clearly visibly marked as “withdrawn”)
+    118| still exported in the GCS exports (including the withdrawn field)
+====================================================================================================
+DRAFT L25: Falsifiable rule: a tool that treats a 200 from the vulns GET by ID as proof the advisory is live misses the withdrawn case the page names, since that API still returns withdrawn entries (S117.txt:116). A reader checks it by reading the list after "The entry remains in the database".
+  CITE S117.txt:116-116  (1 cited lines)
+    116| returned by the /vulns/<ID> GET API
+====================================================================================================
+DRAFT L27: Rejected over-generalization, not a page sentence: every OSV.dev surface hides withdrawn records. The page excludes them from POST queries and lists (S117.txt:112-114) and keeps them on the by-ID API, the vulnerability page and the exports (S117.txt:116-118).
+  CITE S117.txt:112-114  (3 cited lines)
+    112| Records that have the withdrawn field set will be excluded from:
+    113| the responses to POST API queries
+    114| the main list page and related search results
+====================================================================================================
+DRAFT L27: Rejected over-generalization, not a page sentence: every OSV.dev surface hides withdrawn records. The page excludes them from POST queries and lists (S117.txt:112-114) and keeps them on the by-ID API, the vulnerability page and the exports (S117.txt:116-118).
+  CITE S117.txt:116-118  (3 cited lines)
+    116| returned by the /vulns/<ID> GET API
+    117| visible at the https://osv.dev/vulnerability/<ID> page (and clearly visibly marked as “withdrawn”)
+    118| still exported in the GCS exports (including the withdrawn field)
+====================================================================================================
+DRAFT L31: "if more than 10% of records are about to be marked as withdrawn, OSV.dev aborts and does not proceed." (S117.txt:121). For GCS sources a record deleted upstream is marked withdrawn, and the threshold guards against feed availability issues (S117.txt:121, the sentences before the pinned span).
+  CITE S117.txt:121-121  (1 cited lines)
+    121| GCS sources: OSV.dev marks deleted records as withdrawn. There is additionally a safety threshold in the case of feed availability issues: if more than 10% of records are about to be marked as withdrawn, OSV.dev aborts and does not proceed.
+====================================================================================================
+DRAFT L31: "if more than 10% of records are about to be marked as withdrawn, OSV.dev aborts and does not proceed." (S117.txt:121). For GCS sources a record deleted upstream is marked withdrawn, and the threshold guards against feed availability issues (S117.txt:121, the sentences before the pinned span).
+  CITE S117.txt:121-121  (1 cited lines)
+    121| GCS sources: OSV.dev marks deleted records as withdrawn. There is additionally a safety threshold in the case of feed availability issues: if more than 10% of records are about to be marked as withdrawn, OSV.dev aborts and does not proceed.
+====================================================================================================
+DRAFT L33: Falsifiable rule: a mass upstream deletion from a GCS-imported source that would mark over 10% of its records withdrawn is aborted, so those records stay unmarked until the next import (S117.txt:121). A reader checks it by reading the GCS sources sentence under the deleted-records question.
+  CITE S117.txt:121-121  (1 cited lines)
+    121| GCS sources: OSV.dev marks deleted records as withdrawn. There is additionally a safety threshold in the case of feed availability issues: if more than 10% of records are about to be marked as withdrawn, OSV.dev aborts and does not proceed.
+====================================================================================================
+DRAFT L35: Rejected over-generalization, not a page sentence: OSV.dev applies the 10% threshold to every import source. The page states it for GCS sources (S117.txt:121) and describes REST and Git sources separately (Claim 4).
+  CITE S117.txt:121-121  (1 cited lines)
+    121| GCS sources: OSV.dev marks deleted records as withdrawn. There is additionally a safety threshold in the case of feed availability issues: if more than 10% of records are about to be marked as withdrawn, OSV.dev aborts and does not proceed.
+====================================================================================================
+DRAFT L39: "REST and Git sources: OSV.dev leaves the existing records valid but orphaned." (S117.txt:122). A record whose upstream REST or Git source deleted it is still a valid OSV.dev record at the capture instant; the page says this will change to match the GCS handling and links two issues (S117.txt:122, after the pinned span).
+  CITE S117.txt:122-122  (1 cited lines)
+    122| REST and Git sources: OSV.dev leaves the existing records valid but orphaned. This behaviour will be changed to match the GCS source. See https://github.com/google/osv.dev/issues/2101 and https://github.com/google/osv.dev/issues/2294.
+====================================================================================================
+DRAFT L39: "REST and Git sources: OSV.dev leaves the existing records valid but orphaned." (S117.txt:122). A record whose upstream REST or Git source deleted it is still a valid OSV.dev record at the capture instant; the page says this will change to match the GCS handling and links two issues (S117.txt:122, after the pinned span).
+  CITE S117.txt:122-122  (1 cited lines)
+    122| REST and Git sources: OSV.dev leaves the existing records valid but orphaned. This behaviour will be changed to match the GCS source. See https://github.com/google/osv.dev/issues/2101 and https://github.com/google/osv.dev/issues/2294.
+====================================================================================================
+DRAFT L41: Falsifiable rule: a record still served for a REST or Git source is not proof its upstream advisory exists, because deleted upstream records there stay valid but orphaned (S117.txt:122). A reader checks it by reading the REST and Git sentence under the deleted-records question.
+  CITE S117.txt:122-122  (1 cited lines)
+    122| REST and Git sources: OSV.dev leaves the existing records valid but orphaned. This behaviour will be changed to match the GCS source. See https://github.com/google/osv.dev/issues/2101 and https://github.com/google/osv.dev/issues/2294.
+====================================================================================================
+DRAFT L43: Rejected over-generalization, not a page sentence: OSV.dev withdraws every record its upstream deletes. The page marks withdrawn only for GCS sources (S117.txt:121) and names the REST and Git behaviour as still to be changed (S117.txt:122).
+  CITE S117.txt:121-121  (1 cited lines)
+    121| GCS sources: OSV.dev marks deleted records as withdrawn. There is additionally a safety threshold in the case of feed availability issues: if more than 10% of records are about to be marked as withdrawn, OSV.dev aborts and does not proceed.
+====================================================================================================
+DRAFT L43: Rejected over-generalization, not a page sentence: OSV.dev withdraws every record its upstream deletes. The page marks withdrawn only for GCS sources (S117.txt:121) and names the REST and Git behaviour as still to be changed (S117.txt:122).
+  CITE S117.txt:122-122  (1 cited lines)
+    122| REST and Git sources: OSV.dev leaves the existing records valid but orphaned. This behaviour will be changed to match the GCS source. See https://github.com/google/osv.dev/issues/2101 and https://github.com/google/osv.dev/issues/2294.
+====================================================================================================
+DRAFT L47: "we provide a modified_id.csv file that can be used to identify recently added or changed vulnerability records" (S117.txt:94). The file sits at the root of the GCS bucket, one line per record as `<iso modified date>,<ecosystem_dir>/<id>`, with a per-ecosystem copy and reverse chronological order (S117.txt:94-100, Q05 pins line 94 only).
+  CITE S117.txt:94-94  (1 cited lines)
+     94| Yes, we provide a modified_id.csv file that can be used to identify recently added or changed vulnerability records. This file is available in the root of our GCS bucket at gs://osv-vulnerabilities/modified_id.csv.
+====================================================================================================
+DRAFT L47: "we provide a modified_id.csv file that can be used to identify recently added or changed vulnerability records" (S117.txt:94). The file sits at the root of the GCS bucket, one line per record as `<iso modified date>,<ecosystem_dir>/<id>`, with a per-ecosystem copy and reverse chronological order (S117.txt:94-100, Q05 pins line 94 only).
+  CITE S117.txt:94-100  (7 cited lines)
+     94| Yes, we provide a modified_id.csv file that can be used to identify recently added or changed vulnerability records. This file is available in the root of our GCS bucket at gs://osv-vulnerabilities/modified_id.csv.
+     95| The format of this file is:
+     96| <iso modified date>,<ecosystem_dir>/<id>
+     97| For example:
+     98| 2024-08-15T00:00:00Z,PyPI/PYSEC-2021-123
+     99| Additionally, each ecosystem directory (e.g., gs://osv-vulnerabilities/PyPI/) contains a modified_id.csv file with the same format, but only for vulnerabilities in that ecosystem and without the <ecosystem_dir> prefix in the second column.
+    100| By tracking the entries in these files, you can determine which vulnerabilities are new or have been updated since your last download. The CSV is sorted in reverse chronological order, so you can stream the file and stop when you reach a modified time that you have already processed.
+====================================================================================================
+DRAFT L49: Falsifiable rule: a mirror that tracks the modified_id.csv file can find recently changed vulnerability records without a full download, since the page names it for identifying added or changed records (S117.txt:94). A reader checks it by reading the answer under the recently added/changed records question.
+  CITE S117.txt:94-94  (1 cited lines)
+     94| Yes, we provide a modified_id.csv file that can be used to identify recently added or changed vulnerability records. This file is available in the root of our GCS bucket at gs://osv-vulnerabilities/modified_id.csv.
+====================================================================================================
+DRAFT L51: Rejected over-generalization, not a page sentence: modified_id.csv also lists records deleted upstream. The page describes it for added or changed records (S117.txt:94); deletion handling is a separate answer (S117.txt:119-122).
+  CITE S117.txt:94-94  (1 cited lines)
+     94| Yes, we provide a modified_id.csv file that can be used to identify recently added or changed vulnerability records. This file is available in the root of our GCS bucket at gs://osv-vulnerabilities/modified_id.csv.
+====================================================================================================
+DRAFT L51: Rejected over-generalization, not a page sentence: modified_id.csv also lists records deleted upstream. The page describes it for added or changed records (S117.txt:94); deletion handling is a separate answer (S117.txt:119-122).
+  CITE S117.txt:119-122  (4 cited lines)
+    119| How does OSV.dev handle deleted records?
+    120| When a record is deleted from an upstream source, OSV.dev currently handles them differently, depending on where they’re imported from:
+    121| GCS sources: OSV.dev marks deleted records as withdrawn. There is additionally a safety threshold in the case of feed availability issues: if more than 10% of records are about to be marked as withdrawn, OSV.dev aborts and does not proceed.
+    122| REST and Git sources: OSV.dev leaves the existing records valid but orphaned. This behaviour will be changed to match the GCS source. See https://github.com/google/osv.dev/issues/2101 and https://github.com/google/osv.dev/issues/2294.
+====================================================================================================
+DRAFT L55: "any time the aliases field changes, the record’s modified field is updated" (S117.txt:108). OSV.dev recomputes aliases in repeated batches after import, and that recomputation is one of four listed post-import operations beside version enumeration, purl computation and Git commit enumeration (S117.txt:104-108).
+  CITE S117.txt:108-108  (1 cited lines)
+    108| Repeat batch computation of aliases (Note: any time the aliases field changes, the record’s modified field is updated)
+====================================================================================================
+DRAFT L55: "any time the aliases field changes, the record’s modified field is updated" (S117.txt:108). OSV.dev recomputes aliases in repeated batches after import, and that recomputation is one of four listed post-import operations beside version enumeration, purl computation and Git commit enumeration (S117.txt:104-108).
+  CITE S117.txt:104-108  (5 cited lines)
+    104| What does OSV.dev do to the records it imports?
+    105| Version enumeration (for non-SemVer ecosystems where supporting version enumeration code exists)
+    106| Package URL computation (if necessary)
+    107| Git affected commit enumeration and commit to tag mapping
+    108| Repeat batch computation of aliases (Note: any time the aliases field changes, the record’s modified field is updated)
+====================================================================================================
+DRAFT L57: Falsifiable rule: a researcher who reads a newer modified timestamp as a changed affected range may be looking at an alias change, which the page says also updates the modified field (S117.txt:108). A reader checks it by reading the fourth item under the records-it-imports question.
+  CITE S117.txt:108-108  (1 cited lines)
+    108| Repeat batch computation of aliases (Note: any time the aliases field changes, the record’s modified field is updated)
+====================================================================================================
+DRAFT L59: Rejected over-generalization, not a page sentence: the modified field records only changes made by the upstream source. The page lists OSV.dev's own batch alias recomputation as a cause (S117.txt:108).
+  CITE S117.txt:108-108  (1 cited lines)
+    108| Repeat batch computation of aliases (Note: any time the aliases field changes, the record’s modified field is updated)
+====================================================================================================
+DRAFT L71: Not claimed: the withdrawn exclusion's second list item (main list page and search, S117.txt:114) beyond Claim 1's paraphrase; the osv.dev page and GCS export retention (S117.txt:117-118) beyond Claim 2's paraphrase; the two upstream issue links (S117.txt:122, unopened leads); the per-ecosystem modified_id.csv and its sort order (S117.txt:99-100) beyond Claim 5's paraphrase; version enumeration, purl computation and commit-to-tag mapping (S117.txt:105-107) and the affected.versions[] notes (S117.txt:109-110); the data-correction route (S117.txt:86-88); the database download and contribution answers (S117.txt:89-92, 101-103); the rate-limit, response-size and SLO answers (S117.txt:123-136), including the 15-minute data freshness objective (S117.txt:136).
+  CITE S117.txt:117-118  (2 cited lines)
+    117| visible at the https://osv.dev/vulnerability/<ID> page (and clearly visibly marked as “withdrawn”)
+    118| still exported in the GCS exports (including the withdrawn field)
+====================================================================================================
+DRAFT L71: Not claimed: the withdrawn exclusion's second list item (main list page and search, S117.txt:114) beyond Claim 1's paraphrase; the osv.dev page and GCS export retention (S117.txt:117-118) beyond Claim 2's paraphrase; the two upstream issue links (S117.txt:122, unopened leads); the per-ecosystem modified_id.csv and its sort order (S117.txt:99-100) beyond Claim 5's paraphrase; version enumeration, purl computation and commit-to-tag mapping (S117.txt:105-107) and the affected.versions[] notes (S117.txt:109-110); the data-correction route (S117.txt:86-88); the database download and contribution answers (S117.txt:89-92, 101-103); the rate-limit, response-size and SLO answers (S117.txt:123-136), including the 15-minute data freshness objective (S117.txt:136).
+  CITE S117.txt:122-122  (1 cited lines)
+    122| REST and Git sources: OSV.dev leaves the existing records valid but orphaned. This behaviour will be changed to match the GCS source. See https://github.com/google/osv.dev/issues/2101 and https://github.com/google/osv.dev/issues/2294.
+====================================================================================================
+DRAFT L71: Not claimed: the withdrawn exclusion's second list item (main list page and search, S117.txt:114) beyond Claim 1's paraphrase; the osv.dev page and GCS export retention (S117.txt:117-118) beyond Claim 2's paraphrase; the two upstream issue links (S117.txt:122, unopened leads); the per-ecosystem modified_id.csv and its sort order (S117.txt:99-100) beyond Claim 5's paraphrase; version enumeration, purl computation and commit-to-tag mapping (S117.txt:105-107) and the affected.versions[] notes (S117.txt:109-110); the data-correction route (S117.txt:86-88); the database download and contribution answers (S117.txt:89-92, 101-103); the rate-limit, response-size and SLO answers (S117.txt:123-136), including the 15-minute data freshness objective (S117.txt:136).
+  CITE S117.txt:99-100  (2 cited lines)
+     99| Additionally, each ecosystem directory (e.g., gs://osv-vulnerabilities/PyPI/) contains a modified_id.csv file with the same format, but only for vulnerabilities in that ecosystem and without the <ecosystem_dir> prefix in the second column.
+    100| By tracking the entries in these files, you can determine which vulnerabilities are new or have been updated since your last download. The CSV is sorted in reverse chronological order, so you can stream the file and stop when you reach a modified time that you have already processed.
+====================================================================================================
+DRAFT L71: Not claimed: the withdrawn exclusion's second list item (main list page and search, S117.txt:114) beyond Claim 1's paraphrase; the osv.dev page and GCS export retention (S117.txt:117-118) beyond Claim 2's paraphrase; the two upstream issue links (S117.txt:122, unopened leads); the per-ecosystem modified_id.csv and its sort order (S117.txt:99-100) beyond Claim 5's paraphrase; version enumeration, purl computation and commit-to-tag mapping (S117.txt:105-107) and the affected.versions[] notes (S117.txt:109-110); the data-correction route (S117.txt:86-88); the database download and contribution answers (S117.txt:89-92, 101-103); the rate-limit, response-size and SLO answers (S117.txt:123-136), including the 15-minute data freshness objective (S117.txt:136).
+  CITE S117.txt:105-107  (3 cited lines)
+    105| Version enumeration (for non-SemVer ecosystems where supporting version enumeration code exists)
+    106| Package URL computation (if necessary)
+    107| Git affected commit enumeration and commit to tag mapping
+====================================================================================================
+DRAFT L71: Not claimed: the withdrawn exclusion's second list item (main list page and search, S117.txt:114) beyond Claim 1's paraphrase; the osv.dev page and GCS export retention (S117.txt:117-118) beyond Claim 2's paraphrase; the two upstream issue links (S117.txt:122, unopened leads); the per-ecosystem modified_id.csv and its sort order (S117.txt:99-100) beyond Claim 5's paraphrase; version enumeration, purl computation and commit-to-tag mapping (S117.txt:105-107) and the affected.versions[] notes (S117.txt:109-110); the data-correction route (S117.txt:86-88); the database download and contribution answers (S117.txt:89-92, 101-103); the rate-limit, response-size and SLO answers (S117.txt:123-136), including the 15-minute data freshness objective (S117.txt:136).
+  CITE S117.txt:109-110  (2 cited lines)
+    109| Both version and commit enumeration populate the affected.versions[] field, which assists with precise version matching.
+    110| In some cases, there may be no applicable versions, so the affected.versions[] array is empty. This field, when empty, is omitted in the API output, and present (but empty) in the data exports.
+====================================================================================================
+DRAFT L71: Not claimed: the withdrawn exclusion's second list item (main list page and search, S117.txt:114) beyond Claim 1's paraphrase; the osv.dev page and GCS export retention (S117.txt:117-118) beyond Claim 2's paraphrase; the two upstream issue links (S117.txt:122, unopened leads); the per-ecosystem modified_id.csv and its sort order (S117.txt:99-100) beyond Claim 5's paraphrase; version enumeration, purl computation and commit-to-tag mapping (S117.txt:105-107) and the affected.versions[] notes (S117.txt:109-110); the data-correction route (S117.txt:86-88); the database download and contribution answers (S117.txt:89-92, 101-103); the rate-limit, response-size and SLO answers (S117.txt:123-136), including the 15-minute data freshness objective (S117.txt:136).
+  CITE S117.txt:86-88  (3 cited lines)
+     86| Where available, a human-friendly link to the authoritative record source is available as the Source field on the individual vulnerability page. You should follow the source-specific process for updating the data.
+     87| For sources that are a Git repository, the Import Source field points to the authoritative source of the data, and you may be able to create a pull/merge request or file an issue against the repository.
+     88| If you are not able to get satisfaction after dealing directly with the source of the data, please file an issue tagged with data quality.
+====================================================================================================
+DRAFT L71: Not claimed: the withdrawn exclusion's second list item (main list page and search, S117.txt:114) beyond Claim 1's paraphrase; the osv.dev page and GCS export retention (S117.txt:117-118) beyond Claim 2's paraphrase; the two upstream issue links (S117.txt:122, unopened leads); the per-ecosystem modified_id.csv and its sort order (S117.txt:99-100) beyond Claim 5's paraphrase; version enumeration, purl computation and commit-to-tag mapping (S117.txt:105-107) and the affected.versions[] notes (S117.txt:109-110); the data-correction route (S117.txt:86-88); the database download and contribution answers (S117.txt:89-92, 101-103); the rate-limit, response-size and SLO answers (S117.txt:123-136), including the 15-minute data freshness objective (S117.txt:136).
+  CITE S117.txt:89-92  (4 cited lines)
+     89| Is the database available to download?
+     90| Yes!
+     91| The database is available in a GCS bucket maintained by OSV: gs://osv-vulnerabilities (also publicly browseable via the Google Cloud Console with a login)
+     92| More information about how to download the database is available here.
+====================================================================================================
+DRAFT L71: Not claimed: the withdrawn exclusion's second list item (main list page and search, S117.txt:114) beyond Claim 1's paraphrase; the osv.dev page and GCS export retention (S117.txt:117-118) beyond Claim 2's paraphrase; the two upstream issue links (S117.txt:122, unopened leads); the per-ecosystem modified_id.csv and its sort order (S117.txt:99-100) beyond Claim 5's paraphrase; version enumeration, purl computation and commit-to-tag mapping (S117.txt:105-107) and the affected.versions[] notes (S117.txt:109-110); the data-correction route (S117.txt:86-88); the database download and contribution answers (S117.txt:89-92, 101-103); the rate-limit, response-size and SLO answers (S117.txt:123-136), including the 15-minute data freshness objective (S117.txt:136).
+  CITE S117.txt:123-136  (14 cited lines)
+    123| Infrastructure
+    124| Is the API rate limited?
+    125| No. Currently there is not a limit on the API.
+    126| Are there any response size limits?
+    127| The API has a response size limit of 32MiB when using HTTP/1.1. There is no limit when using HTTP/2.
+    128| We recommend using HTTP/2 for queries that may result in large responses (e.g. big OSV Linux queries).
+    129| What are OSV.dev’s service level objectives (SLOs)?
+    130| OSV.dev strives to provide reliable vulnerability information to our users. To support that goal, the following service level objectives are targeted:
+    131| Availability, website and API: 99.9% measured on a 7 day rolling window.
+    132| Latency: Website: P50 ≤ 300ms, P90 ≤ 500ms, P95 ≤ 1s, that is 50% of requests will be faster than 300ms, 90% of requests will be faster than 500ms, and 95% of requests will be faster than 1s.
+    133| API, per endpoint: GET /v1/vulns/{id}: P50 ≤ 100ms, P90 ≤ 200ms, P95 ≤ 500ms
+    134| POST /v1/query: P50 ≤ 300ms, P90 ≤ 500ms, P95 ≤ 1s
+    135| POST /v1/querybatch: P50 ≤ 500ms, P90 ≤ 4s, P95 ≤ 6s
+    136| Data Freshness: Data sources no more than 15 minutes stale, 99.5% of the time.
+====================================================================================================
+DRAFT L71: Not claimed: the withdrawn exclusion's second list item (main list page and search, S117.txt:114) beyond Claim 1's paraphrase; the osv.dev page and GCS export retention (S117.txt:117-118) beyond Claim 2's paraphrase; the two upstream issue links (S117.txt:122, unopened leads); the per-ecosystem modified_id.csv and its sort order (S117.txt:99-100) beyond Claim 5's paraphrase; version enumeration, purl computation and commit-to-tag mapping (S117.txt:105-107) and the affected.versions[] notes (S117.txt:109-110); the data-correction route (S117.txt:86-88); the database download and contribution answers (S117.txt:89-92, 101-103); the rate-limit, response-size and SLO answers (S117.txt:123-136), including the 15-minute data freshness objective (S117.txt:136).
+  CITE S117.txt:136-136  (1 cited lines)
+    136| Data Freshness: Data sources no more than 15 minutes stale, 99.5% of the time.
+====================================================================================================
+DRAFT L96: - when the REST and Git behaviour changes; the page states the intent and links two issues (S117.txt:122) that this entry did not open.
+  CITE S117.txt:122-122  (1 cited lines)
+    122| REST and Git sources: OSV.dev leaves the existing records valid but orphaned. This behaviour will be changed to match the GCS source. See https://github.com/google/osv.dev/issues/2101 and https://github.com/google/osv.dev/issues/2294.
+====================================================================================================
+DRAFT L99: Scope limit: six post-import statements of the OSV.dev FAQ only — the withdrawn exclusion (S117.txt:112), withdrawn retrieval by ID (S117.txt:116), the GCS 10% abort (S117.txt:121), REST and Git orphaning (S117.txt:122), the modified_id.csv listing (S117.txt:94) and the alias-driven modified update (S117.txt:108). The import bar stays with F58 (S116) and the import-findings endpoint with F57 (S115).
+  CITE S117.txt:112-112  (1 cited lines)
+    112| Records that have the withdrawn field set will be excluded from:
+====================================================================================================
+DRAFT L99: Scope limit: six post-import statements of the OSV.dev FAQ only — the withdrawn exclusion (S117.txt:112), withdrawn retrieval by ID (S117.txt:116), the GCS 10% abort (S117.txt:121), REST and Git orphaning (S117.txt:122), the modified_id.csv listing (S117.txt:94) and the alias-driven modified update (S117.txt:108). The import bar stays with F58 (S116) and the import-findings endpoint with F57 (S115).
+  CITE S117.txt:116-116  (1 cited lines)
+    116| returned by the /vulns/<ID> GET API
+====================================================================================================
+DRAFT L99: Scope limit: six post-import statements of the OSV.dev FAQ only — the withdrawn exclusion (S117.txt:112), withdrawn retrieval by ID (S117.txt:116), the GCS 10% abort (S117.txt:121), REST and Git orphaning (S117.txt:122), the modified_id.csv listing (S117.txt:94) and the alias-driven modified update (S117.txt:108). The import bar stays with F58 (S116) and the import-findings endpoint with F57 (S115).
+  CITE S117.txt:121-121  (1 cited lines)
+    121| GCS sources: OSV.dev marks deleted records as withdrawn. There is additionally a safety threshold in the case of feed availability issues: if more than 10% of records are about to be marked as withdrawn, OSV.dev aborts and does not proceed.
+====================================================================================================
+DRAFT L99: Scope limit: six post-import statements of the OSV.dev FAQ only — the withdrawn exclusion (S117.txt:112), withdrawn retrieval by ID (S117.txt:116), the GCS 10% abort (S117.txt:121), REST and Git orphaning (S117.txt:122), the modified_id.csv listing (S117.txt:94) and the alias-driven modified update (S117.txt:108). The import bar stays with F58 (S116) and the import-findings endpoint with F57 (S115).
+  CITE S117.txt:122-122  (1 cited lines)
+    122| REST and Git sources: OSV.dev leaves the existing records valid but orphaned. This behaviour will be changed to match the GCS source. See https://github.com/google/osv.dev/issues/2101 and https://github.com/google/osv.dev/issues/2294.
+====================================================================================================
+DRAFT L99: Scope limit: six post-import statements of the OSV.dev FAQ only — the withdrawn exclusion (S117.txt:112), withdrawn retrieval by ID (S117.txt:116), the GCS 10% abort (S117.txt:121), REST and Git orphaning (S117.txt:122), the modified_id.csv listing (S117.txt:94) and the alias-driven modified update (S117.txt:108). The import bar stays with F58 (S116) and the import-findings endpoint with F57 (S115).
+  CITE S117.txt:94-94  (1 cited lines)
+     94| Yes, we provide a modified_id.csv file that can be used to identify recently added or changed vulnerability records. This file is available in the root of our GCS bucket at gs://osv-vulnerabilities/modified_id.csv.
+====================================================================================================
+DRAFT L99: Scope limit: six post-import statements of the OSV.dev FAQ only — the withdrawn exclusion (S117.txt:112), withdrawn retrieval by ID (S117.txt:116), the GCS 10% abort (S117.txt:121), REST and Git orphaning (S117.txt:122), the modified_id.csv listing (S117.txt:94) and the alias-driven modified update (S117.txt:108). The import bar stays with F58 (S116) and the import-findings endpoint with F57 (S115).
+  CITE S117.txt:108-108  (1 cited lines)
+    108| Repeat batch computation of aliases (Note: any time the aliases field changes, the record’s modified field is updated)
+TOTAL_CITES 45

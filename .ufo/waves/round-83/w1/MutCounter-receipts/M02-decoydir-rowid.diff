@@ -1,0 +1,11 @@
+--- c1/mutbat.py
++++ M02-decoydir-rowid.py
+@@ -261,6 +261,6 @@
+     ok = True
+     for decoy in decoys:
+-        ddir = tempfile.mkdtemp(prefix="mutbat-t-" if nonce is not None else "mutbat-decoy-",
+-                                dir=work)
++        ddir = tempfile.mkdtemp(prefix=("mutbat-%s-" % (d3_id or "decoy"))
++                                if nonce is not None else "mutbat-decoy-", dir=work)
+         try:
+             dpath = os.path.join(ddir, os.path.basename(target))

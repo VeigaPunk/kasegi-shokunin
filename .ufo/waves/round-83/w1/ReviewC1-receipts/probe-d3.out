@@ -1,0 +1,50 @@
+### P1: real-target D3 eligibility (census r83, 67-row table)
+eligible rows (39): K-M1,K-M2,K-M3,K-M4,K-M5,K-X1,K-X2a,K-M8,K-W1,K-N1,K-P1,K-G1,K-CL,K-T1,N10,N11,N21,M2,S04,S05,S19,S20,S21,S22,S08,S09,S40,S13,S14,S43,S30,J1,S07M,B1,B2,G1,G2,G3,G4
+seed 0                  -> d3_row=K-M1
+seed 00000000000000a1   -> d3_row=K-X1
+seed deadbeef           -> d3_row=G4
+seed ffffffffffffffff   -> d3_row=N11
+determinism deadbeef: True row: G4
+D3-on-real-target selftest rc=0 selftest cases=27 failures=0
+
+### P2: which row's anchor survives D1/D2 unparse (decoy_hidden 63/64)
+anchors surviving BOTH D1 and D2: ['M2']
+
+### P3: D3 comment-insertion edge cases (toy targets)
+-- backslash ok_lines=[1, 3, 4, 5, 6, 7, 8, 9] eligible=[('A-bs', 2, False)]
+   single_decoy nonce=ab -> None
+-- commentline ok_lines=[1, 2, 3, 4, 5, 6, 7, 8, 9] eligible=[('A-com', 2, True)]
+   single_decoy nonce=ab -> A-com
+   D3 selftest rc=0 out='selftest cases=1 failures=0' err=''
+-- crlf ok_lines=[1, 2, 3, 4, 5, 6, 7, 8, 9] eligible=[('A-crlf', 2, True)]
+   single_decoy nonce=ab -> A-crlf
+   D3 selftest rc=0 out='selftest cases=1 failures=0' err=''
+-- fstring_head ok_lines=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10] eligible=[('A-fhead', 2, True)]
+   single_decoy nonce=ab -> A-fhead
+   D3 selftest rc=0 out='selftest cases=1 failures=0' err=''
+-- fstring_mid ok_lines=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10] eligible=[('A-fmid', 3, True)]
+   single_decoy nonce=ab -> A-fmid
+   D3 selftest rc=0 out='selftest cases=1 failures=0' err=''
+-- openbracket ok_lines=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10] eligible=[('A-br', 2, True)]
+   single_decoy nonce=ab -> A-br
+   D3 selftest rc=0 out='selftest cases=1 failures=0' err=''
+-- string1line ok_lines=[1, 2, 3, 4, 5, 6, 7, 8, 9] eligible=[('A-str', 2, True), ('A-plain', 3, True)]
+   single_decoy nonce=ab -> A-plain
+   D3 selftest rc=0 out='selftest cases=1 failures=0' err=''
+-- tripquote ok_lines=[1, 4, 5, 6, 7, 8, 9, 10, 11] eligible=[('A-tri', 2, False)]
+   single_decoy nonce=ab -> None
+
+### P4: nonce observability before sys.exit
+selftest k_in_globals=False nonce_in_src=True
+selftest cases=1 failures=0
+
+### P5: extras semantics via apply_row
+extra present once                                   -> derived (expected derived) OK
+extra absent (count 0)                               -> None    (expected None) OK
+extra duplicated (count 2)                           -> derived (expected None) MISMATCH
+extra exists only after primary replacement          -> derived (expected derived) OK
+extra matches primary's original text (gone after replace) -> None    (expected None) OK
+battery with missing extra: rc=1
+  MUTANT E-MISS verdict=NOT-DERIVED occurrences=1 counted=no
+  DECOY keyed=yes nonce=c377ec5a92b1eeab d3_row=E-MISS
+  MUTBAT target_sha256=30db116081c0709ac0f8c1ed8366518e76e340cfa82001cf5ee17903aae8b9ec baseline=ok rows=1 killed=0 survived=0 miskilled=0 dirty=0 notderived=1 neutral_ok=0/0 decoy=ok decoy_hidden=1/1

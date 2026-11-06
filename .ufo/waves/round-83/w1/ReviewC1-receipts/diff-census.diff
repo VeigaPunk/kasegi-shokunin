@@ -1,0 +1,113 @@
+--- .ufo/waves/round-82/c1/recheck-cwd-census.py	2026-11-06 17:55:35.973709090 -0300
++++ .ufo/waves/round-83/c1/recheck-cwd-census.py	2026-11-06 18:45:41.643892688 -0300
+@@ -30,14 +30,14 @@
+   recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+   recheck-cwd-census.py --selftest
+ 
+---selftest runs twenty-four checks under TMPDIR (prefix-census, result-main, tmpdir-parent,
++--selftest runs twenty-seven checks under TMPDIR (prefix-census, result-main, tmpdir-parent,
+ scratch-cleanup, first-line, restoration-only, both-headers, relabel-detection,
+ tmpdir-refusal, the round-81 prefix-literal, conform-limbs, tmpdir-file, timeout-bucket,
+-tmpdir-unset, usage-guards and output-lines, the round-82 bucket-sum and main-default,
+-gate-predicates, gate-wiring, and the gate-regs/gate-consume/gate-negpolarity/gate-checkids
+-assertions that consume the restoration-only RESULT limb) and prints
+-'selftest cases=24 failures=0' on success. A TMPDIR that is not an existing directory exits
+-2 before any tempfile call.
++tmpdir-unset, usage-guards and output-lines, the round-82 bucket-sum and main-default, the
++round-83 bucket-other, bucket-over and main-verbose, gate-predicates, gate-wiring, and the
++gate-regs/gate-consume/gate-negpolarity/gate-checkids assertions that consume the
++restoration-only RESULT limb) and prints 'selftest cases=27 failures=0' on success. A TMPDIR
++that is not an existing directory exits 2 before any tempfile call.
+ 
+ Round 79: every gate verdict is a module-level predicate tested in both polarities
+ (gate-predicates), and gate-wiring parses this file's own selftest and refuses a check()
+@@ -75,6 +75,13 @@
+ and then skips it is nonconformant. main-default (round-81 ReviewC1 Major 1): main() without
+ --verbose prints no ENTRY line for a prefixed passing entry, which kills the main()-site
+ verbose default the round-81 S07 row missed.
++
++Round 83: the four round-82 MutC1Hunt gaps are closed by three new checks. bucket-other (G1):
++balanced counts with an exit_other entry are conformant and a prefixed exit-7 entry lands in
++exit_other on a conformant tree. bucket-over (G2): buckets above entries are refused.
++main-verbose (G3, G4): main() --verbose prints the prefixed passing entry's ENTRY line, and
++the verbose run prints strictly more ENTRY lines than the default run, so a verbose default
++fails even when the main-default negative limb is weakened.
+ """
+ import ast
+ import glob
+@@ -265,7 +272,8 @@
+ 
+ 
+ def selftest():
+-    """Twenty-four checks: the round-82 two (bucket-sum, main-default), the round-81 seven
++    """Twenty-seven checks: the round-83 three (bucket-other, bucket-over, main-verbose), the
++    round-82 two (bucket-sum, main-default), the round-81 seven
+     (prefix-literal, conform-limbs, tmpdir-file,
+     timeout-bucket, tmpdir-unset, usage-guards, output-lines) plus fifteen in eight
+     fixtures: prefix-census, result-main, tmpdir-parent,
+@@ -281,7 +289,7 @@
+     removing any check fails gate-checkids. Every gate verdict is a module-level predicate
+     that gate-predicates tests in both polarities, and gate-wiring refuses a check() whose
+     ok argument is a constant True or does not call its gate predicate. Expected on success:
+-    'selftest cases=24 failures=0' and exit 0."""
++    'selftest cases=27 failures=0' and exit 0."""
+     if tmpdir_refused():
+         return 2
+     failures = []
+@@ -296,7 +304,7 @@
+         "gate-regs", "gate-consume", "gate-negpolarity", "gate-checkids", "tmpdir-refusal",
+         "gate-predicates", "gate-wiring", "prefix-literal", "conform-limbs", "tmpdir-file",
+         "timeout-bucket", "tmpdir-unset", "usage-guards", "output-lines", "bucket-sum",
+-        "main-default"))
++        "main-default", "bucket-other", "bucket-over", "main-verbose"))
+     scratch = tempfile.mkdtemp(prefix="recheck-cwd-selftest-", dir=os.environ.get("TMPDIR") or None)
+ 
+     def write_entry(kdir, name, body):
+@@ -663,6 +671,47 @@
+               and "ENTRY b-relative.md noprefix=1 foreign_exit=2" in out22 and ret22 == 1,
+               "lines=%d ret=%d" % (len(out22.splitlines()), ret22))
+ 
++        # Case 23 (round 83, r82 MutC1Hunt G1): bucket-other — the exit_other bucket counts
++        # in the accepting direction: balanced counts with one exit_other entry are
++        # conformant, and a census over a prefixed passing entry plus a prefixed exit-7 entry
++        # puts one entry in exit_other and main() calls the tree conformant (exit 0).
++        oth = {"entries": 2, "noprefix": 0, "exit2_foreign": 0, "exit0_foreign": 1,
++               "exit1_foreign": 0, "exit_other": 1, "norecheck": 0, "restoration_only": 0}
++        root23, kdir23 = fixture("case23-bucket-other")
++        write_entry(kdir23, "p-pass.md", "recheck: cd %s && true\n" % root23)
++        write_entry(kdir23, "q-seven.md", "recheck: cd %s && exit 7\n" % root23)
++        _t23, got23 = capture(census, root23, root23)
++        out23, ret23 = capture(main, ["recheck-cwd-census.py", "--root", root23, "--lane", root23])
++        check("bucket-other",
++              conform_ok(oth) is True and got23["exit_other"] == 1
++              and got23["exit0_foreign"] == 1 and got23["entries"] == 2
++              and ret23 == 0 and "RECHECK-CWD-RESULT conformant" in out23,
++              "exit_other=%d main_ret=%d" % (got23["exit_other"], ret23))
++
++        # Case 24 (round 83, r82 MutC1Hunt G2): bucket-over — buckets that exceed entries
++        # (an entry counted twice) are refused, as are buckets that fall short.
++        over = dict(oth, entries=1)
++        check("bucket-over",
++              conform_ok(over) is False and conform_ok(dict(oth, exit_other=2)) is False
++              and conform_ok(dict(oth, exit0_foreign=0)) is False,
++              "over=%r" % (conform_ok(over),))
++
++        # Case 25 (round 83, r82 MutC1Hunt G3/G4): main-verbose — main() --verbose prints the
++        # ENTRY line of the prefixed passing entry that the default run omits, so the verbose
++        # run prints strictly more ENTRY lines than the default run on the same fixture; a
++        # verbose default (S07M) makes the two equal and fails here even when the
++        # main-default negative limb is weakened.
++        out25, ret25 = capture(main, ["recheck-cwd-census.py", "--root", root1, "--lane", lane1,
++                                      "--verbose"])
++        _t25, _g25 = capture(census, root1, lane1, True)
++        n25v = sum(1 for ln in out25.splitlines() if ln.startswith("ENTRY "))
++        n25d = sum(1 for ln in out22.splitlines() if ln.startswith("ENTRY "))
++        check("main-verbose",
++              "ENTRY a-prefixed.md noprefix=0 foreign_exit=0" in out25
++              and "ENTRY a-prefixed.md noprefix=0 foreign_exit=0" in _t25
++              and n25v > n25d and ret25 == ret22,
++              "verbose_entries=%d default_entries=%d ret=%d" % (n25v, n25d, ret25))
++
+         # Gate predicates (rounds 79-81): every gate verdict function in both polarities,
+         # and the wiring scanner on a known-bad, a known-good, a wrong-predicate-in-
+         # consumed() and a constant-argument source, plus (round 81) a BoolOp-wrapped

@@ -1,0 +1,126 @@
+BASELINE gate_sha256=42f4b2accf704455325f8d1eb8ca4ec21401e35397af7a36861c33a27ace6302 bytes=12464
+BASELINE selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+BASELINE controls_rc=0 r83_lines=7 matches_frozen_receipt=True unmodified_matches=True
+BASELINE probes={"absentcite": false, "gate_line": "ENTRY-GATE sid=S9 claims=1 want=1 spans=1 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok", "gate_ok": false, "len3": false, "nocite": false, "stem": true, "stem35": false, "stop": false, "tie0": false, "tie1": false, "tie2": true, "tie3": true, "twocites": true, "withdrawn": true}
+MUTANT tie2to1 bytes=12464 sha=7f9a368c243ccd48573bff995803d32a6969a1d6fd63db71e8fdb8ba22aa94a1
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=0
+  probes_changed={"tie1": [false, true]}
+  VERDICT SURVIVED-undetected
+MUTANT tie2to0 bytes=12464 sha=9402ec250f2c7d85f1460d37efe13a60c7b209cc1233be0da6e4d8ab56b03f44
+  selftest rc=1 entry-gate selftest FAIL got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': True, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=2
+    - CONTROL forgery=filler gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=filler gate=r83 rc=0 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+    - CONTROL admitted=osv-importfindings-record-quality-feedback.md gate=r83 rc=1 ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL admitted=osv-importfindings-record-quality-feedback.md gate=r83 rc=0 ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+  probes_changed={"gate_line": ["ENTRY-GATE sid=S9 claims=1 want=1 spans=1 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok", "ENTRY-GATE sid=S9 claims=1 want=1 spans=1 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok"], "gate_ok": [false, true], "len3": [false, true], "stem35": [false, true], "stop": [false, true], "tie0": [false, true], "tie1": [false, true]}
+  VERDICT KILLED-selftest
+MUTANT any_to_all bytes=12464 sha=f729cb439ee8b25f0e6ad9a3039a3dc889d8bfbd7a3a8dc2d48644de5769fefd
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=1
+    - CONTROL admitted=osv-ubuntu-binary-to-source-mapping.md gate=r83 rc=0 ENTRY-GATE sid=S114 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+    + CONTROL admitted=osv-ubuntu-binary-to-source-mapping.md gate=r83 rc=1 ENTRY-GATE sid=S114 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+  probes_changed={"nocite": [false, true], "twocites": [true, false]}
+  VERDICT KILLED-controls
+MUTANT stem5to3 bytes=12464 sha=cc26a4cf470ada69c2a92244372e6b4010459fb3e66f90aa67273aea88db2dea
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=0
+  probes_changed={"stem35": [false, true]}
+  VERDICT SURVIVED-undetected
+MUTANT stem5to20 bytes=12465 sha=5d696a37cae78da273807ceb456ccb700e9597809479a91f389ce7f86cf5377d
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=3
+    - CONTROL forgery=copyrule gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=copyrule gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=2 header=ok
+    - CONTROL admitted=osv-determineversion-cc-library-versioning.md gate=r83 rc=0 ENTRY-GATE sid=S113 claims=8 want=8 spans=10 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+    + CONTROL admitted=osv-determineversion-cc-library-versioning.md gate=r83 rc=1 ENTRY-GATE sid=S113 claims=8 want=8 spans=10 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=3 header=ok
+    - CONTROL admitted=osv-high-quality-record-import-bar.md gate=r83 rc=0 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+    + CONTROL admitted=osv-high-quality-record-import-bar.md gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+  probes_changed={"stem": [true, false]}
+  VERDICT KILLED-controls
+MUTANT stop_empty bytes=12233 sha=a400ca6af70e8d7f6300287eef3e8172f9f7f412348382892041fafc7cd3034a
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=0
+  probes_changed={"stop": [false, true]}
+  VERDICT SURVIVED-undetected
+MUTANT stop_plus_withdrawn bytes=12474 sha=944b85b23c40a06e36409661c5bfc760c29867ddb4924530550e33fded53c910
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=0
+  probes_changed={"withdrawn": [true, false]}
+  VERDICT SURVIVED-undetected
+MUTANT membership_dropped bytes=12458 sha=0e833ebbc917591798fa43ff1078b9b4f61cf6c7ac4731f9cd271d7505714a06
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=0
+  probes_changed={}
+  VERDICT SURVIVED-equivalent-on-exercised-points
+MUTANT membership_union bytes=12503 sha=0c1166cd0f32e4ed13835d89264c6cfef55292083d6fc21f8297b2a646f29682
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=1
+    - CONTROL forgery=copyrule gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=copyrule gate=r83 rc=0 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+  probes_changed={"absentcite": [false, true]}
+  VERDICT KILLED-controls
+MUTANT cite_not_stripped bytes=12410 sha=754050d954e7e99878b9383c878dbd3c8660b6219adcdd7b6cb0870d6355df7e
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=0
+  probes_changed={}
+  VERDICT SURVIVED-equivalent-on-exercised-points
+MUTANT nocite_true bytes=12502 sha=1b9f497d09b8384174dac4e8533922bb5f4b2fe3254d0a22b9b0d4b7f8c3462a
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=0
+  probes_changed={"nocite": [false, true]}
+  VERDICT SURVIVED-undetected
+MUTANT untied_out_of_ok bytes=12448 sha=a2f127108050cb1663dafc38e760022bce8f88f3a6f02c2acfce3db7e709780f
+  selftest rc=1 entry-gate selftest FAIL got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': True, 'crosscite': True, 'copyrule': True}
+  controls rc=0 r83_diffs=4
+    - CONTROL forgery=copyrule gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=copyrule gate=r83 rc=0 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    - CONTROL forgery=crosscite gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=crosscite gate=r83 rc=0 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    - CONTROL forgery=filler gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=filler gate=r83 rc=0 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    - CONTROL admitted=osv-importfindings-record-quality-feedback.md gate=r83 rc=1 ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL admitted=osv-importfindings-record-quality-feedback.md gate=r83 rc=0 ENTRY-GATE sid=S115 claims=6 want=6 spans=6 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+  probes_changed={"gate_ok": [false, true]}
+  VERDICT KILLED-selftest
+MUTANT untied_not_printed bytes=12446 sha=855f48cc7fa1d4696729c51428f6109089b70b8a900fd0a824f5f035322fa347
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=7
+    - CONTROL forgery=copyrule gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=copyrule gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok
+    - CONTROL forgery=crosscite gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=crosscite gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok
+    - CONTROL forgery=filler gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=filler gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok
+    - CONTROL admitted=osv-determineversion-cc-library-versioning.md gate=r83 rc=0 ENTRY-GATE sid=S113 claims=8 want=8 spans=10 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+    + CONTROL admitted=osv-determineversion-cc-library-versioning.md gate=r83 rc=0 ENTRY-GATE sid=S113 claims=8 want=8 spans=10 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok
+  probes_changed={"gate_line": ["ENTRY-GATE sid=S9 claims=1 want=1 spans=1 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok", "ENTRY-GATE sid=S9 claims=1 want=1 spans=1 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 header=ok"]}
+  VERDICT KILLED-controls
+MUTANT ge_to_gt bytes=12463 sha=a62f73540f4e7681947862a9cfa702720d61567e3578eae6883b204ad4b47d84
+  selftest rc=1 entry-gate selftest FAIL got={'good': False, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=6
+    - CONTROL forgery=copyrule gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=copyrule gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=5 header=ok
+    - CONTROL forgery=crosscite gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=crosscite gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=4 header=ok
+    - CONTROL forgery=filler gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+    + CONTROL forgery=filler gate=r83 rc=1 ENTRY-GATE sid=S116 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=4 header=ok
+    - CONTROL admitted=osv-determineversion-cc-library-versioning.md gate=r83 rc=0 ENTRY-GATE sid=S113 claims=8 want=8 spans=10 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+    + CONTROL admitted=osv-determineversion-cc-library-versioning.md gate=r83 rc=1 ENTRY-GATE sid=S113 claims=8 want=8 spans=10 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=3 header=ok
+  probes_changed={"tie2": [true, false], "withdrawn": [true, false]}
+  VERDICT KILLED-selftest
+MUTANT word_min3 bytes=12464 sha=6f91e49873d46ce34a354fee8355af3fa670396d870f4e8d0a4443b3d536e762
+  selftest rc=0 entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=0
+  probes_changed={"len3": [false, true]}
+  VERDICT SURVIVED-undetected
+MUTANT word_min5 bytes=12464 sha=a74b25e7c376413aaad39e6b315238d8560b6fd3a3b155f82ea146bffd95f7ab
+  selftest rc=1 entry-gate selftest FAIL got={'good': False, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+  controls rc=0 r83_diffs=1
+    - CONTROL admitted=osv-determineversion-cc-library-versioning.md gate=r83 rc=0 ENTRY-GATE sid=S113 claims=8 want=8 spans=10 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+    + CONTROL admitted=osv-determineversion-cc-library-versioning.md gate=r83 rc=1 ENTRY-GATE sid=S113 claims=8 want=8 spans=10 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=1 header=ok
+  probes_changed={}
+  VERDICT KILLED-selftest
+RESTORED-RUN controls_rc=0 same_as_first_baseline=True
+RESTORED lane_gate_sha256=42f4b2accf704455325f8d1eb8ca4ec21401e35397af7a36861c33a27ace6302 unchanged=True

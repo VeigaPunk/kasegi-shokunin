@@ -1,0 +1,122 @@
+W1 row=MUT-CF-noprefix-ge
+  witness: one prefix-less passing entry tree
+  command: ./cand --root one --lane one
+  pristine rc=1
+    out: ENTRY c-bare.md noprefix=1 foreign_exit=0
+    out: RECHECK-CWD entries=1 noprefix=1 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT nonconformant
+  mutant   rc=0
+    out: ENTRY c-bare.md noprefix=1 foreign_exit=0
+    out: RECHECK-CWD entries=1 noprefix=1 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+
+W10 row=MUT-AP-selftest-last
+  witness: --selftest followed by another argument
+  command: ./cand --selftest --verbose
+  pristine rc=0
+    out: selftest cases=27 failures=0
+  mutant   rc=2
+    err: usage: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose] | --selftest
+
+W11 row=MUT-SUM-swap-exit1-other
+  witness: summary fields on a tree with exit1_foreign=2 exit_other=1
+  command: ./cand --root mix --lane mix
+  pristine rc=0
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+  mutant   rc=0
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=1 exit_other=2 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+
+W12 row=MUT-SUM-other-as-norecheck
+  witness: summary exit_other slot on a tree with exit_other=1 norecheck=0
+  command: ./cand --root mix --lane mix
+  pristine rc=0
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+  mutant   rc=0
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+
+W2 row=MUT-CF-noprefix-ne1
+  witness: two prefix-less passing entries (noprefix=2)
+  command: ./cand --root two --lane two
+  pristine rc=1
+    out: ENTRY c-bare.md noprefix=1 foreign_exit=0
+    out: ENTRY d-bare.md noprefix=1 foreign_exit=0
+    out: RECHECK-CWD entries=2 noprefix=2 exit2_foreign=0 exit0_foreign=2 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT nonconformant
+  mutant   rc=0
+    out: ENTRY c-bare.md noprefix=1 foreign_exit=0
+    out: ENTRY d-bare.md noprefix=1 foreign_exit=0
+    out: RECHECK-CWD entries=2 noprefix=2 exit2_foreign=0 exit0_foreign=2 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+
+W3 row=MUT-MV-drop-noprefix-pass
+  witness: default mode, prefix-less passing entry (no --verbose)
+  command: ./cand --root one --lane one
+  pristine rc=1
+    out: ENTRY c-bare.md noprefix=1 foreign_exit=0
+    out: RECHECK-CWD entries=1 noprefix=1 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT nonconformant
+  mutant   rc=1
+    out: RECHECK-CWD entries=1 noprefix=1 exit2_foreign=0 exit0_foreign=1 exit1_foreign=0 exit_other=0 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT nonconformant
+
+W4 row=MUT-MV-extra-nonzero
+  witness: default mode, prefixed exit-1 entries
+  command: ./cand --root mix --lane mix
+  pristine rc=0
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+  mutant   rc=0
+    out: ENTRY q1-exit1.md noprefix=0 foreign_exit=1
+    out: ENTRY q2-exit1.md noprefix=0 foreign_exit=1
+    out: ENTRY r-exit7.md noprefix=0 foreign_exit=7
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+
+W5 row=MUT-MV-timeout-label
+  witness: --verbose over a timed-out entry (TIMEOUT=1, in-process)
+  command: census(hang, hang, True) with TIMEOUT=1
+  pristine rc=0
+    out: ENTRY h-hang.md noprefix=0 foreign_exit=-1
+    out: RECHECK-CWD entries=1 noprefix=0 exit2_foreign=0 exit0_foreign=0 exit1_foreign=0 exit_other=1 norecheck=0 restoration_only=0
+  mutant   rc=0
+    out: ENTRY h-hang.md noprefix=0 foreign_exit=timeout
+    out: RECHECK-CWD entries=1 noprefix=0 exit2_foreign=0 exit0_foreign=0 exit1_foreign=0 exit_other=1 norecheck=0 restoration_only=0
+
+W6 row=MUT-AP-root-no-value
+  witness: --root with no value
+  command: ./cand --root
+  pristine rc=2
+    err: usage: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose] | --selftest
+  mutant   rc=1
+    err: Traceback (most recent call last):
+
+W7 row=MUT-AP-lane-no-value
+  witness: --lane with no value
+  command: ./cand --lane
+  pristine rc=2
+    err: usage: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose] | --selftest
+  mutant   rc=1
+    err: Traceback (most recent call last):
+
+W8 row=MUT-AP-verbose-as-lane
+  witness: --verbose in a non-final position before --root
+  command: ./cand --verbose --root mix --lane mix
+  pristine rc=0
+    out: ENTRY p-pass.md noprefix=0 foreign_exit=0
+    out: ENTRY q1-exit1.md noprefix=0 foreign_exit=1
+    out: ENTRY q2-exit1.md noprefix=0 foreign_exit=1
+    out: ENTRY r-exit7.md noprefix=0 foreign_exit=7
+    out: RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0
+    out: RECHECK-CWD-RESULT conformant
+  mutant   rc=2
+    err: usage: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose] | --selftest
+
+W9 row=MUT-AP-root-no-abspath
+  witness: relative --root with no corpus/knowledge, cwd=wit
+  command: ./cand --root nosuch --lane nosuch
+  pristine rc=1
+  mutant   rc=1

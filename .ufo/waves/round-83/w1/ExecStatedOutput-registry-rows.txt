@@ -1,0 +1,91 @@
+# Registry rows for stated-output-check.py — round 83, ExecStatedOutput
+
+Candidate bytes: `.ufo/waves/round-83/w1/ExecStatedOutput-candidate-stated-output-check.py`
+(20012 bytes, 562 lines, sha256 `3b086668e63956b916d540f7e21094d788d5cd8b77bd9ce62303630804441b31`).
+Committed path these rows name: `corpus/instruments/stated-output-check.py` (the L1 integrates the
+candidate there; the rows are written for the committed path, not the wave path).
+Measured: `--selftest` -> `selftest cases=21 failures=0`, exit 0; receipt
+`.ufo/waves/round-83/w1/ExecStatedOutput-receipts/stated-output-check-selftest.txt`.
+Routed defect answered: `corpus/lessons/round-82-verifier-spotcheck.md` § Routed defects item 5
+("M82-3's stated-output check is a wave script … not a registered lane instrument").
+
+Both files carry the same 8-column registry table in their later round sections, so the row text is
+identical in each; the README copy also carries the limits paragraph the README's instrument
+sections use. Both blocks are append-only at the end of the file (the lane's post-r28 convention:
+each round appends its own `## Round-NN … registry addition` section rather than editing the base
+table).
+
+---
+
+## SKILL.md — append at end of file
+
+Anchor: the current last line is the `[r71 current-execution amendment, 2026-11-05]` paragraph
+(`SKILL.md:1251` at the r83 freeze). Append the block below after it, separated by one blank line.
+
+```markdown
+## Round-83 Gates & probes registry addition (appended 2026-11-06)
+
+Routed by the round-82 non-author closure (routed defect 5): the M82-3 stated-output check existed
+only as the wave script `.ufo/waves/round-82/l1/stated-output-check.py`
+(`.ufo/waves/round-82/l1/M82-3-stated-output-r82.txt`), so a stated command output in an entry was
+checked by no registered instrument. This section registers the candidate
+`.ufo/waves/round-83/w1/ExecStatedOutput-candidate-stated-output-check.py` (sha256 `3b086668…`,
+`selftest cases=21`) at the committed path named in the row. It checks claims of the shape
+"`<command>` prints <output> and exits <N>": `nothing` means empty stdout, a backticked literal must
+start a stdout line, and a phrase saying "one … line" requires exactly one line; it never executes a
+command whose segment head is not allow-listed read-only (see the instrument docstring for the full
+refusal rules and limits).
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| stated-output-check.py | gate | `python3 corpus/instruments/stated-output-check.py [--root DIR] [--timeout S] <entry.md> [<entry.md> ...]` (matched commands run with `bash -c` in `--root`, default cwd) | 0 every matched stated output holds and refused=0 \| 1 a mismatch or a refused command \| 2 usage/read error (missing file, non-directory `--root`; `--selftest` with a `TMPDIR` that is not an existing directory) | `python3 corpus/instruments/stated-output-check.py --selftest` -> `selftest cases=21 failures=0`, exit 0 | `.ufo/waves/round-83/w1/ExecStatedOutput-receipts/stated-output-check-selftest.txt` | entry `.md` and lane files read-only; executes only allow-listed read-only heads; `TMPDIR` scratch | kasegi |
+```
+
+---
+
+## corpus/instruments/README.md — append at end of file
+
+Anchor: the current last line is "mechanism, not by drift." (`README.md:1054` at the r83 freeze),
+the end of the round-50 `census-freshness-check.py` section. Append the block below after it,
+separated by one blank line.
+
+```markdown
+## Round-83 instrument registry addition — `stated-output-check.py` (appended 2026-11-06)
+
+Round-82 routed defect 5 (`corpus/lessons/round-82-verifier-spotcheck.md` § Routed defects item 5)
+recorded that the M82-3 stated-output check lived only as the wave script
+`.ufo/waves/round-82/l1/stated-output-check.py`. This section registers it. The candidate is
+`.ufo/waves/round-83/w1/ExecStatedOutput-candidate-stated-output-check.py` (sha256
+`3b086668e63956b916d540f7e21094d788d5cd8b77bd9ce62303630804441b31`, 20012 bytes, 562 lines), to be
+committed at `corpus/instruments/stated-output-check.py`. The gates' home registry remains the
+`SKILL.md` *Gates & probes* section, which carries the same row in its round-83 addition.
+
+| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+|---|---|---|---|---|---|---|---|
+| stated-output-check.py | gate | `python3 corpus/instruments/stated-output-check.py [--root DIR] [--timeout S] <entry.md> [<entry.md> ...]` (matched commands run with `bash -c` in `--root`, default cwd) | 0 every matched stated output holds and refused=0 \| 1 a mismatch or a refused command \| 2 usage/read error (missing file, non-directory `--root`; `--selftest` with a `TMPDIR` that is not an existing directory) | `python3 corpus/instruments/stated-output-check.py --selftest` -> `selftest cases=21 failures=0`, exit 0 | `.ufo/waves/round-83/w1/ExecStatedOutput-receipts/stated-output-check-selftest.txt` | entry `.md` and lane files read-only; executes only allow-listed read-only heads; `TMPDIR` scratch | kasegi |
+
+**Known limits (measured, not assumed).** It is not a sandbox: the allow-list (grep egrep fgrep
+printf echo true false test [ wc sha256sum diff sort cut head tail cat ls, plus `python3
+corpus/instruments/*.py` only) refuses destructive heads but is not a capability proof, and entry
+text is trusted input. The environment is inherited, so a stated output is checked against this
+host's command behaviour. "prints nothing" is a stdout claim only (`err_lines=` is printed but not
+asserted). A file with no matched command passes vacuously (`commands=0`), so read the count. The
+grammar is deliberately narrow: a claim without an inline backticked command (e.g. "the literal
+sweep printed 0 files each") is not matched, and a phrase with two backticked literals is
+ambiguous and not matched. Measured on the r83 corpus: 97 entries, `commands=20 mismatches=0
+refused=0`, exit 0 (`.ufo/waves/round-83/w1/ExecStatedOutput-receipts/stated-output-all-entries.txt`).
+```
+
+---
+
+## Measured discrimination these rows rest on (receipts beside this file)
+
+- `stated-output-check-selftest.txt` — `selftest cases=21 failures=0`, exit 0; six fail-expecting
+  cases (stdout-not-empty, rc mismatch, literal missing, one-line limb, refusal, timeout) and
+  fifteen pass/refusal/scratch/CLI cases.
+- `stated-output-entries-r83.txt` — F58 (`osv-high-quality-record-import-bar.md`) `commands=1
+  mismatches=0 refused=0` exit 0; F59 draft `commands=0 mismatches=0 refused=0` exit 0 (vacuous).
+- `stated-output-m823-replay.txt` — A: the round-82 pre-review sentence fails (`rc-want-1-got-0`,
+  rc=1); B: the round-82 wave script on the landed F58 entry matches 0 commands; C: the draft with
+  two injected false stated outputs fails twice with distinct reasons (`rc-want-1-got-0`,
+  `literal-missing:9:`); D: the 97-entry census stays green.

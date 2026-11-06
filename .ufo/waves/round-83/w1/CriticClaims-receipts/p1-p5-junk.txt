@@ -1,0 +1,16 @@
+# P1/P5 one-line junk edit of the landed base instrument (sha256 81677e9d...)
+# diff (one line):
+-        print("selftest cases=%d failures=%d" % (len(done), len(failures)))
++        print("selftest cases=27 failures=%d" % len(failures))
+
+$ python3 -B <scratch>/one-line-p1.py --selftest
+selftest cases=27 failures=0
+rc=0
+
+$ python3 -B <scratch>/one-line-p1.py --root <lane> --lane <lane>
+RECHECK-CWD entries=97 noprefix=0 exit2_foreign=0 exit0_foreign=75 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+rc=0
+
+# Reading: the printed count is not the number of checks run; the three r83 checks do not exist
+# in this file. P2 (hash) and P3 (G1-G4 survive) are what reject it.
