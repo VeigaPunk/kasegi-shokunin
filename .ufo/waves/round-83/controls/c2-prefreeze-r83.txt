@@ -1,0 +1,27 @@
+# C2 prefreeze r83 2026-11-06T21:57:37Z
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-83/manifest.json --source S117
+S117:sha256 OK
+S117:Q01-withdrawn-excluded OK occurrences=1 anchor=112-ok
+S117:Q02-withdrawn-get OK occurrences=1 anchor=116-ok
+S117:Q03-gcs-ten-percent OK occurrences=1 anchor=121-ok
+S117:Q04-rest-git-orphaned OK occurrences=1 anchor=122-ok
+S117:Q05-modified-id-csv OK occurrences=1 anchor=94-ok
+S117:Q06-aliases-bump-modified OK occurrences=1 anchor=108-ok
+rc=0
+$ python3 corpus/instruments/frontier-recheck-count.py | grep FRONTIER-CENSUS
+FRONTIER-CENSUS rows=58 admitted=58 closed=58 problem-rows=0 registry=117
+$ ls corpus/knowledge/*.md | wc -l
+96
+$ registry rows
+117
+# literal sweep: each S117 manifest quote over corpus/knowledge/*.md (count of files containing it)
+Q01-withdrawn-excluded 0
+Q02-withdrawn-get 0
+Q03-gcs-ten-percent 0
+Q04-rest-git-orphaned 0
+Q05-modified-id-csv 0
+Q06-aliases-bump-modified 0
+literal_sweep_total 0
+$ r83 entry-gate selftest
+entry-gate selftest ok got={'good': True, 'dump': False, 'moved': False, 'norule': False, 'labelled': False, 'copied': False, 'snapline': False, 'nocite': False, 'shortrej': False, 'filler': False, 'crosscite': False, 'copyrule': False}
+rc=0

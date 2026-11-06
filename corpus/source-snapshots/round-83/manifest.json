@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "note": "Round-83 F59 manifest: OSV.dev FAQ (S117), captured 2026-11-06 by capture-source.py. Six quotes, each on its exact snapshot line, all from the post-import record lifecycle answers: withdrawn records (:111-118), deleted upstream records (:119-122), the modified_id.csv incremental listing (:93-100) and the alias recomputation note (:108). Not pinned: the withdrawn page and GCS export lines (:117-118; covered by the Q02 retention claim's context), the upstream issue links of :122 (unopened leads), the rate-limit and API answers (:123 on; not lifecycle), the data-quality issue route (:86-88).",
+  "sources": [
+    {
+      "id": "S117",
+      "url": "https://google.github.io/osv.dev/faq/",
+      "capture_url": "https://google.github.io/osv.dev/faq/",
+      "http": {
+        "status": 200,
+        "final_url": "https://google.github.io/osv.dev/faq/"
+      },
+      "kind": "html",
+      "fetch_method": "capture-source.py --kind html, default instrument UA (tags stripped, entities decoded, whitespace collapsed per line); raw page 34381 bytes, snapshot 10229 bytes",
+      "fetched_utc": "2026-11-06T21:55:29Z",
+      "path": "S117.txt",
+      "sha256": "0a5fa51c987544789d3c84fee6be2b1246a7a6a865457668f9e94a37e60bd53e",
+      "bytes": 10229,
+      "lines": 137,
+      "quotes": [
+        {
+          "id": "Q01-withdrawn-excluded",
+          "quote": "Records that have the withdrawn field set will be excluded from:",
+          "anchor": 112
+        },
+        {
+          "id": "Q02-withdrawn-get",
+          "quote": "returned by the /vulns/<ID> GET API",
+          "anchor": 116
+        },
+        {
+          "id": "Q03-gcs-ten-percent",
+          "quote": "if more than 10% of records are about to be marked as withdrawn, OSV.dev aborts and does not proceed.",
+          "anchor": 121
+        },
+        {
+          "id": "Q04-rest-git-orphaned",
+          "quote": "REST and Git sources: OSV.dev leaves the existing records valid but orphaned.",
+          "anchor": 122
+        },
+        {
+          "id": "Q05-modified-id-csv",
+          "quote": "we provide a modified_id.csv file that can be used to identify recently added or changed vulnerability records",
+          "anchor": 94
+        },
+        {
+          "id": "Q06-aliases-bump-modified",
+          "quote": "any time the aliases field changes, the record’s modified field is updated",
+          "anchor": 108
+        }
+      ]
+    }
+  ]
+}
