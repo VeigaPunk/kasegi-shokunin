@@ -1,0 +1,9 @@
+--- pristine
++++ N07-walk-body
+@@ -189,5 +189,5 @@
+     findings = []
+     wired = set()
+-    for node in ast.walk(ast.parse(source)):
++    for node in ast.parse(source).body:
+         if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+                 and node.func.id == "check" and len(node.args) >= 2):

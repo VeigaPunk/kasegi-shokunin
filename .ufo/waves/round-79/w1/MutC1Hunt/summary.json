@@ -1,0 +1,595 @@
+{
+ "baseline_case_line": true,
+ "baseline_rc": 0,
+ "composites": [
+  {
+   "fail_cases": [],
+   "fails": 0,
+   "id": "X1-K-W2+K-C1",
+   "mutant_sha256": "bb6291395fa075e5bff17ff96e74de6d06aff62b6f666aa70463e2ff05b685c7",
+   "rc": 0,
+   "rows": [
+    "K-W2",
+    "K-C1"
+   ],
+   "verdict": "SURVIVED"
+  },
+  {
+   "fail_cases": [
+    "case=gate-wiring"
+   ],
+   "fails": 1,
+   "id": "X2-K-P2+K-C1",
+   "mutant_sha256": "923d6aab2bcd4c2bcf1235aa85d821dbeb7537d7b1ba4ff6a4ca4d2a51b3f3c1",
+   "rc": 1,
+   "rows": [
+    "K-P2",
+    "K-C1"
+   ],
+   "verdict": "KILLED"
+  },
+  {
+   "fail_cases": [
+    "case=gate-checkids"
+   ],
+   "fails": 1,
+   "id": "X3-K-N1+K-P1",
+   "mutant_sha256": "1b9fc85c4741264f5f5c9b83d2e27cae4931c20eb93f31df0c3c2d10383bf6ea",
+   "rc": 1,
+   "rows": [
+    "K-N1",
+    "K-P1"
+   ],
+   "verdict": "KILLED"
+  },
+  {
+   "fail_cases": [
+    "case=gate-predicates"
+   ],
+   "fails": 1,
+   "id": "X4-K-X2b+K-N1",
+   "mutant_sha256": "ccb533c747f245ab687e51c05f35405ba4f964492d5c3ce44b7467c6a274d225",
+   "rc": 1,
+   "rows": [
+    "K-X2b",
+    "K-N1"
+   ],
+   "verdict": "KILLED"
+  }
+ ],
+ "detector": "TMPDIR=/fast/scratch/hyaku/kasegi-r79/MutC1Hunt python3 -B <file> --selftest",
+ "mutants": [
+  {
+   "anchor": "    \"gate-checkids\": \"gate_checkids_ok\",\n",
+   "area": "GATE_PREDICATES dict entry removed",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-predicates"
+   ],
+   "fails": 1,
+   "hypothesis": "predicate registration removal may be invisible to the self-referential scanner -> SURVIVE?",
+   "id": "N01-gatedict-drop-checkids",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N01-gatedict-drop-checkids.py",
+   "mutant_sha256": "5b291b150b44e674a2a3e528c598521877db82f1d6decc0589bcf28009d5d007",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "    \"gate-wiring\": \"wiring_ok\",\n",
+   "area": "GATE_PREDICATES dict value points at the wrong function",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-wiring",
+    "case=gate-checkids"
+   ],
+   "fails": 2,
+   "hypothesis": "gate-wiring check would not call its mapped predicate -> F2/F3 kill",
+   "id": "N02-gatedict-wiring-wrong",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N02-gatedict-wiring-wrong.py",
+   "mutant_sha256": "6d2d792120a71343014986ca3936bceff6e3d54e371ac5ba6a063abb7ead0250",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "    \"gate-wiring\": \"wiring_findings\",\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "            findings.append(\"F1:%s:%d\" % (name, node.lineno))\n",
+   "area": "wiring_findings F1 branch",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-predicates"
+   ],
+   "fails": 1,
+   "hypothesis": "bad_src loses F1:gate-consume:1 -> gate-predicates rows mismatch",
+   "id": "N03-f1-append-pass",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N03-f1-append-pass.py",
+   "mutant_sha256": "8a41aa07fa533543b40e2b28a57fb6adf8e5ebbe0db556073c745b6557fa6fb5",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "            pass\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "        elif not (isinstance(ok, ast.Constant) and ok.value is False):\n",
+   "area": "wiring_findings F2 branch",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-predicates",
+    "case=gate-wiring",
+    "case=gate-checkids"
+   ],
+   "fails": 3,
+   "hypothesis": "constant-True ok no longer reported F2 -> gate-predicates rows mismatch",
+   "id": "N04-f2-cond-invert",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N04-f2-cond-invert.py",
+   "mutant_sha256": "11623f8aa777f94ff562ebe2c749d59680a2b86bcc734eee374f6cce7ca234cb",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "        elif (isinstance(ok, ast.Constant) and ok.value is False):\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "    findings.extend(\"F3:%s\" % name for name in GATE_PREDICATES if name not in wired)\n",
+   "area": "wiring_findings F3 branch",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-predicates"
+   ],
+   "fails": 1,
+   "hypothesis": "unwired gates drop out of bad_src findings -> gate-predicates rows mismatch",
+   "id": "N05-f3-extend-pass",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N05-f3-extend-pass.py",
+   "mutant_sha256": "7a93c662c7d6188a5dbb0e6481aff776afda3210f42be527cfd2835aec583a20",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "    pass\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "        if not (isinstance(label, ast.Constant) and isinstance(label.value, str)):\n",
+   "area": "wiring_findings label filter",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-predicates",
+    "case=gate-wiring",
+    "case=gate-checkids"
+   ],
+   "fails": 3,
+   "hypothesis": "every check() label is skipped -> all gates unwired -> gate-wiring FAIL",
+   "id": "N06-label-int",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N06-label-int.py",
+   "mutant_sha256": "e834405d1b6cb697c18d13e9649803daf2f03a8119b018f1f22c5d3235189ead",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "        if not (isinstance(label, ast.Constant) and isinstance(label.value, int)):\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "    for node in ast.walk(ast.parse(source)):\n",
+   "area": "wiring_findings traversal",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-predicates",
+    "case=gate-wiring",
+    "case=gate-checkids"
+   ],
+   "fails": 3,
+   "hypothesis": "own check() calls live inside selftest() -> all gates unwired -> gate-wiring FAIL",
+   "id": "N07-walk-body",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N07-walk-body.py",
+   "mutant_sha256": "d3ecf4e82be48f48a54b244b917d9c47eb00ebeaebaf2cbc1a9621dca2cc13c5",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "    for node in ast.parse(source).body:\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "                and node.func.id == \"check\" and len(node.args) >= 2):\n",
+   "area": "wiring_findings check() arity gate",
+   "exception_detail": false,
+   "fail_cases": [],
+   "fails": 0,
+   "hypothesis": "all check() calls carry 3 args -> no observable change -> SURVIVE (equivalent?)",
+   "id": "N08-check-arity3",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N08-check-arity3.py",
+   "mutant_sha256": "fb7321cc91179545ecaf156915dedcd5e84dff536c2efa2234f4fa279d68bbb5",
+   "occurrences": 1,
+   "rc": 0,
+   "replacement": "                and node.func.id == \"check\" and len(node.args) >= 3):\n",
+   "verdict": "SURVIVED"
+  },
+  {
+   "anchor": "        if node.func.id == \"consumed\" and len(node.args) == 2:\n",
+   "area": "_calls consumed() arity",
+   "exception_detail": false,
+   "fail_cases": [],
+   "fails": 0,
+   "hypothesis": "consumed() takes exactly 2 args -> no observable change -> SURVIVE (equivalent?)",
+   "id": "N09-consumed-arity",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N09-consumed-arity.py",
+   "mutant_sha256": "cc768d538a3108cea411a9bac133d99907e63bab214832123a6a3b9f55414cbf",
+   "occurrences": 1,
+   "rc": 0,
+   "replacement": "        if node.func.id == \"consumed\" and len(node.args) >= 2:\n",
+   "verdict": "SURVIVED"
+  },
+  {
+   "anchor": "            return _calls(node.args[1], name)\n",
+   "area": "_calls recursion through consumed()",
+   "exception_detail": false,
+   "fail_cases": [],
+   "fails": 0,
+   "hypothesis": "consumed(log, <anything>) starts counting as wired -> SURVIVE?",
+   "id": "N10-calls-recurse-true",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N10-calls-recurse-true.py",
+   "mutant_sha256": "67b07abd1e16d2fdaf0d778ad9e9a08192c7efaf4cda4ae0996f7c7396c734e4",
+   "occurrences": 1,
+   "rc": 0,
+   "replacement": "            return True\n",
+   "verdict": "SURVIVED"
+  },
+  {
+   "anchor": "            (predicates_ok([]), False),\n",
+   "area": "gate-predicates rows table",
+   "exception_detail": false,
+   "fail_cases": [],
+   "fails": 0,
+   "hypothesis": "a passing row is deleted; no registration tracks rows -> SURVIVE?",
+   "id": "N11-rows-drop-empty",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N11-rows-drop-empty.py",
+   "mutant_sha256": "2a3a03e3821befdc86acde8c59141fd5b163bcce0fe295edac572f0077e107eb",
+   "occurrences": 1,
+   "rc": 0,
+   "replacement": "",
+   "verdict": "SURVIVED"
+  },
+  {
+   "anchor": "(predicates_ok([(True, False)]), False),",
+   "area": "gate-predicates rows table",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-predicates"
+   ],
+   "fails": 1,
+   "hypothesis": "row polarity flipped -> gate-predicates FAIL",
+   "id": "N12-rows-flip",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N12-rows-flip.py",
+   "mutant_sha256": "558af9f1a4486641b83b085db3c911134a371fd3b4593c50de46cf60f2700516",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "(predicates_ok([(True, False)]), True),",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "        side_logs = [relabel_log, wiring_log, [predicates_ok([(True, False)]) is False]]\n",
+   "area": "gate-checkids side_logs",
+   "exception_detail": false,
+   "fail_cases": [],
+   "fails": 0,
+   "hypothesis": "third limb duplicates rows[14]; removal is unobservable -> SURVIVE (equivalent?)",
+   "id": "N13-sidelog-drop-third",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N13-sidelog-drop-third.py",
+   "mutant_sha256": "61a1616fc087b9c2869ff71cb6f1a0b4f878db36734dfabefe66db70254ff6bb",
+   "occurrences": 1,
+   "rc": 0,
+   "replacement": "        side_logs = [relabel_log, wiring_log]\n",
+   "verdict": "SURVIVED"
+  },
+  {
+   "anchor": "\"tmpdir-refusal\",\n        \"gate-predicates\", \"gate-wiring\"))",
+   "area": "REQUIRED_CHECKS",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-checkids"
+   ],
+   "fails": 1,
+   "hypothesis": "done has gate-wiring, required does not -> gate-checkids extra -> FAIL",
+   "id": "N14-required-drop-wiring",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N14-required-drop-wiring.py",
+   "mutant_sha256": "beed0a9a6d006e56bfa553c9baec397af31f07c91edf48e99eea281d6868a387",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "\"tmpdir-refusal\",\n        \"gate-predicates\"))",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "\"gate-predicates\", \"gate-wiring\"))",
+   "area": "REQUIRED_CHECKS",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-checkids"
+   ],
+   "fails": 1,
+   "hypothesis": "required has phantom-check, done does not -> gate-checkids missing -> FAIL",
+   "id": "N15-required-add-phantom",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N15-required-add-phantom.py",
+   "mutant_sha256": "dccce456877f1d7eac393c074ff0d0916d368594126b8c5f12043f9b5151d043",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "\"gate-predicates\", \"gate-wiring\", \"phantom-check\"))",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "def main(argv):\n    if tmpdir_refused():\n        return 2\n",
+   "area": "case-13 guard (main refusal rc)",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=tmpdir-refusal"
+   ],
+   "fails": 1,
+   "hypothesis": "case 13 sees ret=0 -> tmpdir-refusal FAIL",
+   "id": "N16-main-refusal-rc0",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N16-main-refusal-rc0.py",
+   "mutant_sha256": "1379bb37d0cd0e54d101ba88af5e5ce2b680c9dca42c197322b814f79a124d5e",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "def main(argv):\n    if tmpdir_refused():\n        return 0\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "        bogus13 = os.path.join(scratch, \"no-such-tmpdir\")\n",
+   "area": "case-13 guard (guard not triggered)",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=tmpdir-refusal"
+   ],
+   "fails": 1,
+   "hypothesis": "TMPDIR becomes a real dir -> no refusal -> tmpdir-refusal FAIL",
+   "id": "N17-case13-existing-tmpdir",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N17-case13-existing-tmpdir.py",
+   "mutant_sha256": "695aac8b38bad405fd5e88a232ad9ee41d53fb4d35bd5498d2a2d57bc86fc9ec",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "        bogus13 = scratch\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "        if code == 2:\n",
+   "area": "census() exit-code bucket",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=prefix-census",
+    "case=first-line"
+   ],
+   "fails": 2,
+   "hypothesis": "exit-2 rechecks land in exit_other -> prefix-census FAIL",
+   "id": "N18-census-exit2-to-3",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N18-census-exit2-to-3.py",
+   "mutant_sha256": "2c1cdd61aef46d743ab17b1817db05b7b9ec366ae982c2ad41c30c214137d757",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "        if code == 3:\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "        noprefix = not value.startswith(prefix)\n",
+   "area": "census() noprefix test",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=prefix-census",
+    "case=result-main",
+    "case=first-line",
+    "case=restoration-only",
+    "case=both-headers",
+    "case=relabel-detection",
+    "case=gate-negpolarity",
+    "case=gate-checkids"
+   ],
+   "fails": 8,
+   "hypothesis": "prefix census inverts -> prefix-census FAIL",
+   "id": "N19-census-noprefix-invert",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N19-census-noprefix-invert.py",
+   "mutant_sha256": "cc9a93525ef4a8cebec07141b059108721926a415dbf374f786d767b374b18e9",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "        noprefix = value.startswith(prefix)\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "            if line.startswith(\"restoration-recheck:\"):\n                return True\n",
+   "area": "has_restoration_recheck",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=restoration-only"
+   ],
+   "fails": 1,
+   "hypothesis": "r.md loses its tag -> restoration-only bucket empty -> FAIL",
+   "id": "N20-restoration-reader-false",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N20-restoration-reader-false.py",
+   "mutant_sha256": "ca998b6857868cca2b24c777516d4810c9033ae9a27edda1618ae2ef64b2ff8e",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "            if line.startswith(\"restoration-recheck:\"):\n                return False\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "        else:\n            counts[\"exit_other\"] += 1\n",
+   "area": "census() exit_other bucket",
+   "exception_detail": false,
+   "fail_cases": [],
+   "fails": 0,
+   "hypothesis": "no fixture yields a code outside {0,1,2} -> SURVIVE?",
+   "id": "N21-census-exitother-to-exit1",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N21-census-exitother-to-exit1.py",
+   "mutant_sha256": "3771dce16d753b40603e31224066120d82bded9f010168c3971cc0d70e100240",
+   "occurrences": 1,
+   "rc": 0,
+   "replacement": "        else:\n            counts[\"exit1_foreign\"] += 1\n",
+   "verdict": "SURVIVED"
+  },
+  {
+   "anchor": "        sink.append(value)\n",
+   "area": "consumed()",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-consume",
+    "case=gate-checkids"
+   ],
+   "fails": 2,
+   "hypothesis": "relabel_log/wiring_log stay empty -> gate-checkids side_logs -> FAIL",
+   "id": "N22-consumed-noappend",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N22-consumed-noappend.py",
+   "mutant_sha256": "6166d58ae61b7c8bd8f54323d5432bafc88a4f699560ef2b0eaeda215990abb2",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "        pass\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "    def consumed(sink, value):\n        sink.append(value)\n        return value\n",
+   "area": "consumed() return limb",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-negpolarity"
+   ],
+   "fails": 1,
+   "hypothesis": "gate-wiring ignores wiring_ok(wfind) -> SURVIVE? (masks X2b class)",
+   "id": "N23-consumed-return-true",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N23-consumed-return-true.py",
+   "mutant_sha256": "b93574ff44ad7e9215c7ae3b2281f34fcd44fd2694fc5dbde50cd7974da8fa32",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "    def consumed(sink, value):\n        sink.append(value)\n        return True\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "        done.append(case)\n",
+   "area": "check() registration",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-checkids"
+   ],
+   "fails": 1,
+   "hypothesis": "done stays empty -> gate-checkids missing -> FAIL",
+   "id": "N24-check-done-pass",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N24-check-done-pass.py",
+   "mutant_sha256": "9f905317cf6c82a8ae2e0b2e2f5227d6b791fc5ffecf34ed9c63b98666feb75f",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "        pass\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "all(log == [True] for log in side_logs)",
+   "area": "gate_checkids_ok side_logs limb",
+   "exception_detail": false,
+   "fail_cases": [],
+   "fails": 0,
+   "hypothesis": "rows falsify only side_logs[0]; later logs unasserted -> SURVIVE?",
+   "id": "N25-gatecheckids-firstsidelog",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N25-gatecheckids-firstsidelog.py",
+   "mutant_sha256": "5d8d2121522650ed5beb6f5080f6faae78198604b23279c63ec92b3a3a199c5a",
+   "occurrences": 1,
+   "rc": 0,
+   "replacement": "all(log == [True] for log in side_logs[:1])",
+   "verdict": "SURVIVED"
+  },
+  {
+   "anchor": "    return set(done) == set(required) and all(log == [True] for log in side_logs)\n",
+   "area": "gate_checkids_ok",
+   "exception_detail": false,
+   "fail_cases": [],
+   "fails": 0,
+   "hypothesis": "no row tests done superset of required -> SURVIVE?",
+   "id": "N26-gatecheckids-superset",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N26-gatecheckids-superset.py",
+   "mutant_sha256": "9ce4727344422869b626ec246cefa5e22963f5629ae30eddb1965c74f81a4a6f",
+   "occurrences": 1,
+   "rc": 0,
+   "replacement": "    return set(done) >= set(required) and all(log == [True] for log in side_logs)\n",
+   "verdict": "SURVIVED"
+  },
+  {
+   "anchor": "              all(got7[k] == v for k, v in want7.items()) and first7 and not rest7,\n",
+   "area": "case-7 both-headers guard",
+   "exception_detail": false,
+   "fail_cases": [],
+   "fails": 0,
+   "hypothesis": "restoration marker for the both-header entry is unasserted -> SURVIVE?",
+   "id": "N27-case7-drop-rest-flag",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N27-case7-drop-rest-flag.py",
+   "mutant_sha256": "3aa40e87ddb0ab7879d00e76e6a83ed47ba58ad6e13d64915a130206120bd974",
+   "occurrences": 1,
+   "rc": 0,
+   "replacement": "              all(got7[k] == v for k, v in want7.items()) and first7,\n",
+   "verdict": "SURVIVED"
+  },
+  {
+   "anchor": "            if has_restoration_recheck(path):\n                counts[\"restoration_only\"] += 1\n",
+   "area": "census() restoration-only bucket",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=restoration-only",
+    "case=relabel-detection",
+    "case=gate-checkids"
+   ],
+   "fails": 3,
+   "hypothesis": "case 6 counts move -> restoration-only FAIL",
+   "id": "N28-census-restoration-bucket",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N28-census-restoration-bucket.py",
+   "mutant_sha256": "f2e02fe200cdd90218fa46adb6f4da604462c52681ded864cafebec69a74734e",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "            if has_restoration_recheck(path):\n                counts[\"norecheck\"] += 1\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "    \"gate-consume\": \"gate_consume_ok\",\n",
+   "area": "GATE_PREDICATES key rename",
+   "exception_detail": false,
+   "fail_cases": [
+    "case=gate-predicates",
+    "case=gate-wiring",
+    "case=gate-checkids"
+   ],
+   "fails": 3,
+   "hypothesis": "gate-consume drops out of the gate set -> SURVIVE?",
+   "id": "N29-gatedict-rename-consume",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N29-gatedict-rename-consume.py",
+   "mutant_sha256": "ff32454f5aea9a072c71f9a315b8803b3150b810732cb320abe26cabe0fa4907",
+   "occurrences": 1,
+   "rc": 1,
+   "replacement": "    \"gate-consume-x\": \"gate_consume_ok\",\n",
+   "verdict": "KILLED"
+  },
+  {
+   "anchor": "            proc = subprocess.run([\"bash\", \"-c\", value], cwd=scratch, env=env,\n",
+   "area": "run_foreign cwd",
+   "exception_detail": false,
+   "fail_cases": [],
+   "fails": 0,
+   "hypothesis": "relative rechecks still fail from the caller cwd -> SURVIVE? (foreign-cwd unasserted)",
+   "id": "N30-runforeign-cwd-inherit",
+   "mutant_path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/w1/MutC1Hunt/mutants/N30-runforeign-cwd-inherit.py",
+   "mutant_sha256": "c0749ea42819f248664630aabb7883eb053cbd32e2c9c60371db7f8832931491",
+   "occurrences": 1,
+   "rc": 0,
+   "replacement": "            proc = subprocess.run([\"bash\", \"-c\", value], cwd=None, env=env,\n",
+   "verdict": "SURVIVED"
+  }
+ ],
+ "r78": {
+  "candidate": {
+   "path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-78/w1/successor/recheck-cwd-census.py",
+   "rc": 0,
+   "sha_after": "f68499715f38b6e74f368c441766954a240d7f5036d68157110e5017c8457db1",
+   "sha_before": "f68499715f38b6e74f368c441766954a240d7f5036d68157110e5017c8457db1"
+  },
+  "diff_nonempty": false,
+  "identical": true,
+  "kx2": {
+   "path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-78/w1/successor/mutants/K-X2.py",
+   "rc": 0,
+   "sha_after": "f28c489f327efb89f492f0efb4b217eb8e083608228b36781f6ffc2f98d39907",
+   "sha_before": "f28c489f327efb89f492f0efb4b217eb8e083608228b36781f6ffc2f98d39907"
+  }
+ },
+ "restored_identical": true,
+ "table_pair_duplicates": [],
+ "table_rows": 19,
+ "target": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-79/c1/recheck-cwd-census.py",
+ "target_sha256": "eda49d3214eaa4760bdb74fd73bc45d0993051618fbce01a3082102419091f2f",
+ "target_sha256_after": "eda49d3214eaa4760bdb74fd73bc45d0993051618fbce01a3082102419091f2f"
+}

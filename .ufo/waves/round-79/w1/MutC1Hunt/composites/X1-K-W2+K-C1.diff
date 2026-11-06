@@ -1,0 +1,16 @@
+--- pristine
++++ X1-K-W2+K-C1
+@@ -470,5 +470,5 @@
+         except Exception as excw:
+             wfind = ["F0:unreadable:%r" % (excw,)]
+-        check("gate-wiring", consumed(wiring_log, wiring_ok(wfind)), "findings=%s" % (wfind,))
++        check("gate-wiring", True, "findings=%s" % (wfind,))
+ 
+         # Gate (QUALITY R127): the four checks that make the RESULT limb load-bearing.
+@@ -498,5 +498,5 @@
+         required = REQUIRED_CHECKS - {"gate-checkids"}
+         side_logs = [relabel_log, wiring_log, [predicates_ok([(True, False)]) is False]]
+-        check("gate-checkids", gate_checkids_ok(done, required, side_logs),
++        check("gate-checkids", True,
+               "missing=%s extra=%s side_logs=%r"
+               % (sorted(required - set(done)), sorted(set(done) - required), side_logs))

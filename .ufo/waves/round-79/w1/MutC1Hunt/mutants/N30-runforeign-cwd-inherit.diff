@@ -1,0 +1,9 @@
+--- pristine
++++ N30-runforeign-cwd-inherit
+@@ -79,5 +79,5 @@
+         env["TMPDIR"] = scratch
+         try:
+-            proc = subprocess.run(["bash", "-c", value], cwd=scratch, env=env,
++            proc = subprocess.run(["bash", "-c", value], cwd=None, env=env,
+                                   stdin=subprocess.DEVNULL, capture_output=True,
+                                   text=True, timeout=TIMEOUT)

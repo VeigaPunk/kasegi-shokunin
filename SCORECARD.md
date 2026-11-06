@@ -2988,3 +2988,24 @@ Move log (round 78):
 | 78 | coverage | registry 112 with S112 `queued`; knowledge 91; frontier 53 | registry 112 with S112 `mined`; knowledge 92; frontier 54 | `corpus/SOURCES.md:124`, `corpus/README.md` F54 row, `PROVINCE.md` F54 line |
 
 Capabilities: none entered. Saturation: unchanged. Retired: none.
+
+## Round 79 — C1 NOT VERIFIED (candidate not landed; frozen counter 18 of 19); C2 VERIFIED (F55 admitted, S113 mined)
+
+Fresh start (run-15 Amendment 46): the rejected closures r76, r77 and r78 and their spot-checks were read before the freeze; both claims carry executed do-nothing and forgery controls committed in the freeze commit `9d0b1eb0709e47c3c6decc09138b5012a8968924` (base `d16d2124fd5262f5a8088aa598f1e628f897d3ab`).
+
+| Claim | Axis | Before | After | Verdict | Counting command | Evidence |
+|---|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest, nominal per R58) | score 4; base counter selftest `cases=6`; frozen battery on base `killed=0` of 19 (notderived 18), rc 1; nonexistent TMPDIR rc 1 traceback | score 4 held (candidate not landed); frozen candidate `eda49d32…091f2f` selftest `cases=15 failures=0`, battery `killed=18` of 19 (K-T1 `EXCEPTION-KILL counted=no`), rc 1 | NOT VERIFIED (P3 fails) | `python3 -B .ufo/waves/round-79/c1/mutbat.py --target <counter> --table .ufo/waves/round-79/c1/mutant-table.json --expect-cases 15 --work $SCRATCH` | `.ufo/waves/round-79/w1/ExecC1Battery.md`, `w1/ExecC1Battery-mutants/K-T1.out`, `.ufo/waves/round-79/l1/L1-battery-r79.txt`, `corpus/lessons/round-79.md` § Mistakes M79-2 |
+| C2 | coverage (8, held) | knowledge 92; registry 113 with S113 queued; FRONTIER-CENSUS rows 54 | knowledge 93; registry 113 with S113 mined; FRONTIER-CENSUS rows 55 admitted 55 closed 55 problem-rows 0 | VERIFIED on B0-B7; coverage score held at 8 pending the operator denominator | `python3 corpus/instruments/frontier-recheck-count.py \| grep FRONTIER-CENSUS ; ls corpus/knowledge/*.md \| wc -l ; grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md` | `corpus/knowledge/osv-determineversion-cc-library-versioning.md`; `corpus/source-snapshots/round-79/`; `.ufo/waves/round-79/controls/`; `w1/ExecC2Gate.md`; `w1/ReviewC2.md`; `w1/ScoutDistinct.md` |
+| depth:density | 9 | 9 | 9 | unchanged (not targeted; SKILL.md not edited) | — | `git diff` of the round lists no SKILL.md |
+
+Move log (round 79):
+
+| Round | Axis | Before | After | Evidence |
+|---|---|---|---|---|
+| 79 | depth:verifiability | census selftest `cases=6`; nonexistent TMPDIR rc 1 | not landed; candidate `cases=15`, TMPDIR rc 2, 18 of 19 frozen kills | `.ufo/waves/round-79/c1/`, `corpus/lessons/round-79.md` M79-1, M79-2 |
+| 79 | coverage | registry 113 with S113 `queued`; knowledge 92; frontier 54 | registry 113 with S113 `mined`; knowledge 93; frontier 55 | `corpus/SOURCES.md` S113 row, `corpus/README.md` F55 row, `PROVINCE.md` F55 line |
+
+Quality criteria added: R128 (non-equivalence before a required kill) and R129 (dedicated exception marker in a mutant counter's classifier), both grounded in `corpus/lessons/round-79.md`. Capabilities: none entered. Saturation: unchanged (line 9/10, window N = 3; depth:verifiability at 4 keeps the lowest-axis obligation). Retired: none.
+
+Planned round 80: re-declare the C1 successor under a counter whose classifier keys on a dedicated `exception=` marker with a selftest row for an assertion FAIL that mentions an exception (R129), add the routed real-gap survivors (MutC1Hunt N10/N11/N21/N25/N26/N27/N30; ReviewEquiv half B) to the frozen table, and freeze P7 as a code-literal check; C2 candidates: the two remaining OSV experimental endpoints (importfindings, ubuntu binary-to-source).

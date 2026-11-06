@@ -1,0 +1,9 @@
+--- pristine
++++ N04-f2-cond-invert
+@@ -206,5 +206,5 @@
+         if _calls(ok, want):
+             wired.add(name)
+-        elif not (isinstance(ok, ast.Constant) and ok.value is False):
++        elif (isinstance(ok, ast.Constant) and ok.value is False):
+             findings.append("F2:%s:%d" % (name, node.lineno))
+     findings.extend("F3:%s" % name for name in GATE_PREDICATES if name not in wired)

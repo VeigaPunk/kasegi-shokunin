@@ -1,0 +1,40 @@
+BASELINE rc=0 ok=True sha256=eda49d3214eaa4760bdb74fd73bc45d0993051618fbce01a3082102419091f2f
+MUTANT N01-gatedict-drop-checkids area='GATE_PREDICATES dict entry removed' verdict=KILLED rc=1 fails=1 cases=case=gate-predicates
+MUTANT N02-gatedict-wiring-wrong area='GATE_PREDICATES dict value points at the wrong function' verdict=KILLED rc=1 fails=2 cases=case=gate-wiring,case=gate-checkids
+MUTANT N03-f1-append-pass area='wiring_findings F1 branch' verdict=KILLED rc=1 fails=1 cases=case=gate-predicates
+MUTANT N04-f2-cond-invert area='wiring_findings F2 branch' verdict=KILLED rc=1 fails=3 cases=case=gate-predicates,case=gate-wiring,case=gate-checkids
+MUTANT N05-f3-extend-pass area='wiring_findings F3 branch' verdict=KILLED rc=1 fails=1 cases=case=gate-predicates
+MUTANT N06-label-int area='wiring_findings label filter' verdict=KILLED rc=1 fails=3 cases=case=gate-predicates,case=gate-wiring,case=gate-checkids
+MUTANT N07-walk-body area='wiring_findings traversal' verdict=KILLED rc=1 fails=3 cases=case=gate-predicates,case=gate-wiring,case=gate-checkids
+MUTANT N08-check-arity3 area='wiring_findings check() arity gate' verdict=SURVIVED rc=0 fails=0 cases=
+MUTANT N09-consumed-arity area='_calls consumed() arity' verdict=SURVIVED rc=0 fails=0 cases=
+MUTANT N10-calls-recurse-true area='_calls recursion through consumed()' verdict=SURVIVED rc=0 fails=0 cases=
+MUTANT N11-rows-drop-empty area='gate-predicates rows table' verdict=SURVIVED rc=0 fails=0 cases=
+MUTANT N12-rows-flip area='gate-predicates rows table' verdict=KILLED rc=1 fails=1 cases=case=gate-predicates
+MUTANT N13-sidelog-drop-third area='gate-checkids side_logs' verdict=SURVIVED rc=0 fails=0 cases=
+MUTANT N14-required-drop-wiring area='REQUIRED_CHECKS' verdict=KILLED rc=1 fails=1 cases=case=gate-checkids
+MUTANT N15-required-add-phantom area='REQUIRED_CHECKS' verdict=KILLED rc=1 fails=1 cases=case=gate-checkids
+MUTANT N16-main-refusal-rc0 area='case-13 guard (main refusal rc)' verdict=KILLED rc=1 fails=1 cases=case=tmpdir-refusal
+MUTANT N17-case13-existing-tmpdir area='case-13 guard (guard not triggered)' verdict=KILLED rc=1 fails=1 cases=case=tmpdir-refusal
+MUTANT N18-census-exit2-to-3 area='census() exit-code bucket' verdict=KILLED rc=1 fails=2 cases=case=prefix-census,case=first-line
+MUTANT N19-census-noprefix-invert area='census() noprefix test' verdict=KILLED rc=1 fails=8 cases=case=prefix-census,case=result-main,case=first-line,case=restoration-only,case=both-headers,case=relabel-detection,case=gate-negpolarity,case=gate-checkids
+MUTANT N20-restoration-reader-false area='has_restoration_recheck' verdict=KILLED rc=1 fails=1 cases=case=restoration-only
+MUTANT N21-census-exitother-to-exit1 area='census() exit_other bucket' verdict=SURVIVED rc=0 fails=0 cases=
+MUTANT N22-consumed-noappend area='consumed()' verdict=KILLED rc=1 fails=2 cases=case=gate-consume,case=gate-checkids
+MUTANT N23-consumed-return-true area='consumed() return limb' verdict=KILLED rc=1 fails=1 cases=case=gate-negpolarity
+MUTANT N24-check-done-pass area='check() registration' verdict=KILLED rc=1 fails=1 cases=case=gate-checkids
+MUTANT N25-gatecheckids-firstsidelog area='gate_checkids_ok side_logs limb' verdict=SURVIVED rc=0 fails=0 cases=
+MUTANT N26-gatecheckids-superset area='gate_checkids_ok' verdict=SURVIVED rc=0 fails=0 cases=
+MUTANT N27-case7-drop-rest-flag area='case-7 both-headers guard' verdict=SURVIVED rc=0 fails=0 cases=
+MUTANT N28-census-restoration-bucket area='census() restoration-only bucket' verdict=KILLED rc=1 fails=3 cases=case=restoration-only,case=relabel-detection,case=gate-checkids
+MUTANT N29-gatedict-rename-consume area='GATE_PREDICATES key rename' verdict=KILLED rc=1 fails=3 cases=case=gate-predicates,case=gate-wiring,case=gate-checkids
+MUTANT N30-runforeign-cwd-inherit area='run_foreign cwd' verdict=SURVIVED rc=0 fails=0 cases=
+COMPOSITE X1-K-W2+K-C1 rows=K-W2+K-C1 verdict=SURVIVED rc=0 fails=0 cases=
+COMPOSITE X2-K-P2+K-C1 rows=K-P2+K-C1 verdict=KILLED rc=1 fails=1 cases=case=gate-wiring
+COMPOSITE X3-K-N1+K-P1 rows=K-N1+K-P1 verdict=KILLED rc=1 fails=1 cases=case=gate-checkids
+COMPOSITE X4-K-X2b+K-N1 rows=K-X2b+K-N1 verdict=KILLED rc=1 fails=1 cases=case=gate-predicates
+R78 candidate rc=0 sha=f68499715f38b6e74f368c441766954a240d7f5036d68157110e5017c8457db1
+R78 kx2 rc=0 sha=f28c489f327efb89f492f0efb4b217eb8e083608228b36781f6ffc2f98d39907
+R78 identical=True rc_pair=0/0
+RESTORED sha_before=eda49d3214eaa4760bdb74fd73bc45d0993051618fbce01a3082102419091f2f sha_after=eda49d3214eaa4760bdb74fd73bc45d0993051618fbce01a3082102419091f2f normalized_output_identical=True raw_identical=False
+HUNT mutants=30 tally={'KILLED': 20, 'SURVIVED': 10} restored=True

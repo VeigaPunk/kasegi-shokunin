@@ -1,0 +1,40 @@
+# L1 post-freeze scoring run (2026-11-06), frozen counter on frozen candidate
+MUTANT K-M1 verdict=KILLED rc=1 fails=3 counted=yes
+MUTANT K-M2 verdict=KILLED rc=1 fails=1 counted=yes
+MUTANT K-M3 verdict=EXCEPTION-KILL rc=1 fails=2 counted=yes
+MUTANT K-M4 verdict=KILLED rc=1 fails=2 counted=yes
+MUTANT K-M5 verdict=KILLED rc=1 fails=1 counted=yes
+MUTANT K-X1 verdict=KILLED rc=1 fails=1 counted=yes
+MUTANT K-X2a verdict=KILLED rc=1 fails=1 counted=yes
+MUTANT K-X2b verdict=KILLED rc=1 fails=2 counted=yes
+MUTANT K-M8 verdict=KILLED rc=1 fails=2 counted=yes
+MUTANT K-W1 verdict=KILLED rc=1 fails=1 counted=yes
+MUTANT K-W2 verdict=KILLED rc=1 fails=1 counted=yes
+MUTANT K-N1 verdict=KILLED rc=1 fails=1 counted=yes
+MUTANT K-P1 verdict=KILLED rc=1 fails=1 counted=yes
+MUTANT K-P2 verdict=KILLED rc=1 fails=2 counted=yes
+MUTANT K-G1 verdict=KILLED rc=1 fails=1 counted=yes
+MUTANT K-C1 verdict=KILLED rc=1 fails=1 counted=yes
+MUTANT K-NP verdict=KILLED rc=1 fails=2 counted=yes
+MUTANT K-CL verdict=KILLED rc=1 fails=1 counted=yes
+MUTANT K-T1 verdict=EXCEPTION-KILL rc=1 fails=1 counted=no
+MUTBAT target_sha256=eda49d3214eaa4760bdb74fd73bc45d0993051618fbce01a3082102419091f2f baseline=ok rows=19 killed=18 survived=0 dirty=1 notderived=0
+rc=1
+# K-T1 mutant selftest output
+rc=1
+selftest case=prefix-census ok got=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=2,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=3 dirs='/fast/scratch/hyaku/kasegi-r79/L1/w3/mutbat-run-wpvn9j_e','/fast/scratch/hyaku/kasegi-r79/L1/w3/mutbat-run-wpvn9j_e','/fast/scratch/hyaku/kasegi-r79/L1/w3/mutbat-run-wpvn9j_e'
+selftest case=scratch-cleanup ok calls=3 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False
+selftest case=both-headers ok got=entries=2,exit0_foreign=2,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=0 want=entries=2,exit0_foreign=2,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=0 first_ran=True restoration_ran=False
+selftest case=relabel-detection ok unpatched got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=1,restoration_only=0 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=1,restoration_only=0; patched got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1
+selftest case=tmpdir-refusal FAIL ret=-99 stdout="exception=FileNotFoundError(2, 'No such file or directory')" stderr=''
+selftest case=gate-predicates ok rows=17 bad=[]
+selftest case=gate-wiring ok findings=[]
+selftest case=gate-regs ok registered=['restoration-only-result']
+selftest case=gate-consume ok clean_ok=True limb_log=[True]
+selftest case=gate-negpolarity ok neg_ok=False
+selftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]
+selftest cases=15 failures=1

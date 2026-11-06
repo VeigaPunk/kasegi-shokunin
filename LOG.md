@@ -2843,3 +2843,15 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Routed: K-X2 transform defect (successor must add an independent assertion on the case-6 limb); R-77-D, R-77-E (L0), R-77-F (three endpoints open).
 - Assimilation: none (82 staged-id collisions remain; L0 pending). Considerthese: none touched (2026-10-26 items are fleet-process or already mined).
 - SentinelC1 issued no candidate verdict (its run preceded the candidate); the candidate's security review is provisional and not landed.
+
+## Round 79 — C1 NOT VERIFIED (not landed), C2 VERIFIED (F55 admitted on S113)
+
+- Fresh start (run-15 Amendment 46): r76/r77/r78 rejected closures and spot-checks read first. Declared C1 depth:verifiability (lowest, nominal 4 per R58): the recheck-cwd successor with gate predicates tested in both polarities and a gate-wiring AST limb, scored by a frozen 19-row battery (`mutbat.py`). Declared C2 coverage (8): F55 on S113, the OSV.dev `POST /v1experimental/determineversion` page, eight pinned clauses. Freeze `9d0b1eb0`, base `d16d2124`; `.ufo/waves/round-79/claims.json`.
+- Controls executed and committed before scoring: base battery `killed=0` rc 1; forgery stub `survived=8` rc 1; r78 candidate `killed=6` rc 1; counter toy selftest rc 0; base nonexistent TMPDIR rc 1 traceback; C2 counters rows 54 / knowledge 92 / S113 source-recheck rc 0.
+- Wave `w1`: one v1 wave of 13 seats (executor×3, scribe×2, scout, reviewer×3, critic, mutation-tester, sentinel, connector); attack seats 5/13 under the round contract. Reports under `.ufo/waves/round-79/w1/`.
+- C1: candidate selftest `cases=15 failures=0`, TMPDIR refusal rc 2, real-tree census conformant at 92 entries with byte-identical counts to base; the frozen battery prints `killed=18` of 19 — K-T1's assertion FAIL detail carries the caught exception text and the counter's substring classifier labels it `EXCEPTION-KILL counted=no`. NOT VERIFIED; no amendment after scoring; not landed.
+- C2: B0–B7 hold on the landed tree (source-recheck rc 0, FRONTIER-CENSUS rows 55 admitted 55, capture-binding unbound 0, recheck-audit expected 93, sources-census rc 0 with the six inherited W04 warnings; B6 literal 0/8, paraphrase 8 novel). ReviewC2's two major prose findings (claim 2 membership, claim 7 unpinned list) fixed before landing.
+- Mistakes mined: M79-1 (equivalent mutant frozen as a required kill; r78 K-X2) and M79-2 (substring exception classifier) in `corpus/lessons/round-79.md`; QUALITY R128, R129 added.
+- Measured scores: depth:verifiability 4 → 4 (delta 0, C1 not landed); coverage 8 → 8 (delta 0, held pending the operator denominator).
+- Routed: r78 spot-check item 1 (Q12 reason) corrected by an appended lesson bullet; MutC1Hunt 7 real-gap survivors; R-77-D, R-77-E (L0); two OSV endpoints open.
+- Assimilation: none (82 staged-id collisions; L0 pending). Considerthese: read, none fits.
