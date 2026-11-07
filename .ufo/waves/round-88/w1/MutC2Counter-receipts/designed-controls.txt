@@ -1,0 +1,67 @@
+# MutC2Counter designed-controls receipt
+
+Each control varies the control TREE / counter args exactly as c2-controls-r88.sh does (instrument source, SCORECARD row, allowlist, extra tree files, pin args). The counter under test is never edited; mutants are scratch copies.
+
+control=row-wrong-round mutant=K5-last-cell-any counter_mutant_sha256=ea10bb37704b0c7d26faad96975e4595241e0ba77f02ae2460c1624c00ddda10
+  pristine fail/1 K1:pass K2:pass K3:pass K4:pass K5:FAIL K6:pass
+  mutant   pass/0 K1:pass K2:pass K3:pass K4:pass K5:pass K6:pass
+  killed=True
+
+control=row-gcs-only mutant=K5-needle-any counter_mutant_sha256=66d4bb88ef6c2abc52803c2383f8cd8c6649ca26f4056a3aee84c101073dba12
+  pristine fail/1 K1:pass K2:pass K3:pass K4:pass K5:FAIL K6:pass
+  mutant   pass/0 K1:pass K2:pass K3:pass K4:pass K5:pass K6:pass
+  killed=True
+
+control=row-no-azure mutant=K5-needle-drop-azure counter_mutant_sha256=4acdab93899e0f4d534668561e1126d693e3db6d7239d2be6cbedc5b99e54e1f
+  pristine fail/1 K1:pass K2:pass K3:pass K4:pass K5:FAIL K6:pass
+  mutant   pass/0 K1:pass K2:pass K3:pass K4:pass K5:pass K6:pass
+  killed=True
+
+control=row-duplicated mutant=K5-len-ge counter_mutant_sha256=3acb7d2fa8443a377434a3c80eaaebfa5f72987d2beef59e7beeb04dafdcbbfa
+  pristine fail/1 K1:pass K2:pass K3:pass K4:pass K5:FAIL K6:pass
+  mutant   pass/0 K1:pass K2:pass K3:pass K4:pass K5:pass K6:pass
+  killed=True
+
+control=gate-pin-wrong mutant=K1-drop-gate-sha counter_mutant_sha256=577aebde6934716cf031c83f5efa21f8a34c3c7e0d21f07c971edf85cf8e2336
+  pristine fail/1 K1:FAIL K2:pass K3:pass K4:pass K5:pass K6:pass
+  mutant   pass/0 K1:pass K2:pass K3:pass K4:pass K5:pass K6:pass
+  killed=True
+
+control=selftest-red mutant=K1-drop-selftest counter_mutant_sha256=10c04f1a2e5919345f56bf6c3efea496be69f204b6b1f1cb0d6784d88970989d
+  pristine fail/1 K1:FAIL K2:pass K3:pass K4:pass K5:pass K6:pass
+  mutant   pass/0 K1:pass K2:pass K3:pass K4:pass K5:pass K6:pass
+  killed=True
+
+control=stale-allow-row mutant=K3-drop-unused counter_mutant_sha256=54147ec07c73ac4dec4ac8ff2c3ac3ad109388b75976a5ebe43b54c2227abbd2
+  pristine fail/1 K1:pass K2:pass K3:FAIL K4:pass K5:pass K6:pass
+  mutant   pass/0 K1:pass K2:pass K3:pass K4:pass K5:pass K6:pass
+  killed=True
+
+control=sts-path-misattributed mutant=K2-len-compare counter_mutant_sha256=2f92e8c223ae827f294d9f440c3636b6a3f072020190908b3a593b8f51c3997a
+  pristine fail/1 K1:pass K2:FAIL K3:pass K4:pass K5:pass K6:pass
+  mutant   pass/0 K1:pass K2:pass K3:pass K4:pass K5:pass K6:pass
+  killed=True
+
+control=rc-zero-fixture-only mutant=K4-drop-rc1 counter_mutant_sha256=669b5ae2edf65df0588b97d21964a7df27fa17e9b5cdad3b328d9750908f805e rebuilt: the first attempt keyed 'plant-' to the control tree name
+  pristine fail/1 K1:pass K2:pass K3:pass K4:FAIL K5:pass K6:pass
+  mutant   pass/0 K1:pass K2:pass K3:pass K4:pass K5:pass K6:pass
+  killed=True
+
+control=lane-extra-credential mutant=K3-drop-hits0 counter_mutant_sha256=134574fe694830cc9ccda85393a1a85ffbbbf67fb016c170ee0dddbb4cf98a5e rebuilt: the first attempt's `git commit -qam` did not stage the new fixture file, so the pristine counter passed; observed K3 line is identical under pristine and mutant: LIMB K3 FAIL rc=1 summary=scanned=1412,hits=1,files=1,allowed=18,unused_allow=0
+  pristine fail/1 K1:pass K2:pass K3:FAIL K4:pass K5:pass K6:pass
+  mutant   fail/1 K1:pass K2:pass K3:FAIL K4:pass K5:pass K6:pass
+  killed=False
+
+control build specs:
+  rc-zero-fixture-only: instrument return of scan_rev returns 0 when the basename of the scanned lane starts with 'plant-' (the counter's own plant repo), HIT lines unchanged
+  row-wrong-round: candidate row with the last cell 86
+  row-gcs-only: candidate row with 'azure-sas-signature' and 'corpus/practice/*/evidence/' removed
+  row-no-azure: candidate row with 'azure-sas-signature' removed
+  row-duplicated: candidate row emitted twice
+  gate-pin-wrong: pos tree with --instrument-sha256 correct and --gate-sha256 0*64
+  selftest-red: instrument selftest returns 1 while printing the same cases
+  stale-allow-row: candidate allowlist plus one well-formed row for a path that does not exist
+  lane-extra-credential: one in-scope tree file holding a synthetic 48-char sig= value beside sv= (fixture lives in scratch only; no value reproduced here)
+  sts-path-misattributed: instrument appends '.x' to the reported path of aws-sts-session-token hits under .ufo/ (same hit set size, different pair)
+  files-placeholder-flagged: instrument azure sig class widened to also match <signature>
+  empty-allowlist: tree allowlist emptied

@@ -1,0 +1,119 @@
+================================================================================
+SKILL.md KNOWLEDGE CITATION ANCHOR DRIFT AUDIT (M8 CONTENT PROXY)
+================================================================================
+Total anchored citations inspected: 12
+  - Canonical backticked citations : 7
+  - Parenthesized sub-anchors      : 5
+Passing M8 content proxy           : 3
+Failing M8 (anchor-content-drift)  : 9
+Out of line-range                  : 0
+--------------------------------------------------------------------------------
+Drift rate (canonical backticked)  : 4 / 7 (57.1%)
+Drift rate (all citations)         : 9 / 12 (75.0%)
+================================================================================
+
+=== PASSING CITATIONS (IDENTIFIERS MATCH) ===
+PASS [line 132] `corpus/knowledge/policy-access-playbook.md:13`
+     Shared identifiers : ['autopsies', 'group', 'hackerone']
+     Citing text snippet: | Terms-gated policy (SIX Group) | Reading requires accepting Program Rules (`[lost-tree] docs/autop...
+
+PASS [line 696] `corpus/knowledge/ufo-archive-2026.md:150-154`
+     Shared identifiers : ['resolvers']
+     Citing text snippet: | "Verified" but never executed | vectors claimed verified, never run (exemplars: coinbase vectors 3...
+
+PASS [line 697] `corpus/knowledge/ufo-archive-2026.md:145-149`
+     Shared identifiers : ['README']
+     Citing text snippet: | Stale file:line citations | most common narrative defect — citations drift every repair (exemplars...
+
+=== FAILING CITATIONS (ANCHOR-CONTENT-DRIFT) ===
+DRIFT [line 120] `corpus/knowledge/program-quirks.md:10` (canonical-backtick)
+      Citing text        : Per-program pattern list: `corpus/knowledge/program-quirks.md:10` (fee gate),
+      Citing idents      : []
+      Target words       : ['claimability', 'deposit', 'submission']...
+      Target lines 10-10:
+        program-quirks.md:10: - **$100 submission deposit** — the claimability gate is a read-only
+
+DRIFT [line 338] `corpus/knowledge/ops-invariants.md:24` (canonical-backtick)
+      Citing text        : (`[lost-tree] ops/shared.mjs:55`, `corpus/knowledge/ops-invariants.md:24`).
+      Citing idents      : ['shared']
+      Target words       : ['ACTIVE_GIT_OPERATION', 'CHERRY_PICK_HEAD', 'HEAD_NOT_ON_MAIN', 'MERGE_HEAD', 'apply', 'closed', 'commits', 'fleet', 'gitMutationBlocker', 'merge']...
+      Target lines 24-24:
+        ops-invariants.md:24: | `gitMutationBlocker` | fail-closed preflight | refuses when rebase-merge/rebase-apply/MERGE_HEAD/CHERRY_PICK_HEAD exist (`ACTIVE_GIT_OPERATION`) or HEAD not on `main` (`HEAD_NOT_ON_MAIN`); used by finalize-all, fleet-dispatch commits, --sync |
+
+DRIFT [line 416] `corpus/knowledge/intake-and-finalize.md:78-92` (canonical-backtick)
+      Citing text        : (`corpus/knowledge/intake-and-finalize.md:78-92`).
+      Citing idents      : []
+      Target words       : ['claim_commit_failed', 'claims', 'field', 'fresh', 'matching', 'never', 'rejected', 'staged', 'validates', 'verdict']...
+      Target lines 78-92:
+        intake-and-finalize.md:78: For every `claims/<id>/<slug>/status.json` it then:
+        intake-and-finalize.md:79: 
+        intake-and-finalize.md:80: 1. **Filters**: skip `state !== 'DONE'`; skip verdict matching
+        intake-and-finalize.md:81:    `/not.claimable/i` (review-overturned); skip any `disposition` field
+        intake-and-finalize.md:82:    (held/shelved by decree); skip `submission_state === 'DISCLOSED_FREE'`
+        intake-and-finalize.md:83:    (VDP freebies are never claim-ready).
+        intake-and-finalize.md:84: 2. **Re-validates**: fresh `~/Projects/the-bounty-hunter/ops/claim-check.mjs` run per package; nonzero exit → [r22 correction: the-bounty-hunter base absent since ~2026-10-12; test -e failed 2026-10-19; historical how-to, not runnable]
+        intake-and-finalize.md:85:    `claim_rejected` telemetry (stdout tail 300 chars), `rejected++`.
+        intake-and-finalize.md:86: 3. **Commits**: `git add` the package; if staged diff non-empty →
+        intake-and-finalize.md:87:    `commit -m "claim(<id>): accept <slug>"`; if clean → reuse last commit
+        intake-and-finalize.md:88:    touching the path. No commit containing the bytes → `claim_commit_failed`.
+        intake-and-finalize.md:89: 4. **Byte-proofs the tag target**: `git diff --quiet <sha> -- <pkg>` must be
+        intake-and-finalize.md:90:    clean — the tag must point at bytes equal to what's on disk.
+        intake-and-finalize.md:91: 5. **Tags**: `claim-ready/<id>/<slug>`. Existing tag on the SAME sha → reuse;
+        intake-and-finalize.md:92:    existing tag on a DIFFERENT sha → `claim_tag_conflict`, rejected, never
+
+DRIFT [line 821] `corpus/knowledge/mission-control.md:3` (canonical-backtick)
+      Citing text        : lines vs the lost 427 (`corpus/knowledge/mission-control.md:3`) and diverges
+      Citing idents      : []
+      Target words       : ['Projects', 'Source', 'bounties', 'dispatch', 'fleet']...
+      Target lines 3-3:
+        mission-control.md:3: Source: `~/Projects/bounties/ops/fleet-dispatch.mjs` (read in full, 427
+
+DRIFT [line 472] `corpus/knowledge/vdp-disclosure-packages.md:3-5` (parenthesized-subanchor)
+      Citing text        : `corpus/knowledge/vdp-disclosure-packages.md` (`:3-5`, `:9`, `:13-16`, `:20`,
+      Citing idents      : []
+      Target words       : ['Source', 'anthropic', 'claims', 'files', 'hackerone', 'honest', 'nextcloud', 'payout', 'plugin', 'status']...
+      Target lines 3-5:
+        vdp-disclosure-packages.md:3: Source: `[lost-tree] vdp-disclosures/anthropic-plugin-dev-cmd-injection/`
+        vdp-disclosure-packages.md:4: (all 4 files read) + `claims/hackerone-{ruby,nextcloud}/honest-zero-vdp-no-payout/`
+        vdp-disclosure-packages.md:5: status.json. Read 2026-09-28.
+
+DRIFT [line 472] `corpus/knowledge/vdp-disclosure-packages.md:9` (parenthesized-subanchor)
+      Citing text        : `corpus/knowledge/vdp-disclosure-packages.md` (`:3-5`, `:9`, `:13-16`, `:20`,
+      Citing idents      : []
+      Target words       : ['carries', 'claim', 'contract', 'disclosures', 'files']...
+      Target lines 9-9:
+        vdp-disclosure-packages.md:9: `vdp-disclosures/<slug>/` carries four files, NOT the six-file claim contract:
+
+DRIFT [line 472] `corpus/knowledge/vdp-disclosure-packages.md:13-16` (parenthesized-subanchor)
+      Citing text        : `corpus/knowledge/vdp-disclosure-packages.md` (`:3-5`, `:9`, `:13-16`, `:20`,
+      Citing idents      : []
+      Target words       : ['Contact', 'ROUTE', 'channel', 'excerpt', 'identity', 'platform', 'program', 'report', 'requested', 'vector']...
+      Target lines 13-16:
+        vdp-disclosure-packages.md:13: | `ROUTE.md` | Channel + attribution decree. Observed: "Free disclosure, ATTRIBUTED"; official VDP intake via security.txt `Contact:` → HackerOne **embedded_submissions** URL (`hackerone.com/<uuid>/embedded_submissions/new`), not the program's bounty form. "No payout requested or accepted." "Operator sends personally — submissions are never fleet-executed." |
+        vdp-disclosure-packages.md:14: | `cover-note.md` | Short operator-facing cover text prepended at send time (this package: a rickroll joke line — operator's choice, his attribution). |
+        vdp-disclosure-packages.md:15: | `[lost-tree] vdp-disclosures/<slug>/report.md` | Same craft contract as claim reports: title; "Disclosed freely by" attribution line; program + official policy URL; affected asset + commit + file + source sha256; CWE class; suggested severity with full CVSS vector; verbatim "Scope excerpt" with observed_at + bundle sha256. |
+        vdp-disclosure-packages.md:16: | `SUBMITTED.md` | Post-send record: timestamp, channel, verbatim platform confirmation string, attribution identity, CWE, evidence note. |
+
+DRIFT [line 472] `corpus/knowledge/vdp-disclosure-packages.md:20` (parenthesized-subanchor)
+      Citing text        : `corpus/knowledge/vdp-disclosure-packages.md` (`:3-5`, `:9`, `:13-16`, `:20`,
+      Citing idents      : []
+      Target words       : ['Operator', 'attributed', 'decree', 'default']...
+      Target lines 20-20:
+        vdp-disclosure-packages.md:20: - **Free + attributed is a decree, not a default.** Operator decree 2026-09-06:
+
+DRIFT [line 473] `corpus/knowledge/vdp-disclosure-packages.md:22-31` (parenthesized-subanchor)
+      Citing text        : `:22-31`), which is now the only record.
+      Citing idents      : []
+      Target words       : ['Contact', 'claims', 'deliberately', 'never', 'package', 'program', 'programs', 'report', 'stages', 'status']...
+      Target lines 22-31:
+        vdp-disclosure-packages.md:22:   vulns." Attribution identity: `vgpnk1337@gmail.com`.
+        vdp-disclosure-packages.md:23: - VDP intake can be the vendor's `security.txt` Contact route even when the
+        vdp-disclosure-packages.md:24:   vendor also runs a paid HackerOne program — the disclosure bypassed the
+        vdp-disclosure-packages.md:25:   bounty queue deliberately.
+        vdp-disclosure-packages.md:26: - Sibling packages `claims/*/honest-zero-vdp-no-payout/` show the flip side:
+        vdp-disclosure-packages.md:27:   VDP-adjacent programs parked as honest-zero (`[lost-tree] claims/*/honest-zero-vdp-no-payout/report.md` + `status.json`
+        vdp-disclosure-packages.md:28:   only — the two-file minimum is what a parked VDP package looks like in
+        vdp-disclosure-packages.md:29:   claims/).
+        vdp-disclosure-packages.md:30: - Same external-effect rule applies: the operator personally submits; the
+        vdp-disclosure-packages.md:31:   fleet stages, never sends.
+

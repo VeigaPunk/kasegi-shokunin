@@ -1,0 +1,31 @@
+# MutC2Counter equivalence + probe receipt
+
+control=files-placeholder-flagged
+  pristine         fail/1 K1:FAIL K2:pass K3:pass K4:FAIL K5:pass K6:pass
+    LIMB K4 FAIL rc=1 missing=none extra=corpus/source-snapshots/round-1/S006.txt|azure-sas-signature sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=False
+  K4-files-subset  fail/1 K1:FAIL K2:pass K3:pass K4:FAIL K5:pass K6:pass
+    LIMB K4 FAIL rc=1 missing=none extra=corpus/source-snapshots/round-1/S006.txt|azure-sas-signature sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+
+control=empty-allowlist
+  pristine         fail/1 K1:pass K2:pass K3:FAIL K4:pass K5:pass K6:pass
+    LIMB K3 FAIL rc=1 summary=scanned=1411,hits=4,files=4,allowed=0,unused_allow=0
+  K3-drop-allowed  fail/1 K1:pass K2:pass K3:FAIL K4:pass K5:pass K6:pass
+    LIMB K3 FAIL rc=1 summary=scanned=1411,hits=4,files=4,allowed=0,unused_allow=0
+
+## shape/scope probe (base vs candidate instrument, scratch fixtures, values not reproduced)
+base --files  (practice-evidence path, STS + credential):  rc=1 hits: aws-sts-session-token, credential, path corpus/practice/p/evidence/E2.json
+base --lane   (same fixture repo at HEAD):                  rc=0 no hits (scope absent)
+cand --files  (same):                                      rc=1 aws-sts-session-token, credential, gcs-signed-url-signature
+cand --lane   (same):                                      rc=1 same three
+-> 2 of the 5 NEW_EXPECT pairs are SCOPE novelty (shapes the base already has, behind the new corpus/practice/<pkg>/evidence/ scope); 3 are SHAPE novelty.
+
+## azure-sas-signature separator/order boundary (candidate instrument, --files, scratch fixtures)
+escaped \u0026, sig first      -> hit
+escaped \u0026, sv first       -> NO hit (the param is preceded by the '6' of \u0026, so the (?<![A-Za-z0-9_]) lookbehind rejects it)
+escaped \u0026, sig first + more params -> hit
+plain &, sv first / sig first / 4 params -> hit
+&amp;, sv first / sig first -> hit
+base instrument over all five -> no hits
+
+## frozen control-script reproducibility
+c2-controls-r88.sh build r87 reads $L/corpus/instruments/capture-secret-scan.py (working tree). After the C2 landing that file is the NEW instrument, so the control becomes a duplicate of pos: first sweep run printed `r87 ... CAPABILITY-CHECK-RESULT pass rc=0`.

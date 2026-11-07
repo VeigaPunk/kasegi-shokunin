@@ -1,0 +1,37 @@
+# mutant	sha256	delta	verdict	killed_by_frozen(limb)	killed_by_added(limb)
+m01-m1-numerator-only		 || 	killed	notentry-forge	N2-pos-denom
+m02-m1-always		 || 	killed	do-nothing,partial,pad,drift-forge,notentry-forge	N2-pos-denom,N11-deleted-entry,N12-truncated-target
+m03-rate-only-internal		 || 	killed	positive,ufo-copy,map-sha	N1-drift-target,N3-dups,N4-ghost-key,N5-zero-anchor,N6-big-anchor,N7-single-drift,N8-trunc,N9-slash-key,N10-mixed-drift,N13-dot-entry,N14-slash-anchored,N15-word4-share
+m04-m2-drop-removed		 || 	killed	do-nothing,partial	N4-ghost-key,N5-zero-anchor,N6-big-anchor,N7-single-drift,N9-slash-key,N10-mixed-drift,N11-deleted-entry,N12-truncated-target,N13-dot-entry,N14-slash-anchored,N15-word4-share
+m05-m2-removed-subset		 || 	killed	do-nothing,partial	N4-ghost-key,N5-zero-anchor,N6-big-anchor,N7-single-drift,N9-slash-key,N10-mixed-drift,N13-dot-entry,N14-slash-anchored,N15-word4-share
+m06-m2-drop-added		 || 	killed	pad	-
+m07-m3-no-replace		 || 	killed	do-nothing,positive,drift-forge,notentry-forge,ufo-copy,map-sha	N1-drift-target,N2-pos-denom,N3-dups
+m08-m3-drop-linecount		 || 	killed	pad	-
+m09-m3-drop-hitkeys		 || 	killed	-	N4-ghost-key,N5-zero-anchor,N6-big-anchor,N9-slash-key,N14-slash-anchored
+m10-m4-drop-bybase		 || 	killed	-	N3-dups
+m11-m4-drop-gone		 || 	killed	-	N4-ghost-key,N5-zero-anchor,N6-big-anchor
+m12-m4-drop-internal		 || 	killed	-	N11-deleted-entry
+m13-m4-no-anchor-strip		 || 	killed	do-nothing,positive,partial,pad,drift-forge,map-sha	N1-drift-target,N2-pos-denom,N7-single-drift,N8-trunc,N10-mixed-drift,N12-truncated-target,N15-word4-share
+m14-m5-drop-lo		 || 	SURVIVED	-	-
+m15-m5-drop-hi		 || 	killed	-	N12-truncated-target
+m16-m5-ignore-m4		 || 	killed	notentry-forge,ufo-copy	N3-dups,N4-ghost-key,N5-zero-anchor,N6-big-anchor,N9-slash-key,N11-deleted-entry,N13-dot-entry,N14-slash-anchored
+m17-m6-always		 || 	killed	map-sha	-
+m18-m6-no-lower		 || 	SURVIVED	-	-
+m19-m8-always		 || 	killed	drift-forge	N1-drift-target,N4-ghost-key,N5-zero-anchor,N6-big-anchor,N7-single-drift,N10-mixed-drift,N15-word4-share
+m20-m8-all-not-any		 || 	killed	-	N10-mixed-drift
+m21-m8-slice-offbyone		 || 	killed	do-nothing,positive,partial,pad,notentry-forge,ufo-copy,map-sha	N2-pos-denom,N3-dups,N8-trunc,N9-slash-key,N11-deleted-entry,N12-truncated-target,N13-dot-entry,N14-slash-anchored
+m22-m8-word-3		 || 	killed	-	N15-word4-share
+m23-m8-word-6	258ec7e93423d9566c03a5b461f585ead761c4faef37d1d6d58fe1168298cdbc	WORD = re.compile(r"[A-Za-z_][A-Za-z0-9_]{4,}") || WORD = re.compile(r"[A-Za-z_][A-Za-z0-9_]{5,}")	killed	do-nothing,positive,partial,pad,notentry-forge,ufo-copy,map-sha	N2-pos-denom,N3-dups,N8-trunc,N9-slash-key,N11-deleted-entry,N12-truncated-target,N13-dot-entry,N14-slash-anchored
+m24-m8-drop-pathlike	5521279c399347655669511cd41e631a83bef22d77f44c9dc8cec627d6cbc0b8	        if PATHLIKE.match(sp.strip()):\n            continue ||         if False:\n            continue	killed	drift-forge	N1-drift-target,N7-single-drift
+m25-m8-first-cite-only	35b9248b7fa524cfe6cf71d5b1b0e2ed8dd7676e7b6c96bcf332a0ebf7cc8943	        cites = [ln for txt in bfiles.values() for ln in txt.split("\n") if "`%s`" % k in ln] ||         cites = [ln for txt in bfiles.values() for ln in txt.split("\n") if "`%s`" % k in ln][:1]	killed	-	N10-mixed-drift
+m26-m8-skip-single-anchor	68a399e0a65ea522052af2525031e0a5f0988e0544f19990709988cc8b8238aa	        if not km or km.group(2) is None: ||         if not km or km.group(3) is None:	killed	-	N4-ghost-key,N7-single-drift
+m27-m8-drop-nocites	ed29e3f771ce86bd4dbd56b0691f0fb811aaad71d83fe7fb4779af59062dc40d	        if not cites or any(not (idents(ln) & tw) for ln in cites): ||         if any(not (idents(ln) & tw) for ln in cites):	killed	-	N4-ghost-key,N5-zero-anchor,N6-big-anchor
+m28-key-no-anchor	d2dd84e27c9888b2d9d340a6cc777526688b965e7aaac65d842f41192dc05b63	KEY = re.compile(r"^([A-Za-z0-9][A-Za-z0-9._-]*\.md)(?::(\d+)(?:-(\d+))?)?$") || KEY = re.compile(r"^([A-Za-z0-9][A-Za-z0-9._-]*\.md)$")	killed	do-nothing,positive,partial,pad,drift-forge,notentry-forge,ufo-copy,map-sha	N1-drift-target,N2-pos-denom,N3-dups,N4-ghost-key,N5-zero-anchor,N6-big-anchor,N7-single-drift,N8-trunc,N9-slash-key,N10-mixed-drift,N11-deleted-entry,N12-truncated-target,N13-dot-entry,N14-slash-anchored,N15-word4-share
+m29-key-no-range	24cdcd81a65a01217aa53ce99800c54dfd8d8ac107033abbb5f5b08cc16e63ca	KEY = re.compile(r"^([A-Za-z0-9][A-Za-z0-9._-]*\.md)(?::(\d+)(?:-(\d+))?)?$") || KEY = re.compile(r"^([A-Za-z0-9][A-Za-z0-9._-]*\.md)(?::(\d+))?$")	killed	do-nothing,positive,partial,pad,drift-forge,notentry-forge,ufo-copy,map-sha	N1-drift-target,N2-pos-denom,N3-dups,N4-ghost-key,N5-zero-anchor,N6-big-anchor,N7-single-drift,N8-trunc,N9-slash-key,N10-mixed-drift,N11-deleted-entry,N12-truncated-target,N13-dot-entry,N14-slash-anchored,N15-word4-share
+m30-key-allow-slash	d01273de647da412059612291ef45b58e5e8cc6ad273cef2bc34fecbcdbf14ee	KEY = re.compile(r"^([A-Za-z0-9][A-Za-z0-9._-]*\.md)(?::(\d+)(?:-(\d+))?)?$") || KEY = re.compile(r"^([A-Za-z0-9][A-Za-z0-9._/-]*\.md)(?::(\d+)(?:-(\d+))?)?$")	killed	-	N14-slash-anchored
+m31-key-allow-leading-dot	786cfb7ea338f1baa535f4d480db0c7ad7acbd58f6bb1859411a7ab38d315733	KEY = re.compile(r"^([A-Za-z0-9][A-Za-z0-9._-]*\.md)(?::(\d+)(?:-(\d+))?)?$") || KEY = re.compile(r"^([A-Za-z0-9.][A-Za-z0-9._-]*\.md)(?::(\d+)(?:-(\d+))?)?$")	SURVIVED	-	-
+m32-scope-count-ge	1c113151f959172b10820d3af96bb345e090cd29fa6e6241b4050aea3f753baf	             if p.endswith(".md") and p.count("/") == 2] ||              if p.endswith(".md") and p.count("/") >= 2]	SURVIVED	-	-
+m33-scope-drop-md-filter	5d016b545f14491bcda2e4c1b4bcd14400843ca18abd2b3eabf2e2ba10988c46	             if p.endswith(".md") and p.count("/") == 2] ||              if p.count("/") == 2]	SURVIVED	-	-
+m34-tree-drop-md-filter	745ae9a9a1a115376ceaa67659a158d0ecc0ef3a5216cebfdac41ed40294803f	        if fn.endswith(".md") and os.path.isfile(p): ||         if os.path.isfile(p):	SURVIVED	-	-
+m35-ufo-include	db5eef969eb7f7dcc67d68c21f6813d7edb4dc31c55f7babcf9f397071473160	        if not p.startswith(".ufo/"): ||         if True:	killed	do-nothing,positive,partial,pad,drift-forge,map-sha	N1-drift-target,N2-pos-denom,N7-single-drift,N8-trunc,N10-mixed-drift,N12-truncated-target,N15-word4-share
+m36-ufo-noslash	bcc3ab49e081ad3eea3d186c94c233e755fa7ae17176b77ffe566e0d16d95e5e	        if not p.startswith(".ufo/"): ||         if not p.startswith(".ufo"):	SURVIVED	-	-

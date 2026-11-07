@@ -1,0 +1,28 @@
+# azure-sas-signature sensitivity (label -> HIT/miss; no fixture bytes printed)
+baseline sv + 2 params + sig                     HIT
+20 params between sv and sig (window max)        HIT
+21 params between sv and sig (window+1)          miss
+40 params between sv and sig                     miss
+single-letter param name in between              miss
+7-letter param name in between                   miss
+empty-value param in between                     HIT
+uppercase SIG=                                   HIT
+uppercase SV=                                    HIT
+reverse order, sig then sv, 2 params             HIT
+39-char sig value                                miss
+40-char sig value                                HIT
+sv with truncated date                           miss
+sig with %3D suffix                              HIT
+separator &amp;                                  HIT
+separator \u0026                                 HIT
+preceded by a word char (lookbehind)             miss
+sig=<signature> documentation placeholder        miss
+
+# gcs-signed-url-signature sensitivity
+64 hex                                           HIT
+63 hex                                           miss
+64 upper hex                                     HIT
+percent-escaped name                             miss
+V2 Signature= (documented limit)                 miss
+header colon form                                HIT
+json key form                                    HIT

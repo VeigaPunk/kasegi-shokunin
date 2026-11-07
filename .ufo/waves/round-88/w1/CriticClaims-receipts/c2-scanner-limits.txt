@@ -1,0 +1,15 @@
+# Measured false negatives of the landed candidate (same bytes as the frozen candidate).
+# Values are synthetic; the S126 case reproduces the capture's own line break (selftest 'gcs-doc-wrapped').
+
+azure plain (control)                                -> ['azure-sas-signature']
+azure value with JSON \/ escape                      -> no hit
+azure value base64url alphabet                       -> no hit
+azure sig first, sv after 25 params                  -> no hit
+gcs query (control)                                  -> ['gcs-signed-url-signature']
+gcs percent-encoded param name                       -> no hit
+gcs header colon-space (control)                     -> ['gcs-signed-url-signature']
+gcs V4 example as captured in S126 (soft-wrapped)    -> no hit
+
+# Documented 'Known limits' in the docstring: GCS V2 Signature=, CloudFront Signature=/Key-Pair-Id=,
+# percent-encoded parameter names, gzip/UTF-16/base64-wrapped captures. NOT documented: soft line wrapping,
+# JSON \/ inside the value, base64url alphabets, and >20 parameters between sv and sig.

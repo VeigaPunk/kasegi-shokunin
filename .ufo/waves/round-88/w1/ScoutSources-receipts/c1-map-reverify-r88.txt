@@ -1,0 +1,9 @@
+# round-88 ScoutSources independent re-verification of the C1 frozen repair map at the C1 landing commit
+# C1 landing = fd33e1bfe26ad9af13c138feb87c9f222be957cb ; base = 6beead9148945fa695cf3139e8fc9d8e91cc5fd0
+# method: git archive fd33e1bf corpus/knowledge | tar -x into scratch; then, per map key, find every backticked
+# occurrence of the map value in corpus/knowledge/*.md, and check the cited range is in range and shares >=1
+# identifier (>=4 chars) with the citing line (the M8 content proxy).
+
+C1-REVERIFY map_keys=50 keys_with_a_backticked_site=50 total_backticked_sites=94
+C1-REVERIFY missing_targets=0 out_of_range_anchors=0 identifier_share_failures=0
+C1-REVERIFY verdict=pass

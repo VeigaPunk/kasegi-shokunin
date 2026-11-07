@@ -1,0 +1,30 @@
+# MutC1Counter control battery (pristine counter, 23 controls)
+counter_sha256=b4127597c4ee1ee29562450903f777afd29699c59bb0b1dedb687c3f45c98b55
+map_sha256=5a731401a1f9145e24898a13c8a47be2135beabedde4352170cf2d2daa5d7960
+resolve_sha256=db5e0767c60ce00ea6c9cfb4ddd3e159e9a86525e5c8417c4a0a73e2e6d45667
+base=6beead9148945fa695cf3139e8fc9d8e91cc5fd0 target=742/1743 (unless stated)
+baseline_reproduces_frozen_receipt=True (see baseline-match.txt)
+
+do-nothing             rc=1 M1=FAIL M2=FAIL M3=FAIL M4=pass M5=pass M6=pass M8=pass | tree=clone(base), map=repair-map.json
+positive               rc=0 M1=pass M2=pass M3=pass M4=pass M5=pass M6=pass M8=pass | tree=clone(base)+apply-map(repair-map)
+partial                rc=1 M1=FAIL M2=FAIL M3=FAIL M4=pass M5=pass M6=pass M8=pass | tree=clone(base)+apply-map(first 25 keys)
+pad                    rc=1 M1=FAIL M2=FAIL M3=FAIL M4=pass M5=pass M6=pass M8=pass | tree=pos + 2 extra resolving cites appended to claim-gates.md
+drift-forge            rc=1 M1=FAIL M2=pass M3=pass M4=pass M5=pass M6=pass M8=FAIL | tree=clone(base)+apply(map+mission-control.md:41-45)
+notentry-forge         rc=1 M1=FAIL M2=pass M3=pass M4=FAIL M5=FAIL M6=pass M8=pass | tree=clone(base)+apply(map+SOURCES.md->corpus/SOURCES.md)
+ufo-copy               rc=1 M1=pass M2=pass M3=pass M4=FAIL M5=FAIL M6=pass M8=pass | tree=clone(base)+apply(map, claim-gates.md:32-33 -> .ufo/.../claim-gates.md:32-33)
+map-sha                rc=1 M1=pass M2=pass M3=pass M4=pass M5=pass M6=FAIL M8=pass | tree=pos, frozen map, --map-sha256 all-zero
+N1-drift-target        rc=1 M1=pass M2=pass M3=pass M4=pass M5=pass M6=pass M8=FAIL | drift-forge tree/map/sha, --target 743/1743 (M8 is then the only failing limb)
+N2-pos-denom           rc=1 M1=FAIL M2=pass M3=pass M4=pass M5=pass M6=pass M8=pass | pos tree, frozen map, --target 742/1742
+N3-dups                rc=1 M1=pass M2=pass M3=pass M4=FAIL M5=FAIL M6=pass M8=pass | pos tree + tracked decoy corpus/notes/claim-gates.md (git add in the clone)
+N4-ghost-key           rc=1 M1=pass M2=FAIL M3=FAIL M4=FAIL M5=FAIL M6=pass M8=FAIL | pos tree, map+claim-gates.md:200 (not a base citation)
+N5-zero-anchor         rc=1 M1=pass M2=FAIL M3=FAIL M4=FAIL M5=FAIL M6=pass M8=FAIL | pos tree, map+claim-gates.md:0-3
+N6-big-anchor          rc=1 M1=pass M2=FAIL M3=FAIL M4=FAIL M5=FAIL M6=pass M8=FAIL | pos tree, map+claim-gates.md:1-99999
+N7-single-drift        rc=1 M1=pass M2=FAIL M3=FAIL M4=pass M5=pass M6=pass M8=FAIL | pos tree, map+claim-gates.md:3 (excluded single-anchor drift key)
+N8-trunc               rc=1 M1=pass M2=pass M3=FAIL M4=pass M5=pass M6=pass M8=pass | pos tree with citation-bases.md last line dropped (line counts differ)
+N9-slash-key           rc=1 M1=pass M2=FAIL M3=FAIL M4=FAIL M5=FAIL M6=pass M8=pass | pos tree, map+corpus/../claim-gates.md
+N10-mixed-drift        rc=1 M1=pass M2=FAIL M3=FAIL M4=pass M5=pass M6=pass M8=FAIL | pos tree, map+claim-gates.md:42-47 (2 citing lines: M8 share pattern True/False)
+N11-deleted-entry      rc=1 M1=FAIL M2=FAIL M3=FAIL M4=FAIL M5=FAIL M6=pass M8=pass | pos tree with corpus/knowledge/claim-gates.md deleted from the worktree (still in the index)
+N12-truncated-target   rc=1 M1=FAIL M2=FAIL M3=FAIL M4=pass M5=FAIL M6=pass M8=pass | pos tree with claim-gates.md truncated to 12 lines (map key :15 now out of range)
+N13-dot-entry          rc=1 M1=pass M2=FAIL M3=FAIL M4=FAIL M5=FAIL M6=pass M8=pass | pos tree + tracked corpus/knowledge/.hidden.md, map+.hidden.md
+N14-slash-anchored     rc=1 M1=pass M2=FAIL M3=FAIL M4=FAIL M5=FAIL M6=pass M8=pass | pos tree, map+x/claim-gates.md:3
+N15-word4-share        rc=1 M1=pass M2=FAIL M3=FAIL M4=pass M5=pass M6=pass M8=FAIL | pos tree, map+claim-gates.md:59-61 (M8 share needs a 4-char identifier)

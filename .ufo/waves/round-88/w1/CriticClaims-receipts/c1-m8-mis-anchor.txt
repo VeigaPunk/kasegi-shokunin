@@ -1,0 +1,24 @@
+# M8 admits a substantively wrong anchor: the decision-digest row is cited at claim-gates.md:34,
+# but the rule it names is on :35. M8 passes on the single word 'decision'.
+
+## entry claim-gates.md (base 6beead91), lines 31-36:
+31: - `chain`/`decisions` non-empty array.
+32: - Per decision: `scope_signal` exactly `NO_SCOPE_OBJECTION` (any other value
+33:   errors; `HARD_STOP` gets its own message AND the exact-signal message —
+34:   two errors for one decision, L83-84, round-13 correction); nonempty `matched_grant_id`;
+35:   `decision_sha256` matches `/^[a-f0-9]{64}$/i`.
+36: - `head_sha256` = final decision's `decision_sha256` =
+37:   `manifest.expected_head_sha256` — three-way binding.
+
+## citing rows triage-thresholds.md (base), lines 221-222:
+221: | grant id | `matched_grant_id` empty after trim | `custodian decision <action>: matched_grant_id is required` | 85 | MATCHES: `claim-gates.md:33-34` |
+222: | decision digest | `decision_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian decision lacks a valid decision_sha256: <action>` | 86 | MATCHES: `claim-gates.md:34` |
+
+## M8 predicate on key claim-gates.md:34
+citing idents = decision_sha256, custodian, decision, lacks, valid, ... (from backticked spans)
+target :34 words = ... decision, errors, round, correction, nonempty, matched_grant_id ...
+intersection = {decision}  -> M8 PASS
+the citing row's own specific identifier 'decision_sha256' is ABSENT from :34 and PRESENT on :35
+
+## landed text (C1 landing)
+landed citing line: | decision digest | `decision_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian decision lacks a valid decision_sha256: <action>` | 86 | MATCHES: `corpus/knowledge/claim-gates.md:34` |

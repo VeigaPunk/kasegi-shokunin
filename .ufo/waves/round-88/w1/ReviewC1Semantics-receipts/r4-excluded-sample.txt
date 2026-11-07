@@ -1,0 +1,176 @@
+====================================================================================================
+EXCLUDED KEY claim-gates.md:10-11; citing sites at base: 2
+  cited claim-gates.md lines 10-11 (file 160 lines):
+       9| 
+  >>  10| Required: `report.md`, `claim_checklist.md`, `custodian-receipts.json`,
+  >>  11| `provenance.json`, `status.json`, `evidence/manifest.json` (L22–24).
+      12| 
+  SITE corpus/knowledge/triage-thresholds.md:178
+     | required files | any of `report.md`, `claim_checklist.md`, `custodian-receipts.json`, `provenance.json`, `status.json` missing | `missing <f>` | 22-23 | MATCHES: `claim-gates.md:10-11`, `claim-package-contract.md:9-16` |
+  SITE corpus/knowledge/triage-thresholds.md:179
+     | manifest file | `evidence/manifest.json` missing | `missing evidence/manifest.json` | 24 | MATCHES: `claim-gates.md:10-11` |
+====================================================================================================
+EXCLUDED KEY claim-gates.md:5-6; citing sites at base: 1
+  cited claim-gates.md lines 5-6 (file 160 lines):
+       4| 2026-09-28; tag `014A`). Exit 1 + `claim-check: FAIL (N errors)` on any gate;
+  >>   5| `OK` only when zero errors. This replaces the "gates known only via error
+  >>   6| strings" gap.
+       7| 
+  SITE corpus/knowledge/triage-thresholds.md:445
+     | 9.13 | claim-check aborts the artifact loop on the first path/existence/symlink failure per artifact, and skips oversize files without scanning, so a single run's error set is path-dependent, not a full partition of violations. | 46-49, 111 | `claim-gates.md:5-6` (no-early-exit framing is accurate for the gate list, not per-artifact) |
+====================================================================================================
+EXCLUDED KEY claim-gates.md:71-74; citing sites at base: 2
+  cited claim-gates.md lines 71-74 (file 160 lines):
+      70| - `claim_review.outcome === 'APPROVED'` (case-insensitive) and
+  >>  71|   `claim_ready === true`; nonempty `producer_identity`.
+  >>  72| - `claim_review.reviewer`: `role === 'kx-reviewer'` exactly, nonempty
+  >>  73|   `identity`, `requested_model`, `resolved_model`, `fallback` is boolean.
+  >>  74|   Reviewer identity ≠ producer identity.
+      75| - Hard gates all `PASS`: `written_scope`, `authorization`,
+  SITE corpus/knowledge/triage-thresholds.md:280
+     | nested readiness | over the truthy contexts `claim_review`, `claim_wave`, `claim_attempt`, `submission`: `String(ctx.outcome ?? ctx.state).toUpperCase() === 'BLOCKED'` OR `ctx.claim_ready === false` OR `ctx.submission_ready === false` | `status.json contains a blocked nested readiness decision` | 210-220 | MATCHES: `claim-gates.md:71-74` |
+  SITE corpus/knowledge/triage-thresholds.md:281
+     | nested blockers | same contexts, `(ctx.blocker_codes ?? ctx.blockers ?? ctx.remaining_gates)` is a non-empty array | `status.json contains unresolved nested readiness blockers` | 218-223 | MATCHES: `claim-gates.md:71-74` |
+====================================================================================================
+EXCLUDED KEY claim-package-contract.md:15; citing sites at base: 2
+  cited claim-package-contract.md lines 15-15 (file 99 lines):
+      14| | `custodian-receipts.json` | Non-empty decision chain `{action, input_sha256, decision_sha256, matched_grant_id, scope_signal}`. Every action: nonempty `matched_grant_id` AND `scope_signal` exactly `"NO_SCOPE_OBJECTION"`. `head_sha256` == final decision digest == `manifest.expected_head_sha256`. |
+  >>  15| | `provenance.json` | Agents + requested/resolved models per transition, commands + exit codes, pin (remote + commit), `policy_sha256`, `external_effects_performed: []`, secrets attestation. |
+      16| | `status.json` | `manifest_sha256` binds status to manifest bytes. `claim_review` holds `hard_gates` + `subchecks` + `reviewer` (distinct identity, requested/resolved model, fallback flag). |
+  SITE corpus/knowledge/claim-package-gate.md:15
+     - **R-PROVENANCE** — each agent carries a transition with requested and resolved models; each command carries an integer exit code; `pin.remote` is non-empty and `pin.commit` is 7-64 hex; `policy_sha256` is 64 hex; `external_effects_performed` is exactly `[]`; an attestation is present. Contract: "Agents + requested/resolved models per transition, commands + exit codes, pin (remote + commit), `policy_sha256`, `external_effects_performed: []`, secrets attestation." (`corpus/knowledge/claim-package-contract.md:15`)
+  SITE corpus/knowledge/triage-thresholds.md:241
+     `claim-package-contract.md:15` are unenforced. Likewise the manifest
+====================================================================================================
+EXCLUDED KEY claim-package-contract.md:9-16; citing sites at base: 2
+  cited claim-package-contract.md lines 9-16 (file 99 lines):
+       8| 
+  >>   9| | File | Binding rules |
+  >>  10| |---|---|
+  >>  11| | `report.md` | Title; program + official URL; "Scope excerpt" = verbatim policy text + URL + observed_at + content sha256; vuln class; repro steps without secrets; impact tied to the policy's own severity/reward language; affected asset; suggested fix; disclosure timeline; literal marker "No submission performed". |
+  >>  12| | `claim_checklist.md` | Per-program submission steps (portal route, fields, quirks); carries "OPERATOR-GATED"; names residual gates. |
+  >>  13| | `evidence/manifest.json` | `schema_version: "evidence-manifest/v1"`. Per-artifact sha256 + `polarity` ∈ {positive, negative}; ≥1 positive required. `redactions[]`: one same-digest receipt per artifact with nonempty, distinct producer/verifier identities. `redactions:[]` is never claim-ready. Artifact paths are relative to `evidence/`, must stay inside the package, no symlink traversal. |
+  >>  14| | `custodian-receipts.json` | Non-empty decision chain `{action, input_sha256, decision_sha256, matched_grant_id, scope_signal}`. Every action: nonempty `matched_grant_id` AND `scope_signal` exactly `"NO_SCOPE_OBJECTION"`. `head_sha256` == final decision digest == `manifest.expected_head_sha256`. |
+  >>  15| | `provenance.json` | Agents + requested/resolved models per transition, commands + exit codes, pin (remote + commit), `policy_sha256`, `external_effects_performed: []`, secrets attestation. |
+  >>  16| | `status.json` | `manifest_sha256` binds status to manifest bytes. `claim_review` holds `hard_gates` + `subchecks` + `reviewer` (distinct identity, requested/resolved model, fallback flag). |
+      17| 
+  SITE corpus/knowledge/triage-thresholds.md:178
+     | required files | any of `report.md`, `claim_checklist.md`, `custodian-receipts.json`, `provenance.json`, `status.json` missing | `missing <f>` | 22-23 | MATCHES: `claim-gates.md:10-11`, `claim-package-contract.md:9-16` |
+  SITE corpus/knowledge/triage-thresholds.md:457
+     | six-file package contract | `claim-package-contract.md:9-16, 28-38` | MATCHES for gate-enforced rows; §9.8 marks the convention-only rows |
+====================================================================================================
+EXCLUDED KEY ev-model.md:15-16; citing sites at base: 1
+  cited ev-model.md lines 15-16 (file 60 lines):
+      14| p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
+  >>  15| gross_value  = p_success × expected_reward
+  >>  16| total_cost   = effort_hours × opportunity_rate
+      17|                + direct_cost + delay_cost + expected_risk_cost
+  SITE corpus/knowledge/triage-thresholds.md:367
+     | `p_in_scope`, `p_reproducible`, `p_unique`, `p_accepted` | `number`, `minimum: 0`, `maximum: 1` | 36-39 | MATCHES: `ev-model.md:15-16` |
+====================================================================================================
+EXCLUDED KEY ev-model.md:22-23; citing sites at base: 2
+  cited ev-model.md lines 22-23 (file 60 lines):
+      21| Facts:
+  >>  22| - Inputs live in `bounty-map/programs/<id>.json` → `ev_inputs`; schema pins
+  >>  23|   `p_*` to [0,1], `as_of` datetime, free-form `sources` for provenance.
+      24| - Missing inputs print `UNKNOWN` for the affected term, never 0/1; verdict
+  SITE corpus/knowledge/triage-thresholds.md:369
+     | `deadline` | `format: date-time` | 46 | MATCHES: `ev-model.md:22-23` |
+  SITE corpus/knowledge/triage-thresholds.md:370
+     | `duration_p90`, `submission_buffer` | `number` | 47-48 | MATCHES: `ev-model.md:22-23` |
+====================================================================================================
+EXCLUDED KEY intake-surface.md:71; citing sites at base: 2
+  cited intake-surface.md lines 71-71 (file 179 lines):
+      70|   with `board_ref.dataset`.
+  >>  71| - Coverage: 586/592 `evidence/` dirs have map records; 252/274 `claims/`
+      72|   dirs have map records; **352 map programs were never touched** (no
+  SITE corpus/knowledge/triage-thresholds.md:86
+     | priority | `id ∈ fleets/priority.json` `priority[]` (missing file → `{priority:[]}`) | `9e12` = 9,000,000,000,000 | 91, 110 | MATCHES: `intake-surface.md:71`, `mission-control.md:19` |
+  SITE corpus/knowledge/triage-thresholds.md:87
+     | continue | `id ∈ {v.program : v.verdict === 'continue'}` from `docs/review-verdicts.jsonl` | `2e12` = 2,000,000,000,000 | 92-96, 110 | MATCHES: `intake-surface.md:71`, `mission-control.md:19-20` |
+====================================================================================================
+EXCLUDED KEY intake-surface.md:75-76; citing sites at base: 1
+  cited intake-surface.md lines 75-76 (file 179 lines):
+      74| - Name-drift pairs where map id ≠ claims/evidence dir name for the same
+  >>  75|   program: `bugcrowd-spacex` (map) vs `bugcrowd-spacex-starlink` (claims),
+  >>  76|   `github-bug-bounty` (map — the single curated record) vs `github-bounty`
+      77|   (claims+evidence), plus all the ingestion slugs. Duplicate-detection and
+  SITE corpus/knowledge/triage-thresholds.md:437
+     | 9.5 | `reward.min` numeric on **14** records; `reward` object on 48. | census §2.2 | `intake-surface.md:75-76` ("`reward.min` present on 48"), `SKILL.md:111` ("`reward` exists on 48" — true but conflated downstream) |
+====================================================================================================
+EXCLUDED KEY mission-control.md:20-21; citing sites at base: 4
+  cited mission-control.md lines 20-21 (file 171 lines):
+      19| - **Queue score** (`buildQueue`): `priority` set +9e12 (`fleets/priority.json`),
+  >>  20|   `continue` verdicts +2e12, `curated` EV inputs +1e12, `reward.min*1000`,
+  >>  21|   `freshness.live` +1. `DONE` never redispatches; live leases and
+      22|   mission-file presence filter the candidate set. EV is ordering, never a
+  SITE corpus/knowledge/triage-thresholds.md:58
+     | attempts exhausted | `attempts(id) >= MAX_ATTEMPTS` (MAX_ATTEMPTS = 2) | 103, 46 | MATCHES: `SKILL.md:117`, `mission-control.md:20-21` |
+  SITE corpus/knowledge/triage-thresholds.md:59
+     | active mission | `readStatus(id)` exists AND its `state` ∉ TERMINAL — i.e. a non-terminal `fleets/run/<id>.status.json` blocks redispatch | 105 | MATCHES: `mission-control.md:20-21` |
+  SITE corpus/knowledge/triage-thresholds.md:90
+     | freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `intake-surface.md:72`, `mission-control.md:20-21`; SUPERSEDES: `SKILL.md:113-114,175-176` (term omitted) |
+  SITE corpus/knowledge/triage-thresholds.md:144
+     | `MAX_ATTEMPTS` | `2` | 46 | MATCHES: `SKILL.md:117`, `mission-control.md:20-21` |
+====================================================================================================
+EXCLUDED KEY mission-control.md:36-38; citing sites at base: 3
+  cited mission-control.md lines 36-38 (file 171 lines):
+      35|   (`omp` CLI against `fleets/missions/<id>.md`).
+  >>  36| - **Sweep** (terminal states PARKED/DONE/RETIRED/FAILED): `DONE` +
+  >>  37|   `deliverable` → `commitClaims` + `finalizePush` + `mission_done`; else
+  >>  38|   `mission_parked`/`mission_failed`. Pane killed, lease deleted, slot
+      39|   rotates. Pane dead + lease alive + no terminal status → writes
+  SITE corpus/knowledge/triage-thresholds.md:146
+     | `MODEL` (initial) | `alibaba-token-plan/deepseek-v4-pro:max` | 34 | MATCHES: `mission-control.md:36-38` |
+  SITE corpus/knowledge/triage-thresholds.md:153
+     | off-peak window | `h = (getUTCHours() − 3 + 24) % 24; offpeak = h >= 12 && h < 22` (UTC−3) | 298-299 | MATCHES: `mission-control.md:36-38`, `SKILL.md:14-15` |
+  SITE corpus/knowledge/triage-thresholds.md:154
+     | off-peak model | `alibaba-token-plan/deepseek-v4-pro:max` | 300 | MATCHES: `mission-control.md:36-38` |
+====================================================================================================
+EXCLUDED KEY mission-control.md:42-46; citing sites at base: 1
+  cited mission-control.md lines 42-46 (file 171 lines):
+      41| - **P20/P21**: dispatcher is the sole committer to `claims/`; every commit
+  >>  42|   gated on a fresh `ops/claim-check.mjs` run (red = `claim_rejected`
+  >>  43|   telemetry, not committed). Commit message:
+  >>  44|   `claim(<id>): <verdict> — <title> [mission:… evidence:<12-char>]`.
+  >>  45|   Post-commit it verifies a commit actually contains the package bytes and
+  >>  46|   that `git diff <sha> -- <rel>` is clean — byte proof, not trust.
+      47| - **`finalizePush`** (operator decree 2026-09-04): every accepted package
+  SITE corpus/knowledge/triage-thresholds.md:149
+     | `--sync` cadence | `tickCount % 10 === 0` (~5 min at 30 s ticks) | 352-353 | MATCHES: `mission-control.md:42-46` |
+====================================================================================================
+EXCLUDED KEY ops-invariants.md:18; citing sites at base: 3
+  cited ops-invariants.md lines 18-18 (file 141 lines):
+      17| |---|---|---|
+  >>  18| | `BANNED` | `['cursor', 'opencode']` | provider tokens that may appear nowhere in registry lanes, config roles, or agent cards — scanned word-boundary `(^|[^a-z])tok([^a-z]|$)` case-insensitive |
+      19| | `PARKED` | `[]` | empty since the chatgpt park lifted 2026-09-04 (operator reset; gpt-6-astra probe OK). Empty list → the parked regex is `/(?!)/`, never matches — parked-provider checks are currently no-ops by construction |
+  SITE corpus/knowledge/citation-bases.md:13
+     example `corpus/knowledge/ops-invariants.md:18`; do not use a bare
+  SITE corpus/knowledge/citation-bases.md:14
+     `ops-invariants.md:18` or `claim-gates.md:3` when the target is in the lane —
+  SITE corpus/knowledge/triage-thresholds.md:390
+     | `BANNED` | `['cursor', 'opencode']` | 9 | MATCHES: `ops-invariants.md:18`, `SKILL.md:525` |
+====================================================================================================
+EXCLUDED KEY ops-invariants.md:17-25; citing sites at base: 1
+  cited ops-invariants.md lines 17-25 (file 141 lines):
+      16| | Export | Value | Meaning |
+  >>  17| |---|---|---|
+  >>  18| | `BANNED` | `['cursor', 'opencode']` | provider tokens that may appear nowhere in registry lanes, config roles, or agent cards — scanned word-boundary `(^|[^a-z])tok([^a-z]|$)` case-insensitive |
+  >>  19| | `PARKED` | `[]` | empty since the chatgpt park lifted 2026-09-04 (operator reset; gpt-6-astra probe OK). Empty list → the parked regex is `/(?!)/`, never matches — parked-provider checks are currently no-ops by construction |
+  >>  20| | `K3_SEATS` | `['judge', 'planner']` | the only lanes allowed to route k3 |
+  >>  21| | `K3_TOKEN` | `/kimi-code\/k3|kimi-k3|moonshot\/kimi-k3/i` | scanned against primary/bucket routes only, never notes |
+  >>  22| | `TELEMETRY_EVENTS` | 8 names | the *registry* event kinds (lane_parked, lane_degraded, operator_decree, xask_dry, board_imported, binding_verified, reroute_drill, provenance_drift); runtime kinds are emitted by fleet-dispatch |
+  >>  23| | `sha256File` | bytes→hex | returns `null` on absent path — callers must not confuse null with a digest |
+  >>  24| | `gitMutationBlocker` | fail-closed preflight | refuses when rebase-merge/rebase-apply/MERGE_HEAD/CHERRY_PICK_HEAD exist (`ACTIVE_GIT_OPERATION`) or HEAD not on `main` (`HEAD_NOT_ON_MAIN`); used by finalize-all, fleet-dispatch commits, --sync |
+  >>  25| | `appendLedger` | 3500-byte cap | see `corpus/knowledge/mission-ledger.md` |
+      26| 
+  SITE corpus/knowledge/triage-thresholds.md:455
+     | shared constants table | `ops-invariants.md:17-25` | MATCHES (adds exact marker list and the 3500-byte truncation stub shape) |
+====================================================================================================
+EXCLUDED KEY ufo-archive-2026.md:31; citing sites at base: 1
+  cited ufo-archive-2026.md lines 31-31 (file 210 lines):
+      30| - `bounty-keeper/` — `[lost-tree] fleets/ufo-archive-2026/bounty-keeper/keeper.mjs`: saturated a 16-pane wall, `LAUNCH_CAP 384`,
+  >>  31|   12 h night budget, spawned `b1k-NNN` runs via `~/Projects/ufo-fsd-alpha/scripts/ufo-sighting.mjs` (recorded as `origin-work/ufo-fsd-alpha` at census time; the tree relocated to `~/Projects/ufo-fsd-alpha` 2026-10-12, file survives at HEAD `964f443e`). State:
+      32|   launched 265, halted `night_budget` 2026-09-11T09:37Z. **This is the
+  SITE corpus/knowledge/root-loss-2026-10-12.md:68
+       (`ufo-archive-2026.md:31`, `ufo-workspaces.md` twice) and left as recorded

@@ -1,0 +1,24 @@
+# H2: statements in corpus/knowledge/presigned-url-credentials-in-captured-evidence.md falsified by the C2 landing
+
+## s1  line 13 says the shape set is the gate's patterns 'plus two AWS shapes it adds (instrument lines 21-31)'
+The scanner is the lane's instrument, `corpus/instruments/capture-secret-scan.py` (capability row `SCORECARD.md:307`). Its shape set is the claim-package gate's `SECRET_PATTERNS`, imported from `corpus/instruments/claim-package-check.py` beside it, plus two AWS shapes it adds (instrument lines 21-31) — a lane design choice, not an AWS statement.
+reproduce: grep -n 'gcs-signed-url-signature\|azure-sas-signature' corpus/instruments/capture-secret-scan.py | head -2
+32:  gcs-signed-url-signature  (round 88) `X-Goog-Signature=<hex>` (query string)
+37:  azure-sas-signature    (round 88) a `sig=<value>` query parameter of 40+
+
+## s2  line 111 (FC-4) says --selftest | tail -1 prints cases=19
+**FC-4 — the exception is one exact string.** `grep -n 'AKIA' corpus/source-snapshots/round-87/S124.txt` prints four l
+reproduce: python3 -B corpus/instruments/capture-secret-scan.py --selftest | tail -1
+SELFTEST-RESULT pass cases=33
+
+## s3  line 69 anchors the output/exit contract at 'instrument lines 41-46'
+The command is `python3 -B corpus/instruments/capture-secret-scan.py --files <path>...`. It scans exactly the named work
+reproduce: grep -n 'Output never prints\|Exit 0 when nothing matched' corpus/instruments/capture-secret-scan.py
+57:Output never prints a matched value: `HIT shape=<s> path=<p> line=<n>` per
+62:Exit 0 when nothing matched, 1 when anything matched, 2 on usage or read error.
+-- same grep at the base revision --
+41:Output never prints a matched value: `HIT shape=<s> path=<p> line=<n>` per
+46:Exit 0 when nothing matched, 1 when anything matched, 2 on usage or read error.
+
+## control: FC-6 line 115 reproduces unchanged
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=2 unused_allow=15 rc=0

@@ -1,0 +1,50 @@
+================================================================================
+SIBLING LANE OVERLAP SCAN: SIGNED URLS & CLOUD CREDENTIALS
+================================================================================
+Scope: 20 sibling lanes in /home/vgpnk/Projects/shokunin/*-shokunin
+Surfaces: corpus/instruments/, tools/, corpus/knowledge/, corpus/SOURCES.md, SKILL.md, .ufo/
+--------------------------------------------------------------------------------
+
+1. ACTIVE INSTRUMENTS & SCRIPTS IN SIBLING LANES:
+   - kengaku-shokunin/.ufo/waves/round-53/w3/R53SentinelFetch2/scan_extended.py:27
+     Rule: ('credential', 'signed-url-param', re.compile(r'(?i)[?&](?:X-Amz-Signature|X-Amz-Credential|sig|signature|access_token|token)=[A-Za-z0-9._%\-]{16,}'))
+     Significance: Detects query parameter signatures across AWS and generic sig= parameters.
+   - kagi-shokunin/corpus/transcript-scan.sh:83-95
+     Rule: PATTERNS_HIT over sqlite transcript cells (op://, -----BEGIN, AKIA, ASIA, ghp_, xoxb-, sk-ant-, ya29., eyJhbG).
+     Significance: Targets developer API keys in relational DB; does not scan query string signed URLs.
+
+2. KNOWLEDGE ENTRIES IN SIBLING LANES:
+   - kagi-shokunin/corpus/knowledge/secret-scanning-detection-vs-validation.md:8-73
+     Content: Analyzes Gitleaks (pattern/entropy detection) vs TruffleHog (live verification).
+     Significance: Conceptual framework for detection vs validation; no cloud signed URL parameter specs.
+
+3. HISTORICAL SENTINEL CHECKS & EVIDENCE IN SIBLING LANES:
+   - kengaku-shokunin/.ufo/waves/round-32/build/R32Sentinel.md:14
+     Match: Signed-URL params X-Amz-Signature/GoogleAccessId/Signature=
+     Significance: Explicitly identifies GCS V2 signed URL parameter (GoogleAccessId).
+   - kotodama-shokunin/.ufo/waves/round-74/w2/SentinelLanded.md:463
+     Match: Presigned-URL parameter check (X-Amz-Signature|X-Amz-Credential|Signature=|access_token=|api_key=|sig=)
+   - kotodama-shokunin/.ufo/waves/round-74/w1/SentinelScope.md:90
+     Match: Regex check over evidence paths for presigned or signed URLs.
+   - kama-shokunin/.ufo/waves/round-47/w1/out/S1Rows/model-head.txt:4
+     Match: Upstream HTTP 302 Location header containing CloudFront signed URL parameters (Expires, Policy, Signature, Key-Pair-Id).
+   - kama-shokunin/.ufo/waves/round-48/w1/out/S1Gate/loc1.txt:1
+     Match: CloudFront signed URL redirect in HuggingFace CDN fetch.
+   - kengaku-shokunin/.ufo/waves/round-95/w1/ScoutSources/receipts/net/config.headers:5
+     Match: Upstream HTTP 307 Location header containing CloudFront signed URL parameters (Expires, Signature, Key-Pair-Id).
+   - mado-shokunin/.ufo/waves/round-18/w1/reports/RevFetchReceiptContract.md:577
+     Match: Query parameter check forbidding sessionid, sig, signature, x-amz-signature.
+   - kotoba-shokunin/.ufo/round-44/evidence/omp-live-18.12.2-strings.txt:2877, :33927
+     Match: Decompiled runtime binary strings containing X-Amz-Security-Token and X-Amz-Signature.
+
+4. REUSE VS DUPLICATION ASSESSMENT FOR KASEGI:
+   - What kasegi could REUSE:
+     * CloudFront signed URL query parameters (Key-Pair-Id, Signature, Policy) as evidenced in kama/kengaku CDN headers.
+     * GCS V2 signed URL parameter shape (GoogleAccessId + Signature=) documented in kengaku R32Sentinel.
+     * Sibling regex patterns unifying query-credential parameters under strict length and prefix bounds.
+   - What kasegi must NOT duplicate:
+     * kagi transcript-scan.sh SQLite scanning (out-of-scope for kasegi bounty captures).
+     * mado real-time shell spawn interception (kasegi is static file/git-blob scanning).
+     * mori host privacy/retention gates (kasegi focuses on domain vulnerability evidence).
+     * Loose un-allowlisted shell grep one-liners without formal test harness.
+================================================================================

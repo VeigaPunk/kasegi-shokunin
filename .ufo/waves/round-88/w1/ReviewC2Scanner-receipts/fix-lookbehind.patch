@@ -1,0 +1,13 @@
+diff --git a/corpus/instruments/capture-secret-scan.py b/corpus/instruments/capture-secret-scan.py
+index e509ee2..6173f03 100755
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -84,7 +84,7 @@ CLOUD_PATTERNS = (
+     ("gcs-signed-url-signature", re.compile(
+         rb"(?i)X-Goog-Signature(?:=|\\?[\"']?\s*:\s*\\?[\"']?)[0-9a-f]{64,}")),
+     ("azure-sas-signature", re.compile(
+-        rb"(?i)(?<![A-Za-z0-9_])(?:" + _SV + _PARAM + _SEP + _SIG + rb"|" + _SIG + _PARAM + _SEP + _SV + rb")")),
++        rb"(?i)(?:(?<![A-Za-z0-9_])|(?<=\\u0026)|(?<=%26))(?:" + _SV + _PARAM + _SEP + _SIG + rb"|" + _SIG + _PARAM + _SEP + _SV + rb")")),
+ )
+ ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
+ NEVER_ALLOWED = frozenset({"aws-sts-session-token"})

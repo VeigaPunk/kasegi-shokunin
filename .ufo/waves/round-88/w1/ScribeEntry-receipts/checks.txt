@@ -1,0 +1,62 @@
+# ScribeEntry (round 88, attempt 1) — measured checks for the knowledge-entry candidate
+# candidate: .ufo/waves/round-88/w1/ScribeEntry-candidate/corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md
+# run 2026-11-07 from /home/vgpnk/Projects/shokunin/kasegi-shokunin, python3 -B, scratch TMPDIR=/fast/scratch/hyaku/kasegi-r88/ScribeEntry
+# every line below is copied from the run's stdout; no credential value appears in any of it
+
+## entry line 5 (`recheck:`), `bash -n` parse then executed from the lane root
+S126:sha256 OK
+S126:Q01-possession OK occurrences=1 anchor=424-ok
+S126:Q02-signature-param OK occurrences=1 anchor=487-ok
+S127:sha256 OK
+S127:Q01-sig-hmac-base64 OK occurrences=1 anchor=404-ok
+S127:Q02-example-uri OK occurrences=1 anchor=605-ok
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+recheck_rc=0
+
+## FC-1 — quote spans (normalized=whitespace)
+S126:423-424 occurrences=1 expected=1 anchored=y words=24 OK
+S126:433-434 occurrences=1 expected=1 anchored=y words=12 OK
+S126:450-451 occurrences=1 expected=1 anchored=y words=18 OK
+S126:481-482 occurrences=1 expected=1 anchored=y words=18 OK
+S126:487-488 occurrences=1 expected=1 anchored=y words=14 OK
+S127:402-404 occurrences=1 expected=1 anchored=y words=22 OK
+S127:599-599 occurrences=1 expected=1 anchored=y words=15 OK
+S127:601-601 occurrences=1 expected=1 anchored=y words=17 OK
+S127:605-605 occurrences=1 expected=1 anchored=y words=1 OK
+S127:638-638 occurrences=2 expected=2 anchored=y words=1 OK
+S127:639-639 occurrences=1 expected=1 anchored=y words=17 OK
+QUOTE-CHECK pass spans=11 bad=0
+exit=0
+
+## FC-2 — missing-source and corrupted-source controls
+S999:source UNAVAILABLE reason=not-listed
+missing_rc=2
+S126:sha256 MISMATCH expected=b04de8a94c7905d8b768b8dcd7d7e354df3f972ef292bb3e1a1f36aea000b83d actual=b5b7c4a37503f6deaea4d345e880a73c82fdba6cc7a7402a82361aac1d4ef6c3
+corrupt_rc=1
+exit=0
+
+## FC-3 — pinned captures: digests plus scanner
+b04de8a94c7905d8b768b8dcd7d7e354df3f972ef292bb3e1a1f36aea000b83d  corpus/source-snapshots/round-88/S126.txt
+66f8a35e9d598e5f5eecedd9003a7ba7f99c1eda24963e4cf1891245bdfb1312  corpus/source-snapshots/round-88/S127.txt
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+exit=0
+
+## FC-5 — provider scope and instrument pin
+S126 azure_sas=0
+S127 google=0
+d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417
+exit=0
+
+## FC-6 — redaction rule line and redaction blocks
+Every JSON string value containing `X-Amz-` keeps its scheme/host/path and
+loses its query string, replaced by `?[presigned-query-redacted-r86]`.
+r88_redaction_blocks=0
+r86_pre_digest_len=64 keys=applied_utc,note,pre_redaction_bytes,pre_redaction_sha256,removed,strings,tool
+exit=0
+
+## FC-7 — the wrapped-signature miss is the wrap (scratch copy of the pinned capture, joined at the wrap)
+HIT shape=gcs-signed-url-signature path=/fast/scratch/hyaku/kasegi-r88/ScribeEntry/tmp.B30qwWuOld/S126-joined.txt line=466
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1
+joined_rc=1
+exit=0
+# the tmp dir name is random per run; the fixture was deleted by the recipe's last line

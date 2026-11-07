@@ -1,0 +1,108 @@
+# MutC2Counter survey receipt (round-88, attempt 1)
+counter=.ufo/waves/round-88/c2/capability-check.py counter_sha256=7bf648df5c72bf2e89bbafb1dad1447fc7b45b5ad4caa18c3382368ddf75ecdc
+base=6beead9148945fa695cf3139e8fc9d8e91cc5fd0 c2_landing=b43dc2154bc09470da2209fb626021da3af3593e
+controls_script=.ufo/waves/round-88/controls/c2-controls-r88.sh sha256=190510998cc1786a89684752128397db9234f80f913d0c12ce90e2a0e81f0575
+controls_receipt=.ufo/waves/round-88/controls/c2-controls-r88.txt sha256=5aa9cdcd1df29ec23206c221ee7dd7be47351bb1bc6953596038c7c41977ec07
+base_instrument_sha256=b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1
+
+## A. baseline reproduction (frozen counter over the 13 executed controls, rebuilt in scratch)
+donothing   expected=fail/1 reproduced=fail/1 match=yes limbs=K1:FAIL K2:pass K3:pass K4:FAIL K5:FAIL K6:pass
+pos         expected=pass/0 reproduced=pass/0 match=yes limbs=K1:pass K2:pass K3:pass K4:pass K5:pass K6:pass
+wrongsha    expected=fail/1 reproduced=fail/1 match=yes limbs=K1:FAIL K2:pass K3:pass K4:pass K5:pass K6:pass
+norow       expected=fail/1 reproduced=fail/1 match=yes limbs=K1:pass K2:pass K3:pass K4:pass K5:FAIL K6:pass
+r87         expected=fail/1 reproduced=fail/1 match=yes limbs=K1:pass K2:pass K3:pass K4:FAIL K5:pass K6:pass
+noscope     expected=fail/1 reproduced=fail/1 match=yes limbs=K1:FAIL K2:pass K3:pass K4:FAIL K5:pass K6:pass
+nogcs       expected=fail/1 reproduced=fail/1 match=yes limbs=K1:FAIL K2:pass K3:pass K4:FAIL K5:pass K6:pass
+loosesas    expected=fail/1 reproduced=fail/1 match=yes limbs=K1:FAIL K2:pass K3:pass K4:FAIL K5:pass K6:pass
+nojsonsep   expected=fail/1 reproduced=fail/1 match=yes limbs=K1:FAIL K2:pass K3:pass K4:FAIL K5:pass K6:pass
+shortgcs    expected=fail/1 reproduced=fail/1 match=yes limbs=K1:FAIL K2:pass K3:pass K4:FAIL K5:pass K6:pass
+filesclean  expected=fail/1 reproduced=fail/1 match=yes limbs=K1:pass K2:pass K3:pass K4:FAIL K5:pass K6:pass
+stsallow    expected=fail/1 reproduced=fail/1 match=yes limbs=K1:pass K2:pass K3:pass K4:FAIL K5:pass K6:pass
+alwaysclean expected=fail/1 reproduced=fail/1 match=yes limbs=K1:pass K2:FAIL K3:pass K4:FAIL K5:pass K6:pass
+baseline_matches_frozen_txt=13/13
+note(r87): the frozen script builds this control from the LANE WORKING TREE (corpus/instruments/capture-secret-scan.py), which the C2 landing replaced; post-landing the control degenerates to a second `pos` (first attempt printed r87 pass rc=0). Reproduced here from git show 6beead91:corpus/instruments/capture-secret-scan.py (sha256 above), where it fails K4 as the frozen receipt says.
+
+## B. mutant table (24 single-point mutants; each applied to a scratch copy of the counter)
+mutant                         sha256[:16]      class          killing control / reason
+K1-drop-gate-sha               577aebde6934716c killed-designed gate-pin-wrong
+K1-drop-selftest               10c04f1a2e591934 killed-designed selftest-red
+K2-drop-oracle-expected        8c103ec955937500 unkillable     frozen history
+K2-len-compare                 2f92e8c223ae827f killed-designed sts-path-misattributed
+K3-drop-allowed                ea476c1819225bb1 equivalent     redundant given 18/18 rows used
+K3-drop-hits0                  134574fe694830cc equivalent     redundant with `not hits`
+K3-drop-unused                 54147ec07c73ac4d killed-designed stale-allow-row
+K4-drop-new-union              6c9859a1bd497cd2 killed-frozen  pos, wrongsha, norow (extra/missing set)
+K4-drop-rc1                    669b5ae2edf65df0 killed-designed rc-zero-fixture-only
+K4-files-always-true           2728c606c6bb1719 killed-frozen  filesclean
+K4-files-subset                68a06529d007d75f equivalent     see equivalence receipt
+K4-plant-remove-gcs-fixture    fb8178d598fc66f2 killed-frozen  pos, wrongsha, norow
+K4-spurious-expected           83a687573f592c9a killed-frozen  pos, wrongsha, norow
+K4-stsallow-rc-ge1             8a2a980e0e1d86be killed-frozen  stsallow
+K4-subset-hits                 67565b880b2414e6 limb-only      noscope/nogcs/nojsonsep flip the K4 limb; verdict cannot flip (K1 fails in the same controls)
+K5-last-cell-any               ea10bb37704b0c7d killed-designed row-wrong-round
+K5-len-ge                      3acb7d2fa8443a37 killed-designed row-duplicated
+K5-needle-any                  66d4bb88ef6c2abc killed-designed row-gcs-only
+K5-needle-drop-azure           4acdab93899e0f4d killed-designed row-no-azure
+K6-base-rev-candidate          ef39b0c74645de6d killed-frozen  pos
+K6-drop-base-rc                e6fe0f057c9919d6 unkillable     constants
+K6-drop-caught                 e6e4699fbcdef473 unkillable     constants + scope-confound
+RESULT-any                     fe78883086356461 killed-frozen  12 of 13 controls (all but pos)
+RESULT-rc0                     f811f516b99613c6 killed-frozen  12 of 13 controls (all but pos)
+totals=equivalent:3 killed-designed:9 killed-frozen:8 limb-only:1 unkillable:3 n=24
+verdict-level kills: 8 by frozen controls + 9 by designed controls = 17/24
+
+## C. mutation specs (a => b, one occurrence each, asserted)
+K1-drop-gate-sha               and (not a.gate_sha256 or gsha == a.gate_sha256.lower()) => and True
+K1-drop-selftest               ok = (rc == 0 and "SELFTEST-RESULT pass" in out => ok = (True
+K2-drop-oracle-expected        ok = rc == 1 and oracle == set(HISTORY_EXPECTED) and sts == oracle => ok = rc == 1 and sts == oracle
+K2-len-compare                 and sts == oracle\n => and len(sts) == len(oracle)\n
+K3-drop-allowed                and summ[3] >= 1 and not hits) => and not hits)
+K3-drop-hits0                  ok = bool(rc == 0 and summ and summ[1] == 0 and => ok = bool(rc == 0 and summ and
+K3-drop-unused                 and summ[4] == 0 and => and
+K4-drop-new-union              PLANT_EXPECT = PLANT_EXPECT | NEW_EXPECT => PLANT_EXPECT = PLANT_EXPECT
+K4-drop-rc1                    ok = rc == 1 and hits == set(PLANT_EXPECT) => ok = hits == set(PLANT_EXPECT)
+K4-files-always-true           fok = rc3 == 1 and fhits == {(f1, "azure-sas-signature")} => fok = True
+K4-files-subset                fok = rc3 == 1 and fhits == {(f1, "azure-sas-signature")} => fok = rc3 == 1 and (f1, "azure-sas-signature") in fhits
+K4-plant-remove-gcs-fixture        "corpus/source-snapshots/round-1/S004.txt":\n =>     "corpus/source-snapshots/round-1/S004.txt-removed":\n
+K4-spurious-expected               ("w/z-receipts/live-c.json", "azure-sas-signature"),\n}) =>     ("w/z-receipts/live-c.json", "azure-sas-signature"),\n    ("corpus/source-snapshots/round-1/S003.txt", "aws-access-key-id"),\n})
+K4-stsallow-rc-ge1             and rc2 == 2 and fok => and rc2 >= 1 and fok
+K4-subset-hits                             ok = rc == 1 and hits == set(PLANT_EXPECT) and rc2 == 2 and fok =>             ok = rc == 1 and hits <= set(PLANT_EXPECT) and rc2 == 2 and fok
+K5-last-cell-any               ok = len(rows) == 1 and rows[0][-1] == "87" and all( => ok = len(rows) == 1 and all(
+K5-len-ge                      ok = len(rows) == 1 and => ok = len(rows) >= 1 and
+K5-needle-any                  all(n in " ".join(rows[0]) for n in need) => any(n in " ".join(rows[0]) for n in need)
+K5-needle-drop-azure           need = ("gcs-signed-url-signature", "azure-sas-signature", => need = ("gcs-signed-url-signature",
+K6-drop-base-rc                ok = rcb == 1 and not caught => ok = not caught
+K6-drop-caught                 ok = rcb == 1 and not caught and => ok = rcb == 1 and
+RESULT-any                     allok = all(ok for _, ok, _ in limbs) => allok = any(ok for _, ok, _ in limbs)
+RESULT-rc0                     return 0 if allok else 1 => return 0
+K6-base-rev-candidate          git(lane, "show", "%s:corpus/instruments/%s" % (BASE_REV, f)) => git(lane, "show", "%s:corpus/instruments/%s" % (rev, f))
+
+## D. per-control verdicts for every mutant
+K1-drop-gate-sha               alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K1-drop-selftest               alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K2-drop-oracle-expected        alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K2-len-compare                 alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K3-drop-allowed                alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K3-drop-hits0                  alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K3-drop-unused                 alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K4-drop-new-union              alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=fail/1 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K4-drop-rc1                    alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K4-files-always-true           alwaysclean=fail/1 donothing=fail/1 filesclean=pass/0 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K4-files-subset                alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K4-plant-remove-gcs-fixture    alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=fail/1 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K4-spurious-expected           alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=fail/1 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K4-stsallow-rc-ge1             alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=pass/0 wrongsha=fail/1
+K4-subset-hits                 alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K5-last-cell-any               alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K5-len-ge                      alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K5-needle-any                  alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K5-needle-drop-azure           alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K6-drop-base-rc                alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+K6-drop-caught                 alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=pass/0 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+RESULT-any                     alwaysclean=pass/0 donothing=pass/0 filesclean=pass/0 loosesas=pass/0 nogcs=pass/0 nojsonsep=pass/0 norow=pass/0 noscope=pass/0 pos=pass/0 r87=pass/0 shortgcs=pass/0 stsallow=pass/0 wrongsha=pass/0
+RESULT-rc0                     alwaysclean=fail/0 donothing=fail/0 filesclean=fail/0 loosesas=fail/0 nogcs=fail/0 nojsonsep=fail/0 norow=fail/0 noscope=fail/0 pos=pass/0 r87=fail/0 shortgcs=fail/0 stsallow=fail/0 wrongsha=fail/0
+K6-base-rev-candidate          alwaysclean=fail/1 donothing=fail/1 filesclean=fail/1 loosesas=fail/1 nogcs=fail/1 nojsonsep=fail/1 norow=fail/1 noscope=fail/1 pos=fail/1 r87=fail/1 shortgcs=fail/1 stsallow=fail/1 wrongsha=fail/1
+
+## E. restoration evidence
+counter_sha256_after_sweep=7bf648df5c72bf2e89bbafb1dad1447fc7b45b5ad4caa18c3382368ddf75ecdc (unchanged: mutants ran from scratch copies under /fast/scratch/hyaku/kasegi-r88/MutC2Counter/mut/)
+lane writes by this seat: none outside .ufo/waves/round-88/w1/ (read-only git: clone --shared, show, grep, rev-parse)

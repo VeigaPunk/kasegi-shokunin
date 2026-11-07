@@ -1,0 +1,21 @@
+# Predicate gap: a landing commit that carries 1 of the 8 repointed files, with the other 7
+# left UNCOMMITTED in the clone's working tree, passes BOTH C1 P1 (meter reads the working tree) and P1's
+# companion P3 (path list only). So P1+P3 do not bind the committed content; P1 must be run on a pristine
+# clone (git status --porcelain empty) or against the committed blobs.
+# (Built in scratch: clone --shared at the freeze, apply the frozen map, commit only corpus/knowledge/claim-gates.md.)
+simulated_landing=1e29b88f1135a41171045503f7b04443879f4462
+porcelain_lines=7
+
+KNOWLEDGE-METER base=703/1754 after=742/1743 target=742/1743 keys=50 mirror_absent=True
+LIMB M1 pass after=742/1743
+LIMB M2 pass removed=50 keys=50 stray_removed=0 stray_added=0 unrepaired=0
+LIMB M3 pass same_files=True bad_lines=0 keys_hit=50
+LIMB M4 pass bad=none
+LIMB M8 pass no_shared_identifier=none
+LIMB M5 pass out_of_range=none
+LIMB M6 pass sha256=5a731401a1f9145e24898a13c8a47be2135beabedde4352170cf2d2daa5d7960
+KNOWLEDGE-METER-RESULT pass rc=0
+P1_rc=0
+
+LANDING-SCOPE from=7f2ebebf to=1e29b88f changed=1 outside=0 verdict=PASS exit=0
+P3_rc=0

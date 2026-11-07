@@ -1,0 +1,19 @@
+# Separability: C1 and C2 are content-independent; only the commit graph chains them.
+# The landed candidate (copied beside the landing's gate) scans BOTH landings to the same summary:
+# the 8 knowledge files C1 changes are not capture-class paths, so C2 cannot see them.
+C1 landing rc=0 CAPTURE-SECRET-SCAN mode=rev:fd33e1bfe26ad9af13c138feb87c9f222be957cb scanned=1414 hits=0 files=0 allowed=18 unused_allow=0 rc=0
+C2 landing rc=0 CAPTURE-SECRET-SCAN mode=rev:b43dc2154bc09470da2209fb626021da3af3593e scanned=1414 hits=0 files=0 allowed=18 unused_allow=0 rc=0
+
+# Converse: the C1 meter on a clone of the C2 landing still reads 742/1743, so C2 changes
+# nothing in the knowledge scope. C2's P3 only takes the C1 landing as its `from` rev.
+cmd: python3 -B .ufo/waves/round-88/c1/knowledge-meter.py --lane <clone@b43dc215> --base-rev 6beead91 --map .ufo/waves/round-88/c1/repair-map.json --target 742/1743 --map-sha256 5a7314.. --work <scratch>
+KNOWLEDGE-METER base=703/1754 after=742/1743 target=742/1743 keys=50 mirror_absent=True
+LIMB M1 pass after=742/1743
+LIMB M2 pass removed=50 keys=50 stray_removed=0 stray_added=0 unrepaired=0
+LIMB M3 pass same_files=True bad_lines=0 keys_hit=50
+LIMB M4 pass bad=none
+LIMB M8 pass no_shared_identifier=none
+LIMB M5 pass out_of_range=none
+LIMB M6 pass sha256=5a731401a1f9145e24898a13c8a47be2135beabedde4352170cf2d2daa5d7960
+KNOWLEDGE-METER-RESULT pass rc=0
+rc=0

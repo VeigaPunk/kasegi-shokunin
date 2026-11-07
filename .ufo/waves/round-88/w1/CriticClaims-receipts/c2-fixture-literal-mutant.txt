@@ -1,0 +1,19 @@
+# K1-K4 are fixture-bound: a 'scanner' whose two new shapes match ONLY the literal fixture values that the
+# candidate's own selftest and the counter's PLANTS constants use still passes K1-K6 (no sha pin given, as the
+# frozen mutant controls do). Method (two mechanical replacements in the frozen candidate, nothing else):
+#   the GCS hex class [0-9a-f]{64,}  -> an alternation of the candidate-selftest and counter-PLANT 128-hex values
+#   the Azure _SIG body              -> sig=(alternation of the candidate-selftest and counter-PLANT values)
+# The sv-context wrapper is untouched, so S007 (sig without sv) stays correctly silent. The literal values are
+# already in the frozen candidate's selftest and the counter's PLANT constants and are NOT reproduced here
+# (credential-hygiene rule); the substitution is mechanical and reproducible from those two frozen files.
+mutant_instrument_sha256=d0433f6be11d658abb863f153a9140c3faa13c2938d34b5d009392b8e574a076
+
+CAPABILITY-CHECK rev=e565d6cdd487c6ccc1c465f33f8699a553271114 instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=d0433f6be11d658abb863f153a9140c3faa13c2938d34b5d009392b8e574a076 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1411,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+rc=0

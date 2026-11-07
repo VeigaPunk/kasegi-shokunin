@@ -1,0 +1,20 @@
+# planted-fixture scan: does HIT/receipt output print matched bytes?
+# fixture: one 380-byte capture with an STS token value, a 72-hex GCS signature and an Azure SAS sig
+# fixture sha256: 99551262726cfe4b29f1a46256089a53acb2d9f19e85fa58e3eb61009dd79bf2
+## --rev HEAD
+HIT shape=credential path=corpus/source-snapshots/round-88/live-capture.json line=1
+HIT shape=aws-sts-session-token path=corpus/source-snapshots/round-88/live-capture.json line=1
+HIT shape=gcs-signed-url-signature path=corpus/source-snapshots/round-88/live-capture.json line=2
+HIT shape=azure-sas-signature path=corpus/source-snapshots/round-88/live-capture.json line=3
+CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=1 hits=4 files=1 allowed=0 unused_allow=17 rc=1
+rc=1
+## --files <capture>
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r88/SentinelRegex/leak/repo/corpus/source-snapshots/round-88/live-capture.json line=1
+HIT shape=aws-sts-session-token path=/fast/scratch/hyaku/kasegi-r88/SentinelRegex/leak/repo/corpus/source-snapshots/round-88/live-capture.json line=1
+HIT shape=gcs-signed-url-signature path=/fast/scratch/hyaku/kasegi-r88/SentinelRegex/leak/repo/corpus/source-snapshots/round-88/live-capture.json line=2
+HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/SentinelRegex/leak/repo/corpus/source-snapshots/round-88/live-capture.json line=3
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=4 files=1 allowed=0 unused_allow=17 rc=1
+rc=1
+## --files <plain markers file, no capture path>
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+rc=0

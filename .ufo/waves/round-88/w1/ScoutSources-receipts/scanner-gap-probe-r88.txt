@@ -1,0 +1,37 @@
+# round-88 ScoutSources gap probe — LANDED instrument at C2 landing commit b43dc215
+# instrument sha256 d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 (copied read-only into scratch)
+# fixtures are synthetic; fixture bytes stay in scratch and are deleted on exit; the receipt carries only
+# the scanner's HIT/summary lines (which never print a matched value) and each fixture's sha256.
+
+== fixture G1_cloudfront  sha256=932fd5fcb2bab64e0f5b9556d102c37c7b07d037412d6e576cb2ee70e048afdb
+   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+   exit=0
+== fixture G2_gcs_v2  sha256=6675e0eced8907a9e32b421f5f9f5b62dc7bb090b9fe5b4c17aacfccbd77b96a
+   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+   exit=0
+== fixture G3_azure_ud_no_sv  sha256=5834a43c6ffb24eade07416a6a6ebccdbdca19ae39cd42e3452607225c29cb9a
+   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+   exit=0
+== fixture G4_azure_ud_with_sv  sha256=8fc5a948996cec3f34731959281adc05a2a434a5b84d3bb5730a8c2685073bc8
+   HIT shape=azure-sas-signature path=../probe/G4_azure_ud_with_sv.txt line=1
+   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1
+   exit=1
+== fixture G5_h1_expiring_url  sha256=5fd1eb44c0abf61a5c6f00328d71865ccb2f6f7f954647e7effb2f6ca80d2f8c
+   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+   exit=0
+== fixture G6_gh_raw_token  sha256=eaab3d8aa395fd5db83e11677c6f801c892cd68febfbd8e30879417857db4cab
+   HIT shape=credential path=../probe/G6_gh_raw_token.txt line=1
+   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1
+   exit=1
+== fixture G7_gh_raw_token_pct  sha256=b53e86a073f0568833154d6696d46fcf8ba6b1a21a68257c6227b53688f8faaf
+   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+   exit=0
+== fixture G8_s3_xamz_sig_only  sha256=b3b25c0f2df8b8a75df8fc3d871857f09ffae06a9aba1d2e632c86458b547b62
+   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+   exit=0
+== fixture G9_positive_control  sha256=8d58d38577204c71ad6b1abb84ed5c31c0217ab6de1201b6639006175653081a
+   HIT shape=credential path=../probe/G9_positive_control.txt line=1
+   HIT shape=aws-sts-session-token path=../probe/G9_positive_control.txt line=1
+   HIT shape=aws-access-key-id path=../probe/G9_positive_control.txt line=1
+   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=3 files=1 allowed=0 unused_allow=17 rc=1
+   exit=1

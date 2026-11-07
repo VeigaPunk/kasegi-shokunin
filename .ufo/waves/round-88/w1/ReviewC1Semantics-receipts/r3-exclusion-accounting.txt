@@ -1,0 +1,18 @@
+# r3 — exclusion accounting reproduction, coverage gap, counter blind spot
+# base for citing-site scans: 6beead9148945fa695cf3139e8fc9d8e91cc5fd0
+
+excluded keys with a reason string: 54
+reason-string mismatches: 0 []
+
+# coverage of eligible base citations (single-range keys), map+excluded vs neither:
+eligible single-range citation sites covered by map+excluded: 147
+not covered: 1 [('corpus/knowledge/triage-thresholds.md', 453, 'claim-gates.md:3-6')]
+
+# comma-list citations of knowledge entries at the landing (outside the map key grammar):
+440:| 9.8 | `claim-check.mjs` never validates manifest `schema_version`, `provenance.json` pins/`policy_sha256`/`external_effects_performed`, `status.severity`, or `status.reward` — the tokens do not appear in the file. Those `corpus/knowledge/claim-package-contract.md` rows are contract-by-convention. | grep of `claim-check.mjs` for `schema_version\|policy_sha256\|external_effects\|reward\|severity\|mission_id` → only `title` (183, 194) matches | `claim-package-contract.md:13,15,33-38` (implies gate-enforced) |
+453:| claim-check gate list + error-based discovery | `claim-gates.md:3-6, 8-74` | MATCHES (this entry adds exact trigger conditions, numeric bounds, and per-gate line numbers) |
+457:| six-file package contract | `claim-package-contract.md:9-16, 28-38` | MATCHES for gate-enforced rows; §9.8 marks the convention-only rows |
+
+# counter reads excluded.json? (grep for a limb that consumes it)
+39:               backticked or double-quoted spans, path-like spans excluded; a
+-> only the M8 docstring phrase 'path-like spans excluded'; no limb loads .ufo/waves/round-88/c1/excluded.json

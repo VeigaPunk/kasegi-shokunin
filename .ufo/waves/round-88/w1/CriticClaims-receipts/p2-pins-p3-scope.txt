@@ -1,0 +1,17 @@
+# CriticClaims re-run: P2 pins (claims.json instruments) at both landings, and P3 landing scope
+
+P2 fd33e1bf pins=15 bad=0
+P2 b43dc215 pins=15 bad=0
+
+# C1 freeze->landing
+LANDING-SCOPE from=7f2ebebf to=fd33e1bf changed=8 outside=0 verdict=PASS exit=0
+rc=0
+
+# C2 C1landing->landing
+LANDING-SCOPE from=fd33e1bf to=b43dc215 changed=2 outside=0 verdict=PASS exit=0
+rc=0
+
+# negative: empty diff (must FAIL, no vacuous pass)
+LANDING-SCOPE from=7f2ebebf to=7f2ebebf changed=0 outside=0 verdict=FAIL exit=1
+rc=1
+

@@ -1,0 +1,439 @@
+[
+ {
+  "mutant": "param-bound-1",
+  "note": "sv then FOUR intervening parameters then sig (realistic SAS ordering)",
+  "pristine": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-param-bound-1-1492/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "sig-threshold-32",
+  "note": "negative: 35-char sig beside sv must not be a hit",
+  "pristine": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-sig-threshold-32-2308/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "sv-hardcoded-version",
+  "note": "newer storage service version",
+  "pristine": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-sv-hardcoded-version-7978/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "gcs-threshold-80",
+  "note": "72-hex GCS signature (inside the un-pinned 64..79 window)",
+  "pristine": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=gcs-signed-url-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-gcs-threshold-80-2041/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "gcs-threshold-128",
+  "note": "96-hex GCS signature",
+  "pristine": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=gcs-signed-url-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-gcs-threshold-128-2167/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "gcs-nocase",
+  "note": "lower-case parameter name",
+  "pristine": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=gcs-signed-url-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-gcs-nocase-9370/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "param-name-max3",
+  "note": "5-character intervening parameter name (user-delegation SAS)",
+  "pristine": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-param-name-max3-7300/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "lookbehind-drop",
+  "note": "negative: sv= run into a longer parameter name",
+  "pristine": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-lookbehind-drop-9977/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "lookbehind-drop",
+  "note": "positive: the JSON-escaped SAS position ReviewC2Scanner F1 reports as missed (sv after \\u0026)",
+  "pristine": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-lookbehind-drop-6674/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "lookbehind-allow-underscore",
+  "note": "negative: sv= run into an underscored parameter name",
+  "pristine": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-lookbehind-allow-underscore-9053/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "sig-padding-drop",
+  "note": "40-char sig with literal padding",
+  "pristine": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-sig-padding-drop-7195/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-sig-padding-drop-7195/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "detector_separates": false
+ },
+ {
+  "mutant": "sig-padding-drop",
+  "note": "percent-encoded padding sits inside the value class already",
+  "pristine": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-sig-padding-drop-3197/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=azure-sas-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-sig-padding-drop-3197/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "detector_separates": false
+ },
+ {
+  "mutant": "gcs-json-quote-drop",
+  "note": "JSON-key form (selftest-only ground)",
+  "pristine": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=gcs-signed-url-signature path=/fast/scratch/hyaku/kasegi-r88/MutC2Scanner/probe/fixture-gcs-json-quote-drop-2531/probe.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "scope-prefix-loose",
+  "note": "negative: a sibling corpus/ tree is NOT corpus/practice/<pkg>/evidence/",
+  "plants": [
+   "corpus/practice2/p/evidence/F.txt"
+  ],
+  "pristine": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=1411 hits=0 files=0 allowed=18 unused_allow=0 rc=0"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=aws-sts-session-token path=corpus/practice2/p/evidence/F.txt line=1",
+    "HIT shape=credential path=corpus/practice2/p/evidence/F.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=1412 hits=2 files=1 allowed=18 unused_allow=0 rc=1"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "scope-evidence-not-parts3",
+  "note": "negative: evidence nested one level deeper than <pkg>/evidence/",
+  "plants": [
+   "corpus/practice/p/sub/evidence/F.txt"
+  ],
+  "pristine": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=1411 hits=0 files=0 allowed=18 unused_allow=0 rc=0"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=aws-sts-session-token path=corpus/practice/p/sub/evidence/F.txt line=1",
+    "HIT shape=credential path=corpus/practice/p/sub/evidence/F.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=1412 hits=2 files=1 allowed=18 unused_allow=0 rc=1"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "scope-min-depth6",
+  "note": "the positive <pkg>/evidence/<file> form the depth guard drops",
+  "plants": [
+   "corpus/practice/p/evidence/F.txt"
+  ],
+  "pristine": {
+   "rc": 1,
+   "hits": [
+    "HIT shape=aws-sts-session-token path=corpus/practice/p/evidence/F.txt line=1",
+    "HIT shape=credential path=corpus/practice/p/evidence/F.txt line=1"
+   ],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=1412 hits=2 files=1 allowed=18 unused_allow=0 rc=1"
+   ],
+   "selftest": []
+  },
+  "mutant_run": {
+   "rc": 0,
+   "hits": [],
+   "summary": [
+    "CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=1402 hits=0 files=0 allowed=18 unused_allow=0 rc=0"
+   ],
+   "selftest": []
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "selftest-drop-gcs-json-key",
+  "note": "selftest case deleted; every limb still passes",
+  "pristine": {
+   "rc": 0,
+   "screened": [
+    "SELFTEST gcs-json-key ok got=gcs-signed-url-signature",
+    "SELFTEST-RESULT pass cases=33"
+   ]
+  },
+  "mutant_run": {
+   "rc": 0,
+   "screened": [
+    "SELFTEST-RESULT pass cases=32"
+   ]
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "selftest-drop-azure-html-amp",
+  "note": "selftest case deleted; every limb still passes",
+  "pristine": {
+   "rc": 0,
+   "screened": [
+    "SELFTEST azure-html-amp ok got=azure-sas-signature",
+    "SELFTEST-RESULT pass cases=33"
+   ]
+  },
+  "mutant_run": {
+   "rc": 0,
+   "screened": [
+    "SELFTEST-RESULT pass cases=32"
+   ]
+  },
+  "detector_separates": true
+ },
+ {
+  "mutant": "selftest-case-count-zero",
+  "note": "selftest report no longer counts cases",
+  "pristine": {
+   "rc": 0,
+   "screened": [
+    "SELFTEST-RESULT pass cases=33"
+   ]
+  },
+  "mutant_run": {
+   "rc": 0,
+   "screened": [
+    "SELFTEST-RESULT pass cases=0"
+   ]
+  },
+  "detector_separates": true
+ }
+]
