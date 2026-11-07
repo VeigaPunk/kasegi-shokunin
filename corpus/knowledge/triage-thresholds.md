@@ -85,9 +85,9 @@ score = priority_hit(9e12) + continue_verdict(2e12) + curated_ev(1e12)
 |---|---|---|---|---|
 | priority | `id ∈ fleets/priority.json` `priority[]` (missing file → `{priority:[]}`) | `9e12` = 9,000,000,000,000 | 91, 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-88`, `corpus/knowledge/mission-control.md:19` |
 | continue | `id ∈ {v.program : v.verdict === 'continue'}` from `docs/review-verdicts.jsonl` | `2e12` = 2,000,000,000,000 | 92-96, 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-88`, `corpus/knowledge/mission-control.md:19-20` |
-| curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES: `SKILL.md:182-184` (round-13 correction: earlier text omitted `is_live(1)`) and `SKILL.md:255-257` (`curated` is a boolean on non-empty `ev_inputs`, never an EV magnitude); see §2.2 |
+| curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES: `SKILL.md:182-185` (round-13 correction: earlier text omitted `is_live(1)`) and `SKILL.md:255-257` (`curated` is a boolean on non-empty `ev_inputs`, never an EV magnitude); see §2.2 |
 | reward | `(rec.reward?.min ?? 0) * 1000` | 50 → 5e4 … 10000 → 1e7 (observed) | 110 | SUPERSEDES: `SKILL.md:182-184` — the earlier text wrote `reward.min`; the current queue tail writes `reward.min×1000` |
-| freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-85`, `corpus/knowledge/mission-control.md:20-21`; SUPERSEDES: `SKILL.md:182-184,255-257` (round-13 correction: earlier text omitted `is_live(1)` and called `curated` an EV magnitude) |
+| freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-85`, `corpus/knowledge/mission-control.md:20-21`; SUPERSEDES: `SKILL.md:182-185,255-257` (round-13 correction: earlier text omitted `is_live(1)` and called `curated` an EV magnitude) |
 
 Sort is `(a,b) => b.score - a.score`, descending, stable (`[lost-base] fleet-dispatch.mjs:113`).
 
