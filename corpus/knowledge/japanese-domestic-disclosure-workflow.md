@@ -4,7 +4,7 @@ source: S041 — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf — �
 source: S042 — https://www.ipa.go.jp/security/todokede/vuln/process.html — 脆弱性関連情報の届出受付業務における取扱いプロセス (IPA), 最終更新日 2017年5月30日 (L123); ソフトウエア製品 1.–10. (L133-159) with 5.起算日の連絡 (L144-145); ウェブアプリケーション 1.–7. (L162-182); 自社製品 1.–8. (L184-200) — capture corpus/source-snapshots/round-28/S042.txt
 verified-at: 2026-10-25
 recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041 && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S042
-ground: F12 — adopts the staged package entry `japanese-domestic-disclosure-workflow.md` (`/home/vgpnk/Projects/shokuknow/merge/kasegi/`, read-only), re-grounded line by line on this round's captures; every quote below was re-located in `corpus/source-snapshots/round-28/`, none copied from the package bytes.
+ground: F12 — adopts the staged package entry `corpus/knowledge/japanese-domestic-disclosure-workflow.md` (`/home/vgpnk/Projects/shokuknow/merge/kasegi/`, read-only), re-grounded line by line on this round's captures; every quote below was re-located in `corpus/source-snapshots/round-28/`, none copied from the package bytes.
 
 ## The claim
 

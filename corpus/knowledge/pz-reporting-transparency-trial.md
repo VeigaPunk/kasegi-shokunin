@@ -49,7 +49,7 @@ The post introduces the list with "We will share:" (L23) and then gives exactly 
 
 > "Reporting Transparency is an alert, not a blueprint for attackers." — S017.txt:L34
 
-The section is headed "Will this help attackers?" and opens "No —" (L34); the limit is temporal — "until the deadline" — and the post states it once, for the trial as a whole, rather than report by report. This is also the sentence that separates this row from `vendor-disclosure-policies-as-corpus-objects.md` (F10): the notice discloses existence while the technical record waits.
+The section is headed "Will this help attackers?" and opens "No —" (L34); the limit is temporal — "until the deadline" — and the post states it once, for the trial as a whole, rather than report by report. This is also the sentence that separates this row from `corpus/knowledge/vendor-disclosure-policies-as-corpus-objects.md` (F10): the notice discloses existence while the technical record waits.
 
 ## Claim 4 — the target is the earlier gap, defined against the user-side one
 

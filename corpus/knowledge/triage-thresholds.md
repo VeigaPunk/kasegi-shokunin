@@ -33,13 +33,13 @@ This is the single derivation of the numeric thresholds the bounty pipeline
 runs on: queue admission weights (`fleet-dispatch.mjs::buildQueue`), package
 gates (`claim-check.mjs`), the adjusted-EV formula (`ev-report.mjs`), the
 shared constants every ops file imports (`shared.mjs`), and the record contract
-(`schema.json`). Narrative companions remain `claim-gates.md` (gate list),
-`ev-model.md` (EV), `ops-invariants.md` (shared constants) — the `Corpus tie`
+(`schema.json`). Narrative companions remain `corpus/knowledge/claim-gates.md` (gate list),
+`corpus/knowledge/ev-model.md` (EV), `corpus/knowledge/ops-invariants.md` (shared constants) — the `Corpus tie`
 column records the round-13 audit verdict per row: `MATCHES` (agreed) or
 `SUPERSEDES` (corrected the companion — every such target was repaired in
 place round-13, marker "round-13 correction"; §9 is the ledger). Out of scope
 here: `claim-index.mjs`,
-`prepare-claims.mjs`, `validate.mjs` (see `claim-gates.md`, `ops-invariants.md`).
+`prepare-claims.mjs`, `validate.mjs` (see `corpus/knowledge/claim-gates.md`, `corpus/knowledge/ops-invariants.md`).
 
 Pipeline order: **queue admission** (`buildQueue`) → **package validation**
 (`claim-check.mjs`) → **commit/tag/push** (`commitClaims`→`finalizePush`).
@@ -54,10 +54,10 @@ filter matches (`[lost-base] fleet-dispatch.mjs:88-114`):
 | Filter | Exact condition | Line | Corpus tie |
 |---|---|---|---|
 | unreadable record | `readJson(...)` falsy → skip | 100-101 | — |
-| leased | `leaseAlive(leases[id])`: `Date.parse(leases[id].expires_at) > Date.now()` | 102, 58 | MATCHES: `mission-control.md:20-24` |
+| leased | `leaseAlive(leases[id])`: `Date.parse(leases[id].expires_at) > Date.now()` | 102, 58 | MATCHES: `corpus/knowledge/mission-control.md:20-24` |
 | attempts exhausted | `attempts(id) >= MAX_ATTEMPTS` (MAX_ATTEMPTS = 2) | 103, 46 | MATCHES: `SKILL.md:117`, `mission-control.md:20-21` |
 | active mission | `readStatus(id)` exists AND its `state` ∉ TERMINAL — i.e. a non-terminal `fleets/run/<id>.status.json` blocks redispatch | 105 | MATCHES: `mission-control.md:20-21` |
-| delivered | `status.state === 'DONE'` (stated separately as "never redispatch") | 106 | MATCHES: `mission-control.md:21` |
+| delivered | `status.state === 'DONE'` (stated separately as "never redispatch") | 106 | MATCHES: `corpus/knowledge/mission-control.md:21` |
 
 `attempts(id)` = `max(0, parks − resets)`, where `parks` counts telemetry lines in
 `ledger/telemetry.jsonl` matching `"program": "<id>"[,}]` **and**
@@ -83,8 +83,8 @@ score = priority_hit(9e12) + continue_verdict(2e12) + curated_ev(1e12)
 
 | Weight | Exact trigger | Numeric | Line | Corpus tie |
 |---|---|---|---|---|
-| priority | `id ∈ fleets/priority.json` `priority[]` (missing file → `{priority:[]}`) | `9e12` = 9,000,000,000,000 | 91, 110 | MATCHES: `intake-surface.md:71`, `mission-control.md:19` |
-| continue | `id ∈ {v.program : v.verdict === 'continue'}` from `docs/review-verdicts.jsonl` | `2e12` = 2,000,000,000,000 | 92-96, 110 | MATCHES: `intake-surface.md:71`, `mission-control.md:19-20` |
+| priority | `id ∈ fleets/priority.json` `priority[]` (missing file → `{priority:[]}`) | `9e12` = 9,000,000,000,000 | 91, 110 | MATCHES: `intake-surface.md:71`, `corpus/knowledge/mission-control.md:19` |
+| continue | `id ∈ {v.program : v.verdict === 'continue'}` from `docs/review-verdicts.jsonl` | `2e12` = 2,000,000,000,000 | 92-96, 110 | MATCHES: `intake-surface.md:71`, `corpus/knowledge/mission-control.md:19-20` |
 | curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES: `SKILL.md:113-114` (four terms, no `is_live`) and `SKILL.md:175-176` (same omission; names the term `curated-EV` although the source tests only non-emptiness); see §2.2 |
 | reward | `(rec.reward?.min ?? 0) * 1000` | 50 → 5e4 … 10000 → 1e7 (observed) | 110 | SUPERSEDES: `SKILL.md:175` — that line writes `reward.min`, source multiplies by 1000 |
 | freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `intake-surface.md:72`, `mission-control.md:20-21`; SUPERSEDES: `SKILL.md:113-114,175-176` (term omitted) |
@@ -147,7 +147,7 @@ Consequences, all derived from the expression at line 110:
 | stagger/round-robin | `--models-rr m1,m2,m3 --rr-until <epochMs>`; active only while `Date.now() < RR_UNTIL` | 38-44 | MATCHES: `mission-control.md:38-40` |
 | poll interval | `setTimeout(tick, 30000)` = 30 s | 409 | MATCHES: `mission-control.md:13-14` |
 | `--sync` cadence | `tickCount % 10 === 0` (~5 min at 30 s ticks) | 352-353 | MATCHES: `mission-control.md:42-46` |
-| `SYNC_PATHS` | 11 entries: `claims/README.md, evidence, ledger, docs, ops, fleets/missions, bounty-map, fleets/registry.json, fleets/mission-template.md, README.md, .gitignore` | 348 | MATCHES: `mission-control.md:43-46` |
+| `SYNC_PATHS` | 11 entries: `claims/README.md, evidence, ledger, docs, ops, fleets/missions, bounty-map, fleets/registry.json, fleets/mission-template.md, README.md, .gitignore` | 348 | MATCHES: `corpus/knowledge/mission-control.md:43-46` |
 | grid/session | `SESSION='ufo_sighting'`, `GRID='formation'` | 27, 65 | MATCHES: `SKILL.md:526` |
 | limit-log window | log `mtimeMs` within `15 * 60e3` = 900,000 ms = 15 min; tail = last `20000` chars | 276-277 | MATCHES: `mission-control.md:40-45` |
 | off-peak window | `h = (getUTCHours() − 3 + 24) % 24; offpeak = h >= 12 && h < 22` (UTC−3) | 298-299 | MATCHES: `mission-control.md:36-38`, `SKILL.md:14-15` |
@@ -173,8 +173,8 @@ sites across 8 gate families.
 
 | Gate | Trigger (fails when) | Error template | Line | Corpus tie |
 |---|---|---|---|---|
-| arg/dir | no arg, or dir does not exist | `claim-check: usage: node ops/claim-check.mjs claims/<program-id>/<slug>` + exit 1 | 14-15 | MATCHES: `claim-gates.md:4-5` |
-| package root | `realpathSync(dir)` resolves the package once for symlink confinement | — | 16 | MATCHES: `claim-gates.md:21-23` |
+| arg/dir | no arg, or dir does not exist | `claim-check: usage: node ops/claim-check.mjs claims/<program-id>/<slug>` + exit 1 | 14-15 | MATCHES: `corpus/knowledge/claim-gates.md:4-5` |
+| package root | `realpathSync(dir)` resolves the package once for symlink confinement | — | 16 | MATCHES: `corpus/knowledge/claim-gates.md:21-23` |
 | required files | any of `report.md`, `claim_checklist.md`, `custodian-receipts.json`, `provenance.json`, `status.json` missing | `missing <f>` | 22-23 | MATCHES: `claim-gates.md:10-11`, `claim-package-contract.md:9-16` |
 | manifest file | `evidence/manifest.json` missing | `missing evidence/manifest.json` | 24 | MATCHES: `claim-gates.md:10-11` |
 
@@ -182,9 +182,9 @@ sites across 8 gate families.
 
 | Gate | Trigger | Error template | Line | Corpus tie |
 |---|---|---|---|---|
-| scope excerpt | `report.md` present AND does not match `/scope excerpt/i` | `report.md: no scope excerpt section` | 27-28 | MATCHES: `claim-gates.md:15` |
-| no-submission marker | `report.md` present AND does not match `/no submission (performed\|made)/i` (phrase in prose, not the JSON field) | `report.md: missing explicit "no submission performed" marker` | 29 | MATCHES: `claim-gates.md:15`, `claim-package-contract.md:11` |
-| operator gate | `claim_checklist.md` present AND does not match `/OPERATOR-GATED/i` | `claim_checklist.md: missing OPERATOR-GATED marker` | 31-32 | MATCHES: `claim-gates.md:16` |
+| scope excerpt | `report.md` present AND does not match `/scope excerpt/i` | `report.md: no scope excerpt section` | 27-28 | MATCHES: `corpus/knowledge/claim-gates.md:15` |
+| no-submission marker | `report.md` present AND does not match `/no submission (performed\|made)/i` (phrase in prose, not the JSON field) | `report.md: missing explicit "no submission performed" marker` | 29 | MATCHES: `corpus/knowledge/claim-gates.md:15`, `corpus/knowledge/claim-package-contract.md:11` |
+| operator gate | `claim_checklist.md` present AND does not match `/OPERATOR-GATED/i` | `claim_checklist.md: missing OPERATOR-GATED marker` | 31-32 | MATCHES: `corpus/knowledge/claim-gates.md:16` |
 
 Absent files are skipped here (presence is already gated in 4.1) — note the
 `if (report)` / `if (checklist)` guards.
@@ -193,19 +193,19 @@ Absent files are skipped here (presence is already gated in 4.1) — note the
 
 | Gate | Trigger | Error template | Line | Corpus tie |
 |---|---|---|---|---|
-| sequence | `manifest.sequence` not a number | `manifest: missing sequence` | 40 | MATCHES: `claim-gates.md:20` |
-| head key | `'expected_head_sha256' in manifest` false | `manifest: missing expected_head_sha256` | 41 | MATCHES: `claim-gates.md:20` |
-| path confinement | `resolve(dir,'evidence',a.path)` does not start with `dir + sep` | `manifest artifact escapes package: <path>` | 45-46 | MATCHES: `claim-gates.md:21-23` |
-| existence | `a.path` empty or file absent | `manifest artifact missing on disk: <path>` | 47 | MATCHES: `claim-gates.md:21-23` |
-| symlink confinement | `realpathSync(ap)` does not start with `realDir + sep` | `manifest artifact symlink escapes package: <path>` | 48-49 | MATCHES: `claim-gates.md:21-23` |
-| digest | `sha256File(ap) !== a.sha256` | `manifest artifact hash mismatch: <path>` | 50 | MATCHES: `claim-gates.md:22-23` |
-| polarity | `a.polarity ∉ {'positive','negative'}` | `manifest artifact <path>: polarity must be positive\|negative` | 51 | MATCHES: `claim-gates.md:23` |
-| positive floor | zero positive-polarity artifacts in the whole manifest | `manifest: claim package requires at least one positive-polarity artifact` | 52, 70 | MATCHES: `claim-gates.md:24`, `claim-package-contract.md:13` |
-| same-digest receipt | no redaction with `artifact_sha256 === a.sha256 && scanned_artifact_sha256 === a.sha256` AND non-empty distinct `producer`/`verifier` (trimmed compare) | `manifest artifact <path>: missing same-digest redaction receipt with distinct producer/verifier` | 53-60 | MATCHES: `claim-gates.md:25-27` |
-| receipt↔receipt | `r.scanned_artifact_sha256 !== r.artifact_sha256` | `redaction receipt not bound to artifact digest: <json>` | 65 | MATCHES: `claim-gates.md:25-27` |
-| receipt identities | `producer` or `verifier` empty after trim | `redaction receipt: producer and verifier identities are required` | 66 | MATCHES: `claim-gates.md:26` |
-| receipt distinctness | `producer === verifier` | `redaction receipt: verifier must differ from producer` | 67 | MATCHES: `claim-gates.md:27` |
-| receipt↔manifest | receipt digest not equal to any `a.sha256` | `redaction receipt does not bind a manifest artifact: <digest or '(missing digest)'>` | 68 | MATCHES: `claim-gates.md:27` |
+| sequence | `manifest.sequence` not a number | `manifest: missing sequence` | 40 | MATCHES: `corpus/knowledge/claim-gates.md:20` |
+| head key | `'expected_head_sha256' in manifest` false | `manifest: missing expected_head_sha256` | 41 | MATCHES: `corpus/knowledge/claim-gates.md:20` |
+| path confinement | `resolve(dir,'evidence',a.path)` does not start with `dir + sep` | `manifest artifact escapes package: <path>` | 45-46 | MATCHES: `corpus/knowledge/claim-gates.md:21-23` |
+| existence | `a.path` empty or file absent | `manifest artifact missing on disk: <path>` | 47 | MATCHES: `corpus/knowledge/claim-gates.md:21-23` |
+| symlink confinement | `realpathSync(ap)` does not start with `realDir + sep` | `manifest artifact symlink escapes package: <path>` | 48-49 | MATCHES: `corpus/knowledge/claim-gates.md:21-23` |
+| digest | `sha256File(ap) !== a.sha256` | `manifest artifact hash mismatch: <path>` | 50 | MATCHES: `corpus/knowledge/claim-gates.md:22-23` |
+| polarity | `a.polarity ∉ {'positive','negative'}` | `manifest artifact <path>: polarity must be positive\|negative` | 51 | MATCHES: `corpus/knowledge/claim-gates.md:23` |
+| positive floor | zero positive-polarity artifacts in the whole manifest | `manifest: claim package requires at least one positive-polarity artifact` | 52, 70 | MATCHES: `corpus/knowledge/claim-gates.md:24`, `corpus/knowledge/claim-package-contract.md:13` |
+| same-digest receipt | no redaction with `artifact_sha256 === a.sha256 && scanned_artifact_sha256 === a.sha256` AND non-empty distinct `producer`/`verifier` (trimmed compare) | `manifest artifact <path>: missing same-digest redaction receipt with distinct producer/verifier` | 53-60 | MATCHES: `corpus/knowledge/claim-gates.md:25-27` |
+| receipt↔receipt | `r.scanned_artifact_sha256 !== r.artifact_sha256` | `redaction receipt not bound to artifact digest: <json>` | 65 | MATCHES: `corpus/knowledge/claim-gates.md:25-27` |
+| receipt identities | `producer` or `verifier` empty after trim | `redaction receipt: producer and verifier identities are required` | 66 | MATCHES: `corpus/knowledge/claim-gates.md:26` |
+| receipt distinctness | `producer === verifier` | `redaction receipt: verifier must differ from producer` | 67 | MATCHES: `corpus/knowledge/claim-gates.md:27` |
+| receipt↔manifest | receipt digest not equal to any `a.sha256` | `redaction receipt does not bind a manifest artifact: <digest or '(missing digest)'>` | 68 | MATCHES: `corpus/knowledge/claim-gates.md:27` |
 
 Extracted values: `positiveArtifactCount` increments on
 `polarity === 'positive'` (52); `manifestSha256 = sha256File(manifestPath)` over
@@ -215,14 +215,14 @@ exact file bytes (37) — used later for the status binding (4.8).
 
 | Gate | Trigger | Error template | Line | Corpus tie |
 |---|---|---|---|---|
-| chain present | `chain = receipts.chain ?? receipts.decisions ?? []` not a non-empty array | `custodian-receipts.json: claim package requires a non-empty decision chain` | 77-79 | MATCHES: `claim-gates.md:31` |
-| hard stop | `String(d.scope_signal).trim().toUpperCase() === 'HARD_STOP'` (checked first, own message) | `custodian HARD_STOP present: <action> — package must park, not ship` | 82-83 | MATCHES: `claim-gates.md:32-33` |
-| scope signal | uppercased/trimmed `scope_signal !== 'NO_SCOPE_OBJECTION'` | `custodian decision <action>: scope_signal must be exactly NO_SCOPE_OBJECTION` | 84 | MATCHES: `claim-gates.md:32-33`, `SKILL.md:90-91` |
-| grant id | `matched_grant_id` empty after trim | `custodian decision <action>: matched_grant_id is required` | 85 | MATCHES: `claim-gates.md:33-34` |
-| decision digest | `decision_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian decision lacks a valid decision_sha256: <action>` | 86 | MATCHES: `claim-gates.md:34` |
-| head digest | `head_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian-receipts.json: missing valid head_sha256` | 88 | MATCHES: `claim-gates.md:35-36` |
-| head chain-end | `chain.at(-1).decision_sha256 !== custodianHead` | `custodian-receipts.json: head_sha256 does not match the final decision` | 89 | MATCHES: `claim-gates.md:35-36` |
-| manifest binding | `manifest.expected_head_sha256 !== custodianHead` (three-way binding) | `manifest expected_head_sha256 does not bind the custodian decision-chain head` | 90 | MATCHES: `claim-gates.md:35-36`, `claim-package-contract.md:14` |
+| chain present | `chain = receipts.chain ?? receipts.decisions ?? []` not a non-empty array | `custodian-receipts.json: claim package requires a non-empty decision chain` | 77-79 | MATCHES: `corpus/knowledge/claim-gates.md:31` |
+| hard stop | `String(d.scope_signal).trim().toUpperCase() === 'HARD_STOP'` (checked first, own message) | `custodian HARD_STOP present: <action> — package must park, not ship` | 82-83 | MATCHES: `corpus/knowledge/claim-gates.md:32-33` |
+| scope signal | uppercased/trimmed `scope_signal !== 'NO_SCOPE_OBJECTION'` | `custodian decision <action>: scope_signal must be exactly NO_SCOPE_OBJECTION` | 84 | MATCHES: `corpus/knowledge/claim-gates.md:32-33`, `SKILL.md:90-91` |
+| grant id | `matched_grant_id` empty after trim | `custodian decision <action>: matched_grant_id is required` | 85 | MATCHES: `corpus/knowledge/claim-gates.md:33-34` |
+| decision digest | `decision_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian decision lacks a valid decision_sha256: <action>` | 86 | MATCHES: `corpus/knowledge/claim-gates.md:34` |
+| head digest | `head_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian-receipts.json: missing valid head_sha256` | 88 | MATCHES: `corpus/knowledge/claim-gates.md:35-36` |
+| head chain-end | `chain.at(-1).decision_sha256 !== custodianHead` | `custodian-receipts.json: head_sha256 does not match the final decision` | 89 | MATCHES: `corpus/knowledge/claim-gates.md:35-36` |
+| manifest binding | `manifest.expected_head_sha256 !== custodianHead` (three-way binding) | `manifest expected_head_sha256 does not bind the custodian decision-chain head` | 90 | MATCHES: `corpus/knowledge/claim-gates.md:35-36`, `corpus/knowledge/claim-package-contract.md:14` |
 | unreadable file | file exists but `readJson` returned falsy | `custodian-receipts.json: present but unreadable` | 91-92 | MATCHES: `claim-gates.md:29-36` |
 
 `action` defaults to `'(unnamed action)'` (81). Note `HARD_STOP` emits **both**
@@ -239,7 +239,7 @@ Boundary: this is the **entire** provenance gate. `claim-check.mjs` contains no
 reference to `schema_version`, `policy_sha256`, `external_effects_performed`,
 `commit`/pin, or per-transition models — the provenance fields enumerated in
 `claim-package-contract.md:15` are unenforced. Likewise the manifest
-`schema_version: "evidence-manifest/v1"` (`claim-package-contract.md:13`) is
+`schema_version: "evidence-manifest/v1"` (`corpus/knowledge/claim-package-contract.md:13`) is
 never read.
 
 ### 4.6 Symlink / size / secrets sweep (`L100-114`)
@@ -266,15 +266,15 @@ Decoded pattern: keyword (`api key`/`apikey`/`api-key`, `secret`, `token`,
 | producer | `claim_review.producer_identity` empty after trim | `status.json claim_review must name producer_identity` | 132 | MATCHES: `claim-gates.md:55` |
 | reviewer shape | `reviewer.role !== 'kx-reviewer'` (exact) OR empty `identity`/`requested_model`/`resolved_model` OR `typeof reviewer.fallback !== 'boolean'` | `status.json claim_review must bind kx-reviewer identity, requested/resolved model, and fallback provenance` | 133-141 | MATCHES: `claim-gates.md:56-58`, `SKILL.md:94-95` |
 | identity separation | `producer_identity === reviewer.identity` (both non-empty, exact compare, untrimmed equality after per-field trim) | `status.json claim_review reviewer must differ from producer` | 142-143 | MATCHES: `claim-gates.md:58-59` |
-| hard gates | each of `written_scope`, `authorization`, `evidence_integrity`, `no_duplicate_or_prior_submission` uppercased ≠ `'PASS'` — one error per gate | `status.json claim_review hard gate <gate> must be PASS` | 145-155 | MATCHES: `claim-gates.md:59-61`, `claim-package-contract.md:28-29` |
+| hard gates | each of `written_scope`, `authorization`, `evidence_integrity`, `no_duplicate_or_prior_submission` uppercased ≠ `'PASS'` — one error per gate | `status.json claim_review hard gate <gate> must be PASS` | 145-155 | MATCHES: `claim-gates.md:59-61`, `corpus/knowledge/claim-package-contract.md:28-29` |
 | subchecks | each of `no_secrets`, `operator_attribution` uppercased ≠ `'PASS'` | `status.json claim_review subcheck <subcheck> must be PASS` | 156-160 | MATCHES: `claim-gates.md:61`, `claim-package-contract.md:30` |
 
 ### 4.8 `status.json` — claimability, duplication, blockers (`L162-225`)
 
 | Gate | Trigger (any one) | Error template | Line | Corpus tie |
 |---|---|---|---|---|
-| not-claimable heuristics | `claimable === false`; `not_claimable === true`; `do_not_submit === true`; truthy `claimability_gap`; `finding_count === 0`; `verdict` matching `/not[-_\s]?claimable\|honest[-_\s]?zero/i` | `status.json explicitly marks this package not claimable` | 163-171 | MATCHES: `claim-gates.md:63-66` |
-| prior submission | `submission_performed === true` OR truthy `submitted_url` OR uppercased `submission_state === 'SUBMITTED'` | `status.json records a prior submission; duplicate submission is forbidden` | 174-179 | MATCHES: `claim-gates.md:66-67` |
+| not-claimable heuristics | `claimable === false`; `not_claimable === true`; `do_not_submit === true`; truthy `claimability_gap`; `finding_count === 0`; `verdict` matching `/not[-_\s]?claimable\|honest[-_\s]?zero/i` | `status.json explicitly marks this package not claimable` | 163-171 | MATCHES: `corpus/knowledge/claim-gates.md:63-66` |
+| prior submission | `submission_performed === true` OR truthy `submitted_url` OR uppercased `submission_state === 'SUBMITTED'` | `status.json records a prior submission; duplicate submission is forbidden` | 174-179 | MATCHES: `corpus/knowledge/claim-gates.md:66-67` |
 | global duplicate | scans every `claims/<program>/<slug>/status.json` (root = `resolve(dir,'..','..')`, self skipped, unparseable skipped): another package has a prior-submission record AND (`slug === currentSlug` OR (`currentTitle.length >= 16` AND lowercased titles equal)) | `global duplicate guard: matching finding already has a submission record at <program>/<slug>` | 181-199 | MATCHES: `claim-gates.md:67-70` |
 | blockers | truthy `blocked_reason`, `submission_blocker`, `blocking_record`, OR `submit/BLOCKED.md` exists | `status.json or submit/BLOCKED.md records an unresolved readiness blocker` | 201-208 | MATCHES: `claim-gates.md:70-71` |
 | nested readiness | over the truthy contexts `claim_review`, `claim_wave`, `claim_attempt`, `submission`: `String(ctx.outcome ?? ctx.state).toUpperCase() === 'BLOCKED'` OR `ctx.claim_ready === false` OR `ctx.submission_ready === false` | `status.json contains a blocked nested readiness decision` | 210-220 | MATCHES: `claim-gates.md:71-74` |
@@ -363,7 +363,7 @@ reviewer derivation).
 | `reward` | no required keys; `additionalProperties:false` | 21-23 | — |
 | `reward.min` / `max` | `number` (no min/max bound; negatives allowed by schema) | 25-26 | — |
 | `reward.currency` | pattern `^[A-Z]{3}$` | 27 | — |
-| `ev_inputs` | `additionalProperties:false`, **no** `required` (so `{}` is schema-valid) | 32-34 | MATCHES: `ops-invariants.md:34-40` (subset validator) |
+| `ev_inputs` | `additionalProperties:false`, **no** `required` (so `{}` is schema-valid) | 32-34 | MATCHES: `corpus/knowledge/ops-invariants.md:34-40` (subset validator) |
 | `p_in_scope`, `p_reproducible`, `p_unique`, `p_accepted` | `number`, `minimum: 0`, `maximum: 1` | 36-39 | MATCHES: `ev-model.md:15-16` |
 | `expected_reward`, `effort_hours`, `opportunity_rate`, `direct_cost`, `delay_cost`, `expected_risk_cost` | `number`, unbounded | 40-45 | MATCHES: `ev-model.md:21-23` |
 | `deadline` | `format: date-time` | 46 | MATCHES: `ev-model.md:22-23` |
@@ -378,8 +378,8 @@ reviewer derivation).
 | `notes` | `string` | 66 | — |
 
 Boundary: `schema.json` is enforced only as far as `validate.mjs`'s hand-rolled
-subset (`ops-invariants.md:34-40`); `--strict` additionally requires non-empty
-`ev_inputs` (`ops-invariants.md:41-42`), which is what makes "curated"
+subset (`corpus/knowledge/ops-invariants.md:34-40`); `--strict` additionally requires non-empty
+`ev_inputs` (`corpus/knowledge/ops-invariants.md:41-42`), which is what makes "curated"
 (`[lost-base] fleet-dispatch.mjs:107`) a strict-mode-valid notion rather than a
 schema-mandated one.
 
@@ -388,13 +388,13 @@ schema-mandated one.
 | Export | Value | Line | Corpus tie |
 |---|---|---|---|
 | `BANNED` | `['cursor', 'opencode']` | 9 | MATCHES: `ops-invariants.md:18`, `SKILL.md:525` |
-| `PARKED` | `[]` (chatgpt park lifted 2026-09-04) | 10 | MATCHES: `ops-invariants.md:19` |
-| `K3_SEATS` | `['judge', 'planner']` | 11 | MATCHES: `ops-invariants.md:20` |
-| `K3_TOKEN` | `/kimi-code\/k3\|kimi-k3\|moonshot\/kimi-k3/i` | 13 | MATCHES: `ops-invariants.md:21` |
-| `TELEMETRY_EVENTS` | 8 registry kinds: `lane_parked, lane_degraded, operator_decree, xask_dry, board_imported, binding_verified, reroute_drill, provenance_drift` | 15-24 | MATCHES: `ops-invariants.md:22`, `SKILL.md:525` |
-| `sha256File` | sha256 hex of exact file bytes; `null` when path absent/unreadable | 27-33 | MATCHES: `ops-invariants.md:23` |
-| `gitMutationBlocker` | markers `rebase-merge, rebase-apply, MERGE_HEAD, CHERRY_PICK_HEAD` → `{code:'ACTIVE_GIT_OPERATION'}`; detached HEAD → `{code:'HEAD_NOT_ON_MAIN'}`; branch ≠ `main` → `{code:'HEAD_NOT_ON_MAIN'}`; else `null` | 36-48 (markers 37, codes 40/44/46) | MATCHES: `ops-invariants.md:24`, `SKILL.md:245-247` |
-| `appendLedger` | appends `{ts, ...entry}` to `ledger/<kind>.jsonl`; if the serialized line exceeds **3500 bytes** it is replaced by a `{truncated:true, …}` stub recording `bytes` (POSIX `PIPE_BUF` atomicity guard) | 53-58 (cap 55) | MATCHES: `ops-invariants.md:25`, `SKILL.md:146`, `SKILL.md:246` |
+| `PARKED` | `[]` (chatgpt park lifted 2026-09-04) | 10 | MATCHES: `corpus/knowledge/ops-invariants.md:19` |
+| `K3_SEATS` | `['judge', 'planner']` | 11 | MATCHES: `corpus/knowledge/ops-invariants.md:20` |
+| `K3_TOKEN` | `/kimi-code\/k3\|kimi-k3\|moonshot\/kimi-k3/i` | 13 | MATCHES: `corpus/knowledge/ops-invariants.md:21` |
+| `TELEMETRY_EVENTS` | 8 registry kinds: `lane_parked, lane_degraded, operator_decree, xask_dry, board_imported, binding_verified, reroute_drill, provenance_drift` | 15-24 | MATCHES: `corpus/knowledge/ops-invariants.md:22`, `SKILL.md:525` |
+| `sha256File` | sha256 hex of exact file bytes; `null` when path absent/unreadable | 27-33 | MATCHES: `corpus/knowledge/ops-invariants.md:23` |
+| `gitMutationBlocker` | markers `rebase-merge, rebase-apply, MERGE_HEAD, CHERRY_PICK_HEAD` → `{code:'ACTIVE_GIT_OPERATION'}`; detached HEAD → `{code:'HEAD_NOT_ON_MAIN'}`; branch ≠ `main` → `{code:'HEAD_NOT_ON_MAIN'}`; else `null` | 36-48 (markers 37, codes 40/44/46) | MATCHES: `corpus/knowledge/ops-invariants.md:24`, `SKILL.md:245-247` |
+| `appendLedger` | appends `{ts, ...entry}` to `ledger/<kind>.jsonl`; if the serialized line exceeds **3500 bytes** it is replaced by a `{truncated:true, …}` stub recording `bytes` (POSIX `PIPE_BUF` atomicity guard) | 53-58 (cap 55) | MATCHES: `corpus/knowledge/ops-invariants.md:25`, `SKILL.md:146`, `SKILL.md:246` |
 
 `gitMutationBlocker` is the reason the live tree's stalled rebase blocks every
 dispatcher git path (`fleet-dispatch.mjs:123, 216, 255, 354`).
@@ -433,15 +433,15 @@ Supersedes column names the audit-time target, not current text.
 | 9.1 | Dispatch score has **five** terms, not four — `is_live(1)` is part of the ordering (`[lost-base] fleet-dispatch.mjs:110`). | 110 | `SKILL.md:113-114` and `SKILL.md:175-176` omit it (both are summaries of this expression) |
 | 9.2 | The `reward` term is `reward.min × 1000`, so the ordering tail is `… > reward.min×1000 > live(1)`, not `… > reward.min`. | 110 | `SKILL.md:175` writes `reward.min` |
 | 9.3 | `curated` is a **boolean** on `Object.keys(ev_inputs).length > 0`; no EV magnitude is ever compared. The `buildQueue` header's "EV ordering (curated first …)" is doubly wrong: curated ranks **third**, behind priority and continue. | 10, 107, 110 | `[lost-base] fleet-dispatch.mjs:10` (in-file comment), `SKILL.md:10-11`-style "EV ordering" phrasing |
-| 9.4 | `rec.ev_inputs?.adjusted_ev` (`[lost-base] fleet-dispatch.mjs:200`) can never be a number: `schema.json` `ev_inputs` is `additionalProperties:false` (34) with no `adjusted_ev` property (35-51), `ev-report.mjs` computes it without persisting (82), and 0 of 1088 program records contain the key (census §2.2). Consequence: every `mission_dispatched` line logs `adjusted_ev: "unknown"` and the negative-EV `ev_note` branch (204) is dead — AR12's "negative/unknown EV is ledgered honestly" is true only in the "unknown" direction. | 200-205, `[lost-base] schema.json:34-51` | `[lost-base] fleet-dispatch.mjs:11` (in-file comment), `mission-control.md:21-23` |
+| 9.4 | `rec.ev_inputs?.adjusted_ev` (`[lost-base] fleet-dispatch.mjs:200`) can never be a number: `schema.json` `ev_inputs` is `additionalProperties:false` (34) with no `adjusted_ev` property (35-51), `ev-report.mjs` computes it without persisting (82), and 0 of 1088 program records contain the key (census §2.2). Consequence: every `mission_dispatched` line logs `adjusted_ev: "unknown"` and the negative-EV `ev_note` branch (204) is dead — AR12's "negative/unknown EV is ledgered honestly" is true only in the "unknown" direction. | 200-205, `[lost-base] schema.json:34-51` | `[lost-base] fleet-dispatch.mjs:11` (in-file comment), `corpus/knowledge/mission-control.md:21-23` |
 | 9.5 | `reward.min` numeric on **14** records; `reward` object on 48. | census §2.2 | `intake-surface.md:75-76` ("`reward.min` present on 48"), `SKILL.md:111` ("`reward` exists on 48" — true but conflated downstream) |
 | 9.6 | Peak-window model is `openai-codex/gpt-6-astra:max`. | `[lost-base] fleet-dispatch.mjs:300` | `mission-control.md:37-38` (`openai-oauth/gpt-6-astra:max`) |
 | 9.7 | Usage-limit signatures are four (incl. `usage_limit_reached`), ANDed with a family regex, tail-only, 15-min mtime window. | 271-278 | `mission-control.md:41-43` (three signatures) |
-| 9.8 | `claim-check.mjs` never validates manifest `schema_version`, `provenance.json` pins/`policy_sha256`/`external_effects_performed`, `status.severity`, or `status.reward` — the tokens do not appear in the file. Those `claim-package-contract.md` rows are contract-by-convention. | grep of `claim-check.mjs` for `schema_version\|policy_sha256\|external_effects\|reward\|severity\|mission_id` → only `title` (183, 194) matches | `claim-package-contract.md:13,15,33-38` (implies gate-enforced) |
+| 9.8 | `claim-check.mjs` never validates manifest `schema_version`, `provenance.json` pins/`policy_sha256`/`external_effects_performed`, `status.severity`, or `status.reward` — the tokens do not appear in the file. Those `corpus/knowledge/claim-package-contract.md` rows are contract-by-convention. | grep of `claim-check.mjs` for `schema_version\|policy_sha256\|external_effects\|reward\|severity\|mission_id` → only `title` (183, 194) matches | `claim-package-contract.md:13,15,33-38` (implies gate-enforced) |
 | 9.9 | Tier collision bound: `reward.min ≥ 1e9` breaks the priority/continue/curated separation (no guard). Observed max `reward.min` = 10000 → `1e7`, five orders under the curated tier. | 110 + census §2.2 | — |
 | 9.10 | Pane-exit failures write `mission_failed` (327) and `attempts()` counts `mission_(parked\|failed)` (82), so two infra crashes exhaust a program's 2-attempt hunt budget. | 78-85, 325-328 | `mission-control.md:31-33` (notes budget counts it, not the infra-consumption consequence) |
 | 9.11 | `report.md` "no submission" is a **prose phrase** regex (`/no submission (performed\|made)/i`, 29), distinct from the `no_submission_performed` JSON guard listed in observed statuses. | 29 | `claim-package-contract.md:27` |
-| 9.12 | `HARD_STOP` emits two errors for one decision (its own message plus the `NO_SCOPE_OBJECTION` message). | 83-84 | `claim-gates.md:32-33` ("`HARD_STOP` gets its own message" — it gets both) |
+| 9.12 | `HARD_STOP` emits two errors for one decision (its own message plus the `NO_SCOPE_OBJECTION` message). | 83-84 | `corpus/knowledge/claim-gates.md:32-33` ("`HARD_STOP` gets its own message" — it gets both) |
 | 9.13 | claim-check aborts the artifact loop on the first path/existence/symlink failure per artifact, and skips oversize files without scanning, so a single run's error set is path-dependent, not a full partition of violations. | 46-49, 111 | `claim-gates.md:5-6` (no-early-exit framing is accurate for the gate list, not per-artifact) |
 | 9.14 | "~1040 records" contribute 0 or 1 points — the census says **1024** (796 zero + 228 one), plus 13 reward-band records at ≤1e7. | census §2.2 | `SKILL.md:115` |
 | 9.15 | `priority.json` is a strict subset of the continue-verdict programs (14/14), so the 9e12 tier only orders *within* the continue cohort; it is not a disjoint class. | 90-96 + census §2.2 | — (new) |
@@ -470,9 +470,9 @@ unterminated final line, so `read` numbering shows 428):
 - `~/Projects/bounties/ops/shared.mjs` — 58 lines
 - `~/Projects/bounties/bounty-map/schema.json` — 68 lines
 
-Corpus files read for overlap: `claim-gates.md`, `ev-model.md`,
-`ops-invariants.md`, `mission-control.md`, `intake-surface.md`,
-`claim-package-contract.md`, `SKILL.md` (§Finding-triage decision table,
+Corpus files read for overlap: `corpus/knowledge/claim-gates.md`, `corpus/knowledge/ev-model.md`,
+`corpus/knowledge/ops-invariants.md`, `corpus/knowledge/mission-control.md`, `corpus/knowledge/intake-surface.md`,
+`corpus/knowledge/claim-package-contract.md`, `SKILL.md` (§Finding-triage decision table,
 §Intake surface, §Triage economics, §Cited paths).
 
 Read-only census commands (no writes to the bounty tree; programs,

@@ -57,7 +57,7 @@ So a policy that is "at least" conformant carries the six minimum elements; cred
 
 ## The vendor example (S040, pointer only)
 
-The guideline's own 参考2 (L2082-2100) lists existing public vulnerability disclosure policies as examples, and Cisco's "Security Vulnerability Policy" is the first (L2086-2088) — with the URL `https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html`, the same final URL recorded in this lane's S040 recheck cell (R25-5). The lane's round-25 F10 entry (`vendor-disclosure-policy-commitments-crosswalk.md`) already verified Cisco's claim "The Cisco PSIRT aligns its practices with ISO/IEC 29147:2018" (S040.txt:58, round-25 manifest) and crosswalked it against the Japanese vendor policies. This entry does not re-make that claim: S040 appears here only as the real-world example the guideline itself cites of a 29147:2018-aligned disclosure policy.
+The guideline's own 参考2 (L2082-2100) lists existing public vulnerability disclosure policies as examples, and Cisco's "Security Vulnerability Policy" is the first (L2086-2088) — with the URL `https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html`, the same final URL recorded in this lane's S040 recheck cell (R25-5). The lane's round-25 F10 entry (`corpus/knowledge/vendor-disclosure-policy-commitments-crosswalk.md`) already verified Cisco's claim "The Cisco PSIRT aligns its practices with ISO/IEC 29147:2018" (S040.txt:58, round-25 manifest) and crosswalked it against the Japanese vendor policies. This entry does not re-make that claim: S040 appears here only as the real-world example the guideline itself cites of a 29147:2018-aligned disclosure policy.
 
 ## Limits
 

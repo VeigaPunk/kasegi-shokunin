@@ -71,7 +71,7 @@ ROE that names a narrower activity set therefore narrows, not widens, the grant.
 
 ## Limits
 
-This entry does not restate F03 (`authorization-safe-harbor-and-scope.md`), which
+This entry does not restate F03 (`corpus/knowledge/authorization-safe-harbor-and-scope.md`), which
 holds what a platform's safe-harbour statement does and does not add to asset
 scope; read it first. It adds the owner-side engagement instrument and the
 template's shape.
