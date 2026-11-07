@@ -55,8 +55,8 @@ filter matches (`[lost-base] fleet-dispatch.mjs:88-114`):
 |---|---|---|---|
 | unreadable record | `readJson(...)` falsy → skip | 100-101 | — |
 | leased | `leaseAlive(leases[id])`: `Date.parse(leases[id].expires_at) > Date.now()` | 102, 58 | MATCHES: `corpus/knowledge/mission-control.md:20-24` |
-| attempts exhausted | `attempts(id) >= MAX_ATTEMPTS` (MAX_ATTEMPTS = 2) | 103, 46 | MATCHES: `SKILL.md:117`, `mission-control.md:20-21` |
-| active mission | `readStatus(id)` exists AND its `state` ∉ TERMINAL — i.e. a non-terminal `fleets/run/<id>.status.json` blocks redispatch | 105 | MATCHES: `mission-control.md:20-21` |
+| attempts exhausted | `attempts(id) >= MAX_ATTEMPTS` (MAX_ATTEMPTS = 2) | 103, 46 | MATCHES: `SKILL.md:117` |
+| active mission | `readStatus(id)` exists AND its `state` ∉ TERMINAL — i.e. a non-terminal `fleets/run/<id>.status.json` blocks redispatch | 105 | MATCHES: `corpus/knowledge/mission-control.md:20-21` |
 | delivered | `status.state === 'DONE'` (stated separately as "never redispatch") | 106 | MATCHES: `corpus/knowledge/mission-control.md:21` |
 
 `attempts(id)` = `max(0, parks − resets)`, where `parks` counts telemetry lines in
@@ -83,11 +83,11 @@ score = priority_hit(9e12) + continue_verdict(2e12) + curated_ev(1e12)
 
 | Weight | Exact trigger | Numeric | Line | Corpus tie |
 |---|---|---|---|---|
-| priority | `id ∈ fleets/priority.json` `priority[]` (missing file → `{priority:[]}`) | `9e12` = 9,000,000,000,000 | 91, 110 | MATCHES: `intake-surface.md:71`, `corpus/knowledge/mission-control.md:19` |
-| continue | `id ∈ {v.program : v.verdict === 'continue'}` from `docs/review-verdicts.jsonl` | `2e12` = 2,000,000,000,000 | 92-96, 110 | MATCHES: `intake-surface.md:71`, `corpus/knowledge/mission-control.md:19-20` |
+| priority | `id ∈ fleets/priority.json` `priority[]` (missing file → `{priority:[]}`) | `9e12` = 9,000,000,000,000 | 91, 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-88`, `corpus/knowledge/mission-control.md:19` |
+| continue | `id ∈ {v.program : v.verdict === 'continue'}` from `docs/review-verdicts.jsonl` | `2e12` = 2,000,000,000,000 | 92-96, 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-88`, `corpus/knowledge/mission-control.md:19-20` |
 | curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES: `SKILL.md:113-114` (four terms, no `is_live`) and `SKILL.md:175-176` (same omission; names the term `curated-EV` although the source tests only non-emptiness); see §2.2 |
 | reward | `(rec.reward?.min ?? 0) * 1000` | 50 → 5e4 … 10000 → 1e7 (observed) | 110 | SUPERSEDES: `SKILL.md:175` — that line writes `reward.min`, source multiplies by 1000 |
-| freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-85`, `mission-control.md:20-21`; SUPERSEDES: `SKILL.md:113-114,175-176` (term omitted) |
+| freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-85`, `corpus/knowledge/mission-control.md:20-21`; SUPERSEDES: `SKILL.md:113-114,175-176` (term omitted) |
 
 Sort is `(a,b) => b.score - a.score`, descending, stable (`[lost-base] fleet-dispatch.mjs:113`).
 
@@ -141,18 +141,18 @@ Consequences, all derived from the expression at line 110:
 | `MAX` (`--max`) | default `5` | 29 | — |
 | `STAGGER_S` (`--stagger`) | default `20` s; enforced as `STAGGER_S*1000 − (now − lastLaunch)` before the 2nd+ launch in a tick | 30, 399-400 | — |
 | `LEASE_MS` | `2 * 3600 * 1000` = 7,200,000 ms = 2 h | 45 | MATCHES: `corpus/knowledge/mission-control.md:29`, `SKILL.md:526` |
-| `MAX_ATTEMPTS` | `2` | 46 | MATCHES: `SKILL.md:117`, `mission-control.md:20-21` |
+| `MAX_ATTEMPTS` | `2` | 46 | MATCHES: `SKILL.md:117` |
 | `TERMINAL` | `['DONE','PARKED','FAILED','RETIRED']` | 47 | MATCHES: `corpus/knowledge/mission-control.md:36` |
-| `MODEL` (initial) | `alibaba-token-plan/deepseek-v4-pro:max` | 34 | MATCHES: `mission-control.md:36-38` |
+| `MODEL` (initial) | `alibaba-token-plan/deepseek-v4-pro:max` | 34 | MATCHES: `corpus/knowledge/mission-control.md:54-56` |
 | stagger/round-robin | `--models-rr m1,m2,m3 --rr-until <epochMs>`; active only while `Date.now() < RR_UNTIL` | 38-44 | MATCHES: `corpus/knowledge/mission-control.md:59-60` |
 | poll interval | `setTimeout(tick, 30000)` = 30 s | 409 | MATCHES: `corpus/knowledge/mission-control.md:17` |
-| `--sync` cadence | `tickCount % 10 === 0` (~5 min at 30 s ticks) | 352-353 | MATCHES: `mission-control.md:42-46` |
-| `SYNC_PATHS` | 11 entries: `claims/README.md, evidence, ledger, docs, ops, fleets/missions, bounty-map, fleets/registry.json, fleets/mission-template.md, README.md, .gitignore` | 348 | MATCHES: `mission-control.md:43-46` |
+| `--sync` cadence | `tickCount % 10 === 0` (~5 min at 30 s ticks) | 352-353 | MATCHES: `corpus/knowledge/mission-control.md:68-71` |
+| `SYNC_PATHS` | 11 entries: `claims/README.md, evidence, ledger, docs, ops, fleets/missions, bounty-map, fleets/registry.json, fleets/mission-template.md, README.md, .gitignore` | 348 | MATCHES: `corpus/knowledge/mission-control.md:68-71` |
 | grid/session | `SESSION='ufo_sighting'`, `GRID='formation'` | 27, 65 | MATCHES: `SKILL.md:526` |
-| limit-log window | log `mtimeMs` within `15 * 60e3` = 900,000 ms = 15 min; tail = last `20000` chars | 276-277 | MATCHES: `mission-control.md:40-45` |
-| off-peak window | `h = (getUTCHours() − 3 + 24) % 24; offpeak = h >= 12 && h < 22` (UTC−3) | 298-299 | MATCHES: `mission-control.md:36-38`, `SKILL.md:14-15` |
-| off-peak model | `alibaba-token-plan/deepseek-v4-pro:max` | 300 | MATCHES: `mission-control.md:36-38` |
-| peak model | `openai-codex/gpt-6-astra:max` | 300 | SUPERSEDES: `mission-control.md:37-38` — that entry writes `openai-oauth/gpt-6-astra:max`; source says `openai-codex/` |
+| limit-log window | log `mtimeMs` within `15 * 60e3` = 900,000 ms = 15 min; tail = last `20000` chars | 276-277 | MATCHES: `corpus/knowledge/mission-control.md:61` |
+| off-peak window | `h = (getUTCHours() − 3 + 24) % 24; offpeak = h >= 12 && h < 22` (UTC−3) | 298-299 | MATCHES: `corpus/knowledge/mission-control.md:54-55`, `SKILL.md:14-15` |
+| off-peak model | `alibaba-token-plan/deepseek-v4-pro:max` | 300 | MATCHES: `corpus/knowledge/mission-control.md:54-56` |
+| peak model | `openai-codex/gpt-6-astra:max` | 300 | MATCHES: `corpus/knowledge/mission-control.md:56-57` |
 | limit-fallback model | `xai-oauth/grok-4.6:low` | 281 | MATCHES: `corpus/knowledge/mission-control.md:66` |
 | limit family regex | `MODEL.includes('token-plan') ? /qwen|deepseek|token.?plan/i : /astra|daybreak|codex|openai/i` | 271 | MATCHES: `corpus/knowledge/mission-control.md:64-66` |
 | limit signature regex | `/usage limit has been reached\|usage_limit_reached\|rate limit exceeded\|429 Too Many/i` (ANDed with family, tail-only) | 272, 278 | SUPERSEDES: `corpus/knowledge/mission-control.md:61-64` — at the round-13 audit that entry listed 3 signatures, omitting `usage_limit_reached` (corrected there since: it lists four) |
@@ -174,7 +174,7 @@ sites across 8 gate families.
 | Gate | Trigger (fails when) | Error template | Line | Corpus tie |
 |---|---|---|---|---|
 | arg/dir | no arg, or dir does not exist | `claim-check: usage: node ops/claim-check.mjs claims/<program-id>/<slug>` + exit 1 | 14-15 | MATCHES: `corpus/knowledge/claim-gates.md:4-5` |
-| package root | `realpathSync(dir)` resolves the package once for symlink confinement | — | 16 | MATCHES: `claim-gates.md:21-23` |
+| package root | `realpathSync(dir)` resolves the package once for symlink confinement | — | 16 | MATCHES: `corpus/knowledge/claim-gates.md:21-23` |
 | required files | any of `report.md`, `claim_checklist.md`, `custodian-receipts.json`, `provenance.json`, `status.json` missing | `missing <f>` | 22-23 | MATCHES: `corpus/knowledge/claim-gates.md:10-11`, `corpus/knowledge/claim-package-contract.md:9-16` |
 | manifest file | `evidence/manifest.json` missing | `missing evidence/manifest.json` | 24 | MATCHES: `corpus/knowledge/claim-gates.md:10-11` |
 
@@ -246,7 +246,7 @@ never read.
 
 | Gate | Trigger | Error template | Line | Corpus tie |
 |---|---|---|---|---|
-| symlink | any directory entry is a symlink (`lstatSync`) — aborts into that path | `symlink is forbidden in claim package: <rel>` | 104-105 | — (new; `claim-gates.md:42-47` covers the regex only) |
+| symlink | any directory entry is a symlink (`lstatSync`) — aborts into that path | `symlink is forbidden in claim package: <rel>` | 104-105 | MATCHES: `corpus/knowledge/claim-gates.md:52-56` |
 | size | text file `> 5 * 1024 * 1024` bytes = 5,242,880 B (≈5 MiB), skip scan | `oversize artifact (>5MB): <path>` | 111 | — (new) |
 | secrets | `/(api[_-]?key\|secret\|token\|password\|bearer)\s*[:=]\s*["']?[A-Za-z0-9_\-]{16,}/i` matches file text | `possible secret in <rel> — redact before commit` | 100, 113 | MATCHES: `corpus/knowledge/claim-gates.md:45-48` |
 
@@ -277,8 +277,8 @@ Decoded pattern: keyword (`api key`/`apikey`/`api-key`, `secret`, `token`,
 | prior submission | `submission_performed === true` OR truthy `submitted_url` OR uppercased `submission_state === 'SUBMITTED'` | `status.json records a prior submission; duplicate submission is forbidden` | 174-179 | MATCHES: `corpus/knowledge/claim-gates.md:81-85` |
 | global duplicate | scans every `claims/<program>/<slug>/status.json` (root = `resolve(dir,'..','..')`, self skipped, unparseable skipped): another package has a prior-submission record AND (`slug === currentSlug` OR (`currentTitle.length >= 16` AND lowercased titles equal)) | `global duplicate guard: matching finding already has a submission record at <program>/<slug>` | 181-199 | MATCHES: `corpus/knowledge/claim-gates.md:82-85` |
 | blockers | truthy `blocked_reason`, `submission_blocker`, `blocking_record`, OR `submit/BLOCKED.md` exists | `status.json or submit/BLOCKED.md records an unresolved readiness blocker` | 201-208 | MATCHES: `corpus/knowledge/claim-gates.md:86-87` |
-| nested readiness | over the truthy contexts `claim_review`, `claim_wave`, `claim_attempt`, `submission`: `String(ctx.outcome ?? ctx.state).toUpperCase() === 'BLOCKED'` OR `ctx.claim_ready === false` OR `ctx.submission_ready === false` | `status.json contains a blocked nested readiness decision` | 210-220 | MATCHES: `claim-gates.md:71-74` |
-| nested blockers | same contexts, `(ctx.blocker_codes ?? ctx.blockers ?? ctx.remaining_gates)` is a non-empty array | `status.json contains unresolved nested readiness blockers` | 218-223 | MATCHES: `claim-gates.md:71-74` |
+| nested readiness | over the truthy contexts `claim_review`, `claim_wave`, `claim_attempt`, `submission`: `String(ctx.outcome ?? ctx.state).toUpperCase() === 'BLOCKED'` OR `ctx.claim_ready === false` OR `ctx.submission_ready === false` | `status.json contains a blocked nested readiness decision` | 210-220 | MATCHES: `corpus/knowledge/claim-gates.md:88-91` |
+| nested blockers | same contexts, `(ctx.blocker_codes ?? ctx.blockers ?? ctx.remaining_gates)` is a non-empty array | `status.json contains unresolved nested readiness blockers` | 218-223 | MATCHES: `corpus/knowledge/claim-gates.md:88-91` |
 
 Title threshold: **16 characters** minimum before the cross-package title
 comparison engages (`[lost-tree] claim-check.mjs:194` — lost-tree line number;
@@ -364,10 +364,10 @@ reviewer derivation).
 | `reward.min` / `max` | `number` (no min/max bound; negatives allowed by schema) | 25-26 | — |
 | `reward.currency` | pattern `^[A-Z]{3}$` | 27 | — |
 | `ev_inputs` | `additionalProperties:false`, **no** `required` (so `{}` is schema-valid) | 32-34 | MATCHES: `corpus/knowledge/ops-invariants.md:34-40` (subset validator) |
-| `p_in_scope`, `p_reproducible`, `p_unique`, `p_accepted` | `number`, `minimum: 0`, `maximum: 1` | 36-39 | MATCHES: `ev-model.md:15-16` |
+| `p_in_scope`, `p_reproducible`, `p_unique`, `p_accepted` | `number`, `minimum: 0`, `maximum: 1` | 36-39 | MATCHES: `corpus/knowledge/ev-model.md:22-23` |
 | `expected_reward`, `effort_hours`, `opportunity_rate`, `direct_cost`, `delay_cost`, `expected_risk_cost` | `number`, unbounded | 40-45 | — |
-| `deadline` | `format: date-time` | 46 | MATCHES: `ev-model.md:22-23` |
-| `duration_p90`, `submission_buffer` | `number` | 47-48 | MATCHES: `ev-model.md:22-23` |
+| `deadline` | `format: date-time` | 46 | — |
+| `duration_p90`, `submission_buffer` | `number` | 47-48 | — |
 | `as_of` | `format: date-time` | 49 | MATCHES: `corpus/knowledge/ev-model.md:22-23` |
 | `sources` | `object`, free-form (basis provenance per input) | 50 | MATCHES: `corpus/knowledge/ev-model.md:22-23` |
 | `lane` | `string` | 53 | — |
@@ -387,7 +387,7 @@ schema-mandated one.
 
 | Export | Value | Line | Corpus tie |
 |---|---|---|---|
-| `BANNED` | `['cursor', 'opencode']` | 9 | MATCHES: `ops-invariants.md:18`, `SKILL.md:525` |
+| `BANNED` | `['cursor', 'opencode']` | 9 | MATCHES: `corpus/knowledge/ops-invariants.md:18`, `SKILL.md:525` |
 | `PARKED` | `[]` (chatgpt park lifted 2026-09-04) | 10 | MATCHES: `corpus/knowledge/ops-invariants.md:19` |
 | `K3_SEATS` | `['judge', 'planner']` | 11 | MATCHES: `corpus/knowledge/ops-invariants.md:20` |
 | `K3_TOKEN` | `/kimi-code\/k3\|kimi-k3\|moonshot\/kimi-k3/i` | 13 | MATCHES: `corpus/knowledge/ops-invariants.md:21` |
@@ -442,7 +442,7 @@ Supersedes column names the audit-time target, not current text.
 | 9.10 | Pane-exit failures write `mission_failed` (327) and `attempts()` counts `mission_(parked\|failed)` (82), so two infra crashes exhaust a program's 2-attempt hunt budget. | 78-85, 325-328 | `corpus/knowledge/mission-control.md:40` (notes budget counts it, not the infra-consumption consequence) |
 | 9.11 | `report.md` "no submission" is a **prose phrase** regex (`/no submission (performed\|made)/i`, 29), distinct from the `no_submission_performed` JSON guard listed in observed statuses. | 29 | `corpus/knowledge/claim-package-contract.md:24-26` |
 | 9.12 | `HARD_STOP` emits two errors for one decision (its own message plus the `NO_SCOPE_OBJECTION` message). | 83-84 | `corpus/knowledge/claim-gates.md:32-33` ("`HARD_STOP` gets its own message" — it gets both) |
-| 9.13 | claim-check aborts the artifact loop on the first path/existence/symlink failure per artifact, and skips oversize files without scanning, so a single run's error set is path-dependent, not a full partition of violations. | 46-49, 111 | `claim-gates.md:5-6` (no-early-exit framing is accurate for the gate list, not per-artifact) |
+| 9.13 | claim-check aborts the artifact loop on the first path/existence/symlink failure per artifact, and skips oversize files without scanning, so a single run's error set is path-dependent, not a full partition of violations. | 46-49, 111 | `corpus/knowledge/claim-gates.md:57-61` (no-early-exit framing is accurate for the gate list, not per-artifact) |
 | 9.14 | "~1040 records" contribute 0 or 1 points — the census says **1024** (796 zero + 228 one), plus 13 reward-band records at ≤1e7. | census §2.2 | `SKILL.md:115` |
 | 9.15 | `priority.json` is a strict subset of the continue-verdict programs (14/14), so the 9e12 tier only orders *within* the continue cohort; it is not a disjoint class. | 90-96 + census §2.2 | — (new) |
 
@@ -453,9 +453,9 @@ Supersedes column names the audit-time target, not current text.
 | claim-check gate list + error-based discovery | `claim-gates.md:3-6, 8-74` | MATCHES (this entry adds exact trigger conditions, numeric bounds, and per-gate line numbers) |
 | EV formula + UNKNOWN fail-closed | `corpus/knowledge/ev-model.md:13-25`, `SKILL.md:494-506` | MATCHES (adds 6-decimal `fmt`, 10-input print order, exit-2 paths, non-persistence) |
 | shared constants table | `corpus/knowledge/ops-invariants.md:17-25` | MATCHES (adds exact marker list and the 3500-byte truncation stub shape) |
-| queue score incl. `is_live(1)` | `corpus/knowledge/intake-surface.md:80-85`, `mission-control.md:19-21` | MATCHES (both are correct; §9.1/9.5 supersede their census tail) |
+| queue score incl. `is_live(1)` | `corpus/knowledge/intake-surface.md:80-85`, `corpus/knowledge/mission-control.md:19-21` | MATCHES (both are correct; §9.1/9.5 supersede their census tail) |
 | six-file package contract | `corpus/knowledge/claim-package-contract.md:9-16` | MATCHES for gate-enforced rows; §9.8 marks the convention-only rows |
-| dispatcher runtime shape | `mission-control.md:13-46` | MATCHES except §9.6/9.7 |
+| dispatcher runtime shape | `corpus/knowledge/mission-control.md:13-46` | MATCHES except §9.6/9.7 |
 | appendLedger 3500 B cap / gitMutationBlocker | `SKILL.md:146, 245-247` | MATCHES |
 | `attempts() ≥ 2` as real termination | `SKILL.md:113-117` | MATCHES |
 
