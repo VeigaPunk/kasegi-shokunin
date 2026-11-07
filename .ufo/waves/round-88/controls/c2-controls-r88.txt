@@ -1,0 +1,131 @@
+counter_sha256=7bf648df5c72bf2e89bbafb1dad1447fc7b45b5ad4caa18c3382368ddf75ecdc candidate_sha256=d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 allow_sha256=f9fbd7e7e56cb107081f00bf0e4c5af4e717dea801e86710b8489a932a0efc82 row_sha256=760e1ab41c6c7cf0953d3811c49b345c1ddae7d8854131d264cae8b1428520ba gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6 base=6beead9148945fa695cf3139e8fc9d8e91cc5fd0
+== control do-nothing: base revision as landing (expected fail K1 sha, K4, K5, K6)
+CAPABILITY-CHECK rev=6beead9148945fa695cf3139e8fc9d8e91cc5fd0 instrument_present=True
+LIMB K1 FAIL selftest_rc=0 instrument_sha256=b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1402,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E1.txt|azure-sas-signature,corpus/practice/p/evidence/E2.json|aws-sts-session-token,corpus/practice/p/evidence/E2.json|credential,corpus/source-snapshots/round-1/S004.txt|gcs-signed-url-signature,w/z-receipts/live-c.json|azure-sas-signature extra=none sts_allow_rc=2 files_rc=0 files_hits=0 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 FAIL rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control positive: frozen candidate + row, pinned (expected pass)
+CAPABILITY-CHECK rev=1b26f8e5861b4d50852968b70b5e07ecbea7589c instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1411,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+rc=0
+== control wrong-pin: positive tree, wrong instrument sha (expected fail K1)
+CAPABILITY-CHECK rev=a1c1bd96cf0fbd030511bfba9788f4b7fbfe7d8a instrument_present=True
+LIMB K1 FAIL selftest_rc=0 instrument_sha256=d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1411,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control no-row: candidate without the SCORECARD row update (expected fail K5)
+CAPABILITY-CHECK rev=4e333911c3e7eadbdc6c0ec59b855bb900625735 instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1411,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 FAIL rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control r87-instrument: base instrument as candidate (expected fail K4; K6 reads the BASE instrument, so it passes by construction)
+CAPABILITY-CHECK rev=872060813e382d6ea4c67fd9afec75e5495d8fe6 instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1402,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E1.txt|azure-sas-signature,corpus/practice/p/evidence/E2.json|aws-sts-session-token,corpus/practice/p/evidence/E2.json|credential,corpus/source-snapshots/round-1/S004.txt|gcs-signed-url-signature,w/z-receipts/live-c.json|azure-sas-signature extra=none sts_allow_rc=2 files_rc=0 files_hits=0 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control no-practice-scope (expected fail K4, files limb unaffected)
+CAPABILITY-CHECK rev=6ddb3a4b9baaedc8e6ee38c21d10c166ef72d473 instrument_present=True
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=f2612e7ac4b311a42abbff2fa953ff763e8d6b74be6259a587d02fe223310d5e gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1402,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E1.txt|azure-sas-signature,corpus/practice/p/evidence/E2.json|aws-sts-session-token,corpus/practice/p/evidence/E2.json|credential extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control gcs-pattern-disabled (expected fail K4 missing S004)
+CAPABILITY-CHECK rev=f5b6774e8d5c6998a4cd4ab9795c03d3e08144e0 instrument_present=True
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=65cf31ce0d8f9329ce01e8b826fca78f6845ce02a3a7befa20a93fc2ee845f39 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1411,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/source-snapshots/round-1/S004.txt|gcs-signed-url-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control sas-without-sv-context (expected fail K4 extra S007)
+CAPABILITY-CHECK rev=7147d4a9b5cf46aa783b01fe0b9dfd83e52ade1f instrument_present=True
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=1b85eed616347e83b636d65dac5998c89a3355fdd7deaa90798d783f89e03483 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1411,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=none extra=corpus/source-snapshots/round-1/S007.txt|azure-sas-signature sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control sas-json-separator-dropped (expected fail K4 missing live-c.json)
+CAPABILITY-CHECK rev=a4884736302c1ef947cd9be9f15f69ca11f92a90 instrument_present=True
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=67a90d3d673b7f14af0ccc5de5dcf9e2bb295573a914c1f426bc0dfa053dc0a5 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1411,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=w/z-receipts/live-c.json|azure-sas-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control gcs-threshold-12 (expected fail K4 extra S005 doc example)
+CAPABILITY-CHECK rev=7416481898bd8d076b6e03f2a957cbca90756bd0 instrument_present=True
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=1e47c31fe665c35c122e762156f2a93586d0d8602c89460979da26cd563ad3e3 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1411,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=none extra=corpus/source-snapshots/round-1/S005.txt|gcs-signed-url-signature sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control files-mode-blind (expected fail K4 files limb)
+CAPABILITY-CHECK rev=de8f62a9335a5ecf9aa9ef2885677b8ee5dc22a7 instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=688025e923f244389ffcbfedb172911994032bbe229bfa1d056d397dafb44d09 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1411,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=none extra=none sts_allow_rc=2 files_rc=0 files_hits=0 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control sts-allow-row-accepted (expected fail K4 sts_allow_rc)
+CAPABILITY-CHECK rev=95ce21199b651835e8fcf05ec804c256dab61eba instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=7145de64e24015d788ab4e65402298387b19106089827f51c309836b353dd2e0 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1411,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=none extra=none sts_allow_rc=1 files_rc=1 files_hits=1 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control always-clean (expected fail K2, K4)
+CAPABILITY-CHECK rev=f4977d39f83a229d035ad90746c899fdaff4f589 instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=87c4b60ecfecdfbe9a053d485fdf0f3bcbecac021750f70f4c0c433a7afed1c3 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 FAIL rc=0 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1411,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=0 missing=none extra=none sts_allow_rc=2 files_rc=0 files_hits=1 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
