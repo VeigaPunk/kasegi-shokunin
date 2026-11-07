@@ -1,0 +1,56 @@
+MutC1Counter — facts and pins (round 86, attempt 1)
+====================================================
+lane                 = /home/vgpnk/Projects/shokunin/kasegi-shokunin
+frozen counter       = .ufo/waves/round-86/c1/knowledge-meter.py
+counter sha256       = 03df491be611e8b9a3328cb7df673d9b54e93e4d1d1b856b5e678ad7949e50ee
+frozen map           = .ufo/waves/round-86/c1/repair-map.json
+map sha256           = dd40455a379eb53b75bf5a15772fe675efae79eda2516ea7fac50f86420bce12
+resolve.py sha256    = db5e0767c60ce00ea6c9cfb4ddd3e159e9a86525e5c8417c4a0a73e2e6d45667
+controls script sha  = 7f1126c2a8f63d9029b9e69f1f89745f6e0ae1ae3a109aba8b073c2538362c4f
+base rev             = d7296645c2cd9f631329fa8e2f38328a4c9c89a5
+freeze rev (HEAD)    = 252df0c90c066d83d229e3107811a6bc05e8feed (short 252df0c)
+base scope rate      = 398/1721 (distinct citations)
+positive rate        = 596/1716, added=198 new tokens, 5 map values already base tokens
+map keys             = 203 (197 anchored, 6 bare), 203 distinct values, 0 map keys have a
+                       non-unique basename at base (89 cited tokens excluded for exactly that)
+
+Measuring root: fresh `git clone --shared <lane> <scratch>/trees/<name>` + `git checkout <base>`
+per control (15 clones used), HEAD asserted == base. Scratch root
+/fast/scratch/hyaku/kasegi-r86/MutC1Counter (deleted after the run).
+
+Harness equivalence: the 7 frozen controls reproduce
+.ufo/waves/round-86/controls/c1-controls-r86.txt *exactly*, line for line, including
+KNOWLEDGE-METER/LIMB detail strings and numbers (7/7 exact; compare_frozen.py).
+Counter bytes were never edited: sha256 identical before and after.
+
+Base-tree facts (read from the clone at base):
+  tracked files                       16310
+  tracked numeric S<digits>.txt       1245 (102 distinct basenames; 54 unique-basename;
+                                       3 unique-basename copies outside corpus/source-snapshots:
+                                       S068.txt, S070.txt, S072.txt)
+  lane-root numeric S<digits>.txt     0
+  cited GONE KEY tokens               292
+  cited GONE tokens w/ unique basename 203 (exactly the map keys)
+  ... of which unique copy lies outside corpus/source-snapshots/ : 0
+  anchored unique-basename tokens     197; all 197 anchors in range
+  bare S068.txt / S070.txt / S072.txt cited? no (git grep at base: 0 backticked hits)
+
+Control suite: 7 frozen + 16 extension = 23 controls
+  verdict-class (17): do-nothing, positive, partial, decite, pad, wrong-file, map-sha,
+    tgt-den (--target 596/1717), tgt-lo (--target 595/1715), prose, ghost, stale-lo,
+    stale-range, uniq, keym, mapsha-prefix (fake sha shares first 8 hex), blank-line
+  assertion-class (6): result-assert, anchor-mismatch, assert-m2-donothing,
+    assert-m2-pad, assert-m5-wrongfile, deleted-target
+Mutants: 30 single-point (each old string asserted to occur exactly once in the frozen source).
+Cells: 23 controls x (30 mutants + pristine) = 713; missing cells = 0.
+
+Results: killed 24/30 = 80.0%; survived 6 (m11, m12, m16, m17, m18, m29), all provably
+equivalent or dead at this base (see report). Frozen-7-only kill = 6/30 = 20.0%.
+Unique kills by class: frozen 6, extension verdict-level 12, assertion-level 6.
+
+Restoration: frozen counter, frozen map, resolve.py, controls script hashes identical
+before/after; no git/jj writes anywhere (read-only git only); no lane writes outside
+.ufo/waves/round-86/w1/; scratch deleted.
+Pre-existing lane state (not produced by this seat): `git status --porcelain -- .ufo/waves/round-86 corpus`
+shows modified corpus/QUALITY.md, corpus/SOURCES.md, corpus/source-snapshots/round-86/S122.txt,
+round-86/manifest.json and untracked .ufo/waves/round-86/l1/ before and after the run.

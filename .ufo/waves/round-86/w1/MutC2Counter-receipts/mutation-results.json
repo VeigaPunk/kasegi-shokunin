@@ -1,0 +1,1360 @@
+{
+ "frozen_sha256": "b4a97e095da1d869a0e8c0b82f758ba8d517ae2d10cf72e48e7fc4962578a834",
+ "gate_sha256": "8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6",
+ "n_mutants": 39,
+ "killed": 15,
+ "survived": 24,
+ "mutants": [
+  {
+   "mutant": "e0_head_no_subject",
+   "sha256": "18ca9d90e726320151fdd520a2549236236f254ff4998e61cd8f5f77f0ca4003",
+   "verdict": "killed",
+   "killed_by": [
+    "control b3-url-added",
+    "pricing control wrong-subject-heading (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "e0_head_no_cve",
+   "sha256": "34979924565262f827a7284966367445c6b0733f78951b441edefb0e9f8e70da",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e0_head_no_hash_prefix",
+   "sha256": "cc2b5b376633118d008c3d72f0b105bf1420305cd7ebc9b2a387b1baf99ea14d",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e0_url_always_true",
+   "sha256": "f90be391e2e8b3245b30dc9049ead38230e3991e7d0f5e2d834b3e8007496752",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": [
+    "LIMB E0 FAIL heading=False url=True stray=3294999"
+   ]
+  },
+  {
+   "mutant": "e0_no_stray_check",
+   "sha256": "3183e1b199d7446b21f328d8f82c5a98300e82f128e6bfaf03bfcdfb2629c1a9",
+   "verdict": "killed",
+   "killed_by": [
+    "pricing control stray-report-url (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "e3_no_dup_check",
+   "sha256": "dedc400c0a4f664ab1a3bf586aa95444e523d65b47bdce0ea0e31b450bb483e3",
+   "verdict": "killed",
+   "killed_by": [
+    "pricing control duplicate-key (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "e3_dup_never_detected",
+   "sha256": "1b1c2925e8652db187c0f430e081b69f450448b0e4206c7a25dad9971850be82",
+   "verdict": "killed",
+   "killed_by": [
+    "pricing control duplicate-key (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "e3_sections_ge1",
+   "sha256": "4bffe0c33d7f7d8b7ad910767b52f9ddb92b72fdd58c8ba586f2351262be0cb6",
+   "verdict": "killed",
+   "killed_by": [
+    "pricing control two-pricing-sections (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "e4_min_quote_10",
+   "sha256": "1ff17d1f46c6d4206ef8d816dbcd6e1e5116cf02bada2791716ee51bc0cff5e9",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e4_min_quote_1",
+   "sha256": "2ba859daa3e07f52a4ef34408cd2ad30584035b180aac76d6abf000391bc808e",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": [
+    "LIMB E4 FAIL quotes=5 short=1 missing=0 s123=3"
+   ]
+  },
+  {
+   "mutant": "e4_no_short_check",
+   "sha256": "ab1d0f23525d2683cbd9b5e9dbbfeaeedec82f495e56c0032c42d0d93ab16fbd",
+   "verdict": "killed",
+   "killed_by": [
+    "pricing control short-quotes (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "e4_no_s123_requirement",
+   "sha256": "cfc79429e158491ed7ea2f90c7244d111e4240f18d17e0b229d272527ca6755b",
+   "verdict": "killed",
+   "killed_by": [
+    "control r85-package",
+    "pricing control no-s123-quote (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "e4_s123_taken_from_s120",
+   "sha256": "a9db892ceb6c61a6c9ba713440d1e541b3b7b7489f430e215d134c905a0e658d",
+   "verdict": "killed",
+   "killed_by": [
+    "control r85-package",
+    "pricing control no-s123-quote (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "program_hardwired_curl",
+   "sha256": "15d3c2d58cca9369a538bb58d82f4d97b0158150e26140122536276eb979ab16",
+   "verdict": "killed",
+   "killed_by": [
+    "control b3-wrong-subject",
+    "control b3-url-added",
+    "pricing control positive-pricing (expected pass)",
+    "pricing control forged-program (expected fail)",
+    "pricing control wrong-subject-heading (expected fail)",
+    "pricing control stray-report-url (expected fail)",
+    "pricing control short-quotes (expected fail)",
+    "pricing control forged-quote (expected fail)",
+    "pricing control no-s123-quote (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "payer_drop_handle_conjunction",
+   "sha256": "11b65f530241fc8eb41ce94100360a20dfecf761dd30b4361b5c2ba2ac1d9cce",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "payer_drop_s123_conjunction",
+   "sha256": "3107939aeacb0d0ba6490e4c70e2c2eb195a1f908ac405724842d21427bb4b0c",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "policy_drop_end_line",
+   "sha256": "85164d2b3c6fab34d94de3f23a5aceb82507e5a98f83e81c4081e5631bb14de9",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "policy_drop_s121_conjunction",
+   "sha256": "d04f8e5baeecabbb8b396b75521547fb4bb1fc5d8deef3b0e037588f209be955",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "severity_drop_s120_agreement",
+   "sha256": "70a4e706e9ca82caaf3d001937d785f0427401b498e6f63dc25bdba591e295ff",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "flag_truthy_not_strict_true",
+   "sha256": "88a26ecc148af575f188d1f35f69dbfa19d2dd0dbd968b780360f518b301b6f5",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "original_report_drop_s120_corroboration",
+   "sha256": "4c486e882a2466291dbb53a0c0cb8c2ec2867cf00075e825be94456ee5c80c0e",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "reward_regex_digits_only",
+   "sha256": "2cb29783c6583c82665511de92d61f79f72399e0cff214e819dcf56f40c9e5c9",
+   "verdict": "killed",
+   "killed_by": [
+    "control b3-wrong-subject",
+    "control b3-url-added",
+    "pricing control positive-pricing (expected pass)",
+    "pricing control wrong-subject-heading (expected fail)",
+    "pricing control stray-report-url (expected fail)",
+    "pricing control short-quotes (expected fail)",
+    "pricing control forged-quote (expected fail)",
+    "pricing control no-s123-quote (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "kev_always_not_listed",
+   "sha256": "3b290e876523f5aa910b0c7b8e144ed236f45d2156a83bb110df9c5046299b3a",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "kev_reverse_prefix",
+   "sha256": "32390ef7be6f76220f9051b4b7c4ca810f0bd50b3607ffd5720668fe556cdc0c",
+   "verdict": "killed",
+   "killed_by": [
+    "control b3-wrong-subject",
+    "control b3-url-added",
+    "pricing control positive-pricing (expected pass)",
+    "pricing control forged-kev (expected fail)",
+    "pricing control wrong-subject-heading (expected fail)",
+    "pricing control stray-report-url (expected fail)",
+    "pricing control short-quotes (expected fail)",
+    "pricing control forged-quote (expected fail)",
+    "pricing control no-s123-quote (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "cve_lowercased",
+   "sha256": "63152660038517d7bc6adac7e14561cf72ad9404ad10fff562823b8602f13041",
+   "verdict": "killed",
+   "killed_by": [
+    "control b3-wrong-subject",
+    "control b3-url-added",
+    "pricing control positive-pricing (expected pass)",
+    "pricing control forged-program (expected fail)",
+    "pricing control forged-payer-vendor (expected fail)",
+    "pricing control forged-severity (expected fail)",
+    "pricing control forged-reward (expected fail)",
+    "pricing control forged-platform-flag (expected fail)",
+    "pricing control forged-original-report (expected fail)",
+    "pricing control forged-current-policy-none (expected fail)",
+    "pricing control forged-current-policy-date (expected fail)",
+    "pricing control forged-kev (expected fail)",
+    "pricing control forged-cve (expected fail)",
+    "pricing control wrong-subject-heading (expected fail)",
+    "pricing control stray-report-url (expected fail)",
+    "pricing control duplicate-key (expected fail)",
+    "pricing control two-pricing-sections (expected fail)",
+    "pricing control short-quotes (expected fail)",
+    "pricing control forged-quote (expected fail)",
+    "pricing control no-s123-quote (expected fail)"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "e2_drop_manifest_digest",
+   "sha256": "3bb68d3f760eb40c0ded409193eb7f064da0ba64f49e1e2678ae3eeab13b15d0",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e2_drop_byte_equality",
+   "sha256": "0985182c9a76bd6080dc6931031d240596d00018eacea1f1393769c38969e23e",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e2_drop_recorded_artifact_digest",
+   "sha256": "bd1e01d9342b05049543b7c58cd72dc5c34cc63da1ef517544b10b5454083b37",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e2_follow_symlinks",
+   "sha256": "c599bcd0da5974b3f362c909ac117ea24bbd5ff2b0098b1ddef7cc87f2232daf",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e2_found_subset",
+   "sha256": "816b7d9e5b44fc7575ec23c0d22acb8b183def309299a6a12a6949e8ea364a35",
+   "verdict": "killed",
+   "killed_by": [
+    "control r85-package",
+    "control exemplar-copy"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "e2_require_third_source",
+   "sha256": "a040093b8c0f2926ec93a09e8f431219fe754aecdd870593f218a7ea6ea6597d",
+   "verdict": "killed",
+   "killed_by": [
+    "control b3-wrong-subject",
+    "control b3-url-added"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "reward_case_insensitive",
+   "sha256": "b3d55949d0842d6622fb1d54afcc659ad8344939f4d6057b82e03037d77c86ce",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e1_drop_verdict_check",
+   "sha256": "857c74c42c7115d37a66225b72e9eb5fe75558037d0b9ce903f6fd4dcf6b81b7",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e1_drop_rc_check",
+   "sha256": "69b87019005fa058dcc6b4636f45c6606dd80f6d54e4f8cf74bbea4e0f7d128a",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e4_quotes_not_normalized",
+   "sha256": "8c497f788fb2f181cd029006a3b20d202be7dbbd8a2e88908a3fed8437fac4f2",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e4_pool_includes_kev",
+   "sha256": "5f3bde52b16e4db7568386db743cc4cd3aa95e18770e9eea608ecaad14d44f9f",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "severity_case_sensitive",
+   "sha256": "ea0050d6104fe1e2cedd286e3cfdd79b05cd12eccb2ff0467a7a2c17484758b3",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  },
+  {
+   "mutant": "e5_or_instead_of_and",
+   "sha256": "30a43b5e6485336835dcbf61b6b9e4c791042932894afb53b90134483a1d627b",
+   "verdict": "killed",
+   "killed_by": [
+    "control donothing"
+   ],
+   "detail_only": []
+  },
+  {
+   "mutant": "allok_skips_e1",
+   "sha256": "60fcb927b265ac262449f263df4045ca388a29ee7a78453a77f5fa1169c942e1",
+   "verdict": "survived",
+   "killed_by": [],
+   "detail_only": []
+  }
+ ],
+ "probes": [
+  {
+   "probe": "p_e0_head_no_cve",
+   "mutant": "e0_head_no_cve",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 FAIL",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_e0_url_missing",
+   "mutant": "e0_url_always_true",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 FAIL",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_e0_no_hash_prefix",
+   "mutant": "e0_head_no_hash_prefix",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 FAIL",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_e4_min10_16char_quote",
+   "mutant": "e4_min_quote_10",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 FAIL",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_e4_min1_16char_quote",
+   "mutant": "e4_min_quote_1",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 FAIL",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_payer_no_handle",
+   "mutant": "payer_drop_handle_conjunction",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 FAIL",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_payer_no_s123",
+   "mutant": "payer_drop_s123_conjunction",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 FAIL",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_policy_no_endline",
+   "mutant": "policy_drop_end_line",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 FAIL",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_policy_no_s121",
+   "mutant": "policy_drop_s121_conjunction",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 FAIL",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_severity_no_s120",
+   "mutant": "severity_drop_s120_agreement",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 FAIL",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_flag_truthy",
+   "mutant": "flag_truthy_not_strict_true",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 FAIL",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_original_no_corroboration",
+   "mutant": "original_report_drop_s120_corroboration",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 FAIL",
+    "LIMB E3 FAIL",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_kev_always_not_listed",
+   "mutant": "kev_always_not_listed",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 FAIL",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_e2_lying_recorded_digest",
+   "mutant": "e2_drop_recorded_artifact_digest",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 FAIL",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ]
+  },
+  {
+   "probe": "p_e2_no_manifest_binding",
+   "mutant": "e2_drop_manifest_digest",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 FAIL",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ]
+  },
+  {
+   "probe": "p_e2_drop_byte_equality",
+   "mutant": "e2_drop_byte_equality",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 FAIL",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ]
+  },
+  {
+   "probe": "p_e2_symlink_evidence",
+   "mutant": "e2_follow_symlinks",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 FAIL",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ]
+  },
+  {
+   "probe": "p_e2_one_source",
+   "mutant": "e2_found_subset",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 FAIL",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ]
+  },
+  {
+   "probe": "p_e5_one_doc",
+   "mutant": "e5_or_instead_of_and",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 FAIL",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ]
+  },
+  {
+   "probe": "p_allok_only_e1_fails",
+   "mutant": "allok_skips_e1",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT pass limbs=6 rc=0"
+   ]
+  },
+  {
+   "probe": "p_e2_require_s120",
+   "mutant": "e2_require_third_source",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 FAIL",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ]
+  },
+  {
+   "probe": "p_reward_case",
+   "mutant": "reward_case_insensitive",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 FAIL",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  },
+  {
+   "probe": "p_severity_case",
+   "mutant": "severity_case_sensitive",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 FAIL",
+    "LIMB E4 pass",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ]
+  },
+  {
+   "probe": "p_e1_rc0_bad",
+   "mutant": "e1_drop_rc_check",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E1 pass",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT pass limbs=6 rc=0"
+   ]
+  },
+  {
+   "probe": "p_e1_rc3_good",
+   "mutant": "e1_drop_verdict_check",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E1 FAIL",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT fail limbs=6 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E1 pass",
+    "LIMB E2 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "LIMB E5 pass",
+    "E2E-RESULT pass limbs=6 rc=0"
+   ]
+  },
+  {
+   "probe": "p_e4_ws_quote",
+   "mutant": "e4_quotes_not_normalized",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 FAIL",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ]
+  },
+  {
+   "probe": "p_e4_kev_quote",
+   "mutant": "e4_pool_includes_kev",
+   "distinguishes": true,
+   "pristine": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 FAIL",
+    "E2E-RESULT fail limbs=3 rc=1"
+   ],
+   "mutant_out": [
+    "LIMB E0 pass",
+    "LIMB E3 pass",
+    "LIMB E4 pass",
+    "E2E-RESULT pass limbs=3 rc=0"
+   ]
+  }
+ ],
+ "pristine_signature": [
+  [
+   "control donothing",
+   1,
+   [
+    [
+     "E0",
+     "FAIL"
+    ],
+    [
+     "E1",
+     "FAIL"
+    ],
+    [
+     "E2",
+     "FAIL"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "FAIL"
+    ],
+    [
+     "E5",
+     "FAIL"
+    ]
+   ]
+  ],
+  [
+   "control r85-package",
+   1,
+   [
+    [
+     "E0",
+     "FAIL"
+    ],
+    [
+     "E1",
+     "pass"
+    ],
+    [
+     "E2",
+     "FAIL"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "FAIL"
+    ],
+    [
+     "E5",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "control exemplar-copy",
+   1,
+   [
+    [
+     "E0",
+     "FAIL"
+    ],
+    [
+     "E1",
+     "pass"
+    ],
+    [
+     "E2",
+     "FAIL"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "FAIL"
+    ],
+    [
+     "E5",
+     "FAIL"
+    ]
+   ]
+  ],
+  [
+   "control b3-wrong-subject",
+   1,
+   [
+    [
+     "E0",
+     "FAIL"
+    ],
+    [
+     "E1",
+     "FAIL"
+    ],
+    [
+     "E2",
+     "pass"
+    ],
+    [
+     "E3",
+     "pass"
+    ],
+    [
+     "E4",
+     "pass"
+    ],
+    [
+     "E5",
+     "FAIL"
+    ]
+   ]
+  ],
+  [
+   "control b3-url-added",
+   1,
+   [
+    [
+     "E0",
+     "FAIL"
+    ],
+    [
+     "E1",
+     "FAIL"
+    ],
+    [
+     "E2",
+     "pass"
+    ],
+    [
+     "E3",
+     "pass"
+    ],
+    [
+     "E4",
+     "pass"
+    ],
+    [
+     "E5",
+     "FAIL"
+    ]
+   ]
+  ],
+  [
+   "pricing control positive-pricing (expected pass)",
+   0,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "pass"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control forged-program (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control forged-payer-vendor (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control forged-severity (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control forged-reward (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control forged-platform-flag (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control forged-original-report (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control forged-current-policy-none (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control forged-current-policy-date (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control forged-kev (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control forged-cve (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control wrong-subject-heading (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "FAIL"
+    ],
+    [
+     "E3",
+     "pass"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control stray-report-url (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "FAIL"
+    ],
+    [
+     "E3",
+     "pass"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control duplicate-key (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control two-pricing-sections (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "FAIL"
+    ],
+    [
+     "E4",
+     "pass"
+    ]
+   ]
+  ],
+  [
+   "pricing control short-quotes (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "pass"
+    ],
+    [
+     "E4",
+     "FAIL"
+    ]
+   ]
+  ],
+  [
+   "pricing control forged-quote (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "pass"
+    ],
+    [
+     "E4",
+     "FAIL"
+    ]
+   ]
+  ],
+  [
+   "pricing control no-s123-quote (expected fail)",
+   1,
+   [
+    [
+     "E0",
+     "pass"
+    ],
+    [
+     "E3",
+     "pass"
+    ],
+    [
+     "E4",
+     "FAIL"
+    ]
+   ]
+  ]
+ ]
+}

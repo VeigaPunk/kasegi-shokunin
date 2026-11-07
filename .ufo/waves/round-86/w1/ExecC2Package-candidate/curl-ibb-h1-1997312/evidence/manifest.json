@@ -1,0 +1,112 @@
+{
+ "schema_version": "evidence-manifest/v1",
+ "sequence": 1,
+ "package": "claim-package candidate — ibb HackerOne 1997312 / CVE-2023-28319 (retrospective practice package, payer side of round-85 curl-h1-1913733)",
+ "sources": [
+  {
+   "id": "S120",
+   "url": "https://curl.se/docs/CVE-2023-28319.html",
+   "fetched_utc": "2026-11-07T00:26:29Z",
+   "sha256": "65d6b230ad58e86517b1b0faddd800d6bcb111ed05e21e22752246f4b0913690",
+   "bytes": 3053
+  },
+  {
+   "id": "S121",
+   "url": "https://curl.se/dev/vuln-disclosure.html",
+   "fetched_utc": "2026-11-07T00:26:30Z",
+   "sha256": "9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102",
+   "bytes": 19670
+  },
+  {
+   "id": "S122",
+   "url": "https://hackerone.com/reports/1997312.json",
+   "fetched_utc": "2026-11-07T00:58:29Z",
+   "sha256": "ceb01841a5144d72fb744f733b99a3fac792bf4197038fe9ec686ef57b418ec1",
+   "bytes": 9131
+  },
+  {
+   "id": "S123",
+   "url": "https://daniel.haxx.se/blog/2026/01/26/the-end-of-the-curl-bug-bounty/",
+   "fetched_utc": "2026-11-07T00:58:29Z",
+   "sha256": "22a7d5bed4d4081db7e94e4c788a5aaf12ed8dc8f7607536ef4ad36828de4ab5",
+   "bytes": 11895
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "S120.txt",
+   "sha256": "65d6b230ad58e86517b1b0faddd800d6bcb111ed05e21e22752246f4b0913690",
+   "bytes": 3053,
+   "polarity": "positive",
+   "note": "curl advisory CVE-2023-28319, byte-identical to corpus/source-snapshots/round-85/S120.txt"
+  },
+  {
+   "path": "S121.txt",
+   "sha256": "9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102",
+   "bytes": 19670,
+   "polarity": "positive",
+   "note": "curl vulnerability-disclosure policy, byte-identical to corpus/source-snapshots/round-85/S121.txt"
+  },
+  {
+   "path": "S122.txt",
+   "sha256": "ceb01841a5144d72fb744f733b99a3fac792bf4197038fe9ec686ef57b418ec1",
+   "bytes": 9131,
+   "polarity": "positive",
+   "note": "HackerOne JSON record of IBB report 1997312, byte-identical to corpus/source-snapshots/round-86/S122.txt; the source JSON contains a presigned-URL session token matching the gate credential shape twice — kept byte-identical for evidence binding, R-NOSECRET overlap documented in report.md"
+  },
+  {
+   "path": "S123.txt",
+   "sha256": "22a7d5bed4d4081db7e94e4c788a5aaf12ed8dc8f7607536ef4ad36828de4ab5",
+   "bytes": 11895,
+   "polarity": "positive",
+   "note": "curl maintainer post, end of the curl bug bounty (2026-01-26), byte-identical to corpus/source-snapshots/round-86/S123.txt"
+  }
+ ],
+ "redactions": [
+  {
+   "artifact": "S120.txt",
+   "path": "S120.txt",
+   "artifact_sha256": "65d6b230ad58e86517b1b0faddd800d6bcb111ed05e21e22752246f4b0913690",
+   "scanned_artifact_sha256": "65d6b230ad58e86517b1b0faddd800d6bcb111ed05e21e22752246f4b0913690",
+   "producer": "ExecC2Package",
+   "verifier": "KasegiR86",
+   "verifier_receipt": ".ufo/waves/round-86/l1/redaction-scan-r86.txt (pending L1 verification)",
+   "removed": [],
+   "note": "public vendor advisory; no personal or customer data present, zero bytes removed; gate SECRET_PATTERNS scan clean"
+  },
+  {
+   "artifact": "S121.txt",
+   "path": "S121.txt",
+   "artifact_sha256": "9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102",
+   "scanned_artifact_sha256": "9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102",
+   "producer": "ExecC2Package",
+   "verifier": "KasegiR86",
+   "verifier_receipt": ".ufo/waves/round-86/l1/redaction-scan-r86.txt (pending L1 verification)",
+   "removed": [],
+   "note": "public vendor policy page; no personal or customer data present, zero bytes removed; gate SECRET_PATTERNS scan clean"
+  },
+  {
+   "artifact": "S122.txt",
+   "path": "S122.txt",
+   "artifact_sha256": "ceb01841a5144d72fb744f733b99a3fac792bf4197038fe9ec686ef57b418ec1",
+   "scanned_artifact_sha256": "ceb01841a5144d72fb744f733b99a3fac792bf4197038fe9ec686ef57b418ec1",
+   "producer": "ExecC2Package",
+   "verifier": "KasegiR86",
+   "verifier_receipt": ".ufo/waves/round-86/l1/redaction-scan-r86.txt (pending L1 verification)",
+   "removed": [],
+   "note": "public HackerOne record JSON; no personal or customer data present, zero bytes removed; the presigned-URL token (expired, in profile_picture_urls) matches the credential shape twice — recorded honestly, bytes kept for evidence binding; gate R-NOSECRET overlap documented in report.md"
+  },
+  {
+   "artifact": "S123.txt",
+   "path": "S123.txt",
+   "artifact_sha256": "22a7d5bed4d4081db7e94e4c788a5aaf12ed8dc8f7607536ef4ad36828de4ab5",
+   "scanned_artifact_sha256": "22a7d5bed4d4081db7e94e4c788a5aaf12ed8dc8f7607536ef4ad36828de4ab5",
+   "producer": "ExecC2Package",
+   "verifier": "KasegiR86",
+   "verifier_receipt": ".ufo/waves/round-86/l1/redaction-scan-r86.txt (pending L1 verification)",
+   "removed": [],
+   "note": "public maintainer post; no personal or customer data present, zero bytes removed; gate SECRET_PATTERNS scan clean"
+  }
+ ],
+ "expected_head_sha256": "00a88c5a05a3b7e673eaaaa921069527f485aa8cee10c206f35ffc3fc3587550"
+}

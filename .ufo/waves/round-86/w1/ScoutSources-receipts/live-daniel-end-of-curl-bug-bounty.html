@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en-US" prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>The end of the curl bug-bounty | daniel.haxx.se</title>
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+	<link rel="pingback" href="https://daniel.haxx.se/blog/xmlrpc.php">
+	<meta name='robots' content='max-image-preview:large' />
+<link rel="alternate" type="application/rss+xml" title="daniel.haxx.se &raquo; Feed" href="https://daniel.haxx.se/blog/feed/" />
+<link rel="alternate" type="application/rss+xml" title="daniel.haxx.se &raquo; Comments Feed" href="https://daniel.haxx.se/blog/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="daniel.haxx.se &raquo; The end of the curl bug-bounty Comments Feed" href="https://daniel.haxx.se/blog/2026/01/26/the-end-of-the-curl-bug-bounty/feed/" />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://daniel.haxx.se/blog/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fdaniel.haxx.se%2Fblog%2F2026%2F01%2F26%2Fthe-end-of-the-curl-bug-bounty%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://daniel.haxx.se/blog/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fdaniel.haxx.se%2Fblog%2F2026%2F01%2F26%2Fthe-end-of-the-curl-bug-bounty%2F&#038;format=xml" />
+<style id="wp-img-auto-sizes-contain-inline-css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id="wp-emoji-styles-inline-css">
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+/*# sourceURL=wp-emoji-styles-inline-css */
+</style>
+<style id="wp-block-library-inline-css">
+:root{--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color);--wp-editor-canvas-background:#ddd;--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,160.5;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}:root .has-text-align-center{text-align:center}:root .has-text-align-left{text-align:left}:root .has-text-align-right{text-align:right}.has-fit-text{white-space:nowrap!important}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{word-wrap:normal!important;border:0;clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;word-break:normal!important}.screen-reader-text:focus{background-color:#ddd;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style^=border-color],[style*=";border-color"],[style*="; border-color"]){border-style:solid}html :where([style^=border-top-color],[style*=";border-top-color"],[style*="; border-top-color"]){border-top-style:solid}html :where([style^=border-right-color],[style*=";border-right-color"],[style*="; border-right-color"]){border-right-style:solid}html :where([style^=border-bottom-color],[style*=";border-bottom-color"],[style*="; border-bottom-color"]){border-bottom-style:solid}html :where([style^=border-left-color],[style*=";border-left-color"],[style*="; border-left-color"]){border-left-style:solid}html :where([style^=border-width],[style*=";border-width"],[style*="; border-width"]){border-style:solid}html :where([style^=border-top-width],[style*=";border-top-width"],[style*="; border-top-width"]){border-top-style:solid}html :where([style^=border-right-width],[style*=";border-right-width"],[style*="; border-right-width"]){border-right-style:solid}html :where([style^=border-bottom-width],[style*=";border-bottom-width"],[style*="; border-bottom-width"]){border-bottom-style:solid}html :where([style^=border-left-width],[style*=";border-left-width"],[style*="; border-left-width"]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
+
+/*# sourceURL=/wp-includes/css/dist/block-library/common.min.css */
+</style>
+<style id="wp-block-calendar-inline-css">
+.wp-block-calendar{text-align:center}.wp-block-calendar td,.wp-block-calendar th{border:1px solid;padding:.25em}.wp-block-calendar th{font-weight:400}.wp-block-calendar caption{background-color:inherit}.wp-block-calendar table{border-collapse:collapse;width:100%}.wp-block-calendar table.has-background th{background-color:inherit}.wp-block-calendar table.has-text-color th{color:inherit}.wp-block-calendar :where(table:not(.has-text-color)){color:#40464d}.wp-block-calendar :where(table:not(.has-text-color)) td,.wp-block-calendar :where(table:not(.has-text-color)) th{border-color:#ddd}:where(.wp-block-calendar table:not(.has-background) th){background:#ddd}
+/*# sourceURL=https://daniel.haxx.se/blog/wp-includes/blocks/calendar/style.min.css */
+</style>
+<style id="wp-block-heading-inline-css">
+h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-background,h3:where(.wp-block-heading).has-background,h4:where(.wp-block-heading).has-background,h5:where(.wp-block-heading).has-background,h6:where(.wp-block-heading).has-background{padding:1.25em 2.375em}h1.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h1.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h2.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h2.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h3.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h3.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h4.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h4.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h5.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h5.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h6.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h6.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]){rotate:180deg}
+/*# sourceURL=https://daniel.haxx.se/blog/wp-includes/blocks/heading/style.min.css */
+</style>
+<style id="wp-block-image-inline-css">
+.wp-block-image>a,.wp-block-image>figure>a{display:inline-block}.wp-block-image img{box-sizing:border-box;height:auto;max-width:100%;vertical-align:bottom}@media not (prefers-reduced-motion){.wp-block-image img.hide{visibility:hidden}.wp-block-image img.show{animation:show-content-image .4s}}.wp-block-image[style*=border-radius] img,.wp-block-image[style*=border-radius]>a{border-radius:inherit}.wp-block-image.has-custom-border img{box-sizing:border-box}.wp-block-image.aligncenter{text-align:center}.wp-block-image.alignfull>a,.wp-block-image.alignwide>a{width:100%}.wp-block-image.alignfull img,.wp-block-image.alignwide img{height:auto;width:100%}.wp-block-image .aligncenter,.wp-block-image .alignleft,.wp-block-image .alignright,.wp-block-image.aligncenter,.wp-block-image.alignleft,.wp-block-image.alignright{display:table}.wp-block-image .aligncenter>figcaption,.wp-block-image .alignleft>figcaption,.wp-block-image .alignright>figcaption,.wp-block-image.aligncenter>figcaption,.wp-block-image.alignleft>figcaption,.wp-block-image.alignright>figcaption{caption-side:bottom;display:table-caption}.wp-block-image .alignleft{float:left;margin:.5em 1em .5em 0}.wp-block-image .alignright{float:right;margin:.5em 0 .5em 1em}.wp-block-image .aligncenter{margin-left:auto;margin-right:auto}.wp-block-image :where(figcaption){margin-bottom:1em;margin-top:.5em}.wp-block-image.is-style-circle-mask img{border-radius:9999px}@supports ((-webkit-mask-image:none) or (mask-image:none)) or (-webkit-mask-image:none){.wp-block-image.is-style-circle-mask img{border-radius:0;-webkit-mask-image:url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');mask-image:url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');mask-mode:alpha;-webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain}}:root :where(.wp-block-image.is-style-rounded img,.wp-block-image .is-style-rounded img){border-radius:9999px}.wp-block-image figure{margin:0}.wp-lightbox-container{display:flex;flex-direction:column;position:relative}.wp-lightbox-container img{cursor:zoom-in}.wp-lightbox-container img:hover+button{opacity:1}.wp-lightbox-container button{align-items:center;backdrop-filter:blur(16px) saturate(180%);background-color:rgba(90,90,90,.25);border:none;border-radius:4px;cursor:zoom-in;display:flex;height:20px;justify-content:center;opacity:0;padding:0;position:absolute;right:16px;text-align:center;top:16px;width:20px;z-index:100}@media not (prefers-reduced-motion){.wp-lightbox-container button{transition:opacity .2s ease}}.wp-lightbox-container button:focus-visible{outline:3px auto rgba(90,90,90,.25);outline:3px auto -webkit-focus-ring-color;outline-offset:3px}.wp-lightbox-container button:hover{cursor:pointer;opacity:1}.wp-lightbox-container button:focus{opacity:1}.wp-lightbox-container button:focus,.wp-lightbox-container button:hover,.wp-lightbox-container button:not(:hover):not(:active):not(.has-background){background-color:rgba(90,90,90,.25);border:none}.wp-lightbox-overlay{box-sizing:border-box;cursor:zoom-out;height:100vh;left:0;overflow:hidden;position:fixed;top:0;visibility:hidden;width:100%;z-index:100000}.wp-lightbox-overlay .wp-lightbox-close-button{align-items:center;cursor:pointer;display:flex;font-family:inherit;gap:8px;justify-content:center;line-height:1;min-height:40px;min-width:40px;padding:0 4px;position:absolute;right:calc(env(safe-area-inset-right) + 16px);top:calc(env(safe-area-inset-top) + 16px);z-index:5000000}.wp-lightbox-overlay .wp-lightbox-close-button:focus,.wp-lightbox-overlay .wp-lightbox-close-button:hover,.wp-lightbox-overlay .wp-lightbox-close-button:not(:hover):not(:active):not(.has-background){background:none;border:none}.wp-lightbox-overlay .wp-lightbox-close-button:has(.wp-lightbox-close-text:not([hidden])) .wp-lightbox-close-icon svg{height:1em;width:1em}.wp-lightbox-overlay .wp-lightbox-close-icon svg{display:block}.wp-lightbox-overlay .wp-lightbox-navigation-button-next,.wp-lightbox-overlay .wp-lightbox-navigation-button-prev{align-items:center;bottom:16px;cursor:pointer;display:flex;font-family:inherit;gap:4px;justify-content:center;line-height:1;min-height:40px;min-width:40px;padding:0 8px;position:absolute;z-index:2000002}.wp-lightbox-overlay .wp-lightbox-navigation-button-next[hidden],.wp-lightbox-overlay .wp-lightbox-navigation-button-prev[hidden]{display:none}@media (min-width:960px){.wp-lightbox-overlay .wp-lightbox-navigation-button-next,.wp-lightbox-overlay .wp-lightbox-navigation-button-prev{bottom:50%;transform:translateY(-50%)}}.wp-lightbox-overlay .wp-lightbox-navigation-button-next:focus,.wp-lightbox-overlay .wp-lightbox-navigation-button-next:hover,.wp-lightbox-overlay .wp-lightbox-navigation-button-next:not(:hover):not(:active):not(.has-background),.wp-lightbox-overlay .wp-lightbox-navigation-button-prev:focus,.wp-lightbox-overlay .wp-lightbox-navigation-button-prev:hover,.wp-lightbox-overlay .wp-lightbox-navigation-button-prev:not(:hover):not(:active):not(.has-background){background:none;border:none;padding:0 8px}.wp-lightbox-overlay .wp-lightbox-navigation-button-next:has(.wp-lightbox-navigation-text:not([hidden])) .wp-lightbox-navigation-icon svg,.wp-lightbox-overlay .wp-lightbox-navigation-button-prev:has(.wp-lightbox-navigation-text:not([hidden])) .wp-lightbox-navigation-icon svg{display:block;height:1.5em;width:1.5em}.wp-lightbox-overlay .wp-lightbox-navigation-button-prev{left:calc(env(safe-area-inset-left) + 16px)}.wp-lightbox-overlay .wp-lightbox-navigation-button-next{right:calc(env(safe-area-inset-right) + 16px)}.wp-lightbox-overlay .wp-lightbox-navigation-icon svg{vertical-align:middle}.wp-lightbox-overlay .lightbox-image-container{height:var(--wp--lightbox-container-height);left:50%;overflow:hidden;position:absolute;top:50%;transform:translate(-50%,-50%);transform-origin:top left;width:var(--wp--lightbox-container-width);z-index:2000001}.wp-lightbox-overlay .wp-block-image{align-items:center;box-sizing:border-box;display:flex;height:100%;justify-content:center;margin:0;position:relative;transform-origin:0 0;width:100%;z-index:3000000}.wp-lightbox-overlay .wp-block-image img{height:var(--wp--lightbox-image-height);min-height:var(--wp--lightbox-image-height);min-width:var(--wp--lightbox-image-width);width:var(--wp--lightbox-image-width)}.wp-lightbox-overlay .wp-block-image figcaption{display:none}.wp-lightbox-overlay button{background:none;border:none}.wp-lightbox-overlay .scrim{background-color:#fff;height:100%;opacity:.9;position:absolute;width:100%;z-index:2000000}.wp-lightbox-overlay.active{visibility:visible}@media not (prefers-reduced-motion){.wp-lightbox-overlay.active{animation:turn-on-visibility .25s both}.wp-lightbox-overlay.active img{animation:turn-on-visibility .35s both}.wp-lightbox-overlay.show-closing-animation:not(.active){animation:turn-off-visibility .35s both}.wp-lightbox-overlay.show-closing-animation:not(.active) img{animation:turn-off-visibility .25s both}.wp-lightbox-overlay.zoom.active{animation:none;opacity:1;visibility:visible}.wp-lightbox-overlay.zoom.active .lightbox-image-container{animation:lightbox-zoom-in .4s}.wp-lightbox-overlay.zoom.active .lightbox-image-container img{animation:none}.wp-lightbox-overlay.zoom.active .scrim{animation:turn-on-visibility .4s forwards}.wp-lightbox-overlay.zoom.show-closing-animation:not(.active){animation:none}.wp-lightbox-overlay.zoom.show-closing-animation:not(.active) .lightbox-image-container{animation:lightbox-zoom-out .4s}.wp-lightbox-overlay.zoom.show-closing-animation:not(.active) .lightbox-image-container img{animation:none}.wp-lightbox-overlay.zoom.show-closing-animation:not(.active) .scrim{animation:turn-off-visibility .4s forwards}}@keyframes show-content-image{0%{visibility:hidden}99%{visibility:hidden}to{visibility:visible}}@keyframes turn-on-visibility{0%{opacity:0}to{opacity:1}}@keyframes turn-off-visibility{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}to{opacity:0;visibility:hidden}}@keyframes lightbox-zoom-in{0%{transform:translate(calc((-100vw + var(--wp--lightbox-scrollbar-width))/2 + var(--wp--lightbox-initial-left-position)),calc(-50vh + var(--wp--lightbox-initial-top-position))) scale(var(--wp--lightbox-scale))}to{transform:translate(-50%,-50%) scale(1)}}@keyframes lightbox-zoom-out{0%{transform:translate(-50%,-50%) scale(1);visibility:visible}99%{visibility:visible}to{transform:translate(calc((-100vw + var(--wp--lightbox-scrollbar-width))/2 + var(--wp--lightbox-initial-left-position)),calc(-50vh + var(--wp--lightbox-initial-top-position))) scale(var(--wp--lightbox-scale));visibility:hidden}}
+/*# sourceURL=https://daniel.haxx.se/blog/wp-includes/blocks/image/style.min.css */
+</style>
+<style id="wp-block-list-inline-css">
+ol,ul{box-sizing:border-box}:root :where(.wp-block-list.has-background){padding:1.25em 2.375em}
+/*# sourceURL=https://daniel.haxx.se/blog/wp-includes/blocks/list/style.min.css */
+</style>
+<style id="wp-block-paragraph-inline-css">
+.is-small-text{font-size:.875em}.is-regular-text{font-size:1em}.is-large-text{font-size:2.25em}.is-larger-text{font-size:3em}.has-drop-cap:not(:focus):first-letter{float:left;font-size:8.4em;font-style:normal;font-weight:100;line-height:.68;margin:.05em .1em 0 0;text-transform:uppercase}body.rtl .has-drop-cap:not(:focus):first-letter{float:none;margin-left:.1em}p.has-drop-cap.has-background{overflow:hidden}:root :where(p.has-background){padding:1.25em 2.375em}:where(p.has-text-color:not(.has-link-color)) a{color:inherit}p.has-text-align-left[style*="writing-mode:vertical-lr"],p.has-text-align-right[style*="writing-mode:vertical-rl"]{rotate:180deg}
+/*# sourceURL=https://daniel.haxx.se/blog/wp-includes/blocks/paragraph/style.min.css */
+</style>
+
+<style id="classic-theme-styles-inline-css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+
+<style id="global-styles-inline-css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #fff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--green: #24890d;--wp--preset--color--dark-gray: #2b2b2b;--wp--preset--color--medium-gray: #767676;--wp--preset--color--light-gray: #f5f5f5;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}.wp-block-button{--wp--preset--dimension--25: 25%;--wp--preset--dimension--50: 50%;--wp--preset--dimension--75: 75%;--wp--preset--dimension--100: 100%;}:where(body) { margin: 0; }:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-green-color{color: var(--wp--preset--color--green) !important;}.has-dark-gray-color{color: var(--wp--preset--color--dark-gray) !important;}.has-medium-gray-color{color: var(--wp--preset--color--medium-gray) !important;}.has-light-gray-color{color: var(--wp--preset--color--light-gray) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-green-background-color{background-color: var(--wp--preset--color--green) !important;}.has-dark-gray-background-color{background-color: var(--wp--preset--color--dark-gray) !important;}.has-medium-gray-background-color{background-color: var(--wp--preset--color--medium-gray) !important;}.has-light-gray-background-color{background-color: var(--wp--preset--color--light-gray) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-green-border-color{border-color: var(--wp--preset--color--green) !important;}.has-dark-gray-border-color{border-color: var(--wp--preset--color--dark-gray) !important;}.has-medium-gray-border-color{border-color: var(--wp--preset--color--medium-gray) !important;}.has-light-gray-border-color{border-color: var(--wp--preset--color--light-gray) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+<link rel='stylesheet' id='cptch_stylesheet-css' href='https://daniel.haxx.se/blog/wp-content/plugins/captcha/css/front_end_style.css?ver=4.4.5' media='all' />
+<link rel='stylesheet' id='dashicons-css' href='https://daniel.haxx.se/blog/wp-includes/css/dashicons.min.css?ver=7.1.4' media='all' />
+<link rel='stylesheet' id='cptch_desktop_style-css' href='https://daniel.haxx.se/blog/wp-content/plugins/captcha/css/desktop_style.css?ver=4.4.5' media='all' />
+<link rel='stylesheet' id='twentyfourteen-lato-css' href='https://daniel.haxx.se/blog/wp-content/themes/twentyfourteen/fonts/font-lato.css?ver=20230328' media='all' />
+<link rel='stylesheet' id='genericons-css' href='https://daniel.haxx.se/blog/wp-content/themes/twentyfourteen/genericons/genericons.css?ver=20251101' media='all' />
+<link rel='stylesheet' id='twentyfourteen-style-css' href='https://daniel.haxx.se/blog/wp-content/themes/twentyfourteen/style.css?ver=20260819' media='all' />
+<link rel='stylesheet' id='twentyfourteen-block-style-css' href='https://daniel.haxx.se/blog/wp-content/themes/twentyfourteen/css/blocks.css?ver=20250715' media='all' />
+<script id="jquery-core-js" src="https://daniel.haxx.se/blog/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"></script>
+<script id="jquery-migrate-js" src="https://daniel.haxx.se/blog/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1"></script>
+<script data-wp-strategy="defer" defer id="twentyfourteen-script-js" src="https://daniel.haxx.se/blog/wp-content/themes/twentyfourteen/js/functions.js?ver=20250729"></script>
+<link rel="https://api.w.org/" href="https://daniel.haxx.se/blog/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://daniel.haxx.se/blog/wp-json/wp/v2/posts/28830" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://daniel.haxx.se/blog/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 7.1.4" />
+<link rel="canonical" href="https://daniel.haxx.se/blog/2026/01/26/the-end-of-the-curl-bug-bounty/" />
+<link rel='shortlink' href='https://daniel.haxx.se/blog/?p=28830' />
+<meta property="og:title" name="og:title" content="The end of the curl bug-bounty" />
+<meta property="og:type" name="og:type" content="article" />
+<meta property="og:image" name="og:image" content="https://daniel.haxx.se/blog/wp-content/uploads/2025/12/no-more.jpg" />
+<meta property="og:image" name="og:image" content="https://daniel.haxx.se/blog/wp-content/uploads/2026/01/curl-Compared-to-OSS-Peers.png" />
+<meta property="og:url" name="og:url" content="https://daniel.haxx.se/blog/2026/01/26/the-end-of-the-curl-bug-bounty/" />
+<meta property="og:description" name="og:description" content="tldr: an attempt to reduce the terror reporting. There is no longer a curl bug-bounty program. It officially stops on January 31, 2026. After having had a few half-baked previous takes, in April 2019 we kicked off the first real curl bug-bounty with the help of Hackerone, and while it stumbled a bit at first &hellip; Continue reading The end of the curl bug-bounty &rarr;" />
+<meta property="og:locale" name="og:locale" content="en_US" />
+<meta property="og:site_name" name="og:site_name" content="daniel.haxx.se" />
+<meta property="twitter:card" name="twitter:card" content="summary_large_image" />
+<meta property="article:tag" name="article:tag" content="bug bounty" />
+<meta property="article:tag" name="article:tag" content="cURL and libcurl" />
+<meta property="article:tag" name="article:tag" content="hackerone" />
+<meta property="article:section" name="article:section" content="cURL and libcurl" />
+<meta property="article:published_time" name="article:published_time" content="2026-01-26T08:24:41+01:00" />
+<meta property="article:modified_time" name="article:modified_time" content="2026-01-26T16:03:18+01:00" />
+<meta property="article:author" name="article:author" content="https://daniel.haxx.se/blog/author/daniel/" />
+<style>.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>		<style id="twentyfourteen-header-css">
+				.site-title,
+		.site-description {
+			clip-path: inset(50%);
+			position: absolute;
+		}
+				</style>
+		<link rel="icon" href="https://daniel.haxx.se/blog/wp-content/uploads/2024/07/daniel-greenbg-blackandwhite-413x413-1.jpg" sizes="32x32" />
+<link rel="icon" href="https://daniel.haxx.se/blog/wp-content/uploads/2024/07/daniel-greenbg-blackandwhite-413x413-1.jpg" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://daniel.haxx.se/blog/wp-content/uploads/2024/07/daniel-greenbg-blackandwhite-413x413-1.jpg" />
+<meta name="msapplication-TileImage" content="https://daniel.haxx.se/blog/wp-content/uploads/2024/07/daniel-greenbg-blackandwhite-413x413-1.jpg" />
+</head>
+
+<body class="wp-singular post-template-default single single-post postid-28830 single-format-standard wp-embed-responsive wp-theme-twentyfourteen header-image singular">
+<a class="screen-reader-text skip-link" href="#content">
+	Skip to content</a>
+<div id="page" class="hfeed site">
+			<div id="site-header">
+		<a href="https://daniel.haxx.se/blog/" rel="home" >
+			<img src="https://daniel.haxx.se/blog/wp-content/uploads/2024/11/Daniel-blog-header-colonslash-thin.jpg" width="1260" height="100" alt="daniel.haxx.se" decoding="async" fetchpriority="high" />		</a>
+	</div>
+	
+	<header id="masthead" class="site-header">
+		<div class="header-main">
+							<h1 class="site-title"><a href="https://daniel.haxx.se/blog/" rel="home" >daniel.haxx.se</a></h1>
+			
+			<div class="search-toggle">
+				<a href="#search-container" class="screen-reader-text" aria-expanded="false" aria-controls="search-container">
+					Search				</a>
+			</div>
+
+			<nav id="primary-navigation" class="site-navigation primary-navigation">
+				<button class="menu-toggle">Primary Menu</button>
+				<div id="primary-menu" class="nav-menu"><ul>
+<li class="page_item page-item-2"><a href="https://daniel.haxx.se/blog/about/">About</a></li>
+<li class="page_item page-item-22945"><a href="https://daniel.haxx.se/blog/privacy-policy/">Privacy</a></li>
+</ul></div>
+			</nav>
+		</div>
+
+		<div id="search-container" class="search-box-wrapper hide">
+			<div class="search-box">
+				<form role="search" method="get" class="search-form" action="https://daniel.haxx.se/blog/">
+				<label>
+					<span class="screen-reader-text">Search for:</span>
+					<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" />
+				</label>
+				<input type="submit" class="search-submit" value="Search" />
+			</form>			</div>
+		</div>
+	</header><!-- #masthead -->
+
+	<div id="main" class="site-main">
+
+	<div id="primary" class="content-area">
+		<div id="content" class="site-content" role="main">
+			
+<article id="post-28830" class="post-28830 post type-post status-publish format-standard has-post-thumbnail hentry category-curl tag-bug-bounty tag-curl-and-libcurl tag-hackerone">
+	
+		<div class="post-thumbnail">
+			<img width="672" height="339" src="https://daniel.haxx.se/blog/wp-content/uploads/2025/12/no-more.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" decoding="async" />		</div>
+
+		
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="https://daniel.haxx.se/blog/category/floss/curl/" rel="category tag">cURL and libcurl</a></span>
+		</div>
+			<h1 class="entry-title">The end of the curl bug-bounty</h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="https://daniel.haxx.se/blog/2026/01/26/the-end-of-the-curl-bug-bounty/" rel="bookmark"><time class="entry-date" datetime="2026-01-26T08:24:41+01:00">January 26, 2026</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="https://daniel.haxx.se/blog/author/daniel/" rel="author">Daniel Stenberg</a></span></span>			<span class="comments-link"><a href="https://daniel.haxx.se/blog/2026/01/26/the-end-of-the-curl-bug-bounty/#comments">2 Comments</a></span>
+						</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		
+<p class="wp-block-paragraph">tldr: an attempt to reduce the <em>terror reporting</em>.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>There is no longer a curl bug-bounty program.</strong> It officially stops on January 31, 2026.</p>
+
+
+
+<p class="wp-block-paragraph">After having had a few half-baked previous takes, in April 2019 we kicked off the <a href="https://daniel.haxx.se/blog/2019/04/22/curl-hackerone-true/" data-type="post" data-id="11923">first real curl bug-bounty</a> with the help of Hackerone, and while it stumbled a bit at first it has been quite successful I think.</p>
+
+
+
+<p class="wp-block-paragraph">We attracted skilled researchers who reported plenty of actual vulnerabilities for which we paid fine monetary rewards. We have certainly made curl better as a direct result of this: <strong>87 confirmed vulnerabilities and over 100,000 USD</strong> paid as rewards to researchers. I&#8217;m quite happy and proud of this accomplishment.</p>
+
+
+
+<p class="wp-block-paragraph">I would like to especially highlight the awesome Internet Bug Bounty project, which has paid the bounties for us for many years. We could not have done this without them. Also of course Hackerone, who has graciously hosted us and been our partner through these years.</p>
+
+
+
+<p class="wp-block-paragraph">Thanks!</p>
+
+
+
+<h2 class="wp-block-heading">How we got here</h2>
+
+
+
+<p class="wp-block-paragraph">Looking back, I think we can say that the downfall of the bug-bounty program started slowly in the second half of 2024 but accelerated badly in 2025.</p>
+
+
+
+<p class="wp-block-paragraph">We saw an <a href="https://daniel.haxx.se/blog/2025/07/14/death-by-a-thousand-slops/" data-type="post" data-id="27769">explosion in AI slop reports</a> combined with a lower quality even in the reports that were not obvious slop &#8211; presumably because they too were actually misled by AI but with that fact just hidden better.</p>
+
+
+
+<p class="wp-block-paragraph">Maybe the first five years made it possible for researchers to find and report the low hanging fruit. Previous years we have had a rate of somewhere north of 15% of the submissions ending up confirmed vulnerabilities. Starting 2025, the confirmed-rate plummeted to below 5%. Not even one in twenty was <em>real</em>.</p>
+
+
+
+<p class="wp-block-paragraph">The never-ending slop submissions take a serious mental toll to manage and sometimes also a long time to debunk. Time and energy that is completely wasted while also hampering our will to live.</p>
+
+
+
+<p class="wp-block-paragraph">I have also started to get the feeling that a lot of the security reporters submit reports with a <em>bad faith attitude.</em> These &#8220;helpers&#8221; try too hard to twist whatever they find into something horribly bad and a critical vulnerability, but they rarely actively contribute to actually <em>improve</em> curl. They can go to extreme efforts to argue and insist on their specific current finding, but not to write a fix or work with the team on improving curl long-term etc. I don&#8217;t think we need more of that.</p>
+
+
+
+<p class="wp-block-paragraph">There are these three bad trends combined that makes us take this step: the mind-numbing AI slop, humans doing worse than ever and the apparent will to poke holes rather than to help.</p>
+
+
+
+<h2 class="wp-block-heading">Actions</h2>
+
+
+
+<p class="wp-block-paragraph">In an attempt to do something about the sorry state of curl security reports, this is what we do:</p>
+
+
+
+<ul class="wp-block-list">
+<li>We no longer offer any monetary rewards for security reports &#8211; no matter which severity. In an attempt to remove the incentives for submitting made up lies.</li>
+
+
+
+<li>We stop using Hackerone as the recommended channel to report security problems. To make the change immediately obvious and because without a bug-bounty program we don&#8217;t need it.</li>
+
+
+
+<li>We refer everyone to submit suspected curl security problems <a href="https://github.com/curl/curl/security/advisories">on GitHub using their <em>Private vulnerability reporting</em></a> feature.</li>
+
+
+
+<li>We continue to immediately <em>ban and publicly</em> <em>ridicule</em> everyone who submits AI slop to the project.</li>
+</ul>
+
+
+
+<h2 class="wp-block-heading">Maintain curl security</h2>
+
+
+
+<p class="wp-block-paragraph">We believe that we can maintain and continue to evolve curl security in spite of this change. Maybe even improve thanks to this, as hopefully this step helps prevent more people pouring sand into the machine. Ideally we reduce the amount of wasted time and effort.</p>
+
+
+
+<p class="wp-block-paragraph">I believe the best and our most valued security reporters still will tell us when they find security vulnerabilities.</p>
+
+
+
+<h2 class="wp-block-heading">Instead</h2>
+
+
+
+<p class="wp-block-paragraph">If you suspect a security problem in curl going forward, we advise you to head over to GitHub and submit them there.</p>
+
+
+
+<p class="wp-block-paragraph">Alternatively, you send an email with the full report to <code>security @ curl.se</code>. </p>
+
+
+
+<p class="wp-block-paragraph">In both cases, the report is received and handled privately by the curl security team. But with <em>no monetary reward offered</em>.</p>
+
+
+
+<h2 class="wp-block-heading">Leaving Hackerone</h2>
+
+
+
+<p class="wp-block-paragraph">Hackerone was good to us and they have graciously allowed us to run our program on their platform for free for many years. We thank them for that service.</p>
+
+
+
+<p class="wp-block-paragraph">As we now drop the rewards, we feel it makes a clear cut and displays a clearer message to everyone involved by also moving away from Hackerone as a platform for vulnerability reporting. It makes the change more visible.</p>
+
+
+
+<h2 class="wp-block-heading">Future disclosures</h2>
+
+
+
+<p class="wp-block-paragraph">It is probably going to be harder for us to publicly disclose every incoming security report in the same way we have done it on Hackerone for the last year.  We need to work out something to make sure that we can keep doing it at least imperfectly, because I believe in the goodness of such transparency.</p>
+
+
+
+<h2 class="wp-block-heading">We stay on GitHub</h2>
+
+
+
+<p class="wp-block-paragraph">Let me emphasize that this change does not impact our presence and mode of operation with the curl repository and <a href="https://github.com/curl/curl">its hosting on GitHub</a>. We hear about projects having problems with low-quality AI slop submissions on GitHub as well, in the form of issues and pull-requests, but for curl we have not (yet) seen this &#8211; and frankly I don&#8217;t think switching to a GitHub alternative saves us from that.</p>
+
+
+
+<h2 class="wp-block-heading">Other projects do better</h2>
+
+
+
+<p class="wp-block-paragraph">Compared to others, we seem to be affected by the sloppy security reports to a higher degree than the average Open Source project.</p>
+
+
+
+<p class="wp-block-paragraph">With the help of Hackerone, we got numbers of how the curl bug-bounty has compared with other programs over the last year. It turns out curl’s program has seen more volume and noise than other public open source bug bounty programs in the same cohort. Over the past four quarters, curl’s inbound report volume has risen sharply, while other bounty-paying open source programs in the cohort, such as Ruby, Node, and Rails, have not seen a meaningful increase and have remained mostly flat or declined slightly. In the chart, the pink line represents curl’s report volume, and the gray line reflects the broader cohort.</p>
+
+
+<div class="wp-block-image">
+<figure data-wp-context="{&quot;imageId&quot;:&quot;6aee79a05a268&quot;}" data-wp-interactive="core/image" data-wp-key="6aee79a05a268" class="aligncenter size-full wp-lightbox-container"><img decoding="async" width="1995" height="1125" data-wp-class--hide="state.isContentHidden" data-wp-class--show="state.isContentVisible" data-wp-init="callbacks.setButtonStyles" data-wp-on--click="actions.showLightbox" data-wp-on--load="callbacks.setButtonStyles" data-wp-on--pointerdown="actions.preloadImage" data-wp-on--pointerenter="actions.preloadImageWithDelay" data-wp-on--pointerleave="actions.cancelPreload" data-wp-on-window--resize="callbacks.setButtonStyles" src="https://daniel.haxx.se/blog/wp-content/uploads/2026/01/curl-Compared-to-OSS-Peers.png" alt="" class="wp-image-29094"/><button
+			class="lightbox-trigger"
+			type="button"
+			aria-haspopup="dialog"
+			data-wp-bind--aria-label="state.thisImage.triggerButtonAriaLabel"
+			data-wp-init="callbacks.initTriggerButton"
+			data-wp-on--click="actions.showLightbox"
+			data-wp-style--right="state.thisImage.buttonRight"
+			data-wp-style--top="state.thisImage.buttonTop"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 12 12">
+				<path fill="#fff" d="M2 0a2 2 0 0 0-2 2v2h1.5V2a.5.5 0 0 1 .5-.5h2V0H2Zm2 10.5H2a.5.5 0 0 1-.5-.5V8H0v2a2 2 0 0 0 2 2h2v-1.5ZM8 12v-1.5h2a.5.5 0 0 0 .5-.5V8H12v2a2 2 0 0 1-2 2H8Zm2-12a2 2 0 0 1 2 2v2h-1.5V2a.5.5 0 0 0-.5-.5H8V0h2Z" />
+			</svg>
+		</button><figcaption class="wp-element-caption">Inbound Report Volume on Hackerone: curl compared to OSS peers</figcaption></figure>
+</div>
+
+
+<p class="wp-block-paragraph">We suspect the idea of getting money for it is a big part of the explanation. It brings in real reports, but makes it too easy to be annoying with little to no penalty to the user. The reputation system and available program settings were not sufficient for us to prevent sand from getting into the machine.</p>
+
+
+
+<p class="wp-block-paragraph">The exact reason why we suffer more of this abuse than others remains a subject for further speculation and  research.</p>
+
+
+
+<h2 class="wp-block-heading">If the volume keeps up</h2>
+
+
+
+<p class="wp-block-paragraph">There is a non-zero risk that our guesses are wrong and that the volume and security report frequency will keep up even after these changes go into effect.</p>
+
+
+
+<p class="wp-block-paragraph">If that happens, we will deal with it then and take further appropriate steps. I prefer not to overdo things or <em>overplan</em> already now for something that ideally does not happen.</p>
+
+
+
+<h2 class="wp-block-heading">We won&#8217;t charge</h2>
+
+
+
+<p class="wp-block-paragraph">People keep suggesting that one way to deal with the report tsunami is to <em>charge</em> security researchers a small amount of money for the privilege of submitting a vulnerability report to us. A <em>curl reporters security club</em> with an entrance fee.</p>
+
+
+
+<p class="wp-block-paragraph">I think that is a less good solution than just dropping the bounty. Some of the reasons include:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Charging people money in an International context is complicated and a maintenance burden.</li>
+
+
+
+<li>Dealing with charge-backs, returns and other complaints and friction add work.</li>
+
+
+
+<li>It would limit who could or would submit issues. Even some who actually find legitimate issues.</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">Maybe we need to do this later anyway, but we stay away from it for now.</p>
+
+
+
+<h2 class="wp-block-heading">Pull requests are less of a problem</h2>
+
+
+
+<p class="wp-block-paragraph">We have seen other projects and repositories see similar AI-induced problems for pull requests, but this has not been a problem for the curl project. I believe that for PRs we have much better means to sort out the weed with automatic means, since we have tools, tests and scanners to verify such contributions. We don&#8217;t need to waste any human time on pull requests until the quality is good enough to get green check-marks from 200 CI jobs.</p>
+
+
+
+<h2 class="wp-block-heading">Related</h2>
+
+
+
+<p class="wp-block-paragraph">I will do a talk at <a href="https://fosdem.org/2026/schedule/event/B7YKQ7-oss-in-spite-of-ai/">FOSDEM 2026 titled Open Source Security in spite of AI</a> that of course will touch on this subject.</p>
+
+
+
+<h2 class="wp-block-heading">Future</h2>
+
+
+
+<p class="wp-block-paragraph">We never say never. This is now and we might have reasons to reconsider and make a different decision in the future. If we do, we will let you know. These changes are applied now with the hope that they will have a positive effect for the project and its maintainers. If that turns out to not be the outcome, we will of course continue and apply further changes later.</p>
+
+
+
+<h2 class="wp-block-heading">Media</h2>
+
+
+
+<p class="wp-block-paragraph">Since I created <a href="https://github.com/curl/curl/pull/20312">the pull request</a> for updating the bug-bounty information for curl on January 14, almost two weeks before we merged it, various media picked up the news and published articles. Long before I posted this blog post.</p>
+
+
+
+<ul class="wp-block-list">
+<li>The Register: <a href="https://www.theregister.com/2026/01/21/curl_ends_bug_bounty/">Curl shutters bug bounty program to remove incentive for submitting AI slop</a></li>
+</ul>
+
+
+
+<ul class="wp-block-list">
+<li>Elektroniktidningen: <a href="https://etn.se/index.php/nyheter/72808-curl-removes-bug-bounties.html">cURL removes bug bounties</a></li>
+</ul>
+
+
+
+<ul class="wp-block-list">
+<li>Heise online: <a href="https://www.heise.de/news/curl-Projekt-beendet-Bug-Bounty-Programm-11142345.html">curl: Projekt beendet Bug-Bounty-Programm</a></li>
+</ul>
+
+
+
+<ul class="wp-block-list">
+<li>Neowin: <a href="https://www.neowin.net/news/beloved-tool-curl-is-shutting-down-its-bug-bounty-over-ai-slop-reports/">Beloved tool, cURL is shutting down its bug bounty over AI slop reports</a></li>
+</ul>
+
+
+
+<ul class="wp-block-list">
+<li>Golem: <a href="https://www.golem.de/news/bug-bounty-programm-curl-entwickler-dreht-dem-ki-schrott-den-geldhahn-zu-2601-204260.html">Curl-Entwickler dreht dem &#8220;KI-Schrott&#8221; den Geldhahn zu</a></li>
+</ul>
+
+
+
+<ul class="wp-block-list">
+<li>Linux Easy: <a href="https://www.linuxeasy.org/curl-chiude-il-programma-bug-bounty-troppi-report-generati-dallai/">cURL chiude il programma bug bounty: troppi report generati dall’AI</a></li>
+</ul>
+
+
+
+<ul class="wp-block-list">
+<li>Bleeping Computer: <a href="https://www.bleepingcomputer.com/news/security/curl-ending-bug-bounty-program-after-flood-of-ai-slop-reports/">Curl ending bug bounty program after flood of AI slop reports</a></li>
+</ul>
+
+
+
+<ul class="wp-block-list">
+<li>The New Stack: <a href="https://thenewstack.io/drowning-in-ai-slop-reports-curl-ends-bug-bounties/">Drowning in AI slop, cURL ends bug bounties</a></li>
+</ul>
+
+
+
+<ul class="wp-block-list">
+<li>Ars Technica: <a href="https://arstechnica.com/security/2026/01/overrun-with-ai-slop-curl-scraps-bug-bounties-to-ensure-intact-mental-health/">Overrun with AI slop, cURL scraps bug bounties to ensure “intact mental health”</a></li>
+</ul>
+
+
+
+<ul class="wp-block-list">
+<li>PressMind Labs: <a href="https://pressmind.org/curl-konczy-program-bug-bounty-czy-to-koniec-jakosci-zgloszen/">cURL konczy program bug bounty – czy to koniec jakosci zgloszen?</a></li>
+</ul>
+
+
+
+<ul class="wp-block-list">
+<li>Socket: <a href="https://socket.dev/blog/curl-shuts-down-bug-bounty-program-after-flood-of-ai-slop-reports">curl Shuts Down Bug Bounty Program After Flood of AI Slop Reports</a></li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">Also discussed (indirectly) on <a href="https://news.ycombinator.com/item?id=46717556">Hacker News</a>.</p>
+
+
+
+<p class="wp-block-paragraph"></p>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="https://daniel.haxx.se/blog/tag/bug-bounty/" rel="tag">bug bounty</a><a href="https://daniel.haxx.se/blog/tag/curl-and-libcurl/" rel="tag">cURL and libcurl</a><a href="https://daniel.haxx.se/blog/tag/hackerone/" rel="tag">hackerone</a></span></footer></article><!-- #post-28830 -->
+		<nav class="navigation post-navigation">
+		<h1 class="screen-reader-text">
+			Post navigation		</h1>
+		<div class="nav-links">
+			<a href="https://daniel.haxx.se/blog/2026/01/21/libcurl-memory-use-some-years-later/" rel="prev"><span class="meta-nav">Previous Post</span>libcurl memory use some years later</a><a href="https://daniel.haxx.se/blog/2026/01/27/improving-curl-j/" rel="next"><span class="meta-nav">Next Post</span>Improving curl -J</a>			</div><!-- .nav-links -->
+		</nav><!-- .navigation -->
+		
+<div id="comments" class="comments-area">
+
+	
+	<h2 class="comments-title">
+		2 thoughts on &ldquo;The end of the curl bug-bounty&rdquo;	</h2>
+
+		
+	<ol class="comment-list">
+				<li id="comment-27393" class="comment even thread-even depth-1 parent">
+			<article id="div-comment-27393" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/5c71c91ecdf13a84b76411dfa57a679ae1b34b427cba9bd20419bc4846419973?s=34&#038;d=monsterid&#038;r=g' srcset='https://secure.gravatar.com/avatar/5c71c91ecdf13a84b76411dfa57a679ae1b34b427cba9bd20419bc4846419973?s=68&#038;d=monsterid&#038;r=g 2x' class='avatar avatar-34 photo' height='34' width='34' loading='lazy' decoding='async'/>						<b class="fn"><a href="https://logging.apache.org/" class="url" rel="ugc external nofollow">Piotr P. Karwasz</a></b> <span class="says">says:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://daniel.haxx.se/blog/2026/01/26/the-end-of-the-curl-bug-bounty/#comment-27393"><time datetime="2026-01-26T11:48:00+01:00">January 26, 2026 at 11:48</time></a>					</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Hi Daniel,</p>
+<p>We’re facing a very similar situation with the Apache Log4j Bug Bounty Program.</p>
+<p>Since July 2024 we’ve patiently reviewed and responded to 67 submissions, half of which arrived just in the last two months. Even for low-quality reports, we always strive to give a high-quality (and pedagogical) answer. However, a significant proportion of reports, including those generated or assisted by AI, overlook the fundamentals of our security model, adding noise rather than value.</p>
+<p>This influx of low-quality reports places a disproportionate burden on our already limited volunteer resources, drawing time and attention away from investigating genuine issues. We are making one final attempt to adjust the bounty program so that it fairly incentivises both researchers and maintainers. Failing that, the PMC consensus is to close the program by the end of February.</p>
+				</div><!-- .comment-content -->
+
+							</article><!-- .comment-body -->
+		<ol class="children">
+		<li id="comment-27394" class="comment byuser comment-author-daniel bypostauthor odd alt depth-2">
+			<article id="div-comment-27394" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='https://secure.gravatar.com/avatar/69fdca87edd17cee21ca2e79fc2ff671d644603c3dc27167430f3cd3dbab7ba8?s=34&#038;d=monsterid&#038;r=g' srcset='https://secure.gravatar.com/avatar/69fdca87edd17cee21ca2e79fc2ff671d644603c3dc27167430f3cd3dbab7ba8?s=68&#038;d=monsterid&#038;r=g 2x' class='avatar avatar-34 photo' height='34' width='34' loading='lazy' decoding='async'/>						<b class="fn"><a href="https://daniel.haxx.se/" class="url" rel="ugc">Daniel Stenberg</a></b> <span class="says">says:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://daniel.haxx.se/blog/2026/01/26/the-end-of-the-curl-bug-bounty/#comment-27394"><time datetime="2026-01-26T23:17:52+01:00">January 26, 2026 at 23:17</time></a>					</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>@Piotr: thanks for this extra info and take care of yourselves!</p>
+				</div><!-- .comment-content -->
+
+							</article><!-- .comment-body -->
+		</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+	</ol><!-- .comment-list -->
+
+		
+			<p class="no-comments">Comments are closed.</p>
+	
+	
+	
+</div><!-- #comments -->
+		</div><!-- #content -->
+	</div><!-- #primary -->
+
+<div id="content-sidebar" class="content-sidebar widget-area" role="complementary">
+	
+		<aside id="recent-posts-3" class="widget widget_recent_entries">
+		<h1 class="widget-title">Recent Posts</h1><nav aria-label="Recent Posts">
+		<ul>
+											<li>
+					<a href="https://daniel.haxx.se/blog/2026/11/03/scrutinize-our-assessments/">Scrutinize our assessments</a>
+											<span class="post-date">November 3, 2026</span>
+									</li>
+											<li>
+					<a href="https://daniel.haxx.se/blog/2026/10/22/ignore-the-slop/">&#8220;ignore the slop&#8221;</a>
+											<span class="post-date">October 22, 2026</span>
+									</li>
+											<li>
+					<a href="https://daniel.haxx.se/blog/2026/10/20/do-minor-curl-vulnerabilities-in-the-open/">Do minor curl vulnerabilities in the open</a>
+											<span class="post-date">October 20, 2026</span>
+									</li>
+											<li>
+					<a href="https://daniel.haxx.se/blog/2026/10/15/osi-approved-the-curl-license/">OSI approved the curl license</a>
+											<span class="post-date">October 15, 2026</span>
+									</li>
+											<li>
+					<a href="https://daniel.haxx.se/blog/2026/10/14/a-curl-audit-by-aisle/">A curl audit by Aisle</a>
+											<span class="post-date">October 14, 2026</span>
+									</li>
+											<li>
+					<a href="https://daniel.haxx.se/blog/2026/10/14/a-uaf-turned-rce/">A UAF turned RCE</a>
+											<span class="post-date">October 14, 2026</span>
+									</li>
+					</ul>
+
+		</nav></aside><aside id="recent-comments-3" class="widget widget_recent_comments"><h1 class="widget-title">Recent Comments</h1><nav aria-label="Recent Comments"><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link"><a href="https://daniel.haxx.se/" class="url" rel="ugc">Daniel Stenberg</a></span> on <a href="https://daniel.haxx.se/blog/2026/10/22/ignore-the-slop/comment-page-1/#comment-27572">&#8220;ignore the slop&#8221;</a></li><li class="recentcomments"><span class="comment-author-link"><a href="https://kinomig.tv/" class="url" rel="ugc external nofollow">Marya</a></span> on <a href="https://daniel.haxx.se/blog/2026/10/22/ignore-the-slop/comment-page-1/#comment-27571">&#8220;ignore the slop&#8221;</a></li><li class="recentcomments"><span class="comment-author-link"><a href="https://buhtz.codeberg.page/" class="url" rel="ugc external nofollow">Christian Buhtz</a></span> on <a href="https://daniel.haxx.se/blog/2026/10/22/ignore-the-slop/comment-page-1/#comment-27569">&#8220;ignore the slop&#8221;</a></li><li class="recentcomments"><span class="comment-author-link">Adrian Johnston</span> on <a href="https://daniel.haxx.se/blog/2026/10/22/ignore-the-slop/comment-page-1/#comment-27568">&#8220;ignore the slop&#8221;</a></li><li class="recentcomments"><span class="comment-author-link">Imran Chaudhry</span> on <a href="https://daniel.haxx.se/blog/2026/10/20/do-minor-curl-vulnerabilities-in-the-open/comment-page-1/#comment-27567">Do minor curl vulnerabilities in the open</a></li><li class="recentcomments"><span class="comment-author-link">Matthias Hörmann</span> on <a href="https://daniel.haxx.se/blog/2026/10/22/ignore-the-slop/comment-page-1/#comment-27566">&#8220;ignore the slop&#8221;</a></li><li class="recentcomments"><span class="comment-author-link">Patrick T</span> on <a href="https://daniel.haxx.se/blog/2026/10/20/do-minor-curl-vulnerabilities-in-the-open/comment-page-1/#comment-27565">Do minor curl vulnerabilities in the open</a></li><li class="recentcomments"><span class="comment-author-link"><a href="https://www.easytutoriel.com" class="url" rel="ugc external nofollow">Soufiane</a></span> on <a href="https://daniel.haxx.se/blog/2026/10/15/osi-approved-the-curl-license/comment-page-1/#comment-27564">OSI approved the curl license</a></li><li class="recentcomments"><span class="comment-author-link"><a href="https://peeklaunch.com" class="url" rel="ugc external nofollow">Arthur Sathish</a></span> on <a href="https://daniel.haxx.se/blog/2026/10/14/a-curl-audit-by-aisle/comment-page-1/#comment-27563">A curl audit by Aisle</a></li><li class="recentcomments"><span class="comment-author-link"><a href="https://daniel.haxx.se/" class="url" rel="ugc">Daniel Stenberg</a></span> on <a href="https://daniel.haxx.se/blog/2026/10/13/a-slightly-faster-slimmer-curl/comment-page-1/#comment-27559">A slightly faster slimmer curl</a></li></ul></nav></aside></div><!-- #content-sidebar -->
+<div id="secondary">
+		<h2 class="site-description">curl, open source and networking</h2>
+	
+	
+		<div id="primary-sidebar" class="primary-sidebar widget-area" role="complementary">
+		<aside id="block-10" class="widget widget_block">
+<h2 class="wp-block-heading"></h2>
+</aside><aside id="block-11" class="widget widget_block widget_media_image">
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" src="https://daniel.haxx.se/blog/wp-content/uploads/2022/03/final-12-1000x1000-1.jpg" alt="" class="wp-image-18547" style="width:151px;height:151px" width="151" height="151"/></figure>
+</aside><aside id="block-12" class="widget widget_block widget_text">
+<p class="wp-block-paragraph"></p>
+</aside><aside id="block-3" class="widget widget_block widget_text">
+<p class="wp-block-paragraph">Sponsor me:<a href="https://github.com/users/bagder/sponsorship"> on GitHub</a><br>Follow me: <a href="https://mastodon.social/@bagder">@bagder</a><br>Keep up: <a href="https://daniel.haxx.se/blog/feed/">RSS-feed</a><br>Email: <a href="https://lists.haxx.se/listinfo/daniel">weekly reports</a></p>
+</aside><aside id="block-7" class="widget widget_block widget_calendar"><div class="wp-block-calendar"><table id="wp-calendar" class="wp-calendar-table">
+	<caption>January 2026</caption>
+	<thead>
+	<tr>
+		<th scope="col" aria-label="Monday">M</th>
+		<th scope="col" aria-label="Tuesday">T</th>
+		<th scope="col" aria-label="Wednesday">W</th>
+		<th scope="col" aria-label="Thursday">T</th>
+		<th scope="col" aria-label="Friday">F</th>
+		<th scope="col" aria-label="Saturday">S</th>
+		<th scope="col" aria-label="Sunday">S</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td colspan="3" class="pad">&nbsp;</td><td>1</td><td>2</td><td>3</td><td>4</td>
+	</tr>
+	<tr>
+		<td>5</td><td><a href="https://daniel.haxx.se/blog/2026/01/06/" aria-label="Posts published on January 6, 2026">6</a></td><td><a href="https://daniel.haxx.se/blog/2026/01/07/" aria-label="Posts published on January 7, 2026">7</a></td><td>8</td><td>9</td><td>10</td><td>11</td>
+	</tr>
+	<tr>
+		<td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td><a href="https://daniel.haxx.se/blog/2026/01/17/" aria-label="Posts published on January 17, 2026">17</a></td><td>18</td>
+	</tr>
+	<tr>
+		<td><a href="https://daniel.haxx.se/blog/2026/01/19/" aria-label="Posts published on January 19, 2026">19</a></td><td>20</td><td><a href="https://daniel.haxx.se/blog/2026/01/21/" aria-label="Posts published on January 21, 2026">21</a></td><td>22</td><td>23</td><td>24</td><td>25</td>
+	</tr>
+	<tr>
+		<td><a href="https://daniel.haxx.se/blog/2026/01/26/" aria-label="Posts published on January 26, 2026">26</a></td><td><a href="https://daniel.haxx.se/blog/2026/01/27/" aria-label="Posts published on January 27, 2026">27</a></td><td><a href="https://daniel.haxx.se/blog/2026/01/28/" aria-label="Posts published on January 28, 2026">28</a></td><td>29</td><td><a href="https://daniel.haxx.se/blog/2026/01/30/" aria-label="Posts published on January 30, 2026">30</a></td><td>31</td>
+		<td class="pad" colspan="1">&nbsp;</td>
+	</tr>
+	</tbody>
+	</table><nav aria-label="Previous and next months" class="wp-calendar-nav">
+		<span class="wp-calendar-nav-prev"><a href="https://daniel.haxx.se/blog/2025/12/">&laquo; Dec</a></span>
+		<span class="pad">&nbsp;</span>
+		<span class="wp-calendar-nav-next"><a href="https://daniel.haxx.se/blog/2026/02/">Feb &raquo;</a></span>
+	</nav></div></aside>	</div><!-- #primary-sidebar -->
+	</div><!-- #secondary -->
+
+		</div><!-- #main -->
+
+		<footer id="colophon" class="site-footer">
+
+			
+			<div class="site-info">
+								<a class="privacy-policy-link" href="https://daniel.haxx.se/blog/privacy-policy/" rel="privacy-policy">Privacy</a><span role="separator" aria-hidden="true"></span>				<a href="https://wordpress.org/" class="imprint">
+					Proudly powered by WordPress				</a>
+			</div><!-- .site-info -->
+		</footer><!-- #colophon -->
+	</div><!-- #page -->
+
+	<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/blog/*"},{"not":{"href_matches":["/blog/wp-*.php","/blog/wp-admin/*","/blog/wp-content/uploads/*","/blog/wp-content/*","/blog/wp-content/plugins/*","/blog/wp-content/themes/twentyfourteen/*","/blog/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script id="wp-importmap" type="importmap">
+{"imports":{"@wordpress/interactivity":"https://daniel.haxx.se/blog/wp-includes/js/dist/script-modules/interactivity/index.min.js?ver=6a43cba92ed701f32cd9"}}
+</script>
+<script data-wp-router-options="{&quot;loadOnClientNavigation&quot;:true}" fetchpriority="low" id="@wordpress/block-library/image/view-js-module" src="https://daniel.haxx.se/blog/wp-includes/js/dist/script-modules/block-library/image/view.min.js?ver=25f29e3c6cc00370914b" type="module"></script>
+<link rel="modulepreload" href="https://daniel.haxx.se/blog/wp-includes/js/dist/script-modules/interactivity/index.min.js?ver=6a43cba92ed701f32cd9" id="@wordpress/interactivity-js-modulepreload" fetchpriority="low">
+<script id="wp-script-module-data-@wordpress/interactivity" type="application/json">
+{"config":{"core/image":{"defaultAriaLabel":"Enlarged image","closeButtonText":"Close","prevButtonText":"Previous","nextButtonText":"Next"}},"state":{"core/image":{"metadata":{"6aee79a05a268":{"uploadedSrc":"https://daniel.haxx.se/blog/wp-content/uploads/2026/01/curl-Compared-to-OSS-Peers.png","lightboxSrcset":false,"figureClassNames":"aligncenter size-full","figureStyles":null,"imgClassNames":"wp-image-29094","imgStyles":null,"targetWidth":1995,"targetHeight":1125,"scaleAttr":false,"alt":"","galleryId":null,"customAriaLabel":null,"navigationButtonType":"icon","triggerButtonAriaLabel":"Enlarge"}}}}}
+</script>
+		<div
+			class="wp-lightbox-overlay zoom"
+			aria-label="Enlarged images"
+			data-wp-interactive="core/image"
+			data-wp-router-region='{ "id": "core/image-overlay", "attachTo": "body" }'
+			data-wp-key="wp-lightbox-overlay"
+			data-wp-context='{}'
+			data-wp-bind--role="state.roleAttribute"
+			data-wp-bind--aria-label="state.ariaLabel"
+			data-wp-bind--aria-modal="state.ariaModal"
+			data-wp-class--active="state.overlayEnabled"
+			data-wp-class--show-closing-animation="state.overlayOpened"
+			data-wp-watch---focus="callbacks.setOverlayFocus"
+			data-wp-watch---inert="callbacks.setInertElements"
+			data-wp-on--keydown="actions.handleKeydown"
+			data-wp-on--touchstart="actions.handleTouchStart"
+			data-wp-on--touchmove="actions.handleTouchMove"
+			data-wp-on--touchend="actions.handleTouchEnd"
+			data-wp-on--click="actions.hideLightbox"
+			data-wp-on-window--resize="callbacks.setOverlayStyles"
+			data-wp-on-window--scroll="actions.handleScroll"
+			data-wp-bind--style="state.overlayStyles"
+			tabindex="-1"
+			>
+				<button type="button" style="fill:#000" class="wp-lightbox-close-button" data-wp-bind--aria-label="state.closeButtonAriaLabel">
+					<span class="wp-lightbox-close-icon" data-wp-bind--hidden="!state.hasNavigationIcon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="m13.06 12 6.47-6.47-1.06-1.06L12 10.94 5.53 4.47 4.47 5.53 10.94 12l-6.47 6.47 1.06 1.06L12 13.06l6.47 6.47 1.06-1.06L13.06 12Z"></path></svg></span>
+					<span class="wp-lightbox-close-text" data-wp-bind--hidden="!state.hasNavigationText">Close</span>
+				</button>
+				<button type="button" style="fill:#000" class="wp-lightbox-navigation-button wp-lightbox-navigation-button-prev" data-wp-bind--hidden="!state.hasNavigation" data-wp-on--click="actions.showPreviousImage" data-wp-bind--aria-label="state.prevButtonAriaLabel">
+					<span class="wp-lightbox-navigation-icon" data-wp-bind--hidden="!state.hasNavigationIcon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path d="M14.6 7l-1.2-1L8 12l5.4 6 1.2-1-4.6-5z"></path></svg></span>
+					<span class="wp-lightbox-navigation-text" data-wp-bind--hidden="!state.hasNavigationText">Previous</span>
+				</button>
+				<div class="lightbox-image-container">
+					<figure data-wp-bind--class="state.selectedImage.figureClassNames" data-wp-bind--style="state.figureStyles">
+						<img data-wp-bind--alt="state.selectedImage.alt" data-wp-bind--class="state.selectedImage.imgClassNames" data-wp-bind--style="state.imgStyles" data-wp-bind--src="state.selectedImage.currentSrc">
+					</figure>
+				</div>
+				<div class="lightbox-image-container">
+					<figure data-wp-bind--class="state.selectedImage.figureClassNames" data-wp-bind--style="state.figureStyles">
+						<img
+							data-wp-bind--alt="state.selectedImage.alt"
+							data-wp-bind--class="state.selectedImage.imgClassNames"
+							data-wp-bind--style="state.imgStyles"
+							data-wp-bind--src="state.enlargedSrc"
+							data-wp-bind--srcset="state.enlargedSrcset"
+							sizes="100vw"
+						>
+					</figure>
+				</div>
+				<button type="button" style="fill:#000" class="wp-lightbox-navigation-button wp-lightbox-navigation-button-next" data-wp-bind--hidden="!state.hasNavigation" data-wp-on--click="actions.showNextImage" data-wp-bind--aria-label="state.nextButtonAriaLabel">
+					<span class="wp-lightbox-navigation-text" data-wp-bind--hidden="!state.hasNavigationText">Next</span>
+					<span class="wp-lightbox-navigation-icon" data-wp-bind--hidden="!state.hasNavigationIcon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path d="M10.6 6L9.4 7l4.6 5-4.6 5 1.2 1 5.4-6z"></path></svg></span>
+				</button>
+				<div data-wp-text="state.ariaLabel" aria-live="polite" aria-atomic="true" class="screen-reader-text"></div>
+				<div class="scrim" style="background-color: #fff" aria-hidden="true"></div>
+		</div><script id="wp-emoji-settings" type="application/json">
+{"baseUrl":"https://s.w.org/images/core/emoji/17.0.2/72x72/","ext":".png","svgUrl":"https://s.w.org/images/core/emoji/17.0.2/svg/","svgExt":".svg","source":{"concatemoji":"https://daniel.haxx.se/blog/wp-includes/js/wp-emoji-release.min.js?ver=7.1.4"}}
+</script>
+<script type="module">
+/*! This file is auto-generated */
+var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof HTMLScriptElement))throw new Error("Element missing: "+e);const r=JSON.parse(t.text),s=(window._wpemojiSettings=r,"wpEmojiSettingsSupports"),o=["flag","emoji"];function i(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(s,JSON.stringify(t))}catch(e){}}function c(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0);const r=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);return t.every((e,t)=>e===r[t])}function p(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var n=e.getImageData(16,16,1,1);for(let e=0;e<n.data.length;e++)if(0!==n.data[e])return!1;return!0}function u(e,t,n,r){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!r(e,"\ud83e\u1fac8")}return!1}function f(e,t,n,r){let a;const s=(a="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):document.createElement("canvas")).getContext("2d",{willReadFrequently:!0}),o=(s.textBaseline="top",s.font="600 32px Arial",{});return e.forEach(e=>{o[e]=t(s,e,n,r)}),o}function a(e){var t=document.createElement("script");t.src=e,t.defer=!0,document.head.appendChild(t)}r.supports={everything:!0,everythingExceptFlag:!0},new Promise(t=>{let n=function(){try{var e=JSON.parse(sessionStorage.getItem(s));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(o),u.toString(),c.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"});const a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=e=>{i(n=e.data),a.terminate(),t(n)})}catch(e){}i(n=f(o,u,c,p))}t(n)}).then(e=>{for(const n in e)r.supports[n]=e[n],r.supports.everything=r.supports.everything&&r.supports[n],"flag"!==n&&(r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&r.supports[n]);var t;r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&!r.supports.flag,r.supports.everything||((t=r.source||{}).concatemoji?a(t.concatemoji):t.wpemoji&&t.twemoji&&(a(t.twemoji),a(t.wpemoji)))});
+//# sourceURL=https://daniel.haxx.se/blog/wp-includes/js/wp-emoji-loader.min.js
+</script>
+</body>
+</html>

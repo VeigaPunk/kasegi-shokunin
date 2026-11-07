@@ -1,0 +1,46 @@
+# Candidate-derived pricing forgeries (2026-11-07T01:14:24Z) — counter --pricing-only on scratch copies
+== mut-payer
+price-payer: curl
+price-original-report: 1913733
+price-cve: CVE-2023-28319
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=payer
+LIMB E4 pass quotes=6 short=0 missing=0 s123=4
+E2E-RESULT fail limbs=3 rc=1
+counter_rc=1
+== mut-cve
+price-payer: internet-bug-bounty
+price-original-report: 1913733
+price-cve: CVE-2025-9086
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=cve
+LIMB E4 pass quotes=6 short=0 missing=0 s123=4
+E2E-RESULT fail limbs=3 rc=1
+counter_rc=1
+== mut-orig
+price-payer: internet-bug-bounty
+price-original-report: 1997312
+price-cve: CVE-2023-28319
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=original-report
+LIMB E4 pass quotes=6 short=0 missing=0 s123=4
+E2E-RESULT fail limbs=3 rc=1
+counter_rc=1
+== mut-dup
+price-payer: internet-bug-bounty
+price-payer: curl
+price-original-report: 1913733
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=payer bad=payer
+LIMB E4 pass quotes=6 short=0 missing=0 s123=4
+E2E-RESULT fail limbs=3 rc=1
+counter_rc=1
+== mut-short
+price-payer: internet-bug-bounty
+price-original-report: 1913733
+price-cve: CVE-2023-28319
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 FAIL quotes=6 short=1 missing=0 s123=4
+E2E-RESULT fail limbs=3 rc=1
+counter_rc=1

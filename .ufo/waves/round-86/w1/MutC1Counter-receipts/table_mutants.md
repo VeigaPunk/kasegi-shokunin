@@ -1,0 +1,32 @@
+| mutant | verdict | killed by |
+|---|---|---|
+| m01_M1_true | killed | tgt-den,tgt-lo |
+| m02_M1_numerator_only | killed | tgt-den |
+| m03_M1_tuple_ge | killed | tgt-lo |
+| m04_M1_base_rate | killed | positive |
+| m05_M1_target_hardcoded | killed | tgt-den,tgt-lo |
+| m06_M2_true | killed | assert-m2-donothing,assert-m2-pad |
+| m07_M2_no_added | killed | assert-m2-pad |
+| m08_M2_no_removed | killed | assert-m2-donothing |
+| m09_M3_true | killed | prose,ghost,blank-line |
+| m10_M3_no_line_equality | killed | prose,blank-line |
+| m11_M3_no_hit_keys | SURVIVED | - |
+| m12_M3_no_same_files | SURVIVED | - |
+| m13_M3_no_forward_subst | killed | positive |
+| m14_M4_true | killed | wrong-file,uniq,result-assert,assert-m5-wrongfile,deleted-target |
+| m15_M4_no_uniqueness | killed | uniq |
+| m16_M4_no_prefix | SURVIVED | - |
+| m17_M4_no_endswith | SURVIVED | - |
+| m18_M4_no_key_gone | SURVIVED | - |
+| m19_M4_no_internal | killed | deleted-target |
+| m20_M4_no_anchor_agreement | killed | anchor-mismatch |
+| m21_M5_true | killed | stale-lo,stale-range,assert-m5-wrongfile |
+| m22_M5_no_hi_vs_nlines | killed | stale-range |
+| m23_M5_no_m4bad | killed | assert-m5-wrongfile |
+| m24_M5_upper_strict | killed | positive |
+| m25_M6_true | killed | map-sha,mapsha-prefix |
+| m26_M6_prefix8 | killed | mapsha-prefix |
+| m27_rate_internal_only | killed | positive |
+| m28_M4_nonkey_skip | killed | keym |
+| m29_M4_no_tracked_nonempty | SURVIVED | - |
+| m30_M3_no_linecount | killed | blank-line |

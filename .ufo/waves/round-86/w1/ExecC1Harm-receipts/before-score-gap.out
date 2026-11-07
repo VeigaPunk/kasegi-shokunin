@@ -1,0 +1,23 @@
+score-gap — depth:verifiability distance to score 5 (read-only; NOT a claim; asserts no score move)
+root: /fast/scratch/hyaku/kasegi-r86/ExecC1Harm/before
+source: corpus/instruments/recheck-audit.py sha256=451047eacdc979b0ee972d0637aea9911634232e61210e68094d04e7ab016416
+source: SKILL.md sha256=7d082bfec14257351b39c145ea0db26cafbce3d6f263009c3eb1d0893c373552
+source: corpus/instruments/citation-survival.md sha256=629286ab49dc7863f9919237fa805b5e35262ddf92926a5250831f778b67edeb
+source: SCORECARD.md sha256=d524a4d2331f19622f35fcbdf73ad86b9cf2d788e605fee6bd3119c7d42f2935
+[1] rechecks
+cmd: python3 corpus/instruments/recheck-audit.py --root /fast/scratch/hyaku/kasegi-r86/ExecC1Harm/before --quiet
+recheck: lines=98 executes=76 gated=22 broken=0 exit=1
+[2] anchors
+cmd: python3 corpus/instruments/anchorcheck.py SKILL.md (cwd=/fast/scratch/hyaku/kasegi-r86/ExecC1Harm/before)
+anchorcheck: in-range=16 bad=0 lost-recorded=306 origin=0 outside-base=0 base-absent=0 exit=0
+[3] citation-survival census (committed figures)
+cmd: grep -nE '^Numerator = |^- lane total \(SKILL\.md \+ corpus\): |^- SKILL\.md alone: ' corpus/instruments/citation-survival.md
+census-definition: Numerator = RESOLVES + MIRROR-EQUIVALENT + INTERNAL. Denominator = all distinct citations appearing in that scope (a citation in both scopes enters both denominators).
+census-lane: 1227/5152 = 23.82%
+census-skill: 132/701 = 18.83%
+[4] score-5 threshold
+cmd: grep -nE 'Threshold for 5:.*unsupported current claims' SCORECARD.md
+threshold: SCORECARD.md:332 "Threshold for 5: a non-author audit passing 25/25 source chains and 0 unsupported current claims."
+threshold-matches: 2 (first line used)
+[5] gap
+gap: 22 of 98 rechecks still gated on a lost base; score 5 needs 0 gated unsupported claims

@@ -1,0 +1,71 @@
+counter_sha256=03df491be611e8b9a3328cb7df673d9b54e93e4d1d1b856b5e678ad7949e50ee map_sha256=dd40455a379eb53b75bf5a15772fe675efae79eda2516ea7fac50f86420bce12 resolve_sha256=db5e0767c60ce00ea6c9cfb4ddd3e159e9a86525e5c8417c4a0a73e2e6d45667 base=d7296645c2cd9f631329fa8e2f38328a4c9c89a5 target=596/1716
+== control do-nothing: base knowledge scope as after (expected fail)
+KNOWLEDGE-METER base=398/1721 after=398/1721 target=596/1716 keys=203 mirror_absent=True
+LIMB M1 FAIL after=398/1721
+LIMB M2 FAIL removed=0 keys=203 stray_removed=0 stray_added=0 unrepaired=203
+LIMB M3 FAIL same_files=True bad_lines=292 keys_hit=203
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M6 pass sha256=dd40455a379eb53b75bf5a15772fe675efae79eda2516ea7fac50f86420bce12
+KNOWLEDGE-METER-RESULT fail rc=1
+rc=1
+== control positive: frozen map applied (expected pass)
+KNOWLEDGE-METER base=398/1721 after=596/1716 target=596/1716 keys=203 mirror_absent=True
+LIMB M1 pass after=596/1716
+LIMB M2 pass removed=203 keys=203 stray_removed=0 stray_added=0 unrepaired=0
+LIMB M3 pass same_files=True bad_lines=0 keys_hit=203
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M6 pass sha256=dd40455a379eb53b75bf5a15772fe675efae79eda2516ea7fac50f86420bce12
+KNOWLEDGE-METER-RESULT pass rc=0
+rc=0
+== control partial: half the map applied, frozen map scored (expected fail)
+KNOWLEDGE-METER base=398/1721 after=494/1716 target=596/1716 keys=203 mirror_absent=True
+LIMB M1 FAIL after=494/1716
+LIMB M2 FAIL removed=101 keys=203 stray_removed=0 stray_added=0 unrepaired=102
+LIMB M3 FAIL same_files=True bad_lines=162 keys_hit=203
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M6 pass sha256=dd40455a379eb53b75bf5a15772fe675efae79eda2516ea7fac50f86420bce12
+KNOWLEDGE-METER-RESULT fail rc=1
+rc=1
+== control de-cite: the 203 GONE tokens un-backticked (expected fail)
+KNOWLEDGE-METER base=398/1721 after=398/1518 target=596/1716 keys=203 mirror_absent=True
+LIMB M1 FAIL after=398/1518
+LIMB M2 pass removed=203 keys=203 stray_removed=0 stray_added=0 unrepaired=0
+LIMB M3 FAIL same_files=True bad_lines=292 keys_hit=203
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M6 pass sha256=dd40455a379eb53b75bf5a15772fe675efae79eda2516ea7fac50f86420bce12
+KNOWLEDGE-METER-RESULT fail rc=1
+rc=1
+== control pad: map applied plus 2 extra resolving cites (expected fail)
+KNOWLEDGE-METER base=398/1721 after=597/1717 target=596/1716 keys=203 mirror_absent=True
+LIMB M1 FAIL after=597/1717
+LIMB M2 FAIL removed=203 keys=203 stray_removed=0 stray_added=1 unrepaired=0
+LIMB M3 FAIL same_files=True bad_lines=1 keys_hit=203
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M6 pass sha256=dd40455a379eb53b75bf5a15772fe675efae79eda2516ea7fac50f86420bce12
+KNOWLEDGE-METER-RESULT fail rc=1
+rc=1
+== control wrong-file: one key repointed to another snapshot, map re-hashed (expected fail M4)
+KNOWLEDGE-METER base=398/1721 after=596/1716 target=596/1716 keys=203 mirror_absent=True
+LIMB M1 pass after=596/1716
+LIMB M2 pass removed=203 keys=203 stray_removed=0 stray_added=0 unrepaired=0
+LIMB M3 pass same_files=True bad_lines=0 keys_hit=203
+LIMB M4 FAIL bad=S071.txt:117
+LIMB M5 FAIL out_of_range=none
+LIMB M6 pass sha256=569b18fb06be07e10b7dcbf7ed6ee360ba3b4ba40b3847bff80fd35ba37dfce7
+KNOWLEDGE-METER-RESULT fail rc=1
+rc=1
+== control map-sha: positive tree, frozen map, wrong sha (expected fail M6)
+KNOWLEDGE-METER base=398/1721 after=596/1716 target=596/1716 keys=203 mirror_absent=True
+LIMB M1 pass after=596/1716
+LIMB M2 pass removed=203 keys=203 stray_removed=0 stray_added=0 unrepaired=0
+LIMB M3 pass same_files=True bad_lines=0 keys_hit=203
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M6 FAIL sha256=dd40455a379eb53b75bf5a15772fe675efae79eda2516ea7fac50f86420bce12
+KNOWLEDGE-METER-RESULT fail rc=1
+rc=1

@@ -1,0 +1,68 @@
+{"n_mutants": 39, "killed": 15, "survived": 24}
+e0_head_no_subject                   killed   control b3-url-added,pricing control wrong-subject-heading (expected fail) 
+e0_head_no_cve                       survived - 
+e0_head_no_hash_prefix               survived - 
+e0_url_always_true                   survived - detail-only:LIMB E0 FAIL heading=False url=True stray=3294999
+e0_no_stray_check                    killed   pricing control stray-report-url (expected fail) 
+e3_no_dup_check                      killed   pricing control duplicate-key (expected fail) 
+e3_dup_never_detected                killed   pricing control duplicate-key (expected fail) 
+e3_sections_ge1                      killed   pricing control two-pricing-sections (expected fail) 
+e4_min_quote_10                      survived - 
+e4_min_quote_1                       survived - detail-only:LIMB E4 FAIL quotes=5 short=1 missing=0 s123=3
+e4_no_short_check                    killed   pricing control short-quotes (expected fail) 
+e4_no_s123_requirement               killed   control r85-package,pricing control no-s123-quote (expected fail) 
+e4_s123_taken_from_s120              killed   control r85-package,pricing control no-s123-quote (expected fail) 
+program_hardwired_curl               killed   control b3-wrong-subject,control b3-url-added,pricing control positive-pricing (expected pass),pricing control forged-program (expected fail),pricing control wrong-subject-heading (expected fail),pricing control stray-report-url (expected fail),pricing control short-quotes (expected fail),pricing control forged-quote (expected fail),pricing control no-s123-quote (expected fail) 
+payer_drop_handle_conjunction        survived - 
+payer_drop_s123_conjunction          survived - 
+policy_drop_end_line                 survived - 
+policy_drop_s121_conjunction         survived - 
+severity_drop_s120_agreement         survived - 
+flag_truthy_not_strict_true          survived - 
+original_report_drop_s120_corroboration survived - 
+reward_regex_digits_only             killed   control b3-wrong-subject,control b3-url-added,pricing control positive-pricing (expected pass),pricing control wrong-subject-heading (expected fail),pricing control stray-report-url (expected fail),pricing control short-quotes (expected fail),pricing control forged-quote (expected fail),pricing control no-s123-quote (expected fail) 
+kev_always_not_listed                survived - 
+kev_reverse_prefix                   killed   control b3-wrong-subject,control b3-url-added,pricing control positive-pricing (expected pass),pricing control forged-kev (expected fail),pricing control wrong-subject-heading (expected fail),pricing control stray-report-url (expected fail),pricing control short-quotes (expected fail),pricing control forged-quote (expected fail),pricing control no-s123-quote (expected fail) 
+cve_lowercased                       killed   control b3-wrong-subject,control b3-url-added,pricing control positive-pricing (expected pass),pricing control forged-program (expected fail),pricing control forged-payer-vendor (expected fail),pricing control forged-severity (expected fail),pricing control forged-reward (expected fail),pricing control forged-platform-flag (expected fail),pricing control forged-original-report (expected fail),pricing control forged-current-policy-none (expected fail),pricing control forged-current-policy-date (expected fail),pricing control forged-kev (expected fail),pricing control forged-cve (expected fail),pricing control wrong-subject-heading (expected fail),pricing control stray-report-url (expected fail),pricing control duplicate-key (expected fail),pricing control two-pricing-sections (expected fail),pricing control short-quotes (expected fail),pricing control forged-quote (expected fail),pricing control no-s123-quote (expected fail) 
+e2_drop_manifest_digest              survived - 
+e2_drop_byte_equality                survived - 
+e2_drop_recorded_artifact_digest     survived - 
+e2_follow_symlinks                   survived - 
+e2_found_subset                      killed   control r85-package,control exemplar-copy 
+e2_require_third_source              killed   control b3-wrong-subject,control b3-url-added 
+reward_case_insensitive              survived - 
+e1_drop_verdict_check                survived - 
+e1_drop_rc_check                     survived - 
+e4_quotes_not_normalized             survived - 
+e4_pool_includes_kev                 survived - 
+severity_case_sensitive              survived - 
+e5_or_instead_of_and                 killed   control donothing 
+allok_skips_e1                       survived - 
+--- probes
+p_e0_head_no_cve                   e0_head_no_cve                     distinguishes=True
+p_e0_url_missing                   e0_url_always_true                 distinguishes=True
+p_e0_no_hash_prefix                e0_head_no_hash_prefix             distinguishes=True
+p_e4_min10_16char_quote            e4_min_quote_10                    distinguishes=True
+p_e4_min1_16char_quote             e4_min_quote_1                     distinguishes=True
+p_payer_no_handle                  payer_drop_handle_conjunction      distinguishes=True
+p_payer_no_s123                    payer_drop_s123_conjunction        distinguishes=True
+p_policy_no_endline                policy_drop_end_line               distinguishes=True
+p_policy_no_s121                   policy_drop_s121_conjunction       distinguishes=True
+p_severity_no_s120                 severity_drop_s120_agreement       distinguishes=True
+p_flag_truthy                      flag_truthy_not_strict_true        distinguishes=True
+p_original_no_corroboration        original_report_drop_s120_corroboration distinguishes=True
+p_kev_always_not_listed            kev_always_not_listed              distinguishes=True
+p_e2_lying_recorded_digest         e2_drop_recorded_artifact_digest   distinguishes=True
+p_e2_no_manifest_binding           e2_drop_manifest_digest            distinguishes=True
+p_e2_drop_byte_equality            e2_drop_byte_equality              distinguishes=True
+p_e2_symlink_evidence              e2_follow_symlinks                 distinguishes=True
+p_e2_one_source                    e2_found_subset                    distinguishes=True
+p_e5_one_doc                       e5_or_instead_of_and               distinguishes=True
+p_allok_only_e1_fails              allok_skips_e1                     distinguishes=True
+p_e2_require_s120                  e2_require_third_source            distinguishes=True
+p_reward_case                      reward_case_insensitive            distinguishes=True
+p_severity_case                    severity_case_sensitive            distinguishes=True
+p_e1_rc0_bad                       e1_drop_rc_check                   distinguishes=True
+p_e1_rc3_good                      e1_drop_verdict_check              distinguishes=True
+p_e4_ws_quote                      e4_quotes_not_normalized           distinguishes=True
+p_e4_kev_quote                     e4_pool_includes_kev               distinguishes=True

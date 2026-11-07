@@ -1,0 +1,37 @@
+# F-1 receipt A: gate credential pattern vs capture bytes (2026-11-07T01:08:50Z)
+cmd: python3 -B gate SECRET_PATTERNS over corpus/source-snapshots/{round-86/S122,S123,round-85/S120,S121}.txt
+corpus/source-snapshots/round-86/S122.txt -> [('credential', 1404)]
+corpus/source-snapshots/round-86/S123.txt -> clean
+corpus/source-snapshots/round-85/S120.txt -> clean
+corpus/source-snapshots/round-85/S121.txt -> clean
+
+# F-1 receipt B: live gate over the pre-freeze b3 control (scratch, read-only run)
+cmd: python3 -B corpus/instruments/claim-package-check.py /fast/scratch/hyaku/kasegi-r86/l1/c2c/b3
+RULE R-FILES verdict=pass detail=files=6,missing=0,bad=0
+RULE R-MANIFEST verdict=fail detail=artifacts=5,polarity-bad=2
+RULE R-REDACT verdict=fail detail=artifacts=5,receipts=3,missing=2
+RULE R-CUSTODIAN verdict=pass detail=chain=2,grant-miss=0,signal-bad=0,head=bound
+RULE R-PROVENANCE verdict=pass detail=agents=3,commands=8,pin=ok,effects=none,secrets=ok
+RULE R-STATUS verdict=fail detail=manifest_sha256=mismatch
+RULE R-REPORT verdict=pass detail=scope-excerpt=ok,marker=ok,url=ok,cited=3,unbound=0
+RULE R-NOSECRET verdict=fail detail=hits=1,first=evidence/S122.txt,shape=credential
+package=/fast/scratch/hyaku/kasegi-r86/l1/c2c/b3 rules=8 pass=4 fail=4 verdict=DEFECT exit=1
+rc=1
+
+# F-1 receipt C: constructive proof - fully well-formed package binding byte-identical S122+S123
+cmd: cp -r /fast/scratch/hyaku/kasegi-r86/l1/c2c/b3 $S/proof; append S122/S123 artifacts with polarity=positive;
+     add two R-REDACT receipts (producer ExecC2Package / verifier KasegiR86); set manifest.expected_head intact;
+     status.manifest_sha256 := sha256(manifest bytes); then run the gate
+RULE R-FILES verdict=pass detail=files=6,missing=0,bad=0
+RULE R-MANIFEST verdict=pass detail=artifacts=5,positive=5,digest-bad=0,escape=0
+RULE R-REDACT verdict=pass detail=artifacts=5,receipts=5,missing=0,digest-mismatch=0
+RULE R-CUSTODIAN verdict=pass detail=chain=2,grant-miss=0,signal-bad=0,head=bound
+RULE R-PROVENANCE verdict=pass detail=agents=3,commands=8,pin=ok,effects=none,secrets=ok
+RULE R-STATUS verdict=pass detail=manifest=bound,reviewer=distinct,gates=6/6,claimable=false,blocker=named
+RULE R-REPORT verdict=pass detail=scope-excerpt=ok,marker=ok,url=ok,cited=3,unbound=0
+RULE R-NOSECRET verdict=fail detail=hits=1,first=evidence/S122.txt,shape=credential
+package=/fast/scratch/hyaku/kasegi-r86/ReviewC2Package/proof rules=8 pass=7 fail=1 verdict=DEFECT exit=1
+rc=1
+
+proof_manifest_sha256=507fee9cf9ca64e476d3714c40434d84cee88f92d602d6655beb742ae96ce5f4
+evidence_S122_byte_identical=yes

@@ -1,0 +1,69 @@
+ConnectorOverlap — kasegi assimilation id-collision detail (read-only)
+lane corpus: /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+staged queue: /home/vgpnk/Projects/shokuknow/merge/kasegi/SOURCES.append.md (copy taken to scratch, never written)
+id pattern (mandated): ^ {0,3}\|[[:space:]]*S[0-9]{3,}
+
+1. Counts
+   reg ids          123   (S001..S123; rows S120..S123 added r85/r86)
+   staged ids        94   (S031..S124)
+   collisions        93   (comm -12)
+   staged-only        1   S124  (GB/T 28458-2020, std.samr.gov.cn)
+   reg-only          30   S001..S030
+
+2. Row identity for the 93 colliding ids
+   identical rows     0
+   different rows    93
+   examples:
+     S031 lane  = "CVE Numbering Authority Operational Rules v4.2.6 — https://www.cve.org/..."
+     S031 staged= "HackerOne standard program policy set — https://hackerone.com/security/policy_versions"
+     S032 lane  = "NIST SP 800-115, Technical Guide to Information Security Testing ..."
+     S032 staged= "Bugcrowd Vulnerability Rating Taxonomy repository README — https://raw.githubusercontent..."
+     S123 lane  = "Daniel Stenberg, The end of the curl bug-bounty, 2026-01-26 ..."
+     S123 staged= "NIST SP 800-115 ..." (S123 in the staged space)
+   => the queue is a pre-expansion snapshot: /home/vgpnk/Projects/shokuknow/merge/kasegi/MERGE-REPORT.md
+      says "lane registry currently holds **30** rows; first staged id is **S031**". The lane's own
+      expansion later placed different sources at S031..S123.
+
+3. Staged-row defects independent of the collision
+   S120 staged row has 12 fields (E01 fields=12) — the staged file's S120 is not the lane's S120.
+   43 staged rows carry a recheck value the current census rejects (E09).
+
+4. Union dry-run through the existing fleet census (no lane write; scratch root)
+   root: $S/census-root/kasegi-shokunin/corpus/SOURCES.md = registry with the 94 staged rows inserted
+   inside the ## Registry table at line 136; $S/census-root/shokunin.conf = copy of the fleet conf.
+   command: bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root $S/census-root $S/census-root/kasegi-shokunin
+   union   rc=1   E11 214, E03 92, E09 43, W04 26, E04 4, W01 3, E01 1
+   control rc=1   E11 106, W04 6        (same scratch root, unmodified registry)
+   delta: E03 +92 (duplicate id), E01 +1 (S120 fields=12), E09 +43, E04 +4, W01 +3, E11 +108,
+          W04 +20.
+   (E11 is inflated in both runs because the scratch root holds only corpus/SOURCES.md; the delta,
+    not the absolute, is the signal. The real lane's registry validates rc 0 with 6 inherited W04s.)
+   Duplicate detector covered 92 of the 93 colliding ids: S120 is the malformed row, S124 is free.
+
+5. Placement matters: the same append at EOF (after the ## Registry section) produces
+   E12 x94 "row outside Registry section" and E03 0 — i.e. the duplicate-id check does not run for
+   rows outside the section. Receipt: union-append-at-eof.txt.
+
+6. Guard proof (indented row)
+   $S/assimilation/guard/registry-guard.md holds "  | S002 | guard row indented | docs |" and "| S900 | ...".
+   pattern ^ {0,3}\|[[:space:]]*S[0-9]{3,}  -> ids S002,S900 ; comm -12 with reg.ids -> S002 (count 1)
+   naive pattern ^\|[[:space:]]*S[0-9]{3,}    -> ids S900      ; comm -12 with reg.ids -> empty (count 0)
+   => a collision counter built on the naive pattern silently returns "no collisions" on a poisoned
+      registry. The guard is the positive control that the mandated pattern is load-bearing.
+
+7. What a blind merge would touch in this round's claims
+   C2 P4 pins registry row count 123 at freeze and landing; an append makes it 217 (or 217-94+1).
+   C1's repair map has 15 distinct basenames; 10 of them (S071,S073,S075,S076,S078,S089,S090,S103,
+   S105,S106) sit inside the colliding S031..S123 range and carry 198 of the 203 map keys. A merged
+   registry would give those ids a second, different source while corpus/knowledge text still cites
+   `S071.txt:117` etc.
+   S124 is the queue's only free id and it is already assigned to GB/T 28458-2020, i.e. the id the
+   lane's next capture would take.
+
+8. Fleet-wide (fleet-merge-collision.tsv, snapshot 2026-11-06 ~22:15 local)
+   21 lanes with a staged SOURCES.append.md; in every lane with common ids, 0 rows are identical and
+   all common rows differ. Example counts: chousa 114 common / 114 differ, kotodama 132/132,
+   mori 136/136, revenger 155/155, tsukuroi 147/147, kengaku 167/167, kasegi 93/93. Five queues have
+   zero free ids (chousa, kotodama, mori, revenger, tsukuroi).
+   kama's registry moved 337 -> 339 rows during this scan (its round-92 is live): the target id space
+   is a moving surface, which is exactly why an epoch check cannot be an assumption.

@@ -1,0 +1,154 @@
+counter_sha256=b4a97e095da1d869a0e8c0b82f758ba8d517ae2d10cf72e48e7fc4962578a834 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+== control donothing: package path absent (expected fail)
+LIMB E0 FAIL read:FileNotFoundError
+LIMB E1 FAIL gate_rc=2
+LIMB E2 FAIL read:FileNotFoundError
+LIMB E3 FAIL read:FileNotFoundError
+LIMB E4 FAIL read
+LIMB E5 FAIL rel=corpus/practice/curl-ibb-h1-1997312 log=False shonen=True
+E2E-RESULT fail limbs=6 rc=1
+rc=1
+== control r85-package: the round-85 1913733 package unchanged (expected fail)
+LIMB E0 FAIL heading=False url=False stray=none
+LIMB E1 pass gate_rc=0
+LIMB E2 FAIL bound=none
+LIMB E3 FAIL sections=1 dup=none bad=program,payer,platform-bounty-flag,original-report,reward-current-policy
+LIMB E4 FAIL quotes=5 short=0 missing=0 s123=0
+LIMB E5 pass rel=corpus/practice/curl-h1-1913733 log=True shonen=True
+E2E-RESULT fail limbs=6 rc=1
+rc=1
+== control exemplar-copy: r43 shape-valid exemplar (expected fail)
+LIMB E0 FAIL heading=False url=False stray=3294999
+LIMB E1 pass gate_rc=0
+LIMB E2 FAIL bound=none
+LIMB E3 FAIL sections=0 dup=none bad=program,payer,severity,reward-at-disclosure,platform-bounty-flag,original-report,reward-current-policy,kev,cve
+LIMB E4 FAIL quotes=0 short=0 missing=0 s123=0
+LIMB E5 FAIL rel=../../../../../fast/scratch/hyaku/kasegi-r86/MutC2Counter/fx/exemplar log=False shonen=False
+E2E-RESULT fail limbs=6 rc=1
+rc=1
+== control b3-wrong-subject: r85 package + S122/S123 evidence + correct r86 pricing (expected fail E0)
+LIMB E0 FAIL heading=False url=False stray=none
+LIMB E1 FAIL gate_rc=1
+LIMB E2 pass bound=S122,S123
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+LIMB E5 FAIL rel=../../../../../fast/scratch/hyaku/kasegi-r86/MutC2Counter/fx/b3 log=False shonen=False
+E2E-RESULT fail limbs=6 rc=1
+rc=1
+== control b3-url-added: same, 1997312 URL added, heading still 1913733 (expected fail E0)
+LIMB E0 FAIL heading=False url=True stray=none
+LIMB E1 FAIL gate_rc=1
+LIMB E2 pass bound=S122,S123
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+LIMB E5 FAIL rel=../../../../../fast/scratch/hyaku/kasegi-r86/MutC2Counter/fx/b3 log=False shonen=False
+E2E-RESULT fail limbs=6 rc=1
+rc=1
+== pricing control positive-pricing (expected pass)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT pass limbs=3 rc=0
+rc=0
+== pricing control forged-program (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=program
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control forged-payer-vendor (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=payer
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control forged-severity (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=severity
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control forged-reward (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=reward-at-disclosure
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control forged-platform-flag (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=platform-bounty-flag
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control forged-original-report (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=original-report
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control forged-current-policy-none (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=reward-current-policy
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control forged-current-policy-date (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=reward-current-policy
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control forged-kev (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=kev
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control forged-cve (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=none bad=cve
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control wrong-subject-heading (expected fail)
+LIMB E0 FAIL heading=False url=True stray=none
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control stray-report-url (expected fail)
+LIMB E0 FAIL heading=True url=True stray=1913734
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control duplicate-key (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=1 dup=payer bad=none
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control two-pricing-sections (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 FAIL sections=2 dup=none bad=none
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control short-quotes (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 FAIL quotes=5 short=2 missing=0 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control forged-quote (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 FAIL quotes=4 short=0 missing=1 s123=2
+E2E-RESULT fail limbs=3 rc=1
+rc=1
+== pricing control no-s123-quote (expected fail)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 FAIL quotes=3 short=0 missing=0 s123=0
+E2E-RESULT fail limbs=3 rc=1
+rc=1

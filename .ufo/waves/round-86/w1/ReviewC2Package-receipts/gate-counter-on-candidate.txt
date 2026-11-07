@@ -1,0 +1,29 @@
+# Gate and counter runs on the candidate (2026-11-07T01:14:24Z)
+## gate: python3 -B corpus/instruments/claim-package-check.py <candidate>
+RULE R-FILES verdict=pass detail=files=6,missing=0,bad=0
+RULE R-MANIFEST verdict=pass detail=artifacts=4,positive=4,digest-bad=0,escape=0
+RULE R-REDACT verdict=pass detail=artifacts=4,receipts=4,missing=0,digest-mismatch=0
+RULE R-CUSTODIAN verdict=pass detail=chain=2,grant-miss=0,signal-bad=0,head=bound
+RULE R-PROVENANCE verdict=pass detail=agents=3,commands=5,pin=ok,effects=none,secrets=ok
+RULE R-STATUS verdict=pass detail=manifest=bound,reviewer=distinct,gates=6/6,claimable=false,blocker=named
+RULE R-REPORT verdict=pass detail=scope-excerpt=ok,marker=ok,url=ok,cited=4,unbound=0
+RULE R-NOSECRET verdict=fail detail=hits=1,first=evidence/S122.txt,shape=credential
+package=/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-86/w1/ExecC2Package-candidate/curl-ibb-h1-1997312 rules=8 pass=7 fail=1 verdict=DEFECT exit=1
+rc=1
+
+## counter --pricing-only: python3 -B .ufo/waves/round-86/c2/e2e-check.py --lane . --pricing-only <candidate>/report.md
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=6 short=0 missing=0 s123=4
+E2E-RESULT pass limbs=3 rc=0
+rc=0
+
+## counter full: python3 -B .ufo/waves/round-86/c2/e2e-check.py --lane . --pkg <candidate>
+LIMB E0 pass heading=True url=True stray=none
+LIMB E1 FAIL gate_rc=1
+LIMB E2 pass bound=S122,S123
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=6 short=0 missing=0 s123=4
+LIMB E5 FAIL rel=.ufo/waves/round-86/w1/ExecC2Package-candidate/curl-ibb-h1-1997312 log=False shonen=False
+E2E-RESULT fail limbs=6 rc=1
+rc=1

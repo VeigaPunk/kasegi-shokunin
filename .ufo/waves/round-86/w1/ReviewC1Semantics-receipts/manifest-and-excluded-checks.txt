@@ -1,0 +1,25 @@
+# ReviewC1Semantics receipts: manifest path fields, digest binding, excluded-basename census
+# Clone: git clone --shared kasegi-shokunin @ 252df0c90c066d83d229e3107811a6bc05e8feed
+# (1) round-40 manifest record 'path' fields (the values the four C1-repointed lines quote)
+# S016 path='S016.txt'  S020 path='S020.txt'  S021 path='S021.txt'  S023 path='S023.txt'  S025 path='S025.txt'
+# (2) same convention every round: round-45 S071, round-46 S073, round-47 S076, round-49 S078,
+#     round-57 S089, round-69 S103, round-70 S105, round-71 S106 -> all path='S<id>.txt' (bare)
+# (3) file sha256 == manifest digest for round-40 S016/S020/S021/S023/S025: True (5/5)
+#     S021 72dbba57306f786e... S020 8fc334bebf20734b... S023 52a6671fb24842e6... S025 faa1c1f8b9b34615... S016 91cc996f5bab690f...
+# (4) repair-map.json self-check: 203 keys; every key S-id == value basename id; every value under
+#     corpus/source-snapshots/round-{40,45,46,47,49,57,69,70,71}/ matching the SOURCES.md anchor cell
+#     round for that id; anchors carried through unchanged. inconsistent=0
+# (5) excluded.json: 89 keys, ids S029/S040/S041/S069/S100/S102
+# (6) tracked files with the basename at freeze (git ls-files), ALL paths vs under corpus/source-snapshots/:
+#     S029 41/1  S040 33/1  S041 23/3 (round-26, round-28, round-30)  S069 3/1 (round-44)
+#     S100 3/1 (round-67)  S102 2/1 (round-68)
+#     -> the ':N' in excluded.json reason strings = count over ALL tracked files incl. .ufo/waves fixture copies
+# (7) knowledge files holding the excluded bare tokens (unchanged by the map):
+#     S029 -> cra-manufacturer-reporting-duties.md; S040 -> vendor-disclosure-policy-commitments-crosswalk.md
+#     S041 -> iso-29147-divergence-and-clause-crosswalk.md; S069 -> google-cloud-vrp-customer-resource-boundary.md
+#     S100 -> first-psirt-maturity-document.md; S102 -> openssf-scorecard-api-contract.md
+# (8) leftover exact backticked bare S<digits>.txt tokens in the 14 changed files after apply: 0 in each
+# (9) applied diff: 14 files, 292 insertions / 292 deletions (APPLY files_changed=14 keys=203)
+# Repoints per file (numstat): anthropic 1, cisa-bod 1, cisa-cvd 1, cve-bench 1, cve-services 16, doj 1,
+#     gh-advisory-curation 43, gh-global-rest 35, gh-private 18, gh-repo-advisories 45, iso 3, linux-kernel 25,
+#     zdi-policy 17, zdi-process 85

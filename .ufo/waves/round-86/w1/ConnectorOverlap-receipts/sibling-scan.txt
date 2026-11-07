@@ -1,0 +1,50 @@
+ConnectorOverlap — sibling-overlap scan (read-only)
+lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin ; round 86 w1 ; executed 2026-11-06 ~22:00-22:20 local
+scope: /home/vgpnk/Projects/shokunin/*-shokunin/  (20 sibling lane repos; kasegi excluded from the hit lists)
+
+Commands (all read-only; kasegi paths excluded from results):
+  for t in '1997312' 'Internet Bug Bounty' 'hackerone.com/ibb' 'daniel.haxx.se/blog/2026/01/26'; do
+    grep -rlF -- "$t" --include='*.md' --include='*.json' --include='*.txt' --include='*.py' --include='*.sh' \
+      /home/vgpnk/Projects/shokunin/*-shokunin/corpus/
+  done
+  for t in 'CVE-2023-28319' 'hackerone.com/reports' 'libssh' 'curl.se/docs/CVE'; do
+    grep -rlF -- "$t" /home/vgpnk/Projects/shokunin/*-shokunin/corpus/
+  done
+  find /home/vgpnk/Projects/shokunin -maxdepth 6 -name 'knowledge-meter*' -o -name '*repoint*' -o -name '*repair-map*'
+  ls -d /home/vgpnk/Projects/shokunin/*-shokunin/corpus/instruments
+  ls /home/vgpnk/Projects/shokunin/*-shokunin/corpus/instruments/resolve.py
+
+Results — subject/source collision with C2 (IBB report 1997312, S122/S123, the curl bug-bounty end post):
+  '1997312'                     2 incidental hits, both non-subject:
+                                  audio-shokunin/corpus/live/r89-boundary/runs/bp/drain_quit/stdout.bin
+                                    (binary run log; grep -a finds the 7-digit string once)
+                                  kengaku-shokunin/corpus/evidence/round99/tb2-bn-fit-modify/bn_sample_10k.csv
+                                    (numeric sample field)
+  'Internet Bug Bounty'        0
+  'hackerone.com/ibb'          0
+  'daniel.haxx.se/blog/2026/01/26' 0
+  'CVE-2023-28319'             0   (no sibling lane prices this CVE)
+  'hackerone.com/reports'      0   (no sibling lane holds a HackerOne report record)
+  'curl.se/docs/CVE'           0
+  'libssh'                     audio-shokunin strace/log files only (binary-log substring, not a source)
+
+  Conclusion: no sibling lane holds S122/S123 or the 1997312 subject. C2 has no source-id or
+  subject collision. Each lane owns its own SOURCES.md id namespace (S001..Sn per lane); there is
+  no cross-lane id space, so the registry collision reported in §2 is per-lane, not cross-lane.
+
+Results — a reusable knowledge-scope repoint instrument:
+  corpus/instruments/ exists only in kasegi-shokunin (ls -d ... returns 1 dir);
+  corpus/instruments/resolve.py exists only in kasegi-shokunin (1 file);
+  no 'knowledge-meter*', '*repair-map*' outside kasegi.
+  Nearest reusable *patterns* (not instruments) found:
+   - lore-shokunin/.ufo/waves/round-101/seats/V03-c1-repointed.md: verifies a "repointed edge" by
+     replaying the stale fixture (red control) and the repointed fixture (green) through the same
+     frozen replayer, twice, plus an only-delta assertion. This is the paired-control shape that
+     C1's M1 do-nothing control already uses.
+   - kotodama-shokunin/reports/round-26/remainders/pin-repoint-check.py: "the stale row still
+     replays red; the new rows replay green; the new rows are the only delta" — same shape, with
+     byte-unchanged assertions on the filed rows.
+   - lore-shokunin/.ufo/waves/round-88/patches/M4-obs1-repoint.patch: a data-level repoint patch
+     (fixture entity source_id), one hunk; no meter.
+  None of these is a knowledge-scope census; C1's meter has no sibling implementation to import
+  or collide with.

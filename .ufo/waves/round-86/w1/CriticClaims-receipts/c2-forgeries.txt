@@ -1,0 +1,36 @@
+== FA: r85 package body (still says 'No captured record shows who paid it', has_bounty? false) + r86 heading/URL/pricing/S122/S123 ==
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT pass limbs=3 rc=0
+pricing-only rc=0
+LIMB E0 pass heading=True url=True stray=none
+LIMB E1 FAIL gate_rc=1
+LIMB E2 pass bound=S122,S123
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+LIMB E5 FAIL rel=../../c2/FA log=False shonen=False
+E2E-RESULT fail limbs=6 rc=1
+full rc=1
+== FB: r43 exemplar body (CVE-2025-9086, 505 USD, curl 8.13.0-8.15.0) + r86 heading/URL/pricing/S122/S123 ==
+LIMB E0 pass heading=True url=True stray=none
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+E2E-RESULT pass limbs=3 rc=0
+pricing-only rc=0
+LIMB E0 pass heading=True url=True stray=none
+LIMB E1 FAIL gate_rc=1
+LIMB E2 pass bound=S122,S123
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=3 short=0 missing=0 s123=2
+LIMB E5 FAIL rel=../../c2/FB log=False shonen=False
+E2E-RESULT fail limbs=6 rc=1
+full rc=1
+== body evidence of FA/FB (subject mismatch) ==
+6:Official advisory URL: https://curl.se/docs/CVE-2025-9086.html
+13:Source URL: https://curl.se/docs/CVE-2025-9086.html (Project curl Security Advisory, September 10 2025)
+21:> CWE-125: Out-of-bounds Read
+23:> Bug bounty: 505 USD
+34:CWE-125: out-of-bounds read in the cookie path comparison. A cookie set with the
+41:curl 8.13.0 through 8.15.0, with the 8.14.X branch fixed from 8.14.2 (vendor
+kev-suffix rc=0
