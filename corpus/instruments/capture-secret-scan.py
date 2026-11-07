@@ -85,15 +85,28 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          base62 characters (30 random plus a 6-character
                          checksum, S137 lines 167, 173: 40 characters in all,
                          S136 line 160, S137 line 174), not preceded or
-                         followed by a letter, digit or `_` (a JSON `\\n`
-                         escape before the prefix is allowed); or the stateless
+                         followed by a letter, digit or `_` (a preceding
+                         escape terminator of the forms `\\t`, `\\r`, `\\n`,
+                         `\\uXXXX`, `%XX`, `&#NN;` or `&#xXX;` is allowed,
+                         round 93: an escape whose last byte is alphanumeric
+                         hid a token, SentinelGitHub P1); or the stateless
                          installation-token form `ghs_<APPID>_<JWT>` (S136 line
                          160) with a numeric app id and three dot-separated
                          base64url JWT segments of 10+ characters each. The
                          page's own `ghs_APPID_JWT` placeholder and a bare
                          prefix are not hits.
+  gitlab-pat             (round 93) a GitLab personal access token: `glpat-`
+                         followed by a 20-character string (S139 lines 86-87),
+                         the string drawn from `A-Za-z0-9_-` (a lane choice:
+                         the page states the length, not the alphabet), not
+                         preceded or followed by a letter, digit, `_` or `-`
+                         (a preceding escape terminator is allowed, as for
+                         `github-token`). The page's own bare prefix is not a
+                         hit; the encoded `_` prefix separator is a named limit.
 Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened
-source states their length or alphabet), GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
+source states their length or alphabet), GitLab runner (`glrt-`) and other
+GitLab token prefixes (S139 line 86 names only `glpat-`), an encoded prefix
+separator (`gh%5Fp_`, `glpat%2D`; undocumented by either source), GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
 cookies held as HAR/JSON name/value objects (`"name":"CloudFront-Signature"`),
 percent-encoded parameter names or `=` (a whole URL percent-encoded inside
 another URL's query), Azure SAS parameter names of 8+ letters between `sv` and
@@ -153,12 +166,17 @@ CLOUD_PATTERNS = (
     ("cloudfront-signed-cookie-signature", re.compile(
         _CK_LB + rb"CloudFront-Signature=[A-Za-z0-9_~-]{40,}")),
 )
-_GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\n))"
+_ESC_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+_GH_LB = _ESC_LB
 _JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
 GITHUB_PATTERNS = (
     ("github-token", re.compile(
         _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
         + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
+)
+_GL_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+GITLAB_PATTERNS = (
+    ("gitlab-pat", re.compile(_GL_LB + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
 )
 ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
 NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
@@ -192,7 +210,7 @@ def gate_patterns():
 
 
 def patterns():
-    return gate_patterns() + AWS_PATTERNS + CLOUD_PATTERNS + GITHUB_PATTERNS
+    return gate_patterns() + AWS_PATTERNS + CLOUD_PATTERNS + GITHUB_PATTERNS + GITLAB_PATTERNS
 
 
 def is_capture_path(rel):
@@ -353,6 +371,29 @@ def selftest(pats):
         ("gh-unknown-prefix", b"ghx_" + ghtail, set()),
         ("gh-letter-before", b"xghp_" + ghtail, set()),
         ("gh-fine-grained-known-limit", b"github_pat_" + ghtail[:22] + b"_" + (ghtail + ghtail)[:59], set()),
+        # round 93: escape-terminator left boundary (SentinelGitHub P1) and gitlab-pat (S139)
+        ("gh-escape-tab", b'"log":"line\\tghp_' + ghtail + b'"', {"github-token"}),
+        ("gh-escape-cr", b'"log":"line\\rghp_' + ghtail + b'"', {"github-token"}),
+        ("gh-escape-u0020", b'"v":"\\u0020ghp_' + ghtail + b'"', {"github-token"}),
+        ("gh-escape-pct20", b"https://x/?q=%20ghp_" + ghtail, {"github-token"}),
+        ("gh-escape-pct3a", b"x-access-token%3Aghp_" + ghtail, {"github-token"}),
+        ("gh-escape-pct2f", b"a%2Fghp_" + ghtail, {"github-token"}),
+        ("gh-escape-u0026", b'"q":"a\\u0026ghp_' + ghtail + b'"', {"github-token"}),
+        ("gh-escape-pct26", b"q=a%26ghp_" + ghtail, {"github-token"}),
+        ("gh-escape-html-entity", b"q=a&#38;ghp_" + ghtail, {"github-token"}),
+        ("gh-escape-right-underscore", b'"x\\tghp_' + ghtail + b'_"', set()),
+        ("gh-escape-word-before", b"bytes: b'ghp_" + ghtail + b"'", {"github-token"}),
+        ("gl-pat-prose", b"use glpat-" + b"AbC0123456789_-xyZq0" + b" as the password", {"gitlab-pat"}),
+        ("gl-pat-json", b'{"t":"glpat-' + b"0123456789abcdefghij" + b'"}', {"gitlab-pat"}),
+        ("gl-pat-after-pct20", b"q=%20glpat-" + b"0123456789abcdefghij", {"gitlab-pat"}),
+        ("gl-pat-after-u0026", b'"q":"a\\u0026glpat-' + b"0123456789abcdefghij" + b'"', {"gitlab-pat"}),
+        ("gl-pat-19-chars", b"glpat-" + b"0123456789abcdefghi ", set()),
+        ("gl-pat-21-chars", b"glpat-" + b"0123456789abcdefghijk", set()),
+        ("gl-pat-right-underscore", b"glpat-" + b"0123456789abcdefghij" + b"_", set()),
+        ("gl-pat-upper-prefix", b"GLPAT-" + b"0123456789abcdefghij", set()),
+        ("gl-pat-bare-prefix", b"identified by the pattern glpat- followed by a 20-character string", set()),
+        ("gl-pat-letter-before", b"xglpat-" + b"0123456789abcdefghij", set()),
+        ("gl-pat-runner-known-limit", b"glrt-" + b"0123456789abcdefghij", set()),
     ]
     bad = 0
     for name, data, want in cases:
