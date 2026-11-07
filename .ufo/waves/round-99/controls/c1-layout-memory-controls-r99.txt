@@ -1,0 +1,22 @@
+== P2 layout equality (clean) ==
+CENSUS-CHECK pass rev=b9411a6b530e486180cf14c72fccc46668dcf5ee skill=162/732 corpus=2569/7620 lane=2607/8022 host_owned=76 confined=1
+rc=0
+== P2 layout equality (dirty: parent carries MISSION.md and the .ufo member file) ==
+CENSUS-CHECK pass rev=b9411a6b530e486180cf14c72fccc46668dcf5ee skill=162/732 corpus=2569/7620 lane=2607/8022 host_owned=76 confined=1
+rc=0
+== P4 memory profile (clean check) ==
+CENSUS-CHECK pass rev=b9411a6b530e486180cf14c72fccc46668dcf5ee skill=162/732 corpus=2569/7620 lane=2607/8022 host_owned=76 confined=1
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.29
+	Maximum resident set size (kbytes): 512064
+== CONTROL write-bad-revision ==
+CENSUS-WRITE error reason=bad-revision rc=2
+rc=2
+== CONTROL write-not-ancestor (fixture clone; commit made in the fixture, then back to master) ==
+fixture-root ok
+CENSUS-WRITE ok rev=a44edaadfda54d502deecf826f9481c4d39c8716 skill=162/732 lane=2607/8022 host_owned=76 confined=1
+rc=0 dangling=a44edaadfda54d502deecf826f9481c4d39c8716
+== CONTROL write-not-ancestor (fixture clone; commit made on a detached HEAD, then master restored) ==
+fixture-root ok
+dangling=fbbbcab20224ab4311eac7ae08c52de9809a03d4 master=b9411a6b530e486180cf14c72fccc46668dcf5ee head=b9411a6b530e486180cf14c72fccc46668dcf5ee
+CENSUS-WRITE error reason=rev-not-ancestor rc=2
+rc=2
