@@ -145,6 +145,36 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          40 characters of `A-Za-z0-9_-` (S140 line 73), with the
                          escape-terminator left boundary and the optional custom
                          instance prefix.
+  gitlab-runner-registration-token (round 97) the runner registration token:
+                         `GR1348941` + 20 characters of `A-Za-z0-9_-` (S140 line
+                         101), no custom instance prefix (the rule has none).
+  gitlab-feed-token      (round 97) the `feed_token=` query form: that literal
+                         then 20 characters of `A-Za-z0-9_-` (S140 line 160).
+  gitlab-oauth-app-secret (round 97) an OAuth application secret: `gloas-` +
+                         64 characters of `A-Za-z0-9_-` (S140 line 174), no
+                         custom instance prefix.
+  gitlab-feed-token-v2   (round 97) `glft-` + 20 characters of `A-Za-z0-9_-`
+                         (S140 line 190), no custom instance prefix.
+  gitlab-incoming-email-token (round 97) `glimt-` + 20-25 LOWER-CASE
+                         alphanumerics (S140 line 229), with the optional custom
+                         instance prefix; the rule's own lower-case alphabet is
+                         kept, so an upper-case tail is not a hit.
+  gitlab-scim-oauth-token (round 97) `glsoat-` + 20 characters of
+                         `A-Za-z0-9_-` (S140 line 278), no custom instance prefix.
+  gitlab-deploy-token-in-url (round 97) the `gitlab+deploy-token-<N>:<token>@`
+                         URL form: the literal, 1+ digits, `:`, 20 characters of
+                         `A-Za-z0-9_-`, then `@` (S140 line 341).
+  gitlab-feature-flags-client-token (round 97) `glffct-` + 20 characters of
+                         `A-Za-z0-9_-` (S140 line 392), with the optional custom
+                         instance prefix.
+  gitlab-runner-controller-token (round 97) `glrct-` + 20 characters of
+                         `A-Za-z0-9_-` (S140 line 412), with the optional custom
+                         instance prefix.
+  gitlab-kubernetes-agent-token (round 97) `glagent-` + exactly 50 characters
+                         of `A-Za-z0-9_-` (S140 line 213), with the optional
+                         custom instance prefix and the rule's own right boundary
+                         (a following dot is allowed only when it is not followed
+                         by a lower-case alphanumeric, or at end of input).
   gitlab-jwt-token       (round 95) the GitLab JWT-form tokens: `glcbt-` or
                          `glsat-` (optional 1-20 character instance prefix) or
                          `gliamat-`, then `eyJ` + 10-1000 characters, `.eyJ` +
@@ -157,11 +187,8 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          documentation placeholders (`glcbt-eyJ<header>...`) are
                          not hits.
 Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened
-source states their length or alphabet), the remaining GitLab
-prefixes (`glft-`, `glimt-`, `glsoat-`, `glffct-`, `gloas-`, `glrct-`;
-S140 lines 190, 229, 278, 392, 174, 412), the runner registration
-token (`GR1348941` + 20, S140 line 101), the `feed_token=` query form
-(S140 line 160), the `gitlab+deploy-token-N:` URL form (S140 line 341), the
+source states their length or alphabet), the path-dependent feed-token form
+(`glft-` + 64 hex + `-` + 1-20 digits, S140 line 512), the
 `t1_`-prefixed runner token without `glrt-` (S140 line 308) and the
 `/trigger/pipeline?...token=` URL form (S140 line 532), an encoded prefix
 separator (`gh%5Fp_`, `glpat%2D`; undocumented by either source), GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
@@ -252,6 +279,28 @@ GITLAB_PATTERNS = (
     ("gitlab-workspace-token-versioned", re.compile(_GL_LB + _GL_PREFIX + rb"glwt-" + _GJ_VER)),
     ("gitlab-pipeline-trigger-token", re.compile(
         _GL_LB + _GL_PREFIX + rb"glptt-(?:[A-Za-z0-9_-]{20}|[A-Za-z0-9_-]{40})(?![A-Za-z0-9_-])")),
+    # round 97: the ten remaining GitLab families the round-96 known-limits
+    # list named (S140 lines 101, 160, 174, 190, 213, 229, 278, 341, 392, 412).
+    ("gitlab-runner-registration-token", re.compile(
+        _GL_LB + rb"GR1348941[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-feed-token", re.compile(
+        _GL_LB + rb"feed_token=[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-oauth-app-secret", re.compile(
+        _GL_LB + rb"gloas-[A-Za-z0-9_-]{64}(?![A-Za-z0-9_-])")),
+    ("gitlab-feed-token-v2", re.compile(
+        _GL_LB + rb"glft-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-incoming-email-token", re.compile(
+        _GL_LB + _GL_PREFIX + rb"glimt-[a-z0-9]{20,25}(?![A-Za-z0-9_-])")),
+    ("gitlab-scim-oauth-token", re.compile(
+        _GL_LB + rb"glsoat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-deploy-token-in-url", re.compile(
+        _GL_LB + rb"gitlab\+deploy-token-[0-9]+:[A-Za-z0-9_-]{20}@")),
+    ("gitlab-feature-flags-client-token", re.compile(
+        _GL_LB + _GL_PREFIX + rb"glffct-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-runner-controller-token", re.compile(
+        _GL_LB + _GL_PREFIX + rb"glrct-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-kubernetes-agent-token", re.compile(
+        _GL_LB + _GL_PREFIX + rb"glagent-[A-Za-z0-9_-]{50}(?![A-Za-z0-9_-]|\.[0-9a-z])")),
     ("gitlab-pat", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
     ("gitlab-runner-auth-token", re.compile(_GL_LB + _GL_PREFIX + rb"glrtr?-(?:t[1-3]_)?[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
     ("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
@@ -514,6 +563,29 @@ def selftest(pats):
         ("gl-jwt-third-19-chars", b"glsat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*19 + b" ", set()),
         ("gl-jwt-letter-before", b"xglcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, set()),
         ("gl-jwt-doc-placeholder", b"glcbt-eyJ<header>.<payload>.<signature>", set()),
+        # round 97: the ten remaining GitLab families (S140 lines 101, 160, 174,
+        # 190, 213, 229, 278, 341, 392, 412), each with one boundary negative.
+        ("gl-registration", b"t GR1348941" + b"A" * 20 + b" end", {"gitlab-runner-registration-token"}),
+        ("gl-registration-short", b"GR1348941" + b"A" * 19 + b" ", set()),
+        ("gl-feed-token", b"u?feed_token=" + b"B" * 20 + b"&", {"gitlab-feed-token"}),
+        ("gl-feed-token-short", b"feed_token=" + b"B" * 19 + b"&", set()),
+        ("gl-oauth-app-secret", b"gloas-" + b"C" * 64 + b" ", {"gitlab-oauth-app-secret"}),
+        ("gl-oauth-app-short", b"gloas-" + b"C" * 63 + b" ", set()),
+        ("gl-feed-token-v2", b"glft-" + b"D" * 20 + b" ", {"gitlab-feed-token-v2"}),
+        ("gl-feed-token-v2-long", b"glft-" + b"D" * 21 + b" ", set()),
+        ("gl-incoming-email", b"glimt-" + b"e" * 22 + b" ", {"gitlab-incoming-email-token"}),
+        ("gl-incoming-email-upper", b"glimt-" + b"E" * 22 + b" ", set()),
+        ("gl-scim-oauth", b"glsoat-" + b"F" * 20 + b" ", {"gitlab-scim-oauth-token"}),
+        ("gl-scim-oauth-short", b"glsoat-" + b"F" * 19 + b" ", set()),
+        ("gl-deploy-token-in-url", b"https://gitlab+deploy-token-7:" + b"G" * 20 + b"@gitlab.com",
+         {"gitlab-deploy-token-in-url"}),
+        ("gl-deploy-token-in-url-no-at", b"gitlab+deploy-token-7:" + b"G" * 20 + b"/x", set()),
+        ("gl-feature-flags", b"acme-glffct-" + b"H" * 20 + b" ", {"gitlab-feature-flags-client-token"}),
+        ("gl-feature-flags-short", b"glffct-" + b"H" * 19 + b" ", set()),
+        ("gl-runner-controller", b"glrct-" + b"I" * 20 + b" ", {"gitlab-runner-controller-token"}),
+        ("gl-runner-controller-short", b"glrct-" + b"I" * 19 + b" ", set()),
+        ("gl-kubernetes-agent", b"glagent-" + b"J" * 50 + b" ", {"gitlab-kubernetes-agent-token"}),
+        ("gl-kubernetes-agent-short", b"glagent-" + b"J" * 49 + b" ", set()),
     ]
     bad = 0
     for name, data, want in cases:
