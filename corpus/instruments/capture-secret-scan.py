@@ -175,6 +175,20 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          custom instance prefix and the rule's own right boundary
                          (a following dot is allowed only when it is not followed
                          by a lower-case alphanumeric, or at end of input).
+  gitlab-ci-build-token  (round 98) the CI build token: `glcbt-` + 1-5
+                         alphanumerics + `_` + 20 characters of `A-Za-z0-9_-`
+                         (S140 line 293), with the rule's own punct/space/EOL
+                         right boundary (S140 line 294).
+  gitlab-iam-refresh-token (round 98) `gliamrt-` + 43 characters of
+                         `A-Za-z0-9_-`, `.`, 43 characters of `A-Za-z0-9_-`
+                         (S140 line 480), right boundary `[^0-9a-zA-Z_\-]`/EOL.
+  gitlab-iam-authorization-code (round 98) `gliamac-` + 43 + `.` + 43 of
+                         `A-Za-z0-9_-` (S140 line 497), same right boundary.
+  gitlab-session-cookie  (round 98) the session cookie value: the
+                         assignmentContext keyword `_gitlab_session` (optionally
+                         `_geo_` + 64 hex) then a separator, an optional
+                         `cell-<N>-` prefix and 64 lower-case hex characters
+                         (S140 lines 549-551).
   gitlab-jwt-token       (round 95) the GitLab JWT-form tokens: `glcbt-` or
                          `glsat-` (optional 1-20 character instance prefix) or
                          `gliamat-`, then `eyJ` + 10-1000 characters, `.eyJ` +
@@ -281,18 +295,31 @@ GITLAB_PATTERNS = (
         _GL_LB + _GL_PREFIX + rb"glptt-(?:[A-Za-z0-9_-]{20}|[A-Za-z0-9_-]{40})(?![A-Za-z0-9_-])")),
     # round 97: the ten remaining GitLab families the round-96 known-limits
     # list named (S140 lines 101, 160, 174, 190, 213, 229, 278, 341, 392, 412).
+    # round 98: the four further S140 rules the round-97 spot-check named
+    # (lines 293, 480, 497, 549) and S140's own right boundary for the five
+    # round-97 shapes whose `(?![A-Za-z0-9_-])` refused a real token followed
+    # by `_` or `-` (SentinelShapes MUST-FIX 1).
+    ("gitlab-ci-build-token", re.compile(
+        _GL_LB + rb"glcbt-[A-Za-z0-9]{1,5}_[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
+    ("gitlab-iam-refresh-token", re.compile(
+        _GL_LB + rb"gliamrt-[A-Za-z0-9_-]{43}\.[A-Za-z0-9_-]{43}(?![A-Za-z0-9_-])")),
+    ("gitlab-iam-authorization-code", re.compile(
+        _GL_LB + rb"gliamac-[A-Za-z0-9_-]{43}\.[A-Za-z0-9_-]{43}(?![A-Za-z0-9_-])")),
+    ("gitlab-session-cookie", re.compile(
+        _GL_LB + rb"_gitlab_session(?:_geo_[0-9a-f]{64})?[\s\"'=:;]+"
+        rb"(?:cell-[0-9]+-)?[0-9a-f]{64}(?![0-9a-f])")),
     ("gitlab-runner-registration-token", re.compile(
-        _GL_LB + rb"GR1348941[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+        _GL_LB + rb"GR1348941[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
     ("gitlab-feed-token", re.compile(
-        _GL_LB + rb"feed_token=[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+        _GL_LB + rb"feed_token=[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
     ("gitlab-oauth-app-secret", re.compile(
-        _GL_LB + rb"gloas-[A-Za-z0-9_-]{64}(?![A-Za-z0-9_-])")),
+        _GL_LB + rb"gloas-[A-Za-z0-9_-]{64}(?![A-Za-z0-9])")),
     ("gitlab-feed-token-v2", re.compile(
-        _GL_LB + rb"glft-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+        _GL_LB + rb"glft-[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
     ("gitlab-incoming-email-token", re.compile(
         _GL_LB + _GL_PREFIX + rb"glimt-[a-z0-9]{20,25}(?![A-Za-z0-9_-])")),
     ("gitlab-scim-oauth-token", re.compile(
-        _GL_LB + rb"glsoat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+        _GL_LB + rb"glsoat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
     ("gitlab-deploy-token-in-url", re.compile(
         _GL_LB + rb"gitlab\+deploy-token-[0-9]+:[A-Za-z0-9_-]{20}@")),
     ("gitlab-feature-flags-client-token", re.compile(
@@ -586,6 +613,30 @@ def selftest(pats):
         ("gl-runner-controller-short", b"glrct-" + b"I" * 19 + b" ", set()),
         ("gl-kubernetes-agent", b"glagent-" + b"J" * 50 + b" ", {"gitlab-kubernetes-agent-token"}),
         ("gl-kubernetes-agent-short", b"glagent-" + b"J" * 49 + b" ", set()),
+        # round 98: the four further S140 rules (lines 293, 480, 497, 549) and
+        # the five widened right boundaries (a real token followed by `_`/`-`).
+        ("gl-ci-build", b"glcbt-Ab3_" + b"k" * 20 + b" end", {"gitlab-ci-build-token"}),
+        ("gl-ci-build-6-prefix", b"glcbt-Ab3cde_" + b"k" * 20 + b" ", set()),
+        ("gl-ci-build-no-underscore", b"glcbt-Ab3" + b"k" * 20 + b" ", set()),
+        ("gl-ci-build-short", b"glcbt-Ab3_" + b"k" * 19 + b" ", set()),
+        ("gl-ci-build-right-alnum", b"glcbt-Ab3_" + b"k" * 21, set()),
+        ("gl-iam-refresh", b"gliamrt-" + b"A" * 43 + b"." + b"B" * 43 + b" ", {"gitlab-iam-refresh-token"}),
+        ("gl-iam-refresh-short", b"gliamrt-" + b"A" * 42 + b"." + b"B" * 43 + b" ", set()),
+        ("gl-iam-refresh-no-dot", b"gliamrt-" + b"A" * 43 + b"B" * 43 + b" ", set()),
+        ("gl-iam-auth-code", b"gliamac-" + b"C" * 43 + b"." + b"D" * 43 + b" ", {"gitlab-iam-authorization-code"}),
+        ("gl-iam-auth-code-44", b"gliamac-" + b"C" * 44 + b"." + b"D" * 43 + b" ", set()),
+        ("gl-session-cookie", b"Cookie: _gitlab_session=" + b"0a" * 32 + b"; Path=/", {"gitlab-session-cookie"}),
+        ("gl-session-cookie-cell", b"_gitlab_session=" + b"cell-7-" + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-cookie-geo", b"_gitlab_session_geo_" + b"0a" * 32 + b"=" + b"1b" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-cookie-63", b"_gitlab_session=" + b"0a" * 31 + b"0", set()),
+        ("gl-session-cookie-no-context", b"x=" + b"0a" * 32 + b"\n", set()),
+        ("gl-session-cookie-upper", b"_gitlab_session=" + b"0A" * 32 + b"\n", set()),
+        ("gl-registration-right-underscore", b"GR1348941" + b"A" * 20 + b"_x", {"gitlab-runner-registration-token"}),
+        ("gl-registration-right-hyphen", b"GR1348941" + b"A" * 20 + b"-x", {"gitlab-runner-registration-token"}),
+        ("gl-feed-token-right-underscore", b"feed_token=" + b"B" * 20 + b"_x", {"gitlab-feed-token"}),
+        ("gl-oauth-app-right-hyphen", b"gloas-" + b"C" * 64 + b"-x", {"gitlab-oauth-app-secret"}),
+        ("gl-feed-token-v2-right-underscore", b"glft-" + b"D" * 20 + b"_x", {"gitlab-feed-token-v2"}),
+        ("gl-scim-oauth-right-hyphen", b"glsoat-" + b"F" * 20 + b"-x", {"gitlab-scim-oauth-token"}),
     ]
     bad = 0
     for name, data, want in cases:
