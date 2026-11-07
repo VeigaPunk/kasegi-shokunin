@@ -1,0 +1,13 @@
+# Round-89 C2 controls, FIRST run (superseded before the freeze; transcribed by the L1 KasegiR89 from the run's output)
+# Counter at that run: K7 planted its first generated positive at g/source-snapshots/G1.txt, a path the
+# instrument's capture scope (is_capture_path) never scans. Result: the POSITIVE control failed K7 with
+#   == control positive: frozen candidate + allowlist + row, pinned (expected pass)
+#   LIMB K7 FAIL seed=8989 rc=1 missing=g/source-snapshots/G1.txt|cloudfront-signed-url-signature extra=none
+#   CAPABILITY-CHECK-RESULT fail rc=1
+#   == control positive, second seed 1 (expected pass)
+#   LIMB K7 FAIL seed=1 rc=1 missing=g/source-snapshots/G1.txt|cloudfront-signed-url-signature extra=none
+# and every other control carried the same spurious K7 miss. The fixture-literal control also failed K3,
+# because its literal alternative for the documentation example matched fewer bytes than the allowlist rows bind.
+# Fixes before the freeze: the plant moved to g/x-receipts/live-g1.txt (inside the capture scope), and the
+# literal control's documentation alternative was widened to the same span the candidate matches.
+# The rerun is c2-controls-r89.txt. Lesson: corpus/lessons/round-89.md M89-1.

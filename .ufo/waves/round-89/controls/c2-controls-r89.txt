@@ -1,0 +1,193 @@
+counter_sha256=176effca85337a67093462b6239d7e6486566d72eeaf300958b298b00785abcf candidate_sha256=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec allow_sha256=76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985 row_sha256=3854e888efe6b397b2659507e53ad047a0b03cfd1a032fe5f87c3be7b99627e3 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6 base=090a46f89932324787e00ca20b1007f893934c9a seed=8989
+== control do-nothing: base revision as landing (expected fail K1 sha, K4, K5, K7, K8; K6 reads the base instrument and passes by construction)
+CAPABILITY-CHECK rev=090a46f89932324787e00ca20b1007f893934c9a instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=0 instrument_sha256=d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1527,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E3.json|azure-sas-signature,corpus/source-snapshots/round-1/S008.txt|cloudfront-signed-url-signature,corpus/source-snapshots/round-1/S009.txt|cloudfront-signed-url-signature,w/live-e.html|cloudfront-signed-url-signature,w/q-receipts/live-d.json|cloudfront-signed-url-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=0 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature,g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped;cf: &amp; separator;cf: Policy, Signature, Key-Pair-Id, custom policy (S130 line 14 order);cf: Signature then Key-Pair-Id, canned policy (S128 line 13 order);cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 FAIL rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control positive: frozen candidate + allowlist + row, pinned (expected pass)
+CAPABILITY-CHECK rev=97a48da9394701b7ec7452f103e46edb363eaae5 instrument_present=True seed=8989
+LIMB K1 pass selftest_rc=0 instrument_sha256=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+rc=0
+== control positive, second seed 1 (expected pass)
+CAPABILITY-CHECK rev=97a48da9394701b7ec7452f103e46edb363eaae5 instrument_present=True seed=1
+LIMB K1 pass selftest_rc=0 instrument_sha256=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=1 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+rc=0
+== control wrong-pin: positive tree, wrong instrument sha (expected fail K1)
+CAPABILITY-CHECK rev=e5f1e1de0e2cd45bdde4472f2bf765a1f26accce instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=0 instrument_sha256=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control no-row: candidate without the SCORECARD row update (expected fail K5)
+CAPABILITY-CHECK rev=f67fade7c2348a75effa553191b99c4e17704dd7 instrument_present=True seed=8989
+LIMB K1 pass selftest_rc=0 instrument_sha256=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 FAIL rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control no-allow-rows: candidate without the two doc-example allowlist rows (expected fail K3: the snapshots' AWS example signature is a hit)
+CAPABILITY-CHECK rev=e0915112459aa3363c48bd5a1635a96206b5ffa7 instrument_present=True seed=8989
+LIMB K1 pass selftest_rc=0 instrument_sha256=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=1 summary=scanned=1530,hits=2,files=2,allowed=18,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control r88-instrument: base instrument as candidate (unpinned; its own selftest passes, so expected fail K3 unused allow rows, K4, K7, K8)
+CAPABILITY-CHECK rev=276a8d0b731193f808f4e09e053f36458e823ab4 instrument_present=True seed=8989
+LIMB K1 pass selftest_rc=0 instrument_sha256=d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=0 summary=scanned=1530,hits=0,files=0,allowed=18,unused_allow=2
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E3.json|azure-sas-signature,corpus/source-snapshots/round-1/S008.txt|cloudfront-signed-url-signature,corpus/source-snapshots/round-1/S009.txt|cloudfront-signed-url-signature,w/live-e.html|cloudfront-signed-url-signature,w/q-receipts/live-d.json|cloudfront-signed-url-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=0 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature,g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped;cf: &amp; separator;cf: Policy, Signature, Key-Pair-Id, custom policy (S130 line 14 order);cf: Signature then Key-Pair-Id, canned policy (S128 line 13 order);cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control cloudfront-pattern-never-matches (expected fail K1 selftest, K4, K7, K8)
+CAPABILITY-CHECK rev=15535787080a60b1217095d3f60d0366fd11d77b instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=b69c6b3b5a113cfcff49e478dbba8d3858f94d3f6a5684c44286a499543d7243 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=0 summary=scanned=1530,hits=0,files=0,allowed=18,unused_allow=2
+LIMB K4 FAIL rc=1 missing=corpus/source-snapshots/round-1/S008.txt|cloudfront-signed-url-signature,corpus/source-snapshots/round-1/S009.txt|cloudfront-signed-url-signature,w/live-e.html|cloudfront-signed-url-signature,w/q-receipts/live-d.json|cloudfront-signed-url-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature extra=none
+LIMB K8 FAIL clauses=10 failing=cf: &amp; separator;cf: Policy, Signature, Key-Pair-Id, custom policy (S130 line 14 order);cf: Signature then Key-Pair-Id, canned policy (S128 line 13 order);cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control cloudfront-without-key-pair-id-context (expected fail K4 extra S012, K7 extra n1, K8)
+CAPABILITY-CHECK rev=15f18212faa60a423a7610f86590342b76faf231 instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=1127bcdc96aa365377e9637cdca939bf3f56a3983e2958246c68ffe578fc119d gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=1 summary=scanned=1530,hits=2,files=2,allowed=18,unused_allow=2
+LIMB K4 FAIL rc=1 missing=none extra=corpus/source-snapshots/round-1/S012.txt|cloudfront-signed-url-signature sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=none extra=g/x-receipts/live-n1.txt|cloudfront-signed-url-signature
+LIMB K8 FAIL clauses=10 failing=cf: Signature without Key-Pair-Id is not a hit
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control cloudfront-left-boundary-admits-dash (expected fail K4 extra S011, K8)
+CAPABILITY-CHECK rev=c575897f79d0a1785fe6b271e6fa11f24f6c6d44 instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=3d070f6955c5005a4db54bfe1da4fcb1357e99e9536d931468db2b39940b9980 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=none extra=corpus/source-snapshots/round-1/S011.txt|cloudfront-signed-url-signature sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+LIMB K8 FAIL clauses=10 failing=cf: X-Amz-Signature beside Key-Pair-Id never starts a match
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control cloudfront-case-insensitive (expected fail K7 extra n2)
+CAPABILITY-CHECK rev=666abf1b973f45360a8305e321e426f350f292fc instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=8fc765b752b0c455c16843b585dd2747bfc52325a9798e54ae48577d9be737cb gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=none extra=g/x-receipts/live-n2.txt|cloudfront-signed-url-signature
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control cloudfront-floor-12 (expected fail K4 extra S013, K8)
+CAPABILITY-CHECK rev=99a1a0852c100a6e152dc503c702686879150247 instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=2836801c5d185267b425dbfa97e4fc59fccb64209199242281782a932f45fe6c gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=none extra=corpus/source-snapshots/round-1/S013.txt|cloudfront-signed-url-signature sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+LIMB K8 FAIL clauses=10 failing=cf: 40-character floor
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control json-separator-dropped (expected fail K4 missing live-d, live-c, E3; K7; K8)
+CAPABILITY-CHECK rev=5b176e1e0a0b28c703b3e4265c47358b1faa2dc8 instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=6b77da4392d513cd9580c309be003e29458e8b24b1336c6542457ce7f681b248 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E3.json|azure-sas-signature,w/q-receipts/live-d.json|cloudfront-signed-url-signature,w/z-receipts/live-c.json|azure-sas-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=g/x-receipts/live-g2.json|cloudfront-signed-url-signature,g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped;cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control azure-u0026-boundary-reverted (r88 F1; expected fail K4 missing E3, K7 missing g3, K8)
+CAPABILITY-CHECK rev=6c06ca57b661f7c070ce99259a88645a0140f493 instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=20c37b0a6a142b2969ba7dbe0c403eb48dbf8fbc3002a4450a3a1a1d33060fb0 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E3.json|azure-sas-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control fixture-literal-detector (r88 CriticClaims D4; expected fail K7 only)
+CAPABILITY-CHECK rev=fb74ef76c03a7f0a58acaa2ddebe24cfdb677e76 instrument_present=True seed=8989
+LIMB K1 pass selftest_rc=0 instrument_sha256=1fe6952f12df754f7cfa690d4da8212304b16d1c73e77952e12c97e167fa0412 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control always-clean (expected fail K2, K4, K7)
+CAPABILITY-CHECK rev=f838194669374d2257a06db1540e56bf69305045 instrument_present=True seed=8989
+LIMB K1 pass selftest_rc=0 instrument_sha256=c3ce2fcd6627637593123f0c5c635e07c9201daf8009368413096bcae97134c4 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 FAIL rc=0 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=0 missing=none extra=none sts_allow_rc=2 files_rc=0 files_hits=2 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=0 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1

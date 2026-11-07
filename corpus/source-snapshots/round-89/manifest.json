@@ -1,0 +1,67 @@
+{
+ "schema_version": 1,
+ "note": "Round-89 C2 manifest: Amazon CloudFront signed URLs, the shape the capture-secret-scan extension `cloudfront-signed-url-signature` names. S128 canned policy: the example signed URL carries Expires=, Signature= and Key-Pair-Id=; Signature is a hashed, signed, base64-encoded policy with + = / replaced by - _ ~. S130 custom policy: Policy=, Signature=, Key-Pair-Id=; anyone with the signed URL can access the files the policy covers. Captured 2026-11-07 by capture-source.py with the instrument UA; both captures scanned with the candidate capture-secret-scan before the freeze commit (.ufo/waves/round-89/controls/capture-scan-r89.txt): each holds AWS's documentation example signature (contains EXAMPLE), allowlisted by digest.",
+ "sources": [
+  {
+   "id": "S128",
+   "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-creating-signed-url-canned-policy.html",
+   "capture_url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-creating-signed-url-canned-policy.html",
+   "http": {
+    "status": 200,
+    "final_url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-creating-signed-url-canned-policy.html"
+   },
+   "kind": "html",
+   "fetch_method": "capture-source.py --kind html, default instrument UA; raw 34341 bytes, snapshot 11207 bytes; the same normalized sha256 as ScoutSources' round-88 lead capture (.ufo/waves/round-88/w1/ScoutSources-receipts/lead-urls-status-r88.txt)",
+   "fetched_utc": "2026-11-07T05:14:06Z",
+   "path": "S128.txt",
+   "sha256": "cd246e7debb4ea67cccf783ac6b16307b1d0febbda9de133df29a5ada5ea3331",
+   "bytes": 11207,
+   "lines": 225,
+   "quotes": [
+    {
+     "id": "Q01-signature-param",
+     "quote": "&Signature=hashed and signed version of the policy",
+     "anchor": 70
+    },
+    {
+     "id": "Q02-key-pair-id",
+     "quote": "The ID for a CloudFront public key, for example, K2JCJMDEHXQW5F.",
+     "anchor": 77
+    },
+    {
+     "id": "Q03-urlsafe-replacement",
+     "quote": "Replace characters that are invalid in a URL query string with characters that are valid.",
+     "anchor": 202
+    }
+   ]
+  },
+  {
+   "id": "S130",
+   "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-creating-signed-url-custom-policy.html",
+   "capture_url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-creating-signed-url-custom-policy.html",
+   "http": {
+    "status": 200,
+    "final_url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-creating-signed-url-custom-policy.html"
+   },
+   "kind": "html",
+   "fetch_method": "capture-source.py --kind html, default instrument UA; raw 50387 bytes, snapshot 19858 bytes; the same normalized sha256 as ScoutSources' round-88 lead capture (.ufo/waves/round-88/w1/ScoutSources-receipts/lead-urls-status-r88.txt)",
+   "fetched_utc": "2026-11-07T05:14:09Z",
+   "path": "S130.txt",
+   "sha256": "dcdaa1233df06b7304bc29c8af89371d81e7b0fa816251532ef9c52c8356ca39",
+   "bytes": 19858,
+   "lines": 422,
+   "quotes": [
+    {
+     "id": "Q01-anyone-with-url",
+     "quote": "anyone with the signed URL can access all of the files in any distribution that is associated",
+     "anchor": 163
+    },
+    {
+     "id": "Q02-policy-param",
+     "quote": "Policy=base64 encoded version of",
+     "anchor": 66
+    }
+   ]
+  }
+ ]
+}

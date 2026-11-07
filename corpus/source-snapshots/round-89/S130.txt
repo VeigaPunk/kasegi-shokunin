@@ -1,0 +1,422 @@
+Create a signed URL using a custom policy - Amazon CloudFront
+View a markdown version of this page
+Create a signed URL using a custom policy - Amazon CloudFront
+DocumentationAmazon CloudFrontDeveloper Guide
+Create a policy statement for a signed URL that uses a custom policyExample policy statements for a signed URL that uses a custom policyCreate a signature for a signed URL that uses a custom policy
+Create a signed URL using a custom policy
+To create a signed URL using a custom policy, complete the following procedure.
+To create a signed URL using a custom policy
+If you're using .NET or Java to create signed URLs, and if you haven't reformatted the private key for
+your key pair from the default .pem format to a format compatible with .NET or with Java, do so now. For
+more information, see Reformat the private key (.NET and Java only).
+Concatenate the following values. You can use the format in this example
+signed URL.
+https://d111111abcdef8.cloudfront.net/image.jpg?color=red&size=medium&Policy=eyANCiAgICEXAMPLEW1lbnQiOiBbeyANCiAgICAgICJSZXNvdXJjZSI6Imh0dHA6Ly9kemJlc3FtN3VuMW0wLmNsb3VkZnJvbnQubmV0L2RlbW8ucGhwIiwgDQogICAgICAiQ29uZGl0aW9uIjp7IA0KICAgICAgICAgIklwQWRkcmVzcyI6eyJBV1M6U291cmNlSXAiOiIyMDcuMTcxLjE4MC4xMDEvMzIifSwNCiAgICAgICAgICJEYXRlR3JlYXRlclRoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTI5Njg2MDE3Nn0sDQogICAgICAgICAiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjEyOTY4NjAyMjZ9DQogICAgICB9IA0KICAgfV0gDQp9DQo&Signature=nitfHRCrtziwO2HwPfWw~yYDhUF5EwRunQA-j19DzZrvDh6hQ73lDx~-ar3UocvvRQVw6EkC~GdpGQyyOSKQim-TxAnW7d8F5Kkai9HVx0FIu-5jcQb0UEmatEXAMPLE3ReXySpLSMj0yCd3ZAB4UcBCAqEijkytL6f3fVYNGQI6&Key-Pair-Id=K2JCJMDEHXQW5F&Hash-Algorithm=SHA256
+Remove all empty spaces (including tabs and newline characters). You might
+have to include escape characters in the string in application code. All
+values have a type of String.
+1. Base URL for the file
+The base URL is the CloudFront URL that you would use to access the
+file if you were not using signed URLs, including your own query
+string parameters, if any. In the preceding example, the base
+URL is
+https://d111111abcdef8.cloudfront.net/image.jpg.
+For more information about the format of URLs for distributions,
+see Customize the URL format for files in CloudFront.
+The following examples show values that you specify for
+distributions.
+The following CloudFront URL is for an image file in a
+distribution (using the CloudFront domain name). Note that
+image.jpg is in an images
+directory. The path to the file in the URL must match
+the path to the file on your HTTP server or in your Amazon S3
+bucket.
+https://d111111abcdef8.cloudfront.net/images/image.jpg
+The following CloudFront URL includes a query string:
+https://d111111abcdef8.cloudfront.net/images/image.jpg?size=large
+The following CloudFront URLs are for image files in a
+distribution. Both use an alternate domain name; the
+second one includes a query string:
+https://www.example.com/images/image.jpg
+https://www.example.com/images/image.jpg?color=red
+The following CloudFront URL is for an image file in a
+distribution that uses an alternate domain name and the
+HTTPS protocol:
+https://www.example.com/images/image.jpg
+2. ?
+The ? indicates that query string parameters
+follow the base URL. Include the ? even if you
+don't specify any query parameters.
+Note
+You can specify the following query parameters in any
+order.
+3. Your query string parameters, if
+any&
+(Optional) You can enter your own query string parameters. To
+do so, add an ampersand (&) between each one, such as
+color=red&size=medium. You can specify
+query string parameters in any order within the URL.
+Important
+Your query string parameters can't be named
+Policy, Signature,
+Key-Pair-Id, or
+Hash-Algorithm.
+If you add your own parameters, append an &
+after each one, including the last one.
+4. Policy=base64 encoded version of
+policy statement
+Your policy statement in JSON format, with empty spaces
+removed, then base64 encoded. For more information, see Create a policy statement for a signed URL that uses a custom policy.
+The policy statement controls the access that a signed URL
+grants to a user. It includes the URL of the file, an expiration
+date and time, an optional date and time that the URL becomes
+valid, and an optional IP address or range of IP addresses that
+are allowed to access the file.
+5. &Signature=hashed and signed
+version of the policy statement
+A hashed, signed, and base64-encoded version of the JSON
+policy statement. For more information, see Create a signature for a signed URL that uses a custom policy.
+6. &Key-Pair-Id=public key ID for
+the CloudFront public key whose corresponding private key you're using
+to generate the signature
+The ID for a CloudFront public key, for example,
+K2JCJMDEHXQW5F. The public key ID tells CloudFront
+which public key to use to validate the signed URL. CloudFront
+compares the information in the signature with the information
+in the policy statement to verify that the URL has not been
+tampered with.
+This public key must belong to a key group that is a trusted
+signer in the distribution. For more information, see Specify signers that can create signed URLs and signed cookies.
+7. &Hash-Algorithm=SHA1 or SHA256
+(Optional) The hash algorithm used to create the signature. Supported values are
+SHA1 and SHA256. If you don't specify this parameter,
+CloudFront defaults to SHA1.
+Create a policy statement for a signed URL that uses a custom policy
+Complete the following steps to create a policy statement for a signed URL that uses a
+custom policy.
+For example policy statements that control access to files in a variety of ways, see Example policy statements for a signed URL that uses a custom policy.
+To create the policy statement for a signed URL that uses a custom policy
+Construct the policy statement using the following JSON format. Replace the less than
+(<) and greater than (>) symbols, and the
+descriptions within them, with your own values. For more information,
+see Values that you specify in the policy statement for a signed URL that uses a custom policy.
+{
+"Statement": [
+{
+"Resource": "<Optional but recommended: URL of the file>",
+"Condition": {
+"DateLessThan": {
+"AWS:EpochTime": <Required: ending date and time in Unix time format and UTC>
+},
+"DateGreaterThan": {
+"AWS:EpochTime": <Optional: beginning date and time in Unix time format and UTC>
+},
+"IpAddress": {
+"AWS:SourceIp": "<Optional: IP address>"
+}
+}
+}
+]
+}
+Note the following:
+You can include only one statement in the policy.
+Use UTF-8 character encoding.
+Include all punctuation and parameter names exactly as specified. Abbreviations for
+parameter names are not accepted.
+The order of the parameters in the Condition section doesn't matter.
+For information about the values for Resource, DateLessThan,
+DateGreaterThan, and IpAddress, see
+Values that you specify in the policy statement for a signed URL that uses a custom policy.
+Remove all empty spaces (including tabs and newline characters) from the policy
+statement. You might have to include escape characters in the string in
+application code.
+Base64-encode the policy statement using MIME base64 encoding. For more information, see
+Section
+6.8, Base64 Content-Transfer-Encoding in RFC 2045,
+MIME (Multipurpose Internet Mail Extensions) Part One: Format of
+Internet Message Bodies.
+Replace characters that are invalid in a URL query string with characters that are valid. The
+following table lists invalid and valid characters.
+Replace these invalid characters
+With these valid characters
++
+- (hyphen)
+=
+_ (underscore)
+/
+~ (tilde)
+Append the resulting value to your signed URL after Policy=.
+Create a signature for the signed URL by hashing, signing, and base64-encoding the
+policy statement. For more information, see Create a signature for a signed URL that uses a custom policy.
+Values that you specify in the policy statement for a signed URL that uses a custom policy
+When you create a policy statement for a custom policy, you specify the following values.
+Resource
+The URL, including any query strings, but excluding the CloudFront Policy,
+Signature, Key-Pair-Id,
+and Hash-Algorithm parameters.
+For example:
+https://d111111abcdef8.cloudfront.net/images/horizon.jpg\?size=large&license=yes
+You can specify only one URL value for
+Resource.
+Important
+You can omit the Resource parameter in a policy, but doing so means that
+anyone with the signed URL can access all of the files in any distribution that is associated
+with the key pair that you use to create the signed
+URL.
+Note the following:
+Protocol – The value must begin with
+http://, https://, or
+*://.
+Query string parameters – If the URL has
+query string parameters, don't use a backslash character
+(\) to escape the question mark
+character (?) that begins the query string.
+For example:
+https://d111111abcdef8.cloudfront.net/images/horizon.jpg?size=large&license=yes
+Wildcard characters – You can use wildcard
+characters in the URL in the policy. The following
+wildcard characters are supported:
+asterisk (*), which matches zero
+or more characters
+question mark (?), which matches
+exactly one character
+When CloudFront matches the URL in the policy to the URL in the HTTP request, the URL in
+the policy is divided into four sections—protocol,
+domain, path, and query string—as follows:
+[protocol]://[domain]/[path]\?[query
+string]
+When you use a wildcard character in the URL in the
+policy, the wildcard matching applies only within the
+boundaries of the section that contains the wildcard.
+For example, consider this URL in a policy:
+https://www.example.com/hello*world
+In this example, the asterisk wildcard (*) only applies within the path
+section, so it matches the URLs
+https://www.example.com/helloworld and
+https://www.example.com/hello-world, but it
+does not match the URL
+https://www.example.net/hello?world.
+The following exceptions apply to the section
+boundaries for wildcard matching:
+A trailing asterisk in the path section
+implies an asterisk in the query string section.
+For example,
+http://example.com/hello* is
+equivalent to
+http://example.com/hello*\?*.
+A trailing asterisk in the domain section
+implies an asterisk in both the path and query
+string sections. For example,
+http://example.com* is equivalent to
+http://example.com*/*\?*.
+A URL in the policy can omit the protocol section and start with an asterisk in
+the domain section. In that case, the protocol
+section is implicitly set to an asterisk. For
+example, the URL *example.com in a
+policy is equivalent to
+*://*example.com/.
+An asterisk by itself ("Resource":
+"*") matches any URL.
+For example, the value:
+https://d111111abcdef8.cloudfront.net/*game_download.zip*
+in a policy matches all of the following URLs:
+https://d111111abcdef8.cloudfront.net/game_download.zip
+https://d111111abcdef8.cloudfront.net/example_game_download.zip?license=yes
+https://d111111abcdef8.cloudfront.net/test_game_download.zip?license=temp
+Percent-encoded characters
+– CloudFront matches the policy Resource
+against the raw (undecoded) request URL and forwards
+that URL to the origin unchanged. A percent-encoded
+character in the request URL, such as %3B
+for ;, %3F for
+?, or %23 for
+#, is treated as data rather than as a
+URL delimiter. For more information, see RFC
+3986 on the IETF website. For example, a
+wildcard can't match across a literal semicolon
+(;), but it can match across the encoded
+form (%3B).
+Alternate domain names – If you specify an
+alternate domain name (CNAME) in the URL in the policy,
+the HTTP request must use the alternate domain name in
+your webpage or application. Do not specify the Amazon S3 URL
+for the file in a policy.
+DateLessThan
+The expiration date and time for the URL in Unix time format (in seconds) and
+Coordinated Universal Time (UTC). In the policy, do not enclose
+the value in quotation marks. For information about UTC, see
+Date and Time
+on the Internet: Timestamps.
+For example, January 31, 2023 10:00 AM UTC converts to 1675159200 in Unix time
+format.
+This is the only required parameter in the Condition section. CloudFront requires
+this value to prevent users from having permanent access to your private content.
+For more information, see When CloudFront checks expiration date and time in a signed URL
+DateGreaterThan (Optional)
+An optional start date and time for the URL in Unix time format (in seconds) and
+Coordinated Universal Time (UTC). Users are not allowed to
+access the file on or before the specified date and time. Do not
+enclose the value in quotation marks.
+IpAddress (Optional)
+The IP address of the client making the HTTP request. Note the following:
+To allow any IP address to access the file, omit the IpAddress
+parameter.
+You can specify either one IP address or one IP address range. You can't use the
+policy to allow access if the client's IP address is in
+one of two separate ranges.
+To allow access from a single IP address, you specify:
+"IPv4 IP address/32"
+You must specify IP address ranges in standard IPv4 CIDR format (for example,
+192.0.2.0/24). For more information, see
+Classless Inter-domain Routing (CIDR): The Internet
+Address Assignment and Aggregation Plan.
+Important
+IP addresses in IPv6 format, such as 2001:0db8:85a3::8a2e:0370:7334,
+are not supported.
+If you're using a custom policy that includes IpAddress, do not enable
+IPv6 for the distribution. If you want to restrict
+access to some content by IP address and support IPv6
+requests for other content, you can create two
+distributions. For more information, see Enable IPv6 (viewer requests) in the topic
+All distribution settings reference.
+Example policy statements for a signed URL that uses a custom policy
+The following example policy statements show how to control access to a specific file, all of the files in a
+directory, or all of the files associated with a key pair ID. The examples also show how to control access
+from an individual IP address or a range of IP addresses, and how to prevent users from using the signed URL
+after a specified date and time.
+If you copy and paste any of these examples, remove any empty spaces (including tabs and
+newline characters), replace the values with your own values, and include a
+newline character after the closing brace (}).
+For more information, see Values that you specify in the policy statement for a signed URL that uses a custom policy.
+Topics
+Example policy statement: Access one file from a range of IP addresses
+Example policy statement: Access all files in a directory from a range of IP addresses
+Example policy statement: Access all files associated with a key pair ID from one IP address
+Example policy statement: Access one file from a range of IP addresses
+The following example custom policy in a signed URL specifies that a user can access the
+file https://d111111abcdef8.cloudfront.net/game_download.zip from IP
+addresses in the range 192.0.2.0/24 until January 31, 2023
+10:00 AM UTC:
+{
+"Statement": [
+{
+"Resource": "https://d111111abcdef8.cloudfront.net/game_download.zip",
+"Condition": {
+"IpAddress": {
+"AWS:SourceIp": "192.0.2.0/24"
+},
+"DateLessThan": {
+"AWS:EpochTime": 1675159200
+}
+}
+}
+]
+}
+Example policy statement: Access all files in a directory from a range of IP addresses
+With the following example custom policy, you can create signed URLs for any file in the
+training directory, as indicated by the asterisk wildcard
+character (*) in the Resource parameter. Users can
+access the file from an IP address in the range 192.0.2.0/24
+until January 31, 2023 10:00 AM UTC:
+{
+"Statement": [
+{
+"Resource": "https://d111111abcdef8.cloudfront.net/training/*",
+"Condition": {
+"IpAddress": {
+"AWS:SourceIp": "192.0.2.0/24"
+},
+"DateLessThan": {
+"AWS:EpochTime": 1675159200
+}
+}
+}
+]
+}
+Each signed URL with which you use this policy has a URL that identifies a specific file,
+for example:
+https://d111111abcdef8.cloudfront.net/training/orientation.pdf
+Example policy statement: Access all files associated with a key pair ID from one IP address
+With the following example custom policy, you can create signed URLs for any file
+associated with any distribution, as indicated by the asterisk wildcard
+character (*) in the Resource parameter. The
+signed URL must use the https:// protocol, not
+http://. The user must use the IP address
+192.0.2.10/32. (The value 192.0.2.10/32 in CIDR
+notation refers to a single IP address, 192.0.2.10.) The files
+are available only from January 31, 2023 10:00 AM UTC until February 2, 2023
+10:00 AM UTC:
+{
+"Statement": [
+{
+"Resource": "https://*",
+"Condition": {
+"IpAddress": {
+"AWS:SourceIp": "192.0.2.10/32"
+},
+"DateGreaterThan": {
+"AWS:EpochTime": 1675159200
+},
+"DateLessThan": {
+"AWS:EpochTime": 1675332000
+}
+}
+}
+]
+}
+Each signed URL with which you use this policy has a URL that identifies a specific file
+in a specific CloudFront distribution, for example:
+https://d111111abcdef8.cloudfront.net/training/orientation.pdf
+The signed URL also includes a key pair ID, which must be associated with a trusted key
+group in the distribution (d111111abcdef8.cloudfront.net) that you specify in the
+URL.
+Create a signature for a signed URL that uses a custom policy
+The signature for a signed URL that uses a custom policy is a hashed, signed, and
+base64-encoded version of the policy statement. To create a signature for a
+custom policy, complete the following steps.
+For additional information and examples of how to hash, sign, and encode the policy statement, see:
+Linux commands and OpenSSL for base64 encoding and encryption
+Code examples for creating a signature for a signed URL
+Note
+The linked examples use SHA-1 by default. To use SHA-256 instead, replace sha1 with sha256 in the OpenSSL commands and include the Hash-Algorithm=SHA256 query parameter in the signed URL.
+Option 1: To create a signature by using a custom policy
+Use the SHA-1 or SHA-256 hash function and the generated RSA or ECDSA private key to hash and sign the JSON policy statement that you
+created in the procedure To create the policy statement for a signed URL that uses a custom policy. Use the version of the policy statement that no longer includes
+empty spaces but that has not yet been base64-encoded.
+If you use SHA-256, you must include &Hash-Algorithm=SHA256 in the signed URL.
+For the private key that is required by the hash function, use a private key whose
+public key is in an active trusted key group for the
+distribution.
+Note
+The method that you use to hash and sign the policy statement depends on your programming
+language and platform. For sample code, see Code examples for creating a signature for a signed URL.
+Remove empty spaces (including tabs and newline characters) from the hashed and signed
+string.
+Base64-encode the string using MIME base64 encoding. For more information, see Section 6.8,
+Base64 Content-Transfer-Encoding in RFC 2045, MIME
+(Multipurpose Internet Mail Extensions) Part One: Format of Internet
+Message Bodies.
+Replace characters that are invalid in a URL query string with characters that are valid. The
+following table lists invalid and valid characters.
+Replace these invalid characters
+With these valid characters
++
+- (hyphen)
+=
+_ (underscore)
+/
+~ (tilde)
+Append the resulting value to your signed URL after &Signature=, and return to
+To create a signed URL using a custom policy to finish
+concatenating the parts of your signed URL.
+Javascript is disabled or is unavailable in your browser.
+To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+Document Conventions
+Create a signed URL using a canned policy
+Use signed cookies
+Did this page help you? - Yes
+Thanks for letting us know we're doing a good job!
+If you've got a moment, please tell us what we did right so we can do more of it.
+Did this page help you? - No
+Thanks for letting us know this page needs work. We're sorry we let you down.
+If you've got a moment, please tell us how we can make the documentation better.

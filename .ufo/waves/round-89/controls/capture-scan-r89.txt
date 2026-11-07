@@ -1,0 +1,12 @@
+# round-89 capture scan, candidate scanner sha256 95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec, allowlist 76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985
+$ capture-secret-scan.py --files corpus/source-snapshots/round-89/S128.txt corpus/source-snapshots/round-89/S130.txt --allow /dev/null
+HIT shape=cloudfront-signed-url-signature path=corpus/source-snapshots/round-89/S128.txt line=13
+HIT shape=cloudfront-signed-url-signature path=corpus/source-snapshots/round-89/S130.txt line=14
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=2 files=2 allowed=0 unused_allow=0 rc=1
+rc=1
+$ same with candidate allowlist (paths relative to lane root)
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=2 unused_allow=17 rc=0
+rc=0
+$ base scanner (master) on the same files
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+rc=0
