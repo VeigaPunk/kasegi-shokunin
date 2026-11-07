@@ -23,13 +23,13 @@ measurement of that file prints `ghr total= 80 tail= 76`
 (`.ufo/waves/round-94/w1/ScoutGitLabRules-receipts/06-github-firstparty-examples.txt:10`;
 the example value there is not reproduced here).
 
-The lane's exact matcher is (`corpus/instruments/capture-secret-scan.py:191`,
-`corpus/instruments/capture-secret-scan.py:196`):
+The lane's exact matcher is (`corpus/instruments/capture-secret-scan.py:281-282`,
+`corpus/instruments/capture-secret-scan.py:202`):
 
 - `_GH_REFRESH = rb"ghr_[A-Za-z0-9]{76}(?![A-Za-z0-9_])"`
 - `("github-refresh-token", re.compile(_GH_LB + _GH_REFRESH)),`
 
-`_GH_LB` is `_ESC_LB` (`corpus/instruments/capture-secret-scan.py:188-189`): not
+`_GH_LB` is `_ESC_LB` (`corpus/instruments/capture-secret-scan.py:277`): not
 preceded by a letter, digit or `_`, or preceded by a `\t`/`\r`/`\n`, `\uXXXX`,
 `%XX`, `&#NN;` or `&#xNN;` escape. The right boundary is the lane's own; the
 vendor rule at S143 line 72 has none.
@@ -43,7 +43,7 @@ rule is a *separate* shape (`github-refresh-token`) precisely because a
 its lookahead fails at character 37.
 
 Boundary facts, pinned by the selftest cases at
-`corpus/instruments/capture-secret-scan.py:439-443` and by the lookbehind at
+`corpus/instruments/capture-secret-scan.py:445-449` and by the lookbehind at
 `corpus/instruments/capture-secret-scan.py:188`:
 
 - 75 characters is not a hit; 77 characters is not a hit (a 76-character
@@ -72,14 +72,14 @@ regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glsat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-z
 regex = '''\bgliamat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
 ```
 
-The lane's exact matcher (`corpus/instruments/capture-secret-scan.py:198-208`):
+The lane's exact matcher (`corpus/instruments/capture-secret-scan.py:204-214`):
 
-- `_GL_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"` (`corpus/instruments/capture-secret-scan.py:198`)
-- `_GL_PREFIX = rb"(?:[A-Za-z0-9]{1,20}-)?"` (`corpus/instruments/capture-secret-scan.py:199`)
-- `_GJ_SEG = rb"[A-Za-z0-9_-]{10,1000}"` (`corpus/instruments/capture-secret-scan.py:200`)
-- `_GJ_TAIL = rb"[A-Za-z0-9_-]{20,1000}"` (`corpus/instruments/capture-secret-scan.py:201`)
-- `_GJ_HEAD = _GL_LB + rb"(?:" + _GL_PREFIX + rb"(?:glcbt|glsat)|gliamat)-eyJ" + _GJ_SEG` (`corpus/instruments/capture-secret-scan.py:202`)
-- `("gitlab-jwt-token", re.compile(` and `_GJ_HEAD + rb"\.eyJ" + _GJ_SEG + rb"\." + _GJ_TAIL + rb"(?![A-Za-z0-9_-])")),` (`corpus/instruments/capture-secret-scan.py:207-208`)
+- `_GL_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"` (`corpus/instruments/capture-secret-scan.py:204`)
+- `_GL_PREFIX = rb"(?:[A-Za-z0-9]{1,20}-)?"` (`corpus/instruments/capture-secret-scan.py:205`)
+- `_GJ_SEG = rb"[A-Za-z0-9_-]{10,1000}"` (`corpus/instruments/capture-secret-scan.py:206`)
+- `_GJ_TAIL = rb"[A-Za-z0-9_-]{20,1000}"` (`corpus/instruments/capture-secret-scan.py:207`)
+- `_GJ_HEAD = _GL_LB + rb"(?:" + _GL_PREFIX + rb"(?:glcbt|glsat)|gliamat)-eyJ" + _GJ_SEG` (`corpus/instruments/capture-secret-scan.py:208`)
+- `("gitlab-jwt-token", re.compile(` and `_GJ_HEAD + rb"\.eyJ" + _GJ_SEG + rb"\." + _GJ_TAIL + rb"(?![A-Za-z0-9_-])")),` (`corpus/instruments/capture-secret-scan.py:213-214`)
 
 Facts a reader can act on:
 
@@ -103,7 +103,7 @@ Credential detectors that key on the prefix alone under-detect: a 76-character
 refresh token defeats a 36-character matcher, and a JWT segment floor is what
 distinguishes a token from a placeholder such as
 `glcbt-eyJ<header>.<payload>.<signature>`. Both new shapes are pinned by the
-instrument's selftest at `corpus/instruments/capture-secret-scan.py:439-452`
+instrument's selftest at `corpus/instruments/capture-secret-scan.py:445-458`
 (cases `gh-refresh-*`, `gl-jwt-*`), which grew 101 → 115 cases in round 95; the
 cases use synthetic values and a placeholder-shaped string, not the vendor's
 redacted example values.
@@ -122,7 +122,7 @@ redacted example values.
   regexes (all six lines are quoted in the section above).
 - `python3 -B corpus/instruments/capture-secret-scan.py --selftest` prints
   `SELFTEST-RESULT pass cases=115`; the 14 new cases at
-  `corpus/instruments/capture-secret-scan.py:439-452` cover the 76/75/77
+  `corpus/instruments/capture-secret-scan.py:445-458` cover the 76/75/77
   boundary and the classic-36 fallback for GitHub, and the three prefixes, the
   10/10/20 floors, the non-`eyJ` head and a placeholder for GitLab.
 - `python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-95/S142.txt corpus/source-snapshots/round-94/S140.txt`

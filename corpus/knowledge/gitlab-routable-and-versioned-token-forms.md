@@ -12,7 +12,7 @@ prefix set itself is a first-party statement in GitLab's documentation (S144).
 
 The round-94 scanner matched `glpat-` + exactly 20 characters and required the
 next character to be outside `[A-Za-z0-9_-]`
-(`corpus/instruments/capture-secret-scan.py:255`). A *routable* token
+(`corpus/instruments/capture-secret-scan.py:261`). A *routable* token
 continues past those 20 characters, so the right boundary refuses it: the
 token's 21st character is alphanumeric. The same is true of every versioned
 form. A shape that only knows the 20-character prefix therefore reports nothing
@@ -46,8 +46,8 @@ token's 20.
 | `gitlab-pipeline-trigger-token` | `glptt-` (instance prefix) | none: exactly 20 or exactly 40 characters | 73 |
 
 The landed matchers are
-`corpus/instruments/capture-secret-scan.py:242-243` (the two tail fragments) and
-`corpus/instruments/capture-secret-scan.py:247-254` (the seven patterns).
+`corpus/instruments/capture-secret-scan.py:248-249` (the two tail fragments) and
+`corpus/instruments/capture-secret-scan.py:253-260` (the seven patterns).
 
 The order matters only for reporting: a versioned token cannot match the
 routable pattern (after the 2-character route comes a dot, not the 7-character
@@ -69,13 +69,13 @@ none.
 
 ## Boundaries the scanner enforces
 
-- **Left**: the escape-terminator family (`corpus/instruments/capture-secret-scan.py:237`):
+- **Left**: the escape-terminator family (`corpus/instruments/capture-secret-scan.py:243`):
   not preceded by a letter, digit or `_`, or preceded by `\t`/`\r`/`\n`,
   `\uXXXX`, `%XX`, `&#NN;` or `&#xNN;`.
 - **Right**: `(?![A-Za-z0-9_])` after the tail, so a longer alphanumeric run is
   not truncated into a hit.
 - **Instance prefix**: `(?:[A-Za-z0-9]{1,20}-)?` where S140 publishes one
-  (`corpus/instruments/capture-secret-scan.py:238`). The runner versioned rule
+  (`corpus/instruments/capture-secret-scan.py:244`). The runner versioned rule
   publishes one as well; the landed matcher omits it and relies on the left
   boundary, which starts the match at `glrt-`/`glrtr-` instead of the prefix.
   Detection is the same for a prefix ending in `-` (and wider for a prefix

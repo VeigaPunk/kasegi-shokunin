@@ -45,7 +45,7 @@ whitespace-separated words.
 - S140:392 — `regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glffct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''`
 - S140:412 — `regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''`
 
-The landed matchers are `corpus/instruments/capture-secret-scan.py:283-303`.
+The landed matchers are `corpus/instruments/capture-secret-scan.py:289-309`.
 
 ## What the documentation adds, and what it does not
 
