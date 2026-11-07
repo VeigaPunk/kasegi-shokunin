@@ -1,0 +1,43 @@
+# R7  corpus-wide sweep: does ANY GitLab docs page state a token PREFIX *and* its LENGTH in prose?
+# (scope: 'GitLab token prefix and length'; qualifying test = a prefix string co-occurring
+#  within 250 chars of both a bare digit and length prose)
+
+file                       bytes #pfx  prefix+length co-occurrence
+c2-02d4dd2d.html           81312    0  -
+c2-775864b8.html           47000    0  -
+c2-b5b17e12.html           36846    0  -
+c2-c4f76c15.html           77323    0  -
+cand-091f4350.html         67793   13  -
+cand-13b53333.html         52701    0  -
+cand-1fdec7ee.html         81306    1  -
+cand-4d492d3e.html         43604    0  -
+cand-a98af222.html         56446    1  -
+f-02d4dd2d.html            81312    0  -
+j2-13b53333.html           52701    0  -
+j2-60ea8275.html           81250    4  -
+j2-6a11a1b5.html           38176    0  -
+j2-8cb346ad.html           58908    0  -
+j2-c0e297c9.html          164818    0  -
+s-091f4350.html            67793   13  -
+s-13b53333.html            52701    0  -
+s-1fdec7ee.html            81306    1  -
+s-239ed15e.html           156147    2  ['glpat']
+w-a53b7bca.html            83090    0  -
+w-f5293204.html            74498    0  -
+x-2fab9977.html            53663    0  -
+x-a98af222.html            56446    1  -
+x-dfdcca3a.html            67578    0  -
+y-7dc3dd0d.html           109207    0  -
+y-8f460f12.html           107605    0  -
+y-a98af222.html            56446    1  -
+y-c4f76c15.html            77323    0  -
+z-091f4350.html            67793   13  -
+z-0aed5e27.html            78753    0  -
+
+# pages qualifying: [('s-239ed15e.html', ['glpat'])]
+
+# NOTE: the only qualifying page is the ALREADY-REGISTERED S139
+#  https://docs.gitlab.com/user/application_security/secret_detection/detected_secrets/
+#  (registry row S139, tier A, status mined, used-by corpus/instruments/capture-secret-scan.py).
+#  Its qualifying sentence (the 'Rule-based detection' section):
+    For example, a GitLab personal access token is identified by the pattern glpat- followed by a 20-character string. GitLab supports 200+ rules covering popular vendors by default. Rule-based det

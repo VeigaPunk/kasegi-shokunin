@@ -1,0 +1,78 @@
+=== harness.py (probe) vs frozen c1-controls-r97.py ===
+--- /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-97/controls/c1-controls-r97.py	2026-11-07 16:15:04.572811471 -0300
++++ /fast/scratch/hyaku/kasegi-r97/MutC1Counter/harness.py	2026-11-07 16:44:30.681395068 -0300
+@@ -138,7 +138,7 @@
+                 print("  " + ln)
+                 log.append("  " + ln)
+ 
+-    meter = C1 + "/knowledge-meter.py"
++    meter = os.environ.get("MUT_METER") or (C1 + "/knowledge-meter.py")
+     real_sha = sh(["sha256sum", MAP]).stdout.split()[0]
+     cand_rev = sh(["git", "-C", cand, "rev-parse", "HEAD"]).stdout.strip()
+     print("C1-CONTROLS candidate=%s base=%s freeze=%s r96=%s" % (cand_rev, BASE, freeze, r96))
+
+=== F1 partial vs harness.py ===
+--- /fast/scratch/hyaku/kasegi-r97/MutC1Counter/harness.py	2026-11-07 16:44:30.681395068 -0300
++++ /fast/scratch/hyaku/kasegi-r97/MutC1Counter/harness-f1-subset.py	2026-11-07 16:52:42.059761268 -0300
+@@ -124,8 +124,8 @@
+         if declared is None:
+             declared = []
+         else:
+-            ok = ok and fails == set(declared)
+-            att = " attribution=%s" % ("PASS" if fails == set(declared) else "FAIL")
++            ok = ok and fails <= set(declared)
++            att = " attribution=%s" % ("PASS" if fails <= set(declared) else "FAIL")
+             attribution.append(fails == set(declared))
+         results.append(ok)
+         line = "CONTROL %s rc=%d want=%d %s limbs=%s declared=%s%s" % (
+
+=== F1b full vs harness.py ===
+--- /fast/scratch/hyaku/kasegi-r97/MutC1Counter/harness.py	2026-11-07 16:44:30.681395068 -0300
++++ /fast/scratch/hyaku/kasegi-r97/MutC1Counter/harness-f1b-subset-all.py	2026-11-07 16:55:34.056052041 -0300
+@@ -124,9 +124,9 @@
+         if declared is None:
+             declared = []
+         else:
+-            ok = ok and fails == set(declared)
+-            att = " attribution=%s" % ("PASS" if fails == set(declared) else "FAIL")
+-            attribution.append(fails == set(declared))
++            ok = ok and fails <= set(declared)
++            att = " attribution=%s" % ("PASS" if fails <= set(declared) else "FAIL")
++            attribution.append(fails <= set(declared))
+         results.append(ok)
+         line = "CONTROL %s rc=%d want=%d %s limbs=%s declared=%s%s" % (
+             name, rc, want, "PASS" if ok else "FAIL",
+
+=== F2-control vs frozen ===
+--- /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-97/controls/c1-controls-r97.py	2026-11-07 16:15:04.572811471 -0300
++++ /fast/scratch/hyaku/kasegi-r97/MutC1Counter/harness-f2-control.py	2026-11-07 16:46:15.389970300 -0300
+@@ -255,6 +255,16 @@
+     rc, out = run(meter, d, rev, rev, os.path.join(d, MAP_REL), TARGET, sha)
+     record("snapshot-missing-only", rc, 1, out, declared=["M4", "M5"])
+ 
++    # 14. meter-selfedit: a fixture that edits the counter itself, plus one
++    #     unlisted knowledge edit the real meter flags as M3.
++    d, rev, sha = fixture(cand, os.path.join(work, "fx-meteredit"),
++                          edits=[(TRIAGE, 143, "MATCHES:", "MATCHES :"),
++                                 (".ufo/waves/round-97/c1/knowledge-meter.py", 1,
++                                  "#!/usr/bin/env python3",
++                                  "#!/usr/bin/env python3\nimport sys as _s\n_s.exit(0)")])
++    rc, out = run(meter, d, rev, rev, os.path.join(d, MAP_REL), TARGET, sha)
++    record("meter-selfedit", rc, 0, out, declared=[])
++
+     verdict = all(results)
+     att_ok = all(attribution)
+     print("ATTRIBUTION %s fixtures=%d" % ("pass" if att_ok else "fail", len(attribution)))
+
+=== F2-forged vs F2-control ===
+--- /fast/scratch/hyaku/kasegi-r97/MutC1Counter/harness-f2-control.py	2026-11-07 16:46:15.389970300 -0300
++++ /fast/scratch/hyaku/kasegi-r97/MutC1Counter/harness-f2-forged.py	2026-11-07 16:46:15.389996540 -0300
+@@ -108,6 +108,8 @@
+     def run(counter, lane, after, labels_pin, map_path, target, map_sha=None):
+         wd = os.path.join(work, "w")
+         os.makedirs(wd, exist_ok=True)
++        if counter == meter:
++            counter = os.path.join(lane, ".ufo/waves/round-97/c1/knowledge-meter.py")
+         cmd = [sys.executable, "-B", counter, "--lane", lane, "--base-rev", BASE,
+                "--after-rev", after, "--map", map_path, "--labels-rev", labels_pin,
+                "--base-target", BASE_TARGET, "--target", target, "--work", wd]

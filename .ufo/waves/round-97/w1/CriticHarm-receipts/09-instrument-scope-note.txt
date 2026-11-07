@@ -1,0 +1,19 @@
+$ python3 - (per-token classify with 2s alarm, both revisions)
+base TIMEOUT>2s '~/Projects/**'
+tip  TIMEOUT>2s '~/Projects/**'
+same_slow_set=True
+
+=> the only token whose classify exceeds 2s is the recursive glob ~/Projects/**, at BOTH revisions;
+   a full-tree resolve.py main() run therefore exceeds the 300s job cap on this host.
+   The claim-scope reading (corpus/knowledge, what knowledge-meter.py measures) completes in 1.2s.
+
+$ bare basenames still present outside corpus/knowledge (tip), files citing each
+resolve.py outside-knowledge-files=26
+anchorcheck.py outside-knowledge-files=33
+capture-source.py outside-knowledge-files=30
+source-recheck.py outside-knowledge-files=48
+density.py outside-knowledge-files=26
+capture-secret-scan.py outside-knowledge-files=5
+claim-package-check.py outside-knowledge-files=10
+r35-defect-closure.sh outside-knowledge-files=5
+r36-closure.sh outside-knowledge-files=4

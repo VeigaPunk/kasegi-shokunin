@@ -1,0 +1,32 @@
+# R4  byte-exact derivation of the committed capture S140.txt from the live upstream raw file
+# (redaction recipe: drop blank lines, strip the 2-space indent of the 82 example-element
+#  lines, then replace each of those 82 lines with one fixed marker line)
+
+live raw            : lines=592 bytes=20228 sha256=14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5
+manifest 'raw' pin  : 20228 bytes sha256=14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5
+
+STEP1 collapsed      : lines=563 bytes=20035 sha256=04fc5cfa200c92f54e14a7d104bb56e479aeccf45746234f0965c3c8e637d921
+manifest 'collapsed' : 20035 bytes sha256=04fc5cfa200c92f54e14a7d104bb56e479aeccf45746234f0965c3c8e637d921
+MATCH
+
+STEP2 marker-substituted (== committed capture):
+  derived  : lines=563 bytes=25537 sha256=f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c
+  committed: lines=563 bytes=25537 sha256=f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c
+  BYTE-IDENTICAL: True
+
+# the marker line (one fixed marker, 82 occurrences, all identical):
+  "[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]"  (len=157, count=82)
+
+# CONSEQUENCE: the capture DROPPED the 30 blank lines and the 2-space example indent, so
+#  the committed capture's line numbers are NOT the upstream file's line numbers.
+#  cited capture line -> live upstream line (content byte-identical at both):
+  capture 101  -> live 105  (offset +4) identical=True
+  capture 160  -> live 167  (offset +7) identical=True
+  capture 174  -> live 182  (offset +8) identical=True
+  capture 190  -> live 199  (offset +9) identical=True
+  capture 213  -> live 223  (offset +10) identical=True
+  capture 229  -> live 240  (offset +11) identical=True
+  capture 278  -> live 291  (offset +13) identical=True
+  capture 341  -> live 358  (offset +17) identical=True
+  capture 392  -> live 412  (offset +20) identical=True
+  capture 412  -> live 433  (offset +21) identical=True

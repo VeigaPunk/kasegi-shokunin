@@ -1,0 +1,32 @@
+$ git show 75a4718:corpus/knowledge/source-tree-loss-2026-09-28.md | awk 'NR>=305&&NR<=335'
+  marked `[lost-tree]`.
+- **Cross-lane blast radius** (connector): 339 `Projects/bounties` references
+  across the 8 lane repos + main repo (221 path-shaped, 133 inside
+  `corpus/knowledge/`); no sibling lane and no main-repo doc had recorded the
+  disappearance, and 4 lanes wrote files after 23:51Z without mentioning it.
+  Scope ruling requested, not absorbed: `the-bounty-hunter` is **mixed** —
+  kasegi owns the bounty EV/claim/policy semantics, kumitate the
+  orchestration/tooling surface, protocol/integrator arbitrates the repo-level
+  split (consistent with the r10 `fleets/registry.json` ruling). Its remote
+  `VeigaPunk/the-bounty-hunter` is outside the lane push allow-list
+  (`../MISSION.md:49-56`); this lane pushed nothing there.
+
+## 10. Round-15 measurements (both instruments, before → after)
+
+| instrument | before r15 | after r15 |
+|---|---|---|
+| `corpus/instruments/density.py` file mean over `SKILL.md` (18 blocks) | 142.5 | **152.9** |
+| `corpus/instruments/density.py` path-citation instances | 376 | **623** |
+| block: Triage economics | 93.3 | **131.4** |
+| block: Ops integrity layer | 61.1 | **111.5** |
+| block: VDP disclosure packages | 81.8 | **117.4** |
+| block: Retirement lane | 62.5 | **93.0** |
+| `corpus/instruments/resolve.py` SKILL.md resolvability | 47/289 = 16.26 % | **222/486 = 45.68 %** |
+| `corpus/instruments/resolve.py` corpus resolvability | 129/971 = 13.29 % | **396/1297 = 30.53 %** |
+| `corpus/instruments/resolve.py` lane total | 156/1107 = 14.09 % | **410/1437 = 28.53 %** |
+| `corpus/instruments/anchorcheck.py` over `SKILL.md` | n/a | 194 in-range mirror cite instances, **0 past-EOF**; 47 MISSING-FILE are the expected lost-tree and package-relative anchors (`docs/*`, `claims/*`, `status.json`, `INGESTION.md`, `fleets/*`), which the mirror never contained |
+
+Measured at round-15 close from the committed tree, re-runnable with
+`python3 corpus/instruments/resolve.py <lane-repo>` and
+`python3 corpus/instruments/density.py SKILL.md`. Two fixed-point caveats, both
+disclosed rather than hidden: the SKILL `## Cited paths` header quotes the

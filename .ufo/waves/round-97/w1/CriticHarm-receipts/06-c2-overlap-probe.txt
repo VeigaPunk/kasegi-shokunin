@@ -1,0 +1,14 @@
+$ python3 -B <rev>/corpus/instruments/capture-secret-scan.py --files $S/probe/*.txt --allow <rev>/.../capture-secret-allow.tsv
+probe files: a-ver-50-upper b-ver-50-lower c-agent-49 d-prefixed-50 e-agent-51 f-reg-21 g-deploy-url h-glft-left i-feed-token-21 j-oauth-65
+== base ==
+HIT shape=gitlab-agent-token-versioned path=/fast/scratch/hyaku/kasegi-r97/CriticHarm/probe/b-ver-50-lower.txt line=1
+(end)
+== tip ==
+HIT shape=gitlab-kubernetes-agent-token path=/fast/scratch/hyaku/kasegi-r97/CriticHarm/probe/a-ver-50-upper.txt line=1
+HIT shape=gitlab-agent-token-versioned path=/fast/scratch/hyaku/kasegi-r97/CriticHarm/probe/b-ver-50-lower.txt line=1
+HIT shape=gitlab-kubernetes-agent-token path=/fast/scratch/hyaku/kasegi-r97/CriticHarm/probe/d-prefixed-50.txt line=1
+HIT shape=gitlab-deploy-token-in-url path=/fast/scratch/hyaku/kasegi-r97/CriticHarm/probe/g-deploy-url.txt line=1
+(end)
+
+note: no probe file reports a shape at base and none at tip (no masking);
+      tip adds kubernetes-agent on the 50-char upper-case-version-tail form (base reported nothing there)

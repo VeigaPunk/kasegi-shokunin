@@ -1,0 +1,26 @@
+# R5  JOB 2 candidate: GitLab Docs, Authentication development guidelines (Token prefixes section)
+# URL: https://docs.gitlab.com/development/authentication/
+# command: curl -sSL -o j2-60ea8275.html -w 'http=%{http_code} bytes=%{size_download}' <url>
+# accessed: 2026-11-07
+
+http=200 bytes=81314 final_url=https://docs.gitlab.com/development/authentication/
+
+0382533f4bbc3a69c45b6e84582e37a3f25cc051dfe9270dc9c82f1d5f51e9ec  j2-60ea8275.html
+
+# headings (h1/h2/h3) containing 'prefix' or 'token':
+  h2 Token prefixes
+  h2 Access tokens
+  h3 Personal access tokens
+  h3 Group and project access tokens
+  h3 Access token guardrails
+  h2 CI job tokens
+
+# located quote (section 'Token prefixes', verbatim):
+  Token prefixes Use token prefixes to identify token types during debugging and code review. Prefix Token type Storage glpat- Personal, project, or group access token SHA-256 digest gldt- Deploy token AES-256-GCM encrypted glcbt- CI job token AES-256-GCM encrypted gloas- OAuth application secret SHA-512 digest For a complete list of token types and sto
+
+# absence sweep: token-length prose on this page
+  pattern \b20\b                                                         hits=0
+  pattern \b64\b                                                         hits=0
+  pattern \b50\b                                                         hits=0
+  pattern \b25\b                                                         hits=0
+  pattern \d{1,3}[- ]?(?:character|characters|char\b|long\b|digits|alphanumeric) hits=0

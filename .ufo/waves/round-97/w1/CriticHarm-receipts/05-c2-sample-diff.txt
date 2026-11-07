@@ -1,0 +1,25 @@
+$ git -C $S/sample rev-parse --show-toplevel  (fixture assertion, then commit)
+toplevel=/fast/scratch/hyaku/kasegi-r97/CriticHarm/sample
+HEAD=136b01deed9269a762351fb06f987286eac0c5ce
+files=137
+
+$ python3 -B base/corpus/instruments/capture-secret-scan.py --lane $S/sample --rev HEAD --allow base/.../capture-secret-allow.tsv
+CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=137 hits=69 files=64 allowed=0 unused_allow=25 rc=1
+rc=1 (hits present, expected)
+
+$ python3 -B tip/corpus/instruments/capture-secret-scan.py --lane $S/sample --rev HEAD --allow tip/.../capture-secret-allow.tsv
+CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=137 hits=79 files=74 allowed=0 unused_allow=25 rc=1
+rc=1 (hits present, expected)
+
+$ diff of (path, shape) HIT sets
+base_pairs=69 tip_pairs=79 MASKED(base-only)=0 NEW(tip-only)=10
+  NEW ('corpus/source-snapshots/r97-critic/gl-deploy-token-in-url.txt', 'gitlab-deploy-token-in-url')
+  NEW ('corpus/source-snapshots/r97-critic/gl-feature-flags.txt', 'gitlab-feature-flags-client-token')
+  NEW ('corpus/source-snapshots/r97-critic/gl-feed-token-v2.txt', 'gitlab-feed-token-v2')
+  NEW ('corpus/source-snapshots/r97-critic/gl-feed-token.txt', 'gitlab-feed-token')
+  NEW ('corpus/source-snapshots/r97-critic/gl-incoming-email.txt', 'gitlab-incoming-email-token')
+  NEW ('corpus/source-snapshots/r97-critic/gl-kubernetes-agent.txt', 'gitlab-kubernetes-agent-token')
+  NEW ('corpus/source-snapshots/r97-critic/gl-oauth-app-secret.txt', 'gitlab-oauth-app-secret')
+  NEW ('corpus/source-snapshots/r97-critic/gl-registration.txt', 'gitlab-runner-registration-token')
+  NEW ('corpus/source-snapshots/r97-critic/gl-runner-controller.txt', 'gitlab-runner-controller-token')
+  NEW ('corpus/source-snapshots/r97-critic/gl-scim-oauth.txt', 'gitlab-scim-oauth-token')

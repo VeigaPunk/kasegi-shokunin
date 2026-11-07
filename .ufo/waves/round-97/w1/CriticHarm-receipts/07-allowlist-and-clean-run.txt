@@ -1,0 +1,21 @@
+$ git rev-parse <rev>:corpus/instruments/capture-secret-allow.tsv
+b06af5e07efbd961a8449f7de6b57eeea62c6bd3 b5b97c6873de366ebd2966fb56e61eec475450e7
+75a471809cba265c8981ece1c0ed29c7895d9308 b5b97c6873de366ebd2966fb56e61eec475450e7
+a9a53608dce6aea07d298bb9d5133532078eb1dd b5b97c6873de366ebd2966fb56e61eec475450e7
+
+$ awk -F"\t" "!/^#/ && NF==4" capture-secret-allow.tsv | wc -l ; duplicate keys
+rows=25 dup_keys=0
+
+$ python3 -B corpus/instruments/capture-secret-scan.py --lane . --rev a9a5360 --allow corpus/instruments/capture-secret-allow.tsv   (landed scanner)
+CAPTURE-SECRET-SCAN mode=rev:a9a53608dce6aea07d298bb9d5133532078eb1dd scanned=3018 hits=0 files=0 allowed=27 unused_allow=0 rc=0
+rc=0 (from run)
+
+$ python3 -B base/corpus/instruments/capture-secret-scan.py --lane . --rev a9a5360 --allow corpus/instruments/capture-secret-allow.tsv   (round-96 scanner, same rev)
+CAPTURE-SECRET-SCAN mode=rev:a9a53608dce6aea07d298bb9d5133532078eb1dd scanned=3018 hits=0 files=0 allowed=27 unused_allow=0 rc=0
+rc=0 (from run)
+
+$ allow accounting: 25 rows -> allowed matches / distinct keys
+allow_keys=25 allowed_matches=27 distinct_keys_used=25
+  repeat x2 .ufo/waves/round-85/w1/ExecC1Hunt-receipts/gone.json credential
+  repeat x2 .ufo/waves/round-94/w1/ScoutGitLabRules-receipts/06-github-firstparty-examples.txt github-refresh-token
+nonallowed_first_hits=0

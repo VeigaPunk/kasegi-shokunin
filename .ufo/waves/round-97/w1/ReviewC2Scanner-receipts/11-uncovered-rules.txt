@@ -1,0 +1,18 @@
+# four S140 GitLab rules with no scanner shape and no known-limits entry
+S140:291: id = "gitlab_ci_build_token"
+S140:478: id = "gitlab_iam_refresh_token"
+S140:495: id = "gitlab_iam_authorization_code"
+S140:547: id = "gitlab_session_cookie"
+# their regexes
+S140:293: regex = "\\b(glcbt-[0-9a-zA-Z]{1,5}_[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+S140:480: regex = '''\b(gliamrt-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)'''
+S140:497: regex = '''\b(gliamac-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)'''
+S140:549: regex = '''(?:cell-[0-9]+-)?[0-9a-f]{64}'''
+# landing scanner over one synthetic instance of each
+S140:293 glcbt-<1-5>_<20>        -> []
+S140:480 gliamrt-43.43           -> []
+S140:497 gliamac-43.43           -> []
+S140:549 session cookie 64hex    -> []
+S140:549 cell-<n>-64hex          -> []
+# base instrument names none of them (grep count over the whole base file)
+0

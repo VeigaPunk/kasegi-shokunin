@@ -1,0 +1,44 @@
+$ git show --name-only --format="" a9a53608dce6aea07d298bb9d5133532078eb1dd
+SCORECARD.md
+corpus/instruments/capture-secret-scan.py
+
+$ git diff b06af5e..a9a5360 -- corpus/instruments/capture-secret-scan.py | grep -c "^@@"
+4
+
+$ diff <(sed -n "/^GITLAB_PATTERNS = (/,/^)/p" base) <(sed -n "/^GITLAB_PATTERNS = (/,/^)/p" tip)
+11a12,33
+>     # round 97: the ten remaining GitLab families the round-96 known-limits
+>     # list named (S140 lines 101, 160, 174, 190, 213, 229, 278, 341, 392, 412).
+>     ("gitlab-runner-registration-token", re.compile(
+>         _GL_LB + rb"GR1348941[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+>     ("gitlab-feed-token", re.compile(
+>         _GL_LB + rb"feed_token=[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+>     ("gitlab-oauth-app-secret", re.compile(
+>         _GL_LB + rb"gloas-[A-Za-z0-9_-]{64}(?![A-Za-z0-9_-])")),
+>     ("gitlab-feed-token-v2", re.compile(
+>         _GL_LB + rb"glft-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+>     ("gitlab-incoming-email-token", re.compile(
+>         _GL_LB + _GL_PREFIX + rb"glimt-[a-z0-9]{20,25}(?![A-Za-z0-9_-])")),
+>     ("gitlab-scim-oauth-token", re.compile(
+>         _GL_LB + rb"glsoat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+>     ("gitlab-deploy-token-in-url", re.compile(
+>         _GL_LB + rb"gitlab\+deploy-token-[0-9]+:[A-Za-z0-9_-]{20}@")),
+>     ("gitlab-feature-flags-client-token", re.compile(
+>         _GL_LB + _GL_PREFIX + rb"glffct-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+>     ("gitlab-runner-controller-token", re.compile(
+>         _GL_LB + _GL_PREFIX + rb"glrct-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+>     ("gitlab-kubernetes-agent-token", re.compile(
+>         _GL_LB + _GL_PREFIX + rb"glagent-[A-Za-z0-9_-]{50}(?![A-Za-z0-9_-]|\.[0-9a-z])")),
+diff rc=1 (1 = additions only)
+
+$ git diff base..tip -- capture-secret-scan.py | grep -E "^[-+].*(ALLOWED_VALUES|NEVER_ALLOWED|def scan_bytes|def report|def is_capture_path|_GL_LB =|_GL_PREFIX =|_GJ_VER =|_GJ_ROUTABLE =)"
+grep rc=1 (1 = no such lines changed)
+
+$ python3 -B $S/extract-cases.py base tip
+/fast/scratch/hyaku/kasegi-r97/CriticHarm/base/corpus/instruments/capture-secret-scan.py cases=117 positives=64 negatives=53
+/fast/scratch/hyaku/kasegi-r97/CriticHarm/tip/corpus/instruments/capture-secret-scan.py cases=137 positives=74 negatives=63
+
+$ python3 -B $S/build-sample.py base tip $S/sample  (subset check)
+base=117 tip=137
+shared=117 shared_changed=[] base_only=[]
+wrote=137

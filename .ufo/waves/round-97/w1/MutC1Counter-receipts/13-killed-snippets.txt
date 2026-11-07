@@ -1,0 +1,77 @@
+=== M01-qualify-drop-tracked-internal / qualify-target-missing ===
+CONTROL qualify-target-missing rc=0 want=1 FAIL limbs=none declared=M4,M5 attribution=FAIL
+  LIMB M1 pass after=1043/2035
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=34 unbound=none
+  LIMB M10 pass labelled=34 want=34 mapped=34 kinds=qualify-lane=34 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=4b4994aaed5e4301b552492a8e606807ac618a8246376395eb632d9124fbdf2c
+  KNOWLEDGE-METER-RESULT pass rc=0
+
+=== M07-m10-drop-unapplied / unapplied-only ===
+CONTROL unapplied-only rc=0 want=1 FAIL limbs=none declared=M10 attribution=FAIL
+  LIMB M1 pass after=1043/2035
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=33 unbound=none
+  LIMB M10 pass labelled=34 want=34 mapped=33 kinds=qualify-lane=33,range=1 unknown=none unapplied=cisa-bod-20-01-vdp-minimums.md:159/S021.txt unlabelled=none
+  LIMB M6 pass sha256=f4ed7387ca08146e1426e22d7ad3a3c60082a53ae77b9556351ffaade0783c0c
+  KNOWLEDGE-METER-RESULT pass rc=0
+
+=== M09-drop-m6 / wrong-map-sha ===
+CONTROL wrong-map-sha rc=0 want=1 FAIL limbs=none declared=M6 attribution=FAIL
+  LIMB M1 pass after=1043/2035
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=33 unbound=none
+  LIMB M10 pass labelled=33 want=33 mapped=33 kinds=qualify-lane=33 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=f4ed7387ca08146e1426e22d7ad3a3c60082a53ae77b9556351ffaade0783c0c
+  KNOWLEDGE-METER-RESULT pass rc=0
+
+=== M11-drop-m1 / do-nothing ===
+CONTROL do-nothing rc=1 want=1 FAIL limbs=M3 declared=M1,M3 attribution=FAIL
+  LIMB M1 pass after=1040/2041
+  LIMB M3 FAIL same_files=True bad_lines=30 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=33 unbound=none
+  LIMB M10 pass labelled=33 want=33 mapped=33 kinds=qualify-lane=33 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=f4ed7387ca08146e1426e22d7ad3a3c60082a53ae77b9556351ffaade0783c0c
+  KNOWLEDGE-METER-RESULT fail rc=1
+
+=== M13-m3-drop-dup-rows / duplicate-row ===
+CONTROL duplicate-row rc=0 want=1 FAIL limbs=none declared=M3 attribution=FAIL
+  LIMB M1 pass after=1043/2035
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=1
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=34 unbound=none
+  LIMB M10 pass labelled=33 want=33 mapped=33 kinds=qualify-lane=33 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=65438ec5d77772f6ec30a1fd8502cc360dab1cdb2882b6057ec0c5073e404ded
+  KNOWLEDGE-METER-RESULT pass rc=0
+
+=== M14-m5-drop-m4-propagation / qualify-target-missing ===
+CONTROL qualify-target-missing rc=1 want=1 FAIL limbs=M4 declared=M4,M5 attribution=FAIL
+  LIMB M1 pass after=1043/2035
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 FAIL bad=github-prefixed-tokens-in-captured-evidence.md:151
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=34 unbound=none
+  LIMB M10 pass labelled=34 want=34 mapped=34 kinds=qualify-lane=34 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=4b4994aaed5e4301b552492a8e606807ac618a8246376395eb632d9124fbdf2c
+  KNOWLEDGE-METER-RESULT fail rc=1
+
+=== M17-m10-drop-unlabelled / unlabelled-only ===
+CONTROL unlabelled-only rc=1 want=1 FAIL limbs=M9 declared=M10,M9 attribution=FAIL
+  LIMB M1 pass after=1043/2035
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 FAIL rows=34 unbound=triage-thresholds.md:57
+  LIMB M10 pass labelled=33 want=33 mapped=34 kinds=qualify-lane=33 unknown=none unapplied=none unlabelled=triage-thresholds.md:57/corpus/knowledge/mission-control.md:20-24
+  LIMB M6 pass sha256=7c2417b3502bdb84fae98cc3d0180ac09353032f99cb6b658741da4c6deea3e3
+  KNOWLEDGE-METER-RESULT fail rc=1
+

@@ -1,0 +1,171 @@
+=== M01-qualify-drop-tracked-internal ===
+@@ -413,8 +413,7 @@
+             if exp and exp[0] == "qualify-lane":
+                 target = exp[2].strip("`")
+                 if (old != "`%s`" % key or new != exp[2] or "/" in key or ":" in key
+-                        or target.startswith(".ufo/") or target not in A["tracked"]
+-                        or A["classify"](target) != "INTERNAL"):
++                        or target.startswith(".ufo/")):
+                     m4bad.append(tag)
+                 continue
+             vals = list(dict.fromkeys(VALANY.findall(new)))
+=== M02-qualify-allow-separator-key ===
+@@ -412,7 +412,7 @@
+             # nothing to range-check.
+             if exp and exp[0] == "qualify-lane":
+                 target = exp[2].strip("`")
+-                if (old != "`%s`" % key or new != exp[2] or "/" in key or ":" in key
++                if (old != "`%s`" % key or new != exp[2]
+                         or target.startswith(".ufo/") or target not in A["tracked"]
+                         or A["classify"](target) != "INTERNAL"):
+                     m4bad.append(tag)
+=== M03-qualify-accept-new-ne-label ===
+@@ -412,7 +412,7 @@
+             # nothing to range-check.
+             if exp and exp[0] == "qualify-lane":
+                 target = exp[2].strip("`")
+-                if (old != "`%s`" % key or new != exp[2] or "/" in key or ":" in key
++                if (old != "`%s`" % key or "/" in key or ":" in key
+                         or target.startswith(".ufo/") or target not in A["tracked"]
+                         or A["classify"](target) != "INTERNAL"):
+                     m4bad.append(tag)
+=== M04-qualify-drop-old-eq-key ===
+@@ -412,7 +412,7 @@
+             # nothing to range-check.
+             if exp and exp[0] == "qualify-lane":
+                 target = exp[2].strip("`")
+-                if (old != "`%s`" % key or new != exp[2] or "/" in key or ":" in key
++                if (new != exp[2] or "/" in key or ":" in key
+                         or target.startswith(".ufo/") or target not in A["tracked"]
+                         or A["classify"](target) != "INTERNAL"):
+                     m4bad.append(tag)
+=== M05-qualify-accept-ufo-target ===
+@@ -413,7 +413,7 @@
+             if exp and exp[0] == "qualify-lane":
+                 target = exp[2].strip("`")
+                 if (old != "`%s`" % key or new != exp[2] or "/" in key or ":" in key
+-                        or target.startswith(".ufo/") or target not in A["tracked"]
++                        or target not in A["tracked"]
+                         or A["classify"](target) != "INTERNAL"):
+                     m4bad.append(tag)
+                 continue
+=== M06-m3-drop-old-not-once ===
+@@ -385,7 +385,7 @@
+                             fwd = fwd.replace(old, new)
+                     if fwd != x:
+                         bad += 1
+-        limbs.append(("M3", same_files and bad == 0 and missing == 0 and dup == 0 and bool(rows),
++        limbs.append(("M3", same_files and bad == 0 and dup == 0 and bool(rows),
+                       "same_files=%s bad_lines=%d old_not_once=%d dup_rows=%d" % (same_files, bad, missing, dup)))
+         # M4 binding, M5 in range
+         bybase = {}
+=== M07-m10-drop-unapplied ===
+@@ -491,7 +491,7 @@
+         unlabelled = sorted(mapped - want)
+         tally = ",".join("%s=%d" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))
+         short = lambda ps: ",".join("%s/%s" % (s.rsplit("/", 1)[-1], k) for s, k in ps) or "none"
+-        limbs.append(("M10", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),
++        limbs.append(("M10", bool(want) and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),
+                       "labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s" % (
+                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))
+         if a.map_sha256:
+=== M08-m9-drop-new-comparison ===
+@@ -473,7 +473,7 @@
+             bl = bfiles.get(f, "").split("\n")
+             line = bl[n - 1] if 1 <= n <= len(bl) else ""
+             exp = expected_edit(key, lab[0], lab[1], line) if lab else None
+-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):
++            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1] != old:
+                 m9bad.append("%s:%d" % (f.rsplit("/", 1)[-1], n))
+         limbs.append(("M9", not m9bad and bool(rows), "rows=%d unbound=%s" % (len(rows), ",".join(m9bad) or "none")))
+         # M10 completeness on (site, key) pairs
+=== M09-drop-m6 ===
+@@ -496,7 +496,7 @@
+                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))
+         if a.map_sha256:
+             got = hashlib.sha256(mb).hexdigest()
+-            limbs.append(("M6", got == a.map_sha256.lower(), "sha256=%s" % got))
++            limbs.append(("M6", True, "sha256=%s" % got))
+         for name, ok, det in limbs:
+             print("LIMB %s %s %s" % (name, "pass" if ok else "FAIL", det))
+         allok = all(ok for _, ok, _ in limbs)
+=== M10-m10-accept-unknown-kind ===
+@@ -491,7 +491,7 @@
+         unlabelled = sorted(mapped - want)
+         tally = ",".join("%s=%d" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))
+         short = lambda ps: ",".join("%s/%s" % (s.rsplit("/", 1)[-1], k) for s, k in ps) or "none"
+-        limbs.append(("M10", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),
++        limbs.append(("M10", bool(want) and not unapplied and not unlabelled and set(EXCLUDED) <= set(kinds),
+                       "labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s" % (
+                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))
+         if a.map_sha256:
+=== M11-drop-m1 ===
+@@ -358,7 +358,7 @@
+         print(host_line("base", bcls))
+         print(host_line("after", acls))
+         limbs = [("M0", (bn, bm) == (bn0, bm0), "base=%d/%d" % (bn, bm)),
+-                 ("M1", (an, am) == (tn, tm), "after=%d/%d" % (an, am))]
++                 ("M1", True, "after=%d/%d" % (an, am))]
+         # M3 per-site line diff
+         sites = {}
+         dup = 0
+=== M12-drop-m0 ===
+@@ -357,7 +357,7 @@
+             bn, bm, an, am, bn0, bm0, tn, tm, len(rows), len(labels), a.after_rev, A["mirror_absent"]))
+         print(host_line("base", bcls))
+         print(host_line("after", acls))
+-        limbs = [("M0", (bn, bm) == (bn0, bm0), "base=%d/%d" % (bn, bm)),
++        limbs = [("M0", True, "base=%d/%d" % (bn, bm)),
+                  ("M1", (an, am) == (tn, tm), "after=%d/%d" % (an, am))]
+         # M3 per-site line diff
+         sites = {}
+=== M13-m3-drop-dup-rows ===
+@@ -385,7 +385,7 @@
+                             fwd = fwd.replace(old, new)
+                     if fwd != x:
+                         bad += 1
+-        limbs.append(("M3", same_files and bad == 0 and missing == 0 and dup == 0 and bool(rows),
++        limbs.append(("M3", same_files and bad == 0 and missing == 0 and bool(rows),
+                       "same_files=%s bad_lines=%d old_not_once=%d dup_rows=%d" % (same_files, bad, missing, dup)))
+         # M4 binding, M5 in range
+         bybase = {}
+=== M14-m5-drop-m4-propagation ===
+@@ -464,7 +464,7 @@
+                     if text is None or not (1 <= lo <= hi <= len(text.splitlines())):
+                         m5bad.append(tag)
+         limbs.append(("M4", not m4bad and bool(rows), "bad=%s" % (",".join(sorted(set(m4bad))) or "none")))
+-        limbs.append(("M5", not m5bad and not m4bad, "out_of_range=%s" % (",".join(sorted(set(m5bad))) or "none")))
++        limbs.append(("M5", not m5bad, "out_of_range=%s" % (",".join(sorted(set(m5bad))) or "none")))
+         # M9 label binding
+         m9bad = []
+         for f, n, key, old, new in rows:
+=== M15-m4-range-drop-key-in-old ===
+@@ -421,7 +421,7 @@
+             lane = lane_specs(new)
+             snaps = SNAPANY.findall(new)
+             km = KEYFILE.match("`%s`" % key) or (SNAPKEY.match("`%s`" % key) if snaps else None)
+-            if not km or ("`%s`" % key) not in old:
++            if not km:
+                 m4bad.append(tag)
+                 continue
+             name = km.group(1)
+=== M16-m4-drop-internal-value-check ===
+@@ -447,7 +447,7 @@
+                 continue
+             for v in vals:
+                 vm = VAL.match("`%s`" % v)
+-                if not (vm and vm.group(1) == name and bybase.get(name) == ["corpus/knowledge/" + name] and A["classify"](v) == "INTERNAL"):
++                if not (vm and vm.group(1) == name and bybase.get(name) == ["corpus/knowledge/" + name]):
+                     m4bad.append(tag)
+                     continue
+                 text = afiles.get("corpus/knowledge/" + name, file_at(A["tree"], "corpus/knowledge/" + name))
+=== M17-m10-drop-unlabelled ===
+@@ -491,7 +491,7 @@
+         unlabelled = sorted(mapped - want)
+         tally = ",".join("%s=%d" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))
+         short = lambda ps: ",".join("%s/%s" % (s.rsplit("/", 1)[-1], k) for s, k in ps) or "none"
+-        limbs.append(("M10", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),
++        limbs.append(("M10", bool(want) and not unapplied and not unknown and set(EXCLUDED) <= set(kinds),
+                       "labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s" % (
+                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))
+         if a.map_sha256:

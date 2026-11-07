@@ -1,0 +1,14 @@
+# R3  the same ten regexes located in the LIVE upstream raw file (line numbers differ)
+# command: grep -nE 'regex = ' raw-gitlab.toml | grep -E 'GR1348941|feed_token=|gloas-|glft-|glagent-|glimt-|glsoat-|deploy-token-|glffct-|glrct-'
+
+105:regex = "\\b(GR1348941[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+167:regex = "\\b(feed_token=[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+182:regex = "\\b(gloas-[0-9a-zA-Z_\\-]{64})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+199:regex = "\\b(glft-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+223:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{50})(?:[^0-9a-zA-Z_\-.]|\.[^0-9a-z]|\.$|$)'''
+240:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glimt-[0-9a-z]{20,25})(?:[^0-9a-zA-Z_\-]|$)'''
+291:regex = "\\b(glsoat-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+358:regex = '''gitlab\+deploy-token-[0-9]+:([0-9a-zA-Z_\-]{20})@'''
+412:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glffct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+433:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+541:regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glft-[0-9a-f]{64}-[0-9]{1,20}\b'''

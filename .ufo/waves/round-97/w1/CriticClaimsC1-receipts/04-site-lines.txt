@@ -1,0 +1,180 @@
+=== corpus/knowledge/capture-intake-gate.md:5  keys=capture-secret-scan.py
+      3| source: S131 — GitHub Docs, About push protection — https://docs.github.com/en/code-security/secret-scanning/introduction/about-push-protection — anchor `corpus/source-snapshots/round-90/S131.txt:570` and `corpus/source-snapshots/round-90/S131.txt:610` (capture 647 lines, 20,549 bytes, sha256 0c98d69a14b33d3995f0d7748112f191dcac391157a6cb093054c346ff71fcc9; manifest `corpus/source-snapshots/round-90/manifest.json` records Q01-block-before at anchor 570 and Q02-bypass-reason at anchor 610, each `occurrences=1`); own work — `corpus/instruments/capture-source.py` read at `643ddb4379536e7a5ff7cdfe5c5befe9afbf63f2` (sha256 0630d32b98d40bd07c4716b0062babfaa1a8cee6b8bb4103c582b71d41d53dbf) and `corpus/instruments/capture-secret-scan.py` at the same revision (sha256 95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec); contrast only — S132, GitLab Docs, Secret push protection, a `rejected` row at `corpus/SOURCES.md:144`, quoted from the live page opened 2026-11-07 (no snapshot committed).
+      4| 
+>>    5| verified-at: 2026-11-07 (re-read at the pinned revision: `git show 643ddb4379536e7a5ff7cdfe5c5befe9afbf63f2:corpus/instruments/capture-source.py | sha256sum` and the same for `capture-secret-scan.py` print the two digests above, and the working-tree copies print the same two digests; `python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-90/manifest.json --source S131` prints `S131:sha256 OK` plus two `Q0n … OK occurrences=1 anchor=N-ok` lines, rc 0; `python3 -B corpus/instruments/capture-source.py --selftest` prints `selftest normalize=ok deterministic=ok`, two `INTAKE-REFUSED SELFTEST … written=no` lines and `selftest intake-refuse=ok existing-kept=ok`, rc 0; the GitLab sentences in Claim 5 were read from the live page at HTTP 200)
+      6| 
+      7| recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-90/manifest.json --source S131 && python3 -B corpus/instruments/capture-source.py --selftest | grep -x 'selftest normalize=ok deterministic=ok' && python3 -B corpus/instruments/capture-source.py --selftest | grep -x 'selftest intake-refuse=ok existing-kept=ok'  # fails closed on a moved or rewritten snapshot, a conversion that stops being deterministic, or a gate that stops refusing
+=== corpus/knowledge/capture-intake-gate.md:11  keys=capture-source.py,capture-secret-scan.py
+      9| ## Attribution
+     10| 
+>>   11| S131 is GitHub's own description of GitHub's push protection (`corpus/SOURCES.md:143`, tier A): every sentence here about blocking before the repository, about a bypass that carries a reason and about the alerts that record it is GitHub's statement about GitHub, not about any other vendor's protection. S132 is GitLab's page about GitLab's secret push protection, a `rejected` row (`corpus/SOURCES.md:144`) whose capture was never committed; every sentence in Claim 5 about a skip, a threshold or a diff-only scope is GitLab's statement about GitLab, quoted from the live page at https://docs.gitlab.com/user/application_security/secret_detection/secret_push_protection/ opened 2026-11-07, and it is cited only as the contrast case. `capture-source.py` and `capture-secret-scan.py` are the lane's own instruments: every sentence about the gate's order, refusal line, exit code, allowlist and limits is about those bytes at `643ddb43…`, not a vendor statement, and the shape set is a lane design choice.
+     12| 
+     13| ## Claim 1 — a capture is the artifact the corpus later quotes, so the scan belongs before the write, not before the commit
+=== corpus/knowledge/capture-intake-gate.md:105  keys=capture-source.py
+    103| ## Claim 6 — what the gate cannot see, and what a clean run does not mean
+    104| 
+>>  105| The shape set is the scanner's `patterns()` — the claim-package gate's six `SECRET_PATTERNS` plus two AWS shapes plus three cloud shapes at the round-90 landing: `private-key`, `op-ref`, `bearer`, `authorization`, `credential`, `session-cookie`, `aws-sts-session-token`, `aws-access-key-id`, `gcs-signed-url-signature`, `azure-sas-signature`, `cloudfront-signed-url-signature` — eleven names, which the counter derives from the scanner rather than restating (`LIMB G0 pass shapes=11 missing=none extra=none`, `.ufo/waves/round-90/l1/c2-landing-r90.txt:4`). Round 91 added a fourth cloud shape, `cloudfront-signed-cookie-signature`, round 92 `github-token` and round 93 `gitlab-pat` and the escape-terminator left boundary (`corpus/instruments/capture-secret-scan.py:238-247` now returns fourteen), and the gate inherits each through `patterns()` without a change to `capture-source.py`: the round-90 counter at the round-91 landing prints `G0 FAIL shapes=12 missing=cloudfront-signed-cookie-signature` (its derived list predates the shape) while G1–G6 pass, and a loopback capture of a signed-cookie header is refused with that shape (`.ufo/waves/round-91/w1/CriticHarm.md`, item 2).
+    106| 
+    107| The docstring's named limits reach the gate unchanged (`corpus/instruments/capture-secret-scan.py:120-134`, round-93 text):
+=== corpus/knowledge/capture-intake-gate.md:178  keys=anchorcheck.py
+    176| ```
+    177| 
+>>  178| Measured 2026-11-07: the two digests are `0630d32b…` and `95f24a54…`, the printed spans are the lines Claim 2 through Claim 6 quote, and `anchorcheck.py` prints `0 bad` on this draft (FC-6).
+    179| 
+    180| **FC-3 — the gate refuses and keeps an existing file, on the instrument's own bytes.**
+=== corpus/knowledge/capture-intake-gate.md:262  keys=source-recheck.py
+    260| - **The gate is a shape matcher with a path scope.** It scans the snapshot bytes of one instrument (`corpus/instruments/capture-source.py:134-135`); an allowlist row can only bind a path the gate computes (`:109-112`), and a capture written by hand is outside it.
+    261| - **The selftest is weaker than the counter.** It cannot distinguish a hit from a gate error (Claim 6, bullet 6); the counter's G1 and G5 are the discriminating limbs, and a reader who runs only `--selftest` is reading a weaker signal than the receipt.
+>>  262| - **No request was made to any host for this entry except the two documentation pages named above**: S131 was re-read from its committed snapshot through `source-recheck.py`, and the GitLab page was opened once, plain GET, 2026-11-07.
+    263| - **The instrument's own documentation is not evidence for the instrument.** The README row (`corpus/instruments/README.md:175-184`) states the gate's contract; every claim here is checked against the instrument's code at the anchor revision, not against the README.
+    264| 
+=== corpus/knowledge/chinese-crowdsourced-testing-scope-and-rewards.md:300  keys=source-recheck.py
+    298|   after that fetch, and it did not compare the raw HTML/PDF bodies.
+    299| - The `recheck:` line verifies the pin and the exactly-once presence of fourteen quotes (eight
+>>  300|   for S049, six for S050) under `source-recheck.py`'s declared normalization (capture markup stripped, whitespace
+    301|   collapsed). It does not verify that the upstream pages still serve this text, and the 16
+    302|   strings marked *hand-measured* above are checked by the command or count printed beside them,
+=== corpus/knowledge/cisa-bod-20-01-vdp-minimums.md:4  keys=capture-source.py
+      2| 
+      3| source: S021 — https://www.cisa.gov/news-events/directives/bod-20-01-develop-and-publish-vulnerability-disclosure-policy — capture corpus/source-snapshots/round-40/S021.txt (432 lines, 58,004 bytes; sha256 72dbba57306f786ea515856aeefd99666fc5f69ad1d7ae4e0ade63347730e329): title and issuance date L72-L79, web-friendly-version note L91, compulsory-direction and addressee L92-L95, why a VDP L96-L98, bug-bounty contrast L107, required actions L108-L171, policy element list L119-L128, prohibited terms L130-L134, scope expansion L137-L140, handling procedures L141-L155, reporting and CyberScope metrics L156-L171, CISA actions L172-L181, implementation checklist L183-L196, DOJ-aligned template L197-L198, minimums-not-ceiling L204, revocation status of BOD 19-02 and BOD 22-01 L389-L401, no-fix-deadline FAQ L300-L301, 45-90 day norm L305, BOD 19-02 FAQ L310-L313, footnote recommendations 3/7/90 days L379-L384
+>>    4| verified-at: 2026-10-26 (capture fetched this day with `curl -sS -L --max-time 90 -A kasegi-shokunin/1.0` — HTTP 200, `text/html; charset=utf-8`, 127,832 raw bytes, raw sha256 fc7267288c8de400d433d911c3336fc573f65ea50d74d1b1a56f82a0cc998a5d at 2026-10-26T21:15:57Z — then normalized by the lane's `capture-source.py`; this entry's quotes were re-located in that capture with a whitespace-collapsing matcher, each `occurrences=1` unless stated)
+      5| ground: F03 — authorisation, safe harbour and scope: the compulsory federal VDP element set, its prohibited terms and its scope-expansion schedule; the clock material (target timelines and the 45-90 day norm) extends F02, which holds CISA's supplier guide (S003) and CERT/CC's 45-day figure (S004)
+      6| recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-40/manifest.json --source S021   # prints S021:sha256 OK then S021:Q1 OK with occurrences=1 and anchor=133-ok (the no-restriction-on-reporter-disclosure prohibition); exits 2 when the manifest or capture is absent and 1 when the digest differs or that assertion moves; the remaining quotes below are anchored claims, each counted by FC-1 to FC-10
+=== corpus/knowledge/cisa-cvd-program-stages.md:4  keys=capture-source.py
+      2| 
+      3| source: S023 — https://www.cisa.gov/resources-tools/programs/coordinated-vulnerability-disclosure-cvd-program — capture corpus/source-snapshots/round-40/S023.txt (213 lines, 14,357 bytes; sha256 52a6671fb24842e606b808e5cd4c77030c9c5e4f4f8af3082b31fcc927cb6087): intake channel L88-L89, technology breadth L104-L110, simultaneous dissemination L111, Top Level Root and CNA of Last Resort L112, statutory authorities L114, the seven-stage process L115-L146, triage criteria L117-L123, in/out-of-scope outcomes L124-L127, coordination actions L128-L133, CVE record determination L134-L135, advisory preparation L136-L145, KEV evaluation L146, disclosure channels L147, disclosure-timeline factors L148-L152, VEP exclusion L153, CVD-versus-VDP separation L154-L155, resources L156-L171
+>>    4| verified-at: 2026-10-26 (capture fetched this day with `curl -sS -L --max-time 90 -A kasegi-shokunin/1.0` — HTTP 200, `text/html; charset=utf-8`, 75,587 raw bytes, raw sha256 383792fd393700210e2a6b8ac38f12c8bc249b85eb60bbbe1976667bab5ca6da at 2026-10-26T21:16:01Z, identical across two fetches — then normalized by the lane's `capture-source.py`; this entry's quotes were re-located in that capture with a whitespace-collapsing matcher)
+      5| ground: F06 — multi-party coordinated disclosure, read from the coordinator's own side: this page adds CISA's stage list, its CNA-of-Last-Resort role, and a 45-day earliest-disclosure floor that FIRST's guidelines (S018) do not state; its clock content is distinct from F02's CERT/CC and CISA-supplier-guide figures
+      6| recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-40/manifest.json --source S023   # prints S023:sha256 OK then S023:Q1 OK and S023:Q2 OK, each occurrences=1 with anchor=151-ok and anchor=154-ok (the 45-day floor and the CVD/VDP separation); exits 2 when the manifest or capture is absent and 1 when the digest differs or a pinned quote moves; the remaining quotes below are anchored claims, each counted by FC-1 to FC-9
+=== corpus/knowledge/citation-bases.md:64  keys=anchorcheck.py
+     62| Its historical anchors carry the parallel prefix `[lost-base] ` INSIDE the
+     63| backticks, same semantics as `[lost-tree]` (recorded, deliberately
+>>   64| non-openable, `LOST-RECORDED` under `anchorcheck.py`, GONE+synthetic under
+     65| `resolve.py`, never counts as verified). `ufo-fsd-alpha` is NOT a lost base —
+     66| it relocated intact to `~/Projects/ufo-fsd-alpha`, and citations to it are
+=== corpus/knowledge/citation-bases.md:65  keys=resolve.py
+     63| backticks, same semantics as `[lost-tree]` (recorded, deliberately
+     64| non-openable, `LOST-RECORDED` under `anchorcheck.py`, GONE+synthetic under
+>>   65| `resolve.py`, never counts as verified). `ufo-fsd-alpha` is NOT a lost base —
+     66| it relocated intact to `~/Projects/ufo-fsd-alpha`, and citations to it are
+     67| re-anchored, not prefixed.
+=== corpus/knowledge/citation-bases.md:74  keys=anchorcheck.py
+     72| the shell command git -C /home/vgpnk/projects/shokunin/kasegi-shokunin show [r22 correction: lowercase lane path absent on 2026-10-19; test -e failed 2026-10-19; historical]
+     73| fc6d398:SKILL.md (pipe to sed -n 'NNNp' for one line). Machine-readable pin
+>>   74| declaration for `anchorcheck.py` (plain HTML comment, never backticked):
+     75| `pin: SKILL.md fc6d398` inside an HTML comment tag. Other measured lane
+     76| snapshots: `7483333` (round-13, 590-line `SKILL.md`), `eb5b590` (round-15,
+=== corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:69  keys=claim-package-check.py
+     67| **Scope.** `--rev REV` reads a git tree without checkout and scans capture-class paths only: anything under `corpus/source-snapshots/`, anything under a practice package's `corpus/practice/<pkg>/evidence/` (added round 88), any path with a directory segment ending in `-receipts`, and any file whose name starts with `live-` (`corpus/instruments/capture-secret-scan.py:14-21`). `--files PATH...` scans exactly the named working-tree files whatever their path, and the docstring's instruction is to run it "on every capture before the commit that first adds it" (`:20-21`).
+     68| 
+>>   69| **Shapes.** The claim-package gate's `SECRET_PATTERNS`, imported from `claim-package-check.py` beside the instrument so the two never drift, plus the two AWS shapes, the two round-88 cloud shapes and the round-89 CloudFront shape (`corpus/instruments/capture-secret-scan.py:23-66`):
+     70| 
+     71| - `gcs-signed-url-signature` — `X-Goog-Signature=<hex>` (query string) or `X-Goog-Signature: <hex>` (header, JSON key) with 64 or more hex digits: a Cloud Storage V4 signed URL's signature (`:32-36`; pattern `:132-133`).
+=== corpus/knowledge/considerthese-proposals-ledger.md:125  keys=r35-defect-closure.sh,r36-closure.sh
+    123| | 1. Make "distance to next score" explicit | landed (r31 measurement; r39 criteria) — unchanged | `SCORECARD.md:1532` §Saturation block stands; `python3 corpus/instruments/score-gap.py` at round-42 base `5053a7f4` prints `gap: 24 of 60 rechecks still gated on a lost base; score 5 needs 0 gated unsupported claims` (60 rechecks, was 59). No round-41 change. |
+    124| | 2. Run one end-to-end domain task round | partially landed r40 — remainder open (unchanged) | Claim-checker remainder still absent: no `corpus/instruments/` basename contains `claim`. Round 41 mined proposal 7's upkeep instead and declined this remainder — the only exemplar (`.ufo/waves/round-40/wave1/ExecConsiderthese.e2e-package.md`) is PARKED `claimable:false` with authorization, prior-submission and reviewer-distinctness gates failing by construction, leaving a checker's claimable-positive path unexercisable (`corpus/lessons/round-41.md:108-110`). SHONEN box 2 `[~]` at `## Round 41 evidence` (no live domain hunt; RFC 9116 curated as format knowledge, not an authorized task). |
+>>  125| | 3. Add a quiescence gate before `complete` | landed — unchanged | Placeholder half live: `r35-defect-closure.sh` prints `closed=7/7 exit=0` at round-42 base; porcelain half in `r36-closure.sh` E9(b), r38 G4/G6, r39 G2/G5/G6 + `corpus/QUALITY.md:292` (R33). Frozen round-42 C1 extends the lineage — J13 scratch-root quiescence, J9 negative controls, J10 selftest isolation (`.ufo/waves/round-42/claims.json`). |
+    126| | 4. Cap or externalise wave evidence | open (unchanged; operator-owned) | Measured at round-42 HEAD `0566bd6`: 8,283 tracked files, 7,962 under `.ufo/` (96.1 %); 136,350,132 bytes, 129,027,596 under `.ufo/` (94.6 %); +174 files / +2,554,838 bytes since the round-41 measure; no `.gitattributes`/LFS. Keep-or-externalise decision operator-owned; no release, LFS or prune artefact committed. |
+    127| | 5. Land the owed F18 `PROVINCE.md` amendment | landed r36 — resolved-landed (unchanged) | `PROVINCE.md:77` carries the `[r36 Frontier amendment …] F18` line naming `admitted round 35` and entry `corpus/knowledge/cisa-kev-catalog.md` (source S052); re-verified at round-42 base. |
+=== corpus/knowledge/considerthese-proposals-ledger.md:140  keys=r36-closure.sh
+    138| | 1. Make "distance to next score" explicit | landed (r31 measurement; r39 criteria) — unchanged | `SCORECARD.md:1532` §Saturation block stands; `python3 corpus/instruments/score-gap.py` at round-43 base `ab98fac9` prints `gap: 24 of 61 rechecks still gated on a lost base; score 5 needs 0 gated unsupported claims` (61 rechecks, was 60 at the round-41 section's measure). No round-42 change to the criterion. |
+    139| | 2. Run one end-to-end domain task round | partially landed r40 — remainder open (unchanged) | Claim-checker remainder still absent at round-43 base `ab98fac9`: `git ls-tree --name-only ab98fac9 corpus/instruments/ \| grep -ic claim` → 0; `corpus/instruments/claim-package-check.py` absent; `corpus/knowledge/claim-package-gate.md` absent. Round 42 did not mine it (C2 was F25/S064; `corpus/lessons/round-42.md` has no considerthese section). SHONEN box 2 `[~]` at `SHONEN.md:249-256` (`## Round 42 evidence`: no end-to-end domain hunt). The r40 exemplar stays PARKED `claimable:false`. |
+>>  140| | 3. Add a quiescence gate before `complete` | landed — unchanged | Placeholder half: `bash corpus/instruments/r35-defect-closure.sh` on the lane worktree (instrument tree identical to `ab98fac9`) prints `closed=7/7 exit=0`. Porcelain half remains `r36-closure.sh` E9(b), r38 G4/G6, r39 G2/G5/G6, and `corpus/QUALITY.md:292` (R33). Round 42 extended the same lineage (J13 scratch-root quiescence in `corpus/instruments/r42-closure.sh`); it did not add a new proposal-3 criterion. |
+    141| | 4. Cap or externalise wave evidence | open (unchanged; operator-owned) | Measured at round-43 base `ab98fac9`: `git ls-tree -r -l` → 8,442 tracked files, 8,115 under `.ufo/` (96.1 %); 139,341,514 bytes, 131,709,109 under `.ufo/` (94.5 %); +159 files / +2,991,382 bytes since the round-41 section's round-42 HEAD measure (8,283 files / 136,350,132 bytes). No `.gitattributes`. Keep-or-externalise stays operator-owned; no release, LFS, or prune artefact. |
+    142| | 5. Land the owed F18 `PROVINCE.md` amendment | landed r36 — resolved-landed (unchanged) | `PROVINCE.md:77` still carries the `[r36 Frontier amendment …] F18` line naming `admitted round 35` and `corpus/knowledge/cisa-kev-catalog.md` (source S052); re-verified at `ab98fac9`. |
+=== corpus/knowledge/first-psirt-maturity-document.md:11  keys=source-recheck.py
+      9| ## Attributed claim table
+     10| 
+>>   11| All claims describe these two captures of FIRST's maturity document — not requirements on any team, not a certification, not a score. Locations are exact lines of the digest-pinned S100.txt and S101.txt named above; the two captures are never mixed inside one quote. S100.txt carries FIRST site navigation at L1-L215 and footer navigation/copyright at L465-L478, so only content lines are cited. Every quote below is pinned in `corpus/source-snapshots/round-67/manifest.json` and re-checked by the production instrument: `source-recheck.py` reports 54/54 OK (S100 44, S101 10), exit 0.
+     12| 
+     13| | Claim | FIRST PSIRT Maturity teaching | Located verbatim evidence | Falsifier / review rule |
+=== corpus/knowledge/first-psirt-maturity-document.md:68  keys=source-recheck.py
+     66| ## Corrections (round 68, append-only — routed by the round-67 non-author spotcheck)
+     67| 
+>>   68| - **V67-1, quote count.** The attributed-claim-table preamble above says "`source-recheck.py` reports 54/54 OK (S100 44, S101 10)". That count is superseded: the landed manifest pins **58** quotes (S100 48, S101 10) and the instrument prints 58 quote-level `OK` lines plus the two `sha256 OK` lines. Counting command, run 2026-11-04 at round 68: `python3 -c "import json;d=json.load(open('corpus/source-snapshots/round-67/manifest.json'));print([(s['id'],len(s['quotes'])) for s in d['sources']])"` → `[('S100', 48), ('S101', 10)]`; `python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-67/manifest.json --source S100 | grep -c ' OK '` → `48`; the same for `--source S101` → `10`. The superseded sentence is left in place as history.
+     69| - **V67-3, C15 anchor.** C15's Level-3 area list ends "L463". `corpus/source-snapshots/round-67/S100.txt:462` is the `Training & Education` heading and `:463` is its item `Train development teams`, so the *area list* ends at L462; the L463 quote itself is correct as a quote. Measured: `sed -n '460,464p' corpus/source-snapshots/round-67/S100.txt` → `Vulnerability Disclosure` / `Build playbook for stakeholder/industry coordination` / `Training & Education` / `Train development teams` / `Establish continuing education of all stakeholders`.
+     70| 
+=== corpus/knowledge/first-psirt-services-framework.md:41  keys=capture-source.py
+     39| ## Scope and limits
+     40| 
+>>   41| - This entry is grounded in the round-65 S098 capture. L1 opened the page with `capture-source.py` (HTTP 200, 229255 fetched bytes, 170137 snapshot bytes, `fetched_utc` 2026-11-04T19:26:27Z); ScoutS098's independent capture is compared in the round-65 wave record. The page body states no publication or revision date; the served HTTP `Last-Modified` header read 2026-01-26T14:43:46Z at capture (round-65 independent fetch, `w1/ReviewC2Base/source-check.md`), so `verified-at` is the access date, not the edition. The canonical non-slash URL serves 200 with no redirect; the trailing-slash form redirects to `…_framework_v1-1`, whose raw bytes differ while its normalized text is identical.
+     42| - The recheck compares digest-pinned local bytes and manifest quotes; it does not establish upstream freshness, that a team implements any service, or that a particular disclosure met any duty.
+     43| - The text capture flattens the page's navigation and figures; the navigation block before L216 is excluded from every anchor. Figure references (e.g. "Figure 9: Vulnerability Qualification Process", L851) are names only — the capture does not carry the diagram's content, so no process arrows or ordering beyond the prose is claimed.
+=== corpus/knowledge/immunefi-vscs-v2-2-smart-contract-severity.md:111  keys=source-recheck.py
+    109| 
+    110| - Pin: `corpus/source-snapshots/round-34/S051.txt` (8502 B, 175 lines, sha256 `4fd8ed981808b9b9632fd8a4536305e36c82fa98f319bb1cbc7fdb0514b325a5`), bound by `corpus/source-snapshots/round-34/manifest.json`, whose record S051 carries that digest, the URL, a strict-UTC `fetched_utc`, and the eighteen Q1-Q18 assertions this entry quotes — sixteen at `occurrences=1`, two at `occurrences=2` with a verified anchor (next bullet).
+>>  111| - **Two quoted bullets occur twice in the capture and are anchor-pinned.** `Permanent freezing of funds` occurs at L62 (Blockchain/DLT) and L77 (Smart Contracts); `1. None- Best practices` at L71 and L96. The manifest pins them with `anchor: 77` and `anchor: 96`, so `source-recheck.py` prints `occurrences=2 anchor=N-ok` — the count and the intended line are both checked, and a capture that drops either line fails the assertion rather than passing on the other.
+    112| - `verified-at: 2026-10-26` is when this entry was written and its quotes checked against the pin, not the capture instant (the manifest's `fetched_utc` is the fetch time).
+    113| - Documentation only: the capture carries no credential, session or private URL, and this entry quotes no such line (Q6).
+=== corpus/knowledge/japanese-domestic-disclosure-workflow.md:101  keys=source-recheck.py
+     99| - PDF figure text is extraction-ordered, not reading-ordered; 図２/図３/図４ are cited by caption and by the step headings the extractor separated, never quoted as continuous prose. The 起算日 definition is extracted as a footnote (S041.txt:340, note 4), separated from its body text, so it is quoted as that footnote.
+    100| - One quoted string is not unique: "「画面キャプチャ」、" occurs twice (S041.txt:344 in chapter Ⅳ's evidence footnote, S041.txt:929 in chapter Ⅴ's). L344 is the occurrence cited here; no `manifest.json` assertion pins this string, so its binding is the line number, not an exactly-once count.
+>>  101| - `source-recheck.py` accepts one `--source` per invocation (`corpus/instruments/source-recheck.py:275`), so the `recheck:` line chains two invocations instead of repeating the flag; `--source S041 --source S042` on a single invocation would silently re-derive only S042.
+    102| - The staged draft this entry adopts described the web path as "six-step". Both captures number seven — S042.txt:162-182 and 図４ at S041.txt:1331 — and the entry follows the captures. The staged draft also carried a `source:` line for the JPCERT/CC guideline under a package-local S043 id; that source is the lane's S041 (registered round 26), cited here under its lane id, not re-registered.
+    103| - Documentation-only: nothing here instructs contacting, probing, scanning, logging in to, or submitting against any system; both sources were read as public documents on 2026-10-25.
+=== corpus/knowledge/presigned-url-credentials-in-captured-evidence.md:92  keys=source-recheck.py
+     90| **Falsifiable rule.** Any sentence asserting that a captured bounty-record JSON is credential-free is falsified by `python3 -B corpus/instruments/capture-secret-scan.py --files <capture>` exiting 1 with a `HIT` line, or by `grep -cE 'X-Amz-Security-Token|(AKIA|ASIA)[A-Z0-9]{16}' <capture>` printing a non-zero count. Any sentence asserting that an expiring presigned URL may be committed is falsified by Claim 5's window arithmetic. Any sentence asserting that an `AKIA`/`ASIA` id is itself a secret is falsified by `corpus/source-snapshots/round-87/S125.txt:332-333`.
+     91| 
+>>   92| **FC-1 — every quoted span is verbatim, exactly-once, on its declared line, and pinned to the capture.** `source-recheck.py` prints `S124:sha256 OK` then `S124:Q01-session-token OK occurrences=1 anchor=84-ok`, `Q02-hold-session-token OK occurrences=1 anchor=85-ok`, `Q03-example-key-id OK occurrences=1 anchor=409-ok`, and for S125 `Q01-prefix-intro OK occurrences=1 anchor=303-ok`, `Q02-sts-key OK occurrences=1 anchor=331-ok`, `Q03-sts-session OK occurrences=1 anchor=332-ok`; both invocations rc 0 (measured this day). The two quotes in this entry that are not S124/S125 text are lane own-work: the redaction tool's sentence and the lesson's two clauses, both cited by file and line.
+     93| 
+     94| **FC-2 — the S122 shape counts are measured, not remembered.** This prints counts and string lengths only, never a URL or a value:
+=== corpus/knowledge/program-severity-ladders-and-reward-scales.md:66  keys=source-recheck.py
+     64| - The staged package entry also included CNVD 众测 and BILISRC ladders and a worked CNVD score example. They are **not adopted this round**: this F13 entry is limited to the three captured lane rows S043/S044/S045 and their round-29 manifest assertions.
+     65| - Staged S032 (Bugcrowd VRT README) and S033 (Bugcrowd CWE map) are mapped by document to lane S044 and S045 respectively. Staged S031 (HackerOne policy set) maps to lane S043. Citations here use the lane ids, never staged numeric ids.
+>>   66| - S043 is a raw minified one-line JSON capture. The manifest's line anchor is necessarily line 1; its location fields identify record 3787452 and the relevant `new_policy` section. `source-recheck.py` counts normalized substrings across the whole capture, so repeated boilerplate may report multiple occurrences even where the location identifies this policy record; see the manifest receipt for the observed counts and limitation.
+     67| - The quoted VRT override is a contiguous excerpt under 25 words, rather than the complete source sentence, which exceeds the quote-length bound. The citation points to its full sentence at S044.txt:11.
+     68| 
+=== corpus/knowledge/root-loss-2026-10-12.md:54  keys=anchorcheck.py,resolve.py
+     52|   `[lost-tree]` (recorded, deliberately non-openable, counted separately,
+     53|   never counts as verified). `corpus/knowledge/citation-bases.md` carries the vocabulary.
+>>   54| - **Instruments:** `anchorcheck.py` and `resolve.py` now DERIVE their roots
+     55|   (`$KASEGI_MIRROR` / `$KASEGI_ORIGIN_ROOT` / `$UFO_SRC` → first existing
+     56|   candidate → canonical absent path), never hardcode; `anchorcheck.py`
+=== corpus/knowledge/root-loss-2026-10-12.md:56  keys=anchorcheck.py
+     54| - **Instruments:** `anchorcheck.py` and `resolve.py` now DERIVE their roots
+     55|   (`$KASEGI_MIRROR` / `$KASEGI_ORIGIN_ROOT` / `$UFO_SRC` → first existing
+>>   56|   candidate → canonical absent path), never hardcode; `anchorcheck.py`
+     57|   reports `BASE-ABSENT` as its own verdict for citations into an absent base
+     58|   that were not yet marked, so a missing tree can never masquerade as a
+=== corpus/knowledge/source-tree-loss-2026-09-28.md:321  keys=density.py
+    319| | instrument | before r15 | after r15 |
+    320| |---|---|---|
+>>  321| | `density.py` file mean over `SKILL.md` (18 blocks) | 142.5 | **152.9** |
+    322| | `density.py` path-citation instances | 376 | **623** |
+    323| | block: Triage economics | 93.3 | **131.4** |
+=== corpus/knowledge/source-tree-loss-2026-09-28.md:322  keys=density.py
+    320| |---|---|---|
+    321| | `density.py` file mean over `SKILL.md` (18 blocks) | 142.5 | **152.9** |
+>>  322| | `density.py` path-citation instances | 376 | **623** |
+    323| | block: Triage economics | 93.3 | **131.4** |
+    324| | block: Ops integrity layer | 61.1 | **111.5** |
+=== corpus/knowledge/source-tree-loss-2026-09-28.md:327  keys=resolve.py
+    325| | block: VDP disclosure packages | 81.8 | **117.4** |
+    326| | block: Retirement lane | 62.5 | **93.0** |
+>>  327| | `resolve.py` SKILL.md resolvability | 47/289 = 16.26 % | **222/486 = 45.68 %** |
+    328| | `resolve.py` corpus resolvability | 129/971 = 13.29 % | **396/1297 = 30.53 %** |
+    329| | `resolve.py` lane total | 156/1107 = 14.09 % | **410/1437 = 28.53 %** |
+=== corpus/knowledge/source-tree-loss-2026-09-28.md:328  keys=resolve.py
+    326| | block: Retirement lane | 62.5 | **93.0** |
+    327| | `resolve.py` SKILL.md resolvability | 47/289 = 16.26 % | **222/486 = 45.68 %** |
+>>  328| | `resolve.py` corpus resolvability | 129/971 = 13.29 % | **396/1297 = 30.53 %** |
+    329| | `resolve.py` lane total | 156/1107 = 14.09 % | **410/1437 = 28.53 %** |
+    330| | `anchorcheck.py` over `SKILL.md` | n/a | 194 in-range mirror cite instances, **0 past-EOF**; 47 MISSING-FILE are the expected lost-tree and package-relative anchors (`docs/*`, `claims/*`, `status.json`, `INGESTION.md`, `fleets/*`), which the mirror never contained |
+=== corpus/knowledge/source-tree-loss-2026-09-28.md:329  keys=resolve.py
+    327| | `resolve.py` SKILL.md resolvability | 47/289 = 16.26 % | **222/486 = 45.68 %** |
+    328| | `resolve.py` corpus resolvability | 129/971 = 13.29 % | **396/1297 = 30.53 %** |
+>>  329| | `resolve.py` lane total | 156/1107 = 14.09 % | **410/1437 = 28.53 %** |
+    330| | `anchorcheck.py` over `SKILL.md` | n/a | 194 in-range mirror cite instances, **0 past-EOF**; 47 MISSING-FILE are the expected lost-tree and package-relative anchors (`docs/*`, `claims/*`, `status.json`, `INGESTION.md`, `fleets/*`), which the mirror never contained |
+    331| 
+=== corpus/knowledge/source-tree-loss-2026-09-28.md:330  keys=anchorcheck.py
+    328| | `resolve.py` corpus resolvability | 129/971 = 13.29 % | **396/1297 = 30.53 %** |
+    329| | `resolve.py` lane total | 156/1107 = 14.09 % | **410/1437 = 28.53 %** |
+>>  330| | `anchorcheck.py` over `SKILL.md` | n/a | 194 in-range mirror cite instances, **0 past-EOF**; 47 MISSING-FILE are the expected lost-tree and package-relative anchors (`docs/*`, `claims/*`, `status.json`, `INGESTION.md`, `fleets/*`), which the mirror never contained |
+    331| 
+    332| Measured at round-15 close from the committed tree, re-runnable with
+=== corpus/knowledge/vendor-third-party-finding-coordination.md:168  keys=source-recheck.py
+    166|   evidence only; it carries no per-vendor process, contact or timeline.
+    167| - The recheck verifies the pin and the exactly-once presence of eleven quotes (Q1-Q11) under
+>>  168|   `source-recheck.py`'s declared normalization (capture markup stripped, whitespace
+    169|   collapsed). It does not verify that the upstream page still serves this text.
+    170| - Documentation only: this entry records published programme text. It instructs no probing,

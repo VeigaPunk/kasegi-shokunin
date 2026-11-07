@@ -1,0 +1,60 @@
+L101| id = "gitlab_runner_registration_token"
+L101| keywords = ["GR1348941"]
+L101| regex = "\\b(GR1348941[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+L101| tags = ["gitlab", "gitlab_blocking"]
+L101| type = "token"
+---
+L160| id = "gitlab_feed_token"
+L160| keywords = ["feed_token"]
+L160| regex = "\\b(feed_token=[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+L160| # TODO: This is an old pattern
+L160| tags = ["gitlab", "client_side_sd"]
+---
+L174| id = "gitlab_oauth_app_secret"
+L174| keywords = ["gloas"]
+L174| regex = "\\b(gloas-[0-9a-zA-Z_\\-]{64})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+L174| tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+L174| type = "client_secret"
+---
+L190| id = "gitlab_feed_token_v2"
+L190| keywords = ["glft"]
+L190| regex = "\\b(glft-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+L190| examples = [
+L190| [line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+---
+L213| id = "gitlab_kubernetes_agent_token"
+L213| keywords = ["glagent"]
+L213| regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{50})(?:[^0-9a-zA-Z_\-.]|\.[^0-9a-z]|\.$|$)'''
+L213| tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+L213| type = "token"
+---
+L229| id = "gitlab_incoming_email_token"
+L229| keywords = ["glimt"]
+L229| regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glimt-[0-9a-z]{20,25})(?:[^0-9a-zA-Z_\-]|$)'''
+L229| examples = [
+L229| [line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+---
+L278| id = "gitlab_scim_oauth_token"
+L278| keywords = ["glsoat"]
+L278| regex = "\\b(glsoat-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+L278| tags = ["gitlab", "client_side_sd"]
+L278| type = "token"
+---
+L341| id = "gitlab_deploy_token_in_url"
+L341| keywords = ["gitlab+deploy-token-"]
+L341| regex = '''gitlab\+deploy-token-[0-9]+:([0-9a-zA-Z_\-]{20})@'''
+L341| examples = [
+L341| [line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+---
+L392| id = "gitlab_feature_flags_client_token"
+L392| keywords = ["glffct-"]
+L392| regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glffct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+L392| examples = [
+L392| [line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+---
+L412| id = "gitlab_runner_controller_token"
+L412| keywords = ["glrct-"]
+L412| regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+L412| examples = [
+L412| [line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+---

@@ -1,0 +1,16 @@
+$ git show 75a4718:corpus/knowledge/root-loss-2026-10-12.md | awk 'NR>=48&&NR<=62'
+## Consequences for the lane record
+
+- **Citation class:** anchors whose base was the mirror or origin-work are
+  now `[lost-base] <path>:<line>` — second loss class, same semantics as
+  `[lost-tree]` (recorded, deliberately non-openable, counted separately,
+  never counts as verified). `corpus/knowledge/citation-bases.md` carries the vocabulary.
+- **Instruments:** `corpus/instruments/anchorcheck.py` and `corpus/instruments/resolve.py` now DERIVE their roots
+  (`$KASEGI_MIRROR` / `$KASEGI_ORIGIN_ROOT` / `$UFO_SRC` → first existing
+  candidate → canonical absent path), never hardcode; `corpus/instruments/anchorcheck.py`
+  reports `BASE-ABSENT` as its own verdict for citations into an absent base
+  that were not yet marked, so a missing tree can never masquerade as a
+  missing file.
+- **Receipt-store claims** (`submission-review/` receipts backing the
+  no-resubmit rule, `queue.json:11-12`, the two CSV rows, the two JSON
+  receipts) are now corpus-attested only. The round-18 recorded SHAs of the

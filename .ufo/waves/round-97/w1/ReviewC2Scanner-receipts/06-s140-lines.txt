@@ -1,0 +1,46 @@
+# S140 = corpus/source-snapshots/round-94/S140.txt (gitlab.toml @ 59ada1f4), sha256:
+f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c  corpus/source-snapshots/round-94/S140.txt
+# the ten round-97 lines
+S140:101: regex = "\\b(GR1348941[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+S140:160: regex = "\\b(feed_token=[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+S140:174: regex = "\\b(gloas-[0-9a-zA-Z_\\-]{64})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+S140:190: regex = "\\b(glft-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+S140:213: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{50})(?:[^0-9a-zA-Z_\-.]|\.[^0-9a-z]|\.$|$)'''
+S140:229: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glimt-[0-9a-z]{20,25})(?:[^0-9a-zA-Z_\-]|$)'''
+S140:278: regex = "\\b(glsoat-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+S140:341: regex = '''gitlab\+deploy-token-[0-9]+:([0-9a-zA-Z_\-]{20})@'''
+S140:392: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glffct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+S140:412: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+# the three kept known-limit lines
+S140:308: regex = '''(?:(?m:^)|[^0-9a-zA-Z_\-\r\n])(t[1-3]_[1-9a-km-zA-HJ-NP-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+S140:512: id = "gitlab_feed_token_path_dependent"
+S140:532: regex = '''/trigger/pipeline\?(?:[0-9a-zA-Z_.%\[\]=-]{1,100}&){0,10}token=([0-9a-f]{30})\b'''
+# landing pattern block (lines 283-304)
+    # list named (S140 lines 101, 160, 174, 190, 213, 229, 278, 341, 392, 412).
+    ("gitlab-runner-registration-token", re.compile(
+        _GL_LB + rb"GR1348941[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-feed-token", re.compile(
+        _GL_LB + rb"feed_token=[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-oauth-app-secret", re.compile(
+        _GL_LB + rb"gloas-[A-Za-z0-9_-]{64}(?![A-Za-z0-9_-])")),
+    ("gitlab-feed-token-v2", re.compile(
+        _GL_LB + rb"glft-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-incoming-email-token", re.compile(
+        _GL_LB + _GL_PREFIX + rb"glimt-[a-z0-9]{20,25}(?![A-Za-z0-9_-])")),
+    ("gitlab-scim-oauth-token", re.compile(
+        _GL_LB + rb"glsoat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-deploy-token-in-url", re.compile(
+        _GL_LB + rb"gitlab\+deploy-token-[0-9]+:[A-Za-z0-9_-]{20}@")),
+    ("gitlab-feature-flags-client-token", re.compile(
+        _GL_LB + _GL_PREFIX + rb"glffct-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-runner-controller-token", re.compile(
+        _GL_LB + _GL_PREFIX + rb"glrct-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-kubernetes-agent-token", re.compile(
+        _GL_LB + _GL_PREFIX + rb"glagent-[A-Za-z0-9_-]{50}(?![A-Za-z0-9_-]|\.[0-9a-z])")),
+    ("gitlab-pat", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+# landing known-limits paragraph (lines 189-193)
+Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened
+source states their length or alphabet), the path-dependent feed-token form
+(`glft-` + 64 hex + `-` + 1-20 digits, S140 line 512), the
+`t1_`-prefixed runner token without `glrt-` (S140 line 308) and the
+`/trigger/pipeline?...token=` URL form (S140 line 532), an encoded prefix

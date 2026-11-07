@@ -1,0 +1,55 @@
+# clause probes on the landing instrument (synthetic fixtures only)
+gloas-20 (same family, short)      -> []
+glagent-20 (same family, short)    -> []
+glagent-49                         -> []
+glagent-50                         -> ['gitlab-kubernetes-agent-token']
+glagent-50-dot-lower               -> []
+glagent-50-dot-upper               -> ['gitlab-kubernetes-agent-token']
+glagent-50-dot-end                 -> ['gitlab-kubernetes-agent-token']
+glagent-50-dot-digit               -> []
+glagent-50-dot-underscore          -> ['gitlab-kubernetes-agent-token']
+glagent-50-hyphen                  -> []
+glagent-versioned                  -> ['gitlab-agent-token-versioned']
+glft-64hex (known limit)           -> []
+glft-20                            -> ['gitlab-feed-token-v2']
+glimt-19                           -> []
+glimt-20                           -> ['gitlab-incoming-email-token']
+glimt-25                           -> ['gitlab-incoming-email-token']
+glimt-26                           -> []
+glimt-upper                        -> []
+glimt-prefix                       -> ['gitlab-incoming-email-token']
+registration                       -> ['gitlab-runner-registration-token']
+registration-19                    -> []
+registration-21                    -> []
+registration-prefixed              -> ['gitlab-runner-registration-token']
+feed_token                         -> ['gitlab-feed-token']
+feed_token-19                      -> []
+feed_token-21                      -> []
+gloas-63                           -> []
+gloas-64                           -> ['gitlab-oauth-app-secret']
+gloas-65                           -> []
+glsoat-19                          -> []
+glsoat-20                          -> ['gitlab-scim-oauth-token']
+glsoat-21                          -> []
+deploy-url                         -> ['gitlab-deploy-token-in-url']
+deploy-url-no-at                   -> []
+deploy-url-19                      -> []
+deploy-url-21                      -> []
+deploy-url-nodigits                -> []
+glffct-19                          -> []
+glffct-20                          -> ['gitlab-feature-flags-client-token']
+glffct-prefix                      -> ['gitlab-feature-flags-client-token']
+glrct-19                           -> []
+glrct-20                           -> ['gitlab-runner-controller-token']
+glrct-prefix                       -> ['gitlab-runner-controller-token']
+
+# group(0) prefix inclusion: prefixed shapes include 'acme-', no-prefix shapes do not
+gitlab-runner-registration-token   group0_starts_with_acme=False
+gitlab-feed-token                  group0_starts_with_acme=False
+gitlab-oauth-app-secret            group0_starts_with_acme=False
+gitlab-feed-token-v2               group0_starts_with_acme=False
+gitlab-scim-oauth-token            group0_starts_with_acme=False
+gitlab-feature-flags-client-token  group0_starts_with_acme=True
+gitlab-runner-controller-token     group0_starts_with_acme=True
+gitlab-kubernetes-agent-token      group0_starts_with_acme=True
+gitlab-incoming-email-token        group0_starts_with_acme=True

@@ -1,0 +1,15 @@
+variant	point	pin_rc	pin_limbs	nopin_rc	nopin_limbs	verdict	catch
+M01-glagent-right-boundary	drop right boundary on glagent-{50}	1	K1	0	none	SURVIVED	no fixture for 51+ or 50+token-char
+M02-glagent-49-or-51	accept 49 or 51	1	K1	1	K1,K3	KILLED	K1 selftest gl-kubernetes-agent/-short; K3 p10 missing n10 extra
+M03-glimt-upper	glimt- tail [A-Za-z0-9]	1	K1	1	K1,K3	KILLED	K1 selftest gl-incoming-email-upper; K3 n5 extra
+M04-deploy-url-no-at	drop @ on deploy-token URL	1	K1	1	K1,K3	KILLED	K1 selftest gl-deploy-token-in-url-no-at; K3 n7 extra
+M05-glsoat-19-or-21	accept 19 or 21 on glsoat-	1	K1	1	K1,K3	KILLED	K1 selftest gl-scim-oauth-short; K3 n6 extra
+M06-gloas-63	accept 63 on gloas-	1	K1	1	K1,K3	KILLED	K1 selftest gl-oauth-app-short; K3 n3 extra
+M07-glft-21	accept 21 on glft-	1	K1	1	K1,K3	KILLED	K1 selftest gl-feed-token-v2-long; K3 n4 extra
+M08-glsoat-no-left-boundary	drop _GL_LB on glsoat-	1	K1	0	none	SURVIVED	no glued-left fixture; probe xglsoat- hits only mutant
+M09-glsoat-custom-prefix	add _GL_PREFIX to glsoat-	1	K1	0	none	SURVIVED	no allowlist-digest fixture; probe bare allow row used by pristine, not mutant
+M10-feed-token-case-insensitive	(?i:feed_token=)	1	K1	0	none	SURVIVED	no case fixture; probe FEED_TOKEN= hits only mutant
+F01-literal-locked	ten shapes = selftest/plant literals	1	K1	0	none	FORGERY SURVIVED	K1+K3 share literals; gate passes a scanner blind to real tokens
+F02-rev-mode-blind	rev mode drops cloud patterns	1	K1	1	K2	CAUGHT	K2 allowed=25 unused_allow=2 (two cloudfront allow rows unused)
+F02b-rev-mode-blind-gitlab	rev mode drops every GitLab shape	1	K1	0	none	FORGERY SURVIVED	K2/K6 bookkeeping intact; K3 only exercises --files
+F03-blanket-files	files mode reports all ten shapes	1	K1	1	K3	CAUGHT	K3 200 (path,shape) pairs vs 10 expected, 190 extras
