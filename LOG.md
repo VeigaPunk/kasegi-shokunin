@@ -2903,3 +2903,23 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Measured scores: depth:verifiability 4 → 4 (nominal per R58); coverage 8 → 8 (held pending the operator denominator).
 - Assimilation: none (87 staged-id collisions; L0 pending). Considerthese: ConnectorOverlap scan recorded in `w1/ConnectorOverlap.md`.
 - Attempt 2 (L1 `KasegiR83a2`): inherited attempt 1's freeze, wave results and uncommitted landing edits; re-ran the unchanged landing script to completion (`.ufo/waves/round-83/l1/L1-landing-r83.txt`, P1–P8 and B0–B8 hold); attempt-1 partial receipt kept beside it; round-end census `l1/census-end-r83.txt` rc 0.
+
+## Round 84 — C1 VERIFIED (recheck-cwd successor e5f2e4bd landed), C2 VERIFIED (F60 admitted on S118)
+
+- Read first: the r83 closure (admitted) and `corpus/lessons/round-83-verifier-spotcheck.md` (routed defects 1–8). C1 is depth:verifiability, the lowest axis, at a nominal 4 per R58. It lands the recheck-cwd successor `e5f2e4bd…`, whose six new checks close the twelve r83 MutC1Hunt survivors, scored by an r84 counter (the r83 counter plus selftest limbs extra/dup/decoy_line) over a 79-row table. C2 is coverage: admit F60 on S118 (OSV.dev Data sources page, GCS data-dump layout), gated by the unchanged r83 entry gate.
+- Controls executed and committed in the freeze `7f76b7eb`:
+  - r83 bytes under the r84 counter: `killed=64 survived=12`, rc 1.
+  - Check-name stub: `survived=12`, rc 1.
+  - Candidate: `killed=76 neutral_ok=3/3 decoy=ok`, rc 0.
+  - Counter mutants M09/M10/M12: rc 0 under r83, rc 1 under r84.
+  - C2 prefreeze: rows 59, S118 queued, literal sweep 0, gate pass on the draft.
+  - Draft v0 gate: `untied=2`, rc 1.
+- Wave `w1`: one v1 wave of 12 seats (executor×3, mutation-tester×2, reviewer×2, critic×2, scout, scribe, connector). Attack seats 6/12, dead seats 0. Reports are under `.ufo/waves/round-84/w1/`.
+- Landing `c91c944f`: P1–P8 and B0–B8 hold (`.ufo/waves/round-84/l1/L1-landing-r84.txt`, measured over a `git archive` extract of the landing commit). B8 was re-run in the worktree after a byte-equality check, because the r83 gate builds its expected recheck line relative to `--lane`.
+- Integrated before landing, all F60 text edits; the six pins are unchanged:
+  - ReviewC2 M1, M2 and L1.
+  - CriticClaims B5.
+  - ScoutSource §3.4, the live-bucket observation, which goes in Limits only.
+- Mistakes mined: M84-1 (rule paraphrase drifts from the quote's vocabulary) and M84-2 (rule consequence contradicts the entry's own Limits), in `corpus/lessons/round-84.md`; QUALITY R135. SHONEN evidence pointers corrected (CriticTrend 1–2).
+- Measured scores: depth:verifiability 4 → 4 (nominal; no meter move, CriticTrend label note); coverage 8 → 8 (held pending the operator denominator).
+- Assimilation: none (88 staged-id collisions; L0 pending). considerthese: proposal 2's open half (one end-to-end task) identified by ConnectorOverlap; not adopted, planned for round 85.

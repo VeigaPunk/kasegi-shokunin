@@ -1,0 +1,97 @@
+# L1 landing receipt round 84 — 2026-11-07T00:08:08Z — over git archive of c91c944fde0b2c9d62db14901c0aec2edb072950
+## frozen bytes vs freeze 7f76b7eb
+FROZEN-OK .ufo/waves/round-84/claims.json
+FROZEN-OK .ufo/waves/round-84/c1/recheck-cwd-census.py
+FROZEN-OK .ufo/waves/round-84/c1/mutbat.py
+FROZEN-OK .ufo/waves/round-84/c1/mutant-table.json
+FROZEN-OK .ufo/waves/round-84/c1/build-table.py
+FROZEN-OK .ufo/waves/round-84/controls/c1-stub-r84.py
+FROZEN-OK .ufo/waves/round-84/controls/c1-counter-mutants-r84.py
+FROZEN-OK corpus/source-snapshots/round-84/manifest.json
+FROZEN-OK corpus/source-snapshots/round-84/S118.txt
+FROZEN-OK r83 entry-gate
+## P1
+selftest cases=33 failures=0
+rc=0
+## P2
+e5f2e4bdecfc18f80e823ec3bc0797e09b11761ad1b59ad99d488ca3c3cf179e  corpus/instruments/recheck-cwd-census.py
+## P3
+rc=0
+MUTBAT target_sha256=e5f2e4bdecfc18f80e823ec3bc0797e09b11761ad1b59ad99d488ca3c3cf179e baseline=ok rows=79 killed=76 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=3/3 decoy=ok decoy_hidden=75/76
+killed_lines=76 h_killed=12
+## P4
+mutbat selftest ok
+r84_limbs={'extra': True, 'dup': True, 'decoy_line': True}
+rc=0
+## P5
+COUNTER-MUTANT M09 counter=r83 rc=0 selftest=ok
+COUNTER-MUTANT M10 counter=r83 rc=0 selftest=ok
+COUNTER-MUTANT M12 counter=r83 rc=0 selftest=ok
+COUNTER-MUTANT M09 counter=r84 rc=1 selftest=FAIL
+COUNTER-MUTANT M10 counter=r84 rc=1 selftest=FAIL
+COUNTER-MUTANT M12 counter=r84 rc=1 selftest=FAIL
+COUNTER-MUTANTS-RESULT as-expected
+rc=0
+## P6
+98
+RECHECK-CWD entries=98 noprefix=0 exit2_foreign=0 exit0_foreign=76 exit1_foreign=22 exit_other=0 norecheck=0 restoration_only=0
+RECHECK-CWD-RESULT conformant
+rc=0
+## P7
+c1-donothing-r84.txt last=rc=1 survived_H=12
+c1-stub-r84.txt last=rc=1 survived_H=12
+## P8
+SKILL.md cases33=1 cases27=0
+corpus/instruments/README.md cases33=1 cases27=0
+## B0
+S118:sha256 OK
+S118:Q01-allzip-withdrawn OK occurrences=1 anchor=102-ok
+S118:Q02-record-path OK occurrences=1 anchor=104-ok
+S118:Q03-empty-dir OK occurrences=1 anchor=104-ok
+S118:Q04-per-ecosystem-csv-prefix OK occurrences=1 anchor=114-ok
+S118:Q05-colon-prefix-dir OK occurrences=1 anchor=121-ok
+S118:Q06-stopped-prefixed OK occurrences=1 anchor=123-ok
+rc=0
+## B1
+-| S118 | OS
++| S118 | OS
+118
+| mined | 2026-11-06 | 90d | corpus/knowledge/osv-gcs-data-dump-layout.md |
+## B2
+freeze=97 landing=98
+set-equal
++corpus/knowledge/osv-gcs-data-dump-layout.md
+## B3
+FRONTIER-CENSUS rows=60 admitted=60 closed=60 problem-rows=0 registry=118
+FRONTIER-PASS F60 ids=S118
+## B4
+records=98 bound=98 unbound=0
+## B5
+recheck_exact=yes
+foreign rc=0
+## B6
+literal_sweep_total 0 files 97
+## B7
+file	ok	/fast/scratch/hyaku/kasegi-r84/l1/land/extract/corpus/SOURCES.md
+rc=0
+## B8
+ENTRY-GATE sid=S118 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=bad
+ENTRY-GATE-RESULT fail
+rc=1
+## harm: density SKILL.md (base a089ff3d vs landing)
+| | **mean dens** | | | | | | | | **273.2** |
+| | **mean dens** | | | | | | | | **273.2** |
+## R133 check on the round-84 lesson
+0
+## B8 (lane worktree; appended 2026-11-07T00:11:06Z)
+The extract run above prints header=bad because the r83 gate builds the expected recheck line from the manifest path taken relative to --lane (entry-gate.py:108-109, manifest['_path']); an extract outside the lane cannot match 'cd <lane> && ... --manifest corpus/...'. B8 is therefore run in the lane worktree after proving its inputs equal the landing commit's bytes:
+WORKTREE=LANDING corpus/knowledge/osv-gcs-data-dump-layout.md
+WORKTREE=LANDING corpus/source-snapshots/round-84/manifest.json
+WORKTREE=LANDING corpus/source-snapshots/round-84/S118.txt
+WORKTREE=LANDING .ufo/waves/round-83/c2/entry-gate.py
+ENTRY-GATE sid=S118 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+## B7 (lane root form)
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+rc=0
