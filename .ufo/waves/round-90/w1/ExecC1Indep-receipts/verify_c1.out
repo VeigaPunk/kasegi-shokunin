@@ -1,0 +1,20 @@
+CHECK G1-map-pin freeze=7c420856c334 worktree=7c420856c334 claims=7c420856c334
+CHECK G2-meter-pin freeze=8f4ac2182397 worktree=8f4ac2182397 claims=8f4ac2182397
+CHECK H1-rowcount rows=34
+CHECK H2-single-file all citing-file == corpus/knowledge/triage-thresholds.md
+CHECK H3-excl-count excluded=4 lines=[152, 155, 249, 438]
+CHECK A1-P3-one-path paths=['corpus/knowledge/triage-thresholds.md']
+CHECK B1-linecount base=488 after=488
+CHECK B2-changed-set changed=32 map_lines=32 missing=[] extra=[]
+CHECK B3-excl-unchanged excluded lines byte-identical
+CHECK C1-token-swap bad=none
+CHECK C2-no-other-diffs other=[]
+CHECK H4-multi-line-note lines carrying 2 sites=[261, 270] (34 rows / 32 lines)
+CHECK D1-map-bound wrong_rows=40 wrong_with_range=38 unbound=none
+CHECK E1-tranche-complete wrong_with_range=38 mapped=34 excluded=4 leftover=none excluded_not_labelled=none
+CHECK F1-in-range out_of_range=none
+CHECK F2-target-unique ambiguous=none
+CHECK F3-keys-gone-base root-level key files absent at base=5/5 distinct=['claim-gates.md', 'claim-package-contract.md', 'ev-model.md', 'intake-surface.md', 'mission-control.md']
+INFO F-targets corpus/knowledge/claim-gates.md target of map lines [236, 251, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 278, 279] | corpus/knowledge/claim-package-contract.md target of map lines [261, 270, 443] | corpus/knowledge/ev-model.md target of map lines [310, 311, 312, 313, 371, 372] | corpus/knowledge/intake-surface.md target of map lines [90, 456] | corpus/knowledge/mission-control.md target of map lines [143, 145, 147, 148, 156, 157, 158, 439, 442]
+INFO gone-candidates 52 tokens -> /fast/scratch/hyaku/kasegi-r90/ExecC1Indep/gone-candidates.txt
+VERDICT PASS (17 checks, 0 failed)

@@ -1,0 +1,17 @@
+probe                      variant                rc   written/shape
+P1 M06 value>256B          pristine               3    False
+P1 M06 value>256B          M06                    0    True
+P2 M13 allow+cwd           pristine cwd=lane      0    True
+P2 M13 allow+cwd           pristine cwd=other     0    True
+P2 M13 allow+cwd           M13 cwd=lane           0    True
+P2 M13 allow+cwd           M13 cwd=other          3    False
+P3 M15 out-of-lane         pristine               3    False
+P3 M15 out-of-lane         M15                    0    True
+P4 M24 text-kind           pristine               3    False
+P4 M24 text-kind           M24                    0    True
+P5 selftest rc             pristine               0    credential,aws-sts-session-token
+P5 selftest rc             M19                    0    credential,aws-sts-session-token
+P5 selftest rc             kept-false             1    credential,aws-sts-session-token
+P5 selftest rc             M19+kept-false         0    credential,aws-sts-session-token
+P5 selftest rc             M20                    0    no-refusal-line
+P5 selftest rc             M26                    0    credential

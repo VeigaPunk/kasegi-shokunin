@@ -1,0 +1,17 @@
+SentinelGate r90 — conversion cost at MAX_FETCH_BYTES (capture-source.py at 643ddb4)
+html_to_text() on a body of N unclosed '<script ' tags; CPU time via time.process_time()
+
+    16 KB chars=16387    cpu=   0.11s
+    32 KB chars=32771    cpu=   0.44s x3.9 per doubling
+    64 KB chars=65539    cpu=   1.71s x3.9 per doubling
+   128 KB chars=131075   cpu=   6.88s x4.0 per doubling
+   256 KB chars=262147   cpu=  23.31s x3.4 per doubling
+  control 256 KB of well-formed closed <script>x</script>: cpu=0.00s
+
+quadratic fit t = 0.11s * (size/16KB)^2 holds at all five points (4.0x per doubling)
+extrapolated cost at the 32 MiB fetch cap: 0.11 * 2048^2 s = 461373 s = 128.2 h (one capture)
+no timeout wraps html_to_text(); fetch itself is capped, conversion is not
+
+MAX_FETCH_BYTES boundary, end to end:
+  32 MiB body      rc=0 wall=7.1s child_maxrss=127724 KiB snapshot_bytes=33554433
+  32 MiB + 1 body rc=1 written=False stderr='response exceeds 33554432 bytes'

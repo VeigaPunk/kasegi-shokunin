@@ -1,0 +1,122 @@
+# Item 2 - caller guard for the changed capture() signature. Tracked files outside .ufo/. Date: 2026-11-07
+
+## A. imports of the instrument as a module (none expected)
+$ git grep -n -E "(^|[^a-z])(import +capture_source|from +capture_source)" -- . ":!.ufo/"
+(no match)
+
+$ git grep -n capture_source -- . ':!.ufo/'
+(no match)
+
+## B. dynamic module loads in committed instruments
+$ git grep -n -E 'spec_from_file_location|exec_module' -- 'corpus/instruments/*.py'
+corpus/instruments/capture-secret-scan.py:141:    spec = importlib.util.spec_from_file_location("claim_package_check", path)
+corpus/instruments/capture-secret-scan.py:143:    spec.loader.exec_module(mod)
+corpus/instruments/capture-source.py:103:    spec = importlib.util.spec_from_file_location("capture_secret_scan", path)
+corpus/instruments/capture-source.py:105:    spec.loader.exec_module(mod)
+corpus/instruments/citation-ground-check.py:116:    spec = importlib.util.spec_from_file_location("kasegi_resolve", path)
+corpus/instruments/citation-ground-check.py:123:        spec.loader.exec_module(module)
+corpus/instruments/limb-mutation-check.py:332:    "spec = importlib.util.spec_from_file_location('limb_mutant', sys.argv[1])\n"
+corpus/instruments/limb-mutation-check.py:334:    "spec.loader.exec_module(module)\n"
+corpus/instruments/limb-mutation-check.py:351:    a zero exit AND the sentinel printed after `exec_module`, because a module
+corpus/instruments/r46-mutant-equivalents/m14-equivalence-differential.py:34:spec = importlib.util.spec_from_file_location("st", selftest_path)
+corpus/instruments/r46-mutant-equivalents/m14-equivalence-differential.py:36:spec.loader.exec_module(st)
+corpus/instruments/r46-selftest-f29.py:559:    spec = importlib.util.spec_from_file_location("r46_f29_gate_under_test", path)
+corpus/instruments/r46-selftest-f29.py:563:    spec.loader.exec_module(mod)
+
+=> the only exec_module loads are inside capture-source.py and capture-secret-scan.py themselves
+   (capture-source loads capture-secret-scan at capture time); no other instrument imports either.
+
+## C. invocations of capture-source.py in tracked code outside .ufo/
+$ git grep -n capture-source -- '*.py' '*.sh' '*.mjs' '*.js' ':!.ufo/'
+corpus/instruments/capture-source.py:5:  python3 corpus/instruments/capture-source.py --id S001 --url URL \
+corpus/instruments/capture-source.py:7:  python3 corpus/instruments/capture-source.py --selftest
+corpus/instruments/capture-source.py:151:    directory = tempfile.mkdtemp(prefix="capture-source-selftest-")
+corpus/instruments/figure-audit.py:118:# from DIR (RevengerC1 row 2) and `capture-source.py --out PATH` writes PATH and fetches any URL
+corpus/instruments/figure-audit.py:138:#     and capture-source's `--url`/scratch options.
+corpus/instruments/figure-audit.py:168:    "capture-source.py": ("--url", "--work", "--scratch"),
+corpus/instruments/figure-audit.py:176:    "capture-source.py": (),
+corpus/instruments/figure-audit.py:773:             _one("s-pyout", "python3 corpus/instruments/capture-source.py --id x --url file:///dev/null --out out.txt", "35"))
+corpus/instruments/figure-audit.py:775:             _one("s-pyouteq", "python3 corpus/instruments/capture-source.py --id x --url file:///dev/null --out=out.txt", "35"))
+corpus/instruments/figure-audit.py:777:             _one("s-pyoutab", "python3 corpus/instruments/capture-source.py --id x --url file:///dev/null --ou out.txt", "35"))
+corpus/instruments/figure-audit.py:788:             _one("s-pyshorto", "python3 corpus/instruments/capture-source.py -o out.txt", "35"))
+corpus/instruments/figure-audit.py:790:             _one("s-pyoutlong", "python3 corpus/instruments/capture-source.py --output out.txt", "35"))
+corpus/instruments/figure-audit.py:792:             _one("s-pyurl", "python3 corpus/instruments/capture-source.py --url file:///dev/null", "35"))
+corpus/instruments/figure-audit.py:801:             _one("s-pyoutonly", "python3 corpus/instruments/capture-source.py --out out.txt", "35"))
+corpus/instruments/r47-counters-selftest.py:118: "instrument (capture-source.py --kind html) so the recheck can reproduce a comparing capture (round-47 D7 provenance "
+corpus/instruments/r47-routed-defects.py:24:        instrument (fix chosen: re-capture with the committed `capture-source.py
+
+All C hits are figure-audit.py derive-gate PROBE STRINGS (the python head is refused before execution;
+the expected rc 35 is the derive gate's, not capture-source.py's) plus comments. No tracked caller
+executes capture-source.py, imports capture(), or reads its return value. capture(..., allow_path=None)
+is keyword-defaulted; success returns the sha256 hexdigest (truthy -> main returns 0), refusal returns
+None -> main returns 3.
+
+## D. capture() call sites and returns at the landing
+$ git show 643ddb4379536e7a5ff7cdfe5c5befe9afbf63f2:corpus/instruments/capture-source.py | grep -n 'capture('
+126:def capture(source_id, url, out, kind, allow_path=None):
+171:        refused = capture("SELFTEST", "file://" + planted, out, "html") is None
+192:    if capture(args.id, args.url, args.out, args.kind, args.allow) is None:
+lines 146 (success) and 139 (refusal) as read in the landing blob:
+139:        return None
+146:    return hashlib.sha256(data).hexdigest()
+
+## E. line-number citations of capture-source.py outside .ufo/
+$ git grep -n -E 'capture-source[.]py:[0-9]+' -- . ':!.ufo/'
+corpus/instruments/citation-survival.tsv:531:capture-source.py:32	GONE		2		rel	2	+CORPUS
+corpus/lessons/round-25-verifier-spotcheck.md:114:| S040 Cisco Security Vulnerability Policy | admit | browser UA → http **403** (as the lesson's access note says); instrument UA (`capture-source.py:32`) `curl -L` → 301 → `sec.cloudapps.cisco.com/…/security_vulnerability_policy.html` http 200, 94,027 B; `aligns its practices with <a …>` present; four `<li>` expedite bullets | agree | row's "four situations … (L301 to L309)" matches live page and `S040.txt:301-309`; note the canonical URL now redirects (R25-5) |
+corpus/lessons/round-35-verifier-spotcheck.md:107:| S068 (quarantine slice) | reject (nothing to adopt; duplicate of S040) | Cisco policy, instrument UA (`capture-source.py:32`): 200, 94,027 B at `sec.cloudapps.cisco.com/…`; plain `kasegi-shokunin/1.0` UA → 403 | agree | quoted sentence "The Cisco PSIRT aligns its practices with ISO/IEC 29147:2018 , which are guidelines…" occurs once in the tag-stripped text; lane `SOURCES.md:46` S040 carries the identical URL, so adoption would double-register one document |
+
+$ grep -rn -E '(capture-source|capture-secret-scan)[.]py:[0-9]' corpus/knowledge/ corpus/README.md corpus/instruments/README.md
+corpus/knowledge/presigned-url-credentials-in-captured-evidence.md:67:> "run it on every capture before the commit that first adds it" — `corpus/instruments/capture-secret-scan.py:18-19`
+corpus/knowledge/presigned-url-credentials-in-captured-evidence.md:75:> "Rows for aws-sts-session-token are refused (a session token is never a false positive)" — `corpus/instruments/capture-secret-scan.py:37-38`
+corpus/knowledge/presigned-url-credentials-in-captured-evidence.md:77:so no row can quiet a session-token hit, and a refused or malformed row is a read error (exit 2) — an attempt to allow a token becomes a loud failure, not a silent pass. An unused row is reported (`unused_allow=` counts rows no scanned match consumed, "reported, not an error" at `corpus/instruments/capture-secret-scan.py:44-45`), so a stale row is visible without blocking a run.
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:49:Lane reading: the value is Base64 of an HMAC-SHA256, so its alphabet is `A-Za-z0-9+/` with `=` padding, and inside a URL it may be percent-encoded (`+` as `%2B`, `/` as `%2F`, `=` as `%3D`). A 32-byte HMAC in Base64 is 44 characters including one trailing `=`; that is the arithmetic behind the detector's 40-character floor and its `[A-Za-z0-9%+/]` alphabet with up to two trailing `=`/`%3D` (`corpus/instruments/capture-secret-scan.py:101`, `:111-112`).
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:65:The docstring at `corpus/instruments/capture-secret-scan.py:1-82` is the specification this entry reads.
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:67:**Scope.** `--rev REV` reads a git tree without checkout and scans capture-class paths only: anything under `corpus/source-snapshots/`, anything under a practice package's `corpus/practice/<pkg>/evidence/` (added round 88), any path with a directory segment ending in `-receipts`, and any file whose name starts with `live-` (`corpus/instruments/capture-secret-scan.py:14-21`). `--files PATH...` scans exactly the named working-tree files whatever their path, and the docstring's instruction is to run it "on every capture before the commit that first adds it" (`:20-21`).
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:69:**Shapes.** The claim-package gate's `SECRET_PATTERNS`, imported from `claim-package-check.py` beside the instrument so the two never drift, plus the two AWS shapes, the two round-88 cloud shapes and the round-89 CloudFront shape (`corpus/instruments/capture-secret-scan.py:23-60`):
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:79:**Named limits**, verbatim from `corpus/instruments/capture-secret-scan.py:61-65`: GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed cookies (`CloudFront-Signature`), percent-encoded parameter names or `=`, more than 20 other parameters between the two matched ones, values soft-wrapped across lines, and gzip/UTF-16/base64-wrapped captures are not detected.
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:83:- the Azure shape requires `sv=YYYY-MM-DD` in the same query; the page dates that parameter from storage service version 2012-02-12 ("For Azure Storage version 2012-02-12 and later, this parameter indicates the version to use", `corpus/source-snapshots/round-88/S127.txt:631-633`), and the selftest pins `azure-sig-without-sv` as not detected (`corpus/instruments/capture-secret-scan.py:270`);
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:84:- the GCS shape requires 64 or more **contiguous** hex digits after the parameter name. The page's own example signature is wrapped at 80-character lines (`corpus/source-snapshots/round-88/S126.txt:466-473`, 512 hex digits over 8 lines), and the selftest pins exactly that wrapped case as not detected (`corpus/instruments/capture-secret-scan.py:263`, case `gcs-doc-wrapped`, expected evidence set empty). A capture that hard-wraps a signed URL therefore reads clean while carrying the signature — measured in FC-7;
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:87:- the round-88 `\u0026` limit is closed: the left boundary `_LB` (`corpus/instruments/capture-secret-scan.py:103`) admits a match that starts right after `\u0026` or `%26`, so a JSON-escaped copy of the documented example URI (`corpus/source-snapshots/round-88/S127.txt:605`, `sv=` sixth) is detected and the selftest pins that order (`:272`, case `azure-json-escaped-s127-order`). What remains: `%26` is a left boundary only, not a separator inside the span (`_SEP` at `:99` is `&`, `&amp;`, `\u0026`), so a query whose parameters are joined by `%26` is not spanned; and at most 20 intervening parameters with 2-6 letter names are spanned (`:100`).
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:124:The table maps `+` to `-`, `=` to `_` and `/` to `~`, so a CloudFront signature's alphabet is `A-Za-z0-9` plus `-`, `_` and `~`. The `~` is the distinguishing byte — a value carrying it is neither plain base64 nor the common base64url spelling — and the detector's class admits all three substitutions (`corpus/instruments/capture-secret-scan.py:106`).
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:134:**Scanner shape.** `cloudfront-signed-url-signature` (`corpus/instruments/capture-secret-scan.py:47-60`; pattern `:104-114`): a `Signature=` of 40 or more URL-safe characters in the same query as a `Key-Pair-Id=` of 8-32 upper-case letters or digits, either order, separated by `&`, `&amp;` or JSON `\u0026`, parameter names case-sensitive, up to 20 other parameters between, and a `Signature=` preceded by `-` never starts a match — so an S3 `X-Amz-Signature=` is not read as a CloudFront signature. The selftest pins four detected cases (`cf-canned`, `cf-custom`, `cf-kpi-first-json`, `cf-html-amp`, `:273-276`) and five clean ones (`cf-doc-placeholder`, `cf-sig-without-kpi`, `cf-amz-signature-beside-kpi`, `cf-short-sig`, `cf-lowercase-names`, `:277-281`).
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:138:- a `Signature=` with no `Key-Pair-Id=` in the same query is not detected (`cf-sig-without-kpi`, `corpus/instruments/capture-secret-scan.py:278`);
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:148:1. **Scan the file, not the directory, before the first commit.** `--files` names exactly the working-tree paths about to be added (`corpus/instruments/capture-secret-scan.py:20-21`); run it on each new capture and paste the `CAPTURE-SECRET-SCAN … rc=` line into the round receipt.
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:157:**Falsifiable rule.** Any sentence asserting that a capture holding an active Cloud Storage V4 signed URL, an Azure service SAS or an Amazon CloudFront signed URL is credential-free is falsified by `python3 -B corpus/instruments/capture-secret-scan.py --files <capture>` exiting 1 with a `HIT shape=gcs-signed-url-signature`, `HIT shape=azure-sas-signature` or `HIT shape=cloudfront-signed-url-signature` line. Any sentence asserting that an Azure ad hoc SAS can be revoked without a policy or key action is falsified by `corpus/source-snapshots/round-88/S127.txt:599` and `:601`. Any sentence asserting that a Cloud Storage signed URL grants nothing to its holder is falsified by `corpus/source-snapshots/round-88/S126.txt:423-424`. Any sentence asserting that a CloudFront signed URL grants nothing to whoever holds it is falsified by `corpus/source-snapshots/round-89/S130.txt:163`. Any sentence asserting the scanner catches every signed-URL form is falsified by `corpus/instruments/capture-secret-scan.py:61-65`.
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:316:2. **"A Cloud Storage signed URL, an Azure SAS and a CloudFront signed URL are the same shape."** Rejected: different parameter names (`X-Goog-Signature` versus `sig` versus `Signature` beside `Key-Pair-Id`), different encodings (hex V4, Base64 HMAC-SHA256, URL-safe base64 with `~`), different revocation stories (key rotation, policy deletion or key regeneration, expiry or key-pair rotation); the instrument carries three separate shapes for that reason (`corpus/instruments/capture-secret-scan.py:109-114`).
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:317:3. **"The scanner catches every signed-URL form."** Rejected: the named limits at `corpus/instruments/capture-secret-scan.py:61-65` exclude GCS V2, CloudFront signed cookies, percent-encoded parameter names, more than 20 intervening parameters and soft-wrapped values; the Azure shape needs `sv=` in the same query and the CloudFront shape needs `Key-Pair-Id=` (Claim 5, Claim 7).
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:320:6. **"Every capture in the repository is scanned by `--rev`."** Rejected: the scope is path-based (`corpus/instruments/capture-secret-scan.py:14-21`); a capture at another path is covered only by `--files`, which is why the docstring says to run that on each capture before its first commit (`:20-21`).
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:322:8. **"A CloudFront signed URL and a CloudFront signed cookie are the same shape."** Rejected: the shape matches query parameters of a signed URL (`Signature=` beside `Key-Pair-Id=`); signed cookies carry `CloudFront-Signature` and `CloudFront-Key-Pair-Id` cookie names, which the docstring's named limits exclude (`corpus/instruments/capture-secret-scan.py:61-62`), and a cookie is not a query parameter (Claim 7).
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:327:- **Three providers, one form each.** S126 covers Cloud Storage V4 signed URLs; S127 covers the Azure service SAS; S128 and S130 cover the CloudFront signed URL, whose canned and custom policies are two parameter sets of one form. Account SAS, user-delegation SAS, GCS V2 and CloudFront signed cookies are outside both the entries and the detector's shape set (`corpus/instruments/capture-secret-scan.py:61-65`), and nothing here claims coverage of them.
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:328:- **No HAR is exercised.** None of the four captures is a HAR; the HAR case is the same query string preserved in a request URL, and the instrument's selftest exercises the shapes in a URL query string, a JSON key, an HTML-escaped query and a JSON `\u0026` escape (`corpus/instruments/capture-secret-scan.py:261-281`), not in a real HAR. This entry measures no HAR bytes.
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:331:- **The thresholds are the instrument's.** 64+ hex digits, 40+ base64/percent characters and 40+ URL-safe characters are lane choices sized to the documented encodings (`corpus/instruments/capture-secret-scan.py:106-114`); a shorter or reformatted signature falls outside the shape and a clean run says nothing about it.
+
+$ git diff --name-only 6088c3eb0c29040415c69e7b5fb91e110480ab26 643ddb4379536e7a5ff7cdfe5c5befe9afbf63f2 -- corpus/instruments/capture-secret-scan.py
+(no match)
+
+=> knowledge/ and README: no capture-source.py line-number citation exists. The only capture-secret-scan.py
+   citations are the round-89-repaired cloud entry, and that file did not move in round 90.
+
+## F. the UA line moved 32 -> 51
+$ git show 6088c3eb0c29040415c69e7b5fb91e110480ab26:corpus/instruments/capture-source.py | grep -n '^UA = '
+32:UA = "kasegi-shokunin/1.0 (documentation capture; +https://shokunin.invalid/kasegi)"
+$ git show 643ddb4379536e7a5ff7cdfe5c5befe9afbf63f2:corpus/instruments/capture-source.py | grep -n '^UA = '
+51:UA = "kasegi-shokunin/1.0 (documentation capture; +https://shokunin.invalid/kasegi)"
+landing line 32 content: a capture before it was written.
+
+Stale pointers old -> new: corpus/lessons/round-25-verifier-spotcheck.md:114 and
+corpus/lessons/round-35-verifier-spotcheck.md:107 both say 'instrument UA (capture-source.py:32)';
+capture-source.py:32 -> :51. Both are corpus/lessons/ round receipts; CORPUS.md:8 keeps lessons
+append-only ('corrections are filed here as new entries'), so they are frozen historical records,
+not live pointers. No knowledge entry or README line carries a moved capture-source.py line citation.
+
+## G. derive-gate map (figure-audit.py): --allow is neither a write nor an ingress option
+    "limb-mutation-check.py": ("--root",),
+    "r46-c1-gate.py": ("--root",),
+    # --url fetches any scheme; --work/--scratch are its write roots
+    "capture-source.py": ("--url", "--work", "--scratch"),
+}
+
+# Every python head the gate may run, by basename.  A head absent from this table is refused.
+PY_DENIED_BY_SCRIPT is a per-head deny list and PY_SCRIPT_CENSUS a head allow list; adding a
+non-writing --allow option changes neither, and --url/--out remain refused for this head.

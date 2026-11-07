@@ -1,0 +1,32 @@
+=== MUT1: refusal line without the line field (sha be181b2d...) ===
+CAPABILITY-CHECK rev=643ddb4379536e7a5ff7cdfe5c5befe9afbf63f2 base=6088c3eb0c29040415c69e7b5fb91e110480ab26 seed=9090 override=/fast/scratch/hyaku/kasegi-r90/CriticClaims/mut1/capture-source.py instrument_sha256=be181b2d2b7c9e5b3cb9258af53de6984433082a399802eb06c246bda5844b83
+LIMB G0 pass shapes=11 missing=none extra=none
+LIMB G1 pass plants=11 bad=none
+LIMB G2 pass rc=3 kept=True
+LIMB G3 pass clean=6 bad=none
+LIMB G4 pass allowed_rc=0 written=True other_path_rc=3 never_allowed_rc=3
+LIMB G5 pass rc=3 written=False
+LIMB G6 pass rc=0 selftest normalize=ok deterministic=ok INTAKE-REFUSED SELFTEST shape=credential out=/fast/scratch/hyaku/kasegi-r90/Criti
+LIMB P pass sha256=be181b2d2b7c9e5b3cb9258af53de6984433082a399802eb06c246bda5844b83
+CAPABILITY-CHECK-RESULT pass rc=0
+rc=0
+
+=== MUT2: gate scans only the first 65536 bytes (sha 8dcedb10...) ===
+CAPABILITY-CHECK rev=643ddb4379536e7a5ff7cdfe5c5befe9afbf63f2 base=6088c3eb0c29040415c69e7b5fb91e110480ab26 seed=9090 override=/fast/scratch/hyaku/kasegi-r90/CriticClaims/mut2/capture-source.py instrument_sha256=8dcedb1042fce224d6bc9ac194447df7b74486e86d6ca41d4456e056566fb8c5
+LIMB G0 pass shapes=11 missing=none extra=none
+LIMB G1 pass plants=11 bad=none
+LIMB G2 pass rc=3 kept=True
+LIMB G3 pass clean=6 bad=none
+LIMB G4 pass allowed_rc=0 written=True other_path_rc=3 never_allowed_rc=3
+LIMB G5 pass rc=3 written=False
+LIMB G6 pass rc=0 selftest normalize=ok deterministic=ok INTAKE-REFUSED SELFTEST shape=credential line=1 out=/fast/scratch/hyaku/kasegi-r9
+LIMB P pass sha256=8dcedb1042fce224d6bc9ac194447df7b74486e86d6ca41d4456e056566fb8c5
+CAPABILITY-CHECK-RESULT pass rc=0
+rc=0
+
+=== MUT2 on a 1 MiB-prefixed capture (credential past the prefix) ===
+mut2-prefix rc=0 written=True credential_in_snapshot=True
+stdout: Z status=200 fetched_bytes=1048672 snapshot_bytes=1048672 sha256=bd56012546f86f0b63367578d9626748cb5402c41595f03039c2abc689c22175 utc=2026-11-07T07:20:41Z out=corpus/sour
+landed rc=3 written=False
+landed shapes: ['shape=credential', 'shape=aws-sts-session-token']
+rc=0

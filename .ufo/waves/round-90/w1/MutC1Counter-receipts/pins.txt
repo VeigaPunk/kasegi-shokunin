@@ -1,0 +1,36 @@
+frozen counter (read-only, never edited): /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-90/c1/knowledge-meter.py
+  sha256 before probe: 8f4ac21823979adb4096977ede78140eeade19baaa9072f546a5d6dd703836d4 (claims.json)
+  sha256 after probe:  8f4ac21823979adb4096977ede78140eeade19baaa9072f546a5d6dd703836d4
+frozen map sha256: 7c420856c3347d362bfc419030aa474cbc253975f3026bc13355b654055fb8b3
+fixture repo base commit: 293e9347f77a60006e71d4e25a1749d89304e435 (tree = git archive 6088c3eb0c29040415c69e7b5fb91e110480ab26 of the lane)
+fixture commits: {"BASE": "293e9347f77a60006e71d4e25a1749d89304e435", "BDB": "bb209974efcbf8813f465be40c3533acc8133c10", "BLANK": "1a47e56a0172de4a5bb7eb94b463179af1b1638b", "BZ": "f08c5588a86b82a86180864661081ec72ea96baa", "CAND": "40e92e86e11051f282deebeac93e537ab78a910d", "CROSS": "c87ca80a479e6185ea8e16ed308867f40cdaf8b9", "DB_AFTER": "04cbda132c541b30f64251b14361e09b91df0098", "EXTRA": "9e117bd03442c4bae2743febfa8cfacff6dc056f", "L_9999": "2f0a0b3cf7d7aec8db8bc85a9d0706201324a10a", "L_CROSS": "47e7e346f81a1068b19f97ec509f8d80448ae143", "L_FILE": "d1a8ae5ad4d0a8e46080d22bcf9bd3ba05fdfda3", "L_GONE": "86e3c6cb158fed9de8e4e473e4f812709f019fc6", "L_HI": "6db9d9ba53966c9a64121d5197e3d34b54a27858", "L_LO": "28c530f5b8a5b5a8891507de47b20ca32527716c", "L_NOOP": "4620cecde6aa27011835bec0f5291228f1ad8f1b", "L_RANGE": "fb7d1173c92e37b883798837b27d29d53c6ede6c", "L_WRONG": "d19e951071b7bd0e5d8881ddf69f6e8418e0cce7", "SHIFT": "3ed495bbae71f74436069a8f4f21a0553ea469e3", "SUP": "5c1f5b49234bb7fe8925f936acda6b9e26baded3", "TAMPER": "70201b01b737cb684aa1e2ac20577dde7a4aa8f1", "UB": "08c3ecd61dc8e0384bea2b08f8d12487487cc7a0", "UFO_AFTER": "06ec061fe8ffdcb6fec34f6e164ffa29cf5799a2", "UNL": "a5462db5da51974f8830d5a0ea577437afe5d5ff", "V9999": "2038a9454eecc81ffff954356a518f828f744cae", "VHI": "14c4be7b9b6f4beec5a9046e16ba8cfcc1ea46d0", "VLO": "1cabb3113b703df14fe4385a924198d312c63d7e", "Z_AFTER": "5c9aa69b982033118bd6cc0d0bd69412610e1103"}
+map variants: {"cross": "1d2664bd43c2d5802ca9db255739fbb42d3707e160f2a08acdd78146d4c301a2", "dup": "750aedc35f9dbb3a063a90a2a07ba7b05ce7d17947e1bbdb30a278d4c6edccd2", "frozen": "7c420856c3347d362bfc419030aa474cbc253975f3026bc13355b654055fb8b3", "gone": "a2c14914f51d661ccdafcfd2aeb0e67289abd746aa9f54b3c2715fe713588f4b", "noop": "2f7b0eac4fb241f1f1151a293b9065880c49f523755b2b4e1da9a32c036c0f66", "shift": "e9dacbafff02c7bdc98283c74770ba6e95349082d097dd1f7279ac03d17573aa", "superset": "e5416b8b726e1a5c1d8a9d5f67f78857b23606ca0a4abc420f3cdf87443dadf2", "unlabel": "b25431cc9aad564f65c2a8c1310a6032dbf95c9aaf9d73dec47ca14dd77ed560", "v9999": "aa9d1cf4a9430d54621bc675f265f1813742d122acc1a38d1632df6ac7c53f47", "vhi": "65e20f717cdd2206a84a706d26108a8ab1f7929268fea261150e8fcf3b79a49f", "vlo": "8d00c8c9cdd31cc1d1f257c6addb04a72fb7165313e24c6a9561c910dbab3222"}
+
+landing cross-check (frozen counter, real lane, base 6088c3eb -> after 4a7e6768, labels 02b6d88f):
+KNOWLEDGE-METER base=812/1827 after=843/1829 base_target=812/1827 target=843/1829 sites=34 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=812/1827
+LIMB M1 pass after=843/1829
+LIMB M3 pass same_files=True bad_lines=0 key_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=34 unbound=none
+LIMB M6 pass sha256=7c420856c3347d362bfc419030aa474cbc253975f3026bc13355b654055fb8b3
+KNOWLEDGE-METER-RESULT pass rc=0
+landing_rc=0
+
+measure-mode pin probe (fixture worktree at base, --measure-rev = the cand commit):
+  frozen  -> rate=843/1829 (pinned=archive)
+  m_pin_worktree mutant -> rate=812/1827, while its headline still prints pinned=archive
+
+frozen control rerun vs .ufo/waves/round-90/controls/c1-controls-r90.txt: LIMB/KNOWLEDGE-METER/control_rc lines byte-identical;
+environment receipt from the rerun:
+  -- lane=live
+  r89-meter KNOWLEDGE-METER rev=b9fcf005 rate=815/1827 pct=44.61 mirror_absent=True
+  r90-meter KNOWLEDGE-METER rev=b9fcf005 rate=812/1827 pct=44.44 mirror_absent=True pinned=archive
+  r90-meter HOST rev abs_tokens=127 abs_nongone=23
+  -- lane=clean-clone
+  r89-meter KNOWLEDGE-METER rev=b9fcf005 rate=814/1827 pct=44.55 mirror_absent=True
+  r90-meter KNOWLEDGE-METER rev=b9fcf005 rate=812/1827 pct=44.44 mirror_absent=True pinned=archive
+  r90-meter HOST rev abs_tokens=127 abs_nongone=23

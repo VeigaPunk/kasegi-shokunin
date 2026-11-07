@@ -1,0 +1,414 @@
+# Kasegi R.classify( and --lane working-tree classification scan receipt
+
+## 1. Occurrences of R.classify( in kasegi git repo:
+  .ufo/waves/round-85/c1/skill-meter.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/c1/skill-meter.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/controls/c1-controls-r85.sh:31:        if n<18 and tok.startswith('~/Projects/bounties/') and R.is_pathlike(tok) and R.classify(tok,sys.argv[3],mirror)[0]=='GONE' and t.count('`%s`'%m.group(1))==1:
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/build.py:32:    if R.classify(val,LANE,MIRROR)[0]!="INTERNAL":
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/build.py:34:    if tok not in land_cites or R.classify(tok,LANE,MIRROR)[0]!="GONE":
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/build.py:55:kgone=[t for t in ktok_occ if R.classify(t,LANE,MIRROR)[0]=="GONE"]
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt.py:18:gone=[t for t in sorted(cites) if R.classify(t,LANE,MIRROR)[0]=="GONE"]
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt2.py:33:    if R.classify(tok,LANE,MIRROR)[0]=="GONE": gone.append(tok)
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt3.py:22:gone=[t for t in sorted(cites) if R.classify(t,LANE,MIRROR)[0]=="GONE"]
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt4.py:19:gone=[t for t in sorted(cites) if R.classify(t,LANE,MIRROR)[0]=="GONE"]
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt5.py:30:    gone=[t for t in sorted(cites) if R.classify(t,LANE,MIRROR)[0]=="GONE"]
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt6.py:17:    cls=R.classify(k,LANE,R.MIRROR_ROOT)
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt6.py:18:    cls2=R.classify(v,LANE,R.MIRROR_ROOT)
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt6.py:36:    if t in cites: print("cited",repr(t),R.classify(t,LANE,R.MIRROR_ROOT))
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt7.py:22:print("landed distinct tokens:",len(cites),"GONE:",sum(1 for t in cites if R.classify(t,LANE,MIRROR)[0]=="GONE"),
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt7.py:23:      "nonGONE:",sum(1 for t in cites if R.classify(t,LANE,MIRROR)[0]!="GONE"))
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt7.py:27:    cls=R.classify(val,LANE,MIRROR)[0]
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt7.py:34:    if c["token"] in cites and R.classify(c["token"],LANE,MIRROR)[0]=="GONE":
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt8.py:40:print(R.classify("python3 corpus/instruments/",LANE,R.MIRROR_ROOT))
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt8.py:41:print(R.classify("corpus/instruments/",LANE,R.MIRROR_ROOT))
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt9.py:17:    print(t, t in cites, R.classify(t,LANE,R.MIRROR_ROOT) if t in cites else "-", lines_of(t))
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt9.py:19:gone=[t for t in cites if R.classify(t,LANE,R.MIRROR_ROOT)[0]=="GONE"]
+  .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt9.py:26:        print(repr(tok),a,"->",R.classify(b,LANE,R.MIRROR_ROOT))
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/harness/driver.py:51:        if n<18 and tok.startswith('~/Projects/bounties/') and R.is_pathlike(tok) and R.classify(tok,sys.argv[3],mirror)[0]=='GONE' and t.count('`%s`'%m.group(1))==1:
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/harness/driver.py:107:     'and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")',
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/harness/driver.py:111:     'and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")',
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/harness/driver.py:112:     'and R.classify(v, lane, mirror)[0] == "INTERNAL")',
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m01-m1-numerator-only.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m01-m1-numerator-only.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m02-m1-limb-dropped.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m02-m1-limb-dropped.py:136:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m03-m1-ge.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m03-m1-ge.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m04-m2-drop-added.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m04-m2-drop-added.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m05-m2-keys-subset.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m05-m2-keys-subset.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m06-m2-any-overlap.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m06-m2-any-overlap.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m07-m3-skip-linecount.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m07-m3-skip-linecount.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m08-m3-drop-hit.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m08-m3-drop-hit.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m09-m3-self-replace.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m09-m3-self-replace.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m10-m3-hit-from-after.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m10-m3-hit-from-after.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m11-m4-drop-ufo.diff:9:               and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m11-m4-drop-ufo.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m11-m4-drop-ufo.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m12-m4-drop-endswith.diff:9:               and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m12-m4-drop-endswith.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m12-m4-drop-endswith.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m13-m4-drop-internal.diff:7:-              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m13-m4-drop-internal.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m14-m4-drop-base-gone.diff:7:-              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m14-m4-drop-base-gone.diff:8:+              and R.classify(v, lane, mirror)[0] == "INTERNAL")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m14-m4-drop-base-gone.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m14-m4-drop-base-gone.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m15-m5-ignored.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m15-m5-ignored.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m16-m5-prefix.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m16-m5-prefix.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m17-verdict-ignores-m4.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m17-verdict-ignores-m4.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m18-verdict-ignores-m5.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m18-verdict-ignores-m5.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m19-rc0-on-fail.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m19-rc0-on-fail.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m20-m3-zip-swapped.py:57:    cls = {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-85/w1/MutC1Counter-receipts/mutants/m20-m3-zip-swapped.py:137:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/c1/knowledge-meter.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/c1/knowledge-meter.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/build_controls.py:224:        if R.classify(cand, pos, os.path.expanduser(R.MIRROR_ROOT))[0] != "INTERNAL":
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/gen_mutants.py:38:     '              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")',
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/gen_mutants.py:50:     'and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")',
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/gen_mutants.py:51:     'and R.classify(v, lane, mirror)[0] == "INTERNAL")'),
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/gen_mutants.py:53:     'and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")',
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/knowledge-meter.orig.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/knowledge-meter.orig.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m01_M1_true.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m01_M1_true.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m02_M1_numerator_only.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m02_M1_numerator_only.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m03_M1_tuple_ge.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m03_M1_tuple_ge.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m04_M1_base_rate.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m04_M1_base_rate.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m05_M1_target_hardcoded.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m05_M1_target_hardcoded.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m06_M2_true.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m06_M2_true.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m07_M2_no_added.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m07_M2_no_added.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m08_M2_no_removed.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m08_M2_no_removed.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m09_M3_true.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m09_M3_true.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m10_M3_no_line_equality.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m10_M3_no_line_equality.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m11_M3_no_hit_keys.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m11_M3_no_hit_keys.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m12_M3_no_same_files.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m12_M3_no_same_files.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m13_M3_no_forward_subst.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m13_M3_no_forward_subst.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m14_M4_true.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m15_M4_no_uniqueness.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m15_M4_no_uniqueness.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m16_M4_no_prefix.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m16_M4_no_prefix.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m17_M4_no_endswith.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m17_M4_no_endswith.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m18_M4_no_key_gone.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m18_M4_no_key_gone.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m19_M4_no_internal.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m20_M4_no_anchor_agreement.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m20_M4_no_anchor_agreement.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m21_M5_true.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m21_M5_true.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m22_M5_no_hi_vs_nlines.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m22_M5_no_hi_vs_nlines.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m23_M5_no_m4bad.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m23_M5_no_m4bad.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m24_M5_upper_strict.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m24_M5_upper_strict.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m25_M6_true.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m25_M6_true.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m26_M6_prefix8.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m26_M6_prefix8.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m27_rate_internal_only.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m27_rate_internal_only.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m28_M4_nonkey_skip.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m28_M4_nonkey_skip.py:179:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m29_M4_no_tracked_nonempty.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m29_M4_no_tracked_nonempty.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m30_M3_no_linecount.py:88:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-86/w1/MutC1Counter-receipts/mutants/m30_M3_no_linecount.py:180:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-87/c1/knowledge-meter.py:98:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-87/c1/knowledge-meter.py:191:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-87/w1/MutC1Counter-receipts/MutC1Counter-mutants.tsv:6:M06-internal-clause-drop	and R.classify(v, lane, mirror)[0] == "INTERNAL" and 	and True and 
+  .ufo/waves/round-87/w1/MutC1Counter.md:64:| M06 | drop `and R.classify(v, lane, mirror)[0] == "INTERNAL"` | M4 | survived | nofile-own-rate |
+  .ufo/waves/round-87/w1/ScribeEntry-receipts/entry-checks.txt:170:>     _,c=R.collect(d); return dict((t,R.classify(t,".",mirror)[0]) for t in sorted(c))
+  .ufo/waves/round-88/c1/knowledge-meter.py:110:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-88/c1/knowledge-meter.py:203:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-88/w1/ExecC1Indep-receipts/rederive.py:56:cls = {t: R.classify(t, CLONE, mirror)[0] for t in sorted(tok_lines)}
+  .ufo/waves/round-88/w1/MutC1Counter-receipts/MutC1Counter-harness.py:176:    ("m11-m4-drop-gone", '              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")',
+  .ufo/waves/round-88/w1/MutC1Counter-receipts/MutC1Counter-harness.py:177:     '              and R.classify(v, lane, mirror)[0] == "INTERNAL")'),
+  .ufo/waves/round-88/w1/MutC1Counter-receipts/MutC1Counter-harness.py:178:    ("m12-m4-drop-internal", 'and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")',
+  .ufo/waves/round-89/c1/knowledge-meter.py:95:    return {t: R.classify(t, lane, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-89/c1/knowledge-meter.py:195:              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
+  .ufo/waves/round-89/w1/MutC1Counter-receipts/mutants.tsv:14:M4-04-internal-drop	M4 INTERNAL classification	R.classify(v, lane, mirror)[0] == "INTERNAL" ==> R.classify(v, lane, mirror)[0] != "GONE"	SURVIVED	-	-	-
+  .ufo/waves/round-90/c1/knowledge-meter.py:106:    return {t: R.classify(t, tree, mirror)[0] for t in sorted(cites)}
+  .ufo/waves/round-90/c1/knowledge-meter.py:127:        info["classify"] = lambda t, R=R, tree=tree: R.classify(t, tree, os.path.expanduser(R.MIRROR_ROOT))[0]
+
+## 2. Occurrences of --lane in .ufo/waves/round-8*/c*/ and corpus/instruments/:
+File: .ufo/waves/round-80/c1/recheck-cwd-census.py
+    8: noprefix          the value does not start with `cd <LANE> && ` (LANE = --lane)
+    28: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+    324: out2n, ret2n = capture(main, ["recheck-cwd-census.py", "--root", root2n, "--lane", root2n])
+    327: out2c, ret2c = capture(main, ["recheck-cwd-census.py", "--root", root2c, "--lane", root2c])
+File: .ufo/waves/round-80/controls/c1-forgery-stub.py
+    8: noprefix          the value does not start with `cd <LANE> && ` (LANE = --lane)
+    28: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+    329: out2n, ret2n = capture(main, ["recheck-cwd-census.py", "--root", root2n, "--lane", root2n])
+    332: out2c, ret2c = capture(main, ["recheck-cwd-census.py", "--root", root2c, "--lane", root2c])
+File: .ufo/waves/round-81/c1/recheck-cwd-census.py
+    8: noprefix          the value does not start with `cd <LANE> && ` (LANE = --lane)
+    28: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+    62: named message, --lane distinct from --root is honoured) and output-lines (the
+    342: out2n, ret2n = capture(main, ["recheck-cwd-census.py", "--root", root2n, "--lane", root2n])
+File: .ufo/waves/round-81/c2/entry-gate.py
+    24: entry-gate.py --entry FILE --manifest FILE --source SID --lane DIR
+    131: ap.add_argument("--lane")
+    137: print("entry-gate: --entry, --manifest, --source and --lane are required", file=sys.stderr)
+File: .ufo/waves/round-81/controls/c1-forgeries-r81.py
+    11: Usage: c1-forgeries-r81.py --lane DIR --work DIR
+    82: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-82/c1/recheck-cwd-census.py
+    8: noprefix          the value does not start with `cd <LANE> && ` (LANE = --lane)
+    30: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+    65: named message, --lane distinct from --root is honoured) and output-lines (the
+    363: out2n, ret2n = capture(main, ["recheck-cwd-census.py", "--root", root2n, "--lane", root2n])
+File: .ufo/waves/round-82/c2/entry-gate.py
+    33: entry-gate.py --entry FILE --manifest FILE --source SID --lane DIR
+    191: ap.add_argument("--lane")
+    197: print("entry-gate: --entry, --manifest, --source and --lane are required", file=sys.stderr)
+File: .ufo/waves/round-82/controls/c1-forgeries-r82.py
+    27: Usage: c1-forgeries-r82.py --lane DIR --work DIR
+    161: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-82/controls/c1-forgeries-r82.txt
+    6: $ python3 -B .ufo/waves/round-82/controls/c1-forgeries-r82.py --lane <lane> --work <scratch>
+File: .ufo/waves/round-83/c1/recheck-cwd-census.py
+    8: noprefix          the value does not start with `cd <LANE> && ` (LANE = --lane)
+    30: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+    65: named message, --lane distinct from --root is honoured) and output-lines (the
+    371: out2n, ret2n = capture(main, ["recheck-cwd-census.py", "--root", root2n, "--lane", root2n])
+File: .ufo/waves/round-83/c2/entry-gate.py
+    33: entry-gate.py --entry FILE --manifest FILE --source SID --lane DIR
+    230: ap.add_argument("--lane")
+    236: print("entry-gate: --entry, --manifest, --source and --lane are required", file=sys.stderr)
+File: .ufo/waves/round-83/controls/c1-forgeries-r83.py
+    27: Usage: c1-forgeries-r82.py --lane DIR --work DIR
+    224: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-83/controls/c1-stub-r83.py
+    9: Usage: c1-stub-r83.py --lane DIR --out FILE
+    21: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-83/controls/c1-stub-r83.txt
+    2: $ python3 -B .ufo/waves/round-83/controls/c1-stub-r83.py --lane . --out <scratch>/home/recheck-cwd-census.py
+File: .ufo/waves/round-83/controls/c2-controls-r83.py
+    15: Usage: c2-controls-r83.py --lane DIR --work DIR
+    67: "--manifest", manifest, "--source", sid, "--lane", lane],
+    75: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-83/controls/c2-g6-controls-r83.txt
+    2: $ python3 -B .ufo/waves/round-83/controls/c2-controls-r83.py --lane . --work <scratch>
+File: .ufo/waves/round-84/c1/recheck-cwd-census.py
+    8: noprefix          the value does not start with `cd <LANE> && ` (LANE = --lane)
+    30: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+    66: named message, --lane distinct from --root is honoured) and output-lines (the
+    92: --lane exits 2 with the usage line and no exception, a relative --root is reported absolute,
+File: .ufo/waves/round-84/controls/c1-counter-mutants-r84.py
+    16: Usage: c1-counter-mutants-r84.py --lane DIR --work DIR
+    37: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-84/controls/c1-counter-mutants-r84.txt
+    2: $ python3 -B .ufo/waves/round-84/controls/c1-counter-mutants-r84.py --lane . --work <scratch>
+File: .ufo/waves/round-84/controls/c1-stub-r84.py
+    9: Usage: c1-stub-r84.py --lane DIR --out FILE
+    23: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-84/controls/c1-stub-r84.txt
+    2: $ python3 -B .ufo/waves/round-84/controls/c1-stub-r84.py --lane . --out <scratch>/home/recheck-cwd-census.py
+File: .ufo/waves/round-84/controls/c2-draft-v0-r84.txt
+    10: $ python3 -B .ufo/waves/round-83/c2/entry-gate.py --entry <v0> --manifest corpus/source-snapshots/round-84/manifest.json --source S118 --lane <lane>
+File: .ufo/waves/round-85/c1/skill-meter.py
+    5: python3 skill-meter.py --lane LANE --base BASE_SKILL --after AFTER_SKILL \
+    7: python3 skill-meter.py --lane LANE --measure SKILL_FILE
+    67: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-85/c2/e2e-check.py
+    5: python3 e2e-check.py --lane LANE --pkg PKG_DIR [--work DIR]
+    6: python3 e2e-check.py --lane LANE --pricing-only REPORT_MD
+    161: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-85/controls/c1-controls-r85.sh
+    12: M="python3 -B $W/c1/skill-meter.py --lane $L --work $S/w"
+File: .ufo/waves/round-85/controls/c2-controls-r85.sh
+    7: C="python3 -B $W/c2/e2e-check.py --lane $L"
+File: .ufo/waves/round-86/c1/build-map.py
+    12: Usage: build-map.py --lane LANE --rev REV --out MAP.json --excluded EXCL.json --work DIR
+    30: for f in ("--lane", "--rev", "--out", "--excluded", "--work"):
+File: .ufo/waves/round-86/c1/knowledge-meter.py
+    5: python3 knowledge-meter.py --lane LANE --base-rev REV --map MAP --target NUM/DEN \
+    7: python3 knowledge-meter.py --lane LANE --measure-rev REV [--work DIR]
+    97: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-86/c2/e2e-check.py
+    5: python3 e2e-check.py --lane LANE --pkg PKG_DIR
+    6: python3 e2e-check.py --lane LANE --pricing-only REPORT_MD
+    214: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-86/controls/c1-controls-r86.sh
+    16: meter() { python3 -B $W/c1/knowledge-meter.py --lane "$1" --base-rev $B --map "${2:-$MAP}" --target $T --map-sha256 "${3:-$MSHA}" --work "$S/w"; echo "rc=$?"; }
+File: .ufo/waves/round-86/controls/c2-controls-r86.sh
+    8: C="python3 -B $W/c2/e2e-check.py --lane $L"
+File: .ufo/waves/round-87/c1/build-map.py
+    13: Usage: build-map.py --lane LANE --rev REV --out MAP.json --excluded EXCL.json --work DIR
+    31: for f in ("--lane", "--rev", "--out", "--excluded", "--work"):
+File: .ufo/waves/round-87/c1/knowledge-meter.py
+    6: python3 knowledge-meter.py --lane LANE --base-rev REV --map MAP --target NUM/DEN \
+    8: python3 knowledge-meter.py --lane LANE --measure-rev REV [--work DIR]
+    107: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-87/c2/candidate/capture-secret-scan.py
+    5: python3 corpus/instruments/capture-secret-scan.py --lane LANE --rev REV [--allow TSV]
+    239: ap.add_argument("--lane")
+File: .ufo/waves/round-87/c2/capability-check.py
+    5: python3 capability-check.py --lane LANE --rev REV --work DIR \
+    117: ap.add_argument("--lane", required=True)
+    164: rc, hits, _, _ = run_instr(inst, "--lane", lane, "--rev", HISTORY_REV)
+    172: rc, hits, summ, _ = run_instr(inst, "--lane", lane, "--rev", rev)
+File: .ufo/waves/round-87/controls/c1-controls-r87.sh
+    17: meter() { python3 -B $W/c1/knowledge-meter.py --lane "$1" --base-rev $B --map "${2:-$MAP}" --target $T --map-sha256 "${3:-$MSHA}" --work "$S/w"; echo "rc=$?"; }
+File: .ufo/waves/round-87/controls/c2-controls-r87.sh
+    16: ROW='| capture-secret-scan | Scans captured evidence (source snapshots, seat receipts, live- captures) at a git revision or a file list for credential shapes before commit: the claim-package gate patterns plus AWS STS session tokens and AWS key ids, with a digest-bound allowlist | `python3 -B .ufo/waves/round-87/c2/capability-check.py --lane . --rev master --work <scratch>` (K1-K5 pass) | 87 |'
+    39: check() { python3 -B $W/c2/capability-check.py --lane "$1" --rev HEAD --work "$S/w" --instrument-sha256 "${2:-$ISHA}" --gate-sha256 "$GSHA"; echo "rc=$?"; }
+File: .ufo/waves/round-87/controls/capture-scan-r87.txt
+    9: $ capture-secret-scan.py --lane . --rev cd1f568a (base) --allow candidate
+File: .ufo/waves/round-88/c1/build-map.py
+    15: Usage: build-map.py --lane LANE --rev REV --out MAP.json --excluded EXCL.json --work DIR
+    31: for f in ("--lane", "--rev", "--out", "--excluded", "--work"):
+File: .ufo/waves/round-88/c1/knowledge-meter.py
+    6: python3 knowledge-meter.py --lane LANE --base-rev REV --map MAP --target NUM/DEN \
+    8: python3 knowledge-meter.py --lane LANE --measure-rev REV [--work DIR]
+    119: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-88/c2/candidate/capture-secret-scan.py
+    5: python3 corpus/instruments/capture-secret-scan.py --lane LANE --rev REV [--allow TSV]
+    282: ap.add_argument("--lane")
+File: .ufo/waves/round-88/c2/candidate/scorecard-row.txt
+    1: | capture-secret-scan | Scans captured evidence (source snapshots, practice-package evidence under `corpus/practice/*/evidence/`, seat receipts, `live-*` captures) at a git revision or a file list for credential shapes before commit: the claim-package gate patterns, AWS STS session tokens and AWS key ids (round 87), and cloud signed-URL signatures `gcs-signed-url-signature` (Cloud Storage V4, S126) and `azure-sas-signature` (Azure Storage SAS, S127) (round 88), with a digest-bound allowlist | `python3 -B .ufo/waves/round-87/c2/capability-check.py --lane . --rev master --work <scratch>` (K1-K5, round 87); `python3 -B .ufo/waves/round-88/c2/capability-check.py --lane . --rev master --work <scratch>` (K1-K6, round 88) | 87 |
+File: .ufo/waves/round-88/c2/capability-check.py
+    6: python3 capability-check.py --lane LANE --rev REV --work DIR \
+    153: ap.add_argument("--lane", required=True)
+    200: rc, hits, _, _ = run_instr(inst, "--lane", lane, "--rev", HISTORY_REV)
+    208: rc, hits, summ, _ = run_instr(inst, "--lane", lane, "--rev", rev)
+File: .ufo/waves/round-88/controls/c1-controls-r88.sh
+    16: meter() { python3 -B $W/c1/knowledge-meter.py --lane "$1" --base-rev $B --map "${2:-$MAP}" --target $T --map-sha256 "${3:-$MSHA}" --work "$S/w"; echo "rc=$?"; }
+File: .ufo/waves/round-88/controls/c2-controls-r88.sh
+    41: count() { python3 -B $W/c2/capability-check.py --lane "$S/$1" --rev HEAD --work "$S/w" "${@:2}"; echo "rc=$?"; }
+    43: python3 -B $W/c2/capability-check.py --lane $L --rev $B --work "$S/w" --instrument-sha256 $ISHA --gate-sha256 $GSHA; echo "rc=$?"
+File: .ufo/waves/round-89/c1/knowledge-meter.py
+    8: python3 knowledge-meter.py --lane LANE --base-rev REV --after-rev REV --map MAP \
+    10: python3 knowledge-meter.py --lane LANE --measure-rev REV [--work DIR]
+    104: ap.add_argument("--lane", required=True)
+File: .ufo/waves/round-89/c2/candidate/capture-secret-scan.py
+    5: python3 corpus/instruments/capture-secret-scan.py --lane LANE --rev REV [--allow TSV]
+    320: ap.add_argument("--lane")
+File: .ufo/waves/round-89/c2/candidate/scorecard-row.txt
+    1: | capture-secret-scan | Scans captured evidence (source snapshots, practice-package evidence under `corpus/practice/*/evidence/`, seat receipts, `live-*` captures) at a git revision or a file list for credential shapes before commit: the claim-package gate patterns, AWS STS session tokens and AWS key ids (round 87), and cloud signed-URL signatures `gcs-signed-url-signature` (Cloud Storage V4, S126) and `azure-sas-signature` (Azure Storage SAS, S127) (round 88), and `cloudfront-signed-url-signature` (Amazon CloudFront signed URLs, canned and custom policy, S128, S130) plus Azure SAS matches that start after a JSON-escaped `\u0026` separator in any parameter position (round 89), with a digest-bound allowlist | `python3 -B .ufo/waves/round-87/c2/capability-check.py --lane . --rev master --work <scratch>` (K1-K5, round 87); `python3 -B .ufo/waves/round-88/c2/capability-check.py --lane . --rev master --work <scratch>` (K1-K6, round 88); `python3 -B .ufo/waves/round-89/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K8, round 89; the pins hold until the instrument next changes) | 87 |
+File: .ufo/waves/round-89/c2/capability-check.py
+    7: python3 capability-check.py --lane LANE --rev REV --work DIR \
+    235: ap.add_argument("--lane", required=True)
+    284: rc, hits, _, _ = run_instr(inst, "--lane", lane, "--rev", HISTORY_REV)
+    292: rc, hits, summ, _ = run_instr(inst, "--lane", lane, "--rev", rev)
+File: .ufo/waves/round-89/controls/c1-controls-r89.sh
+    20: meter() { local d=$1; shift; python3 -B $W/c1/knowledge-meter.py --lane "$S/$d" --base-rev $B --work "$S/w" --target $T "$@"; echo "rc=$?"; }
+File: .ufo/waves/round-89/controls/c2-controls-r89.sh
+    47: count() { python3 -B $W/c2/capability-check.py --lane "$S/$1" --rev HEAD --work "$S/w" --seed $SEED "${@:2}"; echo "rc=$?"; }
+    49: python3 -B $W/c2/capability-check.py --lane $L --rev $B --work "$S/w" --seed $SEED --instrument-sha256 $ISHA --gate-sha256 $GSHA; echo "rc=$?"
+    51: echo "== control positive, second seed 1 (expected pass)"; python3 -B $W/c2/capability-check.py --lane "$S/pos" --rev HEAD --work "$S/w" --seed 1 --instrument-sha256 $ISHA --gate-sha256 $GSHA; echo "rc=$?"
+File: corpus/instruments/capture-secret-scan.py
+    5: python3 corpus/instruments/capture-secret-scan.py --lane LANE --rev REV [--allow TSV]
+    320: ap.add_argument("--lane")
+File: corpus/instruments/census-freshness-check.py
+    7: python corpus/instruments/census-freshness-check.py --selftest [--lane-root DIR]
+    162: ap.add_argument("--lane-root", dest="lane_root", default=None,
+File: corpus/instruments/r36-closure.sh
+    31: #   bash corpus/instruments/r36-closure.sh --export-ref <hash> [--lane DIR]
+    37: #        [--lane DIR] [--work DIR] [--scratch-root DIR]
+    175: --lane)
+    176: [ $# -ge 2 ] || die '--lane needs a directory'
+File: corpus/instruments/r37-closure.sh
+    34: #   bash corpus/instruments/r37-closure.sh --export-ref <hash> [--lane DIR]
+    40: #        [--lane DIR] [--work DIR] [--scratch-root DIR]
+    244: --lane)
+    245: [ $# -ge 2 ] || die '--lane needs a directory'
+File: corpus/instruments/r38-closure.sh
+    29: #   bash corpus/instruments/r38-closure.sh --export-ref <hash> [--lane DIR]
+    35: #        [--lane DIR] [--work DIR] [--scratch-root DIR]
+    117: #       `--export-ref <ref> --lane <lane> --work <work>/r37`, ends with
+    147: #     worktree/HEAD/scratch limbs) against --lane; a dirty lane or a stale HEAD
+File: corpus/instruments/r39-closure.sh
+    35: #   bash corpus/instruments/r39-closure.sh --export-ref <hash> [--lane DIR]
+    42: #        [--lane DIR] [--work DIR] [--scratch-root DIR]
+    151: #       `--export-ref <ref> --lane <lane> --work <work>/r37` and must end with
+    186: #     worktree/HEAD/scratch limbs) against --lane: at the real judged head the
+File: corpus/instruments/r40-closure.sh
+    60: #   bash corpus/instruments/r40-closure.sh --export-ref <hash> [--lane DIR]
+    67: #        [--lane DIR] [--work DIR] [--scratch-root DIR]
+    77: #        [--lane DIR] [--work DIR] [--scratch-root DIR]
+    244: --lane)
+File: corpus/instruments/r41-closure.sh
+    76: #   bash corpus/instruments/r41-closure.sh --export-ref <hash> [--lane DIR]
+    84: #        [--lane DIR] [--work DIR] [--scratch-root DIR]
+    97: #        [--lane DIR] [--work DIR] [--scratch-root DIR]
+    312: --lane)
+File: corpus/instruments/r42-closure.sh
+    4: #   r42-closure.sh --export-ref <hash> [--lane DIR] [--work DIR]
+    46: --lane)         [ $# -ge 2 ] || exit 2; LANE="$2"; shift 2 ;;
+    1670: p = subprocess.run(["bash", SELF, "--export-ref", ref, "--lane", LANE,
+File: corpus/instruments/r43-closure.sh
+    4: #   r43-closure.sh --export-ref <hash> [--lane DIR] [--work DIR]
+    62: --lane) LANE="${2:-}"; shift 2 ;;
+    115: bash "$EXPORT/$CARRIED_REL" --export-ref "$FULL" --lane "$LANE" \
+File: corpus/instruments/r43-limbs/k17-claims-before.sh
+    90: #   bash ExecK17ClaimsBefore.sh --export-ref <hash> [--lane DIR] [--work DIR] [--selftest]
+    556: --lane)       K17_LANE=$2; shift 2 ;;
+File: corpus/instruments/r45-counters-selftest-c1.py
+    9: round-45/{S071.txt,S072.txt,manifest.json} copied byte-for-byte from --lane, an
+    40: python3 r45-counters-selftest-c1.py [--lane DIR] [--base DIR] [--counter PATH] [--only ID,ID] [--jobs N] [--keep]
+    43: --lane may be an export of the integration commit; the counter, snapshots, claims.json and the
+    775: ap.add_argument("--lane", default=LANE)
+File: corpus/instruments/r45-counters-selftest-c2.py
+    16: the first two are the real captures' hashes (computed here from --lane), the third is the hash of the synthetic 63 stub names.
+    26: Usage: python3 r45-counters-selftest-c2.py [--lane DIR] [--counter PATH] [--do-nothing-control] [--keep]
+    27: --lane    the tree whose corpus/instruments/r45-c2-gate.py and round-45 captures are used (default: the lane; pass an EXPORT)
+    29: READ-ONLY on --lane; scratch only under $HYAKU_SCRATCH/kasegi-r45/selftest-c2/.
+File: corpus/instruments/r46-counters-selftest-c1.py
+    40: python3 r46-counters-selftest-c1.py [--lane DIR] [--pure DIR] [--counter FILE] [--work DIR] [--jobs N] [--keep]
+    41: --lane DIR   a lane export whose corpus/instruments/r46-c1-gate.py is the counter under test (default: the live lane)
+    648: ap.add_argument("--lane", default=LANE)
+File: corpus/instruments/r46-counters-selftest-c2.py
+    15: corpus/source-snapshots/round-46/{S073.txt,manifest.json}   byte copies from --lane
+    37: Usage: python3 r46-counters-selftest-c2.py [--lane DIR] [--pure DIR] [--counter PATH] [--do-nothing-control] [--keep] [-v]
+    38: READ-ONLY on --lane and --pure; scratch only under $HYAKU_SCRATCH/kasegi-r46/R46W2ExecSelftestC2/ (removed on exit unless --keep).
+    458: ap.add_argument("--lane", default=LANE)
+File: corpus/instruments/r46-landing-gate.py
+    19: --pre-report  --lane DIR --branch master --round N [--jj-lane PATH]
+    27: --post-report --lane DIR --branch master --report PATH --fleet DIR [--tip REV]
+    596: p = subprocess.run([sys.executable, os.path.abspath(__file__), "--post-report", "--lane", ctx["lane"],
+    617: ap.add_argument("--lane")
+File: corpus/instruments/r46-mutbat.py
+    258: "--dir", d, "--lane", view], check=True, timeout=900)
+    263: "--dir", d, "--lane", view], check=True, timeout=900)
+    301: if selftest and ("--counter" in flags or "--root" in flags or "--lane" in flags):
+File: corpus/instruments/r46-selftest-f29.py
+    38: python3 r46-selftest-f29.py [--lane DIR] [--counter PATH] [--work DIR] [--pure DIR]
+    40: READ-ONLY on --lane and --pure; scratch only under --work (default
+    802: ap.add_argument("--lane", default=LANE_DEFAULT)
+File: corpus/instruments/recheck-cwd-census.py
+    8: noprefix          the value does not start with `cd <LANE> && ` (LANE = --lane)
+    30: recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
+    66: named message, --lane distinct from --root is honoured) and output-lines (the
+    92: --lane exits 2 with the usage line and no exception, a relative --root is reported absolute,
+File: corpus/instruments/wave-registry.py
+    14: python3 corpus/instruments/wave-registry.py --results RESULTS.json --out PATH --lane kasegi
+    19: --lane     lane name, recorded in the `lane=` field.
+    48: ap.add_argument("--lane", default="kasegi")

@@ -1,0 +1,44 @@
+# Item 2b - C2 instrument behaviour guard (independent of the frozen counter). Date: 2026-11-07
+Landed bytes: sha256 0630d32b98d40bd07c4716b0062babfaa1a8cee6b8bb4103c582b71d41d53dbf (corpus/instruments/capture-source.py)
+Candidate bytes: sha256 0630d32b... (c2/candidate/capture-source.py; claim pin match)
+All runs: loopback HTTP server on 127.0.0.1 served from scratch; TMPDIR=scratch; no lane writes.
+
+## A. selftest (landed)
+$ TMPDIR=scratch python3 -B corpus/instruments/capture-source.py --selftest
+selftest normalize=ok deterministic=ok
+INTAKE-REFUSED SELFTEST shape=credential line=1 out=<scratch>/out.txt written=no
+INTAKE-REFUSED SELFTEST shape=aws-sts-session-token line=1 out=<scratch>/out.txt written=no
+selftest intake-refuse=ok existing-kept=ok ; rc=0
+(the value is never printed; two shapes match one planted line, one line per shape)
+
+## B. clean capture through the landed gate
+clean HTML (26-byte snapshot): rc=0, status=200, file written, sha256 line printed
+same input through the BASE instrument (6088c3eb blob): rc=0, snapshot BYTE-EQUAL to the landed run -> gate does not alter clean bytes
+
+## C. credential capture through the landed gate
+fixture carries one X-Amz-Security-Token-style line (fake value, scratch only): rc=3, file NOT created,
+2 INTAKE-REFUSED lines (shapes credential + aws-sts-session-token), the value does not appear in stdout.
+same fixture with an existing --out holding b'previous\n': rc=3 and the file stays byte-identical (sha before == sha after).
+same fixture through the BASE instrument: rc=0 and the file IS written (do-nothing control).
+
+## D. named limit measured: a bare partner-pattern token is not a shape
+fixture: clean HTML with a bare 'ghp_'-prefixed 36-char alphanumeric token (fake, scratch only), no keyword/separator.
+landed gate: rc=0, file written, 0 INTAKE-REFUSED; the snapshot contains the value.
+scanner shapes at the landing: private-key, op-ref, bearer, authorization, credential, session-cookie,
+aws-sts-session-token, aws-access-key-id, gcs-signed-url-signature, azure-sas-signature, cloudfront-signed-url-signature.
+A keyworded form ('token: <40 chars>') DOES hit shape=credential; a bare token does not.
+This is the README's stated limit ('the gate sees only what the scanner's shapes name'), but it is the
+same class S131 documents (GitHub partner patterns), so the L1 should record it as a named limit, not as coverage.
+
+## E. cost (gate scans the converted text with 11 shapes)
+8 MB benign text: 0.83 s; 1 MB '&aa=' repetition: 0.08 s; 1 MB 'sig='+'A'*40 repetition: 0.48 s. No pathological case found.
+Capture cap is 32 MB, so the gate cannot turn a capture into an unbounded scan.
+
+## F. allowlist path binding: a legitimate re-capture at a new round path is refused
+$ scan_bytes(committed snapshot bytes, patterns, path, allow) with allowlist = corpus/instruments/capture-secret-allow.tsv (19 data rows)
+round-89/S128.txt at 'corpus/source-snapshots/round-89/S128.txt' -> found=0 (row matches)
+round-89/S128.txt at 'corpus/source-snapshots/round-91/S128.txt' -> found=1 (cloudfront-signed-url-signature)
+round-87/S124.txt at its own path -> found=0 ; at a round-91 path -> found=1 (authorization)
+=> the 180d recheck of these pages cannot re-capture into a new round directory without adding a new allow row
+   with a reason. That is the S131 design (bypass per path with a stated reason), but it is a step the recheck
+   procedure must name; the README does not say the row is per-path-and-per-bytes rather than per-source.

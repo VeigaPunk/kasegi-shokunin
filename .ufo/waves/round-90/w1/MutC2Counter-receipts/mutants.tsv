@@ -1,0 +1,31 @@
+mutant	limb	description	sha256	anchor_count	old	new
+M01	G0	drop missing-shapes conjunct	ee56e26cabbc45a0b6d493610dca0f5a111a921133f9b47fe4c654c3cb5aeb53	1	("G0", not missing and not extra,	("G0", not extra,
+M02	G0	drop extra-shapes conjunct	7f6d2315f0a02d397c05d2c92f87f10d56b0939866e7065b458a194787cabb46	1	("G0", not missing and not extra,	("G0", not missing,
+M03	G1	drop rc==3 conjunct	aedfe509ad6679c0c96f07167351b48dc604634a9fd1113d041d1b86dce7c6c7	1	ok = rc == 3 and not os.path.exists(out) and named and not leak	ok = not os.path.exists(out) and named and not leak
+M04	G1	drop not-written conjunct	e0c3b0efcb9bfb46104782e0be58e30951023f58284c9d1d666f7748483ea7dc	1	ok = rc == 3 and not os.path.exists(out) and named and not leak	ok = rc == 3 and named and not leak
+M05	G1	drop named-shape conjunct	0ad72f9e55934068471b88e558207ab4294a9cbf64e023ba679b112b226a3836	1	ok = rc == 3 and not os.path.exists(out) and named and not leak	ok = rc == 3 and not os.path.exists(out) and not leak
+M06	G1	drop leak conjunct entirely	7ee2c5ea5f02aabe18ae0c45a17ca18573bd3572e4188fc7d1a3174c13d97746	1	ok = rc == 3 and not os.path.exists(out) and named and not leak	ok = rc == 3 and not os.path.exists(out) and named
+M07	G1	leak: stderr only (drop stdout)	32cd41d468ffa42294ddf74076b5d193faa2ab28bbef18a238c90ba17fa56be0	1	leak = bool(sec) and (sec in so or sec in se)	leak = bool(sec) and sec in se
+M08	G1	leak: stdout only (drop stderr)	0bbecad38b4341507f23278dc4d901b7c9c9a76ad250547e48eb79187248d660	1	leak = bool(sec) and (sec in so or sec in se)	leak = bool(sec) and sec in so
+M09	G1	named: drop trailing-space anchor	42002b2c35f97a2735063106872b0f57b4acc693ae614d9c54a2e7ba2a509c2e	1	("shape=%s " % shape) in l + " "	("shape=%s" % shape) in l
+M10	G1	named: accept any INTAKE-REFUSED line (wrong shape passes)	4a41e61e23d0a9332b6ef681b508f9020b52e07e55159d13d85df89f4a0a7e8a	1	named = any(l.startswith("INTAKE-REFUSED") and ("shape=%s " % shape) in l + " " for l in so.splitlines())	named = any(l.startswith("INTAKE-REFUSED") for l in so.splitlines())
+M11	G2	drop kept conjunct	e5d4ab7d749ed023d98e748b57b025f761257297da2d6c055267ef0af66c684e	1	limbs.append(("G2", rc == 3 and kept,	limbs.append(("G2", rc == 3,
+M12	G2	drop rc==3 conjunct	7f251b329fde7c8485756b220d3d4f33d947fa74aea1291d478a708fe271bf5a	1	limbs.append(("G2", rc == 3 and kept,	limbs.append(("G2", kept,
+M13	G2	kept: existence only, drop byte equality	79f83014685a23462da79f31794b80ad6695dc897d25bae7c7c91e00f1c22a71	1	kept = os.path.exists(out) and open(out, "rb").read() == prev	kept = os.path.exists(out)
+M14	G3	drop instrument rc==0 conjunct	7f5a21c891440bc8be9fbcdc37916977108752386285bcf30a2d010392a71cc9	1	if not (r1 == 0 and r2 == 0 and same):	if not (r2 == 0 and same):
+M15	G3	drop base rc==0 conjunct	e1a10f2c08a853585e7ab1e4ac5940d980b99ee0f1b19b5cebd94023f4854eb4	1	if not (r1 == 0 and r2 == 0 and same):	if not (r1 == 0 and same):
+M16	G3	drop byte-equality conjunct	c091166cd4f4cae22e902d1f7b97e41314b68d0ae2b8f87f07486d44e4d276ba	1	if not (r1 == 0 and r2 == 0 and same):	if not (r1 == 0 and r2 == 0):
+M17	G3	same: existence only, drop base byte comparison	a98496eac675e8c2f01440d49d1772ac29eb9e0e55043aba6b6cb145c4e808c3	1	same = os.path.exists(o1) and os.path.exists(o2) and open(o1, "rb").read() == open(o2, "rb").read()	same = os.path.exists(o1) and os.path.exists(o2)
+M18	G4	drop allowed rc==0 conjunct	32de98f20c7171a7c64fcbacd727c84167049ff33535782cb0cbce5e859cddf0	1	g4 = ra == 0 and allowed_written and rb_ == 3	g4 = allowed_written and rb_ == 3
+M19	G4	drop allowed-written conjunct	7075eaf9e1443d92b5e56ae580d23eef0669b0b786fd394d379f334722e936c0	1	g4 = ra == 0 and allowed_written and rb_ == 3	g4 = ra == 0 and rb_ == 3
+M20	G4	drop other-path rc==3 conjunct	c77f84a9efee4143b6e49110e72d66f2caef6273e0fee3fc85ea1bad15801852	1	and rb_ == 3 and not os.path.exists(o2)	and not os.path.exists(o2)
+M21	G4	drop other-path not-written conjunct	ea08a20cbff2015c9e2d156c638c3f21398dd8a5b3012b3b3c6c1e8e990cadc6	1	and not os.path.exists(o2) and rcs == 3	and rcs == 3
+M22	G4	drop never-allowed rc==3 conjunct	dafe5d34c916c1d75ec38c7d1e05e34db0b625424ceb0e33a77bca3200cb036d	1	and rcs == 3 and not os.path.exists(o3)	and not os.path.exists(o3)
+M23	G4	drop never-allowed not-written conjunct	b829e0441930439d30373be6fdeeadfd3db0334f9f600db290f51a4309aeab7f	1	 and not os.path.exists(o3)	
+M24	G4	allowlist digest not bound to matched bytes (0*64)	facd94c1981f7d8044e7417d8f5daa478bf3f8114c07b1a50e11a5cc6aaeed42	1	dig = hashlib.sha256(m.group(0)).hexdigest()	dig = "0" * 64
+M25	G5	drop rc==3 conjunct	d5f3ed5ae3cddbcc87e5f0f2b1168292e887df9a033fa22fa16bd746bdca489e	1	("G5", r5 == 3 and not os.path.exists(o5),	("G5", not os.path.exists(o5),
+M26	G5	drop not-written conjunct	09283367088f6723d017cc7a4080b51830bc24c5ce9fa094180ba5fa52c9e0f4	1	("G5", r5 == 3 and not os.path.exists(o5),	("G5", r5 == 3,
+M27	G5	drop G5 limb entirely	f35bc22c8c02b61f253ae2cce8cdb1a6d541196624c3c0187595f9554d8a5618	1	("G5", r5 == 3 and not os.path.exists(o5),	("G5", True,
+M28	G6	drop G6 limb entirely	5ca86e71b0905e6b6d445a28f798c663a2cb620faa90b3a135ed2702e9768fae	1	("G6", r6 == 0,	("G6", True,
+M29	P	drop P limb	8afe83ee15d3e46c80ee1809439e51142df7d31b9b2bb0cedb18ab8d977a0f2c	1	("P", got == a.instrument_sha256.lower(),	("P", True,
+M30	P	drop sha256 case folding	15f4ad3730f2e99383ccbf02796ddf2c5e4e6187fafba250ebeab28945ef2516	1	got == a.instrument_sha256.lower()	got == a.instrument_sha256

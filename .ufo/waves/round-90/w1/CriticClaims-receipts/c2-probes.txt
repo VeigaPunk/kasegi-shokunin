@@ -1,0 +1,28 @@
+$ python3 -B /fast/scratch/hyaku/kasegi-r90/CriticClaims/probe_http.py
+== A multi-line line number ==
+rc=3 written=False value_echo=False
+stdout: INTAKE-REFUSED A shape=credential line=3 out=corpus/source-snapshots/round-90/A.txt written=no
+INTAKE-REFUSED A shape=aws-sts-session-token line=3 out=corpus/source-snapshots/round-90/A.txt written=no
+== B text kind ==
+rc=3 written=False shapes=['shape=credential', 'shape=aws-sts-session-token']
+== C malformed allowlist ==
+rc=3 written=False gates=['shape=gate-error:OSError']
+== D digest mismatch ==
+rc=3 written=False shapes=['shape=credential']
+== E missing allowlist ==
+credential input: rc=3 written=False
+clean input: rc=0 written=True
+== F broken scanner ==
+rc=3 written=False gates=['shape=gate-error:SyntaxError']
+== G large prefix (1 MiB) ==
+rc=3 written=False shapes=['shape=credential', 'shape=aws-sts-session-token']
+== H committed allowlist binds one path ==
+at allowed path: rc=0 written=True bytes_eq=True
+at other path: rc=3 written=False shapes=['shape=cloudfront-signed-url-signature']
+== I script-stripped credential ==
+rc=0 written=True
+== J documented example key (scanner hardcoded allow) ==
+rc=0 written=True shapes=[]
+== K other key id refused ==
+rc=3 written=False shapes=['shape=aws-access-key-id']
+rc=0

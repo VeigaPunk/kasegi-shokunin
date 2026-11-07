@@ -1,0 +1,27 @@
+mutant	pristine_line	mutation	mutant_sha256	failed_behavioral_limbs	verdict	counter_seed	confirm_seed	confirm_limbs
+M01-gate-after-write	L135	intake gate moved after makedirs/open/write (plan moved below the write)	dafb081dd3cf8cdfb8d7d6dce54ed03cf0f7b94c2c71e4d55a2e7b5b40f521e9	G1,G2,G4,G5,G6	KILLED	9090	-	-
+M02-refusal-falls-through	L138	refusal branch prints but no longer returns; capture falls through to write	932ac8f5b54484fbbc4558848c239e675a905685b3c4991fd698d4be8e746f4b	G1,G2,G4,G5,G6	KILLED	9090	-	-
+M03-refuse-only-multi-shape	L136	refuse only when >1 shape found	be0140e8c400457682818755be9a0a9abdba2de16760272c6abb3290e4507ffb	G1,G4,G5	KILLED	9090	-	-
+M04-refusal-echoes-value	L138	INTAKE-REFUSED line appends the converted data (%r)	7c46430b31fce5f543749aece317cddc6224b5c804c2222f5da6aa8957dc72ab	G1	KILLED	9090	-	-
+M05-refusal-omits-shape	L138	INTAKE-REFUSED line prints shape=unknown instead of the shape	b622f1c59feed9765341160ea1b63ff4e93eaf5794bc5f0d36991f5fbe10bada	G1	KILLED	9090	-	-
+M06-gate-first-256-bytes	L135	gate scans data[:256] instead of the whole converted body	e5b5bd6ba5e029868036d69011197c69aebd5146e61aed166c4b6383f9e347fa	none	SURVIVED	9090	2133321417	none
+M07-gate-fails-open	L122	intake_gate exception handler returns [] (fail open)	824644dc870230244fae1a48dee6d8fddd73c1688957b1416ee7762fff8e2e38	G4,G5	KILLED	9090	-	-
+M08-gate-except-import-only	L122	intake_gate except narrowed to ImportError (scanner removal escapes)	732b91cd0b2892f07eee39cf8a050afb59432d2b2cffbcbe9f7cf32eb55c0cd6	G4,G5	KILLED	9090	-	-
+M09-gate-returns-empty	L121	intake_gate returns [] instead of the found list	f1c38945e05cbf97cc4ea0589da962dd12668ec73d967a7c529156bdbc9499b6	G1,G2,G4,G6	KILLED	9090	-	-
+M10-gate-ignores-allowlist	L119	allowlist load replaced by {}	579ffca9c8b3e8c73b1ec350b7bd5a49d3912dfdf47774641fa4084021e7add1	G3,G4	KILLED	9090	-	-
+M11-gate-scans-abs-path	L120	scan_bytes path argument is abspath(out), bypassing lane_rel	1a2bbf9ab3d5c4afb496128c0f8ef4a964c2fca73d9edc39984f3f5283107033	G3,G4	KILLED	9090	-	-
+M12-lane-rel-always-abs	L112	lane_rel always returns the absolute path	50c43297feeee4e544e08630f7b1833a8caaf821b327dcb61ea74b77b1ab2479	G3,G4	KILLED	9090	-	-
+M13-lane-rel-from-cwd	L111	lane_rel relpath base is os.getcwd(), not LANE	68cfef2f045b03853bcba11a994153563253e03fc4927638164cd3572f1f1006	none	SURVIVED	9090	1124192498	none
+M14-lane-root-one-level-short	L48	LANE resolved one directory level short	856242dade01e55abfdebe1c166c801285ae7b4fb83b9c1aeaa8619a14be6ea8	G3,G4	KILLED	9090	-	-
+M15-lane-rel-no-outside-guard	L112	lane_rel returns rel even when it starts with ..	50eefa04f2bc1b068796ae341ff2730d1d2a4647c907483d882119e0325e661e	none	SURVIVED	9090	1954885495	none
+M16-main-refusal-rc-zero	L192	main returns 0 instead of REFUSED_RC on refusal	9d34f491de17b41493232adc8ae31a6c3c4d5671fbdd99d906a0c7ab7ea84197	G1,G2,G4,G5	KILLED	9090	-	-
+M17-refused-rc-one	L49	REFUSED_RC changed 3 -> 1	614d6909610b7d63668c12486f961967ed18ae55c154659e98b8c72b083219a0	G1,G2,G4,G5	KILLED	9090	-	-
+M18-main-check-inverted	L192	main tests capture(...) is not None for the refused branch	13653173aa794e5fda512c5387c9a53a1576279ce3e3f0aaa4463a78fc28c1b5	G1,G2,G3,G4,G5	KILLED	9090	-	-
+M19-selftest-always-zero	L174	selftest returns 0 unconditionally	caed29ce5e015d9677c2b1f23c8fb472a5932b4f55dbfa094e0730f43ec0a12b	none	SURVIVED	9090	1304155116	none
+M20-selftest-assumes-refusal	L171	selftest refusal exercise replaced by refused=True (capture call removed)	7939db794c4a492d6ea48dc4bda230c293441b2d3a22580c6b0e4a27f8eb06ea	none	SURVIVED	9090	2110582124	none
+M21-selftest-refusal-inverted	L171	selftest expects capture(...) is not None as refusal	04e5e5f10c889eb314a8dc2c2b6819c5241da4eede376f2116d7a767cde16d04	G6	KILLED	9090	-	-
+M22-default-allow-path-dropped	L119	default allowlist joined path dropped; load_allow(None)	4518d1ffe422cbf5ecfdd13317d7029003ca9dc6cdc4fa85701ad848f84dc7e7	G1,G3	KILLED	9090	-	-
+M23-gate-error-treated-as-clean	L136	gate-error entries filtered out before the refusal test	445712ea9c048c2e5da5439c43fed8259510cdaafede078d54f7c6a2641dff0d	G4,G5	KILLED	9090	-	-
+M24-gate-skips-text-kind	L135	intake gate skipped when --kind text	b6d56f5d2264c02f4ca20078bbf0bd98420f57f7b33fc31005c8a863ccf8a3f2	none	SURVIVED	9090	146634025	none
+M25-gate-first-shape-only	L121	intake_gate returns found[:1]	43203a0272fa79ef941842b188b76ff4f978ce816e9d16c26d7587971d2a07af	G1	KILLED	9090	-	-
+M26-selftest-plant-shortened	L164	selftest STS fixture value shortened 65 -> 17 chars (still matches generic credential)	c06575f5ea3ba428ee33fab5dc4b0fe0d668fa09df47fab853b7ace9a08ec50b	none	SURVIVED	9090	197035568	none

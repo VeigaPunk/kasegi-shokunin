@@ -1,0 +1,11 @@
+SentinelGate r90 — PDF path: bytes reach disk before the intake gate (643ddb4)
+capture() calls pdf_to_text(raw) (line 75) before intake_gate(data) (line 135);
+pdf_to_text writes the fetched body to tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) (line 79)
+
+  PDF with a token in the text layer: rc=3 written=False shapes=credential,aws-sts-session-token
+  temp files left in TMPDIR after a normal (refused) run: 0
+  clean PDF: rc=0 written=True
+  pdftotext shim copies its input before extraction: temp exists=True mode=0o600 token_in_temp=True out_written=False
+  (the gate had not run yet at that point: same run exits rc=3 refusing)
+  SIGKILL while pdftotext runs: residue files=1 token_in_residue=True mode=0o600 out_written=False
+  the finally: os.unlink(tmp) (line 91) does not run on SIGKILL

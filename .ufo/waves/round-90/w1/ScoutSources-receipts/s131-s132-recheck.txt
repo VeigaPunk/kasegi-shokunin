@@ -1,0 +1,72 @@
+ScoutSources — round-90 w1 — S131/S132 live re-open receipt
+Host lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Scratch root (deleted at end of seat): /fast/scratch/hyaku/kasegi-r90/ScoutSources
+No file bytes are reproduced here; only digests, counts and scanner/instrument stdout.
+
+== 1. S131 re-opened through the LANDED instrument (the gate runs on it) ==
+cmd: python3 -B corpus/instruments/capture-source.py --id S131 \
+      --url https://docs.github.com/en/code-security/secret-scanning/introduction/about-push-protection \
+      --out $S/S131.txt
+stdout: S131 status=200 fetched_bytes=637119 snapshot_bytes=20549 \
+        sha256=0c98d69a14b33d3995f0d7748112f191dcac391157a6cb093054c346ff71fcc9 \
+        utc=2026-11-07T07:07:28Z   (exit 0)
+sha256 of written file: 0c98d69a14b33d3995f0d7748112f191dcac391157a6cb093054c346ff71fcc9
+committed snapshot corpus/source-snapshots/round-90/S131.txt sha256:
+        0c98d69a14b33d3995f0d7748112f191dcac391157a6cb093054c346ff71fcc9
+cmp committed vs live capture: BYTE-IDENTICAL (no output from cmp)
+lines (wc -l): 647 live / 647 committed
+manifest.json sha256 field for S131: 0c98d69a14b33d3995f0d7748112f191dcac391157a6cb093054c346ff71fcc9
+=> live bytes == manifest pin == committed bytes.
+
+== 2. base instrument (pre-landing, 6088c3eb) re-capture, same URL ==
+cmd: git show 6088c3eb0c29040415c69e7b5fb91e110480ab26:corpus/instruments/capture-source.py > $S/capture-source-base.py
+     python3 -B $S/capture-source-base.py --id S131 --url <same> --out $S/S131-base.txt
+stdout: status=200 fetched_bytes=637119 snapshot_bytes=20549 sha256=0c98d69a14b33d3995f0d7748112f191dcac391157a6cb093054c346ff71fcc9 (exit 0)
+cmp committed vs base-instrument capture: BYTE-IDENTICAL
+=> the landed gate changes nothing for a clean capture (independent corroboration of counter limb G3
+   for one real first-party page beyond the counter's own fixtures).
+
+== 3. UA sensitivity of the S131 capture ==
+fetched with urllib's stock UA: raw=637119 snapshot=20549 sha256=0c98d69a14b33d39 (same)
+fetched with the instrument UA:   raw=637119 snapshot=20549 sha256=0c98d69a14b33d39 (same)
+=> the manifest note's "default UA" wording is not load-bearing for S131: both UAs yield the same bytes.
+
+== 4. manifest quote anchors, checked by the lane's own rechecker ==
+cmd: python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-90/manifest.json
+stdout (exit 0):
+  S131:sha256 OK
+  S131:Q01-block-before OK occurrences=1 anchor=570-ok
+  S131:Q02-bypass-reason OK occurrences=1 anchor=610-ok
+manual read of the live snapshot at those lines:
+  line 570 contains "push protection blocks pushes that contain secrets before they reach your repository"
+  line 610 contains "anyone with write access to the repository can bypass push protection by specifying a bypass reason"
+each quote occurs exactly once in the 647-line snapshot (grep -c = 1 for both).
+
+== 5. S132 re-opened (rejected row; re-verification of the rejection reason) ==
+cmd: python3 -B corpus/instruments/capture-source.py --id S132 \
+      --url https://docs.gitlab.com/user/application_security/secret_detection/secret_push_protection/ \
+      --out $S/S132.txt
+stdout: S132 status=200 fetched_bytes=65723 snapshot_bytes=16022 \
+        sha256=78fe974000e435e06419e62e28b1f687156c7300d4aeb23bb9608866db86452d \
+        utc=2026-11-07T07:07:30Z   (exit 0)
+lines (wc -l): 335
+line map that the S132 rejection reason rests on (verified in the live capture):
+  line  90  blocking statement
+  line 167  "Audit events are logged when:"
+  line 168  blocked-because-detected (audit event)
+  line 169  skipped: too many changed paths
+  line 170  skipped: changes too many lines
+  line 171  scan timeout occurs and GitLab accepts the push
+  line 172  ruleset parse or compile error
+  line 173  skipped: scan received invalid input
+  line 174  unexpected scan error          <-- OUTSIDE the anchor range cited in corpus/SOURCES.md (168-173)
+  line 176  numeric push size threshold    <-- OUTSIDE the anchor range cited in corpus/SOURCES.md (168-173)
+the quoted sentence at line 169 is verbatim in the live capture (13 words by whitespace split;
+corpus/lessons/round-90.md records it as "12 words").
+=> the rejection reason (fail-open skip conditions) is confirmed against the live page.
+
+== 6. round-90 committed S131 snapshot re-scanned with the lane's scanner ==
+cmd: python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-90/S131.txt
+stdout: CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+=> reproduces the frozen control .ufo/waves/round-90/controls/capture-scan-r90.txt
+   (mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0) exactly.

@@ -1,0 +1,72 @@
+ScoutSources — round-90 w1 — capture-source.py intake-gate behaviour observed live
+Instrument: corpus/instruments/capture-source.py at HEAD 779062a (sha256 0630d32b98d40bd07c4716b0062babfaa1a8cee6b8bb4103c582b71d41d53dbf,
+identical to the frozen candidate .ufo/waves/round-90/c2/candidate/capture-source.py).
+Scratch root (deleted at end of seat): /fast/scratch/hyaku/kasegi-r90/ScoutSources
+No fixture bytes and no matched values are reproduced; only instrument stdout, digests and line numbers.
+
+== A. clean first-party capture passes the gate and is byte-stable ==
+cmd: python3 -B corpus/instruments/capture-source.py --id S131 --url <about-push-protection> --out $S/S131.txt
+exit 0, sha256 0c98d69a14b33d3995f0d7748112f191dcac391157a6cb093054c346ff71fcc9.
+
+== B. refusal: a documentation page that contains a credential-SHAPED EXAMPLE is refused ==
+cmd: python3 -B corpus/instruments/capture-source.py --id GH-PATTERNS \
+      --url https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns \
+      --out $S/gh-patterns.txt
+stdout: INTAKE-REFUSED GH-PATTERNS shape=private-key line=596 out=$S/gh-patterns.txt written=no
+exit 3; $S/gh-patterns.txt was NOT created (ls: no such file).
+The refusal line names shape and line only; no matched value appears on stdout.
+The refused line is the table cell describing the generic private-key pattern (its own text quotes a
+PEM header as an example), i.e. a documentation example, not a key.
+
+== C. refusal keeps an existing file byte-identical ==
+printf 'PREEXISTING-BYTES-KEEP-ME\n' > $S/existing.txt ; sha256 before -> $S/exist-before.txt
+cmd: python3 -B corpus/instruments/capture-source.py --id GHP2 --url <same GH page> --out $S/existing.txt
+stdout: INTAKE-REFUSED GHP2 shape=private-key line=596 out=$S/existing.txt written=no ; exit 3
+sha256 after -> $S/exist-after.txt ; diff before/after: identical
+=> EXISTING FILE BYTE-IDENTICAL AFTER REFUSAL (digest of the 26-byte placeholder unchanged).
+
+== D. fail closed when the scanner cannot be loaded ==
+copied corpus/instruments/capture-source.py to $S/broken/ and replaced its sibling
+capture-secret-scan.py with a module that raises ImportError on load.
+cmd: python3 -B $S/broken/capture-source.py --id X --url <about-push-protection> --out $S/broken/out.txt
+stdout: INTAKE-REFUSED X shape=gate-error:ImportError line=0 out=$S/broken/out.txt written=no
+exit 3; $S/broken/out.txt not created. => fail closed (no capture written when the gate cannot run).
+
+== E. the allowlist is digest-bound to the matched bytes and to the path ==
+correct row (path<TAB>shape<TAB>sha256-of-matched-bytes<TAB>reason), sha256 of the matched bytes computed
+in scratch from the scanner's own match (27 bytes, sha256 3021d90eb9437b2d8f30e8363695c4418b5e5f1870801b5c317e9398ee0f572d):
+cmd: python3 -B corpus/instruments/capture-source.py --id GH-PATTERNS --url <GH page> --out $S/gh-patterns.txt --allow $S/allow.tsv
+stdout: GH-PATTERNS status=200 fetched_bytes=827097 snapshot_bytes=19263 \
+        sha256=77f388961f48b660e374701cd7667931f592bbfe215c7071c109d333cfda06eb ; exit 0
+same row with a WRONG digest (all-zero sha256):
+cmd: ... --allow $S/allow-bad.tsv
+stdout: INTAKE-REFUSED GH-P shape=private-key line=596 out=$S/gh-patterns.txt written=no ; exit 3
+=> the allowlist lets one exact matched value through at one path and nothing else.
+
+== F. the scanner's documented known limits, re-measured on the landed scanner ==
+probe over corpus/instruments/capture-secret-scan.py patterns() (imported at HEAD 779062a);
+fixture bytes stayed in scratch and are not reproduced here. Results are shape names only.
+  bare provider token, no key= context (ghp_/gho_/github_pat_/npm_/xoxb-/sk-ant-api03-/sk-proj-/dd_api_/sk_live_ forms): NO HIT
+  same values preceded by a key name (token=, api_key=, secret=): HIT shape=credential
+  bare "Authorization: Bearer <32 chars>": HIT shape=bearer and shape=authorization
+  CloudFront signed URL (Signature= + Key-Pair-Id=, 40+ chars): HIT shape=cloudfront-signed-url-signature
+  Azure service SAS (sv= + sig=, 40+ chars): HIT shape=azure-sas-signature
+  Azure SAS carrying the documented 7-letter parameter skdutid between sv= and sig=: NO HIT
+  CloudFront signature delivered as a Set-Cookie header value: NO HIT
+  GCS V2 signed URL (GoogleAccessId= + Signature=): NO HIT
+  gzip/UTF-16/base64-wrapped or soft-wrapped values: NO HIT (documented limit, unchanged)
+=> the scanner's known limits are unchanged by the C2 landing; the intake gate inherits them exactly.
+
+== G. capture-source.py fails closed on an HTTP error (unrelated to the gate) ==
+cmd: python3 -B corpus/instruments/capture-source.py --id GH-TS --url <troubleshooting-push-protection> --out $S/gh-ts.txt
+urllib.error.HTTPError: HTTP Error 404: Not Found ; exit 1 ; no snapshot written.
+(Instrument defect observed, not fixed here: the traceback escapes instead of a short refusal line.)
+
+== H. a stale AWS doc URL yields a 2 KiB meta-refresh stub, captured as an 18-byte snapshot ==
+cmd: python3 -B corpus/instruments/capture-source.py --id CF-STUB --url \
+      https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PrivateContent-setting-signed-cookie.html --out $S/cf-stub.txt
+stdout: CF-STUB status=200 fetched_bytes=2410 snapshot_bytes=18 sha256=5f741c4a4aab7c37718a6dcb251c050a13ac590e5b41fe8e10680bd6e07751af ; exit 0
+the 18-byte snapshot is only the page title; the lower-case URL of the same document
+(PrivateContent-setting-signed-cookie-custom-policy.html) captures 21243 bytes.
+=> a capture of a moved AWS doc can succeed while carrying no content; the manifest digest then pins an
+   18-byte title, not the document. Candidate round-91 lead (an emptiness check on the snapshot).

@@ -1,0 +1,85 @@
+ScoutSources — round-90 w1 — round-91 lead captures (opened, quoted, digested)
+All fetched with the lane's own instrument (so the C2 gate ran on each):
+  python3 -B corpus/instruments/capture-source.py --id <ID> --url <URL> --out $S/<file>.txt
+Scratch root (deleted at end of seat): /fast/scratch/hyaku/kasegi-r90/ScoutSources
+Access date for every entry below: 2026-11-07. No snapshot bytes are reproduced here — only digests,
+line counts, line numbers and the quoted sentences.
+
+== LEAD 1 — Microsoft Learn, Create a user delegation SAS (the skdutid parameter) ==
+URL: https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas
+capture: HTTP 200, fetched_bytes=118382, snapshot_bytes=60089,
+         sha256 56d858ac8c2988fdf95a045b5a75f13cc5a28a1f71b3786638522775b1786cd6, 954 lines
+NOTE: round-89 ReviewWindow recorded the same URL with a DIFFERENT normalisation
+      (its own text sha256 184d191b…, doc lines 1472-1483 / 3471 / 3513). Under the lane instrument's
+      normalisation the same facts sit at lines 177 and 566-571. Line numbers are therefore not portable
+      between the two normalisers; any new row must anchor to a capture-source.py snapshot and pin its digest.
+Anchor lines (this capture):
+  line 177  the parameter token on its own, inside the SAS-parameter table
+  line 566  prose: when the field is required
+  line 571  prose: version support
+Quote (12 words, line 571): "The sduoid and skdutid fields are supported with version 2025-07-05 and later."
+Quote (line 177, one token): "skdutid"
+Measured on the landed scanner (capture-secret-scan.py at 779062a): a SAS carrying this 7-letter parameter
+between sv= and sig= is NOT detected (parameter-name class is [A-Za-z]{2,6}); the same URL without it is.
+35 documented Azure SAS parameter tokens were recounted from this capture; exactly one (skdutid) is
+outside that class.
+
+== LEAD 2 — GitHub Docs, Supported secret scanning patterns ==
+URL: https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns
+capture: HTTP 200, fetched_bytes=827097, snapshot_bytes=19263,
+         sha256 77f388961f48b660e374701cd7667931f592bbfe215c7071c109d333cfda06eb, 688 lines
+The gate REFUSES this page by default (shape=private-key line=596 — the page's own generic-private-key
+pattern description quotes a PEM header as an example). To open it as a lead it was captured in scratch
+with a one-row --allow TSV whose sha256 column is the digest of the matched bytes; see gate-behaviour.txt §E.
+Anchor lines (this capture):
+  line 582  pattern-category table row for provider patterns
+  line 587  table caption: push protection column
+  line 614  the sentence introducing the pattern table
+  line 616  the push-protection scope rule
+  line 624  table header row
+  line 675  pagination marker
+Quote (16 words, line 616): "Push protection only supports the most recent token versions that secret scanning can identify with confidence."
+Quote (12 words, line 614): "Use the table below to search, filter, and browse all supported patterns."
+FINDING on coverage — what push protection covers that capture-secret-scan lacks:
+  * The page's own rendered table is CLIENT-PAGINATED: the captured snapshot shows only the first
+    alphabetical slice of providers (1Password .. Apify, 25 pattern rows) plus the marker
+    "Previous123456…22Next" at line 675. The full set is 22 pages.
+  * The complete set lives in the page's embedded JSON payload (531 entries, 207 providers), which the
+    instrument's HTML conversion strips, so it is NOT in the snapshot. Counting hasPushProtection=true over
+    that embedded payload gives 465 of 531 patterns with push protection; the flag is per-pattern, per-provider.
+  * capture-secret-scan detects no provider-prefixed token on its own: bare values of the shape
+    ghp_/gho_/github_pat_/npm_/xoxb-/sk-ant-api03-/sk-proj-/dd_api_/sk_live_ produce NO HIT; they are caught
+    only when a key name (token=, api_key=, secret=) precedes them, via the generic `credential` shape.
+    Push protection covers the bare values by prefix and partner rule. This is the concrete coverage gap.
+  * The GitHub rules line 616 also bounds push protection to the most recent token versions, so a
+    prefix-only rule copied from this page would be version-sensitive.
+
+== LEAD 3 — Amazon CloudFront Developer Guide, Setting signed cookies with a custom policy ==
+URL: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-setting-signed-cookie-custom-policy.html
+capture: HTTP 200, fetched_bytes=51673, snapshot_bytes=21243,
+         sha256 ddf45b805c7f67f29cf15f60f805fd636968f14734f4e342c697760f8b49f1cc, 441 lines
+Anchor lines (this capture):
+  line  19  the two cookie names
+  line  40  what the signature cookie holds
+  line  96  the cookie-parameter table
+Quote (8 words, line 40): "CloudFront-Signature=hashed and signed version of the policy statement;"
+Quote (3 words, line 19): "CloudFront-Signature, and CloudFront-Key-Pair-Id."
+WHY THIS IS THE RIGHT THIRD LEAD for the intake gate's known limit:
+  The scanner's own docstring lists "CloudFront signed cookies (CloudFront-Signature)" as a known limit,
+  and this page is the first-party document that defines the cookie-borne form. Measured on the landed
+  scanner: a Set-Cookie header carrying that signature is NOT detected, and the same value in a signed
+  URL query is also NOT detected at 32 characters (the cloudfront shape needs 40+ characters plus a
+  Key-Pair-Id parameter in the same query). So the cookie form is a real, sourceable gap, not a re-reading.
+  A GCS V2 signed-URL page was also opened as a candidate for this slot (Google Cloud Storage, V2 signing
+  process, legacy; sha256 517f22a3669fb2e8b803637684476dc70f3e49451a03125e75c0cef4ef87de07, 262 lines;
+  it names the parameter GoogleAccessId at line 159) and was set aside: the scanner's docstring already
+  lists that GCS V2 shape as a known limit, so it would restate a limit rather than open new ground,
+  and the page carries no example of the query form to quote.
+
+== capture-source.py behaviour observed while opening the leads (candidate round-91 instrument work) ==
+  * HTTP error escapes as a traceback (exit 1) instead of a short refusal line — see gate-behaviour.txt §G.
+  * A moved AWS doc URL captures successfully as an 18-byte title-only snapshot — see gate-behaviour.txt §H.
+  * The gate refuses a first-party documentation page whose text quotes a credential SHAPE as an example
+    (GitHub's own pattern table); opening such a page needs a one-row, digest-bound --allow file.
+    The lane's default allowlist (corpus/instruments/capture-secret-allow.tsv) has 19 rows and no row for
+    this page.

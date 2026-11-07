@@ -1,0 +1,75 @@
+PATTERNS 11 private-key,op-ref,bearer,authorization,credential,session-cookie,aws-sts-session-token,aws-access-key-id,gcs-signed-url-signature,azure-sas-signature,cloudfront-signed-url-signature
+SEED 9090   plants=11 private-key-name=EC       akid-prefix=ASIA
+  PLANT authorization                  matches=authorization                                 value_len=30
+  PLANT aws-access-key-id              matches=aws-access-key-id                             value_len=20
+  PLANT aws-sts-session-token          matches=credential,aws-sts-session-token              value_len=64
+  PLANT azure-sas-signature            matches=azure-sas-signature                           value_len=44
+  PLANT bearer                         matches=bearer                                        value_len=32
+  PLANT cloudfront-signed-url-signature matches=cloudfront-signed-url-signature               value_len=60
+  PLANT credential                     matches=credential                                    value_len=28
+  PLANT gcs-signed-url-signature       matches=gcs-signed-url-signature                      value_len=128
+  PLANT op-ref                         matches=op-ref                                        value_len=20
+  PLANT private-key                    matches=private-key                                   value_len=none
+  PLANT session-cookie                 matches=session-cookie                                value_len=28
+SEED 1      plants=11 private-key-name=RSA      akid-prefix=ASIA
+SEED 2      plants=11 private-key-name=RSA      akid-prefix=AKIA
+SEED 3      plants=11 private-key-name=RSA      akid-prefix=ASIA
+SEED 7      plants=11 private-key-name=EC       akid-prefix=AKIA
+PROBES 57
+  PROBE credential api_key=          hit=credential                               note=planted
+  PROBE credential apikey=           hit=credential                               note=unplanted branch
+  PROBE credential api-key=          hit=credential                               note=unplanted branch
+  PROBE credential secret=           hit=credential                               note=unplanted branch
+  PROBE credential token=            hit=credential                               note=unplanted branch
+  PROBE credential password=         hit=credential                               note=unplanted branch
+  PROBE credential len15             hit=none                                     note=floor-1
+  PROBE credential len16             hit=credential                               note=floor
+  PROBE credential json-quoted       hit=credential                               note=unplanted form
+  PROBE bearer len15                 hit=none                                     note=floor-1
+  PROBE bearer len16                 hit=bearer                                   note=floor
+  PROBE bearer lowercase             hit=bearer                                   note=unplanted case
+  PROBE authorization bearer-sub     hit=authorization,bearer                     note=unplanted branch
+  PROBE authorization json           hit=authorization                            note=unplanted form
+  PROBE authorization len15          hit=none                                     note=floor-1
+  PROBE session-cookie hyphen        hit=session-cookie                           note=unplanted branch
+  PROBE session-cookie nounderscore  hit=session-cookie                           note=unplanted branch
+  PROBE session-cookie len15         hit=none                                     note=floor-1
+  PROBE op-ref len2                  hit=none                                     note=floor-1
+  PROBE op-ref len3                  hit=op-ref                                   note=floor
+  PROBE private-key pkcs8-empty      hit=private-key                              note=unplanted form
+  PROBE private-key lowercase        hit=none                                     note=unplanted case
+  PROBE aws-sts header               hit=aws-sts-session-token,credential         note=unplanted form
+  PROBE aws-sts json-key             hit=aws-sts-session-token,credential         note=unplanted form
+  PROBE aws-sts len19                hit=credential                               note=floor-1
+  PROBE aws-sts len20                hit=aws-sts-session-token,credential         note=floor
+  PROBE akid 15                      hit=none                                     note=floor-1
+  PROBE akid 16                      hit=aws-access-key-id                        note=floor
+  PROBE akid 17                      hit=none                                     note=floor+1
+  PROBE akid asia                    hit=aws-access-key-id                        note=unplanted prefix (seed-dependent)
+  PROBE akid lowercase               hit=none                                     note=unplanted case
+  PROBE gcs len63                    hit=none                                     note=floor-1
+  PROBE gcs len64                    hit=gcs-signed-url-signature                 note=floor
+  PROBE gcs header                   hit=gcs-signed-url-signature                 note=unplanted form
+  PROBE gcs json-key                 hit=gcs-signed-url-signature                 note=unplanted form
+  PROBE gcs uppercase-hex            hit=gcs-signed-url-signature                 note=unplanted case
+  PROBE azure sig-first              hit=azure-sas-signature                      note=unplanted order
+  PROBE azure amp                    hit=azure-sas-signature                      note=unplanted separator
+  PROBE azure json-escaped           hit=azure-sas-signature                      note=unplanted separator
+  PROBE azure pct26                  hit=none                                     note=unplanted separator
+  PROBE azure len39                  hit=none                                     note=floor-1
+  PROBE azure len40                  hit=azure-sas-signature                      note=floor
+  PROBE cf kpi-first                 hit=cloudfront-signed-url-signature          note=unplanted order
+  PROBE cf amp                       hit=cloudfront-signed-url-signature          note=unplanted separator
+  PROBE cf json-escaped              hit=cloudfront-signed-url-signature          note=unplanted separator
+  PROBE cf len39                     hit=none                                     note=floor-1
+  PROBE cf len40                     hit=cloudfront-signed-url-signature          note=floor
+  PROBE cf kpi len7                  hit=none                                     note=kpi floor-1
+  PROBE cf kpi len8                  hit=cloudfront-signed-url-signature          note=kpi floor
+  PROBE cf lowercase-names           hit=none                                     note=unplanted case
+  PROBE azure pct26 leading          hit=azure-sas-signature                      note=leading sep
+  PROBE azure u0026 leading          hit=azure-sas-signature                      note=leading sep
+  PROBE cf pct26 leading             hit=cloudfront-signed-url-signature          note=leading sep
+  PROBE bearer base64 plus           hit=none                                     note=alphabet
+  PROBE bearer base64 slash          hit=none                                     note=alphabet
+  PROBE credential value with plus   hit=none                                     note=alphabet
+  PROBE sts value with plus          hit=aws-sts-session-token                    note=alphabet

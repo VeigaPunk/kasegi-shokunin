@@ -1,0 +1,59 @@
+# Item 1 — depth:density guard (round 90). Commands + outputs. Date: 2026-11-07
+
+## A. touched? git diff --stat BASE LANDING -- SKILL.md PROVINCE.md
+$ git diff --stat 6088c3eb0c29040415c69e7b5fb91e110480ab26 643ddb4379536e7a5ff7cdfe5c5befe9afbf63f2 -- SKILL.md PROVINCE.md
+paths printed: ""
+
+$ git diff --stat 6088c3eb 779062a36 -- SKILL.md PROVINCE.md   # same through the receipts commit
+
+## B. landed bytes
+7d082bfec14257351b39c145ea0db26cafbce3d6f263009c3eb1d0893c373552  SKILL.md
+736299ba5d43f8b8fae299d55287ba0352287ef3c0fc5a81acdbc99cdaf54ac3  PROVINCE.md
+  1251 SKILL.md
+   237 PROVINCE.md
+  1488 total
+
+## C. density instrument (landed tree)
+$ python3 -B corpus/instruments/density.py SKILL.md --label x
+# Density census — x (1251 lines, 38 blocks)
+# ev = path-cites + concrete-tbl-rows + numerics + signatures; dens = ev*100/nb
+# num: unique numeric tokens (no bare years, no letter-adjacent fragments, no
+#      enumeration markers, no date/time stamps; letter-free code spans count);
+Traceback (most recent call last):
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/density.py", line 208, in <module>
+    sys.exit(main(sys.argv))
+             ~~~~^^^^^^^^^^
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/density.py", line 198, in main
+    print(f"| {i} | {title} | {r['lines']} | {r['nb']} | {r['cites']} | "
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          f"{r['tbl']} | {r['num']} | {r['sig']} | {r['ev']} | {r['dens']:.1f} |")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+| | **mean dens** | | | | | | | | **273.2** |
+Total path-citation instances: 932 across 38 blocks.
+
+$ python3 -B corpus/instruments/density.py PROVINCE.md --label x
+# Density census — x (237 lines, 7 blocks)
+# ev = path-cites + concrete-tbl-rows + numerics + signatures; dens = ev*100/nb
+# num: unique numeric tokens (no bare years, no letter-adjacent fragments, no
+#      enumeration markers, no date/time stamps; letter-free code spans count);
+Traceback (most recent call last):
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/density.py", line 208, in <module>
+    sys.exit(main(sys.argv))
+             ~~~~^^^^^^^^^^
+  File "/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/density.py", line 198, in main
+    print(f"| {i} | {title} | {r['lines']} | {r['nb']} | {r['cites']} | "
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          f"{r['tbl']} | {r['num']} | {r['sig']} | {r['ev']} | {r['dens']:.1f} |")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+| | **mean dens** | | | | | | | | **98.5** |
+Total path-citation instances: 31 across 7 blocks.
+
+## D. base blobs through the same instrument (no drift proof)
+# Density census — base (1251 lines, 38 blocks)
+| | **mean dens** | | | | | | | | **273.2** |
+Total path-citation instances: 932 across 38 blocks.
+# Density census — base (237 lines, 7 blocks)
+| | **mean dens** | | | | | | | | **98.5** |
+Total path-citation instances: 31 across 7 blocks.

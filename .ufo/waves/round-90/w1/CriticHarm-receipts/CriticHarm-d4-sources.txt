@@ -1,0 +1,50 @@
+# Item 4 - SOURCES guard: S131/S132 well-formedness + census validate. Date: 2026-11-07
+
+## rows at HEAD 779062a (both are 11-cell rows; table header counts 11 columns)
+S131: | S131 | GitHub Docs, About push protection — https://docs.github.com/en/code-security/secret-scanning/introduction/about-push-protection | docs | A | GitHub's own description of push protection: secret scanning that blocks a push carrying a secret before it reaches the repository, with a bypass that requires a stated reason; GitHub push protection only, not alerting after the fact | Push protection definition and bypass rule, snapshot lines 570, 572 and 610; capture corpus/source-snapshots/round-90/S131.txt | Scan captured bytes before they are written and refuse on a hit; let one documented value through only with a recorded reason | queued | 2026-11-07 | 180d | — |
+
+S132: | S132 | GitLab Docs, Secret push protection — https://docs.gitlab.com/user/application_security/secret_detection/secret_push_protection/ | docs | A | GitLab's secret push protection: blocks pushes that carry secrets, with a skip option and documented skip conditions | Blocking statement and skip conditions, scratch capture lines 90 and 168-173 (not committed) | REJECTED: the blocking design it documents is already sourced on S131; what it adds is skipping the scan when a push has too many changed paths or lines or invalid input, a fail-open path the intake gate refuses by design (fail closed). flip: a round that adds an input-size bound to the intake gate cites it as the contrast case. | rejected | 2026-11-07 | 180d | — |
+
+## cell counts (awk -F'|' gives NF=13 for a well-formed 11-cell row: leading/trailing empties)
+S131 NF=13
+S132 NF=13
+
+## protocol fields (CORPUS.md:86-108)
+- status vocab: queued / mined / rejected -> S131=queued, S132=rejected (both legal)
+- rejected teaches opens 'REJECTED:' and carries 'flip:' -> S132 yes: 'REJECTED: the blocking design it documents is already source ...'
+- used-by for a queued row is '—' -> yes for both; kind=docs, tier=A for both (community-only tier inflation rule n/a)
+
+## S131 anchor resolves (snapshot lines 570, 572, 610)
+  570: Push protection is a secret scanning feature designed to prevent hardcoded credentials, such as secrets or tokens, from ever being pushed to your repo
+  572: When push protection detects a potential secret during a push attempt, it will block the push and provide a detailed message explaining the reason for
+  610: For push protection for repositories, by default, anyone with write access to the repository can bypass push protection by specifying a bypass reason.
+
+## manifest binds the committed snapshot
+$ python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-90/manifest.json
+S131:sha256 OK
+S131:Q01-block-before OK occurrences=1 anchor=570-ok
+S131:Q02-bypass-reason OK occurrences=1 anchor=610-ok
+rc=0
+committed snapshot sha256: 0c98d69a14b33d3995f0d7748112f191dcac391157a6cb093054c346ff71fcc9  corpus/source-snapshots/round-90/S131.txt
+manifest note records the pre-landing capture (06:58:38Z) and the freeze scan hits=0 (controls/capture-scan-r90.txt).
+
+## census validate
+$ bash /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+kasegi	W04	S076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes
+kasegi	W04	S080 duplicate url ossf.github.io/osv-schema across scopes
+kasegi	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+rc=0
+
+The W04 lines name S028/S029/S072/S076/S080/S085 (pre-existing duplicate-URL rows), none of them S131/S132.
+
+## pending integration step (not a landing defect)
+S131 is `queued`/used-by '-' while the landed instrument's docstring (capture-source.py:22-24) and SCORECARD:308 name S131
+as the design source, and the round-90 lesson (corpus/lessons/round-90.md:18 'S131 — ... (admitted, used by the instrument)') cites it.
+CORPUS.md:103-107: `mined` = cited by >=1 path in used-by; used-by = 'repo-relative paths of the knowledge entries or lessons
+citing the row'. The integration step is the status flip queued -> mined with used-by 'corpus/lessons/round-90.md' (protocol
+form) or the instrument path (round-89 S128/S130 form). C2 P3 excludes SOURCES.md from the landing, so this is pending integration,
+harmless only if it lands (same class as round 89's S128/S130 flip).

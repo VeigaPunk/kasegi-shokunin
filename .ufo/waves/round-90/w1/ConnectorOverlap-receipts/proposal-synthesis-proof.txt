@@ -1,0 +1,11 @@
+# Proposal verification: Scoped Revision-Pinned Census Freshness
+
+1. git archive HEAD extract time: 0.085 seconds
+2. Scoped token collection: 291 occurrences, 204 distinct citations (time: 0.022s)
+3. Scoped classification against archive extract: 204 citations (time: 0.008s)
+   Internal: 24, GONE: 180, Total time: 0.115s
+
+4. Working-Tree Immunity Verification:
+   - Archive extract is a read-only snapshot of the commit object store.
+   - Untracked files, pycache, and working-tree modifications do not enter the extract.
+   - Peak RAM is bounded to archive extract size (~10MB scoped, ~230MB full) vs ~13GB for full working-tree resolve.

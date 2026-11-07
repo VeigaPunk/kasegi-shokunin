@@ -1,0 +1,62 @@
+# Item 3 - C1 guard: does any repointed site cite a range that contradicts another sentence on its own row?
+Landing 4a7e676895d3fc74e18c853457c9b465ade2ddf5. Date: 2026-11-07. 34 map rows checked; 2 contradict.
+
+## Cross-check (map vs labels vs landed text): 34/34 rows consistent mechanically
+- every map value equals the label's supported range and the label verdict is WRONG (0 mismatches)
+- every value appears in the landed citing line; the old key is gone from that line (0 leftovers)
+- every target range is in bounds; P3 prints exactly corpus/knowledge/triage-thresholds.md
+- map sha256 7c420856c3347d362bfc419030aa474cbc253975f3026bc13355b654055fb8b3 = claim pin
+
+=> this check can only find mechanical errors. The contradiction below is semantic, and M9 cannot see it
+   because M9 asserts value == labelled range (l1/c1-landing-r90.txt: 'LIMB M9 pass rows=34 unbound=none').
+
+## F1 site 1 - triage-thresholds.md:158 (shared-constants table, limit signature regex)
+$ git show 4a7e676895d3fc74e18c853457c9b465ade2ddf5:corpus/knowledge/triage-thresholds.md | sed -n '158p'
+| limit signature regex | `/usage limit has been reached\|usage_limit_reached\|rate limit exceeded\|429 Too Many/i` (ANDed with family, tail-only) | 272, 278 | SUPERSEDES: `corpus/knowledge/mission-control.md:61-64` — that entry lists 3 signatures, omitting `usage_limit_reached` |
+
+## F1 site 2 - triage-thresholds.md:439 (section 9.7)
+$ git show 4a7e676895d3fc74e18c853457c9b465ade2ddf5:corpus/knowledge/triage-thresholds.md | sed -n '439p'
+| 9.7 | Usage-limit signatures are four (incl. `usage_limit_reached`), ANDed with a family regex, tail-only, 15-min mtime window. | 271-278 | `corpus/knowledge/mission-control.md:61-64` (three signatures) |
+
+## the cited range (mission-control.md:61-64, unchanged since base: not in the round diff)
+$ git show 4a7e676895d3fc74e18c853457c9b465ade2ddf5:corpus/knowledge/mission-control.md | nl -ba | sed -n '61,64p'
+  61	- **`detectLimit()`**: tails `fleets/run/*.log` modified <15 min; strict
+  62	  signatures — FOUR, round-13 correction (`usage limit has been reached`,
+  63	  `usage_limit_reached`, `rate limit exceeded`,
+  64	  `429 Too Many`; fleet-dispatch.mjs:272) ANDed with a model-family regex — the TUI status bar
+
+$ git show 4a7e676895d3fc74e18c853457c9b465ade2ddf5:corpus/knowledge/mission-control.md | sed -n '62,63p' | grep -c usage_limit_reached
+1
+=> line 62 says 'signatures - FOUR, round-13 correction'; line 63 contains usage_limit_reached.
+   Both repointed rows say the entry 'lists 3 signatures, omitting usage_limit_reached' / '(three signatures)'.
+   The citation now refutes the sentence it is attached to, in the same row.
+
+## what the row cited before the landing (both rows):
+$ git show 6088c3eb0c29040415c69e7b5fb91e110480ab26:corpus/knowledge/triage-thresholds.md | sed -n '158p'
+| limit signature regex | `/usage limit has been reached\|usage_limit_reached\|rate limit exceeded\|429 Too Many/i` (ANDed with family, tail-only) | 272, 278 | SUPERSEDES: `mission-control.md:41-43` — ...
+   old range mission-control.md:41-43 = P20/P21 commit-gate text (unrelated, not a contradiction; merely unsupported)
+   after the repoint the same clause is refuted by its own citation, so the landing converts 'unsupported' into 'contradicted'.
+
+## the round-89 labels already said the range states FOUR
+$ git show 02b6d88f:.ufo/waves/round-89/w1/ReviewC1Labels-receipts/tranche5-labels.tsv | awk -F'\t' '$2 ~ /triage-thresholds.md:(158|439|155)$/'
+mission-control.md:37-38	corpus/knowledge/triage-thresholds.md:155	WRONG	corpus/knowledge/mission-control.md:55-57	peak model is L55-57; entry already carries the openai-codex correction, so the SUPERSEDES premise is stale
+mission-control.md:41-43	corpus/knowledge/triage-thresholds.md:158	WRONG	corpus/knowledge/mission-control.md:61-64	four signatures are L61-64
+mission-control.md:41-43	corpus/knowledge/triage-thresholds.md:439	WRONG	corpus/knowledge/mission-control.md:61-64	same
+
+## the frozen exclusion rule and its own precedent
+excluded.tsv (4 frozen sites) reason for line 155:
+corpus/knowledge/triage-thresholds.md:155	mission-control.md:37-38	labeller: the SUPERSEDES premise is stale (entry already carries the openai-codex correction); a repoint would cite a range that contradicts the row
+=> site 155 was excluded because the SUPERSEDES premise is stale and 'a repoint would cite a range that contradicts the row'.
+   Sites 158 and 439 have the same condition (entry already carries the round-13 correction) but were admitted,
+   because the frozen key is the label-reason text, and their label reasons name the range without the staleness note.
+
+## why this is a routed defect, not a predicate failure
+C1 P1 is the pinned meter (M0/M1/M3/M4/M5/M6/M9). M9 binds each row to a WRONG label and checks value == labelled range;
+it has no semantic limb, so the round's own counter passes while the two rows now mislead a verifier.
+
+## smallest safe correction (round 91; the landing is frozen)
+Treat 158 and 439 as content-stale rather than repointable, and repair the gloss in place:
+  158: 'SUPERSEDES: corpus/knowledge/mission-control.md:61-64 - that entry lists 3 signatures, omitting usage_limit_reached'
+       -> 'MATCHES: corpus/knowledge/mission-control.md:61-64 (entry corrected in round 13; it lists four signatures incl. usage_limit_reached)'
+  439: 'corpus/knowledge/mission-control.md:61-64 (three signatures)' -> '(entry lists four; corrected in round 13)'
+Both are prose edits inside triage-thresholds.md; no target-entry edit is needed.

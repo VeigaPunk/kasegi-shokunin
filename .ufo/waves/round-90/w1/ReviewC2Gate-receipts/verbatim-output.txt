@@ -1,0 +1,65 @@
+### P0 ready (S=/tmp/c2r.DxoqI0), instrument sha256=0630d32b98d40bd07c4716b0062babfaa1a8cee6b8bb4103c582b71d41d53dbf
+### F1 — allow row invisible in the capture record
+A status=200 fetched_bytes=34 snapshot_bytes=34 sha256=0b48d9c0e506a3c661e973794c809f6c12decfcc7b36b07bc5eca8cbceff0b0b utc=2026-11-07T07:15:22Z out=corpus/source-snapshots/round-90/a.txt
+rc=0
+allow-mentions=0
+### F2a — absolute first-column key authorizes an out-of-lane write
+B status=200 fetched_bytes=34 snapshot_bytes=34 sha256=0b48d9c0e506a3c661e973794c809f6c12decfcc7b36b07bc5eca8cbceff0b0b utc=2026-11-07T07:15:23Z out=/tmp/c2r.DxoqI0/out-abs.txt
+rc=0 wrote=yes
+### F2b — symlinked directory inside the lane, bytes land outside
+C status=200 fetched_bytes=34 snapshot_bytes=34 sha256=0b48d9c0e506a3c661e973794c809f6c12decfcc7b36b07bc5eca8cbceff0b0b utc=2026-11-07T07:15:24Z out=corpus/source-snapshots/linkdir/z.txt
+rc=0
+realpath=/tmp/c2r.DxoqI0/outside/z.txt landed=yes
+### F2c — refusal line prints the raw --out argument
+INTAKE-REFUSED D shape=credential line=1 out=../escaped.txt written=no
+INTAKE-REFUSED D shape=aws-sts-session-token line=1 out=../escaped.txt written=no
+rc=3
+### F3 — the landed instrument trips its own scanner
+HIT shape=credential path=/tmp/c2r.DxoqI0/lane/corpus/instruments/capture-source.py line=164
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1
+rc=1
+### F4 — allow_url() absent; file:// fetched
+0
+173:  the scheme allowlist lives in `allow_url()`, redirects stay on http(s), but it
+selftest normalize=ok deterministic=ok
+INTAKE-REFUSED SELFTEST shape=credential line=1 out=/fast/scratch/hyaku/kasegi-r90/ReviewC2Gate/capture-source-selftest-6qallgxp/out.txt written=no
+INTAKE-REFUSED SELFTEST shape=aws-sts-session-token line=1 out=/fast/scratch/hyaku/kasegi-r90/ReviewC2Gate/capture-source-selftest-6qallgxp/out.txt written=no
+selftest intake-refuse=ok existing-kept=ok
+rc=0
+### F5 — gate-error names the type, not the row
+INTAKE-REFUSED E shape=gate-error:OSError line=0 out=corpus/source-snapshots/round-90/e1.txt written=no
+rc=3
+INTAKE-REFUSED E shape=gate-error:OSError line=0 out=corpus/source-snapshots/round-90/e2.txt written=no
+rc=3
+### F6 — file:// success path writes, then no digest line
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: %d format: a real number is required, not NoneType
+rc=1 size=6
+### verified limbs
+INTAKE-REFUSED V1 shape=credential line=1 out=corpus/source-snapshots/round-91/V1.txt written=no
+INTAKE-REFUSED V1 shape=aws-sts-session-token line=1 out=corpus/source-snapshots/round-91/V1.txt written=no
+rc=3 dir=absent
+rc=3 kept=absent-check
+INTAKE-REFUSED V2 shape=credential line=1 out=corpus/source-snapshots/keep.txt written=no
+INTAKE-REFUSED V2 shape=aws-sts-session-token line=1 out=corpus/source-snapshots/keep.txt written=no
+rc=3 kept=yes
+INTAKE-REFUSED V3 shape=gate-error:FileNotFoundError line=0 out=corpus/source-snapshots/V3.txt written=no
+rc=3 written=no
+INTAKE-REFUSED V4 shape=credential line=1 out=corpus/source-snapshots/V4.txt written=no
+INTAKE-REFUSED V4 shape=aws-sts-session-token line=1 out=corpus/source-snapshots/V4.txt written=no
+text rc=3
+fetchfail rc=1 kept=yes last=urllib.error.URLError: <urlopen error [Errno 2] No such file or directory: '/tmp/c2r.DxoqI0/nope.html'>
+value-echo=0
+### scratch removed: yes
+### appendix — two verified-limb cases not covered by the blocks above
+INTAKE-REFUSED A8 shape=gate-error:FileNotFoundError line=0 out=corpus/source-snapshots/gate-err.txt written=no
+gate-error rc=3 kept=yes
+A9 status=200 fetched_bytes=12 snapshot_bytes=6 sha256=90c877f65b3141d28d51619fd2bbc862c49c48be4fab42386062f532e27e4fd6 utc=2026-11-07T07:16:05Z out=corpus/source-snapshots/a7.txt
+missing-allowlist rc=0
+### appendix 2 — kind=pdf gating and scanned==written consistency
+INTAKE-REFUSED P1 shape=credential line=1 out=corpus/source-snapshots/pdf.txt written=no
+INTAKE-REFUSED P1 shape=aws-sts-session-token line=1 out=corpus/source-snapshots/pdf.txt written=no
+pdf rc=3 written=no
+P2 status=200 fetched_bytes=167 snapshot_bytes=9 sha256=a531c05210c520eddecb14c35c0031390fec4cf46d6525d5cea4e936c8a009ae utc=2026-11-07T07:16:36Z out=corpus/source-snapshots/href.txt
+href rc=0
+href snapshot=linkbody token-in-snapshot=0

@@ -1,0 +1,85 @@
+SentinelGate r90 receipt — capture-source.py at 643ddb4379536e7a5ff7cdfe5c5befe9afbf63f2
+instrument sha256 = 0630d32b98d40bd07c4716b0062babfaa1a8cee6b8bb4103c582b71d41d53dbf
+scanner sha256    = 95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec
+fixtures: synthetic values, written only to scratch; no value appears in this file.
+
+R01   STS token, plain text                                      rc=3 written=no    snapshot_sha16=- shapes=aws-sts-session-token,credential CORRECT
+      INTAKE-REFUSED T shape=credential line=2 out=<path> written=no
+      INTAKE-REFUSED T shape=aws-sts-session-token line=2 out=<path> written=no
+R02   STS key split by <b>..</b> tags                            rc=3 written=no    snapshot_sha16=- shapes=aws-sts-session-token,credential CORRECT
+      INTAKE-REFUSED T shape=credential line=2 out=<path> written=no
+      INTAKE-REFUSED T shape=aws-sts-session-token line=2 out=<path> written=no
+R03   STS value split by <b>/<wbr>/comment                       rc=3 written=no    snapshot_sha16=- shapes=aws-sts-session-token,credential CORRECT
+      INTAKE-REFUSED T shape=credential line=2 out=<path> written=no
+      INTAKE-REFUSED T shape=aws-sts-session-token line=2 out=<path> written=no
+R04   azure SAS, &amp; separators                                rc=3 written=no    snapshot_sha16=- shapes=azure-sas-signature CORRECT
+      INTAKE-REFUSED T shape=azure-sas-signature line=2 out=<path> written=no
+R05   azure SAS, &#x26; separators                               rc=3 written=no    snapshot_sha16=- shapes=azure-sas-signature CORRECT
+      INTAKE-REFUSED T shape=azure-sas-signature line=2 out=<path> written=no
+R06   azure SAS, &#38; separators                                rc=3 written=no    snapshot_sha16=- shapes=azure-sas-signature CORRECT
+      INTAKE-REFUSED T shape=azure-sas-signature line=2 out=<path> written=no
+R07   azure SAS, &amp;amp; separators                            rc=3 written=no    snapshot_sha16=- shapes=azure-sas-signature CORRECT (snapshot keeps '&amp;', which _SEP accepts)
+      INTAKE-REFUSED T shape=azure-sas-signature line=2 out=<path> written=no
+R08   azure SAS, &amp;#x26; separators                           rc=0 written=yes   snapshot_sha16=00e68442c4dcb694 shapes=none BYPASS
+      note: snapshot line carries sv=..&#x26;..sig=<48 chars>; scanner reports clean
+R09   cloudfront URL, &amp;#x26; separators                      rc=0 written=yes   snapshot_sha16=8f24b7586bd7287c shapes=none BYPASS
+R10   azure SAS, %26 separators                                  rc=0 written=yes   snapshot_sha16=260b4fe9648fbb39 shapes=none BYPASS
+R11   STS value with &#9; at offset 10 (value 26, runs 10+16)    rc=0 written=yes   snapshot_sha16=eebcaf723e313cc6 shapes=none BYPASS
+      note: collapse() turns the tab into one space; value recoverable by deleting it
+R12   azure sig with &#9; at offset 20 (value 45, runs 20+25)    rc=0 written=yes   snapshot_sha16=c3713f9efc38a06a shapes=none BYPASS
+R13   gcs sig with &#9; at offset 30 (value 114, runs 30+84)     rc=0 written=yes   snapshot_sha16=b08e7f2fc4231711 shapes=none BYPASS
+R14   STS value with &nbsp; at offset 10                         rc=0 written=yes   snapshot_sha16=eebcaf723e313cc6 shapes=none BYPASS
+      note: same mechanism as R11 via U+00A0 -> space
+R15   STS token inside <script>                                  rc=0 written=yes   snapshot_sha16=2e22da2ab1371330 shapes=none CORRECT (12-byte snapshot; the token is not written)
+R16   STS token inside <style>                                   rc=0 written=yes   snapshot_sha16=2e22da2ab1371330 shapes=none CORRECT
+R17   unclosed <script> before the token                         rc=3 written=no    snapshot_sha16=- shapes=aws-sts-session-token,credential CORRECT
+      INTAKE-REFUSED T shape=credential line=2 out=<path> written=no
+      INTAKE-REFUSED T shape=aws-sts-session-token line=2 out=<path> written=no
+R18   --kind text, CRLF body                                     rc=3 written=no    snapshot_sha16=- shapes=aws-sts-session-token,credential CORRECT (line=2)
+      INTAKE-REFUSED T shape=credential line=2 out=<path> written=no
+      INTAKE-REFUSED T shape=aws-sts-session-token line=2 out=<path> written=no
+R19   plant, --out in a non-existent dir                         rc=3 written=no    snapshot_sha16=- shapes=aws-sts-session-token,credential CORRECT
+      INTAKE-REFUSED T shape=credential line=2 out=<path> written=no
+      INTAKE-REFUSED T shape=aws-sts-session-token line=2 out=<path> written=no
+      note: directory created=False
+R20   clean, --out in a non-existent dir                         rc=0 written=yes   snapshot_sha16=f8d1fa27e7ad557f shapes=none CORRECT (created)
+R21   plant onto an existing --out                               rc=3 written=yes   snapshot_sha16=b9de15d06570245b shapes=aws-sts-session-token,credential CORRECT
+      INTAKE-REFUSED T shape=credential line=2 out=<path> written=no
+      INTAKE-REFUSED T shape=aws-sts-session-token line=2 out=<path> written=no
+      note: existing bytes unchanged=True
+R22   --out is a directory                                       rc=1 written=no    snapshot_sha16=- shapes=none LIMIT (uncaught IsADirectoryError rc=1)
+R23   --out empty string                                         rc=2 written=no    snapshot_sha16=- shapes=none CORRECT (argparse rc=2)
+R24   allow row (path,credential,digest) + same value            rc=0 written=yes   snapshot_sha16=c978c097e85e36e9 shapes=none CORRECT (allowed)
+R25   same path, different value                                 rc=3 written=yes   snapshot_sha16=c978c097e85e36e9 shapes=credential CORRECT (refused, file kept)
+      note: existing bytes unchanged=True (before=c978c097e85e36e9 after=c978c097e85e36e9)
+      INTAKE-REFUSED T shape=credential line=1 out=<path> written=no
+R26   same value, different path                                 rc=3 written=no    snapshot_sha16=- shapes=credential CORRECT (refused)
+      INTAKE-REFUSED T shape=credential line=1 out=<path> written=no
+R27   allowlist row for aws-sts-session-token                    rc=3 written=no    snapshot_sha16=- shapes=gate-error:OSError CORRECT (load refuses; fail closed)
+      INTAKE-REFUSED T shape=gate-error:OSError line=0 out=<path> written=no
+R28   --allow points at a directory                              rc=3 written=no    snapshot_sha16=- shapes=gate-error:IsADirectoryError CORRECT (fail closed)
+      INTAKE-REFUSED T shape=gate-error:IsADirectoryError line=0 out=<path> written=no
+R29   --allow absent file                                        rc=0 written=yes   snapshot_sha16=f8d1fa27e7ad557f shapes=none LIMIT (load_allow returns {} silently)
+R30   re-capture committed S128 at its allowlisted path          rc=0 written=yes   snapshot_sha16=cd246e7debb4ea67 shapes=none CORRECT (rc0, snapshot_sha16 matches the committed file)
+      note: committed S128 sha16=cd246e7debb4ea67
+R31   relative --out from another cwd (allowlist not consulted)  rc=3  LIMIT (no allowlist diagnostic)
+R32   claim-package-check.py missing (patterns() raises)  rc=3 written=False shapes=gate-error:FileNotFoundError  CORRECT (fail closed)
+R33   capture-secret-scan.py missing  rc=3 written=False shapes=gate-error:FileNotFoundError  CORRECT (fail closed)
+R34   --out symlink to an existing file, plant                   rc=3 written=yes   snapshot_sha16=24b186bd25e8dc7d shapes=aws-sts-session-token,credential CORRECT (refused, target kept)
+      note: existing bytes unchanged=True (before=24b186bd25e8dc7d after=24b186bd25e8dc7d)
+      INTAKE-REFUSED T shape=credential line=2 out=<path> written=no
+      INTAKE-REFUSED T shape=aws-sts-session-token line=2 out=<path> written=no
+R35   --out symlink to an existing file, clean                   rc=0 written=yes   snapshot_sha16=f8d1fa27e7ad557f shapes=none LIMIT (write follows the symlink; out= names the link, bytes land at the target)
+      note: target_sha16=f8d1fa27e7ad557f link_is_symlink=True
+R36   allow row keyed to a symlinked in-lane dir                 rc=0 written=yes   snapshot_sha16=c978c097e85e36e9 shapes=none LIMIT (row consumed under the lexical lane path; bytes land outside the tree)
+      note: physical file outside tree=True
+R37   same, different value                                      rc=3 written=yes   snapshot_sha16=c978c097e85e36e9 shapes=credential CORRECT (digest still binds)
+      note: existing bytes unchanged=True (before=c978c097e85e36e9 after=c978c097e85e36e9)
+      INTAKE-REFUSED T shape=credential line=1 out=<path> written=no
+R38   clean capture onto corpus/instruments/README.md            rc=0 written=yes   snapshot_sha16=f8d1fa27e7ad557f shapes=none LIMIT (no containment: --out may name any in-tree file)
+      note: readme sha16 before=b7d799a6718db298 after=f8d1fa27e7ad557f
+R39   PDF with a token in the text layer                         rc=3 written=no    snapshot_sha16=- shapes=aws-sts-session-token,credential CORRECT
+      INTAKE-REFUSED P shape=credential line=2 out=<path> written=no
+      INTAKE-REFUSED P shape=aws-sts-session-token line=2 out=<path> written=no
+R40   clean PDF                                                  rc=0 written=yes   snapshot_sha16=38f473fefa7fc5fc shapes=none CORRECT
+R41   --id containing a newline  rc=3 intake_lines=4 (2 shapes)  LIMIT (refusal-line injection)
