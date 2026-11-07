@@ -8,42 +8,42 @@ recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/inst
 
 This entry records one maintainer-side lifecycle: the route a project's maintainers take inside GitHub from a
 privately known vulnerability to a published advisory their community can act on. The source is a single GitHub
-Docs overview page; its prose spans S076.txt:558-600 inside a capture that also carries page chrome (nav, “Copy markdown” (`S076.txt:559`), TOC and footer lines such as S076.txt:556, S076.txt:559 and S076.txt:601-610). The page states its own
-three-phase summary in one sentence: “You can use repository security advisories to privately discuss, fix, and publish information about security vulnerabilities in your public repository.” (`S076.txt:558`)
-The page bounds the feature to public repositories: “Repository security advisories and private vulnerability reporting are available for public repositories on GitHub.com” (`S076.txt:561`)
-The maintainer-side definition is explicit: “Repository security advisories allow maintainers of public repositories to privately discuss and fix a security vulnerability in a project.” (`S076.txt:568`)
+Docs overview page; its prose spans S076.txt:558-600 inside a capture that also carries page chrome (nav, “Copy markdown” (`corpus/source-snapshots/round-47/S076.txt:559`), TOC and footer lines such as S076.txt:556, S076.txt:559 and S076.txt:601-610). The page states its own
+three-phase summary in one sentence: “You can use repository security advisories to privately discuss, fix, and publish information about security vulnerabilities in your public repository.” (`corpus/source-snapshots/round-47/S076.txt:558`)
+The page bounds the feature to public repositories: “Repository security advisories and private vulnerability reporting are available for public repositories on GitHub.com” (`corpus/source-snapshots/round-47/S076.txt:561`)
+The maintainer-side definition is explicit: “Repository security advisories allow maintainers of public repositories to privately discuss and fix a security vulnerability in a project.” (`corpus/source-snapshots/round-47/S076.txt:568`)
 
 Decision rule for a maintainer's package advisory step (the page states the CVE request before the fix-version material, so the numbering below is this entry's, not the page's order):
 
-1. Draft discussion is available. “Create a draft security advisory, and use the draft to privately discuss the impact of the vulnerability on your project.” (`S076.txt:570`) This capability is not a universal secrecy rule; the page also permits republication of details disclosed elsewhere (`S076.txt:573`).
-2. A temporary private fork is an available collaboration mechanism, not a mandatory fix location. “Privately collaborate to fix the vulnerability in a temporary private fork.” (`S076.txt:571`)
-3. Add a fix version whenever possible, not as an unconditional publication requirement. “Whenever possible, you should add a fix version to a security advisory prior to publishing the advisory.” (`S076.txt:596`)
-4. A GitHub CVE request is optional and does not itself publish. “Requesting a CVE identification number doesn't make your security advisory public.” (`S076.txt:583`) On this route the assigning body is GitHub: “GitHub is a CVE Numbering Authority (CNA) and is authorized to assign CVE identification numbers.” (`S076.txt:582`) The page says “GitHub usually reviews the request within 72 hours.” (`S076.txt:583`)
+1. Draft discussion is available. “Create a draft security advisory, and use the draft to privately discuss the impact of the vulnerability on your project.” (`corpus/source-snapshots/round-47/S076.txt:570`) This capability is not a universal secrecy rule; the page also permits republication of details disclosed elsewhere (`corpus/source-snapshots/round-47/S076.txt:573`).
+2. A temporary private fork is an available collaboration mechanism, not a mandatory fix location. “Privately collaborate to fix the vulnerability in a temporary private fork.” (`corpus/source-snapshots/round-47/S076.txt:571`)
+3. Add a fix version whenever possible, not as an unconditional publication requirement. “Whenever possible, you should add a fix version to a security advisory prior to publishing the advisory.” (`corpus/source-snapshots/round-47/S076.txt:596`)
+4. A GitHub CVE request is optional and does not itself publish. “Requesting a CVE identification number doesn't make your security advisory public.” (`corpus/source-snapshots/round-47/S076.txt:583`) On this route the assigning body is GitHub: “GitHub is a CVE Numbering Authority (CNA) and is authorized to assign CVE identification numbers.” (`corpus/source-snapshots/round-47/S076.txt:582`) The page says “GitHub usually reviews the request within 72 hours.” (`corpus/source-snapshots/round-47/S076.txt:583`)
 
 Two different 72-hour statements appear in the capture and must not be merged into one deadline: the CVE-request
-review clock above, and the post-publication Dependabot step “This process can take up to 72 hours and GitHub may contact you for more information.” (`S076.txt:594`)
+review clock above, and the post-publication Dependabot step “This process can take up to 72 hours and GitHub may contact you for more information.” (`corpus/source-snapshots/round-47/S076.txt:594`)
 
 | id | observed question | ground |
 |---|---|---|
-| G1 | What are repository security advisories for? | “You can use repository security advisories to privately discuss, fix, and publish information about security vulnerabilities in your public repository.” (`S076.txt:558`) |
-| G2 | Which repositories may use the feature? | “Repository security advisories and private vulnerability reporting are available for public repositories on GitHub.com” (`S076.txt:561`) |
-| G3 | Who may privately discuss and fix the vulnerability? | “Repository security advisories allow maintainers of public repositories to privately discuss and fix a security vulnerability in a project.” (`S076.txt:568`) |
-| G4 | What is the first artefact the maintainer creates? | “Create a draft security advisory, and use the draft to privately discuss the impact of the vulnerability on your project.” (`S076.txt:570`) |
-| G5 | Which private fix-collaboration mechanism is available? | “Privately collaborate to fix the vulnerability in a temporary private fork.” (`S076.txt:571`) |
-| G6 | When may the advisory be published? | “Publish the security advisory to alert your community of the vulnerability once a patch is released.” (`S076.txt:572`) |
-| G7 | May an already disclosed finding be re-advertised here? | “You can also use repository security advisories to republish the details of a security vulnerability that you have already disclosed elsewhere” (`S076.txt:573`) |
-| G8 | Who may be credited on the advisory? | “You can give credit to individuals who contributed to a security advisory.” (`S076.txt:575`) |
-| G9 | Where does a repository-scoped advisory live afterwards? | “If you created a security advisory in your repository, the security advisory will stay in your repository.” (`S076.txt:577`) |
-| G10 | Which database receives published advisories? | “We publish security advisories for any of the ecosystems supported by the dependency graph to the GitHub Advisory Database on github.com/advisories.” (`S076.txt:577`) |
-| G11 | Does an npm advisory also reach the npm advisory list? | “If a security advisory is specifically for npm, we also publish the advisory to the npm security advisories.” (`S076.txt:578`) |
-| G12 | Which body assigns CVE identification numbers on this route? | “GitHub is a CVE Numbering Authority (CNA) and is authorized to assign CVE identification numbers.” (`S076.txt:582`) |
-| G13 | What is the clock on a CVE request? | “GitHub usually reviews the request within 72 hours.” (`S076.txt:583`) |
-| G14 | Does the CVE request publish the advisory? | “Requesting a CVE identification number doesn't make your security advisory public.” (`S076.txt:583`) |
-| G15 | When is GitHub unable to assign the identifier? | “GitHub cannot assign CVEs to your project if it is covered by another CNA.” (`S076.txt:584`) |
-| G16 | What is public once the advisory is published? | “Anyone can see the current version of the advisory data, as well as any advisory credits that the credited users have accepted.” (`S076.txt:589`) |
-| G17 | Who may read the advisory conversation? | “Collaborators can view the conversation history of the advisory.” (`S076.txt:590`) |
-| G18 | What runs after publication, and on whose clock? | “This process can take up to 72 hours and GitHub may contact you for more information.” (`S076.txt:594`) |
-| G19 | What qualified fix-version guidance does GitHub give? | “Whenever possible, you should add a fix version to a security advisory prior to publishing the advisory.” (`S076.txt:596`) |
+| G1 | What are repository security advisories for? | “You can use repository security advisories to privately discuss, fix, and publish information about security vulnerabilities in your public repository.” (`corpus/source-snapshots/round-47/S076.txt:558`) |
+| G2 | Which repositories may use the feature? | “Repository security advisories and private vulnerability reporting are available for public repositories on GitHub.com” (`corpus/source-snapshots/round-47/S076.txt:561`) |
+| G3 | Who may privately discuss and fix the vulnerability? | “Repository security advisories allow maintainers of public repositories to privately discuss and fix a security vulnerability in a project.” (`corpus/source-snapshots/round-47/S076.txt:568`) |
+| G4 | What is the first artefact the maintainer creates? | “Create a draft security advisory, and use the draft to privately discuss the impact of the vulnerability on your project.” (`corpus/source-snapshots/round-47/S076.txt:570`) |
+| G5 | Which private fix-collaboration mechanism is available? | “Privately collaborate to fix the vulnerability in a temporary private fork.” (`corpus/source-snapshots/round-47/S076.txt:571`) |
+| G6 | When may the advisory be published? | “Publish the security advisory to alert your community of the vulnerability once a patch is released.” (`corpus/source-snapshots/round-47/S076.txt:572`) |
+| G7 | May an already disclosed finding be re-advertised here? | “You can also use repository security advisories to republish the details of a security vulnerability that you have already disclosed elsewhere” (`corpus/source-snapshots/round-47/S076.txt:573`) |
+| G8 | Who may be credited on the advisory? | “You can give credit to individuals who contributed to a security advisory.” (`corpus/source-snapshots/round-47/S076.txt:575`) |
+| G9 | Where does a repository-scoped advisory live afterwards? | “If you created a security advisory in your repository, the security advisory will stay in your repository.” (`corpus/source-snapshots/round-47/S076.txt:577`) |
+| G10 | Which database receives published advisories? | “We publish security advisories for any of the ecosystems supported by the dependency graph to the GitHub Advisory Database on github.com/advisories.” (`corpus/source-snapshots/round-47/S076.txt:577`) |
+| G11 | Does an npm advisory also reach the npm advisory list? | “If a security advisory is specifically for npm, we also publish the advisory to the npm security advisories.” (`corpus/source-snapshots/round-47/S076.txt:578`) |
+| G12 | Which body assigns CVE identification numbers on this route? | “GitHub is a CVE Numbering Authority (CNA) and is authorized to assign CVE identification numbers.” (`corpus/source-snapshots/round-47/S076.txt:582`) |
+| G13 | What is the clock on a CVE request? | “GitHub usually reviews the request within 72 hours.” (`corpus/source-snapshots/round-47/S076.txt:583`) |
+| G14 | Does the CVE request publish the advisory? | “Requesting a CVE identification number doesn't make your security advisory public.” (`corpus/source-snapshots/round-47/S076.txt:583`) |
+| G15 | When is GitHub unable to assign the identifier? | “GitHub cannot assign CVEs to your project if it is covered by another CNA.” (`corpus/source-snapshots/round-47/S076.txt:584`) |
+| G16 | What is public once the advisory is published? | “Anyone can see the current version of the advisory data, as well as any advisory credits that the credited users have accepted.” (`corpus/source-snapshots/round-47/S076.txt:589`) |
+| G17 | Who may read the advisory conversation? | “Collaborators can view the conversation history of the advisory.” (`corpus/source-snapshots/round-47/S076.txt:590`) |
+| G18 | What runs after publication, and on whose clock? | “This process can take up to 72 hours and GitHub may contact you for more information.” (`corpus/source-snapshots/round-47/S076.txt:594`) |
+| G19 | What qualified fix-version guidance does GitHub give? | “Whenever possible, you should add a fix version to a security advisory prior to publishing the advisory.” (`corpus/source-snapshots/round-47/S076.txt:596`) |
 
 ## Overlap and novelty
 
@@ -89,15 +89,15 @@ This remains the existing F29 surface, not new frontier credit in round 47.
 - One page, one actor. The prose is S076.txt:558-600; the capture also carries page chrome (S076.txt:556, S076.txt:559, S076.txt:562-565, S076.txt:601-610); it is GitHub's concept
   overview of the maintainer-side advisory lifecycle, not the operating manual and not a rule for other platforms.
 - Four sibling pages are named by the capture but their bodies are not held here: the advisory form's fields and the
-  creation flow (“Creating a repository security advisory” (`S076.txt:575`)), the REST API endpoints (“REST API
-  endpoints for repository security advisories” (`S076.txt:574`)), the post-publication editing flow (“Editing a
-  repository security advisory” (`S076.txt:592`)) and the Advisory Database's own edit flow (“Editing security
-  advisories in the GitHub Advisory Database” (`S076.txt:577`)). Each appears in the capture as link text only.
+  creation flow (“Creating a repository security advisory” (`corpus/source-snapshots/round-47/S076.txt:575`)), the REST API endpoints (“REST API
+  endpoints for repository security advisories” (`corpus/source-snapshots/round-47/S076.txt:574`)), the post-publication editing flow (“Editing a
+  repository security advisory” (`corpus/source-snapshots/round-47/S076.txt:592`)) and the Advisory Database's own edit flow (“Editing security
+  advisories in the GitHub Advisory Database” (`corpus/source-snapshots/round-47/S076.txt:577`)). Each appears in the capture as link text only.
 - The form's field list is not on this page. The page says only that “The security advisory form on GitHub is a
-  standardized form that matches the CVE description format.” (`S076.txt:581`) — it states the form's shape, not its
+  standardized form that matches the CVE description format.” (`corpus/source-snapshots/round-47/S076.txt:581`) — it states the form's shape, not its
   fields, and the fields live on the sibling page named above.
 - The API surface is not on this page either: “You can also use the REST API to create, list, and update repository
-  security advisories.” (`S076.txt:574`) is a pointer to the endpoint list, not the endpoints.
+  security advisories.” (`corpus/source-snapshots/round-47/S076.txt:574`) is a pointer to the endpoint list, not the endpoints.
 - The page is silent where a package would want more. Sweep over the capture for disclosure-timing and reward
   vocabulary: `grep -n -i -E 'timeline|embargo|deadline|reward|bount' corpus/source-snapshots/round-47/S076.txt`
   printed nothing (grep exit 1). The page states no disclosure deadline, no embargo and no reward. It says nothing
@@ -105,11 +105,11 @@ This remains the existing F29 surface, not new frontier credit in round 47.
   administrators of an advisory (S076.txt:583).
 - Publication visibility is only what the page lists: the advisory data and accepted credits are public, the
   conversation history is visible to collaborators, and the advisory URL does not change (“The URL of a security
-  advisory does not change after publication.” (`S076.txt:591`)). The page states no retention period, no unpublish
+  advisory does not change after publication.” (`corpus/source-snapshots/round-47/S076.txt:591`)). The page states no retention period, no unpublish
   path and no takedown rule.
 - The fix-version duty is graded, not absolute: “Whenever possible, you should add a fix version to a security
-  advisory prior to publishing the advisory.” (`S076.txt:596`). Of the three cases that follow, only two —
-  S076.txt:599 and S076.txt:600 — let a maintainer publish without a fix version; the first case (“Imminently available, and you are able to, wait to disclose the issue when the fix is ready.” (`S076.txt:598`)) forbids it. A package may record the duty and the two cases; it
+  advisory prior to publishing the advisory.” (`corpus/source-snapshots/round-47/S076.txt:596`). Of the three cases that follow, only two —
+  S076.txt:599 and S076.txt:600 — let a maintainer publish without a fix version; the first case (“Imminently available, and you are able to, wait to disclose the issue when the fix is ready.” (`corpus/source-snapshots/round-47/S076.txt:598`)) forbids it. A package may record the duty and the two cases; it
   may not record that a fix version is mandatory.
 - The page records no acceptance test and no review checklist; a package cannot lift one from this capture.
 - Quote checks are exact-text checks against the pinned capture, not a live check. The `recheck:` line re-verifies
@@ -125,21 +125,21 @@ These are evidence checks for claimed actions, not a mandatory four-step GitHub-
 
 1. If draft discussion is claimed, require evidence for that claim: “Create a
    draft security advisory, and use the draft to privately discuss the impact of the vulnerability on your
-   project.” (`S076.txt:570`) A published advisory alone does not evidence private draft discussion.
+   project.” (`corpus/source-snapshots/round-47/S076.txt:570`) A published advisory alone does not evidence private draft discussion.
 2. If private-fork collaboration is claimed, verify it rather than mandate that mechanism: “Privately collaborate to fix the vulnerability in a
-   temporary private fork.” (`S076.txt:571`)
+   temporary private fork.” (`corpus/source-snapshots/round-47/S076.txt:571`)
 3. For a claimed GitHub CVE request, publication is a separate event: “Requesting a CVE
-   identification number doesn't make your security advisory public.” (`S076.txt:583`) On this optional route record
+   identification number doesn't make your security advisory public.” (`corpus/source-snapshots/round-47/S076.txt:583`) On this optional route record
    GitHub as the assigning body on this route, “GitHub is a CVE Numbering Authority (CNA) and is authorized to assign
-   CVE identification numbers.” (`S076.txt:582`), and the boundary is COVERAGE by another CNA, not use of another
+   CVE identification numbers.” (`corpus/source-snapshots/round-47/S076.txt:582`), and the boundary is COVERAGE by another CNA, not use of another
    authority's identifier — a project covered by its most-appropriate-scope CNA (the F07 rule:
    `corpus/knowledge/cna-assignment-and-vulnerability-rules.md:36`) is one “GitHub cannot assign CVEs to your
-   project if it is covered by another CNA.” (`S076.txt:584`) applies to, whether or not that CNA has assigned an
+   project if it is covered by another CNA.” (`corpus/source-snapshots/round-47/S076.txt:584`) applies to, whether or not that CNA has assigned an
    identifier yet. A package that treats the CVE request as the publication event fails on the request-does-not-publish line.
 4. Preserve the qualification and exceptions of fix-version guidance: “Whenever possible, you should add a fix version to a security advisory prior to
-   publishing the advisory.” (`S076.txt:596`) The two without-fix cases above are not rejected merely for lacking a version.
+   publishing the advisory.” (`corpus/source-snapshots/round-47/S076.txt:596`) The two without-fix cases above are not rejected merely for lacking a version.
 
 A package that also states what is public after publication must record the split, not just the fact of
 publication: “Anyone can see the current version of the advisory data, as well as any advisory credits that the
-credited users have accepted.” (`S076.txt:589`) and “Collaborators can view the conversation history of the
-advisory.” (`S076.txt:590`)
+credited users have accepted.” (`corpus/source-snapshots/round-47/S076.txt:589`) and “Collaborators can view the conversation history of the
+advisory.” (`corpus/source-snapshots/round-47/S076.txt:590`)

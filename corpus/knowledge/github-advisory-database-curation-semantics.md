@@ -15,85 +15,85 @@ reader can decide what a GHSA record proves before treating it as a finding, a f
 Decision rule for "what does this advisory record actually assert?":
 
 1. **Class first.** The page groups records under three class sub-headings — "GitHub-reviewed
-   vulnerability advisories" (`S105.txt:572`), "Unreviewed vulnerability advisories"
-   (`S105.txt:600`) and "Malware advisories" (`S105.txt:603`) — and its intro only says the problems
-   "come in several varieties" (`S105.txt:569`). Review status decides whether validity was checked:
-   reviewed records are checked (`S105.txt:584`), unreviewed ones are not (`S105.txt:602`), and the
+   vulnerability advisories" (`corpus/source-snapshots/round-70/S105.txt:572`), "Unreviewed vulnerability advisories"
+   (`corpus/source-snapshots/round-70/S105.txt:600`) and "Malware advisories" (`corpus/source-snapshots/round-70/S105.txt:603`) — and its intro only says the problems
+   "come in several varieties" (`corpus/source-snapshots/round-70/S105.txt:569`). Review status decides whether validity was checked:
+   reviewed records are checked (`corpus/source-snapshots/round-70/S105.txt:584`), unreviewed ones are not (`corpus/source-snapshots/round-70/S105.txt:602`), and the
    page says nothing about a validity review of malware records.
    - **GitHub-reviewed vulnerability.** Advisories are mapped to packages "in ecosystems we support"
      and "We carefully review each advisory for validity and ensure that they contain a full
-     description and both ecosystem and package information." (`S105.txt:584`). Review is scoped to a
+     description and both ecosystem and package information." (`corpus/source-snapshots/round-70/S105.txt:584`). Review is scoped to a
      supported registry: "We review advisories if they are for a vulnerability in a package that comes
-     from a supported registry." (`S105.txt:585`).
+     from a supported registry." (`corpus/source-snapshots/round-70/S105.txt:585`).
    - **Unreviewed vulnerability.** "Unreviewed advisories are published automatically into the GitHub
-     Advisory Database, directly from the National Vulnerability Database feed." (`S105.txt:601`), and
+     Advisory Database, directly from the National Vulnerability Database feed." (`corpus/source-snapshots/round-70/S105.txt:601`), and
      "Dependabot doesn't create Dependabot alerts for unreviewed advisories as this type of advisory
-     isn't checked for validity or completion." (`S105.txt:602`). An unreviewed record is an NVD
+     isn't checked for validity or completion." (`corpus/source-snapshots/round-70/S105.txt:602`). An unreviewed record is an NVD
      import, not a GitHub judgment.
    - **Malware.** "We publish them automatically into the GitHub Advisory Database from the npm
-     security team and the OpenSSF Malicious Packages repository." (`S105.txt:604`); they are
-     searchable as `type:malware` (`S105.txt:606`); "Malware alerts do not contain a fix version,
+     security team and the OpenSSF Malicious Packages repository." (`corpus/source-snapshots/round-70/S105.txt:604`); they are
+     searchable as `type:malware` (`corpus/source-snapshots/round-70/S105.txt:606`); "Malware alerts do not contain a fix version,
      because the defining characteristic of a malware alert is that there are no safe versions"
-     (`S105.txt:571`); and "Our malware advisories are mostly about substitution attacks."
-     (`S105.txt:607`).
+     (`corpus/source-snapshots/round-70/S105.txt:571`); and "Our malware advisories are mostly about substitution attacks."
+     (`corpus/source-snapshots/round-70/S105.txt:607`).
 2. **Then the field provenance.** GHSA ids, CVSS versions and EPSS scores have different authors and
    different update guarantees (table below). The CVSS-version rule is branch-specific: "If GitHub
    obtains a CVE, the GitHub Advisory Database uses the CVSS version assigned by the maintainer, which
    can be version 3.1 or 4.0. If the CVE is imported, the GitHub Advisory Database supports CVSS
-   versions 4.0, 3.1 and 3.0." (`S105.txt:628`) — the page does not state who assigns an imported
+   versions 4.0, 3.1 and 3.0." (`corpus/source-snapshots/round-70/S105.txt:628`) — the page does not state who assigns an imported
    CVE's version. An EPSS percentile is only refreshed "when significantly different"
-   (`S105.txt:639`).
+   (`corpus/source-snapshots/round-70/S105.txt:639`).
 3. **Then the fix claim.** Vulnerability advisories carry the affected version range and "the earliest
-   version where the problem was fixed" (`S105.txt:570`). Malware alerts "do not contain a fix
-   version" (`S105.txt:571`), but the page elsewhere lists "patched versions" among the fields an
-   advisory may carry (`S105.txt:622`), so read the fix field per record rather than inferring it from
+   version where the problem was fixed" (`corpus/source-snapshots/round-70/S105.txt:570`). Malware alerts "do not contain a fix
+   version" (`corpus/source-snapshots/round-70/S105.txt:571`), but the page elsewhere lists "patched versions" among the fields an
+   advisory may carry (`corpus/source-snapshots/round-70/S105.txt:622`), so read the fix field per record rather than inferring it from
    the class; a malware record should not be read as a patched-in-X statement without that field.
 
 ### Advisory classes: admission, alerting, and what the record proves
 
 | class | admission path | Dependabot alert? | what the record proves |
 |---|---|---|---|
-| GitHub-reviewed vulnerability | listed as a source of reviewed advisories (`S105.txt:573-582`), then reviewed for validity, description and ecosystem/package data within a supported registry (`S105.txt:584-585`); NVD appears both here and as the unreviewed feed (`S105.txt:601`) | yes, if Dependabot alerts are enabled, for a dependency on the package (`S105.txt:599`) | a maintained range statement with a fixed version (`S105.txt:570`) |
-| unreviewed vulnerability | automatic, directly from the NVD feed (`S105.txt:601`) | no (`S105.txt:602`) | an NVD import only; not checked for validity or completion |
-| malware | automatic, from the npm security team and the OpenSSF Malicious Packages repository (`S105.txt:604`) | yes when malware alerts are enabled (`S105.txt:605`) | malware alerts carry no fix version (`S105.txt:571`); mostly substitution attacks (`S105.txt:607`) |
+| GitHub-reviewed vulnerability | listed as a source of reviewed advisories (`corpus/source-snapshots/round-70/S105.txt:573-582`), then reviewed for validity, description and ecosystem/package data within a supported registry (`corpus/source-snapshots/round-70/S105.txt:584-585`); NVD appears both here and as the unreviewed feed (`corpus/source-snapshots/round-70/S105.txt:601`) | yes, if Dependabot alerts are enabled, for a dependency on the package (`corpus/source-snapshots/round-70/S105.txt:599`) | a maintained range statement with a fixed version (`corpus/source-snapshots/round-70/S105.txt:570`) |
+| unreviewed vulnerability | automatic, directly from the NVD feed (`corpus/source-snapshots/round-70/S105.txt:601`) | no (`corpus/source-snapshots/round-70/S105.txt:602`) | an NVD import only; not checked for validity or completion |
+| malware | automatic, from the npm security team and the OpenSSF Malicious Packages repository (`corpus/source-snapshots/round-70/S105.txt:604`) | yes when malware alerts are enabled (`corpus/source-snapshots/round-70/S105.txt:605`) | malware alerts carry no fix version (`corpus/source-snapshots/round-70/S105.txt:571`); mostly substitution attacks (`corpus/source-snapshots/round-70/S105.txt:607`) |
 
 The substitution-attack note carries a scoping caveat worth quoting exactly: Dependabot "doesn't look
 at project configurations to determine if the packages are coming from a private registry"
-(`S105.txt:607`), so a same-name alert cannot distinguish the malicious package from a legitimate one,
+(`corpus/source-snapshots/round-70/S105.txt:607`), so a same-name alert cannot distinguish the malicious package from a legitimate one,
 and "Users who have their dependencies appropriately scoped should not be affected by malware."
-(`S105.txt:607`).
+(`corpus/source-snapshots/round-70/S105.txt:607`).
 
 ### Sources: eight imported feeds plus a community-contribution channel
 
-"We add advisories to the GitHub Advisory Database from the following sources:" (`S105.txt:573`).
+"We add advisories to the GitHub Advisory Database from the following sources:" (`corpus/source-snapshots/round-70/S105.txt:573`).
 The eight feeds are security advisories reported on GitHub, the National Vulnerability Database, the
 npm Security advisories database, the FriendsOfPHP database, the Go Vulncheck database, the Python
 Packaging Advisory database, the Ruby Advisory database and the RustSec Advisory database
-(`S105.txt:574-581`); the ninth bullet is community contributions through pull requests to
-`github/advisory-database` (`S105.txt:582`), which the page treats as an editing channel rather than a
+(`corpus/source-snapshots/round-70/S105.txt:574-581`); the ninth bullet is community contributions through pull requests to
+`github/advisory-database` (`corpus/source-snapshots/round-70/S105.txt:582`), which the page treats as an editing channel rather than a
 feed. The page also states the storage format: "Security advisories are published as JSON files in the
-Open Source Vulnerability (OSV) format." (`S105.txt:567`). The page's own "we do not author this data"
-sentence (`S105.txt:640`) is scoped to EPSS, not to the advisory records.
+Open Source Vulnerability (OSV) format." (`corpus/source-snapshots/round-70/S105.txt:567`). The page's own "we do not author this data"
+sentence (`corpus/source-snapshots/round-70/S105.txt:640`) is scoped to EPSS, not to the advisory records.
 
 ### Supported ecosystems (the review gate's allow-list)
 
 "Generally, we name our supported ecosystems after the software programming language's associated
-package registry." (`S105.txt:585`) — Composer, Erlang, Go, GitHub Actions, Maven, Npm, NuGet, Pip,
-Pub, RubyGems, Rust and Swift (`S105.txt:586-597`). GitHub Actions' cell is a marketplace URL, not a
-registry (`S105.txt:589`); only Swift reads "Swift (registry: N/A)" (`S105.txt:597`). The page states
+package registry." (`corpus/source-snapshots/round-70/S105.txt:585`) — Composer, Erlang, Go, GitHub Actions, Maven, Npm, NuGet, Pip,
+Pub, RubyGems, Rust and Swift (`corpus/source-snapshots/round-70/S105.txt:586-597`). GitHub Actions' cell is a marketplace URL, not a
+registry (`corpus/source-snapshots/round-70/S105.txt:589`); only Swift reads "Swift (registry: N/A)" (`corpus/source-snapshots/round-70/S105.txt:597`). The page states
 no converse about packages outside these registries: unreviewed records are in the database
-(`S105.txt:601`) and the list is open to suggestions (`S105.txt:598`).
+(`corpus/source-snapshots/round-70/S105.txt:601`) and the list is open to suggestions (`corpus/source-snapshots/round-70/S105.txt:598`).
 
 ### Field provenance
 
 | field | author | rule and location |
 |---|---|---|
-| GHSA id | GitHub, on creation or import | `GHSA-xxxx-xxxx-xxxx`, charset `23456789cfghjmpqrvwx`, lowercase (`S105.txt:611-616`) |
-| CVSS version | maintainer for a GitHub-obtained CVE; unstated for an import | 3.1 and 4.0 supported (`S105.txt:621`); GitHub-obtained CVE uses the maintainer's version (3.1 or 4.0); an imported CVE supports 4.0, 3.1 and 3.0 (`S105.txt:628`) |
-| severity label | unstated | one of four levels defined in CVSS Section 5: low, medium/moderate, high, critical (`S105.txt:623-627`); the page does not state who maps a score to a label |
-| EPSS percentage | FIRST | daily synchronization; percentages "will always be fully synchronized" (`S105.txt:639`) |
-| EPSS percentile | FIRST | refreshed only "when significantly different" (`S105.txt:639`); "we do not author this data, but rather source it from FIRST" (`S105.txt:640`); not editable in community contributions (`S105.txt:640`) |
-| community edits | submitter, gated by GitHub Security Lab | a PR to `github/advisory-database` may edit or add detail (ecosystems, severity, description); the Security Lab curation team reviews and publishes if accepted (`S105.txt:642`); the submitter is credited with type "Analyst" (`S105.txt:643`) |
+| GHSA id | GitHub, on creation or import | `GHSA-xxxx-xxxx-xxxx`, charset `23456789cfghjmpqrvwx`, lowercase (`corpus/source-snapshots/round-70/S105.txt:611-616`) |
+| CVSS version | maintainer for a GitHub-obtained CVE; unstated for an import | 3.1 and 4.0 supported (`corpus/source-snapshots/round-70/S105.txt:621`); GitHub-obtained CVE uses the maintainer's version (3.1 or 4.0); an imported CVE supports 4.0, 3.1 and 3.0 (`corpus/source-snapshots/round-70/S105.txt:628`) |
+| severity label | unstated | one of four levels defined in CVSS Section 5: low, medium/moderate, high, critical (`corpus/source-snapshots/round-70/S105.txt:623-627`); the page does not state who maps a score to a label |
+| EPSS percentage | FIRST | daily synchronization; percentages "will always be fully synchronized" (`corpus/source-snapshots/round-70/S105.txt:639`) |
+| EPSS percentile | FIRST | refreshed only "when significantly different" (`corpus/source-snapshots/round-70/S105.txt:639`); "we do not author this data, but rather source it from FIRST" (`corpus/source-snapshots/round-70/S105.txt:640`); not editable in community contributions (`corpus/source-snapshots/round-70/S105.txt:640`) |
+| community edits | submitter, gated by GitHub Security Lab | a PR to `github/advisory-database` may edit or add detail (ecosystems, severity, description); the Security Lab curation team reviews and publishes if accepted (`corpus/source-snapshots/round-70/S105.txt:642`); the submitter is credited with type "Analyst" (`corpus/source-snapshots/round-70/S105.txt:643`) |
 
 ## How this changes a reading
 
@@ -101,14 +101,14 @@ no converse about packages outside these registries: unreviewed records are in t
   non-malware records, never of "the database" (S103.txt:275-276); this entry says what each class was
   checked for.
 - Split three numbers that are often collapsed: the CVSS **version** and score are the maintainer's or
-  an import's (`S105.txt:628`), the four **severity labels** are CVSS Section 5 bands with an unstated
-  mapping author (`S105.txt:623`), and **EPSS** is FIRST's data passed through GitHub with the sync
-  rule above (`S105.txt:639-640`).
-- A malware record's missing fix version is a class rule about alerts (`S105.txt:571`), not a
-  remediation judgment: check the record's own patched-versions field (`S105.txt:622`) before saying
+  an import's (`corpus/source-snapshots/round-70/S105.txt:628`), the four **severity labels** are CVSS Section 5 bands with an unstated
+  mapping author (`corpus/source-snapshots/round-70/S105.txt:623`), and **EPSS** is FIRST's data passed through GitHub with the sync
+  rule above (`corpus/source-snapshots/round-70/S105.txt:639-640`).
+- A malware record's missing fix version is a class rule about alerts (`corpus/source-snapshots/round-70/S105.txt:571`), not a
+  remediation judgment: check the record's own patched-versions field (`corpus/source-snapshots/round-70/S105.txt:622`) before saying
   anything about a fix.
 - A community contribution is reviewed content: acceptance by the Security Lab curation team is the
-  gate (`S105.txt:642`), and the contributor is credited rather than treated as the author of the
+  gate (`corpus/source-snapshots/round-70/S105.txt:642`), and the contributor is credited rather than treated as the author of the
   record.
 
 ## Limits
