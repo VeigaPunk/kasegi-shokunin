@@ -1,0 +1,48 @@
+counter_sha256=4fba0cbe98fff8524efaf9f8ccd8879a133632260820ee611b7253f3fccfead7 instrument_sha256=b3164f3f70b6daf2b7233b55df56f2a181dfeb1544637d2f3c83ec3ebe676c88 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6 allow_sha256=f9fbd7e7e56cb107081f00bf0e4c5af4e717dea801e86710b8489a932a0efc82 base=cd1f568a6be2656b5f5dc479eb90ef99b91131b5
+== control do-nothing: base, no instrument (expected fail)
+CAPABILITY-CHECK rev=cd1f568a6be2656b5f5dc479eb90ef99b91131b5 instrument_present=False
+LIMB K1 FAIL missing=capture-secret-scan.py,capture-secret-allow.tsv
+LIMB K2 FAIL instrument-absent
+LIMB K3 FAIL instrument-absent
+LIMB K4 FAIL instrument-absent
+LIMB K5 FAIL rows=0
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control positive: candidate placed (expected pass)
+CAPABILITY-CHECK rev=be10ec3c921dd4b7cec2462b9d7d45fdf1ba28e4 instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=b3164f3f70b6daf2b7233b55df56f2a181dfeb1544637d2f3c83ec3ebe676c88 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+rc=0
+== forgery always-clean scanner (expected fail K2,K4)
+CAPABILITY-CHECK rev=b7b1e69536d79bdfb9b2ce8296b62a92a30727a2 instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=6934cf490e50b10b4a9768d221898e95f72628055a738c6f10c6a0c05490713c gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 FAIL rc=0 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=0 missing=none extra=none sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== forgery gate-only scanner, no AWS shapes (expected fail)
+CAPABILITY-CHECK rev=55846b9b3ac1b81590c008f787da315467a86a8e instrument_present=True
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=4235ff89d5edba9c37255616850aaeb6e3463a81aae731585652d117cd64d9ef gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 FAIL rc=1 sts_files=0 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/source-snapshots/round-1/S001.txt|aws-access-key-id,corpus/source-snapshots/round-1/S001.txt|aws-sts-session-token,w/x-receipts/live-a.json|aws-access-key-id extra=none sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== forgery allowlist bound to path+shape, not value (expected fail K4)
+CAPABILITY-CHECK rev=edd01808a1651d11421020b00f218caef074bad1 instrument_present=True
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=6d59e62e03c9c71809919dee92897561014b76fcecbc1025047cf0a1d3a69b1e gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=13
+LIMB K4 FAIL rc=1 missing=w/y-receipts/fp-other.json|credential extra=none sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== forgery scope widened to all of corpus/ (expected fail K4; a whole-tree mutant ran >15 min at attempt 1 and was replaced)
+CAPABILITY-CHECK rev=b75ae492a82834d4151b34e276918906cd93bdd7 instrument_present=True

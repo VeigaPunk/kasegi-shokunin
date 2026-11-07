@@ -1,0 +1,11 @@
+# round-87 pre-freeze capture scan (candidate b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1, allowlist f9fbd7e7e56cb107081f00bf0e4c5af4e717dea801e86710b8489a932a0efc82); run from a scratch copy beside claim-package-check.py
+$ capture-secret-scan.py --files corpus/source-snapshots/round-87/S124.txt corpus/source-snapshots/round-87/S125.txt corpus/source-snapshots/round-87/manifest.json --allow .ufo/waves/round-87/c2/candidate/capture-secret-allow.tsv
+CAPTURE-SECRET-SCAN mode=files scanned=3 hits=0 files=0 allowed=2 unused_allow=15 rc=0
+exit=0
+$ same files, empty allowlist (the S124 documentation match must surface)
+HIT shape=authorization path=corpus/source-snapshots/round-87/S124.txt line=384
+CAPTURE-SECRET-SCAN mode=files scanned=3 hits=1 files=1 allowed=0 unused_allow=0 rc=1
+exit=1
+$ capture-secret-scan.py --lane . --rev cd1f568a (base) --allow candidate
+CAPTURE-SECRET-SCAN mode=rev:cd1f568a6be2656b5f5dc479eb90ef99b91131b5 scanned=1316 hits=0 files=0 allowed=16 unused_allow=2 rc=0
+exit=0

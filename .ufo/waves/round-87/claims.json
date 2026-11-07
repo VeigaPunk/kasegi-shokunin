@@ -1,0 +1,81 @@
+{
+ "round": 87,
+ "lane": "kasegi",
+ "attempt": 1,
+ "base": "cd1f568a6be2656b5f5dc479eb90ef99b91131b5",
+ "history_read": [
+  "corpus/lessons/round-86-verifier-spotcheck.md (routed defects 1-6; operator note on the pushed STS token)",
+  "corpus/lessons/round-86.md (M86-1..3; routed to r87)",
+  "SCORECARD.md Round 86 'Planned round 87'",
+  ".ufo/waves/round-86/w1/ReviewC1Semantics.md (routed candidates 1 and 2: excluded tokens unique under corpus/source-snapshots/; S041 genuinely ambiguous)"
+ ],
+ "planned_row_disposition": {
+  "re-freeze the C2 package with a full positive control": "not taken: the package already passes the r86 counter at the tip, so a do-nothing control would meet a re-freeze target (prompt \u00a79); the M86-3 fix is applied instead to both r87 claims (full positive control in the freeze receipts)",
+  "knowledge tranche 2": "taken as C1 (83 keys; the r86 quoted manifest-field keys excluded by limb M7)",
+  "MutC1/MutC2 survivors": "r87 counters carry new limbs; mutation seats attack them"
+ },
+ "controls": {
+  "census_start": ".ufo/waves/round-87/controls/census-start-r87.txt",
+  "c1": [
+   ".ufo/waves/round-87/controls/c1-controls-r87.sh",
+   ".ufo/waves/round-87/controls/c1-controls-r87.txt"
+  ],
+  "c2": [
+   ".ufo/waves/round-87/controls/c2-controls-r87.sh",
+   ".ufo/waves/round-87/controls/c2-controls-r87.txt"
+  ],
+  "capture_scan": ".ufo/waves/round-87/controls/capture-scan-r87.txt",
+  "c2_attempt_notes": [
+   ".ufo/waves/round-87/controls/c2-controls-r87-attempt1-timeout.txt: first battery, candidate b3164f3f; hung >15 min in the whole-tree control",
+   ".ufo/waves/round-87/controls/c2-controls-r87-attempt2-timeout.txt: second battery, same candidate; hung in the corpus-wide control. Cause: read_blobs wrote every oid to git cat-file before reading, deadlocking past the pipe buffer (~1,560 oids). Fixed in the frozen candidate before the freeze; the final battery is c2-controls-r87.txt"
+  ]
+ },
+ "instruments": {
+  ".ufo/waves/round-87/c1/knowledge-meter.py": "949f0625f02bbd2fcc05a9d7ddddc7e622137f5935f06d1a27be252e3fe927be",
+  ".ufo/waves/round-87/c1/apply-map.py": "2a11c1c6afedd3b8621b34d0e99a8b39b33f05303cc746c08e0e7abe64babf5f",
+  ".ufo/waves/round-87/c1/build-map.py": "a9dd74ef89e03be06020d46077142128b56fe0c1295577cf22e33325e14931aa",
+  ".ufo/waves/round-87/c1/repair-map.json": "7db928c77efe2f594c0fcbc26174b79db1f60f7a1d244055b679512c778f1eaa",
+  ".ufo/waves/round-87/c1/excluded.json": "33e2f48449a3d413085dbd345d588df7bb5041127543099535594a60fc4546a3",
+  ".ufo/waves/round-87/c2/capability-check.py": "4fba0cbe98fff8524efaf9f8ccd8879a133632260820ee611b7253f3fccfead7",
+  ".ufo/waves/round-87/c2/candidate/capture-secret-scan.py": "b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1",
+  ".ufo/waves/round-87/c2/candidate/capture-secret-allow.tsv": "f9fbd7e7e56cb107081f00bf0e4c5af4e717dea801e86710b8489a932a0efc82",
+  "corpus/instruments/resolve.py": "db5e0767c60ce00ea6c9cfb4ddd3e159e9a86525e5c8417c4a0a73e2e6d45667",
+  "corpus/instruments/claim-package-check.py": "8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6",
+  "corpus/source-snapshots/round-87/S124.txt": "88d4f703cef1b9d1cead11053dd9f02692bd4629a7110e42caecc74a2fc2f1cb",
+  "corpus/source-snapshots/round-87/S125.txt": "65c99351e731b743f18243e93613da7e05b4030d5fe2060a6cc484a320de55fe",
+  "corpus/source-snapshots/round-87/manifest.json": "9648c7646fa9e569433a5751cd8e7c5b04542b967892aa68b2b9ac7473082d85"
+ },
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "axis_score": "4 (lowest non-retired); the claim reads resolve.py's own classification over corpus/knowledge/*.md; the integer score is not claimed to move (internal-citation repoint, r85/r86 CriticClaims qualifier)",
+   "statement": "Repoint the 83 distinct bare snapshot citations in .ufo/waves/round-87/c1/repair-map.json (bare `S<digits>.txt` with optional :N/:N-M anchor, GONE at base, not a QUOTED manifest-field token, whose basename is held by exactly one tracked file under corpus/source-snapshots/, anchor in range: S029 x1, S040 x1, S069 x10, S100 x1, S102 x70) to full lane paths, so the knowledge-scope meter moves 596/1720 -> exactly 678/1719.",
+   "counter": "python3 -B .ufo/waves/round-87/c1/knowledge-meter.py --lane <git clone --shared of the landing commit under /fast/scratch/hyaku/kasegi-r87/> --base-rev cd1f568a6be2656b5f5dc479eb90ef99b91131b5 --map .ufo/waves/round-87/c1/repair-map.json --target 678/1719 --map-sha256 7db928c77efe2f594c0fcbc26174b79db1f60f7a1d244055b679512c778f1eaa --work <scratch>",
+   "predicates": {
+    "P1": "the counter prints KNOWLEDGE-METER-RESULT pass rc=0 (limbs M1-M7) on a scratch clone of the landing commit",
+    "P2": "every file in 'instruments' has its frozen sha256 at the landing commit",
+    "P3": "git diff --name-only <freeze> <landing> lists only corpus/knowledge/ files"
+   },
+   "kill_rule": "any of P1-P3 false at the landing commit -> C1 NOT VERIFIED; the map, counter and target are never changed after the freeze; a post-landing semantic finding is reverted and reported as a qualifier, never re-scored",
+   "do_nothing_control": "base as after: M1 FAIL 596/1720, rc 1 (controls/c1-controls-r87.txt)"
+  },
+  {
+   "id": "C2",
+   "axis": "coverage",
+   "axis_score": "8 held; claim type: capability acquisition `capture-secret-scan` (a new operation: credential-shape screening of captured evidence before commit); this is the round's sourced claim (S124, S125)",
+   "statement": "Capability capture-secret-scan enters: corpus/instruments/capture-secret-scan.py and corpus/instruments/capture-secret-allow.tsv land byte-equal to the frozen candidates, and the frozen counter passes K1-K5 at the landing commit: selftest; on the r86 freeze 252df0c9 it flags exactly the two files the git-grep oracle finds with an X-Amz-Security-Token value; on the landing commit it reports hits=0 with no stale allowlist row; on a planted repository its hit set is exact and an STS allowlist row is refused (exit 2); SCORECARD carries the capability row (round 87).",
+   "counter": "python3 -B .ufo/waves/round-87/c2/capability-check.py --lane . --rev <landing commit> --work <scratch> --instrument-sha256 b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1 --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6",
+   "predicates": {
+    "P1": "the counter prints CAPABILITY-CHECK-RESULT pass rc=0 at the landing commit",
+    "P2": "corpus/instruments/capture-secret-scan.py and capture-secret-allow.tsv at the landing commit are byte-equal to the frozen candidates (sha256 in 'instruments')"
+   },
+   "kill_rule": "P1 or P2 false at the landing commit -> C2 NOT VERIFIED; scanner, allowlist and counter are never changed after the freeze (a seat finding becomes a routed defect for round 88)",
+   "do_nothing_control": "base: K1 FAIL missing instrument, K2-K5 FAIL, rc 1 (controls/c2-controls-r87.txt)",
+   "sources": [
+    "S124",
+    "S125"
+   ]
+  }
+ ]
+}
