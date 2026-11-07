@@ -3,18 +3,18 @@
 Census of record — regenerated at the revision below (the round that
 regenerated it is named in LOG.md; this line carries no round number so it cannot go stale).
 
-measured-at: ff267d12e7c915986a62253bd40f9289ee6cec5d
+measured-at: 1605775b0388b309ed05513f6862b669e80e3f30
 home: confined (empty Projects tree; no host roots)
 pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2588/7685 = 33.68% | lane 2626/8087 = 32.47%
 host-inclusive rate (instrument definition: HOST-OWNED reclassification excluded, confined HOME): SKILL 165/732 = 22.54% | corpus 2665/7685 = 34.68% | lane 2703/8087 = 33.42%
 host-owned inputs: 77 absolute-path citations resolve outside the lane (reported separately; not revision-stable)
 confined: 1 `..` walk-out citation(s) reclassified HOST-OWNED and excluded from the pinned numerator; resolve.py counts them INTERNAL, so the body numerator = host-inclusive + confined per scope (SKILL 0, corpus 1, lane 1)
-header-sha256: 921df7fda7168f813891fbe2ee10f05d64ee239dffcc2b32c57cba5696a76f03
-body-sha256: 86841e5585bb677517b841f7efb34d6ad7d017fd54ed18cb140f817593e73e70
+header-sha256: 830f31133e962e14b1b41dc4e25c89bfc46108366b3735010aa4365a63912fa6
+body-sha256: e2e38c9c730e4897c6b6523aef0566ba9bb13a088ec9bf5226511c96e5454435
 ---
 
 Instrument: `corpus/instruments/resolve.py` (stdlib-only, deterministic; r18 definition).
-Lane root: `/home/vgpnk/Projects/shokunin/kasegi-shokunin` (measured from the git-archive extract of `ff267d12e7c915986a62253bd40f9289ee6cec5d`)
+Lane root: `/home/vgpnk/Projects/shokunin/kasegi-shokunin` (measured from the git-archive extract of `1605775b0388b309ed05513f6862b669e80e3f30`)
 Scope: `SKILL.md` + `corpus/**/*.md` (338 files).
 Extraction: verbatim density.py docstring path-like rule (see module docstring).
 Mirror root for bounty-path equivalence: `<confined-home>/Projects/the-bounty-hunter` (ABSENT — mirror fallback disabled).
