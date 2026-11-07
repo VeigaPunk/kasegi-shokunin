@@ -2998,3 +2998,16 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Integration: `corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md` replaced by the ScribeEntry candidate (Claim 7 CloudFront; instrument references repointed after the C2 line shift, CriticHarm F1); `presigned-url-credentials-in-captured-evidence.md:69` repointed. QUALITY R141 added.
 - Routed to the operator: committed live CloudFront signed URLs in two sibling lanes' wave receipts (L0 `kasegi | round-89`).
 - Mistakes: M89-1 (plant outside instrument scope), M89-2 (hand-listed clause map claimed complete), M89-3 (control input read from a moving path). Lesson: `corpus/lessons/round-89.md`.
+
+## Round 90 — C1 (tranche 5: 34 non-author-labelled sites, revision-pinned meter 812/1827 → 843/1829), C2 (capability capture-intake-gate: capture-source.py refuses credential captures before writing, S131)
+
+- Read first: the r89 closure (`admitted`) and `corpus/lessons/round-89-verifier-spotcheck.md` routed defects 1–6. Freeze `33f43db9` holds claims, counters, map, exclusions, candidate and executed controls (`.ufo/waves/round-90/controls/`):
+  - C1 controls: no-work, shift+1 (M1 passes by coincidence at 843/1829; M9 and M6 kill it), superset (4 excluded sites applied), unlabelled CORRECT site, working-tree-only each rc 1; candidate rc 0. Environment receipt: round-89 meter 815 live / 814 clean clone at `b9fcf005`, round-90 meter 812 / 812 (M90-1).
+  - C2 controls: no-work (base instrument) and forgeries F1 blanket, F2 AWS-only, F3 write-then-check, F4 allowlist ignored, F5 fail-open, F6 leaky refusal line each rc 1; candidate rc 0. The first counter draft used `file://` inputs and failed the positive control on an unrelated instrument crash (M90-2).
+- C1 landing `4a7e6768` (`triage-thresholds.md` only): counter pass 843/1829, pins equal.
+- C2 landing `643ddb43` (`capture-source.py`, instruments README, SCORECARD capability row): G0–G6 and P pass at three seeds; S131 re-captured through the landed gate, sha256 equal to the committed snapshot.
+- Sources: S131 (GitHub push protection) opened 2026-11-07, captured, `queued` at the freeze → `mined` at integration; S132 (GitLab secret push protection) opened and rejected (skip conditions are the fail-open path the gate refuses). Registry 130 → 132.
+- considerthese `2026-10-24.md:49-52` (intake gate) implemented as C2 after four routings. Correction filed: the round-89 tip reading 814/1827 is 812/1827 pinned.
+- Wave w1 (12 seats): CriticClaims C1/C2 VERIFIED; ExecC1Indep AGREE; ReviewC1Sites 32/34 CORRECT, 2 stale glosses (158, 439) repaired at integration; ReviewC2Gate APPROVE; mutation, sentinel and counter findings routed to round 91 (`corpus/lessons/round-90.md` § Wave findings).
+- Integration: `corpus/knowledge/capture-intake-gate.md` admitted (ScribeEntry; 51 citations in range, 17 quotes located); S131 `queued` → `mined`; QUALITY R142.
+- Mistakes: M90-1 (meter reads the ambient working tree; QUALITY R142), M90-2 (harness input scheme differs from use), M90-3 (selection reads the label reason, not the row). Lesson: `corpus/lessons/round-90.md`.
