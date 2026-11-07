@@ -85,9 +85,9 @@ score = priority_hit(9e12) + continue_verdict(2e12) + curated_ev(1e12)
 |---|---|---|---|---|
 | priority | `id ∈ fleets/priority.json` `priority[]` (missing file → `{priority:[]}`) | `9e12` = 9,000,000,000,000 | 91, 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-88`, `corpus/knowledge/mission-control.md:19` |
 | continue | `id ∈ {v.program : v.verdict === 'continue'}` from `docs/review-verdicts.jsonl` | `2e12` = 2,000,000,000,000 | 92-96, 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-88`, `corpus/knowledge/mission-control.md:19-20` |
-| curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES: `SKILL.md:113-114` (four terms, no `is_live`) and `SKILL.md:175-176` (same omission; names the term `curated-EV` although the source tests only non-emptiness); see §2.2 |
-| reward | `(rec.reward?.min ?? 0) * 1000` | 50 → 5e4 … 10000 → 1e7 (observed) | 110 | SUPERSEDES: `SKILL.md:175` — that line writes `reward.min`, source multiplies by 1000 |
-| freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-85`, `corpus/knowledge/mission-control.md:20-21`; SUPERSEDES: `SKILL.md:113-114,175-176` (term omitted) |
+| curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES: `SKILL.md:182-184` (round-13 correction: earlier text omitted `is_live(1)`) and `SKILL.md:255-257` (`curated` is a boolean on non-empty `ev_inputs`, never an EV magnitude); see §2.2 |
+| reward | `(rec.reward?.min ?? 0) * 1000` | 50 → 5e4 … 10000 → 1e7 (observed) | 110 | SUPERSEDES: `SKILL.md:182-184` — the earlier text wrote `reward.min`; the current queue tail writes `reward.min×1000` |
+| freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-85`, `corpus/knowledge/mission-control.md:20-21`; SUPERSEDES: `SKILL.md:182-184,255-257` (round-13 correction: earlier text omitted `is_live(1)` and called `curated` an EV magnitude) |
 
 Sort is `(a,b) => b.score - a.score`, descending, stable (`[lost-base] fleet-dispatch.mjs:113`).
 
@@ -353,7 +353,7 @@ reviewer derivation).
 | Field / constraint | Exact rule | Line | Corpus tie |
 |---|---|---|---|
 | record | `additionalProperties: false` at top level | 5 | MATCHES: `SKILL.md:999` |
-| required keys | `id, name, source_kind, official_url, freshness, lane, mission_state` | 6 | MATCHES: `SKILL.md:522` |
+| required keys | `id, name, source_kind, official_url, freshness, lane, mission_state` | 6 | MATCHES: `SKILL.md:999` (the program-record schema bullet; `SKILL.md` does not enumerate the required keys — the list is `[lost-base] schema.json:6`) |
 | `id` | pattern `^[a-z0-9-]+$` | 8 | — |
 | `name` | `minLength: 1` | 9 | — |
 | `source_kind` | enum `independent \| platform \| web3` | 10 | — |
@@ -393,7 +393,7 @@ schema-mandated one.
 | `K3_TOKEN` | `/kimi-code\/k3\|kimi-k3\|moonshot\/kimi-k3/i` | 13 | MATCHES: `corpus/knowledge/ops-invariants.md:21` |
 | `TELEMETRY_EVENTS` | 8 registry kinds: `lane_parked, lane_degraded, operator_decree, xask_dry, board_imported, binding_verified, reroute_drill, provenance_drift` | 15-24 | MATCHES: `corpus/knowledge/ops-invariants.md:22`, `SKILL.md:340-346` |
 | `sha256File` | sha256 hex of exact file bytes; `null` when path absent/unreadable | 27-33 | MATCHES: `corpus/knowledge/ops-invariants.md:23` |
-| `gitMutationBlocker` | markers `rebase-merge, rebase-apply, MERGE_HEAD, CHERRY_PICK_HEAD` → `{code:'ACTIVE_GIT_OPERATION'}`; detached HEAD → `{code:'HEAD_NOT_ON_MAIN'}`; branch ≠ `main` → `{code:'HEAD_NOT_ON_MAIN'}`; else `null` | 36-48 (markers 37, codes 40/44/46) | MATCHES: `corpus/knowledge/ops-invariants.md:24`, `SKILL.md:245-247` |
+| `gitMutationBlocker` | markers `rebase-merge, rebase-apply, MERGE_HEAD, CHERRY_PICK_HEAD` → `{code:'ACTIVE_GIT_OPERATION'}`; detached HEAD → `{code:'HEAD_NOT_ON_MAIN'}`; branch ≠ `main` → `{code:'HEAD_NOT_ON_MAIN'}`; else `null` | 36-48 (markers 37, codes 40/44/46) | MATCHES: `corpus/knowledge/ops-invariants.md:24`, `SKILL.md:335-338` |
 | `appendLedger` | appends `{ts, ...entry}` to `ledger/<kind>.jsonl`; if the serialized line exceeds **3500 bytes** it is replaced by a `{truncated:true, …}` stub recording `bytes` (POSIX `PIPE_BUF` atomicity guard) | 53-58 (cap 55) | MATCHES: `corpus/knowledge/ops-invariants.md:25`, `SKILL.md:224-226`, `SKILL.md:331-335` |
 
 `gitMutationBlocker` is the reason the live tree's stalled rebase blocks every
@@ -430,10 +430,10 @@ Supersedes column names the audit-time target, not current text.
 
 | # | Statement | Source basis | Supersedes |
 |---|---|---|---|
-| 9.1 | Dispatch score has **five** terms, not four — `is_live(1)` is part of the ordering (`[lost-base] fleet-dispatch.mjs:110`). | 110 | `SKILL.md:113-114` and `SKILL.md:175-176` omit it (both are summaries of this expression) |
-| 9.2 | The `reward` term is `reward.min × 1000`, so the ordering tail is `… > reward.min×1000 > live(1)`, not `… > reward.min`. | 110 | `SKILL.md:175` writes `reward.min` |
-| 9.3 | `curated` is a **boolean** on `Object.keys(ev_inputs).length > 0`; no EV magnitude is ever compared. The `buildQueue` header's "EV ordering (curated first …)" is doubly wrong: curated ranks **third**, behind priority and continue. | 10, 107, 110 | `[lost-base] fleet-dispatch.mjs:10` (in-file comment), `SKILL.md:10-11`-style "EV ordering" phrasing |
-| 9.4 | `rec.ev_inputs?.adjusted_ev` (`[lost-base] fleet-dispatch.mjs:200`) can never be a number: `schema.json` `ev_inputs` is `additionalProperties:false` (34) with no `adjusted_ev` property (35-51), `ev-report.mjs` computes it without persisting (82), and 0 of 1088 program records contain the key (census §2.2). Consequence: every `mission_dispatched` line logs `adjusted_ev: "unknown"` and the negative-EV `ev_note` branch (204) is dead — AR12's "negative/unknown EV is ledgered honestly" is true only in the "unknown" direction. | 200-205, `[lost-base] schema.json:34-51` | `[lost-base] fleet-dispatch.mjs:11` (in-file comment), `corpus/knowledge/mission-control.md:21-23` |
+| 9.1 | Dispatch score has **five** terms, not four — `is_live(1)` is part of the ordering (`[lost-base] fleet-dispatch.mjs:110`). | 110 | `SKILL.md:182-184` and `SKILL.md:255-257` carry the correction the earlier text omitted (both are summaries of this expression) |
+| 9.2 | The `reward` term is `reward.min × 1000`, so the ordering tail is `… > reward.min×1000 > live(1)`, not `… > reward.min`. | 110 | `SKILL.md:182-184` writes `reward.min×1000`; the earlier text's `reward.min` is the superseded form |
+| 9.3 | `curated` is a **boolean** on `Object.keys(ev_inputs).length > 0`; no EV magnitude is ever compared. The `buildQueue` header's "EV ordering (curated first …)" is doubly wrong: curated ranks **third**, behind priority and continue. | 10, 107, 110 | `[lost-base] fleet-dispatch.mjs:10` (in-file comment, the "EV ordering (curated first …)" phrasing), `SKILL.md:182-184` (the queue puts `curated` third, behind `priority` and `continue`) |
+| 9.4 | `rec.ev_inputs?.adjusted_ev` (`[lost-base] fleet-dispatch.mjs:200`) can never be a number: `schema.json` `ev_inputs` is `additionalProperties:false` (34) with no `adjusted_ev` property (35-51), `ev-report.mjs` computes it without persisting (82), and 0 of 1088 program records contain the key (census §2.2). Consequence: every `mission_dispatched` line logs `adjusted_ev: "unknown"` and the negative-EV `ev_note` branch (204) is dead — AR12's "negative/unknown EV is ledgered honestly" is true only in the "unknown" direction. | 200-205, `[lost-base] schema.json:34-51` | `[lost-base] fleet-dispatch.mjs:11` (in-file comment), `corpus/knowledge/mission-control.md:21-27` |
 | 9.5 | `reward.min` numeric on **14** records; `reward` object on 48. | census §2.2 | `corpus/knowledge/intake-surface.md:89-93` (round-13 correction: `reward` object on 48 but numeric `reward.min` on only 14 — the reward-exists≠reward.min-numeric conflation, superseding the earlier "`reward.min` present on 48"), `SKILL.md:176-178` (`reward` object exists on 48 records but numeric `reward.min` on only 14 — round-13 correction) |
 | 9.6 | Peak-window model is `openai-codex/gpt-6-astra:max`. | `[lost-base] fleet-dispatch.mjs:300` | `corpus/knowledge/mission-control.md:55-57` (peak → `openai-codex/gpt-6-astra:max`; the round-13 correction records that earlier text said `openai-oauth/`) |
 | 9.7 | Usage-limit signatures are four (incl. `usage_limit_reached`), ANDed with a family regex, tail-only, 15-min mtime window. | 271-278 | `corpus/knowledge/mission-control.md:61-64` (three signatures at audit time; four since its round-13 correction) |
