@@ -64,7 +64,7 @@ The class's fix was still open at the round-86 spot-check, which routed it as a 
 
 ## Claim 6 — the operating rule: scan every capture with `--files` before its first commit, redact the query string, keep the pre-redaction digest
 
-> "run it on every capture before the commit that first adds it" — `corpus/instruments/capture-secret-scan.py:18-19`
+> "run it on every capture before the commit that first adds it" — `corpus/instruments/capture-secret-scan.py:20-21`
 
 The command is `python3 -B corpus/instruments/capture-secret-scan.py --files <path>...`. It scans exactly the named working-tree files, prints one `HIT shape=<s> path=<p> line=<n>` per file and shape, then a `CAPTURE-SECRET-SCAN mode=files scanned=… hits=… files=… allowed=… unused_allow=… rc=…` summary, and exits 0 when nothing matched, 1 when anything matched, 2 on a usage or read error (instrument lines 77-82; round-87 lines 41-46 before the round-88 docstring insertion). The summary never prints a matched value (line 77), so the receipt is safe to commit where the fixture is not.
 
@@ -72,7 +72,7 @@ Redaction is the second half of the rule, and it has two parts: strip the query 
 
 The allowlist is the third part, and it is narrow by design: a row is `path<TAB>shape<TAB>sha256-of-matched-bytes<TAB>reason`, one exact value at one path (instrument lines 33-36), and
 
-> "Rows for aws-sts-session-token are refused (a session token is never a false positive)" — `corpus/instruments/capture-secret-scan.py:37-38`
+> "Rows for aws-sts-session-token are refused (a session token is never a false positive)" — `corpus/instruments/capture-secret-scan.py:110-111`
 
 so no row can quiet a session-token hit, and a refused or malformed row is a read error (exit 2) — an attempt to allow a token becomes a loud failure, not a silent pass. An unused row is reported (`unused_allow=` counts rows no scanned match consumed, "reported, not an error" at `corpus/instruments/capture-secret-scan.py:44-45`), so a stale row is visible without blocking a run.
 
