@@ -1,0 +1,19 @@
+# Post-freeze, NOT admission evidence: S122 bytes differ from the frozen sha (redacted after the freeze).
+== frozen counter over the integrated package (worktree)
+LIMB E0 pass heading=True url=True stray=none
+LIMB E1 pass gate_rc=0
+LIMB E2 pass bound=S122,S123
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=6 short=0 missing=0 s123=4
+LIMB E5 pass rel=corpus/practice/curl-ibb-h1-1997312 log=True shonen=True
+E2E-RESULT pass limbs=6 rc=0
+rc=0
+== frozen counter over the package with the FROZEN (pre-redaction) S122 bytes: git show 252df0c9:corpus/source-snapshots/round-86/S122.txt
+LIMB E0 pass heading=True url=True stray=none
+LIMB E1 FAIL gate_rc=1
+LIMB E2 FAIL bound=S123
+LIMB E3 pass sections=1 dup=none bad=none
+LIMB E4 pass quotes=6 short=0 missing=0 s123=4
+LIMB E5 pass rel=corpus/practice/curl-ibb-h1-1997312 log=True shonen=True
+E2E-RESULT fail limbs=6 rc=1
+rc=1

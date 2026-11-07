@@ -2949,3 +2949,18 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
   - MutC1Counter: 16 survivors against the frozen controls.
 - Mistakes: M85-1 (the r84 SHONEN pointer edit broke `shonen-form.py`, canonical 1 → 0; fixed, QUALITY R136), M85-2, M85-3 (census root dependence). Lesson: `corpus/lessons/round-85.md`.
 - Assimilation: none (91 staged-id collisions). considerthese: 2026-10-26 proposal 2's end-to-end half is adopted as C2.
+
+## Round 86 — C1 (resolve.py knowledge-scope meter 398/1721 → 596/1716, frozen 203-key map; 4 keys reverted after landing), C2 (second priced practice package corpus/practice/curl-ibb-h1-1997312 — killed as frozen)
+
+- Read first: the r85 closure and `corpus/lessons/round-85-verifier-spotcheck.md` (routed defects 1–4). Freeze `252df0c9` holds the claims, counters and executed controls (`.ufo/waves/round-86/controls/`):
+  - C1 controls: do-nothing 398/1721, partial 494/1716, de-cite 398/1518, pad 597/1717, wrong-file (M4) and wrong map sha (M6) each rc 1; positive 596/1716 rc 0.
+  - C2 controls: absent package, the r85 package, the r43 exemplar, two B3-class wrong-subject packages and 17 pricing forgeries each rc 1; positive pricing rc 0. No full-package positive control was run (lesson M86-3).
+- C1 landing `fdb5f4af`: the frozen map is applied to 14 knowledge files; the counter prints `base=398/1721 after=596/1716`, M1–M6 pass, rc 0 over a clone of the landing (`.ufo/waves/round-86/l1/c1-landing-r86.txt`); SKILL density 273.2 unchanged.
+  - ReviewC1Semantics Finding 1: 4 of the 203 keys (`S020.txt`, `S021.txt`, `S023.txt`, `S025.txt`) are quoted round-40 manifest `path` field values, not citations. Commit `e73c1f94` restores those 4 lines to the base bytes; the lane tip reads 596/1720 (`.ufo/waves/round-86/l1/c1-correction-r86.txt`).
+  - ExecC1Registry: 198/203 map values equal the registry row's capture path, 5 rows name none, 0 contradict; 203/203 citing files list the S-id in `source:`.
+- **End-to-end domain task, second package:** `corpus/practice/curl-ibb-h1-1997312` prices the payer side of CVE-2023-28319 from HackerOne IBB report 1997312 (S122) and the curl lead developer's end-of-bounty post (S123): payer internet-bug-bounty (program-level statement, joined by S122 `has_bounty?` true), original report 1913733, reward ended 2026-01-31. Gate `rules=8 pass=8 verdict=WELL-FORMED` after integration.
+  - C2 is killed as frozen: the captured S122 carried AWS STS presigned-URL session-token material that the r43 gate's R-NOSECRET refuses, so frozen limbs E1 and E2 cannot both pass (ExecC2Package, ReviewC2Package F-1, CriticClaims B1).
+  - The S122 capture was redacted after the freeze (`.ufo/waves/round-86/l1/redact-presigned-r86.txt`); the token had been pushed live in the freeze commit (lesson M86-2, L0 question filed).
+- Sources: S122 and S123 opened 2026-11-07, now `mined` (registry 121 → 123).
+- Mistakes: M86-1 (planned tranche of non-citations; QUALITY R137), M86-2 (credential material captured and pushed), M86-3 (no full-package positive control before freeze). Lesson: `corpus/lessons/round-86.md`.
+- Assimilation: none (93 staged-id collisions). considerthese: no new proposal adopted.

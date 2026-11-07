@@ -1,0 +1,91 @@
+{
+ "schema_version": "provenance/v1",
+ "agents": [
+  {
+   "identity": "ExecC2Package",
+   "transition": "capture-sources",
+   "requested_model": "@m_cru",
+   "resolved_model": "commandcode/stealth/crouton-alpha",
+   "role": "package producer"
+  },
+  {
+   "identity": "ExecC2Package",
+   "transition": "build-practice-package",
+   "requested_model": "@m_cru",
+   "resolved_model": "commandcode/stealth/crouton-alpha",
+   "role": "artifact copy, manifest, report and gate runs"
+  },
+  {
+   "identity": "KasegiR86",
+   "transition": "integrate-and-verify",
+   "requested_model": "anthropic/claude-opus-5-5:medium",
+   "resolved_model": "anthropic/claude-opus-5-5",
+   "role": "round-86 L1: redaction re-scan, review fixes, landing at corpus/practice/curl-ibb-h1-1997312"
+  }
+ ],
+ "transitions": [
+  {
+   "index": 1,
+   "agent": "ExecC2Package",
+   "requested_model": "@m_cru",
+   "resolved_model": "commandcode/stealth/crouton-alpha",
+   "from": "committed snapshots S122-S123 (round-86) and S120-S121 (round-85 reuse)",
+   "to": "evidence artifacts (byte copies)"
+  },
+  {
+   "index": 2,
+   "agent": "ExecC2Package",
+   "requested_model": "@m_cru",
+   "resolved_model": "commandcode/stealth/crouton-alpha",
+   "from": "evidence artifacts",
+   "to": "six-file candidate package"
+  },
+  {
+   "index": 3,
+   "agent": "KasegiR86",
+   "requested_model": "anthropic/claude-opus-5-5:medium",
+   "resolved_model": "anthropic/claude-opus-5-5",
+   "from": "candidate + ReviewC2Package findings",
+   "to": "landed package corpus/practice/curl-ibb-h1-1997312"
+  }
+ ],
+ "identity_note": "Producer ExecC2Package built the candidate. KasegiR86 (round-86 L1) redacted the S122 presigned query strings, re-scanned every artifact (.ufo/waves/round-86/l1/redaction-scan-r86.txt) and applied ReviewC2Package F-2..F-8 at integration.",
+ "commands": [
+  {
+   "command": "cp corpus/source-snapshots/round-85/S120.txt corpus/source-snapshots/round-85/S121.txt corpus/source-snapshots/round-86/S122.txt corpus/source-snapshots/round-86/S123.txt candidate/evidence/",
+   "exit_code": 0
+  },
+  {
+   "command": "python3 -B corpus/instruments/claim-package-check.py candidate (final run; expected fail R-NOSECRET only)",
+   "exit_code": 1
+  },
+  {
+   "command": "python3 -B .ufo/waves/round-86/c2/e2e-check.py --lane <lane> --pricing-only candidate/report.md",
+   "exit_code": 0
+  },
+  {
+   "command": "python3 -B .ufo/waves/round-86/c2/e2e-check.py --lane <lane> --pkg candidate",
+   "exit_code": 1
+  },
+  {
+   "command": "python3 -B .ufo/waves/round-86/l1/redact-presigned.py corpus/source-snapshots/round-86/S122.txt",
+   "exit_code": 0
+  },
+  {
+   "command": "python3 -B .ufo/waves/round-86/l1/build-package-r86.py",
+   "exit_code": 0
+  }
+ ],
+ "pin": {
+  "remote": "https://github.com/VeigaPunk/kasegi-shokunin.git",
+  "commit": "252df0c90c066d83d229e3107811a6bc05e8feed"
+ },
+ "policy_sha256": "9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102",
+ "external_effects_performed": [],
+ "secrets_attestation": {
+  "no_secrets": true,
+  "findings": 0,
+  "by": "KasegiR86",
+  "method": "claim-package-check.py SECRET_PATTERNS over every artifact after the S122 redaction (.ufo/waves/round-86/l1/redaction-scan-r86.txt); before redaction S122 carried a short-lived presigned-URL session token (X-Amz-Date 2026-11-07T00:58:29Z, X-Amz-Expires 3600 s; live until 2026-11-07T01:58:29Z) inside the public ibb team profile-picture URLs"
+ }
+}

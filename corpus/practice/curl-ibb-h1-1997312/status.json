@@ -1,0 +1,39 @@
+{
+ "schema_version": "claim-status/v1",
+ "manifest_sha256": "ba051a3bdf1f70c498c161daf75815d436377000b3f7762379d2ccb8591bb2ec",
+ "state": "PARKED",
+ "verdict": "positive-blocked-retrospective-practice-package",
+ "claimable": false,
+ "finding_count": 1,
+ "blockers": [
+  "retrospective practice package: already disclosed and fixed upstream (CVE-2023-28319, curl 8.1.0); duplicate of HackerOne 1997312 (originally 1913733)",
+  "evidence byte-identical S122 carries a presigned-URL token matching the gate credential shape twice; R-NOSECRET overlap documented in report.md — needs L1/instrument call before landing"
+ ],
+ "residual_gates": [
+  "operator submission gate",
+  "prior-submission check",
+  "reviewer distinctness"
+ ],
+ "do_not_submit": true,
+ "no_submission_performed": true,
+ "claim_review": {
+  "hard_gates": {
+   "written_scope": "PASS",
+   "authorization": "PASS",
+   "evidence_integrity": "PASS",
+   "no_duplicate_or_prior_submission": "PENDING"
+  },
+  "subchecks": {
+   "no_secrets": "PASS",
+   "operator_attribution": "PASS"
+  },
+  "reviewer": {
+   "identity": "ReviewC2Package",
+   "requested_model": "@m_flash (reviewer route at spawn)",
+   "resolved_model": "not recorded by the seat",
+   "fallback": false,
+   "verdict": "CHANGES-REQUESTED on the candidate (F-1..F-9); F-2..F-8 applied at L1 integration by KasegiR86; F-1 (frozen E1/E2 conflict) kills C2 as frozen; no reviewer re-pass was run",
+   "report": ".ufo/waves/round-86/w1/ReviewC2Package.md"
+  }
+ }
+}

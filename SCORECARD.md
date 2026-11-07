@@ -3144,3 +3144,23 @@ Planned round 86 (not frozen):
 - Regenerate the census of record together with the figure-audit ledger.
 - Second repair-map tranche from ExecC1Hunt's 31 candidates.
 - Leads: IBB 1997312 and the 2026-01-26 end-of-bounty post, as a payer field in a second package.
+
+## Round 86 — C1 VERIFIED-pending-closure on its frozen predicates (knowledge-scope meter 398/1721 → 596/1716 at landing `fdb5f4af`), semantic qualifier: 4/203 keys reverted in `e73c1f94`, tip 596/1720; C2 NOT VERIFIED (killed as frozen: E1 and E2 unsatisfiable on the captured S122 bytes)
+
+Frozen claims: `.ufo/waves/round-86/claims.json` (freeze `252df0c90c066d83d229e3107811a6bc05e8feed`, base `d7296645c2cd9f631329fa8e2f38328a4c9c89a5`). Every listed control was executed and committed in the freeze.
+
+| Claim | Axis | Before | After | Verdict | Counting command | Evidence |
+|---|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest) | score 4; resolve.py knowledge scope 398/1721 = 23.13 % (scratch clone root) | score 4 held; 596/1716 = 34.73 % at landing `fdb5f4af` (M1–M6 pass); tip after the semantic revert 596/1720 = 34.65 % (199 distinct repoints) | frozen predicates P1–P4 pass at the landing; ReviewC1Semantics Finding 1: 4 keys (`S020.txt`, `S021.txt`, `S023.txt`, `S025.txt`) were quoted manifest `path` field values, not citations, reverted in `e73c1f94`; CriticClaims: nominal in class (internal repoint, external RESOLVES unmoved) | `python3 -B .ufo/waves/round-86/c1/knowledge-meter.py --lane <clone of landing> --base-rev d7296645c2cd9f631329fa8e2f38328a4c9c89a5 --map .ufo/waves/round-86/c1/repair-map.json --target 596/1716 --map-sha256 dd40455a379eb53b75bf5a15772fe675efae79eda2516ea7fac50f86420bce12` | `.ufo/waves/round-86/l1/c1-landing-r86.txt`, `.ufo/waves/round-86/l1/c1-correction-r86.txt`, `.ufo/waves/round-86/w1/ReviewC1Semantics.md` |
+| C2 | coverage 8 held; capability extension of priced-claim-package | one package; payer field open ("No captured record shows who paid it"); S122/S123 deferred leads | second package `corpus/practice/curl-ibb-h1-1997312` landed post-freeze (gate WELL-FORMED, payer internet-bug-bounty), but the frozen P1/P2 cannot hold on the frozen S122 bytes | NOT VERIFIED — kill rule: the captured S122 carried presigned-URL credential material; R-NOSECRET (E1) refuses it, and E2 requires those exact bytes. The passing counter run after redaction is post-freeze evidence only | `python3 -B .ufo/waves/round-86/c2/e2e-check.py --lane . --pkg corpus/practice/curl-ibb-h1-1997312` | `.ufo/waves/round-86/w1/ExecC2Package.md`, `.ufo/waves/round-86/w1/ReviewC2Package.md` F-1, `.ufo/waves/round-86/l1/c2-postfreeze-r86.txt` |
+| — | depth:density | 273.2 | 273.2 | unchanged | `python3 corpus/instruments/density.py SKILL.md --label x` | `.ufo/waves/round-86/l1/c1-landing-r86.txt` |
+
+- **Capabilities:** none added; `priced-claim-package` gains a second, payer-resolved package (not credited: C2 killed).
+- **Quality criteria added:** R137 (a planned repair tranche must hold a citation-for-citation candidate).
+- **Saturation / retired:** unchanged / none.
+- **Census of record:** `corpus/instruments/citation-survival.md` still reads 132/701; not regenerated (a full census needs ~13 GB with ~9 lanes live). Carried.
+
+Planned round 87 (not frozen):
+- Re-freeze the C2 package claim with a full-package positive control run before the freeze (M86-3) over the redacted S122.
+- Knowledge-scope tranche 2: the ~86 excluded tokens whose real snapshot is unique once `.ufo/` copies are discounted (ReviewC1Semantics routed candidate 1); exclude quoted manifest fields (M86-1/F1 class).
+- MutC1/MutC2 survivors (see `.ufo/waves/round-86/w1/MutC1Counter.md`, `MutC2Counter.md`).
