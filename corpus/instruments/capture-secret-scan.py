@@ -95,17 +95,36 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          base64url JWT segments of 10+ characters each. The
                          page's own `ghs_APPID_JWT` placeholder and a bare
                          prefix are not hits.
-  gitlab-pat             (round 93) a GitLab personal access token: `glpat-`
-                         followed by a 20-character string (S139 lines 86-87),
-                         the string drawn from `A-Za-z0-9_-` (a lane choice:
-                         the page states the length, not the alphabet), not
-                         preceded or followed by a letter, digit, `_` or `-`
-                         (a preceding escape terminator is allowed, as for
-                         `github-token`). The page's own bare prefix is not a
-                         hit; the encoded `_` prefix separator is a named limit.
+  gitlab-pat             (round 93; round 94 custom prefix) a GitLab personal
+                         access token: `glpat-` followed by a 20-character
+                         string drawn from `A-Za-z0-9_-` (S140 line 4 states
+                         `[0-9a-zA-Z_-]{20}`, so the class is sourced, not a
+                         lane choice; S139 lines 86-87 state the length), with
+                         an optional custom instance prefix of 1-20
+                         alphanumerics and a `-` (S140 line 4
+                         `(?:[a-zA-Z0-9]{1,20}-)?`; the docs' custom-prefix
+                         rule), not preceded by a letter, digit or `_` (a
+                         preceding escape terminator of the forms above is
+                         allowed), not followed by a letter, digit, `_` or `-`.
+                         The page's own bare prefix is not a hit; the encoded
+                         `_` prefix separator is a named limit.
+  gitlab-runner-auth-token (round 94) a GitLab runner authentication token:
+                         `glrt-` or `glrtr-`, an optional partition prefix
+                         `t1_`/`t2_`/`t3_`, then 20 characters of
+                         `A-Za-z0-9_-` (S140 line 114), with the same
+                         boundaries and optional custom instance prefix as
+                         `gitlab-pat`.
+  gitlab-deploy-token    (round 94) a GitLab deploy token: `gldt-` then 20
+                         characters of `A-Za-z0-9_-` (S140 line 255), with the
+                         same boundaries and optional custom instance prefix.
 Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened
-source states their length or alphabet), GitLab runner (`glrt-`) and other
-GitLab token prefixes (S139 line 86 names only `glpat-`), an encoded prefix
+source states their length or alphabet), the routable and versioned-routable
+token forms (`glpat-`, `gldt-`, `glrt-`/`glrtr-` with a `.`-suffixed routable
+tail; S140 lines 30, 51, 136, 324), the JWT-form GitLab tokens (`glcbt-eyJ…`,
+`glsat-eyJ…`, `gliamat-eyJ…`; S140 lines 430, 447, 464), the remaining GitLab
+prefixes (`glptt-`, `glft-`, `glimt-`, `glagent-`, `glwt-`, `glsoat-`,
+`glffct-`, `gloas-`, `glrct-`; S140 lines 73, 190, 229, 213, 375, 278, 392,
+174, 412), an encoded prefix
 separator (`gh%5Fp_`, `glpat%2D`; undocumented by either source), GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
 cookies held as HAR/JSON name/value objects (`"name":"CloudFront-Signature"`),
 percent-encoded parameter names or `=` (a whole URL percent-encoded inside
@@ -174,9 +193,12 @@ GITHUB_PATTERNS = (
         _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
         + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
 )
-_GL_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+_GL_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+_GL_PREFIX = rb"(?:[A-Za-z0-9]{1,20}-)?"
 GITLAB_PATTERNS = (
-    ("gitlab-pat", re.compile(_GL_LB + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-pat", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-runner-auth-token", re.compile(_GL_LB + _GL_PREFIX + rb"glrtr?-(?:t[1-3]_)?[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
 )
 ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
 NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
@@ -393,7 +415,18 @@ def selftest(pats):
         ("gl-pat-upper-prefix", b"GLPAT-" + b"0123456789abcdefghij", set()),
         ("gl-pat-bare-prefix", b"identified by the pattern glpat- followed by a 20-character string", set()),
         ("gl-pat-letter-before", b"xglpat-" + b"0123456789abcdefghij", set()),
-        ("gl-pat-runner-known-limit", b"glrt-" + b"0123456789abcdefghij", set()),
+        ("gl-pat-custom-prefix", b"acme-glpat-" + b"0123456789abcdefghij", {"gitlab-pat"}),
+        ("gl-pat-custom-prefix-19", b"acme-glpat-" + b"0123456789abcdefghi ", set()),
+        ("gl-pat-html-entity", b"q=a&#x26;glpat-" + b"0123456789abcdefghij", {"gitlab-pat"}),
+        ("gl-pat-hyphen-before", b"-glpat-" + b"0123456789abcdefghij", {"gitlab-pat"}),
+        ("gl-runner-auth", b"glrt-" + b"0123456789abcdefghij", {"gitlab-runner-auth-token"}),
+        ("gl-runner-registered", b"glrtr-t2_" + b"0123456789abcdefghij", {"gitlab-runner-auth-token"}),
+        ("gl-runner-bad-partition", b"glrtr-t4_" + b"0123456789abcdefghij", set()),
+        ("gl-runner-21-chars", b"glrt-" + b"0123456789abcdefghijk", set()),
+        ("gl-runner-custom-prefix", b"acme-glrt-" + b"0123456789abcdefghij", {"gitlab-runner-auth-token"}),
+        ("gl-deploy", b"gldt-" + b"0123456789abcdefghij", {"gitlab-deploy-token"}),
+        ("gl-deploy-19-chars", b"gldt-" + b"0123456789abcdefghi ", set()),
+        ("gl-deploy-21-chars", b"gldt-" + b"0123456789abcdefghijk", set()),
     ]
     bad = 0
     for name, data, want in cases:
