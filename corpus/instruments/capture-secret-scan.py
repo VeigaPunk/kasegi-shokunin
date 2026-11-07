@@ -128,6 +128,23 @@ claim-package-check.py beside this file, so the two never drift), plus:
   gitlab-deploy-token    (round 94) a GitLab deploy token: `gldt-` then 20
                          characters of `A-Za-z0-9_-` (S140 line 255), with the
                          same boundaries and optional custom instance prefix.
+  gitlab-pat-versioned   (round 96) the versioned-routable PAT: `glpat-` then
+                         27-300 characters of `A-Za-z0-9_-`, `.` + 2 lower-case
+                         alphanumerics, `.` + 2 more + 7 (S140 line 51).
+  gitlab-pat-routable    (round 96) the routable PAT: `glpat-` + 27-300, then
+                         `.` + 2 lower-case alphanumerics + 7 (S140 line 30).
+  gitlab-runner-auth-token-versioned (round 96) `glrt-`/`glrtr-` + 27-300 +
+                         `.`+2+`.`+2+7 (S140 line 136).
+  gitlab-deploy-token-versioned  (round 96) `gldt-` + 27-300 + `.`+2+`.`+2+7
+                         (S140 line 324).
+  gitlab-agent-token-versioned   (round 96) `glagent-` + 27-300 + `.`+2+`.`+2+7
+                         (S140 line 358).
+  gitlab-workspace-token-versioned (round 96) `glwt-` + 27-300 + `.`+2+`.`+2+7
+                         (S140 line 375).
+  gitlab-pipeline-trigger-token  (round 96) `glptt-` then exactly 20 or exactly
+                         40 characters of `A-Za-z0-9_-` (S140 line 73), with the
+                         escape-terminator left boundary and the optional custom
+                         instance prefix.
   gitlab-jwt-token       (round 95) the GitLab JWT-form tokens: `glcbt-` or
                          `glsat-` (optional 1-20 character instance prefix) or
                          `gliamat-`, then `eyJ` + 10-1000 characters, `.eyJ` +
@@ -140,12 +157,13 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          documentation placeholders (`glcbt-eyJ<header>...`) are
                          not hits.
 Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened
-source states their length or alphabet), the routable and versioned-routable
-token forms (`glpat-`, `gldt-`, `glrt-`/`glrtr-` with a `.`-suffixed routable
-tail; S140 lines 30, 51, 136, 324), the remaining GitLab
-prefixes (`glptt-`, `glft-`, `glimt-`, `glagent-`, `glwt-`, `glsoat-`,
-`glffct-`, `gloas-`, `glrct-`; S140 lines 73, 190, 229, 213, 375, 278, 392,
-174, 412), an encoded prefix
+source states their length or alphabet), the remaining GitLab
+prefixes (`glft-`, `glimt-`, `glsoat-`, `glffct-`, `gloas-`, `glrct-`;
+S140 lines 190, 229, 278, 392, 174, 412), the runner registration
+token (`GR1348941` + 20, S140 line 101), the `feed_token=` query form
+(S140 line 160), the `gitlab+deploy-token-N:` URL form (S140 line 341), the
+`t1_`-prefixed runner token without `glrt-` (S140 line 308) and the
+`/trigger/pipeline?...token=` URL form (S140 line 532), an encoded prefix
 separator (`gh%5Fp_`, `glpat%2D`; undocumented by either source), GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
 cookies held as HAR/JSON name/value objects (`"name":"CloudFront-Signature"`),
 percent-encoded parameter names or `=` (a whole URL percent-encoded inside
@@ -221,7 +239,19 @@ _GL_PREFIX = rb"(?:[A-Za-z0-9]{1,20}-)?"
 _GJ_SEG = rb"[A-Za-z0-9_-]{10,1000}"
 _GJ_TAIL = rb"[A-Za-z0-9_-]{20,1000}"
 _GJ_HEAD = _GL_LB + rb"(?:" + _GL_PREFIX + rb"(?:glcbt|glsat)|gliamat)-eyJ" + _GJ_SEG
+_GJ_VER = rb"[A-Za-z0-9_-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7}(?![A-Za-z0-9_])"
+_GJ_ROUTABLE = rb"[A-Za-z0-9_-]{27,300}\.[0-9a-z]{2}[0-9a-z]{7}(?![A-Za-z0-9_])"
 GITLAB_PATTERNS = (
+    # round 96: the routable and versioned-routable forms (S140 lines 30, 51,
+    # 136, 324, 358, 375) and the pipeline trigger token (S140 line 73).
+    ("gitlab-pat-versioned", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-" + _GJ_VER)),
+    ("gitlab-pat-routable", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-" + _GJ_ROUTABLE)),
+    ("gitlab-runner-auth-token-versioned", re.compile(_GL_LB + rb"glrtr?-" + _GJ_VER)),
+    ("gitlab-deploy-token-versioned", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-" + _GJ_VER)),
+    ("gitlab-agent-token-versioned", re.compile(_GL_LB + _GL_PREFIX + rb"glagent-" + _GJ_VER)),
+    ("gitlab-workspace-token-versioned", re.compile(_GL_LB + _GL_PREFIX + rb"glwt-" + _GJ_VER)),
+    ("gitlab-pipeline-trigger-token", re.compile(
+        _GL_LB + _GL_PREFIX + rb"glptt-(?:[A-Za-z0-9_-]{20}|[A-Za-z0-9_-]{40})(?![A-Za-z0-9_-])")),
     ("gitlab-pat", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
     ("gitlab-runner-auth-token", re.compile(_GL_LB + _GL_PREFIX + rb"glrtr?-(?:t[1-3]_)?[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
     ("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
@@ -406,6 +436,19 @@ def selftest(pats):
         ("cf-cookie-lowercase-name", b"cloudfront-signature=" + cfsig, set()),
         ("cf-cookie-prefixed-name", b"X-CloudFront-Signature=" + cfsig, set()),
         ("cf-cookie-json-joined", b'{"set-cookie":"CloudFront-Key-Pair-Id=K2JCJMDEHXQW5F; Path=/\\nCloudFront-Signature=' + cfsig + b'; Path=/"}', {"cloudfront-signed-cookie-signature"}),
+        ("glpat-versioned", b"t glpat-" + b"A" * 28 + b".de.fg1234567 end", {"gitlab-pat-versioned"}),
+        ("glpat-routable", b"t glpat-" + b"A" * 28 + b".de" + b"fg12345 end", {"gitlab-pat-routable"}),
+        ("glpat-routable-short-head", b"glpat-" + b"A" * 26 + b".defg12345", set()),
+        ("glpat-routable-upper-tail", b"glpat-" + b"A" * 28 + b".DEfg12345", set()),
+        ("glpat-versioned-one-char", b"glpat-" + b"A" * 28 + b".d.fg1234567", set()),
+        ("glrtr-versioned", b"glrtr-" + b"B" * 30 + b".ab.cd1234567", {"gitlab-runner-auth-token-versioned"}),
+        ("gldt-versioned", b"gldt-" + b"C" * 30 + b".ab.cd1234567", {"gitlab-deploy-token-versioned"}),
+        ("glagent-versioned", b"glagent-" + b"D" * 30 + b".ab.cd1234567", {"gitlab-agent-token-versioned"}),
+        ("glwt-versioned", b"glwt-" + b"E" * 30 + b".ab.cd1234567", {"gitlab-workspace-token-versioned"}),
+        ("glptt-20", b"glptt-" + b"F" * 20 + b" end", {"gitlab-pipeline-trigger-token"}),
+        ("glptt-40", b"glptt-" + b"G" * 40 + b" end", {"gitlab-pipeline-trigger-token"}),
+        ("glptt-19", b"glptt-" + b"F" * 19 + b" end", set()),
+        ("glptt-39", b"glptt-" + b"G" * 39 + b" end", set()),
         ("gh-classic-pat-prose", b"use ghp_" + ghtail + b" as the password", {"github-token"}),
         ("gh-oauth-json", b'{"t":"gho_' + ghtail + b'"}', {"github-token"}),
         ("gh-user-to-server", b"ghu_" + ghtail, {"github-token"}),
