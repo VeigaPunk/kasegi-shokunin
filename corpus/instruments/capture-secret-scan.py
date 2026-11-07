@@ -177,11 +177,13 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          by a lower-case alphanumeric, or at end of input).
   gitlab-ci-build-token  (round 98) the CI build token: `glcbt-` + 1-5
                          alphanumerics + `_` + 20 characters of `A-Za-z0-9_-`
-                         (S140 line 293), with the rule's own punct/space/EOL
-                         right boundary (S140 line 294).
+                         (S140 line 293), with `(?![A-Za-z0-9])`, a superset of
+                         the rule's punct/space/EOL class: it also accepts a
+                         non-ASCII or non-whitespace control byte after the
+                         token, so it never refuses a token S140 would report.
   gitlab-iam-refresh-token (round 98) `gliamrt-` + 43 characters of
                          `A-Za-z0-9_-`, `.`, 43 characters of `A-Za-z0-9_-`
-                         (S140 line 480), right boundary `[^0-9a-zA-Z_\-]`/EOL.
+                         (S140 line 480), right boundary `[^0-9a-zA-Z_-]`/EOL.
   gitlab-iam-authorization-code (round 98) `gliamac-` + 43 + `.` + 43 of
                          `A-Za-z0-9_-` (S140 line 497), same right boundary.
   gitlab-session-cookie  (round 98) the session cookie value: the
@@ -296,9 +298,11 @@ GITLAB_PATTERNS = (
     # round 97: the ten remaining GitLab families the round-96 known-limits
     # list named (S140 lines 101, 160, 174, 190, 213, 229, 278, 341, 392, 412).
     # round 98: the four further S140 rules the round-97 spot-check named
-    # (lines 293, 480, 497, 549) and S140's own right boundary for the five
-    # round-97 shapes whose `(?![A-Za-z0-9_-])` refused a real token followed
-    # by `_` or `-` (SentinelShapes MUST-FIX 1).
+    # (lines 293, 480, 497, 549) and `(?![A-Za-z0-9])` — a superset of S140's
+    # punct/space/EOL class — for the five round-97 shapes whose
+    # `(?![A-Za-z0-9_-])` refused a real token followed by `_` or `-`
+    # (SentinelShapes MUST-FIX 1; the superset is deliberate: it never refuses
+    # a token S140 would report).
     ("gitlab-ci-build-token", re.compile(
         _GL_LB + rb"glcbt-[A-Za-z0-9]{1,5}_[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
     ("gitlab-iam-refresh-token", re.compile(
