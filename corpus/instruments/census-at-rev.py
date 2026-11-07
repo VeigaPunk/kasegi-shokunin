@@ -50,10 +50,14 @@ HEAD = "# citation-survival census — kasegi lane"
 
 HOME_LINE = "home: confined (empty Projects tree; no host roots)"
 PINNED_PREFIX = "pinned rate (INTERNAL only; revision-stable):"
-HOST_PREFIX = "host-inclusive rate (resolve.py's definition, confined HOME):"
+HOST_PREFIX = ("host-inclusive rate (instrument definition: HOST-OWNED reclassification "
+               "excluded, confined HOME):")
 HOSTOWNED_PREFIX = "host-owned inputs:"
+CONFINED_PREFIX = "confined:"
+# Presence is matched on a stable prefix; the full line is compared separately,
+# so a relabelled host line reports `host-mismatch` (not `no-host-inclusive`).
 HEADER_FIELDS = ("measured-at:", HOME_LINE.split(":")[0] + ":", PINNED_PREFIX,
-                 HOST_PREFIX, HOSTOWNED_PREFIX)
+                 "host-inclusive rate", HOSTOWNED_PREFIX, CONFINED_PREFIX)
 SEPARATOR = "\n---\n\n"
 
 
@@ -147,6 +151,7 @@ def measure(lane, rev, work, cache_ok=True):
     # host-dependent, never INTERNAL. It stays in the denominator.
     root = os.path.realpath(d)
     confined = 0
+    confined_scope = {"SKILL": 0, "+CORPUS": 0, "ALL": 0}
     fixed = []
     for cit, klass, resolved, scopes in rows:
         if klass == "INTERNAL" and walkout(cit):
@@ -154,6 +159,9 @@ def measure(lane, rev, work, cache_ok=True):
             if not (rp == root or rp.startswith(root + os.sep)):
                 klass = "HOST-OWNED"
                 confined += 1
+                for tag in ("SKILL", "+CORPUS", "ALL"):
+                    if tag == "ALL" or tag in scopes:
+                        confined_scope[tag] += 1
         fixed.append((cit, klass, scopes))
     rows = fixed
 
@@ -169,6 +177,9 @@ def measure(lane, rev, work, cache_ok=True):
 
     host_owned = sum(1 for _, k, _ in rows if k in ("RESOLVES", "MIRROR-EQUIVALENT"))
     out = {"rev": rev, "rows": len(rows), "host_owned": host_owned, "confined": confined}
+    out["skill_confined"] = confined_scope["SKILL"]
+    out["corpus_confined"] = confined_scope["+CORPUS"]
+    out["lane_confined"] = confined_scope["ALL"]
     for tag, scope in (("skill", "SKILL"), ("corpus", "+CORPUS"), ("lane", "ALL")):
         n, m = rate(scope)
         hn, hm = host_incl(scope)
@@ -230,6 +241,14 @@ def host_line(rates):
         rates["lane_host"][0], rates["lane_host"][1], pct(*rates["lane_host"])))
 
 
+def confined_line(rates):
+    return ("%s %d `..` walk-out citation(s) reclassified HOST-OWNED and excluded from the "
+            "pinned numerator; resolve.py counts them INTERNAL, so the body numerator = "
+            "host-inclusive + confined per scope (SKILL %d, corpus %d, lane %d)" % (
+                CONFINED_PREFIX, rates["confined"], rates["skill_confined"],
+                rates["corpus_confined"], rates["lane_confined"]))
+
+
 def host_owned_line(rates):
     return ("%s %d absolute-path citations resolve outside the lane "
             "(reported separately; not revision-stable)" % (HOSTOWNED_PREFIX, rates["host_owned"]))
@@ -244,7 +263,8 @@ def header_lines(rates, rev):
             HOME_LINE,
             pinned_line(rates),
             host_line(rates),
-            host_owned_line(rates)]
+            host_owned_line(rates),
+            confined_line(rates)]
 
 
 def ancestor_of_tip(lane, rev):
@@ -269,7 +289,8 @@ def write_census(lane, rev, work, out):
         print("CENSUS-WRITE error reason=%s rc=2" % err)
         return 2
     head = [HEAD, "",
-            "Census of record — regenerated in round 99 at the revision below.",
+            "Census of record — regenerated at the revision below (the round that", 
+            "regenerated it is named in LOG.md; this line carries no round number so it cannot go stale).",
             ""]
     head += header_lines(rates, rev)
     hdr = header_lines(rates, rev)
@@ -282,6 +303,31 @@ def write_census(lane, rev, work, out):
         rev, rates["skill"][0], rates["skill"][1], rates["lane"][0], rates["lane"][1],
         rates["host_owned"], rates["confined"]))
     return 0
+
+
+def resolvability_numbers(body):
+    """The body's resolve.py numerator per scope (the `## Resolvability rate` list)."""
+    pats = {"skill": r"^- SKILL\.md alone: \*\*(\d+)/\d+ = [0-9.]+%\*\*$",
+            "corpus": r"^- corpus alone: \*\*(\d+)/\d+ = [0-9.]+%\*\*$",
+            "lane": r"^- lane total \(SKILL\.md \+ corpus\): \*\*(\d+)/\d+ = [0-9.]+%\*\*$"}
+    out = {}
+    for tag, pat in pats.items():
+        m = re.search(pat, body, re.M)
+        if not m:
+            return None
+        out[tag] = int(m.group(1))
+    return out
+
+
+def class_numbers(body):
+    """The body's terminal-outcome class table."""
+    out = {}
+    for name in ("RESOLVES", "MIRROR-EQUIVALENT", "GONE", "INTERNAL"):
+        m = re.search(r"^\| %s \| (\d+) \|$" % re.escape(name), body, re.M)
+        if not m:
+            return None
+        out[name] = int(m.group(1))
+    return out
 
 
 def split_body(text):
@@ -344,6 +390,34 @@ def check(lane, path, work):
         return 1
     if hdr[4] != host_owned_line(rates):
         print("CENSUS-CHECK fail reason=host-owned-mismatch rc=1")
+        return 1
+    # R162: the record reconciles with itself. The header states the confined
+    # count; the body's resolve.py numerator is the header's host-inclusive
+    # numerator plus that count, per scope; and the class table sums to the
+    # distinct total with INTERNAL - confined = the pinned numerator. A record
+    # can pass every digest and every regenerated-line comparison while its
+    # header and body name different definitions (the round-99 record did).
+    if hdr[5] != confined_line(rates):
+        print("CENSUS-CHECK fail reason=reconcile-confined rc=1")
+        return 1
+    nums = resolvability_numbers(body)
+    if nums is None:
+        print("CENSUS-CHECK fail reason=reconcile-body rc=1")
+        return 1
+    for tag in ("skill", "corpus", "lane"):
+        want = rates[tag + "_host"][0] + rates[tag + "_confined"]
+        if nums[tag] != want:
+            print("CENSUS-CHECK fail reason=reconcile-body rc=1")
+            print("  body %s=%d != host-inclusive %d + confined %d = %d" % (
+                tag, nums[tag], rates[tag + "_host"][0], rates[tag + "_confined"], want))
+            return 1
+    classes = class_numbers(body)
+    if classes is None:
+        print("CENSUS-CHECK fail reason=reconcile-classes rc=1")
+        return 1
+    if (sum(classes.values()) != rates["rows"]
+            or classes["INTERNAL"] - rates["confined"] != rates["lane"][0]):
+        print("CENSUS-CHECK fail reason=reconcile-classes rc=1")
         return 1
     if body != mbody:
         print("CENSUS-CHECK fail reason=body-mismatch rc=1")

@@ -1,38 +1,40 @@
 # citation-survival census — kasegi lane
 
-Census of record — regenerated in round 99 at the revision below.
+Census of record — regenerated at the revision below (the round that
+regenerated it is named in LOG.md; this line carries no round number so it cannot go stale).
 
-measured-at: a3db47e71fe292c03b00ba11f38cccbec45d3966
+measured-at: ff267d12e7c915986a62253bd40f9289ee6cec5d
 home: confined (empty Projects tree; no host roots)
-pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2569/7624 = 33.70% | lane 2607/8026 = 32.48%
-host-inclusive rate (resolve.py's definition, confined HOME): SKILL 165/732 = 22.54% | corpus 2645/7624 = 34.69% | lane 2683/8026 = 33.43%
-host-owned inputs: 76 absolute-path citations resolve outside the lane (reported separately; not revision-stable)
-header-sha256: ddad876669a002f3509bd0366f24b70f4bc45bc01b946d8cac7f0b5611f70379
-body-sha256: 680a3534cf47fb30b1a24b13f62719de98e0812365f4113c682778e6885eef69
+pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2588/7685 = 33.68% | lane 2626/8087 = 32.47%
+host-inclusive rate (instrument definition: HOST-OWNED reclassification excluded, confined HOME): SKILL 165/732 = 22.54% | corpus 2665/7685 = 34.68% | lane 2703/8087 = 33.42%
+host-owned inputs: 77 absolute-path citations resolve outside the lane (reported separately; not revision-stable)
+confined: 1 `..` walk-out citation(s) reclassified HOST-OWNED and excluded from the pinned numerator; resolve.py counts them INTERNAL, so the body numerator = host-inclusive + confined per scope (SKILL 0, corpus 1, lane 1)
+header-sha256: 921df7fda7168f813891fbe2ee10f05d64ee239dffcc2b32c57cba5696a76f03
+body-sha256: 86841e5585bb677517b841f7efb34d6ad7d017fd54ed18cb140f817593e73e70
 ---
 
 Instrument: `corpus/instruments/resolve.py` (stdlib-only, deterministic; r18 definition).
-Lane root: `/home/vgpnk/Projects/shokunin/kasegi-shokunin` (measured from the git-archive extract of `a3db47e71fe292c03b00ba11f38cccbec45d3966`)
-Scope: `SKILL.md` + `corpus/**/*.md` (336 files).
+Lane root: `/home/vgpnk/Projects/shokunin/kasegi-shokunin` (measured from the git-archive extract of `ff267d12e7c915986a62253bd40f9289ee6cec5d`)
+Scope: `SKILL.md` + `corpus/**/*.md` (338 files).
 Extraction: verbatim density.py docstring path-like rule (see module docstring).
 Mirror root for bounty-path equivalence: `<confined-home>/Projects/the-bounty-hunter` (ABSENT — mirror fallback disabled).
 
 ## Totals
 
-- distinct path-like citations: **8026** (total occurrences: 16587; a citation cited in both scopes counts once)
+- distinct path-like citations: **8087** (total occurrences: 16719; a citation cited in both scopes counts once)
 - distinct citations appearing in SKILL.md: 732 (of which SKILL-only: 402)
-- distinct citations appearing in corpus: 7624
+- distinct citations appearing in corpus: 7685
 
 | class | distinct citations |
 |---|---|
-| RESOLVES | 76 |
+| RESOLVES | 77 |
 | MIRROR-EQUIVALENT | 0 |
-| GONE | 5342 |
-| INTERNAL | 2608 |
-| OTHER *(root-domain bucket, orthogonal: the brief says classify other roots as RESOLVES/GONE)* | 76 resolve / 184 gone = 260 |
+| GONE | 5383 |
+| INTERNAL | 2627 |
+| OTHER *(root-domain bucket, orthogonal: the brief says classify other roots as RESOLVES/GONE)* | 77 resolve / 188 gone = 265 |
 
-Terminal outcome classes sum to the distinct total: RESOLVES(76) + MIRROR-EQUIVALENT(0) + INTERNAL(2608) + GONE(5342) = 8026.
-Of the 76 RESOLVES, 76 are non-lane roots (domain `other`: origin-work, /tmp, ~/projects …); 0 are lane-repo-absolute.
+Terminal outcome classes sum to the distinct total: RESOLVES(77) + MIRROR-EQUIVALENT(0) + INTERNAL(2627) + GONE(5383) = 8087.
+Of the 77 RESOLVES, 77 are non-lane roots (domain `other`: origin-work, /tmp, ~/projects …); 0 are lane-repo-absolute.
 Of the 0 MIRROR-EQUIVALENT, 0 were written as `~/Projects/bounties/...` (domain `bounty`), 0 were bounty-root-relative bare paths (domain `rel`).
 
 ## Resolvability rate
@@ -40,8 +42,8 @@ Of the 0 MIRROR-EQUIVALENT, 0 were written as `~/Projects/bounties/...` (domain 
 Numerator = RESOLVES + MIRROR-EQUIVALENT + INTERNAL. Denominator = all distinct citations appearing in that scope (a citation in both scopes enters both denominators).
 
 - SKILL.md alone: **165/732 = 22.54%**
-- corpus alone: **2646/7624 = 34.71%**
-- lane total (SKILL.md + corpus): **2684/8026 = 33.44%**
+- corpus alone: **2666/7685 = 34.69%**
+- lane total (SKILL.md + corpus): **2704/8087 = 33.44%**
 
 ## Noise sub-census (GONE tokens that are rule artifacts, not citable paths)
 
@@ -49,31 +51,31 @@ Flag counts (a token can carry several flags):
 
 | flags | distinct GONE citations |
 |---|---|
-| gitstatus | 14 |
+| gitstatus | 15 |
 | gitstatus,synthetic | 12 |
-| regex | 25 |
+| regex | 26 |
 | regex,synthetic | 7 |
-| shell | 686 |
-| shell,synthetic | 303 |
-| synthetic | 749 |
+| shell | 688 |
+| shell,synthetic | 307 |
+| synthetic | 756 |
 
-- GONE citations carrying any noise flag: 1796
-- GONE citations with no noise flag (genuine vanished paths): 3546
-- citations containing glob/placeholder syntax (`* ? [ { } <...>`): 1153
+- GONE citations carrying any noise flag: 1811
+- GONE citations with no noise flag (genuine vanished paths): 3572
+- citations containing glob/placeholder syntax (`* ? [ { } <...>`): 1166
 
 Noise-adjusted rates (denominator excludes noise-flagged citations):
 - SKILL: 161/371 = 43.40%
-- CORPUS: 2564/6045 = 42.42%
-- ALL: 2601/6147 = 42.31%
+- CORPUS: 2582/6089 = 42.40%
+- ALL: 2619/6191 = 42.30%
 
 ## Scope x class matrix
 
 | class | SKILL.md only | SKILL+corpus | corpus only | total |
 |---|---|---|---|---|
-| RESOLVES | 0 | 3 | 73 | 76 |
+| RESOLVES | 0 | 3 | 74 | 77 |
 | MIRROR-EQUIVALENT | 0 | 0 | 0 | 0 |
-| GONE | 364 | 203 | 4775 | 5342 |
-| INTERNAL | 38 | 124 | 2446 | 2608 |
+| GONE | 364 | 203 | 4816 | 5383 |
+| INTERNAL | 38 | 124 | 2465 | 2627 |
 
 ## Citation-base ambiguity (r5's known hazard)
 
@@ -98,7 +100,7 @@ grep -ohP '`[^`\n]+`' SKILL.md corpus/README.md corpus/*/*.md \
  | sort -u | wc -l
 ```
 
-Result: both yield **8026** distinct citations, and
+Result: both yield **8087** distinct citations, and
 `diff <(pipeline to file) <(cut -f1 citation-survival.tsv | tail -n +2 | sort -u)` is empty (sets identical, not just counts).
 Re-running `resolve.py` twice leaves both outputs byte-identical (md5 stable).
 
@@ -113,7 +115,7 @@ Re-running `resolve.py` twice leaves both outputs byte-identical (md5 stable).
 For every citation whose base resolves and whose anchor names a file, the anchor
 is compared against the resolved file's line count (editor convention).
 
-- anchors checked: 1261 — in range: 1242 — **out of range: 19**
+- anchors checked: 1263 — in range: 1244 — **out of range: 19**
 
 | citation | class | resolved file | anchor | file lines | verdict |
 |---|---|---|---|---|---|
@@ -194,25 +196,25 @@ is compared against the resolved file's line count (editor convention).
 | `/home/vgpnk/Projects/shokunin/PROTOCOL.md:457-461` | RESOLVES | `/home/vgpnk/Projects/shokunin/PROTOCOL.md` | 457-461 | - | in range |
 | `/home/vgpnk/Projects/shokunin/kake-shokunin/corpus/knowledge/security-txt-publishing.md:63` | RESOLVES | `/home/vgpnk/Projects/shokunin/kake-shokunin/corpus/knowledge/security-txt-publishing.md` | 63 | - | in range |
 | `/usr/lib/python3.14/http/client.py:845-855` | RESOLVES | `/usr/lib/python3.14/http/client.py` | 845-855 | - | in range |
-| `LOG.md:1469` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1469 | 3114 | in range |
-| `LOG.md:1550` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1550 | 3114 | in range |
-| `LOG.md:1584` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1584 | 3114 | in range |
-| `LOG.md:1665` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1665 | 3114 | in range |
-| `LOG.md:1686` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1686 | 3114 | in range |
-| `LOG.md:1728` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1728 | 3114 | in range |
-| `LOG.md:1800-1801` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1800-1801 | 3114 | in range |
-| `LOG.md:1804` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1804 | 3114 | in range |
-| `LOG.md:2045` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2045 | 3114 | in range |
-| `LOG.md:2205` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2205 | 3114 | in range |
-| `LOG.md:2599` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2599 | 3114 | in range |
-| `LOG.md:2610` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2610 | 3114 | in range |
-| `LOG.md:2611` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2611 | 3114 | in range |
-| `LOG.md:2813` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2813 | 3114 | in range |
-| `LOG.md:545` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 545 | 3114 | in range |
-| `LOG.md:709-713` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 709-713 | 3114 | in range |
-| `LOG.md:734` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 734 | 3114 | in range |
-| `LOG.md:747-750` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 747-750 | 3114 | in range |
-| `LOG.md:812` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 812 | 3114 | in range |
+| `LOG.md:1469` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1469 | 3125 | in range |
+| `LOG.md:1550` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1550 | 3125 | in range |
+| `LOG.md:1584` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1584 | 3125 | in range |
+| `LOG.md:1665` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1665 | 3125 | in range |
+| `LOG.md:1686` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1686 | 3125 | in range |
+| `LOG.md:1728` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1728 | 3125 | in range |
+| `LOG.md:1800-1801` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1800-1801 | 3125 | in range |
+| `LOG.md:1804` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1804 | 3125 | in range |
+| `LOG.md:2045` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2045 | 3125 | in range |
+| `LOG.md:2205` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2205 | 3125 | in range |
+| `LOG.md:2599` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2599 | 3125 | in range |
+| `LOG.md:2610` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2610 | 3125 | in range |
+| `LOG.md:2611` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2611 | 3125 | in range |
+| `LOG.md:2813` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 2813 | 3125 | in range |
+| `LOG.md:545` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 545 | 3125 | in range |
+| `LOG.md:709-713` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 709-713 | 3125 | in range |
+| `LOG.md:734` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 734 | 3125 | in range |
+| `LOG.md:747-750` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 747-750 | 3125 | in range |
+| `LOG.md:812` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 812 | 3125 | in range |
 | `PROVINCE.md:0` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/PROVINCE.md` | 0 | 237 | in range |
 | `PROVINCE.md:16-22` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/PROVINCE.md` | 16-22 | 237 | in range |
 | `PROVINCE.md:165` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/PROVINCE.md` | 165 | 237 | in range |
@@ -231,56 +233,56 @@ is compared against the resolved file's line count (editor convention).
 | `README.md:213` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/README.md` | 213 | 14 | OUT OF RANGE |
 | `README.md:23` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/README.md` | 23 | 14 | OUT OF RANGE |
 | `README.md:30` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/README.md` | 30 | 14 | OUT OF RANGE |
-| `SCORECARD.md:1014-1027` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1014-1027 | 3407 | in range |
-| `SCORECARD.md:1014-1035` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1014-1035 | 3407 | in range |
-| `SCORECARD.md:1074` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1074 | 3407 | in range |
-| `SCORECARD.md:1078` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1078 | 3407 | in range |
-| `SCORECARD.md:1116` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1116 | 3407 | in range |
-| `SCORECARD.md:1116-1119` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1116-1119 | 3407 | in range |
-| `SCORECARD.md:1129` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1129 | 3407 | in range |
-| `SCORECARD.md:1145` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1145 | 3407 | in range |
-| `SCORECARD.md:121-149` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 121-149 | 3407 | in range |
-| `SCORECARD.md:1240` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1240 | 3407 | in range |
-| `SCORECARD.md:1263-1281` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1263-1281 | 3407 | in range |
-| `SCORECARD.md:1269` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1269 | 3407 | in range |
-| `SCORECARD.md:1271` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1271 | 3407 | in range |
-| `SCORECARD.md:1284` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1284 | 3407 | in range |
-| `SCORECARD.md:134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 134 | 3407 | in range |
-| `SCORECARD.md:1492` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1492 | 3407 | in range |
-| `SCORECARD.md:1505` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1505 | 3407 | in range |
-| `SCORECARD.md:1509` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1509 | 3407 | in range |
-| `SCORECARD.md:1532` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1532 | 3407 | in range |
-| `SCORECARD.md:1547` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1547 | 3407 | in range |
-| `SCORECARD.md:1567` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1567 | 3407 | in range |
-| `SCORECARD.md:1595` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1595 | 3407 | in range |
-| `SCORECARD.md:1602` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1602 | 3407 | in range |
-| `SCORECARD.md:1602-1605` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1602-1605 | 3407 | in range |
-| `SCORECARD.md:1605` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1605 | 3407 | in range |
-| `SCORECARD.md:1634` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1634 | 3407 | in range |
-| `SCORECARD.md:164` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 164 | 3407 | in range |
-| `SCORECARD.md:174` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 174 | 3407 | in range |
-| `SCORECARD.md:1788` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1788 | 3407 | in range |
-| `SCORECARD.md:228-290` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 228-290 | 3407 | in range |
-| `SCORECARD.md:23` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 23 | 3407 | in range |
-| `SCORECARD.md:2420` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 2420 | 3407 | in range |
-| `SCORECARD.md:2477` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 2477 | 3407 | in range |
-| `SCORECARD.md:251` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 251 | 3407 | in range |
-| `SCORECARD.md:252` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 252 | 3407 | in range |
-| `SCORECARD.md:259-270` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 259-270 | 3407 | in range |
-| `SCORECARD.md:307` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 307 | 3407 | in range |
-| `SCORECARD.md:309` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 309 | 3407 | in range |
-| `SCORECARD.md:309-321` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 309-321 | 3407 | in range |
-| `SCORECARD.md:327` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 327 | 3407 | in range |
-| `SCORECARD.md:331` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 331 | 3407 | in range |
-| `SCORECARD.md:49-58` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 49-58 | 3407 | in range |
-| `SCORECARD.md:502` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 502 | 3407 | in range |
-| `SCORECARD.md:510` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 510 | 3407 | in range |
-| `SCORECARD.md:65` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 65 | 3407 | in range |
-| `SCORECARD.md:813` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 813 | 3407 | in range |
-| `SCORECARD.md:813-819` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 813-819 | 3407 | in range |
-| `SCORECARD.md:837` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 837 | 3407 | in range |
-| `SCORECARD.md:88-96` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 88-96 | 3407 | in range |
-| `SCORECARD.md:988` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 988 | 3407 | in range |
+| `SCORECARD.md:1014-1027` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1014-1027 | 3431 | in range |
+| `SCORECARD.md:1014-1035` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1014-1035 | 3431 | in range |
+| `SCORECARD.md:1074` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1074 | 3431 | in range |
+| `SCORECARD.md:1078` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1078 | 3431 | in range |
+| `SCORECARD.md:1116` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1116 | 3431 | in range |
+| `SCORECARD.md:1116-1119` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1116-1119 | 3431 | in range |
+| `SCORECARD.md:1129` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1129 | 3431 | in range |
+| `SCORECARD.md:1145` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1145 | 3431 | in range |
+| `SCORECARD.md:121-149` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 121-149 | 3431 | in range |
+| `SCORECARD.md:1240` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1240 | 3431 | in range |
+| `SCORECARD.md:1263-1281` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1263-1281 | 3431 | in range |
+| `SCORECARD.md:1269` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1269 | 3431 | in range |
+| `SCORECARD.md:1271` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1271 | 3431 | in range |
+| `SCORECARD.md:1284` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1284 | 3431 | in range |
+| `SCORECARD.md:134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 134 | 3431 | in range |
+| `SCORECARD.md:1492` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1492 | 3431 | in range |
+| `SCORECARD.md:1505` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1505 | 3431 | in range |
+| `SCORECARD.md:1509` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1509 | 3431 | in range |
+| `SCORECARD.md:1532` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1532 | 3431 | in range |
+| `SCORECARD.md:1547` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1547 | 3431 | in range |
+| `SCORECARD.md:1567` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1567 | 3431 | in range |
+| `SCORECARD.md:1595` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1595 | 3431 | in range |
+| `SCORECARD.md:1602` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1602 | 3431 | in range |
+| `SCORECARD.md:1602-1605` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1602-1605 | 3431 | in range |
+| `SCORECARD.md:1605` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1605 | 3431 | in range |
+| `SCORECARD.md:1634` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1634 | 3431 | in range |
+| `SCORECARD.md:164` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 164 | 3431 | in range |
+| `SCORECARD.md:174` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 174 | 3431 | in range |
+| `SCORECARD.md:1788` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 1788 | 3431 | in range |
+| `SCORECARD.md:228-290` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 228-290 | 3431 | in range |
+| `SCORECARD.md:23` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 23 | 3431 | in range |
+| `SCORECARD.md:2420` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 2420 | 3431 | in range |
+| `SCORECARD.md:2477` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 2477 | 3431 | in range |
+| `SCORECARD.md:251` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 251 | 3431 | in range |
+| `SCORECARD.md:252` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 252 | 3431 | in range |
+| `SCORECARD.md:259-270` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 259-270 | 3431 | in range |
+| `SCORECARD.md:307` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 307 | 3431 | in range |
+| `SCORECARD.md:309` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 309 | 3431 | in range |
+| `SCORECARD.md:309-321` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 309-321 | 3431 | in range |
+| `SCORECARD.md:327` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 327 | 3431 | in range |
+| `SCORECARD.md:331` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 331 | 3431 | in range |
+| `SCORECARD.md:49-58` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 49-58 | 3431 | in range |
+| `SCORECARD.md:502` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 502 | 3431 | in range |
+| `SCORECARD.md:510` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 510 | 3431 | in range |
+| `SCORECARD.md:65` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 65 | 3431 | in range |
+| `SCORECARD.md:813` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 813 | 3431 | in range |
+| `SCORECARD.md:813-819` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 813-819 | 3431 | in range |
+| `SCORECARD.md:837` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 837 | 3431 | in range |
+| `SCORECARD.md:88-96` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 88-96 | 3431 | in range |
+| `SCORECARD.md:988` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SCORECARD.md` | 988 | 3431 | in range |
 | `SHONEN.md:164-165` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SHONEN.md` | 164-165 | 12 | OUT OF RANGE |
 | `SHONEN.md:164-166` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SHONEN.md` | 164-166 | 12 | OUT OF RANGE |
 | `SHONEN.md:172` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/SHONEN.md` | 172 | 12 | OUT OF RANGE |
@@ -359,32 +361,32 @@ is compared against the resolved file's line count (editor convention).
 | `considerthese/2026-10-26.md:30` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/considerthese/2026-10-26.md` | 30 | 35 | in range |
 | `considerthese/2026-10-26.md:31` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/considerthese/2026-10-26.md` | 31 | 35 | in range |
 | `considerthese/2026-10-26.md:35` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/considerthese/2026-10-26.md` | 35 | 35 | in range |
-| `corpus/QUALITY.md:169` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 169 | 646 | in range |
-| `corpus/QUALITY.md:220-222` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 220-222 | 646 | in range |
-| `corpus/QUALITY.md:226` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 226 | 646 | in range |
-| `corpus/QUALITY.md:227` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 227 | 646 | in range |
-| `corpus/QUALITY.md:229` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 229 | 646 | in range |
-| `corpus/QUALITY.md:249` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 249 | 646 | in range |
-| `corpus/QUALITY.md:263` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 263 | 646 | in range |
-| `corpus/QUALITY.md:278` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 278 | 646 | in range |
-| `corpus/QUALITY.md:292` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 292 | 646 | in range |
-| `corpus/QUALITY.md:35-36` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 35-36 | 646 | in range |
-| `corpus/QUALITY.md:391` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 391 | 646 | in range |
-| `corpus/QUALITY.md:401` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 401 | 646 | in range |
-| `corpus/QUALITY.md:407` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 407 | 646 | in range |
-| `corpus/QUALITY.md:413-416` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 413-416 | 646 | in range |
-| `corpus/QUALITY.md:550` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 550 | 646 | in range |
-| `corpus/QUALITY.md:576-579` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 576-579 | 646 | in range |
-| `corpus/QUALITY.md:581` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 581 | 646 | in range |
-| `corpus/QUALITY.md:587` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 587 | 646 | in range |
-| `corpus/QUALITY.md:587-588` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 587-588 | 646 | in range |
-| `corpus/QUALITY.md:588` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 588 | 646 | in range |
-| `corpus/QUALITY.md:594` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 594 | 646 | in range |
-| `corpus/QUALITY.md:595` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 595 | 646 | in range |
-| `corpus/QUALITY.md:77` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 77 | 646 | in range |
-| `corpus/QUALITY.md:83` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 83 | 646 | in range |
-| `corpus/QUALITY.md:89` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 89 | 646 | in range |
-| `corpus/QUALITY.md:95` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 95 | 646 | in range |
+| `corpus/QUALITY.md:169` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 169 | 659 | in range |
+| `corpus/QUALITY.md:220-222` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 220-222 | 659 | in range |
+| `corpus/QUALITY.md:226` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 226 | 659 | in range |
+| `corpus/QUALITY.md:227` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 227 | 659 | in range |
+| `corpus/QUALITY.md:229` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 229 | 659 | in range |
+| `corpus/QUALITY.md:249` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 249 | 659 | in range |
+| `corpus/QUALITY.md:263` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 263 | 659 | in range |
+| `corpus/QUALITY.md:278` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 278 | 659 | in range |
+| `corpus/QUALITY.md:292` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 292 | 659 | in range |
+| `corpus/QUALITY.md:35-36` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 35-36 | 659 | in range |
+| `corpus/QUALITY.md:391` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 391 | 659 | in range |
+| `corpus/QUALITY.md:401` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 401 | 659 | in range |
+| `corpus/QUALITY.md:407` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 407 | 659 | in range |
+| `corpus/QUALITY.md:413-416` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 413-416 | 659 | in range |
+| `corpus/QUALITY.md:550` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 550 | 659 | in range |
+| `corpus/QUALITY.md:576-579` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 576-579 | 659 | in range |
+| `corpus/QUALITY.md:581` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 581 | 659 | in range |
+| `corpus/QUALITY.md:587` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 587 | 659 | in range |
+| `corpus/QUALITY.md:587-588` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 587-588 | 659 | in range |
+| `corpus/QUALITY.md:588` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 588 | 659 | in range |
+| `corpus/QUALITY.md:594` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 594 | 659 | in range |
+| `corpus/QUALITY.md:595` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 595 | 659 | in range |
+| `corpus/QUALITY.md:77` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 77 | 659 | in range |
+| `corpus/QUALITY.md:83` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 83 | 659 | in range |
+| `corpus/QUALITY.md:89` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 89 | 659 | in range |
+| `corpus/QUALITY.md:95` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/QUALITY.md` | 95 | 659 | in range |
 | `corpus/README.md:0` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md` | 0 | 1287 | in range |
 | `corpus/README.md:1019` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md` | 1019 | 1287 | in range |
 | `corpus/README.md:1050` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md` | 1050 | 1287 | in range |
@@ -406,65 +408,65 @@ is compared against the resolved file's line count (editor convention).
 | `corpus/README.md:591` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md` | 591 | 1287 | in range |
 | `corpus/README.md:702` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md` | 702 | 1287 | in range |
 | `corpus/README.md:82` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/README.md` | 82 | 1287 | in range |
-| `corpus/SOURCES.md:100` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 100 | 365 | in range |
-| `corpus/SOURCES.md:112` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 112 | 365 | in range |
-| `corpus/SOURCES.md:112-113` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 112-113 | 365 | in range |
-| `corpus/SOURCES.md:113` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 113 | 365 | in range |
-| `corpus/SOURCES.md:114` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 114 | 365 | in range |
-| `corpus/SOURCES.md:115` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 115 | 365 | in range |
-| `corpus/SOURCES.md:117` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 117 | 365 | in range |
-| `corpus/SOURCES.md:122` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 122 | 365 | in range |
-| `corpus/SOURCES.md:124` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 124 | 365 | in range |
-| `corpus/SOURCES.md:125` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 125 | 365 | in range |
-| `corpus/SOURCES.md:126` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 126 | 365 | in range |
-| `corpus/SOURCES.md:127` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 127 | 365 | in range |
-| `corpus/SOURCES.md:128` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 128 | 365 | in range |
-| `corpus/SOURCES.md:129` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 129 | 365 | in range |
-| `corpus/SOURCES.md:133` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 133 | 365 | in range |
-| `corpus/SOURCES.md:135` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 135 | 365 | in range |
-| `corpus/SOURCES.md:137` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 137 | 365 | in range |
-| `corpus/SOURCES.md:138` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 138 | 365 | in range |
-| `corpus/SOURCES.md:139` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 139 | 365 | in range |
-| `corpus/SOURCES.md:140` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 140 | 365 | in range |
-| `corpus/SOURCES.md:141` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 141 | 365 | in range |
-| `corpus/SOURCES.md:142` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 142 | 365 | in range |
-| `corpus/SOURCES.md:143` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 143 | 365 | in range |
-| `corpus/SOURCES.md:144` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 144 | 365 | in range |
-| `corpus/SOURCES.md:145` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 145 | 365 | in range |
-| `corpus/SOURCES.md:145-146` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 145-146 | 365 | in range |
-| `corpus/SOURCES.md:146` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 146 | 365 | in range |
-| `corpus/SOURCES.md:148` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 148 | 365 | in range |
-| `corpus/SOURCES.md:148-149` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 148-149 | 365 | in range |
-| `corpus/SOURCES.md:149` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 149 | 365 | in range |
-| `corpus/SOURCES.md:150` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 150 | 365 | in range |
-| `corpus/SOURCES.md:151` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 151 | 365 | in range |
-| `corpus/SOURCES.md:152` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 152 | 365 | in range |
-| `corpus/SOURCES.md:153` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 153 | 365 | in range |
-| `corpus/SOURCES.md:157` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 157 | 365 | in range |
-| `corpus/SOURCES.md:158` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 158 | 365 | in range |
-| `corpus/SOURCES.md:164` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 164 | 365 | in range |
-| `corpus/SOURCES.md:176` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 176 | 365 | in range |
-| `corpus/SOURCES.md:22` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 22 | 365 | in range |
-| `corpus/SOURCES.md:250` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 250 | 365 | in range |
-| `corpus/SOURCES.md:284` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 284 | 365 | in range |
-| `corpus/SOURCES.md:318-319` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 318-319 | 365 | in range |
-| `corpus/SOURCES.md:40` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 40 | 365 | in range |
-| `corpus/SOURCES.md:47` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 47 | 365 | in range |
-| `corpus/SOURCES.md:48` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 48 | 365 | in range |
-| `corpus/SOURCES.md:54` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 54 | 365 | in range |
-| `corpus/SOURCES.md:55-56` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 55-56 | 365 | in range |
-| `corpus/SOURCES.md:56` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 56 | 365 | in range |
-| `corpus/SOURCES.md:57` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 57 | 365 | in range |
-| `corpus/SOURCES.md:58` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 58 | 365 | in range |
-| `corpus/SOURCES.md:61` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 61 | 365 | in range |
-| `corpus/SOURCES.md:62` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 62 | 365 | in range |
-| `corpus/SOURCES.md:62-65` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 62-65 | 365 | in range |
-| `corpus/SOURCES.md:74` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 74 | 365 | in range |
-| `corpus/SOURCES.md:79` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 79 | 365 | in range |
-| `corpus/SOURCES.md:82` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 82 | 365 | in range |
-| `corpus/SOURCES.md:83` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 83 | 365 | in range |
-| `corpus/SOURCES.md:86` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 86 | 365 | in range |
-| `corpus/SOURCES.md:90` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 90 | 365 | in range |
+| `corpus/SOURCES.md:100` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 100 | 368 | in range |
+| `corpus/SOURCES.md:112` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 112 | 368 | in range |
+| `corpus/SOURCES.md:112-113` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 112-113 | 368 | in range |
+| `corpus/SOURCES.md:113` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 113 | 368 | in range |
+| `corpus/SOURCES.md:114` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 114 | 368 | in range |
+| `corpus/SOURCES.md:115` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 115 | 368 | in range |
+| `corpus/SOURCES.md:117` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 117 | 368 | in range |
+| `corpus/SOURCES.md:122` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 122 | 368 | in range |
+| `corpus/SOURCES.md:124` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 124 | 368 | in range |
+| `corpus/SOURCES.md:125` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 125 | 368 | in range |
+| `corpus/SOURCES.md:126` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 126 | 368 | in range |
+| `corpus/SOURCES.md:127` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 127 | 368 | in range |
+| `corpus/SOURCES.md:128` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 128 | 368 | in range |
+| `corpus/SOURCES.md:129` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 129 | 368 | in range |
+| `corpus/SOURCES.md:133` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 133 | 368 | in range |
+| `corpus/SOURCES.md:135` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 135 | 368 | in range |
+| `corpus/SOURCES.md:137` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 137 | 368 | in range |
+| `corpus/SOURCES.md:138` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 138 | 368 | in range |
+| `corpus/SOURCES.md:139` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 139 | 368 | in range |
+| `corpus/SOURCES.md:140` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 140 | 368 | in range |
+| `corpus/SOURCES.md:141` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 141 | 368 | in range |
+| `corpus/SOURCES.md:142` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 142 | 368 | in range |
+| `corpus/SOURCES.md:143` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 143 | 368 | in range |
+| `corpus/SOURCES.md:144` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 144 | 368 | in range |
+| `corpus/SOURCES.md:145` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 145 | 368 | in range |
+| `corpus/SOURCES.md:145-146` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 145-146 | 368 | in range |
+| `corpus/SOURCES.md:146` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 146 | 368 | in range |
+| `corpus/SOURCES.md:148` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 148 | 368 | in range |
+| `corpus/SOURCES.md:148-149` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 148-149 | 368 | in range |
+| `corpus/SOURCES.md:149` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 149 | 368 | in range |
+| `corpus/SOURCES.md:150` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 150 | 368 | in range |
+| `corpus/SOURCES.md:151` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 151 | 368 | in range |
+| `corpus/SOURCES.md:152` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 152 | 368 | in range |
+| `corpus/SOURCES.md:153` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 153 | 368 | in range |
+| `corpus/SOURCES.md:157` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 157 | 368 | in range |
+| `corpus/SOURCES.md:158` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 158 | 368 | in range |
+| `corpus/SOURCES.md:164` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 164 | 368 | in range |
+| `corpus/SOURCES.md:176` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 176 | 368 | in range |
+| `corpus/SOURCES.md:22` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 22 | 368 | in range |
+| `corpus/SOURCES.md:250` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 250 | 368 | in range |
+| `corpus/SOURCES.md:284` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 284 | 368 | in range |
+| `corpus/SOURCES.md:318-319` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 318-319 | 368 | in range |
+| `corpus/SOURCES.md:40` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 40 | 368 | in range |
+| `corpus/SOURCES.md:47` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 47 | 368 | in range |
+| `corpus/SOURCES.md:48` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 48 | 368 | in range |
+| `corpus/SOURCES.md:54` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 54 | 368 | in range |
+| `corpus/SOURCES.md:55-56` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 55-56 | 368 | in range |
+| `corpus/SOURCES.md:56` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 56 | 368 | in range |
+| `corpus/SOURCES.md:57` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 57 | 368 | in range |
+| `corpus/SOURCES.md:58` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 58 | 368 | in range |
+| `corpus/SOURCES.md:61` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 61 | 368 | in range |
+| `corpus/SOURCES.md:62` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 62 | 368 | in range |
+| `corpus/SOURCES.md:62-65` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 62-65 | 368 | in range |
+| `corpus/SOURCES.md:74` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 74 | 368 | in range |
+| `corpus/SOURCES.md:79` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 79 | 368 | in range |
+| `corpus/SOURCES.md:82` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 82 | 368 | in range |
+| `corpus/SOURCES.md:83` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 83 | 368 | in range |
+| `corpus/SOURCES.md:86` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 86 | 368 | in range |
+| `corpus/SOURCES.md:90` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md` | 90 | 368 | in range |
 | `corpus/instruments/README.md:1000` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/README.md` | 1000 | 1064 | in range |
 | `corpus/instruments/README.md:131` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/README.md` | 131 | 1064 | in range |
 | `corpus/instruments/README.md:16-17` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/README.md` | 16-17 | 1064 | in range |
@@ -478,89 +480,90 @@ is compared against the resolved file's line count (editor convention).
 | `corpus/instruments/capture-binding-check.py:67-68` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py` | 67-68 | 1129 | in range |
 | `corpus/instruments/capture-binding-check.py:80` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-binding-check.py` | 80 | 1129 | in range |
 | `corpus/instruments/capture-secret-allow.tsv:21-22` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-allow.tsv` | 21-22 | 28 | in range |
-| `corpus/instruments/capture-secret-scan.py:1-152` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 1-152 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:120-121` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 120-121 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:120-134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 120-134 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:128` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 128 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:128-134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 128-134 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:129-130` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 129-130 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:129-131` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 129-131 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:131-132` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 131-132 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:132` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 132 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:132-134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 132-134 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:133-134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 133-134 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:137-144` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 137-144 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:14-21` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 14-21 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:141-142` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 141-142 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:142` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 142 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:142-143` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 142-143 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:146-151` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 146-151 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:147` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 147 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:157-166` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 157-166 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:168` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 168 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:169` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 169 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:170` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 170 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:170-184` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 170-184 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:172` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 172 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:175` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 175 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:175-184` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 175-184 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:179-184` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 179-184 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:186` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 186 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:188` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 188 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:188-189` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 188-189 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:19-21` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 19-21 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:191` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 191 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:193-194` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 193-194 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:196` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 196 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:198` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 198 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:198-208` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 198-208 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:199` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 199 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:20-21` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 20-21 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:200` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 200 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:201` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 201 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:202` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 202 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:207-208` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 207-208 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:208-223` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 208-223 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:23-134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 23-134 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:23-66` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 23-66 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:237` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 237 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:238` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 238 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:238-243` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 238-243 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:238-247` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 238-247 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:242-243` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 242-243 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:246-247` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 246-247 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:247-254` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 247-254 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:255` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 255 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:283-303` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 283-303 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:350-370` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 350-370 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:352` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 352 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:358` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 358 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:359` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 359 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:361` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 361 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:367` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 367 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:371-380` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 371-380 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:376` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 376 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:381-395` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 381-395 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:388` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 388 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:388-389` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 388-389 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:390-391` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 390-391 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:395` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 395 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:439-443` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 439-443 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:439-452` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 439-452 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:44-45` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 44-45 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:47-52` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 47-52 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:53-66` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 53-66 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:53-80` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 53-80 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:67-80` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 67-80 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:81-82` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 81-82 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:81-92` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 81-92 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:81-97` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 81-97 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:84-85` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 84-85 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:84-92` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 84-92 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:86-97` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 86-97 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:87-92` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 87-92 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:9-21` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 9-21 | 737 | in range |
-| `corpus/instruments/capture-secret-scan.py:93-95` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 93-95 | 737 | in range |
+| `corpus/instruments/capture-secret-scan.py:1-152` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 1-152 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:120-121` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 120-121 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:120-134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 120-134 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:128` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 128 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:128-134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 128-134 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:129-130` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 129-130 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:129-131` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 129-131 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:131-132` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 131-132 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:132` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 132 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:132-134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 132-134 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:133-134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 133-134 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:137-144` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 137-144 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:14-21` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 14-21 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:141-142` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 141-142 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:142` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 142 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:142-143` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 142-143 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:146-151` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 146-151 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:147` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 147 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:157-166` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 157-166 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:168` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 168 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:169` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 169 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:170` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 170 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:170-184` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 170-184 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:172` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 172 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:175` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 175 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:175-184` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 175-184 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:179-184` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 179-184 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:186` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 186 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:188` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 188 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:19-21` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 19-21 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:20-21` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 20-21 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:202` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 202 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:204` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 204 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:204-214` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 204-214 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:205` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 205 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:206` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 206 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:207` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 207 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:208` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 208 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:213-214` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 213-214 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:214-229` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 214-229 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:23-134` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 23-134 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:23-66` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 23-66 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:243` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 243 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:244` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 244 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:244-249` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 244-249 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:244-253` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 244-253 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:248-249` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 248-249 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:252-253` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 252-253 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:253-260` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 253-260 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:261` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 261 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:277` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 277 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:281-282` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 281-282 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:289-309` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 289-309 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:356-376` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 356-376 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:358` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 358 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:364` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 364 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:365` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 365 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:367` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 367 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:373` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 373 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:377-386` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 377-386 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:382` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 382 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:387-401` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 387-401 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:394` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 394 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:394-395` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 394-395 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:396-397` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 396-397 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:401` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 401 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:44-45` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 44-45 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:445-449` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 445-449 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:445-458` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 445-458 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:47-52` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 47-52 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:53-66` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 53-66 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:53-80` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 53-80 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:67-80` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 67-80 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:81-82` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 81-82 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:81-92` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 81-92 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:81-97` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 81-97 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:84-85` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 84-85 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:84-92` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 84-92 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:86-97` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 86-97 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:87-88` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 87-88 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:87-92` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 87-92 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:9-21` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 9-21 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:92-95` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 92-95 | 749 | in range |
+| `corpus/instruments/capture-secret-scan.py:93-95` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py` | 93-95 | 749 | in range |
 | `corpus/instruments/capture-source.py:109-112` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-source.py` | 109-112 | 198 | in range |
 | `corpus/instruments/capture-source.py:115-123` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-source.py` | 115-123 | 198 | in range |
 | `corpus/instruments/capture-source.py:120` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-source.py` | 120 | 198 | in range |
@@ -954,6 +957,7 @@ is compared against the resolved file's line count (editor convention).
 | `corpus/lessons/round-86.md:63` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-86.md` | 63 | 85 | in range |
 | `corpus/lessons/round-9.md:33` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-9.md` | 33 | 63 | in range |
 | `corpus/lessons/round-96.md:21` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-96.md` | 21 | 86 | in range |
+| `corpus/lessons/round-98.md:145-196` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/lessons/round-98.md` | 145-196 | 227 | in range |
 | `corpus/source-snapshots/round-23/S029.txt:14` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-23/S029.txt` | 14 | 146 | in range |
 | `corpus/source-snapshots/round-23/S029.txt:20` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-23/S029.txt` | 20 | 146 | in range |
 | `corpus/source-snapshots/round-24/S013.txt:65` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-24/S013.txt` | 65 | 183 | in range |
@@ -1387,23 +1391,23 @@ match against a Sep-5 genesis sync — see §Honest scope limits.
 | # | citation | files citing | occurrences | noise flags |
 |---|---|---|---|---|
 | 1 | `[~]` | 82 | 199 | synthetic |
-| 2 | `claims.json` | 65 | 111 | - |
-| 3 | `.ufo/watchdog.log` | 55 | 61 | - |
+| 2 | `claims.json` | 67 | 113 | - |
+| 3 | `.ufo/watchdog.log` | 58 | 64 | - |
 | 4 | `source-recheck.py` | 48 | 71 | - |
 | 5 | `grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md` | 43 | 46 | shell,synthetic |
-| 6 | `git ls-remote origin refs/heads/master` | 39 | 39 | shell |
+| 6 | `git ls-remote origin refs/heads/master` | 40 | 40 | shell |
 | 7 | `scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi` | 35 | 43 | - |
 | 8 | `anchorcheck.py` | 33 | 49 | - |
 | 9 | `capture-source.py` | 31 | 43 | - |
-| 10 | `frontier-recheck-count.py` | 30 | 45 | - |
-| 11 | `resolve.py` | 29 | 54 | - |
+| 10 | `resolve.py` | 30 | 56 | - |
+| 11 | `frontier-recheck-count.py` | 30 | 45 | - |
 | 12 | `density.py` | 26 | 36 | - |
-| 13 | `w1-results.json` | 24 | 27 | - |
+| 13 | `w1-results.json` | 25 | 28 | - |
 | 14 | `status.json` | 23 | 49 | - |
-| 15 | `MISSION.md` | 23 | 25 | - |
-| 16 | `recheck-audit.py` | 22 | 31 | - |
-| 17 | `SOURCES.md` | 22 | 27 | - |
-| 18 | `templates/round-prompt.md` | 22 | 25 | - |
+| 15 | `templates/round-prompt.md` | 23 | 27 | - |
+| 16 | `MISSION.md` | 23 | 25 | - |
+| 17 | `recheck-audit.py` | 22 | 31 | - |
+| 18 | `SOURCES.md` | 22 | 27 | - |
 | 19 | `claims/` | 21 | 35 | - |
 | 20 | `ops/claim-check.mjs` | 18 | 37 | - |
 
